@@ -11,7 +11,7 @@ const {JSDOM} = jsdom;
 jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store');
 
-describe('Next 12 Months Can Not Hearing view', () => {
+describe('cant attend hearing in next months view', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
@@ -31,7 +31,7 @@ describe('Next 12 Months Can Not Hearing view', () => {
     });
 
     it('should have page title', () => {
-      expect(htmlDocument.title).toEqual('Your money claims account - next 12 months can not hearing');
+      expect(htmlDocument.title).toEqual('Your money claims account - cant attend hearing in next months');
     });
 
     it('should display the header', () => {

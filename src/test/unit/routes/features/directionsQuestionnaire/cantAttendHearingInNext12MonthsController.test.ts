@@ -9,7 +9,7 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 
-describe('Next 12 Months Can Not Hearing Controller', () => {
+describe('cant attend hearing in next months Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
@@ -20,7 +20,7 @@ describe('Next 12 Months Can Not Hearing Controller', () => {
   });
 
   describe('on GET', () => {
-    it('should return Next 12 Months Can Not Hearing page', async () => {
+    it('should return cant attend hearing in next months page', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL).expect((res) => {
         expect(res.status).toBe(200);
@@ -44,7 +44,7 @@ describe('Next 12 Months Can Not Hearing Controller', () => {
       app.locals.draftStoreClient = mockCivilClaim;
     });
 
-    it('should return Next 12 Months Can Not Hearing page on empty post', async () => {
+    it('should return cant attend hearing in next months page on empty post', async () => {
       await request(app).post(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(TestMessages.VALID_NEXT_12MONTHS_CANNOT_HEARING);

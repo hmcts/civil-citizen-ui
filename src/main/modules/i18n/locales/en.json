@@ -1049,7 +1049,7 @@
     },
     "CANT_ATTEND_HEARING_IN_NEXT_12MONTHS": {
       "CONTENT": "These should only be the dates of important events like medical appointments, other court hearing, or holidays you have already booked",
-      "PAGE_TITLE": "next 12 months can not hearing",
+      "PAGE_TITLE": "cant attend hearing in next months",
       "TITLE": "Are there any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing?"
     },
     "NOT_ELIGIBLE_FOR_SERVICE": {
