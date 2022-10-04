@@ -17,14 +17,14 @@ import {AppRequest} from 'common/models/AppRequest';
 const claimantSoleTraderDetailsController = express.Router();
 const claimantSoleTraderDetailsPath = 'features/claim/claimant-sole-trader-details';
 
-function renderPage(res: express.Response, req: express.Request, claimant: Party,  claimantIndividualAddress: GenericForm<CitizenAddress>, claimantIndividualCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>, claimantDetails: GenericForm<PartyDetails>): void {
+function renderPage(res: express.Response, req: express.Request, claimant: Party,  claimantSoleTraderAddress: GenericForm<CitizenAddress>, claimantSoleTraderCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>, claimantDetails: GenericForm<PartyDetails>): void {
   const partyName = claimant?.partyName;
   const type = claimant?.type;
 
   res.render(claimantSoleTraderDetailsPath, {
     claimant,
-    claimantIndividualAddress,
-    claimantIndividualCorrespondenceAddress,
+    claimantSoleTraderAddress,
+    claimantSoleTraderCorrespondenceAddress,
     claimantDetails,
     partyName,
     type,
@@ -36,11 +36,11 @@ claimantSoleTraderDetailsController.get(CLAIM_CLAIMANT_SOLE_TRADER_DETAILS_URL, 
     const caseId = req.session?.user?.id;
     const claimant: Party = await getClaimantInformation(caseId);
 
-    const claimantIndividualAddress = new GenericForm<CitizenAddress>(CitizenAddress.fromJson(claimant.primaryAddress));
-    const claimantIndividualCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(CitizenCorrespondenceAddress.fromJson(claimant.correspondenceAddress));
+    const claimantSoleTraderAddress = new GenericForm<CitizenAddress>(CitizenAddress.fromJson(claimant.primaryAddress));
+    const claimantSoleTraderCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(CitizenCorrespondenceAddress.fromJson(claimant.correspondenceAddress));
     const claimantDetails = new GenericForm<PartyDetails>(PartyDetails.fromJson(claimant));
 
-    renderPage(res, req, claimant, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, claimantDetails);
+    renderPage(res, req, claimant, claimantSoleTraderAddress, claimantSoleTraderCorrespondenceAddress, claimantDetails);
   } catch (error) {
     next(error);
   }
