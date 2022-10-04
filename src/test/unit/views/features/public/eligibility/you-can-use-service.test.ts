@@ -7,7 +7,6 @@ import {t} from 'i18next';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
-const govukBodyClass = 'govuk-body';
 const pageTitle = 'PAGES.YOU_CAN_USE_SERVICE.PAGE_TITLE';
 
 jest.mock('../../../../../../main/modules/oidc');
@@ -19,7 +18,7 @@ describe('You can use this service View', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
-    let paragraphs: HTMLCollection;
+    let mainWrapper: Element;
 
     beforeEach(async () => {
       nock(idamUrl)
@@ -28,7 +27,7 @@ describe('You can use this service View', () => {
       const response = await request(app).get(ELIGIBLE_FOR_THIS_SERVICE_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
-      paragraphs = htmlDocument.getElementsByClassName(govukBodyClass);
+      mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
     });
 
     it('should have page title', () => {
@@ -41,12 +40,11 @@ describe('You can use this service View', () => {
     });
 
     it('should display paragraph', () => {
-      expect(paragraphs[0].innerHTML).toContain(t('PAGES.YOU_CAN_USE_SERVICE.BASED_ON_ANSWERS'));
+      expect(mainWrapper.getElementsByClassName('govuk-body')[0].innerHTML).toContain(t('PAGES.YOU_CAN_USE_SERVICE.BASED_ON_ANSWERS'));
     });
 
     it('should display Continue button', () => {
-      const button = htmlDocument.getElementsByClassName('govuk-button');
-      expect(button[0].innerHTML).toContain(t('COMMON.BUTTONS.CONTINUE'));
+      expect(mainWrapper.getElementsByClassName('govuk-button')[0].innerHTML).toContain(t('COMMON.BUTTONS.CONTINUE'));
     });
 
     it('should display contact us forHelp', () => {
