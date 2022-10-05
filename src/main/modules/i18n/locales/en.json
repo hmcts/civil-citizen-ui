@@ -1688,6 +1688,7 @@
     "VALID_BETWEEN_NUMBERS_0_80": "Enter a number between 0 and 80",
     "VALID_CHOOSE": "Choose your response",
     "VALID_CITY": "Enter a valid town/city",
+    "VALID_CLAIM_AMOUNT": "Enter an amount of money",
     "VALID_CLAIM_NUMBER": "Enter a claim number",
     "VALID_CLAIM_REFERENCE_NUMBER": "Enter a valid claim number",
     "VALID_CORRESPONDENCE_ADDRESS_LINE_1": "Enter first correspondence address line",

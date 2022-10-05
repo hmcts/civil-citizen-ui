@@ -6,7 +6,7 @@ export class ClaimAmountRow {
   @ValidateIf(o => o.amount !== undefined)
   @IsDefined({message: 'ERRORS.VALID_REASON_REQUIRED'})
   @IsNotEmpty({message: 'ERRORS.VALID_REASON_REQUIRED'})
-  @MaxLength(FREE_TEXT_MAX_LENGTH, {message: 'ERRORS.TEXT400_TOO_LONG'})
+  @MaxLength(FREE_TEXT_MAX_LENGTH, {message: 'ERRORS.TEXT_TOO_MANY'})
     reason?: string;
 
   @ValidateIf(o => o.reason !== undefined)
