@@ -18,10 +18,10 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t("PAGES.CLAIMANT_PHONE.TITLE") }}</h1>
-          <p class="govuk-body">{{ t("PAGES.CLAIMANT_PHONE.NUMBER_INFORMATION") }}</p>
           <p class="govuk-body">
             {{ t("PAGES.CLAIMANT_PHONE.INFORMATION") }}
           </p>
+          <p class="govuk-body">{{ t("PAGES.CLAIMANT_PHONE.NUMBER_INFORMATION") }}</p>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             <div class="govuk-form-group {%- if form.errorFor('telephoneNumber') %} govuk-form-group--error{% endif %}">
