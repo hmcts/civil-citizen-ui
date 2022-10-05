@@ -1,7 +1,7 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {getDefendantEmail,saveDefendantEmail} from '../../../../../main/services/features/claim/defendantEmailService';
 import {Claim} from '../../../../../main/common/models/claim';
-import {CounterpartyType} from '../../../../../main/common/models/counterpartyType';
+import {PartyType} from '../../../../../main/common/models/partyType';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {Respondent} from '../../../../../main/common/models/respondent';
 import {DefendantEmail} from '../../../../../main/common/form/models/claim/defendantEmail';
@@ -20,11 +20,11 @@ const respondent: Respondent = {
   individualFirstName: '',
   telephoneNumber: '',
   responseType: '',
-  type: CounterpartyType.INDIVIDUAL,
+  type: PartyType.INDIVIDUAL,
   partyName: '',
   contactPerson: '',
   emailAddress: '',
-}
+};
 
 describe('Claimant Defendant Email Service', () => {
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
