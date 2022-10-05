@@ -3,7 +3,7 @@ import {ClaimantDefendantEmail} from '../../../../common/form/models/claim/claim
 import {CLAIMANT_DEFENDANT_EMAIL_URL, CLAIMANT_DEFENDANT_MOBILE_URL} from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {getClaimantDefendantEmail,saveClaimantDefendantEmail} from '../../../../../main/services/features/claim/claimantDefendantEmailService';
-import {AppRequest} from 'common/models/AppRequest';
+import {AppRequest} from '../../../../common/models/AppRequest';
 
 const claimantDefendantEmailViewPath = 'features/public/claim/defendant-email';
 const claimantDefendantEmailController = express.Router();
