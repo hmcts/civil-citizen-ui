@@ -129,6 +129,7 @@ import claimantDoBController from './features/public/claim/claimantDoBController
 import claimantIndividualDetailsController from './features/claim/claimantIndividualDetailsController';
 import whyUnavailableForHearingController from './features/directionsQuestionnaire/whyUnavailableForHearingController';
 import phoneOrVideoHearingController from './features/directionsQuestionnaire/phoneOrVideoHearingController';
+import youCanUseServiceController from './features/public/eligibility/youCanUseServiceController';
 
 export default [
   homeController,
@@ -250,4 +251,5 @@ export default [
   whyUnavailableForHearingController,
   claimantDoBController,
   phoneOrVideoHearingController,
+  youCanUseServiceController,
 ];
