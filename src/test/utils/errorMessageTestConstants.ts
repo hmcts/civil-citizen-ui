@@ -53,7 +53,7 @@ export const enum TestMessages {
   VALID_AMOUNT_ONE_POUND_OR_MORE = 'Enter an amount of £1 or more',
   VALID_DAY = 'Enter a valid day',
   VALID_DEFENDANT_AGE_ELIGIBILITY = 'Select yes, no, or company/organisation',
-  VALID_ENTER_VALID_EMAIL_ADDRESS = 'Enter valid email address',
+  VALID_EMAIL_ADDRESS = 'Enter valid email address',
   VALID_SENT_EXPERT_REPORTS = 'Select yes if you have sent expert reports to the other parties',
   VALID_FOUR_DIGIT_YEAR = 'Enter a 4 digit year',
   VALID_HOUSING = 'Describe your housing',
