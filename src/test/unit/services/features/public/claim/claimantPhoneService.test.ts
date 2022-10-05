@@ -1,10 +1,10 @@
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import {getClaimantPhone,saveClaimantPhone} from '../../../../../../main/services/features/claim/claimantPhoneService';
 import {Claim, Party} from '../../../../../../main/common/models/claim';
-import {CounterpartyType} from '../../../../../../main/common/models/counterpartyType';
 import {CorrespondenceAddress} from '../../../../../../main/common/models/correspondenceAddress';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {CitizenTelephoneNumber} from '../../../../../../main/common/form/models/citizenTelephoneNumber';
+import { PartyType } from '../../../../../../main/common/models/partyType';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -26,7 +26,7 @@ const party: Party = {
   soleTraderFirstName: '',
   soleTraderLastName: '',
   partyName: '',
-  type: CounterpartyType.INDIVIDUAL,
+  type: PartyType.INDIVIDUAL,
   primaryAddress: correspondenceAddress,
   phoneNumber: '',
 };
