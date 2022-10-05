@@ -17,7 +17,7 @@ import {AppRequest} from 'common/models/AppRequest';
 const claimantIndividualDetailsController = express.Router();
 const claimantIndividualDetailsPath = 'features/claim/claimant-individual-details';
 
-function renderPage(res: express.Response, req: express.Request, claimant: Party,  claimantIndividualAddress: GenericForm<CitizenAddress>, claimantIndividualCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>, claimantDetails: GenericForm<PartyDetails>): void {
+function renderPage(res: express.Response, req: express.Request, claimant: Party, claimantIndividualAddress: GenericForm<CitizenAddress>, claimantIndividualCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>, claimantDetails: GenericForm<PartyDetails>): void {
   const partyName = claimant?.partyName;
   const type = claimant?.type;
 
@@ -31,7 +31,7 @@ function renderPage(res: express.Response, req: express.Request, claimant: Party
   });
 }
 
-claimantIndividualDetailsController.get(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, async (req:AppRequest, res:express.Response, next: express.NextFunction) => {
+claimantIndividualDetailsController.get(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, async (req: AppRequest, res: express.Response, next: express.NextFunction) => {
   try {
     const caseId = req.session?.user?.id;
     const claimant: Party = await getClaimantInformation(caseId);

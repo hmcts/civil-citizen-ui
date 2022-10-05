@@ -3,7 +3,7 @@ import 'dayjs/locale/cy';
 import currencyFormat from '../utils/currencyFormat';
 import {Respondent} from './respondent';
 import {StatementOfMeans} from './statementOfMeans';
-import {CounterpartyType} from './counterpartyType';
+import {PartyType} from './partyType';
 import {RepaymentPlan} from './repaymentPlan';
 import {PartialAdmission} from './partialAdmission';
 import {DefendantEvidence} from './evidence/evidence';
@@ -255,7 +255,7 @@ export class Claim {
   }
 
   isBusiness(): boolean {
-    return this.respondent1?.type === CounterpartyType.COMPANY || this.respondent1?.type === CounterpartyType.ORGANISATION;
+    return this.respondent1?.type === PartyType.COMPANY || this.respondent1?.type === PartyType.ORGANISATION;
   }
 
   isDeadlineExtended(): boolean {
@@ -323,7 +323,7 @@ export interface Party {
   soleTraderFirstName?: string;
   soleTraderLastName?: string;
   partyName?: string;
-  type?: CounterpartyType;
+  type?: PartyType;
   primaryAddress?: CorrespondenceAddress;
   phoneNumber?: string;
   provideCorrespondenceAddress?: string;

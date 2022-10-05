@@ -389,6 +389,7 @@
       "YES_CORRESPONDENCE": "Yes, add a correspondence address"
     },
     "CITIZEN_DOB": {
+      "EXAMPLE": "For example, 31 3 1980",
       "PAGE_TITLE": "Your date of birth",
       "TITLE": "Enter your date of birth"
     },
@@ -681,6 +682,18 @@
       "TITLE": "Do you have loans or credit card debts?",
       "TOTAL": "Total owed"
     },
+    "DEFENDANT_PARTY_TYPE": {
+      "CLAIMING_AGAINST_AN_INDIVIDUAL": "An individual",
+      "CLAIMING_AGAINST_LIMITED_COMPANY": "A limited company",
+      "CLAIMING_AGAINST_ORGANISATION": "Another type of organisation",
+      "CLAIMING_AGAINST_SOLE_TRADER_OR_SELF_EMPLOYED": "A sole trader or self-employed person",
+      "CLAIMING_AGAINST_AN_INDIVIDUAL_HINT": "For example someone you lent money to",
+      "CLAIMING_AGAINST_LIMITED_COMPANY_HINT": "For example a company that sold you goods or services",
+      "CLAIMING_AGAINST_ORGANISATION_HINT": "For example a partnership, trust, charity, club or association",
+      "CLAIMING_AGAINST_SOLE_TRADER_OR_SELF_EMPLOYED_HINT": "For example a tradesperson who did work for you",
+      "PAGE_TITLE": "Who are you making the claim against?",
+      "TITLE": "Who are you making the claim against?"
+    },
     "DEFENDANT_TIMELINE": {
       "PAGE_TITLE": "Add your timeline of events",
       "THEIR_TIMELINE": "Their timeline",
@@ -818,6 +831,10 @@
       "HELP_WITH_FEES_ADVICE": "You may be asked by the court to email evidence in support of your application before your claim is issued.",
       "HELP_WITH_FEES_INTRO": "Making an application for Help with Fees does not guarantee that you will get your fee covered. You may still have to pay some or all of your court fee to get the claim issued (for the court system to officially start the claim and send details to the other side). When you apply for Help with Fees, you should receive an update from us within 5 working days, giving you the result of your application.",
       "TITLE": "Some useful information about Help with Fees"
+    },
+    "EMPLOYER" : {
+      "EMPLOYER_NAME" : "Employer name",
+      "JOB_TITLE" : "Job title"
     },
     "EMPLOYMENT_STATUS": {
       "BOTH": "You can select both.",
@@ -970,6 +987,7 @@
     "FREE_TELEPHONE_MEDIATION": {
       "AUTOMATICALLY_REGISTERED": "We have automatically registered you for free telephone mediation from HM Courts and Tribunals Service.",
       "CLAIMANT_MUST_AGREE": "The claimant must agree to mediation. We'll contact you within 28 days after the claimant's confirmation, to arrange a free appointment.",
+      "DO_NOT_AGREE_TO_FREE_MEDIATION": "I do not agree to free mediation",
       "EITHER_PARTY_BREAKS_TERMS": "If either party breaks the terms the other party can go to court to ask for a judgment or hearing.",
       "FIND_OUT_MORE": "Find out more about ",
       "HOW_WORKS": "How free mediation works",
@@ -1518,9 +1536,15 @@
       "PAGE_TITLE": "Your employer",
       "WHO_EMPLOYS": "Who employs you?"
     },
-    "EMPLOYER": {
-      "EMPLOYER_NAME": "Employer name",
-      "JOB_TITLE": "Job title"
+    "WHY_UNAVAILABLE_FOR_HEARING": {
+      "MUST_TELL_US_WHY": "You must tell us why you, your experts or witnesses cannot go to a hearing. The court will consider the reasons when deciding when to hold the hearing.",
+      "PAGE_TITLE": "Why are they not available for hearing?",
+      "TITLE": "Why are you, your experts or witnesses unavailable for a hearing for {{days}} days?"
+    },
+    "YOU_CAN_USE_SERVICE": {
+      "PAGE_TITLE": "You can use this service",
+      "TITLE": "You can use this service",
+      "BASED_ON_ANSWERS": "Based on your answers you can make a money claim using this service."
     },
     "YOU_CAN_USE": {
       "BASED_ON": "Based on your answers you can make a money claim using this service.",
@@ -1637,6 +1661,7 @@
     "SOMETHING_WENT_WRONG": "Something went wrong",
     "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Tell us if you believe the facts stated in this response are true",
     "TELL_US_WHY": "Please tell us why",
+    "TELL_US_WHY_UNAVAILABLE": "Tell us why you, your experts or witnesses are unavailable for a hearing",
     "TRANSACTION_SOURCE": {
       "ENTER_OTHER_INCOME": "Enter other income source",
       "HOW_MUCH_INCOME": {
