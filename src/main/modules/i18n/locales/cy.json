@@ -465,7 +465,7 @@
         "TITLE": "Enter your details",
         "YOUR_POSTAL_ADDRESS": "Your postal address"
       },
-      "CLAIMANT_DEFENDANT_EMAIL": {
+      "DEFENDANT_EMAIL": {
         "PAGE_TITLE": "Their email address (optional)",
         "PERSONAL_EMAIL": "This must be their personal email address",
         "TITLE": "Their email address (optional)",
@@ -1717,6 +1717,7 @@
     "VALID_ENTER_AT_LEAST_ONE_COURT_ORDER": "Rhowch fanylion o leiaf un gorchymyn llys",
     "VALID_ENTER_AT_LEAST_ONE_EMPLOYER": "Rhowch o leiaf un cyflogwr",
     "VALID_ENTER_AT_LEAST_ONE_NUMBER": "Rhowch rif ar gyfer o leiaf un maes",
+    "VALID_ENTER_VALID_EMAIL_ADDRESS": "Enter valid email address",
     "VALID_FOUR_DIGIT_YEAR": "Nodwch flwyddyn sy'n cynnwys 4 digid",
     "VALID_FREE_TEXT_DATE_LENGTH": "Rhowch ddyddiad sydd ddim hirach na $constraint1 nod",
     "VALID_HOUSING": "Disgrifiwch eich cartref",

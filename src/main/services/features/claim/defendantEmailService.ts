@@ -1,24 +1,24 @@
 import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
-import {ClaimantDefendantEmail} from '../../../common/form/models/claim/claimantDefendantEmail';
+import {DefendantEmail} from '../../../common/form/models/claim/defendantEmail';
 import {Respondent} from '../../../common/models/respondent';
 
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('claimantDefendantEmailAsService');
+const logger = Logger.getLogger('defendantEmailAsService');
 
-const getClaimantDefendantEmail = async (claimId:string) => {
+const getDefendantEmail = async (claimId:string) => {
   try {
     const claim = await getCaseDataFromStore(claimId);
     if (claim.respondent1) {
-      return new ClaimantDefendantEmail(claim.respondent1.emailAddress);
+      return new DefendantEmail(claim.respondent1.emailAddress);
     }
-    return new ClaimantDefendantEmail();
+    return new DefendantEmail();
   } catch (error) {
     logger.error(error);
     throw error;
   }
 };
 
-const saveClaimantDefendantEmail = async (claimId:string,form: ClaimantDefendantEmail) => {
+const saveDefendantEmail = async (claimId:string,form: DefendantEmail) => {
   try {
     const claim = await getCaseDataFromStore(claimId);
     if (!claim.respondent1) {
@@ -33,6 +33,6 @@ const saveClaimantDefendantEmail = async (claimId:string,form: ClaimantDefendant
 };
 
 export {
-  getClaimantDefendantEmail,
-  saveClaimantDefendantEmail,
+  getDefendantEmail,
+  saveDefendantEmail,
 };

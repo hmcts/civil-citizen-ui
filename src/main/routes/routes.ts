@@ -129,7 +129,7 @@ import claimantDoBController from './features/public/claim/claimantDoBController
 import claimantIndividualDetailsController from './features/claim/claimantIndividualDetailsController';
 import phoneOrVideoHearingController from './features/directionsQuestionnaire/phoneOrVideoHearingController';
 import youCanUseServiceController from './features/public/eligibility/youCanUseServiceController';
-import claimantDefendantEmailController from './features/public/claim/claimantDefendantEmailController';
+import defendantEmailController from './features/public/claim/defendantEmailController';
 
 export default [
   homeController,
@@ -251,5 +251,5 @@ export default [
   claimantDoBController,
   phoneOrVideoHearingController,
   youCanUseServiceController,
-  claimantDefendantEmailController,
+  defendantEmailController,
 ];

@@ -3,7 +3,7 @@ import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  CLAIMANT_DEFENDANT_EMAIL_URL, CLAIMANT_DEFENDANT_MOBILE_URL,
+  DEFENDANT_EMAIL_URL, DEFENDANT_PHONE_NUMBER_URL,
 } from '../../../../../main/routes/urls';
 import {t} from 'i18next';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
@@ -27,7 +27,7 @@ describe('Completing Claim', () => {
     it('should return on your claimant defendant email page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .get(CLAIMANT_DEFENDANT_EMAIL_URL)
+        .get(DEFENDANT_EMAIL_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.CLAIM_JOURNEY.CLAIMANT_DEFENDANT_EMAIL.TITLE'));
@@ -37,7 +37,7 @@ describe('Completing Claim', () => {
     it('should return 500 status code when error occurs', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .get(CLAIMANT_DEFENDANT_EMAIL_URL)
+        .get(DEFENDANT_EMAIL_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -49,29 +49,29 @@ describe('Completing Claim', () => {
     it('should redirect to the their mobile screen when email is provided', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .post(CLAIMANT_DEFENDANT_EMAIL_URL)
+        .post(DEFENDANT_EMAIL_URL)
         .send({emailAddress: EMAIL_ADDRESS})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIMANT_DEFENDANT_MOBILE_URL);
+          expect(res.header.location).toEqual(DEFENDANT_PHONE_NUMBER_URL);
         });
     });
 
     it('should redirect to the their mobile screen when email is not provided', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .post(CLAIMANT_DEFENDANT_EMAIL_URL)
+        .post(DEFENDANT_EMAIL_URL)
         .send({emailAddress: ''})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIMANT_DEFENDANT_MOBILE_URL);
+          expect(res.header.location).toEqual(DEFENDANT_PHONE_NUMBER_URL);
         });
     });
 
     it('should return error on incorrect input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .post(CLAIMANT_DEFENDANT_EMAIL_URL)
+        .post(DEFENDANT_EMAIL_URL)
         .send({emailAddress: 'test'})
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -82,7 +82,7 @@ describe('Completing Claim', () => {
     it('should return status 500 when there is error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .post(CLAIMANT_DEFENDANT_EMAIL_URL)
+        .post(DEFENDANT_EMAIL_URL)
         .send({emailAddress: EMAIL_ADDRESS})
         .expect((res) => {
           expect(res.status).toBe(500);

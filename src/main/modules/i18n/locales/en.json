@@ -464,7 +464,7 @@
         "TITLE": "Enter your details",
         "YOUR_POSTAL_ADDRESS": "Your postal address"
       },
-      "CLAIMANT_DEFENDANT_EMAIL": {
+      "DEFENDANT_EMAIL": {
         "PAGE_TITLE": "Their email address (optional)",
         "PERSONAL_EMAIL": "This must be their personal email address",
         "TITLE": "Their email address (optional)",

@@ -1,10 +1,10 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import {getClaimantDefendantEmail,saveClaimantDefendantEmail} from '../../../../../main/services/features/claim/claimantDefendantEmailService';
+import {getDefendantEmail,saveDefendantEmail} from '../../../../../main/services/features/claim/defendantEmailService';
 import {Claim} from '../../../../../main/common/models/claim';
 import {CounterpartyType} from '../../../../../main/common/models/counterpartyType';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {Respondent} from '../../../../../main/common/models/respondent';
-import {ClaimantDefendantEmail} from "../../../../../main/common/form/models/claim/claimantDefendantEmail";
+import {DefendantEmail} from '../../../../../main/common/form/models/claim/defendantEmail';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -35,7 +35,7 @@ describe('Claimant Defendant Email Service', () => {
         return new Claim();
       });
       //When
-      const form = await getClaimantDefendantEmail('123');
+      const form = await getDefendantEmail('123');
       //Then
       expect(form.emailAddress).toBeUndefined();
       expect(form.emailAddress).toEqual(undefined);
@@ -49,7 +49,7 @@ describe('Claimant Defendant Email Service', () => {
         return claim;
       });
       //When
-      const form = await getClaimantDefendantEmail('123');
+      const form = await getDefendantEmail('123');
       //Then
       expect(form.emailAddress).toEqual('');
     });
@@ -63,7 +63,7 @@ describe('Claimant Defendant Email Service', () => {
         return claim;
       });
       //When
-      const form = await getClaimantDefendantEmail('123');
+      const form = await getDefendantEmail('123');
 
       //Then
       expect(form.emailAddress).toEqual(EMAIL_ADDRESS);
@@ -75,7 +75,7 @@ describe('Claimant Defendant Email Service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(getClaimantDefendantEmail('123')).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(getDefendantEmail('123')).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 
@@ -90,7 +90,7 @@ describe('Claimant Defendant Email Service', () => {
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveClaimantDefendantEmail('123', new ClaimantDefendantEmail(EMAIL_ADDRESS));
+      await saveDefendantEmail('123', new DefendantEmail(EMAIL_ADDRESS));
       //Then
       expect(spySave).toBeCalled();
     });
@@ -101,7 +101,7 @@ describe('Claimant Defendant Email Service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(saveClaimantDefendantEmail('123', new ClaimantDefendantEmail(EMAIL_ADDRESS))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(saveDefendantEmail('123', new DefendantEmail(EMAIL_ADDRESS))).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
 
     it('should rethrow error when error occurs on save claim', async () => {
@@ -111,7 +111,7 @@ describe('Claimant Defendant Email Service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(saveClaimantDefendantEmail('123', new ClaimantDefendantEmail(EMAIL_ADDRESS))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(saveDefendantEmail('123', new DefendantEmail(EMAIL_ADDRESS))).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 });
