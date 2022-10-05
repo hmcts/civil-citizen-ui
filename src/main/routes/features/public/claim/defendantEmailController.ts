@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Response, Request, Router} from 'express';
 import {DefendantEmail} from '../../../../common/form/models/claim/defendantEmail';
 import {DEFENDANT_EMAIL_URL, DEFENDANT_PHONE_NUMBER_URL} from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
@@ -6,13 +6,13 @@ import {getDefendantEmail,saveDefendantEmail} from '../../../../services/feature
 import {AppRequest} from '../../../../common/models/AppRequest';
 
 const defendantEmailViewPath = 'features/public/claim/defendant-email';
-const defendantEmailController = express.Router();
+const defendantEmailController = Router();
 
-function renderView(form: GenericForm<DefendantEmail>, res: express.Response): void {
+function renderView(form: GenericForm<DefendantEmail>, res: Response): void {
   res.render(defendantEmailViewPath, {form});
 }
 
-defendantEmailController.get(DEFENDANT_EMAIL_URL, async (req: AppRequest, res: express.Response, next: express.NextFunction) => {
+defendantEmailController.get(DEFENDANT_EMAIL_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.session?.user?.id;
     const form: DefendantEmail = await getDefendantEmail(claimId);
@@ -22,7 +22,7 @@ defendantEmailController.get(DEFENDANT_EMAIL_URL, async (req: AppRequest, res: e
   }
 });
 
-defendantEmailController.post(DEFENDANT_EMAIL_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+defendantEmailController.post(DEFENDANT_EMAIL_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const form: GenericForm<DefendantEmail> = new GenericForm(new DefendantEmail(req.body.emailAddress));
     form.validateSync();
