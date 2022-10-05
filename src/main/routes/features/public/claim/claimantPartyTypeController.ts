@@ -1,7 +1,7 @@
 import express from 'express';
 import {CLAIMANT_PARTY_TYPE_SELECTION_URL,CLAIMANT_INDIVIDUAL_DETAILS_URL,CLAIMANT_SOLE_TRADER_DETAILS_URL,CLAIMANT_COMPANY_DETAILS_URL,CLAIMANT_ORGANISATION_DETAILS_URL} from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
-import {ClaimantPartyTypeSelection} from '../../../../common/form/models/claim/claimantPartyTypeSelection';
+import {ClaimantPartyTypeSelection} from '../../../../common/form/models/claim/claimant/claimantPartyTypeSelection';
 import {CounterpartyType} from '../../../../common/models/counterpartyType';
 
 const claimantPartyTypeViewPath = 'features/public/claim/claimant-party-type';

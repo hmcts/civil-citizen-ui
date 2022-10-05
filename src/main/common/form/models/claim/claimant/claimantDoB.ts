@@ -1,7 +1,7 @@
 import {IsDate, Max, Min, Validate, ValidateIf} from 'class-validator';
-import {OptionalDateNotInFutureValidator} from '../../validators/optionalDateNotInFutureValidator';
-import {OptionalDateFourDigitValidator} from '../../validators/optionalDateFourDigitValidator';
-import {DateConverter} from '../../../utils/dateConverter';
+import {OptionalDateNotInFutureValidator} from '../../../validators/optionalDateNotInFutureValidator';
+import {OptionalDateFourDigitValidator} from '../../../validators/optionalDateFourDigitValidator';
+import {DateConverter} from '../../../../utils/dateConverter';
 
 export class ClaimantDoB {
   @ValidateIf(o => (o.day < 32 && o.month < 13 && o.year > 999))
