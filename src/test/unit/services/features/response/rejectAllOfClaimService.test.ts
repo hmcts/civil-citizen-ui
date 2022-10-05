@@ -6,7 +6,7 @@ import * as draftStoreService from '../../../../../main/modules/draft-store/draf
 import {Claim} from '../../../../../main/common/models/claim';
 import rejectAllOfClaimType from '../../../../../main/common/form/models/rejectAllOfClaimType';
 import {RejectAllOfClaim} from '../../../../../main/common/form/models/rejectAllOfClaim';
-import {CounterpartyType} from '../../../../../main/common/models/counterpartyType';
+import {PartyType} from '../../../../../main/common/models/partyType';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -64,7 +64,7 @@ function createClaim() {
   const claim = new Claim();
   claim.rejectAllOfClaim = new RejectAllOfClaim(rejectAllOfClaimType.ALREADY_PAID);
   claim.applicant1 = {
-    type: CounterpartyType.ORGANISATION,
+    type: PartyType.ORGANISATION,
     partyName: 'Test',
     individualTitle: 'Mr.',
     individualFirstName: 'TestName',

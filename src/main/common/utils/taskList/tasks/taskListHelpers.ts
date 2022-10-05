@@ -1,6 +1,6 @@
 import {Claim} from '../../../models/claim';
 import {Respondent} from '../../../../common/models/respondent';
-import {CounterpartyType} from '../../../../common/models/counterpartyType';
+import {PartyType} from '../../../models/partyType';
 import PaymentOptionType from '../../../../common/form/models/admission/paymentOption/paymentOptionType';
 import RejectAllOfClaimType from '../../../../common/form/models/rejectAllOfClaimType';
 import {YesNo} from '../../../../common/form/models/yesNo';
@@ -14,7 +14,7 @@ export const hasCorrespondenceAndPrimaryAddress = (respondent1: Respondent): boo
 };
 
 export const hasDateOfBirthIfIndividual = (respondent1: Respondent): boolean => {
-  return !!(respondent1?.type !== CounterpartyType.INDIVIDUAL || (respondent1?.type === CounterpartyType.INDIVIDUAL && respondent1?.dateOfBirth));
+  return !!(respondent1?.type !== PartyType.INDIVIDUAL || (respondent1?.type === PartyType.INDIVIDUAL && respondent1?.dateOfBirth));
 };
 
 export const isResponseTypeMissing = (respondent1: Respondent): boolean => {
@@ -47,11 +47,11 @@ export const isIndividualWithStatementOfMeansComplete = (caseData: Claim): boole
 };
 
 export const isCounterpartyIndividual = (respondent1: Respondent): boolean => {
-  return respondent1.type === CounterpartyType.INDIVIDUAL || respondent1.type === CounterpartyType.SOLE_TRADER;
+  return respondent1.type === PartyType.INDIVIDUAL || respondent1.type === PartyType.SOLE_TRADER;
 };
 
 export const isCounterpartyCompany = (respondent1: Respondent): boolean => {
-  return respondent1.type === CounterpartyType.ORGANISATION || respondent1.type === CounterpartyType.COMPANY;
+  return respondent1.type === PartyType.ORGANISATION || respondent1.type === PartyType.COMPANY;
 };
 
 export const hasContactPersonAndCompanyPhone = (caseData: Claim): boolean => {

@@ -1,6 +1,6 @@
 import {CorrespondenceAddress} from '../../../../../../main/common/models/correspondenceAddress';
 import {Claim} from '../../../../../../main/common/models/claim';
-import {CounterpartyType} from '../../../../../../main/common/models/counterpartyType';
+import {PartyType} from '../../../../../../main/common/models/partyType';
 import {
   getAddress,
   getSolicitorName,
@@ -83,7 +83,7 @@ function buildClaimWithAddress(address: CorrespondenceAddress, correspondenceAdd
   claim.applicant1 = {
     partyName: 'Some Very Important Company Ltd',
     primaryAddress: address,
-    type: CounterpartyType.COMPANY,
+    type: PartyType.COMPANY,
   };
   if (correspondenceAddress) {
     claim.specApplicantCorrespondenceAddressdetails = correspondenceAddress;

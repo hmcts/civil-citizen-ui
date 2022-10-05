@@ -11,3 +11,7 @@ export enum YesNoNotReceived {
   NO = 'no',
   NOT_RECEIVED = 'not-received'
 }
+export enum YesNoUpperCamelCase {
+  YES = 'Yes',
+  NO = 'No',
+}

@@ -6,7 +6,7 @@ import {
   createClaimWithFreeTelephoneMediationSectionForIndividual,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
-import {CounterpartyType} from '../../../../../../../main/common/models/counterpartyType';
+import {PartyType} from '../../../../../../../main/common/models/partyType';
 import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
 import {CompanyTelephoneNumber} from '../../../../../../../main/common/form/models/mediation/companyTelephoneNumber';
 
@@ -38,7 +38,7 @@ describe('Free Telephone Mediation Section', () => {
     //Given
     const claim = createClaimWithFreeTelephoneMediationSection();
     if (claim.respondent1) {
-      claim.respondent1.type = CounterpartyType.COMPANY;
+      claim.respondent1.type = PartyType.COMPANY;
     }
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
@@ -62,7 +62,7 @@ describe('Free Telephone Mediation Section', () => {
       claim.mediation.canWeUse = undefined;
     }
     if (claim.respondent1) {
-      claim.respondent1.type = CounterpartyType.COMPANY;
+      claim.respondent1.type = PartyType.COMPANY;
     }
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
@@ -82,7 +82,7 @@ describe('Free Telephone Mediation Section', () => {
       claim.mediation.mediationDisagreement = undefined;
     }
     if (claim.respondent1) {
-      claim.respondent1.type = CounterpartyType.COMPANY;
+      claim.respondent1.type = PartyType.COMPANY;
     }
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
@@ -101,7 +101,7 @@ describe('Free Telephone Mediation Section', () => {
     }
 
     if (claim.respondent1) {
-      claim.respondent1.type = CounterpartyType.COMPANY;
+      claim.respondent1.type = PartyType.COMPANY;
     }
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');

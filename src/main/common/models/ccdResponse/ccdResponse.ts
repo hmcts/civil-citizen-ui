@@ -9,4 +9,5 @@ export interface CCDResponse extends ClaimUpdate{
   respondent1RepaymentPlan?: CCDRepaymentPlan;
   respondToClaimAdmitPartLRspec?: CCDPayBySetDate;
   specAoSApplicantCorrespondenceAddressRequired?: string;
+  responseClaimMediationSpecRequired?: string;
 }
