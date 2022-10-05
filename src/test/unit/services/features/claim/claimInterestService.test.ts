@@ -1,16 +1,16 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {getClaimInterest, saveClaimInterest} from '../../../../../main/services/features/claim/claimInterestService';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
-import {Claim} from "../../../../../main/common/models/claim";
-import {GenericYesNo} from "../../../../../main/common/form/models/genericYesNo";
-import {TestMessages} from "../../../../utils/errorMessageTestConstants";
+import {Claim} from '../../../../../main/common/models/claim';
+import {GenericYesNo} from '../../../../../main/common/form/models/genericYesNo';
+import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
-const CLAIM_ID = '123';
+const CASE_ID = '123';
 const claim = new Claim()
 
 describe('Claim interest service', () => {
@@ -22,8 +22,9 @@ describe('Claim interest service', () => {
       mockGetCaseData.mockImplementation(async () => {
         return new GenericYesNo();
       });
+
       //When
-      const result = await getClaimInterest(CLAIM_ID)
+      const result = await getClaimInterest(CASE_ID)
 
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
@@ -39,67 +40,79 @@ describe('Claim interest service', () => {
         claim.claimInterest = new GenericYesNo(YesNo.YES)
         return claim;
       });
+
       //When
-      const result = await getClaimInterest(CLAIM_ID)
+      const result = await getClaimInterest(CASE_ID)
 
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(result.option).not.toBeNull();
       expect(result.option).toEqual(YesNo.YES);
     });
+
+    it('should throw an error when error is thrown from draft store', async () => {
+      //When
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+      //Then
+      await expect(getClaimInterest(CASE_ID)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
   });
 
   describe('save Claim interest', async () => {
-    it('should return error when getting case data', async () => {
-      //Given
-      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
-
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      //When
-      await saveClaimInterest(CLAIM_ID, new GenericYesNo(YesNo.YES))
-
-      //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
-      await expect(saveClaimInterest('123', new GenericYesNo('yes'))).rejects.toThrow(TestMessages.REDIS_FAILURE);
-      await expect(saveClaimInterest('123', new GenericYesNo('yes'))).rejects.toContain(TestMessages.SOMETHING_WENT_WRONG);
-    });
-
-    it('should return error when saving draft claim', async () => {
+    it('should save claim Interest option when option is YES', async () => {
       //Given
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
 
-      mockSaveDraftClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-
-      //When
-      await saveClaimInterest(CLAIM_ID, new GenericYesNo(YesNo.YES))
-
-      //Then
-      expect(spySaveDraftClaim).toBeCalled();
-      await expect(saveClaimInterest('123', new GenericYesNo('yes'))).rejects.toThrow(TestMessages.REDIS_FAILURE);
-      await expect(saveClaimInterest('123', new GenericYesNo('yes'))).rejects.toContain(TestMessages.SOMETHING_WENT_WRONG);
-    });
-
-    it('should save claim Interest option', async () => {
-      //Give
-      const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
-
       mockGetCaseData.mockImplementation(async () => {
-        claim.claimInterest = new GenericYesNo(YesNo.YES)
+        claim.claimInterest = {option : YesNo.YES}
         return claim
       });
 
       //When
-      await saveClaimInterest(CLAIM_ID, new GenericYesNo(YesNo.YES))
+      await saveClaimInterest(CASE_ID, new GenericYesNo(YesNo.YES))
 
       //Then
       expect(spySaveDraftClaim).toBeCalled();
-      expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, claim);
-      await expect(saveClaimInterest('123', new GenericYesNo('yes'))).toBeCalled();
-      await expect(saveClaimInterest('123', new GenericYesNo('yes'))).not.toThrowError();
+      expect(spySaveDraftClaim).toBeCalledWith(CASE_ID, claim);
+    });
+
+    it('should save claim Interest option when option is NO', async () => {
+      //Given
+      const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
+
+      mockGetCaseData.mockImplementation(async () => {
+        claim.claimInterest = {option : YesNo.NO}
+        return claim
+      });
+
+      //When
+      await saveClaimInterest(CASE_ID, new GenericYesNo(YesNo.NO))
+
+      //Then
+      expect(spySaveDraftClaim).toBeCalled();
+      expect(spySaveDraftClaim).toBeCalledWith(CASE_ID, claim);
+    });
+
+    it('should throw error when draft store get method throws error', async () => {
+      //When
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+
+      //Then
+      await expect(saveClaimInterest(CASE_ID, new GenericYesNo(YesNo.YES))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
+
+    it('should throw error when draft store save method throws error', async () => {
+      //When
+      mockSaveDraftClaim.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+
+      //Then
+      await expect(saveClaimInterest(CASE_ID, new GenericYesNo(YesNo.YES))).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 });

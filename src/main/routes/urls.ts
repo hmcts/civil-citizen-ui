@@ -141,6 +141,6 @@ export const DQ_SENT_EXPERT_REPORTS_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/sent-
 export const DQ_EXPERT_GUIDANCE_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/expert-guidance`;
 export const CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL = `${BASE_CLAIM_URL}/claimant-individual-details`;
 export const CLAIMANT_DOB_URL = `${BASE_CLAIM_URL}/claimant-dob`;
-export const CLAIM_INTEREST_AMOUNT = `${BASE_CLAIM_URL}/interest`;
+export const CLAIM_INTEREST = `${BASE_CLAIM_URL}/interest`;
 export const CLAIM_INTEREST_TYPE = `${BASE_CLAIM_URL}/interest-type`;
 export const CLAIM_HELP_WITH_FEES = `${BASE_CLAIM_URL}/help-with-fees`;

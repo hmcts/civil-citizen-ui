@@ -109,7 +109,7 @@ function buildMockClaim(): Claim {
   _mockClaim.claimFee = {
     calculatedAmountInPence: '11500',
   };
-  _mockClaim.claimInterest = YesNo.YES;
+  _mockClaim.claimInterest = {option : YesNo.YES};
   _mockClaim.interestClaimFrom = InterestClaimFromType.FROM_A_SPECIFIC_DATE;
   _mockClaim.claimAmountBreakup = [
     {
