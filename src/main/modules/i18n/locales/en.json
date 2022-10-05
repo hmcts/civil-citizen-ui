@@ -438,6 +438,16 @@
       "REJECT_WHOLE_CLAIM": "If you reject all of the claim, the claim may be transferred to a County Court hearing centre.",
       "RESPONSE_MEANING": "Find out what each response means"
     },
+    "CLAIM_AMOUNT_BREAKDOWN": {
+      "AMOUNT": "Amount",
+      "CLAIM_FEE": "your claim fee - we’ll add this for you",
+      "DONT_INCLUDE": "Don’t include:",
+      "DESCRIPTION": "Your claim could be for a single amount or made up of multiple items.",
+      "HINT": "Briefly explain each item - for example, \"broken tiles\", \"roof damage\"",
+      "INTEREST": "interest - we’ll ask you about this next",
+      "REASON": "What you’re claiming for",
+      "TITLE": "Claim amount"
+    },
     "CLAIM_DETAILS": {
       "AMOUNT": "Amount",
       "AMOUNT_BREAKDOWN": "Amount breakdown",

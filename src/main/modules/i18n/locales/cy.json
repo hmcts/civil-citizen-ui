@@ -439,6 +439,16 @@
       "REJECT_WHOLE_CLAIM": "Os ydych yn gwrthod yr hawliad cyfan, gall yr hawliad gael ei drosglwyddo i ganolfan wrandawiadau Llys Sirol.",
       "RESPONSE_MEANING": "Canfod beth mae pob ymateb yn ei olygu"
     },
+    "CLAIM_AMOUNT_BREAKDOWN": {
+      "AMOUNT": "Amount",
+      "CLAIM_FEE": "your claim fee - we’ll add this for you",
+      "DONT_INCLUDE": "Don’t include:",
+      "DESCRIPTION": "Your claim could be for a single amount or made up of multiple items.",
+      "HINT": "Briefly explain each item - for example, \"broken tiles\", \"roof damage\"",
+      "INTEREST": "interest - we’ll ask you about this next",
+      "REASON": "What you’re claiming for",
+      "TITLE": "Claim amount"
+    },
     "CLAIM_DETAILS": {
       "AMOUNT": "Amount",
       "AMOUNT_BREAKDOWN": "Amount breakdown",
