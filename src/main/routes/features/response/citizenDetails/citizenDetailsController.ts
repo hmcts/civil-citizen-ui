@@ -1,6 +1,6 @@
 import * as express from 'express';
 import {CITIZEN_DETAILS_URL, DOB_URL, CITIZEN_PHONE_NUMBER_URL} from '../../../urls';
-import {CitizenAddress} from '../../../../common/form/models/citizenAddress';
+import {Address} from 'common/form/models/address';
 import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citizenCorrespondenceAddress';
 import {Respondent} from '../../../../common/models/respondent';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
@@ -24,7 +24,7 @@ const getViewPathWithType = (type: PartyType) => {
   return CITIZEN_DETAILS_VIEW_PATH;
 };
 
-function renderPage(res: express.Response, req: express.Request, respondent: Respondent, citizenAddress: GenericForm<CitizenAddress>, citizenCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>): void {
+function renderPage(res: express.Response, req: express.Request, respondent: Respondent, citizenAddress: GenericForm<Address>, citizenCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>): void {
   const type = respondent?.type;
 
   res.render(getViewPathWithType(type), {
@@ -49,7 +49,7 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: express.Request, r
   try {
     const respondent: Respondent = await getRespondentInformation(req.params.id);
 
-    const citizenAddress = new GenericForm<CitizenAddress>(new CitizenAddress(
+    const citizenAddress = new GenericForm<Address>(new Address(
       respondent?.primaryAddress ? respondent.primaryAddress.AddressLine1 : undefined,
       respondent?.primaryAddress ? respondent.primaryAddress.AddressLine2 : undefined,
       respondent?.primaryAddress ? respondent.primaryAddress.AddressLine3 : undefined,
@@ -72,7 +72,7 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: express.Request, r
 citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   const responseDataRedis: Respondent = await getRespondentInformation(req.params.id);
   try {
-    const citizenAddress = new GenericForm<CitizenAddress>(new CitizenAddress(
+    const citizenAddress = new GenericForm<Address>(new Address(
       req.body.primaryAddressLine1,
       req.body.primaryAddressLine2,
       req.body.primaryAddressLine3,
