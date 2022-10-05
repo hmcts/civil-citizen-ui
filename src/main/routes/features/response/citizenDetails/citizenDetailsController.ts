@@ -1,6 +1,6 @@
-import * as express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {CITIZEN_DETAILS_URL, DOB_URL, CITIZEN_PHONE_NUMBER_URL} from '../../../urls';
-import {Address} from 'common/form/models/address';
+import {Address} from '../../../../common/form/models/address';
 import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citizenCorrespondenceAddress';
 import {Respondent} from '../../../../common/models/respondent';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
@@ -12,7 +12,7 @@ import {
 import {PartyType} from '../../../../common/models/partyType';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 
-const citizenDetailsController = express.Router();
+const citizenDetailsController = Router();
 
 const CITIZEN_DETAILS_COMPANY_VIEW_PATH = 'features/response/citizenDetails/citizen-details-company';
 const CITIZEN_DETAILS_VIEW_PATH = 'features/response/citizenDetails/citizen-details';
@@ -24,20 +24,20 @@ const getViewPathWithType = (type: PartyType) => {
   return CITIZEN_DETAILS_VIEW_PATH;
 };
 
-function renderPage(res: express.Response, req: express.Request, respondent: Respondent, citizenAddress: GenericForm<Address>, citizenCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>): void {
+function renderPage(res: Response, req: Request, respondent: Respondent, citizenAddress: GenericForm<Address>, citizenCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>): void {
   const type = respondent?.type;
 
   res.render(getViewPathWithType(type), {
     respondent,
     citizenAddress,
     citizenCorrespondenceAddress,
-    partyName: respondent?.partyName ,
+    partyName: respondent?.partyName,
     contactPerson: respondent?.contactPerson,
     type,
   });
 }
 
-const redirect = (responseDataRedis: Respondent, req: express.Request, res: express.Response) => {
+const redirect = (responseDataRedis: Respondent, req: Request, res: Response) => {
   if (responseDataRedis?.type === PartyType.SOLE_TRADER || responseDataRedis?.type === PartyType.INDIVIDUAL) {
     res.redirect(constructResponseUrlWithIdParams(req.params.id, DOB_URL));
   } else {
@@ -45,7 +45,7 @@ const redirect = (responseDataRedis: Respondent, req: express.Request, res: expr
   }
 };
 
-citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const respondent: Respondent = await getRespondentInformation(req.params.id);
 
@@ -69,7 +69,7 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: express.Request, r
   }
 });
 
-citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
   const responseDataRedis: Respondent = await getRespondentInformation(req.params.id);
   try {
     const citizenAddress = new GenericForm<Address>(new Address(
