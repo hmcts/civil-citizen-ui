@@ -39,8 +39,8 @@ describe('Claimant Phone View', () => {
 
     it('should display paragraphs', () => {
       const body = mainWrapper.getElementsByClassName('govuk-body');
-      expect(body[0].innerHTML).toContain(t('PAGES.CLAIMANT_PHONE.NUMBER_INFORMATION'));
-      expect(body[1].innerHTML).toContain(t('PAGES.CLAIMANT_PHONE.INFORMATION'));
+      expect(body[0].innerHTML).toContain(t('PAGES.CLAIMANT_PHONE.INFORMATION'));
+      expect(body[1].innerHTML).toContain(t('PAGES.CLAIMANT_PHONE.NUMBER_INFORMATION'));
     });
 
     it('should display form elements', () => {
