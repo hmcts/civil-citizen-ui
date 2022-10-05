@@ -130,6 +130,7 @@ import claimantIndividualDetailsController from './features/claim/claimantIndivi
 import phoneOrVideoHearingController from './features/directionsQuestionnaire/phoneOrVideoHearingController';
 import cantAttendHearingInNext12MonthsController
   from './features/directionsQuestionnaire/cantAttendHearingInNext12MonthsController';
+import youCanUseServiceController from './features/public/eligibility/youCanUseServiceController';
 
 export default [
   homeController,
@@ -251,4 +252,5 @@ export default [
   claimantDoBController,
   phoneOrVideoHearingController,
   cantAttendHearingInNext12MonthsController,
+  youCanUseServiceController,
 ];
