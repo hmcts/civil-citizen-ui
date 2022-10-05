@@ -30,7 +30,7 @@ describe('Completing Claim', () => {
         .get(DEFENDANT_EMAIL_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.CLAIM_JOURNEY.CLAIMANT_DEFENDANT_EMAIL.TITLE'));
+          expect(res.text).toContain(t('PAGES.CLAIM_JOURNEY.DEFENDANT_EMAIL.TITLE'));
         });
     });
 

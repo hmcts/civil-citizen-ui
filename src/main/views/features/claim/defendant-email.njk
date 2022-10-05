@@ -7,7 +7,7 @@
 {% from "../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.CLAIM_JOURNEY.CLAIMANT_DEFENDANT_EMAIL.TITLE') }}
+  {{ setPageTitle('PAGES.CLAIM_JOURNEY.DEFENDANT_EMAIL.TITLE') }}
 {% endblock %}
 
 {% block content %}
@@ -20,10 +20,10 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.CLAIM_JOURNEY.CLAIMANT_DEFENDANT_EMAIL.PAGE_TITLE') }}</h1>
+          <h1 class="govuk-heading-l">{{ t('PAGES.CLAIM_JOURNEY.DEFENDANT_EMAIL.PAGE_TITLE') }}</h1>
           <p class="govuk-body">
-            {{ t('PAGES.CLAIM_JOURNEY.CLAIMANT_DEFENDANT_EMAIL.USE_THIS_EMAIL') }}
-            {{ t('PAGES.CLAIM_JOURNEY.CLAIMANT_DEFENDANT_EMAIL.PERSONAL_EMAIL') }}
+            {{ t('PAGES.CLAIM_JOURNEY.DEFENDANT_EMAIL.USE_THIS_EMAIL') }}
+            {{ t('PAGES.CLAIM_JOURNEY.DEFENDANT_EMAIL.PERSONAL_EMAIL') }}
           </p>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
@@ -33,7 +33,7 @@
               name: 'emailAddress',
               value: form.model.emailAddress,
               label: {
-                text: t('PAGES.CLAIM_JOURNEY.CLAIMANT_DEFENDANT_EMAIL.TITLE')
+                text: t('PAGES.CLAIM_JOURNEY.DEFENDANT_EMAIL.TITLE')
                 class: 'govuk-visually-hidden'
               },
               errorMessage: {
