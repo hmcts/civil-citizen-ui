@@ -5,7 +5,7 @@ import {CLAIM_CLAIMANT_SOLE_TRADER_DETAILS_URL, CLAIMANT_PHONE_URL} from '../../
 
 import {buildCorrespondenceAddress, buildPrimaryAddress} from '../../../../utils/mockClaim';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {CounterpartyType} from '../../../../../main/common/models/counterpartyType';
+import {PartyType} from '../../../../../main/common/models/partyType';
 import {Claim, Party} from '../../../../../main/common/models/claim';
 import {Respondent} from '../../../../../main/common/models/respondent';
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
@@ -38,7 +38,7 @@ const buildClaimOfApplicant = (): Party => {
   return claim.applicant1;
 };
 
-const buildClaimOfApplicantType = (type: CounterpartyType): Party => {
+const buildClaimOfApplicantType = (type: PartyType): Party => {
   claim.applicant1 = new Respondent();
   claim.applicant1.type = type;
   claim.applicant1.primaryAddress = buildPrimaryAddress();
@@ -127,7 +127,7 @@ describe('Claimant Sole Trader Details page', () => {
   it('should return your details page with information without correspondent address', async () => {
     const buildClaimOfApplicantWithoutCorrespondent = (): Party => {
       claim.applicant1 = new Respondent();
-      claim.applicant1.type = CounterpartyType.SOLE_TRADER;
+      claim.applicant1.type = PartyType.SOLE_TRADER;
       claim.applicant1.individualTitle = 'individualTitle';
       claim.applicant1.individualFirstName = 'individualFirstName';
       claim.applicant1.individualLastName = 'individualLastName';
@@ -197,7 +197,7 @@ describe('Claimant Sole Trader Details page', () => {
 
   it('POST/Claimant Sole Trader details - should redirect on correct correspondence address', async () => {
     mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(CounterpartyType.SOLE_TRADER);
+      return buildClaimOfApplicantType(PartyType.SOLE_TRADER);
     });
     await request(app)
       .post(CLAIM_CLAIMANT_SOLE_TRADER_DETAILS_URL)
@@ -221,7 +221,7 @@ describe('Claimant Sole Trader Details page', () => {
 
   it('POST/Claimant Sole Trader details - should return error on empty primary address line', async () => {
     mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(CounterpartyType.SOLE_TRADER);
+      return buildClaimOfApplicantType(PartyType.SOLE_TRADER);
     });
     await request(app)
       .post(CLAIM_CLAIMANT_SOLE_TRADER_DETAILS_URL)
@@ -290,7 +290,7 @@ describe('Claimant Sole Trader Details page', () => {
 
   it('POST/Claimant Sole Trader details - should return error on empty correspondence address line', async () => {
     mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(CounterpartyType.SOLE_TRADER);
+      return buildClaimOfApplicantType(PartyType.SOLE_TRADER);
     });
     await request(app)
       .post(CLAIM_CLAIMANT_SOLE_TRADER_DETAILS_URL)
@@ -315,7 +315,7 @@ describe('Claimant Sole Trader Details page', () => {
 
   it('POST/Claimant Sole Trader details - should return error on empty correspondence city', async () => {
     mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(CounterpartyType.SOLE_TRADER);
+      return buildClaimOfApplicantType(PartyType.SOLE_TRADER);
     });
     await request(app)
       .post(CLAIM_CLAIMANT_SOLE_TRADER_DETAILS_URL)
@@ -340,7 +340,7 @@ describe('Claimant Sole Trader Details page', () => {
 
   it('POST/Claimant Sole Trader details - should return error on empty correspondence postcode', async () => {
     mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(CounterpartyType.SOLE_TRADER);
+      return buildClaimOfApplicantType(PartyType.SOLE_TRADER);
     });
     await request(app)
       .post(CLAIM_CLAIMANT_SOLE_TRADER_DETAILS_URL)
@@ -365,7 +365,7 @@ describe('Claimant Sole Trader Details page', () => {
 
   it('POST/Claimant Sole Trader details - should return error on no input', async () => {
     mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(CounterpartyType.SOLE_TRADER);
+      return buildClaimOfApplicantType(PartyType.SOLE_TRADER);
     });
     await request(app)
       .post(CLAIM_CLAIMANT_SOLE_TRADER_DETAILS_URL)
@@ -419,7 +419,7 @@ describe('Claimant Sole Trader Details page', () => {
 
   it('POST/Claimant Sole Trader details - should return error on input for correspondence address when provideCorrespondenceAddress is set to YES', async () => {
     mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(CounterpartyType.SOLE_TRADER);
+      return buildClaimOfApplicantType(PartyType.SOLE_TRADER);
     });
     await request(app)
       .post(CLAIM_CLAIMANT_SOLE_TRADER_DETAILS_URL)
@@ -446,7 +446,7 @@ describe('Claimant Sole Trader Details page', () => {
 
   it('should redirect to claimant phone screen', async () => {
     mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(CounterpartyType.SOLE_TRADER);
+      return buildClaimOfApplicantType(PartyType.SOLE_TRADER);
     });
     await request(app)
       .post(CLAIM_CLAIMANT_SOLE_TRADER_DETAILS_URL)
