@@ -389,6 +389,7 @@
       "YES_CORRESPONDENCE": "Yes, add a correspondence address"
     },
     "CITIZEN_DOB": {
+      "EXAMPLE": "For example, 31 3 1980",
       "PAGE_TITLE": "Your date of birth",
       "TITLE": "Enter your date of birth"
     },
@@ -986,6 +987,7 @@
     "FREE_TELEPHONE_MEDIATION": {
       "AUTOMATICALLY_REGISTERED": "We have automatically registered you for free telephone mediation from HM Courts and Tribunals Service.",
       "CLAIMANT_MUST_AGREE": "The claimant must agree to mediation. We'll contact you within 28 days after the claimant's confirmation, to arrange a free appointment.",
+      "DO_NOT_AGREE_TO_FREE_MEDIATION": "I do not agree to free mediation",
       "EITHER_PARTY_BREAKS_TERMS": "If either party breaks the terms the other party can go to court to ask for a judgment or hearing.",
       "FIND_OUT_MORE": "Find out more about ",
       "HOW_WORKS": "How free mediation works",
@@ -1525,6 +1527,11 @@
       "PAGE_TITLE": "Your employer",
       "WHO_EMPLOYS": "Who employs you?"
     },
+    "WHY_UNAVAILABLE_FOR_HEARING": {
+      "MUST_TELL_US_WHY": "You must tell us why you, your experts or witnesses cannot go to a hearing. The court will consider the reasons when deciding when to hold the hearing.",
+      "PAGE_TITLE": "Why are they not available for hearing?",
+      "TITLE": "Why are you, your experts or witnesses unavailable for a hearing for {{days}} days?"
+    },
     "YOU_CAN_USE_SERVICE": {
       "PAGE_TITLE": "You can use this service",
       "TITLE": "You can use this service",
@@ -1643,6 +1650,7 @@
     "SOMETHING_WENT_WRONG": "Something went wrong",
     "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Tell us if you believe the facts stated in this response are true",
     "TELL_US_WHY": "Please tell us why",
+    "TELL_US_WHY_UNAVAILABLE": "Tell us why you, your experts or witnesses are unavailable for a hearing",
     "TRANSACTION_SOURCE": {
       "ENTER_OTHER_INCOME": "Enter other income source",
       "HOW_MUCH_INCOME": {

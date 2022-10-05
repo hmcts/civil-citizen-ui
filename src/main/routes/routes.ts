@@ -128,6 +128,7 @@ import expertReportDetailsController from './features/directionsQuestionnaire/ex
 import defendantPartyTypeController from './features/public/claim/defendantPartyTypeController';
 import claimantDoBController from './features/public/claim/claimantDoBController';
 import claimantIndividualDetailsController from './features/claim/claimantIndividualDetailsController';
+import whyUnavailableForHearingController from './features/directionsQuestionnaire/whyUnavailableForHearingController';
 import phoneOrVideoHearingController from './features/directionsQuestionnaire/phoneOrVideoHearingController';
 import youCanUseServiceController from './features/public/eligibility/youCanUseServiceController';
 
@@ -249,6 +250,7 @@ export default [
   expertReportDetailsController,
   defendantPartyTypeController,
   claimantIndividualDetailsController,
+  whyUnavailableForHearingController,
   claimantDoBController,
   phoneOrVideoHearingController,
   youCanUseServiceController,
