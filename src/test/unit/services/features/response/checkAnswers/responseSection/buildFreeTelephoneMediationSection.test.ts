@@ -9,6 +9,7 @@ import * as constVal from '../../../../../../utils/checkAnswersConstants';
 import {PartyType} from '../../../../../../../main/common/models/partyType';
 import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
 import {CompanyTelephoneNumber} from '../../../../../../../main/common/form/models/mediation/companyTelephoneNumber';
+import {Mediation} from '../../../../../../../main/common/models/mediation/mediation';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -113,10 +114,22 @@ describe('Free Telephone Mediation Section', () => {
 
   });
 
-  it('should return only the title', async () => {
+  it('should return only the title when mediation is undefined', async () => {
     //When
     const claim = createClaimWithFreeTelephoneMediationSection();
     claim.mediation = undefined;
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows.length).toBe(1);
+
+  });
+
+  it('should return only the title when canWeUse is undefined', async () => {
+    //When
+    const claim = createClaimWithFreeTelephoneMediationSectionForIndividual();
+
+    claim.mediation = new Mediation({option: undefined});
+
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows.length).toBe(1);
