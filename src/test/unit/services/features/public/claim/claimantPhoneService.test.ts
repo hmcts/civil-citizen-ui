@@ -4,7 +4,7 @@ import {Claim, Party} from '../../../../../../main/common/models/claim';
 import {CorrespondenceAddress} from '../../../../../../main/common/models/correspondenceAddress';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {CitizenTelephoneNumber} from '../../../../../../main/common/form/models/citizenTelephoneNumber';
-import { PartyType } from '../../../../../../main/common/models/partyType';
+import {PartyType} from '../../../../../../main/common/models/partyType';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
