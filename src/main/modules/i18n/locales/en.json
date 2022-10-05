@@ -825,6 +825,10 @@
       "HELP_WITH_FEES_INTRO": "Making an application for Help with Fees does not guarantee that you will get your fee covered. You may still have to pay some or all of your court fee to get the claim issued (for the court system to officially start the claim and send details to the other side). When you apply for Help with Fees, you should receive an update from us within 5 working days, giving you the result of your application.",
       "TITLE": "Some useful information about Help with Fees"
     },
+    "EMPLOYER" : {
+      "EMPLOYER_NAME" : "Employer name",
+      "JOB_TITLE" : "Job title"
+    },
     "EMPLOYMENT_STATUS": {
       "BOTH": "You can select both.",
       "EMPLOYED": "Employed",
@@ -1515,9 +1519,10 @@
       "PAGE_TITLE": "Your employer",
       "WHO_EMPLOYS": "Who employs you?"
     },
-    "EMPLOYER": {
-      "EMPLOYER_NAME": "Employer name",
-      "JOB_TITLE": "Job title"
+    "YOU_CAN_USE_SERVICE": {
+      "PAGE_TITLE": "You can use this service",
+      "TITLE": "You can use this service",
+      "BASED_ON_ANSWERS": "Based on your answers you can make a money claim using this service."
     },
     "YOU_CAN_USE": {
       "BASED_ON": "Based on your answers you can make a money claim using this service.",
