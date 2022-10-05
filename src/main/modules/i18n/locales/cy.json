@@ -682,6 +682,18 @@
       "TITLE": "A oes gennych fenthyciadau neu ddyledion cerdyn credyd?",
       "TOTAL": "Cyfanswm sy'n ddyledus gennych"
     },
+    "DEFENDANT_PARTY_TYPE": {
+      "CLAIMING_AGAINST_AN_INDIVIDUAL": "An individual",
+      "CLAIMING_AGAINST_LIMITED_COMPANY": "A limited company",
+      "CLAIMING_AGAINST_ORGANISATION": "Another type of organisation",
+      "CLAIMING_AGAINST_SOLE_TRADER_OR_SELF_EMPLOYED": "A sole trader or self-employed person",
+      "CLAIMING_AGAINST_AN_INDIVIDUAL_HINT": "For example someone you lent money to",
+      "CLAIMING_AGAINST_LIMITED_COMPANY_HINT": "For example a company that sold you goods or services",
+      "CLAIMING_AGAINST_ORGANISATION_HINT": "For example a partnership, trust, charity, club or association",
+      "CLAIMING_AGAINST_SOLE_TRADER_OR_SELF_EMPLOYED_HINT": "For example a tradesperson who did work for you",
+      "PAGE_TITLE": "Who are you making the claim against?",
+      "TITLE": "Who are you making the claim against?"
+    },
     "DEFENDANT_TIMELINE": {
       "PAGE_TITLE": "Ychwanegu eich amserlen digwyddiadau",
       "THEIR_TIMELINE": "Eu llinell amser",
