@@ -10,10 +10,7 @@ import {PartyDetails} from '../../../common/form/models/partyDetails';
 
 export const getClaimantInformation = async (claimId: string): Promise<Party> => {
   const responseData = await getCaseDataFromStore(claimId);
-  if (responseData?.applicant1) {
-    return responseData.applicant1;
-  }
-  return {};
+  return (responseData?.applicant1) ? responseData.applicant1 : {};
 };
 
 export const saveClaimant = async (claimId: string, citizenAddress: CitizenAddress, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, postToThisAddress: YesNo, claimantDetails: PartyDetails): Promise<void> => {
@@ -33,12 +30,12 @@ export const saveClaimant = async (claimId: string, citizenAddress: CitizenAddre
   await saveDraftClaim(claimId, responseData);
 };
 
-export const getCorrespondenceAddressForm = (value?: Record<string,string>): CitizenCorrespondenceAddress => {
+export const getCorrespondenceAddressForm = (value?: Record<string, string>): CitizenCorrespondenceAddress => {
   let claimantIndividualCorrespondenceAddress = CitizenCorrespondenceAddress.fromObject(value);
-  if (value.provideCorrespondenceAddress === YesNo.NO){
+  if (value.provideCorrespondenceAddress === YesNo.NO) {
     claimantIndividualCorrespondenceAddress = undefined;
   }
-  if (claimantIndividualCorrespondenceAddress){
+  if (claimantIndividualCorrespondenceAddress) {
     return claimantIndividualCorrespondenceAddress;
   }
   return new CitizenCorrespondenceAddress();

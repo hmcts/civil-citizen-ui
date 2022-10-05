@@ -11,7 +11,7 @@ import {
   RESPONSE_DEADLINE_OPTIONS_URL,
 } from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {CounterpartyType} from '../../../../../main/common/models/counterpartyType';
+import {PartyType} from '../../../../../main/common/models/partyType';
 import {ResponseOptions} from '../../../../../main/common/form/models/responseDeadline';
 import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 
@@ -21,7 +21,7 @@ const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveCaseData = draftStoreService.saveDraftClaim as jest.Mock;
 const mockClaim = new Claim();
 mockClaim.applicant1 = {
-  type: CounterpartyType.INDIVIDUAL,
+  type: PartyType.INDIVIDUAL,
   partyName: 'Joe Bloggs',
 };
 

@@ -10,7 +10,7 @@ import {
 } from '../../../../../main/routes/urls';
 import {ResponseDeadline} from '../../../../../main/common/form/models/responseDeadline';
 import {AdditionalTimeOptions} from '../../../../../main/common/form/models/additionalTime';
-import {CounterpartyType} from '../../../../../main/common/models/counterpartyType';
+import {PartyType} from '../../../../../main/common/models/partyType';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 
@@ -20,7 +20,7 @@ const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveCaseData = draftStoreService.saveDraftClaim as jest.Mock;
 const mockClaim = new Claim();
 mockClaim.applicant1 = {
-  type: CounterpartyType.INDIVIDUAL,
+  type: PartyType.INDIVIDUAL,
   partyName: 'Joe Bloggs',
 };
 
@@ -46,7 +46,7 @@ describe('Request More Time Controller', () => {
     it('should render the page if additional time is set', async () => {
       const claim = new Claim();
       claim.applicant1 = {
-        type: CounterpartyType.SOLE_TRADER,
+        type: PartyType.SOLE_TRADER,
         partyName: 'Miss Jane',
       };
       claim.responseDeadline = new ResponseDeadline();

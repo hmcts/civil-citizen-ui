@@ -4,7 +4,7 @@ import {
   buildResponseToClaimSection,
 } from '../../../../../../../main/services/features/dashboard/claimSummary/latestUpdate/latestUpdateContentBuilder';
 import {CaseState} from '../../../../../../../main/common/form/models/claimDetails';
-import {CounterpartyType} from '../../../../../../../main/common/models/counterpartyType';
+import {PartyType} from '../../../../../../../main/common/models/partyType';
 import {ClaimSummaryType} from '../../../../../../../main/common/form/models/claimSummarySection';
 import {CLAIM_TASK_LIST_URL} from '../../../../../../../main/routes/urls';
 
@@ -14,7 +14,7 @@ describe('Latest Update Content Builder', () => {
   claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
   claim.respondent1ResponseDeadline = new Date('2022-07-29T15:59:59');
   claim.applicant1 = {
-    type: CounterpartyType.INDIVIDUAL,
+    type: PartyType.INDIVIDUAL,
     partyName: partyName,
   };
   const claimId = '5129';
