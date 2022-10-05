@@ -128,6 +128,7 @@ import expertReportDetailsController from './features/directionsQuestionnaire/ex
 import claimantDoBController from './features/public/claim/claimantDoBController';
 import claimantIndividualDetailsController from './features/claim/claimantIndividualDetailsController';
 import phoneOrVideoHearingController from './features/directionsQuestionnaire/phoneOrVideoHearingController';
+import youCanUseServiceController from './features/public/eligibility/youCanUseServiceController';
 
 export default [
   homeController,
@@ -248,4 +249,5 @@ export default [
   claimantIndividualDetailsController,
   claimantDoBController,
   phoneOrVideoHearingController,
+  youCanUseServiceController,
 ];
