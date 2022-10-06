@@ -19,9 +19,8 @@ priorityDebtsController.get(
   CITIZEN_PRIORITY_DEBTS_URL,
   async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
-      const savedValues = await getPriorityDebts(req.params.id);
       res.render(debtsViewPath, {
-        priorityDebts: savedValues,
+        priorityDebts: await getPriorityDebts(req.params.id),
         checkBoxFields,
       });
     } catch (error) {

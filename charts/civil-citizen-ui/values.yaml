@@ -35,7 +35,6 @@ nodejs:
     cmc:
       resourceGroup: cmc
       secrets:
-        - cmc-s2s-secret
         - citizen-draft-store-primary
         - citizen-draft-store-secondary
 

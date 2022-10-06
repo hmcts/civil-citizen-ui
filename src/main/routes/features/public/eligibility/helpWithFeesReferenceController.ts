@@ -9,9 +9,7 @@ import {YesNo} from '../../../../common/form/models/yesNo';
 const helpWithFeesReferenceController = express.Router();
 const helpWithFeesViewPath = 'features/public/eligibility/help-with-fees-reference';
 
-function renderView(genericYesNoForm: GenericForm<GenericYesNo>, res: express.Response): void {
-  const form = Object.assign(genericYesNoForm);
-  form.option = genericYesNoForm.model.option;
+function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
   res.render(helpWithFeesViewPath, {form});
 }
 

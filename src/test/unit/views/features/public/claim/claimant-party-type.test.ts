@@ -1,5 +1,5 @@
 import config from 'config';
-import { t } from 'i18next';
+import {t} from 'i18next';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
@@ -13,17 +13,17 @@ const {JSDOM} = jsdom;
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 
-describe('Signposting View', () => {
+describe('Claimant Party Type View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
   describe('on GET', () => {
     let htmlDocument: Document;
-    let mainWrapper: any;
+    let mainWrapper: Element;
     beforeEach(async () => {
       nock(idamUrl)
         .post('/o/token')
-        .reply(200, { id_token: citizenRoleToken });
+        .reply(200, {id_token: citizenRoleToken});
       const response = await request(app).get(CLAIMANT_PARTY_TYPE_SELECTION_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
@@ -73,7 +73,7 @@ describe('Signposting View', () => {
     beforeEach(async () => {
       nock(idamUrl)
         .post('/o/token')
-        .reply(200, { id_token: citizenRoleToken });
+        .reply(200, {id_token: citizenRoleToken});
       app.locals.draftStoreClient = mockCivilClaim;
       const response = await request(app).post(CLAIMANT_PARTY_TYPE_SELECTION_URL);
       const dom = new JSDOM(response.text);

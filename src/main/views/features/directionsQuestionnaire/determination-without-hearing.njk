@@ -1,11 +1,10 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
-{% from "../../macro/yesNoForm.njk" import yesNoRadioButton %}
+{% from "../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
 {% from "../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
@@ -47,7 +46,7 @@
               }) }}
             {% endset %}
 
-            {{ yesNoRadioButton(t, 'isDeterminationWithoutHearing', 'isDeterminationWithoutHearing', '', form, '', {noHtml: noHtml}) }}
+            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {noHtml: noHtml}) }}
 
             <div class="govuk-form-group">
               {{ govukButton({

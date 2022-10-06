@@ -13,7 +13,7 @@ import {
 } from '../../../../../utils/mockClaimForCheckAnswers';
 import {Respondent} from '../../../../../../main/common/models/respondent';
 import {QualifiedStatementOfTruth} from '../../../../../../main/common/form/models/statementOfTruth/qualifiedStatementOfTruth';
-import {CounterpartyType} from '../../../../../../main/common/models/counterpartyType';
+import {PartyType} from '../../../../../../main/common/models/partyType';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {
   CLAIM_ID,
@@ -95,7 +95,7 @@ describe('Check Answers service', () => {
 
     it('should create new qualified statement of truth if signature type is qualified', () => {
       claim.respondent1 = new Respondent();
-      claim.respondent1.type = CounterpartyType.ORGANISATION;
+      claim.respondent1.type = PartyType.ORGANISATION;
       expect(getStatementOfTruth(claim)).toEqual({isFullAmountRejected: false, type: 'qualified'});
     });
   });
@@ -113,19 +113,19 @@ describe('Check Answers service', () => {
 
     it('should return basic signature type if respondent is sole trader', () => {
       claim.respondent1 = new Respondent();
-      claim.respondent1.type = CounterpartyType.SOLE_TRADER;
+      claim.respondent1.type = PartyType.SOLE_TRADER;
       expect(getSignatureType(claim)).toEqual(SignatureType.BASIC);
     });
 
     it('should return basic signature type if respondent is company', () => {
       claim.respondent1 = new Respondent();
-      claim.respondent1.type = CounterpartyType.COMPANY;
+      claim.respondent1.type = PartyType.COMPANY;
       expect(getSignatureType(claim)).toEqual(SignatureType.QUALIFIED);
     });
 
     it('should return basic signature type if respondent is organisation', () => {
       claim.respondent1 = new Respondent();
-      claim.respondent1.type = CounterpartyType.ORGANISATION;
+      claim.respondent1.type = PartyType.ORGANISATION;
       expect(getSignatureType(claim)).toEqual(SignatureType.QUALIFIED);
     });
   });
