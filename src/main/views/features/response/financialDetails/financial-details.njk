@@ -15,7 +15,7 @@
       <h2 class="govuk-heading-l">{{t('PAGES.FINANCIAL_DETAILS.SEND_FINANCIAL_DETAILS', { applicant1Details: applicant1Details })}}</h2>
 
       {% set defendantType = claim.respondent1.type %}
-      {% if (defendantType == CounterpartyType.INDIVIDUAL or defendantType == CounterpartyType.SOLE_TRADER) %}
+      {% if (defendantType == partyType.INDIVIDUAL or defendantType == partyType.SOLE_TRADER) %}
         <p class="govuk-body">
           {{t('PAGES.FINANCIAL_DETAILS.NEED_GIVE_DETAILS', { applicant1Details: applicant1Details })}}
         </p>
@@ -28,7 +28,7 @@
         <p class="govuk-body">
           {{t('PAGES.FINANCIAL_DETAILS.REJECT_PAY_SOONER')}}
         </p>
-      {% elseif (defendantType == CounterpartyType.COMPANY or defendantType == CounterpartyType.ORGANISATION) %}
+      {% elseif (defendantType == partyType.COMPANY or defendantType == partyType.ORGANISATION) %}
         <p class="govuk-body">
            {{t('PAGES.FINANCIAL_DETAILS.SEND_STATEMENT_ACCOUNTS', { applicant1Details: applicant1Details })}}
         </p>

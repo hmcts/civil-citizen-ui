@@ -23,7 +23,7 @@ describe('Help with fees reference view', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
-    let mainWrapper: any;
+    let mainWrapper: Element;
 
     beforeEach(async () => {
       nock(idamUrl)

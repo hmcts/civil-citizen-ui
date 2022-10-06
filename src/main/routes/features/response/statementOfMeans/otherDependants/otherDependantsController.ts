@@ -15,9 +15,7 @@ const citizenOtherDependantsViewPath = 'features/response/statementOfMeans/other
 const otherDependantsController = express.Router();
 const otherDependantsService = new OtherDependantsService();
 
-function renderView(otherDependants: GenericForm<OtherDependants>, res: express.Response): void {
-  const form = Object.assign(otherDependants);
-  form.option = otherDependants.model.option;
+function renderView(form: GenericForm<OtherDependants>, res: express.Response): void {
   res.render(citizenOtherDependantsViewPath, {form});
 }
 
@@ -35,7 +33,7 @@ otherDependantsController.get(CITIZEN_OTHER_DEPENDANTS_URL, async (req, res, nex
 
 otherDependantsController.post(CITIZEN_OTHER_DEPENDANTS_URL,
   async (req, res, next: express.NextFunction) => {
-    try{
+    try {
       const form: GenericForm<OtherDependants> = new GenericForm(new OtherDependants(
         req.body.option, req.body.numberOfPeople, req.body.details));
       form.validateSync();

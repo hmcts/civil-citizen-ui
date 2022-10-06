@@ -13,6 +13,7 @@
       "version": "4",
       "calculatedAmountInPence": "7000"
     },
+    "respondent1ResponseDate": "2022-09-25T13:46:07.287428",
     "supportRequired": {
       "languageSelected": true,
       "languageInterpreted": "Croatian",
@@ -37,6 +38,27 @@
         "AddressLine3": "Church Road"
       },
       "partyTypeDisplayValue": "Organisation"
+    },
+    "directionQuestionnaire": {
+      "hearing": {},
+      "vulnerabilityQuestions": {},
+      "experts": {
+        "expertReportDetails": {
+          "option": "yes",
+          "reportDetails": [
+            {
+              "expertName": "John Doe",
+              "reportDate": "2022-03-01T11:57:10.592492"
+            }
+          ]
+        }
+      },
+      "witnesses": {
+        "otherWitnesses": {
+          "option": "",
+          "witnessItems": [{}]
+        }
+      }
     },
     "applicantSolicitor1UserDetails": {
       "email": "hmcts.civil+organisation.1.solicitor.1@gmail.com"

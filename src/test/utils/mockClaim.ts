@@ -1,6 +1,6 @@
 import {Respondent} from '../../main/common/models/respondent';
 import {Claim} from '../../main/common/models/claim';
-import {CounterpartyType} from '../../main/common/models/counterpartyType';
+import {PartyType} from '../../main/common/models/partyType';
 import {DocumentType} from '../../main/common/models/document/documentType';
 import {PrimaryAddress} from '../../main/common/models/primaryAddress';
 import {CorrespondenceAddress} from '../../main/common/models/correspondenceAddress';
@@ -44,7 +44,7 @@ export const buildRespondent1 = (): Respondent => {
   respondent.telephoneNumber = '0208339922';
   respondent.dateOfBirth = new Date('2022-01-24T15:59:59');
   respondent.responseType = '';
-  respondent.type = CounterpartyType.INDIVIDUAL;
+  respondent.type = PartyType.INDIVIDUAL;
   respondent.primaryAddress = buildPrimaryAddress();
   respondent.correspondenceAddress = buildCorrespondenceAddress();
   return respondent;
@@ -61,7 +61,7 @@ function buildMockClaim(): Claim {
     individualTitle: 'Mrs',
     individualLastName: 'Clark',
     individualFirstName: 'Jane',
-    type: CounterpartyType.INDIVIDUAL,
+    type: PartyType.INDIVIDUAL,
     partyName: 'Mrs Jane Clark',
   };
   _mockClaim.statementOfMeans = {

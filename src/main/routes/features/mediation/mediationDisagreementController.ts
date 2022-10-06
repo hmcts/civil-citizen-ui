@@ -12,14 +12,12 @@ import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatt
 import {YesNo} from '../../../common/form/models/yesNo';
 import {Claim} from '../../../common/models/claim';
 import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
-import {CounterpartyType} from '../../../common/models/counterpartyType';
+import {PartyType} from '../../../common/models/partyType';
 
 const mediationDisagreementViewPath = 'features/mediation/mediation-disagreement';
 const mediationDisagreementController = express.Router();
 
 function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
-  const alreadyPaid = Object.assign(form);
-  alreadyPaid.option = form.model.option;
   res.render(mediationDisagreementViewPath, {form});
 }
 
@@ -50,7 +48,7 @@ mediationDisagreementController.post(MEDIATION_DISAGREEMENT_URL, async (req, res
       if (req.body.option === YesNo.NO) {
         res.redirect(constructResponseUrlWithIdParams(req.params.id, DONT_WANT_FREE_MEDIATION_URL));
       } else {
-        if (claim.respondent1.type === CounterpartyType.INDIVIDUAL || claim.respondent1.type === CounterpartyType.SOLE_TRADER) {
+        if (claim.respondent1.type === PartyType.INDIVIDUAL || claim.respondent1.type === PartyType.SOLE_TRADER) {
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CAN_WE_USE_URL));
         } else {
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CAN_WE_USE_COMPANY_URL));

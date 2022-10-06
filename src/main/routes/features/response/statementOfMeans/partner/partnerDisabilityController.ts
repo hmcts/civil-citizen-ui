@@ -13,9 +13,7 @@ const partnerViewPath = 'features/response/statementOfMeans/partner/partner-disa
 const partnerDisabilityController = express.Router();
 const partnerDisabilityService = new PartnerDisabilityService();
 
-function renderView(partnerDisability: GenericForm<GenericYesNo>, res: express.Response): void {
-  const form = Object.assign(partnerDisability);
-  form.option = partnerDisability.model.option;
+function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
   res.render(partnerViewPath, {form});
 }
 

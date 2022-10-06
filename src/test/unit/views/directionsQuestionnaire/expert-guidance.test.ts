@@ -19,7 +19,7 @@ describe('Send your response by email View', () => {
   describe('on GET', () => {
     let htmlDocument: Document;
     let paragraphs: HTMLCollection;
-    let mainWrapper: any;
+    let mainWrapper: Element;
 
     beforeEach(async () => {
       nock(idamUrl)
