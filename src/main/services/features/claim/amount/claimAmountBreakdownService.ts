@@ -21,7 +21,7 @@ const convertFormToJson = (form: ClaimAmountRow): ClaimAmountBreakup =>{
   return {
     value:{
       claimAmount: form.amount.toString(),
-      claimReason: form.reason
-    }
-  }
-}
+      claimReason: form.reason,
+    },
+  };
+};
