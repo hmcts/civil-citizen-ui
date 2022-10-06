@@ -6,10 +6,7 @@ const totp = require('totp-generator');
 
 const tokens = {};
 const getCcdDataStoreBaseUrl = () => `${config.url.ccdDataStore}/caseworkers/${tokens.userId}/jurisdictions/${config.definition.jurisdiction}/case-types/${config.definition.caseType}`;
-const getCcdDataStoreGABaseUrl = () => `${config.url.ccdDataStore}/caseworkers/${tokens.userId}/jurisdictions/${config.definition.jurisdiction}/case-types/${config.definition.caseTypeGA}`;
-
 const getCcdCaseUrl = (userId, caseId) => `${config.url.ccdDataStore}/aggregated/caseworkers/${userId}/jurisdictions/${config.definition.jurisdiction}/case-types/${config.definition.caseType}/cases/${caseId}`;
-const getPaymentCallbackUrl = () => `${config.url.generalApplication}/service-request-update`;
 const getRequestHeaders = (userAuth) => {
   return {
     'Content-Type': 'application/json',
@@ -17,7 +14,6 @@ const getRequestHeaders = (userAuth) => {
     'ServiceAuthorization': tokens.s2sAuth,
   };
 };
-const getGeneralApplicationBaseUrl = () => `${config.url.generalApplication}/testing-support/case/`;
 
 module.exports = {
   setupTokens: async (user) => {
@@ -42,13 +38,6 @@ module.exports = {
       .then(response => response.json());
   },
 
-  paymentApiRequestUpdateServiceCallback: async (serviceRequestUpdateDto) => {
-    let url = getPaymentCallbackUrl();
-    let response = await restHelper.retriedRequest(url, getRequestHeaders(tokens.userAuth),
-      serviceRequestUpdateDto,'PUT');
-    return response || {};
-  },
-
   startEvent: async (eventName, caseId) => {
     let url = getCcdDataStoreBaseUrl();
     if (caseId) {
@@ -60,35 +49,6 @@ module.exports = {
       .then(response => response.json());
     tokens.ccdEvent = response.token;
     return response.case_details.case_data || {};
-  },
-
-  startGAEvent: async (eventName, caseId) => {
-    let url = getCcdDataStoreGABaseUrl();
-    if (caseId) {
-      url += `/cases/${caseId}`;
-    }
-    url += `/event-triggers/${eventName}/token`;
-
-    let response = await restHelper.retriedRequest(url, getRequestHeaders(tokens.userAuth), null, 'GET')
-      .then(response => response.json());
-    tokens.ccdEvent = response.token;
-
-    return response.case_details.case_data || {};
-  },
-
-  submitGAEvent: async (eventName, caseData, caseId) => {
-    let url = `${getCcdDataStoreGABaseUrl()}/cases`;
-    if (caseId) {
-      url += `/${caseId}/events`;
-    }
-
-    return restHelper.retriedRequest(url, getRequestHeaders(tokens.userAuth),
-      {
-        data: caseData,
-        event: {id: eventName},
-        event_data: caseData,
-        event_token: tokens.ccdEvent,
-      }, 'POST', 201);
   },
 
   validatePage: async (eventName, pageId, caseData, caseId, expectedStatus = 200) => {
@@ -115,39 +75,5 @@ module.exports = {
         event_data: caseData,
         event_token: tokens.ccdEvent,
       }, 'POST', 201);
-  },
-
-  fetchUpdatedCaseData: async (caseId) => {
-
-    const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
-
-    let url = getGeneralApplicationBaseUrl();
-    console.log('*** Civil Case Reference: '  + caseId + ' ***');
-    if (caseId) {
-      url += `${caseId}`;
-    }
-
-    return await restHelper.retriedRequest(url,
-      {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${authToken}`,
-      },null, 'GET');
-  },
-
-  fetchUpdatedGABusinessProcessData: async (caseId) => {
-
-    const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
-
-    let url = getGeneralApplicationBaseUrl();
-    console.log('*** GA Case Reference: '  + caseId + ' ***');
-    if (caseId) {
-      url += `${caseId}/business-process`;
-    }
-
-    return await restHelper.retriedRequest(url,
-      {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${authToken}`,
-      },null, 'GET');
   },
 };
