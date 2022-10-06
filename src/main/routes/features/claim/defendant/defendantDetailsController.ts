@@ -12,9 +12,12 @@ import {getDefendantInformation, saveDefendant} from '../../../../services/featu
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {Address} from '../../../../common/form/models/address';
 import {CompanyOrOrganisationPartyDetails} from '../../../../common/form/models/companyOrOrganisationPartyDetails';
+import {convertToPrimaryAddress} from '../../../../common/models/primaryAddress';
+import {PartyType} from 'models/partyType';
 
 const defendantDetailsController = Router();
-const defendantDetailsViewPath = 'features/claim/defendant/defendant-details';
+const defendantDetailsCompanyOrOrganisationViewPath = 'features/claim/defendant/defendant-details-company-or-organisation';
+const defendantDetailsIndividualOrSoleTraderViewPath = 'features/claim/defendant/defendant-details-individual-or-sole-trader';
 const detailsURLs = [
   CLAIM_DEFENDANT_COMPANY_DETAILS_URL,
   CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL,
@@ -22,22 +25,23 @@ const detailsURLs = [
   CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL,
 ];
 
+function renderView(res: Response, form: GenericForm<CompanyOrOrganisationPartyDetails>, primaryAddressForm: GenericForm<Address>, defendantType: PartyType) {
+  if (defendantType === PartyType.COMPANY || defendantType === PartyType.ORGANISATION) {
+    res.render(defendantDetailsCompanyOrOrganisationViewPath, {form, primaryAddressForm, defendantType});
+  } else {
+    res.render(defendantDetailsIndividualOrSoleTraderViewPath, {form, primaryAddressForm, defendantType});
+  }
+}
+
 defendantDetailsController.get(detailsURLs, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const defendantType = getPartyTypeDependingOnRoute(req?.url);
     const userId = req.session?.user?.id;
     const defendantDetails = await getDefendantInformation(userId);
     // TODO: correspondence address needs refactoring as all attributes start as capitalised (AddressLine1) while
-    //  we save camelcase (primaryAddressLine1) afterwards remove bellow attributes set
-    let defendantAddress = Object.assign(defendantDetails?.primaryAddress);
-    defendantAddress = {
-      ...defendantAddress,
-      AddressLine1: defendantAddress?.primaryAddressLine1,
-      AddressLine2: defendantAddress?.primaryAddressLine2,
-      AddressLine3: defendantAddress?.primaryAddressLine3,
-      PostTown: defendantAddress?.primaryCity,
-      PostCode: defendantAddress?.primaryPostCode,
-    };
+    //  we save camelcase (primaryAddressLine1) afterwards remove bellow Object.assign
+    let defendantAddress = (defendantDetails?.primaryAddress) ? Object.assign(defendantDetails?.primaryAddress) : {};
+    defendantAddress = convertToPrimaryAddress(defendantAddress);
 
     // TODO: wrap in the conditional if not suitable for your defendantType (CIV-4300, 4299, 4286). Currently catering for ORGANISATION
     const form = new GenericForm(new CompanyOrOrganisationPartyDetails(defendantDetails?.partyName, defendantDetails?.contactPerson));
@@ -48,8 +52,7 @@ defendantDetailsController.get(detailsURLs, async (req: AppRequest, res: Respons
       defendantAddress?.PostTown,
       defendantAddress?.PostCode,
     ));
-
-    res.render(defendantDetailsViewPath, {form, primaryAddressForm, defendantType});
+    renderView(res, form, primaryAddressForm, defendantType);
   } catch (error) {
     next(error);
   }
@@ -72,7 +75,7 @@ defendantDetailsController.post(detailsURLs, async (req: AppRequest, res: Respon
     form.validateSync();
 
     if (form.hasErrors() || primaryAddressForm.hasErrors()) {
-      res.render(defendantDetailsViewPath, {form, primaryAddressForm, defendantType});
+      renderView(res, form, primaryAddressForm, defendantType);
     } else {
       const partyDetailsAndPrimaryAddress = {
         ...form.model,
