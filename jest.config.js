@@ -10,7 +10,7 @@ module.exports = {
   testTimeout: 6000,
   globals: {
       'ts-jest': {
-        isolatedModules: true
+        isolatedModules: false
       }
     }
 }
