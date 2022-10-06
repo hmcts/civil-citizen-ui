@@ -4,7 +4,7 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import {
-  DEFENDANT_EMAIL_URL,
+  CLAIM_DEFENDANT_EMAIL_URL,
 } from '../../../../../../main/routes/urls';
 
 const jsdom = require('jsdom');
@@ -22,7 +22,7 @@ describe('Claimant Defendant Email View', () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, { id_token: citizenRoleToken });
-      const response = await request(app).get(DEFENDANT_EMAIL_URL);
+      const response = await request(app).get(CLAIM_DEFENDANT_EMAIL_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
       mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
