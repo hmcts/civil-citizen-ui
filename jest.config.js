@@ -7,5 +7,10 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   setupFilesAfterEnv: ['./jest.setup.redis-mock.js'],
-  testTimeout: 6000
+  testTimeout: 6000,
+  globals: {
+      'ts-jest': {
+        isolatedModules: true
+      }
+    }
 }
