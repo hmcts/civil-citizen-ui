@@ -1,6 +1,8 @@
 import {IsDefined, IsNotEmpty, Validate, ValidateIf, ValidateNested} from 'class-validator';
 import {AtLeastOneCheckboxSelectedValidator} from '../../form/validators/atLeastOneCheckboxSelectedValidator';
-export enum supportType {
+import {YesNo} from '../../form/models/yesNo';
+
+export enum SupportType {
   SIGN_LANGUAGE_INTERPRETER = 'signLanguageInterpreter',
   LANGUAGE_INTERPRETER = 'languageInterpreter',
   OTHER_SUPPORT = 'otherSupport',
@@ -8,9 +10,9 @@ export enum supportType {
 
 const generateErrorMessage = (sourceName: string): string => {
   switch (sourceName) {
-    case supportType.SIGN_LANGUAGE_INTERPRETER:
+    case SupportType.SIGN_LANGUAGE_INTERPRETER:
       return 'ERRORS.NO_SIGN_LANGUAGE_ENTERED';
-    case supportType.LANGUAGE_INTERPRETER:
+    case SupportType.LANGUAGE_INTERPRETER:
       return 'ERRORS.NO_LANGUAGE_ENTERED';
     default:
       return 'ERRORS.NO_OTHER_SUPPORT';
@@ -23,23 +25,21 @@ const withMessage = (buildErrorFn: (sourceName: string) => string) => {
   };
 };
 
-export class Support {
-  sourceName?: string;
-  selected?: boolean;
-  @ValidateIf(o => o.selected)
-  @IsDefined({message: withMessage(generateErrorMessage)})
-  @IsNotEmpty({message: withMessage(generateErrorMessage)})
-  // @MaxLength(FREE_TEXT_MAX_LENGTH, {message: TEXT_TOO_LONG})
-    content?: string;
+export class SupportRequiredList {
 
-  [key: string]: boolean | string;
+  option: YesNo;
+  @ValidateIf(o => o.option === YesNo.YES)
+  @ValidateNested()
+    items?: SupportRequired[];
 
-  constructor(sourceName?: string, selected?: boolean, content?: string) {
-    this.selected = selected;
-    this.content = content;
-    this.sourceName = sourceName;
+  [key: string]: YesNo | SupportRequired[];
+
+  constructor(option?: YesNo, items?: SupportRequired[]) {
+    this.option = option;
+    this.items = items;
   }
 }
+
 export class SupportRequired {
   @IsDefined({message: 'ERRORS.ENTER_PERSON_NAME'})
   @IsNotEmpty({message: 'ERRORS.ENTER_PERSON_NAME'})
@@ -71,26 +71,25 @@ export class SupportRequired {
       value?.hearingLoop?.selected,
       value?.signLanguageInterpreter?.selected,
       value?.languageInterpreter?.selected,
+      value?.otherSupport?.selected,
     ];
   }
-// TODO : it might me unnecessary
-  public isAtLeastOneCheckBoxSelected(): boolean {
-    return this.disabledAccess?.selected ||
-      this.hearingLoop?.selected ||
-      this.signLanguageInterpreter?.selected ||
-      this.languageInterpreter?.selected ||
-      this.otherSupport?.selected;
+}
+
+export class Support {
+  sourceName?: string;
+  selected?: boolean;
+  @ValidateIf(o => o.selected)
+  @IsDefined({message: withMessage(generateErrorMessage)})
+  @IsNotEmpty({message: withMessage(generateErrorMessage)})
+    content?: string;
+
+  [key: string]: boolean | string;
+
+  constructor(sourceName?: string, selected?: boolean, content?: string) {
+    this.sourceName = sourceName;
+    this.selected = selected;
+    this.content = content;
   }
 }
 
-export class SupportRequiredList{
-
-  @ValidateNested()
-    items?: SupportRequired[];
-
-  [key: string]: SupportRequired[];
-
-  constructor(items?: SupportRequired[]) {
-    this.items = items;
-  }
-}
