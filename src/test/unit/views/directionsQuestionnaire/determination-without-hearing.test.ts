@@ -4,6 +4,7 @@ import request from 'supertest';
 import {app} from '../../../../main/app';
 import {DETERMINATION_WITHOUT_HEARING_URL} from '../../../../main/routes/urls';
 import {mockCivilClaim} from '../../../utils/mockDraftStore';
+import {YesNo} from '../../../../main/common/form/models/yesNo';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -17,7 +18,7 @@ describe('Determination Without Hearing View', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
-    let mainWrapper: any;
+    let mainWrapper: Element;
 
     beforeEach(async () => {
       nock(idamUrl)
@@ -53,8 +54,8 @@ describe('Determination Without Hearing View', () => {
 
     it('should display yes and no radios', () => {
       const radios = htmlDocument.getElementsByClassName('govuk-radios__input');
-      expect(radios[0].getAttribute('value')).toBe('yes');
-      expect(radios[1].getAttribute('value')).toBe('no');
+      expect(radios[0].getAttribute('value')).toBe(YesNo.YES);
+      expect(radios[1].getAttribute('value')).toBe(YesNo.NO);
     });
 
     it('should display text area if no radio is selected', () => {
@@ -102,7 +103,7 @@ describe('Determination Without Hearing View', () => {
       });
 
       it('should display choose option error above radio buttons', () => {
-        const error = htmlDocument.getElementById('isDeterminationWithoutHearing-error');
+        const error = htmlDocument.getElementById('option-error');
         expect(error?.innerHTML).toContain(chooseOption);
       });
     });
@@ -117,7 +118,7 @@ describe('Determination Without Hearing View', () => {
           .reply(200, {id_token: citizenRoleToken});
         app.locals.draftStoreClient = mockCivilClaim;
         const response = await request(app).post(DETERMINATION_WITHOUT_HEARING_URL)
-          .send({isDeterminationWithoutHearing: 'no'});
+          .send({option: YesNo.NO});
         const dom = new JSDOM(response.text);
         htmlDocument = dom.window.document;
       });

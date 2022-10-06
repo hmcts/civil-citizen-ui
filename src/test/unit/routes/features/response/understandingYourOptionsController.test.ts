@@ -25,10 +25,52 @@ describe('Understanding Your Options Controller', () => {
   describe('on GET', () => {
     it('should return understanding you options page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(UNDERSTANDING_RESPONSE_OPTIONS_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Requesting extra time');
-      });
+      await request(app)
+        .get(UNDERSTANDING_RESPONSE_OPTIONS_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Requesting extra time');
+        });
+    });
+
+    it('should pass welsh translation via query', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      await request(app).get(UNDERSTANDING_RESPONSE_OPTIONS_URL)
+        .query({lang: 'cy'})
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Gwneud cais am ragor o amser');
+        });
+    });
+    it('should pass english translation via query', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      await request(app).get(UNDERSTANDING_RESPONSE_OPTIONS_URL)
+        .query({lang: 'en'})
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Requesting extra time');
+        });
+    });
+
+    it('should pass welsh translation via cookie', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      await request(app).get(UNDERSTANDING_RESPONSE_OPTIONS_URL)
+        .set('Cookie', ['lang=cy'])
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Gwneud cais am ragor o amser');
+        });
+    });
+
+    it('should pass english translation via cookie', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      await request(app).get(UNDERSTANDING_RESPONSE_OPTIONS_URL)
+        .set('Cookie', ['lang=en'])
+        .query({lang: 'en'})
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Requesting extra time');
+        });
     });
 
     it('should return understanding you options page when response deadline date is not set', async () => {

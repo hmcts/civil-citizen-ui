@@ -1,10 +1,7 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/error-message/macro.njk" import govukErrorMessage %}
-{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
-{% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
@@ -24,13 +21,13 @@
 <div class="govuk-form-group {% if form.errorFor('debtsItems') %} govuk-form-group--error  {% endif %}">
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-half">
-      <label id="account-balance-label" class="govuk-label--s">{{ t('PAGES.DEBTS.LIST') }}</label>
+      <label id="debts-label" class="govuk-label--s">{{ t('PAGES.DEBTS.LIST') }}</label>
     </div>
     <div class="govuk-grid-column-one-quarter govuk-!-text-align-right">
-      <label id="account-balance-label" class="govuk-label--s ">{{ t('PAGES.DEBTS.TOTAL') }}</label>
+      <label id="total-owed-label" class="govuk-label--s ">{{ t('PAGES.DEBTS.TOTAL') }}</label>
     </div>
     <div class="govuk-grid-column-one-quarter govuk-!-text-align-right">
-      <label id="account-balance-label" class="govuk-label--s">{{ t('PAGES.DEBTS.MONTHLY') }}</label>
+      <label id="monthly-payments-label" class="govuk-label--s">{{ t('PAGES.DEBTS.MONTHLY') }}</label>
     </div>
   </div>
   {% for debtsItem in form.model.debtsItems %}
@@ -56,6 +53,10 @@
               id: debt,
               name: debt,
               value: debtsItem.debt,
+              label: {
+                text: t('PAGES.DEBTS.LIST'),
+                classes: 'govuk-visually-hidden'
+              },
               spellcheck: false,
               classes: "govuk-grid-column-full govuk-select--error" if form.errorFor(debt) else "govuk-grid-column-full"
             }) }}
@@ -69,6 +70,10 @@
               prefix: {
                 text: "£"
               },
+              label: {
+                text: t('PAGES.DEBTS.TOTAL'),
+                classes: 'govuk-visually-hidden'
+              },
               spellcheck: false,
               classes: "govuk-grid-column-full govuk-input--error" if form.errorFor(totalOwned) else "govuk-grid-column-full"
             }) }}
@@ -81,6 +86,10 @@
               type: "number",
               prefix: {
                 text: "£"
+              },
+              label: {
+                text: t('PAGES.DEBTS.MONTHLY'),
+                classes: 'govuk-visually-hidden'
               },
               spellcheck: false,
               classes: "govuk-grid-column-full govuk-input--error" if form.errorFor(monthlyPayments) else "govuk-grid-column-full"

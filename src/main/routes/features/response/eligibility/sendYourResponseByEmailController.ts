@@ -3,13 +3,13 @@ import {SEND_RESPONSE_BY_EMAIL_URL} from '../../../urls';
 import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
 import {Claim} from '../../../../common/models/claim';
 import {ResponseType} from '../../../../common/form/models/responseType';
-import {CounterpartyType} from '../../../../common/models/counterpartyType';
+import {PartyType} from '../../../../common/models/partyType';
 import RejectAllOfClaimType from '../../../../common/form/models/rejectAllOfClaimType';
 import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
 import config from 'config';
 import {FeeRange, FeeRanges} from '../../../../common/models/feeRange';
 import {TableItem} from '../../../../common/models/tableItem';
-import {AppRequest} from 'models/AppRequest';
+import {AppRequest} from '../../../../common/models/AppRequest';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -18,11 +18,11 @@ const sendYourResponseByEmailController = express.Router();
 
 function renderView(res: express.Response, form: Claim, fees: [TableItem[]]): void {
   res.render(sendYourResponseByEmailViewPath, {
-    form: form,
-    fees: fees,
-    ResponseType: ResponseType,
-    RejectAllOfClaimType: RejectAllOfClaimType,
-    CounterpartyType: CounterpartyType,
+    form,
+    fees,
+    ResponseType,
+    RejectAllOfClaimType,
+    partyType: PartyType,
   });
 }
 

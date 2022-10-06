@@ -15,7 +15,7 @@ const whyDoYouDisagreeViewPath = 'features/response/admission/why-do-you-disagre
 let claimAmount: number;
 
 function renderView(form: GenericForm<WhyDoYouDisagree>, _claimAmount: number, res: express.Response) {
-  res.render(whyDoYouDisagreeViewPath, {form: form, claimAmount: _claimAmount});
+  res.render(whyDoYouDisagreeViewPath, {form, claimAmount: _claimAmount});
 }
 
 whyDoYouDisagreeController.get(CITIZEN_WHY_DO_YOU_DISAGREE_URL, async (req, res, next: express.NextFunction) => {

@@ -16,10 +16,10 @@ const evidenceViewPath = 'features/response/evidence/evidences';
 const evidenceController = express.Router();
 
 function renderView(form: GenericForm<Evidence>, res: express.Response): void {
-  res.render(evidenceViewPath, { form });
+  res.render(evidenceViewPath, {form});
 }
 
-evidenceController.get(CITIZEN_EVIDENCE_URL, async (req, res,next: express.NextFunction) => {
+evidenceController.get(CITIZEN_EVIDENCE_URL, async (req, res, next: express.NextFunction) => {
   try {
     const form: Evidence = await getEvidence(req.params.id);
     if (form.evidenceItem.length < INIT_ROW_COUNT) {

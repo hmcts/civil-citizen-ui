@@ -6,7 +6,7 @@ import {CIVIL_SERVICE_CALCULATE_DEADLINE} from '../../../../../../main/app/clien
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {NEW_RESPONSE_DEADLINE_URL} from '../../../../../../main/routes/urls';
-import {CounterpartyType} from '../../../../../../main/common/models/counterpartyType';
+import {PartyType} from '../../../../../../main/common/models/partyType';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -20,7 +20,7 @@ describe('New response deadline view', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamServiceUrl: string = config.get('services.idam.url');
   let htmlDocument: Document;
-  let mainWrapper: any;
+  let mainWrapper: Element;
 
   beforeEach(async () => {
     nock(idamServiceUrl)
@@ -33,7 +33,7 @@ describe('New response deadline view', () => {
     const claim = new Claim();
     claim.applicant1 = {
       partyName: 'Mr. James Bond',
-      type: CounterpartyType.INDIVIDUAL,
+      type: PartyType.INDIVIDUAL,
     };
     claim.responseDeadline = {
       agreedResponseDeadline : extendedDate,
