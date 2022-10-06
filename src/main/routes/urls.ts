@@ -151,3 +151,4 @@ export const DQ_EXPERT_GUIDANCE_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/expert-gu
 export const CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL = `${BASE_CLAIM_URL}/claimant-individual-details`;
 export const DQ_UNAVAILABLE_FOR_HEARING = `${DIRECTIONS_QUESTIONNAIRE_URL}/unavailable-for-hearing`;
 export const DQ_PHONE_OR_VIDEO_HEARING_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/phone-or-video-hearing`;
+export const CLAIM_AMOUNT_URL = `${BASE_CLAIM_URL}/amount`;

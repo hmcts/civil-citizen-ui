@@ -5,4 +5,8 @@ export class AmountBreakdown {
   @ValidateNested({ each: true })
   @ArrayMinSize(1, { message: 'ERRORS.VALID_CLAIM_AMOUNT' })
     claimAmountRows: ClaimAmountRow[];
+
+  constructor(claimAmountRows?: ClaimAmountRow[]) {
+    this.claimAmountRows = claimAmountRows;
+  }
 }
