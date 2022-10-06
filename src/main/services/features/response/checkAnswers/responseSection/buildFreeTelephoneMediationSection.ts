@@ -18,7 +18,7 @@ const getContactNumber = (claim: Claim) => {
     return claim.mediation.companyTelephoneNumber.mediationPhoneNumber;
   }
   else if (claim.mediation?.canWeUse?.mediationPhoneNumber) {
-    return claim.mediation?.canWeUse?.mediationPhoneNumber;
+    return claim.mediation.canWeUse.mediationPhoneNumber;
   } else {
     return claim.respondent1.telephoneNumber;
   }
