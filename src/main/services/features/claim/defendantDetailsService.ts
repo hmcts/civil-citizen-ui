@@ -7,13 +7,15 @@ const getDefendantInformation = async (claimId: string): Promise<Party> => {
   return (responseData?.respondent1) ? responseData.respondent1 : {};
 };
 
-const saveDefendant = async (claimId: string, propertyName: string, propertyValue: any) => {
+const saveDefendant = async (claimId: string, propertyName?: string, propertyValue?: any, saveObject?: boolean) => {
   const claim = await getCaseDataFromStore(claimId) || new Claim();
   if (!claim.respondent1) {
     claim.respondent1 = new Respondent();
   }
-  claim.respondent1[propertyName as keyof Respondent] = propertyValue;
 
+  (saveObject) ?
+    claim.respondent1 = {...claim.respondent1, ...propertyValue} :
+    claim.respondent1[propertyName as keyof Respondent] = propertyValue;
   await saveDraftClaim(claimId, claim);
 };
 
