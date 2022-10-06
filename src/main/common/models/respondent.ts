@@ -15,6 +15,5 @@ export class Respondent {
   type: PartyType;
   partyName?: string;
   contactPerson?: string;
-  specAoSApplicantCorrespondenceAddressRequired: YesNo
 }
 

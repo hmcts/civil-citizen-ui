@@ -20,5 +20,4 @@ export const addressHasChange = (address: PrimaryAddress, originalAddress: Prima
   };
 
   return !isEqual(addressObject, originalAddressObject)
-
 }
