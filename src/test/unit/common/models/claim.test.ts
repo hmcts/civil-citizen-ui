@@ -13,7 +13,7 @@ import {Dependants} from '../../../../main/common/form/models/statementOfMeans/d
 import civilClaimResponseApplicantCompany from '../../../utils/mocks/civilClaimResponseApplicantCompanyMock.json';
 import civilClaimResponseApplicantIndividual from '../../../utils/mocks/civilClaimResponseApplicanIndividualMock.json';
 import {ResponseType} from '../../../../main/common/form/models/responseType';
-import {CounterpartyType} from '../../../../main/common/models/counterpartyType';
+import {PartyType} from '../../../../main/common/models/partyType';
 import {PartialAdmission} from '../../../../main/common/models/partialAdmission';
 import {Respondent} from '../../../../main/common/models/respondent';
 import {HowMuchDoYouOwe} from '../../../../main/common/form/models/admission/partialAdmission/howMuchDoYouOwe';
@@ -441,7 +441,7 @@ describe('Claim isFullAdmission', () => {
   });
   it('should return false with partial admission', () => {
     //Given
-    claim.respondent1 = {responseType: ResponseType.PART_ADMISSION, primaryAddress: {}, type: CounterpartyType.INDIVIDUAL};
+    claim.respondent1 = {responseType: ResponseType.PART_ADMISSION, primaryAddress: {}, type: PartyType.INDIVIDUAL};
     //When
     const result = claim.isFullAdmission();
     //Then
@@ -483,7 +483,7 @@ describe('Claim isPartialAdmission', () => {
   });
   it('should return false with full admission', () => {
     //Given
-    claim.respondent1 = {responseType: ResponseType.FULL_ADMISSION, primaryAddress: {}, type: CounterpartyType.INDIVIDUAL};
+    claim.respondent1 = {responseType: ResponseType.FULL_ADMISSION, primaryAddress: {}, type: PartyType.INDIVIDUAL};
     //When
     const result = claim.isPartialAdmission();
     //Then
@@ -991,7 +991,7 @@ describe('Documents', () => {
     it('should return false with individual type', () => {
       //Given
       claim.respondent1 = new Respondent();
-      claim.respondent1.type = CounterpartyType.INDIVIDUAL;
+      claim.respondent1.type = PartyType.INDIVIDUAL;
       //When
       const result = claim.isBusiness();
       //Then
@@ -1000,7 +1000,7 @@ describe('Documents', () => {
     it('should return true with sole trader', () => {
       //Given
       claim.respondent1 = new Respondent();
-      claim.respondent1.type = CounterpartyType.SOLE_TRADER;
+      claim.respondent1.type = PartyType.SOLE_TRADER;
       //When
       const result = claim.isBusiness();
       //Then
@@ -1009,7 +1009,7 @@ describe('Documents', () => {
     it('should return true with company type', () => {
       //Given
       claim.respondent1 = new Respondent();
-      claim.respondent1.type = CounterpartyType.COMPANY;
+      claim.respondent1.type = PartyType.COMPANY;
       //When
       const result = claim.isBusiness();
       //Then
@@ -1018,7 +1018,7 @@ describe('Documents', () => {
     it('should return true with organisation trader', () => {
       //Given
       claim.respondent1 = new Respondent();
-      claim.respondent1.type = CounterpartyType.ORGANISATION;
+      claim.respondent1.type = PartyType.ORGANISATION;
       //When
       const result = claim.isBusiness();
       //Then

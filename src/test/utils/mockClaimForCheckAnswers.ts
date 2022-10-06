@@ -4,7 +4,7 @@ import PaymentOptionType from '../../main/common/form/models/admission/paymentOp
 import {
   TransactionSchedule,
 } from '../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
-import {CounterpartyType} from '../../main/common/models/counterpartyType';
+import {PartyType} from '../../main/common/models/partyType';
 import {DebtItems} from '../../main/common/form/models/statementOfMeans/debts/debtItems';
 import {Debts} from '../../main/common/form/models/statementOfMeans/debts/debts';
 import {PriorityDebts} from '../../main/common/form/models/statementOfMeans/priorityDebts';
@@ -66,7 +66,7 @@ export const createClaimWithBasicRespondentDetails = (contactPerson?: string): C
     contactPerson: contactPerson,
     dateOfBirth: new Date('2000-12-12'),
     responseType: ResponseType.FULL_ADMISSION,
-    type: CounterpartyType.INDIVIDUAL,
+    type: PartyType.INDIVIDUAL,
     primaryAddress: {
       AddressLine1: '23 Brook lane',
       PostTown: 'Bristol',
@@ -97,7 +97,7 @@ export const createClaimWithRespondentDetailsWithPaymentOption = (paymentOption:
 export const createClaimWithIndividualDetails = (): Claim => {
   const claim = new Claim();
   claim.respondent1 = {
-    type: CounterpartyType.INDIVIDUAL,
+    type: PartyType.INDIVIDUAL,
     individualTitle: TITLE,
     individualLastName: LAST_NAME,
     individualFirstName: FIRST_NAME,
@@ -718,7 +718,7 @@ export const ceateClaimWithPartialAdmission = (alreadyPaid?: YesNo, paymentOptio
     contactPerson: '',
     dateOfBirth: new Date('2000-12-12'),
     responseType: ResponseType.PART_ADMISSION,
-    type: CounterpartyType.INDIVIDUAL,
+    type: PartyType.INDIVIDUAL,
     primaryAddress: {
       AddressLine1: '23 Brook lane',
       PostTown: 'Bristol',
@@ -752,7 +752,7 @@ export const createClaimWithFreeTelephoneMediationSectionForIndividual = (): Cla
   const claim = createClaimWithBasicRespondentDetails('contactTest');
   if (claim.respondent1) {
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
-    claim.respondent1.type = CounterpartyType.INDIVIDUAL;
+    claim.respondent1.type = PartyType.INDIVIDUAL;
   }
   const defendantTimeline: DefendantTimeline = new DefendantTimeline(
     [new TimelineRow('6 November 2022', 'Event 1'), new TimelineRow('7 November 2022', 'Event 2')],

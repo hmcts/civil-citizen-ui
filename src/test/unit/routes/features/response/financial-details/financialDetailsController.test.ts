@@ -136,7 +136,7 @@ describe('Citizen financial details', () => {
         .post(constructResponseUrlWithIdParams('1646818997929180', FINANCIAL_DETAILS_URL))
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(mockLogger.error).toHaveBeenCalledWith('No counterpartyType found.');
+          expect(mockLogger.error).toHaveBeenCalledWith('No partyType found.');
         });
     });
   });

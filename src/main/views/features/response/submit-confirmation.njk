@@ -12,12 +12,10 @@
   {{ setPageTitle('PAGES.SUBMIT_CONFIRMATION.PAGE_TITLE') }}
 {% endblock %}
 
-{% set dateToday = "now" | addDaysTranslated(0, t) %}
-
 {% set panelContent %}
   {{ t('PAGES.SUBMIT_CONFIRMATION.CLAIM_NUMBER')}}:
   <br><strong>{{ claimNumber }}</strong><br>
-  <br>{{ dateToday }}
+  <br>{{ responseSubmitDate }}
 {% endset %}
 
 

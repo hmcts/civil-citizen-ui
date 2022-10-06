@@ -12,7 +12,7 @@ import {
   CIVIL_SERVICE_FEES_RANGES,
   CIVIL_SERVICE_SUBMIT_EVENT,
 } from '../../../../main/app/client/civilServiceUrls';
-import {CounterpartyType} from '../../../../main/common/models/counterpartyType';
+import {PartyType} from '../../../../main/common/models/partyType';
 import {mockClaim} from '../../../utils/mockClaim';
 import {TestMessages} from '../../../utils/errorMessageTestConstants';
 import {CaseState} from '../../../../main/common/form/models/claimDetails';
@@ -57,7 +57,7 @@ describe('Civil Service Client', () => {
           individualTitle: 'Mrs',
           individualLastName: 'Clark',
           individualFirstName: 'Jane',
-          type: CounterpartyType.INDIVIDUAL,
+          type: PartyType.INDIVIDUAL,
         };
       claim.totalClaimAmount = 1500;
 

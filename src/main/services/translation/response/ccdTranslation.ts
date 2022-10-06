@@ -3,7 +3,7 @@ import {CCDResponse} from '../../../common/models/ccdResponse/ccdResponse';
 import {toCCDRepaymentPlan} from '../../../common/models/ccdResponse/ccdRepaymentPlan';
 import {toCCDPaymentOption} from '../../../common/models/ccdResponse/ccdPaymentOption';
 import {toCCDPayBySetDate} from '../../../common/models/ccdResponse/ccdPayBySetDate';
-import {YesNo} from '../../../common/form/models/yesNo';
+import {toAgreedMediation} from '../../../common/models/ccdResponse/ccdAgreedMediation';
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   return {
@@ -11,6 +11,7 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     defenceAdmitPartPaymentTimeRouteRequired: toCCDPaymentOption(claim.paymentOption),
     respondent1RepaymentPlan: toCCDRepaymentPlan(claim.repaymentPlan),
     respondToClaimAdmitPartLRspec: toCCDPayBySetDate(claim.paymentDate),
-    specAoSApplicantCorrespondenceAddressRequired: addressHasChange ? YesNo.NO : YesNo.YES,
+    specAoSApplicantCorrespondenceAddressRequired: 'No', // TODO This part needs to be change in separate story CIV-4571
+    responseClaimMediationSpecRequired: toAgreedMediation(claim.mediation),
   };
 };

@@ -9,7 +9,7 @@ import {
 import {ResponseType} from '../../../../../main/common/form/models/responseType';
 import {TaskStatus} from '../../../../../main/common/models/taskList/TaskStatus';
 import {deepCopy} from '../../../../utils/deepCopy';
-import {CounterpartyType} from '../../../../../main/common/models/counterpartyType';
+import {PartyType} from '../../../../../main/common/models/partyType';
 import {Respondent} from '../../../../../main/common/models/respondent';
 import PaymentOptionType from '../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {StatementOfMeans} from '../../../../../main/common/models/statementOfMeans';
@@ -127,7 +127,7 @@ describe('Response Task List service', () => {
     const caseData = new Claim();
     caseData.respondent1 = new Respondent();
     caseData.respondent1.individualFirstName = 'Joe';
-    caseData.respondent1.type = CounterpartyType.INDIVIDUAL;
+    caseData.respondent1.type = PartyType.INDIVIDUAL;
     caseData.respondent1.responseType = ResponseType.FULL_ADMISSION;
     delete caseData.paymentOption;
 
