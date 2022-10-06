@@ -11,6 +11,7 @@
     "types": ["codeceptjs", "jest"],
     "baseUrl": "src",
     "resolveJsonModule": true,
+    "allowJs": true,
     "paths": {
       "common/*": [
         "main/common/*"
