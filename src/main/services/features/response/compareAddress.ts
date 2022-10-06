@@ -1,20 +1,24 @@
-import config from 'config';
-import { AppRequest } from '../../../common/models/AppRequest';
-import { getCaseDataFromStore } from '../../../modules/draft-store/draftStoreService';
-import { CivilServiceClient } from '../../../app/client/civilServiceClient';
-import { isEqual } from 'lodash';
+import {isEqual} from 'lodash';
+import {PrimaryAddress} from 'common/models/primaryAddress';
 
-const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+export const addressHasChange = (address: PrimaryAddress, originalAddress: PrimaryAddress): boolean => {
 
-export const compareAddress = async (req: AppRequest): Promise<boolean> => {
+  const addressObject = {
+    PostCode: address.PostCode ? address.PostCode : '',
+    PostTown: address.PostTown ? address.PostTown : '',
+    AddressLine1: address.AddressLine1 ? address.AddressLine1 : '',
+    AddressLine2: address.AddressLine2 ? address.AddressLine2 : '',
+    AddressLine3: address.AddressLine3 ? address.AddressLine3 : '',
+  };
 
-  const claimFromCivilService = await civilServiceClient.retrieveClaimDetails(req.params.id, <AppRequest>req);
-  const claimFromRedis = await getCaseDataFromStore(req.params.id);
+  const originalAddressObject = {
+    PostCode: originalAddress.PostCode ? originalAddress.PostCode : '',
+    PostTown: originalAddress.PostTown ? originalAddress.PostTown : '',
+    AddressLine1: originalAddress.AddressLine1 ? originalAddress.AddressLine1 : '',
+    AddressLine2: originalAddress.AddressLine2 ? originalAddress.AddressLine2 : '',
+    AddressLine3: originalAddress.AddressLine3 ? originalAddress.AddressLine3 : '',
+  };
 
-  console.log('claimFromCivilService --> ', claimFromCivilService);
-  console.log('claimFromRedis --> ', claimFromRedis);
-
-  return isEqual(claimFromCivilService, claimFromRedis)
+  return !isEqual(addressObject, originalAddressObject)
 
 }
