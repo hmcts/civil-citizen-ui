@@ -105,7 +105,7 @@ import claimReferenceController from './features/public/firstContact/claimRefere
 import pinController from './features/public/firstContact/pinController';
 import firstContactClaimSummaryController from './features/public/firstContact/claimSummaryController';
 import eligibleController from './features/public/eligibility/eligibleController';
-import claimantPartyTypeController from './features/public/claim/claimantPartyTypeController';
+import claimantPartyTypeController from './features/claim/claimantPartyTypeController';
 import completingClaimController from './features/claim/completingClaimController';
 import submitComfirmationController from './features/response/submitComfirmationController';
 import resolvingThisDisputeController from './features/claim/resolvingThisDisputeController';
@@ -125,8 +125,8 @@ import expertDetailsController from './features/directionsQuestionnaire/experts/
 import sentExpertReportsController from './features/directionsQuestionnaire/sentExpertReportsController';
 import otherWitnessesController from './features/directionsQuestionnaire/otherWitnessesController';
 import expertReportDetailsController from './features/directionsQuestionnaire/expertReportDetailsController';
-import defendantPartyTypeController from './features/public/claim/defendantPartyTypeController';
-import claimantDoBController from './features/public/claim/claimantDoBController';
+import defendantPartyTypeController from './features/claim/defendantPartyTypeController';
+import claimantDoBController from './features/claim/claimantDoBController';
 import claimantIndividualDetailsController from './features/claim/claimantIndividualDetailsController';
 import whyUnavailableForHearingController from './features/directionsQuestionnaire/whyUnavailableForHearingController';
 import phoneOrVideoHearingController from './features/directionsQuestionnaire/phoneOrVideoHearingController';
