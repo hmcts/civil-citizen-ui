@@ -1,5 +1,6 @@
 import {IsDefined, IsNotEmpty, IsNumber, MaxLength, Min, ValidateIf} from 'class-validator';
 import {FREE_TEXT_MAX_LENGTH} from '../../../validators/validationConstraints';
+import {ClaimAmountBreakup} from '../../claimDetails';
 
 export class ClaimAmountRow {
 
@@ -18,6 +19,10 @@ export class ClaimAmountRow {
   constructor (reason?: string, amount?: number) {
     this.reason = reason;
     this.amount = amount;
+  }
+
+  public static fromClaimBreakupJson( breakUpJson: ClaimAmountBreakup): ClaimAmountRow{
+    return new ClaimAmountRow(breakUpJson.value.claimReason, Number(breakUpJson.value.claimAmount));
   }
 
 }
