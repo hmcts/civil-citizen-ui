@@ -126,6 +126,7 @@ export const CLAIMANT_COMPANY_DETAILS_URL = `${BASE_CLAIM_URL}/claimant-company-
 export const CLAIMANT_DOB_URL = `${BASE_CLAIM_URL}/claimant-dob`;
 export const CLAIMANT_INDIVIDUAL_DETAILS_URL = `${BASE_CLAIM_URL}/claimant-individual-details`;
 export const CLAIMANT_ORGANISATION_DETAILS_URL = `${BASE_CLAIM_URL}/claimant-organisation-details`;
+export const CLAIMANT_TASK_LIST_URL = `${BASE_CLAIM_URL}/task-list`;
 export const CLAIMANT_PARTY_TYPE_SELECTION_URL = `${BASE_CLAIM_URL}/claimant-party-type-selection`;
 export const CLAIMANT_PHONE_NUMBER_URL = `${BASE_CLAIM_URL}/claimant-phone-number`;
 export const CLAIMANT_SOLE_TRADER_DETAILS_URL = `${BASE_CLAIM_URL}/claimant-sole-trader-details`;
