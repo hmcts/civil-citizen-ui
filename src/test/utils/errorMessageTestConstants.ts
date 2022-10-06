@@ -2,6 +2,7 @@ export const enum TestMessages {
   AMOUNT_LESS_THAN_CLAIMED = 'Enter a value less than the amount claimed',
   ARE_YOU_DISABLED = 'Are you disabled?',
   ARE_YOU_SEVERELY_DISABLED = 'Are you severely disabled?',
+  CANT_FIND_ADDRESS = 'We can\'t find an address for that postcode.Try again or enter the address manually.',
   CHOOSE_YOUR_RESPONSE = 'Choose your response',
   CLAIM_CARER = 'Do you claim Carer’s Allowance or Carer’s Credit?',
   CLAIM_NUMBER = 'testCaseReference',
