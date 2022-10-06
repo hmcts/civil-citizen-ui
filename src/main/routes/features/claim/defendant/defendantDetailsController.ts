@@ -13,7 +13,7 @@ import {GenericForm} from '../../../../common/form/models/genericForm';
 import {Address} from '../../../../common/form/models/address';
 import {CompanyOrOrganisationPartyDetails} from '../../../../common/form/models/companyOrOrganisationPartyDetails';
 import {convertToPrimaryAddress} from '../../../../common/models/primaryAddress';
-import {PartyType} from 'models/partyType';
+import {PartyType} from '../../../../common/models/partyType';
 
 const defendantDetailsController = Router();
 const defendantDetailsCompanyOrOrganisationViewPath = 'features/claim/defendant/defendant-details-company-or-organisation';
