@@ -14,8 +14,7 @@ import {NotEligibleReason} from '../../../../common/form/models/eligibility/NotE
 const defendantAgeEligibilityController = express.Router();
 const defendantEligibilityViewPath = 'features/public/eligibility/defendant-age';
 
-function renderView(ageEligibilityForm: GenericForm<DefendantAgeEligibility>, res: express.Response): void {
-  const form = Object.assign(ageEligibilityForm);
+function renderView(form: GenericForm<DefendantAgeEligibility>, res: express.Response): void {
   res.render(defendantEligibilityViewPath, {form});
 }
 

@@ -3,11 +3,9 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
-import {
-  SUPPORT_REQUIRED_URL,
-  DETERMINATION_WITHOUT_HEARING_URL,
-} from '../../../../../main/routes/urls';
+import {DETERMINATION_WITHOUT_HEARING_URL, EXPERT_GUIDANCE_URL} from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {YesNo} from '../../../../../main/common/form/models/yesNo';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -54,7 +52,7 @@ describe('Determination Without Hearing Controller', () => {
     });
 
     it('should return determination without hearing page if only option no is selected', async () => {
-      await request(app).post(DETERMINATION_WITHOUT_HEARING_URL).send({isDeterminationWithoutHearing: 'no'})
+      await request(app).post(DETERMINATION_WITHOUT_HEARING_URL).send({option: YesNo.NO})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Determination without Hearing Questions');
@@ -70,19 +68,19 @@ describe('Determination Without Hearing Controller', () => {
     });
 
     it('should redirect to the support required page if option yes is selected', async () => {
-      await request(app).post(DETERMINATION_WITHOUT_HEARING_URL).send({isDeterminationWithoutHearing: 'yes'})
+      await request(app).post(DETERMINATION_WITHOUT_HEARING_URL).send({option: YesNo.YES})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(SUPPORT_REQUIRED_URL);
+          expect(res.get('location')).toBe(EXPERT_GUIDANCE_URL);
         });
     });
 
     it('should redirect to the support required page if option no is selected and reason is provided', async () => {
       await request(app).post(DETERMINATION_WITHOUT_HEARING_URL)
-        .send({isDeterminationWithoutHearing: 'no', reasonForHearing: 'valid reason'})
+        .send({option: YesNo.NO, reasonForHearing: 'valid reason'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(SUPPORT_REQUIRED_URL);
+          expect(res.get('location')).toBe(EXPERT_GUIDANCE_URL);
         });
     });
 
@@ -90,7 +88,7 @@ describe('Determination Without Hearing Controller', () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(DETERMINATION_WITHOUT_HEARING_URL)
-        .send({isDeterminationWithoutHearing: 'yes'})
+        .send({option: YesNo.YES})
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

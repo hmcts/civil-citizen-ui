@@ -3,9 +3,10 @@ import {
 } from '../../../../../../../main/services/features/response/checkAnswers/checkAnswersService';
 import {
   createClaimWithFreeTelephoneMediationSection,
+  createClaimWithFreeTelephoneMediationSectionForIndividual,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
-import {CounterpartyType} from '../../../../../../../main/common/models/counterpartyType';
+import {PartyType} from '../../../../../../../main/common/models/partyType';
 import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
 import {CompanyTelephoneNumber} from '../../../../../../../main/common/form/models/mediation/companyTelephoneNumber';
 
@@ -37,7 +38,7 @@ describe('Free Telephone Mediation Section', () => {
     //Given
     const claim = createClaimWithFreeTelephoneMediationSection();
     if (claim.respondent1) {
-      claim.respondent1.type = CounterpartyType.COMPANY;
+      claim.respondent1.type = PartyType.COMPANY;
     }
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
@@ -61,7 +62,7 @@ describe('Free Telephone Mediation Section', () => {
       claim.mediation.canWeUse = undefined;
     }
     if (claim.respondent1) {
-      claim.respondent1.type = CounterpartyType.COMPANY;
+      claim.respondent1.type = PartyType.COMPANY;
     }
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
@@ -81,7 +82,7 @@ describe('Free Telephone Mediation Section', () => {
       claim.mediation.mediationDisagreement = undefined;
     }
     if (claim.respondent1) {
-      claim.respondent1.type = CounterpartyType.COMPANY;
+      claim.respondent1.type = PartyType.COMPANY;
     }
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
@@ -100,7 +101,7 @@ describe('Free Telephone Mediation Section', () => {
     }
 
     if (claim.respondent1) {
-      claim.respondent1.type = CounterpartyType.COMPANY;
+      claim.respondent1.type = PartyType.COMPANY;
     }
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
@@ -119,6 +120,17 @@ describe('Free Telephone Mediation Section', () => {
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows.length).toBe(1);
+
+  });
+
+  it('should return response free telephone mediation with telephone number', async () => {
+    //Given
+    const claim = createClaimWithFreeTelephoneMediationSectionForIndividual();
+    //When
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows.length).toBe(2);
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].title).toBe(constVal.PAGES_FREE_TELEPHONE_MEDIATION_PAGE_TITLE);
 
   });
 });

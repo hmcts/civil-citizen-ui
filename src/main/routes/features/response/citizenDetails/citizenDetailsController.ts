@@ -9,7 +9,7 @@ import {
   getRespondentInformation,
   saveRespondent,
 } from '../../../../services/features/response/citizenDetails/citizenDetailsService';
-import {CounterpartyType} from '../../../../common/models/counterpartyType';
+import {PartyType} from '../../../../common/models/partyType';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 
 const citizenDetailsController = express.Router();
@@ -17,31 +17,28 @@ const citizenDetailsController = express.Router();
 const CITIZEN_DETAILS_COMPANY_VIEW_PATH = 'features/response/citizenDetails/citizen-details-company';
 const CITIZEN_DETAILS_VIEW_PATH = 'features/response/citizenDetails/citizen-details';
 
-const getViewpathWithType = (type: CounterpartyType) => {
-  if (type === CounterpartyType.ORGANISATION || type === CounterpartyType.COMPANY) {
+const getViewPathWithType = (type: PartyType) => {
+  if (type === PartyType.ORGANISATION || type === PartyType.COMPANY) {
     return CITIZEN_DETAILS_COMPANY_VIEW_PATH;
   }
   return CITIZEN_DETAILS_VIEW_PATH;
 };
 
 function renderPage(res: express.Response, req: express.Request, respondent: Respondent, citizenAddress: GenericForm<CitizenAddress>, citizenCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>): void {
-  const partyName = respondent?.partyName;
   const type = respondent?.type;
-  const contactPerson = respondent?.contactPerson;
 
-  const viewPath = getViewpathWithType(type);
-  res.render(viewPath, {
+  res.render(getViewPathWithType(type), {
     respondent,
     citizenAddress,
     citizenCorrespondenceAddress,
-    partyName: partyName,
-    contactPerson: contactPerson,
-    type: type,
+    partyName: respondent?.partyName ,
+    contactPerson: respondent?.contactPerson,
+    type,
   });
 }
 
-const redirect = async (responseDataRedis: Respondent, req: express.Request, res: express.Response) => {
-  if (responseDataRedis?.type === CounterpartyType.SOLE_TRADER || responseDataRedis?.type === CounterpartyType.INDIVIDUAL) {
+const redirect = (responseDataRedis: Respondent, req: express.Request, res: express.Response) => {
+  if (responseDataRedis?.type === PartyType.SOLE_TRADER || responseDataRedis?.type === PartyType.INDIVIDUAL) {
     res.redirect(constructResponseUrlWithIdParams(req.params.id, DOB_URL));
   } else {
     res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PHONE_NUMBER_URL));
