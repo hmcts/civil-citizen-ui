@@ -12,7 +12,7 @@ import {
   isRepaymentPlanMissing,
   isStatementOfMeansComplete,
 } from '../../../../../../main/common/utils/taskList/tasks/taskListHelpers';
-import {CounterpartyType} from '../../../../../../main/common/models/counterpartyType';
+import {PartyType} from '../../../../../../main/common/models/partyType';
 import {Respondent} from '../../../../../../main/common/models/respondent';
 import PaymentOptionType from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {Mediation} from '../../../../../../main/common/models/mediation/mediation';
@@ -38,7 +38,7 @@ const mockRespondent: Respondent = {
     AddressLine3: '',
   },
   correspondenceAddress: {},
-  type: CounterpartyType.ORGANISATION,
+  type: PartyType.ORGANISATION,
 };
 
 describe('Task List Helpers', () => {
@@ -50,44 +50,44 @@ describe('Task List Helpers', () => {
 
   describe('isCounterpartyCompany helper', () => {
     it('should return true if counterparty is organisation', () => {
-      mockRespondent.type = CounterpartyType.ORGANISATION;
+      mockRespondent.type = PartyType.ORGANISATION;
       expect(isCounterpartyCompany(mockRespondent)).toEqual(true);
     });
 
     it('should return true if counterparty is company', () => {
-      mockRespondent.type = CounterpartyType.COMPANY;
+      mockRespondent.type = PartyType.COMPANY;
       expect(isCounterpartyCompany(mockRespondent)).toEqual(true);
     });
 
     it('should return false if counterparty is individual', () => {
-      mockRespondent.type = CounterpartyType.INDIVIDUAL;
+      mockRespondent.type = PartyType.INDIVIDUAL;
       expect(isCounterpartyCompany(mockRespondent)).toEqual(false);
     });
 
     it('should return false if counterparty is sole trader', () => {
-      mockRespondent.type = CounterpartyType.SOLE_TRADER;
+      mockRespondent.type = PartyType.SOLE_TRADER;
       expect(isCounterpartyCompany(mockRespondent)).toEqual(false);
     });
   });
 
   describe('isCounterpartyIndividual helper', () => {
     it('should return false if counterparty is organisation', () => {
-      mockRespondent.type = CounterpartyType.ORGANISATION;
+      mockRespondent.type = PartyType.ORGANISATION;
       expect(isCounterpartyIndividual(mockRespondent)).toEqual(false);
     });
 
     it('should return false if counterparty is company', () => {
-      mockRespondent.type = CounterpartyType.COMPANY;
+      mockRespondent.type = PartyType.COMPANY;
       expect(isCounterpartyIndividual(mockRespondent)).toEqual(false);
     });
 
     it('should return true if counterparty is individual', () => {
-      mockRespondent.type = CounterpartyType.INDIVIDUAL;
+      mockRespondent.type = PartyType.INDIVIDUAL;
       expect(isCounterpartyIndividual(mockRespondent)).toEqual(true);
     });
 
     it('should return true if counterparty is sole trader', () => {
-      mockRespondent.type = CounterpartyType.SOLE_TRADER;
+      mockRespondent.type = PartyType.SOLE_TRADER;
       expect(isCounterpartyIndividual(mockRespondent)).toEqual(true);
     });
   });
@@ -249,7 +249,7 @@ describe('Task List Helpers', () => {
       caseData.rejectAllOfClaim.option = RejectAllOfClaimType.COUNTER_CLAIM;
       expect(isFullDefenceAndNotCounterClaim(caseData)).toEqual(false);
     });
-    
+
     it('should return true if is FullDefence And Not a CounterClaim', () => {
       caseData.respondent1 = new Respondent();
       caseData.respondent1.responseType = ResponseType.FULL_DEFENCE;
@@ -262,20 +262,20 @@ describe('Task List Helpers', () => {
   describe('hasDateOfBirthIfIndividual helper', () => {
     it('should return false if individual', () => {
       caseData.respondent1 = new Respondent();
-      caseData.respondent1.type = CounterpartyType.INDIVIDUAL;
+      caseData.respondent1.type = PartyType.INDIVIDUAL;
       expect(hasDateOfBirthIfIndividual(caseData.respondent1)).toEqual(false);
     });
 
     it('should return true if individual and has dateOfBirth', () => {
       caseData.respondent1 = new Respondent();
-      caseData.respondent1.type = CounterpartyType.INDIVIDUAL;
+      caseData.respondent1.type = PartyType.INDIVIDUAL;
       caseData.respondent1.dateOfBirth = new Date();
       expect(hasDateOfBirthIfIndividual(caseData.respondent1)).toEqual(true);
     });
 
     it('should return true if is not individual', () => {
       caseData.respondent1 = new Respondent();
-      caseData.respondent1.type = CounterpartyType.ORGANISATION;
+      caseData.respondent1.type = PartyType.ORGANISATION;
       expect(hasDateOfBirthIfIndividual(caseData.respondent1)).toEqual(true);
     });
   });
@@ -310,7 +310,7 @@ describe('Task List Helpers', () => {
       caseData.respondent1.postToThisAddress = YesNo.NO;
       expect(hasCorrespondenceAndPrimaryAddress(caseData.respondent1)).toEqual(true);
     });
-    
+
     it('should return true if has primaryAdress, YES and has correspondenceAdress', () => {
       caseData.respondent1 = new Respondent();
       caseData.respondent1.primaryAddress = adress;

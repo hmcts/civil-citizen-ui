@@ -1,5 +1,6 @@
 import {IsNotEmpty, Validate} from 'class-validator';
 import {PostcodeValidator} from '../validators/postcodeValidator';
+import {CorrespondenceAddress} from '../../models/correspondenceAddress';
 
 export class CitizenAddress {
   @IsNotEmpty({message: 'ERRORS.VALID_ADDRESS_LINE_1'})
@@ -23,5 +24,25 @@ export class CitizenAddress {
     this.primaryAddressLine3 = primaryAddressLine3;
     this.primaryCity = primaryCity;
     this.primaryPostCode = primaryPostCode;
+  }
+
+  static fromObject(value?: Record<string, string>): CitizenAddress {
+    return new CitizenAddress(
+      value?.primaryAddressLine1,
+      value?.primaryAddressLine2,
+      value?.primaryAddressLine3,
+      value?.primaryCity,
+      value?.primaryPostCode,
+    );
+  }
+
+  static fromJson(value?: CorrespondenceAddress): CitizenAddress {
+    return new CitizenAddress(
+      value?.AddressLine1,
+      value?.AddressLine2,
+      value?.AddressLine3,
+      value?.PostTown,
+      value?.PostCode,
+    );
   }
 }

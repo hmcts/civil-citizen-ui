@@ -5,6 +5,7 @@ import {CCDPaymentOption} from '../../../../../main/common/models/ccdResponse/cc
 import {CCDRepaymentPlanFrequency} from '../../../../../main/common/models/ccdResponse/ccdRepaymentPlan';
 import {Respondent} from '../../../../../main/common/models/respondent';
 import {ResponseType} from '../../../../../main/common/form/models/responseType';
+import {YesNoUpperCamelCase} from '../../../../../main/common/form/models/yesNo';
 
 describe('translate response to ccd version', ()=> {
   it('should translate payment option to ccd', ()=> {
@@ -51,4 +52,22 @@ describe('translate response to ccd version', ()=> {
     //Then
     expect(ccdResponse.respondToClaimAdmitPartLRspec?.whenWillThisAmountBePaid).toBe(claim.paymentDate);
   });
+  it('should translate mediation option to CCD', ()=>{
+    //Given
+    const claim = new Claim();
+    claim.respondent1 = new Respondent();
+    claim.mediation = {
+      canWeUse: undefined,
+      mediationDisagreement: undefined,
+      companyTelephoneNumber: {
+        mediationContactPerson : 'test',
+        mediationPhoneNumber : '123',
+      },
+    };
+    //When
+    const ccdResponse = translateDraftResponseToCCD(claim);
+    //Then
+    expect(ccdResponse.responseClaimMediationSpecRequired).toBe(YesNoUpperCamelCase.YES);
+  });
+
 });

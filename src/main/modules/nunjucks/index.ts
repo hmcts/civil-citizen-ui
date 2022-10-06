@@ -6,9 +6,9 @@ import * as numeral from '../../common/utils/currencyFormat';
 import {convertToPoundsFilter} from '../../common/utils/currencyFormat';
 import {i18n, TOptions} from 'i18next';
 import {ResponseType} from '../../common/form/models/responseType';
-import {YesNo} from '../../common/form/models/yesNo';
+import {YesNo, YesNoNotReceived} from '../../common/form/models/yesNo';
 import {ResidenceType} from '../../common/form/models/statementOfMeans/residenceType';
-import {CounterpartyType} from '../../common/models/counterpartyType';
+import {PartyType} from '../../common/models/partyType';
 import {UnemploymentCategory} from '../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
 import {TransactionSchedule} from '../../common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {EvidenceType} from '../../common/models/evidence/evidenceType';
@@ -98,7 +98,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('ResponseType', ResponseType);
     nunjucksEnv.addGlobal('YesNo', YesNo);
     nunjucksEnv.addGlobal('ResidenceType', ResidenceType);
-    nunjucksEnv.addGlobal('CounterpartyType', CounterpartyType);
+    nunjucksEnv.addGlobal('partyType', PartyType);
     nunjucksEnv.addGlobal('UnemploymentCategory', UnemploymentCategory);
     nunjucksEnv.addGlobal('TransactionSchedule', TransactionSchedule);
     nunjucksEnv.addGlobal('EvidenceType', EvidenceType);
@@ -110,6 +110,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('AgeEligibilityOptions', AgeEligibilityOptions);
     nunjucksEnv.addGlobal('TotalAmountOptions', TotalAmountOptions);
     nunjucksEnv.addGlobal('ClaimTypeOptions', ClaimTypeOptions);
+    nunjucksEnv.addGlobal('YesNoNotReceived', YesNoNotReceived);
     nunjucksEnv.addGlobal('urls', urls);
 
     app.use((req, res, next) => {

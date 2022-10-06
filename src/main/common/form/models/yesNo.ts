@@ -6,3 +6,12 @@ export enum YesNoUpperCase {
   YES = 'YES',
   NO = 'NO'
 }
+export enum YesNoNotReceived {
+  YES = 'yes',
+  NO = 'no',
+  NOT_RECEIVED = 'not-received'
+}
+export enum YesNoUpperCamelCase {
+  YES = 'Yes',
+  NO = 'No',
+}

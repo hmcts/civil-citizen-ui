@@ -18,7 +18,7 @@ import {Claim} from '../../../../../../main/common/models/claim';
 import {Respondent} from '../../../../../../main/common/models/respondent';
 import {buildCorrespondenceAddress, buildPrimaryAddress} from '../../../../../utils/mockClaim';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {CounterpartyType} from '../../../../../../main/common/models/counterpartyType';
+import {PartyType} from '../../../../../../main/common/models/partyType';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -40,7 +40,7 @@ const buildClaimOfRespondent = (): Respondent => {
   return claim.respondent1;
 };
 
-const buildClaimOfRespondentType = (type: CounterpartyType): Respondent => {
+const buildClaimOfRespondentType = (type: PartyType): Respondent => {
   claim.respondent1 = new Respondent();
   claim.respondent1.type = type;
   claim.respondent1.primaryAddress = buildPrimaryAddress();
@@ -148,7 +148,7 @@ describe('Confirm Details page', () => {
 
   it('should return your details company page', async () => {
     mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(CounterpartyType.COMPANY);
+      return buildClaimOfRespondentType(PartyType.COMPANY);
     });
     await request(app)
       .get(CITIZEN_DETAILS_URL)
@@ -161,7 +161,7 @@ describe('Confirm Details page', () => {
 
   it('should return your details organisation page', async () => {
     mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(CounterpartyType.ORGANISATION);
+      return buildClaimOfRespondentType(PartyType.ORGANISATION);
     });
     await request(app)
       .get(CITIZEN_DETAILS_URL)
@@ -195,7 +195,7 @@ describe('Confirm Details page', () => {
 
   it('POST/Citizen details - should redirect on correct correspondence address', async () => {
     mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(CounterpartyType.ORGANISATION);
+      return buildClaimOfRespondentType(PartyType.ORGANISATION);
     });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
@@ -219,7 +219,7 @@ describe('Confirm Details page', () => {
 
   it('POST/Citizen details - should return error on empty primary address line', async () => {
     mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(CounterpartyType.INDIVIDUAL);
+      return buildClaimOfRespondentType(PartyType.INDIVIDUAL);
     });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
@@ -288,7 +288,7 @@ describe('Confirm Details page', () => {
 
   it('POST/Citizen details - should return error on empty correspondence address line', async () => {
     mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(CounterpartyType.ORGANISATION);
+      return buildClaimOfRespondentType(PartyType.ORGANISATION);
     });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
@@ -313,7 +313,7 @@ describe('Confirm Details page', () => {
 
   it('POST/Citizen details - should return error on empty correspondence city', async () => {
     mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(CounterpartyType.ORGANISATION);
+      return buildClaimOfRespondentType(PartyType.ORGANISATION);
     });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
@@ -338,7 +338,7 @@ describe('Confirm Details page', () => {
 
   it('POST/Citizen details - should return error on empty correspondence postcode', async () => {
     mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(CounterpartyType.ORGANISATION);
+      return buildClaimOfRespondentType(PartyType.ORGANISATION);
     });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
@@ -363,7 +363,7 @@ describe('Confirm Details page', () => {
 
   it('POST/Citizen details - should return error on no input', async () => {
     mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(CounterpartyType.ORGANISATION);
+      return buildClaimOfRespondentType(PartyType.ORGANISATION);
     });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
@@ -417,7 +417,7 @@ describe('Confirm Details page', () => {
 
   it('POST/Citizen details - should return error on input for correspondence address when postToThisAddress is set to YES', async () => {
     mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(CounterpartyType.ORGANISATION);
+      return buildClaimOfRespondentType(PartyType.ORGANISATION);
     });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
@@ -444,7 +444,7 @@ describe('Confirm Details page', () => {
 
   it('POST/Citizen details - should display organisation details and return errors when postToThisAddress is set to YES', async () => {
     mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(CounterpartyType.ORGANISATION);
+      return buildClaimOfRespondentType(PartyType.ORGANISATION);
     });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
@@ -473,7 +473,7 @@ describe('Confirm Details page', () => {
 
   it('POST/Citizen details - should display company details and return errors when postToThisAddress is set to YES', async () => {
     mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(CounterpartyType.COMPANY);
+      return buildClaimOfRespondentType(PartyType.COMPANY);
     });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
@@ -516,7 +516,7 @@ describe('Confirm Details page', () => {
   describe('Redirect to Phone or DOB screen', () => {
     it('should redirect to confirm phone screen if respondent type is COMPANY', async () => {
       mockGetRespondentInformation.mockImplementation(async () => {
-        return buildClaimOfRespondentType(CounterpartyType.COMPANY);
+        return buildClaimOfRespondentType(PartyType.COMPANY);
       });
       await request(app)
         .post(CITIZEN_DETAILS_URL)
@@ -528,7 +528,7 @@ describe('Confirm Details page', () => {
     });
     it('should redirect to confirm phone screen if respondent type is ORGANISATION', async () => {
       mockGetRespondentInformation.mockImplementation(async () => {
-        return buildClaimOfRespondentType(CounterpartyType.ORGANISATION);
+        return buildClaimOfRespondentType(PartyType.ORGANISATION);
       });
       await request(app)
         .post(CITIZEN_DETAILS_URL)
@@ -540,7 +540,7 @@ describe('Confirm Details page', () => {
     });
     it('should redirect to confirm DOB screen if respondent type is INDIVIDUAL', async () => {
       mockGetRespondentInformation.mockImplementation(async () => {
-        return buildClaimOfRespondentType(CounterpartyType.INDIVIDUAL);
+        return buildClaimOfRespondentType(PartyType.INDIVIDUAL);
       });
       await request(app)
         .post(CITIZEN_DETAILS_URL)
@@ -552,7 +552,7 @@ describe('Confirm Details page', () => {
     });
     it('should redirect to confirm DOB screen if respondent type is SOLE TRADER', async () => {
       mockGetRespondentInformation.mockImplementation(async () => {
-        return buildClaimOfRespondentType(CounterpartyType.SOLE_TRADER);
+        return buildClaimOfRespondentType(PartyType.SOLE_TRADER);
       });
       await request(app)
         .post(CITIZEN_DETAILS_URL)

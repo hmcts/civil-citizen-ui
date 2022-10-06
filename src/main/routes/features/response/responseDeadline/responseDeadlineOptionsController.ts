@@ -17,12 +17,10 @@ const responseDeadlineOptionsController = express.Router();
 const responseDeadlineOptionsViewPath = 'features/response/response-deadline-options';
 const responseDeadlineService = new ResponseDeadlineService();
 
-function renderView(res: express.Response, form: GenericForm<ResponseDeadline>, claim: Claim): void {
-  const responseDeadline = Object.assign(form);
-  responseDeadline.option = form.model?.option;
+function renderView(res: express.Response, form: GenericForm<ResponseDeadline>, claim: Claim, language: string): void {
   res.render(responseDeadlineOptionsViewPath, {
-    form: responseDeadline,
-    responseDate: claim.formattedResponseDeadline(),
+    form,
+    responseDate: claim.formattedResponseDeadline(language),
     claimantName: claim.getClaimantName(),
   });
 }
@@ -31,7 +29,8 @@ responseDeadlineOptionsController.get(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGua
   async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
       const claim = await getCaseDataFromStore(req.params.id);
-      renderView(res, new GenericForm(new ResponseDeadline(claim.responseDeadline?.option)), claim);
+      const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+      renderView(res, new GenericForm(new ResponseDeadline(claim.responseDeadline?.option)), claim, lang);
     }
     catch (error) {
       next(error);
@@ -44,6 +43,7 @@ responseDeadlineOptionsController.post(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGu
       let responseOption;
       let redirectUrl;
       const claimId = req.params.id;
+      const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await getCaseDataFromStore(claimId);
       switch (req.body['option']) {
         case 'already-agreed':
@@ -68,7 +68,7 @@ responseDeadlineOptionsController.post(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGu
       const form = new GenericForm(new ResponseDeadline(responseOption));
       await form.validate();
       if (form.hasErrors()) {
-        renderView(res, form, claim);
+        renderView(res, form, claim, lang);
       } else {
         await responseDeadlineService.saveDeadlineResponse(claimId, responseOption);
         res.redirect(redirectUrl);
