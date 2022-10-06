@@ -1,0 +1,55 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.CLAIM_JOURNEY.HOW_CLAIM_INTEREST.PAGE_TITLE') }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% if form.hasErrors() %}
+        {{ errorSummary(form.getErrors(), t) }}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t('PAGES.HOW_CLAIM_INTEREST.TITLE') }}</h1>
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+              {{ govukRadios({
+                idPrefix: "claimantClaimInterest",
+                name: "claimantClaimInterest",
+                items: [
+                  {
+                    value: interestClaimOptions.SAME_RATE_INTEREST,
+                    checked: true if form.model.claimantClaimInterest === interestClaimOptions.SAME_RATE_INTEREST,
+                    text: t('PAGES.HOW_CLAIM_INTEREST.SAME_RATE') ,
+                  },
+                  {
+                    value: interestClaimOptions.BREAK_DOWN_INTEREST,
+                    checked: true if form.model.claimantClaimInterest === interestClaimOptions.BREAK_DOWN_INTEREST,
+                    text: t('PAGES.HOW_CLAIM_INTEREST.BREAK_DOWN') ,
+                  }
+                ],
+                errorMessage: {
+                  text: form.errorFor('claimantClaimInterest')
+                } if form.hasErrors()
+              }) }}
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+              }) }}
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-three-thirds">
+          {{ contactUsForHelp(t) }}
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

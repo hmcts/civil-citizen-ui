@@ -150,3 +150,6 @@ export const DQ_OTHER_WITNESSES_AVAILABILITY_DATES_FOR_HEARING_URL = `${DIRECTIO
 export const DQ_EXPERT_GUIDANCE_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/expert-guidance`;
 export const DQ_UNAVAILABLE_FOR_HEARING = `${DIRECTIONS_QUESTIONNAIRE_URL}/unavailable-for-hearing`;
 export const DQ_PHONE_OR_VIDEO_HEARING_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/phone-or-video-hearing`;
+export const CLAIM_INTEREST_TYPE_URL =  `${BASE_CLAIM_URL}/interest-type`;
+export const CLAIM_INTEREST_RATE_URL =  `${BASE_CLAIM_URL}/interest-rate`;
+export const CLAIM_INTEREST_TOTAL_URL =  `${BASE_CLAIM_URL}/interest-total`;
