@@ -1103,6 +1103,7 @@
         "CITIZENS_ADVICE": "Citizens Advice",
         "MIGHT_ABLE": "You might be able to get advice from organisations like "
       },
+      "CITIZENS_ADVICE": "Citizens Advice",
       "CLAIMANT_ADDRESS": {
         "NEED_UK_ADDRESS": "You need to have an address in the UK to make a money claim."
       },
@@ -1380,6 +1381,7 @@
         "WE_ASK_CLAIMANT_FOR_MEDIATION": "We'll ask if they want to try mediation. If they agree, we'll contact you to try to arrange an appointment."
       },
       "PA_PAY_IMMEDIATELY": {
+        "IF_CLAIMANT_ACCEPTS_OFFER_OF": "If {{ claimantName }} accepts your offer of £{{ partialAmount }}",
         "CHEQUES_OR_BANK_TRANSFERS": "any cheques or bank transfers are clear in their account by the deadline",
         "CLAIM_SETTLED": "The claim will be settled.",
         "MAKE_SURE_THAT": "Make sure that:",
@@ -1525,6 +1527,11 @@
       "PAGE_TITLE": "Your employer",
       "WHO_EMPLOYS": "Pwy sy’n eich cyflogi"
     },
+    "WHY_UNAVAILABLE_FOR_HEARING": {
+      "MUST_TELL_US_WHY": "You must tell us why you, your experts or witnesses cannot go to a hearing. The court will consider the reasons when deciding when to hold the hearing.",
+      "PAGE_TITLE": "Why are they not available for hearing?",
+      "TITLE": "Why are you, your experts or witnesses unavailable for a hearing for {{days}} days?"
+    },
     "YOU_CAN_USE_SERVICE": {
       "PAGE_TITLE": "You can use this service",
       "TITLE": "You can use this service",
@@ -1574,6 +1581,7 @@
     "DEFENDANT_POSTCODE_NOT_VALID": "Postcode must be in England or Wales",
     "DEFENDANT_EXPERT_EVIDENCE_REQUIRED": "Select yes if you want to use expert evidence",
     "DEFENDANT_YOURSELF_EVIDENCE_REQUIRED": "Select yes if you want to give evidence yourself",
+    "DEFENDANT_EXPERT_EXPLAIN_EXAMINE": "Explain what there is to examine",
     "DEFENDANT_WITNESS_ENTER_FIRST_NAME": "Enter the witness’s first name",
     "DEFENDANT_WITNESS_ENTER_LAST_NAME": "Enter the witness’s last name",
     "DEFENDANT_WITNESS_SELECT_OTHER": "Select yes if you have other witnesses",
@@ -1642,6 +1650,7 @@
     "SOMETHING_WENT_WRONG": "Something went wrong",
     "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Tell us if you believe the facts stated in this response are true",
     "TELL_US_WHY": "Please tell us why",
+    "TELL_US_WHY_UNAVAILABLE": "Tell us why you, your experts or witnesses are unavailable for a hearing",
     "TRANSACTION_SOURCE": {
       "ENTER_OTHER_INCOME": "Tynnu'r ffynhonnell incwm hon",
       "HOW_MUCH_INCOME": {
