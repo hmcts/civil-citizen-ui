@@ -439,6 +439,7 @@
       "RESPONSE_MEANING": "Find out what each response means"
     },
     "CLAIM_AMOUNT_BREAKDOWN": {
+      "ADD_ANOTHER_ROW": "Add another row",
       "AMOUNT": "Amount",
       "CLAIM_FEE": "your claim fee - we’ll add this for you",
       "DONT_INCLUDE": "Don’t include:",
