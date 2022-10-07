@@ -62,17 +62,17 @@
         isPageHeading: false
       }
     }) }}
-    {% set nameError = errorFor('model[items][' + index + '][name]', 'model') %}
+    {% set fullNameError = errorFor('model[items][' + index + '][fullName]', 'model') %}
     {{ govukSelect({
-      id: 'model[items]['+index+'][name]',
-      name: 'model[items]['+index+'][name]',
+      id: 'model[items]['+index+'][fullName]',
+      name: 'model[items]['+index+'][fullName]',
       label: {
         text: t('PAGES.SUPPORT_REQUIRED.NAME_OF_PERSON')
       },
       items: nameList,
       errorMessage: {
-        text: t(nameError)
-      } if nameError
+        text: t(fullNameError)
+      } if fullNameError
     }) }}
     {% set checkboxGrpError = errorFor('model[items][' + index + '][checkboxGrp]', 'model') %}
     <div id={{'model[items]['+index+'][checkboxGrp]'}}>

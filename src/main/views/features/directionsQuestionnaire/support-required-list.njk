@@ -19,9 +19,9 @@
 {% set supportDetailsHtml %}
 <div>
 {% for row in form.model.items %}
-  {{ supportRequired(loop.index0, row, form.errorFor, t, { hidden: isRemoveButtonHidden }, nameLists[loop.index0]) }}
+  {{ supportRequired(loop.index0, row, form.errorFor, t, { hidden: isRemoveButtonHidden }, peopleLists[loop.index0]) }}
 {% else %}
-  {{ supportRequired(0, '', form.errorFor, t, { hidden: true }, nameLists) }}
+  {{ supportRequired(0, '', form.errorFor, t, { hidden: true }, peopleLists[0]) }}
 {% endfor %}
 </div>
 <div>

@@ -8,22 +8,14 @@ export enum SupportType {
   OTHER_SUPPORT = 'otherSupport',
 }
 
-const generateErrorMessage = (sourceName: string): string => {
-  switch (sourceName) {
-    case SupportType.SIGN_LANGUAGE_INTERPRETER:
-      return 'ERRORS.NO_SIGN_LANGUAGE_ENTERED';
-    case SupportType.LANGUAGE_INTERPRETER:
-      return 'ERRORS.NO_LANGUAGE_ENTERED';
-    default:
-      return 'ERRORS.NO_OTHER_SUPPORT';
-  }
-};
-
-const withMessage = (buildErrorFn: (sourceName: string) => string) => {
-  return (args: any): string => {
-    return buildErrorFn(args.object.sourceName);
-  };
-};
+export interface SupportRequiredParams{
+  fullName?: string,
+  disabledAccess?: Support,
+  hearingLoop?: Support,
+  signLanguageInterpreter?: Support,
+  languageInterpreter?: Support,
+  otherSupport?: Support,
+}
 
 export class SupportRequiredList {
 
@@ -43,7 +35,7 @@ export class SupportRequiredList {
 export class SupportRequired {
   @IsDefined({message: 'ERRORS.ENTER_PERSON_NAME'})
   @IsNotEmpty({message: 'ERRORS.ENTER_PERSON_NAME'})
-    name?: string;
+    fullName?: string;
   disabledAccess?: Support;
   hearingLoop?: Support;
   @ValidateNested()
@@ -55,23 +47,20 @@ export class SupportRequired {
   @Validate(AtLeastOneCheckboxSelectedValidator, {message: 'ERRORS.SELECT_SUPPORT' })
     checkboxGrp: boolean [];
 
-  [key: string]: string | Support | any[] | (() => boolean);
-  // [key: string]: string | Support ;
-
-  // TODO : change any to relevant interface
-  constructor(value?: any) {
-    this.name = value?.name;
-    this.disabledAccess = value?.disabledAccess;
-    this.hearingLoop = value?.hearingLoop;
-    this.signLanguageInterpreter = value?.signLanguageInterpreter;
-    this.languageInterpreter = value?.languageInterpreter;
-    this.otherSupport = value?.otherSupport;
+  [key: string]: string | Support | boolean[];
+  constructor(params?: SupportRequiredParams) {
+    this.fullName = params?.fullName;
+    this.disabledAccess = params?.disabledAccess;
+    this.hearingLoop = params?.hearingLoop;
+    this.signLanguageInterpreter = params?.signLanguageInterpreter;
+    this.languageInterpreter = params?.languageInterpreter;
+    this.otherSupport = params?.otherSupport;
     this.checkboxGrp = [
-      value?.disabledAccess?.selected,
-      value?.hearingLoop?.selected,
-      value?.signLanguageInterpreter?.selected,
-      value?.languageInterpreter?.selected,
-      value?.otherSupport?.selected,
+      params?.disabledAccess?.selected,
+      params?.hearingLoop?.selected,
+      params?.signLanguageInterpreter?.selected,
+      params?.languageInterpreter?.selected,
+      params?.otherSupport?.selected,
     ];
   }
 }
@@ -91,5 +80,22 @@ export class Support {
     this.selected = selected;
     this.content = content;
   }
+}
+
+function generateErrorMessage (sourceName: string): string {
+  switch (sourceName) {
+    case SupportType.SIGN_LANGUAGE_INTERPRETER:
+      return 'ERRORS.NO_SIGN_LANGUAGE_ENTERED';
+    case SupportType.LANGUAGE_INTERPRETER:
+      return 'ERRORS.NO_LANGUAGE_ENTERED';
+    default:
+      return 'ERRORS.NO_OTHER_SUPPORT';
+  }
+}
+
+function withMessage (buildErrorFn: (sourceName: string) => string) {
+  return (args: any): string => {
+    return buildErrorFn(args.object.sourceName);
+  };
 }
 

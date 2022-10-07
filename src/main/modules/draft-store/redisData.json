@@ -60,7 +60,7 @@
           "supportRequiredList": {
             "items": [
               {
-                "name": "johndoe",
+                "fullName": "johndoe",
                 "disabledAccess": {
                   "selected": true
                 },
@@ -70,7 +70,7 @@
                 }
               },
               {
-                "name": "mikebrown",
+                "fullName": "mikebrown",
                 "hearingLoop": {
                   "selected": true
                 },
