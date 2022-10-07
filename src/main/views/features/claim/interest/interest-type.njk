@@ -19,8 +19,8 @@
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
               {{ govukRadios({
-                idPrefix: "claimantClaimInterest",
-                name: "claimantClaimInterest",
+                idPrefix: "interestType",
+                name: "interestType",
                 items: [
                   {
                     value: interestClaimOptions.SAME_RATE_INTEREST,
@@ -34,7 +34,7 @@
                   }
                 ],
                 errorMessage: {
-                  text: form.errorFor('claimantClaimInterest')
+                  text: form.errorFor('interestType')
                 } if form.hasErrors()
               }) }}
             <div class="govuk-form-group">

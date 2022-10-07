@@ -22,7 +22,7 @@ import {TotalAmountOptions} from '../../common/models/eligibility/totalAmountOpt
 import {ClaimTypeOptions} from '../../common/models/eligibility/claimTypeOptions';
 import {AgeEligibilityOptions} from '../../common/form/models/eligibility/defendant/AgeEligibilityOptions';
 import * as urls from '../../routes/urls';
-import {InterestClaimOptions} from 'common/form/models/claimDetails';
+import {InterestClaimOptionsType} from '../../common/form/models/claimDetails';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -113,7 +113,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('ClaimTypeOptions', ClaimTypeOptions);
     nunjucksEnv.addGlobal('YesNoNotReceived', YesNoNotReceived);
     nunjucksEnv.addGlobal('urls', urls);
-    nunjucksEnv.addGlobal('interestClaimOptions', InterestClaimOptions);
+    nunjucksEnv.addGlobal('interestClaimOptions', InterestClaimOptionsType);
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;
