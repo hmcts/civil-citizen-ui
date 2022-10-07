@@ -1,5 +1,5 @@
-import { PrimaryAddress } from "../../../../../../main/common/models/primaryAddress";
-import {addressHasChange} from "../../../../../../main/services/features/response/submission/compareAddress";
+import {PrimaryAddress} from '../../../../../../main/common/models/primaryAddress';
+import {addressHasChange} from '../../../../../../main/services/features/response/submission/compareAddress';
 
 const addressData: PrimaryAddress = {
   PostTown: 'XXX123',
@@ -11,7 +11,7 @@ const addressData: PrimaryAddress = {
 const completeAddress: PrimaryAddress = {
   County: 'Test',
   Country: 'Test',
-  ...addressData
+  ...addressData,
 };
 
 const addressUpdated: PrimaryAddress = {
