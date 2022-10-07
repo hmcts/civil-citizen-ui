@@ -1,15 +1,15 @@
 import {NextFunction, Response, Router} from 'express';
 import {CITIZEN_DISABILITY_URL, CITIZEN_RESIDENCE_URL, CITIZEN_SEVERELY_DISABLED_URL} from '../../../urls';
-import {Disability} from '../../../../common/form/models/statementOfMeans/disability';
 import {DisabilityService} from '../../../../services/features/response/statementOfMeans/disabilityService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../common/form/models/genericForm';
+import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
 
 const citizenDisabilityViewPath = 'features/response/statementOfMeans/disability';
 const disabilityController = Router();
 const disabilityService = new DisabilityService();
 
-function renderView(form: GenericForm<Disability>, res: Response): void {
+function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(citizenDisabilityViewPath, {form});
 }
 
@@ -23,7 +23,7 @@ disabilityController.get(CITIZEN_DISABILITY_URL, async (req, res, next: NextFunc
 
 disabilityController.post(CITIZEN_DISABILITY_URL,
   async (req, res, next: NextFunction) => {
-    const form = new GenericForm(new Disability(req.body.option));
+    const form = new GenericForm(new GenericYesNo(req.body.option));
     form.validateSync();
     if (form.hasErrors()) {
       renderView(form, res);

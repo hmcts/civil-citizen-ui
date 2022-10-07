@@ -13,8 +13,4 @@ export class BetweenSixteenAndNineteenDependants {
     this.value = value;
     this.maxValue = maxValue;
   }
-
-  getMaxValue(): number {
-    return this.maxValue;
-  }
 }

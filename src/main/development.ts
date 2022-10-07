@@ -1,6 +1,6 @@
-import * as express from 'express';
+import {Express} from 'express';
 
-const setupDev = (app: express.Express, developmentMode: boolean): void => {
+const setupDev = (app: Express, developmentMode: boolean): void => {
   if (developmentMode) {
     const webpackDev = require('webpack-dev-middleware');
     const webpack = require('webpack');

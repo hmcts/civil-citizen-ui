@@ -27,7 +27,6 @@ import {UnemploymentCategory} from '../../main/common/form/models/statementOfMea
 import {UnemploymentDetails} from '../../main/common/form/models/statementOfMeans/unemployment/unemploymentDetails';
 import {SelfEmployedAs} from '../../main/common/models/selfEmployedAs';
 import {TaxPayments} from '../../main/common/models/taxPayments';
-import {Disability} from '../../main/common/form/models/statementOfMeans/disability';
 import {YesNo} from '../../main/common/form/models/yesNo';
 import {Residence} from '../../main/common/form/models/statementOfMeans/residence';
 import {ResidenceType} from '../../main/common/form/models/statementOfMeans/residenceType';
@@ -572,7 +571,7 @@ export const createClaimWithUnemploymentCategoryOTHER = (): Claim => {
 export const createClaimWithDisability = (option: YesNo): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
-  const disability: Disability = new Disability(option);
+  const disability: GenericYesNo = new GenericYesNo(option);
   const severeDisability: GenericYesNo = new GenericYesNo(option);
   claim.statementOfMeans = {
     disability: disability,
@@ -584,7 +583,7 @@ export const createClaimWithDisability = (option: YesNo): Claim => {
 export const createClaimWithDisabilityAndSevereDisability = (optionDisability: YesNo, optionSevereDisability: YesNo): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
-  const disability: Disability = new Disability(optionDisability);
+  const disability: GenericYesNo = new GenericYesNo(optionDisability);
   const severeDisability: GenericYesNo = new GenericYesNo(optionSevereDisability);
   claim.statementOfMeans = {
     disability: disability,
@@ -623,7 +622,7 @@ export const createClaimWithCohabiting = (
 
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
-  const disability: Disability = new Disability(disabilityOption);
+  const disability: GenericYesNo = new GenericYesNo(disabilityOption);
   const cohabiting: GenericYesNo = new GenericYesNo(cohabitingOption);
   const partnerAge: GenericYesNo = new GenericYesNo(partnerAgeOption);
   const partnerPension: GenericYesNo = new GenericYesNo(partnerPensionOption);

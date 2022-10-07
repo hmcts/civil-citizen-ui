@@ -7,7 +7,6 @@ import {
   CaseState,
 } from '../../../../main/common/form/models/claimDetails';
 import {StatementOfMeans} from '../../../../main/common/models/statementOfMeans';
-import {Disability} from '../../../../main/common/form/models/statementOfMeans/disability';
 import {YesNo} from '../../../../main/common/form/models/yesNo';
 import {Dependants} from '../../../../main/common/form/models/statementOfMeans/dependants/dependants';
 import civilClaimResponseApplicantCompany from '../../../utils/mocks/civilClaimResponseApplicantCompanyMock.json';
@@ -176,7 +175,7 @@ describe('Claim isDefendantDisabled', () => {
   });
   it('should return false with empty disability', () => {
     //Given
-    claim.statementOfMeans.disability = new Disability();
+    claim.statementOfMeans.disability = new GenericYesNo();
     //When
     const result = claim.isDefendantDisabled();
     //Then

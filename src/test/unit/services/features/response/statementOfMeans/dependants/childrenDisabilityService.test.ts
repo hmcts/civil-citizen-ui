@@ -7,10 +7,8 @@ import {
   isDefendantNotDisabled,
   isDefendantPartnerDisabled,
   saveChildrenDisability,
-  setChildrenDisabilityServiceLogger,
 } from '../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService';
 import {CivilClaimResponse} from '../../../../../../../main/common/models/civilClaimResponse';
-import {Logger} from 'winston';
 import {
   NumberOfChildren,
 } from '../../../../../../../main/common/form/models/statementOfMeans/dependants/numberOfChildren';
@@ -42,15 +40,6 @@ const noPartnerOrDisability: string = JSON.stringify(civilClaimResponseNoPartner
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
-const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
-
-const DRAFT_STORE_GET_ERROR = 'draft store get error';
-const DRAFT_STORE_SAVE_ERROR = 'draft store save error';
-
-const mockLogger = {
-  error: jest.fn().mockImplementation((message: string) => message),
-  info: jest.fn().mockImplementation((message: string) => message),
-} as unknown as Logger;
 
 describe('Children Disability service', () => {
   describe('Validation', () => {
@@ -238,37 +227,6 @@ describe('Children Disability service', () => {
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalledWith('claimId', mockClaim);
-    });
-  });
-
-  describe('Exception Handling', () => {
-    afterEach(() => {
-      jest.clearAllMocks();
-    });
-
-    it('should throw error when retrieving data from draft store fails', async () => {
-      //When
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        throw new Error(DRAFT_STORE_GET_ERROR);
-      });
-      setChildrenDisabilityServiceLogger(mockLogger);
-      //Then
-      await expect(getChildrenDisability('claimId')).rejects.toThrow(DRAFT_STORE_GET_ERROR);
-      expect(mockLogger.error).toHaveBeenCalled();
-    });
-
-    it('should throw error when saving data to draft store fails', async () => {
-      //When
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        return mockClaim;
-      });
-      mockSaveDraftClaim.mockImplementation(async () => {
-        throw new Error(DRAFT_STORE_SAVE_ERROR);
-      });
-      setChildrenDisabilityServiceLogger(mockLogger);
-      //Then
-      await expect(saveChildrenDisability('claimId', new GenericYesNo())).rejects.toThrow(DRAFT_STORE_SAVE_ERROR);
-      expect(mockLogger.error).toHaveBeenCalled();
     });
   });
 
