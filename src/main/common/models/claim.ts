@@ -19,7 +19,7 @@ import {
   ClaimAmountBreakup,
   ClaimFee,
   InterestClaimFromType,
-  InterestClaimOptions,
+  InterestClaimOptionsType,
   InterestClaimUntilType,
   SameRateInterestSelection,
   SameRateInterestType,
@@ -66,7 +66,7 @@ export class Claim {
   interestClaimFrom?: InterestClaimFromType;
   interestClaimUntil?: InterestClaimUntilType;
   interestFromSpecificDate?: Date;
-  interestClaimOptions: InterestClaimOptions;
+  interestClaimOptions: InterestClaimOptionsType;
   sameRateInterestSelection?: SameRateInterestSelection;
   breakDownInterestTotal?: number;
   submittedDate?: Date;
@@ -146,7 +146,7 @@ export class Claim {
   }
 
   isInterestClaimOptionsSameRateInterest(): boolean {
-    return this.interestClaimOptions === InterestClaimOptions.SAME_RATE_INTEREST;
+    return this.interestClaimOptions === InterestClaimOptionsType.SAME_RATE_INTEREST;
   }
 
   isSameRateTypeEightPercent(): boolean {

@@ -8,7 +8,7 @@ export enum InterestClaimUntilType {
   UNTIL_SETTLED_OR_JUDGEMENT_MADE = 'UNTIL_SETTLED_OR_JUDGEMENT_MADE'
 }
 
-export enum InterestClaimOptions {
+export enum InterestClaimOptionsType {
   SAME_RATE_INTEREST = 'SAME_RATE_INTEREST',
   BREAK_DOWN_INTEREST = 'BREAK_DOWN_INTEREST'
 }

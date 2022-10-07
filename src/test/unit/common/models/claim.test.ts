@@ -1,7 +1,7 @@
 import {Claim} from '../../../../main/common/models/claim';
 import {
   InterestClaimFromType,
-  InterestClaimOptions,
+  InterestClaimOptionsType,
   InterestClaimUntilType,
   SameRateInterestType,
   CaseState,
@@ -116,7 +116,7 @@ describe('Claim isInterestClaimOptionsSameRateInterest', () => {
   });
   it('should return true', () => {
     //Given
-    claim.interestClaimOptions = InterestClaimOptions.SAME_RATE_INTEREST;
+    claim.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
     //When
     const result = claim.isInterestClaimOptionsSameRateInterest();
     //Then
@@ -124,7 +124,7 @@ describe('Claim isInterestClaimOptionsSameRateInterest', () => {
   });
   it('should return false', () => {
     //Given
-    claim.interestClaimOptions = InterestClaimOptions.BREAK_DOWN_INTEREST;
+    claim.interestClaimOptions = InterestClaimOptionsType.BREAK_DOWN_INTEREST;
     //When
     const result = claim.isInterestClaimOptionsSameRateInterest();
     //Then
