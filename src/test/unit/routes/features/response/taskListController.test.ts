@@ -33,7 +33,7 @@ describe('Claimant details', () => {
           expect(res.text).toContain('Claim number:');
           expect(res.text).toContain(claim.case_data.legacyCaseReference);
           expect(res.text).toContain('Total claim amount:');
-          expect(res.text).toContain(claim.case_data.totalClaimAmount);
+          expect(res.text).toContain(claim.case_data.totalClaimAmount.toString());
           expect(res.text).toContain('Claim details:');
         });
     });

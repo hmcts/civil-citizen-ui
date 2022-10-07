@@ -48,7 +48,7 @@ describe('Claim details page', () => {
         .get('/cases/1111')
         .reply(200, CivilClaimResponseMock);
       app.locals.draftStoreClient = mockCivilClaimUndefined;
-      const spyRedisSave = spyOn(draftStoreService, 'saveDraftClaim');
+      const spyRedisSave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       await request(app)
         .get('/case/1111/response/claim-details')
         .expect((res) => {
@@ -77,7 +77,7 @@ describe('Claim details page', () => {
         .get('/cases/1111')
         .reply(200, CivilClaimResponseMock);
       app.locals.draftStoreClient = mockCivilClaim;
-      const spyRedisSave = spyOn(draftStoreService, 'saveDraftClaim');
+      const spyRedisSave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       await request(app)
         .get('/case/1111/response/claim-details')
         .expect((res) => {
@@ -106,7 +106,7 @@ describe('Claim details page', () => {
         .get('/cases/1111')
         .reply(200, CivilClaimResponseMock);
       app.locals.draftStoreClient = mockCivilClaimPDFTimeline;
-      const spyRedisSave = spyOn(draftStoreService, 'saveDraftClaim');
+      const spyRedisSave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       await request(app)
         .get('/case/1111/response/claim-details')
         .expect((res) => {
