@@ -8,7 +8,7 @@ Feature('Create claim spec 1v1 API tests @test @api-tests');
 
 Scenario('Create claim spec 1v1', async ({api}) => {
   civilCaseReference = await api.createSpecifiedClaim(
-    config.applicantSolicitorUser, mpScenario);
+    config.applicantSolicitorUser);
   console.log('Civil Case created for CIVIL APPLICATIONS : ' + civilCaseReference);
 
 });
