@@ -466,14 +466,6 @@
         "TITLE": "Enter your details",
         "YOUR_POSTAL_ADDRESS": "Your postal address"
       },
-      "WHEN_CLAIM_INTEREST_FROM": {
-        "FROM_A_SPECIFIC_DATE" : "A particular date",
-        "FROM_CLAIM_SUBMIT_DATE" : "The date you submit the claim",
-        "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
-        "HINT_EXAMPLE_DATE": "For example the date an invoice was overdue or that you told someone they owed you the money.",
-        "PAGE_TITLE": "When are you claiming interest from?",
-        "TITLE": "When are you claiming interest from?"
-      },
       "RESOLVE_THE_DISPUTE": {
         "P1": {
           "BEFORE_YOU_CLAIM": "Before you claim you should:",
@@ -489,6 +481,14 @@
         },
         "PAGE_TITLE": "Try to resolve the dispute",
         "TITLE": "Try to resolve the dispute"
+      },
+      "WHEN_CLAIM_INTEREST_FROM": {
+        "FROM_A_SPECIFIC_DATE" : "A particular date",
+        "FROM_CLAIM_SUBMIT_DATE" : "The date you submit the claim",
+        "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
+        "HINT_EXAMPLE_DATE": "For example the date an invoice was overdue or that you told someone they owed you the money.",
+        "PAGE_TITLE": "When are you claiming interest from?",
+        "TITLE": "When are you claiming interest from?"
       }
     },
     "CLAIM_SUMMARY": {
@@ -1771,6 +1771,7 @@
     "VALID_TEXT_LENGTH": "You’ve entered too many characters",
     "VALID_TRIED_TO_SETTLE": "Select yes if you have tried to settle this claim before going to court",
     "VALID_TWO_DECIMAL_NUMBER": "Enter a valid amount, maximum two decimal places",
+    "VALID_CLAIM_INTEREST_FROM": "Choose when to claim interest from",
     "VALID_VALUE": "Are you sure this is a valid value?",
     "VALID_YEAR": "Enter a valid year",
     "VALID_YES_NO_OPTION": "Choose option: Yes or No",
