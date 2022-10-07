@@ -10,7 +10,7 @@ import {
   TransactionSchedule,
 } from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import RegularIncome
+import {RegularIncome}
   from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
 
 jest.mock('../../../../../../../main/modules/draft-store');

@@ -17,7 +17,7 @@ export interface IncomeParams {
   other?: OtherTransaction;
 }
 
-export default class RegularIncome {
+export class RegularIncome {
   @ValidateNested()
     job: Transaction;
 

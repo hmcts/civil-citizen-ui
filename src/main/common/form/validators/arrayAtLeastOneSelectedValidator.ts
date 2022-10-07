@@ -14,5 +14,4 @@ export class ArrayAtLeastOneSelectedValidator implements  ValidatorConstraintInt
   isElementEmpty(element : unknown){
     return Object.values(element).every(value => value === undefined || value === '');
   }
-
 }

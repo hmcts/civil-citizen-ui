@@ -1,6 +1,6 @@
 import express from 'express';
 import {RegularExpenses} from '../../form/models/statementOfMeans/expensesAndIncome/regularExpenses';
-import RegularIncome from '../../form/models/statementOfMeans/expensesAndIncome/regularIncome';
+import {RegularIncome} from '../../form/models/statementOfMeans/expensesAndIncome/regularIncome';
 import Transaction from '../../form/models/statementOfMeans/expensesAndIncome/transaction';
 import OtherTransaction from '../../form/models/statementOfMeans/expensesAndIncome/otherTransaction';
 

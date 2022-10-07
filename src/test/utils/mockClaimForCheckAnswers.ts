@@ -13,7 +13,7 @@ import Transaction from '../../main/common/form/models/statementOfMeans/expenses
 import TransactionSource from '../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSource';
 import {RegularExpenses} from '../../main/common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
 import OtherTransaction from '../../main/common/form/models/statementOfMeans/expensesAndIncome/otherTransaction';
-import RegularIncome from '../../main/common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
+import {RegularIncome} from '../../main/common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
 import {BankAccount} from '../../main/common/form/models/bankAndSavings/bankAccount';
 import {CourtOrders} from '../../main/common/form/models/statementOfMeans/courtOrders/courtOrders';
 import {CourtOrder} from '../../main/common/form/models/statementOfMeans/courtOrders/courtOrder';

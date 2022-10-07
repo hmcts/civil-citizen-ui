@@ -13,7 +13,7 @@ import {RegularExpenses} from '../form/models/statementOfMeans/expensesAndIncome
 import {Debts} from '../form/models/statementOfMeans/debts/debts';
 import {CourtOrders} from '../form/models/statementOfMeans/courtOrders/courtOrders';
 import {Explanation} from '../form/models/statementOfMeans/explanation';
-import RegularIncome from '../form/models/statementOfMeans/expensesAndIncome/regularIncome';
+import {RegularIncome} from '../form/models/statementOfMeans/expensesAndIncome/regularIncome';
 import {GenericYesNo} from '../form/models/genericYesNo';
 
 export class StatementOfMeans {

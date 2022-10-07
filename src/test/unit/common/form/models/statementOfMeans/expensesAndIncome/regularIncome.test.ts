@@ -1,5 +1,5 @@
 import {GenericForm} from '../../../../../../../main/common/form/models/genericForm';
-import RegularIncome
+import {RegularIncome}
   from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
 import {IncomeType} from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/incomeType';
 import Transaction from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transaction';

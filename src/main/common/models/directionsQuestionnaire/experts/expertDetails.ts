@@ -2,7 +2,6 @@ import {IsEmail, IsNotEmpty, IsNumber, Min, Validate, ValidateIf} from 'class-va
 import {OptionalIntegerValidator} from '../../../form/validators/optionalIntegerValidator';
 
 export class ExpertDetails {
-
   firstName?: string;
   lastName?: string;
 
@@ -34,5 +33,4 @@ export class ExpertDetails {
     this.fieldOfExpertise = fieldOfExpertise;
     this.estimatedCost = estimatedCost;
   }
-
 }
