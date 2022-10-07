@@ -8,7 +8,6 @@ import {
 import {AtLeastOneRowIsPopulated} from '../../../../../common/form/validators/atLeastOneRowIsPopulated';
 
 export class CourtOrders {
-
   @IsDefined({message: VALID_YES_NO_SELECTION})
     declared: boolean;
 

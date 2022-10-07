@@ -1,5 +1,5 @@
-import TimelineRow from '../../../../../../main/common/form/models/timeLineOfEvents/timelineRow';
 import {Validator} from 'class-validator';
+import {TimelineRow} from '../../../../../../main/common/form/models/timeLineOfEvents/timelineRow';
 
 describe('TimeLineRow', () => {
   describe('atLeastOneRowPopulated', () => {

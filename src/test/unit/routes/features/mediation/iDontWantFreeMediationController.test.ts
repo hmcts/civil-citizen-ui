@@ -6,7 +6,7 @@ import {CLAIM_TASK_LIST_URL, DONT_WANT_FREE_MEDIATION_URL} from '../../../../../
 import {OPTION_REQUIRED} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure, mockRedisWithMediationProperties} from '../../../../utils/mockDraftStore';
-import NoMediationReasonOptions from '../../../../../main/common/form/models/mediation/noMediationReasonOptions';
+import {NoMediationReasonOptions} from '../../../../../main/common/form/models/mediation/noMediationReasonOptions';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');

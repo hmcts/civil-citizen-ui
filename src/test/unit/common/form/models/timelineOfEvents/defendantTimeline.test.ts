@@ -1,6 +1,6 @@
 import {DefendantTimeline} from '../../../../../../main/common/form/models/timeLineOfEvents/defendantTimeline';
-import TimelineRow from '../../../../../../main/common/form/models/timeLineOfEvents/timelineRow';
 import {GenericForm} from '../../../../../../main/common/form/models/genericForm';
+import {TimelineRow} from '../../../../../../main/common/form/models/timeLineOfEvents/timelineRow';
 
 describe('defendant timeline', () => {
   describe('validation', () => {

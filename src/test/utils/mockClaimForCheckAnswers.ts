@@ -43,13 +43,13 @@ import {PaymentIntention} from '../../main/common/form/models/admission/partialA
 import {NoMediationReason} from '../../main/common/form/models/mediation/noMediationReason';
 import {CompanyTelephoneNumber} from '../../main/common/form/models/mediation/companyTelephoneNumber';
 import {Mediation} from '../../main/common/models/mediation/mediation';
-import TimelineRow from '../../main/common/form/models/timeLineOfEvents/timelineRow';
 import {EvidenceType} from '../../main/common/models/evidence/evidenceType';
 import {EvidenceItem} from '../../main/common/form/models/evidence/evidenceItem';
 import {DefendantEvidence} from '../../main/common/models/evidence/evidence';
 import {Evidence} from '../../main/common/form/models/evidence/evidence';
 import RejectAllOfClaimType from '../../main/common/form/models/rejectAllOfClaimType';
 import {GenericYesNo} from '../../main/common/form/models/genericYesNo';
+import {TimelineRow} from '../../main/common/form/models/timeLineOfEvents/timelineRow';
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';

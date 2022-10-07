@@ -19,7 +19,6 @@ import {
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
 import {DefendantTimeline} from '../../../../../../../main/common/form/models/timeLineOfEvents/defendantTimeline';
-import TimelineRow from '../../../../../../../main/common/form/models/timeLineOfEvents/timelineRow';
 import {DefendantEvidence} from '../../../../../../../main/common/models/evidence/evidence';
 import {EvidenceItem} from '../../../../../../../main/common/form/models/evidence/evidenceItem';
 import {Evidence} from '../../../../../../../main/common/form/models/evidence/evidence';
@@ -32,6 +31,7 @@ import {
   WhyDoYouDisagree,
 } from '../../../../../../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {Defence} from '../../../../../../../main/common/form/models/defence';
+import {TimelineRow} from '../../../../../../../main/common/form/models/timeLineOfEvents/timelineRow';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
