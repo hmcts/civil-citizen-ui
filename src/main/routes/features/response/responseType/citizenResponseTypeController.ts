@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Response, Router} from 'express';
 import {
   CITIZEN_ALREADY_PAID_URL,
   CITIZEN_REJECT_ALL_CLAIM_URL,
@@ -15,13 +15,13 @@ import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlForm
 import {GenericForm} from '../../../../common/form/models/genericForm';
 
 const citizenResponseTypeViewPath = 'features/response/citizenResponseType/citizen-response-type';
-const citizenResponseTypeController = express.Router();
+const citizenResponseTypeController = Router();
 
-function renderView(form: GenericForm<CitizenResponseType>, res: express.Response, componentDetailItemsList?: ComponentDetailItems[]): void {
+function renderView(form: GenericForm<CitizenResponseType>, res: Response, componentDetailItemsList?: ComponentDetailItems[]): void {
   res.render(citizenResponseTypeViewPath, {form: form, componentDetailItemsList: componentDetailItemsList});
 }
 
-citizenResponseTypeController.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res,next: express.NextFunction) => {
+citizenResponseTypeController.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res,next: NextFunction) => {
   try {
     const citizenResponseType = new GenericForm(new CitizenResponseType());
     const claim = await getCaseDataFromStore(req.params.id);
@@ -36,7 +36,7 @@ citizenResponseTypeController.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res,nex
 });
 
 citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
-  async (req, res, next: express.NextFunction) => {
+  async (req, res, next: NextFunction) => {
     try {
       const formResponseType: GenericForm<CitizenResponseType> = new GenericForm<CitizenResponseType>(new CitizenResponseType(req.body.responseType));
       await formResponseType.validate();

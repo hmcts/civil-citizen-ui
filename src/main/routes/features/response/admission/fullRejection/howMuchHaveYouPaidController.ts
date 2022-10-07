@@ -1,4 +1,4 @@
-import express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {
   CITIZEN_FR_AMOUNT_YOU_PAID_URL,
   CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL,
@@ -12,14 +12,14 @@ import {toNumberOrUndefined} from '../../../../../common/utils/numberConverter';
 import {ResponseType} from '../../../../../common/form/models/responseType';
 
 const howMuchHaveYouPaidPath = 'features/response/admission/how-much-have-you-paid';
-const howMuchHaveYouPaidController = express.Router();
+const howMuchHaveYouPaidController = Router();
 const lastMonth = new Date(Date.now());
 lastMonth.setMonth(lastMonth.getMonth() - 1);
 let totalClaimAmount: number;
 
 howMuchHaveYouPaidController
   .get(
-    CITIZEN_FR_AMOUNT_YOU_PAID_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    CITIZEN_FR_AMOUNT_YOU_PAID_URL, async (req: Request, res: Response, next: NextFunction) => {
       try {
         const howMuchHaveYouPaid: HowMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid(req.params.id, ResponseType.FULL_DEFENCE);
         totalClaimAmount = howMuchHaveYouPaid.totalClaimAmount;
@@ -35,7 +35,7 @@ howMuchHaveYouPaidController
       }
     })
   .post(
-    CITIZEN_FR_AMOUNT_YOU_PAID_URL, async (req, res, next: express.NextFunction) => {
+    CITIZEN_FR_AMOUNT_YOU_PAID_URL, async (req, res, next: NextFunction) => {
       const howMuchHaveYouPaid = howMuchHaveYouPaidService.buildHowMuchHaveYouPaid(toNumberOrUndefined(req.body.amount), totalClaimAmount, req.body.year, req.body.month, req.body.day, req.body.text);
       const form: GenericForm<HowMuchHaveYouPaid> = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
       const paid = toNumberOrUndefined(req.body.amount);

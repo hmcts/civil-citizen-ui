@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {MediationIndividualPhoneNumber} from '../../../common/form/models/mediation/mediationIndividualPhoneNumber';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {Mediation} from '../../../common/models/mediation/mediation';
@@ -11,9 +11,9 @@ import {CAN_WE_USE_URL, CLAIM_TASK_LIST_URL} from '../../urls';
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
 
 const mediationIndividualPhoneViewPath = 'features/mediation/can-we-use';
-const mediationIndividualPhoneController = express.Router();
+const mediationIndividualPhoneController = Router();
 
-async function renderView(form: GenericForm<MediationIndividualPhoneNumber>, res: express.Response, claimId: string): Promise<void> {
+async function renderView(form: GenericForm<MediationIndividualPhoneNumber>, res: Response, claimId: string): Promise<void> {
   const claim: Claim = await getCaseDataFromStore(claimId);
   res.render(mediationIndividualPhoneViewPath, {form, respondentTelNumber: claim.respondent1?.telephoneNumber});
 }
@@ -22,14 +22,14 @@ const getGenericForm = (mediationIndividualPhoneNumber: MediationIndividualPhone
   return new GenericForm<MediationIndividualPhoneNumber>(mediationIndividualPhoneNumber);
 };
 
-const isTelephoneNumberSaved = (telephoneNumber: string, req: express.Request) => {
+const isTelephoneNumberSaved = (telephoneNumber: string, req: Request) => {
   if (!telephoneNumber) {
     return getGenericForm(new MediationIndividualPhoneNumber(YesNo.NO, req.body.telephoneNumber));
   }
   return getGenericForm(new MediationIndividualPhoneNumber(req.body.option, req.body.telephoneNumber));
 };
 
-mediationIndividualPhoneController.get(CAN_WE_USE_URL, async (req, res, next: express.NextFunction) => {
+mediationIndividualPhoneController.get(CAN_WE_USE_URL, async (req, res, next: NextFunction) => {
   try {
     const mediation: Mediation = await getMediation(req.params.id);
     await renderView(getGenericForm(mediation.canWeUse), res, req.params.id);
@@ -39,7 +39,7 @@ mediationIndividualPhoneController.get(CAN_WE_USE_URL, async (req, res, next: ex
 });
 
 mediationIndividualPhoneController.post(CAN_WE_USE_URL,
-  async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const claim: Claim = await getCaseDataFromStore(req.params.id);
       const mediationIndividualPhoneForm: GenericForm<MediationIndividualPhoneNumber> = isTelephoneNumberSaved(claim.respondent1.telephoneNumber, req);
