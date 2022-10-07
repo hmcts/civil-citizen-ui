@@ -6,10 +6,5 @@ module.exports = {
     '^.+\\.ts?$': 'ts-jest',
   },
   testTimeout: 6000,
-  globals: {
-      'ts-jest': {
-        isolatedModules: true
-      }
-    },
   "moduleFileExtensions": ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
 }
