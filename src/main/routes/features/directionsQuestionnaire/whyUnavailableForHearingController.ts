@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {
   DQ_PHONE_OR_VIDEO_HEARING_URL,
   DQ_UNAVAILABLE_FOR_HEARING,
@@ -12,16 +12,16 @@ import {
 import {WhyUnavailableForHearing} from '../../../common/models/directionsQuestionnaire/hearing/whyUnavailableForHearing';
 import {getCalculatedDays} from '../../../services/features/directionsQuestionnaire/whyUnavailableForHearingService';
 
-const whyUnavailableForHearingController = express.Router();
+const whyUnavailableForHearingController = Router();
 const whyUnavailableForHearingViewPath = 'features/directionsQuestionnaire/why-unavailable-for-hearing';
 const dqPropertyName = 'whyUnavailableForHearing';
 const dqParentName = 'hearing';
 
-function renderView(form: GenericForm<WhyUnavailableForHearing>, res: express.Response, days:number): void {
+function renderView(form: GenericForm<WhyUnavailableForHearing>, res: Response, days:number): void {
   res.render(whyUnavailableForHearingViewPath, {form, days});
 }
 
-whyUnavailableForHearingController.get(DQ_UNAVAILABLE_FOR_HEARING, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+whyUnavailableForHearingController.get(DQ_UNAVAILABLE_FOR_HEARING, async (req: Request, res: Response, next: NextFunction) => {
   try {
 
     const directionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
@@ -34,7 +34,7 @@ whyUnavailableForHearingController.get(DQ_UNAVAILABLE_FOR_HEARING, async (req: e
   }
 });
 
-whyUnavailableForHearingController.post(DQ_UNAVAILABLE_FOR_HEARING, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+whyUnavailableForHearingController.post(DQ_UNAVAILABLE_FOR_HEARING, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const whyUnavailableForHearing = new GenericForm(new WhyUnavailableForHearing(req.body.reason));

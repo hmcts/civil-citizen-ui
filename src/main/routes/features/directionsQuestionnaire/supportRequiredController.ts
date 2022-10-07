@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Response, Router} from 'express';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {CLAIM_TASK_LIST_URL, SUPPORT_REQUIRED_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
@@ -8,15 +8,15 @@ import {
   saveDirectionQuestionnaire,
 } from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 
-const supportRequiredController = express.Router();
+const supportRequiredController = Router();
 const supportRequiredViewPath = 'features/directionsQuestionnaire/support-required';
 const dqPropertyName = 'supportRequired';
 
-function renderView(form: GenericForm<SupportRequired>, res: express.Response): void {
+function renderView(form: GenericForm<SupportRequired>, res: Response): void {
   res.render(supportRequiredViewPath, {form});
 }
 
-supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res, next: express.NextFunction) => {
+supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res, next: NextFunction) => {
   try {
 
     const directionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
@@ -29,7 +29,7 @@ supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res, next: expre
   }
 });
 
-supportRequiredController.post(SUPPORT_REQUIRED_URL, async (req, res, next: express.NextFunction) => {
+supportRequiredController.post(SUPPORT_REQUIRED_URL, async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     let supportRequired = new SupportRequired();
