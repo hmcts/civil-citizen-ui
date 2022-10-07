@@ -71,9 +71,7 @@ describe('Response - Check answers', () => {
   });
 
   describe('on GET', () => {
-
     beforeEach(function (done) {
-
       testSession
         .get(constructResponseUrlWithIdParams(CLAIM_ID, CLAIM_TASK_LIST_URL))
         .expect(200)
