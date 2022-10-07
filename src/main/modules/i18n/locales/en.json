@@ -550,10 +550,10 @@
       "PAGE_TITLE": "Get the details right",
       "YOULL_HAVE_TO_PAY": "You'll have to pay an additional fee if you want you"
     },
-    "CONSIDER_CLAIMANT_DOCUMENTS" : {
-      "GIVE_DETAILS" : "Give details of the documents",
-      "PAGE_TITLE" : "Are there any documents the claimant has that you want the court to consider?",
-      "TITLE" : "Are there any documents the claimant has that you want the court to consider?"
+    "CONSIDER_CLAIMANT_DOCUMENTS": {
+      "GIVE_DETAILS": "Give details of the documents",
+      "PAGE_TITLE": "Are there any documents the claimant has that you want the court to consider?",
+      "TITLE": "Are there any documents the claimant has that you want the court to consider?"
     },
     "CONTACT_THEM": {
       "ABOUT": "About claim",
@@ -1097,6 +1097,11 @@
       "PAGE_TITLE": "New response deadline",
       "TITLE": "4 pm on {{ responseDeadline }}"
     },
+    "CANT_ATTEND_HEARING_IN_NEXT_12MONTHS": {
+      "CONTENT": "These should only be the dates of important events like medical appointments, other court hearing, or holidays you have already booked",
+      "PAGE_TITLE": "cant attend hearing in next months",
+      "TITLE": "Are there any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing?"
+    },
     "NOT_ELIGIBLE_FOR_SERVICE": {
       "ABLE_TO_GET_AN_ADVICE": {
         "1": "You might be able to get advice from organisations like ",
@@ -1629,7 +1634,7 @@
     "ENTER_FIRST_NAME": "Enter first name",
     "ENTER_LAST_NAME": "Enter last name",
     "ENTER_PAYMENT_EXPLANATION": "Enter text explaining how you paid",
-    "ENTER_VALID_EMAIL":"Enter a valid email address",
+    "ENTER_VALID_EMAIL": "Enter a valid email address",
     "ENTER_SECURITY_CODE": "Enter your security code",
     "ENTER_VALID_SECURITY_CODE": "Enter a valid security code",
     "ENTER_VALID_TITLE": "Enter valid title",
@@ -1637,7 +1642,7 @@
     "EXPERT_NAME_REQUIRED": "Enter the expert’s name",
     "ERROR": "Error",
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Enter a first payment date in the future",
-    "GIVE_DETAILS_DOCUMENTS" : "Give details of the documents",
+    "GIVE_DETAILS_DOCUMENTS": "Give details of the documents",
     "JOB_TITLE_REQUIRED": "Enter a job title",
     "NAME_REQUIRED": "Please enter a name",
     "NUMBER_OF_PEOPLE_REQUIRED": "Enter a numeric, for example 3",
@@ -1672,7 +1677,7 @@
       "WATER": "Select how often you pay for Water"
     },
     "SELECT_REQUEST": "Select if you want to request more time, have already agreed more time, have had your request for more time refused, or you do not want more time",
-    "SELECT_YES_IF_DOCUMENTS" : "Select yes if there are documents the claimant has that you want the court to consider",
+    "SELECT_YES_IF_DOCUMENTS": "Select yes if there are documents the claimant has that you want the court to consider",
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
     "SIGNER_NAME_TOO_LONG": "You've entered too many characters",
     "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",
@@ -1769,6 +1774,7 @@
     "VALID_INTEGER": "Enter a numeric, for example 3",
     "VALID_MONTH": "Enter a valid month",
     "VALID_NAME": "Enter name",
+    "VALID_CANT_ATTEND_HEARING": "Select yes if there are any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing",
     "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Number can’t be higher than on previous page",
     "VALID_OPTION_SELECTION": "Select an option",
     "VALID_OWED_AMOUNT_REQUIRED": "Enter a valid amount owed",

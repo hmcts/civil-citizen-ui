@@ -81,4 +81,5 @@ export const enum TestMessages {
   VALID_YES_NO_SELECTION = 'Please select yes or no',
   WATER_AMOUNT_ERROR = 'Enter how much you pay for Water',
   WHO_EMPLOYS_YOU = 'Who employs you?',
+  VALID_NEXT_12MONTHS_CANNOT_HEARING = 'Select yes if there are any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing',
 }
