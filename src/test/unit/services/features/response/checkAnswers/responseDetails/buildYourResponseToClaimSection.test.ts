@@ -12,7 +12,7 @@ import {
   createClaimWithFullRejection,
   createClaimWithRespondentDetailsWithPaymentOption,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
-import PaymentOptionType from '../../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import {PaymentOptionType} from '../../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {
   PaymentIntention,
 } from '../../../../../../../main/common/form/models/admission/partialAdmission/paymentIntention';

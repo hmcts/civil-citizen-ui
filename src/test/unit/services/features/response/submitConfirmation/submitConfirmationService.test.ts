@@ -7,7 +7,7 @@ import {getNextStepsTitle} from '../../../../../../main/services/features/respon
 import {ResponseType} from '../../../../../../main/common/form/models/responseType';
 import {PartyType} from '../../../../../../main/common/models/partyType';
 import {Respondent} from '../../../../../../main/common/models/respondent';
-import PaymentOptionType from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import {PaymentOptionType} from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {HowMuchHaveYouPaid} from '../../../../../../main/common/form/models/admission/howMuchHaveYouPaid';
 import {PartialAdmission} from '../../../../../../main/common/models/partialAdmission';
 import {PaymentIntention} from '../../../../../../main/common/form/models/admission/partialAdmission/paymentIntention';

@@ -1,6 +1,6 @@
 import {Claim} from '../../main/common/models/claim';
 import {ResponseType} from '../../main/common/form/models/responseType';
-import PaymentOptionType from '../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import {PaymentOptionType} from '../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {
   TransactionSchedule,
 } from '../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';

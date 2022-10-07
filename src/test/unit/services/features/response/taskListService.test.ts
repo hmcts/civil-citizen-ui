@@ -11,7 +11,7 @@ import {TaskStatus} from '../../../../../main/common/models/taskList/TaskStatus'
 import {deepCopy} from '../../../../utils/deepCopy';
 import {PartyType} from '../../../../../main/common/models/partyType';
 import {Respondent} from '../../../../../main/common/models/respondent';
-import PaymentOptionType from '../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import {PaymentOptionType} from '../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {StatementOfMeans} from '../../../../../main/common/models/statementOfMeans';
 import {Disability} from '../../../../../main/common/form/models/statementOfMeans/disability';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';

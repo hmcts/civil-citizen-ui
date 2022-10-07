@@ -1,5 +1,5 @@
 import {PaymentIntention} from '../../../../../../main/common/form/models/admission/partialAdmission/paymentIntention';
-import PaymentOptionType from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import {PaymentOptionType} from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {PartialAdmission} from '../../../../../../main/common/models/partialAdmission';
 import {TaskStatus} from '../../../../../../main/common/models/taskList/TaskStatus';

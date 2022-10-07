@@ -1,7 +1,7 @@
-import PaymentOption
+import {PaymentOption}
   from '../../../../../../main/common/form/models/admission/paymentOption/paymentOption';
 import {Validator} from 'class-validator';
-import PaymentOptionType
+import {PaymentOptionType}
   from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 
 const validator = new Validator();

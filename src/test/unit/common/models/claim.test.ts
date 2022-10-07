@@ -18,7 +18,7 @@ import {PartialAdmission} from '../../../../main/common/models/partialAdmission'
 import {Respondent} from '../../../../main/common/models/respondent';
 import {HowMuchDoYouOwe} from '../../../../main/common/form/models/admission/partialAdmission/howMuchDoYouOwe';
 import {PaymentIntention} from '../../../../main/common/form/models/admission/partialAdmission/paymentIntention';
-import PaymentOptionType from '../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import {PaymentOptionType} from '../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {mockClaim} from '../../../utils/mockClaim';
 import {DocumentType} from '../../../../main/common/models/document/documentType';
 import {GenericYesNo} from '../../../../main/common/form/models/genericYesNo';
@@ -27,7 +27,7 @@ import {RejectAllOfClaimType} from '../../../../main/common/form/models/rejectAl
 import {HowMuchHaveYouPaid, HowMuchHaveYouPaidParams} from '../../../../main/common/form/models/admission/howMuchHaveYouPaid';
 import {WhyDoYouDisagree} from '../../../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {Defence} from '../../../../main/common/form/models/defence';
-import { ClaimResponseStatus } from '../../../../main/common/models/claimResponseStatus';
+import {ClaimResponseStatus} from '../../../../main/common/models/claimResponseStatus';
 
 describe('Claim isInterestClaimUntilSubmitDate', () => {
   const claim = new Claim();

@@ -5,7 +5,7 @@ import {app} from '../../../../../../main/app';
 import {mockRedisWithPaymentAmount, mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import civilClaimResponseWithAdmittedPaymentAmountMock from '../../../../../utils/mocks/civilClaimResponseWithAdmittedPaymentAmountMock.json';
 import {CITIZEN_PAYMENT_OPTION_URL, CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL} from '../../../../../../main/routes/urls';
-import PaymentOptionType from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import {PaymentOptionType} from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 const jsdom = require('jsdom');
