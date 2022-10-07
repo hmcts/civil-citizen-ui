@@ -1,4 +1,4 @@
-import express from 'express';
+import {Response} from 'express';
 import {ClaimantOrDefendant, PartyType} from '../../../common/models/partyType';
 import {
   CLAIM_DEFENDANT_COMPANY_DETAILS,
@@ -11,7 +11,7 @@ import {
   CLAIMANT_SOLE_TRADER_DETAILS_URL,
 } from '../../../routes/urls';
 
-const redirectToPage = (partyType: PartyType, res: express.Response, claimantOrDefendant: ClaimantOrDefendant) => {
+const redirectToPage = (partyType: PartyType, res: Response, claimantOrDefendant: ClaimantOrDefendant) => {
   switch (partyType) {
     case PartyType.INDIVIDUAL:
       (claimantOrDefendant === ClaimantOrDefendant.CLAIMANT) ?
