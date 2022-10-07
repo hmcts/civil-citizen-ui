@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {CITIZEN_DEBTS_URL, CITIZEN_MONTHLY_EXPENSES_URL} from '../../../../urls';
 import {Debts} from '../../../../../common/form/models/statementOfMeans/debts/debts';
 import {DebtItems} from '../../../../../common/form/models/statementOfMeans/debts/debtItems';
@@ -10,13 +10,13 @@ import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlF
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 
 const debtsViewPath = 'features/response/statementOfMeans/debts/debts';
-const debtsController = express.Router();
+const debtsController = Router();
 
-function renderView(form: GenericForm<Debts>, res: express.Response): void {
+function renderView(form: GenericForm<Debts>, res: Response): void {
   res.render(debtsViewPath, {form});
 }
 
-debtsController.get(CITIZEN_DEBTS_URL, async (req, res, next: express.NextFunction) => {
+debtsController.get(CITIZEN_DEBTS_URL, async (req, res, next: NextFunction) => {
   try {
     const debtsForm: GenericForm<Debts> = new GenericForm(new Debts());
     const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
@@ -33,7 +33,7 @@ debtsController.get(CITIZEN_DEBTS_URL, async (req, res, next: express.NextFuncti
 });
 
 debtsController.post(CITIZEN_DEBTS_URL,
-  async (req, res, next: express.NextFunction) => {
+  async (req, res, next: NextFunction) => {
     try {
       const debtsForm: GenericForm<Debts> = new GenericForm(new Debts(req.body.option, transformToDebts(req)));
       debtsForm.validateSync();
@@ -53,14 +53,14 @@ debtsController.post(CITIZEN_DEBTS_URL,
     }
   });
 
-function transformToDebts(req: express.Request): DebtItems[] {
+function transformToDebts(req: Request): DebtItems[] {
   return req.body.debtsItems
     .map((item: DebtItems) => {
       return new DebtItems(item.debt, item.totalOwned, item.monthlyPayments);
     });
 }
 
-function removeEmptyValueToDebts(req: express.Request): DebtItems[] {
+function removeEmptyValueToDebts(req: Request): DebtItems[] {
   return req.body.debtsItems
     .filter((item: DebtItems) => item.debt && item.totalOwned && item.monthlyPayments)
     .map((item: DebtItems) => {

@@ -1,4 +1,4 @@
-import courtOrdersService
+import {courtOrdersService}
   from '../../../../../../../main/services/features/response/statementOfMeans/courtOrders/courtOrdersService';
 import * as draftStoreService from '../../../../../../../main/modules/draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../../../../../main/common/models/statementOfMeans';

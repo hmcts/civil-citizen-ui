@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Response, Router} from 'express';
 import {SelfEmployedAsForm} from '../../../../../../common/form/models/statementOfMeans/employment/selfEmployed/selfEmployedAsForm';
 import {constructResponseUrlWithIdParams} from '../../../../../../common/utils/urlFormatter';
 import {
@@ -12,13 +12,13 @@ import {
 import {GenericForm} from '../../../../../../common/form/models/genericForm';
 
 const selfEmployedAsViewPath = 'features/response/statementOfMeans/employment/selfEmployed/self-employed-as';
-const selfEmployedAsController = express.Router();
+const selfEmployedAsController = Router();
 
-function renderView(form: GenericForm<SelfEmployedAsForm>, res: express.Response): void {
+function renderView(form: GenericForm<SelfEmployedAsForm>, res: Response): void {
   res.render(selfEmployedAsViewPath, {form});
 }
 
-selfEmployedAsController.get(CITIZEN_SELF_EMPLOYED_URL, async (req, res, next: express.NextFunction) => {
+selfEmployedAsController.get(CITIZEN_SELF_EMPLOYED_URL, async (req, res, next: NextFunction) => {
   try {
     const form = await getSelfEmployedAsForm(req.params.id);
     renderView(form, res);
@@ -28,7 +28,7 @@ selfEmployedAsController.get(CITIZEN_SELF_EMPLOYED_URL, async (req, res, next: e
 });
 
 selfEmployedAsController.post(CITIZEN_SELF_EMPLOYED_URL,
-  async (req, res, next: express.NextFunction) => {
+  async (req, res, next: NextFunction) => {
     try{
       const annualTurnover = req.body.annualTurnover ? Number(req.body.annualTurnover) : undefined;
       const form: GenericForm<SelfEmployedAsForm> = new GenericForm(new SelfEmployedAsForm(req.body.jobTitle, annualTurnover));

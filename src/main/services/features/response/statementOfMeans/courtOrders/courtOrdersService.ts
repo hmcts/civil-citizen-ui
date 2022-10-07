@@ -47,5 +47,4 @@ class CourtOrdersService {
   }
 }
 
-const courtOrdersService = new CourtOrdersService();
-export default courtOrdersService;
+export const courtOrdersService = new CourtOrdersService();

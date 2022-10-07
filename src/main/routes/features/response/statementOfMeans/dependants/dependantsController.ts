@@ -1,4 +1,4 @@
-import express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {Dependants} from '../../../../../common/form/models/statementOfMeans/dependants/dependants';
 import {
   CHILDREN_DISABILITY_URL,
@@ -13,11 +13,11 @@ import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlF
 
 const residenceViewPath = 'features/response/statementOfMeans/dependants/dependants';
 
-const dependantsController = express.Router();
+const dependantsController = Router();
 dependantsController
   .get(
     CITIZEN_DEPENDANTS_URL,
-    async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       try {
         const dependants: Dependants = await dependantsService.getDependants(req.params.id);
         res.render(residenceViewPath, {form: new GenericForm(dependants)});
@@ -27,7 +27,7 @@ dependantsController
     })
   .post(
     CITIZEN_DEPENDANTS_URL,
-    async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       const dependants = dependantsService.buildDependants(req.body.declared, req.body.under11,
         req.body.between11and15, req.body.between16and19);
       const form: GenericForm<Dependants> = dependantsService.validateDependants(dependants);
