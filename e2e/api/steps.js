@@ -12,17 +12,12 @@ const {
 } = require('../api/testingSupport');
 const {assignCaseRoleToUser, addUserCaseMapping, unAssignAllUsers} = require('./caseRoleAssignmentHelper');
 const apiRequest = require('./apiRequest.js');
-const claimData = require('../fixtures/events/createClaim.js');
 const claimSpecData = require('../fixtures/events/createClaimSpec.js');
 
 const testingSupport = require('./testingSupport');
 
 const data = {
-  CREATE_CLAIM: (mpScenario, claimantType) => claimData.createClaim(mpScenario, claimantType),
   CREATE_SPEC_CLAIM: (mpScenario) => claimSpecData.createClaim(mpScenario),
-  CREATE_CLAIM_RESPONDENT_LIP: claimData.createClaimLitigantInPerson,
-  CREATE_CLAIM_TERMINATED_PBA: claimData.createClaimWithTerminatedPBAAccount,
-  CREATE_CLAIM_RESPONDENT_SOLICITOR_FIRM_NOT_IN_MY_HMCTS: claimData.createClaimRespondentSolFirmNotInMyHmcts,
 };
 
 const midEventFieldForPage = {
