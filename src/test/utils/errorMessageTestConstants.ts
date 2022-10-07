@@ -76,4 +76,6 @@ export const enum TestMessages {
   VALID_YES_NO_SELECTION = 'Please select yes or no',
   WATER_AMOUNT_ERROR = 'Enter how much you pay for Water',
   WHO_EMPLOYS_YOU = 'Who employs you?',
+  VALID_AMOUNT_BREAKDOWN = 'Enter an amount of money',
+  VALID_VALUE = 'Are you sure this is a valid value?',
 }
