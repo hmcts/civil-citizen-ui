@@ -1,6 +1,7 @@
 import {IsDefined, IsNotEmpty, IsNumber, MaxLength, Min, ValidateIf} from 'class-validator';
 import {FREE_TEXT_MAX_LENGTH} from '../../../validators/validationConstraints';
 import {ClaimAmountBreakup} from '../../claimDetails';
+import {toNumberOrUndefined} from '../../../../utils/numberConverter';
 
 export class ClaimAmountRow {
 
@@ -13,7 +14,7 @@ export class ClaimAmountRow {
   @ValidateIf(o => o.isAtLeastOneFieldPopulated() )
   @IsDefined({ message: 'ERRORS.AMOUNT_REQUIRED' })
   @Min(0.01, { message: 'ERRORS.VALID_VALUE'})
-  @IsNumber({maxDecimalPlaces: 2}, {message: 'ERRORS.VALID_TWO_DECIMAL_NUMBER'})
+  @IsNumber(  {allowNaN: false, maxDecimalPlaces: 2}, {message: 'ERRORS.VALID_TWO_DECIMAL_NUMBER'})
     amount?: number;
 
   constructor (reason?: string, amount?: number) {
@@ -30,7 +31,7 @@ export class ClaimAmountRow {
   }
 
   public static fromClaimBreakupJson( breakUpJson: ClaimAmountBreakup): ClaimAmountRow{
-    return new ClaimAmountRow(breakUpJson.value.claimReason, Number(breakUpJson.value.claimAmount));
+    return new ClaimAmountRow(breakUpJson.value.claimReason, toNumberOrUndefined(breakUpJson.value.claimAmount));
   }
 
   public static fromObject(value: Record<string, string>): ClaimAmountRow {
