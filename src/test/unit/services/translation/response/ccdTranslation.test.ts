@@ -13,7 +13,7 @@ describe('translate response to ccd version', ()=> {
     const claim = new Claim();
     claim.paymentOption = PaymentOptionType.BY_SET_DATE;
     //When
-    const ccdResponse = translateDraftResponseToCCD(claim);
+    const ccdResponse = translateDraftResponseToCCD(claim, false);
     //Then
     expect(ccdResponse.defenceAdmitPartPaymentTimeRouteRequired).toBe(CCDPaymentOption.BY_SET_DATE);
   });
@@ -26,7 +26,7 @@ describe('translate response to ccd version', ()=> {
       repaymentFrequency: 'MONTH',
     };
     //When
-    const ccdResponse = translateDraftResponseToCCD(claim);
+    const ccdResponse = translateDraftResponseToCCD(claim, false);
     //Then
     expect(ccdResponse.respondent1RepaymentPlan).not.toBeUndefined();
     expect(ccdResponse.respondent1RepaymentPlan?.repaymentFrequency).toBe(CCDRepaymentPlanFrequency.ONCE_ONE_MONTH);
@@ -39,7 +39,7 @@ describe('translate response to ccd version', ()=> {
     claim.respondent1 = new Respondent();
     claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
     //When
-    const ccdResponse = translateDraftResponseToCCD(claim);
+    const ccdResponse = translateDraftResponseToCCD(claim, false);
     //Then
     expect(ccdResponse.respondent1ClaimResponseTypeForSpec).toBe(ResponseType.FULL_ADMISSION);
   });
@@ -48,7 +48,7 @@ describe('translate response to ccd version', ()=> {
     const claim = new Claim();
     claim.paymentDate = new Date();
     //When
-    const ccdResponse = translateDraftResponseToCCD(claim);
+    const ccdResponse = translateDraftResponseToCCD(claim, false);
     //Then
     expect(ccdResponse.respondToClaimAdmitPartLRspec?.whenWillThisAmountBePaid).toBe(claim.paymentDate);
   });
@@ -65,7 +65,7 @@ describe('translate response to ccd version', ()=> {
       },
     };
     //When
-    const ccdResponse = translateDraftResponseToCCD(claim);
+    const ccdResponse = translateDraftResponseToCCD(claim, false);
     //Then
     expect(ccdResponse.responseClaimMediationSpecRequired).toBe(YesNoUpperCamelCase.YES);
   });
