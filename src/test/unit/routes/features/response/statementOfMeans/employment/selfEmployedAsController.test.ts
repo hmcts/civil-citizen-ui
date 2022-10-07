@@ -19,7 +19,6 @@ describe('Self Employed As', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
 
-
   describe('on Get', () => {
     it('should return on self employed page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;

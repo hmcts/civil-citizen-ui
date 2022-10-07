@@ -40,7 +40,6 @@ describe('Repayment Plan', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
 
-
   describe('on Get', () => {
     it('should return on your evidence list page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
