@@ -1,7 +1,7 @@
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {AmountBreakdown} from '../../../../common/form/models/claim/amount/amountBreakdown';
-import {ClaimAmountRow} from "common/form/models/claim/amount/claimAmountRow";
-import {ClaimAmountBreakup} from "common/form/models/claimDetails";
+import {ClaimAmountRow} from '../../../../common/form/models/claim/amount/claimAmountRow';
+import {ClaimAmountBreakup} from '../../../../common/form/models/claimDetails';
 
 export const getClaimAmountBreakdownForm = async (claimantId: string) : Promise<AmountBreakdown> => {
   const claim = await getCaseDataFromStore(claimantId);

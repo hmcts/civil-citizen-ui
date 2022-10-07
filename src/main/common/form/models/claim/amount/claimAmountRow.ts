@@ -25,4 +25,11 @@ export class ClaimAmountRow {
     return new ClaimAmountRow(breakUpJson.value.claimReason, Number(breakUpJson.value.claimAmount));
   }
 
+  public static fromObject(value: Record<string, string>): ClaimAmountRow {
+    if(!value){
+      return undefined;
+    }
+    return new ClaimAmountRow(value.reason, Number(value.amount));
+  }
+
 }

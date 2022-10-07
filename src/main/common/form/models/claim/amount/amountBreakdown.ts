@@ -26,4 +26,12 @@ export class AmountBreakdown {
     }
     return new AmountBreakdown(rows);
   }
+
+  public static fromObject(value: Record<string, object>) : AmountBreakdown {
+    if(!value){
+      return undefined;
+    }
+    const rows = (value.claimAmountRows as Array<Record<string,string>>).map((row)=> ClaimAmountRow.fromObject(row));
+    return new AmountBreakdown(rows);
+  }
 }
