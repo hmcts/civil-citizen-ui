@@ -1,6 +1,6 @@
 import {Validator} from 'class-validator';
-import Transaction from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transaction';
-import TransactionSource
+import {Transaction} from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transaction';
+import {TransactionSource}
   from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSource';
 import {
   TransactionSchedule,

@@ -2,8 +2,8 @@ import {GenericForm} from '../../../../../../../main/common/form/models/genericF
 import {
   RegularExpenses,
 } from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
-import Transaction from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transaction';
-import TransactionSource
+import {Transaction} from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transaction';
+import {TransactionSource}
   from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSource';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 

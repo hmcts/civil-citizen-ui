@@ -5,7 +5,7 @@ import {
 } from '../../../../../../../main/services/features/response/statementOfMeans/income/regularIncomeService';
 import {Claim} from '../../../../../../../main/common/models/claim';
 import {StatementOfMeans} from '../../../../../../../main/common/models/statementOfMeans';
-import Transaction from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transaction';
+import {Transaction} from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transaction';
 import {
   TransactionSchedule,
 } from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';

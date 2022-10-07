@@ -9,10 +9,10 @@ import {DebtItems} from '../../main/common/form/models/statementOfMeans/debts/de
 import {Debts} from '../../main/common/form/models/statementOfMeans/debts/debts';
 import {PriorityDebts} from '../../main/common/form/models/statementOfMeans/priorityDebts';
 import {PriorityDebtDetails} from '../../main/common/form/models/statementOfMeans/priorityDebtDetails';
-import Transaction from '../../main/common/form/models/statementOfMeans/expensesAndIncome/transaction';
-import TransactionSource from '../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSource';
+import {Transaction} from '../../main/common/form/models/statementOfMeans/expensesAndIncome/transaction';
+import {TransactionSource} from '../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSource';
 import {RegularExpenses} from '../../main/common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
-import OtherTransaction from '../../main/common/form/models/statementOfMeans/expensesAndIncome/otherTransaction';
+import {OtherTransaction} from '../../main/common/form/models/statementOfMeans/expensesAndIncome/otherTransaction';
 import {RegularIncome} from '../../main/common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
 import {BankAccount} from '../../main/common/form/models/bankAndSavings/bankAccount';
 import {CourtOrders} from '../../main/common/form/models/statementOfMeans/courtOrders/courtOrders';
