@@ -30,7 +30,7 @@ import {
   SUPPORT_REQUIRED_URL,
 } from '../../../../../main/routes/urls';
 import {RejectAllOfClaim} from '../../../../../main/common/form/models/rejectAllOfClaim';
-import RejectAllOfClaimType from '../../../../../main/common/form/models/rejectAllOfClaimType';
+import {RejectAllOfClaimType} from '../../../../../main/common/form/models/rejectAllOfClaimType';
 import {HowMuchHaveYouPaid} from '../../../../../main/common/form/models/admission/howMuchHaveYouPaid';
 import {GenericYesNo} from '../../../../../main/common/form/models/genericYesNo';
 

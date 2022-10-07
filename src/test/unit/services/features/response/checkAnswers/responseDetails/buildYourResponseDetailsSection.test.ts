@@ -24,7 +24,7 @@ import {EvidenceItem} from '../../../../../../../main/common/form/models/evidenc
 import {Evidence} from '../../../../../../../main/common/form/models/evidence/evidence';
 import {EvidenceType} from '../../../../../../../main/common/models/evidence/evidenceType';
 import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
-import RejectAllOfClaimType from '../../../../../../../main/common/form/models/rejectAllOfClaimType';
+import {RejectAllOfClaimType} from '../../../../../../../main/common/form/models/rejectAllOfClaimType';
 import {ResponseType} from '../../../../../../../main/common/form/models/responseType';
 import {RejectAllOfClaim} from '../../../../../../../main/common/form/models/rejectAllOfClaim';
 import {

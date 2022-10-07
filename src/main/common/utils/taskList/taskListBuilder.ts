@@ -23,8 +23,8 @@ import PaymentOptionType from '../../../common/form/models/admission/paymentOpti
 import {getLng} from '../../../common/utils/languageToggleUtils';
 import {t} from 'i18next';
 import {getTellUsHowMuchYouHavePaidTask} from './tasks/tellUsHowMuchYouHavePaid';
-import RejectAllOfClaimType from '../../form/models/rejectAllOfClaimType';
 import {getTellUsWhyDisagreeWithClaimTask} from './tasks/tellUsWhyDisagreeWithClaim';
+import {RejectAllOfClaimType} from '../../../common/form/models/rejectAllOfClaimType';
 
 const buildPrepareYourResponseSection = (caseData: Claim, claimId: string, lang: string): TaskList => {
   const tasks: Task[] = [];

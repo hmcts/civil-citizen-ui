@@ -47,9 +47,9 @@ import {EvidenceType} from '../../main/common/models/evidence/evidenceType';
 import {EvidenceItem} from '../../main/common/form/models/evidence/evidenceItem';
 import {DefendantEvidence} from '../../main/common/models/evidence/evidence';
 import {Evidence} from '../../main/common/form/models/evidence/evidence';
-import RejectAllOfClaimType from '../../main/common/form/models/rejectAllOfClaimType';
 import {GenericYesNo} from '../../main/common/form/models/genericYesNo';
 import {TimelineRow} from '../../main/common/form/models/timeLineOfEvents/timelineRow';
+import {RejectAllOfClaimType} from '../../main/common/form/models/rejectAllOfClaimType';
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';

@@ -1,6 +1,6 @@
 import {Validator} from 'class-validator';
 import {RejectAllOfClaim} from '../../../../../main/common/form/models/rejectAllOfClaim';
-import RejectAllOfClaimType from '../../../../../main/common/form/models/rejectAllOfClaimType';
+import {RejectAllOfClaimType} from '../../../../../main/common/form/models/rejectAllOfClaimType';
 
 describe('Citizen partner age radio validation', () => {
   const validator = new Validator();

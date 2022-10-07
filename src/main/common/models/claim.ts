@@ -34,10 +34,10 @@ import {DocumentType} from './document/documentType';
 import {ResponseDeadline} from './responseDeadline';
 import {getLng} from '../../common/utils/languageToggleUtils';
 import {ClaimResponseStatus} from './claimResponseStatus';
-import RejectAllOfClaimType from '../../common/form/models/rejectAllOfClaimType';
 import {DirectionQuestionnaire} from '../models/directionsQuestionnaire/directionQuestionnaire';
 import {ResponseOptions} from '../../common/form/models/responseDeadline';
 import {AdditionalTimeOptions} from '../../common/form/models/additionalTime';
+import {RejectAllOfClaimType} from '../../common/form/models/rejectAllOfClaimType';
 
 export class Claim {
   legacyCaseReference: string;

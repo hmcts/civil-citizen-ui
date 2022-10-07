@@ -14,7 +14,7 @@ import {PaymentIntention} from '../../../../../../main/common/form/models/admiss
 import {RejectAllOfClaim} from '../../../../../../main/common/form/models/rejectAllOfClaim';
 import {WhyDoYouDisagree} from '../../../../../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {Defence} from '../../../../../../main/common/form/models/defence';
-import RejectAllOfClaimType from '../../../../../../main/common/form/models/rejectAllOfClaimType';
+import {RejectAllOfClaimType} from '../../../../../../main/common/form/models/rejectAllOfClaimType';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({

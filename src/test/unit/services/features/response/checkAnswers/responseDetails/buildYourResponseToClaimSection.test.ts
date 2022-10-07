@@ -18,7 +18,7 @@ import {
 } from '../../../../../../../main/common/form/models/admission/partialAdmission/paymentIntention';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
 import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
-import RejectAllOfClaimType from '../../../../../../../main/common/form/models/rejectAllOfClaimType';
+import {RejectAllOfClaimType} from '../../../../../../../main/common/form/models/rejectAllOfClaimType';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');

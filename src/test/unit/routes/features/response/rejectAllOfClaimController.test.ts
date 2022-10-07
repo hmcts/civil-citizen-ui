@@ -16,7 +16,7 @@ import {
   mockRedisFailure,
 } from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import RejectAllOfClaimType from '../../../../../main/common/form/models/rejectAllOfClaimType';
+import {RejectAllOfClaimType} from '../../../../../main/common/form/models/rejectAllOfClaimType';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
