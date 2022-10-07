@@ -1,16 +1,16 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import {CLAIMANT_DOB_URL} from '../../../../../../main/routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
+import {app} from '../../../../../main/app';
+import {CLAIMANT_DOB_URL} from '../../../../../main/routes/urls';
+import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/draft-store');
 
 describe('Claimant Date of Birth View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

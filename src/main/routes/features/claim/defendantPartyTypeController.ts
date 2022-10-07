@@ -8,7 +8,7 @@ import {getDefendantInformation, saveDefendant} from '../../../services/features
 import {Party} from '../../../common/models/claim';
 import {AppRequest} from '../../../common/models/AppRequest';
 
-const defendantPartyTypeViewPath = 'features/public/claim/defendant-party-type';
+const defendantPartyTypeViewPath = 'features/claim/defendant-party-type';
 const defendantPartyTypeController = express.Router();
 
 defendantPartyTypeController.get(CLAIM_DEFENDANT_PARTY_TYPE_URL, async (req: AppRequest, res: express.Response, next: express.NextFunction) => {
