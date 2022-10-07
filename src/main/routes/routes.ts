@@ -131,6 +131,8 @@ import claimantIndividualDetailsController from './features/claim/claimantIndivi
 import claimantPhoneController from './features/public/claim/claimantPhoneController';
 import whyUnavailableForHearingController from './features/directionsQuestionnaire/whyUnavailableForHearingController';
 import phoneOrVideoHearingController from './features/directionsQuestionnaire/phoneOrVideoHearingController';
+import cantAttendHearingInNext12MonthsController
+  from './features/directionsQuestionnaire/cantAttendHearingInNext12MonthsController';
 import youCanUseServiceController from './features/public/eligibility/youCanUseServiceController';
 
 export default [
@@ -255,5 +257,6 @@ export default [
   whyUnavailableForHearingController,
   claimantDoBController,
   phoneOrVideoHearingController,
+  cantAttendHearingInNext12MonthsController,
   youCanUseServiceController,
 ];

@@ -550,10 +550,10 @@
       "PAGE_TITLE": "Get the details right",
       "YOULL_HAVE_TO_PAY": "You'll have to pay an additional fee if you want you"
     },
-    "CONSIDER_CLAIMANT_DOCUMENTS" : {
-      "GIVE_DETAILS" : "Give details of the documents",
-      "PAGE_TITLE" : "Are there any documents the claimant has that you want the court to consider?",
-      "TITLE" : "Are there any documents the claimant has that you want the court to consider?"
+    "CONSIDER_CLAIMANT_DOCUMENTS": {
+      "GIVE_DETAILS": "Give details of the documents",
+      "PAGE_TITLE": "Are there any documents the claimant has that you want the court to consider?",
+      "TITLE": "Are there any documents the claimant has that you want the court to consider?"
     },
     "CONTACT_THEM": {
       "ABOUT": "Ynghylch yr Hawliad",
@@ -1074,6 +1074,11 @@
       "CONTENT": "Byddwn yn anfon neges e-bost atoch chi a chynrychiolydd cyfreithiol {{ claimantName }} i gadarnhau eich bod wedi cytuno â’r dyddiad ymateb newydd hwn.",
       "PAGE_TITLE": "Terfyn amser newydd ar gyfer ymateb",
       "TITLE": "4pm ar {{ responseDeadline }}"
+    },
+    "CANT_ATTEND_HEARING_IN_NEXT_12MONTHS": {
+      "CONTENT": "These should only be the dates of important events like medical appointments, other court hearing, or holidays you have already booked",
+      "PAGE_TITLE": "cant attend hearing in next months",
+      "TITLE": "Are there any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing?"
     },
     "NOT_ELIGIBLE_FOR_SERVICE": {
       "ABLE_TO_GET_AN_ADVICE": {
@@ -1606,7 +1611,7 @@
     "ENTER_FIRST_NAME": "Enter first name",
     "ENTER_LAST_NAME": "Enter last name",
     "ENTER_PAYMENT_EXPLANATION": "Rhowch eglurhad o sut y gwnaethoch dalu",
-    "ENTER_VALID_EMAIL":"Enter a valid email address",
+    "ENTER_VALID_EMAIL": "Enter a valid email address",
     "ENTER_SECURITY_CODE": "Enter your security code",
     "ENTER_VALID_SECURITY_CODE": "Enter a valid security code",
     "ENTER_VALID_TITLE": "Enter valid title",
@@ -1744,6 +1749,7 @@
     "VALID_HOUSING": "Disgrifiwch eich cartref",
     "VALID_INTEGER": "Rhowch rif, er enghraifft 3",
     "VALID_MONTH": "Rhowch fis dilys",
+    "VALID_CANT_ATTEND_HEARING": "Select yes if there are any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing",
     "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Ni all y rhif fod yn uwch na'r rhif ar y dudalen flaenorol",
     "VALID_OPTION_SELECTION": "Dewiswch opsiwn",
     "VALID_OWED_AMOUNT_REQUIRED": "Rhowch swm dilys",
