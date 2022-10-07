@@ -10,6 +10,8 @@ const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 const pageTitle = 'PAGES.CLAIM_JOURNEY.CLAIM_INTEREST.PAGE_TITLE';
 
+jest.mock('../../../../../main/modules/oidc');
+
 describe('Claim Interest View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
