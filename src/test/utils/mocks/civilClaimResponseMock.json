@@ -50,12 +50,33 @@
               "reportDate": "2022-03-01T11:57:10.592492"
             }
           ]
+        },
+        "expertDetailsList": {
+          "items": [
+            {
+              "firstName": "Mike",
+              "lastName": "Brown"
+            },
+            {
+              "firstName": "Jasmine",
+              "lastName": "Williams"
+            }
+          ]
         }
       },
       "witnesses": {
         "otherWitnesses": {
           "option": "",
-          "witnessItems": [{}]
+          "witnessItems": [
+            {
+              "firstName": "John",
+              "lastName": "Doe"
+            },
+            {
+              "firstName": "Jane",
+              "lastName": "Smith"
+            }
+          ]
         }
       }
     },
