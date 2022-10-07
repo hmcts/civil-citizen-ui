@@ -15,14 +15,19 @@ export class AmountBreakdown {
     this.claimAmountRows = claimAmountRows;
   }
 
+  public getPopulatedRows() : ClaimAmountRow[] {
+    const populatedRows = this.claimAmountRows.filter(row => !row.isEmpty());
+    return populatedRows;
+  }
+
   public static emptyForm(): AmountBreakdown {
     return new AmountBreakdown([new ClaimAmountRow(), new ClaimAmountRow(), new ClaimAmountRow(), new ClaimAmountRow()]);
   }
 
   public static fromJsonArray(breakUpJsonArray: ClaimAmountBreakup[]): AmountBreakdown {
     const rows = breakUpJsonArray.map((breakUpJson)=> ClaimAmountRow.fromClaimBreakupJson(breakUpJson));
-    if(rows.length > MIN_ROWS) {
-      for(let i = 0; i < MIN_ROWS - rows.length; i++){
+    if(rows.length < MIN_ROWS) {
+      for(let i = 0; i <= MIN_ROWS - rows.length; i++){
         rows.push(new ClaimAmountRow());
       }
     }
