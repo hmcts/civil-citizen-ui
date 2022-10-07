@@ -121,9 +121,20 @@ import permissionForExpertController from './features/directionsQuestionnaire/pe
 import defendantYourselfEvidenceController
   from './features/directionsQuestionnaire/defendantYourselfEvidenceController';
 import expertCanStillExamineController from './features/directionsQuestionnaire/expertCanStillExamineController';
+import expertDetailsController from './features/directionsQuestionnaire/experts/expertDetailsController';
 import sentExpertReportsController from './features/directionsQuestionnaire/sentExpertReportsController';
+import otherWitnessesController from './features/directionsQuestionnaire/otherWitnessesController';
 import expertReportDetailsController from './features/directionsQuestionnaire/expertReportDetailsController';
+import defendantPartyTypeController from './features/public/claim/defendantPartyTypeController';
+import claimantDoBController from './features/public/claim/claimantDoBController';
 import claimantIndividualDetailsController from './features/claim/claimantIndividualDetailsController';
+import welshLanguageController from './features/directionsQuestionnaire/welshLanguageController';
+import claimantPhoneController from './features/public/claim/claimantPhoneController';
+import whyUnavailableForHearingController from './features/directionsQuestionnaire/whyUnavailableForHearingController';
+import phoneOrVideoHearingController from './features/directionsQuestionnaire/phoneOrVideoHearingController';
+import cantAttendHearingInNext12MonthsController
+  from './features/directionsQuestionnaire/cantAttendHearingInNext12MonthsController';
+import youCanUseServiceController from './features/public/eligibility/youCanUseServiceController';
 import claimInterestController from './features/claim/claimInterestController';
 
 export default [
@@ -238,8 +249,18 @@ export default [
   defendantExpertEvidenceController,
   expertCanStillExamineController,
   defendantYourselfEvidenceController,
+  expertDetailsController,
   sentExpertReportsController,
+  otherWitnessesController,
   expertReportDetailsController,
+  defendantPartyTypeController,
   claimantIndividualDetailsController,
+  welshLanguageController,
+  claimantPhoneController,
+  whyUnavailableForHearingController,
+  claimantDoBController,
+  phoneOrVideoHearingController,
+  cantAttendHearingInNext12MonthsController,
+  youCanUseServiceController,
   claimInterestController,
 ];

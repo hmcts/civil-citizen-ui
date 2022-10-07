@@ -35,6 +35,7 @@
             <input type="hidden" name="type" value="{{ form.model.type }}">
             <input type="hidden" name="isFullAmountRejected" value="{{ form.model.isFullAmountRejected }}">
             {{ statementOfTruth(
+              t,
               form,
               statementOfTruthType = SignatureType.RESPONSE,
               labelHtml = t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX') + '<p class="govuk-!-margin-top-2">' +

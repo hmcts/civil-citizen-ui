@@ -8,7 +8,7 @@ import {i18n, TOptions} from 'i18next';
 import {ResponseType} from '../../common/form/models/responseType';
 import {YesNo, YesNoNotReceived} from '../../common/form/models/yesNo';
 import {ResidenceType} from '../../common/form/models/statementOfMeans/residenceType';
-import {CounterpartyType} from '../../common/models/counterpartyType';
+import {PartyType} from '../../common/models/partyType';
 import {UnemploymentCategory} from '../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
 import {TransactionSchedule} from '../../common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {EvidenceType} from '../../common/models/evidence/evidenceType';
@@ -21,6 +21,7 @@ import {NotEligibleReason} from '../../common/form/models/eligibility/NotEligibl
 import {TotalAmountOptions} from '../../common/models/eligibility/totalAmountOptions';
 import {ClaimTypeOptions} from '../../common/models/eligibility/claimTypeOptions';
 import {AgeEligibilityOptions} from '../../common/form/models/eligibility/defendant/AgeEligibilityOptions';
+import {LanguageOptions} from '../../common/models/directionsQuestionnaire/languageOptions';
 import * as urls from '../../routes/urls';
 
 const packageDotJson = require('../../../../package.json');
@@ -98,7 +99,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('ResponseType', ResponseType);
     nunjucksEnv.addGlobal('YesNo', YesNo);
     nunjucksEnv.addGlobal('ResidenceType', ResidenceType);
-    nunjucksEnv.addGlobal('CounterpartyType', CounterpartyType);
+    nunjucksEnv.addGlobal('partyType', PartyType);
     nunjucksEnv.addGlobal('UnemploymentCategory', UnemploymentCategory);
     nunjucksEnv.addGlobal('TransactionSchedule', TransactionSchedule);
     nunjucksEnv.addGlobal('EvidenceType', EvidenceType);
@@ -111,6 +112,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('TotalAmountOptions', TotalAmountOptions);
     nunjucksEnv.addGlobal('ClaimTypeOptions', ClaimTypeOptions);
     nunjucksEnv.addGlobal('YesNoNotReceived', YesNoNotReceived);
+    nunjucksEnv.addGlobal('LanguageOptions', LanguageOptions);
     nunjucksEnv.addGlobal('urls', urls);
 
     app.use((req, res, next) => {
