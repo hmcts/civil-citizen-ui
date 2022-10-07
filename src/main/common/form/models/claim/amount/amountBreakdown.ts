@@ -1,12 +1,14 @@
 import {ClaimAmountRow} from './claimAmountRow';
-import {ArrayMinSize, ValidateNested} from 'class-validator';
+import { ValidateNested} from 'class-validator';
 import {ClaimAmountBreakup} from '../../claimDetails';
+import {AtLeastOneRowIsPopulated} from '../../../validators/atLeastOneRowIsPopulated';
 
 const MIN_ROWS = 4;
 
 export class AmountBreakdown {
-  @ValidateNested({each: true})
-  @ArrayMinSize(1, {message: 'ERRORS.VALID_CLAIM_AMOUNT'})
+
+  @ValidateNested()
+  @AtLeastOneRowIsPopulated( {message: 'ERRORS.VALID_CLAIM_AMOUNT'})
     claimAmountRows: ClaimAmountRow[];
 
   constructor(claimAmountRows?: ClaimAmountRow[]) {

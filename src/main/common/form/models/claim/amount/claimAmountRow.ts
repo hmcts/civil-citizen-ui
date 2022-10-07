@@ -4,13 +4,13 @@ import {ClaimAmountBreakup} from '../../claimDetails';
 
 export class ClaimAmountRow {
 
-  @ValidateIf(o => o.amount !== undefined)
+  @ValidateIf(o => o.isAtLeastOneFieldPopulated() )
   @IsDefined({message: 'ERRORS.VALID_REASON_REQUIRED'})
   @IsNotEmpty({message: 'ERRORS.VALID_REASON_REQUIRED'})
   @MaxLength(FREE_TEXT_MAX_LENGTH, {message: 'ERRORS.TEXT_TOO_MANY'})
     reason?: string;
 
-  @ValidateIf(o => o.reason !== undefined)
+  @ValidateIf(o => o.isAtLeastOneFieldPopulated() )
   @IsDefined({ message: 'ERRORS.AMOUNT_REQUIRED' })
   @Min(0.01, { message: 'ERRORS.VALID_VALUE'})
   @IsNumber({maxDecimalPlaces: 2}, {message: 'ERRORS.VALID_TWO_DECIMAL_NUMBER'})
@@ -19,6 +19,14 @@ export class ClaimAmountRow {
   constructor (reason?: string, amount?: number) {
     this.reason = reason;
     this.amount = amount;
+  }
+
+  public isEmpty (): boolean {
+    return Object.values(this).every(value => value === undefined || value === '' || value?.length === 0 || value === 0);
+  }
+
+  isAtLeastOneFieldPopulated (): boolean {
+    return !this.isEmpty();
   }
 
   public static fromClaimBreakupJson( breakUpJson: ClaimAmountBreakup): ClaimAmountRow{

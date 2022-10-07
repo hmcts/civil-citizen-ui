@@ -42,9 +42,18 @@
               <label class="govuk-label--s">{{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.AMOUNT') }}</label>
               <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0"></p>
             </div>
+            <div
+              class="govuk-form-group {% if claimAmountError %} govuk-form-group--error {% endif %}">
+              {% if claimAmountError %}
+                <p class="govuk-error-message">
+                  <span class="govuk-visually-hidden">{{ t('ERRORS.ERROR') }} :</span> {{ t(claimAmountError) }}
+                </p>
+              {% endif %}
+            </div>
             {% for claimAmountRow in form.model.claimAmountRows %}
               {{ claimAmount(claimAmountRow, loop.index0, form, t) }}
             {% endfor %}
+
             <div class="govuk-grid-column-two-thirds">
               {{ govukButton({
                 text: t('PAGES.CLAIM_AMOUNT_BREAKDOWN.ADD_ANOTHER_ROW'),
