@@ -41,7 +41,7 @@ claimInterestController.post(CLAIM_INTEREST, async (req: any, res: express.Respo
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveClaimInterest(caseId, form.model);
+      await saveClaimInterest(caseId, form.model.option as YesNo);
       (form.model.option === YesNo.YES) ?
         res.redirect(CLAIM_INTEREST_TYPE) :
         res.redirect(CLAIM_HELP_WITH_FEES);

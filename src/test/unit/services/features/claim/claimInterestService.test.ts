@@ -11,7 +11,7 @@ jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 const CASE_ID = '123';
-const claim = new Claim()
+const claim = new Claim();
 
 describe('Claim interest service', () => {
   describe('get Claim interest', () => {
@@ -24,7 +24,7 @@ describe('Claim interest service', () => {
       });
 
       //When
-      const result = await getClaimInterest(CASE_ID)
+      const result = await getClaimInterest(CASE_ID);
 
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
@@ -37,12 +37,12 @@ describe('Claim interest service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
 
       mockGetCaseData.mockImplementation(async () => {
-        claim.claimInterest = new GenericYesNo(YesNo.YES)
+        claim.claimInterest = YesNo.YES;
         return claim;
       });
 
       //When
-      const result = await getClaimInterest(CASE_ID)
+      const result = await getClaimInterest(CASE_ID);
 
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
@@ -66,12 +66,12 @@ describe('Claim interest service', () => {
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
 
       mockGetCaseData.mockImplementation(async () => {
-        claim.claimInterest = {option : YesNo.YES}
-        return claim
+        claim.claimInterest = YesNo.YES;
+        return claim;
       });
 
       //When
-      await saveClaimInterest(CASE_ID, new GenericYesNo(YesNo.YES))
+      await saveClaimInterest(CASE_ID, YesNo.YES);
 
       //Then
       expect(spySaveDraftClaim).toBeCalled();
@@ -83,12 +83,12 @@ describe('Claim interest service', () => {
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
 
       mockGetCaseData.mockImplementation(async () => {
-        claim.claimInterest = {option : YesNo.NO}
-        return claim
+        claim.claimInterest = YesNo.NO;
+        return claim;
       });
 
       //When
-      await saveClaimInterest(CASE_ID, new GenericYesNo(YesNo.NO))
+      await saveClaimInterest(CASE_ID, YesNo.NO);
 
       //Then
       expect(spySaveDraftClaim).toBeCalled();
@@ -102,7 +102,7 @@ describe('Claim interest service', () => {
       });
 
       //Then
-      await expect(saveClaimInterest(CASE_ID, new GenericYesNo(YesNo.YES))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(saveClaimInterest(CASE_ID, YesNo.YES)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
 
     it('should throw error when draft store save method throws error', async () => {
@@ -112,7 +112,7 @@ describe('Claim interest service', () => {
       });
 
       //Then
-      await expect(saveClaimInterest(CASE_ID, new GenericYesNo(YesNo.YES))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(saveClaimInterest(CASE_ID, YesNo.YES)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 });
