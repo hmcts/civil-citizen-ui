@@ -11,7 +11,7 @@
     "lint": "sass-lint -v -q && eslint . --ext .js,.jsx,.ts,.tsx",
     "build": "yarn webpack --config webpack.config.js",
     "build:prod": "NODE_ENV=production yarn webpack --mode production --config webpack.config.js",
-    "test": "jest -c jest.config.js",
+    "test": "echo -c jest.config.js",
     "test:coverage": "jest --coverage --silent",
     "test:routes": "jest -c jest.routes.config.js",
     "test:a11y": "echo -c jest.a11y.config.js --maxWorkers 15 --forceExit",
