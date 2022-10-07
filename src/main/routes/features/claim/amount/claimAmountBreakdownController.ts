@@ -30,7 +30,6 @@ claimAmountBreakdownController.get(CLAIM_AMOUNT_URL, async(req: AppRequest, res:
     const form = new GenericForm(AmountBreakdown.fromObject(req.body));
     form.validateSync();
     if(form.hasErrors()) {
-      console.log(form.getAllErrors());
       renderView(form, res);
     }else {
       const appRequest = <AppRequest> req;
