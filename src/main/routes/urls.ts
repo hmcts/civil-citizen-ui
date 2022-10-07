@@ -120,6 +120,7 @@ export const CLAIM_DEFENDANT_COMPANY_DETAILS = `${BASE_CLAIM_URL}/defendant-comp
 export const CLAIM_DEFENDANT_INDIVIDUAL_DETAILS = `${BASE_CLAIM_URL}/defendant-individual-details`;
 export const CLAIM_DEFENDANT_ORGANISATION_DETAILS = `${BASE_CLAIM_URL}/defendant-organisation-details`;
 export const CLAIM_DEFENDANT_SOLE_TRADER_DETAILS = `${BASE_CLAIM_URL}/defendant-sole-trader-details`;
+export const CLAIM_WHEN_CLAIM_INTEREST_FROM_URL = `${BASE_CLAIM_URL}/interest-date`;
 export const CLAIM_COMPLETING_CLAIM_URL = `${BASE_CLAIM_URL}/completing-claim`;
 export const CLAIMANT_COMPANY_DETAILS_URL = `${BASE_CLAIM_URL}/claimant-company-details`;
 export const CLAIMANT_DOB_URL = `${BASE_CLAIM_URL}/claimant-dob`;
