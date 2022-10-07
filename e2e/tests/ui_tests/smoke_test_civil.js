@@ -4,7 +4,7 @@ const mpScenario = 'ONE_V_ONE';
 
 let parentCaseNumber, childCaseNumber;
 
-Feature('CUI Ex Smoke tests @ga-smoke-tests');
+Feature('CUI Ex Smoke tests');
 
 Scenario.skip('CUI Ex Tests', async ({I, api}) => {
   parentCaseNumber = await api.createUnspecifiedClaim(
