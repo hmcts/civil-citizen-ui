@@ -1,0 +1,93 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.WELSH_LANGUAGE.PAGE_TITLE') }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% if form.hasErrors() %}
+        <div class="govuk-grid-row">
+          {{ errorSummary(form.getErrors(), t) }}
+        </div>
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t('PAGES.WELSH_LANGUAGE.PAGE_TITLE') }}</h1>
+
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+
+            <p class="govuk-body">{{t('PAGES.WELSH_LANGUAGE.OFFICIAL_LANGUAGE')}}</p>
+
+            <p class="govuk-body govuk-!-font-weight-bold">{{t('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK')}}</p>
+            {{ govukRadios({
+              id: "speakLanguage",
+              name: "speakLanguage",
+              items: [
+                {
+                  value: LanguageOptions.ENGLISH,
+                  text: t('PAGES.WELSH_LANGUAGE.ENGLISH'),
+                  checked: form.model.speakLanguage === LanguageOptions.ENGLISH
+                },
+                {
+                  value: LanguageOptions.WELSH,
+                  text: t('PAGES.WELSH_LANGUAGE.WELSH'),
+                  checked: form.model.speakLanguage === LanguageOptions.WELSH
+                },
+                {
+                  value: LanguageOptions.WELSH_AND_ENGLISH,
+                  text: t('PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH'),
+                  checked: form.model.speakLanguage === LanguageOptions.WELSH_AND_ENGLISH
+                }
+              ],
+              errorMessage: {
+                html: t(form.errorFor('speakLanguage'))
+                } if form.hasErrors()
+              }) }}
+
+            <p class="govuk-body govuk-!-font-weight-bold">{{t('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS')}}</p>
+            {{ govukRadios({
+              id: "documentsLanguage",
+              name: "documentsLanguage",
+              items: [
+                {
+                  value: LanguageOptions.ENGLISH,
+                  text: t('PAGES.WELSH_LANGUAGE.ENGLISH'),
+                  checked: form.model.documentsLanguage === LanguageOptions.ENGLISH
+                },
+                {
+                  value: LanguageOptions.WELSH,
+                  text: t('PAGES.WELSH_LANGUAGE.WELSH'),
+                  checked: form.model.documentsLanguage === LanguageOptions.WELSH
+                },
+                {
+                  value: LanguageOptions.WELSH_AND_ENGLISH,
+                  text: t('PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH'),
+                  checked: form.model.documentsLanguage === LanguageOptions.WELSH_AND_ENGLISH
+                }
+              ],
+              errorMessage: {
+                html: t(form.errorFor('documentsLanguage'))
+                } if form.hasErrors()
+              }) }}
+
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
