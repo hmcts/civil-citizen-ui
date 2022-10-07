@@ -19,5 +19,5 @@ export const addressHasChange = (address: PrimaryAddress, originalAddress: Prima
     AddressLine3: originalAddress.AddressLine3 ? originalAddress.AddressLine3 : '',
   };
 
-  return !isEqual(addressObject, originalAddressObject)
-}
+  return !isEqual(addressObject, originalAddressObject);
+};
