@@ -134,6 +134,7 @@ import phoneOrVideoHearingController from './features/directionsQuestionnaire/ph
 import cantAttendHearingInNext12MonthsController
   from './features/directionsQuestionnaire/cantAttendHearingInNext12MonthsController';
 import youCanUseServiceController from './features/public/eligibility/youCanUseServiceController';
+import interestStartDateController from './features/interest/interestStartDateController';
 
 export default [
   homeController,
@@ -259,4 +260,5 @@ export default [
   phoneOrVideoHearingController,
   cantAttendHearingInNext12MonthsController,
   youCanUseServiceController,
+  interestStartDateController,
 ];
