@@ -27,6 +27,7 @@ describe('Claim details page', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    jest.clearAllMocks();
   });
 
   describe('on Get', () => {
@@ -83,11 +84,11 @@ describe('Claim details page', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(CLAIM_DETAILS);
-          expect(res.text).toContain(getTotalAmountWithInterestAndFees(claim.case_data));
+          expect(res.text).toContain(getTotalAmountWithInterestAndFees(claim.case_data).toString());
           expect(res.text).toContain(claim.case_data?.claimAmountBreakup[0].value.claimReason);
           expect(res.text).toContain(claim.case_data?.claimAmountBreakup[0].value.claimAmount);
-          expect(res.text).toContain(claim.case_data?.totalInterest);
-          expect(res.text).toContain(convertToPoundsFilter(claim.case_data?.claimFee.calculatedAmountInPence));
+          expect(res.text).toContain(claim.case_data?.totalInterest.toString());
+          expect(res.text).toContain(convertToPoundsFilter(claim.case_data?.claimFee.calculatedAmountInPence).toString());
           expect(res.text).toContain(claim.case_data.detailsOfClaim);
           expect(res.text).toContain(claim.case_data?.timelineOfEvents[0].value.timelineDescription);
           expect(res.text).toContain(dateFilter(claim.case_data?.timelineOfEvents[0].value.timelineDate));
