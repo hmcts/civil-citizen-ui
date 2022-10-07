@@ -27,7 +27,8 @@ export class AmountBreakdown {
   public static fromJsonArray(breakUpJsonArray: ClaimAmountBreakup[]): AmountBreakdown {
     const rows = breakUpJsonArray.map((breakUpJson)=> ClaimAmountRow.fromClaimBreakupJson(breakUpJson));
     if(rows.length < MIN_ROWS) {
-      for(let i = 0; i <= MIN_ROWS - rows.length; i++){
+      const rowLength = rows.length;
+      for(let i = 0; i < (MIN_ROWS - rowLength); i++){
         rows.push(new ClaimAmountRow());
       }
     }

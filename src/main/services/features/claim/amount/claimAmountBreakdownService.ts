@@ -3,18 +3,32 @@ import {AmountBreakdown} from '../../../../common/form/models/claim/amount/amoun
 import {ClaimAmountRow} from '../../../../common/form/models/claim/amount/claimAmountRow';
 import {ClaimAmountBreakup} from '../../../../common/form/models/claimDetails';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('claimantPhoneAsService');
+
 export const getClaimAmountBreakdownForm = async (claimantId: string) : Promise<AmountBreakdown> => {
-  const claim = await getCaseDataFromStore(claimantId);
-  if(!claim.claimAmountBreakup){
-    return AmountBreakdown.emptyForm();
+  try{
+    const claim = await getCaseDataFromStore(claimantId);
+    if(!claim.claimAmountBreakup){
+      return AmountBreakdown.emptyForm();
+    }
+    return AmountBreakdown.fromJsonArray(claim.claimAmountBreakup);
+  }catch(error){
+    logger.error(error);
+    throw error;
   }
-  return AmountBreakdown.fromJsonArray(claim.claimAmountBreakup);
+
 };
 
 export const saveClaimAmountBreakdownForm = async (claimantId: string, amountBreakdown: AmountBreakdown) => {
-  const claim = await getCaseDataFromStore(claimantId);
-  claim.claimAmountBreakup = amountBreakdown.getPopulatedRows().map((row)=> convertFormToJson(row));
-  await saveDraftClaim(claimantId, claim);
+  try{
+    const claim = await getCaseDataFromStore(claimantId);
+    claim.claimAmountBreakup = amountBreakdown.getPopulatedRows().map((row)=> convertFormToJson(row));
+    await saveDraftClaim(claimantId, claim);
+  }catch(error){
+    logger.error(error);
+    throw error;
+  }
 };
 
 const convertFormToJson = (form: ClaimAmountRow): ClaimAmountBreakup =>{
