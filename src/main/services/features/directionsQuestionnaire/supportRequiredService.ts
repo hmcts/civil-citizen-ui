@@ -3,9 +3,9 @@ import * as express from 'express';
 import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
 import {SupportRequiredList, SupportRequired, Support} from '../../../common/models/directionsQuestionnaire/supportRequired';
 import {Claim} from '../../../common/models/claim';
-import {ExpertDetails} from 'common/models/directionsQuestionnaire/experts/expertDetails';
-import {OtherWitnessItems} from 'common/models/directionsQuestionnaire/witnesses/otherWitnessItems';
-import {YesNo} from 'common/form/models/yesNo';
+import {ExpertDetails} from '../../../common/models/directionsQuestionnaire/experts/expertDetails';
+import {OtherWitnessItems} from '../../../common/models/directionsQuestionnaire/witnesses/otherWitnessItems';
+import {YesNo} from '../../../common/form/models/yesNo';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');
@@ -18,8 +18,8 @@ interface NameListType {
 
 const generateList = (list: OtherWitnessItems[] | ExpertDetails[]): NameListType[] => {
   return list?.map(item => {
-    const name = `${item.firstName} ${item.lastName}`;
-    const value = (item.firstName + item.lastName).toLocaleLowerCase();
+    const name = `${item?.firstName} ${item?.lastName}`;
+    const value = (item?.firstName + item?.lastName)?.toLocaleLowerCase();
     return {
       value: value,
       text: name,
