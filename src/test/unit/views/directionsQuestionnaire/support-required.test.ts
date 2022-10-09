@@ -66,9 +66,9 @@ describe('Support required View', () => {
       expect(hint.innerHTML).toContain('Select all that apply.');
     });
 
-    it('should display 5 checkboxes with various options', () => {
+    it('should display 10 checkboxes with various options', () => {
       const checkboxes = htmlDocument.getElementsByClassName('govuk-checkboxes__item');
-      expect(checkboxes.length).toEqual(5);
+      expect(checkboxes.length).toEqual(10);
       expect(checkboxes[0].innerHTML).toContain('Disabled access');
       expect(checkboxes[1].innerHTML).toContain('Hearing loop');
       expect(checkboxes[2].innerHTML).toContain('Sign language interpreter');
@@ -79,8 +79,9 @@ describe('Support required View', () => {
     it('should display action buttons', () => {
       const buttons = mainWrapper.getElementsByClassName('govuk-button');
       expect(buttons[0].innerHTML).toContain('Remove');
-      expect(buttons[1].innerHTML).toContain('Add another person');
-      expect(buttons[2].innerHTML).toContain('Save and continue');
+      expect(buttons[1].innerHTML).toContain('Remove');
+      expect(buttons[2].innerHTML).toContain('Add another person');
+      expect(buttons[3].innerHTML).toContain('Save and continue');
     });
 
     it('should display contact us forHelp', () => {

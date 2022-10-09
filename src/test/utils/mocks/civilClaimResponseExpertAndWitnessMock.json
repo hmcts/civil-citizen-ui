@@ -39,7 +39,32 @@
       "partyTypeDisplayValue": "Organisation"
     },
     "directionQuestionnaire": {
-      "hearing": {},
+      "hearing": {
+          "supportRequiredList": {
+            "items": [
+              {
+                "fullName": "johndoe",
+                "disabledAccess": {
+                  "selected": true
+                },
+                "otherSupport": {
+                  "selected": true,
+                  "content": "other support text"
+                }
+              },
+              {
+                "fullName": "mikebrown",
+                "hearingLoop": {
+                  "selected": true
+                },
+                "languageInterpreter": {
+                  "selected": true,
+                  "content": "language support text"
+                }
+              }
+            ]
+          }
+        },
       "vulnerabilityQuestions": {},
       "experts": {
         "expertReportDetails": {

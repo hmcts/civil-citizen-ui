@@ -11,7 +11,7 @@ const {getCalculation, addCalculationEventListener} = require('./calculate-amoun
 
 document.addEventListener('DOMContentLoaded', function () {
   const indexRegex = /\[(\d+)\]/;
-  const checkboxIndexRegex = /\-(\d+)\-/;
+  const checkboxIndexRegex = /-(\d+)-/;
   const chechboxCondtionalHidden = 'govuk-checkboxes__conditional--hidden';
   const checkboxConditional = 'govuk-checkboxes__conditional';
   const checkboxConditionalClassName = '.govuk-checkboxes__conditional';
@@ -130,11 +130,11 @@ document.addEventListener('DOMContentLoaded', function () {
         'for',
         element
           .getAttribute('for')
-          .replace(checkboxIndexRegex, '-' + newIndex + '-')
+          .replace(checkboxIndexRegex, '-' + newIndex + '-'),
       );
       element.setAttribute(
         'for',
-        element.getAttribute('for').replace(indexRegex, '[' + newIndex + ']')
+        element.getAttribute('for').replace(indexRegex, '[' + newIndex + ']'),
       );
     }
     if (element.getAttribute('aria-controls')) {
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function () {
         'aria-controls',
         element
           .getAttribute('aria-controls')
-          .replace(checkboxIndexRegex, '-' + newIndex + '-')
+          .replace(checkboxIndexRegex, '-' + newIndex + '-'),
       );
     }
   }

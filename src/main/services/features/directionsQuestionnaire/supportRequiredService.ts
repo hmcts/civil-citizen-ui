@@ -1,7 +1,7 @@
 import * as express from 'express';
 
 import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
-import {SupportRequiredList, SupportRequired, Support} from '../../../common/models/directionsQuestionnaire/supportRequired';
+import {SupportRequiredList, SupportRequired, Support, SupportRequiredParams} from '../../../common/models/directionsQuestionnaire/supportRequired';
 import {Claim} from '../../../common/models/claim';
 import {ExpertDetails} from '../../../common/models/directionsQuestionnaire/experts/expertDetails';
 import {OtherWitnessItems} from '../../../common/models/directionsQuestionnaire/witnesses/otherWitnessItems';
@@ -10,7 +10,7 @@ import {YesNo} from '../../../common/form/models/yesNo';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');
 
-interface NameListType {
+export interface NameListType {
   value: string;
   text: string;
   selected?: boolean;
@@ -94,7 +94,7 @@ export const getSupportRequiredForm = (req: express.Request): SupportRequiredLis
       }
     });
   }
-  return new SupportRequiredList(req.body.option, items.map((item: any) => new SupportRequired(item)));
+  return new SupportRequiredList(req.body.option, items.map((item: SupportRequiredParams) => new SupportRequired(item)));
 };
 
 function populateSupportForm(value: Support, supportName: string): Support {
