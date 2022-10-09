@@ -38,7 +38,7 @@ describe('Support Required service', () => {
       const form = getSupportRequiredForm(req);
       //Then
       expect(form).not.toBeUndefined();
-      expect(form.option).toBe('zyes');
+      expect(form.option).toBe('yes');
       expect(form.items[0].fullName).toBeFalsy();
       expect(form.items[0].disabledAccess?.selected).toBeFalsy();
     });
@@ -48,11 +48,11 @@ describe('Support Required service', () => {
       const req = request;
       req.body = {
         option: YesNo.YES,
-        declared: ['disabledAccess'],
         model: {
           items: [
             {
               fullName: 'johdoe',
+              declared: 'disabledAccess',
             },
           ],
         },
@@ -71,11 +71,11 @@ describe('Support Required service', () => {
       const req = request;
       req.body = {
         option: YesNo.YES,
-        declared: [['disabledAccess', 'otherSupport']],
         model: {
           items: [
             {
               fullName: 'johdoe',
+              declared: ['disabledAccess', 'otherSupport'],
               otherSupport: {content: 'test'},
             },
           ],
@@ -97,15 +97,16 @@ describe('Support Required service', () => {
       const req = request;
       req.body = {
         option: YesNo.YES,
-        declared: [['disabledAccess', 'otherSupport'], 'signLanguageInterpreter'],
         model: {
           items: [
             {
               fullName: 'johdoe',
+              declared: ['disabledAccess', 'otherSupport'],
               otherSupport: {content: 'test'},
             },
             {
               fullName: 'mikebrown',
+              declared: 'signLanguageInterpreter',
               signLanguageInterpreter: {content: 'sign language support'},
             },
           ],
@@ -152,11 +153,11 @@ describe('Support Required service', () => {
       const req = request;
       req.body = {
         option: YesNo.NO,
-        declared: ['disabledAccess'],
         model: {
           items: [
             {
               fullName: 'johndoe',
+              declared: 'disabledAccess',
             },
           ],
         },

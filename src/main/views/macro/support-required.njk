@@ -77,8 +77,8 @@
     {% set checkboxGrpError = errorFor('model[items][' + index + '][checkboxGrp]', 'model') %}
     <div id={{'model[items]['+index+'][checkboxGrp]'}}>
       {{ govukCheckboxes({
-        idPrefix: 'declared',
-        name: 'declared['+index+']',
+        idPrefix: 'declared['+index+']',
+        name: 'model[items]['+index+][declared]',
         hint: {
           text: t('PAGES.SUPPORT_REQUIRED.SELECT_ALL_THAT_APPLY')
         },

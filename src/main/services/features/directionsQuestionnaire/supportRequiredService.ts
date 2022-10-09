@@ -82,18 +82,16 @@ export const getSupportRequiredForm = (req: express.Request): SupportRequiredLis
     return new SupportRequiredList(req.body.option, [new SupportRequired()]);
   }
   const items = req.body.model.items;
-  if (Array.isArray(req.body.declared)) {
-    req.body.declared.forEach((declared: string[], index: number) => {
-      if (Array.isArray(declared)) {
-        declared.forEach((supportName: string) => {
-          items[index][supportName] = populateSupportForm(items[index][supportName], supportName);
-        });
-      } else {
-        const supportName = declared;
+  items.forEach((item: SupportRequiredParams, index: number) => {
+    if (item.declared && Array.isArray(item.declared)) {
+      item.declared.forEach((supportName: string) => {
         items[index][supportName] = populateSupportForm(items[index][supportName], supportName);
-      }
-    });
-  }
+      });
+    } else if (item.declared) {
+      const supportName = item.declared;
+      items[index][supportName] = populateSupportForm(items[index][supportName], supportName);
+    }
+  });
   return new SupportRequiredList(req.body.option, items.map((item: SupportRequiredParams) => new SupportRequired(item)));
 };
 

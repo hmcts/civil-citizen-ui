@@ -15,6 +15,7 @@ export interface SupportRequiredParams{
   signLanguageInterpreter?: Support,
   languageInterpreter?: Support,
   otherSupport?: Support,
+  declared?: string,
 }
 
 export class SupportRequiredList {

@@ -82,10 +82,12 @@ describe('Support required', () => {
         .post(supportRequiredUrl)
         .send({
           option: YesNo.YES,
-          declared: ['disabledAccess'],
           model: {
             items: [
-              {fullName: 'johndoe'},
+              {
+                declared: 'disabledAccess',
+                fullName: 'johndoe',
+              },
             ],
           },
         })
@@ -164,9 +166,9 @@ describe('Support required', () => {
         .post(supportRequiredUrl)
         .send({
           option: YesNo.YES,
-          declared: ['signLanguageInterpreter'],
           model: {
             items: [{
+              declared: 'signLanguageInterpreter',
               fullName: 'johndoe',
             }],
           },
@@ -182,9 +184,9 @@ describe('Support required', () => {
         .post(supportRequiredUrl)
         .send({
           option: YesNo.YES,
-          declared: ['languageInterpreter'],
           model: {
             items: [{
+              declared: 'languageInterpreter',
               fullName: 'johndoe',
             }],
           },
