@@ -3,7 +3,7 @@ import nock from 'nock';
 import {app} from '../../../../main/app';
 import request from 'supertest';
 import {SUPPORT_REQUIRED_URL} from '../../../../main/routes/urls';
-import {mockCivilClaim} from '../../../utils/mockDraftStore';
+import {mockCivilClaimWithExpertAndWitness} from '../../../utils/mockDraftStore';
 import {YesNo} from '../../../../main/common/form/models/yesNo';
 
 const jsdom = require('jsdom');
@@ -27,7 +27,7 @@ describe('Support required View', () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockCivilClaimWithExpertAndWitness;
       const response = await request(app).get(supportRequiredUrl);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;

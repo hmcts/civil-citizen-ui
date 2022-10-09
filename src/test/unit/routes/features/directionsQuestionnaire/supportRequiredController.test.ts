@@ -12,7 +12,7 @@ import {
 } from '../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 import {
-  mockCivilClaim,
+  mockCivilClaimWithExpertAndWitness,
   mockRedisFailure,
 } from '../../../../utils/mockDraftStore';
 import {
@@ -39,7 +39,7 @@ describe('Support required', () => {
 
   describe('on GET', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockCivilClaimWithExpertAndWitness;
     });
 
     it('should return supportRequired page', async () => {
@@ -62,7 +62,7 @@ describe('Support required', () => {
   });
   describe('on POST', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockCivilClaimWithExpertAndWitness;
     });
 
     it('when there is no option selection, should redirect to claim task list screen', async () => {
