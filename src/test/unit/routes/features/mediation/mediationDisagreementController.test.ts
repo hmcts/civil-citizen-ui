@@ -10,7 +10,7 @@ import {
 } from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
-import {CounterpartyType} from '../../../../../main/common/models/counterpartyType';
+import {PartyType} from '../../../../../main/common/models/partyType';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
 
 const applicantTypeMock = require('./applicantTypeMock.json');
@@ -74,7 +74,7 @@ describe('Mediation Disagreement', () => {
         });
     });
     it('should redirect page when YES and applicant type is INDIVIDUAL', async () => {
-      applicantTypeMock.case_data.respondent1.type = CounterpartyType.INDIVIDUAL;
+      applicantTypeMock.case_data.respondent1.type = PartyType.INDIVIDUAL;
       const individualTypeMock: string = JSON.stringify(applicantTypeMock);
       app.locals.draftStoreClient = {
         set: jest.fn(() => Promise.resolve({})),
@@ -89,7 +89,7 @@ describe('Mediation Disagreement', () => {
         });
     });
     it('should redirect page when YES and applicant type is SOLE TRADER', async () => {
-      applicantTypeMock.case_data.respondent1.type = CounterpartyType.SOLE_TRADER;
+      applicantTypeMock.case_data.respondent1.type = PartyType.SOLE_TRADER;
       const soleTraderTypeMock: string = JSON.stringify(applicantTypeMock);
       app.locals.draftStoreClient = {
         set: jest.fn(() => Promise.resolve({})),
@@ -104,7 +104,7 @@ describe('Mediation Disagreement', () => {
         });
     });
     it('should redirect page when YES and applicant type is ORGANISATION', async () => {
-      applicantTypeMock.case_data.respondent1.type = CounterpartyType.ORGANISATION;
+      applicantTypeMock.case_data.respondent1.type = PartyType.ORGANISATION;
       const organisationTypeMock: string = JSON.stringify(applicantTypeMock);
       app.locals.draftStoreClient = {
         set: jest.fn(() => Promise.resolve({})),
@@ -119,7 +119,7 @@ describe('Mediation Disagreement', () => {
         });
     });
     it('should redirect page when YES and applicant type is COMPANY', async () => {
-      applicantTypeMock.case_data.respondent1.type = CounterpartyType.COMPANY;
+      applicantTypeMock.case_data.respondent1.type = PartyType.COMPANY;
       const companyTypeMock: string = JSON.stringify(applicantTypeMock);
       app.locals.draftStoreClient = {
         set: jest.fn(() => Promise.resolve({})),

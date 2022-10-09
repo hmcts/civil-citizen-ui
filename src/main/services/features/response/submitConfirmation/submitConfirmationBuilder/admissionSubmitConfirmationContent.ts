@@ -4,6 +4,7 @@ import {Claim} from '../../../../../common/models/claim';
 import {ClaimSummarySection, ClaimSummaryType} from '../../../../../common/form/models/claimSummarySection';
 import {CITIZEN_CONTACT_THEM_URL} from '../../../../../routes/urls';
 import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
+import {addDaysToDate} from '../../../../../common/utils/dateUtils';
 
 export function getFAPAyImmediatelyStatus(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantName = claim.getClaimantName();
@@ -95,15 +96,13 @@ export function getNextStepsTitle(lang: string):ClaimSummarySection[] {
         text: t('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT', {lng: lang}),
       },
     },
-  ]; 
+  ];
 }
 
 export function getFAPayImmediatelyNextSteps(claimId: string, claim: Claim, lang: string): ClaimSummarySection[]{
   const claimantName = claim.getClaimantName();
-  // TODO : submission day + 5 days
-  const today = new Date();
-  today.setDate(today.getDate() + 5);
-  const immediatePaymentDeadline = formatDateToFullDate(today, lang);
+  const immediatePaymentDate = addDaysToDate(claim?.respondent1ResponseDate, 5);
+  const immediatePaymentDeadline = formatDateToFullDate(immediatePaymentDate, lang);
   return [
     {
       type: ClaimSummaryType.HTML,
@@ -178,7 +177,7 @@ export function getNotPayImmediatelyContent(claim: Claim, lang: string): ClaimSu
       },
     },
   ];
-} 
+}
 
 export function getFARejectOfferContent(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantName = claim.getClaimantName();
@@ -197,4 +196,4 @@ export function getFARejectOfferContent(claim: Claim, lang: string): ClaimSummar
       },
     },
   ];
-} 
+}

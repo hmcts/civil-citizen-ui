@@ -2,6 +2,7 @@ export const enum TestMessages {
   AMOUNT_LESS_THAN_CLAIMED = 'Enter a value less than the amount claimed',
   ARE_YOU_DISABLED = 'Are you disabled?',
   ARE_YOU_SEVERELY_DISABLED = 'Are you severely disabled?',
+  CHOOSE_YOUR_RESPONSE = 'Choose your response',
   CLAIM_CARER = 'Do you claim Carer’s Allowance or Carer’s Credit?',
   CLAIM_NUMBER = 'testCaseReference',
   DATE_NOT_MORE_THAN_28_DAYS = 'Agreed response date cannot be more than 28 days after the original response date',
@@ -75,4 +76,5 @@ export const enum TestMessages {
   VALID_YES_NO_SELECTION = 'Please select yes or no',
   WATER_AMOUNT_ERROR = 'Enter how much you pay for Water',
   WHO_EMPLOYS_YOU = 'Who employs you?',
+  VALID_NEXT_12MONTHS_CANNOT_HEARING = 'Select yes if there are any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing',
 }
