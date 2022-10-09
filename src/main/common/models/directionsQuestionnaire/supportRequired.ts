@@ -26,7 +26,6 @@ export class SupportRequiredList {
     items?: SupportRequired[];
 
   [key: string]: YesNo | SupportRequired[];
-
   constructor(option?: YesNo, items?: SupportRequired[]) {
     this.option = option;
     this.items = items;
@@ -75,7 +74,6 @@ export class Support {
     content?: string;
 
   [key: string]: boolean | string;
-
   constructor(sourceName?: string, selected?: boolean, content?: string) {
     this.sourceName = sourceName;
     this.selected = selected;

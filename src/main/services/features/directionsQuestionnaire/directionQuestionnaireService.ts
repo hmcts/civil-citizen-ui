@@ -57,7 +57,6 @@ const saveDirectionQuestionnaire = async (claimId: string, value: any, direction
       }
       claim.directionQuestionnaire = directionQuestionnaire;
     }
-    console.log('save--->', claim.directionQuestionnaire.hearing.supportRequiredList);
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
