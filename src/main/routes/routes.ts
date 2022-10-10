@@ -137,7 +137,7 @@ import cantAttendHearingInNext12MonthsController
 import youCanUseServiceController from './features/public/eligibility/youCanUseServiceController';
 import claimAmountBreakdownController from './features/claim/amount/claimAmountBreakdownController';
 import claimInterestController from './features/claim/interest/claimInterestController';
-import defendantEmailController from './features/public/claim/defendantEmailController';
+import defendantEmailController from './features/claim/yourDetails/defendantEmailController';
 
 export default [
   homeController,

@@ -1,5 +1,5 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import {getDefendantEmail,saveDefendantEmail} from '../../../../../main/services/features/claim/defendantEmailService';
+import {getDefendantEmail,saveDefendantEmail} from '../../../../../main/services/features/claim/yourDetails/defendantEmailService';
 import {Claim} from '../../../../../main/common/models/claim';
 import {PartyType} from '../../../../../main/common/models/partyType';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
