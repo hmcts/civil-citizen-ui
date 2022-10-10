@@ -92,7 +92,7 @@ describe('Support required View', () => {
 
   describe('on POST', () => {
     let htmlDocument: Document;
-    beforeEach(async () => {
+    beforeAll(async () => {
       const response = await request(app).post(SUPPORT_REQUIRED_URL)
         .send({
           option: YesNo.YES,
