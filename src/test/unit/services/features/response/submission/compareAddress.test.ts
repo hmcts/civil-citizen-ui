@@ -1,5 +1,8 @@
 import {PrimaryAddress} from '../../../../../../main/common/models/primaryAddress';
-import {addressHasChange} from '../../../../../../main/services/features/response/submission/compareAddress';
+import {
+  addressHasChange,
+  processAddressLine
+} from '../../../../../../main/services/features/response/submission/compareAddress';
 
 const addressData: PrimaryAddress = {
   PostTown: 'XXX123',
@@ -51,5 +54,20 @@ describe('Compare addresses util', () => {
     const isAddressUpdated = addressHasChange(completeAddress, addressUpdated);
     //Then
     expect(isAddressUpdated).toEqual(true);
+  });
+  it('should return empty string when address line does not exist', ()=> {
+    //When
+    const result = processAddressLine();
+    //Then
+    expect(result).toEqual('');
+  });
+  it('should return address line when address exists', ()=>{
+    //Given
+    const addressLine1 = 'lalala';
+    //When
+    const result = processAddressLine(addressLine1);
+    //Then
+    expect(result).toEqual(addressLine1);
+
   });
 });

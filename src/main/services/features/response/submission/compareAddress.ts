@@ -4,20 +4,24 @@ import {PrimaryAddress} from 'common/models/primaryAddress';
 export const addressHasChange = (address: PrimaryAddress, originalAddress: PrimaryAddress): boolean => {
 
   const addressObject = {
-    PostCode: address.PostCode ? address.PostCode : '',
-    PostTown: address.PostTown ? address.PostTown : '',
-    AddressLine1: address.AddressLine1 ? address.AddressLine1 : '',
-    AddressLine2: address.AddressLine2 ? address.AddressLine2 : '',
-    AddressLine3: address.AddressLine3 ? address.AddressLine3 : '',
+    PostCode: processAddressLine(address.PostCode),
+    PostTown: processAddressLine( address.PostTown),
+    AddressLine1: processAddressLine(address.AddressLine1),
+    AddressLine2: processAddressLine(address.AddressLine2),
+    AddressLine3: processAddressLine(address.AddressLine3),
   };
 
   const originalAddressObject = {
-    PostCode: originalAddress.PostCode ? originalAddress.PostCode : '',
-    PostTown: originalAddress.PostTown ? originalAddress.PostTown : '',
-    AddressLine1: originalAddress.AddressLine1 ? originalAddress.AddressLine1 : '',
-    AddressLine2: originalAddress.AddressLine2 ? originalAddress.AddressLine2 : '',
-    AddressLine3: originalAddress.AddressLine3 ? originalAddress.AddressLine3 : '',
+    PostCode: processAddressLine(originalAddress.PostCode),
+    PostTown: processAddressLine(originalAddress.PostTown),
+    AddressLine1: processAddressLine(originalAddress.AddressLine1),
+    AddressLine2: processAddressLine(originalAddress.AddressLine2),
+    AddressLine3: processAddressLine(originalAddress.AddressLine3),
   };
 
   return !isEqual(addressObject, originalAddressObject);
+};
+
+export const processAddressLine = (addressLine?: string) => {
+  return addressLine? addressLine : '';
 };
