@@ -69,5 +69,41 @@ describe('translate response to ccd version', ()=> {
     //Then
     expect(ccdResponse.responseClaimMediationSpecRequired).toBe(YesNoUpperCamelCase.YES);
   });
+  it('should translate address changed to ccd', ()=> {
+    //Given
+    const claim = new Claim();
+    claim.respondent1 = new Respondent();
+    claim.mediation = {
+      canWeUse: undefined,
+      mediationDisagreement: undefined,
+      companyTelephoneNumber: {
+        mediationContactPerson : 'test',
+        mediationPhoneNumber : '123',
+      },
+    };
+    const addressChanged = true;
+    //When
+    const ccdResponse = translateDraftResponseToCCD(claim, addressChanged);
+    //Then
+    expect(ccdResponse.specAoSApplicantCorrespondenceAddressRequired).toBe(YesNoUpperCamelCase.NO);
+  });
+  it('should translate addres has not changed to ccd', ()=>{
+    //Given
+    const claim = new Claim();
+    claim.respondent1 = new Respondent();
+    claim.mediation = {
+      canWeUse: undefined,
+      mediationDisagreement: undefined,
+      companyTelephoneNumber: {
+        mediationContactPerson : 'test',
+        mediationPhoneNumber : '123',
+      },
+    };
+    const addressChanged = false;
+    //When
+    const ccdResponse = translateDraftResponseToCCD(claim, addressChanged);
+    //Then
+    expect(ccdResponse.specAoSApplicantCorrespondenceAddressRequired).toBe(YesNoUpperCamelCase.YES);
+  });
 
 });
