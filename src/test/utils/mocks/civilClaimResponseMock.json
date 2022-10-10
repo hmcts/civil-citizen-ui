@@ -42,6 +42,10 @@
     "directionQuestionnaire": {
       "hearing": {},
       "vulnerabilityQuestions": {},
+      "welshLanguageRequirements":{
+        "speakLanguage":"en",
+        "documentsLanguage":"en"
+      },
       "experts": {
         "expertReportDetails": {
           "option": "yes",
