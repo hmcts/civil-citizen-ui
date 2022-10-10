@@ -1,6 +1,7 @@
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {ClaimantInterestRate} from '../../../../common/form/models/claim/interest/claimantInterestRate';
-import { Claim } from '../../../../common/models/claim';
+import {Claim} from '../../../../common/models/claim';
+import {SameRateInterestSelection,SameRateInterestType} from '../../../../common/form/models/claimDetails';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimanIterestRateService');
@@ -46,7 +47,18 @@ const getClaim = async (claimId: string): Promise<Claim> => {
   return claim;
 };
 
+const getInterestRateForm = async (option: SameRateInterestType, rate: number | undefined, reason: string): Promise<SameRateInterestSelection> => {
+  const sameRateInterestSelection: SameRateInterestSelection = {
+    sameRateInterestType: option,
+    differentRate: option === SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE ? rate : undefined,
+    reason: option === SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE ? reason : '',
+  };
+
+  return sameRateInterestSelection;
+};
+
 export {
   getInterestRate,
   saveIterestRate,
+  getInterestRateForm,
 };

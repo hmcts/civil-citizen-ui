@@ -1,9 +1,9 @@
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import { getInterestRate,saveIterestRate } from '../../../../../../main/services/features/claim/interest/claimantInterestRateService';
+import {getInterestRate,saveIterestRate,getInterestRateForm} from '../../../../../../main/services/features/claim/interest/claimantInterestRateService';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {SameRateInterestSelection, SameRateInterestType} from '../../../../../../main/common/form/models/claimDetails';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import { ClaimantInterestRate } from '../../../../../../main/common/form/models/claim/interest/claimantInterestRate';
+import {ClaimantInterestRate} from '../../../../../../main/common/form/models/claim/interest/claimantInterestRate';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -96,7 +96,7 @@ describe('Claimant Interest Rate Service', () => {
       expect(spySave).toBeCalled();
     });
 
-    it('should save claimant interest rate data successfully when claim exists', async () => {
+    it('should save claimant interest rate data successfully when claim exists  and different rate provided', async () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
@@ -106,10 +106,27 @@ describe('Claimant Interest Rate Service', () => {
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
+      await getInterestRateForm(SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE, 40, 'Reason...');
       await saveIterestRate('123', new ClaimantInterestRate(
         mockSameRateInterestSelection.sameRateInterestType,
         mockSameRateInterestSelection.differentRate,
         mockSameRateInterestSelection.reason));
+      //Then
+      expect(spySave).toBeCalled();
+    });
+
+    it('should save claimant interest rate not defined when claim exists and 8% rate selected', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.sameRateInterestSelection = mockSameRateInterestSelectionWithValues;
+        return claim;
+
+      });
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await getInterestRateForm(SameRateInterestType.SAME_RATE_INTEREST_8_PC, undefined, '');
+      await saveIterestRate('123', new ClaimantInterestRate(SameRateInterestType.SAME_RATE_INTEREST_8_PC,undefined,''));
       //Then
       expect(spySave).toBeCalled();
     });

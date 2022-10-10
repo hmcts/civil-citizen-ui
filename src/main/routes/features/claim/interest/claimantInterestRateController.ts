@@ -4,10 +4,10 @@ import {CLAIMANT_INTEREST_RATE_URL,CLAIMANT_INTEREST_DATE_URL} from '../../../ur
 import {
   getInterestRate,
   saveIterestRate,
+  getInterestRateForm,
 } from '../../../../services/features/claim/interest/claimantInterestRateService';
 import {ClaimantInterestRate} from '../../../../common/form/models/claim/interest/claimantInterestRate';
 import {AppRequest} from 'common/models/AppRequest';
-import {SameRateInterestSelection, SameRateInterestType} from '../../../../common/form/models/claimDetails';
 
 const interestRateController = express.Router();
 const interestRateViewPath = 'features/claim/interest/claimant-interest-rate';
@@ -30,11 +30,7 @@ interestRateController.post(CLAIMANT_INTEREST_RATE_URL,
   async (req: AppRequest | express.Request, res: express.Response, next: express.NextFunction) => {
     try {
       const claimId = (<AppRequest>req).session.user?.id;
-      const sameRateInterestSelection: SameRateInterestSelection = {
-        sameRateInterestType: req.body.option,
-        differentRate: req.body.option === SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE ? req.body.rate : '',
-        reason: req.body.option === SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE ? req.body.reason : '',
-      };
+      const sameRateInterestSelection = await getInterestRateForm(req.body.option,req.body.rate,req.body.reason);
       const form: GenericForm<ClaimantInterestRate> = new GenericForm(new ClaimantInterestRate(sameRateInterestSelection.sameRateInterestType,sameRateInterestSelection.differentRate,sameRateInterestSelection.reason));
       form.validateSync();
       if (form.hasErrors()) {
