@@ -158,3 +158,6 @@ export const CLAIM_INTEREST_RATE_URL = `${BASE_CLAIM_URL}/interest-rate`;
 export const CLAIM_INTEREST_TOTAL_URL = `${BASE_CLAIM_URL}/interest-total`;
 export const CLAIM_AMOUNT_URL = `${BASE_CLAIM_URL}/amount`;
 export const CLAIM_INTEREST_URL = `${BASE_CLAIM_URL}/interest`;
+export const CLAIM_INTEREST = `${BASE_CLAIM_URL}/interest`;
+export const CLAIM_INTEREST_TYPE = `${BASE_CLAIM_URL}/interest-type`;
+export const CLAIM_HELP_WITH_FEES = `${BASE_CLAIM_URL}/help-with-fees`;

@@ -93,6 +93,10 @@
       "SIGN_IN": "Mewngofnodi",
       "SIGN_OUT": "Sign out"
     },
+    "HELP_WITH_INTEREST_RATES": {
+      "THE_COURT_WILL_DECIDE": "The court will decide if you're entitled to some or all of the interest claimed.",
+      "YOU_CAN_CLAIM": "You can claim 8% interest on money owed to you. This is the statutory rate. If you know that a different rate applies you can use that. For example if you have a contract with a specific rate"
+    },
     "MONTH_NAMES": {
       "APRIL": "Ebrill",
       "AUGUST": "Awst",
@@ -470,6 +474,11 @@
       "WHAT_HAPPENED": "Beth ddigwyddodd"
     },
     "CLAIM_JOURNEY": {
+      "CLAIM_INTEREST": {
+        "PAGE_TITLE": "Do you want to claim interest?",
+        "TITLE:": "Do you want to claim interest?",
+        "YOU_CAN_CLAIM_INTEREST": "You can claim interest on the money you say you're owed. The court will decide if you're entitled to it."
+      },
       "CLAIMANT_INDIVIDUAL_DETAILS": {
         "PAGE_TITLE": "Enter your details",
         "THESE_DETAILS_ARE": "These details are shared with the person, business or organisation you are claiming from (the defendant).",
