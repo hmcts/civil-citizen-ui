@@ -23,12 +23,12 @@ export class InterestStartDate {
   @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
     year: number;
 
-  @IsDefined({message: 'ERRORS.VALID_DISAGREE_REASON_REQUIRED'})
-  @IsNotEmpty({message: 'ERRORS.VALID_DISAGREE_REASON_REQUIRED'})
-  @MaxLength(FREE_TEXT_1000_MAX_LENGTH, {message: 'ERRORS.VALID_DISAGREE_REASON_REQUIRED'})
+  @IsDefined({message: 'ERRORS.VALID_WHY_FROM_PARTICULAR_DATE'})
+  @IsNotEmpty({message: 'ERRORS.VALID_WHY_FROM_PARTICULAR_DATE'})
+  @MaxLength(FREE_TEXT_1000_MAX_LENGTH, {message: 'ERRORS.VALID_WHY_FROM_PARTICULAR_DATE'})
     reason?: string;
 
-  constructor(year?: string, month?: string, day?: string, reason?: string) {
+  constructor(day?: string, month?: string, year?: string, reason?: string) {
     this.date = DateConverter.convertToDate(year, month, day);
     this.year = Number(year);
     this.month = Number(month);

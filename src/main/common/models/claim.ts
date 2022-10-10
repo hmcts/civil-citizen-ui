@@ -38,7 +38,7 @@ import RejectAllOfClaimType from '../../common/form/models/rejectAllOfClaimType'
 import {DirectionQuestionnaire} from '../models/directionsQuestionnaire/directionQuestionnaire';
 import {ResponseOptions} from '../../common/form/models/responseDeadline';
 import {AdditionalTimeOptions} from '../../common/form/models/additionalTime';
-import {Interest} from '../../common/form/models/Interest/interest';
+import {Interest} from '../form/models/interest/interest';
 
 export class Claim {
   legacyCaseReference: string;
