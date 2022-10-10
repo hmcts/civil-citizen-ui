@@ -8,11 +8,7 @@
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
-  {% if claimantView %}
     {{ setPageTitle('PAGES.INTEREST_START_DATE.PAGE_TITLE') }}
-  {% else %}
-    {{ setPageTitle('PAGES.INTEREST_START_DATE.PAGE_TITLE') }}
-  {% endif %}
 {% endblock %}
 
 {% block content %}
