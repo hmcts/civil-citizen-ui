@@ -7,7 +7,7 @@
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.HOW_CLAIM_INTEREST.PAGE_TITLE') }}
+  {{ setPageTitle('PAGES.INTEREST_CLAIM_OPTIONS.PAGE_TITLE') }}
 {% endblock %}
 
 {% block content %}
@@ -18,7 +18,7 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.HOW_CLAIM_INTEREST.TITLE') }}</h1>
+          <h1 class="govuk-heading-l">{{ t('PAGES.INTEREST_CLAIM_OPTIONS.TITLE') }}</h1>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
               {{ govukRadios({
@@ -28,12 +28,12 @@
                   {
                     value: InterestClaimOptionsType.SAME_RATE_INTEREST,
                     checked: true if form.model.interestType === InterestClaimOptionsType.SAME_RATE_INTEREST,
-                    text: t('PAGES.HOW_CLAIM_INTEREST.SAME_RATE')
+                    text: t('PAGES.INTEREST_CLAIM_OPTIONS.SAME_RATE')
                   },
                   {
                     value: InterestClaimOptionsType.BREAK_DOWN_INTEREST,
                     checked: true if form.model.interestType === InterestClaimOptionsType.BREAK_DOWN_INTEREST,
-                    text: t('PAGES.HOW_CLAIM_INTEREST.BREAK_DOWN')
+                    text: t('PAGES.INTEREST_CLAIM_OPTIONS.BREAK_DOWN')
                   }
                 ],
                 errorMessage: {

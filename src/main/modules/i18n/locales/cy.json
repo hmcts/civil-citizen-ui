@@ -1032,7 +1032,7 @@
       "REACHING_SETTLEMENT": "Setlo’r anghydfod",
       "TITLE": "Gwasanaeth cyfryngu dros y ffôn am ddim"
     },
-    "HOW_CLAIM_INTEREST": {
+    "INTEREST_CLAIM_OPTIONS": {
       "BREAK_DOWN": "Break down interest for different time periods or items",
       "PAGE_TITLE": "How do you want to claim interest?",
       "SAME_RATE": "Same rate for the whole period",
