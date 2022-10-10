@@ -17,7 +17,16 @@
         "witnesses": {
           "otherWitnesses": {
             "option": "",
-            "witnessItems": []
+            "witnessItems": [
+              {
+                "firstName": "John",
+                "lastName": "Doe"
+              },
+              {
+                "firstName": "Jane",
+                "lastName": "Smith"
+              }
+            ]
           }
         },
         "experts": {
@@ -31,6 +40,44 @@
               {
                 "expertName": "Mahmut",
                 "reportDate": "2022-06-01T11:57:10.592492"
+              }
+            ]
+          },
+          "expertDetailsList": {
+            "items": [
+              {
+                "firstName": "Mike",
+                "lastName": "Brown"
+              },
+              {
+                "firstName": "Jasmine",
+                "lastName": "Williams"
+              }
+            ]
+          }
+        },
+        "hearing": {
+          "supportRequiredList": {
+            "items": [
+              {
+                "fullName": "johndoe",
+                "disabledAccess": {
+                  "selected": true
+                },
+                "otherSupport": {
+                  "selected": true,
+                  "content": "bla bla"
+                }
+              },
+              {
+                "fullName": "mikebrown",
+                "hearingLoop": {
+                  "selected": true
+                },
+                "languageInterpreter": {
+                  "selected": true,
+                  "content": "zla zla"
+                }
               }
             ]
           }
