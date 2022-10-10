@@ -22,7 +22,7 @@ import {TotalAmountOptions} from '../../common/models/eligibility/totalAmountOpt
 import {ClaimTypeOptions} from '../../common/models/eligibility/claimTypeOptions';
 import {AgeEligibilityOptions} from '../../common/form/models/eligibility/defendant/AgeEligibilityOptions';
 import {LanguageOptions} from '../../common/models/directionsQuestionnaire/languageOptions';
-import {InterestClaimFromType} from '../../common/form/models/claimDetails'
+import {InterestClaimFromType} from '../../common/form/models/claimDetails';
 import * as urls from '../../routes/urls';
 
 const packageDotJson = require('../../../../package.json');
