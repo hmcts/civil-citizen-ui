@@ -1,7 +1,7 @@
 import express from 'express';
 import {CLAIMANT_DOB_URL, CLAIMANT_PHONE_NUMBER_URL} from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
-import {ClaimantDoB} from '../../../../common/form/models/claim/claimantDoB';
+import {ClaimantDoB} from '../../../../common/form/models/claim/claimant/claimantDoB';
 import {Claim} from '../../../../common/models/claim';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {AppRequest} from '../../../../common/models/AppRequest';
