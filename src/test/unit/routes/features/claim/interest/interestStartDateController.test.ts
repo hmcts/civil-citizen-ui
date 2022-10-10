@@ -71,7 +71,7 @@ describe('interest start date', () => {
           expect(res.text).toContain(t('ERRORS.VALID_DAY'));
           expect(res.text).toContain(t('ERRORS.VALID_MONTH'));
           expect(res.text).toContain(t('ERRORS.VALID_YEAR'));
-          expect(res.text).toContain('Enter text explaining why you&#39;re claiming from a particular date');
+          expect(res.text).toContain(t('ERRORS.VALID_WHY_FROM_PARTICULAR_DATE'));
         });
     });
     it('should return error on year less than 1872', async () => {
@@ -104,7 +104,7 @@ describe('interest start date', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_DATE'));
+          expect(res.text).toContain(t('ERRORS.CORRECT_DATE_NOT_IN_FUTURE'));
         });
     });
     it('should return error 4 digit year', async () => {

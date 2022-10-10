@@ -1800,6 +1800,6 @@
     "VALID_VALUE": "A ydych yn siŵr bod hwn yn swm dilys?",
     "VALID_YES_NO_OPTION": "Dewiswch opsiwn: ie neu na",
     "VALID_YES_NO_SELECTION": "Dewiswch ie neu na, os gwelwch yn dda",
-    "VALID_WHY_FROM_PARTICULAR_DATE": "Enter text explaining why you're claiming from a particular date"
+    "VALID_WHY_FROM_PARTICULAR_DATE": "You need to explain why you are claiming"
   }
 }
