@@ -59,7 +59,7 @@ describe('Task List Builder', () => {
       it('should have chooseAResponseTask', () => {
         const claim = new Claim();
         const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
-        expect(respondToClaimSection.tasks).toHaveLength(1);
+        expect(respondToClaimSection.tasks.length).toBe(1);
         expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
       });
       it('should have chooseAResponseTask and whyDisagreeWithAmountClaimedTask', () => {
@@ -67,7 +67,7 @@ describe('Task List Builder', () => {
         claim.respondent1 = new Respondent();
         claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
         const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
-        expect(respondToClaimSection.tasks).toHaveLength(2);
+        expect(respondToClaimSection.tasks.length).toBe(2);
         expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
         expect(respondToClaimSection.tasks[1].url).toEqual(decideHowYouPayUrl);
       });
@@ -77,7 +77,7 @@ describe('Task List Builder', () => {
         claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
         claim.paymentOption = PaymentOptionType.BY_SET_DATE;
         const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
-        expect(respondToClaimSection.tasks).toHaveLength(3);
+        expect(respondToClaimSection.tasks.length).toBe(3);
         expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
         expect(respondToClaimSection.tasks[1].url).toEqual(decideHowYouPayUrl);
         expect(respondToClaimSection.tasks[2].url).toEqual(shareFinancialDetailsUrl);
@@ -88,7 +88,7 @@ describe('Task List Builder', () => {
         claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
         claim.paymentOption = PaymentOptionType.INSTALMENTS;
         const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
-        expect(respondToClaimSection.tasks).toHaveLength(4);
+        expect(respondToClaimSection.tasks.length).toBe(4);
         expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
         expect(respondToClaimSection.tasks[1].url).toEqual(decideHowYouPayUrl);
         expect(respondToClaimSection.tasks[2].url).toEqual(shareFinancialDetailsUrl);
@@ -102,7 +102,7 @@ describe('Task List Builder', () => {
         claim.respondent1 = new Respondent();
         claim.respondent1.responseType = ResponseType.PART_ADMISSION;
         const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
-        expect(respondToClaimSection.tasks).toHaveLength(2);
+        expect(respondToClaimSection.tasks.length).toBe(2);
         expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
         expect(respondToClaimSection.tasks[1].url).toEqual(whyDisagreeWithAmountClaimedUrl);
       });
@@ -113,7 +113,7 @@ describe('Task List Builder', () => {
         claim.partialAdmission = new PartialAdmission();
         claim.partialAdmission.alreadyPaid = new GenericYesNo(YesNo.YES);
         const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
-        expect(respondToClaimSection.tasks).toHaveLength(3);
+        expect(respondToClaimSection.tasks.length).toBe(3);
         expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
         expect(respondToClaimSection.tasks[1].url).toEqual(howMuchHaveYouPaidUrl);
         expect(respondToClaimSection.tasks[2].url).toEqual(whyDisagreeWithAmountClaimedUrl);
@@ -127,7 +127,7 @@ describe('Task List Builder', () => {
         claim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe();
         claim.partialAdmission.howMuchDoYouOwe.amount = 1;
         const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
-        expect(respondToClaimSection.tasks).toHaveLength(4);
+        expect(respondToClaimSection.tasks.length).toBe(4);
         expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
         expect(respondToClaimSection.tasks[1].url).toEqual(howMuchMoneyAdmitOweUrl);
         expect(respondToClaimSection.tasks[2].url).toEqual(whyDisagreeWithAmountClaimedUrl);
@@ -142,7 +142,7 @@ describe('Task List Builder', () => {
         claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
         claim.partialAdmission.paymentIntention.paymentDate = new Date();
         const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
-        expect(respondToClaimSection.tasks).toHaveLength(3);
+        expect(respondToClaimSection.tasks.length).toBe(3);
         expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
         expect(respondToClaimSection.tasks[1].url).toEqual(shareFinancialDetailsUrl);
         expect(respondToClaimSection.tasks[2].url).toEqual(whyDisagreeWithAmountClaimedUrl);
@@ -156,7 +156,7 @@ describe('Task List Builder', () => {
         claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
         claim.partialAdmission.paymentIntention.paymentDate = new Date();
         const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
-        expect(respondToClaimSection.tasks).toHaveLength(4);
+        expect(respondToClaimSection.tasks.length).toBe(4);
         expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
         expect(respondToClaimSection.tasks[1].url).toEqual(shareFinancialDetailsUrl);
         expect(respondToClaimSection.tasks[2].url).toEqual(whyDisagreeWithAmountClaimedUrl);
@@ -173,7 +173,7 @@ describe('Task List Builder', () => {
         claim.rejectAllOfClaim = new RejectAllOfClaim();
         claim.rejectAllOfClaim.option = RejectAllOfClaimType.ALREADY_PAID;
         const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
-        expect(respondToClaimSection.tasks).toHaveLength(2);
+        expect(respondToClaimSection.tasks.length).toBe(2);
         expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
         expect(respondToClaimSection.tasks[1].url).toEqual(tellUsHowMuchYouHavePaidUrl);
       });
@@ -185,7 +185,7 @@ describe('Task List Builder', () => {
         claim.totalClaimAmount = 1000;
         claim.rejectAllOfClaim.howMuchHaveYouPaid.amount = 500;
         const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
-        expect(respondToClaimSection.tasks).toHaveLength(3);
+        expect(respondToClaimSection.tasks.length).toBe(3);
         expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
         expect(respondToClaimSection.tasks[1].url).toEqual(tellUsHowMuchYouHavePaidUrl);
         expect(respondToClaimSection.tasks[2].url).toEqual(whyDisagreeWithAmountClaimedFullDefenceUrl);
@@ -195,7 +195,7 @@ describe('Task List Builder', () => {
         claim.rejectAllOfClaim = new RejectAllOfClaim();
         claim.rejectAllOfClaim.option = RejectAllOfClaimType.DISPUTE;
         const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
-        expect(respondToClaimSection.tasks).toHaveLength(2);
+        expect(respondToClaimSection.tasks.length).toBe(2);
         expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
         expect(respondToClaimSection.tasks[1].url).toEqual(tellUsWhyDisagreeWithClaimUrl);
       });
@@ -206,7 +206,7 @@ describe('Task List Builder', () => {
     it('should be empty', () => {
       const claim = new Claim();
       const respondToClaimSection = buildResolvingTheClaimSection(claim, claimId, lang);
-      expect(respondToClaimSection.tasks).toHaveLength(0);
+      expect(respondToClaimSection.tasks.length).toBe(0);
     });
 
     it('should have freeTelephoneMediationTask if full defence', () => {
@@ -214,7 +214,7 @@ describe('Task List Builder', () => {
       claim.respondent1 = new Respondent();
       claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
       const resolvingTheClaimSection = buildResolvingTheClaimSection(claim, claimId, lang);
-      expect(resolvingTheClaimSection.tasks).toHaveLength(1);
+      expect(resolvingTheClaimSection.tasks.length).toBe(1);
       expect(resolvingTheClaimSection.tasks[0].url).toEqual(freeTelephoneMediationUrl);
     });
 
@@ -224,7 +224,7 @@ describe('Task List Builder', () => {
       claim.partialAdmission.whyDoYouDisagree = new WhyDoYouDisagree();
       claim.partialAdmission.whyDoYouDisagree.text = 'test';
       const resolvingTheClaimSection = buildResolvingTheClaimSection(claim, claimId, lang);
-      expect(resolvingTheClaimSection.tasks).toHaveLength(1);
+      expect(resolvingTheClaimSection.tasks.length).toBe(1);
       expect(resolvingTheClaimSection.tasks[0].url).toEqual(freeTelephoneMediationUrl);
     });
   });
@@ -233,14 +233,14 @@ describe('Task List Builder', () => {
     it('should be empty', () => {
       const claim = new Claim();
       const respondToClaimSection = buildYourHearingRequirementsSection(claim, claimId, lang);
-      expect(respondToClaimSection.tasks).toHaveLength(0);
+      expect(respondToClaimSection.tasks.length).toBe(0);
     });
     it('should have freeTelephoneMediationTask', () => {
       const claim = new Claim();
       claim.respondent1 = new Respondent();
       claim.respondent1.responseType = ResponseType.PART_ADMISSION;
       const yourHearingRequirementsSection = buildYourHearingRequirementsSection(claim, claimId, lang);
-      expect(yourHearingRequirementsSection.tasks).toHaveLength(1);
+      expect(yourHearingRequirementsSection.tasks.length).toBe(1);
       expect(yourHearingRequirementsSection.tasks[0].url).toEqual(giveUsDetailsHearingUrl);
     });
   });

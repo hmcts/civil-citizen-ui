@@ -29,7 +29,7 @@ describe('Expert Details service', () => {
         return new Claim();
       });
       const expertDetails = await getExpertDetails('validClaimId');
-      expect(expertDetails.items).toHaveLength(1);
+      expect(expertDetails.items.length).toBe(0);
       expect(expertDetails.items[0].firstName).toBeUndefined();
     });
 
@@ -40,7 +40,7 @@ describe('Expert Details service', () => {
       });
       const expertDetails = await getExpertDetails('validClaimId');
 
-      expect(expertDetails.items).toHaveLength(1);
+      expect(expertDetails.items.length).toBe(1);
       expect(expertDetails.items[0].firstName).toBe('Joe');
     });
 
