@@ -1,7 +1,7 @@
 import {PrimaryAddress} from '../../../../../../main/common/models/primaryAddress';
 import {
   addressHasChange,
-  processAddressLine
+  processAddressLine,
 } from '../../../../../../main/services/features/response/submission/compareAddress';
 
 const addressData: PrimaryAddress = {
