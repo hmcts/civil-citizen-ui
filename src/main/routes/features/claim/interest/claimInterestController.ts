@@ -1,9 +1,5 @@
 import * as express from 'express';
-import {
-  CLAIM_INTEREST,
-  CLAIM_INTEREST_TYPE,
-  CLAIM_HELP_WITH_FEES,
-} from  '../../../../routes/urls';
+import {CLAIM_HELP_WITH_FEES, CLAIM_INTEREST_TYPE, CLAIM_INTEREST_URL} from '../../../../routes/urls';
 import {GenericForm} from '.././../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
 import {YesNo} from '../../../../common/form/models/yesNo';
@@ -21,7 +17,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: express.Response): voi
   res.render(claimInterestPath, {form});
 }
 
-claimInterestController.get(CLAIM_INTEREST, async (req:AppRequest, res:express.Response, next: express.NextFunction) => {
+claimInterestController.get(CLAIM_INTEREST_URL, async (req: AppRequest, res: express.Response, next: express.NextFunction) => {
   const caseId = req.session?.user?.id;
 
   try {
@@ -31,7 +27,7 @@ claimInterestController.get(CLAIM_INTEREST, async (req:AppRequest, res:express.R
   }
 });
 
-claimInterestController.post(CLAIM_INTEREST, async (req: any, res: express.Response, next: express.NextFunction) => {
+claimInterestController.post(CLAIM_INTEREST_URL, async (req: any, res: express.Response, next: express.NextFunction) => {
   try {
     const caseId = req.session?.user?.id;
     const claimInterest = getClaimInterestForm(req.body.option);
