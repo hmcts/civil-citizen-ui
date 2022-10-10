@@ -14,6 +14,7 @@ import civilClaimResponseWithAdmittedPaymentAmountMock
 import civilClaimResponsePDFTimeline from './mocks/civilClaimResponsePDFTimelineMock.json';
 import claimantClaimsMock from './mocks/claimantClaimsMock.json';
 import civilClaimResponseWithTimelineAndEvidenceMock from './mocks/civilClaimResponseTimelineAndEvidenceMock.json';
+import civilClaimResponseWithWithExpertAndWitness from './mocks/civilClaimResponseExpertAndWitnessMock.json';
 
 import {Logger} from 'winston';
 
@@ -97,6 +98,11 @@ const mockClaimantClaims = {
   get: jest.fn(() => Promise.resolve(JSON.stringify(claimantClaimsMock))),
 };
 
+const mockCivilClaimWithExpertAndWitness = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseWithWithExpertAndWitness))),
+};
+
 export {
   mockCivilClaim,
   mockCivilClaimUndefined,
@@ -115,4 +121,5 @@ export {
   mockCivilClaimPDFTimeline,
   mockClaimantClaims,
   mockCivilClaimWithTimelineAndEvidence,
+  mockCivilClaimWithExpertAndWitness,
 };
