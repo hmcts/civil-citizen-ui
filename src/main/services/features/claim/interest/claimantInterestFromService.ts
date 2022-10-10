@@ -1,5 +1,5 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
-import {InterestClaimFromSelection} from '../../../common/form/models/claim/interestClaimFromSelection';
+import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {InterestClaimFromSelection} from '../../../../common/form/models/claim/interest/interestClaimFromSelection';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantInterestFromAsService');

@@ -5,16 +5,16 @@ import {
   CLAIM_INTEREST_START_DATE_URL
 } from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
-import {InterestClaimFromSelection} from '../../../../common/form/models/claim/interestClaimFromSelection';
+import {InterestClaimFromSelection} from '../../../../common/form/models/claim/interest/interestClaimFromSelection';
 import {
   getClaimantInterestFrom,
   saveClaimantInterestFrom
-} from '../../../../services/features/claim/claimantInterestFromService';
-import {InterestClaimFromType} from "../../../../common/form/models/claimDetails";
+} from '../../../../services/features/claim/interest/claimantInterestFromService';
+import {InterestClaimFromType} from '../../../../common/form/models/claimDetails';
 import {AppRequest} from '../../../../common/models/AppRequest';
 
 const claimantInterestFromController = Router();
-const claimantInterestFromViewPath = 'features/public/claim/claimant-interest-from';
+const claimantInterestFromViewPath = 'features/claim/interest/claimant-interest-from';
 
 
 function renderView(form: GenericForm<InterestClaimFromSelection>, res: Response): void {
