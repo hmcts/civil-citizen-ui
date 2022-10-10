@@ -13,15 +13,15 @@ describe('Claimant Date of Birth Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    app.locals.draftStoreClient = mockCivilClaim;
   });
 
   describe('on GET', () => {
     it('should render date of birth page', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
       const res = await request(app).get(CLAIMANT_DOB_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain('What is your date of birth?');
@@ -47,15 +47,16 @@ describe('Claimant Date of Birth Controller', () => {
 
   describe('on POST', () => {
     it('should render date of birth page if there are form errors', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
       const res = await request(app).post(CLAIMANT_DOB_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain('What is your date of birth?');
     });
 
     it('should redirect to the claimant phone number page', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app).post(CLAIMANT_DOB_URL)
-        .send({day: 3, month: 4, year: 1980})
+        .send({day: 2, month: 3, year: 1980})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toBe(CLAIMANT_PHONE_NUMBER_URL);
@@ -63,8 +64,9 @@ describe('Claimant Date of Birth Controller', () => {
     });
 
     it('should redirect to the claimant phone number page', async () => {
+      app.locals.draftStoreClient = mockNoStatementOfMeans;
       await request(app).post(CLAIMANT_DOB_URL)
-        .send({day: 2, month: 3, year: 1980})
+        .send({day: 3, month: 4, year: 1980})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toBe(CLAIMANT_PHONE_NUMBER_URL);

@@ -40,7 +40,7 @@ describe('Dashboard page', () => {
     .get(CIVIL_SERVICE_CASES_URL + 'defendant/undefined')
     .reply(200, {});
 
-  beforeEach((done) => {
+  beforeAll((done) => {
     testSession
       .get('/oauth2/callback')
       .query('code=ABC')

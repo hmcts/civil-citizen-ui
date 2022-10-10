@@ -22,18 +22,15 @@ describe('Support required', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamServiceUrl: string = config.get('services.idam.url');
 
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamServiceUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
 
   describe('on GET', () => {
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
-    });
-
     it('should return supportRequired page', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(supportRequiredUrl)
         .expect((res: Response) => {
@@ -51,8 +48,9 @@ describe('Support required', () => {
         });
     });
   });
+
   describe('on POST', () => {
-    beforeEach(() => {
+    beforeAll(() => {
       app.locals.draftStoreClient = mockCivilClaim;
     });
 

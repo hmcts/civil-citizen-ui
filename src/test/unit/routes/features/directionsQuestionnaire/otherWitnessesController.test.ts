@@ -43,7 +43,8 @@ const mockOtherWitnesses = {
 describe('Other Witnesses', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  beforeEach(() => {
+
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
@@ -53,16 +54,6 @@ describe('Other Witnesses', () => {
     test('should return on your other witnesses page successfully', async () => {
       app.locals.draftStoreClient = mockOtherWitnesses;
       await request(app).get(DQ_DEFENDANT_WITNESSES_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.OTHER_WITNESSES.PAGE_TITLE'));
-        });
-    });
-
-    test('should return on your other witnesses page successfully', async () => {
-      app.locals.draftStoreClient = mockOtherWitnesses;
-      await request(app)
-        .get(DQ_DEFENDANT_WITNESSES_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.OTHER_WITNESSES.PAGE_TITLE'));
