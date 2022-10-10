@@ -22,6 +22,7 @@ import {TotalAmountOptions} from '../../common/models/eligibility/totalAmountOpt
 import {ClaimTypeOptions} from '../../common/models/eligibility/claimTypeOptions';
 import {AgeEligibilityOptions} from '../../common/form/models/eligibility/defendant/AgeEligibilityOptions';
 import {LanguageOptions} from '../../common/models/directionsQuestionnaire/languageOptions';
+import {SameRateInterestType} from '../../common/form/models/claimDetails';
 import * as urls from '../../routes/urls';
 import {InterestClaimOptionsType} from '../../common/form/models/claim/interest/interestClaimOptionsType';
 
@@ -114,6 +115,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('ClaimTypeOptions', ClaimTypeOptions);
     nunjucksEnv.addGlobal('YesNoNotReceived', YesNoNotReceived);
     nunjucksEnv.addGlobal('LanguageOptions', LanguageOptions);
+    nunjucksEnv.addGlobal('SameRateInterestType', SameRateInterestType);
     nunjucksEnv.addGlobal('urls', urls);
     nunjucksEnv.addGlobal('InterestClaimOptionsType', InterestClaimOptionsType);
 

@@ -14,7 +14,8 @@ export enum SameRateInterestType {
 }
 export interface SameRateInterestSelection {
   sameRateInterestType: SameRateInterestType,
-  differentRate?: number
+  differentRate?: number,
+  reason?: string,
 }
 
 export interface ClaimFee {
