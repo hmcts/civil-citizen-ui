@@ -25,7 +25,7 @@ const mockWithoutRespondentPhone = {
 describe('Confirm Mediation Individual Telephone Number', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
@@ -38,7 +38,7 @@ describe('Confirm Mediation Individual Telephone Number', () => {
     let mainWrapper: Element;
 
     describe('on GET', () => {
-      beforeEach(async () => {
+      beforeAll(async () => {
         nock(idamUrl)
           .post('/o/token')
           .reply(200, {id_token: citizenRoleToken});
@@ -125,7 +125,7 @@ describe('Confirm Mediation Individual Telephone Number', () => {
     describe('on POST', () => {
       const getErrorSummaryListElement = (index: number) => htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0].getElementsByTagName('li')[index];
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         app.locals.draftStoreClient = mockCivilClaim;
         await request(app).post(CAN_WE_USE_URL).then(res => {
           const dom = new JSDOM(res.text);

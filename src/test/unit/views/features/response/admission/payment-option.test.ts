@@ -20,7 +20,8 @@ describe('Payment Option View', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
-    beforeEach(async () => {
+
+    beforeAll(async () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
@@ -65,7 +66,7 @@ describe('Payment Option View', () => {
 
   describe('on POST', () => {
     let htmlDocument: Document;
-    beforeEach(async () => {
+    beforeAll(async () => {
       app.locals.draftStoreClient = mockRedisWithPaymentAmount;
       const response = await request(app).post(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL);
       const dom = new JSDOM(response.text);
@@ -98,7 +99,7 @@ describe('Part Admit - Payment Option View', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
-    beforeEach(async () => {
+    beforeAll(async () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
