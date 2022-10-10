@@ -3,7 +3,7 @@ import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
 import {CIVIL_SERVICE_CALCULATE_DEADLINE} from '../../../../../../main/app/client/civilServiceUrls';
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from '../../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {
   CLAIM_TASK_LIST_URL,
@@ -16,7 +16,7 @@ jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 
-const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
+const mockGetCaseDataFromStore = getCaseDataFromStore as jest.Mock;
 
 describe('Response - New response deadline', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -32,7 +32,8 @@ describe('Response - New response deadline', () => {
     agreedResponseDeadline : extendedDate,
     calculatedResponseDeadline: extendedDate,
   };
-  beforeEach(() => {
+
+  beforeAll(() => {
     nock(idamServiceUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
@@ -40,6 +41,7 @@ describe('Response - New response deadline', () => {
       .post(CIVIL_SERVICE_CALCULATE_DEADLINE)
       .reply(200, new Date(2022, 9, 31));
   });
+
   describe('on GET', () => {
     it('should return new deadline date successfully', async () => {
       const expectedDate = '31 October 2022';

@@ -68,13 +68,16 @@ describe('Confirm Details page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    jest.resetAllMocks();
-
   });
+
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
   describe('on Exception', () => {
     it('should return http 500 when has error in the get method', async () => {
       mockGetRespondentInformation.mockImplementation(async () => {

@@ -34,18 +34,15 @@ describe('Citizen court orders', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamServiceUrl: string = config.get('services.idam.url');
 
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamServiceUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
 
   describe('on GET', () => {
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockDraftStore;
-    });
-
     it('should return court orders page', async () => {
+      app.locals.draftStoreClient = mockDraftStore;
       await request(app)
         .get(respondentCourtOrdersUrl)
         .expect((res: Response) => {
@@ -63,8 +60,9 @@ describe('Citizen court orders', () => {
         });
     });
   });
+
   describe('on POST', () => {
-    beforeEach(() => {
+    beforeAll(() => {
       app.locals.draftStoreClient = mockDraftStore;
     });
 
