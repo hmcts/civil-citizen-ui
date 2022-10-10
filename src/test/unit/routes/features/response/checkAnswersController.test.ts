@@ -22,7 +22,6 @@ const {JSDOM} = jsdom;
 const request = require('supertest');
 const {app} = require('../../../../../main/app');
 const session = require('supertest-session');
-const testSession = session(app);
 const civilServiceUrl = config.get<string>('services.civilService.url');
 const data = require('../../../../utils/mocks/defendantClaimsMock.json');
 jest.mock('../../../../../main/modules/oidc');
@@ -73,7 +72,7 @@ describe('Response - Check answers', () => {
 
   describe('on GET', () => {
     beforeEach((done) => {
-      testSession
+      session(app)
         .get(constructResponseUrlWithIdParams(CLAIM_ID, CLAIM_TASK_LIST_URL))
         .expect(200)
         .end(function (err: Error) {
@@ -89,7 +88,7 @@ describe('Response - Check answers', () => {
         return createClaimWithBasicRespondentDetails();
       });
 
-      const response = await testSession.get(respondentCheckAnswersUrl);
+      const response = await session(app).get(respondentCheckAnswersUrl);
       expect(response.status).toBe(200);
 
       const dom = new JSDOM(response.text);
@@ -106,7 +105,7 @@ describe('Response - Check answers', () => {
 
     });
     it('should pass english translation via query', async () => {
-      await testSession.get(respondentCheckAnswersUrl)
+      await session(app).get(respondentCheckAnswersUrl)
         .query({lang: 'en'})
         .expect((res: Response) => {
           expect(res.status).toBe(200);
@@ -114,7 +113,7 @@ describe('Response - Check answers', () => {
         });
     });
     it('should pass cy translation via query', async () => {
-      await testSession.get(respondentCheckAnswersUrl)
+      await session(app).get(respondentCheckAnswersUrl)
         .query({lang: 'cy'})
         .expect((res: Response) => {
           expect(res.status).toBe(200);
@@ -126,7 +125,7 @@ describe('Response - Check answers', () => {
       mockGetSummarySections.mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
-      await testSession
+      await session(app)
         .get(respondentCheckAnswersUrl)
         .expect((res: Response) => {
           expect(res.status).toBe(500);
