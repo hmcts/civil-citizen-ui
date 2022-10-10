@@ -1,7 +1,6 @@
 import {Claim} from '../../../../main/common/models/claim';
 import {
   InterestClaimFromType,
-  InterestClaimOptionsType,
   InterestClaimUntilType,
   SameRateInterestType,
   CaseState,
@@ -28,6 +27,7 @@ import {HowMuchHaveYouPaid, HowMuchHaveYouPaidParams} from '../../../../main/com
 import {WhyDoYouDisagree} from '../../../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {Defence} from '../../../../main/common/form/models/defence';
 import { ClaimResponseStatus } from '../../../../main/common/models/claimResponseStatus';
+import {InterestClaimOptionsType} from '../../../../main/common/form/models/claim/interest/interestClaimOptionsType';
 
 describe('Claim isInterestClaimUntilSubmitDate', () => {
   const claim = new Claim();

@@ -1,19 +1,24 @@
 import express from 'express';
 import {
-  CITIZEN_PA_PAYMENT_DATE_URL,
+  CLAIM_INTEREST_RATE_URL,
+  CLAIM_INTEREST_TOTAL_URL,
   CLAIM_INTEREST_TYPE_URL,
-  CLAIM_TASK_LIST_URL,
 } from '../../../urls';
-import {GenericForm} from 'common/form/models/genericForm';
+import {GenericForm} from '../../../../common/form/models/genericForm';
 import {AppRequest} from 'models/AppRequest';
-import InterestClaimOptions from "common/form/models/claim/interest/interestClaimOptions";
-import {constructResponseUrlWithIdParams} from "common/utils/urlFormatter";
+import InterestClaimOption from "../../../../common/form/models/claim/interest/interestClaimOption";
+import {constructResponseUrlWithIdParams} from "../../../../common/utils/urlFormatter";
+import {
+  getInterestTypeForm,
+  saveInterestTypeOption,
+} from "../../../../services/features/claim/interest/interestTypeService";
+import {InterestClaimOptionsType} from '../../../../common/form/models/claim/interest/interestClaimOptionsType';
 
 const interestTypeController = express.Router();
-const interestTypeViewPath = 'features/claim/interest-type';
+const interestTypeViewPath = 'features/claim/interest/interest-type';
 
 
-function renderView(form: GenericForm<InterestClaimOptions>, res: express.Response) {
+function renderView(form: GenericForm<InterestClaimOption>, res: express.Response) {
   res.render(interestTypeViewPath, {form});
 }
 
@@ -27,20 +32,20 @@ interestTypeController.get(CLAIM_INTEREST_TYPE_URL, async (req: AppRequest, res:
   }
 });
 
-interestTypeController.post(CLAIM_INTEREST_TYPE_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+interestTypeController.post(CLAIM_INTEREST_TYPE_URL, async (req: AppRequest | express.Request, res: express.Response, next: express.NextFunction) => {
   try {
-    const claimId = req.session?.user?.id;
-    const interestType = new GenericForm(new InterestClaimOptions(req.body.interestType));
-    interestType.validateSync();
+    const claimId = (<AppRequest>req).session?.user?.id;
+    const interestTypeForm = new GenericForm(new InterestClaimOption(req.body.interestType));
+    interestTypeForm.validateSync();
 
-    if (interestType.hasErrors()) {
-      renderView(interestType, res);
+    if (interestTypeForm.hasErrors()) {
+      renderView(interestTypeForm, res);
     } else {
-      await saveInterestTypeOption(claimId, interestType.model.interestType);
-      if (form.paymentOptionBySetDateSelected()) {
-        res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_PA_PAYMENT_DATE_URL));
+      await saveInterestTypeOption(claimId, interestTypeForm.model);
+      if (interestTypeForm.model.interestType == InterestClaimOptionsType.SAME_RATE_INTEREST) {
+        res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_INTEREST_RATE_URL));
       } else {
-        res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_TASK_LIST_URL));
+        res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_INTEREST_TOTAL_URL));
       }
     }
   } catch (error) {

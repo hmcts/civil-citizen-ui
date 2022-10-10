@@ -1011,6 +1011,12 @@
       "REACHING_SETTLEMENT": "Setlo’r anghydfod",
       "TITLE": "Gwasanaeth cyfryngu dros y ffôn am ddim"
     },
+    "HOW_CLAIM_INTEREST": {
+      "BREAK_DOWN": "Break down interest for different time periods or items",
+      "PAGE_TITLE": "How do you want to claim interest?",
+      "SAME_RATE": "Same rate for the whole period",
+      "TITLE": "How do you want to claim interest?"
+    },
     "INCOMPLETE_SUBMISSION": {
       "TITLE": "You need to complete all sections before you submit your response"
     },
@@ -1759,6 +1765,7 @@
     "VALID_FREE_TEXT_DATE_LENGTH": "Rhowch ddyddiad sydd ddim hirach na $constraint1 nod",
     "VALID_HOUSING": "Disgrifiwch eich cartref",
     "VALID_INTEGER": "Rhowch rif, er enghraifft 3",
+    "VALID_INTEREST_TYPE_OPTION": "Choose same rate or breakdown",
     "VALID_MONTH": "Rhowch fis dilys",
     "VALID_CANT_ATTEND_HEARING": "Select yes if there are any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing",
     "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Ni all y rhif fod yn uwch na'r rhif ar y dudalen flaenorol",

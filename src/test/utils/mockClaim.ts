@@ -7,13 +7,13 @@ import {CorrespondenceAddress} from '../../main/common/models/correspondenceAddr
 import {YesNo} from '../../main/common/form/models/yesNo';
 import {
   InterestClaimFromType,
-  InterestClaimOptionsType,
   InterestClaimUntilType,
   SameRateInterestType,
   CaseState,
 } from '../../main/common/form/models/claimDetails';
 import {ResponseOptions} from '../../main/common/form/models/responseDeadline';
 import {AdditionalTimeOptions} from '../../main/common/form/models/additionalTime';
+import {InterestClaimOptionsType} from '../../main/common/form/models/claim/interest/interestClaimOptionsType';
 
 export const buildPrimaryAddress = (): PrimaryAddress => {
   return {

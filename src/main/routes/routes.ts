@@ -129,7 +129,7 @@ import defendantPartyTypeController from './features/claim/defendantPartyTypeCon
 import claimantDoBController from './features/claim/claimantDoBController';
 import claimantIndividualDetailsController from './features/claim/claimantIndividualDetailsController';
 import welshLanguageController from './features/directionsQuestionnaire/welshLanguageController';
-import claimantPhoneController from './features/public/claim/claimantPhoneController';
+import claimantPhoneController from './features/claim/claimantPhoneController';
 import whyUnavailableForHearingController from './features/directionsQuestionnaire/whyUnavailableForHearingController';
 import phoneOrVideoHearingController from './features/directionsQuestionnaire/phoneOrVideoHearingController';
 import cantAttendHearingInNext12MonthsController

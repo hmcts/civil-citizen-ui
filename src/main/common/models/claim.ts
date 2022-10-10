@@ -19,7 +19,6 @@ import {
   ClaimAmountBreakup,
   ClaimFee,
   InterestClaimFromType,
-  InterestClaimOptionsType,
   InterestClaimUntilType,
   SameRateInterestSelection,
   SameRateInterestType,
@@ -38,6 +37,7 @@ import RejectAllOfClaimType from '../../common/form/models/rejectAllOfClaimType'
 import {DirectionQuestionnaire} from '../models/directionsQuestionnaire/directionQuestionnaire';
 import {ResponseOptions} from '../../common/form/models/responseDeadline';
 import {AdditionalTimeOptions} from '../../common/form/models/additionalTime';
+import {InterestClaimOptionsType} from '../../common/form/models/claim/interest/interestClaimOptionsType';
 
 export class Claim {
   legacyCaseReference: string;
@@ -135,6 +135,10 @@ export class Claim {
 
   isInterestClaimUntilSubmitDate(): boolean {
     return this.interestClaimUntil === InterestClaimUntilType.UNTIL_CLAIM_SUBMIT_DATE;
+  }
+
+  isInterestClaimOptionExists(): boolean {
+    return this.interestClaimOptions?.length > 0
   }
 
   isInterestFromClaimSubmitDate(): boolean {
