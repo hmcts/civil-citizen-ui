@@ -5,7 +5,7 @@ import {GenericForm} from '../../../../common/form/models/genericForm';
 import {getDefendantEmail,saveDefendantEmail} from '../../../../services/features/claim/yourDetails/defendantEmailService';
 import {AppRequest} from '../../../../common/models/AppRequest';
 
-const defendantEmailViewPath = 'features/claim/defendant-email';
+const defendantEmailViewPath = 'features/claim/yourDetails/defendant-email';
 const defendantEmailController = Router();
 
 function renderView(form: GenericForm<DefendantEmail>, res: Response): void {
