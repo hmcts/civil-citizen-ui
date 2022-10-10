@@ -16,7 +16,8 @@ const dqParentName = 'hearing';
 
 supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res, next: express.NextFunction) => {
   try {
-    const [supportRequiredList, peopleLists] = await getSupportRequired(req.params.id);
+    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+    const [supportRequiredList, peopleLists] = await getSupportRequired(req.params.id, lang);
     const form = new GenericForm(supportRequiredList);
     res.render(supportRequiredViewPath, {form, peopleLists});
   } catch (error) {
@@ -31,8 +32,9 @@ supportRequiredController.post(SUPPORT_REQUIRED_URL, async (req, res, next: expr
     const form = new GenericForm(supportRequiredList);
     form.validateSync();
     if (form.hasErrors()) {
+      const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const selectedNames = form.model?.items?.map(item => item.fullName);
-      const peopleLists = await generatePeopleListWithSelectedValues(claimId, selectedNames);
+      const peopleLists = await generatePeopleListWithSelectedValues(claimId, selectedNames, lang);
       res.render(supportRequiredViewPath, {form, peopleLists});
     } else {
       await saveDirectionQuestionnaire(claimId, form.model, dqPropertyName, dqParentName);

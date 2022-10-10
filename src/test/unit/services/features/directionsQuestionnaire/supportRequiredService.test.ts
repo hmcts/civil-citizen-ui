@@ -4,7 +4,7 @@ import {
   getSupportRequiredForm,
   NameListType,
 } from '../../../../../main/services/features/directionsQuestionnaire/supportRequiredService';
-import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from '../../../../../main/modules/draft-store/draftStoreService';
 import {
   SupportRequired,
   SupportRequiredList,
@@ -17,7 +17,12 @@ import {Claim} from '../../../../../main/common/models/claim';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
+jest.mock('../../../../../main/modules/i18n');
+jest.mock('i18next', () => ({
+  t: (i: string | unknown) => i,
+  use: jest.fn(),
+}));
+const mockGetCaseDataFromStore = getCaseDataFromStore as jest.Mock;
 
 describe('Support Required service', () => {
   describe('convert to support required form', () => {
@@ -287,13 +292,14 @@ describe('Support Required service', () => {
   });
 
   describe('Get Support Required List', () => {
+    const lang = 'en';
     it('should return support required details from draft store if present', async () => {
       //Given
       mockGetCaseDataFromStore.mockImplementation(async () => {
         return civilClaimResponseExpertAndWitnessMock.case_data;
       });
       //When
-      const [supportRequiredList, peopleLists] = await getSupportRequired('1234');
+      const [supportRequiredList, peopleLists] = await getSupportRequired('1234', lang);
       //Then
       if (supportRequiredList.items) {
         expect(supportRequiredList.items).toBeTruthy();
@@ -307,11 +313,11 @@ describe('Support Required service', () => {
         const firstRow = peopleLists[0] as NameListType[];
         const secondRow = peopleLists[1] as NameListType[];
         expect(peopleLists.length).toBe(2);
-        expect(firstRow[0].text).toBe('Choose the name of the person');
+        expect(firstRow[0].text).toBe('PAGES.SUPPORT_REQUIRED.CHOOSE_NAME');
         expect(firstRow[1].text).toBe('John Doe');
         expect(firstRow[1].value).toBe('johndoe');
         expect(firstRow[1].selected).toBe(true);
-        expect(secondRow[0].text).toBe('Choose the name of the person');
+        expect(secondRow[0].text).toBe('PAGES.SUPPORT_REQUIRED.CHOOSE_NAME');
         expect(secondRow[3].text).toBe('Mike Brown');
         expect(secondRow[3].value).toBe('mikebrown');
         expect(secondRow[3].selected).toBe(true);
@@ -323,8 +329,8 @@ describe('Support Required service', () => {
       mockGetCaseDataFromStore.mockImplementation(async () => {
         return new Claim();
       });
-      //Whensuppo
-      const [supportRequiredList, peopleLists] = await getSupportRequired('1234');
+      //When
+      const [supportRequiredList, peopleLists] = await getSupportRequired('1234', lang);
       //Then
       if (supportRequiredList.items) {
         expect(supportRequiredList.items).toBeTruthy();
@@ -339,7 +345,7 @@ describe('Support Required service', () => {
       if (peopleLists.length) {
         const firstRow = peopleLists[0] as NameListType[];
         expect(peopleLists.length).toBe(1);
-        expect(firstRow[0].text).toBe('Choose the name of the person');
+        expect(firstRow[0].text).toBe('PAGES.SUPPORT_REQUIRED.CHOOSE_NAME');
         expect(firstRow[0].value).toBe('');
         expect(firstRow[0].selected).toBeUndefined();
       }

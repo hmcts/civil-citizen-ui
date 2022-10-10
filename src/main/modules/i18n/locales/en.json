@@ -1495,6 +1495,7 @@
     },
     "SUPPORT_REQUIRED": {
       "ADD_ANOTHER": "Add another person",
+      "CHOOSE_NAME": "Choose the name of the person",
       "DISABLE": "Disabled access",
       "ENTER_SIGN_LANGUAGE": "What sign language needs to be interpreted?",
       "EXTRA_SUPPORT": "Tell us what other support they need",
