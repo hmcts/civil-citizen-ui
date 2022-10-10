@@ -13,17 +13,17 @@ import {
   isStatementOfMeansComplete,
 } from '../../../../../../main/common/utils/taskList/tasks/taskListHelpers';
 import {PartyType} from '../../../../../../main/common/models/partyType';
-import {Respondent} from '../../../../../../main/common/models/respondent';
+import {Party} from '../../../../../../main/common/models/party';
 import PaymentOptionType from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {Mediation} from '../../../../../../main/common/models/mediation/mediation';
 import {CompanyTelephoneNumber} from '../../../../../../main/common/form/models/mediation/companyTelephoneNumber';
 import {ResponseType} from '../../../../../../main/common/form/models/responseType';
 import {RejectAllOfClaim} from '../../../../../../main/common/form/models/rejectAllOfClaim';
 import RejectAllOfClaimType from '../../../../../../main/common/form/models/rejectAllOfClaimType';
-import { YesNo } from '../../../../../../main/common/form/models/yesNo';
+import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 
 const mockClaim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
-const mockRespondent: Respondent = {
+const mockRespondent: Party = {
   dateOfBirth: new Date(),
   responseType: '',
   telephoneNumber: '',
@@ -239,7 +239,7 @@ describe('Task List Helpers', () => {
 
   describe('isFullDefenceAndNotCounterClaim helper', () => {
     it('should return false if is not fullDefence', () => {
-      caseData.respondent1 = new Respondent();
+      caseData.respondent1 = new Party();
       caseData.respondent1.responseType = ResponseType.FULL_ADMISSION;
       expect(isFullDefenceAndNotCounterClaim(caseData)).toEqual(false);
     });
@@ -251,7 +251,7 @@ describe('Task List Helpers', () => {
     });
 
     it('should return true if is FullDefence And Not a CounterClaim', () => {
-      caseData.respondent1 = new Respondent();
+      caseData.respondent1 = new Party();
       caseData.respondent1.responseType = ResponseType.FULL_DEFENCE;
       caseData.rejectAllOfClaim = new RejectAllOfClaim();
       caseData.rejectAllOfClaim.option = RejectAllOfClaimType.ALREADY_PAID;
@@ -261,20 +261,20 @@ describe('Task List Helpers', () => {
 
   describe('hasDateOfBirthIfIndividual helper', () => {
     it('should return false if individual', () => {
-      caseData.respondent1 = new Respondent();
+      caseData.respondent1 = new Party();
       caseData.respondent1.type = PartyType.INDIVIDUAL;
       expect(hasDateOfBirthIfIndividual(caseData.respondent1)).toEqual(false);
     });
 
     it('should return true if individual and has dateOfBirth', () => {
-      caseData.respondent1 = new Respondent();
+      caseData.respondent1 = new Party();
       caseData.respondent1.type = PartyType.INDIVIDUAL;
       caseData.respondent1.dateOfBirth = new Date();
       expect(hasDateOfBirthIfIndividual(caseData.respondent1)).toEqual(true);
     });
 
     it('should return true if is not individual', () => {
-      caseData.respondent1 = new Respondent();
+      caseData.respondent1 = new Party();
       caseData.respondent1.type = PartyType.ORGANISATION;
       expect(hasDateOfBirthIfIndividual(caseData.respondent1)).toEqual(true);
     });
@@ -292,27 +292,27 @@ describe('Task List Helpers', () => {
     };
 
     it('should return false if only has primaryAdress', () => {
-      caseData.respondent1 = new Respondent();
+      caseData.respondent1 = new Party();
       caseData.respondent1.primaryAddress = adress;
       expect(hasCorrespondenceAndPrimaryAddress(caseData.respondent1)).toEqual(false);
     });
 
     it('should return false if has primaryAdress, YES and doesnt has correspondenceAdress', () => {
-      caseData.respondent1 = new Respondent();
+      caseData.respondent1 = new Party();
       caseData.respondent1.primaryAddress = adress;
       caseData.respondent1.postToThisAddress = YesNo.YES;
       expect(hasCorrespondenceAndPrimaryAddress(caseData.respondent1)).toEqual(false);
     });
 
     it('should return true if has primaryAdress and NO', () => {
-      caseData.respondent1 = new Respondent();
+      caseData.respondent1 = new Party();
       caseData.respondent1.primaryAddress = adress;
       caseData.respondent1.postToThisAddress = YesNo.NO;
       expect(hasCorrespondenceAndPrimaryAddress(caseData.respondent1)).toEqual(true);
     });
 
     it('should return true if has primaryAdress, YES and has correspondenceAdress', () => {
-      caseData.respondent1 = new Respondent();
+      caseData.respondent1 = new Party();
       caseData.respondent1.primaryAddress = adress;
       caseData.respondent1.postToThisAddress = YesNo.YES;
       caseData.respondent1.correspondenceAddress = adress;

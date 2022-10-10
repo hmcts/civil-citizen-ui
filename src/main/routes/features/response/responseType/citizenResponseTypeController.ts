@@ -5,7 +5,7 @@ import {
   CITIZEN_RESPONSE_TYPE_URL,
   CLAIM_TASK_LIST_URL,
 } from '../../../urls';
-import {Respondent} from '../../../../common/models/respondent';
+import {Party} from 'models/party';
 import {Claim} from '../../../../common/models/claim';
 import {CitizenResponseType} from '../../../../common/form/models/citizenResponseType';
 import {ResponseType} from '../../../../common/form/models/responseType';
@@ -21,7 +21,7 @@ function renderView(form: GenericForm<CitizenResponseType>, res: express.Respons
   res.render(citizenResponseTypeViewPath, {form: form, componentDetailItemsList: componentDetailItemsList});
 }
 
-citizenResponseTypeController.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res,next: express.NextFunction) => {
+citizenResponseTypeController.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res, next: express.NextFunction) => {
   try {
     const citizenResponseType = new GenericForm(new CitizenResponseType());
     const claim = await getCaseDataFromStore(req.params.id);
@@ -47,7 +47,7 @@ citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
         if (claim.respondent1) {
           claim.respondent1.responseType = formResponseType.model.responseType;
         } else {
-          const respondent = new Respondent();
+          const respondent = new Party();
           respondent.responseType = formResponseType.model.responseType;
           claim.respondent1 = respondent;
         }

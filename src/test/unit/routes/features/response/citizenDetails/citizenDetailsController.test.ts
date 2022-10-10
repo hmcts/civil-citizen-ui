@@ -15,7 +15,7 @@ import {
   saveRespondent,
 } from '../../../../../../main/services/features/response/citizenDetails/citizenDetailsService';
 import {Claim} from '../../../../../../main/common/models/claim';
-import {Respondent} from '../../../../../../main/common/models/respondent';
+import {Party} from '../../../../../../main/common/models/party';
 import {buildCorrespondenceAddress, buildPrimaryAddress} from '../../../../../utils/mockClaim';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {PartyType} from '../../../../../../main/common/models/partyType';
@@ -30,8 +30,8 @@ const mockSaveRespondent = saveRespondent as jest.Mock;
 
 const claim = new Claim();
 
-const buildClaimOfRespondent = (): Respondent => {
-  claim.respondent1 = new Respondent();
+const buildClaimOfRespondent = (): Party => {
+  claim.respondent1 = new Party();
   claim.respondent1.individualTitle = 'individualTitle';
   claim.respondent1.individualFirstName = 'individualFirstName';
   claim.respondent1.individualLastName = 'individualLastName';
@@ -40,8 +40,8 @@ const buildClaimOfRespondent = (): Respondent => {
   return claim.respondent1;
 };
 
-const buildClaimOfRespondentType = (type: PartyType): Respondent => {
-  claim.respondent1 = new Respondent();
+const buildClaimOfRespondentType = (type: PartyType): Party => {
+  claim.respondent1 = new Party();
   claim.respondent1.type = type;
   claim.respondent1.primaryAddress = buildPrimaryAddress();
   claim.respondent1.correspondenceAddress = buildCorrespondenceAddress();
@@ -104,7 +104,7 @@ describe('Confirm Details page', () => {
 
   it('should return your details page with empty information', async () => {
     mockGetRespondentInformation.mockImplementation(async () => {
-      return new Respondent();
+      return new Party();
     });
     await request(app)
       .get(CITIZEN_DETAILS_URL)
@@ -127,8 +127,8 @@ describe('Confirm Details page', () => {
   });
 
   it('should return your details page with information without correspondent address', async () => {
-    const buildClaimOfRespondentWithoutCorrespondent = (): Respondent => {
-      claim.respondent1 = new Respondent();
+    const buildClaimOfRespondentWithoutCorrespondent = (): Party => {
+      claim.respondent1 = new Party();
       claim.respondent1.individualTitle = 'individualTitle';
       claim.respondent1.individualFirstName = 'individualFirstName';
       claim.respondent1.individualLastName = 'individualLastName';
@@ -502,7 +502,7 @@ describe('Confirm Details page', () => {
 
   it('get/Citizen details - should return test variable when there is no data on redis and civil-service', async () => {
     mockGetRespondentInformation.mockImplementation(async () => {
-      return new Respondent();
+      return new Party();
     });
     await request(app)
       .get('/case/1111/response/your-details')

@@ -1,7 +1,7 @@
 import * as express from 'express';
 import {CitizenDob} from '../../../../common/form/models/citizenDob';
-import {DOB_URL, CITIZEN_PHONE_NUMBER_URL, AGE_ELIGIBILITY_URL} from '../../../../routes/urls';
-import {Respondent} from '../../../../common/models/respondent';
+import {AGE_ELIGIBILITY_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL} from '../../../../routes/urls';
+import {Party} from '../../../../common/models/party';
 import {Claim} from '../../../../common/models/claim';
 import {AgeEligibilityVerification} from '../../../../common/utils/ageEligibilityVerification';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
@@ -51,7 +51,7 @@ citizenDobController.post(DOB_URL, async (req, res, next: express.NextFunction) 
       if (claim.respondent1) {
         claim.respondent1.dateOfBirth = citizenDob.model.dateOfBirth;
       } else {
-        const respondent = new Respondent();
+        const respondent = new Party();
         respondent.dateOfBirth = citizenDob.model.dateOfBirth;
         claim.respondent1 = respondent;
       }

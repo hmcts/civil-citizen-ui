@@ -1,4 +1,4 @@
-import {Respondent} from '../../main/common/models/respondent';
+import {Party} from '../../main/common/models/party';
 import {Claim} from '../../main/common/models/claim';
 import {PartyType} from '../../main/common/models/partyType';
 import {DocumentType} from '../../main/common/models/document/documentType';
@@ -35,8 +35,8 @@ export const buildCorrespondenceAddress = (): CorrespondenceAddress => {
   };
 };
 
-export const buildRespondent1 = (): Respondent => {
-  const respondent = new Respondent();
+export const buildRespondent1 = (): Party => {
+  const respondent = new Party();
   respondent.individualTitle = 'Mrs.';
   respondent.individualLastName = 'Mary';
   respondent.individualFirstName = 'Richards';

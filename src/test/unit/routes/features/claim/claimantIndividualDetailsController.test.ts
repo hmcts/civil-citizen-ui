@@ -6,7 +6,7 @@ import {buildCorrespondenceAddress, buildPrimaryAddress} from '../../../../utils
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {PartyType} from '../../../../../main/common/models/partyType';
 import {Claim, Party} from '../../../../../main/common/models/claim';
-import {Respondent} from '../../../../../main/common/models/respondent';
+import {Party} from '../../../../../main/common/models/party';
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {
   VALID_ADDRESS_LINE_1,
@@ -28,7 +28,7 @@ const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 const claim = new Claim();
 
 const buildClaimOfApplicant = (): Party => {
-  claim.applicant1 = new Respondent();
+  claim.applicant1 = new Party();
   claim.applicant1.individualTitle = 'individualTitle';
   claim.applicant1.individualFirstName = 'individualFirstName';
   claim.applicant1.individualLastName = 'individualLastName';
@@ -38,7 +38,7 @@ const buildClaimOfApplicant = (): Party => {
 };
 
 const buildClaimOfApplicantType = (type: PartyType): Party => {
-  claim.applicant1 = new Respondent();
+  claim.applicant1 = new Party();
   claim.applicant1.type = type;
   claim.applicant1.primaryAddress = buildPrimaryAddress();
   claim.applicant1.correspondenceAddress = buildCorrespondenceAddress();
@@ -101,7 +101,7 @@ describe('Claimant Individual Details page', () => {
 
   it('should return your details page with empty information', async () => {
     mockGetCaseData.mockImplementation(async () => {
-      return new Respondent();
+      return new Party();
     });
     await request(app)
       .get(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
@@ -125,7 +125,7 @@ describe('Claimant Individual Details page', () => {
 
   it('should return your details page with information without correspondent address', async () => {
     const buildClaimOfApplicantWithoutCorrespondent = (): Party => {
-      claim.applicant1 = new Respondent();
+      claim.applicant1 = new Party();
       claim.applicant1.type = PartyType.INDIVIDUAL;
       claim.applicant1.individualTitle = 'individualTitle';
       claim.applicant1.individualFirstName = 'individualFirstName';
@@ -146,7 +146,7 @@ describe('Claimant Individual Details page', () => {
 
   it('should return your details page with no primary, correspondence address or claimant details', async () => {
     const buildClaimOfApplicantWithoutInformation = (): Party => {
-      claim.applicant1 = new Respondent();
+      claim.applicant1 = new Party();
       claim.applicant1.primaryAddress = undefined;
       return claim.applicant1;
     };
@@ -163,7 +163,7 @@ describe('Claimant Individual Details page', () => {
 
   it('get/Claimant individual details - should return test variable when there is no data on redis and civil-service', async () => {
     mockGetCaseData.mockImplementation(async () => {
-      return new Respondent();
+      return new Party();
     });
     await request(app)
       .get('/claim/claimant-individual-details')

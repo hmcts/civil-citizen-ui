@@ -10,7 +10,7 @@ import {ResponseType} from '../../../../../main/common/form/models/responseType'
 import {TaskStatus} from '../../../../../main/common/models/taskList/TaskStatus';
 import {deepCopy} from '../../../../utils/deepCopy';
 import {PartyType} from '../../../../../main/common/models/partyType';
-import {Respondent} from '../../../../../main/common/models/respondent';
+import {Party} from '../../../../../main/common/models/party';
 import PaymentOptionType from '../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {StatementOfMeans} from '../../../../../main/common/models/statementOfMeans';
 import {Disability} from '../../../../../main/common/form/models/statementOfMeans/disability';
@@ -125,7 +125,7 @@ describe('Response Task List service', () => {
 
   describe('Respond to claim task list', () => {
     const caseData = new Claim();
-    caseData.respondent1 = new Respondent();
+    caseData.respondent1 = new Party();
     caseData.respondent1.individualFirstName = 'Joe';
     caseData.respondent1.type = PartyType.INDIVIDUAL;
     caseData.respondent1.responseType = ResponseType.FULL_ADMISSION;

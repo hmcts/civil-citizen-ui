@@ -5,7 +5,7 @@ import {ClaimantDoB} from '../../../../common/form/models/claim/claimant/claiman
 import {Claim} from '../../../../common/models/claim';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {AppRequest} from '../../../../common/models/AppRequest';
-import {Respondent} from '../../../../common/models/respondent';
+import {Party} from 'models/party';
 
 const claimantDoBController = express.Router();
 const claimantDoBViewPath = 'features/response/citizenDob/citizen-dob';
@@ -38,7 +38,7 @@ claimantDoBController.post(CLAIMANT_DOB_URL, async (req: express.Request, res: e
       if (claim.respondent1) {
         claim.respondent1.dateOfBirth = form.model.dateOfBirth;
       } else {
-        const respondent = new Respondent();
+        const respondent = new Party();
         respondent.dateOfBirth = form.model.dateOfBirth;
         claim.respondent1 = respondent;
       }

@@ -1,10 +1,6 @@
-import {
-  ValidateIf,
-  MaxLength,
-  IsDefined,
-  IsNotEmpty,
-} from 'class-validator';
-import {Party} from '../../models/claim';
+import {IsDefined, IsNotEmpty, MaxLength, ValidateIf} from 'class-validator';
+import {Party} from '../../models/party';
+
 export class PartyDetails {
 
   @ValidateIf(o => o.title !== undefined)
@@ -27,7 +23,7 @@ export class PartyDetails {
     title?: string,
     firstName?: string,
     lastName?: string,
-  ){
+  ) {
     this.title = title;
     this.firstName = firstName;
     this.lastName = lastName;

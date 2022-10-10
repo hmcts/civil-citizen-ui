@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {CLAIMANT_DOB_URL, CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL} from '../../urls';
+import {CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, CLAIMANT_DOB_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {CitizenAddress} from '../../../common/form/models/citizenAddress';
 import {CitizenCorrespondenceAddress} from '../../../common/form/models/citizenCorrespondenceAddress';
@@ -11,7 +11,7 @@ import {
 } from '../../../services/features/claim/claimantDetailsService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {PartyDetails} from '../../../common/form/models/partyDetails';
-import {Party} from '../../../common/models/claim';
+import {Party} from '../../../common/models/party';
 import {AppRequest} from 'common/models/AppRequest';
 
 const claimantIndividualDetailsController = express.Router();

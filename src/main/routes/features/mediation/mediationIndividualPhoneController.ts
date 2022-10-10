@@ -15,7 +15,7 @@ const mediationIndividualPhoneController = express.Router();
 
 async function renderView(form: GenericForm<MediationIndividualPhoneNumber>, res: express.Response, claimId: string): Promise<void> {
   const claim: Claim = await getCaseDataFromStore(claimId);
-  res.render(mediationIndividualPhoneViewPath, {form, respondentTelNumber: claim.respondent1?.telephoneNumber});
+  res.render(mediationIndividualPhoneViewPath, {form, respondentTelNumber: claim.respondent1?.phoneNumber});
 }
 
 const getGenericForm = (mediationIndividualPhoneNumber: MediationIndividualPhoneNumber) => {
@@ -42,7 +42,7 @@ mediationIndividualPhoneController.post(CAN_WE_USE_URL,
   async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
       const claim: Claim = await getCaseDataFromStore(req.params.id);
-      const mediationIndividualPhoneForm: GenericForm<MediationIndividualPhoneNumber> = isTelephoneNumberSaved(claim.respondent1.telephoneNumber, req);
+      const mediationIndividualPhoneForm: GenericForm<MediationIndividualPhoneNumber> = isTelephoneNumberSaved(claim.respondent1.phoneNumber, req);
       await mediationIndividualPhoneForm.validate();
       if (mediationIndividualPhoneForm.hasErrors()) {
         await renderView(mediationIndividualPhoneForm, res, req.params.id);

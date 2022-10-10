@@ -5,7 +5,7 @@ import {PartyTypeSelection} from '../../../../common/form/models/claim/partyType
 import {redirectToPage} from '../../../../services/features/claim/partyTypeService';
 import {ClaimantOrDefendant} from '../../../../common/models/partyType';
 import {getDefendantInformation, saveDefendant} from '../../../../services/features/claim/defendantDetailsService';
-import {Party} from '../../../../common/models/claim';
+import {Party} from '../../../../common/models/party';
 import {AppRequest} from '../../../../common/models/AppRequest';
 
 const defendantPartyTypeViewPath = 'features/public/claim/defendant-party-type';

@@ -2,7 +2,7 @@ import * as express from 'express';
 import {CITIZEN_DETAILS_URL, DOB_URL, CITIZEN_PHONE_NUMBER_URL} from '../../../urls';
 import {CitizenAddress} from '../../../../common/form/models/citizenAddress';
 import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citizenCorrespondenceAddress';
-import {Respondent} from '../../../../common/models/respondent';
+import {Party} from 'models/party';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {YesNo} from '../../../../common/form/models/yesNo';
 import {
@@ -24,20 +24,20 @@ const getViewPathWithType = (type: PartyType) => {
   return CITIZEN_DETAILS_VIEW_PATH;
 };
 
-function renderPage(res: express.Response, req: express.Request, respondent: Respondent, citizenAddress: GenericForm<CitizenAddress>, citizenCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>): void {
+function renderPage(res: express.Response, req: express.Request, respondent: Party, citizenAddress: GenericForm<CitizenAddress>, citizenCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>): void {
   const type = respondent?.type;
 
   res.render(getViewPathWithType(type), {
     respondent,
     citizenAddress,
     citizenCorrespondenceAddress,
-    partyName: respondent?.partyName ,
+    partyName: respondent?.partyName,
     contactPerson: respondent?.contactPerson,
     type,
   });
 }
 
-const redirect = (responseDataRedis: Respondent, req: express.Request, res: express.Response) => {
+const redirect = (responseDataRedis: Party, req: express.Request, res: express.Response) => {
   if (responseDataRedis?.type === PartyType.SOLE_TRADER || responseDataRedis?.type === PartyType.INDIVIDUAL) {
     res.redirect(constructResponseUrlWithIdParams(req.params.id, DOB_URL));
   } else {
@@ -47,7 +47,7 @@ const redirect = (responseDataRedis: Respondent, req: express.Request, res: expr
 
 citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
-    const respondent: Respondent = await getRespondentInformation(req.params.id);
+    const respondent: Party = await getRespondentInformation(req.params.id);
 
     const citizenAddress = new GenericForm<CitizenAddress>(new CitizenAddress(
       respondent?.primaryAddress ? respondent.primaryAddress.AddressLine1 : undefined,
@@ -70,7 +70,7 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: express.Request, r
 });
 
 citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-  const responseDataRedis: Respondent = await getRespondentInformation(req.params.id);
+  const responseDataRedis: Party = await getRespondentInformation(req.params.id);
   try {
     const citizenAddress = new GenericForm<CitizenAddress>(new CitizenAddress(
       req.body.primaryAddressLine1,

@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import 'dayjs/locale/cy';
 import currencyFormat from '../utils/currencyFormat';
-import {Respondent} from './respondent';
+import {Party} from './party';
 import {StatementOfMeans} from './statementOfMeans';
 import {PartyType} from './partyType';
 import {RepaymentPlan} from './repaymentPlan';
@@ -48,7 +48,7 @@ export class Claim {
   totalClaimAmount: number;
   respondent1ResponseDeadline: Date;
   detailsOfClaim: string;
-  respondent1?: Respondent;
+  respondent1?: Party;
   statementOfMeans?: StatementOfMeans;
   paymentOption?: PaymentOptionType;
   repaymentPlan?: RepaymentPlan;
@@ -76,9 +76,48 @@ export class Claim {
   systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
   ccdState: CaseState;
   responseDeadline: ResponseDeadline;
-  respondentSolicitor1AgreedDeadlineExtension?:Date;
+  respondentSolicitor1AgreedDeadlineExtension?: Date;
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
+
+  get responseStatus(): ClaimResponseStatus {
+    if (this.isFullAdmission() && this.isPaymentOptionPayImmediately()) {
+      return ClaimResponseStatus.FA_PAY_IMMEDIATELY;
+    }
+
+    if (this.isFullAdmission() && this.isPaymentOptionInstallments()) {
+      return ClaimResponseStatus.FA_PAY_INSTALLMENTS;
+    }
+
+    if (this.isFullAdmission() && this.isPaymentOptionBySetDate()) {
+      return ClaimResponseStatus.FA_PAY_BY_DATE;
+    }
+
+    if (this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.YES) {
+      return ClaimResponseStatus.PA_ALREADY_PAID;
+    }
+
+    if (this.isPartialAdmission() && this.isPAPaymentOptionPayImmediately()) {
+      return ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY;
+    }
+
+    if (this.isPartialAdmission() && this.isPAPaymentOptionByDate()) {
+      return ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE;
+    }
+
+    if (this.isPartialAdmission() && this.isPAPaymentOptionInstallments()) {
+      return ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS;
+    }
+
+    if (this.isRejectAllOfClaimAlreadyPaid() && this.hasConfirmedAlreadyPaid()) {
+      return this.hasPaidInFull() ? ClaimResponseStatus.RC_PAID_FULL : ClaimResponseStatus.RC_PAID_LESS;
+    }
+
+    if (this.isFullDefence() && this.isRejectAllOfClaimDispute()) {
+      return ClaimResponseStatus.RC_DISPUTE;
+    }
+
+  }
 
   getClaimantName(): string {
     return this.applicant1.partyName;
@@ -206,6 +245,7 @@ export class Claim {
   partialAdmissionPaidAmount(): number {
     return this.partialAdmission?.howMuchHaveYouPaid?.amount;
   }
+
   isRejectAllOfClaimAlreadyPaid(): number {
     return this.rejectAllOfClaim?.howMuchHaveYouPaid?.amount;
   }
@@ -262,45 +302,6 @@ export class Claim {
     return this.respondentSolicitor1AgreedDeadlineExtension !== undefined;
   }
 
-  get responseStatus(): ClaimResponseStatus {
-    if (this.isFullAdmission() && this.isPaymentOptionPayImmediately()) {
-      return ClaimResponseStatus.FA_PAY_IMMEDIATELY;
-    }
-
-    if (this.isFullAdmission() && this.isPaymentOptionInstallments()) {
-      return ClaimResponseStatus.FA_PAY_INSTALLMENTS;
-    }
-
-    if (this.isFullAdmission() && this.isPaymentOptionBySetDate()) {
-      return ClaimResponseStatus.FA_PAY_BY_DATE;
-    }
-
-    if (this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.YES) {
-      return ClaimResponseStatus.PA_ALREADY_PAID;
-    }
-
-    if (this.isPartialAdmission() && this.isPAPaymentOptionPayImmediately()) {
-      return ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY;
-    }
-
-    if (this.isPartialAdmission() && this.isPAPaymentOptionByDate()) {
-      return ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE;
-    }
-
-    if (this.isPartialAdmission() && this.isPAPaymentOptionInstallments()) {
-      return ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS;
-    }
-
-    if (this.isRejectAllOfClaimAlreadyPaid() && this.hasConfirmedAlreadyPaid()) {
-      return this.hasPaidInFull() ? ClaimResponseStatus.RC_PAID_FULL : ClaimResponseStatus.RC_PAID_LESS;
-    }
-
-    if (this.isFullDefence() && this.isRejectAllOfClaimDispute()) {
-      return ClaimResponseStatus.RC_DISPUTE;
-    }
-
-  }
-
   hasRespondentAskedForMoreThan28Days(): boolean {
     return this.responseDeadline?.option === ResponseOptions.YES && this.responseDeadline?.additionalTime === AdditionalTimeOptions.MORE_THAN_28_DAYS;
   }
@@ -313,21 +314,6 @@ export class Claim {
     return this.responseDeadline?.option === ResponseOptions.NO;
   }
 
-}
-
-export interface Party {
-  individualTitle?: string;
-  individualLastName?: string;
-  individualFirstName?: string;
-  soleTraderTitle?: string;
-  soleTraderFirstName?: string;
-  soleTraderLastName?: string;
-  partyName?: string;
-  type?: PartyType;
-  primaryAddress?: CorrespondenceAddress;
-  phoneNumber?: string;
-  provideCorrespondenceAddress?: string;
-  correspondenceAddress?: CorrespondenceAddress;
 }
 
 export interface StatementOfTruth {

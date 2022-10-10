@@ -2,7 +2,7 @@ import * as draftStoreService from '../../../../../main/modules/draft-store/draf
 import {getClaimantInformation, saveClaimant} from '../../../../../main/services/features/claim/claimantDetailsService';
 import {Claim, Party} from '../../../../../main/common/models/claim';
 import {buildPrimaryAddress, mockClaim} from '../../../../utils/mockClaim';
-import {Respondent} from '../../../../../main/common/models/respondent';
+import {Party} from '../../../../../main/common/models/party';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
 import {buildCitizenAddress, buildCitizenCorrespondenceAddress} from '../../../../utils/mockForm';
 import {PartyDetails} from '../../../../../main/common/form/models/partyDetails';
@@ -57,7 +57,7 @@ describe('Citizen details service', () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      claimData.applicant1 = new Respondent();
+      claimData.applicant1 = new Party();
       claimData.applicant1.individualTitle = 'individualTitle';
       claimData.applicant1.individualFirstName = 'individualFirstName';
       claimData.applicant1.individualLastName = 'individualLastName';
@@ -92,7 +92,7 @@ describe('Citizen details service', () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      claimData.applicant1 = new Respondent();
+      claimData.applicant1 = new Party();
       claimData.applicant1.individualTitle = 'individualTitle';
       claimData.applicant1.individualFirstName = 'individualFirstName';
       claimData.applicant1.individualLastName = 'individualLastName';
@@ -100,7 +100,7 @@ describe('Citizen details service', () => {
       claimData.applicant1.provideCorrespondenceAddress = YesNo.NO;
       mockGetCaseData.mockImplementation(async () => {
         const claim = mockClaim;
-        const claimant = new Respondent();
+        const claimant = new Party();
         claimant.primaryAddress = buildPrimaryAddress();
         claim.respondent1 = claimant;
         return mockClaim;

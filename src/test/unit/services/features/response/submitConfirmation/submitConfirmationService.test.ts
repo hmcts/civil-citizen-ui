@@ -3,10 +3,12 @@ import {
   buildSubmitStatus,
   buildNextStepsSection,
 } from '../../../../../../main/services/features/response/submitConfirmation/submitConfirmationBuilder/submitConfirmationBuilder';
-import {getNextStepsTitle} from '../../../../../../main/services/features/response/submitConfirmation/submitConfirmationBuilder/admissionSubmitConfirmationContent';
+import {
+  getNextStepsTitle,
+} from '../../../../../../main/services/features/response/submitConfirmation/submitConfirmationBuilder/admissionSubmitConfirmationContent';
 import {ResponseType} from '../../../../../../main/common/form/models/responseType';
 import {PartyType} from '../../../../../../main/common/models/partyType';
-import {Respondent} from '../../../../../../main/common/models/respondent';
+import {Party} from '../../../../../../main/common/models/party';
 import PaymentOptionType from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {HowMuchHaveYouPaid} from '../../../../../../main/common/form/models/admission/howMuchHaveYouPaid';
 import {PartialAdmission} from '../../../../../../main/common/models/partialAdmission';
@@ -30,7 +32,7 @@ describe('Submit Confirmation service', () => {
     const claim = new Claim();
     claim.paymentOption = PaymentOptionType.IMMEDIATELY;
     claim.paymentDate = new Date('2035-06-01T00:00:00.000Z');
-    claim.respondent1 = new Respondent();
+    claim.respondent1 = new Party();
     claim.applicant1 = {
       partyName: 'Some Very Important Company Ltd',
       type: PartyType.COMPANY,
@@ -64,7 +66,7 @@ describe('Submit Confirmation service', () => {
   describe('Full admission pay by date scenario', () => {
     const claim = new Claim();
     claim.paymentOption = PaymentOptionType.BY_SET_DATE;
-    claim.respondent1 = new Respondent();
+    claim.respondent1 = new Party();
     claim.applicant1 = {
       partyName: 'Some Very Important Company Ltd',
       type: PartyType.COMPANY,
@@ -103,7 +105,7 @@ describe('Submit Confirmation service', () => {
   describe('Full admission pay by installment scenario', () => {
     const claim = new Claim();
     claim.paymentOption = PaymentOptionType.INSTALMENTS;
-    claim.respondent1 = new Respondent();
+    claim.respondent1 = new Party();
     claim.applicant1 = {
       partyName: 'Some Very Important Company Ltd',
       type: PartyType.COMPANY,
@@ -147,7 +149,7 @@ describe('Submit Confirmation service', () => {
       partyName: 'Some Very Important Company Ltd',
       type: PartyType.COMPANY,
     };
-    claim.respondent1 = new Respondent();
+    claim.respondent1 = new Party();
     claim.respondent1.partyName = 'Version 1';
     claim.respondent1.type = PartyType.INDIVIDUAL;
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
@@ -190,7 +192,7 @@ describe('Submit Confirmation service', () => {
       partyName: 'Some Very Important Company Ltd',
       type: PartyType.COMPANY,
     };
-    claim.respondent1 = new Respondent();
+    claim.respondent1 = new Party();
     claim.respondent1.partyName = 'Version 1';
     claim.respondent1.type = PartyType.INDIVIDUAL;
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
@@ -244,7 +246,7 @@ describe('Submit Confirmation service', () => {
       partyName: 'Some Very Important Company Ltd',
       type: PartyType.COMPANY,
     };
-    claim.respondent1 = new Respondent();
+    claim.respondent1 = new Party();
     claim.respondent1.partyName = 'Version 1';
     claim.respondent1.type = PartyType.INDIVIDUAL;
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
@@ -290,7 +292,7 @@ describe('Submit Confirmation service', () => {
 
     const getClaim = () => {
       const claim = new Claim();
-      claim.respondent1 = new Respondent();
+      claim.respondent1 = new Party();
       claim.applicant1 = {
         partyName: 'Some Very Important Company Ltd',
         type: PartyType.COMPANY,
@@ -380,7 +382,7 @@ describe('Submit Confirmation service', () => {
 
     const getClaim = () => {
       const claim = new Claim();
-      claim.respondent1 = new Respondent();
+      claim.respondent1 = new Party();
       claim.applicant1 = {
         partyName: 'Some Very Important Company Ltd',
         type: PartyType.COMPANY,
