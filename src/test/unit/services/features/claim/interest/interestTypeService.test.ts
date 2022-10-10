@@ -2,11 +2,11 @@ import * as draftStoreService from '../../../../../../main/modules/draft-store/d
 import {Claim} from '../../../../../../main/common/models/claim';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {
-  InterestClaimOptionsType
+  InterestClaimOptionsType,
 } from '../../../../../../main/common/form/models/claim/interest/interestClaimOptionsType';
 import {
   getInterestTypeForm,
-  saveInterestTypeOption
+  saveInterestTypeOption,
 } from '../../../../../../main/services/features/claim/interest/interestTypeService';
 import InterestClaimOption from '../../../../../../main/common/form/models/claim/interest/interestClaimOption';
 
