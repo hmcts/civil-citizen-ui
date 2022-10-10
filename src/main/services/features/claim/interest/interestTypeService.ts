@@ -1,7 +1,7 @@
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import InterestClaimOption from '../../../../common/form/models/claim/interest/interestClaimOption';
 import {InterestClaimOptionsType} from '../../../../common/form/models/claim/interest/interestClaimOptionsType';
-import {Claim} from "models/claim";
+import {Claim} from 'models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('interestTypeService');

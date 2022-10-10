@@ -6,17 +6,16 @@ import {
 } from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {AppRequest} from 'models/AppRequest';
-import InterestClaimOption from "../../../../common/form/models/claim/interest/interestClaimOption";
-import {constructResponseUrlWithIdParams} from "../../../../common/utils/urlFormatter";
+import InterestClaimOption from '../../../../common/form/models/claim/interest/interestClaimOption';
+import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {
   getInterestTypeForm,
   saveInterestTypeOption,
-} from "../../../../services/features/claim/interest/interestTypeService";
+} from '../../../../services/features/claim/interest/interestTypeService';
 import {InterestClaimOptionsType} from '../../../../common/form/models/claim/interest/interestClaimOptionsType';
 
 const interestTypeController = express.Router();
 const interestTypeViewPath = 'features/claim/interest/interest-type';
-
 
 function renderView(form: GenericForm<InterestClaimOption>, res: express.Response) {
   res.render(interestTypeViewPath, {form});

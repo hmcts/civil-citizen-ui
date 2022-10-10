@@ -138,7 +138,7 @@ export class Claim {
   }
 
   isInterestClaimOptionExists(): boolean {
-    return this.interestClaimOptions?.length > 0
+    return this.interestClaimOptions?.length > 0;
   }
 
   isInterestFromClaimSubmitDate(): boolean {

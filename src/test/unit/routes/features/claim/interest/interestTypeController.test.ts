@@ -10,7 +10,7 @@ import {
 } from '../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {
-  InterestClaimOptionsType
+  InterestClaimOptionsType,
 } from '../../../../../../main/common/form/models/claim/interest/interestClaimOptionsType';
 
 jest.mock('../../../../../../main/modules/oidc');
