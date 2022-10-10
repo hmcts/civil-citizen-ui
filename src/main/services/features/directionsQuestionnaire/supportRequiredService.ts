@@ -3,8 +3,6 @@ import * as express from 'express';
 import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
 import {SupportRequiredList, SupportRequired, Support, SupportRequiredParams} from '../../../common/models/directionsQuestionnaire/supportRequired';
 import {Claim} from '../../../common/models/claim';
-import {ExpertDetails} from '../../../common/models/directionsQuestionnaire/experts/expertDetails';
-import {OtherWitnessItems} from '../../../common/models/directionsQuestionnaire/witnesses/otherWitnessItems';
 import {YesNo} from '../../../common/form/models/yesNo';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -16,20 +14,26 @@ export interface NameListType {
   selected?: boolean;
 }
 
-const generateList = (list: OtherWitnessItems[] | ExpertDetails[]): NameListType[] => {
-  return list?.map(item => {
-    const name = `${item?.firstName} ${item?.lastName}`;
-    const value = (item?.firstName + item?.lastName)?.toLocaleLowerCase();
-    return {
-      value: value,
-      text: name,
-    };
-  });
+export interface FullName {
+  firstName: string;
+  lastName: string;
+}
+
+const generateList = (list: FullName[]): NameListType[] => {
+  return list?.filter((item: FullName)=> item.firstName || item.lastName)
+    .map((item: FullName) => {
+      const name = `${item?.firstName} ${item?.lastName}`;
+      const value = (item?.firstName + item?.lastName)?.toLocaleLowerCase();
+      return {
+        value: value,
+        text: name,
+      };
+    });
 };
 
 export const generateExpertAndWitnessList = (caseData: Claim): NameListType[] => {
-  const experts = generateList(caseData.directionQuestionnaire?.experts?.expertDetailsList?.items);
-  const witnesses = generateList(caseData.directionQuestionnaire?.witnesses?.otherWitnesses?.witnessItems);
+  const experts = generateList(caseData.directionQuestionnaire?.experts?.expertDetailsList?.items?.map(item => ({firstName: item.firstName, lastName: item.lastName})));
+  const witnesses = generateList(caseData.directionQuestionnaire?.witnesses?.otherWitnesses?.witnessItems?.map(item => ({firstName: item.firstName, lastName: item.lastName})));
   const defaultOption = [{
     value: '',
     text: 'Choose the name of the person',
