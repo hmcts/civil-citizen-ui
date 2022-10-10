@@ -16,7 +16,7 @@ describe('Claim Interest View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
@@ -27,7 +27,7 @@ describe('Claim Interest View', () => {
     let htmlDocument: Document;
     let mainWrapper: Element;
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const response = await request(app).get(CLAIM_INTEREST);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
