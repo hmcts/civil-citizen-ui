@@ -23,21 +23,23 @@
           <h1 class="govuk-heading-l">{{ t('PAGES.CLAIM_JOURNEY.DEFENDANT_EMAIL.PAGE_TITLE') }}</h1>
           <p class="govuk-body">
             {{ t('PAGES.CLAIM_JOURNEY.DEFENDANT_EMAIL.USE_THIS_EMAIL') }}
-            {{ t('PAGES.CLAIM_JOURNEY.DEFENDANT_EMAIL.PERSONAL_EMAIL') }}
           </p>
+          <p class="govuk-body">
+            {{ t('PAGES.CLAIM_JOURNEY.DEFENDANT_EMAIL.PERSONAL_EMAIL') }}
+          </p?>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            <div class="govuk-form-group {%- if errors[0].text %} govuk-form-group--error{% endif %}">
+            <div class="govuk-form-group {%- if form.errorFor('emailAddress') %} govuk-form-group--error{% endif %}">
             {{ govukInput({
-              id: 'emailAddress',
-              name: 'emailAddress',
+              id: "emailAddress",
+              name: "emailAddress",
               value: form.model.emailAddress,
               label: {
-                text: t('PAGES.CLAIM_JOURNEY.DEFENDANT_EMAIL.TITLE')
-                class: 'govuk-visually-hidden'
+                text: t('PAGES.CLAIM_JOURNEY.DEFENDANT_EMAIL.TITLE'),
+                classes: 'govuk-visually-hidden'
               },
               errorMessage: {
-                html: t(errors[0].text)
+                html: t(form.errorFor('emailAddress'))
               } if form.hasErrors()
               }) }}
             </div>

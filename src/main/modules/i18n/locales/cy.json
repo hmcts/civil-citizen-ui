@@ -1767,7 +1767,6 @@
       "WATER": "Enter a valid Water amount, maximum two decimal places"
     },
     "VALID_DISAGREE_REASON_REQUIRED": "Dywedwch pam ydych yn anghytuno",
-    "VALID_EMAIL_ADDRESS": "Enter valid email address",
     "VALID_ENTER_A_JOB_TITLE": "Rhowch deitl swydd",
     "VALID_ENTER_AN_EMPLOYER_NAME": "Rhowch enw cyflogwr",
     "VALID_ENTER_AT_LEAST_ONE_COURT_ORDER": "Rhowch fanylion o leiaf un gorchymyn llys",

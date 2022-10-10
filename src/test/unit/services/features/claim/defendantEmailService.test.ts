@@ -4,7 +4,7 @@ import {Claim} from '../../../../../main/common/models/claim';
 import {PartyType} from '../../../../../main/common/models/partyType';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {Respondent} from '../../../../../main/common/models/respondent';
-import {DefendantEmail} from '../../../../../main/common/form/models/claim/defendantEmail';
+import {DefendantEmail} from '../../../../../main/common/form/models/claim/yourDetails/defendantEmail';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');

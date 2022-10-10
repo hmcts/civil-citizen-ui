@@ -75,7 +75,7 @@ describe('Completing Claim', () => {
         .send({emailAddress: 'test'})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_EMAIL_ADDRESS);
+          expect(res.text).toContain(TestMessages.ENTER_VALID_EMAIL);
         });
     });
 
