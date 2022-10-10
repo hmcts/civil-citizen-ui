@@ -9,6 +9,7 @@ import {
   NO_LANGUAGE_ENTERED,
   NO_OTHER_SUPPORT,
   NO_SIGN_LANGUAGE_ENTERED,
+  SELECT_YES_IF_SUPPORT,
 } from '../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 import {
@@ -65,15 +66,15 @@ describe('Support required', () => {
       app.locals.draftStoreClient = mockCivilClaimWithExpertAndWitness;
     });
 
-    it('when there is no option selection, should redirect to claim task list screen', async () => {
+    it('wshould display error when there is no option selection', async () => {
       await request(app)
         .post(supportRequiredUrl)
         .send({
           model: {items:[]},
         })
-        .expect((res: express.Response) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(CLAIM_TASK_LIST_URL.replace(':id', 'aaa'));
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(SELECT_YES_IF_SUPPORT);
         });
     });
 

@@ -54,3 +54,4 @@ export const QUESTION_1_REQUIRED = 'Question 1: Do you believe you, or a witness
 export const QUESTION_2_REQUIRED = 'Question 2: If you have answered "yes" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?';
 export const NO_NAME_SELECTED = 'Enter the name of the person who needs support';
 export const NO_SUPPORT_SELECTED = 'Select the support the person needs to attend a hearing';
+export const SELECT_YES_IF_SUPPORT = 'Select yes if someone needs support to attend a hearing';

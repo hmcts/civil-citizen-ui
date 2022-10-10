@@ -19,8 +19,8 @@ export interface SupportRequiredParams{
 }
 
 export class SupportRequiredList {
-
-  option: YesNo;
+  @IsDefined({message: 'ERRORS.SELECT_YES_IF_SUPPORT'})
+    option: YesNo;
   @ValidateIf(o => o.option === YesNo.YES)
   @ValidateNested()
     items?: SupportRequired[];
