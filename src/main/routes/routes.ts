@@ -136,6 +136,7 @@ import cantAttendHearingInNext12MonthsController
   from './features/directionsQuestionnaire/cantAttendHearingInNext12MonthsController';
 import youCanUseServiceController from './features/public/eligibility/youCanUseServiceController';
 import defendantDetailsController from './features/claim/defendant/defendantDetailsController';
+import claimAmountBreakdownController from './features/claim/amount/claimAmountBreakdownController';
 
 export default [
   homeController,
@@ -263,4 +264,5 @@ export default [
   cantAttendHearingInNext12MonthsController,
   youCanUseServiceController,
   defendantDetailsController,
+  claimAmountBreakdownController,
 ];

@@ -440,6 +440,16 @@
       "REJECT_WHOLE_CLAIM": "Os ydych yn gwrthod yr hawliad cyfan, gall yr hawliad gael ei drosglwyddo i ganolfan wrandawiadau Llys Sirol.",
       "RESPONSE_MEANING": "Canfod beth mae pob ymateb yn ei olygu"
     },
+    "CLAIM_AMOUNT_BREAKDOWN": {
+      "AMOUNT": "Amount",
+      "CLAIM_FEE": "your claim fee - we’ll add this for you",
+      "DONT_INCLUDE": "Don’t include:",
+      "DESCRIPTION": "Your claim could be for a single amount or made up of multiple items.",
+      "HINT": "Briefly explain each item - for example, \"broken tiles\", \"roof damage\"",
+      "INTEREST": "interest - we’ll ask you about this next",
+      "REASON": "What you’re claiming for",
+      "TITLE": "Claim amount"
+    },
     "CLAIM_DETAILS": {
       "AMOUNT": "Amount",
       "AMOUNT_BREAKDOWN": "Amount breakdown",
@@ -1755,6 +1765,7 @@
     "VALID_BETWEEN_NUMBERS_0_80": "Enter a number between 0 and 80",
     "VALID_CHOOSE": "Choose your response",
     "VALID_CITY": "Rhowch enw tref/dinas dilys",
+    "VALID_CLAIM_AMOUNT": "Enter an amount of money",
     "VALID_CLAIM_NUMBER": "Enter a claim number",
     "VALID_CLAIM_REFERENCE_NUMBER": "Enter a valid claim number",
     "VALID_CORRESPONDENCE_ADDRESS_LINE_1": "Rhowch linell gyntaf y cyfeiriad ar gyfer gohebiaeth",
