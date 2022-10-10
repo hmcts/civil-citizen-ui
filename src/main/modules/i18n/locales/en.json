@@ -151,6 +151,7 @@
       "CORRECT_INFORMATION_CONFIRMATION": "I confirm that I believe the details I have provided are correct.",
       "DETAILS_TRUTHY": "The hearing requirement details on this page are true to the best of my knowledge.",
       "INFORMATION_ON_PAGE": "The information on this page forms your {{ type }}. You can see it on the {{ type }} form after you submit.",
+      "JOB_TITLE": "Job title",
       "SENIOR_POSITION_REQUIREMENT": "You must hold a senior position in your organisation to sign the {{ typeOfStatement }}.",
       "STATEMENT_OF_WORK": "statement of truth",
       "TITLE": "Statement of truth",
@@ -515,6 +516,12 @@
       "PAGE_TITLE": "About you and this claim",
       "TITLE": "About you and this claim"
     },
+    "CLAIMANT_PHONE": {
+      "INFORMATION": "We might need to speak to you about this claim. We’ll only call on weekdays between 9am and 5pm.",
+      "NUMBER_INFORMATION": "We'll also give your number to the person, business, or organisation you are claiming from.",
+      "PAGE_TITLE": "Your phone number",
+      "TITLE": "Enter a phone number (optional)"
+    },
     "COMPANY_DETAILS": {
       "ADDRESS_FOR_SERVICE": "This is known as an \"address for service\".",
       "ADDRESS_NOT_FOUND": "We can't find an address for that postcode.",
@@ -543,10 +550,10 @@
       "PAGE_TITLE": "Get the details right",
       "YOULL_HAVE_TO_PAY": "You'll have to pay an additional fee if you want you"
     },
-    "CONSIDER_CLAIMANT_DOCUMENTS" : {
-      "GIVE_DETAILS" : "Give details of the documents",
-      "PAGE_TITLE" : "Are there any documents the claimant has that you want the court to consider?",
-      "TITLE" : "Are there any documents the claimant has that you want the court to consider?"
+    "CONSIDER_CLAIMANT_DOCUMENTS": {
+      "GIVE_DETAILS": "Give details of the documents",
+      "PAGE_TITLE": "Are there any documents the claimant has that you want the court to consider?",
+      "TITLE": "Are there any documents the claimant has that you want the court to consider?"
     },
     "CONTACT_THEM": {
       "ABOUT": "About claim",
@@ -1068,6 +1075,11 @@
       "PAGE_TITLE": "New response deadline",
       "TITLE": "4 pm on {{ responseDeadline }}"
     },
+    "CANT_ATTEND_HEARING_IN_NEXT_12MONTHS": {
+      "CONTENT": "These should only be the dates of important events like medical appointments, other court hearing, or holidays you have already booked",
+      "PAGE_TITLE": "cant attend hearing in next months",
+      "TITLE": "Are there any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing?"
+    },
     "NOT_ELIGIBLE_FOR_SERVICE": {
       "ABLE_TO_GET_AN_ADVICE": {
         "1": "You might be able to get advice from organisations like ",
@@ -1381,9 +1393,9 @@
         "WE_ASK_CLAIMANT_FOR_MEDIATION": "We'll ask if they want to try mediation. If they agree, we'll contact you to try to arrange an appointment."
       },
       "PA_PAY_IMMEDIATELY": {
-        "IF_CLAIMANT_ACCEPTS_OFFER_OF": "If {{ claimantName }} accepts your offer of £{{ partialAmount }}",
         "CHEQUES_OR_BANK_TRANSFERS": "any cheques or bank transfers are clear in their account by the deadline",
         "CLAIM_SETTLED": "The claim will be settled.",
+        "IF_CLAIMANT_ACCEPTS_OFFER_OF": "If {{ claimantName }} accepts your offer of £{{ partialAmount }}",
         "MAKE_SURE_THAT": "Make sure that:",
         "RECEIPT_FOR_PAYMENTS": "you get a receipt for any payments",
         "THEY_GET_MONEY_BY": "they get the money by {{ paymentDate }} - they can request a County Court Judgment against you if not",
@@ -1522,6 +1534,15 @@
       "REMINDER": "You are reminded that a copy of this directions questionnaire will be shared with all other parties.",
       "TITLE": "Vulnerability Questions"
     },
+    "WELSH_LANGUAGE": {
+      "ENGLISH": "English",
+      "OFFICIAL_LANGUAGE": "Welsh is an official language of Wales. You can use Welsh in court hearings. Asking to speak in Welsh in your hearing will not delay the hearing or have any effect on proceedings or the outcome of a case.",
+      "PAGE_TITLE": "Welsh language",
+      "WELSH": "Welsh",
+      "WELSH_AND_ENGLISH": "Welsh and English",
+      "WHAT_LANGUAGE_DOCUMENTS": "What languages will the documents be provided in?",
+      "WHAT_LANGUAGE_SPEAK": "What languages will you, your experts and your witnesses speak at the hearing?"
+    },
     "WHO_EMPLOYS_YOU": {
       "ADD_ANOTHER_JOB": "Add another job",
       "PAGE_TITLE": "Your employer",
@@ -1599,7 +1620,7 @@
     "ENTER_FIRST_NAME": "Enter first name",
     "ENTER_LAST_NAME": "Enter last name",
     "ENTER_PAYMENT_EXPLANATION": "Enter text explaining how you paid",
-    "ENTER_VALID_EMAIL":"Enter a valid email address",
+    "ENTER_VALID_EMAIL": "Enter a valid email address",
     "ENTER_SECURITY_CODE": "Enter your security code",
     "ENTER_VALID_SECURITY_CODE": "Enter a valid security code",
     "ENTER_VALID_TITLE": "Enter valid title",
@@ -1607,7 +1628,7 @@
     "EXPERT_NAME_REQUIRED": "Enter the expert’s name",
     "ERROR": "Error",
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Enter a first payment date in the future",
-    "GIVE_DETAILS_DOCUMENTS" : "Give details of the documents",
+    "GIVE_DETAILS_DOCUMENTS": "Give details of the documents",
     "JOB_TITLE_REQUIRED": "Enter a job title",
     "NAME_REQUIRED": "Please enter a name",
     "NUMBER_OF_PEOPLE_REQUIRED": "Enter a numeric, for example 3",
@@ -1641,8 +1662,10 @@
       "RENT": "Select how often you pay for Rent",
       "WATER": "Select how often you pay for Water"
     },
+    "SELECT_LANGUAGE_DOCUMENTS": "Select the language your documents will be provided in",
+    "SELECT_LANGUAGE_SPEAK": "Select the language you, your experts, and your witnesses will speak at the hearing",
     "SELECT_REQUEST": "Select if you want to request more time, have already agreed more time, have had your request for more time refused, or you do not want more time",
-    "SELECT_YES_IF_DOCUMENTS" : "Select yes if there are documents the claimant has that you want the court to consider",
+    "SELECT_YES_IF_DOCUMENTS": "Select yes if there are documents the claimant has that you want the court to consider",
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
     "SIGNER_NAME_TOO_LONG": "You've entered too many characters",
     "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",
@@ -1737,6 +1760,7 @@
     "VALID_HOUSING": "Describe your housing",
     "VALID_INTEGER": "Enter a numeric, for example 3",
     "VALID_MONTH": "Enter a valid month",
+    "VALID_CANT_ATTEND_HEARING": "Select yes if there are any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing",
     "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Number can’t be higher than on previous page",
     "VALID_OPTION_SELECTION": "Select an option",
     "VALID_OWED_AMOUNT_REQUIRED": "Enter a valid amount owed",
