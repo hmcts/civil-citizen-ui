@@ -1,0 +1,88 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/page-title.njk" import setPageTitle %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../macro/error-summary.njk" import errorSummary %}
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.CLAIMANT_INTEREST_RATE.PAGE_TITLE') }}
+{% endblock %}
+{% set noHtml %}
+{{ govukInput({
+  id: 'rate',
+  name: 'rate',
+  type: "number",
+  autocomplete: "number",
+  classes: "govuk-!-width-one-quarter",
+  label: {
+    text: t('PAGES.CLAIMANT_INTEREST_RATE.RATE_CLAIMING')
+  },
+  value: form.model.rate if form.model.option === SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE else '',
+  errorMessage: {
+    text: t(form.errorFor('rate'))
+  } if form.hasFieldError('rate')
+}) }}
+{{ govukInput({
+  id: 'reason',
+  name: 'reason',
+  type: "text",
+  autocomplete: "text",
+  classes: "govuk-!-width-one-half",
+  label: {
+    text: t('PAGES.CLAIMANT_INTEREST_RATE.WHY_YOU_ARE_ENTITLED')
+  },
+  value: form.model.reason if form.model.option === SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE else '',
+  errorMessage: {
+    text: t(form.errorFor('reason'))
+  } if form.hasFieldError('reason')
+}) }}
+{% endset %}
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% set optionError = form.errorFor("option") %}
+      {% if form.hasErrors() %}
+        <div class="govuk-grid-row">
+          {{ errorSummary(form.getAllErrors(), t) }}
+        </div>
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <div class="govuk-!-margin-bottom-8">
+            <h1 class="govuk-heading-l">{{ t('PAGES.CLAIMANT_INTEREST_RATE.TITLE') }}</h1>
+            <p class="govuk-body">{{ t('PAGES.CLAIMANT_INTEREST_RATE.RATE_INFORMATION') }}:</p>
+            <form method="post" novalidate autocomplete="off">
+              {{ csrfProtection(csrf) }}
+              {{ govukRadios({
+                idPrefix: "option",
+                name: "option",
+                items: [
+                  {
+                    value: SameRateInterestType.SAME_RATE_INTEREST_8_PC,
+                    checked: true if form.model.option === SameRateInterestType.SAME_RATE_INTEREST_8_PC,
+                    text: '8%'
+                  },
+                  {
+                    value: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
+                    checked: true if form.model.option  === SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
+                    html: t('PAGES.CLAIMANT_INTEREST_RATE.DIFFERENT_RATE_LABEL'),
+                    conditional:{html: noHtml}
+                  }
+                ],
+                errorMessage: { text: t(optionError) } if t(optionError) else ''
+              }) }}
+              <div class="govuk-form-group">
+                {{ govukButton({
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+              }) }}
+                {{ contactUsForHelp(t) }}
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
