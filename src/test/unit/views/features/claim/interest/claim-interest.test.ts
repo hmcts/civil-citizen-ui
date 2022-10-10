@@ -1,16 +1,16 @@
 import config from 'config';
 import nock from 'nock';
-import {app} from '../../../../../main/app';
-import {mockCivilClaim} from '../../../../utils/mockDraftStore';
+import {app} from '../../../../../../main/app';
+import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import request from 'supertest';
-import {CLAIM_INTEREST} from '../../../../../main/routes/urls';
+import {CLAIM_INTEREST} from '../../../../../../main/routes/urls';
 import {t} from 'i18next';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 const pageTitle = 'PAGES.CLAIM_JOURNEY.CLAIM_INTEREST.PAGE_TITLE';
 
-jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/oidc');
 
 describe('Claim Interest View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

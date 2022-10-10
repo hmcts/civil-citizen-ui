@@ -1,7 +1,7 @@
-import {GenericYesNo} from '../../../common/form/models/genericYesNo';
-import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
-import {VALID_YES_NO_SELECTION} from '../../../common/form/validationErrors/errorMessageConstants';
-import {YesNo} from '../../../common/form/models/yesNo';
+import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
+import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {VALID_YES_NO_SELECTION} from '../../../../common/form/validationErrors/errorMessageConstants';
+import {YesNo} from '../../../../common/form/models/yesNo';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('Claim - Claim Interest');

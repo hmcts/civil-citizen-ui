@@ -135,7 +135,7 @@ import phoneOrVideoHearingController from './features/directionsQuestionnaire/ph
 import cantAttendHearingInNext12MonthsController
   from './features/directionsQuestionnaire/cantAttendHearingInNext12MonthsController';
 import youCanUseServiceController from './features/public/eligibility/youCanUseServiceController';
-import claimInterestController from './features/claim/claimInterestController';
+import claimInterestController from './features/claim/interest/claimInterestController';
 
 export default [
   homeController,

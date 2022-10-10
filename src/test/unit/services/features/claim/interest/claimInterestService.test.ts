@@ -1,12 +1,12 @@
-import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import {getClaimInterest, saveClaimInterest} from '../../../../../main/services/features/claim/claimInterestService';
-import {YesNo} from '../../../../../main/common/form/models/yesNo';
-import {Claim} from '../../../../../main/common/models/claim';
-import {GenericYesNo} from '../../../../../main/common/form/models/genericYesNo';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import {getClaimInterest, saveClaimInterest} from '../../../../../../main/services/features/claim/interest/claimInterestService';
+import {YesNo} from '../../../../../../main/common/form/models/yesNo';
+import {Claim} from '../../../../../../main/common/models/claim';
+import {GenericYesNo} from '../../../../../../main/common/form/models/genericYesNo';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
