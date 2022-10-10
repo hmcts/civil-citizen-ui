@@ -11,4 +11,5 @@ export class Hearing {
   considerClaimantDocuments?: ConsiderClaimantDocuments;
   whyUnavailableForHearing?: WhyUnavailableForHearing;
   phoneOrVideoHearing?: PhoneOrVideoHearing;
+  cantAttendHearingInNext12Months?: GenericYesNo;
 }
