@@ -48,7 +48,7 @@ describe('Claimant Interest From View', () => {
       const radios = htmlDocument.getElementsByClassName('govuk-radios__input');
       expect(radios[0].getAttribute('value')).toBe('FROM_CLAIM_SUBMIT_DATE');
       expect(radios[1].getAttribute('value')).toBe('FROM_A_SPECIFIC_DATE');
-      const hint = htmlDocument.getElementsByClassName('govuk-hint')
+      const hint = htmlDocument.getElementsByClassName('govuk-hint');
       expect(hint[0].innerHTML).toContain(t('PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.HINT_AFTER_4PM'));
       expect(hint[1].innerHTML).toContain(t('PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.HINT_EXAMPLE_DATE'));
     });

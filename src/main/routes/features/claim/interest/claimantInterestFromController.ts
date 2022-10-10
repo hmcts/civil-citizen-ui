@@ -2,20 +2,19 @@ import {NextFunction, Response, Router} from 'express';
 import {
   CLAIM_HELP_WITH_FEES_URL,
   CLAIM_INTEREST_FROM_URL,
-  CLAIM_INTEREST_START_DATE_URL
+  CLAIM_INTEREST_START_DATE_URL,
 } from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {InterestClaimFromSelection} from '../../../../common/form/models/claim/interest/interestClaimFromSelection';
 import {
   getClaimantInterestFrom,
-  saveClaimantInterestFrom
+  saveClaimantInterestFrom,
 } from '../../../../services/features/claim/interest/claimantInterestFromService';
 import {InterestClaimFromType} from '../../../../common/form/models/claimDetails';
 import {AppRequest} from '../../../../common/models/AppRequest';
 
 const claimantInterestFromController = Router();
 const claimantInterestFromViewPath = 'features/claim/interest/claimant-interest-from';
-
 
 function renderView(form: GenericForm<InterestClaimFromSelection>, res: Response): void {
   res.render(claimantInterestFromViewPath, {form});
