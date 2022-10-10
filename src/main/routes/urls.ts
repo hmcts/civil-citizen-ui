@@ -155,3 +155,5 @@ export const CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL = `${BASE_CLAIM_URL}/claimant
 export const DQ_UNAVAILABLE_FOR_HEARING = `${DIRECTIONS_QUESTIONNAIRE_URL}/unavailable-for-hearing`;
 export const DQ_PHONE_OR_VIDEO_HEARING_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/phone-or-video-hearing`;
 export const DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/cant-Attend-Hearing-In-Next-12Months`;
+export const CLAIM_AMOUNT_URL = `${BASE_CLAIM_URL}/amount`;
+export const CLAIM_INTEREST_URL = `${BASE_CLAIM_URL}/interest`;
