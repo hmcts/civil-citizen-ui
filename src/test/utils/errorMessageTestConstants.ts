@@ -57,6 +57,7 @@ export const enum TestMessages {
   VALID_FOUR_DIGIT_YEAR = 'Enter a 4 digit year',
   VALID_HOUSING = 'Describe your housing',
   VALID_INTEGER = 'Enter a numeric, for example 3',
+  VALID_INTEREST_TYPE_OPTION= 'Choose same rate or breakdown',
   VALID_MONTH = 'Enter a valid month',
   VALID_NUMBER_FOR_PREVIOUS_PAGE = 'Number can’t be higher than on previous page',
   VALID_OPTION_SELECTION = 'Select an option',
