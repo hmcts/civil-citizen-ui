@@ -67,17 +67,13 @@
               errorMessage: { text: t(form.errorFor('contactPerson')) } if form.errorFor('contactPerson')
             }) }}
             <h2 class="govuk-heading-m">{{ t('PAGES.DEFENDANT_DETAILS.ORGANISATION_ADDRESS') }}</h2>
-            <p class="govuk-body">
-              {{ t('PAGES.DEFENDANT_DETAILS.ORGANISATION_ADDRESS_NOT_CORRECT') + ' ' + t('PAGES.DEFENDANT_DETAILS.ORGANISATION_ANY_CHANGES') }}
-            </p>
+            <p class="govuk-body">{{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }} {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}</p>
             <p class="govuk-body">
               {{ t('PAGES.DEFENDANT_DETAILS.ORGANISATION_MAIN_OFFICE') + ' ' + t('PAGES.DEFENDANT_DETAILS.ENGLAND_OR_WALES_ADDRESS') }}
             </p>
 
             <div class="govuk-form-group" id="primaryPostcodeContainer">
               <h2 class="govuk-heading-m">{{ addressTitle }}</h2>
-              <p
-                class="govuk-body">{{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }} {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}</p>
               <label class="govuk-label" for="primaryPostcode">
                 {{ t('PAGES.DEFENDANT_DETAILS.UK_POSTCODE') }}
               </label>
