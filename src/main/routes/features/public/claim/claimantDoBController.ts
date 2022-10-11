@@ -5,7 +5,7 @@ import {ClaimantDoB} from '../../../../common/form/models/claim/claimant/claiman
 import {Claim} from '../../../../common/models/claim';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {AppRequest} from '../../../../common/models/AppRequest';
-import {Party} from 'models/party';
+import {Party} from '../../../../common/models/party';
 
 const claimantDoBController = express.Router();
 const claimantDoBViewPath = 'features/response/citizenDob/citizen-dob';

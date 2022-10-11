@@ -26,7 +26,7 @@ const mockClaim = require('../../../../../utils/mocks/civilClaimResponseMock.jso
 const mockRespondent: Party = {
   dateOfBirth: new Date(),
   responseType: '',
-  telephoneNumber: '',
+  phoneNumber: '',
   individualLastName: '',
   individualFirstName: '',
   individualTitle: '',

@@ -5,7 +5,7 @@ import {
   CITIZEN_RESPONSE_TYPE_URL,
   CLAIM_TASK_LIST_URL,
 } from '../../../urls';
-import {Party} from 'models/party';
+import {Party} from '../../../../common/models/party';
 import {Claim} from '../../../../common/models/claim';
 import {CitizenResponseType} from '../../../../common/form/models/citizenResponseType';
 import {ResponseType} from '../../../../common/form/models/responseType';

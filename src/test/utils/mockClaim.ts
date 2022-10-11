@@ -6,11 +6,11 @@ import {PrimaryAddress} from '../../main/common/models/primaryAddress';
 import {CorrespondenceAddress} from '../../main/common/models/correspondenceAddress';
 import {YesNo} from '../../main/common/form/models/yesNo';
 import {
+  CaseState,
   InterestClaimFromType,
   InterestClaimOptions,
   InterestClaimUntilType,
   SameRateInterestType,
-  CaseState,
 } from '../../main/common/form/models/claimDetails';
 import {ResponseOptions} from '../../main/common/form/models/responseDeadline';
 import {AdditionalTimeOptions} from '../../main/common/form/models/additionalTime';
@@ -41,7 +41,7 @@ export const buildRespondent1 = (): Party => {
   respondent.individualLastName = 'Mary';
   respondent.individualFirstName = 'Richards';
   respondent.partyName = 'Mrs Richards Mary';
-  respondent.telephoneNumber = '0208339922';
+  respondent.phoneNumber = '0208339922';
   respondent.dateOfBirth = new Date('2022-01-24T15:59:59');
   respondent.responseType = '';
   respondent.type = PartyType.INDIVIDUAL;

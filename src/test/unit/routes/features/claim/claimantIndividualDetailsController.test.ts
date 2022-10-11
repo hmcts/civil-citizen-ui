@@ -5,7 +5,7 @@ import {CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, CLAIMANT_DOB_URL} from '../../../
 import {buildCorrespondenceAddress, buildPrimaryAddress} from '../../../../utils/mockClaim';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {PartyType} from '../../../../../main/common/models/partyType';
-import {Claim, Party} from '../../../../../main/common/models/claim';
+import {Claim} from '../../../../../main/common/models/claim';
 import {Party} from '../../../../../main/common/models/party';
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {

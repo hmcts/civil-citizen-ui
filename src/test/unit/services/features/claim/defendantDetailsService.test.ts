@@ -1,5 +1,5 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import {Claim, Party} from '../../../../../main/common/models/claim';
+import {Claim} from '../../../../../main/common/models/claim';
 import {buildPrimaryAddress, mockClaim} from '../../../../utils/mockClaim';
 import {Party} from '../../../../../main/common/models/party';
 import {

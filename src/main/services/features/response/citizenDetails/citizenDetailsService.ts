@@ -1,5 +1,5 @@
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
-import {Party} from 'models/party';
+import {Party} from '../../../../common/models/party';
 import {Claim} from '../../../../common/models/claim';
 import {PrimaryAddress} from '../../../../common/models/primaryAddress';
 import {CorrespondenceAddress} from '../../../../common/models/correspondenceAddress';
