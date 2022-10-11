@@ -7,7 +7,7 @@ import {Claim} from '../../../../../../main/common/models/claim';
 import {buildPrimaryAddress, mockClaim} from '../../../../../utils/mockClaim';
 import {Party} from '../../../../../../main/common/models/party';
 import {YesNo} from '../../../../../../main/common/form/models/yesNo';
-import {buildCitizenAddress, buildCitizenCorrespondenceAddress} from '../../../../../utils/mockForm';
+import {buildCitizenAddress} from '../../../../../utils/mockForm';
 import {PartyDetails} from '../../../../../../main/common/form/models/partyDetails';
 import {CitizenCorrespondenceAddress} from '../../../../../../main/common/form/models/citizenCorrespondenceAddress';
 
@@ -57,6 +57,9 @@ describe('Citizen details service', () => {
   });
   describe('save Claimant', () => {
     it('should save a claimant when has no information on redis ', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
@@ -77,21 +80,10 @@ describe('Citizen details service', () => {
       expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, claimData);
     });
 
-    it('should save a claim when in redis is undefined', async () => {
-      //Given
-      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
-      const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      mockGetCaseData.mockImplementation(async () => {
-        return undefined;
-      });
-      //When
-      await saveClaimant(CLAIM_ID, buildCitizenAddress().model, buildCitizenCorrespondenceAddress().model, YesNo.NO, claimantDetails);
-      //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
-      expect(spySaveDraftClaim).toBeCalled();
-    });
-
     it('should save a claimant when in redis correspondentAddress is undefined or empty and the citizenAddress without information', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');

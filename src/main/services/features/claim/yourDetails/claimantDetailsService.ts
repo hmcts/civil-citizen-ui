@@ -1,6 +1,5 @@
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {Party} from '../../../../common/models/party';
-import {Claim} from '../../../../common/models/claim';
 import {convertToPrimaryAddress} from '../../../../common/models/primaryAddress';
 import {convertToCorrespondenceAddress} from '../../../../common/models/correspondenceAddress';
 import {CitizenAddress} from '../../../../common/form/models/citizenAddress';
@@ -14,7 +13,7 @@ export const getClaimantInformation = async (claimId: string): Promise<Party> =>
 };
 
 export const saveClaimant = async (claimId: string, citizenAddress: CitizenAddress, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, postToThisAddress: YesNo, claimantDetails: PartyDetails): Promise<void> => {
-  const responseData = await getCaseDataFromStore(claimId) || new Claim();
+  const responseData = await getCaseDataFromStore(claimId);
   if (!responseData.applicant1) {
     responseData.applicant1 = new Party();
   }
@@ -48,7 +47,7 @@ export const getClaimantPartyInformation = async (claimId: string): Promise<Part
 
 export const saveClaimantParty = async (claimId: string, citizenAddress: CitizenAddress, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, postToThisAddress: YesNo, party: Party): Promise<void> => {
   const responseData = await getCaseDataFromStore(claimId);
-  if (!responseData.applicant1) {
+  if (!responseData?.applicant1) {
     responseData.applicant1 = new Party();
   }
   responseData.applicant1.provideCorrespondenceAddress = postToThisAddress;

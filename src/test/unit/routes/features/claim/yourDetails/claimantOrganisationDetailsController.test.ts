@@ -66,6 +66,8 @@ const validDataForPost = {
   correspondenceAddressLine3: '',
   correspondenceCity: '',
   correspondencePostCode: '',
+  partyName: 'partyName',
+  contactPerson: 'contactPerson'
 };
 
 describe('Claimant Organisation Details page', () => {
@@ -181,21 +183,12 @@ describe('Claimant Organisation Details page', () => {
   });
 
   it('POST/Claimant organisation details - should redirect on correct primary address', async () => {
+    mockGetCaseData.mockImplementation(async () => {
+      return new Claim();
+    });
     await request(app)
       .post(CLAIMANT_ORGANISATION_DETAILS_URL)
-      .send({
-        primaryAddressLine1: 'Flat 3A Middle Road',
-        primaryAddressLine2: '',
-        primaryAddressLine3: '',
-        primaryCity: 'London',
-        primaryPostCode: 'SW1H 9AJ',
-        provideCorrespondenceAddress: 'no',
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
-      })
+      .send(validDataForPost)
       .expect((res) => {
         expect(res.status).toBe(302);
       });
@@ -207,19 +200,7 @@ describe('Claimant Organisation Details page', () => {
     });
     await request(app)
       .post(CLAIMANT_ORGANISATION_DETAILS_URL)
-      .send({
-        primaryAddressLine1: 'Flat 3A Middle Road',
-        primaryAddressLine2: '',
-        primaryAddressLine3: '',
-        primaryCity: 'London',
-        primaryPostCode: 'SW1H 9AJ',
-        provideCorrespondenceAddress: 'yes',
-        correspondenceAddressLine1: 'Flat 3A Middle Road',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: 'London',
-        correspondencePostCode: 'SW1H 9AJ',
-      })
+      .send(validDataForPost)
       .expect((res) => {
         expect(res.status).toBe(302);
       });

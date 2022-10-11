@@ -13,19 +13,19 @@ import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlForm
 import {Party} from '../../../../common/models/party';
 import {AppRequest} from '../../../../common/models/AppRequest';
 
-const claimantIndividualDetailsController = express.Router();
-const claimantIndividualDetailsPath = 'features/claim/yourDetails/claimant-organisation-details';
+const claimantOrganisationDetailsController = express.Router();
+const claimantOrganisationDetailsPath = 'features/claim/yourDetails/claimant-organisation-details';
 
 function renderPage(res: express.Response, req: express.Request, party: GenericForm<Party>, claimantIndividualAddress: GenericForm<CitizenAddress>, claimantIndividualCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>): void {
 
-  res.render(claimantIndividualDetailsPath, {
+  res.render(claimantOrganisationDetailsPath, {
     party,
     claimantIndividualAddress,
     claimantIndividualCorrespondenceAddress,
   });
 }
 
-claimantIndividualDetailsController.get(CLAIMANT_ORGANISATION_DETAILS_URL, async (req: AppRequest, res: express.Response, next: express.NextFunction) => {
+claimantOrganisationDetailsController.get(CLAIMANT_ORGANISATION_DETAILS_URL, async (req: AppRequest, res: express.Response, next: express.NextFunction) => {
   try {
     const caseId = req.session?.user?.id;
     const claimant: Party = await getClaimantPartyInformation(caseId);
@@ -39,7 +39,7 @@ claimantIndividualDetailsController.get(CLAIMANT_ORGANISATION_DETAILS_URL, async
   }
 });
 
-claimantIndividualDetailsController.post(CLAIMANT_ORGANISATION_DETAILS_URL, async (req: any, res: express.Response, next: express.NextFunction) => {
+claimantOrganisationDetailsController.post(CLAIMANT_ORGANISATION_DETAILS_URL, async (req: any, res: express.Response, next: express.NextFunction) => {
   const caseId = req.session?.user?.id;
   const claimant: Party = await getClaimantPartyInformation(caseId);
   try {
@@ -66,4 +66,4 @@ claimantIndividualDetailsController.post(CLAIMANT_ORGANISATION_DETAILS_URL, asyn
   }
 });
 
-export default claimantIndividualDetailsController;
+export default claimantOrganisationDetailsController;
