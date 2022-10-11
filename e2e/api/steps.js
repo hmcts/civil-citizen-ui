@@ -197,6 +197,7 @@ function removeUuidsFromDynamicList(data, dynamicListField) {
 
 const assignSpecCase = async (caseId, mpScenario) => {
   await assignCaseRoleToUser(caseId, 'RESPONDENTSOLICITORONE', config.defendantSolicitorUser);
+  //remove the switch
   switch (mpScenario) {
     case 'ONE_V_TWO_TWO_LEGAL_REP': {
       await assignCaseRoleToUser(caseId, 'RESPONDENTSOLICITORTWO', config.secondDefendantSolicitorUser);

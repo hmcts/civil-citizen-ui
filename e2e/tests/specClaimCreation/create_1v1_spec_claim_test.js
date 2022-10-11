@@ -13,7 +13,3 @@ Scenario('Create claim spec 1v1', async ({api}) => {
 
 });
 
-AfterSuite(async ({api}) => {
-  await api.cleanUp();
-});
-
