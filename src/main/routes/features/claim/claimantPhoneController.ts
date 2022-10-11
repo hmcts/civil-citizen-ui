@@ -1,11 +1,11 @@
 import * as express from 'express';
-import {CLAIMANT_PHONE_NUMBER_URL, CLAIMANT_TASK_LIST_URL} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {getClaimantPhone,saveClaimantPhone} from '../../../../../main/services/features/claim/claimantPhoneService';
+import {CLAIMANT_PHONE_NUMBER_URL, CLAIMANT_TASK_LIST_URL} from '../../urls';
+import {GenericForm} from '../../../common/form/models/genericForm';
+import {getClaimantPhone,saveClaimantPhone} from '../../../../main/services/features/claim/claimantPhoneService';
 import {AppRequest} from 'common/models/AppRequest';
-import {CitizenTelephoneNumber} from '../../../../common/form/models/citizenTelephoneNumber';
+import {CitizenTelephoneNumber} from '../../../common/form/models/citizenTelephoneNumber';
 
-const claimantPhoneViewPath = 'features/public/claim/claimant-phone';
+const claimantPhoneViewPath = 'features/claim/claimant-phone';
 const claimantPhoneController = express.Router();
 
 function renderView(form: GenericForm<CitizenTelephoneNumber>, res: express.Response): void {
