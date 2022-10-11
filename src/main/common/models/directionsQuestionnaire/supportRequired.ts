@@ -1,45 +1,100 @@
-import {IsDefined, IsNotEmpty, MaxLength, ValidateIf} from 'class-validator';
-import {
-  NO_LANGUAGE_ENTERED,
-  NO_OTHER_SUPPORT,
-  NO_SIGN_LANGUAGE_ENTERED,
-  TEXT_TOO_LONG,
-} from '../../form/validationErrors/errorMessageConstants';
-import {FREE_TEXT_MAX_LENGTH} from '../../form/validators/validationConstraints';
+import {IsDefined, IsNotEmpty, Validate, ValidateIf, ValidateNested} from 'class-validator';
+import {AtLeastOneCheckboxSelectedValidator} from '../../form/validators/atLeastOneCheckboxSelectedValidator';
+import {YesNo} from '../../form/models/yesNo';
 
-export class SupportRequired {
-  disabledAccessSelected?: boolean;
-  hearingLoopSelected?: boolean;
-  signLanguageSelected?: boolean;
-  languageSelected?: boolean;
-  otherSupportSelected?: boolean;
+export enum SupportType {
+  SIGN_LANGUAGE_INTERPRETER = 'signLanguageInterpreter',
+  LANGUAGE_INTERPRETER = 'languageInterpreter',
+  OTHER_SUPPORT = 'otherSupport',
+}
 
-  @ValidateIf(o => o.signLanguageSelected)
-  @IsDefined({message: NO_SIGN_LANGUAGE_ENTERED})
-  @IsNotEmpty({message: NO_SIGN_LANGUAGE_ENTERED})
-  @MaxLength(FREE_TEXT_MAX_LENGTH, {message: TEXT_TOO_LONG})
-    signLanguageInterpreted?: string;
+export interface SupportRequiredParams{
+  fullName?: string,
+  disabledAccess?: Support,
+  hearingLoop?: Support,
+  signLanguageInterpreter?: Support,
+  languageInterpreter?: Support,
+  otherSupport?: Support,
+  declared?: string,
+}
 
-  @ValidateIf(o => o.languageSelected)
-  @IsDefined({message: NO_LANGUAGE_ENTERED})
-  @IsNotEmpty({message: NO_LANGUAGE_ENTERED})
-  @MaxLength(FREE_TEXT_MAX_LENGTH, {message: TEXT_TOO_LONG})
-    languageInterpreted?: string;
+export class SupportRequiredList {
+  @IsDefined({message: 'ERRORS.SELECT_YES_IF_SUPPORT'})
+    option: YesNo;
+  @ValidateIf(o => o.option === YesNo.YES)
+  @ValidateNested()
+    items?: SupportRequired[];
 
-  @ValidateIf(o => o.otherSupportSelected)
-  @IsDefined({message: NO_OTHER_SUPPORT})
-  @IsNotEmpty({message: NO_OTHER_SUPPORT})
-  @MaxLength(FREE_TEXT_MAX_LENGTH, {message: TEXT_TOO_LONG})
-    otherSupport?: string;
-
-  constructor(languageSelected?: boolean, languageInterpreted?: string, signLanguageSelected?: boolean, signLanguageInterpreted?: string, hearingLoopSelected?: boolean, disabledAccessSelected?: boolean, otherSupportSelected?: boolean, otherSupport?: string) {
-    this.languageSelected = languageSelected;
-    this.languageInterpreted = languageInterpreted;
-    this.signLanguageSelected = signLanguageSelected;
-    this.signLanguageInterpreted = signLanguageInterpreted;
-    this.hearingLoopSelected = hearingLoopSelected;
-    this.disabledAccessSelected = disabledAccessSelected;
-    this.otherSupportSelected = otherSupportSelected;
-    this.otherSupport = otherSupport;
+  [key: string]: YesNo | SupportRequired[];
+  constructor(option?: YesNo, items?: SupportRequired[]) {
+    this.option = option;
+    this.items = items;
   }
 }
+
+export class SupportRequired {
+  @IsDefined({message: 'ERRORS.ENTER_PERSON_NAME'})
+  @IsNotEmpty({message: 'ERRORS.ENTER_PERSON_NAME'})
+    fullName?: string;
+  disabledAccess?: Support;
+  hearingLoop?: Support;
+  @ValidateNested()
+    signLanguageInterpreter?: Support;
+  @ValidateNested()
+    languageInterpreter?: Support;
+  @ValidateNested()
+    otherSupport?: Support;
+  @Validate(AtLeastOneCheckboxSelectedValidator, {message: 'ERRORS.SELECT_SUPPORT' })
+    checkboxGrp: boolean [];
+
+  [key: string]: string | Support | boolean[];
+  constructor(params?: SupportRequiredParams) {
+    this.fullName = params?.fullName;
+    this.disabledAccess = params?.disabledAccess;
+    this.hearingLoop = params?.hearingLoop;
+    this.signLanguageInterpreter = params?.signLanguageInterpreter;
+    this.languageInterpreter = params?.languageInterpreter;
+    this.otherSupport = params?.otherSupport;
+    this.checkboxGrp = [
+      params?.disabledAccess?.selected,
+      params?.hearingLoop?.selected,
+      params?.signLanguageInterpreter?.selected,
+      params?.languageInterpreter?.selected,
+      params?.otherSupport?.selected,
+    ];
+  }
+}
+
+export class Support {
+  sourceName?: string;
+  selected?: boolean;
+  @ValidateIf(o => o.selected)
+  @IsDefined({message: withMessage(generateErrorMessage)})
+  @IsNotEmpty({message: withMessage(generateErrorMessage)})
+    content?: string;
+
+  [key: string]: boolean | string;
+  constructor(sourceName?: string, selected?: boolean, content?: string) {
+    this.sourceName = sourceName;
+    this.selected = selected;
+    this.content = content;
+  }
+}
+
+function generateErrorMessage (sourceName: string): string {
+  switch (sourceName) {
+    case SupportType.SIGN_LANGUAGE_INTERPRETER:
+      return 'ERRORS.NO_SIGN_LANGUAGE_ENTERED';
+    case SupportType.LANGUAGE_INTERPRETER:
+      return 'ERRORS.NO_LANGUAGE_ENTERED';
+    default:
+      return 'ERRORS.NO_OTHER_SUPPORT';
+  }
+}
+
+function withMessage (buildErrorFn: (sourceName: string) => string) {
+  return (args: any): string => {
+    return buildErrorFn(args.object.sourceName);
+  };
+}
+

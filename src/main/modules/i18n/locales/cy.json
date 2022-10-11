@@ -93,6 +93,10 @@
       "SIGN_IN": "Mewngofnodi",
       "SIGN_OUT": "Sign out"
     },
+    "HELP_WITH_INTEREST_RATES": {
+      "THE_COURT_WILL_DECIDE": "The court will decide if you're entitled to some or all of the interest claimed.",
+      "YOU_CAN_CLAIM": "You can claim 8% interest on money owed to you. This is the statutory rate. If you know that a different rate applies you can use that. For example if you have a contract with a specific rate"
+    },
     "MONTH_NAMES": {
       "APRIL": "Ebrill",
       "AUGUST": "Awst",
@@ -440,6 +444,16 @@
       "REJECT_WHOLE_CLAIM": "Os ydych yn gwrthod yr hawliad cyfan, gall yr hawliad gael ei drosglwyddo i ganolfan wrandawiadau Llys Sirol.",
       "RESPONSE_MEANING": "Canfod beth mae pob ymateb yn ei olygu"
     },
+    "CLAIM_AMOUNT_BREAKDOWN": {
+      "AMOUNT": "Amount",
+      "CLAIM_FEE": "your claim fee - we’ll add this for you",
+      "DONT_INCLUDE": "Don’t include:",
+      "DESCRIPTION": "Your claim could be for a single amount or made up of multiple items.",
+      "HINT": "Briefly explain each item - for example, \"broken tiles\", \"roof damage\"",
+      "INTEREST": "interest - we’ll ask you about this next",
+      "REASON": "What you’re claiming for",
+      "TITLE": "Claim amount"
+    },
     "CLAIM_DETAILS": {
       "AMOUNT": "Amount",
       "AMOUNT_BREAKDOWN": "Amount breakdown",
@@ -460,6 +474,11 @@
       "WHAT_HAPPENED": "Beth ddigwyddodd"
     },
     "CLAIM_JOURNEY": {
+      "CLAIM_INTEREST": {
+        "PAGE_TITLE": "Do you want to claim interest?",
+        "TITLE:": "Do you want to claim interest?",
+        "YOU_CAN_CLAIM_INTEREST": "You can claim interest on the money you say you're owed. The court will decide if you're entitled to it."
+      },
       "CLAIMANT_INDIVIDUAL_DETAILS": {
         "PAGE_TITLE": "Enter your details",
         "THESE_DETAILS_ARE": "These details are shared with the person, business or organisation you are claiming from (the defendant).",
@@ -502,6 +521,14 @@
     "CLAIMANT_DOB": {
       "PAGE_TITLE": "Your date of birth",
       "TITLE": "What is your date of birth?"
+    },
+    "CLAIMANT_INTEREST_RATE": {
+      "PAGE_TITLE": "Annual rate iterest you want to claim",
+      "TITLE": "What annual rate of interest do you want to claim?",
+      "RATE_INFORMATION": "You can claim 8% per year unless you know that a different rate applies.",
+      "DIFFERENT_RATE_LABEL": "A different rate",
+      "RATE_CLAIMING": "Rate you're claiming",
+      "WHY_YOU_ARE_ENTITLED": "Why you're entitled to this rate"
     },
     "CLAIMANT_PARTY_TYPE_SELECTION": {
       "CLAIMING_AS_HEADER": "I'm claiming as:",
@@ -1393,9 +1420,9 @@
         "WE_ASK_CLAIMANT_FOR_MEDIATION": "We'll ask if they want to try mediation. If they agree, we'll contact you to try to arrange an appointment."
       },
       "PA_PAY_IMMEDIATELY": {
-        "IF_CLAIMANT_ACCEPTS_OFFER_OF": "If {{ claimantName }} accepts your offer of £{{ partialAmount }}",
         "CHEQUES_OR_BANK_TRANSFERS": "any cheques or bank transfers are clear in their account by the deadline",
         "CLAIM_SETTLED": "The claim will be settled.",
+        "IF_CLAIMANT_ACCEPTS_OFFER_OF": "If {{ claimantName }} accepts your offer of £{{ partialAmount }}",
         "MAKE_SURE_THAT": "Make sure that:",
         "RECEIPT_FOR_PAYMENTS": "you get a receipt for any payments",
         "THEY_GET_MONEY_BY": "they get the money by {{ paymentDate }} - they can request a County Court Judgment against you if not",
@@ -1450,7 +1477,7 @@
       "IF_CLAIMANT_REJECTS_OFFER": "If {{ claimantName }} rejects your offer",
       "IF_CLAIMANT_REJECTS_OWE": "If {{ claimantName }} rejects that you only owe £{{ partialAmount }}",
       "IF_DONT_WANT_MEDIATION": "If they don’t want to try mediation the court will review the case for the full amount of £{{ claimAmount }}.",
-      "IF_NEED_PAYMENT_DETAILS": "if you need their payment details.",
+      "IF_NEED_PAYMENT_DETAILS": " if you need their payment details.",
       "IF_CLAIMANT_REJECTS_RESPONSE": "If {{ claimantName }} rejects your response",
       "PAGE_TITLE": "Submit Confirmation",
       "RECEIPT_FOR_PAYMENTS": "make sure you get a receipt for each payment",
@@ -1494,16 +1521,20 @@
       "YOU_WILL_BE_ASKED": "You will be asked some questions to check you are eligible to use this service."
     },
     "SUPPORT_REQUIRED": {
-      "ARRANGE_AND_PAY": "You may have to arrange and pay for interpreters except for Welsh. The court will tell you.",
+      "ADD_ANOTHER": "Add another person",
+      "CHOOSE_NAME": "Choose the name of the person",
       "DISABLE": "Disabled access",
-      "ENTER_SIGN_LANGUAGE": "Enter the sign language you need",
-      "EXTRA_SUPPORT": "The court can't guarantee extra support, but it will consider other needs relating to physical or mental health impairments",
+      "ENTER_SIGN_LANGUAGE": "What sign language needs to be interpreted?",
+      "EXTRA_SUPPORT": "Tell us what other support they need",
       "HEARING": "Hearing loop",
       "LANGUAGE": "Language interpreter",
+      "NAME_OF_PERSON": "Name of the person who needs support",
       "OTHER": "Other support",
       "PAGE_TITLE": "Support required",
+      "PERSON_TEXT": "Person",
+      "SELECT_ALL_THAT_APPLY": "Select all that apply.",
       "SIGN_LANGUAGE": "Sign language interpreter",
-      "TITLE": "Select any support you'd require for a court hearing (optional)",
+      "TITLE": "Do you, your experts or witnesses need support to attend a hearing",
       "WHAT_LANGUAGE": "What language needs to be interpreted?"
     },
     "UNDER_18": {
@@ -1533,6 +1564,15 @@
       "YOUR_ANSWERS": "Your answers to the questions above will enable the court and the judge, to consider what steps, adjustments or support can be arranged.",
       "REMINDER": "You are reminded that a copy of this directions questionnaire will be shared with all other parties.",
       "TITLE": "Vulnerability Questions"
+    },
+    "WELSH_LANGUAGE": {
+      "ENGLISH": "English",
+      "OFFICIAL_LANGUAGE": "Welsh is an official language of Wales. You can use Welsh in court hearings. Asking to speak in Welsh in your hearing will not delay the hearing or have any effect on proceedings or the outcome of a case.",
+      "PAGE_TITLE": "Welsh language",
+      "WELSH": "Welsh",
+      "WELSH_AND_ENGLISH": "Welsh and English",
+      "WHAT_LANGUAGE_DOCUMENTS": "What languages will the documents be provided in?",
+      "WHAT_LANGUAGE_SPEAK": "What languages will you, your experts and your witnesses speak at the hearing?"
     },
     "WHO_EMPLOYS_YOU": {
       "ADD_ANOTHER_JOB": "Ychwanegu swydd arall",
@@ -1610,6 +1650,7 @@
     "ENTER_EXPERT_FIELD": "Enter the expert’s field of expertise",
     "ENTER_FIRST_NAME": "Enter first name",
     "ENTER_LAST_NAME": "Enter last name",
+    "ENTER_PERSON_NAME": "Enter the name of the person who needs support",
     "ENTER_PAYMENT_EXPLANATION": "Rhowch eglurhad o sut y gwnaethoch dalu",
     "ENTER_VALID_EMAIL": "Enter a valid email address",
     "ENTER_SECURITY_CODE": "Enter your security code",
@@ -1622,6 +1663,9 @@
     "GIVE_DETAILS_DOCUMENTS": "Give details of the documents",
     "JOB_TITLE_REQUIRED": "Rhowch deitl swydd",
     "NAME_REQUIRED": "Nodwch enw os gwelwch yn dda",
+    "NO_LANGUAGE_ENTERED": "Enter the language that needs to be interpreted",
+    "NO_OTHER_SUPPORT": "Tell us what other support they need",
+    "NO_SIGN_LANGUAGE_ENTERED": "Enter the sign language that needs to be interpreted",
     "NUMBER_OF_PEOPLE_REQUIRED": "Rhowch rif, er enghraifft 3",
     "NUMBER_REQUIRED": "Rhowch rif dilys",
     "OPTION_REQUIRED": "Dewiswch un rheswm",
@@ -1631,6 +1675,9 @@
     "PHONE_NUMBER_REQUIRED": "Nodwch rif ffôn",
     "QUESTION_1_REQUIRED": "1. Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider? is required",
     "QUESTION_2_REQUIRED": "Question 2: If you have answered \"yes\" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?",
+    "RATE_CHOOSE_ONE": "Choose rate of interest",
+    "RATE_CORRECT_THE_ONE_ENTERED": "Correct rate you’ve entered",
+    "RATE_EXPLAIN_CLAIMING_IT": "You haven’t explained why you’re claiming this rate",
     "REDIS_FAILURE": "Redis DraftStore failure.",
     "SELECT_ADDITIONAL_TIME": "Dewiswch faint o amser ychwanegol yr ydych yn gwneud cais amdano",
     "SECURITY_CODE_WRONG_OR_EXPIRED": "The security code was not right or has expired",
@@ -1653,8 +1700,12 @@
       "RENT": "Dewiswch pa mor aml ydych chi'n talu rhent",
       "WATER": "Dewiswch pa mor aml ydych chi'n talu am ddŵr"
     },
+    "SELECT_LANGUAGE_DOCUMENTS": "Select the language your documents will be provided in",
+    "SELECT_LANGUAGE_SPEAK": "Select the language you, your experts, and your witnesses will speak at the hearing",
     "SELECT_REQUEST": "Dewiswch os ydych eisiau gwneud cais am ragor o amser i ymateb, os ydych eisoes wedi cytuno ar ragor o amser i ymateb, os yw eich cais am ragor o amser wedi’i wrthod, neu nid ydych angen rhagor o amser i ymateb",
+    "SELECT_SUPPORT": "Select the support the person needs to attend a hearing",
     "SELECT_YES_IF_DOCUMENTS": "Select yes if there are documents the claimant has that you want the court to consider",
+    "SELECT_YES_IF_SUPPORT": "Select yes if someone needs support to attend a hearing",
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
     "SIGNER_NAME_TOO_LONG": "You've entered too many characters",
     "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",
@@ -1720,6 +1771,7 @@
     "VALID_BETWEEN_NUMBERS_0_80": "Enter a number between 0 and 80",
     "VALID_CHOOSE": "Choose your response",
     "VALID_CITY": "Rhowch enw tref/dinas dilys",
+    "VALID_CLAIM_AMOUNT": "Enter an amount of money",
     "VALID_CLAIM_NUMBER": "Enter a claim number",
     "VALID_CLAIM_REFERENCE_NUMBER": "Enter a valid claim number",
     "VALID_CORRESPONDENCE_ADDRESS_LINE_1": "Rhowch linell gyntaf y cyfeiriad ar gyfer gohebiaeth",
