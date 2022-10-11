@@ -95,6 +95,7 @@
     },
     "HELP_WITH_INTEREST_RATES": {
       "THE_COURT_WILL_DECIDE": "The court will decide if you're entitled to some or all of the interest claimed.",
+      "TITLE": "Help with interest rates",
       "YOU_CAN_CLAIM": "You can claim 8% interest on money owed to you. This is the statutory rate. If you know that a different rate applies you can use that. For example if you have a contract with a specific rate"
     },
     "MONTH_NAMES": {
@@ -343,6 +344,7 @@
       "TAX_PAYMENT_ARE_YOU_BEHIND": "Ydych chi ar ei hôl hi gyda thaliadau treth?",
       "TAX_PAYMENT_AMOUNT_YOU_OWE": "Swm sydd arnoch chi?",
       "TAX_PAYMENT_REASON": "Rheswm",
+      "TITLE": "Gwiriwch eich ateb",
       "TIMELINE_TITLE": "Eich llinell amser o'r hyn a ddigwyddodd (dewisol)",
       "TIMELINE_COMMENTS": "Sylwadau am eu llinell amser (dewisol)",
       "EVIDENCE_TITLE": "Eich tystiolaeth (dewisol)",
@@ -354,7 +356,6 @@
       "EVIDENCE_STATEMENT_OF_ACCOUNT": "Datganiadau cyfrifon",
       "EVIDENCE_OTHER": "Arall",
       "EVIDENCE_COMMENTS": "Sylwadau am eu tystiolaeth (dewisol)",
-      "TITLE": "Gwiriwch eich ateb",
       "WHEN_PAY": "Pryd fyddwch chi'n talu",
       "WHEN_PAY_TITLE": "Pryd fyddwch chi'n talu",
       "WHERE_DO_YOU_LIVE": "Ble rydych chi'n byw?",
@@ -445,6 +446,7 @@
       "RESPONSE_MEANING": "Canfod beth mae pob ymateb yn ei olygu"
     },
     "CLAIM_AMOUNT_BREAKDOWN": {
+      "ADD_ANOTHER_ROW": "Add another row",
       "AMOUNT": "Amount",
       "CLAIM_FEE": "your claim fee - we’ll add this for you",
       "DONT_INCLUDE": "Don’t include:",
@@ -813,6 +815,11 @@
       "PAGE_TITLE": "A oes gennych anabledd?",
       "TITLE": "A oes gennych anabledd?"
     },
+    "INTEREST_START_DATE": {
+      "PAGE_TITLE": "claim interest from",
+      "TITLE": "Enter the date you want to claim interest from",
+      "REASON": "Explain why you’re claiming from this date"
+    },
     "ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES": {
       "PARAGRAPH1_1": "If you have already applied for Help with Fees in respect ooooof ",
       "PARAGRAPH1_2": "you may already have a reference number. If so, you can save and continue and enter it when asked. Do not use a number related to a different claim. If you don’t have a Help with Fees number for this claim, please follow the instructions below.",
@@ -888,9 +895,9 @@
       "HELP_WITH_FEES_INTRO": "Making an application for Help with Fees does not guarantee that you will get your fee covered. You may still have to pay some or all of your court fee to get the claim issued (for the court system to officially start the claim and send details to the other side). When you apply for Help with Fees, you should receive an update from us within 5 working days, giving you the result of your application.",
       "TITLE": "Some useful information about Help with Fees"
     },
-    "EMPLOYER" : {
-      "EMPLOYER_NAME" : "Enw’r cyflogwr",
-      "JOB_TITLE" : "Teitl swydd"
+    "EMPLOYER": {
+      "EMPLOYER_NAME": "Enw’r cyflogwr",
+      "JOB_TITLE": "Teitl swydd"
     },
     "EMPLOYMENT_STATUS": {
       "BOTH": "Gallwch ddewis y ddau",
@@ -1059,6 +1066,12 @@
       "PAGE_TITLE": "Free telephone mediation",
       "REACHING_SETTLEMENT": "Setlo’r anghydfod",
       "TITLE": "Gwasanaeth cyfryngu dros y ffôn am ddim"
+    },
+    "INTEREST_CLAIM_OPTIONS": {
+      "BREAK_DOWN": "Break down interest for different time periods or items",
+      "PAGE_TITLE": "How do you want to claim interest?",
+      "SAME_RATE": "Same rate for the whole period",
+      "TITLE": "How do you want to claim interest?"
     },
     "INCOMPLETE_SUBMISSION": {
       "TITLE": "You need to complete all sections before you submit your response"
@@ -1824,6 +1837,7 @@
     "VALID_FREE_TEXT_DATE_LENGTH": "Rhowch ddyddiad sydd ddim hirach na $constraint1 nod",
     "VALID_HOUSING": "Disgrifiwch eich cartref",
     "VALID_INTEGER": "Rhowch rif, er enghraifft 3",
+    "VALID_INTEREST_TYPE_OPTION": "Choose same rate or breakdown",
     "VALID_MONTH": "Rhowch fis dilys",
     "VALID_NAME": "Enter name",
     "VALID_CANT_ATTEND_HEARING": "Select yes if there are any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing",
@@ -1849,6 +1863,7 @@
     "VALID_YEAR": "Rhowch flwyddyn ddilys",
     "VALID_VALUE": "A ydych yn siŵr bod hwn yn swm dilys?",
     "VALID_YES_NO_OPTION": "Dewiswch opsiwn: ie neu na",
-    "VALID_YES_NO_SELECTION": "Dewiswch ie neu na, os gwelwch yn dda"
+    "VALID_YES_NO_SELECTION": "Dewiswch ie neu na, os gwelwch yn dda",
+    "VALID_WHY_FROM_PARTICULAR_DATE": "You need to explain why you are claiming"
   }
 }

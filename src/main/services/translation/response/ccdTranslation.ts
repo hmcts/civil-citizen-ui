@@ -4,14 +4,16 @@ import {toCCDRepaymentPlan} from '../../../common/models/ccdResponse/ccdRepaymen
 import {toCCDPaymentOption} from '../../../common/models/ccdResponse/ccdPaymentOption';
 import {toCCDPayBySetDate} from '../../../common/models/ccdResponse/ccdPayBySetDate';
 import {toAgreedMediation} from '../../../common/models/ccdResponse/ccdAgreedMediation';
+import {YesNoUpperCamelCase} from '../../../common/form/models/yesNo';
 
-export const translateDraftResponseToCCD = (claim: Claim): CCDResponse => {
+export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   return {
     respondent1ClaimResponseTypeForSpec: claim.respondent1?.responseType,
     defenceAdmitPartPaymentTimeRouteRequired: toCCDPaymentOption(claim.paymentOption),
     respondent1RepaymentPlan: toCCDRepaymentPlan(claim.repaymentPlan),
     respondToClaimAdmitPartLRspec: toCCDPayBySetDate(claim.paymentDate),
-    specAoSApplicantCorrespondenceAddressRequired: 'No', // TODO This part needs to be change in separate story CIV-4571
     responseClaimMediationSpecRequired: toAgreedMediation(claim.mediation),
+    specAoSApplicantCorrespondenceAddressRequired: addressHasChange ? YesNoUpperCamelCase.NO : YesNoUpperCamelCase.YES,
+    respondent1: claim.respondent1,
   };
 };
