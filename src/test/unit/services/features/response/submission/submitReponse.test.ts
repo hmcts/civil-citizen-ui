@@ -7,7 +7,7 @@ import {submitResponse} from '../../../../../../main/services/features/response/
 import nock from 'nock';
 import config from 'config';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {Respondent} from '../../../../../../main/common/models/respondent';
+import {Party} from '../../../../../../main/common/models/party';
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/services/translation/response/ccdTranslation');
@@ -21,9 +21,9 @@ const citizenBaseUrl: string = config.get('services.civilService.url');
 describe('Submit response to ccd', ()=>{
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
   const claim = new Claim();
-  claim.respondent1 = new Respondent();
+  claim.respondent1 = new Party();
   const claimFromService = new Claim();
-  claimFromService.respondent1 = new Respondent();
+  claimFromService.respondent1 = new Party();
   beforeEach(() => {
     nock(citizenBaseUrl)
       .get('/cases/1')

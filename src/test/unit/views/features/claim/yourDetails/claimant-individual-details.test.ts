@@ -10,8 +10,8 @@ const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 const pageTitle = 'PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.PAGE_TITLE';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/draft-store');
 
 describe('Claimant Individual Details View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

@@ -1,5 +1,5 @@
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {CitizenTelephoneNumber} from 'common/form/models/citizenTelephoneNumber';
+import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {CitizenTelephoneNumber} from '../../../../common/form/models/citizenTelephoneNumber';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantPhoneAsService');
