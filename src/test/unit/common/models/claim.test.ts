@@ -1,7 +1,6 @@
 import {Claim} from '../../../../main/common/models/claim';
 import {
   InterestClaimFromType,
-  InterestClaimOptions,
   InterestClaimUntilType,
   SameRateInterestType,
   CaseState,
@@ -28,6 +27,7 @@ import {HowMuchHaveYouPaid, HowMuchHaveYouPaidParams} from '../../../../main/com
 import {WhyDoYouDisagree} from '../../../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {Defence} from '../../../../main/common/form/models/defence';
 import { ClaimResponseStatus } from '../../../../main/common/models/claimResponseStatus';
+import {InterestClaimOptionsType} from '../../../../main/common/form/models/claim/interest/interestClaimOptionsType';
 
 describe('Claim isInterestClaimUntilSubmitDate', () => {
   const claim = new Claim();
@@ -116,7 +116,7 @@ describe('Claim isInterestClaimOptionsSameRateInterest', () => {
   });
   it('should return true', () => {
     //Given
-    claim.interestClaimOptions = InterestClaimOptions.SAME_RATE_INTEREST;
+    claim.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
     //When
     const result = claim.isInterestClaimOptionsSameRateInterest();
     //Then
@@ -124,7 +124,7 @@ describe('Claim isInterestClaimOptionsSameRateInterest', () => {
   });
   it('should return false', () => {
     //Given
-    claim.interestClaimOptions = InterestClaimOptions.BREAK_DOWN_INTEREST;
+    claim.interestClaimOptions = InterestClaimOptionsType.BREAK_DOWN_INTEREST;
     //When
     const result = claim.isInterestClaimOptionsSameRateInterest();
     //Then
