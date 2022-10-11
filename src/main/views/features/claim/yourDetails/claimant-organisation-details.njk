@@ -16,7 +16,7 @@
 {% set claimantIndividualAddressErrors = claimantIndividualAddress.getAllErrors() %}
 {% set partyErrors = party.getAllErrors() %}
 
-{% set partyName = t('PAGES.CITIZEN_DETAILS.PARTY_NAME_COMPANY') %}
+{% set partyType = t('PAGES.CITIZEN_DETAILS.PARTY_NAME_COMPANY') %}
 
 
 {% if claimantIndividualCorrespondenceAddress %}
@@ -25,7 +25,7 @@
 {% endif %}
 
 {% if party.model.type === partyType.ORGANISATION %}
-  {% set partyName = t('PAGES.CITIZEN_DETAILS.PARTY_NAME_ORGANISATION') %}
+  {% set partyType = t('PAGES.CITIZEN_DETAILS.PARTY_NAME_ORGANISATION') %}
   {% set payingExtra = t('PAGES.CITIZEN_DETAILS.PAYING_EXTRA_ORGANISATION') %}
 {% endif %}
 
@@ -96,7 +96,7 @@
 
             {{ govukInput({
               label: {
-                text: t(partyName)
+                text: t(partyType)
               },
               classes: "govuk-!-width-one-half",
               id: "partyName",
@@ -113,7 +113,7 @@
               name: "contactPerson",
               value: party.model.contactPerson,
               hint: {
-                text: t('PAGES.PARTIAL_ADMISSION_HOW_MUCH_HAVE_YOU_PAID.FOR_EXAMPLE')
+                text: t('PAGES.CITIZEN_DETAILS.CONTACT_PERSON_HINT')
               }
             }) }}
 
