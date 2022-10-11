@@ -88,7 +88,7 @@ describe('Task List View', () => {
       expect(tableCells[4].innerHTML).toContain('Claim fee');
       expect(tableCells[5].innerHTML).toContain(convertToPoundsFilter(claim.case_data.claimFee.calculatedAmountInPence).toString());
       expect(tableCells[6].innerHTML).toContain('Claim Total');
-      expect(tableCells[7].innerHTML).toContain(getTotalAmountWithInterestAndFees(claim.case_data));
+      expect(tableCells[7].innerHTML).toContain(getTotalAmountWithInterestAndFees(claim.case_data).toString());
     });
 
     it('should display reason for claim text and reason', () => {
