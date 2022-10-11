@@ -25,6 +25,7 @@ import {LanguageOptions} from '../../common/models/directionsQuestionnaire/langu
 import {SameRateInterestType} from '../../common/form/models/claimDetails';
 import {InterestClaimFromType} from '../../common/form/models/claimDetails';
 import * as urls from '../../routes/urls';
+import {InterestClaimOptionsType} from '../../common/form/models/claim/interest/interestClaimOptionsType';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -118,6 +119,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('SameRateInterestType', SameRateInterestType);
     nunjucksEnv.addGlobal('InterestClaimFromType', InterestClaimFromType);
     nunjucksEnv.addGlobal('urls', urls);
+    nunjucksEnv.addGlobal('InterestClaimOptionsType', InterestClaimOptionsType);
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;

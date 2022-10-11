@@ -7,13 +7,13 @@ import {CorrespondenceAddress} from '../../main/common/models/correspondenceAddr
 import {YesNo} from '../../main/common/form/models/yesNo';
 import {
   InterestClaimFromType,
-  InterestClaimOptions,
   InterestClaimUntilType,
   SameRateInterestType,
   CaseState,
 } from '../../main/common/form/models/claimDetails';
 import {ResponseOptions} from '../../main/common/form/models/responseDeadline';
 import {AdditionalTimeOptions} from '../../main/common/form/models/additionalTime';
+import {InterestClaimOptionsType} from '../../main/common/form/models/claim/interest/interestClaimOptionsType';
 
 export const buildPrimaryAddress = (): PrimaryAddress => {
   return {
@@ -121,7 +121,7 @@ function buildMockClaim(): Claim {
   ];
   _mockClaim.interestClaimUntil = InterestClaimUntilType.UNTIL_CLAIM_SUBMIT_DATE;
   _mockClaim.interestFromSpecificDate = new Date('2022-05-20');
-  _mockClaim.interestClaimOptions = InterestClaimOptions.SAME_RATE_INTEREST;
+  _mockClaim.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
   _mockClaim.sameRateInterestSelection = {
     sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC,
   };

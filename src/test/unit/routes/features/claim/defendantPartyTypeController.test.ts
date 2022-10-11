@@ -1,23 +1,23 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import {PartyType} from '../../../../../../main/common/models/partyType';
-import {mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {app} from '../../../../../main/app';
+import {PartyType} from '../../../../../main/common/models/partyType';
+import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {
   CLAIM_DEFENDANT_COMPANY_DETAILS,
   CLAIM_DEFENDANT_INDIVIDUAL_DETAILS,
   CLAIM_DEFENDANT_ORGANISATION_DETAILS,
   CLAIM_DEFENDANT_PARTY_TYPE_URL,
   CLAIM_DEFENDANT_SOLE_TRADER_DETAILS,
-} from '../../../../../../main/routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../../main/common/models/claim';
+} from '../../../../../main/routes/urls';
+import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
+import {Claim} from '../../../../../main/common/models/claim';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 describe('Defendant party type controller', () => {
   const mockGetClaim = draftStoreService.getCaseDataFromStore as jest.Mock;
