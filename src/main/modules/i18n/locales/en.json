@@ -380,6 +380,8 @@
       "ADDRESS_NOT_FOUND": "We can't find an address for that postcode.",
       "ALL_CORRESPONDENCE": "All correspondence will be sent to this address.",
       "CLAIMANT_DETAILS_PROVIDED": "Your name and address were provided by the person, business or organisation claiming from you (the claimant).",
+      "CONTACT_PERSON": "Contact person (optional)",
+      "CONTACT_PERSON_HINT": "The defendant can contact this person to discuss the claim",
       "CONFIRM_YOUR_DETAILS": "Confirm your details",
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Would you like correspondence sent to a different address?",
@@ -387,6 +389,8 @@
       "FIRST_NAME": "First name",
       "LAST_NAME": "Last name",
       "MANUAL_ADDRESS": "Enter address manually",
+      "PARTY_NAME_COMPANY": "Company name",
+      "PARTY_NAME_ORGANISATION": "Organisation name",
       "PAGE_TITLE": "Your details",
       "PICK_ADDRESS": "Pick an address",
       "TITLE": "Title",
@@ -868,9 +872,9 @@
       "HELP_WITH_FEES_INTRO": "Making an application for Help with Fees does not guarantee that you will get your fee covered. You may still have to pay some or all of your court fee to get the claim issued (for the court system to officially start the claim and send details to the other side). When you apply for Help with Fees, you should receive an update from us within 5 working days, giving you the result of your application.",
       "TITLE": "Some useful information about Help with Fees"
     },
-    "EMPLOYER" : {
-      "EMPLOYER_NAME" : "Employer name",
-      "JOB_TITLE" : "Job title"
+    "EMPLOYER": {
+      "EMPLOYER_NAME": "Employer name",
+      "JOB_TITLE": "Job title"
     },
     "EMPLOYMENT_STATUS": {
       "BOTH": "You can select both.",
@@ -1807,6 +1811,7 @@
     "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Number can’t be higher than on previous page",
     "VALID_OPTION_SELECTION": "Select an option",
     "VALID_OWED_AMOUNT_REQUIRED": "Enter a valid amount owed",
+    "VALID_PARTY_NAME": "Enter name",
     "VALID_PAYMENT_OPTION": "Choose a payment option",
     "VALID_PHONE_NUMBER": "Enter a phone number in the correct format",
     "VALID_PHONE_OR_VIDEO_HEARING": {

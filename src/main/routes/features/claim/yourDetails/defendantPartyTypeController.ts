@@ -1,12 +1,15 @@
 import express from 'express';
 import {CLAIM_DEFENDANT_PARTY_TYPE_URL} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {PartyTypeSelection} from '../../../../common/form/models/claim/partyTypeSelection';
+import {GenericForm} from 'common/form/models/genericForm';
+import {PartyTypeSelection} from 'common/form/models/claim/partyTypeSelection';
 import {redirectToPage} from '../../../../services/features/claim/partyTypeService';
-import {ClaimantOrDefendant} from '../../../../common/models/partyType';
-import {getDefendantInformation, saveDefendant} from '../../../../services/features/claim/defendantDetailsService';
-import {Party} from '../../../../common/models/party';
-import {AppRequest} from '../../../../common/models/AppRequest';
+import {ClaimantOrDefendant} from 'models/partyType';
+import {
+  getDefendantInformation,
+  saveDefendant,
+} from '../../../../services/features/claim/yourDetails/defendantDetailsService';
+import {Party} from 'models/party';
+import {AppRequest} from 'models/AppRequest';
 
 const defendantPartyTypeViewPath = 'features/public/claim/defendant-party-type';
 const defendantPartyTypeController = express.Router();

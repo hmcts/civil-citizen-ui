@@ -1,13 +1,13 @@
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../../main/app';
 import config from 'config';
 import request from 'supertest';
-import {CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, CLAIMANT_DOB_URL} from '../../../../../main/routes/urls';
-import {buildCorrespondenceAddress, buildPrimaryAddress} from '../../../../utils/mockClaim';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {PartyType} from '../../../../../main/common/models/partyType';
-import {Claim} from '../../../../../main/common/models/claim';
-import {Party} from '../../../../../main/common/models/party';
-import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
+import {CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, CLAIMANT_DOB_URL} from '../../../../../../main/routes/urls';
+import {buildCorrespondenceAddress, buildPrimaryAddress} from '../../../../../utils/mockClaim';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {PartyType} from '../../../../../../main/common/models/partyType';
+import {Claim} from '../../../../../../main/common/models/claim';
+import {Party} from '../../../../../../main/common/models/party';
+import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import {
   VALID_ADDRESS_LINE_1,
   VALID_CITY,
@@ -15,7 +15,7 @@ import {
   VALID_CORRESPONDENCE_CITY,
   VALID_CORRESPONDENCE_POSTCODE,
   VALID_POSTCODE,
-} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
+} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');

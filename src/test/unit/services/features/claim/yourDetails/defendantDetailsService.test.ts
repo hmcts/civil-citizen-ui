@@ -1,12 +1,12 @@
-import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../main/common/models/claim';
-import {buildPrimaryAddress, mockClaim} from '../../../../utils/mockClaim';
-import {Party} from '../../../../../main/common/models/party';
+import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import {Claim} from '../../../../../../main/common/models/claim';
+import {buildPrimaryAddress, mockClaim} from '../../../../../utils/mockClaim';
+import {Party} from '../../../../../../main/common/models/party';
 import {
   getDefendantInformation,
   saveDefendant,
-} from '../../../../../main/services/features/claim/defendantDetailsService';
-import {PartyType} from '../../../../../main/common/models/partyType';
+} from '../../../../../../main/services/features/claim/yourDetails/defendantDetailsService';
+import {PartyType} from '../../../../../../main/common/models/partyType';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');

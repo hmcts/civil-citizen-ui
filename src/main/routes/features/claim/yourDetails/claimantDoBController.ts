@@ -1,11 +1,11 @@
 import express from 'express';
 import {CLAIMANT_DOB_URL, CLAIMANT_PHONE_NUMBER_URL} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {ClaimantDoB} from '../../../../common/form/models/claim/claimant/claimantDoB';
-import {Claim} from '../../../../common/models/claim';
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
-import {AppRequest} from '../../../../common/models/AppRequest';
-import {Party} from '../../../../common/models/party';
+import {GenericForm} from 'common/form/models/genericForm';
+import {ClaimantDoB} from 'common/form/models/claim/claimant/claimantDoB';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'models/AppRequest';
+import {Party} from 'models/party';
 
 const claimantDoBController = express.Router();
 const claimantDoBViewPath = 'features/response/citizenDob/citizen-dob';

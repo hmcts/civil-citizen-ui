@@ -866,9 +866,9 @@
       "HELP_WITH_FEES_INTRO": "Making an application for Help with Fees does not guarantee that you will get your fee covered. You may still have to pay some or all of your court fee to get the claim issued (for the court system to officially start the claim and send details to the other side). When you apply for Help with Fees, you should receive an update from us within 5 working days, giving you the result of your application.",
       "TITLE": "Some useful information about Help with Fees"
     },
-    "EMPLOYER" : {
-      "EMPLOYER_NAME" : "Enw’r cyflogwr",
-      "JOB_TITLE" : "Teitl swydd"
+    "EMPLOYER": {
+      "EMPLOYER_NAME": "Enw’r cyflogwr",
+      "JOB_TITLE": "Teitl swydd"
     },
     "EMPLOYMENT_STATUS": {
       "BOTH": "Gallwch ddewis y ddau",
@@ -1805,6 +1805,7 @@
     "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Ni all y rhif fod yn uwch na'r rhif ar y dudalen flaenorol",
     "VALID_OPTION_SELECTION": "Dewiswch opsiwn",
     "VALID_OWED_AMOUNT_REQUIRED": "Rhowch swm dilys",
+    "VALID_PARTY_NAME": "Enter name",
     "VALID_PAYMENT_OPTION": "Dewis opsiwn ad-dalu",
     "VALID_PHONE_NUMBER": "Rhowch rif ffôn gan ddefnyddio'r fformat cywir",
     "VALID_PHONE_OR_VIDEO_HEARING": {

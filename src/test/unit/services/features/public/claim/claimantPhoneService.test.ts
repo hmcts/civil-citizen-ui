@@ -1,5 +1,8 @@
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import {getClaimantPhone,saveClaimantPhone} from '../../../../../../main/services/features/claim/claimantPhoneService';
+import {
+  getClaimantPhone,
+  saveClaimantPhone,
+} from '../../../../../../main/services/features/claim/yourDetails/claimantPhoneService';
 import {Claim, Party} from '../../../../../../main/common/models/claim';
 import {CorrespondenceAddress} from '../../../../../../main/common/models/correspondenceAddress';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';

@@ -1,12 +1,15 @@
-import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import {getClaimantInformation, saveClaimant} from '../../../../../main/services/features/claim/claimantDetailsService';
-import {Claim} from '../../../../../main/common/models/claim';
-import {buildPrimaryAddress, mockClaim} from '../../../../utils/mockClaim';
-import {Party} from '../../../../../main/common/models/party';
-import {YesNo} from '../../../../../main/common/form/models/yesNo';
-import {buildCitizenAddress, buildCitizenCorrespondenceAddress} from '../../../../utils/mockForm';
-import {PartyDetails} from '../../../../../main/common/form/models/partyDetails';
-import {CitizenCorrespondenceAddress} from '../../../../../main/common/form/models/citizenCorrespondenceAddress';
+import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import {
+  getClaimantInformation,
+  saveClaimant,
+} from '../../../../../../main/services/features/claim/yourDetails/claimantDetailsService';
+import {Claim} from '../../../../../../main/common/models/claim';
+import {buildPrimaryAddress, mockClaim} from '../../../../../utils/mockClaim';
+import {Party} from '../../../../../../main/common/models/party';
+import {YesNo} from '../../../../../../main/common/form/models/yesNo';
+import {buildCitizenAddress, buildCitizenCorrespondenceAddress} from '../../../../../utils/mockForm';
+import {PartyDetails} from '../../../../../../main/common/form/models/partyDetails';
+import {CitizenCorrespondenceAddress} from '../../../../../../main/common/form/models/citizenCorrespondenceAddress';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
