@@ -24,16 +24,8 @@ const getContactNumber = (claim: Claim) => {
   }
 };
 
-const getCanWeUse = (claim: Claim) => {
-  if (claim.mediation?.canWeUse?.option) {
-    return YesNoUpperCase.YES;
-  } else {
-    if (claim.mediation?.mediationDisagreement?.option) {
-      return YesNoUpperCase.NO;
-    } else if (claim.mediation?.companyTelephoneNumber) {
-      return YesNoUpperCase.YES;
-    }
-  }
+const getCanWeUse = (claim: Claim): YesNoUpperCase => {
+  return claim.isAgreedWithFreeMediation() ? YesNoUpperCase.YES : YesNoUpperCase.NO;
 };
 
 export const buildFreeTelephoneMediationSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {

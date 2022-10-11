@@ -76,7 +76,7 @@ export class Claim {
   systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
   ccdState: CaseState;
   responseDeadline: ResponseDeadline;
-  respondentSolicitor1AgreedDeadlineExtension?:Date;
+  respondentSolicitor1AgreedDeadlineExtension?: Date;
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
 
@@ -296,7 +296,7 @@ export class Claim {
     }
 
     if (this.isFullDefence() && this.isRejectAllOfClaimDispute()) {
-      return this.isAgreedWithFreeMediation()? ClaimResponseStatus.RC_DISPUTE_WITH_MEDIATION
+      return this.isAgreedWithFreeMediation() ? ClaimResponseStatus.RC_DISPUTE_WITH_MEDIATION
         : ClaimResponseStatus.RC_DISPUTE_NO_MEDIATION;
     }
   }
@@ -322,6 +322,7 @@ export class Claim {
       } else if (this.mediation?.companyTelephoneNumber) {
         return true;
       }
+      return false;
     }
   }
 }
