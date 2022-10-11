@@ -380,6 +380,8 @@
       "ADDRESS_NOT_FOUND": "Ni allwn dod o hyd i gyfeiriad ar gyfer y cod post hwnnw.",
       "ALL_CORRESPONDENCE": "Byddir yn anfon pob gohebiaeth i'r cyfeiriad hwn.",
       "CLAIMANT_DETAILS_PROVIDED": "Darparwyd eich enw a'ch cyfeiriad gan yr unigolyn, y busnes neu'r sefydliad sy'n cyflwyno'r hawliad (yr hawlydd).",
+      "CONTACT_PERSON": "Contact person (optional)",
+      "CONTACT_PERSON_HINT": "The defendant can contact this person to discuss the claim",
       "CONFIRM_YOUR_DETAILS": "Cadarnhau eich manylion",
       "CORRESPONDENCE_ADDRESS": "Cyfeiriad ar gyfer gohebiaeth",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Ydych chi am inni anfon gohebiaeth i gyfeiriad arall?",
@@ -387,6 +389,8 @@
       "FIRST_NAME": "Enw cyntaf",
       "LAST_NAME": "Cyfenw",
       "MANUAL_ADDRESS": "Teipio'r cyfeiriad",
+      "PARTY_NAME_COMPANY": "Company name",
+      "PARTY_NAME_ORGANISATION": "Organisation name",
       "PAGE_TITLE": "Eich manylion",
       "PICK_ADDRESS": "Dewiswch gyfeiriad",
       "TITLE": "Teitl",
@@ -1840,6 +1844,7 @@
     "VALID_VALUE": "A ydych yn siŵr bod hwn yn swm dilys?",
     "VALID_YES_NO_OPTION": "Dewiswch opsiwn: ie neu na",
     "VALID_YES_NO_SELECTION": "Dewiswch ie neu na, os gwelwch yn dda",
+    "VALID_DISAGREE_REASON_REQUIRED": "Enter text explaining why do you disagree",
     "VALID_WHY_FROM_PARTICULAR_DATE": "You need to explain why you are claiming"
   }
 }
