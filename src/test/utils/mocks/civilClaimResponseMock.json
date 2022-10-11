@@ -42,6 +42,10 @@
     "directionQuestionnaire": {
       "hearing": {},
       "vulnerabilityQuestions": {},
+      "welshLanguageRequirements":{
+        "speakLanguage":"en",
+        "documentsLanguage":"en"
+      },
       "experts": {
         "expertReportDetails": {
           "option": "yes",
@@ -53,12 +57,7 @@
           ]
         }
       },
-      "witnesses": {
-        "otherWitnesses": {
-          "option": "",
-          "witnessItems": [{}]
-        }
-      }
+      "witnessItems": [{}]
     },
     "applicantSolicitor1UserDetails": {
       "email": "hmcts.civil+organisation.1.solicitor.1@gmail.com"

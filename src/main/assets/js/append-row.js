@@ -10,6 +10,11 @@
 const {getCalculation, addCalculationEventListener} = require('./calculate-amount');
 
 document.addEventListener('DOMContentLoaded', function () {
+  const indexRegex = /\[(\d+)\]/;
+  const checkboxIndexRegex = /-(\d+)-/;
+  const chechboxCondtionalHidden = 'govuk-checkboxes__conditional--hidden';
+  const checkboxConditional = 'govuk-checkboxes__conditional';
+  const checkboxConditionalClassName = '.govuk-checkboxes__conditional';
   const appendRowButton = document.getElementsByClassName('append-row');
   if (elementExists(appendRowButton)) {
     appendRowButton[0].addEventListener('click', (event) => {
@@ -42,11 +47,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const multipleRowElement = document.getElementsByClassName('multiple-row');
     if (elementExists(multipleRowElement)) {
       const lastRow = getLastRow(multipleRowElement);
-      let newRow = lastRow.cloneNode(true);
+      const newRow = lastRow.cloneNode(true);
       const children = newRow.children;
       Array.from(children).forEach((child) => {
-        let inputs = child.querySelectorAll('input, textarea, select');
-        updateInputs(inputs);
+        const elements = child.querySelectorAll('input, textarea, select, label,' + checkboxConditionalClassName);
+        updateInputs(elements);
         removeErrors(child);
       });
       lastRow.parentNode.appendChild(newRow);
@@ -63,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function updateNewRow(addedRow) {
-    let newRow = getLastRow(addedRow);
+    const newRow = getLastRow(addedRow);
     removeErrors(newRow);
   }
 
@@ -82,27 +87,64 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  function updateInputs(inputs) {
-    if (elementExists(inputs)) {
-      inputs.forEach(input => {
-        if (input.type !== 'radio' && input.type !== 'checkbox') {
-          input.value = '';
+  function updateInputs(elements) {
+    if (elementExists(elements)) {
+      elements.forEach(element => {
+        if (element.type !== 'radio' && element.type !== 'checkbox') {
+          element.value = '';
         }
-        if (input.checked) {
-          input.checked = false;
+        if (element.checked) {
+          element.checked = false;
         }
-        input.classList.remove('govuk-input--error', 'govuk-select--error', 'govuk-textarea--error');
-        input.parentNode.classList.remove('govuk-form-group--error');
-        incrementIndexOnName(input);
+        element.classList.remove('govuk-input--error', 'govuk-select--error', 'govuk-textarea--error');
+        element.parentNode.classList.remove('govuk-form-group--error');
+        incrementIndexOnNameAndId(element);
+        updateAttributes(element);
+        if (
+          element.className?.includes(checkboxConditional) &&
+          !element.className?.includes(chechboxCondtionalHidden)
+        ) {
+          element.classList.add(chechboxCondtionalHidden);
+        }
+        if (element.type === 'checkbox') {
+          addEventToAddedCheckbox(element);
+        }
       });
     }
   }
 
-  function incrementIndexOnName(input) {
-    let newIndex = document.getElementsByClassName('multiple-row').length;
-    const indexRegex = /\[(\d+)\]/;
-    input.name = input.name.replace(indexRegex, '[' + newIndex + ']');
-    input.id = input.id.replace(indexRegex, '[' + newIndex + ']');
+  function incrementIndexOnNameAndId(element) {
+    const newIndex = document.getElementsByClassName('multiple-row').length;
+    if (element.name) {
+      element.name = element.name.replace(indexRegex, '[' + newIndex + ']');
+      element.id = element.id.replace(checkboxIndexRegex, '-' + newIndex + '-');
+    }
+    element.id = element.id.replace(indexRegex, '[' + newIndex + ']');
+    element.id = element.id.replace(checkboxIndexRegex, '-' + newIndex + '-');
+  }
+
+  function updateAttributes(element) {
+    const newIndex = document.getElementsByClassName('multiple-row').length;
+    if (element.getAttribute('for')) {
+      element.setAttribute(
+        'for',
+        element
+          .getAttribute('for')
+          .replace(checkboxIndexRegex, '-' + newIndex + '-'),
+      );
+      element.setAttribute(
+        'for',
+        element.getAttribute('for').replace(indexRegex, '[' + newIndex + ']'),
+      );
+    }
+    if (element.getAttribute('aria-controls')) {
+      element.setAttribute(
+        'aria-controls',
+        element
+          .getAttribute('aria-controls')
+          .replace(checkboxIndexRegex, '-' + newIndex + '-'),
+      );
+    }
   }
 
   function showRemoveButton() {
@@ -128,5 +170,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function elementExists(element) {
     return element?.length > 0;
+  }
+
+  function addEventToAddedCheckbox(checkbox) {
+    checkbox.addEventListener('click', (event) => {
+      event.target.ariaExpanded = event.target.ariaExpanded === 'true' ? false : true;
+      const index = event.target.id.match(checkboxIndexRegex);
+      const fieldName = event.target.id.split('-')[2];
+      const conditional = document.getElementById(`conditional-declared-${index[1]}-${fieldName}`);
+      if (conditional?.className?.includes(chechboxCondtionalHidden)) {
+        conditional.classList.remove(chechboxCondtionalHidden);
+      } else {
+        conditional.classList.add(chechboxCondtionalHidden);
+      }
+    });
   }
 });
