@@ -161,3 +161,5 @@ export const CLAIM_INTEREST_TOTAL_URL = `${BASE_CLAIM_URL}/interest-total`;
 export const CLAIM_AMOUNT_URL = `${BASE_CLAIM_URL}/amount`;
 export const CLAIM_INTEREST_URL = `${BASE_CLAIM_URL}/interest`;
 export const CLAIM_HELP_WITH_FEES_URL = `${BASE_CLAIM_URL}/help-with-fees`;
+export const CLAIM_INTEREST_START_DATE_URL = `${BASE_CLAIM_URL}/interest-start-date`;
+export const CLAIM_INTEREST_END_DATE_URL = `${BASE_CLAIM_URL}/interest-end-date`;
