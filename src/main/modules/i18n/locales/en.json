@@ -797,6 +797,11 @@
       "PAGE_TITLE": "Are you disabled?",
       "TITLE": "Are you disabled?"
     },
+    "INTEREST_START_DATE": {
+      "PAGE_TITLE": "claim interest from",
+      "TITLE": "Enter the date you want to claim interest from",
+      "REASON": "Explain why you’re claiming from this date"
+    },
     "ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES": {
       "PARAGRAPH1_1": "If you have already applied for Help with Fees in respect of",
       "PARAGRAPH1_2": "you may already have a reference number. If so, you can save and continue and enter it when asked. Do not use a number related to a different claim. If you don’t have a Help with Fees number for this claim, please follow the instructions below.",
@@ -1831,6 +1836,8 @@
     "VALID_VALUE": "Are you sure this is a valid value?",
     "VALID_YEAR": "Enter a valid year",
     "VALID_YES_NO_OPTION": "Choose option: Yes or No",
-    "VALID_YES_NO_SELECTION": "Please select yes or no"
+    "VALID_YES_NO_SELECTION": "Please select yes or no",
+    "VALID_DISAGREE_REASON_REQUIRED": "Enter text explaining why do you disagree",
+    "VALID_WHY_FROM_PARTICULAR_DATE": "You need to explain why you are claiming"
   }
 }
