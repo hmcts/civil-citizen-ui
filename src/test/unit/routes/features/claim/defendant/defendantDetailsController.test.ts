@@ -3,7 +3,11 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
-import {CLAIM_DEFENDANT_EMAIL_URL, CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL} from '../../../../../../main/routes/urls';
+import {
+  CLAIM_DEFENDANT_COMPANY_DETAILS_URL,
+  CLAIM_DEFENDANT_EMAIL_URL,
+  CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL,
+} from '../../../../../../main/routes/urls';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../../../main/modules/draft-store/draftStoreService';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {Claim} from '../../../../../../main/common/models/claim';
@@ -37,41 +41,52 @@ describe('Defendant details controller', () => {
   });
 
   describe('on GET', () => {
-    it('should render defendant details page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      const res = await request(app).get(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('Enter organisation details');
+    describe('Company', () => {
+      it('should render company defendant details page', async () => {
+        app.locals.draftStoreClient = mockCivilClaim;
+        const res = await request(app).get(CLAIM_DEFENDANT_COMPANY_DETAILS_URL);
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Company details');
+      });
     });
 
-    it('should render defendant details page when data is already set in redis', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.respondent1 = new Respondent();
-        claim.respondent1 = {
-          type: PartyType.ORGANISATION,
-          primaryAddress: {
-            PostCode: 'SN1 2RA',
-            PostTown: 'Bath',
-            AddressLine1: 'Valid address',
-            AddressLine2: 'Valid address number',
-            AddressLine3: '',
-          },
-        };
-        return claim;
+    describe('Organisation', () => {
+      it('should render defendant details page', async () => {
+        app.locals.draftStoreClient = mockCivilClaim;
+        const res = await request(app).get(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL);
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Enter organisation details');
       });
-      const res = await request(app).get(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('Enter organisation details');
-    });
 
-    it('should return http 500 status when has error in the get method', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
+      it('should render defendant details page when data is already set in redis', async () => {
+        mockGetCaseData.mockImplementation(async () => {
+          const claim = new Claim();
+          claim.respondent1 = new Respondent();
+          claim.respondent1 = {
+            type: PartyType.ORGANISATION,
+            primaryAddress: {
+              PostCode: 'SN1 2RA',
+              PostTown: 'Bath',
+              AddressLine1: 'Valid address',
+              AddressLine2: 'Valid address number',
+              AddressLine3: '',
+            },
+          };
+          return claim;
+        });
+        const res = await request(app).get(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL);
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Enter organisation details');
       });
-      await request(app).get(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL).expect((res) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+
+      it('should return http 500 status when has error in the get method', async () => {
+        mockGetCaseData.mockImplementation(async () => {
+          throw new Error(TestMessages.REDIS_FAILURE);
+        });
+        await request(app).get(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL).expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
       });
     });
   });
