@@ -1,29 +1,25 @@
-import {NextFunction, Response, Router} from 'express';
+import {NextFunction, Router} from 'express';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {CLAIM_TASK_LIST_URL, SUPPORT_REQUIRED_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
-import {SupportRequired} from '../../../common/models/directionsQuestionnaire/supportRequired';
+import {saveDirectionQuestionnaire} from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {
-  getDirectionQuestionnaire,
-  saveDirectionQuestionnaire,
-} from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
+  getSupportRequired,
+  getSupportRequiredForm,
+  generatePeopleListWithSelectedValues,
+} from '../../../services/features/directionsQuestionnaire/supportRequiredService';
 
 const supportRequiredController = Router();
-const supportRequiredViewPath = 'features/directionsQuestionnaire/support-required';
-const dqPropertyName = 'supportRequired';
-
-function renderView(form: GenericForm<SupportRequired>, res: Response): void {
-  res.render(supportRequiredViewPath, {form});
-}
+const supportRequiredViewPath = 'features/directionsQuestionnaire/support-required-list';
+const dqPropertyName = 'supportRequiredList';
+const dqParentName = 'hearing';
 
 supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res, next: NextFunction) => {
   try {
-
-    const directionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
-    const supportRequired = directionQuestionnaire.supportRequired ?
-      directionQuestionnaire.supportRequired : new SupportRequired();
-
-    renderView(new GenericForm(supportRequired), res);
+    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+    const [supportRequiredList, peopleLists] = await getSupportRequired(req.params.id, lang);
+    const form = new GenericForm(supportRequiredList);
+    res.render(supportRequiredViewPath, {form, peopleLists});
   } catch (error) {
     next(error);
   }
@@ -32,21 +28,16 @@ supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res, next: NextF
 supportRequiredController.post(SUPPORT_REQUIRED_URL, async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    let supportRequired = new SupportRequired();
-    if (req.body.declared) {
-      const languageSelected = !!(req.body.declared.includes('languageSelected'));
-      const signLanguageSelected = !!(req.body.declared.includes('signLanguageSelected'));
-      const disabledAccessSelected = !!(req.body.declared.includes('disabledAccessSelected'));
-      const hearingLoopSelected = !!(req.body.declared.includes('hearingLoopSelected'));
-      const otherSupportSelected = !!(req.body.declared.includes('otherSupportSelected'));
-      supportRequired = new SupportRequired(languageSelected, req.body.languageInterpreted, signLanguageSelected, req.body.signLanguageInterpreted, hearingLoopSelected, disabledAccessSelected, otherSupportSelected, req.body.otherSupport);
-    }
-    const form = new GenericForm(supportRequired);
+    const supportRequiredList = getSupportRequiredForm(req);
+    const form = new GenericForm(supportRequiredList);
     form.validateSync();
     if (form.hasErrors()) {
-      res.render(supportRequiredViewPath, {form});
+      const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+      const selectedNames = form.model?.items?.map(item => item.fullName);
+      const peopleLists = await generatePeopleListWithSelectedValues(claimId, selectedNames, lang);
+      res.render(supportRequiredViewPath, {form, peopleLists});
     } else {
-      await saveDirectionQuestionnaire(claimId, supportRequired, dqPropertyName);
+      await saveDirectionQuestionnaire(claimId, form.model, dqPropertyName, dqParentName);
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_TASK_LIST_URL));
     }
   } catch (error) {

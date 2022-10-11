@@ -13,7 +13,6 @@
       "version": "4",
       "calculatedAmountInPence": "7000"
     },
-    "respondent1ResponseDate": "2022-09-25T13:46:07.287428",
     "supportRequired": {
       "languageSelected": true,
       "languageInterpreted": "Croatian",
@@ -40,12 +39,33 @@
       "partyTypeDisplayValue": "Organisation"
     },
     "directionQuestionnaire": {
-      "hearing": {},
+      "hearing": {
+          "supportRequiredList": {
+            "items": [
+              {
+                "fullName": "johndoe",
+                "disabledAccess": {
+                  "selected": true
+                },
+                "otherSupport": {
+                  "selected": true,
+                  "content": "other support text"
+                }
+              },
+              {
+                "fullName": "mikebrown",
+                "hearingLoop": {
+                  "selected": true
+                },
+                "languageInterpreter": {
+                  "selected": true,
+                  "content": "language support text"
+                }
+              }
+            ]
+          }
+        },
       "vulnerabilityQuestions": {},
-      "welshLanguageRequirements":{
-        "speakLanguage":"en",
-        "documentsLanguage":"en"
-      },
       "experts": {
         "expertReportDetails": {
           "option": "yes",
@@ -55,9 +75,35 @@
               "reportDate": "2022-03-01T11:57:10.592492"
             }
           ]
+        },
+        "expertDetailsList": {
+          "items": [
+            {
+              "firstName": "Mike",
+              "lastName": "Brown"
+            },
+            {
+              "firstName": "Jasmine",
+              "lastName": "Williams"
+            }
+          ]
         }
       },
-      "witnessItems": [{}]
+      "witnesses": {
+        "otherWitnesses": {
+          "option": "",
+          "witnessItems": [
+            {
+              "firstName": "John",
+              "lastName": "Doe"
+            },
+            {
+              "firstName": "Jane",
+              "lastName": "Smith"
+            }
+          ]
+        }
+      }
     },
     "applicantSolicitor1UserDetails": {
       "email": "hmcts.civil+organisation.1.solicitor.1@gmail.com"

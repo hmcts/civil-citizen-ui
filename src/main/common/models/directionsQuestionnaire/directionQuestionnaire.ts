@@ -1,5 +1,4 @@
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
-import {SupportRequired} from '../../models/directionsQuestionnaire/supportRequired';
 import {Experts} from './experts/experts';
 import {VulnerabilityQuestions} from './vulnerabilityQuestions/vulnerabilityQuestions';
 import {WelshLanguageRequirements} from './welshLanguageRequirements/welshLanguageRequirements';
@@ -8,7 +7,6 @@ import {Hearing} from './hearing/hearing';
 
 export class DirectionQuestionnaire {
   defendantYourselfEvidence?: GenericYesNo;
-  supportRequired?: SupportRequired;
   hearing?: Hearing;
   vulnerabilityQuestions?: VulnerabilityQuestions;
   experts?: Experts;
@@ -17,7 +15,6 @@ export class DirectionQuestionnaire {
 
   constructor(
     defendantYourselfEvidence?: GenericYesNo,
-    supportRequired?: SupportRequired,
     hearing?: Hearing,
     vulnerabilityQuestions?: VulnerabilityQuestions,
     experts?: Experts,
@@ -25,7 +22,6 @@ export class DirectionQuestionnaire {
     witnesses?: Witnesses,
   ) {
     this.defendantYourselfEvidence = defendantYourselfEvidence;
-    this.supportRequired = supportRequired;
     this.hearing = hearing;
     this.vulnerabilityQuestions = vulnerabilityQuestions;
     this.experts = experts;
