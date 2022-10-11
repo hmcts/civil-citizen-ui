@@ -22,6 +22,7 @@ import {TotalAmountOptions} from '../../common/models/eligibility/totalAmountOpt
 import {ClaimTypeOptions} from '../../common/models/eligibility/claimTypeOptions';
 import {AgeEligibilityOptions} from '../../common/form/models/eligibility/defendant/AgeEligibilityOptions';
 import {LanguageOptions} from '../../common/models/directionsQuestionnaire/languageOptions';
+import {SameRateInterestType} from '../../common/form/models/claimDetails';
 import * as urls from '../../routes/urls';
 
 const packageDotJson = require('../../../../package.json');
@@ -113,6 +114,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('ClaimTypeOptions', ClaimTypeOptions);
     nunjucksEnv.addGlobal('YesNoNotReceived', YesNoNotReceived);
     nunjucksEnv.addGlobal('LanguageOptions', LanguageOptions);
+    nunjucksEnv.addGlobal('SameRateInterestType', SameRateInterestType);
     nunjucksEnv.addGlobal('urls', urls);
 
     app.use((req, res, next) => {

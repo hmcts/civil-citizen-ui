@@ -528,6 +528,14 @@
       "PAGE_TITLE": "Your date of birth",
       "TITLE": "What is your date of birth?"
     },
+    "CLAIMANT_INTEREST_RATE": {
+      "PAGE_TITLE": "Annual rate iterest you want to claim",
+      "TITLE": "What annual rate of interest do you want to claim?",
+      "RATE_INFORMATION": "You can claim 8% per year unless you know that a different rate applies.",
+      "DIFFERENT_RATE_LABEL": "A different rate",
+      "RATE_CLAIMING": "Rate you're claiming",
+      "WHY_YOU_ARE_ENTITLED": "Why you're entitled to this rate"
+    },
     "CLAIMANT_PARTY_TYPE_SELECTION": {
       "CLAIMING_AS_HEADER": "I'm claiming as:",
       "CLAIMING_AS_AN_INDIVIDUAL": "An individual",
@@ -1673,6 +1681,9 @@
     "PHONE_NUMBER_REQUIRED": "Nodwch rif ffôn",
     "QUESTION_1_REQUIRED": "1. Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider? is required",
     "QUESTION_2_REQUIRED": "Question 2: If you have answered \"yes\" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?",
+    "RATE_CHOOSE_ONE": "Choose rate of interest",
+    "RATE_CORRECT_THE_ONE_ENTERED": "Correct rate you’ve entered",
+    "RATE_EXPLAIN_CLAIMING_IT": "You haven’t explained why you’re claiming this rate",
     "REDIS_FAILURE": "Redis DraftStore failure.",
     "SELECT_ADDITIONAL_TIME": "Dewiswch faint o amser ychwanegol yr ydych yn gwneud cais amdano",
     "SECURITY_CODE_WRONG_OR_EXPIRED": "The security code was not right or has expired",
