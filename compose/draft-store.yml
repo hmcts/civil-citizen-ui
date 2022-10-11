@@ -7,6 +7,12 @@ services:
     command: redis-server --save 20 1 --loglevel warning
     volumes:
       - cache:/data
+    networks:
+      - ccd-network
+networks:
+  ccd-network:
+    external:
+      name: ccd-network
 volumes:
   cache:
     driver: local

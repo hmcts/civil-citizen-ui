@@ -1,14 +1,17 @@
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import * as ccdTranslationService from '../../../../../../main/services/translation/response/ccdTranslation';
+import * as compareAddress from '../../../../../../main/services/features/response/submission/compareAddress';
 import {Claim} from '../../../../../../main/common/models/claim';
 import * as requestModels from '../../../../../../main/common/models/AppRequest';
 import {submitResponse} from '../../../../../../main/services/features/response/submission/submitResponse';
 import nock from 'nock';
 import config from 'config';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {Respondent} from '../../../../../../main/common/models/respondent';
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/services/translation/response/ccdTranslation');
+jest.mock('../../../../../../main/services/features/response/submission/compareAddress');
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 mockedAppRequest.params = {id:'1'};
@@ -18,7 +21,14 @@ const citizenBaseUrl: string = config.get('services.civilService.url');
 describe('Submit response to ccd', ()=>{
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
   const claim = new Claim();
-
+  claim.respondent1 = new Respondent();
+  const claimFromService = new Claim();
+  claimFromService.respondent1 = new Respondent();
+  beforeEach(() => {
+    nock(citizenBaseUrl)
+      .get('/cases/1')
+      .reply(200, claimFromService);
+  });
   it('should submit response successfully when there are no errors', async ()=> {
     //Given
     nock(citizenBaseUrl)
@@ -28,9 +38,11 @@ describe('Submit response to ccd', ()=>{
       return claim;
     });
     const spyOnTranslation = jest.spyOn(ccdTranslationService, 'translateDraftResponseToCCD');
+    const spyOnAddressComparison = jest.spyOn(compareAddress, 'addressHasChange');
     //When
     await submitResponse(mockedAppRequest);
     //Then
+    expect(spyOnAddressComparison).toHaveBeenCalled();
     expect(spyOnTranslation).toHaveBeenCalled();
     if(!nock.isDone()) {
       nock.cleanAll();
