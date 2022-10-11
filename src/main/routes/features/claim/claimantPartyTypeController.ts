@@ -1,11 +1,11 @@
 import {Request, Response, Router} from 'express';
-import {CLAIMANT_PARTY_TYPE_SELECTION_URL} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {PartyTypeSelection} from '../../../../common/form/models/claim/partyTypeSelection';
-import {ClaimantOrDefendant} from '../../../../common/models/partyType';
-import {redirectToPage} from '../../../../services/features/claim/partyTypeService';
+import {CLAIMANT_PARTY_TYPE_SELECTION_URL} from '../../urls';
+import {GenericForm} from '../../../common/form/models/genericForm';
+import {PartyTypeSelection} from '../../../common/form/models/claim/partyTypeSelection';
+import {ClaimantOrDefendant} from '../../../common/models/partyType';
+import {redirectToPage} from '../../../services/features/claim/partyTypeService';
 
-const claimantPartyTypeViewPath = 'features/public/claim/claimant-party-type';
+const claimantPartyTypeViewPath = 'features/claim/claimant-party-type';
 const claimantPartyTypeController = Router();
 
 claimantPartyTypeController.get(CLAIMANT_PARTY_TYPE_SELECTION_URL, (req: Request, res: Response) => {

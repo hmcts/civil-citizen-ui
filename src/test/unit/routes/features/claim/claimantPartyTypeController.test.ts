@@ -2,17 +2,17 @@ import config from 'config';
 import {t} from 'i18next';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import {PartyType} from '../../../../../../main/common/models/partyType';
+import {app} from '../../../../../main/app';
+import {PartyType} from '../../../../../main/common/models/partyType';
 import {
   CLAIMANT_PARTY_TYPE_SELECTION_URL,
   CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL,
   CLAIMANT_SOLE_TRADER_DETAILS_URL,
   CLAIMANT_COMPANY_DETAILS_URL,
   CLAIMANT_ORGANISATION_DETAILS_URL,
-} from '../../../../../../main/routes/urls';
+} from '../../../../../main/routes/urls';
 
-jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/oidc');
 
 describe('Claim Party Type Controller', () => {
   // TODO: Update test after refactoring controller to get and save to DraftStore

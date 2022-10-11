@@ -3,7 +3,7 @@ import nock from 'nock';
 import {app} from '../../../../../../main/app';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import request from 'supertest';
-import {CLAIM_INTEREST} from '../../../../../../main/routes/urls';
+import {CLAIM_INTEREST_URL} from '../../../../../../main/routes/urls';
 import {t} from 'i18next';
 
 const jsdom = require('jsdom');
@@ -28,7 +28,7 @@ describe('Claim Interest View', () => {
     let mainWrapper: Element;
 
     beforeAll(async () => {
-      const response = await request(app).get(CLAIM_INTEREST);
+      const response = await request(app).get(CLAIM_INTEREST_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
       mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];

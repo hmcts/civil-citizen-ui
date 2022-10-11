@@ -2,14 +2,14 @@ import config from 'config';
 import {t} from 'i18next';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../main/app';
 import {
   CLAIMANT_PHONE_NUMBER_URL,
-} from '../../../../../../main/routes/urls';
+} from '../../../../../main/routes/urls';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
-jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/oidc');
 
 describe('Claimant Phone View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

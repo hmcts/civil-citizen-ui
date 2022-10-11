@@ -2,16 +2,16 @@ import config from 'config';
 import {t} from 'i18next';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
+import {app} from '../../../../../main/app';
+import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 import {
   CLAIMANT_PARTY_TYPE_SELECTION_URL,
-} from '../../../../../../main/routes/urls';
+} from '../../../../../main/routes/urls';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/draft-store');
 
 describe('Claimant Party Type View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
