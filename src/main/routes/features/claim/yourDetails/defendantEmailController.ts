@@ -1,4 +1,4 @@
-import {NextFunction, Response, Request, Router} from 'express';
+import {NextFunction, Response, Router} from 'express';
 import {DefendantEmail} from '../../../../common/form/models/claim/yourDetails/defendantEmail';
 import {CLAIM_DEFENDANT_EMAIL_URL, CLAIM_DEFENDANT_PHONE_NUMBER_URL} from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
@@ -22,7 +22,7 @@ defendantEmailController.get(CLAIM_DEFENDANT_EMAIL_URL, async (req: AppRequest, 
   }
 });
 
-defendantEmailController.post(CLAIM_DEFENDANT_EMAIL_URL, async (req: Request, res: Response, next: NextFunction) => {
+defendantEmailController.post(CLAIM_DEFENDANT_EMAIL_URL, async (req: any, res: Response, next: NextFunction) => {
   try {
     const form: GenericForm<DefendantEmail> = new GenericForm(new DefendantEmail(req.body.emailAddress));
     form.validateSync();
