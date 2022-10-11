@@ -13,7 +13,7 @@ export const getOtherWitnesses = async (req: express.Request): Promise<OtherWitn
     if (directionQuestionnaire?.witnesses?.otherWitnesses) {
       return directionQuestionnaire?.witnesses?.otherWitnesses;
     }
-    return new OtherWitnesses(undefined, [new OtherWitnessItems()]);
+    return new OtherWitnesses();
   } catch (error) {
     logger.error(error);
     throw error;
