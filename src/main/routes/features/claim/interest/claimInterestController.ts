@@ -4,7 +4,7 @@ import {
   CLAIM_INTEREST_TYPE,
   CLAIM_HELP_WITH_FEES,
 } from  '../../../../routes/urls';
-import {GenericForm} from '.././../../../common/form/models/genericForm';
+import {GenericForm} from '../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
 import {YesNo} from '../../../../common/form/models/yesNo';
 import {

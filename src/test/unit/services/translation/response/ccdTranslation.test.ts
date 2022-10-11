@@ -72,7 +72,7 @@ describe('translate response to ccd version', () => {
   it('should translate address changed to ccd', ()=> {
     //Given
     const claim = new Claim();
-    claim.respondent1 = new Respondent();
+    claim.respondent1 = new Party();
     claim.mediation = {
       canWeUse: undefined,
       mediationDisagreement: undefined,
@@ -90,7 +90,7 @@ describe('translate response to ccd version', () => {
   it('should translate addres has not changed to ccd', ()=>{
     //Given
     const claim = new Claim();
-    claim.respondent1 = new Respondent();
+    claim.respondent1 = new Party();
     claim.mediation = {
       canWeUse: undefined,
       mediationDisagreement: undefined,

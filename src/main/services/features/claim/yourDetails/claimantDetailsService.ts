@@ -1,12 +1,12 @@
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {Party} from 'models/party';
-import {Claim} from 'models/claim';
-import {convertToPrimaryAddress} from 'models/primaryAddress';
-import {convertToCorrespondenceAddress} from 'models/correspondenceAddress';
-import {CitizenAddress} from 'common/form/models/citizenAddress';
-import {CitizenCorrespondenceAddress} from 'common/form/models/citizenCorrespondenceAddress';
-import {YesNo} from 'common/form/models/yesNo';
-import {PartyDetails} from 'common/form/models/partyDetails';
+import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {Party} from '../../../../common/models/party';
+import {Claim} from '../../../../common/models/claim';
+import {convertToPrimaryAddress} from '../../../../common/models/primaryAddress';
+import {convertToCorrespondenceAddress} from '../../../../common/models/correspondenceAddress';
+import {CitizenAddress} from '../../../../common/form/models/citizenAddress';
+import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citizenCorrespondenceAddress';
+import {YesNo} from '../../../../common/form/models/yesNo';
+import {PartyDetails} from '../../../../common/form/models/partyDetails';
 
 export const getClaimantInformation = async (claimId: string): Promise<Party> => {
   const responseData = await getCaseDataFromStore(claimId);

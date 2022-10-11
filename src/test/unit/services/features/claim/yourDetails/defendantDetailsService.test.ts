@@ -8,8 +8,8 @@ import {
 } from '../../../../../../main/services/features/claim/yourDetails/defendantDetailsService';
 import {PartyType} from '../../../../../../main/common/models/partyType';
 
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 const CLAIM_ID = '123';

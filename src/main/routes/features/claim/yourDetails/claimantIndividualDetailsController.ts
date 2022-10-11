@@ -1,16 +1,16 @@
 import * as express from 'express';
 import {CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, CLAIMANT_DOB_URL} from '../../../urls';
-import {GenericForm} from 'common/form/models/genericForm';
-import {CitizenAddress} from 'common/form/models/citizenAddress';
-import {CitizenCorrespondenceAddress} from 'common/form/models/citizenCorrespondenceAddress';
-import {YesNo} from 'common/form/models/yesNo';
+import {GenericForm} from '../../../../common/form/models/genericForm';
+import {CitizenAddress} from '../../../../common/form/models/citizenAddress';
+import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citizenCorrespondenceAddress';
+import {YesNo} from '../../../../common/form/models/yesNo';
 import {
   getClaimantInformation,
   getCorrespondenceAddressForm,
   saveClaimant,
 } from '../../../../services/features/claim/yourDetails/claimantDetailsService';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {PartyDetails} from 'common/form/models/partyDetails';
+import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+import {PartyDetails} from '../../../../common/form/models/partyDetails';
 import {Party} from 'models/party';
 import {AppRequest} from 'models/AppRequest';
 

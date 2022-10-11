@@ -3,7 +3,8 @@ import {
   getClaimantPhone,
   saveClaimantPhone,
 } from '../../../../../../main/services/features/claim/yourDetails/claimantPhoneService';
-import {Claim, Party} from '../../../../../../main/common/models/claim';
+import {Claim} from '../../../../../../main/common/models/claim';
+import {Party} from '../../../../../../main/common/models/party';
 import {CorrespondenceAddress} from '../../../../../../main/common/models/correspondenceAddress';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {CitizenTelephoneNumber} from '../../../../../../main/common/form/models/citizenTelephoneNumber';
