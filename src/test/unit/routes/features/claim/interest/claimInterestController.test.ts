@@ -3,11 +3,7 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
-import {
-  CLAIM_INTEREST,
-  CLAIM_INTEREST_TYPE,
-  CLAIM_HELP_WITH_FEES,
-} from '../../../../../../main/routes/urls';
+import {CLAIM_HELP_WITH_FEES, CLAIM_INTEREST_TYPE, CLAIM_INTEREST_URL} from '../../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
@@ -27,7 +23,7 @@ describe('Claim Interest page', () => {
   describe('on GET', () => {
     it('should return on claim interest page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(CLAIM_INTEREST).expect((res) => {
+      await request(app).get(CLAIM_INTEREST_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.CLAIM_JOURNEY.CLAIM_INTEREST.TITLE'));
       });
@@ -36,7 +32,7 @@ describe('Claim Interest page', () => {
     it('should return status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .get(CLAIM_INTEREST)
+        .get(CLAIM_INTEREST_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -50,14 +46,14 @@ describe('Claim Interest page', () => {
     });
 
     it('should return error message when no option selected', async () => {
-      await request(app).post(CLAIM_INTEREST).expect((res) => {
+      await request(app).post(CLAIM_INTEREST_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(TestMessages.VALID_YES_NO_SELECTION);
       });
     });
 
     it('should redirect to the How do you want to claim interest screen when option is Yes', async () => {
-      await request(app).post(CLAIM_INTEREST).send({option: 'yes'})
+      await request(app).post(CLAIM_INTEREST_URL).send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.get('location')).toBe(CLAIM_INTEREST_TYPE);
@@ -65,7 +61,7 @@ describe('Claim Interest page', () => {
     });
 
     it('should redirect to the Help with fees screen when option is Yes', async () => {
-      await request(app).post(CLAIM_INTEREST).send({option: 'no'})
+      await request(app).post(CLAIM_INTEREST_URL).send({option: 'no'})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.get('location')).toBe(CLAIM_HELP_WITH_FEES);
@@ -75,7 +71,7 @@ describe('Claim Interest page', () => {
     it('should return status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .post(CLAIM_INTEREST)
+        .post(CLAIM_INTEREST_URL)
         .send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(500);
