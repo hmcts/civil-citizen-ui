@@ -9,7 +9,6 @@ services:
       - cache:/data
     networks:
       - ccd-network
-
 networks:
   ccd-network:
     external:
