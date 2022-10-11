@@ -34,12 +34,12 @@ const eMockWithFullAdmission = {
 describe('Repayment Plan', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
+
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
-
 
   describe('on Get', () => {
     it('should return on your evidence list page successfully', async () => {
