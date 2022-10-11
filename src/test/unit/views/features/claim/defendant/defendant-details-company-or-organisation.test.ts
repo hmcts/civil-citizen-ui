@@ -3,7 +3,10 @@ import nock from 'nock';
 import {app} from '../../../../../../main/app';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import request from 'supertest';
-import {CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL} from '../../../../../../main/routes/urls';
+import {
+  CLAIM_DEFENDANT_COMPANY_DETAILS_URL,
+  CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL,
+} from '../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
@@ -24,45 +27,75 @@ describe('Defendant details company or organisation view', () => {
   });
 
   describe('on GET', () => {
-    let htmlDocument: Document;
-    let mainWrapper: Element;
+    describe('Company', () => {
+      let htmlDocument: Document;
+      let mainWrapper: Element;
 
-    beforeAll(async () => {
-      const response = await request(app).get(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL);
-      const dom = new JSDOM(response.text);
-      htmlDocument = dom.window.document;
-      mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
+      beforeAll(async () => {
+        const response = await request(app).get(CLAIM_DEFENDANT_COMPANY_DETAILS_URL);
+        const dom = new JSDOM(response.text);
+        htmlDocument = dom.window.document;
+        mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
+      });
+
+      it('should have correct page title', () => {
+        expect(htmlDocument.title).toEqual('Your money claims account - Company details');
+      });
+
+      it('should display correct header', () => {
+        const header = mainWrapper.getElementsByClassName('govuk-heading-l');
+        expect(header[0].innerHTML).toContain('Company details');
+      });
+
+      it('should display correct paragraph', () => {
+        const paragraph = mainWrapper.getElementsByClassName('govuk-body');
+        expect(paragraph[0].innerHTML).toContain('You’ll have to pay extra fee if you later want to change the name of anyone involved with the claim.');
+        expect(paragraph[2].innerHTML).toContain('Enter the company’s main office or a company address that has a connection with the claim');
+      });
     });
 
-    it('should have correct page title', () => {
-      expect(htmlDocument.title).toEqual('Your money claims account - Enter organisation details');
-    });
+    describe('Organisation', () => {
+      let htmlDocument: Document;
+      let mainWrapper: Element;
 
-    it('should display correct header', () => {
-      const header = mainWrapper.getElementsByClassName('govuk-heading-l');
-      expect(header[0].innerHTML).toContain('Enter organisation details');
-    });
+      beforeAll(async () => {
+        const response = await request(app).get(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL);
+        const dom = new JSDOM(response.text);
+        htmlDocument = dom.window.document;
+        mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
+      });
 
-    it('should display correct paragraph', () => {
-      const paragraph = mainWrapper.getElementsByClassName('govuk-body')[0];
-      expect(paragraph.innerHTML).toContain('You’ll have to pay extra fee if you later want to change the name of an organisation involved with the claim.');
-    });
+      it('should have correct page title', () => {
+        expect(htmlDocument.title).toEqual('Your money claims account - Enter organisation details');
+      });
 
-    it('should display input fields', () => {
-      const inputs = mainWrapper.getElementsByClassName('govuk-input');
-      expect(inputs.length).toBe(8);
-      expect(inputs[0].getAttribute('id')).toBe('partyName');
-      expect(inputs[1].getAttribute('id')).toBe('contactPerson');
-      expect(inputs[2].getAttribute('id')).toBe('primaryPostcode');
-      expect(inputs[3].getAttribute('id')).toBe('primaryAddressLine1');
-      expect(inputs[4].getAttribute('id')).toBe('primaryAddressLine2');
-      expect(inputs[5].getAttribute('id')).toBe('primaryAddressLine3');
-      expect(inputs[6].getAttribute('id')).toBe('primaryCity');
-      expect(inputs[7].getAttribute('id')).toBe('primaryPostCode');
-    });
+      it('should display correct header', () => {
+        const header = mainWrapper.getElementsByClassName('govuk-heading-l');
+        expect(header[0].innerHTML).toContain('Enter organisation details');
+      });
 
-    it('should display save and continue button', () => {
-      expect(mainWrapper.getElementsByClassName('govuk-button')[1].innerHTML).toContain('Save and continue');
+      it('should display correct paragraphs', () => {
+        const paragraph = mainWrapper.getElementsByClassName('govuk-body');
+        expect(paragraph[0].innerHTML).toContain('You’ll have to pay extra fee if you later want to change the name of an organisation involved with the claim.');
+        expect(paragraph[2].innerHTML).toContain('Enter the organisation’s main office or address that has a connection with the claim');
+      });
+
+      it('should display input fields', () => {
+        const inputs = mainWrapper.getElementsByClassName('govuk-input');
+        expect(inputs.length).toBe(8);
+        expect(inputs[0].getAttribute('id')).toBe('partyName');
+        expect(inputs[1].getAttribute('id')).toBe('contactPerson');
+        expect(inputs[2].getAttribute('id')).toBe('primaryPostcode');
+        expect(inputs[3].getAttribute('id')).toBe('primaryAddressLine1');
+        expect(inputs[4].getAttribute('id')).toBe('primaryAddressLine2');
+        expect(inputs[5].getAttribute('id')).toBe('primaryAddressLine3');
+        expect(inputs[6].getAttribute('id')).toBe('primaryCity');
+        expect(inputs[7].getAttribute('id')).toBe('primaryPostCode');
+      });
+
+      it('should display save and continue button', () => {
+        expect(mainWrapper.getElementsByClassName('govuk-button')[1].innerHTML).toContain('Save and continue');
+      });
     });
   });
 

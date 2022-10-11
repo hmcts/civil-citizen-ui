@@ -719,18 +719,19 @@
       "TOTAL": "Total owed"
     },
     "DEFENDANT_DETAILS": {
+      "COMPANY_ADDRESS": "Company address",
+      "COMPANY_MAIN_OFFICE": "Enter the company’s main office or a company address that has a connection with the claim.",
+      "COMPANY_NAME": "Company name",
       "CONTACT_PERSON": "Name of contact person (optional)",
       "CONTACT_PERSON_HINT": "This might be a person you’ve discussed the claim with.",
       "ENGLAND_OR_WALES_ADDRESS": "The address must be in England or Wales.",
       "FIND_ADDRESS": "Find address",
       "MANUAL_ADDRESS": "Enter address manually",
       "ORGANISATION_ADDRESS": "Organisation address",
-      "ORGANISATION_ADDRESS_NOT_CORRECT": "If your address is not correct you can change it here.",
-      "ORGANISATION_ANY_CHANGES": "Any changes will be shared with the claimant when you submit your response.",
       "ORGANISATION_MAIN_OFFICE": "Enter the organisation’s main office or address that has a connection with the claim.",
       "ORGANISATION_NAME": "Organisation name",
       "PAGE_TITLES": {
-        "COMPANY": "",
+        "COMPANY": "Company details",
         "INDIVIDUAL": "",
         "ORGANISATION": "Enter organisation details",
         "SOLE_TRADER": ""
