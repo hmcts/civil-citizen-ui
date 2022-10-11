@@ -1,9 +1,10 @@
 const I = actor();
 
-export class DashboardPage {
+module.exports.DashboardPage = {
   open () {
     I.amOnPage('/dashboard');
-  }
+  },
+  
   verifyDashboardPageContent () {
     I.see('Your money claims account');
     I.see('Claims you\'ve made');
@@ -21,5 +22,5 @@ export class DashboardPage {
     I.see('Claim amount');
     I.see('Status');
     I.see('Contact us for help');
-  }
-}
+  },
+};

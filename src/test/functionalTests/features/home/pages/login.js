@@ -11,15 +11,15 @@ const buttons = {
   hideMessage: 'button[name="hide-accepted"]',
 };
 
-export class LoginPage {
+module.exports.LoginPage = {
   open () {
     I.amOnPage('/');
-  }
+  },
 
   acceptCookies () {
     I.click(buttons.acceptCookies);
     I.click(buttons.hideMessage);
-  }
+  },
 
   login (email, password) {
     I.waitForVisible(fields.username);
@@ -27,5 +27,5 @@ export class LoginPage {
     I.fillField(fields.password, password);
     I.click(buttons.submit);
     I.seeInCurrentUrl('/dashboard');
-  }
-}
+  },
+};

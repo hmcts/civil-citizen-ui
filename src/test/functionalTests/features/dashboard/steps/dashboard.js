@@ -1,11 +1,10 @@
-import { DashboardPage } from '../pages/dashboard';
+const DashboardPage = require('../pages/dashboard');
 
-const I= actor();
 const dashboardPage = new DashboardPage();
 
-export class DashboardSteps {
+module.exports.DashboardSteps = {
 
   DashboardPage () {
     dashboardPage.verifyDashboardPageContent();
-  }
-}
+  },
+};

@@ -1,17 +1,17 @@
 
-import { LoginPage } from '../pages/login';
+const LoginPage = require('../pages/login');
 
 const loginPage = new LoginPage();
 
-export class LoginSteps {
+module.exports.LoginSteps = {
 
   AcceptCookies() {
     loginPage.acceptCookies();
-  }
+  },
 
   EnterUserCredentials (username, password) {    
     loginPage.open();
     this.AcceptCookies();
     loginPage.login(username, password);
-  }
-}
+  },
+};

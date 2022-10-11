@@ -1,5 +1,5 @@
-const { DashboardSteps } = require('../features/dashboard/steps/dashboard');
-const { LoginSteps } = require('../features/home/steps/login');
+const DashboardSteps = require('../features/dashboard/steps/dashboard');
+const LoginSteps = require('../features/home/steps/login');
 const config = require('../../config');
 
 const dashboardSteps = new DashboardSteps();
