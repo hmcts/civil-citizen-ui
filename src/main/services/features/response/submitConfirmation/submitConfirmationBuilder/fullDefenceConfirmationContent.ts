@@ -14,7 +14,7 @@ export const getRCDisputeStatus = (claim: Claim, lng: string): ClaimSummarySecti
   ];
 };
 
-export const getRCDisputeNextSteps = (claimId: string, claim: Claim, lng: string): ClaimSummarySection[] => {
+export const getRCDisputeWithMediationNextSteps = (claimId: string, claim: Claim, lng: string): ClaimSummarySection[] => {
 
   const claimantName = claim.getClaimantName();
 
@@ -45,3 +45,12 @@ export const getRCDisputeNextSteps = (claimId: string, claim: Claim, lng: string
     },
   ];
 };
+
+export const getRCDisputeNoMediationNextSteps = (claimId: string, claim: Claim, lng: string): ClaimSummarySection[] => {
+
+
+  return [
+
+  ];
+};
+

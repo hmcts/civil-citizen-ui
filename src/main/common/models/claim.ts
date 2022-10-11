@@ -296,9 +296,9 @@ export class Claim {
     }
 
     if (this.isFullDefence() && this.isRejectAllOfClaimDispute()) {
-      return ClaimResponseStatus.RC_DISPUTE;
+      return this.isAgreedWithFreeMediation()? ClaimResponseStatus.RC_DISPUTE_WITH_MEDIATION
+        : ClaimResponseStatus.RC_DISPUTE_NO_MEDIATION;
     }
-
   }
 
   hasRespondentAskedForMoreThan28Days(): boolean {
@@ -313,6 +313,17 @@ export class Claim {
     return this.responseDeadline?.option === ResponseOptions.NO;
   }
 
+  isAgreedWithFreeMediation(): boolean {
+    if (this.mediation?.canWeUse?.option) {
+      return true;
+    } else {
+      if (this.mediation?.mediationDisagreement?.option) {
+        return false;
+      } else if (this.mediation?.companyTelephoneNumber) {
+        return true;
+      }
+    }
+  }
 }
 
 export interface Party {

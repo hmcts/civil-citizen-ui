@@ -19,7 +19,12 @@ import {
 } from './rejectClaimConfirmationContent';
 
 import {ClaimResponseStatus} from '../../../../../common/models/claimResponseStatus';
-import {getRCDisputeNextSteps, getRCDisputeStatus} from './fullDefenceConfirmationContent';
+import {
+  getRCDisputeWithMediationNextSteps,
+  getRCDisputeNoMediationNextSteps,
+  getRCDisputeStatus
+} from './fullDefenceConfirmationContent';
+
 import {
   getPA_AlreadyPaidStatus,
   getPA_AlreadyPaidNextSteps,
@@ -52,7 +57,8 @@ export function buildSubmitStatus(claimId: string, claim: Claim, lang: string): 
       return [...FAPayByDateStatus, ...contactYouStatement, ...financialDetails];
     case ClaimResponseStatus.FA_PAY_INSTALLMENTS:
       return [...FAPayByInstallmentsStatus, ...contactYouStatement, ...financialDetails];
-    case ClaimResponseStatus.RC_DISPUTE:
+    case ClaimResponseStatus.RC_DISPUTE_WITH_MEDIATION:
+    case ClaimResponseStatus.RC_DISPUTE_NO_MEDIATION:
       return RCDisputeStatus;
     case ClaimResponseStatus.PA_ALREADY_PAID:
       return PA_AlreadyPaidStatus;
@@ -79,7 +85,8 @@ export function buildNextStepsSection(claimId: string, claim: Claim, lang: strin
   const PAPayInstallmentsNextSteps = getPAPayInstallmentsNextSteps(claimId, claim, lang);
   const RC_PaidLessNextSteps = getRC_PaidLessNextSteps(claim, lang);
   const RC_PaidFullNextSteps = getRC_PaidFullNextSteps(claim,lang);
-  const RCDisputeNextSteps = getRCDisputeNextSteps(claimId, claim, lang);
+  const RC_DisputeWithMediationNextSteps = getRCDisputeWithMediationNextSteps(claimId, claim, lang);
+  const RC_DisputeNoMediationNextSteps = getRCDisputeNoMediationNextSteps(claimId, claim, lang);
 
   switch (claim.responseStatus) {
     case ClaimResponseStatus.FA_PAY_IMMEDIATELY:
@@ -88,8 +95,10 @@ export function buildNextStepsSection(claimId: string, claim: Claim, lang: strin
       return FAPayByDateNextSteps;
     case ClaimResponseStatus.FA_PAY_INSTALLMENTS:
       return FAPayByInstallmentsNextSteps;
-    case ClaimResponseStatus.RC_DISPUTE:
-      return RCDisputeNextSteps;
+    case ClaimResponseStatus.RC_DISPUTE_WITH_MEDIATION:
+      return RC_DisputeWithMediationNextSteps;
+    case ClaimResponseStatus.RC_DISPUTE_NO_MEDIATION:
+      return RC_DisputeNoMediationNextSteps;
     case ClaimResponseStatus.PA_ALREADY_PAID:
       return PA_AlreadyPaidNextSteps;
     case ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY:
