@@ -1,17 +1,17 @@
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {
   getClaimantPhone,
   saveClaimantPhone,
-} from '../../../../../../main/services/features/claim/yourDetails/claimantPhoneService';
-import {Claim} from '../../../../../../main/common/models/claim';
-import {Party} from '../../../../../../main/common/models/party';
-import {CorrespondenceAddress} from '../../../../../../main/common/models/correspondenceAddress';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {CitizenTelephoneNumber} from '../../../../../../main/common/form/models/citizenTelephoneNumber';
-import {PartyType} from '../../../../../../main/common/models/partyType';
+} from '../../../../../main/services/features/claim/yourDetails/claimantPhoneService';
+import {Claim} from '../../../../../main/common/models/claim';
+import {Party} from '../../../../../main/common/models/party';
+import {CorrespondenceAddress} from '../../../../../main/common/models/correspondenceAddress';
+import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {CitizenTelephoneNumber} from '../../../../../main/common/form/models/citizenTelephoneNumber';
+import {PartyType} from '../../../../../main/common/models/partyType';
 
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 const correspondenceAddress: CorrespondenceAddress = {
   County: '',

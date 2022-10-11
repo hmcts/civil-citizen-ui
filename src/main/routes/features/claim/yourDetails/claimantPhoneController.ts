@@ -8,7 +8,7 @@ import {
 import {AppRequest} from 'models/AppRequest';
 import {CitizenTelephoneNumber} from '../../../../common/form/models/citizenTelephoneNumber';
 
-const claimantPhoneViewPath = 'features/public/claim/claimant-phone';
+const claimantPhoneViewPath = 'features/claim/claimant-phone';
 const claimantPhoneController = express.Router();
 
 function renderView(form: GenericForm<CitizenTelephoneNumber>, res: express.Response): void {
