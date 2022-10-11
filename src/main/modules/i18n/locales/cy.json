@@ -506,6 +506,14 @@
         },
         "PAGE_TITLE": "Try to resolve the dispute",
         "TITLE": "Try to resolve the dispute"
+      },
+      "WHEN_CLAIM_INTEREST_FROM": {
+        "FROM_A_SPECIFIC_DATE" : "A particular date",
+        "FROM_CLAIM_SUBMIT_DATE" : "The date you submit the claim",
+        "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
+        "HINT_EXAMPLE_DATE": "For example the date an invoice was overdue or that you told someone they owed you the money.",
+        "PAGE_TITLE": "When are you claiming interest from?",
+        "TITLE": "When are you claiming interest from?"
       }
     },
     "CLAIM_SUMMARY": {
@@ -1789,6 +1797,7 @@
     "VALID_CHOOSE": "Choose your response",
     "VALID_CITY": "Rhowch enw tref/dinas dilys",
     "VALID_CLAIM_AMOUNT": "Enter an amount of money",
+    "VALID_CLAIM_INTEREST_FROM": "Choose when to claim interest from",
     "VALID_CLAIM_NUMBER": "Enter a claim number",
     "VALID_CLAIM_REFERENCE_NUMBER": "Enter a valid claim number",
     "VALID_CORRESPONDENCE_ADDRESS_LINE_1": "Rhowch linell gyntaf y cyfeiriad ar gyfer gohebiaeth",
