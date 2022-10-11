@@ -1,7 +1,7 @@
 import * as express from 'express';
 import {
   DQ_PHONE_OR_VIDEO_HEARING_URL,
-  DQ_UNAVAILABLE_FOR_HEARING,
+  DQ_UNAVAILABLE_FOR_HEARING_URL,
 } from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
@@ -21,7 +21,7 @@ function renderView(form: GenericForm<WhyUnavailableForHearing>, res: express.Re
   res.render(whyUnavailableForHearingViewPath, {form, days});
 }
 
-whyUnavailableForHearingController.get(DQ_UNAVAILABLE_FOR_HEARING, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+whyUnavailableForHearingController.get(DQ_UNAVAILABLE_FOR_HEARING_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
 
     const directionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
@@ -34,7 +34,7 @@ whyUnavailableForHearingController.get(DQ_UNAVAILABLE_FOR_HEARING, async (req: e
   }
 });
 
-whyUnavailableForHearingController.post(DQ_UNAVAILABLE_FOR_HEARING, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+whyUnavailableForHearingController.post(DQ_UNAVAILABLE_FOR_HEARING_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const claimId = req.params.id;
     const whyUnavailableForHearing = new GenericForm(new WhyUnavailableForHearing(req.body.reason));
