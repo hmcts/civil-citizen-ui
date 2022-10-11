@@ -1,5 +1,9 @@
 import * as express from 'express';
-import {FIRST_CONTACT_ACCESS_DENIED_URL, FIRST_CONTACT_CLAIM_SUMMARY_URL} from '../../../../routes/urls';
+import {
+  CASE_TIMELINE_DOCUMENTS_URL,
+  FIRST_CONTACT_ACCESS_DENIED_URL,
+  FIRST_CONTACT_CLAIM_SUMMARY_URL,
+} from '../../../../routes/urls';
 import {Claim} from '../../../../common/models/claim';
 import {getClaimById} from '../../../../modules/utilityService';
 import {getInterestDetails} from '../../../../common/utils/interestUtils';
@@ -17,8 +21,9 @@ firstContactClaimSummaryController.get(FIRST_CONTACT_CLAIM_SUMMARY_URL,
         const claim: Claim = await getClaimById(claimId, req);
         const interestData = getInterestDetails(claim);
         const totalAmount = getTotalAmountWithInterestAndFees(claim);
+        const timelinePdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', claimId);
         res.render('features/public/firstContact/claim-summary', {
-          claim, totalAmount, interestData,
+          claim, totalAmount, interestData,timelinePdfUrl,
         });
       } else {
         res.redirect(FIRST_CONTACT_ACCESS_DENIED_URL);
