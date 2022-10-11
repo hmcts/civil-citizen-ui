@@ -19,7 +19,6 @@ import {
   ClaimAmountBreakup,
   ClaimFee,
   InterestClaimFromType,
-  InterestClaimOptions,
   InterestClaimUntilType,
   SameRateInterestSelection,
   SameRateInterestType,
@@ -38,6 +37,7 @@ import RejectAllOfClaimType from '../../common/form/models/rejectAllOfClaimType'
 import {DirectionQuestionnaire} from '../models/directionsQuestionnaire/directionQuestionnaire';
 import {ResponseOptions} from '../../common/form/models/responseDeadline';
 import {AdditionalTimeOptions} from '../../common/form/models/additionalTime';
+import {InterestClaimOptionsType} from '../../common/form/models/claim/interest/interestClaimOptionsType';
 import {Interest} from '../form/models/interest/interest';
 
 export class Claim {
@@ -68,7 +68,7 @@ export class Claim {
   interestClaimFrom?: InterestClaimFromType;
   interestClaimUntil?: InterestClaimUntilType;
   interestFromSpecificDate?: Date;
-  interestClaimOptions: InterestClaimOptions;
+  interestClaimOptions: InterestClaimOptionsType;
   sameRateInterestSelection?: SameRateInterestSelection;
   breakDownInterestTotal?: number;
   submittedDate?: Date;
@@ -178,6 +178,10 @@ export class Claim {
     return this.interestClaimUntil === InterestClaimUntilType.UNTIL_CLAIM_SUBMIT_DATE;
   }
 
+  isInterestClaimOptionExists(): boolean {
+    return this.interestClaimOptions?.length > 0;
+  }
+
   isInterestFromClaimSubmitDate(): boolean {
     return this.interestClaimFrom === InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
   }
@@ -187,7 +191,7 @@ export class Claim {
   }
 
   isInterestClaimOptionsSameRateInterest(): boolean {
-    return this.interestClaimOptions === InterestClaimOptions.SAME_RATE_INTEREST;
+    return this.interestClaimOptions === InterestClaimOptionsType.SAME_RATE_INTEREST;
   }
 
   isSameRateTypeEightPercent(): boolean {

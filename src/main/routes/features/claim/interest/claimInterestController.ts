@@ -1,5 +1,9 @@
 import * as express from 'express';
-import {CLAIM_HELP_WITH_FEES, CLAIM_INTEREST_TYPE, CLAIM_INTEREST_URL} from '../../../../routes/urls';
+import {
+  CLAIM_INTEREST_URL,
+  CLAIM_INTEREST_TYPE_URL,
+  CLAIM_HELP_WITH_FEES_URL,
+} from  '../../../../routes/urls';
 import {GenericForm} from '.././../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
 import {YesNo} from '../../../../common/form/models/yesNo';
@@ -17,7 +21,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: express.Response): voi
   res.render(claimInterestPath, {form});
 }
 
-claimInterestController.get(CLAIM_INTEREST_URL, async (req: AppRequest, res: express.Response, next: express.NextFunction) => {
+claimInterestController.get(CLAIM_INTEREST_URL, async (req:AppRequest, res:express.Response, next: express.NextFunction) => {
   const caseId = req.session?.user?.id;
 
   try {
@@ -39,8 +43,8 @@ claimInterestController.post(CLAIM_INTEREST_URL, async (req: any, res: express.R
     } else {
       await saveClaimInterest(caseId, form.model.option as YesNo);
       (form.model.option === YesNo.YES) ?
-        res.redirect(CLAIM_INTEREST_TYPE) :
-        res.redirect(CLAIM_HELP_WITH_FEES);
+        res.redirect(CLAIM_INTEREST_TYPE_URL) :
+        res.redirect(CLAIM_HELP_WITH_FEES_URL);
     }
   } catch (error) {
     next(error);

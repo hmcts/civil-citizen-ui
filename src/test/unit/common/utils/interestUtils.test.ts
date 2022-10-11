@@ -3,7 +3,8 @@ import {Claim} from '../../../../main/common/models/claim';
 import {deepCopy} from '../../../utils/deepCopy';
 import {mockClaim as mockResponse} from '../../../utils/mockClaim';
 import {YesNo} from '../../../../main/common/form/models/yesNo';
-import {InterestClaimFromType, InterestClaimOptions, SameRateInterestType} from '../../../../main/common/form/models/claimDetails';
+import {InterestClaimFromType, SameRateInterestType} from '../../../../main/common/form/models/claimDetails';
+import {InterestClaimOptionsType} from '../../../../main/common/form/models/claim/interest/interestClaimOptionsType';
 
 describe('Interest Utils', () => {
   const claim: Claim = Object.assign(new Claim(), deepCopy(mockResponse));
@@ -31,7 +32,7 @@ describe('Interest Utils', () => {
   it('getInterestRate should return %8 interest rate when no different rate is selected', () => {
     //Given
     const claimWithSameInterestRate = deepCopy(claim);
-    claimWithSameInterestRate.interestClaimOptions = InterestClaimOptions.SAME_RATE_INTEREST;
+    claimWithSameInterestRate.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
     claimWithSameInterestRate.sameRateInterestSelection.sameRateInterestType = SameRateInterestType.SAME_RATE_INTEREST_8_PC;
 
     //When
@@ -43,7 +44,7 @@ describe('Interest Utils', () => {
   it('getInterestRate should return different rate value when different interesst rate than %8 is selected', () => {
     //Given
     const DIFFERENT_INTEREST_RATE = 7;
-    claim.interestClaimOptions = InterestClaimOptions.SAME_RATE_INTEREST;
+    claim.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
     claim.sameRateInterestSelection.differentRate = DIFFERENT_INTEREST_RATE;
     claim.sameRateInterestSelection.sameRateInterestType = SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE;
 
