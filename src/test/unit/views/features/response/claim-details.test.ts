@@ -60,7 +60,7 @@ describe('Task List View', () => {
     it('should display claim amount text and value', () => {
       const claimDetails = mainWrapper.getElementsByClassName('govuk-body');
       expect(claimDetails[1].innerHTML).toContain('Claim amount');
-      expect(claimDetails[1].innerHTML).toContain(getTotalAmountWithInterestAndFees(claim.case_data));
+      expect(claimDetails[1].innerHTML).toContain(getTotalAmountWithInterestAndFees(claim.case_data).toString());
     });
 
     it('should contain View amount breakdown details component', () => {
@@ -71,7 +71,7 @@ describe('Task List View', () => {
       expect(tableHeaders[0].innerHTML).toContain('Amount breakdown');
       expect(tableHeaders[1].innerHTML).toContain('Amount');
       expect(tableCells[0].innerHTML).toContain(claim.case_data.claimAmountBreakup[0].value.claimReason);
-      expect(tableCells[1].innerHTML).toContain(convertToPoundsFilter(claim.case_data.claimAmountBreakup[0].value.claimAmount));
+      expect(tableCells[1].innerHTML).toContain(convertToPoundsFilter(claim.case_data.claimAmountBreakup[0].value.claimAmount).toString());
     });
 
     it('should contain Interest details component', () => {
@@ -79,14 +79,14 @@ describe('Task List View', () => {
       const tableCells = htmlDocument.getElementsByClassName('govuk-table__cell');
       const interestText = htmlDocument.getElementsByClassName('govuk-details__text');
       expect(details[1].innerHTML).toContain('Interest');
-      expect(tableCells[3].innerHTML).toContain(claim.case_data.totalInterest);
+      expect(tableCells[3].innerHTML).toContain(claim.case_data.totalInterest.toString());
       expect(interestText[1].innerHTML).toContain('Interest calculated at 8% for 3 days (20 May 2022 to 23 May 2022)');
     });
 
     it('should contain Claim fee and Claim total text and values', () => {
       const tableCells = htmlDocument.getElementsByClassName('govuk-table__cell');
       expect(tableCells[4].innerHTML).toContain('Claim fee');
-      expect(tableCells[5].innerHTML).toContain(convertToPoundsFilter(claim.case_data.claimFee.calculatedAmountInPence));
+      expect(tableCells[5].innerHTML).toContain(convertToPoundsFilter(claim.case_data.claimFee.calculatedAmountInPence).toString());
       expect(tableCells[6].innerHTML).toContain('Claim Total');
       expect(tableCells[7].innerHTML).toContain(getTotalAmountWithInterestAndFees(claim.case_data));
     });

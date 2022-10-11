@@ -7,9 +7,9 @@ import {
   CLAIM_TASK_LIST_URL,
 } from '../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import { mockCivilClaim, mockRedisFailure } from '../../../../../utils/mockDraftStore';
-import { EvidenceType } from '../../../../../../main/common/models/evidence/evidenceType';
-import { FREE_TEXT_MAX_LENGTH } from '../../../../../../main/common/form/validators/validationConstraints';
+import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {EvidenceType} from '../../../../../../main/common/models/evidence/evidenceType';
+import {FREE_TEXT_MAX_LENGTH} from '../../../../../../main/common/form/validators/validationConstraints';
 import {
   VALID_TEXT_LENGTH,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
@@ -34,135 +34,136 @@ const eMockWithFullAdmission = {
 describe('Repayment Plan', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
-  });
-});
-
-describe('on Get', () => {
-  it('should return on your evidence list page successfully', async () => {
-    app.locals.draftStoreClient = mockCivilClaim;
-    await request(app).get(CITIZEN_EVIDENCE_URL)
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('List your evidence');
-      });
+      .reply(200, {id_token: citizenRoleToken});
   });
 
-  it('should return on your evidence list page successfully when less than 4 items saved', async () => {
-    app.locals.draftStoreClient = mockWithLessThaFourEvidence;
-    await request(app)
-      .get(CITIZEN_EVIDENCE_URL)
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('List your evidence');
-      });
+
+  describe('on Get', () => {
+    it('should return on your evidence list page successfully', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      await request(app).get(CITIZEN_EVIDENCE_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('List your evidence');
+        });
+    });
+
+    it('should return on your evidence list page successfully when less than 4 items saved', async () => {
+      app.locals.draftStoreClient = mockWithLessThaFourEvidence;
+      await request(app)
+        .get(CITIZEN_EVIDENCE_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('List your evidence');
+        });
+    });
+
+    it('should return 500 status code when error occurs', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app)
+        .get(CITIZEN_EVIDENCE_URL)
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
   });
 
-  it('should return 500 status code when error occurs', async () => {
-    app.locals.draftStoreClient = mockRedisFailure;
-    await request(app)
-      .get(CITIZEN_EVIDENCE_URL)
-      .expect((res) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
-  });
-});
+  describe('on Post', () => {
+    const COMMENT = 'Nam ac ante id turpis elementum laoreet. Nunc a erat nec eros iaculis lobortis ut in quam.';
+    const tooLongEvidenceDetails: string = Array(FREE_TEXT_MAX_LENGTH + 2).join('a');
+    const EVIDENCE_ITEM = [
+      {'type': EvidenceType.CONTRACTS_AND_AGREEMENTS, 'description': 'Test evidence details'},
+      {'type': null, 'description': ''},
+      {'type': null, 'description': ''},
+      {'type': null, 'description': ''},
+    ];
 
-describe('on Post', () => {
-  const COMMENT = 'Nam ac ante id turpis elementum laoreet. Nunc a erat nec eros iaculis lobortis ut in quam.';
-  const tooLongEvidenceDetails: string = Array(FREE_TEXT_MAX_LENGTH + 2).join('a');
-  const EVIDENCE_ITEM = [
-    { 'type': EvidenceType.CONTRACTS_AND_AGREEMENTS, 'description': 'Test evidence details' },
-    { 'type': null, 'description': ''},
-    { 'type': null, 'description': ''},
-    { 'type': null, 'description': ''},
-  ];
+    const EVIDENCE_ITEM_INVALID = [
+      {'type': EvidenceType.CONTRACTS_AND_AGREEMENTS, 'description': tooLongEvidenceDetails},
+      {'type': null, 'description': ''},
+      {'type': null, 'description': ''},
+      {'type': null, 'description': ''},
+    ];
 
-  const EVIDENCE_ITEM_INVALID = [
-    { 'type': EvidenceType.CONTRACTS_AND_AGREEMENTS, 'description': tooLongEvidenceDetails },
-    { 'type': null, 'description': ''},
-    { 'type': null, 'description': ''},
-    { 'type': null, 'description': ''},
-  ];
+    it('should return errors when comment max length is greater than 99000 characters', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      await request(app)
+        .post(CITIZEN_EVIDENCE_URL)
+        .send({comment: tooLongEvidenceDetails, evidenceItem: EVIDENCE_ITEM})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(VALID_TEXT_LENGTH);
+        });
+    });
 
-  it('should return errors when comment max length is greater than 99000 characters', async () => {
-    app.locals.draftStoreClient = mockCivilClaim;
-    await request(app)
-      .post(CITIZEN_EVIDENCE_URL)
-      .send({comment: tooLongEvidenceDetails, evidenceItem: EVIDENCE_ITEM})
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_TEXT_LENGTH);
-      });
-  });
+    it('should return errors when description max length is greater than 99000 characters', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      await request(app)
+        .post(CITIZEN_EVIDENCE_URL)
+        .send({comment: COMMENT, evidenceItem: EVIDENCE_ITEM_INVALID})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(VALID_TEXT_LENGTH);
+        });
+    });
 
-  it('should return errors when description max length is greater than 99000 characters', async () => {
-    app.locals.draftStoreClient = mockCivilClaim;
-    await request(app)
-      .post(CITIZEN_EVIDENCE_URL)
-      .send({comment: COMMENT, evidenceItem: EVIDENCE_ITEM_INVALID})
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_TEXT_LENGTH);
-      });
-  });
+    it('should redirect with empties input and redirect to task list', async () => {
+      app.locals.draftStoreClient = mockWithLessThaFourEvidence;
+      await request(app)
+        .post(CITIZEN_EVIDENCE_URL)
+        .send({comment: '', evidenceItem: []})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+        });
+    });
 
-  it('should redirect with empties input and redirect to task list', async () => {
-    app.locals.draftStoreClient = mockWithLessThaFourEvidence;
-    await request(app)
-      .post(CITIZEN_EVIDENCE_URL)
-      .send({comment: '', evidenceItem: []})
-      .expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
-      });
-  });
+    it('should redirect with correct input and redirect to task list', async () => {
+      app.locals.draftStoreClient = mockWithLessThaFourEvidence;
+      await request(app)
+        .post(CITIZEN_EVIDENCE_URL)
+        .send({comment: COMMENT, evidenceItem: EVIDENCE_ITEM})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+        });
+    });
 
-  it('should redirect with correct input and redirect to task list', async () => {
-    app.locals.draftStoreClient = mockWithLessThaFourEvidence;
-    await request(app)
-      .post(CITIZEN_EVIDENCE_URL)
-      .send({comment: COMMENT, evidenceItem: EVIDENCE_ITEM})
-      .expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
-      });
-  });
+    it('should redirect with empties input and redirect to impact of dispute', async () => {
+      app.locals.draftStoreClient = eMockWithFullAdmission;
+      await request(app)
+        .post(CITIZEN_EVIDENCE_URL)
+        .send({comment: '', evidenceItem: []})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+        });
+    });
 
-  it('should redirect with empties input and redirect to impact of dispute', async () => {
-    app.locals.draftStoreClient = eMockWithFullAdmission;
-    await request(app)
-      .post(CITIZEN_EVIDENCE_URL)
-      .send({comment: '', evidenceItem: []})
-      .expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
-      });
-  });
+    it('should redirect with correct input and redirect to impact of dispute', async () => {
+      app.locals.draftStoreClient = eMockWithFullAdmission;
+      await request(app)
+        .post(CITIZEN_EVIDENCE_URL)
+        .send({comment: COMMENT, evidenceItem: EVIDENCE_ITEM})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+        });
+    });
 
-  it('should redirect with correct input and redirect to impact of dispute', async () => {
-    app.locals.draftStoreClient = eMockWithFullAdmission;
-    await request(app)
-      .post(CITIZEN_EVIDENCE_URL)
-      .send({comment: COMMENT, evidenceItem: EVIDENCE_ITEM})
-      .expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
-      });
-  });
-
-  it('should return status 500 when there is error', async () => {
-    app.locals.draftStoreClient = mockRedisFailure;
-    await request(app)
-      .post(CITIZEN_EVIDENCE_URL)
-      .send({comment: COMMENT, evidenceItem: EVIDENCE_ITEM})
-      .expect((res) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
+    it('should return status 500 when there is error', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app)
+        .post(CITIZEN_EVIDENCE_URL)
+        .send({comment: COMMENT, evidenceItem: EVIDENCE_ITEM})
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
   });
 });

@@ -36,7 +36,7 @@ describe('Extend ResponseDeadline Service', ()=>{
         .post('/cases/1/citizen/undefined/event')
         .reply(200, {});
       mockGetCaseDataFromStore.mockImplementation(async () => claim);
-      const spy = spyOn(draftStoreService, 'saveDraftClaim');
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
       await submitExtendedResponseDeadline(mockedAppRequest);
       //Then
@@ -51,7 +51,7 @@ describe('Extend ResponseDeadline Service', ()=>{
       //Given
       claim.respondentSolicitor1AgreedDeadlineExtension = new Date();
       mockGetCaseDataFromStore.mockImplementation(async () => claim);
-      const spy = spyOn(draftStoreService, 'saveDraftClaim');
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
       await submitExtendedResponseDeadline(mockedAppRequest);
       //Then
