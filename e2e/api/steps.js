@@ -51,40 +51,6 @@ let mpScenario = 'ONE_V_ONE';
 
 module.exports = {
 
-  createUnspecifiedClaim: async (user, multipartyScenario, claimantType) => {
-
-    eventName = 'CREATE_CLAIM';
-    caseId = null;
-    caseData = {};
-    mpScenario = multipartyScenario;
-
-    const createClaimData = data.CREATE_CLAIM(mpScenario, claimantType);
-
-    await apiRequest.setupTokens(user);
-    await apiRequest.startEvent(eventName);
-    await validateEventPages(createClaimData);
-
-    let i;
-    for (i = 0; i < createClaimData.invalid.Court.courtLocation.applicantPreferredCourt.length; i++) {
-      await assertError('Court', createClaimData.invalid.Court.courtLocation.applicantPreferredCourt[i],
-        null, 'Case data validation failed');
-    }
-    await assertError('Upload', createClaimData.invalid.Upload.servedDocumentFiles.particularsOfClaimDocument,
-      null, 'Case data validation failed');
-
-    await assertSubmittedEvent('PENDING_CASE_ISSUED', {
-      header: 'Your claim has been received',
-      body: 'Your claim will not be issued until payment is confirmed.',
-    });
-
-    await assignCase(caseId, multipartyScenario);
-    await waitForFinishedBusinessProcess(caseId);
-
-    //field is deleted in about to submit callback
-    deleteCaseFields('applicantSolicitor1CheckEmail');
-    return caseId;
-  },
-
   createSpecifiedClaim: async (user, multipartyScenario) => {
     console.log(' This is inside createSpecifiedClaim');
     eventName = 'CREATE_CLAIM_SPEC';
@@ -108,40 +74,12 @@ module.exports = {
     return caseId;
   },
 
-  notifyClaimDetails: async (user, caseId) => {
-    await apiRequest.setupTokens(user);
-
-    eventName = 'NOTIFY_DEFENDANT_OF_CLAIM_DETAILS';
-    await apiRequest.startEvent(eventName, caseId);
-
-    await validateEventPages(data[eventName]);
-
-    await assertSubmittedEvent('AWAITING_RESPONDENT_ACKNOWLEDGEMENT', {
-      header: 'Defendant notified',
-      body: 'The defendant legal representative\'s organisation has been notified of the claim details.',
-    });
-
-    await waitForFinishedBusinessProcess(caseId);
-  },
-
   cleanUp: async () => {
     await unAssignAllUsers();
   },
 };
 
 // Functions
-const validateEventPages = async (data, solicitor) => {
-  //transform the data
-  console.log('validateEventPages');
-  for (let pageId of Object.keys(data.valid)) {
-    if (pageId === 'Upload' || pageId === 'DraftDirections' || pageId === 'ApplicantDefenceResponseDocument' || pageId === 'DraftDirections') {
-      const document = await testingSupport.uploadDocument();
-      data = await updateCaseDataWithPlaceholders(data, document);
-    }
-    // data = await updateCaseDataWithPlaceholders(data);
-    await assertValidData(data, pageId, solicitor);
-  }
-};
 
 const assertValidDataSpec = async (data, pageId) => {
   console.log(`asserting page: ${pageId} has valid data`);

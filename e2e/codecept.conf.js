@@ -13,12 +13,6 @@ exports.config = {
         ignoreHTTPSErrors: true,
       },
     },
-    BrowserHelpers: {
-      require: './helpers/browser_helper.js',
-    },
-    GenerateReportHelper: {
-      require: './helpers/generate_report_helper.js',
-    },
   },
   include: {
     I: './steps_file.js',
