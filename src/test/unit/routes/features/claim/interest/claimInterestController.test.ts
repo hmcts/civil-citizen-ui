@@ -3,7 +3,11 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
-import {CLAIM_HELP_WITH_FEES, CLAIM_INTEREST_TYPE, CLAIM_INTEREST_URL} from '../../../../../../main/routes/urls';
+import {
+  CLAIM_INTEREST_URL,
+  CLAIM_INTEREST_TYPE_URL,
+  CLAIM_HELP_WITH_FEES_URL,
+} from '../../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
@@ -56,7 +60,7 @@ describe('Claim Interest page', () => {
       await request(app).post(CLAIM_INTEREST_URL).send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(CLAIM_INTEREST_TYPE);
+          expect(res.get('location')).toBe(CLAIM_INTEREST_TYPE_URL);
         });
     });
 
@@ -64,7 +68,7 @@ describe('Claim Interest page', () => {
       await request(app).post(CLAIM_INTEREST_URL).send({option: 'no'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(CLAIM_HELP_WITH_FEES);
+          expect(res.get('location')).toBe(CLAIM_HELP_WITH_FEES_URL);
         });
     });
 
