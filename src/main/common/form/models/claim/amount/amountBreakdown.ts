@@ -20,6 +20,11 @@ export class AmountBreakdown {
     return populatedRows;
   }
 
+  public totalAmount () {
+    const amounts: number[] = this.claimAmountRows.filter(item => item.amount > 0).map(item => item.amount);
+    return amounts.length ? amounts.reduce((a, b) => a + b) : 0;
+  }
+
   public static emptyForm(): AmountBreakdown {
     return new AmountBreakdown([new ClaimAmountRow(), new ClaimAmountRow(), new ClaimAmountRow(), new ClaimAmountRow()]);
   }
