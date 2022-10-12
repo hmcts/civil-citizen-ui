@@ -15,5 +15,6 @@ export class Respondent {
   type: PartyType;
   partyName?: string;
   contactPerson?: string;
+  emailAddress?: string;
 }
 

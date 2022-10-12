@@ -135,11 +135,14 @@ import phoneOrVideoHearingController from './features/directionsQuestionnaire/ph
 import cantAttendHearingInNext12MonthsController
   from './features/directionsQuestionnaire/cantAttendHearingInNext12MonthsController';
 import youCanUseServiceController from './features/public/eligibility/youCanUseServiceController';
+import defendantDetailsController from './features/claim/defendant/defendantDetailsController';
 import interestTypeController from './features/claim/interest/interestTypeController';
 import interestRateController from './features/claim/interest/claimantInterestRateController';
 import interestStartDateController from './features/claim/interest/interestStartDateController';
 import claimAmountBreakdownController from './features/claim/amount/claimAmountBreakdownController';
 import claimInterestController from './features/claim/interest/claimInterestController';
+import claimantInterestFromController from './features/claim/interest/claimantInterestFromController';
+import defendantEmailController from './features/claim/yourDetails/defendantEmailController';
 
 export default [
   homeController,
@@ -266,9 +269,12 @@ export default [
   phoneOrVideoHearingController,
   cantAttendHearingInNext12MonthsController,
   youCanUseServiceController,
+  defendantDetailsController,
   interestTypeController,
   interestRateController,
   claimAmountBreakdownController,
   claimInterestController,
   interestStartDateController,
+  claimantInterestFromController,
+  defendantEmailController,
 ];

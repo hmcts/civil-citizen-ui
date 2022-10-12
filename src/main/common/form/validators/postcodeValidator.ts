@@ -11,7 +11,7 @@ export class PostcodeValidator implements ValidatorConstraintInterface {
 
   validate(value: string) {
     const ukPostCodePattern = this.UK_POSTCODE_REGEX;
-    const normalised = value.toString().replace(/\s/g, '');
+    const normalised = value?.toString().replace(/\s/g, '');
     if (!value) {
       return true;
     }
