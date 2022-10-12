@@ -336,6 +336,7 @@ export interface Party {
   provideCorrespondenceAddress?: string;
   correspondenceAddress?: CorrespondenceAddress;
   contactPerson?: string;
+  businessName?: string;
 }
 
 export interface StatementOfTruth {

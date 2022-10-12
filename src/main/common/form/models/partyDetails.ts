@@ -7,46 +7,50 @@ import {
 import {Party} from '../../models/claim';
 export class PartyDetails {
 
-  @ValidateIf(o => o.title !== undefined)
+  @ValidateIf(o => o.individualTitle !== undefined)
   @MaxLength(35, {message: 'ERRORS.ENTER_VALID_TITLE'})
-    title?: string;
+    individualTitle?: string;
 
-  @ValidateIf(o => o.firstName !== undefined)
+  @ValidateIf(o => o.individualFirstName !== undefined)
   @IsDefined({message: 'ERRORS.ENTER_FIRST_NAME'})
   @IsNotEmpty({message: 'ERRORS.ENTER_FIRST_NAME'})
   @MaxLength(255, {message: 'ERRORS.TEXT_TOO_MANY'})
-    firstName?: string;
+    individualFirstName?: string;
 
-  @ValidateIf(o => o.lastName !== undefined)
+  @ValidateIf(o => o.individualLastName !== undefined)
   @IsDefined({message: 'ERRORS.ENTER_LAST_NAME'})
   @IsNotEmpty({message: 'ERRORS.ENTER_LAST_NAME'})
   @MaxLength(255, {message: 'ERRORS.TEXT_TOO_MANY'})
-    lastName?: string;
+    individualLastName?: string;
 
-  constructor(
-    title?: string,
-    firstName?: string,
-    lastName?: string,
-  ){
-    this.title = title;
-    this.firstName = firstName;
-    this.lastName = lastName;
+  @ValidateIf(o => o.businessName !== undefined)
+  @MaxLength(255, {message: 'ERRORS.TEXT_TOO_MANY'})
+    businessName?: string;
+// TODO : fix any
+  // check other places using paty details constructor -- claimantIndividualDetailsController  -- saveClaimant
+  constructor(value: Party){
+    this.individualTitle = value?.individualTitle;
+    this.individualFirstName = value?.individualFirstName;
+    this.individualLastName = value?.individualLastName;
+    this.businessName = value?.businessName;
   }
 
-  static fromObject(value?: Record<string, string>): PartyDetails {
-    return new PartyDetails(
-      value?.claimantIndividualDetailsTitle,
-      value?.claimantIndividualDetailsFirstName,
-      value?.claimantIndividualDetailsLastName,
-    );
-  }
+  // static fromObject(value?: Record<string, string>): PartyDetails {
+  //   return new PartyDetails(
+  //     value?.individualTitle,
+  //     value?.individualFirstName,
+  //     value?.individualLastName,
+  //     value?.businessName,
+  //   );
+  // }
 
-  static fromJson(value?: Party): PartyDetails {
-    return new PartyDetails(
-      value?.individualTitle,
-      value?.individualFirstName,
-      value?.individualLastName,
-    );
-  }
+  // static fromJson(value?: Party): PartyDetails {
+  //   return new PartyDetails(
+  //     value?.individualTitle,
+  //     value?.individualFirstName,
+  //     value?.individualLastName,
+  //     value?.businessName,
+  //   );
+  // }
 }
 

@@ -38,7 +38,7 @@ claimantIndividualDetailsController.get(CLAIMANT_INDIVIDUAL_DETAILS_URL, async (
 
     const claimantIndividualAddress = new GenericForm<Address>(Address.fromJson(claimant.primaryAddress));
     const claimantIndividualCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(CitizenCorrespondenceAddress.fromJson(claimant.correspondenceAddress));
-    const claimantDetails = new GenericForm<PartyDetails>(PartyDetails.fromJson(claimant));
+    const claimantDetails:any = undefined;
 
     renderPage(res, req, claimant, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, claimantDetails);
   } catch (error) {
@@ -52,7 +52,7 @@ claimantIndividualDetailsController.post(CLAIMANT_INDIVIDUAL_DETAILS_URL, async 
   try {
     const claimantIndividualAddress = new GenericForm<Address>(Address.fromObject(req.body));
     const claimantIndividualCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(getCorrespondenceAddressForm(req.body));
-    const claimantDetails = new GenericForm<PartyDetails>(PartyDetails.fromObject(req.body));
+    const claimantDetails:any = undefined;
 
     claimantDetails.validateSync();
     claimantIndividualAddress.validateSync();
