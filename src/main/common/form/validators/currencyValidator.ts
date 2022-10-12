@@ -28,5 +28,4 @@ export class CurrencyValidator implements ValidatorConstraintInterface {  numeri
   defaultMessage() {
     return this.validNumber ? 'ERRORS.VALID_TWO_DECIMAL_NUMBER' : 'ERRORS.VALID_STRICTLY_POSITIVE_NUMBER';
   }
-
 }

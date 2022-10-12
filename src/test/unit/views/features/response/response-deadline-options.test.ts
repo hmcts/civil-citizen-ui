@@ -19,7 +19,7 @@ describe('Response Deadline Options View', () => {
     let htmlDocument: Document;
     let mainWrapper: Element;
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
@@ -88,7 +88,7 @@ describe('Response Deadline Options View', () => {
 
   describe('on POST', () => {
     let htmlDocument: Document;
-    beforeEach(async () => {
+    beforeAll(async () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});

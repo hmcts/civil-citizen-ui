@@ -20,7 +20,7 @@ import {
   CITIZEN_RESIDENCE_URL,
   CITIZEN_RESPONSE_TYPE_URL,
 } from '../../../../../../../main/routes/urls';
-import PaymentOptionType from '../../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import {PaymentOptionType} from '../../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
 import {formatDateToFullDate} from '../../../../../../../main/common/utils/dateUtils';
 import {ResponseType} from '../../../../../../../main/common/form/models/responseType';

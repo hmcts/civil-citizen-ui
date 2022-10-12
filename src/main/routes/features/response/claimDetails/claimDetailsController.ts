@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {
   CLAIM_DETAILS_URL,
   CASE_TIMELINE_DOCUMENTS_URL,
@@ -10,9 +10,9 @@ import {getTotalAmountWithInterestAndFees} from '../../../../modules/claimDetail
 import {DocumentUri} from '../../../../common/models/document/documentType';
 import {getClaimById} from '../../../../modules/utilityService';
 
-const claimDetailsController = express.Router();
+const claimDetailsController = Router();
 
-claimDetailsController.get(CLAIM_DETAILS_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+claimDetailsController.get(CLAIM_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claim: Claim = await getClaimById(req.params.id, req);
     const interestData = getInterestDetails(claim);

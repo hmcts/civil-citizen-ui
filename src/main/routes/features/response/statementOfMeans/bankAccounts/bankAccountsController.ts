@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {Response, Router} from 'express';
 import {
   CITIZEN_BANK_ACCOUNT_URL, CITIZEN_DISABILITY_URL,
 } from '../../../../../routes/urls';
@@ -10,10 +10,10 @@ import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlF
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 
 const citizenBankAccountsViewPath = 'features/response/statementOfMeans/citizenBankAndSavings/citizen-bank-accounts';
-const bankAccountsController = express.Router();
+const bankAccountsController = Router();
 const bankAccountService = new BankAccountService();
 
-function renderView(form: GenericForm<BankAccounts>, bankAccountDropDownItems: BankAccountTypes,  res: express.Response): void {
+function renderView(form: GenericForm<BankAccounts>, bankAccountDropDownItems: BankAccountTypes,  res: Response): void {
   res.render(citizenBankAccountsViewPath, {form, bankAccountDropDownItems});
 }
 

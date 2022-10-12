@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {CLAIMANT_DOB_URL, CLAIMANT_INDIVIDUAL_DETAILS_URL} from '../../../urls';
+import {CLAIMANT_DOB_URL, CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL} from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {Address} from '../../../../common/form/models/address';
 import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citizenCorrespondenceAddress';
@@ -31,7 +31,7 @@ function renderPage(res: Response, req: Request, claimant: Party, claimantIndivi
   });
 }
 
-claimantIndividualDetailsController.get(CLAIMANT_INDIVIDUAL_DETAILS_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+claimantIndividualDetailsController.get(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const caseId = req.session?.user?.id;
     const claimant: Party = await getClaimantInformation(caseId);
@@ -46,7 +46,7 @@ claimantIndividualDetailsController.get(CLAIMANT_INDIVIDUAL_DETAILS_URL, async (
   }
 });
 
-claimantIndividualDetailsController.post(CLAIMANT_INDIVIDUAL_DETAILS_URL, async (req: any, res: Response, next: NextFunction) => {
+claimantIndividualDetailsController.post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, async (req: any, res: Response, next: NextFunction) => {
   const caseId = req.session?.user?.id;
   const claimant: Party = await getClaimantInformation(caseId);
   try {

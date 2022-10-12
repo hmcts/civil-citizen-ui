@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {Response, Router} from 'express';
 import {WhyDoYouDisagree} from '../../../../../common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {CITIZEN_TIMELINE_URL, CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL} from '../../../../urls';
@@ -10,11 +10,11 @@ import {
   saveWhyDoYouDisagreeData,
 } from '../../../../../services/features/response/admission/whyDoYouDisagreeService';
 
-const whyDoYouDisagreeFullRejectionController = express.Router();
+const whyDoYouDisagreeFullRejectionController = Router();
 const whyDoYouDisagreeViewPath = 'features/response/admission/why-do-you-disagree';
 let claimAmount: number;
 
-function renderView(form: GenericForm<WhyDoYouDisagree>, claimAmount: number, res: express.Response) {
+function renderView(form: GenericForm<WhyDoYouDisagree>, claimAmount: number, res: Response) {
   res.render(whyDoYouDisagreeViewPath, {form, claimAmount});
 }
 

@@ -6,7 +6,6 @@ import {
   CaseState,
 } from '../../../../main/common/form/models/claimDetails';
 import {StatementOfMeans} from '../../../../main/common/models/statementOfMeans';
-import {Disability} from '../../../../main/common/form/models/statementOfMeans/disability';
 import {YesNo} from '../../../../main/common/form/models/yesNo';
 import {Dependants} from '../../../../main/common/form/models/statementOfMeans/dependants/dependants';
 import civilClaimResponseApplicantCompany from '../../../utils/mocks/civilClaimResponseApplicantCompanyMock.json';
@@ -17,16 +16,13 @@ import {PartialAdmission} from '../../../../main/common/models/partialAdmission'
 import {Party} from '../../../../main/common/models/party';
 import {HowMuchDoYouOwe} from '../../../../main/common/form/models/admission/partialAdmission/howMuchDoYouOwe';
 import {PaymentIntention} from '../../../../main/common/form/models/admission/partialAdmission/paymentIntention';
-import PaymentOptionType from '../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import {PaymentOptionType} from '../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {mockClaim} from '../../../utils/mockClaim';
 import {DocumentType} from '../../../../main/common/models/document/documentType';
 import {GenericYesNo} from '../../../../main/common/form/models/genericYesNo';
 import {RejectAllOfClaim} from '../../../../main/common/form/models/rejectAllOfClaim';
-import RejectAllOfClaimType from '../../../../main/common/form/models/rejectAllOfClaimType';
-import {
-  HowMuchHaveYouPaid,
-  HowMuchHaveYouPaidParams,
-} from '../../../../main/common/form/models/admission/howMuchHaveYouPaid';
+import {RejectAllOfClaimType} from '../../../../main/common/form/models/rejectAllOfClaimType';
+import {HowMuchHaveYouPaid, HowMuchHaveYouPaidParams} from '../../../../main/common/form/models/admission/howMuchHaveYouPaid';
 import {WhyDoYouDisagree} from '../../../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {Defence} from '../../../../main/common/form/models/defence';
 import {ClaimResponseStatus} from '../../../../main/common/models/claimResponseStatus';
@@ -179,7 +175,7 @@ describe('Claim isDefendantDisabled', () => {
   });
   it('should return false with empty disability', () => {
     //Given
-    claim.statementOfMeans.disability = new Disability();
+    claim.statementOfMeans.disability = new GenericYesNo();
     //When
     const result = claim.isDefendantDisabled();
     //Then

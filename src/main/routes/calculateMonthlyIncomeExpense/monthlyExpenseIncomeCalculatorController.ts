@@ -1,8 +1,8 @@
-import * as express from 'express';
+import {Router} from 'express';
 import {TOTAL_AMOUNT_CALCULATION_URL} from '../urls';
 import {calculateTotalAmount} from '../../common/utils/calculateMonthlyIncomeExpenses/monthlyIncomeExpensesCalculator';
 
-const monthlyExpenseIncomeCalculatorController = express.Router();
+const monthlyExpenseIncomeCalculatorController = Router();
 
 monthlyExpenseIncomeCalculatorController.post(TOTAL_AMOUNT_CALCULATION_URL, (req, res) => {
   const scheduledAmounts = req.body;

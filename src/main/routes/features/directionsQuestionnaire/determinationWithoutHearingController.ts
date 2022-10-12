@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {Response, Router} from 'express';
 import {DETERMINATION_WITHOUT_HEARING_URL, EXPERT_GUIDANCE_URL} from '../../urls';
 import {
   DeterminationWithoutHearing,
@@ -12,12 +12,12 @@ import {
 } from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {YesNo} from '../../../common/form/models/yesNo';
 
-const determinationWithoutHearingController = express.Router();
+const determinationWithoutHearingController = Router();
 const determinationWithoutHearingViewPath = 'features/directionsQuestionnaire/determination-without-hearing';
 const dqPropertyName = 'determinationWithoutHearing';
 const dqParentName = 'hearing';
 
-function renderView(form: GenericForm<DeterminationWithoutHearing>, res: express.Response): void {
+function renderView(form: GenericForm<DeterminationWithoutHearing>, res: Response): void {
   res.render(determinationWithoutHearingViewPath, {form});
 }
 

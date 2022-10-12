@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {Response, Router} from 'express';
 import {DQ_EXPERT_GUIDANCE_URL, DQ_EXPERT_REPORT_DETAILS_URL, DQ_GIVE_EVIDENCE_YOURSELF_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {
@@ -14,11 +14,11 @@ import {
   saveDirectionQuestionnaire,
 } from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 
-const expertReportDetailsController = express.Router();
+const expertReportDetailsController = Router();
 const dqPropertyName = 'expertReportDetails';
 const dqParentName = 'experts';
 
-function renderView(form: GenericForm<ExpertReportDetails>, res: express.Response): void {
+function renderView(form: GenericForm<ExpertReportDetails>, res: Response): void {
   res.render('features/directionsQuestionnaire/expert-report-details', {form, today: new Date()});
 }
 

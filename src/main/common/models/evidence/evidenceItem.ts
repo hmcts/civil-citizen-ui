@@ -1,4 +1,4 @@
-import { EvidenceType } from './evidenceType';
+import {EvidenceType} from './evidenceType';
 
 export interface EvidenceItem {
   type?: EvidenceType

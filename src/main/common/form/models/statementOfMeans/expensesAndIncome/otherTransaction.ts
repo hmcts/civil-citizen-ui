@@ -1,5 +1,5 @@
 import {ValidateIf, ValidateNested} from 'class-validator';
-import TransactionSource from './transactionSource';
+import {TransactionSource} from './transactionSource';
 import {TransactionSchedule} from './transactionSchedule';
 import {toNumberOrUndefined} from '../../../../utils/numberConverter';
 
@@ -9,7 +9,7 @@ export interface OtherTransactionRequestParams {
   schedule?: TransactionSchedule;
 }
 
-export default class OtherTransaction {
+export class OtherTransaction {
   declared: boolean;
   @ValidateIf((o: OtherTransaction) => o.declared === true)
   @ValidateNested({each: true})

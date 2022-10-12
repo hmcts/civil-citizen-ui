@@ -1,13 +1,13 @@
 import {app} from '../../../../../../main/app';
 import config from 'config';
 import request from 'supertest';
-import {CLAIMANT_INDIVIDUAL_DETAILS_URL, CLAIMANT_DOB_URL} from '../../../../../../main/routes/urls';
+import {CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, CLAIMANT_DOB_URL} from '../../../../../../main/routes/urls';
 import {buildCorrespondenceAddress, buildPrimaryAddress} from '../../../../../utils/mockClaim';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {PartyType} from '../../../../../../main/common/models/partyType';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {Party} from '../../../../../../main/common/models/party';
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from '../../../../../../main/modules/draft-store/draftStoreService';
 import {
   VALID_ADDRESS_LINE_1,
   VALID_CITY,
@@ -22,8 +22,8 @@ jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/services/features/response/citizenDetails/citizenDetailsService');
 
-const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
+const mockSaveDraftClaim = saveDraftClaim as jest.Mock;
 
 const claim = new Claim();
 
@@ -65,10 +65,13 @@ describe('Claimant Individual Details page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+  });
+
+  beforeEach(() => {
     jest.resetAllMocks();
   });
 
@@ -78,7 +81,7 @@ describe('Claimant Individual Details page', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       await request(app)
-        .get(CLAIMANT_INDIVIDUAL_DETAILS_URL)
+        .get(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -90,7 +93,7 @@ describe('Claimant Individual Details page', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       await request(app)
-        .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
+        .post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
         .send(validDataForPost)
         .expect((res) => {
           expect(res.status).toBe(500);
@@ -104,7 +107,7 @@ describe('Claimant Individual Details page', () => {
       return new Party();
     });
     await request(app)
-      .get(CLAIMANT_INDIVIDUAL_DETAILS_URL)
+      .get(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Enter your details');
@@ -116,7 +119,7 @@ describe('Claimant Individual Details page', () => {
       return buildClaimOfApplicant();
     });
     await request(app)
-      .get(CLAIMANT_INDIVIDUAL_DETAILS_URL)
+      .get(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Enter your details');
@@ -137,7 +140,7 @@ describe('Claimant Individual Details page', () => {
       return buildClaimOfApplicantWithoutCorrespondent();
     });
     await request(app)
-      .get(CLAIMANT_INDIVIDUAL_DETAILS_URL)
+      .get(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Enter your details');
@@ -154,7 +157,7 @@ describe('Claimant Individual Details page', () => {
       return buildClaimOfApplicantWithoutInformation();
     });
     await request(app)
-      .get(CLAIMANT_INDIVIDUAL_DETAILS_URL)
+      .get(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Enter your details');
@@ -178,7 +181,7 @@ describe('Claimant Individual Details page', () => {
       return new Claim();
     });
     await request(app)
-      .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
+      .post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
         primaryAddressLine1: 'Flat 3A Middle Road',
         primaryAddressLine2: '',
@@ -202,7 +205,7 @@ describe('Claimant Individual Details page', () => {
       return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
     });
     await request(app)
-      .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
+      .post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
         primaryAddressLine1: 'Flat 3A Middle Road',
         primaryAddressLine2: '',
@@ -226,7 +229,7 @@ describe('Claimant Individual Details page', () => {
       return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
     });
     await request(app)
-      .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
+      .post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
         primaryAddressLine1: '',
         primaryAddressLine2: '',
@@ -248,7 +251,7 @@ describe('Claimant Individual Details page', () => {
 
   it('POST/Claimant individual details - should return error on empty primary city', async () => {
     await request(app)
-      .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
+      .post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
         primaryAddressLine1: 'Flat 3A Middle Road',
         primaryAddressLine2: '',
@@ -270,7 +273,7 @@ describe('Claimant Individual Details page', () => {
 
   it('POST/Claimant Individual details - should return error on empty primary postcode', async () => {
     await request(app)
-      .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
+      .post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
         primaryAddressLine1: 'Flat 3A Middle Road',
         primaryAddressLine2: '',
@@ -295,7 +298,7 @@ describe('Claimant Individual Details page', () => {
       return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
     });
     await request(app)
-      .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
+      .post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
         primaryAddressLine1: 'Flat 3A Middle Road',
         primaryAddressLine2: '',
@@ -320,7 +323,7 @@ describe('Claimant Individual Details page', () => {
       return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
     });
     await request(app)
-      .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
+      .post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
         primaryAddressLine1: 'Flat 3A Middle Road',
         primaryAddressLine2: '',
@@ -345,7 +348,7 @@ describe('Claimant Individual Details page', () => {
       return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
     });
     await request(app)
-      .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
+      .post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
         primaryAddressLine1: 'Flat 3A Middle Road',
         primaryAddressLine2: '',
@@ -370,7 +373,7 @@ describe('Claimant Individual Details page', () => {
       return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
     });
     await request(app)
-      .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
+      .post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
         primaryAddressLine1: '',
         primaryAddressLine2: '',
@@ -397,7 +400,7 @@ describe('Claimant Individual Details page', () => {
 
   it('POST/Claimant individual details - should return error on input for primary address when provideCorrespondenceAddress is set to NO', async () => {
     await request(app)
-      .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
+      .post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
         primaryAddressLine1: '',
         primaryAddressLine2: '',
@@ -424,7 +427,7 @@ describe('Claimant Individual Details page', () => {
       return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
     });
     await request(app)
-      .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
+      .post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
         primaryAddressLine1: '',
         primaryAddressLine2: '',
@@ -451,7 +454,7 @@ describe('Claimant Individual Details page', () => {
       return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
     });
     await request(app)
-      .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
+      .post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send(validDataForPost)
       .expect((res) => {
         expect(res.status).toBe(302);

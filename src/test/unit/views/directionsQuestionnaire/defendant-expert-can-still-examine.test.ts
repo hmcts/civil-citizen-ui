@@ -19,7 +19,7 @@ describe('Defendant expert can still examine View', () => {
     let htmlDocument: Document;
     let mainWrapper: Element;
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
@@ -79,7 +79,7 @@ describe('Defendant expert can still examine View', () => {
     describe('no radio selected', () => {
       let htmlDocument: Document;
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         nock(idamUrl)
           .post('/o/token')
           .reply(200, {id_token: citizenRoleToken});
@@ -109,7 +109,7 @@ describe('Defendant expert can still examine View', () => {
     describe('yes option selected', () => {
       let htmlDocument: Document;
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         nock(idamUrl)
           .post('/o/token')
           .reply(200, {id_token: citizenRoleToken});

@@ -2,7 +2,7 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
-import {CLAIMANT_INDIVIDUAL_DETAILS_URL} from '../../../../../../main/routes/urls';
+import {CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL} from '../../../../../main/routes/urls';
 import {t} from 'i18next';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 
@@ -17,7 +17,7 @@ describe('Claimant Individual Details View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
@@ -28,8 +28,8 @@ describe('Claimant Individual Details View', () => {
     let htmlDocument: Document;
     let mainWrapper: Element;
 
-    beforeEach(async () => {
-      const response = await request(app).get(CLAIMANT_INDIVIDUAL_DETAILS_URL);
+    beforeAll(async () => {
+      const response = await request(app).get(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
       mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];

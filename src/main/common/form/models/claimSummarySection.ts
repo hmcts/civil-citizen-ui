@@ -26,15 +26,14 @@ export interface ClaimSummaryItem {
 /**
  * NOTE:
  * Type determines what data properties needs that item
- * The comments shows what properties we could use for each type
  */
 export enum ClaimSummaryType {
-  PARAGRAPH = 'p', // [text]
-  BUTTON = 'button', // [href, text, classes]
-  TITLE = 'title', // [text]
-  SUBTITLE = 'subtitle', // [text]
-  LINK = 'link', // [textBefore, textAfter, href, text, subtitle]
-  HTML = 'html', // [html]
-  INSET_TEXT = 'insetText', // [text, html]
-  SUMMARY = 'summary' // [rows]
+  PARAGRAPH = 'p',
+  BUTTON = 'button',
+  TITLE = 'title',
+  SUBTITLE = 'subtitle',
+  LINK = 'link',
+  HTML = 'html',
+  INSET_TEXT = 'insetText',
+  SUMMARY = 'summary'
 }

@@ -27,7 +27,7 @@ claimantDoBController.get(CLAIMANT_DOB_URL, async (req: AppRequest, res: Respons
 
 claimantDoBController.post(CLAIMANT_DOB_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
-    const caseId = (<AppRequest>req).session?.user?.id;
+    const claimId = (<AppRequest>req).session.user?.id;
     const {year, month, day} = req.body;
     const form = new GenericForm(new ClaimantDoB(day, month, year));
     form.validateSync();
@@ -35,7 +35,7 @@ claimantDoBController.post(CLAIMANT_DOB_URL, async (req: AppRequest | Request, r
     if (form.hasErrors()) {
       res.render(claimantDoBViewPath, {form, today: new Date(), claimantView: true});
     } else {
-      const claim = await getCaseDataFromStore(caseId);
+      const claim = await getCaseDataFromStore(claimId);
       if (claim.respondent1) {
         claim.respondent1.dateOfBirth = form.model.dateOfBirth;
       } else {
@@ -43,7 +43,7 @@ claimantDoBController.post(CLAIMANT_DOB_URL, async (req: AppRequest | Request, r
         respondent.dateOfBirth = form.model.dateOfBirth;
         claim.respondent1 = respondent;
       }
-      await saveDraftClaim(caseId, claim);
+      await saveDraftClaim(claimId, claim);
       res.redirect(CLAIMANT_PHONE_NUMBER_URL);
     }
   } catch (error) {

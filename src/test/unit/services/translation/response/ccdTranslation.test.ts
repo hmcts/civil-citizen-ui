@@ -1,4 +1,4 @@
-import PaymentOptionType from '../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import {PaymentOptionType} from '../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {Claim} from '../../../../../main/common/models/claim';
 import {translateDraftResponseToCCD} from '../../../../../main/services/translation/response/ccdTranslation';
 import {CCDPaymentOption} from '../../../../../main/common/models/ccdResponse/ccdPaymentOption';

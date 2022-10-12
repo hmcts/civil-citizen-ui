@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Router} from 'express';
 import config from 'config';
 import {getSubmitConfirmationContent} from '../../../services/features/response/submitConfirmation/submitConfirmationService';
 import {CONFIRMATION_URL} from '../../urls';
@@ -8,11 +8,11 @@ import {CivilServiceClient} from '../../../app/client/civilServiceClient';
 import {AppRequest} from '../../../common/models/AppRequest';
 import {formatDateToFullDate} from '../../../common/utils/dateUtils';
 
-const submitComfirmationController = express.Router();
+const submitComfirmationController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-submitComfirmationController.get(CONFIRMATION_URL, async (req, res, next: express.NextFunction) => {
+submitComfirmationController.get(CONFIRMATION_URL, async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;

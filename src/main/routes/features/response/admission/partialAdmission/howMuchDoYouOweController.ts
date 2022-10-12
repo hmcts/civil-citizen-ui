@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {HowMuchDoYouOwe} from '../../../../../common/form/models/admission/partialAdmission/howMuchDoYouOwe';
 import {CITIZEN_OWED_AMOUNT_URL, CLAIM_TASK_LIST_URL} from '../../../../urls';
 import {
@@ -10,13 +10,13 @@ import {toNumberOrUndefined} from '../../../../../common/utils/numberConverter';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 
 const howMuchDoYouOweViewPath = 'features/response/admission/partialAdmission/how-much-do-you-owe';
-const howMuchDoYouOweController = express.Router();
+const howMuchDoYouOweController = Router();
 
-function renderView(form: GenericForm<HowMuchDoYouOwe>, res: express.Response) {
+function renderView(form: GenericForm<HowMuchDoYouOwe>, res: Response) {
   res.render(howMuchDoYouOweViewPath, {form: form});
 }
 
-howMuchDoYouOweController.get(CITIZEN_OWED_AMOUNT_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+howMuchDoYouOweController.get(CITIZEN_OWED_AMOUNT_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const howMuchDoYouOweForm = await getHowMuchDoYouOweForm(req.params.id);
     renderView(new GenericForm(howMuchDoYouOweForm), res);
@@ -25,7 +25,7 @@ howMuchDoYouOweController.get(CITIZEN_OWED_AMOUNT_URL, async (req: express.Reque
   }
 });
 
-howMuchDoYouOweController.post(CITIZEN_OWED_AMOUNT_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+howMuchDoYouOweController.post(CITIZEN_OWED_AMOUNT_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const savedValues = await getHowMuchDoYouOweForm(req.params.id);
     const howMuchDoYouOwe = new HowMuchDoYouOwe(toNumberOrUndefined(req.body.amount), savedValues.totalAmount);

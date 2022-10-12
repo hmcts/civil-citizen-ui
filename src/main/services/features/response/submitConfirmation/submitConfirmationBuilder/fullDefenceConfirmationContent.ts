@@ -1,6 +1,6 @@
-import { t } from 'i18next';
-import { Claim } from '../../../../../common/models/claim';
-import { ClaimSummarySection, ClaimSummaryType } from '../../../../../common/form/models/claimSummarySection';
+import {t} from 'i18next';
+import {Claim} from '../../../../../common/models/claim';
+import {ClaimSummarySection, ClaimSummaryType} from '../../../../../common/form/models/claimSummarySection';
 
 export const getRCDisputeStatus = (claim: Claim, lng: string): ClaimSummarySection[] => {
   const claimantName = claim.getClaimantName();
@@ -8,7 +8,7 @@ export const getRCDisputeStatus = (claim: Claim, lng: string): ClaimSummarySecti
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.RC_DISPUTE.WE_HAVE_MAILED', { claimantName, lng }),
+        text: t('PAGES.SUBMIT_CONFIRMATION.RC_DISPUTE.WE_HAVE_MAILED', {claimantName, lng}),
       },
     },
   ];
@@ -22,25 +22,25 @@ export const getRCDisputeNextSteps = (claimId: string, claim: Claim, lng: string
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.RC_DISPUTE.WE_WILL_CONTACT', { claimantName, lng }),
+        text: t('PAGES.SUBMIT_CONFIRMATION.RC_DISPUTE.WE_WILL_CONTACT', {claimantName, lng}),
       },
     },
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.RC_DISPUTE.IF_CLAIMANT_ACCEPTS', {  claimantName, lng }),
+        text: t('PAGES.SUBMIT_CONFIRMATION.RC_DISPUTE.IF_CLAIMANT_ACCEPTS', {claimantName, lng}),
       },
     },
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.RC_DISPUTE.IF_CLAIMANT_REJECTS', {  claimantName, lng }),
+        text: t('PAGES.SUBMIT_CONFIRMATION.RC_DISPUTE.IF_CLAIMANT_REJECTS', {claimantName, lng}),
       },
     },
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.RC_DISPUTE.IF_THEY_REJECT', { lng }),
+        text: t('PAGES.SUBMIT_CONFIRMATION.RC_DISPUTE.IF_THEY_REJECT', {lng}),
       },
     },
   ];

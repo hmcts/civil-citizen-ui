@@ -14,7 +14,8 @@ describe('Send your response by email', () => {
   const feesUrl: string = config.get('feesUrl');
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  beforeEach(() => {
+
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
