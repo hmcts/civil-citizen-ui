@@ -8,7 +8,7 @@ import {ClaimAmountRow} from '../../../../../../main/common/form/models/claim/am
 import {
   CLAIM_AMOUNT_URL,
   CLAIM_INTEREST_URL,
-  NOT_ELIGIBLE_FOR_THIS_SERVICE_URL
+  NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
 } from '../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
