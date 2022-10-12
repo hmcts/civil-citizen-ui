@@ -739,7 +739,9 @@
       "CONTACT_PERSON_HINT": "This might be a person you’ve discussed the claim with.",
       "ENGLAND_OR_WALES_ADDRESS": "The address must be in England or Wales.",
       "FIND_ADDRESS": "Find address",
+      "INVALID_CLAIM": "Your claim may be invalid if you use the wrong address.",
       "MANUAL_ADDRESS": "Enter address manually",
+      "NO_WORK_ADDRESS": "You cannot use their work address.",
       "ORGANISATION_ADDRESS": "Organisation address",
       "ORGANISATION_ADDRESS_NOT_CORRECT": "If your address is not correct you can change it here.",
       "ORGANISATION_ANY_CHANGES": "Any changes will be shared with the claimant when you submit your response.",
@@ -747,14 +749,16 @@
       "ORGANISATION_NAME": "Organisation name",
       "PAGE_TITLES": {
         "COMPANY": "",
-        "INDIVIDUAL": "",
+        "INDIVIDUAL": "Enter the defendant’s details",
         "ORGANISATION": "Enter organisation details",
         "SOLE_TRADER": ""
       },
       "PAYING_EXTRA": "You’ll have to pay extra fee if you later want to change the name of anyone involved with the claim.",
       "PAYING_EXTRA_ORGANISATION": "You’ll have to pay extra fee if you later want to change the name of an organisation involved with the claim.",
       "PICK_ADDRESS": "Pick an address",
-      "UK_POSTCODE": "Enter a UK postcode"
+      "THEIR_ADDRESS": "Their address",
+      "UK_POSTCODE": "Enter a UK postcode",
+      "USUAL_ADDRESS": "You must enter their usual or last known home address."
     },
     "DEFENDANT_PARTY_TYPE": {
       "CLAIMING_AGAINST_AN_INDIVIDUAL": "An individual",
