@@ -36,10 +36,7 @@
 {% set correspondenceAddressHtml %}
   <div class="govuk-form-group" id="postcodeContainer">
     <p class="govuk-label govuk-!-margin-bottom-5">
-    <p class="govuk-body">{{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }} {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}</p>
-    <label class="govuk-label" for="postcode">
-      {{ t('PAGES.CITIZEN_DETAILS.UK_POSTCODE') }}
-    </label>
+    <p class="govuk-body">{{ t('PAGES.COMPANY_DETAILS.ALL_CORRESPONDENCE') }} {{ t('PAGES.COMPANY_DETAILS.ADDRESS_FOR_SERVICE') }}</p>
     <div id="postcode-error" class="govuk-visually-hidden govuk-error-message">
       {{ t('PAGES.CITIZEN_DETAILS.ADDRESS_NOT_FOUND') + t('PAGES.CITIZEN_DETAILS.TRY_AGAIN') }}
     </div>
@@ -120,9 +117,7 @@
             <div class="govuk-form-group" id="primaryPostcodeContainer">
               <h2 class="govuk-heading-m">{{ addressTitle }}</h2>
               <p class="govuk-body">{{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }} {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}</p>
-              <label class="govuk-label" for="primaryPostcode">
-                {{ t('PAGES.CITIZEN_DETAILS.UK_POSTCODE') }}
-              </label>
+              <p class="govuk-body">{{ t('PAGES.ORGANISATION_DETAILS.MAIN_OFFICE') }}</p>
               <div id="primaryPostcode-error" class="govuk-visually-hidden govuk-error-message">
                 {{ t('PAGES.CITIZEN_DETAILS.ADDRESS_NOT_FOUND') + t('PAGES.CITIZEN_DETAILS.TRY_AGAIN') }}
               </div>
