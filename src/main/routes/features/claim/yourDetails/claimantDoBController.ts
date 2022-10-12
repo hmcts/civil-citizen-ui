@@ -1,11 +1,11 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {CLAIMANT_DOB_URL, CLAIMANT_PHONE_NUMBER_URL} from '../../urls';
-import {GenericForm} from '../../../common/form/models/genericForm';
-import {ClaimantDoB} from '../../../common/form/models/claim/claimant/claimantDoB';
-import {Claim} from '../../../common/models/claim';
-import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
-import {AppRequest} from '../../../common/models/AppRequest';
-import {Respondent} from '../../../common/models/respondent';
+import {CLAIMANT_DOB_URL, CLAIMANT_PHONE_NUMBER_URL} from '../../../urls';
+import {GenericForm} from '../../../../common/form/models/genericForm';
+import {ClaimantDoB} from '../../../../common/form/models/claim/claimant/claimantDoB';
+import {Claim} from '../../../../common/models/claim';
+import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {AppRequest} from '../../../../common/models/AppRequest';
+import {Party} from '../../../../common/models/party';
 
 const claimantDoBController = Router();
 const claimantDoBViewPath = 'features/response/citizenDob/citizen-dob';
@@ -39,7 +39,7 @@ claimantDoBController.post(CLAIMANT_DOB_URL, async (req: AppRequest | Request, r
       if (claim.respondent1) {
         claim.respondent1.dateOfBirth = form.model.dateOfBirth;
       } else {
-        const respondent = new Respondent();
+        const respondent = new Party();
         respondent.dateOfBirth = form.model.dateOfBirth;
         claim.respondent1 = respondent;
       }

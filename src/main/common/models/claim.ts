@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import 'dayjs/locale/cy';
 import currencyFormat from '../utils/currencyFormat';
-import {Respondent} from './respondent';
+import {Party} from './party';
 import {StatementOfMeans} from './statementOfMeans';
 import {PartyType} from './partyType';
 import {RepaymentPlan} from './repaymentPlan';
@@ -49,7 +49,7 @@ export class Claim {
   totalClaimAmount: number;
   respondent1ResponseDeadline: Date;
   detailsOfClaim: string;
-  respondent1?: Respondent;
+  respondent1?: Party;
   statementOfMeans?: StatementOfMeans;
   paymentOption?: PaymentOptionType;
   repaymentPlan?: RepaymentPlan;
@@ -320,22 +320,6 @@ export class Claim {
     return this.responseDeadline?.option === ResponseOptions.NO;
   }
 
-}
-
-export interface Party {
-  individualTitle?: string;
-  individualLastName?: string;
-  individualFirstName?: string;
-  soleTraderTitle?: string;
-  soleTraderFirstName?: string;
-  soleTraderLastName?: string;
-  partyName?: string;
-  type?: PartyType;
-  primaryAddress?: CorrespondenceAddress;
-  phoneNumber?: string;
-  provideCorrespondenceAddress?: string;
-  correspondenceAddress?: CorrespondenceAddress;
-  contactPerson?: string;
 }
 
 export interface StatementOfTruth {

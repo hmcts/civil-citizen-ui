@@ -6,7 +6,7 @@ import {ResponseType} from '../../../../../main/common/form/models/responseType'
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
 import {Claim} from '../../../../../main/common/models/claim';
 import {PartialAdmission} from '../../../../../main/common/models/partialAdmission';
-import {Respondent} from '../../../../../main/common/models/respondent';
+import {Party} from '../../../../../main/common/models/party';
 import {constructResponseUrlWithIdParams} from '../../../../../main/common/utils/urlFormatter';
 import {
   buildResolvingTheClaimSection,
@@ -64,7 +64,7 @@ describe('Task List Builder', () => {
       });
       it('should have chooseAResponseTask and whyDisagreeWithAmountClaimedTask', () => {
         const claim = new Claim();
-        claim.respondent1 = new Respondent();
+        claim.respondent1 = new Party();
         claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
         const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
         expect(respondToClaimSection.tasks.length).toBe(2);
@@ -73,7 +73,7 @@ describe('Task List Builder', () => {
       });
       it('should have chooseAResponseTask, whyDisagreeWithAmountClaimedTask and shareFinancialDetailsTask', () => {
         const claim = new Claim();
-        claim.respondent1 = new Respondent();
+        claim.respondent1 = new Party();
         claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
         claim.paymentOption = PaymentOptionType.BY_SET_DATE;
         const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
@@ -84,7 +84,7 @@ describe('Task List Builder', () => {
       });
       it('should have chooseAResponseTask, whyDisagreeWithAmountClaimedTask, shareFinancialDetailsTask and repaymentPlanTask', () => {
         const claim = new Claim();
-        claim.respondent1 = new Respondent();
+        claim.respondent1 = new Party();
         claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
         claim.paymentOption = PaymentOptionType.INSTALMENTS;
         const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
@@ -99,7 +99,7 @@ describe('Task List Builder', () => {
     describe('test PART_ADMISSION', () => {
       it('should have chooseAResponseTask and whyDisagreeWithAmountClaimedTask', () => {
         const claim = new Claim();
-        claim.respondent1 = new Respondent();
+        claim.respondent1 = new Party();
         claim.respondent1.responseType = ResponseType.PART_ADMISSION;
         const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
         expect(respondToClaimSection.tasks.length).toBe(2);
@@ -108,7 +108,7 @@ describe('Task List Builder', () => {
       });
       it('should have chooseAResponseTask, whyDisagreeWithAmountClaimedTask and howMuchHaveYouPaidTask', () => {
         const claim = new Claim();
-        claim.respondent1 = new Respondent();
+        claim.respondent1 = new Party();
         claim.respondent1.responseType = ResponseType.PART_ADMISSION;
         claim.partialAdmission = new PartialAdmission();
         claim.partialAdmission.alreadyPaid = new GenericYesNo(YesNo.YES);
@@ -120,7 +120,7 @@ describe('Task List Builder', () => {
       });
       it('should have chooseAResponseTask, whyDisagreeWithAmountClaimedTask, whenWillYouPayTask and howMuchMoneyAdmitOweTask', () => {
         const claim = new Claim();
-        claim.respondent1 = new Respondent();
+        claim.respondent1 = new Party();
         claim.respondent1.responseType = ResponseType.PART_ADMISSION;
         claim.partialAdmission = new PartialAdmission();
         claim.partialAdmission.alreadyPaid = new GenericYesNo(YesNo.NO);
@@ -135,7 +135,7 @@ describe('Task List Builder', () => {
       });
       it('should have chooseAResponseTask, shareFinancialDetailsTask and whyDisagreeWithAmountClaimedTask', () => {
         const claim = new Claim();
-        claim.respondent1 = new Respondent();
+        claim.respondent1 = new Party();
         claim.respondent1.responseType = ResponseType.PART_ADMISSION;
         claim.partialAdmission = new PartialAdmission();
         claim.partialAdmission.paymentIntention = new PaymentIntention();
@@ -149,7 +149,7 @@ describe('Task List Builder', () => {
       });
       it('should have chooseAResponseTask, shareFinancialDetailsTask, repaymentPlanTask and whyDisagreeWithAmountClaimedTask', () => {
         const claim = new Claim();
-        claim.respondent1 = new Respondent();
+        claim.respondent1 = new Party();
         claim.respondent1.responseType = ResponseType.PART_ADMISSION;
         claim.partialAdmission = new PartialAdmission();
         claim.partialAdmission.paymentIntention = new PaymentIntention();
@@ -166,7 +166,7 @@ describe('Task List Builder', () => {
 
     describe('test FULL_DEFENCE', () => {
       const claim = new Claim();
-      claim.respondent1 = new Respondent();
+      claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
 
       it('should have tellUsHowMuchYouHavePaidTask', () => {
@@ -211,7 +211,7 @@ describe('Task List Builder', () => {
 
     it('should have freeTelephoneMediationTask if full defence', () => {
       const claim = new Claim();
-      claim.respondent1 = new Respondent();
+      claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
       const resolvingTheClaimSection = buildResolvingTheClaimSection(claim, claimId, lang);
       expect(resolvingTheClaimSection.tasks.length).toBe(1);
@@ -237,7 +237,7 @@ describe('Task List Builder', () => {
     });
     it('should have freeTelephoneMediationTask', () => {
       const claim = new Claim();
-      claim.respondent1 = new Respondent();
+      claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.PART_ADMISSION;
       const yourHearingRequirementsSection = buildYourHearingRequirementsSection(claim, claimId, lang);
       expect(yourHearingRequirementsSection.tasks.length).toBe(1);

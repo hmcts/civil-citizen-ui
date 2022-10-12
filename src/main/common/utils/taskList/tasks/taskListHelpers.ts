@@ -1,5 +1,5 @@
 import {Claim} from '../../../models/claim';
-import {Respondent} from '../../../../common/models/respondent';
+import {Party} from 'models/party';
 import {PartyType} from '../../../models/partyType';
 import {PaymentOptionType} from '../../../../common/form/models/admission/paymentOption/paymentOptionType';
 import {YesNo} from '../../../../common/form/models/yesNo';
@@ -9,15 +9,15 @@ export const isCaseDataMissing = (caseData: Claim): boolean => {
   return !caseData;
 };
 
-export const hasCorrespondenceAndPrimaryAddress = (respondent1: Respondent): boolean => {
+export const hasCorrespondenceAndPrimaryAddress = (respondent1: Party): boolean => {
   return !!(respondent1?.primaryAddress && (respondent1?.postToThisAddress === YesNo.NO || respondent1?.correspondenceAddress));
 };
 
-export const hasDateOfBirthIfIndividual = (respondent1: Respondent): boolean => {
+export const hasDateOfBirthIfIndividual = (respondent1: Party): boolean => {
   return !!(respondent1?.type !== PartyType.INDIVIDUAL || (respondent1?.type === PartyType.INDIVIDUAL && respondent1?.dateOfBirth));
 };
 
-export const isResponseTypeMissing = (respondent1: Respondent): boolean => {
+export const isResponseTypeMissing = (respondent1: Party): boolean => {
   return !respondent1?.responseType;
 };
 
@@ -46,11 +46,11 @@ export const isIndividualWithStatementOfMeansComplete = (caseData: Claim): boole
   return (isCounterpartyIndividual(caseData.respondent1) && isStatementOfMeansComplete(caseData));
 };
 
-export const isCounterpartyIndividual = (respondent1: Respondent): boolean => {
+export const isCounterpartyIndividual = (respondent1: Party): boolean => {
   return respondent1.type === PartyType.INDIVIDUAL || respondent1.type === PartyType.SOLE_TRADER;
 };
 
-export const isCounterpartyCompany = (respondent1: Respondent): boolean => {
+export const isCounterpartyCompany = (respondent1: Party): boolean => {
   return respondent1.type === PartyType.ORGANISATION || respondent1.type === PartyType.COMPANY;
 };
 

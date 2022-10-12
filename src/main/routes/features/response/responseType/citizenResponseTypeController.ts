@@ -5,7 +5,7 @@ import {
   CITIZEN_RESPONSE_TYPE_URL,
   CLAIM_TASK_LIST_URL,
 } from '../../../urls';
-import {Respondent} from '../../../../common/models/respondent';
+import {Party} from '../../../../common/models/party';
 import {Claim} from '../../../../common/models/claim';
 import {CitizenResponseType} from '../../../../common/form/models/citizenResponseType';
 import {ResponseType} from '../../../../common/form/models/responseType';
@@ -47,7 +47,7 @@ citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
         if (claim.respondent1) {
           claim.respondent1.responseType = formResponseType.model.responseType;
         } else {
-          const respondent = new Respondent();
+          const respondent = new Party();
           respondent.responseType = formResponseType.model.responseType;
           claim.respondent1 = respondent;
         }
