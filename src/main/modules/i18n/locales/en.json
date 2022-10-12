@@ -733,6 +733,7 @@
       "TOTAL": "Total owed"
     },
     "DEFENDANT_DETAILS": {
+      "BUSINESS_NAME": "Trading as (If you know it)",
       "CONTACT_PERSON": "Name of contact person (optional)",
       "CONTACT_PERSON_HINT": "This might be a person you’ve discussed the claim with.",
       "ENGLAND_OR_WALES_ADDRESS": "The address must be in England or Wales.",
@@ -747,11 +748,12 @@
         "COMPANY": "",
         "INDIVIDUAL": "",
         "ORGANISATION": "Enter organisation details",
-        "SOLE_TRADER": ""
+        "SOLE_TRADER": "Enter the defendant's details"
       },
       "PAYING_EXTRA": "You’ll have to pay extra fee if you later want to change the name of anyone involved with the claim.",
       "PAYING_EXTRA_ORGANISATION": "You’ll have to pay extra fee if you later want to change the name of an organisation involved with the claim.",
       "PICK_ADDRESS": "Pick an address",
+      "THEIR_ADRESS": "Their address",
       "UK_POSTCODE": "Enter a UK postcode"
     },
     "DEFENDANT_PARTY_TYPE": {
