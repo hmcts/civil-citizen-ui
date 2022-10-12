@@ -143,6 +143,7 @@ import claimAmountBreakdownController from './features/claim/amount/claimAmountB
 import claimInterestController from './features/claim/interest/claimInterestController';
 import claimantInterestFromController from './features/claim/interest/claimantInterestFromController';
 import claimantOrganisationDetailsController from './features/claim/yourDetails/claimantOrganisationDetailsController';
+import defendantEmailController from './features/claim/yourDetails/defendantEmailController';
 
 export default [
   homeController,
@@ -278,4 +279,5 @@ export default [
   claimantOrganisationDetailsController,
   interestStartDateController,
   claimantInterestFromController,
+  defendantEmailController,
 ];
