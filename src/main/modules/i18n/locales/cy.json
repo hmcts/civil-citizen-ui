@@ -17,6 +17,11 @@
     "DAY": "Diwrnod",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
     "GO_TO_HOMEPAGE": "Go to homepage",
+    "INPUT_LABELS": {
+      "FIRST_NAME": "Enw cyntaf",
+      "LAST_NAME": "Cyfenw",
+      "TITLE": "Teitl"
+    },
     "MONTH": "Mis",
     "MONTHS": "Mis",
     "NO": "Nac oes",

@@ -19,32 +19,14 @@ export class PartyDetails {
   @MaxLength(255, {message: 'ERRORS.TEXT_TOO_MANY'})
     individualLastName?: string;
 
-  constructor(
-    title?: string,
-    firstName?: string,
-    lastName?: string,
-  ) {
-    this.title = title;
-    this.firstName = firstName;
-    this.lastName = lastName;
+  @ValidateIf(o => o.businessName !== undefined)
+  @MaxLength(255, {message: 'ERRORS.TEXT_TOO_MANY'})
+    businessName?: string;
+
+  constructor(value: Party) {
+    this.individualTitle = value?.individualTitle;
+    this.individualFirstName = value?.individualFirstName;
+    this.individualLastName = value?.individualLastName;
+    this.businessName = value?.businessName;
   }
-
-  // static fromObject(value?: Record<string, string>): PartyDetails {
-  //   return new PartyDetails(
-  //     value?.individualTitle,
-  //     value?.individualFirstName,
-  //     value?.individualLastName,
-  //     value?.businessName,
-  //   );
-  // }
-
-  // static fromJson(value?: Party): PartyDetails {
-  //   return new PartyDetails(
-  //     value?.individualTitle,
-  //     value?.individualFirstName,
-  //     value?.individualLastName,
-  //     value?.businessName,
-  //   );
-  // }
 }
-

@@ -17,6 +17,11 @@
     "DAY": "Day",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
     "GO_TO_HOMEPAGE": "Go to homepage",
+    "INPUT_LABELS": {
+      "FIRST_NAME": "First name",
+      "LAST_NAME": "Last name",
+      "TITLE": "Title"
+    },
     "MONTH": "Month",
     "MONTHS": "Months",
     "NO": "No",
@@ -749,8 +754,7 @@
       "ORGANISATION_MAIN_OFFICE": "Enter the organisation’s main office or address that has a connection with the claim.",
       "ORGANISATION_NAME": "Organisation name",
       "PAGE_TITLES": {
-        "COMPANY": "",
-        "INDIVIDUAL": "",
+        "COMPANY": "Company details",
         "ORGANISATION": "Enter organisation details",
         "SOLE_TRADER": "Enter the defendant's details"
       },

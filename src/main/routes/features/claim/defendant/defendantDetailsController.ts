@@ -44,12 +44,11 @@ defendantDetailsController.get(detailsURLs, async (req: AppRequest, res: Respons
     let defendantAddress = (defendantDetails?.primaryAddress) ? Object.assign(defendantDetails?.primaryAddress) : {};
     defendantAddress = convertToPrimaryAddress(defendantAddress);
 
-    // TODO: wrap in the conditional if not suitable for your defendantType (CIV-4300, 4299, 4286). Currently catering for ORGANISATION
     let form: GenericForm<PartyDetails | CompanyOrOrganisationPartyDetails>;
-    if (defendantType === PartyType.SOLE_TRADER) {
-      form = new GenericForm<PartyDetails>(new PartyDetails(defendantDetails));
-    } else {
+    if (defendantType === PartyType.COMPANY || defendantType === PartyType.ORGANISATION) {
       form = new GenericForm(new CompanyOrOrganisationPartyDetails(defendantDetails?.partyName, defendantDetails?.contactPerson));
+    } else {
+      form = new GenericForm<PartyDetails>(new PartyDetails(defendantDetails));
     }
     const primaryAddressForm = new GenericForm(new Address(
       defendantAddress?.AddressLine1,
@@ -70,10 +69,10 @@ defendantDetailsController.post(detailsURLs, async (req: AppRequest, res: Respon
     const userId = req.session?.user?.id ;
     const body = req.body as Record<string, string>;
     let form: GenericForm<PartyDetails | CompanyOrOrganisationPartyDetails> ;
-    if (defendantType === PartyType.SOLE_TRADER) {
-      form = new GenericForm<PartyDetails>(new PartyDetails(body));
-    } else {
+    if (defendantType === PartyType.COMPANY || defendantType === PartyType.ORGANISATION) {
       form = new GenericForm(new CompanyOrOrganisationPartyDetails(body.partyName, body.contactPerson));
+    } else {
+      form = new GenericForm<PartyDetails>(new PartyDetails(body));
     }
     const primaryAddressForm = new GenericForm(new Address(
       body.primaryAddressLine1,

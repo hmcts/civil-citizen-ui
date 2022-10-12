@@ -22,6 +22,7 @@ export class Party {
   responseType?: string;
   contactPerson?: string;
   emailAddress?: string;
+  businessName?: string;
 
   constructor(
     partyName?: string,

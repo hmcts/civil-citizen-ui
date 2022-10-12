@@ -4,10 +4,7 @@ import {app} from '../../../../../../main/app';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import request from 'supertest';
 import {
-  // CLAIM_DEFENDANT_COMPANY_DETAILS_URL,
-  // CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL,
   CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL,
-  // CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL,
 } from '../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
@@ -52,6 +49,8 @@ describe('Defendant details sole trader or individual view', () => {
       it('should display correct paragraph', () => {
         const paragraph = mainWrapper.getElementsByClassName('govuk-body');
         expect(paragraph[0].innerHTML).toContain('You’ll have to pay extra fee if you later want to change the name of anyone involved with the claim.');
+        expect(paragraph[1].innerHTML).toContain('If your address is not correct you can change it here. Any changes will be shared with the claimant when you submit your response.');
+        expect(paragraph[2].innerHTML).toContain('Enter the organisation’s main office or address that has a connection with the claim. The address must be in England or Wales.');
       });
 
       it('should display input fields for address', () => {
@@ -82,87 +81,49 @@ describe('Defendant details sole trader or individual view', () => {
         expect(contactUs[0].innerHTML).toContain('Contact us for help');
       });
     });
-
-    describe('Individual', () => {
-      // let htmlDocument: Document;
-      // // let mainWrapper: Element;
-
-      // beforeAll(async () => {
-      //   const response = await request(app).get(CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL);
-      //   const dom = new JSDOM(response.text);
-      //   htmlDocument = dom.window.document;
-      //   // mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
-      // });
-
-      // it('should have correct page title', () => {
-      //   expect(htmlDocument.title).toEqual('Your money claims account - Enter organisation details');
-      // });
-
-      // it('should display correct header', () => {
-      //   const header = mainWrapper.getElementsByClassName('govuk-heading-l');
-      //   expect(header[0].innerHTML).toContain('Enter organisation details');
-      // });
-
-      // it('should display correct paragraphs', () => {
-      //   const paragraph = mainWrapper.getElementsByClassName('govuk-body');
-      //   expect(paragraph[0].innerHTML).toContain('You’ll have to pay extra fee if you later want to change the name of an organisation involved with the claim.');
-      //   expect(paragraph[2].innerHTML).toContain('Enter the organisation’s main office or address that has a connection with the claim');
-      // });
-
-      // it('should display input fields', () => {
-      //   const inputs = mainWrapper.getElementsByClassName('govuk-input');
-      //   expect(inputs.length).toBe(8);
-      //   expect(inputs[0].getAttribute('id')).toBe('partyName');
-      //   expect(inputs[1].getAttribute('id')).toBe('contactPerson');
-      //   expect(inputs[2].getAttribute('id')).toBe('primaryPostcode');
-      //   expect(inputs[3].getAttribute('id')).toBe('primaryAddressLine1');
-      //   expect(inputs[4].getAttribute('id')).toBe('primaryAddressLine2');
-      //   expect(inputs[5].getAttribute('id')).toBe('primaryAddressLine3');
-      //   expect(inputs[6].getAttribute('id')).toBe('primaryCity');
-      //   expect(inputs[7].getAttribute('id')).toBe('primaryPostCode');
-      // });
-
-      // it('should display save and continue button', () => {
-      //   expect(mainWrapper.getElementsByClassName('govuk-button')[1].innerHTML).toContain('Save and continue');
-      // });
-    });
   });
 
   describe('on POST', () => {
     let htmlDocument: Document;
+    describe('Sole Trader', () => {
+      beforeAll(async () => {
+        const response = await request(app).post(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL).send({individualFirstName: '', individualLastName: ''});
+        const dom = new JSDOM(response.text);
+        htmlDocument = dom.window.document;
+      });
 
-    beforeAll(async () => {
-      const response = await request(app).post(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL);
-      const dom = new JSDOM(response.text);
-      htmlDocument = dom.window.document;
-    });
+      it('should display error summary with errors', () => {
+        const errorSummary = htmlDocument.getElementsByClassName('govuk-error-summary')[0]
+          .getElementsByClassName('govuk-error-summary__title')[0];
+        const errorSummaryMessages = htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0]
+          .getElementsByTagName('li');
+        expect(errorSummary.innerHTML).toContain('There was a problem');
+        expect(errorSummaryMessages[0].innerHTML).toContain(TestMessages.ENTER_FIRST_NAME);
+        expect(errorSummaryMessages[0].getElementsByTagName('a')[0].getAttribute('href'))
+          .toContain('#individualFirstName');
+        expect(errorSummaryMessages[1].innerHTML).toContain(TestMessages.ENTER_LAST_NAME);
+        expect(errorSummaryMessages[1].getElementsByTagName('a')[0].getAttribute('href'))
+          .toContain('#individualLastName');
+        expect(errorSummaryMessages[2].innerHTML).toContain(TestMessages.ENTER_FIRST_ADDRESS);
+        expect(errorSummaryMessages[2].getElementsByTagName('a')[0].getAttribute('href'))
+          .toContain('#primaryAddressLine1');
+        expect(errorSummaryMessages[3].innerHTML).toContain(TestMessages.ENTER_POSTCODE);
+        expect(errorSummaryMessages[3].getElementsByTagName('a')[0].getAttribute('href'))
+          .toContain('#primaryPostCode');
+        expect(errorSummaryMessages[4].innerHTML).toContain(TestMessages.ENTER_TOWN);
+        expect(errorSummaryMessages[4].getElementsByTagName('a')[0].getAttribute('href'))
+          .toContain('#primaryCity');
+      });
 
-    it('should display error summary with errors', () => {
-      const errorSummary = htmlDocument.getElementsByClassName('govuk-error-summary')[0]
-        .getElementsByClassName('govuk-error-summary__title')[0];
-      const errorSummaryMessages = htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0]
-        .getElementsByTagName('li');
-      expect(errorSummary.innerHTML).toContain('There was a problem');
-      console.log('err---', errorSummaryMessages[0]);
-      console.log('zart--', errorSummaryMessages[0].innerHTML)
-      console.log('zart-3-', errorSummaryMessages[3].innerHTML)
-      expect(errorSummaryMessages[0].innerHTML).toContain(TestMessages.ENTER_FIRST_ADDRESS);
-      expect(errorSummaryMessages[0].getElementsByTagName('a')[0].getAttribute('href'))
-        .toContain('#primaryAddressLine1');
-      expect(errorSummaryMessages[1].innerHTML).toContain(TestMessages.ENTER_POSTCODE);
-      expect(errorSummaryMessages[1].getElementsByTagName('a')[0].getAttribute('href'))
-        .toContain('#primaryPostCode');
-      expect(errorSummaryMessages[2].innerHTML).toContain(TestMessages.ENTER_TOWN);
-      expect(errorSummaryMessages[2].getElementsByTagName('a')[0].getAttribute('href'))
-        .toContain('#primaryCity');
-    });
-
-    it('should display correct error message for date inputs', () => {
-      const errorMessages = htmlDocument.getElementsByClassName('govuk-error-message');
-      expect(errorMessages[0].innerHTML).toContain(TestMessages.CANT_FIND_ADDRESS);
-      expect(errorMessages[1].innerHTML).toContain(TestMessages.ENTER_FIRST_ADDRESS);
-      expect(errorMessages[2].innerHTML).toContain(TestMessages.ENTER_TOWN);
-      expect(errorMessages[3].innerHTML).toContain(TestMessages.ENTER_POSTCODE);
+      it('should display correct error message for input fields', () => {
+        const errorMessages = htmlDocument.getElementsByClassName('govuk-error-message');
+        expect(errorMessages[0].innerHTML).toContain(TestMessages.ENTER_FIRST_NAME);
+        expect(errorMessages[1].innerHTML).toContain(TestMessages.ENTER_LAST_NAME);
+        expect(errorMessages[2].innerHTML).toContain(TestMessages.CANT_FIND_ADDRESS);
+        expect(errorMessages[3].innerHTML).toContain(TestMessages.ENTER_FIRST_ADDRESS);
+        expect(errorMessages[4].innerHTML).toContain(TestMessages.ENTER_TOWN);
+        expect(errorMessages[5].innerHTML).toContain(TestMessages.ENTER_POSTCODE);
+      });
     });
   });
 });

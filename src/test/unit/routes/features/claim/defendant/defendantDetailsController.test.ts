@@ -79,10 +79,9 @@ describe('Defendant details controller', () => {
         mockGetCaseData.mockImplementation(async () => {
           throw new Error(TestMessages.REDIS_FAILURE);
         });
-        await request(app).get(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL).expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+        const res = await request(app).get(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL);
+        expect(res.status).toBe(500);
+        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
     });
 
@@ -134,10 +133,9 @@ describe('Defendant details controller', () => {
         claim.respondent1 = new Party();
         return claim;
       });
-      await request(app).post(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL).send(mockSaveData).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(CLAIM_DEFENDANT_EMAIL_URL);
-      });
+      const res = await request(app).post(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL).send(mockSaveData);
+      expect(res.status).toBe(302);
+      expect(res.header.location).toBe(CLAIM_DEFENDANT_EMAIL_URL);
     });
 
     it('should show errors if data is not provided', async () => {
@@ -146,22 +144,20 @@ describe('Defendant details controller', () => {
         claim.respondent1 = new Party();
         return claim;
       });
-      await request(app).post(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
-        expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
-        expect(res.text).toContain(TestMessages.ENTER_TOWN);
-      });
+      const res = await request(app).post(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL);
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
+      expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
+      expect(res.text).toContain(TestMessages.ENTER_TOWN);
     });
 
     it('should return http 500 status when has error in the get method', async () => {
       mockSaveDraftClaim.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
-      await request(app).post(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL).send(mockSaveData).expect((res) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
+      const res = await request(app).post(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL).send(mockSaveData);
+      expect(res.status).toBe(500);
+      expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
     });
     describe('Sole Trader', () => {
       it('should redirect to the defendant email page if data is successfully updated', async () => {
@@ -170,10 +166,9 @@ describe('Defendant details controller', () => {
           claim.respondent1 = new Party();
           return claim;
         });
-        await request(app).post(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL).send(mockSaveData).expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toBe(CLAIM_DEFENDANT_EMAIL_URL);
-        });
+        const res = await request(app).post(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL).send(mockSaveData);
+        expect(res.status).toBe(302);
+        expect(res.header.location).toBe(CLAIM_DEFENDANT_EMAIL_URL);
       });
 
       it('should show errors if data is not provided', async () => {
@@ -182,22 +177,22 @@ describe('Defendant details controller', () => {
           claim.respondent1 = new Party();
           return claim;
         });
-        await request(app).post(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL).expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
-          expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
-          expect(res.text).toContain(TestMessages.ENTER_TOWN);
-        });
+        const res = await request(app).post(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL).send({individualFirstName: '', individualLastName: ''});
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(TestMessages.ENTER_FIRST_NAME);
+        expect(res.text).toContain(TestMessages.ENTER_LAST_NAME);
+        expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
+        expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
+        expect(res.text).toContain(TestMessages.ENTER_TOWN);
       });
 
       it('should return http 500 status when has error in the get method', async () => {
         mockGetCaseData.mockImplementation(async () => {
           throw new Error(TestMessages.REDIS_FAILURE);
         });
-        await request(app).get(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL).expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+        const res = await request(app).get(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL);
+        expect(res.status).toBe(500);
+        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
     });
   });

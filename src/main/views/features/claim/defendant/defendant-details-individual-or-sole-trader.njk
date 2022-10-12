@@ -10,13 +10,7 @@
 
 {% set payingExtra = t('PAGES.DEFENDANT_DETAILS.PAYING_EXTRA') %}
 {% set correspondenceAddressClass = 'govuk-visually-hidden' %}
-{% if defendantType === partyType.INDIVIDUAL %}
-  {% set title = t('PAGES.DEFENDANT_DETAILS.PAGE_TITLES.INDIVIDUAL') %}
-{% elif defendantType === partyType.SOLE_TRADER %}
-  {% set title = t('PAGES.DEFENDANT_DETAILS.PAGE_TITLES.SOLE_TRADER') %}
-{% else %}
-  {% set title = '' %}
-{% endif %}
+{% set title = t('PAGES.DEFENDANT_DETAILS.PAGE_TITLES.SOLE_TRADER') %}
 
 {% set formErrors = form.getAllErrors() %}
 {% set primaryAddressFormErrors = primaryAddressForm.getAllErrors() %}
@@ -41,7 +35,7 @@
             {{ csrfProtection(csrf) }}
             {{ govukInput({
               label: {
-                text: t('PAGES.CITIZEN_DETAILS.TITLE')
+                text: t('COMMON.INPUT_LABELS.TITLE')
               },
               classes: 'govuk-!-width-one-half',
               id: 'individualTitle',
@@ -51,7 +45,7 @@
             }) }}
             {{ govukInput({
               label: {
-                text: t('PAGES.CITIZEN_DETAILS.FIRST_NAME')
+                text: t('COMMON.INPUT_LABELS.FIRST_NAME')
               },
               classes: 'govuk-!-width-one-half',
               id: 'individualFirstName',
@@ -61,7 +55,7 @@
             }) }}
             {{ govukInput({
               label: {
-                text: t('PAGES.CITIZEN_DETAILS.LAST_NAME')
+                text: t('COMMON.INPUT_LABELS.LAST_NAME')
               },
               classes: 'govuk-!-width-one-half',
               id: 'individualLastName',
@@ -82,6 +76,10 @@
               }) }}
             {% endif %}
             <h2 class="govuk-heading-m">{{ t('PAGES.DEFENDANT_DETAILS.THEIR_ADRESS') }}</h2>
+            <p class="govuk-body">{{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }} {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}</p>
+            <p class="govuk-body">
+              {{ t('PAGES.DEFENDANT_DETAILS.ORGANISATION_MAIN_OFFICE') + ' ' + t('PAGES.DEFENDANT_DETAILS.ENGLAND_OR_WALES_ADDRESS') }}
+            </p>
             <div class="govuk-form-group" id="primaryPostcodeContainer">
               <h2 class="govuk-heading-m">{{ addressTitle }}</h2>
               <label class="govuk-label" for="primaryPostcode">
