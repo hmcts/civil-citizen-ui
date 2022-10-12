@@ -24,14 +24,14 @@ describe('Task List View', () => {
   let mainWrapper: Element;
   const claim = require('../../../../utils/mocks/civilClaimResponseMock.json');
 
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
 
   describe('on GET', () => {
-    beforeEach(async () => {
+    beforeAll(async () => {
       nock('http://localhost:4000')
         .get('/cases/1111')
         .reply(200, mockResponse);
@@ -60,7 +60,7 @@ describe('Task List View', () => {
     it('should display claim amount text and value', () => {
       const claimDetails = mainWrapper.getElementsByClassName('govuk-body');
       expect(claimDetails[1].innerHTML).toContain('Claim amount');
-      expect(claimDetails[1].innerHTML).toContain(getTotalAmountWithInterestAndFees(claim.case_data));
+      expect(claimDetails[1].innerHTML).toContain(getTotalAmountWithInterestAndFees(claim.case_data).toString());
     });
 
     it('should contain View amount breakdown details component', () => {
@@ -71,7 +71,7 @@ describe('Task List View', () => {
       expect(tableHeaders[0].innerHTML).toContain('Amount breakdown');
       expect(tableHeaders[1].innerHTML).toContain('Amount');
       expect(tableCells[0].innerHTML).toContain(claim.case_data.claimAmountBreakup[0].value.claimReason);
-      expect(tableCells[1].innerHTML).toContain(convertToPoundsFilter(claim.case_data.claimAmountBreakup[0].value.claimAmount));
+      expect(tableCells[1].innerHTML).toContain(convertToPoundsFilter(claim.case_data.claimAmountBreakup[0].value.claimAmount).toString());
     });
 
     it('should contain Interest details component', () => {
@@ -79,16 +79,16 @@ describe('Task List View', () => {
       const tableCells = htmlDocument.getElementsByClassName('govuk-table__cell');
       const interestText = htmlDocument.getElementsByClassName('govuk-details__text');
       expect(details[1].innerHTML).toContain('Interest');
-      expect(tableCells[3].innerHTML).toContain(claim.case_data.totalInterest);
+      expect(tableCells[3].innerHTML).toContain(claim.case_data.totalInterest.toString());
       expect(interestText[1].innerHTML).toContain('Interest calculated at 8% for 3 days (20 May 2022 to 23 May 2022)');
     });
 
     it('should contain Claim fee and Claim total text and values', () => {
       const tableCells = htmlDocument.getElementsByClassName('govuk-table__cell');
       expect(tableCells[4].innerHTML).toContain('Claim fee');
-      expect(tableCells[5].innerHTML).toContain(convertToPoundsFilter(claim.case_data.claimFee.calculatedAmountInPence));
+      expect(tableCells[5].innerHTML).toContain(convertToPoundsFilter(claim.case_data.claimFee.calculatedAmountInPence).toString());
       expect(tableCells[6].innerHTML).toContain('Claim Total');
-      expect(tableCells[7].innerHTML).toContain(getTotalAmountWithInterestAndFees(claim.case_data));
+      expect(tableCells[7].innerHTML).toContain(getTotalAmountWithInterestAndFees(claim.case_data).toString());
     });
 
     it('should display reason for claim text and reason', () => {
@@ -114,8 +114,8 @@ describe('Task List View', () => {
       app.locals.draftStoreClient = mockCivilClaimPDFTimeline;
       const response = await request(app).get('/case/1111/response/claim-details');
       const dom = new JSDOM(response.text);
-      htmlDocument = dom.window.document;
-      const downloadLink = htmlDocument.getElementById('timeline-link') as HTMLAnchorElement;
+      const _htmlDocument = dom.window.document;
+      const downloadLink = _htmlDocument.getElementById('timeline-link') as HTMLAnchorElement;
       expect(downloadLink.innerHTML).toContain('Download and view timeline');
       expect(downloadLink.href).toContain('case/1111/documents/timeline');
     });

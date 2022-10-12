@@ -16,7 +16,8 @@ jest.mock('../../../../../main/modules/draft-store');
 describe('Why Unavailable for Hearing Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  beforeEach(() => {
+
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
@@ -43,7 +44,7 @@ describe('Why Unavailable for Hearing Controller', () => {
   });
 
   describe('on POST', () => {
-    beforeEach(() => {
+    beforeAll(() => {
       app.locals.draftStoreClient = mockCivilClaim;
     });
 

@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {Request, Response, Router} from 'express';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {
   ELIGIBILITY_CLAIM_TYPE_URL,
@@ -10,16 +10,16 @@ import {ClaimTypeOptions} from '../../../../common/models/eligibility/claimTypeO
 import {constructUrlWithNotEligibleReason} from '../../../../common/utils/urlFormatter';
 import {NotEligibleReason} from '../../../../common/form/models/eligibility/NotEligibleReason';
 
-const claimTypeController = express.Router();
+const claimTypeController = Router();
 const claimTypeViewPath = 'features/public/eligibility/claim-type';
 
-claimTypeController.get(ELIGIBILITY_CLAIM_TYPE_URL, (req: express.Request, res: express.Response) => {
+claimTypeController.get(ELIGIBILITY_CLAIM_TYPE_URL, (req: Request, res: Response) => {
   const claimType = req.cookies?.eligibility?.claimType;
   const form = new GenericForm(new ClaimType(claimType));
   res.render(claimTypeViewPath, { form });
 });
 
-claimTypeController.post(ELIGIBILITY_CLAIM_TYPE_URL, async (req: express.Request, res: express.Response) => {
+claimTypeController.post(ELIGIBILITY_CLAIM_TYPE_URL, async (req: Request, res: Response) => {
   const claimType = new ClaimType(req.body.claimType);
   const form = new GenericForm(claimType);
   await form.validate();

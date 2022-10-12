@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {CONFIRMATION_URL, RESPONSE_CHECK_ANSWERS_URL, RESPONSE_INCOMPLETE_SUBMISSION_URL} from '../../urls';
 import {
   getStatementOfTruth,
@@ -17,9 +17,9 @@ import {AllResponseTasksCompletedGuard} from '../../../routes/guards/allResponse
 import {submitResponse} from '../../../services/features/response/submission/submitResponse';
 
 const checkAnswersViewPath = 'features/response/check-answers';
-const checkAnswersController = express.Router();
+const checkAnswersController = Router();
 
-function renderView(req: express.Request, res: express.Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim) {
+function renderView(req: Request, res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const summarySections = getSummarySections(req.params.id, claim, lang);
   const signatureType = form.model?.type;
@@ -34,7 +34,7 @@ function renderView(req: express.Request, res: express.Response, form: GenericFo
 
 checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL,
   AllResponseTasksCompletedGuard.apply(RESPONSE_INCOMPLETE_SUBMISSION_URL),
-  async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const claim = await getCaseDataFromStore(req.params.id);
       const form = new GenericForm(getStatementOfTruth(claim));
@@ -44,7 +44,7 @@ checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL,
     }
   });
 
-checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const isFullAmountRejected = (req.body?.isFullAmountRejected === 'true');
     const form = new GenericForm((req.body.type === 'qualified')

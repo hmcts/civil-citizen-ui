@@ -8,10 +8,7 @@ import {VALID_DATE} from '../validationErrors/errorMessageConstants';
 export class OptionalDateNotInFutureValidator implements ValidatorConstraintInterface {
 
   validate(inputDate: Date) {
-    if (inputDate !== null && (inputDate > (new Date(Date.now())))) {
-      return false;
-    }
-    return true;
+    return !(inputDate !== null && (inputDate > (new Date(Date.now()))));
   }
 
   defaultMessage() {

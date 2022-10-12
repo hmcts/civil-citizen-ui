@@ -1,22 +1,22 @@
-import * as express from 'express';
+import {NextFunction, Response, Router} from 'express';
 import {SEND_RESPONSE_BY_EMAIL_URL} from '../../../urls';
 import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
 import {Claim} from '../../../../common/models/claim';
 import {ResponseType} from '../../../../common/form/models/responseType';
 import {PartyType} from '../../../../common/models/partyType';
-import RejectAllOfClaimType from '../../../../common/form/models/rejectAllOfClaimType';
 import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
 import config from 'config';
 import {FeeRange, FeeRanges} from '../../../../common/models/feeRange';
 import {TableItem} from '../../../../common/models/tableItem';
 import {AppRequest} from '../../../../common/models/AppRequest';
+import {RejectAllOfClaimType} from '../../../../common/form/models/rejectAllOfClaimType';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 const sendYourResponseByEmailViewPath = 'features/response/eligibility/send-your-response-by-email';
-const sendYourResponseByEmailController = express.Router();
+const sendYourResponseByEmailController = Router();
 
-function renderView(res: express.Response, form: Claim, fees: [TableItem[]]): void {
+function renderView(res: Response, form: Claim, fees: [TableItem[]]): void {
   res.render(sendYourResponseByEmailViewPath, {
     form,
     fees,
@@ -26,7 +26,7 @@ function renderView(res: express.Response, form: Claim, fees: [TableItem[]]): vo
   });
 }
 
-sendYourResponseByEmailController.get(SEND_RESPONSE_BY_EMAIL_URL, async (req, res, next: express.NextFunction) => {
+sendYourResponseByEmailController.get(SEND_RESPONSE_BY_EMAIL_URL, async (req, res, next: NextFunction) => {
   try {
     const form = await getCaseDataFromStore(req.params.id);
     const feesRanges: FeeRanges = await civilServiceClient.getFeeRanges(<AppRequest>req);

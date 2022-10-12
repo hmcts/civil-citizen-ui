@@ -1,7 +1,7 @@
 import {AmountSchedule} from './amountSchedule';
 import _ from 'lodash';
 
-export interface ScheduledAmount {
+interface ScheduledAmount {
   amount: number;
   schedule: string;
 }
@@ -20,5 +20,6 @@ const calculateTotalAmount = (amountsPerSchedule?: ScheduledAmount[]): string =>
 };
 
 export {
+  ScheduledAmount,
   calculateTotalAmount,
 };

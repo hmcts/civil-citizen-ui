@@ -28,7 +28,7 @@ describe('Confirm Mediation Individual Telephone Number', () => {
     let mainWrapper: Element;
 
     describe('on GET', () => {
-      beforeEach(async () => {
+      beforeAll(async () => {
         nock(idamUrl)
           .post('/o/token')
           .reply(200, {id_token: citizenRoleToken});
@@ -95,7 +95,7 @@ describe('Confirm Mediation Individual Telephone Number', () => {
     describe('on POST', () => {
       const getErrorSummaryListElement = (index: number) => htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0].getElementsByTagName('li')[index];
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         app.locals.draftStoreClient = mockCivilClaim;
         await request(app).post(CITIZEN_EVIDENCE_URL).then(res => {
           const dom = new JSDOM(res.text);

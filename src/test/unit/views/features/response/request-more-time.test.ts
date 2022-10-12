@@ -15,7 +15,7 @@ describe('Request More Time View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
@@ -26,7 +26,7 @@ describe('Request More Time View', () => {
     let htmlDocument: Document;
     let mainWrapper: Element;
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const response = await request(app).get(REQUEST_MORE_TIME_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
@@ -96,7 +96,7 @@ describe('Request More Time View', () => {
 
   describe('on POST', () => {
     let htmlDocument: Document;
-    beforeEach(async () => {
+    beforeAll(async () => {
       const response = await request(app).post(REQUEST_MORE_TIME_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;

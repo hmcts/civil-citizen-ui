@@ -20,7 +20,7 @@ describe('Agreed response date', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamServiceUrl: string = config.get('services.idam.url');
 
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamServiceUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});

@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {Request, Response, Router} from 'express';
 import {
   DQ_EXPERT_SMALL_CLAIMS_URL,
   DQ_GIVE_EVIDENCE_YOURSELF_URL,
@@ -6,10 +6,10 @@ import {
 } from '../../urls';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 
-const expertSmallClaimsController = express.Router();
+const expertSmallClaimsController = Router();
 const expertSmallClaimsViewPath = 'features/directionsQuestionnaire/expert-small-claims';
 
-expertSmallClaimsController.get(DQ_EXPERT_SMALL_CLAIMS_URL, async (req:express.Request, res:express.Response) => {
+expertSmallClaimsController.get(DQ_EXPERT_SMALL_CLAIMS_URL, async (req: Request, res: Response) => {
   const claimId = req.params.id;
   res.render(expertSmallClaimsViewPath,
     {giveEvidenceYourselfScreenURL: constructResponseUrlWithIdParams(claimId,DQ_GIVE_EVIDENCE_YOURSELF_URL) , reportWrittenByExpertScreenURL: constructResponseUrlWithIdParams(claimId,DQ_EXPERT_REPORT_DETAILS_URL)});

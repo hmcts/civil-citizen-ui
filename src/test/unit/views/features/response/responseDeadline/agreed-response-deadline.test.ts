@@ -21,7 +21,7 @@ describe('Agreed response deadline View', () => {
   let htmlDocument: Document;
 
   describe('on GET', () => {
-    beforeEach(async () => {
+    beforeAll(async () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
@@ -86,7 +86,7 @@ describe('Agreed response deadline View', () => {
 
   describe('on POST', () => {
     const getErrorSummaryListElement = (index: number) => htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0].getElementsByTagName('li')[index];
-    beforeEach(async () => {
+    beforeAll(async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).post(AGREED_TO_MORE_TIME_URL).then(res => {
         const dom = new JSDOM(res.text);

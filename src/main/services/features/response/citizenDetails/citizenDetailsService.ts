@@ -1,25 +1,25 @@
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
-import {Respondent} from '../../../../common/models/respondent';
+import {Party} from '../../../../common/models/party';
 import {Claim} from '../../../../common/models/claim';
 import {PrimaryAddress} from '../../../../common/models/primaryAddress';
 import {CorrespondenceAddress} from '../../../../common/models/correspondenceAddress';
-import {CitizenAddress} from '../../../../common/form/models/citizenAddress';
+import {Address} from '../../../../common/form/models/address';
 import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citizenCorrespondenceAddress';
 import {GenericForm} from '../../../../common/form/models/genericForm';
-import {YesNo} from 'common/form/models/yesNo';
+import {YesNo} from '../../../../common/form/models/yesNo';
 
-export const getRespondentInformation = async (claimId: string): Promise<Respondent> => {
+export const getRespondentInformation = async (claimId: string): Promise<Party> => {
   const responseData = await getCaseDataFromStore(claimId);
   if (responseData?.respondent1) {
     return responseData.respondent1;
   }
-  return new Respondent();
+  return new Party();
 };
 
-export const saveRespondent = async (claimId: string, citizenAddress: GenericForm<CitizenAddress>, citizenCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>, postToThisAddress: YesNo, contactPerson = ''): Promise<void> => {
+export const saveRespondent = async (claimId: string, citizenAddress: GenericForm<Address>, citizenCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>, postToThisAddress: YesNo, contactPerson = ''): Promise<void> => {
   const responseData = await getCaseDataFromStore(claimId) || new Claim();
   if (!responseData.respondent1) {
-    responseData.respondent1 = new Respondent();
+    responseData.respondent1 = new Party();
   }
   responseData.respondent1.contactPerson = contactPerson;
   responseData.respondent1.postToThisAddress = postToThisAddress;
@@ -29,7 +29,7 @@ export const saveRespondent = async (claimId: string, citizenAddress: GenericFor
   await saveDraftClaim(claimId, responseData);
 };
 
-const buildPrimaryAddress = (citizenAddress: GenericForm<CitizenAddress>): PrimaryAddress => {
+const buildPrimaryAddress = (citizenAddress: GenericForm<Address>): PrimaryAddress => {
 
   return {
     AddressLine1: citizenAddress.model.primaryAddressLine1,

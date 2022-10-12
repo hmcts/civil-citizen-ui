@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {CITIZEN_CONTACT_THEM_URL, CLAIM_DETAILS_URL, FINANCIAL_DETAILS_URL} from '../../urls';
 import {Claim} from '../../../common/models/claim';
 import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
@@ -6,9 +6,9 @@ import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatt
 import {getAddress, getSolicitorName} from '../../../../main/services/features/response/contactThem/contactThemService';
 
 const citizenContactThemViewPath = 'features/dashboard/contact-them';
-const contactThemController = express.Router();
+const contactThemController = Router();
 
-function renderView(res: express.Response, claim: Claim, claimantDetailsUrl: string, claimDetailsUrl: string, financialDetailsUrl: string): void {
+function renderView(res: Response, claim: Claim, claimantDetailsUrl: string, claimDetailsUrl: string, financialDetailsUrl: string): void {
   res.render(citizenContactThemViewPath, {
     claim,
     claimantDetailsUrl,
@@ -20,7 +20,7 @@ function renderView(res: express.Response, claim: Claim, claimantDetailsUrl: str
 }
 
 contactThemController.get(
-  CITIZEN_CONTACT_THEM_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  CITIZEN_CONTACT_THEM_URL, async (req: Request, res: Response, next: NextFunction) => {
     try {
       const claim: Claim = await getCaseDataFromStore(req.params.id);
       const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CITIZEN_CONTACT_THEM_URL);

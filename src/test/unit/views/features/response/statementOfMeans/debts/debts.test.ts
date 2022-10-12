@@ -17,13 +17,14 @@ const {JSDOM} = jsdom;
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
+
 describe('Debts View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   let htmlDocument: Document;
 
   describe('on GET', () => {
-    beforeEach(async () => {
+    beforeAll(async () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
@@ -87,7 +88,7 @@ describe('Debts View', () => {
   describe('on POST', () => {
     let htmlDocument: Document;
     app.locals.draftStoreClient = mockCivilClaim;
-    beforeEach(async () => {
+    beforeAll(async () => {
       const response = await request(app).post(CITIZEN_DEBTS_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;

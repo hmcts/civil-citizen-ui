@@ -2,7 +2,6 @@ import {IsInt, Min, ValidateIf} from 'class-validator';
 import {toNumberOrUndefined} from '../../../../utils/numberConverter';
 
 export class NumberOfChildren {
-
   @ValidateIf((o: NumberOfChildren) => o.under11 !== undefined)
   @IsInt({message: 'ERRORS.VALID_INTEGER'})
   @Min(0, {message: 'ERRORS.VALID_POSITIVE_NUMBER'})

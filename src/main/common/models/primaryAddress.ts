@@ -1,4 +1,4 @@
-import {CitizenAddress} from '../form/models/citizenAddress';
+import {Address} from '../form/models/address';
 
 export interface PrimaryAddress {
   County?: string;
@@ -10,7 +10,7 @@ export interface PrimaryAddress {
   AddressLine3?: string;
 }
 
-export const convertToPrimaryAddress = (citizenAddress: CitizenAddress ): PrimaryAddress => {
+export const convertToPrimaryAddress = (citizenAddress: Address ): PrimaryAddress => {
   return {
     AddressLine1: citizenAddress.primaryAddressLine1,
     AddressLine2: citizenAddress.primaryAddressLine2,

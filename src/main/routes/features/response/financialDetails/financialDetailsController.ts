@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {
   CITIZEN_BANK_ACCOUNT_URL,
   CITIZEN_CONTACT_THEM_URL,
@@ -8,25 +8,25 @@ import {
 import {Claim} from '../../../../common/models/claim';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {PartyType} from '../../../../common/models/partyType';
-import * as winston from 'winston';
+import {Logger as winLogger} from 'winston' ;
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 
 const financialDetailsViewPath = 'features/response/financialDetails/financial-details';
-const financialDetailsController = express.Router();
+const financialDetailsController = Router();
 const {Logger} = require('@hmcts/nodejs-logging');
-let logger: winston.Logger = Logger.getLogger('financialDetailsController');
+let logger: winLogger = Logger.getLogger('financialDetailsController');
 
-export function setFinancialDetailsControllerLogger(winstonLogger: winston.Logger) {
+export function setFinancialDetailsControllerLogger(winstonLogger: winLogger) {
   logger = winstonLogger;
 }
 
-function renderView(res: express.Response, claim: Claim, claimantDetailsUrl: string): void {
+function renderView(res: Response, claim: Claim, claimantDetailsUrl: string): void {
   res.render(financialDetailsViewPath, {claim, claimantDetailsUrl});
 }
 
 financialDetailsController
   .get(
-    FINANCIAL_DETAILS_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    FINANCIAL_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
       try {
         const claim: Claim = await getCaseDataFromStore(req.params.id);
         const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CITIZEN_CONTACT_THEM_URL);
@@ -35,7 +35,7 @@ financialDetailsController
         next(error);
       }
     })
-  .post(FINANCIAL_DETAILS_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  .post(FINANCIAL_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
     try {
       const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CITIZEN_CONTACT_THEM_URL);
       const claim: Claim = await getCaseDataFromStore(req.params.id);

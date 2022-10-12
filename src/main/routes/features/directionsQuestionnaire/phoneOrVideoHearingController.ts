@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {
   DQ_PHONE_OR_VIDEO_HEARING_URL,
   VULNERABILITY_URL,
@@ -13,16 +13,16 @@ import {
   saveDirectionQuestionnaire,
 } from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 
-const phoneOrVideoHearingController = express.Router();
+const phoneOrVideoHearingController = Router();
 const phoneOrVideoHearingViewPath = 'features/directionsQuestionnaire/phone-or-video-hearing';
 const dqPropertyName = 'phoneOrVideoHearing';
 const dqParentName = 'hearing';
 
-function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
+function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(phoneOrVideoHearingViewPath, {form});
 }
 
-phoneOrVideoHearingController.get(DQ_PHONE_OR_VIDEO_HEARING_URL, async (req, res, next: express.NextFunction) => {
+phoneOrVideoHearingController.get(DQ_PHONE_OR_VIDEO_HEARING_URL, async (req, res, next: NextFunction) => {
   try {
     const phoneOrVideoHearing = await getGenericOption(req.params.id, dqPropertyName, dqParentName);
     renderView(new GenericForm(phoneOrVideoHearing), res);
@@ -31,7 +31,7 @@ phoneOrVideoHearingController.get(DQ_PHONE_OR_VIDEO_HEARING_URL, async (req, res
   }
 });
 
-phoneOrVideoHearingController.post(DQ_PHONE_OR_VIDEO_HEARING_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+phoneOrVideoHearingController.post(DQ_PHONE_OR_VIDEO_HEARING_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const details = req.body.option === YesNo.YES ? req.body.details : undefined;
