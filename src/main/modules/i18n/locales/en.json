@@ -1236,8 +1236,6 @@
     "OTHER_WITNESSES": {
       "ADD_ANOTHER_WITNESS": "Add another witness",
       "EMAIL_LABEL": "Email address (optional)",
-      "FIRST_NAME_LABEL": "First name",
-      "LAST_NAME_LABEL": "Last name",
       "PAGE_TITLE": "Do you have other witnesses?",
       "PHONE_LABEL": "Phone number (optional)",
       "REMOVE_WITNESS": "Remove witness",

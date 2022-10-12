@@ -43,8 +43,8 @@ describe('Other Witnesses view', () => {
     it('should display labels', () => {
       const input = htmlDocument.getElementsByClassName('govuk-label');
       expect(input[0].innerHTML).toContain(t('COMMON.VARIATION.YES'));
-      expect(input[1].innerHTML).toContain(t('PAGES.OTHER_WITNESSES.FIRST_NAME_LABEL'));
-      expect(input[2].innerHTML).toContain(t('PAGES.OTHER_WITNESSES.LAST_NAME_LABEL'));
+      expect(input[1].innerHTML).toContain(t('COMMON.INPUT_LABELS.FIRST_NAME'));
+      expect(input[2].innerHTML).toContain(t('COMMON.INPUT_LABELS.LAST_NAME'));
       expect(input[3].innerHTML).toContain(t('PAGES.OTHER_WITNESSES.EMAIL_LABEL'));
       expect(input[4].innerHTML).toContain(t('PAGES.OTHER_WITNESSES.PHONE_LABEL'));
       expect(input[5].innerHTML).toContain(t('PAGES.OTHER_WITNESSES.WHAT_THEY_WITNESSED_LABEL'));
