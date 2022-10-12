@@ -543,7 +543,7 @@
       "TITLE": "What is your date of birth?"
     },
     "CLAIMANT_INTEREST_RATE": {
-      "PAGE_TITLE": "Annual rate iterest you want to claim",
+      "PAGE_TITLE": "Annual rate interest you want to claim",
       "TITLE": "What annual rate of interest do you want to claim?",
       "RATE_INFORMATION": "You can claim 8% per year unless you know that a different rate applies.",
       "DIFFERENT_RATE_LABEL": "A different rate",
