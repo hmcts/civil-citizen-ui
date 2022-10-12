@@ -49,7 +49,7 @@ describe('Claimant Organisation Details View', () => {
       expect(paragraph.innerHTML).toEqual(t('PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.THESE_DETAILS_ARE'));
     });
 
-    it('should display Title, First Name and Last Name labels', () => {
+    it('should display Company name and Contact person labels', () => {
       const labels = mainWrapper.getElementsByClassName('govuk-label');
       expect(labels[0].innerHTML).toContain('Company name');
       expect(labels[1].innerHTML).toContain('Contact person');
