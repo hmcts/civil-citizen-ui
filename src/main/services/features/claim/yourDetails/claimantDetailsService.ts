@@ -22,10 +22,9 @@ export const saveClaimant = async (claimId: string, citizenAddress: Address, cit
   responseData.applicant1.correspondenceAddress = citizenCorrespondenceAddress.isEmpty()
     ? undefined
     : convertToCorrespondenceAddress(citizenCorrespondenceAddress);
-  responseData.applicant1.individualTitle = claimantDetails.title;
-  responseData.applicant1.individualFirstName = claimantDetails.firstName;
-  responseData.applicant1.individualLastName = claimantDetails.lastName;
-
+  responseData.applicant1.individualTitle = claimantDetails?.individualTitle;
+  responseData.applicant1.individualFirstName = claimantDetails?.individualFirstName;
+  responseData.applicant1.individualLastName = claimantDetails?.individualLastName;
   await saveDraftClaim(claimId, responseData);
 };
 
