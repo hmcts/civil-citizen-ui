@@ -1,5 +1,9 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {CLAIMANT_ORGANISATION_DETAILS_URL, CLAIMANT_PHONE_NUMBER_URL} from '../../../urls';
+import {
+  CLAIMANT_COMPANY_DETAILS_URL,
+  CLAIMANT_ORGANISATION_DETAILS_URL,
+  CLAIMANT_PHONE_NUMBER_URL
+} from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {Address} from '../../../../common/form/models/address';
 import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citizenCorrespondenceAddress';
@@ -12,34 +16,40 @@ import {
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {Party} from '../../../../common/models/party';
 import {AppRequest} from '../../../../common/models/AppRequest';
+import {getPartyTypeDependingOnRoute} from '../../../../services/features/claim/claimantOrDefendantTypeService';
+import {PartyType} from '../../../../common/models/partyType';
+
 
 const claimantOrganisationDetailsController = Router();
 const claimantOrganisationDetailsPath = 'features/claim/yourDetails/claimant-organisation-details';
 
-function renderPage(res: Response, req: Request, party: GenericForm<Party>, claimantIndividualAddress: GenericForm<Address>, claimantIndividualCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>): void {
+function renderPage(res: Response, req: Request, party: GenericForm<Party>, claimantIndividualAddress: GenericForm<Address>, claimantIndividualCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>, claimantType: PartyType): void {
 
   res.render(claimantOrganisationDetailsPath, {
     party,
     claimantIndividualAddress,
     claimantIndividualCorrespondenceAddress,
+    claimantType,
   });
 }
 
-claimantOrganisationDetailsController.get(CLAIMANT_ORGANISATION_DETAILS_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+claimantOrganisationDetailsController.get([CLAIMANT_ORGANISATION_DETAILS_URL, CLAIMANT_COMPANY_DETAILS_URL], async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const caseId = req.session?.user?.id;
+    //TODO: Change check the type in getPartyTypeDependingOnRoute to data in Redis
+    const claimantType = getPartyTypeDependingOnRoute(req?.url);
     const claimant: Party = await getClaimantPartyInformation(caseId);
     const claimantIndividualAddress = new GenericForm<Address>(Address.fromJson(claimant.primaryAddress));
     const claimantIndividualCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(CitizenCorrespondenceAddress.fromJson(claimant.correspondenceAddress));
     const party = new GenericForm(claimant);
 
-    renderPage(res, req, party, claimantIndividualAddress, claimantIndividualCorrespondenceAddress);
+    renderPage(res, req, party, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, claimantType);
   } catch (error) {
     next(error);
   }
 });
 
-claimantOrganisationDetailsController.post(CLAIMANT_ORGANISATION_DETAILS_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+claimantOrganisationDetailsController.post([CLAIMANT_ORGANISATION_DETAILS_URL, CLAIMANT_COMPANY_DETAILS_URL], async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   const caseId = (<AppRequest>req).session?.user?.id;
   const claimant: Party = await getClaimantPartyInformation(caseId);
   try {
@@ -56,7 +66,9 @@ claimantOrganisationDetailsController.post(CLAIMANT_ORGANISATION_DETAILS_URL, as
     }
 
     if (party.hasErrors() || claimantIndividualAddress.hasErrors() || claimantIndividualCorrespondenceAddress.hasErrors()) {
-      renderPage(res, req, party, claimantIndividualAddress, claimantIndividualCorrespondenceAddress);
+      //TODO: Change check the type in getPartyTypeDependingOnRoute to data in Redis
+      const claimantType = getPartyTypeDependingOnRoute(req?.url);
+      renderPage(res, req, party, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, claimantType);
     } else {
       await saveClaimantParty(caseId, claimantIndividualAddress.model, claimantIndividualCorrespondenceAddress.model, req.body.provideCorrespondenceAddress, party.model);
       res.redirect(constructResponseUrlWithIdParams(caseId, CLAIMANT_PHONE_NUMBER_URL));

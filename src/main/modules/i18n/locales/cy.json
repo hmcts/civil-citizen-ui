@@ -574,7 +574,10 @@
       "ADDRESS_NOT_FOUND": "Ni allwn dod o hyd i gyfeiriad ar gyfer y cod post hwnnw.",
       "ALL_CORRESPONDENCE": "Byddir yn anfon pob gohebiaeth i'r cyfeiriad hwn.",
       "CLAIMANT_DETAILS_PROVIDED": "Darparwyd eich enw a'ch cyfeiriad gan yr unigolyn, y busnes neu'r sefydliad sy'n cyflwyno'r hawliad (yr hawlydd).",
+      "CLAIMANT_PAGE_TITLE": "Enter company details",
+      "CLAIMANT_TITLE": "Enter company details",
       "COMPANY_ADDRESS": "Cyfeiriad y cwmni",
+      "COMPANY_REGISTERED_OFFICE": "Enter the company's registered office or a company address that has a connection with the claim.",
       "COMPANY_NAME": "Enw'r cwmni",
       "CONTACT_NAME_OPTIONAL": "Enw cyswllt (dewisol)",
       "CORRESPONDENCE_ADDRESS": "Gohebiaeth cyfeiriad",
@@ -586,6 +589,7 @@
       "ORGANISATION_NAME": "Enw'r sefydliad",
       "PAGE_TITLE": "Manylion cwmni",
       "PICK_ADDRESS": "Dewiswch gyfeiriad",
+      "TITLE": "Manylion cwmni",
       "TRY_AGAIN": "Rhowch gynnig arall arni neu nodwch y cyfeiriad â llaw.",
       "UK_POSTCODE": "Rhowch god post yn y DU",
       "YES_CORRESPONDENCE": "Ydw. Ychwanegu cyfeiriad ar gyfer gohebiaeth"
