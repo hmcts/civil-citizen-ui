@@ -40,18 +40,17 @@ mockGetSummarySections.mockImplementation(() => {return createClaimWithBasicResp
 const CLAIM_ID = 'aaa';
 const respondentCheckAnswersUrl = constructResponseUrlWithIdParams(CLAIM_ID, RESPONSE_CHECK_ANSWERS_URL);
 app.locals.draftStoreClient = mockRedisWithPaymentAmount;
-const testSession = session(app);
 const {JSDOM} = jsdom;
 
 describe('Check answers View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamServiceUrl: string = config.get('services.idam.url');
 
-  beforeEach((done) => {
+  beforeAll((done) => {
     nock(idamServiceUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    testSession
+    session(app)
       .get(constructResponseUrlWithIdParams(CLAIM_ID, CLAIM_TASK_LIST_URL))
       .expect(200)
       .end((err: Error) => {
@@ -64,10 +63,10 @@ describe('Check answers View', () => {
       let htmlDocument: Document;
       let mainWrapper: Element;
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         mockGetStatementOfTruth.mockImplementation(() => {return  new QualifiedStatementOfTruth(true);});
         mockRejectingFullAmount.mockImplementation(() => true);
-        const response = await testSession.get(respondentCheckAnswersUrl);
+        const response = await session(app).get(respondentCheckAnswersUrl);
         const dom = new JSDOM(response.text);
         htmlDocument = dom.window.document;
         mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
@@ -156,10 +155,10 @@ describe('Check answers View', () => {
       let htmlDocument: Document;
       let mainWrapper: Element;
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         mockGetStatementOfTruth.mockImplementation(() => {return  new StatementOfTruthForm(false);});
         mockRejectingFullAmount.mockImplementation(() => false);
-        const response = await testSession.get(respondentCheckAnswersUrl);
+        const response = await session(app).get(respondentCheckAnswersUrl);
         const dom = new JSDOM(response.text);
         htmlDocument = dom.window.document;
         mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
@@ -197,7 +196,7 @@ describe('Check answers View', () => {
     describe('respondent type individual', () => {
       let htmlDocument: Document;
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         mockGetStatementOfTruth.mockImplementation(() => {return  new StatementOfTruthForm(false);});
         mockRejectingFullAmount.mockImplementation(() => false);
         const data = {signed: ''};
@@ -224,7 +223,7 @@ describe('Check answers View', () => {
     describe('respondent type organisation', () => {
       let htmlDocument: Document;
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         mockGetStatementOfTruth.mockImplementation(() => {return new QualifiedStatementOfTruth(true);});
         mockRejectingFullAmount.mockImplementation(() => true);
         const data = {

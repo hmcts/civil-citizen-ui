@@ -1,4 +1,4 @@
-import { EvidenceItem } from './evidenceItem';
+import {EvidenceItem} from './evidenceItem';
 
 export interface DefendantEvidence {
   comment?: string;

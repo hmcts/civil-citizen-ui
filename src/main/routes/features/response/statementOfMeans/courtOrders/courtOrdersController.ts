@@ -1,17 +1,17 @@
-import express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {CITIZEN_COURT_ORDERS_URL, CITIZEN_PRIORITY_DEBTS_URL} from '../../../../urls';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
-import courtOrdersService
+import {courtOrdersService}
   from '../../../../../services/features/response/statementOfMeans/courtOrders/courtOrdersService';
 import {CourtOrders} from '../../../../../common/form/models/statementOfMeans/courtOrders/courtOrders';
 
 const residenceViewPath = 'features/response/statementOfMeans/courtOrders/court-orders';
 
-const courtOrdersController = express.Router();
+const courtOrdersController = Router();
 courtOrdersController
   .get(
     CITIZEN_COURT_ORDERS_URL,
-    async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       try {
         const courtOrders: CourtOrders = await courtOrdersService.getCourtOrders(req.params.id);
         res.render(residenceViewPath, {
@@ -23,7 +23,7 @@ courtOrdersController
     })
   .post(
     CITIZEN_COURT_ORDERS_URL,
-    async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       const courtOrders = courtOrdersService.buildCourtOrders(req.body);
       courtOrdersService.removeEmptyCourtOrders(courtOrders);
       const form = new GenericForm(courtOrders);

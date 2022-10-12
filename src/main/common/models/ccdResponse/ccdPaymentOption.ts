@@ -1,4 +1,4 @@
-import PaymentOptionType from '../../form/models/admission/paymentOption/paymentOptionType';
+import {PaymentOptionType} from '../../form/models/admission/paymentOption/paymentOptionType';
 
 export enum CCDPaymentOption {
   IMMEDIATELY = 'IMMEDIATELY',

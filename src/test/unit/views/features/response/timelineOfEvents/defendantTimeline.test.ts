@@ -17,16 +17,18 @@ describe('defendant timeline view', () => {
   const idamUrl: string = config.get('idamUrl');
   let htmlDocument: Document;
   const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
-  beforeEach(() => {
+
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
+
   describe('on Get', () => {
     afterEach(() => {
       app.locals.draftStoreClient = undefined;
     });
-    beforeEach(async () => {
+    beforeAll(async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       const res = await request(app)
         .get(CITIZEN_TIMELINE_URL);
@@ -76,7 +78,7 @@ describe('defendant timeline view', () => {
       ],
     };
     const getErrorSummaryListElement = (index: number) => htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0].getElementsByTagName('li')[index];
-    beforeEach(async () => {
+    beforeAll(async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       const res = await request(app)
         .post(CITIZEN_TIMELINE_URL).send(data);

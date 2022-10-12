@@ -13,14 +13,14 @@ describe('Shared Expert Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
 
   describe('on GET', () => {
-    it('should return shared experd page', async () => {
+    it('should return shared expert page', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(DQ_SHARE_AN_EXPERT_URL).expect((res) => {
         expect(res.status).toBe(200);
@@ -40,7 +40,7 @@ describe('Shared Expert Controller', () => {
   });
 
   describe('on POST', () => {
-    beforeEach(() => {
+    beforeAll(() => {
       app.locals.draftStoreClient = mockCivilClaim;
     });
 

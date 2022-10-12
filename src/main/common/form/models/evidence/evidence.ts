@@ -1,4 +1,4 @@
-import {MaxLength, ValidateNested} from 'class-validator'; // ValidateIf,
+import {MaxLength, ValidateNested} from 'class-validator';
 import { VALID_TEXT_LENGTH } from '../../../../common/form/validationErrors/errorMessageConstants';
 import { FREE_TEXT_MAX_LENGTH } from '../../../../common/form/validators/validationConstraints';
 import { EvidenceItem } from './evidenceItem';

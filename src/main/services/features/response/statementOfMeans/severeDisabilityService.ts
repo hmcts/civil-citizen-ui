@@ -8,7 +8,6 @@ const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('severeDisabilityService');
 
 export class SevereDisabilityService {
-
   public async getSevereDisability(claimId: string) {
     try {
       const case_data = await getCaseDataFromStore(claimId);

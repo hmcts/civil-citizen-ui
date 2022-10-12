@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {Request, Response, Router} from 'express';
 import {
   ELIGIBILITY_HELP_WITH_FEES_URL,
   ELIGIBILITY_INFORMATION_ABOUT_HELP_WITH_FEES_URL,
@@ -8,21 +8,21 @@ import {GenericForm} from '../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
 import {YesNo} from '../../../../common/form/models/yesNo';
 
-const helpWithFeesEligibilityController = express.Router();
+const helpWithFeesEligibilityController = Router();
 const helpWithFeesEligibilityViewPath = 'features/public/eligibility/help-with-fees';
 
-function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
+function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(helpWithFeesEligibilityViewPath, {form});
 }
 
-helpWithFeesEligibilityController.get(ELIGIBILITY_HELP_WITH_FEES_URL, (req: express.Request, res: express.Response) => {
+helpWithFeesEligibilityController.get(ELIGIBILITY_HELP_WITH_FEES_URL, (req: Request, res: Response) => {
   const cookie = req.cookies['eligibility'] ? req.cookies['eligibility'] : {};
   const eligibleHelpWithFees = cookie.eligibleHelpWithFees;
   const genericYesNoForm = new GenericForm(new GenericYesNo(eligibleHelpWithFees));
   renderView(genericYesNoForm, res);
 });
 
-helpWithFeesEligibilityController.post(ELIGIBILITY_HELP_WITH_FEES_URL, async (req: express.Request, res: express.Response) => {
+helpWithFeesEligibilityController.post(ELIGIBILITY_HELP_WITH_FEES_URL, async (req: Request, res: Response) => {
   const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option));
   await genericYesNoForm.validate();
 

@@ -3,7 +3,6 @@ import {Validate, IsDefined, ValidateIf, IsNotEmpty, MaxLength} from 'class-vali
 import {YesNo} from '../yesNo';
 
 export class MediationIndividualPhoneNumber {
-
   @IsDefined({message: 'ERRORS.VALID_YES_NO_OPTION'})
     option?: YesNo;
 

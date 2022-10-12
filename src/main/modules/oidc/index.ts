@@ -4,11 +4,7 @@ import {AppRequest} from '../../common/models/AppRequest';
 import {getUserDetails} from '../../app/auth/user/oidc';
 import {SIGN_IN_URL, SIGN_OUT_URL, CALLBACK_URL, DASHBOARD_URL, UNAUTHORISED_URL} from '../../routes/urls';
 
-/**
- * Adds the oidc middleware to add oauth authentication
- */
 export class OidcMiddleware {
-
   public enableFor(app: Application): void {
     const loginUrl: string = config.get('services.idam.authorizationURL');
     const clientId: string = config.get('services.idam.clientID');

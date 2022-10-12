@@ -8,5 +8,4 @@ export class CitizenBankAccount {
     this.joint = joint;
     this.balance = balance;
   }
-
 }

@@ -8,7 +8,7 @@ import {
   CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL,
 } from '../../../urls';
 import {getPartyTypeDependingOnRoute} from '../../../../services/features/claim/claimantOrDefendantTypeService';
-import {getDefendantInformation, saveDefendant} from '../../../../services/features/claim/defendantDetailsService';
+import {getDefendantInformation, saveDefendant} from '../../../../services/features/claim/yourDetails/defendantDetailsService';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {Address} from '../../../../common/form/models/address';
 import {CompanyOrOrganisationPartyDetails} from '../../../../common/form/models/companyOrOrganisationPartyDetails';

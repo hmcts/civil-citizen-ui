@@ -4,7 +4,6 @@ import {NumberOfChildren} from './numberOfChildren';
 import {AtLeastOneFieldIsPopulated} from '../../../validators/atLeastOneFieldIsPopulated';
 
 export class Dependants {
-
   @IsDefined({message: 'ERRORS.VALID_YES_NO_OPTION'})
     declared?: boolean;
 

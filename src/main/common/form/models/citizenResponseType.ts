@@ -8,5 +8,4 @@ export class CitizenResponseType {
   constructor(responseType?: string) {
     this.responseType = responseType;
   }
-
 }

@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {Response, Router} from 'express';
 import {DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL, UNAUTHORISED_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
@@ -9,11 +9,11 @@ import {
   saveDirectionQuestionnaire,
 } from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 
-const cantAttendHearingInNext12MonthsController = express.Router();
+const cantAttendHearingInNext12MonthsController = Router();
 const dqPropertyName = 'cantAttendHearingInNext12Months';
 const dqParentName = 'hearing';
 
-function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
+function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render('features/directionsQuestionnaire/cant-Attend-Hearing-In-Next-12Months', {form});
 }
 

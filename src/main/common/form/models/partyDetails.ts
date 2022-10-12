@@ -1,10 +1,6 @@
-import {
-  ValidateIf,
-  MaxLength,
-  IsDefined,
-  IsNotEmpty,
-} from 'class-validator';
-import {Party} from '../../models/claim';
+import {IsDefined, IsNotEmpty, MaxLength, ValidateIf} from 'class-validator';
+import {Party} from '../../models/party';
+
 export class PartyDetails {
 
   @ValidateIf(o => o.individualTitle !== undefined)
@@ -23,16 +19,14 @@ export class PartyDetails {
   @MaxLength(255, {message: 'ERRORS.TEXT_TOO_MANY'})
     individualLastName?: string;
 
-  @ValidateIf(o => o.businessName !== undefined)
-  @MaxLength(255, {message: 'ERRORS.TEXT_TOO_MANY'})
-    businessName?: string;
-// TODO : fix any
-  // check other places using paty details constructor -- claimantIndividualDetailsController  -- saveClaimant
-  constructor(value: Party){
-    this.individualTitle = value?.individualTitle;
-    this.individualFirstName = value?.individualFirstName;
-    this.individualLastName = value?.individualLastName;
-    this.businessName = value?.businessName;
+  constructor(
+    title?: string,
+    firstName?: string,
+    lastName?: string,
+  ) {
+    this.title = title;
+    this.firstName = firstName;
+    this.lastName = lastName;
   }
 
   // static fromObject(value?: Record<string, string>): PartyDetails {

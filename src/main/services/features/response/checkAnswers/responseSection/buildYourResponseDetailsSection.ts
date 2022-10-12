@@ -19,7 +19,7 @@ import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 import {DefendantTimeline} from '../../../../../common/form/models/timeLineOfEvents/defendantTimeline';
 import {YesNo} from '../../../../../common/form/models/yesNo';
 import {ResponseType} from '../../../../../common/form/models/responseType';
-import RejectAllOfClaimType from '../../../../../common/form/models/rejectAllOfClaimType';
+import {RejectAllOfClaimType} from '../../../../../common/form/models/rejectAllOfClaimType';
 
 const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', {lng: getLng(lang)});
 

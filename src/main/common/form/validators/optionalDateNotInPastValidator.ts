@@ -11,10 +11,8 @@ export class OptionalDateNotInPastValidator implements ValidatorConstraintInterf
     const today = new Date(Date.now());
     // Need to compare dates discarding hours, minutes etc.
     today.setHours(0,0,0,0);
-    if (inputDate !== null && (inputDate < today)) {
-      return false;
-    }
-    return true;
+    return !(inputDate !== null && (inputDate < today));
+
   }
 
   defaultMessage() {

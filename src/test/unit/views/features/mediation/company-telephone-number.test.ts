@@ -21,7 +21,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
   let mainWrapper: Element;
 
   describe('on GET', () => {
-    beforeEach(async () => {
+    beforeAll(async () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, { id_token: citizenRoleToken });
@@ -107,7 +107,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
 
     const getErrorSummaryListElement = (index: number) => htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0].getElementsByTagName('li')[index];
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       const res = await request(app).post(CAN_WE_USE_COMPANY_URL).send({ contactPerson: 'Test contact person' });
       const dom = new JSDOM(res.text);

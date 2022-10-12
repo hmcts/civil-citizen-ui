@@ -20,7 +20,7 @@ describe('Experts Details view', () => {
     let htmlDocument: Document;
     let mainWrapper: Element;
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
@@ -54,8 +54,8 @@ describe('Experts Details view', () => {
     it('should display form', () => {
       const inputs = htmlDocument.getElementsByClassName('govuk-input');
       const textarea = htmlDocument.getElementsByClassName('govuk-textarea');
-      expect(inputs).toHaveLength(6);
-      expect(textarea).toHaveLength(1);
+      expect(inputs.length).toBe(6);
+      expect(textarea.length).toBe(1);
     });
 
     it('should display save and continue button', () => {
@@ -71,5 +71,4 @@ describe('Experts Details view', () => {
       expect(contactUs[0].innerHTML).toContain('Contact us for help');
     });
   });
-
 });

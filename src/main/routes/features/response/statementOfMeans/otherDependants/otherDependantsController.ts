@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Response, Router} from 'express';
 import {
   CITIZEN_OTHER_DEPENDANTS_URL,
   CITIZEN_EMPLOYMENT_URL,
@@ -12,14 +12,14 @@ import {getCaseDataFromStore} from '../../../../../modules/draft-store/draftStor
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 
 const citizenOtherDependantsViewPath = 'features/response/statementOfMeans/otherDependants/other-dependants';
-const otherDependantsController = express.Router();
+const otherDependantsController = Router();
 const otherDependantsService = new OtherDependantsService();
 
-function renderView(form: GenericForm<OtherDependants>, res: express.Response): void {
+function renderView(form: GenericForm<OtherDependants>, res: Response): void {
   res.render(citizenOtherDependantsViewPath, {form});
 }
 
-otherDependantsController.get(CITIZEN_OTHER_DEPENDANTS_URL, async (req, res, next: express.NextFunction) => {
+otherDependantsController.get(CITIZEN_OTHER_DEPENDANTS_URL, async (req, res, next: NextFunction) => {
   try {
     const response = await otherDependantsService.getOtherDependants(req.params.id);
     const otherDependants = response
@@ -32,7 +32,7 @@ otherDependantsController.get(CITIZEN_OTHER_DEPENDANTS_URL, async (req, res, nex
 });
 
 otherDependantsController.post(CITIZEN_OTHER_DEPENDANTS_URL,
-  async (req, res, next: express.NextFunction) => {
+  async (req, res, next: NextFunction) => {
     try {
       const form: GenericForm<OtherDependants> = new GenericForm(new OtherDependants(
         req.body.option, req.body.numberOfPeople, req.body.details));

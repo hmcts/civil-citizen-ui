@@ -1,6 +1,6 @@
-import express from 'express';
+import {NextFunction, Response, Router} from 'express';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
-import RegularIncome from '../../../../../common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
+import {RegularIncome} from '../../../../../common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
 import {CITIZEN_EXPLANATION_URL, CITIZEN_MONTHLY_INCOME_URL} from '../../../../urls';
 import {
   getRegularIncome,
@@ -9,13 +9,13 @@ import {
 import {toRegularIncomeForm} from '../../../../../common/utils/expenseAndIncome/regularIncomeExpenseCoverter';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 
-const regularIncomeController = express.Router();
+const regularIncomeController = Router();
 
-function renderView(form: GenericForm<RegularIncome>, res: express.Response) {
+function renderView(form: GenericForm<RegularIncome>, res: Response) {
   res.render('features/response/statementOfMeans/income/regular-income', {form});
 }
 
-regularIncomeController.get(CITIZEN_MONTHLY_INCOME_URL, async (req, res, next: express.NextFunction) => {
+regularIncomeController.get(CITIZEN_MONTHLY_INCOME_URL, async (req, res, next: NextFunction) => {
   try {
     const model = await getRegularIncome(req.params.id);
     renderView(new GenericForm<RegularIncome>(model), res);
@@ -24,7 +24,7 @@ regularIncomeController.get(CITIZEN_MONTHLY_INCOME_URL, async (req, res, next: e
   }
 });
 
-regularIncomeController.post(CITIZEN_MONTHLY_INCOME_URL, async (req, res, next: express.NextFunction) => {
+regularIncomeController.post(CITIZEN_MONTHLY_INCOME_URL, async (req, res, next: NextFunction) => {
   try {
     const form = new GenericForm(toRegularIncomeForm(req));
     await form.validate();

@@ -26,14 +26,14 @@ describe('Send your response by email View', () => {
   const mockId = '5129';
   CivilClaimResponseMock.case_data.respondent1ResponseDeadline = '2022-01-01';
 
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
 
   describe('on GET', () => {
-    beforeEach(async () => {
+    beforeAll(async () => {
       nock('http://localhost:4000')
         .get(`/cases/${mockId}`)
         .reply(200, CivilClaimResponseMock);
