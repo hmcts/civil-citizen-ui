@@ -11,9 +11,8 @@ import {TaskStatus} from '../../../../../main/common/models/taskList/TaskStatus'
 import {deepCopy} from '../../../../utils/deepCopy';
 import {PartyType} from '../../../../../main/common/models/partyType';
 import {Party} from '../../../../../main/common/models/party';
-import PaymentOptionType from '../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import {PaymentOptionType} from '../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {StatementOfMeans} from '../../../../../main/common/models/statementOfMeans';
-import {Disability} from '../../../../../main/common/form/models/statementOfMeans/disability';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
 import {GenericYesNo} from '../../../../../main/common/form/models/genericYesNo';
 
@@ -183,7 +182,7 @@ describe('Response Task List service', () => {
     it('should display share your financial details task as complete if payment option is by set date', () => {
       caseData.taskSharedFinancialDetails = true;
       caseData.statementOfMeans = new StatementOfMeans();
-      caseData.statementOfMeans.disability = new Disability();
+      caseData.statementOfMeans.disability = new GenericYesNo();
       caseData.statementOfMeans.severeDisability = new GenericYesNo();
       caseData.statementOfMeans.disability.option = YesNo.YES;
       caseData.statementOfMeans.severeDisability.option = YesNo.NO;

@@ -9,14 +9,14 @@ import {
 import {ResponseType} from '../../../../../../main/common/form/models/responseType';
 import {PartyType} from '../../../../../../main/common/models/partyType';
 import {Party} from '../../../../../../main/common/models/party';
-import PaymentOptionType from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import {PaymentOptionType} from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {HowMuchHaveYouPaid} from '../../../../../../main/common/form/models/admission/howMuchHaveYouPaid';
 import {PartialAdmission} from '../../../../../../main/common/models/partialAdmission';
 import {PaymentIntention} from '../../../../../../main/common/form/models/admission/partialAdmission/paymentIntention';
 import {RejectAllOfClaim} from '../../../../../../main/common/form/models/rejectAllOfClaim';
 import {WhyDoYouDisagree} from '../../../../../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {Defence} from '../../../../../../main/common/form/models/defence';
-import RejectAllOfClaimType from '../../../../../../main/common/form/models/rejectAllOfClaimType';
+import {RejectAllOfClaimType} from '../../../../../../main/common/form/models/rejectAllOfClaimType';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({

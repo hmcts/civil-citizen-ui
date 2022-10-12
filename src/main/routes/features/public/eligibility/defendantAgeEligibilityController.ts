@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {Response, Router} from 'express';
 import {
   ELIGIBILITY_DEFENDANT_AGE_URL,
   ELIGIBILITY_CLAIMANT_AGE_URL,
@@ -11,10 +11,10 @@ import {AgeEligibilityOptions} from '../../../../common/form/models/eligibility/
 import {constructUrlWithNotEligibleReason} from '../../../../common/utils/urlFormatter';
 import {NotEligibleReason} from '../../../../common/form/models/eligibility/NotEligibleReason';
 
-const defendantAgeEligibilityController = express.Router();
+const defendantAgeEligibilityController = Router();
 const defendantEligibilityViewPath = 'features/public/eligibility/defendant-age';
 
-function renderView(form: GenericForm<DefendantAgeEligibility>, res: express.Response): void {
+function renderView(form: GenericForm<DefendantAgeEligibility>, res: Response): void {
   res.render(defendantEligibilityViewPath, {form});
 }
 

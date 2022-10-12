@@ -24,10 +24,13 @@ describe('Claim details page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
 
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+  });
+
+  beforeEach(() => {
     jest.clearAllMocks();
   });
 

@@ -1,6 +1,6 @@
-import * as express from 'express';
+import {Response} from 'express';
 
-export function displayPDF(res: express.Response, content: Buffer, filename: string) {
+export function displayPDF(res: Response, content: Buffer, filename: string) {
   res.writeHead(200, {
     'Content-Type': 'application/pdf',
     'Content-Disposition': `inline; filename=${filename}.pdf`,
@@ -9,7 +9,7 @@ export function displayPDF(res: express.Response, content: Buffer, filename: str
   res.end(content);
 }
 
-export function downloadPDF(res: express.Response, content: Buffer, filename: string) {
+export function downloadPDF(res: Response, content: Buffer, filename: string) {
   res.writeHead(200, {
     'Content-Type': 'application/pdf',
     'Content-Disposition': `attachment; filename=${filename}`,

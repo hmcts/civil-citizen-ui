@@ -20,7 +20,7 @@ describe('Determination Without Hearing View', () => {
     let htmlDocument: Document;
     let mainWrapper: Element;
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
@@ -81,7 +81,7 @@ describe('Determination Without Hearing View', () => {
       let htmlDocument: Document;
       const chooseOption = 'Choose option: Yes or No';
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         nock(idamUrl)
           .post('/o/token')
           .reply(200, {id_token: citizenRoleToken});
@@ -112,7 +112,7 @@ describe('Determination Without Hearing View', () => {
       let htmlDocument: Document;
       const tellUsWhy = 'Please tell us why';
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         nock(idamUrl)
           .post('/o/token')
           .reply(200, {id_token: citizenRoleToken});

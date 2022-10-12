@@ -6,7 +6,6 @@ import {Witnesses} from './witnesses/witnesses';
 import {Hearing} from './hearing/hearing';
 
 export class DirectionQuestionnaire {
-
   defendantYourselfEvidence?: GenericYesNo;
   hearing?: Hearing;
   vulnerabilityQuestions?: VulnerabilityQuestions;

@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {Response, Router} from 'express';
 import {
   ELIGIBILITY_DEFENDANT_AGE_URL,
   ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL,
@@ -10,10 +10,10 @@ import {YesNo} from '../../../../common/form/models/yesNo';
 import {constructUrlWithNotEligibleReason} from '../../../../common/utils/urlFormatter';
 import {NotEligibleReason} from '../../../../common/form/models/eligibility/NotEligibleReason';
 
-const claimAgainstGovernmentController = express.Router();
+const claimAgainstGovernmentController = Router();
 const defendantEligibilityViewPath = 'features/public/eligibility/claim-against-government';
 
-function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
+function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(defendantEligibilityViewPath, {form});
 }
 

@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {CITIZEN_DEBTS_URL, CITIZEN_PRIORITY_DEBTS_URL} from '../../../urls';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {checkBoxFields} from '../../../../common/utils/priorityDebts/priorityDebtsConstants';
@@ -12,12 +12,12 @@ import {
   listFormErrors,
 } from '../../../../common/utils/priorityDebts/priorityDebtsConvertors';
 
-const priorityDebtsController = express.Router();
+const priorityDebtsController = Router();
 const debtsViewPath = 'features/response/statementOfMeans/priority-debts';
 
 priorityDebtsController.get(
   CITIZEN_PRIORITY_DEBTS_URL,
-  async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       res.render(debtsViewPath, {
         priorityDebts: await getPriorityDebts(req.params.id),
@@ -31,7 +31,7 @@ priorityDebtsController.get(
 
 priorityDebtsController.post(
   CITIZEN_PRIORITY_DEBTS_URL,
-  async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const form = convertRequestBodyToForm(req);
       await form.validate();

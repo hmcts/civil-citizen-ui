@@ -1,5 +1,4 @@
 export class HtmlConverter {
-
   /**
    * Converts HTML form field in `foo[bar]` format to property in `foo.bar` format.
    */

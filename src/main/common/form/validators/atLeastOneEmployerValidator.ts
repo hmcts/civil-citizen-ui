@@ -18,6 +18,5 @@ export class AtLeastOneEmployerValidator implements ValidatorConstraintInterface
   defaultMessage() {
     return VALID_ENTER_AT_LEAST_ONE_EMPLOYER;
   }
-
 }
 

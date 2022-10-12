@@ -15,7 +15,8 @@ describe('You can use this service', () => {
   // TODO: remove this once paths become publicly available as mocking the response token will not be needed
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  beforeEach(() => {
+
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});

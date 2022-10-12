@@ -8,19 +8,20 @@ import {
   CITIZEN_RESPONSE_TYPE_URL,
   CLAIM_TASK_LIST_URL,
 } from '../../../../../../main/routes/urls';
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from '../../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {Party} from '../../../../../../main/common/models/party';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Citizen response type', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  beforeEach(() => {
+
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});

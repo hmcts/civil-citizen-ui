@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {DQ_DEFENDANT_EXPERT_EVIDENCE_URL, DQ_GIVE_EVIDENCE_YOURSELF_URL, DQ_SENT_EXPERT_REPORTS_URL} from '../../urls';
 import {
   getGenericOption,
@@ -10,16 +10,16 @@ import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatt
 import {YesNo} from '../../../common/form/models/yesNo';
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
 
-const defendantExpertEvidenceController = express.Router();
+const defendantExpertEvidenceController = Router();
 const defendantExpertEvidenceViewPath = 'features/directionsQuestionnaire/defendant-expert-evidence';
 const dqPropertyName = 'defendantExpertEvidence';
 const dqParentName = 'experts';
 
-function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
+function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(defendantExpertEvidenceViewPath, {form});
 }
 
-defendantExpertEvidenceController.get(DQ_DEFENDANT_EXPERT_EVIDENCE_URL, async (req, res, next: express.NextFunction) => {
+defendantExpertEvidenceController.get(DQ_DEFENDANT_EXPERT_EVIDENCE_URL, async (req, res, next: NextFunction) => {
   try {
     const defendantExpertEvidence = await getGenericOption(req.params.id, dqPropertyName, dqParentName);
     renderView(new GenericForm(defendantExpertEvidence), res);
@@ -28,7 +28,7 @@ defendantExpertEvidenceController.get(DQ_DEFENDANT_EXPERT_EVIDENCE_URL, async (r
   }
 });
 
-defendantExpertEvidenceController.post(DQ_DEFENDANT_EXPERT_EVIDENCE_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+defendantExpertEvidenceController.post(DQ_DEFENDANT_EXPERT_EVIDENCE_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const defendantExpertEvidence = new GenericForm(getGenericOptionForm(req.body.option, dqPropertyName));

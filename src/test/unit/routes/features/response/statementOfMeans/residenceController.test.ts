@@ -19,18 +19,15 @@ describe('Citizen residence', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamServiceUrl: string = config.get('services.idam.url');
 
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamServiceUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
   });
 
   describe('on GET', () => {
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
-    });
-
     it('should return residence page', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
       await agent
         .get(respondentResidenceUrl)
         .expect((res: Response) => {
@@ -50,7 +47,7 @@ describe('Citizen residence', () => {
     });
   });
   describe('on POST', () => {
-    beforeEach(() => {
+    beforeAll(() => {
       app.locals.draftStoreClient = mockCivilClaim;
     });
 

@@ -15,7 +15,7 @@ describe('Citizen Bank Accounts View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
@@ -26,7 +26,7 @@ describe('Citizen Bank Accounts View', () => {
     let htmlDocument: Document;
     let mainWrapper: Element;
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const response = await request(app).get(CITIZEN_BANK_ACCOUNT_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
@@ -76,7 +76,7 @@ describe('Citizen Bank Accounts View', () => {
     let htmlDocument: Document;
     const mockAccounts = [{ typeOfAccount: '', joint: 'true', balance: '' }, { typeOfAccount: '', joint: '', balance: '10' }];
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const response = await request(app).post(CITIZEN_BANK_ACCOUNT_URL)
         .send({accounts: mockAccounts});
       const dom = new JSDOM(response.text);

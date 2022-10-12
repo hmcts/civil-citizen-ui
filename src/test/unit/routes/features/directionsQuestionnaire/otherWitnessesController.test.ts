@@ -43,127 +43,117 @@ const mockOtherWitnesses = {
 describe('Other Witnesses', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  beforeEach(() => {
+
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
+      .reply(200, {id_token: citizenRoleToken});
+  });
+
+  describe('on Get', () => {
+    test('should return on your other witnesses page successfully', async () => {
+      app.locals.draftStoreClient = mockOtherWitnesses;
+      await request(app).get(DQ_DEFENDANT_WITNESSES_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('PAGES.OTHER_WITNESSES.PAGE_TITLE'));
+        });
+    });
+
+    it('should return status 500 when error thrown', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app)
+        .get(DQ_DEFENDANT_WITNESSES_URL)
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
+  });
+
+  describe('on Post', () => {
+    test('should redirect with correct input and redirect to availability dates screen', async () => {
+      app.locals.draftStoreClient = mockOtherWitnesses;
+      await request(app)
+        .post(DQ_DEFENDANT_WITNESSES_URL)
+        .send({option: YesNo.NO, witnessItems: []})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(DQ_OTHER_WITNESSES_AVAILABILITY_DATES_FOR_HEARING_URL);
+        });
+    });
+
+    test('should return errors when option selected equal no', async () => {
+      await request(app)
+        .post(DQ_DEFENDANT_WITNESSES_URL)
+        .send({option: undefined, witnessItems: [{}]})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.DEFENDANT_WITNESS_SELECT_OTHER'));
+        });
+    });
+
+    test('should return errors when option selected equal yes and no witness details provided', async () => {
+      await request(app)
+        .post(DQ_DEFENDANT_WITNESSES_URL)
+        .send({
+          option: 'yes',
+          witnessItems: [
+            {
+              details: '',
+              email: '',
+              firstName: '',
+              lastName: '',
+              telephone: '',
+            }],
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.DEFENDANT_WITNESS_ENTER_FIRST_NAME'));
+          expect(res.text).toContain(t('ERRORS.DEFENDANT_WITNESS_ENTER_LAST_NAME'));
+          expect(res.text).toContain(t('ERRORS.DEFENDANT_WITNESS_WHAT_THEY_WITNESSED'));
+        });
+    });
+
+    test('should redirect when option selected equal yes and other witness details are provided', async () => {
+      await request(app)
+        .post(DQ_DEFENDANT_WITNESSES_URL)
+        .send({
+          option: 'yes',
+          witnessItems: [
+            {
+              details: 'Details here...',
+              email: 'jane.clarke@version1.com',
+              firstName: 'Jane',
+              lastName: 'Clarke',
+              telephone: '01632960001',
+            }],
+        })
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(DQ_OTHER_WITNESSES_AVAILABILITY_DATES_FOR_HEARING_URL);
+        });
+    });
+
+    it('should return status 500 when error thrown', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app)
+        .post(DQ_DEFENDANT_WITNESSES_URL)
+        .send({
+          option: 'yes',
+          witnessItems: [
+            {
+              details: 'Details here...',
+              email: 'jane.clarke@version1.com',
+              firstName: 'Jane',
+              lastName: 'Clarke',
+              telephone: '01632960001',
+            }],
+        })
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
   });
 });
-
-describe('on Get', () => {
-  test('should return on your other witnesses page successfully', async () => {
-    app.locals.draftStoreClient = mockOtherWitnesses;
-    await request(app).get(DQ_DEFENDANT_WITNESSES_URL)
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.OTHER_WITNESSES.PAGE_TITLE'));
-      });
-  });
-
-  test('should return on your other witnesses page successfully', async () => {
-    app.locals.draftStoreClient = mockOtherWitnesses;
-    await request(app)
-      .get(DQ_DEFENDANT_WITNESSES_URL)
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.OTHER_WITNESSES.PAGE_TITLE'));
-      });
-  });
-
-  it('should return status 500 when error thrown', async () => {
-    app.locals.draftStoreClient = mockRedisFailure;
-    await request(app)
-      .get(DQ_DEFENDANT_WITNESSES_URL)
-      .expect((res) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
-  });
-});
-
-describe('on Post', () => {
-  test('should redirect with correct input and redirect to availability dates screen', async () => {
-    app.locals.draftStoreClient = mockOtherWitnesses;
-    await request(app)
-      .post(DQ_DEFENDANT_WITNESSES_URL)
-      .send({option: YesNo.NO, witnessItems: []})
-      .expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(DQ_OTHER_WITNESSES_AVAILABILITY_DATES_FOR_HEARING_URL);
-      });
-  });
-
-  test('should return errors when option selected equal no', async () => {
-    await request(app)
-      .post(DQ_DEFENDANT_WITNESSES_URL)
-      .send({option: undefined, witnessItems: [{}]})
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('ERRORS.DEFENDANT_WITNESS_SELECT_OTHER'));
-      });
-  });
-
-  test('should return errors when option selected equal yes and no witness details provided', async () => {
-    await request(app)
-      .post(DQ_DEFENDANT_WITNESSES_URL)
-      .send({
-        option: 'yes',
-        witnessItems: [
-          {
-            details: '',
-            email: '',
-            firstName: '',
-            lastName: '',
-            telephone: '',
-          }],
-      })
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('ERRORS.DEFENDANT_WITNESS_ENTER_FIRST_NAME'));
-        expect(res.text).toContain(t('ERRORS.DEFENDANT_WITNESS_ENTER_LAST_NAME'));
-        expect(res.text).toContain(t('ERRORS.DEFENDANT_WITNESS_WHAT_THEY_WITNESSED'));
-      });
-  });
-
-  test('should redirect when option selected equal yes and other witness details are provided', async () => {
-    await request(app)
-      .post(DQ_DEFENDANT_WITNESSES_URL)
-      .send({
-        option: 'yes',
-        witnessItems: [
-          {
-            details: 'Details here...',
-            email: 'jane.clarke@version1.com',
-            firstName: 'Jane',
-            lastName: 'Clarke',
-            telephone: '01632960001',
-          }],
-      })
-      .expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(DQ_OTHER_WITNESSES_AVAILABILITY_DATES_FOR_HEARING_URL);
-      });
-  });
-
-  it('should return status 500 when error thrown', async () => {
-    app.locals.draftStoreClient = mockRedisFailure;
-    await request(app)
-      .post(DQ_DEFENDANT_WITNESSES_URL)
-      .send({
-        option: 'yes',
-        witnessItems: [
-          {
-            details: 'Details here...',
-            email: 'jane.clarke@version1.com',
-            firstName: 'Jane',
-            lastName: 'Clarke',
-            telephone: '01632960001',
-          }],
-      })
-      .expect((res) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
-  });
-});
-

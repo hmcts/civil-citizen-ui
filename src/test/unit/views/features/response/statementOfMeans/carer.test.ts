@@ -17,7 +17,7 @@ describe('Carer View', () => {
   let htmlDocument: Document;
 
   describe('on GET', () => {
-    beforeEach(async () => {
+    beforeAll(async () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
@@ -63,7 +63,7 @@ describe('Carer View', () => {
   describe('on POST', () => {
     let htmlDocument: Document;
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const response = await request(app).post(CITIZEN_CARER_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;

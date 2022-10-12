@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Response, Router} from 'express';
 import {CitizenTelephoneNumber} from '../../../../common/form/models/citizenTelephoneNumber';
 import {CITIZEN_PHONE_NUMBER_URL, CLAIM_TASK_LIST_URL} from '../../../urls';
 import {Party} from '../../../../common/models/party';
@@ -8,13 +8,13 @@ import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlForm
 import {GenericForm} from '../../../../common/form/models/genericForm';
 
 const citizenPhoneViewPath = 'features/response/citizenPhoneNumber/citizen-phone';
-const citizenPhoneController = express.Router();
+const citizenPhoneController = Router();
 
-function renderView(form: GenericForm<CitizenTelephoneNumber>, res: express.Response): void {
+function renderView(form: GenericForm<CitizenTelephoneNumber>, res: Response): void {
   res.render(citizenPhoneViewPath, {form});
 }
 
-citizenPhoneController.get(CITIZEN_PHONE_NUMBER_URL, async (req, res, next: express.NextFunction) => {
+citizenPhoneController.get(CITIZEN_PHONE_NUMBER_URL, async (req, res, next: NextFunction) => {
   try {
     const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
     const citizenTelephoneNumber = responseDataRedis?.respondent1?.phoneNumber
@@ -25,7 +25,7 @@ citizenPhoneController.get(CITIZEN_PHONE_NUMBER_URL, async (req, res, next: expr
   }
 });
 citizenPhoneController.post(CITIZEN_PHONE_NUMBER_URL,
-  async (req, res, next: express.NextFunction) => {
+  async (req, res, next: NextFunction) => {
     try {
       const model: CitizenTelephoneNumber = new CitizenTelephoneNumber(req.body.telephoneNumber);
       const citizenTelephoneNumberForm = new GenericForm(model);

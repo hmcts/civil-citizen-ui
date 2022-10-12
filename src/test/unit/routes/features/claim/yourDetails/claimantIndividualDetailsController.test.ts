@@ -7,7 +7,7 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {PartyType} from '../../../../../../main/common/models/partyType';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {Party} from '../../../../../../main/common/models/party';
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from '../../../../../../main/modules/draft-store/draftStoreService';
 import {
   VALID_ADDRESS_LINE_1,
   VALID_CITY,
@@ -22,8 +22,8 @@ jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/services/features/response/citizenDetails/citizenDetailsService');
 
-const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
+const mockSaveDraftClaim = saveDraftClaim as jest.Mock;
 
 const claim = new Claim();
 
@@ -65,10 +65,13 @@ describe('Claimant Individual Details page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+  });
+
+  beforeEach(() => {
     jest.resetAllMocks();
   });
 

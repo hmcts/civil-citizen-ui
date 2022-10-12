@@ -15,7 +15,7 @@ describe('Expert Report Details View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
@@ -26,7 +26,7 @@ describe('Expert Report Details View', () => {
     let htmlDocument: Document;
     let mainWrapper: Element;
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const response = await request(app).get(DQ_EXPERT_REPORT_DETAILS_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
@@ -115,7 +115,7 @@ describe('Expert Report Details View', () => {
       },
     ];
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const response = await request(app).post(DQ_EXPERT_REPORT_DETAILS_URL)
         .send({
           option: YesNo.YES,
