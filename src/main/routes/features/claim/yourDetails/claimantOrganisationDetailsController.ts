@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {CLAIMANT_ORGANISATION_DETAILS_URL, CLAIMANT_PHONE_NUMBER_URL} from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {CitizenAddress} from '../../../../common/form/models/citizenAddress';
@@ -13,10 +13,10 @@ import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlForm
 import {Party} from '../../../../common/models/party';
 import {AppRequest} from '../../../../common/models/AppRequest';
 
-const claimantOrganisationDetailsController = express.Router();
+const claimantOrganisationDetailsController = Router();
 const claimantOrganisationDetailsPath = 'features/claim/yourDetails/claimant-organisation-details';
 
-function renderPage(res: express.Response, req: express.Request, party: GenericForm<Party>, claimantIndividualAddress: GenericForm<CitizenAddress>, claimantIndividualCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>): void {
+function renderPage(res: Response, req: Request, party: GenericForm<Party>, claimantIndividualAddress: GenericForm<CitizenAddress>, claimantIndividualCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>): void {
 
   res.render(claimantOrganisationDetailsPath, {
     party,
@@ -25,7 +25,7 @@ function renderPage(res: express.Response, req: express.Request, party: GenericF
   });
 }
 
-claimantOrganisationDetailsController.get(CLAIMANT_ORGANISATION_DETAILS_URL, async (req: AppRequest, res: express.Response, next: express.NextFunction) => {
+claimantOrganisationDetailsController.get(CLAIMANT_ORGANISATION_DETAILS_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const caseId = req.session?.user?.id;
     const claimant: Party = await getClaimantPartyInformation(caseId);
@@ -39,8 +39,8 @@ claimantOrganisationDetailsController.get(CLAIMANT_ORGANISATION_DETAILS_URL, asy
   }
 });
 
-claimantOrganisationDetailsController.post(CLAIMANT_ORGANISATION_DETAILS_URL, async (req: any, res: express.Response, next: express.NextFunction) => {
-  const caseId = req.session?.user?.id;
+claimantOrganisationDetailsController.post(CLAIMANT_ORGANISATION_DETAILS_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+  const caseId = (<AppRequest>req).session?.user?.id;
   const claimant: Party = await getClaimantPartyInformation(caseId);
   try {
     const claimantIndividualAddress = new GenericForm<CitizenAddress>(CitizenAddress.fromObject(req.body));
