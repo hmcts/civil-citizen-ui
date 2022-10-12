@@ -4,7 +4,7 @@ import request from 'supertest';
 import {
   CLAIMANT_COMPANY_DETAILS_URL,
   CLAIMANT_ORGANISATION_DETAILS_URL,
-  CLAIMANT_PHONE_NUMBER_URL
+  CLAIMANT_PHONE_NUMBER_URL,
 } from '../../../../../../main/routes/urls';
 import {buildCorrespondenceAddress, buildPrimaryAddress} from '../../../../../utils/mockClaim';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
@@ -81,7 +81,6 @@ describe('Claimant Organisation Details page', () => {
       .reply(200, {id_token: citizenRoleToken});
     jest.resetAllMocks();
   });
-
 
   describe('Organisation Type', () => {
     describe('on Exception', () => {

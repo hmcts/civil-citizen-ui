@@ -2,7 +2,7 @@ import {NextFunction, Request, Response, Router} from 'express';
 import {
   CLAIMANT_COMPANY_DETAILS_URL,
   CLAIMANT_ORGANISATION_DETAILS_URL,
-  CLAIMANT_PHONE_NUMBER_URL
+  CLAIMANT_PHONE_NUMBER_URL,
 } from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {Address} from '../../../../common/form/models/address';
@@ -18,7 +18,6 @@ import {Party} from '../../../../common/models/party';
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {getPartyTypeDependingOnRoute} from '../../../../services/features/claim/claimantOrDefendantTypeService';
 import {PartyType} from '../../../../common/models/partyType';
-
 
 const claimantOrganisationDetailsController = Router();
 const claimantOrganisationDetailsPath = 'features/claim/yourDetails/claimant-organisation-details';
