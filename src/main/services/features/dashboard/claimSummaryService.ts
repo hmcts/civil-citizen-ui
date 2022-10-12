@@ -11,4 +11,4 @@ function getDocumentsContent(claim: Claim, claimId: string, lang?: string): Clai
   }];
 }
 
-export { getDocumentsContent };
+export {getDocumentsContent};

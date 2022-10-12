@@ -56,5 +56,4 @@ class ResidenceService {
   }
 }
 
-const residenceService = new ResidenceService();
-export default residenceService;
+export const residenceService = new ResidenceService();

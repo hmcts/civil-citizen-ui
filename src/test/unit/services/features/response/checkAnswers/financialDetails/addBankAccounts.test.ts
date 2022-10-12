@@ -11,7 +11,7 @@ import {
   createClaimWithRespondentDetailsWithPaymentOption,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
-import PaymentOptionType
+import {PaymentOptionType}
   from '../../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 
 jest.mock('../../../../../../../main/modules/draft-store');

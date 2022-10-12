@@ -1,8 +1,8 @@
-import PaymentOption from '../../../../common/form/models/admission/paymentOption/paymentOption';
+import {PaymentOption} from '../../../../common/form/models/admission/paymentOption/paymentOption';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {Claim} from '../../../../common/models/claim';
 import {ResponseType} from '../../../../common/form/models/responseType';
-import PaymentOptionType
+import {PaymentOptionType}
   from '../../../../common/form/models/admission/paymentOption/paymentOptionType';
 import {PaymentIntention} from '../../../../common/form/models/admission/partialAdmission/paymentIntention';
 
@@ -15,7 +15,7 @@ const getPaymentOptionForm = async (claimId: string, responseType : ResponseType
     if (isFullAdmission(responseType) && claim.isFullAdmissionPaymentOptionExists()) {
       return new PaymentOption(PaymentOptionType[claim.paymentOption as keyof typeof PaymentOptionType]);
     } else if (isPartAdmission(responseType) && claim.isPartialAdmissionPaymentOptionExists()) {
-      return new PaymentOption(PaymentOptionType[claim.partialAdmission.paymentIntention.paymentOption as keyof typeof PaymentOptionType]); 
+      return new PaymentOption(PaymentOptionType[claim.partialAdmission.paymentIntention.paymentOption as keyof typeof PaymentOptionType]);
     }
     return new PaymentOption();
   } catch (error) {
@@ -24,16 +24,16 @@ const getPaymentOptionForm = async (claimId: string, responseType : ResponseType
   }
 };
 
-const savePaymentOptionData = async (claimId: string, form: PaymentOption, responseType: ResponseType) => {  
+const savePaymentOptionData = async (claimId: string, form: PaymentOption, responseType: ResponseType) => {
   try {
     const claim: Claim = await getCaseDataFromStore(claimId);
     if (isFullAdmission(responseType)) {
-      claim.paymentOption = form.paymentType; 
+      claim.paymentOption = form.paymentType;
     } else if (isPartAdmission(responseType)) {
       if (!claim.partialAdmission.paymentIntention) {
         claim.partialAdmission.paymentIntention = new PaymentIntention();
       }
-      claim.partialAdmission.paymentIntention.paymentOption = form.paymentType; 
+      claim.partialAdmission.paymentIntention.paymentOption = form.paymentType;
     }
 
     if (!form.paymentOptionBySetDateSelected()) {
@@ -41,7 +41,7 @@ const savePaymentOptionData = async (claimId: string, form: PaymentOption, respo
       if (isFullAdmission(responseType)) {
         claim.paymentDate = undefined;
       } else if (isPartAdmission(responseType)) {
-        claim.partialAdmission.paymentIntention.paymentDate = undefined;    
+        claim.partialAdmission.paymentIntention.paymentDate = undefined;
       }
     }
     await saveDraftClaim(claimId, claim);

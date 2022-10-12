@@ -22,7 +22,7 @@ describe('New response deadline view', () => {
   let htmlDocument: Document;
   let mainWrapper: Element;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     nock(idamServiceUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});

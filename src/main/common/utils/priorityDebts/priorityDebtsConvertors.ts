@@ -1,7 +1,7 @@
-import * as express from 'express';
+import {Request} from 'express';
 import {ValidationError} from 'class-validator';
 import {PriorityDebts, DebtType, DebtsError} from '../../../common/form/models/statementOfMeans/priorityDebts';
-import { PriorityDebtDetails, DebtDetailsError, DebtValidationError } from '../../form/models/statementOfMeans/priorityDebtDetails';
+import {PriorityDebtDetails, DebtDetailsError, DebtValidationError} from '../../form/models/statementOfMeans/priorityDebtDetails';
 import {checkBoxFields} from './priorityDebtsConstants';
 import {GenericForm} from '../../../common/form/models/genericForm';
 
@@ -26,7 +26,7 @@ const convertDebtNameToDisplay = (name: string) => {
   return checkBoxFields.find((field) => field.name === name)?.text;
 };
 
-export const convertRequestBodyToForm = (req: express.Request): GenericForm<PriorityDebts> => {
+export const convertRequestBodyToForm = (req: Request): GenericForm<PriorityDebts> => {
   const convertedData: GenericForm<PriorityDebts> = new GenericForm(new PriorityDebts());
   checkBoxFields
     .map((field) => field.name)

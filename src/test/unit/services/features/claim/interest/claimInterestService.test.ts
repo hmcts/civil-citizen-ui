@@ -60,7 +60,7 @@ describe('Claim interest service', () => {
     });
   });
 
-  describe('save Claim interest', async () => {
+  describe('save Claim interest', () => {
     it('should save claim Interest option when option is YES', async () => {
       //Given
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');

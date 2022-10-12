@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, DQ_DEFENDANT_EXPERT_EVIDENCE_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {
@@ -11,16 +11,16 @@ import {
 } from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {YesNo} from '../../../common/form/models/yesNo';
 
-const considerClaimantDocumentsController = express.Router();
+const considerClaimantDocumentsController = Router();
 const considerClaimantDocumentsViewPath = 'features/directionsQuestionnaire/consider-claimant-documents';
 const dqPropertyName = 'considerClaimantDocuments';
 const dqParentName = 'hearing';
 
-function renderView(form: GenericForm<ConsiderClaimantDocuments>, res: express.Response): void {
+function renderView(form: GenericForm<ConsiderClaimantDocuments>, res: Response): void {
   res.render(considerClaimantDocumentsViewPath, {form});
 }
 
-considerClaimantDocumentsController.get(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+considerClaimantDocumentsController.get(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
 
     const directionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
@@ -33,7 +33,7 @@ considerClaimantDocumentsController.get(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, asyn
   }
 });
 
-considerClaimantDocumentsController.post(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+considerClaimantDocumentsController.post(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const details = req.body.option === YesNo.YES ? req.body.details : undefined;

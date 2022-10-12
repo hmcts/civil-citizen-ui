@@ -1,12 +1,12 @@
-import * as express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {UNDERSTANDING_RESPONSE_OPTIONS_URL} from '../../urls';
 import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
 import {deadLineGuard} from '../../../routes/guards/deadLineGuard';
 
-const understandingYourOptionsController = express.Router();
+const understandingYourOptionsController = Router();
 
 understandingYourOptionsController.get(UNDERSTANDING_RESPONSE_OPTIONS_URL, deadLineGuard,
-  async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await getCaseDataFromStore(req.params.id);

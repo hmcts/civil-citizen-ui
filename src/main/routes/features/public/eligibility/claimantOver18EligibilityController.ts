@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {Response, Router} from 'express';
 import {
   NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, ELIGIBILITY_CLAIMANT_AGE_URL, ELIGIBILITY_APPLY_HELP_WITH_FEES_URL,
 } from '../../../../routes/urls';
@@ -8,10 +8,10 @@ import {YesNo} from '../../../../common/form/models/yesNo';
 import {constructUrlWithNotEligibleReason} from '../../../../common/utils/urlFormatter';
 import {NotEligibleReason} from '../../../../common/form/models/eligibility/NotEligibleReason';
 
-const claimantOver18EligibilityController = express.Router();
+const claimantOver18EligibilityController = Router();
 const over18EligibilityViewPath = 'features/public/eligibility/over-18';
 
-function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
+function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(over18EligibilityViewPath, {form});
 }
 

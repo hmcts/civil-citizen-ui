@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Router} from 'express';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {
   getExpertDetails,
@@ -8,12 +8,12 @@ import {saveDirectionQuestionnaire} from '../../../../services/features/directio
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {DQ_EXPERT_DETAILS_URL, DQ_DEFENDANT_EXPERT_EVIDENCE_URL} from '../../../urls';
 
-const expertDetailsController = express.Router();
+const expertDetailsController = Router();
 const expertDetailsViewPath = 'features/directionsQuestionnaire/experts/expert-details';
 const dqPropertyName = 'expertDetailsList';
 const dqParentName = 'experts';
 
-expertDetailsController.get(DQ_EXPERT_DETAILS_URL, async (req, res, next: express.NextFunction) => {
+expertDetailsController.get(DQ_EXPERT_DETAILS_URL, async (req, res, next: NextFunction) => {
   try {
     const form = new GenericForm(await getExpertDetails(req.params.id));
     res.render(expertDetailsViewPath, {form});
@@ -22,7 +22,7 @@ expertDetailsController.get(DQ_EXPERT_DETAILS_URL, async (req, res, next: expres
   }
 });
 
-expertDetailsController.post(DQ_EXPERT_DETAILS_URL, async (req, res, next: express.NextFunction) => {
+expertDetailsController.post(DQ_EXPERT_DETAILS_URL, async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const expertDetailsList = getExpertDetailsForm(req.body.items);

@@ -53,7 +53,7 @@ describe('claim amount breakdown service', () => {
       return new Claim();
     });
     const form = new AmountBreakdown([new ClaimAmountRow('just because', 200), new ClaimAmountRow()]);
-    const spy = spyOn(draftStoreService, 'saveDraftClaim');
+    const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
     //When
     await saveClaimAmountBreakdownForm('123', form);
     expect(spy).toBeCalled();

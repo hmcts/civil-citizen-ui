@@ -36,17 +36,6 @@ export class GenericForm<Model> {
     }
   }
 
-  /**
-   * @deprecated use errorFor instead. It should include all errors
-   */
-  nestedErrorFor(fieldName: string): string {
-    if (this.hasNestedFieldError(fieldName)) {
-      return this.getNestedErrors()
-        .filter((error: FormValidationError) => error.property === fieldName)
-        .map((error: FormValidationError) => error.text)[0];
-    }
-  }
-
   public getErrors(property?: string): FormValidationError[] {
     const validators: FormValidationError[] = [];
     if (this.hasErrors()) {

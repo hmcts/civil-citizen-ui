@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {CITIZEN_COURT_ORDERS_URL, CITIZEN_SELF_EMPLOYED_URL, CITIZEN_WHO_EMPLOYS_YOU_URL} from '../../../../urls';
 import {
   getEmployers,
@@ -12,9 +12,9 @@ import {EmploymentForm} from '../../../../../common/form/models/statementOfMeans
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 
 const whoEmploysYouViewPath = 'features/response/statementOfMeans/employment/who-employs-you';
-const whoEmploysYouController = express.Router();
+const whoEmploysYouController = Router();
 
-whoEmploysYouController.get(CITIZEN_WHO_EMPLOYS_YOU_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+whoEmploysYouController.get(CITIZEN_WHO_EMPLOYS_YOU_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const form = new GenericForm(await getEmployers(req.params.id));
     res.render(whoEmploysYouViewPath, {form});
@@ -23,7 +23,7 @@ whoEmploysYouController.get(CITIZEN_WHO_EMPLOYS_YOU_URL, async (req: express.Req
   }
 });
 
-whoEmploysYouController.post(CITIZEN_WHO_EMPLOYS_YOU_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+whoEmploysYouController.post(CITIZEN_WHO_EMPLOYS_YOU_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const employers: Employers = new Employers(req.body.rows.map((employer: Employer) => new Employer(employer.employerName, employer.jobTitle)));

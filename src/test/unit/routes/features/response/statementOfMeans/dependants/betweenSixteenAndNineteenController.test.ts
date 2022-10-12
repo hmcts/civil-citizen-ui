@@ -7,7 +7,7 @@ import {
   CITIZEN_DEPENDANTS_EDUCATION_URL,
   CITIZEN_OTHER_DEPENDANTS_URL,
 } from '../../../../../../../main/routes/urls';
-import * as childrenDisabilityService
+import {hasDisabledChildren}
   from '../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
@@ -15,18 +15,20 @@ import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService');
-const mockHasDisabledChildren = childrenDisabilityService.hasDisabledChildren as jest.Mock;
+const mockHasDisabledChildren = hasDisabledChildren as jest.Mock;
 
 const EXPECTED_TEXT = 'Children aged 16 to 19 living with you';
 
 describe('Dependant Teenagers', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  beforeEach(() => {
+
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
+
   describe('on GET', () => {
     app.locals.draftStoreClient = mockCivilClaim;
     it('should return dependent teenagers page', async () => {

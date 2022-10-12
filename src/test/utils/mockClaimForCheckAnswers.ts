@@ -1,6 +1,6 @@
 import {Claim} from '../../main/common/models/claim';
 import {ResponseType} from '../../main/common/form/models/responseType';
-import PaymentOptionType from '../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import {PaymentOptionType} from '../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {
   TransactionSchedule,
 } from '../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
@@ -9,11 +9,11 @@ import {DebtItems} from '../../main/common/form/models/statementOfMeans/debts/de
 import {Debts} from '../../main/common/form/models/statementOfMeans/debts/debts';
 import {PriorityDebts} from '../../main/common/form/models/statementOfMeans/priorityDebts';
 import {PriorityDebtDetails} from '../../main/common/form/models/statementOfMeans/priorityDebtDetails';
-import Transaction from '../../main/common/form/models/statementOfMeans/expensesAndIncome/transaction';
-import TransactionSource from '../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSource';
+import {Transaction} from '../../main/common/form/models/statementOfMeans/expensesAndIncome/transaction';
+import {TransactionSource} from '../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSource';
 import {RegularExpenses} from '../../main/common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
-import OtherTransaction from '../../main/common/form/models/statementOfMeans/expensesAndIncome/otherTransaction';
-import RegularIncome from '../../main/common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
+import {OtherTransaction} from '../../main/common/form/models/statementOfMeans/expensesAndIncome/otherTransaction';
+import {RegularIncome} from '../../main/common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
 import {BankAccount} from '../../main/common/form/models/bankAndSavings/bankAccount';
 import {CourtOrders} from '../../main/common/form/models/statementOfMeans/courtOrders/courtOrders';
 import {CourtOrder} from '../../main/common/form/models/statementOfMeans/courtOrders/courtOrder';
@@ -27,7 +27,6 @@ import {UnemploymentCategory} from '../../main/common/form/models/statementOfMea
 import {UnemploymentDetails} from '../../main/common/form/models/statementOfMeans/unemployment/unemploymentDetails';
 import {SelfEmployedAs} from '../../main/common/models/selfEmployedAs';
 import {TaxPayments} from '../../main/common/models/taxPayments';
-import {Disability} from '../../main/common/form/models/statementOfMeans/disability';
 import {YesNo} from '../../main/common/form/models/yesNo';
 import {Residence} from '../../main/common/form/models/statementOfMeans/residence';
 import {ResidenceType} from '../../main/common/form/models/statementOfMeans/residenceType';
@@ -43,13 +42,13 @@ import {PaymentIntention} from '../../main/common/form/models/admission/partialA
 import {NoMediationReason} from '../../main/common/form/models/mediation/noMediationReason';
 import {CompanyTelephoneNumber} from '../../main/common/form/models/mediation/companyTelephoneNumber';
 import {Mediation} from '../../main/common/models/mediation/mediation';
-import TimelineRow from '../../main/common/form/models/timeLineOfEvents/timelineRow';
 import {EvidenceType} from '../../main/common/models/evidence/evidenceType';
 import {EvidenceItem} from '../../main/common/form/models/evidence/evidenceItem';
 import {DefendantEvidence} from '../../main/common/models/evidence/evidence';
 import {Evidence} from '../../main/common/form/models/evidence/evidence';
-import RejectAllOfClaimType from '../../main/common/form/models/rejectAllOfClaimType';
 import {GenericYesNo} from '../../main/common/form/models/genericYesNo';
+import {TimelineRow} from '../../main/common/form/models/timeLineOfEvents/timelineRow';
+import {RejectAllOfClaimType} from '../../main/common/form/models/rejectAllOfClaimType';
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -62,7 +61,7 @@ export const createClaimWithBasicRespondentDetails = (contactPerson?: string): C
   const claim = new Claim();
   claim.respondent1 = {
     partyName: PARTY_NAME,
-    telephoneNumber: CONTACT_NUMBER,
+    phoneNumber: CONTACT_NUMBER,
     contactPerson: contactPerson,
     dateOfBirth: new Date('2000-12-12'),
     responseType: ResponseType.FULL_ADMISSION,
@@ -102,7 +101,7 @@ export const createClaimWithIndividualDetails = (): Claim => {
     individualLastName: LAST_NAME,
     individualFirstName: FIRST_NAME,
     partyName: PARTY_NAME,
-    telephoneNumber: CONTACT_NUMBER,
+    phoneNumber: CONTACT_NUMBER,
     responseType: ResponseType.FULL_ADMISSION,
     primaryAddress: {
       AddressLine1: '23 Brook lane',
@@ -572,7 +571,7 @@ export const createClaimWithUnemploymentCategoryOTHER = (): Claim => {
 export const createClaimWithDisability = (option: YesNo): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
-  const disability: Disability = new Disability(option);
+  const disability: GenericYesNo = new GenericYesNo(option);
   const severeDisability: GenericYesNo = new GenericYesNo(option);
   claim.statementOfMeans = {
     disability: disability,
@@ -584,7 +583,7 @@ export const createClaimWithDisability = (option: YesNo): Claim => {
 export const createClaimWithDisabilityAndSevereDisability = (optionDisability: YesNo, optionSevereDisability: YesNo): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
-  const disability: Disability = new Disability(optionDisability);
+  const disability: GenericYesNo = new GenericYesNo(optionDisability);
   const severeDisability: GenericYesNo = new GenericYesNo(optionSevereDisability);
   claim.statementOfMeans = {
     disability: disability,
@@ -623,7 +622,7 @@ export const createClaimWithCohabiting = (
 
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
-  const disability: Disability = new Disability(disabilityOption);
+  const disability: GenericYesNo = new GenericYesNo(disabilityOption);
   const cohabiting: GenericYesNo = new GenericYesNo(cohabitingOption);
   const partnerAge: GenericYesNo = new GenericYesNo(partnerAgeOption);
   const partnerPension: GenericYesNo = new GenericYesNo(partnerPensionOption);
@@ -714,7 +713,7 @@ export const ceateClaimWithPartialAdmission = (alreadyPaid?: YesNo, paymentOptio
   };
   claim.respondent1 = {
     partyName: PARTY_NAME,
-    telephoneNumber: CONTACT_NUMBER,
+    phoneNumber: CONTACT_NUMBER,
     contactPerson: '',
     dateOfBirth: new Date('2000-12-12'),
     responseType: ResponseType.PART_ADMISSION,

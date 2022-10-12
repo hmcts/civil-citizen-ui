@@ -15,7 +15,7 @@ describe('Mediation Disagreement View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
@@ -26,7 +26,7 @@ describe('Mediation Disagreement View', () => {
     let htmlDocument: Document;
     let mainWrapper: Element;
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const response = await request(app).get(MEDIATION_DISAGREEMENT_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
@@ -110,7 +110,7 @@ describe('Mediation Disagreement View', () => {
   describe('on POST', () => {
     let htmlDocument: Document;
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const response = await request(app).post(MEDIATION_DISAGREEMENT_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;

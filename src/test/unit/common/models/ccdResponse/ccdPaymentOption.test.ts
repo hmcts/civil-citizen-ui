@@ -1,4 +1,4 @@
-import PaymentOptionType from '../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import {PaymentOptionType} from '../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {CCDPaymentOption, toCCDPaymentOption} from '../../../../../main/common/models/ccdResponse/ccdPaymentOption';
 
 describe('translate payment option to ccd version', ()=> {

@@ -1,6 +1,6 @@
-import * as express from 'express';
+import {Router} from 'express';
 
-const homeController = express.Router();
+const homeController = Router();
 
 homeController.get('/home', (_req, res) => {
   res.render('home');
