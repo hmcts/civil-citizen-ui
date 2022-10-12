@@ -7,7 +7,7 @@ import {CLAIM_DEFENDANT_EMAIL_URL, CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL} fro
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../../../main/modules/draft-store/draftStoreService';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {Claim} from '../../../../../../main/common/models/claim';
-import {Respondent} from '../../../../../../main/common/models/respondent';
+import {Party} from '../../../../../../main/common/models/party';
 import {PartyType} from '../../../../../../main/common/models/partyType';
 
 jest.mock('../../../../../../main/modules/oidc');
@@ -47,7 +47,7 @@ describe('Defendant details controller', () => {
     it('should render defendant details page when data is already set in redis', async () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
-        claim.respondent1 = new Respondent();
+        claim.respondent1 = new Party();
         claim.respondent1 = {
           type: PartyType.ORGANISATION,
           primaryAddress: {
@@ -80,7 +80,7 @@ describe('Defendant details controller', () => {
     it('should redirect to the defendant email page if data is successfully updated', async () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
-        claim.respondent1 = new Respondent();
+        claim.respondent1 = new Party();
         return claim;
       });
       await request(app).post(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL).send(mockSaveData).expect((res) => {
@@ -92,7 +92,7 @@ describe('Defendant details controller', () => {
     it('should show errors if data is not provided', async () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
-        claim.respondent1 = new Respondent();
+        claim.respondent1 = new Party();
         return claim;
       });
       await request(app).post(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL).expect((res) => {

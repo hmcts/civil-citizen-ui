@@ -8,7 +8,7 @@ import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
-const pageTitle = 'PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.PAGE_TITLE';
+const pageTitle = 'PAGES.ORGANISATION_DETAILS.PAGE_TITLE';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -41,7 +41,7 @@ describe('Claimant Organisation Details View', () => {
 
     it('should display correct header', () => {
       const header = htmlDocument.getElementsByClassName('govuk-heading-l');
-      expect(header[0].innerHTML).toContain(t('PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.TITLE'));
+      expect(header[0].innerHTML).toContain(t('PAGES.ORGANISATION_DETAILS.TITLE'));
     });
 
     it('should display These details are shared paragraph', () => {
@@ -64,7 +64,7 @@ describe('Claimant Organisation Details View', () => {
     describe('Your postal address section', () => {
       it('should display Your postal address heading', () => {
         const header = mainWrapper.getElementsByClassName('govuk-heading-m')[0];
-        expect(header.innerHTML).toContain(t('PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.YOUR_POSTAL_ADDRESS'));
+        expect(header.innerHTML).toContain(t('PAGES.ORGANISATION_DETAILS.ADDRESS'));
       });
 
       it('should display If your address is paragraph', () => {

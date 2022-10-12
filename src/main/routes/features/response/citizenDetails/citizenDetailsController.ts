@@ -69,8 +69,8 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: Request, res: Resp
   }
 });
 
-citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: Request, res: Party, next: NextFunction) => {
-  const responseDataRedis: Respondent = await getRespondentInformation(req.params.id);
+citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
+  const responseDataRedis: Party = await getRespondentInformation(req.params.id);
   try {
     const citizenAddress = new GenericForm<Address>(new Address(
       req.body.primaryAddressLine1,
