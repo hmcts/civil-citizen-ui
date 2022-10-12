@@ -26,6 +26,10 @@ module.exports = {
       ignoreHTTPSErrors: true,
     },
   },
+  include: {
+    // src/test/functionalTests/specClaimHelpers
+    api: './functionalTests/specClaimHelpers/api/steps.js',
+  },
   Username: process.env.CITIZEN_USERNAME,
   Password: process.env.CITIZEN_PASSWORD,
   idamStub: {
@@ -64,16 +68,3 @@ module.exports = {
   defendant1SolicitorOrgId: process.env.ENVIRONMENT == 'demo' ? 'DAWY9LJ' : '79ZRSOU',
   defendant2SolicitorOrgId: process.env.ENVIRONMENT =='demo' ? 'LCVTI1I' : 'H2156A0',
 };
-
-// config.helpers = {
-//   Playwright: {
-//     url: config.TestUrl,
-//     show: !config.TestHeadlessBrowser,
-//     browser: 'chromium',
-//     waitForTimeout: config.WaitForTimeout,
-//     timeout: 20000,
-//     waitForAction: 1000,
-//     waitForNavigation: 'networkidle0',
-//     ignoreHTTPSErrors: true,
-//   },
-// };
