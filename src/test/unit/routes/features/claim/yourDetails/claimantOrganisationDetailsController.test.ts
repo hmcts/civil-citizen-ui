@@ -1,10 +1,7 @@
 import {app} from '../../../../../../main/app';
 import config from 'config';
 import request from 'supertest';
-import {
-  CLAIMANT_PHONE_NUMBER_URL,
-  CLAIMANT_ORGANISATION_DETAILS_URL
-} from '../../../../../../main/routes/urls';
+import {CLAIMANT_ORGANISATION_DETAILS_URL, CLAIMANT_PHONE_NUMBER_URL} from '../../../../../../main/routes/urls';
 import {buildCorrespondenceAddress, buildPrimaryAddress} from '../../../../../utils/mockClaim';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {PartyType} from '../../../../../../main/common/models/partyType';
@@ -67,7 +64,7 @@ const validDataForPost = {
   correspondenceCity: '',
   correspondencePostCode: '',
   partyName: 'partyName',
-  contactPerson: 'contactPerson'
+  contactPerson: 'contactPerson',
 };
 
 describe('Claimant Organisation Details page', () => {
@@ -108,7 +105,7 @@ describe('Claimant Organisation Details page', () => {
     });
   });
 
-  it('should return your details page with empty information', async () => {
+  it('should return your company or organisation details page with empty information', async () => {
     mockGetCaseData.mockImplementation(async () => {
       return new Party();
     });
@@ -120,7 +117,7 @@ describe('Claimant Organisation Details page', () => {
       });
   });
 
-  it('should return your details page with information', async () => {
+  it('should return your company or organisation details page with information', async () => {
     mockGetCaseData.mockImplementation(async () => {
       return buildClaimOfApplicant();
     });
@@ -132,7 +129,7 @@ describe('Claimant Organisation Details page', () => {
       });
   });
 
-  it('should return your details page with information without correspondent address', async () => {
+  it('should return your company or organisation details page with information without correspondent address', async () => {
     const buildClaimOfApplicantWithoutCorrespondent = (): Party => {
       claim.applicant1 = new Party();
       claim.applicant1.type = PartyType.ORGANISATION;
@@ -153,7 +150,7 @@ describe('Claimant Organisation Details page', () => {
       });
   });
 
-  it('should return your details page with no primary, correspondence address or claimant details', async () => {
+  it('should return your company or organisation details page with no primary, correspondence address or claimant details', async () => {
     const buildClaimOfApplicantWithoutInformation = (): Party => {
       claim.applicant1 = new Party();
       claim.applicant1.primaryAddress = undefined;

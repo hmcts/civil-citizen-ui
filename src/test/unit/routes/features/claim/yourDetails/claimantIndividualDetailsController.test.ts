@@ -174,6 +174,9 @@ describe('Claimant Individual Details page', () => {
   });
 
   it('POST/Claimant Individual details - should redirect on correct primary address', async () => {
+    mockGetCaseData.mockImplementation(async () => {
+      return new Claim();
+    });
     await request(app)
       .post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({

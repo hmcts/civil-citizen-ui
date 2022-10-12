@@ -1,4 +1,4 @@
-import express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {CLAIMANT_DOB_URL, CLAIMANT_PHONE_NUMBER_URL} from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {ClaimantDoB} from '../../../../common/form/models/claim/claimant/claimantDoB';
@@ -7,10 +7,10 @@ import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-st
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {Party} from '../../../../common/models/party';
 
-const claimantDoBController = express.Router();
+const claimantDoBController = Router();
 const claimantDoBViewPath = 'features/response/citizenDob/citizen-dob';
 
-claimantDoBController.get(CLAIMANT_DOB_URL, async (req: AppRequest, res: express.Response, next: express.NextFunction) => {
+claimantDoBController.get(CLAIMANT_DOB_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const caseId = req.session?.user?.id;
     const claim: Claim = await getCaseDataFromStore(caseId);
@@ -25,8 +25,9 @@ claimantDoBController.get(CLAIMANT_DOB_URL, async (req: AppRequest, res: express
   }
 });
 
-claimantDoBController.post(CLAIMANT_DOB_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+claimantDoBController.post(CLAIMANT_DOB_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
+    const caseId = (<AppRequest>req).session?.user?.id;
     const {year, month, day} = req.body;
     const form = new GenericForm(new ClaimantDoB(day, month, year));
     form.validateSync();
@@ -34,7 +35,7 @@ claimantDoBController.post(CLAIMANT_DOB_URL, async (req: express.Request, res: e
     if (form.hasErrors()) {
       res.render(claimantDoBViewPath, {form, today: new Date(), claimantView: true});
     } else {
-      const claim = await getCaseDataFromStore(req.params.id);
+      const claim = await getCaseDataFromStore(caseId);
       if (claim.respondent1) {
         claim.respondent1.dateOfBirth = form.model.dateOfBirth;
       } else {
@@ -42,7 +43,7 @@ claimantDoBController.post(CLAIMANT_DOB_URL, async (req: express.Request, res: e
         respondent.dateOfBirth = form.model.dateOfBirth;
         claim.respondent1 = respondent;
       }
-      await saveDraftClaim(req.params.id, claim);
+      await saveDraftClaim(caseId, claim);
       res.redirect(CLAIMANT_PHONE_NUMBER_URL);
     }
   } catch (error) {
