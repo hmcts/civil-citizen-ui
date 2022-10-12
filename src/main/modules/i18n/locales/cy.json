@@ -98,6 +98,11 @@
       "TITLE": "Help with interest rates",
       "YOU_CAN_CLAIM": "You can claim 8% interest on money owed to you. This is the statutory rate. If you know that a different rate applies you can use that. For example if you have a contract with a specific rate"
     },
+    "INPUT_LABELS": {
+      "FIRST_NAME": "Enw cyntaf",
+      "LAST_NAME": "Cyfenw",
+      "TITLE": "Teitl"
+    },
     "MONTH_NAMES": {
       "APRIL": "Ebrill",
       "AUGUST": "Awst",
@@ -384,12 +389,9 @@
       "CORRESPONDENCE_ADDRESS": "Cyfeiriad ar gyfer gohebiaeth",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Ydych chi am inni anfon gohebiaeth i gyfeiriad arall?",
       "FIND_ADDRESS": "Dod o hyd i gyfeiriad",
-      "FIRST_NAME": "Enw cyntaf",
-      "LAST_NAME": "Cyfenw",
       "MANUAL_ADDRESS": "Teipio'r cyfeiriad",
       "PAGE_TITLE": "Eich manylion",
       "PICK_ADDRESS": "Dewiswch gyfeiriad",
-      "TITLE": "Teitl",
       "TRY_AGAIN": "Rhowch gynnig arall arni neu nodwch y cyfeiriad â llaw.",
       "UK_POSTCODE": "Rhowch god post yn y DU",
       "YES_CORRESPONDENCE": "Ydw. Ychwanegu cyfeiriad ar gyfer gohebiaeth"
