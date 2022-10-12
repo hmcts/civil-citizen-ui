@@ -2,7 +2,7 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
-import {CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL} from '../../../../../main/routes/urls';
+import {CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL} from '../../../../../../main/routes/urls';
 import {t} from 'i18next';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 
