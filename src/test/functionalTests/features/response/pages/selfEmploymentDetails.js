@@ -8,7 +8,7 @@ const buttons = {
   continue: 'button.govuk-button',
 };
 
-export class SelfEmploymentDetails {
+class SelfEmploymentDetails {
 
   enterSelfEmployerDetails() {
     I.see('What are you self-employed as?', 'h1');
@@ -17,3 +17,5 @@ export class SelfEmploymentDetails {
     I.click(buttons.continue);
   }
 }
+
+module.exports = SelfEmploymentDetails;

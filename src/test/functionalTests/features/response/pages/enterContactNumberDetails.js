@@ -9,7 +9,7 @@ const buttons = {
   saveAndContinue: 'button.govuk-button',
 };
 
-export class ContactNumberDetailsPage {
+class ContactNumberDetailsPage {
   enterContactNumber (claimRef) {
     I.amOnPage('/case/'+claimRef+'/response/your-phone');
     I.see('Enter a phone number (optional)', 'h1');
@@ -17,3 +17,5 @@ export class ContactNumberDetailsPage {
     I.click(buttons.saveAndContinue);
   }
 }
+
+module.exports = ContactNumberDetailsPage;

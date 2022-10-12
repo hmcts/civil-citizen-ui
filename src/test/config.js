@@ -1,17 +1,31 @@
-import { PropertiesVolume } from '../main/modules/properties-volume';
+//import { PropertiesVolume } from '../main/modules/properties-volume/index.ts';
+//import { PropertiesVolume } from '../main/modules/properties-volume';
+//const PropertiesVolume = require('../main/modules/properties-volume');
 const defaultPassword = process.env.CITIZEN_PASSWORD;
+const testUrl = process.env.TEST_URL || 'https://civil-citizen-ui.demo.platform.hmcts.net';
+const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
 
-if (!process.env.TEST_PASSWORD) {
-  new PropertiesVolume().enableFor({ locals: { developmentMode: true } });
-}
-
-export const config = {
-  TestUrl: process.env.TEST_URL || 'https://civil-citizen-ui.demo.platform.hmcts.net',
+// if (!process.env.TEST_PASSWORD) {
+//   new PropertiesVolume().enableFor({ locals: { developmentMode: true } });
+// }
+module.exports = {
+  TestUrl: testUrl,
   env: process.env.ENVIRONMENT_NAME || 'local',
-  TestHeadlessBrowser: process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true,
+  TestHeadlessBrowser: testHeadlessBrowser,
   TestSlowMo: 250,
   WaitForTimeout: 20000,
-  helpers: {},
+  helpers: {
+    Playwright: {
+      url: testUrl,
+      show: !testHeadlessBrowser,
+      browser: 'chromium',
+      waitForTimeout: 20000,
+      timeout: 20000,
+      waitForAction: 1000,
+      waitForNavigation: 'networkidle0',
+      ignoreHTTPSErrors: true,
+    },
+  },
   Username: process.env.CITIZEN_USERNAME,
   Password: process.env.CITIZEN_PASSWORD,
   idamStub: {
@@ -51,15 +65,15 @@ export const config = {
   defendant2SolicitorOrgId: process.env.ENVIRONMENT =='demo' ? 'LCVTI1I' : 'H2156A0',
 };
 
-config.helpers = {
-  Playwright: {
-    url: config.TestUrl,
-    show: !config.TestHeadlessBrowser,
-    browser: 'chromium',
-    waitForTimeout: config.WaitForTimeout,
-    timeout: 20000,
-    waitForAction: 1000,
-    waitForNavigation: 'networkidle0',
-    ignoreHTTPSErrors: true,
-  },
-};
+// config.helpers = {
+//   Playwright: {
+//     url: config.TestUrl,
+//     show: !config.TestHeadlessBrowser,
+//     browser: 'chromium',
+//     waitForTimeout: config.WaitForTimeout,
+//     timeout: 20000,
+//     waitForAction: 1000,
+//     waitForNavigation: 'networkidle0',
+//     ignoreHTTPSErrors: true,
+//   },
+// };

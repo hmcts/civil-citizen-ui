@@ -19,7 +19,7 @@ const buttons = {
   saveAndContinue: 'button.govuk-button',
 };
 
-export class NameAndAddressDetailsPage {
+class NameAndAddressDetailsPage {
   enterNameAndAddressDetails (claimRef) {
     I.amOnPage('/case/'+claimRef+'/response/your-details');
     I.see('Confirm your details','h1');
@@ -38,3 +38,5 @@ export class NameAndAddressDetailsPage {
     I.click(buttons.saveAndContinue);
   }
 }
+
+module.exports = NameAndAddressDetailsPage;

@@ -1,4 +1,4 @@
-const config = require('../config.js.js');
+const config = require('../../../config');
 const deepEqualInAnyOrder = require('deep-equal-in-any-order');
 const chai = require('chai');
 
@@ -199,6 +199,6 @@ function removeUuidsFromDynamicList(data, dynamicListField) {
   return dynamicElements.map(({code, ...item}) => item);
 }
 
-const assignSpecCase = async (caseId, mpScenario) => {
+const assignSpecCase = async (caseId) => {
   await assignCaseRoleToUser(caseId, 'RESPONDENTSOLICITORONE', config.defendantCitizenUser);
 };

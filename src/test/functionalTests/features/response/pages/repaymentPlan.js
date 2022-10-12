@@ -17,7 +17,7 @@ const day = currentDate.getDay();
 const month = currentDate.getMonth();
 const year = currentDate.getFullYear() + 1;
 
-export class RepaymentPlan {
+class RepaymentPlan {
   enterRepaymentPlan(claimRef) {
     I.amOnPage('/case/' + claimRef + '/response/full-admission/payment-plan');
     I.see('Your repayment plan', 'h1');
@@ -29,3 +29,5 @@ export class RepaymentPlan {
     I.click(buttons.saveAndContinue);
   }
 }
+
+module.exports = RepaymentPlan;

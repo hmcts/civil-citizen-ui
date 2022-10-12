@@ -16,7 +16,7 @@ const buttons = {
   saveAndContinue: 'Save and continue',
 };
 
-export class MonthlyIncome {
+class MonthlyIncome {
 
   selectIncomeFromJob(incomeAmount) {
     I.see('What regular income do you receive?', 'h1');
@@ -39,3 +39,5 @@ export class MonthlyIncome {
     I.click(buttons.saveAndContinue);
   }
 }
+
+module.exports = MonthlyIncome;

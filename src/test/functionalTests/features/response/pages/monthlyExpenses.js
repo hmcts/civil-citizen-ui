@@ -25,7 +25,7 @@ const buttons = {
   saveAndContinue: 'Save and continue',
 };
 
-export class MonthlyExpenses {
+class MonthlyExpenses {
 
   selectMortgage(mortgageAmount) {
     I.see('What are your regular expenses?', 'h1');
@@ -63,3 +63,5 @@ export class MonthlyExpenses {
     I.click(buttons.saveAndContinue);
   }
 }
+
+module.exports = MonthlyExpenses;

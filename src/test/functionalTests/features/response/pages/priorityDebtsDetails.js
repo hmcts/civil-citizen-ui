@@ -18,7 +18,7 @@ const buttons = {
   saveAndContinue: 'Save and continue',
 };
 
-export class PriorityDebtsDetails {
+class PriorityDebtsDetails {
 
   selectMortgage(mortgageAmount) {
     I.see('Debts you\'re behind on', 'h1');
@@ -45,3 +45,5 @@ export class PriorityDebtsDetails {
     I.click(buttons.saveAndContinue);
   }
 }
+
+module.exports = PriorityDebtsDetails;

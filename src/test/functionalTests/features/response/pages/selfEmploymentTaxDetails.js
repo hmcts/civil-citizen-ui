@@ -10,7 +10,7 @@ const buttons = {
   continue: 'button.govuk-button',
 };
 
-export class SelfEmploymentTaxDetails {
+class SelfEmploymentTaxDetails {
 
   clickYesButton() {
     I.see('Are you behind on tax payments?', 'h1');
@@ -25,3 +25,5 @@ export class SelfEmploymentTaxDetails {
     I.click(buttons.continue);
   }
 }
+
+module.exports = SelfEmploymentTaxDetails;

@@ -17,22 +17,24 @@ const buttons = {
   saveAndContinue: 'Save and continue',
 };
 
-module.exports.BankAccountsDetails = {
+class BankAccountsDetails {
   enterBankAccountDetails() {
     I.see('List your bank and savings accounts', 'h1');
     I.selectOption(fields.accounts1, 'Current account');
     I.selectOption(fields.jointAccount1, 'Yes');
     I.fillField(fields.account1Balance, '2000');
-  },
+  }
 
   enterAdditionalBankAccountDetails() {
     I.click(buttons.addAnotherAccount);
     I.selectOption(fields.accounts3, 'ISA');
     I.selectOption(fields.jointAccount3, 'No');
     I.fillField(fields.account3Balance, '6000');
-  },
+  }
 
   clickContinue(){
     I.click(buttons.saveAndContinue);
-  },
-};
+  }
+}
+
+module.exports = BankAccountsDetails;

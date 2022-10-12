@@ -10,7 +10,7 @@ const buttons = {
   saveAndContinue: 'button.govuk-button',
 };
 
-export class RespondTypePage {
+class RespondTypePage {
   enterResponseToClaim(claimRef, responseType){
     I.amOnPage('/case/'+claimRef+'/response/response-type');
     I.see('How do you respond to the claim?', 'h1');
@@ -35,3 +35,5 @@ export class RespondTypePage {
     I.click(buttons.saveAndContinue);
   }
 }
+
+module.exports = RespondTypePage;

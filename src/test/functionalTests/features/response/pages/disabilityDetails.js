@@ -9,7 +9,7 @@ const buttons = {
   continue: 'button.govuk-button',
 };
 
-export class DisabilityDetails {
+class DisabilityDetails {
 
   clickYesButton() {
     I.see('Are you disabled?', 'h1');
@@ -22,3 +22,5 @@ export class DisabilityDetails {
     I.click(buttons.continue);
   }
 }
+
+module.exports = DisabilityDetails;

@@ -10,7 +10,7 @@ const buttons = {
   saveAndContinue: 'button.govuk-button',
 };
 
-export class PaymentOptionPage {
+class PaymentOptionPage {
   enterPaymentOption(claimRef, paymentType) {
     I.amOnPage('/case/'+claimRef+'/response/full-admission/payment-option');
     I.see('When do you want to pay?', 'h1');
@@ -35,3 +35,5 @@ export class PaymentOptionPage {
     I.click(buttons.saveAndContinue);
   }
 }
+
+module.exports = PaymentOptionPage;

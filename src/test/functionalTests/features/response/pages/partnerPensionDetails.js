@@ -8,7 +8,7 @@ const buttons = {
   continue: 'button.govuk-button',
 };
 
-export class PartnerPensionDetails {
+class PartnerPensionDetails {
 
   clickYesButton() {
     I.see('Does your partner receive a pension?', 'h1');
@@ -21,3 +21,5 @@ export class PartnerPensionDetails {
     I.click(buttons.continue);
   }
 }
+
+module.exports = PartnerPensionDetails;

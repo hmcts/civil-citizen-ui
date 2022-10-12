@@ -8,7 +8,7 @@ const buttons = {
   submit: 'Submit Response',
 };
 
-module.exports.CheckYourAnswersPage = {
+class CheckYourAnswersPage {
   checkAndSubmit(claimRef) {
     I.amOnPage('/case/'+claimRef+'/response/check-and-send');
     I.see('Check your answers', 'h1');
@@ -16,5 +16,7 @@ module.exports.CheckYourAnswersPage = {
     I.checkOption(fields.cyaSigned);
     I.click(buttons.submit);
     I.waitForText('You’ve submitted your response');
-  },
-};
+  }
+}
+
+module.exports = CheckYourAnswersPage;

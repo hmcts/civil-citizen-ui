@@ -11,7 +11,7 @@ const buttons = {
   continue: 'button.govuk-button',
 };
 
-export class EmploymentDetails {
+class EmploymentDetails {
 
   clickYesButton() {
     I.see('Do you have a job?', 'h1');
@@ -26,3 +26,5 @@ export class EmploymentDetails {
     I.click(buttons.continue);
   }
 }
+
+module.exports = EmploymentDetails;

@@ -8,17 +8,19 @@ const buttons = {
   continue: 'button.govuk-button',
 };
 
-module.exports.CarerDetails = {
+class CarerDetails {
 
   clickYesButton() {
     I.see('Do you claim Carer’s Allowance or Carer’s Credit?', 'h1');
     I.click(fields.yesButton);
     I.click(buttons.continue);
-  },
+  }
 
   clickNoButton() {
     I.see('Do you claim Carer’s Allowance or Carer’s Credit?', 'h1');
     I.click(fields.noButton);
     I.click(buttons.continue);
-  },
-};
+  }
+}
+
+module.exports = CarerDetails;

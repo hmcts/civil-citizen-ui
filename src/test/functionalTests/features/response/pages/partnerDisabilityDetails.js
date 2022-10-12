@@ -8,7 +8,7 @@ const buttons = {
   continue: 'button.govuk-button',
 };
 
-export class PartnerDisabilityDetails {
+class PartnerDisabilityDetails {
 
   clickYesButton() {
     I.see('Is your partner disabled?', 'h1');
@@ -21,3 +21,5 @@ export class PartnerDisabilityDetails {
     I.click(buttons.continue);
   }
 }
+
+module.exports = PartnerDisabilityDetails;

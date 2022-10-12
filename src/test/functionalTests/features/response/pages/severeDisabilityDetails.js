@@ -8,7 +8,7 @@ const buttons = {
   continue: 'button.govuk-button',
 };
 
-export class SevereDisabilityDetails {
+class SevereDisabilityDetails {
 
   clickYesButton() {
     I.see('Are you severely disabled?', 'h1');
@@ -21,3 +21,5 @@ export class SevereDisabilityDetails {
     I.click(buttons.continue);
   }
 }
+
+module.exports = SevereDisabilityDetails;

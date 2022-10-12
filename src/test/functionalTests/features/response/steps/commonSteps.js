@@ -1,35 +1,39 @@
-import { ResponseSteps } from './prepareYourResponseSteps';
+//import { ResponseSteps } from './prepareYourResponseSteps';
 
-const I = actor();
-const responseSteps = new ResponseSteps();
+const { ResponseSteps } =  require('./prepareYourResponseSteps');
 
-export class CommonSteps {
+//const I = actor();
+//const ResponseSteps = new ResponseSteps();
+
+class CommonSteps {
   EnterPersonalDetails(claimRef) {
-    responseSteps.VerifyResponsePageContent(claimRef);
-    responseSteps.EnterNameAndAddressDetails(claimRef);
-    responseSteps.EnterDateOfBirth(claimRef);
-    responseSteps.EnterContactNumber(claimRef);
+    ResponseSteps.VerifyResponsePageContent(claimRef);
+    ResponseSteps.EnterNameAndAddressDetails(claimRef);
+    ResponseSteps.EnterDateOfBirth(claimRef);
+    ResponseSteps.EnterContactNumber(claimRef);
   }
   EnterFinancialDetails(claimRef){
-    responseSteps.ShareYourFinancialDetailsIntro(claimRef);
-    responseSteps.EnterBankAccountDetails();
-    responseSteps.SelectDisabilityDetails('yes', 'yes');
-    responseSteps.SelectResidenceDetails('ownHome');
-    responseSteps.SelectPartnerDetails('yes');
-    responseSteps.SelectPartnerAge('yes');
-    responseSteps.SelectPartnerPension('yes');
-    responseSteps.SelectPartnerDisability('no');
-    responseSteps.SelectDependantDetails('yes');
-    responseSteps.SelectOtherDependantDetails('yes');
-    responseSteps.SelectEmploymentDetails('yes');
-    responseSteps.EnterEmployerDetails();
-    responseSteps.EnterSelfEmploymentDetails();
-    responseSteps.EnterSelfEmploymentTaxDetails();
-    responseSteps.EnterCourtOrderDetails(claimRef);
-    responseSteps.PriorityDebtsDetails('120','20','10', '5');
-    responseSteps.EnterDebtDetails();
-    responseSteps.MonthlyExpensesDetails('1200','45', '25', '30', '100', '125');
-    responseSteps.MonthlyIncomeDetails('4500', '120', '1100');
-    responseSteps.EnterExplanation();
+    ResponseSteps.ShareYourFinancialDetailsIntro(claimRef);
+    ResponseSteps.EnterBankAccountDetails();
+    ResponseSteps.SelectDisabilityDetails('yes', 'yes');
+    ResponseSteps.SelectResidenceDetails('ownHome');
+    ResponseSteps.SelectPartnerDetails('yes');
+    ResponseSteps.SelectPartnerAge('yes');
+    ResponseSteps.SelectPartnerPension('yes');
+    ResponseSteps.SelectPartnerDisability('no');
+    ResponseSteps.SelectDependantDetails('yes');
+    ResponseSteps.SelectOtherDependantDetails('yes');
+    ResponseSteps.SelectEmploymentDetails('yes');
+    ResponseSteps.EnterEmployerDetails();
+    ResponseSteps.EnterSelfEmploymentDetails();
+    ResponseSteps.EnterSelfEmploymentTaxDetails();
+    ResponseSteps.EnterCourtOrderDetails(claimRef);
+    ResponseSteps.PriorityDebtsDetails('120','20','10', '5');
+    ResponseSteps.EnterDebtDetails();
+    ResponseSteps.MonthlyExpensesDetails('1200','45', '25', '30', '100', '125');
+    ResponseSteps.MonthlyIncomeDetails('4500', '120', '1100');
+    ResponseSteps.EnterExplanation();
   }
 }
+
+module.exports = CommonSteps;

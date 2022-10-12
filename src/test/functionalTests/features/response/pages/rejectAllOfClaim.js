@@ -9,7 +9,7 @@ const buttons = {
   continue: 'button.govuk-button',
 };
 
-export class RejectAllOfClaim {
+class RejectAllOfClaim {
   selectRejectAllReason(reason) {
     switch (reason) {
       case 'alreadyPaid':{
@@ -31,3 +31,5 @@ export class RejectAllOfClaim {
     I.click(buttons.continue);
   }
 }
+
+module.exports = RejectAllOfClaim;

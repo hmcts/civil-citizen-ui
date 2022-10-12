@@ -8,7 +8,7 @@ const buttons = {
   continue: 'button.govuk-button',
 };
 
-export class PartAdmitAlreadyPaid {
+class PartAdmitAlreadyPaid {
 
   selectAlreadyPaid(option) {
     I.see('Have you paid the claimant the amount you admit you owe?', 'h1');
@@ -20,3 +20,5 @@ export class PartAdmitAlreadyPaid {
     I.click(buttons.continue);
   }
 }
+
+module.exports = PartAdmitAlreadyPaid;

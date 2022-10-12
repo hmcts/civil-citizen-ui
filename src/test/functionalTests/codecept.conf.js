@@ -1,20 +1,20 @@
 exports.config = {
   tests: '../functionalTests/tests/*_tests.js',
-  output: process.env.REPORT_DIR || 'test-results/functional',
-  helpers: {
-    Puppeteer: {
-      restart: false,
-      keepCookies: true,
-      show: process.env.SHOW_BROWSER_WINDOW === 'true' || false,
-      windowSize: '1200x900',
-      waitForTimeout: parseInt(process.env.WAIT_FOR_TIMEOUT_MS || 50000),
-      chrome: {
-        ignoreHTTPSErrors: true,
-      },
-    },
-  },
+  //output: process.env.REPORT_DIR || 'test-results/functional',
+  // helpers: {
+  //   Puppeteer: {
+  //     restart: false,
+  //     keepCookies: true,
+  //     show: process.env.SHOW_BROWSER_WINDOW === 'true' || false,
+  //     windowSize: '1200x900',
+  //     waitForTimeout: parseInt(process.env.WAIT_FOR_TIMEOUT_MS || 50000),
+  //     chrome: {
+  //       ignoreHTTPSErrors: true,
+  //     },
+  //   },
+  // },
   include: {
-    api: './api/steps.js',
+    api: './specClaimHelpers/api/steps.js',
   },
   plugins: {
     autoDelay: {

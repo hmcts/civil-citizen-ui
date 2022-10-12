@@ -11,7 +11,7 @@ const buttons = {
   saveAndContinue: 'button.govuk-button',
 };
 
-export class DateOfBirthDetailsPage {
+class DateOfBirthDetailsPage {
   enterDateOfBirth (claimRef)  {
     I.amOnPage('/case/' + claimRef + '/response/your-dob');
     I.see('Enter your date of birth', 'h1');
@@ -22,3 +22,5 @@ export class DateOfBirthDetailsPage {
     I.click(buttons.saveAndContinue);
   }
 }
+
+module.exports = DateOfBirthDetailsPage;

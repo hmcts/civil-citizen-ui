@@ -10,7 +10,7 @@ const buttons = {
   continue: 'button.govuk-button',
 };
 
-export class OtherDependantDetails {
+class OtherDependantDetails {
 
   clickYesButton() {
     I.see('Do you support anyone else financially?', 'h1');
@@ -25,3 +25,5 @@ export class OtherDependantDetails {
     I.click(buttons.continue);
   }
 }
+
+module.exports = OtherDependantDetails;

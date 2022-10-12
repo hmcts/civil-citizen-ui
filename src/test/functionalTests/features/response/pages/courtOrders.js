@@ -12,7 +12,7 @@ const buttons = {
   saveAndContinue: 'Save and continue',
 };
 
-export class CourtOrders {
+class CourtOrders {
 
   clickYesButton(claimref) {
     I.see('Are you paying money as a result of any court orders?', 'h1');
@@ -28,3 +28,5 @@ export class CourtOrders {
     I.click(buttons.saveAndContinue);
   }
 }
+
+module.exports = CourtOrders;

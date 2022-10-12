@@ -19,7 +19,7 @@ const buttons = {
   saveAndContinue: 'Save and continue',
 };
 
-export class Debts {
+class Debts {
 
   clickYesButton() {
     I.see('Do you have loans or credit card debts?', 'h1');
@@ -42,3 +42,5 @@ export class Debts {
     I.click(buttons.saveAndContinue);
   }
 }
+
+module.exports = Debts;

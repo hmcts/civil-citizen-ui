@@ -8,10 +8,12 @@ const buttons = {
   continue: 'button.govuk-button',
 };
 
-export class Explanation {
+class Explanation {
 
   enterExplanation() {
     I.fillField(fields.reason, 'Test reason');
     I.click(buttons.continue);
   }
 }
+
+module.exports = Explanation;

@@ -15,7 +15,7 @@ const day = currentDate.getDay();
 const month = currentDate.getMonth();
 const year = currentDate.getFullYear() + 1;
 
-export class DateToPayOn {
+class DateToPayOn {
   enterDateToPayOn () {
     I.see('What date will you pay on?', 'h1');
     I.fillField(fields.day, day.toString());
@@ -24,3 +24,5 @@ export class DateToPayOn {
     I.click(buttons.saveAndContinue);
   }
 }
+
+module.exports = DateToPayOn;

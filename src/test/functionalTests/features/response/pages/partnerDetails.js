@@ -8,7 +8,7 @@ const buttons = {
   continue: 'button.govuk-button',
 };
 
-export class PartnerDetails {
+class PartnerDetails {
 
   clickYesButton() {
     I.see('Do you live with a partner?', 'h1');
@@ -21,3 +21,5 @@ export class PartnerDetails {
     I.click(buttons.continue);
   }
 }
+
+module.exports = PartnerDetails;

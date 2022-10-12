@@ -11,7 +11,7 @@ const buttons = {
   continue: 'button.govuk-button',
 };
 
-export class ResidenceDetails {
+class ResidenceDetails {
 
   selectResidenceType(residenceType) {
     I.see('Where do you live?', 'h1');
@@ -44,3 +44,5 @@ export class ResidenceDetails {
     I.click(buttons.continue);
   }
 }
+
+module.exports = ResidenceDetails;

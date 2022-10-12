@@ -1,38 +1,72 @@
-import { TaskListPage } from '../pages/taskList';
-import { NameAndAddressDetailsPage } from '../pages/enterNameAndAddressDetails';
-import { DateOfBirthDetailsPage } from '../pages/enterDateOfBirthDetails';
-import { ContactNumberDetailsPage } from '../pages/enterContactNumberDetails';
-import { RespondTypePage } from '../pages/respondType';
-import { PaymentOptionPage } from '../pages/paymentOption';
-import { CheckYourAnswersPage } from '../pages/checkYourAnswers';
-import { DateToPayOn } from '../pages/dateToPayOn';
-import { ShareYouFinancialDetailsIntro } from '../pages/shareYouFinancialDetailsIntro';
-import { BankAccountsDetails } from '../pages/bankAccountsDetails';
-import { DisabilityDetails } from '../pages/disabilityDetails';
-import { SevereDisabilityDetails } from '../pages/severeDisabilityDetails';
-import { ResidenceDetails } from '../pages/residenceDetails';
-import { PartnerDetails } from '../pages/partnerDetails';
-import { PartnerAgeDetails } from '../pages/partnerAgeDetails';
-import { PartnerPensionDetails } from '../pages/partnerPensionDetails';
-import { PartnerDisabilityDetails } from '../pages/partnerDisabilityDetails';
-import { DependantDetails } from '../pages/dependantDetails';
-import { OtherDependantDetails } from '../pages/otherDependantDetails';
-import { EmploymentDetails } from '../pages/employment';
-import { EmployerDetails } from '../pages/employerDetails';
-import { SelfEmploymentDetails } from '../pages/selfEmploymentDetails';
-import { SelfEmploymentTaxDetails } from '../pages/selfEmploymentTaxDetails';
-import { CourtOrders } from '../pages/courtOrders';
-import { PriorityDebtsDetails } from '../pages/priorityDebtsDetails';
-import { Debts } from '../pages/debts';
-import { MonthlyExpenses } from '../pages/monthlyExpenses';
-import { MonthlyIncome } from '../pages/monthlyIncome';
-import { Explanation } from '../pages/explanation';
-import { RepaymentPlan } from '../pages/repaymentPlan';
-import { PartAdmitAlreadyPaid } from '../pages/partAdmitAlreadyPaid';
-import { RejectAllOfClaim } from '../pages/rejectAllOfClaim';
-import { CarerDetails } from '../pages/carerDetails';
+//import { TaskListPage } from '../pages/taskList';
+const TaskListPage = require('../pages/taskList');
+// import { NameAndAddressDetailsPage } from '../pages/enterNameAndAddressDetails';
+// import { DateOfBirthDetailsPage } from '../pages/enterDateOfBirthDetails';
+// import { ContactNumberDetailsPage } from '../pages/enterContactNumberDetails';
+// import { RespondTypePage } from '../pages/respondType';
+// import { PaymentOptionPage } from '../pages/paymentOption';
+// import { CheckYourAnswersPage } from '../pages/checkYourAnswers';
+// import { DateToPayOn } from '../pages/dateToPayOn';
+// import { ShareYouFinancialDetailsIntro } from '../pages/shareYouFinancialDetailsIntro';
+// import { BankAccountsDetails } from '../pages/bankAccountsDetails';
+// import { DisabilityDetails } from '../pages/disabilityDetails';
+// import { SevereDisabilityDetails } from '../pages/severeDisabilityDetails';
+// import { ResidenceDetails } from '../pages/residenceDetails';
+// import { PartnerDetails } from '../pages/partnerDetails';
+// import { PartnerAgeDetails } from '../pages/partnerAgeDetails';
+// import { PartnerPensionDetails } from '../pages/partnerPensionDetails';
+// import { PartnerDisabilityDetails } from '../pages/partnerDisabilityDetails';
+// import { DependantDetails } from '../pages/dependantDetails';
+// import { OtherDependantDetails } from '../pages/otherDependantDetails';
+// import { EmploymentDetails } from '../pages/employment';
+// import { EmployerDetails } from '../pages/employerDetails';
+// import { SelfEmploymentDetails } from '../pages/selfEmploymentDetails';
+// import { SelfEmploymentTaxDetails } from '../pages/selfEmploymentTaxDetails';
+// import { CourtOrders } from '../pages/courtOrders';
+// import { PriorityDebtsDetails } from '../pages/priorityDebtsDetails';
+// import { Debts } from '../pages/debts';
+// import { MonthlyExpenses } from '../pages/monthlyExpenses';
+// import { MonthlyIncome } from '../pages/monthlyIncome';
+// import { Explanation } from '../pages/explanation';
+// import { RepaymentPlan } from '../pages/repaymentPlan';
+// import { PartAdmitAlreadyPaid } from '../pages/partAdmitAlreadyPaid';
+// import { RejectAllOfClaim } from '../pages/rejectAllOfClaim';
+// import { CarerDetails } from '../pages/carerDetails';
 
-const I = actor();
+const  NameAndAddressDetailsPage  =  require('../pages/enterNameAndAddressDetails');
+const  DateOfBirthDetailsPage  =  require('../pages/enterDateOfBirthDetails');
+const  ContactNumberDetailsPage  =  require('../pages/enterContactNumberDetails');
+const  RespondTypePage  =  require('../pages/respondType');
+const  PaymentOptionPage  =  require('../pages/paymentOption');
+const  CheckYourAnswersPage  =  require('../pages/checkYourAnswers');
+const  DateToPayOn  =  require('../pages/dateToPayOn');
+const  ShareYouFinancialDetailsIntro  =  require('../pages/shareYouFinancialDetailsIntro');
+const  BankAccountsDetails  =  require('../pages/bankAccountsDetails');
+const  DisabilityDetails  =  require('../pages/disabilityDetails');
+const  SevereDisabilityDetails  =  require('../pages/severeDisabilityDetails');
+const  ResidenceDetails  =  require('../pages/residenceDetails');
+const  PartnerDetails  =  require('../pages/partnerDetails');
+const  PartnerAgeDetails  =  require('../pages/partnerAgeDetails');
+const  PartnerPensionDetails  =  require('../pages/partnerPensionDetails');
+const  PartnerDisabilityDetails  =  require('../pages/partnerDisabilityDetails');
+const  DependantDetails  =  require('../pages/dependantDetails');
+const  OtherDependantDetails  =  require('../pages/otherDependantDetails');
+const  EmploymentDetails  =  require('../pages/employment');
+const  EmployerDetails  =  require('../pages/employerDetails');
+const  SelfEmploymentDetails  =  require('../pages/selfEmploymentDetails');
+const  SelfEmploymentTaxDetails  =  require('../pages/selfEmploymentTaxDetails');
+const  CourtOrders  =  require('../pages/courtOrders');
+const  PriorityDebtsDetails  =  require('../pages/priorityDebtsDetails');
+const  Debts  =  require('../pages/debts');
+const  MonthlyExpenses  =  require('../pages/monthlyExpenses');
+const  MonthlyIncome  =  require('../pages/monthlyIncome');
+const  Explanation  =  require('../pages/explanation');
+const  RepaymentPlan  =  require('../pages/repaymentPlan');
+const  PartAdmitAlreadyPaid  =  require('../pages/partAdmitAlreadyPaid');
+const  RejectAllOfClaim  =  require('../pages/rejectAllOfClaim');
+const  CarerDetails  =  require('../pages/carerDetails');
+
+//const I = actor();
 const taskListPage = new TaskListPage();
 const nameAndAddressDetailsPage  = new NameAndAddressDetailsPage();
 const dateOfBirthDetailsPage = new DateOfBirthDetailsPage();
@@ -67,7 +101,7 @@ const partAdmitAlreadyPaid = new PartAdmitAlreadyPaid();
 const rejectAllOfClaim = new RejectAllOfClaim();
 const selectCarerDetails = new CarerDetails();
 
-export class ResponseSteps {
+class ResponseSteps {
 
   VerifyResponsePageContent (claimRef) {
     taskListPage.open(claimRef);
@@ -223,3 +257,5 @@ export class ResponseSteps {
     rejectAllOfClaim.selectRejectAllReason(reason);
   }
 }
+
+module.exports = ResponseSteps;

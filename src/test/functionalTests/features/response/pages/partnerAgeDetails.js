@@ -8,7 +8,7 @@ const buttons = {
   continue: 'button.govuk-button',
 };
 
-export class PartnerAgeDetails {
+class PartnerAgeDetails {
 
   clickYesButton() {
     I.see('Is your partner aged 18 or over?', 'h1');
@@ -21,3 +21,4 @@ export class PartnerAgeDetails {
     I.click(buttons.continue);
   }
 }
+module.exports = PartnerAgeDetails;

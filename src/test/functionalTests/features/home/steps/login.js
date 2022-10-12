@@ -1,17 +1,19 @@
 
 const LoginPage = require('../pages/login');
 
-const loginPage = new LoginPage();
+//const loginPage = new LoginPage();
 
-module.exports.LoginSteps = {
+class LoginSteps  {
 
   AcceptCookies() {
-    loginPage.acceptCookies();
-  },
+    LoginPage.acceptCookies();
+  }
 
-  EnterUserCredentials (username, password) {    
-    loginPage.open();
+  EnterUserCredentials(username, password) {    
+    LoginPage.open();
     this.AcceptCookies();
-    loginPage.login(username, password);
-  },
-};
+    LoginPage.login(username, password);
+  }
+}
+
+module.exports =  new LoginSteps();

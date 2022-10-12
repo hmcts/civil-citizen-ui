@@ -1,6 +1,6 @@
 const I = actor();
 
-export class TaskListPage {
+class TaskListPage {
 
   open(claimRef) {
     I.amOnPage('/case/' + claimRef + '/response/task-list');
@@ -10,3 +10,5 @@ export class TaskListPage {
     I.see('Respond to a money claim');
   }
 }
+
+module.exports = TaskListPage;

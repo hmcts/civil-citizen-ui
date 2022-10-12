@@ -1,4 +1,5 @@
-const config = require('../config.js.js');
+//const config = require('../config.js.js');
+const config = require('../../../config');
 const restHelper = require('./restHelper');
 const NodeCache = require('node-cache');
 //Idam access token expires for every 8 hrs

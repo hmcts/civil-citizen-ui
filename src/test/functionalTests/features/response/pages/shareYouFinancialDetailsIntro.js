@@ -4,7 +4,7 @@ const buttons = {
   continue: 'button.govuk-button',
 };
 
-export class ShareYouFinancialDetailsIntro {
+class ShareYouFinancialDetailsIntro {
 
   open(claimRef) {
     I.amOnPage('/case/' + claimRef + '/response/statement-of-means/intro');
@@ -14,3 +14,5 @@ export class ShareYouFinancialDetailsIntro {
     I.click(buttons.continue);
   }
 }
+
+module.exports = ShareYouFinancialDetailsIntro;

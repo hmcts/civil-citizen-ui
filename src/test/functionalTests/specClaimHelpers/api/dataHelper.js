@@ -1,5 +1,6 @@
 const uuid = require('uuid');
-const config = require('../config.js.js');
+//const config = require('../config.js.js');
+const config = require('../../../config');
 const address = require('../fixtures/address');
 
 const getDateTimeISOString = days => {

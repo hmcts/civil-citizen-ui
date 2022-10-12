@@ -9,7 +9,7 @@ const buttons = {
   saveAndContinue: 'Save and continue',
 };
 
-export class EmployerDetails {
+class EmployerDetails {
 
   enterEmployerDetails() {
     I.see('Who employs you?', 'h1');
@@ -18,3 +18,5 @@ export class EmployerDetails {
     I.click(buttons.saveAndContinue);
   }
 }
+
+module.exports = EmployerDetails;
