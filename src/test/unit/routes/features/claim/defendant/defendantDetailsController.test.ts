@@ -76,7 +76,7 @@ describe('Defendant details controller', () => {
       });
 
       it('should return http 500 status when has error in the get method', async () => {
-        mockGetCaseData.mockImplementation(async () => {
+        mockGetCaseData.mockImplementationOnce(async () => {
           throw new Error(TestMessages.REDIS_FAILURE);
         });
         const res = await request(app).get(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL);
@@ -115,7 +115,7 @@ describe('Defendant details controller', () => {
       });
 
       it('should return http 500 status when has error in the get method', async () => {
-        mockGetCaseData.mockImplementation(async () => {
+        mockGetCaseData.mockImplementationOnce(async () => {
           throw new Error(TestMessages.REDIS_FAILURE);
         });
         await request(app).get(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL).expect((res) => {
@@ -152,7 +152,7 @@ describe('Defendant details controller', () => {
     });
 
     it('should return http 500 status when has error in the get method', async () => {
-      mockSaveDraftClaim.mockImplementation(async () => {
+      mockSaveDraftClaim.mockImplementationOnce(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       const res = await request(app).post(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL).send(mockSaveData);
