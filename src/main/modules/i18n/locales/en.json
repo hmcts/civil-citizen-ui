@@ -1127,6 +1127,11 @@
       "PAGE_TITLE": "New response deadline",
       "TITLE": "4 pm on {{ responseDeadline }}"
     },
+    "ORGANISATION_DETAILS": {
+      "ADDRESS": "Organisation address",
+      "PAGE_TITLE": "Enter organisation details",
+      "TITLE": "Enter organisation details"
+    },
     "CANT_ATTEND_HEARING_IN_NEXT_12MONTHS": {
       "CONTENT": "These should only be the dates of important events like medical appointments, other court hearing, or holidays you have already booked",
       "PAGE_TITLE": "cant attend hearing in next months",
@@ -1853,7 +1858,6 @@
     "VALID_YEAR": "Enter a valid year",
     "VALID_YES_NO_OPTION": "Choose option: Yes or No",
     "VALID_YES_NO_SELECTION": "Please select yes or no",
-    "VALID_DISAGREE_REASON_REQUIRED": "Enter text explaining why do you disagree",
     "VALID_WHY_FROM_PARTICULAR_DATE": "You need to explain why you are claiming"
   }
 }
