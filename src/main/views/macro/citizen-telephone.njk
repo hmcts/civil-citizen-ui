@@ -8,6 +8,9 @@
       text: t(param.label),
       classes: 'govuk-visually-hidden'
     },
+    hint: {
+      text: t(param.hint) if param.hint else ''
+    },
     errorMessage: {
       html: t(form.errorFor('telephoneNumber'))
     } if form.hasErrors()
