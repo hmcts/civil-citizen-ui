@@ -21,6 +21,7 @@ export class Party {
   dateOfBirth?: Date;
   responseType?: string;
   contactPerson?: string;
+  emailAddress?: string;
 
   constructor(
     partyName?: string,

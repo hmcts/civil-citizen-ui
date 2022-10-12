@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {CLAIMANT_ORGANISATION_DETAILS_URL, CLAIMANT_PHONE_NUMBER_URL} from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
-import {CitizenAddress} from '../../../../common/form/models/citizenAddress';
+import {Address} from '../../../../common/form/models/address';
 import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citizenCorrespondenceAddress';
 import {YesNo} from '../../../../common/form/models/yesNo';
 import {
@@ -16,7 +16,7 @@ import {AppRequest} from '../../../../common/models/AppRequest';
 const claimantOrganisationDetailsController = Router();
 const claimantOrganisationDetailsPath = 'features/claim/yourDetails/claimant-organisation-details';
 
-function renderPage(res: Response, req: Request, party: GenericForm<Party>, claimantIndividualAddress: GenericForm<CitizenAddress>, claimantIndividualCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>): void {
+function renderPage(res: Response, req: Request, party: GenericForm<Party>, claimantIndividualAddress: GenericForm<Address>, claimantIndividualCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>): void {
 
   res.render(claimantOrganisationDetailsPath, {
     party,
@@ -29,7 +29,7 @@ claimantOrganisationDetailsController.get(CLAIMANT_ORGANISATION_DETAILS_URL, asy
   try {
     const caseId = req.session?.user?.id;
     const claimant: Party = await getClaimantPartyInformation(caseId);
-    const claimantIndividualAddress = new GenericForm<CitizenAddress>(CitizenAddress.fromJson(claimant.primaryAddress));
+    const claimantIndividualAddress = new GenericForm<Address>(Address.fromJson(claimant.primaryAddress));
     const claimantIndividualCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(CitizenCorrespondenceAddress.fromJson(claimant.correspondenceAddress));
     const party = new GenericForm(claimant);
 
@@ -43,7 +43,7 @@ claimantOrganisationDetailsController.post(CLAIMANT_ORGANISATION_DETAILS_URL, as
   const caseId = (<AppRequest>req).session?.user?.id;
   const claimant: Party = await getClaimantPartyInformation(caseId);
   try {
-    const claimantIndividualAddress = new GenericForm<CitizenAddress>(CitizenAddress.fromObject(req.body));
+    const claimantIndividualAddress = new GenericForm<Address>(Address.fromObject(req.body));
     const claimantIndividualCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(getCorrespondenceAddressForm(req.body));
     const party = new GenericForm(new Party(req.body.partyName, req.body.contactPerson));
 

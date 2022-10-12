@@ -113,7 +113,7 @@ describe('Claimant Organisation Details page', () => {
       .get(CLAIMANT_ORGANISATION_DETAILS_URL)
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Enter your details');
+        expect(res.text).toContain('Enter organisation details');
       });
   });
 
@@ -125,7 +125,7 @@ describe('Claimant Organisation Details page', () => {
       .get(CLAIMANT_ORGANISATION_DETAILS_URL)
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Enter your details');
+        expect(res.text).toContain('Enter organisation details');
       });
   });
 
@@ -146,7 +146,7 @@ describe('Claimant Organisation Details page', () => {
       .get(CLAIMANT_ORGANISATION_DETAILS_URL)
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Enter your details');
+        expect(res.text).toContain('Enter organisation details');
       });
   });
 
@@ -163,7 +163,7 @@ describe('Claimant Organisation Details page', () => {
       .get(CLAIMANT_ORGANISATION_DETAILS_URL)
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Enter your details');
+        expect(res.text).toContain('Enter organisation details');
       });
   });
 
@@ -175,7 +175,7 @@ describe('Claimant Organisation Details page', () => {
       .get('/claim/claimant-organisation-details')
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Enter your details');
+        expect(res.text).toContain('Enter organisation details');
       });
   });
 

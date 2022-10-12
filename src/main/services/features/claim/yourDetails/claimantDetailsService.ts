@@ -2,7 +2,7 @@ import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-st
 import {Party} from '../../../../common/models/party';
 import {convertToPrimaryAddress} from '../../../../common/models/primaryAddress';
 import {convertToCorrespondenceAddress} from '../../../../common/models/correspondenceAddress';
-import {CitizenAddress} from '../../../../common/form/models/citizenAddress';
+import {Address} from '../../../../common/form/models/address';
 import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citizenCorrespondenceAddress';
 import {YesNo} from '../../../../common/form/models/yesNo';
 import {PartyDetails} from '../../../../common/form/models/partyDetails';
@@ -12,7 +12,7 @@ export const getClaimantInformation = async (claimId: string): Promise<Party> =>
   return (responseData?.applicant1) ? responseData.applicant1 : {};
 };
 
-export const saveClaimant = async (claimId: string, citizenAddress: CitizenAddress, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, postToThisAddress: YesNo, claimantDetails: PartyDetails): Promise<void> => {
+export const saveClaimant = async (claimId: string, citizenAddress: Address, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, postToThisAddress: YesNo, claimantDetails: PartyDetails): Promise<void> => {
   const responseData = await getCaseDataFromStore(claimId);
   if (!responseData.applicant1) {
     responseData.applicant1 = new Party();
@@ -45,7 +45,7 @@ export const getClaimantPartyInformation = async (claimId: string): Promise<Part
   return Object.assign(new Party(), responseData?.applicant1);
 };
 
-export const saveClaimantParty = async (claimId: string, citizenAddress: CitizenAddress, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, postToThisAddress: YesNo, party: Party): Promise<void> => {
+export const saveClaimantParty = async (claimId: string, citizenAddress: Address, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, postToThisAddress: YesNo, party: Party): Promise<void> => {
   const responseData = await getCaseDataFromStore(claimId);
   if (!responseData?.applicant1) {
     responseData.applicant1 = new Party();

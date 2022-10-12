@@ -12,7 +12,7 @@
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 
 {% set correspondenceAddressClass = 'govuk-visually-hidden' %}
-{% set addressTitle = t('PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.YOUR_POSTAL_ADDRESS') %}
+{% set addressTitle = t('PAGES.ORGANISATION_DETAILS.ADDRESS') %}
 {% set claimantIndividualAddressErrors = claimantIndividualAddress.getAllErrors() %}
 {% set partyErrors = party.getAllErrors() %}
 
@@ -30,16 +30,13 @@
 {% endif %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.PAGE_TITLE') }}
+  {{ setPageTitle('PAGES.ORGANISATION_DETAILS.PAGE_TITLE') }}
 {% endblock %}
 
 {% set correspondenceAddressHtml %}
   <div class="govuk-form-group" id="postcodeContainer">
     <p class="govuk-label govuk-!-margin-bottom-5">
-    <p class="govuk-body">{{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }} {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}</p>
-    <label class="govuk-label" for="postcode">
-      {{ t('PAGES.CITIZEN_DETAILS.UK_POSTCODE') }}
-    </label>
+    <p class="govuk-body">{{ t('PAGES.COMPANY_DETAILS.ALL_CORRESPONDENCE') }} {{ t('PAGES.COMPANY_DETAILS.ADDRESS_FOR_SERVICE') }}</p>
     <div id="postcode-error" class="govuk-visually-hidden govuk-error-message">
       {{ t('PAGES.CITIZEN_DETAILS.ADDRESS_NOT_FOUND') + t('PAGES.CITIZEN_DETAILS.TRY_AGAIN') }}
     </div>
@@ -85,7 +82,7 @@
 
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.TITLE') }}</h1>
+          <h1 class="govuk-heading-l">{{ t('PAGES.ORGANISATION_DETAILS.TITLE') }}</h1>
           <p class="govuk-body">{{ t('PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.THESE_DETAILS_ARE') }}</p>
         </div>
       </div>
@@ -120,9 +117,7 @@
             <div class="govuk-form-group" id="primaryPostcodeContainer">
               <h2 class="govuk-heading-m">{{ addressTitle }}</h2>
               <p class="govuk-body">{{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }} {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}</p>
-              <label class="govuk-label" for="primaryPostcode">
-                {{ t('PAGES.CITIZEN_DETAILS.UK_POSTCODE') }}
-              </label>
+              <p class="govuk-body">{{ t('PAGES.ORGANISATION_DETAILS.MAIN_OFFICE') }}</p>
               <div id="primaryPostcode-error" class="govuk-visually-hidden govuk-error-message">
                 {{ t('PAGES.CITIZEN_DETAILS.ADDRESS_NOT_FOUND') + t('PAGES.CITIZEN_DETAILS.TRY_AGAIN') }}
               </div>

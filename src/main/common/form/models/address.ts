@@ -2,7 +2,7 @@ import {IsNotEmpty, Validate} from 'class-validator';
 import {PostcodeValidator} from '../validators/postcodeValidator';
 import {CorrespondenceAddress} from '../../models/correspondenceAddress';
 
-export class CitizenAddress {
+export class Address {
   @IsNotEmpty({message: 'ERRORS.VALID_ADDRESS_LINE_1'})
     primaryAddressLine1?: string;
   primaryAddressLine2?: string;
@@ -26,8 +26,8 @@ export class CitizenAddress {
     this.primaryPostCode = primaryPostCode;
   }
 
-  static fromObject(value?: Record<string, string>): CitizenAddress {
-    return new CitizenAddress(
+  static fromObject(value?: Record<string, string>): Address {
+    return new Address(
       value?.primaryAddressLine1,
       value?.primaryAddressLine2,
       value?.primaryAddressLine3,
@@ -36,8 +36,8 @@ export class CitizenAddress {
     );
   }
 
-  static fromJson(value?: CorrespondenceAddress): CitizenAddress {
-    return new CitizenAddress(
+  static fromJson(value?: CorrespondenceAddress): Address {
+    return new Address(
       value?.AddressLine1,
       value?.AddressLine2,
       value?.AddressLine3,

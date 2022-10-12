@@ -8,7 +8,7 @@ import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
-const pageTitle = 'PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.PAGE_TITLE';
+const pageTitle = 'PAGES.ORGANISATION_DETAILS.PAGE_TITLE';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -17,7 +17,7 @@ describe('Claimant Organisation Details View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
@@ -28,7 +28,7 @@ describe('Claimant Organisation Details View', () => {
     let htmlDocument: Document;
     let mainWrapper: Element;
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const response = await request(app).get(CLAIMANT_ORGANISATION_DETAILS_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
@@ -41,7 +41,7 @@ describe('Claimant Organisation Details View', () => {
 
     it('should display correct header', () => {
       const header = htmlDocument.getElementsByClassName('govuk-heading-l');
-      expect(header[0].innerHTML).toContain(t('PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.TITLE'));
+      expect(header[0].innerHTML).toContain(t('PAGES.ORGANISATION_DETAILS.TITLE'));
     });
 
     it('should display These details are shared paragraph', () => {
@@ -49,7 +49,7 @@ describe('Claimant Organisation Details View', () => {
       expect(paragraph.innerHTML).toEqual(t('PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.THESE_DETAILS_ARE'));
     });
 
-    it('should display Title, First Name and Last Name labels', () => {
+    it('should display Company name and Contact person labels', () => {
       const labels = mainWrapper.getElementsByClassName('govuk-label');
       expect(labels[0].innerHTML).toContain('Company name');
       expect(labels[1].innerHTML).toContain('Contact person');
@@ -64,7 +64,7 @@ describe('Claimant Organisation Details View', () => {
     describe('Your postal address section', () => {
       it('should display Your postal address heading', () => {
         const header = mainWrapper.getElementsByClassName('govuk-heading-m')[0];
-        expect(header.innerHTML).toContain(t('PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.YOUR_POSTAL_ADDRESS'));
+        expect(header.innerHTML).toContain(t('PAGES.ORGANISATION_DETAILS.ADDRESS'));
       });
 
       it('should display If your address is paragraph', () => {
@@ -74,14 +74,13 @@ describe('Claimant Organisation Details View', () => {
 
       it('should display primary address labels', () => {
         const labels = mainWrapper.getElementsByClassName('govuk-label');
-        expect(labels[2].innerHTML).toContain('Enter a UK postcode');
-        expect(labels[4].innerHTML).toContain('Building and street');
-        expect(labels[7].innerHTML).toContain('Town or city');
-        expect(labels[8].innerHTML).toContain('Postcode');
+        expect(labels[3].innerHTML).toContain('Building and street');
+        expect(labels[6].innerHTML).toContain('Town or city');
+        expect(labels[7].innerHTML).toContain('Postcode');
       });
 
       it('should display Enter address manually text', () => {
-        const paragraph = mainWrapper.getElementsByClassName('govuk-body')[2];
+        const paragraph = mainWrapper.getElementsByClassName('govuk-body')[3];
         expect(paragraph.innerHTML).toContain('Enter address manually');
       });
     });
@@ -102,20 +101,19 @@ describe('Claimant Organisation Details View', () => {
         expect(radios[0].getAttribute('value')).toBe('no');
         expect(radios[1].getAttribute('value')).toBe('yes');
         const labels = mainWrapper.getElementsByClassName('govuk-label');
-        expect(labels[9].innerHTML).toContain('No');
-        expect(labels[10].innerHTML).toContain('Yes, add a correspondence address');
+        expect(labels[8].innerHTML).toContain('No');
+        expect(labels[9].innerHTML).toContain('Yes, add a correspondence address');
       });
 
       it('should display correspondence address labels', () => {
         const labels = mainWrapper.getElementsByClassName('govuk-label');
-        expect(labels[12].innerHTML).toContain('Enter a UK postcode');
-        expect(labels[14].innerHTML).toContain('Building and street');
-        expect(labels[17].innerHTML).toContain('Town or city');
-        expect(labels[18].innerHTML).toContain('Postcode');
+        expect(labels[13].innerHTML).toContain('Building and street');
+        expect(labels[15].innerHTML).toContain('Town or city');
+        expect(labels[16].innerHTML).toContain('Postcode');
       });
 
       it('should display Enter address manually text', () => {
-        const paragraph = mainWrapper.getElementsByClassName('govuk-body')[4];
+        const paragraph = mainWrapper.getElementsByClassName('govuk-body')[3];
         expect(paragraph.innerHTML).toContain('Enter address manually');
       });
     });
