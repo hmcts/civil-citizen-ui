@@ -21,7 +21,7 @@ import {mockClaim} from '../../../utils/mockClaim';
 import {DocumentType} from '../../../../main/common/models/document/documentType';
 import {GenericYesNo} from '../../../../main/common/form/models/genericYesNo';
 import {RejectAllOfClaim} from '../../../../main/common/form/models/rejectAllOfClaim';
-import RejectAllOfClaimType from '../../../../main/common/form/models/rejectAllOfClaimType';
+import {RejectAllOfClaimType} from '../../../../main/common/form/models/rejectAllOfClaimType';
 import {
   HowMuchHaveYouPaid,
   HowMuchHaveYouPaidParams,
