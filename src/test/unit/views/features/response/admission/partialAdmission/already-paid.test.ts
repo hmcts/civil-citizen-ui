@@ -18,7 +18,8 @@ describe('Already Paid View', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
-    beforeEach(async () => {
+
+    beforeAll(async () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
@@ -63,7 +64,7 @@ describe('Already Paid View', () => {
 
   describe('on POST', () => {
     let htmlDocument: Document;
-    beforeEach(async () => {
+    beforeAll(async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       const response = await request(app).post(CITIZEN_ALREADY_PAID_URL);
       const dom = new JSDOM(response.text);

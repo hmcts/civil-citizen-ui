@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {Request, Response, Router} from 'express';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {
   ELIGIBILITY_CLAIM_VALUE_URL,
@@ -10,15 +10,15 @@ import {TotalAmountOptions} from '../../../../common/models/eligibility/totalAmo
 import {constructUrlWithNotEligibleReason} from '../../../../common/utils/urlFormatter';
 import {NotEligibleReason} from '../../../../common/form/models/eligibility/NotEligibleReason';
 
-const totalAmountController = express.Router();
+const totalAmountController = Router();
 const totalAmountViewPath = 'features/public/eligibility/total-amount';
 
-totalAmountController.get(ELIGIBILITY_CLAIM_VALUE_URL, (req: express.Request, res: express.Response) => {
+totalAmountController.get(ELIGIBILITY_CLAIM_VALUE_URL, (req: Request, res: Response) => {
   const totalAmount = req.cookies?.eligibility?.totalAmount;
   res.render(totalAmountViewPath, { form: new GenericForm(new TotalAmount(totalAmount))});
 });
 
-totalAmountController.post(ELIGIBILITY_CLAIM_VALUE_URL, async (req: express.Request, res: express.Response) => {
+totalAmountController.post(ELIGIBILITY_CLAIM_VALUE_URL, async (req: Request, res: Response) => {
   const totalAmount = new TotalAmount(req.body.totalAmount);
   const form = new GenericForm(totalAmount);
   await form.validate();

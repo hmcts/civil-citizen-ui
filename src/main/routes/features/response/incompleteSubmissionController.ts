@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Router} from 'express';
 import {CLAIM_TASK_LIST_URL, RESPONSE_INCOMPLETE_SUBMISSION_URL} from '../../urls';
 import {outstandingTasksFromCase} from '../../../services/features/response/taskListService';
 import {Task} from '../../../common/models/taskList/task';
@@ -6,9 +6,9 @@ import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreServi
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 
 const incompleteSubmissionViewPath = 'features/response/incomplete-submission';
-const incompleteSubmissionController = express.Router();
+const incompleteSubmissionController = Router();
 
-incompleteSubmissionController.get(RESPONSE_INCOMPLETE_SUBMISSION_URL, async (req, res, next: express.NextFunction) => {
+incompleteSubmissionController.get(RESPONSE_INCOMPLETE_SUBMISSION_URL, async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;

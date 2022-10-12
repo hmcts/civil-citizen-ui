@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {RepaymentPlanForm} from '../../../../../../common/form/models/repaymentPlan/repaymentPlanForm';
 import {constructResponseUrlWithIdParams} from '../../../../../../common/utils/urlFormatter';
 import {
@@ -12,10 +12,10 @@ import {ResponseType} from '../../../../../../common/form/models/responseType';
 import {getCaseDataFromStore} from '../../../../../../modules/draft-store/draftStoreService';
 
 const repaymentPlanViewPath = 'features/response/repaymentPlan/repaymentPlan';
-const repaymentPlanPartAdmissionController = express.Router();
+const repaymentPlanPartAdmissionController = Router();
 let amount: number;
 
-function renderView(form: GenericForm<RepaymentPlanForm>, res: express.Response, amount: number): void {
+function renderView(form: GenericForm<RepaymentPlanForm>, res: Response, amount: number): void {
   res.render(repaymentPlanViewPath, {
     form,
     paymentExampleDate: getFirstPaymentExampleDate(),
@@ -24,7 +24,7 @@ function renderView(form: GenericForm<RepaymentPlanForm>, res: express.Response,
   });
 }
 
-repaymentPlanPartAdmissionController.get(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL, async (req, res, next: express.NextFunction) => {
+repaymentPlanPartAdmissionController.get(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL, async (req, res, next: NextFunction) => {
   try {
     const claim = await getCaseDataFromStore(req.params.id);
     amount = claim.partialAdmissionPaymentAmount();
@@ -36,7 +36,7 @@ repaymentPlanPartAdmissionController.get(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL, asy
 });
 
 repaymentPlanPartAdmissionController.post(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL,
-  async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const claim = await getCaseDataFromStore(req.params.id);
       const repaymentPlan = getRepaymentPlanForm(claim, true);

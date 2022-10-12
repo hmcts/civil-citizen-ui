@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {Response, Router} from 'express';
 import {DQ_EXPERT_EXAMINATION_URL, DQ_GIVE_EVIDENCE_YOURSELF_URL, PERMISSION_FOR_EXPERT_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
@@ -10,12 +10,12 @@ import {
   saveDirectionQuestionnaire,
 } from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 
-const permissionForExpertController = express.Router();
+const permissionForExpertController = Router();
 const permissionForExpertViewPath = 'features/directionsQuestionnaire/permission-for-expert';
 const dqPropertyName = 'permissionForExpert';
 const dqParentName = 'experts';
 
-function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
+function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(permissionForExpertViewPath, {form});
 }
 

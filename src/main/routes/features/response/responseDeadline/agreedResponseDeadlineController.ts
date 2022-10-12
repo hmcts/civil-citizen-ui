@@ -1,4 +1,4 @@
-import express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {AgreedResponseDeadline} from '../../../../common/form/models/agreedResponseDeadline';
 import {
   AGREED_TO_MORE_TIME_URL,
@@ -13,11 +13,11 @@ import {deadLineGuard} from '../../../../routes/guards/deadLineGuard';
 
 const responseDeadlineService = new ResponseDeadlineService();
 const agreedResponseDeadlineViewPath = 'features/response/responseDeadline/agreed-response-deadline';
-const agreedResponseDeadlineController = express.Router();
+const agreedResponseDeadlineController = Router();
 
 agreedResponseDeadlineController
   .get(
-    AGREED_TO_MORE_TIME_URL, deadLineGuard, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    AGREED_TO_MORE_TIME_URL, deadLineGuard, async (req: Request, res: Response, next: NextFunction) => {
       const backLink = constructResponseUrlWithIdParams(req.params.id, RESPONSE_DEADLINE_OPTIONS_URL);
       try {
         const claim = await getCaseDataFromStore(req.params.id);
@@ -33,7 +33,7 @@ agreedResponseDeadlineController
       }
     })
   .post(
-    AGREED_TO_MORE_TIME_URL, deadLineGuard, async (req, res, next: express.NextFunction) => {
+    AGREED_TO_MORE_TIME_URL, deadLineGuard, async (req, res, next: NextFunction) => {
       const {year, month, day} = req.body;
       const backLink = constructResponseUrlWithIdParams(req.params.id, RESPONSE_DEADLINE_OPTIONS_URL);
       try {

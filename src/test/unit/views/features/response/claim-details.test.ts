@@ -24,14 +24,14 @@ describe('Task List View', () => {
   let mainWrapper: Element;
   const claim = require('../../../../utils/mocks/civilClaimResponseMock.json');
 
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
 
   describe('on GET', () => {
-    beforeEach(async () => {
+    beforeAll(async () => {
       nock('http://localhost:4000')
         .get('/cases/1111')
         .reply(200, mockResponse);
@@ -114,8 +114,8 @@ describe('Task List View', () => {
       app.locals.draftStoreClient = mockCivilClaimPDFTimeline;
       const response = await request(app).get('/case/1111/response/claim-details');
       const dom = new JSDOM(response.text);
-      htmlDocument = dom.window.document;
-      const downloadLink = htmlDocument.getElementById('timeline-link') as HTMLAnchorElement;
+      const _htmlDocument = dom.window.document;
+      const downloadLink = _htmlDocument.getElementById('timeline-link') as HTMLAnchorElement;
       expect(downloadLink.innerHTML).toContain('Download and view timeline');
       expect(downloadLink.href).toContain('case/1111/documents/timeline');
     });

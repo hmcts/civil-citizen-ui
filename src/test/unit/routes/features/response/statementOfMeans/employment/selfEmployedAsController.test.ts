@@ -13,6 +13,7 @@ jest.mock('../../../../../../../main/modules/draft-store');
 describe('Self Employed As', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
+
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')

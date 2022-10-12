@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Router} from 'express';
 import {AddressInfoResponse, OSPlacesClient} from '@hmcts/os-places-client';
 import {POSTCODE_LOOKUP_URL} from '../../../urls';
 import config from 'config';
@@ -6,8 +6,8 @@ import config from 'config';
 const postcodeLookupApiKey = config.get<string>('services.postcodeLookup.ordnanceSurveyApiKey');
 const osPlacesClient = new OSPlacesClient(postcodeLookupApiKey);
 
-export default express.Router()
-  .get(POSTCODE_LOOKUP_URL, (req, res, next: express.NextFunction) => {
+export default Router()
+  .get(POSTCODE_LOOKUP_URL, (req, res, next: NextFunction) => {
     if (!req.query.postcode || !req.query.postcode.toString().trim()) {
       return res.status(400).json({
         error: {

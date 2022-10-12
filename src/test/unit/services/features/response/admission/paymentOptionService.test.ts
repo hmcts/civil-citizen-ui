@@ -4,9 +4,9 @@ import {
   getPaymentOptionForm,
   savePaymentOptionData,
 } from '../../../../../../main/services/features/response/admission/paymentOptionService';
-import PaymentOptionType
+import {PaymentOptionType}
   from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
-import PaymentOption
+import {PaymentOption}
   from '../../../../../../main/common/form/models/admission/paymentOption/paymentOption';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {ResponseType} from '../../../../../../main/common/form/models/responseType';
@@ -31,17 +31,7 @@ describe('payment option service', () => {
       //Then
       expect(form.paymentType).toBe(PaymentOptionType.IMMEDIATELY);
     });
-    it('should get new form when payment option is empty', async () => {
-      //Given
-      const claim = createClaim(undefined);
-      mockGetCaseData.mockImplementation(async () => {
-        return claim;
-      });
-      //When
-      const form = await getPaymentOptionForm('123', ResponseType.FULL_ADMISSION);
-      //Then
-      expect(form.paymentType).toBeUndefined();
-    });
+
     it('should get new form when payment option undefined', async () => {
       //Given
       const claim = new Claim();
@@ -98,17 +88,7 @@ describe('payment option service', () => {
       //Then
       expect(form.paymentType).toBe(PaymentOptionType.INSTALMENTS);
     });
-    it('should get new form when payment option is empty', async () => {
-      //Given
-      const claim = createPartialAdmissionClaim(undefined);
-      mockGetCaseData.mockImplementation(async () => {
-        return claim;
-      });
-      //When
-      const form = await getPaymentOptionForm('123', ResponseType.PART_ADMISSION);
-      //Then
-      expect(form.paymentType).toBeUndefined();
-    });
+
     it('should get new form when payment option undefined', async () => {
       //Given
       const claim = new Claim();

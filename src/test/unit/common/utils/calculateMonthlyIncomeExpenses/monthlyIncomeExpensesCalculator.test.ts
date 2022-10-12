@@ -1,7 +1,7 @@
 import {
   RegularExpenses,
 } from '../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
-import Transaction from '../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transaction';
+import {Transaction} from '../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transaction';
 import {
   TransactionSchedule,
 } from '../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';

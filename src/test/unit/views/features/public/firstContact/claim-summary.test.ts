@@ -18,7 +18,7 @@ describe('First contact - Claim Summary View', () => {
   let htmlDocument: Document;
   let mainWrapper: Element;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});

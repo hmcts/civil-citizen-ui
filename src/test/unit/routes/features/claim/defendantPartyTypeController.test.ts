@@ -12,7 +12,7 @@ import {
   CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL,
 } from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from '../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../main/common/models/claim';
 
 jest.mock('../../../../../main/modules/oidc');
@@ -20,14 +20,17 @@ jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 describe('Defendant party type controller', () => {
-  const mockGetClaim = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockGetClaim = getCaseDataFromStore as jest.Mock;
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+  });
+
+  beforeEach(() => {
     mockGetClaim.mockImplementation(async () => {
       new Claim();
     });
@@ -100,7 +103,7 @@ describe('Defendant party type controller', () => {
     });
 
     it('should return something went wrong page if redis failure occurs', async () => {
-      const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      const mockSaveDraftClaim = saveDraftClaim as jest.Mock;
       mockSaveDraftClaim.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });

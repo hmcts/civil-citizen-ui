@@ -6,7 +6,6 @@ import {FREE_TEXT_MAX_LENGTH} from '../../../../common/form/validators/validatio
 import {EvidenceType} from '../../../models/evidence/evidenceType';
 
 export class EvidenceItem {
-
   type?: EvidenceType;
 
   @MaxLength(FREE_TEXT_MAX_LENGTH, {message: VALID_TEXT_LENGTH})

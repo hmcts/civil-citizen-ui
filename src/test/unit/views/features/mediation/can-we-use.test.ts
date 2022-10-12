@@ -6,10 +6,10 @@ import {
   CAN_WE_USE_URL,
 } from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import { mockCivilClaim } from '../../../../utils/mockDraftStore';
+import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 
 const jsdom = require('jsdom');
-const { JSDOM } = jsdom;
+const {JSDOM} = jsdom;
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -29,7 +29,7 @@ describe('Confirm Mediation Individual Telephone Number', () => {
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
+      .reply(200, {id_token: citizenRoleToken});
   });
 
   describe('Repayment Plan View', () => {
@@ -37,7 +37,7 @@ describe('Confirm Mediation Individual Telephone Number', () => {
     let mainWrapper: Element;
 
     describe('on GET', () => {
-      beforeEach(async () => {
+      beforeAll(async () => {
         app.locals.draftStoreClient = mockCivilClaim;
         await request(app).get(CAN_WE_USE_URL).then(res => {
           const dom = new JSDOM(res.text);
@@ -119,9 +119,9 @@ describe('Confirm Mediation Individual Telephone Number', () => {
     });
 
     describe('on POST', () => {
-      const getErrorSummaryListElement = (index:number) => htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0].getElementsByTagName('li')[index];
+      const getErrorSummaryListElement = (index: number) => htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0].getElementsByTagName('li')[index];
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         app.locals.draftStoreClient = mockCivilClaim;
         await request(app).post(CAN_WE_USE_URL).then(res => {
           const dom = new JSDOM(res.text);
@@ -144,7 +144,7 @@ describe('Confirm Mediation Individual Telephone Number', () => {
       it('should display correct error summary message with correct link for telephone number is undefined', async () => {
         await request(app)
           .post(CAN_WE_USE_URL)
-          .send({ option: 'no', telephoneNumber: ''})
+          .send({option: 'no', telephoneNumber: ''})
           .then(res => {
             const dom = new JSDOM(res.text);
             htmlDocument = dom.window.document;
@@ -158,7 +158,7 @@ describe('Confirm Mediation Individual Telephone Number', () => {
       it('should display correct error summary message with correct link for telephone number greater than 30 characters', async () => {
         await request(app)
           .post(CAN_WE_USE_URL)
-          .send({ option: 'no', telephoneNumber: '1234567890123456789012345678900'})
+          .send({option: 'no', telephoneNumber: '1234567890123456789012345678900'})
           .then(res => {
             const dom = new JSDOM(res.text);
             htmlDocument = dom.window.document;

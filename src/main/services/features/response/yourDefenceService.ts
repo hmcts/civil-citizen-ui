@@ -8,7 +8,6 @@ const logger = Logger.getLogger('yourDefenceService');
 
 export const saveYourDefence = async (claim: Claim, claimId: string, form: Defence) => {
   try {
-
     if (!claim.rejectAllOfClaim) {
       claim.rejectAllOfClaim = new RejectAllOfClaim();
     }

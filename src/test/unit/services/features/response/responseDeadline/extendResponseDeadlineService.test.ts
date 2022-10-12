@@ -27,6 +27,7 @@ claim.responseDeadline = {
   option: ResponseOptions.ALREADY_AGREED,
 };
 const citizenBaseUrl: string = config.get('services.civilService.url');
+
 describe('Extend ResponseDeadline Service', () => {
   describe('submitExtendedResponseDeadline', () => {
     beforeEach(() => {
@@ -46,7 +47,6 @@ describe('Extend ResponseDeadline Service', () => {
       if (!nock.isDone()) {
         nock.cleanAll();
       }
-
       expect(spy).toHaveBeenCalled();
     });
 
@@ -59,6 +59,7 @@ describe('Extend ResponseDeadline Service', () => {
       await submitExtendedResponseDeadline(mockedAppRequest);
       //Then
       expect(spy).not.toHaveBeenCalled();
+      spy.mockClear();
     });
 
     it('should rethrow exception when redis throws exception', async () => {

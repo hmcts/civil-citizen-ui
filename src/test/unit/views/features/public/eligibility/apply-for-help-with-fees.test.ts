@@ -13,12 +13,15 @@ describe('Apply For Help With Fees View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
+  beforeAll(() => {
+    nock(idamUrl)
+      .post('/o/token')
+      .reply(200, {id_token: citizenRoleToken});
+  });
+
   describe('on GET', () => {
     let htmlDocument: Document;
-    beforeEach(async () => {
-      nock(idamUrl)
-        .post('/o/token')
-        .reply(200, {id_token: citizenRoleToken});
+    beforeAll(async () => {
       const response = await request(app).get(ELIGIBILITY_APPLY_HELP_WITH_FEES_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;

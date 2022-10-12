@@ -70,37 +70,3 @@ export const getSecondConditionalContentContent = (claim: Claim): ClaimSummarySe
     },
   ];
 };
-
-export const getThirdConditionalContentContent = (claim: Claim): ClaimSummarySection[] => { //NOSONAR
-  return [
-    {
-      type: ClaimSummaryType.TITLE,
-      data: {
-        text: 'Notify us about the debt respite scheme (breathing space)',
-      },
-    },
-    {
-      type: ClaimSummaryType.PARAGRAPH,
-      data: {
-        text: 'Do you need to notify us that the defendant has entered the debt respite scheme (breathing space)?',
-      },
-    },
-    {
-      type: ClaimSummaryType.LINK,
-      data: {
-        text: 'debt respite scheme (opens in new tab)',
-        href: '/test',
-        textBefore: 'More information about the',
-      },
-    },
-    {
-      type: ClaimSummaryType.BUTTON,
-      data: {
-        text: 'Notify us about the debt respite scheme',
-        href: '/test',
-        classes: 'govuk-button--secondary',
-      },
-    },
-  ];
-};
-

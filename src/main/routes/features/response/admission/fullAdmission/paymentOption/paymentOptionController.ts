@@ -1,7 +1,7 @@
-import * as express from 'express';
+import {NextFunction, Response, Router} from 'express';
 import {CITIZEN_PAYMENT_DATE_URL, CITIZEN_PAYMENT_OPTION_URL, CLAIM_TASK_LIST_URL} from '../../../../../urls';
-import PaymentOption from '../../../../../../common/form/models/admission/paymentOption/paymentOption';
-import PaymentOptionType
+import {PaymentOption} from '../../../../../../common/form/models/admission/paymentOption/paymentOption';
+import {PaymentOptionType}
   from '../../../../../../common/form/models/admission/paymentOption/paymentOptionType';
 import {
   getPaymentOptionForm,
@@ -11,14 +11,14 @@ import {constructResponseUrlWithIdParams} from '../../../../../../common/utils/u
 import {ResponseType} from '../../../../../../common/form/models/responseType';
 import {GenericForm} from '../../../../../../common/form/models/genericForm';
 
-const paymentOptionController = express.Router();
+const paymentOptionController = Router();
 const citizenPaymentOptionViewPath = 'features/response/admission/payment-option';
 
-function renderView(form: GenericForm<PaymentOption>, res: express.Response) {
+function renderView(form: GenericForm<PaymentOption>, res: Response) {
   res.render(citizenPaymentOptionViewPath, {form, PaymentOptionType});
 }
 
-function redirectToNextPage(claimId: string, form: PaymentOption, res: express.Response) {
+function redirectToNextPage(claimId: string, form: PaymentOption, res: Response) {
   if (form.paymentOptionBySetDateSelected()) {
     res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_PAYMENT_DATE_URL));
   } else {
@@ -26,7 +26,7 @@ function redirectToNextPage(claimId: string, form: PaymentOption, res: express.R
   }
 }
 
-paymentOptionController.get(CITIZEN_PAYMENT_OPTION_URL, async (req, res, next: express.NextFunction) => {
+paymentOptionController.get(CITIZEN_PAYMENT_OPTION_URL, async (req, res, next: NextFunction) => {
   try {
     const paymentOption = await getPaymentOptionForm(req.params.id, ResponseType.FULL_ADMISSION);
     renderView(new GenericForm(paymentOption), res);
@@ -35,7 +35,7 @@ paymentOptionController.get(CITIZEN_PAYMENT_OPTION_URL, async (req, res, next: e
   }
 });
 
-paymentOptionController.post(CITIZEN_PAYMENT_OPTION_URL, async (req, res, next: express.NextFunction) => {
+paymentOptionController.post(CITIZEN_PAYMENT_OPTION_URL, async (req, res, next: NextFunction) => {
   const paymentOption = new PaymentOption(req.body.paymentType);
   const form = new GenericForm(paymentOption);
   try {

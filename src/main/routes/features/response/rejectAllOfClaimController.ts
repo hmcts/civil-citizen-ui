@@ -1,18 +1,18 @@
-import * as express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {CITIZEN_REJECT_ALL_CLAIM_URL, CLAIM_TASK_LIST_URL, SEND_RESPONSE_BY_EMAIL_URL} from '../../urls';
 import {getRejectAllOfClaim, saveRejectAllOfClaim} from '../../../services/features/response/rejectAllOfClaimService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {RejectAllOfClaim} from '../../../common/form/models/rejectAllOfClaim';
-import RejectAllOfClaimType from '../../../common/form/models/rejectAllOfClaimType';
 import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
 import {WhyDoYouDisagree} from '../../../common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {HowMuchHaveYouPaid} from '../../../common/form/models/admission/howMuchHaveYouPaid';
+import {RejectAllOfClaimType} from '../../../common/form/models/rejectAllOfClaimType';
 
 const rejectAllOfClaimViewPath = 'features/response/reject-all-of-claim';
-const rejectAllOfClaimController = express.Router();
+const rejectAllOfClaimController = Router();
 
-rejectAllOfClaimController.get(CITIZEN_REJECT_ALL_CLAIM_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+rejectAllOfClaimController.get(CITIZEN_REJECT_ALL_CLAIM_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getCaseDataFromStore(claimId);
@@ -27,7 +27,7 @@ rejectAllOfClaimController.get(CITIZEN_REJECT_ALL_CLAIM_URL, async (req: express
   }
 });
 
-rejectAllOfClaimController.post(CITIZEN_REJECT_ALL_CLAIM_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+rejectAllOfClaimController.post(CITIZEN_REJECT_ALL_CLAIM_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const rejectAllOfClaim = new RejectAllOfClaim(req.body.option);
