@@ -135,6 +135,7 @@ import phoneOrVideoHearingController from './features/directionsQuestionnaire/ph
 import cantAttendHearingInNext12MonthsController
   from './features/directionsQuestionnaire/cantAttendHearingInNext12MonthsController';
 import youCanUseServiceController from './features/public/eligibility/youCanUseServiceController';
+import defendantDetailsController from './features/claim/defendant/defendantDetailsController';
 import interestTypeController from './features/claim/interest/interestTypeController';
 import interestRateController from './features/claim/interest/claimantInterestRateController';
 import interestStartDateController from './features/claim/interest/interestStartDateController';
@@ -268,6 +269,7 @@ export default [
   phoneOrVideoHearingController,
   cantAttendHearingInNext12MonthsController,
   youCanUseServiceController,
+  defendantDetailsController,
   interestTypeController,
   interestRateController,
   claimAmountBreakdownController,
