@@ -726,6 +726,28 @@
       "TITLE": "A oes gennych fenthyciadau neu ddyledion cerdyn credyd?",
       "TOTAL": "Cyfanswm sy'n ddyledus gennych"
     },
+    "DEFENDANT_DETAILS": {
+      "CONTACT_PERSON": "Name of contact person (optional)",
+      "CONTACT_PERSON_HINT": "This might be a person you’ve discussed the claim with.",
+      "ENGLAND_OR_WALES_ADDRESS": "The address must be in England or Wales.",
+      "FIND_ADDRESS": "Find address",
+      "MANUAL_ADDRESS": "Enter address manually",
+      "ORGANISATION_ADDRESS": "Organisation address",
+      "ORGANISATION_ADDRESS_NOT_CORRECT": "If your address is not correct you can change it here.",
+      "ORGANISATION_ANY_CHANGES": "Any changes will be shared with the claimant when you submit your response.",
+      "ORGANISATION_MAIN_OFFICE": "Enter the organisation’s main office or address that has a connection with the claim.",
+      "ORGANISATION_NAME": "Organisation name",
+      "PAGE_TITLES": {
+        "COMPANY": "",
+        "INDIVIDUAL": "",
+        "ORGANISATION": "Enter organisation details",
+        "SOLE_TRADER": ""
+      },
+      "PAYING_EXTRA": "You’ll have to pay extra fee if you later want to change the name of anyone involved with the claim.",
+      "PAYING_EXTRA_ORGANISATION": "You’ll have to pay extra fee if you later want to change the name of an organisation involved with the claim.",
+      "PICK_ADDRESS": "Pick an address",
+      "UK_POSTCODE": "Enter a UK postcode"
+    },
     "DEFENDANT_PARTY_TYPE": {
       "CLAIMING_AGAINST_AN_INDIVIDUAL": "An individual",
       "CLAIMING_AGAINST_LIMITED_COMPANY": "A limited company",
@@ -1639,6 +1661,7 @@
     }
   },
   "ERRORS": {
+    "ADDRESS_NOT_FOUND": "We can't find an address for that postcode.",
     "AMOUNT_INVALID_DECIMALS": "Rhowch swm, dim mwy na dau le degol",
     "AMOUNT_LESS_THAN_CLAIMED": "Nodwch werth sy'n llai na'r swm a hawlir",
     "AMOUNT_REQUIRED": "Nodwch swm o £1 neu fwy",
@@ -1781,6 +1804,7 @@
     "TEXT_TOO_MANY": "You've entered too many characters",
     "TEXT400_TOO_LONG": "Rhaid i'r rheswm fod yn 400 o nodau neu'n llai",
     "THERE_WAS_A_PROBLEM": "Roedd problem",
+    "TRY_AGAIN": "Try again or enter the address manually.",
     "TYPE_OF_ACCOUNT_REQUIRED": "Dewiswch math o gyfrif",
     "VALID_ADDRESS_LINE_1": "Rhowch linell gyntaf y cyfeiriad",
     "VALID_AGREED_RESPONSE_DATE": "Rhowch y dyddiad ymateb yr ydych wedi’i gytuno",
@@ -1824,6 +1848,7 @@
     "VALID_INTEGER": "Rhowch rif, er enghraifft 3",
     "VALID_INTEREST_TYPE_OPTION": "Choose same rate or breakdown",
     "VALID_MONTH": "Rhowch fis dilys",
+    "VALID_NAME": "Enter name",
     "VALID_CANT_ATTEND_HEARING": "Select yes if there are any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing",
     "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Ni all y rhif fod yn uwch na'r rhif ar y dudalen flaenorol",
     "VALID_OPTION_SELECTION": "Dewiswch opsiwn",
