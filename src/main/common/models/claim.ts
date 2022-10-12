@@ -19,7 +19,6 @@ import {
   ClaimAmountBreakup,
   ClaimFee,
   InterestClaimFromType,
-  InterestClaimOptions,
   InterestClaimUntilType,
   SameRateInterestSelection,
   SameRateInterestType,
@@ -38,6 +37,8 @@ import RejectAllOfClaimType from '../../common/form/models/rejectAllOfClaimType'
 import {DirectionQuestionnaire} from '../models/directionsQuestionnaire/directionQuestionnaire';
 import {ResponseOptions} from '../../common/form/models/responseDeadline';
 import {AdditionalTimeOptions} from '../../common/form/models/additionalTime';
+import {InterestClaimOptionsType} from '../../common/form/models/claim/interest/interestClaimOptionsType';
+import {Interest} from '../form/models/interest/interest';
 
 export class Claim {
   legacyCaseReference: string;
@@ -63,10 +64,11 @@ export class Claim {
   claimAmountBreakup?: ClaimAmountBreakup[];
   totalInterest?: number;
   claimInterest?: YesNo;
+  interest?: Interest;
   interestClaimFrom?: InterestClaimFromType;
   interestClaimUntil?: InterestClaimUntilType;
   interestFromSpecificDate?: Date;
-  interestClaimOptions: InterestClaimOptions;
+  interestClaimOptions: InterestClaimOptionsType;
   sameRateInterestSelection?: SameRateInterestSelection;
   breakDownInterestTotal?: number;
   submittedDate?: Date;
@@ -76,9 +78,48 @@ export class Claim {
   systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
   ccdState: CaseState;
   responseDeadline: ResponseDeadline;
-  respondentSolicitor1AgreedDeadlineExtension?:Date;
+  respondentSolicitor1AgreedDeadlineExtension?: Date;
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
+
+  get responseStatus(): ClaimResponseStatus {
+    if (this.isFullAdmission() && this.isPaymentOptionPayImmediately()) {
+      return ClaimResponseStatus.FA_PAY_IMMEDIATELY;
+    }
+
+    if (this.isFullAdmission() && this.isPaymentOptionInstallments()) {
+      return ClaimResponseStatus.FA_PAY_INSTALLMENTS;
+    }
+
+    if (this.isFullAdmission() && this.isPaymentOptionBySetDate()) {
+      return ClaimResponseStatus.FA_PAY_BY_DATE;
+    }
+
+    if (this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.YES) {
+      return ClaimResponseStatus.PA_ALREADY_PAID;
+    }
+
+    if (this.isPartialAdmission() && this.isPAPaymentOptionPayImmediately()) {
+      return ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY;
+    }
+
+    if (this.isPartialAdmission() && this.isPAPaymentOptionByDate()) {
+      return ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE;
+    }
+
+    if (this.isPartialAdmission() && this.isPAPaymentOptionInstallments()) {
+      return ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS;
+    }
+
+    if (this.isRejectAllOfClaimAlreadyPaid() && this.hasConfirmedAlreadyPaid()) {
+      return this.hasPaidInFull() ? ClaimResponseStatus.RC_PAID_FULL : ClaimResponseStatus.RC_PAID_LESS;
+    }
+
+    if (this.isFullDefence() && this.isRejectAllOfClaimDispute()) {
+      return ClaimResponseStatus.RC_DISPUTE;
+    }
+
+  }
 
   getClaimantName(): string {
     return this.applicant1.partyName;
@@ -137,6 +178,10 @@ export class Claim {
     return this.interestClaimUntil === InterestClaimUntilType.UNTIL_CLAIM_SUBMIT_DATE;
   }
 
+  isInterestClaimOptionExists(): boolean {
+    return this.interestClaimOptions?.length > 0;
+  }
+
   isInterestFromClaimSubmitDate(): boolean {
     return this.interestClaimFrom === InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
   }
@@ -146,7 +191,7 @@ export class Claim {
   }
 
   isInterestClaimOptionsSameRateInterest(): boolean {
-    return this.interestClaimOptions === InterestClaimOptions.SAME_RATE_INTEREST;
+    return this.interestClaimOptions === InterestClaimOptionsType.SAME_RATE_INTEREST;
   }
 
   isSameRateTypeEightPercent(): boolean {
@@ -206,6 +251,7 @@ export class Claim {
   partialAdmissionPaidAmount(): number {
     return this.partialAdmission?.howMuchHaveYouPaid?.amount;
   }
+
   isRejectAllOfClaimAlreadyPaid(): number {
     return this.rejectAllOfClaim?.howMuchHaveYouPaid?.amount;
   }
@@ -260,45 +306,6 @@ export class Claim {
 
   isDeadlineExtended(): boolean {
     return this.respondentSolicitor1AgreedDeadlineExtension !== undefined;
-  }
-
-  get responseStatus(): ClaimResponseStatus {
-    if (this.isFullAdmission() && this.isPaymentOptionPayImmediately()) {
-      return ClaimResponseStatus.FA_PAY_IMMEDIATELY;
-    }
-
-    if (this.isFullAdmission() && this.isPaymentOptionInstallments()) {
-      return ClaimResponseStatus.FA_PAY_INSTALLMENTS;
-    }
-
-    if (this.isFullAdmission() && this.isPaymentOptionBySetDate()) {
-      return ClaimResponseStatus.FA_PAY_BY_DATE;
-    }
-
-    if (this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.YES) {
-      return ClaimResponseStatus.PA_ALREADY_PAID;
-    }
-
-    if (this.isPartialAdmission() && this.isPAPaymentOptionPayImmediately()) {
-      return ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY;
-    }
-
-    if (this.isPartialAdmission() && this.isPAPaymentOptionByDate()) {
-      return ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE;
-    }
-
-    if (this.isPartialAdmission() && this.isPAPaymentOptionInstallments()) {
-      return ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS;
-    }
-
-    if (this.isRejectAllOfClaimAlreadyPaid() && this.hasConfirmedAlreadyPaid()) {
-      return this.hasPaidInFull() ? ClaimResponseStatus.RC_PAID_FULL : ClaimResponseStatus.RC_PAID_LESS;
-    }
-
-    if (this.isFullDefence() && this.isRejectAllOfClaimDispute()) {
-      return ClaimResponseStatus.RC_DISPUTE;
-    }
-
   }
 
   hasRespondentAskedForMoreThan28Days(): boolean {
