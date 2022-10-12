@@ -32,4 +32,3 @@ export const addDaysToDate = (date: Date, value: number) => {
   updatedDate.setDate(updatedDate.getDate() + value);
   return updatedDate;
 };
-

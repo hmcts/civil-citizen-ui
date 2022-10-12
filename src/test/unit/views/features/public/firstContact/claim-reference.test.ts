@@ -20,7 +20,7 @@ describe('Respond to Claim - Reference Number', () => {
   let htmlDocument: Document;
 
   describe('on GET', () => {
-    beforeEach(async () => {
+    beforeAll(async () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, { id_token: citizenRoleToken });
@@ -71,7 +71,7 @@ describe('Respond to Claim - Reference Number', () => {
 
     const getErrorSummaryListElement = (index: number) => htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0].getElementsByTagName('li')[index];
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const res = await request(app).post(FIRST_CONTACT_CLAIM_REFERENCE_URL);
       const dom = new JSDOM(res.text);
       htmlDocument = dom.window.document;

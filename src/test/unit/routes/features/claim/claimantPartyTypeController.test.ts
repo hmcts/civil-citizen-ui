@@ -15,11 +15,11 @@ import {
 jest.mock('../../../../../main/modules/oidc');
 
 describe('Claim Party Type Controller', () => {
-  // TODO: Upadate test after refactoring controller to get and save to DraftStore
+  // TODO: Update test after refactoring controller to get and save to DraftStore
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});

@@ -4,9 +4,9 @@ import {
 } from '../../../../../main/services/features/response/rejectAllOfClaimService';
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../main/common/models/claim';
-import rejectAllOfClaimType from '../../../../../main/common/form/models/rejectAllOfClaimType';
 import {RejectAllOfClaim} from '../../../../../main/common/form/models/rejectAllOfClaim';
 import {PartyType} from '../../../../../main/common/models/partyType';
+import {RejectAllOfClaimType} from '../../../../../main/common/form/models/rejectAllOfClaimType';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -53,7 +53,7 @@ describe('rejectAllOfClaim service', () => {
         return claim;
       });
       //When
-      await saveRejectAllOfClaim('123', new RejectAllOfClaim(rejectAllOfClaimType.ALREADY_PAID));
+      await saveRejectAllOfClaim('123', new RejectAllOfClaim(RejectAllOfClaimType.ALREADY_PAID));
       //Then
       expect(spySave).toBeCalled();
     });
@@ -62,7 +62,7 @@ describe('rejectAllOfClaim service', () => {
 
 function createClaim() {
   const claim = new Claim();
-  claim.rejectAllOfClaim = new RejectAllOfClaim(rejectAllOfClaimType.ALREADY_PAID);
+  claim.rejectAllOfClaim = new RejectAllOfClaim(RejectAllOfClaimType.ALREADY_PAID);
   claim.applicant1 = {
     type: PartyType.ORGANISATION,
     partyName: 'Test',

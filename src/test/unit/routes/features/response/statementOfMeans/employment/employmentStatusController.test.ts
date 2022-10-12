@@ -18,11 +18,13 @@ jest.mock('../../../../../../../main/modules/draft-store');
 describe('Employment status', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  beforeEach(() => {
+
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
+
   describe('on Get', () => {
     it('should return employment status page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;

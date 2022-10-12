@@ -13,7 +13,7 @@ import {CorrespondenceAddress} from './correspondenceAddress';
 import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
 import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/dateUtils';
 import {StatementOfTruthForm} from '../form/models/statementOfTruth/statementOfTruthForm';
-import PaymentOptionType from '../form/models/admission/paymentOption/paymentOptionType';
+import {PaymentOptionType} from '../form/models/admission/paymentOption/paymentOptionType';
 import {
   CaseState,
   ClaimAmountBreakup,
@@ -33,12 +33,12 @@ import {DocumentType} from './document/documentType';
 import {ResponseDeadline} from './responseDeadline';
 import {getLng} from '../../common/utils/languageToggleUtils';
 import {ClaimResponseStatus} from './claimResponseStatus';
-import RejectAllOfClaimType from '../../common/form/models/rejectAllOfClaimType';
 import {DirectionQuestionnaire} from '../models/directionsQuestionnaire/directionQuestionnaire';
 import {ResponseOptions} from '../../common/form/models/responseDeadline';
 import {AdditionalTimeOptions} from '../../common/form/models/additionalTime';
 import {InterestClaimOptionsType} from '../../common/form/models/claim/interest/interestClaimOptionsType';
 import {Interest} from '../form/models/interest/interest';
+import {RejectAllOfClaimType} from '../../common/form/models/rejectAllOfClaimType';
 
 export class Claim {
   legacyCaseReference: string;

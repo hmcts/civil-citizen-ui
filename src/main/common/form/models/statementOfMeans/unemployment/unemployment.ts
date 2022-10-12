@@ -5,7 +5,6 @@ import {UnemploymentDetails} from './unemploymentDetails';
 import {OtherDetails} from './otherDetails';
 
 export class Unemployment {
-
   @IsDefined({message: SELECT_AN_OPTION})
     option: UnemploymentCategory;
 

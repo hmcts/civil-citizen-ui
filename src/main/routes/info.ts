@@ -1,4 +1,4 @@
-import * as os from 'os';
+import {hostname} from 'os';
 
 import { infoRequestHandler } from '@hmcts/info-provider';
 import { Router } from 'express';
@@ -8,7 +8,7 @@ export default function(app: Router): void {
     '/info',
     infoRequestHandler({
       extraBuildInfo: {
-        host: os.hostname(),
+        host: hostname(),
         name: 'citizen-ui',
         uptime: process.uptime(),
       },

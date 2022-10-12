@@ -3,7 +3,7 @@ import {Claim} from '../../../models/claim';
 import {TaskStatus} from '../../../models/taskList/TaskStatus';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL} from '../../../../routes/urls';
-import PaymentOptionType from '../../../../common/form/models/admission/paymentOption/paymentOptionType';
+import {PaymentOptionType} from '../../../../common/form/models/admission/paymentOption/paymentOptionType';
 import {getLng} from '../../../../common/utils/languageToggleUtils';
 import {t} from 'i18next';
 

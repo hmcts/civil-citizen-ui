@@ -16,16 +16,16 @@ jest.mock('../../../../../../../../main/modules/draft-store');
 describe('Payment Option Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  beforeEach(() => {
+
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
+
   describe('on Get', () => {
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
-    });
     it('should return payment option page successfully', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CITIZEN_PAYMENT_OPTION_URL)
         .expect((res) => {
@@ -33,6 +33,7 @@ describe('Payment Option Controller', () => {
           expect(res.text).toContain('When do you want to pay?');
         });
     });
+
     it('should return status 500 when there is an error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
@@ -43,10 +44,12 @@ describe('Payment Option Controller', () => {
         });
     });
   });
+
   describe('on Post', () => {
-    beforeEach(() => {
+    beforeAll(() => {
       app.locals.draftStoreClient = mockCivilClaim;
     });
+
     it('should validate when option is not selected', async () => {
       await request(app)
         .post(CITIZEN_PAYMENT_OPTION_URL)

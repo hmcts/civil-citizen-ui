@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {Response, Router} from 'express';
 import {
   ELIGIBILITY_INFORMATION_FEES_URL,
   ELIGIBILITY_APPLY_HELP_FEES_URL,
@@ -8,10 +8,10 @@ import {GenericForm} from '../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
 import {YesNo} from '../../../../common/form/models/yesNo';
 
-const someUsefulInfoFeesController = express.Router();
+const someUsefulInfoFeesController = Router();
 const someUsefulInfoFeesViewPath = 'features/public/eligibility/some-useful-info-fees';
 
-function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
+function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(someUsefulInfoFeesViewPath, {form});
 }
 

@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {Router} from 'express';
 import {CLAIM_DETAILS_URL, CLAIM_TASK_LIST_URL} from '../../urls';
 import {getDescription, getTaskLists, getTitle} from '../../../services/features/response/taskListService';
 import {Claim} from '../../../common/models/claim';
@@ -7,7 +7,7 @@ import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from '../../../modules/utilityService';
 
 const taskListViewPath = 'features/response/task-list';
-const taskListController = express.Router();
+const taskListController = Router();
 
 taskListController.get(CLAIM_TASK_LIST_URL, async (req: AppRequest, res, next) => {
   try {

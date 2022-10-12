@@ -26,5 +26,4 @@ export class AccountBalanceValidator implements ValidatorConstraintInterface {
   defaultMessage() {
     return !this.validNumber ? NUMBER_REQUIRED : VALID_TWO_DECIMAL_NUMBER;
   }
-
 }

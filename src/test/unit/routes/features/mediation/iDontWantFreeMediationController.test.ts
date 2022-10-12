@@ -6,7 +6,7 @@ import {CLAIM_TASK_LIST_URL, DONT_WANT_FREE_MEDIATION_URL} from '../../../../../
 import {OPTION_REQUIRED} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure, mockRedisWithMediationProperties} from '../../../../utils/mockDraftStore';
-import NoMediationReasonOptions from '../../../../../main/common/form/models/mediation/noMediationReasonOptions';
+import {NoMediationReasonOptions} from '../../../../../main/common/form/models/mediation/noMediationReasonOptions';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -14,7 +14,8 @@ jest.mock('../../../../../main/modules/draft-store');
 describe('I dont want free meditation', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  beforeEach(() => {
+
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
