@@ -1,15 +1,15 @@
-import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import {Claim, Party} from '../../../../../main/common/models/claim';
-import {buildPrimaryAddress, mockClaim} from '../../../../utils/mockClaim';
-import {Respondent} from '../../../../../main/common/models/respondent';
+import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import {Claim} from '../../../../../../main/common/models/claim';
+import {buildPrimaryAddress, mockClaim} from '../../../../../utils/mockClaim';
+import {Party} from '../../../../../../main/common/models/party';
 import {
   getDefendantInformation,
   saveDefendant,
-} from '../../../../../main/services/features/claim/defendantDetailsService';
-import {PartyType} from '../../../../../main/common/models/partyType';
+} from '../../../../../../main/services/features/claim/yourDetails/defendantDetailsService';
+import {PartyType} from '../../../../../../main/common/models/partyType';
 
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 const CLAIM_ID = '123';
@@ -46,7 +46,7 @@ describe('Defendant details service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       const expectedData = new Claim();
-      expectedData.respondent1 =  {type: PartyType.INDIVIDUAL};
+      expectedData.respondent1 = {type: PartyType.INDIVIDUAL};
 
       mockGetCaseData.mockImplementation(async () => {
         return new Claim();
@@ -74,7 +74,7 @@ describe('Defendant details service', () => {
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       mockGetCaseData.mockImplementation(async () => {
         const claim = mockClaim;
-        claim.respondent1 = new Respondent();
+        claim.respondent1 = new Party();
         claim.respondent1 = {
           primaryAddress: buildPrimaryAddress(),
           responseType: 'foo',

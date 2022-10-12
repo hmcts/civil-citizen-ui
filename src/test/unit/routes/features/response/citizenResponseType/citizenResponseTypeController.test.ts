@@ -10,7 +10,7 @@ import {
 } from '../../../../../../main/routes/urls';
 import {getCaseDataFromStore} from '../../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../../main/common/models/claim';
-import {Respondent} from '../../../../../../main/common/models/respondent';
+import {Party} from '../../../../../../main/common/models/party';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
@@ -68,7 +68,7 @@ describe('Citizen response type', () => {
     it('should return citizen response type page with all information from redis', async () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
-        const respondent1 = new Respondent();
+        const respondent1 = new Party();
         respondent1.responseType = 'test';
         claim.respondent1 = respondent1;
         return claim;
@@ -105,7 +105,7 @@ describe('Citizen response type', () => {
     it('should redirect page when correct input when has information on redis', async () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
-        const respondent1 = new Respondent();
+        const respondent1 = new Party();
         respondent1.responseType = 'test';
         claim.respondent1 = respondent1;
         return claim;
@@ -132,7 +132,7 @@ describe('Citizen response type', () => {
     it('should redirect page when user selects I admit part of the claim ', async () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
-        const respondent1 = new Respondent();
+        const respondent1 = new Party();
         respondent1.responseType = 'test';
         claim.respondent1 = respondent1;
         return claim;

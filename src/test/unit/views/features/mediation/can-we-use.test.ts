@@ -2,9 +2,7 @@ import config from 'config';
 import nock from 'nock';
 import {app} from '../../../../../main/app';
 import request from 'supertest';
-import {
-  CAN_WE_USE_URL,
-} from '../../../../../main/routes/urls';
+import {CAN_WE_USE_URL} from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 
@@ -15,7 +13,7 @@ jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 
 const civilClaimResponseMock = require('./noRespondentTelephoneMock.json');
-civilClaimResponseMock.case_data.respondent1.telephoneNumber = '';
+civilClaimResponseMock.case_data.respondent1.phoneNumber = '';
 const civilClaimResponseMockWithoutRespondentPhone: string = JSON.stringify(civilClaimResponseMock);
 const mockWithoutRespondentPhone = {
   set: jest.fn(() => Promise.resolve({})),

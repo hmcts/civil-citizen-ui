@@ -26,7 +26,7 @@
     },
     "applicant1": {
       "type": "INDIVIDUAL",
-      "telephoneNumber": "(0)207 127 0000",
+      "phoneNumber": "(0)207 127 0000",
       "individualTitle": "Mr.",
       "individualFirstName": "Jan",
       "individualLastName": "Clark",
@@ -44,7 +44,7 @@
     },
     "respondent1": {
       "dateOfBirth": "2022-03-01T13:29:24.971",
-      "telephoneNumber": "111"
+      "phoneNumber": "111"
     }
   }
 }

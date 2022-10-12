@@ -26,7 +26,7 @@
     "applicant1": {
       "type": "ORGANISATION",
       "partyName": "Mr. Jan Clark",
-      "telephoneNumber": "(0)207 127 0000",
+      "phoneNumber": "(0)207 127 0000",
       "primaryAddress": {
         "County": "Kent",
         "Country": "United Kingdom",
@@ -41,11 +41,10 @@
     "applicantSolicitor1UserDetails": {
       "email": "hmcts.civil+organisation.1.solicitor.1@gmail.com"
     },
-
     "respondent1": {
       "type": "ORGANISATION",
       "dateOfBirth": "2022-03-01T13:29:24.971",
-      "telephoneNumber": "111",
+      "phoneNumber": "111",
       "contactPerson": "Felipe",
       "partyName": "Version 1",
       "responseType": "FULL_ADMISSION"
