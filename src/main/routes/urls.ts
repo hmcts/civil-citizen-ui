@@ -165,3 +165,4 @@ export const CLAIM_HELP_WITH_FEES_URL = `${BASE_CLAIM_URL}/help-with-fees`;
 export const CLAIM_INTEREST_FROM_URL = `${BASE_CLAIM_URL}/interest-date`;
 export const CLAIM_INTEREST_START_DATE_URL = `${BASE_CLAIM_URL}/interest-start-date`;
 export const CLAIM_INTEREST_END_DATE_URL = `${BASE_CLAIM_URL}/interest-end-date`;
+export const DEFENDANT_PHONE_NUMBER_URL = `${BASE_CLAIM_URL}/defendant-phone-number`;

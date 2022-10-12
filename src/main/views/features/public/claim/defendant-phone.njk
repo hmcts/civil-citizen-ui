@@ -7,7 +7,7 @@
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "../../../macro/citizen-telephone.njk" import citizenTelephone %}
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.CITIZEN_PHONE.PAGE_TITLE') }}
+  {{ setPageTitle('PAGES.DEFENDANT_PHONE_NUMBER.PAGE_TITLE') }}
 {% endblock %}
 {% block content %}
   <div class="govuk-width-container">
@@ -18,11 +18,7 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t("PAGES.CITIZEN_PHONE.TITLE") }}</h1>
-          <p class="govuk-body">{{ t("PAGES.CITIZEN_PHONE.MORE_INFORMATION") }}</p>
-          <p class="govuk-body">
-            {{ t("PAGES.CITIZEN_PHONE.INFORMATION") }}
-          </p>
+          <h1 class="govuk-heading-l">{{ t("PAGES.DEFENDANT_PHONE_NUMBER.TITLE") }}</h1>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             <div class="govuk-form-group {%- if form.errorFor('telephoneNumber') %} govuk-form-group--error{% endif %}">

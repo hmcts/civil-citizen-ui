@@ -791,6 +791,10 @@
       "PAGE_TITLE": "Defendant expert evidence",
       "TITLE": "Do you want to use expert evidence?"
     },
+    "DEFENDANT_PHONE_NUMBER": {
+      "PAGE_TITLE": "Their phone number",
+      "TITLE": "Their phone number (optional)"
+    },
     "DEFENDANT_YOURSELF_EVIDENCE": {
       "PAGE_TITLE": "Defendant yourself evidence",
       "TITLE": "Do you want to give evidence yourself?"

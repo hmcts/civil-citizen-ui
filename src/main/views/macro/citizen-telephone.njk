@@ -1,0 +1,15 @@
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% macro citizenTelephone(form, t, param) %}
+  {{ govukInput({
+    id: param.id,
+    name: param.name,
+    value: form.model.telephoneNumber,
+    label: {
+      text: t(param.label),
+      classes: 'govuk-visually-hidden'
+    },
+    errorMessage: {
+      html: t(form.errorFor('telephoneNumber'))
+    } if form.hasErrors()
+  }) }}
+{% endmacro %}
