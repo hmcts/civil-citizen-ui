@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {CITIZEN_DETAILS_URL, DOB_URL, CITIZEN_PHONE_NUMBER_URL} from '../../../urls';
-import {CitizenAddress} from '../../../../common/form/models/citizenAddress';
+import {Address} from '../../../../common/form/models/address';
 import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citizenCorrespondenceAddress';
 import {Respondent} from '../../../../common/models/respondent';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
@@ -24,14 +24,14 @@ const getViewPathWithType = (type: PartyType) => {
   return CITIZEN_DETAILS_VIEW_PATH;
 };
 
-function renderPage(res: Response, req: Request, respondent: Respondent, citizenAddress: GenericForm<CitizenAddress>, citizenCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>): void {
+function renderPage(res: Response, req: Request, respondent: Respondent, citizenAddress: GenericForm<Address>, citizenCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>): void {
   const type = respondent?.type;
 
   res.render(getViewPathWithType(type), {
     respondent,
     citizenAddress,
     citizenCorrespondenceAddress,
-    partyName: respondent?.partyName ,
+    partyName: respondent?.partyName,
     contactPerson: respondent?.contactPerson,
     type,
   });
@@ -49,7 +49,7 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: Request, res: Resp
   try {
     const respondent: Respondent = await getRespondentInformation(req.params.id);
 
-    const citizenAddress = new GenericForm<CitizenAddress>(new CitizenAddress(
+    const citizenAddress = new GenericForm<Address>(new Address(
       respondent?.primaryAddress ? respondent.primaryAddress.AddressLine1 : undefined,
       respondent?.primaryAddress ? respondent.primaryAddress.AddressLine2 : undefined,
       respondent?.primaryAddress ? respondent.primaryAddress.AddressLine3 : undefined,
@@ -72,7 +72,7 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: Request, res: Resp
 citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
   const responseDataRedis: Respondent = await getRespondentInformation(req.params.id);
   try {
-    const citizenAddress = new GenericForm<CitizenAddress>(new CitizenAddress(
+    const citizenAddress = new GenericForm<Address>(new Address(
       req.body.primaryAddressLine1,
       req.body.primaryAddressLine2,
       req.body.primaryAddressLine3,

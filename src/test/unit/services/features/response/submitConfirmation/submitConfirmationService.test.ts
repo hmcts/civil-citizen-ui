@@ -154,30 +154,30 @@ describe('Submit Confirmation service', () => {
 
     it('should display submit status', () => {
       const submitStatusSection = buildSubmitStatus(mockClaimId, claim, lang);
-      expect(submitStatusSection[0].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.YOU_HAVE_SAID_YOU_OWW');
-      expect(submitStatusSection[1].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WE_CONTACT_YOU');
+      expect(submitStatusSection[0]?.data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.YOU_HAVE_SAID_YOU_OWW');
+      expect(submitStatusSection[1]?.data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WE_CONTACT_YOU');
     });
 
     it('should display what happens next title', () => {
       const nextStepsTitle = getNextStepsTitle(lang);
-      expect(nextStepsTitle[0].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');
+      expect(nextStepsTitle[0].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');
     });
 
     it('should display next steps section', () => {
       const nextStepsSection = buildNextStepsSection(mockClaimId, claim, lang);
-      expect(nextStepsSection[0].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.YOU_NEED_PAY_IMMEDIATELY');
-      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.MAKE_SURE_THAT');
-      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.THEY_GET_MONEY_BY');
-      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.CHEQUES_OR_BANK_TRANSFERS');
-      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.RECEIPT_FOR_PAYMENTS');
-      expect(nextStepsSection[2].data.text).toContain('PAGES.SUBMIT_CONFIRMATION.CONTACT_CLAIMANT');
+      expect(nextStepsSection[0].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.YOU_NEED_PAY_IMMEDIATELY');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.MAKE_SURE_THAT');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.THEY_GET_MONEY_BY');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.CHEQUES_OR_BANK_TRANSFERS');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.RECEIPT_FOR_PAYMENTS');
+      expect(nextStepsSection[2].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.CONTACT_CLAIMANT');
       expect(nextStepsSection[2].data?.textAfter).toContain('PAGES.SUBMIT_CONFIRMATION.IF_NEED_PAYMENT_DETAILS');
       expect(nextStepsSection[2].data?.href).toContain(`/dashboard/${mockClaimId}/contact-them`);
-      expect(nextStepsSection[3].data.text).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.IF_CLAIMANT_ACCEPTS_OFFER_OF');
-      expect(nextStepsSection[4].data.text).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.CLAIM_SETTLED');
-      expect(nextStepsSection[5].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OFFER');
-      expect(nextStepsSection[6].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WE_WILL_ASK_MEDIATION');
-      expect(nextStepsSection[7].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.IF_DONT_WANT_MEDIATION');
+      expect(nextStepsSection[3].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.IF_CLAIMANT_ACCEPTS_OFFER_OF');
+      expect(nextStepsSection[4].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.CLAIM_SETTLED');
+      expect(nextStepsSection[5].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OFFER');
+      expect(nextStepsSection[6].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WE_WILL_ASK_MEDIATION');
+      expect(nextStepsSection[7].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.IF_DONT_WANT_MEDIATION');
     });
   });
 
@@ -197,41 +197,41 @@ describe('Submit Confirmation service', () => {
 
     it('should display submit status', () => {
       const submitStatusSection = buildSubmitStatus(mockClaimId, claim, lang);
-      expect(submitStatusSection[0].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_PAY_INSTALLMENTS.YOU_BELIEVE_YOU_OWE');
-      expect(submitStatusSection[1].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_PAY_INSTALLMENTS.WE_SENT_EXPLANATION');
-      expect(submitStatusSection[2].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WE_CONTACT_YOU');
+      expect(submitStatusSection[0].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_PAY_INSTALLMENTS.YOU_BELIEVE_YOU_OWE');
+      expect(submitStatusSection[1].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_PAY_INSTALLMENTS.WE_SENT_EXPLANATION');
+      expect(submitStatusSection[2].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WE_CONTACT_YOU');
     });
 
     it('should display financial details in status if type isBussines', () => {
       claim.respondent1.type = PartyType.ORGANISATION;
       const submitStatusSection = buildSubmitStatus(mockClaimId, claim, lang);
-      expect(submitStatusSection[0].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_PAY_INSTALLMENTS.YOU_BELIEVE_YOU_OWE');
-      expect(submitStatusSection[1].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_PAY_INSTALLMENTS.WE_SENT_EXPLANATION');
-      expect(submitStatusSection[2].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WE_CONTACT_YOU');
-      expect(submitStatusSection[3].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.SEND_FINANCIAL_DETAILS');
-      expect(submitStatusSection[4].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.SEND_STATEMENT_OF_ACC');
-      expect(submitStatusSection[5].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.GET_FINANCIAL_DETAILS');
+      expect(submitStatusSection[0].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_PAY_INSTALLMENTS.YOU_BELIEVE_YOU_OWE');
+      expect(submitStatusSection[1].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_PAY_INSTALLMENTS.WE_SENT_EXPLANATION');
+      expect(submitStatusSection[2].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WE_CONTACT_YOU');
+      expect(submitStatusSection[3].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.SEND_FINANCIAL_DETAILS');
+      expect(submitStatusSection[4].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.SEND_STATEMENT_OF_ACC');
+      expect(submitStatusSection[5].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.GET_FINANCIAL_DETAILS');
     });
 
     it('should display what happens next title', () => {
       const nextStepsTitle = getNextStepsTitle(lang);
-      expect(nextStepsTitle[0].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');
+      expect(nextStepsTitle[0]?.data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');
     });
 
     it('should display next steps section', () => {
       const nextStepsSection = buildNextStepsSection(mockClaimId, claim, lang);
-      expect(nextStepsSection[0].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_ACCEPTS_OFFER');
-      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.YOU_SHOULD');
-      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.SETUP_REPAYMENT_PLAN');
-      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.IF_NEED_PAYMENT_DETAILS');
-      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.BECAUSE_YOU_WONT_PAY_IMMEDIATELY');
-      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.ASK_SIGN_SETTLEMENT');
-      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.REQUEST_COURT_AGAINST_YOU');
-      expect(nextStepsSection[2].data.text).toContain('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OWE');
-      expect(nextStepsSection[3].data.text).toContain('PAGES.SUBMIT_CONFIRMATION.WE_WILL_ASK_MEDIATION');
-      expect(nextStepsSection[4].data.text).toContain('PAGES.SUBMIT_CONFIRMATION.IF_DONT_WANT_MEDIATION');
-      expect(nextStepsSection[5].data.text).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_INSTALLMENTS.REJECT_OFFER_TO_PAY_BY');
-      expect(nextStepsSection[6].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.COURT_DECIDE_HOW_TO_PAY');
+      expect(nextStepsSection[0].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_ACCEPTS_OFFER');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.YOU_SHOULD');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.SETUP_REPAYMENT_PLAN');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.IF_NEED_PAYMENT_DETAILS');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.BECAUSE_YOU_WONT_PAY_IMMEDIATELY');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.ASK_SIGN_SETTLEMENT');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.REQUEST_COURT_AGAINST_YOU');
+      expect(nextStepsSection[2].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OWE');
+      expect(nextStepsSection[3].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.WE_WILL_ASK_MEDIATION');
+      expect(nextStepsSection[4].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.IF_DONT_WANT_MEDIATION');
+      expect(nextStepsSection[5].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_INSTALLMENTS.REJECT_OFFER_TO_PAY_BY');
+      expect(nextStepsSection[6].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.COURT_DECIDE_HOW_TO_PAY');
     });
   });
 
@@ -251,38 +251,38 @@ describe('Submit Confirmation service', () => {
 
     it('should display submit status', () => {
       const submitStatusSection = buildSubmitStatus(mockClaimId, claim, lang);
-      expect(submitStatusSection[0].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.YOU_BELIEVE_YOU_OWE');
-      expect(submitStatusSection[1].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.SENT_EXPLANATION');
-      expect(submitStatusSection[2].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WE_CONTACT_YOU');
+      expect(submitStatusSection[0].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.YOU_BELIEVE_YOU_OWE');
+      expect(submitStatusSection[1].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.SENT_EXPLANATION');
+      expect(submitStatusSection[2].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WE_CONTACT_YOU');
     });
 
     it('should display financial details in status if type isBussines', () => {
       claim.respondent1.type = PartyType.ORGANISATION;
       const submitStatusSection = buildSubmitStatus(mockClaimId, claim, lang);
-      expect(submitStatusSection[0].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.YOU_BELIEVE_YOU_OWE');
-      expect(submitStatusSection[1].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.SENT_EXPLANATION');
-      expect(submitStatusSection[2].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WE_CONTACT_YOU');
-      expect(submitStatusSection[3].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.SEND_FINANCIAL_DETAILS');
-      expect(submitStatusSection[4].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.SEND_STATEMENT_OF_ACC');
-      expect(submitStatusSection[5].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.GET_FINANCIAL_DETAILS');
+      expect(submitStatusSection[0].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.YOU_BELIEVE_YOU_OWE');
+      expect(submitStatusSection[1].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.SENT_EXPLANATION');
+      expect(submitStatusSection[2].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WE_CONTACT_YOU');
+      expect(submitStatusSection[3].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.SEND_FINANCIAL_DETAILS');
+      expect(submitStatusSection[4].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.SEND_STATEMENT_OF_ACC');
+      expect(submitStatusSection[5].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.GET_FINANCIAL_DETAILS');
     });
 
     it('should display what happens next title', () => {
       const nextStepsTitle = getNextStepsTitle(lang);
-      expect(nextStepsTitle[0].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');
+      expect(nextStepsTitle[0].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');
     });
 
     it('should display next steps section', () => {
       const nextStepsSection = buildNextStepsSection(mockClaimId, claim, lang);
-      expect(nextStepsSection[0].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_ACCEPTS_OFFER');
-      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.YOU_SHOULD');
-      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.PAY_BY');
-      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.CHEQUES_OR_BANK_TRANSFERS');
-      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.CONTACT_THEM');
-      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.IF_NEED_PAYMENT_DETAILS');
-      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.MAKE_SURE_GET_RECEIPT');
-      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.ASK_SIGN_SETTLEMENT');
-      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.REQUEST_COURT_AGAINST_YOU');
+      expect(nextStepsSection[0].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_ACCEPTS_OFFER');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.YOU_SHOULD');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.PAY_BY');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.CHEQUES_OR_BANK_TRANSFERS');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.CONTACT_THEM');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.IF_NEED_PAYMENT_DETAILS');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.MAKE_SURE_GET_RECEIPT');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.ASK_SIGN_SETTLEMENT');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.REQUEST_COURT_AGAINST_YOU');
     });
   });
 

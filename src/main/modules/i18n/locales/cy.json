@@ -95,6 +95,7 @@
     },
     "HELP_WITH_INTEREST_RATES": {
       "THE_COURT_WILL_DECIDE": "The court will decide if you're entitled to some or all of the interest claimed.",
+      "TITLE": "Help with interest rates",
       "YOU_CAN_CLAIM": "You can claim 8% interest on money owed to you. This is the statutory rate. If you know that a different rate applies you can use that. For example if you have a contract with a specific rate"
     },
     "MONTH_NAMES": {
@@ -343,6 +344,7 @@
       "TAX_PAYMENT_ARE_YOU_BEHIND": "Ydych chi ar ei hôl hi gyda thaliadau treth?",
       "TAX_PAYMENT_AMOUNT_YOU_OWE": "Swm sydd arnoch chi?",
       "TAX_PAYMENT_REASON": "Rheswm",
+      "TITLE": "Gwiriwch eich ateb",
       "TIMELINE_TITLE": "Eich llinell amser o'r hyn a ddigwyddodd (dewisol)",
       "TIMELINE_COMMENTS": "Sylwadau am eu llinell amser (dewisol)",
       "EVIDENCE_TITLE": "Eich tystiolaeth (dewisol)",
@@ -354,7 +356,6 @@
       "EVIDENCE_STATEMENT_OF_ACCOUNT": "Datganiadau cyfrifon",
       "EVIDENCE_OTHER": "Arall",
       "EVIDENCE_COMMENTS": "Sylwadau am eu tystiolaeth (dewisol)",
-      "TITLE": "Gwiriwch eich ateb",
       "WHEN_PAY": "Pryd fyddwch chi'n talu",
       "WHEN_PAY_TITLE": "Pryd fyddwch chi'n talu",
       "WHERE_DO_YOU_LIVE": "Ble rydych chi'n byw?",
@@ -445,6 +446,7 @@
       "RESPONSE_MEANING": "Canfod beth mae pob ymateb yn ei olygu"
     },
     "CLAIM_AMOUNT_BREAKDOWN": {
+      "ADD_ANOTHER_ROW": "Add another row",
       "AMOUNT": "Amount",
       "CLAIM_FEE": "your claim fee - we’ll add this for you",
       "DONT_INCLUDE": "Don’t include:",
@@ -500,6 +502,14 @@
         },
         "PAGE_TITLE": "Try to resolve the dispute",
         "TITLE": "Try to resolve the dispute"
+      },
+      "WHEN_CLAIM_INTEREST_FROM": {
+        "FROM_A_SPECIFIC_DATE" : "A particular date",
+        "FROM_CLAIM_SUBMIT_DATE" : "The date you submit the claim",
+        "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
+        "HINT_EXAMPLE_DATE": "For example the date an invoice was overdue or that you told someone they owed you the money.",
+        "PAGE_TITLE": "When are you claiming interest from?",
+        "TITLE": "When are you claiming interest from?"
       }
     },
     "CLAIM_SUMMARY": {
@@ -716,6 +726,28 @@
       "TITLE": "A oes gennych fenthyciadau neu ddyledion cerdyn credyd?",
       "TOTAL": "Cyfanswm sy'n ddyledus gennych"
     },
+    "DEFENDANT_DETAILS": {
+      "CONTACT_PERSON": "Name of contact person (optional)",
+      "CONTACT_PERSON_HINT": "This might be a person you’ve discussed the claim with.",
+      "ENGLAND_OR_WALES_ADDRESS": "The address must be in England or Wales.",
+      "FIND_ADDRESS": "Find address",
+      "MANUAL_ADDRESS": "Enter address manually",
+      "ORGANISATION_ADDRESS": "Organisation address",
+      "ORGANISATION_ADDRESS_NOT_CORRECT": "If your address is not correct you can change it here.",
+      "ORGANISATION_ANY_CHANGES": "Any changes will be shared with the claimant when you submit your response.",
+      "ORGANISATION_MAIN_OFFICE": "Enter the organisation’s main office or address that has a connection with the claim.",
+      "ORGANISATION_NAME": "Organisation name",
+      "PAGE_TITLES": {
+        "COMPANY": "",
+        "INDIVIDUAL": "",
+        "ORGANISATION": "Enter organisation details",
+        "SOLE_TRADER": ""
+      },
+      "PAYING_EXTRA": "You’ll have to pay extra fee if you later want to change the name of anyone involved with the claim.",
+      "PAYING_EXTRA_ORGANISATION": "You’ll have to pay extra fee if you later want to change the name of an organisation involved with the claim.",
+      "PICK_ADDRESS": "Pick an address",
+      "UK_POSTCODE": "Enter a UK postcode"
+    },
     "DEFENDANT_PARTY_TYPE": {
       "CLAIMING_AGAINST_AN_INDIVIDUAL": "An individual",
       "CLAIMING_AGAINST_LIMITED_COMPANY": "A limited company",
@@ -790,6 +822,11 @@
     "DISABILITY": {
       "PAGE_TITLE": "A oes gennych anabledd?",
       "TITLE": "A oes gennych anabledd?"
+    },
+    "INTEREST_START_DATE": {
+      "PAGE_TITLE": "claim interest from",
+      "TITLE": "Enter the date you want to claim interest from",
+      "REASON": "Explain why you’re claiming from this date"
     },
     "ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES": {
       "PARAGRAPH1_1": "If you have already applied for Help with Fees in respect ooooof ",
@@ -866,9 +903,9 @@
       "HELP_WITH_FEES_INTRO": "Making an application for Help with Fees does not guarantee that you will get your fee covered. You may still have to pay some or all of your court fee to get the claim issued (for the court system to officially start the claim and send details to the other side). When you apply for Help with Fees, you should receive an update from us within 5 working days, giving you the result of your application.",
       "TITLE": "Some useful information about Help with Fees"
     },
-    "EMPLOYER" : {
-      "EMPLOYER_NAME" : "Enw’r cyflogwr",
-      "JOB_TITLE" : "Teitl swydd"
+    "EMPLOYER": {
+      "EMPLOYER_NAME": "Enw’r cyflogwr",
+      "JOB_TITLE": "Teitl swydd"
     },
     "EMPLOYMENT_STATUS": {
       "BOTH": "Gallwch ddewis y ddau",
@@ -1037,6 +1074,12 @@
       "PAGE_TITLE": "Free telephone mediation",
       "REACHING_SETTLEMENT": "Setlo’r anghydfod",
       "TITLE": "Gwasanaeth cyfryngu dros y ffôn am ddim"
+    },
+    "INTEREST_CLAIM_OPTIONS": {
+      "BREAK_DOWN": "Break down interest for different time periods or items",
+      "PAGE_TITLE": "How do you want to claim interest?",
+      "SAME_RATE": "Same rate for the whole period",
+      "TITLE": "How do you want to claim interest?"
     },
     "INCOMPLETE_SUBMISSION": {
       "TITLE": "You need to complete all sections before you submit your response"
@@ -1618,6 +1661,7 @@
     }
   },
   "ERRORS": {
+    "ADDRESS_NOT_FOUND": "We can't find an address for that postcode.",
     "AMOUNT_INVALID_DECIMALS": "Rhowch swm, dim mwy na dau le degol",
     "AMOUNT_LESS_THAN_CLAIMED": "Nodwch werth sy'n llai na'r swm a hawlir",
     "AMOUNT_REQUIRED": "Nodwch swm o £1 neu fwy",
@@ -1760,6 +1804,7 @@
     "TEXT_TOO_MANY": "You've entered too many characters",
     "TEXT400_TOO_LONG": "Rhaid i'r rheswm fod yn 400 o nodau neu'n llai",
     "THERE_WAS_A_PROBLEM": "Roedd problem",
+    "TRY_AGAIN": "Try again or enter the address manually.",
     "TYPE_OF_ACCOUNT_REQUIRED": "Dewiswch math o gyfrif",
     "VALID_ADDRESS_LINE_1": "Rhowch linell gyntaf y cyfeiriad",
     "VALID_AGREED_RESPONSE_DATE": "Rhowch y dyddiad ymateb yr ydych wedi’i gytuno",
@@ -1772,6 +1817,7 @@
     "VALID_CHOOSE": "Choose your response",
     "VALID_CITY": "Rhowch enw tref/dinas dilys",
     "VALID_CLAIM_AMOUNT": "Enter an amount of money",
+    "VALID_CLAIM_INTEREST_FROM": "Choose when to claim interest from",
     "VALID_CLAIM_NUMBER": "Enter a claim number",
     "VALID_CLAIM_REFERENCE_NUMBER": "Enter a valid claim number",
     "VALID_CORRESPONDENCE_ADDRESS_LINE_1": "Rhowch linell gyntaf y cyfeiriad ar gyfer gohebiaeth",
@@ -1800,7 +1846,9 @@
     "VALID_FREE_TEXT_DATE_LENGTH": "Rhowch ddyddiad sydd ddim hirach na $constraint1 nod",
     "VALID_HOUSING": "Disgrifiwch eich cartref",
     "VALID_INTEGER": "Rhowch rif, er enghraifft 3",
+    "VALID_INTEREST_TYPE_OPTION": "Choose same rate or breakdown",
     "VALID_MONTH": "Rhowch fis dilys",
+    "VALID_NAME": "Enter name",
     "VALID_CANT_ATTEND_HEARING": "Select yes if there are any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing",
     "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Ni all y rhif fod yn uwch na'r rhif ar y dudalen flaenorol",
     "VALID_OPTION_SELECTION": "Dewiswch opsiwn",
@@ -1824,6 +1872,7 @@
     "VALID_YEAR": "Rhowch flwyddyn ddilys",
     "VALID_VALUE": "A ydych yn siŵr bod hwn yn swm dilys?",
     "VALID_YES_NO_OPTION": "Dewiswch opsiwn: ie neu na",
-    "VALID_YES_NO_SELECTION": "Dewiswch ie neu na, os gwelwch yn dda"
+    "VALID_YES_NO_SELECTION": "Dewiswch ie neu na, os gwelwch yn dda",
+    "VALID_WHY_FROM_PARTICULAR_DATE": "You need to explain why you are claiming"
   }
 }

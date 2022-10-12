@@ -1,10 +1,10 @@
 import {Response} from 'express';
 import {ClaimantOrDefendant, PartyType} from '../../../common/models/partyType';
 import {
-  CLAIM_DEFENDANT_COMPANY_DETAILS,
-  CLAIM_DEFENDANT_INDIVIDUAL_DETAILS,
-  CLAIM_DEFENDANT_ORGANISATION_DETAILS,
-  CLAIM_DEFENDANT_SOLE_TRADER_DETAILS,
+  CLAIM_DEFENDANT_COMPANY_DETAILS_URL,
+  CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL,
+  CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL,
+  CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL,
   CLAIMANT_COMPANY_DETAILS_URL,
   CLAIMANT_INDIVIDUAL_DETAILS_URL,
   CLAIMANT_ORGANISATION_DETAILS_URL,
@@ -16,22 +16,22 @@ const redirectToPage = (partyType: PartyType, res: Response, claimantOrDefendant
     case PartyType.INDIVIDUAL:
       (claimantOrDefendant === ClaimantOrDefendant.CLAIMANT) ?
         res.redirect(CLAIMANT_INDIVIDUAL_DETAILS_URL) :
-        res.redirect(CLAIM_DEFENDANT_INDIVIDUAL_DETAILS);
+        res.redirect(CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL);
       break;
     case PartyType.SOLE_TRADER:
       (claimantOrDefendant === ClaimantOrDefendant.CLAIMANT) ?
         res.redirect(CLAIMANT_SOLE_TRADER_DETAILS_URL) :
-        res.redirect(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS);
+        res.redirect(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL);
       break;
     case PartyType.COMPANY:
       (claimantOrDefendant === ClaimantOrDefendant.CLAIMANT) ?
         res.redirect(CLAIMANT_COMPANY_DETAILS_URL) :
-        res.redirect(CLAIM_DEFENDANT_COMPANY_DETAILS);
+        res.redirect(CLAIM_DEFENDANT_COMPANY_DETAILS_URL);
       break;
     case PartyType.ORGANISATION:
       (claimantOrDefendant === ClaimantOrDefendant.CLAIMANT) ?
         res.redirect(CLAIMANT_ORGANISATION_DETAILS_URL) :
-        res.redirect(CLAIM_DEFENDANT_ORGANISATION_DETAILS);
+        res.redirect(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL);
       break;
     default:
       res.render('not-found');

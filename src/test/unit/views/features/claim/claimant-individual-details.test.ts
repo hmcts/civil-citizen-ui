@@ -2,7 +2,7 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
-import {CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL} from '../../../../../main/routes/urls';
+import {CLAIMANT_INDIVIDUAL_DETAILS_URL} from '../../../../../main/routes/urls';
 import {t} from 'i18next';
 import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 
@@ -29,7 +29,7 @@ describe('Claimant Individual Details View', () => {
     let mainWrapper: Element;
 
     beforeAll(async () => {
-      const response = await request(app).get(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL);
+      const response = await request(app).get(CLAIMANT_INDIVIDUAL_DETAILS_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
       mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];

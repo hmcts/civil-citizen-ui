@@ -502,6 +502,14 @@
         },
         "PAGE_TITLE": "Try to resolve the dispute",
         "TITLE": "Try to resolve the dispute"
+      },
+      "WHEN_CLAIM_INTEREST_FROM": {
+        "FROM_A_SPECIFIC_DATE" : "A particular date",
+        "FROM_CLAIM_SUBMIT_DATE" : "The date you submit the claim",
+        "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
+        "HINT_EXAMPLE_DATE": "For example the date an invoice was overdue or that you told someone they owed you the money.",
+        "PAGE_TITLE": "When are you claiming interest from?",
+        "TITLE": "When are you claiming interest from?"
       }
     },
     "CLAIM_SUMMARY": {
@@ -718,6 +726,28 @@
       "TITLE": "Do you have loans or credit card debts?",
       "TOTAL": "Total owed"
     },
+    "DEFENDANT_DETAILS": {
+      "CONTACT_PERSON": "Name of contact person (optional)",
+      "CONTACT_PERSON_HINT": "This might be a person you’ve discussed the claim with.",
+      "ENGLAND_OR_WALES_ADDRESS": "The address must be in England or Wales.",
+      "FIND_ADDRESS": "Find address",
+      "MANUAL_ADDRESS": "Enter address manually",
+      "ORGANISATION_ADDRESS": "Organisation address",
+      "ORGANISATION_ADDRESS_NOT_CORRECT": "If your address is not correct you can change it here.",
+      "ORGANISATION_ANY_CHANGES": "Any changes will be shared with the claimant when you submit your response.",
+      "ORGANISATION_MAIN_OFFICE": "Enter the organisation’s main office or address that has a connection with the claim.",
+      "ORGANISATION_NAME": "Organisation name",
+      "PAGE_TITLES": {
+        "COMPANY": "",
+        "INDIVIDUAL": "",
+        "ORGANISATION": "Enter organisation details",
+        "SOLE_TRADER": ""
+      },
+      "PAYING_EXTRA": "You’ll have to pay extra fee if you later want to change the name of anyone involved with the claim.",
+      "PAYING_EXTRA_ORGANISATION": "You’ll have to pay extra fee if you later want to change the name of an organisation involved with the claim.",
+      "PICK_ADDRESS": "Pick an address",
+      "UK_POSTCODE": "Enter a UK postcode"
+    },
     "DEFENDANT_PARTY_TYPE": {
       "CLAIMING_AGAINST_AN_INDIVIDUAL": "An individual",
       "CLAIMING_AGAINST_LIMITED_COMPANY": "A limited company",
@@ -792,6 +822,11 @@
     "DISABILITY": {
       "PAGE_TITLE": "Are you disabled?",
       "TITLE": "Are you disabled?"
+    },
+    "INTEREST_START_DATE": {
+      "PAGE_TITLE": "claim interest from",
+      "TITLE": "Enter the date you want to claim interest from",
+      "REASON": "Explain why you’re claiming from this date"
     },
     "ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES": {
       "PARAGRAPH1_1": "If you have already applied for Help with Fees in respect of",
@@ -868,9 +903,9 @@
       "HELP_WITH_FEES_INTRO": "Making an application for Help with Fees does not guarantee that you will get your fee covered. You may still have to pay some or all of your court fee to get the claim issued (for the court system to officially start the claim and send details to the other side). When you apply for Help with Fees, you should receive an update from us within 5 working days, giving you the result of your application.",
       "TITLE": "Some useful information about Help with Fees"
     },
-    "EMPLOYER" : {
-      "EMPLOYER_NAME" : "Employer name",
-      "JOB_TITLE" : "Job title"
+    "EMPLOYER": {
+      "EMPLOYER_NAME": "Employer name",
+      "JOB_TITLE": "Job title"
     },
     "EMPLOYMENT_STATUS": {
       "BOTH": "You can select both.",
@@ -1039,6 +1074,12 @@
       "PAGE_TITLE": "Free telephone mediation",
       "REACHING_SETTLEMENT": "Reaching a settlement",
       "TITLE": "Free telephone mediation"
+    },
+    "INTEREST_CLAIM_OPTIONS": {
+      "BREAK_DOWN": "Break down interest for different time periods or items",
+      "PAGE_TITLE": "How do you want to claim interest?",
+      "SAME_RATE": "Same rate for the whole period",
+      "TITLE": "How do you want to claim interest?"
     },
     "INCOMPLETE_SUBMISSION": {
       "TITLE": "You need to complete all sections before you submit your response"
@@ -1620,6 +1661,7 @@
     }
   },
   "ERRORS": {
+    "ADDRESS_NOT_FOUND": "We can't find an address for that postcode.",
     "AMOUNT_INVALID_DECIMALS": "Enter a valid amount, maximum two decimal places",
     "AMOUNT_LESS_THAN_CLAIMED": "Enter a value less than the amount claimed",
     "AMOUNT_REQUIRED": "Enter an amount of £1 or more",
@@ -1762,6 +1804,7 @@
     "TEXT_TOO_MANY": "You've entered too many characters",
     "TEXT400_TOO_LONG": "Reason must be 400 characters or fewer",
     "THERE_WAS_A_PROBLEM": "There was a problem",
+    "TRY_AGAIN": "Try again or enter the address manually.",
     "TYPE_OF_ACCOUNT_REQUIRED": "Select a type of account",
     "VALID_ADDRESS_LINE_1": "Enter first address line",
     "VALID_AGREED_RESPONSE_DATE": "Enter the agreed response date",
@@ -1774,6 +1817,7 @@
     "VALID_CHOOSE": "Choose your response",
     "VALID_CITY": "Enter a valid town/city",
     "VALID_CLAIM_AMOUNT": "Enter an amount of money",
+    "VALID_CLAIM_INTEREST_FROM": "Choose when to claim interest from",
     "VALID_CLAIM_NUMBER": "Enter a claim number",
     "VALID_CLAIM_REFERENCE_NUMBER": "Enter a valid claim number",
     "VALID_CORRESPONDENCE_ADDRESS_LINE_1": "Enter first correspondence address line",
@@ -1802,7 +1846,9 @@
     "VALID_FREE_TEXT_DATE_LENGTH": "Enter a date no longer than $constraint1 characters",
     "VALID_HOUSING": "Describe your housing",
     "VALID_INTEGER": "Enter a numeric, for example 3",
+    "VALID_INTEREST_TYPE_OPTION": "Choose same rate or breakdown",
     "VALID_MONTH": "Enter a valid month",
+    "VALID_NAME": "Enter name",
     "VALID_CANT_ATTEND_HEARING": "Select yes if there are any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing",
     "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Number can’t be higher than on previous page",
     "VALID_OPTION_SELECTION": "Select an option",
@@ -1826,6 +1872,8 @@
     "VALID_VALUE": "Are you sure this is a valid value?",
     "VALID_YEAR": "Enter a valid year",
     "VALID_YES_NO_OPTION": "Choose option: Yes or No",
-    "VALID_YES_NO_SELECTION": "Please select yes or no"
+    "VALID_YES_NO_SELECTION": "Please select yes or no",
+    "VALID_DISAGREE_REASON_REQUIRED": "Enter text explaining why do you disagree",
+    "VALID_WHY_FROM_PARTICULAR_DATE": "You need to explain why you are claiming"
   }
 }
