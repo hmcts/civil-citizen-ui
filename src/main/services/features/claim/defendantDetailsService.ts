@@ -1,4 +1,4 @@
-import {Party} from '../../../common/models/claim';
+import {Claim, Party} from '../../../common/models/claim';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
 import {Respondent} from '../../../common/models/respondent';
 
@@ -21,7 +21,7 @@ const getDefendantInformation = async (claimId: string): Promise<Party> => {
  * @return Promise<void>
  * **/
 const saveDefendant = async (claimId: string, propertyName?: string, propertyValue?: any, saveObject?: boolean) => {
-  const claim = await getCaseDataFromStore(claimId);
+  const claim = await getCaseDataFromStore(claimId) || new Claim();
   if (!claim.respondent1) {
     claim.respondent1 = new Respondent();
   }
