@@ -1,14 +1,14 @@
-const { debounce } = require('./calculate-amount');
+const {debounce} = require('./calculate-amount');
 document.addEventListener('DOMContentLoaded', async function () {
-  if(document.getElementsByClassName('civil-amount-breakdown-row')?.length) {
+  if (document.getElementsByClassName('civil-amount-breakdown-row')?.length) {
     addTotalClaimAmountCalculationEventListener();
     populateTotalClaimAmount();
   }
 });
 
-function calculateTotal(){
+function calculateTotal() {
   const amountInputArray = Array.from(document.getElementsByClassName('civil-claim-amount'));
-  if(amountInputArray.length){
+  if (amountInputArray.length) {
     const amountArray = amountInputArray.map(element => Number(element.value));
     return amountArray.length ? amountArray.reduce((a, b) => a + b) : 0;
   }
@@ -16,8 +16,14 @@ function calculateTotal(){
 
 function populateTotalClaimAmount() {
   const total = calculateTotal();
-  const totalPlaceholder = document.getElementsByClassName('total-claim-amount');
-  totalPlaceholder[0].innerHTML = total;
+  const totalPlaceholder = Array.from(document.getElementsByClassName('total-claim-amount'));
+  totalPlaceholder.forEach(element => {
+    if (element.type === 'hidden') {
+      element.value = total;
+    }else{
+      element.innerHTML = total;
+    }
+  });
 }
 
 function addTotalClaimAmountCalculationEventListener() {
