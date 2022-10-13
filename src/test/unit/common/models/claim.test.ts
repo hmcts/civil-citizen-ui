@@ -22,10 +22,7 @@ import {DocumentType} from '../../../../main/common/models/document/documentType
 import {GenericYesNo} from '../../../../main/common/form/models/genericYesNo';
 import {RejectAllOfClaim} from '../../../../main/common/form/models/rejectAllOfClaim';
 import {RejectAllOfClaimType} from '../../../../main/common/form/models/rejectAllOfClaimType';
-import {
-  HowMuchHaveYouPaid,
-  HowMuchHaveYouPaidParams,
-} from '../../../../main/common/form/models/admission/howMuchHaveYouPaid';
+import {HowMuchHaveYouPaid, HowMuchHaveYouPaidParams} from '../../../../main/common/form/models/admission/howMuchHaveYouPaid';
 import {WhyDoYouDisagree} from '../../../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {Defence} from '../../../../main/common/form/models/defence';
 import {ClaimResponseStatus} from '../../../../main/common/models/claimResponseStatus';

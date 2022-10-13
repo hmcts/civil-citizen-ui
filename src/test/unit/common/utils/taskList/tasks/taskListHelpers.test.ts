@@ -19,8 +19,8 @@ import {Mediation} from '../../../../../../main/common/models/mediation/mediatio
 import {CompanyTelephoneNumber} from '../../../../../../main/common/form/models/mediation/companyTelephoneNumber';
 import {ResponseType} from '../../../../../../main/common/form/models/responseType';
 import {RejectAllOfClaim} from '../../../../../../main/common/form/models/rejectAllOfClaim';
-import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 import {RejectAllOfClaimType} from '../../../../../../main/common/form/models/rejectAllOfClaimType';
+import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 
 const mockClaim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
 const mockRespondent: Party = {
