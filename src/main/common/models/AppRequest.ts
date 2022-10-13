@@ -1,6 +1,6 @@
-import { Request } from 'express';
-import { Session } from 'express-session';
-import { Claim } from './claim';
+import {Request} from 'express';
+import {Session} from 'express-session';
+import {Claim} from './claim';
 
 export interface AppRequest<T = Partial<Claim>> extends Request {
   session: AppSession;

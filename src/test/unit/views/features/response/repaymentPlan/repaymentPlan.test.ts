@@ -6,6 +6,7 @@ import {CITIZEN_REPAYMENT_PLAN_FULL_URL} from '../../../../../../main/routes/url
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import {DateFormatter} from '../../../../../../main/common/utils/dateFormatter';
 import {t} from 'i18next';
+
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 
@@ -15,11 +16,12 @@ jest.mock('../../../../../../main/modules/draft-store');
 describe('Repayment Plan View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  let htmlDocument: Document;
-  let mainWrapper: Element;
 
   describe('on GET', () => {
-    beforeEach(async () => {
+    let htmlDocument: Document;
+    let mainWrapper: Element;
+
+    beforeAll(async () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
@@ -38,7 +40,7 @@ describe('Repayment Plan View', () => {
 
     it('should display total amount claimed text', async () => {
       const paragraph = mainWrapper.getElementsByClassName('govuk-body-m');
-      expect(paragraph[0].innerHTML).toContain(t('PAGES.REPAYMENT_PLAN.SUBTITLE',{totalAmount: '110'}));
+      expect(paragraph[0].innerHTML).toContain(t('PAGES.REPAYMENT_PLAN.SUBTITLE', {totalAmount: '110'}));
     });
 
     it('should display save and continue button', () => {
@@ -123,9 +125,10 @@ describe('Repayment Plan View', () => {
   });
 
   describe('on POST', () => {
+    let htmlDocument: Document;
     const getErrorSummaryListElement = (index: number) => htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0].getElementsByTagName('li')[index];
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).post(CITIZEN_REPAYMENT_PLAN_FULL_URL).then(res => {
         const dom = new JSDOM(res.text);
@@ -145,34 +148,6 @@ describe('Repayment Plan View', () => {
         .toContain('#paymentAmount');
     });
 
-    it('should display correct error summary message with correct link for Payment Amount with more than 2 decimal digits', async () => {
-      await request(app)
-        .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
-        .send({paymentAmount: '99.333', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '2040'})
-        .then(res => {
-          const dom = new JSDOM(res.text);
-          htmlDocument = dom.window.document;
-        });
-      const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(t('ERRORS.VALID_TWO_DECIMAL_NUMBER'));
-      expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
-        .toContain('#paymentAmount');
-    });
-
-    it('should display correct error summary message with correct link for Payment Amount greater than Total Claim Amount', async () => {
-      await request(app)
-        .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
-        .send({paymentAmount: '1000000000', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '2040'})
-        .then(res => {
-          const dom = new JSDOM(res.text);
-          htmlDocument = dom.window.document;
-        });
-      const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(t('ERRORS.EQUAL_INSTALMENTS_REQUIRED'));
-      expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
-        .toContain('#paymentAmount');
-    });
-
     it('should display correct error summary message with correct link for Year', () => {
       const errorSummaryMessage = getErrorSummaryListElement(4);
       expect(errorSummaryMessage.innerHTML).toContain(t('ERRORS.PAYMENT_FREQUENCY_REQUIRED'));
@@ -188,6 +163,7 @@ describe('Repayment Plan View', () => {
     });
 
     it('should display correct error summary message with correct link form Day', () => {
+      // this
       const errorSummaryMessage = getErrorSummaryListElement(2);
       expect(errorSummaryMessage.innerHTML).toContain(t('ERRORS.VALID_MONTH'));
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
@@ -195,39 +171,97 @@ describe('Repayment Plan View', () => {
     });
 
     it('should display correct error summary message with correct link for Repayment Frequency', () => {
+      // this
       const errorSummaryMessage = getErrorSummaryListElement(1);
       expect(errorSummaryMessage.innerHTML).toContain(t('ERRORS.VALID_DAY'));
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#day');
     });
 
-    it('should display correct error summary message with correct link for First Repayment Date', async () => {
-      await request(app)
-        .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
-        .send({paymentAmount: '100', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '1973'})
-        .then(res => {
-          const dom = new JSDOM(res.text);
-          htmlDocument = dom.window.document;
-        });
-      const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(t('ERRORS.FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED'));
-      expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
-        .toContain('#firstRepaymentDate');
+    describe('Payment Amount with more than 2 decimal digits', () => {
+      let htmlDocument: Document;
+
+      beforeAll(async () => {
+        await request(app)
+          .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
+          .send({paymentAmount: '99.333', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '2040'})
+          .then(res => {
+            const dom = new JSDOM(res.text);
+            htmlDocument = dom.window.document;
+          });
+      });
+
+      it('should display correct error summary message with correct link for Payment Amount with more than 2 decimal digits', async () => {
+        const errorSummaryMessage = htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0]
+          .getElementsByTagName('li')[0];
+        expect(errorSummaryMessage.innerHTML).toContain(t('ERRORS.VALID_TWO_DECIMAL_NUMBER'));
+        expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
+          .toContain('#paymentAmount');
+      });
     });
 
-    it('should display correct error summary message with correct link for Year less than 4 digits', async () => {
-      await request(app)
-        .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
-        .send({paymentAmount: '100', repaymentFrequency: 'WEEK', day: '01', month: '01', year: '0'})
-        .then(res => {
-          const dom = new JSDOM(res.text);
-          htmlDocument = dom.window.document;
-        });
-      const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(t('ERRORS.VALID_FOUR_DIGIT_YEAR'));
-      expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
-        .toContain('#year');
+    describe('Payment Amount greater than Total Claim Amount', () => {
+      let htmlDocument: Document;
+
+      beforeAll(async () => {
+        await request(app)
+          .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
+          .send({paymentAmount: '1000000000', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '2040'})
+          .then(res => {
+            const dom = new JSDOM(res.text);
+            htmlDocument = dom.window.document;
+          });
+      });
+
+      it('should display correct error summary message with correct link for Payment Amount greater than Total Claim Amount', () => {
+        const errorSummaryMessage = htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0]
+          .getElementsByTagName('li')[0];
+        expect(errorSummaryMessage.innerHTML).toContain(t('ERRORS.EQUAL_INSTALMENTS_REQUIRED'));
+        expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
+          .toContain('#paymentAmount');
+      });
+    });
+
+    describe('First Repayment Date', () => {
+      let htmlDocument: Document;
+
+      beforeAll(async () => {
+        await request(app).post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
+          .send({paymentAmount: '100', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '1973'})
+          .then(res => {
+            const dom = new JSDOM(res.text);
+            htmlDocument = dom.window.document;
+          });
+      });
+
+      it('should display correct error summary message with correct link for First Repayment Date', () => {
+        const errorSummaryMessage = htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0]
+          .getElementsByTagName('li')[0];
+        expect(errorSummaryMessage.innerHTML).toContain(t('ERRORS.FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED'));
+        expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
+          .toContain('#firstRepaymentDate');
+      });
+    });
+
+    describe('Year less than 4 digits', () => {
+      let htmlDocument: Document;
+
+      beforeAll(async () => {
+        await request(app).post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
+          .send({paymentAmount: '100', repaymentFrequency: 'WEEK', day: '01', month: '01', year: '0'})
+          .then(res => {
+            const dom = new JSDOM(res.text);
+            htmlDocument = dom.window.document;
+          });
+      });
+
+      it('should display correct error summary message with correct link for Year less than 4 digits', () => {
+        const errorSummaryMessage = htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0]
+          .getElementsByTagName('li')[0];
+        expect(errorSummaryMessage.innerHTML).toContain(t('ERRORS.VALID_FOUR_DIGIT_YEAR'));
+        expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
+          .toContain('#year');
+      });
     });
   });
-
 });

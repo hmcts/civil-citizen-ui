@@ -27,7 +27,6 @@ export class ValidationErrors {
     }
     return `Enter how much you pay for ${sourceName ? sourceName : ExpenseType.OTHER}`;
   };
-  static readonly AMOUNT_INVALID_DECIMALS = (name: string) => `Enter a valid ${name} amount, maximum two decimal places`;
   static readonly AMOUNT_NON_NEGATIVE_NUMBER_REQUIRED = (sourceName: string, isIncome: boolean) => {
     const VALID_NUMBER_AMOUNT_KEY = 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.';
     if (isIncome) {
@@ -79,7 +78,7 @@ export class ValidationErrors {
   }
 }
 
-export default class TransactionSource {
+export class TransactionSource {
   isIncome: boolean;
   nameRequired: boolean;
   @ValidateIf(o => o.nameRequired)

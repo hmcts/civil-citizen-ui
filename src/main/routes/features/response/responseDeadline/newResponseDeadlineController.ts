@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Router} from 'express';
 import {
   AGREED_TO_MORE_TIME_URL,
   CLAIM_TASK_LIST_URL,
@@ -12,11 +12,11 @@ import {
   submitExtendedResponseDeadline,
 } from '../../../../services/features/response/responseDeadline/extendResponseDeadlineService';
 
-const newResponseDeadlineController = express.Router();
+const newResponseDeadlineController = Router();
 const newResponseDeadlineViewPath = 'features/response/responseDeadline/new-response-deadline';
 
 newResponseDeadlineController
-  .get(NEW_RESPONSE_DEADLINE_URL, async (req: AppRequest, res, next: express.NextFunction) => {
+  .get(NEW_RESPONSE_DEADLINE_URL, async (req: AppRequest, res, next: NextFunction) => {
     try {
       const claim = await getClaimWithExtendedResponseDeadline(req);
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
@@ -29,7 +29,7 @@ newResponseDeadlineController
       next(error);
     }
   })
-  .post(NEW_RESPONSE_DEADLINE_URL, async (req: AppRequest, res, next: express.NextFunction) => {
+  .post(NEW_RESPONSE_DEADLINE_URL, async (req: AppRequest, res, next: NextFunction) => {
     try {
       await submitExtendedResponseDeadline(req);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));

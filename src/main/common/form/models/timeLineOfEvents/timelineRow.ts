@@ -1,7 +1,7 @@
 import {IsDefined, IsNotEmpty, MaxLength, ValidateIf} from 'class-validator';
 import {FREE_TEXT_MAX_LENGTH} from '../../validators/validationConstraints';
 
-export default class TimelineRow {
+export class TimelineRow {
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
   @IsDefined({message: 'ERRORS.DATE_REQUIRED'})
   @IsNotEmpty({message: 'ERRORS.DATE_REQUIRED'})

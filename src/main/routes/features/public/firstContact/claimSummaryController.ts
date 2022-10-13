@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {FIRST_CONTACT_ACCESS_DENIED_URL, FIRST_CONTACT_CLAIM_SUMMARY_URL} from '../../../../routes/urls';
 import {Claim} from '../../../../common/models/claim';
 import {getClaimById} from '../../../../modules/utilityService';
@@ -6,10 +6,10 @@ import {getInterestDetails} from '../../../../common/utils/interestUtils';
 import {getTotalAmountWithInterestAndFees} from '../../../../modules/claimDetailsService';
 import {YesNo} from '../../../../common/form/models/yesNo';
 
-const firstContactClaimSummaryController = express.Router();
+const firstContactClaimSummaryController = Router();
 
 firstContactClaimSummaryController.get(FIRST_CONTACT_CLAIM_SUMMARY_URL,
-  async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const cookie = req.cookies['firstContact'];
       if (cookie?.claimId && cookie?.pinVerified === YesNo.YES) {

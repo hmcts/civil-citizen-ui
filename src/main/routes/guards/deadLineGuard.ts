@@ -1,4 +1,4 @@
-import express from 'express';
+import {NextFunction, Request, Response} from 'express';
 import {Claim} from '../../common/models/claim';
 import {getCaseDataFromStore} from '../../modules/draft-store/draftStoreService';
 import {isPastDeadline} from '../../common/utils/dateUtils';
@@ -7,7 +7,7 @@ import {TaskStatus} from '../../common/models/taskList/TaskStatus';
 import {constructResponseUrlWithIdParams} from '../../common/utils/urlFormatter';
 import {CLAIM_TASK_LIST_URL} from '../../routes/urls';
 
-export const deadLineGuard = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+export const deadLineGuard = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const unauthorized = await isUnauthorized(req);
     if (unauthorized) {
@@ -20,7 +20,7 @@ export const deadLineGuard = async (req: express.Request, res: express.Response,
   }
 };
 
-export const isUnauthorized = async (req: express.Request) => {
+export const isUnauthorized = async (req: Request) => {
   const caseData: Claim = await getCaseDataFromStore(req.params.id);
   const isDeadlinePassed = isPastDeadline(caseData.respondent1ResponseDeadline);
   const viewOptionsBeforeDeadlineTask = getViewOptionsBeforeDeadlineTask(caseData, req.params.id, 'en');
@@ -30,10 +30,7 @@ export const isUnauthorized = async (req: express.Request) => {
   const isResponseDeadlineExtensionNotQualified = caseData.isRequestToExtendDeadlineRefused() || caseData.isResponseToExtendDeadlineNo() || caseData.hasRespondentAskedForMoreThan28Days();
   const responseDeadlineCantBeExtended = isDeadlinePassed && isTaskComplete && isResponseDeadlineExtensionNotQualified;
   const isTooLateToExtendDeadline = isDeadlinePassed && !isTaskComplete;
-  if (responseDeadlineCantBeExtended
+  return responseDeadlineCantBeExtended
     || deadlineIsExtended
-  || isTooLateToExtendDeadline) {
-    return true;
-  }
-  return false;
+    || isTooLateToExtendDeadline;
 };

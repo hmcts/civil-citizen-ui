@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Response, Router} from 'express';
 import {
   CITIZEN_EVIDENCE_URL,
   CITIZEN_TIMELINE_URL,
@@ -14,17 +14,17 @@ import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlForm
 import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
 import {TimeLineOfEvents} from '../../../../common/models/timelineOfEvents/timeLineOfEvents';
 
-const defendantTimelineController = express.Router();
+const defendantTimelineController = Router();
 const defendantTimelineView = 'features/response/timelineOfEvents/defendant-timeline';
 
-function renderView(form: GenericForm<DefendantTimeline>, theirTimeline: TimeLineOfEvents[], pdfUrl: string, res: express.Response) {
+function renderView(form: GenericForm<DefendantTimeline>, theirTimeline: TimeLineOfEvents[], pdfUrl: string, res: Response) {
   res.render(defendantTimelineView, {
     form, theirTimeline, pdfUrl,
   });
 }
 
 defendantTimelineController.get(CITIZEN_TIMELINE_URL,
-  async (req, res, next: express.NextFunction) => {
+  async (req, res, next: NextFunction) => {
     try {
       const claim = await getCaseDataFromStore(req.params.id);
       const theirTimeline = claim.timelineOfEvents;
@@ -36,7 +36,7 @@ defendantTimelineController.get(CITIZEN_TIMELINE_URL,
     }
   });
 
-defendantTimelineController.post(CITIZEN_TIMELINE_URL, async (req, res, next: express.NextFunction) => {
+defendantTimelineController.post(CITIZEN_TIMELINE_URL, async (req, res, next: NextFunction) => {
   try {
     const form = new GenericForm(DefendantTimeline.buildPopulatedForm(req.body.rows, req.body.comment));
     await form.validate();

@@ -3,7 +3,7 @@ import config from 'config';
 import {getCaseDataFromStore, saveDraftClaim} from '../modules/draft-store/draftStoreService';
 import {CivilServiceClient} from '../app/client/civilServiceClient';
 import {Claim} from '../../main/common/models/claim';
-import * as express from 'express';
+import {Request} from 'express';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -13,7 +13,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
  * @param claimId, req
  * @returns claim
  */
-export const getClaimById = async (claimId: string, req: express.Request): Promise<Claim> => {
+export const getClaimById = async (claimId: string, req: Request): Promise<Claim> => {
   let claim: Claim = await getCaseDataFromStore(claimId);
   if(claim.isEmpty()) {
     claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);

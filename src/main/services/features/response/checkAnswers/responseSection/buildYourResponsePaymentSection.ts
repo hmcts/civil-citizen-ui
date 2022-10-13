@@ -13,7 +13,7 @@ import {
 } from '../../../../../routes/urls';
 import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import PaymentOptionType from '../../../../../common/form/models/admission/paymentOption/paymentOptionType';
+import {PaymentOptionType} from '../../../../../common/form/models/admission/paymentOption/paymentOptionType';
 import {ResponseType} from '../../../../../common/form/models/responseType';
 import {currencyFormatWithNoTrailingZeros} from '../../../../../common/utils/currencyFormat';
 

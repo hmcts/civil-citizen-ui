@@ -1,5 +1,5 @@
 import {IsDefined, IsIn, MaxLength, ValidateIf} from 'class-validator';
-import NoMediationReasonOptions from './noMediationReasonOptions';
+import {NoMediationReasonOptions} from '../mediation/noMediationReasonOptions';
 
 export class NoMediationReason {
   @IsDefined({message: 'ERRORS.OPTION_REQUIRED'})

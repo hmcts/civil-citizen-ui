@@ -26,7 +26,7 @@ describe('Free Telephone Mediation View', () => {
     let mainWrapper: Element;
     let paragraphs: HTMLCollection;
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});

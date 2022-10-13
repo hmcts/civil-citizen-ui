@@ -6,7 +6,7 @@ import {getLng} from '../../../../../../common/utils/languageToggleUtils';
 import {
   CITIZEN_MONTHLY_INCOME_URL,
 } from '../../../../../../routes/urls';
-import Transaction from '../../../../../../common/form/models/statementOfMeans/expensesAndIncome/transaction';
+import {Transaction} from '../../../../../../common/form/models/statementOfMeans/expensesAndIncome/transaction';
 import {currencyFormatWithNoTrailingZeros} from '../../../../../../common/utils/currencyFormat';
 
 const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', { lng: getLng(lang) });

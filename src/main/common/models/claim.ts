@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import 'dayjs/locale/cy';
 import currencyFormat from '../utils/currencyFormat';
-import {Respondent} from './respondent';
+import {Party} from './party';
 import {StatementOfMeans} from './statementOfMeans';
 import {PartyType} from './partyType';
 import {RepaymentPlan} from './repaymentPlan';
@@ -13,7 +13,7 @@ import {CorrespondenceAddress} from './correspondenceAddress';
 import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
 import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/dateUtils';
 import {StatementOfTruthForm} from '../form/models/statementOfTruth/statementOfTruthForm';
-import PaymentOptionType from '../form/models/admission/paymentOption/paymentOptionType';
+import {PaymentOptionType} from '../form/models/admission/paymentOption/paymentOptionType';
 import {
   CaseState,
   ClaimAmountBreakup,
@@ -33,12 +33,12 @@ import {DocumentType} from './document/documentType';
 import {ResponseDeadline} from './responseDeadline';
 import {getLng} from '../../common/utils/languageToggleUtils';
 import {ClaimResponseStatus} from './claimResponseStatus';
-import RejectAllOfClaimType from '../../common/form/models/rejectAllOfClaimType';
 import {DirectionQuestionnaire} from '../models/directionsQuestionnaire/directionQuestionnaire';
 import {ResponseOptions} from '../../common/form/models/responseDeadline';
 import {AdditionalTimeOptions} from '../../common/form/models/additionalTime';
 import {InterestClaimOptionsType} from '../../common/form/models/claim/interest/interestClaimOptionsType';
 import {Interest} from '../form/models/interest/interest';
+import {RejectAllOfClaimType} from '../../common/form/models/rejectAllOfClaimType';
 
 export class Claim {
   legacyCaseReference: string;
@@ -49,7 +49,7 @@ export class Claim {
   totalClaimAmount: number;
   respondent1ResponseDeadline: Date;
   detailsOfClaim: string;
-  respondent1?: Respondent;
+  respondent1?: Party;
   statementOfMeans?: StatementOfMeans;
   paymentOption?: PaymentOptionType;
   repaymentPlan?: RepaymentPlan;
@@ -320,21 +320,6 @@ export class Claim {
     return this.responseDeadline?.option === ResponseOptions.NO;
   }
 
-}
-
-export interface Party {
-  individualTitle?: string;
-  individualLastName?: string;
-  individualFirstName?: string;
-  soleTraderTitle?: string;
-  soleTraderFirstName?: string;
-  soleTraderLastName?: string;
-  partyName?: string;
-  type?: PartyType;
-  primaryAddress?: CorrespondenceAddress;
-  phoneNumber?: string;
-  provideCorrespondenceAddress?: string;
-  correspondenceAddress?: CorrespondenceAddress;
 }
 
 export interface StatementOfTruth {

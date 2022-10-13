@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Response, Router} from 'express';
 import {
   CITIZEN_DEPENDANTS_URL,
   CITIZEN_PARTNER_AGE_URL,
@@ -12,15 +12,15 @@ import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
 
 const citizenPartnerAgeViewPath = 'features/response/statementOfMeans/partner/partner-age';
-const partnerAgeController = express.Router();
+const partnerAgeController = Router();
 const partnerAgeService = new PartnerAgeService();
 const disabilityService = new DisabilityService();
 
-function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
+function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(citizenPartnerAgeViewPath, {form});
 }
 
-partnerAgeController.get(CITIZEN_PARTNER_AGE_URL, async (req, res, next: express.NextFunction) => {
+partnerAgeController.get(CITIZEN_PARTNER_AGE_URL, async (req, res, next: NextFunction) => {
   try {
     const partnerAge = await partnerAgeService.getPartnerAge(req.params.id);
     renderView(partnerAge, res);
@@ -30,7 +30,7 @@ partnerAgeController.get(CITIZEN_PARTNER_AGE_URL, async (req, res, next: express
 });
 
 partnerAgeController.post(CITIZEN_PARTNER_AGE_URL,
-  async (req, res, next: express.NextFunction) => {
+  async (req, res, next: NextFunction) => {
     try {
       const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option));
       form.validateSync();

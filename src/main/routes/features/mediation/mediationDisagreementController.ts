@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Response, Router} from 'express';
 import {
   CAN_WE_USE_COMPANY_URL,
   CAN_WE_USE_URL,
@@ -15,13 +15,13 @@ import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreServi
 import {PartyType} from '../../../common/models/partyType';
 
 const mediationDisagreementViewPath = 'features/mediation/mediation-disagreement';
-const mediationDisagreementController = express.Router();
+const mediationDisagreementController = Router();
 
-function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
+function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(mediationDisagreementViewPath, {form});
 }
 
-mediationDisagreementController.get(MEDIATION_DISAGREEMENT_URL, async (req, res, next: express.NextFunction) => {
+mediationDisagreementController.get(MEDIATION_DISAGREEMENT_URL, async (req, res, next: NextFunction) => {
   try {
     const mediation = await getMediation(req.params.id);
     const freeMediationForm = new GenericForm(new GenericYesNo(mediation.mediationDisagreement?.option));
@@ -31,7 +31,7 @@ mediationDisagreementController.get(MEDIATION_DISAGREEMENT_URL, async (req, res,
   }
 });
 
-mediationDisagreementController.post(MEDIATION_DISAGREEMENT_URL, async (req, res, next: express.NextFunction) => {
+mediationDisagreementController.post(MEDIATION_DISAGREEMENT_URL, async (req, res, next: NextFunction) => {
   try {
     const claim: Claim = await getCaseDataFromStore(req.params.id);
     const mediationDisagreement = new GenericYesNo(req.body.option);

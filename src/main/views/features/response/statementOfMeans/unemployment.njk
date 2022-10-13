@@ -20,7 +20,7 @@
       {% set optionError = form.errorFor("option") %}
       {% set otherDetailsNestedError = form.errorFor('otherDetails[details]') %}
       {% set yearNestedError = form.errorFor('unemploymentDetails[years]') %}
-      {% set monthsNestedError = form.nestedErrorFor('unemploymentDetails[months]') %}
+      {% set monthsNestedError = form.errorFor('unemploymentDetails[months]') %}
       {% if form.hasErrors() %}
         {{ errorSummary(form.getErrors(), t) }}
       {% endif %}

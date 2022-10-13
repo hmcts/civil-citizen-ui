@@ -1,18 +1,18 @@
-import {CitizenAddress} from '../../main/common/form/models/citizenAddress';
+import {Address} from '../../main/common/form/models/address';
 import {CitizenCorrespondenceAddress} from '../../main/common/form/models/citizenCorrespondenceAddress';
 import {Debts} from '../../main/common/form/models/statementOfMeans/debts/debts';
 import {YesNo} from '../../main/common/form/models/yesNo';
 import {DebtItems} from '../../main/common/form/models/statementOfMeans/debts/debtItems';
 import {GenericForm} from '../../main/common/form/models/genericForm';
 
-export const buildCitizenAddress = (): GenericForm<CitizenAddress> => {
-  const citizenAddress =  new CitizenAddress();
-  citizenAddress.primaryAddressLine1 = 'primaryAddressLine1';
-  citizenAddress.primaryAddressLine2 = 'primaryAddressLine2';
-  citizenAddress.primaryAddressLine3 = 'primaryAddressLine3';
-  citizenAddress.primaryPostCode = 'primaryPostCode';
-  citizenAddress.primaryCity = 'primaryCity';
-  return  new GenericForm<CitizenAddress>(citizenAddress);
+export const buildCitizenAddress = (): GenericForm<Address> => {
+  const address =  new Address();
+  address.primaryAddressLine1 = 'primaryAddressLine1';
+  address.primaryAddressLine2 = 'primaryAddressLine2';
+  address.primaryAddressLine3 = 'primaryAddressLine3';
+  address.primaryPostCode = 'primaryPostCode';
+  address.primaryCity = 'primaryCity';
+  return  new GenericForm<Address>(address);
 };
 
 export const buildCitizenCorrespondenceAddress = () : GenericForm<CitizenCorrespondenceAddress> => {

@@ -1,9 +1,9 @@
-import TransactionSource from './transactionSource';
+import {TransactionSource} from './transactionSource';
 import {ValidateIf, ValidateNested} from 'class-validator';
 import {TransactionSchedule} from './transactionSchedule';
 import {toNumberOrUndefined} from '../../../../utils/numberConverter';
 
-export default class Transaction {
+export class Transaction {
   declared: boolean;
 
   @ValidateIf((o: Transaction) => o.declared === true)

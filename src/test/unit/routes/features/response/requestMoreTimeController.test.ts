@@ -2,7 +2,7 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
-import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
+import {getCaseDataFromStore,saveDraftClaim} from '../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../main/common/models/claim';
 import {
   CLAIM_TASK_LIST_URL,
@@ -16,8 +16,8 @@ import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-const mockSaveCaseData = draftStoreService.saveDraftClaim as jest.Mock;
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
+const mockSaveCaseData = saveDraftClaim as jest.Mock;
 const mockClaim = new Claim();
 mockClaim.applicant1 = {
   type: PartyType.INDIVIDUAL,
@@ -28,7 +28,7 @@ describe('Request More Time Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
