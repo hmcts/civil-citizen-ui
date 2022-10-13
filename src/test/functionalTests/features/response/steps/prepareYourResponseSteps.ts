@@ -33,6 +33,8 @@ import {PartAdmitAlreadyPaid} from '../pages/partAdmitAlreadyPaid';
 import {RejectAllOfClaim} from '../pages/rejectAllOfClaim';
 import {CarerDetails} from '../pages/carerDetails';
 import {ViewYourOptionsBeforeDeadline} from '../pages/viewYourOptionsBeforeDeadline';
+import {HowMuchYouHavePaid} from '../pages/howMuchYouHavePaid';
+import {WhyDoYouDisagreeTheClaimAmount} from '../pages/whyDoYouDisagreeTheClaimAmount';
 
 const I: I = actor();
 const taskListPage: TaskListPage = new TaskListPage();
@@ -69,6 +71,8 @@ const partAdmitAlreadyPaid: PartAdmitAlreadyPaid = new PartAdmitAlreadyPaid();
 const rejectAllOfClaim: RejectAllOfClaim = new RejectAllOfClaim();
 const selectCarerDetails: CarerDetails = new CarerDetails();
 const viewYourOptionsBeforeDeadline: ViewYourOptionsBeforeDeadline = new ViewYourOptionsBeforeDeadline();
+const howMuchYouHavePaid: HowMuchYouHavePaid = new HowMuchYouHavePaid();
+const whyDoYouDisagreeTheClaimAmount: WhyDoYouDisagreeTheClaimAmount = new WhyDoYouDisagreeTheClaimAmount();
 
 export class ResponseSteps {
 
@@ -258,6 +262,14 @@ export class ResponseSteps {
 
   SelectPartAdmitAlreadyPaid(option: string): void {
     partAdmitAlreadyPaid.selectAlreadyPaid(option);
+  }
+  
+  EnterHowMuchYouHavePaid(claimRef: string, amount: number): void {
+    howMuchYouHavePaid.enterPaymentDetails(claimRef, amount);
+  }
+  
+  EnterWhyYouDisagreeTheClaimAmount(claimRef: string): void {
+    whyDoYouDisagreeTheClaimAmount.enterReason(claimRef);
   }
 
   SelectOptionInRejectAllClaim(reason: string): void {
