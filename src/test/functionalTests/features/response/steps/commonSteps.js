@@ -1,18 +1,19 @@
 //import { ResponseSteps } from './prepareYourResponseSteps';
 
-const { ResponseSteps } =  require('./prepareYourResponseSteps');
+const ResponseSteps  =  require('./prepareYourResponseSteps');
 
 //const I = actor();
 //const ResponseSteps = new ResponseSteps();
 
 class CommonSteps {
+
   EnterPersonalDetails(claimRef) {
     ResponseSteps.VerifyResponsePageContent(claimRef);
     ResponseSteps.EnterNameAndAddressDetails(claimRef);
     ResponseSteps.EnterDateOfBirth(claimRef);
     ResponseSteps.EnterContactNumber(claimRef);
   }
-  EnterFinancialDetails(claimRef){
+  EnterFinancialDetails(claimRef) {
     ResponseSteps.ShareYourFinancialDetailsIntro(claimRef);
     ResponseSteps.EnterBankAccountDetails();
     ResponseSteps.SelectDisabilityDetails('yes', 'yes');
@@ -36,4 +37,4 @@ class CommonSteps {
   }
 }
 
-module.exports = CommonSteps;
+module.exports = new CommonSteps();

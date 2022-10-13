@@ -1,4 +1,3 @@
-//const config = require('../config.js.js');
 const config = require('../../../config');
 const restHelper = require('./restHelper');
 const NodeCache = require('node-cache');

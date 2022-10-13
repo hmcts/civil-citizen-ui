@@ -1,16 +1,8 @@
-// import {config} from '../../config';
-// import { ResponseSteps } from '../features/response/steps/prepareYourResponseSteps';
-// import { CommonSteps } from '../features/response/steps/commonSteps';
-// import { LoginSteps} from '../features/home/steps/login';
+const config =  require('../../config');
+const  ResponseSteps  =  require('../features/response/steps/prepareYourResponseSteps');
+const  CommonSteps  =  require('../features/response/steps/commonSteps');
+const  LoginSteps =  require('../features/home/steps/login');
 
-const {config} =  require('../../config');
-const { ResponseSteps } =  require('../features/response/steps/prepareYourResponseSteps');
-const { CommonSteps } =  require('../features/response/steps/commonSteps');
-const { LoginSteps} =  require('../features/home/steps/login');
-
-// const responseSteps = new ResponseSteps();
-// const commonSteps = new CommonSteps();
-// const loginSteps = new LoginSteps();
 const partAdmit = 'partAdmit';
 const rejectAll = 'rejectAll';
 const immediatePayment = 'immediate';

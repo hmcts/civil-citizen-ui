@@ -1,38 +1,4 @@
-//import { TaskListPage } from '../pages/taskList';
 const TaskListPage = require('../pages/taskList');
-// import { NameAndAddressDetailsPage } from '../pages/enterNameAndAddressDetails';
-// import { DateOfBirthDetailsPage } from '../pages/enterDateOfBirthDetails';
-// import { ContactNumberDetailsPage } from '../pages/enterContactNumberDetails';
-// import { RespondTypePage } from '../pages/respondType';
-// import { PaymentOptionPage } from '../pages/paymentOption';
-// import { CheckYourAnswersPage } from '../pages/checkYourAnswers';
-// import { DateToPayOn } from '../pages/dateToPayOn';
-// import { ShareYouFinancialDetailsIntro } from '../pages/shareYouFinancialDetailsIntro';
-// import { BankAccountsDetails } from '../pages/bankAccountsDetails';
-// import { DisabilityDetails } from '../pages/disabilityDetails';
-// import { SevereDisabilityDetails } from '../pages/severeDisabilityDetails';
-// import { ResidenceDetails } from '../pages/residenceDetails';
-// import { PartnerDetails } from '../pages/partnerDetails';
-// import { PartnerAgeDetails } from '../pages/partnerAgeDetails';
-// import { PartnerPensionDetails } from '../pages/partnerPensionDetails';
-// import { PartnerDisabilityDetails } from '../pages/partnerDisabilityDetails';
-// import { DependantDetails } from '../pages/dependantDetails';
-// import { OtherDependantDetails } from '../pages/otherDependantDetails';
-// import { EmploymentDetails } from '../pages/employment';
-// import { EmployerDetails } from '../pages/employerDetails';
-// import { SelfEmploymentDetails } from '../pages/selfEmploymentDetails';
-// import { SelfEmploymentTaxDetails } from '../pages/selfEmploymentTaxDetails';
-// import { CourtOrders } from '../pages/courtOrders';
-// import { PriorityDebtsDetails } from '../pages/priorityDebtsDetails';
-// import { Debts } from '../pages/debts';
-// import { MonthlyExpenses } from '../pages/monthlyExpenses';
-// import { MonthlyIncome } from '../pages/monthlyIncome';
-// import { Explanation } from '../pages/explanation';
-// import { RepaymentPlan } from '../pages/repaymentPlan';
-// import { PartAdmitAlreadyPaid } from '../pages/partAdmitAlreadyPaid';
-// import { RejectAllOfClaim } from '../pages/rejectAllOfClaim';
-// import { CarerDetails } from '../pages/carerDetails';
-
 const  NameAndAddressDetailsPage  =  require('../pages/enterNameAndAddressDetails');
 const  DateOfBirthDetailsPage  =  require('../pages/enterDateOfBirthDetails');
 const  ContactNumberDetailsPage  =  require('../pages/enterContactNumberDetails');
@@ -66,7 +32,7 @@ const  PartAdmitAlreadyPaid  =  require('../pages/partAdmitAlreadyPaid');
 const  RejectAllOfClaim  =  require('../pages/rejectAllOfClaim');
 const  CarerDetails  =  require('../pages/carerDetails');
 
-//const I = actor();
+const I = actor(); // eslint-disable-line no-unused-vars
 const taskListPage = new TaskListPage();
 const nameAndAddressDetailsPage  = new NameAndAddressDetailsPage();
 const dateOfBirthDetailsPage = new DateOfBirthDetailsPage();
@@ -258,4 +224,4 @@ class ResponseSteps {
   }
 }
 
-module.exports = ResponseSteps;
+module.exports = new ResponseSteps();

@@ -1,7 +1,5 @@
 const {listElement, buildAddress} = require('../../api/dataHelper');
-//const config = require('../../config.js.js');
-
-const config = require('../../../config');
+const config = require('../../../../config');
 
 const respondent1 = {
   type: 'INDIVIDUAL',

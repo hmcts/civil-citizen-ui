@@ -1,4 +1,3 @@
-//const config = require('../config.js.js');
 const config = require('../../../config');
 const idamHelper = require('./idamHelper');
 const restHelper = require('./restHelper');

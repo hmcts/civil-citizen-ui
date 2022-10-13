@@ -1,8 +1,6 @@
 
 const LoginPage = require('../pages/login');
 
-//const loginPage = new LoginPage();
-
 class LoginSteps  {
 
   AcceptCookies() {
