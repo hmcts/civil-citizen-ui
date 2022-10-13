@@ -47,7 +47,6 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: Request, res: Response, ne
       res.redirect(FIRST_CONTACT_CLAIM_SUMMARY_URL);
     }
   } catch (error) {
-    console.log(error);
     const status = error.message;
     if(status.includes('400')) {
       const pinForm = new GenericForm(new PinType(''));
