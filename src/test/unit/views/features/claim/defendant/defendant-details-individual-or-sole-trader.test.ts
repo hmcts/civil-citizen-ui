@@ -4,6 +4,7 @@ import {app} from '../../../../../../main/app';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import request from 'supertest';
 import {
+  CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL,
   CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL,
 } from '../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
@@ -26,6 +27,35 @@ describe('Defendant details sole trader or individual view', () => {
   });
 
   describe('on GET', () => {
+    describe('Individual', () => {
+      let htmlDocument: Document;
+      let mainWrapper: Element;
+
+      beforeAll(async () => {
+        const response = await request(app).get(CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL);
+        const dom = new JSDOM(response.text);
+        htmlDocument = dom.window.document;
+        mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
+      });
+
+      it('should display correct header', () => {
+        const header = mainWrapper.getElementsByClassName('govuk-heading-l');
+        expect(header[0].innerHTML).toContain('Enter the defendant’s details');
+      });
+
+      it('should display correct paragraph', () => {
+        const paragraph = mainWrapper.getElementsByClassName('govuk-body');
+        expect(paragraph[3].innerHTML).toContain('You must enter their usual or last known home address. You cannot use their work address.');
+      });
+
+      it('should not display sole trader input field', () => {
+        const inputs = mainWrapper.getElementsByClassName('govuk-input');
+        expect(inputs.length).toBe(9);
+        expect(inputs[2].getAttribute('id')).toBe('individualLastName');
+        expect(inputs[3].getAttribute('id')).toBe('primaryPostcode');
+      });
+    });
+
     describe('Sole trader', () => {
       let htmlDocument: Document;
       let mainWrapper: Element;

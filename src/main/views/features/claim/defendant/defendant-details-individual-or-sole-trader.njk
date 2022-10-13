@@ -1,5 +1,8 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "../../../macro/address.njk" import addressForm %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
@@ -85,7 +88,7 @@
             <p class="govuk-body">
               {{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }} {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}
             </p>
-            {% if defendantType === partyType.SOLE_TRADER %}
+            {% if defendantType === partyType.INDIVIDUAL %}
               <p class="govuk-body">
                {{ t('PAGES.DEFENDANT_DETAILS.ENGLAND_OR_WALES_ADDRESS') }} {{ t('PAGES.DEFENDANT_DETAILS.INVALID_CLAIM') }}
               </p>
@@ -106,7 +109,7 @@
                 {{ t('ERRORS.ADDRESS_NOT_FOUND') + t('ERRORS.TRY_AGAIN') }}
               </div>
               <input class="govuk-input govuk-input--width-10" id="primaryPostcode" name="primaryPostcode" type="text" autocomplete="postal-code"/>
-              <button class="govuk-button govuk-button--secondary findAddressButton" data-module="govuk-button"id="primaryfindAddressButton">
+              <button class="govuk-button govuk-button--secondary findAddressButton" data-module="govuk-button" id="primaryfindAddressButton">
                 {{ t('PAGES.DEFENDANT_DETAILS.FIND_ADDRESS') }}
               </button>
               <div id="primarySelectAddress" class="govuk-visually-hidden">
