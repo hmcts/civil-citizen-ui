@@ -1,21 +1,21 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {CLAIMANT_DOB_URL, CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL} from '../../urls';
-import {GenericForm} from '../../../common/form/models/genericForm';
-import {Address} from '../../../common/form/models/address';
-import {CitizenCorrespondenceAddress} from '../../../common/form/models/citizenCorrespondenceAddress';
-import {YesNo} from '../../../common/form/models/yesNo';
+import {CLAIMANT_DOB_URL, CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL} from '../../../urls';
+import {GenericForm} from '../../../../common/form/models/genericForm';
+import {Address} from '../../../../common/form/models/address';
+import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citizenCorrespondenceAddress';
+import {YesNo} from '../../../../common/form/models/yesNo';
 import {
   getClaimantInformation,
   getCorrespondenceAddressForm,
   saveClaimant,
-} from '../../../services/features/claim/claimantDetailsService';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {PartyDetails} from '../../../common/form/models/partyDetails';
-import {Party} from '../../../common/models/claim';
-import {AppRequest} from '../../../common/models/AppRequest';
+} from '../../../../services/features/claim/yourDetails/claimantDetailsService';
+import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+import {PartyDetails} from '../../../../common/form/models/partyDetails';
+import {Party} from '../../../../common/models/party';
+import {AppRequest} from '../../../../common/models/AppRequest';
 
 const claimantIndividualDetailsController = Router();
-const claimantIndividualDetailsPath = 'features/claim/claimant-individual-details';
+const claimantIndividualDetailsPath = 'features/claim/yourDetails/claimant-individual-details';
 
 function renderPage(res: Response, req: Request, claimant: Party, claimantIndividualAddress: GenericForm<Address>, claimantIndividualCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>, claimantDetails: GenericForm<PartyDetails>): void {
   const partyName = claimant?.partyName;
@@ -38,7 +38,7 @@ claimantIndividualDetailsController.get(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, a
 
     const claimantIndividualAddress = new GenericForm<Address>(Address.fromJson(claimant.primaryAddress));
     const claimantIndividualCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(CitizenCorrespondenceAddress.fromJson(claimant.correspondenceAddress));
-    const claimantDetails = new GenericForm<PartyDetails>(PartyDetails.fromJson(claimant));
+    const claimantDetails = new GenericForm<PartyDetails>(new PartyDetails(claimant));
 
     renderPage(res, req, claimant, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, claimantDetails);
   } catch (error) {
@@ -52,7 +52,7 @@ claimantIndividualDetailsController.post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, 
   try {
     const claimantIndividualAddress = new GenericForm<Address>(Address.fromObject(req.body));
     const claimantIndividualCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(getCorrespondenceAddressForm(req.body));
-    const claimantDetails = new GenericForm<PartyDetails>(PartyDetails.fromObject(req.body));
+    const claimantDetails = new GenericForm<PartyDetails>(new PartyDetails(req.body));
 
     claimantDetails.validateSync();
     claimantIndividualAddress.validateSync();

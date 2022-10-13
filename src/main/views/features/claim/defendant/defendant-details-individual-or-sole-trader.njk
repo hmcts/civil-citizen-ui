@@ -1,8 +1,5 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/input/macro.njk" import govukInput %}
-{% from "govuk/components/select/macro.njk" import govukSelect %}
-{% from "../../../macro/address.njk" import addressForm %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
@@ -36,8 +33,7 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ title }}</h1>
-          <p class="govuk-body">{{ t('PAGES.DEFENDANT_DETAILS.PAYING_EXTRA') }}</p>
-
+          <p class="govuk-body">{{ payingExtra }}</p>
           <form method="post" name="address" novalidate>
             {{ csrfProtection(csrf) }}
 
@@ -45,9 +41,9 @@
               label: {
                 text: t('COMMON.INPUT_LABELS.TITLE')
               },
-              classes: "govuk-!-width-one-half",
-              id: "individualTitle",
-              name: "individualTitle",
+              classes: 'govuk-!-width-one-half',
+              id: 'individualTitle',
+              name: 'individualTitle',
               value: form.model.individualTitle,
               errorMessage: { text: t(form.errorFor('individualTitle')) } if form.errorFor('individualTitle')
             }) }}
@@ -55,9 +51,9 @@
               label: {
                 text: t('COMMON.INPUT_LABELS.FIRST_NAME')
               },
-              classes: "govuk-!-width-one-half",
-              id: "individualFirstName",
-              name: "individualFirstName",
+              classes: 'govuk-!-width-one-half',
+              id: 'individualFirstName',
+              name: 'individualFirstName',
               value: form.model.individualFirstName,
               errorMessage: { text: t(form.errorFor('individualFirstName')) } if form.errorFor('individualFirstName')
             }) }}
@@ -65,24 +61,42 @@
               label: {
                 text: t('COMMON.INPUT_LABELS.LAST_NAME')
               },
-              classes: "govuk-!-width-one-half",
-              id: "individualLastName",
-              name: "individualLastName",
+              classes: 'govuk-!-width-one-half',
+              id: 'individualLastName',
+              name: 'individualLastName',
               value: form.model.individualLastName,
               errorMessage: { text: t(form.errorFor('individualLastName')) } if form.errorFor('individualLastName')
             }) }}
+
+            {% if defendantType === partyType.SOLE_TRADER %}
+              {{  govukInput({
+                label: {
+                  text: t('PAGES.DEFENDANT_DETAILS.BUSINESS_NAME')
+                },
+                classes: 'govuk-!-width-one-half',
+                id: 'soleTraderTradingAs',
+                name: 'soleTraderTradingAs',
+                value: form.model.soleTraderTradingAs,
+                errorMessage: { text: t(form.errorFor('soleTraderTradingAs')) } if form.errorFor('soleTraderTradingAs')
+              }) }}
+            {% endif %}
 
             <h2 class="govuk-heading-m">{{ t('PAGES.DEFENDANT_DETAILS.THEIR_ADDRESS') }}</h2>
             <p class="govuk-body">
               {{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }} {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}
             </p>
-            <p class="govuk-body">
-              {{ t('PAGES.DEFENDANT_DETAILS.ENGLAND_OR_WALES_ADDRESS') }} {{ t('PAGES.DEFENDANT_DETAILS.INVALID_CLAIM') }}
-            </p>
-            <p class="govuk-body">
-              {{ t('PAGES.DEFENDANT_DETAILS.USUAL_ADDRESS') }} {{ t('PAGES.DEFENDANT_DETAILS.NO_WORK_ADDRESS') }}
-            </p>
-
+            {% if defendantType === partyType.SOLE_TRADER %}
+              <p class="govuk-body">
+               {{ t('PAGES.DEFENDANT_DETAILS.ENGLAND_OR_WALES_ADDRESS') }} {{ t('PAGES.DEFENDANT_DETAILS.INVALID_CLAIM') }}
+              </p>
+              <p class="govuk-body">
+                {{ t('PAGES.DEFENDANT_DETAILS.USUAL_ADDRESS') }} {{ t('PAGES.DEFENDANT_DETAILS.NO_WORK_ADDRESS') }}
+              </p>
+            {% else %}
+                <p class="govuk-body">
+                  {{ t('PAGES.DEFENDANT_DETAILS.ORGANISATION_MAIN_OFFICE') + ' ' + t('PAGES.DEFENDANT_DETAILS.ENGLAND_OR_WALES_ADDRESS') }}
+                </p>
+            {% endif %}
             <div class="govuk-form-group" id="primaryPostcodeContainer">
               <h2 class="govuk-heading-m">{{ addressTitle }}</h2>
               <label class="govuk-label" for="primaryPostcode">
@@ -91,10 +105,8 @@
               <div id="primaryPostcode-error" class="govuk-visually-hidden govuk-error-message">
                 {{ t('ERRORS.ADDRESS_NOT_FOUND') + t('ERRORS.TRY_AGAIN') }}
               </div>
-              <input class="govuk-input govuk-input--width-10" id="primaryPostcode" name="primaryPostcode" type="text"
-                     autocomplete="postal-code"/>
-              <button class="govuk-button govuk-button--secondary findAddressButton" data-module="govuk-button"
-                      id="primaryfindAddressButton">
+              <input class="govuk-input govuk-input--width-10" id="primaryPostcode" name="primaryPostcode" type="text" autocomplete="postal-code"/>
+              <button class="govuk-button govuk-button--secondary findAddressButton" data-module="govuk-button"id="primaryfindAddressButton">
                 {{ t('PAGES.DEFENDANT_DETAILS.FIND_ADDRESS') }}
               </button>
               <div id="primarySelectAddress" class="govuk-visually-hidden">
@@ -110,8 +122,7 @@
               </div>
             </div>
             <div>
-              <a id="primaryEnterAddressManually" aria-controls="enterAddressManually" href="#"
-                 class="govuk-body govuk-link enterAddressManually">
+              <a id="primaryEnterAddressManually" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link enterAddressManually">
                 {{ t('PAGES.DEFENDANT_DETAILS.MANUAL_ADDRESS') }}
               </a>
             </div>
@@ -123,7 +134,6 @@
                 addressTitle = ''
               ) }}
             </div>
-
             {{ govukButton({
               text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),
               classes: 'govuk-!-margin-top-4'

@@ -5,11 +5,11 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/select/macro.njk" import govukSelect %}
 
-{% from "../../macro/address.njk" import addressForm %}
-{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
-{% from "../../macro/csrf.njk" import csrfProtection %}
-{% from "../../macro/error-summary.njk" import errorSummary %}
-{% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../../macro/address.njk" import addressForm %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../macro/error-summary.njk" import errorSummary %}
+{% from "../../../macro/page-title.njk" import setPageTitle %}
 
 {% set correspondenceAddressClass = 'govuk-visually-hidden' %}
 {% set addressTitle = t('PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.YOUR_POSTAL_ADDRESS') %}
@@ -92,30 +92,30 @@
                 text: t('COMMON.INPUT_LABELS.TITLE')
               },
               classes: "govuk-!-width-one-half",
-              id: "title",
-              name: "claimantIndividualDetailsTitle",
-              value: claimantDetails.model.title,
-                errorMessage: { text: t(claimantDetails.errorFor('title')) } if claimantDetails.errorFor('title')
+              id: "individualTitle",
+              name: "individualTitle",
+              value: claimantDetails.model.individualTitle,
+                errorMessage: { text: t(claimantDetails.errorFor('individualTitle')) } if claimantDetails.errorFor('tiindividualTitle')
             }) }}
             {{ govukInput({
               label: {
                 text: t('COMMON.INPUT_LABELS.FIRST_NAME')
               },
               classes: "govuk-!-width-one-half",
-              id: "firstName",
-              name: "claimantIndividualDetailsFirstName",
-              value: claimantDetails.model.firstName,
-              errorMessage: { text: t(claimantDetails.errorFor('firstName')) } if claimantDetails.errorFor('firstName')
+              id: "individualFirstName",
+              name: "individualFirstName",
+              value: claimantDetails.model.individualFirstName,
+              errorMessage: { text: t(claimantDetails.errorFor('individualFirstName')) } if claimantDetails.errorFor('individualFirstName')
             }) }}
             {{ govukInput({
               label: {
                 text: t('COMMON.INPUT_LABELS.LAST_NAME')
               },
               classes: "govuk-!-width-one-half",
-              id: "lastName",
-              name: "claimantIndividualDetailsLastName",
-              value: claimantDetails.model.lastName,
-               errorMessage: { text: t(claimantDetails.errorFor('lastName')) } if claimantDetails.errorFor('lastName')
+              id: "individualLastName",
+              name: "individualLastName",
+              value: claimantDetails.model.individualLastName,
+               errorMessage: { text: t(claimantDetails.errorFor('individualLastName')) } if claimantDetails.errorFor('individualLastName')
             }) }}
 
             <div class="govuk-form-group" id="primaryPostcodeContainer">
