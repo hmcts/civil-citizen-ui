@@ -35,7 +35,7 @@ const saveTelephone = async (claimId:string,form: CitizenTelephoneNumber,citizen
   }
 };
 
-const saveForm = (claim: Claim, form: CitizenTelephoneNumber,citizenType: ClaimantOrDefendant) => {
+const saveForm = (claim: Claim, form: CitizenTelephoneNumber, citizenType: ClaimantOrDefendant) => {
   if (citizenType === ClaimantOrDefendant.CLAIMANT) {
     if (!claim.applicant1) {
       claim.applicant1 = new Party();
@@ -47,7 +47,7 @@ const saveForm = (claim: Claim, form: CitizenTelephoneNumber,citizenType: Claima
     }
     claim.respondent1.phoneNumber = form.telephoneNumber;
   }
-}
+};
 
 export {
   getTelephone,
