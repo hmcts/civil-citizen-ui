@@ -48,8 +48,8 @@ const redirect = (responseDataRedis: Party, req: Request, res: Response) => {
 citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const respondent: Party = await getRespondentInformation(req.params.id);
-    const citizenAddress = new GenericForm<Address>(new Address(respondent?.primaryAddress));
-    const citizenCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress(respondent?.correspondenceAddress));
+    const citizenAddress = new GenericForm<Address>(Address.fromJson(respondent?.primaryAddress));
+    const citizenCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(CitizenCorrespondenceAddress.fromJson(respondent?.correspondenceAddress));
     renderPage(res, req, respondent, citizenAddress, citizenCorrespondenceAddress);
   } catch (error) {
     next(error);
@@ -59,9 +59,9 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: Request, res: Resp
 citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
   const responseDataRedis: Party = await getRespondentInformation(req.params.id);
   try {
-    const citizenAddress = new GenericForm<Address>(new Address(req.body));
+    const citizenAddress = new GenericForm<Address>(Address.fromObject(req.body));
 
-    let citizenCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress(req.body));
+    let citizenCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(CitizenCorrespondenceAddress.fromObject(req.body));
 
     await citizenAddress.validate();
     if (req.body.postToThisAddress === YesNo.YES) {

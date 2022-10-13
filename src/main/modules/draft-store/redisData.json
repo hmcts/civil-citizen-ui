@@ -998,6 +998,7 @@
         "individualFirstName": "Jan",
         "individualLastName": "Clark",
         "partyName": "Mr. Jan Clark",
+        "soleTraderTradingAs": "Clark's Sons Ltd.",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
