@@ -1,11 +1,11 @@
-import * as express from 'express';
+import {NextFunction, Response, Router} from 'express';
 import {
   CITIZEN_ALREADY_PAID_URL,
   CITIZEN_REJECT_ALL_CLAIM_URL,
   CITIZEN_RESPONSE_TYPE_URL,
   CLAIM_TASK_LIST_URL,
 } from '../../../urls';
-import {Respondent} from '../../../../common/models/respondent';
+import {Party} from '../../../../common/models/party';
 import {Claim} from '../../../../common/models/claim';
 import {CitizenResponseType} from '../../../../common/form/models/citizenResponseType';
 import {ResponseType} from '../../../../common/form/models/responseType';
@@ -15,13 +15,13 @@ import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlForm
 import {GenericForm} from '../../../../common/form/models/genericForm';
 
 const citizenResponseTypeViewPath = 'features/response/citizenResponseType/citizen-response-type';
-const citizenResponseTypeController = express.Router();
+const citizenResponseTypeController = Router();
 
-function renderView(form: GenericForm<CitizenResponseType>, res: express.Response, componentDetailItemsList?: ComponentDetailItems[]): void {
+function renderView(form: GenericForm<CitizenResponseType>, res: Response, componentDetailItemsList?: ComponentDetailItems[]): void {
   res.render(citizenResponseTypeViewPath, {form: form, componentDetailItemsList: componentDetailItemsList});
 }
 
-citizenResponseTypeController.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res,next: express.NextFunction) => {
+citizenResponseTypeController.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res,next: NextFunction) => {
   try {
     const citizenResponseType = new GenericForm(new CitizenResponseType());
     const claim = await getCaseDataFromStore(req.params.id);
@@ -36,7 +36,7 @@ citizenResponseTypeController.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res,nex
 });
 
 citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
-  async (req, res, next: express.NextFunction) => {
+  async (req, res, next: NextFunction) => {
     try {
       const formResponseType: GenericForm<CitizenResponseType> = new GenericForm<CitizenResponseType>(new CitizenResponseType(req.body.responseType));
       await formResponseType.validate();
@@ -47,7 +47,7 @@ citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
         if (claim.respondent1) {
           claim.respondent1.responseType = formResponseType.model.responseType;
         } else {
-          const respondent = new Respondent();
+          const respondent = new Party();
           respondent.responseType = formResponseType.model.responseType;
           claim.respondent1 = respondent;
         }

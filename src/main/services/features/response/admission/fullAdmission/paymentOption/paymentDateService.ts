@@ -7,8 +7,7 @@ import {PaymentIntention} from '../../../../../../common/form/models/admission/p
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('paymentDateService');
 
-class PaymentDateService {
-
+export class PaymentDateService {
   public async getPaymentDate(claimId: string, responseType: ResponseType): Promise<PaymentDate> {
     try {
       const claim = await getCaseDataFromStore(claimId);
@@ -62,5 +61,4 @@ class PaymentDateService {
 
 }
 
-const paymentDateService = new PaymentDateService();
-export default paymentDateService;
+export const paymentDateService = new PaymentDateService();

@@ -380,6 +380,8 @@
       "ADDRESS_NOT_FOUND": "Ni allwn dod o hyd i gyfeiriad ar gyfer y cod post hwnnw.",
       "ALL_CORRESPONDENCE": "Byddir yn anfon pob gohebiaeth i'r cyfeiriad hwn.",
       "CLAIMANT_DETAILS_PROVIDED": "Darparwyd eich enw a'ch cyfeiriad gan yr unigolyn, y busnes neu'r sefydliad sy'n cyflwyno'r hawliad (yr hawlydd).",
+      "CONTACT_PERSON": "Contact person (optional)",
+      "CONTACT_PERSON_HINT": "The defendant can contact this person to discuss the claim",
       "CONFIRM_YOUR_DETAILS": "Cadarnhau eich manylion",
       "CORRESPONDENCE_ADDRESS": "Cyfeiriad ar gyfer gohebiaeth",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Ydych chi am inni anfon gohebiaeth i gyfeiriad arall?",
@@ -387,6 +389,8 @@
       "FIRST_NAME": "Enw cyntaf",
       "LAST_NAME": "Cyfenw",
       "MANUAL_ADDRESS": "Teipio'r cyfeiriad",
+      "PARTY_NAME_COMPANY": "Company name",
+      "PARTY_NAME_ORGANISATION": "Organisation name",
       "PAGE_TITLE": "Eich manylion",
       "PICK_ADDRESS": "Dewiswch gyfeiriad",
       "TITLE": "Teitl",
@@ -490,6 +494,12 @@
       "CONTINUE_CLAIMING_INTEREST": {
         "PAGE_TITLE": "Continue claiming interest",
         "TITLE": "Continue to claim interest after you submit your claim?"
+      },
+      "DEFENDANT_EMAIL": {
+        "PAGE_TITLE": "Their email address (optional)",
+        "PERSONAL_EMAIL": "This must be their personal email address",
+        "TITLE": "Their email address (optional)",
+        "USE_THIS_EMAIL": "We'll use this to tell them you've made a claim, as well as notifying them by post."
       },
       "RESOLVE_THE_DISPUTE": {
         "P1": {
@@ -1148,6 +1158,12 @@
       "CONTENT": "Byddwn yn anfon neges e-bost atoch chi a chynrychiolydd cyfreithiol {{ claimantName }} i gadarnhau eich bod wedi cytuno â’r dyddiad ymateb newydd hwn.",
       "PAGE_TITLE": "Terfyn amser newydd ar gyfer ymateb",
       "TITLE": "4pm ar {{ responseDeadline }}"
+    },
+    "ORGANISATION_DETAILS": {
+      "ADDRESS": "Organisation address",
+      "MAIN_OFFICE": "Enter the organisation’s main office or an organisation’s address that has a connection with the claim.",
+      "PAGE_TITLE": "Enter organisation details",
+      "TITLE": "Enter organisation details"
     },
     "CANT_ATTEND_HEARING_IN_NEXT_12MONTHS": {
       "CONTENT": "These should only be the dates of important events like medical appointments, other court hearing, or holidays you have already booked",
@@ -1857,6 +1873,7 @@
     "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Ni all y rhif fod yn uwch na'r rhif ar y dudalen flaenorol",
     "VALID_OPTION_SELECTION": "Dewiswch opsiwn",
     "VALID_OWED_AMOUNT_REQUIRED": "Rhowch swm dilys",
+    "VALID_PARTY_NAME": "Enter name",
     "VALID_PAYMENT_OPTION": "Dewis opsiwn ad-dalu",
     "VALID_PHONE_NUMBER": "Rhowch rif ffôn gan ddefnyddio'r fformat cywir",
     "VALID_PHONE_OR_VIDEO_HEARING": {

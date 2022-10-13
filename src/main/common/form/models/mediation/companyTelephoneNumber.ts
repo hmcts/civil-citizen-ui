@@ -2,7 +2,6 @@ import { IsDefined, MaxLength, ValidateIf, IsNotEmpty } from 'class-validator';
 import { YesNo } from '../yesNo';
 
 export class CompanyTelephoneNumber  {
-
   @IsDefined({ message: 'ERRORS.VALID_YES_NO_OPTION' })
     option?: YesNo;
 
@@ -25,7 +24,6 @@ export class CompanyTelephoneNumber  {
     mediationPhoneNumber?: string;
 
   constructor(option?: YesNo, mediationPhoneNumber?: string, mediationContactPerson?: string, mediationPhoneNumberConfirmation?: string) {
-
     this.option = option;
     this.mediationPhoneNumber = mediationPhoneNumber;
     this.mediationContactPerson = mediationContactPerson;

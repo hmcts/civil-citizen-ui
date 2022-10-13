@@ -21,7 +21,7 @@ describe("You can't use this service View", () => {
   let mainWrapper: Element;
 
   describe('on GET', () => {
-    beforeEach(async () => {
+    beforeAll(async () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
@@ -47,7 +47,7 @@ describe("You can't use this service View", () => {
     });
 
     describe('Reason is claim value over 25000', () => {
-      beforeEach(async () => {
+      beforeAll(async () => {
         await request(app).get(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_VALUE_OVER_25000)).then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
@@ -85,7 +85,7 @@ describe("You can't use this service View", () => {
     });
 
     describe('Reason is claim against government', () => {
-      beforeEach(async () => {
+      beforeAll(async () => {
         await request(app).get(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.GOVERNMENT_DEPARTMENT)).then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
@@ -121,7 +121,7 @@ describe("You can't use this service View", () => {
     });
 
     describe('Reason is claim value not known', () => {
-      beforeEach(async () => {
+      beforeAll(async () => {
         await request(app).get(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_VALUE_NOT_KNOWN)).then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
@@ -154,7 +154,7 @@ describe("You can't use this service View", () => {
     });
 
     describe('Reason is defendant address', () => {
-      beforeEach(async () => {
+      beforeAll(async () => {
         await request(app).get(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.DEFENDANT_ADDRESS)).then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
@@ -190,7 +190,7 @@ describe("You can't use this service View", () => {
     });
 
     describe('Reason is more than one person or organisation ', () => {
-      beforeEach(async () => {
+      beforeAll(async () => {
         await request(app).get(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.MULTIPLE_DEFENDANTS)).then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
@@ -228,7 +228,7 @@ describe("You can't use this service View", () => {
     });
 
     describe('Reason is claim on behalf', () => {
-      beforeEach(async () => {
+      beforeAll(async () => {
         await request(app).get(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_ON_BEHALF)).then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
@@ -264,7 +264,7 @@ describe("You can't use this service View", () => {
     });
 
     describe('Reason is claimant under 18', () => {
-      beforeEach(async () => {
+      beforeAll(async () => {
         await request(app).get(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.UNDER_18_CLAIMANT)).then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
@@ -289,7 +289,7 @@ describe("You can't use this service View", () => {
     });
 
     describe('Reason multiple claimants', () => {
-      beforeEach(async () => {
+      beforeAll(async () => {
         await request(app).get(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.MULTIPLE_CLAIMANTS)).then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
@@ -323,7 +323,7 @@ describe("You can't use this service View", () => {
     });
 
     describe('Reason is claim for tenancy deposit', () => {
-      beforeEach(async () => {
+      beforeAll(async () => {
         await request(app).get(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_IS_FOR_TENANCY_DEPOSIT)).then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
@@ -347,7 +347,7 @@ describe("You can't use this service View", () => {
     });
 
     describe('Reason is no UK address', () => {
-      beforeEach(async () => {
+      beforeAll(async () => {
         await request(app).get(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIMANT_ADDRESS)).then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
@@ -362,7 +362,7 @@ describe("You can't use this service View", () => {
     });
 
     describe('Reason defendant under 18', () => {
-      beforeEach(async () => {
+      beforeAll(async () => {
         await request(app).get(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.UNDER_18_DEFENDANT)).then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;

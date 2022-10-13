@@ -1,10 +1,10 @@
-import * as express from 'express';
+import {Router} from 'express';
 import {
   CLAIM_COMPLETING_CLAIM_URL,
 } from '../../urls';
 
 const completingClaimViewPath = 'features/claim/completing-claim';
-const completingClaimController = express.Router();
+const completingClaimController = Router();
 
 completingClaimController.get(CLAIM_COMPLETING_CLAIM_URL, (_req, res) => {
   res.render(completingClaimViewPath);

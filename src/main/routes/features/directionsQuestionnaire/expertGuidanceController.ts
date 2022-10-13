@@ -1,10 +1,10 @@
-import * as express from 'express';
+import {NextFunction, Router} from 'express';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {EXPERT_GUIDANCE_URL, PERMISSION_FOR_EXPERT_URL} from '../../urls';
 
-const expertGuidanceController = express.Router();
+const expertGuidanceController = Router();
 
-expertGuidanceController.get(EXPERT_GUIDANCE_URL, async (_req, res, next: express.NextFunction) => {
+expertGuidanceController.get(EXPERT_GUIDANCE_URL, async (_req, res, next: NextFunction) => {
   try {
     res.render('features/directionsQuestionnaire/expert-guidance');
   } catch (error) {
@@ -12,7 +12,7 @@ expertGuidanceController.get(EXPERT_GUIDANCE_URL, async (_req, res, next: expres
   }
 });
 
-expertGuidanceController.post(EXPERT_GUIDANCE_URL, async (req, res, next: express.NextFunction) => {
+expertGuidanceController.post(EXPERT_GUIDANCE_URL, async (req, res, next: NextFunction) => {
   try {
     res.redirect(constructResponseUrlWithIdParams(req.params.id, PERMISSION_FOR_EXPERT_URL));
   } catch (error) {

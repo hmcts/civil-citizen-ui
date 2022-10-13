@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {
   CHILDREN_DISABILITY_URL,
   CITIZEN_DEPENDANTS_EDUCATION_URL,
@@ -16,19 +16,19 @@ import {hasDisabledChildren} from '../../../../../services/features/response/sta
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 
 const dependantTeenagersViewPath = 'features/response/statementOfMeans/dependants/between_16_and_19';
-const betweenSixteenAndNineteenController = express.Router();
+const betweenSixteenAndNineteenController = Router();
 
-function renderView(form: GenericForm<BetweenSixteenAndNineteenDependants>, res: express.Response): void {
+function renderView(form: GenericForm<BetweenSixteenAndNineteenDependants>, res: Response): void {
   res.render(dependantTeenagersViewPath, {form});
 }
 
-function convertToForm(req: express.Request): GenericForm<BetweenSixteenAndNineteenDependants> {
+function convertToForm(req: Request): GenericForm<BetweenSixteenAndNineteenDependants> {
   const value = req.body.value ? Number(req.body.value) : undefined;
   const maxValue = req.body.maxValue ? Number(req.body.maxValue) : undefined;
   return new GenericForm(new BetweenSixteenAndNineteenDependants(value, maxValue));
 }
 
-betweenSixteenAndNineteenController.get(CITIZEN_DEPENDANTS_EDUCATION_URL, async (req, res, next: express.NextFunction) => {
+betweenSixteenAndNineteenController.get(CITIZEN_DEPENDANTS_EDUCATION_URL, async (req, res, next: NextFunction) => {
   try {
     renderView(await getForm(req.params.id), res);
   } catch (error) {
@@ -36,7 +36,7 @@ betweenSixteenAndNineteenController.get(CITIZEN_DEPENDANTS_EDUCATION_URL, async 
   }
 });
 
-betweenSixteenAndNineteenController.post(CITIZEN_DEPENDANTS_EDUCATION_URL, async (req, res, next: express.NextFunction) => {
+betweenSixteenAndNineteenController.post(CITIZEN_DEPENDANTS_EDUCATION_URL, async (req, res, next: NextFunction) => {
   const form = convertToForm(req);
   try {
     form.validateSync();

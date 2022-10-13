@@ -15,16 +15,14 @@ jest.mock('../../../../../main/app/client/civilServiceClient');
 describe('Document download controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  beforeEach(() => {
+
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
-  describe('on Get', () => {
-    afterEach(() => {
-      app.locals.draftStoreClient = undefined;
-    });
 
+  describe('on Get', () => {
     it('should download the pdf successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaimPDFTimeline;
       const mockDownloadPDFDocument = jest.spyOn(documentUtils, 'downloadPDF');
@@ -35,6 +33,7 @@ describe('Document download controller', () => {
           expect(mockDownloadPDFDocument).toBeCalled();
         });
     });
+
     it('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)

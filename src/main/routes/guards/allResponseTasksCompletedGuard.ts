@@ -1,5 +1,4 @@
-import * as express from 'express';
-
+import {NextFunction, Request, Response} from 'express';
 import {Task} from '../../common/models/taskList/task';
 import {getTaskLists, outstandingTasksFromTaskLists} from '../../services/features/response/taskListService';
 import assert from 'assert';
@@ -8,9 +7,8 @@ import {Claim} from '../../common/models/claim';
 import {getCaseDataFromStore} from '../../modules/draft-store/draftStoreService';
 
 export class AllResponseTasksCompletedGuard {
-
   static apply(redirectUrl: string) {
-    return async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
+    return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
       try {
         const lang = req?.query?.lang ? req.query.lang : req?.cookies?.lang;
         const caseData: Claim = await getCaseDataFromStore(req.session.claimId);

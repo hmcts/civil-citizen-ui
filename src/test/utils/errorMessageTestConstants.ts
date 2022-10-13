@@ -20,6 +20,7 @@ export const enum TestMessages {
   ENTER_POSTCODE = 'Enter address postcode',
   ENTER_TOWN = 'Enter a valid town/city',
   ENTER_VALID_AMOUNT = 'Enter a valid amount',
+  ENTER_VALID_EMAIL = 'Enter a valid email address',
   EQUAL_INSTALMENTS_REQUIRED = 'Enter a valid amount for equal instalments',
   EXAMPLE_LIVE_WITH_PARTNER = 'For example, a boyfriend, girlfriend, husband, wife or civil partner.',
   EXPERT_GUIDANCE_TITLE = 'Using an expert in small claims',

@@ -21,7 +21,7 @@ describe('You can use this service View', () => {
   let htmlDocument: Document;
 
   describe('on GET', () => {
-    beforeEach(async () => {
+    beforeAll(async () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
@@ -34,7 +34,7 @@ describe('You can use this service View', () => {
     describe('HWF Eligible', () => {
       let mainWrapper: Element;
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         await request(app).get(ELIGIBILITY_HWF_ELIGIBLE_URL).then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
@@ -74,7 +74,7 @@ describe('You can use this service View', () => {
     describe('HWF Eligible Reference', () => {
       let mainWrapper: Element;
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         await request(app).get(ELIGIBILITY_HWF_ELIGIBLE_REFERENCE_URL).then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
@@ -106,7 +106,7 @@ describe('You can use this service View', () => {
     describe('Eligible for this Service', () => {
       let mainWrapper: Element;
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         await request(app).get(ELIGIBLE_FOR_THIS_SERVICE_URL).then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;

@@ -1,18 +1,18 @@
-import express from 'express';
+import {Request, Response, NextFunction} from 'express';
 import {AdditionalTimeOptions} from '../../../../main/common/form/models/additionalTime';
 import {ResponseDeadline, ResponseOptions} from '../../../../main/common/form/models/responseDeadline';
 import {Claim} from '../../../../main/common/models/claim';
-import * as draftStoreService from '../../../../main/modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from '../../../../main/modules/draft-store/draftStoreService';
 import {deadLineGuard} from '../../../../main/routes/guards/deadLineGuard';
 
 jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
 
-const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
-const MOCK_REQUEST = { params: { id: '123' } } as unknown as express.Request;
-const MOCK_RESPONSE = { redirect: jest.fn() } as unknown as express.Response;
-const MOCK_NEXT = jest.fn() as express.NextFunction;
+const MOCK_REQUEST = { params: { id: '123' } } as unknown as Request;
+const MOCK_RESPONSE = { redirect: jest.fn() } as unknown as Response;
+const MOCK_NEXT = jest.fn() as NextFunction;
 
 describe('Deadline Guard', () => {
   it('should respond unauthorized when isTaskComplete && isDeadlineExtended', async () => {

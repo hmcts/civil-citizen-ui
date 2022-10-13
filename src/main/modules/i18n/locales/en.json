@@ -380,6 +380,8 @@
       "ADDRESS_NOT_FOUND": "We can't find an address for that postcode.",
       "ALL_CORRESPONDENCE": "All correspondence will be sent to this address.",
       "CLAIMANT_DETAILS_PROVIDED": "Your name and address were provided by the person, business or organisation claiming from you (the claimant).",
+      "CONTACT_PERSON": "Contact person (optional)",
+      "CONTACT_PERSON_HINT": "The defendant can contact this person to discuss the claim",
       "CONFIRM_YOUR_DETAILS": "Confirm your details",
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Would you like correspondence sent to a different address?",
@@ -387,6 +389,8 @@
       "FIRST_NAME": "First name",
       "LAST_NAME": "Last name",
       "MANUAL_ADDRESS": "Enter address manually",
+      "PARTY_NAME_COMPANY": "Company name",
+      "PARTY_NAME_ORGANISATION": "Organisation name",
       "PAGE_TITLE": "Your details",
       "PICK_ADDRESS": "Pick an address",
       "TITLE": "Title",
@@ -490,6 +494,12 @@
       "CONTINUE_CLAIMING_INTEREST": {
         "PAGE_TITLE": "Continue claiming interest",
         "TITLE": "Continue to claim interest after you submit your claim?"
+      },
+      "DEFENDANT_EMAIL": {
+        "PAGE_TITLE": "Their email address (optional)",
+        "PERSONAL_EMAIL": "This must be their personal email address",
+        "TITLE": "Their email address (optional)",
+        "USE_THIS_EMAIL": "We'll use this to tell them you've made a claim, as well as notifying them by post."
       },
       "RESOLVE_THE_DISPUTE": {
         "P1": {
@@ -1148,6 +1158,12 @@
       "CONTENT": "We’ll email both you and {{ claimantName }} legal representative to confirm that you have agreed this new response date.",
       "PAGE_TITLE": "New response deadline",
       "TITLE": "4 pm on {{ responseDeadline }}"
+    },
+    "ORGANISATION_DETAILS": {
+      "ADDRESS": "Organisation address",
+      "MAIN_OFFICE": "Enter the organisation’s main office or an organisation’s address that has a connection with the claim.",
+      "PAGE_TITLE": "Enter organisation details",
+      "TITLE": "Enter organisation details"
     },
     "CANT_ATTEND_HEARING_IN_NEXT_12MONTHS": {
       "CONTENT": "These should only be the dates of important events like medical appointments, other court hearing, or holidays you have already booked",
@@ -1857,6 +1873,7 @@
     "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Number can’t be higher than on previous page",
     "VALID_OPTION_SELECTION": "Select an option",
     "VALID_OWED_AMOUNT_REQUIRED": "Enter a valid amount owed",
+    "VALID_PARTY_NAME": "Enter name",
     "VALID_PAYMENT_OPTION": "Choose a payment option",
     "VALID_PHONE_NUMBER": "Enter a phone number in the correct format",
     "VALID_PHONE_OR_VIDEO_HEARING": {
@@ -1877,7 +1894,6 @@
     "VALID_YEAR": "Enter a valid year",
     "VALID_YES_NO_OPTION": "Choose option: Yes or No",
     "VALID_YES_NO_SELECTION": "Please select yes or no",
-    "VALID_DISAGREE_REASON_REQUIRED": "Enter text explaining why do you disagree",
     "VALID_WHY_FROM_PARTICULAR_DATE": "You need to explain why you are claiming"
   }
 }

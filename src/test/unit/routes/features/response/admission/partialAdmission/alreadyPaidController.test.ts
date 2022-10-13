@@ -16,18 +16,15 @@ describe('Already Paid Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
 
   describe('on GET', () => {
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
-    });
-
     it('should return already paid page successfully', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(CITIZEN_ALREADY_PAID_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Have you paid the claimant the amount you admit you owe?');

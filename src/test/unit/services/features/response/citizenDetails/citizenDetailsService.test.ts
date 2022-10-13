@@ -3,12 +3,12 @@ import {
   getRespondentInformation,
   saveRespondent,
 } from '../../../../../../main/services/features/response/citizenDetails/citizenDetailsService';
-import {Respondent} from '../../../../../../main/common/models/respondent';
+import {Party} from '../../../../../../main/common/models/party';
 import {buildCorrespondenceAddress, buildPrimaryAddress, mockClaim} from '../../../../../utils/mockClaim';
 import {buildCitizenAddress, buildCitizenCorrespondenceAddress} from '../../../../../utils/mockForm';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {CitizenCorrespondenceAddress} from '../../../../../../main/common/form/models/citizenCorrespondenceAddress';
-import { YesNo } from '../../../../../../main/common/form/models/yesNo';
+import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 import {GenericForm} from '../../../../../../main/common/form/models/genericForm';
 
 jest.mock('../../../../../../main/modules/draft-store');
@@ -24,15 +24,15 @@ describe('Citizen details service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
 
       mockGetCaseData.mockImplementation(async () => {
-        return new Respondent();
+        return new Party();
       });
       //when
-      const result: Respondent = await getRespondentInformation(CLAIM_ID);
+      const result: Party = await getRespondentInformation(CLAIM_ID);
 
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(result).not.toBeNull();
-      expect(result).toEqual(new Respondent());
+      expect(result).toEqual(new Party());
     });
 
     it('should return a respondent Object with value when data is retrieved', async () => {
@@ -42,7 +42,7 @@ describe('Citizen details service', () => {
         return mockClaim;
       });
       //when
-      const result: Respondent = await getRespondentInformation(CLAIM_ID);
+      const result: Party = await getRespondentInformation(CLAIM_ID);
 
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
@@ -55,7 +55,7 @@ describe('Citizen details service', () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      const respondentResult = new Respondent();
+      const respondentResult = new Party();
       respondentResult.primaryAddress = buildPrimaryAddress();
       respondentResult.correspondenceAddress = buildCorrespondenceAddress();
       respondentResult.postToThisAddress = YesNo.NO;
@@ -97,7 +97,7 @@ describe('Citizen details service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       const resultClaim = new Claim();
-      resultClaim.respondent1 = new Respondent();
+      resultClaim.respondent1 = new Party();
       resultClaim.respondent1ResponseDeadline = new Date('2022-01-24T15:59:59');
       mockGetCaseData.mockImplementation(async () => {
         return undefined;
@@ -114,13 +114,13 @@ describe('Citizen details service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       const resultClaim = new Claim();
-      const respondentResult = new Respondent();
+      const respondentResult = new Party();
       respondentResult.primaryAddress = buildPrimaryAddress();
       resultClaim.respondent1 = respondentResult;
       resultClaim.respondent1ResponseDeadline = new Date('2022-01-24T15:59:59');
       mockGetCaseData.mockImplementation(async () => {
         const claim = mockClaim;
-        const respondent = new Respondent();
+        const respondent = new Party();
         respondent.primaryAddress = buildPrimaryAddress();
         claim.respondent1 = respondent;
         claim.respondent1ResponseDeadline = new Date('2022-01-24T15:59:59');
@@ -137,7 +137,7 @@ describe('Citizen details service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       const resultClaim = new Claim();
-      const respondentResult = new Respondent();
+      const respondentResult = new Party();
       respondentResult.primaryAddress = buildPrimaryAddress();
       respondentResult.correspondenceAddress = buildCorrespondenceAddress();
       resultClaim.respondent1ResponseDeadline = new Date('2022-01-24T15:59:59');
@@ -158,7 +158,7 @@ describe('Citizen details service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       const resultClaim = new Claim();
-      const respondentResult = new Respondent();
+      const respondentResult = new Party();
       respondentResult.primaryAddress = buildPrimaryAddress();
       resultClaim.respondent1ResponseDeadline = new Date('2022-01-24T15:59:59');
       mockGetCaseData.mockImplementation(async () => {
