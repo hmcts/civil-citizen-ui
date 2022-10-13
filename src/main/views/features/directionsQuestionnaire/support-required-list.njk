@@ -44,7 +44,7 @@
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
               <h1 class="govuk-fieldset__heading">{{ t('PAGES.SUPPORT_REQUIRED.TITLE') }}</h1>
             </legend>
-            {{ yesNoRadioButton(t, 'option', 'model[option]', '', form, '', {yesHtml: supportDetailsHtml}) }}
+            {{ yesNoRadioButton(t, 'model[option]', 'option', '', form, '', {yesHtml: supportDetailsHtml}) }}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
