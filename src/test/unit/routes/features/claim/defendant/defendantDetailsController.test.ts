@@ -151,13 +151,29 @@ describe('Defendant details controller', () => {
         expect(res.status).toBe(302);
         expect(res.header.location).toBe(CLAIM_DEFENDANT_EMAIL_URL);
       });
+
+      it('should show errors if required fields are not filled in', async () => {
+        mockGetCaseData.mockImplementation(async () => {
+          const claim = new Claim();
+          claim.respondent1 = new Party();
+          claim.respondent1.type = PartyType.INDIVIDUAL;
+          return claim;
+        });
+        await request(app)
+          .post(CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL)
+          .send({individualFirstName: '', individualLastName: ''}).expect((res) => {
+            expect(res.status).toBe(200);
+            expect(res.text).toContain(TestMessages.ENTER_FIRST_NAME);
+            expect(res.text).toContain(TestMessages.ENTER_LAST_NAME);
+          });
+      });
     });
 
     it('should redirect to the defendant email page if data is successfully updated', async () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
         claim.respondent1 = new Party();
-        claim.respondent1.type = PartyType.INDIVIDUAL;
+        claim.respondent1.type = PartyType.ORGANISATION;
         return claim;
       });
       const res = await request(app).post(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL).send(mockSaveData);
