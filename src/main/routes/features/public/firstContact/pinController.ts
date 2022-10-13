@@ -33,16 +33,13 @@ pinController.get(FIRST_CONTACT_PIN_URL, (req: AppRequest<{pin:string}>, res: Re
 pinController.post(FIRST_CONTACT_PIN_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const cookie = req.cookies['firstContact'] ? req.cookies['firstContact'] : {};
-    const response: AxiosResponse = await civilServiceClient.verifyPin(<AppRequest>req, req.body.pin, cookie.claimReference);
-    const pin = response.status === 400 ? '' : req.body.pin;
+    const pin = req.body.pin;
     const pinForm = new GenericForm(new PinType(pin));
     await pinForm.validate();
     if (pinForm.hasErrors()) {
       renderView(pinForm, !!req.body.pin, res);
     } else {
-      if (response.status === 401) {
-        return res.redirect(FIRST_CONTACT_ACCESS_DENIED_URL);
-      }
+      const response: AxiosResponse = await civilServiceClient.verifyPin(<AppRequest>req, req.body.pin, cookie.claimReference);
       await saveDraftClaim(response.data.id, response.data.case_data);
       cookie.claimId = response.data.id;
       cookie.pinVerified = YesNo.YES;
@@ -50,7 +47,17 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: Request, res: Response, ne
       res.redirect(FIRST_CONTACT_CLAIM_SUMMARY_URL);
     }
   } catch (error) {
-    next(error);
+    console.log(error);
+    const status = error.message;
+    if(status.includes('400')) {
+      const pinForm = new GenericForm(new PinType(''));
+      await pinForm.validate();
+      renderView(pinForm, !!req.body.pin, res);
+    }else if(status.includes('401')){
+      return res.redirect(FIRST_CONTACT_ACCESS_DENIED_URL);
+    }else{
+      next(error);
+    }
   }
 });
 
