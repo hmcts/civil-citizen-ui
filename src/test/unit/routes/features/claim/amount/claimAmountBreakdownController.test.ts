@@ -53,6 +53,7 @@ describe('claimAmountBreadkownController test', ()=>{
           amount:'1',
         },
       ],
+      totalAmount:'1',
     };
     it('should show errors when there are errors', async () => {
       const data = {
@@ -62,6 +63,7 @@ describe('claimAmountBreadkownController test', ()=>{
             amount:'1',
           },
         ],
+        totalAmount:'1',
       };
 
       await request(app).post(CLAIM_AMOUNT_URL)
@@ -99,6 +101,7 @@ describe('claimAmountBreadkownController test', ()=>{
             amount:'26000',
           },
         ],
+        totalAmount:'26000',
       };
       await request(app).post(CLAIM_AMOUNT_URL)
         .send(data)

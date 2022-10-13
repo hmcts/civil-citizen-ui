@@ -9,7 +9,6 @@ import {
   saveClaimAmountBreakdownForm,
 } from '../../../../services/features/claim/amount/claimAmountBreakdownService';
 import {AppRequest} from '../../../../common/models/AppRequest';
-import {MAX_CLAIM_AMOUNT_TOTAL} from '../../../../common/form/validators/validationConstraints';
 import {constructUrlWithNotEligibleReason} from '../../../../common/utils/urlFormatter';
 import {NotEligibleReason} from '../../../../common/form/models/eligibility/NotEligibleReason';
 
@@ -35,7 +34,7 @@ claimAmountBreakdownController.get(CLAIM_AMOUNT_URL, async (req: AppRequest, res
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      if (form.model.totalAmount() <= MAX_CLAIM_AMOUNT_TOTAL) {
+      if (form.model.isValidTotal()) {
         await saveAndRedirectToNextPage(<AppRequest>req, res, form.model);
       } else {
         res.redirect(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_VALUE_OVER_25000));
