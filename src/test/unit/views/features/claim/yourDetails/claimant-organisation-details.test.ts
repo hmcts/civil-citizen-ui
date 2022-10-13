@@ -74,9 +74,10 @@ describe('Claimant Organisation Details View', () => {
 
       it('should display primary address labels', () => {
         const labels = mainWrapper.getElementsByClassName('govuk-label');
-        expect(labels[3].innerHTML).toContain('Building and street');
-        expect(labels[6].innerHTML).toContain('Town or city');
-        expect(labels[7].innerHTML).toContain('Postcode');
+        expect(labels[3].innerHTML).toContain('Pick an address');
+        expect(labels[4].innerHTML).toContain('Building and street');
+        expect(labels[7].innerHTML).toContain('Town or city');
+        expect(labels[8].innerHTML).toContain('Postcode');
       });
 
       it('should display Enter address manually text', () => {
@@ -101,15 +102,16 @@ describe('Claimant Organisation Details View', () => {
         expect(radios[0].getAttribute('value')).toBe('no');
         expect(radios[1].getAttribute('value')).toBe('yes');
         const labels = mainWrapper.getElementsByClassName('govuk-label');
-        expect(labels[8].innerHTML).toContain('No');
-        expect(labels[9].innerHTML).toContain('Yes, add a correspondence address');
+        expect(labels[9].innerHTML).toContain('No');
+        expect(labels[10].innerHTML).toContain('Yes, add a correspondence address');
       });
 
       it('should display correspondence address labels', () => {
         const labels = mainWrapper.getElementsByClassName('govuk-label');
-        expect(labels[13].innerHTML).toContain('Building and street');
-        expect(labels[15].innerHTML).toContain('Town or city');
-        expect(labels[16].innerHTML).toContain('Postcode');
+        expect(labels[13].innerHTML).toContain('Pick an address');
+        expect(labels[14].innerHTML).toContain('Building and street');
+        expect(labels[17].innerHTML).toContain('Town or city');
+        expect(labels[18].innerHTML).toContain('Postcode');
       });
 
       it('should display Enter address manually text', () => {
