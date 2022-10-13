@@ -48,21 +48,8 @@ const redirect = (responseDataRedis: Party, req: Request, res: Response) => {
 citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const respondent: Party = await getRespondentInformation(req.params.id);
-
-    const citizenAddress = new GenericForm<Address>(new Address(
-      respondent?.primaryAddress ? respondent.primaryAddress.AddressLine1 : undefined,
-      respondent?.primaryAddress ? respondent.primaryAddress.AddressLine2 : undefined,
-      respondent?.primaryAddress ? respondent.primaryAddress.AddressLine3 : undefined,
-      respondent?.primaryAddress ? respondent.primaryAddress.PostTown : undefined,
-      respondent?.primaryAddress ? respondent.primaryAddress.PostCode : undefined));
-
-    const citizenCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress(
-      respondent?.correspondenceAddress ? respondent.correspondenceAddress.AddressLine1 : undefined,
-      respondent?.correspondenceAddress ? respondent.correspondenceAddress.AddressLine2 : undefined,
-      respondent?.correspondenceAddress ? respondent.correspondenceAddress.AddressLine3 : undefined,
-      respondent?.correspondenceAddress ? respondent.correspondenceAddress.PostTown : undefined,
-      respondent?.correspondenceAddress ? respondent.correspondenceAddress.PostCode : undefined));
-
+    const citizenAddress = new GenericForm<Address>(new Address(respondent?.primaryAddress));
+    const citizenCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress(respondent?.correspondenceAddress));
     renderPage(res, req, respondent, citizenAddress, citizenCorrespondenceAddress);
   } catch (error) {
     next(error);
@@ -72,21 +59,9 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: Request, res: Resp
 citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
   const responseDataRedis: Party = await getRespondentInformation(req.params.id);
   try {
-    const citizenAddress = new GenericForm<Address>(new Address(
-      req.body.primaryAddressLine1,
-      req.body.primaryAddressLine2,
-      req.body.primaryAddressLine3,
-      req.body.primaryCity,
-      req.body.primaryPostCode,
-    ));
+    const citizenAddress = new GenericForm<Address>(new Address(req.body));
 
-    let citizenCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress(
-      req.body.correspondenceAddressLine1,
-      req.body.correspondenceAddressLine2,
-      req.body.correspondenceAddressLine3,
-      req.body.correspondenceCity,
-      req.body.correspondencePostCode,
-    ));
+    let citizenCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress(req.body));
 
     await citizenAddress.validate();
     if (req.body.postToThisAddress === YesNo.YES) {

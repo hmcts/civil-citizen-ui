@@ -19,17 +19,13 @@ export class CitizenCorrespondenceAddress {
   @IsNotEmpty({message: VALID_CORRESPONDENCE_CITY})
     correspondenceCity?: string;
 
-  constructor(
-    correspondenceAddressLine1?: string,
-    correspondenceAddressLine2?: string,
-    correspondenceAddressLine3?: string,
-    correspondenceCity?: string,
-    correspondencePostCode?: string) {
-    this.correspondenceAddressLine1 = correspondenceAddressLine1;
-    this.correspondenceAddressLine2 = correspondenceAddressLine2;
-    this.correspondenceAddressLine3 = correspondenceAddressLine3;
-    this.correspondenceCity = correspondenceCity;
-    this.correspondencePostCode = correspondencePostCode;
+  // TODO : fix any and other places using this model
+  constructor(value?:any) {
+    this.correspondenceAddressLine1 = value?.correspondenceAddressLine1;
+    this.correspondenceAddressLine2 = value?.correspondenceAddressLine2;
+    this.correspondenceAddressLine3 = value?.correspondenceAddressLine3;
+    this.correspondenceCity = value?.correspondenceCity;
+    this.correspondencePostCode = value?.correspondencePostCode;
   }
 
   isEmpty() {
@@ -37,22 +33,10 @@ export class CitizenCorrespondenceAddress {
   }
 
   static fromObject(value?: Record<string, string>): CitizenCorrespondenceAddress {
-    return new CitizenCorrespondenceAddress(
-      value?.correspondenceAddressLine1,
-      value?.correspondenceAddressLine2,
-      value?.correspondenceAddressLine3,
-      value?.correspondenceCity,
-      value?.correspondencePostCode,
-    );
+    return new CitizenCorrespondenceAddress(value);
   }
 
   static fromJson(value?: CorrespondenceAddress): CitizenCorrespondenceAddress {
-    return new CitizenCorrespondenceAddress(
-      value?.AddressLine1,
-      value?.AddressLine2,
-      value?.AddressLine3,
-      value?.PostTown,
-      value?.PostCode,
-    );
+    return new CitizenCorrespondenceAddress(value);
   }
 }
