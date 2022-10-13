@@ -19,7 +19,7 @@ import {
   ClaimAmountBreakup,
   ClaimFee,
   InterestClaimFromType,
-  InterestClaimUntilType,
+  InterestEndDateType,
   SameRateInterestSelection,
   SameRateInterestType,
 } from '../form/models/claimDetails';
@@ -66,7 +66,6 @@ export class Claim {
   claimInterest?: YesNo;
   interest?: Interest;
   interestClaimFrom?: InterestClaimFromType;
-  interestClaimUntil?: InterestClaimUntilType;
   interestFromSpecificDate?: Date;
   interestClaimOptions: InterestClaimOptionsType;
   sameRateInterestSelection?: SameRateInterestSelection;
@@ -174,8 +173,8 @@ export class Claim {
     return this.paymentOption === PaymentOptionType.INSTALMENTS;
   }
 
-  isInterestClaimUntilSubmitDate(): boolean {
-    return this.interestClaimUntil === InterestClaimUntilType.UNTIL_CLAIM_SUBMIT_DATE;
+  isInterestEndDateUntilSubmitDate(): boolean {
+    return this.interest.interestEndDate === InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE;
   }
 
   isInterestClaimOptionExists(): boolean {

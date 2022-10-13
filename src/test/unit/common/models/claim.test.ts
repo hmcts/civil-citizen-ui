@@ -1,7 +1,7 @@
 import {Claim} from '../../../../main/common/models/claim';
 import {
   InterestClaimFromType,
-  InterestClaimUntilType,
+  InterestEndDateType,
   SameRateInterestType,
   CaseState,
 } from '../../../../main/common/form/models/claimDetails';
@@ -28,27 +28,31 @@ import {Defence} from '../../../../main/common/form/models/defence';
 import {ClaimResponseStatus} from '../../../../main/common/models/claimResponseStatus';
 import {InterestClaimOptionsType} from '../../../../main/common/form/models/claim/interest/interestClaimOptionsType';
 
-describe('Claim isInterestClaimUntilSubmitDate', () => {
+describe('Claim isInterestEnDateUntilSubmitDate', () => {
   const claim = new Claim();
   it('should return undefined', () => {
     //When
-    const result = claim.isInterestClaimUntilSubmitDate();
+    const result = claim.isInterestEndDateUntilSubmitDate();
     //Then
     expect(result).toBeFalsy();
   });
   it('should return true', () => {
     //Given
-    claim.interestClaimUntil = InterestClaimUntilType.UNTIL_CLAIM_SUBMIT_DATE;
+    claim.interest = {
+      interestEndDate : InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE
+    };
     //When
-    const result = claim.isInterestClaimUntilSubmitDate();
+    const result = claim.isInterestEndDateUntilSubmitDate();
     //Then
     expect(result).toBeTruthy;
   });
   it('should return false', () => {
     //Given
-    claim.interestClaimUntil = InterestClaimUntilType.UNTIL_SETTLED_OR_JUDGEMENT_MADE;
+    claim.interest = {
+      interestEndDate : InterestEndDateType.UNTIL_SETTLED_OR_JUDGEMENT_MADE
+    };
     //When
-    const result = claim.isInterestClaimUntilSubmitDate();
+    const result = claim.isInterestEndDateUntilSubmitDate();
     //Then
     expect(result).toBeFalsy();
   });

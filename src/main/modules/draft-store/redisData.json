@@ -154,7 +154,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -331,7 +333,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -504,7 +508,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -678,7 +684,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -843,7 +851,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -1066,7 +1076,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -1258,7 +1270,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -1453,7 +1467,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -1633,7 +1649,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -1802,7 +1820,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
