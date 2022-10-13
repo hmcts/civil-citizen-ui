@@ -47,7 +47,7 @@ describe('Interest Service', () => {
       const claim = new Claim();
       claim.interest = new Interest();
       claim.interest = {
-        interestEndDate: InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE
+        interestEndDate: InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE,
       };
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return claim;

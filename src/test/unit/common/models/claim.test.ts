@@ -39,7 +39,7 @@ describe('Claim isInterestEnDateUntilSubmitDate', () => {
   it('should return true', () => {
     //Given
     claim.interest = {
-      interestEndDate : InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE
+      interestEndDate : InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE,
     };
     //When
     const result = claim.isInterestEndDateUntilSubmitDate();
@@ -49,7 +49,7 @@ describe('Claim isInterestEnDateUntilSubmitDate', () => {
   it('should return false', () => {
     //Given
     claim.interest = {
-      interestEndDate : InterestEndDateType.UNTIL_SETTLED_OR_JUDGEMENT_MADE
+      interestEndDate : InterestEndDateType.UNTIL_SETTLED_OR_JUDGEMENT_MADE,
     };
     //When
     const result = claim.isInterestEndDateUntilSubmitDate();

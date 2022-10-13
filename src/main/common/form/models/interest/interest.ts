@@ -7,7 +7,7 @@ export class Interest {
 
   constructor(
     interestStartDate?: InterestStartDate,
-    interestEndDate?: InterestEndDateType
+    interestEndDate?: InterestEndDateType,
   ) {
     this.interestStartDate = interestStartDate;
     this.interestEndDate = interestEndDate;
