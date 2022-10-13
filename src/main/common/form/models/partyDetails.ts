@@ -21,12 +21,12 @@ export class PartyDetails {
 
   @ValidateIf(o => o.businessName !== undefined)
   @MaxLength(255, {message: 'ERRORS.TEXT_TOO_MANY'})
-    businessName?: string;
+    soleTraderTradingAs?: string;
 
   constructor(value: Party) {
     this.individualTitle = value?.individualTitle;
     this.individualFirstName = value?.individualFirstName;
     this.individualLastName = value?.individualLastName;
-    this.businessName = value?.businessName;
+    this.soleTraderTradingAs = value?.soleTraderTradingAs;
   }
 }

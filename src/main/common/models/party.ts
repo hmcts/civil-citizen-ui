@@ -10,6 +10,7 @@ export class Party {
   soleTraderTitle?: string;
   soleTraderFirstName?: string;
   soleTraderLastName?: string;
+  soleTraderTradingAs?: string;
   @IsNotEmpty({message: 'ERRORS.VALID_PARTY_NAME'})
     partyName?: string;
   type?: PartyType;
@@ -22,7 +23,6 @@ export class Party {
   responseType?: string;
   contactPerson?: string;
   emailAddress?: string;
-  businessName?: string;
 
   constructor(
     partyName?: string,

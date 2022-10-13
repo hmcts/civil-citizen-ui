@@ -59,7 +59,7 @@ describe('Defendant details sole trader or individual view', () => {
         expect(inputs[0].getAttribute('id')).toBe('individualTitle');
         expect(inputs[1].getAttribute('id')).toBe('individualFirstName');
         expect(inputs[2].getAttribute('id')).toBe('individualLastName');
-        expect(inputs[3].getAttribute('id')).toBe('businessName');
+        expect(inputs[3].getAttribute('id')).toBe('soleTraderTradingAs');
         expect(inputs[4].getAttribute('id')).toBe('primaryPostcode');
         expect(inputs[5].getAttribute('id')).toBe('primaryAddressLine1');
         expect(inputs[6].getAttribute('id')).toBe('primaryAddressLine2');
