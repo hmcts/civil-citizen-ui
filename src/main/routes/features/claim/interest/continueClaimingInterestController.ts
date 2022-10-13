@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Response, Router} from 'express';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
 import {
@@ -8,40 +8,39 @@ import {
 } from '../../../../routes/urls';
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {YesNo} from '../../../../common/form/models/yesNo';
-import {
-  getContinueClaimingInterest,
-  getContinueClaimingInterestForm,
-  saveContinueClaimingInterest,
-} from '../../../../services/features/claim/interest/continueClaimingInterestService';
+import {getInterest, saveInterest} from '../../../../services/features/claim/interest/interestService';
+import {t} from "i18next";
 
-const continueClaimingInterestController = express.Router();
+const continueClaimingInterestController = Router();
 const continueClaimingInterestPath = 'features/claim/interest/continue-claiming-interest';
 
-function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
+function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(continueClaimingInterestPath, {form});
 }
 
-continueClaimingInterestController.get(CLAIM_INTEREST_CONTINUE_CLAIMING_URL, async (req:AppRequest, res:express.Response, next: express.NextFunction) => {
+continueClaimingInterestController.get(CLAIM_INTEREST_CONTINUE_CLAIMING_URL, async (req:AppRequest, res:Response, next: NextFunction) => {
   const caseId = req.session?.user?.id;
 
   try {
-    renderView(new GenericForm(await getContinueClaimingInterest(caseId)), res);
+    const interest = await getInterest(caseId)
+
+    renderView(new GenericForm(new GenericYesNo(interest.continueClaimingInterest)), res);
   } catch (error) {
     next(error);
   }
 });
 
-continueClaimingInterestController.post(CLAIM_INTEREST_CONTINUE_CLAIMING_URL, async (req: any, res: express.Response, next: express.NextFunction) => {
+continueClaimingInterestController.post(CLAIM_INTEREST_CONTINUE_CLAIMING_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const caseId = req.session?.user?.id;
-    const continueClaimingInterest = getContinueClaimingInterestForm(req.body.option);
-    const form = new GenericForm(continueClaimingInterest);
+    const body = req.body as Record<string, string>;
+    const form = new GenericForm(new GenericYesNo(body.option, t('ERRORS.VALID_YES_NO_SELECTION')));
     form.validateSync();
 
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveContinueClaimingInterest(caseId, form.model.option as YesNo);
+      await saveInterest(caseId, form.model.option as YesNo, "continueClaimingInterest");
       (form.model.option === YesNo.YES) ?
         res.redirect(CLAIM_INTEREST_HOW_MUCH_URL) :
         res.redirect(CLAIM_HELP_WITH_FEES_URL);

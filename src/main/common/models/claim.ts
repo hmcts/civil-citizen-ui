@@ -64,7 +64,6 @@ export class Claim {
   claimAmountBreakup?: ClaimAmountBreakup[];
   totalInterest?: number;
   claimInterest?: YesNo;
-  continueClaimingInterest?: YesNo;
   interest?: Interest;
   interestClaimFrom?: InterestClaimFromType;
   interestClaimUntil?: InterestClaimUntilType;

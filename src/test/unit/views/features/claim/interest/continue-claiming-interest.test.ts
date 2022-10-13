@@ -14,7 +14,7 @@ describe('Continue Claiming Interest View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
@@ -24,7 +24,7 @@ describe('Continue Claiming Interest View', () => {
   describe('on GET', () => {
     let htmlDocument: Document;
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const response = await request(app).get(CLAIM_INTEREST_CONTINUE_CLAIMING_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
@@ -59,6 +59,34 @@ describe('Continue Claiming Interest View', () => {
     it('should not display error summary component', () => {
       const errorSummary = htmlDocument.getElementsByClassName('govuk-error-summary');
       expect(errorSummary.length).toEqual(0);
+    });
+  });
+
+  describe('on POST', () => {
+    let htmlDocument: Document;
+
+    beforeAll(async () => {
+      nock(idamUrl)
+        .post('/o/token')
+        .reply(200, {id_token: citizenRoleToken});
+      app.locals.draftStoreClient = mockCivilClaim;
+      const response = await request(app).post(CLAIM_INTEREST_CONTINUE_CLAIMING_URL);
+      const dom = new JSDOM(response.text);
+      htmlDocument = dom.window.document;
+    });
+
+    it('should display error summary', () => {
+      const errorSummaryTitle = htmlDocument.getElementsByClassName('govuk-error-summary__title')[0];
+      const errorSummaryMessage = htmlDocument.getElementsByClassName('govuk-error-summary__list')[0]
+        .getElementsByTagName('li')[0].getElementsByTagName('a')[0];
+      expect(errorSummaryTitle.innerHTML).toContain(t('ERRORS.THERE_WAS_A_PROBLEM'));
+      expect(errorSummaryMessage.innerHTML).toContain(t('ERRORS.VALID_YES_NO_SELECTION'));
+      expect(errorSummaryMessage.getAttribute('href')).toBe('#option');
+    });
+
+    it('should display error message', () => {
+      const errorMessage = htmlDocument.getElementsByClassName('govuk-error-message')[0];
+      expect(errorMessage.innerHTML).toContain(t('ERRORS.VALID_YES_NO_SELECTION'));
     });
   });
 });
