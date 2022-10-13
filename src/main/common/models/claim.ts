@@ -174,7 +174,7 @@ export class Claim {
   }
 
   isInterestEndDateUntilSubmitDate(): boolean {
-    return this.interest.interestEndDate === InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE;
+    return this.interest?.interestEndDate === InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE;
   }
 
   isInterestClaimOptionExists(): boolean {

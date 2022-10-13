@@ -497,6 +497,13 @@
         "TITLE": "Their email address (optional)",
         "USE_THIS_EMAIL": "We'll use this to tell them you've made a claim, as well as notifying them by post."
       },
+      "INTEREST_END_DATE": {
+        "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
+        "PAGE_TITLE": "When do you want to stop claiming interest?",
+        "TITLE": "When do you want to stop claiming interest?",
+        "UNTIL_CLAIM_SUBMIT_DATE": "When you submit the claim",
+        "UNTIL_SETTLED_OR_JUDGEMENT_MADE": "Continue until the claim is settled or judgment made"
+      },
       "RESOLVE_THE_DISPUTE": {
         "P1": {
           "BEFORE_YOU_CLAIM": "Before you claim you should:",
@@ -1834,6 +1841,7 @@
     "VALID_CITY": "Rhowch enw tref/dinas dilys",
     "VALID_CLAIM_AMOUNT": "Enter an amount of money",
     "VALID_CLAIM_INTEREST_FROM": "Choose when to claim interest from",
+    "VALID_CLAIM_INTEREST_END_DATE": "Choose when you want to stop claiming interest",
     "VALID_CLAIM_NUMBER": "Enter a claim number",
     "VALID_CLAIM_REFERENCE_NUMBER": "Enter a valid claim number",
     "VALID_CORRESPONDENCE_ADDRESS_LINE_1": "Rhowch linell gyntaf y cyfeiriad ar gyfer gohebiaeth",

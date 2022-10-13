@@ -1841,7 +1841,7 @@
     "VALID_CITY": "Enter a valid town/city",
     "VALID_CLAIM_AMOUNT": "Enter an amount of money",
     "VALID_CLAIM_INTEREST_FROM": "Choose when to claim interest from",
-    "VALID_CLAIM_INTEREST_UNTIL": "Choose when you want to stop claiming interest",
+    "VALID_CLAIM_INTEREST_END_DATE": "Choose when you want to stop claiming interest",
     "VALID_CLAIM_NUMBER": "Enter a claim number",
     "VALID_CLAIM_REFERENCE_NUMBER": "Enter a valid claim number",
     "VALID_CORRESPONDENCE_ADDRESS_LINE_1": "Enter first correspondence address line",
