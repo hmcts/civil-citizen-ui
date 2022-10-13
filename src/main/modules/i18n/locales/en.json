@@ -487,6 +487,10 @@
         "TITLE": "Enter your details",
         "YOUR_POSTAL_ADDRESS": "Your postal address"
       },
+      "CONTINUE_CLAIMING_INTEREST": {
+        "PAGE_TITLE": "Continue claiming interest",
+        "TITLE": "Continue to claim interest after you submit your claim?"
+      },
       "RESOLVE_THE_DISPUTE": {
         "P1": {
           "BEFORE_YOU_CLAIM": "Before you claim you should:",

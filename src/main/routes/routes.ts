@@ -142,6 +142,7 @@ import interestStartDateController from './features/claim/interest/interestStart
 import claimAmountBreakdownController from './features/claim/amount/claimAmountBreakdownController';
 import claimInterestController from './features/claim/interest/claimInterestController';
 import claimantInterestFromController from './features/claim/interest/claimantInterestFromController';
+import continueClaimingInterestController from './features/claim/interest/continueClaimingInterestController';
 
 export default [
   homeController,
@@ -275,4 +276,5 @@ export default [
   claimInterestController,
   interestStartDateController,
   claimantInterestFromController,
+  continueClaimingInterestController,
 ];
