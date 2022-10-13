@@ -1,17 +1,17 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../main/app';
-import {CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL} from '../../../../../main/routes/urls';
+import {app} from '../../../../../../main/app';
+import {CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL} from '../../../../../../main/routes/urls';
 import {t} from 'i18next';
-import {mockCivilClaim} from '../../../../utils/mockDraftStore';
+import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 const pageTitle = 'PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.PAGE_TITLE';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/draft-store');
 
 describe('Claimant Individual Details View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

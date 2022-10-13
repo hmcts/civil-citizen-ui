@@ -13,7 +13,7 @@ import civilClaimResponseApplicantIndividual from '../../../utils/mocks/civilCla
 import {ResponseType} from '../../../../main/common/form/models/responseType';
 import {PartyType} from '../../../../main/common/models/partyType';
 import {PartialAdmission} from '../../../../main/common/models/partialAdmission';
-import {Respondent} from '../../../../main/common/models/respondent';
+import {Party} from '../../../../main/common/models/party';
 import {HowMuchDoYouOwe} from '../../../../main/common/form/models/admission/partialAdmission/howMuchDoYouOwe';
 import {PaymentIntention} from '../../../../main/common/form/models/admission/partialAdmission/paymentIntention';
 import {PaymentOptionType} from '../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
@@ -371,7 +371,7 @@ describe('Claim isChildrenDisabled', () => {
   });
   it('should return false with no children ', () => {
     //Given
-    claim.statementOfMeans.dependants.declared =false;
+    claim.statementOfMeans.dependants.declared = false;
     //When
     const result = claim.isChildrenDisabled();
     //Then
@@ -398,8 +398,8 @@ describe('Claim isChildrenDisabled', () => {
 });
 
 describe('Claim get claimant and defendant names by type', () => {
-  const claimCompany =  Object.assign(new Claim(), JSON.parse(JSON.stringify(civilClaimResponseApplicantCompany)).case_data);
-  const claimIndividual =  Object.assign(new Claim(), JSON.parse(JSON.stringify(civilClaimResponseApplicantIndividual)).case_data);
+  const claimCompany = Object.assign(new Claim(), JSON.parse(JSON.stringify(civilClaimResponseApplicantCompany)).case_data);
+  const claimIndividual = Object.assign(new Claim(), JSON.parse(JSON.stringify(civilClaimResponseApplicantIndividual)).case_data);
   it('should return claimantName for INDIVIDUAL', () => {
     //When
     const result = claimIndividual.getClaimantName();
@@ -436,7 +436,7 @@ describe('Claim isFullAdmission', () => {
   });
   it('should return false without respondent details', () => {
     //Given
-    claim.respondent1 = new Respondent();
+    claim.respondent1 = new Party();
     //When
     const result = claim.isFullAdmission();
     //Then
@@ -478,7 +478,7 @@ describe('Claim isPartialAdmission', () => {
   });
   it('should return false without respondent details', () => {
     //Given
-    claim.respondent1 = new Respondent();
+    claim.respondent1 = new Party();
     //When
     const result = claim.isPartialAdmission();
     //Then
@@ -993,7 +993,7 @@ describe('Documents', () => {
     });
     it('should return false with individual type', () => {
       //Given
-      claim.respondent1 = new Respondent();
+      claim.respondent1 = new Party();
       claim.respondent1.type = PartyType.INDIVIDUAL;
       //When
       const result = claim.isBusiness();
@@ -1002,7 +1002,7 @@ describe('Documents', () => {
     });
     it('should return true with sole trader', () => {
       //Given
-      claim.respondent1 = new Respondent();
+      claim.respondent1 = new Party();
       claim.respondent1.type = PartyType.SOLE_TRADER;
       //When
       const result = claim.isBusiness();
@@ -1011,7 +1011,7 @@ describe('Documents', () => {
     });
     it('should return true with company type', () => {
       //Given
-      claim.respondent1 = new Respondent();
+      claim.respondent1 = new Party();
       claim.respondent1.type = PartyType.COMPANY;
       //When
       const result = claim.isBusiness();
@@ -1020,7 +1020,7 @@ describe('Documents', () => {
     });
     it('should return true with organisation trader', () => {
       //Given
-      claim.respondent1 = new Respondent();
+      claim.respondent1 = new Party();
       claim.respondent1.type = PartyType.ORGANISATION;
       //When
       const result = claim.isBusiness();
