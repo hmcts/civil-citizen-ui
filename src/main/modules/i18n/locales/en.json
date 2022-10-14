@@ -94,7 +94,7 @@
       "SIGN_OUT": "Sign out"
     },
     "HELP_CALCULATING_INTEREST": {
-      "CALCULATE_THIS": "To calculate this, use the steps bellow",
+      "CALCULATE_THIS": "To calculate this, use the steps bellow.",
       "EXAMPLE": {
         "EXAMPLE": "Example",
         "OWED": "If you were owed £,1000:",
@@ -105,7 +105,8 @@
         "TOTAL_INTEREST": "Work out the total amount of interest: multiply the daily interest from step 2 by the number of days the debt has been overdue.",
         "YEARLY_INTEREST": "Work out the yearly interest: take the amount you’re claiming and multiply it by 0.08 (which is 8%)."
       },
-      "USUAL_RATE": "For most types of debt the rate is usually 8%"
+      "TITLE": "Help calculating interest",
+      "USUAL_RATE": "For most types of debt the rate is usually 8%."
     },
     "HELP_WITH_INTEREST_RATES": {
       "THE_COURT_WILL_DECIDE": "The court will decide if you're entitled to some or all of the interest claimed.",
