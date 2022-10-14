@@ -3,7 +3,7 @@ import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  DEFENDANT_PHONE_NUMBER_URL, CLAIMANT_TASK_LIST_URL,
+  CLAIM_DEFENDANT_PHONE_NUMBER_URL, CLAIMANT_TASK_LIST_URL,
 } from '../../../../../main/routes/urls';
 import {t} from 'i18next';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
@@ -27,7 +27,7 @@ describe('Completing Claim', () => {
     it('should return on your defendant phone number page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .get(DEFENDANT_PHONE_NUMBER_URL)
+        .get(CLAIM_DEFENDANT_PHONE_NUMBER_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.DEFENDANT_PHONE_NUMBER.TITLE'));
@@ -37,7 +37,7 @@ describe('Completing Claim', () => {
     it('should return 500 status code when error occurs', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .get(DEFENDANT_PHONE_NUMBER_URL)
+        .get(CLAIM_DEFENDANT_PHONE_NUMBER_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -49,7 +49,7 @@ describe('Completing Claim', () => {
     it('should redirect to task list when optional phone number provided', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .post(DEFENDANT_PHONE_NUMBER_URL)
+        .post(CLAIM_DEFENDANT_PHONE_NUMBER_URL)
         .send({telephoneNumber: PHONE_NUMBER})
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -60,7 +60,7 @@ describe('Completing Claim', () => {
     it('should redirect to task list when optional phone number is not provided', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .post(DEFENDANT_PHONE_NUMBER_URL)
+        .post(CLAIM_DEFENDANT_PHONE_NUMBER_URL)
         .send({telephoneNumber: ''})
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -71,7 +71,7 @@ describe('Completing Claim', () => {
     it('should return error on incorrect input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .post(DEFENDANT_PHONE_NUMBER_URL)
+        .post(CLAIM_DEFENDANT_PHONE_NUMBER_URL)
         .send({telephoneNumber: 'abc'})
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -81,7 +81,7 @@ describe('Completing Claim', () => {
 
     it('should return error on input with interior spaces', async () => {
       await request(app)
-        .post(DEFENDANT_PHONE_NUMBER_URL)
+        .post(CLAIM_DEFENDANT_PHONE_NUMBER_URL)
         .send({telephoneNumber: '123 456'})
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -91,7 +91,7 @@ describe('Completing Claim', () => {
 
     it('should accept input with trailing whitespaces', async () => {
       await request(app)
-        .post(DEFENDANT_PHONE_NUMBER_URL)
+        .post(CLAIM_DEFENDANT_PHONE_NUMBER_URL)
         .send({telephoneNumber: '123 '})
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -101,7 +101,7 @@ describe('Completing Claim', () => {
     it('should return status 500 when there is error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .post(DEFENDANT_PHONE_NUMBER_URL)
+        .post(CLAIM_DEFENDANT_PHONE_NUMBER_URL)
         .send({telephoneNumber: PHONE_NUMBER})
         .expect((res) => {
           expect(res.status).toBe(500);

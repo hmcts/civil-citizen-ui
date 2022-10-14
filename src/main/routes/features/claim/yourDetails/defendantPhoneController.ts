@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {DEFENDANT_PHONE_NUMBER_URL, CLAIMANT_TASK_LIST_URL} from '../../../urls';
+import {CLAIM_DEFENDANT_PHONE_NUMBER_URL, CLAIMANT_TASK_LIST_URL} from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {getTelephone,saveTelephone} from '../../../../../main/services/features/claim/yourDetails/claimantAndDefendantPhoneService';
 import {AppRequest} from 'common/models/AppRequest';
@@ -13,7 +13,7 @@ function renderView(form: GenericForm<CitizenTelephoneNumber>, res: Response): v
   res.render(defendantPhoneViewPath, {form});
 }
 
-defendantPhoneController.get(DEFENDANT_PHONE_NUMBER_URL, async (req: AppRequest,res: Response, next: NextFunction) => {
+defendantPhoneController.get(CLAIM_DEFENDANT_PHONE_NUMBER_URL, async (req: AppRequest,res: Response, next: NextFunction) => {
   try {
     const claimId = req.session.user?.id;
     const form: CitizenTelephoneNumber = await getTelephone(claimId, ClaimantOrDefendant.DEFENDANT);
@@ -23,7 +23,7 @@ defendantPhoneController.get(DEFENDANT_PHONE_NUMBER_URL, async (req: AppRequest,
   }
 });
 
-defendantPhoneController.post(DEFENDANT_PHONE_NUMBER_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+defendantPhoneController.post(CLAIM_DEFENDANT_PHONE_NUMBER_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const claimId = (<AppRequest>req).session.user?.id;
     const form: GenericForm<CitizenTelephoneNumber> = new GenericForm(new CitizenTelephoneNumber(req.body.telephoneNumber));
