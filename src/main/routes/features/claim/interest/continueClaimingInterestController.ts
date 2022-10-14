@@ -22,7 +22,7 @@ continueClaimingInterestController.get(CLAIM_INTEREST_CONTINUE_CLAIMING_URL, asy
   const caseId = req.session?.user?.id;
 
   try {
-    const interest = await getInterest(caseId)
+    const interest = await getInterest(caseId);
 
     renderView(new GenericForm(new GenericYesNo(interest.continueClaimingInterest)), res);
   } catch (error) {
@@ -34,14 +34,14 @@ continueClaimingInterestController.post(CLAIM_INTEREST_CONTINUE_CLAIMING_URL, as
   try {
     const caseId = req.session?.user?.id;
     const body = req.body as Record<string, string>;
-    const continueClaimingInterest = getClaimInterestForm(body.option)
+    const continueClaimingInterest = getClaimInterestForm(body.option);
     const form = new GenericForm(continueClaimingInterest);
     form.validateSync();
 
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveInterest(caseId, form.model.option as YesNo, "continueClaimingInterest");
+      await saveInterest(caseId, form.model.option as YesNo, 'continueClaimingInterest');
       (form.model.option === YesNo.YES) ?
         res.redirect(CLAIM_INTEREST_HOW_MUCH_URL) :
         res.redirect(CLAIM_HELP_WITH_FEES_URL);
