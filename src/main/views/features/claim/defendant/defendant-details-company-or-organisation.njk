@@ -12,11 +12,17 @@
 {% set correspondenceAddressClass = 'govuk-visually-hidden' %}
 {% if defendantType === partyType.COMPANY %}
   {% set title = t('PAGES.DEFENDANT_DETAILS.PAGE_TITLES.COMPANY') %}
+  {% set inputTitle = t('PAGES.DEFENDANT_DETAILS.COMPANY_NAME') %}
+  {% set addressTitle = t('PAGES.DEFENDANT_DETAILS.COMPANY_ADDRESS') %}
   {% elif defendantType === partyType.ORGANISATION %}
   {% set title = t('PAGES.DEFENDANT_DETAILS.PAGE_TITLES.ORGANISATION') %}
   {% set payingExtra = t('PAGES.DEFENDANT_DETAILS.PAYING_EXTRA_ORGANISATION') %}
+  {% set inputTitle = t('PAGES.DEFENDANT_DETAILS.ORGANISATION_NAME') %}
+  {% set addressTitle = t('PAGES.DEFENDANT_DETAILS.ORGANISATION_ADDRESS') %}
 {% else %}
   {% set title = '' %}
+  {% set inputTitle = '' %}
+  {% set addressTitle = '' %}
 {% endif %}
 
 {% set formErrors = form.getAllErrors() %}
@@ -44,7 +50,7 @@
 
             {{ govukInput({
               label: {
-                text: t('PAGES.DEFENDANT_DETAILS.ORGANISATION_NAME')
+                text: inputTitle
               },
               classes: 'govuk-!-width-one-half',
               id: 'partyName',
@@ -66,13 +72,24 @@
               value: form.model.contactPerson,
               errorMessage: { text: t(form.errorFor('contactPerson')) } if form.errorFor('contactPerson')
             }) }}
-            <h2 class="govuk-heading-m">{{ t('PAGES.DEFENDANT_DETAILS.ORGANISATION_ADDRESS') }}</h2>
-            <p class="govuk-body">{{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }} {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}</p>
-            <p class="govuk-body">
-              {{ t('PAGES.DEFENDANT_DETAILS.ORGANISATION_MAIN_OFFICE') + ' ' + t('PAGES.DEFENDANT_DETAILS.ENGLAND_OR_WALES_ADDRESS') }}
-            </p>
 
             <div class="govuk-form-group" id="primaryPostcodeContainer">
+              <h2 class="govuk-heading-m">{{ addressTitle }}</h2>
+              <p class="govuk-body">
+                {{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }} {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}
+              </p>
+              {% if defendantType === partyType.COMPANY %}
+                <p class="govuk-body">
+                  {{ t('PAGES.DEFENDANT_DETAILS.COMPANY_MAIN_OFFICE') + ' ' + t('PAGES.DEFENDANT_DETAILS.ENGLAND_OR_WALES_ADDRESS') }}
+                </p>
+              {% elseif defendantType === partyType.ORGANISATION %}
+                <p class="govuk-body">
+                  {{ t('PAGES.DEFENDANT_DETAILS.ORGANISATION_MAIN_OFFICE') + ' ' + t('PAGES.DEFENDANT_DETAILS.ENGLAND_OR_WALES_ADDRESS') }}
+                </p>
+              {% else %}
+                <p class="govuk-body">{{ t('PAGES.DEFENDANT_DETAILS.ENGLAND_OR_WALES_ADDRESS') }}</p>
+              {% endif %}
+
               <label class="govuk-label" for="primaryPostcode">
                 {{ t('PAGES.DEFENDANT_DETAILS.UK_POSTCODE') }}
               </label>

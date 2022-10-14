@@ -50,6 +50,7 @@ defendantDetailsController.get(detailsURLs, async (req: AppRequest, res: Respons
     } else {
       form = new GenericForm<PartyDetails>(new PartyDetails(defendantDetails));
     }
+
     const primaryAddressForm = new GenericForm(new Address(
       defendantAddress?.AddressLine1,
       defendantAddress?.AddressLine2,
@@ -93,7 +94,7 @@ defendantDetailsController.post(detailsURLs, async (req: AppRequest, res: Respon
           ...primaryAddressForm.model,
         },
       };
-      await saveDefendant(userId, undefined, partyDetailsAndPrimaryAddress, true);
+      await saveDefendant(userId, '', partyDetailsAndPrimaryAddress, true);
       res.redirect(CLAIM_DEFENDANT_EMAIL_URL);
     }
   } catch (error) {
