@@ -105,6 +105,7 @@
         "TOTAL_INTEREST": "Work out the total amount of interest: multiply the daily interest from step 2 by the number of days the debt has been overdue.",
         "YEARLY_INTEREST": "Work out the yearly interest: take the amount you’re claiming and multiply it by 0.08 (which is 8%)."
       },
+      "TITLE": "Help calculating interest",
       "USUAL_RATE": "For most types of debt the rate is usually 8%"
     },
     "HELP_WITH_INTEREST_RATES": {
