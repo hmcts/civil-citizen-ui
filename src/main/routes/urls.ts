@@ -124,6 +124,7 @@ export const CLAIM_DEFENDANT_PARTY_TYPE_URL = `${BASE_CLAIM_URL}/defendant-party
 export const CLAIM_DEFENDANT_PHONE_NUMBER_URL = `${BASE_CLAIM_URL}/defendant-mobile`;
 export const CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL = `${BASE_CLAIM_URL}/defendant-sole-trader-details`;
 export const CLAIM_RESOLVING_DISPUTE_URL = `${BASE_CLAIM_URL}/resolving-this-dispute`;
+export const CLAIM_TOTAL_INTEREST_URL = `${BASE_CLAIM_URL}/interest-total`;
 export const CLAIMANT_COMPANY_DETAILS_URL = `${BASE_CLAIM_URL}/claimant-company-details`;
 export const CLAIMANT_DOB_URL = `${BASE_CLAIM_URL}/claimant-dob`;
 export const CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL = `${BASE_CLAIM_URL}/claimant-individual-details`;
