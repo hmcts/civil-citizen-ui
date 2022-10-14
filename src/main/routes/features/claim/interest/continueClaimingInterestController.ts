@@ -9,7 +9,7 @@ import {
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {YesNo} from '../../../../common/form/models/yesNo';
 import {getInterest, saveInterest} from '../../../../services/features/claim/interest/interestService';
-import {t} from "i18next";
+import {getClaimInterestForm} from '../../../../services/features/claim/interest/claimInterestService';
 
 const continueClaimingInterestController = Router();
 const continueClaimingInterestPath = 'features/claim/interest/continue-claiming-interest';
@@ -34,7 +34,8 @@ continueClaimingInterestController.post(CLAIM_INTEREST_CONTINUE_CLAIMING_URL, as
   try {
     const caseId = req.session?.user?.id;
     const body = req.body as Record<string, string>;
-    const form = new GenericForm(new GenericYesNo(body.option, t('ERRORS.VALID_YES_NO_SELECTION')));
+    const continueClaimingInterest = getClaimInterestForm(body.option)
+    const form = new GenericForm(continueClaimingInterest);
     form.validateSync();
 
     if (form.hasErrors()) {
