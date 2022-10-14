@@ -120,7 +120,7 @@ export class CivilServiceClient {
   async verifyPin(req: AppRequest, pin: string, caseReference: string): Promise<AxiosResponse> {
     try {
       const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_VALIDATE_PIN_URL
-        .replace(':caseReference', caseReference), pin, { headers: {'Content-Type': 'application/json'}});
+        .replace(':caseReference', caseReference), pin, { headers: {'Content-Type': 'application/json'}});// nosonar
       return response;
 
     } catch (err: unknown) {
