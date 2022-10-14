@@ -53,6 +53,15 @@ describe('Defendant details controller', () => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Company details');
       });
+    });
+
+    describe('Organisation', () => {
+      it('should render defendant details page', async () => {
+        app.locals.draftStoreClient = mockCivilClaim;
+        const res = await request(app).get(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL);
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Enter organisation details');
+      });
 
       it('should render defendant details page when data is already set in redis', async () => {
         mockGetCaseData.mockImplementation(async () => {
