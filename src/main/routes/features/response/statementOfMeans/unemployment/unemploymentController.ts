@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Response, Router} from 'express';
 import {CITIZEN_COURT_ORDERS_URL, CITIZEN_UNEMPLOYED_URL} from '../../../../../routes/urls';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {Unemployment} from '../../../../../common/form/models/statementOfMeans/unemployment/unemployment';
@@ -12,16 +12,16 @@ import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {Validator} from 'class-validator';
 
 const citizenEmploymentStatusViewPath = 'features/response/statementOfMeans/unemployment';
-const unemploymentController = express.Router();
+const unemploymentController = Router();
 const validator = new Validator();
 const unemploymentService = new UnemploymentService();
 let unemployment = new Unemployment();
 
-function renderView(form: GenericForm<Unemployment>, res: express.Response): void {
+function renderView(form: GenericForm<Unemployment>, res: Response): void {
   res.render(citizenEmploymentStatusViewPath, {form, UnemploymentCategory});
 }
 
-unemploymentController.get(CITIZEN_UNEMPLOYED_URL, async (req, res, next: express.NextFunction) => {
+unemploymentController.get(CITIZEN_UNEMPLOYED_URL, async (req, res, next: NextFunction) => {
   try {
     unemployment = await unemploymentService.getUnemployment(req.params.id);
     renderView(new GenericForm(unemployment), res);
@@ -30,7 +30,7 @@ unemploymentController.get(CITIZEN_UNEMPLOYED_URL, async (req, res, next: expres
   }
 });
 
-unemploymentController.post(CITIZEN_UNEMPLOYED_URL, async (req, res, next: express.NextFunction) => {
+unemploymentController.post(CITIZEN_UNEMPLOYED_URL, async (req, res, next: NextFunction) => {
   try {
     const unemploymentToSave = new Unemployment(req.body.option, new UnemploymentDetails(req.body.years, req.body.months), new OtherDetails(req.body.details));
     const unemploymentForm: GenericForm<Unemployment> = new GenericForm(unemploymentToSave);

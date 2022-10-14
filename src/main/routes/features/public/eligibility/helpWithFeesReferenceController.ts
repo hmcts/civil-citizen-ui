@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {Response, Router} from 'express';
 import {
   ELIGIBILITY_HWF_ELIGIBLE_URL, ELIGIBILITY_HELP_WITH_FEES_REFERENCE_URL, ELIGIBILITY_HWF_ELIGIBLE_REFERENCE_URL,
 } from '../../../../routes/urls';
@@ -6,10 +6,10 @@ import {GenericForm} from '../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
 import {YesNo} from '../../../../common/form/models/yesNo';
 
-const helpWithFeesReferenceController = express.Router();
+const helpWithFeesReferenceController = Router();
 const helpWithFeesViewPath = 'features/public/eligibility/help-with-fees-reference';
 
-function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
+function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(helpWithFeesViewPath, {form});
 }
 

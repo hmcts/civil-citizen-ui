@@ -1,8 +1,8 @@
 import { IsNumber, Min, Max, IsDefined, ValidateIf, Validate, IsDate, MinDate } from 'class-validator';
 import {DateConverter} from '../../../utils/dateConverter';
 import { EqualToOrLessThanPropertyValueValidator } from '../../validators/equalToOrLessThanPropertyValueValidator';
-export class RepaymentPlanForm{
 
+export class RepaymentPlanForm{
   @IsDefined({ message: 'ERRORS.AMOUNT_REQUIRED' })
   @IsNumber({maxDecimalPlaces: 2}, {message: 'ERRORS.VALID_TWO_DECIMAL_NUMBER'})
   @Min(1, { message: 'ERRORS.AMOUNT_REQUIRED' })

@@ -1,4 +1,3 @@
-
 export interface AhrefButtonComponent {
   text?: string;
   href?: string;
@@ -13,4 +12,3 @@ export interface ComponentDetailItems {
   formattedValues?: string[];
   hasDivider?: boolean | true;
 }
-

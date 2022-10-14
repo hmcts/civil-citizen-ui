@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {Evidence, INIT_ROW_COUNT} from '../../../../common/form/models/evidence/evidence';
 import {EvidenceItem} from '../../../../common/form/models/evidence/evidenceItem';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
@@ -13,13 +13,13 @@ import {
 import {GenericForm} from '../../../../common/form/models/genericForm';
 
 const evidenceViewPath = 'features/response/evidence/evidences';
-const evidenceController = express.Router();
+const evidenceController = Router();
 
-function renderView(form: GenericForm<Evidence>, res: express.Response): void {
+function renderView(form: GenericForm<Evidence>, res: Response): void {
   res.render(evidenceViewPath, {form});
 }
 
-evidenceController.get(CITIZEN_EVIDENCE_URL, async (req, res, next: express.NextFunction) => {
+evidenceController.get(CITIZEN_EVIDENCE_URL, async (req, res, next: NextFunction) => {
   try {
     const form: Evidence = await getEvidence(req.params.id);
     if (form.evidenceItem.length < INIT_ROW_COUNT) {
@@ -31,7 +31,7 @@ evidenceController.get(CITIZEN_EVIDENCE_URL, async (req, res, next: express.Next
   }
 });
 
-evidenceController.post(CITIZEN_EVIDENCE_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+evidenceController.post(CITIZEN_EVIDENCE_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     let form: GenericForm<Evidence>;
     form = new GenericForm(new Evidence(req.body.comment, transformToEvidences(req)));
@@ -48,13 +48,13 @@ evidenceController.post(CITIZEN_EVIDENCE_URL, async (req: express.Request, res: 
   }
 });
 
-function transformToEvidences(req: express.Request): EvidenceItem[] {
+function transformToEvidences(req: Request): EvidenceItem[] {
   return req.body.evidenceItem.map((item: EvidenceItem) => {
     return new EvidenceItem(item.type, item.description);
   });
 }
 
-function removeEmptyValueToEvidences(req: express.Request): EvidenceItem[] {
+function removeEmptyValueToEvidences(req: Request): EvidenceItem[] {
   return req.body.evidenceItem
     .filter((item: EvidenceItem) => item.type)
     .map((item: EvidenceItem) => {

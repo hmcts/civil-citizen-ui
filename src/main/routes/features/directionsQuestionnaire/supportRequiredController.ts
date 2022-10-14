@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Router} from 'express';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {CLAIM_TASK_LIST_URL, SUPPORT_REQUIRED_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
@@ -9,12 +9,12 @@ import {
   generatePeopleListWithSelectedValues,
 } from '../../../services/features/directionsQuestionnaire/supportRequiredService';
 
-const supportRequiredController = express.Router();
+const supportRequiredController = Router();
 const supportRequiredViewPath = 'features/directionsQuestionnaire/support-required-list';
 const dqPropertyName = 'supportRequiredList';
 const dqParentName = 'hearing';
 
-supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res, next: express.NextFunction) => {
+supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res, next: NextFunction) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const [supportRequiredList, peopleLists] = await getSupportRequired(req.params.id, lang);
@@ -25,7 +25,7 @@ supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res, next: expre
   }
 });
 
-supportRequiredController.post(SUPPORT_REQUIRED_URL, async (req, res, next: express.NextFunction) => {
+supportRequiredController.post(SUPPORT_REQUIRED_URL, async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const supportRequiredList = getSupportRequiredForm(req);

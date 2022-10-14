@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Response, Router} from 'express';
 import {
   OnTaxPayments,
 } from '../../../../../../common/form/models/statementOfMeans/employment/selfEmployed/onTaxPayments';
@@ -11,13 +11,13 @@ import {constructResponseUrlWithIdParams} from '../../../../../../common/utils/u
 import {GenericForm} from '../../../../../../common/form/models/genericForm';
 
 const citizenOnTaxPaymentsViewPath = 'features/response/statementOfMeans/employment/selfEmployed/on-tax-payments';
-const onTaxPaymentsController = express.Router();
+const onTaxPaymentsController = Router();
 
-function renderView(form: GenericForm<OnTaxPayments>, res: express.Response) {
+function renderView(form: GenericForm<OnTaxPayments>, res: Response) {
   res.render(citizenOnTaxPaymentsViewPath, {form});
 }
 
-onTaxPaymentsController.get(ON_TAX_PAYMENTS_URL, async (req, res, next: express.NextFunction) => {
+onTaxPaymentsController.get(ON_TAX_PAYMENTS_URL, async (req, res, next: NextFunction) => {
   try {
     renderView(await getOnTaxPaymentsForm(req.params.id), res);
   } catch (error) {
@@ -25,7 +25,7 @@ onTaxPaymentsController.get(ON_TAX_PAYMENTS_URL, async (req, res, next: express.
   }
 });
 
-onTaxPaymentsController.post(ON_TAX_PAYMENTS_URL, async (req, res, next: express.NextFunction) => {
+onTaxPaymentsController.post(ON_TAX_PAYMENTS_URL, async (req, res, next: NextFunction) => {
   const form = new GenericForm(new OnTaxPayments(req.body.option, Number(req.body.amountYouOwe), req.body.reason));
   try {
     form.validateSync();

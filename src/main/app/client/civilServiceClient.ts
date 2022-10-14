@@ -14,7 +14,6 @@ import {
 import {FeeRange, FeeRanges} from '../../common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
 import {CaseDocument} from 'common/models/document/caseDocument';
-import {CLAIM_DETAILS_NOT_AVAILBALE, DOCUMENT_NOT_AVAILABLE} from './errorMessageContants';
 import {
   DashboardClaimantItem,
   DashboardDefendantItem,
@@ -72,7 +71,6 @@ export class CivilServiceClient {
     const submitterId = req.session?.user?.id;
     try{
       const response = await this.client.get('/cases/defendant/' + submitterId, config);
-      console.log(response.data);
       return plainToInstance(DashboardDefendantItem, response.data as object[]);
     }catch(err){
       logger.log(err);
@@ -99,7 +97,7 @@ export class CivilServiceClient {
     try {
       const response = await this.client.get(`/cases/${claimId}`, config);// nosonar
       if (!response.data) {
-        throw new AssertionError({message: CLAIM_DETAILS_NOT_AVAILBALE});
+        throw new AssertionError({message: 'Claim details not available!'});
       }
       const caseDetails: CivilClaimResponse = response.data;
       return convertCaseToClaimAndIncludeState(caseDetails);
@@ -153,7 +151,7 @@ export class CivilServiceClient {
     try {
       const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL, documentDetails, config);
       if (!response.data) {
-        throw new AssertionError({message: DOCUMENT_NOT_AVAILABLE});
+        throw new AssertionError({message: 'Document is not available.'});
       }
       return response.data as Buffer;
     } catch (err: unknown) {

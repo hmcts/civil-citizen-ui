@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {
   DQ_DEFENDANT_CAN_STILL_EXAMINE_URL,
   DQ_DEFENDANT_EXPERT_REPORTS_URL,
@@ -13,16 +13,16 @@ import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatt
 import {YesNo} from '../../../common/form/models/yesNo';
 import {ExpertCanStillExamine} from '../../../common/models/directionsQuestionnaire/experts/expertCanStillExamine';
 
-const expertCanStillExamineController = express.Router();
+const expertCanStillExamineController = Router();
 const expertCanStillExamineViewPath = 'features/directionsQuestionnaire/defendant-expert-can-still-examine';
 const dqPropertyName = 'expertCanStillExamine';
 const dqParentName = 'experts';
 
-function renderView(form: GenericForm<ExpertCanStillExamine>, res: express.Response): void {
+function renderView(form: GenericForm<ExpertCanStillExamine>, res: Response): void {
   res.render(expertCanStillExamineViewPath, {form});
 }
 
-expertCanStillExamineController.get(DQ_DEFENDANT_CAN_STILL_EXAMINE_URL, async (req, res, next: express.NextFunction) => {
+expertCanStillExamineController.get(DQ_DEFENDANT_CAN_STILL_EXAMINE_URL, async (req, res, next: NextFunction) => {
   try {
     const directionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
     const expertCanStillExamine = directionQuestionnaire.experts?.expertCanStillExamine ?
@@ -34,7 +34,7 @@ expertCanStillExamineController.get(DQ_DEFENDANT_CAN_STILL_EXAMINE_URL, async (r
   }
 });
 
-expertCanStillExamineController.post(DQ_DEFENDANT_CAN_STILL_EXAMINE_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+expertCanStillExamineController.post(DQ_DEFENDANT_CAN_STILL_EXAMINE_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const details = req.body.option === YesNo.YES ? req.body.details : undefined;

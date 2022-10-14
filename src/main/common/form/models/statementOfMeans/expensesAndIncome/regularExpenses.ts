@@ -1,8 +1,8 @@
-import Transaction from './transaction';
+import {Transaction} from './transaction';
 import {ValidateNested} from 'class-validator';
 import {ExpenseType} from './expenseType';
 import {ScheduledAmount} from '../../../../utils/calculateMonthlyIncomeExpenses/monthlyIncomeExpensesCalculator';
-import OtherTransaction from './otherTransaction';
+import {OtherTransaction} from './otherTransaction';
 
 export interface ExpenseParams {
   mortgage?: Transaction;
@@ -19,11 +19,6 @@ export interface ExpenseParams {
   mobilePhone?: Transaction;
   maintenance?: Transaction;
   other?: OtherTransaction;
-}
-
-export interface ResponseExpenseParams {
-  declared: string[];
-  model: ExpenseParams;
 }
 
 export class RegularExpenses {

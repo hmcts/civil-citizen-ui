@@ -13,7 +13,7 @@ jest.mock('../../../../../../main/modules/draft-store');
 describe('Citizen date of birth', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });

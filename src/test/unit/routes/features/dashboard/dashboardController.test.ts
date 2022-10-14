@@ -40,7 +40,7 @@ describe('Dashboard page', () => {
     .get(CIVIL_SERVICE_CASES_URL + 'defendant/undefined')
     .reply(200, {});
 
-  beforeEach((done) => {
+  beforeAll((done) => {
     testSession
       .get('/oauth2/callback')
       .query('code=ABC')
@@ -55,7 +55,6 @@ describe('Dashboard page', () => {
 
   describe('on GET', () => {
     it('should return dashboard page', async () => {
-      console.log(JSON.stringify(testSession));
       await testSession
         .get(DASHBOARD_URL)
         .expect((res: Response) => {

@@ -1,6 +1,6 @@
 import {SummarySections} from '../../../../common/models/summaryList/summarySections';
 import {Claim} from '../../../../common/models/claim';
-import PaymentOptionType from '../../../../common/form/models/admission/paymentOption/paymentOptionType';
+import {PaymentOptionType} from '../../../../common/form/models/admission/paymentOption/paymentOptionType';
 import {StatementOfTruthForm} from '../../../../common/form/models/statementOfTruth/statementOfTruthForm';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {SignatureType} from '../../../../common/models/signatureType';

@@ -7,7 +7,7 @@ import {
   CITIZEN_DEPENDANTS_URL,
   CITIZEN_OTHER_DEPENDANTS_URL,
 } from '../../../../../../../main/routes/urls';
-import * as childrenDisabilityService
+import {hasDisabledChildren}
   from '../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
@@ -18,7 +18,7 @@ const {app} = require('../../../../../../../main/app');
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService');
-const mockHasDisabledChildren = childrenDisabilityService.hasDisabledChildren as jest.Mock;
+const mockHasDisabledChildren = hasDisabledChildren as jest.Mock;
 
 const respondentDependantsUrl = CITIZEN_DEPENDANTS_URL.replace(':id', 'aaa');
 
@@ -26,7 +26,7 @@ describe('Citizen dependants', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamServiceUrl: string = config.get('services.idam.url');
 
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamServiceUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});

@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {Response, Router} from 'express';
 import {DQ_SENT_EXPERT_REPORTS_URL, DQ_SHARE_AN_EXPERT_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {SentExpertReports} from '../../../common/models/directionsQuestionnaire/experts/sentExpertReports';
@@ -9,12 +9,12 @@ import {
 
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 
-const sentExpertReportsController = express.Router();
+const sentExpertReportsController = Router();
 const expertReportsViewPath = 'features/directionsQuestionnaire/sent-expert-reports';
 const dqPropertyName = 'sentExpertReports';
 const dqParentName = 'experts';
 
-function renderView(form: GenericForm<SentExpertReports>, res: express.Response): void {
+function renderView(form: GenericForm<SentExpertReports>, res: Response): void {
   res.render(expertReportsViewPath, {form});
 }
 

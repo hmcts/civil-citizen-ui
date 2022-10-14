@@ -3,7 +3,7 @@ import {getDefendantEmail,saveDefendantEmail} from '../../../../../main/services
 import {Claim} from '../../../../../main/common/models/claim';
 import {PartyType} from '../../../../../main/common/models/partyType';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {Respondent} from '../../../../../main/common/models/respondent';
+import {Party} from '../../../../../main/common/models/party';
 import {DefendantEmail} from '../../../../../main/common/form/models/claim/yourDetails/defendantEmail';
 
 jest.mock('../../../../../main/modules/draft-store');
@@ -11,14 +11,14 @@ jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 const EMAIL_ADDRESS = 'test@gmail.com';
 
-const respondent: Respondent = {
+const respondent: Party = {
   primaryAddress: {},
   postToThisAddress: '',
   correspondenceAddress: {},
   individualTitle: '',
   individualLastName: '',
   individualFirstName: '',
-  telephoneNumber: '',
+  phoneNumber: '',
   responseType: '',
   type: PartyType.INDIVIDUAL,
   partyName: '',

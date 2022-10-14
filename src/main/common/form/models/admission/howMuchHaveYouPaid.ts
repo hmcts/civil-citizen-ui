@@ -1,5 +1,4 @@
 import {IsDate, IsDefined, IsNotEmpty, IsNumber, Max, Min, Validate, ValidateIf} from 'class-validator';
-
 import {MIN_AMOUNT_VALUE} from '../../validators/validationConstraints';
 import {EqualToOrLessThanPropertyValueValidator} from '../../validators/equalToOrLessThanPropertyValueValidator';
 import {OptionalDateFourDigitValidator} from '../../validators/optionalDateFourDigitValidator';

@@ -1,4 +1,3 @@
-import {Disability} from '../form/models/statementOfMeans/disability';
 import {OtherDependants} from '../form/models/statementOfMeans/otherDependants';
 import {CitizenBankAccount} from './citizenBankAccount';
 import {Residence} from '../form/models/statementOfMeans/residence';
@@ -13,11 +12,11 @@ import {RegularExpenses} from '../form/models/statementOfMeans/expensesAndIncome
 import {Debts} from '../form/models/statementOfMeans/debts/debts';
 import {CourtOrders} from '../form/models/statementOfMeans/courtOrders/courtOrders';
 import {Explanation} from '../form/models/statementOfMeans/explanation';
-import RegularIncome from '../form/models/statementOfMeans/expensesAndIncome/regularIncome';
+import {RegularIncome} from '../form/models/statementOfMeans/expensesAndIncome/regularIncome';
 import {GenericYesNo} from '../form/models/genericYesNo';
 
 export class StatementOfMeans {
-  disability?: Disability;
+  disability?: GenericYesNo;
   severeDisability?: GenericYesNo;
   partnerAge?: GenericYesNo;
   bankAccounts?: CitizenBankAccount[];

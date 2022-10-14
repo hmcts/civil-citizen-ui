@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {Response, Router} from 'express';
 import {DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, DQ_REQUEST_EXTRA_4WEEKS_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
@@ -9,11 +9,11 @@ import {
   saveDirectionQuestionnaire,
 } from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 
-const requestExtra4WeeksController = express.Router();
+const requestExtra4WeeksController = Router();
 const dqPropertyName = 'requestExtra4weeks';
 const dqParentName = 'experts';
 
-function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
+function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render('features/directionsQuestionnaire/request-extra-4weeks', {form});
 }
 

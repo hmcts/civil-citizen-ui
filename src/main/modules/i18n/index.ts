@@ -22,7 +22,6 @@ const options = {
 };
 
 export class I18Next {
-
   static enableFor(app: Express): i18n {
     i18next
       .use(Backend)
@@ -30,7 +29,6 @@ export class I18Next {
       .init(options);
 
     app.use(i18nextMiddleware.handle(i18next));
-
     return i18next;
   }
 }

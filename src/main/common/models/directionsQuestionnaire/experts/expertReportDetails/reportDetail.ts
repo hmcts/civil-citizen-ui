@@ -2,6 +2,7 @@ import {Min, Max, Validate, IsNotEmpty, IsDefined, IsDate, ValidateIf} from 'cla
 import {DateConverter} from '../../../../utils/dateConverter';
 import {OptionalDateNotInFutureValidator} from '../../../../form/validators/optionalDateNotInFutureValidator';
 import {OptionalDateFourDigitValidator} from  '../../../../form/validators/optionalDateFourDigitValidator';
+
 export class ReportDetail {
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
   @IsNotEmpty({message: 'ERRORS.EXPERT_NAME_REQUIRED'})

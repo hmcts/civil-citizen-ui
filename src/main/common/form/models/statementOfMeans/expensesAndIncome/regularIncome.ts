@@ -1,7 +1,7 @@
-import Transaction from './transaction';
+import {Transaction} from './transaction';
 import {ValidateNested} from 'class-validator';
 import {IncomeType} from './incomeType';
-import OtherTransaction from './otherTransaction';
+import {OtherTransaction} from './otherTransaction';
 
 export interface IncomeParams {
   job?: Transaction;
@@ -17,7 +17,7 @@ export interface IncomeParams {
   other?: OtherTransaction;
 }
 
-export default class RegularIncome {
+export class RegularIncome {
   @ValidateNested()
     job: Transaction;
 
