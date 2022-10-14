@@ -20,8 +20,10 @@
   {% else %}
     <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_DETAILS.FULL_NAME') }}</h2>
     <p class="govuk-body">{% if respondent.partyName %}{{ respondent.partyName }}{% else %} fullName Test{% endif %}</p>
-    <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_DETAILS.BUSINESS_NAME') }}</h2>
-    <p class="govuk-body">{% if respondent.soleTraderTradingAs %}{{ respondent.soleTraderTradingAs }}{% else %} businessName Test{% endif %}</p>
+    {% if respondent.soleTraderTradingAs %}
+      <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_DETAILS.BUSINESS_NAME') }}</h2>
+      <p class="govuk-body">{{ respondent.soleTraderTradingAs }}</p>
+    {% endif %}
   {% endif %}
 {% endmacro %}
 
