@@ -116,6 +116,7 @@ export const FIRST_CONTACT_SIGNPOSTING_URL = `${BASE_FIRST_CONTACT_URL}/start`;
 export const FIRST_CONTACT_CLAIM_REFERENCE_URL = `${BASE_FIRST_CONTACT_URL}/claim-reference`;
 export const FIRST_CONTACT_CLAIM_SUMMARY_URL = `${BASE_FIRST_CONTACT_URL}/claim-summary`;
 export const CLAIM_COMPLETING_CLAIM_URL = `${BASE_CLAIM_URL}/completing-claim`;
+export const CLAIM_CONTINUE_CLAIMING_INTEREST = `${BASE_CLAIM_URL}/interest-continue-claiming`;
 export const CLAIM_DEFENDANT_COMPANY_DETAILS_URL = `${BASE_CLAIM_URL}/defendant-company-details`;
 export const CLAIM_DEFENDANT_EMAIL_URL = `${BASE_CLAIM_URL}/defendant-email`;
 export const CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL = `${BASE_CLAIM_URL}/defendant-individual-details`;
