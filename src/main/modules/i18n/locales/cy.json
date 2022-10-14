@@ -93,6 +93,20 @@
       "SIGN_IN": "Mewngofnodi",
       "SIGN_OUT": "Sign out"
     },
+    "HELP_CALCULATING_INTEREST": {
+      "CALCULATE_THIS": "To calculate this, use the steps bellow",
+      "EXAMPLE": {
+        "EXAMPLE": "Example",
+        "OWED": "If you were owed £,1000:",
+        "ANNUAL_INTEREST": "the annual interest would be £80 (1000 x 0.08 = 80) you’d divide £80 by 365 to get the daily interest: about 22p a day (80 / 365 = 0.22) after 50 days this would be £11 (50 x 0.22 = 11)"
+      },
+      "STEPS": {
+        "DAILY_INTEREST": "Work out the daily interest: divide your yearly interest from step 1 by 365 (the number of days in a year).",
+        "TOTAL_INTEREST": "Work out the total amount of interest: multiply the daily interest from step 2 by the number of days the debt has been overdue.",
+        "YEARLY_INTEREST": "Work out the yearly interest: take the amount you’re claiming and multiply it by 0.08 (which is 8%)."
+      },
+      "USUAL_RATE": "For most types of debt the rate is usually 8%"
+    },
     "HELP_WITH_INTEREST_RATES": {
       "THE_COURT_WILL_DECIDE": "The court will decide if you're entitled to some or all of the interest claimed.",
       "TITLE": "Help with interest rates",
@@ -1564,6 +1578,14 @@
     "TENANCY_DEPOSIT": {
       "TITLE": "Is your claim for a tenancy deposit?"
     },
+    "TOTAL_INTEREST": {
+      "ADD_TO_CLAIM_AMOUNT": "We’ll add it to your claim amount.",
+      "CALCULATE_INTEREST": "You need to calculate interest for the different time periods or items and let us know the total.",
+      "CALCULATION_PROOF": "Show how you calculated the amount",
+      "PAGE_TITLE": "Claim total interest",
+      "TITLE": "What is the total interest for your claim?",
+      "TOTAL_AMOUNT": "Total interest amount"
+    },
     "TRIED_TO_SETTLE": {
       "BOTH_PARTIES": "Both parties must take certain steps before going to court.",
       "PAGE_TITLE": "Have you tried to settle this claim before going to court?",
@@ -1721,6 +1743,7 @@
     "ERROR": "Error",
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Rhowch ddyddiad talu cyntaf yn y dyfodol",
     "GIVE_DETAILS_DOCUMENTS": "Give details of the documents",
+    "HOW_YOU_CALCULATED_AMOUNT": "You must tell us how you calculated the amount",
     "JOB_TITLE_REQUIRED": "Rhowch deitl swydd",
     "NAME_REQUIRED": "Nodwch enw os gwelwch yn dda",
     "NO_LANGUAGE_ENTERED": "Enter the language that needs to be interpreted",
