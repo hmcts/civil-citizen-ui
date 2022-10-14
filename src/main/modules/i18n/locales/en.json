@@ -497,6 +497,13 @@
         "TITLE": "Their email address (optional)",
         "USE_THIS_EMAIL": "We'll use this to tell them you've made a claim, as well as notifying them by post."
       },
+      "HOW_MUCH_CONTINUE": {
+        "DAILY_INTEREST_AMOUNT": "Daily interest amount",
+        "OPTION_1": "8% per year",
+        "OPTION_2": "Specific daily interest amount",
+        "PAGE_TITLE": "How much do you want to continue claiming?",
+        "TITLE": "How much do you want to continue claiming?"
+      },
       "RESOLVE_THE_DISPUTE": {
         "P1": {
           "BEFORE_YOU_CLAIM": "Before you claim you should:",
@@ -1682,6 +1689,7 @@
     "AMOUNT_LESS_THAN_CLAIMED": "Enter a value less than the amount claimed",
     "AMOUNT_REQUIRED": "Enter an amount of £1 or more",
     "ANNUAL_TURNOVER_REQUIRED": "Are you sure this is a valid value?",
+    "CHOOSE_TYPE_OF_INTEREST": "Choose a type of interest",
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_NUMBER_REQUIRED": "You need to enter the claim number",
     "CLAIM_VALID_AMOUNT": "Enter a valid amount",

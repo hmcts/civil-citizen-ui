@@ -497,6 +497,12 @@
         "TITLE": "Their email address (optional)",
         "USE_THIS_EMAIL": "We'll use this to tell them you've made a claim, as well as notifying them by post."
       },
+      "HOW_MUCH_CONTINUE": {
+        "OPTION_1": "8% per year",
+        "OPTION_2": "Specific daily interest amount",
+        "PAGE_TITLE": "How much do you want to continue claiming?",
+        "TITLE": "How much do you want to continue claiming?"
+      },
       "RESOLVE_THE_DISPUTE": {
         "P1": {
           "BEFORE_YOU_CLAIM": "Before you claim you should:",
@@ -1682,6 +1688,7 @@
     "AMOUNT_LESS_THAN_CLAIMED": "Nodwch werth sy'n llai na'r swm a hawlir",
     "AMOUNT_REQUIRED": "Nodwch swm o £1 neu fwy",
     "ANNUAL_TURNOVER_REQUIRED": "A ydych yn siŵr bod hwn yn swm dilys?",
+    "CHOOSE_TYPE_OF_INTEREST": "Choose a type of interest",
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_NUMBER_REQUIRED": "You need to enter the claim number",
     "CLAIM_VALID_AMOUNT": "Rhowch swm dilys",
