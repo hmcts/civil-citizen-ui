@@ -97,7 +97,7 @@
       "CALCULATE_THIS": "To calculate this, use the steps bellow.",
       "EXAMPLE": {
         "EXAMPLE": "Example",
-        "OWED": "If you were owed £,1000:",
+        "OWED": "If you were owed £1,000:",
         "ANNUAL_INTEREST": "the annual interest would be £80 (1000 x 0.08 = 80) you’d divide £80 by 365 to get the daily interest: about 22p a day (80 / 365 = 0.22) after 50 days this would be £11 (50 x 0.22 = 11)"
       },
       "STEPS": {
