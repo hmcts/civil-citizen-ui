@@ -24,21 +24,18 @@ const getViewPathWithType = (type: PartyType) => {
   return CITIZEN_DETAILS_VIEW_PATH;
 };
 
-function renderPage(res: Response, req: Request, respondent: Party, citizenAddress: GenericForm<Address>, citizenCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>): void {
-  const type = respondent?.type;
+function renderPage(res: Response, req: Request, respondent: Party, citizenAddress: GenericForm<Address>, citizenCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>, party: GenericForm<Party>): void {
 
-  res.render(getViewPathWithType(type), {
+  res.render(getViewPathWithType(respondent.type), {
     respondent,
     citizenAddress,
     citizenCorrespondenceAddress,
-    partyName: respondent?.partyName,
-    contactPerson: respondent?.contactPerson,
-    type,
+    party,
   });
 }
 
-const redirect = (responseDataRedis: Party, req: Request, res: Response) => {
-  if (responseDataRedis?.type === PartyType.SOLE_TRADER || responseDataRedis?.type === PartyType.INDIVIDUAL) {
+const redirect = (respondent: Party, req: Request, res: Response) => {
+  if (respondent?.type === PartyType.SOLE_TRADER || respondent?.type === PartyType.INDIVIDUAL) {
     res.redirect(constructResponseUrlWithIdParams(req.params.id, DOB_URL));
   } else {
     res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PHONE_NUMBER_URL));
@@ -48,39 +45,48 @@ const redirect = (responseDataRedis: Party, req: Request, res: Response) => {
 citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const respondent: Party = await getRespondentInformation(req.params.id);
+    const party = new GenericForm(respondent);
     const citizenAddress = new GenericForm<Address>(Address.fromJson(respondent?.primaryAddress));
     const citizenCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(CitizenCorrespondenceAddress.fromJson(respondent?.correspondenceAddress));
-    renderPage(res, req, respondent, citizenAddress, citizenCorrespondenceAddress);
+    renderPage(res, req, respondent, citizenAddress, citizenCorrespondenceAddress, party);
   } catch (error) {
     next(error);
   }
 });
 
 citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
-  const responseDataRedis: Party = await getRespondentInformation(req.params.id);
+
   try {
+    const respondent = await getRespondentInformation(req.params.id);
     const citizenAddress = new GenericForm<Address>(Address.fromObject(req.body));
-
+    const party = new GenericForm(new Party(req.body));
     let citizenCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(CitizenCorrespondenceAddress.fromObject(req.body));
-
-    await citizenAddress.validate();
+    citizenAddress.validateSync();
+    party.validateSync();
     if (req.body.postToThisAddress === YesNo.YES) {
-      await citizenCorrespondenceAddress.validate();
-      responseDataRedis.postToThisAddress = YesNo.YES;
+      citizenCorrespondenceAddress.validateSync();
+      respondent.postToThisAddress = YesNo.YES;
     }
-
-    if (citizenAddress.hasErrors() || citizenCorrespondenceAddress.hasErrors()) {
-      renderPage(res, req, responseDataRedis, citizenAddress, citizenCorrespondenceAddress);
+    if (party.hasErrors() || citizenAddress.hasErrors() || citizenCorrespondenceAddress.hasErrors()) {
+      renderPage(res, req, respondent, citizenAddress, citizenCorrespondenceAddress, party);
     } else {
       if (req.body.postToThisAddress === YesNo.NO) {
         citizenCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress());
       }
-      await saveRespondent(req.params.id, citizenAddress, citizenCorrespondenceAddress, req.body.postToThisAddress, req.body.contactPerson);
-      redirect(responseDataRedis, req, res);
+      await saveRespondent(req.params.id, citizenAddress.model, citizenCorrespondenceAddress.model, party.model);
+      redirect(respondent, req, res);
     }
   } catch (error) {
     next(error);
   }
 });
+
+// TODO : align citizen-details-company with citizen-details, contact name
+// check the save method for phone,
+// check the fields are populated with type
+// phoen number popuylated for company if already provide
+// change form --> form, citizenDetails --> formDeatils, citizen--> form
+// redirect logic control for tel number
+// company correspondance adrees enter manually calismiyor
 
 export default citizenDetailsController;

@@ -45,7 +45,7 @@ claimantOrganisationDetailsController.post(CLAIMANT_ORGANISATION_DETAILS_URL, as
   try {
     const claimantIndividualAddress = new GenericForm<Address>(Address.fromObject(req.body));
     const claimantIndividualCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(getCorrespondenceAddressForm(req.body));
-    const party = new GenericForm(new Party(req.body.partyName, req.body.contactPerson));
+    const party = new GenericForm(new Party(req.body));
 
     party.validateSync();
     claimantIndividualAddress.validateSync();

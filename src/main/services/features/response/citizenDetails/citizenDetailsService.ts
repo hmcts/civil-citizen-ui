@@ -1,12 +1,9 @@
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {Party} from '../../../../common/models/party';
-import {Claim} from '../../../../common/models/claim';
-import {PrimaryAddress} from '../../../../common/models/primaryAddress';
-import {CorrespondenceAddress} from '../../../../common/models/correspondenceAddress';
 import {Address} from '../../../../common/form/models/address';
 import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citizenCorrespondenceAddress';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {YesNo} from '../../../../common/form/models/yesNo';
+import {convertToPrimaryAddress} from '../../../../common/models/primaryAddress';
+import {convertToCorrespondenceAddress} from '../../../../common/models/correspondenceAddress';
 
 export const getRespondentInformation = async (claimId: string): Promise<Party> => {
   const responseData = await getCaseDataFromStore(claimId);
@@ -16,37 +13,18 @@ export const getRespondentInformation = async (claimId: string): Promise<Party> 
   return new Party();
 };
 
-export const saveRespondent = async (claimId: string, citizenAddress: GenericForm<Address>, citizenCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>, postToThisAddress: YesNo, contactPerson = ''): Promise<void> => {
-  const responseData = await getCaseDataFromStore(claimId) || new Claim();
+export const saveRespondent = async (claimId: string, citizenAddress: Address, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, party: Party): Promise<void> => {
+  const responseData = await getCaseDataFromStore(claimId);
   if (!responseData.respondent1) {
     responseData.respondent1 = new Party();
   }
-  responseData.respondent1.contactPerson = contactPerson;
-  responseData.respondent1.postToThisAddress = postToThisAddress;
-  responseData.respondent1.primaryAddress = buildPrimaryAddress(citizenAddress);
-  responseData.respondent1.correspondenceAddress = citizenCorrespondenceAddress.model.isEmpty() ? undefined : buildCorrespondenceAddress(citizenCorrespondenceAddress);
+  responseData.respondent1.primaryAddress = convertToPrimaryAddress(citizenAddress);
+  responseData.respondent1.correspondenceAddress = citizenCorrespondenceAddress.isEmpty()
+    ? undefined
+    : convertToCorrespondenceAddress(citizenCorrespondenceAddress);
+  responseData.respondent1.phoneNumber = party?.phoneNumber;
+  responseData.respondent1.contactPerson = party?.contactPerson;
+  responseData.respondent1.postToThisAddress = party?.postToThisAddress;
 
   await saveDraftClaim(claimId, responseData);
 };
-
-const buildPrimaryAddress = (citizenAddress: GenericForm<Address>): PrimaryAddress => {
-
-  return {
-    AddressLine1: citizenAddress.model.primaryAddressLine1,
-    AddressLine2: citizenAddress.model.primaryAddressLine2,
-    AddressLine3: citizenAddress.model.primaryAddressLine3,
-    PostTown: citizenAddress.model.primaryCity,
-    PostCode: citizenAddress.model.primaryPostCode,
-  };
-};
-
-const buildCorrespondenceAddress = (citizenCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>): CorrespondenceAddress => {
-  return {
-    AddressLine1: citizenCorrespondenceAddress.model.correspondenceAddressLine1,
-    AddressLine2: citizenCorrespondenceAddress.model.correspondenceAddressLine2,
-    AddressLine3: citizenCorrespondenceAddress.model.correspondenceAddressLine3,
-    PostTown: citizenCorrespondenceAddress.model.correspondenceCity,
-    PostCode: citizenCorrespondenceAddress.model.correspondencePostCode,
-  };
-};
-
