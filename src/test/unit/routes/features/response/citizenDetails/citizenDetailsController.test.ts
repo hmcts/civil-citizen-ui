@@ -246,6 +246,9 @@ describe('Confirm Details page', () => {
   });
 
   it('POST/Citizen details - should return error on empty primary city', async () => {
+    mockGetRespondentInformation.mockImplementation(async () => {
+      return buildClaimOfRespondentType(PartyType.ORGANISATION);
+    });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -268,6 +271,9 @@ describe('Confirm Details page', () => {
   });
 
   it('POST/Citizen details - should return error on empty primary postcode', async () => {
+    mockGetRespondentInformation.mockImplementation(async () => {
+      return buildClaimOfRespondentType(PartyType.ORGANISATION);
+    });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -395,6 +401,9 @@ describe('Confirm Details page', () => {
   });
 
   it('POST/Citizen details - should return error on input for primary address when postToThisAddress is set to NO', async () => {
+    mockGetRespondentInformation.mockImplementation(async () => {
+      return buildClaimOfRespondentType(PartyType.ORGANISATION);
+    });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -505,7 +514,9 @@ describe('Confirm Details page', () => {
 
   it('get/Citizen details - should return test variable when there is no data on redis and civil-service', async () => {
     mockGetRespondentInformation.mockImplementation(async () => {
-      return new Party();
+      const party = new Party();
+      party.type = PartyType.INDIVIDUAL;
+      return party;
     });
     await request(app)
       .get('/case/1111/response/your-details')
