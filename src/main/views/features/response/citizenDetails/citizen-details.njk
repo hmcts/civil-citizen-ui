@@ -10,7 +10,7 @@
 {% from "../../../macro/citizen-telephone.njk" import citizenTelephone %}
 
 {% macro citizenDetailsSection(t, type)  %}
-  {% if type === 'INDIVIDUAL' %}
+  {% if type === partyType.INDIVIDUAL %}
     <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_DETAILS.TITLE') }}</h2>
     <p class="govuk-body">{% if respondent.individualTitle %}{{ respondent.individualTitle }}{% else %} individualTitle Test{% endif %}</p>
     <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_DETAILS.FIRST_NAME') }}</h2>
@@ -30,6 +30,7 @@
 {% set correspondenceAddressClass = 'govuk-visually-hidden' %}
 {% set addressTitle = t('PAGES.CITIZEN_DETAILS.ADDRESS') %}
 {% set citizenAddressErrors = citizenAddress.getAllErrors() %}
+{% set partyErrors = party.getAllErrors() %}
 
 {% if citizenCorrespondenceAddress %}
   {% set citizenCorrespondenceAddressErrors = citizenCorrespondenceAddress.getAllErrors() %}
@@ -44,8 +45,8 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
-        {% if citizenCorrespondenceAddress.hasErrors() or citizenAddress.hasErrors() %}
-          {{ errorSummary(citizenAddressErrors, t) }}
+        {% if party.hasErrors() or citizenCorrespondenceAddress.hasErrors() or citizenAddress.hasErrors() %}
+          {{ errorSummary(citizenAddressErrors.concat(partyErrors), t) }}
         {% endif %}
       </div>
       <div class="govuk-grid-row">
@@ -56,7 +57,7 @@
       </div>
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          {{ citizenDetailsSection(t, type)}}
+          {{ citizenDetailsSection(t, respondent.type)}}
           <form method="post" class="govuk-!-padding-top-4" name="address" novalidate>
             {{ csrfProtection(csrf) }}
             {{ addressForm(
@@ -122,11 +123,11 @@
                 {
                   value: YesNo.NO,
                   text: t('COMMON.NO'),
-                  checked: false if respondent.postToThisAddress == YesNo.YES else true
+                  checked: true
                 },
                 {
                   value: YesNo.YES,
-                  checked: true if respondent.postToThisAddress == YesNo.YES else false,
+                  checked: false if citizenCorrespondenceAddress.model.isEmpty() else true,
                   text: t('PAGES.CITIZEN_DETAILS.YES_CORRESPONDENCE'),
                   conditional: {
                   html: correspondenceAddressHtml
@@ -134,13 +135,15 @@
                 }
               ]
             }) }}
-            <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_PHONE.PAGE_TITLE') }}</h2>
-            <p class="govuk-body">{{ t('PAGES.CLAIMANT_PHONE.INFORMATION') }}</p>
-            {{ citizenTelephone(form, t, {
-              id: "telephoneNumber",
-              name: "telephoneNumber",
-              className: "govuk-input--width-20"
+            {% if respondent.phoneNumber !== undefined %}
+              <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_PHONE.PAGE_TITLE') }}</h2>
+              <p class="govuk-body">{{ t('PAGES.CLAIMANT_PHONE.INFORMATION') }}</p>
+              {{ citizenTelephone(party, t, {
+                id: "phoneNumber",
+                name: "phoneNumber",
+                className: "govuk-input--width-20"
             }) }}
+            {% endif %}
             {{ govukButton({
               text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
             }) }}
