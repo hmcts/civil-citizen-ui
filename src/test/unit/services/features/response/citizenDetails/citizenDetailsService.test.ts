@@ -70,7 +70,7 @@ describe('Citizen details service', () => {
       });
 
       //when
-      await saveRespondent(CLAIM_ID, buildCitizenAddress(), buildCitizenCorrespondenceAddress(), YesNo.NO, '');
+      await saveRespondent(CLAIM_ID, buildCitizenAddress().model, buildCitizenCorrespondenceAddress().model, new Party({postToThisAddress: YesNo.NO, contactPerson: ''}));
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, resultClaim);
@@ -86,7 +86,7 @@ describe('Citizen details service', () => {
         return mockClaim;
       });
       //when
-      await saveRespondent(CLAIM_ID, buildCitizenAddress(), buildCitizenCorrespondenceAddress(), YesNo.NO, '');
+      await saveRespondent(CLAIM_ID, buildCitizenAddress().model, buildCitizenCorrespondenceAddress().model, new Party({postToThisAddress: YesNo.NO}));
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, mockClaim);
@@ -100,10 +100,10 @@ describe('Citizen details service', () => {
       resultClaim.respondent1 = new Party();
       resultClaim.respondent1ResponseDeadline = new Date('2022-01-24T15:59:59');
       mockGetCaseData.mockImplementation(async () => {
-        return undefined;
+        return new Claim();
       });
       //when
-      await saveRespondent(CLAIM_ID, buildCitizenAddress(), buildCitizenCorrespondenceAddress(), YesNo.NO, '');
+      await saveRespondent(CLAIM_ID, buildCitizenAddress().model, buildCitizenCorrespondenceAddress().model, new Party({postToThisAddress: YesNo.NO}));
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
@@ -127,7 +127,7 @@ describe('Citizen details service', () => {
         return mockClaim;
       });
       //when
-      await saveRespondent(CLAIM_ID, buildCitizenAddress(), new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress()), YesNo.NO, '');
+      await saveRespondent(CLAIM_ID, buildCitizenAddress().model, (new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress())).model, new Party({postToThisAddress: YesNo.NO}));
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
@@ -148,7 +148,7 @@ describe('Citizen details service', () => {
         return claim;
       });
       //when
-      await saveRespondent(CLAIM_ID, buildCitizenAddress(), buildCitizenCorrespondenceAddress(), YesNo.NO, '');
+      await saveRespondent(CLAIM_ID, buildCitizenAddress().model, buildCitizenCorrespondenceAddress().model, new Party({postToThisAddress: YesNo.NO}));
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
@@ -168,7 +168,7 @@ describe('Citizen details service', () => {
         return claim;
       });
       //when
-      await saveRespondent(CLAIM_ID, buildCitizenAddress(), new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress()), YesNo.NO, '');
+      await saveRespondent(CLAIM_ID, buildCitizenAddress().model, new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress()).model, new Party({postToThisAddress: YesNo.NO}));
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();

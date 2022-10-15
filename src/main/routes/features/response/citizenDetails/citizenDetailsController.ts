@@ -2,7 +2,7 @@ import {NextFunction, Request, Response, Router} from 'express';
 import {CITIZEN_DETAILS_URL, DOB_URL, CITIZEN_PHONE_NUMBER_URL} from '../../../urls';
 import {Address} from '../../../../common/form/models/address';
 import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citizenCorrespondenceAddress';
-import {Party} from 'models/party';
+import {Party} from '../../../../common/models/party';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {YesNo} from '../../../../common/form/models/yesNo';
 import {
@@ -55,7 +55,6 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: Request, res: Resp
 });
 
 citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
-
   try {
     const respondent = await getRespondentInformation(req.params.id);
     const citizenAddress = new GenericForm<Address>(Address.fromObject(req.body));
