@@ -17,7 +17,7 @@ import {
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 
-const civilClaimResponseMock = require('../../../views/features/mediation/noRespondentTelephoneMock.json');
+const civilClaimResponseMock = require('../../../../utils/mocks/noRespondentTelephoneMock.json');
 civilClaimResponseMock.case_data.respondent1.telephoneNumber = '';
 const civilClaimResponseMockWithoutRespondentPhone: string = JSON.stringify(civilClaimResponseMock);
 const mockWithoutRespondentPhone = {

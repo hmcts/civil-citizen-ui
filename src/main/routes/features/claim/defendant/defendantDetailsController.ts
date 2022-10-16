@@ -93,7 +93,7 @@ defendantDetailsController.post(detailsURLs, async (req: AppRequest, res: Respon
           ...primaryAddressForm.model,
         },
       };
-      await saveDefendant(userId, undefined, partyDetailsAndPrimaryAddress, true);
+      await saveDefendant(userId, '', partyDetailsAndPrimaryAddress, true);
       res.redirect(CLAIM_DEFENDANT_EMAIL_URL);
     }
   } catch (error) {
