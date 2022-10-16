@@ -88,10 +88,9 @@ describe('Defendant details controller', () => {
         mockGetCaseData.mockImplementationOnce(async () => {
           throw new Error(TestMessages.REDIS_FAILURE);
         });
-        await request(app).get(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL).expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+        const res = await request(app).get(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL);
+        expect(res.status).toBe(500);
+        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
     });
 
