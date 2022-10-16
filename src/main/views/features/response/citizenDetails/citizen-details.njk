@@ -127,7 +127,7 @@
                 },
                 {
                   value: YesNo.YES,
-                  checked: false if citizenCorrespondenceAddress.model.isEmpty() else true,
+                  checked: true if party.model.postToThisAddress == YesNo.YES else false,
                   text: t('PAGES.CITIZEN_DETAILS.YES_CORRESPONDENCE'),
                   conditional: {
                   html: correspondenceAddressHtml
