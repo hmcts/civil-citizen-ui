@@ -43,7 +43,6 @@ defendantDetailsController.get(detailsURLs, async (req: AppRequest, res: Respons
     let defendantAddress = (defendantDetails?.primaryAddress) ? Object.assign(defendantDetails?.primaryAddress) : {};
     defendantAddress = convertToPrimaryAddress(defendantAddress);
 
-    // TODO: wrap in the conditional if not suitable for your defendantType (CIV-4300, 4299, 4286). Currently catering for ORGANISATION
     const form = new GenericForm(new CompanyOrOrganisationPartyDetails(defendantDetails?.partyName, defendantDetails?.contactPerson));
     const primaryAddressForm = new GenericForm(new Address(
       defendantAddress?.AddressLine1,
@@ -83,7 +82,7 @@ defendantDetailsController.post(detailsURLs, async (req: AppRequest, res: Respon
           ...primaryAddressForm.model,
         },
       };
-      await saveDefendant(userId, undefined, partyDetailsAndPrimaryAddress, true);
+      await saveDefendant(userId, '', partyDetailsAndPrimaryAddress, true);
       res.redirect(CLAIM_DEFENDANT_EMAIL_URL);
     }
   } catch (error) {
