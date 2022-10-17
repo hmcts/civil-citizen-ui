@@ -80,12 +80,4 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: Request, res: Res
   }
 });
 
-// TODO : align citizen-details-company with citizen-details, contact name
-// check the save method for phone,
-// check the fields are populated with type
-// phoen number popuylated for company if already provide
-// change form --> form, citizenDetails --> formDeatils, citizen--> form
-// redirect logic control for tel number
-// company correspondance adrees enter manually calismiyor
-
 export default citizenDetailsController;
