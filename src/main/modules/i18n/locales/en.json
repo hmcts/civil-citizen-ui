@@ -1332,6 +1332,13 @@
       "SECURITY_CODE": "Security code",
       "TITLE": "Enter security code"
     },
+    "REASON": {
+      "EXTRA_FEE_IF_CHANGE_DETAILS": "You'll have to pay an extra fee if you want to change the details of the claim later.",
+      "DONT_GIVE_TIMELINE": "Don't give us a detailed timeline - we'll ask for that separately.",
+      "PAGE_TITLE": "Briefly explain your claim",
+      "TELL_US_WHY": "Tell us why you believe the defendant owes you money.",
+      "TITLE": "Briefly explain your claim"
+    },
     "REGULAR_EXPENSES": {
       "PAGE_TITLE": "Your regular expenses"
     },
@@ -1739,6 +1746,7 @@
     "RATE_CHOOSE_ONE": "Choose rate of interest",
     "RATE_CORRECT_THE_ONE_ENTERED": "Correct rate you’ve entered",
     "RATE_EXPLAIN_CLAIMING_IT": "You haven’t explained why you’re claiming this rate",
+    "REASON_REQUIRED": "You need to explain why you believe you're owed the money",
     "REDIS_FAILURE": "Redis DraftStore failure.",
     "SECURITY_CODE_WRONG_OR_EXPIRED": "The security code was not right or has expired",
     "SELECT_ADDITIONAL_TIME": "Select how much additional time you are asking for",
