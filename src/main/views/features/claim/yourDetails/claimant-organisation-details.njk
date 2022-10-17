@@ -45,8 +45,11 @@
     <div id="postcode-error" class="govuk-visually-hidden govuk-error-message">
       {{ t('PAGES.CITIZEN_DETAILS.ADDRESS_NOT_FOUND') + t('PAGES.CITIZEN_DETAILS.TRY_AGAIN') }}
     </div>
+    <label class="govuk-label" for="postcode">
+      {{ t('PAGES.CITIZEN_DETAILS.UK_POSTCODE') }}
+    </label>
     <input class="govuk-input govuk-input--width-10" id="postcode" name="postcode" type="text" autocomplete="postal-code"/>
-    <button href="#" class="govuk-button govuk-button--secondary findAddressButton" data-module="govuk-button" id="findAddressButton">
+    <button class="govuk-button govuk-button--secondary findAddressButton" data-module="govuk-button" id="findAddressButton">
       {{ t('PAGES.CITIZEN_DETAILS.FIND_ADDRESS') }}
     </button>
     <div id="selectAddress" class="govuk-visually-hidden govuk-!-margin-bottom-2">
@@ -126,6 +129,9 @@
               <div id="primaryPostcode-error" class="govuk-visually-hidden govuk-error-message">
                 {{ t('PAGES.CITIZEN_DETAILS.ADDRESS_NOT_FOUND') + t('PAGES.CITIZEN_DETAILS.TRY_AGAIN') }}
               </div>
+              <label class="govuk-label" for="primaryPostcode">
+                {{ t('PAGES.CITIZEN_DETAILS.UK_POSTCODE') }}
+              </label>
               <input class="govuk-input govuk-input--width-10" id="primaryPostcode" name="primaryPostcode" type="text" autocomplete="postal-code"/>
               <button href="#" class="govuk-button govuk-button--secondary findAddressButton" data-module="govuk-button" id="primaryfindAddressButton">
                 {{ t('PAGES.CITIZEN_DETAILS.FIND_ADDRESS') }}
