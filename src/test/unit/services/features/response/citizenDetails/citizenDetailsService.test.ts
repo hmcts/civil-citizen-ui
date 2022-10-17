@@ -65,7 +65,7 @@ describe('Citizen details service', () => {
       correspondenceAddressLine2: '',
       correspondenceAddressLine3: '',
       correspondenceCity: 'London',
-      correspondencePostCode: 'SW1H 9AJ'
+      correspondencePostCode: 'SW1H 9AJ',
     };
     it('should return an empty correspondance address object when "yes" selected but no input provided from user', async () => {
       //Given
@@ -261,6 +261,4 @@ describe('Citizen details service', () => {
       expect(spySaveDraftClaim).toBeCalled();
     });
   });
-
-
 });
