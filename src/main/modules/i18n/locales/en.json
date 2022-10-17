@@ -383,6 +383,8 @@
       "CONTACT_PERSON": "Contact person (optional)",
       "CONTACT_PERSON_HINT": "The defendant can contact this person to discuss the claim",
       "CONFIRM_YOUR_DETAILS": "Confirm your details",
+      "COMPANY_ADDRESS": "Company Address",
+      "COMPANY_DETAILS": "Enter company details",
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Would you like correspondence sent to a different address?",
       "FIND_ADDRESS": "Find address",
@@ -514,8 +516,8 @@
         "TITLE": "Try to resolve the dispute"
       },
       "WHEN_CLAIM_INTEREST_FROM": {
-        "FROM_A_SPECIFIC_DATE" : "A particular date",
-        "FROM_CLAIM_SUBMIT_DATE" : "The date you submit the claim",
+        "FROM_A_SPECIFIC_DATE": "A particular date",
+        "FROM_CLAIM_SUBMIT_DATE": "The date you submit the claim",
         "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
         "HINT_EXAMPLE_DATE": "For example the date an invoice was overdue or that you told someone they owed you the money.",
         "PAGE_TITLE": "When are you claiming interest from?",

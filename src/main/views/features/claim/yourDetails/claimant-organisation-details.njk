@@ -12,20 +12,23 @@
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 
 {% set correspondenceAddressClass = 'govuk-visually-hidden' %}
-{% set addressTitle = t('PAGES.ORGANISATION_DETAILS.ADDRESS') %}
+
 {% set claimantIndividualAddressErrors = claimantIndividualAddress.getAllErrors() %}
 {% set partyErrors = party.getAllErrors() %}
 
-{% set partyType = t('PAGES.CITIZEN_DETAILS.PARTY_NAME_COMPANY') %}
-
+{% set partyTypeName = t('PAGES.CITIZEN_DETAILS.PARTY_NAME_COMPANY') %}
+{% set detailsTitle =  t('PAGES.CITIZEN_DETAILS.COMPANY_DETAILS')  %}
+{% set addressTitle = t('PAGES.CITIZEN_DETAILS.COMPANY_ADDRESS') %}
 
 {% if claimantIndividualCorrespondenceAddress %}
   {% set claimantIndividualCorrespondenceAddressErrors = claimantIndividualCorrespondenceAddress.getAllErrors() %}
   {% set claimantIndividualAddressErrors = claimantIndividualAddressErrors.concat(claimantIndividualCorrespondenceAddress.getAllErrors()) %}
 {% endif %}
 
-{% if party.model.type === partyType.ORGANISATION %}
-  {% set partyType = t('PAGES.CITIZEN_DETAILS.PARTY_NAME_ORGANISATION') %}
+{% if type === partyType.ORGANISATION %}
+  {% set partyTypeName = t('PAGES.CITIZEN_DETAILS.PARTY_NAME_ORGANISATION') %}
+  {% set addressTitle = t('PAGES.ORGANISATION_DETAILS.ADDRESS') %}
+  {% set detailsTitle =  t('PAGES.ORGANISATION_DETAILS.TITLE')  %}
   {% set payingExtra = t('PAGES.CITIZEN_DETAILS.PAYING_EXTRA_ORGANISATION') %}
 {% endif %}
 
@@ -82,7 +85,7 @@
 
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.ORGANISATION_DETAILS.TITLE') }}</h1>
+          <h1 class="govuk-heading-l">{{ detailsTitle}}</h1>
           <p class="govuk-body">{{ t('PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.THESE_DETAILS_ARE') }}</p>
         </div>
       </div>
@@ -93,7 +96,7 @@
 
             {{ govukInput({
               label: {
-                text: t(partyType)
+                text: t(partyTypeName)
               },
               classes: "govuk-!-width-one-half",
               id: "partyName",
