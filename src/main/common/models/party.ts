@@ -1,7 +1,7 @@
 import {IsNotEmpty, Validate, ValidateIf} from 'class-validator';
 import {PartyType} from '../models/partyType';
 import {PrimaryAddress} from '../models/primaryAddress';
-import {CorrespondenceAddress} from '../models/correspondenceAddress'
+import {CorrespondenceAddress} from '../models/correspondenceAddress';
 import {OptionalIntegerValidator} from '../../common/form/validators/optionalIntegerValidator';
 
 export class Party {
