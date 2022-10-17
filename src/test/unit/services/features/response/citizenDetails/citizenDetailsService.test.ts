@@ -5,7 +5,7 @@ import {
 } from '../../../../../../main/services/features/response/citizenDetails/citizenDetailsService';
 import {Party} from '../../../../../../main/common/models/party';
 import {buildCorrespondenceAddress, buildPrimaryAddress, mockClaim} from '../../../../../utils/mockClaim';
-import {buildCitizenAddress, buildCitizenCorrespondenceAddress} from '../../../../../utils/mockForm';
+import {buildCitizenAddress, buildCitizenCorrespondenceAddress, buildParty} from '../../../../../utils/mockForm';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {CitizenCorrespondenceAddress} from '../../../../../../main/common/form/models/citizenCorrespondenceAddress';
 import {YesNo} from '../../../../../../main/common/form/models/yesNo';
@@ -59,7 +59,8 @@ describe('Citizen details service', () => {
       respondentResult.primaryAddress = buildPrimaryAddress();
       respondentResult.correspondenceAddress = buildCorrespondenceAddress();
       respondentResult.postToThisAddress = YesNo.NO;
-      respondentResult.contactPerson = '';
+      respondentResult.contactPerson = 'Jane Smith';
+      respondentResult.phoneNumber = '123456';
       const resultClaim = new Claim();
       resultClaim.respondent1 = respondentResult;
       resultClaim.respondent1ResponseDeadline = new Date('2022-01-24T15:59:59');
@@ -70,7 +71,7 @@ describe('Citizen details service', () => {
       });
 
       //when
-      await saveRespondent(CLAIM_ID, buildCitizenAddress().model, buildCitizenCorrespondenceAddress().model, new Party({postToThisAddress: YesNo.NO, contactPerson: ''}));
+      await saveRespondent(CLAIM_ID, buildCitizenAddress().model, buildCitizenCorrespondenceAddress().model, buildParty().model);
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, resultClaim);

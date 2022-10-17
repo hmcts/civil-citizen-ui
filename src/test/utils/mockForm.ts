@@ -4,6 +4,7 @@ import {Debts} from '../../main/common/form/models/statementOfMeans/debts/debts'
 import {YesNo} from '../../main/common/form/models/yesNo';
 import {DebtItems} from '../../main/common/form/models/statementOfMeans/debts/debtItems';
 import {GenericForm} from '../../main/common/form/models/genericForm';
+import {Party} from '../../main/common/models/party';
 
 export const buildCitizenAddress = (): GenericForm<Address> => {
   const address =  new Address();
@@ -23,6 +24,14 @@ export const buildCitizenCorrespondenceAddress = () : GenericForm<CitizenCorresp
   citizenCorrespondenceAddress.correspondenceCity = 'correspondenceCity';
   citizenCorrespondenceAddress.correspondencePostCode = 'correspondencePostCode';
   return new GenericForm<CitizenCorrespondenceAddress>(citizenCorrespondenceAddress);
+};
+
+export const buildParty = (): GenericForm<Party> => {
+  const party = new Party();
+  party.postToThisAddress = YesNo.NO;
+  party.contactPerson = 'Jane Smith';
+  party.phoneNumber = '123456';
+  return new GenericForm<Party>(party);
 };
 
 export const buildDebtFormYes = () : Debts => {

@@ -8,7 +8,7 @@ import {YesNo} from '../../../../common/form/models/yesNo';
 
 export const getRespondentInformation = async (claimId: string): Promise<Party> => {
   const responseData = await getCaseDataFromStore(claimId);
-  if (responseData?.respondent1) {
+  if (responseData.respondent1) {
     return responseData.respondent1;
   }
   return new Party();
