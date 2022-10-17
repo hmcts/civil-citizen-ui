@@ -5,6 +5,7 @@ import {OtherWitnesses} from '../../../../../main/common/models/directionsQuesti
 import {Claim} from '../../../../../main/common/models/claim';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import civilClaimResponseExpertAndWitnessMock from '../../../../utils/mocks/civilClaimResponseExpertAndWitnessMock.json';
+import {Witnesses} from '../../../../../main/common/models/directionsQuestionnaire/witnesses/witnesses';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -50,6 +51,53 @@ describe('Other witnesses service', () => {
       expect(form.witnessItems?.length).toBe(0);
       expect(form.option).toBeUndefined();
       expect(form.witnessItems).toEqual([]);
+    });
+    it('should return new form when no otherWitnesses existing on draft store', async () => {
+      //Given
+      mockGetCaseDataFromStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.directionQuestionnaire = {
+          witnesses: {
+            otherWitnesses: new OtherWitnesses(),
+          },
+        };
+        return claim;
+      });
+      //When
+      const form = await getOtherWitnesses(req);
+      //Then
+      expect(form).toBeTruthy();
+      expect(form.option).toBeUndefined();
+      expect(form.witnessItems).toBeUndefined();
+    });
+    it('should return new form when no witnesses existing on draft store', async () => {
+      //Given
+      mockGetCaseDataFromStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.directionQuestionnaire = {
+          witnesses: new Witnesses(),
+        };
+        return claim;
+      });
+      //When
+      const form = await getOtherWitnesses(req);
+      //Then
+      expect(form).toBeTruthy();
+      expect(form.option).toBeUndefined();
+      expect(form.witnessItems).toBeUndefined();
+    });
+    it('should return new form when no directionQuestionnaire existing on draft store', async () => {
+      //Given
+      mockGetCaseDataFromStore.mockImplementation(async () => {
+        const claim = new Claim();
+        return claim;
+      });
+      //When
+      const form = await getOtherWitnesses(req);
+      //Then
+      expect(form).toBeTruthy();
+      expect(form.option).toBeUndefined();
+      expect(form.witnessItems).toBeUndefined();
     });
     it('should throw an error when error is thrown from draft store', async () => {
       //When
