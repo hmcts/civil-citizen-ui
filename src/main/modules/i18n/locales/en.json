@@ -578,7 +578,10 @@
       "ADDRESS_NOT_FOUND": "We can't find an address for that postcode.",
       "ALL_CORRESPONDENCE": "All correspondence will be sent to this address.",
       "CLAIMANT_DETAILS_PROVIDED": "Your name and address were provided by the person, business or organisation claiming from you (the claimant).",
+      "CLAIMANT_PAGE_TITLE": "Enter company details",
+      "CLAIMANT_TITLE": "Enter company details",
       "COMPANY_ADDRESS": "Company address",
+      "COMPANY_REGISTERED_OFFICE": "Enter the company's registered office or a company address that has a connection with the claim.",
       "COMPANY_NAME": "Company name",
       "CONTACT_NAME_OPTIONAL": "Contact name (optional)",
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
@@ -590,6 +593,7 @@
       "ORGANISATION_NAME": "Organisation name",
       "PAGE_TITLE": "Company details",
       "PICK_ADDRESS": "Pick an address",
+      "TITLE": "Company details",
       "TRY_AGAIN": "Try again or enter the address manually.",
       "UK_POSTCODE": "Enter a UK postcode",
       "YES_CORRESPONDENCE": "Yes, add a correspondence address"
