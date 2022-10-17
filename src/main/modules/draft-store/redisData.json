@@ -600,7 +600,7 @@
         }
       },
       "respondent1": {
-        "type": "INDIVIDUAL",
+        "type": "SOLE_TRADER",
         "individualTitle": "Mr.",
         "individualFirstName": "Jan",
         "individualLastName": "Clark",
@@ -981,8 +981,7 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "soleTraderTradingAs": "hele"
+        }
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
