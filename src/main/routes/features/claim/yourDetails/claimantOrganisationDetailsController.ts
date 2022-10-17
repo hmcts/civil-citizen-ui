@@ -4,7 +4,7 @@ import {
   CLAIMANT_INDIVIDUAL_DETAILS_URL,
   CLAIMANT_ORGANISATION_DETAILS_URL,
   CLAIMANT_PHONE_NUMBER_URL,
-  CLAIMANT_SOLE_TRADER_DETAILS_URL
+  CLAIMANT_SOLE_TRADER_DETAILS_URL,
 } from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {Address} from '../../../../common/form/models/address';
@@ -18,9 +18,9 @@ import {
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {Party} from '../../../../common/models/party';
 import {AppRequest} from '../../../../common/models/AppRequest';
-import {PartyType} from "../../../../common/models/partyType";
-import {getPartyTypeDependingOnRoute} from "../../../../services/features/claim/claimantOrDefendantTypeService";
-import {PartyDetails} from "../../../../common/form/models/partyDetails";
+import {PartyType} from '../../../../common/models/partyType';
+import {getPartyTypeDependingOnRoute} from '../../../../services/features/claim/claimantOrDefendantTypeService';
+import {PartyDetails} from '../../../../common/form/models/partyDetails';
 
 const claimantOrganisationDetailsController = Router();
 const claimantOrganisationDetailsPath = 'features/claim/yourDetails/claimant-organisation-details';
