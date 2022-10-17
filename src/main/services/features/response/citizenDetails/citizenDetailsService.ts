@@ -4,6 +4,7 @@ import {Address} from '../../../../common/form/models/address';
 import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citizenCorrespondenceAddress';
 import {convertToPrimaryAddress} from '../../../../common/models/primaryAddress';
 import {convertToCorrespondenceAddress} from '../../../../common/models/correspondenceAddress';
+import {YesNo} from '../../../../common/form/models/yesNo';
 
 export const getRespondentInformation = async (claimId: string): Promise<Party> => {
   const responseData = await getCaseDataFromStore(claimId);
@@ -11,6 +12,17 @@ export const getRespondentInformation = async (claimId: string): Promise<Party> 
     return responseData.respondent1;
   }
   return new Party();
+};
+
+export const getCorrespondenceAddressForm = (value?: Record<string, string>): CitizenCorrespondenceAddress => {
+  let citizenCorrespondenceAddress = CitizenCorrespondenceAddress.fromObject(value);
+  if (value.postToThisAddress === YesNo.NO) {
+    citizenCorrespondenceAddress = undefined;
+  }
+  if (citizenCorrespondenceAddress) {
+    return citizenCorrespondenceAddress;
+  }
+  return new CitizenCorrespondenceAddress();
 };
 
 export const saveRespondent = async (claimId: string, citizenAddress: Address, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, party: Party): Promise<void> => {

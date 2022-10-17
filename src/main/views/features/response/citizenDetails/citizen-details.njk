@@ -68,7 +68,7 @@
               addressTitle = addressTitle
             ) }}
             {% set correspondenceAddressHtml %}
-              <div class="govuk-form-group" id="postcode">
+              <div class="govuk-form-group" id="postcodeContainer">
                 <p
                   class="govuk-label govuk-!-margin-bottom-5">{{ t('PAGES.CITIZEN_DETAILS.ALL_CORRESPONDENCE') + t('PAGES.CITIZEN_DETAILS.ADDRESS_FOR_SERVICE') }}</p>
                 <label class="govuk-label" for="postcode">
@@ -79,7 +79,7 @@
                 </div>
                 <input class="govuk-input govuk-input--width-10" id="postcode" name="postcode" type="text"
                        autocomplete="postal-code"/>
-                <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button"
+                <button href="#" class="govuk-button govuk-button--secondary findAddressButton" data-module="govuk-button"
                         id="findAddressButton">
                   {{ t('PAGES.CITIZEN_DETAILS.FIND_ADDRESS') }}
                 </button>
@@ -87,6 +87,7 @@
                   {{ govukSelect({
                     id: "correspondenceAddressList",
                     name: "correspondenceAddressList",
+                    classes: 'addressList',
                     label: {
                       text: t('PAGES.CITIZEN_DETAILS.PICK_ADDRESS')
                     },
@@ -127,7 +128,7 @@
                 },
                 {
                   value: YesNo.YES,
-                  checked: true if party.model.postToThisAddress == YesNo.YES else false,
+                  checked: true if respondent.postToThisAddress === YesNo.YES else false,
                   text: t('PAGES.CITIZEN_DETAILS.YES_CORRESPONDENCE'),
                   conditional: {
                   html: correspondenceAddressHtml

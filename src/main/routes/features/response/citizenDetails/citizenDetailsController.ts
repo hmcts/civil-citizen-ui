@@ -6,6 +6,7 @@ import {Party} from '../../../../common/models/party';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {YesNo} from '../../../../common/form/models/yesNo';
 import {
+  getCorrespondenceAddressForm,
   getRespondentInformation,
   saveRespondent,
 } from '../../../../services/features/response/citizenDetails/citizenDetailsService';
@@ -24,7 +25,7 @@ const getViewPathWithType = (type: PartyType) => {
   return CITIZEN_DETAILS_VIEW_PATH;
 };
 
-function renderPage(res: Response, req: Request, respondent: Party, citizenAddress: GenericForm<Address>, citizenCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>, party: GenericForm<Party>): void {
+function renderPage(res: Response, req: Request, party: GenericForm<Party>, citizenAddress: GenericForm<Address>, citizenCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>, respondent: Party): void {
 
   res.render(getViewPathWithType(respondent.type), {
     respondent,
@@ -48,7 +49,7 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: Request, res: Resp
     const party = new GenericForm(respondent);
     const citizenAddress = new GenericForm<Address>(Address.fromJson(respondent?.primaryAddress));
     const citizenCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(CitizenCorrespondenceAddress.fromJson(respondent?.correspondenceAddress));
-    renderPage(res, req, respondent, citizenAddress, citizenCorrespondenceAddress, party);
+    renderPage(res, req, party, citizenAddress, citizenCorrespondenceAddress, respondent);
   } catch (error) {
     next(error);
   }
@@ -57,21 +58,20 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: Request, res: Resp
 citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const respondent = await getRespondentInformation(req.params.id);
-    const citizenAddress = new GenericForm<Address>(Address.fromObject(req.body));
     const party = new GenericForm(new Party(req.body));
-    let citizenCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(CitizenCorrespondenceAddress.fromObject(req.body));
-    citizenAddress.validateSync();
+    const citizenAddress = new GenericForm<Address>(Address.fromObject(req.body));
+    const citizenCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(getCorrespondenceAddressForm(req.body));
+
     party.validateSync();
+    citizenAddress.validateSync();
+
     if (req.body.postToThisAddress === YesNo.YES) {
       citizenCorrespondenceAddress.validateSync();
       respondent.postToThisAddress = YesNo.YES;
     }
     if (party.hasErrors() || citizenAddress.hasErrors() || citizenCorrespondenceAddress.hasErrors()) {
-      renderPage(res, req, respondent, citizenAddress, citizenCorrespondenceAddress, party);
+      renderPage(res, req, party, citizenAddress, citizenCorrespondenceAddress, respondent);
     } else {
-      if (req.body.postToThisAddress === YesNo.NO) {
-        citizenCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress());
-      }
       await saveRespondent(req.params.id, citizenAddress.model, citizenCorrespondenceAddress.model, party.model);
       redirect(respondent, req, res);
     }
