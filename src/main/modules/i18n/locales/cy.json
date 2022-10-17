@@ -1746,7 +1746,7 @@
     "RATE_CHOOSE_ONE": "Choose rate of interest",
     "RATE_CORRECT_THE_ONE_ENTERED": "Correct rate you’ve entered",
     "RATE_EXPLAIN_CLAIMING_IT": "You haven’t explained why you’re claiming this rate",
-    "REASON_REQUIRED": "You need to explain why you believe you're owed the money",
+    "REASON_REQUIRED": "You need to explain why you believe you’re owed the money",
     "REDIS_FAILURE": "Redis DraftStore failure.",
     "SELECT_ADDITIONAL_TIME": "Dewiswch faint o amser ychwanegol yr ydych yn gwneud cais amdano",
     "SECURITY_CODE_WRONG_OR_EXPIRED": "The security code was not right or has expired",

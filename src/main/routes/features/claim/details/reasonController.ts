@@ -4,7 +4,7 @@ import {GenericForm} from '../../../../common/form/models/genericForm';
 
 import {
   CLAIM_REASON_URL,
-  CLAIM_TIMELINE_URL
+  CLAIM_TIMELINE_URL,
 } from '../../../urls';
 import {getClaimDetails, saveClaimDetails} from '../../../../services/features/claim/details/claimDetailsService';
 import {Reason} from '../../../../common/form/models/claim/details/reason';
