@@ -98,6 +98,11 @@
       "TITLE": "Help with interest rates",
       "YOU_CAN_CLAIM": "You can claim 8% interest on money owed to you. This is the statutory rate. If you know that a different rate applies you can use that. For example if you have a contract with a specific rate"
     },
+    "INPUT_LABELS": {
+      "FIRST_NAME": "Enw cyntaf",
+      "LAST_NAME": "Cyfenw",
+      "TITLE": "Teitl"
+    },
     "MONTH_NAMES": {
       "APRIL": "Ebrill",
       "AUGUST": "Awst",
@@ -386,14 +391,11 @@
       "CORRESPONDENCE_ADDRESS": "Cyfeiriad ar gyfer gohebiaeth",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Ydych chi am inni anfon gohebiaeth i gyfeiriad arall?",
       "FIND_ADDRESS": "Dod o hyd i gyfeiriad",
-      "FIRST_NAME": "Enw cyntaf",
-      "LAST_NAME": "Cyfenw",
       "MANUAL_ADDRESS": "Teipio'r cyfeiriad",
       "PARTY_NAME_COMPANY": "Company name",
       "PARTY_NAME_ORGANISATION": "Organisation name",
       "PAGE_TITLE": "Eich manylion",
       "PICK_ADDRESS": "Dewiswch gyfeiriad",
-      "TITLE": "Teitl",
       "TRY_AGAIN": "Rhowch gynnig arall arni neu nodwch y cyfeiriad â llaw.",
       "UK_POSTCODE": "Rhowch god post yn y DU",
       "YES_CORRESPONDENCE": "Ydw. Ychwanegu cyfeiriad ar gyfer gohebiaeth"
@@ -491,6 +493,10 @@
         "TITLE": "Enter your details",
         "YOUR_POSTAL_ADDRESS": "Your postal address"
       },
+      "CONTINUE_CLAIMING_INTEREST": {
+        "PAGE_TITLE": "Continue claiming interest",
+        "TITLE": "Continue to claim interest after you submit your claim?"
+      },
       "DEFENDANT_EMAIL": {
         "PAGE_TITLE": "Their email address (optional)",
         "PERSONAL_EMAIL": "This must be their personal email address",
@@ -574,7 +580,10 @@
       "ADDRESS_NOT_FOUND": "Ni allwn dod o hyd i gyfeiriad ar gyfer y cod post hwnnw.",
       "ALL_CORRESPONDENCE": "Byddir yn anfon pob gohebiaeth i'r cyfeiriad hwn.",
       "CLAIMANT_DETAILS_PROVIDED": "Darparwyd eich enw a'ch cyfeiriad gan yr unigolyn, y busnes neu'r sefydliad sy'n cyflwyno'r hawliad (yr hawlydd).",
+      "CLAIMANT_PAGE_TITLE": "Enter company details",
+      "CLAIMANT_TITLE": "Enter company details",
       "COMPANY_ADDRESS": "Cyfeiriad y cwmni",
+      "COMPANY_REGISTERED_OFFICE": "Enter the company's registered office or a company address that has a connection with the claim.",
       "COMPANY_NAME": "Enw'r cwmni",
       "CONTACT_NAME_OPTIONAL": "Enw cyswllt (dewisol)",
       "CORRESPONDENCE_ADDRESS": "Gohebiaeth cyfeiriad",
@@ -586,6 +595,7 @@
       "ORGANISATION_NAME": "Enw'r sefydliad",
       "PAGE_TITLE": "Manylion cwmni",
       "PICK_ADDRESS": "Dewiswch gyfeiriad",
+      "TITLE": "Manylion cwmni",
       "TRY_AGAIN": "Rhowch gynnig arall arni neu nodwch y cyfeiriad â llaw.",
       "UK_POSTCODE": "Rhowch god post yn y DU",
       "YES_CORRESPONDENCE": "Ydw. Ychwanegu cyfeiriad ar gyfer gohebiaeth"
@@ -737,26 +747,32 @@
       "TOTAL": "Cyfanswm sy'n ddyledus gennych"
     },
     "DEFENDANT_DETAILS": {
+      "BUSINESS_NAME": "Trading as (If you know it)",
+      "COMPANY_ADDRESS": "Company address",
+      "COMPANY_MAIN_OFFICE": "Enter the company’s main office or a company address that has a connection with the claim.",
+      "COMPANY_NAME": "Company name",
       "CONTACT_PERSON": "Name of contact person (optional)",
       "CONTACT_PERSON_HINT": "This might be a person you’ve discussed the claim with.",
       "ENGLAND_OR_WALES_ADDRESS": "The address must be in England or Wales.",
       "FIND_ADDRESS": "Find address",
+      "INVALID_CLAIM": "Your claim may be invalid if you use the wrong address.",
       "MANUAL_ADDRESS": "Enter address manually",
+      "NO_WORK_ADDRESS": "You cannot use their work address.",
       "ORGANISATION_ADDRESS": "Organisation address",
-      "ORGANISATION_ADDRESS_NOT_CORRECT": "If your address is not correct you can change it here.",
-      "ORGANISATION_ANY_CHANGES": "Any changes will be shared with the claimant when you submit your response.",
       "ORGANISATION_MAIN_OFFICE": "Enter the organisation’s main office or address that has a connection with the claim.",
       "ORGANISATION_NAME": "Organisation name",
       "PAGE_TITLES": {
-        "COMPANY": "",
-        "INDIVIDUAL": "",
+        "COMPANY": "Company details",
+        "INDIVIDUAL": "Enter the defendant’s details",
         "ORGANISATION": "Enter organisation details",
-        "SOLE_TRADER": ""
+        "SOLE_TRADER": "Enter the defendant's details"
       },
       "PAYING_EXTRA": "You’ll have to pay extra fee if you later want to change the name of anyone involved with the claim.",
       "PAYING_EXTRA_ORGANISATION": "You’ll have to pay extra fee if you later want to change the name of an organisation involved with the claim.",
       "PICK_ADDRESS": "Pick an address",
-      "UK_POSTCODE": "Enter a UK postcode"
+      "THEIR_ADDRESS": "Their address",
+      "UK_POSTCODE": "Enter a UK postcode",
+      "USUAL_ADDRESS": "You must enter their usual or last known home address."
     },
     "DEFENDANT_PARTY_TYPE": {
       "CLAIMING_AGAINST_AN_INDIVIDUAL": "An individual",
@@ -1248,8 +1264,6 @@
     "OTHER_WITNESSES": {
       "ADD_ANOTHER_WITNESS": "Add another witness",
       "EMAIL_LABEL": "Email address (optional)",
-      "FIRST_NAME_LABEL": "First name",
-      "LAST_NAME_LABEL": "Last name",
       "PAGE_TITLE": "Do you have other witnesses?",
       "PHONE_LABEL": "Phone number (optional)",
       "REMOVE_WITNESS": "Remove witness",

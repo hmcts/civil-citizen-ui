@@ -189,7 +189,7 @@ describe('Repayment Plan', () => {
           expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
         });
     });
-    
+
     it('should redirect with valid input with every month frequency', async () => {
       await request(app)
         .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)

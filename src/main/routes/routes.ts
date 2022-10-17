@@ -145,6 +145,7 @@ import claimantInterestFromController from './features/claim/interest/claimantIn
 import claimantOrganisationDetailsController from './features/claim/yourDetails/claimantOrganisationDetailsController';
 import defendantEmailController from './features/claim/yourDetails/defendantEmailController';
 import defendantPhoneController from './features/claim/yourDetails/defendantPhoneController';
+import continueClaimingInterestController from './features/claim/interest/continueClaimingInterestController';
 
 export default [
   homeController,
@@ -282,4 +283,5 @@ export default [
   claimantInterestFromController,
   defendantEmailController,
   defendantPhoneController,
+  continueClaimingInterestController,
 ];
