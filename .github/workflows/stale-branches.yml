@@ -27,7 +27,7 @@ jobs:
             recent activity. It will be closed if no further activity occurs. Thank you
             for your contributions.
           tag-committer: true
-          stale-branch-label: stale branch 🗑️
+          stale-branch-label: 'stale branch 🗑️'
           max-issues: 20
-          compare-branches: off
+          compare-branches: 'off'
 
