@@ -13,6 +13,7 @@
     "CHOOSE": "Choose",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
     "DASHBOARD": "Dashboard",
+    "DATE": "Date",
     "DATE_EXAMPLE": "For Example, {{ date }}",
     "DAY": "Day",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
@@ -34,6 +35,7 @@
       "TOWN_OR_CITY": "Town or city"
     },
     "BUTTONS": {
+      "ADD_ANOTHER_EVENT": "Add another event",
       "BACK": "Back",
       "CONTINUE": "Continue",
       "I_CONFIRM_IVE_READ_THIS": "I confirm I've read this",
@@ -161,6 +163,10 @@
       "STATEMENT_OF_WORK": "statement of truth",
       "TITLE": "Statement of truth",
       "WHEN_SATISFIED": "When you're satisfied that your answers are accurate, you should tick to \"sign\" this statement of truth on the form."
+    },
+    "TIMELINE": {
+      "EXAMPLE_EVENT": "For example, you might have signed a contract",
+      "WHAT_HAPPENED": "What happened"
     },
     "TYPES_OF_SENIOR_POSITION": {
       "CORPORATION_NOT_REGISTERED": "If your corporation isn't registered, a senior position could be:",
@@ -1565,6 +1571,14 @@
     "TENANCY_DEPOSIT": {
       "TITLE": "Is your claim for a tenancy deposit?"
     },
+    "TIMELINE": {
+      "EXAMPLE": "Example timeline",
+      "EXAMPLE_ONE": "John Smith gave me a quote to replace the roof.",
+      "EXAMPLE_TWO": "We agreed and signed a contract for the work.",
+      "EXAMPLE_THREE": "I noticed a leak on the landing and told Mr Smith about this.",
+      "NO_EXACT_DATE": "If you don’t know exact date, tell us the month and year",
+      "TITLE": "Timeline of events"
+    },
     "TRIED_TO_SETTLE": {
       "BOTH_PARTIES": "Both parties must take certain steps before going to court.",
       "PAGE_TITLE": "Have you tried to settle this claim before going to court?",
@@ -1729,6 +1743,7 @@
     "NO_SIGN_LANGUAGE_ENTERED": "Enter the sign language that needs to be interpreted",
     "NUMBER_OF_PEOPLE_REQUIRED": "Enter a numeric, for example 3",
     "NUMBER_REQUIRED": "Enter a valid number",
+    "ONE_ROW_REQUIRED": "Enter at least one row",
     "OPTION_REQUIRED": "Please select one reason",
     "OPTION_REQUIRED_RESPONSE": "Please select a response",
     "PAGE_NOT_FOUND": "Page Not Found",
