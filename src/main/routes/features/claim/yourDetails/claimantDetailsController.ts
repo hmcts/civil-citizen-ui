@@ -1,6 +1,7 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {
   CLAIMANT_COMPANY_DETAILS_URL,
+  CLAIMANT_DOB_URL,
   CLAIMANT_INDIVIDUAL_DETAILS_URL,
   CLAIMANT_ORGANISATION_DETAILS_URL,
   CLAIMANT_PHONE_NUMBER_URL,
@@ -54,7 +55,7 @@ function renderPage(res: Response, req: Request, party: GenericForm<Party>, clai
 
 claimantDetailsController.get(detailsURLs, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const partyType = getPartyTypeDependingOnRoute(req?.url);
+    const partyType = getPartyTypeDependingOnRoute(req.url);
     const caseId = req.session?.user?.id;
     const claimant: Party = await getClaimantPartyInformation(caseId);
     const claimantIndividualAddress = new GenericForm<Address>(Address.fromJson(claimant.primaryAddress));
@@ -69,7 +70,7 @@ claimantDetailsController.get(detailsURLs, async (req: AppRequest, res: Response
 });
 
 claimantDetailsController.post(detailsURLs, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
-  const partyType = getPartyTypeDependingOnRoute(req?.url);
+  const partyType = getPartyTypeDependingOnRoute(req.url);
   const caseId = (<AppRequest>req).session?.user?.id;
   const claimant: Party = await getClaimantPartyInformation(caseId);
   try {
@@ -91,7 +92,12 @@ claimantDetailsController.post(detailsURLs, async (req: AppRequest | Request, re
       renderPage(res, req, party, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, claimantDetails, partyType);
     } else {
       await saveClaimantParty(caseId, claimantIndividualAddress.model, claimantIndividualCorrespondenceAddress.model, req.body.provideCorrespondenceAddress, party.model);
-      res.redirect(constructResponseUrlWithIdParams(caseId, CLAIMANT_PHONE_NUMBER_URL));
+
+      if (partyType === PartyType.COMPANY || partyType === PartyType.ORGANISATION) {
+        res.redirect(constructResponseUrlWithIdParams(caseId, CLAIMANT_PHONE_NUMBER_URL));
+      } else {
+        res.redirect(constructResponseUrlWithIdParams(caseId, CLAIMANT_DOB_URL));
+      }
     }
   } catch (error) {
     next(error);
