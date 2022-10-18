@@ -49,7 +49,7 @@ describe('Completing Claim', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CLAIMANT_PHONE_NUMBER_URL)
-        .send({phoneNumber: PHONE_NUMBER})
+        .send({telephoneNumber: PHONE_NUMBER})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CLAIMANT_TASK_LIST_URL);
@@ -60,7 +60,7 @@ describe('Completing Claim', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CLAIMANT_PHONE_NUMBER_URL)
-        .send({phoneNumber: ''})
+        .send({telephoneNumber: ''})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CLAIMANT_TASK_LIST_URL);
@@ -71,7 +71,7 @@ describe('Completing Claim', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CLAIMANT_PHONE_NUMBER_URL)
-        .send({phoneNumber: 'abc'})
+        .send({telephoneNumber: 'abc'})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.VALID_PHONE_NUMBER);
@@ -81,7 +81,7 @@ describe('Completing Claim', () => {
     it('should return error on input with interior spaces', async () => {
       await request(app)
         .post(CLAIMANT_PHONE_NUMBER_URL)
-        .send({phoneNumber: '123 456'})
+        .send({telephoneNumber: '123 456'})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.VALID_PHONE_NUMBER);
@@ -91,7 +91,7 @@ describe('Completing Claim', () => {
     it('should accept input with trailing whitespaces', async () => {
       await request(app)
         .post(CLAIMANT_PHONE_NUMBER_URL)
-        .send({phoneNumber: '123 '})
+        .send({telephoneNumber: '123 '})
         .expect((res) => {
           expect(res.status).toBe(302);
         });
@@ -101,7 +101,7 @@ describe('Completing Claim', () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CLAIMANT_PHONE_NUMBER_URL)
-        .send({phoneNumber: PHONE_NUMBER})
+        .send({telephoneNumber: PHONE_NUMBER})
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

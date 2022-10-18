@@ -19,11 +19,11 @@ jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 const CLAIM_ID = '123';
 const claimData = new Claim();
-const claimantDetails = new PartyDetails(
-  'individualTitle',
-  'individualFirstName',
-  'individualLastName',
-);
+const claimantDetails = new PartyDetails({
+  individualTitle: 'Mr.',
+  individualFirstName: 'John',
+  individualLastName: 'Doe',
+});
 
 describe('Citizen details service', () => {
   describe('get Claimant Information', () => {
@@ -97,9 +97,9 @@ describe('Citizen details service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       claimData.applicant1 = new Party();
-      claimData.applicant1.individualTitle = 'individualTitle';
-      claimData.applicant1.individualFirstName = 'individualFirstName';
-      claimData.applicant1.individualLastName = 'individualLastName';
+      claimData.applicant1.individualTitle = 'Mr.';
+      claimData.applicant1.individualFirstName = 'John';
+      claimData.applicant1.individualLastName = 'Doe';
       claimData.applicant1.primaryAddress = buildPrimaryAddress();
       claimData.applicant1.provideCorrespondenceAddress = YesNo.NO;
 
@@ -118,9 +118,9 @@ describe('Citizen details service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       claimData.applicant1 = new Party();
-      claimData.applicant1.individualTitle = 'individualTitle';
-      claimData.applicant1.individualFirstName = 'individualFirstName';
-      claimData.applicant1.individualLastName = 'individualLastName';
+      claimData.applicant1.individualTitle = 'Mr.';
+      claimData.applicant1.individualFirstName = 'John';
+      claimData.applicant1.individualLastName = 'Doe';
       claimData.applicant1.primaryAddress = buildPrimaryAddress();
       claimData.applicant1.provideCorrespondenceAddress = YesNo.NO;
       mockGetCaseData.mockImplementation(async () => {

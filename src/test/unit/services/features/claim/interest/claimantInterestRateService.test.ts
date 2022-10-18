@@ -40,7 +40,7 @@ describe('Claimant Interest Rate Service', () => {
     });
   });
 
-  it('should get empty form when claimant iterest rate does not exist', async () => {
+  it('should get empty form when claimant interest rate does not exist', async () => {
     //Given
     mockGetCaseData.mockImplementation(async () => {
       const claim = new Claim();

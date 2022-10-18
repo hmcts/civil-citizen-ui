@@ -144,6 +144,9 @@ import claimInterestController from './features/claim/interest/claimInterestCont
 import claimantInterestFromController from './features/claim/interest/claimantInterestFromController';
 import claimantOrganisationDetailsController from './features/claim/yourDetails/claimantOrganisationDetailsController';
 import defendantEmailController from './features/claim/yourDetails/defendantEmailController';
+import reasonController from './features/claim/details/reasonController';
+import defendantPhoneController from './features/claim/yourDetails/defendantPhoneController';
+import continueClaimingInterestController from './features/claim/interest/continueClaimingInterestController';
 import helpWithFeesController from './features/claim/helpWithFees/helpWithFeesController';
 
 export default [
@@ -281,5 +284,8 @@ export default [
   interestStartDateController,
   claimantInterestFromController,
   defendantEmailController,
+  reasonController,
+  defendantPhoneController,
+  continueClaimingInterestController,
   helpWithFeesController,
 ];
