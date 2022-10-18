@@ -95,6 +95,67 @@ describe('Regular Expenses Controller', () => {
           expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.RENT'));
         });
     });
+
+    it('should show errors gas is selected but no amount or schedule selected', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_EXPENSES_URL)
+        .send({
+          declared: ['gas'], model: {
+            gas: {
+              transactionSource:
+                {
+                  name: 'gas', amount: '', schedule: undefined,
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.GAS'));
+          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.GAS'));
+        });
+    });
+
+    it('should show errors electricity is selected but no amount or schedule selected', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_EXPENSES_URL)
+        .send({
+          declared: ['electricity'], model: {
+            electricity: {
+              transactionSource:
+                {
+                  name: 'electricity', amount: '', schedule: undefined,
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.ELECTRICITY'));
+          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.ELECTRICITY'));
+        });
+    });
+
+    it('should show errors water is selected but no amount or schedule selected', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_EXPENSES_URL)
+        .send({
+          declared: ['water'], model: {
+            water: {
+              transactionSource:
+                {
+                  name: 'water', amount: '', schedule: undefined,
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.WATER'));
+          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.WATER'));
+        });
+    });
+
     it('should show errors when mortgage is selected but no schedule selected', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_EXPENSES_URL)
