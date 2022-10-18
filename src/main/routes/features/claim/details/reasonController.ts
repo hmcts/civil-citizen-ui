@@ -8,10 +8,11 @@ import {
 } from '../../../urls';
 import {getClaimDetails, saveClaimDetails} from '../../../../services/features/claim/details/claimDetailsService';
 import {Reason} from '../../../../common/form/models/claim/details/reason';
+import {ClaimDetails} from "common/form/models/claim/details/claimDetails";
 
 const reasonController = Router();
 const reasonViewPath = 'features/claim/details/reason';
-const dqPropertyName = 'reason';
+const claimDetailsPropertyName = 'reason';
 
 function renderView(form: GenericForm<Reason>, res: Response): void {
   res.render(reasonViewPath, {form});
@@ -19,8 +20,8 @@ function renderView(form: GenericForm<Reason>, res: Response): void {
 
 reasonController.get(CLAIM_REASON_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimDetails = await getClaimDetails(req.session?.user?.id);
-    const reason = Object.assign(new Reason(), claimDetails.reason);
+    const claimDetails: ClaimDetails = await getClaimDetails(req.session?.user?.id);
+    const reason: Reason = claimDetails.reason;
     const reasonForm = new GenericForm(reason);
 
     renderView(reasonForm, res);
@@ -38,7 +39,7 @@ reasonController.post(CLAIM_REASON_URL, async (req: AppRequest | Request, res: R
       renderView(reasonForm, res);
     } else {
       const appRequest = <AppRequest>req;
-      await saveClaimDetails(appRequest.session?.user?.id, reasonForm.model, dqPropertyName);
+      await saveClaimDetails(appRequest.session?.user?.id, reasonForm.model, claimDetailsPropertyName);
       res.redirect(CLAIM_TIMELINE_URL);
     }
   } catch (error) {
