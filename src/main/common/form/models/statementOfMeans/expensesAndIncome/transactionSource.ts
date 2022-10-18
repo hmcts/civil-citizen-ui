@@ -3,7 +3,7 @@ import {TransactionSchedule} from './transactionSchedule';
 import {MAX_AMOUNT_VALUE} from '../../../validators/validationConstraints';
 import {ScheduledAmount} from '../../../../utils/calculateMonthlyIncomeExpenses/monthlyIncomeExpensesCalculator';
 import {IncomeType} from './incomeType';
-import { ExpenseType } from './expenseType';
+import {ExpenseType} from './expenseType';
 
 export interface TransactionSourceParams {
   name?: string;
