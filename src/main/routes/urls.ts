@@ -170,4 +170,3 @@ export const CLAIM_INTEREST_END_DATE_URL = `${BASE_CLAIM_URL}/interest-end-date`
 export const CLAIM_INTEREST_CONTINUE_CLAIMING_URL = `${BASE_CLAIM_URL}/interest-continue-claiming`;
 export const CLAIM_INTEREST_HOW_MUCH_URL = `${BASE_CLAIM_URL}/interest-how-much`;
 export const CLAIM_REASON_URL = `${BASE_CLAIM_URL}/reason`;
-export const CLAIM_TIMELINE_URL = `${BASE_CLAIM_URL}/timeline`;
