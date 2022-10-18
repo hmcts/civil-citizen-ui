@@ -14,6 +14,7 @@ import {Address} from '../../../../common/form/models/address';
 import {CompanyOrOrganisationPartyDetails} from '../../../../common/form/models/companyOrOrganisationPartyDetails';
 import {convertToPrimaryAddress} from '../../../../common/models/primaryAddress';
 import {PartyType} from '../../../../common/models/partyType';
+import {PartyDetails} from '../../../../common/form/models/partyDetails';
 
 const defendantDetailsController = Router();
 const defendantDetailsCompanyOrOrganisationViewPath = 'features/claim/defendant/defendant-details-company-or-organisation';
@@ -25,7 +26,7 @@ const detailsURLs = [
   CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL,
 ];
 
-function renderView(res: Response, form: GenericForm<CompanyOrOrganisationPartyDetails>, primaryAddressForm: GenericForm<Address>, defendantType: PartyType) {
+function renderView(res: Response, form: GenericForm<PartyDetails | CompanyOrOrganisationPartyDetails>, primaryAddressForm: GenericForm<Address>, defendantType: PartyType) {
   if (defendantType === PartyType.COMPANY || defendantType === PartyType.ORGANISATION) {
     res.render(defendantDetailsCompanyOrOrganisationViewPath, {form, primaryAddressForm, defendantType});
   } else {
@@ -43,7 +44,13 @@ defendantDetailsController.get(detailsURLs, async (req: AppRequest, res: Respons
     let defendantAddress = (defendantDetails?.primaryAddress) ? Object.assign(defendantDetails?.primaryAddress) : {};
     defendantAddress = convertToPrimaryAddress(defendantAddress);
 
-    const form = new GenericForm(new CompanyOrOrganisationPartyDetails(defendantDetails?.partyName, defendantDetails?.contactPerson));
+    let form: GenericForm<PartyDetails | CompanyOrOrganisationPartyDetails>;
+    if (defendantType === PartyType.COMPANY || defendantType === PartyType.ORGANISATION) {
+      form = new GenericForm(new CompanyOrOrganisationPartyDetails(defendantDetails?.partyName, defendantDetails?.contactPerson));
+    } else {
+      form = new GenericForm<PartyDetails>(new PartyDetails(defendantDetails));
+    }
+
     const primaryAddressForm = new GenericForm(new Address(
       defendantAddress?.AddressLine1,
       defendantAddress?.AddressLine2,
@@ -60,9 +67,14 @@ defendantDetailsController.get(detailsURLs, async (req: AppRequest, res: Respons
 defendantDetailsController.post(detailsURLs, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const defendantType = getPartyTypeDependingOnRoute(req?.url);
-    const userId = req.session?.user?.id;
-    const body = Object.assign(req.body);
-    const form = new GenericForm(new CompanyOrOrganisationPartyDetails(body.partyName, body.contactPerson));
+    const userId = req.session?.user?.id ;
+    const body = req.body as Record<string, string>;
+    let form: GenericForm<PartyDetails | CompanyOrOrganisationPartyDetails> ;
+    if (defendantType === PartyType.COMPANY || defendantType === PartyType.ORGANISATION) {
+      form = new GenericForm(new CompanyOrOrganisationPartyDetails(body.partyName, body.contactPerson));
+    } else {
+      form = new GenericForm<PartyDetails>(new PartyDetails(body));
+    }
     const primaryAddressForm = new GenericForm(new Address(
       body.primaryAddressLine1,
       body.primaryAddressLine2,

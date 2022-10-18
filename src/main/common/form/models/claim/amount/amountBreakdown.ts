@@ -2,6 +2,7 @@ import {ClaimAmountRow} from './claimAmountRow';
 import { ValidateNested} from 'class-validator';
 import {ClaimAmountBreakup} from '../../claimDetails';
 import {AtLeastOneRowIsPopulated} from '../../../validators/atLeastOneRowIsPopulated';
+import {MAX_CLAIM_AMOUNT_TOTAL} from '../../../validators/validationConstraints';
 
 const MIN_ROWS = 4;
 
@@ -10,14 +11,20 @@ export class AmountBreakdown {
   @ValidateNested()
   @AtLeastOneRowIsPopulated( {message: 'ERRORS.VALID_CLAIM_AMOUNT'})
     claimAmountRows: ClaimAmountRow[];
+  totalAmount: number;
 
-  constructor(claimAmountRows?: ClaimAmountRow[]) {
+  constructor(claimAmountRows?: ClaimAmountRow[], totalAmount?: number) {
     this.claimAmountRows = claimAmountRows;
+    this.totalAmount = totalAmount;
   }
 
   public getPopulatedRows() : ClaimAmountRow[] {
     const populatedRows = this.claimAmountRows.filter(row => !row.isEmpty());
     return populatedRows;
+  }
+
+  public isValidTotal() {
+    return this.totalAmount <= MAX_CLAIM_AMOUNT_TOTAL;
   }
 
   public static emptyForm(): AmountBreakdown {
@@ -40,6 +47,6 @@ export class AmountBreakdown {
       return undefined;
     }
     const rows = (value.claimAmountRows as Array<Record<string,string>>).map((row)=> ClaimAmountRow.fromObject(row));
-    return new AmountBreakdown(rows);
+    return new AmountBreakdown(rows, Number(value.totalAmount));
   }
 }
