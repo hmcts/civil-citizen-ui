@@ -83,5 +83,6 @@ async function getCalculation() {
 export {
   getCalculation,
   addCalculationEventListener,
+  debounce,
 };
 
