@@ -6,6 +6,8 @@ import {FREE_TEXT_MAX_LENGTH} from '../../validators/validationConstraints';
 const MINIMUM_ROWS = 4;
 
 export class DefendantTimeline {
+  atLeastOneRowRequired?: boolean;
+
   @ValidateNested({each: true})
     rows: TimelineRow[];
 
@@ -13,9 +15,10 @@ export class DefendantTimeline {
   @MaxLength(FREE_TEXT_MAX_LENGTH, {message: VALID_TEXT_LENGTH})
     comment?: string;
 
-  constructor(rows?: TimelineRow[], comment?: string) {
+  constructor(rows?: TimelineRow[], comment?: string, atLeastOneRowRequired?: boolean) {
     this.rows = rows;
     this.comment = comment;
+    this.atLeastOneRowRequired = atLeastOneRowRequired;
   }
 
   public static buildEmptyForm(): DefendantTimeline {
@@ -37,6 +40,11 @@ export class DefendantTimeline {
       }
     }
     return timelineOfEvents.concat(additionalRows);
+  }
+
+  atLeastOneRowPopulated(): boolean {
+    const emptyRows = this.rows?.filter(row => row.isAtLeastOneFieldPopulated());
+    return emptyRows.length > 0;
   }
 
   filterOutEmptyRows() {
