@@ -1,5 +1,9 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {FIRST_CONTACT_ACCESS_DENIED_URL, FIRST_CONTACT_CLAIM_SUMMARY_URL} from '../../../../routes/urls';
+import {
+  CASE_TIMELINE_DOCUMENTS_URL,
+  FIRST_CONTACT_ACCESS_DENIED_URL,
+  FIRST_CONTACT_CLAIM_SUMMARY_URL,
+} from '../../../../routes/urls';
 import {Claim} from '../../../../common/models/claim';
 import {getClaimById} from '../../../../modules/utilityService';
 import {getInterestDetails} from '../../../../common/utils/interestUtils';
