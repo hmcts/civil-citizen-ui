@@ -3,9 +3,10 @@ import {AppRequest} from '../../../../common/models/AppRequest';
 import {CLAIM_EVIDENCE_URL, CLAIM_TIMELINE_URL} from '../../../../routes/urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {getClaimantInformation} from '../../../../services/features/claim/yourDetails/claimantDetailsService';
-import {DefendantTimeline} from 'common/form/models/timeLineOfEvents/defendantTimeline';
+import {DefendantTimeline} from '../../../../common/form/models/timeLineOfEvents/defendantTimeline';
 import {
   getTimeline,
+  saveTimeline,
   validateTimeline,
 } from '../../../../services/features/claim/yourDetails/timelineService';
 import {getDateInThePast} from '../../../../common/utils/dateUtils';
@@ -43,7 +44,7 @@ timelineController.post(CLAIM_TIMELINE_URL, async (req: AppRequest, res: Respons
       ];
       res.render(timelineViewPath, {form, dates});
     } else {
-      //save
+      await saveTimeline(req.session?.user?.id, form.model);
       res.redirect(CLAIM_EVIDENCE_URL);
     }
   } catch (error) {
