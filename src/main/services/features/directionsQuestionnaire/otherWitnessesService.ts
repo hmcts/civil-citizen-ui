@@ -9,10 +9,8 @@ const logger = Logger.getLogger('otherWitnessesService');
 export const getOtherWitnesses = async (req: Request): Promise<OtherWitnesses> => {
   try{
     const directionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
-    if (directionQuestionnaire?.witnesses) {
-      const witnesses = directionQuestionnaire.witnesses;
-      witnesses.otherWitnesses.witnessItems = witnesses?.otherWitnesses?.witnessItems.map(item => new OtherWitnessItems(item));
-      return new OtherWitnesses(witnesses?.otherWitnesses?.option, witnesses?.otherWitnesses?.witnessItems);
+    if (directionQuestionnaire?.witnesses?.otherWitnesses) {
+      return directionQuestionnaire?.witnesses?.otherWitnesses;
     }
     return new OtherWitnesses();
   } catch (error) {

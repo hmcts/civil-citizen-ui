@@ -16,6 +16,8 @@ export const enum TestMessages {
   ENTER_PHONE_NUMBER_OPTIONAL = 'Enter a phone number (optional)',
   ENTER_DATE_OF_BIRTH = 'Enter your date of birth',
   ENTER_FIRST_ADDRESS = 'Enter first address line',
+  ENTER_FIRST_NAME = 'Enter first name',
+  ENTER_LAST_NAME = 'Enter last name',
   ENTER_NAME = 'Enter name',
   ENTER_POSTCODE = 'Enter address postcode',
   ENTER_TOWN = 'Enter a valid town/city',
@@ -87,4 +89,5 @@ export const enum TestMessages {
   VALID_AMOUNT_BREAKDOWN = 'Enter an amount of money',
   VALID_VALUE = 'Are you sure this is a valid value?',
   INTEREST_START_DATE = 'Enter the date you want to claim interest from',
+  REASON_EXPLANATION = 'Briefly explain your claim',
 }

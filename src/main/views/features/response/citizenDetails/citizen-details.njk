@@ -57,7 +57,15 @@
       </div>
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          {{ citizenDetailsSection(t, respondent.type)}}
+          <h2 class="govuk-heading-m">{{ t('COMMON.INPUT_LABELS.TITLE') }}</h2>
+          <p
+            class="govuk-body">{% if respondent.individualTitle %}{{ respondent.individualTitle }}{% else %} individualTitle Test{% endif %}</p>
+          <h2 class="govuk-heading-m">{{ t('COMMON.INPUT_LABELS.FIRST_NAME') }}</h2>
+          <p
+            class="govuk-body">{% if respondent.individualFirstName %}{{ respondent.individualFirstName }}{% else %} individualFirstName Test{% endif %}</p>
+          <h2 class="govuk-heading-m">{{ t('COMMON.INPUT_LABELS.LAST_NAME') }}</h2>
+          <p
+            class="govuk-body">{% if respondent.individualLastName %}{{ respondent.individualLastName }}{% else %} individualLastName Test{% endif %}</p>
           <form method="post" class="govuk-!-padding-top-4" name="address" novalidate>
             {{ csrfProtection(csrf) }}
             {{ addressForm(

@@ -93,7 +93,7 @@ describe('Claim details page', () => {
           expect(res.text).toContain(claim.case_data?.claimAmountBreakup[0].value.claimAmount);
           expect(res.text).toContain(claim.case_data?.totalInterest.toString());
           expect(res.text).toContain(convertToPoundsFilter(claim.case_data?.claimFee.calculatedAmountInPence).toString());
-          expect(res.text).toContain(claim.case_data.detailsOfClaim);
+          expect(res.text).toContain(claim.case_data?.claimDetails.reason.text);
           expect(res.text).toContain(claim.case_data?.timelineOfEvents[0].value.timelineDescription);
           expect(res.text).toContain(dateFilter(claim.case_data?.timelineOfEvents[0].value.timelineDate));
         });

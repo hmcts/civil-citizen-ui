@@ -101,7 +101,11 @@
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
       "totalInterest": 0,
-      "detailsOfClaim": "Test details of claim",
+      "claimDetails": {
+        "reason": {
+          "text": "Test details of claim"
+        }
+      },
       "superClaimType": "SPEC_CLAIM",
       "businessProcess": {
         "status": "FINISHED",
@@ -278,7 +282,11 @@
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
       "totalInterest": 15,
-      "detailsOfClaim": "Test details of claim",
+      "claimDetails": {
+        "reason": {
+          "text": "Test details of claim"
+        }
+      },
       "superClaimType": "SPEC_CLAIM",
       "businessProcess": {
         "status": "FINISHED",
@@ -451,7 +459,11 @@
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
       "totalInterest": 0,
-      "detailsOfClaim": "Test details of claim",
+      "claimDetails": {
+        "reason": {
+          "text": "Test details of claim"
+        }
+      },
       "superClaimType": "SPEC_CLAIM",
       "businessProcess": {
         "status": "FINISHED",
@@ -618,7 +630,11 @@
       "claimInterest": "Yes",
       "submittedDate": "2022-05-25T16:29:22.100358",
       "totalInterest": 6.82,
-      "detailsOfClaim": "Test details of claim",
+      "claimDetails": {
+        "reason": {
+          "text": "Test details of claim"
+        }
+      },
       "superClaimType": "SPEC_CLAIM",
       "businessProcess": {
         "status": "FINISHED",
@@ -794,7 +810,11 @@
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
       "totalInterest": 15,
-      "detailsOfClaim": "Test details of claim",
+      "claimDetails": {
+        "reason": {
+          "text": "Test details of claim"
+        }
+      },
       "superClaimType": "SPEC_CLAIM",
       "businessProcess": {
         "status": "FINISHED",
@@ -986,7 +1006,11 @@
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
       "totalInterest": 6.82,
-      "detailsOfClaim": "Test details of claim",
+      "claimDetails": {
+        "reason": {
+          "text": "Test details of claim"
+        }
+      },
       "superClaimType": "SPEC_CLAIM",
       "businessProcess": {
         "status": "FINISHED",
@@ -1199,7 +1223,11 @@
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
       "totalInterest": 6.82,
-      "detailsOfClaim": "Test details of claim",
+      "claimDetails": {
+        "reason": {
+          "text": "Test details of claim"
+        }
+      },
       "superClaimType": "SPEC_CLAIM",
       "businessProcess": {
         "status": "FINISHED",
@@ -1401,7 +1429,11 @@
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
       "totalInterest": 0,
-      "detailsOfClaim": "Test details of claim",
+      "claimDetails": {
+        "reason": {
+          "text": "Test details of claim"
+        }
+      },
       "superClaimType": "SPEC_CLAIM",
       "businessProcess": {
         "status": "FINISHED",
@@ -1581,7 +1613,11 @@
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
       "totalInterest": 15,
-      "detailsOfClaim": "Test details of claim",
+      "claimDetails": {
+        "reason": {
+          "text": "Test details of claim"
+        }
+      },
       "superClaimType": "SPEC_CLAIM",
       "businessProcess": {
         "status": "FINISHED",
@@ -1750,7 +1786,11 @@
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
       "totalInterest": 0,
-      "detailsOfClaim": "Test details of claim",
+      "claimDetails": {
+        "reason": {
+          "text": "Test details of claim"
+        }
+      },
       "superClaimType": "SPEC_CLAIM",
       "businessProcess": {
         "status": "FINISHED",

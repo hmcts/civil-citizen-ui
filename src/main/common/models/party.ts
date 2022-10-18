@@ -12,7 +12,6 @@ export class Party {
   soleTraderFirstName?: string;
   soleTraderLastName?: string;
   soleTraderTradingAs?: string;
-  @ValidateIf(o=> o.partyName !== undefined)
   @IsNotEmpty({message: 'ERRORS.VALID_PARTY_NAME'})
     partyName?: string;
   type?: PartyType;

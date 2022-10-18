@@ -5,7 +5,11 @@ import config from 'config';
 import * as claimAmountbreakdownService from  '../../../../../../main/services/features/claim/amount/claimAmountBreakdownService';
 import {AmountBreakdown} from '../../../../../../main/common/form/models/claim/amount/amountBreakdown';
 import {ClaimAmountRow} from '../../../../../../main/common/form/models/claim/amount/claimAmountRow';
-import {CLAIM_AMOUNT_URL, CLAIM_INTEREST_URL} from '../../../../../../main/routes/urls';
+import {
+  CLAIM_AMOUNT_URL,
+  CLAIM_INTEREST_URL,
+  NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
+} from '../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
@@ -49,6 +53,7 @@ describe('claimAmountBreadkownController test', ()=>{
           amount:'1',
         },
       ],
+      totalAmount:'1',
     };
     it('should show errors when there are errors', async () => {
       const data = {
@@ -58,6 +63,7 @@ describe('claimAmountBreadkownController test', ()=>{
             amount:'1',
           },
         ],
+        totalAmount:'1',
       };
 
       await request(app).post(CLAIM_AMOUNT_URL)
@@ -75,7 +81,7 @@ describe('claimAmountBreadkownController test', ()=>{
           expect(res.header.location).toBe(CLAIM_INTEREST_URL);
         });
     });
-    it('should show erro page when there is an error with service', async () =>{
+    it('should show error page when there is an error with service', async () =>{
       const saveForm = claimAmountbreakdownService.saveClaimAmountBreakdownForm as jest.Mock;
       saveForm.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
@@ -85,6 +91,23 @@ describe('claimAmountBreadkownController test', ()=>{
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
+    it('should redirect to not eligible page when total amount exceeds 25000', async () => {
+      const data = {
+        claimAmountRows: [
+          {
+            reason:'no reason',
+            amount:'26000',
+          },
+        ],
+        totalAmount:'26000',
+      };
+      await request(app).post(CLAIM_AMOUNT_URL)
+        .send(data)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toBe(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL + '?reason=claim-value-over-25000');
         });
     });
   });

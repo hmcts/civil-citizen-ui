@@ -86,7 +86,11 @@
       "status": "FAILED"
     },
     "totalInterest": 0,
-    "detailsOfClaim": "Defendant broke my window with her football",
+    "claimDetails": {
+      "reason": {
+        "text": "Test details of claim"
+      }
+    },
     "claimFee": {
       "calculatedAmountInPence": "3500",
       "code": "FEE0202",
