@@ -1352,6 +1352,13 @@
       "SECURITY_CODE": "Security code",
       "TITLE": "Enter security code"
     },
+    "REASON": {
+      "EXTRA_FEE_IF_CHANGE_DETAILS": "You'll have to pay an extra fee if you want to change the details of the claim later.",
+      "DONT_GIVE_TIMELINE": "Don't give us a detailed timeline - we'll ask for that separately.",
+      "PAGE_TITLE": "Briefly explain your claim",
+      "TELL_US_WHY": "Tell us why you believe the defendant owes you money.",
+      "TITLE": "Briefly explain your claim"
+    },
     "REGULAR_EXPENSES": {
       "PAGE_TITLE": "Your regular expenses"
     },
@@ -1639,11 +1646,9 @@
     },
     "VULNERABILITY": {
       "PAGE_TITLE": "Vulnerability questions",
-      "QUESTION_1": "Question 1: Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider?",
-      "QUESTION_2": "Question 2: If you have answered \"yes\" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?",
-      "YOUR_ANSWERS": "Your answers to the questions above will enable the court and the judge, to consider what steps, adjustments or support can be arranged.",
-      "REMINDER": "You are reminded that a copy of this directions questionnaire will be shared with all other parties.",
-      "TITLE": "Vulnerability Questions"
+      "QUESTION_1": "This is someone who has been the victim of domestic or other abuse, has a learning disability, physical or mental illness or reduced mental capacity. The court will look at what adjustments or support the person needs.",
+      "QUESTION_2": "Tell us who is vulnerable and what support they need",
+      "TITLE": "Are you, your experts or witnesses vulnerable in a way that the court needs to consider?"
     },
     "WELSH_LANGUAGE": {
       "ENGLISH": "English",
@@ -1754,11 +1759,10 @@
     "PAGE_NOT_FOUND": "Page Not Found",
     "PAYMENT_FREQUENCY_REQUIRED": "Choose a payment frequency",
     "PHONE_NUMBER_REQUIRED": "Please enter a phone number",
-    "QUESTION_1_REQUIRED": "Question 1: Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider? is required",
-    "QUESTION_2_REQUIRED": "Question 2: If you have answered \"yes\" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?",
     "RATE_CHOOSE_ONE": "Choose rate of interest",
     "RATE_CORRECT_THE_ONE_ENTERED": "Correct rate you’ve entered",
     "RATE_EXPLAIN_CLAIMING_IT": "You haven’t explained why you’re claiming this rate",
+    "REASON_REQUIRED": "You need to explain why you believe you’re owed the money",
     "REDIS_FAILURE": "Redis DraftStore failure.",
     "SECURITY_CODE_WRONG_OR_EXPIRED": "The security code was not right or has expired",
     "SELECT_ADDITIONAL_TIME": "Select how much additional time you are asking for",
@@ -1911,6 +1915,8 @@
     "VALID_YEAR": "Enter a valid year",
     "VALID_YES_NO_OPTION": "Choose option: Yes or No",
     "VALID_YES_NO_SELECTION": "Please select yes or no",
-    "VALID_WHY_FROM_PARTICULAR_DATE": "You need to explain why you are claiming"
+    "VALID_WHY_FROM_PARTICULAR_DATE": "You need to explain why you are claiming",
+    "QUESTION_1_REQUIRED": "Select yes if someone is vulnerable in a way that the court needs to consider",
+    "QUESTION_2_REQUIRED": "Tell us who is vulnerable and what support they need"
   }
 }

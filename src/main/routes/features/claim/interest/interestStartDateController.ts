@@ -8,7 +8,7 @@ import {getInterest, saveInterest} from '../../../../services/features/claim/int
 
 const interestStartDateController = Router();
 const interestStartDateViewPath = 'features/claim/interest/interest-start-date';
-const dqPropertyName = 'interestStartDate';
+const interestPropertyName = 'interestStartDate';
 
 function renderView(form: GenericForm<InterestStartDate>, res: Response): void {
   res.render(interestStartDateViewPath, {form, today: new Date()});
@@ -35,7 +35,7 @@ interestStartDateController.post(CLAIM_INTEREST_START_DATE_URL, async (req: AppR
       renderView(form, res);
     } else {
       const appRequest = <AppRequest>req;
-      await saveInterest(appRequest.session?.user?.id, form.model, dqPropertyName);
+      await saveInterest(appRequest.session?.user?.id, form.model, interestPropertyName);
       res.redirect(CLAIM_INTEREST_END_DATE_URL);
     }
   } catch (error) {

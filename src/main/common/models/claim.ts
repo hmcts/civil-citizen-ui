@@ -39,6 +39,7 @@ import {AdditionalTimeOptions} from '../../common/form/models/additionalTime';
 import {InterestClaimOptionsType} from '../../common/form/models/claim/interest/interestClaimOptionsType';
 import {Interest} from '../form/models/interest/interest';
 import {RejectAllOfClaimType} from '../../common/form/models/rejectAllOfClaimType';
+import {ClaimDetails} from '../../common/form/models/claim/details/claimDetails';
 
 export class Claim {
   legacyCaseReference: string;
@@ -48,7 +49,7 @@ export class Claim {
   applicantSolicitor1ClaimStatementOfTruth?: StatementOfTruth;
   totalClaimAmount: number;
   respondent1ResponseDeadline: Date;
-  detailsOfClaim: string;
+  claimDetails: ClaimDetails;
   respondent1?: Party;
   statementOfMeans?: StatementOfMeans;
   paymentOption?: PaymentOptionType;
