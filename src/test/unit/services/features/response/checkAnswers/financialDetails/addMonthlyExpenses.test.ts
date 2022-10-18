@@ -40,40 +40,40 @@ describe('Monthly Expenses Details', () => {
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[12].actions?.items[0].href).toBe(CITIZEN_MONTHLY_EXPENSES_URL.replace(':id', constVal.CLAIM_ID));
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[13].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
 
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[13].key.text).toBe('COMMON.EXPENSE_RENT');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[13].key.text).toBe('COMMON.CHECKBOX_FIELDS.RENT');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[13].value.html).toBe('£300');
 
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[14].key.text).toBe('COMMON.EXPENSE_COUNCIL_TAX');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[14].key.text).toBe('COMMON.CHECKBOX_FIELDS.COUNCIL_TAX');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[14].value.html).toBe('£10,000');
 
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[15].key.text).toBe('COMMON.EXPENSE_GAS');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[15].key.text).toBe('COMMON.CHECKBOX_FIELDS.GAS');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[15].value.html).toBe('£100');
 
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[16].key.text).toBe('COMMON.EXPENSE_ELECTRICITY');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[16].key.text).toBe('COMMON.CHECKBOX_FIELDS.ELECTRICITY');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[16].value.html).toBe('£100');
 
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[17].key.text).toBe('COMMON.EXPENSE_WATER');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[17].key.text).toBe('COMMON.CHECKBOX_FIELDS.WATER');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[17].value.html).toBe('£400');
 
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[18].key.text).toBe('COMMON.EXPENSE_TRAVEL');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[18].key.text).toBe('COMMON.CHECKBOX_FIELDS.TRAVEL');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[18].value.html).toBe('£500');
 
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[19].key.text).toBe('COMMON.EXPENSE_SCHOOL_COSTS');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[19].key.text).toBe('COMMON.CHECKBOX_FIELDS.SCHOOL_COSTS');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[19].value.html).toBe('£600');
 
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[20].key.text).toBe('COMMON.EXPENSE_FOOD_AND_HOUSEKEEPING');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[20].key.text).toBe('COMMON.CHECKBOX_FIELDS.FOOD_AND_HOUSEKEEPING');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[20].value.html).toBe('£700');
 
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[21].key.text).toBe('COMMON.EXPENSE_TV_BROADBAND');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[21].key.text).toBe('COMMON.CHECKBOX_FIELDS.TV_AND_BROADBAND');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[21].value.html).toBe('£500.50');
 
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[22].key.text).toBe('COMMON.EXPENSE_HIRE_PURCHASE');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[22].key.text).toBe('COMMON.CHECKBOX_FIELDS.HIRE_PURCHASE');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[22].value.html).toBe('£44.40');
 
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[23].key.text).toBe('COMMON.EXPENSE_MOBILE_PHONE');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[23].key.text).toBe('COMMON.CHECKBOX_FIELDS.MOBILE_PHONE');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[23].value.html).toBe('£25');
 
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[24].key.text).toBe('COMMON.EXPENSE_MAINTENANCE');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[24].key.text).toBe('COMMON.CHECKBOX_FIELDS.MAINTENANCE');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[24].value.html).toBe('£120');
 
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[25].key.text).toBe('Expenses 1');
