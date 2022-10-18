@@ -12,7 +12,7 @@
       {% set heading = t('PAGES.YOUR_DEFENCE.TITLE') %}
       {% set errors = form.getAllErrors() %}
       {% set claimantFullName = claimantName %}
-      {% set theirReason = form.model.detailsOfClaim %}
+      {% set theirReason = form.model.claimDetails.reason.text %}
       {% set labelContent =  '<p class="govuk-!-font-weight-bold">' + t('PAGES.YOUR_DEFENCE.BRIEFLY') + '</p>' +
         '<p class="govuk-body">' + t('PAGES.YOUR_DEFENCE.FAIL') + '</p>' +
         '<p class="govuk-body">' + t('PAGES.YOUR_DEFENCE.ACCEPT') + '</p>' +

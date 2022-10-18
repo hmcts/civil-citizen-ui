@@ -10,7 +10,13 @@
 
 {% set payingExtra = t('PAGES.DEFENDANT_DETAILS.PAYING_EXTRA') %}
 {% set correspondenceAddressClass = 'govuk-visually-hidden' %}
-{% set title = t('PAGES.DEFENDANT_DETAILS.PAGE_TITLES.SOLE_TRADER') %}
+{% if defendantType === partyType.INDIVIDUAL %}
+  {% set title = t('PAGES.DEFENDANT_DETAILS.PAGE_TITLES.INDIVIDUAL') %}
+{% elif defendantType === partyType.SOLE_TRADER %}
+  {% set title = t('PAGES.DEFENDANT_DETAILS.PAGE_TITLES.SOLE_TRADER') %}
+{% else %}
+  {% set title = '' %}
+{% endif %}
 
 {% set formErrors = form.getAllErrors() %}
 {% set primaryAddressFormErrors = primaryAddressForm.getAllErrors() %}
@@ -33,6 +39,7 @@
           <p class="govuk-body">{{ payingExtra }}</p>
           <form method="post" name="address" novalidate>
             {{ csrfProtection(csrf) }}
+
             {{ govukInput({
               label: {
                 text: t('COMMON.INPUT_LABELS.TITLE')
@@ -63,6 +70,7 @@
               value: form.model.individualLastName,
               errorMessage: { text: t(form.errorFor('individualLastName')) } if form.errorFor('individualLastName')
             }) }}
+
             {% if defendantType === partyType.SOLE_TRADER %}
               {{  govukInput({
                 label: {
@@ -75,11 +83,23 @@
                 errorMessage: { text: t(form.errorFor('soleTraderTradingAs')) } if form.errorFor('soleTraderTradingAs')
               }) }}
             {% endif %}
-            <h2 class="govuk-heading-m">{{ t('PAGES.DEFENDANT_DETAILS.THEIR_ADRESS') }}</h2>
-            <p class="govuk-body">{{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }} {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}</p>
+
+            <h2 class="govuk-heading-m">{{ t('PAGES.DEFENDANT_DETAILS.THEIR_ADDRESS') }}</h2>
             <p class="govuk-body">
-              {{ t('PAGES.DEFENDANT_DETAILS.ORGANISATION_MAIN_OFFICE') + ' ' + t('PAGES.DEFENDANT_DETAILS.ENGLAND_OR_WALES_ADDRESS') }}
+              {{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }} {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}
             </p>
+            {% if defendantType === partyType.INDIVIDUAL %}
+              <p class="govuk-body">
+               {{ t('PAGES.DEFENDANT_DETAILS.ENGLAND_OR_WALES_ADDRESS') }} {{ t('PAGES.DEFENDANT_DETAILS.INVALID_CLAIM') }}
+              </p>
+              <p class="govuk-body">
+                {{ t('PAGES.DEFENDANT_DETAILS.USUAL_ADDRESS') }} {{ t('PAGES.DEFENDANT_DETAILS.NO_WORK_ADDRESS') }}
+              </p>
+            {% else %}
+                <p class="govuk-body">
+                  {{ t('PAGES.DEFENDANT_DETAILS.ORGANISATION_MAIN_OFFICE') + ' ' + t('PAGES.DEFENDANT_DETAILS.ENGLAND_OR_WALES_ADDRESS') }}
+                </p>
+            {% endif %}
             <div class="govuk-form-group" id="primaryPostcodeContainer">
               <label class="govuk-label" for="primaryPostcode">
                 {{ t('PAGES.DEFENDANT_DETAILS.UK_POSTCODE') }}
@@ -88,7 +108,7 @@
                 {{ t('ERRORS.ADDRESS_NOT_FOUND') + t('ERRORS.TRY_AGAIN') }}
               </div>
               <input class="govuk-input govuk-input--width-10" id="primaryPostcode" name="primaryPostcode" type="text" autocomplete="postal-code"/>
-              <button class="govuk-button govuk-button--secondary findAddressButton" data-module="govuk-button"id="primaryfindAddressButton">
+              <button class="govuk-button govuk-button--secondary findAddressButton" data-module="govuk-button" id="primaryfindAddressButton">
                 {{ t('PAGES.DEFENDANT_DETAILS.FIND_ADDRESS') }}
               </button>
               <div id="primarySelectAddress" class="govuk-visually-hidden">
