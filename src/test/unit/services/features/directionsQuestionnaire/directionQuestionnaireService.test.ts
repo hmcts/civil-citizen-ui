@@ -12,6 +12,9 @@ import {GenericYesNo} from '../../../../../main/common/form/models/genericYesNo'
 import {Experts} from '../../../../../main/common/models/directionsQuestionnaire/experts/experts';
 import {Hearing} from '../../../../../main/common/models/directionsQuestionnaire/hearing/hearing';
 import {PhoneOrVideoHearing} from '../../../../../main/common/models/directionsQuestionnaire/hearing/phoneOrVideoHearing';
+import {ExpertDetails} from '../../../../../main/common/models/directionsQuestionnaire/experts/expertDetails';
+import {OtherWitnessItems} from '../../../../../main/common/models/directionsQuestionnaire/witnesses/otherWitnessItems';
+import {Witnesses} from '../../../../../main/common/models/directionsQuestionnaire/witnesses/witnesses';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -219,6 +222,76 @@ describe('Direction questionnaire Service', () => {
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
 
       await saveDirectionQuestionnaire('validClaimId',updatedPhoneOrVideoHearing, 'phoneOrVideoHearing', 'hearing');
+      expect(spySave).toHaveBeenCalledWith('validClaimId', updatedClaim);
+    });
+
+    it('should save expert details successfully', async () => {
+      const expertDetailsList = {
+        items: [new ExpertDetails(
+          'John', 'Doe', undefined, undefined, 'insurance', 'reason',
+        )],
+      };
+
+      const updatedExpertDetailsList = {
+        items: [new ExpertDetails(
+          'Jason', 'Brown', undefined, undefined, 'accidents', 'complain',
+        )],
+      };
+      const updatedClaim = new Claim();
+      updatedClaim.directionQuestionnaire = new DirectionQuestionnaire();
+      updatedClaim.directionQuestionnaire.experts = new Experts();
+      updatedClaim.directionQuestionnaire.experts.expertDetailsList = updatedExpertDetailsList;
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.directionQuestionnaire = new DirectionQuestionnaire();
+        claim.directionQuestionnaire.experts = new Experts();
+        claim.directionQuestionnaire.experts.expertDetailsList = expertDetailsList;
+        return claim;
+      });
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+
+      await saveDirectionQuestionnaire('validClaimId', updatedExpertDetailsList, 'expertDetailsList', 'experts');
+      expect(spySave).toHaveBeenCalledWith('validClaimId', updatedClaim);
+    });
+
+    it('should save other witness successfully', async () => {
+      const otherWitnesses = {
+        option: YesNo.YES,
+        items: [new OtherWitnessItems({
+          firstName: 'John',
+          lastName: 'Doe',
+          email: undefined,
+          telephone: undefined,
+          details: 'accident',
+        }),
+        ],
+      };
+
+      const updatedOtherWitnesses = {
+        option: YesNo.YES,
+        items: [new OtherWitnessItems({
+          firstName: 'Mike',
+          lastName: 'Brown',
+          email: undefined,
+          telephone: undefined,
+          details: 'damage',
+        }),
+        ],
+      };
+      const updatedClaim = new Claim();
+      updatedClaim.directionQuestionnaire = new DirectionQuestionnaire();
+      updatedClaim.directionQuestionnaire.witnesses = new Witnesses();
+      updatedClaim.directionQuestionnaire.witnesses.otherWitnesses = updatedOtherWitnesses;
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.directionQuestionnaire = new DirectionQuestionnaire();
+        claim.directionQuestionnaire.witnesses = new Witnesses();
+        claim.directionQuestionnaire.witnesses.otherWitnesses = otherWitnesses;
+        return claim;
+      });
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+
+      await saveDirectionQuestionnaire('validClaimId', updatedOtherWitnesses, 'otherWitnesses', 'witnesses');
       expect(spySave).toHaveBeenCalledWith('validClaimId', updatedClaim);
     });
 

@@ -249,7 +249,7 @@
     xhr.open('GET', '/postcode-lookup?postcode=' + encodeURIComponent(val));
     xhr.onload = function () {
       if (xhr.status !== 200) {
-        const postcodeEl = addressTypes.CORRESPONDENCE
+        const postcodeEl = address === addressTypes.CORRESPONDENCE
           ? postcodeCtrl
           : primaryPostcodeCtrl;
         postcodeError(postcodeEl, true, address);
