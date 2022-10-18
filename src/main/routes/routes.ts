@@ -283,7 +283,7 @@ export default [
   interestStartDateController,
   claimantInterestFromController,
   defendantEmailController,
+  claimTotalInterestController,
   defendantPhoneController,
   continueClaimingInterestController,
-  claimTotalInterestController,
 ];
