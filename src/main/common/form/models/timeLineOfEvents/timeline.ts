@@ -5,7 +5,7 @@ import {FREE_TEXT_MAX_LENGTH} from '../../validators/validationConstraints';
 
 const MINIMUM_ROWS = 4;
 
-export class DefendantTimeline {
+export class Timeline {
   atLeastOneRowRequired?: boolean;
 
   @ValidateNested({each: true})
@@ -21,12 +21,12 @@ export class DefendantTimeline {
     this.atLeastOneRowRequired = atLeastOneRowRequired;
   }
 
-  public static buildEmptyForm(): DefendantTimeline {
-    return new DefendantTimeline(DefendantTimeline.addRemainingRows([]));
+  public static buildEmptyForm(): Timeline {
+    return new Timeline(Timeline.addRemainingRows([]));
   }
 
-  public static buildPopulatedForm(timelineOfEvents: TimelineRow[], comment?: string): DefendantTimeline {
-    return new DefendantTimeline(DefendantTimeline.addRemainingRows(
+  public static buildPopulatedForm(timelineOfEvents: TimelineRow[], comment?: string): Timeline {
+    return new Timeline(Timeline.addRemainingRows(
       timelineOfEvents.map((timeline: TimelineRow) => {
         return TimelineRow.buildPopulatedForm(timeline.date, timeline.description);
       })), comment);

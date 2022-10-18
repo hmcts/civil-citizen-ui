@@ -3,7 +3,7 @@ import {AppRequest} from '../../../../common/models/AppRequest';
 import {CLAIM_EVIDENCE_URL, CLAIM_TIMELINE_URL} from '../../../../routes/urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {getClaimantInformation} from '../../../../services/features/claim/yourDetails/claimantDetailsService';
-import {DefendantTimeline} from '../../../../common/form/models/timeLineOfEvents/defendantTimeline';
+import {Timeline} from '../../../../common/form/models/timeLineOfEvents/timeline';
 import {
   getTimeline,
   saveTimeline,
@@ -33,7 +33,7 @@ timelineController.get(CLAIM_TIMELINE_URL, async (req: AppRequest, res: Response
 timelineController.post(CLAIM_TIMELINE_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const body = Object.assign(req.body);
-    const form = validateTimeline(DefendantTimeline.buildPopulatedForm(body.rows));
+    const form = validateTimeline(Timeline.buildPopulatedForm(body.rows));
 
     if (form.hasErrors()) {
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;

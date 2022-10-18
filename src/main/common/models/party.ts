@@ -2,7 +2,7 @@ import {PartyType} from '../models/partyType';
 import {PrimaryAddress} from '../models/primaryAddress';
 import {CorrespondenceAddress} from '../models/correspondenceAddress';
 import {IsNotEmpty} from 'class-validator';
-import {DefendantTimeline} from '../form/models/timeLineOfEvents/defendantTimeline';
+import {Timeline} from '../form/models/timeLineOfEvents/timeline';
 
 export class Party {
   individualTitle?: string;
@@ -23,7 +23,7 @@ export class Party {
   responseType?: string;
   contactPerson?: string;
   emailAddress?: string;
-  timeline?: DefendantTimeline;
+  timeline?: Timeline;
 
   constructor(
     partyName?: string,
