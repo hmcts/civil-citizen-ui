@@ -1,6 +1,5 @@
 import {Request} from 'express';
 import {t} from 'i18next';
-
 import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
 import {SupportRequiredList, SupportRequired, Support, SupportRequiredParams} from '../../../common/models/directionsQuestionnaire/supportRequired';
 import {Claim} from '../../../common/models/claim';
