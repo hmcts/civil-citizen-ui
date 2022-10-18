@@ -59,7 +59,7 @@ claimantOrganisationDetailsController.get(detailsURLs, async (req: AppRequest, r
     const claimant: Party = await getClaimantPartyInformation(caseId);
     const claimantIndividualAddress = new GenericForm<Address>(Address.fromJson(claimant.primaryAddress));
     const claimantIndividualCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(CitizenCorrespondenceAddress.fromJson(claimant.correspondenceAddress));
-    const claimantDetails = new GenericForm<PartyDetails>(PartyDetails.fromJson(claimant));
+    const claimantDetails = new GenericForm<PartyDetails>(new PartyDetails(claimant));
     const party = new GenericForm(claimant);
 
     renderPage(res, req, party, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, claimantDetails, partyType);
@@ -76,7 +76,7 @@ claimantOrganisationDetailsController.post(detailsURLs, async (req: AppRequest |
     const claimantIndividualAddress = new GenericForm<Address>(Address.fromObject(req.body));
     const claimantIndividualCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(getCorrespondenceAddressForm(req.body));
     const party = new GenericForm(new Party(req.body.partyName, req.body.contactPerson));
-    const claimantDetails = new GenericForm<PartyDetails>(PartyDetails.fromObject(req.body));
+    const claimantDetails = new GenericForm<PartyDetails>(new PartyDetails(req.body));
 
     party.validateSync();
     claimantDetails.validateSync();
