@@ -1,14 +1,14 @@
-import PaymentOptionType from '../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import {PaymentOptionType} from '../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {Claim} from '../../../../../main/common/models/claim';
 import {translateDraftResponseToCCD} from '../../../../../main/services/translation/response/ccdTranslation';
 import {CCDPaymentOption} from '../../../../../main/common/models/ccdResponse/ccdPaymentOption';
 import {CCDRepaymentPlanFrequency} from '../../../../../main/common/models/ccdResponse/ccdRepaymentPlan';
-import {Respondent} from '../../../../../main/common/models/respondent';
+import {Party} from '../../../../../main/common/models/party';
 import {ResponseType} from '../../../../../main/common/form/models/responseType';
 import {YesNoUpperCamelCase} from '../../../../../main/common/form/models/yesNo';
 
-describe('translate response to ccd version', ()=> {
-  it('should translate payment option to ccd', ()=> {
+describe('translate response to ccd version', () => {
+  it('should translate payment option to ccd', () => {
     //Given
     const claim = new Claim();
     claim.paymentOption = PaymentOptionType.BY_SET_DATE;
@@ -33,17 +33,17 @@ describe('translate response to ccd version', ()=> {
     expect(ccdResponse.respondent1RepaymentPlan?.firstRepaymentDate).toBe(claim.repaymentPlan.firstRepaymentDate);
     expect(ccdResponse.respondent1RepaymentPlan?.paymentAmount).toBe(claim.repaymentPlan.paymentAmount);
   });
-  it('should translate response type to CCD', ()=>{
+  it('should translate response type to CCD', () => {
     //Given
     const claim = new Claim();
-    claim.respondent1 = new Respondent();
+    claim.respondent1 = new Party();
     claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
     //When
     const ccdResponse = translateDraftResponseToCCD(claim, false);
     //Then
     expect(ccdResponse.respondent1ClaimResponseTypeForSpec).toBe(ResponseType.FULL_ADMISSION);
   });
-  it('should translate payment date to CCD', ()=>{
+  it('should translate payment date to CCD', () => {
     //Given
     const claim = new Claim();
     claim.paymentDate = new Date();
@@ -52,16 +52,16 @@ describe('translate response to ccd version', ()=> {
     //Then
     expect(ccdResponse.respondToClaimAdmitPartLRspec?.whenWillThisAmountBePaid).toBe(claim.paymentDate);
   });
-  it('should translate mediation option to CCD', ()=>{
+  it('should translate mediation option to CCD', () => {
     //Given
     const claim = new Claim();
-    claim.respondent1 = new Respondent();
+    claim.respondent1 = new Party();
     claim.mediation = {
       canWeUse: undefined,
       mediationDisagreement: undefined,
       companyTelephoneNumber: {
-        mediationContactPerson : 'test',
-        mediationPhoneNumber : '123',
+        mediationContactPerson: 'test',
+        mediationPhoneNumber: '123',
       },
     };
     //When
@@ -72,7 +72,7 @@ describe('translate response to ccd version', ()=> {
   it('should translate address changed to ccd', ()=> {
     //Given
     const claim = new Claim();
-    claim.respondent1 = new Respondent();
+    claim.respondent1 = new Party();
     claim.mediation = {
       canWeUse: undefined,
       mediationDisagreement: undefined,
@@ -90,7 +90,7 @@ describe('translate response to ccd version', ()=> {
   it('should translate addres has not changed to ccd', ()=>{
     //Given
     const claim = new Claim();
-    claim.respondent1 = new Respondent();
+    claim.respondent1 = new Party();
     claim.mediation = {
       canWeUse: undefined,
       mediationDisagreement: undefined,

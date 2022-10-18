@@ -12,11 +12,13 @@ jest.mock('../../../../../../../main/modules/draft-store');
 describe('Why do you disagree Full Rejection Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  beforeEach(() => {
+
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
+
   describe('on Get', () => {
     it('should return Why do you disagree Full Rejection page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
@@ -27,6 +29,7 @@ describe('Why do you disagree Full Rejection Controller', () => {
           expect(res.text).toContain('Why do you disagree with the claim amount?');
         });
     });
+
     it('should return status 500 when there is an error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
@@ -37,6 +40,7 @@ describe('Why do you disagree Full Rejection Controller', () => {
         });
     });
   });
+
   describe('on Post', () => {
     it('should validate when text is not fill', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
@@ -48,6 +52,7 @@ describe('Why do you disagree Full Rejection Controller', () => {
           expect(res.text).toContain('Why do you disagree with the claim amount?');
         });
     });
+
     it('should redirect to timeline of events when text is filled', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
@@ -58,6 +63,7 @@ describe('Why do you disagree Full Rejection Controller', () => {
           expect(res.header.location).toEqual(CITIZEN_TIMELINE_URL);
         });
     });
+
     it('should return 500 status when there is error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)

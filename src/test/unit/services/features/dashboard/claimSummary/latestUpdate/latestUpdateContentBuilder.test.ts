@@ -27,7 +27,7 @@ describe('Latest Update Content Builder', () => {
       // When
       const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
       // Then
-      expect(responseToClaimSection).toHaveLength(3);
+      expect(responseToClaimSection.length).toBe(3);
       expect(responseToClaimSection[0].type).toEqual(ClaimSummaryType.TITLE);
       expect(responseToClaimSection[0].data?.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.YOU_HAVENT_RESPONDED_TO_CLAIM');
       expect(responseToClaimSection[2].type).toEqual(ClaimSummaryType.LINK);
@@ -40,7 +40,7 @@ describe('Latest Update Content Builder', () => {
       //When
       const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
       // Then
-      expect(responseToClaimSection).toHaveLength(3);
+      expect(responseToClaimSection.length).toBe(3);
       expect(responseToClaimSection[0].type).toEqual(ClaimSummaryType.TITLE);
       expect(responseToClaimSection[0].data?.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.MORE_TIME_REQUESTED');
       expect(responseToClaimSection[2].type).toEqual(ClaimSummaryType.LINK);
@@ -63,7 +63,7 @@ describe('Latest Update Content Builder', () => {
       // When
       const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
       // Then
-      expect(responseToClaimSection).toHaveLength(5);
+      expect(responseToClaimSection.length).toBe(5);
       expect(responseToClaimSection[0].type).toEqual(ClaimSummaryType.TITLE);
       expect(responseToClaimSection[1].type).toEqual(ClaimSummaryType.PARAGRAPH);
       expect(responseToClaimSection[2].type).toEqual(ClaimSummaryType.PARAGRAPH);
@@ -78,7 +78,7 @@ describe('Latest Update Content Builder', () => {
       // when
       const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
       // Then
-      expect(responseToClaimSection).toHaveLength(0);
+      expect(responseToClaimSection.length).toBe(0);
     });
   });
 });

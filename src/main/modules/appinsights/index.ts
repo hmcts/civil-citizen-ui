@@ -3,7 +3,6 @@ import config from 'config';
 const appInsights = require('applicationinsights');
 
 export class AppInsights {
-
   enable(): void {
     if (config.get('appInsights.instrumentationKey')) {
       appInsights.setup(config.get('appInsights.instrumentationKey'))
@@ -14,5 +13,4 @@ export class AppInsights {
       appInsights.defaultClient.trackTrace({message: 'App insights activated'});
     }
   }
-
 }

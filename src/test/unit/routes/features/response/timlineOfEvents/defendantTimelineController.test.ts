@@ -16,15 +16,14 @@ jest.mock('../../../../../../main/modules/draft-store');
 describe('defendant timeline controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  beforeEach(() => {
+
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
+
   describe('on Get', () => {
-    afterEach(() => {
-      app.locals.draftStoreClient = undefined;
-    });
     it('should display the page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
@@ -47,13 +46,12 @@ describe('defendant timeline controller', () => {
         });
     });
   });
+
   describe('on Post', () => {
     beforeEach(() => {
       app.locals.draftStoreClient = mockCivilClaim;
     });
-    afterEach(() => {
-      app.locals.draftStoreClient = undefined;
-    });
+
     it('should return error message when date is entered but no description', async () => {
       const data = {
         rows: [

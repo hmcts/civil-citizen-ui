@@ -1,20 +1,20 @@
-import * as express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {CitizenDob} from '../../../../common/form/models/citizenDob';
-import {DOB_URL, CITIZEN_PHONE_NUMBER_URL, AGE_ELIGIBILITY_URL} from '../../../../routes/urls';
-import {Respondent} from '../../../../common/models/respondent';
+import {AGE_ELIGIBILITY_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL} from '../../../../routes/urls';
+import {Party} from '../../../../common/models/party';
 import {Claim} from '../../../../common/models/claim';
 import {AgeEligibilityVerification} from '../../../../common/utils/ageEligibilityVerification';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 
-const citizenDobController = express.Router();
+const citizenDobController = Router();
 
-function renderView(form: GenericForm<CitizenDob>, res: express.Response): void {
+function renderView(form: GenericForm<CitizenDob>, res: Response): void {
   res.render('features/response/citizenDob/citizen-dob', {form: form, today: new Date()});
 }
 
-function redirectToNextPage(req: express.Request, res: express.Response, dob: Date) {
+function redirectToNextPage(req: Request, res: Response, dob: Date) {
   if (AgeEligibilityVerification.isOverEighteen(dob)) {
     res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PHONE_NUMBER_URL));
   } else {
@@ -22,7 +22,7 @@ function redirectToNextPage(req: express.Request, res: express.Response, dob: Da
   }
 }
 
-citizenDobController.get(DOB_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+citizenDobController.get(DOB_URL, async (req: Request, res: Response, next: NextFunction) => {
   const {year, month, day} = req.body;
   try {
     const citizenDob = new GenericForm(new CitizenDob(year, month, day));
@@ -39,7 +39,7 @@ citizenDobController.get(DOB_URL, async (req: express.Request, res: express.Resp
   }
 });
 
-citizenDobController.post(DOB_URL, async (req, res, next: express.NextFunction) => {
+citizenDobController.post(DOB_URL, async (req, res, next: NextFunction) => {
   const {year, month, day} = req.body;
   try {
     const citizenDob = new GenericForm(new CitizenDob(year, month, day));
@@ -51,7 +51,7 @@ citizenDobController.post(DOB_URL, async (req, res, next: express.NextFunction) 
       if (claim.respondent1) {
         claim.respondent1.dateOfBirth = citizenDob.model.dateOfBirth;
       } else {
-        const respondent = new Respondent();
+        const respondent = new Party();
         respondent.dateOfBirth = citizenDob.model.dateOfBirth;
         claim.respondent1 = respondent;
       }

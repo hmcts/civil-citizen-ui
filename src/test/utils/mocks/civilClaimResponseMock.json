@@ -27,7 +27,7 @@
     "applicant1": {
       "type": "ORGANISATION",
       "partyName": "Mr. Jan Clark",
-      "telephoneNumber": "(0)207 127 0000",
+      "phoneNumber": "(0)207 127 0000",
       "primaryAddress": {
         "County": "Kent",
         "Country": "United Kingdom",
@@ -42,9 +42,9 @@
     "directionQuestionnaire": {
       "hearing": {},
       "vulnerabilityQuestions": {},
-      "welshLanguageRequirements":{
-        "speakLanguage":"en",
-        "documentsLanguage":"en"
+      "welshLanguageRequirements": {
+        "speakLanguage": "en",
+        "documentsLanguage": "en"
       },
       "experts": {
         "expertReportDetails": {
@@ -57,7 +57,9 @@
           ]
         }
       },
-      "witnessItems": [{}]
+      "witnessItems": [
+        {}
+      ]
     },
     "applicantSolicitor1UserDetails": {
       "email": "hmcts.civil+organisation.1.solicitor.1@gmail.com"
@@ -165,7 +167,7 @@
     "respondent1": {
       "type": "ORGANISATION",
       "dateOfBirth": "2022-03-01T13:29:24.971",
-      "telephoneNumber": "111",
+      "phoneNumber": "111",
       "contactPerson": "Felipe",
       "partyName": "Version 1"
     },
@@ -173,6 +175,7 @@
     "legacyCaseReference": "000MC009",
     "totalClaimAmount": 110,
     "claimInterest": "Yes",
+    "continueClaimingInterest": "Yes",
     "submittedDate": "2022-05-23T17:02:02.38407",
     "totalInterest": 15,
     "interestClaimFrom": "FROM_A_SPECIFIC_DATE",
@@ -182,7 +185,11 @@
     "sameRateInterestSelection": {
       "sameRateInterestType": "SAME_RATE_INTEREST_8_PC"
     },
-    "detailsOfClaim": "House repair",
+    "claimDetails": {
+      "reason": {
+        "text": "Test details of claim"
+      }
+    },
     "claimAmountBreakup": [
       {
         "id": "acbefa73-f24b-4c64-a00f-38f90c31d7e3",

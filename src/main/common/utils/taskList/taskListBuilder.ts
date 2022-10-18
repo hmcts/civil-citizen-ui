@@ -19,12 +19,12 @@ import {getGiveUsDetailsHearingTask} from './tasks/giveUsDetailsHearing';
 import {getHowMuchMoneyAdmitOweTask} from './tasks/howMuchMoneyAdmitOwe';
 import {getFreeTelephoneMediationTask} from './tasks/freeTelephoneMediation';
 import {getWhenWillYouPayTask} from './tasks/whenWillYouPay';
-import PaymentOptionType from '../../../common/form/models/admission/paymentOption/paymentOptionType';
+import {PaymentOptionType} from '../../../common/form/models/admission/paymentOption/paymentOptionType';
 import {getLng} from '../../../common/utils/languageToggleUtils';
 import {t} from 'i18next';
 import {getTellUsHowMuchYouHavePaidTask} from './tasks/tellUsHowMuchYouHavePaid';
-import RejectAllOfClaimType from '../../form/models/rejectAllOfClaimType';
 import {getTellUsWhyDisagreeWithClaimTask} from './tasks/tellUsWhyDisagreeWithClaim';
+import {RejectAllOfClaimType} from '../../../common/form/models/rejectAllOfClaimType';
 
 const buildPrepareYourResponseSection = (caseData: Claim, claimId: string, lang: string): TaskList => {
   const tasks: Task[] = [];

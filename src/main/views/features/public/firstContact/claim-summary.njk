@@ -53,7 +53,7 @@
             html: amountBreakdownTable(claim, interestData, totalAmount)
           }) }}
           <h2 class="govuk-heading-s">{{ t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.REASON_FOR_CLAIM') }}</h2>
-          <p class="govuk-body">{{ claim.detailsOfClaim }}</p>
+          <p class="govuk-body">{{ claim.claimDetails.reason.text }}</p>
           {% if timelineRows and timelineRows.length %}
             {{ timelineSummary(timelineRows) }}
           {% endif %}

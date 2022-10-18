@@ -3,16 +3,13 @@ import {Unemployment} from '../../../../../common/form/models/statementOfMeans/u
 import {UnemploymentDetails} from '../../../../../common/form/models/statementOfMeans/unemployment/unemploymentDetails';
 import {OtherDetails} from '../../../../../common/form/models/statementOfMeans/unemployment/otherDetails';
 import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
-import {
-  UnemploymentCategory,
-} from '../../../../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
+import {UnemploymentCategory} from '../../../../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('employmentService');
 const unemployment = new Unemployment();
 
 export class UnemploymentService {
-
   public async getUnemployment(claimId: string) {
     try {
       const claim = await getCaseDataFromStore(claimId);

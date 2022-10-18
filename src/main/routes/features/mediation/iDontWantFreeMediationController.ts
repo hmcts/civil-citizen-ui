@@ -1,20 +1,20 @@
-import * as express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {NoMediationReason} from '../../../common/form/models/mediation/noMediationReason';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {Mediation} from '../../../common/models/mediation/mediation';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {getMediation, saveMediation} from '../../../services/features/response/mediation/mediationService';
 import {CLAIM_TASK_LIST_URL, DONT_WANT_FREE_MEDIATION_URL} from '../../urls';
-import NoMediationReasonOptions from '../../../common/form/models/mediation/noMediationReasonOptions';
+import {NoMediationReasonOptions} from '../../../common/form/models/mediation/noMediationReasonOptions';
 
 const iDontWantFreeMediationViewPath = 'features/mediation/i-dont-want-free-mediation';
-const iDontWantFreeMediationController = express.Router();
+const iDontWantFreeMediationController = Router();
 
-function renderView(form: GenericForm<NoMediationReason>, res: express.Response): void {
+function renderView(form: GenericForm<NoMediationReason>, res: Response): void {
   res.render(iDontWantFreeMediationViewPath, {form, NoMediationReasonOptions: NoMediationReasonOptions});
 }
 
-iDontWantFreeMediationController.get(DONT_WANT_FREE_MEDIATION_URL, async (req, res, next: express.NextFunction) => {
+iDontWantFreeMediationController.get(DONT_WANT_FREE_MEDIATION_URL, async (req, res, next: NextFunction) => {
   try {
     const mediation: Mediation = await getMediation(req.params.id);
     renderView(new GenericForm(mediation.noMediationReason), res);
@@ -24,7 +24,7 @@ iDontWantFreeMediationController.get(DONT_WANT_FREE_MEDIATION_URL, async (req, r
 });
 
 iDontWantFreeMediationController.post(DONT_WANT_FREE_MEDIATION_URL,
-  async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const noMediationReasonForm = new GenericForm(new NoMediationReason(req.body.disagreeMediationOption, req.body.otherReason));
       await noMediationReasonForm.validate();

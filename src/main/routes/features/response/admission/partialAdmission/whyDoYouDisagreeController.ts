@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Response, Router} from 'express';
 import {WhyDoYouDisagree} from '../../../../../common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {
   getWhyDoYouDisagreeForm,
@@ -10,15 +10,15 @@ import {WhyDoYouDisagreeForm} from '../../../../../common/models/whyDoYouDisagre
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {ResponseType} from '../../../../../common/form/models/responseType';
 
-const whyDoYouDisagreeController = express.Router();
+const whyDoYouDisagreeController = Router();
 const whyDoYouDisagreeViewPath = 'features/response/admission/why-do-you-disagree';
 let claimAmount: number;
 
-function renderView(form: GenericForm<WhyDoYouDisagree>, _claimAmount: number, res: express.Response) {
+function renderView(form: GenericForm<WhyDoYouDisagree>, _claimAmount: number, res: Response) {
   res.render(whyDoYouDisagreeViewPath, {form, claimAmount: _claimAmount});
 }
 
-whyDoYouDisagreeController.get(CITIZEN_WHY_DO_YOU_DISAGREE_URL, async (req, res, next: express.NextFunction) => {
+whyDoYouDisagreeController.get(CITIZEN_WHY_DO_YOU_DISAGREE_URL, async (req, res, next: NextFunction) => {
   try {
     const form = await getWhyDoYouDisagreeForm(req.params.id, ResponseType.PART_ADMISSION);
     claimAmount = form.claimAmount;
@@ -28,7 +28,7 @@ whyDoYouDisagreeController.get(CITIZEN_WHY_DO_YOU_DISAGREE_URL, async (req, res,
   }
 });
 
-whyDoYouDisagreeController.post(CITIZEN_WHY_DO_YOU_DISAGREE_URL, async (req, res, next: express.NextFunction) => {
+whyDoYouDisagreeController.post(CITIZEN_WHY_DO_YOU_DISAGREE_URL, async (req, res, next: NextFunction) => {
   const whyDoYouDisagree = new WhyDoYouDisagree(req.body.text);
   const whyDoYouDisagreeForm = new WhyDoYouDisagreeForm();
   whyDoYouDisagreeForm.claimAmount = claimAmount;

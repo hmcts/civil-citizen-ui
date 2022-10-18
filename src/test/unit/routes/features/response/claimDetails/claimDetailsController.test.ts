@@ -23,10 +23,15 @@ describe('Claim details page', () => {
   const idamUrl: string = config.get('idamUrl');
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
-  beforeEach(() => {
+
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+  });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
   describe('on Get', () => {
@@ -48,7 +53,7 @@ describe('Claim details page', () => {
         .get('/cases/1111')
         .reply(200, CivilClaimResponseMock);
       app.locals.draftStoreClient = mockCivilClaimUndefined;
-      const spyRedisSave = spyOn(draftStoreService, 'saveDraftClaim');
+      const spyRedisSave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       await request(app)
         .get('/case/1111/response/claim-details')
         .expect((res) => {
@@ -77,18 +82,18 @@ describe('Claim details page', () => {
         .get('/cases/1111')
         .reply(200, CivilClaimResponseMock);
       app.locals.draftStoreClient = mockCivilClaim;
-      const spyRedisSave = spyOn(draftStoreService, 'saveDraftClaim');
+      const spyRedisSave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       await request(app)
         .get('/case/1111/response/claim-details')
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(CLAIM_DETAILS);
-          expect(res.text).toContain(getTotalAmountWithInterestAndFees(claim.case_data));
+          expect(res.text).toContain(getTotalAmountWithInterestAndFees(claim.case_data).toString());
           expect(res.text).toContain(claim.case_data?.claimAmountBreakup[0].value.claimReason);
           expect(res.text).toContain(claim.case_data?.claimAmountBreakup[0].value.claimAmount);
-          expect(res.text).toContain(claim.case_data?.totalInterest);
-          expect(res.text).toContain(convertToPoundsFilter(claim.case_data?.claimFee.calculatedAmountInPence));
-          expect(res.text).toContain(claim.case_data.detailsOfClaim);
+          expect(res.text).toContain(claim.case_data?.totalInterest.toString());
+          expect(res.text).toContain(convertToPoundsFilter(claim.case_data?.claimFee.calculatedAmountInPence).toString());
+          expect(res.text).toContain(claim.case_data?.claimDetails.reason.text);
           expect(res.text).toContain(claim.case_data?.timelineOfEvents[0].value.timelineDescription);
           expect(res.text).toContain(dateFilter(claim.case_data?.timelineOfEvents[0].value.timelineDate));
         });
@@ -106,7 +111,7 @@ describe('Claim details page', () => {
         .get('/cases/1111')
         .reply(200, CivilClaimResponseMock);
       app.locals.draftStoreClient = mockCivilClaimPDFTimeline;
-      const spyRedisSave = spyOn(draftStoreService, 'saveDraftClaim');
+      const spyRedisSave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       await request(app)
         .get('/case/1111/response/claim-details')
         .expect((res) => {

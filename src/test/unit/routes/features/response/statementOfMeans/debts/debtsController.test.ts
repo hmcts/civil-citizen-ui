@@ -3,7 +3,7 @@ import {app} from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {CITIZEN_DEBTS_URL, CITIZEN_MONTHLY_EXPENSES_URL} from '../../../../../../../main/routes/urls';
-import * as draftStoreService from '../../../../../../../main/modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from '../../../../../../../main/modules/draft-store/draftStoreService';
 import {
   buildDebtFormNo,
   buildDebtFormUndefined,
@@ -17,20 +17,19 @@ import {
 } from '../../../../../../utils/mockForm';
 import {Claim} from '../../../../../../../main/common/models/claim';
 import {StatementOfMeans} from '../../../../../../../main/common/models/statementOfMeans';
-import {
-  REDIS_FAILURE,
-} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {REDIS_FAILURE} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
-const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Debts', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  beforeEach(() => {
+
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
@@ -216,8 +215,7 @@ describe('Debts', () => {
     it('should should redirect to when option is yes but has empty items', async () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
-        const statementOfMeans = new StatementOfMeans();
-        claim.statementOfMeans = statementOfMeans;
+        claim.statementOfMeans = new StatementOfMeans();
         claim.statementOfMeans.debts = buildDebtFormNo();
         return claim;
       });

@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {
   AGREED_TO_MORE_TIME_URL,
   CLAIM_TASK_LIST_URL,
@@ -13,11 +13,11 @@ import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlForm
 import {ResponseDeadlineService} from '../../../../services/features/response/responseDeadlineService';
 import {deadLineGuard} from '../../../../routes/guards/deadLineGuard';
 
-const responseDeadlineOptionsController = express.Router();
+const responseDeadlineOptionsController = Router();
 const responseDeadlineOptionsViewPath = 'features/response/response-deadline-options';
 const responseDeadlineService = new ResponseDeadlineService();
 
-function renderView(res: express.Response, form: GenericForm<ResponseDeadline>, claim: Claim, language: string): void {
+function renderView(res: Response, form: GenericForm<ResponseDeadline>, claim: Claim, language: string): void {
   res.render(responseDeadlineOptionsViewPath, {
     form,
     responseDate: claim.formattedResponseDeadline(language),
@@ -26,7 +26,7 @@ function renderView(res: express.Response, form: GenericForm<ResponseDeadline>, 
 }
 
 responseDeadlineOptionsController.get(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGuard,
-  async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const claim = await getCaseDataFromStore(req.params.id);
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
@@ -38,7 +38,7 @@ responseDeadlineOptionsController.get(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGua
   });
 
 responseDeadlineOptionsController.post(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGuard,
-  async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       let responseOption;
       let redirectUrl;

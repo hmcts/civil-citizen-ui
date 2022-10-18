@@ -15,11 +15,13 @@ jest.mock('../../../../../main/modules/draft-store');
 describe('Mediation - Company or Organisation - Confirm telephone number', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  beforeEach(() => {
+
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
   });
+
   describe('on Get', () => {
     it('should return on company telephone number page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
@@ -110,7 +112,6 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
         });
     });
     it('should redirect with valid input', async () => {
-
       await request(app)
         .post(CAN_WE_USE_COMPANY_URL)
         .send({ option: YesNo.NO, mediationPhoneNumber: validPhoneNumber, mediationContactPerson: validName })

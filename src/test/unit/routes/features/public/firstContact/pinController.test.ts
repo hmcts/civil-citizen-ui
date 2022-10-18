@@ -3,13 +3,12 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  FIRST_CONTACT_PIN_URL,
   FIRST_CONTACT_ACCESS_DENIED_URL,
   FIRST_CONTACT_CLAIM_SUMMARY_URL,
+  FIRST_CONTACT_PIN_URL,
 } from '../../../../../../main/routes/urls';
 import {t} from 'i18next';
 import {YesNo} from '../../../../../../main/common/form/models/yesNo';
-import {CIVIL_SERVICE_VALIDATE_PIN_URL} from '../../../../../../main/app/client/civilServiceUrls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 
@@ -20,7 +19,9 @@ const mockFullClaim = { 'id': 1662129391355637, 'case_data': {}};
 describe('Respond to Claim - Pin Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  beforeEach(() => {
+  const civilServiceUrl = config.get<string>('services.civilService.url');
+
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
@@ -41,6 +42,9 @@ describe('Respond to Claim - Pin Controller', () => {
 
   describe('on POST', () => {
     it('should show error messages when empty pin', async () => {
+      nock(civilServiceUrl)
+        .post('/assignment/reference/undefined')
+        .reply(400);
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).post(FIRST_CONTACT_PIN_URL).send({ pin: '' }).expect((res) => {
         expect(res.status).toBe(200);
@@ -49,9 +53,8 @@ describe('Respond to Claim - Pin Controller', () => {
     });
 
     it('should redirect to claim summary when pin and reference match', async () => {
-
-      nock('http://localhost:4000')
-        .post(CIVIL_SERVICE_VALIDATE_PIN_URL)
+      nock(civilServiceUrl)
+        .post('/assignment/reference/000MC000')
         .reply(200, mockFullClaim);
 
       app.locals.draftStoreClient = mockCivilClaim;
@@ -65,8 +68,8 @@ describe('Respond to Claim - Pin Controller', () => {
     });
 
     it('should redirect unauthorized page', async () => {
-      nock('http://localhost:4000')
-        .post(CIVIL_SERVICE_VALIDATE_PIN_URL)
+      nock(civilServiceUrl)
+        .post('/assignment/reference/000MC000')
         .reply(401, {});
 
       app.locals.draftStoreClient = mockCivilClaim;
@@ -78,8 +81,8 @@ describe('Respond to Claim - Pin Controller', () => {
     });
 
     it('should show error messages when receive 400 status', async () => {
-      nock('http://localhost:4000')
-        .post(CIVIL_SERVICE_VALIDATE_PIN_URL)
+      nock(civilServiceUrl)
+        .post('/assignment/reference/111MC111')
         .reply(400, {});
 
       app.locals.draftStoreClient = mockCivilClaim;
@@ -91,8 +94,8 @@ describe('Respond to Claim - Pin Controller', () => {
     });
 
     it('should catch the exceptions', async () => {
-      nock('http://localhost:4000')
-        .post(CIVIL_SERVICE_VALIDATE_PIN_URL)
+      nock(civilServiceUrl)
+        .post('/assignment/reference/error')
         .reply(500, {});
 
       app.locals.draftStoreClient = mockRedisFailure;

@@ -1,7 +1,3 @@
-{% from "govuk/components/details/macro.njk" import govukDetails %}
-
-{# Set some default values #}
-
 {% set contactocmc = 'contactocmc@justice.gov.uk' %}
 {% set openingHours = t('Monday to Friday, 8.30am to 5pm.') %}
 {% set responseDelay = t('We\'ll get back to you within 10 days.') %}
@@ -17,7 +13,7 @@
   <p class="govuk-body govuk-!-margin-bottom-0">{{responseDelay}}</p>
   <h3 class="govuk-heading-m govuk-!-margin-bottom-0">Telephone</h3>
   <p class="govuk-body govuk-!-margin-bottom-0">{{ phone }}</p>
-  <p class="govuk-body govuk-!-margin-bottom-0">{{openingHours}}</p>
+  <p class="govuk-body govuk-!-margin-bottom-0">{{openingHours}}
   <a target="_blank" class="govuk-link" href={{callChargesUrl}}>{{callCharges}}</a></p>
 {% endmacro %}
 

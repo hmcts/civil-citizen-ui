@@ -1,4 +1,4 @@
-import os from 'os';
+import {hostname} from 'os';
 import {Application} from 'express';
 import config from 'config';
 
@@ -32,7 +32,7 @@ export class HealthCheck {
       },
       buildInfo: {
         name: 'civil-citizen-ui',
-        host: os.hostname(),
+        host: hostname(),
         uptime: process.uptime(),
       },
     };
