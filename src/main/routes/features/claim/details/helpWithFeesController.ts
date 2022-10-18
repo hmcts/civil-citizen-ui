@@ -31,8 +31,8 @@ helpWithFeesController.get(CLAIM_HELP_WITH_FEES_URL, async (req: AppRequest, res
 helpWithFeesController.post(CLAIM_HELP_WITH_FEES_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const userId = (<AppRequest>req).session?.user?.id;
-    req.body.option === YesNo.NO ? req.body.referenceNumber = '' : req.body.referenceNumber;
-    const helpWithFees = new HelpWithFees(req.body.option, req.body.referenceNumber);
+    const referenceNumber = YesNo.NO ? '' : req.body.referenceNumber;
+    const helpWithFees = new HelpWithFees(req.body.option, referenceNumber);
     const form = new GenericForm(helpWithFees);
     form.validateSync();
     if (form.hasErrors()) {
