@@ -175,6 +175,7 @@
     "legacyCaseReference": "000MC009",
     "totalClaimAmount": 110,
     "claimInterest": "Yes",
+    "continueClaimingInterest": "Yes",
     "submittedDate": "2022-05-23T17:02:02.38407",
     "totalInterest": 15,
     "interestClaimFrom": "FROM_A_SPECIFIC_DATE",
