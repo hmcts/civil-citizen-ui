@@ -69,11 +69,11 @@ import yourDefenceController from './features/response/yourDefenceController';
 import incompleteSubmissionController from './features/response/incompleteSubmissionController';
 import howMuchHaveYouPaidFRController from './features/response/admission/fullRejection/howMuchHaveYouPaidController';
 import claimSummaryController from './features/dashboard/claimSummaryController';
-import expertGuidanceController from './features/directionsQuestionnaire/expertGuidanceController';
+import expertGuidanceController from './features/directionsQuestionnaire/experts/expertGuidanceController';
 import partialAdmissionPaymentOptionController
   from './features/response/admission/partialAdmission/partialAdmissionPaymentOptionController';
 import supportRequiredController from './features/directionsQuestionnaire/supportRequiredController';
-import vulnerabilityController from './features/directionsQuestionnaire/vulnerabilityController';
+import vulnerabilityController from './features/directionsQuestionnaire/vulnerabilityQuestions/vulnerabilityController';
 import whyDoYouDisagreeFullRejectionController
   from './features/response/admission/fullRejection/whyDoYouDisagreeFullRejectionController';
 import documentDownloadController from './features/document/documentDownloadController';
@@ -83,7 +83,7 @@ import newDeadlineResponseController from './features/response/responseDeadline/
 import requestMoreTimeController from './features/response/requestMoreTimeController';
 import agreedResponseDeadlineController from './features/response/responseDeadline/agreedResponseDeadlineController';
 import determinationWithoutHearingController
-  from './features/directionsQuestionnaire/determinationWithoutHearingController';
+  from './features/directionsQuestionnaire/hearing/determinationWithoutHearingController';
 import totalAmountController from './features/public/eligibility/totalAmountController';
 import claimTypeController from './features/public/eligibility/claimTypeController';
 import notEligibleController from './features/public/eligibility/notEligibleController';
@@ -110,30 +110,34 @@ import completingClaimController from './features/claim/completingClaimControlle
 import submitComfirmationController from './features/response/submitComfirmationController';
 import resolvingThisDisputeController from './features/claim/resolvingThisDisputeController';
 import cookiesController from './features/public/cookiesController';
-import defendantExpertEvidenceController from './features/directionsQuestionnaire/defendantExpertEvidenceController';
+import defendantExpertEvidenceController
+  from './features/directionsQuestionnaire/experts/defendantExpertEvidenceController';
 import considerClaimantDocumentsController
   from './features/directionsQuestionnaire/considerClaimantDocumentsController';
 import triedToSettleController from './features/directionsQuestionnaire/triedToSettleController';
-import expertSmallClaimsController from './features/directionsQuestionnaire/expertSmallClaimsController';
-import sharedExpertController from './features/directionsQuestionnaire/sharedExpertController';
+import expertSmallClaimsController from './features/directionsQuestionnaire/experts/expertSmallClaimsController';
+import sharedExpertController from './features/directionsQuestionnaire/experts/sharedExpertController';
 import requestExtra4WeeksController from './features/directionsQuestionnaire/requestExtra4WeeksController';
-import permissionForExpertController from './features/directionsQuestionnaire/permissionForExpertController';
+import permissionForExpertController from './features/directionsQuestionnaire/experts/permissionForExpertController';
 import defendantYourselfEvidenceController
   from './features/directionsQuestionnaire/defendantYourselfEvidenceController';
-import expertCanStillExamineController from './features/directionsQuestionnaire/expertCanStillExamineController';
+import expertCanStillExamineController
+  from './features/directionsQuestionnaire/experts/expertCanStillExamineController';
 import expertDetailsController from './features/directionsQuestionnaire/experts/expertDetailsController';
-import sentExpertReportsController from './features/directionsQuestionnaire/sentExpertReportsController';
-import otherWitnessesController from './features/directionsQuestionnaire/otherWitnessesController';
-import expertReportDetailsController from './features/directionsQuestionnaire/expertReportDetailsController';
+import sentExpertReportsController from './features/directionsQuestionnaire/experts/sentExpertReportsController';
+import otherWitnessesController from './features/directionsQuestionnaire/witnesses/otherWitnessesController';
+import expertReportDetailsController from './features/directionsQuestionnaire/experts/expertReportDetailsController';
 import defendantPartyTypeController from './features/claim/yourDetails/defendantPartyTypeController';
 import claimantDoBController from './features/claim/yourDetails/claimantDoBController';
 import claimantIndividualDetailsController from './features/claim/yourDetails/claimantIndividualDetailsController';
-import welshLanguageController from './features/directionsQuestionnaire/welshLanguageController';
+import welshLanguageController
+  from './features/directionsQuestionnaire/welshLanguageRequirements/welshLanguageController';
 import claimantPhoneController from './features/claim/yourDetails/claimantPhoneController';
-import whyUnavailableForHearingController from './features/directionsQuestionnaire/whyUnavailableForHearingController';
-import phoneOrVideoHearingController from './features/directionsQuestionnaire/phoneOrVideoHearingController';
+import whyUnavailableForHearingController
+  from './features/directionsQuestionnaire/hearing/whyUnavailableForHearingController';
+import phoneOrVideoHearingController from './features/directionsQuestionnaire/hearing/phoneOrVideoHearingController';
 import cantAttendHearingInNext12MonthsController
-  from './features/directionsQuestionnaire/cantAttendHearingInNext12MonthsController';
+  from './features/directionsQuestionnaire/hearing/cantAttendHearingInNext12MonthsController';
 import youCanUseServiceController from './features/public/eligibility/youCanUseServiceController';
 import defendantDetailsController from './features/claim/defendant/defendantDetailsController';
 import interestTypeController from './features/claim/interest/interestTypeController';
@@ -144,6 +148,7 @@ import claimInterestController from './features/claim/interest/claimInterestCont
 import claimantInterestFromController from './features/claim/interest/claimantInterestFromController';
 import claimantOrganisationDetailsController from './features/claim/yourDetails/claimantOrganisationDetailsController';
 import defendantEmailController from './features/claim/yourDetails/defendantEmailController';
+import claimTotalInterestController from './features/claim/interest/claimTotalInterestController';
 import reasonController from './features/claim/details/reasonController';
 import defendantPhoneController from './features/claim/yourDetails/defendantPhoneController';
 import continueClaimingInterestController from './features/claim/interest/continueClaimingInterestController';
@@ -284,6 +289,7 @@ export default [
   interestStartDateController,
   claimantInterestFromController,
   defendantEmailController,
+  claimTotalInterestController,
   reasonController,
   defendantPhoneController,
   continueClaimingInterestController,
