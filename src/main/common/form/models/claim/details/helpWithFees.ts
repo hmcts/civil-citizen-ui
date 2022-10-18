@@ -1,5 +1,5 @@
-import {IsDefined, IsNotEmpty, ValidateIf} from "class-validator";
-import {YesNo} from "../../yesNo";
+import {IsDefined, IsNotEmpty, ValidateIf} from 'class-validator';
+import {YesNo} from '../../yesNo';
 
 export class HelpWithFees {
   @IsDefined({message: 'ERRORS.VALID_YES_NO_SELECTION'})

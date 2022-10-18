@@ -1,6 +1,5 @@
-import { HelpWithFees } from "./helpWithFees";
-import { Reason } from "./reason";
-
+import { HelpWithFees } from './helpWithFees';
+import { Reason } from './reason';
 
 export class ClaimDetails {
   reason?: Reason;
