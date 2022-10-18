@@ -47,7 +47,11 @@
     "claimInterest": "Yes",
     "submittedDate": "2022-03-01T11:57:10.592492",
     "totalInterest": 6.82,
-    "detailsOfClaim": "Test details of claim",
+    "claimDetails": {
+      "reason": {
+        "text": "Test details of claim"
+      }
+    },
     "timelineOfEvents": [
       {
         "id": "97e59389-1e6a-49bf-8957-f7fccb86e838",
