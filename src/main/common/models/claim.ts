@@ -54,7 +54,7 @@ export class Claim {
   paymentOption?: PaymentOptionType;
   repaymentPlan?: RepaymentPlan;
   paymentDate?: Date;
-  partialAdmission?: PartialAdmission; // TODO: needs refactoring, see PartialAdmission
+  partialAdmission?: PartialAdmission;
   rejectAllOfClaim?: RejectAllOfClaim;
   mediation?: Mediation;
   evidence?: DefendantEvidence;

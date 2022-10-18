@@ -10,6 +10,6 @@ export class PartialAdmission {
   howMuchDoYouOwe?: HowMuchDoYouOwe;
   alreadyPaid?: GenericYesNo;
   howMuchHaveYouPaid?: HowMuchHaveYouPaid;
-  timeline?: Timeline;
+  timeline?: Timeline; // TODO: probably we can use Party timeline instead
   paymentIntention?: PaymentIntention;
 }
