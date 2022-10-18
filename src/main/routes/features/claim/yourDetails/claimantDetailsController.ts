@@ -22,7 +22,7 @@ import {PartyType} from '../../../../common/models/partyType';
 import {getPartyTypeDependingOnRoute} from '../../../../services/features/claim/claimantOrDefendantTypeService';
 import {PartyDetails} from '../../../../common/form/models/partyDetails';
 
-const claimantOrganisationDetailsController = Router();
+const claimantDetailsController = Router();
 const claimantOrganisationDetailsPath = 'features/claim/yourDetails/claimant-organisation-details';
 const claimantIndividualDetailsPath = 'features/claim/yourDetails/claimant-individual-details';
 
@@ -52,7 +52,7 @@ function renderPage(res: Response, req: Request, party: GenericForm<Party>, clai
   }
 }
 
-claimantOrganisationDetailsController.get(detailsURLs, async (req: AppRequest, res: Response, next: NextFunction) => {
+claimantDetailsController.get(detailsURLs, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const partyType = getPartyTypeDependingOnRoute(req?.url);
     const caseId = req.session?.user?.id;
@@ -68,7 +68,7 @@ claimantOrganisationDetailsController.get(detailsURLs, async (req: AppRequest, r
   }
 });
 
-claimantOrganisationDetailsController.post(detailsURLs, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+claimantDetailsController.post(detailsURLs, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   const partyType = getPartyTypeDependingOnRoute(req?.url);
   const caseId = (<AppRequest>req).session?.user?.id;
   const claimant: Party = await getClaimantPartyInformation(caseId);
@@ -98,4 +98,4 @@ claimantOrganisationDetailsController.post(detailsURLs, async (req: AppRequest |
   }
 });
 
-export default claimantOrganisationDetailsController;
+export default claimantDetailsController;
