@@ -3,6 +3,7 @@ import './assets/js/postcode-lookup.js';
 import './assets/js/append-row.js';
 import './assets/js/calculate-amount.js';
 import './assets/js/calculate-length-repayment.js';
+import './assets/js/calculate-total-amount.js';
 import './assets/js/remove-error-content';
 import './assets/js/conditionally-hide-add-button';
 import './assets/js/jquery';
