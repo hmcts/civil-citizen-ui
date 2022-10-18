@@ -1,7 +1,7 @@
-import {Claim} from '../../../../../common/models/claim';
-import {HelpWithFees} from '../../../../../common/form/models/claim/details/helpWithFees';
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../../modules/draft-store/draftStoreService';
-import {getClaimDetails} from '../claimDetailsService';
+import {Claim} from '../../../../common/models/claim';
+import {HelpWithFees} from '../../../../common/form/models/claim/details/helpWithFees';
+import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {getClaimDetails} from './claimDetailsService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('Claim - Help with fees');

@@ -6,12 +6,12 @@ import {
 } from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {AppRequest} from '../../../../common/models/AppRequest';
-import {getHelpWithFees, saveHelpWithFees} from '../../../../services/features/claim/details/helpWithFees/helpWithFeesService';
+import {getHelpWithFees, saveHelpWithFees} from '../../../../services/features/claim/details/helpWithFeesService';
 import {YesNo} from '../../../../common/form/models/yesNo';
 import {HelpWithFees} from '../../../../common/form/models/claim/details/helpWithFees';
 
 const helpWithFeesReferenceController = Router();
-const helpWithFeesViewPath = 'features/claim/help-with-fees-reference';
+const helpWithFeesViewPath = 'features/claim/details/help-with-fees';
 
 function renderView(form: GenericForm<HelpWithFees>, res: Response): void {
   res.render(helpWithFeesViewPath, {form});

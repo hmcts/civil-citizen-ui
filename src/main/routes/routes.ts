@@ -147,7 +147,7 @@ import defendantEmailController from './features/claim/yourDetails/defendantEmai
 import reasonController from './features/claim/details/reasonController';
 import defendantPhoneController from './features/claim/yourDetails/defendantPhoneController';
 import continueClaimingInterestController from './features/claim/interest/continueClaimingInterestController';
-import helpWithFeesController from './features/claim/helpWithFees/helpWithFeesController';
+import helpWithFeesController from './features/claim/details/helpWithFeesController';
 
 export default [
   homeController,
