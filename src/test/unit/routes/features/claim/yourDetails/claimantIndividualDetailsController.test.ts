@@ -34,6 +34,8 @@ const buildClaimOfApplicant = (): Party => {
   claim.applicant1.individualLastName = 'individualLastName';
   claim.applicant1.primaryAddress = buildPrimaryAddress();
   claim.applicant1.correspondenceAddress = buildCorrespondenceAddress();
+  claim.applicant1.partyName = 'partyName';
+  claim.applicant1.contactPerson = 'contactPerson';
   return claim.applicant1;
 };
 
@@ -59,6 +61,8 @@ const validDataForPost = {
   correspondenceAddressLine3: '',
   correspondenceCity: '',
   correspondencePostCode: '',
+  partyName: 'partyName',
+  contactPerson: 'contactPerson',
 };
 
 describe('Claimant Individual Details page', () => {
@@ -194,6 +198,8 @@ describe('Claimant Individual Details page', () => {
         correspondenceAddressLine3: '',
         correspondenceCity: '',
         correspondencePostCode: '',
+        partyName: 'partyName',
+        contactPerson: 'contactPerson',
       })
       .expect((res) => {
         expect(res.status).toBe(302);
@@ -218,6 +224,8 @@ describe('Claimant Individual Details page', () => {
         correspondenceAddressLine3: '',
         correspondenceCity: 'London',
         correspondencePostCode: 'SW1H 9AJ',
+        partyName: 'partyName',
+        contactPerson: 'contactPerson',
       })
       .expect((res) => {
         expect(res.status).toBe(302);
@@ -242,6 +250,8 @@ describe('Claimant Individual Details page', () => {
         correspondenceAddressLine3: '',
         correspondenceCity: '',
         correspondencePostCode: '',
+        partyName: 'partyName',
+        contactPerson: 'contactPerson',
       })
       .expect((res) => {
         expect(res.status).toBe(200);
@@ -264,6 +274,8 @@ describe('Claimant Individual Details page', () => {
         correspondenceAddressLine3: '',
         correspondenceCity: '',
         correspondencePostCode: '',
+        partyName: 'partyName',
+        contactPerson: 'contactPerson',
       })
       .expect((res) => {
         expect(res.status).toBe(200);
@@ -286,6 +298,8 @@ describe('Claimant Individual Details page', () => {
         correspondenceAddressLine3: '',
         correspondenceCity: '',
         correspondencePostCode: '',
+        partyName: 'partyName',
+        contactPerson: 'contactPerson',
       })
       .expect((res) => {
         expect(res.status).toBe(200);
@@ -311,6 +325,8 @@ describe('Claimant Individual Details page', () => {
         correspondenceAddressLine3: '',
         correspondenceCity: '',
         correspondencePostCode: '',
+        partyName: 'partyName',
+        contactPerson: 'contactPerson',
       })
       .expect((res) => {
         expect(res.status).toBe(200);
@@ -336,6 +352,8 @@ describe('Claimant Individual Details page', () => {
         correspondenceAddressLine3: '',
         correspondenceCity: '',
         correspondencePostCode: 'SW1H 9AJ',
+        partyName: 'partyName',
+        contactPerson: 'contactPerson',
       })
       .expect((res) => {
         expect(res.status).toBe(200);
@@ -361,6 +379,8 @@ describe('Claimant Individual Details page', () => {
         correspondenceAddressLine3: '',
         correspondenceCity: 'London',
         correspondencePostCode: '',
+        partyName: 'partyName',
+        contactPerson: 'contactPerson',
       })
       .expect((res) => {
         expect(res.status).toBe(200);
@@ -386,6 +406,9 @@ describe('Claimant Individual Details page', () => {
         correspondenceAddressLine3: '',
         correspondenceCity: '',
         correspondencePostCode: '',
+        partyName: 'partyName',
+        contactPerson: 'contactPerson',
+
       })
       .expect((res) => {
         expect(res.status).toBe(200);
@@ -413,6 +436,8 @@ describe('Claimant Individual Details page', () => {
         correspondenceAddressLine3: '',
         correspondenceCity: '',
         correspondencePostCode: '',
+        partyName: 'partyName',
+        contactPerson: 'contactPerson',
       })
       .expect((res) => {
         expect(res.status).toBe(200);
@@ -440,6 +465,8 @@ describe('Claimant Individual Details page', () => {
         correspondenceAddressLine3: '',
         correspondenceCity: '',
         correspondencePostCode: '',
+        partyName: 'partyName',
+        contactPerson: 'contactPerson',
       })
       .expect((res) => {
         expect(res.status).toBe(200);
