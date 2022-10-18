@@ -17,15 +17,15 @@ export class ValidationErrors {
 
   static readonly generateErrorMessageForValidPaymentAmount = (name: string): string => {
     return `ERRORS.EXPENSES_AMOUNT.${ValidationErrors.getExpensesTransalationKey(name)}`;
-  }
+  };
 
   static readonly generateErrorMessageForValidScheduleFrequency = (name: string): string => {
     return `ERRORS.EXPENSES_FREQUENCY.${ValidationErrors.getExpensesTransalationKey(name)}`;
-  }
+  };
 
   static readonly generateErrorMessageForValidPaymentAmountFormat = (name: string): string => {
     return `ERRORS.EXPENSES_AMOUNT_FORMAT.${ValidationErrors.getExpensesTransalationKey(name)}`;
-  }
+  };
 
   static readonly NAME_REQUIRED = (_name: string, isIncome: boolean) => {
     if (isIncome) {
