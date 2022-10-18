@@ -9,12 +9,11 @@ import {
   CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_FEES_RANGES,
   CIVIL_SERVICE_SUBMIT_EVENT,
-  // CIVIL_SERVICE_VALIDATE_PIN_URL,
+  CIVIL_SERVICE_VALIDATE_PIN_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from '../../common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
 import {CaseDocument} from 'common/models/document/caseDocument';
-import {CLAIM_DETAILS_NOT_AVAILBALE, DOCUMENT_NOT_AVAILABLE} from './errorMessageContants';
 import {
   DashboardClaimantItem,
   DashboardDefendantItem,
@@ -72,7 +71,6 @@ export class CivilServiceClient {
     const submitterId = req.session?.user?.id;
     try{
       const response = await this.client.get('/cases/defendant/' + submitterId, config);
-      console.log(response.data);
       return plainToInstance(DashboardDefendantItem, response.data as object[]);
     }catch(err){
       logger.log(err);
@@ -99,7 +97,7 @@ export class CivilServiceClient {
     try {
       const response = await this.client.get(`/cases/${claimId}`, config);// nosonar
       if (!response.data) {
-        throw new AssertionError({message: CLAIM_DETAILS_NOT_AVAILBALE});
+        throw new AssertionError({message: 'Claim details not available!'});
       }
       const caseDetails: CivilClaimResponse = response.data;
       return convertCaseToClaimAndIncludeState(caseDetails);
@@ -121,27 +119,10 @@ export class CivilServiceClient {
 
   async verifyPin(req: AppRequest, pin: string, caseReference: string): Promise<AxiosResponse> {
     try {
-      // const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_VALIDATE_PIN_URL
-      // .replace(':caseReference', caseReference), pin, config);
-      // return response;
+      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_VALIDATE_PIN_URL //nosonar
+        .replace(':caseReference', caseReference), pin, { headers: {'Content-Type': 'application/json'}});// nosonar
+      return response;
 
-      // TODO: return real service once complete, this is a mock response
-      const mockFullClaim = { 'id': 1662129391355637, 'case_data': {}};
-      const mockResponse: AxiosResponse = {
-        status: 401,
-        data: mockFullClaim,
-        statusText: null,
-        headers: null,
-        config: null,
-      };
-      if(caseReference === '000MC000' && pin === '0000'){
-        mockResponse.status = 200;
-      } else if(caseReference === '111MC111' && pin === '1111'){
-        mockResponse.status = 400;
-      } else if(caseReference === 'error' && pin === 'error'){
-        mockResponse.status = 500;
-      }
-      return mockResponse;
     } catch (err: unknown) {
       logger.error(err);
       throw err;
@@ -153,7 +134,7 @@ export class CivilServiceClient {
     try {
       const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL, documentDetails, config);
       if (!response.data) {
-        throw new AssertionError({message: DOCUMENT_NOT_AVAILABLE});
+        throw new AssertionError({message: 'Document is not available.'});
       }
       return response.data as Buffer;
     } catch (err: unknown) {

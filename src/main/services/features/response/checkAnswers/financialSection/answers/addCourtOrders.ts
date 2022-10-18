@@ -6,7 +6,6 @@ import {getLng} from '../../../../../../common/utils/languageToggleUtils';
 import {
   CITIZEN_COURT_ORDERS_URL,
 } from '../../../../../../routes/urls';
-
 import {currencyFormatWithNoTrailingZeros} from '../../../../../../common/utils/currencyFormat';
 import {YesNoUpperCase} from '../../../../../../common/form/models/yesNo';
 

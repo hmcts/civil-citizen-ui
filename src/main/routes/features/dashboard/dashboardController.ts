@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {Response, Router} from 'express';
 import {CivilServiceClient} from '../../../app/client/civilServiceClient';
 import config from 'config';
 import {DASHBOARD_URL} from '../../urls';
@@ -10,7 +10,7 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-function renderPage(res: express.Response, claimsAsClaimant: DashboardClaimantItem[], claimDraftSaved: DashboardClaimantItem,
+function renderPage(res: Response, claimsAsClaimant: DashboardClaimantItem[], claimDraftSaved: DashboardClaimantItem,
   claimsAsDefendant: DashboardDefendantItem[], responseDraftSaved: boolean,
   paginationArgumentClaimant: object, paginationArgumentDefendant: object): void {
   res.render('features/dashboard/dashboard', {
@@ -24,7 +24,7 @@ function renderPage(res: express.Response, claimsAsClaimant: DashboardClaimantIt
   });
 }
 
-const dashboardController = express.Router();
+const dashboardController = Router();
 
 dashboardController.get(DASHBOARD_URL, async function (req: AppRequest, res) {
   const user: UserDetails = req.session.user;

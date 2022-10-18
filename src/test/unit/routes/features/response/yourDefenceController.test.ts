@@ -18,11 +18,13 @@ jest.mock('../../../../../main/modules/draft-store');
 describe('yourDefence', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  beforeEach(() => {
+
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
+
   describe('on Get', () => {
     const inset = 'Your response will be sent to Mr. Jan Clark.';
     const header = 'Why do you disagree with the claim?';

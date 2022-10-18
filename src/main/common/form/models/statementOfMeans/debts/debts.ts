@@ -3,8 +3,6 @@ import {DebtItems} from '../../../../../common/form/models/statementOfMeans/debt
 import {YesNo} from '../../../../../common/form/models/yesNo';
 import {AtLeastOnePopulatedRow} from '../../../../../common/form/validators/atLeastOnePopulatedRow';
 
-export const INIT_ROW_COUNT = 2;
-
 export class Debts{
   @IsDefined({message: 'ERRORS.VALID_YES_NO_OPTION'})
     option?: string;
@@ -21,7 +19,7 @@ export class Debts{
 
   getInitialRows() : DebtItems[]{
     const items: DebtItems[] = [];
-    for (let i = 0; i < INIT_ROW_COUNT; i++) {
+    for (let i = 0; i < 2; i++) {
       items.push(new DebtItems('','', ''));
     }
     return items;

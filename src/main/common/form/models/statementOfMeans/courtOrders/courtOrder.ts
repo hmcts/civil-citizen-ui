@@ -8,7 +8,6 @@ import {
 import {toNumberOrUndefined} from '../../../../../common/utils/numberConverter';
 
 export class CourtOrder {
-
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
   @IsNumber({maxDecimalPlaces: 2}, {message: VALID_TWO_DECIMAL_NUMBER})
   @Min(0, {message: VALID_STRICTLY_POSITIVE_NUMBER})
@@ -30,7 +29,6 @@ export class CourtOrder {
   }
 
   static fromObject(value?: Record<string,string>): CourtOrder {
-
     const instalmentAmount: number = toNumberOrUndefined(value.instalmentAmount);
     const amount: number = toNumberOrUndefined(value.amount);
     const claimNumber: string = value.claimNumber || undefined;

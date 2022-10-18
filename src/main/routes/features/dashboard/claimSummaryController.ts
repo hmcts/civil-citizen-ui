@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Router} from 'express';
 import config from 'config';
 import {getLatestUpdateContent} from '../../../services/features/dashboard/claimSummary/latestUpdateService';
 import {getDocumentsContent} from '../../../services/features/dashboard/claimSummaryService';
@@ -7,11 +7,11 @@ import {DEFENDANT_SUMMARY_URL} from '../../urls';
 import {CivilServiceClient} from '../../../app/client/civilServiceClient';
 
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
-const claimSummaryController = express.Router();
+const claimSummaryController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: express.NextFunction) => {
+claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);

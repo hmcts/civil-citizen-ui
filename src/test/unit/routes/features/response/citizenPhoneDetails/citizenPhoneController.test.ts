@@ -12,11 +12,13 @@ jest.mock('../../../../../../main/modules/draft-store');
 describe('Citizen phone number', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  beforeEach(() => {
+
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
   });
+
   describe('on GET', () => {
     it('should return citizen phone number page with all information from redis', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
@@ -46,6 +48,7 @@ describe('Citizen phone number', () => {
         });
     });
   });
+
   describe('on POST', () => {
     it('should create a new claim if redis gives undefined', async () => {
       app.locals.draftStoreClient = mockCivilClaimUndefined;

@@ -5,14 +5,14 @@ import {app} from '../../../../../main/app';
 import {PartyType} from '../../../../../main/common/models/partyType';
 import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {
-  CLAIM_DEFENDANT_COMPANY_DETAILS,
-  CLAIM_DEFENDANT_INDIVIDUAL_DETAILS,
-  CLAIM_DEFENDANT_ORGANISATION_DETAILS,
+  CLAIM_DEFENDANT_COMPANY_DETAILS_URL,
+  CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL,
+  CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL,
   CLAIM_DEFENDANT_PARTY_TYPE_URL,
-  CLAIM_DEFENDANT_SOLE_TRADER_DETAILS,
+  CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL,
 } from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from '../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../main/common/models/claim';
 
 jest.mock('../../../../../main/modules/oidc');
@@ -20,14 +20,17 @@ jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 describe('Defendant party type controller', () => {
-  const mockGetClaim = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockGetClaim = getCaseDataFromStore as jest.Mock;
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+  });
+
+  beforeEach(() => {
     mockGetClaim.mockImplementation(async () => {
       new Claim();
     });
@@ -64,28 +67,28 @@ describe('Defendant party type controller', () => {
     it('should redirect to the defendant individual details if individual radio is selected', async () => {
       await request(app).post(CLAIM_DEFENDANT_PARTY_TYPE_URL).send({option: PartyType.INDIVIDUAL}).then((response) => {
         expect(response.status).toBe(302);
-        expect(response.header.location).toBe(CLAIM_DEFENDANT_INDIVIDUAL_DETAILS);
+        expect(response.header.location).toBe(CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL);
       });
     });
 
     it('should redirect to the defendant company details if company radio is selected', async () => {
       await request(app).post(CLAIM_DEFENDANT_PARTY_TYPE_URL).send({option: PartyType.COMPANY}).then((response) => {
         expect(response.status).toBe(302);
-        expect(response.header.location).toBe(CLAIM_DEFENDANT_COMPANY_DETAILS);
+        expect(response.header.location).toBe(CLAIM_DEFENDANT_COMPANY_DETAILS_URL);
       });
     });
 
     it('should redirect to the sole trader details if sole trader radio is selected', async () => {
       await request(app).post(CLAIM_DEFENDANT_PARTY_TYPE_URL).send({option: PartyType.SOLE_TRADER}).then((response) => {
         expect(response.status).toBe(302);
-        expect(response.header.location).toBe(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS);
+        expect(response.header.location).toBe(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL);
       });
     });
 
     it('should redirect to the organisation details if organisation radio is selected', async () => {
       await request(app).post(CLAIM_DEFENDANT_PARTY_TYPE_URL).send({option: PartyType.ORGANISATION}).then((response) => {
         expect(response.status).toBe(302);
-        expect(response.header.location).toBe(CLAIM_DEFENDANT_ORGANISATION_DETAILS);
+        expect(response.header.location).toBe(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL);
       });
     });
 
@@ -100,7 +103,7 @@ describe('Defendant party type controller', () => {
     });
 
     it('should return something went wrong page if redis failure occurs', async () => {
-      const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      const mockSaveDraftClaim = saveDraftClaim as jest.Mock;
       mockSaveDraftClaim.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });

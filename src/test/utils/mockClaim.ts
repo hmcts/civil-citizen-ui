@@ -1,4 +1,4 @@
-import {Respondent} from '../../main/common/models/respondent';
+import {Party} from '../../main/common/models/party';
 import {Claim} from '../../main/common/models/claim';
 import {PartyType} from '../../main/common/models/partyType';
 import {DocumentType} from '../../main/common/models/document/documentType';
@@ -6,14 +6,16 @@ import {PrimaryAddress} from '../../main/common/models/primaryAddress';
 import {CorrespondenceAddress} from '../../main/common/models/correspondenceAddress';
 import {YesNo} from '../../main/common/form/models/yesNo';
 import {
+  CaseState,
   InterestClaimFromType,
   InterestClaimUntilType,
   SameRateInterestType,
-  CaseState,
 } from '../../main/common/form/models/claimDetails';
 import {ResponseOptions} from '../../main/common/form/models/responseDeadline';
 import {AdditionalTimeOptions} from '../../main/common/form/models/additionalTime';
 import {InterestClaimOptionsType} from '../../main/common/form/models/claim/interest/interestClaimOptionsType';
+import {ClaimDetails} from '../../main/common/form/models/claim/details/claimDetails';
+import {Reason} from '../../main/common/form/models/claim/details/reason';
 
 export const buildPrimaryAddress = (): PrimaryAddress => {
   return {
@@ -35,13 +37,13 @@ export const buildCorrespondenceAddress = (): CorrespondenceAddress => {
   };
 };
 
-export const buildRespondent1 = (): Respondent => {
-  const respondent = new Respondent();
+export const buildRespondent1 = (): Party => {
+  const respondent = new Party();
   respondent.individualTitle = 'Mrs.';
   respondent.individualLastName = 'Mary';
   respondent.individualFirstName = 'Richards';
   respondent.partyName = 'Mrs Richards Mary';
-  respondent.telephoneNumber = '0208339922';
+  respondent.phoneNumber = '0208339922';
   respondent.dateOfBirth = new Date('2022-01-24T15:59:59');
   respondent.responseType = '';
   respondent.type = PartyType.INDIVIDUAL;
@@ -95,7 +97,7 @@ function buildMockClaim(): Claim {
   };
   _mockClaim.totalClaimAmount = 110;
   _mockClaim.respondent1ResponseDeadline = new Date('2022-01-24T15:59:59');
-  _mockClaim.detailsOfClaim = 'the reason i have given';
+  _mockClaim.claimDetails = new ClaimDetails(new Reason('the reason i have given'));
   _mockClaim.respondent1 = buildRespondent1();
   _mockClaim.timelineOfEvents = [
     {

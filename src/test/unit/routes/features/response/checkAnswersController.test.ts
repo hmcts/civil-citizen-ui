@@ -1,7 +1,10 @@
 import nock from 'nock';
 import config from 'config';
 import Module from 'module';
-import * as checkAnswersService from '../../../../../main/services/features/response/checkAnswers/checkAnswersService';
+import {
+  getSummarySections,
+  saveStatementOfTruth,
+} from '../../../../../main/services/features/response/checkAnswers/checkAnswersService';
 import {CITIZEN_DETAILS_URL, CLAIM_TASK_LIST_URL, RESPONSE_CHECK_ANSWERS_URL} from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {SummarySections} from '../../../../../main/common/models/summaryList/summarySections';
@@ -11,7 +14,7 @@ import {
 } from '../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {TaskStatus} from '../../../../../main/common/models/taskList/TaskStatus';
 import {constructResponseUrlWithIdParams} from '../../../../../main/common/utils/urlFormatter';
-import * as claimDetailsService from '../../../../../main/modules/claimDetailsService';
+import {isFullAmountReject} from '../../../../../main/modules/claimDetailsService';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -19,7 +22,6 @@ const {JSDOM} = jsdom;
 const request = require('supertest');
 const {app} = require('../../../../../main/app');
 const session = require('supertest-session');
-const testSession = session(app);
 const civilServiceUrl = config.get<string>('services.civilService.url');
 const data = require('../../../../utils/mocks/defendantClaimsMock.json');
 jest.mock('../../../../../main/modules/oidc');
@@ -29,9 +31,9 @@ jest.mock('../../../../../main/services/features/response/taskListService', () =
   ...jest.requireActual('../../../../../main/services/features/response/taskListService') as Module,
   getTaskLists: jest.fn(() => TASK_LISTS),
 }));
-const mockGetSummarySections = checkAnswersService.getSummarySections as jest.Mock;
-const mockSaveStatementOfTruth = checkAnswersService.saveStatementOfTruth as jest.Mock;
-const mockRejectingFullAmount = claimDetailsService.isFullAmountReject as jest.Mock;
+const mockGetSummarySections = getSummarySections as jest.Mock;
+const mockSaveStatementOfTruth = saveStatementOfTruth as jest.Mock;
+const mockRejectingFullAmount = isFullAmountReject as jest.Mock;
 mockRejectingFullAmount.mockImplementation(() => true);
 
 const PARTY_NAME = 'Mrs. Mary Richards';
@@ -55,13 +57,11 @@ describe('Response - Check answers', () => {
   const idamServiceUrl: string = config.get('services.idam.url');
   const checkYourAnswerEng = 'Check your answers';
   const checkYourAnswerCy = 'Gwiriwch eich ateb';
-  beforeEach(() => {
+
+  beforeAll(() => {
     nock(idamServiceUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    mockGetSummarySections.mockImplementation(() => {
-      return createClaimWithBasicRespondentDetails();
-    });
     nock(civilServiceUrl)
       .get('/cases/defendant/123')
       .reply(200, {data: data});
@@ -71,10 +71,8 @@ describe('Response - Check answers', () => {
   });
 
   describe('on GET', () => {
-
-    beforeEach(function (done) {
-
-      testSession
+    beforeEach((done) => {
+      session(app)
         .get(constructResponseUrlWithIdParams(CLAIM_ID, CLAIM_TASK_LIST_URL))
         .expect(200)
         .end(function (err: Error) {
@@ -90,7 +88,7 @@ describe('Response - Check answers', () => {
         return createClaimWithBasicRespondentDetails();
       });
 
-      const response = await testSession.get(respondentCheckAnswersUrl);
+      const response = await session(app).get(respondentCheckAnswersUrl);
       expect(response.status).toBe(200);
 
       const dom = new JSDOM(response.text);
@@ -107,7 +105,7 @@ describe('Response - Check answers', () => {
 
     });
     it('should pass english translation via query', async () => {
-      await testSession.get(respondentCheckAnswersUrl)
+      await session(app).get(respondentCheckAnswersUrl)
         .query({lang: 'en'})
         .expect((res: Response) => {
           expect(res.status).toBe(200);
@@ -115,7 +113,7 @@ describe('Response - Check answers', () => {
         });
     });
     it('should pass cy translation via query', async () => {
-      await testSession.get(respondentCheckAnswersUrl)
+      await session(app).get(respondentCheckAnswersUrl)
         .query({lang: 'cy'})
         .expect((res: Response) => {
           expect(res.status).toBe(200);
@@ -127,7 +125,7 @@ describe('Response - Check answers', () => {
       mockGetSummarySections.mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
-      await testSession
+      await session(app)
         .get(respondentCheckAnswersUrl)
         .expect((res: Response) => {
           expect(res.status).toBe(500);
@@ -137,6 +135,9 @@ describe('Response - Check answers', () => {
   });
   describe('on Post', () => {
     it('should return errors when form is incomplete', async () => {
+      mockGetSummarySections.mockImplementation(() => {
+        return createClaimWithBasicRespondentDetails();
+      });
       const data = {signed: ''};
       await request(app)
         .post(respondentCheckAnswersUrl)

@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {CHILDREN_DISABILITY_URL, CITIZEN_OTHER_DEPENDANTS_URL} from '../../../../urls';
 import {
   getChildrenDisability,
@@ -9,11 +9,11 @@ import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
 
 const childrenDisabilityViewPath = 'features/response/statementOfMeans/dependants/children-disability';
-const childrenDisabilityController = express.Router();
+const childrenDisabilityController = Router();
 
 childrenDisabilityController
   .get(CHILDREN_DISABILITY_URL,
-    async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       try {
         const childrenDisability : GenericYesNo = await getChildrenDisability(req.params.id);
         const form = new GenericForm(childrenDisability);
@@ -24,7 +24,7 @@ childrenDisabilityController
     })
   .post(
     CHILDREN_DISABILITY_URL,
-    async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       const childrenDisability: GenericYesNo = new GenericYesNo(req.body.option);
       const form: GenericForm<GenericYesNo> = new GenericForm(childrenDisability);
       await form.validate();

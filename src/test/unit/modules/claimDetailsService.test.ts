@@ -3,7 +3,7 @@ import {convertToPoundsFilter} from '../../../main/common/utils/currencyFormat';
 import {deepCopy} from '../../utils/deepCopy';
 import {Claim} from '../../../main/common/models/claim';
 import {createClaimWithBasicRespondentDetails} from '../../utils/mockClaimForCheckAnswers';
-import {Respondent} from '../../../main/common/models/respondent';
+import {Party} from '../../../main/common/models/party';
 import {ResponseType} from '../../../main/common/form/models/responseType';
 
 describe('Claim Details service', () => {
@@ -40,13 +40,13 @@ describe('Claim Details service', () => {
     });
 
     it('should return true if respondent responseType is PART_ADMISSION', () => {
-      claim.respondent1 = new Respondent();
+      claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.PART_ADMISSION;
       expect(isFullAmountReject(claim)).toBe(true);
     });
 
     it('should return true if respondent responseType is FULL_DEFENCE', () => {
-      claim.respondent1 = new Respondent();
+      claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
       expect(isFullAmountReject(claim)).toBe(true);
     });

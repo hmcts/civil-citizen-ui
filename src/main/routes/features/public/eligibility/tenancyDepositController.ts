@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {Response, Router} from 'express';
 import {
   ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL,
   ELIGIBILITY_TENANCY_DEPOSIT_URL,
@@ -10,10 +10,10 @@ import {YesNo} from '../../../../common/form/models/yesNo';
 import {NotEligibleReason} from '../../../../common/form/models/eligibility/NotEligibleReason';
 import {constructUrlWithNotEligibleReason} from '../../../../common/utils/urlFormatter';
 
-const tenancyDepositController = express.Router();
+const tenancyDepositController = Router();
 const tenancyDepositViewPath = 'features/public/eligibility/tenancy-deposit';
 
-function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
+function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(tenancyDepositViewPath, {form});
 }
 

@@ -12,11 +12,13 @@ describe('Claimant details', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   const claim = require('../../../../utils/mocks/civilClaimResponseMock.json');
-  beforeEach(() => {
+
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
+
   describe('on GET', () => {
     it('should return contact claimant details from claim', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
@@ -33,7 +35,7 @@ describe('Claimant details', () => {
           expect(res.text).toContain('Claim number:');
           expect(res.text).toContain(claim.case_data.legacyCaseReference);
           expect(res.text).toContain('Total claim amount:');
-          expect(res.text).toContain(claim.case_data.totalClaimAmount);
+          expect(res.text).toContain(claim.case_data.totalClaimAmount.toString());
           expect(res.text).toContain('Claim details:');
         });
     });

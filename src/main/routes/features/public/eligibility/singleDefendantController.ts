@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {Response, Router} from 'express';
 import {
   ELIGIBILITY_DEFENDANT_ADDRESS_URL,
   ELIGIBILITY_SINGLE_DEFENDANT_URL,
@@ -8,10 +8,10 @@ import {GenericForm} from '../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
 import {YesNo} from '../../../../common/form/models/yesNo';
 
-const singleDefendantController = express.Router();
+const singleDefendantController = Router();
 const singleDefendantViewPath = 'features/public/eligibility/single-defendant';
 
-function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
+function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(singleDefendantViewPath, {form});
 }
 

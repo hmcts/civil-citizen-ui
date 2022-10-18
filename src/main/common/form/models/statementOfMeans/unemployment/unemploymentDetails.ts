@@ -29,5 +29,4 @@ export class UnemploymentDetails {
     this.years = parseInt(years);
     this.months = parseInt(months);
   }
-
 }

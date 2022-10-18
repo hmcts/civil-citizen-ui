@@ -93,10 +93,30 @@
       "SIGN_IN": "Sign in",
       "SIGN_OUT": "Sign out"
     },
+    "HELP_CALCULATING_INTEREST": {
+      "CALCULATE_THIS": "To calculate this, use the steps bellow.",
+      "EXAMPLE": {
+        "EXAMPLE": "Example",
+        "OWED": "If you were owed £1,000:",
+        "ANNUAL_INTEREST": "the annual interest would be £80 (1000 x 0.08 = 80) you’d divide £80 by 365 to get the daily interest: about 22p a day (80 / 365 = 0.22) after 50 days this would be £11 (50 x 0.22 = 11)"
+      },
+      "STEPS": {
+        "DAILY_INTEREST": "Work out the daily interest: divide your yearly interest from step 1 by 365 (the number of days in a year).",
+        "TOTAL_INTEREST": "Work out the total amount of interest: multiply the daily interest from step 2 by the number of days the debt has been overdue.",
+        "YEARLY_INTEREST": "Work out the yearly interest: take the amount you’re claiming and multiply it by 0.08 (which is 8%)."
+      },
+      "TITLE": "Help calculating interest",
+      "USUAL_RATE": "For most types of debt the rate is usually 8%."
+    },
     "HELP_WITH_INTEREST_RATES": {
       "THE_COURT_WILL_DECIDE": "The court will decide if you're entitled to some or all of the interest claimed.",
       "TITLE": "Help with interest rates",
       "YOU_CAN_CLAIM": "You can claim 8% interest on money owed to you. This is the statutory rate. If you know that a different rate applies you can use that. For example if you have a contract with a specific rate"
+    },
+    "INPUT_LABELS": {
+      "FIRST_NAME": "First name",
+      "LAST_NAME": "Last name",
+      "TITLE": "Title"
     },
     "MONTH_NAMES": {
       "APRIL": "April",
@@ -380,16 +400,17 @@
       "ADDRESS_NOT_FOUND": "We can't find an address for that postcode.",
       "ALL_CORRESPONDENCE": "All correspondence will be sent to this address.",
       "CLAIMANT_DETAILS_PROVIDED": "Your name and address were provided by the person, business or organisation claiming from you (the claimant).",
+      "CONTACT_PERSON": "Contact person (optional)",
+      "CONTACT_PERSON_HINT": "The defendant can contact this person to discuss the claim",
       "CONFIRM_YOUR_DETAILS": "Confirm your details",
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Would you like correspondence sent to a different address?",
       "FIND_ADDRESS": "Find address",
-      "FIRST_NAME": "First name",
-      "LAST_NAME": "Last name",
       "MANUAL_ADDRESS": "Enter address manually",
+      "PARTY_NAME_COMPANY": "Company name",
+      "PARTY_NAME_ORGANISATION": "Organisation name",
       "PAGE_TITLE": "Your details",
       "PICK_ADDRESS": "Pick an address",
-      "TITLE": "Title",
       "TRY_AGAIN": "Try again or enter the address manually.",
       "UK_POSTCODE": "Enter a UK postcode",
       "YES_CORRESPONDENCE": "Yes, add a correspondence address"
@@ -487,6 +508,16 @@
         "TITLE": "Enter your details",
         "YOUR_POSTAL_ADDRESS": "Your postal address"
       },
+      "CONTINUE_CLAIMING_INTEREST": {
+        "PAGE_TITLE": "Continue claiming interest",
+        "TITLE": "Continue to claim interest after you submit your claim?"
+      },
+      "DEFENDANT_EMAIL": {
+        "PAGE_TITLE": "Their email address (optional)",
+        "PERSONAL_EMAIL": "This must be their personal email address",
+        "TITLE": "Their email address (optional)",
+        "USE_THIS_EMAIL": "We'll use this to tell them you've made a claim, as well as notifying them by post."
+      },
       "RESOLVE_THE_DISPUTE": {
         "P1": {
           "BEFORE_YOU_CLAIM": "Before you claim you should:",
@@ -504,8 +535,8 @@
         "TITLE": "Try to resolve the dispute"
       },
       "WHEN_CLAIM_INTEREST_FROM": {
-        "FROM_A_SPECIFIC_DATE" : "A particular date",
-        "FROM_CLAIM_SUBMIT_DATE" : "The date you submit the claim",
+        "FROM_A_SPECIFIC_DATE": "A particular date",
+        "FROM_CLAIM_SUBMIT_DATE": "The date you submit the claim",
         "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
         "HINT_EXAMPLE_DATE": "For example the date an invoice was overdue or that you told someone they owed you the money.",
         "PAGE_TITLE": "When are you claiming interest from?",
@@ -533,11 +564,11 @@
       "TITLE": "What is your date of birth?"
     },
     "CLAIMANT_INTEREST_RATE": {
-      "PAGE_TITLE": "Annual rate iterest you want to claim",
-      "TITLE": "What annual rate of interest do you want to claim?",
-      "RATE_INFORMATION": "You can claim 8% per year unless you know that a different rate applies.",
       "DIFFERENT_RATE_LABEL": "A different rate",
+      "PAGE_TITLE": "Annual rate interest you want to claim",
       "RATE_CLAIMING": "Rate you're claiming",
+      "RATE_INFORMATION": "You can claim 8% per year unless you know that a different rate applies.",
+      "TITLE": "What annual rate of interest do you want to claim?",
       "WHY_YOU_ARE_ENTITLED": "Why you're entitled to this rate"
     },
     "CLAIMANT_PARTY_TYPE_SELECTION": {
@@ -564,7 +595,10 @@
       "ADDRESS_NOT_FOUND": "We can't find an address for that postcode.",
       "ALL_CORRESPONDENCE": "All correspondence will be sent to this address.",
       "CLAIMANT_DETAILS_PROVIDED": "Your name and address were provided by the person, business or organisation claiming from you (the claimant).",
+      "CLAIMANT_PAGE_TITLE": "Enter company details",
+      "CLAIMANT_TITLE": "Enter company details",
       "COMPANY_ADDRESS": "Company address",
+      "COMPANY_REGISTERED_OFFICE": "Enter the company's registered office or a company address that has a connection with the claim.",
       "COMPANY_NAME": "Company name",
       "CONTACT_NAME_OPTIONAL": "Contact name (optional)",
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
@@ -576,6 +610,7 @@
       "ORGANISATION_NAME": "Organisation name",
       "PAGE_TITLE": "Company details",
       "PICK_ADDRESS": "Pick an address",
+      "TITLE": "Company details",
       "TRY_AGAIN": "Try again or enter the address manually.",
       "UK_POSTCODE": "Enter a UK postcode",
       "YES_CORRESPONDENCE": "Yes, add a correspondence address"
@@ -726,6 +761,34 @@
       "TITLE": "Do you have loans or credit card debts?",
       "TOTAL": "Total owed"
     },
+    "DEFENDANT_DETAILS": {
+      "BUSINESS_NAME": "Trading as (If you know it)",
+      "COMPANY_ADDRESS": "Company address",
+      "COMPANY_MAIN_OFFICE": "Enter the company’s main office or a company address that has a connection with the claim.",
+      "COMPANY_NAME": "Company name",
+      "CONTACT_PERSON": "Name of contact person (optional)",
+      "CONTACT_PERSON_HINT": "This might be a person you’ve discussed the claim with.",
+      "ENGLAND_OR_WALES_ADDRESS": "The address must be in England or Wales.",
+      "FIND_ADDRESS": "Find address",
+      "INVALID_CLAIM": "Your claim may be invalid if you use the wrong address.",
+      "MANUAL_ADDRESS": "Enter address manually",
+      "NO_WORK_ADDRESS": "You cannot use their work address.",
+      "ORGANISATION_ADDRESS": "Organisation address",
+      "ORGANISATION_MAIN_OFFICE": "Enter the organisation’s main office or address that has a connection with the claim.",
+      "ORGANISATION_NAME": "Organisation name",
+      "PAGE_TITLES": {
+        "COMPANY": "Company details",
+        "INDIVIDUAL": "Enter the defendant’s details",
+        "ORGANISATION": "Enter organisation details",
+        "SOLE_TRADER": "Enter the defendant's details"
+      },
+      "PAYING_EXTRA": "You’ll have to pay extra fee if you later want to change the name of anyone involved with the claim.",
+      "PAYING_EXTRA_ORGANISATION": "You’ll have to pay extra fee if you later want to change the name of an organisation involved with the claim.",
+      "PICK_ADDRESS": "Pick an address",
+      "THEIR_ADDRESS": "Their address",
+      "UK_POSTCODE": "Enter a UK postcode",
+      "USUAL_ADDRESS": "You must enter their usual or last known home address."
+    },
     "DEFENDANT_PARTY_TYPE": {
       "CLAIMING_AGAINST_AN_INDIVIDUAL": "An individual",
       "CLAIMING_AGAINST_LIMITED_COMPANY": "A limited company",
@@ -758,6 +821,10 @@
       "LEGAL": "An expert is not a legal representative.",
       "PAGE_TITLE": "Defendant expert evidence",
       "TITLE": "Do you want to use expert evidence?"
+    },
+    "DEFENDANT_PHONE_NUMBER": {
+      "PAGE_TITLE": "Their phone number",
+      "TITLE": "Their phone number (optional)"
     },
     "DEFENDANT_EXPERT_CAN_STILL_EXAMINE": {
       "CAN_NOT_USE": "You can't use an expert in this case.",
@@ -1123,6 +1190,12 @@
       "PAGE_TITLE": "New response deadline",
       "TITLE": "4 pm on {{ responseDeadline }}"
     },
+    "ORGANISATION_DETAILS": {
+      "ADDRESS": "Organisation address",
+      "MAIN_OFFICE": "Enter the organisation’s main office or an organisation’s address that has a connection with the claim.",
+      "PAGE_TITLE": "Enter organisation details",
+      "TITLE": "Enter organisation details"
+    },
     "CANT_ATTEND_HEARING_IN_NEXT_12MONTHS": {
       "CONTENT": "These should only be the dates of important events like medical appointments, other court hearing, or holidays you have already booked",
       "PAGE_TITLE": "cant attend hearing in next months",
@@ -1206,8 +1279,6 @@
     "OTHER_WITNESSES": {
       "ADD_ANOTHER_WITNESS": "Add another witness",
       "EMAIL_LABEL": "Email address (optional)",
-      "FIRST_NAME_LABEL": "First name",
-      "LAST_NAME_LABEL": "Last name",
       "PAGE_TITLE": "Do you have other witnesses?",
       "PHONE_LABEL": "Phone number (optional)",
       "REMOVE_WITNESS": "Remove witness",
@@ -1292,6 +1363,13 @@
       "FOR_A_NEW_SECURITY_CODE": "for a new security code.",
       "SECURITY_CODE": "Security code",
       "TITLE": "Enter security code"
+    },
+    "REASON": {
+      "EXTRA_FEE_IF_CHANGE_DETAILS": "You'll have to pay an extra fee if you want to change the details of the claim later.",
+      "DONT_GIVE_TIMELINE": "Don't give us a detailed timeline - we'll ask for that separately.",
+      "PAGE_TITLE": "Briefly explain your claim",
+      "TELL_US_WHY": "Tell us why you believe the defendant owes you money.",
+      "TITLE": "Briefly explain your claim"
     },
     "REGULAR_EXPENSES": {
       "PAGE_TITLE": "Your regular expenses"
@@ -1526,6 +1604,14 @@
     "TENANCY_DEPOSIT": {
       "TITLE": "Is your claim for a tenancy deposit?"
     },
+    "TOTAL_INTEREST": {
+      "ADD_TO_CLAIM_AMOUNT": "We’ll add it to your claim amount.",
+      "CALCULATE_INTEREST": "You need to calculate interest for the different time periods or items and let us know the total.",
+      "CALCULATION_PROOF": "Show how you calculated the amount",
+      "PAGE_TITLE": "Claim total interest",
+      "TITLE": "What is the total interest for your claim?",
+      "TOTAL_AMOUNT": "Total interest amount"
+    },
     "TRIED_TO_SETTLE": {
       "BOTH_PARTIES": "Both parties must take certain steps before going to court.",
       "PAGE_TITLE": "Have you tried to settle this claim before going to court?",
@@ -1580,11 +1666,9 @@
     },
     "VULNERABILITY": {
       "PAGE_TITLE": "Vulnerability questions",
-      "QUESTION_1": "Question 1: Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider?",
-      "QUESTION_2": "Question 2: If you have answered \"yes\" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?",
-      "YOUR_ANSWERS": "Your answers to the questions above will enable the court and the judge, to consider what steps, adjustments or support can be arranged.",
-      "REMINDER": "You are reminded that a copy of this directions questionnaire will be shared with all other parties.",
-      "TITLE": "Vulnerability Questions"
+      "QUESTION_1": "This is someone who has been the victim of domestic or other abuse, has a learning disability, physical or mental illness or reduced mental capacity. The court will look at what adjustments or support the person needs.",
+      "QUESTION_2": "Tell us who is vulnerable and what support they need",
+      "TITLE": "Are you, your experts or witnesses vulnerable in a way that the court needs to consider?"
     },
     "WELSH_LANGUAGE": {
       "ENGLISH": "English",
@@ -1639,6 +1723,7 @@
     }
   },
   "ERRORS": {
+    "ADDRESS_NOT_FOUND": "We can't find an address for that postcode.",
     "AMOUNT_INVALID_DECIMALS": "Enter a valid amount, maximum two decimal places",
     "AMOUNT_LESS_THAN_CLAIMED": "Enter a value less than the amount claimed",
     "AMOUNT_REQUIRED": "Enter an amount of £1 or more",
@@ -1682,6 +1767,7 @@
     "ERROR": "Error",
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Enter a first payment date in the future",
     "GIVE_DETAILS_DOCUMENTS": "Give details of the documents",
+    "HOW_YOU_CALCULATED_AMOUNT": "You must tell us how you calculated the amount",
     "JOB_TITLE_REQUIRED": "Enter a job title",
     "NAME_REQUIRED": "Please enter a name",
     "NO_LANGUAGE_ENTERED": "Enter the language that needs to be interpreted",
@@ -1694,11 +1780,10 @@
     "PAGE_NOT_FOUND": "Page Not Found",
     "PAYMENT_FREQUENCY_REQUIRED": "Choose a payment frequency",
     "PHONE_NUMBER_REQUIRED": "Please enter a phone number",
-    "QUESTION_1_REQUIRED": "Question 1: Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider? is required",
-    "QUESTION_2_REQUIRED": "Question 2: If you have answered \"yes\" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?",
     "RATE_CHOOSE_ONE": "Choose rate of interest",
     "RATE_CORRECT_THE_ONE_ENTERED": "Correct rate you’ve entered",
     "RATE_EXPLAIN_CLAIMING_IT": "You haven’t explained why you’re claiming this rate",
+    "REASON_REQUIRED": "You need to explain why you believe you’re owed the money",
     "REDIS_FAILURE": "Redis DraftStore failure.",
     "SECURITY_CODE_WRONG_OR_EXPIRED": "The security code was not right or has expired",
     "SELECT_ADDITIONAL_TIME": "Select how much additional time you are asking for",
@@ -1781,6 +1866,7 @@
     "TEXT_TOO_MANY": "You've entered too many characters",
     "TEXT400_TOO_LONG": "Reason must be 400 characters or fewer",
     "THERE_WAS_A_PROBLEM": "There was a problem",
+    "TRY_AGAIN": "Try again or enter the address manually.",
     "TYPE_OF_ACCOUNT_REQUIRED": "Select a type of account",
     "VALID_ADDRESS_LINE_1": "Enter first address line",
     "VALID_AGREED_RESPONSE_DATE": "Enter the agreed response date",
@@ -1824,10 +1910,12 @@
     "VALID_INTEGER": "Enter a numeric, for example 3",
     "VALID_INTEREST_TYPE_OPTION": "Choose same rate or breakdown",
     "VALID_MONTH": "Enter a valid month",
+    "VALID_NAME": "Enter name",
     "VALID_CANT_ATTEND_HEARING": "Select yes if there are any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing",
     "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Number can’t be higher than on previous page",
     "VALID_OPTION_SELECTION": "Select an option",
     "VALID_OWED_AMOUNT_REQUIRED": "Enter a valid amount owed",
+    "VALID_PARTY_NAME": "Enter name",
     "VALID_PAYMENT_OPTION": "Choose a payment option",
     "VALID_PHONE_NUMBER": "Enter a phone number in the correct format",
     "VALID_PHONE_OR_VIDEO_HEARING": {
@@ -1848,7 +1936,8 @@
     "VALID_YEAR": "Enter a valid year",
     "VALID_YES_NO_OPTION": "Choose option: Yes or No",
     "VALID_YES_NO_SELECTION": "Please select yes or no",
-    "VALID_DISAGREE_REASON_REQUIRED": "Enter text explaining why do you disagree",
-    "VALID_WHY_FROM_PARTICULAR_DATE": "You need to explain why you are claiming"
+    "VALID_WHY_FROM_PARTICULAR_DATE": "You need to explain why you are claiming",
+    "QUESTION_1_REQUIRED": "Select yes if someone is vulnerable in a way that the court needs to consider",
+    "QUESTION_2_REQUIRED": "Tell us who is vulnerable and what support they need"
   }
 }

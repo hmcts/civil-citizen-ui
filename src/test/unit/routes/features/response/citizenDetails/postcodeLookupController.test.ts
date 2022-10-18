@@ -57,11 +57,12 @@ const mockPostcodeLookupResponse = {
 };
 
 describe('Postcode Lookup Controller - HTTP 500', () => {
-  beforeEach(() => {
+  beforeAll(() => {
     nock(mockPostcodeServer)
       .get(mockPostcodePath)
       .reply(500, { status: 500, message: 'Error with OS Places service' });
   });
+
   it('should return 500 as postcode incomplete', async () => {
     await request(app)
       .get(POSTCODE_LOOKUP_URL + '?postcode=BT')
@@ -74,7 +75,7 @@ describe('Postcode Lookup Controller - HTTP 500', () => {
 describe('Postcode Lookup Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });

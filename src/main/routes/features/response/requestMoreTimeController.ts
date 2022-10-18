@@ -1,4 +1,4 @@
-import * as express from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {CLAIM_TASK_LIST_URL, REQUEST_MORE_TIME_URL} from '../../urls';
 import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
 import {GenericForm} from '../../../common/form/models/genericForm';
@@ -8,11 +8,11 @@ import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatt
 import {ResponseDeadlineService} from '../../../services/features/response/responseDeadlineService';
 import {deadLineGuard} from '../../../routes/guards/deadLineGuard';
 
-const requestMoreTimeController = express.Router();
+const requestMoreTimeController = Router();
 const requestMoreTimeViewPath = 'features/response/request-more-time';
 const responseDeadlineService = new ResponseDeadlineService();
 
-function renderView(res: express.Response, form: GenericForm<AdditionalTime>, claim: Claim, language: string): void {
+function renderView(res: Response, form: GenericForm<AdditionalTime>, claim: Claim, language: string): void {
   res.render(requestMoreTimeViewPath, {
     additionalTimeOptions: AdditionalTimeOptions,
     form,
@@ -22,7 +22,7 @@ function renderView(res: express.Response, form: GenericForm<AdditionalTime>, cl
 }
 
 requestMoreTimeController.get(REQUEST_MORE_TIME_URL, deadLineGuard,
-  async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const language = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await getCaseDataFromStore(req.params.id);
@@ -33,7 +33,7 @@ requestMoreTimeController.get(REQUEST_MORE_TIME_URL, deadLineGuard,
   });
 
 requestMoreTimeController.post(REQUEST_MORE_TIME_URL, deadLineGuard,
-  async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const language = req.query.lang ? req.query.lang : req.cookies.lang;
       const selectedOption = responseDeadlineService.getAdditionalTime(req.body.option);
