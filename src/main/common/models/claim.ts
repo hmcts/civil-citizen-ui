@@ -54,11 +54,11 @@ export class Claim {
   paymentOption?: PaymentOptionType;
   repaymentPlan?: RepaymentPlan;
   paymentDate?: Date;
-  partialAdmission?: PartialAdmission;
+  partialAdmission?: PartialAdmission; // TODO: needs refactoring, see PartialAdmission
   rejectAllOfClaim?: RejectAllOfClaim;
   mediation?: Mediation;
   evidence?: DefendantEvidence;
-  timelineOfEvents?: TimeLineOfEvents[];
+  timelineOfEvents?: TimeLineOfEvents[]; // TODO: probably needs refactoring in favor of Party timeline
   taskSharedFinancialDetails?: boolean;
   defendantStatementOfTruth?: StatementOfTruthForm | QualifiedStatementOfTruth;
   claimAmountBreakup?: ClaimAmountBreakup[];
