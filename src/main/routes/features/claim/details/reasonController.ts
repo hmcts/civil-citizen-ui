@@ -8,7 +8,7 @@ import {
 } from '../../../urls';
 import {getClaimDetails, saveClaimDetails} from '../../../../services/features/claim/details/claimDetailsService';
 import {Reason} from '../../../../common/form/models/claim/details/reason';
-import {ClaimDetails} from "common/form/models/claim/details/claimDetails";
+import {ClaimDetails} from '../../../../common/form/models/claim/details/claimDetails';
 
 const reasonController = Router();
 const reasonViewPath = 'features/claim/details/reason';
