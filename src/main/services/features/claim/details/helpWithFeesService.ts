@@ -9,12 +9,10 @@ const logger = Logger.getLogger('Claim - Help with fees');
 export const getHelpWithFees = async (claimId: string): Promise<HelpWithFees> => {
   try {
     const caseData = await getCaseDataFromStore(claimId);
-    
     if (caseData.claimDetails?.helpWithFees){
       return new HelpWithFees(caseData.claimDetails.helpWithFees.option, caseData.claimDetails.helpWithFees.referenceNumber);
-    } else {
-      return new HelpWithFees();
     }
+    return new HelpWithFees();
 
   } catch (error) {
     logger.error(error);

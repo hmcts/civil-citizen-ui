@@ -10,14 +10,14 @@ import {getHelpWithFees, saveHelpWithFees} from '../../../../services/features/c
 import {YesNo} from '../../../../common/form/models/yesNo';
 import {HelpWithFees} from '../../../../common/form/models/claim/details/helpWithFees';
 
-const helpWithFeesReferenceController = Router();
+const helpWithFeesController = Router();
 const helpWithFeesViewPath = 'features/claim/details/help-with-fees';
 
 function renderView(form: GenericForm<HelpWithFees>, res: Response): void {
   res.render(helpWithFeesViewPath, {form});
 }
 
-helpWithFeesReferenceController.get(CLAIM_HELP_WITH_FEES_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+helpWithFeesController.get(CLAIM_HELP_WITH_FEES_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.session?.user?.id;
     const helpWithFees: HelpWithFees = await getHelpWithFees(userId);
@@ -28,7 +28,7 @@ helpWithFeesReferenceController.get(CLAIM_HELP_WITH_FEES_URL, async (req: AppReq
   }
 });
 
-helpWithFeesReferenceController.post(CLAIM_HELP_WITH_FEES_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+helpWithFeesController.post(CLAIM_HELP_WITH_FEES_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const userId = (<AppRequest>req).session?.user?.id;
     req.body.option === YesNo.NO ? req.body.referenceNumber = '' : req.body.referenceNumber;
@@ -48,4 +48,4 @@ helpWithFeesReferenceController.post(CLAIM_HELP_WITH_FEES_URL, async (req: AppRe
   }
 });
 
-export default helpWithFeesReferenceController;
+export default helpWithFeesController;

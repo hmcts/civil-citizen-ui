@@ -1,8 +1,8 @@
-import {IsDefined, IsNotEmpty, ValidateIf} from 'class-validator';
+import {IsNotEmpty, ValidateIf} from 'class-validator';
 import {YesNo} from '../../yesNo';
 
 export class HelpWithFees {
-  @IsDefined({message: 'ERRORS.VALID_YES_NO_SELECTION'})
+  @IsNotEmpty({message: 'ERRORS.VALID_YES_NO_SELECTION'})
     option?: YesNo;
 
   @ValidateIf(o => o.option === YesNo.YES)
