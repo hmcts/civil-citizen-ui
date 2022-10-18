@@ -27,7 +27,6 @@ const generateErrorMessageForValidPaymentSchedule = (name: string) =>
 const withMessage = (buildErrorFn: (name: string) => string) => {
   return (args: any): string => {
     const object: PriorityDebtDetails = args.object;
-    console.log(object.name);
     return buildErrorFn(object.name);
   };
 };
