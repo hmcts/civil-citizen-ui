@@ -2,8 +2,8 @@ import {IsDefined, IsNotEmpty, IsNumber, Max, Min, ValidateIf} from 'class-valid
 import {TransactionSchedule} from './transactionSchedule';
 import {MAX_AMOUNT_VALUE} from '../../../validators/validationConstraints';
 import {ScheduledAmount} from '../../../../utils/calculateMonthlyIncomeExpenses/monthlyIncomeExpensesCalculator';
-import {ExpenseType} from './expenseType';
 import {IncomeType} from './incomeType';
+import { ExpenseType } from './expenseType';
 
 export interface TransactionSourceParams {
   name?: string;
@@ -14,25 +14,39 @@ export interface TransactionSourceParams {
 }
 
 export class ValidationErrors {
+
+  static readonly generateErrorMessageForValidPaymentAmount = (name: string): string => {
+    return `ERRORS.EXPENSES_AMOUNT.${ValidationErrors.getExpensesTransalationKey(name)}`;
+  }
+
+  static readonly generateErrorMessageForValidScheduleFrequency = (name: string): string => {
+    return `ERRORS.EXPENSES_FREQUENCY.${ValidationErrors.getExpensesTransalationKey(name)}`;
+  }
+
+  static readonly generateErrorMessageForValidPaymentAmountFormat = (name: string): string => {
+    return `ERRORS.EXPENSES_AMOUNT_FORMAT.${ValidationErrors.getExpensesTransalationKey(name)}`;
+  }
+
   static readonly NAME_REQUIRED = (_name: string, isIncome: boolean) => {
     if (isIncome) {
       return 'ERRORS.TRANSACTION_SOURCE.ENTER_OTHER_INCOME';
     }
-    return 'Enter other expense source';
+    return 'ERRORS.EXPENSES_ENTER_OTHER_SOURCE';
   };
   static readonly AMOUNT_REQUIRED = (sourceName: string, isIncome: boolean) => {
     const HOW_MUCH_INCOME_KEY = 'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.';
     if (isIncome) {
       return HOW_MUCH_INCOME_KEY.concat(ValidationErrors.getTransalationKey(sourceName));
     }
-    return `Enter how much you pay for ${sourceName ? sourceName : ExpenseType.OTHER}`;
+
+    return ValidationErrors.generateErrorMessageForValidPaymentAmount(sourceName);
   };
   static readonly AMOUNT_NON_NEGATIVE_NUMBER_REQUIRED = (sourceName: string, isIncome: boolean) => {
     const VALID_NUMBER_AMOUNT_KEY = 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.';
     if (isIncome) {
       return VALID_NUMBER_AMOUNT_KEY.concat(ValidationErrors.getTransalationKey(sourceName));
     }
-    return `Enter a valid ${sourceName} amount, maximum two decimal places`;
+    return ValidationErrors.generateErrorMessageForValidPaymentAmountFormat(sourceName);
 
   };
   static readonly SCHEDULE_SELECT_AN_OPTION = (sourceName: string, isIncome: boolean) => {
@@ -40,8 +54,42 @@ export class ValidationErrors {
     if (isIncome) {
       return HOW_OFTEN_RECEIVE_KEY.concat(ValidationErrors.getTransalationKey(sourceName));
     }
-    return `Select how often you pay for ${sourceName ? sourceName : ExpenseType.OTHER}`;
+
+    return ValidationErrors.generateErrorMessageForValidScheduleFrequency(sourceName);
   };
+
+  private static getExpensesTransalationKey(sourceName?: string): string {
+    switch (sourceName) {
+      case ExpenseType.MORTGAGE:
+        return 'MORTGAGE';
+      case ExpenseType.RENT:
+        return 'RENT';
+      case ExpenseType.COUNCIL_TAX:
+        return 'COUNCIL_TAX';
+      case ExpenseType.GAS:
+        return 'GAS';
+      case ExpenseType.WATER:
+        return 'WATER';
+      case ExpenseType.ELECTRICITY:
+        return 'ELECTRICITY';
+      case ExpenseType.TRAVEL:
+        return 'TRAVEL';
+      case ExpenseType.SCHOOL_COSTS:
+        return 'SCHOOL_COSTS';
+      case ExpenseType.FOOD_HOUSEKEEPING:
+        return 'FOOD_HOUSEKEEPING';
+      case ExpenseType.TV_AND_BROADBAND:
+        return 'TV_AND_BROADBAND';
+      case ExpenseType.HIRE_PURCHASES:
+        return 'HIRE_PURCHASES';
+      case ExpenseType.MOBILE_PHONE:
+        return 'MOBILE_PHONE';
+      case ExpenseType.MAINTENANCE_PAYMENTS:
+        return 'MAINTENANCE_PAYMENTS';
+      default:
+        return 'OTHER';
+    }
+  }
 
   private static getTransalationKey(sourceName?: string): string{
     switch (sourceName) {

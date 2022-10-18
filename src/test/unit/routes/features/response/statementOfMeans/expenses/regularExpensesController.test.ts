@@ -5,6 +5,7 @@ import {app} from '../../../../../../../main/app';
 import {CITIZEN_MONTHLY_EXPENSES_URL, CITIZEN_MONTHLY_INCOME_URL} from '../../../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
+import {t} from 'i18next';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -57,6 +58,9 @@ describe('Regular Expenses Controller', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.MORTGAGE_AMOUNT_ERROR);
           expect(res.text).toContain(TestMessages.MORTGAGE_SCHEDULE_ERROR);
+
+          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.MORTGAGE'));
+          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.MORTGAGE'));
         });
     });
     it('should show errors when mortgage and rent are selected but no amount or schedule selected', async () => {
@@ -84,6 +88,11 @@ describe('Regular Expenses Controller', () => {
           expect(res.text).toContain(TestMessages.MORTGAGE_SCHEDULE_ERROR);
           expect(res.text).toContain(TestMessages.RENT_AMOUNT_ERROR);
           expect(res.text).toContain(TestMessages.RENT_SCHEDULE_ERROR);
+
+          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.MORTGAGE'));
+          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.MORTGAGE'));
+          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.RENT'));
+          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.RENT'));
         });
     });
     it('should show errors when mortgage is selected but no schedule selected', async () => {
@@ -102,6 +111,7 @@ describe('Regular Expenses Controller', () => {
         .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.MORTGAGE_SCHEDULE_ERROR);
+          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.MORTGAGE'));
         });
     });
     it('should show errors when mortgage is selected and amount is negative', async () => {
@@ -120,6 +130,7 @@ describe('Regular Expenses Controller', () => {
         .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.MORTGAGE_CORRECT_AMOUNT_ERROR);
+          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT_FORMAT.MORTGAGE'));
         });
     });
     it('should show errors when mortgage is selected and amount has three decimal places', async () => {
@@ -138,6 +149,7 @@ describe('Regular Expenses Controller', () => {
         .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.MORTGAGE_CORRECT_AMOUNT_ERROR);
+          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT_FORMAT.MORTGAGE'));
         });
     });
     it('should show errors when other is selected and data for other is not correctly selected', async () => {
@@ -162,9 +174,9 @@ describe('Regular Expenses Controller', () => {
         })
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.OTHER_EXPENSE_NAME_REQUIRED_ERROR);
-          expect(res.text).toContain(TestMessages.OTHER_LIVERY_CORRECT_AMOUNT);
-          expect(res.text).toContain(TestMessages.OTHER_EXPENSE_DOG_SCHEDULE_ERROR);
+          expect(res.text).toContain(t('ERRORS.EXPENSES_ENTER_OTHER_SOURCE'));
+          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT_FORMAT.OTHER'));
+          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.OTHER'));
         });
     });
     it('should redirect when no data is selected', async () => {
