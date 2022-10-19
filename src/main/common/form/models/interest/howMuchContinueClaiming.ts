@@ -6,7 +6,6 @@ export class HowMuchContinueClaiming {
   @IsDefined({message: 'ERRORS.CHOOSE_TYPE_OF_INTEREST'})
     option?: SameRateInterestType;
 
-  //TODO: Validation for this field not fully working
   @ValidateIf(o => o.option === SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE)
   @IsDefined({message: 'ERRORS.VALID_AMOUNT'})
   @Min(MIN_AMOUNT_VALUE, {message: 'ERRORS.VALID_AMOUNT'})

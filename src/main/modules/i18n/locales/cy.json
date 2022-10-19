@@ -519,6 +519,7 @@
         "USE_THIS_EMAIL": "We'll use this to tell them you've made a claim, as well as notifying them by post."
       },
       "HOW_MUCH_CONTINUE": {
+        "DAILY_INTEREST_AMOUNT": "Daily interest amount",
         "OPTION_1": "8% per year",
         "OPTION_2": "Specific daily interest amount",
         "PAGE_TITLE": "How much do you want to continue claiming?",
