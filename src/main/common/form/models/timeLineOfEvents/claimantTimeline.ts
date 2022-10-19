@@ -17,21 +17,21 @@ export class ClaimantTimeline {
     return new ClaimantTimeline(ClaimantTimeline.addRemainingRows([]));
   }
 
-  public static buildPopulatedForm(timelineOfEvents: TimelineRow[]): ClaimantTimeline {
+  public static buildPopulatedForm(rows: TimelineRow[]): ClaimantTimeline {
     return new ClaimantTimeline(ClaimantTimeline.addRemainingRows(
-      timelineOfEvents.map((timeline: TimelineRow) => {
+      rows.map((timeline: TimelineRow) => {
         return TimelineRow.buildPopulatedForm(timeline.date, timeline.description);
       })));
   }
 
-  private static addRemainingRows(timelineOfEvents: TimelineRow[]): TimelineRow[] {
+  private static addRemainingRows(rows: TimelineRow[]): TimelineRow[] {
     const additionalRows = [];
-    if (timelineOfEvents?.length < MINIMUM_ROWS) {
-      for (let i = 0; i < MINIMUM_ROWS - timelineOfEvents.length; i++) {
+    if (rows?.length < MINIMUM_ROWS) {
+      for (let i = 0; i < MINIMUM_ROWS - rows.length; i++) {
         additionalRows.push(new TimelineRow());
       }
     }
-    return timelineOfEvents.concat(additionalRows);
+    return rows.concat(additionalRows);
   }
 
   filterOutEmptyRows() {
