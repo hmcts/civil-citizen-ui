@@ -15,7 +15,7 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set errors = form.getAllErrors() %}
-      {% set atLeastOneRequired = form.errorFor('atLeastOneFieldRequired') %}
+      {% set atLeastOneRequired = form.errorFor('rows') %}
       {% if errors.length > 0 %}
         {{ errorSummary(errors, t) }}
       {% endif %}

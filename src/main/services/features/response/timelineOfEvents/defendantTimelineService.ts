@@ -1,4 +1,4 @@
-import {Timeline} from '../../../../common/form/models/timeLineOfEvents/timeline';
+import {DefendantTimeline} from '../../../../common/form/models/timeLineOfEvents/defendantTimeline';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {PartialAdmission} from '../../../../common/models/partialAdmission';
 import {Claim} from '../../../../common/models/claim';
@@ -6,14 +6,14 @@ import {Claim} from '../../../../common/models/claim';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('defendantTimelineService');
 
-const getPartialAdmitTimeline = (claim: Claim): Timeline => {
+const getPartialAdmitTimeline = (claim: Claim): DefendantTimeline => {
   if (claim.partialAdmission?.timeline) {
-    return Timeline.buildPopulatedForm(claim.partialAdmission.timeline.rows, claim.partialAdmission.timeline.comment);
+    return DefendantTimeline.buildPopulatedForm(claim.partialAdmission.timeline.rows, claim.partialAdmission.timeline.comment);
   }
-  return Timeline.buildEmptyForm();
+  return DefendantTimeline.buildEmptyForm();
 };
 
-const savePartialAdmitTimeline = async (claimId: string, timeline: Timeline) => {
+const savePartialAdmitTimeline = async (claimId: string, timeline: DefendantTimeline) => {
   try {
     const claim = await getCaseDataFromStore(claimId);
     if (!claim.partialAdmission) {

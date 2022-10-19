@@ -59,7 +59,7 @@ export class Claim {
   rejectAllOfClaim?: RejectAllOfClaim;
   mediation?: Mediation;
   evidence?: DefendantEvidence;
-  timelineOfEvents?: TimeLineOfEvents[]; // TODO: probably needs refactoring in favor of Party timeline
+  timelineOfEvents?: TimeLineOfEvents[]; // TODO: Release 2: ClaimDetails timeline needs to translate into this field
   taskSharedFinancialDetails?: boolean;
   defendantStatementOfTruth?: StatementOfTruthForm | QualifiedStatementOfTruth;
   claimAmountBreakup?: ClaimAmountBreakup[];

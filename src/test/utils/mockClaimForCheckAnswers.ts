@@ -37,7 +37,7 @@ import {HowMuchDoYouOwe} from '../../main/common/form/models/admission/partialAd
 import {HowMuchHaveYouPaid, HowMuchHaveYouPaidParams} from '../../main/common/form/models/admission/howMuchHaveYouPaid';
 import {WhyDoYouDisagree} from '../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {PartialAdmission} from '../../main/common/models/partialAdmission';
-import {Timeline} from '../../main/common/form/models/timeLineOfEvents/timeline';
+import {DefendantTimeline} from '../../main/common/form/models/timeLineOfEvents/defendantTimeline';
 import {PaymentIntention} from '../../main/common/form/models/admission/partialAdmission/paymentIntention';
 import {NoMediationReason} from '../../main/common/form/models/mediation/noMediationReason';
 import {CompanyTelephoneNumber} from '../../main/common/form/models/mediation/companyTelephoneNumber';
@@ -685,7 +685,7 @@ export const ceateClaimWithPartialAdmission = (alreadyPaid?: YesNo, paymentOptio
   const whyDoYouDisagree: WhyDoYouDisagree = new WhyDoYouDisagree('Reasons for disagree');
   const howMuchHaveYouPaid: HowMuchHaveYouPaid = new HowMuchHaveYouPaid(param);
 
-  const timeline: Timeline = new Timeline(
+  const timeline: DefendantTimeline = new DefendantTimeline(
     [new TimelineRow('6 November 2022', 'Event 1'), new TimelineRow('7 November 2022', 'Event 2')],
     'Comments about timeline',
   );
@@ -753,7 +753,7 @@ export const createClaimWithFreeTelephoneMediationSectionForIndividual = (): Cla
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
     claim.respondent1.type = PartyType.INDIVIDUAL;
   }
-  const timeline: Timeline = new Timeline(
+  const timeline: DefendantTimeline = new DefendantTimeline(
     [new TimelineRow('6 November 2022', 'Event 1'), new TimelineRow('7 November 2022', 'Event 2')],
     'Comments about timeline',
   );

@@ -5,9 +5,7 @@ import {FREE_TEXT_MAX_LENGTH} from '../../validators/validationConstraints';
 
 const MINIMUM_ROWS = 4;
 
-export class Timeline {
-  atLeastOneRowRequired?: boolean;
-
+export class DefendantTimeline {
   @ValidateNested({each: true})
     rows: TimelineRow[];
 
@@ -15,18 +13,17 @@ export class Timeline {
   @MaxLength(FREE_TEXT_MAX_LENGTH, {message: VALID_TEXT_LENGTH})
     comment?: string;
 
-  constructor(rows?: TimelineRow[], comment?: string, atLeastOneRowRequired?: boolean) {
+  constructor(rows?: TimelineRow[], comment?: string) {
     this.rows = rows;
     this.comment = comment;
-    this.atLeastOneRowRequired = atLeastOneRowRequired;
   }
 
-  public static buildEmptyForm(): Timeline {
-    return new Timeline(Timeline.addRemainingRows([]));
+  public static buildEmptyForm(): DefendantTimeline {
+    return new DefendantTimeline(DefendantTimeline.addRemainingRows([]));
   }
 
-  public static buildPopulatedForm(timelineOfEvents: TimelineRow[], comment?: string): Timeline {
-    return new Timeline(Timeline.addRemainingRows(
+  public static buildPopulatedForm(timelineOfEvents: TimelineRow[], comment?: string): DefendantTimeline {
+    return new DefendantTimeline(DefendantTimeline.addRemainingRows(
       timelineOfEvents.map((timeline: TimelineRow) => {
         return TimelineRow.buildPopulatedForm(timeline.date, timeline.description);
       })), comment);
@@ -40,11 +37,6 @@ export class Timeline {
       }
     }
     return timelineOfEvents.concat(additionalRows);
-  }
-
-  atLeastOneRowPopulated(): boolean {
-    const emptyRows = this.rows?.filter(row => row.isAtLeastOneFieldPopulated());
-    return emptyRows.length > 0;
   }
 
   filterOutEmptyRows() {

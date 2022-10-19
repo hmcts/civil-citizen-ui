@@ -18,7 +18,7 @@ import {
   createClaimWithFullRejection,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
-import {Timeline} from '../../../../../../../main/common/form/models/timeLineOfEvents/timeline';
+import {DefendantTimeline} from '../../../../../../../main/common/form/models/timeLineOfEvents/defendantTimeline';
 import {DefendantEvidence} from '../../../../../../../main/common/models/evidence/evidence';
 import {EvidenceItem} from '../../../../../../../main/common/form/models/evidence/evidenceItem';
 import {Evidence} from '../../../../../../../main/common/form/models/evidence/evidence';
@@ -135,7 +135,7 @@ describe('Partial Admit - Response Details', () => {
     it('should return "Your timeline events" with no comments on your response details section', async () => {
       //Given
       const claim = ceateClaimWithPartialAdmission(YesNo.YES);
-      const timeline: Timeline = new Timeline(
+      const timeline: DefendantTimeline = new DefendantTimeline(
         [new TimelineRow('6 November 2022', 'Event 1')],
         '',
       );
@@ -158,7 +158,7 @@ describe('Partial Admit - Response Details', () => {
     it('should return empty section when timeline not added', async () => {
       //Given
       const claim = ceateClaimWithPartialAdmission(YesNo.YES);
-      const timeline: Timeline = new Timeline(
+      const timeline: DefendantTimeline = new DefendantTimeline(
         [],
         '',
       );
