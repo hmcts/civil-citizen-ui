@@ -1,6 +1,6 @@
-import {ValidateIf, IsDefined, IsNumber, Min} from "class-validator";
-import { MIN_AMOUNT_VALUE } from "../../../../common/form/validators/validationConstraints";
-import {SameRateInterestType} from "../../../../common/form/models/claimDetails";
+import {ValidateIf, IsDefined, IsNumber, Min} from 'class-validator';
+import { MIN_AMOUNT_VALUE } from '../../../../common/form/validators/validationConstraints';
+import {SameRateInterestType} from '../../../../common/form/models/claimDetails';
 
 export class HowMuchContinueClaiming {
   @IsDefined({message: 'ERRORS.CHOOSE_TYPE_OF_INTEREST'})
