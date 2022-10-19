@@ -73,13 +73,17 @@ claimantDetailsController.post(detailsURLs, async (req: AppRequest | Request, re
   const partyType = getPartyTypeDependingOnRoute(req.url);
   const caseId = (<AppRequest>req).session?.user?.id;
   const claimant: Party = await getClaimantPartyInformation(caseId);
+  let party = new GenericForm(new Party());
   try {
     const claimantIndividualAddress = new GenericForm<Address>(Address.fromObject(req.body));
     const claimantIndividualCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(getCorrespondenceAddressForm(req.body));
-    const party = new GenericForm(new Party(req.body.partyName, req.body.contactPerson));
+    if (partyType === PartyType.COMPANY || partyType === PartyType.ORGANISATION) {
+      party = new GenericForm(new Party(req.body.partyName, req.body.contactPerson));
+      party.validateSync();
+    }
     const claimantDetails = new GenericForm<PartyDetails>(new PartyDetails(req.body));
 
-    party.validateSync();
+
     claimantDetails.validateSync();
     claimantIndividualAddress.validateSync();
 
