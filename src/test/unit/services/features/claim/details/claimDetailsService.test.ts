@@ -96,7 +96,7 @@ describe('Claim Details Service', () => {
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
 
       await saveClaimDetails('validClaimId', claimDetails?.reason, 'reason');
-      expect(spySave).toHaveBeenCalledWith('validClaimId', { claimDetails });
+      expect(spySave).toHaveBeenCalledWith('validClaimId', {claimDetails});
     });
 
     it('should update reason successfully', async () => {
@@ -110,7 +110,7 @@ describe('Claim Details Service', () => {
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
 
       await saveClaimDetails('validClaimId', claimDetails?.reason, 'reason');
-      expect(spySave).toHaveBeenCalledWith('validClaimId', { claimDetails });
+      expect(spySave).toHaveBeenCalledWith('validClaimId', {claimDetails});
     });
 
     describe('POST Evidence', () => {
