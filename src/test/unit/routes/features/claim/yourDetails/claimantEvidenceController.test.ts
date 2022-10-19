@@ -24,8 +24,8 @@ const civilClaimResponseMockWithNoEvidence =
       'evidence': {
         'comment': '',
         'evidenceItem': [{}],
-      }
-    }
+      },
+    },
   },
 };
 
