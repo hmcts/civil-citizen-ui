@@ -5,7 +5,8 @@ export class ClaimDetails {
   reason?: Reason;
   timeline?: ClaimantTimeline;
 
-  constructor(reason?: Reason) {
+  constructor(reason?: Reason, timeline?: ClaimantTimeline) {
     this.reason = reason;
+    this.timeline = timeline;
   }
 }
