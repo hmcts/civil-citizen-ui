@@ -1,10 +1,10 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {Evidence,INIT_ROW_COUNT} from '../../../../common/form/models/evidence/evidence';
-import {EvidenceItem} from '../../../../common/form/models/evidence/evidenceItem';
 import {
   getClaimDetails,
   saveClaimDetails,
 } from '../../../../services/features/claim/details/claimDetailsService';
+import * as utilEvidence from '../../../../common/form/models/evidence/transformAndRemoveEmptyValues';
 import {
   CLAIM_EVIDENCE_URL,
   CLAIMANT_TASK_LIST_URL,
@@ -32,13 +32,13 @@ evidenceController.get(CLAIM_EVIDENCE_URL, async (req: AppRequest, res: Response
 
 evidenceController.post(CLAIM_EVIDENCE_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
-    let form = new GenericForm(new Evidence('', transformToEvidences(req)));
+    let form = new GenericForm(new Evidence('', utilEvidence.transformToEvidences(req.body)));
     form.validateSync();
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
       const appRequest = <AppRequest>req;
-      form = new GenericForm(new Evidence('', removeEmptyValueToEvidences(req)));
+      form = new GenericForm(new Evidence('', utilEvidence.removeEmptyValueToEvidences(req.body)));
       await saveClaimDetails(appRequest.session.user?.id, form.model,'evidence');
       res.redirect(CLAIMANT_TASK_LIST_URL);
     }
@@ -57,19 +57,5 @@ const getEvidence = (claimDetails: ClaimDetails) => {
     claimDetails.evidence = new Evidence();
   }
 };
-
-function transformToEvidences(req: Request): EvidenceItem[] {
-  return req.body.evidenceItem.map((item: EvidenceItem) => {
-    return new EvidenceItem(item.type, item.description);
-  });
-}
-
-function removeEmptyValueToEvidences(req: Request): EvidenceItem[] {
-  return req.body.evidenceItem
-    .filter((item: EvidenceItem) => item.type)
-    .map((item: EvidenceItem) => {
-      return new EvidenceItem(item.type, item.description);
-    });
-}
 
 export default evidenceController;
