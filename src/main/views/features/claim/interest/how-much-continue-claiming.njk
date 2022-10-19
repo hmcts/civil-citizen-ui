@@ -11,6 +11,7 @@
 {% block pageTitle %}
   {{ setPageTitle('PAGES.CLAIM_JOURNEY.HOW_MUCH_CONTINUE.PAGE_TITLE') }}
 {% endblock %}
+{% set amountValue = '' + form.model.dailyInterestAmount %}
 {% set noHtml %}
 {{ govukInput({
   id: 'dailyInterestAmount',
@@ -24,7 +25,7 @@
   label: {
     text: t('PAGES.CLAIM_JOURNEY.HOW_MUCH_CONTINUE.DAILY_INTEREST_AMOUNT')
   },
-  value: form.model.dailyInterestAmount,
+  value: amountValue,
   errorMessage: {
     text: t(form.errorFor('dailyInterestAmount'))
   } if form.hasFieldError('dailyInterestAmount')
