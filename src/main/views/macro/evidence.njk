@@ -1,7 +1,6 @@
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
-
 {% macro evidence(evidenceIndex, evidenceValue, errorFor, description, t) %}
   {% call govukFieldset({
       classes: 'moj-add-another__item',
@@ -68,7 +67,7 @@
   <div class="panel panel-border-narrow {{ '' if evidenceValue.type else 'govuk-visually-hidden' }}">
     <span class="govuk-body {% if evidenceValue.type !== EvidenceType.CONTRACTS_AND_AGREEMENTS %} govuk-visually-hidden {% endif
       %}">{{ t(description) }}
-      {{  t('PAGES.EVIDENCE.EVIDENCE_DETAILS.CONTRACTS_AND_AGREEMENTS') }}</span>
+      {{ t('PAGES.EVIDENCE.EVIDENCE_DETAILS.CONTRACTS_AND_AGREEMENTS') }}</span>
     <span class="govuk-body {% if evidenceValue.type !== EvidenceType.EXPERT_WITNESS %} govuk-visually-hidden {% endif %}">{{ t(description) }}
       {{ t('PAGES.EVIDENCE.EVIDENCE_DETAILS.EXPERT_WITNESS') }}</span>
     <span class="govuk-body {% if evidenceValue.type !== EvidenceType.CORRESPONDENCE %} govuk-visually-hidden {% endif %}">{{ t(description) }}

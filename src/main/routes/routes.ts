@@ -152,6 +152,7 @@ import claimTotalInterestController from './features/claim/interest/claimTotalIn
 import reasonController from './features/claim/details/reasonController';
 import defendantPhoneController from './features/claim/yourDetails/defendantPhoneController';
 import continueClaimingInterestController from './features/claim/interest/continueClaimingInterestController';
+import claimantEvidenceController from './features/claim/yourDetails/claimantEvidenceController';
 
 export default [
   homeController,
@@ -292,4 +293,5 @@ export default [
   reasonController,
   defendantPhoneController,
   continueClaimingInterestController,
+  claimantEvidenceController,
 ];
