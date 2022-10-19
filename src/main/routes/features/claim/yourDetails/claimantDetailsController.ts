@@ -83,7 +83,6 @@ claimantDetailsController.post(detailsURLs, async (req: AppRequest | Request, re
     }
     const claimantDetails = new GenericForm<PartyDetails>(new PartyDetails(req.body));
 
-
     claimantDetails.validateSync();
     claimantIndividualAddress.validateSync();
 
