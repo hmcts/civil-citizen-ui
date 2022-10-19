@@ -39,7 +39,6 @@ evidenceController.post(CLAIM_EVIDENCE_URL, async (req: AppRequest | Request, re
     } else {
       const appRequest = <AppRequest>req;
       form = new GenericForm(new Evidence('', removeEmptyValueToEvidences(req)));
-      console.log(form.model);
       await saveClaimDetails(appRequest.session.user?.id, form.model,'evidence');
       res.redirect(CLAIMANT_TASK_LIST_URL);
     }
