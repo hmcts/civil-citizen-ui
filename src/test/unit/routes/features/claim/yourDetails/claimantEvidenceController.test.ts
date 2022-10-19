@@ -20,22 +20,26 @@ jest.mock('../../../../../../main/modules/draft-store');
 const civilClaimResponseMockWithNoEvidence =
 {
   'case_data': {
-    'evidence': {
-      'comment': '',
-      'evidenceItem': [{}],
-    },
+    'claimDetails': {
+      'evidence': {
+        'comment': '',
+        'evidenceItem': [{}],
+      }
+    }
   },
 };
 
 const civilClaimResponseMock =
 {
   'case_data': {
-    'reason': '',
-    'evidence': {
-      'comment': '',
-      'evidenceItem': [
-        { 'type': 'Expert witness', 'description': 'Nam ac ante id turpis elementum laoreet.' },
-      ],
+    'claimDetails': {
+      'reason': '',
+      'evidence': {
+        'comment': '',
+        'evidenceItem': [
+          { 'type': 'Expert witness', 'description': 'Nam ac ante id turpis elementum laoreet.' },
+        ],
+      },
     },
   },
 };
@@ -43,18 +47,20 @@ const civilClaimResponseMock =
 const civilClaimResponseMockWithMultipleEvidences =
 {
   'case_data': {
-    'reason': '',
-    'evidence': {
-      'comment': '',
-      'evidenceItem': [
-        { 'type': 'Expert witness', 'description': 'Nam ac ante id turpis elementum laoreet.' },
-        { 'type': 'Contracts and agreements', 'description': 'Nam ac ante id turpis elementum laoreet.' },
-        { 'type': 'Letters, emails and other correspondence', 'description': 'Nam ac ante id turpis elementum laoreet.' },
-        { 'type': 'Photo evidence', 'description': 'Nam ac ante id turpis elementum laoreet.' },
-        { 'type': 'Receipts', 'description': 'Nam ac ante id turpis elementum laoreet.' },
-        { 'type': 'Statements of account', 'description': 'Nam ac ante id turpis elementum laoreet.' },
-        { 'type': 'Expert witness', 'description': 'Nam ac ante id turpis elementum laoreet.' },
-      ],
+    'claimDetails': {
+      'reason': '',
+      'evidence': {
+        'comment': '',
+        'evidenceItem': [
+          { 'type': 'Expert witness', 'description': 'Nam ac ante id turpis elementum laoreet.' },
+          { 'type': 'Contracts and agreements', 'description': 'Nam ac ante id turpis elementum laoreet.' },
+          { 'type': 'Letters, emails and other correspondence', 'description': 'Nam ac ante id turpis elementum laoreet.' },
+          { 'type': 'Photo evidence', 'description': 'Nam ac ante id turpis elementum laoreet.' },
+          { 'type': 'Receipts', 'description': 'Nam ac ante id turpis elementum laoreet.' },
+          { 'type': 'Statements of account', 'description': 'Nam ac ante id turpis elementum laoreet.' },
+          { 'type': 'Expert witness', 'description': 'Nam ac ante id turpis elementum laoreet.' },
+        ],
+      },
     },
   },
 };
