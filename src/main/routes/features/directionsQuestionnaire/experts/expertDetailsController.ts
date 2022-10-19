@@ -3,13 +3,15 @@ import {GenericForm} from '../../../../common/form/models/genericForm';
 import {
   getExpertDetails,
   getExpertDetailsForm,
-  saveExpertDetails,
 } from '../../../../services/features/directionsQuestionnaire/expertDetailsService';
+import {saveDirectionQuestionnaire} from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {DQ_EXPERT_DETAILS_URL, DQ_DEFENDANT_EXPERT_EVIDENCE_URL} from '../../../urls';
 
 const expertDetailsController = Router();
 const expertDetailsViewPath = 'features/directionsQuestionnaire/experts/expert-details';
+const dqPropertyName = 'expertDetailsList';
+const dqParentName = 'experts';
 
 expertDetailsController.get(DQ_EXPERT_DETAILS_URL, async (req, res, next: NextFunction) => {
   try {
@@ -30,7 +32,7 @@ expertDetailsController.post(DQ_EXPERT_DETAILS_URL, async (req, res, next: NextF
     if (form.hasNestedErrors()) {
       res.render(expertDetailsViewPath, {form});
     } else {
-      await saveExpertDetails(claimId, expertDetailsList, 'expertDetailsList');
+      await saveDirectionQuestionnaire(claimId, expertDetailsList, dqPropertyName, dqParentName);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, DQ_DEFENDANT_EXPERT_EVIDENCE_URL));
     }
   } catch (error) {

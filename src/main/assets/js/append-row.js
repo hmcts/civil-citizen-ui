@@ -8,6 +8,7 @@
  * If there is only one row then remove button will be hidden
  */
 const {getCalculation, addCalculationEventListener} = require('./calculate-amount');
+const{addTotalClaimAmountCalculationEventListener} = require('./calculate-total-amount');
 
 document.addEventListener('DOMContentLoaded', function () {
   const indexRegex = /\[(\d+)\]/;
@@ -58,6 +59,9 @@ document.addEventListener('DOMContentLoaded', function () {
       updateNewRow(document.getElementsByClassName('multiple-row'));
       if (elementExists(document.getElementsByClassName('civil-amountRow'))) {
         addCalculationEventListener();
+      }
+      if(elementExists(document.getElementsByClassName('civil-amount-breakdown-row'))) {
+        addTotalClaimAmountCalculationEventListener();
       }
     }
   }

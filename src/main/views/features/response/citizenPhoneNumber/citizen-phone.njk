@@ -5,11 +5,10 @@
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
-
+{% from "../../../macro/citizen-telephone.njk" import citizenTelephone %}
 {% block pageTitle %}
   {{ setPageTitle('PAGES.CITIZEN_PHONE.PAGE_TITLE') }}
 {% endblock %}
-
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -26,21 +25,12 @@
           </p>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            <div class="govuk-form-group {%- if errors[0].text %} govuk-form-group--error{% endif %}">
-              {{ govukInput({
+            <div class="govuk-form-group {%- if form.errorFor('telephoneNumber') %} govuk-form-group--error{% endif %}">
+              {{ citizenTelephone(form, t, {
                 id: "telephoneNumber",
                 name: "telephoneNumber",
-                value: form.telephoneNumber,
-                label: {
-                  text: t('PAGES.CITIZEN_PHONE.TITLE'),
-                  classes: 'govuk-visually-hidden'
-                },
-                hint: {
-                  text: t("PAGES.CITIZEN_PHONE.EXAMPLE")
-                },
-                errorMessage: {
-                  html: t(errors[0].text)
-                } if form.hasErrors()
+                label: "PAGES.CITIZEN_PHONE.TITLE",
+                hint: "PAGES.CITIZEN_PHONE.EXAMPLE"
               }) }}
             </div>
             <div class="govuk-form-group">
@@ -59,4 +49,3 @@
     </main>
   </div>
 {% endblock %}
-
