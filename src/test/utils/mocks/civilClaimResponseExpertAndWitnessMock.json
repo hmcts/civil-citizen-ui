@@ -230,7 +230,11 @@
     "sameRateInterestSelection": {
       "sameRateInterestType": "SAME_RATE_INTEREST_8_PC"
     },
-    "detailsOfClaim": "House repair",
+    "claimDetails": {
+      "reason": {
+        "text": "Test details of claim"
+      }
+    },
     "claimAmountBreakup": [
       {
         "id": "acbefa73-f24b-4c64-a00f-38f90c31d7e3",

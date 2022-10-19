@@ -6,6 +6,7 @@ import {getInterest, saveInterest} from '../../../../../../main/services/feature
 import {Interest} from '../../../../../../main/common/form/models/interest/interest';
 import {InterestStartDate} from '../../../../../../main/common/form/models/interest/interestStartDate';
 import {InterestEndDateType} from '../../../../../../main/common/form/models/claimDetails';
+import {TotalInterest} from '../../../../../../main/common/form/models/interest/totalInterest';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -81,6 +82,15 @@ describe('Interest Service', () => {
 
       await saveInterest('validClaimId', interest?.interestStartDate, 'interestStartDate');
       expect(spySave).toHaveBeenCalledWith('validClaimId', {interest});
+    });
+
+    it('should save total interest', async () => {
+      const interest = new Interest();
+      interest.totalInterest = new TotalInterest('23', 'this is my reason');
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+
+      await saveInterest('claimId', interest.totalInterest, 'totalInterest');
+      expect(spySave).toHaveBeenCalledWith('claimId', {interest});
     });
 
     it('should update interest start date successfully', async () => {

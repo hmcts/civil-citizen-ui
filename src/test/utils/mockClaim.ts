@@ -14,6 +14,8 @@ import {
 import {ResponseOptions} from '../../main/common/form/models/responseDeadline';
 import {AdditionalTimeOptions} from '../../main/common/form/models/additionalTime';
 import {InterestClaimOptionsType} from '../../main/common/form/models/claim/interest/interestClaimOptionsType';
+import {ClaimDetails} from '../../main/common/form/models/claim/details/claimDetails';
+import {Reason} from '../../main/common/form/models/claim/details/reason';
 
 export const buildPrimaryAddress = (): PrimaryAddress => {
   return {
@@ -95,7 +97,7 @@ function buildMockClaim(): Claim {
   };
   _mockClaim.totalClaimAmount = 110;
   _mockClaim.respondent1ResponseDeadline = new Date('2022-01-24T15:59:59');
-  _mockClaim.detailsOfClaim = 'the reason i have given';
+  _mockClaim.claimDetails = new ClaimDetails(new Reason('the reason i have given'));
   _mockClaim.respondent1 = buildRespondent1();
   _mockClaim.timelineOfEvents = [
     {
