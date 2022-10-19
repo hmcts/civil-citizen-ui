@@ -24,34 +24,12 @@
   label: {
     text: t('PAGES.CLAIM_JOURNEY.HOW_MUCH_CONTINUE.DAILY_INTEREST_AMOUNT')
   },
-  value: form.model.rate if form.model.option === SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE else '',
+  value: form.model.dailyInterestAmount,
   errorMessage: {
     text: t(form.errorFor('dailyInterestAmount'))
   } if form.hasFieldError('dailyInterestAmount')
 }) }}
 {% endset %}
-
-{{ govukInput({
-  id: "amount",
-  name: "amount",
-  value: amountAsString,
-  type: "number",
-  autocomplete: "number",
-  spellcheck: false,
-  text: title,
-  prefix: {
-    text: "£"
-  },
-  label: {
-    text: t('PAGES.PARTIAL_ADMISSION_HOW_MUCH_HAVE_YOU_PAID.HOW_MUCH'),
-    classes: "govuk-label--s",
-    isPageHeading: true
-  },
-  classes: "govuk-!-width-two-thirds",
-  errorMessage: {
-    text:t(form.errorFor('amount'))
-  } if form.hasFieldError('amount')
-}) }}
 
 {% block content %}
   <div class="govuk-width-container">

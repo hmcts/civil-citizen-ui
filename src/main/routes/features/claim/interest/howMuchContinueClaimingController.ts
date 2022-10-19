@@ -13,8 +13,10 @@ import {
  */
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {getInterest, saveInterest} from '../../../../services/features/claim/interest/interestService';
-import {HowMuchContinueClaiming} from 'common/form/models/interest/howMuchContinueClaiming';
-import {SameRateInterestSelection, SameRateInterestType} from 'common/form/models/claimDetails';
+import {HowMuchContinueClaiming} from '../../../../common/form/models/interest/howMuchContinueClaiming';
+import { toNumber } from 'lodash';
+import { SameRateInterestType } from '../../../../common/form/models/claimDetails';
+// import {SameRateInterestSelection, SameRateInterestType} from 'common/form/models/claimDetails';
 
 const howMuchContinueClaimingController = Router();
 const howMuchContinueClaimingPath = 'features/claim/interest/how-much-continue-claiming';
@@ -63,8 +65,9 @@ howMuchContinueClaimingController.post(CLAIM_INTEREST_HOW_MUCH, async (req: AppR
 
     const caseId = (<AppRequest>req).session?.user?.id;
     //const body = req.body as Record<string, string>;
-    const sameRateInterestSelection = await getHowMuchContinueClaimingForm(req.body.option, req.body.dailyInterestAmount);
-    const form: GenericForm<HowMuchContinueClaiming> = new GenericForm(new HowMuchContinueClaiming(sameRateInterestSelection.sameRateInterestType, sameRateInterestSelection.differentRate));
+    // const sameRateInterestSelection = await getHowMuchContinueClaimingForm(req.body.option, req.body.dailyInterestAmount);
+    const dailyInterestAmount = req.body.option === SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE ? toNumber(req.body.dailyInterestAmount) : null;
+    const form: GenericForm<HowMuchContinueClaiming> = new GenericForm(new HowMuchContinueClaiming(req.body.option, dailyInterestAmount));
     form.validateSync();
 
     if (form.hasErrors()) {
@@ -79,11 +82,11 @@ howMuchContinueClaimingController.post(CLAIM_INTEREST_HOW_MUCH, async (req: AppR
 });
 
 //TODO: move to service when complete?
-const getHowMuchContinueClaimingForm = async (option: SameRateInterestType, dailyInterestAmount: number | undefined): Promise<SameRateInterestSelection> => {
-  return {
-    sameRateInterestType: option,
-    differentRate: option === SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE ? dailyInterestAmount : undefined,
-  };
-};
+// const getHowMuchContinueClaimingForm = async (option: SameRateInterestType, dailyInterestAmount: number | undefined): Promise<SameRateInterestSelection> => {
+//   return {
+//     sameRateInterestType: option,
+//     differentRate: option === SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE ? dailyInterestAmount : undefined,
+//   };
+// };
 
 export default howMuchContinueClaimingController;
