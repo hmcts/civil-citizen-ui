@@ -39,7 +39,7 @@ interestEndDateController.post(CLAIM_INTEREST_END_DATE_URL, async (req: AppReque
       renderView(form, res);
     } else {
       const appRequest = <AppRequest>req;
-      await saveInterest(appRequest.session?.user?.id, form.model, dqPropertyName);
+      await saveInterest(appRequest.session?.user?.id, form.model.option, dqPropertyName);
       res.redirect(CLAIM_HELP_WITH_FEES_URL);
     }
   } catch (error) {
