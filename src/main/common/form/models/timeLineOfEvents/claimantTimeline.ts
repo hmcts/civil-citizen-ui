@@ -34,11 +34,6 @@ export class ClaimantTimeline {
     return timelineOfEvents.concat(additionalRows);
   }
 
-  atLeastOneRowPopulated(): boolean {
-    const emptyRows = this.rows?.filter(row => row.isAtLeastOneFieldPopulated());
-    return emptyRows.length > 0;
-  }
-
   filterOutEmptyRows() {
     if (this.rows?.length) {
       this.rows = this.rows.filter(row => row.isAtLeastOneFieldPopulated());
