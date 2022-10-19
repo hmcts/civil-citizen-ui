@@ -4,7 +4,7 @@ import {
   CLAIM_HELP_WITH_FEES_URL,
 } from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
-import {InterestEndDateSelection} from '../../../../common/form/models/interest/interestEndDateSelection';
+import {InterestEndDate} from '../../../../common/form/models/interest/interestEndDate';
 import {InterestEndDateType} from '../../../../common/form/models/claimDetails';
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {getInterest, saveInterest} from '../../../../services/features/claim/interest/interestService';
@@ -13,7 +13,7 @@ const interestEndDateController = Router();
 const interestEndDateViewPath = 'features/claim/interest/interest-end-date';
 const dqPropertyName = 'interestEndDate';
 
-function renderView(form: GenericForm<InterestEndDateSelection>, res: Response): void {
+function renderView(form: GenericForm<InterestEndDate>, res: Response): void {
   res.render(interestEndDateViewPath, {form});
 }
 
@@ -21,7 +21,7 @@ interestEndDateController.get(CLAIM_INTEREST_END_DATE_URL, async (req: AppReques
   try {
     const claimId = req.session?.user?.id;
     const interest = await getInterest(claimId);
-    const interestEndDate = Object.assign(new InterestEndDateSelection(), interest.interestEndDate);
+    const interestEndDate =  new InterestEndDate(interest.interestEndDate);
     const form = new GenericForm(interestEndDate);
 
     renderView(form, res);
@@ -32,7 +32,7 @@ interestEndDateController.get(CLAIM_INTEREST_END_DATE_URL, async (req: AppReques
 
 interestEndDateController.post(CLAIM_INTEREST_END_DATE_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
-    const form = new GenericForm(new InterestEndDateSelection(req.body.option as InterestEndDateType));
+    const form = new GenericForm(new InterestEndDate(req.body.option as InterestEndDateType));
     form.validateSync();
 
     if (form.hasErrors()) {
