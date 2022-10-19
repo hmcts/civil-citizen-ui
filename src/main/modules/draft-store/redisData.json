@@ -96,7 +96,7 @@
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
         },
-        "phoneNumber": "01632960001"
+        "partyPhone": "01632960001"
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
@@ -247,7 +247,7 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "SOLE_TRADER",
-        "telephoneNumber": "(0)207 127 0000",
+        "partyPhone": "(0)207 127 0000",
         "individualTitle": "Mr.",
         "individualFirstName": "Jan",
         "individualLastName": "Clark",
@@ -424,7 +424,7 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "INDIVIDUAL",
-        "telephoneNumber": "(0)207 127 0000",
+        "partyPhone": "(0)207 127 0000",
         "individualTitle": "Mr.",
         "individualFirstName": "Alex",
         "individualLastName": "Van",
@@ -441,7 +441,7 @@
       },
       "respondent1": {
         "type": "INDIVIDUAL",
-        "telephoneNumber": "(0)207 127 0000",
+        "partyPhone": "(0)207 127 0000",
         "individualTitle": "Mr.",
         "individualFirstName": "Jhon",
         "individualLastName": "Smith",
@@ -805,7 +805,8 @@
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
         },
-        "phoneNumber": "01632960001"
+        "partyPhone": "01632960001",
+        "contactPerson": "Jane Smith"
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
@@ -1424,7 +1425,7 @@
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
         },
-        "telephoneNumber": "01632960001"
+        "partyPhone": "01632960001"
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
@@ -1578,7 +1579,7 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "SOLE_TRADER",
-        "telephoneNumber": "(0)207 127 0000",
+        "partyPhone": "(0)207 127 0000",
         "individualTitle": "Mr.",
         "individualFirstName": "Jan",
         "individualLastName": "Clark",
@@ -1751,7 +1752,7 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "INDIVIDUAL",
-        "telephoneNumber": "(0)207 127 0000",
+        "partyPhone": "(0)207 127 0000",
         "individualTitle": "Mr.",
         "individualFirstName": "Alex",
         "individualLastName": "Van",
@@ -1768,7 +1769,7 @@
       },
       "respondent1": {
         "type": "INDIVIDUAL",
-        "telephoneNumber": "(0)207 127 0000",
+        "partyPhone": "(0)207 127 0000",
         "individualTitle": "Mr.",
         "individualFirstName": "Jhon",
         "individualLastName": "Smith",

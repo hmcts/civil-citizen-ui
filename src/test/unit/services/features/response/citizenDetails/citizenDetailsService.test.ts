@@ -122,7 +122,7 @@ describe('Citizen details service', () => {
       respondentResult.correspondenceAddress = buildCorrespondenceAddress();
       respondentResult.postToThisAddress = YesNo.NO;
       respondentResult.contactPerson = 'Jane Smith';
-      respondentResult.phoneNumber = '123456';
+      respondentResult.partyPhone = '123456';
       const resultClaim = new Claim();
       resultClaim.respondent1 = respondentResult;
       resultClaim.respondent1ResponseDeadline = new Date('2022-01-24T15:59:59');
@@ -139,7 +139,7 @@ describe('Citizen details service', () => {
       expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, resultClaim);
     });
 
-    it('should save a respondent with undefined postToThisAddress,contactPerson and phoneNumber values when no input from view', async () => {
+    it('should save a respondent with undefined postToThisAddress,contactPerson and partyPhone values when no input from view', async () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
@@ -148,7 +148,7 @@ describe('Citizen details service', () => {
       respondentResult.correspondenceAddress = buildCorrespondenceAddress();
       respondentResult.postToThisAddress = undefined;
       respondentResult.contactPerson = undefined;
-      respondentResult.phoneNumber = undefined;
+      respondentResult.partyPhone = undefined;
       const resultClaim = new Claim();
       resultClaim.respondent1 = respondentResult;
       resultClaim.respondent1ResponseDeadline = new Date('2022-01-24T15:59:59');

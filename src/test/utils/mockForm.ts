@@ -30,7 +30,7 @@ export const buildParty = (): GenericForm<Party> => {
   const party = new Party();
   party.postToThisAddress = YesNo.NO;
   party.contactPerson = 'Jane Smith';
-  party.phoneNumber = '123456';
+  party.partyPhone = '123456';
   return new GenericForm<Party>(party);
 };
 

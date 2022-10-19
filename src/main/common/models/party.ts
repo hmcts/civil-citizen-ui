@@ -18,10 +18,10 @@ export class Party {
   type?: PartyType;
   primaryAddress?: PrimaryAddress;
   postToThisAddress?: string;
-  @ValidateIf(o => o.phoneNumber !== undefined)
+  @ValidateIf(o => o.partyPhone !== undefined)
   @IsNotEmpty({message: 'ERRORS.NOT_TO_REMOVE_PHONE_NUMBER'})
   @Validate(OptionalIntegerValidator, {message: 'ERRORS.VALID_PHONE_NUMBER'})
-    phoneNumber?: string;
+    partyPhone?: string;
   provideCorrespondenceAddress?: string;
   correspondenceAddress?: CorrespondenceAddress;
   dateOfBirth?: Date;
@@ -31,7 +31,7 @@ export class Party {
   constructor(value?: Party) {
     this.partyName = value?.partyName;
     this.contactPerson = value?.contactPerson;
-    this.phoneNumber = value?.phoneNumber?.trim();
+    this.partyPhone = value?.partyPhone?.trim();
     this.postToThisAddress = value?.postToThisAddress;
   }
 }

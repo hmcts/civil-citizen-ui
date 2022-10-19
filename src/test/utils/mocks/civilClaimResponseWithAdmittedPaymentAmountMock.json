@@ -15,7 +15,7 @@
     "respondent1": {
       "type": "ORGANISATION",
       "dateOfBirth": "2022-03-01T13:29:24.971",
-      "phoneNumber": "111",
+      "partyPhone": "111",
       "contactPerson": "Felipe",
       "partyName": "Version 1",
       "responseType": "PART_ADMISSION"

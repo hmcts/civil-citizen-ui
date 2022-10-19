@@ -34,7 +34,7 @@ export const saveRespondent = async (claimId: string, citizenAddress: Address, c
   responseData.respondent1.correspondenceAddress = citizenCorrespondenceAddress.isEmpty()
     ? undefined
     : convertToCorrespondenceAddress(citizenCorrespondenceAddress);
-  responseData.respondent1.phoneNumber = party?.phoneNumber;
+  responseData.respondent1.partyPhone = party?.partyPhone;
   responseData.respondent1.contactPerson = party?.contactPerson;
   responseData.respondent1.postToThisAddress = party?.postToThisAddress;
 

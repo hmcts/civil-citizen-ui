@@ -590,7 +590,7 @@ describe('Confirm Details page', () => {
 
   it('POST/Citizen details - should display company details with telephone number and return errors when postToThisAddress is set to YES', async () => {
     mockGetRespondentInformation.mockImplementation(async () => {
-      return {...buildClaimOfRespondentType(PartyType.COMPANY), phoneNumber: '123456'};
+      return {...buildClaimOfRespondentType(PartyType.COMPANY), partyPhone: '123456'};
     });
     mockGetCorrespondenceAddressForm.mockImplementation(() => {
       return CitizenCorrespondenceAddress.fromObject({
@@ -615,7 +615,7 @@ describe('Confirm Details page', () => {
         correspondenceAddressLine3: '',
         correspondenceCity: '',
         correspondencePostCode: '',
-        phoneNumber: '',
+        partyPhone: '',
       })
       .expect((res) => {
         expect(res.status).toBe(200);
