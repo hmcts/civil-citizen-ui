@@ -3,7 +3,7 @@ import {AddressInfoResponse, OSPlacesClient} from '@hmcts/os-places-client';
 import {POSTCODE_LOOKUP_URL} from '../../../urls';
 import config from 'config';
 
-const postcodeLookupApiKey = config.get<string>('secrets.civil.ORDNANCE_SURVEY_API_KEY');
+const postcodeLookupApiKey = config.get<string>('secrets.civil.ordnanceSurveyApiKey');
 const osPlacesClient = new OSPlacesClient(postcodeLookupApiKey);
 
 export default Router()
