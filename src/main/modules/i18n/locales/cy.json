@@ -269,6 +269,7 @@
       "DISABILITY_ARE_YOU_DISABLED": "Ydych chi'n anabl?",
       "DISABILITY_ARE_YOU_SEVERELY_DISABLED": "Ydych chi'n anabl iawn?",
       "DOB": "Dyddiad Geni",
+      "EMAIL": "Email",
       "EMPLOYMENT_DETAILS": "Manylion cyflogaeth",
       "EMPLOYMENT_DO_YOU_HAVE_A_JOB": "A oes gennych swydd?",
       "EMPLOYMENT_TYPE": "Math o swydd",
@@ -349,6 +350,7 @@
       "TAX_PAYMENT_ARE_YOU_BEHIND": "Ydych chi ar ei hôl hi gyda thaliadau treth?",
       "TAX_PAYMENT_AMOUNT_YOU_OWE": "Swm sydd arnoch chi?",
       "TAX_PAYMENT_REASON": "Rheswm",
+      "THEIR_DETAILS_TITLE": "Their details",
       "TITLE": "Gwiriwch eich ateb",
       "TIMELINE_TITLE": "Eich llinell amser o'r hyn a ddigwyddodd (dewisol)",
       "TIMELINE_COMMENTS": "Sylwadau am eu llinell amser (dewisol)",
@@ -520,8 +522,8 @@
         "TITLE": "Try to resolve the dispute"
       },
       "WHEN_CLAIM_INTEREST_FROM": {
-        "FROM_A_SPECIFIC_DATE" : "A particular date",
-        "FROM_CLAIM_SUBMIT_DATE" : "The date you submit the claim",
+        "FROM_A_SPECIFIC_DATE": "A particular date",
+        "FROM_CLAIM_SUBMIT_DATE": "The date you submit the claim",
         "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
         "HINT_EXAMPLE_DATE": "For example the date an invoice was overdue or that you told someone they owed you the money.",
         "PAGE_TITLE": "When are you claiming interest from?",

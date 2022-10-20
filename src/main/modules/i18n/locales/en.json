@@ -269,6 +269,7 @@
       "DISABILITY_ARE_YOU_DISABLED": "Are you disabled?",
       "DISABILITY_ARE_YOU_SEVERELY_DISABLED": "Are you severely disabled?",
       "DOB": "Date of birth",
+      "EMAIL": "Email",
       "EMPLOYMENT_DETAILS": "Employment details",
       "EMPLOYMENT_DO_YOU_HAVE_A_JOB": "Do you have a job?",
       "EMPLOYMENT_TYPE": "Type of job",
@@ -349,6 +350,7 @@
       "TAX_PAYMENT_ARE_YOU_BEHIND": "Are you behind on tax payments?",
       "TAX_PAYMENT_AMOUNT_YOU_OWE": "Amount you owe?",
       "TAX_PAYMENT_REASON": "Reason",
+      "THEIR_DETAILS_TITLE": "Their details",
       "TITLE": "Check your answers",
       "TIMELINE_TITLE": "Your timeline of what happened (optional)",
       "TIMELINE_COMMENTS": "Comments about their timeline (optional)",
@@ -520,8 +522,8 @@
         "TITLE": "Try to resolve the dispute"
       },
       "WHEN_CLAIM_INTEREST_FROM": {
-        "FROM_A_SPECIFIC_DATE" : "A particular date",
-        "FROM_CLAIM_SUBMIT_DATE" : "The date you submit the claim",
+        "FROM_A_SPECIFIC_DATE": "A particular date",
+        "FROM_CLAIM_SUBMIT_DATE": "The date you submit the claim",
         "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
         "HINT_EXAMPLE_DATE": "For example the date an invoice was overdue or that you told someone they owed you the money.",
         "PAGE_TITLE": "When are you claiming interest from?",

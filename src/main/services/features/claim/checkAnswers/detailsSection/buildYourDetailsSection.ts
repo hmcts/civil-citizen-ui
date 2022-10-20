@@ -3,7 +3,7 @@ import {Claim} from '../../../../../common/models/claim';
 import {summaryRow} from '../../../../../common/models/summaryList/summaryList';
 import {t} from 'i18next';
 import {getLng} from '../../../../../common/utils/languageToggleUtils';
-import {CLAIM_DETAILS_URL, CLAIMANT_PHONE_NUMBER_URL, DOB_URL} from '../../../../../routes/urls';
+import {CLAIM_DETAILS_URL, CLAIMANT_DOB_URL, CLAIMANT_PHONE_NUMBER_URL} from '../../../../../routes/urls';
 import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {PrimaryAddress} from '../../../../../common/models/primaryAddress';
@@ -37,7 +37,7 @@ export const buildYourDetailsSection = (claim: Claim, claimId: string, lang: str
   yourDetailsSection.summaryList.rows.push(...[summaryRow(t('PAGES.CHECK_YOUR_ANSWER.ADDRESS', {lng: getLng(lang)}), addressToString(claim.applicant1?.primaryAddress), yourDetailsHref, changeLabel(lang)),
     summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CORRESPONDENCE_ADDRESS', {lng: getLng(lang)}), claim.applicant1?.correspondenceAddress ? addressToString(claim.applicant1?.correspondenceAddress) : t('PAGES.CHECK_YOUR_ANSWER.SAME_ADDRESS', {lng: getLng(lang)}), yourDetailsHref, changeLabel(lang))]);
   if (claim.applicant1?.dateOfBirth) {
-    const yourDOBHref = DOB_URL.replace(':id', claimId);
+    const yourDOBHref = CLAIMANT_DOB_URL.replace(':id', claimId);
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DOB', {lng: getLng(lang)}), formatDateToFullDate(claim.applicant1.dateOfBirth, getLng(lang)), yourDOBHref, changeLabel(lang)));
   }
   yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng: getLng(lang)}), claim.applicant1?.phoneNumber, phoneNumberHref, changeLabel(lang)));
