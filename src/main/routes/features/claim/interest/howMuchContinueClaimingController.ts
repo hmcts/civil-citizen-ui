@@ -29,7 +29,6 @@ howMuchContinueClaimingController.post(CLAIM_INTEREST_HOW_MUCH, async (req: AppR
   try {
     const caseId = (<AppRequest>req).session?.user?.id;
     const dailyInterestAmount = req.body.option === SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE ? toNumberOrUndefined(req.body.dailyInterestAmount) : null;
-    //const dailyInterestAmount = req.body.option === SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE ? toNumber(req.body.dailyInterestAmount) : null;
     const form: GenericForm<HowMuchContinueClaiming> = new GenericForm(new HowMuchContinueClaiming(req.body.option, dailyInterestAmount));
     form.validateSync();
 
