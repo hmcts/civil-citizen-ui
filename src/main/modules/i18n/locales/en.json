@@ -404,6 +404,8 @@
       "CONTACT_PERSON": "Contact person (optional)",
       "CONTACT_PERSON_HINT": "The defendant can contact this person to discuss the claim",
       "CONFIRM_YOUR_DETAILS": "Confirm your details",
+      "COMPANY_ADDRESS": "Company Address",
+      "COMPANY_DETAILS": "Enter company details",
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Would you like correspondence sent to a different address?",
       "FIND_ADDRESS": "Find address",
@@ -508,6 +510,7 @@
         "PAGE_TITLE": "Enter your details",
         "THESE_DETAILS_ARE": "These details are shared with the person, business or organisation you are claiming from (the defendant).",
         "TITLE": "Enter your details",
+        "TRADING": "Trading (optional)",
         "YOUR_POSTAL_ADDRESS": "Your postal address"
       },
       "CONTINUE_CLAIMING_INTEREST": {

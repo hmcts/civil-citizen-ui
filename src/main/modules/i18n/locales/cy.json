@@ -404,6 +404,8 @@
       "CONTACT_PERSON": "Contact person (optional)",
       "CONTACT_PERSON_HINT": "The defendant can contact this person to discuss the claim",
       "CONFIRM_YOUR_DETAILS": "Cadarnhau eich manylion",
+      "COMPANY_ADDRESS": "Company Address",
+      "COMPANY_DETAILS": "Enter company details",
       "CORRESPONDENCE_ADDRESS": "Cyfeiriad ar gyfer gohebiaeth",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Ydych chi am inni anfon gohebiaeth i gyfeiriad arall?",
       "FIND_ADDRESS": "Dod o hyd i gyfeiriad",
@@ -508,6 +510,7 @@
         "PAGE_TITLE": "Enter your details",
         "THESE_DETAILS_ARE": "These details are shared with the person, business or organisation you are claiming from (the defendant).",
         "TITLE": "Enter your details",
+        "TRADING": "Trading (optional)",
         "YOUR_POSTAL_ADDRESS": "Your postal address"
       },
       "CONTINUE_CLAIMING_INTEREST": {
