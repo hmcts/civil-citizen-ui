@@ -35,6 +35,7 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
+      {% set optionError = form.errorFor("option") %}
       <div class="govuk-grid-row">
         {% if form.hasErrors() %}
           {{ errorSummary(form.getErrors(), t) }}
