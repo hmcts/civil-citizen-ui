@@ -8,7 +8,6 @@ const osPlacesClient = new OSPlacesClient(postcodeLookupApiKey);
 
 export default Router()
   .get(POSTCODE_LOOKUP_URL, (req, res, next: NextFunction) => {
-    console.log('key', postcodeLookupApiKey);
     if (!req.query.postcode || !req.query.postcode.toString().trim()) {
       return res.status(400).json({
         error: {
