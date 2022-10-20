@@ -398,6 +398,8 @@
       "CONTACT_PERSON": "Contact person (optional)",
       "CONTACT_PERSON_HINT": "The defendant can contact this person to discuss the claim",
       "CONFIRM_YOUR_DETAILS": "Cadarnhau eich manylion",
+      "COMPANY_ADDRESS": "Company Address",
+      "COMPANY_DETAILS": "Enter company details",
       "CORRESPONDENCE_ADDRESS": "Cyfeiriad ar gyfer gohebiaeth",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Ydych chi am inni anfon gohebiaeth i gyfeiriad arall?",
       "FIND_ADDRESS": "Dod o hyd i gyfeiriad",
@@ -501,6 +503,7 @@
         "PAGE_TITLE": "Enter your details",
         "THESE_DETAILS_ARE": "These details are shared with the person, business or organisation you are claiming from (the defendant).",
         "TITLE": "Enter your details",
+        "TRADING": "Trading (optional)",
         "YOUR_POSTAL_ADDRESS": "Your postal address"
       },
       "CONTINUE_CLAIMING_INTEREST": {
@@ -512,6 +515,13 @@
         "PERSONAL_EMAIL": "This must be their personal email address",
         "TITLE": "Their email address (optional)",
         "USE_THIS_EMAIL": "We'll use this to tell them you've made a claim, as well as notifying them by post."
+      },
+      "INTEREST_END_DATE": {
+        "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
+        "PAGE_TITLE": "When do you want to stop claiming interest?",
+        "TITLE": "When do you want to stop claiming interest?",
+        "UNTIL_CLAIM_SUBMIT_DATE": "When you submit the claim",
+        "UNTIL_SETTLED_OR_JUDGEMENT_MADE": "Continue until the claim is settled or judgment made"
       },
       "RESOLVE_THE_DISPUTE": {
         "P1": {
@@ -1933,6 +1943,7 @@
     "VALID_CITY": "Rhowch enw tref/dinas dilys",
     "VALID_CLAIM_AMOUNT": "Enter an amount of money",
     "VALID_CLAIM_INTEREST_FROM": "Choose when to claim interest from",
+    "VALID_CLAIM_INTEREST_END_DATE": "Choose when you want to stop claiming interest",
     "VALID_CLAIM_NUMBER": "Enter a claim number",
     "VALID_CLAIM_REFERENCE_NUMBER": "Enter a valid claim number",
     "VALID_CORRESPONDENCE_ADDRESS_LINE_1": "Rhowch linell gyntaf y cyfeiriad ar gyfer gohebiaeth",

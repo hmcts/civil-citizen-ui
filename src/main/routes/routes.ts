@@ -129,7 +129,6 @@ import otherWitnessesController from './features/directionsQuestionnaire/witness
 import expertReportDetailsController from './features/directionsQuestionnaire/experts/expertReportDetailsController';
 import defendantPartyTypeController from './features/claim/yourDetails/defendantPartyTypeController';
 import claimantDoBController from './features/claim/yourDetails/claimantDoBController';
-import claimantIndividualDetailsController from './features/claim/yourDetails/claimantIndividualDetailsController';
 import welshLanguageController
   from './features/directionsQuestionnaire/welshLanguageRequirements/welshLanguageController';
 import claimantPhoneController from './features/claim/yourDetails/claimantPhoneController';
@@ -143,10 +142,11 @@ import defendantDetailsController from './features/claim/defendant/defendantDeta
 import interestTypeController from './features/claim/interest/interestTypeController';
 import interestRateController from './features/claim/interest/claimantInterestRateController';
 import interestStartDateController from './features/claim/interest/interestStartDateController';
+import interestEndDateController from './features/claim/interest/interestEndDateController';
 import claimAmountBreakdownController from './features/claim/amount/claimAmountBreakdownController';
 import claimInterestController from './features/claim/interest/claimInterestController';
 import claimantInterestFromController from './features/claim/interest/claimantInterestFromController';
-import claimantOrganisationDetailsController from './features/claim/yourDetails/claimantOrganisationDetailsController';
+import claimantDetailsController from './features/claim/yourDetails/claimantDetailsController';
 import defendantEmailController from './features/claim/yourDetails/defendantEmailController';
 import claimTotalInterestController from './features/claim/interest/claimTotalInterestController';
 import reasonController from './features/claim/details/reasonController';
@@ -270,7 +270,6 @@ export default [
   otherWitnessesController,
   expertReportDetailsController,
   defendantPartyTypeController,
-  claimantIndividualDetailsController,
   welshLanguageController,
   claimantPhoneController,
   whyUnavailableForHearingController,
@@ -284,8 +283,9 @@ export default [
   claimAmountBreakdownController,
   claimInterestController,
   interestStartDateController,
-  claimantOrganisationDetailsController,
+  claimantDetailsController,
   interestStartDateController,
+  interestEndDateController,
   claimantInterestFromController,
   defendantEmailController,
   claimTotalInterestController,
