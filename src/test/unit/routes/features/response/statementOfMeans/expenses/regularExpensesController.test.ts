@@ -96,6 +96,26 @@ describe('Regular Expenses Controller', () => {
         });
     });
 
+    it('should show errors councilTax is selected but no amount or schedule selected', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_EXPENSES_URL)
+        .send({
+          declared: 'councilTax', model: {
+            councilTax: {
+              transactionSource:
+                {
+                  name: 'Council Tax', amount: '', schedule: undefined,
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.COUNCIL_TAX'));
+          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.COUNCIL_TAX'));
+        });
+    });
+
     it('should show errors gas is selected but no amount or schedule selected', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_EXPENSES_URL)
@@ -113,6 +133,26 @@ describe('Regular Expenses Controller', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.GAS'));
           expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.GAS'));
+        });
+    });
+
+    it('should show errors water is selected but no amount or schedule selected', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_EXPENSES_URL)
+        .send({
+          declared: ['water'], model: {
+            water: {
+              transactionSource:
+                {
+                  name: 'water', amount: '', schedule: undefined,
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.WATER'));
+          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.WATER'));
         });
     });
 
@@ -136,23 +176,164 @@ describe('Regular Expenses Controller', () => {
         });
     });
 
-    it('should show errors water is selected but no amount or schedule selected', async () => {
+    it('should show errors travel is selected but no amount or schedule selected', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_EXPENSES_URL)
         .send({
-          declared: ['water'], model: {
-            water: {
+          declared: 'travel', model: {
+            travel: {
               transactionSource:
                 {
-                  name: 'water', amount: '', schedule: undefined,
+                  name: 'travel', amount: '', schedule: undefined,
                 },
             },
           },
         })
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.WATER'));
-          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.WATER'));
+          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.TRAVEL'));
+          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.TRAVEL'));
+        });
+    });
+
+    it('should show errors school cost is selected but no amount or schedule selected', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_EXPENSES_URL)
+        .send({
+          declared: 'schoolCosts', model: {
+            schoolCosts: {
+              transactionSource:
+                {
+                  name: 'school costs (include clothing)', amount: '', schedule: undefined,
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.SCHOOL_COSTS'));
+          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.SCHOOL_COSTS'));
+        });
+    });
+
+    it('should show errors food and housekeeping is selected but no amount or schedule selected', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_EXPENSES_URL)
+        .send({
+          declared: 'foodAndHousekeeping', model: {
+            foodAndHousekeeping: {
+              transactionSource:
+                {
+                  name: 'food and housekeeping', amount: '', schedule: undefined,
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.FOOD_HOUSEKEEPING'));
+          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.FOOD_HOUSEKEEPING'));
+        });
+    });
+
+    it('should show errors tv and broadband is selected but no amount or schedule selected', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_EXPENSES_URL)
+        .send({
+          declared: 'tvAndBroadband', model: {
+            tvAndBroadband: {
+              transactionSource:
+                {
+                  name: 'TV and broadband', amount: '', schedule: undefined,
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.TV_AND_BROADBAND'));
+          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.TV_AND_BROADBAND'));
+        });
+    });
+
+    it('should show errors hire purchase is selected but no amount or schedule selected', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_EXPENSES_URL)
+        .send({
+          declared: 'hirePurchase', model: {
+            hirePurchase: {
+              transactionSource:
+                {
+                  name: 'hire purchase', amount: '', schedule: undefined,
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.HIRE_PURCHASES'));
+          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.HIRE_PURCHASES'));
+        });
+    });
+
+    it('should show errors mobile phone is selected but no amount or schedule selected', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_EXPENSES_URL)
+        .send({
+          declared: 'mobilePhone', model: {
+            mobilePhone: {
+              transactionSource:
+                {
+                  name: 'mobile phone', amount: '', schedule: undefined,
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.MOBILE_PHONE'));
+          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.MOBILE_PHONE'));
+        });
+    });
+
+    it('should show errors maintenance payments is selected but no amount or schedule selected', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_EXPENSES_URL)
+        .send({
+          declared: 'maintenance', model: {
+            maintenance: {
+              transactionSource:
+                {
+                  name: 'maintenance payments', amount: '', schedule: undefined,
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.MAINTENANCE_PAYMENTS'));
+          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.MAINTENANCE_PAYMENTS'));
+        });
+    });
+
+    it('should show errors other is selected but no amount or schedule selected', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_EXPENSES_URL)
+        .send({
+          declared: 'other', model: {
+            other: {
+              transactionSources: [
+                {
+                  name: '', amount: '', schedule: undefined,
+                },
+              ],
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.OTHER'));
+          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.OTHER'));
         });
     });
 
