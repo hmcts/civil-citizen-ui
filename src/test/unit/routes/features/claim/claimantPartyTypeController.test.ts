@@ -52,11 +52,10 @@ describe('Claim Party Type Controller', () => {
     });
 
     it('should render claimant individual details page when radio "An individual" is selected', async () => {
-      await request(app).post(CLAIMANT_PARTY_TYPE_SELECTION_URL).send({'option': PartyType.INDIVIDUAL}).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(CLAIMANT_INDIVIDUAL_DETAILS_URL);
-        expect(app.request.cookies.claim_issue_journey.claimantPartyType).toBe(PartyType.INDIVIDUAL);
-      });
+      const res = await request(app).post(CLAIMANT_PARTY_TYPE_SELECTION_URL)
+        .send({'option': PartyType.INDIVIDUAL});
+      expect(res.status).toBe(302);
+      expect(res.header.location).toBe(CLAIMANT_INDIVIDUAL_DETAILS_URL);
     });
 
     it('should render claimant sole trader details page when radio "A sole trader or self-employed person" is selected', async () => {
