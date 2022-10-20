@@ -11,11 +11,12 @@ import {
   CLAIMANT_COMPANY_DETAILS_URL,
   CLAIMANT_ORGANISATION_DETAILS_URL,
 } from '../../../../../main/routes/urls';
+import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../main/modules/oidc');
 
 describe('Claim Party Type Controller', () => {
-  // TODO: Update test after refactoring controller to get and save to DraftStore
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
@@ -27,78 +28,67 @@ describe('Claim Party Type Controller', () => {
 
   describe('on GET', () => {
     it('should render claimant party type selection page successfully', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
       const res = await request(app).get(CLAIMANT_PARTY_TYPE_SELECTION_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain(t('PAGES.CLAIMANT_PARTY_TYPE_SELECTION.TITLE'));
     });
 
-    it('should render claimant party type selection page with set cookie value as INDIVIDUAL', async () => {
-      app.request['cookies'] = {'claim_issue_journey': {claimantPartyType: PartyType.INDIVIDUAL}};
+    it('should return 500 status code when error occurs', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
       const res = await request(app).get(CLAIMANT_PARTY_TYPE_SELECTION_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(t('PAGES.CLAIMANT_PARTY_TYPE_SELECTION.TITLE'));
-    });
-
-    it('should render claimant party type selection page with set cookie value as SOLE_TRADER', async () => {
-      app.request['cookies'] = {'claim_issue_journey': {claimantPartyType: PartyType.SOLE_TRADER}};
-      const res = await request(app).get(CLAIMANT_PARTY_TYPE_SELECTION_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(t('PAGES.CLAIMANT_PARTY_TYPE_SELECTION.TITLE'));
-    });
-
-    it('should render claimant party type selection page with set cookie value as COMPANY', async () => {
-      app.request['cookies'] = {'claim_issue_journey': {claimantPartyType: PartyType.COMPANY}};
-      const res = await request(app).get(CLAIMANT_PARTY_TYPE_SELECTION_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(t('PAGES.CLAIMANT_PARTY_TYPE_SELECTION.TITLE'));
-    });
-
-    it('should render claimant party type selection page with set cookie value as ORGANISATION', async () => {
-      app.request['cookies'] = {'claim_issue_journey': {claimantPartyType: PartyType.ORGANISATION}};
-      const res = await request(app).get(CLAIMANT_PARTY_TYPE_SELECTION_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(t('PAGES.CLAIMANT_PARTY_TYPE_SELECTION.TITLE'));
+      expect(res.status).toBe(500);
+      expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
     });
   });
 
   describe('on POST', () => {
     it('should render error message when claiming as is not selected', async () => {
-      await request(app).post(CLAIMANT_PARTY_TYPE_SELECTION_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('There was a problem');
-      });
+      app.locals.draftStoreClient = mockCivilClaim;
+      const res = await request(app).post(CLAIMANT_PARTY_TYPE_SELECTION_URL);
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('There was a problem');
+      expect(res.text).toContain(TestMessages.VALID_CHOOSE);
     });
 
     it('should render claimant individual details page when radio "An individual" is selected', async () => {
-      await request(app).post(CLAIMANT_PARTY_TYPE_SELECTION_URL).send({'option': PartyType.INDIVIDUAL}).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL);
-        expect(app.request.cookies.claim_issue_journey.claimantPartyType).toBe(PartyType.INDIVIDUAL);
-      });
+      app.locals.draftStoreClient = mockCivilClaim;
+      const res = await request(app).post(CLAIMANT_PARTY_TYPE_SELECTION_URL)
+        .send({'option': PartyType.INDIVIDUAL});
+      expect(res.status).toBe(302);
+      expect(res.header.location).toBe(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL);
     });
 
     it('should render claimant sole trader details page when radio "A sole trader or self-employed person" is selected', async () => {
-      await request(app).post(CLAIMANT_PARTY_TYPE_SELECTION_URL).send({'option': PartyType.SOLE_TRADER}).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(CLAIMANT_SOLE_TRADER_DETAILS_URL);
-        expect(app.request.cookies.claim_issue_journey.claimantPartyType).toBe(PartyType.SOLE_TRADER);
-      });
+      app.locals.draftStoreClient = mockCivilClaim;
+      const res = await request(app).post(CLAIMANT_PARTY_TYPE_SELECTION_URL)
+        .send({'option': PartyType.SOLE_TRADER});
+      expect(res.status).toBe(302);
+      expect(res.header.location).toBe(CLAIMANT_SOLE_TRADER_DETAILS_URL);
     });
 
     it('should render claimant company details page when radio "A limited company" is selected', async () => {
-      await request(app).post(CLAIMANT_PARTY_TYPE_SELECTION_URL).send({'option': PartyType.COMPANY}).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(CLAIMANT_COMPANY_DETAILS_URL);
-        expect(app.request.cookies.claim_issue_journey.claimantPartyType).toBe(PartyType.COMPANY);
-      });
+      app.locals.draftStoreClient = mockCivilClaim;
+      const res = await request(app).post(CLAIMANT_PARTY_TYPE_SELECTION_URL)
+        .send({'option': PartyType.COMPANY});
+      expect(res.status).toBe(302);
+      expect(res.header.location).toBe(CLAIMANT_COMPANY_DETAILS_URL);
     });
 
     it('should render claimant organisation details page when radio "Another type of organisation" is selected', async () => {
-      await request(app).post(CLAIMANT_PARTY_TYPE_SELECTION_URL).send({'option': PartyType.ORGANISATION}).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(CLAIMANT_ORGANISATION_DETAILS_URL);
-        expect(app.request.cookies.claim_issue_journey.claimantPartyType).toBe(PartyType.ORGANISATION);
-      });
+      app.locals.draftStoreClient = mockCivilClaim;
+      const res = await request(app).post(CLAIMANT_PARTY_TYPE_SELECTION_URL)
+        .send({'option': PartyType.ORGANISATION});
+      expect(res.status).toBe(302);
+      expect(res.header.location).toBe(CLAIMANT_ORGANISATION_DETAILS_URL);
+    });
+
+    it('should return http 500 when has error in the post method', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      const res = await request(app).post(CLAIMANT_PARTY_TYPE_SELECTION_URL)
+        .send({'option': PartyType.ORGANISATION});
+      expect(res.status).toBe(500);
+      expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
     });
   });
 });
