@@ -66,8 +66,8 @@ export function addDaysFilterTranslated(value: string, num: number, t: (key:stri
     date = DateTime.now();
   }
 
-  date.plus({days: num});
-  const month = t('COMMON.MONTH_NAMES.' + date.monthLong.toUpperCase());
+  const newDate = date.plus({days: num});
+  const month = t('COMMON.MONTH_NAMES.' + newDate.monthLong.toUpperCase());
 
-  return (date.day + ' ' + month + ' ' + date.year);
+  return (newDate.day + ' ' + month + ' ' + newDate.year);
 }
