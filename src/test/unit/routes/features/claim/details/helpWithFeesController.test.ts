@@ -4,7 +4,6 @@ import nock from 'nock';
 import request from 'supertest';
 import {
   CLAIM_HELP_WITH_FEES_URL,
-  CLAIM_HELP_WITH_FEES_REFERENCE_URL,
   CLAIM_TOTAL_URL,
 } from '../../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
@@ -46,7 +45,7 @@ describe('Claim Details - Help With Fees', () => {
   });
 
   describe('on POST', () => {
-    it('should redirect to total if No selected', async () => {
+    it('should redirect to total page when NO selected', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CLAIM_HELP_WITH_FEES_URL)
@@ -56,13 +55,13 @@ describe('Claim Details - Help With Fees', () => {
           expect(res.get('location')).toBe(CLAIM_TOTAL_URL);
         });
     });
-    it('should redirect to Help With Fees Reference if Yes and has referenceNumber', async () => {
+    it('should redirect to total page when YES selected', async () => {
       await request(app)
         .post(CLAIM_HELP_WITH_FEES_URL)
         .send({option:YesNo.YES, referenceNumber:'test'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(CLAIM_HELP_WITH_FEES_REFERENCE_URL);
+          expect(res.get('location')).toBe(CLAIM_TOTAL_URL);
         });
     });
     it('should show error if no radio button selected', async () => {

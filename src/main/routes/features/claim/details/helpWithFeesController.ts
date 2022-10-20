@@ -1,7 +1,6 @@
 import {NextFunction, Response, Request, Router} from 'express';
 import {
   CLAIM_HELP_WITH_FEES_URL,
-  CLAIM_HELP_WITH_FEES_REFERENCE_URL,
   CLAIM_TOTAL_URL,
 } from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
@@ -41,9 +40,7 @@ helpWithFeesController.post(CLAIM_HELP_WITH_FEES_URL, async (req: AppRequest | R
       renderView(form, res);
     } else {
       await saveClaimDetails(userId, form.model, helpWithFeesPropertyName);
-      req.body.option === YesNo.YES
-        ? res.redirect(CLAIM_HELP_WITH_FEES_REFERENCE_URL)
-        : res.redirect(CLAIM_TOTAL_URL);
+      res.redirect(CLAIM_TOTAL_URL);
     }
   } catch (error) {
     next(error);
