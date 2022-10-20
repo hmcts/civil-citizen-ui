@@ -19,7 +19,7 @@ import {
   ClaimAmountBreakup,
   ClaimFee,
   InterestClaimFromType,
-  InterestClaimUntilType,
+  InterestEndDateType,
   SameRateInterestSelection,
   SameRateInterestType,
 } from '../form/models/claimDetails';
@@ -39,6 +39,7 @@ import {AdditionalTimeOptions} from '../../common/form/models/additionalTime';
 import {InterestClaimOptionsType} from '../../common/form/models/claim/interest/interestClaimOptionsType';
 import {Interest} from '../form/models/interest/interest';
 import {RejectAllOfClaimType} from '../../common/form/models/rejectAllOfClaimType';
+import {ClaimDetails} from '../../common/form/models/claim/details/claimDetails';
 
 export class Claim {
   legacyCaseReference: string;
@@ -48,7 +49,7 @@ export class Claim {
   applicantSolicitor1ClaimStatementOfTruth?: StatementOfTruth;
   totalClaimAmount: number;
   respondent1ResponseDeadline: Date;
-  detailsOfClaim: string;
+  claimDetails: ClaimDetails;
   respondent1?: Party;
   statementOfMeans?: StatementOfMeans;
   paymentOption?: PaymentOptionType;
@@ -66,7 +67,6 @@ export class Claim {
   claimInterest?: YesNo;
   interest?: Interest;
   interestClaimFrom?: InterestClaimFromType;
-  interestClaimUntil?: InterestClaimUntilType;
   interestFromSpecificDate?: Date;
   interestClaimOptions: InterestClaimOptionsType;
   sameRateInterestSelection?: SameRateInterestSelection;
@@ -174,8 +174,8 @@ export class Claim {
     return this.paymentOption === PaymentOptionType.INSTALMENTS;
   }
 
-  isInterestClaimUntilSubmitDate(): boolean {
-    return this.interestClaimUntil === InterestClaimUntilType.UNTIL_CLAIM_SUBMIT_DATE;
+  isInterestEndDateUntilSubmitDate(): boolean {
+    return this.interest?.interestEndDate === InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE;
   }
 
   isInterestClaimOptionExists(): boolean {

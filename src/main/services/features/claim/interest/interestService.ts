@@ -2,13 +2,12 @@ import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-st
 import {Interest} from '../../../../common/form/models/interest/interest';
 
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('directionQuestionnaireService');
+const logger = Logger.getLogger('interestService');
 
 const getInterest = async (claimId: string): Promise<Interest> => {
   try {
     const caseData = await getCaseDataFromStore(claimId);
     return Object.assign(new Interest(), caseData.interest);
-
   } catch (error) {
     logger.error(error);
     throw error;
