@@ -117,6 +117,17 @@
               value: claimantDetails.model.individualLastName,
                errorMessage: { text: t(claimantDetails.errorFor('individualLastName')) } if claimantDetails.errorFor('individualLastName')
             }) }}
+            {% if type === partyType.SOLE_TRADER %}
+              {{ govukInput({
+                label: {
+                  text: t('PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.TRADING')
+                },
+                classes: "govuk-!-width-one-half",
+                id: "trading",
+                name: "trading",
+                value: claimantDetails.model.soleTraderTradingAs
+              }) }}
+            {% endif %}
 
             <div class="govuk-form-group" id="primaryPostcodeContainer">
               <h2 class="govuk-heading-m">{{ addressTitle }}</h2>
