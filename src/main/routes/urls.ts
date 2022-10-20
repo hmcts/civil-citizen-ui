@@ -171,4 +171,3 @@ export const CLAIM_INTEREST_CONTINUE_CLAIMING_URL = `${BASE_CLAIM_URL}/interest-
 export const CLAIM_INTEREST_HOW_MUCH_URL = `${BASE_CLAIM_URL}/interest-how-much`;
 export const CLAIM_REASON_URL = `${BASE_CLAIM_URL}/reason`;
 export const CLAIM_TIMELINE_URL = `${BASE_CLAIM_URL}/timeline`;
-export const CLAIM_INTEREST_HOW_MUCH = `${BASE_CLAIM_URL}/interest-how-much`;

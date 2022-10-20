@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {CLAIM_HELP_WITH_FEES_URL, CLAIM_INTEREST_HOW_MUCH} from '../../../../routes/urls';
+import {CLAIM_HELP_WITH_FEES_URL, CLAIM_INTEREST_HOW_MUCH_URL} from '../../../../routes/urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {getInterest, saveInterest} from '../../../../services/features/claim/interest/interestService';
@@ -14,7 +14,7 @@ function renderView(form: GenericForm<HowMuchContinueClaiming>, res: Response): 
   res.render(howMuchContinueClaimingPath, {form});
 }
 
-howMuchContinueClaimingController.get(CLAIM_INTEREST_HOW_MUCH, async (req:AppRequest, res:Response, next: NextFunction) => {
+howMuchContinueClaimingController.get(CLAIM_INTEREST_HOW_MUCH_URL, async (req:AppRequest, res:Response, next: NextFunction) => {
   const caseId = req.session?.user?.id;
 
   try {
@@ -25,7 +25,8 @@ howMuchContinueClaimingController.get(CLAIM_INTEREST_HOW_MUCH, async (req:AppReq
   }
 });
 
-howMuchContinueClaimingController.post(CLAIM_INTEREST_HOW_MUCH, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+howMuchContinueClaimingController.post(CLAIM_INTEREST_HOW_MUCH_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+  const howMuchContinueClaiming = 'howMuchContinueClaiming';
   try {
     const caseId = (<AppRequest>req).session?.user?.id;
     const dailyInterestAmount = req.body.option === SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE ? toNumberOrUndefined(req.body.dailyInterestAmount) : null;
@@ -35,7 +36,7 @@ howMuchContinueClaimingController.post(CLAIM_INTEREST_HOW_MUCH, async (req: AppR
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveInterest(caseId, form.model, 'howMuchContinueClaiming');
+      await saveInterest(caseId, form.model, howMuchContinueClaiming);
       res.redirect(CLAIM_HELP_WITH_FEES_URL);
     }
   } catch (error) {
