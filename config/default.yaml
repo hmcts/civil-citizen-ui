@@ -9,6 +9,7 @@ services:
     microservice: 'civil_service'
   postcodeLookup:
     ordnanceSurveyApiKey: dummy
+    ORDNANCE_SURVEY_API_KEY: ORDNANCE_SURVEY_API_KEY
   idam:
     url: 'http://localhost:5000'
     authorizationURL: 'http://localhost:9002/login'
