@@ -142,6 +142,7 @@ import defendantDetailsController from './features/claim/defendant/defendantDeta
 import interestTypeController from './features/claim/interest/interestTypeController';
 import interestRateController from './features/claim/interest/claimantInterestRateController';
 import interestStartDateController from './features/claim/interest/interestStartDateController';
+import interestEndDateController from './features/claim/interest/interestEndDateController';
 import claimAmountBreakdownController from './features/claim/amount/claimAmountBreakdownController';
 import claimInterestController from './features/claim/interest/claimInterestController';
 import claimantInterestFromController from './features/claim/interest/claimantInterestFromController';
@@ -284,6 +285,7 @@ export default [
   interestStartDateController,
   claimantDetailsController,
   interestStartDateController,
+  interestEndDateController,
   claimantInterestFromController,
   defendantEmailController,
   claimTotalInterestController,
