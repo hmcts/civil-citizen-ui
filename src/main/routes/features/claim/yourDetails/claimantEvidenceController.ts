@@ -37,9 +37,9 @@ evidenceController.post(CLAIM_EVIDENCE_URL, async (req: AppRequest | Request, re
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      const appRequest = <AppRequest>req;
+      const claimId = (<AppRequest>req).session.user?.id;
       form.model.evidenceItem = utilEvidence.removeEmptyValueToEvidences(req.body);
-      await saveClaimDetails(appRequest.session.user?.id, form.model, 'evidence');
+      await saveClaimDetails(claimId, form.model, 'evidence');
       res.redirect(CLAIMANT_TASK_LIST_URL);
     }
   } catch (error) {
