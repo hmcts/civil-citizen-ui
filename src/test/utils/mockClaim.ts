@@ -8,7 +8,7 @@ import {YesNo} from '../../main/common/form/models/yesNo';
 import {
   CaseState,
   InterestClaimFromType,
-  InterestClaimUntilType,
+  InterestEndDateType,
   SameRateInterestType,
 } from '../../main/common/form/models/claimDetails';
 import {ResponseOptions} from '../../main/common/form/models/responseDeadline';
@@ -121,7 +121,10 @@ function buildMockClaim(): Claim {
       },
     },
   ];
-  _mockClaim.interestClaimUntil = InterestClaimUntilType.UNTIL_CLAIM_SUBMIT_DATE;
+
+  _mockClaim.interest = {
+    interestEndDate: InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE,
+  };
   _mockClaim.interestFromSpecificDate = new Date('2022-05-20');
   _mockClaim.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
   _mockClaim.sameRateInterestSelection = {

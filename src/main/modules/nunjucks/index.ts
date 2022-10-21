@@ -24,6 +24,7 @@ import {AgeEligibilityOptions} from '../../common/form/models/eligibility/defend
 import {LanguageOptions} from '../../common/models/directionsQuestionnaire/languageOptions';
 import {SameRateInterestType} from '../../common/form/models/claimDetails';
 import {InterestClaimFromType} from '../../common/form/models/claimDetails';
+import {InterestEndDateType} from '../../common/form/models/claimDetails';
 import * as urls from '../../routes/urls';
 import {InterestClaimOptionsType} from '../../common/form/models/claim/interest/interestClaimOptionsType';
 
@@ -118,6 +119,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('LanguageOptions', LanguageOptions);
     nunjucksEnv.addGlobal('SameRateInterestType', SameRateInterestType);
     nunjucksEnv.addGlobal('InterestClaimFromType', InterestClaimFromType);
+    nunjucksEnv.addGlobal('InterestEndDateType', InterestEndDateType);
     nunjucksEnv.addGlobal('urls', urls);
     nunjucksEnv.addGlobal('InterestClaimOptionsType', InterestClaimOptionsType);
 

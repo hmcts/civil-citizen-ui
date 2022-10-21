@@ -5,11 +5,11 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import {PartyType} from '../../../../../main/common/models/partyType';
 import {
-  CLAIMANT_PARTY_TYPE_SELECTION_URL,
-  CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL,
-  CLAIMANT_SOLE_TRADER_DETAILS_URL,
   CLAIMANT_COMPANY_DETAILS_URL,
+  CLAIMANT_INDIVIDUAL_DETAILS_URL,
   CLAIMANT_ORGANISATION_DETAILS_URL,
+  CLAIMANT_PARTY_TYPE_SELECTION_URL,
+  CLAIMANT_SOLE_TRADER_DETAILS_URL,
 } from '../../../../../main/routes/urls';
 
 jest.mock('../../../../../main/modules/oidc');
@@ -72,7 +72,7 @@ describe('Claim Party Type Controller', () => {
     it('should render claimant individual details page when radio "An individual" is selected', async () => {
       await request(app).post(CLAIMANT_PARTY_TYPE_SELECTION_URL).send({'option': PartyType.INDIVIDUAL}).expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toBe(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL);
+        expect(res.header.location).toBe(CLAIMANT_INDIVIDUAL_DETAILS_URL);
         expect(app.request.cookies.claim_issue_journey.claimantPartyType).toBe(PartyType.INDIVIDUAL);
       });
     });
