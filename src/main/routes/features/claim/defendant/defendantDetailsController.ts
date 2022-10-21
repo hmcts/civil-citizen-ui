@@ -39,12 +39,12 @@ defendantDetailsController.get(detailsURLs, async (req: AppRequest, res: Respons
     const defendantDetails = await getDefendantInformation(userId);
     // TODO: correspondence address needs refactoring as all attributes start as capitalised (AddressLine1) while
     //  we save camelcase (primaryAddressLine1) afterwards remove bellow Object.assign
-    let defendantAddress = (defendantDetails?.primaryAddress) ? Object.assign(defendantDetails?.primaryAddress) : {};
+    let defendantAddress = (defendantDetails.primaryAddress) ? Object.assign(defendantDetails.primaryAddress) : {};
     defendantAddress = convertToPrimaryAddress(defendantAddress);
 
     let form: GenericForm<PartyDetails | CompanyOrOrganisationPartyDetails>;
     if (defendantDetails.type === PartyType.COMPANY || defendantDetails.type === PartyType.ORGANISATION) {
-      form = new GenericForm(new CompanyOrOrganisationPartyDetails(defendantDetails?.partyName, defendantDetails?.contactPerson));
+      form = new GenericForm(new CompanyOrOrganisationPartyDetails(defendantDetails.partyName, defendantDetails.contactPerson));
     } else {
       form = new GenericForm<PartyDetails>(new PartyDetails(defendantDetails));
     }

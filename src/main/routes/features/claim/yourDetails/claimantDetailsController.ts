@@ -61,7 +61,7 @@ claimantDetailsController.get(detailsURLs, async (req: AppRequest, res: Response
     const claimantDetails = new GenericForm<PartyDetails>(new PartyDetails(claimant));
     const party = new GenericForm(claimant);
 
-    renderPage(res, req, party, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, claimantDetails, claimant?.type);
+    renderPage(res, req, party, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, claimantDetails, claimant.type);
   } catch (error) {
     next(error);
   }
@@ -93,7 +93,7 @@ claimantDetailsController.post(detailsURLs, async (req: AppRequest | Request, re
     } else {
       await saveClaimantParty(caseId, claimantIndividualAddress.model, claimantIndividualCorrespondenceAddress.model, req.body.provideCorrespondenceAddress, party.model);
 
-      if (claimant?.type === PartyType.COMPANY || claimant?.type === PartyType.ORGANISATION) {
+      if (claimant.type === PartyType.COMPANY || claimant.type === PartyType.ORGANISATION) {
         res.redirect(constructResponseUrlWithIdParams(caseId, CLAIMANT_PHONE_NUMBER_URL));
       } else {
         res.redirect(constructResponseUrlWithIdParams(caseId, CLAIMANT_DOB_URL));
