@@ -7,7 +7,7 @@ import {
   CITIZEN_DETAILS_URL,
   CITIZEN_PHONE_NUMBER_URL,
   CLAIM_DEFENDANT_EMAIL_URL,
-  DOB_URL
+  DOB_URL,
 } from '../../../../../routes/urls';
 import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';

@@ -1,5 +1,5 @@
-import {getSummarySections,} from '../../../../../../../main/services/features/claim/checkAnswers/checkAnswersService';
-import {CITIZEN_DETAILS_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL,} from '../../../../../../../main/routes/urls';
+import {getSummarySections} from '../../../../../../../main/services/features/claim/checkAnswers/checkAnswersService';
+import {CITIZEN_DETAILS_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL} from '../../../../../../../main/routes/urls';
 import {
   createClaimWithBasicRespondentDetails,
   createClaimWithContactPersonDetails,

@@ -1,11 +1,11 @@
 import nock from 'nock';
 import config from 'config';
-import {getSummarySections,} from '../../../../../main/services/features/claim/checkAnswers/checkAnswersService';
+import {getSummarySections} from '../../../../../main/services/features/claim/checkAnswers/checkAnswersService';
 import {
   CITIZEN_DETAILS_URL,
   CLAIM_CHECK_ANSWERS_URL,
   CLAIM_DEFENDANT_EMAIL_URL,
-  CLAIM_DETAILS_URL
+  CLAIM_DETAILS_URL,
 } from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {SummarySections} from '../../../../../main/common/models/summaryList/summarySections';
@@ -168,7 +168,7 @@ export function createClaimWithBasicRespondentDetails(): SummarySections {
               items: [{
                 href: CLAIM_DETAILS_URL,
                 text: 'Change',
-              }
+              },
               ],
             },
           },
@@ -183,7 +183,7 @@ export function createClaimWithBasicRespondentDetails(): SummarySections {
               items: [{
                 href: CLAIM_DETAILS_URL,
                 text: 'Change',
-              }
+              },
               ],
             },
           },
@@ -198,7 +198,7 @@ export function createClaimWithBasicRespondentDetails(): SummarySections {
               items: [{
                 href: CLAIM_DETAILS_URL,
                 text: 'Change',
-              }
+              },
               ],
             },
           },
@@ -213,7 +213,7 @@ export function createClaimWithBasicRespondentDetails(): SummarySections {
               items: [{
                 href: CLAIM_DETAILS_URL,
                 text: 'Change',
-              }
+              },
               ],
             },
           },
@@ -228,80 +228,80 @@ export function createClaimWithBasicRespondentDetails(): SummarySections {
               items: [{
                 href: CLAIM_DETAILS_URL,
                 text: 'Change',
-              }
+              },
               ],
             },
           },
         ],
       },
     },
-      {
-        title: 'Their details',
-        summaryList: {
-          rows: [
-            {
-              key: {
-                text: 'Full name',
-              },
-              value: {
-                text: PARTY_NAME,
-              },
-              actions: {
-                items: [{
-                  href: constructResponseUrlWithIdParams(CLAIM_ID, CITIZEN_DETAILS_URL),
-                  text: 'Change',
-                }
-                ],
-              }
+    {
+      title: 'Their details',
+      summaryList: {
+        rows: [
+          {
+            key: {
+              text: 'Full name',
             },
-            {
-              key: {
-                text: 'Address',
-              },
-              value: {
-                text: 'Simon street',
-              },
-              actions: {
-                items: [{
-                  href: constructResponseUrlWithIdParams(CLAIM_ID, CITIZEN_DETAILS_URL),
-                  text: 'Change',
-                }
-                ],
-              }
+            value: {
+              text: PARTY_NAME,
             },
-            {
-              key: {
-                text: 'Email',
+            actions: {
+              items: [{
+                href: constructResponseUrlWithIdParams(CLAIM_ID, CITIZEN_DETAILS_URL),
+                text: 'Change',
               },
-              value: {
-                text: 'contact@gmail.com',
-              },
-              actions: {
-                items: [{
-                  href: constructResponseUrlWithIdParams(CLAIM_ID, CLAIM_DEFENDANT_EMAIL_URL),
-                  text: 'Change',
-                }
-                ],
-              }
+              ],
             },
-            {
-              key: {
-                text: 'Contact number (optional)',
+          },
+          {
+            key: {
+              text: 'Address',
+            },
+            value: {
+              text: 'Simon street',
+            },
+            actions: {
+              items: [{
+                href: constructResponseUrlWithIdParams(CLAIM_ID, CITIZEN_DETAILS_URL),
+                text: 'Change',
               },
-              value: {
-                text: '98765',
+              ],
+            },
+          },
+          {
+            key: {
+              text: 'Email',
+            },
+            value: {
+              text: 'contact@gmail.com',
+            },
+            actions: {
+              items: [{
+                href: constructResponseUrlWithIdParams(CLAIM_ID, CLAIM_DEFENDANT_EMAIL_URL),
+                text: 'Change',
               },
-              actions: {
-                items: [{
-                  href: constructResponseUrlWithIdParams(CLAIM_ID, CITIZEN_DETAILS_URL),
-                  text: 'Change',
-                }
-                ],
-              }
-            }
-          ]
-        }
-      }
-    ]
+              ],
+            },
+          },
+          {
+            key: {
+              text: 'Contact number (optional)',
+            },
+            value: {
+              text: '98765',
+            },
+            actions: {
+              items: [{
+                href: constructResponseUrlWithIdParams(CLAIM_ID, CITIZEN_DETAILS_URL),
+                text: 'Change',
+              },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    ],
   };
 }
