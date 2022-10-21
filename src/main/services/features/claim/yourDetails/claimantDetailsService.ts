@@ -9,7 +9,7 @@ import {PartyDetails} from '../../../../common/form/models/partyDetails';
 
 export const getClaimantInformation = async (claimId: string): Promise<Party> => {
   const responseData = await getCaseDataFromStore(claimId);
-  return (responseData?.applicant1) ? responseData.applicant1 : {};
+  return (responseData.applicant1) ? responseData.applicant1 : {};
 };
 
 export const saveClaimant = async (claimId: string, citizenAddress: Address, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, postToThisAddress: YesNo, claimantDetails: PartyDetails): Promise<void> => {

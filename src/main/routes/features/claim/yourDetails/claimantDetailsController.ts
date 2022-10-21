@@ -74,7 +74,7 @@ claimantDetailsController.post(detailsURLs, async (req: AppRequest | Request, re
     let party = new GenericForm(new Party());
     const claimantIndividualAddress = new GenericForm<Address>(Address.fromObject(req.body));
     const claimantIndividualCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(getCorrespondenceAddressForm(req.body));
-    if (claimant?.type === PartyType.COMPANY || claimant?.type === PartyType.ORGANISATION) {
+    if (claimant.type === PartyType.COMPANY || claimant.type === PartyType.ORGANISATION) {
       party = new GenericForm(new Party(req.body.partyName, req.body.contactPerson));
       party.validateSync();
     }
@@ -89,7 +89,7 @@ claimantDetailsController.post(detailsURLs, async (req: AppRequest | Request, re
     }
 
     if (claimantDetails.hasErrors() || party.hasErrors() || claimantIndividualAddress.hasErrors() || claimantIndividualCorrespondenceAddress.hasErrors()) {
-      renderPage(res, req, party, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, claimantDetails, claimant?.type);
+      renderPage(res, req, party, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, claimantDetails, claimant.type);
     } else {
       await saveClaimantParty(caseId, claimantIndividualAddress.model, claimantIndividualCorrespondenceAddress.model, req.body.provideCorrespondenceAddress, party.model);
 

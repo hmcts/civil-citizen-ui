@@ -43,13 +43,13 @@ defendantDetailsController.get(detailsURLs, async (req: AppRequest, res: Respons
     defendantAddress = convertToPrimaryAddress(defendantAddress);
 
     let form: GenericForm<PartyDetails | CompanyOrOrganisationPartyDetails>;
-    if (defendantDetails?.type === PartyType.COMPANY || defendantDetails?.type === PartyType.ORGANISATION) {
+    if (defendantDetails.type === PartyType.COMPANY || defendantDetails.type === PartyType.ORGANISATION) {
       form = new GenericForm(new CompanyOrOrganisationPartyDetails(defendantDetails?.partyName, defendantDetails?.contactPerson));
     } else {
       form = new GenericForm<PartyDetails>(new PartyDetails(defendantDetails));
     }
     const primaryAddressForm = new GenericForm(Address.fromJson(defendantAddress));
-    renderView(res, form, primaryAddressForm, defendantDetails?.type);
+    renderView(res, form, primaryAddressForm, defendantDetails.type);
   } catch (error) {
     next(error);
   }
@@ -61,7 +61,7 @@ defendantDetailsController.post(detailsURLs, async (req: AppRequest, res: Respon
     const defendantDetails = await getDefendantInformation(userId);
     const body = req.body as Record<string, string>;
     let form: GenericForm<PartyDetails | CompanyOrOrganisationPartyDetails> ;
-    if (defendantDetails?.type === PartyType.COMPANY || defendantDetails?.type === PartyType.ORGANISATION) {
+    if (defendantDetails.type === PartyType.COMPANY || defendantDetails.type === PartyType.ORGANISATION) {
       form = new GenericForm(new CompanyOrOrganisationPartyDetails(body.partyName, body.contactPerson));
     } else {
       form = new GenericForm<PartyDetails>(new PartyDetails(body));
@@ -71,7 +71,7 @@ defendantDetailsController.post(detailsURLs, async (req: AppRequest, res: Respon
     form.validateSync();
 
     if (form.hasErrors() || primaryAddressForm.hasErrors()) {
-      renderView(res, form, primaryAddressForm, defendantDetails?.type);
+      renderView(res, form, primaryAddressForm, defendantDetails.type);
     } else {
       const partyDetailsAndPrimaryAddress = {
         ...form.model,
