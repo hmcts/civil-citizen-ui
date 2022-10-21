@@ -2,7 +2,6 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
-import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import {
   CLAIM_DEFENDANT_COMPANY_DETAILS_URL,
   CLAIM_DEFENDANT_EMAIL_URL,
@@ -49,16 +48,24 @@ describe('Defendant details controller', () => {
   describe('on GET', () => {
     describe('Individual', () => {
       it('should render individual details page', async () => {
-        app.locals.draftStoreClient = mockCivilClaim;
+        mockGetCaseData.mockImplementation(async () => {
+          const claim = new Claim();
+          claim.respondent1 = {type: PartyType.INDIVIDUAL};
+          return claim;
+        });
         const res = await request(app).get(CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL);
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Enter the defendant');
+        expect(res.text).toContain('Enter the defendant’s details');
       });
     });
 
     describe('Company', () => {
       it('should render company defendant details page', async () => {
-        app.locals.draftStoreClient = mockCivilClaim;
+        mockGetCaseData.mockImplementation(async () => {
+          const claim = new Claim();
+          claim.respondent1 = {type: PartyType.COMPANY};
+          return claim;
+        });
         const res = await request(app).get(CLAIM_DEFENDANT_COMPANY_DETAILS_URL);
         expect(res.status).toBe(200);
         expect(res.text).toContain('Company details');
@@ -67,7 +74,11 @@ describe('Defendant details controller', () => {
 
     describe('Organisation', () => {
       it('should render defendant details page', async () => {
-        app.locals.draftStoreClient = mockCivilClaim;
+        mockGetCaseData.mockImplementation(async () => {
+          const claim = new Claim();
+          claim.respondent1 = {type: PartyType.ORGANISATION};
+          return claim;
+        });
         const res = await request(app).get(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL);
         expect(res.status).toBe(200);
         expect(res.text).toContain('Enter organisation details');
@@ -106,7 +117,11 @@ describe('Defendant details controller', () => {
 
     describe('Sole Trader', () => {
       it('should render defendant details page', async () => {
-        app.locals.draftStoreClient = mockCivilClaim;
+        mockGetCaseData.mockImplementation(async () => {
+          const claim = new Claim();
+          claim.respondent1 = {type: PartyType.SOLE_TRADER};
+          return claim;
+        });
         const res = await request(app).get(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL);
         expect(res.status).toBe(200);
         expect(res.text).toContain('Enter the defendant&#39;s details');
