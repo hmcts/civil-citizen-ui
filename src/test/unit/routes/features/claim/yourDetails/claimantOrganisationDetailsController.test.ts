@@ -546,18 +546,6 @@ describe('Claimant Organisation Details page', () => {
         });
     });
 
-    // it('get/Claimant company details - should return test variable when there is no data on redis and civil-service', async () => {
-    //   mockGetCaseData.mockImplementation(async () => {
-    //     return new Party();
-    //   });
-    //   await request(app)
-    //     .get('/claim/claimant-company-details')
-    //     .expect((res) => {
-    //       expect(res.status).toBe(200);
-    //       expect(res.text).toContain('Enter company details');
-    //     });
-    // });
-
     it('POST/Claimant company details - should redirect on correct primary address', async () => {
       mockGetCaseData.mockImplementation(async () => {
         return new Claim();
