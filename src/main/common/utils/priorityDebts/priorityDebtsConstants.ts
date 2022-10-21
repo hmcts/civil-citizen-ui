@@ -1,7 +1,7 @@
 export const checkBoxFields = [
   {name: 'mortgage', text: 'COMMON.CHECKBOX_FIELDS.MORTGAGE'},
   {name: 'rent', text: 'COMMON.CHECKBOX_FIELDS.RENT'},
-  {name: 'councilTax', text: 'COMMON.CHECKBOX_FIELDS.COUNCIL_TAX'},
+  {name: 'councilTax', text: 'COMMON.CHECKBOX_FIELDS.COUNCIL_TAX_AND_COMMUNTY_CHARGE'},
   {name: 'gas', text: 'COMMON.CHECKBOX_FIELDS.GAS'},
   {name: 'electricity', text: 'COMMON.CHECKBOX_FIELDS.ELECTRICITY'},
   {name: 'water', text: 'COMMON.CHECKBOX_FIELDS.WATER'},

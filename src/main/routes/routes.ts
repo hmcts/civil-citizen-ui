@@ -142,6 +142,7 @@ import defendantDetailsController from './features/claim/defendant/defendantDeta
 import interestTypeController from './features/claim/interest/interestTypeController';
 import interestRateController from './features/claim/interest/claimantInterestRateController';
 import interestStartDateController from './features/claim/interest/interestStartDateController';
+import interestEndDateController from './features/claim/interest/interestEndDateController';
 import claimAmountBreakdownController from './features/claim/amount/claimAmountBreakdownController';
 import claimInterestController from './features/claim/interest/claimInterestController';
 import claimantInterestFromController from './features/claim/interest/claimantInterestFromController';
@@ -149,6 +150,7 @@ import claimantDetailsController from './features/claim/yourDetails/claimantDeta
 import defendantEmailController from './features/claim/yourDetails/defendantEmailController';
 import claimTotalInterestController from './features/claim/interest/claimTotalInterestController';
 import reasonController from './features/claim/details/reasonController';
+import timelineController from './features/claim/yourDetails/timelineController';
 import defendantPhoneController from './features/claim/yourDetails/defendantPhoneController';
 import continueClaimingInterestController from './features/claim/interest/continueClaimingInterestController';
 import helpWithFeesController from './features/claim/details/helpWithFeesController';
@@ -285,10 +287,12 @@ export default [
   interestStartDateController,
   claimantDetailsController,
   interestStartDateController,
+  interestEndDateController,
   claimantInterestFromController,
   defendantEmailController,
   claimTotalInterestController,
   reasonController,
+  timelineController,
   defendantPhoneController,
   continueClaimingInterestController,
   helpWithFeesController,
