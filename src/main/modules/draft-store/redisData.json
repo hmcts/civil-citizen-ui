@@ -132,7 +132,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -313,7 +315,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -490,7 +494,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -668,7 +674,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -838,7 +846,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -993,7 +1003,7 @@
         "individualFirstName": "Jan",
         "individualLastName": "Clark",
         "partyName": "Mr. Jan Clark",
-        "soleTraderTradingAs": "Gardener",
+        "soleTraderTradingAs": "Clark's Sons Ltd.",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -1066,7 +1076,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -1262,7 +1274,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -1461,7 +1475,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -1645,7 +1661,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -1818,7 +1836,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
