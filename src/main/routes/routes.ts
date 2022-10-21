@@ -150,6 +150,7 @@ import claimantDetailsController from './features/claim/yourDetails/claimantDeta
 import defendantEmailController from './features/claim/yourDetails/defendantEmailController';
 import claimTotalInterestController from './features/claim/interest/claimTotalInterestController';
 import reasonController from './features/claim/details/reasonController';
+import timelineController from './features/claim/yourDetails/timelineController';
 import defendantPhoneController from './features/claim/yourDetails/defendantPhoneController';
 import continueClaimingInterestController from './features/claim/interest/continueClaimingInterestController';
 import claimCheckAnswersController from './features/claim/checkAnswersController';
@@ -291,6 +292,7 @@ export default [
   defendantEmailController,
   claimTotalInterestController,
   reasonController,
+  timelineController,
   defendantPhoneController,
   continueClaimingInterestController,
   claimCheckAnswersController,

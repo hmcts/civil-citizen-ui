@@ -135,12 +135,12 @@ describe('Partial Admit - Response Details', () => {
     it('should return "Your timeline events" with no comments on your response details section', async () => {
       //Given
       const claim = ceateClaimWithPartialAdmission(YesNo.YES);
-      const defendantTimeline: DefendantTimeline = new DefendantTimeline(
+      const timeline: DefendantTimeline = new DefendantTimeline(
         [new TimelineRow('6 November 2022', 'Event 1')],
         '',
       );
       claim.partialAdmission = {
-        timeline: defendantTimeline,
+        timeline,
       };
       //When
       const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
@@ -158,12 +158,12 @@ describe('Partial Admit - Response Details', () => {
     it('should return empty section when timeline not added', async () => {
       //Given
       const claim = ceateClaimWithPartialAdmission(YesNo.YES);
-      const defendantTimeline: DefendantTimeline = new DefendantTimeline(
+      const timeline: DefendantTimeline = new DefendantTimeline(
         [],
         '',
       );
       claim.partialAdmission = {
-        timeline: defendantTimeline,
+        timeline,
       };
       //When
       const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');

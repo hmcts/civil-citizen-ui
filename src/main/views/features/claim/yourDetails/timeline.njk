@@ -1,0 +1,77 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/page-title.njk" import setPageTitle %}
+{% from "../../../macro/timeline-row.njk" import timelineRow %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../macro/error-summary.njk" import errorSummary %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.TIMELINE.TITLE') }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% set errors = form.getAllErrors() %}
+      {% set atLeastOneRequired = form.errorFor('rows') %}
+      {% if errors.length > 0 %}
+        {{ errorSummary(errors, t) }}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t('PAGES.TIMELINE.TITLE') }}</h1>
+          <p class="govuk-body">
+            {{ t('PAGES.TIMELINE.NO_EXACT_DATE') }}
+          </p>
+          <h2 class="govuk-heading-s govuk-!-margin-bottom-0">{{ t('PAGES.TIMELINE.EXAMPLE') }}</h2>
+          <ul class="govuk-body">
+            <li>{{ dates[0] }} - {{ t('PAGES.TIMELINE.EXAMPLE_ONE') }}</li>
+            <li>{{ dates[1] }} - {{ t('PAGES.TIMELINE.EXAMPLE_TWO') }}</li>
+            <li>{{ dates[2] }} - {{ t('PAGES.TIMELINE.EXAMPLE_THREE') }}</li>
+          </ul>
+
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            <div class="govuk-form-group {% if atLeastOneRequired %} govuk-form-group--error {% endif %}">
+              {% if atLeastOneRequired %}
+                <p class="govuk-error-message" id="atLeastOneFieldRequired">
+                  <span class="govuk-visually-hidden">{{ t('ERRORS.ERROR') }} :</span> {{ t(atLeastOneRequired) }}
+                </p>
+              {% endif %}
+              <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
+                <label class="govuk-label--s">
+                  {{ t('COMMON.DATE') }}
+                </label>
+                <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">
+                  {{ t('COMMON.DATE_EXAMPLE', { date: dates[0] }) }}
+                </p>
+              </div>
+              <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
+                <label class="govuk-label--s">{{ t('COMMON.TIMELINE.WHAT_HAPPENED') }}</label>
+                <p
+                  class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">{{ t('COMMON.TIMELINE.EXAMPLE_EVENT') }}</p>
+              </div>
+              {% for timeline in form.model.rows %}
+                {{ timelineRow(timeline, loop.index0, form, t) }}
+              {% endfor %}
+            </div>
+
+            {{ govukButton({
+              text: t('COMMON.BUTTONS.ADD_ANOTHER_EVENT'),
+              classes: "govuk-button--secondary append-row"
+            }) }}
+
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t("COMMON.BUTTONS.SAVE_AND_CONTINUE")
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

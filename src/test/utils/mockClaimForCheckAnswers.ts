@@ -729,7 +729,7 @@ export const ceateClaimWithPartialAdmission = (alreadyPaid?: YesNo, paymentOptio
   const whyDoYouDisagree: WhyDoYouDisagree = new WhyDoYouDisagree('Reasons for disagree');
   const howMuchHaveYouPaid: HowMuchHaveYouPaid = new HowMuchHaveYouPaid(param);
 
-  const defendantTimeline: DefendantTimeline = new DefendantTimeline(
+  const timeline: DefendantTimeline = new DefendantTimeline(
     [new TimelineRow('6 November 2022', 'Event 1'), new TimelineRow('7 November 2022', 'Event 2')],
     'Comments about timeline',
   );
@@ -752,7 +752,7 @@ export const ceateClaimWithPartialAdmission = (alreadyPaid?: YesNo, paymentOptio
     howMuchDoYouOwe: howMuchDoYouOwe,
     alreadyPaid: new GenericYesNo(alreadyPaid || ''),
     howMuchHaveYouPaid: howMuchHaveYouPaid,
-    timeline: defendantTimeline,
+    timeline,
     paymentIntention: new PaymentIntention(),
   };
   claim.respondent1 = {
@@ -797,7 +797,7 @@ export const createClaimWithFreeTelephoneMediationSectionForIndividual = (): Cla
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
     claim.respondent1.type = PartyType.INDIVIDUAL;
   }
-  const defendantTimeline: DefendantTimeline = new DefendantTimeline(
+  const timeline: DefendantTimeline = new DefendantTimeline(
     [new TimelineRow('6 November 2022', 'Event 1'), new TimelineRow('7 November 2022', 'Event 2')],
     'Comments about timeline',
   );
@@ -816,7 +816,7 @@ export const createClaimWithFreeTelephoneMediationSectionForIndividual = (): Cla
     howMuchDoYouOwe: howMuchDoYouOwe,
     alreadyPaid: new GenericYesNo(YesNo.YES),
     howMuchHaveYouPaid: howMuchHaveYouPaid,
-    timeline: defendantTimeline,
+    timeline,
     paymentIntention: new PaymentIntention(),
   };
   claim.partialAdmission = partialAdmission;
