@@ -49,7 +49,7 @@ export const buildTheirDetailsSection = (claim: Claim, claimId: string, lang: st
     const yourEmailHref = CLAIM_DEFENDANT_EMAIL_URL.replace(':id', claimId);
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMAIL', {lng: getLng(lang)}), claim.respondent1?.emailAddress, yourEmailHref, changeLabel(lang)));
   }
-  yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng: getLng(lang)}), claim.applicant1?.phoneNumber, phoneNumberHref, changeLabel(lang)));
+  yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng: getLng(lang)}), claim.respondent1?.phoneNumber, phoneNumberHref, changeLabel(lang)));
   return yourDetailsSection;
 };
 

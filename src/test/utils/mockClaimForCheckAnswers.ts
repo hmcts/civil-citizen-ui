@@ -75,6 +75,24 @@ export const createClaimWithBasicRespondentDetails = (contactPerson?: string): C
   claim.paymentOption = PaymentOptionType.IMMEDIATELY;
   return claim;
 };
+export const createClaimWithBasicApplicantDetails = (contactPerson?: string): Claim => {
+  const claim = new Claim();
+  claim.applicant1 = {
+    partyName: PARTY_NAME,
+    phoneNumber: CONTACT_NUMBER,
+    contactPerson: contactPerson,
+    dateOfBirth: new Date('2000-12-12'),
+    responseType: ResponseType.FULL_ADMISSION,
+    type: PartyType.INDIVIDUAL,
+    primaryAddress: {
+      AddressLine1: '23 Brook lane',
+      PostTown: 'Bristol',
+      PostCode: 'BS13SS',
+    },
+  };
+  claim.paymentOption = PaymentOptionType.IMMEDIATELY;
+  return claim;
+};
 
 export const createClaimWithRespondentDetailsWithPaymentOption = (paymentOption: PaymentOptionType): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
@@ -116,9 +134,35 @@ export const createClaimWithIndividualDetails = (): Claim => {
   };
   return claim;
 };
+export const createClaimWithApplicantIndividualDetails = (): Claim => {
+  const claim = new Claim();
+  claim.applicant1 = {
+    type: PartyType.INDIVIDUAL,
+    individualTitle: TITLE,
+    individualLastName: LAST_NAME,
+    individualFirstName: FIRST_NAME,
+    partyName: PARTY_NAME,
+    phoneNumber: CONTACT_NUMBER,
+    responseType: ResponseType.FULL_ADMISSION,
+    primaryAddress: {
+      AddressLine1: '23 Brook lane',
+      PostTown: 'Bristol',
+      PostCode: 'BS13SS',
+    },
+    correspondenceAddress: {
+      AddressLine1: '24 Brook lane',
+      PostTown: 'Bristol',
+      PostCode: 'BS13SS',
+    },
+  };
+  return claim;
+};
 
 export const createClaimWithContactPersonDetails = (): Claim => {
   return createClaimWithBasicRespondentDetails(CONTACT_PERSON);
+};
+export const createClaimWithContactPersonApplicantDetails = (): Claim => {
+  return createClaimWithBasicApplicantDetails(CONTACT_PERSON);
 };
 
 export const createClaimWithOneBankAccount = (): Claim => {
