@@ -17,7 +17,7 @@ export const getInterestDetails = (claim: Claim) => {
 
 function getInterestToDate(claim: Claim) {
   let interestToDate: Date | string = new Date().toISOString();
-  if (claim?.isInterestClaimUntilSubmitDate()) {
+  if (claim?.isInterestEndDateUntilSubmitDate()) {
     interestToDate = claim.submittedDate;
   }
   return interestToDate;

@@ -122,7 +122,7 @@
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
         },
-        "telephoneNumber": "01632960001"
+        "partyPhone": "01632960001"
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
@@ -158,7 +158,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -273,7 +275,7 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "SOLE_TRADER",
-        "telephoneNumber": "(0)207 127 0000",
+        "partyPhone": "(0)207 127 0000",
         "individualTitle": "Mr.",
         "individualFirstName": "Jan",
         "individualLastName": "Clark",
@@ -339,7 +341,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -450,7 +454,7 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "INDIVIDUAL",
-        "telephoneNumber": "(0)207 127 0000",
+        "partyPhone": "(0)207 127 0000",
         "individualTitle": "Mr.",
         "individualFirstName": "Alex",
         "individualLastName": "Van",
@@ -467,7 +471,7 @@
       },
       "respondent1": {
         "type": "INDIVIDUAL",
-        "telephoneNumber": "(0)207 127 0000",
+        "partyPhone": "(0)207 127 0000",
         "individualTitle": "Mr.",
         "individualFirstName": "Jhon",
         "individualLastName": "Smith",
@@ -516,7 +520,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -638,7 +644,7 @@
         }
       },
       "respondent1": {
-        "type": "INDIVIDUAL",
+        "type": "SOLE_TRADER",
         "individualTitle": "Mr.",
         "individualFirstName": "Jan",
         "individualLastName": "Clark",
@@ -694,7 +700,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -831,7 +839,8 @@
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
         },
-        "telephoneNumber": "01632960001"
+        "partyPhone": "01632960001",
+        "contactPerson": "Jane Smith"
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
@@ -863,7 +872,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -1018,6 +1029,7 @@
         "individualFirstName": "Jan",
         "individualLastName": "Clark",
         "partyName": "Mr. Jan Clark",
+        "soleTraderTradingAs": "Clark's Sons Ltd.",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -1090,7 +1102,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -1286,7 +1300,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -1449,7 +1465,7 @@
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
         },
-        "telephoneNumber": "01632960001"
+        "partyPhone": "01632960001"
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
@@ -1485,7 +1501,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -1603,7 +1621,7 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "SOLE_TRADER",
-        "telephoneNumber": "(0)207 127 0000",
+        "partyPhone": "(0)207 127 0000",
         "individualTitle": "Mr.",
         "individualFirstName": "Jan",
         "individualLastName": "Clark",
@@ -1669,7 +1687,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -1776,7 +1796,7 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "INDIVIDUAL",
-        "telephoneNumber": "(0)207 127 0000",
+        "partyPhone": "(0)207 127 0000",
         "individualTitle": "Mr.",
         "individualFirstName": "Alex",
         "individualLastName": "Van",
@@ -1793,7 +1813,7 @@
       },
       "respondent1": {
         "type": "INDIVIDUAL",
-        "telephoneNumber": "(0)207 127 0000",
+        "partyPhone": "(0)207 127 0000",
         "individualTitle": "Mr.",
         "individualFirstName": "Jhon",
         "individualLastName": "Smith",
@@ -1842,7 +1862,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
