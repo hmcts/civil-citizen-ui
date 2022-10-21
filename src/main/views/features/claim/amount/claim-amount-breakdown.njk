@@ -54,18 +54,30 @@
               {{ claimAmount(claimAmountRow, loop.index0, form, t) }}
             {% endfor %}
 
-            <div class="govuk-grid-column-two-thirds">
+            <div class="govuk-grid-column-full">
               {{ govukButton({
                 text: t('PAGES.CLAIM_AMOUNT_BREAKDOWN.ADD_ANOTHER_ROW'),
                 classes: "govuk-button--secondary append-row"
               }) }}
 
-              <div class="govuk-form-group">
-                {{ govukButton({
-                  text: t("COMMON.BUTTONS.SAVE_AND_CONTINUE")
-                }) }}
-                {{ contactUsForHelp(t) }}
+              <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+              <div class="language">
+                <p class="govuk-fieldset__legend govuk-fieldset__legend--m" role="status" aria-live="polite">
+                  £
+                  <span class="total-claim-amount">
+                  0
+               </span>
+                  <input type="hidden" class="total-claim-amount" name="totalAmount" value="{{ form.model.totalAmount }}"/>
+                </p>
               </div>
+            </div>
+            <div class="govuk-grid-column-two-thirds">
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t("COMMON.BUTTONS.SAVE_AND_CONTINUE")
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
             </div>
           </form>
         </div>

@@ -6,7 +6,7 @@ import {
   CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL,
   CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL,
   CLAIMANT_COMPANY_DETAILS_URL,
-  CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL,
+  CLAIMANT_INDIVIDUAL_DETAILS_URL,
   CLAIMANT_ORGANISATION_DETAILS_URL,
   CLAIMANT_SOLE_TRADER_DETAILS_URL,
 } from '../../../routes/urls';
@@ -15,7 +15,7 @@ const redirectToPage = (partyType: PartyType, res: Response, claimantOrDefendant
   switch (partyType) {
     case PartyType.INDIVIDUAL:
       (claimantOrDefendant === ClaimantOrDefendant.CLAIMANT) ?
-        res.redirect(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL) :
+        res.redirect(CLAIMANT_INDIVIDUAL_DETAILS_URL) :
         res.redirect(CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL);
       break;
     case PartyType.SOLE_TRADER:

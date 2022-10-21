@@ -84,7 +84,11 @@
       "status": "SUCCESS"
     },
     "totalInterest": 0,
-    "detailsOfClaim": "Ticket refunds",
+    "claimDetails": {
+      "reason": {
+        "text": "Test details of claim"
+      }
+    },
     "claimFee": {
       "calculatedAmountInPence": "3500",
       "code": "FEE0202",

@@ -12,25 +12,31 @@
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 
 {% set correspondenceAddressClass = 'govuk-visually-hidden' %}
-{% set addressTitle = t('PAGES.ORGANISATION_DETAILS.ADDRESS') %}
+
 {% set claimantIndividualAddressErrors = claimantIndividualAddress.getAllErrors() %}
 {% set partyErrors = party.getAllErrors() %}
 
-{% set partyType = t('PAGES.CITIZEN_DETAILS.PARTY_NAME_COMPANY') %}
-
+{% set partyTypeName = t('PAGES.CITIZEN_DETAILS.PARTY_NAME_COMPANY') %}
+{% set detailsTitle =  t('PAGES.CITIZEN_DETAILS.COMPANY_DETAILS')  %}
+{% set addressExplanation = t('PAGES.COMPANY_DETAILS.COMPANY_REGISTERED_OFFICE') %}
+{% set addressTitle = t('PAGES.CITIZEN_DETAILS.COMPANY_ADDRESS') %}
+{% set pageTitle = t('PAGES.COMPANY_DETAILS.CLAIMANT_PAGE_TITLE') %}
 
 {% if claimantIndividualCorrespondenceAddress %}
   {% set claimantIndividualCorrespondenceAddressErrors = claimantIndividualCorrespondenceAddress.getAllErrors() %}
   {% set claimantIndividualAddressErrors = claimantIndividualAddressErrors.concat(claimantIndividualCorrespondenceAddress.getAllErrors()) %}
 {% endif %}
 
-{% if party.model.type === partyType.ORGANISATION %}
-  {% set partyType = t('PAGES.CITIZEN_DETAILS.PARTY_NAME_ORGANISATION') %}
-  {% set payingExtra = t('PAGES.CITIZEN_DETAILS.PAYING_EXTRA_ORGANISATION') %}
+{% if type === partyType.ORGANISATION %}
+  {% set partyTypeName = t('PAGES.CITIZEN_DETAILS.PARTY_NAME_ORGANISATION') %}
+  {% set addressTitle = t('PAGES.ORGANISATION_DETAILS.ADDRESS') %}
+  {% set detailsTitle =  t('PAGES.ORGANISATION_DETAILS.TITLE')  %}
+  {% set pageTitle = t('PAGES.ORGANISATION_DETAILS.PAGE_TITLE') %}
+  {% set addressExplanation = t('PAGES.ORGANISATION_DETAILS.MAIN_OFFICE') %}
 {% endif %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.ORGANISATION_DETAILS.PAGE_TITLE') }}
+  {{ setPageTitle(pageTitle) }}
 {% endblock %}
 
 {% set correspondenceAddressHtml %}
@@ -40,8 +46,11 @@
     <div id="postcode-error" class="govuk-visually-hidden govuk-error-message">
       {{ t('PAGES.CITIZEN_DETAILS.ADDRESS_NOT_FOUND') + t('PAGES.CITIZEN_DETAILS.TRY_AGAIN') }}
     </div>
+    <label class="govuk-label" for="postcode">
+      {{ t('PAGES.CITIZEN_DETAILS.UK_POSTCODE') }}
+    </label>
     <input class="govuk-input govuk-input--width-10" id="postcode" name="postcode" type="text" autocomplete="postal-code"/>
-    <button href="#" class="govuk-button govuk-button--secondary findAddressButton" data-module="govuk-button" id="findAddressButton">
+    <button class="govuk-button govuk-button--secondary findAddressButton" data-module="govuk-button" id="findAddressButton">
       {{ t('PAGES.CITIZEN_DETAILS.FIND_ADDRESS') }}
     </button>
     <div id="selectAddress" class="govuk-visually-hidden govuk-!-margin-bottom-2">
@@ -82,7 +91,7 @@
 
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.ORGANISATION_DETAILS.TITLE') }}</h1>
+          <h1 class="govuk-heading-l">{{ detailsTitle}}</h1>
           <p class="govuk-body">{{ t('PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.THESE_DETAILS_ARE') }}</p>
         </div>
       </div>
@@ -93,7 +102,7 @@
 
             {{ govukInput({
               label: {
-                text: t(partyType)
+                text: t(partyTypeName)
               },
               classes: "govuk-!-width-one-half",
               id: "partyName",
@@ -117,10 +126,13 @@
             <div class="govuk-form-group" id="primaryPostcodeContainer">
               <h2 class="govuk-heading-m">{{ addressTitle }}</h2>
               <p class="govuk-body">{{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }} {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}</p>
-              <p class="govuk-body">{{ t('PAGES.ORGANISATION_DETAILS.MAIN_OFFICE') }}</p>
+              <p class="govuk-body">{{ addressExplanation }}</p>
               <div id="primaryPostcode-error" class="govuk-visually-hidden govuk-error-message">
                 {{ t('PAGES.CITIZEN_DETAILS.ADDRESS_NOT_FOUND') + t('PAGES.CITIZEN_DETAILS.TRY_AGAIN') }}
               </div>
+              <label class="govuk-label" for="primaryPostcode">
+                {{ t('PAGES.CITIZEN_DETAILS.UK_POSTCODE') }}
+              </label>
               <input class="govuk-input govuk-input--width-10" id="primaryPostcode" name="primaryPostcode" type="text" autocomplete="postal-code"/>
               <button href="#" class="govuk-button govuk-button--secondary findAddressButton" data-module="govuk-button" id="primaryfindAddressButton">
                 {{ t('PAGES.CITIZEN_DETAILS.FIND_ADDRESS') }}

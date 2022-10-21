@@ -89,34 +89,45 @@
 
             {{ govukInput({
               label: {
-                text: t('PAGES.CITIZEN_DETAILS.TITLE')
+                text: t('COMMON.INPUT_LABELS.TITLE')
               },
               classes: "govuk-!-width-one-half",
-              id: "title",
-              name: "claimantIndividualDetailsTitle",
-              value: claimantDetails.model.title,
-                errorMessage: { text: t(claimantDetails.errorFor('title')) } if claimantDetails.errorFor('title')
+              id: "individualTitle",
+              name: "individualTitle",
+              value: claimantDetails.model.individualTitle,
+                errorMessage: { text: t(claimantDetails.errorFor('individualTitle')) } if claimantDetails.errorFor('tiindividualTitle')
             }) }}
             {{ govukInput({
               label: {
-                text: t('PAGES.CITIZEN_DETAILS.FIRST_NAME')
+                text: t('COMMON.INPUT_LABELS.FIRST_NAME')
               },
               classes: "govuk-!-width-one-half",
-              id: "firstName",
-              name: "claimantIndividualDetailsFirstName",
-              value: claimantDetails.model.firstName,
-              errorMessage: { text: t(claimantDetails.errorFor('firstName')) } if claimantDetails.errorFor('firstName')
+              id: "individualFirstName",
+              name: "individualFirstName",
+              value: claimantDetails.model.individualFirstName,
+              errorMessage: { text: t(claimantDetails.errorFor('individualFirstName')) } if claimantDetails.errorFor('individualFirstName')
             }) }}
             {{ govukInput({
               label: {
-                text: t('PAGES.CITIZEN_DETAILS.LAST_NAME')
+                text: t('COMMON.INPUT_LABELS.LAST_NAME')
               },
               classes: "govuk-!-width-one-half",
-              id: "lastName",
-              name: "claimantIndividualDetailsLastName",
-              value: claimantDetails.model.lastName,
-               errorMessage: { text: t(claimantDetails.errorFor('lastName')) } if claimantDetails.errorFor('lastName')
+              id: "individualLastName",
+              name: "individualLastName",
+              value: claimantDetails.model.individualLastName,
+               errorMessage: { text: t(claimantDetails.errorFor('individualLastName')) } if claimantDetails.errorFor('individualLastName')
             }) }}
+            {% if type === partyType.SOLE_TRADER %}
+              {{ govukInput({
+                label: {
+                  text: t('PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.TRADING')
+                },
+                classes: "govuk-!-width-one-half",
+                id: "trading",
+                name: "trading",
+                value: claimantDetails.model.soleTraderTradingAs
+              }) }}
+            {% endif %}
 
             <div class="govuk-form-group" id="primaryPostcodeContainer">
               <h2 class="govuk-heading-m">{{ addressTitle }}</h2>
