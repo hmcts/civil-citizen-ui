@@ -1,0 +1,26 @@
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+
+{% macro setContent(t) %}
+  <div>
+    <p class="govuk-body">{{ t('COMMON.HELP_CALCULATING_INTEREST.USUAL_RATE') }}</p>
+    <p class="govuk-body">{{ t('COMMON.HELP_CALCULATING_INTEREST.CALCULATE_THIS') }}</p>
+    <ol>
+      <li>{{ t('COMMON.HELP_CALCULATING_INTEREST.STEPS.YEARLY_INTEREST') }}</li>
+      <li>{{ t('COMMON.HELP_CALCULATING_INTEREST.STEPS.DAILY_INTEREST') }}</li>
+      <li>{{ t('COMMON.HELP_CALCULATING_INTEREST.STEPS.TOTAL_INTEREST') }}</li>
+    </ol>
+    <div class="example-wrapper">
+      <span class="tag">{{ t('COMMON.HELP_CALCULATING_INTEREST.EXAMPLE.EXAMPLE') }}</span>
+      <p class="govuk-body govuk-!-margin-top-2">{{ t('COMMON.HELP_CALCULATING_INTEREST.EXAMPLE.EXAMPLE') }}</p>
+      <p class="govuk-body">{{ t('COMMON.HELP_CALCULATING_INTEREST.EXAMPLE.OWED') }}</p>
+      <p class="govuk-body">{{ t('COMMON.HELP_CALCULATING_INTEREST.EXAMPLE.ANNUAL_INTEREST') }}</p>
+    </div>
+  </div>
+{% endmacro %}
+
+{% macro helpCalculatingInterest(t) %}
+  {{ govukDetails({
+    summaryText: t('COMMON.HELP_CALCULATING_INTEREST.TITLE'),
+    html: setContent(t)
+  }) }}
+{% endmacro %}

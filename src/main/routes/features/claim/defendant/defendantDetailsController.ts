@@ -50,7 +50,6 @@ defendantDetailsController.get(detailsURLs, async (req: AppRequest, res: Respons
     } else {
       form = new GenericForm<PartyDetails>(new PartyDetails(defendantDetails));
     }
-
     const primaryAddressForm = new GenericForm(new Address(
       defendantAddress?.AddressLine1,
       defendantAddress?.AddressLine2,

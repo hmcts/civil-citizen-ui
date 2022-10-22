@@ -4,6 +4,8 @@ import {getCaseDataFromStore, saveDraftClaim} from '../modules/draft-store/draft
 import {CivilServiceClient} from '../app/client/civilServiceClient';
 import {Claim} from '../../main/common/models/claim';
 import {Request} from 'express';
+import {ClaimDetails} from '../common/form/models/claim/details/claimDetails';
+import {Reason} from '../common/form/models/claim/details/reason';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -23,7 +25,7 @@ export const getClaimById = async (claimId: string, req: Request): Promise<Claim
       claim = new Claim();
       claim.legacyCaseReference = 'testCaseReference';
       claim.totalClaimAmount = 200;
-      claim.detailsOfClaim = 'detailsOfClaimTest';
+      claim.claimDetails = new ClaimDetails(new Reason('reasontext'));
       claim.totalInterest = 15;
       claim.claimFee = {calculatedAmountInPence: '3500'};
     }

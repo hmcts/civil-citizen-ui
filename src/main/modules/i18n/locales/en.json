@@ -13,6 +13,7 @@
     "CHOOSE": "Choose",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
     "DASHBOARD": "Dashboard",
+    "DATE": "Date",
     "DATE_EXAMPLE": "For Example, {{ date }}",
     "DAY": "Day",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
@@ -34,6 +35,7 @@
       "TOWN_OR_CITY": "Town or city"
     },
     "BUTTONS": {
+      "ADD_ANOTHER_EVENT": "Add another event",
       "BACK": "Back",
       "CONTINUE": "Continue",
       "I_CONFIRM_IVE_READ_THIS": "I confirm I've read this",
@@ -44,12 +46,20 @@
       "SUBMIT_RESPONSE": "Submit Response"
     },
     "CHECKBOX_FIELDS": {
-      "COUNCIL_TAX": "Council Tax or Community Charge",
+      "COUNCIL_TAX_AND_COMMUNTY_CHARGE": "Council Tax or Community Charge",
+      "COUNCIL_TAX": "Council Tax",
       "ELECTRICITY": "Electricity",
+      "FOOD_AND_HOUSEKEEPING": "Food and housekeeping",
       "GAS": "Gas",
-      "MAINTENANCE": "Maintenance Payments",
+      "HIRE_PURCHASE": "Hire purchase",
+      "MAINTENANCE": "Maintenance payments",
+      "MOBILE_PHONE": "Mobile phone",
       "MORTGAGE": "Mortgage",
+      "OTHER": "Other expenses",
       "RENT": "Rent",
+      "SCHOOL_COSTS": "School costs (include clothing)",
+      "TRAVEL": "Travel (work or school)",
+      "TV_AND_BROADBAND": "TV and broadband",
       "WATER": "Water"
     },
     "CONDITIONAL_CHECKBOX": {
@@ -92,6 +102,21 @@
       "MY_ACCOUNT": "My account",
       "SIGN_IN": "Sign in",
       "SIGN_OUT": "Sign out"
+    },
+    "HELP_CALCULATING_INTEREST": {
+      "CALCULATE_THIS": "To calculate this, use the steps bellow.",
+      "EXAMPLE": {
+        "EXAMPLE": "Example",
+        "OWED": "If you were owed £1,000:",
+        "ANNUAL_INTEREST": "the annual interest would be £80 (1000 x 0.08 = 80) you’d divide £80 by 365 to get the daily interest: about 22p a day (80 / 365 = 0.22) after 50 days this would be £11 (50 x 0.22 = 11)"
+      },
+      "STEPS": {
+        "DAILY_INTEREST": "Work out the daily interest: divide your yearly interest from step 1 by 365 (the number of days in a year).",
+        "TOTAL_INTEREST": "Work out the total amount of interest: multiply the daily interest from step 2 by the number of days the debt has been overdue.",
+        "YEARLY_INTEREST": "Work out the yearly interest: take the amount you’re claiming and multiply it by 0.08 (which is 8%)."
+      },
+      "TITLE": "Help calculating interest",
+      "USUAL_RATE": "For most types of debt the rate is usually 8%."
     },
     "HELP_WITH_INTEREST_RATES": {
       "THE_COURT_WILL_DECIDE": "The court will decide if you're entitled to some or all of the interest claimed.",
@@ -166,6 +191,10 @@
       "STATEMENT_OF_WORK": "statement of truth",
       "TITLE": "Statement of truth",
       "WHEN_SATISFIED": "When you're satisfied that your answers are accurate, you should tick to \"sign\" this statement of truth on the form."
+    },
+    "TIMELINE": {
+      "EXAMPLE_EVENT": "For example, you might have signed a contract",
+      "WHAT_HAPPENED": "What happened"
     },
     "TYPES_OF_SENIOR_POSITION": {
       "CORPORATION_NOT_REGISTERED": "If your corporation isn't registered, a senior position could be:",
@@ -280,19 +309,6 @@
       "EMPLOYMENT_SELF_ANNUAL_TURNOVER": "Annual turnover",
       "EMPLOYED_AND_SELF_EMPLOYED": "Employed and Self-employed",
       "EXPENSES_REGULAR": "Regular expenses",
-      "EXPENSE_MORTGAGE": "Mortgage",
-      "EXPENSE_RENT": "Rent",
-      "EXPENSE_COUNCIL_TAX": "Council Tax",
-      "EXPENSE_GAS": "Gas",
-      "EXPENSE_ELECTRICITY": "Electricity",
-      "EXPENSE_WATER": "Water",
-      "EXPENSE_TRAVEL": "Travel (work or school)",
-      "EXPENSE_SCHOOL_COSTS": "School costs (include clothing)",
-      "EXPENSE_FOOD_AND_HOUSEKEEPING": "Food and housekeeping",
-      "EXPENSE_TV_BROADBAND": "TV and broadband",
-      "EXPENSE_HIRE_PURCHASE": "Hire purchase",
-      "EXPENSE_MOBILE_PHONE": "Mobile phone",
-      "EXPENSE_MAINTENANCE": "Maintenance payments",
       "FREE_TELEPHONE_CONTACT_NAME": "Contact name",
       "FREE_TELEPHONE_CONTACT_NUMBER": "Contact number",
       "FREE_TELEPHONE_MEDIATION": "Will you try free mediation",
@@ -388,6 +404,8 @@
       "CONTACT_PERSON": "Contact person (optional)",
       "CONTACT_PERSON_HINT": "The defendant can contact this person to discuss the claim",
       "CONFIRM_YOUR_DETAILS": "Confirm your details",
+      "COMPANY_ADDRESS": "Company Address",
+      "COMPANY_DETAILS": "Enter company details",
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Would you like correspondence sent to a different address?",
       "FIND_ADDRESS": "Find address",
@@ -491,6 +509,7 @@
         "PAGE_TITLE": "Enter your details",
         "THESE_DETAILS_ARE": "These details are shared with the person, business or organisation you are claiming from (the defendant).",
         "TITLE": "Enter your details",
+        "TRADING": "Trading (optional)",
         "YOUR_POSTAL_ADDRESS": "Your postal address"
       },
       "CONTINUE_CLAIMING_INTEREST": {
@@ -502,6 +521,13 @@
         "PERSONAL_EMAIL": "This must be their personal email address",
         "TITLE": "Their email address (optional)",
         "USE_THIS_EMAIL": "We'll use this to tell them you've made a claim, as well as notifying them by post."
+      },
+      "INTEREST_END_DATE": {
+        "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
+        "PAGE_TITLE": "When do you want to stop claiming interest?",
+        "TITLE": "When do you want to stop claiming interest?",
+        "UNTIL_CLAIM_SUBMIT_DATE": "When you submit the claim",
+        "UNTIL_SETTLED_OR_JUDGEMENT_MADE": "Continue until the claim is settled or judgment made"
       },
       "RESOLVE_THE_DISPUTE": {
         "P1": {
@@ -520,8 +546,8 @@
         "TITLE": "Try to resolve the dispute"
       },
       "WHEN_CLAIM_INTEREST_FROM": {
-        "FROM_A_SPECIFIC_DATE" : "A particular date",
-        "FROM_CLAIM_SUBMIT_DATE" : "The date you submit the claim",
+        "FROM_A_SPECIFIC_DATE": "A particular date",
+        "FROM_CLAIM_SUBMIT_DATE": "The date you submit the claim",
         "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
         "HINT_EXAMPLE_DATE": "For example the date an invoice was overdue or that you told someone they owed you the money.",
         "PAGE_TITLE": "When are you claiming interest from?",
@@ -1347,10 +1373,27 @@
       "FIND_PIN": "You can find it on the email or letter we sent you.",
       "FOR_A_NEW_SECURITY_CODE": "for a new security code.",
       "SECURITY_CODE": "Security code",
+      "SOURCE_OF_EXPENSES": "Source of expense",
       "TITLE": "Enter security code"
     },
+    "REASON": {
+      "EXTRA_FEE_IF_CHANGE_DETAILS": "You'll have to pay an extra fee if you want to change the details of the claim later.",
+      "DONT_GIVE_TIMELINE": "Don't give us a detailed timeline - we'll ask for that separately.",
+      "PAGE_TITLE": "Briefly explain your claim",
+      "TELL_US_WHY": "Tell us why you believe the defendant owes you money.",
+      "TITLE": "Briefly explain your claim"
+    },
     "REGULAR_EXPENSES": {
-      "PAGE_TITLE": "Your regular expenses"
+      "ADD_ANOTHER_EXPENSE": "Add another expense",
+      "AMOUNT_PAID": "Amount paid",
+      "INCLUDE_ALL_MORTGAGES": "Include all mortgages",
+      "INCLUDE_SEWERAGE_PAYMENTS": "Include sewerage payments",
+      "INFORMATION_NOTE": "Select all that apply. The information you enter must be truthful and accurate. Do not include any arrears repayments.",
+      "PAGE_TITLE": "Your regular expenses",
+      "PAID_EVERY": "Paid every",
+      "SOURCE_OF_EXPENSES": "Source of expense",
+      "TOTAL_MONTHLY_EXPENDITURE": "Total monthly expenditure",
+      "WHAT_ARE_YOUR_REGUALAR_EXPENSES": "What are your regular expenses?"
     },
     "REGULAR_INCOME": {
       "AMOUNT_RECEIVED": "Amount received",
@@ -1582,6 +1625,22 @@
     "TENANCY_DEPOSIT": {
       "TITLE": "Is your claim for a tenancy deposit?"
     },
+    "TIMELINE": {
+      "EXAMPLE": "Example timeline",
+      "EXAMPLE_ONE": "John Smith gave me a quote to replace the roof.",
+      "EXAMPLE_TWO": "We agreed and signed a contract for the work.",
+      "EXAMPLE_THREE": "I noticed a leak on the landing and told Mr Smith about this.",
+      "NO_EXACT_DATE": "If you don’t know exact date, tell us the month and year",
+      "TITLE": "Timeline of events"
+    },
+    "TOTAL_INTEREST": {
+      "ADD_TO_CLAIM_AMOUNT": "We’ll add it to your claim amount.",
+      "CALCULATE_INTEREST": "You need to calculate interest for the different time periods or items and let us know the total.",
+      "CALCULATION_PROOF": "Show how you calculated the amount",
+      "PAGE_TITLE": "Claim total interest",
+      "TITLE": "What is the total interest for your claim?",
+      "TOTAL_AMOUNT": "Total interest amount"
+    },
     "TRIED_TO_SETTLE": {
       "BOTH_PARTIES": "Both parties must take certain steps before going to court.",
       "PAGE_TITLE": "Have you tried to settle this claim before going to court?",
@@ -1636,11 +1695,9 @@
     },
     "VULNERABILITY": {
       "PAGE_TITLE": "Vulnerability questions",
-      "QUESTION_1": "Question 1: Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider?",
-      "QUESTION_2": "Question 2: If you have answered \"yes\" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?",
-      "YOUR_ANSWERS": "Your answers to the questions above will enable the court and the judge, to consider what steps, adjustments or support can be arranged.",
-      "REMINDER": "You are reminded that a copy of this directions questionnaire will be shared with all other parties.",
-      "TITLE": "Vulnerability Questions"
+      "QUESTION_1": "This is someone who has been the victim of domestic or other abuse, has a learning disability, physical or mental illness or reduced mental capacity. The court will look at what adjustments or support the person needs.",
+      "QUESTION_2": "Tell us who is vulnerable and what support they need",
+      "TITLE": "Are you, your experts or witnesses vulnerable in a way that the court needs to consider?"
     },
     "WELSH_LANGUAGE": {
       "ENGLISH": "English",
@@ -1735,10 +1792,60 @@
     "ENTER_VALID_SECURITY_CODE": "Enter a valid security code",
     "ENTER_VALID_TITLE": "Enter valid title",
     "EQUAL_INSTALMENTS_REQUIRED": "Enter a valid amount for equal instalments",
+    "EXPENSES_ENTER_OTHER_SOURCE": "Enter other expense source",
+    "EXPENSES_AMOUNT": {
+      "COUNCIL_TAX": "Enter how much you pay for council tax",
+      "ELECTRICITY": "Enter how much you pay for electricity",
+      "FOOD_HOUSEKEEPING": "Enter how much you pay for food and housekeeping",
+      "GAS": "Enter how much you pay for gas",
+      "HIRE_PURCHASES": "Enter how much you pay for hire purchase",
+      "MAINTENANCE_PAYMENTS": "Enter how much you pay for maintenance payments",
+      "MOBILE_PHONE": "Enter how much you pay for mobile phone",
+      "MORTGAGE": "Enter how much you pay for mortgage",
+      "OTHER": "Enter how much you pay for other expense",
+      "RENT": "Enter how much you pay for rent",
+      "SCHOOL_COSTS": "Enter how much you pay for school costs (include clothing)",
+      "TRAVEL": "Enter how much you pay for travel (work or school)",
+      "TV_AND_BROADBAND": "Enter how much you pay for TV and broadband",
+      "WATER": "Enter how much you pay for water"
+    },
+    "EXPENSES_AMOUNT_FORMAT": {
+      "COUNCIL_TAX": "Enter a valid council tax amount, maximum two decimal places",
+      "ELECTRICITY": "Enter a valid electricity amount, maximum two decimal places",
+      "FOOD_HOUSEKEEPING": "Enter a valid housekeeping amount, maximum two decimal places",
+      "GAS": "Enter a valid gas amount, maximum two decimal places",
+      "HIRE_PURCHASES": "Enter a valid hire purchase amount, maximum two decimal places",
+      "MAINTENANCE_PAYMENTS": "Enter a valid maintenance payments amount, maximum two decimal places",
+      "MOBILE_PHONE": "Enter a valid mobile phone amount, maximum two decimal places",
+      "MORTGAGE": "Enter a valid mortgage amount, maximum two decimal places",
+      "OTHER": "Enter a valid other expense amount, maximum two decimal places",
+      "RENT": "Enter a valid rent amount, maximum two decimal places",
+      "SCHOOL_COSTS": "Enter a valid school costs amount, maximum two decimal places",
+      "TRAVEL": "Enter a valid travel amount, maximum two decimal places",
+      "TV_AND_BROADBAND": "Enter a valid TV and broadband amount, maximum two decimal places",
+      "WATER": "Enter a valid water amount, maximum two decimal places"
+    },
+    "EXPENSES_FREQUENCY": {
+      "COUNCIL_TAX": "Select how often you pay for council tax",
+      "ELECTRICITY": "Select how often you pay for electricity",
+      "FOOD_HOUSEKEEPING": "Select how often you pay for food and housekeeping",
+      "GAS": "Select how often you pay for gas",
+      "HIRE_PURCHASES": "Select how often you pay for hire purchase",
+      "MAINTENANCE_PAYMENTS": "Select how often you pay for maintenance payments",
+      "MOBILE_PHONE": "Select how often you pay for mobile phone",
+      "MORTGAGE": "Select how often you pay for mortgage",
+      "OTHER": "Select how often you pay for other expense",
+      "RENT": "Select how often you pay for rent",
+      "SCHOOL_COSTS": "Select how often you pay for (include clothing)",
+      "TRAVEL": "Select how often you pay for travel (work or school)",
+      "TV_AND_BROADBAND": "Select how often you pay for TV and broadband",
+      "WATER": "Select how often you pay for water"
+    },
     "EXPERT_NAME_REQUIRED": "Enter the expert’s name",
     "ERROR": "Error",
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Enter a first payment date in the future",
     "GIVE_DETAILS_DOCUMENTS": "Give details of the documents",
+    "HOW_YOU_CALCULATED_AMOUNT": "You must tell us how you calculated the amount",
     "JOB_TITLE_REQUIRED": "Enter a job title",
     "NAME_REQUIRED": "Please enter a name",
     "NO_LANGUAGE_ENTERED": "Enter the language that needs to be interpreted",
@@ -1746,16 +1853,16 @@
     "NO_SIGN_LANGUAGE_ENTERED": "Enter the sign language that needs to be interpreted",
     "NUMBER_OF_PEOPLE_REQUIRED": "Enter a numeric, for example 3",
     "NUMBER_REQUIRED": "Enter a valid number",
+    "ONE_ROW_REQUIRED": "Enter at least one row",
     "OPTION_REQUIRED": "Please select one reason",
     "OPTION_REQUIRED_RESPONSE": "Please select a response",
     "PAGE_NOT_FOUND": "Page Not Found",
     "PAYMENT_FREQUENCY_REQUIRED": "Choose a payment frequency",
     "PHONE_NUMBER_REQUIRED": "Please enter a phone number",
-    "QUESTION_1_REQUIRED": "Question 1: Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider? is required",
-    "QUESTION_2_REQUIRED": "Question 2: If you have answered \"yes\" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?",
     "RATE_CHOOSE_ONE": "Choose rate of interest",
     "RATE_CORRECT_THE_ONE_ENTERED": "Correct rate you’ve entered",
     "RATE_EXPLAIN_CLAIMING_IT": "You haven’t explained why you’re claiming this rate",
+    "REASON_REQUIRED": "You need to explain why you believe you’re owed the money",
     "REDIS_FAILURE": "Redis DraftStore failure.",
     "SECURITY_CODE_WRONG_OR_EXPIRED": "The security code was not right or has expired",
     "SELECT_ADDITIONAL_TIME": "Select how much additional time you are asking for",
@@ -1852,6 +1959,7 @@
     "VALID_CITY": "Enter a valid town/city",
     "VALID_CLAIM_AMOUNT": "Enter an amount of money",
     "VALID_CLAIM_INTEREST_FROM": "Choose when to claim interest from",
+    "VALID_CLAIM_INTEREST_END_DATE": "Choose when you want to stop claiming interest",
     "VALID_CLAIM_NUMBER": "Enter a claim number",
     "VALID_CLAIM_REFERENCE_NUMBER": "Enter a valid claim number",
     "VALID_CORRESPONDENCE_ADDRESS_LINE_1": "Enter first correspondence address line",
@@ -1908,6 +2016,8 @@
     "VALID_YEAR": "Enter a valid year",
     "VALID_YES_NO_OPTION": "Choose option: Yes or No",
     "VALID_YES_NO_SELECTION": "Please select yes or no",
-    "VALID_WHY_FROM_PARTICULAR_DATE": "You need to explain why you are claiming"
+    "VALID_WHY_FROM_PARTICULAR_DATE": "You need to explain why you are claiming",
+    "QUESTION_1_REQUIRED": "Select yes if someone is vulnerable in a way that the court needs to consider",
+    "QUESTION_2_REQUIRED": "Tell us who is vulnerable and what support they need"
   }
 }
