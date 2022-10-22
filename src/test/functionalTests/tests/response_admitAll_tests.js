@@ -8,6 +8,7 @@ const admitAll = 'admitAll';
 const immediatePayment = 'immediate';
 const bySetDate = 'bySetDate';
 const repaymentPlan = 'repaymentPlan';
+const dontWantMoreTime = 'dontWantMoreTime';
 
 let claimRef;
 
@@ -21,6 +22,7 @@ Before(async ({api}) => {
 
 Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll', () => {
   CommonSteps.EnterPersonalDetails(claimRef);
+  CommonSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   ResponseSteps.EnterResponseToClaim(claimRef, admitAll);
   ResponseSteps.EnterPaymentOption(claimRef, immediatePayment);
   ResponseSteps.CheckAndSubmit(claimRef);
@@ -28,6 +30,7 @@ Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll', ()
 
 Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll', () => {
   CommonSteps.EnterPersonalDetails(claimRef);
+  CommonSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   ResponseSteps.EnterResponseToClaim(claimRef, admitAll);
   ResponseSteps.EnterPaymentOption(claimRef, bySetDate);
   ResponseSteps.EnterDateToPayOn();
@@ -37,6 +40,7 @@ Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll', () => 
 
 Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll', () => {
   CommonSteps.EnterPersonalDetails(claimRef);
+  CommonSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   ResponseSteps.EnterResponseToClaim(claimRef, admitAll);
   ResponseSteps.EnterPaymentOption(claimRef, repaymentPlan);
   CommonSteps.EnterFinancialDetails(claimRef);

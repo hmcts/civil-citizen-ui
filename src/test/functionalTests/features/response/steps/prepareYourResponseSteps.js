@@ -31,6 +31,8 @@ const  RepaymentPlan  =  require('../pages/repaymentPlan');
 const  PartAdmitAlreadyPaid  =  require('../pages/partAdmitAlreadyPaid');
 const  RejectAllOfClaim  =  require('../pages/rejectAllOfClaim');
 const  CarerDetails  =  require('../pages/carerDetails');
+const ViewYourOptionsBeforeDeadline = require('../pages/viewYourOptionsBeforeDeadline');
+const HowMuchYouHavePaid = require('../pages/howMuchYouHavePaid');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const taskListPage = new TaskListPage();
@@ -66,6 +68,8 @@ const repaymentPlan= new RepaymentPlan();
 const partAdmitAlreadyPaid = new PartAdmitAlreadyPaid();
 const rejectAllOfClaim = new RejectAllOfClaim();
 const selectCarerDetails = new CarerDetails();
+const viewYourOptionsBeforeDeadline = new ViewYourOptionsBeforeDeadline();
+const howMuchYouHavePaid = new HowMuchYouHavePaid();
 
 class ResponseSteps {
 
@@ -94,6 +98,11 @@ class ResponseSteps {
   EnterDateToPayOn() {
     dateToPayOn.enterDateToPayOn();
   }
+
+  EnterYourOptions(claimRef, deadlineOption) {
+    viewYourOptionsBeforeDeadline.selectYouOptions(claimRef, deadlineOption);
+  }
+
   ShareYourFinancialDetailsIntro(claimRef) {
     shareYourFinancialDetailsIntro.open(claimRef);
     shareYourFinancialDetailsIntro.clickContinue();
@@ -172,6 +181,9 @@ class ResponseSteps {
     }else{
       selectEmploymentDetails.clickNoButton();
     }
+  }
+  EnterHowMuchYouHavePaid(claimRef, amount) {
+    howMuchYouHavePaid.enterPaymentDetails(claimRef, amount);
   }
   EnterEmployerDetails() {
     enterEmployerDetails.enterEmployerDetails();

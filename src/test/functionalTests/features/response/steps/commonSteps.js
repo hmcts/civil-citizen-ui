@@ -13,6 +13,11 @@ class CommonSteps {
     ResponseSteps.EnterDateOfBirth(claimRef);
     ResponseSteps.EnterContactNumber(claimRef);
   }
+
+  EnterYourOptionsForDeadline(claimRef, deadlineOption){
+    ResponseSteps.EnterYourOptions(claimRef, deadlineOption);
+  }
+
   EnterFinancialDetails(claimRef) {
     ResponseSteps.ShareYourFinancialDetailsIntro(claimRef);
     ResponseSteps.EnterBankAccountDetails();

@@ -7,6 +7,9 @@ const partAdmit = 'partAdmit';
 const immediatePayment = 'immediate';
 const bySetDate = 'bySetDate';
 const repaymentPlan = 'repaymentPlan';
+const dontWantMoreTime = 'dontWantMoreTime';
+// eslint-disable-next-line no-unused-vars
+const yesIWantMoretime = 'yesIWantMoretime';
 
 let claimRef;
 
@@ -19,9 +22,12 @@ Before(async ({api}) => {
 
 Scenario('Response with PartAdmit and Immediate payment @citizenUI @partAdmit', () => {
   CommonSteps.EnterPersonalDetails(claimRef);
+  CommonSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
   ResponseSteps.SelectPartAdmitAlreadyPaid('yes');
   ResponseSteps.EnterPaymentOption(claimRef, immediatePayment);
+  ResponseSteps.EnterHowMuchYouHavePaid(claimRef, 500);
+  ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef);
   ResponseSteps.CheckAndSubmit(claimRef);
 });
 
