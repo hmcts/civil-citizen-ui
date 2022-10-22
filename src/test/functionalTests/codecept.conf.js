@@ -1,19 +1,20 @@
 const testConfig = require('../config.js');
 
+const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : false;
+
 exports.config = {
   tests: '../functionalTests/tests/*_tests.js',
   output: process.env.REPORT_DIR || 'test-results/functional',
   helpers: {
-    Puppeteer: {
+    Playwright: {
       url: testConfig.TestUrl,
-      restart: false,
-      keepCookies: true,
-      show: process.env.SHOW_BROWSER_WINDOW === 'true' || true,
-      windowSize: '1200x900',
-      waitForTimeout: parseInt(process.env.WAIT_FOR_TIMEOUT_MS || 50000),
-      chrome: {
-        ignoreHTTPSErrors: true,
-      },
+      show: !testHeadlessBrowser,
+      browser: 'chromium',
+      waitForTimeout: 20000,
+      timeout: 20000,
+      waitForAction: 1000,
+      waitForNavigation: 'networkidle0',
+      ignoreHTTPSErrors: true,
     },
   },
   include: {

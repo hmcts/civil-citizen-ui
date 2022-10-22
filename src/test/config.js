@@ -1,7 +1,7 @@
 
 //const PropertiesVolume = require('../main/modules/properties-volume/');
 const defaultPassword = process.env.CITIZEN_PASSWORD;
-const testUrl = process.env.TEST_URL || 'https://civil-citizen-ui-pr-961.service.core-compute-preview.internal';
+const testUrl = process.env.TEST_URL || 'https://civil-citizen-ui-pr-998.service.core-compute-preview.internal';
 const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
 
 // if (!process.env.TEST_PASSWORD) {
@@ -33,12 +33,12 @@ module.exports = {
   },
   url: {
 
-    // manageCase: process.env.URL || 'https://xui-civil-citizen-ui-pr-961.service.core-compute-preview.internal',
+    // manageCase: process.env.URL || 'https://xui-civil-citizen-ui-pr-974.service.core-compute-preview.internal',
     // authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://rpe-service-auth-provider-aat.service.core-compute-aat.internal',
-    // ccdDataStore: process.env.CCD_DATA_STORE_URL || 'http://ccd-data-store-api-civil-citizen-ui-pr-961.service.core-compute-preview.internal',
+    // ccdDataStore: process.env.CCD_DATA_STORE_URL || 'http://ccd-data-store-api-civil-citizen-ui-pr-974.service.core-compute-preview.internal',
     // dmStore: process.env.DM_STORE_URL || 'http://dm-store-aat.service.core-compute-aat.internal',
     // idamApi: process.env.IDAM_API_URL || 'https://idam-api.aat.platform.hmcts.net',
-    // civilService: process.env.CIVIL_SERVICE_URL || 'https://civil-service-civil-citizen-ui-pr-961.service.core-compute-preview.internal',
+    // civilService: process.env.CIVIL_SERVICE_URL || 'https://civil-service-civil-citizen-ui-pr-974.service.core-compute-preview.internal',
 
     manageCase: process.env.URL || 'https://manage-case.demo.platform.hmcts.net/',
     authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://rpe-service-auth-provider-demo.service.core-compute-demo.internal',

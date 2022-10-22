@@ -10,6 +10,7 @@ const buttons = {
 
 class CheckYourAnswersPage {
   checkAndSubmit(claimRef) {
+    console.log('The value of the claimref inside check ur answers  ' + claimRef);
     I.amOnPage('/case/'+claimRef+'/response/check-and-send');
     I.see('Check your answers', 'h1');
     I.waitForElement(fields.cyaSigned);

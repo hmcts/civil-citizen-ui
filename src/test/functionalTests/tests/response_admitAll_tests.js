@@ -15,6 +15,7 @@ Feature('Response with AdmitAll');
 
 Before(async ({api}) => {
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
+  console.log('claimRef has been created Successfully    <===>  '  , claimRef);
   LoginSteps.EnterUserCredentials(config.Username, config.Password);
 });
 

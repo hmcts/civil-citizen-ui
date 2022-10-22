@@ -8,7 +8,7 @@ const fields = {
 };
 
 const buttons = {
-  saveAndContinue: 'button.govuk-button',
+  saveAndContinue: 'div > form > button',
 };
 
 class DateOfBirthDetailsPage {
@@ -18,7 +18,7 @@ class DateOfBirthDetailsPage {
     I.fillField(fields.day, '10');
     I.fillField(fields.month, '12');
     I.fillField(fields.year, '1990');
-
+    I.wait(5);
     I.click(buttons.saveAndContinue);
   }
 }
