@@ -1131,6 +1131,12 @@
       "REACHING_SETTLEMENT": "Setlo’r anghydfod",
       "TITLE": "Gwasanaeth cyfryngu dros y ffôn am ddim"
     },
+    "HELP_WITH_FEES":{
+      "ENTER_NUMBER": "Enter the Help With Fees number",
+      "PAGE_TITLE": "Do you have a Help With Fees reference number?",
+      "TITLE": "Do you have a Help With Fees reference number?",
+      "ONLY_ONE": "You'll only have one if you applied for Help With Fees."
+    },
     "INTEREST_CLAIM_OPTIONS": {
       "BREAK_DOWN": "Break down interest for different time periods or items",
       "PAGE_TITLE": "How do you want to claim interest?",
@@ -1844,6 +1850,7 @@
     "ERROR": "Error",
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Rhowch ddyddiad talu cyntaf yn y dyfodol",
     "GIVE_DETAILS_DOCUMENTS": "Give details of the documents",
+    "HELP_WITH_FEES_REFERENCE_REQUIRED": "Enter your Help With Fees reference number",
     "HOW_YOU_CALCULATED_AMOUNT": "You must tell us how you calculated the amount",
     "JOB_TITLE_REQUIRED": "Rhowch deitl swydd",
     "NAME_REQUIRED": "Nodwch enw os gwelwch yn dda",

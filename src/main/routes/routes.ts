@@ -97,7 +97,7 @@ import claimAgainstGovernmentController from './features/public/eligibility/clai
 import claimantOver18EligibilityController from './features/public/eligibility/claimantOver18EligibilityController';
 import defendantAgeEligibilityController from './features/public/eligibility/defendantAgeEligibilityController';
 import someUsefulInfoFeesController from './features/public/eligibility/someUsefulInfoFeesController';
-import helpWithFeesReferenceController from './features/public/eligibility/helpWithFeesReferenceController';
+import helpWithFeesReferenceEligibilityController from './features/public/eligibility/helpWithFeesReferenceEligibilityController';
 import applyForHelpWithFeesController from './features/public/eligibility/applyForHelpWithFeesController';
 import signpostingController from './features/public/firstContact/signpostingController';
 import accessDeniedController from './features/public/firstContact/accessDeniedController';
@@ -153,6 +153,7 @@ import reasonController from './features/claim/details/reasonController';
 import timelineController from './features/claim/yourDetails/timelineController';
 import defendantPhoneController from './features/claim/yourDetails/defendantPhoneController';
 import continueClaimingInterestController from './features/claim/interest/continueClaimingInterestController';
+import helpWithFeesController from './features/claim/details/helpWithFeesController';
 
 export default [
   homeController,
@@ -245,7 +246,7 @@ export default [
   defendantAgeEligibilityController,
   someUsefulInfoFeesController,
   applyForHelpWithFeesController,
-  helpWithFeesReferenceController,
+  helpWithFeesReferenceEligibilityController,
   signpostingController,
   accessDeniedController,
   claimReferenceController,
@@ -294,4 +295,5 @@ export default [
   timelineController,
   defendantPhoneController,
   continueClaimingInterestController,
+  helpWithFeesController,
 ];
