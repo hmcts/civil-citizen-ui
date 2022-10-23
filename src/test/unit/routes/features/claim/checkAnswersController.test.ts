@@ -1,16 +1,10 @@
 import nock from 'nock';
 import config from 'config';
 import {getSummarySections} from '../../../../../main/services/features/claim/checkAnswers/checkAnswersService';
-import {
-  CITIZEN_DETAILS_URL,
-  CLAIM_CHECK_ANSWERS_URL,
-  CLAIM_DEFENDANT_EMAIL_URL,
-  CLAIM_DETAILS_URL,
-} from '../../../../../main/routes/urls';
+import {CLAIM_CHECK_ANSWERS_URL} from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {SummarySections} from '../../../../../main/common/models/summaryList/summarySections';
 import {getElementsByXPath} from '../../../../utils/xpathExtractor';
-import {constructResponseUrlWithIdParams} from '../../../../../main/common/utils/urlFormatter';
+import {createClaimWithBasicDetails} from '../../../../utils/mocks/claimDetailsMock';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -20,14 +14,13 @@ const {app} = require('../../../../../main/app');
 const session = require('supertest-session');
 const civilServiceUrl = config.get<string>('services.civilService.url');
 const data = require('../../../../utils/mocks/defendantClaimsMock.json');
+
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/claimDetailsService');
 jest.mock('../../../../../main/services/features/claim/checkAnswers/checkAnswersService');
 
 const mockGetSummarySections = getSummarySections as jest.Mock;
-
 const PARTY_NAME = 'Mrs. Mary Richards';
-const CLAIM_ID = 'aaa';
 
 describe('Response - Check answers', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -51,7 +44,7 @@ describe('Response - Check answers', () => {
 
     it('should return check answers page', async () => {
       mockGetSummarySections.mockImplementation(() => {
-        return createClaimWithBasicRespondentDetails();
+        return createClaimWithBasicDetails();
       });
 
       const response = await session(app).get(CLAIM_CHECK_ANSWERS_URL);
@@ -67,7 +60,7 @@ describe('Response - Check answers', () => {
     });
     it('should return check answers page with Your details and their details sections', async () => {
       mockGetSummarySections.mockImplementation(() => {
-        return createClaimWithBasicRespondentDetails();
+        return createClaimWithBasicDetails();
       });
 
       const response = await session(app).get(CLAIM_CHECK_ANSWERS_URL);
@@ -151,157 +144,3 @@ describe('Response - Check answers', () => {
   });
 });
 
-export function createClaimWithBasicRespondentDetails(): SummarySections {
-  return {
-    sections: [{
-      title: 'Your details',
-      summaryList: {
-        rows: [
-          {
-            key: {
-              text: 'Full name',
-            },
-            value: {
-              text: PARTY_NAME,
-            },
-            actions: {
-              items: [{
-                href: CLAIM_DETAILS_URL,
-                text: 'Change',
-              },
-              ],
-            },
-          },
-          {
-            key: {
-              text: 'Contact person',
-            },
-            value: {
-              text: 'Contact',
-            },
-            actions: {
-              items: [{
-                href: CLAIM_DETAILS_URL,
-                text: 'Change',
-              },
-              ],
-            },
-          },
-          {
-            key: {
-              text: 'Address',
-            },
-            value: {
-              text: '54 avenue',
-            },
-            actions: {
-              items: [{
-                href: CLAIM_DETAILS_URL,
-                text: 'Change',
-              },
-              ],
-            },
-          },
-          {
-            key: {
-              text: 'Correspondence address',
-            },
-            value: {
-              text: 'Same as address',
-            },
-            actions: {
-              items: [{
-                href: CLAIM_DETAILS_URL,
-                text: 'Change',
-              },
-              ],
-            },
-          },
-          {
-            key: {
-              text: 'Contact number (optional)',
-            },
-            value: {
-              text: '12345',
-            },
-            actions: {
-              items: [{
-                href: CLAIM_DETAILS_URL,
-                text: 'Change',
-              },
-              ],
-            },
-          },
-        ],
-      },
-    },
-    {
-      title: 'Their details',
-      summaryList: {
-        rows: [
-          {
-            key: {
-              text: 'Full name',
-            },
-            value: {
-              text: PARTY_NAME,
-            },
-            actions: {
-              items: [{
-                href: constructResponseUrlWithIdParams(CLAIM_ID, CITIZEN_DETAILS_URL),
-                text: 'Change',
-              },
-              ],
-            },
-          },
-          {
-            key: {
-              text: 'Address',
-            },
-            value: {
-              text: 'Simon street',
-            },
-            actions: {
-              items: [{
-                href: constructResponseUrlWithIdParams(CLAIM_ID, CITIZEN_DETAILS_URL),
-                text: 'Change',
-              },
-              ],
-            },
-          },
-          {
-            key: {
-              text: 'Email',
-            },
-            value: {
-              text: 'contact@gmail.com',
-            },
-            actions: {
-              items: [{
-                href: constructResponseUrlWithIdParams(CLAIM_ID, CLAIM_DEFENDANT_EMAIL_URL),
-                text: 'Change',
-              },
-              ],
-            },
-          },
-          {
-            key: {
-              text: 'Contact number (optional)',
-            },
-            value: {
-              text: '98765',
-            },
-            actions: {
-              items: [{
-                href: constructResponseUrlWithIdParams(CLAIM_ID, CITIZEN_DETAILS_URL),
-                text: 'Change',
-              },
-              ],
-            },
-          },
-        ],
-      },
-    },
-    ],
-  };
-}
