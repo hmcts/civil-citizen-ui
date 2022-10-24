@@ -283,6 +283,8 @@
       "CHILDREN_BETWEEN_11_TO_15": "11 i 15",
       "CHILDREN_BETWEEN_16_TO_19": "16 i 19",
       "CHILDREN_AGED_16_19_FT_EDUCATION": "Nifer y plant 16 i 19 oed sy'n derbyn addysg neu hyfforddiant amser llawn",
+      "CLAIM_AMOUNT_BREAKDOWN": "Claim amount breakdown",
+      "CLAIM_INTEREST": "Claim Interest",
       "CONTACT_PERSON": "Cyswllt",
       "CONTACT_NUMBER": "Rhif cyswllt (dewisol)",
       "CORRESPONDENCE_ADDRESS": "Gohebiaeth cyfeiriad",
@@ -548,11 +550,13 @@
         "TITLE": "Try to resolve the dispute"
       },
       "WHEN_CLAIM_INTEREST_FROM": {
+        "DATE_INTEREST": "Date interest applied from",
         "FROM_A_SPECIFIC_DATE": "A particular date",
         "FROM_CLAIM_SUBMIT_DATE": "The date you submit the claim",
         "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
         "HINT_EXAMPLE_DATE": "For example the date an invoice was overdue or that you told someone they owed you the money.",
         "PAGE_TITLE": "When are you claiming interest from?",
+        "REASON": "Explain why you're claiming for this date",
         "TITLE": "When are you claiming interest from?"
       }
     },
@@ -581,6 +585,8 @@
       "PAGE_TITLE": "Annual rate interest you want to claim",
       "RATE_CLAIMING": "Rate you're claiming",
       "RATE_INFORMATION": "You can claim 8% per year unless you know that a different rate applies.",
+      "REASON": "Why you're claiming this rate",
+      "SAME_RATE_INTEREST_8_PC": "8.00%",
       "TITLE": "What annual rate of interest do you want to claim?",
       "WHY_YOU_ARE_ENTITLED": "Why you're entitled to this rate"
     },
@@ -1134,9 +1140,9 @@
       "TITLE": "Gwasanaeth cyfryngu dros y ffôn am ddim"
     },
     "INTEREST_CLAIM_OPTIONS": {
-      "BREAK_DOWN": "Break down interest for different time periods or items",
+      "BREAK_DOWN_INTEREST": "Break down interest for different time periods or items",
       "PAGE_TITLE": "How do you want to claim interest?",
-      "SAME_RATE": "Same rate for the whole period",
+      "SAME_RATE_INTEREST": "Same rate for the whole period",
       "TITLE": "How do you want to claim interest?"
     },
     "INCOMPLETE_SUBMISSION": {
