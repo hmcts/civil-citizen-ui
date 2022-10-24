@@ -57,6 +57,7 @@ export const saveClaimantParty = async (claimId: string, citizenAddress: Address
   responseData.applicant1.individualTitle = party?.individualTitle;
   responseData.applicant1.individualFirstName = party?.individualFirstName;
   responseData.applicant1.individualLastName = party?.individualLastName;
+  responseData.applicant1.soleTraderTradingAs = party?.soleTraderTradingAs;
   responseData.applicant1.partyName = party.partyName;
   responseData.applicant1.contactPerson = party.contactPerson;
 
