@@ -2,8 +2,6 @@ import {SummarySections} from '../../../../common/models/summaryList/summarySect
 import {Claim} from '../../../../common/models/claim';
 import {buildYourDetailsSection} from '../../claim/checkAnswers/detailsSection/buildYourDetailsSection';
 import {buildTheirDetailsSection} from '../../claim/checkAnswers/detailsSection/buildTheirDetailsSection';
-//const {Logger} = require('@hmcts/nodejs-logging'); TODO add logger
-//const logger = Logger.getLogger('checkAnswersService');
 
 const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): SummarySections => {
 
