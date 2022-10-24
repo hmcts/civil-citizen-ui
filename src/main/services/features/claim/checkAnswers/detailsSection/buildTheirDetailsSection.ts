@@ -50,6 +50,6 @@ export const buildTheirDetailsSection = (claim: Claim, claimId: string, lang: st
     const yourEmailHref = CLAIM_DEFENDANT_EMAIL_URL.replace(':id', claimId);
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMAIL', {lng}), claim.respondent1?.emailAddress, yourEmailHref, changeLabel(lng)));
   }
-  yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng}), claim.respondent1?.phoneNumber, phoneNumberHref, changeLabel(lng)));
+  yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng}), claim.respondent1?.partyPhone, phoneNumberHref, changeLabel(lng)));
   return yourDetailsSection;
 };

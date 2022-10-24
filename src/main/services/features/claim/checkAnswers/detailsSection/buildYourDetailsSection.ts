@@ -41,6 +41,6 @@ export const buildYourDetailsSection = (claim: Claim, claimId: string, lang: str
     const yourDOBHref = CLAIMANT_DOB_URL.replace(':id', claimId);
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DOB', {lng}), formatDateToFullDate(claim.applicant1.dateOfBirth, lng), yourDOBHref, changeLabel(lng)));
   }
-  yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng}), claim.applicant1?.phoneNumber, phoneNumberHref, changeLabel(lng)));
+  yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng}), claim.applicant1?.partyPhone, phoneNumberHref, changeLabel(lng)));
   return yourDetailsSection;
 };
