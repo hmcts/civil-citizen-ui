@@ -153,6 +153,7 @@ import reasonController from './features/claim/details/reasonController';
 import timelineController from './features/claim/yourDetails/timelineController';
 import defendantPhoneController from './features/claim/yourDetails/defendantPhoneController';
 import continueClaimingInterestController from './features/claim/interest/continueClaimingInterestController';
+import claimantEvidenceController from './features/claim/yourDetails/claimantEvidenceController';
 import howMuchContinueClaimingController from './features/claim/interest/howMuchContinueClaimingController';
 import helpWithFeesController from './features/claim/details/helpWithFeesController';
 
@@ -296,6 +297,7 @@ export default [
   timelineController,
   defendantPhoneController,
   continueClaimingInterestController,
+  claimantEvidenceController,
   howMuchContinueClaimingController,
   helpWithFeesController,
 ];
