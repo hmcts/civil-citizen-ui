@@ -1439,7 +1439,11 @@
       "VIEW_CLAIM_FEES": "View claim fees"
     },
     "REJECT_ALL_CLAIM": {
-      "PAGE_TITLE": "Reject all of claim"
+      "PAGE_TITLE": "Reject all of claim",
+      "TITLE": "Why do you believe you don’t owe {{ claimantName }} any money?",
+      "PAID_WHAT_I_OWE": "I’ve paid what I believe I owe",
+      "DISPUTE_CLAIM": "I dispute all of the claim",
+      "COUNTERCLAIM": "I dispute the claim and want to make a counterclaim"
     },
     "REPAYMENT_PLAN": {
       "ADMIT_YOU_OWE": "You admit you owe £{{amount}}.",

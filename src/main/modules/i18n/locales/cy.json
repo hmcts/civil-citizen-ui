@@ -1438,7 +1438,11 @@
       "VIEW_CLAIM_FEES": "View claim fees"
     },
     "REJECT_ALL_CLAIM": {
-      "PAGE_TITLE": "Reject all of claim"
+      "PAGE_TITLE": "Reject all of claim",
+      "TITLE": "Pam ydych yn credu nad oes unrhyw arian yn ddyledus gennych i'r {{ claimantName }}?",
+      "PAID_WHAT_I_OWE": "Rwyf wedi talu'r swm rwy'n credu sy'n ddyledus gen i",
+      "DISPUTE_CLAIM": "Rwy'n gwrthwynebu'r hawliad cyfan",
+      "COUNTERCLAIM": "Rwy'n gwrthwynebu'r hawliad ac rwyf eisiau gwneud gwrth-hawliad"
     },
     "REPAYMENT_PLAN": {
       "ADMIT_YOU_OWE": "Rydych yn cyfaddef bod arnoch chi £{{amount}}.",
