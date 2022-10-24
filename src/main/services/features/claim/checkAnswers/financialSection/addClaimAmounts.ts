@@ -4,7 +4,7 @@ import {summaryRow} from '../../../../../common/models/summaryList/summaryList';
 import {t} from 'i18next';
 import {getLng} from '../../../../../common/utils/languageToggleUtils';
 import {currencyFormatWithNoTrailingZeros} from '../../../../../common/utils/currencyFormat';
-import {CLAIM_AMOUNT_URL} from 'routes/urls';
+import {CLAIM_AMOUNT_URL} from '../../../../../routes/urls';
 import {ClaimAmountBreakup} from '../../../../../common/form/models/claimDetails';
 
 const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', {lng: getLng(lang)});

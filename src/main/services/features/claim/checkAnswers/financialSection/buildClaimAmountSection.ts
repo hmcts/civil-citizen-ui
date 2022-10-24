@@ -10,8 +10,8 @@ import {
   CLAIM_INTEREST_URL,
   CLAIMANT_INTEREST_RATE_URL,
 } from '../../../../../routes/urls';
-import {InterestClaimFromType, SameRateInterestType} from 'common/form/models/claimDetails';
-import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {InterestClaimFromType, SameRateInterestType} from '../../../../../common/form/models/claimDetails';
+import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 import {addClaimAmounts} from './addClaimAmounts';
 
 const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', {lng: getLng(lang)});
@@ -35,7 +35,7 @@ export const buildClaimAmountSection = (claim: Claim, claimId: string, lang: str
   if (claim?.sameRateInterestSelection?.sameRateInterestType === SameRateInterestType.SAME_RATE_INTEREST_8_PC) {
     const sameRateInterestType = 'PAGES.CLAIMANT_INTEREST_RATE.' + claim.sameRateInterestSelection.sameRateInterestType;
     claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.CLAIMANT_INTEREST_RATE.TITLE', {lng: getLng(lang)}), t(sameRateInterestType, {lng: getLng(lang)}), CLAIMANT_INTEREST_RATE_URL, changeLabel(lang)));
-  } else {
+  } else if (claim.sameRateInterestSelection?.differentRate) {
     const differentRateInterestType = claim.sameRateInterestSelection.differentRate + '%';
     claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.CLAIMANT_INTEREST_RATE.TITLE', {lng: getLng(lang)}), differentRateInterestType, CLAIMANT_INTEREST_RATE_URL, changeLabel(lang)));
     claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.CLAIMANT_INTEREST_RATE.REASON', {lng: getLng(lang)}), claim.sameRateInterestSelection.reason, CLAIMANT_INTEREST_RATE_URL, changeLabel(lang)));
