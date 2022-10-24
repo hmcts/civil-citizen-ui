@@ -24,8 +24,8 @@ export const getCompanyTelephoneNumberData = async (claimId: string): Promise<[s
 
     if (claim.mediation?.companyTelephoneNumber) {
       telephoneNumberData = claim.mediation.companyTelephoneNumber;
-    } else if (claim.respondent1?.phoneNumber) {
-      telephoneNumberData.mediationPhoneNumberConfirmation = claim.respondent1?.phoneNumber;
+    } else if (claim.respondent1?.partyPhone) {
+      telephoneNumberData.mediationPhoneNumberConfirmation = claim.respondent1?.partyPhone;
     }
     return [contactPerson, telephoneNumberData];
   } catch (error) {

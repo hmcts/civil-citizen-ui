@@ -13,7 +13,7 @@
   {{ setPageTitle('PAGES.REJECT_ALL_CLAIM.PAGE_TITLE') }}
 {% endblock %}
 
-{% set heading = t('Why do you believe you don’t owe {{ claimantName }} any money?', { claimantName: claimantName }) %}
+{% set heading = t('PAGES.REJECT_ALL_CLAIM.TITLE', { claimantName: claimantName }) %}
 
 {% block content %}
   <div class="govuk-width-container">
@@ -34,17 +34,17 @@
                 {
                   value: rejectAllOfClaimType.ALREADY_PAID,
                   checked: true if form.model.option === rejectAllOfClaimType.ALREADY_PAID,
-                  html:'I’ve paid what I believe I owe'
+                  html: t('PAGES.REJECT_ALL_CLAIM.PAID_WHAT_I_OWE')
                 },
                 {
                   value: rejectAllOfClaimType.DISPUTE,
                   checked: true if form.model.option  === rejectAllOfClaimType.DISPUTE,
-                  html: 'I dispute all of the claim'
+                  html: t('PAGES.REJECT_ALL_CLAIM.DISPUTE_CLAIM')
                 },
                 {
                   value: rejectAllOfClaimType.COUNTER_CLAIM,
                   checked: true if form.model.option  === rejectAllOfClaimType.COUNTER_CLAIM,
-                  html:'I dispute the claim and want to make a counterclaim'
+                  html: t('PAGES.REJECT_ALL_CLAIM.COUNTERCLAIM')
                 }
               ],
               errorMessage: { text: ' ' } if optionError else ''

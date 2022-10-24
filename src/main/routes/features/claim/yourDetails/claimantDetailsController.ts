@@ -75,7 +75,7 @@ claimantDetailsController.post(detailsURLs, async (req: AppRequest | Request, re
     const claimantIndividualAddress = new GenericForm<Address>(Address.fromObject(req.body));
     const claimantIndividualCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(getCorrespondenceAddressForm(req.body));
     if (claimant.type === PartyType.COMPANY || claimant.type === PartyType.ORGANISATION) {
-      party = new GenericForm(new Party(req.body.partyName, req.body.contactPerson));
+      party = new GenericForm(new Party(req.body));
       party.validateSync();
     }
     const claimantDetails = new GenericForm<PartyDetails>(new PartyDetails(req.body));

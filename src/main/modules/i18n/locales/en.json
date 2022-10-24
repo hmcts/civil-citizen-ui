@@ -400,6 +400,7 @@
       "ADDRESS_FOR_SERVICE": "This is known as an \"address for service\".",
       "ADDRESS_NOT_FOUND": "We can't find an address for that postcode.",
       "ALL_CORRESPONDENCE": "All correspondence will be sent to this address.",
+      "BUSINESS_NAME": "Business name",
       "CLAIMANT_DETAILS_PROVIDED": "Your name and address were provided by the person, business or organisation claiming from you (the claimant).",
       "CONTACT_PERSON": "Contact person (optional)",
       "CONTACT_PERSON_HINT": "The defendant can contact this person to discuss the claim",
@@ -409,6 +410,7 @@
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Would you like correspondence sent to a different address?",
       "FIND_ADDRESS": "Find address",
+      "FULL_NAME": "Your full name",
       "MANUAL_ADDRESS": "Enter address manually",
       "PARTY_NAME_COMPANY": "Company name",
       "PARTY_NAME_ORGANISATION": "Organisation name",
@@ -522,6 +524,13 @@
         "TITLE": "Their email address (optional)",
         "USE_THIS_EMAIL": "We'll use this to tell them you've made a claim, as well as notifying them by post."
       },
+      "HOW_MUCH_CONTINUE": {
+        "DAILY_INTEREST_AMOUNT": "Daily interest amount",
+        "OPTION_1": "8% per year",
+        "OPTION_2": "Specific daily interest amount",
+        "PAGE_TITLE": "How much do you want to continue claiming?",
+        "TITLE": "How much do you want to continue claiming?"
+      },
       "INTEREST_END_DATE": {
         "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
         "PAGE_TITLE": "When do you want to stop claiming interest?",
@@ -611,7 +620,7 @@
       "COMPANY_ADDRESS": "Company address",
       "COMPANY_REGISTERED_OFFICE": "Enter the company's registered office or a company address that has a connection with the claim.",
       "COMPANY_NAME": "Company name",
-      "CONTACT_NAME_OPTIONAL": "Contact name (optional)",
+      "CONTACT_NAME_OPTIONAL": "Contact person (optional)",
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Would you like correspondence sent to a different address?",
       "FIND_ADDRESS": "Find address",
@@ -1131,6 +1140,12 @@
       "REACHING_SETTLEMENT": "Reaching a settlement",
       "TITLE": "Free telephone mediation"
     },
+    "HELP_WITH_FEES":{
+      "ENTER_NUMBER": "Enter the Help With Fees number",
+      "PAGE_TITLE": "Do you have a Help With Fees reference number?",
+      "TITLE": "Do you have a Help With Fees reference number?",
+      "ONLY_ONE": "You'll only have one if you applied for Help With Fees."
+    },
     "INTEREST_CLAIM_OPTIONS": {
       "BREAK_DOWN": "Break down interest for different time periods or items",
       "PAGE_TITLE": "How do you want to claim interest?",
@@ -1424,7 +1439,11 @@
       "VIEW_CLAIM_FEES": "View claim fees"
     },
     "REJECT_ALL_CLAIM": {
-      "PAGE_TITLE": "Reject all of claim"
+      "PAGE_TITLE": "Reject all of claim",
+      "TITLE": "Why do you believe you don’t owe {{ claimantName }} any money?",
+      "PAID_WHAT_I_OWE": "I’ve paid what I believe I owe",
+      "DISPUTE_CLAIM": "I dispute all of the claim",
+      "COUNTERCLAIM": "I dispute the claim and want to make a counterclaim"
     },
     "REPAYMENT_PLAN": {
       "ADMIT_YOU_OWE": "You admit you owe £{{amount}}.",
@@ -1757,6 +1776,7 @@
     "AMOUNT_LESS_THAN_CLAIMED": "Enter a value less than the amount claimed",
     "AMOUNT_REQUIRED": "Enter an amount of £1 or more",
     "ANNUAL_TURNOVER_REQUIRED": "Are you sure this is a valid value?",
+    "CHOOSE_TYPE_OF_INTEREST": "Choose a type of interest",
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_NUMBER_REQUIRED": "You need to enter the claim number",
     "CLAIM_VALID_AMOUNT": "Enter a valid amount",
@@ -1845,12 +1865,14 @@
     "ERROR": "Error",
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Enter a first payment date in the future",
     "GIVE_DETAILS_DOCUMENTS": "Give details of the documents",
+    "HELP_WITH_FEES_REFERENCE_REQUIRED": "Enter your Help With Fees reference number",
     "HOW_YOU_CALCULATED_AMOUNT": "You must tell us how you calculated the amount",
     "JOB_TITLE_REQUIRED": "Enter a job title",
     "NAME_REQUIRED": "Please enter a name",
     "NO_LANGUAGE_ENTERED": "Enter the language that needs to be interpreted",
     "NO_OTHER_SUPPORT": "Tell us what other support they need",
     "NO_SIGN_LANGUAGE_ENTERED": "Enter the sign language that needs to be interpreted",
+    "NOT_TO_REMOVE_PHONE_NUMBER": "You can only change your phone number, not remove it",
     "NUMBER_OF_PEOPLE_REQUIRED": "Enter a numeric, for example 3",
     "NUMBER_REQUIRED": "Enter a valid number",
     "ONE_ROW_REQUIRED": "Enter at least one row",
