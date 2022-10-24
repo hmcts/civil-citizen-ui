@@ -10,6 +10,7 @@ import {PartyType} from '../../../common/models/partyType';
 import {CCDParty} from '../../../common/models/ccdResponse/ccdParty';
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
+  // TODO: should we include everything inside caseData
   return {
     respondent1ClaimResponseTypeForSpec: claim.respondent1?.responseType,
     defenceAdmitPartPaymentTimeRouteRequired: toCCDPaymentOption(claim.paymentOption),
@@ -18,101 +19,77 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     responseClaimMediationSpecRequired: toAgreedMediation(claim.mediation),
     specAoSApplicantCorrespondenceAddressRequired: addressHasChange ? YesNoUpperCamelCase.NO : YesNoUpperCamelCase.YES,
     totalClaimAmount: claim.totalClaimAmount,
+
+    // /response/your-details
+    // /response/your-dob
+    // /response/your-phone
     respondent1: toCCDRespondent1(claim.respondent1),
     respondent1Represented: claim.respondent1.contactPerson, // TODO: contactPerson?
+
+    // /response/response-type
     respondent1ClaimResponseType: claim.respondent1.responseType,
 
-    // whyDoYouDisagree?: WhyDoYouDisagree;
-    // howMuchDoYouOwe?: HowMuchDoYouOwe;
-    // alreadyPaid?: GenericYesNo;
-    // timeline?: DefendantTimeline;
-    // paymentIntention?: PaymentIntention;
-    // howMuchHaveYouPaid?: HowMuchHaveYouPaid;
-    //
-    // amount?: number;
-    // totalClaimAmount?: number;
-    // date?: Date;
-    // day: number;
-    // month: number;
-    // year: number;
-    // text?: string;
-
-    // a: claim.partialAdmission.howMuchHaveYouPaid.totalClaimAmount,
-    // a: claim.partialAdmission.howMuchHaveYouPaid.date,
-    // a: claim.partialAdmission.howMuchHaveYouPaid.text,
-    
+    // /response/partial-admission/already-paid
     partialPayment: claim.partialAdmission.alreadyPaid.option.toUpperCase(),
-    partialPaymentAmount: claim.partialAdmission.howMuchHaveYouPaid.amount.toString(), // should be a number?
 
-  // "orderType": "DISPOSAL",
-  // "partAdmittedByEitherRespondents": "YES",
-  // "partialPayment": "YES",
-  // "partialPaymentAmount": "string",
-  // "paymentConfirmationDecisionSpec": "YES",
-  // "paymentReference": "string",
-  // "paymentSetDate": "string",
-  // "paymentSuccessfulDate": "2022-10-21T13:53:30.562Z",
-  // "paymentTypeSelection": "IMMEDIATELY",
-  // "personalInjuryType": "ROAD_ACCIDENT",
-  // "personalInjuryTypeOther": "string",
-  // "reasonNotSuitableSDO": {
-  //   "input": "string"
-  // },
-  // "repaymentDate": "string",
-  // "repaymentDue": "string",
-  // "repaymentFrequency": "ONCE_ONE_WEEK",
-  // "repaymentSuggestion": "string",
-  // "repaymentSummaryObject": "string",
-  // "requestedCourt": {
-  //   "caseLocation": {
-  //     "baseLocation": "string",
-  //     "region": "string",
-  //     "siteName": "string"
-  //   },
-  //   "reasonForHearingAtSpecificCourt": "string",
-  //   "requestHearingAtSpecificCourt": "YES",
-  //   "responseCourtCode": "string",
-  // },
+    // /response/partial-admission/how-much-have-you-paid
+    partialPaymentAmount: claim.partialAdmission.howMuchHaveYouPaid.amount.toString(), // should be a number?
+    // x: claim.partialAdmission.howMuchHaveYouPaid.date,
+    // x: claim.partialAdmission.howMuchHaveYouPaid.text,
+
+    // /response/partial-admission/why-do-you-disagree
+    // x: claim.partialAdmission.whyDoYouDisagree.text,
+
+    // /response/timeline
+    // x: claim.partialAdmission.timeline.rows, //  date?: string; and description?: string;
+    // x: claim.partialAdmission.timeline.comment,
+
+    // /response/evidence
+    // x: claim.evidence.evidenceItem, // type?: EvidenceType and description?: string
+    // x: claim.evidence.comment,
+
+    // /response/partial-admission/how-much-do-you-owe
+    // x: claim.partialAdmission.howMuchDoYouOwe.amount,
+
+    // /response/partial-admission/payment-option
+    // x: claim.partialAdmission.paymentIntention.paymentOption // TODO: or claim.paymentOption
+    
+    // /response/partial-admission/payment-date
+    // x: claim.partialAdmission.paymentIntention.paymentDate // TODO: or claim.paymentDate
+
+
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TONS OF PAGES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // /response/statement-of-means/intro (see attached screen flow diagram)
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TONS OF PAGES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+    // /response/partial-admission/payment-plan
+    // x: claim.repaymentPlan.paymentAmount,
+    // x: claim.repaymentPlan.repaymentFrequency,
+    // x: claim.repaymentPlan.firstRepaymentDate,
+
+
+    // /mediation/free-telephone-mediation
+    // NOTHING SAVED
+    
+    // /mediation/mediation-disagreement
+    // x: claim.mediation.mediationDisagreement.option, // yes or no
+
+    // /mediation/i-dont-want-free-mediation
+    // x: claim.mediation.noMediationReason.iDoNotWantMediationReason, // NoMediationReasonOptions
+    // x: claim.mediation.noMediationReason.otherReason, // @ValidateIf(o => o.iDoNotWantMediationReason === NoMediationReasonOptions.OTHER)
+
+    // /mediation/can-we-use
+    // x: claim.mediation.canWeUse.option,
+    // x: claim.mediation.canWeUse.mediationPhoneNumber,
+
+    // EXTRA! /mediation/can-we-use-company
+    // x: claim.mediation.companyTelephoneNumber.option,
+    // x: claim.mediation.companyTelephoneNumber.mediationPhoneNumber,
+    // x: claim.mediation.companyTelephoneNumber.mediationContactPerson,
+    // x: claim.mediation.companyTelephoneNumber.mediationPhoneNumberConfirmation,
+
   };
 };
-
-  // CUI Party:
-  // individualTitle?: string;
-  // individualLastName?: string;
-  // individualFirstName?: string;
-  // soleTraderTitle?: string;
-  // soleTraderFirstName?: string;
-  // soleTraderLastName?: string;
-  // soleTraderTradingAs?: string;
-  // partyName?: string;
-  // type?: PartyType;
-  // primaryAddress?: PrimaryAddress;
-  // postToThisAddress?: string;
-  // phoneNumber?: string;
-  // provideCorrespondenceAddress?: string;
-  // correspondenceAddress?: CorrespondenceAddress;
-  // dateOfBirth?: Date;
-  // responseType?: string;
-  // contactPerson?: string;
-  // emailAddress?: string;
-
-  // CIVIL-SERVICE PARTY
-  // type: Type;
-  // individualTitle: String;
-  // individualFirstName: String;
-  // individualLastName: String;
-  // individualDateOfBirth: LocalDate;
-  // companyName: String;
-  // organisationName: String;
-  // soleTraderTitle: String;
-  // soleTraderFirstName: String;
-  // soleTraderLastName: String;
-  // soleTraderTradingAs: String;
-  // soleTraderDateOfBirth: LocalDate;
-  // primaryAddress: Address;
-  // partyName: String;
-  // partyTypeDisplayValue: String;
-  // partyEmail: String;
 
 const toCCDRespondent1 = (respondent1: Party): CCDParty => {
   return {
@@ -136,16 +113,10 @@ const toCCDRespondent1 = (respondent1: Party): CCDParty => {
       PostTown: respondent1.primaryAddress.PostTown
     },
     soleTraderDateOfBirth: respondent1.type === PartyType.SOLE_TRADER ? respondent1.dateOfBirth.toDateString() : '',
-    soleTraderFirstName: respondent1.soleTraderFirstName,
-    soleTraderLastName: respondent1.soleTraderLastName,
-    soleTraderTitle: respondent1.soleTraderTitle,
+    soleTraderFirstName: respondent1.soleTraderFirstName, // TODO: soleTraderFirstName is not used, use individual
+    soleTraderLastName: respondent1.soleTraderLastName, // TODO: soleTraderFirstName is not used, use individual
+    soleTraderTitle: respondent1.soleTraderTitle, // TODO: soleTraderFirstName is not used, use individual
     soleTraderTradingAs: respondent1.soleTraderTradingAs,
     type: respondent1.type
   };
 };
-
-// const generateDisplayValueByPartyType = (partyType: PartyType) => {
-//   const result = partyType.toLowerCase().charAt(0).toUpperCase() + partyType.slice(1);
-//   result.replace('_', ' ');
-//   return result;
-// };
