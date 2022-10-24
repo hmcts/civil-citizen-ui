@@ -60,9 +60,12 @@
 
   const postcodeError = (postcode, hasInputError, address) => {
     const postcodeInput = postcode.classList;
-    let postcodecontainer = primaryPostcodeContainer.classList;
-    let errorContainer = primaryPostcodeErrorContainer.classList;
-    let selectAddressEl = primarySelectAddress.classList;
+    let postcodecontainer, errorContainer, selectAddressEl;
+    if (address === addressTypes.PRIMARY) {
+      postcodecontainer = primaryPostcodeContainer.classList;
+      errorContainer = primaryPostcodeErrorContainer.classList;
+      selectAddressEl = primarySelectAddress.classList;
+    }
     if (address === addressTypes.CORRESPONDENCE) {
       postcodecontainer = postcodeContainer.classList;
       errorContainer = postcodeErrorContainer.classList;

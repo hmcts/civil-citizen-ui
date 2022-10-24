@@ -33,7 +33,7 @@ const party: Party = {
   partyName: '',
   type: PartyType.INDIVIDUAL,
   primaryAddress: correspondenceAddress,
-  phoneNumber: '',
+  partyPhone: '',
 };
 
 const PHONE_NUMBER = '01632960001';
@@ -96,7 +96,7 @@ describe('Claimant Phone Service', () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
-        party.phoneNumber = PHONE_NUMBER;
+        party.partyPhone = PHONE_NUMBER;
         claim.applicant1 = party;
         return claim;
       });
@@ -111,7 +111,7 @@ describe('Claimant Phone Service', () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
-        party.phoneNumber = PHONE_NUMBER;
+        party.partyPhone = PHONE_NUMBER;
         claim.respondent1 = party;
         return claim;
       });
