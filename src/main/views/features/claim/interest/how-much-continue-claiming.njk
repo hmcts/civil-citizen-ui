@@ -1,0 +1,79 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../../macro/page-title.njk" import setPageTitle %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
+{% from "../../../macro/error-summary.njk" import errorSummary %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.CLAIM_JOURNEY.HOW_MUCH_CONTINUE.PAGE_TITLE') }}
+{% endblock %}
+{% set amountValue = '' + form.model.dailyInterestAmount %}
+{% set noHtml %}
+{{ govukInput({
+  id: 'dailyInterestAmount',
+  name: 'dailyInterestAmount',
+  type: "number",
+  autocomplete: "number",
+  prefix: {
+    text: "£"
+  },
+  classes: "govuk-!-width-one-half",
+  label: {
+    text: t('PAGES.CLAIM_JOURNEY.HOW_MUCH_CONTINUE.DAILY_INTEREST_AMOUNT')
+  },
+  value: amountValue,
+  errorMessage: {
+    text: t(form.errorFor('dailyInterestAmount'))
+  } if form.hasFieldError('dailyInterestAmount')
+}) }}
+{% endset %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% set optionError = form.errorFor("option") %}
+      <div class="govuk-grid-row">
+        {% if form.hasErrors() %}
+          {{ errorSummary(form.getErrors(), t) }}
+        {% endif %}
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t('PAGES.CLAIM_JOURNEY.HOW_MUCH_CONTINUE.TITLE') }}</h1>
+
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            {{ govukRadios({
+              idPrefix: "option",
+              name: "option",
+              items: [
+                {
+                  value: SameRateInterestType.SAME_RATE_INTEREST_8_PC,
+                  checked: true if form.model.option === SameRateInterestType.SAME_RATE_INTEREST_8_PC,
+                  text: t('PAGES.CLAIM_JOURNEY.HOW_MUCH_CONTINUE.OPTION_1')
+                },
+                {
+                  value: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
+                  checked: true if form.model.option  === SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
+                  html: t('PAGES.CLAIM_JOURNEY.HOW_MUCH_CONTINUE.OPTION_2'),
+                  conditional:{html: noHtml}
+                }
+              ],
+              errorMessage: { text: t(optionError) } if t(optionError)
+            }) }}
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

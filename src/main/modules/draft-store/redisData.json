@@ -55,32 +55,6 @@
               }
             ]
           }
-        },
-        "hearing": {
-          "supportRequiredList": {
-            "items": [
-              {
-                "fullName": "johndoe",
-                "disabledAccess": {
-                  "selected": true
-                },
-                "otherSupport": {
-                  "selected": true,
-                  "content": "bla bla"
-                }
-              },
-              {
-                "fullName": "mikebrown",
-                "hearingLoop": {
-                  "selected": true
-                },
-                "languageInterpreter": {
-                  "selected": true,
-                  "content": "zla zla"
-                }
-              }
-            ]
-          }
         }
       },
       "supportRequired": {
