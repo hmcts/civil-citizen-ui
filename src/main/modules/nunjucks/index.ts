@@ -4,7 +4,7 @@ import {Express} from 'express';
 import {configure} from 'nunjucks';
 import * as numeral from '../../common/utils/currencyFormat';
 import {convertToPoundsFilter} from '../../common/utils/currencyFormat';
-import {i18n, TOptions} from 'i18next';
+import {t} from 'i18next';
 import {ResponseType} from '../../common/form/models/responseType';
 import {YesNo, YesNoNotReceived} from '../../common/form/models/yesNo';
 import {ResidenceType} from '../../common/form/models/statementOfMeans/residenceType';
@@ -41,9 +41,8 @@ const appAssetPaths = {
 };
 
 export class Nunjucks {
-  constructor(public developmentMode: boolean, public i18next: i18n) {
+  constructor(public developmentMode: boolean) {
     this.developmentMode = developmentMode;
-    this.i18next = i18next;
   }
 
   enableFor(app: Express): void {
@@ -97,7 +96,7 @@ export class Nunjucks {
     nunjucksEnv.addFilter('addDaysTranslated', addDaysFilterTranslated);
     nunjucksEnv.addFilter('date', dateFilter);
     nunjucksEnv.addFilter('formatDate', formatDate);
-    nunjucksEnv.addGlobal('t', (key: string, options?: TOptions): string => this.i18next.t(key, options));
+    nunjucksEnv.addGlobal('t',t);
     nunjucksEnv.addGlobal('translateErrors', translateErrors);
     nunjucksEnv.addGlobal('ResponseType', ResponseType);
     nunjucksEnv.addGlobal('YesNo', YesNo);
