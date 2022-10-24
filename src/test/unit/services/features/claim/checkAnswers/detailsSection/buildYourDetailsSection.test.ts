@@ -19,7 +19,6 @@ const FIRST_NAME = 'John';
 const LAST_NAME = 'Richards';
 const FULL_NAME = `${TITLE} ${FIRST_NAME} ${LAST_NAME}`;
 const CORRESPONDENCE_ADDRESS = '24 Brook lane<br>Bristol<br>BS13SS';
-const PARTY_NAME = 'Nice organisation';
 const CONTACT_NUMBER = '077777777779';
 const ADDRESS = '23 Brook lane<br>Bristol<br>BS13SS';
 const DOB = '12 December 2000';
@@ -33,7 +32,7 @@ describe('Cirizen Details Section', () => {
     expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows.length).toBe(5);
     expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].title).toBe('PAGES.CHECK_YOUR_ANSWER.DETAILS_TITLE');
     expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.FULL_NAME');
-    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[0].value.html).toBe(PARTY_NAME);
+    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[0].value.html).toBe(FULL_NAME);
     expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[0].actions?.items.length).toBe(1);
     expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CLAIM_DETAILS_URL.replace(':id', constVal.CLAIM_ID));
     expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[1].value.html).toBe(ADDRESS);

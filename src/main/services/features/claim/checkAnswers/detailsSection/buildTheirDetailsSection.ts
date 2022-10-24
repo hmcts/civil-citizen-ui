@@ -13,6 +13,7 @@ import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {PrimaryAddress} from '../../../../../common/models/primaryAddress';
 import {CorrespondenceAddress} from '../../../../../common/models/correspondenceAddress';
+import {PartyType} from '../../../../../common/models/partyType';
 
 const changeLabel = (lang: string): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', {lng: lang});
 
@@ -21,10 +22,10 @@ const addressToString = (address: PrimaryAddress | CorrespondenceAddress) => {
 };
 
 const getDefendantFullName = (claim: Claim): string => {
-  if (claim.respondent1?.individualFirstName && claim.respondent1?.individualLastName) {
-    return claim.respondent1.individualTitle + ' ' + claim.respondent1.individualFirstName + ' ' + claim.respondent1.individualLastName;
+  if (claim.respondent1?.type === PartyType.ORGANISATION || claim.respondent1?.type === PartyType.COMPANY) {
+    return claim.respondent1?.partyName;
   }
-  return claim.respondent1?.partyName;
+  return `${claim.respondent1?.individualTitle} ${claim.respondent1?.individualFirstName} ${claim.respondent1?.individualLastName}`;
 };
 
 export const buildTheirDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
