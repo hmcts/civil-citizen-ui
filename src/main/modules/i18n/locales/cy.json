@@ -295,6 +295,7 @@
       "DEBTS_TOTAL_OWED": "Cyfanswm sy’n ddyledus gennych",
       "DEBTS_MONTHLY_PAYMENTS": "Taliadau misol",
       "DETAILS_TITLE": "Eich manylion",
+      "DETAILS_TITLE_CLAIMANT": "Eich manylion (yr hawlydd)",
       "DISABILITY_ARE_YOU_DISABLED": "Ydych chi'n anabl?",
       "DISABILITY_ARE_YOU_SEVERELY_DISABLED": "Ydych chi'n anabl iawn?",
       "DOB": "Dyddiad Geni",
@@ -367,6 +368,7 @@
       "TAX_PAYMENT_AMOUNT_YOU_OWE": "Swm sydd arnoch chi?",
       "TAX_PAYMENT_REASON": "Rheswm",
       "THEIR_DETAILS_TITLE": "Their details",
+      "THEIR_DETAILS_TITLE_DEFENDANT": "Their details (defendant)",
       "TITLE": "Gwiriwch eich ateb",
       "TIMELINE_TITLE": "Eich llinell amser o'r hyn a ddigwyddodd (dewisol)",
       "TIMELINE_COMMENTS": "Sylwadau am eu llinell amser (dewisol)",
@@ -1142,7 +1144,7 @@
       "REACHING_SETTLEMENT": "Setlo’r anghydfod",
       "TITLE": "Gwasanaeth cyfryngu dros y ffôn am ddim"
     },
-    "HELP_WITH_FEES":{
+    "HELP_WITH_FEES": {
       "ENTER_NUMBER": "Enter the Help With Fees number",
       "PAGE_TITLE": "Do you have a Help With Fees reference number?",
       "TITLE": "Do you have a Help With Fees reference number?",

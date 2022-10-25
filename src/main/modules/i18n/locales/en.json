@@ -295,6 +295,7 @@
       "DEBTS_TOTAL_OWED": "Total owed",
       "DEBTS_MONTHLY_PAYMENTS": "Monthly Payments",
       "DETAILS_TITLE": "Your details",
+      "DETAILS_TITLE_CLAIMANT": "Your details (claimant)",
       "DISABILITY_ARE_YOU_DISABLED": "Are you disabled?",
       "DISABILITY_ARE_YOU_SEVERELY_DISABLED": "Are you severely disabled?",
       "DOB": "Date of birth",
@@ -367,6 +368,7 @@
       "TAX_PAYMENT_AMOUNT_YOU_OWE": "Amount you owe?",
       "TAX_PAYMENT_REASON": "Reason",
       "THEIR_DETAILS_TITLE": "Their details",
+      "THEIR_DETAILS_TITLE_DEFENDANT": "Their details (defendant)",
       "TITLE": "Check your answers",
       "TIMELINE_TITLE": "Your timeline of what happened (optional)",
       "TIMELINE_COMMENTS": "Comments about their timeline (optional)",
@@ -1142,7 +1144,7 @@
       "REACHING_SETTLEMENT": "Reaching a settlement",
       "TITLE": "Free telephone mediation"
     },
-    "HELP_WITH_FEES":{
+    "HELP_WITH_FEES": {
       "ENTER_NUMBER": "Enter the Help With Fees number",
       "PAGE_TITLE": "Do you have a Help With Fees reference number?",
       "TITLE": "Do you have a Help With Fees reference number?",
