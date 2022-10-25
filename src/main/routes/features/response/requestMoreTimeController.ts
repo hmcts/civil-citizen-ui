@@ -7,6 +7,8 @@ import {AdditionalTime, AdditionalTimeOptions} from '../../../common/form/models
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {ResponseDeadlineService} from '../../../services/features/response/responseDeadlineService';
 import {deadLineGuard} from '../../../routes/guards/deadLineGuard';
+import {submitResponseDeadlineExtension} from "../../../services/features/response/responseDeadline/extendResponseDeadlineService";
+import {AppRequest} from "models/AppRequest";
 
 const requestMoreTimeController = Router();
 const requestMoreTimeViewPath = 'features/response/request-more-time';
@@ -45,6 +47,7 @@ requestMoreTimeController.post(REQUEST_MORE_TIME_URL, deadLineGuard,
         renderView(res, form, claim, language);
       } else {
         await responseDeadlineService.saveAdditionalTime(claimId, selectedOption);
+        await submitResponseDeadlineExtension(claimId, <AppRequest>req);
         res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_TASK_LIST_URL));
       }
     } catch (error) {

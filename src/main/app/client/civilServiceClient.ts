@@ -151,6 +151,10 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.INFORM_AGREED_EXTENSION_DATE_SPEC, claimId, updatedClaim, req);
   }
 
+  async submitResponseDeadlineExtensionEvent(claimId: string, updatedClaim:ClaimUpdate, req: AppRequest): Promise<Claim> {
+    return this.submitEvent(CaseEvent.DEFENDANT_RESPONSE_CUI_DEADLINE_EXTENSION, claimId, updatedClaim, req);
+  }
+
   async submitEvent(event: CaseEvent, claimId: string, updatedClaim?:ClaimUpdate, req?: AppRequest): Promise<Claim> {
     const config = this.getConfig(req);
     const userId = req.session?.user?.id;
