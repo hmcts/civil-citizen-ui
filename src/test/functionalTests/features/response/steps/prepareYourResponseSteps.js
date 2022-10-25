@@ -33,8 +33,13 @@ const  RejectAllOfClaim  =  require('../pages/rejectAllOfClaim');
 const  CarerDetails  =  require('../pages/carerDetails');
 const ViewYourOptionsBeforeDeadline = require('../pages/viewYourOptionsBeforeDeadline');
 const HowMuchYouHavePaid = require('../pages/howMuchYouHavePaid');
+const WhyDoYouDisagreeTheClaimAmount = require('../pages/WhyDoYouDisagreeTheClaimAmount');
+const ListYourEvidence = require('../pages/listYourEvidence');
+const FreeTelephoneMediation = require('../pages/freeTelephoneMediation');
 
 const I = actor(); // eslint-disable-line no-unused-vars
+const freeTelephoneMediation = new FreeTelephoneMediation();
+const listYourEvidence = new ListYourEvidence();
 const taskListPage = new TaskListPage();
 const nameAndAddressDetailsPage  = new NameAndAddressDetailsPage();
 const dateOfBirthDetailsPage = new DateOfBirthDetailsPage();
@@ -70,6 +75,7 @@ const rejectAllOfClaim = new RejectAllOfClaim();
 const selectCarerDetails = new CarerDetails();
 const viewYourOptionsBeforeDeadline = new ViewYourOptionsBeforeDeadline();
 const howMuchYouHavePaid = new HowMuchYouHavePaid();
+const whyDoYouDisagreeTheClaimAmount = new WhyDoYouDisagreeTheClaimAmount();
 
 class ResponseSteps {
 
@@ -234,6 +240,18 @@ class ResponseSteps {
   SelectOptionInRejectAllClaim(reason) {
     rejectAllOfClaim.selectRejectAllReason(reason);
   }
+  EnterWhyYouDisagreeTheClaimAmount(claimRef) {
+    whyDoYouDisagreeTheClaimAmount.enterReason(claimRef);
+  }
+  
+  EnterYourEvidenceDetails() {
+    listYourEvidence.selectEvidenceFromDropDown();
+  }
+  
+  EnterFreeTelephoneMediationDetails(claimRef) {
+    freeTelephoneMediation.selectEvidenceFromDropDown(claimRef);
+  }
+
 }
 
 module.exports = new ResponseSteps();

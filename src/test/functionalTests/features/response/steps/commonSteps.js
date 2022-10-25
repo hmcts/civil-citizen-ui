@@ -1,9 +1,4 @@
-//import { ResponseSteps } from './prepareYourResponseSteps';
-
 const ResponseSteps  =  require('./prepareYourResponseSteps');
-
-//const I = actor();
-//const ResponseSteps = new ResponseSteps();
 
 class CommonSteps {
 

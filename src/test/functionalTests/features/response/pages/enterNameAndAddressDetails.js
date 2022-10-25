@@ -15,14 +15,9 @@ const fields = {
   correspondencePostCode: 'input[id="correspondencePostCode"]',
 };
 
-const buttons = {
-  saveAndContinue: 'button.govuk-button',
-};
-
 class NameAndAddressDetailsPage {
-  enterNameAndAddressDetails (claimRef) {
-    I.amOnPage('/case/'+claimRef+'/response/your-details');
-    I.see('Confirm your details','h1');
+  enterNameAndAddressDetails () {   
+    I.click('Confirm your details');
     I.fillField(fields.addressLine1, 'Test AddressLine1');
     I.fillField(fields.addressLine2, 'Test AddressLine2');
     I.fillField(fields.addressLine3, 'Test AddressLine3');
@@ -35,7 +30,11 @@ class NameAndAddressDetailsPage {
     I.fillField(fields.correspondenceAddressLine3, 'Cranbrook Road');
     I.fillField(fields.correspondenceCity, 'Barkingside');
     I.fillField(fields.correspondencePostCode, 'IG2 6QU');
-    I.click(buttons.saveAndContinue);
+    I.click('Save and continue');    
+  }
+
+  navigateToNameAndAddressDetailsPage(claimRef) {
+    I.amOnPage('/case/'+claimRef+'/response/your-details');
   }
 }
 

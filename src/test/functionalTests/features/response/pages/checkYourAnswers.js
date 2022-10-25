@@ -10,13 +10,17 @@ const buttons = {
 
 class CheckYourAnswersPage {
   checkAndSubmit(claimRef) {
-    console.log('The value of the claimref inside check ur answers  ' + claimRef);
-    I.amOnPage('/case/'+claimRef+'/response/check-and-send');
+    console.log('The value of the claimref Inside Check Ur answers Page ' + claimRef);    
+    I.click('Check and submit your response');
     I.see('Check your answers', 'h1');
     I.waitForElement(fields.cyaSigned);
     I.checkOption(fields.cyaSigned);
     I.click(buttons.submit);
-    I.waitForText('You’ve submitted your response');
+    I.see('You\'ve submitted your response','h1');    
+  }
+
+  navigateToCheckYourAnswersPage(claimRef) {
+    I.amOnPage('/case/'+claimRef+'/response/check-and-send');
   }
 }
 

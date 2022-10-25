@@ -17,7 +17,12 @@ Feature('Response with AdmitAll');
 Before(async ({api}) => {
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
   console.log('claimRef has been created Successfully    <===>  '  , claimRef);
-  LoginSteps.EnterUserCredentials(config.Username, config.Password);
+  if (claimRef) {
+    LoginSteps.EnterUserCredentials(config.Username, config.Password);
+  } else
+  {
+    console.log('claimRef has not been Created');
+  } 
 });
 
 Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll', () => {

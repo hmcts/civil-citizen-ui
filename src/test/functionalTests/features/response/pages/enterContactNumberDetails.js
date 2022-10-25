@@ -10,13 +10,16 @@ const buttons = {
 };
 
 class ContactNumberDetailsPage {
-  enterContactNumber (claimRef) {
-    I.amOnPage('/case/'+claimRef+'/response/your-phone');
+  enterContactNumber () {   
     I.see('Enter a phone number (optional)', 'h1');
-    I.fillField(fields.contactNumber, '02088908876');
-    I.wait(5);
+    I.fillField(fields.contactNumber, '02088908876');    
     I.click(buttons.saveAndContinue);
   }
+
+  navigateToEnterContactNumberDetailsPage(claimRef) {
+    I.amOnPage('/case/'+claimRef+'/response/your-phone');
+  }
+  
 }
 
 module.exports = ContactNumberDetailsPage;

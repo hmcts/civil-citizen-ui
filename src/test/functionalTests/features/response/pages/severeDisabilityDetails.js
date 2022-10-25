@@ -1,8 +1,8 @@
 const I = actor();
 
 const fields ={
-  yesButton: 'input[id="severeDisability"]',
-  noButton: 'input[id="severeDisability-2"]',
+  yesButton: '#option',
+  noButton: '#option-2',
 };
 const buttons = {
   continue: 'button.govuk-button',

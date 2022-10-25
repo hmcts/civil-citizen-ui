@@ -28,6 +28,8 @@ Scenario('Response with PartAdmit and Immediate payment @citizenUI @partAdmit', 
   ResponseSteps.EnterPaymentOption(claimRef, immediatePayment);
   ResponseSteps.EnterHowMuchYouHavePaid(claimRef, 500);
   ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef);
+  ResponseSteps.EnterYourEvidenceDetails();
+  ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
   ResponseSteps.CheckAndSubmit(claimRef);
 });
 
