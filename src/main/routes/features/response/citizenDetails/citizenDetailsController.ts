@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {CITIZEN_DETAILS_URL, DOB_URL, CITIZEN_PHONE_NUMBER_URL} from '../../../urls';
+import {CITIZEN_DETAILS_URL, DOB_URL, CITIZEN_PHONE_NUMBER_URL, CLAIM_TASK_LIST_URL} from '../../../urls';
 import {Address} from '../../../../common/form/models/address';
 import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citizenCorrespondenceAddress';
 import {Party} from '../../../../common/models/party';
@@ -36,10 +36,15 @@ function renderPage(res: Response, req: Request, party: GenericForm<Party>, citi
 }
 
 const redirect = (respondent: Party, req: Request, res: Response) => {
-  if (respondent?.type === PartyType.SOLE_TRADER || respondent?.type === PartyType.INDIVIDUAL) {
+  console.log(respondent);
+  if (respondent?.type === PartyType.INDIVIDUAL) {
     res.redirect(constructResponseUrlWithIdParams(req.params.id, DOB_URL));
   } else {
-    res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PHONE_NUMBER_URL));
+    if(respondent?.partyPhone){
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
+    }else{
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PHONE_NUMBER_URL));
+    }
   }
 };
 
