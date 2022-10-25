@@ -1,8 +1,4 @@
 {
-  "Claim number": "Mialc rebmun",
-  "Claimant name": "Tnamialc eman",
-  "Claim amount": "Mialc tnuoma",
-  "CLAIM_AMOUNT": "Claim amount",
   "Next steps": "Txen spets",
   "Deadline": "Enildaed",
   "Actions": "Snoitca",
@@ -12,6 +8,7 @@
     "BACK": "Yn ol",
     "CHOOSE": "Dewiswch",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
+    "CLAIM_AMOUNT": "Swm yr hawliad",
     "DASHBOARD": "Dashboard",
     "DATE": "Dyddiad",
     "DATE_EXAMPLE": "Er enghraifft, {{ date }}",
@@ -485,7 +482,6 @@
     "CLAIM_DETAILS": {
       "AMOUNT": "Amount",
       "AMOUNT_BREAKDOWN": "Amount breakdown",
-      "CLAIM_AMOUNT": "Swm yr hawliad",
       "CLAIM_FEE": "Claim fee",
       "CLAIM_NUMBER": "Rhif yr hawliad",
       "CLAIM_TOTAL": "Claim Total",
@@ -565,7 +561,6 @@
     },
     "CLAIM_SUMMARY": {
       "ABOUT_CLAIM": "Am hawliad",
-      "CLAIM_AMOUNT": "Swm yr hawliad:",
       "CLAIM_DETAILS": "Manylion yr hawliad:",
       "CLAIM_DOCUMENTS": "Claim documents",
       "CLAIMANT_NAME": "Enw'r hawlydd:",
@@ -756,7 +751,6 @@
     "DASHBOARD": {
       "ACTIONS": "Actions",
       "ACTION_PROMPT": "You need to respond before ",
-      "CLAIM_AMOUNT": "Swm yr hawliad",
       "CLAIMANT_NAME": "Enw’r hawlydd",
       "CLAIM_NUMBER": "Rhif yr hawliad",
       "CLAIM_PROMPT": "To view or progress your claim click on your claim number. Most recently created claims are listed first.",
@@ -1109,7 +1103,6 @@
       "TITLE": "Enter your claim number"
     },
     "FIRST_CONTACT_CLAIM_SUMMARY": {
-      "CLAIM_AMOUNT": "Swm yr hawliad",
       "CLAIM_NUMBER": "Rhif hawlio",
       "FIND_OUT": "Find out about how we use and store your ",
       "HEADER": "Manylion yr hawliad",

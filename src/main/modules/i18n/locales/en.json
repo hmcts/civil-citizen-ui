@@ -1,8 +1,4 @@
 {
-  "Claim number": "Claim number",
-  "Claimant name": "Claimant name",
-  "Claim amount": "Claim amount",
-  "CLAIM_AMOUNT": "Claim amount",
   "Next steps": "Next steps",
   "Deadline": "Deadline",
   "Actions": "Actions",
@@ -12,6 +8,7 @@
     "BACK": "Back",
     "CHOOSE": "Choose",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
+    "CLAIM_AMOUNT": "Claim amount",
     "DASHBOARD": "Dashboard",
     "DATE": "Date",
     "DATE_EXAMPLE": "For Example, {{ date }}",
@@ -485,7 +482,6 @@
     "CLAIM_DETAILS": {
       "AMOUNT": "Amount",
       "AMOUNT_BREAKDOWN": "Amount breakdown",
-      "CLAIM_AMOUNT": "Claim amount",
       "CLAIM_FEE": "Claim fee",
       "CLAIM_NUMBER": "Claim number",
       "CLAIM_TOTAL": "Claim Total",
@@ -565,7 +561,6 @@
     },
     "CLAIM_SUMMARY": {
       "ABOUT_CLAIM": "About claim",
-      "CLAIM_AMOUNT": "Claim amount:",
       "CLAIM_DETAILS": "Claim details:",
       "CLAIM_DOCUMENTS": "Claim documents",
       "CLAIMANT_NAME": "Claimant name:",
@@ -756,7 +751,6 @@
     "DASHBOARD": {
       "ACTIONS": "Actions",
       "ACTION_PROMPT": "You need to respond before ",
-      "CLAIM_AMOUNT": "Claim amount",
       "CLAIMANT_NAME": "Claimant name",
       "CLAIM_NUMBER": "Claim number",
       "CLAIM_PROMPT": "To view or progress your claim click on your claim number. Most recently created claims are listed first.",
@@ -1109,7 +1103,6 @@
       "TITLE": "Enter your claim number"
     },
     "FIRST_CONTACT_CLAIM_SUMMARY": {
-      "CLAIM_AMOUNT": "Claim amount",
       "CLAIM_NUMBER": "Claim number",
       "FIND_OUT": "Find out about how we use and store your ",
       "HEADER": "Claim details",
