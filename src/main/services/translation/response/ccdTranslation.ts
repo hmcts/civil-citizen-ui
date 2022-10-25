@@ -20,69 +20,118 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     specAoSApplicantCorrespondenceAddressRequired: addressHasChange ? YesNoUpperCamelCase.NO : YesNoUpperCamelCase.YES,
     totalClaimAmount: claim.totalClaimAmount,
 
-    // /response/your-details
-    // /response/your-dob
-    // /response/your-phone
+    // New data translated to CCD
     respondent1: toCCDRespondent1(claim.respondent1),
     respondent1Represented: claim.respondent1.contactPerson, // TODO: contactPerson?
-
-    // /response/response-type
     respondent1ClaimResponseType: claim.respondent1.responseType,
-
-    // /response/partial-admission/already-paid
     partialPayment: claim.partialAdmission.alreadyPaid.option.toUpperCase(),
-
-    // /response/partial-admission/how-much-have-you-paid
     partialPaymentAmount: claim.partialAdmission.howMuchHaveYouPaid.amount.toString(), // should be a number?
     // x: claim.partialAdmission.howMuchHaveYouPaid.date,
     // x: claim.partialAdmission.howMuchHaveYouPaid.text,
-
-    // /response/partial-admission/why-do-you-disagree
     // x: claim.partialAdmission.whyDoYouDisagree.text,
-
-    // /response/timeline
     // x: claim.partialAdmission.timeline.rows, //  date?: string; and description?: string;
     // x: claim.partialAdmission.timeline.comment,
 
-    // /response/evidence
     // x: claim.evidence.evidenceItem, // type?: EvidenceType and description?: string
     // x: claim.evidence.comment,
 
-    // /response/partial-admission/how-much-do-you-owe
     // x: claim.partialAdmission.howMuchDoYouOwe.amount,
-
-    // /response/partial-admission/payment-option
     // x: claim.partialAdmission.paymentIntention.paymentOption // TODO: or claim.paymentOption
-    
-    // /response/partial-admission/payment-date
     // x: claim.partialAdmission.paymentIntention.paymentDate // TODO: or claim.paymentDate
 
+    // x: claim.statementOfMeans.bankAccounts, // [Array] of {typeOfAccount, joint, balance}
+    // x: claim.statementOfMeans.disability.option.toUpperCase(),
+    // x: claim.statementOfMeans.severeDisability.option.toUpperCase(),
+    // x: claim.statementOfMeans.residence.type, // ResidenceType
+    // x: claim.statementOfMeans.residence.housingDetails, // Only if ResidenceType is other
+    
+    // x: claim.statementOfMeans.cohabiting.option.toUpperCase(),
+    // x: claim.statementOfMeans.partnerDisability.option.toUpperCase(),
+    // x: claim.statementOfMeans.partnerAge.option.toUpperCase(),
+    // x: claim.statementOfMeans.partnerPension.option.toUpperCase(),
+    // x: claim.statementOfMeans.partnerSevereDisability.option.toUpperCase(),
 
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TONS OF PAGES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // /response/statement-of-means/intro (see attached screen flow diagram)
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TONS OF PAGES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // x: claim.statementOfMeans.dependants.declared ? 'YES' : 'NO', // saved as boolean
+    // x: claim.statementOfMeans.dependants.numberOfChildren.under11, // if true, type number
+    // x: claim.statementOfMeans.dependants.numberOfChildren.between11and15, // if true, type number
+    // x: claim.statementOfMeans.dependants.numberOfChildren.between16and19, // if true, type number
+    // x: claim.statementOfMeans.numberOfChildrenLivingWithYou, // number
+    // x: claim.statementOfMeans.childrenDisability.option.toUpperCase(), // number
 
-    // /response/partial-admission/payment-plan
+    // x: claim.statementOfMeans.otherDependants.option.toUpperCase(),
+    // x: claim.statementOfMeans.otherDependants.numberOfPeople, // if yes, type number
+    // x: claim.statementOfMeans.otherDependants.details, // if yes, type string
+
+    // x: claim.statementOfMeans.carer.option.toUpperCase(),
+    // x: claim.statementOfMeans.employment.declared ? 'YES' : 'NO', // boolean
+    // x: claim.statementOfMeans.employment.employmentType, // if true, EmploymentCategory
+    // x: claim.statementOfMeans.employers.rows, // if EmploymentCategory=EMPLOYED,  {employerName, jobTitle}, 
+    // x: claim.statementOfMeans.selfEmployedAs.annualTurnover // if EmploymentCategory=SELF-EMPLOYED, type number
+    // x: claim.statementOfMeans.selfEmployedAs.jobTitle // if EmploymentCategory=SELF-EMPLOYED, type string
+    // x: claim.statementOfMeans.taxPayments.owed ? 'YES' : 'NO', // boolean
+    // x: claim.statementOfMeans.taxPayments.amountOwed, // if owed true, type number
+    // x: claim.statementOfMeans.taxPayments.reason, // if owed true, type string
+
+    // x: claim.statementOfMeans.unemployment.option, // enum UnemploymentCategory ['Unemployed','Retired','Other']
+    // x: claim.statementOfMeans.unemployment.unemploymentDetails.months, // if option=Unemployed, type number
+    // x: claim.statementOfMeans.unemployment.unemploymentDetails.years, // if option=Unemployed, type number
+    // x: claim.statementOfMeans.unemployment.otherDetails.details, // if option=Other, type string
+
+    // x: claim.statementOfMeans.courtOrders.declared ? 'YES' : 'NO', // boolean
+    // x: claim.statementOfMeans.courtOrders.rows, // if true, Array of {"instalmentAmount":200,"amount":100,"claimNumber":"ginny"}
+
+    // TODO: coversion Debts you are behind, for each one {amount,isDeclared,name,populated,schedule}
+    // x: claim.statementOfMeans.priorityDebts.councilTax
+    // x: claim.statementOfMeans.priorityDebts.electricity
+    // x: claim.statementOfMeans.priorityDebts.gas
+    // x: claim.statementOfMeans.priorityDebts.maintenance
+    // x: claim.statementOfMeans.priorityDebts.mortgage
+    // x: claim.statementOfMeans.priorityDebts.rent
+    // x: claim.statementOfMeans.priorityDebts.water
+
+    // x: claim.statementOfMeans.debts.option.toUpperCase(), 
+    // x: claim.statementOfMeans.debts.debtsItems, // if yes, [Array] of {"debt":"fefe","totalOwned":"100","monthlyPayments":"100"}
+
+    // TODO: Regular expenses, for each one {declared, transactionSource}
+    // x: claim.statementOfMeans.regularExpenses.councilTax
+    // x: claim.statementOfMeans.regularExpenses.electricity
+    // x: claim.statementOfMeans.regularExpenses.foodAndHousekeeping
+    // x: claim.statementOfMeans.regularExpenses.gas
+    // x: claim.statementOfMeans.regularExpenses.hirePurchase
+    // x: claim.statementOfMeans.regularExpenses.maintenance
+    // x: claim.statementOfMeans.regularExpenses.mobilePhone
+    // x: claim.statementOfMeans.regularExpenses.mortgage
+    // x: claim.statementOfMeans.regularExpenses.other // IT HAS OTHER FIELD
+    // x: claim.statementOfMeans.regularExpenses.rent
+    // x: claim.statementOfMeans.regularExpenses.schoolCosts
+    // x: claim.statementOfMeans.regularExpenses.travel
+
+    // TODO: Regular income
+    // x: claim.statementOfMeans.regularIncome.job, // type Transaction,
+    // x: claim.statementOfMeans.regularIncome.universalCredit, // type Transaction,
+    // x: claim.statementOfMeans.regularIncome.jobseekerAllowanceIncome, // type Transaction,
+    // x: claim.statementOfMeans.regularIncome.jobseekerAllowanceContribution, // type Transaction,
+    // x: claim.statementOfMeans.regularIncome.incomeSupport, // type Transaction,
+    // x: claim.statementOfMeans.regularIncome.workingTaxCredit, // type Transaction,
+    // x: claim.statementOfMeans.regularIncome.childTaxCredit, // type Transaction,
+    // x: claim.statementOfMeans.regularIncome.childBenefit, // type Transaction,
+    // x: claim.statementOfMeans.regularIncome.councilTaxSupport, // type Transaction,
+    // x: claim.statementOfMeans.regularIncome.pension, // type Transaction,
+    // x: claim.statementOfMeans.regularIncome.other, // type OtherTransaction
+
+    // x: claim.statementOfMeans.explanation.text,
+
     // x: claim.repaymentPlan.paymentAmount,
     // x: claim.repaymentPlan.repaymentFrequency,
     // x: claim.repaymentPlan.firstRepaymentDate,
 
-
-    // /mediation/free-telephone-mediation
-    // NOTHING SAVED
-    
-    // /mediation/mediation-disagreement
     // x: claim.mediation.mediationDisagreement.option, // yes or no
-
-    // /mediation/i-dont-want-free-mediation
     // x: claim.mediation.noMediationReason.iDoNotWantMediationReason, // NoMediationReasonOptions
     // x: claim.mediation.noMediationReason.otherReason, // @ValidateIf(o => o.iDoNotWantMediationReason === NoMediationReasonOptions.OTHER)
-
-    // /mediation/can-we-use
     // x: claim.mediation.canWeUse.option,
     // x: claim.mediation.canWeUse.mediationPhoneNumber,
 
-    // EXTRA! /mediation/can-we-use-company
+    // EXTRA added by me and forgot in the AC! /mediation/can-we-use-company
     // x: claim.mediation.companyTelephoneNumber.option,
     // x: claim.mediation.companyTelephoneNumber.mediationPhoneNumber,
     // x: claim.mediation.companyTelephoneNumber.mediationContactPerson,
