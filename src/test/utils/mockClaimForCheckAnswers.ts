@@ -67,11 +67,14 @@ export const createClaimWithBasicRespondentDetails = (contactPerson?: string): C
   const claim = new Claim();
   claim.respondent1 = {
     partyName: PARTY_NAME,
-    phoneNumber: CONTACT_NUMBER,
+    partyPhone: CONTACT_NUMBER,
     contactPerson: contactPerson,
     dateOfBirth: new Date('2000-12-12'),
     responseType: ResponseType.FULL_ADMISSION,
     type: PartyType.INDIVIDUAL,
+    individualTitle: TITLE,
+    individualLastName: LAST_NAME,
+    individualFirstName: FIRST_NAME,
     primaryAddress: {
       AddressLine1: '23 Brook lane',
       PostTown: 'Bristol',
@@ -85,7 +88,10 @@ export const createClaimWithBasicApplicantDetails = (contactPerson?: string): Cl
   const claim = new Claim();
   claim.applicant1 = {
     partyName: PARTY_NAME,
-    phoneNumber: CONTACT_NUMBER,
+    partyPhone: CONTACT_NUMBER,
+    individualTitle: TITLE,
+    individualLastName: LAST_NAME,
+    individualFirstName: FIRST_NAME,
     contactPerson: contactPerson,
     dateOfBirth: new Date('2000-12-12'),
     responseType: ResponseType.FULL_ADMISSION,
@@ -125,7 +131,7 @@ export const createClaimWithIndividualDetails = (): Claim => {
     individualLastName: LAST_NAME,
     individualFirstName: FIRST_NAME,
     partyName: PARTY_NAME,
-    phoneNumber: CONTACT_NUMBER,
+    partyPhone: CONTACT_NUMBER,
     responseType: ResponseType.FULL_ADMISSION,
     primaryAddress: {
       AddressLine1: '23 Brook lane',
@@ -148,7 +154,7 @@ export const createClaimWithApplicantIndividualDetails = (): Claim => {
     individualLastName: LAST_NAME,
     individualFirstName: FIRST_NAME,
     partyName: PARTY_NAME,
-    phoneNumber: CONTACT_NUMBER,
+    partyPhone: CONTACT_NUMBER,
     responseType: ResponseType.FULL_ADMISSION,
     primaryAddress: {
       AddressLine1: '23 Brook lane',
@@ -763,7 +769,7 @@ export const ceateClaimWithPartialAdmission = (alreadyPaid?: YesNo, paymentOptio
   };
   claim.respondent1 = {
     partyName: PARTY_NAME,
-    phoneNumber: CONTACT_NUMBER,
+    partyPhone: CONTACT_NUMBER,
     contactPerson: '',
     dateOfBirth: new Date('2000-12-12'),
     responseType: ResponseType.PART_ADMISSION,

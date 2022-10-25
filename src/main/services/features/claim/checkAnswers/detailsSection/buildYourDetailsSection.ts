@@ -8,38 +8,40 @@ import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {PrimaryAddress} from '../../../../../common/models/primaryAddress';
 import {CorrespondenceAddress} from '../../../../../common/models/correspondenceAddress';
+import {PartyType} from '../../../../../common/models/partyType';
 
-const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', {lng: getLng(lang)});
+const changeLabel = (lang: string): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', {lng: lang});
 
 const addressToString = (address: PrimaryAddress | CorrespondenceAddress) => {
   return address?.AddressLine1 + '<br>' + address?.PostTown + '<br>' + address?.PostCode;
 };
 
 const getApplicantFullName = (claim: Claim): string => {
-  if (claim.applicant1?.individualFirstName && claim.applicant1?.individualLastName) {
-    return claim.applicant1.individualTitle + ' ' + claim.applicant1.individualFirstName + ' ' + claim.applicant1.individualLastName;
+  if (claim.applicant1?.type === PartyType.ORGANISATION || claim.applicant1?.type === PartyType.COMPANY) {
+    return claim.applicant1?.partyName;
   }
-  return claim.applicant1?.partyName;
+  return `${claim.applicant1?.individualTitle} ${claim.applicant1?.individualFirstName} ${claim.applicant1?.individualLastName}`;
 };
 
 export const buildYourDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
   const yourDetailsHref = constructResponseUrlWithIdParams(claimId, CLAIM_DETAILS_URL);
   const phoneNumberHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_PHONE_NUMBER_URL);
+  const lng = getLng(lang);
   const yourDetailsSection = summarySection({
-    title: t('PAGES.CHECK_YOUR_ANSWER.DETAILS_TITLE', {lng: getLng(lang)}),
+    title: t('PAGES.CHECK_YOUR_ANSWER.DETAILS_TITLE', {lng}),
     summaryRows: [
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FULL_NAME', {lng: getLng(lang)}), getApplicantFullName(claim), yourDetailsHref, changeLabel(lang)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FULL_NAME', {lng}), getApplicantFullName(claim), yourDetailsHref, changeLabel(lng)),
     ],
   });
   if (claim.applicant1?.contactPerson) {
-    yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_PERSON', {lng: getLng(lang)}), claim.applicant1.contactPerson, yourDetailsHref, changeLabel(lang)));
+    yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_PERSON', {lng}), claim.applicant1.contactPerson, yourDetailsHref, changeLabel(lng)));
   }
-  yourDetailsSection.summaryList.rows.push(...[summaryRow(t('PAGES.CHECK_YOUR_ANSWER.ADDRESS', {lng: getLng(lang)}), addressToString(claim.applicant1?.primaryAddress), yourDetailsHref, changeLabel(lang)),
-    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CORRESPONDENCE_ADDRESS', {lng: getLng(lang)}), claim.applicant1?.correspondenceAddress ? addressToString(claim.applicant1?.correspondenceAddress) : t('PAGES.CHECK_YOUR_ANSWER.SAME_ADDRESS', {lng: getLng(lang)}), yourDetailsHref, changeLabel(lang))]);
+  yourDetailsSection.summaryList.rows.push(...[summaryRow(t('PAGES.CHECK_YOUR_ANSWER.ADDRESS', {lng}), addressToString(claim.applicant1?.primaryAddress), yourDetailsHref, changeLabel(lng)),
+    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CORRESPONDENCE_ADDRESS', {lng}), claim.applicant1?.correspondenceAddress ? addressToString(claim.applicant1?.correspondenceAddress) : t('PAGES.CHECK_YOUR_ANSWER.SAME_ADDRESS', {lng}), yourDetailsHref, changeLabel(lng))]);
   if (claim.applicant1?.dateOfBirth) {
     const yourDOBHref = CLAIMANT_DOB_URL.replace(':id', claimId);
-    yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DOB', {lng: getLng(lang)}), formatDateToFullDate(claim.applicant1.dateOfBirth, getLng(lang)), yourDOBHref, changeLabel(lang)));
+    yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DOB', {lng}), formatDateToFullDate(claim.applicant1.dateOfBirth, lng), yourDOBHref, changeLabel(lng)));
   }
-  yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng: getLng(lang)}), claim.applicant1?.phoneNumber, phoneNumberHref, changeLabel(lang)));
+  yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng}), claim.applicant1?.partyPhone, phoneNumberHref, changeLabel(lng)));
   return yourDetailsSection;
 };
