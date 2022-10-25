@@ -412,7 +412,6 @@
       "YES_CORRESPONDENCE": "Ydw. Ychwanegu cyfeiriad ar gyfer gohebiaeth"
     },
     "CITIZEN_DOB": {
-      "EXAMPLE": "Er enghraifft, 31 3 1980",
       "PAGE_TITLE": "Your date of birth",
       "TITLE": "Rhowch eich dyddiad geni"
     },
@@ -815,7 +814,6 @@
       "DOWNLOAD_AND_VIEW_TIMELINE": "Download and view their Timeline",
       "ADD_YOUR_TIMELINE": "Ychwanegu eich amserlen digwyddiadau (dewisol)",
       "INCLUDE_DATES_IF_YOU_KNOW": "Rhowch ddyddiadau os ydych yn eu gwybod.",
-      "FOR_EXAMPLE": "Er enghraifft, {{ sixMonthAgo }}",
       "YOU_MIGHT_HAVE_SIGNED_A_CONTRACT": "Er enghraifft, efallai eich bod wedi llofnodi contract",
       "ADD_ANOTHER_EVENT": "Ychwanegu digwyddiad arall",
       "ADD_ANY_COMMENTS": "Ychwanegu unrhyw sylwadau am eu hamserlen (dewisol)"
@@ -1036,7 +1034,6 @@
     "EXPERT_REPORT_DETAILS": {
       "ADD_ANOTHER": "Add another report",
       "EXPERT_NAME": "Expert's name",
-      "FOR_EXAMPLE": "For Example, {{ date }}",
       "PAGE_TITLE": "Have you already got a report written by an expert?",
       "REPORT_DATE": "When is the report dated?",
       "REPORT_TEXT": "Report",

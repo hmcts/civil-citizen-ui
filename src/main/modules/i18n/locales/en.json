@@ -412,7 +412,6 @@
       "YES_CORRESPONDENCE": "Yes, add a correspondence address"
     },
     "CITIZEN_DOB": {
-      "EXAMPLE": "For example, 31 3 1980",
       "PAGE_TITLE": "Your date of birth",
       "TITLE": "Enter your date of birth"
     },
@@ -815,7 +814,6 @@
       "DOWNLOAD_AND_VIEW_TIMELINE": "Download and view their Timeline",
       "ADD_YOUR_TIMELINE": "Add your timeline of events (optional)",
       "INCLUDE_DATES_IF_YOU_KNOW": "Include dates if you know them.",
-      "FOR_EXAMPLE": "For example, {{ sixMonthAgo }}",
       "YOU_MIGHT_HAVE_SIGNED_A_CONTRACT": "For example, you might have signed a contract",
       "ADD_ANOTHER_EVENT": "Add another event",
       "ADD_ANY_COMMENTS": "Add any comments about their timeline (optional)"
@@ -1036,7 +1034,6 @@
     "EXPERT_REPORT_DETAILS": {
       "ADD_ANOTHER": "Add another report",
       "EXPERT_NAME": "Expert's name",
-      "FOR_EXAMPLE": "For Example, {{ date }}",
       "PAGE_TITLE": "Have you already got a report written by an expert?",
       "REPORT_DATE": "When is the report dated?",
       "REPORT_TEXT": "Report",
