@@ -479,7 +479,6 @@
       "CLAIM_FEE": "Claim fee",
       "CLAIM_NUMBER": "Claim number",
       "CLAIM_TOTAL": "Claim Total",
-      "DATE": "Date",
       "DOWNLOAD_AND_VIEW_TIMELINE": "Download and view timeline",
       "DOWNLOAD_CLAIM": "Download claim (PDF)",
       "HEADER": "Claim details",
@@ -812,7 +811,6 @@
     "DEFENDANT_TIMELINE": {
       "PAGE_TITLE": "Add your timeline of events",
       "THEIR_TIMELINE": "Their timeline",
-      "DATE": "Date",
       "WHAT_HAPPENED": "What happened",
       "DOWNLOAD_AND_VIEW_TIMELINE": "Download and view their Timeline",
       "ADD_YOUR_TIMELINE": "Add your timeline of events (optional)",

@@ -29,7 +29,7 @@
               {% if theirTimeline.length %}
               <thead class="govuk-table__head">
               <tr class="govuk-table__row">
-                <th scope="col" class="govuk-table__header">{{ t('PAGES.DEFENDANT_TIMELINE.DATE') }}</th>
+                <th scope="col" class="govuk-table__header">{{ t('COMMON.DATE') }}</th>
                 <th scope="col" class="govuk-table__header">{{ t('PAGES.DEFENDANT_TIMELINE.WHAT_HAPPENED') }}</th>
               </tr>
               </thead>
@@ -56,7 +56,7 @@
             {{ csrfProtection(csrf) }}
             <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
               <label class="govuk-label--s">
-                {{ t('PAGES.DEFENDANT_TIMELINE.DATE') }}
+                {{ t('COMMON.DATE') }}
               </label>
               <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">
                 {{ t('PAGES.DEFENDANT_TIMELINE.FOR_EXAMPLE', { sixMonthAgo: "now" | addDaysTranslated(-180, t) }) }}
