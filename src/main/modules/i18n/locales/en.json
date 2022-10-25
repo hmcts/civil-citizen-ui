@@ -1214,7 +1214,7 @@
     "NEW_RESPONSE_DEADLINE": {
       "CONTENT": "We’ll email both you and {{ claimantName }} legal representative to confirm that you have agreed this new response date.",
       "PAGE_TITLE": "New response deadline",
-      "TITLE": "4 pm on {{ responseDeadline }}"
+      "TITLE": "4pm on {{ responseDeadline }}"
     },
     "ORGANISATION_DETAILS": {
       "ADDRESS": "Organisation address",
