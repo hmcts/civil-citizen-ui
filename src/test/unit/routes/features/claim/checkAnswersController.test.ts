@@ -4,11 +4,7 @@ import {getSummarySections} from '../../../../../main/services/features/claim/ch
 import {CLAIM_CHECK_ANSWERS_URL} from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {getElementsByXPath} from '../../../../utils/xpathExtractor';
-import {
-  claimAmountParticularDate,
-  createClaimWithBasicDetails,
-  createClaimWithClaimAmount,
-} from '../../../../utils/mocks/claimDetailsMock';
+import {createClaimWithBasicDetails} from '../../../../utils/mocks/claimDetailsMock';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -104,95 +100,6 @@ describe('Response - Check answers', () => {
       expect(contact[1].textContent?.trim()).toBe('98765');
       expect(email.length).toBe(1);
       expect(email[0].textContent?.trim()).toBe('contact@gmail.com');
-    });
-
-    it('should return claim amount', async () => {
-      mockGetSummarySections.mockImplementation(() => {
-        return createClaimWithClaimAmount();
-      });
-
-      const response = await session(app).get(CLAIM_CHECK_ANSWERS_URL);
-      expect(response.status).toBe(200);
-
-      const dom = new JSDOM(response.text);
-      const htmlDocument = dom.window.document;
-      const header = getElementsByXPath("//h1[@class='govuk-heading-l']", htmlDocument);
-      const claimAmount = getElementsByXPath(
-        "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'Claim amount breakdown')]]",
-        htmlDocument);
-      const interest = getElementsByXPath(
-        "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'Claim Interest')]]",
-        htmlDocument);
-      const howClaim = getElementsByXPath(
-        "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'How do you want to claim interest?')]]",
-        htmlDocument);
-      const rateOfInterest = getElementsByXPath(
-        "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'What annual rate of interest do you want to claim?')]]",
-        htmlDocument);
-      const interestFrom = getElementsByXPath(
-        "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'When are you claiming interest from?')]]",
-        htmlDocument);
-
-      expect(header.length).toBe(1);
-      expect(header[0].textContent).toBe(checkYourAnswerEng);
-      expect(claimAmount.length).toBe(1);
-      expect(claimAmount[0].textContent?.trim()).toBe('');
-      expect(interest.length).toBe(1);
-      expect(interest[0].textContent?.trim()).toBe('yes');
-      expect(howClaim.length).toBe(1);
-      expect(howClaim[0].textContent?.trim()).toBe('SAME_RATE_INTEREST');
-      expect(rateOfInterest.length).toBe(1);
-      expect(rateOfInterest[0].textContent?.trim()).toBe('SAME_RATE_INTEREST_8_PC');
-      expect(interestFrom.length).toBe(1);
-      expect(interestFrom[0].textContent?.trim()).toBe('FROM_CLAIM_SUBMIT_DATE');
-
-    });
-
-    it('should return claim amount', async () => {
-      mockGetSummarySections.mockImplementation(() => {
-        return claimAmountParticularDate();
-      });
-
-      const response = await session(app).get(CLAIM_CHECK_ANSWERS_URL);
-      expect(response.status).toBe(200);
-
-      const dom = new JSDOM(response.text);
-      const htmlDocument = dom.window.document;
-      const header = getElementsByXPath("//h1[@class='govuk-heading-l']", htmlDocument);
-      const rateOfInterest = getElementsByXPath(
-        "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'What annual rate of interest do you want to claim?')]]",
-        htmlDocument);
-      const whyInterest = getElementsByXPath(
-        "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'Why you're claiming this rate')]]",
-        htmlDocument);
-      const whenInterest = getElementsByXPath(
-        "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'When are you claiming interest from?')]]",
-        htmlDocument);
-      const interestFrom = getElementsByXPath(
-        "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'Date interest applied from')]]",
-        htmlDocument);
-      const interestReason = getElementsByXPath(
-        "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'Explain why you're claiming for this date')]]",
-        htmlDocument);
-      const interestUntil = getElementsByXPath(
-        "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'When do you want to stop claiming interest?')]]",
-        htmlDocument);
-
-      expect(header.length).toBe(1);
-      expect(header[0].textContent).toBe(checkYourAnswerEng);
-      expect(rateOfInterest.length).toBe(1);
-      expect(rateOfInterest[0].textContent?.trim()).toBe('SAME_RATE_INTEREST_DIFFERENT_RATE');
-      expect(whyInterest.length).toBe(1);
-      expect(whyInterest[0].textContent?.trim()).toBe('Reason');
-      expect(whenInterest.length).toBe(1);
-      expect(whenInterest[0].textContent?.trim()).toBe('FROM_A_SPECIFIC_DATE');
-      expect(interestFrom.length).toBe(1);
-      expect(interestFrom[0].textContent?.trim()).toBe('1985-02-01');
-      expect(interestReason.length).toBe(1);
-      expect(interestReason[0].textContent?.trim()).toBe('Reason');
-      expect(interestUntil.length).toBe(1);
-      expect(interestUntil[0].textContent?.trim()).toBe('UNTIL_SETTLED_OR_JUDGEMENT_MADE');
-
     });
 
     it('should pass english translation via query', async () => {
