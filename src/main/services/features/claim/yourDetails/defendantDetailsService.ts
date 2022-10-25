@@ -4,7 +4,7 @@ import {Party} from '../../../../common/models/party';
 
 const getDefendantInformation = async (claimId: string): Promise<Party> => {
   const responseData = await getCaseDataFromStore(claimId);
-  return (responseData?.respondent1) ? responseData.respondent1 : {};
+  return (responseData.respondent1) ? responseData.respondent1 : {};
 };
 
 /**
