@@ -2,8 +2,20 @@ import {app} from '../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {AGE_ELIGIBILITY_URL, DOB_URL, CITIZEN_PHONE_NUMBER_URL} from '../../../../../../main/routes/urls';
-import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure, mockNoStatementOfMeans} from '../../../../../utils/mockDraftStore';
+import {
+  AGE_ELIGIBILITY_URL,
+  DOB_URL,
+  CITIZEN_PHONE_NUMBER_URL,
+  CLAIM_TASK_LIST_URL,
+} from '../../../../../../main/routes/urls';
+import {
+  mockCivilClaim,
+  mockCivilClaimUndefined,
+  mockRedisFailure,
+  mockNoStatementOfMeans,
+  mockCivilClaimRespondentIndividualTypeWithPhoneNumber,
+  mockCivilClaimApplicantIndividualType,
+} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 
@@ -159,7 +171,7 @@ describe('Citizen date of birth', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain(`Redirecting to ${CITIZEN_PHONE_NUMBER_URL}`);
+          expect(res.text).toContain(`Redirecting to ${CLAIM_TASK_LIST_URL}`);
         });
     });
     it('should redirect to phone number page on valid DOB when has undefined on redis', async () => {
@@ -185,6 +197,32 @@ describe('Citizen date of birth', () => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
+    });
+    describe('Redirect to phone-number or task-list screen', () => {
+      it('should redirect to task-list screen if phone-number provided', async () => {
+        app.locals.draftStoreClient = mockCivilClaimRespondentIndividualTypeWithPhoneNumber;
+        await request(app)
+          .post(DOB_URL)
+          .send('year=1981')
+          .send('month=1')
+          .send('day=1')
+          .expect((res) => {
+            expect(res.status).toBe(302);
+            expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          });
+      });
+      it('should redirect to phone-number screen if phone-number NOT provided', async () => {
+        app.locals.draftStoreClient = mockCivilClaimApplicantIndividualType;
+        await request(app)
+          .post(DOB_URL)
+          .send('year=1981')
+          .send('month=1')
+          .send('day=1')
+          .expect((res) => {
+            expect(res.status).toBe(302);
+            expect(res.header.location).toEqual(CITIZEN_PHONE_NUMBER_URL);
+          });
+      });
     });
   });
 });
