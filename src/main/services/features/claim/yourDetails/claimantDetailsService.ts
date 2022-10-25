@@ -9,7 +9,7 @@ import {PartyDetails} from '../../../../common/form/models/partyDetails';
 
 export const getClaimantInformation = async (claimId: string): Promise<Party> => {
   const responseData = await getCaseDataFromStore(claimId);
-  return (responseData?.applicant1) ? responseData.applicant1 : {};
+  return (responseData.applicant1) ? responseData.applicant1 : {};
 };
 
 export const saveClaimant = async (claimId: string, citizenAddress: Address, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, postToThisAddress: YesNo, claimantDetails: PartyDetails): Promise<void> => {
@@ -57,6 +57,7 @@ export const saveClaimantParty = async (claimId: string, citizenAddress: Address
   responseData.applicant1.individualTitle = party?.individualTitle;
   responseData.applicant1.individualFirstName = party?.individualFirstName;
   responseData.applicant1.individualLastName = party?.individualLastName;
+  responseData.applicant1.soleTraderTradingAs = party?.soleTraderTradingAs;
   responseData.applicant1.partyName = party.partyName;
   responseData.applicant1.contactPerson = party.contactPerson;
 
@@ -74,3 +75,4 @@ export const saveClaimantProperty = async (userId: string, propertyName: string,
   }
   await saveDraftClaim(userId, claim);
 };
+

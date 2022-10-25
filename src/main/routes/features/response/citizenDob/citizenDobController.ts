@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {CitizenDob} from '../../../../common/form/models/citizenDob';
-import {AGE_ELIGIBILITY_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL} from '../../../../routes/urls';
+import {AGE_ELIGIBILITY_URL, CITIZEN_PHONE_NUMBER_URL, CLAIM_TASK_LIST_URL, DOB_URL} from '../../../../routes/urls';
 import {Party} from '../../../../common/models/party';
 import {Claim} from '../../../../common/models/claim';
 import {AgeEligibilityVerification} from '../../../../common/utils/ageEligibilityVerification';
@@ -14,9 +14,13 @@ function renderView(form: GenericForm<CitizenDob>, res: Response): void {
   res.render('features/response/citizenDob/citizen-dob', {form: form, today: new Date()});
 }
 
-function redirectToNextPage(req: Request, res: Response, dob: Date) {
+function redirectToNextPage(req: Request, res: Response, dob: Date, respondent: Party) {
   if (AgeEligibilityVerification.isOverEighteen(dob)) {
-    res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PHONE_NUMBER_URL));
+    if(respondent?.partyPhone){
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
+    }else{
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PHONE_NUMBER_URL));
+    }
   } else {
     res.redirect(constructResponseUrlWithIdParams(req.params.id, AGE_ELIGIBILITY_URL));
   }
@@ -56,7 +60,7 @@ citizenDobController.post(DOB_URL, async (req, res, next: NextFunction) => {
         claim.respondent1 = respondent;
       }
       await saveDraftClaim(req.params.id, claim);
-      redirectToNextPage(req, res, claim.respondent1.dateOfBirth);
+      redirectToNextPage(req, res, claim.respondent1.dateOfBirth, claim.respondent1);
     }
   } catch (error) {
     next(error);
