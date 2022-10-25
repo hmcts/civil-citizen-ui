@@ -164,6 +164,13 @@
       "POSTCODE": "CM20 9RA",
       "TELEPHONE": "Tel: 0300 123 7050"
     },
+    "POSTCODE": {
+      "ADDESSES_FOUND": "addresses found (Welsh)",
+      "FIND_ADDRESS": "Dod o hyd i gyfeiriad",
+      "MANUAL_ADDRESS": "Teipio'r cyfeiriad",
+      "PICK_ADDRESS": "Dewiswch gyfeiriad",
+      "UK_POSTCODE": "Rhowch god post yn y DU"
+    },
     "REMAINING_TASKS": {
       "TITLE": "You still need to complete:",
       "BACK": "Back to task list"
@@ -408,14 +415,10 @@
       "COMPANY_DETAILS": "Enter company details",
       "CORRESPONDENCE_ADDRESS": "Cyfeiriad ar gyfer gohebiaeth",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Ydych chi am inni anfon gohebiaeth i gyfeiriad arall?",
-      "FIND_ADDRESS": "Dod o hyd i gyfeiriad",
-      "MANUAL_ADDRESS": "Teipio'r cyfeiriad",
       "PARTY_NAME_COMPANY": "Company name",
       "PARTY_NAME_ORGANISATION": "Organisation name",
       "PAGE_TITLE": "Eich manylion",
-      "PICK_ADDRESS": "Dewiswch gyfeiriad",
       "TRY_AGAIN": "Rhowch gynnig arall arni neu nodwch y cyfeiriad â llaw.",
-      "UK_POSTCODE": "Rhowch god post yn y DU",
       "YES_CORRESPONDENCE": "Ydw. Ychwanegu cyfeiriad ar gyfer gohebiaeth"
     },
     "CITIZEN_DOB": {
@@ -621,16 +624,12 @@
       "CONTACT_NAME_OPTIONAL": "Enw cyswllt (dewisol)",
       "CORRESPONDENCE_ADDRESS": "Gohebiaeth cyfeiriad",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Ydych chi am inni anfon gohebiaeth i gyfeiriad arall?",
-      "FIND_ADDRESS": "Dod o hyd i gyfeiriad",
       "HEADING": "Cadarnhau eich manylion",
-      "MANUAL_ADDRESS": "Teipio'r cyfeiriad'",
       "ORGANISATION_ADDRESS": "Cyfeiriad y sefydliad",
       "ORGANISATION_NAME": "Enw'r sefydliad",
       "PAGE_TITLE": "Manylion cwmni",
-      "PICK_ADDRESS": "Dewiswch gyfeiriad",
       "TITLE": "Manylion cwmni",
       "TRY_AGAIN": "Rhowch gynnig arall arni neu nodwch y cyfeiriad â llaw.",
-      "UK_POSTCODE": "Rhowch god post yn y DU",
       "YES_CORRESPONDENCE": "Ydw. Ychwanegu cyfeiriad ar gyfer gohebiaeth"
     },
     "COMPLETING_CLAIM": {
@@ -787,9 +786,7 @@
       "CONTACT_PERSON": "Name of contact person (optional)",
       "CONTACT_PERSON_HINT": "This might be a person you’ve discussed the claim with.",
       "ENGLAND_OR_WALES_ADDRESS": "The address must be in England or Wales.",
-      "FIND_ADDRESS": "Find address",
       "INVALID_CLAIM": "Your claim may be invalid if you use the wrong address.",
-      "MANUAL_ADDRESS": "Enter address manually",
       "NO_WORK_ADDRESS": "You cannot use their work address.",
       "ORGANISATION_ADDRESS": "Organisation address",
       "ORGANISATION_MAIN_OFFICE": "Enter the organisation’s main office or address that has a connection with the claim.",
@@ -802,9 +799,7 @@
       },
       "PAYING_EXTRA": "You’ll have to pay extra fee if you later want to change the name of anyone involved with the claim.",
       "PAYING_EXTRA_ORGANISATION": "You’ll have to pay extra fee if you later want to change the name of an organisation involved with the claim.",
-      "PICK_ADDRESS": "Pick an address",
       "THEIR_ADDRESS": "Their address",
-      "UK_POSTCODE": "Enter a UK postcode",
       "USUAL_ADDRESS": "You must enter their usual or last known home address."
     },
     "DEFENDANT_PARTY_TYPE": {

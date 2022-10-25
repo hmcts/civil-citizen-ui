@@ -7,20 +7,16 @@
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
-
-{% set correspondenceAddressClass = 'govuk-visually-hidden' %}
+{% from "../../../macro/postcode-address-form.njk" import postcodeLookupAndAddressForm %}
 {% set addressTitle = t('PAGES.CITIZEN_DETAILS.ADDRESS') %}
 {% set citizenAddressErrors = citizenAddress.getAllErrors() %}
-
 {% if citizenCorrespondenceAddress %}
   {% set citizenCorrespondenceAddressErrors = citizenCorrespondenceAddress.getAllErrors() %}
   {% set citizenAddressErrors = citizenAddressErrors.concat(citizenCorrespondenceAddress.getAllErrors()) %}
 {% endif %}
-
 {% block pageTitle %}
   {{ setPageTitle('PAGES.CITIZEN_DETAILS.PAGE_TITLE') }}
 {% endblock %}
-
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -38,14 +34,26 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <h2 class="govuk-heading-m">{{ t('COMMON.INPUT_LABELS.TITLE') }}</h2>
-          <p
-            class="govuk-body">{% if respondent.individualTitle %}{{ respondent.individualTitle }}{% else %} individualTitle Test{% endif %}</p>
+          <p class="govuk-body">
+            {% if respondent.individualTitle %}
+              {{ respondent.individualTitle }}
+            {% else %}
+              individualTitle Test{% endif %}
+          </p>
           <h2 class="govuk-heading-m">{{ t('COMMON.INPUT_LABELS.FIRST_NAME') }}</h2>
-          <p
-            class="govuk-body">{% if respondent.individualFirstName %}{{ respondent.individualFirstName }}{% else %} individualFirstName Test{% endif %}</p>
+          <p class="govuk-body">
+            {% if respondent.individualFirstName %}
+              {{ respondent.individualFirstName }}
+            {% else %}
+              individualFirstName Test{% endif %}
+          </p>
           <h2 class="govuk-heading-m">{{ t('COMMON.INPUT_LABELS.LAST_NAME') }}</h2>
-          <p
-            class="govuk-body">{% if respondent.individualLastName %}{{ respondent.individualLastName }}{% else %} individualLastName Test{% endif %}</p>
+          <p class="govuk-body">
+            {% if respondent.individualLastName %}
+              {{ respondent.individualLastName }}
+            {% else %}
+              individualLastName Test{% endif %}
+          </p>
           <form method="post" class="govuk-!-padding-top-4" name="address" novalidate>
             {{ csrfProtection(csrf) }}
             {{ addressForm(
@@ -56,46 +64,12 @@
               addressTitle = addressTitle
             ) }}
             {% set correspondenceAddressHtml %}
-              <div class="govuk-form-group" id="postcode">
-                <p
-                  class="govuk-label govuk-!-margin-bottom-5">{{ t('PAGES.CITIZEN_DETAILS.ALL_CORRESPONDENCE') + t('PAGES.CITIZEN_DETAILS.ADDRESS_FOR_SERVICE') }}</p>
-                <label class="govuk-label" for="postcode">
-                  {{ t('PAGES.CITIZEN_DETAILS.UK_POSTCODE') }}
-                </label>
-                <div id="postcode-error" class="govuk-visually-hidden govuk-error-message">
-                  {{ t('PAGES.CITIZEN_DETAILS.ADDRESS_NOT_FOUND') + t('PAGES.CITIZEN_DETAILS.TRY_AGAIN') }}
-                </div>
-                <input class="govuk-input govuk-input--width-10" id="postcode" name="postcode" type="text"
-                       autocomplete="postal-code"/>
-                <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button"
-                        id="findAddressButton">
-                  {{ t('PAGES.CITIZEN_DETAILS.FIND_ADDRESS') }}
-                </button>
-                <div id="selectAddress" class="govuk-visually-hidden govuk-!-margin-bottom-2">
-                  {{ govukSelect({
-                    id: "correspondenceAddressList",
-                    name: "correspondenceAddressList",
-                    label: {
-                      text: t('PAGES.CITIZEN_DETAILS.PICK_ADDRESS')
-                    },
-                    items: []
-                  }) }}
-                </div>
-              </div>
-              <div>
-                <a id="enterAddressManually" aria-controls="enterAddressManually" href="#"
-                   class="govuk-body govuk-link enterAddressManually">
-                  {{ t('PAGES.CITIZEN_DETAILS.MANUAL_ADDRESS') }}
-                </a>
-              </div>
-              <div id="correspondenceAddress" class="{{ correspondenceAddressClass }}">
-                {{ addressForm(
-                  t,
-                  citizenCorrespondenceAddress = citizenCorrespondenceAddress,
-                  addressType = 'correspondence',
-                  addressTitle = addressTitle
-                ) }}
-              </div>
+            <p class="govuk-label govuk-!-margin-bottom-5">{{ t('PAGES.CITIZEN_DETAILS.ALL_CORRESPONDENCE') + t('PAGES.CITIZEN_DETAILS.ADDRESS_FOR_SERVICE') }}</p>
+            {{ postcodeLookupAndAddressForm(t, {
+              citizenCorrespondenceAddress:citizenCorrespondenceAddress,
+              addressType:'correspondence',
+              addressTitle:addressTitle
+            }) }}
             {% endset -%}
             <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_DETAILS.CORRESPONDENCE_ADDRESS') }}</h2>
             {{ govukRadios({
@@ -115,7 +89,7 @@
                 },
                 {
                   value: YesNo.YES,
-                  checked: true if respondent.postToThisAddress == YesNo.YES else false,
+                  checked: true if respondent.postToThisAddress == YesNo.YES or citizenCorrespondenceAddress.hasErrors() === true else false,
                   text: t('PAGES.CITIZEN_DETAILS.YES_CORRESPONDENCE'),
                   conditional: {
                   html: correspondenceAddressHtml
