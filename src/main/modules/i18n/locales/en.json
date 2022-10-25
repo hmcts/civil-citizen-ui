@@ -407,6 +407,7 @@
       "ADDRESS_FOR_SERVICE": "This is known as an \"address for service\".",
       "ADDRESS_NOT_FOUND": "We can't find an address for that postcode.",
       "ALL_CORRESPONDENCE": "All correspondence will be sent to this address.",
+      "BUSINESS_NAME": "Business name",
       "CLAIMANT_DETAILS_PROVIDED": "Your name and address were provided by the person, business or organisation claiming from you (the claimant).",
       "CONTACT_PERSON": "Contact person (optional)",
       "CONTACT_PERSON_HINT": "The defendant can contact this person to discuss the claim",
@@ -415,6 +416,7 @@
       "COMPANY_DETAILS": "Enter company details",
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Would you like correspondence sent to a different address?",
+      "FULL_NAME": "Your full name",
       "PARTY_NAME_COMPANY": "Company name",
       "PARTY_NAME_ORGANISATION": "Organisation name",
       "PAGE_TITLE": "Your details",
@@ -621,7 +623,7 @@
       "COMPANY_ADDRESS": "Company address",
       "COMPANY_REGISTERED_OFFICE": "Enter the company's registered office or a company address that has a connection with the claim.",
       "COMPANY_NAME": "Company name",
-      "CONTACT_NAME_OPTIONAL": "Contact name (optional)",
+      "CONTACT_NAME_OPTIONAL": "Contact person (optional)",
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Would you like correspondence sent to a different address?",
       "HEADING": "Confirm your details",
@@ -1207,7 +1209,7 @@
     "NEW_RESPONSE_DEADLINE": {
       "CONTENT": "We’ll email both you and {{ claimantName }} legal representative to confirm that you have agreed this new response date.",
       "PAGE_TITLE": "New response deadline",
-      "TITLE": "4 pm on {{ responseDeadline }}"
+      "TITLE": "4pm on {{ responseDeadline }}"
     },
     "ORGANISATION_DETAILS": {
       "ADDRESS": "Organisation address",
@@ -1432,7 +1434,11 @@
       "VIEW_CLAIM_FEES": "View claim fees"
     },
     "REJECT_ALL_CLAIM": {
-      "PAGE_TITLE": "Reject all of claim"
+      "PAGE_TITLE": "Reject all of claim",
+      "TITLE": "Why do you believe you don’t owe {{ claimantName }} any money?",
+      "PAID_WHAT_I_OWE": "I’ve paid what I believe I owe",
+      "DISPUTE_CLAIM": "I dispute all of the claim",
+      "COUNTERCLAIM": "I dispute the claim and want to make a counterclaim"
     },
     "REPAYMENT_PLAN": {
       "ADMIT_YOU_OWE": "You admit you owe £{{amount}}.",
@@ -1861,6 +1867,7 @@
     "NO_LANGUAGE_ENTERED": "Enter the language that needs to be interpreted",
     "NO_OTHER_SUPPORT": "Tell us what other support they need",
     "NO_SIGN_LANGUAGE_ENTERED": "Enter the sign language that needs to be interpreted",
+    "NOT_TO_REMOVE_PHONE_NUMBER": "You can only change your phone number, not remove it",
     "NUMBER_OF_PEOPLE_REQUIRED": "Enter a numeric, for example 3",
     "NUMBER_REQUIRED": "Enter a valid number",
     "ONE_ROW_REQUIRED": "Enter at least one row",

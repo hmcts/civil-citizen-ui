@@ -43,7 +43,7 @@ export const buildRespondent1 = (): Party => {
   respondent.individualLastName = 'Mary';
   respondent.individualFirstName = 'Richards';
   respondent.partyName = 'Mrs Richards Mary';
-  respondent.phoneNumber = '0208339922';
+  respondent.partyPhone = '0208339922';
   respondent.dateOfBirth = new Date('2022-01-24T15:59:59');
   respondent.responseType = '';
   respondent.type = PartyType.INDIVIDUAL;

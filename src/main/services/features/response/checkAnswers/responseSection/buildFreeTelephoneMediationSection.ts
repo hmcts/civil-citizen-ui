@@ -16,10 +16,10 @@ const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSW
 const getContactNumber = (claim: Claim) => {
   if (claim.mediation?.companyTelephoneNumber) {
     return claim.mediation.companyTelephoneNumber.mediationPhoneNumber;
-  } else if (claim.mediation?.canWeUse.mediationPhoneNumber) {
+  } else if (claim.mediation?.canWeUse?.mediationPhoneNumber) {
     return claim.mediation.canWeUse.mediationPhoneNumber;
   } else {
-    return claim.respondent1.phoneNumber;
+    return claim.respondent1.partyPhone;
   }
 };
 

@@ -407,6 +407,7 @@
       "ADDRESS_FOR_SERVICE": "Gelwir hwn yn 'gyfeiriad cyflwyno'.",
       "ADDRESS_NOT_FOUND": "Ni allwn dod o hyd i gyfeiriad ar gyfer y cod post hwnnw.",
       "ALL_CORRESPONDENCE": "Byddir yn anfon pob gohebiaeth i'r cyfeiriad hwn.",
+      "BUSINESS_NAME": "Business name",
       "CLAIMANT_DETAILS_PROVIDED": "Darparwyd eich enw a'ch cyfeiriad gan yr unigolyn, y busnes neu'r sefydliad sy'n cyflwyno'r hawliad (yr hawlydd).",
       "CONTACT_PERSON": "Contact person (optional)",
       "CONTACT_PERSON_HINT": "The defendant can contact this person to discuss the claim",
@@ -415,6 +416,7 @@
       "COMPANY_DETAILS": "Enter company details",
       "CORRESPONDENCE_ADDRESS": "Cyfeiriad ar gyfer gohebiaeth",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Ydych chi am inni anfon gohebiaeth i gyfeiriad arall?",
+      "FULL_NAME": "Your full name",
       "PARTY_NAME_COMPANY": "Company name",
       "PARTY_NAME_ORGANISATION": "Organisation name",
       "PAGE_TITLE": "Eich manylion",
@@ -621,7 +623,7 @@
       "COMPANY_ADDRESS": "Cyfeiriad y cwmni",
       "COMPANY_REGISTERED_OFFICE": "Enter the company's registered office or a company address that has a connection with the claim.",
       "COMPANY_NAME": "Enw'r cwmni",
-      "CONTACT_NAME_OPTIONAL": "Enw cyswllt (dewisol)",
+      "CONTACT_NAME_OPTIONAL": "Contact person (optional)",
       "CORRESPONDENCE_ADDRESS": "Gohebiaeth cyfeiriad",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Ydych chi am inni anfon gohebiaeth i gyfeiriad arall?",
       "HEADING": "Cadarnhau eich manylion",
@@ -1431,7 +1433,11 @@
       "VIEW_CLAIM_FEES": "View claim fees"
     },
     "REJECT_ALL_CLAIM": {
-      "PAGE_TITLE": "Reject all of claim"
+      "PAGE_TITLE": "Reject all of claim",
+      "TITLE": "Pam ydych yn credu nad oes unrhyw arian yn ddyledus gennych i'r {{ claimantName }}?",
+      "PAID_WHAT_I_OWE": "Rwyf wedi talu'r swm rwy'n credu sy'n ddyledus gen i",
+      "DISPUTE_CLAIM": "Rwy'n gwrthwynebu'r hawliad cyfan",
+      "COUNTERCLAIM": "Rwy'n gwrthwynebu'r hawliad ac rwyf eisiau gwneud gwrth-hawliad"
     },
     "REPAYMENT_PLAN": {
       "ADMIT_YOU_OWE": "Rydych yn cyfaddef bod arnoch chi £{{amount}}.",
@@ -1860,6 +1866,7 @@
     "NO_LANGUAGE_ENTERED": "Enter the language that needs to be interpreted",
     "NO_OTHER_SUPPORT": "Tell us what other support they need",
     "NO_SIGN_LANGUAGE_ENTERED": "Enter the sign language that needs to be interpreted",
+    "NOT_TO_REMOVE_PHONE_NUMBER": "You can only change your phone number, not remove it",
     "NUMBER_OF_PEOPLE_REQUIRED": "Rhowch rif, er enghraifft 3",
     "NUMBER_REQUIRED": "Rhowch rif dilys",
     "ONE_ROW_REQUIRED": "Enter at least one row",

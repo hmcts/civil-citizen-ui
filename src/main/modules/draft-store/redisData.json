@@ -55,32 +55,6 @@
               }
             ]
           }
-        },
-        "hearing": {
-          "supportRequiredList": {
-            "items": [
-              {
-                "fullName": "johndoe",
-                "disabledAccess": {
-                  "selected": true
-                },
-                "otherSupport": {
-                  "selected": true,
-                  "content": "bla bla"
-                }
-              },
-              {
-                "fullName": "mikebrown",
-                "hearingLoop": {
-                  "selected": true
-                },
-                "languageInterpreter": {
-                  "selected": true,
-                  "content": "zla zla"
-                }
-              }
-            ]
-          }
         }
       },
       "supportRequired": {
@@ -1029,6 +1003,7 @@
         "individualFirstName": "Jan",
         "individualLastName": "Clark",
         "partyName": "Mr. Jan Clark",
+        "partyPhone": "678765432",
         "soleTraderTradingAs": "Clark's Sons Ltd.",
         "primaryAddress": {
           "County": "Kent",
@@ -1643,6 +1618,7 @@
       "respondent1": {
         "type": "ORGANISATION",
         "partyName": "Version 1",
+        "partyPhone": "435321672",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -1813,7 +1789,6 @@
       },
       "respondent1": {
         "type": "INDIVIDUAL",
-        "partyPhone": "(0)207 127 0000",
         "individualTitle": "Mr.",
         "individualFirstName": "Jhon",
         "individualLastName": "Smith",
