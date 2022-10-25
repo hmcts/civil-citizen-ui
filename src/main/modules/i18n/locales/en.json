@@ -1148,9 +1148,10 @@
       "REACHING_SETTLEMENT": "Reaching a settlement",
       "TITLE": "Free telephone mediation"
     },
-    "HELP_WITH_FEES":{
+    "HELP_WITH_FEES": {
       "ENTER_NUMBER": "Enter the Help With Fees number",
       "PAGE_TITLE": "Do you have a Help With Fees reference number?",
+      "REFERENCE_NUMBER": "Help with fees reference number",
       "TITLE": "Do you have a Help With Fees reference number?",
       "ONLY_ONE": "You'll only have one if you applied for Help With Fees."
     },

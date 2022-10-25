@@ -5,6 +5,7 @@ import {t} from 'i18next';
 import {getLng} from '../../../../../common/utils/languageToggleUtils';
 import {
   CLAIM_AMOUNT_URL,
+  CLAIM_HELP_WITH_FEES_URL,
   CLAIM_INTEREST_FROM_URL,
   CLAIM_INTEREST_TYPE_URL,
   CLAIM_INTEREST_URL,
@@ -50,8 +51,8 @@ export const buildClaimAmountSection = (claim: Claim, claimId: string, lang: str
       claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.CLAIM_JOURNEY.INTEREST_END_DATE.TITLE', {lng}), t(interestClaimEndDate, {lng}), CLAIM_INTEREST_FROM_URL, changeLabel(lang)));
     }
   }
-  if (claim?.interest) {
-    claimAmountSection.summaryList.rows.push(summaryRow(t('Help with fees reference number', {lng}), '', '', changeLabel(lang)));
+  if (claim.claimDetails?.helpWithFees) {
+    claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.HELP_WITH_FEES.REFERENCE_NUMBER', {lng}), claim.claimDetails.helpWithFees.referenceNumber, CLAIM_HELP_WITH_FEES_URL, changeLabel(lang)));
   }
   return claimAmountSection;
 };
