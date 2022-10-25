@@ -36,7 +36,6 @@ function renderPage(res: Response, req: Request, party: GenericForm<Party>, citi
 }
 
 const redirect = (respondent: Party, req: Request, res: Response) => {
-  console.log(respondent);
   if (respondent?.type === PartyType.INDIVIDUAL) {
     res.redirect(constructResponseUrlWithIdParams(req.params.id, DOB_URL));
   } else {
