@@ -32,7 +32,7 @@ const getApplicantFullName = (claim: Claim): string => {
 export const buildYourDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
 
   let yourDetailsHref = CLAIMANT_COMPANY_DETAILS_URL;
-  switch (claim.respondent1.type) {
+  switch (claim.applicant1.type) {
     case PartyType.INDIVIDUAL:
       yourDetailsHref = CLAIMANT_INDIVIDUAL_DETAILS_URL;
       break;
