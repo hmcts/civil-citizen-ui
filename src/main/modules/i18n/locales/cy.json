@@ -651,9 +651,9 @@
       "YOULL_HAVE_TO_PAY": "You'll have to pay an additional fee if you want you"
     },
     "CONSIDER_CLAIMANT_DOCUMENTS": {
-      "GIVE_DETAILS": "Give details of the documents",
-      "PAGE_TITLE": "Are there any documents the claimant has that you want the court to consider?",
-      "TITLE": "Are there any documents the claimant has that you want the court to consider?"
+      "GIVE_DETAILS": "Rhowch fanylion y dogfennau",
+      "PAGE_TITLE": "A oes yna unrhyw ddogfennau sydd gan yr hawlydd yr ydych eisiau i’r llys eu hystyried?",
+      "TITLE": "A oes yna unrhyw ddogfennau sydd gan yr hawlydd yr ydych eisiau i’r llys eu hystyried?"
     },
     "CONTACT_THEM": {
       "ABOUT": "Ynghylch yr Hawliad",
@@ -1312,14 +1312,15 @@
       "TITLE": "A ydych yn cefnogi rhywun arall yn ariannol?"
     },
     "OTHER_WITNESSES": {
-      "ADD_ANOTHER_WITNESS": "Add another witness",
-      "EMAIL_LABEL": "Email address (optional)",
-      "PAGE_TITLE": "Do you have other witnesses?",
-      "PHONE_LABEL": "Phone number (optional)",
+      "ADD_ANOTHER_WITNESS": "Ychwanegu tyst arall",
+      "EMAIL_LABEL": "Cyfeiriad e-bost (dewisol)",
+      "LAST_NAME_LABEL": "Enw olaf",
+      "PAGE_TITLE": "A oes gennych dystion eraill?",
+      "PHONE_LABEL": "Rhif ffôn (dewisol)",
       "REMOVE_WITNESS": "Remove witness",
-      "THIS_IS_SOMEONE_WHO_CAN_CONFIRM": "This is someone who can confirm your version of events.",
-      "TITLE": "Do you have other witnesses?",
-      "WHAT_THEY_WITNESSED_LABEL": "Tell us what they witnessed"
+      "THIS_IS_SOMEONE_WHO_CAN_CONFIRM": "Tyst yw rhywun sy’n gallu cadarnhau eich fersiwn chi o beth ddigwyddodd.",
+      "TITLE": "A oes gennych dystion eraill?",
+      "WHAT_THEY_WITNESSED_LABEL": "Dywedwch wrthym beth welsant"
     },
     "PARTIAL_ADMISSION_ALREADY_PAID": {
       "PAGE_TITLE": "Already paid"
@@ -1797,10 +1798,10 @@
     "DEFENDANT_EXPERT_EVIDENCE_REQUIRED": "Select yes if you want to use expert evidence",
     "DEFENDANT_YOURSELF_EVIDENCE_REQUIRED": "Select yes if you want to give evidence yourself",
     "DEFENDANT_EXPERT_EXPLAIN_EXAMINE": "Explain what there is to examine",
-    "DEFENDANT_WITNESS_ENTER_FIRST_NAME": "Enter the witness’s first name",
-    "DEFENDANT_WITNESS_ENTER_LAST_NAME": "Enter the witness’s last name",
+    "DEFENDANT_WITNESS_ENTER_FIRST_NAME": "Nodwch enw cyntaf y tyst",
+    "DEFENDANT_WITNESS_ENTER_LAST_NAME": "Nodwch enw olaf y tyst",
     "DEFENDANT_WITNESS_SELECT_OTHER": "Select yes if you have other witnesses",
-    "DEFENDANT_WITNESS_WHAT_THEY_WITNESSED": "Tell us what they witnessed",
+    "DEFENDANT_WITNESS_WHAT_THEY_WITNESSED": "Dywedwch wrthym beth welsant",
     "DESCRIPTION_REQUIRED": "Rhowch ddisgrifiad o beth ddigwyddodd",
     "DETAILS_REQUIRED": "Rhowch fanylion",
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Tell us if you believe the hearing requirement details on this page are true",
@@ -1919,7 +1920,7 @@
     "SELECT_LANGUAGE_SPEAK": "Select the language you, your experts, and your witnesses will speak at the hearing",
     "SELECT_REQUEST": "Dewiswch os ydych eisiau gwneud cais am ragor o amser i ymateb, os ydych eisoes wedi cytuno ar ragor o amser i ymateb, os yw eich cais am ragor o amser wedi’i wrthod, neu nid ydych angen rhagor o amser i ymateb",
     "SELECT_SUPPORT": "Select the support the person needs to attend a hearing",
-    "SELECT_YES_IF_DOCUMENTS": "Select yes if there are documents the claimant has that you want the court to consider",
+    "SELECT_YES_IF_DOCUMENTS": "Dewiswch ‘oes’ os oes gan yr hawlydd ddogfennau yr ydych eisiau i’r llys eu hystyried",
     "SELECT_YES_IF_SUPPORT": "Select yes if someone needs support to attend a hearing",
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
     "SIGNER_NAME_TOO_LONG": "You've entered too many characters",
