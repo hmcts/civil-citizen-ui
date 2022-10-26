@@ -100,8 +100,8 @@ describe('Response - Check answers', () => {
       expect(contact[1].textContent?.trim()).toBe('98765');
       expect(email.length).toBe(1);
       expect(email[0].textContent?.trim()).toBe('contact@gmail.com');
-
     });
+
     it('should pass english translation via query', async () => {
       await session(app).get(CLAIM_CHECK_ANSWERS_URL)
         .query({lang: 'en'})

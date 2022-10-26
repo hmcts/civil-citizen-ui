@@ -1,7 +1,12 @@
 import {app} from '../../../../../../main/app';
 import config from 'config';
 import request from 'supertest';
-import {CITIZEN_DETAILS_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL} from '../../../../../../main/routes/urls';
+import {
+  CITIZEN_DETAILS_URL,
+  CITIZEN_PHONE_NUMBER_URL,
+  CLAIM_TASK_LIST_URL,
+  DOB_URL,
+} from '../../../../../../main/routes/urls';
 import {
   VALID_ADDRESS_LINE_1,
   VALID_CITY,
@@ -681,7 +686,7 @@ describe('Confirm Details page', () => {
       });
   });
 
-  describe('Redirect to Phone or DOB screen', () => {
+  describe('Redirect to Phone or DOB screen (phone number not provided)', () => {
     it('should redirect to confirm phone screen if respondent type is COMPANY', async () => {
       mockGetRespondentInformation.mockImplementation(async () => {
         return buildClaimOfRespondentType(PartyType.COMPANY);
@@ -718,7 +723,7 @@ describe('Confirm Details page', () => {
           expect(res.header.location).toEqual(DOB_URL);
         });
     });
-    it('should redirect to confirm DOB screen if respondent type is SOLE TRADER', async () => {
+    it('should redirect to confirm your phone screen if respondent type is SOLE TRADER', async () => {
       mockGetRespondentInformation.mockImplementation(async () => {
         return buildClaimOfRespondentType(PartyType.SOLE_TRADER);
       });
@@ -727,7 +732,58 @@ describe('Confirm Details page', () => {
         .send(validDataForPost)
         .expect((res) => {
           expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_PHONE_NUMBER_URL);
+        });
+    });
+  });
+
+  describe('Redirect to Phone or DOB screen (phone number provided)', () => {
+    it('should redirect to task-list screen if respondent type is COMPANY', async () => {
+      mockGetRespondentInformation.mockImplementation(async () => {
+        return {...buildClaimOfRespondentType(PartyType.COMPANY), partyPhone: '123456'};
+      });
+      await request(app)
+        .post(CITIZEN_DETAILS_URL)
+        .send(validDataForPost)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+        });
+    });
+    it('should redirect to task-list screen if respondent type is ORGANISATION', async () => {
+      mockGetRespondentInformation.mockImplementation(async () => {
+        return {...buildClaimOfRespondentType(PartyType.ORGANISATION), partyPhone: '123456'};
+      });
+      await request(app)
+        .post(CITIZEN_DETAILS_URL)
+        .send(validDataForPost)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+        });
+    });
+    it('should redirect to confirm DOB screen if respondent type is INDIVIDUAL', async () => {
+      mockGetRespondentInformation.mockImplementation(async () => {
+        return {...buildClaimOfRespondentType(PartyType.INDIVIDUAL), partyPhone: '123456'};
+      });
+      await request(app)
+        .post(CITIZEN_DETAILS_URL)
+        .send(validDataForPost)
+        .expect((res) => {
+          expect(res.status).toBe(302);
           expect(res.header.location).toEqual(DOB_URL);
+        });
+    });
+    it('should redirect to task-list  screen if respondent type is SOLE TRADER', async () => {
+      mockGetRespondentInformation.mockImplementation(async () => {
+        return {...buildClaimOfRespondentType(PartyType.SOLE_TRADER), partyPhone: '123456'};
+      });
+      await request(app)
+        .post(CITIZEN_DETAILS_URL)
+        .send(validDataForPost)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
         });
     });
   });

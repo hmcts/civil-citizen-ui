@@ -2,6 +2,7 @@ import {SummarySections} from '../../../../common/models/summaryList/summarySect
 import {Claim} from '../../../../common/models/claim';
 import {buildYourDetailsSection} from '../../claim/checkAnswers/detailsSection/buildYourDetailsSection';
 import {buildTheirDetailsSection} from '../../claim/checkAnswers/detailsSection/buildTheirDetailsSection';
+import {buildClaimAmountSection} from './financialSection/buildClaimAmountSection';
 
 const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): SummarySections => {
 
@@ -9,6 +10,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
     sections: [
       buildYourDetailsSection(claim, claimId, lang),
       buildTheirDetailsSection(claim, claimId, lang),
+      buildClaimAmountSection(claim, claimId, lang),
     ],
   };
 };
