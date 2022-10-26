@@ -9,6 +9,10 @@ import { toCCDPayBySetDate } from './convertToCCDPayBySetDate';
 import { toCCDHomeType } from './convertToCCDHomeType';
 import { toCCDBankAccount } from './convertToCCDBankAccount';
 import { toCCDTimeline } from './convertToCCDTimeLine';
+import { toCCDEmploymentType } from './convertToCCDEmploymentType';
+import { toCCDEmployerDetails } from './convertToCCDEmployersDetails';
+import { convertToCCDCourtOrderDetails } from './convertToCCDCourtOrderDetails';
+import { convertToCCDLoanCreditDetails } from './convertToCCDLoanCreditDetails';
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   // TODO: should we include everything inside caseData
@@ -21,7 +25,7 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     specAoSApplicantCorrespondenceAddressRequired: addressHasChange ? YesNoUpperCamelCase.NO : YesNoUpperCamelCase.YES,
     totalClaimAmount: claim.totalClaimAmount,
     respondent1: toCCDParty(claim.respondent1),
-    respondent1Represented: claim.respondent1.contactPerson, // TODO: contactPerson?
+    respondent1Represented: claim.respondent1.contactPerson, // TODO: where is contactPerson in CCD?
     specDefenceAdmittedRequired: claim.partialAdmission.alreadyPaid.option.toUpperCase(),
     respondToAdmittedClaim: {
       howMuchWasPaid: claim.partialAdmission.howMuchHaveYouPaid.amount.toString(),
@@ -37,18 +41,14 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     // KENNETH INFO
 
     defenceAdmitPartEmploymentTypeRequired: claim.statementOfMeans.employment.declared ? 'YES' : 'NO', // boolean
-
-    // x: claim.statementOfMeans.employment.employmentType, // if true, EmploymentCategory
-    // CCD: respondToClaimAdmitPartEmploymentTypeLRspec it is a list
-
-    // x: claim.statementOfMeans.employers.rows, // if EmploymentCategory=EMPLOYED,  {employerName, jobTitle},
-    // CCD: responseClaimAdmitPartEmployer.employerDetails it is a list with employerName, jobTitle
-
+    respondToClaimAdmitPartEmploymentTypeLRspec: toCCDEmploymentType(claim.statementOfMeans.employment.employmentType),
+    responseClaimAdmitPartEmployer: {
+      employerDetails: toCCDEmployerDetails(claim.statementOfMeans.employers.rows)
+    },
     respondent1CourtOrderPaymentOption: claim.statementOfMeans.courtOrders.declared ? 'YES' : 'NO', // boolean
 
-    // x: claim.statementOfMeans.courtOrders.rows, // if true, Array of {"instalmentAmount":200,"amount":100,"claimNumber":"ginny"}
-    // CCD: respondent1CourtOrderDetails it is a list claimNumberText, amountOwed, monthlyInstalmentAmount
-
+    respondent1CourtOrderDetails: convertToCCDCourtOrderDetails(claim.statementOfMeans.courtOrders.rows),
+    
     // TODO: coversion Debts you are behind, for each one {amount,isDeclared,name,populated,schedule}
     // x: claim.statementOfMeans.priorityDebts.councilTax
     // x: claim.statementOfMeans.priorityDebts.electricity
@@ -61,8 +61,7 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
 
     respondent1LoanCreditOption: claim.statementOfMeans.debts.option.toUpperCase(),
 
-    // x: claim.statementOfMeans.debts.debtsItems, // if yes, [Array] of {"debt":"fefe","totalOwned":"100","monthlyPayments":"100"}
-    // CCD: respondent1LoanCreditDetails it is a list contains loanCardDebtDetail, totalOwed, monthlyPayment
+    respondent1LoanCreditDetails: convertToCCDLoanCreditDetails(claim.statementOfMeans.debts.debtsItems),
 
     // TODO: Regular expenses, for each one {declared, transactionSource}
     // x: claim.statementOfMeans.regularExpenses.councilTax
@@ -94,10 +93,6 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     // CCD: respondent1DQ.respondent1DQRecurringIncome it is a list contains type (e.g. job, universalCredit **need to translate**), amount, frequency, typeOtherDetails (use when choosing other)
 
     responseToClaimAdmitPartWhyNotPayLRspec: claim.statementOfMeans.explanation.text,
-
-
-
-
 
 
 
@@ -156,10 +151,6 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
       reason: claim.statementOfMeans.taxPayments.reason,
     },
 
-    // x: claim.statementOfMeans.employment.employmentType, // if true, EmploymentCategory
-    // x: claim.statementOfMeans.employers.rows, // if EmploymentCategory=EMPLOYED,  {employerName, jobTitle}, 
-
-
     respondToClaimAdmitPartUnemployedLRspec: {
       unemployedComplexTypeRequired: claim.statementOfMeans.unemployment.option, // CUI has enum UnemploymentCategory ['Unemployed','Retired','Other'], ccd expect a string
       lengthOfUnemployment: {
@@ -175,8 +166,6 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     // x: claim.statementOfMeans.unemployment.unemploymentDetails.years, // if option=Unemployed, type number
     // x: claim.statementOfMeans.unemployment.otherDetails.details, // if option=Other, type string
 
-    // x: claim.statementOfMeans.courtOrders.rows, // if true, Array of {"instalmentAmount":200,"amount":100,"claimNumber":"ginny"}
-
     // TODO: coversion Debts you are behind, for each one {amount,isDeclared,name,populated,schedule}
     // x: claim.statementOfMeans.priorityDebts.councilTax
     // x: claim.statementOfMeans.priorityDebts.electricity
@@ -185,8 +174,6 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     // x: claim.statementOfMeans.priorityDebts.mortgage
     // x: claim.statementOfMeans.priorityDebts.rent
     // x: claim.statementOfMeans.priorityDebts.water
-
-    // x: claim.statementOfMeans.debts.debtsItems, // if yes, [Array] of {"debt":"fefe","totalOwned":"100","monthlyPayments":"100"}
 
     // TODO: Regular expenses, for each one {declared, transactionSource}
     // x: claim.statementOfMeans.regularExpenses.councilTax

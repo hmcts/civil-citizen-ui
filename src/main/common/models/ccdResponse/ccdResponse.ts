@@ -11,6 +11,10 @@ import { CCDBankAccount } from './ccdBankAccount';
 import { CCDPartnerAndDependent } from './ccdPartnerAndDependent';
 import { CCDSelfEmploymentDetails } from './ccdSelfEmploymentDetails';
 import { CCDUnemployedDetails } from './ccdUnemployedDetails';
+import { CCDEmploymentType } from './ccdEmploymentType';
+import { CCDEmployerDetails } from './ccdEmployerDetails';
+import { CCDCourtOrderDetails } from './ccdCourtOrderDetails';
+import { CCDLoanCreditDetails } from './ccdLoanCreditDetails';
 
 export interface CCDResponse extends ClaimUpdate {
   respondent1ClaimResponseTypeForSpec: string; // TODO: should be ResponseType?
@@ -44,4 +48,10 @@ export interface CCDResponse extends ClaimUpdate {
   defenceAdmitPartEmploymentTypeRequired: string,  // TODO: YES NO;
   specDefendant1SelfEmploymentDetails: CCDSelfEmploymentDetails,
   respondToClaimAdmitPartUnemployedLRspec: CCDUnemployedDetails,
+  respondToClaimAdmitPartEmploymentTypeLRspec: CCDEmploymentType[],
+  responseClaimAdmitPartEmployer: {
+    employerDetails: CCDEmployerDetails[],
+  },
+  respondent1CourtOrderDetails: CCDCourtOrderDetails[],
+  respondent1LoanCreditDetails: CCDLoanCreditDetails[],
 }

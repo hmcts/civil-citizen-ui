@@ -2,11 +2,16 @@ import { DefendantTimeline } from "../../../common/form/models/timeLineOfEvents/
 import { CCDTimeLineOfEvents } from "../../../common/models/ccdResponse/ccdTimeLineOfEvents";
 
 export const toCCDTimeline = (timeline: DefendantTimeline): CCDTimeLineOfEvents[] => {
-  const ccdTimeline: CCDTimeLineOfEvents[] = [];
+  const ccdTimelines: CCDTimeLineOfEvents[] = [];
   timeline.rows.forEach((row, index) => {
-    ccdTimeline[index].id = index.toString();
-    ccdTimeline[index].value.timelineDate = row.date;
-    ccdTimeline[index].value.timelineDescription = row.description;
+    const ccdTimeLine: CCDTimeLineOfEvents= {
+      id: index.toString(),
+      value:{
+        timelineDate: row.date,
+        timelineDescription: row.description,
+      },
+    };
+    ccdTimelines.push(ccdTimeLine);
   });
-  return ccdTimeline;
+  return ccdTimelines;
 };
