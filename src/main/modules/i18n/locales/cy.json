@@ -1065,12 +1065,12 @@
       "TITLE": "Have you already got a report written by an expert?"
     },
     "EXPERT_SMALL_CLAIMS": {
-      "CONTINUE": "Continue without an expert",
-      "EXPERT_NOT_REPRESENTATIVE": "An expert is not a legal representative.",
-      "NEEDS_AN_EXPERT": "I believe the case needs an expert",
-      "PAGE_TITLE": "Using an expert",
-      "RARE_FOR_A_JUDGE": "It's rare for a judge to allow you to use an expert in a small claim. Most small claims don't need an expert.",
-      "TITLE": "Using an expert"
+      "CONTINUE": "Parhau heb arbenigwr",
+      "EXPERT_NOT_REPRESENTATIVE": "Nid yw arbenigwr yn gynrychiolydd cyfreithiol.",
+      "NEEDS_AN_EXPERT": "Credaf fod angen arbenigwr ar gyfer yr achos",
+      "PAGE_TITLE": "Defnyddio arbenigwr",
+      "RARE_FOR_A_JUDGE": "Mae’n anghyffredin iawn i farnwr ganiatáu i chi ddefnyddio arbenigwr ar gyfer hawliad bychan. Nid oes angen arbenigwr ar gyfer y mwyafrif o hawliadau bychain.",
+      "TITLE": "Defnyddio arbenigwr"
     },
     "EXPLANATION": {
       "PAGE_TITLE": "Explanation",
