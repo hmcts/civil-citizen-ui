@@ -886,11 +886,11 @@
       "PAGE_TITLE": "Any dependants with disability?"
     },
     "DETERMINATION_WITHOUT_HEARING": {
-      "CLAIM_DETERMINATION_WITHOUT_HEARING": "Do you consider that this claim is suitable for determination without a hearing,",
-      "IE": "i.e. by a judge reading and considering the case papers, witness statements and other documents filled by the parties, making a decision, and giving a note of reason for that decision?",
-      "PAGE_TITLE": "Determination without Hearing Questions",
-      "TELL_US_WHY": "Tell us why",
-      "TITLE": "Determination without hearing"
+      "CLAIM_DETERMINATION_WITHOUT_HEARING": "A ydych yn credu bod yr hawliad hwn yn addas i’w benderfynu heb wrandawiad,",
+      "IE": "h.y. gan farnwr yn darllen ac yn ystyried yr achos ar sail y papurau, y datganiadau tystion a dogfennau eraill a gaiff eu ffeilio gan y partïon, yn gwneud penderfyniad ac yn gwneud datganiad o resymau dros y penderfyniad hwnnw?",
+      "PAGE_TITLE": "Cwestiynau Penderfynu heb Wrandawiad",
+      "TELL_US_WHY": "Wrthym pam",
+      "TITLE": "Cwestiynau Penderfynu heb Wrandawiad\n"
     },
     "DISABILITY": {
       "PAGE_TITLE": "A oes gennych anabledd?",
@@ -1927,7 +1927,7 @@
     "SIGNER_ROLE_TOO_LONG": "You've entered too many characters",
     "SOMETHING_WENT_WRONG": "Something went wrong",
     "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Dywedwch wrthym os ydych yn credu bod y ffeithiau a nodir yn yr ymateb hwn yn wir",
-    "TELL_US_WHY": "Please tell us why",
+    "TELL_US_WHY": "Dywedwch wrthym pam",
     "TELL_US_WHY_UNAVAILABLE": "Tell us why you, your experts or witnesses are unavailable for a hearing",
     "TRANSACTION_SOURCE": {
       "ENTER_OTHER_INCOME": "Tynnu'r ffynhonnell incwm hon",
