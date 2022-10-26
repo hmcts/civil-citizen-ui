@@ -843,12 +843,12 @@
       "ADD_ANY_COMMENTS": "Ychwanegu unrhyw sylwadau am eu hamserlen (dewisol)"
     },
     "DEFENDANT_EXPERT_EVIDENCE": {
-      "EVIDENCE": "Expert evidence is an opinion based on the expertise of a specialist, for example - a building surveyor who can comment on the quality of building work.",
-      "EXPERT": "Experts usually only give written evidence. They may appear at a hearing if the experts disagree, and the court can only decide between their evidence by hearing it in person.",
-      "DECISION": "It will only be allowed if the court cannot make a decision without the expert.",
-      "LEGAL": "An expert is not a legal representative.",
-      "PAGE_TITLE": "Defendant expert evidence",
-      "TITLE": "Do you want to use expert evidence?"
+      "EVIDENCE": "Tystiolaeth arbenigwr yw barn sy’n seiliedig ar arbenigedd arbenigwr, er enghraifft - syrfëwr adeiladu a all wneud sylwadau ar ansawdd gwaith adeiladu.",
+      "EXPERT": "Gan amlaf, dim ond tystiolaeth ysgrifenedig y bydd arbenigwr yn ei roi. Efallai y gofynnir iddynt fynychu gwrandawiad os bydd yr arbenigwyr yn anghytuno, a dim ond drwy wrando ar yr hyn sydd ganddynt i’w ddweud y gall y llys benderfynu.",
+      "DECISION": "Dim ond os na all y llys wneud penderfyniad heb yr arbenigwr y bydd hyn yn cael ei ganiatáu.",
+      "LEGAL": "Nid yw arbenigwr yn gynrychiolydd cyfreithiol.",
+      "PAGE_TITLE": "Ydych chi eisiau defnyddio tystiolaeth arbenigwr?",
+      "TITLE": "Ydych chi eisiau defnyddio tystiolaeth arbenigwr?"
     },
     "DEFENDANT_PHONE_NUMBER": {
       "PAGE_TITLE": "Their phone number",
@@ -1794,7 +1794,7 @@
     "DEFENCE_REQUIRED": "Mae angen ichi egluro pam nad oes arian yn ddyledus gennych",
     "DEFENDANT_AGE_REQUIRED": "Select yes, no, or company/organisation",
     "DEFENDANT_POSTCODE_NOT_VALID": "Postcode must be in England or Wales",
-    "DEFENDANT_EXPERT_EVIDENCE_REQUIRED": "Select yes if you want to use expert evidence",
+    "DEFENDANT_EXPERT_EVIDENCE_REQUIRED": "Dewiswch ‘ydw’ os ydych eisiau defnyddio tystiolaeth arbenigwr",
     "DEFENDANT_YOURSELF_EVIDENCE_REQUIRED": "Select yes if you want to give evidence yourself",
     "DEFENDANT_EXPERT_EXPLAIN_EXAMINE": "Explain what there is to examine",
     "DEFENDANT_WITNESS_ENTER_FIRST_NAME": "Enter the witness’s first name",
