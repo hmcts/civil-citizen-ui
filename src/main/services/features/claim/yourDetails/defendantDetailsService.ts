@@ -1,11 +1,11 @@
 import {Claim} from '../../../../common/models/claim';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {Party} from '../../../../common/models/party';
-import {Address} from 'common/form/models/address';
+import {Address} from '../../../../common/form/models/address';
 import {CitizenCorrespondenceAddress} from 'common/form/models/citizenCorrespondenceAddress';
-import {YesNo} from 'common/form/models/yesNo';
-import {convertToPrimaryAddress} from 'models/primaryAddress';
-import {convertToCorrespondenceAddress} from 'models/correspondenceAddress';
+import {YesNo} from '../../../../common/form/models/yesNo';
+import {convertToPrimaryAddress} from '../../../../common/models/primaryAddress';
+import {convertToCorrespondenceAddress} from '../../../../common/models/correspondenceAddress';
 
 const getDefendantInformation = async (claimId: string): Promise<Party> => {
   const responseData = await getCaseDataFromStore(claimId);

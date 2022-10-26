@@ -19,7 +19,7 @@ import {PartyDetails} from '../../../../common/form/models/partyDetails';
 import {Party} from '../../../../common/models/party';
 import {getCorrespondenceAddressForm} from '../../../../services/features/claim/yourDetails/claimantDetailsService';
 import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citizenCorrespondenceAddress';
-import {YesNo} from 'common/form/models/yesNo';
+import {YesNo} from '../../../../common/form/models/yesNo';
 
 const defendantDetailsController = Router();
 const defendantDetailsCompanyOrOrganisationViewPath = 'features/claim/defendant/defendant-details-company-or-organisation';
