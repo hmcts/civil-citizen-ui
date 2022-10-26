@@ -6,6 +6,7 @@ import civilClaimResponseUnemploymentRetired from './mocks/civilClaimResponseUne
 import civilClaimResponseUnemploymentOther from './mocks/civilClaimResponseUnemploymentOtherMock.json';
 import civilClaimResponseApplicantCompany from './mocks/civilClaimResponseApplicantCompanyMock.json';
 import civilClaimResponseApplicantIndividual from './mocks/civilClaimResponseApplicanIndividualMock.json';
+import civilClaimResponseRespondentIndividualWithPhoneNumber from './mocks/civilClaimResponseRespondentIndividualWithPhoneNumberMock.json';
 import civilClaimResponseApplicantWithMediation from './mocks/civilClaimResponseApplicanWithMediationMock.json';
 import civilClaimResponseNoAdmittedPaymentAmountMock from './mocks/civilClaimResponseNoAdmittedPaymentAmountMock.json';
 import civilClaimResponseFullAdmissionMock from './mocks/civilClaimResponseFullAdmissionMock.json';
@@ -88,6 +89,11 @@ const mockCivilClaimApplicantIndividualType = {
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseApplicantIndividual))),
 };
 
+const mockCivilClaimRespondentIndividualTypeWithPhoneNumber = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseRespondentIndividualWithPhoneNumber))),
+};
+
 const mockCivilClaimPDFTimeline = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponsePDFTimeline))),
@@ -113,6 +119,7 @@ export {
   mockRedisFailure,
   mockCivilClaimApplicantCompanyType,
   mockCivilClaimApplicantIndividualType,
+  mockCivilClaimRespondentIndividualTypeWithPhoneNumber,
   mockLogger,
   mockRedisWithMediationProperties,
   mockRedisWithoutAdmittedPaymentAmount,
