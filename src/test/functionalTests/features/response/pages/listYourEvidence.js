@@ -2,8 +2,8 @@
 const I = actor();
 
 const fields ={
-  firstSelection: '#evidenceItem[0][type]',
-  firstEvidenceItem: '#evidenceItem[0][description]',
+  firstSelection: '[id="evidenceItem[0][type]"]',
+  firstEvidenceItem: '[id="evidenceItem[0][description]"]',
 };
 
 class ListYourEvidence {

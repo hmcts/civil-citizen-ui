@@ -33,11 +33,15 @@ const  RejectAllOfClaim  =  require('../pages/rejectAllOfClaim');
 const  CarerDetails  =  require('../pages/carerDetails');
 const ViewYourOptionsBeforeDeadline = require('../pages/viewYourOptionsBeforeDeadline');
 const HowMuchYouHavePaid = require('../pages/howMuchYouHavePaid');
+const AddYourTimeLine = require('../pages/addYourTimeLine');
 const WhyDoYouDisagreeTheClaimAmount = require('../pages/WhyDoYouDisagreeTheClaimAmount');
 const ListYourEvidence = require('../pages/listYourEvidence');
 const FreeTelephoneMediation = require('../pages/freeTelephoneMediation');
+const MediaTonCanWeUse = require('../pages/mediaTonCanWeUse');
 
 const I = actor(); // eslint-disable-line no-unused-vars
+const mediaTonCanWeUse = new MediaTonCanWeUse();
+const addYourTimeLine = new AddYourTimeLine();
 const freeTelephoneMediation = new FreeTelephoneMediation();
 const listYourEvidence = new ListYourEvidence();
 const taskListPage = new TaskListPage();
@@ -78,6 +82,14 @@ const howMuchYouHavePaid = new HowMuchYouHavePaid();
 const whyDoYouDisagreeTheClaimAmount = new WhyDoYouDisagreeTheClaimAmount();
 
 class ResponseSteps {
+
+  AddMandatoryPhoneNumber(){
+    mediaTonCanWeUse.enterPhoneNumber();
+  }
+
+  AddYourTimeLineEvents(){
+    addYourTimeLine.addTimeLineOfEvents();
+  }
 
   VerifyResponsePageContent (claimRef) {
     taskListPage.open(claimRef);

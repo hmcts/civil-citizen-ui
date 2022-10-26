@@ -2,7 +2,7 @@ const I = actor();
 
 const fields = {
   date1: '#rows\\[0\\]\\[date\\]',
-  whathappened1: '#rows[0][description]', 
+  whathappened1: '#rows\\[0\\]\\[description\\]', 
 };
 
 const buttons = {
@@ -13,7 +13,7 @@ const buttons = {
 class AddYourTimeLine {
   addTimeLineOfEvents() {
     I.see('Add your timeline of events', 'h1');
-    I.fillField(fields.date1, '28 April 2022');
+    I.fillField(fields.date1, '28 April 2022');    
     I.fillField(fields.whathappened1, 'TestTimeLine');    
     this.clickContinue();
   }

@@ -17,7 +17,13 @@ Feature('Response with PartAdmit');
 
 Before(async ({api}) => {
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
-  LoginSteps.EnterUserCredentials(config.Username, config.Password);
+  console.log('claimRef has been created Successfully for Part Admit Tests   <===>  '  , claimRef);
+  if (claimRef) {
+    LoginSteps.EnterUserCredentials(config.Username, config.Password);
+  } else
+  {
+    console.log('claimRef has not been Created');
+  }
 });
 
 Scenario('Response with PartAdmit and Immediate payment @citizenUI @partAdmit', () => {
@@ -28,8 +34,10 @@ Scenario('Response with PartAdmit and Immediate payment @citizenUI @partAdmit', 
   ResponseSteps.EnterPaymentOption(claimRef, immediatePayment);
   ResponseSteps.EnterHowMuchYouHavePaid(claimRef, 500);
   ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef);
+  ResponseSteps.AddYourTimeLineEvents();
   ResponseSteps.EnterYourEvidenceDetails();
   ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
+  ResponseSteps.AddMandatoryPhoneNumber();
   ResponseSteps.CheckAndSubmit(claimRef);
 });
 
