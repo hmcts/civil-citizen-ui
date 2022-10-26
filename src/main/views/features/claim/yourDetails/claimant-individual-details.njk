@@ -29,14 +29,14 @@
   {{ setPageTitle('PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.PAGE_TITLE') }}
 {% endblock %}
 {% set correspondenceAddressHtml %}
-<div class="govuk-form-group" id="postcodeContainer">
+<div class="govuk-form-group">
   <p class="govuk-label govuk-!-margin-bottom-5">
     <p class="govuk-body">{{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }}
       {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}</p>
     {{ postcodeLookupAndAddressForm(t, {
-        citizenCorrespondenceAddress:claimantIndividualCorrespondenceAddress,
-        addressType:'correspondence',
-        addressTitle:addressTitle
+          citizenCorrespondenceAddress:claimantIndividualCorrespondenceAddress,
+          addressType:'correspondence',
+          addressTitle:addressTitle
       }) }}
   </div>
   {% endset -%}
