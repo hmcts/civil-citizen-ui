@@ -1,31 +1,107 @@
-import {Claim} from '../../../common/models/claim';
-import {CCDResponse} from '../../../common/models/ccdResponse/ccdResponse';
-import {toCCDRepaymentPlan} from '../../../common/models/ccdResponse/ccdRepaymentPlan';
-import {toCCDPaymentOption} from '../../../common/models/ccdResponse/ccdPaymentOption';
-import {toCCDPayBySetDate} from '../../../common/models/ccdResponse/ccdPayBySetDate';
-import {toAgreedMediation} from '../../../common/models/ccdResponse/ccdAgreedMediation';
-import {YesNoUpperCamelCase} from '../../../common/form/models/yesNo';
-import {Party} from '../../../common/models/party';
-import {PartyType} from '../../../common/models/partyType';
-import {CCDParty} from '../../../common/models/ccdResponse/ccdParty';
+import { Claim } from '../../../common/models/claim';
+import { CCDResponse } from '../../../common/models/ccdResponse/ccdResponse';
+import { toAgreedMediation } from './convertToCCDAgreedMediation';
+import { YesNoUpperCamelCase } from '../../../common/form/models/yesNo';
+import { toCCDParty } from './convertToCCDParty';
+import { toCCDRepaymentPlan } from './convertToCCDRepaymentPlan';
+import { toCCDPaymentOption } from './convertToCCDPaymentOption';
+import { toCCDPayBySetDate } from './convertToCCDPayBySetDate';
+import { toCCDHomeType } from './convertToCCDHomeType';
+import { toCCDBankAccount } from './convertToCCDBankAccount';
+import { toCCDTimeline } from './convertToCCDTimeLine';
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   // TODO: should we include everything inside caseData
   return {
     respondent1ClaimResponseTypeForSpec: claim.respondent1?.responseType,
-    defenceAdmitPartPaymentTimeRouteRequired: toCCDPaymentOption(claim.paymentOption),
+    defenceAdmitPartPaymentTimeRouteRequired: toCCDPaymentOption(claim.partialAdmission.paymentIntention.paymentOption), // defenceAdmitPartPaymentTimeRouteRequired: toCCDPaymentOption(claim.paymentOption),
     respondent1RepaymentPlan: toCCDRepaymentPlan(claim.repaymentPlan),
-    respondToClaimAdmitPartLRspec: toCCDPayBySetDate(claim.paymentDate),
+    respondToClaimAdmitPartLRspec: toCCDPayBySetDate(claim.partialAdmission.paymentIntention.paymentDate), // respondToClaimAdmitPartLRspec: toCCDPayBySetDate(claim.paymentDate),
     responseClaimMediationSpecRequired: toAgreedMediation(claim.mediation),
     specAoSApplicantCorrespondenceAddressRequired: addressHasChange ? YesNoUpperCamelCase.NO : YesNoUpperCamelCase.YES,
     totalClaimAmount: claim.totalClaimAmount,
-
-    // New data translated to CCD
-    respondent1: toCCDRespondent1(claim.respondent1),
+    respondent1: toCCDParty(claim.respondent1),
     respondent1Represented: claim.respondent1.contactPerson, // TODO: contactPerson?
-    respondent1ClaimResponseType: claim.respondent1.responseType,
-    partialPayment: claim.partialAdmission.alreadyPaid.option.toUpperCase(),
-    partialPaymentAmount: claim.partialAdmission.howMuchHaveYouPaid.amount.toString(), // should be a number?
+    specDefenceAdmittedRequired: claim.partialAdmission.alreadyPaid.option.toUpperCase(),
+    respondToAdmittedClaim: {
+      howMuchWasPaid: claim.partialAdmission.howMuchHaveYouPaid.amount.toString(),
+      whenWasThisAmountPaid: claim.partialAdmission.howMuchHaveYouPaid.date.toDateString(), // CCD: respondToAdmittedClaim.whenWasThisAmountPaid
+      howWasThisAmountPaidOther: claim.partialAdmission.howMuchHaveYouPaid.text, // CCD: respondToAdmittedClaim.howWasThisAmountPaidOther and need to set respondToAdmittedClaim.howWasThisAmountPaid as null
+    },
+    detailsOfWhyDoesYouDisputeTheClaim: claim.partialAdmission.whyDoYouDisagree.text, // CCD: detailsOfWhyDoesYouDisputeTheClaim
+    specResponseTimelineOfEvents: toCCDTimeline(claim.partialAdmission.timeline),
+    // x: claim.partialAdmission.timeline.comment // not used in CCD???
+    respondToAdmittedClaimOwingAmount: claim.partialAdmission.howMuchDoYouOwe.amount, // CCD: respondToAdmittedClaimOwingAmount
+
+
+    // KENNETH INFO
+
+    defenceAdmitPartEmploymentTypeRequired: claim.statementOfMeans.employment.declared ? 'YES' : 'NO', // boolean
+
+    // x: claim.statementOfMeans.employment.employmentType, // if true, EmploymentCategory
+    // CCD: respondToClaimAdmitPartEmploymentTypeLRspec it is a list
+
+    // x: claim.statementOfMeans.employers.rows, // if EmploymentCategory=EMPLOYED,  {employerName, jobTitle},
+    // CCD: responseClaimAdmitPartEmployer.employerDetails it is a list with employerName, jobTitle
+
+    respondent1CourtOrderPaymentOption: claim.statementOfMeans.courtOrders.declared ? 'YES' : 'NO', // boolean
+
+    // x: claim.statementOfMeans.courtOrders.rows, // if true, Array of {"instalmentAmount":200,"amount":100,"claimNumber":"ginny"}
+    // CCD: respondent1CourtOrderDetails it is a list claimNumberText, amountOwed, monthlyInstalmentAmount
+
+    // TODO: coversion Debts you are behind, for each one {amount,isDeclared,name,populated,schedule}
+    // x: claim.statementOfMeans.priorityDebts.councilTax
+    // x: claim.statementOfMeans.priorityDebts.electricity
+    // x: claim.statementOfMeans.priorityDebts.gas
+    // x: claim.statementOfMeans.priorityDebts.maintenance
+    // x: claim.statementOfMeans.priorityDebts.mortgage
+    // x: claim.statementOfMeans.priorityDebts.rent
+    // x: claim.statementOfMeans.priorityDebts.water
+    // CCD: specDefendant1Debts.debtDetails it is a list contains debtType (e.g. water, counciltax, electricity etc.), paymentAmount, paymentFrequency
+
+    respondent1LoanCreditOption: claim.statementOfMeans.debts.option.toUpperCase(),
+
+    // x: claim.statementOfMeans.debts.debtsItems, // if yes, [Array] of {"debt":"fefe","totalOwned":"100","monthlyPayments":"100"}
+    // CCD: respondent1LoanCreditDetails it is a list contains loanCardDebtDetail, totalOwed, monthlyPayment
+
+    // TODO: Regular expenses, for each one {declared, transactionSource}
+    // x: claim.statementOfMeans.regularExpenses.councilTax
+    // x: claim.statementOfMeans.regularExpenses.electricity
+    // x: claim.statementOfMeans.regularExpenses.foodAndHousekeeping
+    // x: claim.statementOfMeans.regularExpenses.gas
+    // x: claim.statementOfMeans.regularExpenses.hirePurchase
+    // x: claim.statementOfMeans.regularExpenses.maintenance
+    // x: claim.statementOfMeans.regularExpenses.mobilePhone
+    // x: claim.statementOfMeans.regularExpenses.mortgage
+    // x: claim.statementOfMeans.regularExpenses.other // IT HAS OTHER FIELD
+    // x: claim.statementOfMeans.regularExpenses.rent
+    // x: claim.statementOfMeans.regularExpenses.schoolCosts
+    // x: claim.statementOfMeans.regularExpenses.travel
+    // CCD: respondent1DQ.respondent1DQRecurringExpenses it is a list contains type (e.g. gas, councilTax **need to translate**), amount, frequency, typeOtherDetails (use when choosing other)
+
+    // TODO: Regular income
+    // x: claim.statementOfMeans.regularIncome.job, // type Transaction,
+    // x: claim.statementOfMeans.regularIncome.universalCredit, // type Transaction,
+    // x: claim.statementOfMeans.regularIncome.jobseekerAllowanceIncome, // type Transaction,
+    // x: claim.statementOfMeans.regularIncome.jobseekerAllowanceContribution, // type Transaction,
+    // x: claim.statementOfMeans.regularIncome.incomeSupport, // type Transaction,
+    // x: claim.statementOfMeans.regularIncome.workingTaxCredit, // type Transaction,
+    // x: claim.statementOfMeans.regularIncome.childTaxCredit, // type Transaction,
+    // x: claim.statementOfMeans.regularIncome.childBenefit, // type Transaction,
+    // x: claim.statementOfMeans.regularIncome.councilTaxSupport, // type Transaction,
+    // x: claim.statementOfMeans.regularIncome.pension, // type Transaction,
+    // x: claim.statementOfMeans.regularIncome.other, // type OtherTransaction
+    // CCD: respondent1DQ.respondent1DQRecurringIncome it is a list contains type (e.g. job, universalCredit **need to translate**), amount, frequency, typeOtherDetails (use when choosing other)
+
+    responseToClaimAdmitPartWhyNotPayLRspec: claim.statementOfMeans.explanation.text,
+
+
+
+
+
+
+
+    // CUI
     // x: claim.partialAdmission.howMuchHaveYouPaid.date,
     // x: claim.partialAdmission.howMuchHaveYouPaid.text,
     // x: claim.partialAdmission.whyDoYouDisagree.text,
@@ -35,49 +111,70 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     // x: claim.evidence.evidenceItem, // type?: EvidenceType and description?: string
     // x: claim.evidence.comment,
 
-    // x: claim.partialAdmission.howMuchDoYouOwe.amount,
     // x: claim.partialAdmission.paymentIntention.paymentOption // TODO: or claim.paymentOption
     // x: claim.partialAdmission.paymentIntention.paymentDate // TODO: or claim.paymentDate
 
-    // x: claim.statementOfMeans.bankAccounts, // [Array] of {typeOfAccount, joint, balance}
-    // x: claim.statementOfMeans.disability.option.toUpperCase(),
-    // x: claim.statementOfMeans.severeDisability.option.toUpperCase(),
+    respondent1DQ: {
+      respondent1DQCarerAllowanceCredit: claim.statementOfMeans.carer.option.toUpperCase(),
+      respondent1BankAccountList: toCCDBankAccount(claim.statementOfMeans.bankAccounts),
+      respondent1DQHomeDetails: {
+        type: toCCDHomeType(claim.statementOfMeans.residence.type), // ResidenceType to CCDHomeType 
+        typeOtherDetails: claim.statementOfMeans.residence.housingDetails // Only if ResidenceType is OTHER
+      },
+    },
+    disabilityPremiumPayments: claim.statementOfMeans.disability.option.toUpperCase(),
+    severeDisabilityPremiumPayments: claim.statementOfMeans.severeDisability.option.toUpperCase(),
     // x: claim.statementOfMeans.residence.type, // ResidenceType
     // x: claim.statementOfMeans.residence.housingDetails, // Only if ResidenceType is other
-    
-    // x: claim.statementOfMeans.cohabiting.option.toUpperCase(),
+
+    respondent1PartnerAndDependent: {
+      haveAnyChildrenRequired: claim.statementOfMeans.dependants.declared ? 'YES' : 'NO',
+      howManyChildrenByAgeGroup: {
+        numberOfUnderEleven: claim.statementOfMeans.dependants.numberOfChildren.under11.toString(),
+        numberOfElevenToFifteen: claim.statementOfMeans.dependants.numberOfChildren.between11and15.toString(),
+        numberOfSixteenToNineteen: claim.statementOfMeans.dependants.numberOfChildren.between16and19.toString(),
+      },
+      liveWithPartnerRequired: claim.statementOfMeans.cohabiting.option.toUpperCase(), // TODO: YES or NO
+      partnerAgedOver: claim.statementOfMeans.partnerAge.option.toUpperCase(), // TODO: YES or NO
+      receiveDisabilityPayments: claim.statementOfMeans.childrenDisability.option.toUpperCase(), // TODO: YES or NO
+      supportPeopleDetails: claim.statementOfMeans.otherDependants.details,
+      supportPeopleNumber: claim.statementOfMeans.otherDependants.numberOfPeople.toString(),
+      supportedAnyoneFinancialRequired: claim.statementOfMeans.otherDependants.option.toUpperCase(), // TODO: YES or NO
+    },
+
     // x: claim.statementOfMeans.partnerDisability.option.toUpperCase(),
-    // x: claim.statementOfMeans.partnerAge.option.toUpperCase(),
     // x: claim.statementOfMeans.partnerPension.option.toUpperCase(),
     // x: claim.statementOfMeans.partnerSevereDisability.option.toUpperCase(),
 
-    // x: claim.statementOfMeans.dependants.declared ? 'YES' : 'NO', // saved as boolean
-    // x: claim.statementOfMeans.dependants.numberOfChildren.under11, // if true, type number
-    // x: claim.statementOfMeans.dependants.numberOfChildren.between11and15, // if true, type number
-    // x: claim.statementOfMeans.dependants.numberOfChildren.between16and19, // if true, type number
     // x: claim.statementOfMeans.numberOfChildrenLivingWithYou, // number
-    // x: claim.statementOfMeans.childrenDisability.option.toUpperCase(), // number
 
-    // x: claim.statementOfMeans.otherDependants.option.toUpperCase(),
-    // x: claim.statementOfMeans.otherDependants.numberOfPeople, // if yes, type number
-    // x: claim.statementOfMeans.otherDependants.details, // if yes, type string
+    specDefendant1SelfEmploymentDetails: {
+      annualTurnover: claim.statementOfMeans.selfEmployedAs.annualTurnover.toString(),
+      jobTitle: claim.statementOfMeans.selfEmployedAs.jobTitle,
+      isBehindOnTaxPayment: claim.statementOfMeans.taxPayments.owed ? 'YES' : 'NO',
+      amountOwed: claim.statementOfMeans.taxPayments.amountOwed.toString(),
+      reason: claim.statementOfMeans.taxPayments.reason,
+    },
 
-    // x: claim.statementOfMeans.carer.option.toUpperCase(),
-    // x: claim.statementOfMeans.employment.declared ? 'YES' : 'NO', // boolean
     // x: claim.statementOfMeans.employment.employmentType, // if true, EmploymentCategory
     // x: claim.statementOfMeans.employers.rows, // if EmploymentCategory=EMPLOYED,  {employerName, jobTitle}, 
-    // x: claim.statementOfMeans.selfEmployedAs.annualTurnover // if EmploymentCategory=SELF-EMPLOYED, type number
-    // x: claim.statementOfMeans.selfEmployedAs.jobTitle // if EmploymentCategory=SELF-EMPLOYED, type string
-    // x: claim.statementOfMeans.taxPayments.owed ? 'YES' : 'NO', // boolean
-    // x: claim.statementOfMeans.taxPayments.amountOwed, // if owed true, type number
-    // x: claim.statementOfMeans.taxPayments.reason, // if owed true, type string
+
+
+    respondToClaimAdmitPartUnemployedLRspec: {
+      unemployedComplexTypeRequired: claim.statementOfMeans.unemployment.option, // CUI has enum UnemploymentCategory ['Unemployed','Retired','Other'], ccd expect a string
+      lengthOfUnemployment: {
+        numberOfMonthsInUnemployment: claim.statementOfMeans.unemployment.unemploymentDetails.months.toString(),
+        numberOfYearsInUnemployment: claim.statementOfMeans.unemployment.unemploymentDetails.years.toString(),
+      },
+      otherUnemployment: claim.statementOfMeans.unemployment.otherDetails.details,
+    },
+
 
     // x: claim.statementOfMeans.unemployment.option, // enum UnemploymentCategory ['Unemployed','Retired','Other']
     // x: claim.statementOfMeans.unemployment.unemploymentDetails.months, // if option=Unemployed, type number
     // x: claim.statementOfMeans.unemployment.unemploymentDetails.years, // if option=Unemployed, type number
     // x: claim.statementOfMeans.unemployment.otherDetails.details, // if option=Other, type string
 
-    // x: claim.statementOfMeans.courtOrders.declared ? 'YES' : 'NO', // boolean
     // x: claim.statementOfMeans.courtOrders.rows, // if true, Array of {"instalmentAmount":200,"amount":100,"claimNumber":"ginny"}
 
     // TODO: coversion Debts you are behind, for each one {amount,isDeclared,name,populated,schedule}
@@ -89,7 +186,6 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     // x: claim.statementOfMeans.priorityDebts.rent
     // x: claim.statementOfMeans.priorityDebts.water
 
-    // x: claim.statementOfMeans.debts.option.toUpperCase(), 
     // x: claim.statementOfMeans.debts.debtsItems, // if yes, [Array] of {"debt":"fefe","totalOwned":"100","monthlyPayments":"100"}
 
     // TODO: Regular expenses, for each one {declared, transactionSource}
@@ -119,8 +215,6 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     // x: claim.statementOfMeans.regularIncome.pension, // type Transaction,
     // x: claim.statementOfMeans.regularIncome.other, // type OtherTransaction
 
-    // x: claim.statementOfMeans.explanation.text,
-
     // x: claim.repaymentPlan.paymentAmount,
     // x: claim.repaymentPlan.repaymentFrequency,
     // x: claim.repaymentPlan.firstRepaymentDate,
@@ -137,35 +231,5 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     // x: claim.mediation.companyTelephoneNumber.mediationContactPerson,
     // x: claim.mediation.companyTelephoneNumber.mediationPhoneNumberConfirmation,
 
-  };
-};
-
-const toCCDRespondent1 = (respondent1: Party): CCDParty => {
-  return {
-    companyName: respondent1.type === PartyType.COMPANY ? respondent1.partyName : '',
-    individualDateOfBirth: respondent1.type === PartyType.INDIVIDUAL ? respondent1.dateOfBirth.toDateString() : '',
-    individualFirstName: respondent1.individualFirstName,
-    individualLastName: respondent1.individualLastName,
-    individualTitle: respondent1.individualTitle,
-    organisationName: respondent1.type === PartyType.ORGANISATION ? respondent1.partyName : '',
-    partyEmail: respondent1.emailAddress,
-    partyName: respondent1.partyName, // TODO: delete? civil-service call getPartyName() but we use it as organisation name
-    partyPhone: respondent1.phoneNumber,
-    // partyTypeDisplayValue: generateDisplayValueByPartyType(respondent1.type),
-    primaryAddress: {
-      AddressLine1: respondent1.primaryAddress.AddressLine1,
-      AddressLine2: respondent1.primaryAddress.AddressLine2,
-      AddressLine3: respondent1.primaryAddress.AddressLine3,
-      Country: respondent1.primaryAddress.Country,
-      County: respondent1.primaryAddress.County,
-      PostCode: respondent1.primaryAddress.PostCode,
-      PostTown: respondent1.primaryAddress.PostTown
-    },
-    soleTraderDateOfBirth: respondent1.type === PartyType.SOLE_TRADER ? respondent1.dateOfBirth.toDateString() : '',
-    soleTraderFirstName: respondent1.soleTraderFirstName, // TODO: soleTraderFirstName is not used, use individual
-    soleTraderLastName: respondent1.soleTraderLastName, // TODO: soleTraderFirstName is not used, use individual
-    soleTraderTitle: respondent1.soleTraderTitle, // TODO: soleTraderFirstName is not used, use individual
-    soleTraderTradingAs: respondent1.soleTraderTradingAs,
-    type: respondent1.type
   };
 };

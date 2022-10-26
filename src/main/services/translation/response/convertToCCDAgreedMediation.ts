@@ -1,4 +1,4 @@
-import {Mediation} from '../../models/mediation/mediation';
+import {Mediation} from '../../../common/models/mediation/mediation';
 import {YesNoUpperCamelCase} from '../../../common/form/models/yesNo';
 
 export const toAgreedMediation = (mediation: Mediation): string => {
