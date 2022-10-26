@@ -21,7 +21,7 @@
     "MONTH": "Mis",
     "MONTHS": "Mis",
     "NO": "Nac oes",
-    "REMOVE": "Remove",
+    "REMOVE": "Tynnu",
     "RETURN_PAGE": "You can return to RETURN-PAGE and start your claim or defence again.",
     "TECHNICAL_PROBLEMS": "Sorry, we had some technical problems during your last operation. Please try again later.",
     "YEAR": "Blwyddyn",
@@ -1048,13 +1048,13 @@
       "WHEN_EXPERT_ALLOWED": "When an expert is allowed"
     },
     "EXPERT_REPORT_DETAILS": {
-      "ADD_ANOTHER": "Add another report",
-      "EXPERT_NAME": "Expert's name",
-      "FOR_EXAMPLE": "For Example, {{ date }}",
-      "PAGE_TITLE": "Have you already got a report written by an expert?",
-      "REPORT_DATE": "When is the report dated?",
-      "REPORT_TEXT": "Report",
-      "TITLE": "Have you already got a report written by an expert?"
+      "ADD_ANOTHER": "Ychwanegu adroddiad arall",
+      "EXPERT_NAME": "Enw’r arbenigwr",
+      "FOR_EXAMPLE": "Er enghraifft, {{ date }}",
+      "PAGE_TITLE": "A oes gennych adroddiad wedi’i ysgrifennu gan arbenigwr yn barod?",
+      "REPORT_DATE": "Beth yw dyddiad yr adroddiad?",
+      "REPORT_TEXT": "Adroddiad",
+      "TITLE": "A oes gennych adroddiad wedi’i ysgrifennu gan arbenigwr yn barod?"
     },
     "EXPERT_SMALL_CLAIMS": {
       "CONTINUE": "Continue without an expert",
@@ -1779,7 +1779,7 @@
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_NUMBER_REQUIRED": "You need to enter the claim number",
     "CLAIM_VALID_AMOUNT": "Rhowch swm dilys",
-    "CORRECT_DATE_NOT_IN_FUTURE": "Correct the date. You can’t use a future date.",
+    "CORRECT_DATE_NOT_IN_FUTURE": "Cywirwch y dyddiad, ni allwch ddefnyddio dyddiad yn y dyfodol.",
     "DATE_REQUIRED": "Nodwch ddyddiad",
     "DATE_NOT_MORE_THAN_28_DAYS": "Ni all y dyddiad ymateb yr ydych wedi’i gytuno fod mwy na 28 diwrnod ar ôl y dyddiad ymateb gwreiddiol",
     "DEFENCE_REQUIRED": "Mae angen ichi egluro pam nad oes arian yn ddyledus gennych",
