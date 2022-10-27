@@ -3,6 +3,7 @@
     "CHOOSE": "Dewiswch",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
     "CLAIM_AMOUNT": "Swm yr hawliad",
+    "CONFIRM_YOUR_DETAILS": "Cadarnhau eich manylion",
     "DASHBOARD": "Dashboard",
     "DATE": "Dyddiad",
     "DATE_EXAMPLE": "Er enghraifft, {{ date }}",
@@ -210,7 +211,6 @@
     "APPLICATION_INCOMPLETE": "Application incomplete",
     "COMPLETED_SECTIONS": "You have completed {{ completed }} of {{ total }} sections",
     "PREPARE_YOUR_RESPONSE": {
-      "CONFIRM_YOUR_DETAILS": "Confirm your details",
       "TITLE": "Prepare your response"
     },
     "RESOLVING_THE_CLAIM": {
@@ -386,7 +386,6 @@
       "CLAIMANT_DETAILS_PROVIDED": "Darparwyd eich enw a'ch cyfeiriad gan yr unigolyn, y busnes neu'r sefydliad sy'n cyflwyno'r hawliad (yr hawlydd).",
       "CONTACT_PERSON": "Contact person (optional)",
       "CONTACT_PERSON_HINT": "The defendant can contact this person to discuss the claim",
-      "CONFIRM_YOUR_DETAILS": "Cadarnhau eich manylion",
       "COMPANY_ADDRESS": "Company Address",
       "COMPANY_DETAILS": "Enter company details",
       "CORRESPONDENCE_ADDRESS": "Cyfeiriad ar gyfer gohebiaeth",
@@ -601,7 +600,6 @@
       "CORRESPONDENCE_ADDRESS": "Gohebiaeth cyfeiriad",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Ydych chi am inni anfon gohebiaeth i gyfeiriad arall?",
       "FIND_ADDRESS": "Dod o hyd i gyfeiriad",
-      "HEADING": "Cadarnhau eich manylion",
       "MANUAL_ADDRESS": "Teipio'r cyfeiriad'",
       "ORGANISATION_ADDRESS": "Cyfeiriad y sefydliad",
       "ORGANISATION_NAME": "Enw'r sefydliad",

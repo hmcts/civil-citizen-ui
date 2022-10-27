@@ -3,6 +3,7 @@
     "CHOOSE": "Choose",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
     "CLAIM_AMOUNT": "Claim amount",
+    "CONFIRM_YOUR_DETAILS": "Confirm your details",
     "DASHBOARD": "Dashboard",
     "DATE": "Date",
     "DATE_EXAMPLE": "For Example, {{ date }}",
@@ -210,7 +211,6 @@
     "APPLICATION_INCOMPLETE": "Application incomplete",
     "COMPLETED_SECTIONS": "You have completed {{ completed }} of {{ total }} sections",
     "PREPARE_YOUR_RESPONSE": {
-      "CONFIRM_YOUR_DETAILS": "Confirm your details",
       "TITLE": "Prepare your response"
     },
     "RESOLVING_THE_CLAIM": {
@@ -386,7 +386,6 @@
       "CLAIMANT_DETAILS_PROVIDED": "Your name and address were provided by the person, business or organisation claiming from you (the claimant).",
       "CONTACT_PERSON": "Contact person (optional)",
       "CONTACT_PERSON_HINT": "The defendant can contact this person to discuss the claim",
-      "CONFIRM_YOUR_DETAILS": "Confirm your details",
       "COMPANY_ADDRESS": "Company Address",
       "COMPANY_DETAILS": "Enter company details",
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
@@ -601,7 +600,6 @@
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Would you like correspondence sent to a different address?",
       "FIND_ADDRESS": "Find address",
-      "HEADING": "Confirm your details",
       "MANUAL_ADDRESS": "Enter address manually'",
       "ORGANISATION_ADDRESS": "Organisation address",
       "ORGANISATION_NAME": "Organisation name",
