@@ -1059,10 +1059,12 @@
       "ADD_ANOTHER": "Add another report",
       "EXPERT_NAME": "Expert's name",
       "FOR_EXAMPLE": "For Example, {{ date }}",
+      "NO": "No",
       "PAGE_TITLE": "Have you already got a report written by an expert?",
       "REPORT_DATE": "When is the report dated?",
       "REPORT_TEXT": "Report",
-      "TITLE": "Have you already got a report written by an expert?"
+      "TITLE": "Have you already got a report written by an expert?",
+      "YES": "Yes"
     },
     "EXPERT_SMALL_CLAIMS": {
       "CONTINUE": "Continue without an expert",
@@ -1536,10 +1538,12 @@
     },
     "SHARED_EXPERT": {
       "IF_YOU_SHARE": "If you share an expert, you will also share the costs unless the judge decides that one party must pay the other party’s share.",
+      "NO": "No",
       "PAGE_TITLE": "Do you want to share an expert with the claimant?",
       "PREPARE_REPORT": "They will prepare a report for the court on behalf of two or more of the parties, including the claimant.",
       "SINGLE_JOINT_EXPERT": "This is known as a ’single joint expert’.",
-      "TITLE": "Do you want to share an expert with the claimant?"
+      "TITLE": "Do you want to share an expert with the claimant?",
+      "YES": "Yes"
     },
     "SUBMIT_CONFIRMATION": {
       "FA_PAY_BY_DATE": {
