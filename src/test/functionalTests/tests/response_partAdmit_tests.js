@@ -38,7 +38,7 @@ Scenario('Response with PartAdmit and Immediate payment @citizenUI @partAdmit', 
   ResponseSteps.EnterYourEvidenceDetails();
   ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
   ResponseSteps.AddMandatoryPhoneNumber();
-  ResponseSteps.CheckAndSubmit(claimRef);
+  ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
 });
 
 Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit', () => {
@@ -48,7 +48,7 @@ Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit', () =
   ResponseSteps.EnterPaymentOption(claimRef, bySetDate);
   ResponseSteps.EnterDateToPayOn();
   CommonSteps.EnterFinancialDetails(claimRef);
-  ResponseSteps.CheckAndSubmit(claimRef);
+  ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
 });
 
 Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit', () => {
@@ -58,5 +58,5 @@ Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit', () 
   ResponseSteps.EnterPaymentOption(claimRef, repaymentPlan);
   CommonSteps.EnterFinancialDetails(claimRef);
   ResponseSteps.EnterRepaymentPlan(claimRef);
-  ResponseSteps.CheckAndSubmit(claimRef);
+  ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
 });

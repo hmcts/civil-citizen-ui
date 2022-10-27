@@ -110,8 +110,8 @@ class ResponseSteps {
   EnterPaymentOption(claimRef, paymentOption) {
     paymentOptionPage.enterPaymentOption(claimRef, paymentOption);
   }
-  CheckAndSubmit(claimRef) {
-    checkYourAnswersPage.checkAndSubmit(claimRef);
+  CheckAndSubmit(claimRef,responseType) {
+    checkYourAnswersPage.checkAndSubmit(claimRef,responseType);
   }
   EnterDateToPayOn() {
     dateToPayOn.enterDateToPayOn();

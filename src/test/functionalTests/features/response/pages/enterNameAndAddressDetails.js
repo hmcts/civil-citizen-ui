@@ -22,7 +22,11 @@ class NameAndAddressDetailsPage {
     I.fillField(fields.addressLine2, 'Test AddressLine2');
     I.fillField(fields.addressLine3, 'Test AddressLine3');
     I.fillField(fields.city, 'Test City');
-    I.fillField(fields.postcode, 'IG6 1JD');
+    I.fillField(fields.postcode, 'IG6 1JD');    
+    I.click('Save and continue');    
+  }
+
+  enterAddressManually () {
     I.click(fields.correspondenceAddress_yes);
     I.click(fields.enterAddressManuallyLink);
     I.fillField(fields.correspondenceAddressLine1, 'Flat 10');
@@ -30,7 +34,6 @@ class NameAndAddressDetailsPage {
     I.fillField(fields.correspondenceAddressLine3, 'Cranbrook Road');
     I.fillField(fields.correspondenceCity, 'Barkingside');
     I.fillField(fields.correspondencePostCode, 'IG2 6QU');
-    I.click('Save and continue');    
   }
 
   navigateToNameAndAddressDetailsPage(claimRef) {
