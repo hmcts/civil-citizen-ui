@@ -25,7 +25,7 @@ export interface CCDResponse extends ClaimUpdate {
   specAoSApplicantCorrespondenceAddressRequired?: YesNoUpperCamelCase;
   totalClaimAmount: number,
   respondent1: CCDParty;
-  respondent1Represented: string,
+  // respondent1Represented: string,
   specDefenceAdmittedRequired: string; // TODO: YES NO;
   respondToAdmittedClaim: AdmittedClaim;
   detailsOfWhyDoesYouDisputeTheClaim: string,
@@ -54,4 +54,5 @@ export interface CCDResponse extends ClaimUpdate {
   },
   respondent1CourtOrderDetails: CCDCourtOrderDetails[],
   respondent1LoanCreditDetails: CCDLoanCreditDetails[],
+  respondent1ResponseDeadline: string,
 }
