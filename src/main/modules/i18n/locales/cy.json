@@ -214,6 +214,10 @@
     "VARIATION": {
       "YES": "Ie",
       "NO": "Na"
+    },
+    "VARIATION_2": {
+      "YES": "Ydw",
+      "NO": "Nac ydw"
     }
   },
   "TASK_LIST": {
@@ -1059,12 +1063,10 @@
       "ADD_ANOTHER": "Ychwanegu adroddiad arall",
       "EXPERT_NAME": "Enw’r arbenigwr",
       "FOR_EXAMPLE": "Er enghraifft, {{ date }}",
-      "NO": "Nac ydw",
       "PAGE_TITLE": "A oes gennych adroddiad wedi’i ysgrifennu gan arbenigwr yn barod?",
       "REPORT_DATE": "Beth yw dyddiad yr adroddiad?",
       "REPORT_TEXT": "Adroddiad",
-      "TITLE": "A oes gennych adroddiad wedi’i ysgrifennu gan arbenigwr yn barod?",
-      "YES": "Ydw"
+      "TITLE": "A oes gennych adroddiad wedi’i ysgrifennu gan arbenigwr yn barod?"
     },
     "EXPERT_SMALL_CLAIMS": {
       "CONTINUE": "Continue without an expert",
@@ -1538,12 +1540,10 @@
     },
     "SHARED_EXPERT": {
       "IF_YOU_SHARE": "Os byddwch yn rhannu arbenigwr, byddwch hefyd yn rhannu’r costau oni bai bod y barnwr yn penderfynu bod rhaid i un parti dalu cyfran y parti arall.",
-      "NO": "Nac ydw",
       "PAGE_TITLE": "Ydych chi eisiau rhannu arbenigwr gyda’r hawlydd?",
       "PREPARE_REPORT": "Byddant yn paratoi adroddiad ar gyfer y llys ar ran dau neu fwy o’r partïon, gan gynnwys yr hawlydd.",
       "SINGLE_JOINT_EXPERT": "Gelwir hyn yn ‘arbenigwr sengl ar y cyd’.",
-      "TITLE": "Ydych chi eisiau rhannu arbenigwr gyda’r hawlydd?",
-      "YES": "Ydw"
+      "TITLE": "Ydych chi eisiau rhannu arbenigwr gyda’r hawlydd?"
     },
     "SUBMIT_CONFIRMATION": {
       "FA_PAY_BY_DATE": {
