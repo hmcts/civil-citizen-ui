@@ -477,8 +477,7 @@
       "PAGE_TITLE": "Claim Details",
       "REASON_FOR_CLAIM": "Reason for claim",
       "TIMELINE": "Timeline",
-      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
-      "WHAT_HAPPENED": "What happened"
+      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown"
     },
     "CLAIM_JOURNEY": {
       "CLAIM_INTEREST": {
@@ -800,11 +799,9 @@
     "DEFENDANT_TIMELINE": {
       "PAGE_TITLE": "Add your timeline of events",
       "THEIR_TIMELINE": "Their timeline",
-      "WHAT_HAPPENED": "What happened",
       "DOWNLOAD_AND_VIEW_TIMELINE": "Download and view their Timeline",
       "ADD_YOUR_TIMELINE": "Add your timeline of events (optional)",
       "INCLUDE_DATES_IF_YOU_KNOW": "Include dates if you know them.",
-      "YOU_MIGHT_HAVE_SIGNED_A_CONTRACT": "For example, you might have signed a contract",
       "ADD_ANY_COMMENTS": "Add any comments about their timeline (optional)"
     },
     "DEFENDANT_EXPERT_EVIDENCE": {

@@ -182,8 +182,8 @@
       "WHEN_SATISFIED": "Pan rydych yn fodlon bod eich atebion yn gywir, dylech roi tic i \"lofnodi'r\" datganiad gwirionedd ar y ffurflen."
     },
     "TIMELINE": {
-      "EXAMPLE_EVENT": "For example, you might have signed a contract",
-      "WHAT_HAPPENED": "What happened"
+      "EXAMPLE_EVENT": "Er enghraifft, efallai eich bod wedi llofnodi contract",
+      "WHAT_HAPPENED": "Beth ddigwyddodd"
     },
     "TYPES_OF_SENIOR_POSITION": {
       "CORPORATION_NOT_REGISTERED": "If your corporation isn't registered, a senior position could be:",
@@ -477,8 +477,7 @@
       "PAGE_TITLE": "Manylion yr hawliad",
       "REASON_FOR_CLAIM": "Reason for claim",
       "TIMELINE": "Timeline",
-      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
-      "WHAT_HAPPENED": "Beth ddigwyddodd"
+      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown"
     },
     "CLAIM_JOURNEY": {
       "CLAIM_INTEREST": {
@@ -800,11 +799,9 @@
     "DEFENDANT_TIMELINE": {
       "PAGE_TITLE": "Ychwanegu eich amserlen digwyddiadau",
       "THEIR_TIMELINE": "Eu llinell amser",
-      "WHAT_HAPPENED": "Beth ddigwyddodd",
       "DOWNLOAD_AND_VIEW_TIMELINE": "Download and view their Timeline",
       "ADD_YOUR_TIMELINE": "Ychwanegu eich amserlen digwyddiadau (dewisol)",
       "INCLUDE_DATES_IF_YOU_KNOW": "Rhowch ddyddiadau os ydych yn eu gwybod.",
-      "YOU_MIGHT_HAVE_SIGNED_A_CONTRACT": "Er enghraifft, efallai eich bod wedi llofnodi contract",
       "ADD_ANY_COMMENTS": "Ychwanegu unrhyw sylwadau am eu hamserlen (dewisol)"
     },
     "DEFENDANT_EXPERT_EVIDENCE": {
