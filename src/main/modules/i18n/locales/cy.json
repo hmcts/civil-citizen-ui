@@ -11,6 +11,7 @@
     "DOWNLOAD_THE_CLAIM": "Download the claim",
     "EMAIL": "E-bost",
     "GO_TO_HOMEPAGE": "Go to homepage",
+    "JOB_TITLE": "Teitl swydd",
     "MONTH": "Mis",
     "MONTHS": "Mis",
     "NO": "Nac oes",
@@ -175,7 +176,6 @@
       "CORRECT_INFORMATION_CONFIRMATION": "Rwy'n cadarnhau fy mod i'n credu bod y manylion rwyf wedi'u darparu yn gywir.",
       "DETAILS_TRUTHY": "Mae manylion gofynion y gwrandawiad ar y dudalen hon yn wir hyd eithaf fy ngwybodaeth.",
       "INFORMATION_ON_PAGE": "Mae'r wybodaeth ar y dudalen hon yn ffurfio eich {{ type }}. Gallwch ei gweld ar y ffurflen {{ type }} ar ôl i chi ei chyflwyno.",
-      "JOB_TITLE": "Job title",
       "SENIOR_POSITION_REQUIREMENT": "You must hold a senior position in your organisation to sign the {{ typeOfStatement }}.",
       "STATEMENT_OF_WORK": "satganiad gwirionedd",
       "TITLE": "Datganiad Gwirionedd",
@@ -292,9 +292,7 @@
       "EMPLOYMENT_TYPE": "Math o swydd",
       "EMPLOYMENT_WHO_EMPLOYS_YOU": "Pwy sy'n eich cyflogi?",
       "EMPLOYMENT_NAME": "Enw'r cyflogwr",
-      "EMPLOYMENT_JOB_TITLE": "Teitl swydd",
       "EMPLOYMENT_SELF_DETAILS": "Manylion hunangyflogaeth?",
-      "EMPLOYMENT_SELF_JOB_TITLE": "Teitl swydd",
       "EMPLOYMENT_SELF_ANNUAL_TURNOVER": "Trosiant blynyddol",
       "EMPLOYED_AND_SELF_EMPLOYED": "Cyflogedig a Hunangyflogedig",
       "EXPENSES_REGULAR": "Treuliau rheolaidd",
@@ -314,7 +312,6 @@
       "INCOME_JOB_SEEKER_ALLOWANCE": "Lwfans Ceisio Gwaith (yn seiliedig ar incwm)",
       "INCOME_JOB_SEEKER_ALLOWANCE_CONTRIBUTION": "Lwfans Ceisio Gwaith (yn seiliedig ar gyfraniadau)",
       "INCOME_WORKING_TAX_CREDIT": "Credyd Treth Gwaith",
-      "JOB_TITLE": "Teitl y swydd",
       "OWE_MONEY": "A oes arnoch chi'r arian a hawlir?",
       "PARTNER_DO_YOU_LIVE_WITH_A": "Ydych chi'n byw gyda phartner?",
       "PARTNER_IS_AGED_18_OR_OVER": "Ydy'ch partner yn 18 oed neu'n hŷn?",
@@ -943,8 +940,7 @@
       "TITLE": "Some useful information about Help with Fees"
     },
     "EMPLOYER": {
-      "EMPLOYER_NAME": "Enw’r cyflogwr",
-      "JOB_TITLE": "Teitl swydd"
+      "EMPLOYER_NAME": "Enw’r cyflogwr"
     },
     "EMPLOYMENT_STATUS": {
       "BOTH": "Gallwch ddewis y ddau",
@@ -1473,7 +1469,6 @@
     },
     "SELF_EMPLOYED": {
       "ANNUAL": "Trosiant blynyddol",
-      "JOB_TITLE": "Teitl swydd",
       "PAGE_TITLE": "Manylion yr hunangyflogaeth",
       "TITLE": "Mewn pa fodd ydych chi’n hunangyflogedig?"
     },
@@ -1968,7 +1963,6 @@
       "WATER": "Enter a valid Water amount, maximum two decimal places"
     },
     "VALID_DISAGREE_REASON_REQUIRED": "Dywedwch pam ydych yn anghytuno",
-    "VALID_ENTER_A_JOB_TITLE": "Rhowch deitl swydd",
     "VALID_ENTER_AN_EMPLOYER_NAME": "Rhowch enw cyflogwr",
     "VALID_ENTER_AT_LEAST_ONE_COURT_ORDER": "Rhowch fanylion o leiaf un gorchymyn llys",
     "VALID_ENTER_AT_LEAST_ONE_EMPLOYER": "Rhowch o leiaf un cyflogwr",

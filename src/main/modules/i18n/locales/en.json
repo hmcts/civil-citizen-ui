@@ -11,6 +11,7 @@
     "DOWNLOAD_THE_CLAIM": "Download the claim",
     "EMAIL": "Email",
     "GO_TO_HOMEPAGE": "Go to homepage",
+    "JOB_TITLE": "Job title",
     "MONTH": "Month",
     "MONTHS": "Months",
     "NO": "No",
@@ -175,7 +176,6 @@
       "CORRECT_INFORMATION_CONFIRMATION": "I confirm that I believe the details I have provided are correct.",
       "DETAILS_TRUTHY": "The hearing requirement details on this page are true to the best of my knowledge.",
       "INFORMATION_ON_PAGE": "The information on this page forms your {{ type }}. You can see it on the {{ type }} form after you submit.",
-      "JOB_TITLE": "Job title",
       "SENIOR_POSITION_REQUIREMENT": "You must hold a senior position in your organisation to sign the {{ typeOfStatement }}.",
       "STATEMENT_OF_WORK": "statement of truth",
       "TITLE": "Statement of truth",
@@ -292,9 +292,7 @@
       "EMPLOYMENT_TYPE": "Type of job",
       "EMPLOYMENT_WHO_EMPLOYS_YOU": "Who employs you?",
       "EMPLOYMENT_NAME": "Employer name",
-      "EMPLOYMENT_JOB_TITLE": "Job title",
       "EMPLOYMENT_SELF_DETAILS": "Self employment details?",
-      "EMPLOYMENT_SELF_JOB_TITLE": "Job title",
       "EMPLOYMENT_SELF_ANNUAL_TURNOVER": "Annual turnover",
       "EMPLOYED_AND_SELF_EMPLOYED": "Employed and Self-employed",
       "EXPENSES_REGULAR": "Regular expenses",
@@ -314,7 +312,6 @@
       "INCOME_JOB_SEEKER_ALLOWANCE": "Jobseeker's Allowance (income based)",
       "INCOME_JOB_SEEKER_ALLOWANCE_CONTRIBUTION": "Jobseeker's Allowance (contribution based)",
       "INCOME_WORKING_TAX_CREDIT": "Working Tax Credit",
-      "JOB_TITLE": "Job title",
       "OWE_MONEY": "Do you owe the money claimed?",
       "PAYMENT_FREQUENCY": "Frequency of payments",
       "PARTNER_DO_YOU_LIVE_WITH_A": "Do you live with a partner?",
@@ -943,8 +940,7 @@
       "TITLE": "Some useful information about Help with Fees"
     },
     "EMPLOYER": {
-      "EMPLOYER_NAME": "Employer name",
-      "JOB_TITLE": "Job title"
+      "EMPLOYER_NAME": "Employer name"
     },
     "EMPLOYMENT_STATUS": {
       "BOTH": "You can select both.",
@@ -1473,7 +1469,6 @@
     },
     "SELF_EMPLOYED": {
       "ANNUAL": "Annual Turnover",
-      "JOB_TITLE": "Job title",
       "PAGE_TITLE": "Self employment details",
       "TITLE": "What are you self-employed as?"
     },
@@ -1968,7 +1963,6 @@
       "WATER": "Enter a valid Water amount, maximum two decimal places"
     },
     "VALID_DISAGREE_REASON_REQUIRED": "Enter text explaining why do you disagree",
-    "VALID_ENTER_A_JOB_TITLE": "Enter a job title",
     "VALID_ENTER_AN_EMPLOYER_NAME": "Enter an employer name",
     "VALID_ENTER_AT_LEAST_ONE_COURT_ORDER": "Enter at least one court order",
     "VALID_ENTER_AT_LEAST_ONE_EMPLOYER": "Enter at least one employer",

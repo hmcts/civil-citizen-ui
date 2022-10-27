@@ -55,13 +55,13 @@ const showEmploymentDetails = (claim: Claim, financialSection: SummarySection, e
     financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_WHO_EMPLOYS_YOU', { lng: getLng(lang) }), '', whoEmploysYouHref, changeLabel(lang)));
     for (const item of claim.statementOfMeans.employers.rows) {
       financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_NAME', { lng: getLng(lang) }), item.employerName, '', changeLabel(lang)));
-      financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_JOB_TITLE', { lng: getLng(lang) }), item.jobTitle, '', changeLabel(lang)));
+      financialSection.summaryList.rows.push(summaryRow(t('COMMON.JOB_TITLE', { lng: getLng(lang) }), item.jobTitle, '', changeLabel(lang)));
     }
   }
 
   if (isSelfEmployedAs) {
     financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_SELF_DETAILS', { lng: getLng(lang) }), '', selfemploymentHref, changeLabel(lang)));
-    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_JOB_TITLE', { lng: getLng(lang) }), isSelfEmployedAs.jobTitle, '', changeLabel(lang)));
+    financialSection.summaryList.rows.push(summaryRow(t('COMMON.JOB_TITLE', { lng: getLng(lang) }), isSelfEmployedAs.jobTitle, '', changeLabel(lang)));
     financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_SELF_ANNUAL_TURNOVER', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(isSelfEmployedAs.annualTurnover), '', changeLabel(lang)));
     showSelfEmploymentTaxPayments(claim, financialSection, lang);
   }
