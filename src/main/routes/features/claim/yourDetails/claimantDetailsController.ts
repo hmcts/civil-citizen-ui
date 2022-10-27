@@ -20,7 +20,6 @@ import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlForm
 import {Party} from '../../../../common/models/party';
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {PartyType} from '../../../../common/models/partyType';
-import {getPartyTypeDependingOnRoute} from '../../../../services/features/claim/claimantOrDefendantTypeService';
 import {PartyDetails} from '../../../../common/form/models/partyDetails';
 
 const claimantDetailsController = Router();
@@ -55,7 +54,6 @@ function renderPage(res: Response, req: Request, party: GenericForm<Party>, clai
 
 claimantDetailsController.get(detailsURLs, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const partyType = getPartyTypeDependingOnRoute(req.url);
     const caseId = req.session?.user?.id;
     const claimant: Party = await getClaimantPartyInformation(caseId);
     const claimantIndividualAddress = new GenericForm<Address>(Address.fromJson(claimant.primaryAddress));
@@ -63,14 +61,13 @@ claimantDetailsController.get(detailsURLs, async (req: AppRequest, res: Response
     const claimantDetails = new GenericForm<PartyDetails>(new PartyDetails(claimant));
     const party = new GenericForm(claimant);
 
-    renderPage(res, req, party, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, claimantDetails, partyType);
+    renderPage(res, req, party, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, claimantDetails, claimant.type);
   } catch (error) {
     next(error);
   }
 });
 
 claimantDetailsController.post(detailsURLs, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
-  const partyType = getPartyTypeDependingOnRoute(req.url);
   const caseId = (<AppRequest>req).session?.user?.id;
 
   try {
@@ -78,7 +75,7 @@ claimantDetailsController.post(detailsURLs, async (req: AppRequest | Request, re
     const claimantIndividualAddress = new GenericForm<Address>(Address.fromObject(req.body));
     const claimantIndividualCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(getCorrespondenceAddressForm(req.body));
     const party = new GenericForm(new Party(req.body));
-    if (partyType === PartyType.COMPANY || partyType === PartyType.ORGANISATION) {
+    if (claimant.type === PartyType.COMPANY || claimant.type === PartyType.ORGANISATION) {
       party.validateSync();
     }
     const claimantDetails = new GenericForm<PartyDetails>(new PartyDetails(req.body));
@@ -91,11 +88,11 @@ claimantDetailsController.post(detailsURLs, async (req: AppRequest | Request, re
     }
 
     if (claimantDetails.hasErrors() || party.hasErrors() || claimantIndividualAddress.hasErrors() || claimantIndividualCorrespondenceAddress.hasErrors()) {
-      renderPage(res, req, party, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, claimantDetails, partyType);
+      renderPage(res, req, party, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, claimantDetails, claimant.type);
     } else {
       await saveClaimantParty(caseId, claimantIndividualAddress.model, claimantIndividualCorrespondenceAddress.model, req.body.provideCorrespondenceAddress, party.model);
 
-      if (partyType === PartyType.COMPANY || partyType === PartyType.ORGANISATION) {
+      if (claimant.type === PartyType.COMPANY || claimant.type === PartyType.ORGANISATION) {
         res.redirect(constructResponseUrlWithIdParams(caseId, CLAIMANT_PHONE_NUMBER_URL));
       } else {
         res.redirect(constructResponseUrlWithIdParams(caseId, CLAIMANT_DOB_URL));
