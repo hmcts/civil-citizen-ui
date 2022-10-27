@@ -46,7 +46,7 @@
               }) }}
             {% endset %}
 
-            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {noHtml: noHtml}) }}
+            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {noHtml: noHtml, yes: 'PAGES.DETERMINATION_WITHOUT_HEARING.YES', no: 'PAGES.DETERMINATION_WITHOUT_HEARING.NO'}) }}
 
             <div class="govuk-form-group">
               {{ govukButton({

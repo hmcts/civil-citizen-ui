@@ -847,8 +847,10 @@
       "EXPERT": "Gan amlaf, dim ond tystiolaeth ysgrifenedig y bydd arbenigwr yn ei roi. Efallai y gofynnir iddynt fynychu gwrandawiad os bydd yr arbenigwyr yn anghytuno, a dim ond drwy wrando ar yr hyn sydd ganddynt i’w ddweud y gall y llys benderfynu.",
       "DECISION": "Dim ond os na all y llys wneud penderfyniad heb yr arbenigwr y bydd hyn yn cael ei ganiatáu.",
       "LEGAL": "Nid yw arbenigwr yn gynrychiolydd cyfreithiol.",
+      "NO": "Nac ydw",
       "PAGE_TITLE": "Ydych chi eisiau defnyddio tystiolaeth arbenigwr?",
-      "TITLE": "Ydych chi eisiau defnyddio tystiolaeth arbenigwr?"
+      "TITLE": "Ydych chi eisiau defnyddio tystiolaeth arbenigwr?",
+      "YES": "Ydw"
     },
     "DEFENDANT_PHONE_NUMBER": {
       "PAGE_TITLE": "Their phone number",
@@ -889,8 +891,10 @@
       "CLAIM_DETERMINATION_WITHOUT_HEARING": "A ydych yn credu bod yr hawliad hwn yn addas i’w benderfynu heb wrandawiad,",
       "IE": "h.y. gan farnwr yn darllen ac yn ystyried yr achos ar sail y papurau, y datganiadau tystion a dogfennau eraill a gaiff eu ffeilio gan y partïon, yn gwneud penderfyniad ac yn gwneud datganiad o resymau dros y penderfyniad hwnnw?",
       "PAGE_TITLE": "Cwestiynau Penderfynu heb Wrandawiad",
+      "NO": "Nac ydw",
       "TELL_US_WHY": "Wrthym pam",
-      "TITLE": "Cwestiynau Penderfynu heb Wrandawiad\n"
+      "TITLE": "Cwestiynau Penderfynu heb Wrandawiad",
+      "YES": "Ydw"
     },
     "DISABILITY": {
       "PAGE_TITLE": "A oes gennych anabledd?",
@@ -2045,6 +2049,7 @@
     "VALID_YEAR": "Rhowch flwyddyn ddilys",
     "VALID_VALUE": "A ydych yn siŵr bod hwn yn swm dilys?",
     "VALID_YES_NO_OPTION": "Dewiswch opsiwn: ie neu na",
+    "VALID_YES_NO_OPTION_NAC_YDW": "Dewiswch opsiwn: ‘ydw’ neu ‘nac ydw’",
     "VALID_YES_NO_SELECTION": "Dewiswch ie neu na, os gwelwch yn dda",
     "VALID_WHY_FROM_PARTICULAR_DATE": "You need to explain why you are claiming",
     "QUESTION_1_REQUIRED": "Select yes if someone is vulnerable in a way that the court needs to consider",

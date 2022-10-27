@@ -847,8 +847,10 @@
       "EXPERT": "Experts usually only give written evidence. They may appear at a hearing if the experts disagree, and the court can only decide between their evidence by hearing it in person.",
       "DECISION": "It will only be allowed if the court cannot make a decision without the expert.",
       "LEGAL": "An expert is not a legal representative.",
+      "NO": "No",
       "PAGE_TITLE": "Defendant expert evidence",
-      "TITLE": "Do you want to use expert evidence?"
+      "TITLE": "Do you want to use expert evidence?",
+      "YES": "Yes"
     },
     "DEFENDANT_PHONE_NUMBER": {
       "PAGE_TITLE": "Their phone number",
@@ -889,8 +891,10 @@
       "CLAIM_DETERMINATION_WITHOUT_HEARING": "Do you consider that this claim is suitable for determination without a hearing,",
       "IE": "i.e. by a judge reading and considering the case papers, witness statements and other documents filled by the parties, making a decision, and giving a note of reason for that decision?",
       "PAGE_TITLE": "Determination without Hearing Questions",
+      "NO": "No",
       "TELL_US_WHY": "Tell us why",
-      "TITLE": "Determination without hearing"
+      "TITLE": "Determination without hearing",
+      "YES": "Yes"
     },
     "DISABILITY": {
       "PAGE_TITLE": "Are you disabled?",
@@ -2046,6 +2050,7 @@
     "VALID_VALUE": "Are you sure this is a valid value?",
     "VALID_YEAR": "Enter a valid year",
     "VALID_YES_NO_OPTION": "Choose option: Yes or No",
+    "VALID_YES_NO_OPTION_NAC_YDW": "Choose option: Yes or No",
     "VALID_YES_NO_SELECTION": "Please select yes or no",
     "VALID_WHY_FROM_PARTICULAR_DATE": "You need to explain why you are claiming",
     "QUESTION_1_REQUIRED": "Select yes if someone is vulnerable in a way that the court needs to consider",
