@@ -9,7 +9,7 @@ import {t} from 'i18next';
 
 export const getConfirmYourDetailsTask = (caseData: Claim, claimId: string, lang: string): Task => {
   const confirmYourDetailsTask = {
-    description: t('TASK_LIST.PREPARE_YOUR_RESPONSE.CONFIRM_YOUR_DETAILS', { lng: getLng(lang) }),
+    description: t('COMMON.CONFIRM_YOUR_DETAILS', { lng: getLng(lang) }),
     url: constructResponseUrlWithIdParams(claimId, CITIZEN_DETAILS_URL),
     status: TaskStatus.INCOMPLETE,
   };
@@ -17,7 +17,7 @@ export const getConfirmYourDetailsTask = (caseData: Claim, claimId: string, lang
   if (hasCorrespondenceAndPrimaryAddress(caseData?.respondent1) && hasDateOfBirthIfIndividual(caseData?.respondent1)) {
     confirmYourDetailsTask.status = TaskStatus.COMPLETE;
   }
-  
+
   return confirmYourDetailsTask;
 };
 
