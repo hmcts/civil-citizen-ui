@@ -4,6 +4,7 @@ import {
   getClaimantPartyInformation,
   saveClaimant,
   saveClaimantParty,
+  saveClaimantProperty,
 } from '../../../../../../main/services/features/claim/yourDetails/claimantDetailsService';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {buildPrimaryAddress, mockClaim} from '../../../../../utils/mockClaim';
@@ -12,6 +13,7 @@ import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 import {buildCitizenAddress} from '../../../../../utils/mockForm';
 import {PartyDetails} from '../../../../../../main/common/form/models/partyDetails';
 import {CitizenCorrespondenceAddress} from '../../../../../../main/common/form/models/citizenCorrespondenceAddress';
+import {PartyType} from '../../../../../../main/common/models/partyType';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -184,6 +186,95 @@ describe('Citizen details service', () => {
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
+    });
+  });
+
+  describe('save Claimant Property', () => {
+    it('should save a claimant when has no information on redis ', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
+      //Given
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      claimData.applicant1 = new Party();
+      claimData.applicant1.partyName = 'PartyName';
+      claimData.applicant1.contactPerson = 'Contact Person';
+      claimData.applicant1.individualTitle = 'individualTitle';
+      claimData.applicant1.individualFirstName = 'individualFirstName';
+      claimData.applicant1.individualLastName = 'individualLastName';
+      claimData.applicant1.primaryAddress = buildPrimaryAddress();
+      claimData.applicant1.provideCorrespondenceAddress = YesNo.NO;
+
+      //When
+      await saveClaimant(CLAIM_ID, buildCitizenAddress().model, new CitizenCorrespondenceAddress(), YesNo.NO, claimData.applicant1);
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, claimData);
+    });
+
+    it('should save a claimant Party when in redis correspondentAddress is undefined or empty and the citizenAddress without information', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
+      //Given
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      claimData.applicant1 = new Party();
+      claimData.applicant1.partyName = 'PartyName';
+      claimData.applicant1.contactPerson = 'Contact Person';
+
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = mockClaim;
+        const claimant = new Party();
+        claimant.primaryAddress = buildPrimaryAddress();
+        claim.respondent1 = claimant;
+        return mockClaim;
+      });
+      //When
+      await saveClaimantParty(CLAIM_ID, buildCitizenAddress().model, new CitizenCorrespondenceAddress(), YesNo.NO, claimData.applicant1);
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spySaveDraftClaim).toBeCalled();
+    });
+  });
+
+  describe('save Claimant single Property', () => {
+    it('should save a claimant when has no information on redis ', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
+      //Given
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      claimData.applicant1 = new Party();
+      claimData.applicant1.type = PartyType.INDIVIDUAL;
+
+      //When
+      await saveClaimantProperty(CLAIM_ID, 'type', PartyType.INDIVIDUAL);
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, claimData);
+    });
+
+    it('should save a claimant Party when type is already in redis', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.applicant1 = new Party();
+        claim.applicant1.type = PartyType.ORGANISATION;
+        return claim;
+      });
+      //Given
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      claimData.applicant1 = new Party();
+      claimData.applicant1.type = PartyType.INDIVIDUAL;
+
+      //When
+      await saveClaimantProperty(CLAIM_ID, 'type', PartyType.INDIVIDUAL);
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, claimData);
     });
   });
 });

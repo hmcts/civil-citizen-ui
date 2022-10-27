@@ -19,7 +19,7 @@
       {% set header = t('PAGES.CONTACT_THEM.ABOUT') %}
       {% set otherPartyName = claim.getClaimantName() %}
       {% set totalClaimAmount ='£'+ claim.totalClaimAmount %}
-      {% set phone = claim.applicant1.phoneNumber %}
+      {% set phone = claim.applicant1.partyPhone %}
       {% set email = claim.applicantSolicitor1UserDetails.email %}
       {% set contactPerson = claim.applicant1.contactPerson %}
       {% set heading = t('PAGES.CONTACT_THEM.CONTACT')+ t(otherParty) %}

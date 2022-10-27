@@ -32,7 +32,7 @@ describe('Defendant party type controller', () => {
 
   beforeEach(() => {
     mockGetClaim.mockImplementation(async () => {
-      new Claim();
+      return new Claim();
     });
   });
 
