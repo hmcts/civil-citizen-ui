@@ -164,6 +164,13 @@
       "POSTCODE": "CM20 9RA",
       "TELEPHONE": "Tel: 0300 123 7050"
     },
+    "POSTCODE": {
+      "ADDESSES_FOUND": "addresses found",
+      "FIND_ADDRESS": "Find address",
+      "MANUAL_ADDRESS": "Enter address manually",
+      "PICK_ADDRESS": "Pick an address",
+      "UK_POSTCODE": "Enter a UK postcode"
+    },
     "REMAINING_TASKS": {
       "TITLE": "You still need to complete:",
       "BACK": "Back to task list"
@@ -283,6 +290,8 @@
       "CHILDREN_BETWEEN_11_TO_15": "11 to 15",
       "CHILDREN_BETWEEN_16_TO_19": "16 to 19",
       "CHILDREN_AGED_16_19_FT_EDUCATION": "Number of children aged 16 to 19 full-time education or training",
+      "CLAIM_AMOUNT_BREAKDOWN": "Claim amount breakdown",
+      "CLAIM_INTEREST": "Claim Interest",
       "CONTACT_PERSON": "Contact person",
       "CONTACT_NUMBER": "Contact number (optional)",
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
@@ -298,6 +307,7 @@
       "DISABILITY_ARE_YOU_DISABLED": "Are you disabled?",
       "DISABILITY_ARE_YOU_SEVERELY_DISABLED": "Are you severely disabled?",
       "DOB": "Date of birth",
+      "EMAIL": "Email",
       "EMPLOYMENT_DETAILS": "Employment details",
       "EMPLOYMENT_DO_YOU_HAVE_A_JOB": "Do you have a job?",
       "EMPLOYMENT_TYPE": "Type of job",
@@ -365,6 +375,7 @@
       "TAX_PAYMENT_ARE_YOU_BEHIND": "Are you behind on tax payments?",
       "TAX_PAYMENT_AMOUNT_YOU_OWE": "Amount you owe?",
       "TAX_PAYMENT_REASON": "Reason",
+      "THEIR_DETAILS_TITLE": "Their details",
       "TITLE": "Check your answers",
       "TIMELINE_TITLE": "Your timeline of what happened (optional)",
       "TIMELINE_COMMENTS": "Comments about their timeline (optional)",
@@ -409,15 +420,11 @@
       "COMPANY_DETAILS": "Enter company details",
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Would you like correspondence sent to a different address?",
-      "FIND_ADDRESS": "Find address",
       "FULL_NAME": "Your full name",
-      "MANUAL_ADDRESS": "Enter address manually",
       "PARTY_NAME_COMPANY": "Company name",
       "PARTY_NAME_ORGANISATION": "Organisation name",
       "PAGE_TITLE": "Your details",
-      "PICK_ADDRESS": "Pick an address",
       "TRY_AGAIN": "Try again or enter the address manually.",
-      "UK_POSTCODE": "Enter a UK postcode",
       "YES_CORRESPONDENCE": "Yes, add a correspondence address"
     },
     "CITIZEN_DOB": {
@@ -555,11 +562,13 @@
         "TITLE": "Try to resolve the dispute"
       },
       "WHEN_CLAIM_INTEREST_FROM": {
+        "DATE_INTEREST": "Date interest applied from",
         "FROM_A_SPECIFIC_DATE": "A particular date",
         "FROM_CLAIM_SUBMIT_DATE": "The date you submit the claim",
         "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
         "HINT_EXAMPLE_DATE": "For example the date an invoice was overdue or that you told someone they owed you the money.",
         "PAGE_TITLE": "When are you claiming interest from?",
+        "REASON": "Explain why you're claiming for this date",
         "TITLE": "When are you claiming interest from?"
       }
     },
@@ -588,6 +597,8 @@
       "PAGE_TITLE": "Annual rate interest you want to claim",
       "RATE_CLAIMING": "Rate you're claiming",
       "RATE_INFORMATION": "You can claim 8% per year unless you know that a different rate applies.",
+      "REASON": "Why you're claiming this rate",
+      "SAME_RATE_INTEREST_8_PC": "8.00%",
       "TITLE": "What annual rate of interest do you want to claim?",
       "WHY_YOU_ARE_ENTITLED": "Why you're entitled to this rate"
     },
@@ -623,16 +634,12 @@
       "CONTACT_NAME_OPTIONAL": "Contact person (optional)",
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Would you like correspondence sent to a different address?",
-      "FIND_ADDRESS": "Find address",
       "HEADING": "Confirm your details",
-      "MANUAL_ADDRESS": "Enter address manually'",
       "ORGANISATION_ADDRESS": "Organisation address",
       "ORGANISATION_NAME": "Organisation name",
       "PAGE_TITLE": "Company details",
-      "PICK_ADDRESS": "Pick an address",
       "TITLE": "Company details",
       "TRY_AGAIN": "Try again or enter the address manually.",
-      "UK_POSTCODE": "Enter a UK postcode",
       "YES_CORRESPONDENCE": "Yes, add a correspondence address"
     },
     "COMPLETING_CLAIM": {
@@ -789,9 +796,7 @@
       "CONTACT_PERSON": "Name of contact person (optional)",
       "CONTACT_PERSON_HINT": "This might be a person you’ve discussed the claim with.",
       "ENGLAND_OR_WALES_ADDRESS": "The address must be in England or Wales.",
-      "FIND_ADDRESS": "Find address",
       "INVALID_CLAIM": "Your claim may be invalid if you use the wrong address.",
-      "MANUAL_ADDRESS": "Enter address manually",
       "NO_WORK_ADDRESS": "You cannot use their work address.",
       "ORGANISATION_ADDRESS": "Organisation address",
       "ORGANISATION_MAIN_OFFICE": "Enter the organisation’s main office or address that has a connection with the claim.",
@@ -804,9 +809,7 @@
       },
       "PAYING_EXTRA": "You’ll have to pay extra fee if you later want to change the name of anyone involved with the claim.",
       "PAYING_EXTRA_ORGANISATION": "You’ll have to pay extra fee if you later want to change the name of an organisation involved with the claim.",
-      "PICK_ADDRESS": "Pick an address",
       "THEIR_ADDRESS": "Their address",
-      "UK_POSTCODE": "Enter a UK postcode",
       "USUAL_ADDRESS": "You must enter their usual or last known home address."
     },
     "DEFENDANT_PARTY_TYPE": {
@@ -1140,16 +1143,17 @@
       "REACHING_SETTLEMENT": "Reaching a settlement",
       "TITLE": "Free telephone mediation"
     },
-    "HELP_WITH_FEES":{
+    "HELP_WITH_FEES": {
       "ENTER_NUMBER": "Enter the Help With Fees number",
       "PAGE_TITLE": "Do you have a Help With Fees reference number?",
+      "REFERENCE_NUMBER": "Help with fees reference number",
       "TITLE": "Do you have a Help With Fees reference number?",
       "ONLY_ONE": "You'll only have one if you applied for Help With Fees."
     },
     "INTEREST_CLAIM_OPTIONS": {
-      "BREAK_DOWN": "Break down interest for different time periods or items",
+      "BREAK_DOWN_INTEREST": "Break down interest for different time periods or items",
       "PAGE_TITLE": "How do you want to claim interest?",
-      "SAME_RATE": "Same rate for the whole period",
+      "SAME_RATE_INTEREST": "Same rate for the whole period",
       "TITLE": "How do you want to claim interest?"
     },
     "INCOMPLETE_SUBMISSION": {
