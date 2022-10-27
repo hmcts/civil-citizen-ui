@@ -1,4 +1,5 @@
 import {PartyType} from "../partyType"
+import {CCDAddress} from "./ccdAddress";
 
 export interface CCDParty {
     companyName: string,
@@ -11,15 +12,7 @@ export interface CCDParty {
     partyName?: string,
     partyPhone: string,
     partyTypeDisplayValue?: string,
-    primaryAddress: {
-      AddressLine1: string,
-      AddressLine2: string,
-      AddressLine3: string,
-      Country: string,
-      County: string,
-      PostCode: string,
-      PostTown: string
-    },
+    primaryAddress: CCDAddress,
     soleTraderDateOfBirth: string,
     soleTraderFirstName: string,
     soleTraderLastName: string,

@@ -1,6 +1,7 @@
 import {CCDParty} from "../../../common/models/ccdResponse/ccdParty";
 import {Party} from "../../../common/models/party";
 import {PartyType} from "../../../common/models/partyType";
+import { toCCDAddress } from "./convertToCCDAddress";
 
 export const toCCDParty = (party: Party): CCDParty => {
   return {
@@ -12,17 +13,9 @@ export const toCCDParty = (party: Party): CCDParty => {
     organisationName: party.type === PartyType.ORGANISATION ? party.partyName : null,
     partyEmail: party.emailAddress,
     partyName: party.partyName, // TODO: delete? civil-service call getPartyName() but we use it as organisation name
-    partyPhone: party.phoneNumber,
+    partyPhone: party.partyPhone,
     // partyTypeDisplayValue: generateDisplayValueByPartyType(party.type), // is this a value calculated in civil-service?
-    primaryAddress: {
-      AddressLine1: party.primaryAddress.AddressLine1,
-      AddressLine2: party.primaryAddress.AddressLine2,
-      AddressLine3: party.primaryAddress.AddressLine3,
-      Country: party.primaryAddress.Country,
-      County: party.primaryAddress.County,
-      PostCode: party.primaryAddress.PostCode,
-      PostTown: party.primaryAddress.PostTown
-    },
+    primaryAddress: toCCDAddress(party.primaryAddress),
     soleTraderDateOfBirth: party.type === PartyType.SOLE_TRADER ? party.dateOfBirth.toDateString() : null,
     soleTraderFirstName: party.type === PartyType.SOLE_TRADER ? party.individualFirstName : null, // TODO: soleTraderFirstName is not used, use individual
     soleTraderLastName: party.type === PartyType.SOLE_TRADER ? party.individualLastName : null, // TODO: soleTraderFirstName is not used, use individual
