@@ -9,7 +9,7 @@ import {
 import {Transaction} from '../../../../../../common/form/models/statementOfMeans/expensesAndIncome/transaction';
 import {currencyFormatWithNoTrailingZeros} from '../../../../../../common/utils/currencyFormat';
 
-const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', { lng: getLng(lang) });
+const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 
 const addListRow = (section:SummarySection, sectionHref:string, transaction:Transaction, expense: string, amount:string, lang: string | unknown) => {
   if (transaction?.declared && transaction?.transactionSource?.amount) {

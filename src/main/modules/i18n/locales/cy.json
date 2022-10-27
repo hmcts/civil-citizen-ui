@@ -1,26 +1,25 @@
 {
-  "Claim number": "Mialc rebmun",
-  "Claimant name": "Tnamialc eman",
-  "Claim amount": "Mialc tnuoma",
-  "CLAIM_AMOUNT": "Claim amount",
-  "Next steps": "Txen spets",
-  "Deadline": "Enildaed",
-  "Actions": "Snoitca",
-  "View": "Weiv",
-  "Save and continue": "Cadw a Pharhau",
   "COMMON": {
-    "BACK": "Yn ol",
+    "ACCOUNT_TYPE": "Math o gyfrif",
+    "ADDRESS": "Cyfeiriad",
     "CHOOSE": "Dewiswch",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
+    "CLAIM_AMOUNT": "Swm yr hawliad",
+    "CONFIRM_YOUR_DETAILS": "Cadarnhau eich manylion",
     "DASHBOARD": "Dashboard",
     "DATE": "Dyddiad",
     "DATE_EXAMPLE": "Er enghraifft, {{ date }}",
     "DAY": "Diwrnod",
+    "DESCRIPTION": "Disgrifiad",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
+    "EMAIL": "E-bost",
+    "FREE_TELEPHONE_MEDIATION": "Gwasanaeth cyfryngu dros y ffôn am ddim",
     "GO_TO_HOMEPAGE": "Go to homepage",
+    "JOB_TITLE": "Teitl swydd",
     "MONTH": "Mis",
     "MONTHS": "Mis",
     "NO": "Nac oes",
+    "OPTIONAL_CONTACT_PERSON": "Contact person (optional)",
     "REMOVE": "Remove",
     "RETURN_PAGE": "You can return to RETURN-PAGE and start your claim or defence again.",
     "TECHNICAL_PROBLEMS": "Sorry, we had some technical problems during your last operation. Please try again later.",
@@ -35,8 +34,9 @@
       "TOWN_OR_CITY": "Tref neu ddinas"
     },
     "BUTTONS": {
-      "ADD_ANOTHER_EVENT": "Add another event",
+      "ADD_ANOTHER_EVENT": "Ychwanegu digwyddiad arall",
       "BACK": "Yn ol",
+      "CHANGE": "Newid",
       "CONTINUE": "Parhau",
       "I_CONFIRM_IVE_READ_THIS": "I confirm I've read this",
       "RESPOND_TO_CLAIM": "Respond to claim",
@@ -46,7 +46,7 @@
       "SUBMIT_RESPONSE": "Cyflwyno'r ymateb"
     },
     "CHECKBOX_FIELDS": {
-      "COUNCIL_TAX_AND_COMMUNTY_CHARGE": "Treth Cyngor",
+      "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Treth Cyngor",
       "COUNCIL_TAX": "Treth Cyngor",
       "ELECTRICITY": "Trydan",
       "FOOD_AND_HOUSEKEEPING": "Bwyd a chadw tŷ",
@@ -69,7 +69,6 @@
     },
     "CONTACT_US_FOR_HELP": {
       "CALL_CHARGES": "Gwybodaeth am brisiau galwadau (yn agor mewn ffenestr newydd)",
-      "EMAIL": "E-bost",
       "OPENING_HOURS": "Dydd Llun i ddydd Gwener, 8.30am i 5pm.",
       "RESPONSE_DELAY": "We'll get back to you within 10 days",
       "TITLE": "Cysylltwch â ni i gael cymorth",
@@ -94,8 +93,7 @@
     },
     "EVIDENCE_SUMMARY": {
       "TITLE": "Tystiolaeth",
-      "ROW_TYPE": "Type",
-      "ROW_DESCRIPTION": "Disgrifiad"
+      "ROW_TYPE": "Type"
     },
     "HEADER": {
       "MONEY_CLAIMS": "Money Claims",
@@ -164,6 +162,16 @@
       "POSTCODE": "CM20 9RA",
       "TELEPHONE": "Tel: 0300 123 7050"
     },
+    "POSTCODE": {
+      "ADDESSES_FOUND": "addresses found (Welsh)",
+      "FIND_ADDRESS": "Dod o hyd i gyfeiriad",
+      "MANUAL_ADDRESS": "Teipio'r cyfeiriad",
+      "PICK_ADDRESS": "Dewiswch gyfeiriad",
+      "UK_POSTCODE": "Rhowch god post yn y DU"
+    },
+    "QUESTION": {
+      "ARE_YOU_SEVERELY_DISABLED": "Ydych chi'n anabl iawn?"
+    },
     "REMAINING_TASKS": {
       "TITLE": "You still need to complete:",
       "BACK": "Back to task list"
@@ -175,10 +183,8 @@
       "WEEK": "Wythnos",
       "TWO_WEEKS_LETTERS": "Pythefnos",
       "FOUR_WEEKS_LETTERS": "4 wythnos",
-      "MONTH_UPPER_CASE": "Mis",
       "WEEK_LOWER_CASE": "wythnos",
       "WEEKS_LOWER_CASE": "wythnos",
-      "MONTH_LOWER_CASE": "mis",
       "MONTHS_LOWER_CASE": "mis",
       "TWO_MONTHS_LOWER_CASE": "2 fis"
     },
@@ -186,15 +192,14 @@
       "CORRECT_INFORMATION_CONFIRMATION": "Rwy'n cadarnhau fy mod i'n credu bod y manylion rwyf wedi'u darparu yn gywir.",
       "DETAILS_TRUTHY": "Mae manylion gofynion y gwrandawiad ar y dudalen hon yn wir hyd eithaf fy ngwybodaeth.",
       "INFORMATION_ON_PAGE": "Mae'r wybodaeth ar y dudalen hon yn ffurfio eich {{ type }}. Gallwch ei gweld ar y ffurflen {{ type }} ar ôl i chi ei chyflwyno.",
-      "JOB_TITLE": "Job title",
       "SENIOR_POSITION_REQUIREMENT": "You must hold a senior position in your organisation to sign the {{ typeOfStatement }}.",
       "STATEMENT_OF_WORK": "satganiad gwirionedd",
       "TITLE": "Datganiad Gwirionedd",
       "WHEN_SATISFIED": "Pan rydych yn fodlon bod eich atebion yn gywir, dylech roi tic i \"lofnodi'r\" datganiad gwirionedd ar y ffurflen."
     },
     "TIMELINE": {
-      "EXAMPLE_EVENT": "For example, you might have signed a contract",
-      "WHAT_HAPPENED": "What happened"
+      "EXAMPLE_EVENT": "Er enghraifft, efallai eich bod wedi llofnodi contract",
+      "WHAT_HAPPENED": "Beth ddigwyddodd"
     },
     "TYPES_OF_SENIOR_POSITION": {
       "CORPORATION_NOT_REGISTERED": "If your corporation isn't registered, a senior position could be:",
@@ -221,11 +226,9 @@
     "APPLICATION_INCOMPLETE": "Application incomplete",
     "COMPLETED_SECTIONS": "You have completed {{ completed }} of {{ total }} sections",
     "PREPARE_YOUR_RESPONSE": {
-      "CONFIRM_YOUR_DETAILS": "Confirm your details",
       "TITLE": "Prepare your response"
     },
     "RESOLVING_THE_CLAIM": {
-      "FREE_TELEPHONE_MEDIATION": "Free telephone mediation",
       "TITLE": "Resolving the claim"
     },
     "RESPOND_TO_CLAIM": {
@@ -263,26 +266,24 @@
       "TITLE": "Rydych eisoes wedi cytuno i ragor o amser i ymateb"
     },
     "ARE_YOU_SEVERELY_DISABLED": {
-      "PAGE_TITLE": "Severely disabled",
-      "TITLE": "A oes gennych anabledd difrifol?"
+      "PAGE_TITLE": "Severely disabled"
     },
     "CARER": {
       "PAGE_TITLE": "Carer's allowance"
     },
     "CHECK_YOUR_ANSWER": {
-      "ADDRESS": "Cyfeiriad",
       "BANK_AND_SAVINGS_ACCOUNTS": "Cyfrifon banc a chynilo",
-      "BANK_TYPE_OF_ACCOUNT": "Math o gyfrif",
       "BANK_BALANCE": "Cydbwysedd",
       "BANK_JOINT_ACCOUNT": "Cyfrif ar y cyd",
       "CARER_CREDIT_DO_YOU_CLAIM": "Ydych chi'n hawlio Lwfans Gofalwr neu Gredyd Gofalwr?",
-      "CHANGE": "Newid",
       "CHILDREN": "Plant",
       "CHILDREN_DO_YOU_HAVE_ANY_LIVE_WITH_YOU": "Oes unrhyw blant yn byw gyda chi?",
       "CHILDREN_UNDER_11": "dan 11",
       "CHILDREN_BETWEEN_11_TO_15": "11 i 15",
       "CHILDREN_BETWEEN_16_TO_19": "16 i 19",
       "CHILDREN_AGED_16_19_FT_EDUCATION": "Nifer y plant 16 i 19 oed sy'n derbyn addysg neu hyfforddiant amser llawn",
+      "CLAIM_AMOUNT_BREAKDOWN": "Claim amount breakdown",
+      "CLAIM_INTEREST": "Claim Interest",
       "CONTACT_PERSON": "Cyswllt",
       "CONTACT_NUMBER": "Rhif cyswllt (dewisol)",
       "CORRESPONDENCE_ADDRESS": "Gohebiaeth cyfeiriad",
@@ -296,16 +297,14 @@
       "DEBTS_MONTHLY_PAYMENTS": "Taliadau misol",
       "DETAILS_TITLE": "Eich manylion",
       "DISABILITY_ARE_YOU_DISABLED": "Ydych chi'n anabl?",
-      "DISABILITY_ARE_YOU_SEVERELY_DISABLED": "Ydych chi'n anabl iawn?",
       "DOB": "Dyddiad Geni",
+      "EMAIL": "E-bost",
       "EMPLOYMENT_DETAILS": "Manylion cyflogaeth",
       "EMPLOYMENT_DO_YOU_HAVE_A_JOB": "A oes gennych swydd?",
       "EMPLOYMENT_TYPE": "Math o swydd",
       "EMPLOYMENT_WHO_EMPLOYS_YOU": "Pwy sy'n eich cyflogi?",
       "EMPLOYMENT_NAME": "Enw'r cyflogwr",
-      "EMPLOYMENT_JOB_TITLE": "Teitl swydd",
       "EMPLOYMENT_SELF_DETAILS": "Manylion hunangyflogaeth?",
-      "EMPLOYMENT_SELF_JOB_TITLE": "Teitl swydd",
       "EMPLOYMENT_SELF_ANNUAL_TURNOVER": "Trosiant blynyddol",
       "EMPLOYED_AND_SELF_EMPLOYED": "Cyflogedig a Hunangyflogedig",
       "EXPENSES_REGULAR": "Treuliau rheolaidd",
@@ -325,7 +324,6 @@
       "INCOME_JOB_SEEKER_ALLOWANCE": "Lwfans Ceisio Gwaith (yn seiliedig ar incwm)",
       "INCOME_JOB_SEEKER_ALLOWANCE_CONTRIBUTION": "Lwfans Ceisio Gwaith (yn seiliedig ar gyfraniadau)",
       "INCOME_WORKING_TAX_CREDIT": "Credyd Treth Gwaith",
-      "JOB_TITLE": "Teitl y swydd",
       "OWE_MONEY": "A oes arnoch chi'r arian a hawlir?",
       "PARTNER_DO_YOU_LIVE_WITH_A": "Ydych chi'n byw gyda phartner?",
       "PARTNER_IS_AGED_18_OR_OVER": "Ydy'ch partner yn 18 oed neu'n hŷn?",
@@ -336,11 +334,7 @@
       "PRIORITY_DEBTS_YOU_ARE_BEHIND_ON": "Dyledion yr ydych ar ei hôl hi",
       "PRIORITY_DEBT_TYPE": "Math o ddyledion",
       "PRIORITY_DEBT_ARREARS_REPAYMENT": "Ad-dalu ôl-ddyledion",
-      "PRIORITY_DEBT_MORTGAGE": "Morgais",
-      "PRIORITY_DEBT_RENT": "Rhent",
       "PRIORITY_DEBT_COUNCIL_TAX": "Treth y Cyngor",
-      "PRIORITY_DEBT_GAS": "Nwy",
-      "PRIORITY_DEBT_ELECTRICITY": "Trydan",
       "PRIORITY_DEBT_WATER": "Dwfr",
       "PRIORITY_DEBT_MAINTENANCE": "Cynnal a chadw",
       "REGULAR_PAYMENTS": "Taliadau rheolaidd o",
@@ -365,6 +359,7 @@
       "TAX_PAYMENT_ARE_YOU_BEHIND": "Ydych chi ar ei hôl hi gyda thaliadau treth?",
       "TAX_PAYMENT_AMOUNT_YOU_OWE": "Swm sydd arnoch chi?",
       "TAX_PAYMENT_REASON": "Rheswm",
+      "THEIR_DETAILS_TITLE": "Their details",
       "TITLE": "Gwiriwch eich ateb",
       "TIMELINE_TITLE": "Eich llinell amser o'r hyn a ddigwyddodd (dewisol)",
       "TIMELINE_COMMENTS": "Sylwadau am eu llinell amser (dewisol)",
@@ -383,7 +378,6 @@
       "YOUR_FINANCIAL_DETAILS_TITLE": "Eich manylion ariannol"
     },
     "CITIZEN_BANK_ACCOUNTS": {
-      "ACCOUNT_TYPE": "Math o gyfrif",
       "ADD_ANOTHER": "Ychwanegu cyfrif arall",
       "BALANCE": "Balans",
       "BANK_AND_SAVINGS_ACCOUNTS": "Rhestrwch eich cyfrifon banc a chyfrifon cynilo",
@@ -402,26 +396,19 @@
       "ALL_CORRESPONDENCE": "Byddir yn anfon pob gohebiaeth i'r cyfeiriad hwn.",
       "BUSINESS_NAME": "Business name",
       "CLAIMANT_DETAILS_PROVIDED": "Darparwyd eich enw a'ch cyfeiriad gan yr unigolyn, y busnes neu'r sefydliad sy'n cyflwyno'r hawliad (yr hawlydd).",
-      "CONTACT_PERSON": "Contact person (optional)",
       "CONTACT_PERSON_HINT": "The defendant can contact this person to discuss the claim",
-      "CONFIRM_YOUR_DETAILS": "Cadarnhau eich manylion",
       "COMPANY_ADDRESS": "Company Address",
       "COMPANY_DETAILS": "Enter company details",
       "CORRESPONDENCE_ADDRESS": "Cyfeiriad ar gyfer gohebiaeth",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Ydych chi am inni anfon gohebiaeth i gyfeiriad arall?",
-      "FIND_ADDRESS": "Dod o hyd i gyfeiriad",
       "FULL_NAME": "Your full name",
-      "MANUAL_ADDRESS": "Teipio'r cyfeiriad",
       "PARTY_NAME_COMPANY": "Company name",
       "PARTY_NAME_ORGANISATION": "Organisation name",
       "PAGE_TITLE": "Eich manylion",
-      "PICK_ADDRESS": "Dewiswch gyfeiriad",
       "TRY_AGAIN": "Rhowch gynnig arall arni neu nodwch y cyfeiriad â llaw.",
-      "UK_POSTCODE": "Rhowch god post yn y DU",
       "YES_CORRESPONDENCE": "Ydw. Ychwanegu cyfeiriad ar gyfer gohebiaeth"
     },
     "CITIZEN_DOB": {
-      "EXAMPLE": "Er enghraifft, 31 3 1980",
       "PAGE_TITLE": "Your date of birth",
       "TITLE": "Rhowch eich dyddiad geni"
     },
@@ -485,11 +472,9 @@
     "CLAIM_DETAILS": {
       "AMOUNT": "Amount",
       "AMOUNT_BREAKDOWN": "Amount breakdown",
-      "CLAIM_AMOUNT": "Swm yr hawliad",
       "CLAIM_FEE": "Claim fee",
       "CLAIM_NUMBER": "Rhif yr hawliad",
       "CLAIM_TOTAL": "Claim Total",
-      "DATE": "Date",
       "DOWNLOAD_AND_VIEW_TIMELINE": "Download and view timeline",
       "DOWNLOAD_CLAIM": "Download claim (PDF)",
       "HEADER": "Manylion yr hawliad",
@@ -498,8 +483,7 @@
       "PAGE_TITLE": "Manylion yr hawliad",
       "REASON_FOR_CLAIM": "Reason for claim",
       "TIMELINE": "Timeline",
-      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
-      "WHAT_HAPPENED": "Beth ddigwyddodd"
+      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown"
     },
     "CLAIM_JOURNEY": {
       "CLAIM_INTEREST": {
@@ -555,17 +539,18 @@
         "TITLE": "Try to resolve the dispute"
       },
       "WHEN_CLAIM_INTEREST_FROM": {
+        "DATE_INTEREST": "Date interest applied from",
         "FROM_A_SPECIFIC_DATE": "A particular date",
         "FROM_CLAIM_SUBMIT_DATE": "The date you submit the claim",
         "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
         "HINT_EXAMPLE_DATE": "For example the date an invoice was overdue or that you told someone they owed you the money.",
         "PAGE_TITLE": "When are you claiming interest from?",
+        "REASON": "Explain why you're claiming for this date",
         "TITLE": "When are you claiming interest from?"
       }
     },
     "CLAIM_SUMMARY": {
       "ABOUT_CLAIM": "Am hawliad",
-      "CLAIM_AMOUNT": "Swm yr hawliad:",
       "CLAIM_DETAILS": "Manylion yr hawliad:",
       "CLAIM_DOCUMENTS": "Claim documents",
       "CLAIMANT_NAME": "Enw'r hawlydd:",
@@ -588,6 +573,8 @@
       "PAGE_TITLE": "Annual rate interest you want to claim",
       "RATE_CLAIMING": "Rate you're claiming",
       "RATE_INFORMATION": "You can claim 8% per year unless you know that a different rate applies.",
+      "REASON": "Why you're claiming this rate",
+      "SAME_RATE_INTEREST_8_PC": "8.00%",
       "TITLE": "What annual rate of interest do you want to claim?",
       "WHY_YOU_ARE_ENTITLED": "Why you're entitled to this rate"
     },
@@ -620,19 +607,15 @@
       "COMPANY_ADDRESS": "Cyfeiriad y cwmni",
       "COMPANY_REGISTERED_OFFICE": "Enter the company's registered office or a company address that has a connection with the claim.",
       "COMPANY_NAME": "Enw'r cwmni",
-      "CONTACT_NAME_OPTIONAL": "Contact person (optional)",
       "CORRESPONDENCE_ADDRESS": "Gohebiaeth cyfeiriad",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Ydych chi am inni anfon gohebiaeth i gyfeiriad arall?",
       "FIND_ADDRESS": "Dod o hyd i gyfeiriad",
-      "HEADING": "Cadarnhau eich manylion",
       "MANUAL_ADDRESS": "Teipio'r cyfeiriad'",
       "ORGANISATION_ADDRESS": "Cyfeiriad y sefydliad",
       "ORGANISATION_NAME": "Enw'r sefydliad",
       "PAGE_TITLE": "Manylion cwmni",
-      "PICK_ADDRESS": "Dewiswch gyfeiriad",
       "TITLE": "Manylion cwmni",
       "TRY_AGAIN": "Rhowch gynnig arall arni neu nodwch y cyfeiriad â llaw.",
-      "UK_POSTCODE": "Rhowch god post yn y DU",
       "YES_CORRESPONDENCE": "Ydw. Ychwanegu cyfeiriad ar gyfer gohebiaeth"
     },
     "COMPLETING_CLAIM": {
@@ -649,10 +632,8 @@
     },
     "CONTACT_THEM": {
       "ABOUT": "Ynghylch yr Hawliad",
-      "ADDRESS": "Cyfeiriad",
       "CLAIMANT": "Hawlydd",
       "CONTACT": "Contact ",
-      "EMAIL": "E-bost",
       "PAGE_TITLE": "Contact claimant",
       "PHONE": "Rhif ffôn"
     },
@@ -756,7 +737,6 @@
     "DASHBOARD": {
       "ACTIONS": "Actions",
       "ACTION_PROMPT": "You need to respond before ",
-      "CLAIM_AMOUNT": "Swm yr hawliad",
       "CLAIMANT_NAME": "Enw’r hawlydd",
       "CLAIM_NUMBER": "Rhif yr hawliad",
       "CLAIM_PROMPT": "To view or progress your claim click on your claim number. Most recently created claims are listed first.",
@@ -789,9 +769,7 @@
       "CONTACT_PERSON": "Name of contact person (optional)",
       "CONTACT_PERSON_HINT": "This might be a person you’ve discussed the claim with.",
       "ENGLAND_OR_WALES_ADDRESS": "The address must be in England or Wales.",
-      "FIND_ADDRESS": "Find address",
       "INVALID_CLAIM": "Your claim may be invalid if you use the wrong address.",
-      "MANUAL_ADDRESS": "Enter address manually",
       "NO_WORK_ADDRESS": "You cannot use their work address.",
       "ORGANISATION_ADDRESS": "Organisation address",
       "ORGANISATION_MAIN_OFFICE": "Enter the organisation’s main office or address that has a connection with the claim.",
@@ -804,9 +782,7 @@
       },
       "PAYING_EXTRA": "You’ll have to pay extra fee if you later want to change the name of anyone involved with the claim.",
       "PAYING_EXTRA_ORGANISATION": "You’ll have to pay extra fee if you later want to change the name of an organisation involved with the claim.",
-      "PICK_ADDRESS": "Pick an address",
       "THEIR_ADDRESS": "Their address",
-      "UK_POSTCODE": "Enter a UK postcode",
       "USUAL_ADDRESS": "You must enter their usual or last known home address."
     },
     "DEFENDANT_PARTY_TYPE": {
@@ -824,14 +800,9 @@
     "DEFENDANT_TIMELINE": {
       "PAGE_TITLE": "Ychwanegu eich amserlen digwyddiadau",
       "THEIR_TIMELINE": "Eu llinell amser",
-      "DATE": "Dyddiad",
-      "WHAT_HAPPENED": "Beth ddigwyddodd",
       "DOWNLOAD_AND_VIEW_TIMELINE": "Download and view their Timeline",
       "ADD_YOUR_TIMELINE": "Ychwanegu eich amserlen digwyddiadau (dewisol)",
       "INCLUDE_DATES_IF_YOU_KNOW": "Rhowch ddyddiadau os ydych yn eu gwybod.",
-      "FOR_EXAMPLE": "Er enghraifft, {{ sixMonthAgo }}",
-      "YOU_MIGHT_HAVE_SIGNED_A_CONTRACT": "Er enghraifft, efallai eich bod wedi llofnodi contract",
-      "ADD_ANOTHER_EVENT": "Ychwanegu digwyddiad arall",
       "ADD_ANY_COMMENTS": "Ychwanegu unrhyw sylwadau am eu hamserlen (dewisol)"
     },
     "DEFENDANT_EXPERT_EVIDENCE": {
@@ -925,10 +896,8 @@
     },
     "ELIGIBILITY_DEFENDANT_AGE": {
       "COMPANY_ORGANISATION": "I'm claiming against a company or organisation",
-      "NO": "No",
       "PAGE_TITLE": "Defendant Age Eligibility",
-      "TITLE": "Do you believe the person you’re claiming against is 18 or over?",
-      "YES": "Yes"
+      "TITLE": "Do you believe the person you’re claiming against is 18 or over?"
     },
     "ELIGIBILITY_HELP_WITH_FEES": {
       "PAGE_TITLE": "Do you need help paying your court fee?",
@@ -969,8 +938,7 @@
       "TITLE": "Some useful information about Help with Fees"
     },
     "EMPLOYER": {
-      "EMPLOYER_NAME": "Enw’r cyflogwr",
-      "JOB_TITLE": "Teitl swydd"
+      "EMPLOYER_NAME": "Enw’r cyflogwr"
     },
     "EMPLOYMENT_STATUS": {
       "BOTH": "Gallwch ddewis y ddau",
@@ -985,7 +953,6 @@
       "CONTRACTS_AND_AGREEMENTS": "Contractau a chytundebau",
       "CORRESPONDENCE": "Llythyrau, negeseuon e-bost a gohebiaeth arall",
       "DESCRIBE": "Disgrifiwch y dystiolaeth hon yn fanylach (dewisol). ",
-      "DESCRIPTION": "Disgrifiad",
       "EVIDENCE": "Tystiolaeth",
       "EVIDENCE_DETAILS": {
         "CONTRACTS_AND_AGREEMENTS": "Er enghraifft, contract wedi ei lofnodi.",
@@ -1050,7 +1017,6 @@
     "EXPERT_REPORT_DETAILS": {
       "ADD_ANOTHER": "Add another report",
       "EXPERT_NAME": "Expert's name",
-      "FOR_EXAMPLE": "For Example, {{ date }}",
       "PAGE_TITLE": "Have you already got a report written by an expert?",
       "REPORT_DATE": "When is the report dated?",
       "REPORT_TEXT": "Report",
@@ -1109,7 +1075,6 @@
       "TITLE": "Enter your claim number"
     },
     "FIRST_CONTACT_CLAIM_SUMMARY": {
-      "CLAIM_AMOUNT": "Swm yr hawliad",
       "CLAIM_NUMBER": "Rhif hawlio",
       "FIND_OUT": "Find out about how we use and store your ",
       "HEADER": "Manylion yr hawliad",
@@ -1137,19 +1102,19 @@
       "NO_WAIT_COURT_HEARING": "Ni fydd rhaid i chi aros yn hirach am wrandawiad llys os byddwch yn dewis cyfryngu.",
       "OPENS_IN_NEW_TAB": "gwasanaeth cyfryngu dros y ffôn am ddim (yn agor mewn ffenestr newydd).",
       "PAGE_TITLE": "Free telephone mediation",
-      "REACHING_SETTLEMENT": "Setlo’r anghydfod",
-      "TITLE": "Gwasanaeth cyfryngu dros y ffôn am ddim"
+      "REACHING_SETTLEMENT": "Setlo’r anghydfod"
     },
-    "HELP_WITH_FEES":{
+    "HELP_WITH_FEES": {
       "ENTER_NUMBER": "Enter the Help With Fees number",
       "PAGE_TITLE": "Do you have a Help With Fees reference number?",
+      "REFERENCE_NUMBER": "Help with fees reference number",
       "TITLE": "Do you have a Help With Fees reference number?",
       "ONLY_ONE": "You'll only have one if you applied for Help With Fees."
     },
     "INTEREST_CLAIM_OPTIONS": {
-      "BREAK_DOWN": "Break down interest for different time periods or items",
+      "BREAK_DOWN_INTEREST": "Break down interest for different time periods or items",
       "PAGE_TITLE": "How do you want to claim interest?",
-      "SAME_RATE": "Same rate for the whole period",
+      "SAME_RATE_INTEREST": "Same rate for the whole period",
       "TITLE": "How do you want to claim interest?"
     },
     "INCOMPLETE_SUBMISSION": {
@@ -1173,7 +1138,6 @@
       "CLAIMANT_CAN_ASK_FOR_CCJ_AGAINST_YOU": "You haven't responded to the claim. {{ claimantName }} can now ask for a County Court Judgement against you.",
       "CCJ_COULD_SEND_BAILIFFS_TO_YOUR_HOME": "A County Court Judgment can mean you find it difficult to get credit, like a mortgage or mobile phone contract. Bailiffs could also be sent to your home.",
       "MORE_TIME_REQUESTED": "More time requested",
-      "RESPOND_TO_CLAIM": "Respond to claim",
       "YOU_CAN_STILL_RESPOND_TO_CLAIM": "You can still respond to the claim before they ask for a judgment.",
       "YOU_HAVENT_RESPONDED_TO_CLAIM": "You haven't responded to this claim",
       "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "You need to respond before 4pm on {{ responseDeadline }} ({{ remainingDays }} Days remaining)."
@@ -1503,7 +1467,6 @@
     },
     "SELF_EMPLOYED": {
       "ANNUAL": "Trosiant blynyddol",
-      "JOB_TITLE": "Teitl swydd",
       "PAGE_TITLE": "Manylion yr hunangyflogaeth",
       "TITLE": "Mewn pa fodd ydych chi’n hunangyflogedig?"
     },
@@ -1518,9 +1481,7 @@
       "PAGE_TITLE": "Send your response by email"
     },
     "SENT_EXPERT_REPORTS": {
-      "OPTION_NO": "No",
       "OPTION_NOT_RECEIVED": "No, I have not yet received them",
-      "OPTION_YES": "Yes",
       "PAGE_TITLE": "Have you already sent expert reports to other parties?",
       "TITLE": "Have you already sent expert reports to other parties?"
     },
@@ -2000,7 +1961,6 @@
       "WATER": "Enter a valid Water amount, maximum two decimal places"
     },
     "VALID_DISAGREE_REASON_REQUIRED": "Dywedwch pam ydych yn anghytuno",
-    "VALID_ENTER_A_JOB_TITLE": "Rhowch deitl swydd",
     "VALID_ENTER_AN_EMPLOYER_NAME": "Rhowch enw cyflogwr",
     "VALID_ENTER_AT_LEAST_ONE_COURT_ORDER": "Rhowch fanylion o leiaf un gorchymyn llys",
     "VALID_ENTER_AT_LEAST_ONE_EMPLOYER": "Rhowch o leiaf un cyflogwr",
