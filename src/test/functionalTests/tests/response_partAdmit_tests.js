@@ -48,6 +48,15 @@ Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit', () =
   ResponseSteps.EnterPaymentOption(claimRef, bySetDate);
   ResponseSteps.EnterDateToPayOn();
   CommonSteps.EnterFinancialDetails(claimRef);
+  ResponseSteps.EnterHowMuchYouHavePaid(claimRef, 500);
+  ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef);
+  ResponseSteps.AddYourTimeLineEvents();
+  ResponseSteps.EnterYourEvidenceDetails();
+  ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
+  ResponseSteps.EnterYourOptions(claimRef, yesIWantMoretime);
+  ResponseSteps.RespondToRequest(claimRef);
+  ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
+  ResponseSteps.AddMandatoryPhoneNumber();
   ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
 });
 
@@ -58,5 +67,11 @@ Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit', () 
   ResponseSteps.EnterPaymentOption(claimRef, repaymentPlan);
   CommonSteps.EnterFinancialDetails(claimRef);
   ResponseSteps.EnterRepaymentPlan(claimRef);
+  ResponseSteps.EnterHowMuchYouHavePaid(claimRef, 500);
+  ResponseSteps.EnterYourOptions(claimRef, dontWantMoreTime);
+  ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef);
+  ResponseSteps.AddYourTimeLineEvents();
+  ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
+  ResponseSteps.AddMandatoryPhoneNumber();    
   ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
 });

@@ -41,7 +41,7 @@ class ViewYourOptionsBeforeDeadline {
       default:
         I.click(fields.dontWantMoreTime);
     }
-    I.click(buttons.saveAndContinue);
+    I.click(buttons.saveAndContinue);    
   }
 }
 module.exports = ViewYourOptionsBeforeDeadline;

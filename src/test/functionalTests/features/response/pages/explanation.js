@@ -12,7 +12,7 @@ class Explanation {
 
   enterExplanation() {
     I.fillField(fields.reason, 'Test reason');
-    I.click(buttons.continue);
+    I.click(buttons.continue);    
   }
 }
 

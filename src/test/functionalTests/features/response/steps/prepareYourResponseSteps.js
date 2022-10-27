@@ -38,8 +38,10 @@ const WhyDoYouDisagreeTheClaimAmount = require('../pages/WhyDoYouDisagreeTheClai
 const ListYourEvidence = require('../pages/listYourEvidence');
 const FreeTelephoneMediation = require('../pages/freeTelephoneMediation');
 const MediaTonCanWeUse = require('../pages/mediaTonCanWeUse');
+const RequestMoreTime = require('../pages/requestMoreTime');
 
 const I = actor(); // eslint-disable-line no-unused-vars
+const requestMoreTime = new RequestMoreTime();
 const mediaTonCanWeUse = new MediaTonCanWeUse();
 const addYourTimeLine = new AddYourTimeLine();
 const freeTelephoneMediation = new FreeTelephoneMediation();
@@ -83,6 +85,10 @@ const whyDoYouDisagreeTheClaimAmount = new WhyDoYouDisagreeTheClaimAmount();
 
 class ResponseSteps {
 
+  RespondToRequest (claimRef) {
+    requestMoreTime.requestMoreTimeToRespond(claimRef);
+  }
+
   AddMandatoryPhoneNumber(){
     mediaTonCanWeUse.enterPhoneNumber();
   }
@@ -110,7 +116,7 @@ class ResponseSteps {
   EnterPaymentOption(claimRef, paymentOption) {
     paymentOptionPage.enterPaymentOption(claimRef, paymentOption);
   }
-  CheckAndSubmit(claimRef,responseType) {
+  CheckAndSubmit(claimRef,responseType) {    
     checkYourAnswersPage.checkAndSubmit(claimRef,responseType);
   }
   EnterDateToPayOn() {
@@ -260,7 +266,7 @@ class ResponseSteps {
     listYourEvidence.selectEvidenceFromDropDown();
   }
   
-  EnterFreeTelephoneMediationDetails(claimRef) {
+  EnterFreeTelephoneMediationDetails(claimRef) {    
     freeTelephoneMediation.selectEvidenceFromDropDown(claimRef);
   }
 

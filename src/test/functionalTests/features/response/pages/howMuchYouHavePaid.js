@@ -31,7 +31,7 @@ class HowMuchYouHavePaid {
     I.fillField(fields.year, year.toString());
     I.see('How did you pay this amount?');
     I.fillField(fields.text, 'Bank transfer');
-    I.click(buttons.saveAndContinue);
+    I.click(buttons.saveAndContinue);    
   }
 }
 
