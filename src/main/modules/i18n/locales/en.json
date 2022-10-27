@@ -166,10 +166,8 @@
       "WEEK": "Week",
       "TWO_WEEKS_LETTERS": "Two weeks",
       "FOUR_WEEKS_LETTERS": "Four weeks",
-      "MONTH_UPPER_CASE": "Month",
       "WEEK_LOWER_CASE": "week",
       "WEEKS_LOWER_CASE": "weeks",
-      "MONTH_LOWER_CASE": "month",
       "MONTHS_LOWER_CASE": "months",
       "TWO_MONTHS_LOWER_CASE": "2 months"
     },
@@ -909,10 +907,8 @@
     },
     "ELIGIBILITY_DEFENDANT_AGE": {
       "COMPANY_ORGANISATION": "I'm claiming against a company or organisation",
-      "NO": "No",
       "PAGE_TITLE": "Defendant Age Eligibility",
       "TITLE": "Do you believe the person you’re claiming against is 18 or over?",
-      "YES": "Yes"
     },
     "ELIGIBILITY_HELP_WITH_FEES": {
       "PAGE_TITLE": "Do you need help paying your court fee?",
@@ -1500,9 +1496,7 @@
       "PAGE_TITLE": "Send your response by email"
     },
     "SENT_EXPERT_REPORTS": {
-      "OPTION_NO": "No",
       "OPTION_NOT_RECEIVED": "No, I have not yet received them",
-      "OPTION_YES": "Yes",
       "PAGE_TITLE": "Have you already sent expert reports to other parties?",
       "TITLE": "Have you already sent expert reports to other parties?"
     },
