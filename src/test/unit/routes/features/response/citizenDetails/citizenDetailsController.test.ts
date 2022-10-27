@@ -242,6 +242,15 @@ describe('Confirm Details page', () => {
     mockGetRespondentInformation.mockImplementation(async () => {
       return buildClaimOfRespondentType(PartyType.INDIVIDUAL);
     });
+    mockGetCorrespondenceAddressForm.mockImplementation(() => {
+      return CitizenCorrespondenceAddress.fromObject({
+        correspondenceAddressLine1: '',
+        correspondenceAddressLine2: '',
+        correspondenceAddressLine3: '',
+        correspondenceCity: '',
+        correspondencePostCode: '',
+      });
+    });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -267,6 +276,15 @@ describe('Confirm Details page', () => {
     mockGetRespondentInformation.mockImplementation(async () => {
       return buildClaimOfRespondentType(PartyType.ORGANISATION);
     });
+    mockGetCorrespondenceAddressForm.mockImplementation(() => {
+      return CitizenCorrespondenceAddress.fromObject({
+        correspondenceAddressLine1: '',
+        correspondenceAddressLine2: '',
+        correspondenceAddressLine3: '',
+        correspondenceCity: '',
+        correspondencePostCode: '',
+      });
+    });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -291,6 +309,15 @@ describe('Confirm Details page', () => {
   it('POST/Citizen details - should return error on empty primary postcode', async () => {
     mockGetRespondentInformation.mockImplementation(async () => {
       return buildClaimOfRespondentType(PartyType.ORGANISATION);
+    });
+    mockGetCorrespondenceAddressForm.mockImplementation(() => {
+      return CitizenCorrespondenceAddress.fromObject({
+        correspondenceAddressLine1: '',
+        correspondenceAddressLine2: '',
+        correspondenceAddressLine3: '',
+        correspondenceCity: '',
+        correspondencePostCode: '',
+      });
     });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
@@ -457,6 +484,15 @@ describe('Confirm Details page', () => {
   it('POST/Citizen details - should return error on input for primary address when postToThisAddress is set to NO', async () => {
     mockGetRespondentInformation.mockImplementation(async () => {
       return buildClaimOfRespondentType(PartyType.ORGANISATION);
+    });
+    mockGetCorrespondenceAddressForm.mockImplementation(() => {
+      return CitizenCorrespondenceAddress.fromObject({
+        correspondenceAddressLine1: '',
+        correspondenceAddressLine2: '',
+        correspondenceAddressLine3: '',
+        correspondenceCity: '',
+        correspondencePostCode: '',
+      });
     });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
