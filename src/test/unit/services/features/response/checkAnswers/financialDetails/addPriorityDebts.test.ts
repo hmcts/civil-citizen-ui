@@ -40,7 +40,7 @@ describe('Priority Debts Details', () => {
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[12].key.text).toBe('1. ' + constVal.PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_TYPE);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[12].value.html).toBe('COMMON.CHECKBOX_FIELDS.MORTGAGE');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[12].actions?.items[0].href).toBe(CITIZEN_PRIORITY_DEBTS_URL.replace(':id', constVal.CLAIM_ID));
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[12].actions?.items[0].text).toBe('PAGES.CHECK_YOUR_ANSWER.CHANGE');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[12].actions?.items[0].text).toBe('COMMON.BUTTONS.CHANGE');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[13].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_ARREARS_REPAYMENT);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[13].value.html).toBe('£1,000');
 

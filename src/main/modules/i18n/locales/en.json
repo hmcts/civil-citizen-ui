@@ -1,5 +1,7 @@
 {
   "COMMON": {
+    "ACCOUNT_TYPE": "Type of account",
+    "ADDRESS": "Address",
     "CHOOSE": "Choose",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
     "CLAIM_AMOUNT": "Claim amount",
@@ -33,6 +35,7 @@
     "BUTTONS": {
       "ADD_ANOTHER_EVENT": "Add another event",
       "BACK": "Back",
+      "CHANGE": "Change",
       "CONTINUE": "Continue",
       "I_CONFIRM_IVE_READ_THIS": "I confirm I've read this",
       "RESPOND_TO_CLAIM": "Respond to claim",
@@ -261,13 +264,10 @@
       "PAGE_TITLE": "Carer's allowance"
     },
     "CHECK_YOUR_ANSWER": {
-      "ADDRESS": "Address",
       "BANK_AND_SAVINGS_ACCOUNTS": "Bank and savings accounts",
-      "BANK_TYPE_OF_ACCOUNT": "Type of account",
       "BANK_BALANCE": "Balance",
       "BANK_JOINT_ACCOUNT": "Joint account",
       "CARER_CREDIT_DO_YOU_CLAIM": "Do you claim Carer’s Allowance or Carer’s Credit?",
-      "CHANGE": "Change",
       "CHILDREN": "Children",
       "CHILDREN_DO_YOU_HAVE_ANY_LIVE_WITH_YOU": "Do any children live with you?",
       "CHILDREN_UNDER_11": "Under 11",
@@ -366,7 +366,6 @@
       "YOUR_FINANCIAL_DETAILS_TITLE": "Your financial details"
     },
     "CITIZEN_BANK_ACCOUNTS": {
-      "ACCOUNT_TYPE": "Type of account",
       "ADD_ANOTHER": "Add another account",
       "BALANCE": "Balance",
       "BANK_AND_SAVINGS_ACCOUNTS": "List your bank and savings accounts",
@@ -625,7 +624,6 @@
     },
     "CONTACT_THEM": {
       "ABOUT": "About claim",
-      "ADDRESS": "Address",
       "CLAIMANT": "Claimant",
       "CONTACT": "Contact ",
       "PAGE_TITLE": "Contact claimant",

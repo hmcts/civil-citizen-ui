@@ -1,5 +1,7 @@
 {
   "COMMON": {
+    "ACCOUNT_TYPE": "Math o gyfrif",
+    "ADDRESS": "Cyfeiriad",
     "CHOOSE": "Dewiswch",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
     "CLAIM_AMOUNT": "Swm yr hawliad",
@@ -33,6 +35,7 @@
     "BUTTONS": {
       "ADD_ANOTHER_EVENT": "Ychwanegu digwyddiad arall",
       "BACK": "Yn ol",
+      "CHANGE": "Newid",
       "CONTINUE": "Parhau",
       "I_CONFIRM_IVE_READ_THIS": "I confirm I've read this",
       "RESPOND_TO_CLAIM": "Respond to claim",
@@ -261,13 +264,10 @@
       "PAGE_TITLE": "Carer's allowance"
     },
     "CHECK_YOUR_ANSWER": {
-      "ADDRESS": "Cyfeiriad",
       "BANK_AND_SAVINGS_ACCOUNTS": "Cyfrifon banc a chynilo",
-      "BANK_TYPE_OF_ACCOUNT": "Math o gyfrif",
       "BANK_BALANCE": "Cydbwysedd",
       "BANK_JOINT_ACCOUNT": "Cyfrif ar y cyd",
       "CARER_CREDIT_DO_YOU_CLAIM": "Ydych chi'n hawlio Lwfans Gofalwr neu Gredyd Gofalwr?",
-      "CHANGE": "Newid",
       "CHILDREN": "Plant",
       "CHILDREN_DO_YOU_HAVE_ANY_LIVE_WITH_YOU": "Oes unrhyw blant yn byw gyda chi?",
       "CHILDREN_UNDER_11": "dan 11",
@@ -366,7 +366,6 @@
       "YOUR_FINANCIAL_DETAILS_TITLE": "Eich manylion ariannol"
     },
     "CITIZEN_BANK_ACCOUNTS": {
-      "ACCOUNT_TYPE": "Math o gyfrif",
       "ADD_ANOTHER": "Ychwanegu cyfrif arall",
       "BALANCE": "Balans",
       "BANK_AND_SAVINGS_ACCOUNTS": "Rhestrwch eich cyfrifon banc a chyfrifon cynilo",
@@ -625,7 +624,6 @@
     },
     "CONTACT_THEM": {
       "ABOUT": "Ynghylch yr Hawliad",
-      "ADDRESS": "Cyfeiriad",
       "CLAIMANT": "Hawlydd",
       "CONTACT": "Contact ",
       "PAGE_TITLE": "Contact claimant",

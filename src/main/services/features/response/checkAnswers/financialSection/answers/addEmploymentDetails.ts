@@ -16,7 +16,7 @@ import {UnemploymentCategory} from '../../../../../../common/form/models/stateme
 import {Unemployment} from '../../../../../../common/form/models/statementOfMeans/unemployment/unemployment';
 import {Employment} from '../../../../../../common/models/employment';
 
-const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', { lng: getLng(lang) });
+const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 
 const getTypeOfJobTranslation = (employment: Employment, lang: string | unknown): string => {
   const tEmployed = t('PAGES.EMPLOYMENT_STATUS.EMPLOYED', { lng: getLng(lang) });
