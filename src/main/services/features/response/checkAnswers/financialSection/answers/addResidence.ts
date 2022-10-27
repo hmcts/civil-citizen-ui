@@ -8,7 +8,7 @@ import {
 } from '../../../../../../routes/urls';
 import {ResidenceType} from '../../../../../../common/form/models/statementOfMeans/residenceType';
 
-const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', { lng: getLng(lang) });
+const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 
 export const addResidence = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
   const yourResidenceTypeHref = CITIZEN_RESIDENCE_URL.replace(':id', claimId);

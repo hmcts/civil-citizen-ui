@@ -21,7 +21,7 @@ import {YesNo} from '../../../../../common/form/models/yesNo';
 import {ResponseType} from '../../../../../common/form/models/responseType';
 import {RejectAllOfClaimType} from '../../../../../common/form/models/rejectAllOfClaimType';
 
-const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', {lng: getLng(lang)});
+const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
 const addTimeline = (claim: Claim, claimId: string, lang: string | unknown, section: SummarySection) => {
   const yourTimelineHref = constructResponseUrlWithIdParams(claimId, CITIZEN_TIMELINE_URL);

@@ -6,7 +6,7 @@ export class Employer {
     employerName: string;
 
   @ValidateIf(o => o.employerName !== '' || o.jobTitle !== '')
-  @IsNotEmpty({ message: 'ERRORS.VALID_ENTER_A_JOB_TITLE' })
+  @IsNotEmpty({ message: 'ERRORS.JOB_TITLE_REQUIRED' })
     jobTitle: string;
 
   constructor(employerName?: string, jobTitle?: string) {

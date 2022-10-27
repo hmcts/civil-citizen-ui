@@ -3,7 +3,7 @@
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 
 {% macro reportDetail(reportDetailIndex, reportDetailValue, errorFor, t, removeButton, today) %}
-{% set dateHint = t('PAGES.EXPERT_REPORT_DETAILS.FOR_EXAMPLE', {
+{% set dateHint = t('COMMON.DATE_EXAMPLE', {
   date: today.getDate()+' '+(today.getMonth()-2)+' '+today.getFullYear()
 }) %}
 
