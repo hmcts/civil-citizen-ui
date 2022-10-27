@@ -37,7 +37,7 @@
       "SUBMIT_RESPONSE": "Cyflwyno'r ymateb"
     },
     "CHECKBOX_FIELDS": {
-      "COUNCIL_TAX_AND_COMMUNTY_CHARGE": "Treth Cyngor",
+      "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Treth Cyngor",
       "COUNCIL_TAX": "Treth Cyngor",
       "ELECTRICITY": "Trydan",
       "FOOD_AND_HOUSEKEEPING": "Bwyd a chadw tŷ",
@@ -325,11 +325,7 @@
       "PRIORITY_DEBTS_YOU_ARE_BEHIND_ON": "Dyledion yr ydych ar ei hôl hi",
       "PRIORITY_DEBT_TYPE": "Math o ddyledion",
       "PRIORITY_DEBT_ARREARS_REPAYMENT": "Ad-dalu ôl-ddyledion",
-      "PRIORITY_DEBT_MORTGAGE": "Morgais",
-      "PRIORITY_DEBT_RENT": "Rhent",
       "PRIORITY_DEBT_COUNCIL_TAX": "Treth y Cyngor",
-      "PRIORITY_DEBT_GAS": "Nwy",
-      "PRIORITY_DEBT_ELECTRICITY": "Trydan",
       "PRIORITY_DEBT_WATER": "Dwfr",
       "PRIORITY_DEBT_MAINTENANCE": "Cynnal a chadw",
       "REGULAR_PAYMENTS": "Taliadau rheolaidd o",

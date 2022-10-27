@@ -31,11 +31,11 @@ export const addPriorityDebts = (claim: Claim, financialSection: SummarySection,
   }
 
   count = 1;
-  addPriorityDebtsListRow(financialSection, yourPriorityDebtsHref, claim.statementOfMeans?.priorityDebts?.mortgage, 'PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_MORTGAGE', lang);
-  addPriorityDebtsListRow(financialSection, yourPriorityDebtsHref, claim.statementOfMeans?.priorityDebts?.rent, 'PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_RENT', lang);
+  addPriorityDebtsListRow(financialSection, yourPriorityDebtsHref, claim.statementOfMeans?.priorityDebts?.mortgage, 'COMMON.CHECKBOX_FIELDS.MORTGAGE', lang);
+  addPriorityDebtsListRow(financialSection, yourPriorityDebtsHref, claim.statementOfMeans?.priorityDebts?.rent, 'COMMON.CHECKBOX_FIELDS.RENT', lang);
   addPriorityDebtsListRow(financialSection, yourPriorityDebtsHref, claim.statementOfMeans?.priorityDebts?.councilTax, 'PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_COUNCIL_TAX', lang);
-  addPriorityDebtsListRow(financialSection, yourPriorityDebtsHref, claim.statementOfMeans?.priorityDebts?.gas, 'PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_GAS', lang);
-  addPriorityDebtsListRow(financialSection, yourPriorityDebtsHref, claim.statementOfMeans?.priorityDebts?.electricity, 'PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_ELECTRICITY', lang);
+  addPriorityDebtsListRow(financialSection, yourPriorityDebtsHref, claim.statementOfMeans?.priorityDebts?.gas, 'COMMON.CHECKBOX_FIELDS.GAS', lang);
+  addPriorityDebtsListRow(financialSection, yourPriorityDebtsHref, claim.statementOfMeans?.priorityDebts?.electricity, 'COMMON.CHECKBOX_FIELDS.ELECTRICITY', lang);
   addPriorityDebtsListRow(financialSection, yourPriorityDebtsHref, claim.statementOfMeans?.priorityDebts?.water, 'PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_WATER', lang);
   addPriorityDebtsListRow(financialSection, yourPriorityDebtsHref, claim.statementOfMeans?.priorityDebts?.maintenance, 'PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_MAINTENANCE', lang);
 };

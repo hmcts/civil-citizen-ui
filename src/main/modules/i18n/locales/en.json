@@ -37,7 +37,7 @@
       "SUBMIT_RESPONSE": "Submit Response"
     },
     "CHECKBOX_FIELDS": {
-      "COUNCIL_TAX_AND_COMMUNTY_CHARGE": "Council Tax or Community Charge",
+      "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Council Tax or Community Charge",
       "COUNCIL_TAX": "Council Tax",
       "ELECTRICITY": "Electricity",
       "FOOD_AND_HOUSEKEEPING": "Food and housekeeping",
@@ -325,11 +325,7 @@
       "PRIORITY_DEBTS_YOU_ARE_BEHIND_ON": "Debts you are behind on",
       "PRIORITY_DEBT_TYPE": "Debt type",
       "PRIORITY_DEBT_ARREARS_REPAYMENT": "Arrears repayment",
-      "PRIORITY_DEBT_MORTGAGE": "Mortgage",
-      "PRIORITY_DEBT_RENT": "Rent",
       "PRIORITY_DEBT_COUNCIL_TAX": "Council tax or community charge",
-      "PRIORITY_DEBT_GAS": "Gas",
-      "PRIORITY_DEBT_ELECTRICITY": "Electricity",
       "PRIORITY_DEBT_WATER": "Water",
       "PRIORITY_DEBT_MAINTENANCE": "Maintenance payments",
       "REGULAR_PAYMENTS": "Regular payments of",
