@@ -158,6 +158,9 @@
       "POSTCODE": "CM20 9RA",
       "TELEPHONE": "Tel: 0300 123 7050"
     },
+    "QUESTION": {
+      "ARE_YOU_SEVERELY_DISABLED": "Are you severely disabled?"
+    },
     "REMAINING_TASKS": {
       "TITLE": "You still need to complete:",
       "BACK": "Back to task list"
@@ -252,8 +255,7 @@
       "TITLE": "You have already agreed to more time to respond"
     },
     "ARE_YOU_SEVERELY_DISABLED": {
-      "PAGE_TITLE": "Severely disabled",
-      "TITLE": "Are you severely disabled?"
+      "PAGE_TITLE": "Severely disabled"
     },
     "CARER": {
       "PAGE_TITLE": "Carer's allowance"
@@ -285,7 +287,6 @@
       "DEBTS_MONTHLY_PAYMENTS": "Monthly Payments",
       "DETAILS_TITLE": "Your details",
       "DISABILITY_ARE_YOU_DISABLED": "Are you disabled?",
-      "DISABILITY_ARE_YOU_SEVERELY_DISABLED": "Are you severely disabled?",
       "DOB": "Date of birth",
       "EMPLOYMENT_DETAILS": "Employment details",
       "EMPLOYMENT_DO_YOU_HAVE_A_JOB": "Do you have a job?",

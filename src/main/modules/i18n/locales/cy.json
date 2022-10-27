@@ -158,6 +158,9 @@
       "POSTCODE": "CM20 9RA",
       "TELEPHONE": "Tel: 0300 123 7050"
     },
+    "QUESTION": {
+      "ARE_YOU_SEVERELY_DISABLED": "Ydych chi'n anabl iawn?"
+    },
     "REMAINING_TASKS": {
       "TITLE": "You still need to complete:",
       "BACK": "Back to task list"
@@ -252,8 +255,7 @@
       "TITLE": "Rydych eisoes wedi cytuno i ragor o amser i ymateb"
     },
     "ARE_YOU_SEVERELY_DISABLED": {
-      "PAGE_TITLE": "Severely disabled",
-      "TITLE": "A oes gennych anabledd difrifol?"
+      "PAGE_TITLE": "Severely disabled"
     },
     "CARER": {
       "PAGE_TITLE": "Carer's allowance"
@@ -285,7 +287,6 @@
       "DEBTS_MONTHLY_PAYMENTS": "Taliadau misol",
       "DETAILS_TITLE": "Eich manylion",
       "DISABILITY_ARE_YOU_DISABLED": "Ydych chi'n anabl?",
-      "DISABILITY_ARE_YOU_SEVERELY_DISABLED": "Ydych chi'n anabl iawn?",
       "DOB": "Dyddiad Geni",
       "EMPLOYMENT_DETAILS": "Manylion cyflogaeth",
       "EMPLOYMENT_DO_YOU_HAVE_A_JOB": "A oes gennych swydd?",
