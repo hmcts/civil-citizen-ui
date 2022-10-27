@@ -26,6 +26,10 @@ export class Address {
     this.primaryPostCode = primaryPostCode;
   }
 
+  isEmpty() {
+    return Object.values(this).every(value => value === undefined || value === '' );
+  }
+
   static fromObject(value?: Record<string, string>): Address {
     return new Address(
       value?.primaryAddressLine1,
