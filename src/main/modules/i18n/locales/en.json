@@ -11,6 +11,7 @@
     "DESCRIPTION": "Description",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
     "EMAIL": "Email",
+    "FREE_TELEPHONE_MEDIATION": "Free telephone mediation",
     "GO_TO_HOMEPAGE": "Go to homepage",
     "JOB_TITLE": "Job title",
     "MONTH": "Month",
@@ -214,7 +215,6 @@
       "TITLE": "Prepare your response"
     },
     "RESOLVING_THE_CLAIM": {
-      "FREE_TELEPHONE_MEDIATION": "Free telephone mediation",
       "TITLE": "Resolving the claim"
     },
     "RESPOND_TO_CLAIM": {
@@ -1099,8 +1099,7 @@
       "NO_WAIT_COURT_HEARING": "You will not have to wait longer for a court hearing if you choose mediation.",
       "OPENS_IN_NEW_TAB": "free telephone mediation (opens in new tab).",
       "PAGE_TITLE": "Free telephone mediation",
-      "REACHING_SETTLEMENT": "Reaching a settlement",
-      "TITLE": "Free telephone mediation"
+      "REACHING_SETTLEMENT": "Reaching a settlement"
     },
     "HELP_WITH_FEES":{
       "ENTER_NUMBER": "Enter the Help With Fees number",
