@@ -164,6 +164,13 @@
       "POSTCODE": "CM20 9RA",
       "TELEPHONE": "Tel: 0300 123 7050"
     },
+    "POSTCODE": {
+      "ADDESSES_FOUND": "addresses found",
+      "FIND_ADDRESS": "Find address",
+      "MANUAL_ADDRESS": "Enter address manually",
+      "PICK_ADDRESS": "Pick an address",
+      "UK_POSTCODE": "Enter a UK postcode"
+    },
     "REMAINING_TASKS": {
       "TITLE": "You still need to complete:",
       "BACK": "Back to task list"
@@ -413,15 +420,11 @@
       "COMPANY_DETAILS": "Enter company details",
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Would you like correspondence sent to a different address?",
-      "FIND_ADDRESS": "Find address",
       "FULL_NAME": "Your full name",
-      "MANUAL_ADDRESS": "Enter address manually",
       "PARTY_NAME_COMPANY": "Company name",
       "PARTY_NAME_ORGANISATION": "Organisation name",
       "PAGE_TITLE": "Your details",
-      "PICK_ADDRESS": "Pick an address",
       "TRY_AGAIN": "Try again or enter the address manually.",
-      "UK_POSTCODE": "Enter a UK postcode",
       "YES_CORRESPONDENCE": "Yes, add a correspondence address"
     },
     "CITIZEN_DOB": {
@@ -631,16 +634,12 @@
       "CONTACT_NAME_OPTIONAL": "Contact person (optional)",
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Would you like correspondence sent to a different address?",
-      "FIND_ADDRESS": "Find address",
       "HEADING": "Confirm your details",
-      "MANUAL_ADDRESS": "Enter address manually'",
       "ORGANISATION_ADDRESS": "Organisation address",
       "ORGANISATION_NAME": "Organisation name",
       "PAGE_TITLE": "Company details",
-      "PICK_ADDRESS": "Pick an address",
       "TITLE": "Company details",
       "TRY_AGAIN": "Try again or enter the address manually.",
-      "UK_POSTCODE": "Enter a UK postcode",
       "YES_CORRESPONDENCE": "Yes, add a correspondence address"
     },
     "COMPLETING_CLAIM": {
@@ -797,9 +796,7 @@
       "CONTACT_PERSON": "Name of contact person (optional)",
       "CONTACT_PERSON_HINT": "This might be a person you’ve discussed the claim with.",
       "ENGLAND_OR_WALES_ADDRESS": "The address must be in England or Wales.",
-      "FIND_ADDRESS": "Find address",
       "INVALID_CLAIM": "Your claim may be invalid if you use the wrong address.",
-      "MANUAL_ADDRESS": "Enter address manually",
       "NO_WORK_ADDRESS": "You cannot use their work address.",
       "ORGANISATION_ADDRESS": "Organisation address",
       "ORGANISATION_MAIN_OFFICE": "Enter the organisation’s main office or address that has a connection with the claim.",
@@ -812,9 +809,7 @@
       },
       "PAYING_EXTRA": "You’ll have to pay extra fee if you later want to change the name of anyone involved with the claim.",
       "PAYING_EXTRA_ORGANISATION": "You’ll have to pay extra fee if you later want to change the name of an organisation involved with the claim.",
-      "PICK_ADDRESS": "Pick an address",
       "THEIR_ADDRESS": "Their address",
-      "UK_POSTCODE": "Enter a UK postcode",
       "USUAL_ADDRESS": "You must enter their usual or last known home address."
     },
     "DEFENDANT_PARTY_TYPE": {
