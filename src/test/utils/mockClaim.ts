@@ -8,12 +8,14 @@ import {YesNo} from '../../main/common/form/models/yesNo';
 import {
   CaseState,
   InterestClaimFromType,
-  InterestClaimUntilType,
+  InterestEndDateType,
   SameRateInterestType,
 } from '../../main/common/form/models/claimDetails';
 import {ResponseOptions} from '../../main/common/form/models/responseDeadline';
 import {AdditionalTimeOptions} from '../../main/common/form/models/additionalTime';
 import {InterestClaimOptionsType} from '../../main/common/form/models/claim/interest/interestClaimOptionsType';
+import {ClaimDetails} from '../../main/common/form/models/claim/details/claimDetails';
+import {Reason} from '../../main/common/form/models/claim/details/reason';
 
 export const buildPrimaryAddress = (): PrimaryAddress => {
   return {
@@ -41,7 +43,7 @@ export const buildRespondent1 = (): Party => {
   respondent.individualLastName = 'Mary';
   respondent.individualFirstName = 'Richards';
   respondent.partyName = 'Mrs Richards Mary';
-  respondent.phoneNumber = '0208339922';
+  respondent.partyPhone = '0208339922';
   respondent.dateOfBirth = new Date('2022-01-24T15:59:59');
   respondent.responseType = '';
   respondent.type = PartyType.INDIVIDUAL;
@@ -95,7 +97,7 @@ function buildMockClaim(): Claim {
   };
   _mockClaim.totalClaimAmount = 110;
   _mockClaim.respondent1ResponseDeadline = new Date('2022-01-24T15:59:59');
-  _mockClaim.detailsOfClaim = 'the reason i have given';
+  _mockClaim.claimDetails = new ClaimDetails(new Reason('the reason i have given'));
   _mockClaim.respondent1 = buildRespondent1();
   _mockClaim.timelineOfEvents = [
     {
@@ -119,7 +121,10 @@ function buildMockClaim(): Claim {
       },
     },
   ];
-  _mockClaim.interestClaimUntil = InterestClaimUntilType.UNTIL_CLAIM_SUBMIT_DATE;
+
+  _mockClaim.interest = {
+    interestEndDate: InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE,
+  };
   _mockClaim.interestFromSpecificDate = new Date('2022-05-20');
   _mockClaim.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
   _mockClaim.sameRateInterestSelection = {

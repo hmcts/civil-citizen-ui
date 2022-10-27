@@ -2,10 +2,11 @@ import * as draftStoreService from '../../../../../../main/modules/draft-store/d
 import {
   getRespondentInformation,
   saveRespondent,
+  getCorrespondenceAddressForm,
 } from '../../../../../../main/services/features/response/citizenDetails/citizenDetailsService';
 import {Party} from '../../../../../../main/common/models/party';
 import {buildCorrespondenceAddress, buildPrimaryAddress, mockClaim} from '../../../../../utils/mockClaim';
-import {buildCitizenAddress, buildCitizenCorrespondenceAddress} from '../../../../../utils/mockForm';
+import {buildCitizenAddress, buildCitizenCorrespondenceAddress, buildParty} from '../../../../../utils/mockForm';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {CitizenCorrespondenceAddress} from '../../../../../../main/common/form/models/citizenCorrespondenceAddress';
 import {YesNo} from '../../../../../../main/common/form/models/yesNo';
@@ -50,6 +51,67 @@ describe('Citizen details service', () => {
       expect(result).toEqual(mockClaim.respondent1);
     });
   });
+
+  describe('getCorrespondenceAddressForm', () => {
+    const mockEmptyAddress = {
+      correspondenceAddressLine1: '',
+      correspondenceAddressLine2: '',
+      correspondenceAddressLine3: '',
+      correspondenceCity: '',
+      correspondencePostCode: '',
+    };
+    const mockCompleteAddress = {
+      correspondenceAddressLine1: 'Flat 3A Middle Road',
+      correspondenceAddressLine2: '',
+      correspondenceAddressLine3: '',
+      correspondenceCity: 'London',
+      correspondencePostCode: 'SW1H 9AJ',
+    };
+    it('should return an empty correspondance address object when "yes" selected but no input provided from user', async () => {
+      //Given
+      const mockCorrespondenceAddress = CitizenCorrespondenceAddress.fromObject(mockEmptyAddress);
+      //when
+      const result: CitizenCorrespondenceAddress = getCorrespondenceAddressForm({...mockEmptyAddress, postToThisAddress: YesNo.YES});
+      //Then
+      expect(result).not.toBeNull();
+      expect(result).toEqual(mockCorrespondenceAddress);
+    });
+
+    it('should return an empty correspondance address object when "no" option selected', async () => {
+      //when
+      const result: CitizenCorrespondenceAddress = getCorrespondenceAddressForm({...mockEmptyAddress, postToThisAddress: YesNo.NO});
+      //Then
+      expect(result).not.toBeNull();
+      expect(result.correspondenceAddressLine1).toBeUndefined();
+      expect(result.correspondenceAddressLine2).toBeUndefined();
+      expect(result.correspondenceAddressLine3).toBeUndefined();
+      expect(result.correspondenceCity).toBeUndefined();
+      expect(result.correspondencePostCode).toBeUndefined();
+    });
+
+    it('should return a correspondance with value when "yes" option is selected and input provided', async () => {
+      //Given
+      const mockCorrespondenceAddress = CitizenCorrespondenceAddress.fromObject(mockCompleteAddress);
+      //when
+      const result: CitizenCorrespondenceAddress = getCorrespondenceAddressForm({...mockCompleteAddress, postToThisAddress: YesNo.YES});
+      //Then
+      expect(result).not.toBeNull();
+      expect(result).toEqual(mockCorrespondenceAddress);
+    });
+
+    it('should return an empty correspondance Object when option is changed from "no" to "yes" option', async () => {
+      //when
+      const result: CitizenCorrespondenceAddress = getCorrespondenceAddressForm({...mockCompleteAddress, postToThisAddress: YesNo.NO});
+      //Then
+      expect(result).not.toBeNull();
+      expect(result.correspondenceAddressLine1).toBeUndefined();
+      expect(result.correspondenceAddressLine2).toBeUndefined();
+      expect(result.correspondenceAddressLine3).toBeUndefined();
+      expect(result.correspondenceCity).toBeUndefined();
+      expect(result.correspondencePostCode).toBeUndefined();
+    });
+  });
+
   describe('save Respondent', () => {
     it('should save a respondent when has no information on redis ', async () => {
       //Given
@@ -59,7 +121,8 @@ describe('Citizen details service', () => {
       respondentResult.primaryAddress = buildPrimaryAddress();
       respondentResult.correspondenceAddress = buildCorrespondenceAddress();
       respondentResult.postToThisAddress = YesNo.NO;
-      respondentResult.contactPerson = '';
+      respondentResult.contactPerson = 'Jane Smith';
+      respondentResult.partyPhone = '123456';
       const resultClaim = new Claim();
       resultClaim.respondent1 = respondentResult;
       resultClaim.respondent1ResponseDeadline = new Date('2022-01-24T15:59:59');
@@ -70,11 +133,35 @@ describe('Citizen details service', () => {
       });
 
       //when
-      await saveRespondent(CLAIM_ID, buildCitizenAddress(), buildCitizenCorrespondenceAddress(), YesNo.NO, '');
+      await saveRespondent(CLAIM_ID, buildCitizenAddress().model, buildCitizenCorrespondenceAddress().model, buildParty().model);
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, resultClaim);
+    });
 
+    it('should save a respondent with undefined postToThisAddress,contactPerson and partyPhone values when no input from view', async () => {
+      //Given
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const respondentResult = new Party();
+      respondentResult.primaryAddress = buildPrimaryAddress();
+      respondentResult.correspondenceAddress = buildCorrespondenceAddress();
+      respondentResult.postToThisAddress = undefined;
+      respondentResult.contactPerson = undefined;
+      respondentResult.partyPhone = undefined;
+      const resultClaim = new Claim();
+      resultClaim.respondent1 = respondentResult;
+      resultClaim.respondent1ResponseDeadline = new Date('2022-01-24T15:59:59');
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.respondent1ResponseDeadline = new Date('2022-01-24T15:59:59');
+        return claim;
+      });
+      //when
+      await saveRespondent(CLAIM_ID, buildCitizenAddress().model, buildCitizenCorrespondenceAddress().model, new Party());
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, resultClaim);
     });
 
     it('should save a respondent when has full information on redis', async () => {
@@ -86,7 +173,7 @@ describe('Citizen details service', () => {
         return mockClaim;
       });
       //when
-      await saveRespondent(CLAIM_ID, buildCitizenAddress(), buildCitizenCorrespondenceAddress(), YesNo.NO, '');
+      await saveRespondent(CLAIM_ID, buildCitizenAddress().model, buildCitizenCorrespondenceAddress().model, new Party({postToThisAddress: YesNo.NO}));
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, mockClaim);
@@ -100,10 +187,10 @@ describe('Citizen details service', () => {
       resultClaim.respondent1 = new Party();
       resultClaim.respondent1ResponseDeadline = new Date('2022-01-24T15:59:59');
       mockGetCaseData.mockImplementation(async () => {
-        return undefined;
+        return new Claim();
       });
       //when
-      await saveRespondent(CLAIM_ID, buildCitizenAddress(), buildCitizenCorrespondenceAddress(), YesNo.NO, '');
+      await saveRespondent(CLAIM_ID, buildCitizenAddress().model, buildCitizenCorrespondenceAddress().model, new Party({postToThisAddress: YesNo.NO}));
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
@@ -127,7 +214,7 @@ describe('Citizen details service', () => {
         return mockClaim;
       });
       //when
-      await saveRespondent(CLAIM_ID, buildCitizenAddress(), new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress()), YesNo.NO, '');
+      await saveRespondent(CLAIM_ID, buildCitizenAddress().model, (new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress())).model, new Party({postToThisAddress: YesNo.NO}));
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
@@ -148,7 +235,7 @@ describe('Citizen details service', () => {
         return claim;
       });
       //when
-      await saveRespondent(CLAIM_ID, buildCitizenAddress(), buildCitizenCorrespondenceAddress(), YesNo.NO, '');
+      await saveRespondent(CLAIM_ID, buildCitizenAddress().model, buildCitizenCorrespondenceAddress().model, new Party({postToThisAddress: YesNo.NO}));
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
@@ -168,11 +255,10 @@ describe('Citizen details service', () => {
         return claim;
       });
       //when
-      await saveRespondent(CLAIM_ID, buildCitizenAddress(), new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress()), YesNo.NO, '');
+      await saveRespondent(CLAIM_ID, buildCitizenAddress().model, new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress()).model, new Party({postToThisAddress: YesNo.NO}));
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
     });
   });
-
 });

@@ -9,7 +9,7 @@ import {PartyDetails} from '../../../../common/form/models/partyDetails';
 
 export const getClaimantInformation = async (claimId: string): Promise<Party> => {
   const responseData = await getCaseDataFromStore(claimId);
-  return (responseData?.applicant1) ? responseData.applicant1 : {};
+  return (responseData.applicant1) ? responseData.applicant1 : {};
 };
 
 export const saveClaimant = async (claimId: string, citizenAddress: Address, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, postToThisAddress: YesNo, claimantDetails: PartyDetails): Promise<void> => {
@@ -22,10 +22,9 @@ export const saveClaimant = async (claimId: string, citizenAddress: Address, cit
   responseData.applicant1.correspondenceAddress = citizenCorrespondenceAddress.isEmpty()
     ? undefined
     : convertToCorrespondenceAddress(citizenCorrespondenceAddress);
-  responseData.applicant1.individualTitle = claimantDetails.title;
-  responseData.applicant1.individualFirstName = claimantDetails.firstName;
-  responseData.applicant1.individualLastName = claimantDetails.lastName;
-
+  responseData.applicant1.individualTitle = claimantDetails?.individualTitle;
+  responseData.applicant1.individualFirstName = claimantDetails?.individualFirstName;
+  responseData.applicant1.individualLastName = claimantDetails?.individualLastName;
   await saveDraftClaim(claimId, responseData);
 };
 
@@ -58,9 +57,22 @@ export const saveClaimantParty = async (claimId: string, citizenAddress: Address
   responseData.applicant1.individualTitle = party?.individualTitle;
   responseData.applicant1.individualFirstName = party?.individualFirstName;
   responseData.applicant1.individualLastName = party?.individualLastName;
+  responseData.applicant1.soleTraderTradingAs = party?.soleTraderTradingAs;
   responseData.applicant1.partyName = party.partyName;
   responseData.applicant1.contactPerson = party.contactPerson;
 
   await saveDraftClaim(claimId, responseData);
+};
+
+export const saveClaimantProperty = async (userId: string, propertyName: string, value: any): Promise<void> => {
+  const claim = await getCaseDataFromStore(userId);
+  if (claim.applicant1) {
+    claim.applicant1[propertyName as keyof Party] = value;
+  } else {
+    const claimant = new Party();
+    claimant[propertyName as keyof Party] = value;
+    claim.applicant1 = claimant;
+  }
+  await saveDraftClaim(userId, claim);
 };
 
