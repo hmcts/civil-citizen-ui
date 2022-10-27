@@ -26,7 +26,7 @@
       "TOWN_OR_CITY": "Tref neu ddinas"
     },
     "BUTTONS": {
-      "ADD_ANOTHER_EVENT": "Add another event",
+      "ADD_ANOTHER_EVENT": "Ychwanegu digwyddiad arall",
       "BACK": "Yn ol",
       "CONTINUE": "Parhau",
       "I_CONFIRM_IVE_READ_THIS": "I confirm I've read this",
@@ -813,7 +813,6 @@
       "ADD_YOUR_TIMELINE": "Ychwanegu eich amserlen digwyddiadau (dewisol)",
       "INCLUDE_DATES_IF_YOU_KNOW": "Rhowch ddyddiadau os ydych yn eu gwybod.",
       "YOU_MIGHT_HAVE_SIGNED_A_CONTRACT": "Er enghraifft, efallai eich bod wedi llofnodi contract",
-      "ADD_ANOTHER_EVENT": "Ychwanegu digwyddiad arall",
       "ADD_ANY_COMMENTS": "Ychwanegu unrhyw sylwadau am eu hamserlen (dewisol)"
     },
     "DEFENDANT_EXPERT_EVIDENCE": {
@@ -1151,7 +1150,6 @@
       "CLAIMANT_CAN_ASK_FOR_CCJ_AGAINST_YOU": "You haven't responded to the claim. {{ claimantName }} can now ask for a County Court Judgement against you.",
       "CCJ_COULD_SEND_BAILIFFS_TO_YOUR_HOME": "A County Court Judgment can mean you find it difficult to get credit, like a mortgage or mobile phone contract. Bailiffs could also be sent to your home.",
       "MORE_TIME_REQUESTED": "More time requested",
-      "RESPOND_TO_CLAIM": "Respond to claim",
       "YOU_CAN_STILL_RESPOND_TO_CLAIM": "You can still respond to the claim before they ask for a judgment.",
       "YOU_HAVENT_RESPONDED_TO_CLAIM": "You haven't responded to this claim",
       "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "You need to respond before 4pm on {{ responseDeadline }} ({{ remainingDays }} Days remaining)."

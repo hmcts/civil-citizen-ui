@@ -813,7 +813,6 @@
       "ADD_YOUR_TIMELINE": "Add your timeline of events (optional)",
       "INCLUDE_DATES_IF_YOU_KNOW": "Include dates if you know them.",
       "YOU_MIGHT_HAVE_SIGNED_A_CONTRACT": "For example, you might have signed a contract",
-      "ADD_ANOTHER_EVENT": "Add another event",
       "ADD_ANY_COMMENTS": "Add any comments about their timeline (optional)"
     },
     "DEFENDANT_EXPERT_EVIDENCE": {
@@ -908,7 +907,7 @@
     "ELIGIBILITY_DEFENDANT_AGE": {
       "COMPANY_ORGANISATION": "I'm claiming against a company or organisation",
       "PAGE_TITLE": "Defendant Age Eligibility",
-      "TITLE": "Do you believe the person you’re claiming against is 18 or over?",
+      "TITLE": "Do you believe the person you’re claiming against is 18 or over?"
     },
     "ELIGIBILITY_HELP_WITH_FEES": {
       "PAGE_TITLE": "Do you need help paying your court fee?",
@@ -1151,7 +1150,6 @@
       "CLAIMANT_CAN_ASK_FOR_CCJ_AGAINST_YOU": "You haven't responded to the claim. {{ claimantName }} can now ask for a County Court Judgement against you.",
       "CCJ_COULD_SEND_BAILIFFS_TO_YOUR_HOME": "A County Court Judgment can mean you find it difficult to get credit, like a mortgage or mobile phone contract. Bailiffs could also be sent to your home.",
       "MORE_TIME_REQUESTED": "More time requested",
-      "RESPOND_TO_CLAIM": "Respond to claim",
       "YOU_CAN_STILL_RESPOND_TO_CLAIM": "You can still respond to the claim before they ask for a judgment.",
       "YOU_HAVENT_RESPONDED_TO_CLAIM": "You haven't responded to this claim",
       "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "You need to respond before 4pm on {{ responseDeadline }} ({{ remainingDays }} Days remaining)."
