@@ -126,6 +126,7 @@
     "INPUT_LABELS": {
       "FIRST_NAME": "First name",
       "LAST_NAME": "Last name",
+      "LAST_NAME_2": "Last Name",
       "TITLE": "Title"
     },
     "MONTH_NAMES": {
@@ -1309,7 +1310,6 @@
     "OTHER_WITNESSES": {
       "ADD_ANOTHER_WITNESS": "Add another witness",
       "EMAIL_LABEL": "Email address (optional)",
-      "LAST_NAME_LABEL": "Last Name",
       "PAGE_TITLE": "Do you have other witnesses?",
       "PHONE_LABEL": "Phone number (optional)",
       "REMOVE_WITNESS": "Remove witness",

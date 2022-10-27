@@ -126,6 +126,7 @@
     "INPUT_LABELS": {
       "FIRST_NAME": "Enw cyntaf",
       "LAST_NAME": "Cyfenw",
+      "LAST_NAME_2": "Enw olaf",
       "TITLE": "Teitl"
     },
     "MONTH_NAMES": {
@@ -1309,7 +1310,6 @@
     "OTHER_WITNESSES": {
       "ADD_ANOTHER_WITNESS": "Ychwanegu tyst arall",
       "EMAIL_LABEL": "Cyfeiriad e-bost (dewisol)",
-      "LAST_NAME_LABEL": "Enw olaf",
       "PAGE_TITLE": "A oes gennych dystion eraill?",
       "PHONE_LABEL": "Rhif ffôn (dewisol)",
       "REMOVE_WITNESS": "Remove witness",
