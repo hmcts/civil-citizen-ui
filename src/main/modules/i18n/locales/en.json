@@ -219,6 +219,10 @@
     "VARIATION": {
       "YES": "Yes",
       "NO": "No"
+    },
+    "VARIATION_2": {
+      "YES": "Yes",
+      "NO": "No"
     }
   },
   "TASK_LIST": {
@@ -1996,6 +2000,7 @@
     "VALID_VALUE": "Are you sure this is a valid value?",
     "VALID_YEAR": "Enter a valid year",
     "VALID_YES_NO_OPTION": "Choose option: Yes or No",
+    "VALID_YES_NO_OPTION_NAC_YDW": "Choose option: Yes or No",
     "VALID_YES_NO_SELECTION": "Please select yes or no",
     "VALID_WHY_FROM_PARTICULAR_DATE": "You need to explain why you are claiming",
     "QUESTION_1_REQUIRED": "Select yes if someone is vulnerable in a way that the court needs to consider",
