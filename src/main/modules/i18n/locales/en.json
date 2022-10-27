@@ -7,7 +7,9 @@
     "DATE": "Date",
     "DATE_EXAMPLE": "For Example, {{ date }}",
     "DAY": "Day",
+    "DESCRIPTION": "Description",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
+    "EMAIL": "Email",
     "GO_TO_HOMEPAGE": "Go to homepage",
     "MONTH": "Month",
     "MONTHS": "Months",
@@ -60,7 +62,6 @@
     },
     "CONTACT_US_FOR_HELP": {
       "CALL_CHARGES": "Find out about call charges (opens in a new window)",
-      "EMAIL": "Email",
       "OPENING_HOURS": "Monday to Friday, 8.30am to 5pm.",
       "RESPONSE_DELAY": "We'll get back to you within 10 days",
       "TITLE": "Contact us for help",
@@ -85,8 +86,7 @@
     },
     "EVIDENCE_SUMMARY": {
       "TITLE": "Evidence",
-      "ROW_TYPE": "Type",
-      "ROW_DESCRIPTION": "Description"
+      "ROW_TYPE": "Type"
     },
     "HEADER": {
       "MONEY_CLAIMS": "Money Claims",
@@ -633,7 +633,6 @@
       "ADDRESS": "Address",
       "CLAIMANT": "Claimant",
       "CONTACT": "Contact ",
-      "EMAIL": "Email",
       "PAGE_TITLE": "Contact claimant",
       "PHONE": "Phone"
     },
@@ -960,7 +959,6 @@
       "CONTRACTS_AND_AGREEMENTS": "Contracts and agreements",
       "CORRESPONDENCE": "Letters, emails and other correspondence",
       "DESCRIBE": "Describe this evidence in more detail (optional). ",
-      "DESCRIPTION": "Description",
       "EVIDENCE": "Evidence",
       "EVIDENCE_DETAILS": {
         "CONTRACTS_AND_AGREEMENTS": "For example, a signed contract.",

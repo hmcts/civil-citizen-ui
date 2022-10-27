@@ -7,7 +7,9 @@
     "DATE": "Dyddiad",
     "DATE_EXAMPLE": "Er enghraifft, {{ date }}",
     "DAY": "Diwrnod",
+    "DESCRIPTION": "Disgrifiad",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
+    "EMAIL": "E-bost",
     "GO_TO_HOMEPAGE": "Go to homepage",
     "MONTH": "Mis",
     "MONTHS": "Mis",
@@ -60,7 +62,6 @@
     },
     "CONTACT_US_FOR_HELP": {
       "CALL_CHARGES": "Gwybodaeth am brisiau galwadau (yn agor mewn ffenestr newydd)",
-      "EMAIL": "E-bost",
       "OPENING_HOURS": "Dydd Llun i ddydd Gwener, 8.30am i 5pm.",
       "RESPONSE_DELAY": "We'll get back to you within 10 days",
       "TITLE": "Cysylltwch â ni i gael cymorth",
@@ -85,8 +86,7 @@
     },
     "EVIDENCE_SUMMARY": {
       "TITLE": "Tystiolaeth",
-      "ROW_TYPE": "Type",
-      "ROW_DESCRIPTION": "Disgrifiad"
+      "ROW_TYPE": "Type"
     },
     "HEADER": {
       "MONEY_CLAIMS": "Money Claims",
@@ -633,7 +633,6 @@
       "ADDRESS": "Cyfeiriad",
       "CLAIMANT": "Hawlydd",
       "CONTACT": "Contact ",
-      "EMAIL": "E-bost",
       "PAGE_TITLE": "Contact claimant",
       "PHONE": "Rhif ffôn"
     },
@@ -960,7 +959,6 @@
       "CONTRACTS_AND_AGREEMENTS": "Contractau a chytundebau",
       "CORRESPONDENCE": "Llythyrau, negeseuon e-bost a gohebiaeth arall",
       "DESCRIBE": "Disgrifiwch y dystiolaeth hon yn fanylach (dewisol). ",
-      "DESCRIPTION": "Disgrifiad",
       "EVIDENCE": "Tystiolaeth",
       "EVIDENCE_DETAILS": {
         "CONTRACTS_AND_AGREEMENTS": "Er enghraifft, contract wedi ei lofnodi.",
