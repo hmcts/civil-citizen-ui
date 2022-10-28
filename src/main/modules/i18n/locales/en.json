@@ -214,6 +214,14 @@
     "VARIATION": {
       "YES": "Yes",
       "NO": "No"
+    },
+    "VARIATION_1": {
+      "YES": "Yes",
+      "NO": "No"
+    },
+    "VARIATION_2": {
+      "YES": "Yes",
+      "NO": "No"
     }
   },
   "TASK_LIST": {
