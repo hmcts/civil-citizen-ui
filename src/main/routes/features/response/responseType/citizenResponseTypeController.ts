@@ -13,6 +13,9 @@ import {ComponentDetailItems} from '../../../../common/form/models/componentDeta
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../common/form/models/genericForm';
+import {
+  resetPreviousResponseTypeSettings,
+} from '../../../../services/features/response/resetPreviousResponseTypeSettingService';
 
 const citizenResponseTypeViewPath = 'features/response/citizenResponseType/citizen-response-type';
 const citizenResponseTypeController = Router();
@@ -21,7 +24,7 @@ function renderView(form: GenericForm<CitizenResponseType>, res: Response, compo
   res.render(citizenResponseTypeViewPath, {form: form, componentDetailItemsList: componentDetailItemsList});
 }
 
-citizenResponseTypeController.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res,next: NextFunction) => {
+citizenResponseTypeController.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res, next: NextFunction) => {
   try {
     const citizenResponseType = new GenericForm(new CitizenResponseType());
     const claim = await getCaseDataFromStore(req.params.id);
@@ -52,6 +55,8 @@ citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
           claim.respondent1 = respondent;
         }
         await saveDraftClaim(req.params.id, claim);
+        await resetPreviousResponseTypeSettings(req.params.id);
+
         switch (formResponseType.model.responseType) {
           case ResponseType.PART_ADMISSION:
             res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_ALREADY_PAID_URL));
