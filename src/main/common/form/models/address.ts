@@ -1,6 +1,7 @@
 import {IsNotEmpty, Validate} from 'class-validator';
 import {PostcodeValidator} from '../validators/postcodeValidator';
 import {CorrespondenceAddress} from 'models/correspondenceAddress';
+import {CitizenCorrespondenceAddress} from 'common/form/models/citizenCorrespondenceAddress';
 
 export class Address {
   @IsNotEmpty({message: 'ERRORS.VALID_ADDRESS_LINE_1'})
@@ -46,3 +47,13 @@ export class Address {
     );
   }
 }
+
+export const convertToAddress = (citizenCorrespondenceAddress?: CitizenCorrespondenceAddress ): Address => {
+  return {
+    primaryAddressLine1: citizenCorrespondenceAddress.correspondenceAddressLine1,
+    primaryAddressLine2: citizenCorrespondenceAddress.correspondenceAddressLine2,
+    primaryAddressLine3: citizenCorrespondenceAddress.correspondenceAddressLine3,
+    primaryCity: citizenCorrespondenceAddress.correspondenceCity,
+    primaryPostCode: citizenCorrespondenceAddress.correspondencePostCode,
+  };
+};

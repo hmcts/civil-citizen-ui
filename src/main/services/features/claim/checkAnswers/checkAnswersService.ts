@@ -1,7 +1,7 @@
 import {SummarySections} from '../../../../common/models/summaryList/summarySections';
-import {Claim} from '../../../../common/models/claim';
-import {buildYourDetailsSection} from '../../claim/checkAnswers/detailsSection/buildYourDetailsSection';
-import {buildTheirDetailsSection} from '../../claim/checkAnswers/detailsSection/buildTheirDetailsSection';
+import {Claim} from 'models/claim';
+import {buildYourDetailsSection} from './detailsSection/buildYourDetailsSection';
+import {buildTheirDetailsSection} from './detailsSection/buildTheirDetailsSection';
 import {buildClaimAmountSection} from './financialSection/buildClaimAmountSection';
 
 const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): SummarySections => {
