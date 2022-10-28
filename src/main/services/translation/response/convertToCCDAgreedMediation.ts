@@ -1,14 +1,14 @@
 import {Mediation} from '../../../common/models/mediation/mediation';
-import {YesNoUpperCamelCase} from '../../../common/form/models/yesNo';
+import {YesNoUpperCase} from '../../../common/form/models/yesNo';
 
 export const toAgreedMediation = (mediation: Mediation): string => {
   if (mediation?.canWeUse?.option) {
-    return YesNoUpperCamelCase.YES;
+    return YesNoUpperCase.YES;
   } else if (mediation?.mediationDisagreement?.option) {
-    return YesNoUpperCamelCase.NO;
+    return YesNoUpperCase.NO;
   } else if (mediation?.companyTelephoneNumber) {
-    return YesNoUpperCamelCase.YES;
+    return YesNoUpperCase.YES;
   } else {
-    return YesNoUpperCamelCase.NO;
+    return YesNoUpperCase.NO;
   }
 };
