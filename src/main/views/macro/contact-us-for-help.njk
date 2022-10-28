@@ -27,7 +27,7 @@
 
 {% macro contactUsForHelp(t,widget, open) %}
   {% set ContactUs = t('COMMON.CONTACT_US_FOR_HELP.TITLE') %}
-  {% set Email = t('COMMON.CONTACT_US_FOR_HELP.EMAIL') %}
+  {% set Email = t('COMMON.EMAIL') %}
   {% set Telephone = t('COMMON.CONTACT_US_FOR_HELP.TELEPHONE') %}
   {% set contactocmc = 'contactocmc@justice.gov.uk' %}
   {% set responseDelay = t('COMMON.CONTACT_US_FOR_HELP.RESPONSE_DELAY') %}
@@ -51,11 +51,11 @@
     <div class="govuk-details">
       {{ emailWidget}}
       {{ callChargesWidget }}
-    </div>    
+    </div>
   {% else %}
     {{ govukDetails({
       summaryText: ContactUs,
       html: content
     }) }}
-  {% endif %} 
+  {% endif %}
 {% endmacro %}
