@@ -215,13 +215,13 @@
       "YES": "Ie",
       "NO": "Na"
     },
-    "VARIATION_1": {
+    "VARIATION_2": {
       "YES": "Ydw",
       "NO": "Nac ydw"
     },
-    "VARIATION_2": {
-      "YES": "Ie",
-      "NO": "Na"
+    "VARIATION_3": {
+      "YES": "Do",
+      "NO": "Naddo"
     }
   },
   "TASK_LIST": {
