@@ -20,7 +20,7 @@
     "MONTHS": "Mis",
     "NO": "Nac oes",
     "OPTIONAL_CONTACT_PERSON": "Contact person (optional)",
-    "REMOVE": "Remove",
+    "REMOVE": "Tynnu",
     "RETURN_PAGE": "You can return to RETURN-PAGE and start your claim or defence again.",
     "TECHNICAL_PROBLEMS": "Sorry, we had some technical problems during your last operation. Please try again later.",
     "YEAR": "Blwyddyn",
@@ -1019,12 +1019,13 @@
       "WHEN_EXPERT_ALLOWED": "When an expert is allowed"
     },
     "EXPERT_REPORT_DETAILS": {
-      "ADD_ANOTHER": "Add another report",
-      "EXPERT_NAME": "Expert's name",
-      "PAGE_TITLE": "Have you already got a report written by an expert?",
-      "REPORT_DATE": "When is the report dated?",
-      "REPORT_TEXT": "Report",
-      "TITLE": "Have you already got a report written by an expert?"
+      "ADD_ANOTHER": "Ychwanegu adroddiad arall",
+      "EXPERT_NAME": "Enw’r arbenigwr",
+      "FOR_EXAMPLE": "Er enghraifft, {{ date }}",
+      "PAGE_TITLE": "A oes gennych adroddiad wedi’i ysgrifennu gan arbenigwr yn barod?",
+      "REPORT_DATE": "Beth yw dyddiad yr adroddiad?",
+      "REPORT_TEXT": "Adroddiad",
+      "TITLE": "A oes gennych adroddiad wedi’i ysgrifennu gan arbenigwr yn barod?"
     },
     "EXPERT_SMALL_CLAIMS": {
       "CONTINUE": "Parhau heb arbenigwr",
@@ -1491,11 +1492,11 @@
       "TITLE": "Have you already sent expert reports to other parties?"
     },
     "SHARED_EXPERT": {
-      "IF_YOU_SHARE": "If you share an expert, you will also share the costs unless the judge decides that one party must pay the other party’s share.",
-      "PAGE_TITLE": "Do you want to share an expert with the claimant?",
-      "PREPARE_REPORT": "They will prepare a report for the court on behalf of two or more of the parties, including the claimant.",
-      "SINGLE_JOINT_EXPERT": "This is known as a ’single joint expert’.",
-      "TITLE": "Want shared expert?"
+      "IF_YOU_SHARE": "Os byddwch yn rhannu arbenigwr, byddwch hefyd yn rhannu’r costau oni bai bod y barnwr yn penderfynu bod rhaid i un parti dalu cyfran y parti arall.",
+      "PAGE_TITLE": "Ydych chi eisiau rhannu arbenigwr gyda’r hawlydd?",
+      "PREPARE_REPORT": "Byddant yn paratoi adroddiad ar gyfer y llys ar ran dau neu fwy o’r partïon, gan gynnwys yr hawlydd.",
+      "SINGLE_JOINT_EXPERT": "Gelwir hyn yn ‘arbenigwr sengl ar y cyd’.",
+      "TITLE": "Ydych chi eisiau rhannu arbenigwr gyda’r hawlydd?"
     },
     "SUBMIT_CONFIRMATION": {
       "FA_PAY_BY_DATE": {
@@ -1745,7 +1746,7 @@
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_NUMBER_REQUIRED": "You need to enter the claim number",
     "CLAIM_VALID_AMOUNT": "Rhowch swm dilys",
-    "CORRECT_DATE_NOT_IN_FUTURE": "Correct the date. You can’t use a future date.",
+    "CORRECT_DATE_NOT_IN_FUTURE": "Cywirwch y dyddiad, ni allwch ddefnyddio dyddiad yn y dyfodol.",
     "DATE_REQUIRED": "Nodwch ddyddiad",
     "DATE_NOT_MORE_THAN_28_DAYS": "Ni all y dyddiad ymateb yr ydych wedi’i gytuno fod mwy na 28 diwrnod ar ôl y dyddiad ymateb gwreiddiol",
     "DEFENCE_REQUIRED": "Mae angen ichi egluro pam nad oes arian yn ddyledus gennych",
@@ -1993,7 +1994,7 @@
     "VALID_REASON_REQUIRED": "Rhowch reswm",
     "VALID_REQUEST_EXTRA_4_WEEKS": "Select yes if you want an extra 4 weeks to try to settle the claim",
     "VALID_SENT_EXPERT_REPORTS": "Select yes if you have sent expert reports to the other parties",
-    "VALID_SHARE_EXPERT": "Select yes if you want to share an expert with the claimant",
+    "VALID_SHARED_EXPERT": "Dewiswch ‘ydw’ os ydych eisiau rhannu arbenigwr gyda’r hawlydd",
     "VALID_STRICTLY_POSITIVE_NUMBER": "Rhowch rif sy'n uwch na 0",
     "VALID_TEXT_LENGTH": "Rydych wedi defnyddio gormod o nodau",
     "VALID_TRIED_TO_SETTLE": "Select yes if you have tried to settle this claim before going to court",
