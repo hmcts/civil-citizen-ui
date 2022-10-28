@@ -1515,44 +1515,43 @@
       "EXAMPLE": "Er enghraifft cyfraniadau Yswiriant Gwladol, Treth Incwm neu TAW."
     },
     "SEND_YOUR_RESPONSE_BY_EMAIL": {
-      "PAGE_TITLE": "Send your response by email",
-      "HEADER": "Gwrthod yr hawliad cyfan a gwneud gwrth-hawliad",
       "COUNTER_CLAIM_CHOSEN": "Rydych wedi dewis gwneud gwrth-hawliad. Mae hyn yn golygu ni all eich amddiffyniad barhau ar-lein. Dilynwch y camau hyn i lwytho, llenwi a dychwelyd ffurflen N9B. Rhaid i chi dalu ffi'r llys. Peidiwch â chreu hawliad newydd.",
-      "WE_MUST_RECEIVE_COMPLETED_FORM": "Rhaid i ni gael eich ffurflen wedi'i llenwi cyn 4pm ar 20 Awst 2023. Bydd yr hawliad yn eich erbyn yn mynd yn ei flaen os na fyddwn yn cael eich ffurflen.",
-      "HOW_TO_COUNTERCLAIM": "Sut i wneud gwrth-hawliad",
-      "STEP_1": "Cam 1: Lawrlwytho a llenwi ffurflen N9B",
-      "PDF_DEFENCE_AND_CLAIM": "Lawrlwytho'r ffurflen N9B Cyflwyno amddiffyniad neu wrth-hawliad (yn agor mewn ffenestr newydd)",
       "CLAIM_DETAILS": {
-        "NEEDED_DETAILS": "Bydd arnoch angen y manylion canlynol am yr hawliad:",
         "CLAIM_NUMBER": "Rhif yr hawliad:",
         "CLAIMANT": "Hawlydd",
-        "DEFENDANT": "Diffynnydd"
+        "DEFENDANT": "Diffynnydd",
+        "NEEDED_DETAILS": "Bydd arnoch angen y manylion canlynol am yr hawliad:"
       },
-      "STEP_2": "Cam 2: E-bostio neu bostio'r ffurflen N9B",
-      "EMAIL_COMPLETED": "E-bostio'r ffurflen N9B wedi'i llenwi i: contactocmc@justice.gov.uk neu ymholiadaucymraeg@justice.gov.uk",
-      "SEND_BY_POST": "Neu, gallwch anfon y ffurflen drwy'r post i:",
-      "STEP_3": "Cam 3: Talu'r ffi llys",
-      "PAY_COURT_FEE": "Bydd angen i chi dalu ffi'r llys i wneud gwrth-hawliad. Bydd y llys yn cysylltu â chi i gymryd y taliad.",
       "DO_NOT_CREATE_NEW_CLAIM": "Peidiwch â chreu hawliad newydd os ydych eisiau gwneud gwrth-hawliad. Defnyddiwch ffurflen N9B.",
+      "EMAIL_COMPLETED": "E-bostio'r ffurflen N9B wedi'i llenwi i: contactocmc@justice.gov.uk neu ymholiadaucymraeg@justice.gov.uk",
+      "HEADER": "Gwrthod yr hawliad cyfan a gwneud gwrth-hawliad",
       "HELP_AND_SUPPORT": "Cymorth a Chefnogaeth",
-
-      "PDF_ADMISSION": "Download admission form (PDF, 102 KB)",
-      "PDF_DEFENCE": "Download admission form (PDF, 102 KB)",
-      "SUPPORT_EMAIL_ADDRESS": "contactocmc@justice.gov.uk",
-      "OPEN_IN_NEW_WINDOW": "(opens in a new window)",
+      "HOW_TO_COUNTERCLAIM": "Sut i wneud gwrth-hawliad",
+      "OPEN_IN_NEW_WINDOW": "(yn agor mewn ffenestr newydd)",
+      "PAGE_TITLE": "Anfonwch eich ymateb drwy e-bost",
+      "PAY_COURT_FEE": "Bydd angen i chi dalu ffi'r llys i wneud gwrth-hawliad. Bydd y llys yn cysylltu â chi i gymryd y taliad.",
+      "PDF_ADMISSION": "Lawrlwytho ffurflen addefiad  (PDF, 102 KB)",
+      "PDF_DEFENCE": "Lawrlwytho ffurflen addefiad  (PDF, 102 KB)",
+      "PDF_DEFENCE_AND_CLAIM": "Lawrlwytho'r ffurflen N9B Cyflwyno amddiffyniad neu wrth-hawliad (yn agor mewn ffenestr newydd)",
+      "SEND_BY_POST": "Neu, gallwch anfon y ffurflen drwy'r post i:",
       "SIGN_POST_ADDRESS": {
+        "CITY": "Harlow",
         "NAME": "HMCTS CMC",
         "PO_BOX": "PO BOX 12747",
-        "CITY": "Harlow",
         "POST_CODE": "CM20 9RA"
       },
+      "STEP_1": "Cam 1: Lawrlwytho a llenwi ffurflen N9B",
+      "STEP_2": "Cam 2: E-bostio neu bostio'r ffurflen N9B",
+      "STEP_3": "Cam 3: Talu'r ffi llys",
+      "SUPPORT_EMAIL_ADDRESS": "contactocmc@justice.gov.uk",
       "NON_SIGN_POST_ADDRESS": {
-        "TITLE": "Civil Money Claims",
-        "NAME": "St. Katharine`s House",
-        "STREET": "21-27 St. Katharine`s Street",
         "CITY": "Northampton",
-        "POST_CODE": "NN1 2LH"
-      }
+        "NAME": "St. Katharine`s House",
+        "POST_CODE": "NN1 2LH",
+        "STREET": "21-27 St. Katharine`s Street",
+        "TITLE": "Civil Money Claims"
+      },
+      "WE_MUST_RECEIVE_COMPLETED_FORM": "Rhaid i ni gael eich ffurflen wedi'i llenwi cyn <span class=\"govuk-body govuk-!-font-weight-bold\">4pm ar {{ deadline }}</span>. Bydd yr hawliad yn eich erbyn yn mynd yn ei flaen os na fyddwn yn cael eich ffurflen."
     },
     "SENT_EXPERT_REPORTS": {
       "OPTION_NO": "No",
