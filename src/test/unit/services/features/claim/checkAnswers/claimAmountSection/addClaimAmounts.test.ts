@@ -24,7 +24,7 @@ describe('Claim amount Details', () => {
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows.length).toBe(4);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].actions?.items.length).toBe(1);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CLAIM_AMOUNT_URL);
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].title).toBe('CLAIM_AMOUNT');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].title).toBe('COMMON.CLAIM_AMOUNT');
   });
 
   it('should return Claim amount with one breakdown', async () => {
@@ -37,7 +37,7 @@ describe('Claim amount Details', () => {
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows.length).toBe(2);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].actions?.items.length).toBe(1);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CLAIM_AMOUNT_URL);
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].title).toBe('CLAIM_AMOUNT');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].title).toBe('COMMON.CLAIM_AMOUNT');
   });
 
   it('should return Claim amount without breakdown', async () => {
@@ -50,7 +50,7 @@ describe('Claim amount Details', () => {
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows.length).toBe(1);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].actions?.items.length).toBe(1);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CLAIM_AMOUNT_URL);
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].title).toBe('CLAIM_AMOUNT');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].title).toBe('COMMON.CLAIM_AMOUNT');
   });
 
 });
