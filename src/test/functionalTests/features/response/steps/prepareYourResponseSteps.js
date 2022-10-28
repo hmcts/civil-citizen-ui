@@ -37,7 +37,7 @@ const AddYourTimeLine = require('../pages/addYourTimeLine');
 const WhyDoYouDisagreeTheClaimAmount = require('../pages/whyDoYouDisagreeTheClaimAmount');
 const ListYourEvidence = require('../pages/listYourEvidence');
 const FreeTelephoneMediation = require('../pages/freeTelephoneMediation');
-const MediaTonCanWeUse = require('../pages/mediaTonCanWeUse');
+const MediaTonCanWeUse = require('../pages/mediatonCanWeUse');
 const RequestMoreTime = require('../pages/requestMoreTime');
 
 const I = actor(); // eslint-disable-line no-unused-vars
