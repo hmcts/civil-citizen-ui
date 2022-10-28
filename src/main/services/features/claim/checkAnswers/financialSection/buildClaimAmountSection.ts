@@ -20,7 +20,7 @@ const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE
 export const buildClaimAmountSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
   const lng = getLng(lang);
   const claimAmountSection = summarySection({
-    title: t('CLAIM_AMOUNT', {lng}),
+    title: t('COMMON.CLAIM_AMOUNT', {lng}),
     summaryRows: [
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CLAIM_AMOUNT_BREAKDOWN', {lng}), '', CLAIM_AMOUNT_URL, changeLabel(lang)),
     ],

@@ -57,7 +57,7 @@ export const buildYourDetailsSection = (claim: Claim, claimId: string, lang: str
   if (claim.applicant1?.contactPerson) {
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_PERSON', {lng}), claim.applicant1.contactPerson, yourDetailsHref, changeLabel(lng)));
   }
-  yourDetailsSection.summaryList.rows.push(...[summaryRow(t('PAGES.CHECK_YOUR_ANSWER.ADDRESS', {lng}), addressToString(claim.applicant1?.primaryAddress), yourDetailsHref, changeLabel(lng)),
+  yourDetailsSection.summaryList.rows.push(...[summaryRow(t('COMMON.ADDRESS', {lng}), addressToString(claim.applicant1?.primaryAddress), yourDetailsHref, changeLabel(lng)),
     summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CORRESPONDENCE_ADDRESS', {lng}), claim.applicant1?.correspondenceAddress ? addressToString(claim.applicant1?.correspondenceAddress) : t('PAGES.CHECK_YOUR_ANSWER.SAME_ADDRESS', {lng}), yourDetailsHref, changeLabel(lng))]);
   if (claim.applicant1?.type === PartyType.INDIVIDUAL || claim.applicant1?.type === PartyType.SOLE_TRADER) {
     if (claim.applicant1?.dateOfBirth) {
