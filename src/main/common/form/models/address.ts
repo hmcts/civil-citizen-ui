@@ -1,6 +1,6 @@
 import {IsNotEmpty, Validate} from 'class-validator';
 import {PostcodeValidator} from '../validators/postcodeValidator';
-import {CorrespondenceAddress} from '../../models/correspondenceAddress';
+import {CorrespondenceAddress} from 'models/correspondenceAddress';
 
 export class Address {
   @IsNotEmpty({message: 'ERRORS.VALID_ADDRESS_LINE_1'})
