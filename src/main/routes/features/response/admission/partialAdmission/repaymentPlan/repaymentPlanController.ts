@@ -10,7 +10,7 @@ import {CITIZEN_REPAYMENT_PLAN_PARTIAL_URL, CLAIM_TASK_LIST_URL} from '../../../
 import {getFirstPaymentExampleDate} from '../../fullAdmission/repaymentPlan/repaymentPlanController';
 import {ResponseType} from '../../../../../../common/form/models/responseType';
 import {getCaseDataFromStore} from '../../../../../../modules/draft-store/draftStoreService';
-import {partAdmitGuard} from '../../../../../../routes/guards/partAdmitGuard';
+import {PartAdmitGuard} from '../../../../../../routes/guards/partAdmitGuard';
 
 const repaymentPlanViewPath = 'features/response/repaymentPlan/repaymentPlan';
 const repaymentPlanPartAdmissionController = Router();
@@ -25,7 +25,7 @@ function renderView(form: GenericForm<RepaymentPlanForm>, res: Response, amount:
   });
 }
 
-repaymentPlanPartAdmissionController.get(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL, partAdmitGuard.apply(CLAIM_TASK_LIST_URL),
+repaymentPlanPartAdmissionController.get(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL, PartAdmitGuard.apply(CLAIM_TASK_LIST_URL),
   async (req, res, next: NextFunction) => {
     try {
       const claim = await getCaseDataFromStore(req.params.id);

@@ -2,7 +2,7 @@ import express from 'express';
 import * as draftStoreService from '../../../../main/modules/draft-store/draftStoreService';
 import {CLAIM_TASK_LIST_URL} from '../../../../main/routes/urls';
 import {Claim} from '../../../../main/common/models/claim';
-import {partAdmitGuard} from '../../../../main/routes/guards/partAdmitGuard';
+import {PartAdmitGuard} from '../../../../main/routes/guards/partAdmitGuard';
 import {HowMuchDoYouOwe} from '../../../../main/common/form/models/admission/partialAdmission/howMuchDoYouOwe';
 
 jest.mock('../../../../main/modules/oidc');
@@ -54,7 +54,7 @@ describe('Response - Part Admit Amount not entered', () => {
         return claim;
       });
       // When
-      await partAdmitGuard.apply(CLAIM_TASK_LIST_URL)(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
+      await PartAdmitGuard.apply(CLAIM_TASK_LIST_URL)(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
       // Then
       expect(MOCK_NEXT).toHaveBeenCalledWith();
     });
@@ -75,7 +75,7 @@ describe('Response - Part Admit Amount not entered', () => {
         return claim;
       });
       // When
-      await partAdmitGuard.apply(CLAIM_TASK_LIST_URL)(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
+      await PartAdmitGuard.apply(CLAIM_TASK_LIST_URL)(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
       // Then
       expect(MOCK_RESPONSE.redirect).toHaveBeenCalled();
     });
@@ -98,7 +98,7 @@ describe('Response - Part Admit Amount not entered', () => {
     });
 
     // When
-    await partAdmitGuard.apply(CLAIM_TASK_LIST_URL)(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
+    await PartAdmitGuard.apply(CLAIM_TASK_LIST_URL)(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
     // Then
     expect(MOCK_NEXT).toHaveBeenCalled();
   });

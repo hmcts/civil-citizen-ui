@@ -3,7 +3,7 @@ import {constructResponseUrlWithIdParams} from '../../common/utils/urlFormatter'
 import {Claim} from '../../common/models/claim';
 import {getCaseDataFromStore} from '../../modules/draft-store/draftStoreService';
 
-export class partAdmitGuard {
+export class PartAdmitGuard {
   static apply(redirectUrl: string) {
     return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
       try {
