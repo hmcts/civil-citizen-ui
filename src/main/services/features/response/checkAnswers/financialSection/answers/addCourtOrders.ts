@@ -9,7 +9,7 @@ import {
 import {currencyFormatWithNoTrailingZeros} from '../../../../../../common/utils/currencyFormat';
 import {YesNoUpperCase} from '../../../../../../common/form/models/yesNo';
 
-const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', { lng: getLng(lang) });
+const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 
 export const addCourtOrders = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
   const yourCourtOrdersHref = CITIZEN_COURT_ORDERS_URL.replace(':id', claimId);

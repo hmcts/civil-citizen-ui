@@ -10,7 +10,7 @@ import {hasContactPersonAndCompanyPhone} from './taskListHelpers';
 
 export const getFreeTelephoneMediationTask = (caseData: Claim, claimId: string, lang: string): Task => {
   const freeTelephoneMediationTask: Task = {
-    description: t('TASK_LIST.RESOLVING_THE_CLAIM.FREE_TELEPHONE_MEDIATION', { lng: getLng(lang) }),
+    description: t('COMMON.FREE_TELEPHONE_MEDIATION', { lng: getLng(lang) }),
     url: constructResponseUrlWithIdParams(claimId, CITIZEN_FREE_TELEPHONE_MEDIATION_URL),
     status: TaskStatus.INCOMPLETE,
   };
