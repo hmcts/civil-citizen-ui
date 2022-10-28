@@ -15,7 +15,6 @@ import {convertToCCDCourtOrderDetails} from './convertToCCDCourtOrderDetails';
 import {convertToCCDLoanCreditDetails} from './convertToCCDLoanCreditDetails';
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
-  // TODO: should we include everything inside caseData
   return {
     respondent1ClaimResponseTypeForSpec: claim.respondent1?.responseType,
     defenceAdmitPartPaymentTimeRouteRequired: toCCDPaymentOption(claim.partialAdmission.paymentIntention.paymentOption), // defenceAdmitPartPaymentTimeRouteRequired: toCCDPaymentOption(claim.paymentOption),
