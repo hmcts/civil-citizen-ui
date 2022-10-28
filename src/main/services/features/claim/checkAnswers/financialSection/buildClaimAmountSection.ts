@@ -15,7 +15,7 @@ import {InterestClaimFromType, SameRateInterestType} from '../../../../../common
 import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 import {addClaimAmounts} from './addClaimAmounts';
 
-const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', {lng: getLng(lang)});
+const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
 export const buildClaimAmountSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
   const lng = getLng(lang);

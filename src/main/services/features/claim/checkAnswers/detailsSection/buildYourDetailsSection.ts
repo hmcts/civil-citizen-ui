@@ -16,7 +16,7 @@ import {PrimaryAddress} from '../../../../../common/models/primaryAddress';
 import {CorrespondenceAddress} from '../../../../../common/models/correspondenceAddress';
 import {PartyType} from '../../../../../common/models/partyType';
 
-const changeLabel = (lang: string): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', {lng: lang});
+const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', {lng: lang});
 
 const addressToString = (address: PrimaryAddress | CorrespondenceAddress) => {
   return address?.AddressLine1 + '<br>' + address?.PostTown + '<br>' + address?.PostCode;
