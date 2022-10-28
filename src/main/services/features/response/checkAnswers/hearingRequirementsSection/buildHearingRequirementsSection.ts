@@ -130,7 +130,7 @@ const vulnerabilityInfo = (claim: Claim, claimId: string, lng: string): SummaryR
   );
 };
 
-export const buildHearingRequirementsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
+const buildHearingRequirementsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
   const lng = getLng(lang);
   const hearingRequirementsSection = summarySection({
     title: t('TASK_LIST.YOUR_HEARING_REQUIREMENTS.TITLE', {lng}),
@@ -158,4 +158,15 @@ export const buildHearingRequirementsSection = (claim: Claim, claimId: string, l
   }
 
   return hearingRequirementsSection;
+};
+
+export {
+  buildHearingRequirementsSection,
+  determinationWithoutHearingReason,
+  determinationWithoutHearingQuestion,
+  documentsLanguagePreference,
+  giveEvidenceYourself,
+  speakingLanguagePreference,
+  vulnerabilityInfo,
+  vulnerabilityQuestion,
 };
