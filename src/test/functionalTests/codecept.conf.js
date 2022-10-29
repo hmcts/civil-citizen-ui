@@ -1,6 +1,6 @@
 const testConfig = require('../config.js');
 
-const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : false;
+//const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
 
 exports.config = {
   tests: '../functionalTests/tests/*_tests.js',
@@ -8,7 +8,7 @@ exports.config = {
   helpers: {
     Playwright: {
       url: testConfig.TestUrl,
-      show: !testHeadlessBrowser,
+      show: false,
       browser: 'chromium',
       waitForTimeout: 20000,
       windowSize: '1920x1080',
