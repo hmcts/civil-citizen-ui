@@ -85,7 +85,7 @@ describe('Extend ResponseDeadline Service', () => {
       await expect(submitExtendedResponseDeadline(mockedAppRequest)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
 
-    it('should rethrow exception when redis throws exception on ', async () => {
+    it('should rethrow exception when redis throws exception on submitResponseDeadlineExtension ', async () => {
       //Given
       mockGetCaseDataFromStore.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
