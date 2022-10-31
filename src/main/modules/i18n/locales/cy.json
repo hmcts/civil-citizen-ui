@@ -1,13 +1,4 @@
 {
-  "Claim number": "Mialc rebmun",
-  "Claimant name": "Tnamialc eman",
-  "Claim amount": "Mialc tnuoma",
-  "CLAIM_AMOUNT": "Swm yr hawliad",
-  "Next steps": "Txen spets",
-  "Deadline": "Enildaed",
-  "Actions": "Snoitca",
-  "View": "Weiv",
-  "Save and continue": "Cadw a Pharhau",
   "COMMON": {
     "ACCOUNT_TYPE": "Math o gyfrif",
     "ADDRESS": "Cyfeiriad",
@@ -1704,12 +1695,11 @@
       "WHAT_LANGUAGE": "What language needs to be interpreted?"
     },
     "UNDER_18": {
-      "PAGE_TITLE": "Under 18",
-      "TITLE": "Cysylltwch â'r llys",
-      "CONTENT": "Os ydych o dan 18 mae angen ichi e-bostio neu ffonio'r llys. Ni all hawlwyr gyflwyno hawliad yn erbyn rhywun dan 18 felly efallai y byddwch yn gallu stopio'r hawliad.",
+      "ABLE_TO_GET_ADVICE": "You might be able to get advice about the claim from",
       "CITIZEN_ADVICE": "Citizens Advice (opens in a new window)",
-      "ABLE_TO_GET_ADVICE": "You might be able to get advice about the claim from"
-
+      "CONTENT": "Os ydych o dan 18 mae angen ichi e-bostio neu ffonio'r llys. Ni all hawlwyr gyflwyno hawliad yn erbyn rhywun dan 18 felly efallai y byddwch yn gallu stopio'r hawliad.",
+      "PAGE_TITLE": "Under 18",
+      "TITLE": "Cysylltwch â'r llys"
     },
     "UNDERSTANDING_YOUR_OPTIONS": {
       "CURRENT_DEADLINE": "Terfyn amser cyfredol ar gyfer ymateb: 4pm ar {{ responseDeadline }}",
