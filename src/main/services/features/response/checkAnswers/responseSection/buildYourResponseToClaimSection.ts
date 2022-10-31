@@ -12,7 +12,7 @@ import {
 } from '../../../../../routes/urls';
 import {YesNo,YesNoUpperCase} from '../../../../../common/form/models/yesNo';
 
-const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', { lng: getLng(lang) });
+const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 
 const getRejectAllOfClaimOptionKey = (claim: Claim) => {
   const page = 'PAGES.CITIZEN_RESPONSE_TYPE.REJECT_ALL_CLAIM_TYPE.';

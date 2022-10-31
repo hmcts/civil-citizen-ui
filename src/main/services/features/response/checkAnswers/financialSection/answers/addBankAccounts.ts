@@ -12,7 +12,7 @@ import {BankAccountTypeValues} from '../../../../../../common/form/models/bankAn
 import {currencyFormatWithNoTrailingZeros} from '../../../../../../common/utils/currencyFormat';
 import {YesNoUpperCase} from '../../../../../../common/form/models/yesNo';
 
-const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', {lng: getLng(lang)});
+const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
 export const addBankAccounts = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
   const yourBankAccountHref = CITIZEN_BANK_ACCOUNT_URL.replace(':id', claimId);
@@ -40,7 +40,7 @@ export const addBankAccounts = (claim: Claim, financialSection: SummarySection, 
 
       const joint = bankAccounts[i].joint === 'true' ? YesNoUpperCase.YES : YesNoUpperCase.NO;
       financialSection.summaryList.rows.push(
-        summaryRow((bankAccounts.length > 1 ? (i + 1) + '. ' : '') + t('PAGES.CHECK_YOUR_ANSWER.BANK_TYPE_OF_ACCOUNT', {lng: getLng(lang)}), typeOfAccount, yourBankAccountHref, changeLabel(lang)),
+        summaryRow((bankAccounts.length > 1 ? (i + 1) + '. ' : '') + t('COMMON.ACCOUNT_TYPE', {lng: getLng(lang)}), typeOfAccount, yourBankAccountHref, changeLabel(lang)),
         summaryRow(t('PAGES.CHECK_YOUR_ANSWER.BANK_BALANCE', {lng: getLng(lang)}), currencyFormatWithNoTrailingZeros(Number(bankAccounts[i].balance)), yourBankAccountHref, changeLabel(lang)),
         summaryRow(t('PAGES.CHECK_YOUR_ANSWER.BANK_JOINT_ACCOUNT', {lng: getLng(lang)}), t(`COMMON.${joint}`, {lng: getLng(lang)}), yourBankAccountHref, changeLabel(lang)),
       );
