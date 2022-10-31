@@ -31,7 +31,7 @@ const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
 const claim = new Claim();
 
-const buildClaimOfApplicant = (): Party => {
+const buildClaimOfApplicantWithType = (type: PartyType): Claim => {
   claim.applicant1 = new Party();
   claim.applicant1.individualTitle = 'individualTitle';
   claim.applicant1.individualFirstName = 'individualFirstName';
@@ -40,17 +40,18 @@ const buildClaimOfApplicant = (): Party => {
   claim.applicant1.correspondenceAddress = buildCorrespondenceAddress();
   claim.applicant1.partyName = 'partyName';
   claim.applicant1.contactPerson = 'contactPerson';
-  return claim.applicant1;
+  claim.applicant1.type = type;
+  return claim;
 };
 
-const buildClaimOfApplicantType = (type: PartyType): Party => {
+const buildClaimOfApplicantType = (type: PartyType): Claim => {
   claim.applicant1 = new Party();
   claim.applicant1.type = type;
   claim.applicant1.primaryAddress = buildPrimaryAddress();
   claim.applicant1.correspondenceAddress = buildCorrespondenceAddress();
   claim.applicant1.partyName = 'partyName';
   claim.applicant1.contactPerson = 'contactPerson';
-  return claim.applicant1;
+  return claim;
 };
 
 const nock = require('nock');
@@ -112,7 +113,9 @@ describe('Claimant Organisation Details page', () => {
 
     it('should return your company or organisation details page with empty information', async () => {
       mockGetCaseData.mockImplementation(async () => {
-        return new Party();
+        const claim = new Claim();
+        claim.applicant1 = {type: PartyType.ORGANISATION};
+        return claim;
       });
       await request(app)
         .get(CLAIMANT_ORGANISATION_DETAILS_URL)
@@ -124,7 +127,7 @@ describe('Claimant Organisation Details page', () => {
 
     it('should return your company or organisation details page with information', async () => {
       mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicant();
+        return buildClaimOfApplicantWithType(PartyType.ORGANISATION);
       });
       await request(app)
         .get(CLAIMANT_ORGANISATION_DETAILS_URL)
@@ -135,14 +138,14 @@ describe('Claimant Organisation Details page', () => {
     });
 
     it('should return your company or organisation details page with information without correspondent address', async () => {
-      const buildClaimOfApplicantWithoutCorrespondent = (): Party => {
+      const buildClaimOfApplicantWithoutCorrespondent = (): Claim => {
         claim.applicant1 = new Party();
         claim.applicant1.type = PartyType.ORGANISATION;
         claim.applicant1.individualTitle = 'individualTitle';
         claim.applicant1.individualFirstName = 'individualFirstName';
         claim.applicant1.individualLastName = 'individualLastName';
         claim.applicant1.primaryAddress = buildPrimaryAddress();
-        return claim.applicant1;
+        return claim;
       };
       mockGetCaseData.mockImplementation(async () => {
         return buildClaimOfApplicantWithoutCorrespondent();
@@ -156,10 +159,11 @@ describe('Claimant Organisation Details page', () => {
     });
 
     it('should return your company or organisation details page with no primary, correspondence address or claimant details', async () => {
-      const buildClaimOfApplicantWithoutInformation = (): Party => {
+      const buildClaimOfApplicantWithoutInformation = (): Claim => {
         claim.applicant1 = new Party();
         claim.applicant1.primaryAddress = undefined;
-        return claim.applicant1;
+        claim.applicant1.type = PartyType.ORGANISATION;
+        return claim;
       };
       mockGetCaseData.mockImplementation(async () => {
         return buildClaimOfApplicantWithoutInformation();
@@ -174,7 +178,9 @@ describe('Claimant Organisation Details page', () => {
 
     it('get/Claimant organisation details - should return test variable when there is no data on redis and civil-service', async () => {
       mockGetCaseData.mockImplementation(async () => {
-        return new Party();
+        const claim = new Claim();
+        claim.applicant1 = {type: PartyType.ORGANISATION};
+        return claim;
       });
       await request(app)
         .get('/claim/claimant-organisation-details')
@@ -477,7 +483,9 @@ describe('Claimant Organisation Details page', () => {
 
     it('should return your company details page with empty information', async () => {
       mockGetCaseData.mockImplementation(async () => {
-        return new Party();
+        const claim = new Claim();
+        claim.applicant1 = {type: PartyType.COMPANY};
+        return claim;
       });
       await request(app)
         .get(CLAIMANT_COMPANY_DETAILS_URL)
@@ -489,7 +497,7 @@ describe('Claimant Organisation Details page', () => {
 
     it('should return your company details page with information', async () => {
       mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicant();
+        return buildClaimOfApplicantWithType(PartyType.COMPANY);
       });
       await request(app)
         .get(CLAIMANT_COMPANY_DETAILS_URL)
@@ -500,14 +508,14 @@ describe('Claimant Organisation Details page', () => {
     });
 
     it('should return your company details page with information without correspondent address', async () => {
-      const buildClaimOfApplicantWithoutCorrespondent = (): Party => {
+      const buildClaimOfApplicantWithoutCorrespondent = (): Claim => {
         claim.applicant1 = new Party();
-        claim.applicant1.type = PartyType.ORGANISATION;
+        claim.applicant1.type = PartyType.COMPANY;
         claim.applicant1.individualTitle = 'individualTitle';
         claim.applicant1.individualFirstName = 'individualFirstName';
         claim.applicant1.individualLastName = 'individualLastName';
         claim.applicant1.primaryAddress = buildPrimaryAddress();
-        return claim.applicant1;
+        return claim;
       };
       mockGetCaseData.mockImplementation(async () => {
         return buildClaimOfApplicantWithoutCorrespondent();
@@ -521,28 +529,17 @@ describe('Claimant Organisation Details page', () => {
     });
 
     it('should return your company details page with no primary, correspondence address or claimant details', async () => {
-      const buildClaimOfApplicantWithoutInformation = (): Party => {
+      const buildClaimOfApplicantWithoutInformation = (): Claim => {
         claim.applicant1 = new Party();
+        claim.applicant1.type = PartyType.COMPANY;
         claim.applicant1.primaryAddress = undefined;
-        return claim.applicant1;
+        return claim;
       };
       mockGetCaseData.mockImplementation(async () => {
         return buildClaimOfApplicantWithoutInformation();
       });
       await request(app)
         .get(CLAIMANT_COMPANY_DETAILS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Enter company details');
-        });
-    });
-
-    it('get/Claimant company details - should return test variable when there is no data on redis and civil-service', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return new Party();
-      });
-      await request(app)
-        .get('/claim/claimant-company-details')
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Enter company details');

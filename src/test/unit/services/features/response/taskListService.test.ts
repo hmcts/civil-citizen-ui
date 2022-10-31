@@ -82,7 +82,7 @@ describe('Response Task List service', () => {
       //When
       const description = getDescription(actualTaskLists, lang);
       //Then
-      expect(actualTaskLists[0].tasks[0].description).toEqual('TASK_LIST.PREPARE_YOUR_RESPONSE.CONFIRM_YOUR_DETAILS');
+      expect(actualTaskLists[0].tasks[0].description).toEqual('COMMON.CONFIRM_YOUR_DETAILS');
       expect(actualTaskLists[0].tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
       expect(description).toEqual('TASK_LIST.COMPLETED_SECTIONS');
     });
@@ -116,7 +116,7 @@ describe('Response Task List service', () => {
 
       const description = getDescription(actualTaskLists, lang);
       //Then
-      expect(actualTaskLists[0].tasks[0].description).toEqual('TASK_LIST.PREPARE_YOUR_RESPONSE.CONFIRM_YOUR_DETAILS');
+      expect(actualTaskLists[0].tasks[0].description).toEqual('COMMON.CONFIRM_YOUR_DETAILS');
       expect(actualTaskLists[0].tasks[0].status).toEqual(TaskStatus.COMPLETE);
       expect(description).toEqual('TASK_LIST.COMPLETED_SECTIONS');
     });

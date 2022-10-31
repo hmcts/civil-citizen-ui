@@ -7,7 +7,6 @@ import {
   CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL,
   CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL,
 } from '../../../urls';
-import {getPartyTypeDependingOnRoute} from '../../../../services/features/claim/claimantOrDefendantTypeService';
 import {getDefendantInformation, saveDefendant} from '../../../../services/features/claim/yourDetails/defendantDetailsService';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {Address} from '../../../../common/form/models/address';
@@ -36,28 +35,21 @@ function renderView(res: Response, form: GenericForm<PartyDetails | CompanyOrOrg
 
 defendantDetailsController.get(detailsURLs, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const defendantType = getPartyTypeDependingOnRoute(req?.url);
     const userId = req.session?.user?.id;
     const defendantDetails = await getDefendantInformation(userId);
     // TODO: correspondence address needs refactoring as all attributes start as capitalised (AddressLine1) while
     //  we save camelcase (primaryAddressLine1) afterwards remove bellow Object.assign
-    let defendantAddress = (defendantDetails?.primaryAddress) ? Object.assign(defendantDetails?.primaryAddress) : {};
+    let defendantAddress = (defendantDetails.primaryAddress) ? Object.assign(defendantDetails.primaryAddress) : {};
     defendantAddress = convertToPrimaryAddress(defendantAddress);
 
     let form: GenericForm<PartyDetails | CompanyOrOrganisationPartyDetails>;
-    if (defendantType === PartyType.COMPANY || defendantType === PartyType.ORGANISATION) {
-      form = new GenericForm(new CompanyOrOrganisationPartyDetails(defendantDetails?.partyName, defendantDetails?.contactPerson));
+    if (defendantDetails.type === PartyType.COMPANY || defendantDetails.type === PartyType.ORGANISATION) {
+      form = new GenericForm(new CompanyOrOrganisationPartyDetails(defendantDetails.partyName, defendantDetails.contactPerson));
     } else {
       form = new GenericForm<PartyDetails>(new PartyDetails(defendantDetails));
     }
-    const primaryAddressForm = new GenericForm(new Address(
-      defendantAddress?.AddressLine1,
-      defendantAddress?.AddressLine2,
-      defendantAddress?.AddressLine3,
-      defendantAddress?.PostTown,
-      defendantAddress?.PostCode,
-    ));
-    renderView(res, form, primaryAddressForm, defendantType);
+    const primaryAddressForm = new GenericForm(Address.fromJson(defendantAddress));
+    renderView(res, form, primaryAddressForm, defendantDetails.type);
   } catch (error) {
     next(error);
   }
@@ -65,27 +57,21 @@ defendantDetailsController.get(detailsURLs, async (req: AppRequest, res: Respons
 
 defendantDetailsController.post(detailsURLs, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const defendantType = getPartyTypeDependingOnRoute(req?.url);
-    const userId = req.session?.user?.id ;
+    const userId = req.session?.user?.id;
+    const defendantDetails = await getDefendantInformation(userId);
     const body = req.body as Record<string, string>;
     let form: GenericForm<PartyDetails | CompanyOrOrganisationPartyDetails> ;
-    if (defendantType === PartyType.COMPANY || defendantType === PartyType.ORGANISATION) {
+    if (defendantDetails.type === PartyType.COMPANY || defendantDetails.type === PartyType.ORGANISATION) {
       form = new GenericForm(new CompanyOrOrganisationPartyDetails(body.partyName, body.contactPerson));
     } else {
       form = new GenericForm<PartyDetails>(new PartyDetails(body));
     }
-    const primaryAddressForm = new GenericForm(new Address(
-      body.primaryAddressLine1,
-      body.primaryAddressLine2,
-      body.primaryAddressLine3,
-      body.primaryCity,
-      body.primaryPostCode,
-    ));
+    const primaryAddressForm = new GenericForm(Address.fromObject(body));
     primaryAddressForm.validateSync();
     form.validateSync();
 
     if (form.hasErrors() || primaryAddressForm.hasErrors()) {
-      renderView(res, form, primaryAddressForm, defendantType);
+      renderView(res, form, primaryAddressForm, defendantDetails.type);
     } else {
       const partyDetailsAndPrimaryAddress = {
         ...form.model,
