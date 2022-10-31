@@ -16,30 +16,30 @@
 {% set errors = form.getAllErrors('model') %}
 
 {% set supportDetailsHtml %}
-<div>
-{% for row in form.model.items %}
-  {{ supportRequired(loop.index0, row, form.errorFor, t, { hidden: isRemoveButtonHidden }, peopleLists[loop.index0]) }}
-{% else %}
-  {{ supportRequired(0, '', form.errorFor, t, { hidden: true }, peopleLists[0]) }}
-{% endfor %}
-</div>
-<div>
-{{ govukButton({
-  text: t('PAGES.SUPPORT_REQUIRED.ADD_ANOTHER'),
-  classes: "govuk-button--secondary append-row"
-}) }}
-</div>
+  <div>
+    {% for row in form.model.items %}
+      {{ supportRequired(loop.index0, row, form.errorFor, t, { hidden: isRemoveButtonHidden }, peopleLists[loop.index0]) }}
+    {% else %}
+      {{ supportRequired(0, '', form.errorFor, t, { hidden: true }, peopleLists[0]) }}
+    {% endfor %}
+  </div>
+  <div>
+    {{ govukButton({
+      text: t('PAGES.SUPPORT_REQUIRED.ADD_ANOTHER'),
+      classes: "govuk-button--secondary append-row"
+    }) }}
+  </div>
 {% endset %}
 
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% if form.hasErrors() %}
+      {# {% if form.hasErrors() %}
         {{ errorSummary(errors, t) }}
-      {% endif %}
+      {% endif %} #}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <form method="post" novalidate>
+          <form method="post">
             {{ csrfProtection(csrf) }}
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
               <h1 class="govuk-fieldset__heading">{{ t('PAGES.SUPPORT_REQUIRED.TITLE') }}</h1>
