@@ -40,7 +40,7 @@ const determinationWithoutHearingReason = (claim: Claim, claimId: string, lng: s
 };
 
 const speakingLanguagePreference =  (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  let speakingLanguageName = '';
+  let speakingLanguageName;
 
   switch (claim?.directionQuestionnaire?.welshLanguageRequirements?.language?.speakLanguage) {
     case LanguageOptions.ENGLISH:
@@ -66,7 +66,7 @@ const speakingLanguagePreference =  (claim: Claim, claimId: string, lng: string)
 };
 
 const documentsLanguagePreference =  (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  let documentsLanguageName = '';
+  let documentsLanguageName;
 
   switch (claim?.directionQuestionnaire?.welshLanguageRequirements?.language?.documentsLanguage) {
     case LanguageOptions.ENGLISH:
