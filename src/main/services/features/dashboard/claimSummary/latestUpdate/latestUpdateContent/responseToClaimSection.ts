@@ -59,7 +59,7 @@ export const getRespondToClaimLink = (claimId: string): ClaimSummarySection => {
     {
       type: ClaimSummaryType.LINK,
       data: {
-        text: 'PAGES.LATEST_UPDATE_CONTENT.RESPOND_TO_CLAIM',
+        text: 'COMMON.BUTTONS.RESPOND_TO_CLAIM',
         href: CLAIM_TASK_LIST_URL.replace(':id', claimId),
       },
     }
