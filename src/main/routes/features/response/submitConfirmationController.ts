@@ -7,7 +7,7 @@ import {getLng} from '../../../common/utils/languageToggleUtils';
 import {CivilServiceClient} from '../../../app/client/civilServiceClient';
 import {AppRequest} from '../../../common/models/AppRequest';
 import {formatDateToFullDate} from '../../../common/utils/dateUtils';
-import {ResponseSubmitDateGuard} from 'routes/guards/responseSubmitDateGuard';
+import {ResponseSubmitDateGuard} from '../../../routes/guards/responseSubmitDateGuard';
 
 const submitConfirmationController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
