@@ -43,15 +43,12 @@ const submitExtendedResponseDeadline = async (req: AppRequest) => {
   }
 };
 
-const submitResponseDeadlineExtension = async (claimId: string, req:AppRequest) => {
+const submitResponseDeadlineExtension = async (req:AppRequest) => {
   try{
-    const claim  = await getCaseDataFromStore(claimId);
-    const viewOptionsBeforeDeadlineTask = getViewOptionsBeforeDeadlineTask(claim, claimId, 'en');
+    const claim  = await getCaseDataFromStore(req.params.id);
+    const viewOptionsBeforeDeadlineTask = getViewOptionsBeforeDeadlineTask(claim, req.params.id, 'en');
     if(viewOptionsBeforeDeadlineTask.status === TaskStatus.INCOMPLETE){
-      await civilServiceClient.submitResponseDeadlineExtensionEvent(claimId, {respondentSolicitor1AgreedDeadlineExtension: claim.responseDeadline.calculatedResponseDeadline}, req);
-      claim.respondent1ResponseDeadline = claim.responseDeadline.calculatedResponseDeadline;
-      claim.respondentSolicitor1AgreedDeadlineExtension = claim.responseDeadline.calculatedResponseDeadline;
-      await saveDraftClaim(claimId, claim);
+      await civilServiceClient.submitResponseDeadlineExtensionEvent(req.params.id, {respondentSolicitor1AgreedDeadlineExtension: claim.responseDeadline.calculatedResponseDeadline}, req);
     }
   }catch(error) {
     logger.error(error);

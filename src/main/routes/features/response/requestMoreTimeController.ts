@@ -47,7 +47,7 @@ requestMoreTimeController.post(REQUEST_MORE_TIME_URL, deadLineGuard,
         renderView(res, form, claim, language);
       } else {
         await responseDeadlineService.saveAdditionalTime(claimId, selectedOption);
-        await submitResponseDeadlineExtension(claimId, <AppRequest>req);
+        await submitResponseDeadlineExtension(<AppRequest>req);
         res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_TASK_LIST_URL));
       }
     } catch (error) {
