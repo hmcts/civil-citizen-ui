@@ -6,6 +6,7 @@ import howMuchHaveYouPaidService from '../../../../../services/features/response
 import {HowMuchHaveYouPaid} from '../../../../../common/form/models/admission/howMuchHaveYouPaid';
 import {toNumberOrUndefined} from '../../../../../common/utils/numberConverter';
 import {ResponseType} from '../../../../../common/form/models/responseType';
+import {PartAdmitGuard} from '../../../../../routes/guards/partAdmitGuard';
 
 const howMuchHaveYouPaidPath = 'features/response/admission/how-much-have-you-paid';
 const howMuchHaveYouPaidController = Router();
@@ -14,7 +15,7 @@ lastMonth.setMonth(lastMonth.getMonth() - 1);
 let totalClaimAmount: number;
 howMuchHaveYouPaidController
   .get(
-    CITIZEN_AMOUNT_YOU_PAID_URL, async (req: Request, res: Response, next: NextFunction) => {
+    CITIZEN_AMOUNT_YOU_PAID_URL, PartAdmitGuard.apply(CLAIM_TASK_LIST_URL), async (req: Request, res: Response, next: NextFunction) => {
       try {
         const howMuchHaveYouPaid: HowMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid(req.params.id, ResponseType.PART_ADMISSION);
         totalClaimAmount = howMuchHaveYouPaid.totalClaimAmount;
