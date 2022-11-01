@@ -43,7 +43,7 @@
           "supportRequiredList": {
             "items": [
               {
-                "fullName": "johndoe",
+                "fullName": "John Doe",
                 "disabledAccess": {
                   "selected": true
                 },
@@ -53,7 +53,7 @@
                 }
               },
               {
-                "fullName": "mikebrown",
+                "fullName": "Mike Brown",
                 "hearingLoop": {
                   "selected": true
                 },
