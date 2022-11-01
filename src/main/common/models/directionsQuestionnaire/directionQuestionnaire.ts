@@ -28,4 +28,20 @@ export class DirectionQuestionnaire {
     this.welshLanguageRequirements = welshLanguageRequirements;
     this.witnesses = witnesses;
   }
+
+  hasExpertReportDetails() : boolean {
+    return this.experts?.hasExpertReportDetails();
+  }
+
+  hasPermissionForExperts() : boolean {
+    return this.experts?.hasPermissionForExpert();
+  }
+
+  hasEvidenceExpertCanStillExamine() : boolean {
+    return this.experts?.hasEvidenceExpertCanStillExamine();
+  }
+
+  hasDefendantExpertEvidence(): boolean {
+    return this.experts?.hasDefendantExpertEvidence();
+  }
 }

@@ -320,6 +320,22 @@ export class Claim {
     return this.responseDeadline?.option === ResponseOptions.NO;
   }
 
+  hasExpertReportDetails(): boolean {
+    return this.directionQuestionnaire?.hasExpertReportDetails();
+  }
+
+  hasPermissionForExperts(): boolean {
+    return this.directionQuestionnaire?.hasPermissionForExperts();
+  }
+
+  hasEvidenceExpertCanStillExamine(): boolean {
+    return this.directionQuestionnaire?.hasEvidenceExpertCanStillExamine();
+  }
+
+  hasDefendantExpertEvidence(): boolean {
+    return this.directionQuestionnaire?.hasDefendantExpertEvidence();
+  }
+
 }
 
 export interface StatementOfTruth {
