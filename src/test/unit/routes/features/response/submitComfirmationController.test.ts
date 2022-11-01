@@ -3,11 +3,16 @@ import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {CONFIRMATION_URL} from '../../../../../main/routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import civilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
+import {getCaseDataFromStore} from '../../../../../main/modules/draft-store/draftStoreService';
+import {Claim} from '../../../../../main/common/models/claim';
+import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {Party} from '../../../../../main/common/models/party';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Submit confirmation controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -24,7 +29,15 @@ describe('Submit confirmation controller', () => {
 
   describe('on GET', () => {
     it('should return submit confirmation from claim', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      const claim = new Claim();
+      const now = new Date();
+      claim.respondent1ResponseDate = new Date(now.setDate(now.getDate() - 1));
+      claim.applicant1 = new Party();
+      claim.applicant1 = {
+        individualFirstName: 'Joe',
+        individualLastName: 'Bloggs',
+      };
+      mockGetCaseData.mockImplementation(async () => claim);
       await request(app)
         .get(CONFIRMATION_URL)
         .expect((res) => {
@@ -34,7 +47,7 @@ describe('Submit confirmation controller', () => {
     });
 
     it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => new Error(TestMessages.REDIS_FAILURE));
       await request(app)
         .get(CONFIRMATION_URL)
         .expect((res) => {
