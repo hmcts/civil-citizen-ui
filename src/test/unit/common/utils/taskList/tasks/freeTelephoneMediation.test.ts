@@ -16,7 +16,7 @@ describe('Free telephone mediation', () => {
   const lang = 'en';
 
   const resultIncomplete = {
-    description: 'TASK_LIST.RESOLVING_THE_CLAIM.FREE_TELEPHONE_MEDIATION',
+    description: 'COMMON.FREE_TELEPHONE_MEDIATION',
     url: '/case/5129/mediation/free-telephone-mediation',
     status: TaskStatus.INCOMPLETE,
   };
@@ -47,7 +47,7 @@ describe('Free telephone mediation', () => {
         const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
         expect(freeTelephoneMediationTask).toEqual(resultComplete);
       });
-  
+
       it('should return complete if canWeUse YES and use same phone', () => {
         claim.mediation = new Mediation(
           { option: YesNo.YES },

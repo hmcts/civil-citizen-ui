@@ -57,9 +57,21 @@ export const saveClaimantParty = async (claimId: string, citizenAddress: Address
   responseData.applicant1.individualTitle = party?.individualTitle;
   responseData.applicant1.individualFirstName = party?.individualFirstName;
   responseData.applicant1.individualLastName = party?.individualLastName;
-  responseData.applicant1.partyName = party.partyName;
-  responseData.applicant1.contactPerson = party.contactPerson;
+  responseData.applicant1.partyName = party?.partyName;
+  responseData.applicant1.contactPerson = party?.contactPerson;
+  responseData.applicant1.soleTraderTradingAs = party?.soleTraderTradingAs;
 
   await saveDraftClaim(claimId, responseData);
 };
 
+export const saveClaimantProperty = async (userId: string, propertyName: string, value: any): Promise<void> => {
+  const claim = await getCaseDataFromStore(userId);
+  if (claim.applicant1) {
+    claim.applicant1[propertyName as keyof Party] = value;
+  } else {
+    const claimant = new Party();
+    claimant[propertyName as keyof Party] = value;
+    claim.applicant1 = claimant;
+  }
+  await saveDraftClaim(userId, claim);
+};

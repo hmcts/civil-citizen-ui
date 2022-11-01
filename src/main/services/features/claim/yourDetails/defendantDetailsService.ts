@@ -1,10 +1,15 @@
 import {Claim} from '../../../../common/models/claim';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {Party} from '../../../../common/models/party';
+import {Address} from '../../../../common/form/models/address';
+import {CitizenCorrespondenceAddress} from 'common/form/models/citizenCorrespondenceAddress';
+import {YesNo} from '../../../../common/form/models/yesNo';
+import {convertToPrimaryAddress} from '../../../../common/models/primaryAddress';
+import {convertToCorrespondenceAddress} from '../../../../common/models/correspondenceAddress';
 
 const getDefendantInformation = async (claimId: string): Promise<Party> => {
   const responseData = await getCaseDataFromStore(claimId);
-  return (responseData?.respondent1) ? responseData.respondent1 : {};
+  return (responseData.respondent1) ? responseData.respondent1 : {};
 };
 
 /**
@@ -30,6 +35,25 @@ const saveDefendant = async (claimId: string, propertyName?: string, propertyVal
     claim.respondent1 = {...claim.respondent1, ...propertyValue} :
     claim.respondent1[propertyName as keyof Party] = propertyValue;
   await saveDraftClaim(claimId, claim);
+};
+
+export const saveDefendantParty = async (claimId: string, citizenAddress: Address, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, postToThisAddress: YesNo, party: Party): Promise<void> => {
+  const responseData = await getCaseDataFromStore(claimId);
+  if (!responseData?.respondent1) {
+    responseData.respondent1 = new Party();
+  }
+  responseData.respondent1.provideCorrespondenceAddress = postToThisAddress;
+  responseData.respondent1.primaryAddress = convertToPrimaryAddress(citizenAddress);
+  responseData.respondent1.correspondenceAddress = citizenCorrespondenceAddress.isEmpty()
+    ? undefined
+    : convertToCorrespondenceAddress(citizenCorrespondenceAddress);
+  responseData.respondent1.individualTitle = party?.individualTitle;
+  responseData.respondent1.individualFirstName = party?.individualFirstName;
+  responseData.respondent1.individualLastName = party?.individualLastName;
+  responseData.respondent1.partyName = party.partyName;
+  responseData.respondent1.contactPerson = party.contactPerson;
+
+  await saveDraftClaim(claimId, responseData);
 };
 
 export {

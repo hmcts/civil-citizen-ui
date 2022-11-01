@@ -9,7 +9,7 @@
 {% endblock %}
 {% block content %}
   {{ govukBackLink({
-    text: t('COMMON.BACK'),
+    text: t('COMMON.BUTTONS.BACK'),
     href: backUrl
   }) }}
   <div class="govuk-width-container govuk-!-padding-top-0">
@@ -19,17 +19,18 @@
       {% set header = t('PAGES.CONTACT_THEM.ABOUT') %}
       {% set otherPartyName = claim.getClaimantName() %}
       {% set totalClaimAmount ='£'+ claim.totalClaimAmount %}
-      {% set phone = claim.applicant1.phoneNumber %}
+      {% set phone = claim.applicant1.partyPhone %}
       {% set email = claim.applicantSolicitor1UserDetails.email %}
       {% set contactPerson = claim.applicant1.contactPerson %}
       {% set heading = t('PAGES.CONTACT_THEM.CONTACT')+ t(otherParty) %}
+      {% set claimAmount = t('COMMON.CLAIM_AMOUNT') + ':' %}
       <div class="govuk-grid-row govuk-!-margin-top-0">
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
           <span class="govuk-caption-l  govuk-!-padding-top-0">{{ t(otherParty) }}</span>
           <h1 class="govuk-heading-l govuk-!-margin-bottom-6">{{ t(otherPartyName) }}</h1>
           <div>
             {% if address %}
-              <h2 class="govuk-heading-m">{{ t('PAGES.CONTACT_THEM.ADDRESS') }}</h2>
+              <h2 class="govuk-heading-m">{{ t('COMMON.ADDRESS') }}</h2>
               {% if solicitorName %}
                 <p class="govuk-body govuk-!-margin-bottom-0">{{ solicitorName }}</p>
               {% endif %}
@@ -55,13 +56,13 @@
               <div class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.CONTACT_THEM.PHONE') +': ' }}{{ phone }}</div>
             {% endif %}
             {% if email %}
-              <div class="govuk-body govuk-!-margin-bottom-6">{{ t('PAGES.CONTACT_THEM.EMAIL') +': ' }}<a href='mailto:{{ email }}'>{{ email }}</a>
+              <div class="govuk-body govuk-!-margin-bottom-6">{{ t('COMMON.EMAIL') +': ' }}<a href='mailto:{{ email }}'>{{ email }}</a>
               </div>
             {% endif %}
           </div>
           {{ contactUsForHelp(t) }}
         </div>
-        {{ aboutClaimWidget({header:header,lines:[{title: t('PAGES.CLAIM_SUMMARY.CLAIMANT_NAME'), href: otherPartyLabel, hrefContact: otherPartyName},{title: t('PAGES.CLAIM_SUMMARY.CLAIM_AMOUNT'), content:totalClaimAmount},{title: t('PAGES.CLAIM_SUMMARY.CLAIM_DETAILS'), href: claimDetailsUrl, hrefContact: t('PAGES.CLAIM_SUMMARY.VIEW_CLAIM')}]}) }}
+        {{ aboutClaimWidget({header:header,lines:[{title: t('PAGES.CLAIM_SUMMARY.CLAIMANT_NAME'), href: otherPartyLabel, hrefContact: otherPartyName},{title: claimAmount, content:totalClaimAmount},{title: t('PAGES.CLAIM_SUMMARY.CLAIM_DETAILS'), href: claimDetailsUrl, hrefContact: t('PAGES.CLAIM_SUMMARY.VIEW_CLAIM')}]}) }}
       </div>
     </main>
   </div>

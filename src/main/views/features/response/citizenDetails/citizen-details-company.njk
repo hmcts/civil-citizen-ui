@@ -8,31 +8,30 @@
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
-
+{% from "../../../macro/citizen-telephone.njk" import citizenTelephone %}
+{% from "../../../macro/postcode-address-form.njk" import postcodeLookupAndAddressForm %}
 {% set correspondenceAddressClass = 'govuk-visually-hidden' %}
-{% set addressTitle = t('PAGES.COMPANY_DETAILS.ORGANISATION_ADDRESS') if type == 'ORGANISATION' else t('PAGES.COMPANY_DETAILS.COMPANY_ADDRESS') %}
+{% set addressTitle = t('PAGES.COMPANY_DETAILS.ORGANISATION_ADDRESS') if respondent.type === partyType.ORGANISATION else t('PAGES.COMPANY_DETAILS.COMPANY_ADDRESS') %}
 {% set citizenAddressErrors = citizenAddress.getAllErrors() %}
-
+{% set partyErrors = party.getAllErrors() %}
 {% if citizenCorrespondenceAddress %}
   {% set citizenCorrespondenceAddressErrors = citizenCorrespondenceAddress.getAllErrors() %}
   {% set citizenAddressErrors = citizenAddressErrors.concat(citizenCorrespondenceAddress.getAllErrors()) %}
 {% endif %}
-
 {% block pageTitle %}
   {{ setPageTitle('PAGES.COMPANY_DETAILS.PAGE_TITLE') }}
 {% endblock %}
-
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
-        {% if citizenCorrespondenceAddress.hasErrors() or citizenAddress.hasErrors() %}
-          {{ errorSummary(citizenAddressErrors, t) }}
+        {% if party.hasErrors() or citizenCorrespondenceAddress.hasErrors() or citizenAddress.hasErrors() %}
+          {{ errorSummary(citizenAddressErrors.concat(partyErrors), t) }}
         {% endif %}
       </div>
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.COMPANY_DETAILS.HEADING') }}</h1>
+          <h1 class="govuk-heading-l">{{ t('COMMON.CONFIRM_YOUR_DETAILS') }}</h1>
           <p class="govuk-body">{{ t('PAGES.COMPANY_DETAILS.CLAIMANT_DETAILS_PROVIDED') }}</p>
         </div>
       </div>
@@ -40,20 +39,20 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post" class="govuk-!-padding-top-4" name="address" novalidate>
             {{ csrfProtection(csrf) }}
-            {% if type === 'COMPANY' %}
+            {% if respondent.type === partyType.COMPANY %}
               <h2 class="govuk-heading-m govuk-!-margin-top-5">{{ t('PAGES.COMPANY_DETAILS.COMPANY_NAME') }}</h2>
             {% endif %}
-            {% if type === 'ORGANISATION' %}
+            {% if respondent.type === partyType.ORGANISATION %}
               <h2 class="govuk-heading-m govuk-!-margin-top-5">{{ t('PAGES.COMPANY_DETAILS.ORGANISATION_NAME') }}</h2>
             {% endif %}
-            <p class="govuk-label govuk-!-margin-bottom-5">{{ partyName }}</p>
+            <p class="govuk-label govuk-!-margin-bottom-5">{{ respondent.partyName }}</p>
             {{ govukInput({
-              label: { text: t('PAGES.COMPANY_DETAILS.CONTACT_NAME_OPTIONAL') },
+              label: { text: t('COMMON.OPTIONAL_CONTACT_PERSON') },
               classes: "govuk-input--width-20",
               id: "contactPerson",
               name: "contactPerson",
               type: "text",
-              value: contactPerson
+              value: party.model.contactPerson
             }) }}
             {{ addressForm(
               t,
@@ -63,46 +62,11 @@
               addressTitle = addressTitle
             ) }}
             {% set correspondenceAddressHtml %}
-              <div class="govuk-form-group" id="postcode">
-                <p
-                  class="govuk-label govuk-!-margin-bottom-5">{{ t('PAGES.COMPANY_DETAILS.ALL_CORRESPONDENCE') + t('PAGES.COMPANY_DETAILS.ADDRESS_FOR_SERVICE') }}</p>
-                <label class="govuk-label" for="postcode">
-                  {{ t('PAGES.COMPANY_DETAILS.UK_POSTCODE') }}
-                </label>
-                <div id="postcode-error" class="govuk-visually-hidden govuk-error-message">
-                  {{ t('PAGES.COMPANY_DETAILS.ADDRESS_NOT_FOUND') + t('PAGES.COMPANY_DETAILS.TRY_AGAIN') }}
-                </div>
-                <input class="govuk-input govuk-input--width-10" id="postcode" name="postcode" type="text"
-                       autocomplete="postal-code"/>
-                <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button"
-                        id="findAddressButton">
-                  {{ t('PAGES.COMPANY_DETAILS.FIND_ADDRESS') }}
-                </button>
-                <div id="selectAddress" class="govuk-visually-hidden govuk-!-margin-bottom-2">
-                  {{ govukSelect({
-                    id: "correspondenceAddressList",
-                    name: "correspondenceAddressList",
-                    label: {
-                      text: t('PAGES.COMPANY_DETAILS.PICK_ADDRESS')
-                    },
-                    items: []
-                  }) }}
-                </div>
-              </div>
-              <div>
-                <a id="enterAddressManually" aria-controls="enterAddressManually" href="#"
-                   class="govuk-body govuk-link">
-                  {{ t('PAGES.COMPANY_DETAILS.MANUAL_ADDRESS') }}
-                </a>
-              </div>
-              <div id="correspondenceAddress" class="{{ correspondenceAddressClass }}">
-                {{ addressForm(
-                  t,
-                  citizenCorrespondenceAddress = citizenCorrespondenceAddress,
-                  addressType = 'correspondence',
-                  addressTitle = addressTitle
-                ) }}
-              </div>
+            {{ postcodeLookupAndAddressForm(t, {
+                citizenCorrespondenceAddress:citizenCorrespondenceAddress,
+                addressType:'correspondence',
+                addressTitle:addressTitle
+              }) }}
             {% endset -%}
             <h2 class="govuk-heading-m">{{ t('PAGES.COMPANY_DETAILS.CORRESPONDENCE_ADDRESS') }}</h2>
             {{ govukRadios({
@@ -122,7 +86,7 @@
                 },
                 {
                   value: "yes",
-                  checked: false if citizenCorrespondenceAddress.model.isEmpty() else true,
+                  checked: true if respondent.postToThisAddress === YesNo.YES or citizenCorrespondenceAddress.model.isEmpty() === true or citizenCorrespondenceAddress.hasErrors() === true else false,
                   text: t('PAGES.COMPANY_DETAILS.YES_CORRESPONDENCE'),
                   conditional: {
                   html: correspondenceAddressHtml
@@ -130,7 +94,15 @@
                 }
               ]
             }) }}
-
+            {% if respondent.partyPhone !== undefined %}
+              <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_PHONE.PAGE_TITLE') }}</h2>
+              <p class="govuk-body">{{ t('PAGES.CLAIMANT_PHONE.INFORMATION') }}</p>
+              {{ citizenTelephone(party, t, {
+                id: "partyPhone",
+                name: "partyPhone",
+                className: "govuk-input--width-20"
+            }) }}
+            {% endif %}
             {{ govukButton({
               text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
             }) }}

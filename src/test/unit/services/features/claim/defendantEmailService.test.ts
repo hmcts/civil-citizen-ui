@@ -18,7 +18,7 @@ const respondent: Party = {
   individualTitle: '',
   individualLastName: '',
   individualFirstName: '',
-  phoneNumber: '',
+  partyPhone: '',
   responseType: '',
   type: PartyType.INDIVIDUAL,
   partyName: '',

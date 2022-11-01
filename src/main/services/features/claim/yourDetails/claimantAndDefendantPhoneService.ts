@@ -12,9 +12,9 @@ const getTelephone = async (claimId:string, citizenType: ClaimantOrDefendant) =>
     const claim = await getCaseDataFromStore(claimId);
 
     if (claim.applicant1 && citizenType === ClaimantOrDefendant.CLAIMANT) {
-      return new CitizenTelephoneNumber(claim.applicant1.phoneNumber);
+      return new CitizenTelephoneNumber(claim.applicant1.partyPhone);
     } else if (claim.respondent1 && citizenType === ClaimantOrDefendant.DEFENDANT) {
-      return new CitizenTelephoneNumber(claim.respondent1.phoneNumber);
+      return new CitizenTelephoneNumber(claim.respondent1.partyPhone);
     }
 
     return new CitizenTelephoneNumber();
@@ -40,12 +40,12 @@ const saveForm = (claim: Claim, form: CitizenTelephoneNumber, citizenType: Claim
     if (!claim.applicant1) {
       claim.applicant1 = new Party();
     }
-    claim.applicant1.phoneNumber = form.telephoneNumber;
+    claim.applicant1.partyPhone = form.telephoneNumber;
   } else if (citizenType === ClaimantOrDefendant.DEFENDANT) {
     if (!claim.respondent1) {
       claim.respondent1 = new Party();
     }
-    claim.respondent1.phoneNumber = form.telephoneNumber;
+    claim.respondent1.partyPhone = form.telephoneNumber;
   }
 };
 

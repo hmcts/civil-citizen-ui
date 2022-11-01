@@ -97,7 +97,7 @@ import claimAgainstGovernmentController from './features/public/eligibility/clai
 import claimantOver18EligibilityController from './features/public/eligibility/claimantOver18EligibilityController';
 import defendantAgeEligibilityController from './features/public/eligibility/defendantAgeEligibilityController';
 import someUsefulInfoFeesController from './features/public/eligibility/someUsefulInfoFeesController';
-import helpWithFeesReferenceController from './features/public/eligibility/helpWithFeesReferenceController';
+import helpWithFeesReferenceEligibilityController from './features/public/eligibility/helpWithFeesReferenceEligibilityController';
 import applyForHelpWithFeesController from './features/public/eligibility/applyForHelpWithFeesController';
 import signpostingController from './features/public/firstContact/signpostingController';
 import accessDeniedController from './features/public/firstContact/accessDeniedController';
@@ -107,7 +107,7 @@ import firstContactClaimSummaryController from './features/public/firstContact/c
 import eligibleController from './features/public/eligibility/eligibleController';
 import claimantPartyTypeController from './features/claim/yourDetails/claimantPartyTypeController';
 import completingClaimController from './features/claim/completingClaimController';
-import submitComfirmationController from './features/response/submitComfirmationController';
+import submitConfirmationController from './features/response/submitConfirmationController';
 import resolvingThisDisputeController from './features/claim/resolvingThisDisputeController';
 import cookiesController from './features/public/cookiesController';
 import defendantExpertEvidenceController
@@ -153,6 +153,10 @@ import reasonController from './features/claim/details/reasonController';
 import timelineController from './features/claim/yourDetails/timelineController';
 import defendantPhoneController from './features/claim/yourDetails/defendantPhoneController';
 import continueClaimingInterestController from './features/claim/interest/continueClaimingInterestController';
+import claimCheckAnswersController from './features/claim/checkAnswersController';
+import claimantEvidenceController from './features/claim/yourDetails/claimantEvidenceController';
+import howMuchContinueClaimingController from './features/claim/interest/howMuchContinueClaimingController';
+import helpWithFeesController from './features/claim/details/helpWithFeesController';
 
 export default [
   homeController,
@@ -245,7 +249,7 @@ export default [
   defendantAgeEligibilityController,
   someUsefulInfoFeesController,
   applyForHelpWithFeesController,
-  helpWithFeesReferenceController,
+  helpWithFeesReferenceEligibilityController,
   signpostingController,
   accessDeniedController,
   claimReferenceController,
@@ -254,7 +258,7 @@ export default [
   eligibleController,
   claimantPartyTypeController,
   completingClaimController,
-  submitComfirmationController,
+  submitConfirmationController,
   resolvingThisDisputeController,
   cookiesController,
   considerClaimantDocumentsController,
@@ -294,4 +298,8 @@ export default [
   timelineController,
   defendantPhoneController,
   continueClaimingInterestController,
+  claimCheckAnswersController,
+  claimantEvidenceController,
+  howMuchContinueClaimingController,
+  helpWithFeesController,
 ];

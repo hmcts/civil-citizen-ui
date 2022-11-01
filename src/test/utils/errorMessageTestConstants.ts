@@ -58,6 +58,7 @@ export const enum TestMessages {
   VALID_AGREED_RESPONSE_DATE = 'Enter the agreed response date',
   VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST = 'Agreed response date must be in the future',
   VALID_AMOUNT_ONE_POUND_OR_MORE = 'Enter an amount of £1 or more',
+  VALID_CHOOSE = 'Choose your response',
   VALID_DAY = 'Enter a valid day',
   VALID_DEFENDANT_AGE_ELIGIBILITY = 'Select yes, no, or company/organisation',
   VALID_SENT_EXPERT_REPORTS = 'Select yes if you have sent expert reports to the other parties',
