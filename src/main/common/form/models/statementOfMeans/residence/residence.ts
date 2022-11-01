@@ -15,4 +15,8 @@ export class Residence {
     this.type = type;
     this.housingDetails = housingDetails;
   }
+
+  isResidenceTypeOther(): boolean {
+    return this.type === ResidenceType.OTHER;
+  }
 }

@@ -25,7 +25,7 @@ const getResidence = async(claimId: string): Promise<Residence> => {
 
 const getResidenceForm = (type: ResidenceType, housingDetails: string): Residence => {
   const residence = new Residence(type, housingDetails);
-  if (residence.type !== ResidenceType.OTHER) {
+  if (!residence.isResidenceTypeOther()) {
     residence.housingDetails = '';
   }
   return residence;
