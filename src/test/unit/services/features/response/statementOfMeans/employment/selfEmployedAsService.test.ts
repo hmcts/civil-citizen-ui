@@ -76,6 +76,18 @@ describe('Self Employed Service', () => {
   });
 
   describe('saveSelfEmployedAsData', () => {
+    it('should save selfEmployedAs data successfully when claim does not exist', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await saveSelfEmployedAsData('123', new GenericForm(new SelfEmployedAsForm(JOB_TITLE, ANNUAL_TURNOVER)));
+      //Then
+      expect(spySave).toBeCalled();
+    });
+
     it('should save selfEmployedAs data successfully when claim exists but no statement of means', async () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {

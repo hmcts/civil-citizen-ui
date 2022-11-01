@@ -118,6 +118,19 @@ describe('Citizen response type', () => {
         });
     });
 
+    it('should redirect page when correct input when dont have information on redis of respondent1', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
+      await request(app)
+        .post(CITIZEN_RESPONSE_TYPE_URL)
+        .send('responseType=test')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+        });
+    });
+
     it('should redirect page when user selects I admit part of the claim ', async () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();

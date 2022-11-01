@@ -15,6 +15,7 @@ import {
 import {GenericForm} from '../../../../../../../main/common/form/models/genericForm';
 import {mockClaim} from '../../../../../../utils/mockClaim';
 import {GenericYesNo} from '../../../../../../../main/common/form/models/genericYesNo';
+import {Claim} from '../../../../../../../main/common/models/claim';
 
 const civilClaimResponseMock = require('../civilClaimResponseMock.json');
 const civilClaimResponse: string = JSON.stringify(civilClaimResponseMock);
@@ -149,6 +150,20 @@ describe('Children Disability service', () => {
       //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return {case_data: {}};
+      });
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await saveChildrenDisability('claimId', new GenericYesNo());
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spySaveDraftClaim).toBeCalled();
+    });
+
+    it('should save childrenDisability when nothing in Redis draft store', async () => {
+      //Given
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return new Claim();
       });
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');

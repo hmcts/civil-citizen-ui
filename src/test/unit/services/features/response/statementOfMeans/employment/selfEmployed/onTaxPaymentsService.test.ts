@@ -80,6 +80,18 @@ describe('On Tax Payments Service', () => {
     });
   });
   describe('saveTaxPaymentsData', () => {
+    it('should save tax payment data successfully when claim does not exist', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await saveTaxPaymentsData('123', new GenericForm(new OnTaxPayments(YesNo.YES, AMOUNT_OWED, REASON)));
+      //Then
+      expect(spySave).toBeCalled();
+    });
+
     it('should save tax payment data successfully when claim exists but no statement of means', async () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {

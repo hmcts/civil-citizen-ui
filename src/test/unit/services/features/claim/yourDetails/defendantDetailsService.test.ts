@@ -57,6 +57,18 @@ describe('Defendant details service', () => {
       expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, expectedData);
     });
 
+    it('should save a defendant type when is undefined in redis', async () => {
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
+
+      await saveDefendant(CLAIM_ID, 'type', PartyType.INDIVIDUAL);
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spySaveDraftClaim).toBeCalled();
+    });
+
     it('should update defendant when in redis', async () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
