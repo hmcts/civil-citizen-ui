@@ -1,5 +1,4 @@
 import express, { NextFunction } from 'express';
-//import * as draftStoreService from '../../../../main/modules/draft-store/draftStoreService';
 import {getCaseDataFromStore} from '../../../../main/modules/draft-store/draftStoreService';
 import {CLAIM_TASK_LIST_URL} from '../../../../main/routes/urls';
 import {Claim} from '../../../../main/common/models/claim';

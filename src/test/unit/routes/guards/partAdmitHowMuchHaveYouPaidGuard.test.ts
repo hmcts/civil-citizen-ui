@@ -21,7 +21,7 @@ const CLAIM_ID = '123';
 const respondentIncompleteSubmissionUrl = constructResponseUrlWithIdParams(CLAIM_ID, CLAIM_TASK_LIST_URL);
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
-const MOCK_REQUEST = { params: { id: '123' } } as unknown as express.Request;
+const MOCK_REQUEST = { params: { id: CLAIM_ID } } as unknown as express.Request;
 const MOCK_RESPONSE = { redirect: jest.fn() } as unknown as express.Response;
 const MOCK_NEXT = jest.fn() as NextFunction;
 
