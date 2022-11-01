@@ -1,7 +1,7 @@
 import {
   getResidence,
   getResidenceForm,
-  saveResidence
+  saveResidence,
 } from '../../../../../../../main/services/features/response/statementOfMeans/residence/residenceService';
 import * as draftStoreService from '../../../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../../../main/common/models/claim';
@@ -75,14 +75,14 @@ describe('Residence service', () => {
       //When
       const result = await getResidenceForm(ResidenceType.JOINT_OWN_HOME, '');
       //Then
-      expect(result).toEqual(new Residence(ResidenceType.JOINT_OWN_HOME, ''));;
+      expect(result).toEqual(new Residence(ResidenceType.JOINT_OWN_HOME, ''));
     });
 
     it('should get residence form successfully when it is other with details', async () => {
       //When
       const result = await getResidenceForm(ResidenceType.OTHER, 'details');
       //Then
-      expect(result).toEqual(new Residence(ResidenceType.OTHER, 'details'));;
+      expect(result).toEqual(new Residence(ResidenceType.OTHER, 'details'));
     });
 
     it('should get residence form successfully when it is not other with details', async () => {

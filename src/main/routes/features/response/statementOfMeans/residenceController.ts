@@ -20,14 +20,14 @@ residenceController.get(
     } catch (error) {
       next(error);
     }
-  }
+  },
 );
 
 residenceController.post(
   CITIZEN_RESIDENCE_URL,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const residence = getResidenceForm(req.body.type, req.body.housingDetails)
+      const residence = getResidenceForm(req.body.type, req.body.housingDetails);
       const form: GenericForm<Residence> = new GenericForm(residence);
 
       form.validateSync();
@@ -41,7 +41,7 @@ residenceController.post(
     } catch (error) {
       next(error);
     }
-  }
+  },
 );
 
 export default residenceController;

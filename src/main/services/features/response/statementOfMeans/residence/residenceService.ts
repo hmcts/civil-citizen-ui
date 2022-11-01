@@ -1,11 +1,11 @@
 import {
   getCaseDataFromStore,
-  saveDraftClaim
+  saveDraftClaim,
 } from '../../../../../modules/draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
 import {Residence} from '../../../../../common/form/models/statementOfMeans/residence/residence';
 import {ResidenceType} from '../../../../../common/form/models/statementOfMeans/residence/residenceType';
-import {Claim} from "models/claim";
+import {Claim} from '../../../../../common/models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('residenceService');
@@ -21,7 +21,7 @@ const getResidence = async(claimId: string): Promise<Residence> => {
     logger.error(`${(error as Error).stack || error}`);
     throw error;
   }
-}
+};
 
 const getResidenceForm = (type: ResidenceType, housingDetails: string): Residence => {
   const residence = new Residence(type, housingDetails);
@@ -29,7 +29,7 @@ const getResidenceForm = (type: ResidenceType, housingDetails: string): Residenc
     residence.housingDetails = '';
   }
   return residence;
-}
+};
 
 const saveResidence = async(claimId: string, residence: Residence) => {
   try {
@@ -47,10 +47,10 @@ const saveResidence = async(claimId: string, residence: Residence) => {
     logger.error(`${(error as Error).stack || error}`);
     throw error;
   }
-}
+};
 
 export {
   getResidence,
   saveResidence,
   getResidenceForm,
-}
+};
