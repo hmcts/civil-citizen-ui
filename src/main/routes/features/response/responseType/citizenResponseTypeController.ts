@@ -5,17 +5,14 @@ import {
   CITIZEN_RESPONSE_TYPE_URL,
   CLAIM_TASK_LIST_URL,
 } from '../../../urls';
-import {Party} from '../../../../common/models/party';
 import {Claim} from '../../../../common/models/claim';
 import {CitizenResponseType} from '../../../../common/form/models/citizenResponseType';
 import {ResponseType} from '../../../../common/form/models/responseType';
 import {ComponentDetailItems} from '../../../../common/form/models/componentDetailItems/componentDetailItems';
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../common/form/models/genericForm';
-import {
-  resetPreviousResponseTypeSettings,
-} from '../../../../services/features/response/resetPreviousResponseTypeSettingService';
+import {saveResponseType} from '../../../../services/features/response/responseType/citizenResponseTypeService';
 
 const citizenResponseTypeViewPath = 'features/response/citizenResponseType/citizen-response-type';
 const citizenResponseTypeController = Router();
@@ -46,16 +43,7 @@ citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
       if (formResponseType.hasErrors()) {
         renderView(formResponseType, res);
       } else {
-        const claim = await getCaseDataFromStore(req.params.id) || new Claim();
-        if (claim.respondent1) {
-          claim.respondent1.responseType = formResponseType.model.responseType;
-        } else {
-          const respondent = new Party();
-          respondent.responseType = formResponseType.model.responseType;
-          claim.respondent1 = respondent;
-        }
-        await saveDraftClaim(req.params.id, claim);
-        await resetPreviousResponseTypeSettings(req.params.id);
+        await saveResponseType(req.params.id, formResponseType.model.responseType);
 
         switch (formResponseType.model.responseType) {
           case ResponseType.PART_ADMISSION:
