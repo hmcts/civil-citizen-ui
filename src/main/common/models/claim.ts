@@ -320,8 +320,8 @@ export class Claim {
     return this.responseDeadline?.option === ResponseOptions.NO;
   }
 
-  isResponseDatePastToday(): boolean {
-    return this.respondent1ResponseDate > new Date();
+  isResponseDateInThePast(): boolean {
+    return this.respondent1ResponseDate <= new Date();
   }
 }
 
