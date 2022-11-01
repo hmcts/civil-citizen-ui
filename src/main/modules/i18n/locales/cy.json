@@ -1484,14 +1484,19 @@
       "EXAMPLE": "Er enghraifft cyfraniadau Yswiriant Gwladol, Treth Incwm neu TAW."
     },
     "SEND_YOUR_RESPONSE_BY_EMAIL": {
-      "COUNTER_CLAIM_CHOSEN": "Rydych wedi dewis gwneud gwrth-hawliad. Mae hyn yn golygu ni all eich amddiffyniad barhau ar-lein. Dilynwch y camau hyn i lwytho, llenwi a dychwelyd ffurflen N9B. Rhaid i chi dalu ffi'r llys. Peidiwch â chreu hawliad newydd.",
+      "COUNTER_CLAIM_CHOSEN": "Rydych wedi dewis gwneud gwrth-hawliad.",
+      "YOUR_DEFENCE_CANNOT_CONTINUE_ONLINE": "Mae hyn yn golygu ni all eich amddiffyniad barhau ar-lein.",
+      "FOLLOW_THESE_STEPS": "Dilynwch y camau hyn i lwytho, llenwi a dychwelyd ffurflen N9B.",
+      "YOU_MUST_PAY_FEE": "Rhaid i chi dalu ffi'r llys.",
+      "DO_NOT_CREATE_NEW_CLAIM": "Peidiwch â chreu hawliad newydd",
       "CLAIM_DETAILS": {
         "CLAIM_NUMBER": "Rhif yr hawliad:",
         "CLAIMANT": "Hawlydd",
         "DEFENDANT": "Diffynnydd",
         "NEEDED_DETAILS": "Bydd arnoch angen y manylion canlynol am yr hawliad:"
       },
-      "DO_NOT_CREATE_NEW_CLAIM": "Peidiwch â chreu hawliad newydd os ydych eisiau gwneud gwrth-hawliad. Defnyddiwch ffurflen N9B.",
+      "DO_NOT_CREATE_NEW_CLAIM_IF_WANT_COUNTERCLAIM": "Peidiwch â chreu hawliad newydd os ydych eisiau gwneud gwrth-hawliad.",
+      "USE_FORM_N9B": "Defnyddiwch ffurflen N9B.",
       "EMAIL_COMPLETED": "E-bostio'r ffurflen N9B wedi'i llenwi i: contactocmc@justice.gov.uk neu ymholiadaucymraeg@justice.gov.uk",
       "HEADER": "Gwrthod yr hawliad cyfan a gwneud gwrth-hawliad",
       "HELP_AND_SUPPORT": "Cymorth a Chefnogaeth",

@@ -55,7 +55,12 @@
         <div class="govuk-grid-column-two-thirds">
           {{ csrfProtection(csrf) }}
           <h1 class="govuk-heading-l govuk-!-margin-bottom-5">{{header}}</h1>
-          <p class="govuk-body">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.COUNTER_CLAIM_CHOSEN')}}</p>
+          <p class="govuk-body">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.COUNTER_CLAIM_CHOSEN') }}
+            {{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.YOUR_DEFENCE_CANNOT_CONTINUE_ONLINE') }}
+            {{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.FOLLOW_THESE_STEPS') }}
+            {{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.YOU_MUST_PAY_FEE') }}
+            {{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.DO_NOT_CREATE_NEW_CLAIM') }}
+          </p>
           <div class="govuk-inset-text">
           <p class="govuk-body">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.WE_MUST_RECEIVE_COMPLETED_FORM',
               { deadline: responseDeadline }) | safe }}</p>
@@ -102,7 +107,8 @@
                 html: feesTable
               }) }}
             <div class="govuk-inset-text govuk-grid-column-two-third">
-              <p class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.DO_NOT_CREATE_NEW_CLAIM') }}</p>
+              <p class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.DO_NOT_CREATE_NEW_CLAIM_IF_WANT_COUNTERCLAIM') }}
+                {{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.USE_FORM_N9B') }}</p>
             </div>
           </div>
           <div>

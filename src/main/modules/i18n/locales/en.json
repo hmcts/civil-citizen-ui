@@ -1482,14 +1482,19 @@
       "EXAMPLE": "For example National Insurance contributions, Income Tax or VAT."
     },
     "SEND_YOUR_RESPONSE_BY_EMAIL": {
-      "COUNTER_CLAIM_CHOSEN": "You have chosen to counterclaim. This means your defence cannot continue online. Follow these steps to download, complete and return form N9B. You must pay a court fee. Do not create a new claim.",
+      "COUNTER_CLAIM_CHOSEN": "You have chosen to counterclaim.",
+      "YOUR_DEFENCE_CANNOT_CONTINUE_ONLINE": "This means your defence cannot continue online.",
+      "FOLLOW_THESE_STEPS": "Follow these steps to download, complete and return form N9B.",
+      "YOU_MUST_PAY_FEE": "You must pay a court fee.",
+      "DO_NOT_CREATE_NEW_CLAIM": "Do not create a new claim.",
       "CLAIM_DETAILS": {
         "NEEDED_DETAILS": "You will need these claim details",
         "CLAIM_NUMBER": "Claim number",
         "CLAIMANT": "Claimant",
         "DEFENDANT": "Defendant"
       },
-      "DO_NOT_CREATE_NEW_CLAIM": "Do not create a new claim if you want to counterclaim. Use form N9B.",
+      "DO_NOT_CREATE_NEW_CLAIM_IF_WANT_COUNTERCLAIM": "Do not create a new claim if you want to counterclaim.",
+      "USE_FORM_N9B": "Use form N9B.",
       "EMAIL_COMPLETED": "Email completed form N9B to",
       "HEADER": "Reject all of the claim and counterclaim",
       "HELP_AND_SUPPORT": "Help and support",
