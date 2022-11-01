@@ -131,7 +131,7 @@
     "webpack-node-externals": "^3.0.0",
     "uuid": "^9.0.0",
     "node-cache": "^5.1.2",
-    "totp-generator": "^0.0.7",
+    "totp-generator": "^0.0.14",
     "deep-equal-in-any-order": "^1.0.28",
     "webdriverio": "^6.12.1"
   },
