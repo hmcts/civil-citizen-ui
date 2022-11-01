@@ -21,6 +21,22 @@ describe('Why do you disagree Controller', () => {
 
   describe('on Get', () => {
     it('should return Why do you disagree page successfully', async () => {
+      const civilClaimResponseMock = {
+        'case_data': {
+          'respondent1': {
+            'responseType': 'PART_ADMISSION',
+          },
+          'partialAdmission': {
+            'alreadyPaid': {
+              'option': 'yes',
+            },
+          },
+        },
+      };
+      const mockCivilClaim = {
+        set: jest.fn(() => Promise.resolve({})),
+        get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseMock))),
+      };
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CITIZEN_WHY_DO_YOU_DISAGREE_URL)
@@ -29,6 +45,15 @@ describe('Why do you disagree Controller', () => {
           expect(res.text).toContain('Why do you disagree with the claim amount?');
         });
     });
+    it('should redirect to task list when part adimit option not selected', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      await request(app)
+        .get(CITIZEN_WHY_DO_YOU_DISAGREE_URL)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+        });
+    });
+
     it('should return status 500 when there is an error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
