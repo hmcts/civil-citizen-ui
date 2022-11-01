@@ -1,8 +1,8 @@
-import {Claim} from 'models/claim';
-import {summaryRow, SummaryRow} from 'models/summaryList/summaryList';
+import {Claim} from '../../../../../common/models/claim';
+import {summaryRow, SummaryRow} from '../../../../../common/models/summaryList/summaryList';
 import {t} from 'i18next';
-import {getLng} from 'common/utils/languageToggleUtils';
-import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
+import {getLng} from '../../../../../common/utils/languageToggleUtils';
+import {changeLabel} from '../../../../../common/utils/checkYourAnswer/changeButton';
 import {
   DQ_DEFENDANT_CAN_STILL_EXAMINE_URL,
   DQ_EXPERT_DETAILS_URL,
@@ -10,9 +10,8 @@ import {
   PERMISSION_FOR_EXPERT_URL,
 } from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {ReportDetail} from 'models/directionsQuestionnaire/experts/expertReportDetails/reportDetail';
-import {formatDateToFullDate} from 'common/utils/dateUtils';
-
+import {ReportDetail} from '../../../../../common/models/directionsQuestionnaire/experts/expertReportDetails/reportDetail';
+import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 
 const buildExportReportSection = (claim: Claim, claimId: string, lang: string | unknown) : SummaryRow[] => {
   const hasExportReportRow = buildHasExportReportSectionOption(claim, claimId, lang);
