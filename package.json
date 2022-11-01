@@ -60,7 +60,7 @@
     "cookie-session": "^2.0.0",
     "csurf": "^1.11.0",
     "dayjs": "^1.11.5",
-    "express": "^4.18.1",
+    "express": "^4.18.2",
     "express-nunjucks": "^2.2.5",
     "express-session": "^1.17.3",
     "glob": "^8.0.3",
