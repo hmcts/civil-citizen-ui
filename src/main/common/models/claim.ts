@@ -320,6 +320,10 @@ export class Claim {
     return this.responseDeadline?.option === ResponseOptions.NO;
   }
 
+  isResponseDateInThePast(): boolean {
+    return this.respondent1ResponseDate <= new Date();
+  }
+
   get hasSupportRequiredProvided(): boolean {
     return this.directionQuestionnaire?.hearing?.supportRequiredList.option === YesNo.YES;
   }

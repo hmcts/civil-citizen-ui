@@ -7,7 +7,7 @@ import {currencyFormatWithNoTrailingZeros} from '../../../../../common/utils/cur
 import {CLAIM_AMOUNT_URL} from '../../../../../routes/urls';
 import {ClaimAmountBreakup} from '../../../../../common/form/models/claimDetails';
 
-const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', {lng: getLng(lang)});
+const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
 export const addClaimAmounts = (claim: Claim, claimAmountSection: SummarySection, claimId: string, lang: string | unknown) => {
   if (claim.claimAmountBreakup) {
