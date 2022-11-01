@@ -3558,10 +3558,10 @@ code-point-at@^1.0.0:
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
   integrity sha512-RpAVKQA5T63xEj6/giIbUEtZwJ4UFIc3ZtvEkiaUERylqe8xb5IvqcgOurZLahv93CLKfxcw5YI+DZcUBRyLXA==
 
-codeceptjs@^3.3.5:
-  version "3.3.5"
-  resolved "https://registry.yarnpkg.com/codeceptjs/-/codeceptjs-3.3.5.tgz#19656d20a199f006d0568b37a06f0990a466ea53"
-  integrity sha512-ieyqJ+EfFdb9YMp+z5viWpjfhUWwPfEEaoZxHNhFw+V+6xj8RApKvUJ3KnXWH6wjhff+YfID0tU6ZTDpVssbRA==
+codeceptjs@^3.3.6:
+  version "3.3.6"
+  resolved "https://registry.yarnpkg.com/codeceptjs/-/codeceptjs-3.3.6.tgz#3631c7e7e9bd9ff7c41e61296e4ca45403359efc"
+  integrity sha512-NYDY8Iuwr/RMfME1Ho75TmmtnDUzuMhB4USCAZWtxtxpC0IhuczdX3QqYlkyrOTe3/XGed8hbx3V10q1Z0NYrQ==
   dependencies:
     "@codeceptjs/configure" "^0.8.0"
     "@codeceptjs/helper" "^1.0.2"
@@ -3596,6 +3596,7 @@ codeceptjs@^3.3.5:
     promise-retry "^1.1.1"
     requireg "^0.2.2"
     resq "^1.10.2"
+    semver "^6.3.0"
     sprintf-js "^1.1.1"
     uuid "^8.3.2"
 
