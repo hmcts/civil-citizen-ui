@@ -124,6 +124,7 @@
     "INPUT_LABELS": {
       "FIRST_NAME": "First name",
       "LAST_NAME": "Last name",
+      "LAST_NAME_2": "Last Name",
       "TITLE": "Title"
     },
     "MONTH_NAMES": {
@@ -219,6 +220,10 @@
     "VARIATION": {
       "YES": "Yes",
       "NO": "No"
+    },
+    "VARIATION_2": {
+      "YES": "Yes",
+      "NO": "No"
     }
   },
   "TASK_LIST": {
@@ -296,6 +301,7 @@
       "DEBTS_TOTAL_OWED": "Total owed",
       "DEBTS_MONTHLY_PAYMENTS": "Monthly Payments",
       "DETAILS_TITLE": "Your details",
+      "DETAILS_TITLE_CLAIMANT": "Your details (claimant)",
       "DISABILITY_ARE_YOU_DISABLED": "Are you disabled?",
       "DOB": "Date of birth",
       "EMAIL": "Email",
@@ -361,6 +367,7 @@
       "TAX_PAYMENT_AMOUNT_YOU_OWE": "Amount you owe?",
       "TAX_PAYMENT_REASON": "Reason",
       "THEIR_DETAILS_TITLE": "Their details",
+      "THEIR_DETAILS_TITLE_DEFENDANT": "Their details (defendant)",
       "TITLE": "Check your answers",
       "TIMELINE_TITLE": "Your timeline of what happened (optional)",
       "TIMELINE_COMMENTS": "Comments about their timeline (optional)",
@@ -1493,7 +1500,7 @@
       "PAGE_TITLE": "Do you want to share an expert with the claimant?",
       "PREPARE_REPORT": "They will prepare a report for the court on behalf of two or more of the parties, including the claimant.",
       "SINGLE_JOINT_EXPERT": "This is known as a ’single joint expert’.",
-      "TITLE": "Want shared expert?"
+      "TITLE": "Do you want to share an expert with the claimant?"
     },
     "SUBMIT_CONFIRMATION": {
       "FA_PAY_BY_DATE": {
@@ -1999,6 +2006,7 @@
     "VALID_VALUE": "Are you sure this is a valid value?",
     "VALID_YEAR": "Enter a valid year",
     "VALID_YES_NO_OPTION": "Choose option: Yes or No",
+    "VALID_YES_NO_OPTION_NAC_YDW": "Choose option: Yes or No",
     "VALID_YES_NO_SELECTION": "Please select yes or no",
     "VALID_WHY_FROM_PARTICULAR_DATE": "You need to explain why you are claiming",
     "QUESTION_1_REQUIRED": "Select yes if someone is vulnerable in a way that the court needs to consider",

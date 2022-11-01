@@ -1,5 +1,9 @@
 import {getSummarySections} from '../../../../../../../main/services/features/claim/checkAnswers/checkAnswersService';
-import {CLAIM_DETAILS_URL, CLAIMANT_DOB_URL, CLAIMANT_PHONE_NUMBER_URL} from '../../../../../../../main/routes/urls';
+import {
+  CLAIMANT_DOB_URL,
+  CLAIMANT_INDIVIDUAL_DETAILS_URL,
+  CLAIMANT_PHONE_NUMBER_URL,
+} from '../../../../../../../main/routes/urls';
 import {
   createClaimWithApplicantIndividualDetails,
   createClaimWithBasicApplicantDetails,
@@ -30,16 +34,16 @@ describe('Cirizen Details Section', () => {
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
     //Then
     expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows.length).toBe(5);
-    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].title).toBe('PAGES.CHECK_YOUR_ANSWER.DETAILS_TITLE');
+    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].title).toBe('PAGES.CHECK_YOUR_ANSWER.DETAILS_TITLE_CLAIMANT');
     expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.FULL_NAME');
     expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[0].value.html).toBe(FULL_NAME);
     expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[0].actions?.items.length).toBe(1);
-    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CLAIM_DETAILS_URL.replace(':id', constVal.CLAIM_ID));
+    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CLAIMANT_INDIVIDUAL_DETAILS_URL);
     expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[1].value.html).toBe(ADDRESS);
     expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[1].actions?.items.length).toBe(1);
-    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[1].actions?.items[0].href).toBe(CLAIM_DETAILS_URL.replace(':id', constVal.CLAIM_ID));
+    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[1].actions?.items[0].href).toBe(CLAIMANT_INDIVIDUAL_DETAILS_URL);
     expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[2].value.html).toBe('PAGES.CHECK_YOUR_ANSWER.SAME_ADDRESS');
-    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[2].actions?.items[0].href).toBe(CLAIM_DETAILS_URL.replace(':id', constVal.CLAIM_ID));
+    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[2].actions?.items[0].href).toBe(CLAIMANT_INDIVIDUAL_DETAILS_URL);
     expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[3].value.html).toBe(DOB);
     expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[3].actions?.items[0].href).toBe(CLAIMANT_DOB_URL);
     expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[4].value.html).toBe(CONTACT_NUMBER);
