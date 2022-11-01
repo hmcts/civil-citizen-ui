@@ -153,7 +153,7 @@ const buildHearingRequirementsSection = (claim: Claim, claimId: string, lang: st
     hearingRequirementsSection.summaryList.rows.push(vulnerabilityInfo(claim, claimId, lng));
   }
 
-  if (claim?.directionQuestionnaire?.hearing?.supportRequiredList) {
+  if (claim?.hasSupportRequiredList) {
     addSupportRequiredList(claim, hearingRequirementsSection, claimId, lang);
   }
 

@@ -17,13 +17,13 @@ export const generateSupportDetails = (item: SupportRequired) => {
   if (item.hearingLoop) {
     supportDetails.push(t('PAGES.SUPPORT_REQUIRED.HEARING'));
   }
-  if (item.signLanguageInterpreter.selected) {
+  if (item.signLanguageInterpreter?.selected) {
     supportDetails.push(item.signLanguageInterpreter.content + ' ' + t('PAGES.CHECK_YOUR_ANSWER.SUPPORT_REQUIRED_INTERPRETER'));
   }
-  if (item.languageInterpreter.selected) {
+  if (item.languageInterpreter?.selected) {
     supportDetails.push(item.languageInterpreter.content + ' ' + t('PAGES.CHECK_YOUR_ANSWER.SUPPORT_REQUIRED_INTERPRETER'));
   }
-  if (item.otherSupport.selected) {
+  if (item.otherSupport?.selected) {
     supportDetails.push(t('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_OTHER') + ` : ${item.otherSupport.content}`);
   }
   return supportDetails.join('<br>');
@@ -33,7 +33,7 @@ export const addSupportRequiredList = (claim: Claim, hearingRequirementsSection:
   const supportRequiredHref = constructResponseUrlWithIdParams(claimId, SUPPORT_REQUIRED_URL);
   const supportRequiredList = claim.directionQuestionnaire?.hearing?.supportRequiredList;
 
-  if (claim.hasSupportRequiredProvided && claim.isSupportRequiredDetailsAvailable) {
+  if (claim.isSupportRequiredYes && claim.isSupportRequiredDetailsAvailable) {
     hearingRequirementsSection.summaryList.rows.push(
       summaryRow(t('PAGES.SUPPORT_REQUIRED.TITLE', {lng: getLng(lang)}), t(`COMMON.${YesNoUpperCase.YES}`, {lng: getLng(lang)}), supportRequiredHref, changeLabel(lang)),
     );
@@ -44,7 +44,7 @@ export const addSupportRequiredList = (claim: Claim, hearingRequirementsSection:
     });
   } else {
     hearingRequirementsSection.summaryList.rows.push(
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_TITLE', {lng: getLng(lang)}), t(`COMMON.${YesNoUpperCase.NO}`, {lng: getLng(lang)}), supportRequiredHref, changeLabel(lang)),
+      summaryRow(t('PAGES.SUPPORT_REQUIRED.TITLE', {lng: getLng(lang)}), t(`COMMON.${YesNoUpperCase.NO}`, {lng: getLng(lang)}), supportRequiredHref, changeLabel(lang)),
     );
   }
 };

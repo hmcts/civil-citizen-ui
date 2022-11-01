@@ -27,6 +27,8 @@ import {WhyDoYouDisagree} from '../../../../main/common/form/models/admission/pa
 import {Defence} from '../../../../main/common/form/models/defence';
 import {ClaimResponseStatus} from '../../../../main/common/models/claimResponseStatus';
 import {InterestClaimOptionsType} from '../../../../main/common/form/models/claim/interest/interestClaimOptionsType';
+import {DirectionQuestionnaire} from '../../../../main/common/models/directionsQuestionnaire/directionQuestionnaire';
+import {Hearing} from '../../../../main/common/models/directionsQuestionnaire/hearing/hearing';
 
 describe('Claim isInterestEnDateUntilSubmitDate', () => {
   const claim = new Claim();
@@ -1044,6 +1046,132 @@ describe('Documents', () => {
       const result = claim.formattedTotalClaimAmount();
       //Then
       expect(result).toBe('£1,000.00');
+    });
+  });
+
+  describe('hasSupportRequiredList', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.hasSupportRequiredList;
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with empty directionQuestionnaire', () => {
+      //Given
+      claim.directionQuestionnaire = new DirectionQuestionnaire();
+      //When
+      const result = claim.hasSupportRequiredList;
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with empty hearing', () => {
+      //Given
+      claim.directionQuestionnaire.hearing = new Hearing();
+      //When
+      const result = claim.hasSupportRequiredList;
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with details', () => {
+      //Given
+      claim.directionQuestionnaire.hearing.supportRequiredList = { option : YesNo.YES};
+      //When
+      const result = claim.hasSupportRequiredList;
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('isSupportRequiredYes', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isSupportRequiredYes;
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with empty directionQuestionnaire', () => {
+      //Given
+      claim.directionQuestionnaire = new DirectionQuestionnaire();
+      //When
+      const result = claim.isSupportRequiredYes;
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with empty hearing', () => {
+      //Given
+      claim.directionQuestionnaire.hearing = new Hearing();
+      //When
+      const result = claim.isSupportRequiredYes;
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with "no" option', () => {
+      //Given
+      claim.directionQuestionnaire.hearing.supportRequiredList = {option: YesNo.NO};
+      //When
+      const result = claim.isSupportRequiredYes;
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with "yes" option', () => {
+      //Given
+      claim.directionQuestionnaire.hearing.supportRequiredList = {option: YesNo.YES};
+      //When
+      const result = claim.isSupportRequiredYes;
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('isSupportRequiredDetailsAvailable', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isSupportRequiredDetailsAvailable;
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with empty directionQuestionnaire', () => {
+      //Given
+      claim.directionQuestionnaire = new DirectionQuestionnaire();
+      //When
+      const result = claim.isSupportRequiredDetailsAvailable;
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with empty hearing', () => {
+      //Given
+      claim.directionQuestionnaire.hearing = new Hearing();
+      //When
+      const result = claim.isSupportRequiredDetailsAvailable;
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with empty items', () => {
+      //Given
+      claim.directionQuestionnaire.hearing.supportRequiredList = {
+        option: YesNo.YES,
+        items: [],
+      };
+      //When
+      const result = claim.isSupportRequiredDetailsAvailable;
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with item details', () => {
+      //Given
+      claim.directionQuestionnaire.hearing.supportRequiredList = {
+        option: YesNo.YES,
+        items: [{
+          fullName: 'John Doe',
+        }],
+      };
+      //When
+      const result = claim.isSupportRequiredDetailsAvailable;
+      //Then
+      expect(result).toBe(true);
     });
   });
 });

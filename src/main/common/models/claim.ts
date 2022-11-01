@@ -324,8 +324,12 @@ export class Claim {
     return this.respondent1ResponseDate <= new Date();
   }
 
-  get hasSupportRequiredProvided(): boolean {
-    return this.directionQuestionnaire?.hearing?.supportRequiredList.option === YesNo.YES;
+  get hasSupportRequiredList(): boolean {
+    return !!this.directionQuestionnaire?.hearing?.supportRequiredList;
+  }
+
+  get isSupportRequiredYes(): boolean {
+    return this.directionQuestionnaire?.hearing?.supportRequiredList?.option === YesNo.YES;
   }
 
   get isSupportRequiredDetailsAvailable(): boolean {
