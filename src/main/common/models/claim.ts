@@ -320,6 +320,13 @@ export class Claim {
     return this.responseDeadline?.option === ResponseOptions.NO;
   }
 
+  get hasSupportRequiredProvided(): boolean {
+    return this.directionQuestionnaire?.hearing?.supportRequiredList.option === YesNo.YES;
+  }
+
+  get isSupportRequiredDetailsAvailable(): boolean {
+    return this.directionQuestionnaire?.hearing?.supportRequiredList?.items?.length > 0;
+  }
 }
 
 export interface StatementOfTruth {
