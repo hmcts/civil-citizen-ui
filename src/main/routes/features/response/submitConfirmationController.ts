@@ -7,12 +7,13 @@ import {getLng} from '../../../common/utils/languageToggleUtils';
 import {CivilServiceClient} from '../../../app/client/civilServiceClient';
 import {AppRequest} from '../../../common/models/AppRequest';
 import {formatDateToFullDate} from '../../../common/utils/dateUtils';
+import {responseSubmitDateGuard} from '../../../routes/guards/responseSubmitDateGuard';
 
-const submitComfirmationController = Router();
+const submitConfirmationController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-submitComfirmationController.get(CONFIRMATION_URL, async (req, res, next: NextFunction) => {
+submitConfirmationController.get(CONFIRMATION_URL, responseSubmitDateGuard, async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
@@ -30,4 +31,4 @@ submitComfirmationController.get(CONFIRMATION_URL, async (req, res, next: NextFu
   }
 });
 
-export default submitComfirmationController;
+export default submitConfirmationController;

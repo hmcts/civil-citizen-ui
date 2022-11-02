@@ -23,7 +23,7 @@ describe('Draft Store Health Check - DOWN', () => {
     await request(app)
       .get('/health')
       .expect((res) => {
-        expect(res.status).toBe(500);
+        expect(res.status).toBe(503);
         expect(res.body.status).toBe('DOWN');
       });
   });
