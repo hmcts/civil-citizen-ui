@@ -39,7 +39,7 @@ export const buildFreeTelephoneMediationSection = (claim: Claim, claimId: string
   const freeMediationHref = constructResponseUrlWithIdParams(claimId, CITIZEN_FREE_TELEPHONE_MEDIATION_URL);
   const contactNumberHref = constructResponseUrlWithIdParams(claimId, CAN_WE_USE_URL);
   const contactNumber = getContactNumber(claim);
-  const contactName = claim.mediation?.companyTelephoneNumber ? claim.mediation.companyTelephoneNumber.mediationContactPerson : claim.respondent1.contactPerson;
+  const contactName = claim.mediation?.companyTelephoneNumber ? claim.mediation.companyTelephoneNumber.mediationContactPerson : claim.respondent1.partyDetails.contactPerson;
   const canWeUse = getCanWeUse(claim);
 
   let freeTelephoneMediationSection: SummarySection = null;
