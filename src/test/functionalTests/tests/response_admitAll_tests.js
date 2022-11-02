@@ -25,7 +25,7 @@ Before(async ({api}) => {
   } 
 });
 
-Scenario('Response with AdmitAll and Immediate payment @citizenUI @smoketest', () => {
+Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll', () => {
   CommonSteps.EnterPersonalDetails(claimRef);
   CommonSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   ResponseSteps.EnterResponseToClaim(claimRef, admitAll);
@@ -33,7 +33,7 @@ Scenario('Response with AdmitAll and Immediate payment @citizenUI @smoketest', (
   ResponseSteps.CheckAndSubmit(claimRef, admitAll);
 });
 
-Scenario('Response with AdmitAll and Date to PayOn @citizenUI @smoketest', () => {
+Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll', () => {
   CommonSteps.EnterPersonalDetails(claimRef);
   CommonSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   ResponseSteps.EnterResponseToClaim(claimRef, admitAll);
@@ -43,7 +43,7 @@ Scenario('Response with AdmitAll and Date to PayOn @citizenUI @smoketest', () =>
   ResponseSteps.CheckAndSubmit(claimRef, admitAll);
 });
 
-Scenario('Response with AdmitAll and Repayment plan @citizenUI @smoketest', () => {
+Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll', () => {
   CommonSteps.EnterPersonalDetails(claimRef);
   CommonSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   ResponseSteps.EnterResponseToClaim(claimRef, admitAll);
