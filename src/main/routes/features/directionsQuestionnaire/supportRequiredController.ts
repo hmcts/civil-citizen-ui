@@ -2,14 +2,8 @@ import {NextFunction, Router} from 'express';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {CLAIM_TASK_LIST_URL, SUPPORT_REQUIRED_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
-import {
-  saveDirectionQuestionnaire
-} from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
-import {
-  generatePeopleListWithSelectedValues,
-  getSupportRequired,
-  getSupportRequiredForm,
-} from '../../../services/features/directionsQuestionnaire/supportRequiredService';
+import {saveDirectionQuestionnaire} from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
+import {generatePeopleListWithSelectedValues, getSupportRequired, getSupportRequiredForm} from '../../../services/features/directionsQuestionnaire/supportRequiredService';
 
 const supportRequiredController = Router();
 const supportRequiredViewPath = 'features/directionsQuestionnaire/support-required-list';
