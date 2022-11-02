@@ -67,7 +67,6 @@ export class Claim {
   claimInterest?: YesNo;
   interest?: Interest;
   interestFromSpecificDate?: Date;
-  interestClaimOptions: InterestClaimOptionsType;
   sameRateInterestSelection?: SameRateInterestSelection;
   breakDownInterestTotal?: number;
   submittedDate?: Date;
@@ -178,7 +177,7 @@ export class Claim {
   }
 
   isInterestClaimOptionExists(): boolean {
-    return this.interestClaimOptions?.length > 0;
+    return this.interest?.interestClaimOptions?.length > 0;
   }
 
   isInterestFromClaimSubmitDate(): boolean {
@@ -190,7 +189,7 @@ export class Claim {
   }
 
   isInterestClaimOptionsSameRateInterest(): boolean {
-    return this.interestClaimOptions === InterestClaimOptionsType.SAME_RATE_INTEREST;
+    return this.interest?.interestClaimOptions === InterestClaimOptionsType.SAME_RATE_INTEREST;
   }
 
   isSameRateTypeEightPercent(): boolean {

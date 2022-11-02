@@ -7,6 +7,7 @@ import {Interest} from '../../../../../../main/common/form/models/interest/inter
 import {InterestStartDate} from '../../../../../../main/common/form/models/interest/interestStartDate';
 import {InterestClaimFromType, InterestEndDateType} from '../../../../../../main/common/form/models/claimDetails';
 import {TotalInterest} from '../../../../../../main/common/form/models/interest/totalInterest';
+import {InterestClaimOptionsType} from '../../../../../../main/common/form/models/claim/interest/interestClaimOptionsType';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -66,6 +67,18 @@ describe('Interest Service', () => {
       const interest = await getInterest('validClaimId');
 
       expect(interest?.interestClaimFrom).toBe(InterestClaimFromType.FROM_A_SPECIFIC_DATE);
+    });
+
+    it('should return Interest object with interest claim options', async () => {
+      const claim = new Claim();
+      claim.interest = new Interest();
+      claim.interest.interestClaimOptions = InterestClaimOptionsType.BREAK_DOWN_INTEREST;
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return claim;
+      });
+      const interest = await getInterest('validClaimId');
+
+      expect(interest?.interestClaimOptions).toBe(InterestClaimOptionsType.BREAK_DOWN_INTEREST);
     });
 
     it('should return an error on redis failure', async () => {
@@ -145,6 +158,23 @@ describe('Interest Service', () => {
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
 
       await saveInterest('validClaimId', interest?.interestClaimFrom, 'interestClaimFrom');
+      expect(spySave).toHaveBeenCalledWith('validClaimId', {interest});
+    });
+
+    it('should update interest claim options successfully', async () => {
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.interest = new Interest();
+        return claim;
+      });
+      interest.interestStartDate = undefined;
+      interest.interestEndDate = undefined;
+      interest.interestClaimFrom = undefined;
+      interest.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
+
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+
+      await saveInterest('validClaimId', interest?.interestClaimOptions, 'interestClaimOptions');
       expect(spySave).toHaveBeenCalledWith('validClaimId', {interest});
     });
 

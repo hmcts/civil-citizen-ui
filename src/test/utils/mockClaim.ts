@@ -124,9 +124,9 @@ function buildMockClaim(): Claim {
   _mockClaim.interest = {
     interestEndDate: InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE,
     interestClaimFrom: InterestClaimFromType.FROM_A_SPECIFIC_DATE,
+    interestClaimOptions: InterestClaimOptionsType.SAME_RATE_INTEREST,
   };
   _mockClaim.interestFromSpecificDate = new Date('2022-05-20');
-  _mockClaim.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
   _mockClaim.sameRateInterestSelection = {
     sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC,
   };
