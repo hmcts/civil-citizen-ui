@@ -60,6 +60,7 @@ claimantDetailsController.get(detailsURLs, async (req: AppRequest, res: Response
     const claimantIndividualCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(CitizenCorrespondenceAddress.fromJson(claimant.correspondenceAddress));
     const claimantDetails = new GenericForm<PartyDetails>(new PartyDetails(claimant));
     const party = new GenericForm(claimant);
+
     renderPage(res, req, party, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, claimantDetails, claimant.type);
   } catch (error) {
     next(error);
@@ -67,18 +68,17 @@ claimantDetailsController.get(detailsURLs, async (req: AppRequest, res: Response
 });
 
 claimantDetailsController.post(detailsURLs, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+  const caseId = (<AppRequest>req).session?.user?.id;
+
   try {
-    const caseId = (<AppRequest>req).session?.user?.id;
     const claimant: Party = await getClaimantPartyInformation(caseId);
-    let party = new GenericForm(new Party());
     const claimantIndividualAddress = new GenericForm<Address>(Address.fromObject(req.body));
     const claimantIndividualCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(getCorrespondenceAddressForm(req.body));
+    const party = new GenericForm(new Party(req.body));
     if (claimant.type === PartyType.COMPANY || claimant.type === PartyType.ORGANISATION) {
-      party = new GenericForm(new Party(req.body));
       party.validateSync();
     }
     const claimantDetails = new GenericForm<PartyDetails>(new PartyDetails(req.body));
-
     claimantDetails.validateSync();
     claimantIndividualAddress.validateSync();
 
@@ -90,11 +90,7 @@ claimantDetailsController.post(detailsURLs, async (req: AppRequest | Request, re
     if (claimantDetails.hasErrors() || party.hasErrors() || claimantIndividualAddress.hasErrors() || claimantIndividualCorrespondenceAddress.hasErrors()) {
       renderPage(res, req, party, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, claimantDetails, claimant.type);
     } else {
-      const partyDetailsToSave: Party = {
-        ...party.model,
-        ...claimantDetails.model,
-      };
-      await saveClaimantParty(caseId, claimantIndividualAddress.model, claimantIndividualCorrespondenceAddress.model, req.body.provideCorrespondenceAddress, partyDetailsToSave);
+      await saveClaimantParty(caseId, claimantIndividualAddress.model, claimantIndividualCorrespondenceAddress.model, req.body.provideCorrespondenceAddress, party.model);
 
       if (claimant.type === PartyType.COMPANY || claimant.type === PartyType.ORGANISATION) {
         res.redirect(constructResponseUrlWithIdParams(caseId, CLAIMANT_PHONE_NUMBER_URL));
