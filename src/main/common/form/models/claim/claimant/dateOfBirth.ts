@@ -7,7 +7,7 @@ export class DateOfBirth {
   @ValidateIf(o => (o.day < 32 && o.month < 13 && o.year > 999))
   @IsDate({message: 'ERRORS.VALID_DATE'})
   @Validate(OptionalDateNotInFutureValidator, {message: 'ERRORS.CORRECT_DATE_NOT_IN_FUTURE'})
-    dateOfBirth?: Date;
+    date?: Date;
 
   @Min((new Date().getFullYear() - 150), {message: 'ERRORS.VALID_YEAR'})
   @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
@@ -22,7 +22,7 @@ export class DateOfBirth {
     day: number;
 
   constructor(day?: string, month?: string, year?: string) {
-    this.dateOfBirth = DateConverter.convertToDate(year, month, day);
+    this.date = DateConverter.convertToDate(year, month, day);
     this.year = Number(year);
     this.month = Number(month);
     this.day = Number(day);

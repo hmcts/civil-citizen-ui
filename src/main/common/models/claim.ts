@@ -122,11 +122,11 @@ export class Claim {
   }
 
   getClaimantName(): string {
-    return this.applicant1.partyName;
+    return this.applicant1.partyDetails.partyName;
   }
 
   getDefendantName(): string {
-    return this.respondent1.partyName;
+    return this.respondent1.partyDetails.partyName;
   }
 
   formattedResponseDeadline(lng?: string): string {

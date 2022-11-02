@@ -1,8 +1,5 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {Party} from 'models/party';
-import {Address, convertToAddress} from 'common/form/models/address';
-import {CitizenCorrespondenceAddress} from 'common/form/models/citizenCorrespondenceAddress';
-import {YesNo} from 'common/form/models/yesNo';
 
 export const getRespondentInformation = async (claimId: string): Promise<Party> => {
   const responseData = await getCaseDataFromStore(claimId);
@@ -12,27 +9,16 @@ export const getRespondentInformation = async (claimId: string): Promise<Party> 
   return new Party();
 };
 
-export const getCorrespondenceAddressForm = (value?: Record<string, string>): CitizenCorrespondenceAddress => {
-  let citizenCorrespondenceAddress = CitizenCorrespondenceAddress.fromObject(value);
-  if (value.postToThisAddress === YesNo.NO) {
-    citizenCorrespondenceAddress = undefined;
-  }
-  if (citizenCorrespondenceAddress) {
-    return citizenCorrespondenceAddress;
-  }
-  return new CitizenCorrespondenceAddress();
-};
-
-export const saveRespondent = async (claimId: string, citizenAddress: Address, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, party: Party): Promise<void> => {
+export const saveRespondent = async (claimId: string, party: Party): Promise<void> => {
   const responseData = await getCaseDataFromStore(claimId);
   if (!responseData.respondent1) {
     responseData.respondent1 = new Party();
   }
-  responseData.respondent1.partyDetails.primaryAddress = citizenAddress;
-  responseData.respondent1.partyDetails.correspondenceAddress = convertToAddress(citizenCorrespondenceAddress);
-  responseData.respondent1.partyDetails.partyPhone = party?.partyDetails.partyPhone;
-  responseData.respondent1.contactPerson = party?.contactPerson;
-  responseData.respondent1.postToThisAddress = party?.postToThisAddress;
+  responseData.respondent1.partyDetails.primaryAddress = party?.partyDetails.primaryAddress;
+  responseData.respondent1.partyDetails.correspondenceAddress = party?.partyDetails.correspondenceAddress;
+  responseData.respondent1.partyPhone = party?.partyPhone;
+  responseData.respondent1.partyDetails.contactPerson = party?.partyDetails.contactPerson;
+  responseData.respondent1.partyDetails.postToThisAddress = party?.partyDetails.postToThisAddress;
 
   await saveDraftClaim(claimId, responseData);
 };

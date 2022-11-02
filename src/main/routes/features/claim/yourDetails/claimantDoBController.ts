@@ -16,7 +16,7 @@ claimantDoBController.get(CLAIMANT_DOB_URL, async (req: AppRequest, res: Respons
     const claim: Claim = await getCaseDataFromStore(caseId);
     let form = new GenericForm(new DateOfBirth());
     if (claim.applicant1?.dateOfBirth) {
-      const dateOfBirth = new Date(claim.applicant1.dateOfBirth);
+      const dateOfBirth = new Date(claim.applicant1.dateOfBirth.date);
       form = new GenericForm(new DateOfBirth(dateOfBirth.getDate().toString(), (dateOfBirth.getMonth() + 1).toString(), dateOfBirth.getFullYear().toString()));
     }
     res.render(claimantDoBViewPath, {form, today: new Date(), claimantView: true});
@@ -35,7 +35,7 @@ claimantDoBController.post(CLAIMANT_DOB_URL, async (req: AppRequest | Request, r
     if (form.hasErrors()) {
       res.render(claimantDoBViewPath, {form, today: new Date(), claimantView: true});
     } else {
-      await saveClaimantProperty(claimId, 'dateOfBirth', form.model.dateOfBirth);
+      await saveClaimantProperty(claimId, 'dateOfBirth', form.model.date);
       res.redirect(CLAIMANT_PHONE_NUMBER_URL);
     }
   } catch (error) {
