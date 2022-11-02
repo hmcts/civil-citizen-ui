@@ -3,17 +3,20 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {CLAIM_TIMELINE_URL, CLAIM_REASON_URL} from '../../../../../../main/routes/urls';
-import {
-  mockCivilClaim,
-  mockCivilClaimUndefined,
-  mockNoStatementOfMeans,
-  mockRedisFailure,
-} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
+import {
+  getClaimDetails,
+  saveClaimDetails,
+} from '../../../../../../main/services/features/claim/details/claimDetailsService';
+import {Claim} from '../../../../../../main/common/models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/services/features/claim/details/claimDetailsService');
+
+const mockClaimDetails = getClaimDetails as jest.Mock;
+const mockSaveClaimDetails = saveClaimDetails as jest.Mock;
 
 describe('Claim Details - Reason', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -26,7 +29,7 @@ describe('Claim Details - Reason', () => {
 
   describe('on GET', () => {
     it('should return reason page empty when dont have information on redis ', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
+      mockClaimDetails.mockImplementation(async () => new Claim());
       await request(app)
         .get(CLAIM_REASON_URL)
         .expect((res) => {
@@ -34,8 +37,9 @@ describe('Claim Details - Reason', () => {
           expect(res.text).toContain(TestMessages.REASON_EXPLANATION);
         });
     });
+
     it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockClaimDetails.mockImplementation(async () => {throw new Error(TestMessages.REDIS_FAILURE);});
       await request(app)
         .get(CLAIM_REASON_URL)
         .expect((res) => {
@@ -47,7 +51,7 @@ describe('Claim Details - Reason', () => {
 
   describe('on POST', () => {
     it('should create a new claim if redis gives undefined', async () => {
-      app.locals.draftStoreClient = mockCivilClaimUndefined;
+      mockSaveClaimDetails.mockImplementation(async () => Promise<void>);
       await request(app)
         .post(CLAIM_REASON_URL)
         .send({text: 'reason'})
@@ -55,8 +59,8 @@ describe('Claim Details - Reason', () => {
           expect(res.status).toBe(302);
         });
     });
+
     it('should return errors on no input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CLAIM_REASON_URL)
         .send({text:''})
@@ -65,7 +69,9 @@ describe('Claim Details - Reason', () => {
           expect(res.text).toContain(t('ERRORS.REASON_REQUIRED'));
         });
     });
+
     it('should accept a valid input', async () => {
+      mockSaveClaimDetails.mockImplementation(async () => Promise<void>);
       await request(app)
         .post(CLAIM_REASON_URL)
         .send({text:'reason'})
@@ -74,6 +80,7 @@ describe('Claim Details - Reason', () => {
         });
     });
     it('should redirect to timeline page', async () => {
+      mockSaveClaimDetails.mockImplementation(async () => Promise<void>);
       await request(app)
         .post(CLAIM_REASON_URL)
         .send({text:'reason'})
@@ -84,7 +91,7 @@ describe('Claim Details - Reason', () => {
     });
 
     it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockSaveClaimDetails.mockImplementation(async () => {throw new Error(TestMessages.REDIS_FAILURE);});
       await request(app)
         .post(CLAIM_REASON_URL)
         .send({text:'reason'})
