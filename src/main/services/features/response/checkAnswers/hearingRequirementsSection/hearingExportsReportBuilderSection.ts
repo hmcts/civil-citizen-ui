@@ -8,8 +8,8 @@ import {
   DQ_EXPERT_DETAILS_URL,
   DQ_EXPERT_REPORT_DETAILS_URL,
   PERMISSION_FOR_EXPERT_URL,
-} from 'routes/urls';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+} from '../../../../../routes/urls';
+import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {ReportDetail} from '../../../../../common/models/directionsQuestionnaire/experts/expertReportDetails/reportDetail';
 import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 
