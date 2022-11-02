@@ -19,7 +19,7 @@
     "MONTH": "Mis",
     "MONTHS": "Mis",
     "NO": "Nac oes",
-    "OPTIONAL_CONTACT_PERSON": "Contact person (optional)",
+    "OPTIONAL_CONTACT_PERSON": "Unigolyn cyswllt (dewisol)",
     "REMOVE": "Tynnu",
     "RETURN_PAGE": "You can return to RETURN-PAGE and start your claim or defence again.",
     "TECHNICAL_PROBLEMS": "Sorry, we had some technical problems during your last operation. Please try again later.",
@@ -404,14 +404,14 @@
       "ADDRESS_FOR_SERVICE": "Gelwir hwn yn 'gyfeiriad cyflwyno'.",
       "ADDRESS_NOT_FOUND": "Ni allwn dod o hyd i gyfeiriad ar gyfer y cod post hwnnw.",
       "ALL_CORRESPONDENCE": "Byddir yn anfon pob gohebiaeth i'r cyfeiriad hwn.",
-      "BUSINESS_NAME": "Business name",
+      "BUSINESS_NAME": "Enw'r busnes",
       "CLAIMANT_DETAILS_PROVIDED": "Darparwyd eich enw a'ch cyfeiriad gan yr unigolyn, y busnes neu'r sefydliad sy'n cyflwyno'r hawliad (yr hawlydd).",
       "CONTACT_PERSON_HINT": "The defendant can contact this person to discuss the claim",
       "COMPANY_ADDRESS": "Company Address",
       "COMPANY_DETAILS": "Enter company details",
       "CORRESPONDENCE_ADDRESS": "Cyfeiriad ar gyfer gohebiaeth",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Ydych chi am inni anfon gohebiaeth i gyfeiriad arall?",
-      "FULL_NAME": "Your full name",
+      "FULL_NAME": "Eich enw llawn",
       "PARTY_NAME_COMPANY": "Company name",
       "PARTY_NAME_ORGANISATION": "Organisation name",
       "PAGE_TITLE": "Eich manylion",
@@ -426,7 +426,7 @@
       "EXAMPLE": "Defnyddiwch rifau yn unig, er enghraifft, 01632960001.",
       "INFORMATION": "Byddwn yn rhoi eich rhif ffôn i'r unigolyn, y busnes neu'r sefydliad sydd wedi cyflwyno hawliad yn eich erbyn, neu eu cynrychiolydd cyfreithiol os oes ganddynt gynrychiolydd.",
       "MORE_INFORMATION": "Ni fyddwn yn eich ffonio ond os bydd arnom angen rhagor o wybodaeth am yr hawliad hwn.",
-      "PAGE_TITLE": "Your phone number",
+      "PAGE_TITLE": "Eich rhif ffôn",
       "TITLE": "Rhowch rif ffôn (dewisol)"
     },
     "CITIZEN_RESPONSE_TYPE": {
@@ -602,9 +602,9 @@
       "TITLE": "About you and this claim"
     },
     "CLAIMANT_PHONE": {
-      "INFORMATION": "We might need to speak to you about this claim. We’ll only call on weekdays between 9am and 5pm.",
+      "INFORMATION": "Efallai y bydd angen i ni siarad â chi am yr hawliad hwn. Byddwn ond yn ffonio ar ddydd Llun i ddydd Gwener rhwng 9am a 5pm.",
       "NUMBER_INFORMATION": "We'll also give your number to the person, business, or organisation you are claiming from.",
-      "PAGE_TITLE": "Your phone number",
+      "PAGE_TITLE": "Eich rhif ffôn",
       "TITLE": "Enter a phone number (optional)"
     },
     "COMPANY_DETAILS": {
@@ -1027,7 +1027,6 @@
     "EXPERT_REPORT_DETAILS": {
       "ADD_ANOTHER": "Ychwanegu adroddiad arall",
       "EXPERT_NAME": "Enw’r arbenigwr",
-      "FOR_EXAMPLE": "Er enghraifft, {{ date }}",
       "PAGE_TITLE": "A oes gennych adroddiad wedi’i ysgrifennu gan arbenigwr yn barod?",
       "REPORT_DATE": "Beth yw dyddiad yr adroddiad?",
       "REPORT_TEXT": "Adroddiad",
@@ -1363,7 +1362,6 @@
       "FIND_PIN": "You can find it on the email or letter we sent you.",
       "FOR_A_NEW_SECURITY_CODE": "for a new security code.",
       "SECURITY_CODE": "Security code",
-      "SOURCE_OF_EXPENSES": "Source of expense",
       "TITLE": "Enter security code"
     },
     "REASON": {
@@ -1665,7 +1663,11 @@
       "WHAT_LANGUAGE": "What language needs to be interpreted?"
     },
     "UNDER_18": {
-      "PAGE_TITLE": "Under 18"
+      "ABLE_TO_GET_ADVICE": "Efallai y gallwch gael cyngor am y ffurflen hawlio gan",
+      "CITIZEN_ADVICE": "Cyngor ar Bopeth (yn agor mewn ffenest newydd)",
+      "CONTENT": "Os ydych o dan 18 mae angen ichi e-bostio neu ffonio'r llys. Ni all hawlwyr gyflwyno hawliad yn erbyn rhywun dan 18 felly efallai y byddwch yn gallu stopio'r hawliad.",
+      "PAGE_TITLE": "O dan 18 oed",
+      "TITLE": "Cysylltwch â'r llys"
     },
     "UNDERSTANDING_YOUR_OPTIONS": {
       "CURRENT_DEADLINE": "Terfyn amser cyfredol ar gyfer ymateb: 4pm ar {{ responseDeadline }}",
