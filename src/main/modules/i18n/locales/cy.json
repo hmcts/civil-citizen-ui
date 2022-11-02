@@ -1660,7 +1660,11 @@
       "WHAT_LANGUAGE": "What language needs to be interpreted?"
     },
     "UNDER_18": {
-      "PAGE_TITLE": "Under 18"
+      "ABLE_TO_GET_ADVICE": "Efallai y gallwch gael cyngor am y ffurflen hawlio gan",
+      "CITIZEN_ADVICE": "Cyngor ar Bopeth (yn agor mewn ffenest newydd)",
+      "CONTENT": "Os ydych o dan 18 mae angen ichi e-bostio neu ffonio'r llys. Ni all hawlwyr gyflwyno hawliad yn erbyn rhywun dan 18 felly efallai y byddwch yn gallu stopio'r hawliad.",
+      "PAGE_TITLE": "O dan 18 oed",
+      "TITLE": "Cysylltwch â'r llys"
     },
     "UNDERSTANDING_YOUR_OPTIONS": {
       "CURRENT_DEADLINE": "Terfyn amser cyfredol ar gyfer ymateb: 4pm ar {{ responseDeadline }}",
