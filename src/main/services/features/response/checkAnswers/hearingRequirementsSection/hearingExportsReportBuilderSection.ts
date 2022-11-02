@@ -14,30 +14,34 @@ import {ReportDetail} from '../../../../../common/models/directionsQuestionnaire
 import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 
 const buildExportReportSection = (claim: Claim, claimId: string, lang: string | unknown) : SummaryRow[] => {
-  const hasExportReportRow = buildHasExportReportSectionOption(claim, claimId, lang);
+  const hrefReportDetails = constructResponseUrlWithIdParams(claimId, DQ_EXPERT_REPORT_DETAILS_URL);
+  const hasExportReportRow = buildHasExportReportSectionOption(claim, claimId, lang, hrefReportDetails);
   const exportReportSectionRows = [hasExportReportRow];
   if(claim.hasExpertReportDetails()){
-    exportReportSectionRows.push(... buildExportReportsRows(claim, claimId, lang));
+    exportReportSectionRows.push(... buildExportReportsRows(claim, claimId, lang, hrefReportDetails));
   }else{
     exportReportSectionRows.push(... whatIsThereToExamineRows(claim, claimId, lang));
   }
   return exportReportSectionRows;
 };
 
-const buildHasExportReportSectionOption = (claim:Claim, claimId: string, lang: string | unknown) : SummaryRow => {
+const buildHasExportReportSectionOption = (claim:Claim, claimId: string, lang: string | unknown, hrefReportDetails: string) : SummaryRow => {
   const value = claim?.hasExpertReportDetails()?
     t('COMMON.VARIATION_2.YES', getLng(lang)): t('COMMON.VARIATION_2.NO', getLng(lang));
   return summaryRow(t('PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE', getLng(lang)),
-    value, constructResponseUrlWithIdParams(claimId, DQ_EXPERT_REPORT_DETAILS_URL), changeLabel(lang));
+    value, hrefReportDetails, changeLabel(lang));
 };
 
-const buildExportReportsRows = (claim:Claim, claimId: string, lang: string | unknown) : SummaryRow[] => {
+const buildExportReportsRows = (claim:Claim, claimId: string, lang: string | unknown, hrefReportDetails: string) : SummaryRow[] => {
   const rows = claim?.directionQuestionnaire?.experts?.expertReportDetails?.reportDetails;
-  return rows.map((row, index) => summaryRow(`${t('PAGES.EXPERT_REPORT_DETAILS.REPORT_TEXT', getLng(lang))} ${index}`,
-    buildExpertsReportDetailsValue(row, lang), constructResponseUrlWithIdParams(claimId, DQ_EXPERT_REPORT_DETAILS_URL), changeLabel(lang)));
+  return rows.map((row, index) => {
+    const reportNumber = index + 1;
+    return summaryRow(`${t('PAGES.EXPERT_REPORT_DETAILS.REPORT_TEXT', getLng(lang))} ${reportNumber}`,
+      buildExpertsReportDetailsValue(row, lang), hrefReportDetails, changeLabel(lang));
+  });
 };
 const buildExpertsReportDetailsValue = (reportDetails: ReportDetail, lang:string | unknown) : string => {
-  return `${t('PAGES.EXPERT_REPORT_DETAILS.EXPERT_NAME', getLng(lang))} : ${reportDetails.expertName}
+  return `${t('PAGES.EXPERT_REPORT_DETAILS.EXPERT_NAME', getLng(lang))} : ${reportDetails.expertName} <br>
   ${t('PAGES.EXPERT_REPORT_DETAILS.DATE_OF_REPORT', getLng(lang))} : ${formatDateToFullDate(reportDetails.reportDate, lang)}`;
 };
 
@@ -63,7 +67,8 @@ const buildExpertsDetailsRows = (claim:Claim, claimId: string, lang: string | un
   const rows = claim?.directionQuestionnaire?.experts?.expertDetailsList?.items;
   const expertDetailsSummaryRows: SummaryRow[] = [];
   rows.forEach((expert, index) => {
-    expertDetailsSummaryRows.push(summaryRow(`${t('PAGES.EXPERT_DETAILS.SECTION_TITLE', getLng(lang))} ${index}`));
+    const row = index +1;
+    expertDetailsSummaryRows.push(summaryRow(`${t('PAGES.EXPERT_DETAILS.SECTION_TITLE', getLng(lang))} ${row}`));
     expertDetailsSummaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.FIRST_NAME_OPTIONAL', getLng(lang)), expert.firstName, hrefExpertDetails, hrefLabel));
     expertDetailsSummaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.LAST_NAME_OPTIONAL', getLng(lang)), expert.lastName, hrefExpertDetails, hrefLabel));
     expertDetailsSummaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.EMAIL_ADDRESS_OPTIONAL', getLng(lang)), expert.emailAddress, hrefExpertDetails, hrefLabel));
