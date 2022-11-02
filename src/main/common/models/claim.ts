@@ -325,7 +325,7 @@ export class Claim {
   }
 
   hasPermissionForExperts(): boolean {
-    return this.directionQuestionnaire?.hasPermissionForExperts();
+    return this.directionQuestionnaire?.experts?.permissionForExpert?.option === YesNo.YES;
   }
 
   hasEvidenceExpertCanStillExamine(): boolean {
