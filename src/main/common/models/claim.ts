@@ -332,11 +332,7 @@ export class Claim {
   }
 
   hasEvidenceExpertCanStillExamine(): boolean {
-    return this.directionQuestionnaire?.hasEvidenceExpertCanStillExamine();
-  }
-
-  hasDefendantExpertEvidence(): boolean {
-    return this.directionQuestionnaire?.hasDefendantExpertEvidence();
+    return this.directionQuestionnaire?.experts?.expertCanStillExamine?.option === YesNo.YES;
   }
 
 }
