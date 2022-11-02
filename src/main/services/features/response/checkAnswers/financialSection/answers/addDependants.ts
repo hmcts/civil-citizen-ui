@@ -8,7 +8,7 @@ import {
 } from '../../../../../../routes/urls';
 import {YesNoUpperCase} from '../../../../../../common/form/models/yesNo';
 
-const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', { lng: getLng(lang) });
+const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 
 export const addDependants = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
   const yourDependantsHref = CITIZEN_DEPENDANTS_URL.replace(':id', claimId);

@@ -1,11 +1,17 @@
 import {getSummarySections} from '../../../../../../../main/services/features/claim/checkAnswers/checkAnswersService';
-import {CITIZEN_DETAILS_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL} from '../../../../../../../main/routes/urls';
+import {
+  CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL,
+  CLAIM_DEFENDANT_PHONE_NUMBER_URL,
+  DOB_URL,
+} from '../../../../../../../main/routes/urls';
 import {
   createClaimWithBasicRespondentDetails,
   createClaimWithContactPersonDetails,
   createClaimWithIndividualDetails,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
+import {PartyType} from '../../../../../../../main/common/models/partyType';
+import {formatDateToFullDate} from '../../../../../../../main/common/utils/dateUtils';
 
 jest.mock('../../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -26,25 +32,25 @@ const DOB = '12 December 2000';
 
 describe('Cirizen Details Section', () => {
   const claim = createClaimWithBasicRespondentDetails();
-  it('should return your details summary sections', async () => {
+  it('should return your Individual details summary sections', async () => {
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
     //Then
-    expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].title).toBe('PAGES.CHECK_YOUR_ANSWER.THEIR_DETAILS_TITLE');
+    expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].title).toBe('PAGES.CHECK_YOUR_ANSWER.THEIR_DETAILS_TITLE_DEFENDANT');
     expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows.length).toBe(5);
     expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[0].value.html).toBe(FULL_NAME);
     expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[0].actions?.items.length).toBe(1);
-    expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CITIZEN_DETAILS_URL.replace(':id', constVal.CLAIM_ID));
+    expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL);
     expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.FULL_NAME');
     expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[1].value.html).toBe(ADDRESS);
     expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[1].actions?.items.length).toBe(1);
-    expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_DETAILS_URL.replace(':id', constVal.CLAIM_ID));
+    expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[1].actions?.items[0].href).toBe(CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL);
     expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[2].value.html).toBe('PAGES.CHECK_YOUR_ANSWER.SAME_ADDRESS');
-    expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[2].actions?.items[0].href).toBe(CITIZEN_DETAILS_URL.replace(':id', constVal.CLAIM_ID));
+    expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[2].actions?.items[0].href).toBe(CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL);
     expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[3].value.html).toBe(DOB);
     expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[3].actions?.items[0].href).toBe(DOB_URL.replace(':id', constVal.CLAIM_ID));
     expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[4].value.html).toBe(CONTACT_NUMBER);
-    expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[4].actions?.items[0].href).toBe(CITIZEN_PHONE_NUMBER_URL.replace(':id', constVal.CLAIM_ID));
+    expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[4].actions?.items[0].href).toBe(CLAIM_DEFENDANT_PHONE_NUMBER_URL);
     expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[4].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER');
   });
 
@@ -72,15 +78,53 @@ describe('Cirizen Details Section', () => {
     //Then
     expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[2].value.html).toBe(CORRESPONDENCE_ADDRESS);
   });
-  it('should return email when it exists', async () => {
+  it('should return email and date of birth when it exists', async () => {
     //Given
     const claim = createClaimWithIndividualDetails();
     if (claim.respondent1) {
       claim.respondent1.emailAddress = EMAIL_ADDRESS;
+      claim.respondent1.dateOfBirth = new Date(2000, 1, 1);
     }
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
-    expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[3].value.html).toBe(EMAIL_ADDRESS);
+    expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[3].value.html).toBe(formatDateToFullDate(new Date(2000, 1, 1)));
+    expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[4].value.html).toBe(EMAIL_ADDRESS);
+  });
+  it('should return your Company details summary sections', async () => {
+    //Given
+    const claim = createClaimWithIndividualDetails();
+    if (claim.respondent1) {
+      claim.respondent1.type = PartyType.SOLE_TRADER;
+      claim.respondent1.soleTraderTradingAs = 'Business name';
+    }
+    //When
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[1].value.html).toBe('Business name');
+  });
+  it('should return your Company details summary sections', async () => {
+    //Given
+    const claim = createClaimWithIndividualDetails();
+    if (claim.respondent1) {
+      claim.respondent1.type = PartyType.COMPANY;
+      claim.respondent1.contactPerson = CONTACT_PERSON;
+    }
+    //When
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[0].value.html).toBe('Nice organisation');
+    expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[1].value.html).toBe('The Post Man');
+  });
+  it('should return your Organisation details summary sections', async () => {
+    //Given
+    const claim = createClaimWithIndividualDetails();
+    if (claim.respondent1) {
+      claim.respondent1.type = PartyType.ORGANISATION;
+    }
+    //When
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[0].value.html).toBe('Nice organisation');
   });
 });
