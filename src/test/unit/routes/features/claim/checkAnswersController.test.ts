@@ -16,6 +16,8 @@ const civilServiceUrl = config.get<string>('services.civilService.url');
 const data = require('../../../../utils/mocks/defendantClaimsMock.json');
 
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/claimDetailsService');
 jest.mock('../../../../../main/services/features/claim/checkAnswers/checkAnswersService');
 
@@ -41,7 +43,6 @@ describe('Response - Check answers', () => {
   });
 
   describe('on GET', () => {
-
     it('should return check answers page', async () => {
       mockGetSummarySections.mockImplementation(() => {
         return createClaimWithBasicDetails();

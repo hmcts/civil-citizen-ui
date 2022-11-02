@@ -7,7 +7,6 @@ import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../..
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
 
 describe('Claimant Timeline Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
