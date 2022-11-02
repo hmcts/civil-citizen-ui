@@ -43,6 +43,7 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     detailsOfWhyDoesYouDisputeTheClaim: claim.partialAdmission.whyDoYouDisagree.text, // CCD: detailsOfWhyDoesYouDisputeTheClaim
     specResponseTimelineOfEvents: toCCDTimeline(claim.partialAdmission.timeline),
     // x: claim.partialAdmission.timeline.comment // not used in CCD???
+    
     respondToAdmittedClaimOwingAmount: claim.partialAdmission.howMuchDoYouOwe.amount, // CCD: respondToAdmittedClaimOwingAmount
     defenceAdmitPartEmploymentTypeRequired: claim.statementOfMeans.employment.declared ? 'YES' : 'NO', // boolean
     respondToClaimAdmitPartEmploymentTypeLRspec: toCCDEmploymentType(claim.statementOfMeans.employment.employmentType),
