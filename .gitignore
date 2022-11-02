@@ -29,6 +29,7 @@ smoke-output/
 functional-output/
 test-results/
 
+.vscode/
 .yarn/
 .yarnrc
 package-lock.json

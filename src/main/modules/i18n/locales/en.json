@@ -124,6 +124,7 @@
     "INPUT_LABELS": {
       "FIRST_NAME": "First name",
       "LAST_NAME": "Last name",
+      "LAST_NAME_2": "Last Name",
       "TITLE": "Title"
     },
     "MONTH_NAMES": {
@@ -300,6 +301,7 @@
       "DEBTS_TOTAL_OWED": "Total owed",
       "DEBTS_MONTHLY_PAYMENTS": "Monthly Payments",
       "DETAILS_TITLE": "Your details",
+      "DETAILS_TITLE_CLAIMANT": "Your details (claimant)",
       "DISABILITY_ARE_YOU_DISABLED": "Are you disabled?",
       "DOB": "Date of birth",
       "EMAIL": "Email",
@@ -364,6 +366,7 @@
       "TAX_PAYMENT_AMOUNT_YOU_OWE": "Amount you owe?",
       "TAX_PAYMENT_REASON": "Reason",
       "THEIR_DETAILS_TITLE": "Their details",
+      "THEIR_DETAILS_TITLE_DEFENDANT": "Their details (defendant)",
       "TITLE": "Check your answers",
       "TIMELINE_TITLE": "Your timeline of what happened (optional)",
       "TIMELINE_COMMENTS": "Comments about their timeline (optional)",
@@ -1657,7 +1660,11 @@
       "WHAT_LANGUAGE": "What language needs to be interpreted?"
     },
     "UNDER_18": {
-      "PAGE_TITLE": "Under 18"
+      "ABLE_TO_GET_ADVICE": "You might be able to get advice about the claim from",
+      "CITIZEN_ADVICE": "Citizens Advice (opens in a new window)",
+      "CONTENT": "If you are under 18 you need to email or phone the court. Claimants cannot submit a claim against someone under 18 so you may be able to have the claim stopped.",
+      "PAGE_TITLE": "Under 18",
+      "TITLE": "Contact the court"
     },
     "UNDERSTANDING_YOUR_OPTIONS": {
       "CURRENT_DEADLINE": "Current response deadline: 4pm on {{ responseDeadline }}",

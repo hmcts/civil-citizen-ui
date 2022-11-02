@@ -320,6 +320,9 @@ export class Claim {
     return this.responseDeadline?.option === ResponseOptions.NO;
   }
 
+  isResponseDateInThePast(): boolean {
+    return this.respondent1ResponseDate <= new Date();
+  }
 }
 
 export interface StatementOfTruth {
