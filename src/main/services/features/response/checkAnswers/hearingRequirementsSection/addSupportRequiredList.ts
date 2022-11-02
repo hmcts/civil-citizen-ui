@@ -5,9 +5,8 @@ import {SupportRequired} from 'common/models/directionsQuestionnaire/supportRequ
 import {summaryRow} from '../../../../../common/models/summaryList/summaryList';
 import {YesNoUpperCase} from '../../../../../common/form/models/yesNo';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {getLng} from '../../../../../common/utils/languageToggleUtils';
 import {SUPPORT_REQUIRED_URL} from '../../../../../routes/urls';
-import {changeLabel} from './buildHearingRequirementsSection';
+import {changeLabel} from '../../../../../common/utils/checkYourAnswer/changeButton';
 
 export const generateSupportDetails = (item: SupportRequired) => {
   const supportDetails = [];
@@ -29,22 +28,22 @@ export const generateSupportDetails = (item: SupportRequired) => {
   return supportDetails.join('<br>');
 };
 
-export const addSupportRequiredList = (claim: Claim, hearingRequirementsSection: SummarySection, claimId: string, lang: string | unknown) => {
+export const addSupportRequiredList = (claim: Claim, hearingRequirementsSection: SummarySection, claimId: string, lng: string) => {
   const supportRequiredHref = constructResponseUrlWithIdParams(claimId, SUPPORT_REQUIRED_URL);
   const supportRequiredList = claim.directionQuestionnaire?.hearing?.supportRequiredList;
 
   if (claim.isSupportRequiredYes && claim.isSupportRequiredDetailsAvailable) {
     hearingRequirementsSection.summaryList.rows.push(
-      summaryRow(t('PAGES.SUPPORT_REQUIRED.TITLE', {lng: getLng(lang)}), t(`COMMON.${YesNoUpperCase.YES}`, {lng: getLng(lang)}), supportRequiredHref, changeLabel(lang)),
+      summaryRow(t('PAGES.SUPPORT_REQUIRED.TITLE', {lng}), t(`COMMON.${YesNoUpperCase.YES}`, {lng}), supportRequiredHref, changeLabel(lng)),
     );
 
     claim.isSupportRequiredDetailsAvailable && supportRequiredList.items.forEach(item => {
-      hearingRequirementsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.SUPPORT_REQUIRED_NAME', {lng: getLng(lang)}), item.fullName, '', changeLabel(lang)));
-      hearingRequirementsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.SUPPORT_REQUIRED_DETAILS', {lng: getLng(lang)}), generateSupportDetails(item), '', changeLabel(lang)));
+      hearingRequirementsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.SUPPORT_REQUIRED_NAME', {lng}), item.fullName, supportRequiredHref, changeLabel(lng)));
+      hearingRequirementsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.SUPPORT_REQUIRED_DETAILS', {lng}), generateSupportDetails(item), supportRequiredHref, changeLabel(lng)));
     });
   } else {
     hearingRequirementsSection.summaryList.rows.push(
-      summaryRow(t('PAGES.SUPPORT_REQUIRED.TITLE', {lng: getLng(lang)}), t(`COMMON.${YesNoUpperCase.NO}`, {lng: getLng(lang)}), supportRequiredHref, changeLabel(lang)),
+      summaryRow(t('PAGES.SUPPORT_REQUIRED.TITLE', {lng}), t(`COMMON.${YesNoUpperCase.NO}`, {lng}), supportRequiredHref, changeLabel(lng)),
     );
   }
 };

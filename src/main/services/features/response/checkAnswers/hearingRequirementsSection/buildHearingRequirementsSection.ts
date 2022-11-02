@@ -12,9 +12,8 @@ import {
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {YesNo, YesNoUpperCamelCase} from '../../../../../common/form/models/yesNo';
 import {LanguageOptions} from '../../../../../common/models/directionsQuestionnaire/languageOptions';
-import { addSupportRequiredList } from './addSupportRequiredList';
-
-export const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
+import {changeLabel} from '../../../../../common/utils/checkYourAnswer/changeButton';
+import {addSupportRequiredList} from './addSupportRequiredList';
 
 const determinationWithoutHearingQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const determinationWithoutHearingQuestion = t('PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARING', {lng})
@@ -154,7 +153,7 @@ const buildHearingRequirementsSection = (claim: Claim, claimId: string, lang: st
   }
 
   if (claim?.hasSupportRequiredList) {
-    addSupportRequiredList(claim, hearingRequirementsSection, claimId, lang);
+    addSupportRequiredList(claim, hearingRequirementsSection, claimId, lng);
   }
 
   if (claim?.directionQuestionnaire?.welshLanguageRequirements?.language) {
