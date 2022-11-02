@@ -826,7 +826,7 @@
     },
     "DEFENDANT_YOURSELF_EVIDENCE": {
       "PAGE_TITLE": "Defendant yourself evidence",
-      "TITLE": "Do you want to give evidence yourself?"
+      "TITLE": "A ydych eisiau rhoi tystiolaeth eich hun?"
     },
     "DEFENDANT_EXPERT_CAN_STILL_EXAMINE": {
       "CAN_NOT_USE": "You can't use an expert in this case.",
@@ -983,17 +983,17 @@
       "TITLE": "Rhestru eich tystiolaeth"
     },
     "EXPERT_DETAILS": {
-      "ADD_ANOTHER_EXPERT": "Add another expert",
-      "ADD_EXPERT": "Add another expert",
-      "COST_OPTIONAL": "Estimated cost (optional)",
-      "EMAIL_ADDRESS_OPTIONAL": "Email address (optional)",
-      "FIELD_OF_EXPERTISE": "Field of expertise",
-      "FIRST_NAME_OPTIONAL": "First name (optional)",
-      "LAST_NAME_OPTIONAL": "Last name (optional)",
-      "PAGE_TITLE": "Enter the expert’s details",
-      "PHONE_OPTIONAL": "Phone number (optional)",
-      "REMOVE_EXPERT": "Remove expert",
-      "TELL_US_WHY_NEED_EXPERT": "Tell us why you need this expert"
+      "ADD_ANOTHER_EXPERT": "Ychwanegu arbenigwr arall",
+      "ADD_EXPERT": "Ychwanegu arbenigwr arall",
+      "COST_OPTIONAL": "Amcangyfrif o’r gost (dewisol)",
+      "EMAIL_ADDRESS_OPTIONAL": "Cyfeiriad e-bost (dewisol)",
+      "FIELD_OF_EXPERTISE": "Maes arbenigedd",
+      "FIRST_NAME_OPTIONAL": "Enw cyntaf (dewisol)",
+      "LAST_NAME_OPTIONAL": "Enw olaf (dewisol)",
+      "PAGE_TITLE": "Nodwch fanylion yr arbenigwr",
+      "PHONE_OPTIONAL": "Rhif ffôn (dewisol)",
+      "REMOVE_EXPERT": "Dileu arbenigwr",
+      "TELL_US_WHY_NEED_EXPERT": "Dywedwch wrthym pam ydych chi angen yr arbenigwr hwn"
     },
     "EXPERT_GUIDANCE": {
       "ASK_PERMISSION": "You must ask for permission to use an expert - a judge will then decide whether the expert is necessary.",
@@ -1427,10 +1427,10 @@
       "TITLE": "Eich cynllun ad-dalu"
     },
     "REQUEST_EXTRA_4WEEKS": {
-      "HINT": "You can use this time to try to settle the claim without going to a hearing. Settling without going to a hearing may avoid costs including fees.",
-      "PAGE_TITLE": "Do you want an extra 4 weeks to try to settle the claim?",
-      "TITLE": "Do you want an extra 4 weeks to try to settle the claim?",
-      "WARNING": "This will not change the response deadline. even if an extra 4 weeks to settle the claim is agreed, you will still need to respond to the claim by the stated deadline."
+      "HINT": "Gallwch ddefnyddio’r amser hwn i geisio setlo’r hawliad heb fynd i wrandawiad. Gall setlo heb fynd i wrandawiad osgoi costau gan gynnwys ffioedd llys.",
+      "PAGE_TITLE": "Ydych chi eisiau 4 wythnos arall i geisio setlo’r hawliad?",
+      "TITLE": "Ydych chi eisiau 4 wythnos arall i geisio setlo’r hawliad?",
+      "WARNING": "Ni fydd hyn yn newid y terfyn amser ar gyfer ymateb. Hyd yn oed os caniateir 4 wythnos arall i setlo’r hawliad, bydd dal angen i chi ymateb i’r hawliad erbyn y terfyn amser a nodir."
     },
     "REQUEST_MORE_TIME": {
       "APPLY_TO_COURT": "Mae angen i chi wneud cais i’r llys am ragor o amser.",
@@ -1488,9 +1488,11 @@
       "PAGE_TITLE": "Send your response by email"
     },
     "SENT_EXPERT_REPORTS": {
-      "OPTION_NOT_RECEIVED": "No, I have not yet received them",
-      "PAGE_TITLE": "Have you already sent expert reports to other parties?",
-      "TITLE": "Have you already sent expert reports to other parties?"
+      "OPTION_NO": "Naddo",
+      "OPTION_NOT_RECEIVED": "Naddo, nid wyf wedi’u cael eto",
+      "OPTION_YES": "Do",
+      "PAGE_TITLE": "Ydych chi wedi anfon adroddiadau arbenigwyr at y partïon eraill yn barod?",
+      "TITLE": "Ydych chi wedi anfon adroddiadau arbenigwyr at y partïon eraill yn barod?"
     },
     "SHARED_EXPERT": {
       "IF_YOU_SHARE": "Os byddwch yn rhannu arbenigwr, byddwch hefyd yn rhannu’r costau oni bai bod y barnwr yn penderfynu bod rhaid i un parti dalu cyfran y parti arall.",
@@ -1628,12 +1630,12 @@
       "TOTAL_AMOUNT": "Total interest amount"
     },
     "TRIED_TO_SETTLE": {
-      "BOTH_PARTIES": "Both parties must take certain steps before going to court.",
-      "PAGE_TITLE": "Have you tried to settle this claim before going to court?",
-      "STEPS": "These steps are:",
-      "STEP_ONE": "discuss the claim and negotiate with each other",
-      "STEP_TWO": "try to reach an agreement about the claim",
-      "STEP_THREE": "consider another form of dispute resolution, such as mediation",
+      "BOTH_PARTIES": "Rhaid i’r ddau barti gymryd camau penodol cyn mynd i’r llys.",
+      "PAGE_TITLE": "Ydych chi wedi ceisio setlo’r hawliad hwn cyn mynd i’r llys?",
+      "STEPS": "Y camau hyn yw:",
+      "STEP_ONE": "trafod yr hawliad gyda’ch gilydd",
+      "STEP_TWO": "ceisio dod i gytundeb ynglŷn â’r hawliad",
+      "STEP_THREE": "ystyried ffordd arall o ddatrys yr anghydfod, er enghraifft cyfryngu",
       "TITLE": "Tried to settle this claim?"
     },
     "TRY_NEW_SERVICE": {
@@ -1660,7 +1662,11 @@
       "WHAT_LANGUAGE": "What language needs to be interpreted?"
     },
     "UNDER_18": {
-      "PAGE_TITLE": "Under 18"
+      "ABLE_TO_GET_ADVICE": "Efallai y gallwch gael cyngor am y ffurflen hawlio gan",
+      "CITIZEN_ADVICE": "Cyngor ar Bopeth (yn agor mewn ffenest newydd)",
+      "CONTENT": "Os ydych o dan 18 mae angen ichi e-bostio neu ffonio'r llys. Ni all hawlwyr gyflwyno hawliad yn erbyn rhywun dan 18 felly efallai y byddwch yn gallu stopio'r hawliad.",
+      "PAGE_TITLE": "O dan 18 oed",
+      "TITLE": "Cysylltwch â'r llys"
     },
     "UNDERSTANDING_YOUR_OPTIONS": {
       "CURRENT_DEADLINE": "Terfyn amser cyfredol ar gyfer ymateb: 4pm ar {{ responseDeadline }}",
@@ -1753,8 +1759,8 @@
     "DEFENCE_REQUIRED": "Mae angen ichi egluro pam nad oes arian yn ddyledus gennych",
     "DEFENDANT_AGE_REQUIRED": "Select yes, no, or company/organisation",
     "DEFENDANT_POSTCODE_NOT_VALID": "Postcode must be in England or Wales",
+    "DEFENDANT_YOURSELF_EVIDENCE_REQUIRED": "Dewiswch ‘ydw’ os ydych eisiau rhoi tystiolaeth eich hun",
     "DEFENDANT_EXPERT_EVIDENCE_REQUIRED": "Dewiswch ‘ydw’ os ydych eisiau defnyddio tystiolaeth arbenigwr",
-    "DEFENDANT_YOURSELF_EVIDENCE_REQUIRED": "Select yes if you want to give evidence yourself",
     "DEFENDANT_EXPERT_EXPLAIN_EXAMINE": "Explain what there is to examine",
     "DEFENDANT_WITNESS_ENTER_FIRST_NAME": "Nodwch enw cyntaf y tyst",
     "DEFENDANT_WITNESS_ENTER_LAST_NAME": "Nodwch enw olaf y tyst",
@@ -1767,7 +1773,7 @@
     "ENTER_AN_EXPLANATION": "Enter an explanation of why you can't pay now",
     "ENTER_AT_LEAST_ONE_DEBT": "Rhowch fanylion o leiaf un ddyled",
     "ENTER_AT_LEAST_ONE_REPORT": "Enter at least one report",
-    "ENTER_EXPERT_DETAILS": "Enter the expert's details",
+    "ENTER_EXPERT_DETAILS": "Nodwch fanylion yr arbenigwr",
     "ENTER_WHY_NEED_EXPERT": "Tell us why you need this expert",
     "ENTER_EXPERT_FIELD": "Enter the expert’s field of expertise",
     "ENTER_FIRST_NAME": "Enter first name",
@@ -1993,12 +1999,12 @@
     "VALID_POSITIVE_NUMBER": "Peidiwch â rhoi rhif negyddol",
     "VALID_POSTCODE": "Rhowch y cod post",
     "VALID_REASON_REQUIRED": "Rhowch reswm",
-    "VALID_REQUEST_EXTRA_4_WEEKS": "Select yes if you want an extra 4 weeks to try to settle the claim",
+    "VALID_REQUEST_EXTRA_4_WEEKS": "Dewiswch ‘ydw’ os ydych chi eisiau 4 wythnos arall i geisio setlo’r hawliad",
     "VALID_SENT_EXPERT_REPORTS": "Select yes if you have sent expert reports to the other parties",
     "VALID_SHARED_EXPERT": "Dewiswch ‘ydw’ os ydych eisiau rhannu arbenigwr gyda’r hawlydd",
     "VALID_STRICTLY_POSITIVE_NUMBER": "Rhowch rif sy'n uwch na 0",
     "VALID_TEXT_LENGTH": "Rydych wedi defnyddio gormod o nodau",
-    "VALID_TRIED_TO_SETTLE": "Select yes if you have tried to settle this claim before going to court",
+    "VALID_TRIED_TO_SETTLE": "Dewiswch ‘do’ os ydych wedi ceisio setlo’r hawliad hwn cyn mynd i’r llys",
     "VALID_TWO_DECIMAL_NUMBER": "Rhowch swm, dim mwy na dau le degol",
     "VALID_YEAR": "Rhowch flwyddyn ddilys",
     "VALID_VALUE": "A ydych yn siŵr bod hwn yn swm dilys?",
