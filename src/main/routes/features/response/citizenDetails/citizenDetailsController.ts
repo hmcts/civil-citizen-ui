@@ -3,9 +3,9 @@ import {CITIZEN_DETAILS_URL, CITIZEN_PHONE_NUMBER_URL, CLAIM_TASK_LIST_URL, DOB_
 import {Party} from '../../../../common/models/party';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {
-  getRespondentInformation,
+  getDefendantInformation,
   saveDefendantProperty,
-} from '../../../../services/features/response/citizenDetails/citizenDetailsService';
+} from '../../../../services/features/common/defendantDetailsService';
 import {PartyType} from '../../../../common/models/partyType';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {PartyDetails} from '../../../../common/form/models/partyDetails';
@@ -43,7 +43,7 @@ const redirect = (respondent: Party, req: Request, res: Response) => {
 
 citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const respondent: Party = await getRespondentInformation(req.params.id);
+    const respondent: Party = await getDefendantInformation(req.params.id);
     const partyDetails = new GenericForm(new PartyDetails(respondent.partyDetails));
     renderPage(res, req, partyDetails, respondent.type);
   } catch (error) {
@@ -53,7 +53,7 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: Request, res: Resp
 
 citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const respondent = await getRespondentInformation(req.params.id);
+    const respondent = await getDefendantInformation(req.params.id);
     const partyDetails = new GenericForm(new PartyDetails(req.body));
     partyDetails.validateSync();
 
