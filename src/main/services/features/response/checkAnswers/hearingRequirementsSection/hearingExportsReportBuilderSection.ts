@@ -66,7 +66,7 @@ const buildExpertsDetailsRows = (claim:Claim, claimId: string, lang: string | un
   const hrefLabel = changeLabel(lang);
   const rows = claim?.directionQuestionnaire?.experts?.expertDetailsList?.items;
   const expertDetailsSummaryRows: SummaryRow[] = [];
-  rows.forEach((expert, index) => {
+  rows?.forEach((expert, index) => {
     const row = index +1;
     expertDetailsSummaryRows.push(summaryRow(`${t('PAGES.EXPERT_DETAILS.SECTION_TITLE', getLng(lang))} ${row}`));
     expertDetailsSummaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.FIRST_NAME_OPTIONAL', getLng(lang)), expert.firstName, hrefExpertDetails, hrefLabel));
