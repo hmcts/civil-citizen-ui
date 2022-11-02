@@ -18,7 +18,7 @@ citizenPhoneController.get(CITIZEN_PHONE_NUMBER_URL, async (req, res, next: Next
   try {
     const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
     const citizenTelephoneNumber = responseDataRedis?.respondent1?.partyPhone
-      ? new GenericForm(new CitizenTelephoneNumber(responseDataRedis.respondent1.partyPhone)) : new GenericForm(new CitizenTelephoneNumber());
+      ? new GenericForm(new CitizenTelephoneNumber(responseDataRedis.respondent1.partyPhone.phone)) : new GenericForm(new CitizenTelephoneNumber());
     renderView(citizenTelephoneNumber, res);
   } catch (error) {
     next(error);
@@ -35,10 +35,10 @@ citizenPhoneController.post(CITIZEN_PHONE_NUMBER_URL,
       } else {
         const claim = await getCaseDataFromStore(req.params.id) || new Claim();
         if (claim.respondent1) {
-          claim.respondent1.partyPhone = model.telephoneNumber;
+          claim.respondent1.partyPhone.phone = model.telephoneNumber;
         } else {
           const respondent = new Party();
-          respondent.partyPhone = model.telephoneNumber;
+          respondent.partyPhone.phone = model.telephoneNumber;
           claim.respondent1 = respondent;
         }
         await saveDraftClaim(req.params.id, claim);

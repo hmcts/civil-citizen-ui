@@ -6,7 +6,7 @@ export const getClaimantInformation = async (claimId: string): Promise<Party> =>
   const responseData = await getCaseDataFromStore(claimId);
   return Object.assign(new Party(), responseData?.applicant1);
 };
-
+//TODO remove that method and use saveClaimantProperty
 export const saveClaimant = async (claimId: string, partyDetails: PartyDetails): Promise<void> => {
   const responseData = await getCaseDataFromStore(claimId);
   if (!responseData?.applicant1) {

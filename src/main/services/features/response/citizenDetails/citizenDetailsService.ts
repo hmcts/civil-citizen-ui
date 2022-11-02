@@ -8,7 +8,7 @@ export const getRespondentInformation = async (claimId: string): Promise<Party> 
   }
   return new Party();
 };
-
+//TODO remove that method and use saveDefendantProperty
 export const saveRespondent = async (claimId: string, party: Party): Promise<void> => {
   const responseData = await getCaseDataFromStore(claimId);
   if (!responseData.respondent1) {
@@ -21,4 +21,16 @@ export const saveRespondent = async (claimId: string, party: Party): Promise<voi
   responseData.respondent1.partyDetails.postToThisAddress = party?.partyDetails.postToThisAddress;
 
   await saveDraftClaim(claimId, responseData);
+};
+
+export const saveDefendantProperty = async (userId: string, propertyName: string, value: any): Promise<void> => {
+  const claim = await getCaseDataFromStore(userId);
+  if (claim.respondent1) {
+    claim.respondent1[propertyName as keyof Party] = value;
+  } else {
+    const claimant = new Party();
+    claimant[propertyName as keyof Party] = value;
+    claim.respondent1 = claimant;
+  }
+  await saveDraftClaim(userId, claim);
 };

@@ -10,7 +10,7 @@ import {
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {
   getClaimantInformation,
-  saveClaimant,
+  saveClaimantProperty,
 } from '../../../../services/features/claim/yourDetails/claimantDetailsService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {Party} from '../../../../common/models/party';
@@ -68,7 +68,7 @@ claimantDetailsController.post(detailsURLs, async (req: AppRequest | Request, re
     if (partyDetails.hasErrors()) {
       renderPage(res, req, partyDetails, claimant.type);
     } else {
-      await saveClaimant(caseId, partyDetails.model);
+      await saveClaimantProperty(caseId, 'partyDetails', partyDetails.model);
 
       if (claimant.type === PartyType.COMPANY || claimant.type === PartyType.ORGANISATION) {
         res.redirect(constructResponseUrlWithIdParams(caseId, CLAIMANT_PHONE_NUMBER_URL));
