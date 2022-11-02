@@ -34,9 +34,9 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      { {% if form.hasErrors() %}
+      {% if form.hasErrors() %}
         {{ errorSummary(errors, t) }}
-      {% endif %} }
+      {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
