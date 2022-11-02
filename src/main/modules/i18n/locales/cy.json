@@ -19,7 +19,7 @@
     "MONTH": "Mis",
     "MONTHS": "Mis",
     "NO": "Nac oes",
-    "OPTIONAL_CONTACT_PERSON": "Contact person (optional)",
+    "OPTIONAL_CONTACT_PERSON": "Unigolyn cyswllt (dewisol)",
     "REMOVE": "Tynnu",
     "RETURN_PAGE": "You can return to RETURN-PAGE and start your claim or defence again.",
     "TECHNICAL_PROBLEMS": "Sorry, we had some technical problems during your last operation. Please try again later.",
@@ -124,6 +124,7 @@
     "INPUT_LABELS": {
       "FIRST_NAME": "Enw cyntaf",
       "LAST_NAME": "Cyfenw",
+      "LAST_NAME_2": "Enw olaf",
       "TITLE": "Teitl"
     },
     "MONTH_NAMES": {
@@ -300,6 +301,7 @@
       "DEBTS_TOTAL_OWED": "Cyfanswm sy’n ddyledus gennych",
       "DEBTS_MONTHLY_PAYMENTS": "Taliadau misol",
       "DETAILS_TITLE": "Eich manylion",
+      "DETAILS_TITLE_CLAIMANT": "Eich manylion (yr hawlydd)",
       "DISABILITY_ARE_YOU_DISABLED": "Ydych chi'n anabl?",
       "DOB": "Dyddiad Geni",
       "EMAIL": "E-bost",
@@ -364,6 +366,7 @@
       "TAX_PAYMENT_AMOUNT_YOU_OWE": "Swm sydd arnoch chi?",
       "TAX_PAYMENT_REASON": "Rheswm",
       "THEIR_DETAILS_TITLE": "Their details",
+      "THEIR_DETAILS_TITLE_DEFENDANT": "Their details (defendant)",
       "TITLE": "Gwiriwch eich ateb",
       "TIMELINE_TITLE": "Eich llinell amser o'r hyn a ddigwyddodd (dewisol)",
       "TIMELINE_COMMENTS": "Sylwadau am eu llinell amser (dewisol)",
@@ -398,14 +401,14 @@
       "ADDRESS_FOR_SERVICE": "Gelwir hwn yn 'gyfeiriad cyflwyno'.",
       "ADDRESS_NOT_FOUND": "Ni allwn dod o hyd i gyfeiriad ar gyfer y cod post hwnnw.",
       "ALL_CORRESPONDENCE": "Byddir yn anfon pob gohebiaeth i'r cyfeiriad hwn.",
-      "BUSINESS_NAME": "Business name",
+      "BUSINESS_NAME": "Enw'r busnes",
       "CLAIMANT_DETAILS_PROVIDED": "Darparwyd eich enw a'ch cyfeiriad gan yr unigolyn, y busnes neu'r sefydliad sy'n cyflwyno'r hawliad (yr hawlydd).",
       "CONTACT_PERSON_HINT": "The defendant can contact this person to discuss the claim",
       "COMPANY_ADDRESS": "Company Address",
       "COMPANY_DETAILS": "Enter company details",
       "CORRESPONDENCE_ADDRESS": "Cyfeiriad ar gyfer gohebiaeth",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Ydych chi am inni anfon gohebiaeth i gyfeiriad arall?",
-      "FULL_NAME": "Your full name",
+      "FULL_NAME": "Eich enw llawn",
       "PARTY_NAME_COMPANY": "Company name",
       "PARTY_NAME_ORGANISATION": "Organisation name",
       "PAGE_TITLE": "Eich manylion",
@@ -420,7 +423,7 @@
       "EXAMPLE": "Defnyddiwch rifau yn unig, er enghraifft, 01632960001.",
       "INFORMATION": "Byddwn yn rhoi eich rhif ffôn i'r unigolyn, y busnes neu'r sefydliad sydd wedi cyflwyno hawliad yn eich erbyn, neu eu cynrychiolydd cyfreithiol os oes ganddynt gynrychiolydd.",
       "MORE_INFORMATION": "Ni fyddwn yn eich ffonio ond os bydd arnom angen rhagor o wybodaeth am yr hawliad hwn.",
-      "PAGE_TITLE": "Your phone number",
+      "PAGE_TITLE": "Eich rhif ffôn",
       "TITLE": "Rhowch rif ffôn (dewisol)"
     },
     "CITIZEN_RESPONSE_TYPE": {
@@ -596,9 +599,9 @@
       "TITLE": "About you and this claim"
     },
     "CLAIMANT_PHONE": {
-      "INFORMATION": "We might need to speak to you about this claim. We’ll only call on weekdays between 9am and 5pm.",
+      "INFORMATION": "Efallai y bydd angen i ni siarad â chi am yr hawliad hwn. Byddwn ond yn ffonio ar ddydd Llun i ddydd Gwener rhwng 9am a 5pm.",
       "NUMBER_INFORMATION": "We'll also give your number to the person, business, or organisation you are claiming from.",
-      "PAGE_TITLE": "Your phone number",
+      "PAGE_TITLE": "Eich rhif ffôn",
       "TITLE": "Enter a phone number (optional)"
     },
     "COMPANY_DETAILS": {
@@ -630,9 +633,9 @@
       "YOULL_HAVE_TO_PAY": "You'll have to pay an additional fee if you want you"
     },
     "CONSIDER_CLAIMANT_DOCUMENTS": {
-      "GIVE_DETAILS": "Give details of the documents",
-      "PAGE_TITLE": "Are there any documents the claimant has that you want the court to consider?",
-      "TITLE": "Are there any documents the claimant has that you want the court to consider?"
+      "GIVE_DETAILS": "Rhowch fanylion y dogfennau",
+      "PAGE_TITLE": "A oes yna unrhyw ddogfennau sydd gan yr hawlydd yr ydych eisiau i’r llys eu hystyried?",
+      "TITLE": "A oes yna unrhyw ddogfennau sydd gan yr hawlydd yr ydych eisiau i’r llys eu hystyried?"
     },
     "CONTACT_THEM": {
       "ABOUT": "Ynghylch yr Hawliad",
@@ -1023,7 +1026,6 @@
       "ADD_ANOTHER": "Ychwanegu adroddiad arall",
       "DATE_OF_REPORT": "Date of report",
       "EXPERT_NAME": "Enw’r arbenigwr",
-      "FOR_EXAMPLE": "Er enghraifft, {{ date }}",
       "PAGE_TITLE": "A oes gennych adroddiad wedi’i ysgrifennu gan arbenigwr yn barod?",
       "REPORT_DATE": "Beth yw dyddiad yr adroddiad?",
       "REPORT_TEXT": "Adroddiad",
@@ -1274,14 +1276,14 @@
       "TITLE": "A ydych yn cefnogi rhywun arall yn ariannol?"
     },
     "OTHER_WITNESSES": {
-      "ADD_ANOTHER_WITNESS": "Add another witness",
-      "EMAIL_LABEL": "Email address (optional)",
-      "PAGE_TITLE": "Do you have other witnesses?",
-      "PHONE_LABEL": "Phone number (optional)",
-      "REMOVE_WITNESS": "Remove witness",
-      "THIS_IS_SOMEONE_WHO_CAN_CONFIRM": "This is someone who can confirm your version of events.",
-      "TITLE": "Do you have other witnesses?",
-      "WHAT_THEY_WITNESSED_LABEL": "Tell us what they witnessed"
+      "ADD_ANOTHER_WITNESS": "Ychwanegu tyst arall",
+      "EMAIL_LABEL": "Cyfeiriad e-bost (dewisol)",
+      "PAGE_TITLE": "A oes gennych dystion eraill?",
+      "PHONE_LABEL": "Rhif ffôn (dewisol)",
+      "REMOVE_WITNESS": "Tynnu'r tyst",
+      "THIS_IS_SOMEONE_WHO_CAN_CONFIRM": "Tyst yw rhywun sy’n gallu cadarnhau eich fersiwn chi o beth ddigwyddodd.",
+      "TITLE": "A oes gennych dystion eraill?",
+      "WHAT_THEY_WITNESSED_LABEL": "Dywedwch wrthym beth welsant"
     },
     "PARTIAL_ADMISSION_ALREADY_PAID": {
       "PAGE_TITLE": "Already paid"
@@ -1359,7 +1361,6 @@
       "FIND_PIN": "You can find it on the email or letter we sent you.",
       "FOR_A_NEW_SECURITY_CODE": "for a new security code.",
       "SECURITY_CODE": "Security code",
-      "SOURCE_OF_EXPENSES": "Source of expense",
       "TITLE": "Enter security code"
     },
     "REASON": {
@@ -1757,10 +1758,10 @@
     "DEFENDANT_EXPERT_EVIDENCE_REQUIRED": "Dewiswch ‘ydw’ os ydych eisiau defnyddio tystiolaeth arbenigwr",
     "DEFENDANT_YOURSELF_EVIDENCE_REQUIRED": "Select yes if you want to give evidence yourself",
     "DEFENDANT_EXPERT_EXPLAIN_EXAMINE": "Explain what there is to examine",
-    "DEFENDANT_WITNESS_ENTER_FIRST_NAME": "Enter the witness’s first name",
-    "DEFENDANT_WITNESS_ENTER_LAST_NAME": "Enter the witness’s last name",
+    "DEFENDANT_WITNESS_ENTER_FIRST_NAME": "Nodwch enw cyntaf y tyst",
+    "DEFENDANT_WITNESS_ENTER_LAST_NAME": "Nodwch enw olaf y tyst",
     "DEFENDANT_WITNESS_SELECT_OTHER": "Select yes if you have other witnesses",
-    "DEFENDANT_WITNESS_WHAT_THEY_WITNESSED": "Tell us what they witnessed",
+    "DEFENDANT_WITNESS_WHAT_THEY_WITNESSED": "Dywedwch wrthym beth welsant",
     "DESCRIPTION_REQUIRED": "Rhowch ddisgrifiad o beth ddigwyddodd",
     "DETAILS_REQUIRED": "Rhowch fanylion",
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Tell us if you believe the hearing requirement details on this page are true",
@@ -1879,7 +1880,7 @@
     "SELECT_LANGUAGE_SPEAK": "Select the language you, your experts, and your witnesses will speak at the hearing",
     "SELECT_REQUEST": "Dewiswch os ydych eisiau gwneud cais am ragor o amser i ymateb, os ydych eisoes wedi cytuno ar ragor o amser i ymateb, os yw eich cais am ragor o amser wedi’i wrthod, neu nid ydych angen rhagor o amser i ymateb",
     "SELECT_SUPPORT": "Select the support the person needs to attend a hearing",
-    "SELECT_YES_IF_DOCUMENTS": "Select yes if there are documents the claimant has that you want the court to consider",
+    "SELECT_YES_IF_DOCUMENTS": "Dewiswch ‘oes’ os oes gan yr hawlydd ddogfennau yr ydych eisiau i’r llys eu hystyried",
     "SELECT_YES_IF_SUPPORT": "Select yes if someone needs support to attend a hearing",
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
     "SIGNER_NAME_TOO_LONG": "You've entered too many characters",
