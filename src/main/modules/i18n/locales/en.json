@@ -1663,7 +1663,11 @@
       "WHAT_LANGUAGE": "What language needs to be interpreted?"
     },
     "UNDER_18": {
-      "PAGE_TITLE": "Under 18"
+      "ABLE_TO_GET_ADVICE": "You might be able to get advice about the claim from",
+      "CITIZEN_ADVICE": "Citizens Advice (opens in a new window)",
+      "CONTENT": "If you are under 18 you need to email or phone the court. Claimants cannot submit a claim against someone under 18 so you may be able to have the claim stopped.",
+      "PAGE_TITLE": "Under 18",
+      "TITLE": "Contact the court"
     },
     "UNDERSTANDING_YOUR_OPTIONS": {
       "CURRENT_DEADLINE": "Current response deadline: 4pm on {{ responseDeadline }}",
