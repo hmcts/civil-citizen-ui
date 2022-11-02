@@ -5,7 +5,7 @@ import {CCDPaymentOption} from '../../../../../main/common/models/ccdResponse/cc
 import {CCDRepaymentPlanFrequency} from '../../../../../main/common/models/ccdResponse/ccdRepaymentPlan';
 import {Party} from '../../../../../main/common/models/party';
 import {ResponseType} from '../../../../../main/common/form/models/responseType';
-import {YesNoUpperCamelCase} from '../../../../../main/common/form/models/yesNo';
+import {YesNoUpperCase} from '../../../../../main/common/form/models/yesNo';
 
 describe('translate response to ccd version', () => {
   it('should translate payment option to ccd', () => {
@@ -67,7 +67,7 @@ describe('translate response to ccd version', () => {
     //When
     const ccdResponse = translateDraftResponseToCCD(claim, false);
     //Then
-    expect(ccdResponse.responseClaimMediationSpecRequired).toBe(YesNoUpperCamelCase.YES);
+    expect(ccdResponse.responseClaimMediationSpecRequired).toBe(YesNoUpperCase.YES);
   });
   it('should translate address changed to ccd', ()=> {
     //Given
@@ -85,7 +85,7 @@ describe('translate response to ccd version', () => {
     //When
     const ccdResponse = translateDraftResponseToCCD(claim, addressChanged);
     //Then
-    expect(ccdResponse.specAoSApplicantCorrespondenceAddressRequired).toBe(YesNoUpperCamelCase.NO);
+    expect(ccdResponse.specAoSApplicantCorrespondenceAddressRequired).toBe(YesNoUpperCase.NO);
   });
   it('should translate addres has not changed to ccd', ()=>{
     //Given
@@ -103,7 +103,7 @@ describe('translate response to ccd version', () => {
     //When
     const ccdResponse = translateDraftResponseToCCD(claim, addressChanged);
     //Then
-    expect(ccdResponse.specAoSApplicantCorrespondenceAddressRequired).toBe(YesNoUpperCamelCase.YES);
+    expect(ccdResponse.specAoSApplicantCorrespondenceAddressRequired).toBe(YesNoUpperCase.YES);
   });
 
 });

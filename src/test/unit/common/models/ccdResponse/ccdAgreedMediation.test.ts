@@ -1,5 +1,5 @@
 import {toAgreedMediation} from '../../../../../main/services/translation/response/convertToCCDAgreedMediation';
-import {YesNo, YesNoUpperCamelCase} from '../../../../../main/common/form/models/yesNo';
+import {YesNo, YesNoUpperCase} from '../../../../../main/common/form/models/yesNo';
 
 describe('translate mediation option to ccd version', ()=> {
   it('should transfer mediation to ccd version if can we use is yes', ()=> {
@@ -11,7 +11,7 @@ describe('translate mediation option to ccd version', ()=> {
     //When
     const result = toAgreedMediation(mediation);
     //Then
-    expect(result).toBe(YesNoUpperCamelCase.YES);
+    expect(result).toBe(YesNoUpperCase.YES);
   });
   it('should transfer mediation to ccd version if disagree is yes', ()=> {
     //Given
@@ -23,7 +23,7 @@ describe('translate mediation option to ccd version', ()=> {
     //When
     const result = toAgreedMediation(mediation);
     //Then
-    expect(result).toBe(YesNoUpperCamelCase.NO);
+    expect(result).toBe(YesNoUpperCase.NO);
   });
   it('should transfer mediation to ccd version if there is phone number', ()=> {
     //Given
@@ -38,7 +38,7 @@ describe('translate mediation option to ccd version', ()=> {
     //When
     const result = toAgreedMediation(mediation);
     //Then
-    expect(result).toBe(YesNoUpperCamelCase.YES);
+    expect(result).toBe(YesNoUpperCase.YES);
   });
   it('should transfer mediation to ccd version if there is no phone number', ()=> {
     //Given
@@ -50,6 +50,6 @@ describe('translate mediation option to ccd version', ()=> {
     //When
     const result = toAgreedMediation(mediation);
     //Then
-    expect(result).toBe(YesNoUpperCamelCase.YES);
+    expect(result).toBe(YesNoUpperCase.YES);
   });
 });
