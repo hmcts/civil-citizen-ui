@@ -1,5 +1,6 @@
 const BASE_CASE_URL = '/case/:id';
 const BASE_CLAIM_URL = '/claim';
+const BASE_CLAIMANT_RESPONSE_URL = '/claimant-response/:id';
 export const BASE_ELIGIBILITY_URL = '/eligibility';
 export const BASE_FIRST_CONTACT_URL = '/first-contact';
 const BASE_CASE_RESPONSE_URL = `${BASE_CASE_URL}/response`;
@@ -177,3 +178,5 @@ export const CLAIMANT_PHONE_NUMBER_URL = `${BASE_CLAIM_URL}/claimant-phone`;
 export const CLAIMANT_SOLE_TRADER_DETAILS_URL = `${BASE_CLAIM_URL}/claimant-sole-trader-details`;
 export const CLAIMANT_INTEREST_RATE_URL = `${BASE_CLAIM_URL}/interest-rate`;
 export const CLAIMANT_INTEREST_DATE_URL = `${BASE_CLAIM_URL}/interest-date`;
+export const CLAIMANT_RESPONSE_INTETNTION_TO_PROCEED_URL = `${BASE_CLAIMANT_RESPONSE_URL}/intention-to-proceed`;
+export const CLAIMANT_RESPONSE_TASK_LIST_URL = `${BASE_CLAIMANT_RESPONSE_URL}/task-list`;
