@@ -3,22 +3,22 @@ import {OptionalDateNotInFutureValidator} from '../../../validators/optionalDate
 import {OptionalDateFourDigitValidator} from '../../../validators/optionalDateFourDigitValidator';
 import {DateConverter} from '../../../../utils/dateConverter';
 
-export class ClaimantDoB {
+export class DateOfBirth {
   @ValidateIf(o => (o.day < 32 && o.month < 13 && o.year > 999))
   @IsDate({message: 'ERRORS.VALID_DATE'})
   @Validate(OptionalDateNotInFutureValidator, {message: 'ERRORS.CORRECT_DATE_NOT_IN_FUTURE'})
     dateOfBirth?: Date;
 
-  @Min((new Date().getFullYear() - 150),{message:'ERRORS.VALID_YEAR'})
+  @Min((new Date().getFullYear() - 150), {message: 'ERRORS.VALID_YEAR'})
   @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
     year: number;
 
-  @Min(1,{message:'ERRORS.VALID_MONTH'})
-  @Max(12,{message:'ERRORS.VALID_MONTH'})
+  @Min(1, {message: 'ERRORS.VALID_MONTH'})
+  @Max(12, {message: 'ERRORS.VALID_MONTH'})
     month: number;
 
-  @Min(1,{message:'ERRORS.VALID_DAY'})
-  @Max(31,{message:'ERRORS.VALID_DAY'})
+  @Min(1, {message: 'ERRORS.VALID_DAY'})
+  @Max(31, {message: 'ERRORS.VALID_DAY'})
     day: number;
 
   constructor(day?: string, month?: string, year?: string) {

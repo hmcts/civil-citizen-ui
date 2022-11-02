@@ -1,10 +1,5 @@
-import {IsDefined, IsNotEmpty, MaxLength, Validate, ValidateIf} from 'class-validator';
-import {Party} from 'models/party';
-import {Email} from 'models/Email';
-import {OptionalIntegerValidator} from 'common/form/validators/optionalIntegerValidator';
-import {PartyPhone} from 'models/PartyPhone';
-import {ClaimantDoB} from 'common/form/models/claim/claimant/claimantDoB';
-import {Address} from 'common/form/models/address';
+import {IsDefined, IsNotEmpty, MaxLength, ValidateIf, ValidateNested} from 'class-validator';
+import {Address} from '../../../common/form/models/address';
 
 export class PartyDetails {
 
@@ -24,19 +19,28 @@ export class PartyDetails {
   @ValidateIf(o => o.businessName !== undefined)
   @MaxLength(255, {message: 'ERRORS.TEXT_TOO_MANY'})
     soleTraderTradingAs?: string;
-  @ValidateIf(o => o.partyPhone !== undefined)
-  @IsNotEmpty({message: 'ERRORS.NOT_TO_REMOVE_PHONE_NUMBER'})
-  @Validate(OptionalIntegerValidator, {message: 'ERRORS.VALID_PHONE_NUMBER'})
-    partyPhone?: PartyPhone;
-  emailAddress?: Email;
-  dateOfBirth?: ClaimantDoB;
-  primaryAddress?: Address;
-  correspondenceAddress?: Address;
+  @ValidateIf(o => o.partyName !== undefined)
+  @IsNotEmpty({message: 'ERRORS.VALID_PARTY_NAME'})
+    partyName?: string;
+  contactPerson?: string;
+  postToThisAddress?: string;
+  provideCorrespondenceAddress?: string;
+  @ValidateNested()
+    primaryAddress?: Address;
+  @ValidateIf(o => o.provideCorrespondenceAddress === 'yes')
+  @ValidateNested()
+    correspondenceAddress?: Address;
 
-  constructor(value: Party) {
+  constructor(value: PartyDetails) {
     this.individualTitle = value?.individualTitle;
     this.individualFirstName = value?.individualFirstName;
     this.individualLastName = value?.individualLastName;
     this.soleTraderTradingAs = value?.soleTraderTradingAs;
+    this.partyName = value?.partyName;
+    this.contactPerson = value?.contactPerson;
+    this.postToThisAddress = value?.postToThisAddress;
+    this.provideCorrespondenceAddress = value?.provideCorrespondenceAddress;
+    this.primaryAddress = value?.primaryAddress;
+    this.correspondenceAddress = value?.correspondenceAddress;
   }
 }
