@@ -37,7 +37,9 @@ export const addSupportRequiredList = (claim: Claim, hearingRequirementsSection:
       summaryRow(t('PAGES.SUPPORT_REQUIRED.TITLE', {lng}), t(`COMMON.${YesNoUpperCase.YES}`, {lng}), supportRequiredHref, changeLabel(lng)),
     );
 
-    claim.isSupportRequiredDetailsAvailable && supportRequiredList.items.forEach(item => {
+    claim.isSupportRequiredDetailsAvailable && supportRequiredList.items.forEach((item, index) => {
+      const row = index + 1;
+      hearingRequirementsSection.summaryList.rows.push(summaryRow(`${t('PAGES.SUPPORT_REQUIRED.PERSON_TEXT', (lng))} ${row}`));
       hearingRequirementsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.SUPPORT_REQUIRED_NAME', {lng}), item.fullName, supportRequiredHref, changeLabel(lng)));
       hearingRequirementsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.SUPPORT_REQUIRED_DETAILS', {lng}), generateSupportDetails(item), supportRequiredHref, changeLabel(lng)));
     });
