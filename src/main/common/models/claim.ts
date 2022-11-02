@@ -324,7 +324,7 @@ export class Claim {
     return this.respondent1ResponseDate <= new Date();
   }
   hasExpertReportDetails(): boolean {
-    return this.directionQuestionnaire?.hasExpertReportDetails();
+    return this.directionQuestionnaire?.experts?.expertReportDetails?.option === YesNo.YES;
   }
 
   hasPermissionForExperts(): boolean {
