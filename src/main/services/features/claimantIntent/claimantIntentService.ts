@@ -27,9 +27,11 @@ const saveClaimantIntent = async (claimId: string, value: any, claimantIntentPro
       }
     } else {
       const claimantIntent: any = new ClaimantIntent();
-      (parentPropertyName) ?
-        claimantIntent[parentPropertyName] = {[claimantIntentPropertyName]: value} :
+      if (parentPropertyName) {
+        claimantIntent[parentPropertyName] = {[claimantIntentPropertyName]: value};
+      } else {
         claimantIntent[claimantIntentPropertyName] = value;
+      }
 
       claim.claimantIntent = claimantIntent;
     }
