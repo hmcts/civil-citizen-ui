@@ -66,7 +66,6 @@ export class Claim {
   totalInterest?: number;
   claimInterest?: YesNo;
   interest?: Interest;
-  interestClaimFrom?: InterestClaimFromType;
   interestFromSpecificDate?: Date;
   interestClaimOptions: InterestClaimOptionsType;
   sameRateInterestSelection?: SameRateInterestSelection;
@@ -183,11 +182,11 @@ export class Claim {
   }
 
   isInterestFromClaimSubmitDate(): boolean {
-    return this.interestClaimFrom === InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
+    return this.interest?.interestClaimFrom === InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
   }
 
   isInterestFromASpecificDate(): boolean {
-    return this.interestClaimFrom === InterestClaimFromType.FROM_A_SPECIFIC_DATE;
+    return this.interest?.interestClaimFrom === InterestClaimFromType.FROM_A_SPECIFIC_DATE;
   }
 
   isInterestClaimOptionsSameRateInterest(): boolean {

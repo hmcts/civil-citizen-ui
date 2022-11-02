@@ -67,7 +67,7 @@ describe('Claim isInterestFromClaimSubmitDate', () => {
   });
   it('should return true', () => {
     //Given
-    claim.interestClaimFrom = InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
+    claim.interest = {interestClaimFrom : InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE};;
     //When
     const result = claim.isInterestFromClaimSubmitDate();
     //Then
@@ -75,7 +75,7 @@ describe('Claim isInterestFromClaimSubmitDate', () => {
   });
   it('should return false', () => {
     //Given
-    claim.interestClaimFrom = InterestClaimFromType.FROM_A_SPECIFIC_DATE;
+    claim.interest = {interestClaimFrom : InterestClaimFromType.FROM_A_SPECIFIC_DATE};;
     //When
     const result = claim.isInterestFromClaimSubmitDate();
     //Then
@@ -93,7 +93,7 @@ describe('Claim isInterestFromASpecificDate', () => {
   });
   it('should return true', () => {
     //Given
-    claim.interestClaimFrom = InterestClaimFromType.FROM_A_SPECIFIC_DATE;
+    claim.interest = {interestClaimFrom : InterestClaimFromType.FROM_A_SPECIFIC_DATE};
     //When
     const result = claim.isInterestFromASpecificDate();
     //Then
@@ -101,7 +101,7 @@ describe('Claim isInterestFromASpecificDate', () => {
   });
   it('should return false', () => {
     //Given
-    claim.interestClaimFrom = InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
+    claim.interest = {interestClaimFrom : InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE};
     //When
     const result = claim.isInterestFromASpecificDate();
     //Then

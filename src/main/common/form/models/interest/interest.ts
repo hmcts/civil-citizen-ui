@@ -1,8 +1,13 @@
 import {InterestStartDate} from './interestStartDate';
-import {InterestEndDateType} from '../../../../common/form/models/claimDetails';
+import {
+  InterestClaimFromType,
+  InterestEndDateType,
+  SameRateInterestSelection
+} from '../../../../common/form/models/claimDetails';
 import {TotalInterest} from './totalInterest';
 import {YesNo} from '../../../../common/form/models/yesNo';
 import {HowMuchContinueClaiming} from './howMuchContinueClaiming';
+import {InterestClaimOptionsType} from "common/form/models/claim/interest/interestClaimOptionsType";
 
 export class Interest {
   continueClaimingInterest?: YesNo;
@@ -10,12 +15,9 @@ export class Interest {
   interestEndDate?: InterestEndDateType;
   totalInterest?: TotalInterest;
   howMuchContinueClaiming?: HowMuchContinueClaiming;
-
-  constructor(
-    interestStartDate?: InterestStartDate,
-    interestEndDate?: InterestEndDateType,
-  ) {
-    this.interestStartDate = interestStartDate;
-    this.interestEndDate = interestEndDate;
-  }
+  interestClaimFrom?: InterestClaimFromType;
+  interestFromSpecificDate?: Date;
+  interestClaimOptions?: InterestClaimOptionsType;
+  sameRateInterestSelection?: SameRateInterestSelection;
+  breakDownInterestTotal?: number;
 }

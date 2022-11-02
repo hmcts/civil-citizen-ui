@@ -112,7 +112,6 @@ function buildMockClaim(): Claim {
     calculatedAmountInPence: '11500',
   };
   _mockClaim.claimInterest = YesNo.YES;
-  _mockClaim.interestClaimFrom = InterestClaimFromType.FROM_A_SPECIFIC_DATE;
   _mockClaim.claimAmountBreakup = [
     {
       value: {
@@ -124,6 +123,7 @@ function buildMockClaim(): Claim {
 
   _mockClaim.interest = {
     interestEndDate: InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE,
+    interestClaimFrom: InterestClaimFromType.FROM_A_SPECIFIC_DATE,
   };
   _mockClaim.interestFromSpecificDate = new Date('2022-05-20');
   _mockClaim.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;

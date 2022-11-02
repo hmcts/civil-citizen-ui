@@ -21,7 +21,7 @@ describe('Interest Utils', () => {
 
   it('getInterestDateOrIssueDate should return submit date when InterestClaimFromType is selected claim submit date', () => {
     //Given
-    claim.interestClaimFrom = InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
+    claim.interest.interestClaimFrom  = InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
 
     //When
     const result = getInterestDateOrIssueDate(claim);

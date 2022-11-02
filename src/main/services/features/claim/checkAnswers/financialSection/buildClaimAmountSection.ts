@@ -41,10 +41,10 @@ export const buildClaimAmountSection = (claim: Claim, claimId: string, lang: str
     claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.CLAIMANT_INTEREST_RATE.TITLE', {lng}), differentRateInterestType, CLAIMANT_INTEREST_RATE_URL, changeLabel(lang)));
     claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.CLAIMANT_INTEREST_RATE.REASON', {lng}), claim.sameRateInterestSelection.reason, CLAIMANT_INTEREST_RATE_URL, changeLabel(lang)));
   }
-  if (claim?.interestClaimFrom) {
-    const interestClaimFrom = 'PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.' + claim.interestClaimFrom;
+  if (claim?.interest?.interestClaimFrom) {
+    const interestClaimFrom = 'PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.' + claim.interest?.interestClaimFrom;
     claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.TITLE', {lng}), t(interestClaimFrom, {lng}), CLAIM_INTEREST_FROM_URL, changeLabel(lang)));
-    if (claim?.interestClaimFrom === InterestClaimFromType.FROM_A_SPECIFIC_DATE) {
+    if (claim?.interest?.interestClaimFrom === InterestClaimFromType.FROM_A_SPECIFIC_DATE) {
       const interestClaimEndDate = 'PAGES.CLAIM_JOURNEY.INTEREST_END_DATE.' + claim.interest.interestEndDate;
       claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.DATE_INTEREST', {lng}), formatDateToFullDate(claim.interest.interestStartDate.date, getLng(lang)), CLAIM_INTEREST_FROM_URL, changeLabel(lang)));
       claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.REASON', {lng}), claim.interest.interestStartDate.reason, changeLabel(lang)));
