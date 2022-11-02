@@ -6,13 +6,21 @@ import {
   CLAIM_HELP_WITH_FEES_URL,
   CLAIM_TOTAL_URL,
 } from '../../../../../../main/routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {YesNo} from '../../../../../../main/common/form/models/yesNo';
+import {
+  getClaimDetails,
+  saveClaimDetails,
+} from '../../../../../../main/services/features/claim/details/claimDetailsService';
+import {Claim} from '../../../../../../main/common/models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/services/features/claim/details/claimDetailsService');
+
+const mockClaimDetails = getClaimDetails as jest.Mock;
+const mockSaveClaimDetails = saveClaimDetails as jest.Mock;
 
 describe('Claim Details - Help With Fees', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -25,7 +33,9 @@ describe('Claim Details - Help With Fees', () => {
 
   describe('on GET', () => {
     it('should return Help With Fees page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockClaimDetails.mockImplementationOnce(async () => {
+        return new Claim();
+      });
       await request(app)
         .get(CLAIM_HELP_WITH_FEES_URL)
         .expect((res) => {
@@ -34,7 +44,9 @@ describe('Claim Details - Help With Fees', () => {
         });
     });
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockClaimDetails.mockImplementationOnce(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CLAIM_HELP_WITH_FEES_URL)
         .expect((res) => {
@@ -45,8 +57,14 @@ describe('Claim Details - Help With Fees', () => {
   });
 
   describe('on POST', () => {
+    beforeAll(() => {
+      mockClaimDetails.mockImplementationOnce(async () => {
+        return new Claim();
+      });
+      mockSaveClaimDetails.mockImplementation(async () => Promise<void>);
+    });
+
     it('should redirect to total page when NO selected', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CLAIM_HELP_WITH_FEES_URL)
         .send({option: YesNo.NO})
@@ -55,6 +73,7 @@ describe('Claim Details - Help With Fees', () => {
           expect(res.get('location')).toBe(CLAIM_TOTAL_URL);
         });
     });
+
     it('should redirect to total page when YES selected', async () => {
       await request(app)
         .post(CLAIM_HELP_WITH_FEES_URL)
@@ -64,8 +83,8 @@ describe('Claim Details - Help With Fees', () => {
           expect(res.get('location')).toBe(CLAIM_TOTAL_URL);
         });
     });
+
     it('should show error if no radio button selected', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CLAIM_HELP_WITH_FEES_URL)
         .send({option:''})
@@ -74,8 +93,8 @@ describe('Claim Details - Help With Fees', () => {
           expect(res.text).toContain(t('ERRORS.VALID_YES_NO_SELECTION'));
         });
     });
+
     it('should show error if Yes selected and reference number is empty', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CLAIM_HELP_WITH_FEES_URL)
         .send({option:YesNo.YES})
@@ -84,8 +103,12 @@ describe('Claim Details - Help With Fees', () => {
           expect(res.text).toContain(t('ERRORS.HELP_WITH_FEES_REFERENCE_REQUIRED'));
         });
     });
+
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockSaveClaimDetails.mockImplementationOnce(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+
       await request(app)
         .post(CLAIM_HELP_WITH_FEES_URL)
         .send({option:YesNo.NO})
