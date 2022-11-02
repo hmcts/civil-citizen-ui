@@ -7,7 +7,7 @@ import {
   saveClaimantProperty,
 } from '../../../../../../main/services/features/claim/yourDetails/claimantDetailsService';
 import {Claim} from '../../../../../../main/common/models/claim';
-import {buildPrimaryAddress, mockClaim} from '../../../../../utils/mockClaim';
+import {buildAddress, mockClaim} from '../../../../../utils/mockClaim';
 import {Party} from '../../../../../../main/common/models/party';
 import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 import {buildCitizenAddress} from '../../../../../utils/mockForm';
@@ -102,7 +102,7 @@ describe('Citizen details service', () => {
       claimData.applicant1.individualTitle = 'Mr.';
       claimData.applicant1.individualFirstName = 'John';
       claimData.applicant1.individualLastName = 'Doe';
-      claimData.applicant1.primaryAddress = buildPrimaryAddress();
+      claimData.applicant1.partyDetails.primaryAddress = buildAddress();
       claimData.applicant1.provideCorrespondenceAddress = YesNo.NO;
 
       //When
@@ -123,12 +123,12 @@ describe('Citizen details service', () => {
       claimData.applicant1.individualTitle = 'Mr.';
       claimData.applicant1.individualFirstName = 'John';
       claimData.applicant1.individualLastName = 'Doe';
-      claimData.applicant1.primaryAddress = buildPrimaryAddress();
+      claimData.applicant1.partyDetails.primaryAddress = buildAddress();
       claimData.applicant1.provideCorrespondenceAddress = YesNo.NO;
       mockGetCaseData.mockImplementation(async () => {
         const claim = mockClaim;
         const claimant = new Party();
-        claimant.primaryAddress = buildPrimaryAddress();
+        claimant.partyDetails.primaryAddress = buildAddress();
         claim.respondent1 = claimant;
         return mockClaim;
       });
@@ -153,7 +153,7 @@ describe('Citizen details service', () => {
       claimData.applicant1.individualTitle = 'individualTitle';
       claimData.applicant1.individualFirstName = 'individualFirstName';
       claimData.applicant1.individualLastName = 'individualLastName';
-      claimData.applicant1.primaryAddress = buildPrimaryAddress();
+      claimData.applicant1.partyDetails.primaryAddress = buildAddress();
       claimData.applicant1.provideCorrespondenceAddress = YesNo.NO;
 
       //When
@@ -177,7 +177,7 @@ describe('Citizen details service', () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = mockClaim;
         const claimant = new Party();
-        claimant.primaryAddress = buildPrimaryAddress();
+        claimant.partyDetails.primaryAddress = buildAddress();
         claim.respondent1 = claimant;
         return mockClaim;
       });
@@ -203,7 +203,7 @@ describe('Citizen details service', () => {
       claimData.applicant1.individualTitle = 'individualTitle';
       claimData.applicant1.individualFirstName = 'individualFirstName';
       claimData.applicant1.individualLastName = 'individualLastName';
-      claimData.applicant1.primaryAddress = buildPrimaryAddress();
+      claimData.applicant1.partyDetails.primaryAddress = buildAddress();
       claimData.applicant1.provideCorrespondenceAddress = YesNo.NO;
 
       //When
@@ -227,7 +227,7 @@ describe('Citizen details service', () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = mockClaim;
         const claimant = new Party();
-        claimant.primaryAddress = buildPrimaryAddress();
+        claimant.partyDetails.primaryAddress = buildAddress();
         claim.respondent1 = claimant;
         return mockClaim;
       });

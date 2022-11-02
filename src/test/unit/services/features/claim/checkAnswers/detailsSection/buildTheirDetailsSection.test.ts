@@ -82,8 +82,8 @@ describe('Cirizen Details Section', () => {
     //Given
     const claim = createClaimWithIndividualDetails();
     if (claim.respondent1) {
-      claim.respondent1.emailAddress = EMAIL_ADDRESS;
-      claim.respondent1.dateOfBirth = new Date(2000, 1, 1);
+      claim.respondent1.partyDetails.emailAddress.emailAddress = EMAIL_ADDRESS;
+      claim.respondent1.partyDetails.dateOfBirth.dateOfBirth = new Date(2000, 1, 1);
     }
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');

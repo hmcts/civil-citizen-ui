@@ -9,31 +9,25 @@ import {CorrespondenceAddress} from '../../../../../main/common/models/correspon
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {CitizenTelephoneNumber} from '../../../../../main/common/form/models/citizenTelephoneNumber';
 import {ClaimantOrDefendant, PartyType} from '../../../../../main/common/models/partyType';
+import {Address} from '../../../../../main/common/form/models/address';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
-const correspondenceAddress: CorrespondenceAddress = {
-  County: '',
-  Country: '',
-  PostCode: '',
-  PostTown: '',
-  AddressLine1: '',
-  AddressLine2: '',
-  AddressLine3: '',
+const address: Address = {
+  primaryAddressLine1: '',
+  primaryAddressLine2: '',
+  primaryAddressLine3: '',
+  primaryCity: '',
+  primaryPostCode: '',
 };
 
 const party: Party = {
   individualTitle: '',
   individualLastName: '',
   individualFirstName: '',
-  soleTraderTitle: '',
-  soleTraderFirstName: '',
-  soleTraderLastName: '',
   partyName: '',
   type: PartyType.INDIVIDUAL,
-  primaryAddress: correspondenceAddress,
-  partyPhone: '',
 };
 
 const PHONE_NUMBER = '01632960001';
@@ -96,7 +90,7 @@ describe('Claimant Phone Service', () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
-        party.partyPhone = PHONE_NUMBER;
+        party.partyDetails.partyPhone.phone = PHONE_NUMBER;
         claim.applicant1 = party;
         return claim;
       });
@@ -111,7 +105,7 @@ describe('Claimant Phone Service', () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
-        party.partyPhone = PHONE_NUMBER;
+        party.partyDetails.partyPhone.phone = PHONE_NUMBER;
         claim.respondent1 = party;
         return claim;
       });

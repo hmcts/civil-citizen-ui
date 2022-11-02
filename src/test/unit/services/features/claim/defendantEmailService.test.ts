@@ -12,18 +12,14 @@ jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 const EMAIL_ADDRESS = 'test@gmail.com';
 
 const respondent: Party = {
-  primaryAddress: {},
   postToThisAddress: '',
-  correspondenceAddress: {},
   individualTitle: '',
   individualLastName: '',
   individualFirstName: '',
-  partyPhone: '',
   responseType: '',
   type: PartyType.INDIVIDUAL,
   partyName: '',
   contactPerson: '',
-  emailAddress: '',
 };
 
 describe('Claimant Defendant Email Service', () => {
@@ -58,7 +54,7 @@ describe('Claimant Defendant Email Service', () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
-        respondent.emailAddress = EMAIL_ADDRESS;
+        respondent.partyDetails.emailAddress.emailAddress = EMAIL_ADDRESS;
         claim.respondent1 = respondent;
         return claim;
       });

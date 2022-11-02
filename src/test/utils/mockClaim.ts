@@ -2,8 +2,6 @@ import {Party} from '../../main/common/models/party';
 import {Claim} from '../../main/common/models/claim';
 import {PartyType} from '../../main/common/models/partyType';
 import {DocumentType} from '../../main/common/models/document/documentType';
-import {PrimaryAddress} from '../../main/common/models/primaryAddress';
-import {CorrespondenceAddress} from '../../main/common/models/correspondenceAddress';
 import {YesNo} from '../../main/common/form/models/yesNo';
 import {
   CaseState,
@@ -16,24 +14,15 @@ import {AdditionalTimeOptions} from '../../main/common/form/models/additionalTim
 import {InterestClaimOptionsType} from '../../main/common/form/models/claim/interest/interestClaimOptionsType';
 import {ClaimDetails} from '../../main/common/form/models/claim/details/claimDetails';
 import {Reason} from '../../main/common/form/models/claim/details/reason';
+import {Address} from '../../main/common/form/models/address';
 
-export const buildPrimaryAddress = (): PrimaryAddress => {
+export const buildAddress = (): Address => {
   return {
-    AddressLine1: 'primaryAddressLine1',
-    AddressLine2: 'primaryAddressLine2',
-    AddressLine3: 'primaryAddressLine3',
-    PostTown: 'primaryCity',
-    PostCode: 'primaryPostCode',
-  };
-};
-
-export const buildCorrespondenceAddress = (): CorrespondenceAddress => {
-  return {
-    AddressLine1: 'correspondenceAddressLine1',
-    AddressLine2: 'correspondenceAddressLine2',
-    AddressLine3: 'correspondenceAddressLine3',
-    PostTown: 'correspondenceCity',
-    PostCode: 'correspondencePostCode',
+    primaryAddressLine1: 'primaryAddressLine1',
+    primaryAddressLine2: 'primaryAddressLine2',
+    primaryAddressLine3: 'primaryAddressLine3',
+    primaryCity: 'primaryCity',
+    primaryPostCode: 'primaryPostCode',
   };
 };
 
@@ -43,12 +32,12 @@ export const buildRespondent1 = (): Party => {
   respondent.individualLastName = 'Mary';
   respondent.individualFirstName = 'Richards';
   respondent.partyName = 'Mrs Richards Mary';
-  respondent.partyPhone = '0208339922';
-  respondent.dateOfBirth = new Date('2022-01-24T15:59:59');
+  respondent.partyDetails.partyPhone.phone = '0208339922';
+  respondent.partyDetails.dateOfBirth.dateOfBirth = new Date('2022-01-24T15:59:59');
   respondent.responseType = '';
   respondent.type = PartyType.INDIVIDUAL;
-  respondent.primaryAddress = buildPrimaryAddress();
-  respondent.correspondenceAddress = buildCorrespondenceAddress();
+  respondent.partyDetails.primaryAddress = buildAddress();
+  respondent.partyDetails.correspondenceAddress = buildAddress();
   return respondent;
 };
 
