@@ -7,7 +7,7 @@ import {
   getClaimantResponse,
   saveClaimantResponse,
 } from '../../../../../main/services/features/claimantResponse/claimantResponseService';
-import {ClaimantResponse} from 'models/claimantResponse';
+import {ClaimantResponse} from '../../../../../main/common/models/claimantResponse';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
