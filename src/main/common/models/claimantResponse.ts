@@ -1,5 +1,5 @@
 import {GenericYesNo} from '../../common/form/models/genericYesNo';
 
-export class ClaimantIntent {
+export class ClaimantResponse {
   hasDefendantPaidYou?: GenericYesNo;
 }
