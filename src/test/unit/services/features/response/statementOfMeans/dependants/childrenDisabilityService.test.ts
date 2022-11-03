@@ -15,6 +15,7 @@ import {
 import {GenericForm} from '../../../../../../../main/common/form/models/genericForm';
 import {mockClaim} from '../../../../../../utils/mockClaim';
 import {GenericYesNo} from '../../../../../../../main/common/form/models/genericYesNo';
+import {Claim} from '../../../../../../../main/common/models/claim';
 
 const civilClaimResponseMock = require('../civilClaimResponseMock.json');
 const civilClaimResponse: string = JSON.stringify(civilClaimResponseMock);
@@ -145,10 +146,10 @@ describe('Children Disability service', () => {
       expect(childrenDisability).toEqual(mockClaim?.statementOfMeans?.childrenDisability);
     });
 
-    it('should save childrenDisability when nothing in Redis draft store', async () => {
+    it('should save childrenDisability when case_data, but no statementOfMeans, in Redis draft store', async () => {
       //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        return undefined;
+        return {case_data: {}};
       });
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
@@ -159,10 +160,10 @@ describe('Children Disability service', () => {
       expect(spySaveDraftClaim).toBeCalled();
     });
 
-    it('should save childrenDisability when case_data, but no statementOfMeans, in Redis draft store', async () => {
+    it('should save childrenDisability when nothing in Redis draft store', async () => {
       //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        return {case_data: {}};
+        return new Claim();
       });
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');

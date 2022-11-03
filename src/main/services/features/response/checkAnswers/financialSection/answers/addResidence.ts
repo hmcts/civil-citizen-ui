@@ -6,26 +6,26 @@ import {getLng} from '../../../../../../common/utils/languageToggleUtils';
 import {
   CITIZEN_RESIDENCE_URL,
 } from '../../../../../../routes/urls';
-import {ResidenceType} from '../../../../../../common/form/models/statementOfMeans/residenceType';
+import {ResidenceType} from '../../../../../../common/form/models/statementOfMeans/residence/residenceType';
 
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 
 export const addResidence = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
   const yourResidenceTypeHref = CITIZEN_RESIDENCE_URL.replace(':id', claimId);
   const residence = claim.statementOfMeans?.residence;
-  const residenceType = claim.statementOfMeans?.residence?.type?.value === ResidenceType.OTHER.value ? residence?.housingDetails : residence?.type?.displayValue;
+  const residenceType = claim.statementOfMeans?.residence?.type === ResidenceType.OTHER ? residence?.housingDetails : residence?.type;
   financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHERE_DO_YOU_LIVE', { lng: getLng(lang) }), translateResidenceType(residenceType, lang), yourResidenceTypeHref, changeLabel(lang)));
 };
 
 const translateResidenceType = (residence: string, lng: string | unknown): string => {
   switch (residence) {
-    case 'Council or housing association home':
+    case 'COUNCIL_OR_HOUSING_ASSN_HOME':
       return t('PAGES.RESIDENCE.ASSOCIATION_HOME', {lng: getLng(lng)});
-    case 'Jointly-owned home (or jointly mortgaged home)':
+    case 'JOINT_OWN_HOME':
       return t('PAGES.RESIDENCE.JOIN_HOME', {lng: getLng(lng)});
-    case 'Home you own yourself (or pay a mortgage on)':
+    case 'OWN_HOME':
       return t('PAGES.RESIDENCE.OWN_HOME', {lng: getLng(lng)});
-    case 'Private rental':
+    case 'PRIVATE_RENTAL':
       return t('PAGES.RESIDENCE.RENTAL_HOME', {lng: getLng(lng)});
     default:
       return residence;
