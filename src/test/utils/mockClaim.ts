@@ -128,8 +128,8 @@ function buildMockClaim(): Claim {
     sameRateInterestSelection: {
       sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC,
     },
+    breakDownInterestTotal: 500,
   };
-  _mockClaim.breakDownInterestTotal = 500;
   _mockClaim.submittedDate = new Date('2022-05-23T17:02:02.38407');
   _mockClaim.totalInterest = 15;
   _mockClaim.paymentDate = new Date('2022-06-01T00:00:00');

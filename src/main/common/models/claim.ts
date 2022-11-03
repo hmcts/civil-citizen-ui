@@ -65,7 +65,6 @@ export class Claim {
   totalInterest?: number;
   claimInterest?: YesNo;
   interest?: Interest;
-  breakDownInterestTotal?: number;
   submittedDate?: Date;
   issueDate?: Date;
   claimFee?: ClaimFee;
