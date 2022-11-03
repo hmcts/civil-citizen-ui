@@ -3,11 +3,7 @@ import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatt
 import {CLAIM_TASK_LIST_URL, SUPPORT_REQUIRED_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {saveDirectionQuestionnaire} from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
-import {
-  getSupportRequired,
-  getSupportRequiredForm,
-  generatePeopleListWithSelectedValues,
-} from '../../../services/features/directionsQuestionnaire/supportRequiredService';
+import {generatePeopleListWithSelectedValues, getSupportRequired, getSupportRequiredForm} from '../../../services/features/directionsQuestionnaire/supportRequiredService';
 import {SupportRequiredList} from 'common/models/directionsQuestionnaire/supportRequired';
 
 const supportRequiredController = Router();
