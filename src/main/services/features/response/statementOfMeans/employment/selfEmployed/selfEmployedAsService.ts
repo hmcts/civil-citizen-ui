@@ -35,7 +35,7 @@ const saveSelfEmployedAsData = async (claimId: string, form: GenericForm<SelfEmp
 };
 
 const getClaim = async (claimId: string): Promise<Claim> => {
-  const claim = await getCaseDataFromStore(claimId) || new Claim();
+  const claim = await getCaseDataFromStore(claimId);
   if (!claim.statementOfMeans) {
     claim.statementOfMeans = new StatementOfMeans();
   }
