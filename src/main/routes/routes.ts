@@ -157,6 +157,7 @@ import claimCheckAnswersController from './features/claim/checkAnswersController
 import claimantEvidenceController from './features/claim/yourDetails/claimantEvidenceController';
 import howMuchContinueClaimingController from './features/claim/interest/howMuchContinueClaimingController';
 import helpWithFeesController from './features/claim/details/helpWithFeesController';
+import partPaymentReceivedController from './features/claimantResponse/partPaymentReceivedController';
 
 export default [
   homeController,
@@ -302,4 +303,5 @@ export default [
   claimantEvidenceController,
   howMuchContinueClaimingController,
   helpWithFeesController,
+  partPaymentReceivedController,
 ];

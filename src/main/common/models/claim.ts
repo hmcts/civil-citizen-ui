@@ -83,7 +83,6 @@ export class Claim {
   respondentSolicitor1AgreedDeadlineExtension?: Date;
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
-  claimantResponse?: ClaimantResponse;
 
   get responseStatus(): ClaimResponseStatus {
     if (this.isFullAdmission() && this.isPaymentOptionPayImmediately()) {
