@@ -768,6 +768,11 @@
       "TITLE": "Do you have loans or credit card debts?",
       "TOTAL": "Total owed"
     },
+    "DEBT_RESPITE_REF_NUMBER": {
+      "ENTER_REFERENCE": "Enter the reference number (optional):",
+      "PAGE_TITLE": "Debt Respite Scheme reference number",
+      "TITLE": "Do you have a Debt Respite Scheme reference number?"
+    },
     "DEFENDANT_DETAILS": {
       "BUSINESS_NAME": "Trading as (If you know it)",
       "COMPANY_ADDRESS": "Company address",
