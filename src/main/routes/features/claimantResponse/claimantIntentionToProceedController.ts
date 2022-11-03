@@ -1,6 +1,6 @@
 import {Response, Router} from 'express';
 import {
-  CLAIMANT_RESPONSE_INTETNTION_TO_PROCEED_URL,
+  CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
@@ -20,7 +20,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(claimantIntentionToProceedViewPath, {form});
 }
 
-claimantIntentionToProceedController.get(CLAIMANT_RESPONSE_INTETNTION_TO_PROCEED_URL, async (req, res, next) => {
+claimantIntentionToProceedController.get(CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL, async (req, res, next) => {
   try {
     const claimantResponse = await getClaimantResponse(req.params.id);
     renderView(new GenericForm(claimantResponse.intentionToProceed), res);
@@ -29,7 +29,7 @@ claimantIntentionToProceedController.get(CLAIMANT_RESPONSE_INTETNTION_TO_PROCEED
   }
 });
 
-claimantIntentionToProceedController.post(CLAIMANT_RESPONSE_INTETNTION_TO_PROCEED_URL, async (req, res, next) => {
+claimantIntentionToProceedController.post(CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL, async (req, res, next) => {
   try {
     const claimId = req.params.id;
     const claimantIntentionToProceed = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_SELECTION'));
@@ -38,7 +38,7 @@ claimantIntentionToProceedController.post(CLAIMANT_RESPONSE_INTETNTION_TO_PROCEE
     if (claimantIntentionToProceed.hasErrors()) {
       renderView(claimantIntentionToProceed, res);
     } else {
-      await saveClaimantResponse(claimId, claimantIntentionToProceed.model.option, crPropertyName, crParentName);
+      await saveClaimantResponse(claimId, claimantIntentionToProceed.model, crPropertyName, crParentName);
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
     }
   } catch (error) {

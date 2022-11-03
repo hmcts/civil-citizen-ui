@@ -157,7 +157,7 @@ import claimCheckAnswersController from './features/claim/checkAnswersController
 import claimantEvidenceController from './features/claim/yourDetails/claimantEvidenceController';
 import howMuchContinueClaimingController from './features/claim/interest/howMuchContinueClaimingController';
 import helpWithFeesController from './features/claim/details/helpWithFeesController';
-import claimantIntentionToProceedController from './features/claimant-reponse/claimantIntentionToProceedController';
+import claimantIntentionToProceedController from './features/claimantResponse/claimantIntentionToProceedController';
 
 export default [
   homeController,

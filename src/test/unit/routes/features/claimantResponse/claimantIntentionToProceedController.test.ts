@@ -3,7 +3,7 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
 import {
-  CLAIMANT_RESPONSE_INTETNTION_TO_PROCEED_URL,
+  CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from '../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
@@ -25,7 +25,7 @@ describe('Claimant intention to proceed Controller', () => {
   describe('on GET', () => {
     it('should return intention to proceed page', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(CLAIMANT_RESPONSE_INTETNTION_TO_PROCEED_URL).expect((res) => {
+      await request(app).get(CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Do you want to proceed with claim?');
       });
@@ -34,7 +34,7 @@ describe('Claimant intention to proceed Controller', () => {
     it('should return status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .get(CLAIMANT_RESPONSE_INTETNTION_TO_PROCEED_URL)
+        .get(CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -48,14 +48,14 @@ describe('Claimant intention to proceed Controller', () => {
     });
 
     it('should return error on empty post', async () => {
-      await request(app).post(CLAIMANT_RESPONSE_INTETNTION_TO_PROCEED_URL).expect((res) => {
+      await request(app).post(CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(TestMessages.VALID_YES_NO_SELECTION);
       });
     });
 
     it('should redirect to the claimant response task-list if option yes is selected', async () => {
-      await request(app).post(CLAIMANT_RESPONSE_INTETNTION_TO_PROCEED_URL).send({option: 'yes'})
+      await request(app).post(CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL).send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.get('location')).toBe(CLAIMANT_RESPONSE_TASK_LIST_URL);
@@ -63,7 +63,7 @@ describe('Claimant intention to proceed Controller', () => {
     });
 
     it('should redirect to the claimant response task-list page if option no is selected', async () => {
-      await request(app).post(CLAIMANT_RESPONSE_INTETNTION_TO_PROCEED_URL).send({option: 'no'})
+      await request(app).post(CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL).send({option: 'no'})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.get('location')).toBe(CLAIMANT_RESPONSE_TASK_LIST_URL);
@@ -73,7 +73,7 @@ describe('Claimant intention to proceed Controller', () => {
     it('should return status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .post(CLAIMANT_RESPONSE_INTETNTION_TO_PROCEED_URL)
+        .post(CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL)
         .send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(500);
