@@ -4,9 +4,9 @@ import {CLAIM_TASK_LIST_URL, SUPPORT_REQUIRED_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {saveDirectionQuestionnaire} from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {
+  generatePeopleListWithSelectedValues,
   getSupportRequired,
   getSupportRequiredForm,
-  generatePeopleListWithSelectedValues,
 } from '../../../services/features/directionsQuestionnaire/supportRequiredService';
 
 const supportRequiredController = Router();
