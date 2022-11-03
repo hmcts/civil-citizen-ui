@@ -83,7 +83,7 @@ describe('On Tax Payments Service', () => {
     it('should save tax payment data successfully when claim does not exist', async () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
-        return undefined;
+        return new Claim();
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
@@ -91,6 +91,7 @@ describe('On Tax Payments Service', () => {
       //Then
       expect(spySave).toBeCalled();
     });
+
     it('should save tax payment data successfully when claim exists but no statement of means', async () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
