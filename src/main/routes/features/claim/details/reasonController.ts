@@ -2,7 +2,7 @@ import {NextFunction, Request, Response, Router} from 'express';
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
 
-import {CLAIM_REASON_URL, CLAIM_TIMELINE_URL,} from 'routes/urls';
+import {CLAIM_REASON_URL, CLAIM_TIMELINE_URL} from 'routes/urls';
 import {getClaimDetails, saveClaimDetails} from 'services/features/claim/details/claimDetailsService';
 import {Reason} from 'form/models/claim/details/reason';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';

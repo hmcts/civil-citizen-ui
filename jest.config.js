@@ -7,7 +7,6 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper: {
-    '^router/(.*)$': '<rootDir>/src/main/router/$1',
     '^common/(.*)$': '<rootDir>/src/main/common/$1',
     '^models/(.*)$': '<rootDir>/src/main/common/models/$1',
     '^form/(.*)$': '<rootDir>/src/main/common/form/$1',

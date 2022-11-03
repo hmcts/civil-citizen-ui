@@ -6,7 +6,7 @@ import * as claimAmountbreakdownService
   from '../../../../../../main/services/features/claim/amount/claimAmountBreakdownService';
 import {AmountBreakdown} from 'form/models/claim/amount/amountBreakdown';
 import {ClaimAmountRow} from 'form/models/claim/amount/claimAmountRow';
-import {CLAIM_AMOUNT_URL, CLAIM_INTEREST_URL, NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,} from 'routes/urls';
+import {CLAIM_AMOUNT_URL, CLAIM_INTEREST_URL, NOT_ELIGIBLE_FOR_THIS_SERVICE_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../../src/test/utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
@@ -15,7 +15,7 @@ jest.mock('../../../../../../main/services/features/claim/amount/claimAmountBrea
 
 const mockServiceGet = claimAmountbreakdownService.getClaimAmountBreakdownForm as jest.Mock;
 
-describe('claimAmountBreadkownController test', () => {
+describe('claimAmountBreakdownController test', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 

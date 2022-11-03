@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {CLAIM_HELP_WITH_FEES_URL, CLAIM_TOTAL_URL,} from 'routes/urls';
+import {CLAIM_HELP_WITH_FEES_URL, CLAIM_TOTAL_URL} from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
 import {AppRequest} from 'models/AppRequest';
 import {YesNo} from 'form/models/yesNo';

@@ -1,6 +1,6 @@
 import {paymentDateService} from 'services/features/response/admission/fullAdmission/paymentOption/paymentDateService';
 import * as draftStoreService from '../../../../../../../../main/modules/draft-store/draftStoreService';
-import {PaymentDate,} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
+import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
 import {GenericForm} from 'form/models/genericForm';
 import {mockClaim} from '../../../../../../../../../src/test/utils/mockClaim';
 import {ResponseType} from 'form/models/responseType';
@@ -287,7 +287,6 @@ describe('Payment Date service', () => {
       expect(form.getErrors()[0].property).toBe('year');
       expect(form.getErrors()[0].constraints).toEqual({OptionalDateFourDigitValidator: 'ERRORS.VALID_FOUR_DIGIT_YEAR'});
     });
-    test;
     it('should raise an error asking for 4 digits, if year is only 2 digits', async () => {
       //Given
       paymentDate = new PaymentDate('23', '12', '1');
@@ -298,7 +297,7 @@ describe('Payment Date service', () => {
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('year');
       expect(form.getErrors()[0].constraints).toEqual({
-        OptionalDateFourDigitValidator: 'ERRORS.VALID_FOUR_DIGIT_YEAR'
+        OptionalDateFourDigitValidator: 'ERRORS.VALID_FOUR_DIGIT_YEAR',
       });
     });
     it('should raise an error asking for 4 digits, if year is only 3 digits', async () => {
@@ -311,7 +310,7 @@ describe('Payment Date service', () => {
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('year');
       expect(form.getErrors()[0].constraints).toEqual({
-        OptionalDateFourDigitValidator: 'ERRORS.VALID_FOUR_DIGIT_YEAR'
+        OptionalDateFourDigitValidator: 'ERRORS.VALID_FOUR_DIGIT_YEAR',
       });
     });
     it('should raise an error if date in the past', async () => {
@@ -324,7 +323,7 @@ describe('Payment Date service', () => {
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('date');
       expect(form.getErrors()[0].constraints).toEqual({
-        customDate: 'ERRORS.VALID_DATE_NOT_IN_PAST'
+        customDate: 'ERRORS.VALID_DATE_NOT_IN_PAST',
       });
     });
     it('should raise an error if month greater than 12', async () => {

@@ -19,9 +19,6 @@
     ],
     "baseUrl": "src/main",
     "paths": {
-      "router/*": [
-        "router/*"
-      ],
       "common/*": [
         "common/*"
       ],
