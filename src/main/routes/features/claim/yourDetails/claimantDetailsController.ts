@@ -32,13 +32,12 @@ const detailsURLs = [
 function renderPage(res: Response, req: Request, claimantDetails: GenericForm<PartyDetails>, partyType: PartyType): void {
   if (partyType === PartyType.COMPANY || partyType === PartyType.ORGANISATION) {
     res.render(claimantOrganisationDetailsPath, {
-      claimantDetails,
+      party: claimantDetails,
       type: partyType,
     });
   } else {
     res.render(claimantIndividualDetailsPath, {
-      claimant: claimantDetails,
-      claimantDetails,
+      party: claimantDetails,
       type: partyType,
     });
   }
