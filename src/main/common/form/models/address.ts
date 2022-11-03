@@ -1,59 +1,27 @@
 import {IsNotEmpty, Validate} from 'class-validator';
 import {PostcodeValidator} from '../validators/postcodeValidator';
-import {CorrespondenceAddress} from 'models/correspondenceAddress';
-import {CitizenCorrespondenceAddress} from 'common/form/models/citizenCorrespondenceAddress';
 
 export class Address {
   @IsNotEmpty({message: 'ERRORS.VALID_ADDRESS_LINE_1'})
-    primaryAddressLine1?: string;
-  primaryAddressLine2?: string;
-  primaryAddressLine3?: string;
+    addressLine1?: string;
+  addressLine2?: string;
+  addressLine3?: string;
   @IsNotEmpty({message: 'ERRORS.VALID_POSTCODE'})
   @Validate(PostcodeValidator, {message: 'ERRORS.DEFENDANT_POSTCODE_NOT_VALID'})
-    primaryPostCode?: string;
+    postCode?: string;
   @IsNotEmpty({message: 'ERRORS.VALID_CITY'})
-    primaryCity?: string;
+    city?: string;
 
   constructor(
-    primaryAddressLine1?: string,
-    primaryAddressLine2?: string,
-    primaryAddressLine3?: string,
-    primaryCity?: string,
-    primaryPostCode?: string) {
-    this.primaryAddressLine1 = primaryAddressLine1;
-    this.primaryAddressLine2 = primaryAddressLine2;
-    this.primaryAddressLine3 = primaryAddressLine3;
-    this.primaryCity = primaryCity;
-    this.primaryPostCode = primaryPostCode;
-  }
-
-  static fromObject(value?: Record<string, string>): Address {
-    return new Address(
-      value?.primaryAddressLine1,
-      value?.primaryAddressLine2,
-      value?.primaryAddressLine3,
-      value?.primaryCity,
-      value?.primaryPostCode,
-    );
-  }
-
-  static fromJson(value?: CorrespondenceAddress): Address {
-    return new Address(
-      value?.AddressLine1,
-      value?.AddressLine2,
-      value?.AddressLine3,
-      value?.PostTown,
-      value?.PostCode,
-    );
+    addressLine1?: string,
+    addressLine2?: string,
+    addressLine3?: string,
+    city?: string,
+    postCode?: string) {
+    this.addressLine1 = addressLine1;
+    this.addressLine2 = addressLine2;
+    this.addressLine3 = addressLine3;
+    this.city = city;
+    this.postCode = postCode;
   }
 }
-
-export const convertToAddress = (citizenCorrespondenceAddress?: CitizenCorrespondenceAddress ): Address => {
-  return {
-    primaryAddressLine1: citizenCorrespondenceAddress.correspondenceAddressLine1,
-    primaryAddressLine2: citizenCorrespondenceAddress.correspondenceAddressLine2,
-    primaryAddressLine3: citizenCorrespondenceAddress.correspondenceAddressLine3,
-    primaryCity: citizenCorrespondenceAddress.correspondenceCity,
-    primaryPostCode: citizenCorrespondenceAddress.correspondencePostCode,
-  };
-};
