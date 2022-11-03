@@ -40,7 +40,7 @@ declare module 'express-session' {
 }
 
 app.locals.ENV = env;
-const i18next = I18Next.enableFor(app);
+I18Next.enableFor(app);
 
 const logger = Logger.getLogger('app');
 
@@ -48,7 +48,7 @@ new PropertiesVolume().enableFor(app);
 new DraftStoreClient(Logger.getLogger('draftStoreClient')).enableFor(app);
 
 new AppInsights().enable();
-new Nunjucks(developmentMode, i18next).enableFor(app);
+new Nunjucks(developmentMode).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);
 new HealthCheck().enableFor(app);
 new OidcMiddleware().enableFor(app);

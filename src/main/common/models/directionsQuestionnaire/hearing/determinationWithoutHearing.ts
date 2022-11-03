@@ -2,7 +2,7 @@ import {IsDefined, IsNotEmpty, ValidateIf} from 'class-validator';
 import {YesNo} from '../../../form/models/yesNo';
 
 export class DeterminationWithoutHearing {
-  @IsDefined({message: 'ERRORS.VALID_YES_NO_OPTION'})
+  @IsDefined({message: 'ERRORS.VALID_YES_NO_OPTION_NAC_YDW'})
     option?: string;
 
   @ValidateIf(o => o.option === YesNo.NO)

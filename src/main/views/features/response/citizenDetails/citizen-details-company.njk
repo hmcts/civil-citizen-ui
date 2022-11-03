@@ -31,7 +31,7 @@
       </div>
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.COMPANY_DETAILS.HEADING') }}</h1>
+          <h1 class="govuk-heading-l">{{ t('COMMON.CONFIRM_YOUR_DETAILS') }}</h1>
           <p class="govuk-body">{{ t('PAGES.COMPANY_DETAILS.CLAIMANT_DETAILS_PROVIDED') }}</p>
         </div>
       </div>
@@ -47,7 +47,7 @@
             {% endif %}
             <p class="govuk-label govuk-!-margin-bottom-5">{{ respondent.partyName }}</p>
             {{ govukInput({
-              label: { text: t('PAGES.COMPANY_DETAILS.CONTACT_NAME_OPTIONAL') },
+              label: { text: t('COMMON.OPTIONAL_CONTACT_PERSON') },
               classes: "govuk-input--width-20",
               id: "contactPerson",
               name: "contactPerson",

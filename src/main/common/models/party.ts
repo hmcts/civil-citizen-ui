@@ -28,10 +28,15 @@ export class Party {
   responseType?: string;
   contactPerson?: string;
   emailAddress?: string;
+
   constructor(value?: Party) {
     this.partyName = value?.partyName;
     this.contactPerson = value?.contactPerson;
     this.partyPhone = value?.partyPhone?.trim();
     this.postToThisAddress = value?.postToThisAddress;
+    this.individualTitle = value?.individualTitle;
+    this.individualLastName = value?.individualLastName;
+    this.individualFirstName = value?.individualFirstName;
+    this.soleTraderTradingAs = value?.soleTraderTradingAs;
   }
 }
