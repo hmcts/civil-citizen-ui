@@ -8,7 +8,8 @@ import {InterestStartDate} from '../../../../../../main/common/form/models/inter
 import {
   InterestClaimFromType,
   InterestEndDateType,
-  SameRateInterestSelection, SameRateInterestType
+  SameRateInterestSelection,
+  SameRateInterestType,
 } from '../../../../../../main/common/form/models/claimDetails';
 import {TotalInterest} from '../../../../../../main/common/form/models/interest/totalInterest';
 import {InterestClaimOptionsType} from '../../../../../../main/common/form/models/claim/interest/interestClaimOptionsType';

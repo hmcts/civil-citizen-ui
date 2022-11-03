@@ -929,7 +929,7 @@ export const claimWithClaimAmountSubmitDate = (): Claim => {
   claim.interest = {
     interestClaimFrom: InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE,
     interestClaimOptions: InterestClaimOptionsType.SAME_RATE_INTEREST,
-    sameRateInterestSelection: {sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC}
+    sameRateInterestSelection: {sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC},
   };
 
   return claim;
@@ -951,7 +951,7 @@ export const claimWithClaimAmountDifferentRate = (): Claim => {
       sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
       differentRate: 10,
       reason: 'Reason',
-    }
+    },
   };
 
   return claim;
