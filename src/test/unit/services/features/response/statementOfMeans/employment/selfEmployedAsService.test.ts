@@ -79,7 +79,7 @@ describe('Self Employed Service', () => {
     it('should save selfEmployedAs data successfully when claim does not exist', async () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
-        return undefined;
+        return new Claim();
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
@@ -87,6 +87,7 @@ describe('Self Employed Service', () => {
       //Then
       expect(spySave).toBeCalled();
     });
+
     it('should save selfEmployedAs data successfully when claim exists but no statement of means', async () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
