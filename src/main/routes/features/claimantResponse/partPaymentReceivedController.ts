@@ -8,12 +8,12 @@ import {GenericYesNo} from '../../../common/form/models/genericYesNo';
 
 import {
   saveClaimantResponse,
+  getGenericOptionForm,
 } from '../../../services/features/claimantResponse/claimantResponseService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {Claim} from '../../../common/models/claim';
 import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
 import {ClaimantResponse} from '../../../common/models/claimantResponse';
-import {getGenericOptionForm} from '../../../services/features/claimantResponse/claimantResponseService';
 
 const partPaymentReceivedController = Router();
 const partPaymentReceivedViewPath = 'features/claimantResponse/part-payment-received';
