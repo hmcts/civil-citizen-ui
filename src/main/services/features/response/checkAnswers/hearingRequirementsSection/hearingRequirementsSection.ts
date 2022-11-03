@@ -10,7 +10,7 @@ const buildHearingRequirementsSection = (claim: Claim, claimId: string, lang: st
     title: t('TASK_LIST.YOUR_HEARING_REQUIREMENTS.TITLE', {lng}),
     summaryRows: [],
   });
-  hearingRequirementsSection.summaryList.rows.push(... buildExportReportSection(claim, claimId, lang));
+  hearingRequirementsSection.summaryList.rows.push(... buildExportReportSection(claim, claimId, lng));
   return hearingRequirementsSection;
 };
 
