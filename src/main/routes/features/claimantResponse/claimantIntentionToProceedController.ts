@@ -38,7 +38,7 @@ claimantIntentionToProceedController.post(CLAIMANT_RESPONSE_INTENTION_TO_PROCEED
     if (claimantIntentionToProceed.hasErrors()) {
       renderView(claimantIntentionToProceed, res);
     } else {
-      await saveClaimantResponse(claimId, claimantIntentionToProceed.model, crPropertyName, crParentName);
+      await saveClaimantResponse(claimId, claimantIntentionToProceed.model.option, crPropertyName, crParentName);
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
     }
   } catch (error) {
