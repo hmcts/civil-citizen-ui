@@ -16,9 +16,9 @@ function renderView(form: GenericForm<CitizenDob>, res: Response): void {
 
 function redirectToNextPage(req: Request, res: Response, dob: Date, respondent: Party) {
   if (AgeEligibilityVerification.isOverEighteen(dob)) {
-    if(respondent?.partyPhone){
+    if (respondent?.partyPhone) {
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
-    }else{
+    } else {
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PHONE_NUMBER_URL));
     }
   } else {
@@ -32,7 +32,7 @@ citizenDobController.get(DOB_URL, async (req: Request, res: Response, next: Next
     const citizenDob = new GenericForm(new CitizenDob(year, month, day));
     const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
     if (responseDataRedis?.respondent1?.dateOfBirth) {
-      const dateOfBirth = new Date(responseDataRedis.respondent1.dateOfBirth);
+      const dateOfBirth = new Date(responseDataRedis.respondent1.dateOfBirth.date);
       citizenDob.model.day = dateOfBirth.getDate();
       citizenDob.model.month = (dateOfBirth.getMonth() + 1);
       citizenDob.model.year = dateOfBirth.getFullYear();
@@ -53,14 +53,14 @@ citizenDobController.post(DOB_URL, async (req, res, next: NextFunction) => {
     } else {
       const claim = await getCaseDataFromStore(req.params.id);
       if (claim.respondent1) {
-        claim.respondent1.dateOfBirth = citizenDob.model.dateOfBirth;
+        claim.respondent1.dateOfBirth.date = citizenDob.model.dateOfBirth;
       } else {
         const respondent = new Party();
-        respondent.dateOfBirth = citizenDob.model.dateOfBirth;
+        respondent.dateOfBirth.date = citizenDob.model.dateOfBirth;
         claim.respondent1 = respondent;
       }
       await saveDraftClaim(req.params.id, claim);
-      redirectToNextPage(req, res, claim.respondent1.dateOfBirth, claim.respondent1);
+      redirectToNextPage(req, res, claim.respondent1.dateOfBirth.date, claim.respondent1);
     }
   } catch (error) {
     next(error);

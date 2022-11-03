@@ -5,11 +5,11 @@ import {Party} from 'models/party';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('defendantEmailAsService');
 
-const getDefendantEmail = async (claimId:string) => {
+const getDefendantEmail = async (claimId: string) => {
   try {
     const claim = await getCaseDataFromStore(claimId);
     if (claim.respondent1) {
-      return new DefendantEmail(claim.respondent1.partyDetails.emailAddress.emailAddress);
+      return new DefendantEmail(claim.respondent1.emailAddress.emailAddress);
     }
     return new DefendantEmail();
   } catch (error) {
@@ -18,13 +18,13 @@ const getDefendantEmail = async (claimId:string) => {
   }
 };
 
-const saveDefendantEmail = async (claimId:string,form: DefendantEmail) => {
+const saveDefendantEmail = async (claimId: string, form: DefendantEmail) => {
   try {
     const claim = await getCaseDataFromStore(claimId);
     if (!claim.respondent1) {
       claim.respondent1 = new Party();
     }
-    claim.respondent1.partyDetails.emailAddress.emailAddress = form.emailAddress;
+    claim.respondent1.emailAddress.emailAddress = form.emailAddress;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);

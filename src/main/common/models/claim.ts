@@ -9,7 +9,6 @@ import {PartialAdmission} from './partialAdmission';
 import {DefendantEvidence} from './evidence/evidence';
 import {Mediation} from './mediation/mediation';
 import {RejectAllOfClaim} from '../form/models/rejectAllOfClaim';
-import {CorrespondenceAddress} from './correspondenceAddress';
 import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
 import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/dateUtils';
 import {StatementOfTruthForm} from '../form/models/statementOfTruth/statementOfTruthForm';
@@ -44,8 +43,6 @@ import {ClaimDetails} from '../../common/form/models/claim/details/claimDetails'
 export class Claim {
   legacyCaseReference: string;
   applicant1?: Party;
-  specApplicantCorrespondenceAddressdetails?: CorrespondenceAddress;
-  applicantSolicitor1ServiceAddress?: CorrespondenceAddress;
   applicantSolicitor1ClaimStatementOfTruth?: StatementOfTruth;
   totalClaimAmount: number;
   respondent1ResponseDeadline: Date;
@@ -122,11 +119,11 @@ export class Claim {
   }
 
   getClaimantName(): string {
-    return this.applicant1.partyName;
+    return this.applicant1.partyDetails.partyName;
   }
 
   getDefendantName(): string {
-    return this.respondent1.partyName;
+    return this.respondent1.partyDetails.partyName;
   }
 
   formattedResponseDeadline(lng?: string): string {

@@ -1,9 +1,5 @@
-import {IsDefined, IsNotEmpty, MaxLength, Validate, ValidateIf} from 'class-validator';
-import {Email} from 'models/Email';
-import {OptionalIntegerValidator} from 'common/form/validators/optionalIntegerValidator';
-import {PartyPhone} from 'models/PartyPhone';
-import {DateOfBirth} from 'common/form/models/claim/claimant/dateOfBirth';
-import {Address} from 'common/form/models/address';
+import {IsDefined, IsNotEmpty, MaxLength, ValidateIf, ValidateNested} from 'class-validator';
+import {Address} from '../../../common/form/models/address';
 
 export class PartyDetails {
 
@@ -23,36 +19,29 @@ export class PartyDetails {
   @ValidateIf(o => o.businessName !== undefined)
   @MaxLength(255, {message: 'ERRORS.TEXT_TOO_MANY'})
     soleTraderTradingAs?: string;
-  @ValidateIf(o => o.partyPhone !== undefined)
-  @IsNotEmpty({message: 'ERRORS.NOT_TO_REMOVE_PHONE_NUMBER'})
-  @Validate(OptionalIntegerValidator, {message: 'ERRORS.VALID_PHONE_NUMBER'})
-    partyPhone?: PartyPhone;
   @ValidateIf(o => o.partyName !== undefined)
   @IsNotEmpty({message: 'ERRORS.VALID_PARTY_NAME'})
     partyName?: string;
-  emailAddress?: Email;
-  dateOfBirth?: DateOfBirth;
-  primaryAddress?: Address;
-  correspondenceAddress?: Address;
+  contactPerson?: string;
   postToThisAddress?: string;
   provideCorrespondenceAddress?: string;
-  contactPerson?: string;
-  responseType?: string;
+  @ValidateNested()
+    primaryAddress?: Address;
+  @ValidateIf(o => o.provideCorrespondenceAddress === 'yes')
+  @ValidateNested()
+    correspondenceAddress?: Address;
 
-  constructor(value?: PartyDetails) {
-    this.contactPerson = value?.contactPerson;
-    this.postToThisAddress = value?.postToThisAddress;
+  constructor(value: PartyDetails) {
     this.individualTitle = value?.individualTitle;
     this.individualLastName = value?.individualLastName;
     this.individualFirstName = value?.individualFirstName;
     this.soleTraderTradingAs = value?.soleTraderTradingAs;
-    this.partyPhone = value?.partyPhone;
+    this.partyName = value?.partyName;
+    this.contactPerson = value?.contactPerson;
+    this.postToThisAddress = value?.postToThisAddress;
     this.provideCorrespondenceAddress = value?.provideCorrespondenceAddress;
-    this.emailAddress = value?.emailAddress;
-    this.dateOfBirth = value?.dateOfBirth;
     this.primaryAddress = value?.primaryAddress;
     this.correspondenceAddress = value?.correspondenceAddress;
-    this.partyName = value?.partyName;
   }
 
 }

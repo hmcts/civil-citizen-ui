@@ -1,13 +1,14 @@
-
-import {PartyType} from 'models/partyType';
-import {PartyDetails} from 'common/form/models/partyDetails';
+import {PartyType} from '../models/partyType';
+import {PartyDetails} from '../../common/form/models/partyDetails';
+import {Email} from '../models/Email';
+import {DateOfBirth} from '../../common/form/models/claim/claimant/dateOfBirth';
+import {PartyPhone} from '../models/PartyPhone';
 
 export class Party {
-  type?: PartyType;
   partyDetails?: PartyDetails;
-
-  constructor(value?: Party) {
-    this.type = value?.type;
-    this.partyDetails = value?.partyDetails;
-  }
+  type?: PartyType;
+  responseType?: string;
+  emailAddress?: Email;
+  dateOfBirth?: DateOfBirth;
+  partyPhone?: PartyPhone;
 }
