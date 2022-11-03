@@ -28,7 +28,7 @@ export function getInterestDateOrIssueDate(claim: Claim) {
   if (claim.isInterestFromClaimSubmitDate()) {
     interestFromDate = claim.submittedDate;
   } else if (claim.isInterestFromASpecificDate()) {
-    interestFromDate = claim.interestFromSpecificDate;
+    interestFromDate = claim.interest?.interestStartDate.date;
   }
   return interestFromDate;
 }

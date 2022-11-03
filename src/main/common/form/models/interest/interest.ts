@@ -16,7 +16,6 @@ export class Interest {
   totalInterest?: TotalInterest;
   howMuchContinueClaiming?: HowMuchContinueClaiming;
   interestClaimFrom?: InterestClaimFromType;
-  interestFromSpecificDate?: Date;
   interestClaimOptions?: InterestClaimOptionsType;
   sameRateInterestSelection?: SameRateInterestSelection;
   breakDownInterestTotal?: number;
