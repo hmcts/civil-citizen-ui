@@ -45,6 +45,7 @@ import {ClaimantResponse} from './claimantResponse';
 export class Claim {
   legacyCaseReference: string;
   applicant1?: Party;
+  claimantResponse?: ClaimantResponse;
   specApplicantCorrespondenceAddressdetails?: CorrespondenceAddress;
   applicantSolicitor1ServiceAddress?: CorrespondenceAddress;
   applicantSolicitor1ClaimStatementOfTruth?: StatementOfTruth;
