@@ -125,11 +125,11 @@ function buildMockClaim(): Claim {
     interestEndDate: InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE,
     interestClaimFrom: InterestClaimFromType.FROM_A_SPECIFIC_DATE,
     interestClaimOptions: InterestClaimOptionsType.SAME_RATE_INTEREST,
+    sameRateInterestSelection: {
+      sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC,
+    },
   };
   _mockClaim.interestFromSpecificDate = new Date('2022-05-20');
-  _mockClaim.sameRateInterestSelection = {
-    sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC,
-  };
   _mockClaim.breakDownInterestTotal = 500;
   _mockClaim.submittedDate = new Date('2022-05-23T17:02:02.38407');
   _mockClaim.totalInterest = 15;

@@ -37,7 +37,7 @@ export function getInterestRate(claim: Claim) {
   let interestRate;
   if (claim.isInterestClaimOptionsSameRateInterest()) {
     if (!claim.isSameRateTypeEightPercent()) {
-      interestRate = claim?.sameRateInterestSelection?.differentRate;
+      interestRate = claim?.interest?.sameRateInterestSelection?.differentRate;
     } else if (claim.isSameRateTypeEightPercent()) {
       interestRate = 8;
     }

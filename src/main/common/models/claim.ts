@@ -20,7 +20,6 @@ import {
   ClaimFee,
   InterestClaimFromType,
   InterestEndDateType,
-  SameRateInterestSelection,
   SameRateInterestType,
 } from '../form/models/claimDetails';
 import {YesNo} from '../form/models/yesNo';
@@ -67,7 +66,6 @@ export class Claim {
   claimInterest?: YesNo;
   interest?: Interest;
   interestFromSpecificDate?: Date;
-  sameRateInterestSelection?: SameRateInterestSelection;
   breakDownInterestTotal?: number;
   submittedDate?: Date;
   issueDate?: Date;
@@ -193,7 +191,7 @@ export class Claim {
   }
 
   isSameRateTypeEightPercent(): boolean {
-    return this.sameRateInterestSelection?.sameRateInterestType === SameRateInterestType.SAME_RATE_INTEREST_8_PC;
+    return this.interest?.sameRateInterestSelection?.sameRateInterestType === SameRateInterestType.SAME_RATE_INTEREST_8_PC;
   }
 
   isDefendantDisabled(): boolean {
