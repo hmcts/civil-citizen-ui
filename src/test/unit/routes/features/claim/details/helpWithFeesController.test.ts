@@ -2,14 +2,11 @@ import {app} from '../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {
-  CLAIM_HELP_WITH_FEES_URL,
-  CLAIM_TOTAL_URL,
-} from '../../../../../../main/routes/urls';
+import {CLAIM_HELP_WITH_FEES_URL, CLAIM_TOTAL_URL,} from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
-import {YesNo} from '../../../../../../main/common/form/models/yesNo';
+import {YesNo} from 'form/models/yesNo';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -58,7 +55,7 @@ describe('Claim Details - Help With Fees', () => {
     it('should redirect to total page when YES selected', async () => {
       await request(app)
         .post(CLAIM_HELP_WITH_FEES_URL)
-        .send({option:YesNo.YES, referenceNumber:'test'})
+        .send({option: YesNo.YES, referenceNumber: 'test'})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.get('location')).toBe(CLAIM_TOTAL_URL);
@@ -68,7 +65,7 @@ describe('Claim Details - Help With Fees', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CLAIM_HELP_WITH_FEES_URL)
-        .send({option:''})
+        .send({option: ''})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.VALID_YES_NO_SELECTION'));
@@ -78,7 +75,7 @@ describe('Claim Details - Help With Fees', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CLAIM_HELP_WITH_FEES_URL)
-        .send({option:YesNo.YES})
+        .send({option: YesNo.YES})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.HELP_WITH_FEES_REFERENCE_REQUIRED'));
@@ -88,7 +85,7 @@ describe('Claim Details - Help With Fees', () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CLAIM_HELP_WITH_FEES_URL)
-        .send({option:YesNo.NO})
+        .send({option: YesNo.NO})
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

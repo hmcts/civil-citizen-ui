@@ -1,14 +1,11 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {AppRequest} from '../../../../common/models/AppRequest';
-import {GenericForm} from '../../../../common/form/models/genericForm';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
 
-import {
-  CLAIM_REASON_URL,
-  CLAIM_TIMELINE_URL,
-} from '../../../urls';
-import {getClaimDetails, saveClaimDetails} from '../../../../services/features/claim/details/claimDetailsService';
-import {Reason} from '../../../../common/form/models/claim/details/reason';
-import {ClaimDetails} from '../../../../common/form/models/claim/details/claimDetails';
+import {CLAIM_REASON_URL, CLAIM_TIMELINE_URL,} from 'routes/urls';
+import {getClaimDetails, saveClaimDetails} from 'services/features/claim/details/claimDetailsService';
+import {Reason} from 'form/models/claim/details/reason';
+import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 
 const reasonController = Router();
 const reasonViewPath = 'features/claim/details/reason';
