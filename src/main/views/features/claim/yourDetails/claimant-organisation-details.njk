@@ -68,7 +68,7 @@
   <div id="correspondenceAddress" class="{{ correspondenceAddressClass }}">
     {{ addressForm(
       t,
-      citizenCorrespondenceAddress = party.model.correspondenceAddress,
+      party = party,
       addressType = 'correspondence',
       addressTitle = addressTitle
     ) }}
@@ -152,7 +152,7 @@
             <div id="primaryAddress" class="{{ correspondenceAddressClass }}">
               {{ addressForm(
                 t,
-                citizenAddress = party.model.correspondenceAddress,
+                party = party,
                 addressType = 'primary',
                 addressTitle = ''
               ) }}
