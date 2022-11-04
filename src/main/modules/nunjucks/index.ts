@@ -7,7 +7,7 @@ import {convertToPoundsFilter} from '../../common/utils/currencyFormat';
 import {t} from 'i18next';
 import {ResponseType} from '../../common/form/models/responseType';
 import {YesNo, YesNoNotReceived} from '../../common/form/models/yesNo';
-import {ResidenceType} from '../../common/form/models/statementOfMeans/residenceType';
+import {ResidenceType} from '../../common/form/models/statementOfMeans/residence/residenceType';
 import {PartyType} from '../../common/models/partyType';
 import {UnemploymentCategory} from '../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
 import {TransactionSchedule} from '../../common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
