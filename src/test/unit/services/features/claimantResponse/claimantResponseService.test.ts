@@ -104,7 +104,6 @@ describe('Claimant Response Service', () => {
   describe('saveClaimantResponse', () => {
     const claimantResponse = new ClaimantResponse();
     claimantResponse.hasDefendantPaidYou = new GenericYesNo(YesNo.YES);
-    claimantResponse.debtRespiteScheme = new DebtRespiteScheme('0000');
 
     it('should save claimant response successfully', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
