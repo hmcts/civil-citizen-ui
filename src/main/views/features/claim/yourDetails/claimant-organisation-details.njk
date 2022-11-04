@@ -29,7 +29,6 @@
   {% set pageTitle = t('PAGES.ORGANISATION_DETAILS.PAGE_TITLE') %}
   {% set addressExplanation = t('PAGES.ORGANISATION_DETAILS.MAIN_OFFICE') %}
 {% endif %}
-
 {% block pageTitle %}
   {{ setPageTitle(pageTitle) }}
 {% endblock %}
@@ -127,6 +126,7 @@
               </div>
               <label class="govuk-label" for="primaryPostcode">
                 {{ t('PAGES.CITIZEN_DETAILS.UK_POSTCODE') }}
+
               </label>
               <input class="govuk-input govuk-input--width-10" id="primaryPostcode" name="primaryPostcode" type="text" autocomplete="postal-code"/>
               <button href="#" class="govuk-button govuk-button--secondary findAddressButton" data-module="govuk-button" id="primaryfindAddressButton">
