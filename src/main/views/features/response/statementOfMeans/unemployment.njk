@@ -36,7 +36,7 @@
                 type: "text",
                 classes:  "govuk-input--width-5 govuk-input--error" if form.hasFieldError('details') else "govuk-input--width-5",
                 label: {
-                  text: t('PAGES.UNEMPLOYMENT.DETAILS')
+                  text: t('COMMON.GIVE_DETAILS')
                 },
                 value: form.model.otherDetails.details,
                 errorMessage: { text: otherDetailsNestedError } if otherDetailsNestedError else ''
