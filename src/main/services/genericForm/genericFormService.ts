@@ -12,4 +12,4 @@ const getErrorMessage = (propertyName: string, errorMessages: any): string => {
 
 export {
   getGenericOptionForm,
-}
+};
