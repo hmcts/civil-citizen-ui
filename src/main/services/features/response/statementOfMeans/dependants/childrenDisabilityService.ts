@@ -46,7 +46,7 @@ export const getChildrenDisability = async (claimId: string): Promise<GenericYes
 
 export const saveChildrenDisability = async (claimId: string, childrenDisability: GenericYesNo) => {
   try {
-    const case_data = await getCaseDataFromStore(claimId) || new Claim();
+    const case_data = await getCaseDataFromStore(claimId);
     if (case_data.statementOfMeans) {
       case_data.statementOfMeans.childrenDisability = childrenDisability;
     } else {
