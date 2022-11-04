@@ -7,7 +7,8 @@ import {
   getClaimantResponse,
   saveClaimantResponse,
 } from '../../../../../main/services/features/claimantResponse/claimantResponseService';
-import {ClaimantResponse} from 'models/claimantResponse/claimantResponse';
+import {ClaimantResponse} from '../../../../../main/common/models/claimantResponse/claimantResponse';
+import {DebtRespiteScheme} from '../../../../../main/common/models/claimantResponse/debtRespiteScheme';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -65,6 +66,32 @@ describe('Claimant Response Service', () => {
       expect(claimantResponse?.hasDefendantPaidYou.option).toBe(YesNo.YES);
     });
 
+    it('should return Claimant Response object with DebtRespiteReferenceNumber', async () => {
+      const claim = new Claim();
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.debtRespiteScheme = new DebtRespiteScheme('1234');
+
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return claim;
+      });
+      const claimantResponse = await getClaimantResponse('validClaimId');
+
+      expect(claimantResponse?.debtRespiteScheme.referenceNumber).toBe('1234');
+    });
+
+    it('should return Claimant Response object with DebtRespiteReferenceNumber empty', async () => {
+      const claim = new Claim();
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.debtRespiteScheme = new DebtRespiteScheme();
+
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return claim;
+      });
+      const claimantResponse = await getClaimantResponse('validClaimId');
+
+      expect(claimantResponse?.debtRespiteScheme.referenceNumber).toBeUndefined();
+    });
+
     it('should return an error on redis failure', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
@@ -77,6 +104,7 @@ describe('Claimant Response Service', () => {
   describe('saveClaimantResponse', () => {
     const claimantResponse = new ClaimantResponse();
     claimantResponse.hasDefendantPaidYou = new GenericYesNo(YesNo.YES);
+    claimantResponse.debtRespiteScheme = new DebtRespiteScheme('0000');
 
     it('should save claimant response successfully', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -108,14 +136,53 @@ describe('Claimant Response Service', () => {
       expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
     });
 
+    describe('debtRespiteScheme', () => {
+      claimantResponse.debtRespiteScheme = new DebtRespiteScheme('0000');
+      it('should save debt respite scheme successfully', async () => {
+        //Given
+        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+          const claim = new Claim();
+          claim.claimantResponse = new ClaimantResponse();
+          return claim;
+        });
+        const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+        const debtRespiteSchemeValue = new DebtRespiteScheme('1234');
+        const claimantResponseToSave = {
+          debtRespiteScheme: {referenceNumber: '1234'},
+        };
+        //When
+        await saveClaimantResponse('validClaimId', debtRespiteSchemeValue, 'debtRespiteScheme');
+        //Then
+        expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToSave});
+      });
+
+      it('should update debt respite scheme successfully', async () => {
+        //Given
+        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+          const claim = new Claim();
+          claim.claimantResponse = claimantResponse;
+          return claim;
+        });
+        const claimantResponseToUpdate = {
+          debtRespiteScheme: {referenceNumber: '1234'},
+        };
+        const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+        //When
+        await saveClaimantResponse('validClaimId', claimantResponse?.debtRespiteScheme, 'debtRespiteScheme');
+        //Then
+        expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
+      });
+    });
+
     it('should return an error on redis failure', async () => {
+      //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return new Claim();
       });
       mockSaveDraftClaim.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
-
+      //Then
       await expect(saveClaimantResponse('claimId', mockGetCaseDataFromDraftStore, ''))
         .rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
