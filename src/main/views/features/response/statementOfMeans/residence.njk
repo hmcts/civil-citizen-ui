@@ -46,29 +46,29 @@
                 name: "type",
                 items: [
                   {
-                    value: ResidenceType.OWN_HOME.value,
+                    value: ResidenceType.OWN_HOME,
                     text: t('PAGES.RESIDENCE.OWN_HOME'),
                     checked: form.model.type === ResidenceType.OWN_HOME
                   },
                   {
-                    value: ResidenceType.JOINT_OWN_HOME.value,
+                    value: ResidenceType.JOINT_OWN_HOME,
                     text: t('PAGES.RESIDENCE.JOIN_HOME'),
-                    checked: form.model.type.value === ResidenceType.JOINT_OWN_HOME.value
+                    checked: form.model.type === ResidenceType.JOINT_OWN_HOME
                   },
                   {
-                    value: ResidenceType.PRIVATE_RENTAL.value,
+                    value: ResidenceType.PRIVATE_RENTAL,
                     text: t('PAGES.RESIDENCE.RENTAL_HOME'),
-                    checked: form.model.type.value === ResidenceType.PRIVATE_RENTAL.value
+                    checked: form.model.type === ResidenceType.PRIVATE_RENTAL
                   },
                   {
-                    value: ResidenceType.COUNCIL_OR_HOUSING_ASSN_HOME.value,
+                    value: ResidenceType.COUNCIL_OR_HOUSING_ASSN_HOME,
                     text: t('PAGES.RESIDENCE.ASSOCIATION_HOME'),
-                    checked: form.model.type.value === ResidenceType.COUNCIL_OR_HOUSING_ASSN_HOME.value
+                    checked: form.model.type === ResidenceType.COUNCIL_OR_HOUSING_ASSN_HOME
                   },
                   {
-                    value: ResidenceType.OTHER.value,
+                    value: ResidenceType.OTHER,
                     text: t('PAGES.RESIDENCE.OTHER'),
-                    checked: form.model.type.value === ResidenceType.OTHER.value,
+                    checked: form.model.type === ResidenceType.OTHER,
                     conditional: {
                       html: housingDetailsHtml
                     }
