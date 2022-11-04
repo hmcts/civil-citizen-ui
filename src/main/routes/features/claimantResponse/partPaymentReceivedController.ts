@@ -5,15 +5,18 @@ import {
 } from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
-
 import {
   saveClaimantResponse,
-  getGenericOptionForm,
 } from '../../../services/features/claimantResponse/claimantResponseService';
+import {
+  getGenericOptionForm,
+} from '../../../services/genericForm/genericFormService';
+
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {Claim} from '../../../common/models/claim';
 import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
 import {ClaimantResponse} from '../../../common/models/claimantResponse';
+import {ClaimantResponseErrorMessages} from '../../../common/form/models/claimantResponse/claimantResponseErrorMessages';
 
 const partPaymentReceivedController = Router();
 const partPaymentReceivedViewPath = 'features/claimantResponse/part-payment-received';
@@ -40,7 +43,7 @@ partPaymentReceivedController.get(CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL, a
 partPaymentReceivedController.post(CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const genericYesNoForm =  new GenericForm(getGenericOptionForm(req.body.option, claimantResponsePropertyName));
+    const genericYesNoForm =  new GenericForm(getGenericOptionForm(req.body.option, claimantResponsePropertyName, ClaimantResponseErrorMessages));
     genericYesNoForm.validateSync();
 
     if (genericYesNoForm.hasErrors()) {

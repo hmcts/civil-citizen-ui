@@ -1,7 +1,5 @@
 import {ClaimantResponse} from '../../../common/models/claimantResponse';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
-import {GenericYesNo} from '../../../common/form/models/genericYesNo';
-import {ClaimantResponseErrorMessages} from '../../../common/form/models/claimantResponse/claimantResponseErrorMessages';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -44,18 +42,7 @@ const saveClaimantResponse = async (claimId: string, value: any, claimantRespons
   }
 };
 
-const getGenericOptionForm = (option: string, propertyName: string): GenericYesNo => {
-  return new GenericYesNo(option, getClaimantResponseErrorMessage(propertyName));
-};
-
-const getClaimantResponseErrorMessage = (propertyName: string): string => {
-  return (ClaimantResponseErrorMessages[propertyName as keyof typeof ClaimantResponseErrorMessages]) ?
-    ClaimantResponseErrorMessages[propertyName as keyof typeof ClaimantResponseErrorMessages] :
-    undefined;
-};
-
 export {
   getClaimantResponse,
   saveClaimantResponse,
-  getGenericOptionForm,
 };
