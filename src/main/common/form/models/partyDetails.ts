@@ -31,7 +31,7 @@ export class PartyDetails {
   @ValidateNested()
     correspondenceAddress?: Address;
 
-  constructor(value: PartyDetails) {
+  constructor(value: any) {
     this.individualTitle = value?.individualTitle;
     this.individualLastName = value?.individualLastName;
     this.individualFirstName = value?.individualFirstName;
@@ -40,8 +40,8 @@ export class PartyDetails {
     this.contactPerson = value?.contactPerson;
     this.postToThisAddress = value?.postToThisAddress;
     this.provideCorrespondenceAddress = value?.provideCorrespondenceAddress;
-    this.primaryAddress = value?.primaryAddress;
-    this.correspondenceAddress = value?.correspondenceAddress;
+    this.primaryAddress = value?.addressLine1 ? new Address(value?.addressLine1[0], value?.addressLine2[0], value?.addressLine3[0], value?.city[0], value?.postCode[0]) : new Address();
+    this.correspondenceAddress = value?.addressLine1 ? new Address(value?.addressLine1[1], value?.addressLine2[1], value?.addressLine3[1], value?.city[1], value?.postCode[1]): new Address();
   }
 
 }

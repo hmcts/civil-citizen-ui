@@ -18,8 +18,8 @@
       html: textInputLabel + ' <span class="govuk-visually-hidden">line 1 of 3</span>'
     },
     classes: "govuk-input--width-20",
-    id: addressType + "AddressLine1",
-    name: addressType + "AddressLine1",
+    id: "addressLine1",
+    name: "addressLine1",
     autocomplete: addressType + "AddressLine-1",
     value: citizenAddress.addressLine1 if addressType == 'primary' else citizenCorrespondenceAddress.addressLine1,
     errorMessage: { text: t(party.errorFor('addressLine1')) } if (addressType == 'primary' and party.errorFor('addressLine1'))
@@ -51,12 +51,12 @@
       text: t('COMMON.ADDRESS_FORM.TOWN_OR_CITY')
     },
     classes: "govuk-input--width-20",
-    id: addressType + "City",
-    name: addressType + "City",
+    id: "city",
+    name: "city",
     autocomplete: addressType + "address-level2",
      value: citizenAddress.city if addressType == 'primary' else citizenCorrespondenceAddress.city,
-    errorMessage: { text: t(party.errorFor('city')) } if (addressType == 'primary' and party.errorFor('city'))
-    else ({ text: t(party.errorFor('city')) } if (addressType == 'correspondence' and party.errorFor('city')))
+    errorMessage: { text: t(party.errorFor('city','primaryAddress')) } if (addressType == 'primary' and party.errorFor('city','primaryAddress'))
+    else ({ text: t(party.errorFor('city','correspondenceAddress')) } if (addressType == 'correspondence' and party.errorFor('city','correspondenceAddress')))
   }) }}
   {{ govukInput({
     label: {
@@ -67,7 +67,7 @@
     name: "postCode",
     autocomplete: addressType + "postal-code",
     value: citizenAddress.postCode if addressType == 'primary' else citizenCorrespondenceAddress.postCode,
-    errorMessage: { text: t(party.errorFor('postCode')) } if (addressType == 'primary' and party.errorFor('postCode'))
-    else ({ text: t(party.errorFor('postCode')) } if (addressType == 'correspondence' and party.errorFor('postCode')))
+    errorMessage: { text: t(party.errorFor('postCode','primaryAddress')) } if (addressType == 'primary' and party.errorFor('postCode','primaryAddress'))
+    else ({ text: t(party.errorFor('postCode','correspondenceAddress')) } if (addressType == 'correspondence' and party.errorFor('postCode', 'correspondenceAddress')))
   }) }}
 {% endmacro %}
