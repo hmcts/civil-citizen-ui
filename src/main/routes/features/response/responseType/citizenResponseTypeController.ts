@@ -43,7 +43,7 @@ citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
       if (formResponseType.hasErrors()) {
         renderView(formResponseType, res);
       } else {
-        const claim = await getCaseDataFromStore(req.params.id) || new Claim();
+        const claim = await getCaseDataFromStore(req.params.id);
         if (claim.respondent1) {
           claim.respondent1.responseType = formResponseType.model.responseType;
         } else {

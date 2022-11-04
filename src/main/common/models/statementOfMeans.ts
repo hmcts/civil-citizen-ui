@@ -1,6 +1,6 @@
 import {OtherDependants} from '../form/models/statementOfMeans/otherDependants';
 import {CitizenBankAccount} from './citizenBankAccount';
-import {Residence} from '../form/models/statementOfMeans/residence';
+import {Residence} from '../form/models/statementOfMeans/residence/residence';
 import {Employment} from './employment';
 import {Employers} from '../form/models/statementOfMeans/employment/employers';
 import {Dependants} from '../form/models/statementOfMeans/dependants/dependants';

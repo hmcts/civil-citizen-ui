@@ -46,7 +46,7 @@ const saveTaxPaymentsData = async (claimId: string, form: GenericForm<OnTaxPayme
 };
 
 const getClaim = async (claimId: string): Promise<Claim> => {
-  const claim = await getCaseDataFromStore(claimId) || new Claim();
+  const claim = await getCaseDataFromStore(claimId);
   if (!claim.statementOfMeans) {
     claim.statementOfMeans = new StatementOfMeans();
   }
