@@ -28,8 +28,8 @@ import {UnemploymentDetails} from '../../main/common/form/models/statementOfMean
 import {SelfEmployedAs} from '../../main/common/models/selfEmployedAs';
 import {TaxPayments} from '../../main/common/models/taxPayments';
 import {YesNo} from '../../main/common/form/models/yesNo';
-import {Residence} from '../../main/common/form/models/statementOfMeans/residence';
-import {ResidenceType} from '../../main/common/form/models/statementOfMeans/residenceType';
+import {Residence} from '../../main/common/form/models/statementOfMeans/residence/residence';
+import {ResidenceType} from '../../main/common/form/models/statementOfMeans/residence/residenceType';
 import {Dependants} from '../../main/common/form/models/statementOfMeans/dependants/dependants';
 import {NumberOfChildren} from '../../main/common/form/models/statementOfMeans/dependants/numberOfChildren';
 import {OtherDependants} from '../../main/common/form/models/statementOfMeans/otherDependants';
@@ -648,10 +648,10 @@ export const createClaimWithDisabilityAndSevereDisability = (optionDisability: Y
   return claim;
 };
 
-export const createClaimWithResidence = (value: string, displayValue: string): Claim => {
+export const createClaimWithResidence = (value: ResidenceType): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
-  const residence: Residence = new Residence(new ResidenceType(value, displayValue), '');
+  const residence: Residence = new Residence(value, '');
   claim.statementOfMeans = {
     residence: residence,
   };
@@ -661,7 +661,7 @@ export const createClaimWithResidence = (value: string, displayValue: string): C
 export const createClaimWithResidenceOther = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
-  const residence: Residence = new Residence(new ResidenceType('OTHER', 'Other'), 'Flat');
+  const residence: Residence = new Residence(ResidenceType.OTHER, 'Flat');
   claim.statementOfMeans = {
     residence: residence,
   };
