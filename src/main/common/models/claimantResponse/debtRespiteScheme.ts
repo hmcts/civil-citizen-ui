@@ -1,6 +1,6 @@
 
 export class DebtRespiteScheme {
-    referenceNumber?: string;
+  referenceNumber?: string;
 
   constructor(referenceNumber?: string) {
     this.referenceNumber = referenceNumber;
