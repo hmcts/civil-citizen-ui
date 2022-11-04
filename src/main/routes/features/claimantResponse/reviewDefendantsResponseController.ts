@@ -13,7 +13,7 @@ reviewDefendantsResponseController.get(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPO
     const claim: Claim = await getCaseDataFromStore(claimId);
     const continueLink = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL);
     const paymentDate = formatDateToFullDate(claim.paymentDate, req.query.lang ? req.query.lang : req.cookies.lang);
-    // TODO: set proper link
+    // TODO: to be done after CIV-5793 is completed
     const downloadResponseLink = '#';
     console.log('claim ', claim);
     res.render('features/claimantResponse/review-defendants-response', {claim, continueLink, downloadResponseLink, paymentDate});
