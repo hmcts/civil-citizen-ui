@@ -22,7 +22,7 @@ const saveClaimantResponse = async (claimId: string, value: any, claimantRespons
         claim.claimantResponse[parentPropertyName][claimantResponsePropertyName] = value;
       } else if (parentPropertyName && !claim.claimantResponse[parentPropertyName]) {
         claim.claimantResponse[parentPropertyName] = {[claimantResponsePropertyName]: value};
-      }else {
+      } else {
         claim.claimantResponse[claimantResponsePropertyName] = value;
       }
     } else {
