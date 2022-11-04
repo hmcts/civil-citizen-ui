@@ -16,6 +16,7 @@ import {PartyType} from '../../../../main/common/models/partyType';
 import {mockClaim} from '../../../utils/mockClaim';
 import {TestMessages} from '../../../utils/errorMessageTestConstants';
 import {CaseState} from '../../../../main/common/form/models/claimDetails';
+import {CourtLocation} from '../../../../main/services/features/courts/courtLocations';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -215,6 +216,23 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
       await expect(civilServiceClient.calculateExtendedResponseDeadline(responseDeadlineDate, mockedAppRequest)).rejects.toThrow('error');
+    });
+  });
+  describe('getCourtLocations test', ()=>{
+    it('should return court locations successfully', async ()=> {
+      //Given
+      const courtLocations = [new CourtLocation('1', 'location1'), new CourtLocation('2', 'location2')];
+      const mockGet = jest.fn().mockResolvedValue({data: courtLocations});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //When
+      const locations = await civilServiceClient.getCourtLocations(mockedAppRequest);
+      //Then
+      expect(locations.length).toBe(2);
+      expect(locations[0].label).toBe(courtLocations[0].label);
+      expect(locations[0].code).toBe(courtLocations[0].code);
+      expect(locations[1].label).toBe(courtLocations[1].label);
+      expect(locations[1].code).toBe(courtLocations[1].code);
     });
   });
 });
