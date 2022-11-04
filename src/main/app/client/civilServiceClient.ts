@@ -17,7 +17,7 @@ import {CaseDocument} from 'common/models/document/caseDocument';
 import {DashboardClaimantItem, DashboardDefendantItem} from '../../common/models/dashboard/dashboardItem';
 import {ClaimUpdate, EventDto} from '../../common/models/events/eventDto';
 import {CaseEvent} from '../../common/models/events/caseEvent';
-import {CourtLocation} from '../../services/features/courts/courtLocations';
+import {CourtLocation} from '../../common/models/courts/courtLocations';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');

@@ -16,7 +16,7 @@ import {PartyType} from '../../../../main/common/models/partyType';
 import {mockClaim} from '../../../utils/mockClaim';
 import {TestMessages} from '../../../utils/errorMessageTestConstants';
 import {CaseState} from '../../../../main/common/form/models/claimDetails';
-import {CourtLocation} from '../../../../main/services/features/courts/courtLocations';
+import {CourtLocation} from '../../../../main/common/models/courts/courtLocations';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
