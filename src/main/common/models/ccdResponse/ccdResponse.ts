@@ -2,7 +2,7 @@ import {CCDPaymentOption} from './ccdPaymentOption';
 import {ClaimUpdate} from '../../models/events/eventDto';
 import {CCDRepaymentPlan} from './ccdRepaymentPlan';
 import {CCDPayBySetDate} from './ccdPayBySetDate';
-import {YesNoUpperCase} from '../../../common/form/models/yesNo';
+import {YesNoUpperCamelCase} from '../../../common/form/models/yesNo';
 import {CCDParty} from './ccdParty';
 
 export interface CCDResponse extends ClaimUpdate {
@@ -11,7 +11,7 @@ export interface CCDResponse extends ClaimUpdate {
   respondent1RepaymentPlan?: CCDRepaymentPlan;
   respondToClaimAdmitPartLRspec?: CCDPayBySetDate;
   responseClaimMediationSpecRequired?: string;
-  specAoSApplicantCorrespondenceAddressRequired?: YesNoUpperCase;
+  specAoSApplicantCorrespondenceAddressRequired?: YesNoUpperCamelCase;
   totalClaimAmount: number,
   respondent1: CCDParty;
 };
