@@ -1,4 +1,4 @@
-import {ClaimantResponse} from 'models/claimantResponse/claimantResponse';
+import {ClaimantResponse} from '../../../common/models/claimantResponse/claimantResponse';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -22,8 +22,8 @@ const saveClaimantResponse = async (claimId: string, value: any, claimantRespons
         claim.claimantResponse[parentPropertyName][claimantResponsePropertyName] = value;
       } else if (parentPropertyName && !claim.claimantResponse[parentPropertyName]) {
         claim.claimantResponse[parentPropertyName] = {[claimantResponsePropertyName]: value};
-      } else {
-        claim.claimantResponse[parentPropertyName] = value;
+      }else {
+        claim.claimantResponse[claimantResponsePropertyName] = value;
       }
     } else {
       const claimantResponse: any = new ClaimantResponse();
