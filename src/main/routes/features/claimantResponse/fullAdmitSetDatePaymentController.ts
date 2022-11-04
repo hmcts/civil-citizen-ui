@@ -6,6 +6,7 @@ import {
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {AppRequest} from '../../../common/models/AppRequest';
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
+import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {saveClaimantResponse} from '../../../services/features/claimantResponse/claimantResponseService';
 import {getFullAdmitSetDatePaymentDetails} from '../../../services/features/claimantResponse/fullAdmitSetDatePaymentService';
 
@@ -24,11 +25,7 @@ fullAdmitSetDatePaymentController.get(CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAYM
   try {
     const claimId = req.params.id;
     const details = await getFullAdmitSetDatePaymentDetails(claimId);
-    const option = details.fullAdmitAcceptPayment;
-    const defendantName = details.defendantName;
-    const proposedSetDate = details.proposedSetDate;
-
-    await renderView(new GenericForm(option), defendantName, proposedSetDate, res);
+    await renderView(new GenericForm(details.fullAdmitAcceptPayment), details.defendantName, details.proposedSetDate, res);
   } catch (error) {
     next(error);
   }
@@ -44,13 +41,10 @@ fullAdmitSetDatePaymentController.post(CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAY
 
     if (form.hasErrors()) {
       const details = await getFullAdmitSetDatePaymentDetails(claimId);
-      const defendantName = details.defendantName;
-      const proposedSetDate = details.proposedSetDate;
-
-      await renderView(form, defendantName, proposedSetDate, res);
+      await renderView(form, details.defendantName, details.proposedSetDate, res);
     } else {
       await saveClaimantResponse(claimId, form.model.option, claimantResponsePropertyName, parentPropertyName);
-      res.redirect(CLAIMANT_RESPONSE_TASK_LIST_URL);
+      res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
     }
   } catch (error) {
     next(error);

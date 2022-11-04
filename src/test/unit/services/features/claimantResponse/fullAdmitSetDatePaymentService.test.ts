@@ -8,6 +8,9 @@ import {ClaimantResponse} from '../../../../../main/common/models/claimantRespon
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
 import {formatDateToFullDate} from '../../../../../main/common/utils/dateUtils';
 import {Party} from '../../../../../main/common/models/party';
+import {
+  getDefendantFullName,
+} from '../../../../../main/services/features/response/checkAnswers/detailsSection/buildYourDetailsSection';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -36,11 +39,11 @@ describe('Full Admit Set Date Payment Service', () => {
 
       //Then
       expect(details.fullAdmitAcceptPayment.option).toBe(YesNo.YES);
-      expect(details.defendantName).toBe(claim.getDefendantName());
+      expect(details.defendantName).toBe(getDefendantFullName(claim));
       expect(details.proposedSetDate).toBe(formatDateToFullDate(claim.paymentDate));
     });
 
-    it('should return object when option is undefined', async () => {
+    it('should return object when fullAdmitSetDateAcceptPayment is undefined', async () => {
       //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         claim.respondent1.partyName = 'John Doe';
@@ -54,7 +57,7 @@ describe('Full Admit Set Date Payment Service', () => {
 
       //Then
       expect(details.fullAdmitAcceptPayment).toBeUndefined();
-      expect(details.defendantName).toBe(claim.getDefendantName());
+      expect(details.defendantName).toBe(getDefendantFullName(claim));
       expect(details.proposedSetDate).toBe(formatDateToFullDate(claim.paymentDate));
     });
 

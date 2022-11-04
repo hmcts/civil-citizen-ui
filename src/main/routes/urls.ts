@@ -1,6 +1,6 @@
 const BASE_CASE_URL = '/case/:id';
 const BASE_CLAIM_URL = '/claim';
-const BASE_CLAIMANT_RESPONSE_URL = '/claimant-response/:id';
+const BASE_CLAIMANT_RESPONSE_URL = `${BASE_CASE_URL}/claimant-response`;
 export const BASE_ELIGIBILITY_URL = '/eligibility';
 export const BASE_FIRST_CONTACT_URL = '/first-contact';
 const BASE_CASE_RESPONSE_URL = `${BASE_CASE_URL}/response`;
