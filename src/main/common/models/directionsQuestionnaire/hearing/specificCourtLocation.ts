@@ -4,10 +4,10 @@ import {CourtLocation} from 'models/courts/courtLocations';
 
 export class SpecificCourtLocation {
 
-  @IsDefined({message: 'ERRORS.VALID_YES_NO_OPTION'})
+  @IsDefined({message: 'ERRORS.SPECIFIC_COURT.SELECT_YES_NO'})
     option: YesNoUpperCase;
   @ValidateIf(o => {return o.isSpecificCourtRequired();})
-  @IsDefined({message: 'ERRORS.VALID_YES_NO_OPTION'})
+  @IsDefined({message: 'ERRORS.SPECIFIC_COURT.SELECT_COURT_LOCATION'})
     courtLocation: CourtLocation;
 
   isSpecificCourtRequired(){
