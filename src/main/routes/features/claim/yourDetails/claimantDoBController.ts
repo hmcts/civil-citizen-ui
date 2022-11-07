@@ -35,7 +35,7 @@ claimantDoBController.post(CLAIMANT_DOB_URL, async (req: AppRequest | Request, r
     if (form.hasErrors()) {
       res.render(claimantDoBViewPath, {form, today: new Date(), claimantView: true});
     } else {
-      await saveClaimantProperty(claimId, 'dateOfBirth', form.model.date);
+      await saveClaimantProperty(claimId, 'dateOfBirth', form.model);
       res.redirect(CLAIMANT_PHONE_NUMBER_URL);
     }
   } catch (error) {
