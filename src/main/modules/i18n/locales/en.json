@@ -42,6 +42,7 @@
       "RESPOND_TO_CLAIM": "Respond to claim",
       "SAVE_AND_CONTINUE": "Save and continue",
       "SAVE": "Save",
+      "SETTLE_THE_CLAIM": "Settle the claim",
       "START_AGAIN": "Start again",
       "SUBMIT_RESPONSE": "Submit Response"
     },
@@ -603,6 +604,10 @@
       "NUMBER_INFORMATION": "We'll also give your number to the person, business, or organisation you are claiming from.",
       "PAGE_TITLE": "Your phone number",
       "TITLE": "Enter a phone number (optional)"
+    },
+    "CLAIMANT_SETTLE_DATE": {
+      "PAGE_TITLE": "When did you settle with the defendant?",
+      "TITLE": "When did you settle with the defendant?"
     },
     "COMPANY_DETAILS": {
       "ADDRESS_FOR_SERVICE": "This is known as an \"address for service\".",
