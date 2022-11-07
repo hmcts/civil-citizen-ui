@@ -171,6 +171,12 @@
       "IMMEDIATELY": "Immediately",
       "INSTALMENTS": "By instalments"
     },
+    "PAYMENT_SCHEDULE": {
+      "BI_WEEKLY": "Every 2 Weeks Payments",
+      "FOUR_WEEKLY": "Every 4 Weeks Payments",
+      "MONTHLY": "Monthly Payments",
+      "WEEKLY": "Weekly Payments"
+    },
     "POSTAL_ADDRESS": {
       "BUILDING": "HMCTS CMC",
       "CITY": "Harlow",

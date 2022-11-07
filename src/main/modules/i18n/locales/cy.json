@@ -171,6 +171,12 @@
       "IMMEDIATELY": "Ar unwaith",
       "INSTALMENTS": "Mewn rhandaliadau"
     },
+    "PAYMENT_SCHEDULE": {
+      "BI_WEEKLY": "Every 2 Weeks Payments",
+      "FOUR_WEEKLY": "Every 4 Weeks Payments",
+      "MONTHLY": "Monthly Payments",
+      "WEEKLY": "Weekly Payments"
+    },
     "POSTAL_ADDRESS": {
       "BUILDING": "HMCTS CMC",
       "CITY": "Harlow",
@@ -1487,6 +1493,7 @@
       "MONTHLY_EXPENSES": "Monthly expenses",
       "MONTHLY_INCOME": "Monthly income",
       "PAGE_TITLE": "Review defendant’s response",
+      "PAY_EXPENSES": "Do they pay any expenses?",
       "PAYMENT_DATE": "They’ve offered to pay you this by {{ paymentDate }}",
       "RECEIVE_INCOME": "Do they receive any income?",
       "SEE_FINANCIAL_DETAILS": "See their financial details",
@@ -1511,9 +1518,7 @@
       "PAGE_TITLE": "Send your response by email"
     },
     "SENT_EXPERT_REPORTS": {
-      "OPTION_NO": "Naddo",
       "OPTION_NOT_RECEIVED": "Naddo, nid wyf wedi’u cael eto",
-      "OPTION_YES": "Do",
       "PAGE_TITLE": "Ydych chi wedi anfon adroddiadau arbenigwyr at y partïon eraill yn barod?",
       "TITLE": "Ydych chi wedi anfon adroddiadau arbenigwyr at y partïon eraill yn barod?"
     },
