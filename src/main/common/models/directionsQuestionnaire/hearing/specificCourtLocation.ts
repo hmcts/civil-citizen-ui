@@ -4,7 +4,7 @@ import {YesNoUpperCase} from 'common/form/models/yesNo';
 export class SpecificCourtLocation {
 
   @IsDefined({message: 'ERRORS.SPECIFIC_COURT.SELECT_YES_NO'})
-    option: YesNoUpperCase;
+    option: string;
   @ValidateIf(o =>  o.isSpecificCourtRequired())
   @IsDefined({message: 'ERRORS.SPECIFIC_COURT.SELECT_COURT_LOCATION'})
     courtLocation: string;
@@ -12,7 +12,7 @@ export class SpecificCourtLocation {
   @IsDefined({message: 'PAGES.SPECIFIC_COURT.REASON'})
     reason: string;
 
-  constructor(option?: YesNoUpperCase, courtLocation?: string, reason?: string) {
+  constructor(option?: string, courtLocation?: string, reason?: string) {
     this.option = option;
     this.courtLocation = courtLocation;
     this.reason = reason;
@@ -20,6 +20,10 @@ export class SpecificCourtLocation {
 
   isSpecificCourtRequired(){
     return this.option === YesNoUpperCase.YES;
+  }
+
+  public static fromObject(record: Record<string, string>){
+    return new SpecificCourtLocation(record?.option, record?.courtLocation, record?.reason);
   }
 
 }
