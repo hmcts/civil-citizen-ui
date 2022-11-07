@@ -7,6 +7,10 @@ import {toNumberOrUndefined} from "common/utils/numberConverter";
 export class DebtStartDate {
 
   @ValidateIf(o => (o.day < 32 && o.month < 13 && o.year > 999))
+  @IsDate({message: 'ERRORS.VALID_DATE'})
+  @Validate(OptionalDateInPastValidator, {message: 'ERRORS.VALID_DATE_IN_PAST'})
+  date?: Date;
+
   @Min(1, {message: 'ERRORS.VALID_DAY'})
   @Max(31, {message: 'ERRORS.VALID_DAY'})
   day?: number;
@@ -18,10 +22,6 @@ export class DebtStartDate {
   @Min(1872, {message: 'ERRORS.VALID_YEAR'})
   @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
   year?: number;
-
-  @IsDate({message: 'ERRORS.VALID_DATE'})
-  @Validate(OptionalDateInPastValidator, {message: 'ERRORS.VALID_DATE_IN_PAST'})
-  date?: Date;
 
   constructor(day?: string, month?: string, year?: string,) {
     this.date = DateConverter.convertToDate(year, month, day);
