@@ -51,10 +51,10 @@
       {{ t('PAGES.CITIZEN_DETAILS.MANUAL_ADDRESS') }}
     </a>
   </div>
-  <div id="correspondenceAddress" class="{{ correspondenceAddressClass }}">
+  <div id="correspondenceAddress">
     {{ addressForm(
       t,
-      citizenCorrespondenceAddress = party.model.correspondenceAddress,
+      party = party,
       addressType = 'correspondence',
       addressTitle = addressTitle
     ) }}
@@ -153,10 +153,10 @@
                 {{ t('PAGES.CITIZEN_DETAILS.MANUAL_ADDRESS') }}
               </a>
             </div>
-            <div id="primaryAddress" class="{{ correspondenceAddressClass }}">
+            <div id="primaryAddress">
               {{ addressForm(
                 t,
-                citizenAddress = party.model.primaryAddress,
+                party = party,
                 addressType = 'primary',
                 addressTitle = ''
               ) }}
