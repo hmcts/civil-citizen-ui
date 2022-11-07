@@ -19,7 +19,6 @@
 {% endif %}
 
 {% set formErrors = form.getAllErrors() %}
-{% set primaryAddressFormErrors = primaryAddressForm.getAllErrors() %}
 
 {% block pageTitle %}
   {{ setPageTitle(title) }}
@@ -29,8 +28,8 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
-        {% if form.hasErrors() or primaryAddressForm.hasErrors() %}
-          {{ errorSummary(formErrors.concat(primaryAddressFormErrors), t) }}
+        {% if form.hasErrors() %}
+          {{ errorSummary(form.getAllErrors(), t) }}
         {% endif %}
       </div>
       <div class="govuk-grid-row">
@@ -131,7 +130,7 @@
             <div id="primaryAddress" class="{{ correspondenceAddressClass }}">
               {{ addressForm(
                 t,
-                citizenAddress = primaryAddressForm,
+                party = form,
                 addressType = 'primary',
                 addressTitle = ''
               ) }}
