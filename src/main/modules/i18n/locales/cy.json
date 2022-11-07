@@ -1894,7 +1894,7 @@
     "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Dywedwch wrthym os ydych yn credu bod y ffeithiau a nodir yn yr ymateb hwn yn wir",
     "SPECIFIC_COURT": {
       "SELECT_YES_NO": "Select yes if you want to ask for the hearing to be held at a specific court",
-      "SELECT_COURT_LOCATION": ""
+      "SELECT_COURT_LOCATION": "Select a court"
     },
     "TELL_US_WHY": "Dywedwch wrthym pam",
     "TELL_US_WHY_UNAVAILABLE": "Tell us why you, your experts or witnesses are unavailable for a hearing",
