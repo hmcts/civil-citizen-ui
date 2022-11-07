@@ -157,7 +157,7 @@ import claimCheckAnswersController from './features/claim/checkAnswersController
 import claimantEvidenceController from './features/claim/yourDetails/claimantEvidenceController';
 import howMuchContinueClaimingController from './features/claim/interest/howMuchContinueClaimingController';
 import helpWithFeesController from './features/claim/details/helpWithFeesController';
-import datePaidViewController from './features/paidInFull/datePaidController';
+import datePaidViewController from './features/claimantResponse/paidInFull/datePaidController';
 
 export default [
   homeController,

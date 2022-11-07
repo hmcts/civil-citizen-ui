@@ -1,4 +1,4 @@
-import {DatePaid} from '../../common/form/models/paidInFull/datePaid';
+import {DatePaid} from '../form/models/clamantResponse/paidInFull/datePaid';
 import {GenericYesNo} from '../form/models/genericYesNo';
 
 export class ClaimantResponse {

@@ -1,7 +1,7 @@
 import {IsDate, Max, Min, Validate, ValidateIf} from 'class-validator';
-import {DateConverter} from '../../../utils/dateConverter';
-import {OptionalDateNotInFutureValidator} from '../../../../common/form/validators/optionalDateNotInFutureValidator';
-import {OptionalDateFourDigitValidator} from '../../../../common/form/validators/optionalDateFourDigitValidator';
+import {DateConverter} from '../../../../utils/dateConverter';
+import {OptionalDateNotInFutureValidator} from '../../../validators/optionalDateNotInFutureValidator';
+import {OptionalDateFourDigitValidator} from '../../../validators/optionalDateFourDigitValidator';
 
 export class DatePaid {
 

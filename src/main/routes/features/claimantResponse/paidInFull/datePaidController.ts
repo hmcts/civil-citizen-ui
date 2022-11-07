@@ -1,13 +1,13 @@
-import {DatePaid} from '../../../../main/common/form/models/paidInFull/datePaid';
+import {DatePaid} from '../../../../common/form/models/clamantResponse/paidInFull/datePaid';
 import {NextFunction, Request, Response, Router} from 'express';
-import {constructResponseUrlWithIdParams} from '../../../../main/common/utils/urlFormatter';
-import {DATE_PAID_URL,DATE_PAID_CONFIRMATION_URL} from '../../../../main/routes/urls';
-import {GenericForm} from '../../../../main/common/form/models/genericForm';
+import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+import {DATE_PAID_URL,DATE_PAID_CONFIRMATION_URL} from '../../../urls';
+import {GenericForm} from '../../../../common/form/models/genericForm';
 import {ClaimantResponse} from 'common/models/claimantResponse';
-import {getClaimantResponse, saveClaimantResponse} from '../../../../main/services/features/claimantResponse/claimantResponseService';
+import {getClaimantResponse, saveClaimantResponse} from '../../../../services/features/claimantResponse/claimantResponseService';
 
 const claimantResponsePropertyName = 'datePaid';
-const datePaidViewPath = 'features/paidInFull/date-paid';
+const datePaidViewPath = 'features/claimantResponse/paidInFull/date-paid';
 const datePaidViewController = Router();
 
 function renderView(form: GenericForm<DatePaid>, res: Response): void {
