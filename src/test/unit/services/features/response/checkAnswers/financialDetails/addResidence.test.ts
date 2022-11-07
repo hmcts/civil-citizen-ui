@@ -8,6 +8,7 @@ import {
   createClaimWithResidence,
   createClaimWithResidenceOther,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
+import {ResidenceType} from '../../../../../../../main/common/form/models/statementOfMeans/residence/residenceType';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
 
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -21,7 +22,7 @@ jest.mock('i18next', () => ({
 describe('Residence Details', () => {
   it('should return residence with COUNCIL_OR_HOUSING_ASSN_HOME value when it exists', async () => {
     //Given
-    const claim = createClaimWithResidence('COUNCIL_OR_HOUSING_ASSN_HOME','Council or housing association home');
+    const claim = createClaimWithResidence(ResidenceType.COUNCIL_OR_HOUSING_ASSN_HOME);
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
@@ -36,7 +37,7 @@ describe('Residence Details', () => {
 
   it('should return residence with PRIVATE_RENTAL value when it exists', async () => {
     //Given
-    const claim = createClaimWithResidence('PRIVATE_RENTAL','Private rental');
+    const claim = createClaimWithResidence(ResidenceType.PRIVATE_RENTAL);
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
@@ -48,7 +49,7 @@ describe('Residence Details', () => {
 
   it('should return residence with JOINT_OWN_HOME value when it exists', async () => {
     //Given
-    const claim = createClaimWithResidence('JOINT_OWN_HOME','Jointly-owned home (or jointly mortgaged home)');
+    const claim = createClaimWithResidence(ResidenceType.JOINT_OWN_HOME);
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
@@ -60,7 +61,7 @@ describe('Residence Details', () => {
 
   it('should return residence with OWN_HOME value when it exists', async () => {
     //Given
-    const claim = createClaimWithResidence('OWN_HOME','Home you own yourself (or pay a mortgage on)');
+    const claim = createClaimWithResidence(ResidenceType.OWN_HOME);
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
