@@ -1,9 +1,7 @@
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import {
   getClaimantInformation,
-  getClaimantPartyInformation,
   saveClaimant,
-  saveClaimantParty,
   saveClaimantProperty,
 } from '../../../../../../main/services/features/claim/yourDetails/claimantDetailsService';
 import {Claim} from '../../../../../../main/common/models/claim';
@@ -12,7 +10,6 @@ import {Party} from '../../../../../../main/common/models/party';
 import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 import {buildCitizenAddress} from '../../../../../utils/mockForm';
 import {PartyDetails} from '../../../../../../main/common/form/models/partyDetails';
-import {CitizenCorrespondenceAddress} from '../../../../../../main/common/form/models/citizenCorrespondenceAddress';
 import {PartyType} from '../../../../../../main/common/models/partyType';
 
 jest.mock('../../../../../../main/modules/draft-store');
@@ -68,7 +65,7 @@ describe('Citizen details service', () => {
         return {};
       });
       //When
-      const result: Party = await getClaimantPartyInformation(CLAIM_ID);
+      const result: Party = await getClaimantInformation(CLAIM_ID);
 
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
@@ -82,7 +79,7 @@ describe('Citizen details service', () => {
         return mockClaim;
       });
       //When
-      const result: Party = await getClaimantPartyInformation(CLAIM_ID);
+      const result: Party = await getClaimantInformation(CLAIM_ID);
 
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
@@ -99,14 +96,16 @@ describe('Citizen details service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       claimData.applicant1 = new Party();
-      claimData.applicant1.individualTitle = 'Mr.';
-      claimData.applicant1.individualFirstName = 'John';
-      claimData.applicant1.individualLastName = 'Doe';
+      claimData.applicant1.partyDetails = new PartyDetails({});
+      claimData.applicant1.partyDetails.individualTitle = 'Mr.';
+      claimData.applicant1.partyDetails.individualFirstName = 'John';
+      claimData.applicant1.partyDetails.individualLastName = 'Doe';
       claimData.applicant1.partyDetails.primaryAddress = buildAddress();
-      claimData.applicant1.provideCorrespondenceAddress = YesNo.NO;
+      claimData.applicant1.partyDetails.provideCorrespondenceAddress = YesNo.NO;
+      claimData.applicant1.partyDetails.correspondenceAddress = buildCitizenAddress().model;
 
       //When
-      await saveClaimant(CLAIM_ID, buildCitizenAddress().model, new CitizenCorrespondenceAddress(), YesNo.NO, claimantDetails);
+      await saveClaimant(CLAIM_ID, claimantDetails);
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, claimData);
@@ -120,20 +119,22 @@ describe('Citizen details service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       claimData.applicant1 = new Party();
-      claimData.applicant1.individualTitle = 'Mr.';
-      claimData.applicant1.individualFirstName = 'John';
-      claimData.applicant1.individualLastName = 'Doe';
+      claimData.applicant1.partyDetails = new PartyDetails({});
+      claimData.applicant1.partyDetails.individualTitle = 'Mr.';
+      claimData.applicant1.partyDetails.individualFirstName = 'John';
+      claimData.applicant1.partyDetails.individualLastName = 'Doe';
       claimData.applicant1.partyDetails.primaryAddress = buildAddress();
-      claimData.applicant1.provideCorrespondenceAddress = YesNo.NO;
+      claimData.applicant1.partyDetails.provideCorrespondenceAddress = YesNo.NO;
       mockGetCaseData.mockImplementation(async () => {
         const claim = mockClaim;
         const claimant = new Party();
+        claimant.partyDetails = new PartyDetails({});
         claimant.partyDetails.primaryAddress = buildAddress();
         claim.respondent1 = claimant;
         return mockClaim;
       });
       //When
-      await saveClaimant(CLAIM_ID, buildCitizenAddress().model, new CitizenCorrespondenceAddress(), YesNo.NO, claimantDetails);
+      await saveClaimant(CLAIM_ID, claimantDetails);
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
@@ -148,16 +149,17 @@ describe('Citizen details service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       claimData.applicant1 = new Party();
-      claimData.applicant1.partyName = 'PartyName';
-      claimData.applicant1.contactPerson = 'Contact Person';
-      claimData.applicant1.individualTitle = 'individualTitle';
-      claimData.applicant1.individualFirstName = 'individualFirstName';
-      claimData.applicant1.individualLastName = 'individualLastName';
+      claimData.applicant1.partyDetails = new PartyDetails({});
+      claimData.applicant1.partyDetails.partyName = 'PartyName';
+      claimData.applicant1.partyDetails.contactPerson = 'Contact Person';
+      claimData.applicant1.partyDetails.individualTitle = 'individualTitle';
+      claimData.applicant1.partyDetails.individualFirstName = 'individualFirstName';
+      claimData.applicant1.partyDetails.individualLastName = 'individualLastName';
       claimData.applicant1.partyDetails.primaryAddress = buildAddress();
-      claimData.applicant1.provideCorrespondenceAddress = YesNo.NO;
+      claimData.applicant1.partyDetails.provideCorrespondenceAddress = YesNo.NO;
 
       //When
-      await saveClaimantParty(CLAIM_ID, buildCitizenAddress().model, new CitizenCorrespondenceAddress(), YesNo.NO, claimData.applicant1);
+      await saveClaimant(CLAIM_ID, claimData.applicant1.partyDetails);
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, claimData);
@@ -171,18 +173,20 @@ describe('Citizen details service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       claimData.applicant1 = new Party();
-      claimData.applicant1.partyName = 'PartyName';
-      claimData.applicant1.contactPerson = 'Contact Person';
+      claimData.applicant1.partyDetails = new PartyDetails({});
+      claimData.applicant1.partyDetails.partyName = 'PartyName';
+      claimData.applicant1.partyDetails.contactPerson = 'Contact Person';
 
       mockGetCaseData.mockImplementation(async () => {
         const claim = mockClaim;
         const claimant = new Party();
+        claimant.partyDetails = new PartyDetails({});
         claimant.partyDetails.primaryAddress = buildAddress();
         claim.respondent1 = claimant;
         return mockClaim;
       });
       //When
-      await saveClaimantParty(CLAIM_ID, buildCitizenAddress().model, new CitizenCorrespondenceAddress(), YesNo.NO, claimData.applicant1);
+      await saveClaimant(CLAIM_ID, claimData.applicant1.partyDetails);
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
@@ -198,16 +202,17 @@ describe('Citizen details service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       claimData.applicant1 = new Party();
-      claimData.applicant1.partyName = 'PartyName';
-      claimData.applicant1.contactPerson = 'Contact Person';
-      claimData.applicant1.individualTitle = 'individualTitle';
-      claimData.applicant1.individualFirstName = 'individualFirstName';
-      claimData.applicant1.individualLastName = 'individualLastName';
+      claimData.applicant1.partyDetails = new PartyDetails({});
+      claimData.applicant1.partyDetails.partyName = 'PartyName';
+      claimData.applicant1.partyDetails.contactPerson = 'Contact Person';
+      claimData.applicant1.partyDetails.individualTitle = 'individualTitle';
+      claimData.applicant1.partyDetails.individualFirstName = 'individualFirstName';
+      claimData.applicant1.partyDetails.individualLastName = 'individualLastName';
       claimData.applicant1.partyDetails.primaryAddress = buildAddress();
-      claimData.applicant1.provideCorrespondenceAddress = YesNo.NO;
+      claimData.applicant1.partyDetails.provideCorrespondenceAddress = YesNo.NO;
 
       //When
-      await saveClaimant(CLAIM_ID, buildCitizenAddress().model, new CitizenCorrespondenceAddress(), YesNo.NO, claimData.applicant1);
+      await saveClaimant(CLAIM_ID, claimData.applicant1.partyDetails);
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, claimData);
@@ -221,18 +226,18 @@ describe('Citizen details service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       claimData.applicant1 = new Party();
-      claimData.applicant1.partyName = 'PartyName';
-      claimData.applicant1.contactPerson = 'Contact Person';
+      claimData.applicant1.partyDetails = new PartyDetails({partyName: 'PartyName', contactPerson: 'Contact Person'});
 
       mockGetCaseData.mockImplementation(async () => {
         const claim = mockClaim;
         const claimant = new Party();
+        claimant.partyDetails = new PartyDetails({});
         claimant.partyDetails.primaryAddress = buildAddress();
         claim.respondent1 = claimant;
         return mockClaim;
       });
       //When
-      await saveClaimantParty(CLAIM_ID, buildCitizenAddress().model, new CitizenCorrespondenceAddress(), YesNo.NO, claimData.applicant1);
+      await saveClaimant(CLAIM_ID, claimData.applicant1.partyDetails);
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();

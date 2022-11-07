@@ -1,6 +1,6 @@
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {DefendantEmail} from 'common/form/models/claim/yourDetails/defendantEmail';
-import {Party} from 'models/party';
+import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {DefendantEmail} from '../../../../common/form/models/claim/yourDetails/defendantEmail';
+import {Party} from '../../../../common/models/party';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('defendantEmailAsService');

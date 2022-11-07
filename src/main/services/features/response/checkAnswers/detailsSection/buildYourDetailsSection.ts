@@ -3,7 +3,7 @@ import {Claim} from '../../../../../common/models/claim';
 import {summaryRow} from '../../../../../common/models/summaryList/summaryList';
 import {t} from 'i18next';
 import {getLng} from '../../../../../common/utils/languageToggleUtils';
-import {CITIZEN_DETAILS_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL} from 'routes/urls';
+import {CITIZEN_DETAILS_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL} from '../../../../../routes/urls';
 import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {Address} from '../../../../../common/form/models/address';

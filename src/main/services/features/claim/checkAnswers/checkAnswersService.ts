@@ -1,5 +1,5 @@
 import {SummarySections} from '../../../../common/models/summaryList/summarySections';
-import {Claim} from 'models/claim';
+import {Claim} from '../../../../common/models/claim';
 import {buildYourDetailsSection} from './detailsSection/buildYourDetailsSection';
 import {buildTheirDetailsSection} from './detailsSection/buildTheirDetailsSection';
 import {buildClaimAmountSection} from './financialSection/buildClaimAmountSection';
