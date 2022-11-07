@@ -34,9 +34,9 @@
           "city": "Reading",
           "addressLine1": "Flat 2",
           "addressLine2": "Caversham House 15-17",
-          "addressLine3": "Church Road",
-          "partyName": "Mr. Jan Clark"
-        }
+          "addressLine3": "Church Road"
+        },
+        "partyName": "Mr. Jan Clark"
       },
       "partyTypeDisplayValue": "Organisation"
     },

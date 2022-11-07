@@ -11,7 +11,7 @@ export const getDefendantInformation = async (claimId: string): Promise<Party> =
 
 export const saveDefendantProperty = async (userId: string, propertyName: string, value: any): Promise<void> => {
   const claim = await getCaseDataFromStore(userId);
-  if (claim.respondent1) {
+  if (claim?.respondent1) {
     claim.respondent1[propertyName as keyof Party] = value;
   } else {
     const claimant = new Party();

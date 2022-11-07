@@ -9,7 +9,7 @@ import {ResponseDeadline} from '../../../../../main/common/form/models/responseD
 import {AdditionalTimeOptions} from '../../../../../main/common/form/models/additionalTime';
 import {PartyType} from '../../../../../main/common/models/partyType';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {Party} from '../../../../../main/common/models/party';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -60,7 +60,11 @@ describe('Request More Time Controller', () => {
     });
 
     it('should render error page when partyName is not set', async () => {
-      mockGetCaseData.mockImplementation(async () => new Claim());
+      const claim = new Claim();
+      claim.applicant1 = new Party();
+      claim.applicant1.type = PartyType.SOLE_TRADER;
+
+      mockGetCaseData.mockImplementation(async () => claim);
       await request(app).get(REQUEST_MORE_TIME_URL).expect((res) => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -68,7 +72,9 @@ describe('Request More Time Controller', () => {
     });
 
     it('should render error page on redis failure error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app).get(REQUEST_MORE_TIME_URL).expect((res) => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

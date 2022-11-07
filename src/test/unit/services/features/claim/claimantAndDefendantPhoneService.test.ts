@@ -17,6 +17,7 @@ const party: Party = {
     individualFirstName: '',
     partyName: '',
   },
+  partyPhone: {phone: '01632960001'},
   type: PartyType.INDIVIDUAL,
 };
 
@@ -54,6 +55,7 @@ describe('Claimant Phone Service', () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
         claim.applicant1 = party;
+        claim.applicant1.partyPhone.phone = '';
         return claim;
       });
       //When
@@ -66,7 +68,8 @@ describe('Claimant Phone Service', () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
-        claim.respondent1 = party;
+        claim.respondent1 = new Party();
+        claim.respondent1.partyPhone = new PartyPhone('');
         return claim;
       });
       //When
@@ -81,7 +84,6 @@ describe('Claimant Phone Service', () => {
         const claim = new Claim();
         claim.applicant1 = new Party();
         claim.applicant1.partyPhone = new PartyPhone(PHONE_NUMBER);
-        claim.applicant1 = party;
         return claim;
       });
       //When
@@ -95,9 +97,8 @@ describe('Claimant Phone Service', () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
-        claim.applicant1 = new Party();
-        claim.applicant1.partyPhone = new PartyPhone(PHONE_NUMBER);
-        claim.respondent1 = party;
+        claim.respondent1 = new Party();
+        claim.respondent1.partyPhone = new PartyPhone(PHONE_NUMBER);
         return claim;
       });
       //When
