@@ -8,7 +8,7 @@
     "CONFIRM_YOUR_DETAILS": "Confirm your details",
     "DASHBOARD": "Dashboard",
     "DATE": "Date",
-    "DATE_EXAMPLE": "For Example, {{ date }}",
+    "DATE_EXAMPLE": "For example, {{ date }}",
     "DAY": "Day",
     "DESCRIPTION": "Description",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
@@ -555,6 +555,11 @@
         "REASON": "Explain why you're claiming for this date",
         "TITLE": "When are you claiming interest from?"
       }
+    },
+    "CLAIMANT_RESPONSE_DEBT_WHEN_START": {
+      "DATE_START_OPTIONAL": "This is the date it started, not the date you received notification of it (optional).",
+      "PAGE_TITLE": "When did it start?",
+      "TITLE": "When did it start?"
     },
     "CLAIM_SUMMARY": {
       "ABOUT_CLAIM": "About claim",

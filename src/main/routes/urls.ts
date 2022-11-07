@@ -178,5 +178,5 @@ export const CLAIMANT_PHONE_NUMBER_URL = `${BASE_CLAIM_URL}/claimant-phone`;
 export const CLAIMANT_SOLE_TRADER_DETAILS_URL = `${BASE_CLAIM_URL}/claimant-sole-trader-details`;
 export const CLAIMANT_INTEREST_RATE_URL = `${BASE_CLAIM_URL}/interest-rate`;
 export const CLAIMANT_INTEREST_DATE_URL = `${BASE_CLAIM_URL}/interest-date`;
-export const CLAIMANT_RESPONSE_WHEN_DEBT_START =  `${BASE_CLAIMANT_RESPONSE_URL}/when-debt-start`;
-export const CLAIMANT_RESPONSE_TASK_LIST_URL = `${BASE_CLAIMANT_RESPONSE_URL}/what-type-is-it`;
+export const CLAIMANT_RESPONSE_WHEN_DEBT_START_URL =  `${BASE_CLAIMANT_RESPONSE_URL}/debt-when-start`;
+export const CLAIMANT_RESPONSE_WHAT_TYPE_URL = `${BASE_CLAIMANT_RESPONSE_URL}/what-type-is-it`;
