@@ -983,17 +983,17 @@
       "TITLE": "Rhestru eich tystiolaeth"
     },
     "EXPERT_DETAILS": {
-      "ADD_ANOTHER_EXPERT": "Add another expert",
-      "ADD_EXPERT": "Add another expert",
-      "COST_OPTIONAL": "Estimated cost (optional)",
-      "EMAIL_ADDRESS_OPTIONAL": "Email address (optional)",
-      "FIELD_OF_EXPERTISE": "Field of expertise",
-      "FIRST_NAME_OPTIONAL": "First name (optional)",
-      "LAST_NAME_OPTIONAL": "Last name (optional)",
-      "PAGE_TITLE": "Enter the expert’s details",
-      "PHONE_OPTIONAL": "Phone number (optional)",
-      "REMOVE_EXPERT": "Remove expert",
-      "TELL_US_WHY_NEED_EXPERT": "Tell us why you need this expert"
+      "ADD_ANOTHER_EXPERT": "Ychwanegu arbenigwr arall",
+      "ADD_EXPERT": "Ychwanegu arbenigwr arall",
+      "COST_OPTIONAL": "Amcangyfrif o’r gost (dewisol)",
+      "EMAIL_ADDRESS_OPTIONAL": "Cyfeiriad e-bost (dewisol)",
+      "FIELD_OF_EXPERTISE": "Maes arbenigedd",
+      "FIRST_NAME_OPTIONAL": "Enw cyntaf (dewisol)",
+      "LAST_NAME_OPTIONAL": "Enw olaf (dewisol)",
+      "PAGE_TITLE": "Nodwch fanylion yr arbenigwr",
+      "PHONE_OPTIONAL": "Rhif ffôn (dewisol)",
+      "REMOVE_EXPERT": "Dileu arbenigwr",
+      "TELL_US_WHY_NEED_EXPERT": "Dywedwch wrthym pam ydych chi angen yr arbenigwr hwn"
     },
     "EXPERT_GUIDANCE": {
       "ASK_PERMISSION": "You must ask for permission to use an expert - a judge will then decide whether the expert is necessary.",
@@ -1427,10 +1427,10 @@
       "TITLE": "Eich cynllun ad-dalu"
     },
     "REQUEST_EXTRA_4WEEKS": {
-      "HINT": "You can use this time to try to settle the claim without going to a hearing. Settling without going to a hearing may avoid costs including fees.",
-      "PAGE_TITLE": "Do you want an extra 4 weeks to try to settle the claim?",
-      "TITLE": "Do you want an extra 4 weeks to try to settle the claim?",
-      "WARNING": "This will not change the response deadline. even if an extra 4 weeks to settle the claim is agreed, you will still need to respond to the claim by the stated deadline."
+      "HINT": "Gallwch ddefnyddio’r amser hwn i geisio setlo’r hawliad heb fynd i wrandawiad. Gall setlo heb fynd i wrandawiad osgoi costau gan gynnwys ffioedd llys.",
+      "PAGE_TITLE": "Ydych chi eisiau 4 wythnos arall i geisio setlo’r hawliad?",
+      "TITLE": "Ydych chi eisiau 4 wythnos arall i geisio setlo’r hawliad?",
+      "WARNING": "Ni fydd hyn yn newid y terfyn amser ar gyfer ymateb. Hyd yn oed os caniateir 4 wythnos arall i setlo’r hawliad, bydd dal angen i chi ymateb i’r hawliad erbyn y terfyn amser a nodir."
     },
     "REQUEST_MORE_TIME": {
       "APPLY_TO_COURT": "Mae angen i chi wneud cais i’r llys am ragor o amser.",
@@ -1814,7 +1814,7 @@
     "ENTER_AN_EXPLANATION": "Enter an explanation of why you can't pay now",
     "ENTER_AT_LEAST_ONE_DEBT": "Rhowch fanylion o leiaf un ddyled",
     "ENTER_AT_LEAST_ONE_REPORT": "Enter at least one report",
-    "ENTER_EXPERT_DETAILS": "Enter the expert's details",
+    "ENTER_EXPERT_DETAILS": "Nodwch fanylion yr arbenigwr",
     "ENTER_WHY_NEED_EXPERT": "Tell us why you need this expert",
     "ENTER_EXPERT_FIELD": "Enter the expert’s field of expertise",
     "ENTER_FIRST_NAME": "Enter first name",
@@ -2040,7 +2040,7 @@
     "VALID_POSITIVE_NUMBER": "Peidiwch â rhoi rhif negyddol",
     "VALID_POSTCODE": "Rhowch y cod post",
     "VALID_REASON_REQUIRED": "Rhowch reswm",
-    "VALID_REQUEST_EXTRA_4_WEEKS": "Select yes if you want an extra 4 weeks to try to settle the claim",
+    "VALID_REQUEST_EXTRA_4_WEEKS": "Dewiswch ‘ydw’ os ydych chi eisiau 4 wythnos arall i geisio setlo’r hawliad",
     "VALID_SENT_EXPERT_REPORTS": "Select yes if you have sent expert reports to the other parties",
     "VALID_SHARED_EXPERT": "Dewiswch ‘ydw’ os ydych eisiau rhannu arbenigwr gyda’r hawlydd",
     "VALID_STRICTLY_POSITIVE_NUMBER": "Rhowch rif sy'n uwch na 0",
