@@ -1499,6 +1499,11 @@
       "SINGLE_JOINT_EXPERT": "This is known as a ’single joint expert’.",
       "TITLE": "Do you want to share an expert with the claimant?"
     },
+    "SPECIFIC_COURT": {
+      "PAGE_TITLE": "Specific court",
+      "SELECT_COURT": "Selected a court",
+      "TITLE": "Do you want to ask for the hearing to be held at a specific court?"
+    },
     "SUBMIT_CONFIRMATION": {
       "FA_PAY_BY_DATE": {
         "BANK_TRANSFERS_CLEAR_IN_THEIR_ACC": "make sure any cheques or bank transfers are clear in their account by the deadline",
