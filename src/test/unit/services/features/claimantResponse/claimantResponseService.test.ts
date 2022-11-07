@@ -4,16 +4,25 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
 import {GenericYesNo} from '../../../../../main/common/form/models/genericYesNo';
 import {
+  constructBanksAndSavingsAccountSection,
   getClaimantResponse,
   saveClaimantResponse,
 } from '../../../../../main/services/features/claimantResponse/claimantResponseService';
 import {ClaimantResponse} from '../../../../../main/common/models/claimantResponse';
+import {getLng} from '../../../../../main/common/utils/languageToggleUtils';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../main/common/utils/languageToggleUtils');
+jest.mock('../../../../../main/modules/i18n');
+jest.mock('i18next', () => ({
+  t: (i: string | unknown) => i,
+  use: jest.fn(),
+}));
 
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+const languageMock = getLng as jest.Mock;
 
 describe('Claimant Response Service', () => {
   describe('getClaimantResponse', () => {
@@ -118,6 +127,50 @@ describe('Claimant Response Service', () => {
 
       await expect(saveClaimantResponse('claimId', mockGetCaseDataFromDraftStore, ''))
         .rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
+  });
+
+  describe('constructBanksAndSavingsAccountSection', () => {
+    const noBorderClass = 'govuk-summary-list__row--no-border';
+    const emptyObject = {text: ''};
+
+    beforeAll(() => {
+      languageMock.mockImplementation(() => 'cimode');
+    });
+
+    it('should return empty values if statement of means does not have bank and savings account data', () => {
+      const response = constructBanksAndSavingsAccountSection(new Claim(), 'cimode');
+      const expectedData = [
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'COMMON.ACCOUNT_TYPE',
+          },
+          value: emptyObject,
+        },
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'COMMON.BALANCE',
+          },
+          value: emptyObject,
+        },
+        {
+          key: {
+            text: 'COMMON.BANK_JOINT_ACCOUNT',
+          },
+          value: emptyObject,
+        },
+        {
+          key: {
+            text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.WHERE_THEY_LIVE',
+          },
+          value: {
+            text: undefined,
+          },
+        },
+      ];
+      expect(response).toStrictEqual(expectedData);
     });
   });
 });
