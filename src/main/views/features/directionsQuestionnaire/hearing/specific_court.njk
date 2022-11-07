@@ -36,9 +36,11 @@
               name: courtLocation,
               items: courtLocations,
               label: {
-                text: t(),
-
-              }
+                text: t('PAGES.SPECIFIC_COURT.SELECT_COURT'),
+              },
+              errorMessage: {
+                text: t(form.errorFor("courtLocation"))
+              } if form.hasFieldError("courtLocation")
             }) }}
               {{ govukTextarea({
                 name: "reason",
