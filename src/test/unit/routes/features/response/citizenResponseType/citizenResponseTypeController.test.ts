@@ -119,7 +119,9 @@ describe('Citizen response type', () => {
     });
 
     it('should redirect page when correct input when dont have information on redis of respondent1', async () => {
-      mockGetCaseData.mockImplementation(async () => undefined);
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
       await request(app)
         .post(CITIZEN_RESPONSE_TYPE_URL)
         .send('responseType=test')

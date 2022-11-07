@@ -1,6 +1,5 @@
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../../common/models/statementOfMeans';
-import {Claim} from '../../../../common/models/claim';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
 
@@ -25,7 +24,7 @@ export class SevereDisabilityService {
 
   public async saveSevereDisability(claimId: string, severeDisability: GenericForm<GenericYesNo>) {
     try {
-      const case_data = await getCaseDataFromStore(claimId) || new Claim();
+      const case_data = await getCaseDataFromStore(claimId);
       if (case_data?.statementOfMeans) {
         case_data.statementOfMeans.severeDisability = severeDisability.model;
       } else {
