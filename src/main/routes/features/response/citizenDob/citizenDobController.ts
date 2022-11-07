@@ -7,6 +7,7 @@ import {AgeEligibilityVerification} from '../../../../common/utils/ageEligibilit
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../common/form/models/genericForm';
+import {DateOfBirth} from '../../../../common/form/models/claim/claimant/dateOfBirth';
 
 const citizenDobController = Router();
 
@@ -53,10 +54,10 @@ citizenDobController.post(DOB_URL, async (req, res, next: NextFunction) => {
     } else {
       const claim = await getCaseDataFromStore(req.params.id);
       if (claim.respondent1) {
-        claim.respondent1.dateOfBirth.date = citizenDob.model.dateOfBirth;
+        claim.respondent1.dateOfBirth = new DateOfBirth(day, month, year);
       } else {
         const respondent = new Party();
-        respondent.dateOfBirth.date = citizenDob.model.dateOfBirth;
+        respondent.dateOfBirth = new DateOfBirth(day, month, year);
         claim.respondent1 = respondent;
       }
       await saveDraftClaim(req.params.id, claim);
