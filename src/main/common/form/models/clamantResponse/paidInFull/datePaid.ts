@@ -4,7 +4,6 @@ import {OptionalDateNotInFutureValidator} from '../../../validators/optionalDate
 import {OptionalDateFourDigitValidator} from '../../../validators/optionalDateFourDigitValidator';
 
 export class DatePaid {
-
   @ValidateIf(o => (o.day < 32 && o.month < 13 && o.year > 999))
   @IsDate({message: 'ERRORS.VALID_DATE'})
   @Validate(OptionalDateNotInFutureValidator, {message: 'ERRORS.CORRECT_DATE_NOT_IN_FUTURE'})
