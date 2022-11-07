@@ -20,13 +20,7 @@ import {PartyPhone} from '../../main/common/models/PartyPhone';
 import {DateOfBirth} from '../../main/common/form/models/claim/claimant/dateOfBirth';
 
 export const buildAddress = (): Address => {
-  return {
-    addressLine1: 'addressLine1',
-    addressLine2: 'addressLine2',
-    addressLine3: 'addressLine3',
-    city: 'city',
-    postCode: 'postCode',
-  };
+  return new Address('addressLine1', 'addressLine2', 'addressLine3', 'city', 'postCode');
 };
 
 export const buildRespondent1 = (): Party => {

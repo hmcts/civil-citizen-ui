@@ -9,11 +9,11 @@ import {PartyPhone} from '../../main/common/models/PartyPhone';
 
 export const buildCitizenAddress = (): GenericForm<Address> => {
   const address = new Address();
-  address.addressLine1 = 'primaryAddressLine1';
-  address.addressLine2 = 'primaryAddressLine2';
-  address.addressLine3 = 'primaryAddressLine3';
-  address.postCode = 'primaryPostCode';
-  address.city = 'primaryCity';
+  address.addressLine1 = 'addressLine1';
+  address.addressLine2 = 'addressLine2';
+  address.addressLine3 = 'addressLine3';
+  address.postCode = 'postCode';
+  address.city = 'city';
   return new GenericForm<Address>(address);
 };
 

@@ -56,11 +56,11 @@ const buildClaimOfRespondentType = (type: PartyType): Party => {
 const nock = require('nock');
 
 const validDataForPost = {
-  addressLine1: 'Flat 3A Middle Road',
-  addressLine2: '',
-  addressLine3: '',
-  primaryCity: 'London',
-  primaryPostCode: 'SW1H 9AJ',
+  addressLine1: ['Flat 3A Middle Road'],
+  addressLine2: [''],
+  addressLine3: [''],
+  city: ['London'],
+  postCode: ['SW1H 9AJ'],
   postToThisAddress: 'no',
 };
 
@@ -183,8 +183,8 @@ describe('Confirm Details page', () => {
         addressLine1: 'Flat 3A Middle Road',
         addressLine2: '',
         addressLine3: '',
-        primaryCity: 'London',
-        primaryPostCode: 'SW1H 9AJ',
+        city: 'London',
+        postCode: 'SW1H 9AJ',
         postToThisAddress: 'no',
       })
       .expect((res) => {
