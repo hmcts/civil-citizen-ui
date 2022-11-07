@@ -554,6 +554,9 @@
         "PAGE_TITLE": "When are you claiming interest from?",
         "REASON": "Explain why you're claiming for this date",
         "TITLE": "When are you claiming interest from?"
+      },
+      "SETTLE_CLAIM_PART_PAYMENT_RECEIVED": {
+        "PAGE_TITLE": "Do you want to settle the claim for the £{{ paidAmount }} the defendant has paid?"
       }
     },
     "CLAIM_SUMMARY": {

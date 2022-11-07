@@ -41,6 +41,7 @@ import {Interest} from '../form/models/interest/interest';
 import {RejectAllOfClaimType} from '../../common/form/models/rejectAllOfClaimType';
 import {ClaimDetails} from '../../common/form/models/claim/details/claimDetails';
 import {ClaimantResponse} from './claimantResponse';
+import {GenericYesNo} from "common/form/models/genericYesNo";
 
 export class Claim {
   legacyCaseReference: string;
@@ -83,6 +84,7 @@ export class Claim {
   respondentSolicitor1AgreedDeadlineExtension?: Date;
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
+  hasPartPaymentBeenAccepted?: GenericYesNo;
 
   get responseStatus(): ClaimResponseStatus {
     if (this.isFullAdmission() && this.isPaymentOptionPayImmediately()) {
