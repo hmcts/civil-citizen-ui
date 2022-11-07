@@ -12,13 +12,7 @@
 
 {% set correspondenceAddressClass = 'govuk-visually-hidden' %}
 {% set addressTitle = t('PAGES.COMPANY_DETAILS.ORGANISATION_ADDRESS') if respondent.type === partyType.ORGANISATION else t('PAGES.COMPANY_DETAILS.COMPANY_ADDRESS') %}
-{% set citizenAddressErrors = citizenAddress.getAllErrors() %}
-{% set partyErrors = party.getAllErrors() %}
 
-{% if citizenCorrespondenceAddress %}
-  {% set citizenCorrespondenceAddressErrors = citizenCorrespondenceAddress.getAllErrors() %}
-  {% set citizenAddressErrors = citizenAddressErrors.concat(citizenCorrespondenceAddress.getAllErrors()) %}
-{% endif %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.COMPANY_DETAILS.PAGE_TITLE') }}
@@ -28,8 +22,8 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
-        {% if party.hasErrors() or citizenCorrespondenceAddress.hasErrors() or citizenAddress.hasErrors() %}
-          {{ errorSummary(citizenAddressErrors.concat(partyErrors), t) }}
+        {% if party.hasErrors() %}
+          {{ errorSummary(party.getAllErrors(), t) }}
         {% endif %}
       </div>
       <div class="govuk-grid-row">
@@ -42,10 +36,10 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post" class="govuk-!-padding-top-4" name="address" novalidate>
             {{ csrfProtection(csrf) }}
-            {% if respondent.type === partyType.COMPANY %}
+            {% if type === partyType.COMPANY %}
               <h2 class="govuk-heading-m govuk-!-margin-top-5">{{ t('PAGES.COMPANY_DETAILS.COMPANY_NAME') }}</h2>
             {% endif %}
-            {% if respondent.type === partyType.ORGANISATION %}
+            {% if type === partyType.ORGANISATION %}
               <h2 class="govuk-heading-m govuk-!-margin-top-5">{{ t('PAGES.COMPANY_DETAILS.ORGANISATION_NAME') }}</h2>
             {% endif %}
             <p class="govuk-label govuk-!-margin-bottom-5">{{ respondent.partyName }}</p>
@@ -59,8 +53,7 @@
             }) }}
             {{ addressForm(
               t,
-              citizenAddress,
-              citizenCorrespondenceAddress,
+              party = party,
               addressType = 'primary',
               addressTitle = addressTitle
             ) }}
@@ -101,7 +94,7 @@
               <div id="correspondenceAddress" class="{{ correspondenceAddressClass }}">
                 {{ addressForm(
                   t,
-                  citizenCorrespondenceAddress = citizenCorrespondenceAddress,
+                  party = party,
                   addressType = 'correspondence',
                   addressTitle = addressTitle
                 ) }}
@@ -133,12 +126,12 @@
                 }
               ]
             }) }}
-            {% if respondent.partyPhone !== undefined %}
+            {% if partyPhone.model.phone !== undefined %}
               <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_PHONE.PAGE_TITLE') }}</h2>
               <p class="govuk-body">{{ t('PAGES.CLAIMANT_PHONE.INFORMATION') }}</p>
-              {{ citizenTelephone(party, t, {
-                id: "partyPhone",
-                name: "partyPhone",
+              {{ citizenTelephone(partyPhone, t, {
+                id: "phone",
+                name: "phone",
                 className: "govuk-input--width-20"
             }) }}
             {% endif %}

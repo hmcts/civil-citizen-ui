@@ -38,7 +38,7 @@ defendantDetailsController.get(detailsURLs, async (req: AppRequest, res: Respons
   try {
     const userId = req.session?.user?.id;
     const defendantDetails = await getDefendantInformation(userId);
-    const partyDetails = new GenericForm<PartyDetails>(new PartyDetails(defendantDetails.partyDetails));
+    const partyDetails = new GenericForm<PartyDetails>(defendantDetails.partyDetails);
 
     renderView(res, partyDetails, defendantDetails.type);
   } catch (error) {

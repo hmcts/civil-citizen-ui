@@ -47,8 +47,7 @@ claimantDetailsController.get(detailsURLs, async (req: AppRequest, res: Response
   try {
     const caseId = req.session?.user?.id;
     const claimant: Party = await getClaimantInformation(caseId);
-    const claimantDetails = new GenericForm<PartyDetails>(new PartyDetails(claimant.partyDetails));
-
+    const claimantDetails = new GenericForm<PartyDetails>(claimant.partyDetails);
     renderPage(res, req, claimantDetails, claimant.type);
   } catch (error) {
     next(error);
