@@ -21,23 +21,27 @@ import {ResponseType} from '../../../../../../main/common/form/models/responseTy
 import {RejectAllOfClaim} from '../../../../../../main/common/form/models/rejectAllOfClaim';
 import {RejectAllOfClaimType} from '../../../../../../main/common/form/models/rejectAllOfClaimType';
 import {YesNo} from '../../../../../../main/common/form/models/yesNo';
+import {PartyDetails} from '../../../../../../main/common/form/models/partyDetails';
+import {DateOfBirth} from '../../../../../../main/common/form/models/claim/claimant/dateOfBirth';
 
 const mockClaim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
 const mockRespondent: Party = {
-  dateOfBirth: new Date(),
+  dateOfBirth: {date: new Date('2000-12-12'), year: 1985, month: 2, day: 2},
   responseType: '',
-  partyPhone: '',
-  individualLastName: '',
-  individualFirstName: '',
-  individualTitle: '',
-  primaryAddress: {
-    PostCode: '',
-    PostTown: '',
-    AddressLine1: '',
-    AddressLine2: '',
-    AddressLine3: '',
+  partyPhone: {phone: ''},
+  partyDetails: {
+    individualLastName: '',
+    individualFirstName: '',
+    individualTitle: '',
+    primaryAddress: {
+      postCode: '',
+      city: '',
+      addressLine1: '',
+      addressLine2: '',
+      addressLine3: '',
+    },
+    correspondenceAddress: {},
   },
-  correspondenceAddress: {},
   type: PartyType.ORGANISATION,
 };
 
@@ -269,7 +273,7 @@ describe('Task List Helpers', () => {
     it('should return true if individual and has dateOfBirth', () => {
       caseData.respondent1 = new Party();
       caseData.respondent1.type = PartyType.INDIVIDUAL;
-      caseData.respondent1.dateOfBirth = new Date();
+      caseData.respondent1.dateOfBirth = new DateOfBirth('1', '1', '2000');
       expect(hasDateOfBirthIfIndividual(caseData.respondent1)).toEqual(true);
     });
 
@@ -281,41 +285,43 @@ describe('Task List Helpers', () => {
   });
 
   describe('hasCorrespondenceAndPrimaryAddress helper', () => {
-    const adress = {
-      County: 'test',
-      Country: 'test',
-      PostCode: 'test',
-      PostTown: 'test',
-      AddressLine1: 'test',
-      AddressLine2: 'test',
-      AddressLine3: 'test',
+    const address = {
+      county: 'test',
+      country: 'test',
+      postCode: 'test',
+      city: 'test',
+      addressLine1: 'test',
+      addressLine2: 'test',
+      addressLine3: 'test',
     };
 
     it('should return false if only has primaryAdress', () => {
       caseData.respondent1 = new Party();
-      caseData.respondent1.primaryAddress = adress;
+      caseData.respondent1.partyDetails = new PartyDetails({});
+      caseData.respondent1.partyDetails.primaryAddress = address;
       expect(hasCorrespondenceAndPrimaryAddress(caseData.respondent1)).toEqual(false);
     });
 
     it('should return false if has primaryAdress, YES and doesnt has correspondenceAdress', () => {
       caseData.respondent1 = new Party();
-      caseData.respondent1.primaryAddress = adress;
-      caseData.respondent1.postToThisAddress = YesNo.YES;
+      caseData.respondent1.partyDetails = new PartyDetails({});
+      caseData.respondent1.partyDetails.primaryAddress = address;
+      caseData.respondent1.partyDetails.postToThisAddress = YesNo.YES;
       expect(hasCorrespondenceAndPrimaryAddress(caseData.respondent1)).toEqual(false);
     });
 
     it('should return true if has primaryAdress and NO', () => {
       caseData.respondent1 = new Party();
-      caseData.respondent1.primaryAddress = adress;
-      caseData.respondent1.postToThisAddress = YesNo.NO;
+      caseData.respondent1.partyDetails = new PartyDetails(address);
+      caseData.respondent1.partyDetails.postToThisAddress = YesNo.NO;
       expect(hasCorrespondenceAndPrimaryAddress(caseData.respondent1)).toEqual(true);
     });
 
     it('should return true if has primaryAdress, YES and has correspondenceAdress', () => {
       caseData.respondent1 = new Party();
-      caseData.respondent1.primaryAddress = adress;
-      caseData.respondent1.postToThisAddress = YesNo.YES;
-      caseData.respondent1.correspondenceAddress = adress;
+      caseData.respondent1.partyDetails = new PartyDetails(address);
+      caseData.respondent1.partyDetails = new PartyDetails(address);
+      caseData.respondent1.partyDetails.postToThisAddress = YesNo.YES;
       expect(hasCorrespondenceAndPrimaryAddress(caseData.respondent1)).toEqual(true);
     });
   });

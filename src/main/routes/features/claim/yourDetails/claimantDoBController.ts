@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {CLAIMANT_DOB_URL, CLAIMANT_PHONE_NUMBER_URL} from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
-import {DateOfBirth} from 'common/form/models/claim/claimant/dateOfBirth';
+import {DateOfBirth} from '../../../../common/form/models/claim/claimant/dateOfBirth';
 import {Claim} from '../../../../common/models/claim';
 import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
 import {AppRequest} from '../../../../common/models/AppRequest';

@@ -11,7 +11,7 @@ import {
   CLAIM_DEFENDANT_PHONE_NUMBER_URL,
   CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL,
   DOB_URL,
-} from 'routes/urls';
+} from '../../../../../routes/urls';
 import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 import {PartyType} from '../../../../../common/models/partyType';
 import {Address} from '../../../../../common/form/models/address';

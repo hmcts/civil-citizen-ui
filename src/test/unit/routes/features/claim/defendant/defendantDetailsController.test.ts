@@ -85,12 +85,14 @@ describe('Defendant details controller', () => {
           claim.respondent1 = new Party();
           claim.respondent1 = {
             type: PartyType.ORGANISATION,
-            primaryAddress: {
-              PostCode: 'SN1 2RA',
-              PostTown: 'Bath',
-              AddressLine1: 'Valid address',
-              AddressLine2: 'Valid address number',
-              AddressLine3: '',
+            partyDetails: {
+              primaryAddress: {
+                postCode: 'SN1 2RA',
+                city: 'Bath',
+                addressLine1: 'Valid address',
+                addressLine2: 'Valid address number',
+                addressLine3: '',
+              },
             },
           };
           return claim;
@@ -131,12 +133,14 @@ describe('Defendant details controller', () => {
           claim.respondent1 = new Party();
           claim.respondent1 = {
             type: PartyType.SOLE_TRADER,
-            primaryAddress: {
-              PostCode: 'SN1 2RA',
-              PostTown: 'Bath',
-              AddressLine1: 'Valid address',
-              AddressLine2: 'Valid address number',
-              AddressLine3: '',
+            partyDetails: {
+              primaryAddress: {
+                postCode: 'SN1 2RA',
+                city: 'Bath',
+                addressLine1: 'Valid address',
+                addressLine2: 'Valid address number',
+                addressLine3: '',
+              },
             },
           };
           return claim;

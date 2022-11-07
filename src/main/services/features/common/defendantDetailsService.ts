@@ -1,4 +1,4 @@
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
 import {Party} from '../../../common/models/party';
 
 export const getDefendantInformation = async (claimId: string): Promise<Party> => {
