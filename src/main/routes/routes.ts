@@ -97,7 +97,8 @@ import claimAgainstGovernmentController from './features/public/eligibility/clai
 import claimantOver18EligibilityController from './features/public/eligibility/claimantOver18EligibilityController';
 import defendantAgeEligibilityController from './features/public/eligibility/defendantAgeEligibilityController';
 import someUsefulInfoFeesController from './features/public/eligibility/someUsefulInfoFeesController';
-import helpWithFeesReferenceEligibilityController from './features/public/eligibility/helpWithFeesReferenceEligibilityController';
+import helpWithFeesReferenceEligibilityController
+  from './features/public/eligibility/helpWithFeesReferenceEligibilityController';
 import applyForHelpWithFeesController from './features/public/eligibility/applyForHelpWithFeesController';
 import signpostingController from './features/public/firstContact/signpostingController';
 import accessDeniedController from './features/public/firstContact/accessDeniedController';
@@ -160,6 +161,7 @@ import helpWithFeesController from './features/claim/details/helpWithFeesControl
 import partPaymentReceivedController from './features/claimantResponse/partPaymentReceivedController';
 import defendantDOBController from './features/claimantResponse/ccj/defendantDOBController';
 import claimantIntentionToProceedController from './features/claimantResponse/claimantIntentionToProceedController';
+import rejectionReasonController from './features/claimantResponse/rejectionReasonController';
 
 export default [
   homeController,
@@ -308,4 +310,5 @@ export default [
   partPaymentReceivedController,
   defendantDOBController,
   claimantIntentionToProceedController,
+  rejectionReasonController,
 ];
