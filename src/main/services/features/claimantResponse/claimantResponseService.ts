@@ -423,7 +423,7 @@ const constructDebtsSection = (claim: Claim, lng: string) => {
   const sectionRows = [];
   const priorityDebts = claim.getPriorityDebts();
   const debts = claim.getDebts();
-  const haveDebts = debts.option === 'yes';
+  const haveDebts = debts?.option === 'yes';
 
   sectionRows.push({
     key: {
@@ -522,6 +522,15 @@ const getFinancialDetails = (claim: Claim, lang: string): object[] => {
 };
 
 export {
+  constructBanksAndSavingsAccountSection,
+  constructChildrenSection,
+  constructFinancialSupportSection,
+  constructEmploymentDetailsSection,
+  constructSelfEmploymentDetailsSection,
+  constructMonthlyIncomeSection,
+  constructMonthlyExpensesSection,
+  constructCourtOrdersSection,
+  constructDebtsSection,
   getFinancialDetails,
   getClaimantResponse,
   saveClaimantResponse,
