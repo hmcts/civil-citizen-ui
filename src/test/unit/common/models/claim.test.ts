@@ -1,9 +1,9 @@
 import {Claim} from '../../../../main/common/models/claim';
 import {
+  CaseState,
   InterestClaimFromType,
   InterestEndDateType,
   SameRateInterestType,
-  CaseState,
 } from '../../../../main/common/form/models/claimDetails';
 import {StatementOfMeans} from '../../../../main/common/models/statementOfMeans';
 import {YesNo} from '../../../../main/common/form/models/yesNo';
@@ -22,7 +22,10 @@ import {DocumentType} from '../../../../main/common/models/document/documentType
 import {GenericYesNo} from '../../../../main/common/form/models/genericYesNo';
 import {RejectAllOfClaim} from '../../../../main/common/form/models/rejectAllOfClaim';
 import {RejectAllOfClaimType} from '../../../../main/common/form/models/rejectAllOfClaimType';
-import {HowMuchHaveYouPaid, HowMuchHaveYouPaidParams} from '../../../../main/common/form/models/admission/howMuchHaveYouPaid';
+import {
+  HowMuchHaveYouPaid,
+  HowMuchHaveYouPaidParams,
+} from '../../../../main/common/form/models/admission/howMuchHaveYouPaid';
 import {WhyDoYouDisagree} from '../../../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {Defence} from '../../../../main/common/form/models/defence';
 import {ClaimResponseStatus} from '../../../../main/common/models/claimResponseStatus';
@@ -39,7 +42,7 @@ describe('Claim isInterestEnDateUntilSubmitDate', () => {
   it('should return true', () => {
     //Given
     claim.interest = {
-      interestEndDate : InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE,
+      interestEndDate: InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE,
     };
     //When
     const result = claim.isInterestEndDateUntilSubmitDate();
@@ -49,7 +52,7 @@ describe('Claim isInterestEnDateUntilSubmitDate', () => {
   it('should return false', () => {
     //Given
     claim.interest = {
-      interestEndDate : InterestEndDateType.UNTIL_SETTLED_OR_JUDGEMENT_MADE,
+      interestEndDate: InterestEndDateType.UNTIL_SETTLED_OR_JUDGEMENT_MADE,
     };
     //When
     const result = claim.isInterestEndDateUntilSubmitDate();
@@ -444,7 +447,11 @@ describe('Claim isFullAdmission', () => {
   });
   it('should return false with partial admission', () => {
     //Given
-    claim.respondent1 = {responseType: ResponseType.PART_ADMISSION, primaryAddress: {}, type: PartyType.INDIVIDUAL};
+    claim.respondent1 = {
+      responseType: ResponseType.PART_ADMISSION,
+      partyDetails: {primaryAddress: {}},
+      type: PartyType.INDIVIDUAL,
+    };
     //When
     const result = claim.isFullAdmission();
     //Then
@@ -486,7 +493,11 @@ describe('Claim isPartialAdmission', () => {
   });
   it('should return false with full admission', () => {
     //Given
-    claim.respondent1 = {responseType: ResponseType.FULL_ADMISSION, primaryAddress: {}, type: PartyType.INDIVIDUAL};
+    claim.respondent1 = {
+      responseType: ResponseType.FULL_ADMISSION,
+      partyDetails: {primaryAddress: {}},
+      type: PartyType.INDIVIDUAL,
+    };
     //When
     const result = claim.isPartialAdmission();
     //Then

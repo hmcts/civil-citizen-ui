@@ -28,11 +28,11 @@ const mockSaveData = {
   businessName: 'John`s Sons Ltd',
   partyName: 'Bob Ltd',
   contactPerson: 'Louise',
-  primaryAddressLine1: 'Fake Org',
-  primaryAddressLine2: 'Somewhere undefined',
-  primaryAddressLine3: 'Floor 4',
-  primaryCity: 'Valid city',
-  primaryPostCode: 'SN12RA',
+  addressLine1: 'Fake Org',
+  addressLine2: 'Somewhere undefined',
+  addressLine3: 'Floor 4',
+  city: 'Valid city',
+  postCode: 'SN12RA',
 };
 
 describe('Defendant details controller', () => {

@@ -18,7 +18,7 @@ import {Address} from '../../../../../common/form/models/address';
 const changeLabel = (lang: string): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', {lng: lang});
 
 const addressToString = (address: Address) => {
-  return address.addressLine1 + '<br>' + address.city + '<br>' + address.postCode;
+  return address?.addressLine1 + '<br>' + address?.city + '<br>' + address?.postCode;
 };
 
 const getApplicantFullName = (claim: Claim): string => {

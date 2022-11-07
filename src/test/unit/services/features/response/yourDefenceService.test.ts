@@ -68,10 +68,12 @@ function createClaim() {
   claim.rejectAllOfClaim = new RejectAllOfClaim(RejectAllOfClaimType.ALREADY_PAID);
   claim.applicant1 = {
     type: PartyType.ORGANISATION,
-    partyName: 'Test',
-    individualTitle: 'Mr.',
-    individualFirstName: 'TestName',
-    individualLastName: 'TestLastName',
+    partyDetails: {
+      partyName: 'Test',
+      individualTitle: 'Mr.',
+      individualFirstName: 'TestName',
+      individualLastName: 'TestLastName',
+    },
   };
   claim.rejectAllOfClaim = new RejectAllOfClaim();
 
