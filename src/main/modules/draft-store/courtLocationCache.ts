@@ -9,7 +9,7 @@ const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('courtLocationCache');
 
 const saveCourtLocationsToCache = async (courLocations: CourtLocation[]) => {
-  if(courLocations.length > 0) {
+  if(courLocations?.length) {
     await draftStoreClient.set(courtLocationKey, JSON.stringify(courLocations));
   }
 };

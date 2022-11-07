@@ -4,7 +4,7 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
 import {getDirectionQuestionnaire} from '../directionQuestionnaireService';
 import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
-import {getCourtLocationsFromCache} from 'modules/draft-store/courtLocationCache';
+import {getCourtLocationsFromCache, saveCourtLocationsToCache} from 'modules/draft-store/courtLocationCache';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 
@@ -23,12 +23,6 @@ const getListOfCourtLocations = async (req: AppRequest): Promise<CourtLocation[]
     return courtLocations;
   }
   return cachedCourtLocations;
-};
-
-const saveCourtLocationsToCache = async (courtLocations: CourtLocation[]) => {
-  if(courtLocations?.length){
-    await saveCourtLocationsToCache(courtLocations);
-  }
 };
 
 export {
