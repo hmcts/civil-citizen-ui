@@ -17,28 +17,28 @@ const dateOfBirth = new Date('10/10/1990');
 const email = 'test@test.com';
 
 const address: PrimaryAddress = {
-  AddressLine1: "Street test",
-  AddressLine2: "1",
-  AddressLine3: "1A",
-  PostTown: "test",
-  PostCode: "sl11gf",
+  AddressLine1: 'Street test',
+  AddressLine2: '1',
+  AddressLine3: '1A',
+  PostTown: 'test',
+  PostCode: 'sl11gf',
   Country: 'test',
   County: 'test',
 };
 
 const addressCCD: CCDAddress = {
-  AddressLine1: "Street test",
-  AddressLine2: "1",
-  AddressLine3: "1A",
-  PostTown: "test",
-  PostCode: "sl11gf",
+  AddressLine1: 'Street test',
+  AddressLine2: '1',
+  AddressLine3: '1A',
+  PostTown: 'test',
+  PostCode: 'sl11gf',
   Country: 'test',
   County: 'test',
 };
 
 const commonParty = {
   primaryAddress: address,
-  contactPerson: "Contact person test",
+  contactPerson: 'Contact person test',
   postToThisAddress: YesNo.NO,
   partyPhone: phone,
   responseType: ResponseType.PART_ADMISSION,
@@ -91,7 +91,7 @@ const partyCompanyCCD: CCDParty = {
   soleTraderLastName: undefined,
   soleTraderTitle: undefined,
   soleTraderTradingAs: undefined,
-  type: PartyType.COMPANY
+  type: PartyType.COMPANY,
 };
 
 const partyIndividualCCD: CCDParty = {
@@ -109,7 +109,7 @@ const partyIndividualCCD: CCDParty = {
   soleTraderFirstName: undefined,
   soleTraderLastName: undefined,
   soleTraderTradingAs: undefined,
-  type: PartyType.INDIVIDUAL
+  type: PartyType.INDIVIDUAL,
 };
 
 const partySoleTraderCCD: CCDParty = {
@@ -127,7 +127,7 @@ const partySoleTraderCCD: CCDParty = {
   soleTraderFirstName: firstName,
   soleTraderLastName: lastName,
   soleTraderTradingAs: soleTraderTradingAs,
-  type: PartyType.SOLE_TRADER
+  type: PartyType.SOLE_TRADER,
 };
 
 describe('translate party to ccd model', () => {
@@ -148,7 +148,7 @@ describe('translate party to ccd model', () => {
       organisationName: companyName,
       companyName: undefined,
       type: PartyType.ORGANISATION,
-    }
+    };
     //When
     const partyResponseCCD = toCCDParty(party);
     //Then

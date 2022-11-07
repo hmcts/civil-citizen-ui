@@ -6,4 +6,4 @@ export interface CCDAddress{
   County: string,
   PostCode: string,
   PostTown: string
-};
+}

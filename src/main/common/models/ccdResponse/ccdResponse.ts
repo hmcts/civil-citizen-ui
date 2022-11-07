@@ -14,4 +14,4 @@ export interface CCDResponse extends ClaimUpdate {
   specAoSApplicantCorrespondenceAddressRequired?: YesNoUpperCamelCase;
   totalClaimAmount: number,
   respondent1: CCDParty;
-};
+}

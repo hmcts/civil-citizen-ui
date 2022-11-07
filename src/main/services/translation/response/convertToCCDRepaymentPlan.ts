@@ -1,5 +1,5 @@
-import { CCDRepaymentPlan, CCDRepaymentPlanFrequency } from "../../../common/models/ccdResponse/ccdRepaymentPlan";
-import { RepaymentPlan } from "../../../common/models/repaymentPlan";
+import {CCDRepaymentPlan, CCDRepaymentPlanFrequency} from '../../../common/models/ccdResponse/ccdRepaymentPlan';
+import {RepaymentPlan} from '../../../common/models/repaymentPlan';
 
 const toCCDRepaymentPlanFrequency = (frequency: string): CCDRepaymentPlanFrequency => {
   switch (frequency) {

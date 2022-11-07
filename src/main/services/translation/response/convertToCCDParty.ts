@@ -1,7 +1,7 @@
-import {CCDParty} from "../../../common/models/ccdResponse/ccdParty";
-import {Party} from "../../../common/models/party";
-import {PartyType} from "../../../common/models/partyType";
-import {toCCDAddress} from "./convertToCCDAddress";
+import {CCDParty} from '../../../common/models/ccdResponse/ccdParty';
+import {Party} from '../../../common/models/party';
+import {PartyType} from '../../../common/models/partyType';
+import {toCCDAddress} from './convertToCCDAddress';
 
 export const toCCDParty = (party: Party): CCDParty => {
   return {
@@ -19,6 +19,6 @@ export const toCCDParty = (party: Party): CCDParty => {
     soleTraderLastName: party?.type === PartyType.SOLE_TRADER ? party?.individualLastName : undefined,
     soleTraderTitle: party?.type === PartyType.SOLE_TRADER ? party?.individualTitle : undefined,
     soleTraderTradingAs: party?.soleTraderTradingAs,
-    type: party?.type
+    type: party?.type,
   };
 };

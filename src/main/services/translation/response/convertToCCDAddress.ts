@@ -1,5 +1,5 @@
-import { CCDAddress } from "../../../common/models/ccdResponse/ccdAddress";
-import { PrimaryAddress } from "../../../common/models/primaryAddress";
+import {CCDAddress} from '../../../common/models/ccdResponse/ccdAddress';
+import {PrimaryAddress} from '../../../common/models/primaryAddress';
 
 export const toCCDAddress = (primaryAddress: PrimaryAddress): CCDAddress => {
   return {
@@ -9,6 +9,6 @@ export const toCCDAddress = (primaryAddress: PrimaryAddress): CCDAddress => {
     Country: primaryAddress?.Country,
     County: primaryAddress?.County,
     PostCode: primaryAddress?.PostCode,
-    PostTown: primaryAddress?.PostTown
+    PostTown: primaryAddress?.PostTown,
   };
 };

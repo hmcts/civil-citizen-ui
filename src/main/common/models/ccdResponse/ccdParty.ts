@@ -1,5 +1,5 @@
-import {PartyType} from "../partyType"
-import {CCDAddress} from "./ccdAddress";
+import {PartyType} from '../partyType';
+import {CCDAddress} from './ccdAddress';
 
 export interface CCDParty {
     companyName: string,
