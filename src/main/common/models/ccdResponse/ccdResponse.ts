@@ -6,7 +6,7 @@ import {YesNoUpperCamelCase} from '../../../common/form/models/yesNo';
 import {CCDParty} from './ccdParty';
 
 export interface CCDResponse extends ClaimUpdate {
-  respondent1ClaimResponseTypeForSpec: string; // TODO: should be ResponseType?
+  respondent1ClaimResponseTypeForSpec: string;
   defenceAdmitPartPaymentTimeRouteRequired?: CCDPaymentOption;
   respondent1RepaymentPlan?: CCDRepaymentPlan;
   respondToClaimAdmitPartLRspec?: CCDPayBySetDate;
