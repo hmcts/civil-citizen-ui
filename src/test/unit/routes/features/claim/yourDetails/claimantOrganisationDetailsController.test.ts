@@ -6,7 +6,7 @@ import {
   CLAIMANT_ORGANISATION_DETAILS_URL,
   CLAIMANT_PHONE_NUMBER_URL,
 } from '../../../../../../main/routes/urls';
-import {buildCorrespondenceAddress, buildPrimaryAddress} from '../../../../../utils/mockClaim';
+import {buildAddress} from '../../../../../utils/mockClaim';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {PartyType} from '../../../../../../main/common/models/partyType';
 import {Claim} from '../../../../../../main/common/models/claim';
@@ -20,6 +20,7 @@ import {
   VALID_CORRESPONDENCE_POSTCODE,
   VALID_POSTCODE,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {PartyDetails} from '../../../../../../main/common/form/models/partyDetails';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -33,24 +34,26 @@ const claim = new Claim();
 
 const buildClaimOfApplicantWithType = (type: PartyType): Claim => {
   claim.applicant1 = new Party();
-  claim.applicant1.individualTitle = 'individualTitle';
-  claim.applicant1.individualFirstName = 'individualFirstName';
-  claim.applicant1.individualLastName = 'individualLastName';
-  claim.applicant1.primaryAddress = buildPrimaryAddress();
-  claim.applicant1.correspondenceAddress = buildCorrespondenceAddress();
-  claim.applicant1.partyName = 'partyName';
-  claim.applicant1.contactPerson = 'contactPerson';
+  claim.applicant1.partyDetails = new PartyDetails({});
+  claim.applicant1.partyDetails.individualTitle = 'individualTitle';
+  claim.applicant1.partyDetails.individualFirstName = 'individualFirstName';
+  claim.applicant1.partyDetails.individualLastName = 'individualLastName';
+  claim.applicant1.partyDetails.primaryAddress = buildAddress();
+  claim.applicant1.partyDetails.correspondenceAddress = buildAddress();
+  claim.applicant1.partyDetails.partyName = 'partyName';
+  claim.applicant1.partyDetails.contactPerson = 'contactPerson';
   claim.applicant1.type = type;
   return claim;
 };
 
 const buildClaimOfApplicantType = (type: PartyType): Claim => {
   claim.applicant1 = new Party();
+  claim.applicant1.partyDetails = new PartyDetails({});
   claim.applicant1.type = type;
-  claim.applicant1.primaryAddress = buildPrimaryAddress();
-  claim.applicant1.correspondenceAddress = buildCorrespondenceAddress();
-  claim.applicant1.partyName = 'partyName';
-  claim.applicant1.contactPerson = 'contactPerson';
+  claim.applicant1.partyDetails.primaryAddress = buildAddress();
+  claim.applicant1.partyDetails.correspondenceAddress = buildAddress();
+  claim.applicant1.partyDetails.partyName = 'partyName';
+  claim.applicant1.partyDetails.contactPerson = 'contactPerson';
   return claim;
 };
 
@@ -140,11 +143,12 @@ describe('Claimant Organisation Details page', () => {
     it('should return your company or organisation details page with information without correspondent address', async () => {
       const buildClaimOfApplicantWithoutCorrespondent = (): Claim => {
         claim.applicant1 = new Party();
+        claim.applicant1.partyDetails = new PartyDetails({});
         claim.applicant1.type = PartyType.ORGANISATION;
-        claim.applicant1.individualTitle = 'individualTitle';
-        claim.applicant1.individualFirstName = 'individualFirstName';
-        claim.applicant1.individualLastName = 'individualLastName';
-        claim.applicant1.primaryAddress = buildPrimaryAddress();
+        claim.applicant1.partyDetails.individualTitle = 'individualTitle';
+        claim.applicant1.partyDetails.individualFirstName = 'individualFirstName';
+        claim.applicant1.partyDetails.individualLastName = 'individualLastName';
+        claim.applicant1.partyDetails.primaryAddress = buildAddress();
         return claim;
       };
       mockGetCaseData.mockImplementation(async () => {
@@ -161,7 +165,8 @@ describe('Claimant Organisation Details page', () => {
     it('should return your company or organisation details page with no primary, correspondence address or claimant details', async () => {
       const buildClaimOfApplicantWithoutInformation = (): Claim => {
         claim.applicant1 = new Party();
-        claim.applicant1.primaryAddress = undefined;
+        claim.applicant1.partyDetails = new PartyDetails({});
+        claim.applicant1.partyDetails.primaryAddress = undefined;
         claim.applicant1.type = PartyType.ORGANISATION;
         return claim;
       };
@@ -510,11 +515,12 @@ describe('Claimant Organisation Details page', () => {
     it('should return your company details page with information without correspondent address', async () => {
       const buildClaimOfApplicantWithoutCorrespondent = (): Claim => {
         claim.applicant1 = new Party();
+        claim.applicant1.partyDetails = new PartyDetails({});
         claim.applicant1.type = PartyType.COMPANY;
-        claim.applicant1.individualTitle = 'individualTitle';
-        claim.applicant1.individualFirstName = 'individualFirstName';
-        claim.applicant1.individualLastName = 'individualLastName';
-        claim.applicant1.primaryAddress = buildPrimaryAddress();
+        claim.applicant1.partyDetails.individualTitle = 'individualTitle';
+        claim.applicant1.partyDetails.individualFirstName = 'individualFirstName';
+        claim.applicant1.partyDetails.individualLastName = 'individualLastName';
+        claim.applicant1.partyDetails.primaryAddress = buildAddress();
         return claim;
       };
       mockGetCaseData.mockImplementation(async () => {
@@ -531,8 +537,9 @@ describe('Claimant Organisation Details page', () => {
     it('should return your company details page with no primary, correspondence address or claimant details', async () => {
       const buildClaimOfApplicantWithoutInformation = (): Claim => {
         claim.applicant1 = new Party();
+        claim.applicant1.partyDetails = new PartyDetails({});
         claim.applicant1.type = PartyType.COMPANY;
-        claim.applicant1.primaryAddress = undefined;
+        claim.applicant1.partyDetails.primaryAddress = undefined;
         return claim;
       };
       mockGetCaseData.mockImplementation(async () => {

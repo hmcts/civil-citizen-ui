@@ -22,7 +22,9 @@ const mockSaveCaseData = saveDraftClaim as jest.Mock;
 const mockClaim = new Claim();
 mockClaim.applicant1 = {
   type: PartyType.INDIVIDUAL,
-  partyName: 'Joe Bloggs',
+  partyDetails: {
+    partyName: 'Joe Bloggs',
+  },
 };
 
 describe('Response Deadline Options Controller', () => {

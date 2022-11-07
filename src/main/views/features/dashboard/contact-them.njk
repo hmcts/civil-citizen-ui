@@ -20,8 +20,8 @@
       {% set otherPartyName = claim.getClaimantName() %}
       {% set totalClaimAmount ='£'+ claim.totalClaimAmount %}
       {% set phone = claim.applicant1.partyPhone %}
-      {% set email = claim.applicantSolicitor1UserDetails.email %}
-      {% set contactPerson = claim.applicant1.contactPerson %}
+      {% set email = claim.applicant1.emailAddress %}
+      {% set contactPerson = claim.applicant1.partyDetails.contactPerson %}
       {% set heading = t('PAGES.CONTACT_THEM.CONTACT')+ t(otherParty) %}
       <div class="govuk-grid-row govuk-!-margin-top-0">
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
@@ -34,19 +34,19 @@
                 <p class="govuk-body govuk-!-margin-bottom-0">{{ solicitorName }}</p>
               {% endif %}
               {% if address.AddressLine1 %}
-                <p class="govuk-body govuk-!-margin-bottom-0">{{ address.AddressLine1 }}</p>
+                <p class="govuk-body govuk-!-margin-bottom-0">{{ address.addressLine1 }}</p>
               {% endif %}
               {% if address.AddressLine2 %}
-                <p class="govuk-body govuk-!-margin-bottom-0">{{ address.AddressLine2 }}</p>
+                <p class="govuk-body govuk-!-margin-bottom-0">{{ address.addressLine2 }}</p>
               {% endif %}
               {% if address.AddressLine3 %}
-                <p class="govuk-body govuk-!-margin-bottom-0">{{ address.AddressLine3 }}</p>
+                <p class="govuk-body govuk-!-margin-bottom-0">{{ address.addressLine3 }}</p>
               {% endif %}
               {% if address.County %}
-                <p class="govuk-body govuk-!-margin-bottom-0">{{ address.County }}</p>
+                <p class="govuk-body govuk-!-margin-bottom-0">{{ address.city }}</p>
               {% endif %}
               {% if address.PostCode %}
-                <p class="govuk-body govuk-!-margin-bottom-6">{{ address.PostCode }}</p>
+                <p class="govuk-body govuk-!-margin-bottom-6">{{ address.postCode }}</p>
               {% endif %}
             {% endif %}
           </div>

@@ -2,12 +2,9 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
-import {getCaseDataFromStore,saveDraftClaim} from '../../../../../main/modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from '../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../main/common/models/claim';
-import {
-  CLAIM_TASK_LIST_URL,
-  REQUEST_MORE_TIME_URL,
-} from '../../../../../main/routes/urls';
+import {CLAIM_TASK_LIST_URL, REQUEST_MORE_TIME_URL} from '../../../../../main/routes/urls';
 import {ResponseDeadline} from '../../../../../main/common/form/models/responseDeadline';
 import {AdditionalTimeOptions} from '../../../../../main/common/form/models/additionalTime';
 import {PartyType} from '../../../../../main/common/models/partyType';
@@ -21,7 +18,9 @@ const mockSaveCaseData = saveDraftClaim as jest.Mock;
 const mockClaim = new Claim();
 mockClaim.applicant1 = {
   type: PartyType.INDIVIDUAL,
-  partyName: 'Joe Bloggs',
+  partyDetails: {
+    partyName: 'Joe Bloggs',
+  },
 };
 
 describe('Request More Time Controller', () => {
@@ -47,7 +46,9 @@ describe('Request More Time Controller', () => {
       const claim = new Claim();
       claim.applicant1 = {
         type: PartyType.SOLE_TRADER,
-        partyName: 'Miss Jane',
+        partyDetails: {
+          partyName: 'Miss Jane',
+        },
       };
       claim.responseDeadline = new ResponseDeadline();
       claim.responseDeadline.additionalTime = AdditionalTimeOptions.MORE_THAN_28_DAYS;

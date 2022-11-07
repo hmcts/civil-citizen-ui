@@ -1,10 +1,12 @@
-import {CorrespondenceAddress} from '../../../../../../main/common/models/correspondenceAddress';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {PartyType} from '../../../../../../main/common/models/partyType';
 import {
   getAddress,
   getSolicitorName,
 } from '../../../../../../main/services/features/response/contactThem/contactThemService';
+import {Party} from '../../../../../../main/common/models/party';
+import {PartyDetails} from '../../../../../../main/common/form/models/partyDetails';
+import {Address} from '../../../../../../main/common/form/models/address';
 
 describe('contact them service', () => {
   describe('getAddress', () => {
@@ -78,27 +80,28 @@ describe('contact them service', () => {
   });
 });
 
-function buildClaimWithAddress(address: CorrespondenceAddress, correspondenceAddress?: CorrespondenceAddress, solicitorAddress?: CorrespondenceAddress): Claim {
+function buildClaimWithAddress(address: Address, correspondenceAddress?: Address, solicitorAddress?: Address): Claim {
   const claim = new Claim();
-  claim.applicant1 = {
-    partyName: 'Some Very Important Company Ltd',
-    primaryAddress: address,
-    type: PartyType.COMPANY,
-  };
+  claim.applicant1 = new Party();
+  claim.applicant1.partyDetails = new PartyDetails({});
+  claim.applicant1.partyDetails.partyName = 'Some Very Important Company Ltd';
+  claim.applicant1.partyDetails.primaryAddress = address;
+  claim.applicant1.type = PartyType.COMPANY;
+
   if (correspondenceAddress) {
-    claim.specApplicantCorrespondenceAddressdetails = correspondenceAddress;
+    claim.applicant1.partyDetails.correspondenceAddress = correspondenceAddress;
   }
   if (solicitorAddress) {
-    claim.applicantSolicitor1ServiceAddress = solicitorAddress;
+    claim.applicant1.partyDetails.primaryAddress = solicitorAddress;
   }
   return claim;
 }
 
-function buildAddress(line1: string, line2: string, postcode: string, postTown: string): CorrespondenceAddress {
+function buildAddress(line1: string, line2: string, postcode: string, postTown: string): Address {
   return {
-    AddressLine1: line1,
-    AddressLine2: line2,
-    PostCode: postcode,
-    PostTown: postTown,
+    addressLine1: line1,
+    addressLine2: line2,
+    postCode: postcode,
+    city: postTown,
   };
 }

@@ -5,24 +5,18 @@ import {Party} from '../../../../../main/common/models/party';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {CitizenTelephoneNumber} from '../../../../../main/common/form/models/citizenTelephoneNumber';
 import {ClaimantOrDefendant, PartyType} from '../../../../../main/common/models/partyType';
-import {Address} from '../../../../../main/common/form/models/address';
+import {PartyPhone} from '../../../../../main/common/models/PartyPhone';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
-const address: Address = {
-  primaryAddressLine1: '',
-  primaryAddressLine2: '',
-  primaryAddressLine3: '',
-  primaryCity: '',
-  primaryPostCode: '',
-};
-
 const party: Party = {
-  individualTitle: '',
-  individualLastName: '',
-  individualFirstName: '',
-  partyName: '',
+  partyDetails: {
+    individualTitle: '',
+    individualLastName: '',
+    individualFirstName: '',
+    partyName: '',
+  },
   type: PartyType.INDIVIDUAL,
 };
 
@@ -72,7 +66,6 @@ describe('Claimant Phone Service', () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
-        //claim.respondent1 = respondent;
         claim.respondent1 = party;
         return claim;
       });
@@ -86,7 +79,8 @@ describe('Claimant Phone Service', () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
-        party.partyDetails.partyPhone.phone = PHONE_NUMBER;
+        claim.applicant1 = new Party();
+        claim.applicant1.partyPhone = new PartyPhone(PHONE_NUMBER);
         claim.applicant1 = party;
         return claim;
       });
@@ -101,7 +95,8 @@ describe('Claimant Phone Service', () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
-        party.partyDetails.partyPhone.phone = PHONE_NUMBER;
+        claim.applicant1 = new Party();
+        claim.applicant1.partyPhone = new PartyPhone(PHONE_NUMBER);
         claim.respondent1 = party;
         return claim;
       });

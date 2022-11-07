@@ -1,10 +1,10 @@
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../../main/common/models/claim';
-import {buildPrimaryAddress, mockClaim} from '../../../../../utils/mockClaim';
+import {buildAddress, mockClaim} from '../../../../../utils/mockClaim';
 import {Party} from '../../../../../../main/common/models/party';
 import {
   getDefendantInformation,
-  saveDefendant,
+  saveDefendantProperty,
 } from '../../../../../../main/services/features/common/defendantDetailsService';
 import {PartyType} from '../../../../../../main/common/models/partyType';
 
@@ -52,7 +52,7 @@ describe('Defendant details service', () => {
         return new Claim();
       });
 
-      await saveDefendant(CLAIM_ID, 'type', PartyType.INDIVIDUAL);
+      await saveDefendantProperty(CLAIM_ID, 'type', PartyType.INDIVIDUAL);
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, expectedData);
     });
@@ -64,7 +64,7 @@ describe('Defendant details service', () => {
         return undefined;
       });
 
-      await saveDefendant(CLAIM_ID, 'type', PartyType.INDIVIDUAL);
+      await saveDefendantProperty(CLAIM_ID, 'type', PartyType.INDIVIDUAL);
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
     });
@@ -76,14 +76,16 @@ describe('Defendant details service', () => {
         const claim = mockClaim;
         claim.respondent1 = new Party();
         claim.respondent1 = {
-          primaryAddress: buildPrimaryAddress(),
+          partyDetails: {
+            primaryAddress: buildAddress(),
+          },
           responseType: 'foo',
           type: PartyType.INDIVIDUAL,
         };
         return claim;
       });
 
-      await saveDefendant(CLAIM_ID, 'type', PartyType.ORGANISATION);
+      await saveDefendantProperty(CLAIM_ID, 'type', PartyType.ORGANISATION);
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
     });
