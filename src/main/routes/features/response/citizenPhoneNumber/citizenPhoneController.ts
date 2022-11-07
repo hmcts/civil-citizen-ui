@@ -33,7 +33,7 @@ citizenPhoneController.post(CITIZEN_PHONE_NUMBER_URL,
       if (citizenTelephoneNumberForm.hasErrors()) {
         renderView(citizenTelephoneNumberForm, res);
       } else {
-        const claim = await getCaseDataFromStore(req.params.id) || new Claim();
+        const claim = await getCaseDataFromStore(req.params.id);
         if (claim.respondent1) {
           claim.respondent1.partyPhone = model.telephoneNumber;
         } else {
