@@ -3,6 +3,7 @@ import {CitizenTelephoneNumber} from '../../../../common/form/models/citizenTele
 import {ClaimantOrDefendant} from '../../../../common/models/partyType';
 import {Party} from '../../../../common/models/party';
 import {Claim} from '../../../../common/models/claim';
+import {PartyPhone} from '../../../../common/models/PartyPhone';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantPhoneAsService');
@@ -12,9 +13,9 @@ const getTelephone = async (claimId: string, citizenType: ClaimantOrDefendant) =
     const claim = await getCaseDataFromStore(claimId);
 
     if (claim.applicant1 && citizenType === ClaimantOrDefendant.CLAIMANT) {
-      return new CitizenTelephoneNumber(claim.applicant1.partyPhone.phone);
+      return new CitizenTelephoneNumber(claim.applicant1?.partyPhone?.phone);
     } else if (claim.respondent1 && citizenType === ClaimantOrDefendant.DEFENDANT) {
-      return new CitizenTelephoneNumber(claim.respondent1.partyPhone.phone);
+      return new CitizenTelephoneNumber(claim.respondent1?.partyPhone?.phone);
     }
 
     return new CitizenTelephoneNumber();
@@ -40,10 +41,16 @@ const saveForm = (claim: Claim, form: CitizenTelephoneNumber, citizenType: Claim
     if (!claim.applicant1) {
       claim.applicant1 = new Party();
     }
+    if(!claim.applicant1.partyPhone){
+      claim.applicant1.partyPhone = new PartyPhone();
+    }
     claim.applicant1.partyPhone.phone = form.telephoneNumber;
   } else if (citizenType === ClaimantOrDefendant.DEFENDANT) {
     if (!claim.respondent1) {
       claim.respondent1 = new Party();
+    }
+    if(!claim.respondent1.partyPhone){
+      claim.respondent1.partyPhone = new PartyPhone();
     }
     claim.respondent1.partyPhone.phone = form.telephoneNumber;
   }
