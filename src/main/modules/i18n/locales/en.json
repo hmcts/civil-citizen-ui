@@ -1502,7 +1502,7 @@
     "SPECIFIC_COURT": {
       "EXPlANATION": "You can ask for the hearing to be held at a specific court, for example, if you spend weekdays a long distance from your home. The court will consider both parties' circumstances when deciding to hold the hearing.",
       "PAGE_TITLE": "Specific court",
-      "SELECT_COURT": "Selected a court",
+      "SELECT_COURT": "Select a court",
       "SELECT_VALUE": "Select a value",
       "REASON": "Tell us why you want the hearing to be held at this court",
       "TITLE": "Do you want to ask for the hearing to be held at a specific court?"
