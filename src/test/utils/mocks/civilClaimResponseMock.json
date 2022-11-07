@@ -26,7 +26,9 @@
     },
     "applicant1": {
       "type": "ORGANISATION",
-      "partyPhone": "(0)207 127 0000",
+      "partyPhone": {
+        "phone": "(0)207 127 0000"
+      },
       "emailAddress": "hmcts@hmcts.com",
       "partyDetails": {
         "primaryAddress": {
