@@ -6,5 +6,64 @@
 {% from "../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.PHONE_OR_VIDEO_HEARING.PAGE_TITLE') }}
+  {{ setPageTitle('PAGES.SPECIFIC_COURT.PAGE_TITLE') }}
+{% endblock %}
+{% block content %}
+  {% if form.hasErrors() %}
+    {{ errorSummary(form.getErrors(), t) }}
+  {% endif %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t('PAGES.SPECIFIC_COURT.TITLE') }}</h1>
+          <p class="govuk-body">{{ t('PAGES.SPECIFIC_COURT.EXPlANATION') }}</p>
+
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            {% set courtItems = [{value: '', text: t('PAGES.SPECIFIC_COURT.SELECT_VALUE')]} %}
+            {% for item in courtLocations %}
+               {% set courtItems = (courtItems.push({
+                  text: item.label,
+                  value: item.label,
+                  selected: form.model.courtLocation === item.label
+              }), courtItems) %}
+            {% endfor %}
+
+            {% set yesHtml %}
+            {{ govukSelect({
+              id: courtLocation,
+              name: courtLocation,
+              items: courtLocations,
+              label: {
+                text: t(),
+
+              }
+            }) }}
+              {{ govukTextarea({
+                name: "reason",
+                id: "reason",
+                value: form.model.reason,
+                label: {
+                  text: t('PAGES.SPECIFIC_COURT.REASON')
+                },
+                errorMessage: {
+                  html: t(form.errorFor("reason"))
+                } if form.hasFieldError("reason")
+              }) }}
+            {% endset %}
+
+            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml: yesHtml}) }}
+
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
 {% endblock %}
