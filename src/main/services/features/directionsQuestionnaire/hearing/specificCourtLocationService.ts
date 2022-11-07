@@ -16,8 +16,9 @@ const getSpecificCourtLocationForm = async (claimId: string) => {
 };
 
 const getListOfCourtLocations = async (req: AppRequest): Promise<CourtLocation[]> =>{
-  const cachedCourtLocations = getCourtLocationsFromCache();
-  if(!cachedCourtLocations) {
+  const cachedCourtLocations = await getCourtLocationsFromCache();
+  console.log(cachedCourtLocations);
+  if(!cachedCourtLocations || !cachedCourtLocations.length) {
     const courtLocations = await civilServiceClient.getCourtLocations(req);
     await saveCourtLocationsToCache(courtLocations);
     return courtLocations;

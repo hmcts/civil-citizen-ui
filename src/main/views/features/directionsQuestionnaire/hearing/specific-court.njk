@@ -1,5 +1,7 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from 'govuk/components/textarea/macro.njk' import govukTextarea %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
@@ -24,8 +26,8 @@
             {% set courtItems = [{value: '', text: t('PAGES.SPECIFIC_COURT.SELECT_VALUE')]} %}
             {% for item in courtLocations %}
                {% set courtItems = (courtItems.push({
-                  text: item.label,
                   value: item.label,
+                  text: item.label,
                   selected: form.model.courtLocation === item.label
               }), courtItems) %}
             {% endfor %}
@@ -34,9 +36,9 @@
             {{ govukSelect({
               id: courtLocation,
               name: courtLocation,
-              items: courtLocations,
+              items: courtItems,
               label: {
-                text: t('PAGES.SPECIFIC_COURT.SELECT_COURT'),
+                text: t('PAGES.SPECIFIC_COURT.SELECT_COURT')
               },
               errorMessage: {
                 text: t(form.errorFor("courtLocation"))
