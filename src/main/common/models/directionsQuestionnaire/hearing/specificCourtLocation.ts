@@ -1,5 +1,5 @@
-import {IsDefined, ValidateIf} from 'class-validator';
-import {YesNoUpperCase} from 'common/form/models/yesNo';
+import {IsDefined, IsNotEmpty, ValidateIf} from 'class-validator';
+import {YesNo} from 'common/form/models/yesNo';
 
 export class SpecificCourtLocation {
 
@@ -10,6 +10,7 @@ export class SpecificCourtLocation {
     courtLocation: string;
   @ValidateIf(o => o.isSpecificCourtRequired())
   @IsDefined({message: 'PAGES.SPECIFIC_COURT.REASON'})
+  @IsNotEmpty({message: 'PAGES.SPECIFIC_COURT.REASON'})
     reason: string;
 
   constructor(option?: string, courtLocation?: string, reason?: string) {
@@ -19,7 +20,7 @@ export class SpecificCourtLocation {
   }
 
   isSpecificCourtRequired(){
-    return this.option === YesNoUpperCase.YES;
+    return this.option === YesNo.YES;
   }
 
   public static fromObject(record: Record<string, string>){

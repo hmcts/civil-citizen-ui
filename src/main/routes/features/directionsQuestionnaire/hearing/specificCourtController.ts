@@ -41,7 +41,6 @@ specificCourtController.get(DQ_COURT_LOCATION_URL, async (req: Request, res: Res
         await saveDirectionQuestionnaire(claimId, form.model, dqPropertyName, dqParentName);
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_WELSH_LANGUAGE_URL));
       }
-      res.redirect(constructResponseUrlWithIdParams(claimId, DQ_WELSH_LANGUAGE_URL));
     }catch(error){
       next(error);
     }

@@ -6,6 +6,7 @@
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
+{% from "../../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.SPECIFIC_COURT.PAGE_TITLE') }}
@@ -34,8 +35,8 @@
 
             {% set yesHtml %}
             {{ govukSelect({
-              id: courtLocation,
-              name: courtLocation,
+              id: "courtLocation",
+              name: "courtLocation",
               items: courtItems,
               label: {
                 text: t('PAGES.SPECIFIC_COURT.SELECT_COURT')
