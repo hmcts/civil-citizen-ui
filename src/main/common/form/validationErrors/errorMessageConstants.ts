@@ -54,5 +54,3 @@ export const NO_NAME_SELECTED = 'Enter the name of the person who needs support'
 export const NO_SUPPORT_SELECTED = 'Select the support the person needs to attend a hearing';
 export const SELECT_YES_IF_SUPPORT = 'Select yes if someone needs support to attend a hearing';
 export const NOT_TO_REMOVE_PHONE_NUMBER = 'You can only change your phone number, not remove it';
-export const CLAIMANT_REJECTION_RESPONSE_REQUIRED = 'Enter why you rejected repayment plan.';
-

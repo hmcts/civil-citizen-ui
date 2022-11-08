@@ -605,8 +605,8 @@
       "TITLE": "Enter a phone number (optional)"
     },
     "CLAIMANT_RESPONSE_REJECTION_REASON": {
-      "PAGE_TITLE": "Rheswm gwrthod",
-      "TITLE": "Pam wnaethoch chi wrthod eu hymateb?"
+      "PAGE_TITLE": "Rejection reason",
+      "TITLE": "Why did you reject their response?"
     },
     "COMPANY_DETAILS": {
       "ADDRESS_FOR_SERVICE": "Gelwir hwn yn 'gyfeiriad cyflwyno'.",
@@ -2058,6 +2058,7 @@
     "VALID_YES_NO_SELECTION": "Dewiswch ie neu na, os gwelwch yn dda",
     "VALID_WHY_FROM_PARTICULAR_DATE": "You need to explain why you are claiming",
     "QUESTION_1_REQUIRED": "Select yes if someone is vulnerable in a way that the court needs to consider",
-    "QUESTION_2_REQUIRED": "Tell us who is vulnerable and what support they need"
+    "QUESTION_2_REQUIRED": "Tell us who is vulnerable and what support they need",
+    "CLAIMANT_REJECTION_RESPONSE_REQUIRED": "Enter why you rejected repayment plan"
   }
 }
