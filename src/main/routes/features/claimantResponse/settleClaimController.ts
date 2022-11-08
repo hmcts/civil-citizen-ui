@@ -26,7 +26,7 @@ settleClaimController.get(CLAIMANT_RESPONSE_SETTLE_CLAIM_URL, async (req: Reques
   try {
     const claim: Claim = await getCaseDataFromStore(claimId);
     paidAmount = claim.isRejectAllOfClaimAlreadyPaid();
-    renderView(new GenericForm(claim.hasPartPaymentBeenAccepted), res, paidAmount);
+    renderView(new GenericForm(claim.claimantResponse.hasPartPaymentBeenAccepted), res, paidAmount);
   } catch (error) {
     next(error);
   }
@@ -41,11 +41,10 @@ settleClaimController.post(CLAIMANT_RESPONSE_SETTLE_CLAIM_URL, async (req: Reque
     if (genericYesNoForm.hasErrors()) {
       renderView(genericYesNoForm, res, paidAmount);
     } else {
+      await saveClaimantResponse(claimId, genericYesNoForm.model, "hasPartPaymentBeenAccepted");
       if (genericYesNoForm.model.option === YesNo.YES) {
-        await saveClaimantResponse(claimId, genericYesNoForm.model, "hasPartPaymentBeenAccepted");
         res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
       } else {
-        await saveClaimantResponse(claimId, genericYesNoForm.model, "hasPartPaymentBeenAccepted");
         res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_REJECT_REASON_URL));
       }
     }
