@@ -27,14 +27,14 @@ describe('Review Defendant\'s Response Controller', () => {
   const mockFinancialDetails = getFinancialDetails as jest.Mock;
   const claim = new Claim();
   claim.statementOfMeans = new StatementOfMeans();
+  mockConstructURL.mockImplementation(() => 'VALID_URL');
+  mockDateFormat.mockImplementation(() => 'validDate');
+  mockFinancialDetails.mockImplementation(() => [[], [], [], [], [], [], [], [], []]);
 
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    mockConstructURL.mockImplementation(() => 'VALID_URL');
-    mockDateFormat.mockImplementation(() => 'validDate');
-    mockFinancialDetails.mockImplementation(() => [[], [], [], [], [], [], [], [], []]);
   });
 
   it('should return defendant\'s response', async () => {
