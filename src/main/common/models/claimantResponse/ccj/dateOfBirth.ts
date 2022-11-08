@@ -11,15 +11,15 @@ export class DateOfBirth {
 
   @Min((new Date().getFullYear() - 150), {message: 'ERRORS.VALID_YEAR'})
   @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
-    year: number;
+    year?: number;
 
   @Min(1, {message: 'ERRORS.VALID_MONTH'})
   @Max(12, {message: 'ERRORS.VALID_MONTH'})
-    month: number;
+    month?: number;
 
   @Min(1, {message: 'ERRORS.VALID_DAY'})
   @Max(31, {message: 'ERRORS.VALID_DAY'})
-    day: number;
+    day?: number;
 
   constructor(params?: Record<string, string>) {
     this.dateOfBirth = DateConverter.convertToDate(params?.year, params?.month, params?.day);

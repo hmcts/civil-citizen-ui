@@ -45,7 +45,7 @@ describe('CCJ - Defendant`s date of birth', () => {
     });
 
     it('should return error on empty post', async () => {
-      const res = await request(app).post(CCJ_DEFENDANT_DOB_URL)
+      const res = await request(app).post(CCJ_DEFENDANT_DOB_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain(TestMessages.VALID_OPTION_SELECTION);
     });
