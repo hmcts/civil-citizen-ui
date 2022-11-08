@@ -1515,7 +1515,48 @@
       "EXAMPLE": "For example National Insurance contributions, Income Tax or VAT."
     },
     "SEND_YOUR_RESPONSE_BY_EMAIL": {
-      "PAGE_TITLE": "Send your response by email"
+      "COUNTER_CLAIM_CHOSEN": "You have chosen to counterclaim.",
+      "YOUR_DEFENCE_CANNOT_CONTINUE_ONLINE": "This means your defence cannot continue online.",
+      "FOLLOW_THESE_STEPS": "Follow these steps to download, complete and return form N9B.",
+      "YOU_MUST_PAY_FEE": "You must pay a court fee.",
+      "DO_NOT_CREATE_NEW_CLAIM": "Do not create a new claim.",
+      "CLAIM_DETAILS": {
+        "NEEDED_DETAILS": "You will need these claim details",
+        "CLAIM_NUMBER": "Claim number",
+        "CLAIMANT": "Claimant",
+        "DEFENDANT": "Defendant"
+      },
+      "DO_NOT_CREATE_NEW_CLAIM_IF_WANT_COUNTERCLAIM": "Do not create a new claim if you want to counterclaim.",
+      "USE_FORM_N9B": "Use form N9B.",
+      "EMAIL_COMPLETED": "Email completed form N9B to",
+      "HEADER": "Reject all of the claim and counterclaim",
+      "HELP_AND_SUPPORT": "Help and support",
+      "HOW_TO_COUNTERCLAIM": "How to counterclaim",
+      "OPEN_IN_NEW_WINDOW": "(opens in a new window)",
+      "PAGE_TITLE": "Send your response by email",
+      "PAY_COURT_FEE": "You`ll need to pay a court fee to make a counterclaim. The court will contact you to take payment.",
+      "PDF_ADMISSION": "Download admission form (PDF, 102 KB)",
+      "PDF_DEFENCE": "Download admission form (PDF, 102 KB)",
+      "PDF_DEFENCE_AND_CLAIM": "Download form N9B Make a defence or counterclaim (opens in a new window)",
+      "SEND_BY_POST": "Or, you can send the form by post to",
+      "SIGN_POST_ADDRESS": {
+        "CITY": "Harlow",
+        "NAME": "HMCTS CMC",
+        "PO_BOX": "PO BOX 12747",
+        "POST_CODE": "CM20 9RA"
+      },
+      "STEP_1": "Step 1: Download and complete form N9B",
+      "STEP_2": "Step 2: Email or post form N9B",
+      "STEP_3": "Step 3: Pay the court fee",
+      "SUPPORT_EMAIL_ADDRESS": "contactocmc@justice.gov.uk",
+      "NON_SIGN_POST_ADDRESS": {
+        "CITY": "Northampton",
+        "NAME": "St. Katharine`s House",
+        "POST_CODE": "NN1 2LH",
+        "STREET": "21-27 St. Katharine`s Street",
+        "TITLE": "Civil Money Claims"
+      },
+      "WE_MUST_RECEIVE_COMPLETED_FORM": "We must receive your completed form before <span class=\"govuk-body govuk-!-font-weight-bold\">4pm on {{ deadline }}</span>. The claim against you will continue if we do not receive this."
     },
     "SENT_EXPERT_REPORTS": {
       "OPTION_NOT_RECEIVED": "No, I have not yet received them",

@@ -20,7 +20,7 @@ const logger = Logger.getLogger('claimantResponseService');
 const getClaimantResponse = async (claimId: string): Promise<ClaimantResponse> => {
   try {
     const claim = await getCaseDataFromStore(claimId);
-    return (claim?.claimantResponse) ? claim.claimantResponse : new ClaimantResponse();
+    return (claim.claimantResponse) ? claim.claimantResponse : new ClaimantResponse();
   } catch (error) {
     logger.error(error);
     throw error;

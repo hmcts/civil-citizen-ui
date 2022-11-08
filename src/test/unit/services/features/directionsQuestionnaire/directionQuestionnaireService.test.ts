@@ -1,20 +1,20 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../main/common/models/claim';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {YesNo} from '../../../../../main/common/form/models/yesNo';
+import {Claim} from 'models/claim';
+import {TestMessages} from '../../../../../../src/test/utils/errorMessageTestConstants';
+import {YesNo} from 'form/models/yesNo';
 import {
   getDirectionQuestionnaire,
   getGenericOption,
   saveDirectionQuestionnaire,
-} from '../../../../../main/services/features/directionsQuestionnaire/directionQuestionnaireService';
-import {DirectionQuestionnaire} from '../../../../../main/common/models/directionsQuestionnaire/directionQuestionnaire';
-import {GenericYesNo} from '../../../../../main/common/form/models/genericYesNo';
-import {Experts} from '../../../../../main/common/models/directionsQuestionnaire/experts/experts';
-import {Hearing} from '../../../../../main/common/models/directionsQuestionnaire/hearing/hearing';
-import {PhoneOrVideoHearing} from '../../../../../main/common/models/directionsQuestionnaire/hearing/phoneOrVideoHearing';
-import {ExpertDetails} from '../../../../../main/common/models/directionsQuestionnaire/experts/expertDetails';
-import {OtherWitnessItems} from '../../../../../main/common/models/directionsQuestionnaire/witnesses/otherWitnessItems';
-import {Witnesses} from '../../../../../main/common/models/directionsQuestionnaire/witnesses/witnesses';
+} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
+import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {Experts} from 'models/directionsQuestionnaire/experts/experts';
+import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
+import {PhoneOrVideoHearing} from 'models/directionsQuestionnaire/hearing/phoneOrVideoHearing';
+import {ExpertDetails} from 'models/directionsQuestionnaire/experts/expertDetails';
+import {OtherWitnessItems} from 'models/directionsQuestionnaire/witnesses/otherWitnessItems';
+import {Witnesses} from 'models/directionsQuestionnaire/witnesses/witnesses';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -221,7 +221,7 @@ describe('Direction questionnaire Service', () => {
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
 
-      await saveDirectionQuestionnaire('validClaimId',updatedPhoneOrVideoHearing, 'phoneOrVideoHearing', 'hearing');
+      await saveDirectionQuestionnaire('validClaimId', updatedPhoneOrVideoHearing, 'phoneOrVideoHearing', 'hearing');
       expect(spySave).toHaveBeenCalledWith('validClaimId', updatedClaim);
     });
 
