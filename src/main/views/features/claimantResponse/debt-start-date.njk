@@ -14,7 +14,6 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set dateToday = "now" | addDaysTranslated(0, t) %}
       {% set errors = form.getErrors() %}
       {% if form.hasErrors() %}
         {{ errorSummary(errors, t) }}
@@ -44,7 +43,7 @@
                 name: "debtStartDate",
                 hint: {
                   text: t('COMMON.DATE_EXAMPLE', {
-                    date: today.getDate() + ' ' + today.getMonth() + ' ' + (today.getFullYear() - 1)
+                    date: today.getDate() + ' ' + today.getMonth() + ' ' + (today.getFullYear() - 18)
                   })
                 },
                 items: [
