@@ -1,6 +1,6 @@
-import {getMaxDateforAge} from '../../../../main/common/utils/dateUtils';
+import {getDOBforAgeFromCurrentTime} from '../../../../main/common/utils/dateUtils';
 
-describe('getMaxDateforAge', () => {
+describe('getDOBforAgeFromCurrentTime', () => {
   it('should return the maximim date for age', () => {
     //Given
     const mockDate = new Date('2022-03-01T11:57:10.592492') as unknown as string;
@@ -8,7 +8,7 @@ describe('getMaxDateforAge', () => {
       .spyOn(global, 'Date')
       .mockImplementation(() => mockDate);
     //When
-    const result = getMaxDateforAge(18);
+    const result = getDOBforAgeFromCurrentTime(18);
     //Then
     expect(result).not.toBeNull();
     expect(spy).toBeCalled();
