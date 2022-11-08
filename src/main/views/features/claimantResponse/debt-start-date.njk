@@ -17,7 +17,7 @@
       {% set dateToday = "now" | addDaysTranslated(0, t) %}
       {% set errors = form.getErrors() %}
       {% if form.hasErrors() %}
-        {{ errorSummary(errors,t,[{keyError:'ERRORS.VALID_DATE_IN_PAST',keyToReplace:'{{dateToday}}',valueToReplace:dateToday}]) }}
+        {{ errorSummary(errors, t) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
@@ -34,7 +34,7 @@
             <div class="govuk-form-group {% if form.hasErrors() %} govuk-form-group--error{% endif %}">
               {% if form.hasErrors() %}
                 {% for error in errors %}
-                  <span class="govuk-error-message">{{ t(error.text,{dateToday: dateToday}) }}</span>
+                  <span class="govuk-error-message">{{ t(error.text) }}</span>
                 {% endfor %}
               {% endif %}
               {{ govukDateInput({

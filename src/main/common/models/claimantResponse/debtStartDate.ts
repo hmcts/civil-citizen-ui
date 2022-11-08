@@ -8,7 +8,7 @@ export class DebtStartDate {
 
   @ValidateIf(o => (o.day < 32 && o.month < 13 && o.year > 999))
   @IsDate({message: 'ERRORS.VALID_DATE'})
-  @Validate(OptionalDateInPastValidator, {message: 'ERRORS.VALID_DATE_IN_PAST'})
+  @Validate(OptionalDateInPastValidator, {message: 'ERRORS.VALID_DATE_START_NOT_AFTER_TODAY'})
   date?: Date;
 
   @ValidateIf(o => (o.day || o.month || o.year))
