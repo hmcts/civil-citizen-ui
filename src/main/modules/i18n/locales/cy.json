@@ -43,7 +43,8 @@
       "SAVE": "Save",
       "SAVE_AND_CONTINUE": "Cadw a Pharhau",
       "START_AGAIN": "Start again",
-      "SUBMIT_RESPONSE": "Cyflwyno'r ymateb"
+      "SUBMIT_RESPONSE": "Cyflwyno'r ymateb",
+      "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})"
     },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Treth Cyngor",
