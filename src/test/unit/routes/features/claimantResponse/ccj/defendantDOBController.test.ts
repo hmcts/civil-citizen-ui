@@ -94,7 +94,7 @@ describe('CCJ - Defendant`s date of birth', () => {
       expect(res.get('location')).toBe(CCJ_PAID_AMOUNT_URL);
     });
 
-    it('should redirect to redirect to paid amount page if option no is selected', async () => {
+    it('should redirect to paid amount page if option no is selected', async () => {
       const res = await request(app).post(CCJ_DEFENDANT_DOB_URL).send({option: 'no'});
       expect(res.status).toBe(302);
       expect(res.get('location')).toBe(CCJ_PAID_AMOUNT_URL);

@@ -67,7 +67,7 @@ describe('Claimant Response Service', () => {
     });
 
     describe('CCJ-Defendant date of birth', () => {
-      it('should return undefined if defendant dob to proceed is not set', async () => {
+      it('should return undefined if defendant dob is not set', async () => {
         //Given
         mockGetCaseDataFromDraftStore.mockImplementation(async () => {
           return new Claim();
@@ -124,7 +124,7 @@ describe('Claimant Response Service', () => {
         expect(claimantResponse?.ccjRequest.defendantDOB.dob).toBeUndefined();
       });
 
-      it('should return Claimant Response object with dob deatils with option yes', async () => {
+      it('should return Claimant Response object with dob details with option yes', async () => {
         //Given
         const claim = new Claim();
         claim.claimantResponse = new ClaimantResponse();
