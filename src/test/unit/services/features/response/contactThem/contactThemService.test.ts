@@ -18,17 +18,7 @@ describe('contact them service', () => {
     const CORRESPONDENCE_ADDRESS_LINE_2 = 'Dean close';
     const CORRESPONDENCE_TOWN = 'Bristol';
     const CORRESPONDENCE_POSTCODE = 'BS1 4HK';
-    it('should return solicitors address when it exists', () => {
-      //Given
-      const solicitorAddress = buildAddress(PRIMARY_ADDRESS_LINE_1, PRIMARY_ADDRESS_LINE_2, PRIMARY_ADDRESS_TOWN, PRIMARY_ADDRESS_POSTCODE);
-      const primaryAddress = buildAddress(PRIMARY_ADDRESS_LINE_1, PRIMARY_ADDRESS_LINE_2, PRIMARY_ADDRESS_TOWN, PRIMARY_ADDRESS_POSTCODE);
-      const correspondenceAddress = buildAddress(CORRESPONDENCE_ADDRESS_LINE_1, CORRESPONDENCE_ADDRESS_LINE_2, CORRESPONDENCE_TOWN, CORRESPONDENCE_POSTCODE);
-      const claim = buildClaimWithAddress(primaryAddress, correspondenceAddress, solicitorAddress);
-      //When
-      const address = getAddress(claim);
-      //Then
-      expect(address).toMatchObject(solicitorAddress);
-    });
+
     it('should return correspondence address when it exists', () => {
       //Given
       const primaryAddress = buildAddress(PRIMARY_ADDRESS_LINE_1, PRIMARY_ADDRESS_LINE_2, PRIMARY_ADDRESS_TOWN, PRIMARY_ADDRESS_POSTCODE);
