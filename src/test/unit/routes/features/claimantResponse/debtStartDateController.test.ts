@@ -8,7 +8,7 @@ import {
 } from '../../../../../main/routes/urls';
 import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {t} from "i18next";
+import {t} from 'i18next';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -30,7 +30,7 @@ describe('Claimant Response - Debt Respite When Start Controller', () => {
         .get(CLAIMANT_RESPONSE_WHEN_DEBT_START_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain("When did it start?");
+          expect(res.text).toContain('When did it start?');
         });
     });
     it('should return http 500 when has error in the get method', async () => {
@@ -170,7 +170,7 @@ describe('Claimant Response - Debt Respite When Start Controller', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain("Start date must not be after today");
+          expect(res.text).toContain('Start date must not be after today');
         });
     });
 

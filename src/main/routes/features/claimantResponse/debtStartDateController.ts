@@ -48,6 +48,4 @@ debtStartDateController.post(CLAIMANT_RESPONSE_WHEN_DEBT_START_URL, async (req: 
   }
 });
 
-
-
 export default debtStartDateController;
