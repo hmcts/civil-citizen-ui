@@ -52,11 +52,11 @@ const buildClaimOfApplicantType = (type: PartyType): Party => {
 const nock = require('nock');
 
 const validDataForPost = {
-  addressLine1: 'Flat 3A Middle Road',
-  addressLine2: '',
-  addressLine3: '',
-  city: 'London',
-  postCode: 'SW1H 9AJ',
+  addressLine1: ['Flat 3A Middle Road','Flat 3A Middle Road'],
+  addressLine2: ['',''],
+  addressLine3: ['',''],
+  city: ['London','London'],
+  postCode: ['SW1H 9AJ','SW1H 9AJ'],
   provideCorrespondenceAddress: 'no',
   partyName: 'partyName',
   contactPerson: 'contactPerson',
@@ -186,11 +186,11 @@ describe('Claimant Individual Details page', () => {
     await request(app)
       .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
-        addressLine1: 'Flat 3A Middle Road',
-        addressLine2: '',
-        addressLine3: '',
-        city: 'London',
-        postCode: 'SW1H 9AJ',
+        addressLine1: ['Flat 3A Middle Road',''],
+        addressLine2: ['',''],
+        addressLine3: ['',''],
+        city: ['London',''],
+        postCode: ['SW1H 9AJ',''],
         provideCorrespondenceAddress: 'no',
         partyName: 'partyName',
         contactPerson: 'contactPerson',
@@ -207,11 +207,11 @@ describe('Claimant Individual Details page', () => {
     await request(app)
       .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
-        addressLine1: 'Flat 3A Middle Road',
-        addressLine2: '',
-        addressLine3: '',
-        city: 'London',
-        postCode: 'SW1H 9AJ',
+        addressLine1: ['Flat 3A Middle Road','Flat 3A Middle Road'],
+        addressLine2: ['',''],
+        addressLine3: ['',''],
+        city: ['London','London'],
+        postCode: ['SW1H 9AJ','SW1H 9AJ'],
         provideCorrespondenceAddress: 'yes',
         partyName: 'partyName',
         contactPerson: 'contactPerson',
@@ -228,11 +228,11 @@ describe('Claimant Individual Details page', () => {
     await request(app)
       .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
-        addressLine1: '',
-        addressLine2: '',
-        addressLine3: '',
-        city: 'London',
-        postCode: 'SW1H 9AJ',
+        addressLine1: ['',''],
+        addressLine2: ['',''],
+        addressLine3: ['',''],
+        city: ['London',''],
+        postCode: ['SW1H 9AJ',''],
         provideCorrespondenceAddress: 'no',
         partyName: 'partyName',
         contactPerson: 'contactPerson',
@@ -247,11 +247,11 @@ describe('Claimant Individual Details page', () => {
     await request(app)
       .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
-        addressLine1: 'Flat 3A Middle Road',
-        addressLine2: '',
-        addressLine3: '',
-        city: '',
-        postCode: 'SW1H 9AJ',
+        addressLine1: ['Flat 3A Middle Road',''],
+        addressLine2: ['',''],
+        addressLine3: ['',''],
+        city: ['',''],
+        postCode: ['SW1H 9AJ',''],
         provideCorrespondenceAddress: 'no',
         partyName: 'partyName',
         contactPerson: 'contactPerson',
@@ -266,11 +266,11 @@ describe('Claimant Individual Details page', () => {
     await request(app)
       .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
-        addressLine1: 'Flat 3A Middle Road',
-        addressLine2: '',
-        addressLine3: '',
-        city: 'London',
-        postCode: '',
+        addressLine1: ['Flat 3A Middle Road',''],
+        addressLine2: ['',''],
+        addressLine3: ['',''],
+        city: ['London',''],
+        postCode: ['',''],
         provideCorrespondenceAddress: 'no',
         partyName: 'partyName',
         contactPerson: 'contactPerson',
@@ -288,11 +288,11 @@ describe('Claimant Individual Details page', () => {
     await request(app)
       .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
-        addressLine1: 'Flat 3A Middle Road',
-        addressLine2: '',
-        addressLine3: '',
-        city: 'London',
-        postCode: 'SW1H 9AJ',
+        addressLine1: ['Flat 3A Middle Road',''],
+        addressLine2: ['',''],
+        addressLine3: ['',''],
+        city: ['London','London'],
+        postCode: ['SW1H 9AJ','SW1H 9AJ'],
         provideCorrespondenceAddress: 'yes',
         partyName: 'partyName',
         contactPerson: 'contactPerson',
@@ -310,11 +310,11 @@ describe('Claimant Individual Details page', () => {
     await request(app)
       .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
-        addressLine1: 'Flat 3A Middle Road',
-        addressLine2: '',
-        addressLine3: '',
-        city: 'London',
-        postCode: 'SW1H 9AJ',
+        addressLine1: ['Flat 3A Middle Road','Flat 3A Middle Road'],
+        addressLine2: ['',''],
+        addressLine3: ['',''],
+        city: ['London',''],
+        postCode: ['SW1H 9AJ','SW1H 9AJ'],
         provideCorrespondenceAddress: 'yes',
         partyName: 'partyName',
         contactPerson: 'contactPerson',
@@ -332,11 +332,11 @@ describe('Claimant Individual Details page', () => {
     await request(app)
       .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
-        addressLine1: 'Flat 3A Middle Road',
-        addressLine2: '',
-        addressLine3: '',
-        city: 'London',
-        postCode: 'SW1H 9AJ',
+        addressLine1: ['Flat 3A Middle Road','Flat 3A Middle Road'],
+        addressLine2: ['',''],
+        addressLine3: ['',''],
+        city: ['London','London'],
+        postCode: ['SW1H 9AJ',''],
         provideCorrespondenceAddress: 'yes',
         partyName: 'partyName',
         contactPerson: 'contactPerson',
@@ -354,11 +354,11 @@ describe('Claimant Individual Details page', () => {
     await request(app)
       .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
-        addressLine1: '',
-        addressLine2: '',
-        addressLine3: '',
-        city: '',
-        postCode: '',
+        addressLine1: ['',''],
+        addressLine2: ['',''],
+        addressLine3: ['',''],
+        city: ['',''],
+        postCode: ['',''],
         provideCorrespondenceAddress: 'yes',
         partyName: 'partyName',
         contactPerson: 'contactPerson',
@@ -379,11 +379,11 @@ describe('Claimant Individual Details page', () => {
     await request(app)
       .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
-        addressLine1: '',
-        addressLine2: '',
-        addressLine3: '',
-        city: '',
-        postCode: '',
+        addressLine1: ['',''],
+        addressLine2: ['',''],
+        addressLine3: ['',''],
+        city: ['',''],
+        postCode: ['',''],
         provideCorrespondenceAddress: 'no',
         partyName: 'partyName',
         contactPerson: 'contactPerson',
@@ -403,11 +403,11 @@ describe('Claimant Individual Details page', () => {
     await request(app)
       .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
-        addressLine1: '',
-        addressLine2: '',
-        addressLine3: '',
-        city: '',
-        postCode: '',
+        addressLine1: ['Flat 3A Middle Road',''],
+        addressLine2: ['',''],
+        addressLine3: ['',''],
+        city: ['London',''],
+        postCode: ['SW1H 9AJ',''],
         provideCorrespondenceAddress: 'yes',
         partyName: 'partyName',
         contactPerson: 'contactPerson',

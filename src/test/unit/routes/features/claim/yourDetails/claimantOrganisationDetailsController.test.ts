@@ -59,11 +59,11 @@ const buildClaimOfApplicantType = (type: PartyType): Claim => {
 const nock = require('nock');
 
 const validDataForPost = {
-  addressLine1: 'Flat 3A Middle Road',
-  addressLine2: '',
-  addressLine3: '',
-  city: 'London',
-  postCode: 'SW1H 9AJ',
+  addressLine1: ['Flat 3A Middle Road', 'Flat 3A Middle Road'],
+  addressLine2: ['',''],
+  addressLine3: ['',''],
+  city: ['London','London'],
+  postCode: ['SW1H 9AJ','SW1H 9AJ'],
   partyName: 'partyName',
   contactPerson: 'contactPerson',
 };
@@ -219,17 +219,12 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
         .send({
-          addressLine1: '',
-          addressLine2: '',
-          addressLine3: '',
-          city: 'London',
-          postCode: 'SW1H 9AJ',
+          addressLine1: ['',''],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['London',''],
+          postCode: ['SW1H 9AJ',''],
           provideCorrespondenceAddress: 'no',
-          correspondenceAddressLine1: '',
-          correspondenceAddressLine2: '',
-          correspondenceAddressLine3: '',
-          correspondenceCity: '',
-          correspondencePostCode: '',
         })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -241,17 +236,12 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
         .send({
-          addressLine1: 'Flat 3A Middle Road',
-          addressLine2: '',
-          addressLine3: '',
-          city: '',
-          postCode: 'SW1H 9AJ',
+          addressLine1: ['Flat 3A Middle Road',''],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['',''],
+          postCode: ['SW1H 9AJ',''],
           provideCorrespondenceAddress: 'no',
-          correspondenceAddressLine1: '',
-          correspondenceAddressLine2: '',
-          correspondenceAddressLine3: '',
-          correspondenceCity: '',
-          correspondencePostCode: '',
         })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -263,17 +253,12 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
         .send({
-          addressLine1: 'Flat 3A Middle Road',
-          addressLine2: '',
-          addressLine3: '',
-          city: 'London',
-          postCode: '',
+          addressLine1: ['Flat 3A Middle Road',''],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['London',''],
+          postCode: ['',''],
           provideCorrespondenceAddress: 'no',
-          correspondenceAddressLine1: '',
-          correspondenceAddressLine2: '',
-          correspondenceAddressLine3: '',
-          correspondenceCity: '',
-          correspondencePostCode: '',
         })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -288,11 +273,11 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
         .send({
-          addressLine1: '',
-          addressLine2: '',
-          addressLine3: '',
-          city: 'London',
-          postCode: 'SW1H 9AJ',
+          addressLine1: ['',''],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['London','London'],
+          postCode: ['SW1H 9AJ','SW1H 9AJ'],
           provideCorrespondenceAddress: 'yes',
         })
         .expect((res) => {
@@ -308,11 +293,11 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
         .send({
-          addressLine1: 'Flat 3A Middle Road',
-          addressLine2: '',
-          addressLine3: '',
-          city: 'London',
-          postCode: 'SW1H 9AJ',
+          addressLine1: ['Flat 3A Middle Road','Flat 3A Middle Road'],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['London',''],
+          postCode: ['SW1H 9AJ','SW1H 9AJ'],
           provideCorrespondenceAddress: 'yes',
         })
         .expect((res) => {
@@ -328,11 +313,11 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
         .send({
-          addressLine1: 'Flat 3A Middle Road',
-          addressLine2: '',
-          addressLine3: '',
-          city: 'London',
-          postCode: '',
+          addressLine1: ['Flat 3A Middle Road','Flat 3A Middle Road'],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['London','London'],
+          postCode: ['SW1H 9AJ',''],
           provideCorrespondenceAddress: 'yes',
         })
         .expect((res) => {
@@ -348,11 +333,11 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
         .send({
-          addressLine1: '',
-          addressLine2: '',
-          addressLine3: '',
-          city: '',
-          postCode: '',
+          addressLine1: ['',''],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['',''],
+          postCode: ['',''],
           provideCorrespondenceAddress: 'yes',
         })
         .expect((res) => {
@@ -370,11 +355,11 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
         .send({
-          addressLine1: '',
-          addressLine2: '',
-          addressLine3: '',
-          city: '',
-          postCode: '',
+          addressLine1: ['',''],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['',''],
+          postCode: ['',''],
           provideCorrespondenceAddress: 'no',
         })
         .expect((res) => {
@@ -392,11 +377,11 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
         .send({
-          addressLine1: '',
-          addressLine2: '',
-          addressLine3: '',
-          city: '',
-          postCode: '',
+          addressLine1: ['Flat 3A Middle Road',''],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['London',''],
+          postCode: ['SW1H 9AJ',''],
           provideCorrespondenceAddress: 'yes',
         })
         .expect((res) => {
@@ -547,17 +532,12 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
         .send({
-          addressLine1: '',
-          addressLine2: '',
-          addressLine3: '',
-          city: 'London',
-          postCode: 'SW1H 9AJ',
-          provideCorrespondenceAddress: 'no',
-          correspondenceAddressLine1: '',
-          correspondenceAddressLine2: '',
-          correspondenceAddressLine3: '',
-          correspondenceCity: '',
-          correspondencePostCode: '',
+          addressLine1: ['',''],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['London','London'],
+          postCode: ['SW1H 9AJ','SW1H 9AJ'],
+          provideCorrespondenceAddress: 'yes',
         })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -606,11 +586,11 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
         .send({
-          addressLine1: 'Flat 3A Middle Road',
-          addressLine2: '',
-          addressLine3: '',
-          city: 'London',
-          postCode: 'SW1H 9AJ',
+          addressLine1: ['',''],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['London','London'],
+          postCode: ['SW1H 9AJ','SW1H 9AJ'],
           provideCorrespondenceAddress: 'yes',
         })
         .expect((res) => {
@@ -626,11 +606,11 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
         .send({
-          addressLine1: 'Flat 3A Middle Road',
-          addressLine2: '',
-          addressLine3: '',
-          city: '',
-          postCode: 'SW1H 9AJ',
+          addressLine1: ['Flat 3A Middle Road','Flat 3A Middle Road'],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['London',''],
+          postCode: ['SW1H 9AJ','SW1H 9AJ'],
           provideCorrespondenceAddress: 'yes',
         })
         .expect((res) => {
@@ -646,11 +626,11 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
         .send({
-          addressLine1: 'Flat 3A Middle Road',
-          addressLine2: '',
-          addressLine3: '',
-          city: 'London',
-          postCode: '',
+          addressLine1: ['Flat 3A Middle Road','Flat 3A Middle Road'],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['London','London'],
+          postCode: ['SW1H 9AJ',''],
           provideCorrespondenceAddress: 'yes',
         })
         .expect((res) => {
@@ -666,11 +646,11 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
         .send({
-          addressLine1: '',
-          addressLine2: '',
-          addressLine3: '',
-          city: '',
-          postCode: '',
+          addressLine1: ['',''],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['',''],
+          postCode: ['',''],
           provideCorrespondenceAddress: 'yes',
         })
         .expect((res) => {
@@ -688,11 +668,11 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
         .send({
-          addressLine1: '',
-          addressLine2: '',
-          addressLine3: '',
-          city: '',
-          postCode: '',
+          addressLine1: ['',''],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['',''],
+          postCode: ['',''],
           provideCorrespondenceAddress: 'no',
         })
         .expect((res) => {
@@ -710,11 +690,11 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
         .send({
-          addressLine1: '',
-          addressLine2: '',
-          addressLine3: '',
-          city: '',
-          postCode: '',
+          addressLine1: ['Flat 3A Middle Road',''],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['London',''],
+          postCode: ['SW1H 9AJ',''],
           provideCorrespondenceAddress: 'yes',
         })
         .expect((res) => {
