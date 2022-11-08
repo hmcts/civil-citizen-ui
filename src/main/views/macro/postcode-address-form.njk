@@ -36,10 +36,12 @@
     </button>
     <div class="govuk-visually-hidden govuk-!-margin-bottom-2">
       {{ govukSelect({
+        id: 'postcodeAddress',
       name: "addressList",
       classes: 'addressList',
       label: {
-        text: t('COMMON.POSTCODE.PICK_ADDRESS')
+        text: t('COMMON.POSTCODE.PICK_ADDRESS'),
+        for: 'postcodeAddress'
       },
       items: [
         {
