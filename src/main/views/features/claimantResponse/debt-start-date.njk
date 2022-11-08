@@ -14,9 +14,10 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
+      {% set dateToday = "now" | addDaysTranslated(0, t) %}
       {% set errors = form.getErrors() %}
       {% if form.hasErrors() %}
-        {{ errorSummary(errors, t) }}
+        {{ errorSummary(errors,t,[{keyError:'ERRORS.VALID_DATE_IN_PAST',keyToReplace:'{{dateToday}}',valueToReplace:dateToday}]) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
@@ -33,7 +34,7 @@
             <div class="govuk-form-group {% if form.hasErrors() %} govuk-form-group--error{% endif %}">
               {% if form.hasErrors() %}
                 {% for error in errors %}
-                  <span class="govuk-error-message">{{ t(error.text) }}</span>
+                  <span class="govuk-error-message">{{ t(error.text,{dateToday: dateToday}) }}</span>
                 {% endfor %}
               {% endif %}
               {{ govukDateInput({

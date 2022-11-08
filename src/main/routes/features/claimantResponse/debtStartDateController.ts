@@ -13,7 +13,7 @@ import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatt
 import {DebtStartDate} from '../../../common/models/claimantResponse/debtStartDate';
 
 const debtStartDateController = Router();
-const debtStartDateViewPath = 'features/claimantResponse/debt-when-start';
+const debtStartDateViewPath = 'features/claimantResponse/debt-start-date';
 const claimantResponsePropertyName = 'debtStartDate';
 
 function renderView(form: GenericForm<DebtStartDate>, res: Response): void {
