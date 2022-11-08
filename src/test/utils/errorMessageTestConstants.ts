@@ -90,5 +90,5 @@ export const enum TestMessages {
   VALID_VALUE = 'Are you sure this is a valid value?',
   INTEREST_START_DATE = 'Enter the date you want to claim interest from',
   REASON_EXPLANATION = 'Briefly explain your claim',
-  CLAIMANT_REJECTION_REASON = 'Enter why you rejected repayment plan.',
+  CLAIMANT_REJECTION_REASON = 'Enter why you rejected repayment plan',
 }
