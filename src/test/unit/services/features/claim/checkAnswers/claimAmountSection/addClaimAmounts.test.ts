@@ -1,11 +1,11 @@
-import {getSummarySections} from '../../../../../../../main/services/features/claim/checkAnswers/checkAnswersService';
-import {CLAIM_AMOUNT_URL} from '../../../../../../../main/routes/urls';
+import {getSummarySections} from 'services/features/claim/checkAnswers/checkAnswersService';
+import {CLAIM_AMOUNT_URL} from 'routes/urls';
 import {
   claimWithClaimAmountBreakDown,
   claimWithClaimAmountOneBreakDown,
-} from '../../../../../../utils/mockClaimForCheckAnswers';
+} from '../../../../../../../../src/test/utils/mockClaimForCheckAnswers';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
-import {Claim} from '../../../../../../../main/common/models/claim';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
