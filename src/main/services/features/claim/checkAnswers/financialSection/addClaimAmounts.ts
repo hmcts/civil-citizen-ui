@@ -1,11 +1,11 @@
-import {SummarySection} from '../../../../../common/models/summaryList/summarySections';
-import {Claim} from '../../../../../common/models/claim';
-import {summaryRow} from '../../../../../common/models/summaryList/summaryList';
+import {SummarySection} from 'models/summaryList/summarySections';
+import {Claim} from 'models/claim';
+import {summaryRow} from 'models/summaryList/summaryList';
 import {t} from 'i18next';
-import {getLng} from '../../../../../common/utils/languageToggleUtils';
-import {currencyFormatWithNoTrailingZeros} from '../../../../../common/utils/currencyFormat';
-import {CLAIM_AMOUNT_URL} from '../../../../../routes/urls';
-import {ClaimAmountBreakup} from '../../../../../common/form/models/claimDetails';
+import {getLng} from 'common/utils/languageToggleUtils';
+import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
+import {CLAIM_AMOUNT_URL} from 'routes/urls';
+import {ClaimAmountBreakup} from 'form/models/claimDetails';
 
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 

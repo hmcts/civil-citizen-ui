@@ -4,7 +4,8 @@ import nock from 'nock';
 import config from 'config';
 import {CITIZEN_OWED_AMOUNT_URL, CLAIM_TASK_LIST_URL} from '../../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
+import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
+import {ResponseType} from '../../../../../../../main/common/form/models/responseType';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -20,7 +21,33 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
   });
 
   describe('on GET', () => {
+    it('should redirect to task list when part admit and amount not defined', async () => {
+      app.locals.draftStoreClient = mockNoStatementOfMeans;
+      await request(app)
+        .get(CITIZEN_OWED_AMOUNT_URL)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+        });
+    });
+
     it('should display page successfully', async () => {
+      const civilClaimResponseMock = {
+        'case_data': {
+          'respondent1': {
+            'responseType': ResponseType.PART_ADMISSION,
+          },
+          'partialAdmission': {
+            'alreadyPaid': {
+              'option': 'yes',
+            },
+          },
+        },
+      };
+      const mockCivilClaim = {
+        set: jest.fn(() => Promise.resolve({})),
+        get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseMock))),
+      };
+
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CITIZEN_OWED_AMOUNT_URL)
@@ -41,7 +68,6 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
   });
 
   describe('on POST', () => {
-    // mock totalClaimAmount is £110
     it('should show errors when no amount is provided', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
