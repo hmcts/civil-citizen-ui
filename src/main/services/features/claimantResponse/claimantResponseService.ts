@@ -84,7 +84,7 @@ const constructBanksAndSavingsAccountSection = (claim: Claim, lng: string) => {
           text: t('COMMON.BANK_JOINT_ACCOUNT', {lng}),
         },
         value: {
-          text: account.joint ? t('COMMON.YES', {lng}) : t('COMMON.NO', {lng}),
+          text: account?.joint === 'yes' ? t('COMMON.YES', {lng}) : t('COMMON.NO', {lng}),
         },
       });
     });
