@@ -33,29 +33,29 @@
               {% if solicitorName %}
                 <p class="govuk-body govuk-!-margin-bottom-0">{{ solicitorName }}</p>
               {% endif %}
-              {% if address.AddressLine1 %}
+              {% if address.addressLine1 %}
                 <p class="govuk-body govuk-!-margin-bottom-0">{{ address.addressLine1 }}</p>
               {% endif %}
-              {% if address.AddressLine2 %}
+              {% if address.addressLine2 %}
                 <p class="govuk-body govuk-!-margin-bottom-0">{{ address.addressLine2 }}</p>
               {% endif %}
-              {% if address.AddressLine3 %}
+              {% if address.addressLine3 %}
                 <p class="govuk-body govuk-!-margin-bottom-0">{{ address.addressLine3 }}</p>
               {% endif %}
-              {% if address.County %}
+              {% if address.city %}
                 <p class="govuk-body govuk-!-margin-bottom-0">{{ address.city }}</p>
               {% endif %}
-              {% if address.PostCode %}
+              {% if address.postCode %}
                 <p class="govuk-body govuk-!-margin-bottom-6">{{ address.postCode }}</p>
               {% endif %}
             {% endif %}
           </div>
           <div>
             {% if phone %}
-              <div class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.CONTACT_THEM.PHONE') +': ' }}{{ phone }}</div>
+              <div class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.CONTACT_THEM.PHONE') +': ' }}{{ phone.phone }}</div>
             {% endif %}
             {% if email %}
-              <div class="govuk-body govuk-!-margin-bottom-6">{{ t('PAGES.CONTACT_THEM.EMAIL') +': ' }}<a href='mailto:{{ email }}'>{{ email }}</a>
+              <div class="govuk-body govuk-!-margin-bottom-6">{{ t('PAGES.CONTACT_THEM.EMAIL') +': ' }}<a href='mailto:{{ email.emailAddress }}'>{{ email.emailAddress }}</a>
               </div>
             {% endif %}
           </div>
