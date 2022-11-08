@@ -319,8 +319,9 @@ describe('Task List Helpers', () => {
 
     it('should return true if has primaryAdress, YES and has correspondenceAdress', () => {
       caseData.respondent1 = new Party();
-      caseData.respondent1.partyDetails = new PartyDetails(address);
-      caseData.respondent1.partyDetails = new PartyDetails(address);
+      caseData.respondent1.partyDetails = new PartyDetails({});
+      caseData.respondent1.partyDetails.primaryAddress = address;
+      caseData.respondent1.partyDetails.correspondenceAddress = address;
       caseData.respondent1.partyDetails.postToThisAddress = YesNo.YES;
       expect(hasCorrespondenceAndPrimaryAddress(caseData.respondent1)).toEqual(true);
     });
