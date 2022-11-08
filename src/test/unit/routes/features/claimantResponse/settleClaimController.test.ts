@@ -3,7 +3,7 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
 import {
-  CLAIMANT_RESPONSE_REJECT_REASON_URL,
+  CLAIMANT_RESPONSE_REJECTION_REASON_URL ,
   CLAIMANT_RESPONSE_SETTLE_CLAIM_URL,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from '../../../../../main/routes/urls';
@@ -44,8 +44,15 @@ describe('Claimant Response - Settle Claim Controller', () => {
   });
 
   describe('on POST', () => {
-    beforeEach(() => {
+    beforeAll(() => {
       app.locals.draftStoreClient = mockCivilClaim;
+    });
+
+    it('should return error on empty post', async () => {
+      await request(app).post(CLAIMANT_RESPONSE_SETTLE_CLAIM_URL).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(TestMessages.VALID_YES_NO_SELECTION);
+      });
     });
 
     it('should redirect to the claimant response task-list if option yes is selected', async () => {
@@ -60,7 +67,7 @@ describe('Claimant Response - Settle Claim Controller', () => {
       await request(app).post(CLAIMANT_RESPONSE_SETTLE_CLAIM_URL).send({option: 'no'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(CLAIMANT_RESPONSE_REJECT_REASON_URL);
+          expect(res.get('location')).toBe(CLAIMANT_RESPONSE_REJECTION_REASON_URL );
         });
     });
 
