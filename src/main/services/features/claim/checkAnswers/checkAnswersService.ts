@@ -3,7 +3,7 @@ import {Claim} from '../../../../common/models/claim';
 import {buildYourDetailsSection} from '../../claim/checkAnswers/detailsSection/buildYourDetailsSection';
 import {buildTheirDetailsSection} from '../../claim/checkAnswers/detailsSection/buildTheirDetailsSection';
 import {buildClaimAmountSection} from './financialSection/buildClaimAmountSection';
-import {buildClaimSection} from "./claimSection/buildClaimSection";
+import {buildClaimSection} from './claimSection/buildClaimSection';
 import {StatementOfTruthForm} from '../../../../common/form/models/statementOfTruth/statementOfTruthForm';
 import {QualifiedStatementOfTruth} from '../../../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {SignatureType} from '../../../../common/models/signatureType';

@@ -2,7 +2,7 @@ import {Reason} from './reason';
 import {Evidence} from '../../evidence/evidence';
 import {HelpWithFees} from './helpWithFees';
 import {ClaimantTimeline} from '../../../../../common/form/models/timeLineOfEvents/claimantTimeline';
-import {QualifiedStatementOfTruth} from "common/form/models/statementOfTruth/qualifiedStatementOfTruth";
+import {QualifiedStatementOfTruth} from '../../../../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
 
 export class ClaimDetails {
   reason?: Reason;
