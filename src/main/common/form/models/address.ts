@@ -24,4 +24,9 @@ export class Address {
     this.city = city;
     this.postCode = postCode;
   }
+
+  static fromObject(value?: Record<string, string>, index?:number): Address {
+    return value.addressLine1 ? new Address(value?.addressLine1[index], value?.addressLine2[index], value?.addressLine3[index], value?.city[index], value?.postCode[index]) : new Address();
+  }
+
 }
