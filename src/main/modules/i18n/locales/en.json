@@ -554,9 +554,6 @@
         "PAGE_TITLE": "When are you claiming interest from?",
         "REASON": "Explain why you're claiming for this date",
         "TITLE": "When are you claiming interest from?"
-      },
-      "SETTLE_CLAIM_PART_PAYMENT_RECEIVED": {
-        "PAGE_TITLE": "Do you want to settle the claim for the £{{ paidAmount }} the defendant has paid?"
       }
     },
     "CLAIM_SUMMARY": {
@@ -1535,6 +1532,12 @@
       "OPTION_NOT_RECEIVED": "No, I have not yet received them",
       "PAGE_TITLE": "Have you already sent expert reports to other parties?",
       "TITLE": "Have you already sent expert reports to other parties?"
+    },
+    "SETTLE_CLAIM_PART_PAYMENT_RECEIVED": {
+      "PAGE_TITLE": "Do you want to settle the claim for the £{{ paidAmount }} the defendant has paid?",
+      "PROCEED_WITH_CLAIM": "Proceed with the claim",
+      "SETTLE_THE_CLAIM": "Settle the claim",
+      "TITLE": "Do you want to settle the claim for the £{{ paidAmount }} the defendant has paid?"
     },
     "SHARED_EXPERT": {
       "IF_YOU_SHARE": "If you share an expert, you will also share the costs unless the judge decides that one party must pay the other party’s share.",
