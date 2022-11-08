@@ -4,12 +4,12 @@ import {buildYourDetailsSection} from '../../claim/checkAnswers/detailsSection/b
 import {buildTheirDetailsSection} from '../../claim/checkAnswers/detailsSection/buildTheirDetailsSection';
 import {buildClaimAmountSection} from './financialSection/buildClaimAmountSection';
 import {buildClaimSection} from "./claimSection/buildClaimSection";
-import {StatementOfTruthForm} from "common/form/models/statementOfTruth/statementOfTruthForm";
-import {QualifiedStatementOfTruth} from "common/form/models/statementOfTruth/qualifiedStatementOfTruth";
-import {SignatureType} from "models/signatureType";
-import {isFullAmountReject} from "modules/claimDetailsService";
-import {getCaseDataFromStore, saveDraftClaim} from "modules/draft-store/draftStoreService";
-import {isCounterpartyIndividual} from "common/utils/taskList/tasks/taskListHelpers";
+import {StatementOfTruthForm} from '../../../../common/form/models/statementOfTruth/statementOfTruthForm';
+import {QualifiedStatementOfTruth} from '../../../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
+import {SignatureType} from '../../../../common/models/signatureType';
+import {isFullAmountReject} from '../../../../modules/claimDetailsService';
+import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {isCounterpartyIndividual} from '../../../../common/utils/taskList/tasks/taskListHelpers';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');

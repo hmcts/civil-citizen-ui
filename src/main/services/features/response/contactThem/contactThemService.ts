@@ -11,7 +11,7 @@ const getAddress = (claim: Claim): CorrespondenceAddress => {
 };
 
 const getSolicitorName = (claim: Claim): string => {
-  return claim.claimDetails.statementOfTruth.signerName;
+  return claim?.claimDetails?.statementOfTruth.signerName;
 };
 
 export {
