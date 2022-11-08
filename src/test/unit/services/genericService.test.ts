@@ -68,11 +68,6 @@ describe('Generic Service', () => {
       const translation = translateResidenceType('Flat', 'cimode');
       expect(translation).toBe('Flat');
     });
-
-    it('should return default translation', () => {
-      const translation = translateResidenceType(undefined, 'cimode');
-      expect(translation).toBe('');
-    });
   });
 
   describe('translatePriorityDebt', () => {
@@ -115,11 +110,6 @@ describe('Generic Service', () => {
       const translation = translatePriorityDebt('Other debt', 'cimode');
       expect(translation).toBe('Other debt');
     });
-
-    it('should return default translation', () => {
-      const translation = translatePriorityDebt(undefined, 'cimode');
-      expect(translation).toBe('');
-    });
   });
 
   describe('translateRepaymentSchedule', () => {
@@ -146,11 +136,6 @@ describe('Generic Service', () => {
     it('should return default translation', () => {
       const translation = translateRepaymentSchedule('Other schedule', 'cimode');
       expect(translation).toBe('Other schedule');
-    });
-
-    it('should return default translation', () => {
-      const translation = translateRepaymentSchedule(undefined, 'cimode');
-      expect(translation).toBe('');
     });
   });
 });
