@@ -6,6 +6,7 @@ import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {DQ_DEFENDANT_WITNESSES_URL} from 'routes/urls';
 import {OtherWitnessItems} from 'models/directionsQuestionnaire/witnesses/otherWitnessItems';
+import {YesNo} from 'common/form/models/yesNo';
 
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
@@ -31,18 +32,18 @@ const getWitnesses = (claim: Claim, claimId: string, lang: string | unknown): Su
 
 export const buildHearingRequirementSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection =>{
   const numberOfWitnesses = claim.directionQuestionnaire.witnesses.otherWitnesses.witnessItems.length;
-  let hearingRequirementSection = null;
+  const hearingRequirementSection = summarySection({
+    title: t('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE', {lng: getLng(lang)}),
+    summaryRows: [],
+  });
 
-  if(claim.isRejectAllOfClaimDispute() || claim.isPartialAdmission()) {
-     hearingRequirementSection = summarySection({
-      title: t('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE', {lng: getLng(lang)}),
-      summaryRows: [
-        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES', {lng: getLng(lang)}), numberOfWitnesses > 0 ? 'Yes' : 'No')
-      ]
-    });
-
-    if(numberOfWitnesses > 0)
-      hearingRequirementSection.summaryList.rows.push(...getWitnesses(claim, claimId, lang));
+  if(claim.directionQuestionnaire.witnesses.otherWitnesses.option == YesNo.NO) {
+    hearingRequirementSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES', {lng: getLng(lang)}), numberOfWitnesses > 0 ? 'Yes' : 'No'));
+  } else {
+    if(claim.isRejectAllOfClaimDispute() || claim.isPartialAdmission()) {
+      if(numberOfWitnesses > 0)
+        hearingRequirementSection.summaryList.rows.push(...getWitnesses(claim, claimId, lang));
+    }
   }
 
   return hearingRequirementSection;
