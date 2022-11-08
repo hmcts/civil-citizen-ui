@@ -623,8 +623,8 @@
       "TITLE": "Has the defendant paid you £{{ paidAmount }}?"
     },
     "CLAIMANT_RESPONSE_REJECTION_REASON": {
-      "PAGE_TITLE": "Rheswm gwrthod",
-      "TITLE": "Pam wnaethoch chi wrthod eu hymateb?"
+      "PAGE_TITLE": "Rejection reason",
+      "TITLE": "Why did you reject their response?"
     },
     "COMPANY_DETAILS": {
       "ADDRESS_FOR_SERVICE": "Gelwir hwn yn 'gyfeiriad cyflwyno'.",
