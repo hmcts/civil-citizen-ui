@@ -25,7 +25,7 @@ const mockSaveData = {
   individualTitle: 'Mr',
   individualFirstName: 'John',
   individualLastName: 'Doe',
-  businessName: 'John`s Sons Ltd',
+  soleTraderTradingAs: 'John`s Sons Ltd',
   partyName: 'Bob Ltd',
   contactPerson: 'Louise',
   addressLine1: 'Fake Org',
@@ -166,7 +166,7 @@ describe('Defendant details controller', () => {
     describe('Individual', () => {
       it('should redirect to the defendant email page if data is successfully saved', async () => {
         const _mockSaveData = mockSaveData;
-        _mockSaveData.businessName = '';
+        _mockSaveData.soleTraderTradingAs = '';
         _mockSaveData.individualFirstName = 'Jane';
         mockGetCaseData.mockImplementation(async () => {
           const claim = new Claim();
