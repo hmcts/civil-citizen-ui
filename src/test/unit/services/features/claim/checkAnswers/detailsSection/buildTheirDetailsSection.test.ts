@@ -112,7 +112,6 @@ describe('Cirizen Details Section', () => {
     const claim = createClaimWithIndividualDetails();
     if (claim.respondent1) {
       claim.respondent1.type = PartyType.COMPANY;
-      claim.respondent1.partyDetails = new PartyDetails({});
       claim.respondent1.partyDetails.contactPerson = CONTACT_PERSON;
     }
     //When

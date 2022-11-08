@@ -64,7 +64,7 @@ describe('Request More Time Controller', () => {
       claim.applicant1 = new Party();
       claim.applicant1.type = PartyType.SOLE_TRADER;
 
-      mockGetCaseData.mockImplementation(async () => claim);
+      mockGetCaseData.mockImplementation(async () => undefined);
       await request(app).get(REQUEST_MORE_TIME_URL).expect((res) => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
