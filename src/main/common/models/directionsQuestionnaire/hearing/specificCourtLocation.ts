@@ -7,6 +7,7 @@ export class SpecificCourtLocation {
     option: string;
   @ValidateIf(o =>  o.isSpecificCourtRequired())
   @IsDefined({message: 'ERRORS.SPECIFIC_COURT.SELECT_COURT_LOCATION'})
+  @IsNotEmpty({message: 'ERRORS.SPECIFIC_COURT.SELECT_COURT_LOCATION'})
     courtLocation: string;
   @ValidateIf(o => o.isSpecificCourtRequired())
   @IsDefined({message: 'PAGES.SPECIFIC_COURT.REASON'})
@@ -15,8 +16,13 @@ export class SpecificCourtLocation {
 
   constructor(option?: string, courtLocation?: string, reason?: string) {
     this.option = option;
-    this.courtLocation = courtLocation;
-    this.reason = reason;
+    if(this.isSpecificCourtRequired()){
+      this.courtLocation = courtLocation;
+      this.reason = reason;
+    }else{
+      this.courtLocation = undefined;
+      this.reason = undefined;
+    }
   }
 
   isSpecificCourtRequired(){
