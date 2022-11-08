@@ -11,6 +11,7 @@ import {StatementOfMeans} from '../../../../../main/common/models/statementOfMea
 import {CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL} from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
+jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/common/utils/urlFormatter');
 jest.mock('../../../../../main/common/utils/dateUtils');
