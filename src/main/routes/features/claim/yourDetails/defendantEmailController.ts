@@ -30,7 +30,7 @@ defendantEmailController.post(CLAIM_DEFENDANT_EMAIL_URL, async (req: any, res: R
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveDefendantEmail(req.params.id,form.model);
+      await saveDefendantEmail(req.session?.user?.id,form.model);
       res.redirect(CLAIM_DEFENDANT_PHONE_NUMBER_URL);
     }
   } catch (error) {

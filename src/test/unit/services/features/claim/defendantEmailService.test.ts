@@ -53,7 +53,7 @@ describe('Claimant Defendant Email Service', () => {
       //When
       const form = await getDefendantEmail('123');
       //Then
-      expect(form.emailAddress).toEqual('');
+      expect(form.emailAddress).toBeUndefined();
     });
 
     it('should return populated form when claimant defendant email exists', async () => {

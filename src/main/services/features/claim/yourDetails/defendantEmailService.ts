@@ -10,7 +10,7 @@ const getDefendantEmail = async (claimId: string) => {
   try {
     const claim = await getCaseDataFromStore(claimId);
     if (claim.respondent1) {
-      return new DefendantEmail(claim.respondent1.emailAddress.emailAddress);
+      return new DefendantEmail(claim.respondent1.emailAddress?.emailAddress);
     }
     return new DefendantEmail();
   } catch (error) {
