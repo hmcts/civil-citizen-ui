@@ -6,6 +6,7 @@ import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlF
 import {paymentDateService}
   from '../../../../../services/features/response/admission/fullAdmission/paymentOption/paymentDateService';
 import {ResponseType} from '../../../../../common/form/models/responseType';
+import {PartAdmitGuard} from '../../../../../routes/guards/partAdmitGuard';
 
 const paymentDatePath = 'features/response/admission/payment-date';
 const paymentDateController = Router();
@@ -14,7 +15,7 @@ nextMonth.setMonth(nextMonth.getMonth() + 1);
 
 paymentDateController
   .get(
-    CITIZEN_PA_PAYMENT_DATE_URL, async (req: Request, res: Response, next: NextFunction) => {
+    CITIZEN_PA_PAYMENT_DATE_URL, PartAdmitGuard.apply(CLAIM_TASK_LIST_URL), async (req: Request, res: Response, next: NextFunction) => {
       try {
         const paymentDate = await paymentDateService.getPaymentDate(req.params.id, ResponseType.PART_ADMISSION);
         res.render(paymentDatePath, {
