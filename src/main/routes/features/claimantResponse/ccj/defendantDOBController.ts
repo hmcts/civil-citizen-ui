@@ -5,12 +5,11 @@ import {
 } from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {YesNo} from '../../../../common/form/models/yesNo';
 import {ExpertCanStillExamine} from '../../../../common/models/directionsQuestionnaire/experts/expertCanStillExamine';
 import {getClaimantResponse, saveClaimantResponse} from '../../../../../main/services/features/claimantResponse/claimantResponseService';
 import {DefendantDOB} from '../../../../common/models/claimantResponse/ccj/defendantDOB';
 import {DateOfBirth} from '../../../../common/models/claimantResponse/ccj/dateOfBirth';
-import {getMaxDateforAge} from '../../../../common/utils/dateUtils';
+import {getDOBforAgeFromCurrentTime} from '../../../../common/utils/dateUtils';
 
 const defendantDOBController = Router();
 const defendantDOBViewPath = 'features/claimantResponse/ccj/defendant-dob';
@@ -20,7 +19,7 @@ const crParentName = 'ccjRequest';
 function renderView(form: GenericForm<ExpertCanStillExamine>, res: Response): void {
   res.render(defendantDOBViewPath, {
     form,
-    maxDateForAge18: getMaxDateforAge(18),
+    maxDateForAge18: getDOBforAgeFromCurrentTime(18),
   });
 }
 
@@ -38,8 +37,7 @@ defendantDOBController.get(CCJ_DEFENDANT_DOB_URL, async (req, res, next: NextFun
 defendantDOBController.post(CCJ_DEFENDANT_DOB_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const dateOfBirth = req.body.option === YesNo.YES ? req.body.dob : undefined;
-    const defendantDOB = new GenericForm(new DefendantDOB(req.body.option, new DateOfBirth(dateOfBirth)));
+    const defendantDOB = new GenericForm(new DefendantDOB(req.body.option, new DateOfBirth(req.body.dob)));
     defendantDOB.validateSync();
     if (defendantDOB.hasErrors()) {
       renderView(defendantDOB, res);

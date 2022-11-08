@@ -39,7 +39,7 @@ export const addDaysToDate = (date: Date, value: number) => {
   return updatedDate;
 };
 
-export const getMaxDateforAge = (age: number): Date => {
+export const getDOBforAgeFromCurrentTime = (age: number): Date => {
   const referenceDate = new Date();
   referenceDate.setFullYear(referenceDate.getFullYear() - age);
   return referenceDate;

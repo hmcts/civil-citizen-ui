@@ -12,6 +12,6 @@ export class DefendantDOB {
 
   constructor(option?: YesNo, dateOfBirth?: DateOfBirth) {
     this.option = option;
-    this.dob = dateOfBirth;
+    this.dob = option === YesNo.YES ? dateOfBirth : undefined;
   }
 }
