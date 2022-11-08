@@ -56,11 +56,11 @@ const buildClaimOfRespondentType = (type: PartyType): Party => {
 const nock = require('nock');
 
 const validDataForPost = {
-  addressLine1: ['Flat 3A Middle Road'],
-  addressLine2: [''],
-  addressLine3: [''],
-  city: ['London'],
-  postCode: ['SW1H 9AJ'],
+  addressLine1: ['Flat 3A Middle Road','Flat 3A Middle Road'],
+  addressLine2: ['',''],
+  addressLine3: ['',''],
+  city: ['London','London'],
+  postCode: ['SW1H 9AJ','SW1H 9AJ'],
   postToThisAddress: 'no',
 };
 
@@ -180,11 +180,11 @@ describe('Confirm Details page', () => {
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
-        addressLine1: 'Flat 3A Middle Road',
-        addressLine2: '',
-        addressLine3: '',
-        city: 'London',
-        postCode: 'SW1H 9AJ',
+        addressLine1: ['Flat 3A Middle Road',''],
+        addressLine2: ['',''],
+        addressLine3: ['',''],
+        city: ['London',''],
+        postCode: ['SW1H 9AJ',''],
         postToThisAddress: 'no',
       })
       .expect((res) => {
@@ -199,11 +199,11 @@ describe('Confirm Details page', () => {
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
-        addressLine1: '',
-        addressLine2: '',
-        addressLine3: '',
-        primaryCity: 'London',
-        primaryPostCode: 'SW1H 9AJ',
+        addressLine1: ['',''],
+        addressLine2: ['',''],
+        addressLine3: ['',''],
+        city: ['London',''],
+        postCode: ['SW1H 9AJ',''],
         postToThisAddress: 'no',
       })
       .expect((res) => {
@@ -219,11 +219,11 @@ describe('Confirm Details page', () => {
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
-        addressLine1: 'Flat 3A Middle Road',
-        addressLine2: '',
-        addressLine3: '',
-        primaryCity: '',
-        primaryPostCode: 'SW1H 9AJ',
+        addressLine1: ['Flat 3A Middle Road',''],
+        addressLine2: ['',''],
+        addressLine3: ['',''],
+        city: ['',''],
+        postCode: ['SW1H 9AJ',''],
         postToThisAddress: 'no',
       })
       .expect((res) => {
@@ -239,11 +239,11 @@ describe('Confirm Details page', () => {
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
-        addressLine1: 'Flat 3A Middle Road',
-        addressLine2: '',
-        addressLine3: '',
-        primaryCity: 'London',
-        primaryPostCode: '',
+        addressLine1: ['Flat 3A Middle Road',''],
+        addressLine2: ['',''],
+        addressLine3: ['',''],
+        city: ['London',''],
+        postCode: ['',''],
         postToThisAddress: 'no',
       })
       .expect((res) => {
@@ -259,17 +259,12 @@ describe('Confirm Details page', () => {
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
-        addressLine1: '',
-        addressLine2: '',
-        addressLine3: '',
-        primaryCity: '',
-        primaryPostCode: '',
+        addressLine1: ['',''],
+        addressLine2: ['',''],
+        addressLine3: ['',''],
+        city: ['',''],
+        postCode: ['',''],
         postToThisAddress: 'no',
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
       })
       .expect((res) => {
         expect(res.status).toBe(200);
