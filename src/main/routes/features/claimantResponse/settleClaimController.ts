@@ -32,16 +32,15 @@ settleClaimController.get(CLAIMANT_RESPONSE_SETTLE_CLAIM_URL, async (req: Reques
 });
 
 settleClaimController.post(CLAIMANT_RESPONSE_SETTLE_CLAIM_URL, async (req: Request, res, next: NextFunction) => {
-  const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_SELECTION'));
-  await genericYesNoForm.validate();
-
-  const claimId = req.params.id;
   try {
-    if (genericYesNoForm.hasErrors()) {
-      renderView(genericYesNoForm, res, paidAmount);
+    const claimId = req.params.id;
+    const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_SELECTION'));
+    form.validateSync();
+    if (form.hasErrors()) {
+      renderView(form, res, paidAmount);
     } else {
-      await saveClaimantResponse(claimId, genericYesNoForm.model, 'hasPartPaymentBeenAccepted');
-      if (genericYesNoForm.model.option === YesNo.YES) {
+      await saveClaimantResponse(claimId, form.model, 'hasPartPaymentBeenAccepted');
+      if (form.model.option === YesNo.YES) {
         res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
       } else {
         res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_REJECTION_REASON_URL ));
