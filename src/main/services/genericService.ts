@@ -52,7 +52,7 @@ const translatePriorityDebt = (debt: string, lng: string): string => {
   }
 };
 
-const translateRepaymentSechedule = (schedule: string, lng: string): string => {
+const translateRepaymentSchedule = (schedule: string, lng: string): string => {
   switch (schedule) {
     case 'FOUR_WEEKS':
       return t('COMMON.PAYMENT_SCHEDULE.FOUR_WEEKLY', {lng});
@@ -70,6 +70,6 @@ const translateRepaymentSechedule = (schedule: string, lng: string): string => {
 export {
   translateAccountType,
   translatePriorityDebt,
-  translateRepaymentSechedule,
+  translateRepaymentSchedule,
   translateResidenceType,
 };

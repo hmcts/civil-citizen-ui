@@ -5,11 +5,15 @@ import {YesNo} from '../../../../../main/common/form/models/yesNo';
 import {GenericYesNo} from '../../../../../main/common/form/models/genericYesNo';
 import {
   constructBanksAndSavingsAccountSection,
-  constructChildrenSection, constructCourtOrdersSection, constructDebtsSection,
+  constructChildrenSection,
+  constructCourtOrdersSection,
+  constructDebtsSection,
   constructEmploymentDetailsSection,
-  constructFinancialSupportSection, constructMonthlyExpensesSection, constructMonthlyIncomeSection,
+  constructFinancialSupportSection,
+  constructMonthlyExpensesSection,
+  constructMonthlyIncomeSection,
   constructSelfEmploymentDetailsSection,
-  getClaimantResponse,
+  getClaimantResponse, getFinancialDetails,
   saveClaimantResponse,
 } from '../../../../../main/services/features/claimantResponse/claimantResponseService';
 import {ClaimantResponse} from '../../../../../main/common/models/claimantResponse';
@@ -838,7 +842,10 @@ describe('Claimant Response Service', () => {
     });
 
     describe('getFinancialDetails', () => {
-
+      it('should call all construct sections', () => {
+        const financialDetails = getFinancialDetails(claim, 'cimode');
+        expect(financialDetails.length).toBe(9);
+      });
     });
   });
 });

@@ -6,7 +6,7 @@ import {t} from 'i18next';
 import {
   translateAccountType,
   translatePriorityDebt,
-  translateRepaymentSechedule,
+  translateRepaymentSchedule,
   translateResidenceType,
 } from '../../genericService';
 import {currencyFormatWithNoTrailingZeros} from '../../../common/utils/currencyFormat';
@@ -451,7 +451,7 @@ const constructDebtsSection = (claim: Claim, lng: string) => {
 
       sectionRows.push({
         key: {
-          text: translateRepaymentSechedule(priorityDebt?.schedule, lng),
+          text: translateRepaymentSchedule(priorityDebt?.schedule, lng),
         },
         value: {
           text: currencyFormatWithNoTrailingZeros(priorityDebt?.amount),
