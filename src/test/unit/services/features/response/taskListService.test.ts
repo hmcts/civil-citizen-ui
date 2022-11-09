@@ -221,10 +221,5 @@ describe('Response Task List service', () => {
 });
 
 function buildAddress(line1: string, line2: string, postcode: string, postTown: string): Address {
-  return {
-    addressLine1: line1,
-    addressLine2: line2,
-    postCode: postcode,
-    city: postTown,
-  };
+  return new Address(line1, line2, '', postcode, postTown);
 }
