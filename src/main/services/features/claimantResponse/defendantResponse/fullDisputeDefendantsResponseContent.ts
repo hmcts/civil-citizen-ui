@@ -1,10 +1,11 @@
 import {t} from 'i18next';
 import {Claim} from '../../../../common/models/claim';
-import {ClaimSummarySection, ClaimSummaryType, TableCells} from '../../../../common/form/models/claimSummarySection';
+import {ClaimSummarySection, ClaimSummaryType} from '../../../../common/form/models/claimSummarySection';
 import {EvidenceItem} from '../../../../common/form/models/evidence/evidenceItem';
 import {TimelineRow} from '../../../../common/form/models/timeLineOfEvents/timelineRow';
+import {TableCell} from '../../../../common/models/summaryList/summaryList';
 
-export const generateTableRowsForTOEs = (theirTOERows: TimelineRow[]): TableCells[][] => {
+export const generateTableRowsForTOEs = (theirTOERows: TimelineRow[]): TableCell[][] => {
   return theirTOERows.map(row => {
     return [{
       text: row.date,
@@ -14,7 +15,7 @@ export const generateTableRowsForTOEs = (theirTOERows: TimelineRow[]): TableCell
   });
 };
 
-export const generateTableRowsForEvidence = (evidenceRows: EvidenceItem[]): TableCells[][] => {
+export const generateTableRowsForEvidence = (evidenceRows: EvidenceItem[]): TableCell[][] => {
   return evidenceRows.map(row => {
     return [{
       text: row.type,
