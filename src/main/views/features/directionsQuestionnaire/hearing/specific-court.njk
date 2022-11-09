@@ -12,7 +12,7 @@
   {{ setPageTitle('PAGES.SPECIFIC_COURT.PAGE_TITLE') }}
 {% endblock %}
 
- {% set courtItems = [{value: '', text: t('PAGES.SPECIFIC_COURT.SELECT_VALUE')]} %}
+ {% set courtItems = [{value: '', text: t('PAGES.SPECIFIC_COURT.SELECT_VALUE')}] %}
  {% for item in courtLocations %}
  {% set courtItems = (courtItems.push({
    value: item.label,
