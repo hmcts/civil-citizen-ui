@@ -87,7 +87,7 @@
                 <p class="govuk-body">{{ t('PAGES.DEFENDANT_DETAILS.ENGLAND_OR_WALES_ADDRESS') }}</p>
               {% endif %}
               {{ postcodeLookupAndAddressForm(t, {
-                citizenAddress:party.model.primaryAddress,
+                party: party,
                 addressType:'primary',
                 addressTitle:''
               }) }}

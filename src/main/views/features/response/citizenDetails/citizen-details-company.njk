@@ -59,7 +59,7 @@
             ) }}
             {% set correspondenceAddressHtml %}
             {{ postcodeLookupAndAddressForm(t, {
-                citizenCorrespondenceAddress:party.model.correspondenceAddress,
+                party:party,
                 addressType:'correspondence',
                 addressTitle:addressTitle
               }) }}

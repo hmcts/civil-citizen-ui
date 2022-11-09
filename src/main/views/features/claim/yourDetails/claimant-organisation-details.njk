@@ -46,7 +46,7 @@
     <p class="govuk-body">{{ t('PAGES.COMPANY_DETAILS.ALL_CORRESPONDENCE') }}
       {{ t('PAGES.COMPANY_DETAILS.ADDRESS_FOR_SERVICE') }}</p>
     {{ postcodeLookupAndAddressForm(t, {
-      citizenCorrespondenceAddress:party.model.correspondenceAddress,
+      party: party,
       addressType:'correspondence',
       addressTitle:addressTitle
     }) }}
@@ -101,7 +101,7 @@
                   {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}</p>
                 <p class="govuk-body">{{ addressExplanation }}</p>
                 {{ postcodeLookupAndAddressForm(t, {
-                    citizenAddress:party.model.primaryAddress,
+                    party: party,
                     addressType:'primary',
                     addressTitle:''
                   }) }}

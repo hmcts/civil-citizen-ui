@@ -63,7 +63,7 @@
             {% set correspondenceAddressHtml %}
             <p class="govuk-label govuk-!-margin-bottom-5">{{ t('PAGES.CITIZEN_DETAILS.ALL_CORRESPONDENCE') + t('PAGES.CITIZEN_DETAILS.ADDRESS_FOR_SERVICE') }}</p>
             {{ postcodeLookupAndAddressForm(t, {
-              citizenCorrespondenceAddress: party.model.correspondenceAddress,
+              party: party,
               addressType:'correspondence',
               addressTitle:addressTitle
             }) }}
@@ -86,7 +86,7 @@
                 },
                 {
                   value: YesNo.YES,
-                  checked: true if party.model.postToThisAddress === YesNo.YES else false,
+                  checked: true if party.model.postToThisAddress === YesNo.YES or party.errorFor('correspondenceAddress') else false,
                   text: t('PAGES.CITIZEN_DETAILS.YES_CORRESPONDENCE'),
                   conditional: {
                   html: correspondenceAddressHtml

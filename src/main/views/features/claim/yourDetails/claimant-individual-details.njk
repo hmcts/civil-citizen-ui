@@ -14,8 +14,8 @@
 {% set correspondenceAddressClass = 'govuk-visually-hidden' %}
 {% set addressTitle = t('PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.YOUR_POSTAL_ADDRESS') %}
 {% if party.model.provideCorrespondenceAddress == YesNo.YES or
-      party.model.correspondenceAddress.isEmpty() === false or
-      party.errorFor('correspondenceAddress') === true %}
+  party.model.correspondenceAddress.isEmpty() === false or
+  party.errorFor('correspondenceAddress') === true %}
   {% set radioChecked = true %}
 {% else %}
   {% set radioChecked = false %}
@@ -25,29 +25,15 @@
 {% endblock %}
 
 {% set correspondenceAddressHtml %}
-<div class="govuk-form-group">
-  <p class="govuk-label govuk-!-margin-bottom-5">
+  <div class="govuk-form-group">
+    <p class="govuk-label govuk-!-margin-bottom-5">
     <p class="govuk-body">{{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }}
       {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}</p>
     {{ postcodeLookupAndAddressForm(t, {
-          citizenCorrespondenceAddress:claimantIndividualCorrespondenceAddress,
-          addressType:'correspondence',
-          addressTitle:addressTitle
-      }) }}
-    </div>
-  </div>
-  <div>
-    <a id="enterAddressManually" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link enterAddressManually">
-      {{ t('PAGES.CITIZEN_DETAILS.MANUAL_ADDRESS') }}
-    </a>
-  </div>
-  <div id="correspondenceAddress">
-    {{ addressForm(
-      t,
-      party = party,
-      addressType = 'correspondence',
-      addressTitle = addressTitle
-    ) }}
+      party: party,
+      addressType:'correspondence',
+      addressTitle:addressTitle
+    }) }}
   </div>
 {% endset -%}
 
@@ -79,7 +65,7 @@
               id: "individualTitle",
               name: "individualTitle",
               value: party.model.individualTitle,
-                errorMessage: { text: t(party.errorFor('individualTitle')) } if party.errorFor('individualTitle')
+              errorMessage: { text: t(party.errorFor('individualTitle')) } if party.errorFor('individualTitle')
             }) }}
             {{ govukInput({
               label: {
@@ -99,7 +85,7 @@
               id: "individualLastName",
               name: "individualLastName",
               value: party.model.individualLastName,
-               errorMessage: { text: t(party.errorFor('individualLastName')) } if party.errorFor('individualLastName')
+              errorMessage: { text: t(party.errorFor('individualLastName')) } if party.errorFor('individualLastName')
             }) }}
             {% if type === partyType.SOLE_TRADER %}
               {{ govukInput({
@@ -111,32 +97,18 @@
                 name: "soleTraderTradingAs",
                 value: party.model.soleTraderTradingAs
               }) }}
-              {% endif %}
-              <div class="govuk-form-group">
-                <h2 class="govuk-heading-m">{{ addressTitle }}</h2>
-                <p class="govuk-body">{{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }}
-                  {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}</p>
-                {{ postcodeLookupAndAddressForm(t, {
-                    citizenAddress:party.model.primaryAddress,
-                    addressType:'primary',
-                    addressTitle:''
-                  }) }}
-              </div>
+            {% endif %}
+            <div class="govuk-form-group">
+              <h2 class="govuk-heading-m">{{ addressTitle }}</h2>
+              <p class="govuk-body">{{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }}
+                {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}</p>
+              {{ postcodeLookupAndAddressForm(t, {
+                party: party,
+                addressType:'primary',
+                addressTitle:''
+              }) }}
             </div>
-            <div>
-              <a id="primaryEnterAddressManually" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link enterAddressManually">
-                {{ t('PAGES.CITIZEN_DETAILS.MANUAL_ADDRESS') }}
-              </a>
-            </div>
-            <div id="primaryAddress" class="{{ correspondenceAddressClass }}">
-              {{ addressForm(
-                t,
-                citizenAddress = claimantIndividualAddress,
-                addressType = 'primary',
-                addressTitle = ''
-              ) }}
-            </div>
-            <br>
+
             <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_DETAILS.CORRESPONDENCE_ADDRESS') }}</h2>
             {{ govukRadios({
               idPrefix: "provideCorrespondenceAddress",
@@ -151,15 +123,15 @@
                 {
                   value: YesNo.NO,
                   text: t('COMMON.NO'),
-                  checked: false if party.model.provideCorrespondenceAddress == YesNo.YES else true
+                  checked: false if party.model.provideCorrespondenceAddress == YesNo.YES else true,
                 },
                 {
                   value: YesNo.YES,
                   checked: radioChecked,
                   text: t('PAGES.CITIZEN_DETAILS.YES_CORRESPONDENCE'),
                   conditional: {
-                    html: correspondenceAddressHtml
-                  }
+                  html: correspondenceAddressHtml
+                }
                 }
               ]
             }) }}

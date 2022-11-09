@@ -101,7 +101,7 @@
             {% endif %}
             <div class="govuk-form-group">
               {{ postcodeLookupAndAddressForm(t, {
-                citizenAddress:party.model.primaryAddress,
+                party: party,
                 addressType:'primary',
                 addressTitle:''
               }) }}
