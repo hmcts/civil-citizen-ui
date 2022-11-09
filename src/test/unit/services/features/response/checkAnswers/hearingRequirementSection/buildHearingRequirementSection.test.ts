@@ -50,8 +50,8 @@ describe('test hearingRequirementSection', () => {
     claim.directionQuestionnaire = new DirectionQuestionnaire();
     claim.directionQuestionnaire.witnesses = new Witnesses();
     claim.directionQuestionnaire.witnesses.otherWitnesses = new OtherWitnesses();
-    claim.directionQuestionnaire.witnesses.otherWitnesses.witnessItems = [witness1];
     claim.directionQuestionnaire.witnesses.otherWitnesses.option = YesNo.YES;
+    claim.directionQuestionnaire.witnesses.otherWitnesses.witnessItems = [witness1];
 
     const summaryRows = buildHearingRequirementSection(claim, '1', 'eng');
 
@@ -65,8 +65,8 @@ describe('test hearingRequirementSection', () => {
     claim.directionQuestionnaire = new DirectionQuestionnaire();
     claim.directionQuestionnaire.witnesses = new Witnesses();
     claim.directionQuestionnaire.witnesses.otherWitnesses = new OtherWitnesses();
-    claim.directionQuestionnaire.witnesses.otherWitnesses.witnessItems = [witness1, witness2];
     claim.directionQuestionnaire.witnesses.otherWitnesses.option = YesNo.YES;
+    claim.directionQuestionnaire.witnesses.otherWitnesses.witnessItems = [witness1, witness2];
 
     const summaryRows = buildHearingRequirementSection(claim, '1', 'eng');
 
