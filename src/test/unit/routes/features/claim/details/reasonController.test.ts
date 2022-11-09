@@ -2,7 +2,7 @@ import {app} from '../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {CLAIM_TIMELINE_URL, CLAIM_REASON_URL} from '../../../../../../main/routes/urls';
+import {CLAIM_REASON_URL, CLAIM_TIMELINE_URL} from 'routes/urls';
 import {
   mockCivilClaim,
   mockCivilClaimUndefined,
@@ -59,7 +59,7 @@ describe('Claim Details - Reason', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CLAIM_REASON_URL)
-        .send({text:''})
+        .send({text: ''})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.REASON_REQUIRED'));
@@ -68,7 +68,7 @@ describe('Claim Details - Reason', () => {
     it('should accept a valid input', async () => {
       await request(app)
         .post(CLAIM_REASON_URL)
-        .send({text:'reason'})
+        .send({text: 'reason'})
         .expect((res) => {
           expect(res.status).toBe(302);
         });
@@ -76,7 +76,7 @@ describe('Claim Details - Reason', () => {
     it('should redirect to timeline page', async () => {
       await request(app)
         .post(CLAIM_REASON_URL)
-        .send({text:'reason'})
+        .send({text: 'reason'})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.text).toContain(`Redirecting to ${CLAIM_TIMELINE_URL}`);
@@ -87,7 +87,7 @@ describe('Claim Details - Reason', () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CLAIM_REASON_URL)
-        .send({text:'reason'})
+        .send({text: 'reason'})
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

@@ -1,7 +1,7 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
-import {DirectionQuestionnaire} from '../../../common/models/directionsQuestionnaire/directionQuestionnaire';
-import {GenericYesNo} from '../../../common/form/models/genericYesNo';
-import {DirectionQuestionnaireErrorMessages} from '../../../common/form/models/directionQuestionnaireErrorMessages';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {DirectionQuestionnaireErrorMessages} from 'form/models/directionQuestionnaireErrorMessages';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('directionQuestionnaireService');

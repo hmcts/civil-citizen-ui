@@ -1,5 +1,5 @@
-import {ClaimSummaryContent} from '../../../common/form/models/claimSummarySection';
-import {Claim} from '../../../common/models/claim';
+import {ClaimSummaryContent} from 'form/models/claimSummarySection';
+import {Claim} from 'models/claim';
 import {buildDownloadSealedClaimSection} from './claimDocuments/claimDocumentContentBuilder';
 
 function getDocumentsContent(claim: Claim, claimId: string, lang?: string): ClaimSummaryContent[] {
