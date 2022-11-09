@@ -160,6 +160,8 @@ import howMuchContinueClaimingController from './features/claim/interest/howMuch
 import helpWithFeesController from './features/claim/details/helpWithFeesController';
 import debtRespiteReferenceNumberController
   from './features/claimantResponse/debtRespiteReferenceNumberController';
+import defendantDOBController from './features/claimantResponse/ccj/defendantDOBController';
+import claimantIntentionToProceedController from './features/claimantResponse/claimantIntentionToProceedController';
 
 export default [
   homeController,
@@ -306,4 +308,6 @@ export default [
   howMuchContinueClaimingController,
   helpWithFeesController,
   debtRespiteReferenceNumberController,
+  defendantDOBController,
+  claimantIntentionToProceedController,
 ];

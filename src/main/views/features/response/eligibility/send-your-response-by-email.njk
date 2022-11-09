@@ -31,11 +31,11 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set header = t('Reject all of the claim and counterclaim') %}
-      {% set pdfDefenceAndClaim = t('Download defence and counterclaim form (PDF, 368 KB)') %}
-      {% set pdfAdmission = t('Download admission form (PDF, 102 KB)') %}
-      {% set pdfDefence = t('Download form N9B Make a defence or counterclaim') %}
-      {% set supportEmailAddress = 'contactocmc@justice.gov.uk' %}
+      {% set header = t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.HEADER') %}
+      {% set pdfDefenceAndClaim = t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.PDF_DEFENCE_AND_CLAIM') %}
+      {% set pdfAdmission = t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.PDF_ADMISSION') %}
+      {% set pdfDefence = t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.PDF_DEFENCE') %}
+      {% set supportEmailAddress = t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.SUPPORT_EMAIL_ADDRESS') %}
       {% set responseDeadline = form.formattedResponseDeadline() %}
       {% set pdfUrl = 'https://www.gov.uk/government/publications/form-n9b-defence-counterclaim-specified-amount'%}
       {% set signPosting = true %}
@@ -55,58 +55,64 @@
         <div class="govuk-grid-column-two-thirds">
           {{ csrfProtection(csrf) }}
           <h1 class="govuk-heading-l govuk-!-margin-bottom-5">{{header}}</h1>
-          <p class="govuk-body">{{ t('You have chosen to counterclaim. This means your defence cannot continue online. Follow these steps to download, complete and return form N9B. You must pay a court fee. Do not create a new claim.')}}</p>
+          <p class="govuk-body">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.COUNTER_CLAIM_CHOSEN') }}
+            {{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.YOUR_DEFENCE_CANNOT_CONTINUE_ONLINE') }}
+            {{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.FOLLOW_THESE_STEPS') }}
+            {{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.YOU_MUST_PAY_FEE') }}
+            {{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.DO_NOT_CREATE_NEW_CLAIM') }}
+          </p>
           <div class="govuk-inset-text">
-          <p class="govuk-body">{{ t('We must receive your completed form before <span class="govuk-body govuk-!-font-weight-bold">4pm on {{ deadline }}</span>. The claim against you will continue if we do not receive this.',
+          <p class="govuk-body">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.WE_MUST_RECEIVE_COMPLETED_FORM',
               { deadline: responseDeadline }) | safe }}</p>
           </div>
 
-          <h2 class="govuk-heading-m govuk-!-margin-bottom-4 govuk-!-font-weight-bold">{{ t('How to counterclaim') }}</h2>
-          <span class="govuk-body govuk-!-margin-bottom-4 govuk-!-font-weight-bold">Step 1: Download and complete form N9B</span>
+          <h2 class="govuk-heading-m govuk-!-margin-bottom-4 govuk-!-font-weight-bold">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.HOW_TO_COUNTERCLAIM') }}</h2>
+          <span class="govuk-body govuk-!-margin-bottom-4 govuk-!-font-weight-bold">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.STEP_1') }}</span>
 
-          <p><a target="_blank" rel="noreferrer noopener"  class="govuk-link" href={{pdfUrl}}>{{ pdfDefence}}<span>{{ t(' (opens in a new window)') }}</span></a></p>
+          <p><a target="_blank" rel="noreferrer noopener" class="govuk-link" href={{pdfUrl}}>{{pdfDefence}}<span>{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.OPEN_IN_NEW_WINDOW') }}</span></a></p>
 
-          <p class="govuk-body govuk-!-margin-bottom-4">{{ t('You will need these claim details')}}:</p>
-          <p class="govuk-body govuk-!-margin-bottom-0">{{ t('Claim number')}}: {{form.legacyCaseReference}}</p>
-          <p class="govuk-body govuk-!-margin-bottom-0">{{ t('Claimant')}}: {{claimantName}}</p>
-          <p class="govuk-body">{{ t('Defendant')}}: {{defendantName}}</p>
+          <p class="govuk-body govuk-!-margin-bottom-4">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.CLAIM_DETAILS.NEEDED_DETAILS')}}:</p>
+          <p class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.CLAIM_DETAILS.CLAIM_NUMBER')}}: {{form.legacyCaseReference}}</p>
+          <p class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.CLAIM_DETAILS.CLAIMANT')}}: {{claimantName}}</p>
+          <p class="govuk-body">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.CLAIM_DETAILS.DEFENDANT')}}: {{defendantName}}</p>
 
-          <span class="govuk-body govuk-!-margin-bottom-4 govuk-!-font-weight-bold">Step 2: Email or post form N9B</span>
-          <p class="govuk-body govuk-!-margin-top-4">{{t('Email completed form N9B to')}}:
+          <span class="govuk-body govuk-!-margin-bottom-4 govuk-!-font-weight-bold">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.STEP_2') }}</span>
+          <p class="govuk-body govuk-!-margin-top-4">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.EMAIL_COMPLETED') }}:
             <a class="govuk-link govuk-!-margin-bottom-0" href='mailto:'{{supportEmailAddress}}>{{supportEmailAddress}}</a>
           </p>
-          <p class="govuk-body govuk-!-margin-bottom-4">{{ t('Or, you can send the form by post to')}}:</p>
+          <p class="govuk-body govuk-!-margin-bottom-4">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.SEND_BY_POST') }}:</p>
 
           {% if signPosting %}
-            <div class="govuk-inset-text govuk-grid-column-two-third">{{ t('HMCTS CMC') }}
-              <p class="govuk-body govuk-!-margin-bottom-0">{{ t('PO Box 12747')}}</p>
-              <p class="govuk-body govuk-!-margin-bottom-0">{{ t('Harlow')}}</p>
-              <p class="govuk-body govuk-!-margin-bottom-0">{{ t('CM20 9RA')}}</p>
+            <div class="govuk-inset-text govuk-grid-column-two-third">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.SIGN_POST_ADDRESS.NAME') }}
+              <p class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.SIGN_POST_ADDRESS.PO_BOX')}}</p>
+              <p class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.SIGN_POST_ADDRESS.CITY')}}</p>
+              <p class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.SIGN_POST_ADDRESS.POST_CODE')}}</p>
             </div>
           {% else %}
-            <div class="govuk-inset-text govuk-grid-column-two-third">{{ t('Civil Money Claims') }}
-              <p class="govuk-body govuk-!-margin-bottom-0">{{ t('St. Katharine`s House')}}</p>
-              <p class="govuk-body govuk-!-margin-bottom-0">{{ t('21-27 St. Katharine`s Street')}}</p>
-              <p class="govuk-body govuk-!-margin-bottom-0">{{ t('Northampton')}}</p>
-              <p class="govuk-body govuk-!-margin-bottom-0">{{ t('NN1 2LH')}}</p>
+            <div class="govuk-inset-text govuk-grid-column-two-third">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.NON_SIGN_POST_ADDRESS.TITLE') }}
+              <p class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.NON_SIGN_POST_ADDRESS.NAME') }}</p>
+              <p class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.NON_SIGN_POST_ADDRESS.STREET') }}</p>
+              <p class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.NON_SIGN_POST_ADDRESS.CITY') }}</p>
+              <p class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.NON_SIGN_POST_ADDRESS.POST_CODE') }}</p>
              </div>
           {% endif %}
 
           <div>
-              <span class="govuk-body govuk-!-margin-bottom-2 govuk-!-font-weight-bold">Step 3: Pay the court fee</span>
+              <span class="govuk-body govuk-!-margin-bottom-2 govuk-!-font-weight-bold">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.STEP_3') }}</span>
               <p class="govuk-body govuk-!-margin-top-4">
-                {{ t('You`ll need to pay a court fee to make a counterclaim. The court will contact you to take payment.')}}
+                {{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.PAY_COURT_FEE') }}
               </p>
               {{ govukDetails({
                 summaryText: t('PAGES.REJECT_ALL.VIEW_CLAIM_FEES'),
                 html: feesTable
               }) }}
             <div class="govuk-inset-text govuk-grid-column-two-third">
-              <p class="govuk-body govuk-!-margin-bottom-0">{{ t('Do not create a new claim if you want to counterclaim. Use form N9B.')}}</p>
+              <p class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.DO_NOT_CREATE_NEW_CLAIM_IF_WANT_COUNTERCLAIM') }}
+                {{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.USE_FORM_N9B') }}</p>
             </div>
           </div>
           <div>
-          <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-font-weight-bold">{{ t('Help and support') }}</h2>
+          <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-font-weight-bold">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.HELP_AND_SUPPORT') }}</h2>
           {{ contactUs(t) }}
           </div>
         </div>
