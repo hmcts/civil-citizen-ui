@@ -5,14 +5,26 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {getInterest, saveInterest} from '../../../../../../main/services/features/claim/interest/interestService';
 import {Interest} from '../../../../../../main/common/form/models/interest/interest';
 import {InterestStartDate} from '../../../../../../main/common/form/models/interest/interestStartDate';
-import {InterestEndDateType} from '../../../../../../main/common/form/models/claimDetails';
+import {
+  InterestClaimFromType,
+  InterestEndDateType,
+  SameRateInterestSelection,
+  SameRateInterestType,
+} from '../../../../../../main/common/form/models/claimDetails';
 import {TotalInterest} from '../../../../../../main/common/form/models/interest/totalInterest';
+import {InterestClaimOptionsType} from '../../../../../../main/common/form/models/claim/interest/interestClaimOptionsType';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+
+const mockSameRateInterestSelectionWithValues: SameRateInterestSelection = {
+  sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
+  differentRate: 40,
+  reason: 'Reasons here...',
+};
 
 describe('Interest Service', () => {
   describe('getInterest', () => {
@@ -47,15 +59,49 @@ describe('Interest Service', () => {
     it('should return Interest object with interest end date', async () => {
       const claim = new Claim();
       claim.interest = new Interest();
-      claim.interest = {
-        interestEndDate: InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE,
-      };
+      claim.interest.interestEndDate = InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE;
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return claim;
       });
       const interest = await getInterest('validClaimId');
 
       expect(interest?.interestEndDate).toBe(InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE);
+    });
+
+    it('should return Interest object with interest claim form', async () => {
+      const claim = new Claim();
+      claim.interest = new Interest();
+      claim.interest.interestClaimFrom = InterestClaimFromType.FROM_A_SPECIFIC_DATE;
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return claim;
+      });
+      const interest = await getInterest('validClaimId');
+
+      expect(interest?.interestClaimFrom).toBe(InterestClaimFromType.FROM_A_SPECIFIC_DATE);
+    });
+
+    it('should return Interest object with interest claim options', async () => {
+      const claim = new Claim();
+      claim.interest = new Interest();
+      claim.interest.interestClaimOptions = InterestClaimOptionsType.BREAK_DOWN_INTEREST;
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return claim;
+      });
+      const interest = await getInterest('validClaimId');
+
+      expect(interest?.interestClaimOptions).toBe(InterestClaimOptionsType.BREAK_DOWN_INTEREST);
+    });
+
+    it('should return Interest object with same rate interest selection', async () => {
+      const claim = new Claim();
+      claim.interest = new Interest();
+      claim.interest.sameRateInterestSelection = mockSameRateInterestSelectionWithValues;
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return claim;
+      });
+      const interest = await getInterest('validClaimId');
+
+      expect(interest?.sameRateInterestSelection).toBe(mockSameRateInterestSelectionWithValues);
     });
 
     it('should return an error on redis failure', async () => {
@@ -119,6 +165,57 @@ describe('Interest Service', () => {
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
 
       await saveInterest('validClaimId', interest?.interestEndDate, 'interestEndDate');
+      expect(spySave).toHaveBeenCalledWith('validClaimId', {interest});
+    });
+
+    it('should update interest claim from successfully', async () => {
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.interest = new Interest();
+        return claim;
+      });
+      interest.interestStartDate = undefined;
+      interest.interestEndDate = undefined;
+      interest.interestClaimFrom = InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
+
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+
+      await saveInterest('validClaimId', interest?.interestClaimFrom, 'interestClaimFrom');
+      expect(spySave).toHaveBeenCalledWith('validClaimId', {interest});
+    });
+
+    it('should update interest claim options successfully', async () => {
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.interest = new Interest();
+        return claim;
+      });
+      interest.interestStartDate = undefined;
+      interest.interestEndDate = undefined;
+      interest.interestClaimFrom = undefined;
+      interest.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
+
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+
+      await saveInterest('validClaimId', interest?.interestClaimOptions, 'interestClaimOptions');
+      expect(spySave).toHaveBeenCalledWith('validClaimId', {interest});
+    });
+
+    it('should update same rate interest selection successfully', async () => {
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.interest = new Interest();
+        return claim;
+      });
+      interest.interestStartDate = undefined;
+      interest.interestEndDate = undefined;
+      interest.interestClaimFrom = undefined;
+      interest.interestClaimOptions = undefined;
+      interest.sameRateInterestSelection = mockSameRateInterestSelectionWithValues;
+
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+
+      await saveInterest('validClaimId', interest?.sameRateInterestSelection, 'sameRateInterestSelection');
       expect(spySave).toHaveBeenCalledWith('validClaimId', {interest});
     });
 
