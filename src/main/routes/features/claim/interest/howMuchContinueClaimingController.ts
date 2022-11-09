@@ -16,7 +16,6 @@ function renderView(form: GenericForm<HowMuchContinueClaiming>, res: Response): 
 
 howMuchContinueClaimingController.get(CLAIM_INTEREST_HOW_MUCH_URL, async (req:AppRequest, res:Response, next: NextFunction) => {
   const caseId = req.session?.user?.id;
-
   try {
     const interest = await getInterest(caseId);
     renderView(new GenericForm<HowMuchContinueClaiming>(interest.howMuchContinueClaiming), res);
