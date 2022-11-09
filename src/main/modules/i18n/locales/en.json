@@ -592,6 +592,10 @@
       "TITLE": "What annual rate of interest do you want to claim?",
       "WHY_YOU_ARE_ENTITLED": "Why you're entitled to this rate"
     },
+    "CLAIMANT_RESPONSE_PROCEED": {
+      "PAGE_TITLE": "Do you want to proceed with claim?",
+      "TITLE": "Do you want to proceed with claim?"
+    },
     "CLAIMANT_PARTY_TYPE_SELECTION": {
       "CLAIMING_AS_HEADER": "I'm claiming as:",
       "CLAIMING_AS_AN_INDIVIDUAL": "An individual",
