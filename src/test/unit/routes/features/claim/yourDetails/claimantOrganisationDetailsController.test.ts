@@ -233,6 +233,9 @@ describe('Claimant Organisation Details page', () => {
     });
 
     it('POST/Claimant organisation details - should return error on empty primary city', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        return buildClaimOfApplicantType(PartyType.ORGANISATION);
+      });
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
         .send({
@@ -546,6 +549,9 @@ describe('Claimant Organisation Details page', () => {
     });
 
     it('POST/Claimant company details - should return error on empty primary city', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        return buildClaimOfApplicantType(PartyType.COMPANY);
+      });
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
         .send({
@@ -563,6 +569,9 @@ describe('Claimant Organisation Details page', () => {
     });
 
     it('POST/Claimant company details - should return error on empty primary postcode', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        return buildClaimOfApplicantType(PartyType.COMPANY);
+      });
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
         .send({
@@ -665,6 +674,9 @@ describe('Claimant Organisation Details page', () => {
     });
 
     it('POST/Claimant Company details - should return error on input for primary address when provideCorrespondenceAddress is set to NO', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        return buildClaimOfApplicantType(PartyType.COMPANY);
+      });
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
         .send({
