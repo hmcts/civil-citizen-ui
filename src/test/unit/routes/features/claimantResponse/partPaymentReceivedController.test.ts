@@ -23,11 +23,11 @@ describe('Claimant Response - Part Payment Received Controller', () => {
   });
 
   describe('on GET', () => {
-    it('should return has the defendant pay you amount page', async () => {
+    it('should return has the defendant paid you amount page', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Has the defendant pay you');
+        expect(res.text).toContain('Has the defendant paid you');
       });
     });
 

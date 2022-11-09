@@ -612,8 +612,8 @@
       "TITLE": "Enter a phone number (optional)"
     },
     "CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED": {
-      "PAGE_TITLE": "Has the defendant pay you £{{ paidAmount }}?",
-      "TITLE": "Has the defendant pay you £{{ paidAmount }}?"
+      "PAGE_TITLE": "Has the defendant paid you £{{ paidAmount }}?",
+      "TITLE": "Has the defendant paid you £{{ paidAmount }}?"
     },
     "COMPANY_DETAILS": {
       "ADDRESS_FOR_SERVICE": "This is known as an \"address for service\".",
