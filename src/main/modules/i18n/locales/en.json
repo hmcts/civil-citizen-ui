@@ -1503,13 +1503,20 @@
       "PAY_EXPENSES": "Do they pay any expenses?",
       "PAYMENT_DATE": "They’ve offered to pay you this by {{ paymentDate }}",
       "RECEIVE_INCOME": "Do they receive any income?",
+      "REJECT_CLAIM_STATEMENT": "{{ defendant }} has rejected the claim.",
       "SEE_FINANCIAL_DETAILS": "See their financial details",
       "SELF_EMPLOYMENT_DETAILS": "Self-employment details",
       "SUPPORT_ANYONE_ELSE": "Do they support anyone else financially?",
+      "THEIR_DEFENCE": "Their defence",
+      "THEIR_EVIDENCE": "Their evidence",
+      "THEIR_TOE": "Their timeline of events",
       "TITLE": "The defendant’s response",
       "TOTAL_PAID_AMOUNT": "This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
       "UNABLE_TO_PAY_FULL_AMOUNT": "Why they can’t pay the full amount now",
-      "WHERE_THEY_LIVE": "Where are they living?"
+      "WHERE_THEY_LIVE": "Where are they living?",
+      "WHY_THEY_DISAGREE_CLAIM": "Why they disagree with the claim",
+      "WHY_THEY_DISAGREE_EVIDENCE": "Why they disagree with your evidence",
+      "WHY_THEY_DISAGREE_TIMELINE": "Why they disagree with your timeline"
     },
     "SELF_EMPLOYED": {
       "PAGE_TITLE": "Self employment details",
