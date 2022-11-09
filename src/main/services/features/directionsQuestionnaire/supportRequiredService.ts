@@ -23,11 +23,10 @@ export interface FullName {
 const generateList = (list: FullName[]): NameListType[] => {
   return list?.filter((item: FullName)=> item.firstName || item.lastName)
     .map((item: FullName) => {
-      const name = `${item?.firstName} ${item?.lastName}`;
-      const value = (item?.firstName + item?.lastName)?.toLocaleLowerCase();
+      const fullName = `${item?.firstName} ${item?.lastName}`;
       return {
-        value: value,
-        text: name,
+        value: fullName,
+        text: fullName,
       };
     });
 };
@@ -59,7 +58,7 @@ export const generatePeopleListWithSelectedValues = async (claimId: string, sele
     }
     return selectedNames?.map(selectedName => {
       return defaultList.map(name => {
-        return {...name, selected: selectedName?.includes(name.value)};
+        return {...name, selected: selectedName?.replace(/ /g, '') === name.value.replace(/ /g, '')};
       });
     });
   } catch (error) {
@@ -68,14 +67,12 @@ export const generatePeopleListWithSelectedValues = async (claimId: string, sele
   }
 };
 
-export const getSupportRequired = async (claimId: string, lang: string): Promise<[SupportRequiredList, NameListType[][]| NameListType[]]> => {
+export const getSupportRequired = async (claimId: string): Promise<SupportRequiredList> => {
   try {
     const caseData = await getCaseDataFromStore(claimId);
-    const selectedNames = caseData.directionQuestionnaire?.hearing?.supportRequiredList?.items?.map(item => item.fullName);
-    const peopleLists = await generatePeopleListWithSelectedValues(claimId, selectedNames, lang);
     return caseData?.directionQuestionnaire?.hearing?.supportRequiredList ?
-      [caseData.directionQuestionnaire.hearing?.supportRequiredList, peopleLists] :
-      [new SupportRequiredList(undefined, [new SupportRequired()]), peopleLists];
+      caseData.directionQuestionnaire.hearing?.supportRequiredList :
+      new SupportRequiredList(undefined, [new SupportRequired()]);
   } catch (error) {
     logger.error(error);
     throw error;

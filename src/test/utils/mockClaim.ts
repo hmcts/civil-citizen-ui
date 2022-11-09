@@ -112,7 +112,6 @@ function buildMockClaim(): Claim {
     calculatedAmountInPence: '11500',
   };
   _mockClaim.claimInterest = YesNo.YES;
-  _mockClaim.interestClaimFrom = InterestClaimFromType.FROM_A_SPECIFIC_DATE;
   _mockClaim.claimAmountBreakup = [
     {
       value: {
@@ -124,13 +123,13 @@ function buildMockClaim(): Claim {
 
   _mockClaim.interest = {
     interestEndDate: InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE,
+    interestClaimFrom: InterestClaimFromType.FROM_A_SPECIFIC_DATE,
+    interestClaimOptions: InterestClaimOptionsType.SAME_RATE_INTEREST,
+    sameRateInterestSelection: {
+      sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC,
+    },
+    breakDownInterestTotal: 500,
   };
-  _mockClaim.interestFromSpecificDate = new Date('2022-05-20');
-  _mockClaim.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
-  _mockClaim.sameRateInterestSelection = {
-    sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC,
-  };
-  _mockClaim.breakDownInterestTotal = 500;
   _mockClaim.submittedDate = new Date('2022-05-23T17:02:02.38407');
   _mockClaim.totalInterest = 15;
   _mockClaim.paymentDate = new Date('2022-06-01T00:00:00');
