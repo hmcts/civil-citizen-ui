@@ -8,6 +8,7 @@ import {
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {toNumberOrUndefined} from '../../../../../common/utils/numberConverter';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
+import {PartAdmitHowMuchHaveYouPaidGuard} from '../../../../../routes/guards/partAdmitHowMuchHaveYouPaidGuard';
 
 const howMuchDoYouOweViewPath = 'features/response/admission/partialAdmission/how-much-do-you-owe';
 const howMuchDoYouOweController = Router();
@@ -16,7 +17,7 @@ function renderView(form: GenericForm<HowMuchDoYouOwe>, res: Response) {
   res.render(howMuchDoYouOweViewPath, {form: form});
 }
 
-howMuchDoYouOweController.get(CITIZEN_OWED_AMOUNT_URL, async (req: Request, res: Response, next: NextFunction) => {
+howMuchDoYouOweController.get(CITIZEN_OWED_AMOUNT_URL, PartAdmitHowMuchHaveYouPaidGuard.apply(CLAIM_TASK_LIST_URL), async (req: Request, res: Response, next: NextFunction) => {
   try {
     const howMuchDoYouOweForm = await getHowMuchDoYouOweForm(req.params.id);
     renderView(new GenericForm(howMuchDoYouOweForm), res);

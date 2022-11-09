@@ -18,7 +18,6 @@ const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 describe('Claimant Response Service', () => {
   describe('getClaimantResponse', () => {
     it('should return undefined if direction claimant response is not set', async () => {
-      //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return new Claim();
       });
@@ -27,20 +26,18 @@ describe('Claimant Response Service', () => {
     });
 
     it('should return Claimant Response object', async () => {
-      //Given
       const claim = new Claim();
       claim.claimantResponse = new ClaimantResponse();
+
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return claim;
       });
-      //When
       const claimantResponse = await getClaimantResponse('validClaimId');
-      //Then
+
       expect(claimantResponse?.hasDefendantPaidYou).toBeUndefined();
     });
 
     it('should return Claimant Response object with hasDefendantPaidYou no', async () => {
-      //Given
       const claim = new Claim();
       claim.claimantResponse = new ClaimantResponse();
       claim.claimantResponse.hasDefendantPaidYou = {
@@ -49,14 +46,12 @@ describe('Claimant Response Service', () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return claim;
       });
-      //When
       const claimantResponse = await getClaimantResponse('validClaimId');
-      //Then
+
       expect(claimantResponse?.hasDefendantPaidYou.option).toBe(YesNo.NO);
     });
 
     it('should return Claimant Response object with hasDefendantPaidYou yes', async () => {
-      //Given
       const claim = new Claim();
       claim.claimantResponse = new ClaimantResponse();
       claim.claimantResponse.hasDefendantPaidYou = {
@@ -65,9 +60,8 @@ describe('Claimant Response Service', () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return claim;
       });
-      //When
       const claimantResponse = await getClaimantResponse('validClaimId');
-      //Then
+
       expect(claimantResponse?.hasDefendantPaidYou.option).toBe(YesNo.YES);
     });
 
@@ -131,11 +125,10 @@ describe('Claimant Response Service', () => {
     });
 
     it('should return an error on redis failure', async () => {
-      //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
-      //Then
+
       await expect(getClaimantResponse('claimId')).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
@@ -145,7 +138,6 @@ describe('Claimant Response Service', () => {
     claimantResponse.hasDefendantPaidYou = new GenericYesNo(YesNo.YES);
 
     it('should save claimant response successfully', async () => {
-      //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         const claim = new Claim();
         claim.claimantResponse = new ClaimantResponse();
@@ -155,14 +147,11 @@ describe('Claimant Response Service', () => {
       const claimantResponseToSave = {
         hasDefendantPaidYou: {option: YesNo.NO},
       };
-      //When
-      await saveClaimantResponse('validClaimId', YesNo.NO, 'option', 'hasDefendantPaidYou');
-      //Then
+      await saveClaimantResponse('validClaimId',  YesNo.NO, 'option', 'hasDefendantPaidYou');
       expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToSave});
     });
 
     it('should update claim determination successfully', async () => {
-      //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         const claim = new Claim();
         claim.claimantResponse = claimantResponse;
@@ -172,9 +161,8 @@ describe('Claimant Response Service', () => {
         hasDefendantPaidYou: {option: YesNo.NO},
       };
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      //When
+
       await saveClaimantResponse('validClaimId', claimantResponse?.hasDefendantPaidYou.option, 'hasDefendantPaidYou');
-      //Then
       expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
     });
 
@@ -216,14 +204,12 @@ describe('Claimant Response Service', () => {
     });
 
     it('should return an error on redis failure', async () => {
-      //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return new Claim();
       });
       mockSaveDraftClaim.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
-      //Then
       await expect(saveClaimantResponse('claimId', mockGetCaseDataFromDraftStore, ''))
         .rejects.toThrow(TestMessages.REDIS_FAILURE);
     });

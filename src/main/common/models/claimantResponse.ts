@@ -1,4 +1,4 @@
-import {GenericYesNo} from '../form/models/genericYesNo';
+import {GenericYesNo} from '../../common/form/models/genericYesNo';
 
 export class ClaimantResponse {
   hasDefendantPaidYou?: GenericYesNo;

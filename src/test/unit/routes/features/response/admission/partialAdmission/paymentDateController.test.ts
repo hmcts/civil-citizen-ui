@@ -56,8 +56,16 @@ describe('Payment date', () => {
   });
 
   describe('on GET', () => {
-    it('should return payment date page', async () => {
+    it('should redirect to task list when part admit and amount not defined', async () => {
       app.locals.draftStoreClient = mockNoStatementOfMeans;
+      await request(app)
+        .get(CITIZEN_PA_PAYMENT_DATE_URL)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+        });
+    });
+    it('should return payment date page', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CITIZEN_PA_PAYMENT_DATE_URL)
         .expect((res) => {

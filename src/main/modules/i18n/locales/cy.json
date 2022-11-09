@@ -70,9 +70,9 @@
     "CONTACT_US_FOR_HELP": {
       "CALL_CHARGES": "Gwybodaeth am brisiau galwadau (yn agor mewn ffenestr newydd)",
       "OPENING_HOURS": "Dydd Llun i ddydd Gwener, 8.30am i 5pm.",
-      "RESPONSE_DELAY": "We'll get back to you within 10 days",
+      "RESPONSE_DELAY": "Byddwn yn cysylltu â chi o fewn 10 diwrnod.",
       "TITLE": "Cysylltwch â ni i gael cymorth",
-      "TELEPHONE": "Rhif ffôn",
+      "TELEPHONE": "Ffôn",
       "WEB_CHAT": "Sgwrsio ar y We",
       "WEB_CHAT_CLOSED": "Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.",
       "WEB_CHAT_NO_ADVISORS": "Nid oes cynghorwyr ar gael ar hyn o bryd. Rhowch gynnig arni eto yn nes ymlaen.",
@@ -161,7 +161,7 @@
       "CITY": "Harlow",
       "PO_BOX": "PO Box 12747",
       "POSTCODE": "CM20 9RA",
-      "TELEPHONE": "Tel: 0300 123 7050"
+      "TELEPHONE": "Tel: 0300 303 5174"
     },
     "POSTCODE": {
       "ADDESSES_FOUND": "addresses found (Welsh)",
@@ -362,6 +362,9 @@
       "SUPPORT_ANYONE_ELSE_FINANCIALLY": "Ydych chi'n cefnogi unrhyw un arall yn ariannol?",
       "SUPPORT_NUMBER_OF_PEOPLE": "Nifer y bobl",
       "SUPPORT_GIVE_DETAILS": "Rhowch fanylion",
+      "SUPPORT_REQUIRED_INTERPRETER": "Interpreter",
+      "SUPPORT_REQUIRED_NAME": "Name of the person who requires support:",
+      "SUPPORT_REQUIRED_DETAILS": "Support details:",
       "TAX_PAYMENT_ARE_YOU_BEHIND": "Ydych chi ar ei hôl hi gyda thaliadau treth?",
       "TAX_PAYMENT_AMOUNT_YOU_OWE": "Swm sydd arnoch chi?",
       "TAX_PAYMENT_REASON": "Rheswm",
@@ -1408,9 +1411,9 @@
       "WORKING_TAX": "Credyd Treth Gwaith"
     },
     "REJECT_ALL": {
-      "FEE": "Fee",
-      "FEE_BASED": "The fee is based on the amount you`re claiming, including interest.",
-      "VIEW_CLAIM_FEES": "View claim fees"
+      "FEE": "Ffi",
+      "FEE_BASED": "Mae'r ffi yn seiliedig ar y swm rydych yn ei hawlio, gan gynnwys llog.",
+      "VIEW_CLAIM_FEES": "Gweld ffioedd yr hawliadau"
     },
     "REJECT_ALL_CLAIM": {
       "PAGE_TITLE": "Reject all of claim",
@@ -1489,7 +1492,48 @@
       "EXAMPLE": "Er enghraifft cyfraniadau Yswiriant Gwladol, Treth Incwm neu TAW."
     },
     "SEND_YOUR_RESPONSE_BY_EMAIL": {
-      "PAGE_TITLE": "Send your response by email"
+      "COUNTER_CLAIM_CHOSEN": "Rydych wedi dewis gwneud gwrth-hawliad.",
+      "YOUR_DEFENCE_CANNOT_CONTINUE_ONLINE": "Mae hyn yn golygu ni all eich amddiffyniad barhau ar-lein.",
+      "FOLLOW_THESE_STEPS": "Dilynwch y camau hyn i lwytho, llenwi a dychwelyd ffurflen N9B.",
+      "YOU_MUST_PAY_FEE": "Rhaid i chi dalu ffi'r llys.",
+      "DO_NOT_CREATE_NEW_CLAIM": "Peidiwch â chreu hawliad newydd",
+      "CLAIM_DETAILS": {
+        "CLAIM_NUMBER": "Rhif yr hawliad:",
+        "CLAIMANT": "Hawlydd",
+        "DEFENDANT": "Diffynnydd",
+        "NEEDED_DETAILS": "Bydd arnoch angen y manylion canlynol am yr hawliad:"
+      },
+      "DO_NOT_CREATE_NEW_CLAIM_IF_WANT_COUNTERCLAIM": "Peidiwch â chreu hawliad newydd os ydych eisiau gwneud gwrth-hawliad.",
+      "USE_FORM_N9B": "Defnyddiwch ffurflen N9B.",
+      "EMAIL_COMPLETED": "E-bostio'r ffurflen N9B wedi'i llenwi i: contactocmc@justice.gov.uk neu ymholiadaucymraeg@justice.gov.uk",
+      "HEADER": "Gwrthod yr hawliad cyfan a gwneud gwrth-hawliad",
+      "HELP_AND_SUPPORT": "Cymorth a Chefnogaeth",
+      "HOW_TO_COUNTERCLAIM": "Sut i wneud gwrth-hawliad",
+      "OPEN_IN_NEW_WINDOW": "(yn agor mewn ffenestr newydd)",
+      "PAGE_TITLE": "Anfonwch eich ymateb drwy e-bost",
+      "PAY_COURT_FEE": "Bydd angen i chi dalu ffi'r llys i wneud gwrth-hawliad. Bydd y llys yn cysylltu â chi i gymryd y taliad.",
+      "PDF_ADMISSION": "Lawrlwytho ffurflen addefiad  (PDF, 102 KB)",
+      "PDF_DEFENCE": "Lawrlwytho ffurflen addefiad  (PDF, 102 KB)",
+      "PDF_DEFENCE_AND_CLAIM": "Lawrlwytho'r ffurflen N9B Cyflwyno amddiffyniad neu wrth-hawliad (yn agor mewn ffenestr newydd)",
+      "SEND_BY_POST": "Neu, gallwch anfon y ffurflen drwy'r post i:",
+      "SIGN_POST_ADDRESS": {
+        "CITY": "Harlow",
+        "NAME": "HMCTS CMC",
+        "PO_BOX": "PO BOX 12747",
+        "POST_CODE": "CM20 9RA"
+      },
+      "STEP_1": "Cam 1: Lawrlwytho a llenwi ffurflen N9B",
+      "STEP_2": "Cam 2: E-bostio neu bostio'r ffurflen N9B",
+      "STEP_3": "Cam 3: Talu'r ffi llys",
+      "SUPPORT_EMAIL_ADDRESS": "contactocmc@justice.gov.uk",
+      "NON_SIGN_POST_ADDRESS": {
+        "CITY": "Northampton",
+        "NAME": "St. Katharine`s House",
+        "POST_CODE": "NN1 2LH",
+        "STREET": "21-27 St. Katharine`s Street",
+        "TITLE": "Civil Money Claims"
+      },
+      "WE_MUST_RECEIVE_COMPLETED_FORM": "Rhaid i ni gael eich ffurflen wedi'i llenwi cyn <span class=\"govuk-body govuk-!-font-weight-bold\">4pm ar {{ deadline }}</span>. Bydd yr hawliad yn eich erbyn yn mynd yn ei flaen os na fyddwn yn cael eich ffurflen."
     },
     "SENT_EXPERT_REPORTS": {
       "OPTION_NO": "Naddo",
