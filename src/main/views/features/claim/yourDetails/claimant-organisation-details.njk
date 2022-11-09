@@ -30,8 +30,7 @@
   {% set addressExplanation = t('PAGES.ORGANISATION_DETAILS.MAIN_OFFICE') %}
 {% endif %}
 {% if party.model.provideCorrespondenceAddress == YesNo.YES or
-      party.model.correspondenceAddress.isEmpty() === false or
-      party.errorFor('correspondenceAddress') === true %}
+      party.errorFor('correspondenceAddress')%}
   {% set radioChecked = true %}
 {% else %}
   {% set radioChecked = false %}

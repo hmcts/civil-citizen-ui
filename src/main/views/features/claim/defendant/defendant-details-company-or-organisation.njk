@@ -87,11 +87,11 @@
                 <p class="govuk-body">{{ t('PAGES.DEFENDANT_DETAILS.ENGLAND_OR_WALES_ADDRESS') }}</p>
               {% endif %}
               {{ postcodeLookupAndAddressForm(t, {
-                party: party,
+                party: form,
                 addressType:'primary',
                 addressTitle:''
               }) }}
-            </div>
+            </div>s
             {{ govukButton({
               text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),
               classes: 'govuk-!-margin-top-4'

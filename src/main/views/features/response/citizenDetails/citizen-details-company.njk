@@ -36,13 +36,13 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post" class="govuk-!-padding-top-4" name="address" novalidate>
             {{ csrfProtection(csrf) }}
-            {% if respondent.type === partyType.COMPANY %}
+            {% if type === partyType.COMPANY %}
               <h2 class="govuk-heading-m govuk-!-margin-top-5">{{ t('PAGES.COMPANY_DETAILS.COMPANY_NAME') }}</h2>
             {% endif %}
-            {% if respondent.type === partyType.ORGANISATION %}
+            {% if type === partyType.ORGANISATION %}
               <h2 class="govuk-heading-m govuk-!-margin-top-5">{{ t('PAGES.COMPANY_DETAILS.ORGANISATION_NAME') }}</h2>
             {% endif %}
-            <p class="govuk-label govuk-!-margin-bottom-5">{{ respondent.partyName }}</p>
+            <p class="govuk-label govuk-!-margin-bottom-5">{{ party.model.partyName }}</p>
             {{ govukInput({
               label: { text: t('COMMON.OPTIONAL_CONTACT_PERSON') },
               classes: "govuk-input--width-20",
@@ -82,7 +82,7 @@
                 },
                 {
                   value: "yes",
-                  checked: true if respondent.postToThisAddress === YesNo.YES or citizenCorrespondenceAddress.model.isEmpty() === true or citizenCorrespondenceAddress.hasErrors() === true else false,
+                  checked: true if party.model.postToThisAddress === YesNo.YES or party.errorFor('correspondenceAddress') else false,
                   text: t('PAGES.COMPANY_DETAILS.YES_CORRESPONDENCE'),
                   conditional: {
                   html: correspondenceAddressHtml

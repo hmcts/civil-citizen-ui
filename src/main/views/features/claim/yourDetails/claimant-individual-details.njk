@@ -14,8 +14,7 @@
 {% set correspondenceAddressClass = 'govuk-visually-hidden' %}
 {% set addressTitle = t('PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.YOUR_POSTAL_ADDRESS') %}
 {% if party.model.provideCorrespondenceAddress == YesNo.YES or
-  party.model.correspondenceAddress.isEmpty() === false or
-  party.errorFor('correspondenceAddress') === true %}
+  party.errorFor('correspondenceAddress') %}
   {% set radioChecked = true %}
 {% else %}
   {% set radioChecked = false %}

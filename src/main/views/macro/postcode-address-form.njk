@@ -1,8 +1,8 @@
 {% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "./address.njk" import addressForm %}
 {% macro postcodeLookupAndAddressForm(t,params) %}
-  {% if params.party.model.primaryAddress %}
-    {% if params.party.errorFor('primaryAddress') or params.party.model.primaryAddress.isEmpty() === false %}
+  {% if params.addressType === 'primary' and params.party.model.primaryAddress %}
+    {% if params.party.errorFor('primaryAddress') %}
       {% set govukVisuallyHidden = '' %}
       {% set govukVisuallyHiddenForAnchor = 'govuk-visually-hidden' %}
     {% else %}
@@ -10,8 +10,8 @@
       {% set govukVisuallyHiddenForAnchor = '' %}
     {% endif %}
   {% endif %}
-  {% if params.party.model.correspondenceAddress %}
-    {% if params.party.errorFor('primaryAddress') === true or params.party.model.correspondenceAddress.isEmpty() === false %}
+  {% if params.addressType === 'correspondence' and params.party.model.correspondenceAddress %}
+    {% if params.party.errorFor('correspondenceAddress') %}
       {% set govukVisuallyHidden = '' %}
       {% set govukVisuallyHiddenForAnchor = 'govuk-visually-hidden' %}
     {% else %}
