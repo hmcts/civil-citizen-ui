@@ -17,25 +17,28 @@
       "es2017.object",
       "dom"
     ],
-    "baseUrl": "src",
+    "baseUrl": "src/main",
     "paths": {
-      "router/*": [
-        "main/router/*"
-      ],
       "common/*": [
-        "main/common/*"
+        "common/*"
       ],
       "models/*": [
-        "main/common/models/*"
+        "common/models/*"
+      ],
+      "form/*": [
+        "common/form/*"
       ],
       "modules/*": [
-        "main/modules/*"
+        "modules/*"
       ],
       "client/*": [
-        "main/app/client/*"
+        "app/client/*"
       ],
       "routes/*": [
-        "main/routes/*"
+        "routes/*"
+      ],
+      "services/*": [
+        "services/*"
       ]
     },
     "typeRoots": [

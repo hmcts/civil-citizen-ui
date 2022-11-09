@@ -20,10 +20,8 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 
 continueClaimingInterestController.get(CLAIM_INTEREST_CONTINUE_CLAIMING_URL, async (req:AppRequest, res:Response, next: NextFunction) => {
   const caseId = req.session?.user?.id;
-
   try {
     const interest = await getInterest(caseId);
-
     renderView(new GenericForm(new GenericYesNo(interest.continueClaimingInterest)), res);
   } catch (error) {
     next(error);
