@@ -338,7 +338,7 @@ export class Claim {
   }
 
   getSelfEmployment(): SelfEmployedAs | undefined {
-    return this.statementOfMeans?.selfEmployedAs ?? undefined;
+    return this.statementOfMeans?.selfEmployedAs;
   }
 
   isBehindOnTheTaxPayments(): boolean {
