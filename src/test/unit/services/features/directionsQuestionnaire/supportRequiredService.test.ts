@@ -1,5 +1,6 @@
 import {request} from 'express';
 import {
+  generatePeopleListWithSelectedValues,
   getSupportRequired,
   getSupportRequiredForm,
   NameListType,
@@ -56,7 +57,7 @@ describe('Support Required service', () => {
         model: {
           items: [
             {
-              fullName: 'johdoe',
+              fullName: 'John Doe',
               declared: 'disabledAccess',
             },
           ],
@@ -67,7 +68,7 @@ describe('Support Required service', () => {
       //Then
       expect(form).not.toBeUndefined();
       expect(form.option).toBe('yes');
-      expect(form.items[0].fullName).toBe('johdoe');
+      expect(form.items[0].fullName).toBe('John Doe');
       expect(form.items[0].disabledAccess?.selected).toBe(true);
     });
 
@@ -79,7 +80,7 @@ describe('Support Required service', () => {
         model: {
           items: [
             {
-              fullName: 'johdoe',
+              fullName: 'John Doe',
               declared: ['disabledAccess', 'otherSupport'],
               otherSupport: {content: 'test'},
             },
@@ -91,7 +92,7 @@ describe('Support Required service', () => {
       //Then
       expect(form).not.toBeUndefined();
       expect(form.option).toBe('yes');
-      expect(form.items[0].fullName).toBe('johdoe');
+      expect(form.items[0].fullName).toBe('John Doe');
       expect(form.items[0].disabledAccess?.selected).toBe(true);
       expect(form.items[0].otherSupport?.selected).toBe(true);
       expect(form.items[0].otherSupport?.content).toBe('test');
@@ -105,12 +106,12 @@ describe('Support Required service', () => {
         model: {
           items: [
             {
-              fullName: 'johdoe',
+              fullName: 'John Doe',
               declared: ['disabledAccess', 'otherSupport'],
               otherSupport: {content: 'test'},
             },
             {
-              fullName: 'mikebrown',
+              fullName: 'Mike Brown',
               declared: 'signLanguageInterpreter',
               signLanguageInterpreter: {content: 'sign language support'},
             },
@@ -122,11 +123,11 @@ describe('Support Required service', () => {
       //Then
       expect(form).not.toBeUndefined();
       expect(form.option).toBe('yes');
-      expect(form.items[0].fullName).toBe('johdoe');
+      expect(form.items[0].fullName).toBe('John Doe');
       expect(form.items[0].disabledAccess?.selected).toBe(true);
       expect(form.items[0].otherSupport?.selected).toBe(true);
       expect(form.items[0].otherSupport?.content).toBe('test');
-      expect(form.items[1].fullName).toBe('mikebrown');
+      expect(form.items[1].fullName).toBe('Mike Brown');
       expect(form.items[1].signLanguageInterpreter?.selected).toBe(true);
       expect(form.items[1].signLanguageInterpreter?.content).toBe('sign language support');
     });
@@ -161,7 +162,7 @@ describe('Support Required service', () => {
         model: {
           items: [
             {
-              fullName: 'johndoe',
+              fullName: 'John Doe',
               declared: 'disabledAccess',
             },
           ],
@@ -207,7 +208,7 @@ describe('Support Required service', () => {
     it('should raise at least error if option "yes" and name selected but no support provided', async () => {
       //Given
       const supportRequiredList = new SupportRequiredList(YesNo.YES, [new SupportRequired({
-        fullName: 'johndoe',
+        fullName: 'John Doe',
       })]);
       const form = new GenericForm(supportRequiredList);
       //When
@@ -221,7 +222,7 @@ describe('Support Required service', () => {
     it('should raise error if option "yes" and sign language selected but no content provided', async () => {
       //Given
       const supportRequiredList = new SupportRequiredList(YesNo.YES, [new SupportRequired({
-        fullName: 'johndoe',
+        fullName: 'John Doe',
         signLanguageInterpreter: new Support(
           'signLanguageInterpreter',
           true,
@@ -241,7 +242,7 @@ describe('Support Required service', () => {
     it('should raise error if option "yes" and language selected but no content provided', async () => {
       //Given
       const supportRequiredList = new SupportRequiredList(YesNo.YES, [new SupportRequired({
-        fullName: 'johndoe',
+        fullName: 'John Doe',
         languageInterpreter: new Support(
           'languageInterpreter',
           true,
@@ -261,7 +262,7 @@ describe('Support Required service', () => {
     it('should raise error if option "yes" and other support selected but no content provided', async () => {
       //Given
       const supportRequiredList = new SupportRequiredList(YesNo.YES, [new SupportRequired({
-        fullName: 'johndoe',
+        fullName: 'John Doe',
         otherSupport: new Support(
           'otherSupport',
           true,
@@ -293,18 +294,21 @@ describe('Support Required service', () => {
 
   describe('Get Support Required List', () => {
     const lang = 'en';
+    const claimId = '1234';
     it('should return support required details from draft store if present', async () => {
       //Given
       mockGetCaseDataFromStore.mockImplementation(async () => {
         return civilClaimResponseExpertAndWitnessMock.case_data;
       });
       //When
-      const [supportRequiredList, peopleLists] = await getSupportRequired('1234', lang);
+      const supportRequiredList = await getSupportRequired(claimId);
+      const selectedNames = supportRequiredList?.items?.map(item => item.fullName);
+      const peopleLists = await generatePeopleListWithSelectedValues(claimId, selectedNames, lang);
       //Then
       if (supportRequiredList.items) {
         expect(supportRequiredList.items).toBeTruthy();
         expect(supportRequiredList.items.length).toBe(2);
-        expect(supportRequiredList.items[0]?.fullName).toEqual('johndoe');
+        expect(supportRequiredList.items[0]?.fullName).toEqual('John Doe');
         expect(supportRequiredList.items[0].disabledAccess?.selected).toBe(true);
         expect(supportRequiredList.items[0].otherSupport?.selected).toBe(true);
         expect(supportRequiredList.items[0].otherSupport?.content).toEqual('other support text');
@@ -315,11 +319,11 @@ describe('Support Required service', () => {
         expect(peopleLists.length).toBe(2);
         expect(firstRow[0].text).toBe('PAGES.SUPPORT_REQUIRED.CHOOSE_NAME');
         expect(firstRow[1].text).toBe('John Doe');
-        expect(firstRow[1].value).toBe('johndoe');
+        expect(firstRow[1].value).toBe('John Doe');
         expect(firstRow[1].selected).toBe(true);
         expect(secondRow[0].text).toBe('PAGES.SUPPORT_REQUIRED.CHOOSE_NAME');
         expect(secondRow[3].text).toBe('Mike Brown');
-        expect(secondRow[3].value).toBe('mikebrown');
+        expect(secondRow[3].value).toBe('Mike Brown');
         expect(secondRow[3].selected).toBe(true);
       }
     });
@@ -330,7 +334,9 @@ describe('Support Required service', () => {
         return new Claim();
       });
       //When
-      const [supportRequiredList, peopleLists] = await getSupportRequired('1234', lang);
+      const supportRequiredList = await getSupportRequired(claimId);
+      const selectedNames = supportRequiredList?.items?.map(item => item.fullName);
+      const peopleLists = await generatePeopleListWithSelectedValues(claimId, selectedNames, lang);
       //Then
       if (supportRequiredList.items) {
         expect(supportRequiredList.items).toBeTruthy();
@@ -347,7 +353,7 @@ describe('Support Required service', () => {
         expect(peopleLists.length).toBe(1);
         expect(firstRow[0].text).toBe('PAGES.SUPPORT_REQUIRED.CHOOSE_NAME');
         expect(firstRow[0].value).toBe('');
-        expect(firstRow[0].selected).toBeUndefined();
+        expect(firstRow[0].selected).toBe(false);
       }
     });
   });
