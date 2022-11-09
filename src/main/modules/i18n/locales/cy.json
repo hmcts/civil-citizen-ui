@@ -224,6 +224,10 @@
     "VARIATION_2": {
       "YES": "Ydw",
       "NO": "Nac ydw"
+    },
+    "VARIATION_3": {
+      "YES": "Ydw/Ydynt",
+      "NO": "Nac ydw/Nac ydynt"
     }
   },
   "TASK_LIST": {
@@ -1739,9 +1743,9 @@
     },
     "VULNERABILITY": {
       "PAGE_TITLE": "Vulnerability questions",
-      "QUESTION_1": "This is someone who has been the victim of domestic or other abuse, has a learning disability, physical or mental illness or reduced mental capacity. The court will look at what adjustments or support the person needs.",
-      "QUESTION_2": "Tell us who is vulnerable and what support they need",
-      "TITLE": "Are you, your experts or witnesses vulnerable in a way that the court needs to consider?"
+      "QUESTION_1": "Diffinnir hyn fel rhywun sydd wedi dioddef camdriniaeth ddomestig neu ryw fath arall o gamdriniaeth, rhywun sydd ag anabledd dysgu, anabledd corfforol, salwch meddyliol neu ddiffyg galluedd meddyliol.  Bydd y llys yn ystyried pa addasiadau neu gymorth y bydd yr unigolyn ei angen",
+      "QUESTION_2": "Dywedwch wrthym pwy sy’n agored i niwed a pha gymorth maent ei angen",
+      "TITLE": "A ydych chi, eich arbenigwyr neu eich tystion yn agored i niwed mewn ffordd y mae angen i’r llys ei ystyried?"
     },
     "WELSH_LANGUAGE": {
       "ENGLISH": "English",
