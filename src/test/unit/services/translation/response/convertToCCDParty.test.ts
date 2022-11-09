@@ -68,9 +68,9 @@ const partyIndividual: Party = {
 
 const partySoleTrader: Party = {
   type: PartyType.SOLE_TRADER,
-  individualTitle: title,
-  individualFirstName: firstName,
-  individualLastName: lastName,
+  soleTraderTitle: title,
+  soleTraderFirstName: firstName,
+  soleTraderLastName: lastName,
   soleTraderTradingAs: soleTraderTradingAs,
   dateOfBirth: dateOfBirth,
   ...commonParty,
