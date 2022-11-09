@@ -228,6 +228,10 @@
     "VARIATION_3": {
       "YES": "Yes",
       "NO": "No"
+    },
+    "VARIATION_4": {
+      "YES": "Yes",
+      "NO": "No"
     }
   },
   "TASK_LIST": {

@@ -228,6 +228,10 @@
     "VARIATION_3": {
       "YES": "Ydw/Ydynt",
       "NO": "Nac ydw/Nac ydynt"
+    },
+    "VARIATION_4": {
+      "YES": "Ydy",
+      "NO": "Nac ydy"
     }
   },
   "TASK_LIST": {
@@ -845,10 +849,10 @@
     },
     "DEFENDANT_EXPERT_CAN_STILL_EXAMINE": {
       "CAN_NOT_USE": "You can't use an expert in this case.",
-      "EXAMINE": "What is there to examine?",
+      "EXAMINE": "Beth ellir ei archwilio?",
       "PAGE_TITLE": "Defendant expert can still examine",
-      "PHOTO_OR_VIDEO": "This could include photographs or videos.",
-      "TITLE": "Does the claim involve something an expert can still examine?"
+      "PHOTO_OR_VIDEO": "Gall hyn gynnwys ffotograffau neu fideos.",
+      "TITLE": "A yw’r hawliad yn ymwneud â rhywbeth y gall arbenigwr dal ei archwilio?"
     },
     "DEPENDANTS": {
       "GROUP11": "11 i 15",
@@ -1817,7 +1821,7 @@
     "DEFENDANT_POSTCODE_NOT_VALID": "Postcode must be in England or Wales",
     "DEFENDANT_YOURSELF_EVIDENCE_REQUIRED": "Dewiswch ‘ydw’ os ydych eisiau rhoi tystiolaeth eich hun",
     "DEFENDANT_EXPERT_EVIDENCE_REQUIRED": "Dewiswch ‘ydw’ os ydych eisiau defnyddio tystiolaeth arbenigwr",
-    "DEFENDANT_EXPERT_EXPLAIN_EXAMINE": "Explain what there is to examine",
+    "DEFENDANT_EXPERT_EXPLAIN_EXAMINE": "Eglurwch beth ellir ei archwilio",
     "DEFENDANT_WITNESS_ENTER_FIRST_NAME": "Nodwch enw cyntaf y tyst",
     "DEFENDANT_WITNESS_ENTER_LAST_NAME": "Nodwch enw olaf y tyst",
     "DEFENDANT_WITNESS_SELECT_OTHER": "Select yes if you have other witnesses",

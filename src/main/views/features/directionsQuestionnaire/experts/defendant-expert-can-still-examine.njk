@@ -46,7 +46,7 @@
             {% set noHtml %}
               <p class="govuk-body">{{ t('PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.CAN_NOT_USE') }}</p>
             {% endset %}
-            {{ yesNoRadioButton(t,id,name, title, form, description, {yesHtml: yesHtml,noHtml: noHtml}) }}
+            {{ yesNoRadioButton(t,id,name, title, form, description, {yesHtml: yesHtml,noHtml: noHtml, yes: 'COMMON.VARIATION_4.YES', no: 'COMMON.VARIATION_4.NO'}) }}
 
             <div class="govuk-form-group">
               {{ govukButton({
