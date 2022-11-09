@@ -316,6 +316,18 @@ export class Claim {
   isResponseDateInThePast(): boolean {
     return this.respondent1ResponseDate <= new Date();
   }
+
+  get hasSupportRequiredList(): boolean {
+    return !!this.directionQuestionnaire?.hearing?.supportRequiredList;
+  }
+
+  get isSupportRequiredYes(): boolean {
+    return this.directionQuestionnaire?.hearing?.supportRequiredList?.option === YesNo.YES;
+  }
+
+  get isSupportRequiredDetailsAvailable(): boolean {
+    return this.directionQuestionnaire?.hearing?.supportRequiredList?.items?.length > 0;
+  }
 }
 
 export interface StatementOfTruth {

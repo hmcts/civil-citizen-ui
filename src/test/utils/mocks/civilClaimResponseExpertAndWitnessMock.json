@@ -40,31 +40,31 @@
     },
     "directionQuestionnaire": {
       "hearing": {
-        "supportRequiredList": {
-          "items": [
-            {
-              "fullName": "johndoe",
-              "disabledAccess": {
-                "selected": true
+          "supportRequiredList": {
+            "items": [
+              {
+                "fullName": "John Doe",
+                "disabledAccess": {
+                  "selected": true
+                },
+                "otherSupport": {
+                  "selected": true,
+                  "content": "other support text"
+                }
               },
-              "otherSupport": {
-                "selected": true,
-                "content": "other support text"
+              {
+                "fullName": "Mike Brown",
+                "hearingLoop": {
+                  "selected": true
+                },
+                "languageInterpreter": {
+                  "selected": true,
+                  "content": "language support text"
+                }
               }
-            },
-            {
-              "fullName": "mikebrown",
-              "hearingLoop": {
-                "selected": true
-              },
-              "languageInterpreter": {
-                "selected": true,
-                "content": "language support text"
-              }
-            }
-          ]
-        }
-      },
+            ]
+          }
+        },
       "vulnerabilityQuestions": {},
       "experts": {
         "expertReportDetails": {
