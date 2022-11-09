@@ -43,6 +43,24 @@ describe('Full Admit Set Date Payment Service', () => {
       expect(details.proposedSetDate).toBe(formatDateToFullDate(claim.paymentDate));
     });
 
+    it('should return object when claimantResponse is undefined', async () => {
+      //Given
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        claim.respondent1.partyName = 'John Doe';
+        claim.paymentDate = new Date('2022-11-11T13:29:22.447');
+        claim.claimantResponse = undefined;
+        return claim;
+      });
+
+      //When
+      const details = await getFullAdmitSetDatePaymentDetails('validClaimId');
+
+      //Then
+      expect(details.fullAdmitAcceptPayment).toBeUndefined();
+      expect(details.defendantName).toBe(getDefendantFullName(claim));
+      expect(details.proposedSetDate).toBe(formatDateToFullDate(claim.paymentDate));
+    });
+
     it('should return object when fullAdmitSetDateAcceptPayment is undefined', async () => {
       //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {

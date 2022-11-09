@@ -2,7 +2,6 @@ import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreServi
 import {formatDateToFullDate} from '../../../common/utils/dateUtils';
 import {ClaimantResponse} from '../../../common/models/claimantResponse';
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
-import {getDefendantFullName} from '../response/checkAnswers/detailsSection/buildYourDetailsSection';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('fullAdmitSetDatePaymentService');
@@ -12,7 +11,7 @@ export const getFullAdmitSetDatePaymentDetails = async (claimId: string): Promis
     const claim = await getCaseDataFromStore(claimId);
     const claimantResponse = (claim?.claimantResponse) ? claim.claimantResponse : new ClaimantResponse();
     const fullAdmitAcceptPayment = claimantResponse.fullAdmitSetDateAcceptPayment;
-    const defendantName = getDefendantFullName(claim);
+    const defendantName = claim.getName(claim.respondent1);
     const proposedSetDate = formatDateToFullDate(claim.paymentDate);
     return {
       fullAdmitAcceptPayment,

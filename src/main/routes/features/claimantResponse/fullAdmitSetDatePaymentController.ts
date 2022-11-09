@@ -34,8 +34,7 @@ fullAdmitSetDatePaymentController.get(CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAYM
 fullAdmitSetDatePaymentController.post(CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAYMENT_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const claimantResponsePropertyName = 'option';
-    const parentPropertyName = 'fullAdmitSetDateAcceptPayment';
+    const propertyName = 'fullAdmitSetDateAcceptPayment';
     const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_SELECTION'));
     form.validateSync();
 
@@ -43,7 +42,7 @@ fullAdmitSetDatePaymentController.post(CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAY
       const details = await getFullAdmitSetDatePaymentDetails(claimId);
       await renderView(form, details.defendantName, details.proposedSetDate, res);
     } else {
-      await saveClaimantResponse(claimId, form.model.option, claimantResponsePropertyName, parentPropertyName);
+      await saveClaimantResponse(claimId, form.model.option, propertyName);
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
     }
   } catch (error) {
