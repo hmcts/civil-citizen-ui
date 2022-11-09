@@ -79,7 +79,7 @@ export const createClaimWithBasicRespondentDetails = (contactPerson?: string): C
       individualFirstName: FIRST_NAME,
     },
   };
-  claim.respondent1.partyDetails.primaryAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
+  claim.respondent1.partyDetails.primaryAddress = new Address('23 Brook lane', '', '', 'Bristol', 'BS13SS');
   claim.paymentOption = PaymentOptionType.IMMEDIATELY;
   return claim;
 };
