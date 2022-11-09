@@ -9,7 +9,7 @@ freeTelephoneMediationController.get(CITIZEN_FREE_TELEPHONE_MEDIATION_URL, async
   try {
     const civilClaim = await getCaseDataFromStore(req.params.id);
     res.render(citizenFreeTelephoneMediationViewPath,
-      {isBusiness: civilClaim.isBusiness()},
+      {isBusiness: civilClaim?.isBusiness()},
     );
   } catch (error) {
     next(error);
