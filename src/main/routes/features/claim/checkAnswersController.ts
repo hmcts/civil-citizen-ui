@@ -14,10 +14,10 @@ import {GenericForm} from '../../../common/form/models/genericForm';
 import {StatementOfTruthForm} from '../../../common/form/models/statementOfTruth/statementOfTruthForm';
 import {QualifiedStatementOfTruth} from '../../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {YesNo} from '../../../common/form/models/yesNo';
-import {paymentUrl} from '../../../../test/utils/externalURLs';
 
 const checkAnswersViewPath = 'features/claim/check-answers';
 const claimCheckAnswersController = Router();
+const paymentUrl = 'https://www.payments.service.gov.uk/card_details/:id';
 
 function renderView(res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim, userId: string, lang: string) {
   const summarySections = getSummarySections(userId, claim, lang);
