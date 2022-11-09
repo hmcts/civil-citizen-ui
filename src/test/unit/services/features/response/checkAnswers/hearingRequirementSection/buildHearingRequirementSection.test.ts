@@ -45,7 +45,7 @@ describe('test hearingRequirementSection', () => {
     expect(summaryRows.summaryList.rows[0].value.html).toEqual(YesNo.NO);
   });
 
-  it('should display \'yes\' when there is 1 witness', () => {
+  it('should display \'yes\' and 1 witness details', () => {
     const claim = new Claim();
     claim.directionQuestionnaire = new DirectionQuestionnaire();
     claim.directionQuestionnaire.witnesses = new Witnesses();
@@ -58,6 +58,24 @@ describe('test hearingRequirementSection', () => {
     expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
     expect(summaryRows.summaryList.rows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
     expect(summaryRows.summaryList.rows[0].value.html).toEqual(YesNo.YES);
+
+    expect(summaryRows.summaryList.rows[1].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WITNESS 1');
+
+    expect(summaryRows.summaryList.rows[2].key.text).toEqual('COMMON.INPUT_LABELS.FIRST_NAME');
+    expect(summaryRows.summaryList.rows[2].value.html).toEqual('Joe');
+
+    expect(summaryRows.summaryList.rows[3].key.text).toEqual('COMMON.INPUT_LABELS.LAST_NAME');
+    expect(summaryRows.summaryList.rows[3].value.html).toEqual('Doe');
+
+    expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.EMAIL_ADDRESS');
+    expect(summaryRows.summaryList.rows[4].value.html).toEqual('joe@doe.com');
+
+    expect(summaryRows.summaryList.rows[5].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.PHONE_NUMBER');
+    expect(summaryRows.summaryList.rows[5].value.html).toEqual('000000000');
+
+    expect(summaryRows.summaryList.rows[6].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY');
+    expect(summaryRows.summaryList.rows[6].value.html).toEqual('Here is some of details');
+
   });
 
   it('should display \'yes\' and have 2 witnesses', () => {
@@ -73,11 +91,29 @@ describe('test hearingRequirementSection', () => {
     expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
     expect(summaryRows.summaryList.rows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
     expect(summaryRows.summaryList.rows[0].value.html).toEqual(YesNo.YES);
-
+    // Witness 1
     expect(summaryRows.summaryList.rows[1].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WITNESS 1');
-    expect(summaryRows.summaryList.rows[1].value.html).toEqual('COMMON.INPUT_LABELS.FIRST_NAME: Joe<br />COMMON.INPUT_LABELS.LAST_NAME: Doe<br />PAGES.CHECK_YOUR_ANSWER.EMAIL_ADDRESS: joe@doe.com<br />PAGES.CHECK_YOUR_ANSWER.PHONE_NUMBER: 000000000<br />PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY: Here is some of details');
-
-    expect(summaryRows.summaryList.rows[2].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WITNESS 2');
-    expect(summaryRows.summaryList.rows[2].value.html).toEqual('COMMON.INPUT_LABELS.FIRST_NAME: Jane<br />COMMON.INPUT_LABELS.LAST_NAME: Does<br />PAGES.CHECK_YOUR_ANSWER.EMAIL_ADDRESS: jane@does.com<br />PAGES.CHECK_YOUR_ANSWER.PHONE_NUMBER: 111111111<br />PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY: Some details of Jane Does');
+    expect(summaryRows.summaryList.rows[2].key.text).toEqual('COMMON.INPUT_LABELS.FIRST_NAME');
+    expect(summaryRows.summaryList.rows[2].value.html).toEqual('Joe');
+    expect(summaryRows.summaryList.rows[3].key.text).toEqual('COMMON.INPUT_LABELS.LAST_NAME');
+    expect(summaryRows.summaryList.rows[3].value.html).toEqual('Doe');
+    expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.EMAIL_ADDRESS');
+    expect(summaryRows.summaryList.rows[4].value.html).toEqual('joe@doe.com');
+    expect(summaryRows.summaryList.rows[5].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.PHONE_NUMBER');
+    expect(summaryRows.summaryList.rows[5].value.html).toEqual('000000000');
+    expect(summaryRows.summaryList.rows[6].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY');
+    expect(summaryRows.summaryList.rows[6].value.html).toEqual('Here is some of details');
+    // Witness 2
+    expect(summaryRows.summaryList.rows[7].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WITNESS 2');
+    expect(summaryRows.summaryList.rows[8].key.text).toEqual('COMMON.INPUT_LABELS.FIRST_NAME');
+    expect(summaryRows.summaryList.rows[8].value.html).toEqual('Jane');
+    expect(summaryRows.summaryList.rows[9].key.text).toEqual('COMMON.INPUT_LABELS.LAST_NAME');
+    expect(summaryRows.summaryList.rows[9].value.html).toEqual('Does');
+    expect(summaryRows.summaryList.rows[10].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.EMAIL_ADDRESS');
+    expect(summaryRows.summaryList.rows[10].value.html).toEqual('jane@does.com');
+    expect(summaryRows.summaryList.rows[11].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.PHONE_NUMBER');
+    expect(summaryRows.summaryList.rows[11].value.html).toEqual('111111111');
+    expect(summaryRows.summaryList.rows[12].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY');
+    expect(summaryRows.summaryList.rows[12].value.html).toEqual('Some details of Jane Does');
   });
 });

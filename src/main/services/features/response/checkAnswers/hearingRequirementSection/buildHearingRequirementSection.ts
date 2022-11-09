@@ -19,13 +19,12 @@ const getWitnesses = (claim: Claim, claimId: string, lang: string | unknown): Su
   let index = 0;
 
   for(const witness of witnesses) {
-    const witnessDetails = t('COMMON.INPUT_LABELS.FIRST_NAME') + ': ' + getEmptyStringIfUndefined(witness.firstName) + '<br />' +
-      t('COMMON.INPUT_LABELS.LAST_NAME') + ': ' + getEmptyStringIfUndefined(witness.lastName) + '<br />' +
-      t('PAGES.CHECK_YOUR_ANSWER.EMAIL_ADDRESS') + ': ' + getEmptyStringIfUndefined(witness.email) + '<br />' +
-      t('PAGES.CHECK_YOUR_ANSWER.PHONE_NUMBER') + ': ' + getEmptyStringIfUndefined(witness.telephone) + '<br />' +
-      t('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY') + ': ' + getEmptyStringIfUndefined(witness.details);
-
-    summaryRows.push(...[summaryRow(`${t('PAGES.CHECK_YOUR_ANSWER.WITNESS', {lng: getLng(lang)})} ${index += 1}`, witnessDetails, witnessesHref, changeLabel(lang))]);
+    summaryRows.push(summaryRow(`${t('PAGES.CHECK_YOUR_ANSWER.WITNESS', {lng: getLng(lang)})} ${index += 1}`, '', witnessesHref, changeLabel(lang)));
+    summaryRows.push(summaryRow(t('COMMON.INPUT_LABELS.FIRST_NAME', {lng: getLng(lang)}), getEmptyStringIfUndefined(witness.firstName)));
+    summaryRows.push(summaryRow(t('COMMON.INPUT_LABELS.LAST_NAME', {lng: getLng(lang)}), getEmptyStringIfUndefined(witness.lastName)));
+    summaryRows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMAIL_ADDRESS', {lng: getLng(lang)}), getEmptyStringIfUndefined(witness.email)));
+    summaryRows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PHONE_NUMBER', {lng: getLng(lang)}), getEmptyStringIfUndefined(witness.telephone)));
+    summaryRows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY', {lng: getLng(lang)}), getEmptyStringIfUndefined(witness.details)));
   }
 
   return summaryRows;
