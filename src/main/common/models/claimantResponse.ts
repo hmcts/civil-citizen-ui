@@ -4,4 +4,5 @@ import {CCJRequest} from './claimantResponse/ccj/ccjRequest';
 export class ClaimantResponse {
   hasDefendantPaidYou?: GenericYesNo;
   ccjRequest?: CCJRequest;
+  intentionToProceed?: GenericYesNo;
 }
