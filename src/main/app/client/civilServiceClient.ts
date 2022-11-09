@@ -6,8 +6,10 @@ import {CivilClaimResponse} from '../../common/models/civilClaimResponse';
 import {
   CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
+  CIVIL_SERVICE_CLAIM_AMOUNT_URL,
   CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_FEES_RANGES,
+  CIVIL_SERVICE_HEARING_URL,
   CIVIL_SERVICE_SUBMIT_EVENT,
   CIVIL_SERVICE_VALIDATE_PIN_URL,
 } from './civilServiceUrls';
@@ -111,6 +113,28 @@ export class CivilServiceClient {
     try{
       const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_FEES_RANGES, config);
       return new FeeRanges(plainToInstance(FeeRange, response.data as object[]));
+    } catch (err: unknown) {
+      logger.error(err);
+      throw err;
+    }
+  }
+
+  async getHearingAmount(amount: number, req: AppRequest): Promise<any> {
+    const config = this.getConfig(req);
+    try{
+      const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_HEARING_URL}/${amount}`, config);
+      return response.data;
+    } catch (err: unknown) {
+      logger.error(err);
+      throw err;
+    }
+  }
+
+  async getClaimAmountFee(amount: number, req: AppRequest): Promise<any> {
+    const config = this.getConfig(req);
+    try{
+      const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_CLAIM_AMOUNT_URL}/${amount}`, config);
+      return response.data;
     } catch (err: unknown) {
       logger.error(err);
       throw err;

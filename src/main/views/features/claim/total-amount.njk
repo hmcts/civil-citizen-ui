@@ -1,0 +1,115 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/help-calculating-interest.njk" import setContent %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.TOTAL_AMOUNT.PAGE_TITLE') }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t('PAGES.TOTAL_AMOUNT.TITLE') }}</h1>
+
+          {{ govukSummaryList({
+            rows: [
+              {
+                key: {
+                  text: "Claim amount",
+                  classes: "govuk-!-font-weight-regular"
+                },
+                value: {
+                  text: "£" + form.claimAmount
+                }
+              },
+              {
+                key: {
+                  text: "Interest to date",
+                  classes: "govuk-!-font-weight-regular"
+                },
+                value: {
+                   text: "£" + form.interestToDate
+                }
+              },
+              {
+                key: {
+                  text: "Claim fee",
+                  classes: "govuk-!-font-weight-regular"
+                },
+                value: {
+                  text: "£" + form.claimFee
+                }
+              },
+              {
+                key: {
+                  text: "Total claim amount"
+                },
+                value: {
+                  text: "£" + form.totalAmount
+                }
+              }
+            ] 
+          }) }}
+
+          <h3 class="govuk-heading-s">{{t('PAGES.TOTAL_AMOUNT.WE_WILL_REVIEW')}}</h3>
+          <ol class="govuk-list govuk-list--number">
+            <li class="govuk-body">{{t('PAGES.TOTAL_AMOUNT.IF_SUCCESSFUL')}}</li>
+            <li class="govuk-body">{{t('PAGES.TOTAL_AMOUNT.TOTAL_WOULD_BE_LOWER')}}</li>
+            <li class="govuk-body">{{t('PAGES.TOTAL_AMOUNT.IF_UNSUCCESSFUL')}}</li>
+          </ol>
+
+          {{ govukDetails({
+            summaryText: t('PAGES.TOTAL_AMOUNT.HOW_INTEREST_IS_CALCULATED'),
+            html: setContent(t)
+          }) }}
+
+          <h3 class="govuk-heading-s">{{t('PAGES.TOTAL_AMOUNT.IF_YOU_SETTLE')}}</h3>
+          <p class="govuk-body">{{t('PAGES.TOTAL_AMOUNT.WE_WONT_REFOUND')}}</p>
+
+          {{ govukSummaryList({
+            rows: [
+              {
+                key: {
+                  text: t('PAGES.TOTAL_AMOUNT.OTHER_FEES'),
+                  classes: "govuk-heading-s"
+                }
+              },
+              {
+                key: {
+                  text: t('PAGES.TOTAL_AMOUNT.HEARING_FEE'),
+                  classes: "govuk-!-font-weight-regular"
+                },
+                value: {
+                  text: "£" + form.hearingAmount
+                }
+              }
+            ] 
+          }) }}
+
+          <p class="govuk-body">{{t('PAGES.TOTAL_AMOUNT.YOU_DONT_HAVE_TO_PAY')}}</p>
+
+          <p class="govuk-body">{{t('PAGES.TOTAL_AMOUNT.ADDITIONAL_FEES')}}
+            <a href="https://www.gov.uk/government/publications/fees-in-the-civil-and-family-courts-main-fees-ex50" class="govuk-link">{{t('PAGES.TOTAL_AMOUNT.FIND_OUT_MORE')}}</a>
+          </p>
+
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

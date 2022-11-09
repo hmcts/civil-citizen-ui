@@ -84,7 +84,7 @@ import requestMoreTimeController from './features/response/requestMoreTimeContro
 import agreedResponseDeadlineController from './features/response/responseDeadline/agreedResponseDeadlineController';
 import determinationWithoutHearingController
   from './features/directionsQuestionnaire/hearing/determinationWithoutHearingController';
-import totalAmountController from './features/public/eligibility/totalAmountController';
+import totalAmountEligibilityController from './features/public/eligibility/totalAmountController';
 import claimTypeController from './features/public/eligibility/claimTypeController';
 import notEligibleController from './features/public/eligibility/notEligibleController';
 import claimantAddressEligibilityController from './features/public/eligibility/claimantAddressEligibilityController';
@@ -157,6 +157,7 @@ import claimCheckAnswersController from './features/claim/checkAnswersController
 import claimantEvidenceController from './features/claim/yourDetails/claimantEvidenceController';
 import howMuchContinueClaimingController from './features/claim/interest/howMuchContinueClaimingController';
 import helpWithFeesController from './features/claim/details/helpWithFeesController';
+import totalAmountController from './features/claim/totalAmountController';
 
 export default [
   homeController,
@@ -235,7 +236,7 @@ export default [
   agreedResponseDeadlineController,
   newDeadlineResponseController,
   determinationWithoutHearingController,
-  totalAmountController,
+  totalAmountEligibilityController,
   claimTypeController,
   notEligibleController,
   claimantAddressEligibilityController,
@@ -302,4 +303,5 @@ export default [
   claimantEvidenceController,
   howMuchContinueClaimingController,
   helpWithFeesController,
+  totalAmountController,
 ];
