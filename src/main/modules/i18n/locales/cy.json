@@ -276,6 +276,10 @@
     "CARER": {
       "PAGE_TITLE": "Carer's allowance"
     },
+    "CCJ_DEFENDANT_DOB": {
+      "PAGE_TITLE": "Do you know the defendant's date of birth?",
+      "TITLE": "Do you know the defendant's date of birth?"
+    },
     "CHECK_YOUR_ANSWER": {
       "BANK_AND_SAVINGS_ACCOUNTS": "Cyfrifon banc a chynilo",
       "BANK_BALANCE": "Cydbwysedd",
@@ -362,6 +366,9 @@
       "SUPPORT_ANYONE_ELSE_FINANCIALLY": "Ydych chi'n cefnogi unrhyw un arall yn ariannol?",
       "SUPPORT_NUMBER_OF_PEOPLE": "Nifer y bobl",
       "SUPPORT_GIVE_DETAILS": "Rhowch fanylion",
+      "SUPPORT_REQUIRED_INTERPRETER": "Interpreter",
+      "SUPPORT_REQUIRED_NAME": "Name of the person who requires support:",
+      "SUPPORT_REQUIRED_DETAILS": "Support details:",
       "TAX_PAYMENT_ARE_YOU_BEHIND": "Ydych chi ar ei hôl hi gyda thaliadau treth?",
       "TAX_PAYMENT_AMOUNT_YOU_OWE": "Swm sydd arnoch chi?",
       "TAX_PAYMENT_REASON": "Rheswm",
@@ -584,6 +591,10 @@
       "SAME_RATE_INTEREST_8_PC": "8.00%",
       "TITLE": "What annual rate of interest do you want to claim?",
       "WHY_YOU_ARE_ENTITLED": "Why you're entitled to this rate"
+    },
+    "CLAIMANT_RESPONSE_PROCEED": {
+      "PAGE_TITLE": "Do you want to proceed with claim?",
+      "TITLE": "Do you want to proceed with claim?"
     },
     "CLAIMANT_PARTY_TYPE_SELECTION": {
       "CLAIMING_AS_HEADER": "I'm claiming as:",
@@ -2015,6 +2026,7 @@
       "WATER": "Enter a valid Water amount, maximum two decimal places"
     },
     "VALID_DISAGREE_REASON_REQUIRED": "Dywedwch pam ydych yn anghytuno",
+    "VALID_ENTER_A_DATE_BEFORE": "Please enter a date of birth before {{ maxDate }}",
     "VALID_ENTER_AN_EMPLOYER_NAME": "Rhowch enw cyflogwr",
     "VALID_ENTER_AT_LEAST_ONE_COURT_ORDER": "Rhowch fanylion o leiaf un gorchymyn llys",
     "VALID_ENTER_AT_LEAST_ONE_EMPLOYER": "Rhowch o leiaf un cyflogwr",
