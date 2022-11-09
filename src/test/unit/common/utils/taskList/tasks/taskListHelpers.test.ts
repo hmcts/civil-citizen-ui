@@ -23,6 +23,7 @@ import {RejectAllOfClaimType} from '../../../../../../main/common/form/models/re
 import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 import {PartyDetails} from '../../../../../../main/common/form/models/partyDetails';
 import {DateOfBirth} from '../../../../../../main/common/form/models/claim/claimant/dateOfBirth';
+import {Address} from '../../../../../../main/common/form/models/address';
 
 const mockClaim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
 const mockRespondent: Party = {
@@ -33,14 +34,8 @@ const mockRespondent: Party = {
     individualLastName: '',
     individualFirstName: '',
     individualTitle: '',
-    primaryAddress: {
-      postCode: '',
-      city: '',
-      addressLine1: '',
-      addressLine2: '',
-      addressLine3: '',
-    },
-    correspondenceAddress: {},
+    primaryAddress: new Address('', '', '', '', ''),
+    correspondenceAddress: new Address(),
   },
   type: PartyType.ORGANISATION,
 };
@@ -285,15 +280,7 @@ describe('Task List Helpers', () => {
   });
 
   describe('hasCorrespondenceAndPrimaryAddress helper', () => {
-    const address = {
-      county: 'test',
-      country: 'test',
-      postCode: 'test',
-      city: 'test',
-      addressLine1: 'test',
-      addressLine2: 'test',
-      addressLine3: 'test',
-    };
+    const address = new Address('test', 'test', 'test', 'test', 'test');
 
     it('should return false if only has primaryAdress', () => {
       caseData.respondent1 = new Party();
@@ -312,7 +299,8 @@ describe('Task List Helpers', () => {
 
     it('should return true if has primaryAdress and NO', () => {
       caseData.respondent1 = new Party();
-      caseData.respondent1.partyDetails = new PartyDetails(address);
+      caseData.respondent1.partyDetails = new PartyDetails({});
+      caseData.respondent1.partyDetails.primaryAddress = new Address('test', 'test', 'test', 'test', 'test');
       caseData.respondent1.partyDetails.postToThisAddress = YesNo.NO;
       expect(hasCorrespondenceAndPrimaryAddress(caseData.respondent1)).toEqual(true);
     });

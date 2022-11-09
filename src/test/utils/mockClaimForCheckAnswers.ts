@@ -55,6 +55,7 @@ import {
   InterestEndDateType,
   SameRateInterestType,
 } from '../../main/common/form/models/claimDetails';
+import {Address} from '../../main/common/form/models/address';
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -76,13 +77,9 @@ export const createClaimWithBasicRespondentDetails = (contactPerson?: string): C
       individualTitle: TITLE,
       individualLastName: LAST_NAME,
       individualFirstName: FIRST_NAME,
-      primaryAddress: {
-        addressLine1: '23 Brook lane',
-        city: 'Bristol',
-        postCode: 'BS13SS',
-      },
     },
   };
+  claim.respondent1.partyDetails.primaryAddress = new Address('23 Brook lane', '', '', 'Bristol', 'BS13SS');
   claim.paymentOption = PaymentOptionType.IMMEDIATELY;
   return claim;
 };
@@ -99,13 +96,9 @@ export const createClaimWithBasicApplicantDetails = (contactPerson?: string): Cl
       individualLastName: LAST_NAME,
       individualFirstName: FIRST_NAME,
       contactPerson: contactPerson,
-      primaryAddress: {
-        addressLine1: '23 Brook lane',
-        city: 'Bristol',
-        postCode: 'BS13SS',
-      },
     },
   };
+  claim.applicant1.partyDetails.primaryAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
   claim.paymentOption = PaymentOptionType.IMMEDIATELY;
   return claim;
 };
@@ -138,18 +131,10 @@ export const createClaimWithIndividualDetails = (): Claim => {
       individualLastName: LAST_NAME,
       individualFirstName: FIRST_NAME,
       partyName: PARTY_NAME,
-      primaryAddress: {
-        addressLine1: '23 Brook lane',
-        city: 'Bristol',
-        postCode: 'BS13SS',
-      },
-      correspondenceAddress: {
-        addressLine1: '24 Brook lane',
-        city: 'Bristol',
-        postCode: 'BS13SS',
-      },
     },
   };
+  claim.respondent1.partyDetails.primaryAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
+  claim.respondent1.partyDetails.correspondenceAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
   return claim;
 };
 export const createClaimWithApplicantIndividualDetails = (): Claim => {
@@ -163,18 +148,11 @@ export const createClaimWithApplicantIndividualDetails = (): Claim => {
       individualLastName: LAST_NAME,
       individualFirstName: FIRST_NAME,
       partyName: PARTY_NAME,
-      primaryAddress: {
-        addressLine1: '23 Brook lane',
-        city: 'Bristol',
-        postCode: 'BS13SS',
-      },
-      correspondenceAddress: {
-        addressLine1: '24 Brook lane',
-        city: 'Bristol',
-        postCode: 'BS13SS',
-      },
     },
   };
+  claim.applicant1.partyDetails.primaryAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
+  claim.applicant1.partyDetails.correspondenceAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
+
   return claim;
 };
 
@@ -783,13 +761,9 @@ export const ceateClaimWithPartialAdmission = (alreadyPaid?: YesNo, paymentOptio
     partyDetails: {
       partyName: PARTY_NAME,
       contactPerson: '',
-      primaryAddress: {
-        addressLine1: '23 Brook lane',
-        city: 'Bristol',
-        postCode: 'BS13SS',
-      },
     },
   };
+  claim.respondent1.partyDetails.primaryAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
   claim.partialAdmission = partialAdmission;
   claim.evidence = defendantEvidence;
   claim.partialAdmission.paymentIntention?.paymentOption ? paymentOptionType : undefined;

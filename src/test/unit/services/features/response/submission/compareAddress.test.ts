@@ -4,29 +4,11 @@ import {
   processAddressLine,
 } from '../../../../../../main/services/features/response/submission/compareAddress';
 
-const addressData: Address = {
-  city: 'XXX123',
-  addressLine1: 'Street',
-  addressLine2: '1',
-  addressLine3: '5A',
-};
-
-const completeAddress: Address = {
-  ...addressData,
-};
-
-const addressUpdated: Address = {
-  ...addressData,
-  postCode: '0000',
-};
-const addressWithEmptyString: Address = {
-  ...addressData,
-  postCode: '',
-};
-const addressWithUndefined: Address = {
-  ...addressData,
-  postCode: undefined,
-};
+const addressData: Address = new Address('Street', '1', '5A', 'XXX123');
+const completeAddress: Address = new Address('Street', '1', '5A', 'XXX123', '');
+const addressUpdated: Address = new Address('Street', '1', '5A', 'XXX123', '0000');
+const addressWithEmptyString: Address = new Address('Street', '1', '5A', 'XXX123', '');
+const addressWithUndefined: Address = new Address('Street', '1', '5A', 'XXX123', undefined);
 
 describe('Compare addresses util', () => {
   it('should return false if same addresses', () => {

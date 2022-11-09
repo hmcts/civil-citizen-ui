@@ -14,6 +14,7 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {Party} from '../../../../../../main/common/models/party';
 import {PartyType} from '../../../../../../main/common/models/partyType';
+import {Address} from '../../../../../../main/common/form/models/address';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -86,13 +87,7 @@ describe('Defendant details controller', () => {
           claim.respondent1 = {
             type: PartyType.ORGANISATION,
             partyDetails: {
-              primaryAddress: {
-                postCode: 'SN1 2RA',
-                city: 'Bath',
-                addressLine1: 'Valid address',
-                addressLine2: 'Valid address number',
-                addressLine3: '',
-              },
+              primaryAddress: new Address('Valid address', 'Valid address number', '', 'Bath', 'SN1 2RA'),
             },
           };
           return claim;
@@ -134,13 +129,7 @@ describe('Defendant details controller', () => {
           claim.respondent1 = {
             type: PartyType.SOLE_TRADER,
             partyDetails: {
-              primaryAddress: {
-                postCode: 'SN1 2RA',
-                city: 'Bath',
-                addressLine1: 'Valid address',
-                addressLine2: 'Valid address number',
-                addressLine3: '',
-              },
+              primaryAddress: new Address('Valid address', 'Valid address number', '', 'Bath', 'SN1 2RA'),
             },
           };
           return claim;

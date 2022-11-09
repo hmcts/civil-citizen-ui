@@ -30,6 +30,7 @@ import {WhyDoYouDisagree} from '../../../../main/common/form/models/admission/pa
 import {Defence} from '../../../../main/common/form/models/defence';
 import {ClaimResponseStatus} from '../../../../main/common/models/claimResponseStatus';
 import {InterestClaimOptionsType} from '../../../../main/common/form/models/claim/interest/interestClaimOptionsType';
+import {Address} from '../../../../main/common/form/models/address';
 
 describe('Claim isInterestEnDateUntilSubmitDate', () => {
   const claim = new Claim();
@@ -70,7 +71,7 @@ describe('Claim isInterestFromClaimSubmitDate', () => {
   });
   it('should return true', () => {
     //Given
-    claim.interest = {interestClaimFrom : InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE};
+    claim.interest = {interestClaimFrom: InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE};
     //When
     const result = claim.isInterestFromClaimSubmitDate();
     //Then
@@ -78,7 +79,7 @@ describe('Claim isInterestFromClaimSubmitDate', () => {
   });
   it('should return false', () => {
     //Given
-    claim.interest = {interestClaimFrom : InterestClaimFromType.FROM_A_SPECIFIC_DATE};
+    claim.interest = {interestClaimFrom: InterestClaimFromType.FROM_A_SPECIFIC_DATE};
     //When
     const result = claim.isInterestFromClaimSubmitDate();
     //Then
@@ -96,7 +97,7 @@ describe('Claim isInterestFromASpecificDate', () => {
   });
   it('should return true', () => {
     //Given
-    claim.interest = {interestClaimFrom : InterestClaimFromType.FROM_A_SPECIFIC_DATE};
+    claim.interest = {interestClaimFrom: InterestClaimFromType.FROM_A_SPECIFIC_DATE};
     //When
     const result = claim.isInterestFromASpecificDate();
     //Then
@@ -104,7 +105,7 @@ describe('Claim isInterestFromASpecificDate', () => {
   });
   it('should return false', () => {
     //Given
-    claim.interest = {interestClaimFrom : InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE};
+    claim.interest = {interestClaimFrom: InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE};
     //When
     const result = claim.isInterestFromASpecificDate();
     //Then
@@ -122,7 +123,7 @@ describe('Claim isInterestClaimOptionsSameRateInterest', () => {
   });
   it('should return true', () => {
     //Given
-    claim.interest ={interestClaimOptions: InterestClaimOptionsType.SAME_RATE_INTEREST};
+    claim.interest = {interestClaimOptions: InterestClaimOptionsType.SAME_RATE_INTEREST};
     //When
     const result = claim.isInterestClaimOptionsSameRateInterest();
     //Then
@@ -130,7 +131,7 @@ describe('Claim isInterestClaimOptionsSameRateInterest', () => {
   });
   it('should return false', () => {
     //Given
-    claim.interest ={interestClaimOptions: InterestClaimOptionsType.BREAK_DOWN_INTEREST};
+    claim.interest = {interestClaimOptions: InterestClaimOptionsType.BREAK_DOWN_INTEREST};
     //When
     const result = claim.isInterestClaimOptionsSameRateInterest();
     //Then
@@ -148,7 +149,7 @@ describe('Claim isSameRateTypeEightPercent', () => {
   });
   it('should return true', () => {
     //Given
-    claim.interest = {sameRateInterestSelection : {sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC}};
+    claim.interest = {sameRateInterestSelection: {sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC}};
     //When
     const result = claim.isSameRateTypeEightPercent();
     //Then
@@ -156,7 +157,7 @@ describe('Claim isSameRateTypeEightPercent', () => {
   });
   it('should return false', () => {
     //Given
-    claim.interest = {sameRateInterestSelection : {sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE}};
+    claim.interest = {sameRateInterestSelection: {sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE}};
     //When
     const result = claim.isSameRateTypeEightPercent();
     //Then
@@ -449,7 +450,7 @@ describe('Claim isFullAdmission', () => {
     //Given
     claim.respondent1 = {
       responseType: ResponseType.PART_ADMISSION,
-      partyDetails: {primaryAddress: {}},
+      partyDetails: {primaryAddress: new Address()},
       type: PartyType.INDIVIDUAL,
     };
     //When
@@ -495,7 +496,7 @@ describe('Claim isPartialAdmission', () => {
     //Given
     claim.respondent1 = {
       responseType: ResponseType.FULL_ADMISSION,
-      partyDetails: {primaryAddress: {}},
+      partyDetails: {primaryAddress: new Address()},
       type: PartyType.INDIVIDUAL,
     };
     //When
