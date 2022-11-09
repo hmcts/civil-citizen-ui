@@ -1,5 +1,6 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../dashboard/item-content.njk" import itemContent %}
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../macro/their-financial-details.njk" import theirFinancialDetails %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
@@ -14,22 +15,14 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.TITLE') }}</h1>
-          {% if claim.responseStatus === 'FULL_ADMISSION_PAY_BY_DATE' %}
-            <p class="govuk-body">
-              {{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.FULL_ADMISSION', {defendant: claim.getDefendantName() }) }}
-              {{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.TOTAL_PAID_AMOUNT') }}
-            </p>
-            <p class="govuk-body">
-              {{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PAYMENT_DATE', {paymentDate: paymentDate}) }}
-            </p>
-          {% endif %}
-          {% if claim.isBusiness() %}
-          {% else %}
-            <h2 class="govuk-heading-s">{{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.UNABLE_TO_PAY_FULL_AMOUNT') }}</h2>
-            <p class="govuk-body">{{ claim.getExplanationText() }}</p>
-          {% endif %}
 
-          {{ theirFinancialDetails(t, 'PAGES.REVIEW_DEFENDANTS_RESPONSE.SEE_FINANCIAL_DETAILS', claim, financialDetails) }}
+          {% for item in defendantsResponseContent %}
+            {{ itemContent(item,t) }}
+          {% endfor %}
+
+          {% if claim.responseStatus === 'FULL_ADMISSION_PAY_BY_DATE' %}
+            {{ theirFinancialDetails(t, 'PAGES.REVIEW_DEFENDANTS_RESPONSE.SEE_FINANCIAL_DETAILS', claim, financialDetails) }}
+          {% endif %}
 
           <h3 class="govuk-heading-s">{{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.FULL_RESPONSE') }}</h3>
           <p class="govuk-body">
