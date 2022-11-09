@@ -16,7 +16,7 @@ import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 import {PartyType} from '../../../../../common/models/partyType';
 import {Address} from '../../../../../common/form/models/address';
 
-const changeLabel = (lang: string): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', {lng: lang});
+const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', {lng: lang});
 
 const addressToString = (address: Address) => {
   return address?.addressLine1 + '<br>' + address?.city + '<br>' + address?.postCode;
@@ -55,7 +55,7 @@ export const buildTheirDetailsSection = (claim: Claim, claimId: string, lang: st
   if (claim.respondent1?.partyDetails.contactPerson) {
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_PERSON', {lng}), claim.respondent1.partyDetails.contactPerson, theirDetailsHref, changeLabel(lng)));
   }
-  yourDetailsSection.summaryList.rows.push(...[summaryRow(t('PAGES.CHECK_YOUR_ANSWER.ADDRESS', {lng}), addressToString(claim.respondent1?.partyDetails.primaryAddress), theirDetailsHref, changeLabel(lng)),
+  yourDetailsSection.summaryList.rows.push(...[summaryRow(t('COMMON.ADDRESS', {lng}), addressToString(claim.respondent1?.partyDetails.primaryAddress), theirDetailsHref, changeLabel(lng)),
     summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CORRESPONDENCE_ADDRESS', {lng}), claim.respondent1?.partyDetails.correspondenceAddress ? addressToString(claim.respondent1?.partyDetails.correspondenceAddress) : t('PAGES.CHECK_YOUR_ANSWER.SAME_ADDRESS', {lng}), theirDetailsHref, changeLabel(lng))]);
   if (claim.respondent1?.type === PartyType.INDIVIDUAL || claim.respondent1?.type === PartyType.SOLE_TRADER) {
     if (claim.respondent1?.dateOfBirth?.date) {

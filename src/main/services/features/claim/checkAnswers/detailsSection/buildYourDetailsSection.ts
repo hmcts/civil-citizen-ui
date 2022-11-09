@@ -1,4 +1,4 @@
-import {SummarySection, summarySection} from '../../../../..//common/models/summaryList/summarySections';
+import {SummarySection, summarySection} from '../../../../../common/models/summaryList/summarySections';
 import {Claim} from '../../../../../common/models/claim';
 import {summaryRow} from '../../../../../common/models/summaryList/summaryList';
 import {t} from 'i18next';
@@ -15,7 +15,7 @@ import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 import {PartyType} from '../../../../../common/models/partyType';
 import {Address} from '../../../../../common/form/models/address';
 
-const changeLabel = (lang: string): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', {lng: lang});
+const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', {lng: lang});
 
 const addressToString = (address: Address) => {
   return address?.addressLine1 + '<br>' + address?.city + '<br>' + address?.postCode;
@@ -56,7 +56,7 @@ export const buildYourDetailsSection = (claim: Claim, claimId: string, lang: str
   if (claim.applicant1?.partyDetails.contactPerson) {
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_PERSON', {lng}), claim.applicant1.partyDetails.contactPerson, yourDetailsHref, changeLabel(lng)));
   }
-  yourDetailsSection.summaryList.rows.push(...[summaryRow(t('PAGES.CHECK_YOUR_ANSWER.ADDRESS', {lng}), addressToString(claim.applicant1?.partyDetails.primaryAddress), yourDetailsHref, changeLabel(lng)),
+  yourDetailsSection.summaryList.rows.push(...[summaryRow(t('COMMON.ADDRESS', {lng}), addressToString(claim.applicant1?.partyDetails.primaryAddress), yourDetailsHref, changeLabel(lng)),
     summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CORRESPONDENCE_ADDRESS', {lng}), claim.applicant1?.partyDetails.correspondenceAddress ? addressToString(claim.applicant1?.partyDetails.correspondenceAddress) : t('PAGES.CHECK_YOUR_ANSWER.SAME_ADDRESS', {lng}), yourDetailsHref, changeLabel(lng))]);
   if (claim.applicant1?.type === PartyType.INDIVIDUAL || claim.applicant1?.type === PartyType.SOLE_TRADER) {
     if (claim.applicant1?.dateOfBirth?.date) {

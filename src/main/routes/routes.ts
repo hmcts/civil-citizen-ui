@@ -107,7 +107,7 @@ import firstContactClaimSummaryController from './features/public/firstContact/c
 import eligibleController from './features/public/eligibility/eligibleController';
 import claimantPartyTypeController from './features/claim/yourDetails/claimantPartyTypeController';
 import completingClaimController from './features/claim/completingClaimController';
-import submitComfirmationController from './features/response/submitComfirmationController';
+import submitConfirmationController from './features/response/submitConfirmationController';
 import resolvingThisDisputeController from './features/claim/resolvingThisDisputeController';
 import cookiesController from './features/public/cookiesController';
 import defendantExpertEvidenceController
@@ -258,7 +258,7 @@ export default [
   eligibleController,
   claimantPartyTypeController,
   completingClaimController,
-  submitComfirmationController,
+  submitConfirmationController,
   resolvingThisDisputeController,
   cookiesController,
   considerClaimantDocumentsController,

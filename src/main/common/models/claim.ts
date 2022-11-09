@@ -19,7 +19,6 @@ import {
   ClaimFee,
   InterestClaimFromType,
   InterestEndDateType,
-  SameRateInterestSelection,
   SameRateInterestType,
 } from '../form/models/claimDetails';
 import {YesNo} from '../form/models/yesNo';
@@ -39,10 +38,12 @@ import {InterestClaimOptionsType} from '../../common/form/models/claim/interest/
 import {Interest} from '../form/models/interest/interest';
 import {RejectAllOfClaimType} from '../../common/form/models/rejectAllOfClaimType';
 import {ClaimDetails} from '../../common/form/models/claim/details/claimDetails';
+import {ClaimantResponse} from './claimantResponse';
 
 export class Claim {
   legacyCaseReference: string;
   applicant1?: Party;
+  claimantResponse?: ClaimantResponse;
   applicantSolicitor1ClaimStatementOfTruth?: StatementOfTruth;
   totalClaimAmount: number;
   respondent1ResponseDeadline: Date;
@@ -62,12 +63,7 @@ export class Claim {
   claimAmountBreakup?: ClaimAmountBreakup[];
   totalInterest?: number;
   claimInterest?: YesNo;
-  interest?: Interest;
-  interestClaimFrom?: InterestClaimFromType;
-  interestFromSpecificDate?: Date;
-  interestClaimOptions: InterestClaimOptionsType;
-  sameRateInterestSelection?: SameRateInterestSelection;
-  breakDownInterestTotal?: number;
+  interest?: Interest; //TODO: Release 1: Some of the fields that have been refactored in Interest are used in Release 1, they must be included in the translator from CCD to work correctly (response/claim-details).
   submittedDate?: Date;
   issueDate?: Date;
   claimFee?: ClaimFee;
@@ -176,23 +172,23 @@ export class Claim {
   }
 
   isInterestClaimOptionExists(): boolean {
-    return this.interestClaimOptions?.length > 0;
+    return this.interest?.interestClaimOptions?.length > 0;
   }
 
   isInterestFromClaimSubmitDate(): boolean {
-    return this.interestClaimFrom === InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
+    return this.interest?.interestClaimFrom === InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
   }
 
   isInterestFromASpecificDate(): boolean {
-    return this.interestClaimFrom === InterestClaimFromType.FROM_A_SPECIFIC_DATE;
+    return this.interest?.interestClaimFrom === InterestClaimFromType.FROM_A_SPECIFIC_DATE;
   }
 
   isInterestClaimOptionsSameRateInterest(): boolean {
-    return this.interestClaimOptions === InterestClaimOptionsType.SAME_RATE_INTEREST;
+    return this.interest?.interestClaimOptions === InterestClaimOptionsType.SAME_RATE_INTEREST;
   }
 
   isSameRateTypeEightPercent(): boolean {
-    return this.sameRateInterestSelection?.sameRateInterestType === SameRateInterestType.SAME_RATE_INTEREST_8_PC;
+    return this.interest?.sameRateInterestSelection?.sameRateInterestType === SameRateInterestType.SAME_RATE_INTEREST_8_PC;
   }
 
   isDefendantDisabled(): boolean {
@@ -317,6 +313,9 @@ export class Claim {
     return this.responseDeadline?.option === ResponseOptions.NO;
   }
 
+  isResponseDateInThePast(): boolean {
+    return this.respondent1ResponseDate <= new Date();
+  }
 }
 
 export interface StatementOfTruth {

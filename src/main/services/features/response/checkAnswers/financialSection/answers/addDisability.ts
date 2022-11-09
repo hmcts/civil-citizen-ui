@@ -9,7 +9,7 @@ import {
 } from '../../../../../../routes/urls';
 import {YesNo,YesNoUpperCase} from '../../../../../../common/form/models/yesNo';
 
-const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', { lng: getLng(lang) });
+const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 
 export const addDisability = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
   const yourDisabilityHref = CITIZEN_DISABILITY_URL.replace(':id', claimId);
@@ -19,6 +19,6 @@ export const addDisability = (claim: Claim, financialSection: SummarySection, cl
   financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DISABILITY_ARE_YOU_DISABLED', { lng: getLng(lang) }), t(`COMMON.${isDisabled}`, {lng: getLng(lang)}), yourDisabilityHref, changeLabel(lang)));
 
   if (isDisabled === YesNoUpperCase.YES) {
-    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DISABILITY_ARE_YOU_SEVERELY_DISABLED', { lng: getLng(lang) }), t(`COMMON.${isSevereDisabled}`, {lng: getLng(lang)}), yourSevereDisabilityHref, changeLabel(lang)));
+    financialSection.summaryList.rows.push(summaryRow(t('COMMON.QUESTION.ARE_YOU_SEVERELY_DISABLED', { lng: getLng(lang) }), t(`COMMON.${isSevereDisabled}`, {lng: getLng(lang)}), yourSevereDisabilityHref, changeLabel(lang)));
   }
 };

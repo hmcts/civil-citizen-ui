@@ -28,8 +28,8 @@ import {UnemploymentDetails} from '../../main/common/form/models/statementOfMean
 import {SelfEmployedAs} from '../../main/common/models/selfEmployedAs';
 import {TaxPayments} from '../../main/common/models/taxPayments';
 import {YesNo} from '../../main/common/form/models/yesNo';
-import {Residence} from '../../main/common/form/models/statementOfMeans/residence';
-import {ResidenceType} from '../../main/common/form/models/statementOfMeans/residenceType';
+import {Residence} from '../../main/common/form/models/statementOfMeans/residence/residence';
+import {ResidenceType} from '../../main/common/form/models/statementOfMeans/residence/residenceType';
 import {Dependants} from '../../main/common/form/models/statementOfMeans/dependants/dependants';
 import {NumberOfChildren} from '../../main/common/form/models/statementOfMeans/dependants/numberOfChildren';
 import {OtherDependants} from '../../main/common/form/models/statementOfMeans/otherDependants';
@@ -656,10 +656,10 @@ export const createClaimWithDisabilityAndSevereDisability = (optionDisability: Y
   return claim;
 };
 
-export const createClaimWithResidence = (value: string, displayValue: string): Claim => {
+export const createClaimWithResidence = (value: ResidenceType): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
-  const residence: Residence = new Residence(new ResidenceType(value, displayValue), '');
+  const residence: Residence = new Residence(value, '');
   claim.statementOfMeans = {
     residence: residence,
   };
@@ -669,7 +669,7 @@ export const createClaimWithResidence = (value: string, displayValue: string): C
 export const createClaimWithResidenceOther = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
-  const residence: Residence = new Residence(new ResidenceType('OTHER', 'Other'), 'Flat');
+  const residence: Residence = new Residence(ResidenceType.OTHER, 'Flat');
   claim.statementOfMeans = {
     residence: residence,
   };
@@ -912,13 +912,7 @@ export const createClaimWithPaymentOption = (responseType: ResponseType, payment
 export const claimWithClaimAmountParticularDate = (): Claim => {
   const claim = new Claim();
   claim.claimInterest = YesNo.YES;
-  claim.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
-  claim.interestClaimFrom = InterestClaimFromType.FROM_A_SPECIFIC_DATE;
-  claim.sameRateInterestSelection = {
-    sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
-    differentRate: 10,
-    reason: 'Reason',
-  };
+
   claim.interest = {
     interestEndDate: InterestEndDateType.UNTIL_SETTLED_OR_JUDGEMENT_MADE,
     interestStartDate: {
@@ -928,6 +922,13 @@ export const claimWithClaimAmountParticularDate = (): Claim => {
       date: new Date(2011, 1, 1),
       reason: 'Reason',
     },
+    interestClaimFrom: InterestClaimFromType.FROM_A_SPECIFIC_DATE,
+    interestClaimOptions: InterestClaimOptionsType.SAME_RATE_INTEREST,
+    sameRateInterestSelection: {
+      sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
+      differentRate: 10,
+      reason: 'Reason',
+    },
   };
 
   return claim;
@@ -935,27 +936,32 @@ export const claimWithClaimAmountParticularDate = (): Claim => {
 export const claimWithClaimAmountSubmitDate = (): Claim => {
   const claim = new Claim();
   claim.claimInterest = YesNo.YES;
-  claim.interestClaimFrom = InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
-  claim.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
-  claim.sameRateInterestSelection = {sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC};
+  claim.interest = {
+    interestClaimFrom: InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE,
+    interestClaimOptions: InterestClaimOptionsType.SAME_RATE_INTEREST,
+    sameRateInterestSelection: {sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC},
+  };
 
   return claim;
 };
 
 export const claimWithClaimAmountSameRate = (): Claim => {
   const claim = new Claim();
-  claim.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
-  claim.sameRateInterestSelection = {sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC};
-
+  claim.interest = {
+    interestClaimOptions: InterestClaimOptionsType.SAME_RATE_INTEREST,
+    sameRateInterestSelection: {sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC},
+  };
   return claim;
 };
 
 export const claimWithClaimAmountDifferentRate = (): Claim => {
   const claim = new Claim();
-  claim.sameRateInterestSelection = {
-    sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
-    differentRate: 10,
-    reason: 'Reason',
+  claim.interest = {
+    sameRateInterestSelection: {
+      sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
+      differentRate: 10,
+      reason: 'Reason',
+    },
   };
 
   return claim;
