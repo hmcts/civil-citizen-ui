@@ -12,8 +12,8 @@ import {
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {YesNo, YesNoUpperCamelCase} from '../../../../../common/form/models/yesNo';
 import {LanguageOptions} from '../../../../../common/models/directionsQuestionnaire/languageOptions';
-
-const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
+import {changeLabel} from '../../../../../common/utils/checkYourAnswer/changeButton';
+import {addSupportRequiredList} from './addSupportRequiredList';
 
 const determinationWithoutHearingQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const determinationWithoutHearingQuestion = t('PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARING', {lng})
@@ -39,7 +39,7 @@ const determinationWithoutHearingReason = (claim: Claim, claimId: string, lng: s
   );
 };
 
-const speakingLanguagePreference =  (claim: Claim, claimId: string, lng: string): SummaryRow => {
+const speakingLanguagePreference = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   let speakingLanguageName;
 
   switch (claim?.directionQuestionnaire?.welshLanguageRequirements?.language?.speakLanguage) {
@@ -65,7 +65,7 @@ const speakingLanguagePreference =  (claim: Claim, claimId: string, lng: string)
   );
 };
 
-const documentsLanguagePreference =  (claim: Claim, claimId: string, lng: string): SummaryRow => {
+const documentsLanguagePreference = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   let documentsLanguageName;
 
   switch (claim?.directionQuestionnaire?.welshLanguageRequirements?.language?.documentsLanguage) {
@@ -150,6 +150,10 @@ const buildHearingRequirementsSection = (claim: Claim, claimId: string, lang: st
   if (claim?.directionQuestionnaire?.vulnerabilityQuestions?.vulnerability) {
     hearingRequirementsSection.summaryList.rows.push(vulnerabilityQuestion(claim, claimId, lng));
     hearingRequirementsSection.summaryList.rows.push(vulnerabilityInfo(claim, claimId, lng));
+  }
+
+  if (claim?.hasSupportRequiredList) {
+    addSupportRequiredList(claim, hearingRequirementsSection, claimId, lng);
   }
 
   if (claim?.directionQuestionnaire?.welshLanguageRequirements?.language) {

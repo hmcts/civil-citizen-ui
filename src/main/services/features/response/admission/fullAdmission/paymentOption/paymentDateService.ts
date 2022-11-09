@@ -1,8 +1,8 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../../../modules/draft-store/draftStoreService';
-import {ResponseType} from '../../../../../../common/form/models/responseType';
-import {PartialAdmission} from '../../../../../../common/models/partialAdmission';
-import {PaymentDate} from '../../../../../../common/form/models/admission/fullAdmission/paymentOption/paymentDate';
-import {PaymentIntention} from '../../../../../../common/form/models/admission/partialAdmission/paymentIntention';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {ResponseType} from 'form/models/responseType';
+import {PartialAdmission} from 'models/partialAdmission';
+import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
+import {PaymentIntention} from 'form/models/admission/partialAdmission/paymentIntention';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('paymentDateService');
@@ -31,7 +31,7 @@ export class PaymentDateService {
           case_data.partialAdmission = new PartialAdmission();
         }
         if (!case_data.partialAdmission?.paymentIntention?.paymentDate) {
-          const paymentType =  case_data.partialAdmission?.paymentIntention?.paymentOption;
+          const paymentType = case_data.partialAdmission?.paymentIntention?.paymentOption;
           case_data.partialAdmission.paymentIntention = new PaymentIntention();
           case_data.partialAdmission.paymentIntention.paymentOption = paymentType;
         }

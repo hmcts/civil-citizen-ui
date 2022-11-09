@@ -4,6 +4,7 @@ import {
 } from '../../../../../../../main/common/models/directionsQuestionnaire/directionQuestionnaire';
 import {Hearing} from '../../../../../../../main/common/models/directionsQuestionnaire/hearing/hearing';
 import * as hearingRequirementsSection from '../../../../../../../main/services/features/response/checkAnswers/hearingRequirementsSection/buildHearingRequirementsSection';
+import * as supportRequiredList from '../../../../../../../main/services/features/response/checkAnswers/hearingRequirementsSection/addSupportRequiredList';
 import {summaryRow} from '../../../../../../../main/common/models/summaryList/summaryList';
 import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
 import {
@@ -13,6 +14,8 @@ import {LanguageOptions} from '../../../../../../../main/common/models/direction
 import {
   VulnerabilityQuestions,
 } from '../../../../../../../main/common/models/directionsQuestionnaire/vulnerabilityQuestions/vulnerabilityQuestions';
+import {summarySection} from '../../../../../../../main/common/models/summaryList/summarySections';
+import {t} from 'i18next';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -353,12 +356,66 @@ describe('Hearing Requirements Section', () => {
     });
   });
 
+  describe('addSupportRequiredList', () => {
+    it('should return summaryRow if supportRequiredList option is no', () => {
+      //Given
+      const claim = new Claim();
+      claim.directionQuestionnaire = new DirectionQuestionnaire();
+      claim.directionQuestionnaire.hearing = new Hearing();
+      claim.directionQuestionnaire.hearing.supportRequiredList = {
+        option: YesNo.NO,
+      };
+      //When
+      const hearingRequirementsSection = summarySection({
+        title: t('TASK_LIST.YOUR_HEARING_REQUIREMENTS.TITLE', {lng}),
+        summaryRows: [],
+      });
+      const mockSummarySection = summaryRow(
+        'PAGES.SUPPORT_REQUIRED.TITLE',
+        t('COMMON.NO'),
+        `/case/${claimId}/directions-questionnaire/support-required`,
+        changeButton,
+      );
+      //Then
+      supportRequiredList.addSupportRequiredList(claim, hearingRequirementsSection, claimId, lng);
+      expect(hearingRequirementsSection.summaryList.rows[0]).toStrictEqual(mockSummarySection);
+    });
+
+    it('should return summaryRow if supportRequiredList option is yes', () => {
+      //Given
+      const claim = new Claim();
+      claim.directionQuestionnaire = new DirectionQuestionnaire();
+      claim.directionQuestionnaire.hearing = new Hearing();
+      claim.directionQuestionnaire.hearing.supportRequiredList = {
+        option: YesNo.YES,
+        items: [
+          {fullName: 'John Doe'},
+        ],
+      };
+      //When
+      const hearingRequirementsSection = summarySection({
+        title: t('TASK_LIST.YOUR_HEARING_REQUIREMENTS.TITLE', {lng}),
+        summaryRows: [],
+      });
+      const mockSummarySection = summaryRow(
+        'PAGES.SUPPORT_REQUIRED.TITLE',
+        t('COMMON.YES'),
+        `/case/${claimId}/directions-questionnaire/support-required`,
+        changeButton,
+      );
+      //Then
+      supportRequiredList.addSupportRequiredList(claim, hearingRequirementsSection, claimId, lng);
+      expect(hearingRequirementsSection.summaryList.rows[0]).toStrictEqual(mockSummarySection);
+    });
+  });
+
   describe('buildHearingRequirementsSection', () => {
     afterEach(() => {
       jest.clearAllMocks();
     });
 
     it('should not call determinationWithoutHearingReason if option is yes', () => {
+      //Given
       const determinationWithoutHearingReasonSpy = jest.spyOn(hearingRequirementsSection, 'determinationWithoutHearingReason');
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
@@ -366,13 +423,14 @@ describe('Hearing Requirements Section', () => {
       claim.directionQuestionnaire.hearing.determinationWithoutHearing = {
         option: YesNo.YES,
       };
-
+      //When
       hearingRequirementsSection.buildHearingRequirementsSection(claim, claimId, lng);
-
+      //Then
       expect(determinationWithoutHearingReasonSpy).not.toBeCalled();
     });
 
     it('should not call determinationWithoutHearingReason if option is undefined', () => {
+      //Given
       const determinationWithoutHearingReasonSpy = jest.spyOn(hearingRequirementsSection, 'determinationWithoutHearingReason');
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
@@ -380,64 +438,82 @@ describe('Hearing Requirements Section', () => {
       claim.directionQuestionnaire.hearing.determinationWithoutHearing = {
         option: undefined,
       };
-
+      //When
       hearingRequirementsSection.buildHearingRequirementsSection(claim, claimId, lng);
-
+      //Then
       expect(determinationWithoutHearingReasonSpy).not.toBeCalled();
     });
 
     it('should not call giveEvidenceYourself if option is not set', () => {
+      //Given
       const giveEvidenceYourselfSpy = jest.spyOn(hearingRequirementsSection, 'giveEvidenceYourself');
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
-
+      //When
       hearingRequirementsSection.buildHearingRequirementsSection(claim, claimId, lng);
-
+      //Then
       expect(giveEvidenceYourselfSpy).not.toBeCalled();
     });
 
     it('should not call vulnerabilityQuestion if vulnerability is not set', () => {
+      //Given
       const vulnerabilityQuestionSpy = jest.spyOn(hearingRequirementsSection, 'vulnerabilityQuestion');
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.vulnerabilityQuestions = new VulnerabilityQuestions();
-
+      //When
       hearingRequirementsSection.buildHearingRequirementsSection(claim, claimId, lng);
-
+      //Then
       expect(vulnerabilityQuestionSpy).not.toBeCalled();
     });
 
     it('should not call vulnerabilityInfo if vulnerability is not set', () => {
+      //Given
       const vulnerabilityInfoSpy = jest.spyOn(hearingRequirementsSection, 'vulnerabilityInfo');
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.vulnerabilityQuestions = new VulnerabilityQuestions();
-
+      //When
       hearingRequirementsSection.buildHearingRequirementsSection(claim, claimId, lng);
-
+      //Then
       expect(vulnerabilityInfoSpy).not.toBeCalled();
     });
 
     it('should not call speakingLanguagePreference if welshLanguageRequirements is not set', () => {
+      //Given
       const speakingLanguagePreferenceSpy = jest.spyOn(hearingRequirementsSection, 'speakingLanguagePreference');
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
-
+      //When
       hearingRequirementsSection.buildHearingRequirementsSection(claim, claimId, lng);
-
+      //Then
       expect(speakingLanguagePreferenceSpy).not.toBeCalled();
     });
 
     it('should not call documentsLanguagePreference if welshLanguageRequirements is not set', () => {
+      //Given
       const documentsLanguagePreferenceSpy = jest.spyOn(hearingRequirementsSection, 'documentsLanguagePreference');
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
-
+      //When
       hearingRequirementsSection.buildHearingRequirementsSection(claim, claimId, lng);
-
+      //Then
       expect(documentsLanguagePreferenceSpy).not.toBeCalled();
+    });
+
+    it('should not call addSupportRequiredList if supportRequiredList is not set', () => {
+      //Given
+      const addSupportRequiredListSpy = jest.spyOn(supportRequiredList, 'addSupportRequiredList');
+      const generateSupportDetailsSpy = jest.spyOn(supportRequiredList, 'generateSupportDetails');
+      const claim = new Claim();
+      claim.directionQuestionnaire = new DirectionQuestionnaire();
+      //When
+      hearingRequirementsSection.buildHearingRequirementsSection(claim, claimId, lng);
+      //Then
+      expect(addSupportRequiredListSpy).not.toBeCalled();
+      expect(generateSupportDetailsSpy).not.toBeCalled();
     });
   });
 });
