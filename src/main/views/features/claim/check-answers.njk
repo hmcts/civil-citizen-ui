@@ -14,7 +14,6 @@
 {% if payment %}
   {% set submitText = t('COMMON.BUTTONS.SUBMIT_RESPONSE_PAYMENT', { payment: payment }) %}
 {% endif %}
-
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -49,7 +48,7 @@
 
             <div class="govuk-form-group">
               {{ govukButton({
-                text: submitText
+                 text: submitText
               }) }}
               {{ contactUsForHelp(t) }}
             </div>

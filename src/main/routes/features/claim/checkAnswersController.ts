@@ -3,17 +3,18 @@ import {CLAIM_CHECK_ANSWERS_URL, CLAIM_CONFIRMATION_URL} from '../../urls';
 import {
   getStatementOfTruth,
   getSummarySections,
-  saveStatementOfTruth
+  saveStatementOfTruth,
 } from '../../../services/features/claim/checkAnswers/checkAnswersService';
 import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
 import {Claim} from '../../../common/models/claim';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {AppRequest} from '../../../common/models/AppRequest';
-import {submitResponse} from '../../../services/features/response/submission/submitResponse';
-import {getTotalAmountWithInterestAndFees, isFullAmountReject} from '../../../modules/claimDetailsService';
+import {isFullAmountReject} from '../../../modules/claimDetailsService';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {StatementOfTruthForm} from '../../../common/form/models/statementOfTruth/statementOfTruthForm';
 import {QualifiedStatementOfTruth} from '../../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
+import {YesNo} from '../../../common/form/models/yesNo';
+import {paymentUrl} from '../../../../test/utils/externalURLs';
 
 const checkAnswersViewPath = 'features/claim/check-answers';
 const claimCheckAnswersController = Router();
@@ -22,11 +23,13 @@ function renderView(res: Response, form: GenericForm<StatementOfTruthForm> | Gen
   const summarySections = getSummarySections(userId, claim, lang);
   const signatureType = form.model?.type;
   const isFullAmountRejected = isFullAmountReject(claim);
-  const payment = getTotalAmountWithInterestAndFees(claim);
-
+  let payment;
+  if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
+    payment = 100;
+  }
   res.render(checkAnswersViewPath, {
     form, summarySections, signatureType,
-    isFullAmountRejected, payment
+    isFullAmountRejected, payment,
   });
 }
 
@@ -52,15 +55,17 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest
     const form = new GenericForm((req.body.type === 'qualified')
       ? new QualifiedStatementOfTruth(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole)
       : new StatementOfTruthForm(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned));
-
+    const claim = await getCaseDataFromStore(userId);
     await form.validate();
     if (form.hasErrors()) {
-      const claim = await getCaseDataFromStore(req.params.id);
       renderView(res, form, claim, userId, lang);
     } else {
-      await saveStatementOfTruth(req.params.id, form.model);
-      await submitResponse(<AppRequest>req);
-      res.redirect(constructResponseUrlWithIdParams(userId, CLAIM_CONFIRMATION_URL));
+      await saveStatementOfTruth(userId, form.model);
+      if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
+        res.redirect(constructResponseUrlWithIdParams(userId, paymentUrl));
+      } else {
+        res.redirect(CLAIM_CONFIRMATION_URL);
+      }
     }
   } catch (error) {
     next(error);
