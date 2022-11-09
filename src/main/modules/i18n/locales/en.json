@@ -620,6 +620,10 @@
       "PAGE_TITLE": "When did it start?",
       "TITLE": "When did it start?"
     },
+    "CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED": {
+      "PAGE_TITLE": "Has the defendant paid you £{{ paidAmount }}?",
+      "TITLE": "Has the defendant paid you £{{ paidAmount }}?"
+    },
     "COMPANY_DETAILS": {
       "ADDRESS_FOR_SERVICE": "This is known as an \"address for service\".",
       "ADDRESS_NOT_FOUND": "We can't find an address for that postcode.",
