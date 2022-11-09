@@ -67,7 +67,7 @@ describe('Claim isInterestFromClaimSubmitDate', () => {
   });
   it('should return true', () => {
     //Given
-    claim.interestClaimFrom = InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
+    claim.interest = {interestClaimFrom : InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE};
     //When
     const result = claim.isInterestFromClaimSubmitDate();
     //Then
@@ -75,7 +75,7 @@ describe('Claim isInterestFromClaimSubmitDate', () => {
   });
   it('should return false', () => {
     //Given
-    claim.interestClaimFrom = InterestClaimFromType.FROM_A_SPECIFIC_DATE;
+    claim.interest = {interestClaimFrom : InterestClaimFromType.FROM_A_SPECIFIC_DATE};
     //When
     const result = claim.isInterestFromClaimSubmitDate();
     //Then
@@ -93,7 +93,7 @@ describe('Claim isInterestFromASpecificDate', () => {
   });
   it('should return true', () => {
     //Given
-    claim.interestClaimFrom = InterestClaimFromType.FROM_A_SPECIFIC_DATE;
+    claim.interest = {interestClaimFrom : InterestClaimFromType.FROM_A_SPECIFIC_DATE};
     //When
     const result = claim.isInterestFromASpecificDate();
     //Then
@@ -101,7 +101,7 @@ describe('Claim isInterestFromASpecificDate', () => {
   });
   it('should return false', () => {
     //Given
-    claim.interestClaimFrom = InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
+    claim.interest = {interestClaimFrom : InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE};
     //When
     const result = claim.isInterestFromASpecificDate();
     //Then
@@ -119,7 +119,7 @@ describe('Claim isInterestClaimOptionsSameRateInterest', () => {
   });
   it('should return true', () => {
     //Given
-    claim.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
+    claim.interest ={interestClaimOptions: InterestClaimOptionsType.SAME_RATE_INTEREST};
     //When
     const result = claim.isInterestClaimOptionsSameRateInterest();
     //Then
@@ -127,7 +127,7 @@ describe('Claim isInterestClaimOptionsSameRateInterest', () => {
   });
   it('should return false', () => {
     //Given
-    claim.interestClaimOptions = InterestClaimOptionsType.BREAK_DOWN_INTEREST;
+    claim.interest ={interestClaimOptions: InterestClaimOptionsType.BREAK_DOWN_INTEREST};
     //When
     const result = claim.isInterestClaimOptionsSameRateInterest();
     //Then
@@ -145,7 +145,7 @@ describe('Claim isSameRateTypeEightPercent', () => {
   });
   it('should return true', () => {
     //Given
-    claim.sameRateInterestSelection = {sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC};
+    claim.interest = {sameRateInterestSelection : {sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC}};
     //When
     const result = claim.isSameRateTypeEightPercent();
     //Then
@@ -153,7 +153,7 @@ describe('Claim isSameRateTypeEightPercent', () => {
   });
   it('should return false', () => {
     //Given
-    claim.sameRateInterestSelection = {sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE};
+    claim.interest = {sameRateInterestSelection : {sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE}};
     //When
     const result = claim.isSameRateTypeEightPercent();
     //Then
