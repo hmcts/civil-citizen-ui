@@ -6,17 +6,17 @@ import {
   CLAIMANT_ORGANISATION_DETAILS_URL,
   CLAIMANT_PHONE_NUMBER_URL,
 } from 'routes/urls';
-import {buildCorrespondenceAddress, buildPrimaryAddress} from '../../../../../utils/mockClaim';
+import {buildAddress} from '../../../../../utils/mockClaim';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {PartyType} from 'models/partyType';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import {PartyDetails} from '../../../../../../main/common/form/models/partyDetails';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../main/services/features/response/citizenDetails/citizenDetailsService');
 
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
@@ -25,41 +25,37 @@ const claim = new Claim();
 
 const buildClaimOfApplicantWithType = (type: PartyType): Claim => {
   claim.applicant1 = new Party();
-  claim.applicant1.individualTitle = 'individualTitle';
-  claim.applicant1.individualFirstName = 'individualFirstName';
-  claim.applicant1.individualLastName = 'individualLastName';
-  claim.applicant1.primaryAddress = buildPrimaryAddress();
-  claim.applicant1.correspondenceAddress = buildCorrespondenceAddress();
-  claim.applicant1.partyName = 'partyName';
-  claim.applicant1.contactPerson = 'contactPerson';
+  claim.applicant1.partyDetails = new PartyDetails({});
+  claim.applicant1.partyDetails.individualTitle = 'individualTitle';
+  claim.applicant1.partyDetails.individualFirstName = 'individualFirstName';
+  claim.applicant1.partyDetails.individualLastName = 'individualLastName';
+  claim.applicant1.partyDetails.primaryAddress = buildAddress();
+  claim.applicant1.partyDetails.correspondenceAddress = buildAddress();
+  claim.applicant1.partyDetails.partyName = 'partyName';
+  claim.applicant1.partyDetails.contactPerson = 'contactPerson';
   claim.applicant1.type = type;
   return claim;
 };
 
 const buildClaimOfApplicantType = (type: PartyType): Claim => {
   claim.applicant1 = new Party();
+  claim.applicant1.partyDetails = new PartyDetails({});
   claim.applicant1.type = type;
-  claim.applicant1.primaryAddress = buildPrimaryAddress();
-  claim.applicant1.correspondenceAddress = buildCorrespondenceAddress();
-  claim.applicant1.partyName = 'partyName';
-  claim.applicant1.contactPerson = 'contactPerson';
+  claim.applicant1.partyDetails.primaryAddress = buildAddress();
+  claim.applicant1.partyDetails.correspondenceAddress = buildAddress();
+  claim.applicant1.partyDetails.partyName = 'partyName';
+  claim.applicant1.partyDetails.contactPerson = 'contactPerson';
   return claim;
 };
 
 const nock = require('nock');
 
 const validDataForPost = {
-  primaryAddressLine1: 'Flat 3A Middle Road',
-  primaryAddressLine2: '',
-  primaryAddressLine3: '',
-  primaryCity: 'London',
-  primaryPostCode: 'SW1H 9AJ',
-  provideCorrespondenceAddress: 'no',
-  correspondenceAddressLine1: '',
-  correspondenceAddressLine2: '',
-  correspondenceAddressLine3: '',
-  correspondenceCity: '',
-  correspondencePostCode: '',
+  addressLine1: ['Flat 3A Middle Road', 'Flat 3A Middle Road'],
+  addressLine2: ['',''],
+  addressLine3: ['',''],
+  city: ['London','London'],
+  postCode: ['SW1H 9AJ','SW1H 9AJ'],
   partyName: 'partyName',
   contactPerson: 'contactPerson',
 };
@@ -132,11 +128,12 @@ describe('Claimant Organisation Details page', () => {
     it('should return your company or organisation details page with information without correspondent address', async () => {
       const buildClaimOfApplicantWithoutCorrespondent = (): Claim => {
         claim.applicant1 = new Party();
+        claim.applicant1.partyDetails = new PartyDetails({});
         claim.applicant1.type = PartyType.ORGANISATION;
-        claim.applicant1.individualTitle = 'individualTitle';
-        claim.applicant1.individualFirstName = 'individualFirstName';
-        claim.applicant1.individualLastName = 'individualLastName';
-        claim.applicant1.primaryAddress = buildPrimaryAddress();
+        claim.applicant1.partyDetails.individualTitle = 'individualTitle';
+        claim.applicant1.partyDetails.individualFirstName = 'individualFirstName';
+        claim.applicant1.partyDetails.individualLastName = 'individualLastName';
+        claim.applicant1.partyDetails.primaryAddress = buildAddress();
         return claim;
       };
       mockGetCaseData.mockImplementation(async () => {
@@ -153,7 +150,8 @@ describe('Claimant Organisation Details page', () => {
     it('should return your company or organisation details page with no primary, correspondence address or claimant details', async () => {
       const buildClaimOfApplicantWithoutInformation = (): Claim => {
         claim.applicant1 = new Party();
-        claim.applicant1.primaryAddress = undefined;
+        claim.applicant1.partyDetails = new PartyDetails({});
+        claim.applicant1.partyDetails.primaryAddress = undefined;
         claim.applicant1.type = PartyType.ORGANISATION;
         return claim;
       };
@@ -213,17 +211,12 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
         .send({
-          primaryAddressLine1: '',
-          primaryAddressLine2: '',
-          primaryAddressLine3: '',
-          primaryCity: 'London',
-          primaryPostCode: 'SW1H 9AJ',
+          addressLine1: ['',''],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['London',''],
+          postCode: ['SW1H 9AJ',''],
           provideCorrespondenceAddress: 'no',
-          correspondenceAddressLine1: '',
-          correspondenceAddressLine2: '',
-          correspondenceAddressLine3: '',
-          correspondenceCity: '',
-          correspondencePostCode: '',
         })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -232,20 +225,18 @@ describe('Claimant Organisation Details page', () => {
     });
 
     it('POST/Claimant organisation details - should return error on empty primary city', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        return buildClaimOfApplicantType(PartyType.ORGANISATION);
+      });
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
         .send({
-          primaryAddressLine1: 'Flat 3A Middle Road',
-          primaryAddressLine2: '',
-          primaryAddressLine3: '',
-          primaryCity: '',
-          primaryPostCode: 'SW1H 9AJ',
+          addressLine1: ['Flat 3A Middle Road',''],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['',''],
+          postCode: ['SW1H 9AJ',''],
           provideCorrespondenceAddress: 'no',
-          correspondenceAddressLine1: '',
-          correspondenceAddressLine2: '',
-          correspondenceAddressLine3: '',
-          correspondenceCity: '',
-          correspondencePostCode: '',
         })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -257,17 +248,12 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
         .send({
-          primaryAddressLine1: 'Flat 3A Middle Road',
-          primaryAddressLine2: '',
-          primaryAddressLine3: '',
-          primaryCity: 'London',
-          primaryPostCode: '',
+          addressLine1: ['Flat 3A Middle Road',''],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['London',''],
+          postCode: ['',''],
           provideCorrespondenceAddress: 'no',
-          correspondenceAddressLine1: '',
-          correspondenceAddressLine2: '',
-          correspondenceAddressLine3: '',
-          correspondenceCity: '',
-          correspondencePostCode: '',
         })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -282,17 +268,12 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
         .send({
-          primaryAddressLine1: 'Flat 3A Middle Road',
-          primaryAddressLine2: '',
-          primaryAddressLine3: '',
-          primaryCity: 'London',
-          primaryPostCode: 'SW1H 9AJ',
+          addressLine1: ['',''],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['London','London'],
+          postCode: ['SW1H 9AJ','SW1H 9AJ'],
           provideCorrespondenceAddress: 'yes',
-          correspondenceAddressLine1: '',
-          correspondenceAddressLine2: '',
-          correspondenceAddressLine3: '',
-          correspondenceCity: '',
-          correspondencePostCode: '',
         })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -307,17 +288,12 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
         .send({
-          primaryAddressLine1: 'Flat 3A Middle Road',
-          primaryAddressLine2: '',
-          primaryAddressLine3: '',
-          primaryCity: 'London',
-          primaryPostCode: 'SW1H 9AJ',
+          addressLine1: ['Flat 3A Middle Road','Flat 3A Middle Road'],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['London',''],
+          postCode: ['SW1H 9AJ','SW1H 9AJ'],
           provideCorrespondenceAddress: 'yes',
-          correspondenceAddressLine1: 'Flat 3A Middle Road',
-          correspondenceAddressLine2: '',
-          correspondenceAddressLine3: '',
-          correspondenceCity: '',
-          correspondencePostCode: 'SW1H 9AJ',
         })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -332,17 +308,12 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
         .send({
-          primaryAddressLine1: 'Flat 3A Middle Road',
-          primaryAddressLine2: '',
-          primaryAddressLine3: '',
-          primaryCity: 'London',
-          primaryPostCode: 'SW1H 9AJ',
+          addressLine1: ['Flat 3A Middle Road','Flat 3A Middle Road'],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['London','London'],
+          postCode: ['SW1H 9AJ',''],
           provideCorrespondenceAddress: 'yes',
-          correspondenceAddressLine1: 'Flat 3A Middle Road',
-          correspondenceAddressLine2: '',
-          correspondenceAddressLine3: '',
-          correspondenceCity: 'London',
-          correspondencePostCode: '',
         })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -357,17 +328,12 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
         .send({
-          primaryAddressLine1: '',
-          primaryAddressLine2: '',
-          primaryAddressLine3: '',
-          primaryCity: '',
-          primaryPostCode: '',
+          addressLine1: ['',''],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['',''],
+          postCode: ['',''],
           provideCorrespondenceAddress: 'yes',
-          correspondenceAddressLine1: '',
-          correspondenceAddressLine2: '',
-          correspondenceAddressLine3: '',
-          correspondenceCity: '',
-          correspondencePostCode: '',
         })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -384,17 +350,12 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
         .send({
-          primaryAddressLine1: '',
-          primaryAddressLine2: '',
-          primaryAddressLine3: '',
-          primaryCity: '',
-          primaryPostCode: '',
+          addressLine1: ['',''],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['',''],
+          postCode: ['',''],
           provideCorrespondenceAddress: 'no',
-          correspondenceAddressLine1: '',
-          correspondenceAddressLine2: '',
-          correspondenceAddressLine3: '',
-          correspondenceCity: '',
-          correspondencePostCode: '',
         })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -411,17 +372,12 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
         .send({
-          primaryAddressLine1: '',
-          primaryAddressLine2: '',
-          primaryAddressLine3: '',
-          primaryCity: '',
-          primaryPostCode: '',
+          addressLine1: ['Flat 3A Middle Road',''],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['London',''],
+          postCode: ['SW1H 9AJ',''],
           provideCorrespondenceAddress: 'yes',
-          correspondenceAddressLine1: '',
-          correspondenceAddressLine2: '',
-          correspondenceAddressLine3: '',
-          correspondenceCity: '',
-          correspondencePostCode: '',
         })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -502,11 +458,12 @@ describe('Claimant Organisation Details page', () => {
     it('should return your company details page with information without correspondent address', async () => {
       const buildClaimOfApplicantWithoutCorrespondent = (): Claim => {
         claim.applicant1 = new Party();
+        claim.applicant1.partyDetails = new PartyDetails({});
         claim.applicant1.type = PartyType.COMPANY;
-        claim.applicant1.individualTitle = 'individualTitle';
-        claim.applicant1.individualFirstName = 'individualFirstName';
-        claim.applicant1.individualLastName = 'individualLastName';
-        claim.applicant1.primaryAddress = buildPrimaryAddress();
+        claim.applicant1.partyDetails.individualTitle = 'individualTitle';
+        claim.applicant1.partyDetails.individualFirstName = 'individualFirstName';
+        claim.applicant1.partyDetails.individualLastName = 'individualLastName';
+        claim.applicant1.partyDetails.primaryAddress = buildAddress();
         return claim;
       };
       mockGetCaseData.mockImplementation(async () => {
@@ -523,8 +480,9 @@ describe('Claimant Organisation Details page', () => {
     it('should return your company details page with no primary, correspondence address or claimant details', async () => {
       const buildClaimOfApplicantWithoutInformation = (): Claim => {
         claim.applicant1 = new Party();
+        claim.applicant1.partyDetails = new PartyDetails({});
         claim.applicant1.type = PartyType.COMPANY;
-        claim.applicant1.primaryAddress = undefined;
+        claim.applicant1.partyDetails.primaryAddress = undefined;
         return claim;
       };
       mockGetCaseData.mockImplementation(async () => {
@@ -569,17 +527,12 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
         .send({
-          primaryAddressLine1: '',
-          primaryAddressLine2: '',
-          primaryAddressLine3: '',
-          primaryCity: 'London',
-          primaryPostCode: 'SW1H 9AJ',
-          provideCorrespondenceAddress: 'no',
-          correspondenceAddressLine1: '',
-          correspondenceAddressLine2: '',
-          correspondenceAddressLine3: '',
-          correspondenceCity: '',
-          correspondencePostCode: '',
+          addressLine1: ['',''],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['London','London'],
+          postCode: ['SW1H 9AJ','SW1H 9AJ'],
+          provideCorrespondenceAddress: 'yes',
         })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -588,20 +541,18 @@ describe('Claimant Organisation Details page', () => {
     });
 
     it('POST/Claimant company details - should return error on empty primary city', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        return buildClaimOfApplicantType(PartyType.COMPANY);
+      });
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
         .send({
-          primaryAddressLine1: 'Flat 3A Middle Road',
-          primaryAddressLine2: '',
-          primaryAddressLine3: '',
-          primaryCity: '',
-          primaryPostCode: 'SW1H 9AJ',
+          addressLine1: 'Flat 3A Middle Road',
+          addressLine2: '',
+          addressLine3: '',
+          city: '',
+          postCode: 'SW1H 9AJ',
           provideCorrespondenceAddress: 'no',
-          correspondenceAddressLine1: '',
-          correspondenceAddressLine2: '',
-          correspondenceAddressLine3: '',
-          correspondenceCity: '',
-          correspondencePostCode: '',
         })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -610,20 +561,18 @@ describe('Claimant Organisation Details page', () => {
     });
 
     it('POST/Claimant company details - should return error on empty primary postcode', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        return buildClaimOfApplicantType(PartyType.COMPANY);
+      });
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
         .send({
-          primaryAddressLine1: 'Flat 3A Middle Road',
-          primaryAddressLine2: '',
-          primaryAddressLine3: '',
-          primaryCity: 'London',
-          primaryPostCode: '',
+          addressLine1: 'Flat 3A Middle Road',
+          addressLine2: '',
+          addressLine3: '',
+          city: 'London',
+          postCode: '',
           provideCorrespondenceAddress: 'no',
-          correspondenceAddressLine1: '',
-          correspondenceAddressLine2: '',
-          correspondenceAddressLine3: '',
-          correspondenceCity: '',
-          correspondencePostCode: '',
         })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -638,17 +587,12 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
         .send({
-          primaryAddressLine1: 'Flat 3A Middle Road',
-          primaryAddressLine2: '',
-          primaryAddressLine3: '',
-          primaryCity: 'London',
-          primaryPostCode: 'SW1H 9AJ',
+          addressLine1: ['',''],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['London','London'],
+          postCode: ['SW1H 9AJ','SW1H 9AJ'],
           provideCorrespondenceAddress: 'yes',
-          correspondenceAddressLine1: '',
-          correspondenceAddressLine2: '',
-          correspondenceAddressLine3: '',
-          correspondenceCity: '',
-          correspondencePostCode: '',
         })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -663,17 +607,12 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
         .send({
-          primaryAddressLine1: 'Flat 3A Middle Road',
-          primaryAddressLine2: '',
-          primaryAddressLine3: '',
-          primaryCity: 'London',
-          primaryPostCode: 'SW1H 9AJ',
+          addressLine1: ['Flat 3A Middle Road','Flat 3A Middle Road'],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['London',''],
+          postCode: ['SW1H 9AJ','SW1H 9AJ'],
           provideCorrespondenceAddress: 'yes',
-          correspondenceAddressLine1: 'Flat 3A Middle Road',
-          correspondenceAddressLine2: '',
-          correspondenceAddressLine3: '',
-          correspondenceCity: '',
-          correspondencePostCode: 'SW1H 9AJ',
         })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -688,17 +627,12 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
         .send({
-          primaryAddressLine1: 'Flat 3A Middle Road',
-          primaryAddressLine2: '',
-          primaryAddressLine3: '',
-          primaryCity: 'London',
-          primaryPostCode: 'SW1H 9AJ',
+          addressLine1: ['Flat 3A Middle Road','Flat 3A Middle Road'],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['London','London'],
+          postCode: ['SW1H 9AJ',''],
           provideCorrespondenceAddress: 'yes',
-          correspondenceAddressLine1: 'Flat 3A Middle Road',
-          correspondenceAddressLine2: '',
-          correspondenceAddressLine3: '',
-          correspondenceCity: 'London',
-          correspondencePostCode: '',
         })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -713,17 +647,12 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
         .send({
-          primaryAddressLine1: '',
-          primaryAddressLine2: '',
-          primaryAddressLine3: '',
-          primaryCity: '',
-          primaryPostCode: '',
+          addressLine1: ['',''],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['',''],
+          postCode: ['',''],
           provideCorrespondenceAddress: 'yes',
-          correspondenceAddressLine1: '',
-          correspondenceAddressLine2: '',
-          correspondenceAddressLine3: '',
-          correspondenceCity: '',
-          correspondencePostCode: '',
         })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -737,20 +666,18 @@ describe('Claimant Organisation Details page', () => {
     });
 
     it('POST/Claimant Company details - should return error on input for primary address when provideCorrespondenceAddress is set to NO', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        return buildClaimOfApplicantType(PartyType.COMPANY);
+      });
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
         .send({
-          primaryAddressLine1: '',
-          primaryAddressLine2: '',
-          primaryAddressLine3: '',
-          primaryCity: '',
-          primaryPostCode: '',
+          addressLine1: ['',''],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['',''],
+          postCode: ['',''],
           provideCorrespondenceAddress: 'no',
-          correspondenceAddressLine1: '',
-          correspondenceAddressLine2: '',
-          correspondenceAddressLine3: '',
-          correspondenceCity: '',
-          correspondencePostCode: '',
         })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -767,17 +694,12 @@ describe('Claimant Organisation Details page', () => {
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
         .send({
-          primaryAddressLine1: '',
-          primaryAddressLine2: '',
-          primaryAddressLine3: '',
-          primaryCity: '',
-          primaryPostCode: '',
+          addressLine1: ['Flat 3A Middle Road',''],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['London',''],
+          postCode: ['SW1H 9AJ',''],
           provideCorrespondenceAddress: 'yes',
-          correspondenceAddressLine1: '',
-          correspondenceAddressLine2: '',
-          correspondenceAddressLine3: '',
-          correspondenceCity: '',
-          correspondencePostCode: '',
         })
         .expect((res) => {
           expect(res.status).toBe(200);

@@ -20,8 +20,8 @@
       {% set otherPartyName = claim.getClaimantName() %}
       {% set totalClaimAmount ='£'+ claim.totalClaimAmount %}
       {% set phone = claim.applicant1.partyPhone %}
-      {% set email = claim.applicantSolicitor1UserDetails.email %}
-      {% set contactPerson = claim.applicant1.contactPerson %}
+      {% set email = claim.applicant1.emailAddress %}
+      {% set contactPerson = claim.applicant1.partyDetails.contactPerson %}
       {% set heading = t('PAGES.CONTACT_THEM.CONTACT')+ t(otherParty) %}
       {% set claimAmount = t('COMMON.CLAIM_AMOUNT') + ':' %}
       <div class="govuk-grid-row govuk-!-margin-top-0">
@@ -34,29 +34,29 @@
               {% if solicitorName %}
                 <p class="govuk-body govuk-!-margin-bottom-0">{{ solicitorName }}</p>
               {% endif %}
-              {% if address.AddressLine1 %}
-                <p class="govuk-body govuk-!-margin-bottom-0">{{ address.AddressLine1 }}</p>
+              {% if address.addressLine1 %}
+                <p class="govuk-body govuk-!-margin-bottom-0">{{ address.addressLine1 }}</p>
               {% endif %}
-              {% if address.AddressLine2 %}
-                <p class="govuk-body govuk-!-margin-bottom-0">{{ address.AddressLine2 }}</p>
+              {% if address.addressLine2 %}
+                <p class="govuk-body govuk-!-margin-bottom-0">{{ address.addressLine2 }}</p>
               {% endif %}
-              {% if address.AddressLine3 %}
-                <p class="govuk-body govuk-!-margin-bottom-0">{{ address.AddressLine3 }}</p>
+              {% if address.addressLine3 %}
+                <p class="govuk-body govuk-!-margin-bottom-0">{{ address.addressLine3 }}</p>
               {% endif %}
-              {% if address.County %}
-                <p class="govuk-body govuk-!-margin-bottom-0">{{ address.County }}</p>
+              {% if address.city %}
+                <p class="govuk-body govuk-!-margin-bottom-0">{{ address.city }}</p>
               {% endif %}
-              {% if address.PostCode %}
-                <p class="govuk-body govuk-!-margin-bottom-6">{{ address.PostCode }}</p>
+              {% if address.postCode %}
+                <p class="govuk-body govuk-!-margin-bottom-6">{{ address.postCode }}</p>
               {% endif %}
             {% endif %}
           </div>
           <div>
             {% if phone %}
-              <div class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.CONTACT_THEM.PHONE') +': ' }}{{ phone }}</div>
+              <div class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.CONTACT_THEM.PHONE') +': ' }}{{ phone.phone }}</div>
             {% endif %}
             {% if email %}
-              <div class="govuk-body govuk-!-margin-bottom-6">{{ t('COMMON.EMAIL') +': ' }}<a href='mailto:{{ email }}'>{{ email }}</a>
+              <div class="govuk-body govuk-!-margin-bottom-6">{{ t('COMMON.EMAIL') +': ' }}<a href='mailto:{{ email.emailAddress }}'>{{ email.emailAddress }}</a>
               </div>
             {% endif %}
           </div>
