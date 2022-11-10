@@ -23,7 +23,7 @@ describe('Full Admit Set Date Payment Service', () => {
     it('should return object with correct details', async () => {
       //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        claim.respondent1.partyName = 'John Doe';
+        claim.respondent1.partyDetails.partyName = 'John Doe';
         claim.paymentDate = new Date('2022-11-11T13:29:22.447');
         claim.claimantResponse.fullAdmitSetDateAcceptPayment = {
           option: YesNo.YES,
@@ -43,7 +43,7 @@ describe('Full Admit Set Date Payment Service', () => {
     it('should return object when claimantResponse is undefined', async () => {
       //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        claim.respondent1.partyName = 'John Doe';
+        claim.respondent1.partyDetails.partyName = 'John Doe';
         claim.paymentDate = new Date('2022-11-11T13:29:22.447');
         claim.claimantResponse = undefined;
         return claim;
@@ -61,7 +61,7 @@ describe('Full Admit Set Date Payment Service', () => {
     it('should return object when fullAdmitSetDateAcceptPayment is undefined', async () => {
       //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        claim.respondent1.partyName = 'John Doe';
+        claim.respondent1.partyDetails.partyName = 'John Doe';
         claim.paymentDate = new Date('2022-11-11T13:29:22.447');
         claim.claimantResponse = new ClaimantResponse();
         claim.claimantResponse.fullAdmitSetDateAcceptPayment = undefined;
