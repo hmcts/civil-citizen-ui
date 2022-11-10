@@ -1,16 +1,16 @@
-import {Router, Response, Request, NextFunction} from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 
-import {CLAIM_AMOUNT_URL, CLAIM_INTEREST_URL, NOT_ELIGIBLE_FOR_THIS_SERVICE_URL} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {AmountBreakdown} from '../../../../common/form/models/claim/amount/amountBreakdown';
+import {CLAIM_AMOUNT_URL, CLAIM_INTEREST_URL, NOT_ELIGIBLE_FOR_THIS_SERVICE_URL} from 'routes/urls';
+import {GenericForm} from 'form/models/genericForm';
+import {AmountBreakdown} from 'form/models/claim/amount/amountBreakdown';
 
 import {
   getClaimAmountBreakdownForm,
   saveClaimAmountBreakdownForm,
-} from '../../../../services/features/claim/amount/claimAmountBreakdownService';
-import {AppRequest} from '../../../../common/models/AppRequest';
-import {constructUrlWithNotEligibleReason} from '../../../../common/utils/urlFormatter';
-import {NotEligibleReason} from '../../../../common/form/models/eligibility/NotEligibleReason';
+} from 'services/features/claim/amount/claimAmountBreakdownService';
+import {AppRequest} from 'models/AppRequest';
+import {constructUrlWithNotEligibleReason} from 'common/utils/urlFormatter';
+import {NotEligibleReason} from 'form/models/eligibility/NotEligibleReason';
 
 const claimAmountBreakdownController = Router();
 const viewPath = 'features/claim/amount/claim-amount-breakdown';

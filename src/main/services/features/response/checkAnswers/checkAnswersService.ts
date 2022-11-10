@@ -14,7 +14,7 @@ import {buildYourFinancialSection} from './financialSection/buildYourFinancialSe
 import {buildYourResponseDetailsSection} from './responseSection/buildYourResponseDetailsSection';
 import {buildFreeTelephoneMediationSection} from './responseSection/buildFreeTelephoneMediationSection';
 import {YesNo} from '../../../../common/form/models/yesNo';
-import {buildHearingRequirementsSection} from './hearingRequirementsSection/hearingRequirementsSection';
+import {buildHearingRequirementsSection} from './hearingRequirementsSection/buildHearingRequirementsSection';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');

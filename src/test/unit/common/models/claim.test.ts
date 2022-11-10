@@ -27,6 +27,8 @@ import {WhyDoYouDisagree} from '../../../../main/common/form/models/admission/pa
 import {Defence} from '../../../../main/common/form/models/defence';
 import {ClaimResponseStatus} from '../../../../main/common/models/claimResponseStatus';
 import {InterestClaimOptionsType} from '../../../../main/common/form/models/claim/interest/interestClaimOptionsType';
+import {DirectionQuestionnaire} from '../../../../main/common/models/directionsQuestionnaire/directionQuestionnaire';
+import {Hearing} from '../../../../main/common/models/directionsQuestionnaire/hearing/hearing';
 
 describe('Claim isInterestEnDateUntilSubmitDate', () => {
   const claim = new Claim();
@@ -67,7 +69,7 @@ describe('Claim isInterestFromClaimSubmitDate', () => {
   });
   it('should return true', () => {
     //Given
-    claim.interestClaimFrom = InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
+    claim.interest = {interestClaimFrom : InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE};
     //When
     const result = claim.isInterestFromClaimSubmitDate();
     //Then
@@ -75,7 +77,7 @@ describe('Claim isInterestFromClaimSubmitDate', () => {
   });
   it('should return false', () => {
     //Given
-    claim.interestClaimFrom = InterestClaimFromType.FROM_A_SPECIFIC_DATE;
+    claim.interest = {interestClaimFrom : InterestClaimFromType.FROM_A_SPECIFIC_DATE};
     //When
     const result = claim.isInterestFromClaimSubmitDate();
     //Then
@@ -93,7 +95,7 @@ describe('Claim isInterestFromASpecificDate', () => {
   });
   it('should return true', () => {
     //Given
-    claim.interestClaimFrom = InterestClaimFromType.FROM_A_SPECIFIC_DATE;
+    claim.interest = {interestClaimFrom : InterestClaimFromType.FROM_A_SPECIFIC_DATE};
     //When
     const result = claim.isInterestFromASpecificDate();
     //Then
@@ -101,7 +103,7 @@ describe('Claim isInterestFromASpecificDate', () => {
   });
   it('should return false', () => {
     //Given
-    claim.interestClaimFrom = InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
+    claim.interest = {interestClaimFrom : InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE};
     //When
     const result = claim.isInterestFromASpecificDate();
     //Then
@@ -119,7 +121,7 @@ describe('Claim isInterestClaimOptionsSameRateInterest', () => {
   });
   it('should return true', () => {
     //Given
-    claim.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
+    claim.interest ={interestClaimOptions: InterestClaimOptionsType.SAME_RATE_INTEREST};
     //When
     const result = claim.isInterestClaimOptionsSameRateInterest();
     //Then
@@ -127,7 +129,7 @@ describe('Claim isInterestClaimOptionsSameRateInterest', () => {
   });
   it('should return false', () => {
     //Given
-    claim.interestClaimOptions = InterestClaimOptionsType.BREAK_DOWN_INTEREST;
+    claim.interest ={interestClaimOptions: InterestClaimOptionsType.BREAK_DOWN_INTEREST};
     //When
     const result = claim.isInterestClaimOptionsSameRateInterest();
     //Then
@@ -145,7 +147,7 @@ describe('Claim isSameRateTypeEightPercent', () => {
   });
   it('should return true', () => {
     //Given
-    claim.sameRateInterestSelection = {sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC};
+    claim.interest = {sameRateInterestSelection : {sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC}};
     //When
     const result = claim.isSameRateTypeEightPercent();
     //Then
@@ -153,7 +155,7 @@ describe('Claim isSameRateTypeEightPercent', () => {
   });
   it('should return false', () => {
     //Given
-    claim.sameRateInterestSelection = {sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE};
+    claim.interest = {sameRateInterestSelection : {sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE}};
     //When
     const result = claim.isSameRateTypeEightPercent();
     //Then
@@ -1044,6 +1046,132 @@ describe('Documents', () => {
       const result = claim.formattedTotalClaimAmount();
       //Then
       expect(result).toBe('£1,000.00');
+    });
+  });
+
+  describe('hasSupportRequiredList', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.hasSupportRequiredList;
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with empty directionQuestionnaire', () => {
+      //Given
+      claim.directionQuestionnaire = new DirectionQuestionnaire();
+      //When
+      const result = claim.hasSupportRequiredList;
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with empty hearing', () => {
+      //Given
+      claim.directionQuestionnaire.hearing = new Hearing();
+      //When
+      const result = claim.hasSupportRequiredList;
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with details', () => {
+      //Given
+      claim.directionQuestionnaire.hearing.supportRequiredList = { option : YesNo.YES};
+      //When
+      const result = claim.hasSupportRequiredList;
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('isSupportRequiredYes', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isSupportRequiredYes;
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with empty directionQuestionnaire', () => {
+      //Given
+      claim.directionQuestionnaire = new DirectionQuestionnaire();
+      //When
+      const result = claim.isSupportRequiredYes;
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with empty hearing', () => {
+      //Given
+      claim.directionQuestionnaire.hearing = new Hearing();
+      //When
+      const result = claim.isSupportRequiredYes;
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with "no" option', () => {
+      //Given
+      claim.directionQuestionnaire.hearing.supportRequiredList = {option: YesNo.NO};
+      //When
+      const result = claim.isSupportRequiredYes;
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with "yes" option', () => {
+      //Given
+      claim.directionQuestionnaire.hearing.supportRequiredList = {option: YesNo.YES};
+      //When
+      const result = claim.isSupportRequiredYes;
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('isSupportRequiredDetailsAvailable', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isSupportRequiredDetailsAvailable;
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with empty directionQuestionnaire', () => {
+      //Given
+      claim.directionQuestionnaire = new DirectionQuestionnaire();
+      //When
+      const result = claim.isSupportRequiredDetailsAvailable;
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with empty hearing', () => {
+      //Given
+      claim.directionQuestionnaire.hearing = new Hearing();
+      //When
+      const result = claim.isSupportRequiredDetailsAvailable;
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with empty items', () => {
+      //Given
+      claim.directionQuestionnaire.hearing.supportRequiredList = {
+        option: YesNo.YES,
+        items: [],
+      };
+      //When
+      const result = claim.isSupportRequiredDetailsAvailable;
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with item details', () => {
+      //Given
+      claim.directionQuestionnaire.hearing.supportRequiredList = {
+        option: YesNo.YES,
+        items: [{
+          fullName: 'John Doe',
+        }],
+      };
+      //When
+      const result = claim.isSupportRequiredDetailsAvailable;
+      //Then
+      expect(result).toBe(true);
     });
   });
 });
