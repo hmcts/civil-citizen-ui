@@ -7,21 +7,13 @@ import {
   CLAIM_TASK_LIST_URL,
   DOB_URL,
 } from 'routes/urls';
-import {
-  VALID_ADDRESS_LINE_1,
-  VALID_CITY,
-  VALID_POSTCODE,
-} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import {
-  getDefendantInformation,
-  saveDefendantProperty,
-} from '../../../../../../main/services/features/common/defendantDetailsService';
-import {Claim} from '../../../../../../main/common/models/claim';
-import {Party} from '../../../../../../main/common/models/party';
+import {getDefendantInformation, saveDefendantProperty} from 'services/features/common/defendantDetailsService';
+import {Claim} from 'models/claim';
+import {Party} from 'models/party';
 import {buildAddress} from '../../../../../utils/mockClaim';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {PartyType} from '../../../../../../main/common/models/partyType';
-import {PartyDetails} from '../../../../../../main/common/form/models/partyDetails';
+import {PartyType} from 'models/partyType';
+import {PartyDetails} from 'form/models/partyDetails';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -248,7 +240,7 @@ describe('Confirm Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_POSTCODE);
+        expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
       });
   });
 

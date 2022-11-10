@@ -277,7 +277,7 @@ describe('Claimant Organisation Details page', () => {
         })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_ADDRESS_LINE_1);
+          expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
         });
     });
 
@@ -297,7 +297,7 @@ describe('Claimant Organisation Details page', () => {
         })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_CITY);
+          expect(res.text).toContain(TestMessages.ENTER_TOWN);
         });
     });
 
@@ -317,7 +317,7 @@ describe('Claimant Organisation Details page', () => {
         })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_POSTCODE);
+          expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
         });
     });
 
@@ -340,9 +340,9 @@ describe('Claimant Organisation Details page', () => {
           expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
           expect(res.text).toContain(TestMessages.ENTER_TOWN);
           expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
-          expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_ADDRESS_LINE_1);
-          expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_CITY);
-          expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_POSTCODE);
+          expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
+          expect(res.text).toContain(TestMessages.ENTER_TOWN);
+          expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
         });
     });
 
@@ -381,9 +381,9 @@ describe('Claimant Organisation Details page', () => {
         })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_ADDRESS_LINE_1);
-          expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_CITY);
-          expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_POSTCODE);
+          expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
+          expect(res.text).toContain(TestMessages.ENTER_TOWN);
+          expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
         });
     });
 
@@ -596,7 +596,7 @@ describe('Claimant Organisation Details page', () => {
         })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_ADDRESS_LINE_1);
+          expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
         });
     });
 
@@ -616,7 +616,7 @@ describe('Claimant Organisation Details page', () => {
         })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_CITY);
+          expect(res.text).toContain(TestMessages.ENTER_TOWN);
         });
     });
 
@@ -636,7 +636,7 @@ describe('Claimant Organisation Details page', () => {
         })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_POSTCODE);
+          expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
         });
     });
 
@@ -659,9 +659,9 @@ describe('Claimant Organisation Details page', () => {
           expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
           expect(res.text).toContain(TestMessages.ENTER_TOWN);
           expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
-          expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_ADDRESS_LINE_1);
-          expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_ADDRESS_LINE_1);
-          expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_POSTCODE);
+          expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
+          expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
+          expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
         });
     });
 
@@ -703,9 +703,9 @@ describe('Claimant Organisation Details page', () => {
         })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_ADDRESS_LINE_1);
-          expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_CITY);
-          expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_POSTCODE);
+          expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
+          expect(res.text).toContain(TestMessages.ENTER_TOWN);
+          expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
         });
     });
 

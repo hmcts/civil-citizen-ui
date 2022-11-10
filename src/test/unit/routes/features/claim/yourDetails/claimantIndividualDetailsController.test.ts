@@ -8,7 +8,7 @@ import {PartyType} from 'models/partyType';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {PartyDetails} from '../../../../../../main/common/form/models/partyDetails';
+import {PartyDetails} from 'form/models/partyDetails';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -231,7 +231,7 @@ describe('Claimant Individual Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_ADDRESS_LINE_1);
+        expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
       });
   });
 
@@ -250,7 +250,7 @@ describe('Claimant Individual Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_CITY);
+        expect(res.text).toContain(TestMessages.ENTER_TOWN);
       });
   });
 
@@ -269,7 +269,7 @@ describe('Claimant Individual Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_POSTCODE);
+        expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
       });
   });
 
@@ -291,7 +291,7 @@ describe('Claimant Individual Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_ADDRESS_LINE_1);
+        expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
       });
   });
 
@@ -313,7 +313,7 @@ describe('Claimant Individual Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_CITY);
+        expect(res.text).toContain(TestMessages.ENTER_TOWN);
       });
   });
 
@@ -335,7 +335,7 @@ describe('Claimant Individual Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_POSTCODE);
+        expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
       });
   });
 
@@ -361,9 +361,9 @@ describe('Claimant Individual Details page', () => {
         expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
         expect(res.text).toContain(TestMessages.ENTER_TOWN);
         expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
-        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_ADDRESS_LINE_1);
-        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_CITY);
-        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_POSTCODE);
+        expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
+        expect(res.text).toContain(TestMessages.ENTER_TOWN);
+        expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
       });
   });
 
@@ -406,9 +406,9 @@ describe('Claimant Individual Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_ADDRESS_LINE_1);
-        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_CITY);
-        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_POSTCODE);
+        expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
+        expect(res.text).toContain(TestMessages.ENTER_TOWN);
+        expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
       });
   });
 
