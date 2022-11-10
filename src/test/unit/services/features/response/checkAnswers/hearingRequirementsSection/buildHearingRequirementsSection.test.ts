@@ -32,85 +32,76 @@ describe('Hearing Requirements Section', () => {
 
   describe('determinationWithoutHearingQuestion', () => {
     it('should return summaryRow if determination without hearing option is no', () => {
-      //Given
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.hearing = new Hearing();
       claim.directionQuestionnaire.hearing.determinationWithoutHearing = {
         option: YesNo.NO,
       };
-      //When
       const mockSummarySection = summaryRow(
         'PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE',
         'No',
         `/case/${claimId}/directions-questionnaire/determination-without-hearing`,
         changeButton,
       );
-      //Then
+
       expect(hearingRequirementsSection.determinationWithoutHearingQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if determination without hearing option is yes', () => {
-      //Given
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.hearing = new Hearing();
       claim.directionQuestionnaire.hearing.determinationWithoutHearing = {
         option: YesNo.YES,
       };
-      //When
       const mockSummarySection = summaryRow(
         'PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE',
         'Yes',
         `/case/${claimId}/directions-questionnaire/determination-without-hearing`,
         changeButton,
       );
-      //Then
+
       expect(hearingRequirementsSection.determinationWithoutHearingQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
     });
   });
 
   describe('determinationWithoutHearingReason', () => {
     it('should return summaryRow if determination without hearing reason is set', () => {
-      //Given
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.hearing = new Hearing();
       claim.directionQuestionnaire.hearing.determinationWithoutHearing = {
         reasonForHearing: 'my reason',
       };
-      //When
       const mockSummarySection = summaryRow(
         'PAGES.DETERMINATION_WITHOUT_HEARING.TELL_US_WHY',
         'my reason',
         `/case/${claimId}/directions-questionnaire/determination-without-hearing`,
         changeButton,
       );
-      //Then
+
       expect(hearingRequirementsSection.determinationWithoutHearingReason(claim, claimId, lng)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if determination without hearing reason is not set', () => {
-      //Given
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.hearing = new Hearing();
       claim.directionQuestionnaire.hearing.determinationWithoutHearing = {};
-      //When
       const mockSummarySection = summaryRow(
         'PAGES.DETERMINATION_WITHOUT_HEARING.TELL_US_WHY',
         '',
         `/case/${claimId}/directions-questionnaire/determination-without-hearing`,
         changeButton,
       );
-      //Then
+
       expect(hearingRequirementsSection.determinationWithoutHearingReason(claim, claimId, lng)).toStrictEqual(mockSummarySection);
     });
   });
 
   describe('speakingLanguagePreference', () => {
     it('should return summaryRow if language preference is english', () => {
-      //Given
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
@@ -118,19 +109,17 @@ describe('Hearing Requirements Section', () => {
         speakLanguage: LanguageOptions.ENGLISH,
         documentsLanguage: LanguageOptions.WELSH,
       };
-      //When
       const mockSummarySection = summaryRow(
         'PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK',
         'PAGES.WELSH_LANGUAGE.ENGLISH',
         `/case/${claimId}/directions-questionnaire/welsh-language`,
         changeButton,
       );
-      //Then
+
       expect(hearingRequirementsSection.speakingLanguagePreference(claim, claimId, lng)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if language preference is welsh', () => {
-      //Given
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
@@ -138,19 +127,17 @@ describe('Hearing Requirements Section', () => {
         speakLanguage: LanguageOptions.WELSH,
         documentsLanguage: LanguageOptions.ENGLISH,
       };
-      //When
       const mockSummarySection = summaryRow(
         'PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK',
         'PAGES.WELSH_LANGUAGE.WELSH',
         `/case/${claimId}/directions-questionnaire/welsh-language`,
         changeButton,
       );
-      //Then
+
       expect(hearingRequirementsSection.speakingLanguagePreference(claim, claimId, lng)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if language preference is english and welsh', () => {
-      //Given
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
@@ -158,19 +145,17 @@ describe('Hearing Requirements Section', () => {
         speakLanguage: LanguageOptions.WELSH_AND_ENGLISH,
         documentsLanguage: LanguageOptions.ENGLISH,
       };
-      //When
       const mockSummarySection = summaryRow(
         'PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK',
         'PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH',
         `/case/${claimId}/directions-questionnaire/welsh-language`,
         changeButton,
       );
-      //Then
+
       expect(hearingRequirementsSection.speakingLanguagePreference(claim, claimId, lng)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if language preference is not provided', () => {
-      //Given
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
@@ -178,7 +163,6 @@ describe('Hearing Requirements Section', () => {
         speakLanguage: LanguageOptions.WELSH_AND_ENGLISH,
         documentsLanguage: LanguageOptions.ENGLISH,
       };
-      //When
       const claimCopy = Object.assign(claim);
       claimCopy.directionQuestionnaire.welshLanguageRequirements.language.speakLanguage = undefined;
       const mockSummarySection = summaryRow(
@@ -187,14 +171,13 @@ describe('Hearing Requirements Section', () => {
         `/case/${claimId}/directions-questionnaire/welsh-language`,
         changeButton,
       );
-      //Then
+
       expect(hearingRequirementsSection.speakingLanguagePreference(claimCopy, claimId, lng)).toStrictEqual(mockSummarySection);
     });
   });
 
   describe('documentsLanguagePreference', () => {
     it('should return summaryRow if document language preference is english', () => {
-      //Given
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
@@ -202,19 +185,17 @@ describe('Hearing Requirements Section', () => {
         speakLanguage: LanguageOptions.WELSH,
         documentsLanguage: LanguageOptions.ENGLISH,
       };
-      //When
       const mockSummarySection = summaryRow(
         'PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS',
         'PAGES.WELSH_LANGUAGE.ENGLISH',
         `/case/${claimId}/directions-questionnaire/welsh-language`,
         changeButton,
       );
-      //Then
+
       expect(hearingRequirementsSection.documentsLanguagePreference(claim, claimId, lng)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if document language preference is welsh', () => {
-      //Given
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
@@ -222,19 +203,17 @@ describe('Hearing Requirements Section', () => {
         speakLanguage: LanguageOptions.ENGLISH,
         documentsLanguage: LanguageOptions.WELSH,
       };
-      //When
       const mockSummarySection = summaryRow(
         'PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS',
         'PAGES.WELSH_LANGUAGE.WELSH',
         `/case/${claimId}/directions-questionnaire/welsh-language`,
         changeButton,
       );
-      //Then
+
       expect(hearingRequirementsSection.documentsLanguagePreference(claim, claimId, lng)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if document language preference is not provided', () => {
-      //Given
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
@@ -242,7 +221,6 @@ describe('Hearing Requirements Section', () => {
         speakLanguage: LanguageOptions.WELSH_AND_ENGLISH,
         documentsLanguage: LanguageOptions.ENGLISH,
       };
-      //When
       const claimCopy = Object.assign(claim);
       claimCopy.directionQuestionnaire.welshLanguageRequirements.language.documentsLanguage = undefined;
       const mockSummarySection = summaryRow(
@@ -251,12 +229,11 @@ describe('Hearing Requirements Section', () => {
         `/case/${claimId}/directions-questionnaire/welsh-language`,
         changeButton,
       );
-      //Then
+
       expect(hearingRequirementsSection.documentsLanguagePreference(claimCopy, claimId, lng)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if document language preference is english and welsh', () => {
-      //Given
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
@@ -264,128 +241,117 @@ describe('Hearing Requirements Section', () => {
         speakLanguage: LanguageOptions.ENGLISH,
         documentsLanguage: LanguageOptions.WELSH_AND_ENGLISH,
       };
-      //When
       const mockSummarySection = summaryRow(
         'PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS',
         'PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH',
         `/case/${claimId}/directions-questionnaire/welsh-language`,
         changeButton,
       );
-      //Then
+
       expect(hearingRequirementsSection.documentsLanguagePreference(claim, claimId, lng)).toStrictEqual(mockSummarySection);
     });
   });
 
   describe('giveEvidenceYourself', () => {
     it('should return summaryRow if give evidence yourself option is no', () => {
-      //Given
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.defendantYourselfEvidence = {
         option: YesNo.NO,
       };
-      //When
       const mockSummarySection = summaryRow(
         'PAGES.CHECK_YOUR_ANSWER.GIVE_EVIDENCE',
         'No',
         `/case/${claimId}/directions-questionnaire/give-evidence-yourself`,
         changeButton,
       );
-      //Then
+
       expect(hearingRequirementsSection.giveEvidenceYourself(claim, claimId, lng)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if give evidence yourself option is yes', () => {
-      //Given
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.defendantYourselfEvidence = {
         option: YesNo.YES,
       };
-      //When
       const mockSummarySection = summaryRow(
         'PAGES.CHECK_YOUR_ANSWER.GIVE_EVIDENCE',
         'Yes',
         `/case/${claimId}/directions-questionnaire/give-evidence-yourself`,
         changeButton,
       );
-      //Then
+
       expect(hearingRequirementsSection.giveEvidenceYourself(claim, claimId, lng)).toStrictEqual(mockSummarySection);
     });
   });
 
   describe('vulnerabilityQuestion', () => {
     it('should return summaryRow if vulnerability question option is no', () => {
-      //Given
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.vulnerabilityQuestions = new VulnerabilityQuestions();
       claim.directionQuestionnaire.vulnerabilityQuestions.vulnerability = {
         option: YesNo.NO,
       };
-      //When
       const mockSummarySection = summaryRow(
         'PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION',
         'No',
         `/case/${claimId}/directions-questionnaire/vulnerability`,
         changeButton,
       );
-      //Then
+
       expect(hearingRequirementsSection.vulnerabilityQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if vulnerability question option is yes', () => {
-      //Given
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.vulnerabilityQuestions = new VulnerabilityQuestions();
       claim.directionQuestionnaire.vulnerabilityQuestions.vulnerability = {
         option: YesNo.YES,
       };
-      //When
       const mockSummarySection = summaryRow(
         'PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION',
         'Yes',
         `/case/${claimId}/directions-questionnaire/vulnerability`,
         changeButton,
       );
-      //Then
+
       expect(hearingRequirementsSection.vulnerabilityQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
     });
   });
 
   describe('vulnerabilityInfo', () => {
     it('should return summaryRow if vulnerability details is set', () => {
-      //Given
       const vulnerabilityDetails = 'Test vulnerability details';
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.vulnerabilityQuestions = new VulnerabilityQuestions();
       claim.directionQuestionnaire.vulnerabilityQuestions.vulnerability = {vulnerabilityDetails};
-      //When
+
       const mockSummarySection = summaryRow(
         'PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_INFO',
         vulnerabilityDetails,
         `/case/${claimId}/directions-questionnaire/vulnerability`,
         changeButton,
       );
-      //Then
+
       expect(hearingRequirementsSection.vulnerabilityInfo(claim, claimId, lng)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if vulnerability details is not set', () => {
-      //Given
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.vulnerabilityQuestions = new VulnerabilityQuestions();
-      //When
+
       const mockSummarySection = summaryRow(
         'PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_INFO',
         '',
         `/case/${claimId}/directions-questionnaire/vulnerability`,
         changeButton,
       );
-      //Then
+
       expect(hearingRequirementsSection.vulnerabilityInfo(claim, claimId, lng)).toStrictEqual(mockSummarySection);
     });
   });
