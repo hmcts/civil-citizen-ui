@@ -36,11 +36,11 @@ describe('Claimant details', () => {
           expect(res.text).toContain('Claim amount:');
           expect(res.text).toContain('Claim details:');
           expect(res.text).toContain('Contact us for help');
-          expect(res.text).toContain(claim.case_data.applicant1.partyName);
-          expect(res.text).toContain(claim.case_data.applicant1.primaryAddress.AddressLine1);
-          expect(res.text).toContain(claim.case_data.applicant1.primaryAddress.AddressLine2);
-          expect(res.text).toContain(claim.case_data.applicant1.primaryAddress.AddressLine3);
-          expect(res.text).toContain(claim.case_data.applicant1.primaryAddress.PostCode);
+          expect(res.text).toContain(claim.case_data.applicant1.partyDetails.partyName);
+          expect(res.text).toContain(claim.case_data.applicant1.partyDetails.primaryAddress.addressLine1);
+          expect(res.text).toContain(claim.case_data.applicant1.partyDetails.primaryAddress.addressLine2);
+          expect(res.text).toContain(claim.case_data.applicant1.partyDetails.primaryAddress.addressLine3);
+          expect(res.text).toContain(claim.case_data.applicant1.partyDetails.primaryAddress.postCode);
         });
     });
 

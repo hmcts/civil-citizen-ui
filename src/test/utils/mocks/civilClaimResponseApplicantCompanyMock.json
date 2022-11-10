@@ -7,11 +7,15 @@
   "case_data": {
     "applicant1": {
       "type": "COMPANY",
-      "partyName": "Version 1"
+      "partyDetails": {
+        "partyName": "Version 1"
+      }
     },
     "respondent1": {
       "type": "COMPANY",
-      "partyName": "Google"
+      "partyDetails": {
+        "partyName": "Google"
+      }
     }
   }
 }
