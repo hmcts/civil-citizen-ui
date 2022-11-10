@@ -4,7 +4,13 @@ import {getSummarySections} from '../../../../../main/services/features/claim/ch
 import {CLAIM_CHECK_ANSWERS_URL} from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {getElementsByXPath} from '../../../../utils/xpathExtractor';
-import {createClaimWithBasicDetails} from '../../../../utils/mocks/claimDetailsMock';
+import {createClaimWithBasicDetails, createClaimWithYourDetails} from '../../../../utils/mocks/claimDetailsMock';
+import {getCaseDataFromStore} from '../../../../../main/modules/draft-store/draftStoreService';
+import {YesNo} from '../../../../../main/common/form/models/yesNo';
+import {Claim} from '../../../../../main/common/models/claim';
+import {ClaimDetails} from 'form/models/claim/details/claimDetails';
+import {HelpWithFees} from 'form/models/claim/details/helpWithFees';
+import {STATEMENT_OF_TRUTH_REQUIRED_MESSAGE} from 'form/validationErrors/errorMessageConstants';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -17,9 +23,11 @@ const data = require('../../../../utils/mocks/defendantClaimsMock.json');
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/claimDetailsService');
+jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/services/features/claim/checkAnswers/checkAnswersService');
 
 const mockGetSummarySections = getSummarySections as jest.Mock;
+const mockGetClaim = getCaseDataFromStore as jest.Mock;
 const PARTY_NAME = 'Mrs. Mary Richards';
 
 describe('Response - Check answers', () => {
@@ -41,6 +49,13 @@ describe('Response - Check answers', () => {
   });
 
   describe('on GET', () => {
+    mockGetClaim.mockImplementation(() => {
+      const claim = new Claim();
+      claim.claimDetails = new ClaimDetails();
+      claim.claimDetails.helpWithFees = new HelpWithFees();
+      claim.claimDetails.helpWithFees.option = YesNo.YES;
+      return claim;
+    });
 
     it('should return check answers page', async () => {
       mockGetSummarySections.mockImplementation(() => {
@@ -132,7 +147,63 @@ describe('Response - Check answers', () => {
     });
   });
   describe('on Post', () => {
+    it('should return errors when form is incomplete', async () => {
+      mockGetSummarySections.mockImplementation(() => {
+        return createClaimWithYourDetails();
+      });
+      const data = {signed: ''};
+      await request(app)
+        .post(CLAIM_CHECK_ANSWERS_URL)
+        .send(data)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(STATEMENT_OF_TRUTH_REQUIRED_MESSAGE);
+        });
+    });
+    it('should return payment button when Fee is no', async () => {
+      mockGetSummarySections.mockImplementation(() => {
+        return createClaimWithYourDetails();
+      });
+      mockGetClaim.mockImplementation(() => {
+        const claim = new Claim();
+        claim.claimDetails = new ClaimDetails();
+        claim.claimDetails.helpWithFees = new HelpWithFees();
+        claim.claimDetails.helpWithFees.option = YesNo.NO;
+        return claim;
+      });
+      const data = {signed: ''};
+      await request(app)
+        .post(CLAIM_CHECK_ANSWERS_URL)
+        .send(data)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Submit and continue to payment');
+        });
+    });
+    it('should return submit button when Fee is yes', async () => {
+      mockGetSummarySections.mockImplementation(() => {
+        return createClaimWithYourDetails();
+      });
+      mockGetClaim.mockImplementation(() => {
+        const claim = new Claim();
+        claim.claimDetails = new ClaimDetails();
+        claim.claimDetails.helpWithFees = new HelpWithFees();
+        claim.claimDetails.helpWithFees.option = YesNo.YES;
+        return claim;
+      });
+      const data = {signed: ''};
+      await request(app)
+        .post(CLAIM_CHECK_ANSWERS_URL)
+        .send(data)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Submit Response');
+        });
+    });
     it('should return 500 when error in service', async () => {
+      mockGetSummarySections.mockImplementation(() => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CLAIM_CHECK_ANSWERS_URL)
         .send(data)
