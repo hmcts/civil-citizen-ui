@@ -42,7 +42,7 @@ mediationIndividualPhoneController.post(CAN_WE_USE_URL,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const claim: Claim = await getCaseDataFromStore(req.params.id);
-      const mediationIndividualPhoneForm: GenericForm<MediationIndividualPhoneNumber> = isTelephoneNumberSaved(claim.respondent1.partyPhone, req);
+      const mediationIndividualPhoneForm: GenericForm<MediationIndividualPhoneNumber> = isTelephoneNumberSaved(claim.respondent1.partyPhone.phone, req);
       await mediationIndividualPhoneForm.validate();
       if (mediationIndividualPhoneForm.hasErrors()) {
         await renderView(mediationIndividualPhoneForm, res, req.params.id);
