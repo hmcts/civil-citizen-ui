@@ -6,12 +6,6 @@ import {CourtOrders} from 'form/models/statementOfMeans/courtOrders/courtOrders'
 import {CourtOrder} from 'form/models/statementOfMeans/courtOrders/courtOrder';
 import {Claim} from 'models/claim';
 import {GenericForm} from 'form/models/genericForm';
-import {
-  VALID_AMOUNT_ONE_POUND_OR_MORE,
-  VALID_CLAIM_NUMBER,
-  VALID_STRICTLY_POSITIVE_NUMBER,
-  VALID_TWO_DECIMAL_NUMBER,
-} from 'form/validationErrors/errorMessageConstants';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -116,7 +110,7 @@ describe('Court Orders service', () => {
       //Then
       expect(form.errorFor('declared')).toBeUndefined();
       expect(form.errorFor('rows')).toBeUndefined();
-      expect(form.errorFor('rows[0][claimNumber]')).toBe(VALID_CLAIM_NUMBER);
+      expect(form.errorFor('rows[0][claimNumber]')).toBe('ERRORS.VALID_CLAIM_NUMBER');
       expect(form.errorFor('rows[0][amount]')).toBeUndefined();
       expect(form.errorFor('rows[0][instalmentAmount]')).toBeUndefined();
     });
@@ -133,7 +127,7 @@ describe('Court Orders service', () => {
       expect(form.errorFor('declared')).toBeUndefined();
       expect(form.errorFor('rows')).toBeUndefined();
       expect(form.errorFor('rows[0][claimNumber]')).toBeUndefined();
-      expect(form.errorFor('rows[0][amount]')).toBe(VALID_AMOUNT_ONE_POUND_OR_MORE);
+      expect(form.errorFor('rows[0][amount]')).toBe('ERRORS.AMOUNT_REQUIRED');
       expect(form.errorFor('rows[0][instalmentAmount]')).toBeUndefined();
     });
     it('should raise an error if declared true and the amount is less than 1', async () => {
@@ -149,7 +143,7 @@ describe('Court Orders service', () => {
       expect(form.errorFor('declared')).toBeUndefined();
       expect(form.errorFor('rows')).toBeUndefined();
       expect(form.errorFor('rows[0][claimNumber]')).toBeUndefined();
-      expect(form.errorFor('rows[0][amount]')).toBe(VALID_AMOUNT_ONE_POUND_OR_MORE);
+      expect(form.errorFor('rows[0][amount]')).toBe('ERRORS.AMOUNT_REQUIRED');
       expect(form.errorFor('rows[0][instalmentAmount]')).toBeUndefined();
     });
     it('should raise an error if declared true and the amount has more than 2 decimals', async () => {
@@ -165,7 +159,7 @@ describe('Court Orders service', () => {
       expect(form.errorFor('declared')).toBeUndefined();
       expect(form.errorFor('rows')).toBeUndefined();
       expect(form.errorFor('rows[0][claimNumber]')).toBeUndefined();
-      expect(form.errorFor('rows[0][amount]')).toBe(VALID_TWO_DECIMAL_NUMBER);
+      expect(form.errorFor('rows[0][amount]')).toBe('ERRORS.VALID_TWO_DECIMAL_NUMBER');
       expect(form.errorFor('rows[0][instalmentAmount]')).toBeUndefined();
     });
     it('should raise an error if declared true and the instalment amount is unspecified', async () => {
@@ -181,7 +175,7 @@ describe('Court Orders service', () => {
       expect(form.errorFor('rows')).toBeUndefined();
       expect(form.errorFor('rows[0][claimNumber]')).toBeUndefined();
       expect(form.errorFor('rows[0][amount]')).toBeUndefined();
-      expect(form.errorFor('rows[0][instalmentAmount]')).toBe(VALID_STRICTLY_POSITIVE_NUMBER);
+      expect(form.errorFor('rows[0][instalmentAmount]')).toBe('ERRORS.VALID_STRICTLY_POSITIVE_NUMBER');
     });
     it('should not raise an error if declared true and the instalment amount is 0', async () => {
       //Given
@@ -213,7 +207,7 @@ describe('Court Orders service', () => {
       expect(form.errorFor('rows')).toBeUndefined();
       expect(form.errorFor('rows[0][claimNumber]')).toBeUndefined();
       expect(form.errorFor('rows[0][amount]')).toBeUndefined();
-      expect(form.errorFor('rows[0][instalmentAmount]')).toBe(VALID_TWO_DECIMAL_NUMBER);
+      expect(form.errorFor('rows[0][instalmentAmount]')).toBe('ERRORS.VALID_TWO_DECIMAL_NUMBER');
     });
     it('should raise an error if declared true and none of the total and instalment amounts aren\'t specified', async () => {
       //Given
@@ -224,8 +218,8 @@ describe('Court Orders service', () => {
       expect(form.errorFor('declared')).toBeUndefined();
       expect(form.errorFor('rows')).toBeUndefined();
       expect(form.errorFor('rows[0][claimNumber]')).toBeUndefined();
-      expect(form.errorFor('rows[0][amount]')).toBe(VALID_AMOUNT_ONE_POUND_OR_MORE);
-      expect(form.errorFor('rows[0][instalmentAmount]')).toBe(VALID_STRICTLY_POSITIVE_NUMBER);
+      expect(form.errorFor('rows[0][amount]')).toBe('ERRORS.AMOUNT_REQUIRED');
+      expect(form.errorFor('rows[0][instalmentAmount]')).toBe('ERRORS.VALID_STRICTLY_POSITIVE_NUMBER');
     });
   });
   describe('Remove Empty Court Orders', () => {

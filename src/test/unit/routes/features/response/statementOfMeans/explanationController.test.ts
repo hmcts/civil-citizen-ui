@@ -2,7 +2,7 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {CITIZEN_EXPLANATION_URL, CLAIM_TASK_LIST_URL} from '../../../../../../main/routes/urls';
+import {CITIZEN_EXPLANATION_URL, CLAIM_TASK_LIST_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 

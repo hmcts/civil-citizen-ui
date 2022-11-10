@@ -1,21 +1,13 @@
 import {app} from '../../../../../../main/app';
 import config from 'config';
 import request from 'supertest';
-import {CLAIMANT_DOB_URL, CLAIMANT_INDIVIDUAL_DETAILS_URL} from '../../../../../../main/routes/urls';
+import {CLAIMANT_DOB_URL, CLAIMANT_INDIVIDUAL_DETAILS_URL} from 'routes/urls';
 import {buildCorrespondenceAddress, buildPrimaryAddress} from '../../../../../utils/mockClaim';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {PartyType} from '../../../../../../main/common/models/partyType';
-import {Claim} from '../../../../../../main/common/models/claim';
-import {Party} from '../../../../../../main/common/models/party';
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../../../main/modules/draft-store/draftStoreService';
-import {
-  VALID_ADDRESS_LINE_1,
-  VALID_CITY,
-  VALID_CORRESPONDENCE_ADDRESS_LINE_1,
-  VALID_CORRESPONDENCE_CITY,
-  VALID_CORRESPONDENCE_POSTCODE,
-  VALID_POSTCODE,
-} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {PartyType} from 'models/partyType';
+import {Claim} from 'models/claim';
+import {Party} from 'models/party';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -232,162 +224,6 @@ describe('Claimant Individual Details page', () => {
       });
   });
 
-  it('POST/Claimant Individual details - should return error on empty primary address line', async () => {
-    mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
-    });
-    await request(app)
-      .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
-      .send({
-        primaryAddressLine1: '',
-        primaryAddressLine2: '',
-        primaryAddressLine3: '',
-        primaryCity: 'London',
-        primaryPostCode: 'SW1H 9AJ',
-        provideCorrespondenceAddress: 'no',
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
-        partyName: 'partyName',
-        contactPerson: 'contactPerson',
-      })
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_ADDRESS_LINE_1);
-      });
-  });
-
-  it('POST/Claimant individual details - should return error on empty primary city', async () => {
-    await request(app)
-      .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
-      .send({
-        primaryAddressLine1: 'Flat 3A Middle Road',
-        primaryAddressLine2: '',
-        primaryAddressLine3: '',
-        primaryCity: '',
-        primaryPostCode: 'SW1H 9AJ',
-        provideCorrespondenceAddress: 'no',
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
-        partyName: 'partyName',
-        contactPerson: 'contactPerson',
-      })
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_CITY);
-      });
-  });
-
-  it('POST/Claimant Individual details - should return error on empty primary postcode', async () => {
-    await request(app)
-      .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
-      .send({
-        primaryAddressLine1: 'Flat 3A Middle Road',
-        primaryAddressLine2: '',
-        primaryAddressLine3: '',
-        primaryCity: 'London',
-        primaryPostCode: '',
-        provideCorrespondenceAddress: 'no',
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
-        partyName: 'partyName',
-        contactPerson: 'contactPerson',
-      })
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_POSTCODE);
-      });
-  });
-
-  it('POST/Claimant Individual details - should return error on empty correspondence address line', async () => {
-    mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
-    });
-    await request(app)
-      .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
-      .send({
-        primaryAddressLine1: 'Flat 3A Middle Road',
-        primaryAddressLine2: '',
-        primaryAddressLine3: '',
-        primaryCity: 'London',
-        primaryPostCode: 'SW1H 9AJ',
-        provideCorrespondenceAddress: 'yes',
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
-        partyName: 'partyName',
-        contactPerson: 'contactPerson',
-      })
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_ADDRESS_LINE_1);
-      });
-  });
-
-  it('POST/Claimant Individual details - should return error on empty correspondence city', async () => {
-    mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
-    });
-    await request(app)
-      .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
-      .send({
-        primaryAddressLine1: 'Flat 3A Middle Road',
-        primaryAddressLine2: '',
-        primaryAddressLine3: '',
-        primaryCity: 'London',
-        primaryPostCode: 'SW1H 9AJ',
-        provideCorrespondenceAddress: 'yes',
-        correspondenceAddressLine1: 'Flat 3A Middle Road',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: 'SW1H 9AJ',
-        partyName: 'partyName',
-        contactPerson: 'contactPerson',
-      })
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_CITY);
-      });
-  });
-
-  it('POST/Claimant Individual details - should return error on empty correspondence postcode', async () => {
-    mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
-    });
-    await request(app)
-      .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
-      .send({
-        primaryAddressLine1: 'Flat 3A Middle Road',
-        primaryAddressLine2: '',
-        primaryAddressLine3: '',
-        primaryCity: 'London',
-        primaryPostCode: 'SW1H 9AJ',
-        provideCorrespondenceAddress: 'yes',
-        correspondenceAddressLine1: 'Flat 3A Middle Road',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: 'London',
-        correspondencePostCode: '',
-        partyName: 'partyName',
-        contactPerson: 'contactPerson',
-      })
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_POSTCODE);
-      });
-  });
-
   it('POST/Claimant Individual details - should return error on no input', async () => {
     mockGetCaseData.mockImplementation(async () => {
       return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
@@ -412,12 +248,12 @@ describe('Claimant Individual Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_ADDRESS_LINE_1);
-        expect(res.text).toContain(VALID_CITY);
-        expect(res.text).toContain(VALID_POSTCODE);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_ADDRESS_LINE_1);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_CITY);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_POSTCODE);
+        expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
+        expect(res.text).toContain(TestMessages.ENTER_TOWN);
+        expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
+        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_ADDRESS_LINE_1);
+        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_CITY);
+        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_POSTCODE);
       });
   });
 
@@ -441,9 +277,9 @@ describe('Claimant Individual Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_ADDRESS_LINE_1);
-        expect(res.text).toContain(VALID_CITY);
-        expect(res.text).toContain(VALID_POSTCODE);
+        expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
+        expect(res.text).toContain(TestMessages.ENTER_TOWN);
+        expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
       });
   });
 
@@ -470,9 +306,9 @@ describe('Claimant Individual Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_ADDRESS_LINE_1);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_CITY);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_POSTCODE);
+        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_ADDRESS_LINE_1);
+        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_CITY);
+        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_POSTCODE);
       });
   });
 
