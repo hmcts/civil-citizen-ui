@@ -160,7 +160,7 @@ import helpWithFeesController from './features/claim/details/helpWithFeesControl
 import partPaymentReceivedController from './features/claimantResponse/partPaymentReceivedController';
 import defendantDOBController from './features/claimantResponse/ccj/defendantDOBController';
 import claimantIntentionToProceedController from './features/claimantResponse/claimantIntentionToProceedController';
-import debtStartDateController from './features/claimantResponse/debtStartDateController';
+import debtStartDateController from './features/breathingSpace/debtRespiteStartDateController';
 
 export default [
   homeController,

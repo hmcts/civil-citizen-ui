@@ -3,8 +3,8 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
 import {
-  CLAIMANT_RESPONSE_WHEN_DEBT_START_URL,
-  CLAIMANT_RESPONSE_WHAT_TYPE_URL,
+  BREATHING_SPACE_RESPITE_START_DATE_URL,
+  BREATHING_SPACE_RESPITE_TYPE_URL,
 } from '../../../../../main/routes/urls';
 import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
@@ -27,7 +27,7 @@ describe('Claimant Response - Debt Respite When Start Controller', () => {
     it('should return debt when start page empty when dont have information on redis ', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .get(CLAIMANT_RESPONSE_WHEN_DEBT_START_URL)
+        .get(BREATHING_SPACE_RESPITE_START_DATE_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('When did it start?');
@@ -36,7 +36,7 @@ describe('Claimant Response - Debt Respite When Start Controller', () => {
     it('should return http 500 when has error in the get method', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .get(CLAIMANT_RESPONSE_WHEN_DEBT_START_URL)
+        .get(BREATHING_SPACE_RESPITE_START_DATE_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -48,7 +48,7 @@ describe('Claimant Response - Debt Respite When Start Controller', () => {
     it('should create a new claim response if redis gives undefined', async () => {
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       await request(app)
-        .post(CLAIMANT_RESPONSE_WHEN_DEBT_START_URL)
+        .post(BREATHING_SPACE_RESPITE_START_DATE_URL)
         .send('year=2000')
         .send('month=1')
         .send('day=1')
@@ -60,7 +60,7 @@ describe('Claimant Response - Debt Respite When Start Controller', () => {
     it('should move to next page on no input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .post(CLAIMANT_RESPONSE_WHEN_DEBT_START_URL)
+        .post(BREATHING_SPACE_RESPITE_START_DATE_URL)
         .send('year=')
         .send('month=')
         .send('day=')
@@ -73,7 +73,7 @@ describe('Claimant Response - Debt Respite When Start Controller', () => {
     it('should return error for day larger than 31', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .post(CLAIMANT_RESPONSE_WHEN_DEBT_START_URL)
+        .post(BREATHING_SPACE_RESPITE_START_DATE_URL)
         .send('year=1990')
         .send('month=1')
         .send('day=32')
@@ -86,7 +86,7 @@ describe('Claimant Response - Debt Respite When Start Controller', () => {
     it('should return error for day no input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .post(CLAIMANT_RESPONSE_WHEN_DEBT_START_URL)
+        .post(BREATHING_SPACE_RESPITE_START_DATE_URL)
         .send('year=1990')
         .send('month=1')
         .send('day=')
@@ -99,7 +99,7 @@ describe('Claimant Response - Debt Respite When Start Controller', () => {
     it('should return error for month larger than 12', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .post(CLAIMANT_RESPONSE_WHEN_DEBT_START_URL)
+        .post(BREATHING_SPACE_RESPITE_START_DATE_URL)
         .send('year=1990')
         .send('month=13')
         .send('day=1')
@@ -112,7 +112,7 @@ describe('Claimant Response - Debt Respite When Start Controller', () => {
     it('should return error for month no input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .post(CLAIMANT_RESPONSE_WHEN_DEBT_START_URL)
+        .post(BREATHING_SPACE_RESPITE_START_DATE_URL)
         .send('year=1990')
         .send('month=')
         .send('day=1')
@@ -125,7 +125,7 @@ describe('Claimant Response - Debt Respite When Start Controller', () => {
     it('should return error for year not 4 digits', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .post(CLAIMANT_RESPONSE_WHEN_DEBT_START_URL)
+        .post(BREATHING_SPACE_RESPITE_START_DATE_URL)
         .send('year=999')
         .send('month=1')
         .send('day=1')
@@ -138,7 +138,7 @@ describe('Claimant Response - Debt Respite When Start Controller', () => {
     it('should return error for year no input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .post(CLAIMANT_RESPONSE_WHEN_DEBT_START_URL)
+        .post(BREATHING_SPACE_RESPITE_START_DATE_URL)
         .send('year=')
         .send('month=1')
         .send('day=1')
@@ -151,7 +151,7 @@ describe('Claimant Response - Debt Respite When Start Controller', () => {
     it('should return error for year not smaller than 1872', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .post(CLAIMANT_RESPONSE_WHEN_DEBT_START_URL)
+        .post(BREATHING_SPACE_RESPITE_START_DATE_URL)
         .send('year=1500')
         .send('month=1')
         .send('day=1')
@@ -164,7 +164,7 @@ describe('Claimant Response - Debt Respite When Start Controller', () => {
     it('should return error for date is future', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .post(CLAIMANT_RESPONSE_WHEN_DEBT_START_URL)
+        .post(BREATHING_SPACE_RESPITE_START_DATE_URL)
         .send('year=2500')
         .send('month=1')
         .send('day=1')
@@ -176,7 +176,7 @@ describe('Claimant Response - Debt Respite When Start Controller', () => {
 
     it('should accept a valid input', async () => {
       await request(app)
-        .post(CLAIMANT_RESPONSE_WHEN_DEBT_START_URL)
+        .post(BREATHING_SPACE_RESPITE_START_DATE_URL)
         .send('year=1990')
         .send('month=1')
         .send('day=1')
@@ -187,20 +187,20 @@ describe('Claimant Response - Debt Respite When Start Controller', () => {
 
     it('should redirect to what type is it page', async () => {
       await request(app)
-        .post(CLAIMANT_RESPONSE_WHEN_DEBT_START_URL)
+        .post(BREATHING_SPACE_RESPITE_START_DATE_URL)
         .send('year=1990')
         .send('month=1')
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain(`Redirecting to ${CLAIMANT_RESPONSE_WHAT_TYPE_URL}`);
+          expect(res.text).toContain(`Redirecting to ${BREATHING_SPACE_RESPITE_TYPE_URL}`);
         });
     });
 
     it('should return http 500 when has error in the post method', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .post(CLAIMANT_RESPONSE_WHEN_DEBT_START_URL)
+        .post(BREATHING_SPACE_RESPITE_START_DATE_URL)
         .send('year=1990')
         .send('month=1')
         .send('day=1')

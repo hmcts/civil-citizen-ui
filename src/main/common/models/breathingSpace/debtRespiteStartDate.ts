@@ -4,7 +4,7 @@ import {DateConverter} from '../../../common/utils/dateConverter';
 import {OptionalDateInPastValidator} from '../../../common/form/validators/optionalDateInPastValidator';
 import {toNumberOrUndefined} from '../../../common/utils/numberConverter';
 
-export class DebtStartDate {
+export class DebtRespiteStartDate {
 
   @ValidateIf(o => (o.day < 32 && o.month < 13 && o.year > 999))
   @IsDate({message: 'ERRORS.VALID_DATE'})
