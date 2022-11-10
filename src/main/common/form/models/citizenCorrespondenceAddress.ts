@@ -1,22 +1,16 @@
 import {IsNotEmpty, Validate} from 'class-validator';
-import {
-  DEFENDANT_POSTCODE_NOT_VALID,
-  VALID_CORRESPONDENCE_ADDRESS_LINE_1,
-  VALID_CORRESPONDENCE_CITY,
-  VALID_CORRESPONDENCE_POSTCODE,
-} from '../validationErrors/errorMessageConstants';
-import {PostcodeValidator} from '../../../common/form/validators/postcodeValidator';
-import {CorrespondenceAddress} from '../../models/correspondenceAddress';
+import {PostcodeValidator} from 'form/validators/postcodeValidator';
+import {CorrespondenceAddress} from 'models/correspondenceAddress';
 
 export class CitizenCorrespondenceAddress {
-  @IsNotEmpty({message: VALID_CORRESPONDENCE_ADDRESS_LINE_1})
+  @IsNotEmpty({message: 'ERRORS.VALID_CORRESPONDENCE_ADDRESS_LINE_1'})
     correspondenceAddressLine1?: string;
   correspondenceAddressLine2?: string;
   correspondenceAddressLine3?: string;
-  @IsNotEmpty({message: VALID_CORRESPONDENCE_POSTCODE})
-  @Validate(PostcodeValidator, {message: DEFENDANT_POSTCODE_NOT_VALID})
+  @IsNotEmpty({message: 'ERRORS.VALID_CORRESPONDENCE_POSTCODE'})
+  @Validate(PostcodeValidator, {message: 'ERRORS.DEFENDANT_POSTCODE_NOT_VALID'})
     correspondencePostCode?: string;
-  @IsNotEmpty({message: VALID_CORRESPONDENCE_CITY})
+  @IsNotEmpty({message: 'ERRORS.VALID_CORRESPONDENCE_CITY'})
     correspondenceCity?: string;
 
   constructor(

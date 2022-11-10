@@ -1,19 +1,17 @@
 import {courtOrdersService}
-  from '../../../../../../../main/services/features/response/statementOfMeans/courtOrders/courtOrdersService';
+  from 'services/features/response/statementOfMeans/courtOrders/courtOrdersService';
 import * as draftStoreService from '../../../../../../../main/modules/draft-store/draftStoreService';
-import {StatementOfMeans} from '../../../../../../../main/common/models/statementOfMeans';
-import {CourtOrders} from '../../../../../../../main/common/form/models/statementOfMeans/courtOrders/courtOrders';
-import {CourtOrder} from '../../../../../../../main/common/form/models/statementOfMeans/courtOrders/courtOrder';
-import {Claim} from '../../../../../../../main/common/models/claim';
-import {GenericForm} from '../../../../../../../main/common/form/models/genericForm';
+import {StatementOfMeans} from 'models/statementOfMeans';
+import {CourtOrders} from 'form/models/statementOfMeans/courtOrders/courtOrders';
+import {CourtOrder} from 'form/models/statementOfMeans/courtOrders/courtOrder';
+import {Claim} from 'models/claim';
+import {GenericForm} from 'form/models/genericForm';
 import {
   VALID_AMOUNT_ONE_POUND_OR_MORE,
   VALID_CLAIM_NUMBER,
-  VALID_ENTER_AT_LEAST_ONE_COURT_ORDER,
   VALID_STRICTLY_POSITIVE_NUMBER,
   VALID_TWO_DECIMAL_NUMBER,
-  VALID_YES_NO_SELECTION,
-} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+} from 'form/validationErrors/errorMessageConstants';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -77,7 +75,7 @@ describe('Court Orders service', () => {
       form.validateSync();
       //Then
       expect(form.getErrors().length).toBe(1);
-      expect(form.errorFor('declared')).toBe(VALID_YES_NO_SELECTION);
+      expect(form.errorFor('declared')).toBe('ERRORS.VALID_YES_NO_SELECTION');
       expect(form.errorFor('rows')).toBeUndefined();
       expect(form.errorFor('rows[0][claimNumber]')).toBeUndefined();
       expect(form.errorFor('rows[0][amount]')).toBeUndefined();
@@ -101,7 +99,7 @@ describe('Court Orders service', () => {
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.errorFor('declared')).toBeUndefined();
-      expect(form.errorFor('rows')).toBe(VALID_ENTER_AT_LEAST_ONE_COURT_ORDER);
+      expect(form.errorFor('rows')).toBe('ERRORS.VALID_ENTER_AT_LEAST_ONE_COURT_ORDER');
       expect(form.errorFor('rows[0][claimNumber]')).toBeUndefined();
       expect(form.errorFor('rows[0][amount]')).toBeUndefined();
       expect(form.errorFor('rows[0][instalmentAmount]')).toBeUndefined();
@@ -175,8 +173,7 @@ describe('Court Orders service', () => {
       const rows = [
         new CourtOrder(1, undefined, 'abc1'),
       ];
-      const courtOrders = new CourtOrders(true, rows);
-      const form = new GenericForm(courtOrders);
+      const form = new GenericForm(new CourtOrders(true, rows));
       //When
       form.validateSync();
       //Then
@@ -220,11 +217,7 @@ describe('Court Orders service', () => {
     });
     it('should raise an error if declared true and none of the total and instalment amounts aren\'t specified', async () => {
       //Given
-      const rows = [
-        new CourtOrder(undefined, undefined, 'abc1'),
-      ];
-      const courtOrders = new CourtOrders(true, rows);
-      const form = new GenericForm(courtOrders);
+      const form = new GenericForm(new CourtOrders(true, [new CourtOrder(undefined, undefined, 'abc1')]));
       //When
       form.validateSync();
       //Then
