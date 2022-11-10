@@ -61,7 +61,7 @@ describe('Defendant details service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       mockGetCaseData.mockImplementation(async () => {
-        return undefined;
+        return new Claim();
       });
 
       await saveDefendant(CLAIM_ID, 'type', PartyType.INDIVIDUAL);

@@ -16,6 +16,7 @@ import {getCaseDataFromStore} from '../../../../../modules/draft-store/draftStor
 import {Claim} from '../../../../../common/models/claim';
 import {ResponseType} from '../../../../../common/form/models/responseType';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
+import {PartAdmitGuard} from '../../../../../routes/guards/partAdmitGuard';
 
 const partialAdmissionPaymentOptionController = Router();
 const citizenPaymentOptionViewPath = 'features/response/admission/payment-option';
@@ -34,7 +35,7 @@ function redirectToNextPage(claimId: string, form: PaymentOption, res: Response)
 
 let admittedPaymentAmount: number;
 
-partialAdmissionPaymentOptionController.get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL, async (req, res, next: NextFunction) => {
+partialAdmissionPaymentOptionController.get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL, PartAdmitGuard.apply(CLAIM_TASK_LIST_URL), async (req, res, next: NextFunction) => {
   const claimId = req.params.id;
   try {
     const claim: Claim = await getCaseDataFromStore(claimId);

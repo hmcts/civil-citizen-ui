@@ -38,3 +38,9 @@ export const addDaysToDate = (date: Date, value: number) => {
   updatedDate.setDate(updatedDate.getDate() + value);
   return updatedDate;
 };
+
+export const getDOBforAgeFromCurrentTime = (age: number): Date => {
+  const referenceDate = new Date();
+  referenceDate.setFullYear(referenceDate.getFullYear() - age);
+  return referenceDate;
+};
