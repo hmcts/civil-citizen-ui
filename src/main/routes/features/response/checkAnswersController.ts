@@ -12,7 +12,7 @@ import {Claim} from '../../../common/models/claim';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {QualifiedStatementOfTruth} from '../../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {isFullAmountReject} from '../../../modules/claimDetailsService';
-import {AppRequest} from 'models/AppRequest';
+import {AppRequest} from '../../../common/models/AppRequest';
 import {AllResponseTasksCompletedGuard} from '../../../routes/guards/allResponseTasksCompletedGuard';
 import {submitResponse} from '../../../services/features/response/submission/submitResponse';
 
