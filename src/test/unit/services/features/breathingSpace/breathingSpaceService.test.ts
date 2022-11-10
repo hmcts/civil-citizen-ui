@@ -80,13 +80,13 @@ describe('Breathing Space Service', () => {
     });
   });
 
-  describe('saveClaimantResponse', () => {
+  describe('saveBreathingSpace', () => {
     const breathingSpace = new BreathingSpace();
     breathingSpace.debtRespiteOption= {
       type: DebtRespiteOptionType.STANDARD,
     };
 
-    it('should save breathing space successfully', async () => {
+    it('should save breathing space debtRespiteOption successfully', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         const claim = new Claim();
         claim.claimDetails = new ClaimDetails();
@@ -106,7 +106,7 @@ describe('Breathing Space Service', () => {
       expect(spySave).toHaveBeenCalledWith('validClaimId', breathingSpaceToSave);
     });
 
-    it('should update breathing space successfully', async () => {
+    it('should update breathing space debtRespiteOption successfully', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         const claim = new Claim();
         claim.claimDetails = new ClaimDetails();
