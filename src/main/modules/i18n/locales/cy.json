@@ -43,7 +43,8 @@
       "SAVE": "Save",
       "SAVE_AND_CONTINUE": "Cadw a Pharhau",
       "START_AGAIN": "Start again",
-      "SUBMIT_RESPONSE": "Cyflwyno'r ymateb"
+      "SUBMIT_RESPONSE": "Cyflwyno'r ymateb",
+      "SUBMIT": "Submit"
     },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Treth Cyngor",
@@ -580,6 +581,18 @@
       "DOWNLOAD_RESPONSE": "Llwytho'r ymateb i lawr",
       "LATEST_UPDATE": "Diweddariad diweddaraf",
       "VIEW_CLAIM": "Gweld yr hawliad"
+    },
+    "CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS": {
+      "PAGE_TITLE": "Check your answers before submitting",
+      "TITLE": "Check your answers before submitting",
+      "REFERENCE_NUMBER": "Reference number",
+      "WHEN_DID_IT_START": "When did it start",
+      "TYPE": {
+        "WHAT_TYPE_IS_IT": "What type is it",
+        "MENTAL_HEALTH_CRISIS_MORATORIUM": "Mental health crisis moratorium",
+        "STANDARD_BREATHING_SPACE": "Standard breathing space"
+      },
+      "EXPECTED_END_DATE": "Expected end date"
     },
     "CLAIMANT_DOB": {
       "PAGE_TITLE": "Your date of birth",
