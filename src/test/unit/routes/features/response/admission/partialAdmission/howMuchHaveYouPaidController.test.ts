@@ -15,10 +15,10 @@ import {
 import {
   mockCivilClaim,
   mockCivilClaimUndefined,
-  mockNoStatementOfMeans,
   mockRedisFailure,
 } from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
+import {ResponseType} from '../../../../../../../main/common/form/models/responseType';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -58,7 +58,24 @@ describe('How Much Have You Paid', () => {
 
   describe('on GET', () => {
     it('should return how much have you paid page', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
+      const civilClaimResponseMock = {
+        'case_data': {
+          'respondent1': {
+            'responseType': ResponseType.PART_ADMISSION,
+          },
+          'partialAdmission': {
+            'alreadyPaid': {
+              'option': 'yes',
+            },
+          },
+        },
+      };
+      const mockCivilClaim = {
+        set: jest.fn(() => Promise.resolve({})),
+        get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseMock))),
+      };
+
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CITIZEN_AMOUNT_YOU_PAID_URL)
         .expect((res) => {
@@ -66,7 +83,39 @@ describe('How Much Have You Paid', () => {
           expect(res.text).toContain('How much have you paid the claimant?');
         });
     });
+
     it('should return how much have you paid with payment amount loaded from Redis', async () => {
+      const civilClaimResponseMock = {
+        'case_data': {
+          'respondent1': {
+            'responseType': ResponseType.PART_ADMISSION,
+          },
+          'partialAdmission': {
+            'alreadyPaid': {
+              'option': 'yes',
+            },
+            'paymentIntention': {
+              'paymentDate': '2025-06-01T00:00:00.000Z',
+            },
+            'howMuchDoYouOwe': {
+              'amount': 500,
+            },
+            'howMuchHaveYouPaid': {
+              'amount': 20,
+              'totalClaimAmount': 110,
+              'date': '2022-01-01T00:00:00.000Z',
+              'day': '1',
+              'month': '1',
+              'year': '2022',
+              'text': 'text',
+            },
+          },
+        },
+      };
+      const mockCivilClaim = {
+        set: jest.fn(() => Promise.resolve({})),
+        get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseMock))),
+      };
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CITIZEN_AMOUNT_YOU_PAID_URL)
@@ -77,6 +126,15 @@ describe('How Much Have You Paid', () => {
           expect(res.text).toContain('name="year" type="text" value="2022"');
           expect(res.text).toContain('name="month" type="text" value="1"');
           expect(res.text).toContain('name="day" type="text" value="1"');
+        });
+    });
+    it('should return http 500 when has error in the get method', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app)
+        .get(CITIZEN_AMOUNT_YOU_PAID_URL)
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

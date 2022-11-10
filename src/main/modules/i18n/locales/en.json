@@ -8,7 +8,7 @@
     "CONFIRM_YOUR_DETAILS": "Confirm your details",
     "DASHBOARD": "Dashboard",
     "DATE": "Date",
-    "DATE_EXAMPLE": "For Example, {{ date }}",
+    "DATE_EXAMPLE": "For example, {{ date }}",
     "DAY": "Day",
     "DESCRIPTION": "Description",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
@@ -277,6 +277,10 @@
     "CARER": {
       "PAGE_TITLE": "Carer's allowance"
     },
+    "CCJ_DEFENDANT_DOB": {
+      "PAGE_TITLE": "Do you know the defendant's date of birth?",
+      "TITLE": "Do you know the defendant's date of birth?"
+    },
     "CHECK_YOUR_ANSWER": {
       "BANK_AND_SAVINGS_ACCOUNTS": "Bank and savings accounts",
       "BANK_BALANCE": "Balance",
@@ -320,6 +324,7 @@
       "FREE_TELEPHONE_MEDIATION": "Will you try free mediation",
       "FIRST_PAYMENT": "Make the first payment on",
       "FULL_NAME": "Full name",
+      "GIVE_EVIDENCE": "Do you want to give evidence?",
       "INCOME_REGULAR": "Regular income",
       "INCOME_JOB": "Income from your job",
       "INCOME_UNIVERSAL_CREDIT": "Universal Credit",
@@ -363,6 +368,9 @@
       "SUPPORT_ANYONE_ELSE_FINANCIALLY": "Do you support anyone else financially?",
       "SUPPORT_NUMBER_OF_PEOPLE": "Number of people",
       "SUPPORT_GIVE_DETAILS": "Give details",
+      "SUPPORT_REQUIRED_INTERPRETER": "Interpreter",
+      "SUPPORT_REQUIRED_NAME": "Name of the person who requires support:",
+      "SUPPORT_REQUIRED_DETAILS": "Support details:",
       "TAX_PAYMENT_ARE_YOU_BEHIND": "Are you behind on tax payments?",
       "TAX_PAYMENT_AMOUNT_YOU_OWE": "Amount you owe?",
       "TAX_PAYMENT_REASON": "Reason",
@@ -380,6 +388,8 @@
       "EVIDENCE_STATEMENT_OF_ACCOUNT": "Statements of account",
       "EVIDENCE_OTHER": "Other",
       "EVIDENCE_COMMENTS": "Comments about their evidence (optional)",
+      "VULNERABILITY_INFO": "Tell us who is vulnerable and what support they need",
+      "VULNERABILITY_QUESTION": "Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider?",
       "WHEN_PAY": "When will you pay",
       "WHEN_PAY_TITLE": "When you'll pay",
       "WHERE_DO_YOU_LIVE": "Where do you live?",
@@ -586,6 +596,10 @@
       "TITLE": "What annual rate of interest do you want to claim?",
       "WHY_YOU_ARE_ENTITLED": "Why you're entitled to this rate"
     },
+    "CLAIMANT_RESPONSE_PROCEED": {
+      "PAGE_TITLE": "Do you want to proceed with claim?",
+      "TITLE": "Do you want to proceed with claim?"
+    },
     "CLAIMANT_PARTY_TYPE_SELECTION": {
       "CLAIMING_AS_HEADER": "I'm claiming as:",
       "CLAIMING_AS_AN_INDIVIDUAL": "An individual",
@@ -608,6 +622,10 @@
     "CLAIMANT_SETTLE_DATE": {
       "PAGE_TITLE": "When did you settle with the defendant?",
       "TITLE": "When did you settle with the defendant?"
+    },
+    "CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED": {
+      "PAGE_TITLE": "Has the defendant paid you £{{ paidAmount }}?",
+      "TITLE": "Has the defendant paid you £{{ paidAmount }}?"
     },
     "COMPANY_DETAILS": {
       "ADDRESS_FOR_SERVICE": "This is known as an \"address for service\".",
@@ -1490,7 +1508,48 @@
       "EXAMPLE": "For example National Insurance contributions, Income Tax or VAT."
     },
     "SEND_YOUR_RESPONSE_BY_EMAIL": {
-      "PAGE_TITLE": "Send your response by email"
+      "COUNTER_CLAIM_CHOSEN": "You have chosen to counterclaim.",
+      "YOUR_DEFENCE_CANNOT_CONTINUE_ONLINE": "This means your defence cannot continue online.",
+      "FOLLOW_THESE_STEPS": "Follow these steps to download, complete and return form N9B.",
+      "YOU_MUST_PAY_FEE": "You must pay a court fee.",
+      "DO_NOT_CREATE_NEW_CLAIM": "Do not create a new claim.",
+      "CLAIM_DETAILS": {
+        "NEEDED_DETAILS": "You will need these claim details",
+        "CLAIM_NUMBER": "Claim number",
+        "CLAIMANT": "Claimant",
+        "DEFENDANT": "Defendant"
+      },
+      "DO_NOT_CREATE_NEW_CLAIM_IF_WANT_COUNTERCLAIM": "Do not create a new claim if you want to counterclaim.",
+      "USE_FORM_N9B": "Use form N9B.",
+      "EMAIL_COMPLETED": "Email completed form N9B to",
+      "HEADER": "Reject all of the claim and counterclaim",
+      "HELP_AND_SUPPORT": "Help and support",
+      "HOW_TO_COUNTERCLAIM": "How to counterclaim",
+      "OPEN_IN_NEW_WINDOW": "(opens in a new window)",
+      "PAGE_TITLE": "Send your response by email",
+      "PAY_COURT_FEE": "You`ll need to pay a court fee to make a counterclaim. The court will contact you to take payment.",
+      "PDF_ADMISSION": "Download admission form (PDF, 102 KB)",
+      "PDF_DEFENCE": "Download admission form (PDF, 102 KB)",
+      "PDF_DEFENCE_AND_CLAIM": "Download form N9B Make a defence or counterclaim (opens in a new window)",
+      "SEND_BY_POST": "Or, you can send the form by post to",
+      "SIGN_POST_ADDRESS": {
+        "CITY": "Harlow",
+        "NAME": "HMCTS CMC",
+        "PO_BOX": "PO BOX 12747",
+        "POST_CODE": "CM20 9RA"
+      },
+      "STEP_1": "Step 1: Download and complete form N9B",
+      "STEP_2": "Step 2: Email or post form N9B",
+      "STEP_3": "Step 3: Pay the court fee",
+      "SUPPORT_EMAIL_ADDRESS": "contactocmc@justice.gov.uk",
+      "NON_SIGN_POST_ADDRESS": {
+        "CITY": "Northampton",
+        "NAME": "St. Katharine`s House",
+        "POST_CODE": "NN1 2LH",
+        "STREET": "21-27 St. Katharine`s Street",
+        "TITLE": "Civil Money Claims"
+      },
+      "WE_MUST_RECEIVE_COMPLETED_FORM": "We must receive your completed form before <span class=\"govuk-body govuk-!-font-weight-bold\">4pm on {{ deadline }}</span>. The claim against you will continue if we do not receive this."
     },
     "SENT_EXPERT_REPORTS": {
       "OPTION_NOT_RECEIVED": "No, I have not yet received them",
@@ -1977,6 +2036,7 @@
       "WATER": "Enter a valid Water amount, maximum two decimal places"
     },
     "VALID_DISAGREE_REASON_REQUIRED": "Enter text explaining why do you disagree",
+    "VALID_ENTER_A_DATE_BEFORE": "Please enter a date of birth before {{ maxDate }}",
     "VALID_ENTER_AN_EMPLOYER_NAME": "Enter an employer name",
     "VALID_ENTER_AT_LEAST_ONE_COURT_ORDER": "Enter at least one court order",
     "VALID_ENTER_AT_LEAST_ONE_EMPLOYER": "Enter at least one employer",
