@@ -855,7 +855,7 @@
       "TITLE": "A ydych eisiau rhoi tystiolaeth eich hun?"
     },
     "DEFENDANT_EXPERT_CAN_STILL_EXAMINE": {
-      "CAN_NOT_USE": "You can't use an expert in this case.",
+      "CAN_NOT_USE": "Ni allwch ddefnyddio arbenigwr yn yr achos hwn",
       "EXAMINE": "Beth ellir ei archwilio?",
       "PAGE_TITLE": "Defendant expert can still examine",
       "PHOTO_OR_VIDEO": "Gall hyn gynnwys ffotograffau neu fideos.",
@@ -2080,7 +2080,7 @@
     "VALID_YES_NO_OPTION_NAC_YDW": "Dewiswch opsiwn: ‘ydw’ neu ‘nac ydw’",
     "VALID_YES_NO_SELECTION": "Dewiswch ie neu na, os gwelwch yn dda",
     "VALID_WHY_FROM_PARTICULAR_DATE": "You need to explain why you are claiming",
-    "QUESTION_1_REQUIRED": "Select yes if someone is vulnerable in a way that the court needs to consider",
+    "QUESTION_1_REQUIRED": "Dewiswch 'oes' os yw rhywun yn fregus a bod angen i'r llys ystyried hynny",
     "QUESTION_2_REQUIRED": "Tell us who is vulnerable and what support they need"
   }
 }
