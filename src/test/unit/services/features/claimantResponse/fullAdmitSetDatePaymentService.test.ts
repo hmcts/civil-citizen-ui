@@ -8,6 +8,7 @@ import {ClaimantResponse} from '../../../../../main/common/models/claimantRespon
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
 import {formatDateToFullDate} from '../../../../../main/common/utils/dateUtils';
 import {Party} from '../../../../../main/common/models/party';
+import {PartyDetails} from '../../../../../main/common/form/models/partyDetails';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -17,6 +18,7 @@ const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as 
 const claim = new Claim();
 claim.claimantResponse = new ClaimantResponse();
 claim.respondent1 = new Party();
+claim.respondent1.partyDetails = new PartyDetails({});
 
 describe('Full Admit Set Date Payment Service', () => {
   describe('getFullAdmitSetDatePaymentDetails', () => {
