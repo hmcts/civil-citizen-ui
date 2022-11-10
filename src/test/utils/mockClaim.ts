@@ -2,8 +2,6 @@ import {Party} from '../../main/common/models/party';
 import {Claim} from '../../main/common/models/claim';
 import {PartyType} from '../../main/common/models/partyType';
 import {DocumentType} from '../../main/common/models/document/documentType';
-import {PrimaryAddress} from '../../main/common/models/primaryAddress';
-import {CorrespondenceAddress} from '../../main/common/models/correspondenceAddress';
 import {YesNo} from '../../main/common/form/models/yesNo';
 import {
   CaseState,
@@ -16,39 +14,28 @@ import {AdditionalTimeOptions} from '../../main/common/form/models/additionalTim
 import {InterestClaimOptionsType} from '../../main/common/form/models/claim/interest/interestClaimOptionsType';
 import {ClaimDetails} from '../../main/common/form/models/claim/details/claimDetails';
 import {Reason} from '../../main/common/form/models/claim/details/reason';
+import {Address} from '../../main/common/form/models/address';
+import {PartyDetails} from '../../main/common/form/models/partyDetails';
+import {PartyPhone} from '../../main/common/models/PartyPhone';
+import {DateOfBirth} from '../../main/common/form/models/claim/claimant/dateOfBirth';
 
-export const buildPrimaryAddress = (): PrimaryAddress => {
-  return {
-    AddressLine1: 'primaryAddressLine1',
-    AddressLine2: 'primaryAddressLine2',
-    AddressLine3: 'primaryAddressLine3',
-    PostTown: 'primaryCity',
-    PostCode: 'primaryPostCode',
-  };
-};
-
-export const buildCorrespondenceAddress = (): CorrespondenceAddress => {
-  return {
-    AddressLine1: 'correspondenceAddressLine1',
-    AddressLine2: 'correspondenceAddressLine2',
-    AddressLine3: 'correspondenceAddressLine3',
-    PostTown: 'correspondenceCity',
-    PostCode: 'correspondencePostCode',
-  };
+export const buildAddress = (): Address => {
+  return new Address('addressLine1', 'addressLine2', 'addressLine3', 'city', 'postCode');
 };
 
 export const buildRespondent1 = (): Party => {
   const respondent = new Party();
-  respondent.individualTitle = 'Mrs.';
-  respondent.individualLastName = 'Mary';
-  respondent.individualFirstName = 'Richards';
-  respondent.partyName = 'Mrs Richards Mary';
-  respondent.partyPhone = '0208339922';
-  respondent.dateOfBirth = new Date('2022-01-24T15:59:59');
+  respondent.partyDetails = new PartyDetails({});
+  respondent.partyDetails.individualTitle = 'Mrs.';
+  respondent.partyDetails.individualLastName = 'Mary';
+  respondent.partyDetails.individualFirstName = 'Richards';
+  respondent.partyDetails.partyName = 'Mrs Richards Mary';
+  respondent.partyPhone = new PartyPhone('0208339922');
+  respondent.dateOfBirth = new DateOfBirth('2022-01-24T15:59:59');
   respondent.responseType = '';
   respondent.type = PartyType.INDIVIDUAL;
-  respondent.primaryAddress = buildPrimaryAddress();
-  respondent.correspondenceAddress = buildCorrespondenceAddress();
+  respondent.partyDetails.primaryAddress = buildAddress();
+  respondent.partyDetails.correspondenceAddress = buildAddress();
   return respondent;
 };
 
@@ -60,11 +47,13 @@ function buildMockClaim(): Claim {
   _mockClaim.legacyCaseReference = '497MC585';
   _mockClaim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
   _mockClaim.applicant1 = {
-    individualTitle: 'Mrs',
-    individualLastName: 'Clark',
-    individualFirstName: 'Jane',
+    partyDetails: {
+      individualTitle: 'Mrs',
+      individualLastName: 'Clark',
+      individualFirstName: 'Jane',
+      partyName: 'Mrs Jane Clark',
+    },
     type: PartyType.INDIVIDUAL,
-    partyName: 'Mrs Jane Clark',
   };
   _mockClaim.statementOfMeans = {
     childrenDisability: {
