@@ -323,6 +323,7 @@
       "FREE_TELEPHONE_MEDIATION": "A wnewch chi roi cynnig ar gyfryngu am ddim",
       "FIRST_PAYMENT": "Gwnewch y taliad cyntaf ymlaen",
       "FULL_NAME": "Enw llawn",
+      "GIVE_EVIDENCE": "Do you want to give evidence?",
       "INCOME_REGULAR": "Incwm rheolaidd",
       "INCOME_JOB": "Incwm o'ch swydd",
       "INCOME_UNIVERSAL_CREDIT": "Credyd Cynhwysol",
@@ -386,6 +387,8 @@
       "EVIDENCE_STATEMENT_OF_ACCOUNT": "Datganiadau cyfrifon",
       "EVIDENCE_OTHER": "Arall",
       "EVIDENCE_COMMENTS": "Sylwadau am eu tystiolaeth (dewisol)",
+      "VULNERABILITY_INFO": "Tell us who is vulnerable and what support they need",
+      "VULNERABILITY_QUESTION": "Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider?",
       "WHEN_PAY": "Pryd fyddwch chi'n talu",
       "WHEN_PAY_TITLE": "Pryd fyddwch chi'n talu",
       "WHERE_DO_YOU_LIVE": "Ble rydych chi'n byw?",
@@ -614,6 +617,10 @@
       "NUMBER_INFORMATION": "We'll also give your number to the person, business, or organisation you are claiming from.",
       "PAGE_TITLE": "Eich rhif ffôn",
       "TITLE": "Enter a phone number (optional)"
+    },
+    "CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED": {
+      "PAGE_TITLE": "Has the defendant paid you £{{ paidAmount }}?",
+      "TITLE": "Has the defendant paid you £{{ paidAmount }}?"
     },
     "COMPANY_DETAILS": {
       "ADDRESS_FOR_SERVICE": "Gelwir hwn yn 'gyfeiriad cyflwyno'.",
