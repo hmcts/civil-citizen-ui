@@ -131,11 +131,11 @@ export class Claim {
   }
 
   private getName(party: Party): string {
-    if (party?.partyDetails?.individualFirstName && party?.partyDetails?.individualLastName) {
+    if (party?.type == PartyType.INDIVIDUAL || party?.type == PartyType.SOLE_TRADER) {
       if(party?.partyDetails?.individualTitle){
-        return `${party.partyDetails?.individualTitle} ${party.partyDetails?.individualFirstName} ${party.partyDetails?.individualLastName}`;
+        return `${party.partyDetails.individualTitle} ${party.partyDetails.individualFirstName} ${party.partyDetails.individualLastName}`;
       }else{
-        return `${party.partyDetails?.individualFirstName} ${party.partyDetails?.individualLastName}`;
+        return `${party.partyDetails.individualFirstName} ${party.partyDetails.individualLastName}`;
       }
     }
     return party?.partyDetails?.partyName;
