@@ -157,8 +157,10 @@ import claimCheckAnswersController from './features/claim/checkAnswersController
 import claimantEvidenceController from './features/claim/yourDetails/claimantEvidenceController';
 import howMuchContinueClaimingController from './features/claim/interest/howMuchContinueClaimingController';
 import helpWithFeesController from './features/claim/details/helpWithFeesController';
-import reviewDefendantsResponseController from './features/claimantResponse/reviewDefendantsResponseController';
+import partPaymentReceivedController from './features/claimantResponse/partPaymentReceivedController';
 import defendantDOBController from './features/claimantResponse/ccj/defendantDOBController';
+import claimantIntentionToProceedController from './features/claimantResponse/claimantIntentionToProceedController';
+import reviewDefendantsResponseController from './features/claimantResponse/reviewDefendantsResponseController';
 
 export default [
   homeController,
@@ -304,6 +306,8 @@ export default [
   claimantEvidenceController,
   howMuchContinueClaimingController,
   helpWithFeesController,
+  partPaymentReceivedController,
   defendantDOBController,
+  claimantIntentionToProceedController,
   reviewDefendantsResponseController,
 ];
