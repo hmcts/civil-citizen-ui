@@ -131,14 +131,14 @@ export class Claim {
   }
 
   private getName(party: Party): string {
-    if (party?.individualFirstName && party?.individualLastName) {
-      if(party?.individualTitle){
-        return `${party.individualTitle} ${party.individualFirstName} ${party.individualLastName}`;
+    if (party?.partyDetails?.individualFirstName && party?.partyDetails?.individualLastName) {
+      if(party?.partyDetails?.individualTitle){
+        return `${party.partyDetails?.individualTitle} ${party.partyDetails?.individualFirstName} ${party.partyDetails?.individualLastName}`;
       }else{
-        return `${party.individualFirstName} ${party.individualLastName}`;
+        return `${party.partyDetails?.individualFirstName} ${party.partyDetails?.individualLastName}`;
       }
     }
-    return party?.partyName;
+    return party?.partyDetails?.partyName;
   }
 
   formattedResponseDeadline(lng?: string): string {
