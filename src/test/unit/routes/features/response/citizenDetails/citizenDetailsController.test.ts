@@ -6,27 +6,18 @@ import {
   CITIZEN_PHONE_NUMBER_URL,
   CLAIM_TASK_LIST_URL,
   DOB_URL,
-} from '../../../../../../main/routes/urls';
-import {
-  VALID_ADDRESS_LINE_1,
-  VALID_CITY,
-  VALID_CORRESPONDENCE_ADDRESS_LINE_1,
-  VALID_CORRESPONDENCE_CITY,
-  VALID_CORRESPONDENCE_POSTCODE,
-  VALID_POSTCODE,
-  NOT_TO_REMOVE_PHONE_NUMBER,
-} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
+} from 'routes/urls';
 import {
   getCorrespondenceAddressForm,
   getRespondentInformation,
   saveRespondent,
-} from '../../../../../../main/services/features/response/citizenDetails/citizenDetailsService';
-import {Claim} from '../../../../../../main/common/models/claim';
-import {Party} from '../../../../../../main/common/models/party';
+} from 'services/features/response/citizenDetails/citizenDetailsService';
+import {Claim} from 'models/claim';
+import {Party} from 'models/party';
 import {buildCorrespondenceAddress, buildPrimaryAddress} from '../../../../../utils/mockClaim';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {PartyType} from '../../../../../../main/common/models/partyType';
-import {CitizenCorrespondenceAddress} from '../../../../../../main/common/form/models/citizenCorrespondenceAddress';
+import {PartyType} from 'models/partyType';
+import {CitizenCorrespondenceAddress} from 'form/models/citizenCorrespondenceAddress';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -268,7 +259,7 @@ describe('Confirm Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_ADDRESS_LINE_1);
+        expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
       });
   });
 
@@ -302,7 +293,7 @@ describe('Confirm Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_CITY);
+        expect(res.text).toContain(TestMessages.ENTER_TOWN);
       });
   });
 
@@ -336,109 +327,7 @@ describe('Confirm Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_POSTCODE);
-      });
-  });
-
-  it('POST/Citizen details - should return error on empty correspondence address line', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.ORGANISATION);
-    });
-    mockGetCorrespondenceAddressForm.mockImplementation(() => {
-      return CitizenCorrespondenceAddress.fromObject({
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
-      });
-    });
-    await request(app)
-      .post(CITIZEN_DETAILS_URL)
-      .send({
-        primaryAddressLine1: 'Flat 3A Middle Road',
-        primaryAddressLine2: '',
-        primaryAddressLine3: '',
-        primaryCity: 'London',
-        primaryPostCode: 'SW1H 9AJ',
-        postToThisAddress: 'yes',
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
-      })
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_ADDRESS_LINE_1);
-      });
-  });
-
-  it('POST/Citizen details - should return error on empty correspondence city', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.ORGANISATION);
-    });
-    mockGetCorrespondenceAddressForm.mockImplementation(() => {
-      return CitizenCorrespondenceAddress.fromObject({
-        correspondenceAddressLine1: 'Flat 3B Middle Road',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: 'SW1H 9AJ',
-      });
-    });
-    await request(app)
-      .post(CITIZEN_DETAILS_URL)
-      .send({
-        primaryAddressLine1: 'Flat 3A Middle Road',
-        primaryAddressLine2: '',
-        primaryAddressLine3: '',
-        primaryCity: 'London',
-        primaryPostCode: 'SW1H 9AJ',
-        postToThisAddress: 'yes',
-        correspondenceAddressLine1: 'Flat 3B Middle Road',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: 'SW1H 9AJ',
-      })
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_CITY);
-      });
-  });
-
-  it('POST/Citizen details - should return error on empty correspondence postcode', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.ORGANISATION);
-    });
-    mockGetCorrespondenceAddressForm.mockImplementation(() => {
-      return CitizenCorrespondenceAddress.fromObject({
-        correspondenceAddressLine1: 'Flat 3B Middle Road',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
-      });
-    });
-    await request(app)
-      .post(CITIZEN_DETAILS_URL)
-      .send({
-        primaryAddressLine1: 'Flat 3A Middle Road',
-        primaryAddressLine2: '',
-        primaryAddressLine3: '',
-        primaryCity: 'London',
-        primaryPostCode: 'SW1H 9AJ',
-        postToThisAddress: 'yes',
-        correspondenceAddressLine1: 'Flat 3B Middle Road',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: 'London',
-        correspondencePostCode: '',
-      })
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_POSTCODE);
+        expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
       });
   });
 
@@ -472,12 +361,12 @@ describe('Confirm Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_ADDRESS_LINE_1);
-        expect(res.text).toContain(VALID_CITY);
-        expect(res.text).toContain(VALID_POSTCODE);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_ADDRESS_LINE_1);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_CITY);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_POSTCODE);
+        expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
+        expect(res.text).toContain(TestMessages.ENTER_TOWN);
+        expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
+        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_ADDRESS_LINE_1);
+        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_CITY);
+        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_POSTCODE);
       });
   });
 
@@ -511,9 +400,9 @@ describe('Confirm Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_ADDRESS_LINE_1);
-        expect(res.text).toContain(VALID_CITY);
-        expect(res.text).toContain(VALID_POSTCODE);
+        expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
+        expect(res.text).toContain(TestMessages.ENTER_TOWN);
+        expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
       });
   });
 
@@ -547,9 +436,9 @@ describe('Confirm Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_ADDRESS_LINE_1);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_CITY);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_POSTCODE);
+        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_ADDRESS_LINE_1);
+        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_CITY);
+        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_POSTCODE);
       });
   });
 
@@ -583,9 +472,9 @@ describe('Confirm Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_ADDRESS_LINE_1);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_CITY);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_POSTCODE);
+        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_ADDRESS_LINE_1);
+        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_CITY);
+        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_POSTCODE);
         expect(res.text).toContain('Confirm your details');
         expect(res.text).toContain('Organisation name');
       });
@@ -621,9 +510,9 @@ describe('Confirm Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_ADDRESS_LINE_1);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_CITY);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_POSTCODE);
+        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_ADDRESS_LINE_1);
+        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_CITY);
+        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_POSTCODE);
         expect(res.text).toContain('Confirm your details');
         expect(res.text).toContain('Company name');
       });
@@ -660,10 +549,10 @@ describe('Confirm Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_ADDRESS_LINE_1);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_CITY);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_POSTCODE);
-        expect(res.text).toContain(NOT_TO_REMOVE_PHONE_NUMBER);
+        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_ADDRESS_LINE_1);
+        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_CITY);
+        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_POSTCODE);
+        expect(res.text).toContain(TestMessages.NOT_TO_REMOVE_PHONE_NUMBER);
         expect(res.text).toContain('Confirm your details');
         expect(res.text).toContain('Your phone number');
       });
@@ -699,9 +588,9 @@ describe('Confirm Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_ADDRESS_LINE_1);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_CITY);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_POSTCODE);
+        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_ADDRESS_LINE_1);
+        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_CITY);
+        expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_POSTCODE);
         expect(res.text).toContain('Confirm your details');
         expect(res.text).toContain('Your full name');
       });

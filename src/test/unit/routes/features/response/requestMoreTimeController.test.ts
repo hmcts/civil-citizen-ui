@@ -2,20 +2,22 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
-import {getCaseDataFromStore,saveDraftClaim} from '../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../main/common/models/claim';
+import {getCaseDataFromStore,saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 import {
   CLAIM_TASK_LIST_URL,
   REQUEST_MORE_TIME_URL,
-} from '../../../../../main/routes/urls';
-import {ResponseDeadline} from '../../../../../main/common/form/models/responseDeadline';
-import {AdditionalTimeOptions} from '../../../../../main/common/form/models/additionalTime';
-import {PartyType} from '../../../../../main/common/models/partyType';
+} from 'routes/urls';
+import {ResponseDeadline} from 'form/models/responseDeadline';
+import {AdditionalTimeOptions} from 'form/models/additionalTime';
+import {PartyType} from 'models/partyType';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockSaveCaseData = saveDraftClaim as jest.Mock;
 const mockClaim = new Claim();

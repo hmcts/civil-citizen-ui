@@ -4,10 +4,11 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import {
   COOKIES_URL,
-} from '../../../../../main/routes/urls';
-import {defaultCookiePreferences} from '../../../../../main/routes/features/public/cookiesController';
+} from 'routes/urls';
+import {defaultCookiePreferences} from 'routes/features/public/cookiesController';
 
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/draft-store');
 
 describe('Cookies page', () => {
   // TODO: remove this once paths become publicly available as mocking the response token will not be needed

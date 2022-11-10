@@ -4,24 +4,15 @@ import config from 'config';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
 import {
-  NO_NAME_SELECTED,
-  NO_SUPPORT_SELECTED,
-  NO_LANGUAGE_ENTERED,
-  NO_OTHER_SUPPORT,
-  NO_SIGN_LANGUAGE_ENTERED,
-  SELECT_YES_IF_SUPPORT,
-} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
-
-import {
   mockCivilClaimWithExpertAndWitness,
   mockRedisFailure,
 } from '../../../../utils/mockDraftStore';
 import {
   CLAIM_TASK_LIST_URL,
   SUPPORT_REQUIRED_URL,
-} from '../../../../../main/routes/urls';
+} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {YesNo} from '../../../../../main/common/form/models/yesNo';
+import {YesNo} from 'form/models/yesNo';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -72,7 +63,7 @@ describe('Support required', () => {
         })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(SELECT_YES_IF_SUPPORT);
+          expect(res.text).toContain(TestMessages.SELECT_YES_IF_SUPPORT);
         });
     });
 
@@ -139,7 +130,7 @@ describe('Support required', () => {
         })
         .expect((res:Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(NO_NAME_SELECTED);
+          expect(res.text).toContain(TestMessages.NO_NAME_SELECTED);
         });
     });
 
@@ -156,7 +147,7 @@ describe('Support required', () => {
         })
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(NO_SUPPORT_SELECTED);
+          expect(res.text).toContain(TestMessages.NO_SUPPORT_SELECTED);
         });
     });
 
@@ -174,7 +165,7 @@ describe('Support required', () => {
         })
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(NO_SIGN_LANGUAGE_ENTERED);
+          expect(res.text).toContain(TestMessages.NO_SIGN_LANGUAGE_ENTERED);
         });
     });
 
@@ -192,7 +183,7 @@ describe('Support required', () => {
         })
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(NO_LANGUAGE_ENTERED);
+          expect(res.text).toContain(TestMessages.NO_LANGUAGE_ENTERED);
         });
     });
 
@@ -210,7 +201,7 @@ describe('Support required', () => {
         })
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(NO_OTHER_SUPPORT);
+          expect(res.text).toContain(TestMessages.NO_OTHER_SUPPORT);
         });
     });
 
