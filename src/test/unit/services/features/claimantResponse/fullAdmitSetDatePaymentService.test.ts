@@ -8,9 +8,6 @@ import {ClaimantResponse} from '../../../../../main/common/models/claimantRespon
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
 import {formatDateToFullDate} from '../../../../../main/common/utils/dateUtils';
 import {Party} from '../../../../../main/common/models/party';
-import {
-  getDefendantFullName,
-} from '../../../../../main/services/features/response/checkAnswers/detailsSection/buildYourDetailsSection';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -39,7 +36,7 @@ describe('Full Admit Set Date Payment Service', () => {
 
       //Then
       expect(details.fullAdmitAcceptPayment.option).toBe(YesNo.YES);
-      expect(details.defendantName).toBe(getDefendantFullName(claim));
+      expect(details.defendantName).toBe(claim.getName(claim.respondent1));
       expect(details.proposedSetDate).toBe(formatDateToFullDate(claim.paymentDate));
     });
 
@@ -57,7 +54,7 @@ describe('Full Admit Set Date Payment Service', () => {
 
       //Then
       expect(details.fullAdmitAcceptPayment).toBeUndefined();
-      expect(details.defendantName).toBe(getDefendantFullName(claim));
+      expect(details.defendantName).toBe(claim.getName(claim.respondent1));
       expect(details.proposedSetDate).toBe(formatDateToFullDate(claim.paymentDate));
     });
 
@@ -66,6 +63,7 @@ describe('Full Admit Set Date Payment Service', () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         claim.respondent1.partyName = 'John Doe';
         claim.paymentDate = new Date('2022-11-11T13:29:22.447');
+        claim.claimantResponse = new ClaimantResponse();
         claim.claimantResponse.fullAdmitSetDateAcceptPayment = undefined;
         return claim;
       });
@@ -75,7 +73,7 @@ describe('Full Admit Set Date Payment Service', () => {
 
       //Then
       expect(details.fullAdmitAcceptPayment).toBeUndefined();
-      expect(details.defendantName).toBe(getDefendantFullName(claim));
+      expect(details.defendantName).toBe(claim.getName(claim.respondent1));
       expect(details.proposedSetDate).toBe(formatDateToFullDate(claim.paymentDate));
     });
 

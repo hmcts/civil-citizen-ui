@@ -131,12 +131,16 @@ export class Claim {
     return this.respondent1.partyName;
   }
 
-  getName = (party: Party): string => {
-    if (party.individualFirstName && party.individualLastName) {
-      return `${party.individualTitle} ${party.individualFirstName} ${party.individualLastName}`;
+  getName(party: Party): string {
+    if (party?.individualFirstName && party?.individualLastName) {
+      if(party?.individualTitle){
+        return `${party.individualTitle} ${party.individualFirstName} ${party.individualLastName}`;
+      }else{
+        return `${party.individualFirstName} ${party.individualLastName}`;
+      }
     }
-    return party.partyName;
-  };
+    return party?.partyName;
+  }
 
   formattedResponseDeadline(lng?: string): string {
     return this.respondent1ResponseDeadline ? dayjs(this.respondent1ResponseDeadline).locale(getLng(lng)).format('DD MMMM YYYY') : '';

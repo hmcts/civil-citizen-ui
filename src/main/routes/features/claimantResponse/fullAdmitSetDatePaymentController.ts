@@ -25,6 +25,7 @@ fullAdmitSetDatePaymentController.get(CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAYM
   try {
     const claimId = req.params.id;
     const details = await getFullAdmitSetDatePaymentDetails(claimId);
+    console.log(details);
     await renderView(new GenericForm(details.fullAdmitAcceptPayment), details.defendantName, details.proposedSetDate, res);
   } catch (error) {
     next(error);
@@ -42,7 +43,7 @@ fullAdmitSetDatePaymentController.post(CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAY
       const details = await getFullAdmitSetDatePaymentDetails(claimId);
       await renderView(form, details.defendantName, details.proposedSetDate, res);
     } else {
-      await saveClaimantResponse(claimId, form.model.option, propertyName);
+      await saveClaimantResponse(claimId, form.model, propertyName);
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
     }
   } catch (error) {
