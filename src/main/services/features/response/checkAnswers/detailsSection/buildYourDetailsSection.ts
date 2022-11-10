@@ -21,7 +21,7 @@ export const buildYourDetailsSection = (claim: Claim, claimId: string, lang: str
   const yourDetailsSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.DETAILS_TITLE', {lng: getLng(lang)}),
     summaryRows: [
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FULL_NAME', {lng: getLng(lang)}), claim.getName(claim.respondent1), yourDetailsHref, changeLabel(lang)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FULL_NAME', {lng: getLng(lang)}), claim.getDefendantFullName(), yourDetailsHref, changeLabel(lang)),
     ],
   });
   if (claim.respondent1.contactPerson) {

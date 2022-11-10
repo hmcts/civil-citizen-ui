@@ -125,7 +125,15 @@ export class Claim {
     return this.respondent1.partyName;
   }
 
-  getName(party: Party): string {
+  getClaimantFullName(): string {
+    return this.getName(this.applicant1);
+  }
+
+  getDefendantFullName(): string{
+    return this.getName(this.respondent1);
+  }
+
+  private getName(party: Party): string {
     if (party?.individualFirstName && party?.individualLastName) {
       if(party?.individualTitle){
         return `${party.individualTitle} ${party.individualFirstName} ${party.individualLastName}`;

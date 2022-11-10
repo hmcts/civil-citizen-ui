@@ -36,7 +36,7 @@ describe('Full Admit Set Date Payment Service', () => {
 
       //Then
       expect(details.fullAdmitAcceptPayment.option).toBe(YesNo.YES);
-      expect(details.defendantName).toBe(claim.getName(claim.respondent1));
+      expect(details.defendantName).toBe(claim.getDefendantFullName());
       expect(details.proposedSetDate).toBe(formatDateToFullDate(claim.paymentDate));
     });
 
@@ -54,7 +54,7 @@ describe('Full Admit Set Date Payment Service', () => {
 
       //Then
       expect(details.fullAdmitAcceptPayment).toBeUndefined();
-      expect(details.defendantName).toBe(claim.getName(claim.respondent1));
+      expect(details.defendantName).toBe(claim.getDefendantFullName());
       expect(details.proposedSetDate).toBe(formatDateToFullDate(claim.paymentDate));
     });
 
@@ -73,7 +73,7 @@ describe('Full Admit Set Date Payment Service', () => {
 
       //Then
       expect(details.fullAdmitAcceptPayment).toBeUndefined();
-      expect(details.defendantName).toBe(claim.getName(claim.respondent1));
+      expect(details.defendantName).toBe(claim.getDefendantFullName());
       expect(details.proposedSetDate).toBe(formatDateToFullDate(claim.paymentDate));
     });
 

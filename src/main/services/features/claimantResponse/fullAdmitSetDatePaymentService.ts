@@ -11,7 +11,7 @@ export const getFullAdmitSetDatePaymentDetails = async (claimId: string): Promis
     const claim = await getCaseDataFromStore(claimId);
     const claimantResponse = (claim?.claimantResponse) ? claim.claimantResponse : new ClaimantResponse();
     const fullAdmitAcceptPayment = claimantResponse?.fullAdmitSetDateAcceptPayment;
-    const defendantName = claim.getName(claim.respondent1);
+    const defendantName = claim.getDefendantFullName();
     const proposedSetDate = formatDateToFullDate(claim.paymentDate);
     return {
       fullAdmitAcceptPayment,
