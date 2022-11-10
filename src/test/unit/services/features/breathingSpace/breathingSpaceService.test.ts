@@ -44,9 +44,9 @@ describe('Breathing Space Service', () => {
       claim.claimDetails = new ClaimDetails();
       claim.claimDetails.breathingSpace = {
         debtRespiteOption: {
-          type: DebtRespiteOptionType.STANDARD
-        }
-      }
+          type: DebtRespiteOptionType.STANDARD,
+        },
+      };
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return claim;
       });
@@ -60,9 +60,9 @@ describe('Breathing Space Service', () => {
       claim.claimDetails = new ClaimDetails();
       claim.claimDetails.breathingSpace = {
         debtRespiteOption: {
-          type: DebtRespiteOptionType.MENTAL_HEALTH
-        }
-      }
+          type: DebtRespiteOptionType.MENTAL_HEALTH,
+        },
+      };
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return claim;
       });
@@ -83,8 +83,8 @@ describe('Breathing Space Service', () => {
   describe('saveClaimantResponse', () => {
     const breathingSpace = new BreathingSpace();
     breathingSpace.debtRespiteOption= {
-      type: DebtRespiteOptionType.STANDARD
-    }
+      type: DebtRespiteOptionType.STANDARD,
+    };
 
     it('should save breathing space successfully', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -98,8 +98,8 @@ describe('Breathing Space Service', () => {
         claimDetails: {
           breathingSpace: {
             debtRespiteOption: {
-              type: DebtRespiteOptionType.STANDARD
-            }
+              type: DebtRespiteOptionType.STANDARD,
+            },
           }},
       };
       await saveBreathingSpace('validClaimId', breathingSpace?.debtRespiteOption, 'debtRespiteOption');
@@ -115,15 +115,15 @@ describe('Breathing Space Service', () => {
       });
       const breathingSpaceUpdate = new BreathingSpace();
       breathingSpaceUpdate.debtRespiteOption= {
-        type: DebtRespiteOptionType.MENTAL_HEALTH
-      }
+        type: DebtRespiteOptionType.MENTAL_HEALTH,
+      };
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       const breathingSpaceToSave = {
         claimDetails: {
           breathingSpace: {
             debtRespiteOption: {
-              type: DebtRespiteOptionType.MENTAL_HEALTH
-            }
+              type: DebtRespiteOptionType.MENTAL_HEALTH,
+            },
           }},
       };
       await saveBreathingSpace('validClaimId', breathingSpaceUpdate?.debtRespiteOption, 'debtRespiteOption');
