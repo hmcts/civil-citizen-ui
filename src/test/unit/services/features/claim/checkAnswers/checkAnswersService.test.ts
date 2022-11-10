@@ -19,6 +19,8 @@ import {
 import {PartyType} from '../../../../../../main/common/models/partyType';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {CLAIM_ID} from '../../../../../utils/checkAnswersConstants';
+import {ResponseType} from '../../../../../../main/common/form/models/responseType';
+import {ClaimDetails} from '../../../../../../main/common/form/models/claim/details/claimDetails';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -52,6 +54,7 @@ describe('Check Answers service', () => {
       //Given
       mockGetCaseDataFromStore.mockImplementation(async () => {
         const claim = new Claim();
+        claim.claimDetails = new ClaimDetails();
         claim.claimDetails.statementOfTruth = {isFullAmountRejected: false, type: SignatureType.BASIC, signed: 'true'};
         return claim;
       });
@@ -86,6 +89,7 @@ describe('Check Answers service', () => {
     });
 
     it('should return statement of truth if it is set in the draft store', () => {
+      claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
       claim.claimDetails.statementOfTruth = new StatementOfTruthForm(false);
       expect(getStatementOfTruth(claim)).toEqual(expectedStatementOfTruth);
     });

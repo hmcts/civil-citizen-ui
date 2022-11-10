@@ -10,6 +10,7 @@ import {SignatureType} from '../../../../common/models/signatureType';
 import {isFullAmountReject} from '../../../../modules/claimDetailsService';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {isCounterpartyIndividual} from '../../../../common/utils/taskList/tasks/taskListHelpers';
+import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
@@ -29,7 +30,7 @@ export const getSummarySections = (claimId: string, claim: Claim, lang?: string 
   return buildSummarySections(claim, claimId, lang);
 };
 export const getStatementOfTruth = (claim: Claim): StatementOfTruthForm | QualifiedStatementOfTruth => {
-  if (claim.claimDetails.statementOfTruth) {
+  if (claim.claimDetails?.statementOfTruth) {
     return resetCheckboxFields(claim.claimDetails.statementOfTruth);
   }
 
@@ -53,6 +54,9 @@ export const getSignatureType = (claim: Claim): SignatureType => {
 export const saveStatementOfTruth = async (claimId: string, claimantStatementOfTruth: StatementOfTruthForm) => {
   try {
     const claim = await getCaseDataFromStore(claimId);
+    if (!claim.claimDetails) {
+      claim.claimDetails = new ClaimDetails();
+    }
     claim.claimDetails.statementOfTruth = claimantStatementOfTruth;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
