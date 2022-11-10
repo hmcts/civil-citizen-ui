@@ -25,7 +25,6 @@ fullAdmitSetDatePaymentController.get(CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAYM
   try {
     const claimId = req.params.id;
     const details = await getFullAdmitSetDatePaymentDetails(claimId);
-    console.log(details);
     await renderView(new GenericForm(details.fullAdmitAcceptPayment), details.defendantName, details.proposedSetDate, res);
   } catch (error) {
     next(error);
