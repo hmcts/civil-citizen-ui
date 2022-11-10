@@ -1,14 +1,14 @@
 import {CCDAddress} from '../../../common/models/ccdResponse/ccdAddress';
-import {PrimaryAddress} from '../../../common/models/primaryAddress';
+import {Address} from '../../../common/form/models/address';
 
-export const toCCDAddress = (primaryAddress: PrimaryAddress): CCDAddress => {
+export const toCCDAddress = (primaryAddress: Address): CCDAddress => {
   return {
-    AddressLine1: primaryAddress?.AddressLine1,
-    AddressLine2: primaryAddress?.AddressLine2,
-    AddressLine3: primaryAddress?.AddressLine3,
-    Country: primaryAddress?.Country,
-    County: primaryAddress?.County,
-    PostCode: primaryAddress?.PostCode,
-    PostTown: primaryAddress?.PostTown,
+    AddressLine1: primaryAddress?.addressLine1,
+    AddressLine2: primaryAddress?.addressLine2,
+    AddressLine3: primaryAddress?.addressLine3,
+    Country: primaryAddress?.city,
+    County: primaryAddress?.city,
+    PostCode: primaryAddress?.postCode,
+    PostTown: primaryAddress?.city,
   };
 };
