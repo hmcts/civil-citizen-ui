@@ -2,16 +2,18 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {
-  CLAIM_DEFENDANT_EMAIL_URL, CLAIM_DEFENDANT_PHONE_NUMBER_URL,
-} from '../../../../../main/routes/urls';
+import {CLAIM_DEFENDANT_EMAIL_URL, CLAIM_DEFENDANT_PHONE_NUMBER_URL} from '../../../../../main/routes/urls';
 import {t} from 'i18next';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {Claim} from '../../../../../main/common/models/claim';
+import {getCaseDataFromStore} from '../../../../../main/modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const EMAIL_ADDRESS = 'test@gmail.com';
 
 describe('Completing Claim', () => {
@@ -25,7 +27,9 @@ describe('Completing Claim', () => {
 
   describe('on GET', () => {
     it('should return on your claimant defendant email page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
       await request(app)
         .get(CLAIM_DEFENDANT_EMAIL_URL)
         .expect((res) => {
@@ -35,7 +39,9 @@ describe('Completing Claim', () => {
     });
 
     it('should return 500 status code when error occurs', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CLAIM_DEFENDANT_EMAIL_URL)
         .expect((res) => {
@@ -47,7 +53,9 @@ describe('Completing Claim', () => {
 
   describe('on Post', () => {
     it('should redirect to the their mobile screen when email is provided', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
       await request(app)
         .post(CLAIM_DEFENDANT_EMAIL_URL)
         .send({emailAddress: EMAIL_ADDRESS})
@@ -58,7 +66,9 @@ describe('Completing Claim', () => {
     });
 
     it('should redirect to the their mobile screen when email is not provided', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
       await request(app)
         .post(CLAIM_DEFENDANT_EMAIL_URL)
         .send({emailAddress: ''})
@@ -80,7 +90,9 @@ describe('Completing Claim', () => {
     });
 
     it('should return status 500 when there is error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CLAIM_DEFENDANT_EMAIL_URL)
         .send({emailAddress: EMAIL_ADDRESS})

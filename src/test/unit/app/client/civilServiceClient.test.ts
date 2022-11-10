@@ -16,6 +16,7 @@ import {PartyType} from '../../../../main/common/models/partyType';
 import {mockClaim} from '../../../utils/mockClaim';
 import {TestMessages} from '../../../utils/errorMessageTestConstants';
 import {CaseState} from '../../../../main/common/form/models/claimDetails';
+import {Party} from '../../../../main/common/models/party';
 import {CourtLocation} from '../../../../main/common/models/courts/courtLocations';
 
 jest.mock('axios');
@@ -25,7 +26,7 @@ declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 
 describe('Civil Service Client', () => {
-  describe('get dashboard claims for claimant', ()=>{
+  describe('get dashboard claims for claimant', () => {
     it('should return claimant claims successfully', async () => {
       //Given
       const data = require('../../../utils/mocks/claimantClaimsMock.json');
@@ -48,16 +49,19 @@ describe('Civil Service Client', () => {
       expect(claimantDashboardItems[0].responseDeadline).toEqual(data[0].responseDeadline);
     });
   });
-  describe('retrieveByDefendantId', ()=>{
+  describe('retrieveByDefendantId', () => {
     it('should retrieve cases successfully', async () => {
       //Given
       const claim = new Claim();
       claim.legacyCaseReference = '000MC003';
+      claim.applicant1 = new Party();
       claim.applicant1 =
         {
-          individualTitle: 'Mrs',
-          individualLastName: 'Clark',
-          individualFirstName: 'Jane',
+          partyDetails: {
+            individualTitle: 'Mrs',
+            individualLastName: 'Clark',
+            individualFirstName: 'Jane',
+          },
           type: PartyType.INDIVIDUAL,
         };
       claim.totalClaimAmount = 1500;
@@ -82,8 +86,8 @@ describe('Civil Service Client', () => {
       expect(mockPost.mock.calls[0][0]).toEqual(CIVIL_SERVICE_CASES_URL);
       expect(actualClaims.length).toEqual(1);
       expect(actualClaims[0].case_data.legacyCaseReference).toEqual('000MC003');
-      expect(actualClaims[0].case_data.applicant1?.individualFirstName).toEqual('Jane');
-      expect(actualClaims[0].case_data.applicant1?.individualLastName).toEqual('Clark');
+      expect(actualClaims[0].case_data.applicant1?.partyDetails.individualFirstName).toEqual('Jane');
+      expect(actualClaims[0].case_data.applicant1?.partyDetails.individualLastName).toEqual('Clark');
     });
   });
   describe('getFeeRanges', () => {
@@ -146,7 +150,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //When
-      const claim = await civilServiceClient.submitDefendantResponseEvent('123',{}, mockedAppRequest);
+      const claim = await civilServiceClient.submitDefendantResponseEvent('123', {}, mockedAppRequest);
       //Then
       expect(mockedAxios.create).toHaveBeenCalledWith({
         baseURL: baseUrl,
@@ -164,7 +168,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
-      await expect(civilServiceClient.submitDefendantResponseEvent('123', {},mockedAppRequest)).rejects.toThrow('error');
+      await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, mockedAppRequest)).rejects.toThrow('error');
     });
   });
   describe('getClaimsForDefendant', () => {
@@ -189,7 +193,7 @@ describe('Civil Service Client', () => {
     });
   });
   describe('calculateExtendedResponseDeadline', () => {
-    it('should return calculated deadline date successfully', async () =>{
+    it('should return calculated deadline date successfully', async () => {
       //Given
       const responseDeadlineDate = new Date(2022, 10, 31);
       const mockPost = jest.fn().mockResolvedValue({data: responseDeadlineDate});

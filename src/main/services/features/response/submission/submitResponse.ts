@@ -12,16 +12,16 @@ const logger = Logger.getLogger('partialAdmissionService');
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-export const submitResponse = async (req : AppRequest): Promise<Claim> => {
+export const submitResponse = async (req: AppRequest): Promise<Claim> => {
   try {
     const claimId = req.params.id;
     const claim = await getCaseDataFromStore(claimId);
     const claimFromCivilService = await civilServiceClient.retrieveClaimDetails(claimId, req);
-    const isAddressUpdated = addressHasChange(claim.respondent1?.primaryAddress, claimFromCivilService.respondent1?.primaryAddress);
+    const isAddressUpdated = addressHasChange(claim.respondent1?.partyDetails?.primaryAddress, claimFromCivilService.respondent1?.partyDetails?.primaryAddress);
     const ccdResponse = translateDraftResponseToCCD(claim, isAddressUpdated);
     logger.info(ccdResponse);
     return await civilServiceClient.submitDefendantResponseEvent(req.params.id, ccdResponse, req);
-  }catch(err){
+  } catch (err) {
     logger.error(err);
     throw err;
   }
