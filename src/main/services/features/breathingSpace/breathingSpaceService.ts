@@ -8,7 +8,7 @@ const logger = Logger.getLogger('interestService');
 const getBreathingSpace = async (claimId: string): Promise<BreathingSpace> => {
   try {
     const caseData = await getCaseDataFromStore(claimId);
-    return Object.assign(new BreathingSpace(), caseData.claimDetails?.breathingSpace);
+    return (caseData.claimDetails?.breathingSpace) ? caseData.claimDetails?.breathingSpace : new BreathingSpace();
   } catch (error) {
     logger.error(error);
     throw error;
