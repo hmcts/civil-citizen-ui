@@ -55,7 +55,7 @@ describe('Breathing Space Service', () => {
       expect(breathingSpace?.debtRespiteOption.type).toBe(DebtRespiteOptionType.STANDARD);
     });
 
-    it('should return Claimant Response object with debtRespiteOption MENTAL_HEALTH', async () => {
+    it('should return Breathing Space object with debtRespiteOption MENTAL_HEALTH', async () => {
       const claim = new Claim();
       claim.claimDetails = new ClaimDetails();
       claim.claimDetails.breathingSpace = {
