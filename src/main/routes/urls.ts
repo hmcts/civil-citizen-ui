@@ -180,6 +180,7 @@ export const CLAIMANT_SOLE_TRADER_DETAILS_URL = `${BASE_CLAIM_URL}/claimant-sole
 export const CLAIMANT_INTEREST_RATE_URL = `${BASE_CLAIM_URL}/interest-rate`;
 export const CLAIMANT_INTEREST_DATE_URL = `${BASE_CLAIM_URL}/interest-date`;
 export const CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL = `${BASE_CLAIMANT_RESPONSE_URL}/intention-to-proceed`;
+export const CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL = `${BASE_CLAIMANT_RESPONSE_URL}/part-payment-received`;
 export const CLAIMANT_RESPONSE_TASK_LIST_URL = `${BASE_CLAIMANT_RESPONSE_URL}/task-list`;
 export const CCJ_DEFENDANT_DOB_URL = `${BASE_CCJ_URL}/date-of-birth`;
 export const CCJ_PAID_AMOUNT_URL = `${BASE_CCJ_URL}/paid-amount`;
