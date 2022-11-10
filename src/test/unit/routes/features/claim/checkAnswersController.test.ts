@@ -1,7 +1,7 @@
 import nock from 'nock';
 import config from 'config';
 import {getSummarySections} from '../../../../../main/services/features/claim/checkAnswers/checkAnswersService';
-import {CLAIM_CHECK_ANSWERS_URL} from '../../../../../main/routes/urls';
+import {CLAIM_CHECK_ANSWERS_URL, CLAIM_CONFIRMATION_URL} from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {getElementsByXPath} from '../../../../utils/xpathExtractor';
 import {createClaimWithBasicDetails, createClaimWithYourDetails} from '../../../../utils/mocks/claimDetailsMock';
@@ -200,6 +200,62 @@ describe('Response - Check answers', () => {
           expect(res.text).toContain('Submit Response');
         });
     });
+
+    it('should redirect to claim confirmation page when Fee is yes', async () => {
+      mockGetSummarySections.mockImplementation(() => {
+        return createClaimWithYourDetails();
+      });
+      mockGetClaim.mockImplementation(() => {
+        const claim = new Claim();
+        claim.claimDetails = new ClaimDetails();
+        claim.claimDetails.helpWithFees = new HelpWithFees();
+        claim.claimDetails.helpWithFees.option = YesNo.YES;
+        return claim;
+      });
+      const data = {
+        signed: 'Test',
+        type: 'qualified',
+        isFullAmountRejected: 'true',
+        directionsQuestionnaireSigned: 'Test',
+        signerRole: 'Test',
+        signerName: 'Test',
+      };
+      await request(app)
+        .post(CLAIM_CHECK_ANSWERS_URL)
+        .send(data)
+        .expect((res: Response) => {
+          expect(res.status).toBe(302);
+          expect(res.text).toContain(CLAIM_CONFIRMATION_URL);
+        });
+    });
+    it('should redirect to claim confirmation page when Fee is no', async () => {
+      mockGetSummarySections.mockImplementation(() => {
+        return createClaimWithYourDetails();
+      });
+      mockGetClaim.mockImplementation(() => {
+        const claim = new Claim();
+        claim.claimDetails = new ClaimDetails();
+        claim.claimDetails.helpWithFees = new HelpWithFees();
+        claim.claimDetails.helpWithFees.option = YesNo.NO;
+        return claim;
+      });
+      const data = {
+        signed: 'Test',
+        type: 'qualified',
+        isFullAmountRejected: 'true',
+        directionsQuestionnaireSigned: 'Test',
+        signerRole: 'Test',
+        signerName: 'Test',
+      };
+      await request(app)
+        .post(CLAIM_CHECK_ANSWERS_URL)
+        .send(data)
+        .expect((res: Response) => {
+          expect(res.status).toBe(302);
+          expect(res.text).toContain('https://www.payments.service.gov.uk/card_details/');
+        });
+    });
+
     it('should return 500 when error in service', async () => {
       mockGetSummarySections.mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);

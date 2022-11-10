@@ -55,6 +55,7 @@ import {
   InterestEndDateType,
   SameRateInterestType,
 } from '../../main/common/form/models/claimDetails';
+import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -84,6 +85,67 @@ export const createClaimWithBasicRespondentDetails = (contactPerson?: string): C
   claim.paymentOption = PaymentOptionType.IMMEDIATELY;
   return claim;
 };
+export const createClaimWithBasicClaimDetails = (contactPerson?: string): Claim => {
+  const claim = new Claim();
+  claim.applicant1 = {
+    partyName: PARTY_NAME,
+    partyPhone: CONTACT_NUMBER,
+    contactPerson: contactPerson,
+    dateOfBirth: new Date('2000-12-12'),
+    responseType: ResponseType.FULL_ADMISSION,
+    type: PartyType.INDIVIDUAL,
+    individualTitle: TITLE,
+    individualLastName: LAST_NAME,
+    individualFirstName: FIRST_NAME,
+    primaryAddress: {
+      AddressLine1: '23 Brook lane',
+      PostTown: 'Bristol',
+      PostCode: 'BS13SS',
+    },
+  };
+  claim.claimDetails = new ClaimDetails();
+  claim.paymentOption = PaymentOptionType.IMMEDIATELY;
+  return claim;
+};
+export const createClaimWithBasicDetails = (contactPerson?: string): Claim => {
+  const claim = new Claim();
+  claim.applicant1 = {
+    partyName: PARTY_NAME,
+    partyPhone: CONTACT_NUMBER,
+    contactPerson: contactPerson,
+    dateOfBirth: new Date('2000-12-12'),
+    responseType: ResponseType.FULL_ADMISSION,
+    type: PartyType.INDIVIDUAL,
+    individualTitle: TITLE,
+    individualLastName: LAST_NAME,
+    individualFirstName: FIRST_NAME,
+    primaryAddress: {
+      AddressLine1: '23 Brook lane',
+      PostTown: 'Bristol',
+      PostCode: 'BS13SS',
+    },
+  };
+  claim.respondent1 = {
+    partyName: PARTY_NAME,
+    partyPhone: CONTACT_NUMBER,
+    contactPerson: contactPerson,
+    dateOfBirth: new Date('2000-12-12'),
+    responseType: ResponseType.FULL_ADMISSION,
+    type: PartyType.INDIVIDUAL,
+    individualTitle: TITLE,
+    individualLastName: LAST_NAME,
+    individualFirstName: FIRST_NAME,
+    primaryAddress: {
+      AddressLine1: '23 Brook lane',
+      PostTown: 'Bristol',
+      PostCode: 'BS13SS',
+    },
+  };
+  claim.claimDetails = new ClaimDetails();
+  claim.paymentOption = PaymentOptionType.IMMEDIATELY;
+  return claim;
+};
+
 export const createClaimWithBasicApplicantDetails = (contactPerson?: string): Claim => {
   const claim = new Claim();
   claim.applicant1 = {
