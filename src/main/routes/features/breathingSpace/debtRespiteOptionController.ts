@@ -15,7 +15,7 @@ import {DebtRespiteOption} from '../../../common/models/breathingSpace/debtRespi
 import {DebtRespiteOptionType} from '../../../common/models/breathingSpace/debtRespiteOptionType';
 
 const debtRespiteOptionController = Router();
-const debtRespiteOptionViewPath = 'features/breathingSpace/debt-respite-type';
+const debtRespiteOptionViewPath = 'features/breathingSpace/respite-type';
 const breathingSpacePropertyName = 'debtRespiteOption';
 
 function renderView(form: GenericForm<DebtRespiteOption>, res: Response): void {
