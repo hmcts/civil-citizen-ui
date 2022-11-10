@@ -185,4 +185,4 @@ export const CLAIMANT_RESPONSE_TASK_LIST_URL = `${BASE_CLAIMANT_RESPONSE_URL}/ta
 export const CCJ_DEFENDANT_DOB_URL = `${BASE_CCJ_URL}/date-of-birth`;
 export const CCJ_PAID_AMOUNT_URL = `${BASE_CCJ_URL}/paid-amount`;
 export const BREATHING_SPACE_RESPITE_TYPE_URL = `${BASE_BREATHING_SPACE_URL}/debt-respite-type`;
-export const BREATHING_SPACE_RESPITE_END_DATE_URL = `${BASE_BREATHING_SPACE_URL}/debt-end-date`;
+export const BREATHING_SPACE_RESPITE_END_DATE_URL = `${BASE_BREATHING_SPACE_URL}/respite-end`;

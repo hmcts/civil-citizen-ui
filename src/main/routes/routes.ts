@@ -158,6 +158,7 @@ import claimantEvidenceController from './features/claim/yourDetails/claimantEvi
 import howMuchContinueClaimingController from './features/claim/interest/howMuchContinueClaimingController';
 import helpWithFeesController from './features/claim/details/helpWithFeesController';
 import defendantDOBController from './features/claimantResponse/ccj/defendantDOBController';
+import debtRespiteOptionController from './features/breathingSpace/debtRespiteOptionController';
 
 export default [
   homeController,
@@ -304,4 +305,5 @@ export default [
   howMuchContinueClaimingController,
   helpWithFeesController,
   defendantDOBController,
+  debtRespiteOptionController,
 ];
