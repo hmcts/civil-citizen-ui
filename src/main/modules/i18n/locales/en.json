@@ -274,9 +274,9 @@
       "PAGE_TITLE": "Severely disabled"
     },
     "BREATHING_SPACE_DEBT_RESPITE_TYPE": {
-      "MENTAL_BS_ENTERED": "Mental health crisis moratorium",
+      "MENTAL_HEALTH": "Mental health crisis moratorium",
       "PAGE_TITLE": "What type is it?",
-      "STANDARD_BS_ENTERED": "Standard breathing space",
+      "STANDARD": "Standard breathing space",
       "TITLE": "What type is it?"
     },
     "CARER": {
