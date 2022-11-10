@@ -25,9 +25,9 @@ import {
   CITIZEN_RESPONSE_TYPE_URL,
   CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL,
   CITIZEN_WHY_DO_YOU_DISAGREE_URL,
+  DETERMINATION_WITHOUT_HEARING_URL,
   FINANCIAL_DETAILS_URL,
   RESPONSE_YOUR_DEFENCE_URL,
-  DETERMINATION_WITHOUT_HEARING_URL,
 } from '../../../../../main/routes/urls';
 import {RejectAllOfClaim} from '../../../../../main/common/form/models/rejectAllOfClaim';
 import {RejectAllOfClaimType} from '../../../../../main/common/form/models/rejectAllOfClaimType';
