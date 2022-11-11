@@ -109,7 +109,7 @@ const partyCompanyCCD: CCDParty = {
 
 const partyIndividualCCD: CCDParty = {
   companyName: undefined,
-  individualDateOfBirth: new Date('10/10/1990').toString(),
+  individualDateOfBirth: new Date('10/10/1990').toLocaleDateString(),
   individualTitle: title,
   individualFirstName: firstName,
   individualLastName: lastName,
@@ -135,7 +135,7 @@ const partySoleTraderCCD: CCDParty = {
   partyEmail: emailCCD,
   partyPhone: phoneCCD,
   primaryAddress: addressCCD,
-  soleTraderDateOfBirth: new Date('10/10/1990').toString(),
+  soleTraderDateOfBirth: new Date('10/10/1990').toLocaleDateString(),
   soleTraderTitle: title,
   soleTraderFirstName: firstName,
   soleTraderLastName: lastName,
