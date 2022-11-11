@@ -1527,7 +1527,11 @@
       "WHERE_THEY_LIVE": "Where are they living?",
       "WHY_THEY_DISAGREE_CLAIM": "Why they disagree with the claim",
       "WHY_THEY_DISAGREE_EVIDENCE": "Why they disagree with your evidence",
-      "WHY_THEY_DISAGREE_TIMELINE": "Why they disagree with your timeline"
+      "WHY_THEY_DISAGREE_TIMELINE": "Why they disagree with your timeline",
+      "WHEN_THEY_PAID_THIS_AMOUNT": "When they say they paid this amount",
+      "HOW_THEY_PAID": "How they said they paid",
+      "THEY_DONT_OWE_CLAIM_AMOUNT": "Why they say they dont owe the amount you claimed",
+      "REJECT_CLAIM_PAID_LESS_STATEMENT": "{{ defendant }} said they paid you £{{ paidAmount}}. They said this is all they owe, not the amount you claim."
     },
     "SELF_EMPLOYED": {
       "PAGE_TITLE": "Self employment details",

@@ -124,6 +124,18 @@ export class Claim {
 
   }
 
+  get hasSupportRequiredList(): boolean {
+    return !!this.directionQuestionnaire?.hearing?.supportRequiredList;
+  }
+
+  get isSupportRequiredYes(): boolean {
+    return this.directionQuestionnaire?.hearing?.supportRequiredList?.option === YesNo.YES;
+  }
+
+  get isSupportRequiredDetailsAvailable(): boolean {
+    return this.directionQuestionnaire?.hearing?.supportRequiredList?.items?.length > 0;
+  }
+
   getClaimantName(): string {
     return this.applicant1.partyName;
   }
@@ -271,6 +283,18 @@ export class Claim {
     return this.rejectAllOfClaim.howMuchHaveYouPaid.amount === this.rejectAllOfClaim.howMuchHaveYouPaid.totalClaimAmount;
   }
 
+  getRejectAllOfClaimPaidLessPaymentDate(): Date {
+    return this.rejectAllOfClaim.howMuchHaveYouPaid.date;
+  }
+
+  getRejectAllOfClaimPaidLessPaymentMode(): string {
+    return this.rejectAllOfClaim?.howMuchHaveYouPaid?.text ?? '';
+  }
+
+  getRejectAllOfClaimDisagreementReason(): string {
+    return this.rejectAllOfClaim?.whyDoYouDisagree?.text ?? '';
+  }
+
   extractDocumentId(): string {
     const documentUrl = this.specClaimTemplateDocumentFiles?.document_url;
     let documentId: string;
@@ -325,18 +349,6 @@ export class Claim {
 
   isResponseDateInThePast(): boolean {
     return this.respondent1ResponseDate <= new Date();
-  }
-
-  get hasSupportRequiredList(): boolean {
-    return !!this.directionQuestionnaire?.hearing?.supportRequiredList;
-  }
-
-  get isSupportRequiredYes(): boolean {
-    return this.directionQuestionnaire?.hearing?.supportRequiredList?.option === YesNo.YES;
-  }
-
-  get isSupportRequiredDetailsAvailable(): boolean {
-    return this.directionQuestionnaire?.hearing?.supportRequiredList?.items?.length > 0;
   }
 
   getExplanationText(): string {
