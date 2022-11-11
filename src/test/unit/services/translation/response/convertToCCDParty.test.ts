@@ -147,16 +147,11 @@ const partySoleTraderCCD: CCDParty = {
 
 describe('translate party to ccd model', () => {
   it('should translate COMPANY party to ccd', () => {
-    //Given
-    const party = partyCompany;
-    //When
-    const partyResponseCCD = toCCDParty(party);
-    //Then
+    const partyResponseCCD = toCCDParty(partyCompany);
     expect(partyResponseCCD).toMatchObject(partyCompanyCCD);
   });
 
   it('should translate ORGANISATION party to ccd', () => {
-    //Given
     const party = partyOrganisation;
     const partyOrganisationCCD: CCDParty = {
       ...partyCompanyCCD,
@@ -164,28 +159,18 @@ describe('translate party to ccd model', () => {
       companyName: undefined,
       type: PartyType.ORGANISATION,
     };
-    //When
+
     const partyResponseCCD = toCCDParty(party);
-    //Then
     expect(partyResponseCCD).toMatchObject(partyOrganisationCCD);
   });
 
   it('should translate INDIVIDUAL party to ccd', () => {
-    //Given
-    const party = partyIndividual;
-    //When
-    const partyResponseCCD = toCCDParty(party);
-    //Then
+    const partyResponseCCD = toCCDParty(partyIndividual);
     expect(partyResponseCCD).toMatchObject(partyIndividualCCD);
   });
 
   it('should translate SOLE TRADER party to ccd', () => {
-    //Given
-    const party = partySoleTrader;
-    //When
-    const partyResponseCCD = toCCDParty(party);
-    //Then
+    const partyResponseCCD = toCCDParty(partySoleTrader);
     expect(partyResponseCCD).toMatchObject(partySoleTraderCCD);
   });
-
 });
