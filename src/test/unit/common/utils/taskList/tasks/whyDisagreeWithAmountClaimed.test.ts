@@ -1,11 +1,12 @@
-import {WhyDoYouDisagree} from '../../../../../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
-import {RejectAllOfClaim} from '../../../../../../main/common/form/models/rejectAllOfClaim';
-import {ResponseType} from '../../../../../../main/common/form/models/responseType';
-import {Claim} from '../../../../../../main/common/models/claim';
-import {PartialAdmission} from '../../../../../../main/common/models/partialAdmission';
-import {TaskStatus} from '../../../../../../main/common/models/taskList/TaskStatus';
-import {getWhyDisagreeWithAmountClaimedTask} from '../../../../../../main/common/utils/taskList/tasks/whyDisagreeWithAmountClaimed';
+import {WhyDoYouDisagree} from 'form/models/admission/partialAdmission/whyDoYouDisagree';
+import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
+import {ResponseType} from 'form/models/responseType';
+import {Claim} from 'models/claim';
+import {PartialAdmission} from 'models/partialAdmission';
+import {TaskStatus} from 'models/taskList/TaskStatus';
+import {getWhyDisagreeWithAmountClaimedTask} from 'common/utils/taskList/tasks/whyDisagreeWithAmountClaimed';
 
+jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,

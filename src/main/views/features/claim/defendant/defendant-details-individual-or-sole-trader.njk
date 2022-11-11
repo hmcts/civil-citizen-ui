@@ -17,8 +17,9 @@
 {% else %}
   {% set title = '' %}
 {% endif %}
+
 {% set formErrors = form.getAllErrors() %}
-{% set primaryAddressFormErrors = primaryAddressForm.getAllErrors() %}
+
 {% block pageTitle %}
   {{ setPageTitle(title) }}
 {% endblock %}
@@ -26,8 +27,8 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
-        {% if form.hasErrors() or primaryAddressForm.hasErrors() %}
-          {{ errorSummary(formErrors.concat(primaryAddressFormErrors), t) }}
+        {% if form.hasErrors() %}
+          {{ errorSummary(form.getAllErrors(), t) }}
         {% endif %}
       </div>
       <div class="govuk-grid-row">
@@ -67,7 +68,7 @@
               errorMessage: { text: t(form.errorFor('individualLastName')) } if form.errorFor('individualLastName')
             }) }}
             {% if defendantType === partyType.SOLE_TRADER %}
-              {{ govukInput({
+              {{  govukInput({
                 label: {
                   text: t('PAGES.DEFENDANT_DETAILS.BUSINESS_NAME')
                 },
@@ -78,6 +79,7 @@
                 errorMessage: { text: t(form.errorFor('soleTraderTradingAs')) } if form.errorFor('soleTraderTradingAs')
               }) }}
             {% endif %}
+
             <h2 class="govuk-heading-m">{{ t('PAGES.DEFENDANT_DETAILS.THEIR_ADDRESS') }}</h2>
             <p class="govuk-body">
               {{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }}
@@ -99,7 +101,7 @@
             {% endif %}
             <div class="govuk-form-group">
               {{ postcodeLookupAndAddressForm(t, {
-                citizenAddress:primaryAddressForm,
+                party: form,
                 addressType:'primary',
                 addressTitle:''
               }) }}

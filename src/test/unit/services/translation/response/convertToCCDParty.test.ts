@@ -1,30 +1,27 @@
-import {Party} from '../../../../../main/common/models/party';
-import {toCCDParty} from '../../../../../main/services/translation/response/convertToCCDParty';
-import {PartyType} from '../../../../../main/common/models/partyType';
-import {ResponseType} from '../../../../../main/common/form/models/responseType';
-import {YesNo} from '../../../../../main/common/form/models/yesNo';
-import {PrimaryAddress} from '../../../../../main/common/models/primaryAddress';
-import {CCDParty} from 'common/models/ccdResponse/ccdParty';
-import {CCDAddress} from 'common/models/ccdResponse/ccdAddress';
+import {Party} from 'models/party';
+import {toCCDParty} from 'services/translation/response/convertToCCDParty';
+import {PartyType} from 'models/partyType';
+import {ResponseType} from 'form/models/responseType';
+import {YesNo} from 'form/models/yesNo';
+import {Address} from 'form/models/address';
+import {CCDParty} from 'models/ccdResponse/ccdParty';
+import {CCDAddress} from 'models/ccdResponse/ccdAddress';
+import {DateOfBirth} from 'form/models/claim/claimant/dateOfBirth';
+import {PartyPhone} from 'models/PartyPhone';
+import {Email} from 'models/Email';
 
 const companyName = 'Version 1';
-const phone = '123456789';
+const phone = new PartyPhone('123456789');
+const phoneCCD = '123456789';
 const title = 'Mr';
 const firstName = 'Jon';
 const lastName = 'Doe';
 const soleTraderTradingAs = 'test';
-const dateOfBirth = new Date('10/10/1990');
-const email = 'test@test.com';
+const dateOfBirth = new DateOfBirth('10','10','1990');
+const email = new Email('test@test.com');
+const emailCCD = 'test@test.com';
 
-const address: PrimaryAddress = {
-  AddressLine1: 'Street test',
-  AddressLine2: '1',
-  AddressLine3: '1A',
-  PostTown: 'test',
-  PostCode: 'sl11gf',
-  Country: 'test',
-  County: 'test',
-};
+const address: Address = new Address('Street test','1', '1A', 'test', 'sl11gf');
 
 const addressCCD: CCDAddress = {
   AddressLine1: 'Street test',
@@ -40,38 +37,56 @@ const commonParty = {
   primaryAddress: address,
   contactPerson: 'Contact person test',
   postToThisAddress: YesNo.NO,
-  partyPhone: phone,
-  responseType: ResponseType.PART_ADMISSION,
-  emailAddress: email,
 };
 
 const partyCompany: Party = {
   type: PartyType.COMPANY,
-  partyName: companyName,
-  ...commonParty,
+  partyPhone: phone,
+  responseType: ResponseType.PART_ADMISSION,
+  emailAddress: email,
+  partyDetails: {
+    partyName: companyName,
+    ...commonParty,
+  },
 };
 
 const partyOrganisation: Party = {
   type: PartyType.ORGANISATION,
-  partyName: companyName,
-  ...commonParty,
+  partyPhone: phone,
+  responseType: ResponseType.PART_ADMISSION,
+  emailAddress: email,
+  partyDetails: {
+    partyName: companyName,
+    ...commonParty,
+  },
 };
 
 const partyIndividual: Party = {
   type: PartyType.INDIVIDUAL,
-  individualTitle: title,
-  individualFirstName: firstName,
-  individualLastName: lastName,
+  partyPhone: phone,
+  responseType: ResponseType.PART_ADMISSION,
+  emailAddress: email,
+  partyDetails: {
+    individualTitle: title,
+    individualFirstName: firstName,
+    individualLastName: lastName,
+    ...commonParty,
+  },
   dateOfBirth: dateOfBirth,
-  ...commonParty,
 };
 
 const partySoleTrader: Party = {
   type: PartyType.SOLE_TRADER,
-  soleTraderTitle: title,
-  soleTraderFirstName: firstName,
-  soleTraderLastName: lastName,
-  soleTraderTradingAs: soleTraderTradingAs,
+  partyPhone: phone,
+  responseType: ResponseType.PART_ADMISSION,
+  emailAddress: email,
+  partyDetails: {
+    individualTitle: title,
+    individualFirstName: firstName,
+    individualLastName: lastName,
+    soleTraderTradingAs: soleTraderTradingAs,
+    ...commonParty,
+  },
   dateOfBirth: dateOfBirth,
   ...commonParty,
 };
@@ -83,8 +98,8 @@ const partyCompanyCCD: CCDParty = {
   individualLastName: undefined,
   individualTitle: undefined,
   organisationName: undefined,
-  partyEmail: email,
-  partyPhone: phone,
+  partyEmail: emailCCD,
+  partyPhone: phoneCCD,
   primaryAddress: addressCCD,
   soleTraderDateOfBirth: undefined,
   soleTraderFirstName: undefined,
@@ -101,8 +116,8 @@ const partyIndividualCCD: CCDParty = {
   individualFirstName: firstName,
   individualLastName: lastName,
   organisationName: undefined,
-  partyEmail: email,
-  partyPhone: phone,
+  partyEmail: emailCCD,
+  partyPhone: phoneCCD,
   primaryAddress: addressCCD,
   soleTraderDateOfBirth: undefined,
   soleTraderTitle: undefined,
@@ -119,8 +134,8 @@ const partySoleTraderCCD: CCDParty = {
   individualLastName: undefined,
   individualTitle: undefined,
   organisationName: undefined,
-  partyEmail: email,
-  partyPhone: phone,
+  partyEmail: emailCCD,
+  partyPhone: phoneCCD,
   primaryAddress: addressCCD,
   soleTraderDateOfBirth: new Date('10/10/1990').toString(),
   soleTraderTitle: title,
@@ -132,16 +147,11 @@ const partySoleTraderCCD: CCDParty = {
 
 describe('translate party to ccd model', () => {
   it('should translate COMPANY party to ccd', () => {
-    //Given
-    const party = partyCompany;
-    //When
-    const partyResponseCCD = toCCDParty(party);
-    //Then
+    const partyResponseCCD = toCCDParty(partyCompany);
     expect(partyResponseCCD).toMatchObject(partyCompanyCCD);
   });
 
   it('should translate ORGANISATION party to ccd', () => {
-    //Given
     const party = partyOrganisation;
     const partyOrganisationCCD: CCDParty = {
       ...partyCompanyCCD,
@@ -149,28 +159,18 @@ describe('translate party to ccd model', () => {
       companyName: undefined,
       type: PartyType.ORGANISATION,
     };
-    //When
+
     const partyResponseCCD = toCCDParty(party);
-    //Then
     expect(partyResponseCCD).toMatchObject(partyOrganisationCCD);
   });
 
   it('should translate INDIVIDUAL party to ccd', () => {
-    //Given
-    const party = partyIndividual;
-    //When
-    const partyResponseCCD = toCCDParty(party);
-    //Then
+    const partyResponseCCD = toCCDParty(partyIndividual);
     expect(partyResponseCCD).toMatchObject(partyIndividualCCD);
   });
 
   it('should translate SOLE TRADER party to ccd', () => {
-    //Given
-    const party = partySoleTrader;
-    //When
-    const partyResponseCCD = toCCDParty(party);
-    //Then
+    const partyResponseCCD = toCCDParty(partySoleTrader);
     expect(partyResponseCCD).toMatchObject(partySoleTraderCCD);
   });
-
 });

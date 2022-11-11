@@ -1,14 +1,15 @@
-import {RESPONSE_INCOMPLETE_SUBMISSION_URL} from '../../../../main/routes/urls';
-import {AllResponseTasksCompletedGuard} from '../../../../main/routes/guards/allResponseTasksCompletedGuard';
+import {RESPONSE_INCOMPLETE_SUBMISSION_URL} from 'routes/urls';
+import {AllResponseTasksCompletedGuard} from 'routes/guards/allResponseTasksCompletedGuard';
 import express from 'express';
-import {TaskStatus} from '../../../../main/common/models/taskList/TaskStatus';
-import {constructResponseUrlWithIdParams} from '../../../../main/common/utils/urlFormatter';
-import {getTaskLists, outstandingTasksFromTaskLists} from '../../../../main/services/features/response/taskListService';
-import {TaskList} from '../../../../main/common/models/taskList/taskList';
-import {Task} from '../../../../main/common/models/taskList/task';
+import {TaskStatus} from 'models/taskList/TaskStatus';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getTaskLists, outstandingTasksFromTaskLists} from 'services/features/response/taskListService';
+import {TaskList} from 'models/taskList/taskList';
+import {Task} from 'models/taskList/task';
 
 jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../main/modules/draft-store');
 jest.mock('../../../../main/routes/features/response/checkAnswersController');
 jest.mock('../../../../main/services/features/response/taskListService');
 jest.mock('../../../../main/modules/i18n');

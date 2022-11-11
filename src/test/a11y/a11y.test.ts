@@ -99,6 +99,12 @@ describe('Accessibility', () => {
       .reply(200, CivilClaimResponseMock)
       .get('/cases/1645882162449409')
       .reply(200, CivilClaimResponseMock);
+    nock('http://localhost:4502')
+      .post('/lease')
+      .reply(200, {});
+    nock('http://localhost:8765')
+      .get('/drafts')
+      .reply(200, {});
   });
 
   urlsList.forEach((url) => {
