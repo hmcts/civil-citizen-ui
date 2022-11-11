@@ -87,7 +87,7 @@ export const enum TestMessages {
   VALID_FOUR_DIGIT_YEAR = 'Enter a 4 digit year',
   VALID_HOUSING = 'Describe your housing',
   VALID_INTEGER = 'Enter a numeric, for example 3',
-  VALID_INTEREST_TYPE_OPTION= 'Choose same rate or breakdown',
+  VALID_INTEREST_TYPE_OPTION = 'Choose same rate or breakdown',
   VALID_MONTH = 'Enter a valid month',
   VALID_NUMBER_FOR_PREVIOUS_PAGE = 'Number can’t be higher than on previous page',
   VALID_NUMBER = 'Enter a valid number',
@@ -115,4 +115,5 @@ export const enum TestMessages {
   VALID_VALUE = 'Are you sure this is a valid value?',
   INTEREST_START_DATE = 'Enter the date you want to claim interest from',
   REASON_EXPLANATION = 'Briefly explain your claim',
+  CLAIMANT_REJECTION_REASON = 'Enter why you rejected repayment plan',
 }
