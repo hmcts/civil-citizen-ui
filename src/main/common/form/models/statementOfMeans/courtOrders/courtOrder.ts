@@ -1,25 +1,19 @@
 import {IsNotEmpty, IsNumber, Min, ValidateIf} from 'class-validator';
-import {
-  VALID_AMOUNT_ONE_POUND_OR_MORE,
-  VALID_CLAIM_NUMBER,
-  VALID_STRICTLY_POSITIVE_NUMBER,
-  VALID_TWO_DECIMAL_NUMBER,
-} from '../../../../../common/form/validationErrors/errorMessageConstants';
-import {toNumberOrUndefined} from '../../../../../common/utils/numberConverter';
+import {toNumberOrUndefined} from 'common/utils/numberConverter';
 
 export class CourtOrder {
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
-  @IsNumber({maxDecimalPlaces: 2}, {message: VALID_TWO_DECIMAL_NUMBER})
-  @Min(0, {message: VALID_STRICTLY_POSITIVE_NUMBER})
+  @IsNumber({maxDecimalPlaces: 2}, {message: 'ERRORS.VALID_TWO_DECIMAL_NUMBER'})
+  @Min(0, {message: 'ERRORS.VALID_STRICTLY_POSITIVE_NUMBER'})
     instalmentAmount?: number;
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
-  @IsNumber({maxDecimalPlaces: 2}, {message: VALID_TWO_DECIMAL_NUMBER})
-  @Min(1.00, {message: VALID_AMOUNT_ONE_POUND_OR_MORE})
+  @IsNumber({maxDecimalPlaces: 2}, {message: 'ERRORS.VALID_TWO_DECIMAL_NUMBER'})
+  @Min(1.00, {message: 'ERRORS.AMOUNT_REQUIRED'})
     amount?: number;
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
-  @IsNotEmpty({message: VALID_CLAIM_NUMBER})
+  @IsNotEmpty({message: 'ERRORS.VALID_CLAIM_NUMBER'})
     claimNumber?: string;
 
   constructor(amount?: number, instalmentAmount?: number, claimNumber?: string) {
