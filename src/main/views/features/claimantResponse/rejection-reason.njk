@@ -5,11 +5,9 @@
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "../../macro/error-summary.njk" import errorSummary %}
-
 {% block pageTitle %}
   {{ setPageTitle('PAGES.CLAIMANT_RESPONSE_REJECTION_REASON.PAGE_TITLE') }}
 {% endblock %}
-
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -17,7 +15,6 @@
       {% if form.hasErrors() %}
         {{ errorSummary(errors, t) }}
       {% endif %}
-
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t('PAGES.CLAIMANT_RESPONSE_REJECTION_REASON.TITLE') }}</h1>
@@ -27,6 +24,11 @@
               {{ govukTextarea({
                 name: "text",
                 id: "text",
+                label: {
+                  text: t('PAGES.CLAIMANT_RESPONSE_REJECTION_REASON.TITLE'),
+                  classes: "govuk-label--l govuk-visually-hidden",
+                  isPageHeading: true
+                },
                 value: form.model.text,
                 classes:"govuk-!-width-three-quarters",
                 errorMessage: {
