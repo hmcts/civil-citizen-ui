@@ -22,7 +22,7 @@
             rows: [
               {
                 key: {
-                  text: "Claim amount",
+                  text: t('COMMON.CLAIM_AMOUNT'),
                   classes: "govuk-!-font-weight-regular"
                 },
                 value: {
@@ -31,16 +31,16 @@
               },
               {
                 key: {
-                  text: "Interest to date",
+                  text: t('PAGES.TOTAL_AMOUNT.INTEREST_TO_DATE'),
                   classes: "govuk-!-font-weight-regular"
                 },
                 value: {
                    text: "£" + form.interestToDate
                 }
-              },
+              } if form.hasInterest,
               {
                 key: {
-                  text: "Claim fee",
+                  text: t('PAGES.TOTAL_AMOUNT.CLAIM_FEE'),
                   classes: "govuk-!-font-weight-regular"
                 },
                 value: {
@@ -49,10 +49,10 @@
               },
               {
                 key: {
-                  text: "Total claim amount"
+                  text: t('PAGES.TOTAL_AMOUNT.TOTAL_CLAIM_AMOUNT')
                 },
                 value: {
-                  text: "£" + form.totalAmount
+                  text: "£" + form.totalClaimAmount
                 }
               }
             ] 
