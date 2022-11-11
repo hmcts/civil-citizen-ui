@@ -280,6 +280,11 @@
       "PAGE_TITLE": "Do you know the defendant's date of birth?",
       "TITLE": "Do you know the defendant's date of birth?"
     },
+    "CCJ_PAID_AMOUNT": {
+      "AMOUNT_PAID": "Amount already paid",
+      "PAGE_TITLE": "Has the defendant paid some of the amount owed?",
+      "TITLE": "Has the defendant paid some of the amount owed?"
+    },
     "CHECK_YOUR_ANSWER": {
       "BANK_AND_SAVINGS_ACCOUNTS": "Bank and savings accounts",
       "BANK_BALANCE": "Balance",
