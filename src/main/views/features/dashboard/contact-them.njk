@@ -55,7 +55,7 @@
             {% if phone %}
               <div class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.CONTACT_THEM.PHONE') +': ' }}{{ phone.phone }}</div>
             {% endif %}
-            {% if email %}
+            {% if email.emailAddress %}
               <div class="govuk-body govuk-!-margin-bottom-6">{{ t('COMMON.EMAIL') +': ' }}<a href='mailto:{{ email.emailAddress }}'>{{ email.emailAddress }}</a>
               </div>
             {% endif %}

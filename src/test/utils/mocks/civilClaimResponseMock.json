@@ -13,6 +13,9 @@
       "version": "4",
       "calculatedAmountInPence": "7000"
     },
+    "claimantResponse": {
+      "hasPartPaymentBeenAccepted": "Yes"
+    },
     "respondent1ResponseDate": "2022-09-25T13:46:07.287428",
     "supportRequired": {
       "languageSelected": true,

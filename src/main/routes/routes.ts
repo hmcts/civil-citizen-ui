@@ -158,6 +158,7 @@ import claimantEvidenceController from './features/claim/yourDetails/claimantEvi
 import howMuchContinueClaimingController from './features/claim/interest/howMuchContinueClaimingController';
 import helpWithFeesController from './features/claim/details/helpWithFeesController';
 import datePaidViewController from './features/claimantResponse/paidInFull/datePaidController';
+import settleClaimController from './features/claimantResponse/settleClaimController';
 import partPaymentReceivedController from './features/claimantResponse/partPaymentReceivedController';
 import defendantDOBController from './features/claimantResponse/ccj/defendantDOBController';
 import claimantIntentionToProceedController from './features/claimantResponse/claimantIntentionToProceedController';
@@ -307,6 +308,7 @@ export default [
   howMuchContinueClaimingController,
   helpWithFeesController,
   datePaidViewController,
+  settleClaimController,
   partPaymentReceivedController,
   defendantDOBController,
   claimantIntentionToProceedController,
