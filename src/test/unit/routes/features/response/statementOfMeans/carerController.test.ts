@@ -2,8 +2,7 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {CITIZEN_CARER_URL, CITIZEN_EMPLOYMENT_URL} from '../../../../../../main/routes/urls';
-import {VALID_YES_NO_OPTION} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {CITIZEN_CARER_URL, CITIZEN_EMPLOYMENT_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 
@@ -69,7 +68,7 @@ describe('Carer', () => {
         .send()
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_YES_NO_OPTION);
+          expect(res.text).toContain(TestMessages.VALID_YES_NO_OPTION);
         });
     });
     it('should return http 500 when has error', async () => {

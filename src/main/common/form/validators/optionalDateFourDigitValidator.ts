@@ -1,5 +1,4 @@
 import {ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator';
-import {VALID_FOUR_DIGIT_YEAR} from '../validationErrors/errorMessageConstants';
 
 const MINIMUM_FOUR_DIGIT_YEAR = 1000;
 
@@ -14,6 +13,6 @@ export class OptionalDateFourDigitValidator implements ValidatorConstraintInterf
   }
 
   defaultMessage() {
-    return VALID_FOUR_DIGIT_YEAR;
+    return 'ERRORS.VALID_FOUR_DIGIT_YEAR';
   }
 }
