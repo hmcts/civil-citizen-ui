@@ -30,7 +30,6 @@ describe('Claimant details', () => {
           expect(res.text).toContain('Claimant');
           expect(res.text).toContain('Address');
           expect(res.text).toContain('Phone:');
-          expect(res.text).toContain('Email:');
           expect(res.text).toContain('About claim');
           expect(res.text).toContain('Claimant name:');
           expect(res.text).toContain('Claim amount:');
