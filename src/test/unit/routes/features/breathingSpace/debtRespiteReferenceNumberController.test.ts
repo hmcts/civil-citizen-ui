@@ -5,7 +5,7 @@ import {app} from '../../../../../main/app';
 import {
   BREATHING_SPACE_RESPITE_REFERENCE_NUMBER_URL,
   BREATHING_SPACE_RESPITE_START_DATE_URL,
-} from '../../../../../main/routes/urls';
+} from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 

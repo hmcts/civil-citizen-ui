@@ -9,6 +9,7 @@ import {
 import {BreathingSpace} from '../../../../../main/common/models/breathingSpace';
 import {ClaimDetails} from '../../../../../main/common/form/models/claim/details/claimDetails';
 import {DebtRespiteOptionType} from '../../../../../main/common/models/breathingSpace/debtRespiteOptionType';
+import {DebtRespiteReferenceNumber} from '../../../../../main/common/models/breathingSpace/debtRespiteReferenceNumber';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -71,6 +72,39 @@ describe('Breathing Space Service', () => {
       expect(breathingSpace?.debtRespiteOption.type).toBe(DebtRespiteOptionType.MENTAL_HEALTH);
     });
 
+    it('should return Breathing Space object with DebtRespiteReferenceNumber', async () => {
+      const claim = new Claim();
+      claim.claimDetails = new ClaimDetails();
+      claim.claimDetails.breathingSpace = {
+        debtRespiteReferenceNumber: {
+          referenceNumber: '1234',
+        },
+      };
+
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return claim;
+      });
+      const breathingSpace = await getBreathingSpace('validClaimId');
+
+      expect(breathingSpace?.debtRespiteReferenceNumber.referenceNumber).toBe('1234');
+    });
+
+    it('should return Breathing Space object with DebtRespiteReferenceNumber empty', async () => {
+      const claim = new Claim();
+      claim.claimDetails = new ClaimDetails();
+      claim.claimDetails.breathingSpace = {
+        debtRespiteReferenceNumber: {
+        },
+      };
+
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return claim;
+      });
+      const breathingSpace = await getBreathingSpace('validClaimId');
+
+      expect(breathingSpace?.debtRespiteReferenceNumber.referenceNumber).toBeUndefined();
+    });
+
     it('should return an error on redis failure', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
@@ -111,6 +145,7 @@ describe('Breathing Space Service', () => {
         const claim = new Claim();
         claim.claimDetails = new ClaimDetails();
         claim.claimDetails.breathingSpace = breathingSpace;
+        claim.claimDetails.breathingSpace.debtRespiteReferenceNumber = undefined;
         return claim;
       });
       const breathingSpaceUpdate = new BreathingSpace();
@@ -128,6 +163,52 @@ describe('Breathing Space Service', () => {
       };
       await saveBreathingSpace('validClaimId', breathingSpaceUpdate?.debtRespiteOption, 'debtRespiteOption');
       expect(spySave).toHaveBeenCalledWith('validClaimId', breathingSpaceToSave);
+    });
+
+    describe('debtRespiteReferenceNumber', () => {
+      breathingSpace.debtRespiteReferenceNumber = new DebtRespiteReferenceNumber('0000');
+      it('should save debt respite reference number successfully', async () => {
+        //Given
+        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+          const claim = new Claim();
+          claim.claimDetails = new ClaimDetails();
+          claim.claimDetails.breathingSpace = new BreathingSpace();
+          return claim;
+        });
+        const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+        const debtRespiteReferenceNumberValue = new DebtRespiteReferenceNumber('1234');
+        const breathingSpaceToSave = {
+          claimDetails: {
+            breathingSpace: {
+              debtRespiteReferenceNumber: {referenceNumber: '1234'},
+            }},
+        };
+        //When
+        await saveBreathingSpace('validClaimId', debtRespiteReferenceNumberValue, 'debtRespiteReferenceNumber');
+        //Then
+        expect(spySave).toHaveBeenCalledWith('validClaimId', breathingSpaceToSave);
+      });
+
+      it('should update debt respite scheme successfully', async () => {
+        //Given
+        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+          const claim = new Claim();
+          claim.claimDetails = new ClaimDetails();
+          claim.claimDetails.breathingSpace = breathingSpace;
+          return claim;
+        });
+        const breathingSpaceToUpdate = {
+          claimDetails: {
+            breathingSpace: {
+              debtRespiteReferenceNumber: {referenceNumber: '1234'},
+            }},
+        };
+        const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+        //When
+        await saveBreathingSpace('validClaimId', breathingSpace?.debtRespiteReferenceNumber, 'debtRespiteReferenceNumber');
+        //Then
+        expect(spySave).toHaveBeenCalledWith('validClaimId', breathingSpaceToUpdate);
+      });
     });
 
     it('should return an error on redis failure', async () => {

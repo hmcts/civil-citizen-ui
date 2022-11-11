@@ -1,5 +1,5 @@
 
-export class DebtRespiteScheme {
+export class DebtRespiteReferenceNumber {
   referenceNumber?: string;
 
   constructor(referenceNumber?: string) {

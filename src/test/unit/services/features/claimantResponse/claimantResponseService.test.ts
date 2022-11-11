@@ -7,7 +7,6 @@ import {
   getClaimantResponse,
   saveClaimantResponse,
 } from '../../../../../main/services/features/claimantResponse/claimantResponseService';
-import {DebtRespiteScheme} from '../../../../../main/common/models/claimantResponse/debtRespiteScheme';
 import {ClaimantResponse} from '../../../../../main/common/models/claimantResponse';
 import {CCJRequest} from '../../../../../main/common/models/claimantResponse/ccj/ccjRequest';
 
@@ -65,32 +64,6 @@ describe('Claimant Response Service', () => {
       const claimantResponse = await getClaimantResponse('validClaimId');
 
       expect(claimantResponse?.hasDefendantPaidYou.option).toBe(YesNo.YES);
-    });
-
-    it('should return Claimant Response object with DebtRespiteReferenceNumber', async () => {
-      const claim = new Claim();
-      claim.claimantResponse = new ClaimantResponse();
-      claim.claimantResponse.debtRespiteScheme = new DebtRespiteScheme('1234');
-
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        return claim;
-      });
-      const claimantResponse = await getClaimantResponse('validClaimId');
-
-      expect(claimantResponse?.debtRespiteScheme.referenceNumber).toBe('1234');
-    });
-
-    it('should return Claimant Response object with DebtRespiteReferenceNumber empty', async () => {
-      const claim = new Claim();
-      claim.claimantResponse = new ClaimantResponse();
-      claim.claimantResponse.debtRespiteScheme = new DebtRespiteScheme();
-
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        return claim;
-      });
-      const claimantResponse = await getClaimantResponse('validClaimId');
-
-      expect(claimantResponse?.debtRespiteScheme.referenceNumber).toBeUndefined();
     });
 
     describe('intentionToProceed', () => {
@@ -342,44 +315,6 @@ describe('Claimant Response Service', () => {
         const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
         //When
         await saveClaimantResponse('validClaimId', YesNo.NO, 'defendantDOB', 'ccjRequest');
-        //Then
-        expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
-      });
-    });
-
-    describe('debtRespiteScheme', () => {
-      claimantResponse.debtRespiteScheme = new DebtRespiteScheme('0000');
-      it('should save debt respite scheme successfully', async () => {
-        //Given
-        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-          const claim = new Claim();
-          claim.claimantResponse = new ClaimantResponse();
-          return claim;
-        });
-        const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-        const debtRespiteSchemeValue = new DebtRespiteScheme('1234');
-        const claimantResponseToSave = {
-          debtRespiteScheme: {referenceNumber: '1234'},
-        };
-        //When
-        await saveClaimantResponse('validClaimId', debtRespiteSchemeValue, 'debtRespiteScheme');
-        //Then
-        expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToSave});
-      });
-
-      it('should update debt respite scheme successfully', async () => {
-        //Given
-        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-          const claim = new Claim();
-          claim.claimantResponse = claimantResponse;
-          return claim;
-        });
-        const claimantResponseToUpdate = {
-          debtRespiteScheme: {referenceNumber: '1234'},
-        };
-        const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-        //When
-        await saveClaimantResponse('validClaimId', claimantResponse?.debtRespiteScheme, 'debtRespiteScheme');
         //Then
         expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
       });

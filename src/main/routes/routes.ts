@@ -159,7 +159,7 @@ import claimantEvidenceController from './features/claim/yourDetails/claimantEvi
 import howMuchContinueClaimingController from './features/claim/interest/howMuchContinueClaimingController';
 import helpWithFeesController from './features/claim/details/helpWithFeesController';
 import debtRespiteReferenceNumberController
-  from './features/claimantResponse/debtRespiteReferenceNumberController';
+  from './features/breathingSpace/debtRespiteReferenceNumberController';
 import partPaymentReceivedController from './features/claimantResponse/partPaymentReceivedController';
 import defendantDOBController from './features/claimantResponse/ccj/defendantDOBController';
 import claimantIntentionToProceedController from './features/claimantResponse/claimantIntentionToProceedController';
