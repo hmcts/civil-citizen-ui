@@ -162,11 +162,8 @@ import settleClaimController from './features/claimantResponse/settleClaimContro
 import partPaymentReceivedController from './features/claimantResponse/partPaymentReceivedController';
 import defendantDOBController from './features/claimantResponse/ccj/defendantDOBController';
 import claimantIntentionToProceedController from './features/claimantResponse/claimantIntentionToProceedController';
-<<<<<<< HEAD
 import breathingSpaceCheckAnswersController from './features/claim/breathingSpace/checkAnswersController';
-=======
 import rejectionReasonController from './features/claimantResponse/rejectionReasonController';
->>>>>>> master
 
 export default [
   homeController,
@@ -316,9 +313,6 @@ export default [
   partPaymentReceivedController,
   defendantDOBController,
   claimantIntentionToProceedController,
-<<<<<<< HEAD
   breathingSpaceCheckAnswersController,
-=======
   rejectionReasonController,
->>>>>>> master
 ];
