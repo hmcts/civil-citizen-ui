@@ -1,9 +1,4 @@
 import {IsDefined, IsInt, Max, Min} from 'class-validator';
-import {
-  VALID_BETWEEN_NUMBERS_0_11,
-  VALID_BETWEEN_NUMBERS_0_80,
-  VALID_INTEGER,
-} from '../../../../form/validationErrors/errorMessageConstants';
 
 export class Validation {
   static readonly MIN_VALUE: number = 0;
@@ -13,16 +8,16 @@ export class Validation {
 
 export class UnemploymentDetails {
 
-  @Min(Validation.MIN_VALUE, {message: VALID_BETWEEN_NUMBERS_0_80})
-  @Max(Validation.MAX_NUMBER_OF_YEARS, {message: VALID_BETWEEN_NUMBERS_0_80})
-  @IsDefined({message: VALID_INTEGER})
-  @IsInt({message: VALID_INTEGER})
+  @Min(Validation.MIN_VALUE, {message: 'ERRORS.VALID_BETWEEN_NUMBERS_0_80'})
+  @Max(Validation.MAX_NUMBER_OF_YEARS, {message: 'ERRORS.VALID_BETWEEN_NUMBERS_0_80'})
+  @IsDefined({message: 'ERRORS.VALID_INTEGER'})
+  @IsInt({message: 'ERRORS.VALID_INTEGER'})
     years: number;
 
-  @Min(Validation.MIN_VALUE, {message: VALID_BETWEEN_NUMBERS_0_11})
-  @Max(Validation.MAX_NUMBER_OF_MONTHS, {message: VALID_BETWEEN_NUMBERS_0_11})
-  @IsDefined({message: VALID_INTEGER})
-  @IsInt({message: VALID_INTEGER})
+  @Min(Validation.MIN_VALUE, {message: 'ERRORS.VALID_BETWEEN_NUMBERS_0_11'})
+  @Max(Validation.MAX_NUMBER_OF_MONTHS, {message: 'ERRORS.VALID_BETWEEN_NUMBERS_0_11'})
+  @IsDefined({message: 'ERRORS.VALID_INTEGER'})
+  @IsInt({message: 'ERRORS.VALID_INTEGER'})
     months: number;
 
   constructor(years?: string, months?: string) {

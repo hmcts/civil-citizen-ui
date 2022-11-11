@@ -9,7 +9,6 @@ import {PartialAdmission} from './partialAdmission';
 import {DefendantEvidence} from './evidence/evidence';
 import {Mediation} from './mediation/mediation';
 import {RejectAllOfClaim} from '../form/models/rejectAllOfClaim';
-import {CorrespondenceAddress} from './correspondenceAddress';
 import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
 import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/dateUtils';
 import {StatementOfTruthForm} from '../form/models/statementOfTruth/statementOfTruthForm';
@@ -45,8 +44,6 @@ export class Claim {
   legacyCaseReference: string;
   applicant1?: Party;
   claimantResponse?: ClaimantResponse;
-  specApplicantCorrespondenceAddressdetails?: CorrespondenceAddress;
-  applicantSolicitor1ServiceAddress?: CorrespondenceAddress;
   applicantSolicitor1ClaimStatementOfTruth?: StatementOfTruth;
   totalClaimAmount: number;
   respondent1ResponseDeadline: Date;
@@ -118,11 +115,11 @@ export class Claim {
   }
 
   getClaimantName(): string {
-    return this.applicant1.partyName;
+    return this.applicant1?.partyDetails?.partyName;
   }
 
   getDefendantName(): string {
-    return this.respondent1.partyName;
+    return this.respondent1?.partyDetails?.partyName;
   }
 
   formattedResponseDeadline(lng?: string): string {
@@ -318,6 +315,30 @@ export class Claim {
 
   isResponseDateInThePast(): boolean {
     return this.respondent1ResponseDate <= new Date();
+  }
+
+  get hasSupportRequiredList(): boolean {
+    return !!this.directionQuestionnaire?.hearing?.supportRequiredList;
+  }
+
+  get isSupportRequiredYes(): boolean {
+    return this.directionQuestionnaire?.hearing?.supportRequiredList?.option === YesNo.YES;
+  }
+
+  get isSupportRequiredDetailsAvailable(): boolean {
+    return this.directionQuestionnaire?.hearing?.supportRequiredList?.items?.length > 0;
+  }
+
+  hasExpertReportDetails(): boolean {
+    return this.directionQuestionnaire?.experts?.expertReportDetails?.option === YesNo.YES;
+  }
+
+  hasPermissionForExperts(): boolean {
+    return this.directionQuestionnaire?.experts?.permissionForExpert?.option === YesNo.YES;
+  }
+
+  hasEvidenceExpertCanStillExamine(): boolean {
+    return this.directionQuestionnaire?.experts?.expertCanStillExamine?.option === YesNo.YES;
   }
 }
 

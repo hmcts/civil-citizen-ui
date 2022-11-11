@@ -1,7 +1,6 @@
-import {TimelineRow} from '../../models/timeLineOfEvents/timelineRow';
+import {TimelineRow} from 'form/models/timeLineOfEvents/timelineRow';
 import {MaxLength, ValidateIf, ValidateNested} from 'class-validator';
-import {VALID_TEXT_LENGTH} from '../../validationErrors/errorMessageConstants';
-import {FREE_TEXT_MAX_LENGTH} from '../../validators/validationConstraints';
+import {FREE_TEXT_MAX_LENGTH} from 'form/validators/validationConstraints';
 
 const MINIMUM_ROWS = 4;
 
@@ -10,7 +9,7 @@ export class DefendantTimeline {
     rows: TimelineRow[];
 
   @ValidateIf(o => o.comment !== undefined)
-  @MaxLength(FREE_TEXT_MAX_LENGTH, {message: VALID_TEXT_LENGTH})
+  @MaxLength(FREE_TEXT_MAX_LENGTH, {message: 'ERRORS.TEXT_TOO_MANY'})
     comment?: string;
 
   constructor(rows?: TimelineRow[], comment?: string) {
