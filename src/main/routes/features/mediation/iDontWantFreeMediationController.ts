@@ -17,7 +17,7 @@ function renderView(form: GenericForm<NoMediationReason>, res: Response): void {
 iDontWantFreeMediationController.get(DONT_WANT_FREE_MEDIATION_URL, async (req, res, next: NextFunction) => {
   try {
     const mediation: Mediation = await getMediation(req.params.id);
-    renderView(new GenericForm(mediation.noMediationReason), res);
+    renderView(new GenericForm(mediation?.noMediationReason), res);
   } catch (error) {
     next(error);
   }

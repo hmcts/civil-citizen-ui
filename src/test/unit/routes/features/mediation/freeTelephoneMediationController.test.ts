@@ -4,7 +4,7 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import {CITIZEN_FREE_TELEPHONE_MEDIATION_URL} from '../../../../../main/routes/urls';
 import {
-  mockCivilClaimApplicantCompanyType, mockCivilClaimApplicantIndividualType,
+  mockCivilClaim, mockCivilClaimUnemploymentRetired,
   mockRedisFailure,
 } from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
@@ -24,7 +24,7 @@ describe('Free Telephone Mediation Controller', () => {
 
   describe('on GET', () => {
     it('should return free telephone mediation page successfully when applicant is business', async () => {
-      app.locals.draftStoreClient = mockCivilClaimApplicantCompanyType;
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(CITIZEN_FREE_TELEPHONE_MEDIATION_URL).expect(res => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Free telephone mediation');
@@ -32,7 +32,7 @@ describe('Free Telephone Mediation Controller', () => {
     });
 
     it('should return free telephone mediation page successfully when applicant is individual', async () => {
-      app.locals.draftStoreClient = mockCivilClaimApplicantIndividualType;
+      app.locals.draftStoreClient = mockCivilClaimUnemploymentRetired;
       await request(app).get(CITIZEN_FREE_TELEPHONE_MEDIATION_URL).expect(res => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Free telephone mediation');
