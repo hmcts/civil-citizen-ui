@@ -4,7 +4,7 @@ import {EXPERT_GUIDANCE_URL, PERMISSION_FOR_EXPERT_URL} from 'routes/urls';
 
 const expertGuidanceController = Router();
 
-expertGuidanceController.get(EXPERT_GUIDANCE_URL,  (_req, res) => {
+expertGuidanceController.get(EXPERT_GUIDANCE_URL, (_req, res) => {
   res.render('features/directionsQuestionnaire/experts/expert-guidance');
 });
 
