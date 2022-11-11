@@ -1561,7 +1561,7 @@
       "TITLE": "Ydych chi eisiau rhannu arbenigwr gyda’r hawlydd?"
     },
     "SPECIFIC_COURT": {
-      "EXPlANATION": "You can ask for the hearing to be held at a specific court, for example, if you spend weekdays a long distance from your home. The court will consider both parties' circumstances when deciding to hold the hearing.",
+      "EXPlANATION": "You can ask for the hearing to be held at a specific court, for example, if you spend weekdays a long distance from your home. The court will consider both parties' circumstances when deciding where to hold the hearing.",
       "PAGE_TITLE": "Specific court",
       "SELECT_COURT": "Select a court",
       "SELECT_VALUE": "Select a value",
