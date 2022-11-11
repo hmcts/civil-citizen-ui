@@ -7,11 +7,11 @@ import { CivilServiceClient } from 'client/civilServiceClient';
 import { convertToPoundsFilter } from '../../../common/utils/currencyFormat';
 import { YesNo } from '../../../common/form/models/yesNo';
 import { InterestClaimOptionsType } from '../../../common/form/models/claim/interest/interestClaimOptionsType';
-import { InterestClaimFromType, SameRateInterestType } from '../../../common/form/models/claimDetails';
+import { InterestClaimFromType } from '../../../common/form/models/claimDetails';
 import { Claim } from '../../../common/models/claim';
 import { getNumberOfDaysBetweenTwoDays } from '../../../common/utils/dateUtils';
+import { getInterestRate } from '../../../common/utils/interestUtils';
 
-const INTEREST_8 = 8;
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 const totalAmountController = Router();
@@ -34,7 +34,7 @@ totalAmountController.get(CLAIM_TOTAL_URL, async (req: AppRequest, res: Response
       interestToDate = calculateInterestToDate(claim);
     }
 
-    const totalAmount = claim.totalClaimAmount + claimFee + interestToDate;
+    const totalAmount: number = claim.totalClaimAmount + claimFee + interestToDate;
     const hearingResponse = await civilServiceClient.getHearingAmount(totalAmount, <AppRequest>req);
     const hearingAmount = convertToPoundsFilter(hearingResponse.calculatedAmountInPence);
 
@@ -52,34 +52,37 @@ totalAmountController.get(CLAIM_TOTAL_URL, async (req: AppRequest, res: Response
   }
 });
 
-const calculateInterestToDate = (claim: Claim) => {
-  if (claim.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST) {
-    return claim.interest?.totalInterest?.amount;
+const calculateInterestToDate = (claim: Claim): number => {
+  if (claim.interest?.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST) {
+    return claim.interest.totalInterest?.amount;
   }
-  const interestPercent = getInterestPercent(claim);
+  const interestPercent = getInterestRate(claim);
   const interestStartDate = getInterestStartDate(claim);
-  return calculateInterest(
+
+  const interest = calculateInterest(
     claim.totalClaimAmount,
     interestPercent,
     interestStartDate,
     new Date()
   );
+  return (Math.round(interest * 100) / 100);
 }
 
 const getInterestStartDate = (claim: Claim): Date => {
-  if (claim.interestClaimFrom === InterestClaimFromType.FROM_A_SPECIFIC_DATE) {
-    return new Date(claim.interest?.interestStartDate?.date);
+  if (claim.interest?.interestClaimFrom === InterestClaimFromType.FROM_A_SPECIFIC_DATE) {
+    return new Date(claim.interest.interestStartDate?.date);
   }
   return new Date();
 }
 
-const getInterestPercent = (claim: Claim): number => {
-  let interestPercent: number = INTEREST_8;
-  if (claim.sameRateInterestSelection.sameRateInterestType === SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE) {
-    interestPercent = claim.sameRateInterestSelection.differentRate;
-  }
-  return interestPercent;
-}
+// const getInterestPercent = (claim: Claim): number => {
+//   let interestPercent: number = INTEREST_8;
+//   // "sameRateInterestSelection\":{\"option\":\"SAME_RATE_INTEREST_DIFFERENT_RATE\",\"rate\":\"200\",\"reason\":\"asd\"}
+//   if (claim.interest?.sameRateInterestSelection?.sameRateInterestType === SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE) {
+//     interestPercent = claim.interest.sameRateInterestSelection.differentRate; // TODO: claim.sameRateInterestSelection.rate
+//   }
+//   return interestPercent;
+// }
 
 const calculateInterest = (amount: number, interest: number, startDate: Date, endDate: Date): number => {
   const days = getNumberOfDaysBetweenTwoDays(startDate, endDate);

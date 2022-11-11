@@ -29,7 +29,7 @@ interestRateController.get(CLAIMANT_INTEREST_RATE_URL, async (req:AppRequest, re
 interestRateController.post(CLAIMANT_INTEREST_RATE_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   const claimId = (<AppRequest>req).session.user?.id;
   try {
-    const sameRateInterestSelection = await getInterestRateForm(req.body.option,req.body.rate,req.body.reason);
+    const sameRateInterestSelection = await getInterestRateForm(req.body.option,req.body.differentRate,req.body.reason);
     const form: GenericForm<ClaimantInterestRate> = new GenericForm(new ClaimantInterestRate(sameRateInterestSelection.sameRateInterestType,sameRateInterestSelection.differentRate,sameRateInterestSelection.reason));
     form.validateSync();
     if (form.hasErrors()) {
