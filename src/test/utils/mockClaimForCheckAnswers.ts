@@ -56,6 +56,8 @@ import {
   SameRateInterestType,
 } from '../../main/common/form/models/claimDetails';
 import {Address} from '../../main/common/form/models/address';
+import {InterestStartDate} from '../../main/common/form/models/interest/interestStartDate';
+import {Interest} from '../../main/common/form/models/interest/interest';
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -955,4 +957,25 @@ export const claimWithClaimAmountOneBreakDown = (): Claim => {
   claim.claimAmountBreakup = [{value: {claimAmount: '200', claimReason: 'roof'}}];
 
   return claim;
+};
+
+export const createClaimWithTotalAmount = (claimInterest: YesNo, sameRateInterestType?: SameRateInterestType, differentRate?: number, reason?: string) => {
+  const claim = createClaimWithBasicRespondentDetails();
+  claim.claimAmountBreakup = [{ value: { claimAmount: '300', claimReason: 'roof' } }];
+  const interestClaimFrom = InterestClaimFromType.FROM_A_SPECIFIC_DATE;
+
+  const sameRateInterestSelection = {
+    sameRateInterestType: sameRateInterestType,
+    differentRate: differentRate,
+    reason: reason,
+  };
+
+  const interestStartDate = new InterestStartDate('30', '09', '2022', 'Reasons...');
+  const interest = new Interest();
+  interest.interestStartDate = interestStartDate,InterestEndDateType.UNTIL_SETTLED_OR_JUDGEMENT_MADE
+  interest.sameRateInterestSelection = sameRateInterestSelection;
+  interest.interestClaimFrom = interestClaimFrom;
+  claim.interest = interest;
+  claim.claimInterest = claimInterest;
+  return claim as Claim;
 };

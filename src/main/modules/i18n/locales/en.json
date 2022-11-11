@@ -378,6 +378,13 @@
       "TITLE": "Check your answers",
       "TIMELINE_TITLE": "Your timeline of what happened (optional)",
       "TIMELINE_COMMENTS": "Comments about their timeline (optional)",
+      "TOTAL_AMOUNT": {
+        "TITLE": "Total amount",
+        "CLAIM_AMOUNT": "Claim amount",
+        "INTEREST_TO_DATE": "Interest to date",
+        "CLAIM_FEE": "Claim fee",
+        "TOTAL": "Total"
+      },
       "EVIDENCE_TITLE": "Your evidence (optional)",
       "EVIDENCE_CONTRACTS_AND_AGREEMENTS": "Contracts and agreements",
       "EVIDENCE_EXPERT_WITNESS": "Expert witness",

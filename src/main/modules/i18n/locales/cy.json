@@ -378,6 +378,13 @@
       "TITLE": "Gwiriwch eich ateb",
       "TIMELINE_TITLE": "Eich llinell amser o'r hyn a ddigwyddodd (dewisol)",
       "TIMELINE_COMMENTS": "Sylwadau am eu llinell amser (dewisol)",
+      "TOTAL_AMOUNT": {
+        "TITLE": "Total amount",
+        "CLAIM_AMOUNT": "Claim amount",
+        "INTEREST_TO_DATE": "Interest to date",
+        "CLAIM_FEE": "Claim fee",
+        "TOTAL": "Total"
+      },
       "EVIDENCE_TITLE": "Eich tystiolaeth (dewisol)",
       "EVIDENCE_CONTRACTS_AND_AGREEMENTS": "Contractau a chytundebau",
       "EVIDENCE_EXPERT_WITNESS": "Tyst arbenigol",
