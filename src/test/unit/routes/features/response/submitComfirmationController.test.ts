@@ -33,7 +33,7 @@ describe('Submit confirmation controller', () => {
       const now = new Date();
       claim.respondent1ResponseDate = new Date(now.setDate(now.getDate() - 1));
       claim.applicant1 = new Party();
-      claim.applicant1 = {
+      claim.applicant1.partyDetails = {
         individualFirstName: 'Joe',
         individualLastName: 'Bloggs',
       };

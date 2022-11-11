@@ -15,7 +15,9 @@ describe('Latest Update Content Builder', () => {
   claim.respondent1ResponseDeadline = new Date('2022-07-29T15:59:59');
   claim.applicant1 = {
     type: PartyType.INDIVIDUAL,
-    partyName: partyName,
+    partyDetails: {
+      partyName: partyName,
+    },
   };
   const claimId = '5129';
   const claimTaskListUrl = CLAIM_TASK_LIST_URL.replace(':id', claimId);
@@ -34,7 +36,7 @@ describe('Latest Update Content Builder', () => {
       expect(responseToClaimSection[2].data?.href).toEqual(claimTaskListUrl);
     });
 
-    it('should have deadlline extended title when defendant extended response deadline', ()=>{
+    it('should have deadlline extended title when defendant extended response deadline', () => {
       //Given
       claim.respondentSolicitor1AgreedDeadlineExtension = new Date();
       //When
