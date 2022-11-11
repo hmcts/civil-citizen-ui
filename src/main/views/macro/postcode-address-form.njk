@@ -1,8 +1,8 @@
 {% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "./address.njk" import addressForm %}
 {% macro postcodeLookupAndAddressForm(t,params) %}
-  {% if params.citizenAddress %}
-    {% if params.citizenAddress.hasErrors() === true or params.citizenAddress.model.isEmpty() === false %}
+  {% if params.addressType === 'primary' and params.party.model.primaryAddress %}
+    {% if params.party.errorFor('primaryAddress') %}
       {% set govukVisuallyHidden = '' %}
       {% set govukVisuallyHiddenForAnchor = 'govuk-visually-hidden' %}
     {% else %}
@@ -10,8 +10,8 @@
       {% set govukVisuallyHiddenForAnchor = '' %}
     {% endif %}
   {% endif %}
-  {% if params.citizenCorrespondenceAddress %}
-    {% if params.citizenCorrespondenceAddress.hasErrors() === true or params.citizenCorrespondenceAddress.model.isEmpty() === false %}
+  {% if params.addressType === 'correspondence' and params.party.model.correspondenceAddress %}
+    {% if params.party.errorFor('correspondenceAddress') %}
       {% set govukVisuallyHidden = '' %}
       {% set govukVisuallyHiddenForAnchor = 'govuk-visually-hidden' %}
     {% else %}
@@ -26,20 +26,22 @@
     <div id="primaryPostcode-error" class="govuk-visually-hidden govuk-error-message">
       {{ t('ERRORS.ADDRESS_NOT_FOUND') + t('ERRORS.TRY_AGAIN') }}
     </div>
-    <input
-      class="govuk-input govuk-input--width-10 postcode-val"
-      name="primaryPostcode"
-      type="text"
-      autocomplete="postal-code"/>
+    <input class="govuk-input govuk-input--width-10 postcode-val"
+           title="{{ t('COMMON.POSTCODE.UK_POSTCODE') }}"
+           name="primaryPostcode"
+           type="text"
+           autocomplete="postal-code" />
     <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button">
       {{ t('COMMON.POSTCODE.FIND_ADDRESS') }}
     </button>
     <div class="govuk-visually-hidden govuk-!-margin-bottom-2">
       {{ govukSelect({
+        id: 'postcodeAddress',
       name: "addressList",
       classes: 'addressList',
       label: {
-        text: t('COMMON.POSTCODE.PICK_ADDRESS')
+        text: t('COMMON.POSTCODE.PICK_ADDRESS'),
+        for: 'postcodeAddress'
       },
       items: [
         {
@@ -59,7 +61,7 @@
         <div class="{{ govukVisuallyHidden }} address-form">
           {{ addressForm(
             t,
-            citizenAddress = params.citizenAddress,
+            party = params.party,
             addressType = params.addressType,
             addressTitle = params.addressTitle
           ) }}
@@ -68,7 +70,7 @@
         <div class="{{ govukVisuallyHidden }} address-form">
           {{ addressForm(
             t,
-            citizenCorrespondenceAddress = params.citizenCorrespondenceAddress,
+            party = params.party,
             addressType = params.addressType,
             addressTitle = params.addressTitle
           ) }}

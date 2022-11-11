@@ -9,10 +9,9 @@ const logger = Logger.getLogger('supportRequiredService');
 export const getExpertDetails = async (claimId: string): Promise<ExpertDetailsList> => {
   try {
     const case_data = await getCaseDataFromStore(claimId);
-    const expertDetails = case_data.directionQuestionnaire?.experts?.expertDetailsList
+    return case_data.directionQuestionnaire?.experts?.expertDetailsList
       ? case_data.directionQuestionnaire.experts.expertDetailsList
       : new ExpertDetailsList([new ExpertDetails()]);
-    return expertDetails;
   } catch (error) {
     logger.error(error);
     throw error;
@@ -20,7 +19,7 @@ export const getExpertDetails = async (claimId: string): Promise<ExpertDetailsLi
 };
 
 export const getExpertDetailsForm = (items: ExpertDetails[]): ExpertDetailsList => {
-  const expertDetailsList: ExpertDetailsList = new ExpertDetailsList(items.map((expertDetail: ExpertDetails) => new ExpertDetails(
+  return new ExpertDetailsList(items.map((expertDetail: ExpertDetails) => new ExpertDetails(
     expertDetail.firstName,
     expertDetail.lastName,
     expertDetail.emailAddress,
@@ -29,7 +28,5 @@ export const getExpertDetailsForm = (items: ExpertDetails[]): ExpertDetailsList 
     expertDetail.fieldOfExpertise,
     toNumber(expertDetail.estimatedCost),
   )));
-
-  return expertDetailsList;
 };
 

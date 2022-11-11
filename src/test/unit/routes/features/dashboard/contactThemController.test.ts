@@ -2,7 +2,7 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {CITIZEN_CONTACT_THEM_URL} from '../../../../../main/routes/urls';
+import {CITIZEN_CONTACT_THEM_URL} from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
@@ -27,17 +27,16 @@ describe('Claimant details', () => {
           expect(res.text).toContain('Claimant');
           expect(res.text).toContain('Address');
           expect(res.text).toContain('Phone:');
-          expect(res.text).toContain('Email:');
           expect(res.text).toContain('About claim');
           expect(res.text).toContain('Claimant name:');
           expect(res.text).toContain('Claim amount:');
           expect(res.text).toContain('Claim details:');
           expect(res.text).toContain('Contact us for help');
-          expect(res.text).toContain(claim.case_data.applicant1.partyName);
-          expect(res.text).toContain(claim.case_data.applicant1.primaryAddress.AddressLine1);
-          expect(res.text).toContain(claim.case_data.applicant1.primaryAddress.AddressLine2);
-          expect(res.text).toContain(claim.case_data.applicant1.primaryAddress.AddressLine3);
-          expect(res.text).toContain(claim.case_data.applicant1.primaryAddress.PostCode);
+          expect(res.text).toContain(claim.case_data.applicant1.partyDetails.partyName);
+          expect(res.text).toContain(claim.case_data.applicant1.partyDetails.primaryAddress.addressLine1);
+          expect(res.text).toContain(claim.case_data.applicant1.partyDetails.primaryAddress.addressLine2);
+          expect(res.text).toContain(claim.case_data.applicant1.partyDetails.primaryAddress.addressLine3);
+          expect(res.text).toContain(claim.case_data.applicant1.partyDetails.primaryAddress.postCode);
         });
     });
     it('should return http 500 when has error in the get method', async () => {

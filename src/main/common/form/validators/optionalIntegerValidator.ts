@@ -1,5 +1,4 @@
 import {ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator';
-import {VALID_PHONE_NUMBER} from '../validationErrors/errorMessageConstants';
 
 /**
  * Validates that the input value is either empty or an integer with no special characters
@@ -16,6 +15,6 @@ export class OptionalIntegerValidator implements ValidatorConstraintInterface {
   }
 
   defaultMessage() {
-    return VALID_PHONE_NUMBER;
+    return 'ERRORS.VALID_PHONE_NUMBER';
   }
 }

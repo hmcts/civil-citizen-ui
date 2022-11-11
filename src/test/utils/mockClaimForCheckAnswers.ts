@@ -55,6 +55,7 @@ import {
   InterestEndDateType,
   SameRateInterestType,
 } from '../../main/common/form/models/claimDetails';
+import {Address} from '../../main/common/form/models/address';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 
 const CONTACT_PERSON = 'The Post Man';
@@ -67,81 +68,72 @@ const CONTACT_NUMBER = '077777777779';
 export const createClaimWithBasicRespondentDetails = (contactPerson?: string): Claim => {
   const claim = new Claim();
   claim.respondent1 = {
-    partyName: PARTY_NAME,
-    partyPhone: CONTACT_NUMBER,
-    contactPerson: contactPerson,
-    dateOfBirth: new Date('2000-12-12'),
+    partyPhone: {phone: CONTACT_NUMBER},
+    dateOfBirth: {date: new Date('2000-12-12'), year: 1985, month: 2, day: 2},
     responseType: ResponseType.FULL_ADMISSION,
     type: PartyType.INDIVIDUAL,
-    individualTitle: TITLE,
-    individualLastName: LAST_NAME,
-    individualFirstName: FIRST_NAME,
-    primaryAddress: {
-      AddressLine1: '23 Brook lane',
-      PostTown: 'Bristol',
-      PostCode: 'BS13SS',
+    partyDetails: {
+      partyName: PARTY_NAME,
+      contactPerson: contactPerson,
+      individualTitle: TITLE,
+      individualLastName: LAST_NAME,
+      individualFirstName: FIRST_NAME,
     },
   };
+  claim.respondent1.partyDetails.primaryAddress = new Address('23 Brook lane', '', '', 'Bristol', 'BS13SS');
   claim.paymentOption = PaymentOptionType.IMMEDIATELY;
   return claim;
 };
 export const createClaimWithBasicClaimDetails = (contactPerson?: string): Claim => {
   const claim = new Claim();
   claim.applicant1 = {
-    partyName: PARTY_NAME,
-    partyPhone: CONTACT_NUMBER,
-    contactPerson: contactPerson,
-    dateOfBirth: new Date('2000-12-12'),
+    partyPhone: {phone: CONTACT_NUMBER},
+    dateOfBirth: {date: new Date('2000-12-12'), year: 1985, month: 2, day: 2},
     responseType: ResponseType.FULL_ADMISSION,
     type: PartyType.INDIVIDUAL,
-    individualTitle: TITLE,
-    individualLastName: LAST_NAME,
-    individualFirstName: FIRST_NAME,
-    primaryAddress: {
-      AddressLine1: '23 Brook lane',
-      PostTown: 'Bristol',
-      PostCode: 'BS13SS',
+    partyDetails: {
+      partyName: PARTY_NAME,
+      contactPerson: contactPerson,
+      individualTitle: TITLE,
+      individualLastName: LAST_NAME,
+      individualFirstName: FIRST_NAME,
     },
   };
   claim.claimDetails = new ClaimDetails();
+  claim.respondent1.partyDetails.primaryAddress = new Address('23 Brook lane', '', '', 'Bristol', 'BS13SS');
   claim.paymentOption = PaymentOptionType.IMMEDIATELY;
   return claim;
 };
 export const createClaimWithBasicDetails = (contactPerson?: string): Claim => {
   const claim = new Claim();
   claim.applicant1 = {
-    partyName: PARTY_NAME,
-    partyPhone: CONTACT_NUMBER,
-    contactPerson: contactPerson,
-    dateOfBirth: new Date('2000-12-12'),
+    partyPhone: {phone: CONTACT_NUMBER},
+    dateOfBirth: {date: new Date('2000-12-12'), year: 1985, month: 2, day: 2},
     responseType: ResponseType.FULL_ADMISSION,
     type: PartyType.INDIVIDUAL,
-    individualTitle: TITLE,
-    individualLastName: LAST_NAME,
-    individualFirstName: FIRST_NAME,
-    primaryAddress: {
-      AddressLine1: '23 Brook lane',
-      PostTown: 'Bristol',
-      PostCode: 'BS13SS',
+    partyDetails: {
+      partyName: PARTY_NAME,
+      contactPerson: contactPerson,
+      individualTitle: TITLE,
+      individualLastName: LAST_NAME,
+      individualFirstName: FIRST_NAME,
     },
   };
   claim.respondent1 = {
-    partyName: PARTY_NAME,
-    partyPhone: CONTACT_NUMBER,
-    contactPerson: contactPerson,
-    dateOfBirth: new Date('2000-12-12'),
+    partyPhone: {phone: CONTACT_NUMBER},
+    dateOfBirth: {date: new Date('2000-12-12'), year: 1985, month: 2, day: 2},
     responseType: ResponseType.FULL_ADMISSION,
     type: PartyType.INDIVIDUAL,
-    individualTitle: TITLE,
-    individualLastName: LAST_NAME,
-    individualFirstName: FIRST_NAME,
-    primaryAddress: {
-      AddressLine1: '23 Brook lane',
-      PostTown: 'Bristol',
-      PostCode: 'BS13SS',
+    partyDetails: {
+      partyName: PARTY_NAME,
+      contactPerson: contactPerson,
+      individualTitle: TITLE,
+      individualLastName: LAST_NAME,
+      individualFirstName: FIRST_NAME,
     },
   };
   claim.claimDetails = new ClaimDetails();
+  claim.respondent1.partyDetails.primaryAddress = new Address('23 Brook lane', '', '', 'Bristol', 'BS13SS');
   claim.paymentOption = PaymentOptionType.IMMEDIATELY;
   return claim;
 };
@@ -149,21 +141,19 @@ export const createClaimWithBasicDetails = (contactPerson?: string): Claim => {
 export const createClaimWithBasicApplicantDetails = (contactPerson?: string): Claim => {
   const claim = new Claim();
   claim.applicant1 = {
-    partyName: PARTY_NAME,
-    partyPhone: CONTACT_NUMBER,
-    individualTitle: TITLE,
-    individualLastName: LAST_NAME,
-    individualFirstName: FIRST_NAME,
-    contactPerson: contactPerson,
-    dateOfBirth: new Date('2000-12-12'),
-    responseType: ResponseType.FULL_ADMISSION,
+    partyPhone: {phone: CONTACT_NUMBER},
+    dateOfBirth: {date: new Date('2000-12-12'), year: 1985, month: 2, day: 2},
     type: PartyType.INDIVIDUAL,
-    primaryAddress: {
-      AddressLine1: '23 Brook lane',
-      PostTown: 'Bristol',
-      PostCode: 'BS13SS',
+    responseType: ResponseType.FULL_ADMISSION,
+    partyDetails: {
+      partyName: PARTY_NAME,
+      individualTitle: TITLE,
+      individualLastName: LAST_NAME,
+      individualFirstName: FIRST_NAME,
+      contactPerson: contactPerson,
     },
   };
+  claim.applicant1.partyDetails.primaryAddress = new Address('23 Brook lane', '', '', 'Bristol', 'BS13SS');
   claim.paymentOption = PaymentOptionType.IMMEDIATELY;
   return claim;
 };
@@ -189,46 +179,35 @@ export const createClaimWithIndividualDetails = (): Claim => {
   const claim = new Claim();
   claim.respondent1 = {
     type: PartyType.INDIVIDUAL,
-    individualTitle: TITLE,
-    individualLastName: LAST_NAME,
-    individualFirstName: FIRST_NAME,
-    partyName: PARTY_NAME,
-    partyPhone: CONTACT_NUMBER,
     responseType: ResponseType.FULL_ADMISSION,
-    primaryAddress: {
-      AddressLine1: '23 Brook lane',
-      PostTown: 'Bristol',
-      PostCode: 'BS13SS',
-    },
-    correspondenceAddress: {
-      AddressLine1: '24 Brook lane',
-      PostTown: 'Bristol',
-      PostCode: 'BS13SS',
+    partyPhone: {phone: CONTACT_NUMBER},
+    partyDetails: {
+      individualTitle: TITLE,
+      individualLastName: LAST_NAME,
+      individualFirstName: FIRST_NAME,
+      partyName: PARTY_NAME,
     },
   };
+  claim.respondent1.partyDetails.primaryAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
+  claim.respondent1.partyDetails.correspondenceAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
   return claim;
 };
 export const createClaimWithApplicantIndividualDetails = (): Claim => {
   const claim = new Claim();
   claim.applicant1 = {
     type: PartyType.INDIVIDUAL,
-    individualTitle: TITLE,
-    individualLastName: LAST_NAME,
-    individualFirstName: FIRST_NAME,
-    partyName: PARTY_NAME,
-    partyPhone: CONTACT_NUMBER,
+    partyPhone: {phone: CONTACT_NUMBER},
     responseType: ResponseType.FULL_ADMISSION,
-    primaryAddress: {
-      AddressLine1: '23 Brook lane',
-      PostTown: 'Bristol',
-      PostCode: 'BS13SS',
-    },
-    correspondenceAddress: {
-      AddressLine1: '24 Brook lane',
-      PostTown: 'Bristol',
-      PostCode: 'BS13SS',
+    partyDetails: {
+      individualTitle: TITLE,
+      individualLastName: LAST_NAME,
+      individualFirstName: FIRST_NAME,
+      partyName: PARTY_NAME,
     },
   };
+  claim.applicant1.partyDetails.primaryAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
+  claim.applicant1.partyDetails.correspondenceAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
+
   return claim;
 };
 
@@ -830,18 +809,16 @@ export const ceateClaimWithPartialAdmission = (alreadyPaid?: YesNo, paymentOptio
     paymentIntention: new PaymentIntention(),
   };
   claim.respondent1 = {
-    partyName: PARTY_NAME,
-    partyPhone: CONTACT_NUMBER,
-    contactPerson: '',
-    dateOfBirth: new Date('2000-12-12'),
+    dateOfBirth: {date: new Date('2000-12-12'), year: 1985, month: 2, day: 2},
     responseType: ResponseType.PART_ADMISSION,
     type: PartyType.INDIVIDUAL,
-    primaryAddress: {
-      AddressLine1: '23 Brook lane',
-      PostTown: 'Bristol',
-      PostCode: 'BS13SS',
+    partyPhone: {phone: CONTACT_NUMBER},
+    partyDetails: {
+      partyName: PARTY_NAME,
+      contactPerson: '',
     },
   };
+  claim.respondent1.partyDetails.primaryAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
   claim.partialAdmission = partialAdmission;
   claim.evidence = defendantEvidence;
   claim.partialAdmission.paymentIntention?.paymentOption ? paymentOptionType : undefined;

@@ -6,71 +6,54 @@ import {
   CITIZEN_PHONE_NUMBER_URL,
   CLAIM_TASK_LIST_URL,
   DOB_URL,
-} from '../../../../../../main/routes/urls';
-import {
-  VALID_ADDRESS_LINE_1,
-  VALID_CITY,
-  VALID_CORRESPONDENCE_ADDRESS_LINE_1,
-  VALID_CORRESPONDENCE_CITY,
-  VALID_CORRESPONDENCE_POSTCODE,
-  VALID_POSTCODE,
-  NOT_TO_REMOVE_PHONE_NUMBER,
-} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import {
-  getCorrespondenceAddressForm,
-  getRespondentInformation,
-  saveRespondent,
-} from '../../../../../../main/services/features/response/citizenDetails/citizenDetailsService';
-import {Claim} from '../../../../../../main/common/models/claim';
-import {Party} from '../../../../../../main/common/models/party';
-import {buildCorrespondenceAddress, buildPrimaryAddress} from '../../../../../utils/mockClaim';
+} from 'routes/urls';
+import {getDefendantInformation, saveDefendantProperty} from 'services/features/common/defendantDetailsService';
+import {Claim} from 'models/claim';
+import {Party} from 'models/party';
+import {buildAddress} from '../../../../../utils/mockClaim';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {PartyType} from '../../../../../../main/common/models/partyType';
-import {CitizenCorrespondenceAddress} from '../../../../../../main/common/form/models/citizenCorrespondenceAddress';
+import {PartyType} from 'models/partyType';
+import {PartyDetails} from 'form/models/partyDetails';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../main/services/features/response/citizenDetails/citizenDetailsService');
+jest.mock('../../../../../../main/services/features/common/defendantDetailsService');
 
-const mockGetRespondentInformation = getRespondentInformation as jest.Mock;
-const mockGetCorrespondenceAddressForm = getCorrespondenceAddressForm as jest.Mock;
-const mockSaveRespondent = saveRespondent as jest.Mock;
+const mockGetRespondentInformation = getDefendantInformation as jest.Mock;
+const mockSaveRespondent = saveDefendantProperty as jest.Mock;
 
 const claim = new Claim();
 
 const buildClaimOfRespondent = (): Party => {
   claim.respondent1 = new Party();
-  claim.respondent1.individualTitle = 'individualTitle';
-  claim.respondent1.individualFirstName = 'individualFirstName';
-  claim.respondent1.individualLastName = 'individualLastName';
-  claim.respondent1.primaryAddress = buildPrimaryAddress();
-  claim.respondent1.correspondenceAddress = buildCorrespondenceAddress();
+  claim.respondent1.partyDetails = new PartyDetails({});
+  claim.respondent1.partyDetails.individualTitle = 'individualTitle';
+  claim.respondent1.partyDetails.individualFirstName = 'individualFirstName';
+  claim.respondent1.partyDetails.individualLastName = 'individualLastName';
+  claim.respondent1.partyDetails.primaryAddress = buildAddress();
+  claim.respondent1.partyDetails.correspondenceAddress = buildAddress();
   return claim.respondent1;
 };
 
 const buildClaimOfRespondentType = (type: PartyType): Party => {
   claim.respondent1 = new Party();
+  claim.respondent1.partyDetails = new PartyDetails({});
   claim.respondent1.type = type;
-  claim.respondent1.primaryAddress = buildPrimaryAddress();
-  claim.respondent1.correspondenceAddress = buildCorrespondenceAddress();
+  claim.respondent1.partyDetails.primaryAddress = buildAddress();
+  claim.respondent1.partyDetails.correspondenceAddress = buildAddress();
   return claim.respondent1;
 };
 
 const nock = require('nock');
 
 const validDataForPost = {
-  primaryAddressLine1: 'Flat 3A Middle Road',
-  primaryAddressLine2: '',
-  primaryAddressLine3: '',
-  primaryCity: 'London',
-  primaryPostCode: 'SW1H 9AJ',
+  addressLine1: ['Flat 3A Middle Road', 'Flat 3A Middle Road'],
+  addressLine2: ['', ''],
+  addressLine3: ['', ''],
+  city: ['London', 'London'],
+  postCode: ['SW1H 9AJ', 'SW1H 9AJ'],
   postToThisAddress: 'no',
-  correspondenceAddressLine1: '',
-  correspondenceAddressLine2: '',
-  correspondenceAddressLine3: '',
-  correspondenceCity: '',
-  correspondencePostCode: '',
 };
 
 describe('Confirm Details page', () => {
@@ -141,10 +124,11 @@ describe('Confirm Details page', () => {
   it('should return your details page with information without correspondent address', async () => {
     const buildClaimOfRespondentWithoutCorrespondent = (): Party => {
       claim.respondent1 = new Party();
-      claim.respondent1.individualTitle = 'individualTitle';
-      claim.respondent1.individualFirstName = 'individualFirstName';
-      claim.respondent1.individualLastName = 'individualLastName';
-      claim.respondent1.primaryAddress = buildPrimaryAddress();
+      claim.respondent1.partyDetails = new PartyDetails({});
+      claim.respondent1.partyDetails.individualTitle = 'individualTitle';
+      claim.respondent1.partyDetails.individualFirstName = 'individualFirstName';
+      claim.respondent1.partyDetails.individualLastName = 'individualLastName';
+      claim.respondent1.partyDetails.primaryAddress = buildAddress();
       return claim.respondent1;
     };
     mockGetRespondentInformation.mockImplementation(async () => {
@@ -188,50 +172,12 @@ describe('Confirm Details page', () => {
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
-        primaryAddressLine1: 'Flat 3A Middle Road',
-        primaryAddressLine2: '',
-        primaryAddressLine3: '',
-        primaryCity: 'London',
-        primaryPostCode: 'SW1H 9AJ',
+        addressLine1: ['Flat 3A Middle Road', ''],
+        addressLine2: ['', ''],
+        addressLine3: ['', ''],
+        city: ['London', ''],
+        postCode: ['SW1H 9AJ', ''],
         postToThisAddress: 'no',
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
-      })
-      .expect((res) => {
-        expect(res.status).toBe(302);
-      });
-  });
-
-  it('POST/Citizen details - should redirect on correct correspondence address', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.ORGANISATION);
-    });
-    mockGetCorrespondenceAddressForm.mockImplementation(() => {
-      return CitizenCorrespondenceAddress.fromObject({
-        correspondenceAddressLine1: 'Flat 3B Middle Road',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: 'London',
-        correspondencePostCode: 'SW1H 9AJ',
-      });
-    });
-    await request(app)
-      .post(CITIZEN_DETAILS_URL)
-      .send({
-        primaryAddressLine1: 'Flat 3A Middle Road',
-        primaryAddressLine2: '',
-        primaryAddressLine3: '',
-        primaryCity: 'London',
-        primaryPostCode: 'SW1H 9AJ',
-        postToThisAddress: 'yes',
-        correspondenceAddressLine1: 'Flat 3B Middle Road',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: 'London',
-        correspondencePostCode: 'SW1H 9AJ',
       })
       .expect((res) => {
         expect(res.status).toBe(302);
@@ -242,33 +188,19 @@ describe('Confirm Details page', () => {
     mockGetRespondentInformation.mockImplementation(async () => {
       return buildClaimOfRespondentType(PartyType.INDIVIDUAL);
     });
-    mockGetCorrespondenceAddressForm.mockImplementation(() => {
-      return CitizenCorrespondenceAddress.fromObject({
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
-      });
-    });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
-        primaryAddressLine1: '',
-        primaryAddressLine2: '',
-        primaryAddressLine3: '',
-        primaryCity: 'London',
-        primaryPostCode: 'SW1H 9AJ',
+        addressLine1: ['', ''],
+        addressLine2: ['', ''],
+        addressLine3: ['', ''],
+        city: ['London', ''],
+        postCode: ['SW1H 9AJ', ''],
         postToThisAddress: 'no',
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_ADDRESS_LINE_1);
+        expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
       });
   });
 
@@ -276,33 +208,19 @@ describe('Confirm Details page', () => {
     mockGetRespondentInformation.mockImplementation(async () => {
       return buildClaimOfRespondentType(PartyType.ORGANISATION);
     });
-    mockGetCorrespondenceAddressForm.mockImplementation(() => {
-      return CitizenCorrespondenceAddress.fromObject({
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
-      });
-    });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
-        primaryAddressLine1: 'Flat 3A Middle Road',
-        primaryAddressLine2: '',
-        primaryAddressLine3: '',
-        primaryCity: '',
-        primaryPostCode: 'SW1H 9AJ',
+        addressLine1: ['Flat 3A Middle Road', ''],
+        addressLine2: ['', ''],
+        addressLine3: ['', ''],
+        city: ['', ''],
+        postCode: ['SW1H 9AJ', ''],
         postToThisAddress: 'no',
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_CITY);
+        expect(res.text).toContain(TestMessages.ENTER_TOWN);
       });
   });
 
@@ -310,174 +228,19 @@ describe('Confirm Details page', () => {
     mockGetRespondentInformation.mockImplementation(async () => {
       return buildClaimOfRespondentType(PartyType.ORGANISATION);
     });
-    mockGetCorrespondenceAddressForm.mockImplementation(() => {
-      return CitizenCorrespondenceAddress.fromObject({
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
-      });
-    });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
-        primaryAddressLine1: 'Flat 3A Middle Road',
-        primaryAddressLine2: '',
-        primaryAddressLine3: '',
-        primaryCity: 'London',
-        primaryPostCode: '',
+        addressLine1: ['Flat 3A Middle Road', ''],
+        addressLine2: ['', ''],
+        addressLine3: ['', ''],
+        city: ['London', ''],
+        postCode: ['', ''],
         postToThisAddress: 'no',
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_POSTCODE);
-      });
-  });
-
-  it('POST/Citizen details - should return error on empty correspondence address line', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.ORGANISATION);
-    });
-    mockGetCorrespondenceAddressForm.mockImplementation(() => {
-      return CitizenCorrespondenceAddress.fromObject({
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
-      });
-    });
-    await request(app)
-      .post(CITIZEN_DETAILS_URL)
-      .send({
-        primaryAddressLine1: 'Flat 3A Middle Road',
-        primaryAddressLine2: '',
-        primaryAddressLine3: '',
-        primaryCity: 'London',
-        primaryPostCode: 'SW1H 9AJ',
-        postToThisAddress: 'yes',
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
-      })
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_ADDRESS_LINE_1);
-      });
-  });
-
-  it('POST/Citizen details - should return error on empty correspondence city', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.ORGANISATION);
-    });
-    mockGetCorrespondenceAddressForm.mockImplementation(() => {
-      return CitizenCorrespondenceAddress.fromObject({
-        correspondenceAddressLine1: 'Flat 3B Middle Road',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: 'SW1H 9AJ',
-      });
-    });
-    await request(app)
-      .post(CITIZEN_DETAILS_URL)
-      .send({
-        primaryAddressLine1: 'Flat 3A Middle Road',
-        primaryAddressLine2: '',
-        primaryAddressLine3: '',
-        primaryCity: 'London',
-        primaryPostCode: 'SW1H 9AJ',
-        postToThisAddress: 'yes',
-        correspondenceAddressLine1: 'Flat 3B Middle Road',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: 'SW1H 9AJ',
-      })
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_CITY);
-      });
-  });
-
-  it('POST/Citizen details - should return error on empty correspondence postcode', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.ORGANISATION);
-    });
-    mockGetCorrespondenceAddressForm.mockImplementation(() => {
-      return CitizenCorrespondenceAddress.fromObject({
-        correspondenceAddressLine1: 'Flat 3B Middle Road',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
-      });
-    });
-    await request(app)
-      .post(CITIZEN_DETAILS_URL)
-      .send({
-        primaryAddressLine1: 'Flat 3A Middle Road',
-        primaryAddressLine2: '',
-        primaryAddressLine3: '',
-        primaryCity: 'London',
-        primaryPostCode: 'SW1H 9AJ',
-        postToThisAddress: 'yes',
-        correspondenceAddressLine1: 'Flat 3B Middle Road',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: 'London',
-        correspondencePostCode: '',
-      })
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_POSTCODE);
-      });
-  });
-
-  it('POST/Citizen details - should return error on no input', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.ORGANISATION);
-    });
-    mockGetCorrespondenceAddressForm.mockImplementation(() => {
-      return CitizenCorrespondenceAddress.fromObject({
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
-      });
-    });
-    await request(app)
-      .post(CITIZEN_DETAILS_URL)
-      .send({
-        primaryAddressLine1: '',
-        primaryAddressLine2: '',
-        primaryAddressLine3: '',
-        primaryCity: '',
-        primaryPostCode: '',
-        postToThisAddress: 'yes',
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
-      })
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_ADDRESS_LINE_1);
-        expect(res.text).toContain(VALID_CITY);
-        expect(res.text).toContain(VALID_POSTCODE);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_ADDRESS_LINE_1);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_CITY);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_POSTCODE);
+        expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
       });
   });
 
@@ -485,225 +248,21 @@ describe('Confirm Details page', () => {
     mockGetRespondentInformation.mockImplementation(async () => {
       return buildClaimOfRespondentType(PartyType.ORGANISATION);
     });
-    mockGetCorrespondenceAddressForm.mockImplementation(() => {
-      return CitizenCorrespondenceAddress.fromObject({
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
-      });
-    });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
-        primaryAddressLine1: '',
-        primaryAddressLine2: '',
-        primaryAddressLine3: '',
-        primaryCity: '',
-        primaryPostCode: '',
+        addressLine1: ['', ''],
+        addressLine2: ['', ''],
+        addressLine3: ['', ''],
+        city: ['', ''],
+        postCode: ['', ''],
         postToThisAddress: 'no',
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_ADDRESS_LINE_1);
-        expect(res.text).toContain(VALID_CITY);
-        expect(res.text).toContain(VALID_POSTCODE);
-      });
-  });
-
-  it('POST/Citizen details - should return error on input for correspondence address when postToThisAddress is set to YES', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.ORGANISATION);
-    });
-    mockGetCorrespondenceAddressForm.mockImplementation(() => {
-      return CitizenCorrespondenceAddress.fromObject({
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
-      });
-    });
-    await request(app)
-      .post(CITIZEN_DETAILS_URL)
-      .send({
-        primaryAddressLine1: '',
-        primaryAddressLine2: '',
-        primaryAddressLine3: '',
-        primaryCity: '',
-        primaryPostCode: '',
-        postToThisAddress: 'yes',
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
-      })
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_ADDRESS_LINE_1);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_CITY);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_POSTCODE);
-      });
-  });
-
-  it('POST/Citizen details - should display organisation details and return errors when postToThisAddress is set to YES', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.ORGANISATION);
-    });
-    mockGetCorrespondenceAddressForm.mockImplementation(() => {
-      return CitizenCorrespondenceAddress.fromObject({
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
-      });
-    });
-    await request(app)
-      .post(CITIZEN_DETAILS_URL)
-      .send({
-        primaryAddressLine1: '',
-        primaryAddressLine2: '',
-        primaryAddressLine3: '',
-        primaryCity: '',
-        primaryPostCode: '',
-        postToThisAddress: 'yes',
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
-      })
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_ADDRESS_LINE_1);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_CITY);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_POSTCODE);
-        expect(res.text).toContain('Confirm your details');
-        expect(res.text).toContain('Organisation name');
-      });
-  });
-
-  it('POST/Citizen details - should display company details and return errors when postToThisAddress is set to YES', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.COMPANY);
-    });
-    mockGetCorrespondenceAddressForm.mockImplementation(() => {
-      return CitizenCorrespondenceAddress.fromObject({
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
-      });
-    });
-    await request(app)
-      .post(CITIZEN_DETAILS_URL)
-      .send({
-        primaryAddressLine1: '',
-        primaryAddressLine2: '',
-        primaryAddressLine3: '',
-        primaryCity: '',
-        primaryPostCode: '',
-        postToThisAddress: 'yes',
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
-      })
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_ADDRESS_LINE_1);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_CITY);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_POSTCODE);
-        expect(res.text).toContain('Confirm your details');
-        expect(res.text).toContain('Company name');
-      });
-  });
-
-  it('POST/Citizen details - should display company details with telephone number and return errors when postToThisAddress is set to YES', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return {...buildClaimOfRespondentType(PartyType.COMPANY), partyPhone: '123456'};
-    });
-    mockGetCorrespondenceAddressForm.mockImplementation(() => {
-      return CitizenCorrespondenceAddress.fromObject({
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
-      });
-    });
-    await request(app)
-      .post(CITIZEN_DETAILS_URL)
-      .send({
-        primaryAddressLine1: '',
-        primaryAddressLine2: '',
-        primaryAddressLine3: '',
-        primaryCity: '',
-        primaryPostCode: '',
-        postToThisAddress: 'yes',
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
-        partyPhone: '',
-      })
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_ADDRESS_LINE_1);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_CITY);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_POSTCODE);
-        expect(res.text).toContain(NOT_TO_REMOVE_PHONE_NUMBER);
-        expect(res.text).toContain('Confirm your details');
-        expect(res.text).toContain('Your phone number');
-      });
-  });
-
-  it('POST/Citizen details - should display Sole trader details and return errors when postToThisAddress is set to YES', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.SOLE_TRADER);
-    });
-    mockGetCorrespondenceAddressForm.mockImplementation(() => {
-      return CitizenCorrespondenceAddress.fromObject({
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
-      });
-    });
-    await request(app)
-      .post(CITIZEN_DETAILS_URL)
-      .send({
-        primaryAddressLine1: '',
-        primaryAddressLine2: '',
-        primaryAddressLine3: '',
-        primaryCity: '',
-        primaryPostCode: '',
-        postToThisAddress: 'yes',
-        correspondenceAddressLine1: '',
-        correspondenceAddressLine2: '',
-        correspondenceAddressLine3: '',
-        correspondenceCity: '',
-        correspondencePostCode: '',
-      })
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_ADDRESS_LINE_1);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_CITY);
-        expect(res.text).toContain(VALID_CORRESPONDENCE_POSTCODE);
-        expect(res.text).toContain('Confirm your details');
-        expect(res.text).toContain('Your full name');
+        expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
+        expect(res.text).toContain(TestMessages.ENTER_TOWN);
+        expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
       });
   });
 

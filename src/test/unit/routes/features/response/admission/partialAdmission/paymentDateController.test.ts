@@ -2,13 +2,7 @@ import {app} from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import request from 'supertest';
-import {CITIZEN_PA_PAYMENT_DATE_URL, CLAIM_TASK_LIST_URL} from '../../../../../../../main/routes/urls';
-import {
-  VALID_DATE_NOT_IN_PAST,
-  VALID_DAY,
-  VALID_MONTH,
-  VALID_YEAR,
-} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {CITIZEN_PA_PAYMENT_DATE_URL, CLAIM_TASK_LIST_URL} from 'routes/urls';
 import {
   mockCivilClaim,
   mockCivilClaimUndefined,
@@ -111,9 +105,9 @@ describe('Payment date', () => {
         .send('day=')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_DAY);
-          expect(res.text).toContain(VALID_MONTH);
-          expect(res.text).toContain(VALID_YEAR);
+          expect(res.text).toContain(TestMessages.VALID_DAY);
+          expect(res.text).toContain(TestMessages.VALID_MONTH);
+          expect(res.text).toContain(TestMessages.VALID_YEAR);
         });
     });
     it('should return error on date in the past', async () => {
@@ -124,7 +118,7 @@ describe('Payment date', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_DATE_NOT_IN_PAST);
+          expect(res.text).toContain(TestMessages.VALID_DATE_NOT_IN_PAST);
         });
     });
     it('should return error on incorrect input', async () => {
@@ -135,7 +129,7 @@ describe('Payment date', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_YEAR);
+          expect(res.text).toContain(TestMessages.VALID_YEAR);
         });
     });
     it('should accept a future date', async () => {
