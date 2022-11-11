@@ -3,8 +3,8 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
 import {
-  CLAIMANT_RESPONSE_DEBT_RESPITE_REFERENCE_NUMBER_URL,
-  CLAIMANT_RESPONSE_DEBT_RESPITE_START_URL,
+  BREATHING_SPACE_RESPITE_REFERENCE_NUMBER_URL,
+  BREATHING_SPACE_RESPITE_START_DATE_URL,
 } from '../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
@@ -25,7 +25,7 @@ describe('Debt Respite Reference Number Controller', () => {
   describe('on GET', () => {
     it('should return intention to proceed page', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(CLAIMANT_RESPONSE_DEBT_RESPITE_REFERENCE_NUMBER_URL).expect((res) => {
+      await request(app).get(BREATHING_SPACE_RESPITE_REFERENCE_NUMBER_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Do you have a Debt Respite Scheme reference number?');
       });
@@ -34,7 +34,7 @@ describe('Debt Respite Reference Number Controller', () => {
     it('should return status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .get(CLAIMANT_RESPONSE_DEBT_RESPITE_REFERENCE_NUMBER_URL)
+        .get(BREATHING_SPACE_RESPITE_REFERENCE_NUMBER_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -48,24 +48,24 @@ describe('Debt Respite Reference Number Controller', () => {
     });
 
     it('should redirect to start date debit respite page when there is NO data', async () => {
-      await request(app).post(CLAIMANT_RESPONSE_DEBT_RESPITE_REFERENCE_NUMBER_URL).expect((res) => {
+      await request(app).post(BREATHING_SPACE_RESPITE_REFERENCE_NUMBER_URL).expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.get('location')).toBe(CLAIMANT_RESPONSE_DEBT_RESPITE_START_URL);
+        expect(res.get('location')).toBe(BREATHING_SPACE_RESPITE_START_DATE_URL);
       });
     });
 
     it('should redirect to start date debit respite page when there is data ', async () => {
-      await request(app).post(CLAIMANT_RESPONSE_DEBT_RESPITE_REFERENCE_NUMBER_URL).send({referenceNumber: '12345'})
+      await request(app).post(BREATHING_SPACE_RESPITE_REFERENCE_NUMBER_URL).send({referenceNumber: '12345'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(CLAIMANT_RESPONSE_DEBT_RESPITE_START_URL);
+          expect(res.get('location')).toBe(BREATHING_SPACE_RESPITE_START_DATE_URL);
         });
     });
 
     it('should return status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .post(CLAIMANT_RESPONSE_DEBT_RESPITE_REFERENCE_NUMBER_URL)
+        .post(BREATHING_SPACE_RESPITE_REFERENCE_NUMBER_URL)
         .send({referenceNumber: '1234'})
         .expect((res) => {
           expect(res.status).toBe(500);
