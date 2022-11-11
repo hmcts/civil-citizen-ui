@@ -14,6 +14,7 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {Party} from '../../../../../../main/common/models/party';
 import {PartyType} from '../../../../../../main/common/models/partyType';
+import {Address} from '../../../../../../main/common/form/models/address';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -25,14 +26,14 @@ const mockSaveData = {
   individualTitle: 'Mr',
   individualFirstName: 'John',
   individualLastName: 'Doe',
-  businessName: 'John`s Sons Ltd',
+  soleTraderTradingAs: 'John`s Sons Ltd',
   partyName: 'Bob Ltd',
   contactPerson: 'Louise',
-  primaryAddressLine1: 'Fake Org',
-  primaryAddressLine2: 'Somewhere undefined',
-  primaryAddressLine3: 'Floor 4',
-  primaryCity: 'Valid city',
-  primaryPostCode: 'SN12RA',
+  addressLine1: 'Fake Org',
+  addressLine2: 'Somewhere undefined',
+  addressLine3: 'Floor 4',
+  city: 'Valid city',
+  postCode: 'SN12RA',
 };
 
 describe('Defendant details controller', () => {
@@ -85,12 +86,8 @@ describe('Defendant details controller', () => {
           claim.respondent1 = new Party();
           claim.respondent1 = {
             type: PartyType.ORGANISATION,
-            primaryAddress: {
-              PostCode: 'SN1 2RA',
-              PostTown: 'Bath',
-              AddressLine1: 'Valid address',
-              AddressLine2: 'Valid address number',
-              AddressLine3: '',
+            partyDetails: {
+              primaryAddress: new Address('Valid address', 'Valid address number', '', 'Bath', 'SN1 2RA'),
             },
           };
           return claim;
@@ -131,12 +128,8 @@ describe('Defendant details controller', () => {
           claim.respondent1 = new Party();
           claim.respondent1 = {
             type: PartyType.SOLE_TRADER,
-            primaryAddress: {
-              PostCode: 'SN1 2RA',
-              PostTown: 'Bath',
-              AddressLine1: 'Valid address',
-              AddressLine2: 'Valid address number',
-              AddressLine3: '',
+            partyDetails: {
+              primaryAddress: new Address('Valid address', 'Valid address number', '', 'Bath', 'SN1 2RA'),
             },
           };
           return claim;
@@ -162,7 +155,7 @@ describe('Defendant details controller', () => {
     describe('Individual', () => {
       it('should redirect to the defendant email page if data is successfully saved', async () => {
         const _mockSaveData = mockSaveData;
-        _mockSaveData.businessName = '';
+        _mockSaveData.soleTraderTradingAs = '';
         _mockSaveData.individualFirstName = 'Jane';
         mockGetCaseData.mockImplementation(async () => {
           const claim = new Claim();

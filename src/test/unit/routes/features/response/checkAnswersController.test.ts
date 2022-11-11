@@ -4,17 +4,14 @@ import Module from 'module';
 import {
   getSummarySections,
   saveStatementOfTruth,
-} from '../../../../../main/services/features/response/checkAnswers/checkAnswersService';
-import {CITIZEN_DETAILS_URL, CLAIM_TASK_LIST_URL, RESPONSE_CHECK_ANSWERS_URL} from '../../../../../main/routes/urls';
+} from 'services/features/response/checkAnswers/checkAnswersService';
+import {CITIZEN_DETAILS_URL, CLAIM_TASK_LIST_URL, RESPONSE_CHECK_ANSWERS_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {SummarySections} from '../../../../../main/common/models/summaryList/summarySections';
+import {SummarySections} from 'models/summaryList/summarySections';
 import {getElementsByXPath} from '../../../../utils/xpathExtractor';
-import {
-  STATEMENT_OF_TRUTH_REQUIRED_MESSAGE,
-} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
-import {TaskStatus} from '../../../../../main/common/models/taskList/TaskStatus';
-import {constructResponseUrlWithIdParams} from '../../../../../main/common/utils/urlFormatter';
-import {isFullAmountReject} from '../../../../../main/modules/claimDetailsService';
+import {TaskStatus} from 'models/taskList/TaskStatus';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {isFullAmountReject} from 'modules/claimDetailsService';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -144,7 +141,7 @@ describe('Response - Check answers', () => {
         .send(data)
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(STATEMENT_OF_TRUTH_REQUIRED_MESSAGE);
+          expect(res.text).toContain(TestMessages.STATEMENT_OF_TRUTH_REQUIRED_MESSAGE);
         });
     });
     it('should return 500 when error in service', async () => {

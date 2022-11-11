@@ -28,4 +28,5 @@ export class DirectionQuestionnaire {
     this.welshLanguageRequirements = welshLanguageRequirements;
     this.witnesses = witnesses;
   }
+
 }

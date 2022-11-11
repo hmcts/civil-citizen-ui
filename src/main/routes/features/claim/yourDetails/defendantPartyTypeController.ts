@@ -6,8 +6,8 @@ import {redirectToPage} from '../../../../services/features/claim/partyTypeServi
 import {ClaimantOrDefendant} from '../../../../common/models/partyType';
 import {
   getDefendantInformation,
-  saveDefendant,
-} from '../../../../services/features/claim/yourDetails/defendantDetailsService';
+  saveDefendantProperty,
+} from '../../../../services/features/common/defendantDetailsService';
 import {Party} from '../../../../common/models/party';
 import {AppRequest} from '../../../../common/models/AppRequest';
 
@@ -35,7 +35,7 @@ defendantPartyTypeController.post(CLAIM_DEFENDANT_PARTY_TYPE_URL, async (req: Ap
     if (form.hasErrors()) {
       res.render(defendantPartyTypeViewPath, {form});
     } else {
-      await saveDefendant(caseId, 'type', form.model.option);
+      await saveDefendantProperty(caseId, 'type', form.model.option);
       redirectToPage(form.model.option, res, ClaimantOrDefendant.DEFENDANT);
     }
   } catch (error) {
