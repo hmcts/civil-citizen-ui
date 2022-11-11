@@ -3,12 +3,8 @@ import nock from 'nock';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {app} from '../../../../../../main/app';
 import request from 'supertest';
-import {CITIZEN_EVIDENCE_URL, CITIZEN_TIMELINE_URL} from '../../../../../../main/routes/urls';
+import {CITIZEN_EVIDENCE_URL, CITIZEN_TIMELINE_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {
-  DATE_REQUIRED,
-  DESCRIPTION_REQUIRED,
-} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -66,7 +62,7 @@ describe('defendant timeline controller', () => {
         .send(data)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(DESCRIPTION_REQUIRED);
+          expect(res.text).toContain(TestMessages.DESCRIPTION_REQUIRED);
         });
     });
     it('should return error message when date is empty and description is defined', async () => {
@@ -83,7 +79,7 @@ describe('defendant timeline controller', () => {
         .send(data)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(DATE_REQUIRED);
+          expect(res.text).toContain(TestMessages.DATE_REQUIRED);
         });
     });
     it('should redirect when no errors', async () => {
