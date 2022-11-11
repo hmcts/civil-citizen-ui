@@ -27,6 +27,9 @@ for example {noHtml:'<span>you clicked on no</span>' #}
         value: YesNo.YES,
         checked: true if form.model.option=="yes" else false,
         html: "<span>" + t(yes) + "</span>",
+        hint: {
+          text: t(params.yesHint)
+        },
         conditional:{
         html: params.yesHtml
       }
@@ -35,6 +38,9 @@ for example {noHtml:'<span>you clicked on no</span>' #}
         value: YesNo.NO,
         checked: true if form.model.option=="no" else false,
         html: "<span>" + t(no) + "</span>",
+        hint: {
+          text: t(params.noHint)
+        },
         conditional:{
         html: params.noHtml
       }
