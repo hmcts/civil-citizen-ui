@@ -1,7 +1,7 @@
 import {IsNotEmpty} from 'class-validator';
 
-export class Explanation {
-  @IsNotEmpty({message: 'ERRORS.ENTER_AN_EXPLANATION'})
+export class RejectionReason {
+  @IsNotEmpty({message: 'ERRORS.CLAIMANT_REJECTION_RESPONSE_REQUIRED'})
     text?: string;
 
   constructor(text?: string) {

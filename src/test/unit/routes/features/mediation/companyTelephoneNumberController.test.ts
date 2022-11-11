@@ -2,11 +2,10 @@ import {app} from '../../../../../main/app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {CAN_WE_USE_COMPANY_URL, CLAIM_TASK_LIST_URL} from '../../../../../main/routes/urls';
+import {CAN_WE_USE_COMPANY_URL, CLAIM_TASK_LIST_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
-import {VALID_YES_NO_OPTION} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
-import {YesNo} from '../../../../../main/common/form/models/yesNo';
+import {YesNo} from 'form/models/yesNo';
 import civilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
 
 jest.mock('../../../../../main/modules/oidc');
@@ -53,7 +52,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
         .send({contactPerson: 'Test contact person'})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_YES_NO_OPTION);
+          expect(res.text).toContain(TestMessages.VALID_YES_NO_OPTION);
         });
     });
     it('should have errors when yes is an option, but no telephone number is provided', async () => {

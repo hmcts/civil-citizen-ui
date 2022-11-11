@@ -1,5 +1,4 @@
 import {ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator';
-import {VALID_DATE_IN_PAST} from '../validationErrors/errorMessageConstants';
 
 /**
  * Validates that the input value is a date in the past, that is, before today
@@ -22,6 +21,6 @@ export class OptionalDateInPastValidator implements ValidatorConstraintInterface
   }
 
   defaultMessage() {
-    return VALID_DATE_IN_PAST + this.today;
+    return 'ERRORS.VALID_DATE_IN_PAST' + this.today;
   }
 }

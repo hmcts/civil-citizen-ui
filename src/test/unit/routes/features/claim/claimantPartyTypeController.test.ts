@@ -3,18 +3,19 @@ import {t} from 'i18next';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
-import {PartyType} from '../../../../../main/common/models/partyType';
+import {PartyType} from 'models/partyType';
 import {
   CLAIMANT_COMPANY_DETAILS_URL,
   CLAIMANT_INDIVIDUAL_DETAILS_URL,
   CLAIMANT_ORGANISATION_DETAILS_URL,
   CLAIMANT_PARTY_TYPE_SELECTION_URL,
   CLAIMANT_SOLE_TRADER_DETAILS_URL,
-} from '../../../../../main/routes/urls';
+} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/draft-store');
 
 describe('Claim Party Type Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
