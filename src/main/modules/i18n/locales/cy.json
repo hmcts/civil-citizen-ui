@@ -618,6 +618,11 @@
       "PAGE_TITLE": "Eich rhif ffôn",
       "TITLE": "Enter a phone number (optional)"
     },
+    "CLAIMANT_RESPONSE_DEBT_WHEN_START": {
+      "DATE_START_OPTIONAL": "This is the date it started, not the date you received notification of it (optional).",
+      "PAGE_TITLE": "When did it start?",
+      "TITLE": "When did it start?"
+    },
     "CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED": {
       "PAGE_TITLE": "Has the defendant paid you £{{ paidAmount }}?",
       "TITLE": "Has the defendant paid you £{{ paidAmount }}?"
@@ -2022,6 +2027,7 @@
     "VALID_DATE": "Rhowch ddyddiad dilys",
     "VALID_DATE_IN_PAST": "Nodwch ddyddiad cyn {{dateToday}}",
     "VALID_DATE_NOT_IN_PAST": "Nodwch ddyddiad heddiw neu ddyddiad yn y dyfodol",
+    "VALID_DATE_START_NOT_AFTER_TODAY": "Start date must not be after today's date",
     "VALID_DAY": "Rhowch ddydd dilys",
     "VALID_DEBT_AMOUNT": {
       "COUNCIL_TAX": "Enter a valid Council Tax or Community Charge amount, maximum two decimal places",
@@ -2032,6 +2038,7 @@
       "RENT": "Enter a valid Rent amount, maximum two decimal places",
       "WATER": "Enter a valid Water amount, maximum two decimal places"
     },
+    "VALID_DEBT_RESPITE_OPTION": "You must select the Type before continuing",
     "VALID_DISAGREE_REASON_REQUIRED": "Dywedwch pam ydych yn anghytuno",
     "VALID_ENTER_A_DATE_BEFORE": "Please enter a date of birth before {{ maxDate }}",
     "VALID_ENTER_AN_EMPLOYER_NAME": "Rhowch enw cyflogwr",

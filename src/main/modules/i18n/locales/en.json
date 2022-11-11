@@ -273,6 +273,11 @@
     "ARE_YOU_SEVERELY_DISABLED": {
       "PAGE_TITLE": "Severely disabled"
     },
+    "BREATHING_SPACE_DEBT_RESPITE_START": {
+      "DATE_START_OPTIONAL": "This is the date it started, not the date you received notification of it (optional).",
+      "PAGE_TITLE": "When did it start?",
+      "TITLE": "When did it start?"
+    },
     "CARER": {
       "PAGE_TITLE": "Carer's allowance"
     },
@@ -2020,6 +2025,7 @@
     "VALID_DATE": "Please enter a valid date",
     "VALID_DATE_IN_PAST": "Enter date before {{dateToday}}",
     "VALID_DATE_NOT_IN_PAST": "Enter a date that is today or in the future",
+    "VALID_DATE_START_NOT_AFTER_TODAY": "Start date must not be after today's date",
     "VALID_DAY": "Enter a valid day",
     "VALID_DEBT_AMOUNT": {
       "COUNCIL_TAX": "Enter a valid Council Tax or Community Charge amount, maximum two decimal places",
@@ -2030,6 +2036,7 @@
       "RENT": "Enter a valid Rent amount, maximum two decimal places",
       "WATER": "Enter a valid Water amount, maximum two decimal places"
     },
+    "VALID_DEBT_RESPITE_OPTION": "You must select the Type before continuing",
     "VALID_DISAGREE_REASON_REQUIRED": "Enter text explaining why do you disagree",
     "VALID_ENTER_A_DATE_BEFORE": "Please enter a date of birth before {{ maxDate }}",
     "VALID_ENTER_AN_EMPLOYER_NAME": "Enter an employer name",

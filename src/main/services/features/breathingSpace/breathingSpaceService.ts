@@ -3,12 +3,12 @@ import {BreathingSpace} from '../../../common/models/breathingSpace';
 import {ClaimDetails} from '../../../common/form/models/claim/details/claimDetails';
 
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('interestService');
+const logger = Logger.getLogger('breathingSpaceService');
 
 const getBreathingSpace = async (claimId: string): Promise<BreathingSpace> => {
   try {
     const caseData = await getCaseDataFromStore(claimId);
-    return Object.assign(new BreathingSpace(), caseData.claimDetails?.breathingSpace);
+    return caseData.claimDetails?.breathingSpace ?? new BreathingSpace();
   } catch (error) {
     logger.error(error);
     throw error;
