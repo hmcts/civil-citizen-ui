@@ -6,8 +6,7 @@ import {
   CITIZEN_REJECT_ALL_CLAIM_URL,
   CLAIM_TASK_LIST_URL,
   SEND_RESPONSE_BY_EMAIL_URL,
-} from '../../../../../main/routes/urls';
-import {OPTION_REQUIRED_RESPONSE} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
+} from 'routes/urls';
 import {
   mockCivilClaim,
   mockCivilClaimUndefined,
@@ -16,7 +15,7 @@ import {
   mockRedisFailure,
 } from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {RejectAllOfClaimType} from '../../../../../main/common/form/models/rejectAllOfClaimType';
+import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -79,7 +78,7 @@ describe('rejectAllOfClaim', () => {
         .send()
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(OPTION_REQUIRED_RESPONSE);
+          expect(res.text).toContain(TestMessages.OPTION_REQUIRED_RESPONSE);
           expect(res.text).toContain('govuk-error-message');
         });
     });
