@@ -371,6 +371,18 @@ export class Claim {
   getDebts(): Debts | undefined {
     return this.statementOfMeans?.debts;
   }
+
+  hasExpertReportDetails(): boolean {
+    return this.directionQuestionnaire?.experts?.expertReportDetails?.option === YesNo.YES;
+  }
+
+  hasPermissionForExperts(): boolean {
+    return this.directionQuestionnaire?.experts?.permissionForExpert?.option === YesNo.YES;
+  }
+
+  hasEvidenceExpertCanStillExamine(): boolean {
+    return this.directionQuestionnaire?.experts?.expertCanStillExamine?.option === YesNo.YES;
+  }
 }
 
 export interface StatementOfTruth {
