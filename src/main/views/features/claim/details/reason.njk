@@ -32,6 +32,10 @@
                 id: "text",
                 value: form.model.text,
                 rows: "10",
+                label: {
+                  text: t("PAGES.REASON.TITLE"),
+                  classes: "govuk-visually-hidden"
+                },
                 errorMessage: {
                   text: t(form.errorFor('text'))
                 } if form.hasFieldError('text')
