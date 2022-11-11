@@ -6,7 +6,7 @@ import {YesNo} from '../../../../../main/common/form/models/yesNo';
 import {Address} from '../../../../../main/common/form/models/address';
 import {CCDParty} from '../../../../../main/common/models/ccdResponse/ccdParty';
 import {CCDAddress} from '../../../../../main/common/models/ccdResponse/ccdAddress';
-import {DateOfBirth} from '../../../../../main/common/form/models/claim/claimant/dateOfBirth';
+import {CitizenDate} from '../../../../../main/common/form/models/claim/claimant/citizenDate';
 import {PartyPhone} from '../../../../../main/common/models/PartyPhone';
 import {Email} from '../../../../../main/common/models/Email';
 
@@ -17,7 +17,7 @@ const title = 'Mr';
 const firstName = 'Jon';
 const lastName = 'Doe';
 const soleTraderTradingAs = 'test';
-const dateOfBirth = new DateOfBirth('10','10','1990');
+const dateOfBirth = new CitizenDate('10','10','1990');
 const email = new Email('test@test.com');
 const emailCCD = 'test@test.com';
 

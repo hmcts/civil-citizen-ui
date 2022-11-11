@@ -8,7 +8,7 @@ import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlForm
 import {ExpertCanStillExamine} from '../../../../common/models/directionsQuestionnaire/experts/expertCanStillExamine';
 import {getClaimantResponse, saveClaimantResponse} from '../../../../../main/services/features/claimantResponse/claimantResponseService';
 import {DefendantDOB} from '../../../../common/models/claimantResponse/ccj/defendantDOB';
-import {DateOfBirth} from '../../../../common/models/claimantResponse/ccj/dateOfBirth';
+import {CitizenDate} from '../../../../common/form/models/claim/claimant/citizenDate';
 import {getDOBforAgeFromCurrentTime} from '../../../../common/utils/dateUtils';
 
 const defendantDOBController = Router();
@@ -37,7 +37,8 @@ defendantDOBController.get(CCJ_DEFENDANT_DOB_URL, async (req, res, next: NextFun
 defendantDOBController.post(CCJ_DEFENDANT_DOB_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const defendantDOB = new GenericForm(new DefendantDOB(req.body.option, new DateOfBirth(req.body.dob)));
+    const { day, month, year } = req.body.dob;
+    const defendantDOB = new GenericForm(new DefendantDOB(req.body.option, new CitizenDate(day,month,year)));
     defendantDOB.validateSync();
     if (defendantDOB.hasErrors()) {
       renderView(defendantDOB, res);
