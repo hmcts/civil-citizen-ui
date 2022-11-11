@@ -791,6 +791,11 @@
       "TITLE": "A oes gennych fenthyciadau neu ddyledion cerdyn credyd?",
       "TOTAL": "Cyfanswm sy'n ddyledus gennych"
     },
+    "DEBT_RESPITE_END_DATE": {
+      "PAGE_TITLE": "Expected end date",
+      "THIS_IS_THE": "This is the end date that it is due to finish (optional)",
+      "TITLE": "Expected end date"
+    },
     "DEFENDANT_DETAILS": {
       "BUSINESS_NAME": "Trading as (If you know it)",
       "COMPANY_ADDRESS": "Company address",
@@ -2044,6 +2049,7 @@
       "RENT": "Enter a valid Rent amount, maximum two decimal places",
       "WATER": "Enter a valid Water amount, maximum two decimal places"
     },
+    "VALID_DEBT_RESPITE_END_DATE": "Expected end date must not be before today's date",
     "VALID_DEBT_RESPITE_OPTION": "You must select the Type before continuing",
     "VALID_DISAGREE_REASON_REQUIRED": "Dywedwch pam ydych yn anghytuno",
     "VALID_ENTER_A_DATE_BEFORE": "Please enter a date of birth before {{ maxDate }}",

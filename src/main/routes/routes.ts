@@ -162,6 +162,7 @@ import partPaymentReceivedController from './features/claimantResponse/partPayme
 import defendantDOBController from './features/claimantResponse/ccj/defendantDOBController';
 import claimantIntentionToProceedController from './features/claimantResponse/claimantIntentionToProceedController';
 import debtStartDateController from './features/breathingSpace/debtRespiteStartDateController';
+import debtRespiteEndDateController from './features/breathingSpace/debtRespiteEndDateController';
 
 export default [
   homeController,
@@ -312,4 +313,5 @@ export default [
   defendantDOBController,
   claimantIntentionToProceedController,
   debtStartDateController,
+  debtRespiteEndDateController,
 ];
