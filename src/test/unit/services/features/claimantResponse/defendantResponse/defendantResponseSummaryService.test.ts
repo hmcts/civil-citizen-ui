@@ -29,7 +29,7 @@ describe("Defendant's response summary service", () => {
       // Given
       const reason = "I don't agree with the claim";
       claim.respondent1.type = PartyType.INDIVIDUAL;
-      claim.respondent1.partyName = 'Mr. John Doe';
+      claim.respondent1.partyDetails = {partyName: 'Mr. John Doe'};
       claim.statementOfMeans.explanation = {text: reason};
       // When
       const defendantsResponseContent = getDefendantsResponseContent(claim, lang);
@@ -45,7 +45,7 @@ describe("Defendant's response summary service", () => {
     it('should display for organisation/company', () => {
       // Given
       claim.respondent1.type = PartyType.ORGANISATION;
-      claim.respondent1.partyName = 'Google';
+      claim.respondent1.partyDetails = {partyName: 'Google'};
       // When
       const defendantsResponseContent = getDefendantsResponseContent(claim, lang);
       // Then

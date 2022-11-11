@@ -17,11 +17,11 @@ const title = 'Mr';
 const firstName = 'Jon';
 const lastName = 'Doe';
 const soleTraderTradingAs = 'test';
-const dateOfBirth = new DateOfBirth('10','10','1990');
+const dateOfBirth = new DateOfBirth('10', '10', '1990');
 const email = new Email('test@test.com');
 const emailCCD = 'test@test.com';
 
-const address: Address = new Address('Street test','1', '1A', 'test', 'sl11gf');
+const address: Address = new Address('Street test', '1', '1A', 'test', 'sl11gf');
 
 const addressCCD: CCDAddress = {
   AddressLine1: 'Street test',
@@ -111,7 +111,7 @@ const partyCompanyCCD: CCDParty = {
 
 const partyIndividualCCD: CCDParty = {
   companyName: undefined,
-  individualDateOfBirth: new Date('10/10/1990').toString(),
+  individualDateOfBirth: new Date('10/10/1990').toLocaleDateString(),
   individualTitle: title,
   individualFirstName: firstName,
   individualLastName: lastName,
@@ -137,7 +137,7 @@ const partySoleTraderCCD: CCDParty = {
   partyEmail: emailCCD,
   partyPhone: phoneCCD,
   primaryAddress: addressCCD,
-  soleTraderDateOfBirth: new Date('10/10/1990').toString(),
+  soleTraderDateOfBirth: new Date('10/10/1990').toLocaleDateString(),
   soleTraderTitle: title,
   soleTraderFirstName: firstName,
   soleTraderLastName: lastName,
