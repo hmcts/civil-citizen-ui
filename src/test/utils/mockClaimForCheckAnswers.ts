@@ -55,6 +55,7 @@ import {
   InterestEndDateType,
   SameRateInterestType,
 } from '../../main/common/form/models/claimDetails';
+import {Address} from '../../main/common/form/models/address';
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -66,42 +67,38 @@ const CONTACT_NUMBER = '077777777779';
 export const createClaimWithBasicRespondentDetails = (contactPerson?: string): Claim => {
   const claim = new Claim();
   claim.respondent1 = {
-    partyName: PARTY_NAME,
-    partyPhone: CONTACT_NUMBER,
-    contactPerson: contactPerson,
-    dateOfBirth: new Date('2000-12-12'),
+    partyPhone: {phone: CONTACT_NUMBER},
+    dateOfBirth: {date: new Date('2000-12-12'), year: 1985, month: 2, day: 2},
     responseType: ResponseType.FULL_ADMISSION,
     type: PartyType.INDIVIDUAL,
-    individualTitle: TITLE,
-    individualLastName: LAST_NAME,
-    individualFirstName: FIRST_NAME,
-    primaryAddress: {
-      AddressLine1: '23 Brook lane',
-      PostTown: 'Bristol',
-      PostCode: 'BS13SS',
+    partyDetails: {
+      partyName: PARTY_NAME,
+      contactPerson: contactPerson,
+      individualTitle: TITLE,
+      individualLastName: LAST_NAME,
+      individualFirstName: FIRST_NAME,
     },
   };
+  claim.respondent1.partyDetails.primaryAddress = new Address('23 Brook lane', '', '', 'Bristol', 'BS13SS');
   claim.paymentOption = PaymentOptionType.IMMEDIATELY;
   return claim;
 };
 export const createClaimWithBasicApplicantDetails = (contactPerson?: string): Claim => {
   const claim = new Claim();
   claim.applicant1 = {
-    partyName: PARTY_NAME,
-    partyPhone: CONTACT_NUMBER,
-    individualTitle: TITLE,
-    individualLastName: LAST_NAME,
-    individualFirstName: FIRST_NAME,
-    contactPerson: contactPerson,
-    dateOfBirth: new Date('2000-12-12'),
-    responseType: ResponseType.FULL_ADMISSION,
+    partyPhone: {phone: CONTACT_NUMBER},
+    dateOfBirth: {date: new Date('2000-12-12'), year: 1985, month: 2, day: 2},
     type: PartyType.INDIVIDUAL,
-    primaryAddress: {
-      AddressLine1: '23 Brook lane',
-      PostTown: 'Bristol',
-      PostCode: 'BS13SS',
+    responseType: ResponseType.FULL_ADMISSION,
+    partyDetails: {
+      partyName: PARTY_NAME,
+      individualTitle: TITLE,
+      individualLastName: LAST_NAME,
+      individualFirstName: FIRST_NAME,
+      contactPerson: contactPerson,
     },
   };
+  claim.applicant1.partyDetails.primaryAddress = new Address('23 Brook lane', '', '', 'Bristol', 'BS13SS');
   claim.paymentOption = PaymentOptionType.IMMEDIATELY;
   return claim;
 };
@@ -127,46 +124,35 @@ export const createClaimWithIndividualDetails = (): Claim => {
   const claim = new Claim();
   claim.respondent1 = {
     type: PartyType.INDIVIDUAL,
-    individualTitle: TITLE,
-    individualLastName: LAST_NAME,
-    individualFirstName: FIRST_NAME,
-    partyName: PARTY_NAME,
-    partyPhone: CONTACT_NUMBER,
     responseType: ResponseType.FULL_ADMISSION,
-    primaryAddress: {
-      AddressLine1: '23 Brook lane',
-      PostTown: 'Bristol',
-      PostCode: 'BS13SS',
-    },
-    correspondenceAddress: {
-      AddressLine1: '24 Brook lane',
-      PostTown: 'Bristol',
-      PostCode: 'BS13SS',
+    partyPhone: {phone: CONTACT_NUMBER},
+    partyDetails: {
+      individualTitle: TITLE,
+      individualLastName: LAST_NAME,
+      individualFirstName: FIRST_NAME,
+      partyName: PARTY_NAME,
     },
   };
+  claim.respondent1.partyDetails.primaryAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
+  claim.respondent1.partyDetails.correspondenceAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
   return claim;
 };
 export const createClaimWithApplicantIndividualDetails = (): Claim => {
   const claim = new Claim();
   claim.applicant1 = {
     type: PartyType.INDIVIDUAL,
-    individualTitle: TITLE,
-    individualLastName: LAST_NAME,
-    individualFirstName: FIRST_NAME,
-    partyName: PARTY_NAME,
-    partyPhone: CONTACT_NUMBER,
+    partyPhone: {phone: CONTACT_NUMBER},
     responseType: ResponseType.FULL_ADMISSION,
-    primaryAddress: {
-      AddressLine1: '23 Brook lane',
-      PostTown: 'Bristol',
-      PostCode: 'BS13SS',
-    },
-    correspondenceAddress: {
-      AddressLine1: '24 Brook lane',
-      PostTown: 'Bristol',
-      PostCode: 'BS13SS',
+    partyDetails: {
+      individualTitle: TITLE,
+      individualLastName: LAST_NAME,
+      individualFirstName: FIRST_NAME,
+      partyName: PARTY_NAME,
     },
   };
+  claim.applicant1.partyDetails.primaryAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
+  claim.applicant1.partyDetails.correspondenceAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
+
   return claim;
 };
 
@@ -768,18 +754,16 @@ export const ceateClaimWithPartialAdmission = (alreadyPaid?: YesNo, paymentOptio
     paymentIntention: new PaymentIntention(),
   };
   claim.respondent1 = {
-    partyName: PARTY_NAME,
-    partyPhone: CONTACT_NUMBER,
-    contactPerson: '',
-    dateOfBirth: new Date('2000-12-12'),
+    dateOfBirth: {date: new Date('2000-12-12'), year: 1985, month: 2, day: 2},
     responseType: ResponseType.PART_ADMISSION,
     type: PartyType.INDIVIDUAL,
-    primaryAddress: {
-      AddressLine1: '23 Brook lane',
-      PostTown: 'Bristol',
-      PostCode: 'BS13SS',
+    partyPhone: {phone: CONTACT_NUMBER},
+    partyDetails: {
+      partyName: PARTY_NAME,
+      contactPerson: '',
     },
   };
+  claim.respondent1.partyDetails.primaryAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
   claim.partialAdmission = partialAdmission;
   claim.evidence = defendantEvidence;
   claim.partialAdmission.paymentIntention?.paymentOption ? paymentOptionType : undefined;
@@ -902,13 +886,7 @@ export const createClaimWithPaymentOption = (responseType: ResponseType, payment
 export const claimWithClaimAmountParticularDate = (): Claim => {
   const claim = new Claim();
   claim.claimInterest = YesNo.YES;
-  claim.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
-  claim.interestClaimFrom = InterestClaimFromType.FROM_A_SPECIFIC_DATE;
-  claim.sameRateInterestSelection = {
-    sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
-    differentRate: 10,
-    reason: 'Reason',
-  };
+
   claim.interest = {
     interestEndDate: InterestEndDateType.UNTIL_SETTLED_OR_JUDGEMENT_MADE,
     interestStartDate: {
@@ -918,6 +896,13 @@ export const claimWithClaimAmountParticularDate = (): Claim => {
       date: new Date(2011, 1, 1),
       reason: 'Reason',
     },
+    interestClaimFrom: InterestClaimFromType.FROM_A_SPECIFIC_DATE,
+    interestClaimOptions: InterestClaimOptionsType.SAME_RATE_INTEREST,
+    sameRateInterestSelection: {
+      sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
+      differentRate: 10,
+      reason: 'Reason',
+    },
   };
 
   return claim;
@@ -925,27 +910,32 @@ export const claimWithClaimAmountParticularDate = (): Claim => {
 export const claimWithClaimAmountSubmitDate = (): Claim => {
   const claim = new Claim();
   claim.claimInterest = YesNo.YES;
-  claim.interestClaimFrom = InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
-  claim.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
-  claim.sameRateInterestSelection = {sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC};
+  claim.interest = {
+    interestClaimFrom: InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE,
+    interestClaimOptions: InterestClaimOptionsType.SAME_RATE_INTEREST,
+    sameRateInterestSelection: {sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC},
+  };
 
   return claim;
 };
 
 export const claimWithClaimAmountSameRate = (): Claim => {
   const claim = new Claim();
-  claim.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
-  claim.sameRateInterestSelection = {sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC};
-
+  claim.interest = {
+    interestClaimOptions: InterestClaimOptionsType.SAME_RATE_INTEREST,
+    sameRateInterestSelection: {sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC},
+  };
   return claim;
 };
 
 export const claimWithClaimAmountDifferentRate = (): Claim => {
   const claim = new Claim();
-  claim.sameRateInterestSelection = {
-    sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
-    differentRate: 10,
-    reason: 'Reason',
+  claim.interest = {
+    sameRateInterestSelection: {
+      sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
+      differentRate: 10,
+      reason: 'Reason',
+    },
   };
 
   return claim;

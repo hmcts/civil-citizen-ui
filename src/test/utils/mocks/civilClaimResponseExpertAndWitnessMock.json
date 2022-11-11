@@ -25,16 +25,16 @@
     },
     "applicant1": {
       "type": "ORGANISATION",
-      "partyName": "Mr. Jan Clark",
-      "telephoneNumber": "(0)207 127 0000",
-      "primaryAddress": {
-        "County": "Kent",
-        "Country": "United Kingdom",
-        "PostCode": "RG4 7AA",
-        "PostTown": "Reading",
-        "AddressLine1": "Flat 2",
-        "AddressLine2": "Caversham House 15-17",
-        "AddressLine3": "Church Road"
+      "partyPhone": "(0)207 127 0000",
+      "partyDetails": {
+        "partyName": "Mr. Jan Clark",
+        "primaryAddress": {
+          "postCode": "RG4 7AA",
+          "city": "Reading",
+          "addressLine1": "Flat 2",
+          "addressLine2": "Caversham House 15-17",
+          "addressLine3": "Church Road"
+        }
       },
       "partyTypeDisplayValue": "Organisation"
     },
@@ -43,7 +43,7 @@
           "supportRequiredList": {
             "items": [
               {
-                "fullName": "johndoe",
+                "fullName": "John Doe",
                 "disabledAccess": {
                   "selected": true
                 },
@@ -53,7 +53,7 @@
                 }
               },
               {
-                "fullName": "mikebrown",
+                "fullName": "Mike Brown",
                 "hearingLoop": {
                   "selected": true
                 },
@@ -211,9 +211,11 @@
     "respondent1": {
       "type": "ORGANISATION",
       "dateOfBirth": "2022-03-01T13:29:24.971",
-      "telephoneNumber": "111",
-      "contactPerson": "Felipe",
-      "partyName": "Version 1"
+      "partyNumber": "111",
+      "partyDetails": {
+        "contactPerson": "Felipe",
+        "partyName": "Version 1"
+      }
     },
     "respondent1ResponseDeadline": "2025-05-15T02:59:59",
     "legacyCaseReference": "000MC009",
@@ -226,7 +228,6 @@
       "interestEndDate": "UNTIL_CLAIM_SUBMIT_DATE"
     },
     "interestClaimOptions": "SAME_RATE_INTEREST",
-    "interestFromSpecificDate": "2022-05-20",
     "sameRateInterestSelection": {
       "sameRateInterestType": "SAME_RATE_INTEREST_8_PC"
     },

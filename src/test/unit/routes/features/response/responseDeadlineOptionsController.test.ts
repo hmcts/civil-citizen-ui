@@ -22,7 +22,9 @@ const mockSaveCaseData = saveDraftClaim as jest.Mock;
 const mockClaim = new Claim();
 mockClaim.applicant1 = {
   type: PartyType.INDIVIDUAL,
-  partyName: 'Joe Bloggs',
+  partyDetails: {
+    partyName: 'Joe Bloggs',
+  },
 };
 
 describe('Response Deadline Options Controller', () => {
@@ -96,7 +98,7 @@ describe('Response Deadline Options Controller', () => {
     });
 
     it('should render error page when partyName is not set', async () => {
-      mockGetCaseData.mockImplementation(async () => new Claim());
+      mockGetCaseData.mockImplementation(async () => undefined);
       await request(app).get(RESPONSE_DEADLINE_OPTIONS_URL).expect((res) => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

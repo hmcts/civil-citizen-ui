@@ -25,9 +25,9 @@ import {
   CITIZEN_RESPONSE_TYPE_URL,
   CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL,
   CITIZEN_WHY_DO_YOU_DISAGREE_URL,
+  DETERMINATION_WITHOUT_HEARING_URL,
   FINANCIAL_DETAILS_URL,
   RESPONSE_YOUR_DEFENCE_URL,
-  SUPPORT_REQUIRED_URL,
 } from '../../../../../main/routes/urls';
 import {RejectAllOfClaim} from '../../../../../main/common/form/models/rejectAllOfClaim';
 import {RejectAllOfClaimType} from '../../../../../main/common/form/models/rejectAllOfClaimType';
@@ -47,7 +47,7 @@ describe('Task List Builder', () => {
   const howMuchHaveYouPaidUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_AMOUNT_YOU_PAID_URL);
   const howMuchMoneyAdmitOweUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_OWED_AMOUNT_URL);
   const freeTelephoneMediationUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_FREE_TELEPHONE_MEDIATION_URL);
-  const giveUsDetailsHearingUrl = constructResponseUrlWithIdParams(claimId, SUPPORT_REQUIRED_URL);
+  const giveUsDetailsHearingUrl = constructResponseUrlWithIdParams(claimId, DETERMINATION_WITHOUT_HEARING_URL);
   const whenWillYouPayUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL);
 
   const tellUsHowMuchYouHavePaidUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_FR_AMOUNT_YOU_PAID_URL);

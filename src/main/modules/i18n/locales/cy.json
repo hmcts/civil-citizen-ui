@@ -276,6 +276,10 @@
     "CARER": {
       "PAGE_TITLE": "Carer's allowance"
     },
+    "CCJ_DEFENDANT_DOB": {
+      "PAGE_TITLE": "Do you know the defendant's date of birth?",
+      "TITLE": "Do you know the defendant's date of birth?"
+    },
     "CHECK_YOUR_ANSWER": {
       "BANK_AND_SAVINGS_ACCOUNTS": "Cyfrifon banc a chynilo",
       "BANK_BALANCE": "Cydbwysedd",
@@ -319,6 +323,7 @@
       "FREE_TELEPHONE_MEDIATION": "A wnewch chi roi cynnig ar gyfryngu am ddim",
       "FIRST_PAYMENT": "Gwnewch y taliad cyntaf ymlaen",
       "FULL_NAME": "Enw llawn",
+      "GIVE_EVIDENCE": "Do you want to give evidence?",
       "INCOME_REGULAR": "Incwm rheolaidd",
       "INCOME_JOB": "Incwm o'ch swydd",
       "INCOME_UNIVERSAL_CREDIT": "Credyd Cynhwysol",
@@ -362,6 +367,9 @@
       "SUPPORT_ANYONE_ELSE_FINANCIALLY": "Ydych chi'n cefnogi unrhyw un arall yn ariannol?",
       "SUPPORT_NUMBER_OF_PEOPLE": "Nifer y bobl",
       "SUPPORT_GIVE_DETAILS": "Rhowch fanylion",
+      "SUPPORT_REQUIRED_INTERPRETER": "Interpreter",
+      "SUPPORT_REQUIRED_NAME": "Name of the person who requires support:",
+      "SUPPORT_REQUIRED_DETAILS": "Support details:",
       "TAX_PAYMENT_ARE_YOU_BEHIND": "Ydych chi ar ei hôl hi gyda thaliadau treth?",
       "TAX_PAYMENT_AMOUNT_YOU_OWE": "Swm sydd arnoch chi?",
       "TAX_PAYMENT_REASON": "Rheswm",
@@ -379,6 +387,8 @@
       "EVIDENCE_STATEMENT_OF_ACCOUNT": "Datganiadau cyfrifon",
       "EVIDENCE_OTHER": "Arall",
       "EVIDENCE_COMMENTS": "Sylwadau am eu tystiolaeth (dewisol)",
+      "VULNERABILITY_INFO": "Tell us who is vulnerable and what support they need",
+      "VULNERABILITY_QUESTION": "Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider?",
       "WHEN_PAY": "Pryd fyddwch chi'n talu",
       "WHEN_PAY_TITLE": "Pryd fyddwch chi'n talu",
       "WHERE_DO_YOU_LIVE": "Ble rydych chi'n byw?",
@@ -585,6 +595,10 @@
       "TITLE": "What annual rate of interest do you want to claim?",
       "WHY_YOU_ARE_ENTITLED": "Why you're entitled to this rate"
     },
+    "CLAIMANT_RESPONSE_PROCEED": {
+      "PAGE_TITLE": "Do you want to proceed with claim?",
+      "TITLE": "Do you want to proceed with claim?"
+    },
     "CLAIMANT_PARTY_TYPE_SELECTION": {
       "CLAIMING_AS_HEADER": "I'm claiming as:",
       "CLAIMING_AS_AN_INDIVIDUAL": "An individual",
@@ -603,6 +617,10 @@
       "NUMBER_INFORMATION": "We'll also give your number to the person, business, or organisation you are claiming from.",
       "PAGE_TITLE": "Eich rhif ffôn",
       "TITLE": "Enter a phone number (optional)"
+    },
+    "CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED": {
+      "PAGE_TITLE": "Has the defendant paid you £{{ paidAmount }}?",
+      "TITLE": "Has the defendant paid you £{{ paidAmount }}?"
     },
     "COMPANY_DETAILS": {
       "ADDRESS_FOR_SERVICE": "Gelwir hwn yn 'gyfeiriad cyflwyno'.",
@@ -993,7 +1011,8 @@
       "PAGE_TITLE": "Enter the expert’s details",
       "PHONE_OPTIONAL": "Phone number (optional)",
       "REMOVE_EXPERT": "Remove expert",
-      "TELL_US_WHY_NEED_EXPERT": "Tell us why you need this expert"
+      "TELL_US_WHY_NEED_EXPERT": "Tell us why you need this expert",
+      "SECTION_TITLE": "Expert Details"
     },
     "EXPERT_GUIDANCE": {
       "ASK_PERMISSION": "You must ask for permission to use an expert - a judge will then decide whether the expert is necessary.",
@@ -1023,6 +1042,7 @@
     },
     "EXPERT_REPORT_DETAILS": {
       "ADD_ANOTHER": "Ychwanegu adroddiad arall",
+      "DATE_OF_REPORT": "Date of report",
       "EXPERT_NAME": "Enw’r arbenigwr",
       "PAGE_TITLE": "A oes gennych adroddiad wedi’i ysgrifennu gan arbenigwr yn barod?",
       "REPORT_DATE": "Beth yw dyddiad yr adroddiad?",
@@ -2020,7 +2040,9 @@
       "RENT": "Enter a valid Rent amount, maximum two decimal places",
       "WATER": "Enter a valid Water amount, maximum two decimal places"
     },
+    "VALID_DEBT_RESPITE_OPTION": "You must select the Type before continuing",
     "VALID_DISAGREE_REASON_REQUIRED": "Dywedwch pam ydych yn anghytuno",
+    "VALID_ENTER_A_DATE_BEFORE": "Please enter a date of birth before {{ maxDate }}",
     "VALID_ENTER_AN_EMPLOYER_NAME": "Rhowch enw cyflogwr",
     "VALID_ENTER_AT_LEAST_ONE_COURT_ORDER": "Rhowch fanylion o leiaf un gorchymyn llys",
     "VALID_ENTER_AT_LEAST_ONE_EMPLOYER": "Rhowch o leiaf un cyflogwr",

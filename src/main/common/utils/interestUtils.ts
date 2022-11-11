@@ -28,7 +28,7 @@ export function getInterestDateOrIssueDate(claim: Claim) {
   if (claim.isInterestFromClaimSubmitDate()) {
     interestFromDate = claim.submittedDate;
   } else if (claim.isInterestFromASpecificDate()) {
-    interestFromDate = claim.interestFromSpecificDate;
+    interestFromDate = claim.interest?.interestStartDate.date;
   }
   return interestFromDate;
 }
@@ -37,7 +37,7 @@ export function getInterestRate(claim: Claim) {
   let interestRate;
   if (claim.isInterestClaimOptionsSameRateInterest()) {
     if (!claim.isSameRateTypeEightPercent()) {
-      interestRate = claim?.sameRateInterestSelection?.differentRate;
+      interestRate = claim?.interest?.sameRateInterestSelection?.differentRate;
     } else if (claim.isSameRateTypeEightPercent()) {
       interestRate = 8;
     }
