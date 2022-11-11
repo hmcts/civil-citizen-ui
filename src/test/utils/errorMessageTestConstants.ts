@@ -61,6 +61,7 @@ export const enum TestMessages {
   VALID_CHOOSE = 'Choose your response',
   VALID_DAY = 'Enter a valid day',
   VALID_DEFENDANT_AGE_ELIGIBILITY = 'Select yes, no, or company/organisation',
+  VALID_ENTER_A_DATE_BEFORE = 'Please enter a date of birth before',
   VALID_SENT_EXPERT_REPORTS = 'Select yes if you have sent expert reports to the other parties',
   VALID_FOUR_DIGIT_YEAR = 'Enter a 4 digit year',
   VALID_HOUSING = 'Describe your housing',

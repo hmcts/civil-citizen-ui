@@ -45,7 +45,7 @@ export class SupportRequired {
   @ValidateNested()
     otherSupport?: Support;
   @Validate(AtLeastOneCheckboxSelectedValidator, {message: 'ERRORS.SELECT_SUPPORT' })
-    checkboxGrp: boolean [];
+    checkboxGrp?: boolean [];
 
   [key: string]: string | Support | boolean[];
   constructor(params?: SupportRequiredParams) {

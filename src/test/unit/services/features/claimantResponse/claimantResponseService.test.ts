@@ -8,7 +8,6 @@ import {
   saveClaimantResponse,
 } from '../../../../../main/services/features/claimantResponse/claimantResponseService';
 import {ClaimantResponse} from '../../../../../main/common/models/claimantResponse';
-import {RejectionReason} from '../../../../../main/common/form/models/claimantResponse/rejectionReason';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -90,7 +89,7 @@ describe('Claimant Response Service', () => {
       const claimantResponseToSave = {
         hasDefendantPaidYou: {option: YesNo.NO},
       };
-      await saveClaimantResponse('validClaimId', YesNo.NO, 'option', 'hasDefendantPaidYou');
+      await saveClaimantResponse('validClaimId',  YesNo.NO, 'option', 'hasDefendantPaidYou');
       expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToSave});
     });
 
@@ -109,15 +108,6 @@ describe('Claimant Response Service', () => {
       expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
     });
 
-    it('should save rejection response successfully', async () => {
-      //Given
-      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      //When
-      await saveClaimantResponse('claimId', new RejectionReason('not agree'), 'rejectionReason');
-      //Then
-      expect(spySave).toBeCalled();
-    });
-
     it('should return an error on redis failure', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return new Claim();
@@ -128,43 +118,6 @@ describe('Claimant Response Service', () => {
 
       await expect(saveClaimantResponse('claimId', mockGetCaseDataFromDraftStore, ''))
         .rejects.toThrow(TestMessages.REDIS_FAILURE);
-    });
-  });
-
-  describe('get rejection reason form model', () => {
-    it('should return an empty form model when no data retrieved', async () => {
-      //Given
-      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
-      const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-
-      mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
-      });
-      //When
-      const result = await getClaimantResponse('claimId');
-      //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
-      expect(result).toEqual(new RejectionReason());
-    });
-    it('should return populated form model when data exists', async () => {
-      //Given
-      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
-      const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-      const newClaim = new Claim();
-      const response = new ClaimantResponse();
-      const rejectionReason = new RejectionReason('not agree');
-      response.rejectionReason = rejectionReason;
-      newClaim.claimantResponse = response;
-
-      mockGetCaseData.mockImplementation(async () => {
-        return newClaim;
-      });
-      //When
-      const claimantResponse = await getClaimantResponse('claimId');
-      //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
-      expect(claimantResponse).not.toBeNull();
-      expect(claimantResponse?.rejectionReason.text).toBe('not agree');
     });
   });
 });
