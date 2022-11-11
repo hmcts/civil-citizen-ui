@@ -12,6 +12,9 @@ import {
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
 import {PartyType} from '../../../../../../../main/common/models/partyType';
 import {formatDateToFullDate} from '../../../../../../../main/common/utils/dateUtils';
+import {PartyDetails} from '../../../../../../../main/common/form/models/partyDetails';
+import {Email} from '../../../../../../../main/common/models/Email';
+import {DateOfBirth} from '../../../../../../../main/common/form/models/claim/claimant/dateOfBirth';
 
 jest.mock('../../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -82,8 +85,8 @@ describe('Cirizen Details Section', () => {
     //Given
     const claim = createClaimWithIndividualDetails();
     if (claim.respondent1) {
-      claim.respondent1.emailAddress = EMAIL_ADDRESS;
-      claim.respondent1.dateOfBirth = new Date(2000, 1, 1);
+      claim.respondent1.emailAddress = new Email(EMAIL_ADDRESS);
+      claim.respondent1.dateOfBirth = new DateOfBirth('1', '2', '2000');
     }
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
@@ -96,7 +99,8 @@ describe('Cirizen Details Section', () => {
     const claim = createClaimWithIndividualDetails();
     if (claim.respondent1) {
       claim.respondent1.type = PartyType.SOLE_TRADER;
-      claim.respondent1.soleTraderTradingAs = 'Business name';
+      claim.respondent1.partyDetails = new PartyDetails({});
+      claim.respondent1.partyDetails.soleTraderTradingAs = 'Business name';
     }
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
@@ -108,7 +112,7 @@ describe('Cirizen Details Section', () => {
     const claim = createClaimWithIndividualDetails();
     if (claim.respondent1) {
       claim.respondent1.type = PartyType.COMPANY;
-      claim.respondent1.contactPerson = CONTACT_PERSON;
+      claim.respondent1.partyDetails.contactPerson = CONTACT_PERSON;
     }
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');

@@ -21,4 +21,5 @@ export class ExpertReportDetails {
     const filteredReportDetails = expertReportDetails.reportDetails?.filter(reportDetail => !reportDetail.isEmpty());
     return {...expertReportDetails, reportDetails: filteredReportDetails};
   }
+
 }

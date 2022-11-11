@@ -1017,7 +1017,8 @@
       "PAGE_TITLE": "Enter the expert’s details",
       "PHONE_OPTIONAL": "Phone number (optional)",
       "REMOVE_EXPERT": "Remove expert",
-      "TELL_US_WHY_NEED_EXPERT": "Tell us why you need this expert"
+      "TELL_US_WHY_NEED_EXPERT": "Tell us why you need this expert",
+      "SECTION_TITLE": "Expert Details"
     },
     "EXPERT_GUIDANCE": {
       "ASK_PERMISSION": "You must ask for permission to use an expert - a judge will then decide whether the expert is necessary.",
@@ -1047,6 +1048,7 @@
     },
     "EXPERT_REPORT_DETAILS": {
       "ADD_ANOTHER": "Ychwanegu adroddiad arall",
+      "DATE_OF_REPORT": "Date of report",
       "EXPERT_NAME": "Enw’r arbenigwr",
       "PAGE_TITLE": "A oes gennych adroddiad wedi’i ysgrifennu gan arbenigwr yn barod?",
       "REPORT_DATE": "Beth yw dyddiad yr adroddiad?",
@@ -2038,6 +2040,7 @@
       "RENT": "Enter a valid Rent amount, maximum two decimal places",
       "WATER": "Enter a valid Water amount, maximum two decimal places"
     },
+    "VALID_DEBT_RESPITE_OPTION": "You must select the Type before continuing",
     "VALID_DISAGREE_REASON_REQUIRED": "Dywedwch pam ydych yn anghytuno",
     "VALID_ENTER_A_DATE_BEFORE": "Please enter a date of birth before {{ maxDate }}",
     "VALID_ENTER_AN_EMPLOYER_NAME": "Rhowch enw cyflogwr",
