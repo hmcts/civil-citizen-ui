@@ -24,7 +24,7 @@ debtRespiteStartDateController.get(BREATHING_SPACE_RESPITE_START_DATE_URL, async
   const claimId = req.params.id;
   try {
     const breathingSpace = await getBreathingSpace(claimId);
-    const debtStartDate = Object.assign(new DebtRespiteStartDate(), breathingSpace.debtRespiteStartDate);
+    const debtStartDate = breathingSpace?.debtRespiteStartDate ?? new DebtRespiteStartDate();
     renderView(new GenericForm(debtStartDate), res);
   } catch (error) {
     next(error);
