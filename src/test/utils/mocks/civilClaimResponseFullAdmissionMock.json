@@ -61,7 +61,6 @@
       "interestEndDate": "UNTIL_CLAIM_SUBMIT_DATE"
     },
     "interestClaimOptions": "SAME_RATE_INTEREST",
-    "interestFromSpecificDate": "2022-05-20",
     "sameRateInterestSelection": {
       "sameRateInterestType": "SAME_RATE_INTEREST_8_PC"
     }

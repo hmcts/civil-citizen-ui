@@ -1,10 +1,12 @@
-import {CorrespondenceAddress} from '../../../../../../main/common/models/correspondenceAddress';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {PartyType} from '../../../../../../main/common/models/partyType';
 import {
   getAddress,
   getSolicitorName,
 } from '../../../../../../main/services/features/response/contactThem/contactThemService';
+import {Party} from '../../../../../../main/common/models/party';
+import {PartyDetails} from '../../../../../../main/common/form/models/partyDetails';
+import {Address} from '../../../../../../main/common/form/models/address';
 
 describe('contact them service', () => {
   describe('getAddress', () => {
@@ -16,17 +18,7 @@ describe('contact them service', () => {
     const CORRESPONDENCE_ADDRESS_LINE_2 = 'Dean close';
     const CORRESPONDENCE_TOWN = 'Bristol';
     const CORRESPONDENCE_POSTCODE = 'BS1 4HK';
-    it('should return solicitors address when it exists', () => {
-      //Given
-      const solicitorAddress = buildAddress(PRIMARY_ADDRESS_LINE_1, PRIMARY_ADDRESS_LINE_2, PRIMARY_ADDRESS_TOWN, PRIMARY_ADDRESS_POSTCODE);
-      const primaryAddress = buildAddress(PRIMARY_ADDRESS_LINE_1, PRIMARY_ADDRESS_LINE_2, PRIMARY_ADDRESS_TOWN, PRIMARY_ADDRESS_POSTCODE);
-      const correspondenceAddress = buildAddress(CORRESPONDENCE_ADDRESS_LINE_1, CORRESPONDENCE_ADDRESS_LINE_2, CORRESPONDENCE_TOWN, CORRESPONDENCE_POSTCODE);
-      const claim = buildClaimWithAddress(primaryAddress, correspondenceAddress, solicitorAddress);
-      //When
-      const address = getAddress(claim);
-      //Then
-      expect(address).toMatchObject(solicitorAddress);
-    });
+
     it('should return correspondence address when it exists', () => {
       //Given
       const primaryAddress = buildAddress(PRIMARY_ADDRESS_LINE_1, PRIMARY_ADDRESS_LINE_2, PRIMARY_ADDRESS_TOWN, PRIMARY_ADDRESS_POSTCODE);
@@ -49,7 +41,7 @@ describe('contact them service', () => {
     it('should return primary address when correspondence address is empty', () => {
       //Given
       const primaryAddress = buildAddress(PRIMARY_ADDRESS_LINE_1, PRIMARY_ADDRESS_LINE_2, PRIMARY_ADDRESS_TOWN, PRIMARY_ADDRESS_POSTCODE);
-      const claim = buildClaimWithAddress(primaryAddress, {});
+      const claim = buildClaimWithAddress(primaryAddress, new Address());
       //When
       const address = getAddress(claim);
       //Then
@@ -78,27 +70,23 @@ describe('contact them service', () => {
   });
 });
 
-function buildClaimWithAddress(address: CorrespondenceAddress, correspondenceAddress?: CorrespondenceAddress, solicitorAddress?: CorrespondenceAddress): Claim {
+function buildClaimWithAddress(address: Address, correspondenceAddress?: Address, solicitorAddress?: Address): Claim {
   const claim = new Claim();
-  claim.applicant1 = {
-    partyName: 'Some Very Important Company Ltd',
-    primaryAddress: address,
-    type: PartyType.COMPANY,
-  };
+  claim.applicant1 = new Party();
+  claim.applicant1.partyDetails = new PartyDetails({});
+  claim.applicant1.partyDetails.partyName = 'Some Very Important Company Ltd';
+  claim.applicant1.partyDetails.primaryAddress = address;
+  claim.applicant1.type = PartyType.COMPANY;
+
   if (correspondenceAddress) {
-    claim.specApplicantCorrespondenceAddressdetails = correspondenceAddress;
+    claim.applicant1.partyDetails.correspondenceAddress = correspondenceAddress;
   }
   if (solicitorAddress) {
-    claim.applicantSolicitor1ServiceAddress = solicitorAddress;
+    claim.applicant1.partyDetails.primaryAddress = solicitorAddress;
   }
   return claim;
 }
 
-function buildAddress(line1: string, line2: string, postcode: string, postTown: string): CorrespondenceAddress {
-  return {
-    AddressLine1: line1,
-    AddressLine2: line2,
-    PostCode: postcode,
-    PostTown: postTown,
-  };
+function buildAddress(line1: string, line2: string, postcode: string, postTown: string): Address {
+  return new Address(line1, line2, '', postcode, postTown);
 }
