@@ -28,7 +28,7 @@ import paymentDatePAController from './features/response/admission/partialAdmiss
 import betweenSixteenAndNineteenController
   from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
 import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
-import priorityDebtsController from './features/response/statementOfMeans/priorityDebtsController';
+// import priorityDebtsController from './features/response/statementOfMeans/priorityDebtsController';
 import selfEmployedAsController
   from './features/response/statementOfMeans/employment/selfEmployed/selfEmployedAsController';
 import onTaxPaymentsController
@@ -160,6 +160,7 @@ import helpWithFeesController from './features/claim/details/helpWithFeesControl
 import partPaymentReceivedController from './features/claimantResponse/partPaymentReceivedController';
 import defendantDOBController from './features/claimantResponse/ccj/defendantDOBController';
 import claimantIntentionToProceedController from './features/claimantResponse/claimantIntentionToProceedController';
+import KpriorityDebtsController from './features/response/statementOfMeans/KpriorityDebtsController';
 
 export default [
   homeController,
@@ -189,7 +190,7 @@ export default [
   paymentDateController,
   betweenSixteenAndNineteenController,
   dependantsController,
-  priorityDebtsController,
+  // priorityDebtsController,
   selfEmployedAsController,
   onTaxPaymentsController,
   unemploymentController,
@@ -308,4 +309,5 @@ export default [
   partPaymentReceivedController,
   defendantDOBController,
   claimantIntentionToProceedController,
+  KpriorityDebtsController,
 ];

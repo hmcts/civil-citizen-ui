@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {CITIZEN_DEBTS_URL, CITIZEN_PRIORITY_DEBTS_URL} from '../../../urls';
+import {CITIZEN_DEBTS_URL, CITIZEN_SEVERELY_DISABLED_URL} from '../../../urls';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {checkBoxFields} from '../../../../common/utils/priorityDebts/priorityDebtsConstants';
 import {
@@ -16,7 +16,7 @@ const priorityDebtsController = Router();
 const debtsViewPath = 'features/response/statementOfMeans/priority-debts';
 
 priorityDebtsController.get(
-  CITIZEN_PRIORITY_DEBTS_URL,
+  CITIZEN_SEVERELY_DISABLED_URL,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       res.render(debtsViewPath, {
@@ -30,7 +30,7 @@ priorityDebtsController.get(
 );
 
 priorityDebtsController.post(
-  CITIZEN_PRIORITY_DEBTS_URL,
+  CITIZEN_SEVERELY_DISABLED_URL,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const form = convertRequestBodyToForm(req);

@@ -3,6 +3,19 @@ import {RegularExpenses} from '../../form/models/statementOfMeans/expensesAndInc
 import {RegularIncome} from '../../form/models/statementOfMeans/expensesAndIncome/regularIncome';
 import {Transaction} from '../../form/models/statementOfMeans/expensesAndIncome/transaction';
 import {OtherTransaction} from '../../form/models/statementOfMeans/expensesAndIncome/otherTransaction';
+// import {TransactionSource} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSource';
+
+function KtoRegularExpenseForm(req: Request): RegularExpenses {
+  const KregularExpenses = new RegularExpenses(req.body.model);
+  Object.keys(req.body.model).forEach((key: keyof RegularExpenses) => {
+    KregularExpenses[key] = req.body.model[key]?.declared ?
+      Transaction.buildPopulatedForm(req.body.model[key].transactionSource.name,
+        req.body.model[key].transactionSource.amount,
+        req.body.model[key].transactionSource.schedule)
+      : new Transaction();
+  });
+  return KregularExpenses;
+}
 
 function toRegularExpenseForm(req: Request): RegularExpenses {
   const regularExpenses = RegularExpenses.buildEmptyForm();
@@ -42,4 +55,5 @@ function updateFormWithResponseData(key: string, req: Request, transactionModel:
 export {
   toRegularExpenseForm,
   toRegularIncomeForm,
+  KtoRegularExpenseForm,
 };
