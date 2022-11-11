@@ -1,8 +1,10 @@
 {% extends "claim-details-tpl.njk" %}
+
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/select/macro.njk" import govukSelect %}
+
 {% from "../../../macro/address.njk" import addressForm %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
@@ -10,17 +12,16 @@
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../macro/postcode-address-form.njk" import postcodeLookupAndAddressForm %}
 {% set correspondenceAddressClass = 'govuk-visually-hidden' %}
-{% set claimantIndividualAddressErrors = claimantIndividualAddress.getAllErrors() %}
+
+
 {% set partyErrors = party.getAllErrors() %}
+
 {% set partyTypeName = t('PAGES.CITIZEN_DETAILS.PARTY_NAME_COMPANY') %}
 {% set detailsTitle =  t('PAGES.CITIZEN_DETAILS.COMPANY_DETAILS') %}
 {% set addressExplanation = t('PAGES.COMPANY_DETAILS.COMPANY_REGISTERED_OFFICE') %}
 {% set addressTitle = t('PAGES.CITIZEN_DETAILS.COMPANY_ADDRESS') %}
 {% set pageTitle = t('PAGES.COMPANY_DETAILS.CLAIMANT_PAGE_TITLE') %}
-{% if claimantIndividualCorrespondenceAddress %}
-  {% set claimantIndividualCorrespondenceAddressErrors = claimantIndividualCorrespondenceAddress.getAllErrors() %}
-  {% set claimantIndividualAddressErrors = claimantIndividualAddressErrors.concat(claimantIndividualCorrespondenceAddress.getAllErrors()) %}
-{% endif %}
+
 {% if type === partyType.ORGANISATION %}
   {% set partyTypeName = t('PAGES.CITIZEN_DETAILS.PARTY_NAME_ORGANISATION') %}
   {% set addressTitle = t('PAGES.ORGANISATION_DETAILS.ADDRESS') %}
@@ -28,9 +29,8 @@
   {% set pageTitle = t('PAGES.ORGANISATION_DETAILS.PAGE_TITLE') %}
   {% set addressExplanation = t('PAGES.ORGANISATION_DETAILS.MAIN_OFFICE') %}
 {% endif %}
-{% if claimant.provideCorrespondenceAddress == YesNo.YES or
-      claimantIndividualCorrespondenceAddress.model.isEmpty() === false or
-      claimantIndividualCorrespondenceAddress.hasErrors() === true %}
+{% if party.model.provideCorrespondenceAddress == YesNo.YES or
+      party.errorFor('correspondenceAddress')%}
   {% set radioChecked = true %}
 {% else %}
   {% set radioChecked = false %}
@@ -38,37 +38,41 @@
 {% block pageTitle %}
   {{ setPageTitle(pageTitle) }}
 {% endblock %}
+
 {% set correspondenceAddressHtml %}
 <div class="govuk-form-group">
   <p class="govuk-label govuk-!-margin-bottom-5">
     <p class="govuk-body">{{ t('PAGES.COMPANY_DETAILS.ALL_CORRESPONDENCE') }}
       {{ t('PAGES.COMPANY_DETAILS.ADDRESS_FOR_SERVICE') }}</p>
     {{ postcodeLookupAndAddressForm(t, {
-      citizenCorrespondenceAddress:claimantIndividualCorrespondenceAddress,
+      party: party,
       addressType:'correspondence',
       addressTitle:addressTitle
     }) }}
   </div>
-  {% endset -%}
-  {% block content %}
-    <div class="govuk-width-container">
-      <main class="govuk-main-wrapper" role="main">
-        <div class="govuk-grid-row">
-          {% if party.hasErrors() or claimantIndividualCorrespondenceAddress.hasErrors() or claimantIndividualAddress.hasErrors() %}
-            {{ errorSummary(partyErrors.concat(claimantIndividualAddressErrors), t) }}
-          {% endif %}
+{% endset -%}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      <div class="govuk-grid-row">
+        {% if party.hasErrors() %}
+          {{ errorSummary(party.getAllErrors(), t) }}
+        {% endif %}
+      </div>
+
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ detailsTitle}}</h1>
+          <p class="govuk-body">{{ t('PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.THESE_DETAILS_ARE') }}</p>
         </div>
-        <div class="govuk-grid-row">
-          <div class="govuk-grid-column-two-thirds">
-            <h1 class="govuk-heading-l">{{ detailsTitle }}</h1>
-            <p class="govuk-body">{{ t('PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.THESE_DETAILS_ARE') }}</p>
-          </div>
-        </div>
-        <div class="govuk-grid-row">
-          <div class="govuk-grid-column-two-thirds">
-            <form method="post" class="govuk-!-padding-top-4" name="address" novalidate>
-              {{ csrfProtection(csrf) }}
-              {{ govukInput({
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <form method="post" class="govuk-!-padding-top-4" name="address" novalidate>
+            {{ csrfProtection(csrf) }}
+
+            {{ govukInput({
               label: {
                 text: t(partyTypeName)
               },
@@ -78,7 +82,7 @@
               value: party.model.partyName,
                 errorMessage: { text: t(party.errorFor('partyName')) } if party.errorFor('partyName')
             }) }}
-              {{ govukInput({
+            {{ govukInput({
               label: {
                 text: t('COMMON.OPTIONAL_CONTACT_PERSON')
               },
@@ -96,7 +100,7 @@
                   {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}</p>
                 <p class="govuk-body">{{ addressExplanation }}</p>
                 {{ postcodeLookupAndAddressForm(t, {
-                    citizenAddress:claimantIndividualAddress,
+                    party: party,
                     addressType:'primary',
                     addressTitle:''
                   }) }}
@@ -115,7 +119,7 @@
                 {
                   value: YesNo.NO,
                   text: t('COMMON.NO'),
-                  checked: false if claimant.provideCorrespondenceAddress == YesNo.YES else true
+                  checked: false if party.model.provideCorrespondenceAddress == YesNo.YES else true
                 },
                 {
                   value: YesNo.YES,
@@ -127,13 +131,13 @@
                 }
               ]
             }) }}
-              {{ govukButton({
+            {{ govukButton({
               text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
             }) }}
-              {{ contactUsForHelp(t) }}
-            </form>
-          </div>
+            {{ contactUsForHelp(t) }}
+          </form>
         </div>
-      </main>
-    </div>
-  {% endblock %}
+      </div>
+    </main>
+  </div>
+{% endblock %}

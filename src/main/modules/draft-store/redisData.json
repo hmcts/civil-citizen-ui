@@ -83,20 +83,24 @@
       },
       "respondent1": {
         "type": "INDIVIDUAL",
-        "individualTitle": "Mrs.",
-        "individualFirstName": "Jane",
-        "individualLastName": "Doe",
-        "partyName": "Mrs. Jane Doe",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "partyDetails": {
+          "individualTitle": "Mrs.",
+          "individualFirstName": "Jane",
+          "individualLastName": "Doe",
+          "partyName": "Mrs. Jane Doe",
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         },
-        "partyPhone": "01632960001"
+        "partyPhone": {
+          "phone": "01632960001"
+        }
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
@@ -250,35 +254,35 @@
       "applicant1": {
         "type": "SOLE_TRADER",
         "partyPhone": "(0)207 127 0000",
-        "individualTitle": "Mr.",
-        "individualFirstName": "Jan",
-        "individualLastName": "Clark",
-        "soleTraderTitle": "Mr.",
-        "soleTraderFirstName": "Jan",
-        "soleTraderLastName": "Clark",
-        "soleTraderTradingAs": "Gardener",
-        "partyName": "Mr. Jan Clark",
-        "primaryAddress": {
-          "County": "London",
-          "Country": "United Kingdom",
-          "PostCode": "SW1H 9AJ",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "partyDetails": {
+          "individualTitle": "Mr.",
+          "individualFirstName": "Jan",
+          "individualLastName": "Clark",
+          "soleTraderTradingAs": "Gardener",
+          "primaryAddress": {
+            "county": "London",
+            "country": "United Kingdom",
+            "postCode": "SW1H 9AJ",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         }
       },
       "respondent1": {
         "type": "ORGANISATION",
         "partyName": "Version 1",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "partyDetails": {
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         }
       },
       "claimInterest": "Yes",
@@ -405,7 +409,7 @@
         "AddressLine3": "Church Road"
       },
       "specRespondentCorrespondenceAddressRequired": "Yes",
-      "responseDeadline":{
+      "responseDeadline": {
         "option": "already-agreed",
         "agreedResponseDeadline": "2022-08-30T15:59:59"
       }
@@ -429,35 +433,37 @@
       "applicant1": {
         "type": "INDIVIDUAL",
         "partyPhone": "(0)207 127 0000",
-        "individualTitle": "Mr.",
-        "individualFirstName": "Alex",
-        "individualLastName": "Van",
-        "partyName": "Mr. Alex Van",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "partyDetails": {
+          "individualTitle": "Mr.",
+          "individualFirstName": "Alex",
+          "individualLastName": "Van",
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         }
       },
       "respondent1": {
         "type": "INDIVIDUAL",
         "partyPhone": "(0)207 127 0000",
-        "individualTitle": "Mr.",
-        "individualFirstName": "Jhon",
-        "individualLastName": "Smith",
-        "partyName": "Mr. Jhon Smith",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "partyDetails": {
+          "individualTitle": "Mr.",
+          "individualFirstName": "Jhon",
+          "individualLastName": "Smith",
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         }
       },
       "claimInterest": "Yes",
@@ -606,15 +612,16 @@
         "individualTitle": "Mr.",
         "individualFirstName": "Jan",
         "individualLastName": "Clark",
-        "partyName": "Mr. Jan Clark",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "partyDetails": {
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         }
       },
       "respondent1": {
@@ -766,7 +773,7 @@
         "AddressLine3": "Church Road"
       },
       "specRespondentCorrespondenceAddressRequired": "Yes",
-      "responseDeadline":{
+      "responseDeadline": {
         "option": "already-agreed",
         "agreedResponseDeadline": "2022-08-30T15:59:59"
       }
@@ -789,31 +796,37 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "COMPANY",
-        "partyName": "Google",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "partyDetails": {
+          "partyName": "Google",
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         }
       },
       "respondent1": {
         "type": "COMPANY",
         "partyName": "Version 1",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "partyDetails": {
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          },
+          "contactPerson": "Jane Smith"
         },
-        "partyPhone": "01632960001",
-        "contactPerson": "Jane Smith"
+        "partyPhone": {
+          "phone": "01632960001"
+        }
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
@@ -960,7 +973,7 @@
         "AddressLine3": "Church Road"
       },
       "specRespondentCorrespondenceAddressRequired": "Yes",
-      "responseDeadline":{
+      "responseDeadline": {
         "option": "yes",
         "additionalTime": "more-than-28-days"
       }
@@ -982,37 +995,40 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "INDIVIDUAL",
-        "individualTitle": "Mr.",
-        "individualFirstName": "Jan",
-        "individualLastName": "Clark",
-        "partyName": "Mr. Jan Clark",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "PartyDetails": {
+          "individualTitle": "Mr.",
+          "individualFirstName": "Jan",
+          "individualLastName": "Clark",
+          "partyName": "Mr. Jan Clark",
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         }
       },
       "respondent1": {
         "type": "SOLE_TRADER",
-        "individualTitle": "Mr.",
-        "individualFirstName": "Jan",
-        "individualLastName": "Clark",
-        "partyName": "Mr. Jan Clark",
-        "partyPhone": "678765432",
-        "soleTraderTradingAs": "Clark's Sons Ltd.",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
-        }
+        "PartyDetails": {
+          "individualTitle": "Mr.",
+          "individualFirstName": "Jan",
+          "individualLastName": "Clark",
+          "soleTraderTradingAs": "Clark's Sons Ltd.",
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
+        },
+        "partyPhone": "678765432"
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
@@ -1168,7 +1184,7 @@
         "AddressLine3": "Church Road"
       },
       "specRespondentCorrespondenceAddressRequired": "Yes",
-      "responseDeadline":{
+      "responseDeadline": {
         "option": "request-refused"
       },
       "evidence": {
@@ -1202,34 +1218,36 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "INDIVIDUAL",
-        "individualTitle": "Mr.",
-        "individualFirstName": "Jan",
-        "individualLastName": "Clark",
-        "partyName": "Mr. Jan Clark",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "PartyDetails": {
+          "individualTitle": "Mr.",
+          "individualFirstName": "Jan",
+          "individualLastName": "Clark",
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         }
       },
       "respondent1": {
         "type": "SOLE_TRADER",
-        "individualTitle": "Mr.",
-        "individualFirstName": "Jan",
-        "individualLastName": "Clark",
-        "partyName": "Mr. Jan Clark",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "PartyDetails": {
+          "individualTitle": "Mr.",
+          "individualFirstName": "Jan",
+          "individualLastName": "Clark",
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         }
       },
       "claimInterest": "Yes",
@@ -1411,31 +1429,34 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "ORGANISATION",
-        "partyName": "Version 1",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "PartyDetails": {
+          "partyName": "Version 1",
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         }
       },
       "respondent1": {
         "type": "INDIVIDUAL",
-        "individualTitle": "Mrs.",
-        "individualFirstName": "Jane",
-        "individualLastName": "Doe",
-        "partyName": "Mrs. Jane Doe",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "PartyDetails": {
+          "individualTitle": "Mrs.",
+          "individualFirstName": "Jane",
+          "individualLastName": "Doe",
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         },
         "partyPhone": "01632960001"
       },
@@ -1571,8 +1592,8 @@
         "AddressLine3": "Church Road"
       },
       "specRespondentCorrespondenceAddressRequired": "Yes",
-      "responseDeadline":{
-        "option":"no"
+      "responseDeadline": {
+        "option": "no"
       }
     }
   },
@@ -1594,36 +1615,36 @@
       "applicant1": {
         "type": "SOLE_TRADER",
         "partyPhone": "(0)207 127 0000",
-        "individualTitle": "Mr.",
-        "individualFirstName": "Jan",
-        "individualLastName": "Clark",
-        "soleTraderTitle": "Mr.",
-        "soleTraderFirstName": "Jan",
-        "soleTraderLastName": "Clark",
-        "soleTraderTradingAs": "Gardener",
-        "partyName": "Mr. Jan Clark",
-        "primaryAddress": {
-          "County": "London",
-          "Country": "United Kingdom",
-          "PostCode": "SW1H 9AJ",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "PartyDetails": {
+          "individualTitle": "Mr.",
+          "individualFirstName": "Jan",
+          "individualLastName": "Clark",
+          "soleTraderTradingAs": "Gardener",
+          "primaryAddress": {
+            "county": "London",
+            "country": "United Kingdom",
+            "postCode": "SW1H 9AJ",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         }
       },
       "respondent1": {
         "type": "ORGANISATION",
-        "partyName": "Version 1",
         "partyPhone": "435321672",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "PartyDetails": {
+          "partyName": "Version 1",
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         }
       },
       "claimInterest": "Yes",
@@ -1770,34 +1791,36 @@
       "applicant1": {
         "type": "INDIVIDUAL",
         "partyPhone": "(0)207 127 0000",
-        "individualTitle": "Mr.",
-        "individualFirstName": "Alex",
-        "individualLastName": "Van",
-        "partyName": "Mr. Alex Van",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "partyDetails": {
+          "individualTitle": "Mr.",
+          "individualFirstName": "Alex",
+          "individualLastName": "Van",
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         }
       },
       "respondent1": {
         "type": "INDIVIDUAL",
-        "individualTitle": "Mr.",
-        "individualFirstName": "Jhon",
-        "individualLastName": "Smith",
-        "partyName": "Mr. Jhon Smith",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "partyDetails": {
+          "individualTitle": "Mr.",
+          "individualFirstName": "Jhon",
+          "individualLastName": "Smith",
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         }
       },
       "claimInterest": "Yes",
@@ -1924,7 +1947,7 @@
         "AddressLine3": "Church Road"
       },
       "specRespondentCorrespondenceAddressRequired": "Yes",
-      "responseDeadline":{
+      "responseDeadline": {
         "option": "already-agreed",
         "additionalTime": "more-than-28-days",
         "agreedResponseDeadline": "2022-08-30T15:59:59"
