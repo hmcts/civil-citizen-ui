@@ -1016,7 +1016,8 @@
       "PAGE_TITLE": "Enter the expert’s details",
       "PHONE_OPTIONAL": "Phone number (optional)",
       "REMOVE_EXPERT": "Remove expert",
-      "TELL_US_WHY_NEED_EXPERT": "Tell us why you need this expert"
+      "TELL_US_WHY_NEED_EXPERT": "Tell us why you need this expert",
+      "SECTION_TITLE": "Expert Details"
     },
     "EXPERT_GUIDANCE": {
       "ASK_PERMISSION": "You must ask for permission to use an expert - a judge will then decide whether the expert is necessary.",
@@ -1046,6 +1047,7 @@
     },
     "EXPERT_REPORT_DETAILS": {
       "ADD_ANOTHER": "Ychwanegu adroddiad arall",
+      "DATE_OF_REPORT": "Date of report",
       "EXPERT_NAME": "Enw’r arbenigwr",
       "PAGE_TITLE": "A oes gennych adroddiad wedi’i ysgrifennu gan arbenigwr yn barod?",
       "REPORT_DATE": "Beth yw dyddiad yr adroddiad?",
@@ -1557,6 +1559,12 @@
       "OPTION_YES": "Do",
       "PAGE_TITLE": "Ydych chi wedi anfon adroddiadau arbenigwyr at y partïon eraill yn barod?",
       "TITLE": "Ydych chi wedi anfon adroddiadau arbenigwyr at y partïon eraill yn barod?"
+    },
+    "SETTLE_CLAIM_PART_PAYMENT_RECEIVED": {
+      "PAGE_TITLE": "Do you want to settle the claim for the £{{ paidAmount }} the defendant has paid?",
+      "PROCEED_WITH_CLAIM": "Proceed with the claim",
+      "SETTLE_THE_CLAIM": "Settle the claim",
+      "TITLE": "Do you want to settle the claim for the £{{ paidAmount }} the defendant has paid?"
     },
     "SHARED_EXPERT": {
       "IF_YOU_SHARE": "Os byddwch yn rhannu arbenigwr, byddwch hefyd yn rhannu’r costau oni bai bod y barnwr yn penderfynu bod rhaid i un parti dalu cyfran y parti arall.",
