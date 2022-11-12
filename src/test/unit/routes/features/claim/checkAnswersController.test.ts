@@ -8,9 +8,8 @@ import {createClaimWithBasicDetails, createClaimWithYourDetails} from '../../../
 import {getCaseDataFromStore} from '../../../../../main/modules/draft-store/draftStoreService';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
 import {Claim} from '../../../../../main/common/models/claim';
-import {ClaimDetails} from 'form/models/claim/details/claimDetails';
-import {HelpWithFees} from 'form/models/claim/details/helpWithFees';
-import {STATEMENT_OF_TRUTH_REQUIRED_MESSAGE} from 'form/validationErrors/errorMessageConstants';
+import {ClaimDetails} from '../../../../../main/common/form/models/claim/details/claimDetails';
+import {HelpWithFees} from '../../../../../main/common/form/models/claim/details/helpWithFees';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -157,7 +156,7 @@ describe('Response - Check answers', () => {
         .send(data)
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(STATEMENT_OF_TRUTH_REQUIRED_MESSAGE);
+          expect(res.text).toContain('Tell us if you believe the facts stated in this response are true');
         });
     });
     it('should return payment button when Fee is no', async () => {

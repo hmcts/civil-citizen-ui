@@ -100,7 +100,7 @@ export const createClaimWithBasicClaimDetails = (contactPerson?: string): Claim 
     },
   };
   claim.claimDetails = new ClaimDetails();
-  claim.respondent1.partyDetails.primaryAddress = new Address('23 Brook lane', '', '', 'Bristol', 'BS13SS');
+  claim.applicant1.partyDetails.primaryAddress = new Address('23 Brook lane', '', '', 'Bristol', 'BS13SS');
   claim.paymentOption = PaymentOptionType.IMMEDIATELY;
   return claim;
 };
