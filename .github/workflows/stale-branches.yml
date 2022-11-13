@@ -20,14 +20,9 @@ jobs:
       - uses: crs-k/stale-branches@v2.0.18
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          days-before-stale: '5'
-          days-before-delete: '10'
-          comment-updates: >
-            This branch has been automatically marked as stale because it has not had
-            recent activity. It will be closed if no further activity occurs. Thank you
-            for your contributions.
+          days-before-stale: 5
+          days-before-delete: 10
+          comment-updates: true
           tag-committer: true
           stale-branch-label: 'stale branch 🗑️'
           max-issues: 20
-          compare-branches: 'off'
-
