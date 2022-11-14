@@ -162,6 +162,7 @@ import settleClaimController from './features/claimantResponse/settleClaimContro
 import partPaymentReceivedController from './features/claimantResponse/partPaymentReceivedController';
 import defendantDOBController from './features/claimantResponse/ccj/defendantDOBController';
 import claimantIntentionToProceedController from './features/claimantResponse/claimantIntentionToProceedController';
+import reviewDefendantsResponseController from './features/claimantResponse/reviewDefendantsResponseController';
 import rejectionReasonController from './features/claimantResponse/rejectionReasonController';
 
 export default [
@@ -312,5 +313,6 @@ export default [
   partPaymentReceivedController,
   defendantDOBController,
   claimantIntentionToProceedController,
+  reviewDefendantsResponseController,
   rejectionReasonController,
 ];
