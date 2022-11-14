@@ -224,6 +224,14 @@
     "VARIATION_2": {
       "YES": "Ydw",
       "NO": "Nac ydw"
+    },
+    "VARIATION_3": {
+      "YES": "Ydw/Ydynt",
+      "NO": "Nac ydw/Nac ydynt"
+    },
+    "VARIATION_4": {
+      "YES": "Ydy",
+      "NO": "Nac ydy"
     }
   },
   "TASK_LIST": {
@@ -851,11 +859,11 @@
       "TITLE": "A ydych eisiau rhoi tystiolaeth eich hun?"
     },
     "DEFENDANT_EXPERT_CAN_STILL_EXAMINE": {
-      "CAN_NOT_USE": "You can't use an expert in this case.",
-      "EXAMINE": "What is there to examine?",
+      "CAN_NOT_USE": "Ni allwch ddefnyddio arbenigwr yn yr achos hwn",
+      "EXAMINE": "Beth ellir ei archwilio?",
       "PAGE_TITLE": "Defendant expert can still examine",
-      "PHOTO_OR_VIDEO": "This could include photographs or videos.",
-      "TITLE": "Does the claim involve something an expert can still examine?"
+      "PHOTO_OR_VIDEO": "Gall hyn gynnwys ffotograffau neu fideos.",
+      "TITLE": "A yw’r hawliad yn ymwneud â rhywbeth y gall arbenigwr dal ei archwilio?"
     },
     "DEPENDANTS": {
       "GROUP11": "11 i 15",
@@ -1773,9 +1781,9 @@
     },
     "VULNERABILITY": {
       "PAGE_TITLE": "Vulnerability questions",
-      "QUESTION_1": "This is someone who has been the victim of domestic or other abuse, has a learning disability, physical or mental illness or reduced mental capacity. The court will look at what adjustments or support the person needs.",
-      "QUESTION_2": "Tell us who is vulnerable and what support they need",
-      "TITLE": "Are you, your experts or witnesses vulnerable in a way that the court needs to consider?"
+      "QUESTION_1": "Diffinnir hyn fel rhywun sydd wedi dioddef camdriniaeth ddomestig neu ryw fath arall o gamdriniaeth, rhywun sydd ag anabledd dysgu, anabledd corfforol, salwch meddyliol neu ddiffyg galluedd meddyliol.  Bydd y llys yn ystyried pa addasiadau neu gymorth y bydd yr unigolyn ei angen",
+      "QUESTION_2": "Dywedwch wrthym pwy sy’n agored i niwed a pha gymorth maent ei angen",
+      "TITLE": "A ydych chi, eich arbenigwyr neu eich tystion yn agored i niwed mewn ffordd y mae angen i’r llys ei ystyried?"
     },
     "WELSH_LANGUAGE": {
       "ENGLISH": "English",
@@ -1847,7 +1855,7 @@
     "DEFENDANT_POSTCODE_NOT_VALID": "Postcode must be in England or Wales",
     "DEFENDANT_YOURSELF_EVIDENCE_REQUIRED": "Dewiswch ‘ydw’ os ydych eisiau rhoi tystiolaeth eich hun",
     "DEFENDANT_EXPERT_EVIDENCE_REQUIRED": "Dewiswch ‘ydw’ os ydych eisiau defnyddio tystiolaeth arbenigwr",
-    "DEFENDANT_EXPERT_EXPLAIN_EXAMINE": "Explain what there is to examine",
+    "DEFENDANT_EXPERT_EXPLAIN_EXAMINE": "Eglurwch beth ellir ei archwilio",
     "DEFENDANT_WITNESS_ENTER_FIRST_NAME": "Nodwch enw cyntaf y tyst",
     "DEFENDANT_WITNESS_ENTER_LAST_NAME": "Nodwch enw olaf y tyst",
     "DEFENDANT_WITNESS_SELECT_OTHER": "Select yes if you have other witnesses",
@@ -2102,7 +2110,7 @@
     "VALID_YES_NO_OPTION_NAC_YDW": "Dewiswch opsiwn: ‘ydw’ neu ‘nac ydw’",
     "VALID_YES_NO_SELECTION": "Dewiswch ie neu na, os gwelwch yn dda",
     "VALID_WHY_FROM_PARTICULAR_DATE": "You need to explain why you are claiming",
-    "QUESTION_1_REQUIRED": "Select yes if someone is vulnerable in a way that the court needs to consider",
+    "QUESTION_1_REQUIRED": "Dewiswch 'oes' os yw rhywun yn fregus a bod angen i'r llys ystyried hynny",
     "QUESTION_2_REQUIRED": "Tell us who is vulnerable and what support they need",
     "CLAIMANT_REJECTION_RESPONSE_REQUIRED": "Enter why you rejected repayment plan"
   }
