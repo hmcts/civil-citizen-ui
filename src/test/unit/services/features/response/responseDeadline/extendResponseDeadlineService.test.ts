@@ -18,7 +18,9 @@ mockedAppRequest.params = {id: '1'};
 const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const claim = new Claim();
 claim.applicant1 = {
-  partyName: 'Mr. James Bond',
+  partyDetails: {
+    partyName: 'Mr. James Bond',
+  },
   type: PartyType.INDIVIDUAL,
 };
 claim.responseDeadline = {

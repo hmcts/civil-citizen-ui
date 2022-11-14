@@ -62,7 +62,7 @@ export class CivilServiceClient {
       const response = await this.client.get('/cases/claimant/' + submitterId, config);
       return plainToInstance(DashboardClaimantItem, response.data as object[]);
     } catch (err) {
-      logger.log(err);
+      logger.error(err);
     }
   }
 
@@ -73,7 +73,7 @@ export class CivilServiceClient {
       const response = await this.client.get('/cases/defendant/' + submitterId, config);
       return plainToInstance(DashboardDefendantItem, response.data as object[]);
     }catch(err){
-      logger.log(err);
+      logger.error(err);
     }
   }
 

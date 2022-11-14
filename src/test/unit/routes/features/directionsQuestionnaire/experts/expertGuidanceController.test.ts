@@ -2,10 +2,11 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {EXPERT_GUIDANCE_URL, PERMISSION_FOR_EXPERT_URL} from '../../../../../../main/routes/urls';
+import {EXPERT_GUIDANCE_URL, PERMISSION_FOR_EXPERT_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/draft-store');
 
 describe('Using an expert in small claims', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

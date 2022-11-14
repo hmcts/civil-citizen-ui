@@ -2,16 +2,9 @@ import {app} from '../../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import request from 'supertest';
-import {CITIZEN_PAYMENT_DATE_URL, CLAIM_TASK_LIST_URL} from '../../../../../../../../main/routes/urls';
-import {
-  VALID_DATE_NOT_IN_PAST,
-  VALID_DAY,
-  VALID_MONTH,
-  VALID_YEAR,
-} from '../../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {CITIZEN_PAYMENT_DATE_URL, CLAIM_TASK_LIST_URL} from 'routes/urls';
 import {
   mockCivilClaim,
-  mockCivilClaimUndefined,
   mockNoStatementOfMeans,
   mockRedisFailure,
 } from '../../../../../../../utils/mockDraftStore';
@@ -82,18 +75,6 @@ describe('Payment date', () => {
     });
   });
   describe('on POST', () => {
-    it('should create a new claim if redis gives undefined', async () => {
-      app.locals.draftStoreClient = mockCivilClaimUndefined;
-      await request(app)
-        .post(CITIZEN_PAYMENT_DATE_URL)
-        .send('year=9999')
-        .send('month=1')
-        .send('day=1')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
-        });
-    });
     it('should return errors on no input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
@@ -103,11 +84,12 @@ describe('Payment date', () => {
         .send('day=')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_DAY);
-          expect(res.text).toContain(VALID_MONTH);
-          expect(res.text).toContain(VALID_YEAR);
+          expect(res.text).toContain(TestMessages.VALID_DAY);
+          expect(res.text).toContain(TestMessages.VALID_MONTH);
+          expect(res.text).toContain(TestMessages.VALID_YEAR);
         });
     });
+
     it('should return error on date in the past', async () => {
       await request(app)
         .post(CITIZEN_PAYMENT_DATE_URL)
@@ -116,30 +98,10 @@ describe('Payment date', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_DATE_NOT_IN_PAST);
+          expect(res.text).toContain(TestMessages.VALID_DATE_NOT_IN_PAST);
         });
     });
-    it('should return error on incorrect input', async () => {
-      await request(app)
-        .post(CITIZEN_PAYMENT_DATE_URL)
-        .send('year=')
-        .send('month=1')
-        .send('day=1')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_YEAR);
-        });
-    });
-    it('should accept a future date', async () => {
-      await request(app)
-        .post(CITIZEN_PAYMENT_DATE_URL)
-        .send('year=9999')
-        .send('month=1')
-        .send('day=1')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
-    });
+
     it('should redirect to claim task list page on valid payment date', async () => {
       await request(app)
         .post(CITIZEN_PAYMENT_DATE_URL)
