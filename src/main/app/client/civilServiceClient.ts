@@ -5,7 +5,7 @@ import {AppRequest} from '../../common/models/AppRequest';
 import {CivilClaimResponse} from '../../common/models/civilClaimResponse';
 import {
   CIVIL_SERVICE_CALCULATE_DEADLINE,
-  CIVIL_SERVICE_CASES_URL,
+  CIVIL_SERVICE_CASES_URL, CIVIL_SERVICE_COURT_LOCATIONS,
   CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_FEES_RANGES,
   CIVIL_SERVICE_SUBMIT_EVENT,
@@ -14,12 +14,10 @@ import {
 import {FeeRange, FeeRanges} from '../../common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
 import {CaseDocument} from 'common/models/document/caseDocument';
-import {
-  DashboardClaimantItem,
-  DashboardDefendantItem,
-} from '../../common/models/dashboard/dashboardItem';
+import {DashboardClaimantItem, DashboardDefendantItem} from '../../common/models/dashboard/dashboardItem';
 import {ClaimUpdate, EventDto} from '../../common/models/events/eventDto';
 import {CaseEvent} from '../../common/models/events/caseEvent';
+import {CourtLocation} from '../../common/models/courts/courtLocations';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -178,6 +176,17 @@ export class CivilServiceClient {
     }catch (err: unknown) {
       logger.error(err);
       throw err;
+    }
+  }
+
+  async getCourtLocations(req: AppRequest): Promise<CourtLocation[]> {
+    const config = this.getConfig(req);
+    try{
+      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_COURT_LOCATIONS, config);
+      return plainToInstance(CourtLocation, response.data as object[]);
+    }catch (error: unknown) {
+      logger.error(error);
+      throw error;
     }
   }
 }
