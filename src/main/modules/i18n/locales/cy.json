@@ -1145,6 +1145,13 @@
       "PAGE_TITLE": "Free telephone mediation",
       "REACHING_SETTLEMENT": "Setlo’r anghydfod"
     },
+    "FULL_ADMIT_SET_DATE_PAYMENT": {
+      "DEFENDANT_OFFERED_TO_PAY": "{{ defendantName }} has offered to pay you in full by {{ proposedSetDate }}",
+      "DO_YOU_ACCEPT": "Do you accept the repayment plan?",
+      "NO_OPTION": "No - I'll suggest my own",
+      "PAGE_TITLE": "How they want to pay",
+      "TITLE": "How they want to pay"
+    },
     "HELP_WITH_FEES": {
       "ENTER_NUMBER": "Enter the Help With Fees number",
       "PAGE_TITLE": "Do you have a Help With Fees reference number?",
@@ -1582,6 +1589,14 @@
       "SINGLE_JOINT_EXPERT": "Gelwir hyn yn ‘arbenigwr sengl ar y cyd’.",
       "TITLE": "Ydych chi eisiau rhannu arbenigwr gyda’r hawlydd?"
     },
+    "SPECIFIC_COURT": {
+      "EXPlANATION": "You can ask for the hearing to be held at a specific court, for example, if you spend weekdays a long distance from your home. The court will consider both parties' circumstances when deciding where to hold the hearing.",
+      "PAGE_TITLE": "Specific court",
+      "SELECT_COURT": "Select a court",
+      "SELECT_VALUE": "Select a value",
+      "REASON": "Tell us why you want the hearing to be held at this court",
+      "TITLE": "Do you want to ask for the hearing to be held at a specific court?"
+    },
     "SUBMIT_CONFIRMATION": {
       "FA_PAY_BY_DATE": {
         "BANK_TRANSFERS_CLEAR_IN_THEIR_ACC": "make sure any cheques or bank transfers are clear in their account by the deadline",
@@ -1971,6 +1986,10 @@
     "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",
     "SOMETHING_WENT_WRONG": "Something went wrong",
     "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Dywedwch wrthym os ydych yn credu bod y ffeithiau a nodir yn yr ymateb hwn yn wir",
+    "SPECIFIC_COURT": {
+      "SELECT_YES_NO": "Select yes if you want to ask for the hearing to be held at a specific court",
+      "SELECT_COURT_LOCATION": "Select a court"
+    },
     "TELL_US_WHY": "Dywedwch wrthym pam",
     "TELL_US_WHY_UNAVAILABLE": "Tell us why you, your experts or witnesses are unavailable for a hearing",
     "TRANSACTION_SOURCE": {
