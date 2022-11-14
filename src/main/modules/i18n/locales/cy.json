@@ -273,6 +273,12 @@
     "ARE_YOU_SEVERELY_DISABLED": {
       "PAGE_TITLE": "Severely disabled"
     },
+    "BREATHING_SPACE_DEBT_RESPITE_TYPE": {
+      "MENTAL_HEALTH": "Mental health crisis moratorium",
+      "PAGE_TITLE": "What type is it?",
+      "STANDARD": "Standard breathing space",
+      "TITLE": "What type is it?"
+    },
     "CARER": {
       "PAGE_TITLE": "Carer's allowance"
     },
