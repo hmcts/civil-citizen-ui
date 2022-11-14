@@ -26,7 +26,7 @@ totalAmountController.get(CLAIM_TOTAL_URL, async (req: AppRequest, res: Response
     const hearingResponse = await civilServiceClient.getHearingAmount(claim.totalClaimAmount, <AppRequest>req);
     const hearingAmount = convertToPoundsFilter(hearingResponse.calculatedAmountInPence);
     const hasInterest = claim.claimInterest === YesNo.YES ? true : false;
-    let interestToDate: number = 0;
+    let interestToDate = 0;
 
     if (hasInterest) {
       interestToDate = calculateInterestToDate(claim);
