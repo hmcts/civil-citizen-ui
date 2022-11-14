@@ -2,11 +2,10 @@ import {app} from '../../../../../main/app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {CAN_WE_USE_COMPANY_URL, CLAIM_TASK_LIST_URL} from '../../../../../main/routes/urls';
+import {CAN_WE_USE_COMPANY_URL, CLAIM_TASK_LIST_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
-import {VALID_YES_NO_OPTION} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
-import {YesNo} from '../../../../../main/common/form/models/yesNo';
+import {YesNo} from 'form/models/yesNo';
 import civilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
 
 jest.mock('../../../../../main/modules/oidc');
@@ -19,7 +18,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
+      .reply(200, {id_token: citizenRoleToken});
   });
 
   describe('on Get', () => {
@@ -28,7 +27,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
       await request(app).get(CAN_WE_USE_COMPANY_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Is '+civilClaimResponseMock.case_data.respondent1.contactPerson+' the right person for the mediation service to call?');
+          expect(res.text).toContain('Is ' + civilClaimResponseMock.case_data.respondent1.partyDetails.contactPerson + ' the right person for the mediation service to call?');
         });
     });
     it('should return 500 status code when error occurs', async () => {
@@ -50,16 +49,16 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CAN_WE_USE_COMPANY_URL)
-        .send({contactPerson : 'Test contact person'})
+        .send({contactPerson: 'Test contact person'})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_YES_NO_OPTION);
+          expect(res.text).toContain(TestMessages.VALID_YES_NO_OPTION);
         });
     });
     it('should have errors when yes is an option, but no telephone number is provided', async () => {
       await request(app)
         .post(CAN_WE_USE_COMPANY_URL)
-        .send({ option: YesNo.YES})
+        .send({option: YesNo.YES})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.PHONE_NUMBER_REQUIRED);
@@ -68,7 +67,13 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
     it('should have errors when yes is an option but a long telephone number is provided', async () => {
       await request(app)
         .post(CAN_WE_USE_COMPANY_URL)
-        .send({ option: YesNo.YES, mediationPhoneNumber: null, mediationContactPerson: null, mediationPhoneNumberConfirmation: inValidPhoneNumber, contactPerson: 'Test contact person' })
+        .send({
+          option: YesNo.YES,
+          mediationPhoneNumber: null,
+          mediationContactPerson: null,
+          mediationPhoneNumberConfirmation: inValidPhoneNumber,
+          contactPerson: 'Test contact person',
+        })
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('You&#39;ve entered too many characters');
@@ -77,7 +82,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
     it('should have errors when no is an option, but no other thing provided', async () => {
       await request(app)
         .post(CAN_WE_USE_COMPANY_URL)
-        .send({ option: YesNo.NO})
+        .send({option: YesNo.NO})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.NAME_REQUIRED);
@@ -87,7 +92,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
     it('should have errors when no is an option, contact number is provided but no contact name', async () => {
       await request(app)
         .post(CAN_WE_USE_COMPANY_URL)
-        .send({ option: YesNo.NO, mediationPhoneNumber: validPhoneNumber, mediationContactPerson:null   })
+        .send({option: YesNo.NO, mediationPhoneNumber: validPhoneNumber, mediationContactPerson: null})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.NAME_REQUIRED);
@@ -96,7 +101,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
     it('should have errors when no is an option, contact name is provided but no contact number', async () => {
       await request(app)
         .post(CAN_WE_USE_COMPANY_URL)
-        .send({ option: YesNo.NO, mediationPhoneNumber: null, mediationContactPerson: validName })
+        .send({option: YesNo.NO, mediationPhoneNumber: null, mediationContactPerson: validName})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.PHONE_NUMBER_REQUIRED);
@@ -105,7 +110,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
     it('should have errors when no is an option but both contact name and contact number are too long', async () => {
       await request(app)
         .post(CAN_WE_USE_COMPANY_URL)
-        .send({ option: YesNo.NO, mediationPhoneNumber: inValidPhoneNumber, mediationContactPerson: inValidName })
+        .send({option: YesNo.NO, mediationPhoneNumber: inValidPhoneNumber, mediationContactPerson: inValidName})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('You&#39;ve entered too many characters');
@@ -114,7 +119,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
     it('should redirect with valid input', async () => {
       await request(app)
         .post(CAN_WE_USE_COMPANY_URL)
-        .send({ option: YesNo.NO, mediationPhoneNumber: validPhoneNumber, mediationContactPerson: validName })
+        .send({option: YesNo.NO, mediationPhoneNumber: validPhoneNumber, mediationContactPerson: validName})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
@@ -124,7 +129,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CAN_WE_USE_COMPANY_URL)
-        .send({ option: YesNo.NO, mediationPhoneNumber: validPhoneNumber, mediationContactPerson: validName })
+        .send({option: YesNo.NO, mediationPhoneNumber: validPhoneNumber, mediationContactPerson: validName})
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

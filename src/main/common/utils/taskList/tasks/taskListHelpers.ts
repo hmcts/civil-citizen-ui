@@ -10,7 +10,7 @@ export const isCaseDataMissing = (caseData: Claim): boolean => {
 };
 
 export const hasCorrespondenceAndPrimaryAddress = (respondent1: Party): boolean => {
-  return !!(respondent1?.primaryAddress && (respondent1?.postToThisAddress === YesNo.NO || respondent1?.correspondenceAddress));
+  return !!(respondent1?.partyDetails?.primaryAddress && (respondent1?.partyDetails?.postToThisAddress === YesNo.NO || respondent1?.partyDetails?.correspondenceAddress?.addressLine1));
 };
 
 export const hasDateOfBirthIfIndividual = (respondent1: Party): boolean => {

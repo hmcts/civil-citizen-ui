@@ -17,12 +17,12 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set optionError = form.errorFor("option") %}
-      {% set otherDetailsNestedError = form.errorFor('otherDetails[details]') %}
-      {% set yearNestedError = form.errorFor('unemploymentDetails[years]') %}
-      {% set monthsNestedError = form.errorFor('unemploymentDetails[months]') %}
+      {% set optionError = t(form.errorFor("option")) %}
+      {% set otherDetailsNestedError = t(form.errorFor('otherDetails[details]')) %}
+      {% set yearNestedError = t(form.errorFor('unemploymentDetails[years]')) %}
+      {% set monthsNestedError = t(form.errorFor('unemploymentDetails[months]')) %}
       {% if form.hasErrors() %}
-        {{ errorSummary(form.getErrors(), t) }}
+        {{ errorSummary(form.getAllErrors(), t) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">

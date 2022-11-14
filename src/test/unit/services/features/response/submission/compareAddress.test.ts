@@ -1,34 +1,14 @@
-import {PrimaryAddress} from '../../../../../../main/common/models/primaryAddress';
+import {Address} from '../../../../../../main/common/form/models/address';
 import {
   addressHasChange,
   processAddressLine,
 } from '../../../../../../main/services/features/response/submission/compareAddress';
 
-const addressData: PrimaryAddress = {
-  PostTown: 'XXX123',
-  AddressLine1: 'Street',
-  AddressLine2: '1',
-  AddressLine3: '5A',
-};
-
-const completeAddress: PrimaryAddress = {
-  County: 'Test',
-  Country: 'Test',
-  ...addressData,
-};
-
-const addressUpdated: PrimaryAddress = {
-  ...addressData,
-  PostCode: '0000',
-};
-const addressWithEmptyString: PrimaryAddress = {
-  ...addressData,
-  PostCode: '',
-};
-const addressWithUndefined: PrimaryAddress = {
-  ...addressData,
-  PostCode: undefined,
-};
+const addressData: Address = new Address('Street', '1', '5A', 'XXX123');
+const completeAddress: Address = new Address('Street', '1', '5A', 'XXX123', '');
+const addressUpdated: Address = new Address('Street', '1', '5A', 'XXX123', '0000');
+const addressWithEmptyString: Address = new Address('Street', '1', '5A', 'XXX123', '');
+const addressWithUndefined: Address = new Address('Street', '1', '5A', 'XXX123', undefined);
 
 describe('Compare addresses util', () => {
   it('should return false if same addresses', () => {
@@ -55,13 +35,13 @@ describe('Compare addresses util', () => {
     //Then
     expect(isAddressUpdated).toEqual(true);
   });
-  it('should return empty string when address line does not exist', ()=> {
+  it('should return empty string when address line does not exist', () => {
     //When
     const result = processAddressLine();
     //Then
     expect(result).toEqual('');
   });
-  it('should return address line when address exists', ()=>{
+  it('should return address line when address exists', () => {
     //Given
     const addressLine1 = 'lalala';
     //When
