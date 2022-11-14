@@ -2,8 +2,8 @@ import request from 'supertest';
 import {app} from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {CITIZEN_DEBTS_URL, CITIZEN_MONTHLY_EXPENSES_URL} from '../../../../../../../main/routes/urls';
-import {getCaseDataFromStore} from '../../../../../../../main/modules/draft-store/draftStoreService';
+import {CITIZEN_DEBTS_URL, CITIZEN_MONTHLY_EXPENSES_URL} from 'routes/urls';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {
   buildDebtFormNo,
   buildDebtFormUndefined,
@@ -15,14 +15,14 @@ import {
   buildDebtFormYesWithTotalOwnedInvalid,
   buildDebtFormYesWithTotalOwnedZero,
 } from '../../../../../../utils/mockForm';
-import {Claim} from '../../../../../../../main/common/models/claim';
-import {StatementOfMeans} from '../../../../../../../main/common/models/statementOfMeans';
-import {REDIS_FAILURE} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {Claim} from 'models/claim';
+import {StatementOfMeans} from 'models/statementOfMeans';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../../../main/modules/draft-store');
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Debts', () => {
@@ -38,7 +38,7 @@ describe('Debts', () => {
   describe('on Exception', () => {
     it('should return http 500 when has error in the get method', async () => {
       mockGetCaseData.mockImplementation(async () => {
-        throw new Error(REDIS_FAILURE);
+        throw new Error(TestMessages.REDIS_FAILURE);
       });
       await request(app)
         .get(CITIZEN_DEBTS_URL)
@@ -51,7 +51,7 @@ describe('Debts', () => {
 
   it('should return http 500 when has error in the post method', async () => {
     mockGetCaseData.mockImplementation(async () => {
-      throw new Error(REDIS_FAILURE);
+      throw new Error(TestMessages.REDIS_FAILURE);
     });
     await request(app)
       .post(CITIZEN_DEBTS_URL)

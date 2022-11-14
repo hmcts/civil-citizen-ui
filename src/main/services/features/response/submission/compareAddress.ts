@@ -1,27 +1,27 @@
 import {isEqual} from 'lodash';
-import {PrimaryAddress} from 'common/models/primaryAddress';
+import {Address} from '../../../../common/form/models/address';
 
-export const addressHasChange = (address: PrimaryAddress, originalAddress: PrimaryAddress): boolean => {
+export const addressHasChange = (address: Address, originalAddress: Address): boolean => {
 
   const addressObject = {
-    PostCode: processAddressLine(address.PostCode),
-    PostTown: processAddressLine( address.PostTown),
-    AddressLine1: processAddressLine(address.AddressLine1),
-    AddressLine2: processAddressLine(address.AddressLine2),
-    AddressLine3: processAddressLine(address.AddressLine3),
+    postCode: processAddressLine(address.postCode),
+    city: processAddressLine(address.city),
+    addressLine1: processAddressLine(address.addressLine1),
+    addressLine2: processAddressLine(address.addressLine2),
+    addressLine3: processAddressLine(address.addressLine3),
   };
 
   const originalAddressObject = {
-    PostCode: processAddressLine(originalAddress.PostCode),
-    PostTown: processAddressLine(originalAddress.PostTown),
-    AddressLine1: processAddressLine(originalAddress.AddressLine1),
-    AddressLine2: processAddressLine(originalAddress.AddressLine2),
-    AddressLine3: processAddressLine(originalAddress.AddressLine3),
+    postCode: processAddressLine(originalAddress.postCode),
+    city: processAddressLine(originalAddress.city),
+    addressLine1: processAddressLine(originalAddress.addressLine1),
+    addressLine2: processAddressLine(originalAddress.addressLine2),
+    addressLine3: processAddressLine(originalAddress.addressLine3),
   };
 
   return !isEqual(addressObject, originalAddressObject);
 };
 
 export const processAddressLine = (addressLine?: string) => {
-  return addressLine? addressLine : '';
+  return addressLine ? addressLine : '';
 };

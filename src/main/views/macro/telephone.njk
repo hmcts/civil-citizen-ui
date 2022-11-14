@@ -9,7 +9,7 @@
   label: {
     text: param.label
   },
-  value: param.value if form.model.option == 'no' else 'Hola',
+  value: param.value if form.model.option == 'no',
   errorMessage: { text: form.errorFor(param.name) } if form.errorFor(param.name) else ''
 }) }}
 {% endmacro %}

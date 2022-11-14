@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {CLAIM_DEFENDANT_PHONE_NUMBER_URL, CLAIMANT_TASK_LIST_URL} from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
-import {getTelephone,saveTelephone} from '../../../../../main/services/features/claim/yourDetails/claimantAndDefendantPhoneService';
+import {getTelephone, saveTelephone} from '../../../../services/features/claim/yourDetails/phoneService';
 import {AppRequest} from 'common/models/AppRequest';
 import {CitizenTelephoneNumber} from '../../../../common/form/models/citizenTelephoneNumber';
 import {ClaimantOrDefendant} from '../../../../common/models/partyType';
@@ -13,11 +13,11 @@ function renderView(form: GenericForm<CitizenTelephoneNumber>, res: Response): v
   res.render(defendantPhoneViewPath, {form});
 }
 
-defendantPhoneController.get(CLAIM_DEFENDANT_PHONE_NUMBER_URL, async (req: AppRequest,res: Response, next: NextFunction) => {
+defendantPhoneController.get(CLAIM_DEFENDANT_PHONE_NUMBER_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.session.user?.id;
     const form: CitizenTelephoneNumber = await getTelephone(claimId, ClaimantOrDefendant.DEFENDANT);
-    renderView(new GenericForm<CitizenTelephoneNumber>(form),res);
+    renderView(new GenericForm<CitizenTelephoneNumber>(form), res);
   } catch (error) {
     next(error);
   }
@@ -32,7 +32,7 @@ defendantPhoneController.post(CLAIM_DEFENDANT_PHONE_NUMBER_URL, async (req: AppR
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveTelephone(claimId,form.model,ClaimantOrDefendant.DEFENDANT);
+      await saveTelephone(claimId, form.model, ClaimantOrDefendant.DEFENDANT);
       res.redirect(CLAIMANT_TASK_LIST_URL);
     }
   } catch (error) {

@@ -26,21 +26,23 @@
     },
     "applicant1": {
       "type": "INDIVIDUAL",
-      "partyPhone": "(0)207 127 0000",
-      "individualTitle": "Mr.",
-      "individualFirstName": "Jan",
-      "individualLastName": "Clark",
-      "primaryAddress": {
-        "County": "Kent",
-        "Country": "United Kingdom",
-        "PostCode": "RG4 7AA",
-        "PostTown": "Reading",
-        "AddressLine1": "Flat 2",
-        "AddressLine2": "Caversham House 15-17",
-        "AddressLine3": "Church Road"
+      "partyPhone": {
+        "phone": "(0)207 127 0000"
       },
-      "partyTypeDisplayValue": "Organisation",
-      "partyName": "Mr. Jan Clark"
+      "partyDetails": {
+        "individualTitle": "Mr.",
+        "individualFirstName": "Jan",
+        "individualLastName": "Clark",
+        "primaryAddress": {
+          "postCode": "RG4 7AA",
+          "city": "Reading",
+          "addressLine1": "Flat 2",
+          "addressLine2": "Caversham House 15-17",
+          "addressLine3": "Church Road"
+        },
+        "partyName": "Mr. Jan Clark"
+      },
+      "partyTypeDisplayValue": "Organisation"
     },
     "respondent1": {
       "dateOfBirth": "2022-03-01T13:29:24.971",
