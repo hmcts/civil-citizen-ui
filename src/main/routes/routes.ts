@@ -163,6 +163,7 @@ import partPaymentReceivedController from './features/claimantResponse/partPayme
 import defendantDOBController from './features/claimantResponse/ccj/defendantDOBController';
 import claimantIntentionToProceedController from './features/claimantResponse/claimantIntentionToProceedController';
 import rejectionReasonController from './features/claimantResponse/rejectionReasonController';
+import specificCourtController from './features/directionsQuestionnaire/hearing/specificCourtController';
 import reviewDefendantsResponseController from './features/claimantResponse/reviewDefendantsResponseController';
 
 export default [
@@ -314,5 +315,6 @@ export default [
   defendantDOBController,
   claimantIntentionToProceedController,
   rejectionReasonController,
+  specificCourtController,
   reviewDefendantsResponseController,
 ];
