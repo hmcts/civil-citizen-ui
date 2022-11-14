@@ -6,9 +6,8 @@ import {
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {getClaimantResponse, saveClaimantResponse} from '../../../../services/features/claimantResponse/claimantResponseService';
-import {PaidAmount} from 'common/models/claimantResponse/ccj/paidAmount';
-import {HowMuchDoYouOwe} from 'common/form/models/admission/partialAdmission/howMuchDoYouOwe';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {PaidAmount} from '../../../../common/models/claimantResponse/ccj/paidAmount';
+import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
 
 const paidAmountController = Router();
 const paidAmountViewPath = 'features/claimantResponse/ccj/paid-amount';
@@ -35,7 +34,7 @@ paidAmountController.post(CCJ_PAID_AMOUNT_URL, async (req: Request, res: Respons
     const claimId = req.params.id;
     const claim = await getCaseDataFromStore(claimId);
     const claimedAmount = claim.totalClaimAmount;
-    const paidAmount = new GenericForm(new PaidAmount(req.body.option, new HowMuchDoYouOwe(Number(req.body.amount), claimedAmount)));
+    const paidAmount = new GenericForm(new PaidAmount(req.body.option, (Number(req.body.amount)), claimedAmount));
     paidAmount.validateSync();
     if (paidAmount.hasErrors()) {
       renderView(paidAmount, res);

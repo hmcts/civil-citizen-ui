@@ -30,16 +30,16 @@
             {% set name = "option" %}
             {% set yesHtml %}
               {{ govukInput({
-                id: "details[amount]",
+                id: "amount",
                 name: "amount",
-                value: form.model.details.amount,
+                value: form.model.amount,
                 classes: "govuk-!-width-one-half",
                 label: {
                   text: t('PAGES.CCJ_PAID_AMOUNT.AMOUNT_PAID')
                 },
                 errorMessage: {
-                  html: t(form.errorFor('details[amount]'))
-                } if form.errorFor('details[amount]')
+                  html: t(form.errorFor('amount'))
+                } if form.errorFor('amount')
               }) }}
             {% endset %}
             {{ yesNoRadioButton(t,id,name, title, form, description, {yesHtml: yesHtml}) }}
