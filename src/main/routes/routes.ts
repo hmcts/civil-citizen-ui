@@ -163,6 +163,7 @@ import partPaymentReceivedController from './features/claimantResponse/partPayme
 import defendantDOBController from './features/claimantResponse/ccj/defendantDOBController';
 import claimantIntentionToProceedController from './features/claimantResponse/claimantIntentionToProceedController';
 import rejectionReasonController from './features/claimantResponse/rejectionReasonController';
+import ccjPaymentOptionController from './features/claimantResponse/ccj/ccjPaymentOptionController';
 
 export default [
   homeController,
@@ -313,4 +314,5 @@ export default [
   defendantDOBController,
   claimantIntentionToProceedController,
   rejectionReasonController,
+  ccjPaymentOptionController,
 ];
