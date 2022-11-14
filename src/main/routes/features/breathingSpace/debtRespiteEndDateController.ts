@@ -21,8 +21,7 @@ function renderView(form: GenericForm<DebtRespiteEndDate>, res: Response): void 
 
 debtRespiteEndDateController.get(BREATHING_SPACE_RESPITE_END_DATE_URL, async (req:AppRequest, res:Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
-    const breathingSpace = await getBreathingSpace(claimId);
+    const breathingSpace = await getBreathingSpace(req.params.id);
     const debtRespiteEndDate = breathingSpace?.debtRespiteEndDate ?? new DebtRespiteEndDate();
     renderView(new GenericForm(debtRespiteEndDate), res);
   } catch (error) {
