@@ -1,13 +1,11 @@
-import {
-  getExplanation,
-  saveExplanation,
-} from '../../../../../../main/services/features/response/statementOfMeans/explanationService';
+import {getExplanation, saveExplanation} from 'services/features/response/statementOfMeans/explanationService';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../../main/common/models/claim';
-import {StatementOfMeans} from '../../../../../../main/common/models/statementOfMeans';
-import {Explanation} from '../../../../../../main/common/form/models/statementOfMeans/explanation';
+import {Claim} from 'models/claim';
+import {StatementOfMeans} from 'models/statementOfMeans';
+import {Explanation} from 'form/models/statementOfMeans/explanation';
 
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../../main/modules/draft-store');
 
 const claimId = '123';
 
