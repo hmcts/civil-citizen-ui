@@ -628,6 +628,10 @@
       "PAGE_TITLE": "Has the defendant paid you £{{ paidAmount }}?",
       "TITLE": "Has the defendant paid you £{{ paidAmount }}?"
     },
+    "CLAIMANT_RESPONSE_REJECTION_REASON": {
+      "PAGE_TITLE": "Rejection reason",
+      "TITLE": "Why did you reject their response?"
+    },
     "COMPANY_DETAILS": {
       "ADDRESS_FOR_SERVICE": "Gelwir hwn yn 'gyfeiriad cyflwyno'.",
       "ADDRESS_NOT_FOUND": "Ni allwn dod o hyd i gyfeiriad ar gyfer y cod post hwnnw.",
@@ -2086,6 +2090,7 @@
     "VALID_YES_NO_SELECTION": "Dewiswch ie neu na, os gwelwch yn dda",
     "VALID_WHY_FROM_PARTICULAR_DATE": "You need to explain why you are claiming",
     "QUESTION_1_REQUIRED": "Select yes if someone is vulnerable in a way that the court needs to consider",
-    "QUESTION_2_REQUIRED": "Tell us who is vulnerable and what support they need"
+    "QUESTION_2_REQUIRED": "Tell us who is vulnerable and what support they need",
+    "CLAIMANT_REJECTION_RESPONSE_REQUIRED": "Enter why you rejected repayment plan"
   }
 }
