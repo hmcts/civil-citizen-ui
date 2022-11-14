@@ -12,7 +12,7 @@ const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', {lng: g
 
 const getEmptyStringIfUndefined = (value: string): string => value || '';
 
-const getWitnesses = (claim: Claim, claimId: string, lang: string | unknown): SummaryRow [] => {
+const getWitnesses = (claim: Claim, claimId: string, lang: string): SummaryRow [] => {
   const witnessesHref = constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_WITNESSES_URL);
   const witnesses: OtherWitnessItems[] = claim.directionQuestionnaire.witnesses.otherWitnesses.witnessItems;
   const summaryRows: SummaryRow [] = [];
@@ -39,7 +39,7 @@ export const buildHearingRequirementSection = (claim: Claim, claimId: string, la
   });
 
   if(numberOfWitnesses > 0)
-    hearingRequirementSection.summaryList.rows.push(...getWitnesses(claim, claimId, lang));
+    hearingRequirementSection.summaryList.rows.push(...getWitnesses(claim, claimId, getLng(lang)));
 
   return hearingRequirementSection;
 };
