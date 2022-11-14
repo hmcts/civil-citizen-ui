@@ -629,6 +629,10 @@
       "PAGE_TITLE": "Has the defendant paid you £{{ paidAmount }}?",
       "TITLE": "Has the defendant paid you £{{ paidAmount }}?"
     },
+    "CLAIMANT_RESPONSE_REJECTION_REASON": {
+      "PAGE_TITLE": "Rejection reason",
+      "TITLE": "Why did you reject their response?"
+    },
     "COMPANY_DETAILS": {
       "ADDRESS_FOR_SERVICE": "Gelwir hwn yn 'gyfeiriad cyflwyno'.",
       "ADDRESS_NOT_FOUND": "Ni allwn dod o hyd i gyfeiriad ar gyfer y cod post hwnnw.",
@@ -1590,6 +1594,12 @@
       "PAGE_TITLE": "Ydych chi wedi anfon adroddiadau arbenigwyr at y partïon eraill yn barod?",
       "TITLE": "Ydych chi wedi anfon adroddiadau arbenigwyr at y partïon eraill yn barod?"
     },
+    "SETTLE_CLAIM_PART_PAYMENT_RECEIVED": {
+      "PAGE_TITLE": "Do you want to settle the claim for the £{{ paidAmount }} the defendant has paid?",
+      "PROCEED_WITH_CLAIM": "Proceed with the claim",
+      "SETTLE_THE_CLAIM": "Settle the claim",
+      "TITLE": "Do you want to settle the claim for the £{{ paidAmount }} the defendant has paid?"
+    },
     "SHARED_EXPERT": {
       "IF_YOU_SHARE": "Os byddwch yn rhannu arbenigwr, byddwch hefyd yn rhannu’r costau oni bai bod y barnwr yn penderfynu bod rhaid i un parti dalu cyfran y parti arall.",
       "PAGE_TITLE": "Ydych chi eisiau rhannu arbenigwr gyda’r hawlydd?",
@@ -1982,9 +1992,7 @@
     "SELECT_YES_IF_DOCUMENTS": "Dewiswch ‘oes’ os oes gan yr hawlydd ddogfennau yr ydych eisiau i’r llys eu hystyried",
     "SELECT_YES_IF_SUPPORT": "Select yes if someone needs support to attend a hearing",
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
-    "SIGNER_NAME_TOO_LONG": "You've entered too many characters",
     "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",
-    "SIGNER_ROLE_TOO_LONG": "You've entered too many characters",
     "SOMETHING_WENT_WRONG": "Something went wrong",
     "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Dywedwch wrthym os ydych yn credu bod y ffeithiau a nodir yn yr ymateb hwn yn wir",
     "TELL_US_WHY": "Dywedwch wrthym pam",
@@ -2110,6 +2118,7 @@
     "VALID_YES_NO_SELECTION": "Dewiswch ie neu na, os gwelwch yn dda",
     "VALID_WHY_FROM_PARTICULAR_DATE": "You need to explain why you are claiming",
     "QUESTION_1_REQUIRED": "Select yes if someone is vulnerable in a way that the court needs to consider",
-    "QUESTION_2_REQUIRED": "Tell us who is vulnerable and what support they need"
+    "QUESTION_2_REQUIRED": "Tell us who is vulnerable and what support they need",
+    "CLAIMANT_REJECTION_RESPONSE_REQUIRED": "Enter why you rejected repayment plan"
   }
 }
