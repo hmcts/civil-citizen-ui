@@ -9,6 +9,7 @@ import {
 } from '../../../../../main/services/features/claimantResponse/claimantResponseService';
 import {ClaimantResponse} from '../../../../../main/common/models/claimantResponse';
 import {CCJRequest} from '../../../../../main/common/models/claimantResponse/ccj/ccjRequest';
+import {RejectionReason} from '../../../../../main/common/form/models/claimantResponse/rejectionReason';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -172,7 +173,7 @@ describe('Claimant Response Service', () => {
         const claim = new Claim();
         claim.claimantResponse = new ClaimantResponse();
         claim.claimantResponse.ccjRequest = new CCJRequest();
-        claim.claimantResponse.ccjRequest.defendantDOB = { option: YesNo.NO };
+        claim.claimantResponse.ccjRequest.defendantDOB = {option: YesNo.NO};
         mockGetCaseDataFromDraftStore.mockImplementation(async () => {
           return claim;
         });
@@ -190,7 +191,7 @@ describe('Claimant Response Service', () => {
         claim.claimantResponse.ccjRequest = new CCJRequest();
         claim.claimantResponse.ccjRequest.defendantDOB = {
           option: YesNo.NO,
-          dob: { dateOfBirth: new Date('2000-11-11T00:00:00.000Z') },
+          dob: {dateOfBirth: new Date('2000-11-11T00:00:00.000Z')},
         };
         mockGetCaseDataFromDraftStore.mockImplementation(async () => {
           return claim;
@@ -226,7 +227,7 @@ describe('Claimant Response Service', () => {
       const claimantResponseToSave = {
         hasDefendantPaidYou: {option: YesNo.NO},
       };
-      await saveClaimantResponse('validClaimId',  YesNo.NO, 'option', 'hasDefendantPaidYou');
+      await saveClaimantResponse('validClaimId', YesNo.NO, 'option', 'hasDefendantPaidYou');
       expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToSave});
     });
 
@@ -293,7 +294,7 @@ describe('Claimant Response Service', () => {
         });
         const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
         const claimantResponseToSave = {
-          ccjRequest: { defendantDOB: 'no' },
+          ccjRequest: {defendantDOB: 'no'},
         };
         //When
         await saveClaimantResponse('validClaimId', YesNo.NO, 'defendantDOB', 'ccjRequest');
@@ -305,12 +306,12 @@ describe('Claimant Response Service', () => {
         //Given
         mockGetCaseDataFromDraftStore.mockImplementation(async () => {
           const claim = new Claim();
-          claim.claimantResponse = { ccjRequest: new CCJRequest()};
-          claim.claimantResponse.ccjRequest.defendantDOB = { option : YesNo.YES };
+          claim.claimantResponse = {ccjRequest: new CCJRequest()};
+          claim.claimantResponse.ccjRequest.defendantDOB = {option: YesNo.YES};
           return claim;
         });
         const claimantResponseToUpdate = {
-          ccjRequest: { defendantDOB: 'no' },
+          ccjRequest: {defendantDOB: 'no'},
         };
         const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
         //When
@@ -318,17 +319,63 @@ describe('Claimant Response Service', () => {
         //Then
         expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
       });
+
+      it('should save rejection response successfully', async () => {
+        //Given
+        const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+        //When
+        await saveClaimantResponse('claimId', new RejectionReason('not agree'), 'rejectionReason');
+        //Then
+        expect(spySave).toBeCalled();
+      });
+
+      it('should return an error on redis failure', async () => {
+        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+          return new Claim();
+        });
+        mockSaveDraftClaim.mockImplementation(async () => {
+          throw new Error(TestMessages.REDIS_FAILURE);
+        });
+        await expect(saveClaimantResponse('claimId', mockGetCaseDataFromDraftStore, ''))
+          .rejects.toThrow(TestMessages.REDIS_FAILURE);
+      });
     });
 
-    it('should return an error on redis failure', async () => {
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        return new Claim();
+    describe('get rejection reason form model', () => {
+      it('should return an empty form model when no data retrieved', async () => {
+        //Given
+        const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+        const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+
+        mockGetCaseData.mockImplementation(async () => {
+          return new Claim();
+        });
+        //When
+        const result = await getClaimantResponse('claimId');
+        //Then
+        expect(spyGetCaseDataFromStore).toBeCalled();
+        expect(result).toEqual(new RejectionReason());
       });
-      mockSaveDraftClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
+      it('should return populated form model when data exists', async () => {
+        //Given
+        const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+        const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+        const newClaim = new Claim();
+        const response = new ClaimantResponse();
+        const reason = new RejectionReason('not agree');
+        response.rejectionReason = reason;
+        newClaim.claimantResponse = response;
+
+        mockGetCaseData.mockImplementation(async () => {
+          return newClaim;
+        });
+        //When
+        const claimantResponse = await getClaimantResponse('claimId');
+        //Then
+        expect(spyGetCaseDataFromStore).toBeCalled();
+        expect(claimantResponse).not.toBeNull();
+        expect(claimantResponse?.rejectionReason.text).toBe('not agree');
       });
-      await expect(saveClaimantResponse('claimId', mockGetCaseDataFromDraftStore, ''))
-        .rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 });

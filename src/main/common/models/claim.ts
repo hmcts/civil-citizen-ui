@@ -347,6 +347,18 @@ export class Claim {
   get isSupportRequiredDetailsAvailable(): boolean {
     return this.directionQuestionnaire?.hearing?.supportRequiredList?.items?.length > 0;
   }
+
+  hasExpertReportDetails(): boolean {
+    return this.directionQuestionnaire?.experts?.expertReportDetails?.option === YesNo.YES;
+  }
+
+  hasPermissionForExperts(): boolean {
+    return this.directionQuestionnaire?.experts?.permissionForExpert?.option === YesNo.YES;
+  }
+
+  hasEvidenceExpertCanStillExamine(): boolean {
+    return this.directionQuestionnaire?.experts?.expertCanStillExamine?.option === YesNo.YES;
+  }
 }
 
 export interface StatementOfTruth {

@@ -622,6 +622,10 @@
       "PAGE_TITLE": "Has the defendant paid you £{{ paidAmount }}?",
       "TITLE": "Has the defendant paid you £{{ paidAmount }}?"
     },
+    "CLAIMANT_RESPONSE_REJECTION_REASON": {
+      "PAGE_TITLE": "Rejection reason",
+      "TITLE": "Why did you reject their response?"
+    },
     "COMPANY_DETAILS": {
       "ADDRESS_FOR_SERVICE": "This is known as an \"address for service\".",
       "ADDRESS_NOT_FOUND": "We can't find an address for that postcode.",
@@ -1011,7 +1015,8 @@
       "PAGE_TITLE": "Enter the expert’s details",
       "PHONE_OPTIONAL": "Phone number (optional)",
       "REMOVE_EXPERT": "Remove expert",
-      "TELL_US_WHY_NEED_EXPERT": "Tell us why you need this expert"
+      "TELL_US_WHY_NEED_EXPERT": "Tell us why you need this expert",
+      "SECTION_TITLE": "Expert Details"
     },
     "EXPERT_GUIDANCE": {
       "ASK_PERMISSION": "You must ask for permission to use an expert - a judge will then decide whether the expert is necessary.",
@@ -1041,6 +1046,7 @@
     },
     "EXPERT_REPORT_DETAILS": {
       "ADD_ANOTHER": "Add another report",
+      "DATE_OF_REPORT": "Date of report",
       "EXPERT_NAME": "Expert's name",
       "PAGE_TITLE": "Have you already got a report written by an expert?",
       "REPORT_DATE": "When is the report dated?",
@@ -1558,12 +1564,26 @@
       "PAGE_TITLE": "Have you already sent expert reports to other parties?",
       "TITLE": "Have you already sent expert reports to other parties?"
     },
+    "SETTLE_CLAIM_PART_PAYMENT_RECEIVED": {
+      "PAGE_TITLE": "Do you want to settle the claim for the £{{ paidAmount }} the defendant has paid?",
+      "PROCEED_WITH_CLAIM": "Proceed with the claim",
+      "SETTLE_THE_CLAIM": "Settle the claim",
+      "TITLE": "Do you want to settle the claim for the £{{ paidAmount }} the defendant has paid?"
+    },
     "SHARED_EXPERT": {
       "IF_YOU_SHARE": "If you share an expert, you will also share the costs unless the judge decides that one party must pay the other party’s share.",
       "PAGE_TITLE": "Do you want to share an expert with the claimant?",
       "PREPARE_REPORT": "They will prepare a report for the court on behalf of two or more of the parties, including the claimant.",
       "SINGLE_JOINT_EXPERT": "This is known as a ’single joint expert’.",
       "TITLE": "Do you want to share an expert with the claimant?"
+    },
+    "SPECIFIC_COURT": {
+      "EXPlANATION": "You can ask for the hearing to be held at a specific court, for example, if you spend weekdays a long distance from your home. The court will consider both parties' circumstances when deciding where to hold the hearing.",
+      "PAGE_TITLE": "Specific court",
+      "SELECT_COURT": "Select a court",
+      "SELECT_VALUE": "Select a value",
+      "REASON": "Tell us why you want the hearing to be held at this court",
+      "TITLE": "Do you want to ask for the hearing to be held at a specific court?"
     },
     "SUBMIT_CONFIRMATION": {
       "FA_PAY_BY_DATE": {
@@ -1834,7 +1854,7 @@
     "DETAILS_REQUIRED": "Enter details",
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Tell us if you believe the hearing requirement details on this page are true",
     "ENTER_A_DEBT": "Enter a debt",
-    "ENTER_AN_EXPLANATION": "Enter an explanation of why you can't pay now",
+    "ENTER_AN_EXPLANATION": "Enter an explanation of why you can’t pay now",
     "ENTER_AT_LEAST_ONE_DEBT": "Enter at least one debt",
     "ENTER_AT_LEAST_ONE_REPORT": "Enter at least one report",
     "ENTER_EXPERT_DETAILS": "Enter the expert's details",
@@ -1950,12 +1970,14 @@
     "SELECT_SUPPORT": "Select the support the person needs to attend a hearing",
     "SELECT_YES_IF_DOCUMENTS": "Select yes if there are documents the claimant has that you want the court to consider",
     "SELECT_YES_IF_SUPPORT": "Select yes if someone needs support to attend a hearing",
-    "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
     "SIGNER_NAME_TOO_LONG": "You've entered too many characters",
     "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",
-    "SIGNER_ROLE_TOO_LONG": "You've entered too many characters",
     "SOMETHING_WENT_WRONG": "Something went wrong",
     "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Tell us if you believe the facts stated in this response are true",
+    "SPECIFIC_COURT": {
+      "SELECT_YES_NO": "Select yes if you want to ask for the hearing to be held at a specific court",
+      "SELECT_COURT_LOCATION": "Select a court"
+     },
     "TELL_US_WHY": "Please tell us why",
     "TELL_US_WHY_UNAVAILABLE": "Tell us why you, your experts or witnesses are unavailable for a hearing",
     "TRANSACTION_SOURCE": {
@@ -2079,6 +2101,7 @@
     "VALID_YES_NO_SELECTION": "Please select yes or no",
     "VALID_WHY_FROM_PARTICULAR_DATE": "You need to explain why you are claiming",
     "QUESTION_1_REQUIRED": "Select yes if someone is vulnerable in a way that the court needs to consider",
-    "QUESTION_2_REQUIRED": "Tell us who is vulnerable and what support they need"
+    "QUESTION_2_REQUIRED": "Tell us who is vulnerable and what support they need",
+    "CLAIMANT_REJECTION_RESPONSE_REQUIRED": "Enter why you rejected repayment plan"
   }
 }
