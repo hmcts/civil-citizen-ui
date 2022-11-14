@@ -5,14 +5,9 @@ import nock from 'nock';
 import {
   CAN_WE_USE_URL,
   CLAIM_TASK_LIST_URL,
-} from '../../../../../main/routes/urls';
+} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
-import {
-  PHONE_NUMBER_REQUIRED,
-  VALID_YES_NO_OPTION,
-  VALID_TEXT_LENGTH,
-} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -63,7 +58,7 @@ describe('Repayment Plan', () => {
         .send('')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_YES_NO_OPTION);
+          expect(res.text).toContain(TestMessages.VALID_YES_NO_OPTION);
         });
     });
     it('should return errors when "NO" option selected and telephone number is undefined ', async () => {
@@ -73,7 +68,7 @@ describe('Repayment Plan', () => {
         .send({option: 'no', telephoneNumber: ''})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(PHONE_NUMBER_REQUIRED);
+          expect(res.text).toContain(TestMessages.PHONE_NUMBER_REQUIRED);
         });
     });
     it('should return errors when "NO" option selected and telephone number max length is greater than 30 characters ', async () => {
@@ -83,7 +78,7 @@ describe('Repayment Plan', () => {
         .send({option: 'no', telephoneNumber: '1234567890123456789012345678900'})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_TEXT_LENGTH);
+          expect(res.text).toContain(TestMessages.VALID_TEXT_LENGTH);
         });
     });
     it('should redirect with valid input', async () => {

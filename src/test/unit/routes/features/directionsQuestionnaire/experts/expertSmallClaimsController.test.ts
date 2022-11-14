@@ -2,10 +2,11 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {DQ_EXPERT_SMALL_CLAIMS_URL} from '../../../../../../main/routes/urls';
+import {DQ_EXPERT_SMALL_CLAIMS_URL} from 'routes/urls';
 import {t} from 'i18next';
 
 jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/draft-store');
 
 describe('Using an expert', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

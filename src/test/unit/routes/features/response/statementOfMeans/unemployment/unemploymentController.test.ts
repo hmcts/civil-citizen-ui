@@ -2,14 +2,7 @@ import {app} from '../../../../../../../main/app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {CITIZEN_COURT_ORDERS_URL, CITIZEN_UNEMPLOYED_URL} from '../../../../../../../main/routes/urls';
-import {
-  DETAILS_REQUIRED,
-  SELECT_AN_OPTION,
-  VALID_BETWEEN_NUMBERS_0_11,
-  VALID_BETWEEN_NUMBERS_0_80,
-  VALID_INTEGER,
-} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {CITIZEN_COURT_ORDERS_URL, CITIZEN_UNEMPLOYED_URL} from 'routes/urls';
 import {
   mockCivilClaim,
   mockCivilClaimOptionNo,
@@ -99,7 +92,7 @@ describe('Unemployment', () => {
         .send()
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(SELECT_AN_OPTION);
+          expect(res.text).toContain(TestMessages.VALID_OPTION_SELECTION);
           expect(res.text).toContain('govuk-error-message');
         });
     });
@@ -137,7 +130,7 @@ describe('Unemployment', () => {
         .send({option: 'Other'})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(DETAILS_REQUIRED);
+          expect(res.text).toContain(TestMessages.DETAILS_REQUIRED);
           expect(res.text).toContain('govuk-error-message');
         });
     });
@@ -165,8 +158,7 @@ describe('Unemployment', () => {
         .send({option: 'Unemployed'})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_INTEGER);
-          expect(res.text).toContain(VALID_INTEGER);
+          expect(res.text).toContain(TestMessages.VALID_INTEGER);
           expect(res.text).toContain('govuk-error-message');
         });
     });
@@ -176,7 +168,7 @@ describe('Unemployment', () => {
         .send({option: 'Unemployed', years: '150', months: '1'})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_BETWEEN_NUMBERS_0_80);
+          expect(res.text).toContain(TestMessages.VALID_BETWEEN_NUMBERS_0_80);
           expect(res.text).toContain('govuk-error-message');
         });
     });
@@ -186,7 +178,7 @@ describe('Unemployment', () => {
         .send({option: 'Unemployed', years: '1', months: '12'})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_BETWEEN_NUMBERS_0_11);
+          expect(res.text).toContain(TestMessages.VALID_BETWEEN_NUMBERS_0_11);
           expect(res.text).toContain('govuk-error-message');
         });
     });

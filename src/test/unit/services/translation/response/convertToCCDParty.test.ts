@@ -1,14 +1,14 @@
-import {Party} from '../../../../../main/common/models/party';
-import {toCCDParty} from '../../../../../main/services/translation/response/convertToCCDParty';
-import {PartyType} from '../../../../../main/common/models/partyType';
-import {ResponseType} from '../../../../../main/common/form/models/responseType';
-import {YesNo} from '../../../../../main/common/form/models/yesNo';
-import {Address} from '../../../../../main/common/form/models/address';
-import {CCDParty} from '../../../../../main/common/models/ccdResponse/ccdParty';
-import {CCDAddress} from '../../../../../main/common/models/ccdResponse/ccdAddress';
-import {DateOfBirth} from '../../../../../main/common/form/models/claim/claimant/dateOfBirth';
-import {PartyPhone} from '../../../../../main/common/models/PartyPhone';
-import {Email} from '../../../../../main/common/models/Email';
+import {Party} from 'models/party';
+import {toCCDParty} from 'services/translation/response/convertToCCDParty';
+import {PartyType} from 'models/partyType';
+import {ResponseType} from 'form/models/responseType';
+import {YesNo} from 'form/models/yesNo';
+import {Address} from 'form/models/address';
+import {CCDParty} from 'models/ccdResponse/ccdParty';
+import {CCDAddress} from 'models/ccdResponse/ccdAddress';
+import {DateOfBirth} from 'form/models/claim/claimant/dateOfBirth';
+import {PartyPhone} from 'models/PartyPhone';
+import {Email} from 'models/Email';
 
 const companyName = 'Version 1';
 const phone = new PartyPhone('123456789');
@@ -147,16 +147,11 @@ const partySoleTraderCCD: CCDParty = {
 
 describe('translate party to ccd model', () => {
   it('should translate COMPANY party to ccd', () => {
-    //Given
-    const party = partyCompany;
-    //When
-    const partyResponseCCD = toCCDParty(party);
-    //Then
+    const partyResponseCCD = toCCDParty(partyCompany);
     expect(partyResponseCCD).toMatchObject(partyCompanyCCD);
   });
 
   it('should translate ORGANISATION party to ccd', () => {
-    //Given
     const party = partyOrganisation;
     const partyOrganisationCCD: CCDParty = {
       ...partyCompanyCCD,
@@ -164,28 +159,18 @@ describe('translate party to ccd model', () => {
       companyName: undefined,
       type: PartyType.ORGANISATION,
     };
-    //When
+
     const partyResponseCCD = toCCDParty(party);
-    //Then
     expect(partyResponseCCD).toMatchObject(partyOrganisationCCD);
   });
 
   it('should translate INDIVIDUAL party to ccd', () => {
-    //Given
-    const party = partyIndividual;
-    //When
-    const partyResponseCCD = toCCDParty(party);
-    //Then
+    const partyResponseCCD = toCCDParty(partyIndividual);
     expect(partyResponseCCD).toMatchObject(partyIndividualCCD);
   });
 
   it('should translate SOLE TRADER party to ccd', () => {
-    //Given
-    const party = partySoleTrader;
-    //When
-    const partyResponseCCD = toCCDParty(party);
-    //Then
+    const partyResponseCCD = toCCDParty(partySoleTrader);
     expect(partyResponseCCD).toMatchObject(partySoleTraderCCD);
   });
-
 });
