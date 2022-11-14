@@ -6,26 +6,18 @@ import {toCCDParty} from './convertToCCDParty';
 import {toCCDRepaymentPlan} from './convertToCCDRepaymentPlan';
 import {toCCDPaymentOption} from './convertToCCDPaymentOption';
 import {toCCDPayBySetDate} from './convertToCCDPayBySetDate';
-import {toCCDHomeType} from './convertToCCDHomeType';
-import {toCCDBankAccount} from './convertToCCDBankAccount';
-import {toCCDTimeline} from './convertToCCDTimeLine';
-import {toCCDEmploymentType} from './convertToCCDEmploymentType';
-import {toCCDEmployerDetails} from './convertToCCDEmployersDetails';
-import {convertToCCDCourtOrderDetails} from './convertToCCDCourtOrderDetails';
-import {convertToCCDLoanCreditDetails} from './convertToCCDLoanCreditDetails';
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   return {
     respondent1ClaimResponseTypeForSpec: claim.respondent1?.responseType,
-    defenceAdmitPartPaymentTimeRouteRequired: toCCDPaymentOption(claim.partialAdmission.paymentIntention.paymentOption), // defenceAdmitPartPaymentTimeRouteRequired: toCCDPaymentOption(claim.paymentOption),
+    defenceAdmitPartPaymentTimeRouteRequired: toCCDPaymentOption(claim.paymentOption),
     respondent1RepaymentPlan: toCCDRepaymentPlan(claim.repaymentPlan),
-    respondToClaimAdmitPartLRspec: toCCDPayBySetDate(claim.partialAdmission.paymentIntention.paymentDate), // respondToClaimAdmitPartLRspec: toCCDPayBySetDate(claim.paymentDate),
+    respondToClaimAdmitPartLRspec: toCCDPayBySetDate(claim.paymentDate),
     responseClaimMediationSpecRequired: toAgreedMediation(claim.mediation),
     specAoSApplicantCorrespondenceAddressRequired: addressHasChange ? YesNoUpperCamelCase.NO : YesNoUpperCamelCase.YES,
     totalClaimAmount: claim.totalClaimAmount,
-    // ------------- START TASK A ------------- 
-    // YOUR DETAILS
     respondent1: toCCDParty(claim.respondent1),
+<<<<<<< HEAD
     // respondent1Represented: claim.respondent1.contactPerson, // TODO: where is contactPerson in CCD?
     // RESPONSE DEADLINE
     // x: claim.responseDeadline.option, //  enum [ALREADY_AGREED, NO, REQUEST_REFUSED, YES]
@@ -207,5 +199,7 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     // x: claim.mediation.companyTelephoneNumber.mediationContactPerson,
     // x: claim.mediation.companyTelephoneNumber.mediationPhoneNumberConfirmation,
 
+=======
+>>>>>>> master
   };
 };

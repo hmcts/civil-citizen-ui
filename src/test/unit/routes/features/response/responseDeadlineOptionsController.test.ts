@@ -2,27 +2,31 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../main/common/models/claim';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 import {
   AGREED_TO_MORE_TIME_URL,
   CLAIM_TASK_LIST_URL,
   REQUEST_MORE_TIME_URL,
   RESPONSE_DEADLINE_OPTIONS_URL,
-} from '../../../../../main/routes/urls';
+} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {PartyType} from '../../../../../main/common/models/partyType';
-import {ResponseOptions} from '../../../../../main/common/form/models/responseDeadline';
+import {PartyType} from 'models/partyType';
+import {ResponseOptions} from 'form/models/responseDeadline';
 import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../main/modules/draft-store');
+
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockSaveCaseData = saveDraftClaim as jest.Mock;
 const mockClaim = new Claim();
 mockClaim.applicant1 = {
   type: PartyType.INDIVIDUAL,
-  partyName: 'Joe Bloggs',
+  partyDetails: {
+    partyName: 'Joe Bloggs',
+  },
 };
 
 describe('Response Deadline Options Controller', () => {
@@ -96,7 +100,7 @@ describe('Response Deadline Options Controller', () => {
     });
 
     it('should render error page when partyName is not set', async () => {
-      mockGetCaseData.mockImplementation(async () => new Claim());
+      mockGetCaseData.mockImplementation(async () => undefined);
       await request(app).get(RESPONSE_DEADLINE_OPTIONS_URL).expect((res) => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

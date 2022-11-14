@@ -9,6 +9,7 @@ import {
 } from '../../../../../main/services/features/claimantResponse/claimantResponseService';
 import {ClaimantResponse} from '../../../../../main/common/models/claimantResponse';
 import {CCJRequest} from '../../../../../main/common/models/claimantResponse/ccj/ccjRequest';
+import {RejectionReason} from '../../../../../main/common/form/models/claimantResponse/rejectionReason';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -66,6 +67,65 @@ describe('Claimant Response Service', () => {
       expect(claimantResponse?.hasDefendantPaidYou.option).toBe(YesNo.YES);
     });
 
+    describe('intentionToProceed', () => {
+      it('should return undefined if intention to proceed is not set', async () => {
+        //Given
+        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+          return new Claim();
+        });
+        //When
+        const claimantResponse = await getClaimantResponse('validClaimId');
+        //Then
+        expect(claimantResponse?.intentionToProceed).toBeUndefined();
+      });
+
+      it('should return Claimant Response object', async () => {
+        //Given
+        const claim = new Claim();
+        claim.claimantResponse = new ClaimantResponse();
+        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+          return claim;
+        });
+        //When
+        const claimantResponse = await getClaimantResponse('validClaimId');
+        expect(claimantResponse).toBeDefined();
+        //Then
+        expect(claimantResponse?.intentionToProceed).toBeUndefined();
+      });
+
+      it('should return Claimant Response object with intentionToProceed no', async () => {
+        //Given
+        const claim = new Claim();
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.intentionToProceed = {
+          option: YesNo.NO,
+        };
+        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+          return claim;
+        });
+        //When
+        const claimantResponse = await getClaimantResponse('validClaimId');
+        //Then
+        expect(claimantResponse?.intentionToProceed.option).toBe(YesNo.NO);
+      });
+
+      it('should return Claimant Response object with intentionToProceed yes', async () => {
+        //Given
+        const claim = new Claim();
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.intentionToProceed = {
+          option: YesNo.YES,
+        };
+        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+          return claim;
+        });
+        //When
+        const claimantResponse = await getClaimantResponse('validClaimId');
+        //Then
+        expect(claimantResponse?.intentionToProceed.option).toBe(YesNo.YES);
+      });
+    });
+
     describe('CCJ-Defendant date of birth', () => {
       it('should return undefined if defendant dob is not set', async () => {
         //Given
@@ -113,7 +173,7 @@ describe('Claimant Response Service', () => {
         const claim = new Claim();
         claim.claimantResponse = new ClaimantResponse();
         claim.claimantResponse.ccjRequest = new CCJRequest();
-        claim.claimantResponse.ccjRequest.defendantDOB = { option: YesNo.NO };
+        claim.claimantResponse.ccjRequest.defendantDOB = {option: YesNo.NO};
         mockGetCaseDataFromDraftStore.mockImplementation(async () => {
           return claim;
         });
@@ -131,7 +191,7 @@ describe('Claimant Response Service', () => {
         claim.claimantResponse.ccjRequest = new CCJRequest();
         claim.claimantResponse.ccjRequest.defendantDOB = {
           option: YesNo.NO,
-          dob: { dateOfBirth: new Date('2000-11-11T00:00:00.000Z') },
+          dob: {dateOfBirth: new Date('2000-11-11T00:00:00.000Z')},
         };
         mockGetCaseDataFromDraftStore.mockImplementation(async () => {
           return claim;
@@ -163,12 +223,11 @@ describe('Claimant Response Service', () => {
         claim.claimantResponse = new ClaimantResponse();
         return claim;
       });
-
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       const claimantResponseToSave = {
         hasDefendantPaidYou: {option: YesNo.NO},
       };
-      await saveClaimantResponse('validClaimId',  YesNo.NO, 'option', 'hasDefendantPaidYou');
+      await saveClaimantResponse('validClaimId', YesNo.NO, 'option', 'hasDefendantPaidYou');
       expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToSave});
     });
 
@@ -187,6 +246,43 @@ describe('Claimant Response Service', () => {
       expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
     });
 
+    describe('intentionToProceed', () => {
+      claimantResponse.intentionToProceed = new GenericYesNo(YesNo.YES);
+      it('should save claimant response successfully', async () => {
+        //Given
+        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+          const claim = new Claim();
+          claim.claimantResponse = new ClaimantResponse();
+          return claim;
+        });
+        const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+        const claimantResponseToSave = {
+          intentionToProceed: {option: YesNo.NO},
+        };
+        //When
+        await saveClaimantResponse('validClaimId', YesNo.NO, 'option', 'intentionToProceed');
+        //Then
+        expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToSave});
+      });
+
+      it('should update claim intentionToProceed successfully', async () => {
+        //Given
+        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+          const claim = new Claim();
+          claim.claimantResponse = claimantResponse;
+          return claim;
+        });
+        const claimantResponseToUpdate = {
+          intentionToProceed: {option: YesNo.NO},
+        };
+        const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+        //When
+        await saveClaimantResponse('validClaimId', claimantResponse?.intentionToProceed.option, 'intentionToProceed');
+        //Then
+        expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
+      });
+    });
+
     describe('CCJ-Defendant date of birth', () => {
 
       it('should save claimant response successfully', async () => {
@@ -198,7 +294,7 @@ describe('Claimant Response Service', () => {
         });
         const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
         const claimantResponseToSave = {
-          ccjRequest: { defendantDOB: 'no' },
+          ccjRequest: {defendantDOB: 'no'},
         };
         //When
         await saveClaimantResponse('validClaimId', YesNo.NO, 'defendantDOB', 'ccjRequest');
@@ -210,12 +306,12 @@ describe('Claimant Response Service', () => {
         //Given
         mockGetCaseDataFromDraftStore.mockImplementation(async () => {
           const claim = new Claim();
-          claim.claimantResponse = { ccjRequest: new CCJRequest()};
-          claim.claimantResponse.ccjRequest.defendantDOB = { option : YesNo.YES };
+          claim.claimantResponse = {ccjRequest: new CCJRequest()};
+          claim.claimantResponse.ccjRequest.defendantDOB = {option: YesNo.YES};
           return claim;
         });
         const claimantResponseToUpdate = {
-          ccjRequest: { defendantDOB: 'no' },
+          ccjRequest: {defendantDOB: 'no'},
         };
         const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
         //When
@@ -223,18 +319,63 @@ describe('Claimant Response Service', () => {
         //Then
         expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
       });
+
+      it('should save rejection response successfully', async () => {
+        //Given
+        const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+        //When
+        await saveClaimantResponse('claimId', new RejectionReason('not agree'), 'rejectionReason');
+        //Then
+        expect(spySave).toBeCalled();
+      });
+
+      it('should return an error on redis failure', async () => {
+        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+          return new Claim();
+        });
+        mockSaveDraftClaim.mockImplementation(async () => {
+          throw new Error(TestMessages.REDIS_FAILURE);
+        });
+        await expect(saveClaimantResponse('claimId', mockGetCaseDataFromDraftStore, ''))
+          .rejects.toThrow(TestMessages.REDIS_FAILURE);
+      });
     });
 
-    it('should return an error on redis failure', async () => {
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        return new Claim();
-      });
-      mockSaveDraftClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
+    describe('get rejection reason form model', () => {
+      it('should return an empty form model when no data retrieved', async () => {
+        //Given
+        const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+        const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 
-      await expect(saveClaimantResponse('claimId', mockGetCaseDataFromDraftStore, ''))
-        .rejects.toThrow(TestMessages.REDIS_FAILURE);
+        mockGetCaseData.mockImplementation(async () => {
+          return new Claim();
+        });
+        //When
+        const result = await getClaimantResponse('claimId');
+        //Then
+        expect(spyGetCaseDataFromStore).toBeCalled();
+        expect(result).toEqual(new RejectionReason());
+      });
+      it('should return populated form model when data exists', async () => {
+        //Given
+        const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+        const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+        const newClaim = new Claim();
+        const response = new ClaimantResponse();
+        const reason = new RejectionReason('not agree');
+        response.rejectionReason = reason;
+        newClaim.claimantResponse = response;
+
+        mockGetCaseData.mockImplementation(async () => {
+          return newClaim;
+        });
+        //When
+        const claimantResponse = await getClaimantResponse('claimId');
+        //Then
+        expect(spyGetCaseDataFromStore).toBeCalled();
+        expect(claimantResponse).not.toBeNull();
+        expect(claimantResponse?.rejectionReason.text).toBe('not agree');
+      });
     });
   });
 });

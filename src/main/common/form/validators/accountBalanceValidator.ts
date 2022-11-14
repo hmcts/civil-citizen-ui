@@ -1,5 +1,4 @@
 import {ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator';
-import {NUMBER_REQUIRED, VALID_TWO_DECIMAL_NUMBER} from '../validationErrors/errorMessageConstants';
 import {MAX_AMOUNT_VALUE} from './validationConstraints';
 
 /**
@@ -24,6 +23,6 @@ export class AccountBalanceValidator implements ValidatorConstraintInterface {
   }
 
   defaultMessage() {
-    return !this.validNumber ? NUMBER_REQUIRED : VALID_TWO_DECIMAL_NUMBER;
+    return !this.validNumber ? 'ERRORS.NUMBER_REQUIRED' : 'ERRORS.VALID_TWO_DECIMAL_NUMBER';
   }
 }
