@@ -23,8 +23,8 @@ export const getClaimAmountBreakdownForm = async (claimantId: string) : Promise<
 export const saveClaimAmountBreakdownForm = async (claimantId: string, amountBreakdown: AmountBreakdown) => {
   try{
     const claim = await getCaseDataFromStore(claimantId);
-    claim.claimAmountBreakup = amountBreakdown.getPopulatedRows().map((row)=> convertFormToJson(row));
     claim.totalClaimAmount = amountBreakdown.totalAmount;
+    claim.claimAmountBreakup = amountBreakdown.getPopulatedRows().map((row)=> convertFormToJson(row));
     await saveDraftClaim(claimantId, claim);
   }catch(error){
     logger.error(error);
