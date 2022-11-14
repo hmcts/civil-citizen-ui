@@ -30,7 +30,7 @@ ccjPaymentOptionController.get(CCJ_PAYMENT_OPTIONS_URL, async (req, res, next: N
 ccjPaymentOptionController.post(CCJ_PAYMENT_OPTIONS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const paymentOption = new GenericForm(new CcjPaymentOption(req.body.type));
+    const paymentOption = new GenericForm(new CcjPaymentOption(req.body.paymentType));
     paymentOption.validateSync();
     if (paymentOption.hasErrors()) {
       renderView(paymentOption, res);
