@@ -24,8 +24,7 @@ const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
 
 const convertCaseToClaimAndIncludeState = (caseDetails: CivilClaimResponse): Claim => {
-  //TODO call  toCUIParty
-  const claim = Claim.fromCCDCaseData(caseDetails.case_data);
+  const claim: Claim = Claim.fromCCDCaseData(caseDetails.case_data);
   claim.ccdState = caseDetails.state;
   return claim;
 };
@@ -102,7 +101,11 @@ export class CivilServiceClient {
         throw new AssertionError({message: 'Claim details not available!'});
       }
       const caseDetails: CivilClaimResponse = response.data;
-      return convertCaseToClaimAndIncludeState(caseDetails);
+      const claim:Claim = convertCaseToClaimAndIncludeState(caseDetails);
+
+      console.log(claim);
+      console.log('claim converted');
+      return claim;
     } catch (err: unknown) {
       logger.error(err);
     }

@@ -77,7 +77,8 @@ export class Claim {
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
 
-  static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
+  public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
+    console.log('converting from ccd claim to claim');
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
     claim.applicant1 = toCUIParty(ccdClaim.applicant1);
     claim.respondent1 = toCUIParty(ccdClaim.respondent1);

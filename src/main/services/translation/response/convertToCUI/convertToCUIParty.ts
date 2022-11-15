@@ -3,6 +3,8 @@ import {Party} from 'models/party';
 import {PartyType} from 'models/partyType';
 import {PartyDetails} from 'form/models/partyDetails';
 import {Address} from 'form/models/address';
+import {PartyPhone} from 'models/PartyPhone';
+import {Email} from 'models/Email';
 
 export const toCUIParty = (ccdParty: CCDParty): Party => {
   const cuiParty = new Party();
@@ -23,10 +25,11 @@ export const toCUIParty = (ccdParty: CCDParty): Party => {
   } else {
     cuiParty.partyDetails.partyName = ccdParty.organisationName ? ccdParty?.organisationName : undefined;
   }
-  cuiParty.partyPhone.phone = ccdParty.partyPhone ? ccdParty?.partyPhone : undefined;
-  cuiParty.emailAddress.emailAddress = ccdParty.partyEmail ? ccdParty?.partyEmail : undefined;
+
+  cuiParty.partyPhone = ccdParty.partyPhone ? new PartyPhone(ccdParty?.partyPhone) : undefined;
+  cuiParty.emailAddress = ccdParty.partyEmail ? new Email(ccdParty?.partyEmail) : undefined;
   cuiParty.type = ccdParty.type ? ccdParty?.type : undefined;
   cuiParty.partyDetails.primaryAddress = new Address(ccdParty.primaryAddress.AddressLine1, ccdParty.primaryAddress.AddressLine2, ccdParty.primaryAddress.AddressLine3, ccdParty.primaryAddress.PostTown, ccdParty.primaryAddress.PostCode);
-
+  console.log(cuiParty);
   return cuiParty;
 };
