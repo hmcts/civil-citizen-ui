@@ -17,7 +17,7 @@ import {Reason} from '../../main/common/form/models/claim/details/reason';
 import {Address} from '../../main/common/form/models/address';
 import {PartyDetails} from '../../main/common/form/models/partyDetails';
 import {PartyPhone} from '../../main/common/models/PartyPhone';
-import {DateOfBirth} from '../../main/common/form/models/claim/claimant/dateOfBirth';
+import {CitizenDate} from '../../main/common/form/models/claim/claimant/citizenDate';
 import {DefendantTimeline} from '../../main/common/form/models/timeLineOfEvents/defendantTimeline';
 import {TimelineRow} from '../../main/common/form/models/timeLineOfEvents/timelineRow';
 import {EvidenceItem} from '../../main/common/form/models/evidence/evidenceItem';
@@ -35,7 +35,7 @@ export const buildRespondent1 = (): Party => {
   respondent.partyDetails.individualFirstName = 'Richards';
   respondent.partyDetails.partyName = 'Mrs Richards Mary';
   respondent.partyPhone = new PartyPhone('0208339922');
-  respondent.dateOfBirth = new DateOfBirth('2022-01-24T15:59:59');
+  respondent.dateOfBirth = new CitizenDate('2022-01-24T15:59:59');
   respondent.responseType = '';
   respondent.type = PartyType.INDIVIDUAL;
   respondent.partyDetails.primaryAddress = buildAddress();
