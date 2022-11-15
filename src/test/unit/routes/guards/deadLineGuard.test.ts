@@ -1,12 +1,13 @@
 import {Request, Response, NextFunction} from 'express';
-import {AdditionalTimeOptions} from '../../../../main/common/form/models/additionalTime';
-import {ResponseDeadline, ResponseOptions} from '../../../../main/common/form/models/responseDeadline';
-import {Claim} from '../../../../main/common/models/claim';
-import {getCaseDataFromStore} from '../../../../main/modules/draft-store/draftStoreService';
-import {deadLineGuard} from '../../../../main/routes/guards/deadLineGuard';
+import {AdditionalTimeOptions} from 'form/models/additionalTime';
+import {ResponseDeadline, ResponseOptions} from 'form/models/responseDeadline';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {deadLineGuard} from 'routes/guards/deadLineGuard';
 
 jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../main/modules/draft-store');
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
