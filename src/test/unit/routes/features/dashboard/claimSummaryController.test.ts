@@ -3,9 +3,7 @@ import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {DEFENDANT_SUMMARY_URL} from '../../../../../main/routes/urls';
-import {
-  mockCivilClaimUndefined,
-} from '../../../../utils/mockDraftStore';
+import {mockCivilClaimUndefined} from '../../../../utils/mockDraftStore';
 import CivilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
 
 jest.mock('../../../../../main/modules/oidc');

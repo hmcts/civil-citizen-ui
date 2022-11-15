@@ -101,10 +101,8 @@ export class CivilServiceClient {
         throw new AssertionError({message: 'Claim details not available!'});
       }
       const caseDetails: CivilClaimResponse = response.data;
-      const claim:Claim = convertCaseToClaimAndIncludeState(caseDetails);
+      const claim: Claim = convertCaseToClaimAndIncludeState(caseDetails);
 
-      console.log(claim);
-      console.log('claim converted');
       return claim;
     } catch (err: unknown) {
       logger.error(err);
