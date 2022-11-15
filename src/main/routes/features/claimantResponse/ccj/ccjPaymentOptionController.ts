@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {
-  CCJ_PAY_BY_SET_DATE_URL,
   CCJ_PAYMENT_OPTIONS_URL,
+  CCJ_PAY_BY_SET_DATE_URL,
   CCJ_REPAYMENT_PLAN_URL,
   CCJ_CHECK_AND_SEND_URL,
 } from '../../../urls';
