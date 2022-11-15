@@ -431,13 +431,13 @@ describe('Claimant Response Service', () => {
           return claim;
         });
         const ccjPaymentOption = {
-          type: PaymentOptionType.IMMEDIATELY
+          type: PaymentOptionType.IMMEDIATELY,
         };
         const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
         const claimantResponseToSave = {
           ccjRequest: {
             ccjPaymentOption: {
-              type: PaymentOptionType.IMMEDIATELY
+              type: PaymentOptionType.IMMEDIATELY,
             }},
         };
         //When
@@ -462,7 +462,7 @@ describe('Claimant Response Service', () => {
           {
             ccjRequest: {
               ccjPaymentOption: {
-                type: PaymentOptionType.BY_SET_DATE
+                type: PaymentOptionType.BY_SET_DATE,
               }},
           };
         const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
