@@ -14,20 +14,13 @@ const addressToString = (address: Address) => {
   return address.addressLine1 + '<br>' + address.city + '<br>' + address.postCode;
 };
 
-const getDefendantFullName = (claim: Claim): string => {
-  if (claim.respondent1.partyDetails.individualFirstName && claim.respondent1.partyDetails.individualLastName) {
-    return claim.respondent1.partyDetails.individualTitle + ' ' + claim.respondent1.partyDetails.individualFirstName + ' ' + claim.respondent1.partyDetails.individualLastName;
-  }
-  return claim.respondent1.partyDetails.partyName;
-};
-
 export const buildYourDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
   const yourDetailsHref = constructResponseUrlWithIdParams(claimId, CITIZEN_DETAILS_URL);
   const phoneNumberHref = constructResponseUrlWithIdParams(claimId, CITIZEN_PHONE_NUMBER_URL);
   const yourDetailsSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.DETAILS_TITLE', {lng: getLng(lang)}),
     summaryRows: [
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FULL_NAME', {lng: getLng(lang)}), getDefendantFullName(claim), yourDetailsHref, changeLabel(lang)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FULL_NAME', {lng: getLng(lang)}), claim.getDefendantFullName(), yourDetailsHref, changeLabel(lang)),
     ],
   });
   if (claim.respondent1.partyDetails.contactPerson) {
