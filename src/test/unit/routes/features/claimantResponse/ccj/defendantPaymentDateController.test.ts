@@ -56,16 +56,6 @@ describe('CCJ - defendant Payment date', () => {
           expect(res.text).toContain('name="day" type="text"');
         });
     });
-
-    it('should return 500 status code when error occurs', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CCJ_DEPENDANT_PAYMENT_DATE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
   });
 
   describe('on POST', () => {
