@@ -159,11 +159,13 @@ import claimantEvidenceController from './features/claim/yourDetails/claimantEvi
 import howMuchContinueClaimingController from './features/claim/interest/howMuchContinueClaimingController';
 import helpWithFeesController from './features/claim/details/helpWithFeesController';
 import settleClaimController from './features/claimantResponse/settleClaimController';
+import fullAdmitSetDatePaymentController from './features/claimantResponse/fullAdmitSetDatePaymentController';
 import partPaymentReceivedController from './features/claimantResponse/partPaymentReceivedController';
 import defendantDOBController from './features/claimantResponse/ccj/defendantDOBController';
 import claimantIntentionToProceedController from './features/claimantResponse/claimantIntentionToProceedController';
 import reviewDefendantsResponseController from './features/claimantResponse/reviewDefendantsResponseController';
 import rejectionReasonController from './features/claimantResponse/rejectionReasonController';
+import specificCourtController from './features/directionsQuestionnaire/hearing/specificCourtController';
 
 export default [
   homeController,
@@ -310,9 +312,11 @@ export default [
   howMuchContinueClaimingController,
   helpWithFeesController,
   settleClaimController,
+  fullAdmitSetDatePaymentController,
   partPaymentReceivedController,
   defendantDOBController,
   claimantIntentionToProceedController,
   reviewDefendantsResponseController,
   rejectionReasonController,
+  specificCourtController,
 ];
