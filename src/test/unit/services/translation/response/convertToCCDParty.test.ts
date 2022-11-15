@@ -1,14 +1,14 @@
-import {Party} from 'models/party';
-import {toCCDParty} from 'services/translation/response/convertToCCDParty';
-import {PartyType} from 'models/partyType';
-import {ResponseType} from 'form/models/responseType';
-import {YesNo} from 'form/models/yesNo';
-import {Address} from 'form/models/address';
-import {CCDParty} from 'models/ccdResponse/ccdParty';
-import {CCDAddress} from 'models/ccdResponse/ccdAddress';
-import {DateOfBirth} from 'form/models/claim/claimant/dateOfBirth';
-import {PartyPhone} from 'models/PartyPhone';
-import {Email} from 'models/Email';
+import {Party} from '../../../../../main/common/models/party';
+import {toCCDParty} from '../../../../../main/services/translation/response/convertToCCDParty';
+import {PartyType} from '../../../../../main/common/models/partyType';
+import {ResponseType} from '../../../../../main/common/form/models/responseType';
+import {YesNo} from '../../../../../main/common/form/models/yesNo';
+import {Address} from '../../../../../main/common/form/models/address';
+import {CCDParty} from '../../../../../main/common/models/ccdResponse/ccdParty';
+import {CCDAddress} from '../../../../../main/common/models/ccdResponse/ccdAddress';
+import {CitizenDate} from '../../../../../main/common/form/models/claim/claimant/citizenDate';
+import {PartyPhone} from '../../../../../main/common/models/PartyPhone';
+import {Email} from '../../../../../main/common/models/Email';
 
 const companyName = 'Version 1';
 const phone = new PartyPhone('123456789');
@@ -17,7 +17,7 @@ const title = 'Mr';
 const firstName = 'Jon';
 const lastName = 'Doe';
 const soleTraderTradingAs = 'test';
-const dateOfBirth = new DateOfBirth('10','10','1990');
+const dateOfBirth = new CitizenDate('10','10','1990');
 const email = new Email('test@test.com');
 const emailCCD = 'test@test.com';
 
@@ -111,7 +111,7 @@ const partyCompanyCCD: CCDParty = {
 
 const partyIndividualCCD: CCDParty = {
   companyName: undefined,
-  individualDateOfBirth: new Date('10/10/1990').toLocaleDateString(),
+  individualDateOfBirth: new Date('Wed Oct 10 1990 01:00:00 GMT+0100').toString(),
   individualTitle: title,
   individualFirstName: firstName,
   individualLastName: lastName,
@@ -137,7 +137,7 @@ const partySoleTraderCCD: CCDParty = {
   partyEmail: emailCCD,
   partyPhone: phoneCCD,
   primaryAddress: addressCCD,
-  soleTraderDateOfBirth: new Date('10/10/1990').toLocaleDateString(),
+  soleTraderDateOfBirth: new Date('Wed Oct 10 1990 01:00:00 GMT+0100').toString(),
   soleTraderTitle: title,
   soleTraderFirstName: firstName,
   soleTraderLastName: lastName,
