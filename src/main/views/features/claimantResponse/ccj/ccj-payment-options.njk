@@ -24,28 +24,28 @@
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {{ govukRadios({
-              idPrefix: "paymentType",
-              name: "paymentType",
+              idPrefix: "type",
+              name: "type",
               items: [
                 {
                   value: PaymentOptionType.IMMEDIATELY,
                   text: t('COMMON.PAYMENT_OPTION.IMMEDIATELY'),
-                  checked: true if form.model.paymentType == PaymentOptionType.IMMEDIATELY
+                  checked: true if form.model.type == PaymentOptionType.IMMEDIATELY
                 },
                 {
                   value: PaymentOptionType.BY_SET_DATE,
                   text: t('COMMON.PAYMENT_OPTION.BY_SET_DATE'),
-                  checked: true if form.model.paymentType == PaymentOptionType.BY_SET_DATE
+                  checked: true if form.model.type == PaymentOptionType.BY_SET_DATE
                 },
                 {
                   value: PaymentOptionType.INSTALMENTS,
                   text: t('PAGES.PAYMENT_OPTION.REPAYMENT'),
-                  checked: true if form.model.paymentType == PaymentOptionType.INSTALMENTS
+                  checked: true if form.model.type == PaymentOptionType.INSTALMENTS
                 }
               ],
               errorMessage: {
-                text: t(form.errorFor('paymentType'))
-              } if form.hasFieldError('paymentType')
+                text: t(form.errorFor('type'))
+              } if form.hasFieldError('type')
             }) }}
             <div class="govuk-form-group">
               {{ govukButton({

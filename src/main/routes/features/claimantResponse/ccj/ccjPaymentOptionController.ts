@@ -21,7 +21,7 @@ function renderView(form: GenericForm<CcjPaymentOption>, res: Response): void {
 ccjPaymentOptionController.get(CCJ_PAYMENT_OPTIONS_URL, async (req, res, next: NextFunction) => {
   try {
     const claimantResponse = await getClaimantResponse(req.params.id);
-    renderView(new GenericForm(new CcjPaymentOption(claimantResponse.ccjRequest?.ccjPaymentOption?.paymentType)), res);
+    renderView(new GenericForm(new CcjPaymentOption(claimantResponse.ccjRequest?.ccjPaymentOption?.type)), res);
   } catch (error) {
     next(error);
   }
@@ -30,12 +30,12 @@ ccjPaymentOptionController.get(CCJ_PAYMENT_OPTIONS_URL, async (req, res, next: N
 ccjPaymentOptionController.post(CCJ_PAYMENT_OPTIONS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const paymentOption = new GenericForm(new CcjPaymentOption(req.body.paymentType));
-    paymentOption.validateSync();
-    if (paymentOption.hasErrors()) {
-      renderView(paymentOption, res);
+    const ccjPaymentOption = new GenericForm(new CcjPaymentOption(req.body.type));
+    ccjPaymentOption.validateSync();
+    if (ccjPaymentOption.hasErrors()) {
+      renderView(ccjPaymentOption, res);
     } else {
-      await saveClaimantResponse(claimId, paymentOption.model, crPropertyName, crParentName);
+      await saveClaimantResponse(claimId, ccjPaymentOption.model, crPropertyName, crParentName);
       res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_PAY_BY_SET_DATE_URL));
     }
   } catch (error) {
