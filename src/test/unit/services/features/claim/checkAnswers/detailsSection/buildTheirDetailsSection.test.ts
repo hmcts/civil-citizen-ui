@@ -14,7 +14,7 @@ import {PartyType} from '../../../../../../../main/common/models/partyType';
 import {formatDateToFullDate} from '../../../../../../../main/common/utils/dateUtils';
 import {PartyDetails} from '../../../../../../../main/common/form/models/partyDetails';
 import {Email} from '../../../../../../../main/common/models/Email';
-import {DateOfBirth} from '../../../../../../../main/common/form/models/claim/claimant/dateOfBirth';
+import {CitizenDate} from '../../../../../../../main/common/form/models/claim/claimant/citizenDate';
 
 jest.mock('../../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -86,7 +86,7 @@ describe('Cirizen Details Section', () => {
     const claim = createClaimWithIndividualDetails();
     if (claim.respondent1) {
       claim.respondent1.emailAddress = new Email(EMAIL_ADDRESS);
-      claim.respondent1.dateOfBirth = new DateOfBirth('1', '2', '2000');
+      claim.respondent1.dateOfBirth = new CitizenDate('1', '2', '2000');
     }
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');

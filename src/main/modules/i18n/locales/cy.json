@@ -42,6 +42,7 @@
       "RESPOND_TO_CLAIM": "Respond to claim",
       "SAVE": "Save",
       "SAVE_AND_CONTINUE": "Cadw a Pharhau",
+      "SETTLE_THE_CLAIM": "Settle the claim",
       "START_AGAIN": "Start again",
       "SUBMIT_RESPONSE": "Cyflwyno'r ymateb"
     },
@@ -638,6 +639,10 @@
     "CLAIMANT_RESPONSE_REJECTION_REASON": {
       "PAGE_TITLE": "Rejection reason",
       "TITLE": "Why did you reject their response?"
+    },
+    "CLAIMANT_SETTLE_DATE": {
+      "PAGE_TITLE": "When did you settle with the defendant?",
+      "TITLE": "When did you settle with the defendant?"
     },
     "COMPANY_DETAILS": {
       "ADDRESS_FOR_SERVICE": "Gelwir hwn yn 'gyfeiriad cyflwyno'.",
