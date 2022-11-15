@@ -5,7 +5,6 @@ import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreServi
 import {CLAIM_TOTAL_URL, CLAIMANT_TASK_LIST_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {convertToPoundsFilter} from '../../../common/utils/currencyFormat';
-import {YesNo} from '../../../common/form/models/yesNo';
 import {calculateInterestToDate} from '../../../common/utils/interestUtils';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -25,11 +24,9 @@ totalAmountController.get(CLAIM_TOTAL_URL, async (req: AppRequest, res: Response
     const claimFee = convertToPoundsFilter(claimFeeResponse.calculatedAmountInPence);
     const hearingResponse = await civilServiceClient.getHearingAmount(claim.totalClaimAmount, <AppRequest>req);
     const hearingAmount = convertToPoundsFilter(hearingResponse.calculatedAmountInPence);
-    const hasInterest = claim.claimInterest === YesNo.YES ? true : false;
-    const hasHelpWithFees = claim.claimDetails.helpWithFees.option === YesNo.YES ? true : false;
     let interestToDate = 0;
-
-    if (hasInterest) {
+    
+    if (claim.hasInterest()) {
       interestToDate = calculateInterestToDate(claim);
     }
 
@@ -39,8 +36,8 @@ totalAmountController.get(CLAIM_TOTAL_URL, async (req: AppRequest, res: Response
       claimFee,
       totalClaimAmount: claim.totalClaimAmount + claimFee + interestToDate,
       hearingAmount,
-      hasInterest,
-      hasHelpWithFees,
+      hasInterest: claim.hasInterest(),
+      hasHelpWithFees: claim.hasHelpWithFees(),
     };
     renderView(form, res);
   } catch (error) {
