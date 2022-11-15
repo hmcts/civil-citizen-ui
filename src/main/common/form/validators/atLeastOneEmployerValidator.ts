@@ -1,6 +1,5 @@
 import {ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator';
 import {Employer} from '../models/statementOfMeans/employment/employer';
-import {VALID_ENTER_AT_LEAST_ONE_EMPLOYER} from '../validationErrors/errorMessageConstants';
 
 @ValidatorConstraint({ name: 'customAtLeastOneEmployerValidator', async: false })
 export class AtLeastOneEmployerValidator implements ValidatorConstraintInterface {
@@ -16,7 +15,7 @@ export class AtLeastOneEmployerValidator implements ValidatorConstraintInterface
   }
 
   defaultMessage() {
-    return VALID_ENTER_AT_LEAST_ONE_EMPLOYER;
+    return 'ERRORS.VALID_ENTER_AT_LEAST_ONE_EMPLOYER';
   }
 }
 

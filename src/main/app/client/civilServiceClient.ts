@@ -16,12 +16,10 @@ import {
 import {FeeRange, FeeRanges} from '../../common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
 import {CaseDocument} from 'common/models/document/caseDocument';
-import {
-  DashboardClaimantItem,
-  DashboardDefendantItem,
-} from '../../common/models/dashboard/dashboardItem';
+import {DashboardClaimantItem, DashboardDefendantItem} from '../../common/models/dashboard/dashboardItem';
 import {ClaimUpdate, EventDto} from '../../common/models/events/eventDto';
 import {CaseEvent} from '../../common/models/events/caseEvent';
+import {CourtLocation} from '../../common/models/courts/courtLocations';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -64,7 +62,7 @@ export class CivilServiceClient {
       const response = await this.client.get('/cases/claimant/' + submitterId, config);
       return plainToInstance(DashboardClaimantItem, response.data as object[]);
     } catch (err) {
-      logger.log(err);
+      logger.error(err);
     }
   }
 
@@ -75,7 +73,7 @@ export class CivilServiceClient {
       const response = await this.client.get('/cases/defendant/' + submitterId, config);
       return plainToInstance(DashboardDefendantItem, response.data as object[]);
     }catch(err){
-      logger.log(err);
+      logger.error(err);
     }
   }
 
@@ -202,6 +200,17 @@ export class CivilServiceClient {
     }catch (err: unknown) {
       logger.error(err);
       throw err;
+    }
+  }
+
+  async getCourtLocations(req: AppRequest): Promise<CourtLocation[]> {
+    const config = this.getConfig(req);
+    try{
+      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_COURT_LOCATIONS, config);
+      return plainToInstance(CourtLocation, response.data as object[]);
+    }catch (error: unknown) {
+      logger.error(error);
+      throw error;
     }
   }
 }

@@ -1,5 +1,4 @@
 import {ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator';
-import {VALID_DATE_NOT_IN_PAST} from '../validationErrors/errorMessageConstants';
 
 /**
  * Validates that the input value is not a date in the past
@@ -16,6 +15,6 @@ export class OptionalDateNotInPastValidator implements ValidatorConstraintInterf
   }
 
   defaultMessage() {
-    return VALID_DATE_NOT_IN_PAST;
+    return 'ERRORS.VALID_DATE_NOT_IN_PAST';
   }
 }
