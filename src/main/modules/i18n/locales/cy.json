@@ -1240,9 +1240,9 @@
       "TITLE": "Enter organisation details"
     },
     "CANT_ATTEND_HEARING_IN_NEXT_12MONTHS": {
-      "CONTENT": "These should only be the dates of important events like medical appointments, other court hearing, or holidays you have already booked",
-      "PAGE_TITLE": "cant attend hearing in next months",
-      "TITLE": "Are there any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing?"
+      "CONTENT": "Dylai’r rhain ond fod yn ddyddiadau digwyddiadau pwysig fel apwyntiadau meddygol, gwrandawiadau eraill neu wyliau rydych eisoes wedi trefnu",
+      "PAGE_TITLE": "Can’t attend hearing in next months",
+      "TITLE": "A oes yna unrhyw ddyddiadau yn y 12 mis nesaf pan na allwch chi, eich arbenigwyr neu eich tystion fynychu gwrandawiad?"
     },
     "NOT_ELIGIBLE_FOR_SERVICE": {
       "ABLE_TO_GET_AN_ADVICE": {
@@ -1380,7 +1380,7 @@
       "YOU_MUST_CONTACT": "Rhaid i chi gysylltu â'r hawlydd a thalu'r swm llawn o fewn 5 diwrnod. Rhaid i unrhyw sieciau neu drosglwyddiadau banc fod wedi clirio yn eu cyfrif."
     },
     "PERMISSION_FOR_EXPERT": {
-      "PAGE_TITLE": "Do you want to ask for the court’s permission to use an expert?",
+      "PAGE_TITLE": "A ydych eisiau gofyn am ganiatâd y llys i ddefnyddio arbenigwr?",
       "TITLE": "Permission for expert"
     },
     "PHONE_OR_VIDEO_HEARING": {
@@ -2126,7 +2126,7 @@
     "VALID_INTEREST_TYPE_OPTION": "Choose same rate or breakdown",
     "VALID_MONTH": "Rhowch fis dilys",
     "VALID_NAME": "Enter name",
-    "VALID_CANT_ATTEND_HEARING": "Select yes if there are any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing",
+    "VALID_CANT_ATTEND_HEARING": "Dewiswch oes os oes yna unrhyw ddyddiadau yn y 12 mis nesaf pan na allwch chi, eich arbenigwyr neu eich tystion fynychu gwrandawiad",
     "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Ni all y rhif fod yn uwch na'r rhif ar y dudalen flaenorol",
     "VALID_OPTION_SELECTION": "Dewiswch opsiwn",
     "VALID_OWED_AMOUNT_REQUIRED": "Rhowch swm dilys",
