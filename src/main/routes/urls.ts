@@ -2,6 +2,7 @@ const BASE_CASE_URL = '/case/:id';
 const BASE_CLAIM_URL = '/claim';
 export const BASE_ELIGIBILITY_URL = '/eligibility';
 export const BASE_FIRST_CONTACT_URL = '/first-contact';
+const BASE_BREATHING_SPACE_URL = `${BASE_CASE_URL}/breathing-space`;
 const BASE_CASE_RESPONSE_URL = `${BASE_CASE_URL}/response`;
 const BASE_CASE_PAID_IN_FULL_URL = `${BASE_CASE_URL}/paid-in-full`;
 const BASE_CLAIMANT_RESPONSE_URL = `${BASE_CASE_URL}/claimant-response`;
@@ -191,4 +192,5 @@ export const CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL = `${BASE_CLAIMANT_RESPO
 export const CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL = `${BASE_CLAIMANT_RESPONSE_URL}/part-payment-received`;
 export const CCJ_DEFENDANT_DOB_URL = `${BASE_CCJ_URL}/date-of-birth`;
 export const CCJ_PAID_AMOUNT_URL = `${BASE_CCJ_URL}/paid-amount`;
-
+export const BREATHING_SPACE_RESPITE_START_DATE_URL = `${BASE_BREATHING_SPACE_URL}/respite-start`;
+export const BREATHING_SPACE_RESPITE_TYPE_URL = `${BASE_BREATHING_SPACE_URL}/respite-type`;
