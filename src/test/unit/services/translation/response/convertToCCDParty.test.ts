@@ -6,7 +6,7 @@ import {YesNo} from '../../../../../main/common/form/models/yesNo';
 import {Address} from '../../../../../main/common/form/models/address';
 import {CCDParty} from '../../../../../main/common/models/ccdResponse/ccdParty';
 import {CCDAddress} from '../../../../../main/common/models/ccdResponse/ccdAddress';
-import {DateOfBirth} from '../../../../../main/common/form/models/claim/claimant/dateOfBirth';
+import {CitizenDate} from '../../../../../main/common/form/models/claim/claimant/citizenDate';
 import {PartyPhone} from '../../../../../main/common/models/PartyPhone';
 import {Email} from '../../../../../main/common/models/Email';
 
@@ -17,7 +17,7 @@ const title = 'Mr';
 const firstName = 'Jon';
 const lastName = 'Doe';
 const soleTraderTradingAs = 'test';
-const dateOfBirth = new DateOfBirth('10','10','1990');
+const dateOfBirth = new CitizenDate('10','10','1990');
 const email = new Email('test@test.com');
 const emailCCD = 'test@test.com';
 
@@ -111,7 +111,7 @@ const partyCompanyCCD: CCDParty = {
 
 const partyIndividualCCD: CCDParty = {
   companyName: undefined,
-  individualDateOfBirth: new Date('10/10/1990').toString(),
+  individualDateOfBirth: new Date('Wed Oct 10 1990 01:00:00 GMT+0100').toString(),
   individualTitle: title,
   individualFirstName: firstName,
   individualLastName: lastName,
@@ -137,7 +137,7 @@ const partySoleTraderCCD: CCDParty = {
   partyEmail: emailCCD,
   partyPhone: phoneCCD,
   primaryAddress: addressCCD,
-  soleTraderDateOfBirth: new Date('10/10/1990').toString(),
+  soleTraderDateOfBirth: new Date('Wed Oct 10 1990 01:00:00 GMT+0100').toString(),
   soleTraderTitle: title,
   soleTraderFirstName: firstName,
   soleTraderLastName: lastName,
@@ -147,16 +147,11 @@ const partySoleTraderCCD: CCDParty = {
 
 describe('translate party to ccd model', () => {
   it('should translate COMPANY party to ccd', () => {
-    //Given
-    const party = partyCompany;
-    //When
-    const partyResponseCCD = toCCDParty(party);
-    //Then
+    const partyResponseCCD = toCCDParty(partyCompany);
     expect(partyResponseCCD).toMatchObject(partyCompanyCCD);
   });
 
   it('should translate ORGANISATION party to ccd', () => {
-    //Given
     const party = partyOrganisation;
     const partyOrganisationCCD: CCDParty = {
       ...partyCompanyCCD,
@@ -164,28 +159,18 @@ describe('translate party to ccd model', () => {
       companyName: undefined,
       type: PartyType.ORGANISATION,
     };
-    //When
+
     const partyResponseCCD = toCCDParty(party);
-    //Then
     expect(partyResponseCCD).toMatchObject(partyOrganisationCCD);
   });
 
   it('should translate INDIVIDUAL party to ccd', () => {
-    //Given
-    const party = partyIndividual;
-    //When
-    const partyResponseCCD = toCCDParty(party);
-    //Then
+    const partyResponseCCD = toCCDParty(partyIndividual);
     expect(partyResponseCCD).toMatchObject(partyIndividualCCD);
   });
 
   it('should translate SOLE TRADER party to ccd', () => {
-    //Given
-    const party = partySoleTrader;
-    //When
-    const partyResponseCCD = toCCDParty(party);
-    //Then
+    const partyResponseCCD = toCCDParty(partySoleTrader);
     expect(partyResponseCCD).toMatchObject(partySoleTraderCCD);
   });
-
 });
