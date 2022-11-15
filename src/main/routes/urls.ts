@@ -189,6 +189,7 @@ export const CLAIMANT_RESPONSE_SETTLE_CLAIM_URL = `${BASE_CLAIMANT_RESPONSE_URL}
 export const CLAIMANT_RESPONSE_REJECTION_REASON_URL = `${BASE_CLAIMANT_RESPONSE_URL}/rejection-reason`;
 export const CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL = `${BASE_CLAIMANT_RESPONSE_URL}/intention-to-proceed`;
 export const CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL = `${BASE_CLAIMANT_RESPONSE_URL}/part-payment-received`;
+export const CCJ_CHECK_AND_SEND_URL = `${BASE_CCJ_URL}/check-and-send`;
 export const CCJ_DEFENDANT_DOB_URL = `${BASE_CCJ_URL}/date-of-birth`;
 export const CCJ_PAID_AMOUNT_URL = `${BASE_CCJ_URL}/paid-amount`;
 export const CCJ_PAY_BY_SET_DATE_URL = `${BASE_CCJ_URL}/pay-by-set-date`;
