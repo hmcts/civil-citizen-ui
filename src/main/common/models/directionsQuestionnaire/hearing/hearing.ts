@@ -4,6 +4,7 @@ import {ConsiderClaimantDocuments} from './considerClaimantDocuments';
 import {WhyUnavailableForHearing} from './whyUnavailableForHearing';
 import {PhoneOrVideoHearing} from './phoneOrVideoHearing';
 import {SupportRequiredList} from '../supportRequired';
+import {SpecificCourtLocation} from './specificCourtLocation';
 
 export class Hearing {
   triedToSettle?: GenericYesNo;
@@ -14,4 +15,5 @@ export class Hearing {
   phoneOrVideoHearing?: PhoneOrVideoHearing;
   cantAttendHearingInNext12Months?: GenericYesNo;
   supportRequiredList?: SupportRequiredList;
+  specificCourtLocation?: SpecificCourtLocation;
 }
