@@ -161,10 +161,12 @@ import helpWithFeesController from './features/claim/details/helpWithFeesControl
 import debtRespiteReferenceNumberController
   from './features/breathingSpace/debtRespiteReferenceNumberController';
 import settleClaimController from './features/claimantResponse/settleClaimController';
+import fullAdmitSetDatePaymentController from './features/claimantResponse/fullAdmitSetDatePaymentController';
 import partPaymentReceivedController from './features/claimantResponse/partPaymentReceivedController';
 import defendantDOBController from './features/claimantResponse/ccj/defendantDOBController';
 import claimantIntentionToProceedController from './features/claimantResponse/claimantIntentionToProceedController';
 import rejectionReasonController from './features/claimantResponse/rejectionReasonController';
+import specificCourtController from './features/directionsQuestionnaire/hearing/specificCourtController';
 
 export default [
   homeController,
@@ -312,8 +314,10 @@ export default [
   helpWithFeesController,
   debtRespiteReferenceNumberController,
   settleClaimController,
+  fullAdmitSetDatePaymentController,
   partPaymentReceivedController,
   defendantDOBController,
   claimantIntentionToProceedController,
   rejectionReasonController,
+  specificCourtController,
 ];
