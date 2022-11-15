@@ -2044,6 +2044,10 @@
       "respondent1": {
         "type": "INDIVIDUAL",
         "partyDetails": {
+          "individualTitle": "Mrs.",
+          "individualFirstName": "Jane",
+          "individualLastName": "Doe",
+          "partyName": "Mrs. Jane Doe",
           "postToThisAddress": "no",
           "primaryAddress": {
             "addressLine1": "Flat 2",

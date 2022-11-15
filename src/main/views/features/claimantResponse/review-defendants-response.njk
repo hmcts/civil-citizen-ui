@@ -16,7 +16,7 @@
           <h1 class="govuk-heading-l">{{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.TITLE') }}</h1>
           {% if claim.responseStatus === 'FULL_ADMISSION_PAY_BY_DATE' %}
             <p class="govuk-body">
-              {{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.FULL_ADMISSION', {defendant: claim.getDefendantName() }) }}
+              {{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.FULL_ADMISSION', {defendant: claim.getDefendantFullName() }) }}
               {{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.TOTAL_PAID_AMOUNT') }}
             </p>
             <p class="govuk-body">
