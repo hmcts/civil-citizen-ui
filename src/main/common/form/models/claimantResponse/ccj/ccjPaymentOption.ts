@@ -8,4 +8,12 @@ export class CcjPaymentOption {
   constructor(type?: PaymentOptionType) {
     this.type = type;
   }
+
+  isCcjPaymentOptionBySetDate() {
+    return this.type === PaymentOptionType.BY_SET_DATE;
+  }
+
+  isCcjPaymentOptionInstalments() {
+    return this.type === PaymentOptionType.INSTALMENTS;
+  }
 }

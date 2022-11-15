@@ -38,9 +38,9 @@ ccjPaymentOptionController.post(CCJ_PAYMENT_OPTIONS_URL, async (req: Request, re
       renderView(ccjPaymentOption, res);
     } else {
       await saveClaimantResponse(claimId, ccjPaymentOption.model, crPropertyName, crParentName);
-      if (ccjPaymentOption.model.type === PaymentOptionType.BY_SET_DATE) {
+      if (ccjPaymentOption.model.isCcjPaymentOptionBySetDate()) {
         res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_PAY_BY_SET_DATE_URL));
-      } else if (ccjPaymentOption.model.type === PaymentOptionType.INSTALMENTS) {
+      } else if (ccjPaymentOption.model.isCcjPaymentOptionInstalments()) {
         res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_REPAYMENT_PLAN_URL));
       } else {
         res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_CHECK_AND_SEND_URL));

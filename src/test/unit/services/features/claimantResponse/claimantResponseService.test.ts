@@ -12,6 +12,7 @@ import {CCJRequest} from '../../../../../main/common/models/claimantResponse/ccj
 import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
 import {RejectionReason} from '../../../../../main/common/form/models/claimantResponse/rejectionReason';
 import {PaymentOptionType} from '../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import {CcjPaymentOption} from 'form/models/claimantResponse/ccj/ccjPaymentOption';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -253,7 +254,7 @@ describe('Claimant Response Service', () => {
         const claim = new Claim();
         claim.claimantResponse = new ClaimantResponse();
         claim.claimantResponse.ccjRequest = new CCJRequest();
-        claim.claimantResponse.ccjRequest.ccjPaymentOption = {type: PaymentOptionType.IMMEDIATELY};
+        claim.claimantResponse.ccjRequest.ccjPaymentOption = new CcjPaymentOption(PaymentOptionType.IMMEDIATELY);
         mockGetCaseDataFromDraftStore.mockImplementation(async () => {
           return claim;
         });
@@ -268,7 +269,7 @@ describe('Claimant Response Service', () => {
         const claim = new Claim();
         claim.claimantResponse = new ClaimantResponse();
         claim.claimantResponse.ccjRequest = new CCJRequest();
-        claim.claimantResponse.ccjRequest.ccjPaymentOption = {type: PaymentOptionType.INSTALMENTS};
+        claim.claimantResponse.ccjRequest.ccjPaymentOption = new CcjPaymentOption(PaymentOptionType.INSTALMENTS);
         mockGetCaseDataFromDraftStore.mockImplementation(async () => {
           return claim;
         });
@@ -283,7 +284,7 @@ describe('Claimant Response Service', () => {
         const claim = new Claim();
         claim.claimantResponse = new ClaimantResponse();
         claim.claimantResponse.ccjRequest = new CCJRequest();
-        claim.claimantResponse.ccjRequest.ccjPaymentOption = {type: PaymentOptionType.BY_SET_DATE};
+        claim.claimantResponse.ccjRequest.ccjPaymentOption = new CcjPaymentOption(PaymentOptionType.BY_SET_DATE);
         mockGetCaseDataFromDraftStore.mockImplementation(async () => {
           return claim;
         });
@@ -452,7 +453,7 @@ describe('Claimant Response Service', () => {
           const claim = new Claim();
           claim.claimantResponse = new ClaimantResponse();
           claim.claimantResponse.ccjRequest = new CCJRequest();
-          claim.claimantResponse.ccjRequest.ccjPaymentOption = { type : PaymentOptionType.BY_SET_DATE };
+          claim.claimantResponse.ccjRequest.ccjPaymentOption = new CcjPaymentOption(PaymentOptionType.BY_SET_DATE);
           return claim;
         });
         const ccjPaymentOptionUpdate = {
