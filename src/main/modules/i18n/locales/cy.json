@@ -633,6 +633,10 @@
       "PAGE_TITLE": "Eich rhif ffôn",
       "TITLE": "Enter a phone number (optional)"
     },
+    "CLAIMANT_SETTLE_DATE": {
+      "PAGE_TITLE": "When did you settle with the defendant?",
+      "TITLE": "When did you settle with the defendant?"
+    },
     "CLAIMANT_RESPONSE_DEBT_WHEN_START": {
       "DATE_START_OPTIONAL": "This is the date it started, not the date you received notification of it (optional).",
       "PAGE_TITLE": "When did it start?",
@@ -645,10 +649,6 @@
     "CLAIMANT_RESPONSE_REJECTION_REASON": {
       "PAGE_TITLE": "Rejection reason",
       "TITLE": "Why did you reject their response?"
-    },
-    "CLAIMANT_SETTLE_DATE": {
-      "PAGE_TITLE": "When did you settle with the defendant?",
-      "TITLE": "When did you settle with the defendant?"
     },
     "COMPANY_DETAILS": {
       "ADDRESS_FOR_SERVICE": "Gelwir hwn yn 'gyfeiriad cyflwyno'.",
@@ -813,6 +813,11 @@
       "PAGE_TITLE": "Any debts?",
       "TITLE": "A oes gennych fenthyciadau neu ddyledion cerdyn credyd?",
       "TOTAL": "Cyfanswm sy'n ddyledus gennych"
+    },
+    "DEBT_RESPITE_END_DATE": {
+      "PAGE_TITLE": "Expected end date",
+      "THIS_IS_THE": "This is the end date that it is due to finish (optional)",
+      "TITLE": "Expected end date"
     },
     "DEFENDANT_DETAILS": {
       "BUSINESS_NAME": "Trading as (If you know it)",
@@ -2086,6 +2091,7 @@
       "RENT": "Enter a valid Rent amount, maximum two decimal places",
       "WATER": "Enter a valid Water amount, maximum two decimal places"
     },
+    "VALID_DEBT_RESPITE_END_DATE": "Expected end date must not be before today's date",
     "VALID_DEBT_RESPITE_OPTION": "You must select the Type before continuing",
     "VALID_DISAGREE_REASON_REQUIRED": "Dywedwch pam ydych yn anghytuno",
     "VALID_ENTER_A_DATE_BEFORE": "Please enter a date of birth before {{ maxDate }}",
