@@ -33,7 +33,7 @@ const CONTACT_NUMBER = '077777777779';
 const ADDRESS = '23 Brook lane<br>Bristol<br>BS13SS';
 const DOB = '12 December 2000';
 
-describe('Cirizen Details Section', () => {
+describe('Citizen Details Section', () => {
   const claim = createClaimWithBasicRespondentDetails();
   it('should return your Individual details summary sections', async () => {
     //When

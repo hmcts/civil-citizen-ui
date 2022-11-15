@@ -3,7 +3,7 @@ import {getDOBforAgeFromCurrentTime} from '../../../../main/common/utils/dateUti
 describe('getDOBforAgeFromCurrentTime', () => {
   it('should return the maximim date for age', () => {
     //Given
-    const mockDate = new Date('2022-03-01T11:57:10.592492') as unknown as string;
+    const mockDate = new Date('2022-03-01') as unknown as string;
     const spy = jest
       .spyOn(global, 'Date')
       .mockImplementation(() => mockDate);
@@ -12,6 +12,6 @@ describe('getDOBforAgeFromCurrentTime', () => {
     //Then
     expect(result).not.toBeNull();
     expect(spy).toBeCalled();
-    expect(result.toISOString()).toEqual('2004-03-01T11:57:10.592Z');
+    expect(result.toISOString()).toEqual('2004-03-01');
   });
 });
