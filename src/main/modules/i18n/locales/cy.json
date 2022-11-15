@@ -1024,17 +1024,17 @@
       "TITLE": "Rhestru eich tystiolaeth"
     },
     "EXPERT_DETAILS": {
-      "ADD_ANOTHER_EXPERT": "Add another expert",
-      "ADD_EXPERT": "Add another expert",
-      "COST_OPTIONAL": "Estimated cost (optional)",
-      "EMAIL_ADDRESS_OPTIONAL": "Email address (optional)",
-      "FIELD_OF_EXPERTISE": "Field of expertise",
-      "FIRST_NAME_OPTIONAL": "First name (optional)",
-      "LAST_NAME_OPTIONAL": "Last name (optional)",
-      "PAGE_TITLE": "Enter the expert’s details",
-      "PHONE_OPTIONAL": "Phone number (optional)",
-      "REMOVE_EXPERT": "Remove expert",
-      "TELL_US_WHY_NEED_EXPERT": "Tell us why you need this expert",
+      "ADD_ANOTHER_EXPERT": "Ychwanegu arbenigwr arall",
+      "ADD_EXPERT": "Ychwanegu arbenigwr arall",
+      "COST_OPTIONAL": "Amcangyfrif o’r gost (dewisol)",
+      "EMAIL_ADDRESS_OPTIONAL": "Cyfeiriad e-bost (dewisol)",
+      "FIELD_OF_EXPERTISE": "Maes arbenigedd",
+      "FIRST_NAME_OPTIONAL": "Enw cyntaf (dewisol)",
+      "LAST_NAME_OPTIONAL": "Enw olaf (dewisol)",
+      "PAGE_TITLE": "Nodwch fanylion yr arbenigwr",
+      "PHONE_OPTIONAL": "Rhif ffôn (dewisol)",
+      "REMOVE_EXPERT": "Dileu arbenigwr",
+      "TELL_US_WHY_NEED_EXPERT": "Dywedwch wrthym pam ydych chi angen yr arbenigwr hwn",
       "SECTION_TITLE": "Expert Details"
     },
     "EXPERT_GUIDANCE": {
@@ -1244,9 +1244,9 @@
       "TITLE": "Enter organisation details"
     },
     "CANT_ATTEND_HEARING_IN_NEXT_12MONTHS": {
-      "CONTENT": "These should only be the dates of important events like medical appointments, other court hearing, or holidays you have already booked",
-      "PAGE_TITLE": "cant attend hearing in next months",
-      "TITLE": "Are there any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing?"
+      "CONTENT": "Dylai’r rhain ond fod yn ddyddiadau digwyddiadau pwysig fel apwyntiadau meddygol, gwrandawiadau eraill neu wyliau rydych eisoes wedi trefnu",
+      "PAGE_TITLE": "Can’t attend hearing in next months",
+      "TITLE": "A oes yna unrhyw ddyddiadau yn y 12 mis nesaf pan na allwch chi, eich arbenigwyr neu eich tystion fynychu gwrandawiad?"
     },
     "NOT_ELIGIBLE_FOR_SERVICE": {
       "ABLE_TO_GET_AN_ADVICE": {
@@ -1386,7 +1386,7 @@
       "YOU_MUST_CONTACT": "Rhaid i chi gysylltu â'r hawlydd a thalu'r swm llawn o fewn 5 diwrnod. Rhaid i unrhyw sieciau neu drosglwyddiadau banc fod wedi clirio yn eu cyfrif."
     },
     "PERMISSION_FOR_EXPERT": {
-      "PAGE_TITLE": "Do you want to ask for the court’s permission to use an expert?",
+      "PAGE_TITLE": "A ydych eisiau gofyn am ganiatâd y llys i ddefnyddio arbenigwr?",
       "TITLE": "Permission for expert"
     },
     "PHONE_OR_VIDEO_HEARING": {
@@ -1477,10 +1477,10 @@
       "TITLE": "Eich cynllun ad-dalu"
     },
     "REQUEST_EXTRA_4WEEKS": {
-      "HINT": "You can use this time to try to settle the claim without going to a hearing. Settling without going to a hearing may avoid costs including fees.",
-      "PAGE_TITLE": "Do you want an extra 4 weeks to try to settle the claim?",
-      "TITLE": "Do you want an extra 4 weeks to try to settle the claim?",
-      "WARNING": "This will not change the response deadline. even if an extra 4 weeks to settle the claim is agreed, you will still need to respond to the claim by the stated deadline."
+      "HINT": "Gallwch ddefnyddio’r amser hwn i geisio setlo’r hawliad heb fynd i wrandawiad. Gall setlo heb fynd i wrandawiad osgoi costau gan gynnwys ffioedd llys.",
+      "PAGE_TITLE": "Ydych chi eisiau 4 wythnos arall i geisio setlo’r hawliad?",
+      "TITLE": "Ydych chi eisiau 4 wythnos arall i geisio setlo’r hawliad?",
+      "WARNING": "Ni fydd hyn yn newid y terfyn amser ar gyfer ymateb. Hyd yn oed os caniateir 4 wythnos arall i setlo’r hawliad, bydd dal angen i chi ymateb i’r hawliad erbyn y terfyn amser a nodir."
     },
     "REQUEST_MORE_TIME": {
       "APPLY_TO_COURT": "Mae angen i chi wneud cais i’r llys am ragor o amser.",
@@ -1878,9 +1878,9 @@
     "ENTER_AN_EXPLANATION": "Enter an explanation of why you can't pay now",
     "ENTER_AT_LEAST_ONE_DEBT": "Rhowch fanylion o leiaf un ddyled",
     "ENTER_AT_LEAST_ONE_REPORT": "Enter at least one report",
-    "ENTER_EXPERT_DETAILS": "Enter the expert's details",
-    "ENTER_WHY_NEED_EXPERT": "Tell us why you need this expert",
-    "ENTER_EXPERT_FIELD": "Enter the expert’s field of expertise",
+    "ENTER_EXPERT_DETAILS": "Nodwch fanylion yr arbenigwr",
+    "ENTER_WHY_NEED_EXPERT": "Dywedwch wrthym pam ydych chi angen yr arbenigwr hwn",
+    "ENTER_EXPERT_FIELD": "Nodwch faes arbenigedd yr arbenigwr",
     "ENTER_FIRST_NAME": "Enter first name",
     "ENTER_LAST_NAME": "Enter last name",
     "ENTER_PERSON_NAME": "Enter the name of the person who needs support",
@@ -2094,7 +2094,7 @@
     "VALID_INTEREST_TYPE_OPTION": "Choose same rate or breakdown",
     "VALID_MONTH": "Rhowch fis dilys",
     "VALID_NAME": "Enter name",
-    "VALID_CANT_ATTEND_HEARING": "Select yes if there are any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing",
+    "VALID_CANT_ATTEND_HEARING": "Dewiswch oes os oes yna unrhyw ddyddiadau yn y 12 mis nesaf pan na allwch chi, eich arbenigwyr neu eich tystion fynychu gwrandawiad",
     "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Ni all y rhif fod yn uwch na'r rhif ar y dudalen flaenorol",
     "VALID_OPTION_SELECTION": "Dewiswch opsiwn",
     "VALID_OWED_AMOUNT_REQUIRED": "Rhowch swm dilys",
@@ -2108,7 +2108,7 @@
     "VALID_POSITIVE_NUMBER": "Peidiwch â rhoi rhif negyddol",
     "VALID_POSTCODE": "Rhowch y cod post",
     "VALID_REASON_REQUIRED": "Rhowch reswm",
-    "VALID_REQUEST_EXTRA_4_WEEKS": "Select yes if you want an extra 4 weeks to try to settle the claim",
+    "VALID_REQUEST_EXTRA_4_WEEKS": "Dewiswch ‘ydw’ os ydych chi eisiau 4 wythnos arall i geisio setlo’r hawliad",
     "VALID_SENT_EXPERT_REPORTS": "Select yes if you have sent expert reports to the other parties",
     "VALID_SHARED_EXPERT": "Dewiswch ‘ydw’ os ydych eisiau rhannu arbenigwr gyda’r hawlydd",
     "VALID_STRICTLY_POSITIVE_NUMBER": "Rhowch rif sy'n uwch na 0",
