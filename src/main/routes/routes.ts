@@ -167,6 +167,7 @@ import claimantIntentionToProceedController from './features/claimantResponse/cl
 import rejectionReasonController from './features/claimantResponse/rejectionReasonController';
 import specificCourtController from './features/directionsQuestionnaire/hearing/specificCourtController';
 import debtRespiteOptionController from './features/breathingSpace/debtRespiteOptionController';
+import debtStartDateController from './features/breathingSpace/debtRespiteStartDateController';
 
 export default [
   homeController,
@@ -321,4 +322,5 @@ export default [
   rejectionReasonController,
   specificCourtController,
   debtRespiteOptionController,
+  debtStartDateController,
 ];
