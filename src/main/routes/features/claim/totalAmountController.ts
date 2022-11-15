@@ -26,6 +26,7 @@ totalAmountController.get(CLAIM_TOTAL_URL, async (req: AppRequest, res: Response
     const hearingResponse = await civilServiceClient.getHearingAmount(claim.totalClaimAmount, <AppRequest>req);
     const hearingAmount = convertToPoundsFilter(hearingResponse.calculatedAmountInPence);
     const hasInterest = claim.claimInterest === YesNo.YES ? true : false;
+    const hasHelpWithFees = claim.claimDetails.helpWithFees.option === YesNo.YES ? true : false;
     let interestToDate = 0;
 
     if (hasInterest) {
@@ -39,6 +40,7 @@ totalAmountController.get(CLAIM_TOTAL_URL, async (req: AppRequest, res: Response
       totalClaimAmount: claim.totalClaimAmount + claimFee + interestToDate,
       hearingAmount,
       hasInterest,
+      hasHelpWithFees,
     };
     renderView(form, res);
   } catch (error) {
