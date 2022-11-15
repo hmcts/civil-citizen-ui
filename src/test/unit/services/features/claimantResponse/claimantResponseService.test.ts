@@ -11,6 +11,7 @@ import {ClaimantResponse} from '../../../../../main/common/models/claimantRespon
 import {CCJRequest} from '../../../../../main/common/models/claimantResponse/ccj/ccjRequest';
 import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
 import {RejectionReason} from '../../../../../main/common/form/models/claimantResponse/rejectionReason';
+import {PaymentOptionType} from '../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -205,6 +206,94 @@ describe('Claimant Response Service', () => {
       });
     });
 
+    describe('CCJ-Payment option get', () => {
+      it('should return undefined if ccj payment option is not set', async () => {
+        //Given
+        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+          return new Claim();
+        });
+        //When
+        const claimantResponse = await getClaimantResponse('validClaimId');
+        //Then
+        expect(claimantResponse?.ccjRequest?.ccjPaymentOption).toBeUndefined();
+      });
+
+      it('should return Claimant Response object', async () => {
+        //Given
+        const claim = new Claim();
+        claim.claimantResponse = new ClaimantResponse();
+        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+          return claim;
+        });
+        //When
+        const claimantResponse = await getClaimantResponse('validClaimId');
+        //Then
+        expect(claimantResponse).toBeDefined();
+        expect(claimantResponse.ccjRequest?.ccjPaymentOption).toBeUndefined();
+      });
+
+      it('should return Claimant Response object with ccj request', async () => {
+        //Given
+        const claim = new Claim();
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.ccjRequest = new CCJRequest();
+        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+          return claim;
+        });
+        //When
+        const claimantResponse = await getClaimantResponse('validClaimId');
+        //Then
+        expect(claimantResponse).toBeDefined();
+        expect(claimantResponse.ccjRequest).toBeDefined();
+        expect(claimantResponse.ccjRequest.ccjPaymentOption).toBeUndefined();
+      });
+
+      it('should return Claimant Response object with option IMMEDIATELY', async () => {
+        //Given
+        const claim = new Claim();
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.ccjRequest = new CCJRequest();
+        claim.claimantResponse.ccjRequest.ccjPaymentOption = {type: PaymentOptionType.IMMEDIATELY};
+        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+          return claim;
+        });
+        //When
+        const claimantResponse = await getClaimantResponse('validClaimId');
+        //Then
+        expect(claimantResponse?.ccjRequest.ccjPaymentOption.type).toBe(PaymentOptionType.IMMEDIATELY);
+      });
+
+      it('should return Claimant Response object with option INSTALMENTS', async () => {
+        //Given
+        const claim = new Claim();
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.ccjRequest = new CCJRequest();
+        claim.claimantResponse.ccjRequest.ccjPaymentOption = {type: PaymentOptionType.INSTALMENTS};
+        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+          return claim;
+        });
+        //When
+        const claimantResponse = await getClaimantResponse('validClaimId');
+        //Then
+        expect(claimantResponse?.ccjRequest.ccjPaymentOption.type).toBe(PaymentOptionType.INSTALMENTS);
+      });
+
+      it('should return Claimant Response object with option BY_SET_DATE', async () => {
+        //Given
+        const claim = new Claim();
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.ccjRequest = new CCJRequest();
+        claim.claimantResponse.ccjRequest.ccjPaymentOption = {type: PaymentOptionType.BY_SET_DATE};
+        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+          return claim;
+        });
+        //When
+        const claimantResponse = await getClaimantResponse('validClaimId');
+        //Then
+        expect(claimantResponse?.ccjRequest.ccjPaymentOption.type).toBe(PaymentOptionType.BY_SET_DATE);
+      });
+    });
+
     it('should return an error on redis failure', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
@@ -330,17 +419,69 @@ describe('Claimant Response Service', () => {
         //Then
         expect(spySave).toBeCalled();
       });
+    });
 
-      it('should return an error on redis failure', async () => {
+    describe('CCJ-Payment option save', () => {
+
+      it('should save claimant response successfully', async () => {
+        //Given
         mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-          return new Claim();
+          const claim = new Claim();
+          claim.claimantResponse = new ClaimantResponse();
+          return claim;
         });
-        mockSaveDraftClaim.mockImplementation(async () => {
-          throw new Error(TestMessages.REDIS_FAILURE);
-        });
-        await expect(saveClaimantResponse('claimId', mockGetCaseDataFromDraftStore, ''))
-          .rejects.toThrow(TestMessages.REDIS_FAILURE);
+        const ccjPaymentOption = {
+          type: PaymentOptionType.IMMEDIATELY
+        };
+        const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+        const claimantResponseToSave = {
+          ccjRequest: {
+            ccjPaymentOption: {
+              type: PaymentOptionType.IMMEDIATELY
+            }},
+        };
+        //When
+        await saveClaimantResponse('validClaimId', ccjPaymentOption, 'ccjPaymentOption', 'ccjRequest');
+        //Then
+        expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToSave});
       });
+
+      it('should update claim defendant dob successfully', async () => {
+        //Given
+        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+          const claim = new Claim();
+          claim.claimantResponse = new ClaimantResponse();
+          claim.claimantResponse.ccjRequest = new CCJRequest();
+          claim.claimantResponse.ccjRequest.ccjPaymentOption = { type : PaymentOptionType.BY_SET_DATE };
+          return claim;
+        });
+        const ccjPaymentOptionUpdate = {
+          type: PaymentOptionType.BY_SET_DATE,
+        };
+        const claimantResponseToUpdate =
+          {
+            ccjRequest: {
+              ccjPaymentOption: {
+                type: PaymentOptionType.BY_SET_DATE
+              }},
+          };
+        const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+        //When
+        await saveClaimantResponse('validClaimId', ccjPaymentOptionUpdate, 'ccjPaymentOption', 'ccjRequest');
+        //Then
+        expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
+      });
+    });
+
+    it('should return an error on redis failure', async () => {
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return new Claim();
+      });
+      mockSaveDraftClaim.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+      await expect(saveClaimantResponse('claimId', mockGetCaseDataFromDraftStore, ''))
+        .rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
 
     describe('get rejection reason form model', () => {
