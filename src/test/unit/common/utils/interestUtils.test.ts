@@ -130,7 +130,7 @@ describe('Interest Utils', () => {
     claim.interest = new Interest();
     claim.interest.interestClaimFrom = InterestClaimFromType.FROM_A_SPECIFIC_DATE;
 
-    let startDate = new Date();
+    const startDate = new Date();
     startDate.setDate(startDate.getDate() - 10);
 
     claim.interest.interestStartDate = new InterestStartDate(
