@@ -9,6 +9,7 @@ import {
 } from '../../../../../main/services/features/claimantResponse/claimantResponseService';
 import {ClaimantResponse} from '../../../../../main/common/models/claimantResponse';
 import {CCJRequest} from '../../../../../main/common/models/claimantResponse/ccj/ccjRequest';
+import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
 import {RejectionReason} from '../../../../../main/common/form/models/claimantResponse/rejectionReason';
 
 jest.mock('../../../../../main/modules/draft-store');
@@ -306,8 +307,9 @@ describe('Claimant Response Service', () => {
         //Given
         mockGetCaseDataFromDraftStore.mockImplementation(async () => {
           const claim = new Claim();
-          claim.claimantResponse = {ccjRequest: new CCJRequest()};
-          claim.claimantResponse.ccjRequest.defendantDOB = {option: YesNo.YES};
+          const date = new Date();
+          claim.claimantResponse = { ccjRequest: new CCJRequest(), datePaid: new CitizenDate(date.getFullYear().toString(),(date.getMonth()-1).toString(),date.getDate().toString())};
+          claim.claimantResponse.ccjRequest.defendantDOB = { option : YesNo.YES };
           return claim;
         });
         const claimantResponseToUpdate = {
