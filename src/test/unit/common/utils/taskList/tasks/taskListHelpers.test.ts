@@ -22,7 +22,7 @@ import {RejectAllOfClaim} from '../../../../../../main/common/form/models/reject
 import {RejectAllOfClaimType} from '../../../../../../main/common/form/models/rejectAllOfClaimType';
 import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 import {PartyDetails} from '../../../../../../main/common/form/models/partyDetails';
-import {DateOfBirth} from '../../../../../../main/common/form/models/claim/claimant/dateOfBirth';
+import {CitizenDate} from '../../../../../../main/common/form/models/claim/claimant/citizenDate';
 import {Address} from '../../../../../../main/common/form/models/address';
 
 const mockClaim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
@@ -268,7 +268,7 @@ describe('Task List Helpers', () => {
     it('should return true if individual and has dateOfBirth', () => {
       caseData.respondent1 = new Party();
       caseData.respondent1.type = PartyType.INDIVIDUAL;
-      caseData.respondent1.dateOfBirth = new DateOfBirth('1', '1', '2000');
+      caseData.respondent1.dateOfBirth = new CitizenDate('1', '1', '2000');
       expect(hasDateOfBirthIfIndividual(caseData.respondent1)).toEqual(true);
     });
 
