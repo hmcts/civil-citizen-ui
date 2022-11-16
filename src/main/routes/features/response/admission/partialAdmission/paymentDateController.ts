@@ -35,6 +35,7 @@ paymentDateController
       if (form.hasErrors()) {
         res.render(paymentDatePath, {
           form: form, nextMonth: nextMonth,
+          title: 'PAGES.ADMISSION_PAYMENT_DATE.TITLE',
         });
       } else {
         try {

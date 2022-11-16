@@ -34,6 +34,7 @@ defendantPaymentDateController
       if (form.hasErrors()) {
         res.render(paymentDatePath, {
           form, nextMonth,
+          title: 'PAGES.CCJ_DEFENDANT_PAYMENT_DATE.TITLE',
         });
       } else {
         try {
