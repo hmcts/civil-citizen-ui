@@ -408,15 +408,27 @@ describe('Claim get claimant and defendant names by type', () => {
   const claimIndividual = Object.assign(new Claim(), JSON.parse(JSON.stringify(civilClaimResponseApplicantIndividual)).case_data);
   it('should return claimantName for INDIVIDUAL', () => {
     //When
-    const result = claimIndividual.getClaimantName();
+    const result = claimIndividual.getClaimantFullName();
     //Then
     expect(result).toBe('Mr. Jan Clark');
   });
   it('should return claimantName for COMPANY', () => {
     //When
-    const result = claimCompany.getClaimantName();
+    const result = claimCompany.getClaimantFullName();
     //Then
     expect(result).toBe('Version 1');
+  });
+  it('should return defendantName for INDIVIDUAL', () => {
+    //When
+    const result = claimIndividual.getDefendantFullName();
+    //Then
+    expect(result).toBe('Mr. Joe Doe');
+  });
+  it('should return defendantName for COMPANY', () => {
+    //When
+    const result = claimCompany.getDefendantFullName();
+    //Then
+    expect(result).toBe('Google');
   });
 });
 

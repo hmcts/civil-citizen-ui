@@ -17,7 +17,7 @@
       {% set otherParty = t('PAGES.CONTACT_THEM.CLAIMANT') %}
       {% set otherPartyLabel = 'contact-them' %}
       {% set header = t('PAGES.CONTACT_THEM.ABOUT') %}
-      {% set otherPartyName = claim.getClaimantName() %}
+      {% set otherPartyName = claim.getClaimantFullName() %}
       {% set totalClaimAmount ='£'+ claim.totalClaimAmount %}
       {% set phone = claim.applicant1.partyPhone %}
       {% set email = claim.applicant1.emailAddress %}

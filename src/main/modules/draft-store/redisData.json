@@ -1000,7 +1000,7 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "INDIVIDUAL",
-        "PartyDetails": {
+        "partyDetails": {
           "individualTitle": "Mr.",
           "individualFirstName": "Jan",
           "individualLastName": "Clark",
@@ -1018,7 +1018,7 @@
       },
       "respondent1": {
         "type": "SOLE_TRADER",
-        "PartyDetails": {
+        "partyDetails": {
           "individualTitle": "Mr.",
           "individualFirstName": "Jan",
           "individualLastName": "Clark",
@@ -1223,7 +1223,7 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "INDIVIDUAL",
-        "PartyDetails": {
+        "partyDetails": {
           "individualTitle": "Mr.",
           "individualFirstName": "Jan",
           "individualLastName": "Clark",
@@ -1240,7 +1240,7 @@
       },
       "respondent1": {
         "type": "SOLE_TRADER",
-        "PartyDetails": {
+        "partyDetails": {
           "individualTitle": "Mr.",
           "individualFirstName": "Jan",
           "individualLastName": "Clark",
@@ -1434,7 +1434,7 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "ORGANISATION",
-        "PartyDetails": {
+        "partyDetails": {
           "partyName": "Version 1",
           "primaryAddress": {
             "county": "Kent",
@@ -1449,7 +1449,7 @@
       },
       "respondent1": {
         "type": "INDIVIDUAL",
-        "PartyDetails": {
+        "partyDetails": {
           "individualTitle": "Mrs.",
           "individualFirstName": "Jane",
           "individualLastName": "Doe",
@@ -1620,7 +1620,7 @@
       "applicant1": {
         "type": "SOLE_TRADER",
         "partyPhone": "(0)207 127 0000",
-        "PartyDetails": {
+        "partyDetails": {
           "individualTitle": "Mr.",
           "individualFirstName": "Jan",
           "individualLastName": "Clark",
@@ -1639,7 +1639,7 @@
       "respondent1": {
         "type": "ORGANISATION",
         "partyPhone": "435321672",
-        "PartyDetails": {
+        "partyDetails": {
           "partyName": "Version 1",
           "primaryAddress": {
             "county": "Kent",
