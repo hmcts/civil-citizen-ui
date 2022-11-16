@@ -2,6 +2,7 @@ const BASE_CASE_URL = '/case/:id';
 const BASE_CLAIM_URL = '/claim';
 export const BASE_ELIGIBILITY_URL = '/eligibility';
 export const BASE_FIRST_CONTACT_URL = '/first-contact';
+const BASE_BREATHING_SPACE_URL = `${BASE_CASE_URL}/breathing-space`;
 const BASE_CASE_RESPONSE_URL = `${BASE_CASE_URL}/response`;
 const BASE_CASE_PAID_IN_FULL_URL = `${BASE_CASE_URL}/paid-in-full`;
 const BASE_CLAIMANT_RESPONSE_URL = `${BASE_CASE_URL}/claimant-response`;
@@ -195,3 +196,8 @@ export const CCJ_PAID_AMOUNT_URL = `${BASE_CCJ_URL}/paid-amount`;
 export const CCJ_PAY_BY_SET_DATE_URL = `${BASE_CCJ_URL}/pay-by-set-date`;
 export const CCJ_PAYMENT_OPTIONS_URL = `${BASE_CCJ_URL}/payment-options`;
 export const CCJ_REPAYMENT_PLAN_URL = `${BASE_CCJ_URL}/repayment-plan`;
+export const BREATHING_SPACE_RESPITE_START_DATE_URL = `${BASE_BREATHING_SPACE_URL}/respite-start`;
+export const BREATHING_SPACE_RESPITE_END_DATE_URL = `${BASE_BREATHING_SPACE_URL}/respite-end`;
+export const BREATHING_SPACE_RESPITE_TYPE_URL = `${BASE_BREATHING_SPACE_URL}/respite-type`;
+export const BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL = `${BASE_BREATHING_SPACE_URL}/check-answers`;
+
