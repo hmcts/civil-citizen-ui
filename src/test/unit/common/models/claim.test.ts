@@ -412,23 +412,11 @@ describe('Claim get claimant and defendant names by type', () => {
     //Then
     expect(result).toBe('Mr. Jan Clark');
   });
-  it('should return defendantName for INDIVIDUAL', () => {
-    //When
-    const result = claimIndividual.getDefendantName();
-    //Then
-    expect(result).toBe('Mr. Joe Doe');
-  });
   it('should return claimantName for COMPANY', () => {
     //When
     const result = claimCompany.getClaimantName();
     //Then
     expect(result).toBe('Version 1');
-  });
-  it('should return defendantName for COMPANY', () => {
-    //When
-    const result = claimCompany.getDefendantName();
-    //Then
-    expect(result).toBe('Google');
   });
 });
 
