@@ -39,6 +39,15 @@ import {Interest} from '../form/models/interest/interest';
 import {RejectAllOfClaimType} from '../../common/form/models/rejectAllOfClaimType';
 import {ClaimDetails} from '../../common/form/models/claim/details/claimDetails';
 import {ClaimantResponse} from './claimantResponse';
+import {CCDClaim} from '../models/civilClaimResponse';
+import {toCUIParty} from 'services/translation/response/convertToCUI/convertToCUIParty';
+import {SelfEmployedAs} from '../models/selfEmployedAs';
+import {TaxPayments} from '../models/taxPayments';
+import {RegularIncome} from '../../common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
+import {RegularExpenses} from '../../common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
+import {CourtOrders} from '../../common/form/models/statementOfMeans/courtOrders/courtOrders';
+import {PriorityDebts} from '../../common/form/models/statementOfMeans/priorityDebts';
+import {Debts} from '../../common/form/models/statementOfMeans/debts/debts';
 
 export class Claim {
   legacyCaseReference: string;
@@ -74,6 +83,14 @@ export class Claim {
   respondentSolicitor1AgreedDeadlineExtension?: Date;
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
+
+  public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
+
+    const claim: Claim = Object.assign(new Claim(), ccdClaim);
+    claim.applicant1 = toCUIParty(ccdClaim.applicant1);
+    claim.respondent1 = toCUIParty(ccdClaim.respondent1);
+    return claim;
+  }
 
   get responseStatus(): ClaimResponseStatus {
     if (this.isFullAdmission() && this.isPaymentOptionPayImmediately()) {
@@ -350,6 +367,42 @@ export class Claim {
 
   hasEvidenceExpertCanStillExamine(): boolean {
     return this.directionQuestionnaire?.experts?.expertCanStillExamine?.option === YesNo.YES;
+  }
+
+  getExplanationText(): string {
+    return this.statementOfMeans?.explanation?.text ?? '';
+  }
+
+  getSelfEmployment(): SelfEmployedAs | undefined {
+    return this.statementOfMeans?.selfEmployedAs;
+  }
+
+  isBehindOnTheTaxPayments(): boolean {
+    return this.statementOfMeans?.taxPayments?.owed ?? false;
+  }
+
+  getBehindOnTaxPayments(): TaxPayments | undefined {
+    return this.statementOfMeans?.taxPayments;
+  }
+
+  getRegularIncome(): RegularIncome | undefined {
+    return this.statementOfMeans?.regularIncome;
+  }
+
+  getRegularExpenses(): RegularExpenses | undefined {
+    return this.statementOfMeans?.regularExpenses;
+  }
+
+  getCourtOrders(): CourtOrders | undefined {
+    return this.statementOfMeans?.courtOrders;
+  }
+
+  getPriorityDebts(): PriorityDebts | undefined {
+    return this.statementOfMeans?.priorityDebts;
+  }
+
+  getDebts(): Debts | undefined {
+    return this.statementOfMeans?.debts;
   }
 }
 
