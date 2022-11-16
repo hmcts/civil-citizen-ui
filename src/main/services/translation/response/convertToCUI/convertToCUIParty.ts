@@ -11,11 +11,11 @@ export const toCUIParty = (ccdParty: CCDParty): Party => {
   const cuiParty = new Party();
   cuiParty.partyDetails = new PartyDetails({});
   if (ccdParty.type === PartyType.INDIVIDUAL) {
-    cuiParty.partyDetails.individualFirstName = ccdParty.individualFirstName ? ccdParty?.individualFirstName : undefined;
+    cuiParty.partyDetails.individualFirstName = ccdParty?.individualFirstName ? ccdParty.individualFirstName : undefined;
     cuiParty.partyDetails.individualLastName = ccdParty.individualLastName ? ccdParty?.individualLastName : undefined;
     cuiParty.partyDetails.individualTitle = ccdParty.individualTitle ? ccdParty?.individualTitle : undefined;
     cuiParty.dateOfBirth = new CitizenDate();
-    cuiParty.dateOfBirth.date = ccdParty.individualDateOfBirth ? new Date(ccdParty?.individualDateOfBirth) : undefined;
+    cuiParty.dateOfBirth.date = ccdParty?.individualDateOfBirth ? new Date(ccdParty.individualDateOfBirth) : undefined;
   } else if (ccdParty.type === PartyType.SOLE_TRADER) {
     cuiParty.partyDetails.individualFirstName = ccdParty.soleTraderFirstName ? ccdParty?.soleTraderFirstName : undefined;
     cuiParty.partyDetails.individualLastName = ccdParty.soleTraderLastName ? ccdParty?.soleTraderLastName : undefined;
