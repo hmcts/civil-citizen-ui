@@ -43,6 +43,7 @@
               <h2 class="govuk-heading-m govuk-!-margin-top-5">{{ t('PAGES.COMPANY_DETAILS.ORGANISATION_NAME') }}</h2>
             {% endif %}
             <p class="govuk-label govuk-!-margin-bottom-5">{{ party.model.partyName }}</p>
+            <input type="hidden" name="partyName" value="{{ party.model.partyName }}"/>
             {{ govukInput({
               label: { text: t('COMMON.OPTIONAL_CONTACT_PERSON') },
               classes: "govuk-input--width-20",
