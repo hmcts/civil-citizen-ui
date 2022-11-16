@@ -2,26 +2,41 @@
   "COMMON": {
     "ACCOUNT_TYPE": "Type of account",
     "ADDRESS": "Address",
+    "ANNUAL_TURNOVER": "Annual Turnover",
+    "BALANCE": "Balance",
+    "BANK_AND_SAVINGS_ACCOUNTS": "Bank and savings accounts",
+    "BANK_JOINT_ACCOUNT": "Joint account",
+    "CHILDREN": "Children",
     "CHOOSE": "Choose",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
     "CLAIM_AMOUNT": "Claim amount",
+    "CLAIM_NUMBER": "Claim number",
     "CONFIRM_YOUR_DETAILS": "Confirm your details",
     "DASHBOARD": "Dashboard",
     "DATE": "Date",
     "DATE_EXAMPLE": "For example, {{ date }}",
     "DAY": "Day",
+    "DEBT": "Debt",
     "DESCRIPTION": "Description",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
     "EMAIL": "Email",
+    "EMPLOYER_NAME": "Employer name",
+    "EMPLOYMENT_DETAILS": "Employment details",
+    "EMPLOYMENT_TYPE": "Type of job",
     "FREE_TELEPHONE_MEDIATION": "Free telephone mediation",
+    "GIVE_DETAILS": "Give details",
     "GO_TO_HOMEPAGE": "Go to homepage",
     "JOB_TITLE": "Job title",
     "MONTH": "Month",
+    "MONTHLY_PAYMENTS": "Monthly payments",
     "MONTHS": "Months",
     "NO": "No",
+    "NUMBER_OF_PEOPLE": "Number of people",
     "OPTIONAL_CONTACT_PERSON": "Contact person (optional)",
+    "REASON": "Reason",
     "REMOVE": "Remove",
     "RETURN_PAGE": "You can return to RETURN-PAGE and start your claim or defence again.",
+    "TOTAL_DEBT": "Total owed",
     "TECHNICAL_PROBLEMS": "Sorry, we had some technical problems during your last operation. Please try again later.",
     "YEAR": "Year",
     "YEARS": "Years",
@@ -157,6 +172,12 @@
       "IMMEDIATELY": "Immediately",
       "INSTALMENTS": "By instalments"
     },
+    "PAYMENT_SCHEDULE": {
+      "BI_WEEKLY": "Every 2 Weeks Payments",
+      "FOUR_WEEKLY": "Every 4 Weeks Payments",
+      "MONTHLY": "Monthly Payments",
+      "WEEKLY": "Weekly Payments"
+    },
     "POSTAL_ADDRESS": {
       "BUILDING": "HMCTS CMC",
       "CITY": "Harlow",
@@ -282,6 +303,17 @@
     "ARE_YOU_SEVERELY_DISABLED": {
       "PAGE_TITLE": "Severely disabled"
     },
+    "BREATHING_SPACE_DEBT_RESPITE_START": {
+      "DATE_START_OPTIONAL": "This is the date it started, not the date you received notification of it (optional).",
+      "PAGE_TITLE": "When did it start?",
+      "TITLE": "When did it start?"
+    },
+    "BREATHING_SPACE_DEBT_RESPITE_TYPE": {
+      "MENTAL_HEALTH": "Mental health crisis moratorium",
+      "PAGE_TITLE": "What type is it?",
+      "STANDARD": "Standard breathing space",
+      "TITLE": "What type is it?"
+    },
     "CARER": {
       "PAGE_TITLE": "Carer's allowance"
     },
@@ -290,11 +322,8 @@
       "TITLE": "Do you know the defendant's date of birth?"
     },
     "CHECK_YOUR_ANSWER": {
-      "BANK_AND_SAVINGS_ACCOUNTS": "Bank and savings accounts",
       "BANK_BALANCE": "Balance",
-      "BANK_JOINT_ACCOUNT": "Joint account",
       "CARER_CREDIT_DO_YOU_CLAIM": "Do you claim Carer’s Allowance or Carer’s Credit?",
-      "CHILDREN": "Children",
       "CHILDREN_DO_YOU_HAVE_ANY_LIVE_WITH_YOU": "Do any children live with you?",
       "CHILDREN_UNDER_11": "Under 11",
       "CHILDREN_BETWEEN_11_TO_15": "11 to 15",
@@ -310,9 +339,6 @@
       "COURT_ORDERS_AMOUNT_OWNED": "Amount you owe",
       "COURT_ORDERS_MONTHLY_INSTALMENT": "Monthly instalment amount",
       "DEBTS_LOANS_OR_CREDIT_CARDS": "Do you have loans or credit card debts?",
-      "DEBT": "Debt",
-      "DEBTS_TOTAL_OWED": "Total owed",
-      "DEBTS_MONTHLY_PAYMENTS": "Monthly Payments",
       "DETAILS_TITLE": "Your details",
       "DETAILS_TITLE_CLAIMANT": "Your details (claimant)",
       "DISABILITY_ARE_YOU_DISABLED": "Are you disabled?",
@@ -322,11 +348,8 @@
       "EMAIL_ADDRESS": "Email address",
       "EMPLOYMENT_DETAILS": "Employment details",
       "EMPLOYMENT_DO_YOU_HAVE_A_JOB": "Do you have a job?",
-      "EMPLOYMENT_TYPE": "Type of job",
       "EMPLOYMENT_WHO_EMPLOYS_YOU": "Who employs you?",
-      "EMPLOYMENT_NAME": "Employer name",
       "EMPLOYMENT_SELF_DETAILS": "Self employment details?",
-      "EMPLOYMENT_SELF_ANNUAL_TURNOVER": "Annual turnover",
       "EMPLOYED_AND_SELF_EMPLOYED": "Employed and Self-employed",
       "EVIDENCE_COMMENTS": "Comments about their evidence (optional)",
       "EVIDENCE_CONTRACTS_AND_AGREEMENTS": "Contracts and agreements",
@@ -387,8 +410,6 @@
       "RESPONSE_WHY_DO_YOU_REJECT_ALL_OF_THIS_CLAIM": "Why do you reject all of this claim?",
       "SAME_ADDRESS": "Same as address",
       "SUPPORT_ANYONE_ELSE_FINANCIALLY": "Do you support anyone else financially?",
-      "SUPPORT_NUMBER_OF_PEOPLE": "Number of people",
-      "SUPPORT_GIVE_DETAILS": "Give details",
       "SUPPORT_REQUIRED_INTERPRETER": "Interpreter",
       "SUPPORT_REQUIRED_NAME": "Name of the person who requires support:",
       "SUPPORT_REQUIRED_DETAILS": "Support details:",
@@ -411,12 +432,10 @@
     },
     "CITIZEN_BANK_ACCOUNTS": {
       "ADD_ANOTHER": "Add another account",
-      "BALANCE": "Balance",
       "BANK_AND_SAVINGS_ACCOUNTS": "List your bank and savings accounts",
       "CURRENT_ACCOUNT": "Current account",
       "EXAMPLE": "Put a minus (-) in front of the amount if you’re overdrawn. For example £-804.45.",
       "ISA": "ISA",
-      "JOINT_ACCOUNT": "Joint account",
       "OTHER": "Other",
       "PAGE_TITLE": "Your bank accounts",
       "SAVINGS_ACCOUNT": "Savings account"
@@ -804,10 +823,13 @@
     "DEBTS": {
       "ADD": "Add a debt",
       "LIST": "List each loan or credit card debt",
-      "MONTHLY": "Monthly payments",
       "PAGE_TITLE": "Any debts?",
-      "TITLE": "Do you have loans or credit card debts?",
-      "TOTAL": "Total owed"
+      "TITLE": "Do you have loans or credit card debts?"
+    },
+    "DEBT_RESPITE_END_DATE": {
+      "PAGE_TITLE": "Expected end date",
+      "THIS_IS_THE": "This is the end date that it is due to finish (optional)",
+      "TITLE": "Expected end date"
     },
     "DEFENDANT_DETAILS": {
       "BUSINESS_NAME": "Trading as (If you know it)",
@@ -984,9 +1006,6 @@
       "HELP_WITH_FEES_ADVICE": "You may be asked by the court to email evidence in support of your application before your claim is issued.",
       "HELP_WITH_FEES_INTRO": "Making an application for Help with Fees does not guarantee that you will get your fee covered. You may still have to pay some or all of your court fee to get the claim issued (for the court system to officially start the claim and send details to the other side). When you apply for Help with Fees, you should receive an update from us within 5 working days, giving you the result of your application.",
       "TITLE": "Some useful information about Help with Fees"
-    },
-    "EMPLOYER": {
-      "EMPLOYER_NAME": "Employer name"
     },
     "EMPLOYMENT_STATUS": {
       "BOTH": "You can select both.",
@@ -1318,8 +1337,6 @@
     },
     "OTHER_DEPENDANTS": {
       "DESCRIPTION": "This can include adults and people you don't live with.",
-      "DETAILS": "Give details",
-      "NUMBER": "Number of people",
       "PAGE_TITLE": "Other dependants?",
       "TITLE": "Do you support anyone else financially?"
     },
@@ -1522,15 +1539,52 @@
       "POST": "Or, you can post the completed form to:",
       "REQUEST_REFUSED": "If your request to {{ claimantName }}'s legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading "
     },
+    "REVIEW_DEFENDANTS_RESPONSE": {
+      "AGED_11_TO_15": "How many are aged 11 to 15?",
+      "AGED_16_TO_19": "How many are aged 16 to 19?",
+      "AGED_16_TO_19_AND_EDUCATION": "How many aged 16 to 19 are in full-time education or training?",
+      "AGED_UNDER_11": "How many are aged under 11?",
+      "AMOUNT_OWED": "Amount they owe",
+      "BEHIND_ON_TAX_PAYMENTS": "Are they behind on tax payments?",
+      "CHILDREN_LIVING_WITH_THEM": "Do any children live with them?",
+      "COURT_ORDERS": "Court orders",
+      "COURT_ORDERS_TO_PAY": "Has a court ordered them to pay anyone else?",
+      "DEBTS": "Debts",
+      "DEBTS_BEHIND_ON": "Do they have any debts they are behind on?",
+      "DEBTS_LOAN_OR_CREDIT_CARD": "Do they have loan or credit card debts?",
+      "DOWNLOAD_RESPONSE": "Download their full response and hearing requirements (PDF)",
+      "EMPLOYED": "Do they have a job?",
+      "FINANCIAL_SUPPORT": "Financial support",
+      "FULL_ADMISSION": "{{ defendant }} admits they owe all the money you’ve claimed.",
+      "FULL_RESPONSE": "Full response",
+      "MONTHLY_EXPENSES": "Monthly expenses",
+      "MONTHLY_INCOME": "Monthly income",
+      "PAGE_TITLE": "Review defendant’s response",
+      "PAY_EXPENSES": "Do they pay any expenses?",
+      "PAYMENT_DATE": "They’ve offered to pay you this by {{ paymentDate }}",
+      "RECEIVE_INCOME": "Do they receive any income?",
+      "REJECT_CLAIM_STATEMENT": "{{ defendant }} has rejected the claim.",
+      "SEE_FINANCIAL_DETAILS": "See their financial details",
+      "SELF_EMPLOYMENT_DETAILS": "Self-employment details",
+      "SUPPORT_ANYONE_ELSE": "Do they support anyone else financially?",
+      "THEIR_DEFENCE": "Their defence",
+      "THEIR_EVIDENCE": "Their evidence",
+      "THEIR_TOE": "Their timeline of events",
+      "TITLE": "The defendant’s response",
+      "TOTAL_PAID_AMOUNT": "This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
+      "UNABLE_TO_PAY_FULL_AMOUNT": "Why they can’t pay the full amount now",
+      "WHERE_THEY_LIVE": "Where are they living?",
+      "WHY_THEY_DISAGREE_CLAIM": "Why they disagree with the claim",
+      "WHY_THEY_DISAGREE_EVIDENCE": "Why they disagree with your evidence",
+      "WHY_THEY_DISAGREE_TIMELINE": "Why they disagree with your timeline"
+    },
     "SELF_EMPLOYED": {
-      "ANNUAL": "Annual Turnover",
       "PAGE_TITLE": "Self employment details",
       "TITLE": "What are you self-employed as?"
     },
     "SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS": {
       "AMOUNT": "Amount you owe",
       "PAGE_TITLE": "Behind on tax payments?",
-      "REASON": "Reason",
       "TITLE": "Are you behind on tax payments?",
       "EXAMPLE": "For example National Insurance contributions, Income Tax or VAT."
     },
@@ -1781,7 +1835,6 @@
     },
     "UNEMPLOYMENT": {
       "DESCRIPTION": "How long have you been unemployed?",
-      "DETAILS": "Give details",
       "OTHER": "Other",
       "PAGE_TITLE": "Unemployed or retired",
       "RETIRED": "Retired",
@@ -2068,6 +2121,7 @@
     "VALID_DATE": "Please enter a valid date",
     "VALID_DATE_IN_PAST": "Enter date before {{dateToday}}",
     "VALID_DATE_NOT_IN_PAST": "Enter a date that is today or in the future",
+    "VALID_DATE_START_NOT_AFTER_TODAY": "Start date must not be after today's date",
     "VALID_DAY": "Enter a valid day",
     "VALID_DEBT_AMOUNT": {
       "COUNCIL_TAX": "Enter a valid Council Tax or Community Charge amount, maximum two decimal places",
@@ -2078,6 +2132,7 @@
       "RENT": "Enter a valid Rent amount, maximum two decimal places",
       "WATER": "Enter a valid Water amount, maximum two decimal places"
     },
+    "VALID_DEBT_RESPITE_END_DATE": "Expected end date must not be before today’s date",
     "VALID_DEBT_RESPITE_OPTION": "You must select the Type before continuing",
     "VALID_DISAGREE_REASON_REQUIRED": "Enter text explaining why do you disagree",
     "VALID_ENTER_A_DATE_BEFORE": "Please enter a date of birth before {{ maxDate }}",
