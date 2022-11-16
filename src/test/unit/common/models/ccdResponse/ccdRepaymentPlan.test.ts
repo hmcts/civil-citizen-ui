@@ -44,6 +44,16 @@ describe('translate repayment plan to ccd', ()=> {
     expect(ccdRepaymentPlan.firstRepaymentDate).toBe(repaymentPlan.firstRepaymentDate);
     expect(ccdRepaymentPlan.paymentAmount).toBe(repaymentPlan.paymentAmount);
   });
+  it('should return undefined if frequency do not exist', ()=>{
+    //Given
+    const repaymentPlan = getRepaymentPlan('');
+    //When
+    const ccdRepaymentPlan = toCCDRepaymentPlan(repaymentPlan);
+    //Then
+    expect(ccdRepaymentPlan.firstRepaymentDate).toBe(repaymentPlan.firstRepaymentDate);
+    expect(ccdRepaymentPlan.paymentAmount).toBe(repaymentPlan.paymentAmount);
+    expect(ccdRepaymentPlan.repaymentFrequency).toBe(undefined);
+  });
 });
 
 const getRepaymentPlan = (frequency: string) : RepaymentPlan => {
