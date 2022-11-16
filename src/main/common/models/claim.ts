@@ -118,10 +118,6 @@ export class Claim {
     return this.applicant1?.partyDetails?.partyName;
   }
 
-  getDefendantName(): string {
-    return this.respondent1?.partyDetails?.partyName;
-  }
-
   getClaimantFullName(): string {
     return this.getName(this.applicant1);
   }
