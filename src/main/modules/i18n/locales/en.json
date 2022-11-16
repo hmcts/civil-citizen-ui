@@ -296,6 +296,15 @@
     "CARER": {
       "PAGE_TITLE": "Carer's allowance"
     },
+    "CCJ_CONFIRMATION": {
+      "ACTIONS_LINK_TEXT": "Find out about actions you can take after a CCJ is issued ",
+      "PAGE_TITLE": "County Court Judgment confirmation",
+      "PROCESS_YOUR_REQUEST": "We’ll process your request and post a copy of the judgment to you and to {{ defendantName }}. We aim to do this within 10 working days.",
+      "POSTAL_RESPONSE": "If a postal response is received before the judgment is issued your request will be rejected.",
+      "TITLE": "County Court Judgment requested",
+      "UPDATES": "Your online account will not be updated with the progress of this claim - any further updates will be by post.",
+      "NO_LONGER_RESPONSE": "{{ defendantName }} can no longer respond to your claim online."
+    },
     "CCJ_DEFENDANT_DOB": {
       "PAGE_TITLE": "Do you know the defendant's date of birth?",
       "TITLE": "Do you know the defendant's date of birth?"
@@ -2006,7 +2015,7 @@
     "SPECIFIC_COURT": {
       "SELECT_YES_NO": "Select yes if you want to ask for the hearing to be held at a specific court",
       "SELECT_COURT_LOCATION": "Select a court"
-     },
+    },
     "TELL_US_WHY": "Please tell us why",
     "TELL_US_WHY_UNAVAILABLE": "Tell us why you, your experts or witnesses are unavailable for a hearing",
     "TRANSACTION_SOURCE": {
