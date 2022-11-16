@@ -26,7 +26,8 @@
                   classes: "govuk-!-font-weight-regular"
                 },
                 value: {
-                  text: "£" + form.claimAmount
+                  text: "£" + form.claimAmount,
+                  classes: "govuk-!-text-align-right"
                 }
               },
               {
@@ -35,7 +36,8 @@
                   classes: "govuk-!-font-weight-regular"
                 },
                 value: {
-                   text: "£" + form.interestToDate
+                  text: "£" + form.interestToDate,
+                  classes: "govuk-!-text-align-right"
                 }
               } if form.hasInterest,
               {
@@ -44,15 +46,18 @@
                   classes: "govuk-!-font-weight-regular"
                 },
                 value: {
-                  text: "£" + form.claimFee
+                  text: "£" + form.claimFee,
+                  classes: "govuk-!-text-align-right"
                 }
               },
               {
                 key: {
-                  text: t('PAGES.TOTAL_AMOUNT.TOTAL_CLAIM_AMOUNT')
+                  text: t('PAGES.TOTAL_AMOUNT.TOTAL_CLAIM_AMOUNT'),
+                  classes: "black-border-top"
                 },
                 value: {
-                  text: "£" + form.totalClaimAmount
+                  text: "£" + form.totalClaimAmount,
+                  classes: "black-border-top govuk-!-font-weight-bold govuk-!-text-align-right"
                 }
               }
             ] 
@@ -91,7 +96,8 @@
                   classes: "govuk-!-font-weight-regular"
                 },
                 value: {
-                  text: "£" + form.hearingAmount
+                  text: "£" + form.hearingAmount,
+                  classes: "govuk-!-text-align-right"
                 }
               }
             ] 
