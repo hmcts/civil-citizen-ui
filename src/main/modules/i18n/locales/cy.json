@@ -289,6 +289,11 @@
       "PAGE_TITLE": "Do you know the defendant's date of birth?",
       "TITLE": "Do you know the defendant's date of birth?"
     },
+    "CCJ_PAYMENT_TYPE": {
+      "WOULD_PAY": "I would like the defendant to pay:",
+      "PAGE_TITLE": "Payment Options",
+      "TITLE": "Payment Options"
+    },
     "CHECK_YOUR_ANSWER": {
       "BANK_AND_SAVINGS_ACCOUNTS": "Cyfrifon banc a chynilo",
       "BANK_BALANCE": "Cydbwysedd",
@@ -2051,6 +2056,7 @@
     "VALID_AT_LEAST_ONE_OPTION": "Rhaid i chi ddewis o leiaf un opsiwn",
     "VALID_BETWEEN_NUMBERS_0_11": "Enter a number between 0 and 11",
     "VALID_BETWEEN_NUMBERS_0_80": "Enter a number between 0 and 80",
+    "VALID_CCJ_PAYMENT_OPTION": "Choose option",
     "VALID_CHOOSE": "Choose your response",
     "VALID_CITY": "Rhowch enw tref/dinas dilys",
     "VALID_CLAIM_AMOUNT": "Enter an amount of money",
