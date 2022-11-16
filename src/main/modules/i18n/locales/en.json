@@ -287,6 +287,12 @@
       "PAGE_TITLE": "When did it start?",
       "TITLE": "When did it start?"
     },
+    "BREATHING_SPACE_DEBT_RESPITE_TYPE": {
+      "MENTAL_HEALTH": "Mental health crisis moratorium",
+      "PAGE_TITLE": "What type is it?",
+      "STANDARD": "Standard breathing space",
+      "TITLE": "What type is it?"
+    },
     "CARER": {
       "PAGE_TITLE": "Carer's allowance"
     },
