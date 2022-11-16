@@ -5,7 +5,7 @@ import {RejectionReason} from '../form/models/claimantResponse/rejectionReason';
 
 export class ClaimantResponse {
   hasDefendantPaidYou?: GenericYesNo;
-  datePaid: CitizenDate;
+  datePaid?: CitizenDate;
   hasPartPaymentBeenAccepted?: GenericYesNo;
   fullAdmitSetDateAcceptPayment?: GenericYesNo;
   ccjRequest?: CCJRequest;
