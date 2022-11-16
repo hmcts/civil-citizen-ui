@@ -33,6 +33,5 @@ describe('CCJ confirmation controller', () => {
       expect(res.status).toBe(500);
       expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
     });
-
   });
 });
