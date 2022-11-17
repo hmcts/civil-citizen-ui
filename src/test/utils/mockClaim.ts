@@ -17,7 +17,11 @@ import {Reason} from '../../main/common/form/models/claim/details/reason';
 import {Address} from '../../main/common/form/models/address';
 import {PartyDetails} from '../../main/common/form/models/partyDetails';
 import {PartyPhone} from '../../main/common/models/PartyPhone';
-import {DateOfBirth} from '../../main/common/form/models/claim/claimant/dateOfBirth';
+import {CitizenDate} from '../../main/common/form/models/claim/claimant/citizenDate';
+import {DefendantTimeline} from '../../main/common/form/models/timeLineOfEvents/defendantTimeline';
+import {TimelineRow} from '../../main/common/form/models/timeLineOfEvents/timelineRow';
+import {EvidenceItem} from '../../main/common/form/models/evidence/evidenceItem';
+import {EvidenceType} from '../../main/common/models/evidence/evidenceType';
 
 export const buildAddress = (): Address => {
   return new Address('addressLine1', 'addressLine2', 'addressLine3', 'city', 'postCode');
@@ -31,7 +35,7 @@ export const buildRespondent1 = (): Party => {
   respondent.partyDetails.individualFirstName = 'Richards';
   respondent.partyDetails.partyName = 'Mrs Richards Mary';
   respondent.partyPhone = new PartyPhone('0208339922');
-  respondent.dateOfBirth = new DateOfBirth('2022-01-24T15:59:59');
+  respondent.dateOfBirth = new CitizenDate('2022-01-24T15:59:59');
   respondent.responseType = '';
   respondent.type = PartyType.INDIVIDUAL;
   respondent.partyDetails.primaryAddress = buildAddress();
@@ -55,6 +59,10 @@ function buildMockClaim(): Claim {
     },
     type: PartyType.INDIVIDUAL,
   };
+  _mockClaim.evidence = {
+    'comment': 'evidence comments',
+    'evidenceItem': [new EvidenceItem(EvidenceType.CONTRACTS_AND_AGREEMENTS, 'I have a signed contract showing that you broke the contract agreement.')],
+  };
   _mockClaim.statementOfMeans = {
     childrenDisability: {
       option: 'yes',
@@ -72,6 +80,7 @@ function buildMockClaim(): Claim {
       year: 2040,
       text: 'text',
     },
+    timeline: DefendantTimeline.buildPopulatedForm([new TimelineRow('2022-04-01', 'I contacted Mary Richards to discuss building works on our roof.')], 'timeline comments'),
   };
   _mockClaim.rejectAllOfClaim = {
     howMuchHaveYouPaid: {
