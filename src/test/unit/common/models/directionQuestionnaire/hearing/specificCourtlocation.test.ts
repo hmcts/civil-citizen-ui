@@ -5,6 +5,7 @@ describe('SpecificCourtLocation', ()=>{
   it('should return true when specific court location is required', ()=>{
     //Given
     const specificCourtLocation = new SpecificCourtLocation(YesNo.YES, 'location', 'reason');
+    const specificCourtLocationMemoizedYes = memoize(specificCourtLocation);
     //When
     const specificCourtLocationIsRequired = specificCourtLocation.isSpecificCourtRequired();
     //Then
@@ -13,23 +14,18 @@ describe('SpecificCourtLocation', ()=>{
   it('should return false when specific court location is not required', ()=>{
     //Given
     const specificCourtLocation = new SpecificCourtLocation(YesNo.NO, 'location', 'reason');
+    const specificCourtLocationMemoizedNO = memoize(specificCourtLocation);
     //When
     const specificCourtLocationIsRequired = specificCourtLocation.isSpecificCourtRequired();
     //Then
     expect(specificCourtLocationIsRequired).toBeFalsy();
   });
   it('should remove court location and reason when court location is not required', ()=>{
-    //When
-    const specificCourtLocation = new SpecificCourtLocation(YesNo.NO, 'location', 'reason');
-    //Then
-    expect(specificCourtLocation.reason).toBeUndefined();
-    expect(specificCourtLocation.courtLocation).toBeUndefined();
+    expect(specificCourtLocationMemoizedNO.reason).toBeUndefined();
+    expect(specificCourtLocationMemoizedNO.courtLocation).toBeUndefined();
   });
   it('should not remove court location and reason when court location is required', ()=>{
-    //When
-    const specificCourtLocation = new SpecificCourtLocation(YesNo.YES, 'location', 'reason');
-    //Then
-    expect(specificCourtLocation.reason).not.toBeUndefined();
-    expect(specificCourtLocation.courtLocation).not.toBeUndefined();
+    expect(specificCourtLocationMemoizedYes.reason).not.toBeUndefined();
+    expect(specificCourtLocationMemoizedYes.courtLocation).not.toBeUndefined();
   });
 });
