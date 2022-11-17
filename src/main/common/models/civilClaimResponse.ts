@@ -19,6 +19,7 @@ import {SystemGeneratedCaseDocuments} from '../../common/models/document/systemG
 import {ResponseDeadline} from '../../common/models/responseDeadline';
 import {DirectionQuestionnaire} from '../../common/models/directionsQuestionnaire/directionQuestionnaire';
 import {CCDParty} from '../../common/models/ccdResponse/ccdParty';
+import {ClaimUpdate} from 'models/events/eventDto';
 
 export class CivilClaimResponse {
   id: string;
@@ -36,14 +37,14 @@ export class CivilClaimResponse {
   }
 }
 
-export class CCDClaim {
-  legacyCaseReference: string;
+export interface CCDClaim extends ClaimUpdate{
+  legacyCaseReference?: string;
   applicant1?: CCDParty;
   claimantResponse?: ClaimantResponse;
   applicantSolicitor1ClaimStatementOfTruth?: StatementOfTruth;
-  totalClaimAmount: number;
-  respondent1ResponseDeadline: Date;
-  claimDetails: ClaimDetails;
+  totalClaimAmount?: number;
+  respondent1ResponseDeadline?: Date;
+  claimDetails?: ClaimDetails;
   respondent1?: CCDParty;
   statementOfMeans?: StatementOfMeans;
   paymentOption?: PaymentOptionType;
@@ -65,10 +66,8 @@ export class CCDClaim {
   claimFee?: ClaimFee;
   specClaimTemplateDocumentFiles?: Document;
   systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
-  ccdState: CaseState;
-  responseDeadline: ResponseDeadline;
-  respondentSolicitor1AgreedDeadlineExtension?: Date;
+  ccdState?: CaseState;
+  responseDeadline?: ResponseDeadline;
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
-
 }

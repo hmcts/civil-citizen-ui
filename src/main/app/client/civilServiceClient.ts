@@ -170,7 +170,7 @@ export class CivilServiceClient {
         .replace(':submitterId', userId)
         .replace(':caseId', claimId), data, config);// nosonar
       logger.info('submitted event ' + data.event + ' with update ' + data.caseDataUpdate);
-      return Claim.fromCCDCaseData(Object.assign(new CCDClaim(),response.data));
+      return Claim.fromCCDCaseData(response.data as CCDClaim);
     } catch (err: unknown) {
       logger.error(err);
       throw err;
