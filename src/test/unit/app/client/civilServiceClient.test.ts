@@ -50,24 +50,25 @@ describe('Civil Service Client', () => {
   describe('retrieveByDefendantId', () => {
     it('should retrieve cases successfully', async () => {
       //Given
-      const claim = new CCDClaim();
-      claim.legacyCaseReference = '000MC003';
-      claim.applicant1 = {
-        companyName: undefined,
-        individualDateOfBirth: undefined,
-        organisationName: undefined,
-        partyEmail: undefined,
-        partyPhone: undefined,
-        primaryAddress: undefined,
-        soleTraderDateOfBirth: undefined,
-        soleTraderFirstName: undefined,
-        soleTraderLastName: undefined,
-        soleTraderTitle: undefined,
-        soleTraderTradingAs: undefined,
-        individualTitle: 'Mrs',
-        individualLastName: 'Clark',
-        individualFirstName: 'Jane',
-        type: PartyType.INDIVIDUAL,
+      const claim: CCDClaim = {
+        legacyCaseReference: '000MC003',
+        applicant1: {
+          companyName: undefined,
+          individualDateOfBirth: undefined,
+          organisationName: undefined,
+          partyEmail: undefined,
+          partyPhone: undefined,
+          primaryAddress: undefined,
+          soleTraderDateOfBirth: undefined,
+          soleTraderFirstName: undefined,
+          soleTraderLastName: undefined,
+          soleTraderTitle: undefined,
+          soleTraderTradingAs: undefined,
+          individualTitle: 'Mrs',
+          individualLastName: 'Clark',
+          individualFirstName: 'Jane',
+          type: PartyType.INDIVIDUAL,
+        },
       };
       const mockResponse: CivilClaimResponse = {
         id: '1',
