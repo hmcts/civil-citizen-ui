@@ -1,5 +1,5 @@
 import {
-  submitExtendedResponseDeadline, submitResponseDeadlineExtension,
+  submitExtendedResponseDeadline,
 } from '../../../../../../main/services/features/response/responseDeadline/extendResponseDeadlineService';
 import * as requestModels from '../../../../../../main/common/models/AppRequest';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
@@ -52,20 +52,6 @@ describe('Extend ResponseDeadline Service', () => {
       expect(spy).toHaveBeenCalled();
     });
 
-    it('should submit event submitResponseDeadlineExtension when task is incomplete', async () => {
-      //Given
-      nock(citizenBaseUrl)
-        .post('/cases/1/citizen/undefined/event')
-        .reply(200, {});
-      mockGetCaseDataFromStore.mockImplementation(async () => claim);
-      //When
-      await submitResponseDeadlineExtension(mockedAppRequest);
-      //Then
-      if (!nock.isDone()) {
-        nock.cleanAll();
-      }
-    });
-
     it('should not submit event when task is complete', async () => {
       //Given
       claim.respondentSolicitor1AgreedDeadlineExtension = new Date();
@@ -85,15 +71,6 @@ describe('Extend ResponseDeadline Service', () => {
       });
       //Then
       await expect(submitExtendedResponseDeadline(mockedAppRequest)).rejects.toThrow(TestMessages.REDIS_FAILURE);
-    });
-
-    it('should rethrow exception when redis throws exception on submitResponseDeadlineExtension ', async () => {
-      //Given
-      mockGetCaseDataFromStore.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      //Then
-      await expect(submitResponseDeadlineExtension(mockedAppRequest)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 });
