@@ -143,7 +143,7 @@ describe('Civil Service Client', () => {
     });
   });
   describe('submitDefendantResponseEvent', () => {
-    it('should sumit defendant response successfully', async () => {
+    it('should submit defendant response successfully', async () => {
       //Given
       const mockResponse = new CivilClaimResponse();
       mockResponse.id = '1';
