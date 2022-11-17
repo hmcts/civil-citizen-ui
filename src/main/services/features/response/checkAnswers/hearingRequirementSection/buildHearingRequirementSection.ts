@@ -30,11 +30,12 @@ const getWitnesses = (claim: Claim, claimId: string, lang: string): SummaryRow [
 };
 
 export const buildHearingRequirementSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection =>{
+  const witnessesHref = constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_WITNESSES_URL);
   const otherWitnesses = claim.directionQuestionnaire?.witnesses?.otherWitnesses?.option;
   const hearingRequirementSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE', {lng: getLng(lang)}),
     summaryRows: [
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES', {lng: getLng(lang)}), otherWitnesses),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES', {lng: getLng(lang)}), otherWitnesses, witnessesHref, changeLabel(getLng(lang))),
     ],
   });
 
