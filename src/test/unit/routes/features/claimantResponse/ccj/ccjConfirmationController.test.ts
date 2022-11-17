@@ -24,7 +24,7 @@ describe('CCJ confirmation controller', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       const res = await request(app).get(CCJ_CONFIRMATION_URL);
       expect(res.status).toBe(200);
-      expect(res.text).toContain('County Court Judgment requested');
+      expect(res.text).toContain('County Court Judgement requested');
     });
 
     it('should return http 500 when has error in the get method', async () => {
