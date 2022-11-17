@@ -12,17 +12,11 @@
   {{ setPageTitle('PAGES.CCJ_CONFIRMATION.PAGE_TITLE') }}
 {% endblock %}
 
-{% set panelTitle %}
-  <h1 class="govuk-!-font-size-36">{{  t('PAGES.CCJ_CONFIRMATION.TITLE') }}</h1>
-{% endset %}
-
-
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       {{ govukPanel({
-        html: panelTitle,
-        classes: 'govuk-!-margin-0 govuk-!-padding-0'
+        titleText:t('PAGES.CCJ_CONFIRMATION.TITLE')
       }) }}
       <br>
       <p class="govuk-body">{{ t('PAGES.CCJ_CONFIRMATION.PROCESS_YOUR_REQUEST', { defendantName: defendantName }) }}</p>
