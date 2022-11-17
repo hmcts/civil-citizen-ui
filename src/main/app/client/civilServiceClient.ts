@@ -2,7 +2,7 @@ import {Claim} from '../../common/models/claim';
 import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
 import {AppRequest} from '../../common/models/AppRequest';
-import {CivilClaimResponse} from '../../common/models/civilClaimResponse';
+import {CCDClaim, CivilClaimResponse} from '../../common/models/civilClaimResponse';
 import {
   CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
@@ -154,6 +154,10 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.INFORM_AGREED_EXTENSION_DATE_SPEC, claimId, updatedClaim, req);
   }
 
+  async submitDraftClaim(updatedClaim: ClaimUpdate, req: AppRequest):  Promise<Claim> {
+    return this.submitEvent(CaseEvent.CREATE_LIP_CLAIM, 'draft', updatedClaim, req);
+  }
+
   async submitEvent(event: CaseEvent, claimId: string, updatedClaim?: ClaimUpdate, req?: AppRequest): Promise<Claim> {
     const config = this.getConfig(req);
     const userId = req.session?.user?.id;
@@ -166,7 +170,7 @@ export class CivilServiceClient {
         .replace(':submitterId', userId)
         .replace(':caseId', claimId), data, config);// nosonar
       logger.info('submitted event ' + data.event + ' with update ' + data.caseDataUpdate);
-      return Object.assign(new Claim(), response.data);
+      return Claim.fromCCDCaseData(Object.assign(new CCDClaim(),response.data));
     } catch (err: unknown) {
       logger.error(err);
       throw err;
