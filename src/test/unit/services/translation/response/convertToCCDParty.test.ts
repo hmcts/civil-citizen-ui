@@ -17,11 +17,11 @@ const title = 'Mr';
 const firstName = 'Jon';
 const lastName = 'Doe';
 const soleTraderTradingAs = 'test';
-const dateOfBirth = new CitizenDate('10','10','1990');
+const dateOfBirth = new CitizenDate('10', '10', '1990');
 const email = new Email('test@test.com');
 const emailCCD = 'test@test.com';
 
-const address: Address = new Address('Street test','1', '1A', 'test', 'sl11gf');
+const address: Address = new Address('Street test', '1', '1A', 'test', 'sl11gf');
 
 const addressCCD: CCDAddress = {
   AddressLine1: 'Street test',
@@ -29,8 +29,6 @@ const addressCCD: CCDAddress = {
   AddressLine3: '1A',
   PostTown: 'test',
   PostCode: 'sl11gf',
-  Country: 'test',
-  County: 'test',
 };
 
 const commonParty = {
