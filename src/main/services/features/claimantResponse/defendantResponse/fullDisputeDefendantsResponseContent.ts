@@ -157,7 +157,7 @@ export const getTheirDefence = (text: string): ClaimSummarySection[] => {
 
 export const buildFullDisputeResponseContent = (claim: Claim, lng: string): ClaimSummarySection[] => {
   return [
-    ...getResponseStatement(claim.getDefendantName()),
+    ...getResponseStatement(claim.getDefendantFullName()),
     ...getTheirDefence(claim.rejectAllOfClaim?.defence?.text),
     ...getTheirTOEs(claim, lng),
     ...getDisagreementStatementWithTimeline(claim),

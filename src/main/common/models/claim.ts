@@ -39,6 +39,8 @@ import {Interest} from '../form/models/interest/interest';
 import {RejectAllOfClaimType} from '../../common/form/models/rejectAllOfClaimType';
 import {ClaimDetails} from '../../common/form/models/claim/details/claimDetails';
 import {ClaimantResponse} from './claimantResponse';
+import {CCDClaim} from 'models/civilClaimResponse';
+import {toCUIParty} from 'services/translation/response/convertToCUI/convertToCUIParty';
 import {SelfEmployedAs} from '../models/selfEmployedAs';
 import {TaxPayments} from '../models/taxPayments';
 import {RegularIncome} from '../../common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
@@ -81,6 +83,14 @@ export class Claim {
   respondentSolicitor1AgreedDeadlineExtension?: Date;
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
+
+  public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
+
+    const claim: Claim = Object.assign(new Claim(), ccdClaim);
+    claim.applicant1 = toCUIParty(ccdClaim.applicant1);
+    claim.respondent1 = toCUIParty(ccdClaim.respondent1);
+    return claim;
+  }
 
   get responseStatus(): ClaimResponseStatus {
     if (this.isFullAdmission() && this.isPaymentOptionPayImmediately()) {
@@ -133,15 +143,15 @@ export class Claim {
     return this.getName(this.applicant1);
   }
 
-  getDefendantFullName(): string{
+  getDefendantFullName(): string {
     return this.getName(this.respondent1);
   }
 
   private getName(party: Party): string {
     if (party.type == PartyType.INDIVIDUAL || party.type == PartyType.SOLE_TRADER) {
-      if(party.partyDetails?.individualTitle){
+      if (party.partyDetails?.individualTitle) {
         return `${party.partyDetails.individualTitle} ${party.partyDetails.individualFirstName} ${party.partyDetails.individualLastName}`;
-      }else{
+      } else {
         return `${party.partyDetails.individualFirstName} ${party.partyDetails.individualLastName}`;
       }
     }

@@ -3,7 +3,7 @@ import {ClaimSummarySection, ClaimSummaryType} from '../../../../common/form/mod
 import {formatDateToFullDate} from '../../../../common/utils/dateUtils';
 
 const getResponseStatement = (claim: Claim, lang: string) => {
-  const defendantName = claim.getDefendantName();
+  const defendantName = claim.getDefendantFullName();
   const paymentDate = claim.paymentDate;
   return [
     {
