@@ -16,7 +16,7 @@ export const addDependants = (claim: Claim, financialSection: SummarySection, cl
   const numberOfChildren = claim.statementOfMeans?.dependants?.numberOfChildren;
   const numberOfChildrenLivingWithYou = claim.statementOfMeans?.numberOfChildrenLivingWithYou;
 
-  financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CHILDREN', { lng: getLng(lang) }), '', yourDependantsHref, changeLabel(lang)));
+  financialSection.summaryList.rows.push(summaryRow(t('COMMON.CHILDREN', { lng: getLng(lang) }), '', yourDependantsHref, changeLabel(lang)));
   financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CHILDREN_DO_YOU_HAVE_ANY_LIVE_WITH_YOU', { lng: getLng(lang) }), t(`COMMON.${dependants}`, {lng: getLng(lang)}), yourDependantsHref, changeLabel(lang)));
 
   if(numberOfChildren?.under11) financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CHILDREN_UNDER_11', { lng: getLng(lang) }), numberOfChildren.under11.toString(), '', changeLabel(lang)));

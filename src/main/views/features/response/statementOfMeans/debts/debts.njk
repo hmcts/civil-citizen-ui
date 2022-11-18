@@ -24,10 +24,10 @@
       <label id="debts-label" class="govuk-label--s">{{ t('PAGES.DEBTS.LIST') }}</label>
     </div>
     <div class="govuk-grid-column-one-quarter govuk-!-text-align-right">
-      <label id="total-owed-label" class="govuk-label--s ">{{ t('PAGES.DEBTS.TOTAL') }}</label>
+      <label id="total-owed-label" class="govuk-label--s ">{{ t('COMMON.TOTAL_DEBT') }}</label>
     </div>
     <div class="govuk-grid-column-one-quarter govuk-!-text-align-right">
-      <label id="monthly-payments-label" class="govuk-label--s">{{ t('PAGES.DEBTS.MONTHLY') }}</label>
+      <label id="monthly-payments-label" class="govuk-label--s">{{ t('COMMON.MONTHLY_PAYMENTS') }}</label>
     </div>
   </div>
   {% for debtsItem in form.model.debtsItems %}
@@ -71,7 +71,7 @@
                 text: "£"
               },
               label: {
-                text: t('PAGES.DEBTS.TOTAL'),
+                text: t('COMMON.TOTAL_DEBT'),
                 classes: 'govuk-visually-hidden'
               },
               spellcheck: false,
@@ -88,7 +88,7 @@
                 text: "£"
               },
               label: {
-                text: t('PAGES.DEBTS.MONTHLY'),
+                text: t('COMMON.MONTHLY_PAYMENTS'),
                 classes: 'govuk-visually-hidden'
               },
               spellcheck: false,
