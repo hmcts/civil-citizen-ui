@@ -143,11 +143,11 @@ describe('Civil Service Client', () => {
     });
   });
   describe('submitDefendantResponseEvent', () => {
-    it('should sumit defendant response successfully', async () => {
+    it('should submit defendant response successfully', async () => {
       //Given
       const mockResponse = new CivilClaimResponse();
       mockResponse.id = '1';
-      mockResponse.case_data = new CCDClaim();
+      mockResponse.case_data = {};
       mockResponse.state = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
 
       const mockPost = jest.fn().mockResolvedValue({data: mockResponse});
