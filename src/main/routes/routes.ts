@@ -166,6 +166,10 @@ import defendantDOBController from './features/claimantResponse/ccj/defendantDOB
 import claimantIntentionToProceedController from './features/claimantResponse/claimantIntentionToProceedController';
 import rejectionReasonController from './features/claimantResponse/rejectionReasonController';
 import specificCourtController from './features/directionsQuestionnaire/hearing/specificCourtController';
+import debtRespiteOptionController from './features/breathingSpace/debtRespiteOptionController';
+import debtStartDateController from './features/breathingSpace/debtRespiteStartDateController';
+import debtRespiteEndDateController from './features/breathingSpace/debtRespiteEndDateController';
+import reviewDefendantsResponseController from './features/claimantResponse/reviewDefendantsResponseController';
 import repaymentPlanInstalmentsController from './features/claimantResponse/ccj/repaymentPlanInstalmentsController';
 
 export default [
@@ -320,5 +324,9 @@ export default [
   claimantIntentionToProceedController,
   rejectionReasonController,
   specificCourtController,
+  debtRespiteOptionController,
+  debtStartDateController,
+  debtRespiteEndDateController,
+  reviewDefendantsResponseController,
   repaymentPlanInstalmentsController,
 ];
