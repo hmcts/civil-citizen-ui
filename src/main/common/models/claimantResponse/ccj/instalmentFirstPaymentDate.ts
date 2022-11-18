@@ -23,10 +23,10 @@ export class InstalmentFirstPaymentDate {
   @Max(9999, {message: 'ERRORS.VALID_YEAR'})
     year: number;
 
-  constructor(day?: string, month?: string, year?: string) {
-    this.date = DateConverter.convertToDate(year, month, day);
-    this.year = toNumberOrUndefined(year);
-    this.month = toNumberOrUndefined(month);
-    this.day = toNumberOrUndefined(day);
+  constructor(firstPaymentDate: Record<string,string>) {
+    this.date = DateConverter.convertToDate(firstPaymentDate?.year, firstPaymentDate?.month, firstPaymentDate?.day);
+    this.year = toNumberOrUndefined(firstPaymentDate?.year);
+    this.month = toNumberOrUndefined(firstPaymentDate?.month);
+    this.day = toNumberOrUndefined(firstPaymentDate?.day);
   }
 }

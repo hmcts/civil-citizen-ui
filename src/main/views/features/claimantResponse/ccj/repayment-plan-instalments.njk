@@ -69,25 +69,25 @@
                 items: [
                   {
                     classes: "govuk-input--width-2 govuk-input--error" if form.errorFor('firstPaymentDate[day]') else "govuk-input--width-2",
-                    id: "day",
+                    id: "firstPaymentDate[day]",
                     label: t('COMMON.DAY'),
-                    name: "day",
+                    name: "firstPaymentDate[day]",
                     value: form.model.firstPaymentDate.day,
                     max: 31
                   },
                   {
                     classes:"govuk-input--width-2 govuk-input--error" if form.errorFor('firstPaymentDate[month]') else "govuk-input--width-2",
-                    id: "month",
+                    id: "firstPaymentDate[month]",
                     label: t('COMMON.MONTH'),
-                    name: "month",
+                    name: "firstPaymentDate[month]",
                     value: form.model.firstPaymentDate.month,
                     max: 12
                   },
                   {
                     classes: "govuk-input--width-4 govuk-input--error" if form.errorFor('firstPaymentDate[year]') else "govuk-input--width-4",
-                    id: "year",
+                    id: "firstPaymentDate[year]",
                     label: t('COMMON.YEAR'),
-                    name: "year",
+                    name: "firstPaymentDate[year]",
                     value: form.model.firstPaymentDate.year,
                     max: 9999
                   }

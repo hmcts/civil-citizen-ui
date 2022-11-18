@@ -9,7 +9,6 @@ import {ClaimantResponse} from '../../../../common/models/claimantResponse';
 import {RepaymentPlanInstalments} from '../../../../common/models/claimantResponse/ccj/repaymentPlanInstalments';
 import {InstalmentFirstPaymentDate} from '../../../../common/models/claimantResponse/ccj/instalmentFirstPaymentDate';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {toNumberOrUndefined} from '../../../../common/utils/numberConverter';
 import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
 import {saveClaimantResponse} from '../../../../../main/services/features/claimantResponse/claimantResponseService';
 
@@ -42,13 +41,12 @@ repaymentPlanInstalmentsController.post(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL, asyn
     const claimId = req.params.id;
     const claim = await getCaseDataFromStore(claimId);
     const form = new GenericForm(new RepaymentPlanInstalments(
-      toNumberOrUndefined(req.body.amount),
-      new InstalmentFirstPaymentDate(req.body.day, req.body.month, req.body.year),
+      req.body.amount,
+      new InstalmentFirstPaymentDate(req.body.firstPaymentDate),
       req.body.paymentFrequency,
     ));
     form.validateSync();
 
-    console.log('Controller Errors:', JSON.stringify(form.errors));
     if (form.hasErrors()) {
       renderView(form, claim.totalClaimAmount, res);
     } else {
