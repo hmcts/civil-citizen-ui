@@ -5,7 +5,7 @@ import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreServi
 import {Claim} from '../../../common/models/claim';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {AppRequest} from '../../../common/models/AppRequest';
-import {submitResponse} from '../../../services/features/response/submission/submitResponse';
+import {submitClaim} from 'services/features/claim/submission/submitClaim';
 
 const checkAnswersViewPath = 'features/claim/check-answers';
 const claimCheckAnswersController = Router();
@@ -31,7 +31,7 @@ claimCheckAnswersController.get(CLAIM_CHECK_ANSWERS_URL,
 
 claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    await submitResponse(<AppRequest>req);
+    await submitClaim(<AppRequest>req);(<AppRequest>req);
     const userId = req.session?.user?.id;
     res.redirect(constructResponseUrlWithIdParams(userId, CLAIM_CONFIRMATION_URL));
   } catch (error) {

@@ -38,6 +38,7 @@ export class CivilClaimResponse {
 }
 
 export interface CCDClaim extends ClaimUpdate{
+  applicant1Represented?: string;
   legacyCaseReference?: string;
   applicant1?: CCDParty;
   claimantResponse?: ClaimantResponse;
