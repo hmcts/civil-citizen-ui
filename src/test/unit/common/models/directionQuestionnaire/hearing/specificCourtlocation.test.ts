@@ -1,6 +1,17 @@
 import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
 import {YesNo} from 'form/models/yesNo';
 
+function memoize<Input, Result>(fn: (input: Input) => Result) {
+  const memoMap = new Map<Input, Result>()
+  return function (input: Input): Result {
+    if (memoMap.has(input)) return memoMap.get(input)!
+    const result = fn(input)
+    memoMap.set(input, result)
+    return result
+  }
+}
+
+
 describe('SpecificCourtLocation', ()=>{
   it('should return true when specific court location is required', ()=>{
     //Given
