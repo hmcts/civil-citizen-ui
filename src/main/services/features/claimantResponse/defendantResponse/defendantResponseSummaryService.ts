@@ -10,5 +10,9 @@ export const getDefendantsResponseContent = (claim: Claim, lang: string): ClaimS
       return buildFullAdmissionResponseContent(claim, lang);
     case ClaimResponseStatus.RC_DISPUTE:
       return buildFullDisputeResponseContent(claim, lang);
+    case ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE:
+    case ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY:
+    case ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS:
+      return buildPartAdmitNotPaidResponseContent(claim, lang);
   }
 };
