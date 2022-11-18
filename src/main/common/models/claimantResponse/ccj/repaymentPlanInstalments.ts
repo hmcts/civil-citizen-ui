@@ -9,14 +9,13 @@ export class RepaymentPlanInstalments {
     amount?: number;
 
   @ValidateNested()
-  firstPaymentDate?: InstalmentFirstPaymentDate;
+    firstPaymentDate?: InstalmentFirstPaymentDate;
 
   @IsDefined({message: 'ERRORS.PAYMENT_FREQUENCY_REQUIRED'})
     paymentFrequency?: PaymentFrequencyType;
 
   constructor(amount?: string, firstPaymentDate?: InstalmentFirstPaymentDate, paymentFrequency?: PaymentFrequencyType) {
     this.amount = toNumberOrUndefined(amount);
-    console.log('constructor: ',this.amount)
     this.firstPaymentDate = firstPaymentDate;
     this.paymentFrequency = paymentFrequency;
   }
