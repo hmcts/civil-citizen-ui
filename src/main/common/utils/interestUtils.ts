@@ -3,8 +3,7 @@ import {YesNo} from '../form/models/yesNo';
 import {getNumberOfDaysBetweenTwoDays} from './dateUtils';
 import {InterestClaimFromType} from '../../common/form/models/claimDetails';
 import {InterestClaimOptionsType} from '../../common/form/models/claim/interest/interestClaimOptionsType';
-
-const INTEREST_8 = 8;
+import {InterestRatePercentage} from 'form/models/interest/interest';
 
 export const getInterestDetails = (claim: Claim) => {
   if (claim?.claimInterest === YesNo.NO) {
@@ -38,7 +37,7 @@ export function getInterestDateOrIssueDate(claim: Claim) {
 }
 
 export function getInterestRate(claim: Claim): number {
-  let interestRate = INTEREST_8;
+  let interestRate = InterestRatePercentage.INTEREST_8;
   if (!claim.isSameRateTypeEightPercent()) {
     interestRate = claim.interest?.sameRateInterestSelection?.differentRate;
   }
