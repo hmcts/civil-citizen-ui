@@ -121,7 +121,7 @@ withPipeline(type, product, component) {
       env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
       env.CIVIL_SERVICE_URL="http://civil-service-aat.service.core-compute-aat.internal"
       env.URL="https://manage-case.aat.platform.hmcts.net"
-      env.TEST_URL="https://civil-citizen-ui-staging.service.core-compute-aat.internal"
+      env.TEST_URL="https://civil-citizen-ui.aat.platform.hmcts.net"
 
       dir("${WORKSPACE}/build") {
         steps.archiveArtifacts artifacts: "ccd-release-config/civil-ccd-staging.xlsx"
@@ -141,7 +141,7 @@ withPipeline(type, product, component) {
       env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
       env.CIVIL_SERVICE_URL="http://civil-service-aat.service.core-compute-aat.internal"
       env.URL="https://manage-case.aat.platform.hmcts.net"
-      env.TEST_URL="https://civil-citizen-ui-staging.service.core-compute-aat.internal"
+      env.TEST_URL="https://civil-citizen-ui.aat.platform.hmcts.net"
     }
 
     after('functionalTest:aat') {
