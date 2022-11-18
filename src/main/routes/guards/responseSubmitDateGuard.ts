@@ -6,7 +6,7 @@ import {DASHBOARD_URL} from '../../routes/urls';
 export const responseSubmitDateGuard = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claim: Claim = await getCaseDataFromStore(req.params?.id);
-    return (claim.isResponseDateInThePast())
+    return (claim?.isResponseDateInThePast())
       ? next()
       : res.redirect(DASHBOARD_URL);
   } catch (error) {
