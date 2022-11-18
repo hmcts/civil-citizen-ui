@@ -31,7 +31,7 @@ claimCheckAnswersController.get(CLAIM_CHECK_ANSWERS_URL,
 
 claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    await submitClaim(<AppRequest>req);(<AppRequest>req);
+    await submitClaim(<AppRequest>req);
     const userId = req.session?.user?.id;
     res.redirect(constructResponseUrlWithIdParams(userId, CLAIM_CONFIRMATION_URL));
   } catch (error) {
