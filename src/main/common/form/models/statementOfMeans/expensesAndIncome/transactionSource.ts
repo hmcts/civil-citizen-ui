@@ -62,16 +62,28 @@ export class ValidationErrors {
     switch (sourceName) {
       case ExpenseType.MORTGAGE:
         return 'MORTGAGE';
+      case ExpenseType.MORTGAGE_PRIORITY:
+        return 'MORTGAGE_PRIORITY';
       case ExpenseType.RENT:
         return 'RENT';
+      case ExpenseType.RENT_PRIORITY:
+        return 'RENT_PRIORITY';
       case ExpenseType.COUNCIL_TAX:
         return 'COUNCIL_TAX';
+      case ExpenseType.COUNCIL_TAX_OR_COMMUNITY_CHARGE:
+        return 'COUNCIL_TAX_OR_COMMUNITY_CHARGE';
       case ExpenseType.GAS:
         return 'GAS';
+      case ExpenseType.GAS_PRIORITY:
+        return 'GAS_PRIORITY';
       case ExpenseType.WATER:
         return 'WATER';
+      case ExpenseType.WATER_PRIORITY:
+        return 'WATER_PRIORITY';
       case ExpenseType.ELECTRICITY:
         return 'ELECTRICITY';
+      case ExpenseType.ELECTRICITY_PRIORITY:
+        return 'ELECTRICITY_PRIORITY';
       case ExpenseType.TRAVEL:
         return 'TRAVEL';
       case ExpenseType.SCHOOL_COSTS:
@@ -86,6 +98,8 @@ export class ValidationErrors {
         return 'MOBILE_PHONE';
       case ExpenseType.MAINTENANCE_PAYMENTS:
         return 'MAINTENANCE_PAYMENTS';
+      case ExpenseType.MAINTENANCE_PAYMENTS_PRIORITY:
+        return 'MAINTENANCE_PAYMENTS_PRIORITY';
       default:
         return 'OTHER';
     }

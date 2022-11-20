@@ -4,7 +4,7 @@ import {Residence} from '../form/models/statementOfMeans/residence/residence';
 import {Employment} from './employment';
 import {Employers} from '../form/models/statementOfMeans/employment/employers';
 import {Dependants} from '../form/models/statementOfMeans/dependants/dependants';
-// import {PriorityDebts} from '../form/models/statementOfMeans/priorityDebts';
+import {PriorityDebts} from '../form/models/statementOfMeans/priorityDebts';
 import {SelfEmployedAs} from './selfEmployedAs';
 import {TaxPayments} from './taxPayments';
 import {Unemployment} from '../form/models/statementOfMeans/unemployment/unemployment';
@@ -34,7 +34,7 @@ export class StatementOfMeans {
   selfEmployedAs?: SelfEmployedAs;
   unemployment?: Unemployment;
   childrenDisability?: GenericYesNo;
-  priorityDebts?: RegularExpenses;
+  priorityDebts?: PriorityDebts;
   regularExpenses?: RegularExpenses;
   debts?: Debts;
   courtOrders?: CourtOrders;
