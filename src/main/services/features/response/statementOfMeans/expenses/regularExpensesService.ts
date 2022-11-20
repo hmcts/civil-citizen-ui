@@ -31,36 +31,7 @@ const saveRegularExpenses = async (claimId: string, regularExpenses: RegularExpe
   }
 };
 
-const KgetRegularExpenses = async (claimId: string): Promise<RegularExpenses> => {
-  try {
-    const claim = await getCaseDataFromStore(claimId);
-    if (claim.statementOfMeans?.priorityDebts) {
-      return claim.statementOfMeans.priorityDebts;
-    }
-    return RegularExpenses.buildEmptyForm();
-  } catch (error) {
-    logger.error(error);
-    throw error;
-  }
-};
-
-const KsaveRegularExpenses = async (claimId: string, priorityDebts: RegularExpenses) => {
-  try {
-    const claim = await getCaseDataFromStore(claimId);
-    if (!claim.statementOfMeans) {
-      claim.statementOfMeans = new StatementOfMeans();
-    }
-    claim.statementOfMeans.priorityDebts = priorityDebts;
-    await saveDraftClaim(claimId, claim);
-  } catch (error) {
-    logger.error(error);
-    throw error;
-  }
-};
-
 export {
   getRegularExpenses,
   saveRegularExpenses,
-  KgetRegularExpenses,
-  KsaveRegularExpenses,
 };
