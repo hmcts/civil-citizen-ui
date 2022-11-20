@@ -50,6 +50,8 @@ const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 const languageMock = getLng as jest.Mock;
 
 describe('Claimant Response Service', () => {
+  beforeEach(console.log("test starting"))
+  afterEach(console.log("test ended"))
   describe('getClaimantResponse', () => {
     it('should return undefined if direction claimant response is not set', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
