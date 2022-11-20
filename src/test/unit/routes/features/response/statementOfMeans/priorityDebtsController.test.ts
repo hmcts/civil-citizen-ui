@@ -45,9 +45,15 @@ describe('Priority Debts Controller', () => {
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
         .send({
-          gas: 'gas',
-          'gas-payment-amount': '',
-          'gas-payment-schedule': '',
+          model: {
+            gas: {
+              declared: 'gas',
+              transactionSource: {
+                name: 'Gas',
+                amount: '',
+              },
+            },
+          },
         })
         .expect((res: Response) => {
           expect(res.status).toBe(200);
@@ -59,12 +65,22 @@ describe('Priority Debts Controller', () => {
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
         .send({
-          gas: 'gas',
-          'gas-payment-amount': '',
-          'gas-payment-schedule': '',
-          water: 'water',
-          'water-payment-amount': '',
-          'water-payment-schedule': '',
+          model: {
+            gas: {
+              declared: 'gas',
+              transactionSource: {
+                name: 'Gas',
+                amount: '',
+              },
+            },
+            water: {
+              declared: 'water',
+              transactionSource: {
+                name: 'Water',
+                amount: '',
+              },
+            },
+          },
         })
         .expect((res: Response) => {
           expect(res.status).toBe(200);
@@ -78,9 +94,15 @@ describe('Priority Debts Controller', () => {
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
         .send({
-          gas: 'gas',
-          'gas-payment-amount': '5129',
-          'gas-payment-schedule': '',
+          model: {
+            gas: {
+              declared: 'gas',
+              transactionSource: {
+                name: 'Gas',
+                amount: '5129',
+              },
+            },
+          },
         })
         .expect((res: Response) => {
           expect(res.status).toBe(200);
@@ -91,9 +113,15 @@ describe('Priority Debts Controller', () => {
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
         .send({
-          gas: 'gas',
-          'gas-payment-amount': '-5129',
-          'gas-payment-schedule': '',
+          model: {
+            gas: {
+              declared: 'gas',
+              transactionSource: {
+                name: 'Gas',
+                amount: '-5129',
+              },
+            },
+          },
         })
         .expect((res: Response) => {
           expect(res.status).toBe(200);
@@ -104,9 +132,15 @@ describe('Priority Debts Controller', () => {
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
         .send({
-          gas: 'gas',
-          'gas-payment-amount': '2000.859',
-          'gas-payment-schedule': '',
+          model: {
+            gas: {
+              declared: 'gas',
+              transactionSource: {
+                name: 'Gas',
+                amount: '2000.859',
+              },
+            },
+          },
         })
         .expect((res: Response) => {
           expect(res.status).toBe(200);
@@ -117,7 +151,9 @@ describe('Priority Debts Controller', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
-        .send({})
+        .send({
+          model: {},
+        })
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_DEBTS_URL);
@@ -128,9 +164,16 @@ describe('Priority Debts Controller', () => {
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
         .send({
-          gas: 'gas',
-          'gas-payment-amount': '85.92',
-          'gas-payment-schedule': 'month',
+          model: {
+            gas: {
+              declared: 'gas',
+              transactionSource: {
+                name: 'Gas',
+                amount: '85.92',
+                schedule: 'MONTH',
+              },
+            },
+          },
         })
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -143,9 +186,16 @@ describe('Priority Debts Controller', () => {
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
         .send({
-          gas: 'gas',
-          'gas-payment-amount': '85.92',
-          'gas-payment-schedule': 'month',
+          model: {
+            gas: {
+              declared: 'gas',
+              transactionSource: {
+                name: 'Gas',
+                amount: '85.92',
+                schedule: 'MONTH',
+              },
+            },
+          },
         })
         .expect((res) => {
           expect(res.status).toBe(500);
