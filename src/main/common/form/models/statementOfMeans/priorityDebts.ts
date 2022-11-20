@@ -37,13 +37,13 @@ export class PriorityDebts {
 
   public static buildEmptyForm(): PriorityDebts {
     const params = {
-      mortgage: PriorityDebts.buildExpense(ExpenseType.MORTGAGE_PRIORITY),
-      rent: PriorityDebts.buildExpense(ExpenseType.RENT_PRIORITY),
-      councilTax: PriorityDebts.buildExpense(ExpenseType.COUNCIL_TAX_OR_COMMUNITY_CHARGE),
-      gas: PriorityDebts.buildExpense(ExpenseType.GAS_PRIORITY),
-      electricity: PriorityDebts.buildExpense(ExpenseType.ELECTRICITY_PRIORITY),
-      water: PriorityDebts.buildExpense(ExpenseType.WATER_PRIORITY),
-      maintenance: PriorityDebts.buildExpense(ExpenseType.MAINTENANCE_PAYMENTS_PRIORITY),
+      mortgage: PriorityDebts.buildPriorityDebt(ExpenseType.MORTGAGE_PRIORITY),
+      rent: PriorityDebts.buildPriorityDebt(ExpenseType.RENT_PRIORITY),
+      councilTax: PriorityDebts.buildPriorityDebt(ExpenseType.COUNCIL_TAX_OR_COMMUNITY_CHARGE),
+      gas: PriorityDebts.buildPriorityDebt(ExpenseType.GAS_PRIORITY),
+      electricity: PriorityDebts.buildPriorityDebt(ExpenseType.ELECTRICITY_PRIORITY),
+      water: PriorityDebts.buildPriorityDebt(ExpenseType.WATER_PRIORITY),
+      maintenance: PriorityDebts.buildPriorityDebt(ExpenseType.MAINTENANCE_PAYMENTS_PRIORITY),
     };
     return new PriorityDebts(params);
   }
@@ -62,7 +62,7 @@ export class PriorityDebts {
     return scheduledAmounts;
   }
 
-  private static buildExpense(type: ExpenseType): Transaction {
+  private static buildPriorityDebt(type: ExpenseType): Transaction {
     return Transaction.buildEmptyForm(type);
   }
 }
