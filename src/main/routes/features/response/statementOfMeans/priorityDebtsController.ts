@@ -1,57 +1,53 @@
-import {NextFunction, Request, Response, Router} from 'express';
-import {CITIZEN_DEBTS_URL, CITIZEN_SEVERELY_DISABLED_URL} from '../../../urls';
+import {NextFunction, Response, Router} from 'express';
+import {GenericForm} from '../../../../common/form/models/genericForm';
+import {RegularExpenses} from '../../../../common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
+import {CITIZEN_DEBTS_URL, CITIZEN_PRIORITY_DEBTS_URL} from '../../../urls';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {checkBoxFields} from '../../../../common/utils/priorityDebts/priorityDebtsConstants';
 import {
   getPriorityDebts,
+  getPriorityDebtsForm,
   savePriorityDebts,
 } from '../../../../services/features/response/statementOfMeans/priorityDebtsService';
-import {
-  convertRequestBodyToForm,
-  formatFormErrors,
-  listFormErrors,
-} from '../../../../common/utils/priorityDebts/priorityDebtsConvertors';
 
 const priorityDebtsController = Router();
-const debtsViewPath = 'features/response/statementOfMeans/priority-debts';
+const priorityDebtsView = 'features/response/statementOfMeans/priority-debts';
 
-priorityDebtsController.get(
-  CITIZEN_SEVERELY_DISABLED_URL,
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      res.render(debtsViewPath, {
-        priorityDebts: await getPriorityDebts(req.params.id),
-        checkBoxFields,
-      });
-    } catch (error) {
-      next(error);
-    }
-  },
-);
+function renderForm(form: GenericForm<RegularExpenses>, res: Response) {
+  res.render(priorityDebtsView, {form});
+}
 
-priorityDebtsController.post(
-  CITIZEN_SEVERELY_DISABLED_URL,
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const form = convertRequestBodyToForm(req);
-      await form.validate();
-      if (form.hasErrors()) {
-        const priorityDebtErrors = formatFormErrors(form.getErrors());
-        const errorList = listFormErrors(priorityDebtErrors);
-        res.render(debtsViewPath, {
-          priorityDebts: form,
-          priorityDebtErrors,
-          errors: errorList,
-          checkBoxFields,
-        });
-      } else {
-        await savePriorityDebts(req.params.id, form);
-        res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEBTS_URL));
-      }
-    } catch (error) {
-      next(error);
+priorityDebtsController.get(CITIZEN_PRIORITY_DEBTS_URL, async (req, res, next: NextFunction) => {
+  try {
+    debugger;
+    const model = await getPriorityDebts(req.params.id);
+    renderForm(new GenericForm<RegularExpenses>(model), res);
+  } catch (error) {
+    next(error);
+  }
+});
+
+priorityDebtsController.post(CITIZEN_PRIORITY_DEBTS_URL, async (req, res, next: NextFunction) => {
+  debugger;
+  const form = new GenericForm(getPriorityDebtsForm(req));
+  try {
+    await form.validate();
+    if (form.hasErrors()) {
+      renderForm(form, res);
+    } else {
+      await savePriorityDebts(req.params.id, form.model);
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEBTS_URL));
     }
-  },
-);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// TODO: check error messages
+// find a better way to call conditionalls
+// update check your answers
+// update tests
+// arrange the file structure
+// change file names remove K
+// create own service for get, getForm, save
 
 export default priorityDebtsController;
