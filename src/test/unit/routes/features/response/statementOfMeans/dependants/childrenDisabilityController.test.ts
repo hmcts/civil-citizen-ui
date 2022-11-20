@@ -2,8 +2,7 @@ import request from 'supertest';
 import {app} from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {CHILDREN_DISABILITY_URL, CITIZEN_OTHER_DEPENDANTS_URL} from '../../../../../../../main/routes/urls';
-import {VALID_YES_NO_OPTION} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {CHILDREN_DISABILITY_URL, CITIZEN_OTHER_DEPENDANTS_URL} from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
@@ -129,7 +128,7 @@ describe('Children Disability', () => {
         .send('')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_YES_NO_OPTION);
+          expect(res.text).toContain(TestMessages.VALID_YES_NO_OPTION);
         });
     });
   });

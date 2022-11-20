@@ -1,4 +1,4 @@
-import {SummaryRow} from '../../../common/models/summaryList/summaryList';
+import {SummaryRow, TableCell} from '../../../common/models/summaryList/summaryList';
 
 export interface ClaimSummaryContent {
   contentSections?: ClaimSummarySection[];
@@ -21,6 +21,8 @@ export interface ClaimSummaryItem {
   subtitle?: string;
   rows?: SummaryRow[];
   variables?: any;
+  head?: TableCell[];
+  tableRows?: TableCell[][];
 }
 
 /**
@@ -35,5 +37,6 @@ export enum ClaimSummaryType {
   LINK = 'link',
   HTML = 'html',
   INSET_TEXT = 'insetText',
-  SUMMARY = 'summary'
+  SUMMARY = 'summary',
+  TABLE = 'table'
 }

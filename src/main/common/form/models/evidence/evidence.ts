@@ -1,13 +1,12 @@
 import {MaxLength, ValidateNested} from 'class-validator';
-import { VALID_TEXT_LENGTH } from '../../../../common/form/validationErrors/errorMessageConstants';
-import { FREE_TEXT_MAX_LENGTH } from '../../../../common/form/validators/validationConstraints';
+import { FREE_TEXT_MAX_LENGTH } from 'form/validators/validationConstraints';
 import { ClaimDetails } from '../claim/details/claimDetails';
 import { EvidenceItem } from './evidenceItem';
 
 export const INIT_ROW_COUNT = 4;
 
 export class Evidence {
-  @MaxLength(FREE_TEXT_MAX_LENGTH, { message: VALID_TEXT_LENGTH })
+  @MaxLength(FREE_TEXT_MAX_LENGTH, { message: 'ERRORS.VALID_TEXT_LENGTH' })
     comment?: string;
 
   @ValidateNested()

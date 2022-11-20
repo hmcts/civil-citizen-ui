@@ -1,13 +1,14 @@
-import express, { NextFunction } from 'express';
-import {getCaseDataFromStore} from '../../../../main/modules/draft-store/draftStoreService';
-import {CLAIM_TASK_LIST_URL} from '../../../../main/routes/urls';
-import {Claim} from '../../../../main/common/models/claim';
-import {YesNo} from '../../../../main/common/form/models/yesNo';
-import {ResponseType} from '../../../../main/common/form/models/responseType';
-import {PartAdmitHowMuchHaveYouPaidGuard} from '../../../../main/routes/guards/partAdmitHowMuchHaveYouPaidGuard';
-import {constructResponseUrlWithIdParams} from '../../../../main/common/utils/urlFormatter';
+import {Request, Response, NextFunction } from 'express';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {CLAIM_TASK_LIST_URL} from 'routes/urls';
+import {Claim} from 'models/claim';
+import {YesNo} from 'form/models/yesNo';
+import {ResponseType} from 'form/models/responseType';
+import {PartAdmitHowMuchHaveYouPaidGuard} from 'routes/guards/partAdmitHowMuchHaveYouPaidGuard';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 jest.mock('../../../../main/modules/oidc');
+jest.mock('../../../../main/modules/draft-store');
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../main/routes/features/response/checkAnswersController');
 jest.mock('../../../../main/services/features/response/taskListService');
@@ -21,8 +22,8 @@ const CLAIM_ID = '123';
 const respondentIncompleteSubmissionUrl = constructResponseUrlWithIdParams(CLAIM_ID, CLAIM_TASK_LIST_URL);
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
-const MOCK_REQUEST = { params: { id: CLAIM_ID } } as unknown as express.Request;
-const MOCK_RESPONSE = { redirect: jest.fn() } as unknown as express.Response;
+const MOCK_REQUEST = { params: { id: CLAIM_ID } } as unknown as Request;
+const MOCK_RESPONSE = { redirect: jest.fn() } as unknown as Response;
 const MOCK_NEXT = jest.fn() as NextFunction;
 
 describe('Response - PartAdmitHowMuchHaveYouPaidGuard', () => {
@@ -36,7 +37,7 @@ describe('Response - PartAdmitHowMuchHaveYouPaidGuard', () => {
       const claim = new Claim();
       claim.respondent1 = {
         responseType: ResponseType.PART_ADMISSION,
-      },
+      };
       claim.partialAdmission = {
         alreadyPaid: {
           option: YesNo.YES,
@@ -57,7 +58,7 @@ describe('Response - PartAdmitHowMuchHaveYouPaidGuard', () => {
       const claim = new Claim();
       claim.respondent1 = {
         responseType: ResponseType.PART_ADMISSION,
-      },
+      };
       claim.partialAdmission = {
         alreadyPaid: {
           option: YesNo.NO,
@@ -77,7 +78,7 @@ describe('Response - PartAdmitHowMuchHaveYouPaidGuard', () => {
       // Given
       const claim = new Claim();
       claim.respondent1 = {
-      },
+      };
 
       mockGetCaseData.mockImplementation(async () => {
         return claim;
@@ -94,7 +95,7 @@ describe('Response - PartAdmitHowMuchHaveYouPaidGuard', () => {
       const claim = new Claim();
       claim.respondent1 = {
         responseType: ResponseType.PART_ADMISSION,
-      },
+      };
       claim.partialAdmission = {
         alreadyPaid: {
           option: YesNo.YES,

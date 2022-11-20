@@ -11,19 +11,20 @@ const buttons = {
 
 class CheckYourAnswersPage {
   checkAndSubmit(claimRef, responseType='') {
-    console.log('The value of the claimref Inside Check Ur answers Page ' + claimRef);    
     I.click('Check and submit your response');
     I.see('Check your answers', 'h1');
-    I.waitForElement(fields.cyaSigned);          
-    I.checkOption(fields.cyaSigned);         
+    I.waitForElement(fields.cyaSigned);
+    I.checkOption(fields.cyaSigned);
     if (responseType == 'partAdmit') {
       I.waitForElement(fields.directionsQuestionnaireSigned);
-      I.checkOption(fields.directionsQuestionnaireSigned);      
+      I.checkOption(fields.directionsQuestionnaireSigned);
     } else if (responseType == 'admitPartTwo') {
-    //WIP Progerss :Please do not remove this comment    
-    }     
+    //WIP Progerss :Please do not remove this comment
+    }
     I.click(buttons.submit);
-    I.see('You\'ve submitted your response','h1');    
+    I.amOnPage('/case/'+claimRef+'/dashboard/');
+    // Remove the above line and uncomment the below line once CIV-6033 is fixed
+    //I.see('You\'ve submitted your response','h1');
   }
 
   navigateToCheckYourAnswersPage(claimRef) {

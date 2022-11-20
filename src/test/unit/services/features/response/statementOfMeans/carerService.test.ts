@@ -1,11 +1,12 @@
-import {getCarer, saveCarer} from '../../../../../../main/services/features/response/statementOfMeans/carerService';
+import {getCarer, saveCarer} from 'services/features/response/statementOfMeans/carerService';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../../main/common/models/claim';
-import {StatementOfMeans} from '../../../../../../main/common/models/statementOfMeans';
-import {YesNo} from '../../../../../../main/common/form/models/yesNo';
-import {GenericYesNo} from '../../../../../../main/common/form/models/genericYesNo';
+import {Claim} from 'models/claim';
+import {StatementOfMeans} from 'models/statementOfMeans';
+import {YesNo} from 'form/models/yesNo';
+import {GenericYesNo} from 'form/models/genericYesNo';
 
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../../main/modules/draft-store');
 
 const claimId = '123';
 

@@ -1,29 +1,41 @@
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import config from 'config';
-import {CLAIM_DETAILS} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import {
   mockCivilClaim,
+  mockCivilClaimPDFTimeline,
   mockCivilClaimUndefined,
   mockRedisFailure,
-  mockCivilClaimPDFTimeline,
 } from '../../../../../utils/mockDraftStore';
 import CivilClaimResponseMock from '../../../../../utils/mocks/civilClaimResponseMock.json';
-import {getTotalAmountWithInterestAndFees} from '../../../../../../main/modules/claimDetailsService';
-import {dateFilter} from '../../../../../../main/modules/nunjucks/filters/dateFilter';
-import {convertToPoundsFilter} from '../../../../../../main/common/utils/currencyFormat';
+import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
+import {dateFilter} from 'modules/nunjucks/filters/dateFilter';
+import {convertToPoundsFilter} from 'common/utils/currencyFormat';
+import {Claim} from 'models/claim';
+import {Party} from 'models/party';
+import {PartyType} from 'models/partyType';
 
 jest.mock('../../../../../../main/modules/oidc');
-
+jest.mock('../../../../../../main/modules/draft-store');
 const nock = require('nock');
 
 describe('Claim details page', () => {
   const idamUrl: string = config.get('idamUrl');
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
-
+  const mockClaim = new Claim();
+  const now = new Date();
+  mockClaim.legacyCaseReference = '000MC009';
+  mockClaim.respondent1ResponseDate = new Date(now.setDate(now.getDate() - 1));
+  mockClaim.applicant1 = new Party();
+  mockClaim.applicant1 = {
+    type: PartyType.INDIVIDUAL,
+    partyDetails: {
+      partyName: 'Joe Bloggs',
+    },
+  };
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
@@ -44,7 +56,6 @@ describe('Claim details page', () => {
         .get('/case/1111/response/claim-details')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(CLAIM_DETAILS);
           expect(res.text).toContain(TestMessages.CLAIM_NUMBER);
         });
     });
@@ -58,7 +69,6 @@ describe('Claim details page', () => {
         .get('/case/1111/response/claim-details')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(CLAIM_DETAILS);
           expect(res.text).toContain('000MC009'); // case number
           expect(res.text).toContain('£195.00'); // tottal claim amount
           expect(res.text).toContain('House repair'); // claim reason
@@ -87,7 +97,6 @@ describe('Claim details page', () => {
         .get('/case/1111/response/claim-details')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(CLAIM_DETAILS);
           expect(res.text).toContain(getTotalAmountWithInterestAndFees(claim.case_data).toString());
           expect(res.text).toContain(claim.case_data?.claimAmountBreakup[0].value.claimReason);
           expect(res.text).toContain(claim.case_data?.claimAmountBreakup[0].value.claimAmount);
@@ -116,7 +125,6 @@ describe('Claim details page', () => {
         .get('/case/1111/response/claim-details')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(CLAIM_DETAILS);
           expect(res.text).toContain('Download and view timeline');
         });
       expect(spyRedisSave).not.toBeCalled();
