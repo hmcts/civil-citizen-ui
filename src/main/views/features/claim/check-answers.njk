@@ -10,7 +10,7 @@
 {% block pageTitle %}
   {{ setPageTitle('PAGES.CHECK_YOUR_ANSWER.TITLE') }}
 {% endblock %}
-{% set submitText = t('COMMON.BUTTONS.SUBMIT_RESPONSE') %}
+{% set submitText = t('COMMON.BUTTONS.SUBMIT_CLAIM') %}
 {% if payment %}
   {% set submitText = t('COMMON.BUTTONS.SUBMIT_RESPONSE_PAYMENT', { payment: payment }) %}
 {% endif %}
@@ -35,17 +35,15 @@
           <form method="post" novalidate autocomplete="off">
             {{ csrfProtection(csrf) }}
             <input type="hidden" name="type" value="{{ form.model.type }}">
-            <input type="hidden" name="isFullAmountRejected" value="{{ form.model.isFullAmountRejected }}">
-            {{ statementOfTruth(
-              t,
-              form,
-              SignatureType.RESPONSE,
-              t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX') + '<p class="govuk-!-margin-top-2">' +
-              t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX_PROCEEDINGS') +'</p>',
-              (signatureType === SignatureType.QUALIFIED),
-              isFullAmountRejected
-            ) }}
-
+           {{ statementOfTruth(
+             t,
+             form,
+             signatureType,
+             labelHtml = t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX') + '<p class="govuk-!-margin-top-2">' +
+             t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX_PROCEEDINGS') +'</p>',
+             isQualified = (signatureType === SignatureType.RESPONSE),
+             isFullAmountRejected = (signatureType === SignatureType.BASIC)
+           ) }}
             <div class="govuk-form-group">
               {{ govukButton({
                  text: submitText

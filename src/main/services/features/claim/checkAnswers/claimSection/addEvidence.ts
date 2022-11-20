@@ -1,20 +1,22 @@
-import {SummarySection} from 'models/summaryList/summarySections';
-import {Claim} from 'models/claim';
-import {summaryRow} from 'models/summaryList/summaryList';
+import {SummarySection} from '../../../../../common/models/summaryList/summarySections';
+import {Claim} from '../../../../../common/models/claim';
+import {summaryRow} from '../../../../../common/models/summaryList/summaryList';
 import {t} from 'i18next';
-import {getLng} from 'common/utils/languageToggleUtils';
-import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
-import {CLAIM_AMOUNT_URL} from 'routes/urls';
-import {ClaimAmountBreakup} from 'form/models/claimDetails';
+import {getLng} from '../../../../../common/utils/languageToggleUtils';
+import {CLAIM_EVIDENCE_URL} from '../../../../../routes/urls';
+import {EvidenceItem} from '../../../../../common/form/models/evidence/evidenceItem';
 
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
 export const addEvidence = (claim: Claim, claimSection: SummarySection, claimId: string, lang: string | unknown) => {
-  if (claim.claimAmountBreakup) {
-    const claimAmounts: ClaimAmountBreakup[] = claim.claimAmountBreakup;
-    for (let i = 0; i < claimAmounts.length; i++) {
+  if (claim.claimDetails?.evidence) {
+    claimSection.summaryList.rows.push(
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_TITLE', {lang}), '', CLAIM_EVIDENCE_URL, changeLabel(lang)),
+    );
+    const evidence: EvidenceItem[] = claim.claimDetails.evidence.evidenceItem;
+    for (let i = 0; i < evidence.length; i++) {
       claimSection.summaryList.rows.push(
-        summaryRow(claimAmounts[i].value.claimReason, currencyFormatWithNoTrailingZeros(Number(claimAmounts[i].value.claimAmount)), CLAIM_AMOUNT_URL, changeLabel(lang)),
+        summaryRow(evidence[i].type, evidence[i].description, CLAIM_EVIDENCE_URL, changeLabel(lang)),
       );
     }
   }

@@ -4,14 +4,20 @@ import {t} from 'i18next';
 import {getLng} from '../../../../../common/utils/languageToggleUtils';
 import {addTimeLine} from './addTimeLine';
 import {addEvidence} from './addEvidence';
+import {summaryRow} from '../../../../../common/models/summaryList/summaryList';
+import {CLAIM_REASON_URL} from '../../../../../routes/urls';
 
 export const buildClaimSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
 
   const lng = getLng(lang);
+  const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: lng});
   const claimSection = summarySection({
-    title: t('PAGES.CHECK_YOUR_ANSWER.DETAILS_TITLE_CLAIMANT', {lng}),
+    title: t('PAGES.CLAIM_DETAILS.PAGE_TITLE', {lng}),
     summaryRows: [],
   });
+  claimSection.summaryList.rows.push(
+    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.REASON_TITLE', {lang}), claim.claimDetails?.reason?.text, CLAIM_REASON_URL, changeLabel(lang)),
+  );
   addTimeLine(claim, claimSection, claimId, lang);
   addEvidence(claim, claimSection, claimId, lang);
 

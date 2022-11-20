@@ -7,7 +7,6 @@ import {buildClaimSection} from './claimSection/buildClaimSection';
 import {StatementOfTruthForm} from '../../../../common/form/models/statementOfTruth/statementOfTruthForm';
 import {QualifiedStatementOfTruth} from '../../../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {SignatureType} from '../../../../common/models/signatureType';
-import {isFullAmountReject} from '../../../../modules/claimDetailsService';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {isCounterpartyIndividual} from '../../../../common/utils/taskList/tasks/taskListHelpers';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
@@ -33,14 +32,13 @@ export const getStatementOfTruth = (claim: Claim): StatementOfTruthForm | Qualif
   if (claim.claimDetails?.statementOfTruth) {
     return resetCheckboxFields(claim.claimDetails.statementOfTruth);
   }
-
   switch (getSignatureType(claim)) {
     case SignatureType.BASIC:
-      return new StatementOfTruthForm(isFullAmountReject(claim));
-    case SignatureType.QUALIFIED:
-      return new QualifiedStatementOfTruth(isFullAmountReject(claim));
+      return new StatementOfTruthForm(false, SignatureType.BASIC);
+    case SignatureType.RESPONSE:
+      return new QualifiedStatementOfTruth(false, SignatureType.RESPONSE);
     default:
-      return new StatementOfTruthForm(isFullAmountReject(claim));
+      return new StatementOfTruthForm(false, SignatureType.BASIC);
   }
 };
 export const resetCheckboxFields = (statementOfTruth: StatementOfTruthForm | QualifiedStatementOfTruth): StatementOfTruthForm | QualifiedStatementOfTruth => {
@@ -49,7 +47,7 @@ export const resetCheckboxFields = (statementOfTruth: StatementOfTruthForm | Qua
   return statementOfTruth;
 };
 export const getSignatureType = (claim: Claim): SignatureType => {
-  return isCounterpartyIndividual(claim.applicant1) ? SignatureType.BASIC : SignatureType.QUALIFIED;
+  return isCounterpartyIndividual(claim.applicant1) ? SignatureType.BASIC : SignatureType.RESPONSE;
 };
 export const saveStatementOfTruth = async (claimId: string, claimantStatementOfTruth: StatementOfTruthForm) => {
   try {

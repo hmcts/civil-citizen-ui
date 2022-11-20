@@ -9,7 +9,6 @@ import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreServi
 import {Claim} from '../../../common/models/claim';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {AppRequest} from '../../../common/models/AppRequest';
-import {isFullAmountReject} from '../../../modules/claimDetailsService';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {StatementOfTruthForm} from '../../../common/form/models/statementOfTruth/statementOfTruthForm';
 import {QualifiedStatementOfTruth} from '../../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
@@ -22,14 +21,13 @@ const paymentUrl = 'https://www.payments.service.gov.uk/card_details/:id';
 function renderView(res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim, userId: string, lang: string) {
   const summarySections = getSummarySections(userId, claim, lang);
   const signatureType = form.model?.type;
-  const isFullAmountRejected = isFullAmountReject(claim);
   let payment;
   if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
     payment = 100;
   }
   res.render(checkAnswersViewPath, {
     form, summarySections, signatureType,
-    isFullAmountRejected, payment,
+    payment,
   });
 }
 
