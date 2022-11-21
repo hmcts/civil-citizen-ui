@@ -4,9 +4,8 @@ import {YesNo} from '../../../../../main/common/form/models/yesNo';
 import {ClaimantResponse} from '../../../../../main/common/models/claimantResponse';
 import {CCJRequest} from '../../../../../main/common/models/claimantResponse/ccj/ccjRequest';
 import {
-  getClaimantResponse
+  getClaimantResponse,
 } from '../../../../../main/services/features/claimantResponse/claimantResponseService';
-
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
