@@ -1,6 +1,7 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../main/common/models/claim';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
+import {GenericYesNo} from '../../../../../main/common/form/models/genericYesNo';
 import {
   constructBanksAndSavingsAccountSection,
   constructChildrenSection,
@@ -34,14 +35,7 @@ import {CCJRequest} from '../../../../../main/common/models/claimantResponse/ccj
 import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
 import {RejectionReason} from '../../../../../main/common/form/models/claimantResponse/rejectionReason';
 
-jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../main/common/utils/languageToggleUtils');
-jest.mock('../../../../../main/modules/i18n');
-jest.mock('i18next', () => ({
-  t: (i: string | unknown) => i,
-  use: jest.fn(),
-}));
 
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
@@ -246,9 +240,7 @@ describe('Claimant Response Service', () => {
 
   describe('saveClaimantResponse', () => {
     const claimantResponse = new ClaimantResponse();
-    claimantResponse.hasDefendantPaidYou = import('../../../../../main/common/form/models/genericYesNo/').then(({ GenericYesNo}) {
-                                            new GenericYesNo(YesNo.YES);
-                                          };
+    claimantResponse.hasDefendantPaidYou = new GenericYesNo(YesNo.YES);
 
     it('should save claimant response successfully', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -280,10 +272,7 @@ describe('Claimant Response Service', () => {
     });
 
     describe('intentionToProceed', () => {
-      claimantResponse.intentionToProceed = import('../../../../../main/common/form/models/genericYesNo/')
-                                              .then(({ GenericYesNo}) {
-                                                  new GenericYesNo(YesNo.YES);
-                                               };
+      claimantResponse.intentionToProceed = new GenericYesNo(YesNo.YES);
       it('should save claimant response successfully', async () => {
         //Given
         mockGetCaseDataFromDraftStore.mockImplementation(async () => {
