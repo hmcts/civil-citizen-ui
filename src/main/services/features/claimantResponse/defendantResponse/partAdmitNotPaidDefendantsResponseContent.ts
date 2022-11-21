@@ -13,15 +13,12 @@ const getResponseStatement = (claim: Claim, lang: string) => {
   switch(claim.responseStatus) {
     case ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS:
       return getResponseStatementPayInstallments(claim);
-      break;
 
     case ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY:
       return getResponseStatementPayImmediately(claim);
-      break;
 
     case ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE:
       return getResponseStatementPayByDate(claim, lang);
-      break;
   }
 };
 
@@ -97,7 +94,7 @@ export const getTheirDefence = (text: string): ClaimSummarySection[] => {
 export const buildPartAdmitNotPaidResponseContent = (claim: Claim, lng: string): ClaimSummarySection[] => {
   return [
     ...getResponseStatement(claim, lng),
-    ...getTheirDefence(claim.partialAdmission?.whyDoYouDisagree?.text),
+    ...getTheirDefence(claim.partialAdmission.whyDoYouDisagree.text),
     ...getTheirTOEs(claim, lng),
     ...getDisagreementStatementWithTimeline(claim),
     ...getTheirEvidence(claim, lng),
