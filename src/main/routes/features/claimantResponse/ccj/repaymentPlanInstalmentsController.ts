@@ -4,10 +4,10 @@ import {
   CCJ_CHECK_AND_SEND_URL,
   CCJ_REPAYMENT_PLAN_INSTALMENTS_URL,
 } from '../../../../routes/urls';
+import {PaymentDate} from '../../../../common/form/models/admission/fullAdmission/paymentOption/paymentDate';
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {ClaimantResponse} from '../../../../common/models/claimantResponse';
 import {RepaymentPlanInstalments} from '../../../../common/models/claimantResponse/ccj/repaymentPlanInstalments';
-import {InstalmentFirstPaymentDate} from '../../../../common/models/claimantResponse/ccj/instalmentFirstPaymentDate';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
 import {saveClaimantResponse} from '../../../../../main/services/features/claimantResponse/claimantResponseService';
@@ -42,7 +42,11 @@ repaymentPlanInstalmentsController.post(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL, asyn
     const claim = await getCaseDataFromStore(claimId);
     const form = new GenericForm(new RepaymentPlanInstalments(
       req.body.amount,
-      new InstalmentFirstPaymentDate(req.body.firstPaymentDate),
+      new PaymentDate(
+        req.body.firstPaymentDate.year,
+        req.body.firstPaymentDate.month,
+        req.body.firstPaymentDate.day,
+      ),
       req.body.paymentFrequency,
     ));
     form.validateSync();

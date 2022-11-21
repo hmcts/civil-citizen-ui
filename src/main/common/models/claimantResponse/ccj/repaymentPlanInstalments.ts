@@ -1,7 +1,7 @@
 import {IsDefined, IsNumber, Min, ValidateNested} from 'class-validator';
-import {InstalmentFirstPaymentDate} from './instalmentFirstPaymentDate';
 import {PaymentFrequencyType} from './paymentFrequencyType';
 import {toNumberOrUndefined} from '../../../../common/utils/numberConverter';
+import {PaymentDate} from '../../../form/models/admission/fullAdmission/paymentOption/paymentDate';
 
 export class RepaymentPlanInstalments {
   @IsNumber({allowNaN: false, maxDecimalPlaces: 2}, {message: 'ERRORS.VALID_TWO_DECIMAL_NUMBER'})
@@ -9,12 +9,12 @@ export class RepaymentPlanInstalments {
     amount?: number;
 
   @ValidateNested()
-    firstPaymentDate?: InstalmentFirstPaymentDate;
+    firstPaymentDate?: PaymentDate;
 
   @IsDefined({message: 'ERRORS.PAYMENT_FREQUENCY_REQUIRED'})
     paymentFrequency?: PaymentFrequencyType;
 
-  constructor(amount?: string, firstPaymentDate?: InstalmentFirstPaymentDate, paymentFrequency?: PaymentFrequencyType) {
+  constructor(amount?: string, firstPaymentDate?: PaymentDate, paymentFrequency?: PaymentFrequencyType) {
     this.amount = toNumberOrUndefined(amount);
     this.firstPaymentDate = firstPaymentDate;
     this.paymentFrequency = paymentFrequency;
