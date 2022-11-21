@@ -1,7 +1,8 @@
 import {Claim} from '../../../common/models/claim';
 import {CCDResponse} from '../../../common/models/ccdResponse/ccdResponse';
-import {toAgreedMediation} from './convertToCCDAgreedMediation';
+import {InterestClaimOptionsType} from '../../../common/form/models/claim/interest/interestClaimOptionsType';
 import {YesNoUpperCamelCase} from '../../../common/form/models/yesNo';
+import {toAgreedMediation} from './convertToCCDAgreedMediation';
 import {toCCDParty} from './convertToCCDParty';
 import {toCCDRepaymentPlan} from './convertToCCDRepaymentPlan';
 import {toCCDPaymentOption} from './convertToCCDPaymentOption';
@@ -10,9 +11,8 @@ import {toCCDTimeline} from './convertToCCDTimeLine';
 import {toCCDEvidence} from './convertToCCDEvidence';
 import {toCCDClaimAmount} from './convertToCCDClaimAmount';
 import {toCCDInterestType} from './convertToCCDInterestType';
-import { InterestClaimOptionsType } from 'common/form/models/claim/interest/interestClaimOptionsType';
-import { toCCDSameRateInterestSelection } from './convertToCCDtoSameRateInterestSelection';
-// import { toCCDDifferentRate } from './convertToDifferentRate';
+import {toCCDSameRateInterestSelection} from './convertToCCDtoSameRateInterestSelection';
+import {toCCDYesNo} from './convertToCCDYesNo';
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   return {
@@ -36,17 +36,16 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     speclistYourEvidenceList: toCCDEvidence(claim.evidence),
     // x: claim.evidence.comment // not used in CCD???
 
-    // Claim Amount
     // /claim/amount
     claimAmountBreakup: toCCDClaimAmount(claim.claimAmountBreakup),
 
     // /claim/interest
-    claimInterest: claim.claimInterest, // TODO convert yes to Yes or YES"claimInterest": "YES",
+    claimInterest: toCCDYesNo(claim.claimInterest), 
     
     // /claim/interest-type
     interestClaimOptions: toCCDInterestType(claim.interest.interestClaimOptions),
 
-    // /claim/interest-total.
+    // /claim/interest-total
     breakDownInterestTotal: claim.interest.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST ? claim.interest.totalInterest.amount : undefined,
     breakDownInterestDescription: claim.interest.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST ? claim.interest.totalInterest.reason : undefined,
 
@@ -54,25 +53,25 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     sameRateInterestSelection: toCCDSameRateInterestSelection(claim.interest.sameRateInterestSelection),
 
     // /claim/interest-date
-    // /claim/interest-start-date
-    // /claim/interest-end-date
-    // /claim/interest-continue-claiming
-    // /claim/interest-how-much
-    // /claim/help-with-fees
+    interestClaimFrom: claim.interest.interestClaimFrom,
 
-    // CCD
-    // "claimInterest": "YES",
-    // "totalInterest": 0,
-    // "interestClaimFrom": "FROM_CLAIM_SUBMIT_DATE",
-    // "interestClaimOptions": "SAME_RATE_INTEREST",
-    // "interestClaimUntil": "UNTIL_CLAIM_SUBMIT_DATE",
-    // "interestFromSpecificDate": "string",
-    // "interestFromSpecificDateDescription": "string",
-    // "sameRateInterestSelection": {
-    //   "differentRate": 0,
-    //   "differentRateReason": "string",
-    //   "sameRateInterestType": "SAME_RATE_INTEREST_8_PC"
-    // },
+    // /claim/interest-start-date
+    interestFromSpecificDate: claim.interest.interestStartDate.date.toLocaleDateString(),	//string($date)
+    interestFromSpecificDateDescription: claim.interest.interestStartDate.reason, //	string
+
+    // /claim/interest-end-date
+    interestClaimUntil: claim.interest.interestEndDate,
+
+    // /claim/interest-continue-claiming
+    // x: claim.interest.continueClaimingInterest, // TODO: yes no
+
+    // /claim/interest-how-much
+    // x: claim.interest.howMuchContinueClaiming.option, //ENUM SameRateInterestType
+    // x: claim.interest.howMuchContinueClaiming.dailyInterestAmount, // number
+
+    // /claim/help-with-fees
+    // x: claim.claimDetails.helpWithFees.option, // YesNo
+    // x: claim.claimDetails.helpWithFees.referenceNumber, // string
 
   };
 };

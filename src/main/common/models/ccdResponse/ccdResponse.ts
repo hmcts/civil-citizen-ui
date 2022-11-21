@@ -9,6 +9,7 @@ import {CCDEvidence} from './ccdEvidence';
 import {CCDClaimAmountBreakup} from './ccdClaimAmountBreakup';
 import {CCDInterestType} from './ccdInterestType';
 import {CCDSameRateInterestSelection} from './ccdSameRateInterestSelection';
+import {InterestClaimFromType, InterestEndDateType} from '../../../common/form/models/claimDetails';
 
 export interface CCDResponse extends ClaimUpdate {
   respondent1ClaimResponseTypeForSpec: string;
@@ -28,4 +29,8 @@ export interface CCDResponse extends ClaimUpdate {
   breakDownInterestTotal: number,
   breakDownInterestDescription: string,
   sameRateInterestSelection: CCDSameRateInterestSelection,
+  interestClaimFrom: InterestClaimFromType,
+  interestFromSpecificDate: string,
+  interestFromSpecificDateDescription: string,
+  interestClaimUntil: InterestEndDateType,
 }
