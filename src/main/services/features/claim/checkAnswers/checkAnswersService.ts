@@ -29,25 +29,18 @@ export const getSummarySections = (claimId: string, claim: Claim, lang?: string 
   return buildSummarySections(claim, claimId, lang);
 };
 export const getStatementOfTruth = (claim: Claim): StatementOfTruthForm | QualifiedStatementOfTruth => {
-  if (claim.claimDetails?.statementOfTruth) {
-    return resetCheckboxFields(claim.claimDetails.statementOfTruth);
-  }
   switch (getSignatureType(claim)) {
     case SignatureType.BASIC:
-      return new StatementOfTruthForm(false, SignatureType.BASIC);
-    case SignatureType.RESPONSE:
-      return new QualifiedStatementOfTruth(false, SignatureType.RESPONSE);
+      return new StatementOfTruthForm(false, SignatureType.BASIC, claim.claimDetails?.statementOfTruth?.signed, claim.claimDetails?.statementOfTruth?.directionsQuestionnaireSigned);
+    case SignatureType.QUALIFIED:
+      return new QualifiedStatementOfTruth(false, claim.claimDetails?.statementOfTruth?.signed, claim.claimDetails?.statementOfTruth?.directionsQuestionnaireSigned, claim.claimDetails?.statementOfTruth?.signerName, claim.claimDetails?.statementOfTruth?.signerRole);
     default:
-      return new StatementOfTruthForm(false, SignatureType.BASIC);
+      return new StatementOfTruthForm(false, SignatureType.BASIC, claim.claimDetails?.statementOfTruth?.signed, claim.claimDetails?.statementOfTruth?.directionsQuestionnaireSigned);
   }
 };
-export const resetCheckboxFields = (statementOfTruth: StatementOfTruthForm | QualifiedStatementOfTruth): StatementOfTruthForm | QualifiedStatementOfTruth => {
-  statementOfTruth.directionsQuestionnaireSigned = '';
-  statementOfTruth.signed = '';
-  return statementOfTruth;
-};
+
 export const getSignatureType = (claim: Claim): SignatureType => {
-  return isCounterpartyIndividual(claim.applicant1) ? SignatureType.BASIC : SignatureType.RESPONSE;
+  return isCounterpartyIndividual(claim.applicant1) ? SignatureType.BASIC : SignatureType.QUALIFIED;
 };
 export const saveStatementOfTruth = async (claimId: string, claimantStatementOfTruth: StatementOfTruthForm) => {
   try {

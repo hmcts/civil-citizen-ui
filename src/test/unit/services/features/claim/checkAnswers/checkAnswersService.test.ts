@@ -1,7 +1,6 @@
 import {
   getSignatureType,
   getStatementOfTruth,
-  resetCheckboxFields,
   saveStatementOfTruth,
 } from '../../../../../../main/services/features/claim/checkAnswers/checkAnswersService';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
@@ -13,9 +12,6 @@ import {
   createClaimWithBasicDetails,
 } from '../../../../../utils/mockClaimForCheckAnswers';
 import {Party} from '../../../../../../main/common/models/party';
-import {
-  QualifiedStatementOfTruth,
-} from '../../../../../../main/common/form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {PartyType} from '../../../../../../main/common/models/partyType';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {CLAIM_ID} from '../../../../../utils/checkAnswersConstants';
@@ -62,22 +58,6 @@ describe('Check Answers service', () => {
       //Then
       await expect(
         saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(false, SignatureType.BASIC, 'true'))).toBeTruthy();
-    });
-  });
-
-  describe('resetCheckboxFields', () => {
-    it('should set directionsQuestionnaireSigned and signed to empty string for statement of truth', () => {
-      const statementOfTruth = new StatementOfTruthForm(false);
-      expect(resetCheckboxFields(statementOfTruth)).toEqual(expectedStatementOfTruth);
-    });
-
-    it('should set directionsQuestionnaireSigned and signed to empty string for qualified statement of truth', () => {
-      const qualifiedStatementOfTruth = new QualifiedStatementOfTruth(false);
-      const expectedQualifiedStatementOfTruth = {
-        ...expectedStatementOfTruth,
-        type: 'qualified',
-      };
-      expect(resetCheckboxFields(qualifiedStatementOfTruth)).toEqual(expectedQualifiedStatementOfTruth);
     });
   });
 
