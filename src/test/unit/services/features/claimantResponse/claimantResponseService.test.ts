@@ -1,8 +1,6 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../main/common/models/claim';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
-import {GenericYesNo} from '../../../../../main/common/form/models/genericYesNo';
 import {
   constructBanksAndSavingsAccountSection,
   constructChildrenSection,
@@ -48,10 +46,9 @@ jest.mock('i18next', () => ({
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 const languageMock = getLng as jest.Mock;
+const REDIS_FAILURE = 'Redis DraftStore failure.';
 
 describe('Claimant Response Service', () => {
-  beforeEach(() => {console.log('test starting');});
-  afterEach(() => {console.log('test ended');});
   describe('getClaimantResponse', () => {
     it('should return undefined if direction claimant response is not set', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -240,16 +237,18 @@ describe('Claimant Response Service', () => {
 
     it('should return an error on redis failure', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
+        throw new Error(REDIS_FAILURE);
       });
 
-      await expect(getClaimantResponse('claimId')).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(getClaimantResponse('claimId')).rejects.toThrow(REDIS_FAILURE);
     });
   });
 
   describe('saveClaimantResponse', () => {
     const claimantResponse = new ClaimantResponse();
-    claimantResponse.hasDefendantPaidYou = new GenericYesNo(YesNo.YES);
+    claimantResponse.hasDefendantPaidYou = import('../../../../../main/common/form/models/genericYesNo/').then(({ GenericYesNo}) {
+                                            new GenericYesNo(YesNo.YES);
+                                          };
 
     it('should save claimant response successfully', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -281,7 +280,10 @@ describe('Claimant Response Service', () => {
     });
 
     describe('intentionToProceed', () => {
-      claimantResponse.intentionToProceed = new GenericYesNo(YesNo.YES);
+      claimantResponse.intentionToProceed = import('../../../../../main/common/form/models/genericYesNo/')
+                                              .then(({ GenericYesNo}) {
+                                                  new GenericYesNo(YesNo.YES);
+                                               };
       it('should save claimant response successfully', async () => {
         //Given
         mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -369,10 +371,10 @@ describe('Claimant Response Service', () => {
           return new Claim();
         });
         mockSaveDraftClaim.mockImplementation(async () => {
-          throw new Error(TestMessages.REDIS_FAILURE);
+          throw new Error(REDIS_FAILURE);
         });
         await expect(saveClaimantResponse('claimId', mockGetCaseDataFromDraftStore, ''))
-          .rejects.toThrow(TestMessages.REDIS_FAILURE);
+          .rejects.toThrow(REDIS_FAILURE);
       });
     });
 
