@@ -17,7 +17,7 @@ jest.mock('i18next', () => ({
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 //const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 //const languageMock = getLng as jest.Mock;
-const REDIS_FAILURE = 'Redis DraftStore failure.';
+//const REDIS_FAILURE = 'Redis DraftStore failure.';
 
 describe('Claimant Response Service', () => {
   describe('getClaimantResponse', () => {
