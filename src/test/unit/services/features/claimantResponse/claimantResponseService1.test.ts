@@ -1,39 +1,9 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../main/common/models/claim';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
-import {GenericYesNo} from '../../../../../main/common/form/models/genericYesNo';
-import {
-  constructBanksAndSavingsAccountSection,
-  constructChildrenSection,
-  constructCourtOrdersSection,
-  constructDebtsSection,
-  constructEmploymentDetailsSection,
-  constructFinancialSupportSection,
-  constructMonthlyExpensesSection,
-  constructMonthlyIncomeSection,
-  constructSelfEmploymentDetailsSection,
-  getClaimantResponse, getFinancialDetails,
-  saveClaimantResponse,
-} from '../../../../../main/services/features/claimantResponse/claimantResponseService';
 import {ClaimantResponse} from '../../../../../main/common/models/claimantResponse';
 import {getLng} from '../../../../../main/common/utils/languageToggleUtils';
-import {StatementOfMeans} from '../../../../../main/common/models/statementOfMeans';
-import {ResidenceType} from '../../../../../main/common/form/models/statementOfMeans/residence/residenceType';
-import {Residence} from '../../../../../main/common/form/models/statementOfMeans/residence/residence';
-import {NumberOfChildren} from '../../../../../main/common/form/models/statementOfMeans/dependants/numberOfChildren';
-import {Dependants} from '../../../../../main/common/form/models/statementOfMeans/dependants/dependants';
-import {EmploymentCategory} from '../../../../../main/common/form/models/statementOfMeans/employment/employmentCategory';
-import {RegularIncome} from '../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
-import {Transaction} from '../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transaction';
-import {RegularExpenses} from '../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
-import {CourtOrder} from '../../../../../main/common/form/models/statementOfMeans/courtOrders/courtOrder';
-import {PriorityDebts} from '../../../../../main/common/form/models/statementOfMeans/priorityDebts';
-import {PriorityDebtDetails} from '../../../../../main/common/form/models/statementOfMeans/priorityDebtDetails';
-import {Debts} from '../../../../../main/common/form/models/statementOfMeans/debts/debts';
-import {DebtItems} from '../../../../../main/common/form/models/statementOfMeans/debts/debtItems';
 import {CCJRequest} from '../../../../../main/common/models/claimantResponse/ccj/ccjRequest';
-import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
-import {RejectionReason} from '../../../../../main/common/form/models/claimantResponse/rejectionReason';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -45,8 +15,8 @@ jest.mock('i18next', () => ({
 }));
 
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
-const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
-const languageMock = getLng as jest.Mock;
+//const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+//const languageMock = getLng as jest.Mock;
 const REDIS_FAILURE = 'Redis DraftStore failure.';
 
 describe('Claimant Response Service', () => {
