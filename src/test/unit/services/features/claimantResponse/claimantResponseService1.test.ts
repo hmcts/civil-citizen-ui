@@ -4,6 +4,7 @@ import {ClaimantResponse} from 'common/models/claimantResponse';
 import {
   getClaimantResponse,
 } from 'services/features/claimantResponse/claimantResponseService';
+/*
 
 jest.mock('modules/draft-store');
 jest.mock('modules/draft-store/draftStoreService');
@@ -13,6 +14,7 @@ jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
 }));
+ */
 
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 //const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
