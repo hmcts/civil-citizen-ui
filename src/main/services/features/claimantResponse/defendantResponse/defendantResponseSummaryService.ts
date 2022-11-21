@@ -3,6 +3,7 @@ import {ClaimSummarySection} from '../../../../common/form/models/claimSummarySe
 import {ClaimResponseStatus} from '../../../../common/models/claimResponseStatus';
 import {buildFullDisputeResponseContent} from './fullDisputeDefendantsResponseContent';
 import {buildFullAdmissionResponseContent} from './fullAdmissinionDefendantsResponseContent';
+import {buildPartAdmitNotPaidResponseContent} from './partAdmitNotPaidDefendantsResponseContent';
 
 export const getDefendantsResponseContent = (claim: Claim, lang: string): ClaimSummarySection[] => {
   switch (claim.responseStatus) {
