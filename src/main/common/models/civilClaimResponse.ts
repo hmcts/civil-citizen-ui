@@ -24,6 +24,9 @@ import {CCDInterestType} from './ccdResponse/ccdInterestType';
 import {CCDSameRateInterestSelection} from './ccdResponse/ccdSameRateInterestSelection';
 import {CCDTimeLineOfEvents} from './ccdResponse/ccdTimeLineOfEvents';
 import {CCDEvidence} from './ccdResponse/ccdEvidence';
+import {CCDPaymentOption} from './ccdResponse/ccdPaymentOption';
+import {CCDRepaymentPlan} from './ccdResponse/ccdRepaymentPlan';
+import {CCDPayBySetDate} from './ccdResponse/ccdPayBySetDate';
 
 export class CivilClaimResponse {
   id: string;
@@ -86,4 +89,10 @@ export interface CCDClaim extends ClaimUpdate {
   interestFromSpecificDate: string,
   interestFromSpecificDateDescription: string,
   interestClaimUntil: InterestEndDateType,
+  respondent1ClaimResponseTypeForSpec: string;
+  defenceAdmitPartPaymentTimeRouteRequired?: CCDPaymentOption;
+  respondent1RepaymentPlan?: CCDRepaymentPlan;
+  respondToClaimAdmitPartLRspec?: CCDPayBySetDate;
+  responseClaimMediationSpecRequired?: string;
+  specAoSApplicantCorrespondenceAddressRequired?: YesNoUpperCamelCase;
 }

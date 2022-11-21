@@ -1,5 +1,5 @@
 import {Party} from '../../../../../main/common/models/party';
-import {toCUIParty} from '../../../../../main/services/translation/response/convertToCUI/convertToCUIParty';
+import {toCUIParty} from '../../../../../main/services/translation/convertToCUI/convertToCUIParty';
 import {PartyType} from '../../../../../main/common/models/partyType';
 import {Address} from '../../../../../main/common/form/models/address';
 import {CCDParty} from '../../../../../main/common/models/ccdResponse/ccdParty';

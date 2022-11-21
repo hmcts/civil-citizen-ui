@@ -40,7 +40,7 @@ import {RejectAllOfClaimType} from '../../common/form/models/rejectAllOfClaimTyp
 import {ClaimDetails} from '../../common/form/models/claim/details/claimDetails';
 import {ClaimantResponse} from './claimantResponse';
 import {CCDClaim} from 'models/civilClaimResponse';
-import {toCUIParty} from 'services/translation/response/convertToCUI/convertToCUIParty';
+import {toCUIParty} from 'services/translation/convertToCUI/convertToCUIParty';
 import {SelfEmployedAs} from '../models/selfEmployedAs';
 import {TaxPayments} from '../models/taxPayments';
 import {RegularIncome} from '../../common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
