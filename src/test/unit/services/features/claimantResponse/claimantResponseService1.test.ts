@@ -40,4 +40,5 @@ describe('Claimant Response Service', () => {
 
       expect(claimantResponse?.hasDefendantPaidYou).toBeUndefined();
     });
+  });
 });
