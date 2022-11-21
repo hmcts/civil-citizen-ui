@@ -245,15 +245,6 @@ export const createClaimWithPriorityDebts = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
 
-  // const mortgage: PriorityDebtDetails = new PriorityDebtDetails(true, 'Mortgage', 1000, 'WEEK');
-  // const rent: PriorityDebtDetails = new PriorityDebtDetails(true, 'Rent', 2000, 'FOUR_WEEKS');
-  // const councilTax: PriorityDebtDetails = new PriorityDebtDetails(true, 'Council Tax or Community Charge', 500.55, 'FOUR_WEEKS');
-  // const gas: PriorityDebtDetails = new PriorityDebtDetails(true, 'Gas', 300, 'WEEK');
-  // const electricity: PriorityDebtDetails = new PriorityDebtDetails(true, 'Electricity', 400, 'TWO_WEEKS');
-  // const water: PriorityDebtDetails = new PriorityDebtDetails(true, 'Water', 500, 'MONTH');
-  // const maintenance: PriorityDebtDetails = new PriorityDebtDetails(true, 'Maintenance Payments', 500, 'TWO_WEEKS');
-  // const priorityDebts: PriorityDebts = new PriorityDebts(mortgage, rent, councilTax, gas, electricity, water, maintenance);
-
   const priority_debts: PriorityDebts = new PriorityDebts(
     {
       mortgage: new Transaction(true, new TransactionSource({
