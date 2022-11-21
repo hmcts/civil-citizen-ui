@@ -15,6 +15,7 @@ jest.mock('i18next', () => ({
   use: jest.fn(),
 }));
  */
+jest.mock('modules/draft-store/draftStoreService');
 
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 //const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
