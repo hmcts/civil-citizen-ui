@@ -5,10 +5,10 @@ import {
   getClaimantResponse,
 } from 'services/features/claimantResponse/claimantResponseService';
 
-jest.mock('main/modules/draft-store');
-jest.mock('main/modules/draft-store/draftStoreService');
-jest.mock('main/common/utils/languageToggleUtils');
-jest.mock('main/modules/i18n');
+jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../main/common/utils/languageToggleUtils');
+jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
