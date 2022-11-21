@@ -1,14 +1,14 @@
-import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../main/common/models/claim';
-import {ClaimantResponse} from '../../../../../main/common/models/claimantResponse';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {Claim} from 'common/models/claim';
+import {ClaimantResponse} from 'common/models/claimantResponse';
 import {
   getClaimantResponse,
-} from '../../../../../main/services/features/claimantResponse/claimantResponseService';
+} from 'services/features/claimantResponse/claimantResponseService';
 
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../main/common/utils/languageToggleUtils');
-jest.mock('../../../../../main/modules/i18n');
+jest.mock('main/modules/draft-store');
+jest.mock('main/modules/draft-store/draftStoreService');
+jest.mock('main/common/utils/languageToggleUtils');
+jest.mock('main/modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
