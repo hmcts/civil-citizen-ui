@@ -196,7 +196,7 @@ describe('Response - Check answers', () => {
         .send(data)
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Submit Response');
+          expect(res.text).toContain('Submit claim');
         });
     });
 

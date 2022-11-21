@@ -70,7 +70,7 @@ describe('Check Answers service', () => {
 
     it('should return statement of truth if it is set in the draft store', () => {
       claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
-      claim.claimDetails.statementOfTruth = new StatementOfTruthForm(false);
+      claim.claimDetails.statementOfTruth = new StatementOfTruthForm(false, SignatureType.BASIC, '', '');
       expect(getStatementOfTruth(claim)).toEqual(expectedStatementOfTruth);
     });
 
