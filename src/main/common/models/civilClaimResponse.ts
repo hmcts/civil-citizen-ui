@@ -1,5 +1,5 @@
 import {StatementOfTruth} from './claim';
-import {CaseState, ClaimAmountBreakup, ClaimFee} from '../form/models/claimDetails';
+import {CaseState, ClaimAmountBreakup, ClaimFee, InterestClaimFromType, InterestEndDateType} from '../form/models/claimDetails';
 import {ClaimantResponse} from '../../common/models/claimantResponse';
 import {ClaimDetails} from '../../common/form/models/claim/details/claimDetails';
 import {StatementOfMeans} from '../../common/models/statementOfMeans';
@@ -12,7 +12,7 @@ import {DefendantEvidence} from '../../common/models/evidence/evidence';
 import {TimeLineOfEvents} from '../../common/models/timelineOfEvents/timeLineOfEvents';
 import {StatementOfTruthForm} from '../../common/form/models/statementOfTruth/statementOfTruthForm';
 import {QualifiedStatementOfTruth} from '../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
-import {YesNo} from '../../common/form/models/yesNo';
+import {YesNoUpperCamelCase} from '../../common/form/models/yesNo';
 import {Interest} from '../../common/form/models/interest/interest';
 import {Document} from '../../common/models/document/document';
 import {SystemGeneratedCaseDocuments} from '../../common/models/document/systemGeneratedCaseDocuments';
@@ -20,6 +20,10 @@ import {ResponseDeadline} from '../../common/models/responseDeadline';
 import {DirectionQuestionnaire} from '../../common/models/directionsQuestionnaire/directionQuestionnaire';
 import {CCDParty} from '../../common/models/ccdResponse/ccdParty';
 import {ClaimUpdate} from 'models/events/eventDto';
+import {CCDInterestType} from './ccdResponse/ccdInterestType';
+import {CCDSameRateInterestSelection} from './ccdResponse/ccdSameRateInterestSelection';
+import {CCDTimeLineOfEvents} from './ccdResponse/ccdTimeLineOfEvents';
+import {CCDEvidence} from './ccdResponse/ccdEvidence';
 
 export class CivilClaimResponse {
   id: string;
@@ -59,7 +63,7 @@ export interface CCDClaim extends ClaimUpdate {
   defendantStatementOfTruth?: StatementOfTruthForm | QualifiedStatementOfTruth;
   claimAmountBreakup?: ClaimAmountBreakup[];
   totalInterest?: number;
-  claimInterest?: YesNo;
+  claimInterest?: YesNoUpperCamelCase;
   interest?: Interest; //TODO: Release 1: Some of the fields that have been refactored in Interest are used in Release 1, they must be included in the translator from CCD to work correctly (response/claim-details).
   submittedDate?: Date;
   issueDate?: Date;
@@ -71,4 +75,15 @@ export interface CCDClaim extends ClaimUpdate {
   respondentSolicitor1AgreedDeadlineExtension?: Date;
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
+  specResponseTimelineOfEvents: CCDTimeLineOfEvents[],
+  detailsOfClaim: string,
+  speclistYourEvidenceList: CCDEvidence[],
+  interestClaimOptions: CCDInterestType,
+  breakDownInterestTotal: number,
+  breakDownInterestDescription: string,
+  sameRateInterestSelection: CCDSameRateInterestSelection,
+  interestClaimFrom: InterestClaimFromType,
+  interestFromSpecificDate: string,
+  interestFromSpecificDateDescription: string,
+  interestClaimUntil: InterestEndDateType,
 }
