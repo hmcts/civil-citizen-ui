@@ -37,7 +37,7 @@ describe('Cirizen Details Section', () => {
   const claim = createClaimWithBasicRespondentDetails();
   it('should return your Individual details summary sections', async () => {
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 300, 'cimode');
     //Then
     expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].title).toBe('PAGES.CHECK_YOUR_ANSWER.THEIR_DETAILS_TITLE_DEFENDANT');
     expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows.length).toBe(5);
@@ -61,7 +61,7 @@ describe('Cirizen Details Section', () => {
     //Given
     const claim = createClaimWithIndividualDetails();
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 300, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[0].value.html).toBe(FULL_NAME);
   });
@@ -69,7 +69,7 @@ describe('Cirizen Details Section', () => {
     //Given
     const claim = createClaimWithContactPersonDetails();
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 300, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[1].value.html).toBe(CONTACT_PERSON);
   });
@@ -77,7 +77,7 @@ describe('Cirizen Details Section', () => {
     //Given
     const claim = createClaimWithIndividualDetails();
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 300, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[2].value.html).toBe(CORRESPONDENCE_ADDRESS);
   });
@@ -89,7 +89,7 @@ describe('Cirizen Details Section', () => {
       claim.respondent1.dateOfBirth = new CitizenDate('1', '2', '2000');
     }
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 300, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[3].value.html).toBe(formatDateToFullDate(new Date(2000, 1, 1)));
     expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[4].value.html).toBe(EMAIL_ADDRESS);
@@ -103,7 +103,7 @@ describe('Cirizen Details Section', () => {
       claim.respondent1.partyDetails.soleTraderTradingAs = 'Business name';
     }
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 300, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[1].value.html).toBe('Business name');
   });
@@ -115,7 +115,7 @@ describe('Cirizen Details Section', () => {
       claim.respondent1.partyDetails.contactPerson = CONTACT_PERSON;
     }
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 300, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[0].value.html).toBe('Nice organisation');
     expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[1].value.html).toBe('The Post Man');
@@ -127,7 +127,7 @@ describe('Cirizen Details Section', () => {
       claim.respondent1.type = PartyType.ORGANISATION;
     }
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 300, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_THEIRDETAILS_SECTION].summaryList.rows[0].value.html).toBe('Nice organisation');
   });

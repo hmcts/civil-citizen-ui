@@ -23,12 +23,11 @@ const hasClaimInterest = (claim: Claim) => {
   return claim.claimInterest === YesNo.YES;
 };
 
-export const buildYourTotalClaimAmountSection = (claim: Claim, claimFee: any, lang: string | unknown): SummarySection => {
+export const buildYourTotalClaimAmountSection = (claim: Claim, claimFee: number, lang: string | unknown): SummarySection => {
   const lng = getLng(lang);
-  let yourTotalClaimAmountSection: SummarySection;
   const grandTotal = getTotalAmount(claim) + claimFee;
 
-  yourTotalClaimAmountSection = summarySection({
+  const yourTotalClaimAmountSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.TOTAL_AMOUNT.TITLE', {lng}),
     summaryRows: [summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TOTAL_AMOUNT.CLAIM_AMOUNT', {lng}), currencyFormatWithNoTrailingZeros(getClaimAmount(claim)), '', '')],
   });

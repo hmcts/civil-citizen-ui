@@ -20,7 +20,7 @@ describe('Claim amount Details', () => {
     //Given
     const claim = claimWithClaimAmountBreakDown();
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 300, 'en');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows.length).toBe(4);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].actions?.items.length).toBe(1);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CLAIM_AMOUNT_URL);
@@ -32,7 +32,7 @@ describe('Claim amount Details', () => {
     const claim = claimWithClaimAmountOneBreakDown();
 
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 300, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows.length).toBe(2);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].actions?.items.length).toBe(1);
@@ -45,7 +45,7 @@ describe('Claim amount Details', () => {
     const claim = new Claim();
 
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 300, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows.length).toBe(1);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].actions?.items.length).toBe(1);

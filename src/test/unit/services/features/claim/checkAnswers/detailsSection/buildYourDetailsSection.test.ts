@@ -31,7 +31,7 @@ describe('Cirizen Details Section', () => {
   const claim = createClaimWithBasicApplicantDetails();
   it('should return your details summary sections', async () => {
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 300, 'cimode');
     //Then
     expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows.length).toBe(5);
     expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].title).toBe('PAGES.CHECK_YOUR_ANSWER.DETAILS_TITLE_CLAIMANT');
@@ -55,7 +55,7 @@ describe('Cirizen Details Section', () => {
     //Given
     const claim = createClaimWithApplicantIndividualDetails();
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 300, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[0].value.html).toBe(FULL_NAME);
   });
@@ -63,7 +63,7 @@ describe('Cirizen Details Section', () => {
     //Given
     const claim = createClaimWithContactPersonApplicantDetails();
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 300, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[1].value.html).toBe(CONTACT_PERSON);
   });
@@ -71,7 +71,7 @@ describe('Cirizen Details Section', () => {
     //Given
     const claim = createClaimWithApplicantIndividualDetails();
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 300, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[2].value.html).toBe(CORRESPONDENCE_ADDRESS);
   });

@@ -961,7 +961,7 @@ export const claimWithClaimAmountOneBreakDown = (): Claim => {
 
 export const createClaimWithTotalAmount = (claimInterest: YesNo, sameRateInterestType?: SameRateInterestType, differentRate?: number, reason?: string) => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.claimAmountBreakup = [{value: {claimAmount: '300', claimReason: 'roof'}}];
+  claim.claimAmountBreakup = [{value: {claimAmount: '9110', claimReason: 'roof'}}];
   const interestClaimFrom = InterestClaimFromType.FROM_A_SPECIFIC_DATE;
 
   const sameRateInterestSelection = {
@@ -970,7 +970,7 @@ export const createClaimWithTotalAmount = (claimInterest: YesNo, sameRateInteres
     reason: reason,
   };
 
-  const interestStartDate = new InterestStartDate('30', '09', '2022', 'Reasons...');
+  const interestStartDate = new InterestStartDate('30', '09', '2022', 'My preference');
   const interest = new Interest();
   interest.interestStartDate = interestStartDate;
   interest.interestEndDate = InterestEndDateType.UNTIL_SETTLED_OR_JUDGEMENT_MADE;
@@ -978,5 +978,6 @@ export const createClaimWithTotalAmount = (claimInterest: YesNo, sameRateInteres
   interest.interestClaimFrom = interestClaimFrom;
   claim.interest = interest;
   claim.claimInterest = claimInterest;
+  claim.totalClaimAmount = 9110;
   return claim as Claim;
 };

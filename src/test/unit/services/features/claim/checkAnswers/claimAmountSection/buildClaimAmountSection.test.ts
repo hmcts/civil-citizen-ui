@@ -23,7 +23,7 @@ describe('Citizen Claim amount Section', () => {
   const claim = claimWithClaimAmountParticularDate();
   it('should return claim amount summary sections', async () => {
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 300, 'cimode');
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.CLAIM_AMOUNT_BREAKDOWN');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].value.html).toBe('');
@@ -65,7 +65,7 @@ describe('Citizen Claim amount Section', () => {
     //Given
     const claim = claimWithClaimAmountParticularDate();
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 300, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.CLAIM_AMOUNT_BREAKDOWN');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].value.html).toBe('');
@@ -90,7 +90,7 @@ describe('Citizen Claim amount Section', () => {
     //Given
     const claim = claimWithClaimAmountSubmitDate();
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 300, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.CLAIM_AMOUNT_BREAKDOWN');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].value.html).toBe('');
@@ -107,7 +107,7 @@ describe('Citizen Claim amount Section', () => {
     //Given
     const claim = claimWithClaimAmountSameRate();
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 300, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.CLAIM_AMOUNT_BREAKDOWN');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].value.html).toBe('');
@@ -121,7 +121,7 @@ describe('Citizen Claim amount Section', () => {
     const claim = claimWithClaimAmountDifferentRate();
 
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 300, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.CLAIM_AMOUNT_BREAKDOWN');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].value.html).toBe('');
