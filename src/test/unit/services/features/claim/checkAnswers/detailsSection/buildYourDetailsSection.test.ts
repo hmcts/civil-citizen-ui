@@ -9,7 +9,7 @@ import {
   createClaimWithBasicApplicantDetails,
   createClaimWithContactPersonApplicantDetails,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
-import * as constVal from '../../../../../../utils/checkAnswersConstants';
+import * as CONSTVAL from '../../../../../../utils/checkAnswersConstants';
 
 jest.mock('../../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -31,48 +31,48 @@ describe('Cirizen Details Section', () => {
   const claim = createClaimWithBasicApplicantDetails();
   it('should return your details summary sections', async () => {
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 300, 'cimode');
+    const summarySections = await getSummarySections(CONSTVAL.CLAIM_ID, claim, 300, 'cimode');
     //Then
-    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows.length).toBe(5);
-    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].title).toBe('PAGES.CHECK_YOUR_ANSWER.DETAILS_TITLE_CLAIMANT');
-    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.FULL_NAME');
-    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[0].value.html).toBe(FULL_NAME);
-    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[0].actions?.items.length).toBe(1);
-    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CLAIMANT_INDIVIDUAL_DETAILS_URL);
-    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[1].value.html).toBe(ADDRESS);
-    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[1].actions?.items.length).toBe(1);
-    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[1].actions?.items[0].href).toBe(CLAIMANT_INDIVIDUAL_DETAILS_URL);
-    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[2].value.html).toBe('PAGES.CHECK_YOUR_ANSWER.SAME_ADDRESS');
-    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[2].actions?.items[0].href).toBe(CLAIMANT_INDIVIDUAL_DETAILS_URL);
-    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[3].value.html).toBe(DOB);
-    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[3].actions?.items[0].href).toBe(CLAIMANT_DOB_URL);
-    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[4].value.html).toBe(CONTACT_NUMBER);
-    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[4].actions?.items[0].href).toBe(CLAIMANT_PHONE_NUMBER_URL);
-    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[4].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER');
+    expect(summarySections.sections[CONSTVAL.INDEX_DETAILS_SECTION].summaryList.rows.length).toBe(5);
+    expect(summarySections.sections[CONSTVAL.INDEX_DETAILS_SECTION].title).toBe('PAGES.CHECK_YOUR_ANSWER.DETAILS_TITLE_CLAIMANT');
+    expect(summarySections.sections[CONSTVAL.INDEX_DETAILS_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.FULL_NAME');
+    expect(summarySections.sections[CONSTVAL.INDEX_DETAILS_SECTION].summaryList.rows[0].value.html).toBe(FULL_NAME);
+    expect(summarySections.sections[CONSTVAL.INDEX_DETAILS_SECTION].summaryList.rows[0].actions?.items.length).toBe(1);
+    expect(summarySections.sections[CONSTVAL.INDEX_DETAILS_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CLAIMANT_INDIVIDUAL_DETAILS_URL);
+    expect(summarySections.sections[CONSTVAL.INDEX_DETAILS_SECTION].summaryList.rows[1].value.html).toBe(ADDRESS);
+    expect(summarySections.sections[CONSTVAL.INDEX_DETAILS_SECTION].summaryList.rows[1].actions?.items.length).toBe(1);
+    expect(summarySections.sections[CONSTVAL.INDEX_DETAILS_SECTION].summaryList.rows[1].actions?.items[0].href).toBe(CLAIMANT_INDIVIDUAL_DETAILS_URL);
+    expect(summarySections.sections[CONSTVAL.INDEX_DETAILS_SECTION].summaryList.rows[2].value.html).toBe('PAGES.CHECK_YOUR_ANSWER.SAME_ADDRESS');
+    expect(summarySections.sections[CONSTVAL.INDEX_DETAILS_SECTION].summaryList.rows[2].actions?.items[0].href).toBe(CLAIMANT_INDIVIDUAL_DETAILS_URL);
+    expect(summarySections.sections[CONSTVAL.INDEX_DETAILS_SECTION].summaryList.rows[3].value.html).toBe(DOB);
+    expect(summarySections.sections[CONSTVAL.INDEX_DETAILS_SECTION].summaryList.rows[3].actions?.items[0].href).toBe(CLAIMANT_DOB_URL);
+    expect(summarySections.sections[CONSTVAL.INDEX_DETAILS_SECTION].summaryList.rows[4].value.html).toBe(CONTACT_NUMBER);
+    expect(summarySections.sections[CONSTVAL.INDEX_DETAILS_SECTION].summaryList.rows[4].actions?.items[0].href).toBe(CLAIMANT_PHONE_NUMBER_URL);
+    expect(summarySections.sections[CONSTVAL.INDEX_DETAILS_SECTION].summaryList.rows[4].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER');
   });
 
   it('should return full name of a person when full name is present', async () => {
     //Given
     const claim = createClaimWithApplicantIndividualDetails();
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 300, 'en');
+    const summarySections = await getSummarySections(CONSTVAL.CLAIM_ID, claim, 'en');
     //Then
-    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[0].value.html).toBe(FULL_NAME);
+    expect(summarySections.sections[CONSTVAL.INDEX_DETAILS_SECTION].summaryList.rows[0].value.html).toBe(FULL_NAME);
   });
   it('should return contact person when contact person is specified', async () => {
     //Given
     const claim = createClaimWithContactPersonApplicantDetails();
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 300, 'en');
+    const summarySections = await getSummarySections(CONSTVAL.CLAIM_ID, claim, 'en');
     //Then
-    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[1].value.html).toBe(CONTACT_PERSON);
+    expect(summarySections.sections[CONSTVAL.INDEX_DETAILS_SECTION].summaryList.rows[1].value.html).toBe(CONTACT_PERSON);
   });
   it('should return correspondence address when it exists', async () => {
     //Given
     const claim = createClaimWithApplicantIndividualDetails();
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 300, 'en');
+    const summarySections = await getSummarySections(CONSTVAL.CLAIM_ID, claim, 'en');
     //Then
-    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[2].value.html).toBe(CORRESPONDENCE_ADDRESS);
+    expect(summarySections.sections[CONSTVAL.INDEX_DETAILS_SECTION].summaryList.rows[2].value.html).toBe(CORRESPONDENCE_ADDRESS);
   });
 });
