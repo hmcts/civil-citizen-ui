@@ -35,7 +35,5 @@ const calculateCCDEvidenceValue = (row: EvidenceItem) => {
       return { statementOfTruthEvidence: row.description };
     case EvidenceType.OTHER:
       return { otherEvidence: row.description };
-    default:
-      return {};
   }
 };

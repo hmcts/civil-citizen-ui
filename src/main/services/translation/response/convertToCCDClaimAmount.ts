@@ -1,4 +1,3 @@
-
 import {ClaimAmountBreakup} from '../../../common/form/models/claimDetails';
 import {CCDClaimAmountBreakup} from '../../../common/models/ccdResponse/ccdClaimAmountBreakup';
 

@@ -33,7 +33,7 @@ export const translateDraftClaimToCCD = (claim: Claim): CCDClaim => {
     breakDownInterestDescription: claim.interest?.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST ? claim.interest?.totalInterest?.reason : undefined,
     sameRateInterestSelection: toCCDSameRateInterestSelection(claim.interest?.sameRateInterestSelection),
     interestClaimFrom: claim.interest?.interestClaimFrom,
-    interestFromSpecificDate: claim.interest?.interestStartDate?.date.toLocaleDateString(),
+    interestFromSpecificDate: claim.interest?.interestStartDate?.date,
     interestFromSpecificDateDescription: claim.interest?.interestStartDate?.reason,
     interestClaimUntil: claim.interest?.interestEndDate,
   };
