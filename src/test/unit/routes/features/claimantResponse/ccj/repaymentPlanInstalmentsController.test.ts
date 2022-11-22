@@ -9,7 +9,7 @@ import {
 import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
-import {PaymentFrequencyType} from '../../../../../../main/common/models/claimantResponse/ccj/paymentFrequencyType';
+import {TransactionSchedule} from '../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -58,7 +58,7 @@ describe('CCJ Repayment Plan page', () => {
             month: '12',
             year: '2060',
           },
-          paymentFrequency: PaymentFrequencyType.EACH_WEEK,
+          paymentFrequency: TransactionSchedule.WEEK,
         })
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -78,7 +78,7 @@ describe('CCJ Repayment Plan page', () => {
               month: '12',
               year: '2060',
             },
-            paymentFrequency: PaymentFrequencyType.EACH_WEEK,
+            paymentFrequency: TransactionSchedule.WEEK,
           })
           .expect((res) => {
             expect(res.status).toBe(200);
@@ -97,7 +97,7 @@ describe('CCJ Repayment Plan page', () => {
               month: '12',
               year: '2060',
             },
-            paymentFrequency: PaymentFrequencyType.EACH_WEEK,
+            paymentFrequency: TransactionSchedule.WEEK,
           })
           .expect((res) => {
             expect(res.status).toBe(200);
@@ -116,7 +116,7 @@ describe('CCJ Repayment Plan page', () => {
               month: '12',
               year: '2060',
             },
-            paymentFrequency: PaymentFrequencyType.EACH_WEEK,
+            paymentFrequency: TransactionSchedule.WEEK,
           })
           .expect((res) => {
             expect(res.status).toBe(200);
@@ -137,7 +137,7 @@ describe('CCJ Repayment Plan page', () => {
               month: '12',
               year: '2060',
             },
-            paymentFrequency: PaymentFrequencyType.EACH_WEEK,
+            paymentFrequency: TransactionSchedule.WEEK,
           })
           .expect((res) => {
             expect(res.status).toBe(200);
@@ -156,7 +156,7 @@ describe('CCJ Repayment Plan page', () => {
               month: '12',
               year: '2060',
             },
-            paymentFrequency: PaymentFrequencyType.EACH_WEEK,
+            paymentFrequency: TransactionSchedule.WEEK,
           })
           .expect((res) => {
             expect(res.status).toBe(200);
@@ -175,7 +175,7 @@ describe('CCJ Repayment Plan page', () => {
               month: '13',
               year: '2060',
             },
-            paymentFrequency: PaymentFrequencyType.EACH_WEEK,
+            paymentFrequency: TransactionSchedule.WEEK,
           })
           .expect((res) => {
             expect(res.status).toBe(200);
@@ -194,7 +194,7 @@ describe('CCJ Repayment Plan page', () => {
               month: '',
               year: '2060',
             },
-            paymentFrequency: PaymentFrequencyType.EACH_WEEK,
+            paymentFrequency: TransactionSchedule.WEEK,
           })
           .expect((res) => {
             expect(res.status).toBe(200);
@@ -213,7 +213,7 @@ describe('CCJ Repayment Plan page', () => {
               month: '10',
               year: '999',
             },
-            paymentFrequency: PaymentFrequencyType.EACH_WEEK,
+            paymentFrequency: TransactionSchedule.WEEK,
           })
           .expect((res) => {
             expect(res.status).toBe(200);
@@ -232,7 +232,7 @@ describe('CCJ Repayment Plan page', () => {
               month: '12',
               year: '',
             },
-            paymentFrequency: PaymentFrequencyType.EACH_WEEK,
+            paymentFrequency: TransactionSchedule.WEEK,
           })
           .expect((res) => {
             expect(res.status).toBe(200);
@@ -251,7 +251,7 @@ describe('CCJ Repayment Plan page', () => {
               month: '12',
               year: '10000',
             },
-            paymentFrequency: PaymentFrequencyType.EACH_WEEK,
+            paymentFrequency: TransactionSchedule.WEEK,
           })
           .expect((res) => {
             expect(res.status).toBe(200);
@@ -270,7 +270,7 @@ describe('CCJ Repayment Plan page', () => {
               month: '12',
               year: '2010',
             },
-            paymentFrequency: PaymentFrequencyType.EACH_WEEK,
+            paymentFrequency: TransactionSchedule.WEEK,
           })
           .expect((res) => {
             expect(res.status).toBe(200);
@@ -311,7 +311,7 @@ describe('CCJ Repayment Plan page', () => {
               month: '12',
               year: '2060',
             },
-            paymentFrequency: PaymentFrequencyType.EACH_WEEK,
+            paymentFrequency: TransactionSchedule.WEEK,
           })
           .expect((res) => {
             expect(res.status).toBe(302);
@@ -330,7 +330,7 @@ describe('CCJ Repayment Plan page', () => {
               month: '12',
               year: '2060',
             },
-            paymentFrequency: PaymentFrequencyType.EVERY_2_WEEKS,
+            paymentFrequency: TransactionSchedule.TWO_WEEKS,
           })
           .expect((res) => {
             expect(res.status).toBe(302);
@@ -349,7 +349,7 @@ describe('CCJ Repayment Plan page', () => {
               month: '12',
               year: '2060',
             },
-            paymentFrequency: PaymentFrequencyType.EVERY_MONTH,
+            paymentFrequency: TransactionSchedule.MONTH,
           })
           .expect((res) => {
             expect(res.status).toBe(302);
@@ -370,7 +370,7 @@ describe('CCJ Repayment Plan page', () => {
             month: '12',
             year: '2060',
           },
-          paymentFrequency: PaymentFrequencyType.EACH_WEEK,
+          paymentFrequency: TransactionSchedule.WEEK,
         })
         .expect((res) => {
           expect(res.status).toBe(500);

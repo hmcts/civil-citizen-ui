@@ -102,18 +102,18 @@
                 name: "paymentFrequency",
                 items: [
                   {
-                    value: PaymentFrequencyType.EACH_WEEK,
-                    checked: true if form.model.paymentFrequency === PaymentFrequencyType.EACH_WEEK,
+                    value: TransactionSchedule.WEEK,
+                    checked: true if form.model.paymentFrequency === TransactionSchedule.WEEK,
                     text: t('COMMON.PAYMENT_FREQUENCY.WEEK')
                   },
                   {
-                    value: PaymentFrequencyType.EVERY_2_WEEKS,
-                    checked: true if form.model.paymentFrequency === PaymentFrequencyType.EVERY_2_WEEKS,
+                    value: TransactionSchedule.TWO_WEEKS,
+                    checked: true if form.model.paymentFrequency === TransactionSchedule.TWO_WEEKS,
                     text: t('COMMON.PAYMENT_FREQUENCY.TWO_WEEKS')
                   },
                   {
-                    value: PaymentFrequencyType.EVERY_MONTH,
-                    checked: true if form.model.paymentFrequency === PaymentFrequencyType.EVERY_MONTH,
+                    value: TransactionSchedule.MONTH,
+                    checked: true if form.model.paymentFrequency === TransactionSchedule.MONTH,
                     text: t('COMMON.PAYMENT_FREQUENCY.MONTH')
                   }
                 ],

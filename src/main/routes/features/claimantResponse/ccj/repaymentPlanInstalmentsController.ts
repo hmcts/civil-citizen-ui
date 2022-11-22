@@ -54,7 +54,9 @@ repaymentPlanInstalmentsController.post(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL, asyn
     if (form.hasErrors()) {
       renderView(form, claim.totalClaimAmount, res);
     } else {
-      await saveClaimantResponse(claimId, form.model, 'repaymentPlanInstalments', 'ccjRequest');
+      const claimantResponsePropertyName = 'repaymentPlanInstalments';
+      const parentPropertyName = 'ccjRequest';
+      await saveClaimantResponse(claimId, form.model, claimantResponsePropertyName, parentPropertyName);
       res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_CHECK_AND_SEND_URL));
     }
   } catch (error) {
