@@ -1,8 +1,7 @@
 import {CivilServiceClient} from '../../../../main/app/client/civilServiceClient';
 import axios, {AxiosInstance} from 'axios';
-import {Claim} from '../../../../main/common/models/claim';
 import * as requestModels from '../../../../main/common/models/AppRequest';
-import {CivilClaimResponse} from '../../../../main/common/models/civilClaimResponse';
+import {CCDClaim, CivilClaimResponse} from '../../../../main/common/models/civilClaimResponse';
 import config from 'config';
 import {
   CIVIL_SERVICE_CALCULATE_DEADLINE,
@@ -16,7 +15,6 @@ import {PartyType} from '../../../../main/common/models/partyType';
 import {mockClaim} from '../../../utils/mockClaim';
 import {TestMessages} from '../../../utils/errorMessageTestConstants';
 import {CaseState} from '../../../../main/common/form/models/claimDetails';
-import {Party} from '../../../../main/common/models/party';
 import {CourtLocation} from '../../../../main/common/models/courts/courtLocations';
 
 jest.mock('axios');
@@ -52,20 +50,25 @@ describe('Civil Service Client', () => {
   describe('retrieveByDefendantId', () => {
     it('should retrieve cases successfully', async () => {
       //Given
-      const claim = new Claim();
+      const claim = new CCDClaim();
       claim.legacyCaseReference = '000MC003';
-      claim.applicant1 = new Party();
-      claim.applicant1 =
-        {
-          partyDetails: {
-            individualTitle: 'Mrs',
-            individualLastName: 'Clark',
-            individualFirstName: 'Jane',
-          },
-          type: PartyType.INDIVIDUAL,
-        };
-      claim.totalClaimAmount = 1500;
-
+      claim.applicant1 = {
+        companyName: undefined,
+        individualDateOfBirth: undefined,
+        organisationName: undefined,
+        partyEmail: undefined,
+        partyPhone: undefined,
+        primaryAddress: undefined,
+        soleTraderDateOfBirth: undefined,
+        soleTraderFirstName: undefined,
+        soleTraderLastName: undefined,
+        soleTraderTitle: undefined,
+        soleTraderTradingAs: undefined,
+        individualTitle: 'Mrs',
+        individualLastName: 'Clark',
+        individualFirstName: 'Jane',
+        type: PartyType.INDIVIDUAL,
+      };
       const mockResponse: CivilClaimResponse = {
         id: '1',
         case_data: claim,
@@ -86,8 +89,8 @@ describe('Civil Service Client', () => {
       expect(mockPost.mock.calls[0][0]).toEqual(CIVIL_SERVICE_CASES_URL);
       expect(actualClaims.length).toEqual(1);
       expect(actualClaims[0].case_data.legacyCaseReference).toEqual('000MC003');
-      expect(actualClaims[0].case_data.applicant1?.partyDetails.individualFirstName).toEqual('Jane');
-      expect(actualClaims[0].case_data.applicant1?.partyDetails.individualLastName).toEqual('Clark');
+      expect(actualClaims[0].case_data.applicant1?.individualFirstName).toEqual('Jane');
+      expect(actualClaims[0].case_data.applicant1?.individualLastName).toEqual('Clark');
     });
   });
   describe('getFeeRanges', () => {
@@ -141,11 +144,11 @@ describe('Civil Service Client', () => {
   describe('submitDefendantResponseEvent', () => {
     it('should sumit defendant response successfully', async () => {
       //Given
-      const mockResponse: CivilClaimResponse = {
-        id: '1',
-        case_data: new Claim(),
-        state: CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT,
-      };
+      const mockResponse = new CivilClaimResponse();
+      mockResponse.id = '1';
+      mockResponse.case_data = new CCDClaim();
+      mockResponse.state = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+
       const mockPost = jest.fn().mockResolvedValue({data: mockResponse});
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
@@ -222,8 +225,8 @@ describe('Civil Service Client', () => {
       await expect(civilServiceClient.calculateExtendedResponseDeadline(responseDeadlineDate, mockedAppRequest)).rejects.toThrow('error');
     });
   });
-  describe('getCourtLocations test', ()=>{
-    it('should return court locations successfully', async ()=> {
+  describe('getCourtLocations test', () => {
+    it('should return court locations successfully', async () => {
       //Given
       const courtLocations = [new CourtLocation('1', 'location1'), new CourtLocation('2', 'location2')];
       const mockGet = jest.fn().mockResolvedValue({data: courtLocations});
