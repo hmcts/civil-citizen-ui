@@ -1,7 +1,5 @@
 import {getSummarySections} from '../../../../../../../main/services/features/claim/checkAnswers/checkAnswersService';
-import {
-  createClaimWithTotalAmount,
-} from '../../../../../../utils/mockClaimForCheckAnswers';
+import {createClaimWithTotalAmount} from '../../../../../../utils/mockClaimForCheckAnswers';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
 import {SameRateInterestType} from '../../../../../../../main/common/form/models/claimDetails';
 import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
@@ -12,11 +10,12 @@ jest.mock('i18next', () => ({
   use: jest.fn(),
 }));
 
-describe('Total Claim Amoint Section', () => {
+describe('Total Claim Amount Section', () => {
   it('should return your total claim amount sections and interest to date if claim interest option is YES', async () => {
     const claim = createClaimWithTotalAmount(YesNo.YES, SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE, 10, 'Reasons here....');
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
+    console.log(summarySections);
     //Then
     expect(summarySections.sections[3].summaryList.rows.length).toBe(4);
     expect(summarySections.sections[3].title).toBe('PAGES.CHECK_YOUR_ANSWER.TOTAL_AMOUNT.TITLE');

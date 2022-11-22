@@ -6,14 +6,21 @@ import {Claim} from '../../../common/models/claim';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {AppRequest} from '../../../common/models/AppRequest';
 import {submitResponse} from '../../../services/features/response/submission/submitResponse';
+import config from 'config';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {convertToPoundsFilter} from 'common/utils/currencyFormat';
+
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 const checkAnswersViewPath = 'features/claim/check-answers';
 const claimCheckAnswersController = Router();
 
-function renderView(req: AppRequest, res: Response, claim: Claim, userId: string) {
+async function renderView(req: AppRequest, res: Response, claim: Claim, userId: string) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const summarySections = getSummarySections(userId, claim, lang);
-
+  const claimFeeResponse = await civilServiceClient.getClaimAmountFee(claim.totalClaimAmount, req);
+  const claimFee = convertToPoundsFilter(claimFeeResponse.calculatedAmountInPence);
+  const summarySections = getSummarySections(userId, claim, claimFee, lang);
   res.render(checkAnswersViewPath, {summarySections});
 }
 
@@ -23,7 +30,7 @@ claimCheckAnswersController.get(CLAIM_CHECK_ANSWERS_URL,
     try {
       const userId = req.session?.user?.id;
       const claim = await getCaseDataFromStore(userId);
-      renderView(req, res, claim, userId);
+      await renderView(req, res, claim, userId);
     } catch (error) {
       next(error);
     }

@@ -8,7 +8,7 @@ import {YesNo} from '../../../../../common/form/models/yesNo';
 import {calculateInterestToDate} from 'common/utils/interestUtils';
 
 const getClaimAmount = (claim?: Claim): number => {
-  return claim.totalClaimAmount;
+  return Number(claim.totalClaimAmount);
 };
 
 const getInterestToDate = (claim: Claim): number => {
@@ -23,15 +23,14 @@ const hasClaimInterest = (claim: Claim) => {
   return claim.claimInterest === YesNo.YES;
 };
 
-export const buildYourTotalClaimAmountSection = (claim: Claim, lang: string | unknown): SummarySection => {
+export const buildYourTotalClaimAmountSection = (claim: Claim, claimFee: any, lang: string | unknown): SummarySection => {
   const lng = getLng(lang);
   let yourTotalClaimAmountSection: SummarySection;
+  const grandTotal = getTotalAmount(claim) + claimFee;
 
   yourTotalClaimAmountSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.TOTAL_AMOUNT.TITLE', {lng}),
-    summaryRows: [
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TOTAL_AMOUNT.CLAIM_AMOUNT', {lng}), currencyFormatWithNoTrailingZeros(Number(getClaimAmount(claim))), '', ''),
-    ],
+    summaryRows: [summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TOTAL_AMOUNT.CLAIM_AMOUNT', {lng}), currencyFormatWithNoTrailingZeros(getClaimAmount(claim)), '', '')],
   });
 
   if (hasClaimInterest(claim)) {
@@ -40,8 +39,8 @@ export const buildYourTotalClaimAmountSection = (claim: Claim, lang: string | un
     );
   }
 
-  yourTotalClaimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TOTAL_AMOUNT.CLAIM_FEE', {lng}), '', '', ''));
-  yourTotalClaimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TOTAL_AMOUNT.TOTAL', {lng}), currencyFormatWithNoTrailingZeros(getTotalAmount(claim)), '', ''));
+  yourTotalClaimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TOTAL_AMOUNT.CLAIM_FEE', {lng}), currencyFormatWithNoTrailingZeros(Number(claimFee)), '', ''));
+  yourTotalClaimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TOTAL_AMOUNT.TOTAL', {lng}), currencyFormatWithNoTrailingZeros(grandTotal), '', ''));
 
   return yourTotalClaimAmountSection;
 };

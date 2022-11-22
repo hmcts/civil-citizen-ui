@@ -13,7 +13,7 @@ const totalAmountController = Router();
 const totalAmountViewPath = 'features/claim/total-amount';
 
 function renderView(form: any, res: Response): void {
-  res.render(totalAmountViewPath, { form });
+  res.render(totalAmountViewPath, {form});
 }
 
 totalAmountController.get(CLAIM_TOTAL_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
@@ -25,7 +25,7 @@ totalAmountController.get(CLAIM_TOTAL_URL, async (req: AppRequest, res: Response
     const hearingResponse = await civilServiceClient.getHearingAmount(claim.totalClaimAmount, req);
     const hearingAmount = convertToPoundsFilter(hearingResponse.calculatedAmountInPence);
     let interestToDate = 0;
-    
+
     if (claim.hasInterest()) {
       interestToDate = calculateInterestToDate(claim);
     }
