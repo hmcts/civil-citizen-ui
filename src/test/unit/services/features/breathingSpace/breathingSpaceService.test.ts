@@ -1,6 +1,5 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../main/common/models/claim';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {
   getBreathingSpace,
   saveBreathingSpace,
@@ -16,6 +15,7 @@ jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+const REDIS_FAILURE = 'Redis DraftStore failure.';
 
 describe('Breathing Space Service', () => {
   describe('getBreathingSpace', () => {
@@ -107,10 +107,10 @@ describe('Breathing Space Service', () => {
 
     it('should return an error on redis failure', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
+        throw new Error(REDIS_FAILURE);
       });
 
-      await expect(getBreathingSpace('claimId')).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(getBreathingSpace('claimId')).rejects.toThrow(REDIS_FAILURE);
     });
   });
 
@@ -216,10 +216,10 @@ describe('Breathing Space Service', () => {
         return new Claim();
       });
       mockSaveDraftClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
+        throw new Error(REDIS_FAILURE);
       });
       await expect(saveBreathingSpace('claimId', mockGetCaseDataFromDraftStore, ''))
-        .rejects.toThrow(TestMessages.REDIS_FAILURE);
+        .rejects.toThrow(REDIS_FAILURE);
     });
   });
 });
