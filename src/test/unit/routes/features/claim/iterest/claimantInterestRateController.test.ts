@@ -3,8 +3,8 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  CLAIMANT_INTEREST_RATE_URL,
-  CLAIMANT_INTEREST_DATE_URL,
+  CLAIM_INTEREST_RATE_URL,
+  CLAIM_INTEREST_DATE_URL,
 } from '../../../../../../main/routes/urls';
 import {t} from 'i18next';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
@@ -27,7 +27,7 @@ describe('Claimant Interest Rate', () => {
     it('should return on your claimant interest rate page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .get(CLAIMANT_INTEREST_RATE_URL)
+        .get(CLAIM_INTEREST_RATE_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.CLAIMANT_INTEREST_RATE.TITLE'));
@@ -37,7 +37,7 @@ describe('Claimant Interest Rate', () => {
     it('should return 500 status code when error occurs', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .get(CLAIMANT_INTEREST_RATE_URL)
+        .get(CLAIM_INTEREST_RATE_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -49,7 +49,7 @@ describe('Claimant Interest Rate', () => {
     it('should redirect to task list when interest is provided with different rate', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .post(CLAIMANT_INTEREST_RATE_URL)
+        .post(CLAIM_INTEREST_RATE_URL)
         .send({
           option: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
           rate: 40,
@@ -57,14 +57,14 @@ describe('Claimant Interest Rate', () => {
         })
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIMANT_INTEREST_DATE_URL);
+          expect(res.header.location).toEqual(CLAIM_INTEREST_DATE_URL);
         });
     });
 
     it('should redirect to task list when interest is provided with 8% rate', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .post(CLAIMANT_INTEREST_RATE_URL)
+        .post(CLAIM_INTEREST_RATE_URL)
         .send({
           option: SameRateInterestType.SAME_RATE_INTEREST_8_PC,
           rate: '',
@@ -72,14 +72,14 @@ describe('Claimant Interest Rate', () => {
         })
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIMANT_INTEREST_DATE_URL);
+          expect(res.header.location).toEqual(CLAIM_INTEREST_DATE_URL);
         });
     });
 
     it('should return error when different interest selected and not provided', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .post(CLAIMANT_INTEREST_RATE_URL)
+        .post(CLAIM_INTEREST_RATE_URL)
         .send({
           option: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
           rate: '',
@@ -93,7 +93,7 @@ describe('Claimant Interest Rate', () => {
     it('should return error when different interest selected and not reasons not provided', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .post(CLAIMANT_INTEREST_RATE_URL)
+        .post(CLAIM_INTEREST_RATE_URL)
         .send({
           option: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
           rate: 40,
@@ -107,7 +107,7 @@ describe('Claimant Interest Rate', () => {
     it('should return status 500 when there is error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .post(CLAIMANT_INTEREST_RATE_URL)
+        .post(CLAIM_INTEREST_RATE_URL)
         .send({
           option: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
           rate: 40,

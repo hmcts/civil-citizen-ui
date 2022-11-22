@@ -3,10 +3,10 @@ import {
   CLAIM_AMOUNT_URL,
   CLAIM_DEFENDANT_EMAIL_URL,
   CLAIM_DETAILS_URL,
-  CLAIM_INTEREST_FROM_URL,
+  CLAIM_INTEREST_DATE_URL,
   CLAIM_INTEREST_TYPE_URL,
   CLAIM_INTEREST_URL,
-  CLAIMANT_INTEREST_RATE_URL,
+  CLAIM_INTEREST_RATE_URL,
 } from '../../../main/routes/urls';
 import {SummarySections} from '../../../main/common/models/summaryList/summarySections';
 import {constructResponseUrlWithIdParams} from '../../../main/common/utils/urlFormatter';
@@ -244,7 +244,7 @@ export function createClaimWithClaimAmount(): SummarySections {
               actions: {
                 items: [
                   {
-                    href: CLAIMANT_INTEREST_RATE_URL,
+                    href: CLAIM_INTEREST_RATE_URL,
                     text: 'Change',
                   },
                 ],
@@ -260,7 +260,7 @@ export function createClaimWithClaimAmount(): SummarySections {
               actions: {
                 items: [
                   {
-                    href: CLAIM_INTEREST_FROM_URL,
+                    href: CLAIM_INTEREST_DATE_URL,
                     text: 'Change',
                   },
                 ],
@@ -290,7 +290,7 @@ export function claimAmountParticularDate(): SummarySections {
               actions: {
                 items: [
                   {
-                    href: CLAIMANT_INTEREST_RATE_URL,
+                    href: CLAIM_INTEREST_RATE_URL,
                     text: 'Change',
                   },
                 ],
@@ -306,7 +306,7 @@ export function claimAmountParticularDate(): SummarySections {
               actions: {
                 items: [
                   {
-                    href: CLAIMANT_INTEREST_RATE_URL,
+                    href: CLAIM_INTEREST_RATE_URL,
                     text: 'Change',
                   },
                 ],
@@ -322,7 +322,7 @@ export function claimAmountParticularDate(): SummarySections {
               actions: {
                 items: [
                   {
-                    href: CLAIM_INTEREST_FROM_URL,
+                    href: CLAIM_INTEREST_DATE_URL,
                     text: 'change',
                   },
                 ],
@@ -338,7 +338,7 @@ export function claimAmountParticularDate(): SummarySections {
               actions: {
                 items: [
                   {
-                    href: CLAIM_INTEREST_FROM_URL,
+                    href: CLAIM_INTEREST_DATE_URL,
                     text: 'Change',
                   },
                 ],
@@ -362,7 +362,7 @@ export function claimAmountParticularDate(): SummarySections {
               actions: {
                 items: [
                   {
-                    href: CLAIM_INTEREST_FROM_URL,
+                    href: CLAIM_INTEREST_DATE_URL,
                     text: 'Change',
                   },
                 ],
