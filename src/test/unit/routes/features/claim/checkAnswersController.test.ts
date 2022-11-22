@@ -42,6 +42,12 @@ describe('Response - Check answers', () => {
 
   describe('on GET', () => {
 
+    beforeEach(() => {
+      nock('http://localhost:4000')
+        .get('/fees/claim/undefined')
+        .reply(200, '50');
+    });
+
     it('should return check answers page', async () => {
       mockGetSummarySections.mockImplementation(() => {
         return createClaimWithBasicDetails();
