@@ -1,10 +1,10 @@
 import {
   SameRateInterestSelection,
-  SameRateInterestType
+  SameRateInterestType,
 } from '../../../common/form/models/claimDetails';
 import {
   CCDRepaymentPlanFrequency,
-  CCDSameRateInterestSelection
+  CCDSameRateInterestSelection,
 } from '../../../common/models/ccdResponse/ccdSameRateInterestSelection';
 
 export const toCCDSameRateInterestSelection = (sameRateInterestSelection: SameRateInterestSelection): CCDSameRateInterestSelection => {

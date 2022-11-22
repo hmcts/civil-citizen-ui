@@ -1,5 +1,5 @@
-import {DefendantTimeline} from "../../../common/form/models/timeLineOfEvents/defendantTimeline";
-import {CCDTimeLineOfEvents} from "../../../common/models/ccdResponse/ccdTimeLineOfEvents";
+import {DefendantTimeline} from '../../../common/form/models/timeLineOfEvents/defendantTimeline';
+import {CCDTimeLineOfEvents} from '../../../common/models/ccdResponse/ccdTimeLineOfEvents';
 
 export const toCCDTimeline = (timeline: DefendantTimeline): CCDTimeLineOfEvents[] => {
   if (!timeline?.rows) return undefined;

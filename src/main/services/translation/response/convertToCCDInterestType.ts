@@ -3,6 +3,6 @@ import {CCDInterestType} from '../../../common/models/ccdResponse/ccdInterestTyp
 
 export const toCCDInterestType = (interestClaimOptions: InterestClaimOptionsType): CCDInterestType => {
   return interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST
-  ? CCDInterestType.BREAK_DOWN_INTEREST
-  : CCDInterestType.SAME_RATE_INTEREST;
+    ? CCDInterestType.BREAK_DOWN_INTEREST
+    : CCDInterestType.SAME_RATE_INTEREST;
 };

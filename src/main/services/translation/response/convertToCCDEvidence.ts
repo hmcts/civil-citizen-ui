@@ -1,7 +1,7 @@
-import {DefendantEvidence} from "../../../common/models/evidence/evidence";
-import {EvidenceItem} from "../../../common/models/evidence/evidenceItem";
-import {EvidenceType} from "../../../common/models/evidence/evidenceType";
-import {CCDEvidence} from "../../../common/models/ccdResponse/ccdEvidence";
+import {DefendantEvidence} from '../../../common/models/evidence/evidence';
+import {EvidenceItem} from '../../../common/models/evidence/evidenceItem';
+import {EvidenceType} from '../../../common/models/evidence/evidenceType';
+import {CCDEvidence} from '../../../common/models/ccdResponse/ccdEvidence';
 
 export const toCCDEvidence = (evidence: DefendantEvidence): CCDEvidence[] => {
   if (!evidence?.evidenceItem) return undefined;
@@ -11,7 +11,7 @@ export const toCCDEvidence = (evidence: DefendantEvidence): CCDEvidence[] => {
       id: index.toString(),
       value: {
         evidenceType: row.type,
-        ...calculateCCDEvidenceValue(row)
+        ...calculateCCDEvidenceValue(row),
       },
     };
     ccdEvidences.push(ccdEvidence);
@@ -38,4 +38,4 @@ const calculateCCDEvidenceValue = (row: EvidenceItem) => {
     default:
       return {};
   }
-}
+};
