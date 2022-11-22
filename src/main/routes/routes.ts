@@ -170,6 +170,7 @@ import debtRespiteOptionController from './features/breathingSpace/debtRespiteOp
 import debtStartDateController from './features/breathingSpace/debtRespiteStartDateController';
 import debtRespiteEndDateController from './features/breathingSpace/debtRespiteEndDateController';
 import reviewDefendantsResponseController from './features/claimantResponse/reviewDefendantsResponseController';
+import ccjCheckAnswersController from './features/claimantResponse/ccj/ccjCheckAnswersController';
 
 export default [
   homeController,
@@ -327,4 +328,5 @@ export default [
   debtStartDateController,
   debtRespiteEndDateController,
   reviewDefendantsResponseController,
+  ccjCheckAnswersController,
 ];
