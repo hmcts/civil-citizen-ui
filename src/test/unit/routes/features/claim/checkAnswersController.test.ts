@@ -5,6 +5,8 @@ import {CLAIM_CHECK_ANSWERS_URL} from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {getElementsByXPath} from '../../../../utils/xpathExtractor';
 import {createClaimWithBasicDetails} from '../../../../utils/mocks/claimDetailsMock';
+import {Claim} from 'common/models/claim';
+import {Party} from 'common/models/party';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -22,11 +24,15 @@ jest.mock('../../../../../main/services/features/claim/checkAnswers/checkAnswers
 const mockGetSummarySections = getSummarySections as jest.Mock;
 const PARTY_NAME = 'Mrs. Mary Richards';
 
-describe('Response - Check answers', () => {
+describe('Claim - Check answers', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamServiceUrl: string = config.get('services.idam.url');
   const checkYourAnswerEng = 'Check your answers';
   const checkYourAnswerCy = 'Gwiriwch eich ateb';
+  const claim = new Claim();
+  claim.respondent1 = new Party();
+  const claimFromService = new Claim();
+  claimFromService.respondent1 = new Party();
 
   beforeAll(() => {
     nock(idamServiceUrl)
@@ -38,6 +44,9 @@ describe('Response - Check answers', () => {
     nock(civilServiceUrl)
       .get('/cases/claimant/123')
       .reply(200, {data: data});
+    nock(civilServiceUrl)
+      .get('/cases/draft')
+      .reply(200, claimFromService);
   });
 
   describe('on GET', () => {

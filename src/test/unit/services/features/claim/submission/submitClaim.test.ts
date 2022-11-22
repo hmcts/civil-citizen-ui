@@ -25,13 +25,13 @@ describe('Submit claim to ccd', () => {
   claimFromService.respondent1 = new Party();
   beforeEach(() => {
     nock(citizenBaseUrl)
-      .get('/cases/1')
+      .get('/cases/draft')
       .reply(200, claimFromService);
   });
   it('should submit claim successfully when there are no errors', async () => {
     //Given
     nock(citizenBaseUrl)
-      .post('/cases/1/citizen/undefined/event')
+      .post('/cases/draft/citizen/undefined/event')
       .reply(200, {});
     mockGetCaseData.mockImplementation(async () => {
       return claim;
@@ -60,7 +60,7 @@ describe('Submit claim to ccd', () => {
       return claim;
     });
     nock(citizenBaseUrl)
-      .post('/cases/1/citizen/undefined/event')
+      .post('/cases/draft/citizen/undefined/event')
       .reply(500, {error: 'error'});
     //Then
     await expect(submitClaim(mockedAppRequest)).rejects.toThrow(TestMessages.REQUEST_FAILED);
