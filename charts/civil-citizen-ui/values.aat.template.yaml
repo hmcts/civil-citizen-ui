@@ -1,6 +1,3 @@
-tags:
-  civil-ccd-stack: true
-
 postgresql:
   enabled: true
   image:
@@ -23,13 +20,14 @@ postgresql:
   postgresqlPassword: hmcts
   persistence:
     enabled: false
+
 civil-service:
   enabled: true
   java:
     applicationPort: 4000
     image: 'hmctspublic.azurecr.io/civil/service:latest'
     imagePullPolicy: Always
-    ingressHost: civil-service-${SERVICE_FQDN}
+    ingressHost: ${SERVICE_FQDN}
     keyVaults:
       civil:
         resourceGroup: civil
@@ -61,7 +59,7 @@ civil-service:
           - citizen-draft-store-secondary
     environment:
       IDAM_CLIENT_ID: civil-service
-      IDAM_CLIENT_REDIRECT_URI: https://civil-ccd-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/oauth2/callback
+      IDAM_CLIENT_REDIRECT_URI: https://civil-citizen-ui-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/oauth2/callback
       IDAM_API_URL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net
       IDAM_WEB_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net
       IDAM_END_SESSION_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/o/endSession
@@ -113,7 +111,7 @@ idam-pr:
     Civil Citizen UI:
       - https://civil-citizen-ui.aat.platform.hmcts.net/oauth2/callback
     XUI:
-      - https://civil-ccd-xui-staging.aat.platform.hmcts.net/oauth2/callback
+      - https://civil-citizen-ui-xui-staging.aat.platform.hmcts.net/oauth2/callback
 
 aac-manage-case-assignment:
   enabled: true
@@ -152,7 +150,7 @@ xui-webapp:
     imagePullPolicy: Always
     releaseNameOverride: ${SERVICE_NAME}-xui-webapp
     image: hmctspublic.azurecr.io/xui/webapp:latest
-    ingressHost: civil-ccd-xui-staging.aat.platform.hmcts.net
+    ingressHost: civil-citizen-ui-xui-staging.aat.platform.hmcts.net
     devcpuRequests: 500m
     devmemoryRequests: 512Mi
     devcpuLimits: 1
@@ -206,7 +204,7 @@ ccd:
         IDAM_SERVICE_KEY: ${CCD_API_GATEWAY_S2S_SECRET}
         IDAM_OAUTH2_CLIENT_SECRET: ${CCD_API_GATEWAY_IDAM_CLIENT_SECRET}
         PROXY_DOCUMENT_MANAGEMENT: http://dm-store-aat.service.core-compute-aat.internal
-      ingressHost: civil-ccd-gateway-staging-aat.service.core-compute-aat.internal
+      ingressHost: civil-citizen-ui-gateway-staging-aat.service.core-compute-aat.internal
       ingressIP: ${INGRESS_IP}
       keyVaults: []
   ccd-data-store-api:
@@ -232,7 +230,7 @@ ccd:
         CCD_MULTIPARTY_EVENTS: DEFENDANT_RESPONSE,ACKNOWLEDGE_CLAIM,CLAIMANT_RESPONSE
         RELEASE_REVISION: "{{ .Release.Revision }}"
       keyVaults: []
-      ingressHost: civil-ccd-data-store-staging-aat.service.core-compute-aat.internal
+      ingressHost: civil-citizen-ui-data-store-staging-aat.service.core-compute-aat.internal
   am-role-assignment-service:
     java:
       environment:
@@ -254,7 +252,7 @@ ccd:
         IDAM_USER_URL: https://idam-web-public.aat.platform.hmcts.net
         RELEASE_REVISION: "{{ .Release.Revision }}"
       keyVaults: []
-      ingressHost: civil-ccd-definition-store-staging-aat.service.core-compute-aat.internal
+      ingressHost: civil-citizen-ui-definition-store-staging-aat.service.core-compute-aat.internal
   ccd-user-profile-api:
     java:
       imagePullPolicy: Always
@@ -262,7 +260,7 @@ ccd:
         USER_PROFILE_DB_HOST: ${SERVICE_NAME}-postgresql
         RELEASE_REVISION: "{{ .Release.Revision }}"
       keyVaults: []
-      ingressHost: civil-ccd-xui-staging-aat.service.core-compute-aat.internal
+      ingressHost: civil-citizen-ui-xui-staging-aat.service.core-compute-aat.internal
 
   postgresql:
     persistence:
@@ -274,7 +272,7 @@ camunda-bpm:
     imagePullPolicy: Always
     disableKeyVaults: true
     releaseNameOverride: ${SERVICE_NAME}-camunda
-    ingressHost: civil-ccd-camunda-staging-aat.service.core-compute-aat.internal
+    ingressHost: civil-citizen-ui-camunda-staging-aat.service.core-compute-aat.internal
     devcpuRequests: 500m
     devmemoryRequests: 512Mi
     devcpuLimits: 1
