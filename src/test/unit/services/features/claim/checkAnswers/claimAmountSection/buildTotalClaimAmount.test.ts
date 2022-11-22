@@ -15,7 +15,6 @@ describe('Total Claim Amount Section', () => {
     const claim = createClaimWithTotalAmount(YesNo.YES, SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE, 10, 'Reasons here....');
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
-    console.log(summarySections);
     //Then
     expect(summarySections.sections[3].summaryList.rows.length).toBe(4);
     expect(summarySections.sections[3].title).toBe('PAGES.CHECK_YOUR_ANSWER.TOTAL_AMOUNT.TITLE');
