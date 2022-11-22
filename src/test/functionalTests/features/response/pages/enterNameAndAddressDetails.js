@@ -1,11 +1,11 @@
 const I = actor();
 
 const fields = {
-  addressLine1: 'input[id="primaryAddressLine1"]',
-  addressLine2: 'input[id="primaryAddressLine2"]',
-  addressLine3: 'input[id="primaryAddressLine3"]',
-  city: 'input[id="primaryCity"]',
-  postcode: 'input[id="primaryPostCode"]',
+  addressLine1: 'input[id="addressLine1"]',
+  addressLine2: 'input[id="addressLine2"]',
+  addressLine3: 'input[id="addressLine3"]',
+  city: 'input[id="city"]',
+  postcode: 'input[id="postCode"]',
   correspondenceAddress_yes: 'input[id="postToThisAddress-2"]',
   enterAddressManuallyLink: 'a[id="enterAddressManually"]',
   correspondenceAddressLine1: 'input[id="correspondenceAddressLine1"]',
@@ -16,14 +16,14 @@ const fields = {
 };
 
 class NameAndAddressDetailsPage {
-  enterNameAndAddressDetails () {   
+  enterNameAndAddressDetails () {
     I.click('Confirm your details');
     I.fillField(fields.addressLine1, 'Test AddressLine1');
     I.fillField(fields.addressLine2, 'Test AddressLine2');
     I.fillField(fields.addressLine3, 'Test AddressLine3');
     I.fillField(fields.city, 'Test City');
-    I.fillField(fields.postcode, 'IG6 1JD');    
-    I.click('Save and continue');    
+    I.fillField(fields.postcode, 'IG6 1JD');
+    I.click('Save and continue');
   }
 
   enterAddressManually () {
