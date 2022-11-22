@@ -53,7 +53,6 @@ export class OidcMiddleware {
         return res.redirect(DASHBOARD_URL);
       }
       res.redirect(SIGN_IN_URL);
-      return next();
     });
   }
 }
