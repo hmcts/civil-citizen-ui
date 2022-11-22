@@ -36,17 +36,5 @@ export const translateDraftClaimToCCD = (claim: Claim): CCDClaim => {
     interestFromSpecificDate: claim.interest?.interestStartDate?.date.toLocaleDateString(),
     interestFromSpecificDateDescription: claim.interest?.interestStartDate?.reason,
     interestClaimUntil: claim.interest?.interestEndDate,
-    
-    // /claim/interest-continue-claiming
-    // x: claim.interest.continueClaimingInterest, // TODO: yes no
-
-    // /claim/interest-how-much
-    // x: claim.interest.howMuchContinueClaiming.option, //ENUM SameRateInterestType
-    // x: claim.interest.howMuchContinueClaiming.dailyInterestAmount, // number
-
-    // /claim/help-with-fees
-    // x: claim.claimDetails.helpWithFees.option, // YesNo
-    // x: claim.claimDetails.helpWithFees.referenceNumber, // string
-
   };
 };
