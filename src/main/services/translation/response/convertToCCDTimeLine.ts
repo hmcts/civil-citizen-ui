@@ -2,8 +2,9 @@ import {DefendantTimeline} from "../../../common/form/models/timeLineOfEvents/de
 import {CCDTimeLineOfEvents} from "../../../common/models/ccdResponse/ccdTimeLineOfEvents";
 
 export const toCCDTimeline = (timeline: DefendantTimeline): CCDTimeLineOfEvents[] => {
+  if (!timeline?.rows) return undefined;
   const ccdTimelines: CCDTimeLineOfEvents[] = [];
-  timeline.rows.forEach((row, index) => {
+  timeline?.rows.forEach((row, index) => {
     const ccdTimeLine: CCDTimeLineOfEvents= {
       id: index.toString(),
       value:{

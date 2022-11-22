@@ -4,6 +4,7 @@ import {EvidenceType} from "../../../common/models/evidence/evidenceType";
 import {CCDEvidence} from "../../../common/models/ccdResponse/ccdEvidence";
 
 export const toCCDEvidence = (evidence: DefendantEvidence): CCDEvidence[] => {
+  if (!evidence?.evidenceItem) return undefined;
   const ccdEvidences: CCDEvidence[] = [];
   evidence.evidenceItem.forEach((row, index) => {
     const ccdEvidence: CCDEvidence = {

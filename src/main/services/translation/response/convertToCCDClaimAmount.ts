@@ -3,6 +3,7 @@ import {ClaimAmountBreakup} from "../../../common/form/models/claimDetails";
 import {CCDClaimAmountBreakup} from "../../../common/models/ccdResponse/ccdClaimAmountBreakup";
 
 export const toCCDClaimAmount = (claimAmountBreakup: ClaimAmountBreakup[]): CCDClaimAmountBreakup[] => {
+  if (!claimAmountBreakup) return undefined;
   const ccdClaimAmountBreakupList: CCDClaimAmountBreakup[] = [];
   claimAmountBreakup.forEach((item, index) => {
     const ccdEvidence: CCDClaimAmountBreakup = {

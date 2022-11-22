@@ -8,6 +8,7 @@ import {
 } from '../../../common/models/ccdResponse/ccdSameRateInterestSelection';
 
 export const toCCDSameRateInterestSelection = (sameRateInterestSelection: SameRateInterestSelection): CCDSameRateInterestSelection => {
+  if (!sameRateInterestSelection) return undefined;
   return {
     sameRateInterestType: sameRateInterestSelection.sameRateInterestType === SameRateInterestType.SAME_RATE_INTEREST_8_PC
       ? CCDRepaymentPlanFrequency.SAME_RATE_INTEREST_8_PC

@@ -78,18 +78,18 @@ export interface CCDClaim extends ClaimUpdate {
   respondentSolicitor1AgreedDeadlineExtension?: Date;
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
-  specResponseTimelineOfEvents: CCDTimeLineOfEvents[],
-  detailsOfClaim: string,
-  speclistYourEvidenceList: CCDEvidence[],
-  interestClaimOptions: CCDInterestType,
-  breakDownInterestTotal: number,
-  breakDownInterestDescription: string,
-  sameRateInterestSelection: CCDSameRateInterestSelection,
-  interestClaimFrom: InterestClaimFromType,
-  interestFromSpecificDate: string,
-  interestFromSpecificDateDescription: string,
-  interestClaimUntil: InterestEndDateType,
-  respondent1ClaimResponseTypeForSpec: string;
+  specResponseTimelineOfEvents?: CCDTimeLineOfEvents[],
+  detailsOfClaim?: string,
+  speclistYourEvidenceList?: CCDEvidence[],
+  interestClaimOptions?: CCDInterestType,
+  breakDownInterestTotal?: number,
+  breakDownInterestDescription?: string,
+  sameRateInterestSelection?: CCDSameRateInterestSelection,
+  interestClaimFrom?: InterestClaimFromType,
+  interestFromSpecificDate?: string,
+  interestFromSpecificDateDescription?: string,
+  interestClaimUntil?: InterestEndDateType,
+  respondent1ClaimResponseTypeForSpec?: string;
   defenceAdmitPartPaymentTimeRouteRequired?: CCDPaymentOption;
   respondent1RepaymentPlan?: CCDRepaymentPlan;
   respondToClaimAdmitPartLRspec?: CCDPayBySetDate;
