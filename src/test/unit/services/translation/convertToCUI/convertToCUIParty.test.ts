@@ -1,12 +1,12 @@
-import {Party} from '../../../../../main/common/models/party';
-import {toCUIParty} from '../../../../../main/services/translation/response/convertToCUI/convertToCUIParty';
-import {PartyType} from '../../../../../main/common/models/partyType';
-import {Address} from '../../../../../main/common/form/models/address';
-import {CCDParty} from '../../../../../main/common/models/ccdResponse/ccdParty';
-import {CCDAddress} from '../../../../../main/common/models/ccdResponse/ccdAddress';
-import {CitizenDate} from '../../../../../main/common/form/models/claim/claimant/citizenDate';
-import {PartyPhone} from '../../../../../main/common/models/PartyPhone';
-import {Email} from '../../../../../main/common/models/Email';
+import {Party} from 'common/models/party';
+import {toCUIParty} from 'services/translation/response/convertToCUI/convertToCUIParty';
+import {PartyType} from 'common/models/partyType';
+import {Address} from 'common/form/models/address';
+import {CCDParty} from 'common/models/ccdResponse/ccdParty';
+import {CCDAddress} from 'common/models/ccdResponse/ccdAddress';
+import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
+import {PartyPhone} from 'common/models/PartyPhone';
+import {Email} from 'common/models/Email';
 
 const companyName = 'Version 1';
 const phone = new PartyPhone('123456789');
@@ -41,7 +41,7 @@ const partyCompany: Party = {
   emailAddress: email,
   partyDetails: {
     partyName: companyName,
-    ..commonParty,
+    ...commonParty,
   },
 };
 
@@ -53,7 +53,7 @@ const partyIndividual: Party = {
     individualTitle: title,
     individualFirstName: firstName,
     individualLastName: lastName,
-    ..commonParty,
+    ...commonParty,
   },
   dateOfBirth: {date: dateOfBirth.date, year: NaN, month: NaN, day: NaN},
 };
@@ -67,7 +67,7 @@ const partySoleTrader: Party = {
     individualFirstName: firstName,
     individualLastName: lastName,
     soleTraderTradingAs: soleTraderTradingAs,
-    ..commonParty,
+    ...commonParty,
   },
   dateOfBirth: {date: dateOfBirth.date, year: NaN, month: NaN, day: NaN},
 };
