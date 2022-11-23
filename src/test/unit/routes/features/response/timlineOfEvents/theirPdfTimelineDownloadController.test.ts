@@ -4,10 +4,10 @@ import {mockCivilClaimPDFTimeline, mockRedisFailure} from '../../../../../utils/
 import {app} from '../../../../../../main/app';
 import request from 'supertest';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import * as documentUtils from '../../../../../../main/common/utils/downloadUtils';
+import * as documentUtils from '.common/utils/downloadUtils';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('.modules/oidc');
+jest.mock('.modules/draft-store');
 jest.mock('../../../../../../main/app/client/dmStoreClient');
 
 describe('Their PDF timeline controller', () => {

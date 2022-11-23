@@ -11,8 +11,8 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftSt
 import {EvidenceType} from 'models/evidence/evidenceType';
 import {FREE_TEXT_MAX_LENGTH} from 'form/validators/validationConstraints';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('.modules/oidc');
+jest.mock('.modules/draft-store');
 
 const civilClaimResponseMock = require('./evidenceListMock.json');
 const civilClaimResponseMockWithOneEvidenceItem: string = JSON.stringify(civilClaimResponseMock);

@@ -6,13 +6,13 @@ import {
   createClaimWithFreeTelephoneMediationSectionForIndividual,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
-import {PartyType} from '../../../../../../../main/common/models/partyType';
-import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
-import {CompanyTelephoneNumber} from '../../../../../../../main/common/form/models/mediation/companyTelephoneNumber';
+import {PartyType} from '../.common/models/partyType';
+import {YesNo} from '../.common/form/models/yesNo';
+import {CompanyTelephoneNumber} from '../.common/form/models/mediation/companyTelephoneNumber';
 
-jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../../main/modules/i18n');
+jest.mock('../.modules/draft-store');
+jest.mock('../.modules/draft-store/draftStoreService');
+jest.mock('../.modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

@@ -11,8 +11,8 @@ import {
 } from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('../.modules/oidc');
+jest.mock('../.modules/draft-store');
 
 describe('Payment date', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

@@ -11,12 +11,12 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {PartyType} from 'models/partyType';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import {PartyDetails} from '../../../../../../main/common/form/models/partyDetails';
+import * as draftStoreService from '.modules/draft-store/draftStoreService';
+import {PartyDetails} from '.common/form/models/partyDetails';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('.modules/oidc');
+jest.mock('.modules/draft-store');
+jest.mock('.modules/draft-store/draftStoreService');
 
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;

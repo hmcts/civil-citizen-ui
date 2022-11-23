@@ -1,10 +1,10 @@
-import {YesNo} from '../../../../../../main/common/form/models/yesNo';
-import {Claim} from '../../../../../../main/common/models/claim';
-import {Mediation} from '../../../../../../main/common/models/mediation/mediation';
-import {TaskStatus} from '../../../../../../main/common/models/taskList/TaskStatus';
-import {getFreeTelephoneMediationTask} from '../../../../../../main/common/utils/taskList/tasks/freeTelephoneMediation';
+import {YesNo} from '.common/form/models/yesNo';
+import {Claim} from '.common/models/claim';
+import {Mediation} from '.common/models/mediation/mediation';
+import {TaskStatus} from '.common/models/taskList/TaskStatus';
+import {getFreeTelephoneMediationTask} from '.common/utils/taskList/tasks/freeTelephoneMediation';
 
-jest.mock('../../../../../../main/modules/i18n');
+jest.mock('.modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

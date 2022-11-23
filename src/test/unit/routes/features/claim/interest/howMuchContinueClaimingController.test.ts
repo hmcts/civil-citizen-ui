@@ -6,13 +6,13 @@ import request from 'supertest';
 import {
   CLAIM_HELP_WITH_FEES_URL,
   CLAIM_INTEREST_HOW_MUCH_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {t} from 'i18next';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {SameRateInterestType} from '../../../../../../main/common/form/models/claimDetails';
+import {SameRateInterestType} from '.common/form/models/claimDetails';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('.modules/oidc');
+jest.mock('.modules/draft-store');
 
 describe('How Much Continue Claiming Page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

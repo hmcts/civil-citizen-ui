@@ -5,12 +5,12 @@ import {app} from '../../../../../../../main/app';
 import {
   CITIZEN_ALREADY_PAID_URL,
   CLAIM_TASK_LIST_URL,
-} from '../../../../../../../main/routes/urls';
+} from '../routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('../.modules/oidc');
+jest.mock('../.modules/draft-store');
 
 describe('Already Paid Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

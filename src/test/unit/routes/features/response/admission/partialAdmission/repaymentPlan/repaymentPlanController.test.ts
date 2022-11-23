@@ -2,13 +2,13 @@ import {app} from '../../../../../../../../main/app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {CITIZEN_REPAYMENT_PLAN_PARTIAL_URL, CLAIM_TASK_LIST_URL} from '../../../../../../../../main/routes/urls';
+import {CITIZEN_REPAYMENT_PLAN_PARTIAL_URL, CLAIM_TASK_LIST_URL} from '../../routes/urls';
 import {TestMessages} from '../../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../../utils/mockDraftStore';
 import {getNextYearValue} from '../../../../../../../utils/dateUtils';
 
-jest.mock('../../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../../main/modules/draft-store');
+jest.mock('../../.modules/oidc');
+jest.mock('../../.modules/draft-store');
 
 describe('Repayment Plan', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

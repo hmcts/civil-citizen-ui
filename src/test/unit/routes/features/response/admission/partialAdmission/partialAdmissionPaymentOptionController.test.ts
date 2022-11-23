@@ -6,13 +6,13 @@ import {
   CITIZEN_PA_PAYMENT_DATE_URL,
   CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL,
   CLAIM_TASK_LIST_URL,
-} from '../../../../../../../main/routes/urls';
+} from '../routes/urls';
 import {mockRedisWithPaymentAmount, mockRedisFullAdmission, mockRedisWithoutAdmittedPaymentAmount, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import civilClaimResponseWithAdmittedPaymentAmountMock from '../../../../../../utils/mocks/civilClaimResponseWithAdmittedPaymentAmountMock.json';
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('../.modules/oidc');
+jest.mock('../.modules/draft-store');
 
 describe('Part Admit - Payment Option Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

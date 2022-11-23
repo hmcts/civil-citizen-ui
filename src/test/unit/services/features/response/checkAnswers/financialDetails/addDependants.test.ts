@@ -3,15 +3,15 @@ import {
 } from '../../../../../../../main/services/features/response/checkAnswers/checkAnswersService';
 import {
   CITIZEN_DEPENDANTS_URL,
-} from '../../../../../../../main/routes/urls';
+} from '../routes/urls';
 import {
   createClaimWithDependants,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
 
-jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../../main/modules/i18n');
+jest.mock('../.modules/draft-store');
+jest.mock('../.modules/draft-store/draftStoreService');
+jest.mock('../.modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

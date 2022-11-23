@@ -1,14 +1,14 @@
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import * as draftStoreService from '.modules/draft-store/draftStoreService';
 import {
   getRepaymentPlanForm,
   saveRepaymentPlanData,
 } from '../../../../../../main/services/features/response/repaymentPlan/repaymentPlanService';
-import {Claim} from '../../../../../../main/common/models/claim';
-import {RepaymentPlanForm} from '../../../../../../main/common/form/models/repaymentPlan/repaymentPlanForm';
+import {Claim} from '.common/models/claim';
+import {RepaymentPlanForm} from '.common/form/models/repaymentPlan/repaymentPlanForm';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('.modules/draft-store');
+jest.mock('.modules/draft-store/draftStoreService');
 
 const TOTAL_CLAIM_AMOUNT = 1000;
 const PAYMENT_AMOUNT = 100;

@@ -7,7 +7,7 @@ import {
   DOB_URL,
   CITIZEN_PHONE_NUMBER_URL,
   CLAIM_TASK_LIST_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {
   mockCivilClaim,
   mockCivilClaimUndefined,
@@ -19,8 +19,8 @@ import {
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('.modules/oidc');
+jest.mock('.modules/draft-store');
 
 describe('Citizen date of birth', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

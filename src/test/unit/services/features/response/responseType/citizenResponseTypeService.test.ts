@@ -1,13 +1,13 @@
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import * as draftStoreService from '.modules/draft-store/draftStoreService';
 import {mockClaim} from '../../../../../utils/mockClaim';
 
 import {
   saveResponseType,
 } from '../../../../../../main/services/features/response/responseType/citizenResponseTypeService';
-import {ResponseType} from '../../../../../../main/common/form/models/responseType';
+import {ResponseType} from '.common/form/models/responseType';
 
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('.modules/draft-store');
+jest.mock('.modules/draft-store/draftStoreService');
 
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const DRAFT_STORE_GET_ERROR = 'draft store get error';

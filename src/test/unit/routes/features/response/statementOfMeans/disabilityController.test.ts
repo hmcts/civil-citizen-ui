@@ -10,8 +10,8 @@ import {
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockCivilClaimOptionNo, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('.modules/oidc');
+jest.mock('.modules/draft-store');
 
 describe('Disability', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

@@ -5,9 +5,9 @@ import nock from 'nock';
 import {CITIZEN_BANK_ACCOUNT_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../.modules/oidc');
+jest.mock('../.modules/draft-store');
+jest.mock('../.modules/draft-store/draftStoreService');
 
 describe('Bank Accounts and Savings', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

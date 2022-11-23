@@ -6,14 +6,14 @@ import {
   FIRST_CONTACT_ACCESS_DENIED_URL,
   FIRST_CONTACT_CLAIM_SUMMARY_URL,
   FIRST_CONTACT_PIN_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {t} from 'i18next';
-import {YesNo} from '../../../../../../main/common/form/models/yesNo';
+import {YesNo} from '.common/form/models/yesNo';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('.modules/oidc');
+jest.mock('.modules/draft-store');
 
 const mockFullClaim = { 'id': 1662129391355637, 'case_data': {}};
 describe('Respond to Claim - Pin Controller', () => {

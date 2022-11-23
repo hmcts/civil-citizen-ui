@@ -5,7 +5,7 @@ import request from 'supertest';
 import {
   AGREED_TO_MORE_TIME_URL,
   NEW_RESPONSE_DEADLINE_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {
   mockCivilClaim,
   mockCivilClaimApplicantIndividualType,
@@ -13,8 +13,8 @@ import {
 } from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('.modules/oidc');
+jest.mock('.modules/draft-store');
 
 describe('Agreed response date', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

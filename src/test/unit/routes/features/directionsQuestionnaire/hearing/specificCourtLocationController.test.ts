@@ -3,7 +3,7 @@ import nock from 'nock';
 import request from 'supertest';
 import {
   DQ_COURT_LOCATION_URL, DQ_WELSH_LANGUAGE_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 import * as specificCourtLocationService from 'services/features/directionsQuestionnaire/hearing/specificCourtLocationService';
 import * as directionQuestionnaireService
   from 'services/features/directionsQuestionnaire/directionQuestionnaireService';

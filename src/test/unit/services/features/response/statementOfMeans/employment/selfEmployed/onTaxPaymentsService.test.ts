@@ -1,19 +1,19 @@
-import * as draftStoreService from '../../../../../../../../main/modules/draft-store/draftStoreService';
+import * as draftStoreService from '../../.modules/draft-store/draftStoreService';
 import {
   getOnTaxPaymentsForm,
   saveTaxPaymentsData,
 } from '../../../../../../../../main/services/features/response/statementOfMeans/employment/selfEmployed/onTaxPaymentsService';
-import {Claim} from '../../../../../../../../main/common/models/claim';
-import {StatementOfMeans} from '../../../../../../../../main/common/models/statementOfMeans';
-import {YesNo} from '../../../../../../../../main/common/form/models/yesNo';
+import {Claim} from '../../.common/models/claim';
+import {StatementOfMeans} from '../../.common/models/statementOfMeans';
+import {YesNo} from '../../.common/form/models/yesNo';
 import {
   OnTaxPayments,
-} from '../../../../../../../../main/common/form/models/statementOfMeans/employment/selfEmployed/onTaxPayments';
+} from '../../.common/form/models/statementOfMeans/employment/selfEmployed/onTaxPayments';
 import {TestMessages} from '../../../../../../../utils/errorMessageTestConstants';
-import {GenericForm} from '../../../../../../../../main/common/form/models/genericForm';
+import {GenericForm} from '../../.common/form/models/genericForm';
 
-jest.mock('../../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../.modules/draft-store');
+jest.mock('../../.modules/draft-store/draftStoreService');
 
 const OWED = true;
 const AMOUNT_OWED = 22.2;

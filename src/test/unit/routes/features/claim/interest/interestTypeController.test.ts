@@ -7,14 +7,14 @@ import {
   CLAIM_INTEREST_RATE_URL,
   CLAIM_INTEREST_TOTAL_URL,
   CLAIM_INTEREST_TYPE_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {
   InterestClaimOptionsType,
-} from '../../../../../../main/common/form/models/claim/interest/interestClaimOptionsType';
+} from '.common/form/models/claim/interest/interestClaimOptionsType';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('.modules/oidc');
+jest.mock('.modules/draft-store');
 
 describe('Interest type controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

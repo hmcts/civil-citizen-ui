@@ -7,8 +7,8 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraf
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {ResponseType} from 'form/models/responseType';
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('../.modules/oidc');
+jest.mock('../.modules/draft-store');
 
 describe('How Much Have You Paid', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

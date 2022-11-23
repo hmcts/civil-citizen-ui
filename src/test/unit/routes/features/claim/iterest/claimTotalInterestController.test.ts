@@ -3,13 +3,13 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
-import {CLAIM_CONTINUE_CLAIMING_INTEREST, CLAIM_TOTAL_INTEREST_URL} from '../../../../../../main/routes/urls';
+import {CLAIM_CONTINUE_CLAIMING_INTEREST, CLAIM_TOTAL_INTEREST_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {getInterest, saveInterest} from '../../../../../../main/services/features/claim/interest/interestService';
-import {Claim} from '../../../../../../main/common/models/claim';
+import {Claim} from '.common/models/claim';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('.modules/oidc');
+jest.mock('.modules/draft-store');
 jest.mock('../../../../../../main/services/features/claim/interest/interestService');
 const getInterestMock = getInterest as jest.Mock;
 const saveInterestMock = saveInterest as jest.Mock;

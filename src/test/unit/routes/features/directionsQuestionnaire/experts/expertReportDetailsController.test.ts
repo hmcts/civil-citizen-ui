@@ -6,12 +6,12 @@ import {
   DQ_EXPERT_GUIDANCE_URL,
   DQ_EXPERT_REPORT_DETAILS_URL,
   DQ_GIVE_EVIDENCE_YOURSELF_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('.modules/oidc');
+jest.mock('.modules/draft-store');
 
 describe('Expert Report Details Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

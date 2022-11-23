@@ -7,7 +7,7 @@ import {
   CITIZEN_WHO_EMPLOYS_YOU_URL,
   CITIZEN_COURT_ORDERS_URL,
   CITIZEN_SELF_EMPLOYED_URL,
-} from '../../../../../../../main/routes/urls';
+} from '../routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 import {t} from 'i18next';
@@ -67,8 +67,8 @@ const mockSelfEmployed = {
   get: jest.fn(() => Promise.resolve(JSON.stringify(mockRedisSelfEmployed))),
 };
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('../.modules/oidc');
+jest.mock('../.modules/draft-store');
 
 describe('Who employs you', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

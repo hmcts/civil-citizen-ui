@@ -1,10 +1,10 @@
-import { HowMuchHaveYouPaid } from '../../../../../../main/common/form/models/admission/howMuchHaveYouPaid';
-import {Claim} from '../../../../../../main/common/models/claim';
-import {PartialAdmission} from '../../../../../../main/common/models/partialAdmission';
-import {TaskStatus} from '../../../../../../main/common/models/taskList/TaskStatus';
-import { getHowMuchHaveYouPaidTask } from '../../../../../../main/common/utils/taskList/tasks/howMuchHaveYouPaid';
+import { HowMuchHaveYouPaid } from '.common/form/models/admission/howMuchHaveYouPaid';
+import {Claim} from '.common/models/claim';
+import {PartialAdmission} from '.common/models/partialAdmission';
+import {TaskStatus} from '.common/models/taskList/TaskStatus';
+import { getHowMuchHaveYouPaidTask } from '.common/utils/taskList/tasks/howMuchHaveYouPaid';
 
-jest.mock('../../../../../../main/modules/i18n');
+jest.mock('.modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

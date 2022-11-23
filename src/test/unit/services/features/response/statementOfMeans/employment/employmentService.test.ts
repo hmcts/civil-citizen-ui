@@ -2,18 +2,18 @@ import {
   getEmploymentForm,
   saveEmploymentData,
 } from '../../../../../../../main/services/features/response/statementOfMeans/employment/employmentService';
-import * as draftStoreService from '../../../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../../../main/common/models/claim';
-import {StatementOfMeans} from '../../../../../../../main/common/models/statementOfMeans';
+import * as draftStoreService from '../.modules/draft-store/draftStoreService';
+import {Claim} from '../.common/models/claim';
+import {StatementOfMeans} from '../.common/models/statementOfMeans';
 import {
   EmploymentCategory,
-} from '../../../../../../../main/common/form/models/statementOfMeans/employment/employmentCategory';
-import {EmploymentForm} from '../../../../../../../main/common/form/models/statementOfMeans/employment/employmentForm';
-import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
-import {GenericForm} from '../../../../../../../main/common/form/models/genericForm';
+} from '../.common/form/models/statementOfMeans/employment/employmentCategory';
+import {EmploymentForm} from '../.common/form/models/statementOfMeans/employment/employmentForm';
+import {YesNo} from '../.common/form/models/yesNo';
+import {GenericForm} from '../.common/form/models/genericForm';
 
-jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../.modules/draft-store');
+jest.mock('../.modules/draft-store/draftStoreService');
 
 describe('employment service', () => {
   describe('get employment form model', () => {

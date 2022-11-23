@@ -6,11 +6,11 @@ import {
   ELIGIBILITY_HELP_WITH_FEES_REFERENCE_URL,
   ELIGIBILITY_HWF_ELIGIBLE_REFERENCE_URL,
   ELIGIBILITY_HWF_ELIGIBLE_URL,
-} from '../../../../../../main/routes/urls';
-import {YesNo} from '../../../../../../main/common/form/models/yesNo';
+} from 'routes/urls';
+import {YesNo} from '.common/form/models/yesNo';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('.modules/oidc');
+jest.mock('.modules/draft-store');
 
 describe('Help With Fees Reference Controller', () => {
   // TODO: remove this once paths become publicly available as mocking the response token will not be needed

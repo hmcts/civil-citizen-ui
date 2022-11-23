@@ -1,24 +1,24 @@
-import {Claim} from '../../../../../../../main/common/models/claim';
+import {Claim} from '../.common/models/claim';
 import {
   DirectionQuestionnaire,
-} from '../../../../../../../main/common/models/directionsQuestionnaire/directionQuestionnaire';
-import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
-import {Experts} from '../../../../../../../main/common/models/directionsQuestionnaire/experts/experts';
+} from '../.common/models/directionsQuestionnaire/directionQuestionnaire';
+import {YesNo} from '../.common/form/models/yesNo';
+import {Experts} from '../.common/models/directionsQuestionnaire/experts/experts';
 import {
   buildExportReportSection,
 } from '../../../../../../../main/services/features/response/checkAnswers/hearingRequirementsSection/hearingExportsReportBuilderSection';
 import {
   ExpertReportDetails,
-} from '../../../../../../../main/common/models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails';
+} from '../.common/models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails';
 import {
   ReportDetail,
-} from '../../../../../../../main/common/models/directionsQuestionnaire/experts/expertReportDetails/reportDetail';
+} from '../.common/models/directionsQuestionnaire/experts/expertReportDetails/reportDetail';
 import {
   ExpertCanStillExamine,
-} from '../../../../../../../main/common/models/directionsQuestionnaire/experts/expertCanStillExamine';
-import {GenericYesNo} from '../../../../../../../main/common/form/models/genericYesNo';
-import {ExpertDetailsList} from '../../../../../../../main/common/models/directionsQuestionnaire/experts/expertDetailsList';
-import {ExpertDetails} from '../../../../../../../main/common/models/directionsQuestionnaire/experts/expertDetails';
+} from '../.common/models/directionsQuestionnaire/experts/expertCanStillExamine';
+import {GenericYesNo} from '../.common/form/models/genericYesNo';
+import {ExpertDetailsList} from '../.common/models/directionsQuestionnaire/experts/expertDetailsList';
+import {ExpertDetails} from '../.common/models/directionsQuestionnaire/experts/expertDetails';
 
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,

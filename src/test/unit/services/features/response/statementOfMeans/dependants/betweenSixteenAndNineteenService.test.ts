@@ -2,21 +2,21 @@ import {
   getForm,
   saveFormToDraftStore,
 } from '../../../../../../../main/services/features/response/statementOfMeans/dependants/betweenSixteenAndNineteenService';
-import * as draftStoreService from '../../../../../../../main/modules/draft-store/draftStoreService';
+import * as draftStoreService from '../.modules/draft-store/draftStoreService';
 import {
   BetweenSixteenAndNineteenDependants,
-} from '../../../../../../../main/common/form/models/statementOfMeans/dependants/betweenSixteenAndNineteenDependants';
-import {Claim} from '../../../../../../../main/common/models/claim';
-import {StatementOfMeans} from '../../../../../../../main/common/models/statementOfMeans';
+} from '../.common/form/models/statementOfMeans/dependants/betweenSixteenAndNineteenDependants';
+import {Claim} from '../.common/models/claim';
+import {StatementOfMeans} from '../.common/models/statementOfMeans';
 import {
   NumberOfChildren,
-} from '../../../../../../../main/common/form/models/statementOfMeans/dependants/numberOfChildren';
-import {Dependants} from '../../../../../../../main/common/form/models/statementOfMeans/dependants/dependants';
+} from '../.common/form/models/statementOfMeans/dependants/numberOfChildren';
+import {Dependants} from '../.common/form/models/statementOfMeans/dependants/dependants';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {GenericForm} from '../../../../../../../main/common/form/models/genericForm';
+import {GenericForm} from '../.common/form/models/genericForm';
 
-jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../.modules/draft-store');
+jest.mock('../.modules/draft-store/draftStoreService');
 
 describe('dependent teenagers service test', () => {
   describe('saveFormToDraftStore', () => {

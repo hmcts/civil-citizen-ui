@@ -1,21 +1,21 @@
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../../main/common/models/claim';
+import * as draftStoreService from '.modules/draft-store/draftStoreService';
+import {Claim} from '.common/models/claim';
 import {
   getPaymentOptionForm,
   savePaymentOptionData,
 } from '../../../../../../main/services/features/response/admission/paymentOptionService';
 import {PaymentOptionType}
-  from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+  from '.common/form/models/admission/paymentOption/paymentOptionType';
 import {PaymentOption}
-  from '../../../../../../main/common/form/models/admission/paymentOption/paymentOption';
+  from '.common/form/models/admission/paymentOption/paymentOption';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {ResponseType} from '../../../../../../main/common/form/models/responseType';
-import {PartialAdmission} from '../../../../../../main/common/models/partialAdmission';
-import {PaymentIntention} from '../../../../../../main/common/form/models/admission/partialAdmission/paymentIntention';
+import {ResponseType} from '.common/form/models/responseType';
+import {PartialAdmission} from '.common/models/partialAdmission';
+import {PaymentIntention} from '.common/form/models/admission/partialAdmission/paymentIntention';
 import {mockClaim} from '../../../../../utils/mockClaim';
 
-jest.mock('.../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('..modules/draft-store');
+jest.mock('.modules/draft-store/draftStoreService');
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 
 describe('payment option service', () => {

@@ -10,7 +10,7 @@ import {
   CLAIMANT_ORGANISATION_DETAILS_URL,
   CLAIMANT_PHONE_NUMBER_URL,
   CLAIMANT_SOLE_TRADER_DETAILS_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 import {PartyType} from '../../../../../common/models/partyType';
 import {Address} from '../../../../../common/form/models/address';

@@ -1,21 +1,21 @@
-import * as draftStoreService from '../../../../../../../main/modules/draft-store/draftStoreService';
+import * as draftStoreService from '../.modules/draft-store/draftStoreService';
 import {
   getRegularExpenses,
   saveRegularExpenses,
 } from '../../../../../../../main/services/features/response/statementOfMeans/expenses/regularExpensesService';
-import {Claim} from '../../../../../../../main/common/models/claim';
-import {StatementOfMeans} from '../../../../../../../main/common/models/statementOfMeans';
-import {Transaction} from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transaction';
+import {Claim} from '../.common/models/claim';
+import {StatementOfMeans} from '../.common/models/statementOfMeans';
+import {Transaction} from '../.common/form/models/statementOfMeans/expensesAndIncome/transaction';
 import {
   TransactionSchedule,
-} from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+} from '../.common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {
   RegularExpenses,
-} from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
+} from '../.common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../.modules/draft-store');
+jest.mock('../.modules/draft-store/draftStoreService');
 
 describe('regularExpenses service', () => {
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;

@@ -6,12 +6,12 @@ import {app} from '../../../../../../main/app';
 import {
   CCJ_DEFENDANT_DOB_URL,
   CCJ_PAID_AMOUNT_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('.modules/oidc');
+jest.mock('.modules/draft-store');
 
 describe('CCJ - Defendant`s date of birth', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

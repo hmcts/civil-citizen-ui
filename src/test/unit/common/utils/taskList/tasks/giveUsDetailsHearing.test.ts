@@ -1,8 +1,8 @@
-import {Claim} from '../../../../../../main/common/models/claim';
-import {TaskStatus} from '../../../../../../main/common/models/taskList/TaskStatus';
-import {getGiveUsDetailsHearingTask} from '../../../../../../main/common/utils/taskList/tasks/giveUsDetailsHearing';
+import {Claim} from '.common/models/claim';
+import {TaskStatus} from '.common/models/taskList/TaskStatus';
+import {getGiveUsDetailsHearingTask} from '.common/utils/taskList/tasks/giveUsDetailsHearing';
 
-jest.mock('../../../../../../main/modules/i18n');
+jest.mock('.modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

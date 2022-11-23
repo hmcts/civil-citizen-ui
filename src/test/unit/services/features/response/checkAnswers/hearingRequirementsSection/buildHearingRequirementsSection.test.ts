@@ -1,25 +1,25 @@
-import {Claim} from '../../../../../../../main/common/models/claim';
+import {Claim} from '../.common/models/claim';
 import {
   DirectionQuestionnaire,
-} from '../../../../../../../main/common/models/directionsQuestionnaire/directionQuestionnaire';
-import {Hearing} from '../../../../../../../main/common/models/directionsQuestionnaire/hearing/hearing';
+} from '../.common/models/directionsQuestionnaire/directionQuestionnaire';
+import {Hearing} from '../.common/models/directionsQuestionnaire/hearing/hearing';
 import * as hearingRequirementsSection from '../../../../../../../main/services/features/response/checkAnswers/hearingRequirementsSection/buildHearingRequirementsSection';
 import * as supportRequiredList from '../../../../../../../main/services/features/response/checkAnswers/hearingRequirementsSection/addSupportRequiredList';
-import {summaryRow} from '../../../../../../../main/common/models/summaryList/summaryList';
-import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
+import {summaryRow} from '../.common/models/summaryList/summaryList';
+import {YesNo} from '../.common/form/models/yesNo';
 import {
   WelshLanguageRequirements,
-} from '../../../../../../../main/common/models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
-import {LanguageOptions} from '../../../../../../../main/common/models/directionsQuestionnaire/languageOptions';
+} from '../.common/models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
+import {LanguageOptions} from '../.common/models/directionsQuestionnaire/languageOptions';
 import {
   VulnerabilityQuestions,
-} from '../../../../../../../main/common/models/directionsQuestionnaire/vulnerabilityQuestions/vulnerabilityQuestions';
-import {summarySection} from '../../../../../../../main/common/models/summaryList/summarySections';
+} from '../.common/models/directionsQuestionnaire/vulnerabilityQuestions/vulnerabilityQuestions';
+import {summarySection} from '../.common/models/summaryList/summarySections';
 import {t} from 'i18next';
 
-jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../../main/modules/i18n');
+jest.mock('../.modules/draft-store');
+jest.mock('../.modules/draft-store/draftStoreService');
+jest.mock('../.modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

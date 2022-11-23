@@ -3,13 +3,13 @@ const request = require('supertest');
 const {app} = require('../../../../../../main/app');
 import nock from 'nock';
 import config from 'config';
-import {CITIZEN_PARTNER_URL, CITIZEN_RESIDENCE_URL} from '../../../../../../main/routes/urls';
-import {FREE_TEXT_MAX_LENGTH} from '../../../../../../main/common/form/validators/validationConstraints';
+import {CITIZEN_PARTNER_URL, CITIZEN_RESIDENCE_URL} from 'routes/urls';
+import {FREE_TEXT_MAX_LENGTH} from '.common/form/validators/validationConstraints';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('.modules/oidc');
+jest.mock('.modules/draft-store');
 
 const agent = request.agent(app);
 const tooLongHousingDetails: string = Array(FREE_TEXT_MAX_LENGTH + 2).join('a');

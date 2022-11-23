@@ -1,15 +1,15 @@
-import * as draftStoreService from '../../../../../../../main/modules/draft-store/draftStoreService';
+import * as draftStoreService from '../.modules/draft-store/draftStoreService';
 import {
   getHowMuchDoYouOweForm,
   saveHowMuchDoYouOweData,
 } from '../../../../../../../main/services/features/response/admission/partialAdmission/howMuchDoYouOweService';
-import {Claim} from '../../../../../../../main/common/models/claim';
-import {PartialAdmission} from '../../../../../../../main/common/models/partialAdmission';
-import {HowMuchDoYouOwe} from '../../../../../../../main/common/form/models/admission/partialAdmission/howMuchDoYouOwe';
+import {Claim} from '../.common/models/claim';
+import {PartialAdmission} from '../.common/models/partialAdmission';
+import {HowMuchDoYouOwe} from '../.common/form/models/admission/partialAdmission/howMuchDoYouOwe';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../.modules/draft-store');
+jest.mock('../.modules/draft-store/draftStoreService');
 
 const AMOUNT = 12.9;
 const TOTAL_AMOUNT = 110;

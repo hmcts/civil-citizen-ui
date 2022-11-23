@@ -1,19 +1,19 @@
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import * as draftStoreService from '.modules/draft-store/draftStoreService';
 import {
   getClaimantInformation,
   saveClaimant,
   saveClaimantProperty,
 } from '../../../../../../main/services/features/claim/yourDetails/claimantDetailsService';
-import {Claim} from '../../../../../../main/common/models/claim';
+import {Claim} from '.common/models/claim';
 import {buildAddress, mockClaim} from '../../../../../utils/mockClaim';
-import {Party} from '../../../../../../main/common/models/party';
-import {YesNo} from '../../../../../../main/common/form/models/yesNo';
+import {Party} from '.common/models/party';
+import {YesNo} from '.common/form/models/yesNo';
 import {buildCitizenAddress} from '../../../../../utils/mockForm';
-import {PartyDetails} from '../../../../../../main/common/form/models/partyDetails';
-import {PartyType} from '../../../../../../main/common/models/partyType';
+import {PartyDetails} from '.common/form/models/partyDetails';
+import {PartyType} from '.common/models/partyType';
 
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('.modules/draft-store');
+jest.mock('.modules/draft-store/draftStoreService');
 
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 const CLAIM_ID = '123';

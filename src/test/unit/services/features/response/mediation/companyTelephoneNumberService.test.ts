@@ -1,16 +1,16 @@
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import * as draftStoreService from '.modules/draft-store/draftStoreService';
 import {
   getCompanyTelephoneNumberData,
   saveCompanyTelephoneNumberData,
 } from '../../../../../../main/services/features/response/mediation/companyTelephoneNumberService';
-import {Claim} from '../../../../../../main/common/models/claim';
-import {Mediation} from '../../../../../../main/common/models/mediation/mediation';
-import {YesNo} from '../../../../../../main/common/form/models/yesNo';
+import {Claim} from '.common/models/claim';
+import {Mediation} from '.common/models/mediation/mediation';
+import {YesNo} from '.common/form/models/yesNo';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {CompanyTelephoneNumber} from '../../../../../../main/common/form/models/mediation/companyTelephoneNumber';
+import {CompanyTelephoneNumber} from '.common/form/models/mediation/companyTelephoneNumber';
 
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('.modules/draft-store');
+jest.mock('.modules/draft-store/draftStoreService');
 
 describe('Mediation - Company or Organisation - Confirm telephone number Service', () => {
   const telephoneNumber = '0123456789';

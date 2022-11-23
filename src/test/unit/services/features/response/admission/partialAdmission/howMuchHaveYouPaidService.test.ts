@@ -1,13 +1,13 @@
 import howMuchHaveYouPaidService
   from '../../../../../../../main/services/features/response/admission/howMuchHaveYouPaidService';
-import * as draftStoreService from '../../../../../../../main/modules/draft-store/draftStoreService';
-import {HowMuchHaveYouPaid} from '../../../../../../../main/common/form/models/admission/howMuchHaveYouPaid';
-import {GenericForm} from '../../../../../../../main/common/form/models/genericForm';
+import * as draftStoreService from '../.modules/draft-store/draftStoreService';
+import {HowMuchHaveYouPaid} from '../.common/form/models/admission/howMuchHaveYouPaid';
+import {GenericForm} from '../.common/form/models/genericForm';
 import {mockClaim} from '../../../../../../utils/mockClaim';
-import {ResponseType} from '../../../../../../../main/common/form/models/responseType';
+import {ResponseType} from '../.common/form/models/responseType';
 
-jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../.modules/draft-store');
+jest.mock('../.modules/draft-store/draftStoreService');
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 

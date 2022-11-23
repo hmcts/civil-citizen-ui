@@ -1,14 +1,14 @@
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../../main/common/models/claim';
-import {YesNo} from '../../../../../../main/common/form/models/yesNo';
+import * as draftStoreService from '.modules/draft-store/draftStoreService';
+import {Claim} from '.common/models/claim';
+import {YesNo} from '.common/form/models/yesNo';
 import {
   getMediation,
   saveMediation,
 } from '../../../../../../main/services/features/response/mediation/mediationService';
-import {Mediation} from '../../../../../../main/common/models/mediation/mediation';
+import {Mediation} from '.common/models/mediation/mediation';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('.modules/draft-store/draftStoreService');
 
 const claimId = '123';
 const mediationPhoneNumber = '6000000';

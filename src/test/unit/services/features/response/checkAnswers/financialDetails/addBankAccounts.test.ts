@@ -3,7 +3,7 @@ import {
 } from '../../../../../../../main/services/features/response/checkAnswers/checkAnswersService';
 import {
   CITIZEN_BANK_ACCOUNT_URL,
-} from '../../../../../../../main/routes/urls';
+} from '../routes/urls';
 import {
   createClaimWithOneBankAccount,
   createClaimWithBankAccounts,
@@ -12,11 +12,11 @@ import {
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
 import {PaymentOptionType}
-  from '../../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+  from '../.common/form/models/admission/paymentOption/paymentOptionType';
 
-jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../../main/modules/i18n');
+jest.mock('../.modules/draft-store');
+jest.mock('../.modules/draft-store/draftStoreService');
+jest.mock('../.modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

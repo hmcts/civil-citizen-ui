@@ -3,15 +3,15 @@ import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
 import {CIVIL_SERVICE_CALCULATE_DEADLINE} from '../../../../../../main/app/client/civilServiceUrls';
-import {getCaseDataFromStore} from '../../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../../main/common/models/claim';
-import {CLAIM_TASK_LIST_URL, NEW_RESPONSE_DEADLINE_URL} from '../../../../../../main/routes/urls';
-import {PartyType} from '../../../../../../main/common/models/partyType';
+import {getCaseDataFromStore} from '.modules/draft-store/draftStoreService';
+import {Claim} from '.common/models/claim';
+import {CLAIM_TASK_LIST_URL, NEW_RESPONSE_DEADLINE_URL} from 'routes/urls';
+import {PartyType} from '.common/models/partyType';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('.modules/oidc');
+jest.mock('.modules/draft-store');
+jest.mock('.modules/draft-store/draftStoreService');
 
 const mockGetCaseDataFromStore = getCaseDataFromStore as jest.Mock;
 

@@ -1,10 +1,10 @@
 import { app } from '../../../../../../main/app';
 import config from 'config';
 import request from 'supertest';
-import { POSTCODE_LOOKUP_URL } from '../../../../../../main/routes/urls';
+import { POSTCODE_LOOKUP_URL } from 'routes/urls';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('.modules/oidc');
+jest.mock('.modules/draft-store');
 const nock = require('nock');
 
 const mockPostcodeServer = 'https://api.os.uk';

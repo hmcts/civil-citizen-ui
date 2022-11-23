@@ -6,7 +6,7 @@ import {
   CITIZEN_DEPENDANTS_URL,
   CITIZEN_PARTNER_AGE_URL,
   CITIZEN_PARTNER_URL,
-} from '../../../../../../../main/routes/urls';
+} from '../routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {
   mockCivilClaim,
@@ -15,8 +15,8 @@ import {
   mockRedisFailure,
 } from '../../../../../../utils/mockDraftStore';
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('../.modules/oidc');
+jest.mock('../.modules/draft-store');
 
 describe('Partner', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

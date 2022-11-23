@@ -6,12 +6,12 @@ import {
   CITIZEN_DEPENDANTS_URL,
   CITIZEN_PARTNER_DISABILITY_URL,
   CITIZEN_PARTNER_SEVERE_DISABILITY_URL,
-} from '../../../../../../../main/routes/urls';
+} from '../routes/urls';
 import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
 import { mockCivilClaim, mockCivilClaimUndefined, mockNoStatementOfMeans, mockRedisFailure } from '../../../../../../utils/mockDraftStore';
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('../.modules/oidc');
+jest.mock('../.modules/draft-store');
 
 describe('Partner disability', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

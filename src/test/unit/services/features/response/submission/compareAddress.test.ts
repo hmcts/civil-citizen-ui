@@ -1,4 +1,4 @@
-import {Address} from '../../../../../../main/common/form/models/address';
+import {Address} from '.common/form/models/address';
 import {
   addressHasChange,
   processAddressLine,

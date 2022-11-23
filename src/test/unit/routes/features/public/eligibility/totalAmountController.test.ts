@@ -2,16 +2,16 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
-import {NotEligibleReason} from '../../../../../../main/common/form/models/eligibility/NotEligibleReason';
-import {TotalAmountOptions} from '../../../../../../main/common/models/eligibility/totalAmountOptions';
-import {constructUrlWithNotEligibleReason} from '../../../../../../main/common/utils/urlFormatter';
+import {NotEligibleReason} from '.common/form/models/eligibility/NotEligibleReason';
+import {TotalAmountOptions} from '.common/models/eligibility/totalAmountOptions';
+import {constructUrlWithNotEligibleReason} from '.common/utils/urlFormatter';
 import {
   ELIGIBILITY_CLAIM_VALUE_URL,
   NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
   ELIGIBILITY_SINGLE_DEFENDANT_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 
-jest.mock('../../../../../../main/modules/oidc');
+jest.mock('.modules/oidc');
 
 describe('Response Deadline Options Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

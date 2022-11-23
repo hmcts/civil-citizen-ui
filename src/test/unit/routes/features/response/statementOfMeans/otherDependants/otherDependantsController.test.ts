@@ -6,7 +6,7 @@ import {
   CITIZEN_CARER_URL,
   CITIZEN_EMPLOYMENT_URL,
   CITIZEN_OTHER_DEPENDANTS_URL,
-} from '../../../../../../../main/routes/urls';
+} from '../routes/urls';
 import {TestMessages} from '../../../../../../../test/utils/errorMessageTestConstants';
 import {mockCivilClaim, mockCivilClaimOptionNo, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 import severelyDisabledDefendantMock from './severelyDisabledDefendantMock.json';
@@ -55,8 +55,8 @@ const mockWithDisabledChildren = {
   get: jest.fn(() => Promise.resolve(civilClaimResponseDisabledPartnerMock)),
 };
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('../.modules/oidc');
+jest.mock('../.modules/draft-store');
 
 describe('Other Dependants', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

@@ -5,14 +5,14 @@ import nock from 'nock';
 import {
   DQ_DEFENDANT_WITNESSES_URL,
   DQ_OTHER_WITNESSES_AVAILABILITY_DATES_FOR_HEARING_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {t} from 'i18next';
-import {YesNo} from '../../../../../../main/common/form/models/yesNo';
+import {YesNo} from '.common/form/models/yesNo';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('.modules/oidc');
+jest.mock('.modules/draft-store');
 
 const otherWitnessMock = {
   'id': 1645882162449409,

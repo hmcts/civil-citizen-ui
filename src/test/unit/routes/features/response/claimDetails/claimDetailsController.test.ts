@@ -2,7 +2,7 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import config from 'config';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import * as draftStoreService from '.modules/draft-store/draftStoreService';
 import {
   mockCivilClaim,
   mockCivilClaimPDFTimeline,
@@ -17,8 +17,8 @@ import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import {PartyType} from 'models/partyType';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('.modules/oidc');
+jest.mock('.modules/draft-store');
 const nock = require('nock');
 
 describe('Claim details page', () => {

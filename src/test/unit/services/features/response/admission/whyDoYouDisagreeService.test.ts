@@ -1,4 +1,4 @@
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import * as draftStoreService from '.modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {
   getWhyDoYouDisagreeForm,
@@ -10,8 +10,8 @@ import {ResponseType} from 'form/models/responseType';
 import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('.modules/draft-store');
+jest.mock('.modules/draft-store/draftStoreService');
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 describe('why do you disagree service', () => {
   describe('get text form', () => {

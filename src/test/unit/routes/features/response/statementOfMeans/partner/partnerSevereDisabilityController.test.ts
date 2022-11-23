@@ -2,12 +2,12 @@ import request from 'supertest';
 import { app } from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import { CITIZEN_DEPENDANTS_URL, CITIZEN_PARTNER_SEVERE_DISABILITY_URL } from '../../../../../../../main/routes/urls';
+import { CITIZEN_DEPENDANTS_URL, CITIZEN_PARTNER_SEVERE_DISABILITY_URL } from '../routes/urls';
 import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
 import { mockCivilClaim, mockCivilClaimUndefined, mockNoStatementOfMeans, mockRedisFailure } from '../../../../../../utils/mockDraftStore';
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('../.modules/oidc');
+jest.mock('../.modules/draft-store');
 
 describe('Partner severe disability', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

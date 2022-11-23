@@ -1,15 +1,15 @@
 import {
   BankAccountService,
 } from '../../../../../../../main/services/features/response/statementOfMeans/bankAccounts/bankAccountService';
-import * as draftStoreService from '../../../../../../../main/modules/draft-store/draftStoreService';
-import {BankAccounts} from '../../../../../../../main/common/form/models/bankAndSavings/bankAccounts';
-import {BankAccount} from '../../../../../../../main/common/form/models/bankAndSavings/bankAccount';
-import {StatementOfMeans} from '../../../../../../../main/common/models/statementOfMeans';
-import {CitizenBankAccount} from '../../../../../../../main/common/models/citizenBankAccount';
-import {Claim} from '../../../../../../../main/common/models/claim';
+import * as draftStoreService from '../.modules/draft-store/draftStoreService';
+import {BankAccounts} from '../.common/form/models/bankAndSavings/bankAccounts';
+import {BankAccount} from '../.common/form/models/bankAndSavings/bankAccount';
+import {StatementOfMeans} from '../.common/models/statementOfMeans';
+import {CitizenBankAccount} from '../.common/models/citizenBankAccount';
+import {Claim} from '../.common/models/claim';
 
-jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../.modules/draft-store');
+jest.mock('../.modules/draft-store/draftStoreService');
 
 describe('Bank account service', () => {
   it('should return empty bank account rows when data for bank accounts does not exist draft store', async () => {

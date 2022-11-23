@@ -1,21 +1,21 @@
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../../main/common/models/claim';
+import * as draftStoreService from '.modules/draft-store/draftStoreService';
+import {Claim} from '.common/models/claim';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 import {getInterest, saveInterest} from '../../../../../../main/services/features/claim/interest/interestService';
-import {Interest} from '../../../../../../main/common/form/models/interest/interest';
-import {InterestStartDate} from '../../../../../../main/common/form/models/interest/interestStartDate';
+import {Interest} from '.common/form/models/interest/interest';
+import {InterestStartDate} from '.common/form/models/interest/interestStartDate';
 import {
   InterestClaimFromType,
   InterestEndDateType,
   SameRateInterestSelection,
   SameRateInterestType,
-} from '../../../../../../main/common/form/models/claimDetails';
-import {TotalInterest} from '../../../../../../main/common/form/models/interest/totalInterest';
-import {InterestClaimOptionsType} from '../../../../../../main/common/form/models/claim/interest/interestClaimOptionsType';
+} from '.common/form/models/claimDetails';
+import {TotalInterest} from '.common/form/models/interest/totalInterest';
+import {InterestClaimOptionsType} from '.common/form/models/claim/interest/interestClaimOptionsType';
 
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('.modules/draft-store');
+jest.mock('.modules/draft-store/draftStoreService');
 
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;

@@ -1,19 +1,19 @@
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../../main/common/models/claim';
+import * as draftStoreService from '.modules/draft-store/draftStoreService';
+import {Claim} from '.common/models/claim';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 import {
   getClaimDetails,
   saveClaimDetails,
 } from '../../../../../../main/services/features/claim/details/claimDetailsService';
-import {Reason} from '../../../../../../main/common/form/models/claim/details/reason';
-import {ClaimDetails} from '../../../../../../main/common/form/models/claim/details/claimDetails';
-import {Evidence} from '../../../../../../main/common/form/models/evidence/evidence';
-import {EvidenceItem} from '../../../../../../main/common/form/models/evidence/evidenceItem';
-import {EvidenceType} from '../../../../../../main/common/models/evidence/evidenceType';
+import {Reason} from '.common/form/models/claim/details/reason';
+import {ClaimDetails} from '.common/form/models/claim/details/claimDetails';
+import {Evidence} from '.common/form/models/evidence/evidence';
+import {EvidenceItem} from '.common/form/models/evidence/evidenceItem';
+import {EvidenceType} from '.common/models/evidence/evidenceType';
 
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('.modules/draft-store');
+jest.mock('.modules/draft-store/draftStoreService');
 
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;

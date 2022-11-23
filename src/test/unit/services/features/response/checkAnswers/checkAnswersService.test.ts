@@ -4,26 +4,26 @@ import {
   resetCheckboxFields,
   saveStatementOfTruth,
 } from '../../../../../../main/services/features/response/checkAnswers/checkAnswersService';
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import * as draftStoreService from '.modules/draft-store/draftStoreService';
 import {TestMessages} from '../../../../../../../src/test/utils/errorMessageTestConstants';
-import {StatementOfTruthForm} from '../../../../../../main/common/form/models/statementOfTruth/statementOfTruthForm';
-import {SignatureType} from '../../../../../../main/common/models/signatureType';
+import {StatementOfTruthForm} from '.common/form/models/statementOfTruth/statementOfTruthForm';
+import {SignatureType} from '.common/models/signatureType';
 import {
   createClaimWithBasicRespondentDetails,
 } from '../../../../../utils/mockClaimForCheckAnswers';
-import {Party} from '../../../../../../main/common/models/party';
+import {Party} from '.common/models/party';
 import {
   QualifiedStatementOfTruth,
-} from '../../../../../../main/common/form/models/statementOfTruth/qualifiedStatementOfTruth';
-import {PartyType} from '../../../../../../main/common/models/partyType';
-import {Claim} from '../../../../../../main/common/models/claim';
+} from '.common/form/models/statementOfTruth/qualifiedStatementOfTruth';
+import {PartyType} from '.common/models/partyType';
+import {Claim} from '.common/models/claim';
 import {
   CLAIM_ID,
 } from '../../../../../utils/checkAnswersConstants';
 
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../main/modules/i18n');
+jest.mock('.modules/draft-store');
+jest.mock('.modules/draft-store/draftStoreService');
+jest.mock('.modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

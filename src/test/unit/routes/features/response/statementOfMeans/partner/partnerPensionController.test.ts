@@ -6,7 +6,7 @@ import {
   CITIZEN_DEPENDANTS_URL,
   CITIZEN_PARTNER_DISABILITY_URL,
   CITIZEN_PARTNER_PENSION_URL,
-} from '../../../../../../../main/routes/urls';
+} from '../routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {
   mockCivilClaim,
@@ -17,8 +17,8 @@ import {
 } from '../../../../../../utils/mockDraftStore';
 import {t} from 'i18next';
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('../.modules/oidc');
+jest.mock('../.modules/draft-store');
 
 describe('Partner Pension', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

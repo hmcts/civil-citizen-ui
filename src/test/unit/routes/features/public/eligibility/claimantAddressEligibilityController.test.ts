@@ -6,14 +6,14 @@ import {
   ELIGIBILITY_TENANCY_DEPOSIT_URL,
   ELIGIBILITY_CLAIMANT_ADDRESS_URL,
   NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
-} from '../../../../../../main/routes/urls';
-import {YesNo} from '../../../../../../main/common/form/models/yesNo';
+} from 'routes/urls';
+import {YesNo} from '.common/form/models/yesNo';
 import {t} from 'i18next';
-import {constructUrlWithNotEligibleReason} from '../../../../../../main/common/utils/urlFormatter';
-import {NotEligibleReason} from '../../../../../../main/common/form/models/eligibility/NotEligibleReason';
+import {constructUrlWithNotEligibleReason} from '.common/utils/urlFormatter';
+import {NotEligibleReason} from '.common/form/models/eligibility/NotEligibleReason';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('.modules/oidc');
+jest.mock('.modules/draft-store');
 
 describe('Claimant Address Eligibility Controller', () => {
   // TODO: remove this once paths become publicly available as mocking the response token will not be needed

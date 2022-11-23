@@ -1,17 +1,17 @@
 import {
   submitExtendedResponseDeadline,
 } from '../../../../../../main/services/features/response/responseDeadline/extendResponseDeadlineService';
-import * as requestModels from '../../../../../../main/common/models/AppRequest';
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../../main/common/models/claim';
-import {PartyType} from '../../../../../../main/common/models/partyType';
+import * as requestModels from '.common/models/AppRequest';
+import * as draftStoreService from '.modules/draft-store/draftStoreService';
+import {Claim} from '.common/models/claim';
+import {PartyType} from '.common/models/partyType';
 import nock from 'nock';
 import config from 'config';
-import {ResponseOptions} from '../../../../../../main/common/form/models/responseDeadline';
+import {ResponseOptions} from '.common/form/models/responseDeadline';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('.modules/draft-store');
+jest.mock('.modules/draft-store/draftStoreService');
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 mockedAppRequest.params = {id: '1'};

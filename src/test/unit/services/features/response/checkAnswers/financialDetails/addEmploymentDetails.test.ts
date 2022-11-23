@@ -5,7 +5,7 @@ import {
   CITIZEN_EMPLOYMENT_URL,
   CITIZEN_WHO_EMPLOYS_YOU_URL,
   CITIZEN_SELF_EMPLOYED_URL,
-} from '../../../../../../../main/routes/urls';
+} from '../routes/urls';
 import {
   createClaimWithEmplymentDetails,
   createClaimWithEmployedCategory,
@@ -18,9 +18,9 @@ import {
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
 
-jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../../main/modules/i18n');
+jest.mock('../.modules/draft-store');
+jest.mock('../.modules/draft-store/draftStoreService');
+jest.mock('../.modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

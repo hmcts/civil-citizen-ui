@@ -2,12 +2,12 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {constructResponseUrlWithIdParams} from '../../../../../../main/common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from '.common/utils/urlFormatter';
 import {
   setFinancialDetailsControllerLogger,
-} from '../../../../../../main/routes/features/response/financialDetails/financialDetailsController';
+} from 'routes/features/response/financialDetails/financialDetailsController';
 import {Logger} from 'winston';
-import {FINANCIAL_DETAILS_URL} from '../../../../../../main/routes/urls';
+import {FINANCIAL_DETAILS_URL} from 'routes/urls';
 import {mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
@@ -18,8 +18,8 @@ const claimIndividual: string = JSON.stringify(claimIndividualMock);
 const claimIndividualNoType: string = JSON.stringify(claimIndividualMockNoType);
 const claimOrganisation: string = JSON.stringify(claimOrganisationMock);
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('.modules/oidc');
+jest.mock('.modules/draft-store');
 
 const mockLogger = {
   error: jest.fn().mockImplementation((message: string) => message),

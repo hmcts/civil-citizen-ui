@@ -3,11 +3,11 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {DQ_PHONE_OR_VIDEO_HEARING_URL, VULNERABILITY_URL} from '../../../../../../main/routes/urls';
+import {DQ_PHONE_OR_VIDEO_HEARING_URL, VULNERABILITY_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('.modules/oidc');
+jest.mock('.modules/draft-store');
 
 describe('Defendant expert can still examine Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

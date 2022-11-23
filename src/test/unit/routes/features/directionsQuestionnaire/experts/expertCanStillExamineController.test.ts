@@ -7,11 +7,11 @@ import {
   DQ_DEFENDANT_CAN_STILL_EXAMINE_URL,
   DQ_DEFENDANT_EXPERT_REPORTS_URL,
   DQ_GIVE_EVIDENCE_YOURSELF_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('.modules/oidc');
+jest.mock('.modules/draft-store');
 
 describe('Defendant expert can still examine Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

@@ -11,31 +11,31 @@ import {
   CITIZEN_TIMELINE_URL,
   CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL,
   CITIZEN_WHY_DO_YOU_DISAGREE_URL,
-} from '../../../../../../../main/routes/urls';
+} from '../routes/urls';
 import {
   ceateClaimWithPartialAdmission,
   createClaimWithBasicRespondentDetails,
   createClaimWithFullRejection,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
-import {DefendantTimeline} from '../../../../../../../main/common/form/models/timeLineOfEvents/defendantTimeline';
-import {DefendantEvidence} from '../../../../../../../main/common/models/evidence/evidence';
-import {EvidenceItem} from '../../../../../../../main/common/form/models/evidence/evidenceItem';
-import {Evidence} from '../../../../../../../main/common/form/models/evidence/evidence';
-import {EvidenceType} from '../../../../../../../main/common/models/evidence/evidenceType';
-import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
-import {RejectAllOfClaimType} from '../../../../../../../main/common/form/models/rejectAllOfClaimType';
-import {ResponseType} from '../../../../../../../main/common/form/models/responseType';
-import {RejectAllOfClaim} from '../../../../../../../main/common/form/models/rejectAllOfClaim';
+import {DefendantTimeline} from '../.common/form/models/timeLineOfEvents/defendantTimeline';
+import {DefendantEvidence} from '../.common/models/evidence/evidence';
+import {EvidenceItem} from '../.common/form/models/evidence/evidenceItem';
+import {Evidence} from '../.common/form/models/evidence/evidence';
+import {EvidenceType} from '../.common/models/evidence/evidenceType';
+import {YesNo} from '../.common/form/models/yesNo';
+import {RejectAllOfClaimType} from '../.common/form/models/rejectAllOfClaimType';
+import {ResponseType} from '../.common/form/models/responseType';
+import {RejectAllOfClaim} from '../.common/form/models/rejectAllOfClaim';
 import {
   WhyDoYouDisagree,
-} from '../../../../../../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
-import {Defence} from '../../../../../../../main/common/form/models/defence';
-import {TimelineRow} from '../../../../../../../main/common/form/models/timeLineOfEvents/timelineRow';
+} from '../.common/form/models/admission/partialAdmission/whyDoYouDisagree';
+import {Defence} from '../.common/form/models/defence';
+import {TimelineRow} from '../.common/form/models/timeLineOfEvents/timelineRow';
 
-jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../../main/modules/i18n');
+jest.mock('../.modules/draft-store');
+jest.mock('../.modules/draft-store/draftStoreService');
+jest.mock('../.modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

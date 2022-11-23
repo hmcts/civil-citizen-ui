@@ -1,14 +1,14 @@
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {CITIZEN_PRIORITY_DEBTS_URL, CITIZEN_DEBTS_URL} from '../../../../../../main/routes/urls';
+import {CITIZEN_PRIORITY_DEBTS_URL, CITIZEN_DEBTS_URL} from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 const {app} = require('../../../../../../main/app');
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('.modules/oidc');
+jest.mock('.modules/draft-store');
 
 describe('Priority Debts Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

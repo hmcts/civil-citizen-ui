@@ -19,16 +19,16 @@ import {
   CITIZEN_REPAYMENT_PLAN_PARTIAL_URL,
   CITIZEN_RESIDENCE_URL,
   CITIZEN_RESPONSE_TYPE_URL,
-} from '../../../../../../../main/routes/urls';
-import {PaymentOptionType} from '../../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+} from '../routes/urls';
+import {PaymentOptionType} from '../.common/form/models/admission/paymentOption/paymentOptionType';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
-import {formatDateToFullDate} from '../../../../../../../main/common/utils/dateUtils';
-import {ResponseType} from '../../../../../../../main/common/form/models/responseType';
-import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
+import {formatDateToFullDate} from '../.common/utils/dateUtils';
+import {ResponseType} from '../.common/form/models/responseType';
+import {YesNo} from '../.common/form/models/yesNo';
 
-jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../../main/modules/i18n');
+jest.mock('../.modules/draft-store');
+jest.mock('../.modules/draft-store/draftStoreService');
+jest.mock('../.modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

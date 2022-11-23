@@ -3,19 +3,19 @@ import {
   CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL,
   CLAIM_DEFENDANT_PHONE_NUMBER_URL,
   DOB_URL,
-} from '../../../../../../../main/routes/urls';
+} from '../routes/urls';
 import {
   createClaimWithBasicRespondentDetails,
   createClaimWithContactPersonDetails,
   createClaimWithIndividualDetails,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
-import {PartyType} from '../../../../../../../main/common/models/partyType';
-import {formatDateToFullDate} from '../../../../../../../main/common/utils/dateUtils';
-import {PartyDetails} from '../../../../../../../main/common/form/models/partyDetails';
-import {Email} from '../../../../../../../main/common/models/Email';
-import {CitizenDate} from '../../../../../../../main/common/form/models/claim/claimant/citizenDate';
+import {PartyType} from '../.common/models/partyType';
+import {formatDateToFullDate} from '../.common/utils/dateUtils';
+import {PartyDetails} from '../.common/form/models/partyDetails';
+import {Email} from '../.common/models/Email';
+import {CitizenDate} from '../.common/form/models/claim/claimant/citizenDate';
 
-jest.mock('../../../../../../../main/modules/i18n');
+jest.mock('../.modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

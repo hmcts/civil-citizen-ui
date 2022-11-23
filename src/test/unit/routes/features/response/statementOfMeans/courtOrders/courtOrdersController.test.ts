@@ -7,8 +7,8 @@ import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 const request = require('supertest');
 const {app} = require('../../../../../../../main/app');
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('../.modules/oidc');
+jest.mock('../.modules/draft-store');
 
 const respondentCourtOrdersUrl = CITIZEN_COURT_ORDERS_URL.replace(':id', 'aaa');
 const mockDraftStore = {

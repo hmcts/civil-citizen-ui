@@ -2,13 +2,13 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
-import {CLAIM_TASK_LIST_URL, DQ_WELSH_LANGUAGE_URL} from '../../../../../../main/routes/urls';
+import {CLAIM_TASK_LIST_URL, DQ_WELSH_LANGUAGE_URL} from 'routes/urls';
 import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('.modules/oidc');
+jest.mock('.modules/draft-store');
 
 describe('Welsh Language Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

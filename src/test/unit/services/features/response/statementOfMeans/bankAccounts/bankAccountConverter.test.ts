@@ -2,9 +2,9 @@ import {
   convertCitizenBankAccountsToForm,
   convertFormToCitizenBankAccount,
 } from '../../../../../../../main/services/features/response/statementOfMeans/bankAccounts/bankAccountConverter';
-import {BankAccounts} from '../../../../../../../main/common/form/models/bankAndSavings/bankAccounts';
-import {BankAccount} from '../../../../../../../main/common/form/models/bankAndSavings/bankAccount';
-import {CitizenBankAccount} from '../../../../../../../main/common/models/citizenBankAccount';
+import {BankAccounts} from '../.common/form/models/bankAndSavings/bankAccounts';
+import {BankAccount} from '../.common/form/models/bankAndSavings/bankAccount';
+import {CitizenBankAccount} from '../.common/models/citizenBankAccount';
 
 describe('Convert bank account entity to and from from', () => {
   it('should convert form to citizen bank account entity successfully when bank accounts exist', () => {

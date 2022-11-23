@@ -1,18 +1,18 @@
-import * as draftStoreService from '../../../../../../../main/modules/draft-store/draftStoreService';
+import * as draftStoreService from '../.modules/draft-store/draftStoreService';
 import {
   getSelfEmployedAsForm,
   saveSelfEmployedAsData,
 } from '../../../../../../../main/services/features/response/statementOfMeans/employment/selfEmployed/selfEmployedAsService';
-import {Claim} from '../../../../../../../main/common/models/claim';
-import {StatementOfMeans} from '../../../../../../../main/common/models/statementOfMeans';
+import {Claim} from '../.common/models/claim';
+import {StatementOfMeans} from '../.common/models/statementOfMeans';
 import {
   SelfEmployedAsForm,
-} from '../../../../../../../main/common/form/models/statementOfMeans/employment/selfEmployed/selfEmployedAsForm';
+} from '../.common/form/models/statementOfMeans/employment/selfEmployed/selfEmployedAsForm';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {GenericForm} from '../../../../../../../main/common/form/models/genericForm';
+import {GenericForm} from '../.common/form/models/genericForm';
 
-jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../.modules/draft-store');
+jest.mock('../.modules/draft-store/draftStoreService');
 
 const JOB_TITLE = 'Developer';
 const ANNUAL_TURNOVER = 70000.22;

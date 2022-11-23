@@ -1,4 +1,4 @@
-import {Claim} from '../../../../../../main/common/models/claim';
+import {Claim} from '.common/models/claim';
 import {
   financialDetailsShared,
   hasContactPersonAndCompanyPhone,
@@ -11,19 +11,19 @@ import {
   isPaymentOptionMissing,
   isRepaymentPlanMissing,
   isStatementOfMeansComplete,
-} from '../../../../../../main/common/utils/taskList/tasks/taskListHelpers';
-import {PartyType} from '../../../../../../main/common/models/partyType';
-import {Party} from '../../../../../../main/common/models/party';
-import {PaymentOptionType} from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
-import {Mediation} from '../../../../../../main/common/models/mediation/mediation';
-import {CompanyTelephoneNumber} from '../../../../../../main/common/form/models/mediation/companyTelephoneNumber';
-import {ResponseType} from '../../../../../../main/common/form/models/responseType';
-import {RejectAllOfClaim} from '../../../../../../main/common/form/models/rejectAllOfClaim';
-import {RejectAllOfClaimType} from '../../../../../../main/common/form/models/rejectAllOfClaimType';
-import {YesNo} from '../../../../../../main/common/form/models/yesNo';
-import {PartyDetails} from '../../../../../../main/common/form/models/partyDetails';
-import {CitizenDate} from '../../../../../../main/common/form/models/claim/claimant/citizenDate';
-import {Address} from '../../../../../../main/common/form/models/address';
+} from '.common/utils/taskList/tasks/taskListHelpers';
+import {PartyType} from '.common/models/partyType';
+import {Party} from '.common/models/party';
+import {PaymentOptionType} from '.common/form/models/admission/paymentOption/paymentOptionType';
+import {Mediation} from '.common/models/mediation/mediation';
+import {CompanyTelephoneNumber} from '.common/form/models/mediation/companyTelephoneNumber';
+import {ResponseType} from '.common/form/models/responseType';
+import {RejectAllOfClaim} from '.common/form/models/rejectAllOfClaim';
+import {RejectAllOfClaimType} from '.common/form/models/rejectAllOfClaimType';
+import {YesNo} from '.common/form/models/yesNo';
+import {PartyDetails} from '.common/form/models/partyDetails';
+import {CitizenDate} from '.common/form/models/claim/claimant/citizenDate';
+import {Address} from '.common/form/models/address';
 
 const mockClaim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
 const mockRespondent: Party = {

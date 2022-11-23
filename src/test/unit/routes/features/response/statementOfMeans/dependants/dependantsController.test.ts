@@ -6,7 +6,7 @@ import {
   CITIZEN_DEPENDANTS_EDUCATION_URL,
   CITIZEN_DEPENDANTS_URL,
   CITIZEN_OTHER_DEPENDANTS_URL,
-} from '../../../../../../../main/routes/urls';
+} from '../routes/urls';
 import {hasDisabledChildren}
   from '../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
@@ -15,8 +15,8 @@ import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 const request = require('supertest');
 const {app} = require('../../../../../../../main/app');
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('../.modules/oidc');
+jest.mock('../.modules/draft-store');
 jest.mock('../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService');
 const mockHasDisabledChildren = hasDisabledChildren as jest.Mock;
 

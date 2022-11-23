@@ -5,11 +5,11 @@ import config from 'config';
 import {
   FIRST_CONTACT_CLAIM_REFERENCE_URL,
   FIRST_CONTACT_PIN_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 import { t } from 'i18next';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('.modules/oidc');
+jest.mock('.modules/draft-store');
 
 describe('Respond to Claim - Claim Reference Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
