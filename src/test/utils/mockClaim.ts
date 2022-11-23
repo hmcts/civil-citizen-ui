@@ -59,6 +59,15 @@ function buildMockClaim(): Claim {
     },
     type: PartyType.INDIVIDUAL,
   };
+  _mockClaim.claimantResponse = {
+    ccjRequest: {
+      paidAmount: {
+        option: YesNo.YES,
+        amount: 10,
+        totalAmount: 110,
+      },
+    },
+  };
   _mockClaim.evidence = {
     'comment': 'evidence comments',
     'evidenceItem': [new EvidenceItem(EvidenceType.CONTRACTS_AND_AGREEMENTS, 'I have a signed contract showing that you broke the contract agreement.')],
@@ -120,6 +129,13 @@ function buildMockClaim(): Claim {
   ];
 
   _mockClaim.interest = {
+    interestStartDate: {
+      date: new Date('2022-08-21T00:00:00.000Z'),
+      year: 2022,
+      month: 8,
+      day: 21,
+      reason: 'test 1',
+    },
     interestEndDate: InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE,
     interestClaimFrom: InterestClaimFromType.FROM_A_SPECIFIC_DATE,
     interestClaimOptions: InterestClaimOptionsType.SAME_RATE_INTEREST,

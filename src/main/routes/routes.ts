@@ -170,8 +170,9 @@ import specificCourtController from './features/directionsQuestionnaire/hearing/
 import debtRespiteOptionController from './features/breathingSpace/debtRespiteOptionController';
 import debtStartDateController from './features/breathingSpace/debtRespiteStartDateController';
 import debtRespiteEndDateController from './features/breathingSpace/debtRespiteEndDateController';
-import paidSomeAmountController from './features/claimantResponse/ccj/paidAmountController'
+import paidSomeAmountController from './features/claimantResponse/ccj/paidAmountController';
 import reviewDefendantsResponseController from './features/claimantResponse/reviewDefendantsResponseController';
+import judgmentAmountSummaryController from 'routes/features/claimantResponse/ccj/judgmentAmountSummaryController';
 
 export default [
   homeController,
@@ -331,5 +332,5 @@ export default [
   debtRespiteEndDateController,
   paidSomeAmountController,
   reviewDefendantsResponseController,
-
+  judgmentAmountSummaryController,
 ];
