@@ -1,14 +1,14 @@
 import config from 'config';
 import nock from 'nock';
 import {mockCivilClaimPDFTimeline, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {app} from '../app';
+import {app} from 'app';
 import request from 'supertest';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as documentUtils from 'common/utils/downloadUtils';
 
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store');
-jest.mock('../app/client/dmStoreClient');
+jest.mock('app/client/dmStoreClient');
 
 describe('Their PDF timeline controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

@@ -1,9 +1,9 @@
 import {Response, Router} from 'express';
-import {CivilServiceClient} from '../../../app/client/civilServiceClient';
+import {CivilServiceClient} from 'app/client/civilServiceClient';
 import config from 'config';
 import {DASHBOARD_URL} from '../../urls';
 import {AppRequest, UserDetails} from 'models/AppRequest';
-import {getOcmcDraftClaims} from '../../../app/client/legacyDraftStoreClient';
+import {getOcmcDraftClaims} from 'app/client/legacyDraftStoreClient';
 import {DashboardClaimantItem, DashboardDefendantItem} from 'common/models/dashboard/dashboardItem';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');

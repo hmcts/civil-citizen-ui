@@ -5,7 +5,7 @@ import {CITIZEN_COURT_ORDERS_URL, CITIZEN_PRIORITY_DEBTS_URL} from 'routes/urls'
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
 const request = require('supertest');
-const {app} = require('../../app');
+const {app} = require('app');
 
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store');

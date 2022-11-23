@@ -1,5 +1,5 @@
 import request from 'supertest';
-import {app} from '../app';
+import {app} from 'app';
 import nock from 'nock';
 import config from 'config';
 import {CLAIMANT_PHONE_NUMBER_URL, CLAIMANT_TASK_LIST_URL} from 'routes/urls';

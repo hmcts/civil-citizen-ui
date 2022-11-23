@@ -7,7 +7,7 @@ import {
 } from '../../../urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {PinType} from 'common/models/firstContact/pin';
-import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
+import {CivilServiceClient} from 'app/client/civilServiceClient';
 import {AppRequest} from 'common/models/AppRequest';
 import {YesNo} from 'common/form/models/yesNo';
 import {saveDraftClaim} from 'modules/draft-store/draftStoreService';

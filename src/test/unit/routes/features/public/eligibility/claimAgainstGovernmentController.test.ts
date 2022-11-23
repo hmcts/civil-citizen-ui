@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../app';
+import {app} from 'app';
 import {
   ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL,
   ELIGIBILITY_DEFENDANT_AGE_URL,

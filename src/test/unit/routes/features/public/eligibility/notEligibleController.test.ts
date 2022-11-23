@@ -1,5 +1,5 @@
 import request from 'supertest';
-import {app} from '../app';
+import {app} from 'app';
 import nock from 'nock';
 import config from 'config';
 import {NOT_ELIGIBLE_FOR_THIS_SERVICE_URL} from 'routes/urls';

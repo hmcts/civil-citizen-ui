@@ -39,6 +39,9 @@
       ],
       "services/*": [
         "services/*"
+      ],
+      "app/*": [
+        "app/*"
       ]
     },
     "typeRoots": [

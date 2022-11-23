@@ -1,4 +1,4 @@
-import {app} from '../../app';
+import {app} from 'app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';

@@ -1,4 +1,4 @@
-import {app} from '../../app';
+import {app} from 'app';
 import {CivilClaimResponse} from 'common/models/civilClaimResponse';
 import {Claim} from 'common/models/claim';
 import {isUndefined} from 'lodash';

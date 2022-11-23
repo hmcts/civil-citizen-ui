@@ -1,6 +1,6 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import config from 'config';
-import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
+import {CivilServiceClient} from 'app/client/civilServiceClient';
 import {AppRequest} from 'common/models/AppRequest';
 import {Claim} from 'common/models/claim';
 import {getViewOptionsBeforeDeadlineTask} from 'common/utils/taskList/tasks/viewOptionsBeforeDeadline';

@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../app';
+import {app} from 'app';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import {CLAIM_CONTINUE_CLAIMING_INTEREST, CLAIM_TOTAL_INTEREST_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';

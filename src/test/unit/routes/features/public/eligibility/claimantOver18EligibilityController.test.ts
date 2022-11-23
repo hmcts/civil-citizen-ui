@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../app';
+import {app} from 'app';
 import {
   NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, ELIGIBILITY_APPLY_HELP_WITH_FEES_URL, ELIGIBILITY_CLAIMANT_AGE_URL,
 } from 'routes/urls';

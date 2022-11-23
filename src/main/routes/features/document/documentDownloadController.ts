@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import config from 'config';
 import {CASE_DOCUMENT_DOWNLOAD_URL} from '../../urls';
-import {CivilServiceClient} from  '../../../app/client/civilServiceClient';
+import {CivilServiceClient} from  'app/client/civilServiceClient';
 import {downloadPDF} from 'common/utils/downloadUtils';
 import {convertToDocumentType} from 'common/utils/documentTypeConverter';
 import {AppRequest} from 'common/models/AppRequest';

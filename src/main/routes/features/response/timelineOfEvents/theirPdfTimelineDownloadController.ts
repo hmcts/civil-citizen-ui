@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import config from 'config';
 import {CASE_TIMELINE_DOCUMENTS_URL} from '../../../urls';
-import {DmStoreClient} from '../../../../app/client/dmStoreClient';
+import {DmStoreClient} from 'app/client/dmStoreClient';
 import {displayPDF} from 'common/utils/downloadUtils';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 

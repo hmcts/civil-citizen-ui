@@ -4,7 +4,7 @@ import {getSubmitConfirmationContent} from '../../../services/features/response/
 import {CONFIRMATION_URL} from '../../urls';
 import {getClaimById} from 'modules/utilityService';
 import {getLng} from 'common/utils/languageToggleUtils';
-import {CivilServiceClient} from '../../../app/client/civilServiceClient';
+import {CivilServiceClient} from 'app/client/civilServiceClient';
 import {AppRequest} from 'common/models/AppRequest';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {responseSubmitDateGuard} from '../../../routes/guards/responseSubmitDateGuard';

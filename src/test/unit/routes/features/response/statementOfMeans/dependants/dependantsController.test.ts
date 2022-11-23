@@ -13,7 +13,7 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraf
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
 const request = require('supertest');
-const {app} = require('../../app');
+const {app} = require('app');
 
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store');

@@ -1,4 +1,4 @@
-import { app } from '../app';
+import { app } from 'app';
 import config from 'config';
 import request from 'supertest';
 import { POSTCODE_LOOKUP_URL } from 'routes/urls';

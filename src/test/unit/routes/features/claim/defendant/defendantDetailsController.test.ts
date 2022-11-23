@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../app';
+import {app} from 'app';
 import {
   CLAIM_DEFENDANT_COMPANY_DETAILS_URL,
   CLAIM_DEFENDANT_EMAIL_URL,

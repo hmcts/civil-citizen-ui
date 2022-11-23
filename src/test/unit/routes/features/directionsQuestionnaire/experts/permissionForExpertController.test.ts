@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../app';
+import {app} from 'app';
 import {
   DQ_EXPERT_EXAMINATION_URL,
   DQ_GIVE_EVIDENCE_YOURSELF_URL,

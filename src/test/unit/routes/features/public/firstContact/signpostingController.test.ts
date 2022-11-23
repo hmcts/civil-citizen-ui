@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../app';
+import {app} from 'app';
 import {
   FIRST_CONTACT_SIGNPOSTING_URL,
 } from 'routes/urls';

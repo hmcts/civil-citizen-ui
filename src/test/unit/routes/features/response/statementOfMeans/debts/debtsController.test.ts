@@ -1,5 +1,5 @@
 import request from 'supertest';
-import {app} from '../../app';
+import {app} from 'app';
 import nock from 'nock';
 import config from 'config';
 import {CITIZEN_DEBTS_URL, CITIZEN_MONTHLY_EXPENSES_URL} from 'routes/urls';

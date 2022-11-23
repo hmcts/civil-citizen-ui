@@ -1,5 +1,5 @@
 import request from 'supertest';
-import {app} from '../app';
+import {app} from 'app';
 import config from 'config';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
@@ -85,7 +85,7 @@ describe('Claim details page', () => {
       const mockGetClaimById = jest.fn().mockImplementation(() => {
         return {};
       });
-      jest.mock('../app/client/civilServiceClient', () => {
+      jest.mock('app/client/civilServiceClient', () => {
         return mockGetClaimById;
       });
       nock('http://localhost:4000')
@@ -113,7 +113,7 @@ describe('Claim details page', () => {
       const mockGetClaimById = jest.fn().mockImplementation(() => {
         return {};
       });
-      jest.mock('../app/client/civilServiceClient', () => {
+      jest.mock('app/client/civilServiceClient', () => {
         return mockGetClaimById;
       });
       nock('http://localhost:4000')

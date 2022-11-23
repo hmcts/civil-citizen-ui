@@ -1,5 +1,5 @@
 import request from 'supertest';
-import {app} from '../app';
+import {app} from 'app';
 import nock from 'nock';
 import config from 'config';
 import {EXPERT_GUIDANCE_URL, PERMISSION_FOR_EXPERT_URL} from 'routes/urls';

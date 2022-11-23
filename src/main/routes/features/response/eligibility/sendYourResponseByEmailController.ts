@@ -4,7 +4,7 @@ import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
 import {ResponseType} from 'common/form/models/responseType';
 import {PartyType} from 'common/models/partyType';
-import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
+import {CivilServiceClient} from 'app/client/civilServiceClient';
 import config from 'config';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {TableItem} from 'common/models/tableItem';

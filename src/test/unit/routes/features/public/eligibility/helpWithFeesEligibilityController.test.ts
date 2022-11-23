@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../app';
+import {app} from 'app';
 import {
   ELIGIBILITY_HELP_WITH_FEES_URL,
   ELIGIBILITY_INFORMATION_ABOUT_HELP_WITH_FEES_URL,
