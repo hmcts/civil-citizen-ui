@@ -8,12 +8,12 @@ import {
   CCJ_PAYMENT_OPTIONS_URL,
   CCJ_REPAYMENT_PLAN_URL,
   CCJ_CHECK_AND_SEND_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('CCJ - Payment option', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
