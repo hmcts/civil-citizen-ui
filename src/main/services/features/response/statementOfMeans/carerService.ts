@@ -1,4 +1,4 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../../common/models/statementOfMeans';
 import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
 

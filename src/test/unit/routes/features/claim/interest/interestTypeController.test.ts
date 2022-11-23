@@ -13,8 +13,8 @@ import {
   InterestClaimOptionsType,
 } from '.common/form/models/claim/interest/interestClaimOptionsType';
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Interest type controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

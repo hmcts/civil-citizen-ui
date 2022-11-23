@@ -7,8 +7,8 @@ import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure} from '../../.
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Welsh Language Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

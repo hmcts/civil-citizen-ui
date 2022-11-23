@@ -1,5 +1,5 @@
 import {getExpertDetails} from '../../../../../../main/services/features/directionsQuestionnaire/expertDetailsService';
-import * as draftStoreService from '.modules/draft-store/draftStoreService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from '.common/models/claim';
 import {ExpertDetailsList} from '.common/models/directionsQuestionnaire/experts/expertDetailsList';
 import {DirectionQuestionnaire} from '.common/models/directionsQuestionnaire/directionQuestionnaire';
@@ -7,8 +7,8 @@ import {Experts} from '.common/models/directionsQuestionnaire/experts/experts';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {ExpertDetails} from '.common/models/directionsQuestionnaire/experts/expertDetails';
 
-jest.mock('.modules/draft-store');
-jest.mock('.modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 

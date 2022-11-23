@@ -4,7 +4,7 @@ import {saveYourDefence} from '../../../services/features/response/yourDefenceSe
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {Defence} from '../../../common/form/models/defence';
-import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 const yourDefenceViewPath = 'features/response/your-defence';
 const yourDefenceController = Router();

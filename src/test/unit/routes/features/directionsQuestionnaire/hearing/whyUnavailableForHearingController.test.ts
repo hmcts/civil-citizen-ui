@@ -7,8 +7,8 @@ import {DQ_PHONE_OR_VIDEO_HEARING_URL, DQ_UNAVAILABLE_FOR_HEARING_URL} from 'rou
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Why Unavailable for Hearing Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

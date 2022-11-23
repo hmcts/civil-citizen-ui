@@ -6,8 +6,8 @@ import {CITIZEN_EXPLANATION_URL, CLAIM_TASK_LIST_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Explanation Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

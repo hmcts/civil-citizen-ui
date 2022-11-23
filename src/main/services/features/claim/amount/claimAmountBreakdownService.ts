@@ -1,4 +1,4 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {AmountBreakdown} from '../../../../common/form/models/claim/amount/amountBreakdown';
 import {ClaimAmountRow} from '../../../../common/form/models/claim/amount/claimAmountRow';
 import {ClaimAmountBreakup} from '../../../../common/form/models/claimDetails';

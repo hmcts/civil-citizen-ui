@@ -1,4 +1,4 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {ClaimDetails} from '../../../../common/form/models/claim/details/claimDetails';
 import {ClaimantTimeline} from '../../../../common/form/models/timeLineOfEvents/claimantTimeline';
 

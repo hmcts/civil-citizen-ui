@@ -5,8 +5,8 @@ import config from 'config';
 import {NOT_ELIGIBLE_FOR_THIS_SERVICE_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe("You can't use this service", () => {
   // TODO: remove this once paths become publicly available as mocking the response token will not be needed

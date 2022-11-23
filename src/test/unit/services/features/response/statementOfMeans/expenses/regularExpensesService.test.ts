@@ -1,4 +1,4 @@
-import * as draftStoreService from '../.modules/draft-store/draftStoreService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {
   getRegularExpenses,
   saveRegularExpenses,
@@ -14,8 +14,8 @@ import {
 } from '../.common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
-jest.mock('../.modules/draft-store');
-jest.mock('../.modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('regularExpenses service', () => {
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;

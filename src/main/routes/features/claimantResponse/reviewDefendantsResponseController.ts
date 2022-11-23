@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL, CLAIMANT_RESPONSE_TASK_LIST_URL} from '../../../routes/urls';
-import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from '../../../common/models/claim';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {

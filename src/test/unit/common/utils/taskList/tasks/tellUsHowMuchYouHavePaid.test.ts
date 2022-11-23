@@ -4,7 +4,7 @@ import {Claim} from '.common/models/claim';
 import {TaskStatus} from '.common/models/taskList/TaskStatus';
 import {getTellUsHowMuchYouHavePaidTask} from '.common/utils/taskList/tasks/tellUsHowMuchYouHavePaid';
 
-jest.mock('.modules/i18n');
+jest.mock('modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

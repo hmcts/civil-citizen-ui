@@ -8,7 +8,7 @@ import {
   saveRepaymentPlanData,
 } from '../../../../../../services/features/response/repaymentPlan/repaymentPlanService';
 import {CITIZEN_REPAYMENT_PLAN_FULL_URL, CLAIM_TASK_LIST_URL} from '../../../../../urls';
-import {getCaseDataFromStore} from '../../../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 const repaymentPlanViewPath = 'features/response/repaymentPlan/repaymentPlan';
 const repaymentPlanFullAdmissionController = Router();

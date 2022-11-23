@@ -15,7 +15,7 @@ import {PartyDetails} from '../.common/form/models/partyDetails';
 import {Email} from '../.common/models/Email';
 import {CitizenDate} from '../.common/form/models/claim/claimant/citizenDate';
 
-jest.mock('../.modules/i18n');
+jest.mock('modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

@@ -1,4 +1,4 @@
-import * as draftStoreService from '.modules/draft-store/draftStoreService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {
   getClaimantInformation,
   saveClaimant,
@@ -12,8 +12,8 @@ import {buildCitizenAddress} from '../../../../../utils/mockForm';
 import {PartyDetails} from '.common/form/models/partyDetails';
 import {PartyType} from '.common/models/partyType';
 
-jest.mock('.modules/draft-store');
-jest.mock('.modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 const CLAIM_ID = '123';

@@ -11,8 +11,8 @@ import {
 import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
 import { mockCivilClaim, mockCivilClaimUndefined, mockNoStatementOfMeans, mockCivilClaimOptionNo, mockRedisFailure } from '../../../../../../utils/mockDraftStore';
 
-jest.mock('../.modules/oidc');
-jest.mock('../.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Partner Age', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

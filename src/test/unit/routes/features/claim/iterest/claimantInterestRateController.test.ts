@@ -11,8 +11,8 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftSt
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {SameRateInterestType} from '.common/form/models/claimDetails';
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Claimant Interest Rate', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

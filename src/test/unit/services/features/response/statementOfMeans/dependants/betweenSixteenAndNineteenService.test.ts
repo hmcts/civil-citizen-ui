@@ -2,7 +2,7 @@ import {
   getForm,
   saveFormToDraftStore,
 } from '../../../../../../../main/services/features/response/statementOfMeans/dependants/betweenSixteenAndNineteenService';
-import * as draftStoreService from '../.modules/draft-store/draftStoreService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {
   BetweenSixteenAndNineteenDependants,
 } from '../.common/form/models/statementOfMeans/dependants/betweenSixteenAndNineteenDependants';
@@ -15,8 +15,8 @@ import {Dependants} from '../.common/form/models/statementOfMeans/dependants/dep
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {GenericForm} from '../.common/form/models/genericForm';
 
-jest.mock('../.modules/draft-store');
-jest.mock('../.modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('dependent teenagers service test', () => {
   describe('saveFormToDraftStore', () => {

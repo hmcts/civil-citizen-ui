@@ -1,4 +1,4 @@
-import * as draftStoreService from '.modules/draft-store/draftStoreService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import * as ccdTranslationService from '../../../../../../main/services/translation/response/ccdTranslation';
 import * as compareAddress from '../../../../../../main/services/features/response/submission/compareAddress';
 import {Claim} from '.common/models/claim';
@@ -8,8 +8,8 @@ import nock from 'nock';
 import config from 'config';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {Party} from '.common/models/party';
-jest.mock('.modules/draft-store');
-jest.mock('.modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/services/translation/response/ccdTranslation');
 jest.mock('../../../../../../main/services/features/response/submission/compareAddress');
 declare const appRequest: requestModels.AppRequest;

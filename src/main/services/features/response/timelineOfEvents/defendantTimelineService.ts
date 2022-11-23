@@ -1,5 +1,5 @@
 import {DefendantTimeline} from '../../../../common/form/models/timeLineOfEvents/defendantTimeline';
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {PartialAdmission} from '../../../../common/models/partialAdmission';
 import {Claim} from '../../../../common/models/claim';
 

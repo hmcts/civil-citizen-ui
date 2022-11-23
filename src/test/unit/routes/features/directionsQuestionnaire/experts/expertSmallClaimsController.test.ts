@@ -5,8 +5,8 @@ import config from 'config';
 import {DQ_EXPERT_SMALL_CLAIMS_URL} from 'routes/urls';
 import {t} from 'i18next';
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Using an expert', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

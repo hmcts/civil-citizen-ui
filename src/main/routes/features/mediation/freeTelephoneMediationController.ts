@@ -1,6 +1,6 @@
 import {NextFunction, Router} from 'express';
 import {CITIZEN_FREE_TELEPHONE_MEDIATION_URL} from '../../urls';
-import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 const freeTelephoneMediationController = Router();
 const citizenFreeTelephoneMediationViewPath = 'features/mediation/free-telephone-mediation';

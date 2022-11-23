@@ -6,8 +6,8 @@ import request from 'supertest';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as documentUtils from '.common/utils/downloadUtils';
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 jest.mock('../../../../../../main/app/client/dmStoreClient');
 
 describe('Their PDF timeline controller', () => {

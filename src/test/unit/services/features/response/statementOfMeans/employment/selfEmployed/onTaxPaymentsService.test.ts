@@ -1,4 +1,4 @@
-import * as draftStoreService from '../../.modules/draft-store/draftStoreService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {
   getOnTaxPaymentsForm,
   saveTaxPaymentsData,
@@ -12,8 +12,8 @@ import {
 import {TestMessages} from '../../../../../../../utils/errorMessageTestConstants';
 import {GenericForm} from '../../.common/form/models/genericForm';
 
-jest.mock('../../.modules/draft-store');
-jest.mock('../../.modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 const OWED = true;
 const AMOUNT_OWED = 22.2;

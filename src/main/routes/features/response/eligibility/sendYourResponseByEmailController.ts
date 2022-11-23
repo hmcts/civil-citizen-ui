@@ -1,6 +1,6 @@
 import {NextFunction, Response, Router} from 'express';
 import {SEND_RESPONSE_BY_EMAIL_URL} from '../../../urls';
-import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from '../../../../common/models/claim';
 import {ResponseType} from '../../../../common/form/models/responseType';
 import {PartyType} from '../../../../common/models/partyType';

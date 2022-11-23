@@ -1,13 +1,13 @@
 import dependantsService
   from '../../../../../../../main/services/features/response/statementOfMeans/dependants/dependantsService';
-import * as draftStoreService from '../.modules/draft-store/draftStoreService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Dependants} from '../.common/form/models/statementOfMeans/dependants/dependants';
 import {
   NumberOfChildren,
 } from '../.common/form/models/statementOfMeans/dependants/numberOfChildren';
 
-jest.mock('../.modules/draft-store');
-jest.mock('../.modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 const mockGetCaseDataFromDraftStore = draftStoreService.getDraftClaimFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 

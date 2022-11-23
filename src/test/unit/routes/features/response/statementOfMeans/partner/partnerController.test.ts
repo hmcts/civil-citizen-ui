@@ -15,8 +15,8 @@ import {
   mockRedisFailure,
 } from '../../../../../../utils/mockDraftStore';
 
-jest.mock('../.modules/oidc');
-jest.mock('../.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Partner', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

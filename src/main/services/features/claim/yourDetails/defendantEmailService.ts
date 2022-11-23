@@ -1,4 +1,4 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {DefendantEmail} from '../../../../common/form/models/claim/yourDetails/defendantEmail';
 import {Party} from '../../../../common/models/party';
 import {Email} from '../../../../common/models/Email';

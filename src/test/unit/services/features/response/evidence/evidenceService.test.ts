@@ -1,4 +1,4 @@
-import * as draftStoreService from '.modules/draft-store/draftStoreService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {getEvidence, saveEvidence} from '../../../../../../main/services/features/response/evidence/evidenceService';
 import {Claim} from '.common/models/claim';
 import {EvidenceType} from '.common/models/evidence/evidenceType';
@@ -6,8 +6,8 @@ import {Evidence} from '.common/form/models/evidence/evidence';
 import {EvidenceItem} from '.common/form/models/evidence/evidenceItem';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
-jest.mock('.modules/draft-store');
-jest.mock('.modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 const COMMENT = 'Nam ac ante id turpis elementum laoreet. Nunc a erat nec eros iaculis lobortis ut in quam.';
 const EVIDENCE_ITEM = [

@@ -7,8 +7,8 @@ import {DETERMINATION_WITHOUT_HEARING_URL, EXPERT_GUIDANCE_URL} from 'routes/url
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {YesNo} from '.common/form/models/yesNo';
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Determination Without Hearing Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

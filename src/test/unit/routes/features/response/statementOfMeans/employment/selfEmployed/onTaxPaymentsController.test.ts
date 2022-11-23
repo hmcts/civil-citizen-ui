@@ -7,8 +7,8 @@ import {TestMessages} from '../../../../../../../utils/errorMessageTestConstants
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../../utils/mockDraftStore';
 import {YesNo} from '../../.common/form/models/yesNo';
 
-jest.mock('../../.modules/oidc');
-jest.mock('../../.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('on tax payments', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

@@ -15,8 +15,8 @@ import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 const request = require('supertest');
 const {app} = require('../../../../../../../main/app');
 
-jest.mock('../.modules/oidc');
-jest.mock('../.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 jest.mock('../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService');
 const mockHasDisabledChildren = hasDisabledChildren as jest.Mock;
 

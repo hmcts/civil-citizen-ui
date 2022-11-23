@@ -3,7 +3,7 @@ import {CLAIMANT_DOB_URL, CLAIMANT_PHONE_NUMBER_URL} from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {CitizenDate} from '../../../../common/form/models/claim/claimant/citizenDate';
 import {Claim} from '../../../../common/models/claim';
-import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {saveClaimantProperty} from '../../../../../main/services/features/claim/yourDetails/claimantDetailsService';
 

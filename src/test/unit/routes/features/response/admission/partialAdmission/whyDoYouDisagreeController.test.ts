@@ -6,8 +6,8 @@ import {CITIZEN_TIMELINE_URL, CITIZEN_WHY_DO_YOU_DISAGREE_URL} from '../routes/u
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 
-jest.mock('../.modules/oidc');
-jest.mock('../.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Why do you disagree Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

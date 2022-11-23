@@ -1,4 +1,4 @@
-import {saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
+import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {Defence} from '../../../common/form/models/defence';
 import {RejectAllOfClaim} from '../../../common/form/models/rejectAllOfClaim';
 import {Claim} from '../../../common/models/claim';

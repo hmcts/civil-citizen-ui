@@ -7,8 +7,8 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 const {app} = require('../../../../../../main/app');
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Priority Debts Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

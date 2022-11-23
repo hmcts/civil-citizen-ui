@@ -2,7 +2,7 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import config from 'config';
 import {AGE_ELIGIBILITY_URL} from 'routes/urls';
-jest.mock('.modules/oidc');
+jest.mock('modules/oidc');
 const nock = require('nock');
 jest.mock('ioredis', () => {
   return jest.fn().mockImplementation(() => {

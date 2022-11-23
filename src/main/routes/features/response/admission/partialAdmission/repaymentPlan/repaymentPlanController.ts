@@ -9,7 +9,7 @@ import {GenericForm} from '../../../../../../common/form/models/genericForm';
 import {CITIZEN_REPAYMENT_PLAN_PARTIAL_URL, CLAIM_TASK_LIST_URL} from '../../../../../urls';
 import {getFirstPaymentExampleDate} from '../../fullAdmission/repaymentPlan/repaymentPlanController';
 import {ResponseType} from '../../../../../../common/form/models/responseType';
-import {getCaseDataFromStore} from '../../../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {PartAdmitGuard} from '../../../../../../routes/guards/partAdmitGuard';
 
 const repaymentPlanViewPath = 'features/response/repaymentPlan/repaymentPlan';

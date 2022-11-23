@@ -9,7 +9,7 @@ import {Claim} from '../../../../common/models/claim';
 import {CitizenResponseType} from '../../../../common/form/models/citizenResponseType';
 import {ResponseType} from '../../../../common/form/models/responseType';
 import {ComponentDetailItems} from '../../../../common/form/models/componentDetailItems/componentDetailItems';
-import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {saveResponseType} from '../../../../services/features/response/responseType/citizenResponseTypeService';

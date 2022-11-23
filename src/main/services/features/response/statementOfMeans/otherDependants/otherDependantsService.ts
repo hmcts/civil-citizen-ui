@@ -3,7 +3,7 @@ import {
   getCaseDataFromStore,
   getDraftClaimFromStore,
   saveDraftClaim,
-} from '../../../../../modules/draft-store/draftStoreService';
+} from 'modules/draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
 import {get} from 'lodash';
 import {GenericForm} from '../../../../../common/form/models/genericForm';

@@ -6,8 +6,8 @@ import {DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL, UNAUTHORISED_URL} from 'routes/url
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('cant attend hearing in next months Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

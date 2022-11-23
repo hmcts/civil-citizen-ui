@@ -6,8 +6,8 @@ import { CITIZEN_RESIDENCE_URL, CITIZEN_SEVERELY_DISABLED_URL } from 'routes/url
 import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
 import { mockCivilClaim, mockCivilClaimOptionNo, mockRedisFailure } from '../../../../../utils/mockDraftStore';
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('SevereDisability', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

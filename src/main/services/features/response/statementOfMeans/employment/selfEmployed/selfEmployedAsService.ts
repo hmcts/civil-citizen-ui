@@ -1,4 +1,4 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {
   SelfEmployedAsForm,
 } from '../../../../../../common/form/models/statementOfMeans/employment/selfEmployed/selfEmployedAsForm';

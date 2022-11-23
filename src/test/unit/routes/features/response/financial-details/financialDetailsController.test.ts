@@ -18,8 +18,8 @@ const claimIndividual: string = JSON.stringify(claimIndividualMock);
 const claimIndividualNoType: string = JSON.stringify(claimIndividualMockNoType);
 const claimOrganisation: string = JSON.stringify(claimOrganisationMock);
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 const mockLogger = {
   error: jest.fn().mockImplementation((message: string) => message),

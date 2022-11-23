@@ -1,4 +1,4 @@
-import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {YesNo} from '../../../common/form/models/yesNo';
 import {
   ExpertReportDetails,

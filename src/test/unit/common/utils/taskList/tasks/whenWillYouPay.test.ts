@@ -5,7 +5,7 @@ import {PartialAdmission} from '.common/models/partialAdmission';
 import {TaskStatus} from '.common/models/taskList/TaskStatus';
 import {getWhenWillYouPayTask} from '.common/utils/taskList/tasks/whenWillYouPay';
 
-jest.mock('.modules/i18n');
+jest.mock('modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

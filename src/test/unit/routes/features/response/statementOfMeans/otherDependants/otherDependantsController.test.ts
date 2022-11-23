@@ -55,8 +55,8 @@ const mockWithDisabledChildren = {
   get: jest.fn(() => Promise.resolve(civilClaimResponseDisabledPartnerMock)),
 };
 
-jest.mock('../.modules/oidc');
-jest.mock('../.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Other Dependants', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

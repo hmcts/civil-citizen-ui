@@ -67,8 +67,8 @@ const mockSelfEmployed = {
   get: jest.fn(() => Promise.resolve(JSON.stringify(mockRedisSelfEmployed))),
 };
 
-jest.mock('../.modules/oidc');
-jest.mock('../.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Who employs you', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

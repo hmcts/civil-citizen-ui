@@ -8,8 +8,8 @@ import {
 } from 'routes/urls';
 import { t } from 'i18next';
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Respond to Claim - Claim Reference Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

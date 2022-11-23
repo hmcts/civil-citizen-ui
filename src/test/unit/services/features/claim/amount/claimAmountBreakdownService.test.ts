@@ -1,4 +1,4 @@
-import * as draftStoreService from '.modules/draft-store/draftStoreService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from '.common/models/claim';
 import {
   getClaimAmountBreakdownForm, saveClaimAmountBreakdownForm,
@@ -7,8 +7,8 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {AmountBreakdown} from '.common/form/models/claim/amount/amountBreakdown';
 import {ClaimAmountRow} from '.common/form/models/claim/amount/claimAmountRow';
 
-jest.mock('.modules/draft-store');
-jest.mock('.modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 

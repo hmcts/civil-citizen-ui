@@ -14,7 +14,7 @@ import {
 
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {Claim} from '../../../common/models/claim';
-import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {ClaimantResponse} from '../../../common/models/claimantResponse';
 import {ClaimantResponseErrorMessages} from '../../../common/form/models/claimantResponse/claimantResponseErrorMessages';
 

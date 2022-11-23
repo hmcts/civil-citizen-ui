@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response} from 'express';
 import {constructResponseUrlWithIdParams} from '../../common/utils/urlFormatter';
 import {Claim} from '../../common/models/claim';
-import {getCaseDataFromStore} from '../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 export class PartAdmitGuard {
   static apply(redirectUrl: string) {

@@ -1,4 +1,4 @@
-import * as draftStoreService from '.modules/draft-store/draftStoreService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {
   getRepaymentPlanForm,
   saveRepaymentPlanData,
@@ -7,8 +7,8 @@ import {Claim} from '.common/models/claim';
 import {RepaymentPlanForm} from '.common/form/models/repaymentPlan/repaymentPlanForm';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
-jest.mock('.modules/draft-store');
-jest.mock('.modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 const TOTAL_CLAIM_AMOUNT = 1000;
 const PAYMENT_AMOUNT = 100;

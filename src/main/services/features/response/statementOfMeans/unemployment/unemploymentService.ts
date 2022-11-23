@@ -1,4 +1,4 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {Unemployment} from '../../../../../common/form/models/statementOfMeans/unemployment/unemployment';
 import {UnemploymentDetails} from '../../../../../common/form/models/statementOfMeans/unemployment/unemploymentDetails';
 import {OtherDetails} from '../../../../../common/form/models/statementOfMeans/unemployment/otherDetails';

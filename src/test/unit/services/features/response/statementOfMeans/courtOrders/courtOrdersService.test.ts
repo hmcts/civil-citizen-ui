@@ -1,14 +1,14 @@
 import {courtOrdersService}
   from 'services/features/response/statementOfMeans/courtOrders/courtOrdersService';
-import * as draftStoreService from '../.modules/draft-store/draftStoreService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {StatementOfMeans} from 'models/statementOfMeans';
 import {CourtOrders} from 'form/models/statementOfMeans/courtOrders/courtOrders';
 import {CourtOrder} from 'form/models/statementOfMeans/courtOrders/courtOrder';
 import {Claim} from 'models/claim';
 import {GenericForm} from 'form/models/genericForm';
 
-jest.mock('../.modules/draft-store');
-jest.mock('../.modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 

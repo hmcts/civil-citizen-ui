@@ -4,7 +4,7 @@ import {getTaskLists, outstandingTasksFromTaskLists} from '../../services/featur
 import assert from 'assert';
 import {constructResponseUrlWithIdParams} from '../../common/utils/urlFormatter';
 import {Claim} from '../../common/models/claim';
-import {getCaseDataFromStore} from '../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 export class AllResponseTasksCompletedGuard {
   static apply(redirectUrl: string) {

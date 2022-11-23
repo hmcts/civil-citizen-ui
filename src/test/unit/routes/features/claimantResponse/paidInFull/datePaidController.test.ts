@@ -7,8 +7,8 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftSt
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import { t } from 'i18next';
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Date Paid Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

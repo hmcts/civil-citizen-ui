@@ -17,8 +17,8 @@ import {
 } from '../../../../../../utils/mockDraftStore';
 import {t} from 'i18next';
 
-jest.mock('../.modules/oidc');
-jest.mock('../.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Partner Pension', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

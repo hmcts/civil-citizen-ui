@@ -1,4 +1,4 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../main/common/models/claim';
 import {PartialAdmission} from '../../../../../main/common/models/partialAdmission';
 import {RejectAllOfClaim} from '../../../../common/form/models/rejectAllOfClaim';

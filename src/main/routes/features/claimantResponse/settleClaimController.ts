@@ -8,7 +8,7 @@ import {GenericForm} from '../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {Claim} from '../../../common/models/claim';
-import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {saveClaimantResponse} from '../../../services/features/claimantResponse/claimantResponseService';
 import {YesNo} from '../../../common/form/models/yesNo';
 

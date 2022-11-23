@@ -7,8 +7,8 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaimWithTimelineAndEvidence, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {FIRST_CONTACT_ACCESS_DENIED_URL, FIRST_CONTACT_CLAIM_SUMMARY_URL} from 'routes/urls';
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('First contact - claim summary controller', () => {
   // TODO: remove this once paths become publicly available as mocking the response token will not be needed

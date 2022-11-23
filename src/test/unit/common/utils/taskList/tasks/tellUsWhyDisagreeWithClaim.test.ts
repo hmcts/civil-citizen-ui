@@ -6,7 +6,7 @@ import {
 } from '.common/utils/taskList/tasks/tellUsWhyDisagreeWithClaim';
 import {RejectAllOfClaim} from '.common/form/models/rejectAllOfClaim';
 
-jest.mock('.modules/i18n');
+jest.mock('modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

@@ -10,8 +10,8 @@ import {
 import {YesNo} from '.common/form/models/yesNo';
 import {t} from 'i18next';
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Help With Fees Eligibility Controller', () => {
   // TODO: remove this once paths become publicly available as mocking the response token will not be needed

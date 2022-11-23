@@ -3,8 +3,8 @@ import config from 'config';
 import request from 'supertest';
 import { POSTCODE_LOOKUP_URL } from 'routes/urls';
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 const nock = require('nock');
 
 const mockPostcodeServer = 'https://api.os.uk';

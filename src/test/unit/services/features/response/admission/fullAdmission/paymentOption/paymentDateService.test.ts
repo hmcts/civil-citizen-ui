@@ -1,13 +1,13 @@
 import {paymentDateService} from 'services/features/response/admission/fullAdmission/paymentOption/paymentDateService';
-import * as draftStoreService from '../../.modules/draft-store/draftStoreService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
 import {GenericForm} from 'form/models/genericForm';
 import {mockClaim} from '../../../../../../../../../src/test/utils/mockClaim';
 import {ResponseType} from 'form/models/responseType';
 import {Claim} from 'models/claim';
 
-jest.mock('../../.modules/draft-store');
-jest.mock('../../.modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 

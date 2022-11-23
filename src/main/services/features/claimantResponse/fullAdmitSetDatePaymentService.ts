@@ -1,4 +1,4 @@
-import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {ClaimantResponse} from '../../../common/models/claimantResponse';
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
 import {formatDateToFullDate} from '../../../common/utils/dateUtils';

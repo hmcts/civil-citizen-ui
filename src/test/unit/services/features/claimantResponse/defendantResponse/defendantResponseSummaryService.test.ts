@@ -7,7 +7,7 @@ import {PaymentOptionType} from '.common/form/models/admission/paymentOption/pay
 import {getDefendantsResponseContent} from '../../../../../../main/services/features/claimantResponse/defendantResponse/defendantResponseSummaryService';
 import {mockClaim} from '../../../../../utils/mockClaim';
 
-jest.mock('.modules/i18n');
+jest.mock('modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

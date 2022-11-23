@@ -6,7 +6,7 @@ import {
   FINANCIAL_DETAILS_URL,
 } from '../../../urls';
 import {Claim} from '../../../../common/models/claim';
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {PartyType} from '../../../../common/models/partyType';
 import {Logger as winLogger} from 'winston' ;
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';

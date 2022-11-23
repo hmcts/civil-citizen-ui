@@ -1,4 +1,4 @@
-import * as draftStoreService from '.modules/draft-store/draftStoreService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from '.common/models/claim';
 import {
   getPaymentOptionForm,
@@ -14,8 +14,8 @@ import {PartialAdmission} from '.common/models/partialAdmission';
 import {PaymentIntention} from '.common/form/models/admission/partialAdmission/paymentIntention';
 import {mockClaim} from '../../../../../utils/mockClaim';
 
-jest.mock('..modules/draft-store');
-jest.mock('.modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 
 describe('payment option service', () => {

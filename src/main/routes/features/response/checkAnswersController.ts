@@ -6,12 +6,12 @@ import {
   saveStatementOfTruth,
 } from '../../../services/features/response/checkAnswers/checkAnswersService';
 import {GenericForm} from '../../../common/form/models/genericForm';
-import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {StatementOfTruthForm} from '../../../common/form/models/statementOfTruth/statementOfTruthForm';
 import {Claim} from '../../../common/models/claim';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {QualifiedStatementOfTruth} from '../../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
-import {isFullAmountReject} from '../../../modules/claimDetailsService';
+import {isFullAmountReject} from 'modules/claimDetailsService';
 import {AppRequest} from '../../../common/models/AppRequest';
 import {AllResponseTasksCompletedGuard} from '../../../routes/guards/allResponseTasksCompletedGuard';
 import {submitResponse} from '../../../services/features/response/submission/submitResponse';

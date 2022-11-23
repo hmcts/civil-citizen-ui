@@ -3,7 +3,7 @@ import {CITIZEN_DEBTS_URL, CITIZEN_MONTHLY_EXPENSES_URL} from '../../../../urls'
 import {Debts} from '../../../../../common/form/models/statementOfMeans/debts/debts';
 import {DebtItems} from '../../../../../common/form/models/statementOfMeans/debts/debtItems';
 import {Claim} from '../../../../../common/models/claim';
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
 import {YesNo} from '../../../../../common/form/models/yesNo';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';

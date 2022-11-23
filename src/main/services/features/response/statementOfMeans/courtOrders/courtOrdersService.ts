@@ -1,7 +1,7 @@
 import {
   getCaseDataFromStore,
   saveDraftClaim,
-} from '../../../../../modules/draft-store/draftStoreService';
+} from 'modules/draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
 import {CourtOrders} from '../../../../../common/form/models/statementOfMeans/courtOrders/courtOrders';
 

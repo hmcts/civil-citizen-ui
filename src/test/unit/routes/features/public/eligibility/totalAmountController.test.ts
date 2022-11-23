@@ -11,7 +11,7 @@ import {
   ELIGIBILITY_SINGLE_DEFENDANT_URL,
 } from 'routes/urls';
 
-jest.mock('.modules/oidc');
+jest.mock('modules/oidc');
 
 describe('Response Deadline Options Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

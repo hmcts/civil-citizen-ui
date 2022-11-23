@@ -1,4 +1,4 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {Interest} from '../../../../common/form/models/interest/interest';
 
 const {Logger} = require('@hmcts/nodejs-logging');

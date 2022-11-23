@@ -6,8 +6,8 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftSt
 import {DQ_PHONE_OR_VIDEO_HEARING_URL, VULNERABILITY_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Defendant expert can still examine Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

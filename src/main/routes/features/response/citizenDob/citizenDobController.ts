@@ -4,7 +4,7 @@ import {AGE_ELIGIBILITY_URL, CITIZEN_PHONE_NUMBER_URL, CLAIM_TASK_LIST_URL, DOB_
 import {Party} from '../../../../common/models/party';
 import {Claim} from '../../../../common/models/claim';
 import {AgeEligibilityVerification} from '../../../../common/utils/ageEligibilityVerification';
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {CitizenDate} from '../../../../common/form/models/claim/claimant/citizenDate';

@@ -8,8 +8,8 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../../../../utils/mockD
 import {t} from 'i18next';
 import {getNextYearValue} from '../../../../../../../utils/dateUtils';
 
-jest.mock('../../.modules/oidc');
-jest.mock('../../.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Repayment Plan', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

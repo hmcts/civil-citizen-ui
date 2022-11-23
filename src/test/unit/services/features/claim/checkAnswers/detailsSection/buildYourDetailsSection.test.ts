@@ -10,7 +10,7 @@ import {
   createClaimWithContactPersonApplicantDetails,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 
-jest.mock('../.modules/i18n');
+jest.mock('modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

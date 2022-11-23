@@ -5,8 +5,8 @@ import config from 'config';
 import {BASE_ELIGIBILITY_URL} from 'routes/urls';
 import {t} from 'i18next';
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Try the new online service', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

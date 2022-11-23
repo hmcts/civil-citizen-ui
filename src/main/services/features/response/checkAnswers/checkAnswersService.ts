@@ -2,11 +2,11 @@ import {SummarySections} from '../../../../common/models/summaryList/summarySect
 import {Claim} from '../../../../common/models/claim';
 import {PaymentOptionType} from '../../../../common/form/models/admission/paymentOption/paymentOptionType';
 import {StatementOfTruthForm} from '../../../../common/form/models/statementOfTruth/statementOfTruthForm';
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {SignatureType} from '../../../../common/models/signatureType';
 import {isCounterpartyIndividual} from '../../../../common/utils/taskList/tasks/taskListHelpers';
 import {QualifiedStatementOfTruth} from '../../../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
-import {isFullAmountReject} from '../../../../modules/claimDetailsService';
+import {isFullAmountReject} from 'modules/claimDetailsService';
 import {buildYourDetailsSection} from './detailsSection/buildYourDetailsSection';
 import {buildYourResponseToClaimSection} from './responseSection/buildYourResponseToClaimSection';
 import {buildYourResponsePaymentSection} from './responseSection/buildYourResponsePaymentSection';

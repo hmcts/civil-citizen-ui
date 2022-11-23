@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {UNDERSTANDING_RESPONSE_OPTIONS_URL} from '../../urls';
-import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {deadLineGuard} from '../../../routes/guards/deadLineGuard';
 
 const understandingYourOptionsController = Router();

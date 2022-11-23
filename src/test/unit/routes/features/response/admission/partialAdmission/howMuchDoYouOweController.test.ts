@@ -7,8 +7,8 @@ import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 import {ResponseType} from '../.common/form/models/responseType';
 
-jest.mock('../.modules/oidc');
-jest.mock('../.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Partial Admit - How much money do you admit you owe? Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

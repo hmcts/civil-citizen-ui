@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response} from 'express';
 import {Claim} from '../../common/models/claim';
-import {getCaseDataFromStore} from '../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {isPastDeadline} from '../../common/utils/dateUtils';
 import {getViewOptionsBeforeDeadlineTask} from '../../common/utils/taskList/tasks/viewOptionsBeforeDeadline';
 import {TaskStatus} from '../../common/models/taskList/TaskStatus';

@@ -10,9 +10,9 @@ import {Party} from 'models/party';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {PartyDetails} from 'form/models/partyDetails';
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
-jest.mock('.modules/draft-store/draftStoreService');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = saveDraftClaim as jest.Mock;

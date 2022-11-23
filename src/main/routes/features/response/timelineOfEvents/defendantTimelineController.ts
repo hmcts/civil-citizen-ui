@@ -11,7 +11,7 @@ import {
   savePartialAdmitTimeline,
 } from '../../../../services/features/response/timelineOfEvents/defendantTimelineService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {TimeLineOfEvents} from '../../../../common/models/timelineOfEvents/timeLineOfEvents';
 
 const defendantTimelineController = Router();

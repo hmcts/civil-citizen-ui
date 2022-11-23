@@ -26,9 +26,9 @@ import {formatDateToFullDate} from '../.common/utils/dateUtils';
 import {ResponseType} from '../.common/form/models/responseType';
 import {YesNo} from '../.common/form/models/yesNo';
 
-jest.mock('../.modules/draft-store');
-jest.mock('../.modules/draft-store/draftStoreService');
-jest.mock('../.modules/i18n');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

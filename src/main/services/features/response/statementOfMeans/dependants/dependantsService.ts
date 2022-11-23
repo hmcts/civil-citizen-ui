@@ -1,4 +1,4 @@
-import {getDraftClaimFromStore, saveDraftClaim} from '../../../../../modules/draft-store/draftStoreService';
+import {getDraftClaimFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
 import {Validator} from 'class-validator';
 import {Dependants} from '../../../../../common/form/models/statementOfMeans/dependants/dependants';

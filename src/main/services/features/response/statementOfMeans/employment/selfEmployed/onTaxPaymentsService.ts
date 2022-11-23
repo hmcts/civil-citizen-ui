@@ -1,4 +1,4 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {
   OnTaxPayments,
 } from '../../../../../../common/form/models/statementOfMeans/employment/selfEmployed/onTaxPayments';

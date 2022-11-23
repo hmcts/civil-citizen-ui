@@ -9,7 +9,7 @@ import {
 } from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
-jest.mock('.modules/oidc');
+jest.mock('modules/oidc');
 
 describe('You can use this service', () => {
   // TODO: remove this once paths become publicly available as mocking the response token will not be needed

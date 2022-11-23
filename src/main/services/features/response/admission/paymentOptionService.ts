@@ -1,5 +1,5 @@
 import {PaymentOption} from '../../../../common/form/models/admission/paymentOption/paymentOption';
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {Claim} from '../../../../common/models/claim';
 import {ResponseType} from '../../../../common/form/models/responseType';
 import {PaymentOptionType}

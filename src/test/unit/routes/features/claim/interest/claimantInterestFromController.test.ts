@@ -7,8 +7,8 @@ import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../..
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {InterestClaimFromType} from '.common/form/models/claimDetails';
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Claimant Interest From Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

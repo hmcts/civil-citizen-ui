@@ -1,5 +1,5 @@
 import {ClaimantResponse} from '../../../common/models/claimantResponse';
-import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {Claim} from '../../../common/models/claim';
 import {getLng} from '../../../common/utils/languageToggleUtils';
 import {t} from 'i18next';

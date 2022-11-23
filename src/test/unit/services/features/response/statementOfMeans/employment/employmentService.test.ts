@@ -2,7 +2,7 @@ import {
   getEmploymentForm,
   saveEmploymentData,
 } from '../../../../../../../main/services/features/response/statementOfMeans/employment/employmentService';
-import * as draftStoreService from '../.modules/draft-store/draftStoreService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from '../.common/models/claim';
 import {StatementOfMeans} from '../.common/models/statementOfMeans';
 import {
@@ -12,8 +12,8 @@ import {EmploymentForm} from '../.common/form/models/statementOfMeans/employment
 import {YesNo} from '../.common/form/models/yesNo';
 import {GenericForm} from '../.common/form/models/genericForm';
 
-jest.mock('../.modules/draft-store');
-jest.mock('../.modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('employment service', () => {
   describe('get employment form model', () => {

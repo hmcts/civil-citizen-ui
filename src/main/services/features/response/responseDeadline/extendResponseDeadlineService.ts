@@ -1,4 +1,4 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import config from 'config';
 import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
 import {AppRequest} from '../../../../common/models/AppRequest';

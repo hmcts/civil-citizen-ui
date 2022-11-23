@@ -8,8 +8,8 @@ import {FREE_TEXT_MAX_LENGTH} from '.common/form/validators/validationConstraint
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 const agent = request.agent(app);
 const tooLongHousingDetails: string = Array(FREE_TEXT_MAX_LENGTH + 2).join('a');

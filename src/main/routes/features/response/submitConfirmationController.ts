@@ -2,7 +2,7 @@ import {NextFunction, Router} from 'express';
 import config from 'config';
 import {getSubmitConfirmationContent} from '../../../services/features/response/submitConfirmation/submitConfirmationService';
 import {CONFIRMATION_URL} from '../../urls';
-import {getClaimById} from '../../../modules/utilityService';
+import {getClaimById} from 'modules/utilityService';
 import {getLng} from '../../../common/utils/languageToggleUtils';
 import {CivilServiceClient} from '../../../app/client/civilServiceClient';
 import {AppRequest} from '../../../common/models/AppRequest';

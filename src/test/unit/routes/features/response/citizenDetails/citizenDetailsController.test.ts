@@ -15,9 +15,9 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {PartyType} from 'models/partyType';
 import {PartyDetails} from 'form/models/partyDetails';
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
-jest.mock('.modules/draft-store/draftStoreService');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/services/features/common/defendantDetailsService');
 
 const mockGetRespondentInformation = getDefendantInformation as jest.Mock;

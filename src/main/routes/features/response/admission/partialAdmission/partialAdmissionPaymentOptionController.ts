@@ -12,7 +12,7 @@ import {
   savePaymentOptionData,
 } from '../../../../../services/features/response/admission/paymentOptionService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {getCaseDataFromStore} from '../../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../common/models/claim';
 import {ResponseType} from '../../../../../common/form/models/responseType';
 import {GenericForm} from '../../../../../common/form/models/genericForm';

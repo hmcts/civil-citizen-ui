@@ -11,7 +11,7 @@ import {getMediation, saveMediation} from '../../../services/features/response/m
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {YesNo} from '../../../common/form/models/yesNo';
 import {Claim} from '../../../common/models/claim';
-import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {PartyType} from '../../../common/models/partyType';
 
 const mediationDisagreementViewPath = 'features/mediation/mediation-disagreement';

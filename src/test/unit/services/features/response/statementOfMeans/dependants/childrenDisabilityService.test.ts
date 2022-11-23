@@ -1,4 +1,4 @@
-import * as draftStoreService from '../.modules/draft-store/draftStoreService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {YesNo} from '../.common/form/models/yesNo';
 import {
   getChildrenDisability,
@@ -38,8 +38,8 @@ const noCohabitingPartnerDisabilityNoOption: string = JSON.stringify(civilClaimR
 const civilClaimResponseNoPartnerOrDisabilityMock = require('../civilClaimResponseNoPartnerOrDefendantSevereDisabilityMock.json');
 const noPartnerOrDisability: string = JSON.stringify(civilClaimResponseNoPartnerOrDisabilityMock);
 
-jest.mock('../.modules/draft-store');
-jest.mock('../.modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 
 describe('Children Disability service', () => {

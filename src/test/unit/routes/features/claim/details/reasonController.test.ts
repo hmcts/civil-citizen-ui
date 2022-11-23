@@ -12,8 +12,8 @@ import {
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Claim Details - Reason', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

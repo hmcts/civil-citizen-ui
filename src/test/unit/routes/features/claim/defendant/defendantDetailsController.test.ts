@@ -9,16 +9,16 @@ import {
   CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL,
   CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL,
 } from 'routes/urls';
-import {getCaseDataFromStore, saveDraftClaim} from '.modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {Claim} from '.common/models/claim';
 import {Party} from '.common/models/party';
 import {PartyType} from '.common/models/partyType';
 import {Address} from '.common/form/models/address';
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
-jest.mock('.modules/draft-store/draftStoreService');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = saveDraftClaim as jest.Mock;

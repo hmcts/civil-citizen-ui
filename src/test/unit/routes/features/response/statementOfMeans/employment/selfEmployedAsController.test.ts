@@ -7,8 +7,8 @@ import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 import {t} from 'i18next';
 
-jest.mock('../.modules/oidc');
-jest.mock('../.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Self Employed As', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

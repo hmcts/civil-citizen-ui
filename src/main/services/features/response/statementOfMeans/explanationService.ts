@@ -1,5 +1,5 @@
 import {Explanation} from '../../../../common/form/models/statementOfMeans/explanation';
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../../common/models/statementOfMeans';
 
 const {Logger} = require('@hmcts/nodejs-logging');

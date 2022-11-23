@@ -8,7 +8,7 @@ import {OtherDependants} from '../../../../../common/form/models/statementOfMean
 import {OtherDependantsService} from '../../../../../services/features/response/statementOfMeans/otherDependants/otherDependantsService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {Claim} from '../../../../../common/models/claim';
-import {getCaseDataFromStore} from '../../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 
 const citizenOtherDependantsViewPath = 'features/response/statementOfMeans/otherDependants/other-dependants';

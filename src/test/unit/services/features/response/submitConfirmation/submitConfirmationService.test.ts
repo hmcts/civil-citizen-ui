@@ -19,7 +19,7 @@ import {Defence} from '.common/form/models/defence';
 import {RejectAllOfClaimType} from '.common/form/models/rejectAllOfClaimType';
 import {PartyDetails} from '.common/form/models/partyDetails';
 
-jest.mock('.modules/i18n');
+jest.mock('modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

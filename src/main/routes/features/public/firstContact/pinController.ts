@@ -10,7 +10,7 @@ import {PinType} from '../../../../common/models/firstContact/pin';
 import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {YesNo} from '../../../../common/form/models/yesNo';
-import {saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {AxiosResponse} from 'axios';
 
 const pinController = Router();

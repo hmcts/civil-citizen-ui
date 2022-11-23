@@ -5,7 +5,7 @@ import {
   REQUEST_MORE_TIME_URL,
   RESPONSE_DEADLINE_OPTIONS_URL,
 } from '../../../urls';
-import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {ResponseDeadline, ResponseOptions} from '../../../../common/form/models/responseDeadline';
 import {Claim} from '../../../../common/models/claim';

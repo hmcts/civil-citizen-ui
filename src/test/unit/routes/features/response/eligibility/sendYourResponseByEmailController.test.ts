@@ -6,8 +6,8 @@ import {SEND_RESPONSE_BY_EMAIL_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Send your response by email', () => {
   const data = require('../../../../../utils/mocks/feeRangesMock.json');

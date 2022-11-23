@@ -1,5 +1,5 @@
 import {AppRequest} from '../../../../common/models/AppRequest';
-import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import config from 'config';
 import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
 import {Claim} from '../../../../common/models/claim';

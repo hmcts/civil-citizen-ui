@@ -10,8 +10,8 @@ import {
 } from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Defendant expert can still examine Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

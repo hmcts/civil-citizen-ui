@@ -8,13 +8,13 @@ import {
   CITIZEN_RESPONSE_TYPE_URL,
   CLAIM_TASK_LIST_URL,
 } from 'routes/urls';
-import {getCaseDataFromStore} from '.modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from '.common/models/claim';
 import {Party} from '.common/models/party';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store/draftStoreService');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Citizen response type', () => {

@@ -1,7 +1,7 @@
 import {
   getCaseDataFromStore,
   saveDraftClaim,
-} from '../../../../../modules/draft-store/draftStoreService';
+} from 'modules/draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
 import {Residence} from '../../../../../common/form/models/statementOfMeans/residence/residence';
 import {ResidenceType} from '../../../../../common/form/models/statementOfMeans/residence/residenceType';

@@ -4,7 +4,7 @@ import {
   resetCheckboxFields,
   saveStatementOfTruth,
 } from '../../../../../../main/services/features/response/checkAnswers/checkAnswersService';
-import * as draftStoreService from '.modules/draft-store/draftStoreService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {TestMessages} from '../../../../../../../src/test/utils/errorMessageTestConstants';
 import {StatementOfTruthForm} from '.common/form/models/statementOfTruth/statementOfTruthForm';
 import {SignatureType} from '.common/models/signatureType';
@@ -21,9 +21,9 @@ import {
   CLAIM_ID,
 } from '../../../../../utils/checkAnswersConstants';
 
-jest.mock('.modules/draft-store');
-jest.mock('.modules/draft-store/draftStoreService');
-jest.mock('.modules/i18n');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

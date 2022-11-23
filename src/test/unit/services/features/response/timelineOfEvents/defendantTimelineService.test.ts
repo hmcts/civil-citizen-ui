@@ -5,12 +5,12 @@ import {
   getPartialAdmitTimeline,
   savePartialAdmitTimeline,
 } from '../../../../../../main/services/features/response/timelineOfEvents/defendantTimelineService';
-import * as draftStoreService from '.modules/draft-store/draftStoreService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {TimelineRow} from '.common/form/models/timeLineOfEvents/timelineRow';
 
-jest.mock('.modules/draft-store');
-jest.mock('.modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('defendantTimelineService', () => {
   describe('getPartialAdmitTimeline', () => {

@@ -6,8 +6,8 @@ import {CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL, CLAIM_TASK_LIST_URL} from '../
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
-jest.mock('../.modules/oidc');
-jest.mock('../.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('You Have Paid Less Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

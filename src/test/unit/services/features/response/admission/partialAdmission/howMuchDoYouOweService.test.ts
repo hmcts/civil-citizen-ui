@@ -1,4 +1,4 @@
-import * as draftStoreService from '../.modules/draft-store/draftStoreService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {
   getHowMuchDoYouOweForm,
   saveHowMuchDoYouOweData,
@@ -8,8 +8,8 @@ import {PartialAdmission} from '../.common/models/partialAdmission';
 import {HowMuchDoYouOwe} from '../.common/form/models/admission/partialAdmission/howMuchDoYouOwe';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
-jest.mock('../.modules/draft-store');
-jest.mock('../.modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 const AMOUNT = 12.9;
 const TOTAL_AMOUNT = 110;

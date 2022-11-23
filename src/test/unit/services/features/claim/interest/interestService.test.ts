@@ -1,4 +1,4 @@
-import * as draftStoreService from '.modules/draft-store/draftStoreService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from '.common/models/claim';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
@@ -14,8 +14,8 @@ import {
 import {TotalInterest} from '.common/form/models/interest/totalInterest';
 import {InterestClaimOptionsType} from '.common/form/models/claim/interest/interestClaimOptionsType';
 
-jest.mock('.modules/draft-store');
-jest.mock('.modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;

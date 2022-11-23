@@ -33,9 +33,9 @@ import {
 import {Defence} from '../.common/form/models/defence';
 import {TimelineRow} from '../.common/form/models/timeLineOfEvents/timelineRow';
 
-jest.mock('../.modules/draft-store');
-jest.mock('../.modules/draft-store/draftStoreService');
-jest.mock('../.modules/i18n');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

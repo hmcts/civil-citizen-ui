@@ -11,8 +11,8 @@ import {mockRedisWithPaymentAmount, mockRedisFullAdmission, mockRedisWithoutAdmi
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import civilClaimResponseWithAdmittedPaymentAmountMock from '../../../../../../utils/mocks/civilClaimResponseWithAdmittedPaymentAmountMock.json';
 
-jest.mock('../.modules/oidc');
-jest.mock('../.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Part Admit - Payment Option Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

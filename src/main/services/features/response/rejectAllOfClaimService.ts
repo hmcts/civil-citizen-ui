@@ -1,4 +1,4 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {RejectAllOfClaim} from '../../../common/form/models/rejectAllOfClaim';
 
 const {Logger} = require('@hmcts/nodejs-logging');

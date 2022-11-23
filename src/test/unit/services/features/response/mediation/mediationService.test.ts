@@ -1,4 +1,4 @@
-import * as draftStoreService from '.modules/draft-store/draftStoreService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from '.common/models/claim';
 import {YesNo} from '.common/form/models/yesNo';
 import {
@@ -8,7 +8,7 @@ import {
 import {Mediation} from '.common/models/mediation/mediation';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
-jest.mock('.modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/draftStoreService');
 
 const claimId = '123';
 const mediationPhoneNumber = '6000000';

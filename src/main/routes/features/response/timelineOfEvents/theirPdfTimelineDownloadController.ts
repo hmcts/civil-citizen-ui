@@ -3,7 +3,7 @@ import config from 'config';
 import {CASE_TIMELINE_DOCUMENTS_URL} from '../../../urls';
 import {DmStoreClient} from '../../../../app/client/dmStoreClient';
 import {displayPDF} from '../../../../common/utils/downloadUtils';
-import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 const theirPdfTimelineDownloadController = Router();
 const baseUrl: string = config.get<string>('services.dmStore.baseUrl');

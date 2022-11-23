@@ -1,4 +1,4 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {BreathingSpace} from '../../../common/models/breathingSpace';
 import {ClaimDetails} from '../../../common/form/models/claim/details/claimDetails';
 

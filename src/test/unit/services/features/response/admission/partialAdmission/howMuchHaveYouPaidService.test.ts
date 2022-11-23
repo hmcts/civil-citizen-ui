@@ -1,13 +1,13 @@
 import howMuchHaveYouPaidService
   from '../../../../../../../main/services/features/response/admission/howMuchHaveYouPaidService';
-import * as draftStoreService from '../.modules/draft-store/draftStoreService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {HowMuchHaveYouPaid} from '../.common/form/models/admission/howMuchHaveYouPaid';
 import {GenericForm} from '../.common/form/models/genericForm';
 import {mockClaim} from '../../../../../../utils/mockClaim';
 import {ResponseType} from '../.common/form/models/responseType';
 
-jest.mock('../.modules/draft-store');
-jest.mock('../.modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 

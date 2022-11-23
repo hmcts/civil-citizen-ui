@@ -10,8 +10,8 @@ import {
 import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
 import { mockCivilClaim, mockCivilClaimUndefined, mockNoStatementOfMeans, mockRedisFailure } from '../../../../../../utils/mockDraftStore';
 
-jest.mock('../.modules/oidc');
-jest.mock('../.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Partner disability', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

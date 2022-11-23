@@ -1,4 +1,4 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {Mediation} from '../../../../common/models/mediation/mediation';
 
 const {Logger} = require('@hmcts/nodejs-logging');

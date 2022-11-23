@@ -1,4 +1,4 @@
-import * as draftStoreService from '../.modules/draft-store/draftStoreService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {
   getSelfEmployedAsForm,
   saveSelfEmployedAsData,
@@ -11,8 +11,8 @@ import {
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {GenericForm} from '../.common/form/models/genericForm';
 
-jest.mock('../.modules/draft-store');
-jest.mock('../.modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 const JOB_TITLE = 'Developer';
 const ANNUAL_TURNOVER = 70000.22;

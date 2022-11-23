@@ -1,4 +1,4 @@
-import * as draftStoreService from '.modules/draft-store/draftStoreService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {
   getCompanyTelephoneNumberData,
   saveCompanyTelephoneNumberData,
@@ -9,8 +9,8 @@ import {YesNo} from '.common/form/models/yesNo';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {CompanyTelephoneNumber} from '.common/form/models/mediation/companyTelephoneNumber';
 
-jest.mock('.modules/draft-store');
-jest.mock('.modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('Mediation - Company or Organisation - Confirm telephone number Service', () => {
   const telephoneNumber = '0123456789';

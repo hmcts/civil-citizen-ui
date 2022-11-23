@@ -12,8 +12,8 @@ import {YesNo} from '.common/form/models/yesNo';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 const mockFullClaim = { 'id': 1662129391355637, 'case_data': {}};
 describe('Respond to Claim - Pin Controller', () => {

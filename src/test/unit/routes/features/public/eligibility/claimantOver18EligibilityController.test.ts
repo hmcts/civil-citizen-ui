@@ -10,8 +10,8 @@ import {constructUrlWithNotEligibleReason} from '.common/utils/urlFormatter';
 import {NotEligibleReason} from '.common/form/models/eligibility/NotEligibleReason';
 import {t} from 'i18next';
 
-jest.mock('.modules/oidc');
-jest.mock('.modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Claimant Over 18 Eligibility Controller', () => {
   // TODO: remove this once paths become publicly available as mocking the response token will not be needed

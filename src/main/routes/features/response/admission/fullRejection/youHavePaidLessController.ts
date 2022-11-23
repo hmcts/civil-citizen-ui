@@ -1,7 +1,7 @@
 import {NextFunction, Router} from 'express';
 import {CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL, CLAIM_TASK_LIST_URL} from '../../../../urls';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {getCaseDataFromStore} from '../../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 const youHavePaidLessController = Router();
 const youHavePaidLessViewPath = 'features/response/admission/fullRejection/you-have-paid-less';

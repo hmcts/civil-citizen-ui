@@ -1,11 +1,11 @@
 import {getExplanation, saveExplanation} from 'services/features/response/statementOfMeans/explanationService';
-import * as draftStoreService from '.modules/draft-store/draftStoreService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {StatementOfMeans} from 'models/statementOfMeans';
 import {Explanation} from 'form/models/statementOfMeans/explanation';
 
-jest.mock('.modules/draft-store/draftStoreService');
-jest.mock('.modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
 
 const claimId = '123';
 

@@ -1,4 +1,4 @@
-import * as draftStoreService from '.modules/draft-store/draftStoreService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from '.common/models/claim';
 import {buildAddress, mockClaim} from '../../../../../utils/mockClaim';
 import {Party} from '.common/models/party';
@@ -8,8 +8,8 @@ import {
 } from '../../../../../../main/services/features/common/defendantDetailsService';
 import {PartyType} from '.common/models/partyType';
 
-jest.mock('.modules/draft-store');
-jest.mock('.modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 const CLAIM_ID = '123';

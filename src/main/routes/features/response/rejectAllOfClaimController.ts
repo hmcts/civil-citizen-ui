@@ -4,7 +4,7 @@ import {getRejectAllOfClaim, saveRejectAllOfClaim} from '../../../services/featu
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {RejectAllOfClaim} from '../../../common/form/models/rejectAllOfClaim';
-import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {WhyDoYouDisagree} from '../../../common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {HowMuchHaveYouPaid} from '../../../common/form/models/admission/howMuchHaveYouPaid';
 import {RejectAllOfClaimType} from '../../../common/form/models/rejectAllOfClaimType';

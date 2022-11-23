@@ -20,9 +20,9 @@ import * as constVal from '../../../../../../utils/checkAnswersConstants';
 import {YesNo} from '../.common/form/models/yesNo';
 import {RejectAllOfClaimType} from '../.common/form/models/rejectAllOfClaimType';
 
-jest.mock('../.modules/draft-store');
-jest.mock('../.modules/draft-store/draftStoreService');
-jest.mock('../.modules/i18n');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

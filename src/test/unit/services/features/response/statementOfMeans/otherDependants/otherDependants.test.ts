@@ -1,4 +1,4 @@
-import * as draftStoreService from '../.modules/draft-store/draftStoreService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from '../.common/models/claim';
 import {
   OtherDependantsService,
@@ -8,8 +8,8 @@ import {GenericForm} from '../.common/form/models/genericForm';
 import {StatementOfMeans} from '../.common/models/statementOfMeans';
 import {YesNo} from '../.common/form/models/yesNo';
 
-jest.mock('../.modules/draft-store');
-jest.mock('../.modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 const otherDependantsService = new OtherDependantsService();
 
