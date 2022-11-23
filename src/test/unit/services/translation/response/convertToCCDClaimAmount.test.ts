@@ -1,6 +1,6 @@
-import {Claim} from '../../../../../main/common/models/claim';
-import {toCCDClaimAmount} from '../../../../../main/services/translation/response/convertToCCDClaimAmount';
-import {CCDClaimAmountBreakup} from '../../../../../main/common/models/ccdResponse/ccdClaimAmountBreakup';
+import {Claim} from 'common/models/claim';
+import {toCCDClaimAmount} from 'services/translation/response/convertToCCDClaimAmount';
+import {CCDClaimAmountBreakup} from 'common/models/ccdResponse/ccdClaimAmountBreakup';
 
 describe('translate Claim Amount to CCD model', () => {
   const claim = new Claim();

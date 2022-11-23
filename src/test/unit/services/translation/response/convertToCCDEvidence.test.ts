@@ -1,7 +1,7 @@
-import {Claim} from '../../../../../main/common/models/claim';
-import {EvidenceType} from '../../../../../main/common/models/evidence/evidenceType';
-import {CCDEvidence} from '../../../../../main/common/models/ccdResponse/ccdEvidence';
-import {toCCDEvidence} from '../../../../../main/services/translation/response/convertToCCDEvidence';
+import {Claim} from 'common/models/claim';
+import {EvidenceType} from 'common/models/evidence/evidenceType';
+import {CCDEvidence} from 'common/models/ccdResponse/ccdEvidence';
+import {toCCDEvidence} from 'services/translation/response/convertToCCDEvidence';
 
 describe('translate Evidence to CCD model', () => {
   const claim = new Claim();

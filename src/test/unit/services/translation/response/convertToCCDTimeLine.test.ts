@@ -1,9 +1,9 @@
-import {Claim} from '../../../../../main/common/models/claim';
-import {toCCDTimeline} from '../../../../../main/services/translation/response/convertToCCDTimeLine';
-import {DefendantTimeline} from '../../../../../main/common/form/models/timeLineOfEvents/defendantTimeline';
-import {PartialAdmission} from '../../../../../main/common/models/partialAdmission';
-import {TimelineRow} from '../../../../../main/common/form/models/timeLineOfEvents/timelineRow';
-import {CCDTimeLineOfEvents} from '../../../../../main/common/models/ccdResponse/ccdTimeLineOfEvents';
+import {Claim} from 'common/models/claim';
+import {toCCDTimeline} from 'services/translation/response/convertToCCDTimeLine';
+import {DefendantTimeline} from 'common/form/models/timeLineOfEvents/defendantTimeline';
+import {PartialAdmission} from 'common/models/partialAdmission';
+import {TimelineRow} from 'common/form/models/timeLineOfEvents/timelineRow';
+import {CCDTimeLineOfEvents} from 'common/models/ccdResponse/ccdTimeLineOfEvents';
 
 describe('translate TimeLine to CCD model', () => {
   const claim = new Claim();

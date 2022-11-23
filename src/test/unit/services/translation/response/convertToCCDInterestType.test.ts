@@ -1,8 +1,8 @@
-import {Claim} from '../../../../../main/common/models/claim';
-import {CCDInterestType} from '../../../../../main/common/models/ccdResponse/ccdInterestType';
-import {InterestClaimOptionsType} from '../../../../../main/common/form/models/claim/interest/interestClaimOptionsType';
-import {toCCDInterestType} from '../../../../../main/services/translation/response/convertToCCDInterestType';
-import { Interest } from 'common/form/models/interest/interest';
+import {Claim} from 'common/models/claim';
+import {CCDInterestType} from 'common/models/ccdResponse/ccdInterestType';
+import {InterestClaimOptionsType} from 'common/form/models/claim/interest/interestClaimOptionsType';
+import {toCCDInterestType} from 'services/translation/response/convertToCCDInterestType';
+import {Interest} from 'common/form/models/interest/interest';
 
 describe('translate InterestType to CCD model', () => {
 

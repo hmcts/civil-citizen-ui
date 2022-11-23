@@ -1,5 +1,5 @@
-import {toCCDYesNo} from '../../../../../main/services/translation/response/convertToCCDYesNo';
-import {YesNo, YesNoUpperCamelCase} from '../../../../../main/common/form/models/yesNo';
+import {toCCDYesNo} from 'services/translation/response/convertToCCDYesNo';
+import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 
 describe('translate YesNo to CCD model', () => {
 

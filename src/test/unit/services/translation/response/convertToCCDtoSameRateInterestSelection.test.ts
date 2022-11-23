@@ -1,8 +1,8 @@
-import {Claim} from '../../../../../main/common/models/claim';
-import {Interest} from '../../../../../main/common/form/models/interest/interest';
-import {toCCDSameRateInterestSelection} from '../../../../../main/services/translation/response/convertToCCDtoSameRateInterestSelection';
-import {SameRateInterestType} from '../../../../../main/common/form/models/claimDetails';
-import {CCDRepaymentPlanFrequency} from '../../../../../main/common/models/ccdResponse/ccdSameRateInterestSelection';
+import {Claim} from 'common/models/claim';
+import {Interest} from 'common/form/models/interest/interest';
+import {toCCDSameRateInterestSelection} from 'services/translation/response/convertToCCDtoSameRateInterestSelection';
+import {SameRateInterestType} from 'common/form/models/claimDetails';
+import {CCDRepaymentPlanFrequency} from 'common/models/ccdResponse/ccdSameRateInterestSelection';
 
 describe('translate InterestType to CCD model', () => {
 
