@@ -46,7 +46,7 @@ const partyCompany: Party = {
   emailAddress: email,
   partyDetails: {
     partyName: companyName,
-    ..commonParty,
+    ...commonParty,
   },
 };
 
@@ -57,7 +57,7 @@ const partyOrganisation: Party = {
   emailAddress: email,
   partyDetails: {
     partyName: companyName,
-    ..commonParty,
+    ...commonParty,
   },
 };
 
@@ -70,7 +70,7 @@ const partyIndividual: Party = {
     individualTitle: title,
     individualFirstName: firstName,
     individualLastName: lastName,
-    ..commonParty,
+    ...commonParty,
   },
   dateOfBirth: dateOfBirth,
 };
@@ -85,10 +85,10 @@ const partySoleTrader: Party = {
     individualFirstName: firstName,
     individualLastName: lastName,
     soleTraderTradingAs: soleTraderTradingAs,
-    ..commonParty,
+    ...commonParty,
   },
   dateOfBirth: dateOfBirth,
-  ..commonParty,
+  ...commonParty,
 };
 
 const partyCompanyCCD: CCDParty = {
