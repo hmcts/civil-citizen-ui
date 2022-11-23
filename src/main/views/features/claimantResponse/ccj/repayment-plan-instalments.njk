@@ -30,13 +30,16 @@
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             <div id="instalment-amount">
-              <h2 class='govuk-heading-m'>{{ t('PAGES.CCJ_REPAYMENT_PLAN_INSTALMENTS.EACH_INSTALMENT_AMOUNT') }}</h2>
               {% set instalmentAmountError = form.errorFor('amount') %}
               {{ govukInput({
                 id: 'amount',
                 name: 'amount',
                 type: "number",
                 autocomplete: "number",
+                label: {
+                  text: t('PAGES.CCJ_REPAYMENT_PLAN_INSTALMENTS.EACH_INSTALMENT_AMOUNT'),
+                  classes: 'govuk-!-font-weight-bold govuk-!-font-size-24'
+                },
                 hint: {
                   text: t('PAGES.CCJ_REPAYMENT_PLAN_INSTALMENTS.INSTALMENT_AMOUNT_HELP')
                 },
