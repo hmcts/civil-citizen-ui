@@ -53,9 +53,10 @@ civil-service:
   enabled: true
   java:
     applicationPort: 4000
+    releaseNameOverride: ${SERVICE_NAME}-civil-service
     image: 'hmctspublic.azurecr.io/civil/service:latest'
     imagePullPolicy: Always
-    ingressHost: ${SERVICE_FQDN}
+    ingressHost: civil-service-${SERVICE_FQDN}
     keyVaults:
       civil:
         resourceGroup: civil
