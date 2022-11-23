@@ -1,6 +1,5 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../main/common/models/claim';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
 import {GenericYesNo} from '../../../../../main/common/form/models/genericYesNo';
 import {
@@ -50,6 +49,7 @@ jest.mock('i18next', () => ({
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 const languageMock = getLng as jest.Mock;
+const REDIS_FAILURE = 'Redis DraftStore failure.';
 
 describe('Claimant Response Service', () => {
   describe('getClaimantResponse', () => {
@@ -328,10 +328,10 @@ describe('Claimant Response Service', () => {
 
     it('should return an error on redis failure', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
+        throw new Error(REDIS_FAILURE);
       });
 
-      await expect(getClaimantResponse('claimId')).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(getClaimantResponse('claimId')).rejects.toThrow(REDIS_FAILURE);
     });
   });
 
@@ -505,16 +505,16 @@ describe('Claimant Response Service', () => {
       });
     });
 
-    it('should return an error on redis failure', async () => {
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        return new Claim();
+      it('should return an error on redis failure', async () => {
+        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+          return new Claim();
+        });
+        mockSaveDraftClaim.mockImplementation(async () => {
+          throw new Error(REDIS_FAILURE);
+        });
+        await expect(saveClaimantResponse('claimId', mockGetCaseDataFromDraftStore, ''))
+          .rejects.toThrow(REDIS_FAILURE);
       });
-      mockSaveDraftClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await expect(saveClaimantResponse('claimId', mockGetCaseDataFromDraftStore, ''))
-        .rejects.toThrow(TestMessages.REDIS_FAILURE);
-    });
 
     describe('get rejection reason form model', () => {
       it('should return an empty form model when no data retrieved', async () => {
