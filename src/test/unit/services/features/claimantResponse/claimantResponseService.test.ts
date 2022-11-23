@@ -505,16 +505,16 @@ describe('Claimant Response Service', () => {
       });
     });
 
-      it('should return an error on redis failure', async () => {
-        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-          return new Claim();
-        });
-        mockSaveDraftClaim.mockImplementation(async () => {
-          throw new Error(REDIS_FAILURE);
-        });
-        await expect(saveClaimantResponse('claimId', mockGetCaseDataFromDraftStore, ''))
-          .rejects.toThrow(REDIS_FAILURE);
+    it('should return an error on redis failure', async () => {
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return new Claim();
       });
+      mockSaveDraftClaim.mockImplementation(async () => {
+        throw new Error(REDIS_FAILURE);
+      });
+      await expect(saveClaimantResponse('claimId', mockGetCaseDataFromDraftStore, ''))
+        .rejects.toThrow(REDIS_FAILURE);
+    });
 
     describe('get rejection reason form model', () => {
       it('should return an empty form model when no data retrieved', async () => {
