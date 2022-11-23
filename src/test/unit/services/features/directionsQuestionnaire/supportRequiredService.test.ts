@@ -4,21 +4,21 @@ import {
   getSupportRequired,
   getSupportRequiredForm,
   NameListType,
-} from '../../../../../main/services/features/directionsQuestionnaire/supportRequiredService';
-import {getCaseDataFromStore} from '../../../../../main/modules/draft-store/draftStoreService';
+} from 'services/features/directionsQuestionnaire/supportRequiredService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {
   SupportRequired,
   SupportRequiredList,
   Support,
-} from '../../../../../main/common/models/directionsQuestionnaire/supportRequired';
-import {GenericForm} from '../../../../../main/common/form/models/genericForm';
-import {YesNo} from '../../../../../main/common/form/models/yesNo';
+} from 'common/models/directionsQuestionnaire/supportRequired';
+import {GenericForm} from 'common/form/models/genericForm';
+import {YesNo} from 'common/form/models/yesNo';
 import civilClaimResponseExpertAndWitnessMock from '../../../../utils/mocks/civilClaimResponseExpertAndWitnessMock.json';
-import {Claim} from '../../../../../main/common/models/claim';
+import {Claim} from 'common/models/claim';
 
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../main/modules/i18n');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

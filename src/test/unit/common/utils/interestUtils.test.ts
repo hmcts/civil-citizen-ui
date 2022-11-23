@@ -1,10 +1,10 @@
-import {getInterestDetails, getInterestDateOrIssueDate, getInterestRate} from '../../../../main/common/utils/interestUtils';
-import {Claim} from '../../../../main/common/models/claim';
+import {getInterestDetails, getInterestDateOrIssueDate, getInterestRate} from 'common/utils/interestUtils';
+import {Claim} from 'common/models/claim';
 import {deepCopy} from '../../../utils/deepCopy';
 import {mockClaim as mockResponse} from '../../../utils/mockClaim';
-import {YesNo} from '../../../../main/common/form/models/yesNo';
-import {InterestClaimFromType, SameRateInterestType} from '../../../../main/common/form/models/claimDetails';
-import {InterestClaimOptionsType} from '../../../../main/common/form/models/claim/interest/interestClaimOptionsType';
+import {YesNo} from 'common/form/models/yesNo';
+import {InterestClaimFromType, SameRateInterestType} from 'common/form/models/claimDetails';
+import {InterestClaimOptionsType} from 'common/form/models/claim/interest/interestClaimOptionsType';
 
 describe('Interest Utils', () => {
   const claim: Claim = Object.assign(new Claim(), deepCopy(mockResponse));

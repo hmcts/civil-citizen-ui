@@ -1,13 +1,13 @@
-import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../main/common/models/claim';
-import {ResponseDeadlineService} from '../../../../../main/services/features/response/responseDeadlineService';
-import {ResponseOptions} from '../../../../../main/common/form/models/responseDeadline';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {Claim} from 'common/models/claim';
+import {ResponseDeadlineService} from 'services/features/response/responseDeadlineService';
+import {ResponseOptions} from 'common/form/models/responseDeadline';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {AdditionalTimeOptions} from '../../../../../main/common/form/models/additionalTime';
+import {AdditionalTimeOptions} from 'common/form/models/additionalTime';
 import {mockClaim} from '../../../../utils/mockClaim';
 
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 const responseDeadlineService = new ResponseDeadlineService();
 

@@ -1,27 +1,27 @@
 import {
   getExpertReportDetails,
   getExpertReportDetailsForm,
-} from '../../../../../main/services/features/directionsQuestionnaire/expertReportDetailsService';
-import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
+} from 'services/features/directionsQuestionnaire/expertReportDetailsService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {
   ExpertReportDetails,
-} from '../../../../../main/common/models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails';
+} from 'common/models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails';
 import {
   ReportDetail,
-} from '../../../../../main/common/models/directionsQuestionnaire/experts/expertReportDetails/reportDetail';
-import {Claim} from '../../../../../main/common/models/claim';
-import {GenericForm} from '../../../../../main/common/form/models/genericForm';
-import {YesNo} from '../../../../../main/common/form/models/yesNo';
+} from 'common/models/directionsQuestionnaire/experts/expertReportDetails/reportDetail';
+import {Claim} from 'common/models/claim';
+import {GenericForm} from 'common/form/models/genericForm';
+import {YesNo} from 'common/form/models/yesNo';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import CivilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
 import {
   saveDirectionQuestionnaire,
-} from '../../../../../main/services/features/directionsQuestionnaire/directionQuestionnaireService';
-import {DirectionQuestionnaire} from '../../../../../main/common/models/directionsQuestionnaire/directionQuestionnaire';
-import {Experts} from '../../../../../main/common/models/directionsQuestionnaire/experts/experts';
+} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
+import {DirectionQuestionnaire} from 'common/models/directionsQuestionnaire/directionQuestionnaire';
+import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
 
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 

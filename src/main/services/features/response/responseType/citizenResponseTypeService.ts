@@ -1,9 +1,9 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../main/common/models/claim';
-import {PartialAdmission} from '../../../../../main/common/models/partialAdmission';
+import {Claim} from 'common/models/claim';
+import {PartialAdmission} from 'common/models/partialAdmission';
 import {RejectAllOfClaim} from 'common/form/models/rejectAllOfClaim';
-import {StatementOfMeans} from '../../../../../main/common/models/statementOfMeans';
-import {Party} from '../../../../../main/common/models/party';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
+import {Party} from 'common/models/party';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('citizenResponseTypeService');

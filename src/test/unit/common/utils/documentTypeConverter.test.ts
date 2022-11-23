@@ -1,5 +1,5 @@
-import {convertToDocumentType} from '../../../../main/common/utils/documentTypeConverter';
-import {DocumentType} from '../../../../main/common/models/document/documentType';
+import {convertToDocumentType} from 'common/utils/documentTypeConverter';
+import {DocumentType} from 'common/models/document/documentType';
 
 describe('Document type converter', () => {
   it('should return undefined when uri is empty', () => {

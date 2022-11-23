@@ -1,22 +1,22 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../main/app';
-import {Claim} from '../../../../../main/common/models/claim';
-import {getCaseDataFromStore} from '../../../../../main/modules/draft-store/draftStoreService';
-import {constructResponseUrlWithIdParams} from '../../../../../main/common/utils/urlFormatter';
-import {formatDateToFullDate} from '../../../../../main/common/utils/dateUtils';
-import {getFinancialDetails} from '../../../../../main/services/features/claimantResponse/claimantResponseService';
-import {StatementOfMeans} from '../../../../../main/common/models/statementOfMeans';
-import {CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL} from '../../../../../main/routes/urls';
+import {app} from 'app';
+import {Claim} from 'common/models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {getFinancialDetails} from 'services/features/claimantResponse/claimantResponseService';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
+import {CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/common/utils/urlFormatter');
-jest.mock('../../../../../main/common/utils/dateUtils');
-jest.mock('../../../../../main/services/features/claimantResponse/claimantResponseService');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
+jest.mock('common/utils/urlFormatter');
+jest.mock('common/utils/dateUtils');
+jest.mock('services/features/claimantResponse/claimantResponseService');
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('Review Defendant\'s Response Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

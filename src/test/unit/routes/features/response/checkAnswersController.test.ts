@@ -17,15 +17,15 @@ const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 
 const request = require('supertest');
-const {app} = require('../../../../../main/app');
+const {app} = require('app');
 const session = require('supertest-session');
 const civilServiceUrl = config.get<string>('services.civilService.url');
 const data = require('../../../../utils/mocks/defendantClaimsMock.json');
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/claimDetailsService');
-jest.mock('../../../../../main/services/features/response/checkAnswers/checkAnswersService');
-jest.mock('../../../../../main/services/features/response/taskListService', () => ({
-  ...jest.requireActual('../../../../../main/services/features/response/taskListService') as Module,
+jest.mock('modules/oidc');
+jest.mock('modules/claimDetailsService');
+jest.mock('services/features/response/checkAnswers/checkAnswersService');
+jest.mock('services/features/response/taskListService', () => ({
+  ...jest.requireActual('services/features/response/taskListService') as Module,
   getTaskLists: jest.fn(() => TASK_LISTS),
 }));
 const mockGetSummarySections = getSummarySections as jest.Mock;

@@ -1,7 +1,7 @@
-import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../main/common/models/claim';
-import {YesNo} from '../../../../../main/common/form/models/yesNo';
-import {GenericYesNo} from '../../../../../main/common/form/models/genericYesNo';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {Claim} from 'common/models/claim';
+import {YesNo} from 'common/form/models/yesNo';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {
   constructBanksAndSavingsAccountSection,
   constructChildrenSection,
@@ -14,31 +14,31 @@ import {
   constructSelfEmploymentDetailsSection,
   getClaimantResponse, getFinancialDetails,
   saveClaimantResponse,
-} from '../../../../../main/services/features/claimantResponse/claimantResponseService';
-import {ClaimantResponse} from '../../../../../main/common/models/claimantResponse';
-import {getLng} from '../../../../../main/common/utils/languageToggleUtils';
-import {StatementOfMeans} from '../../../../../main/common/models/statementOfMeans';
-import {ResidenceType} from '../../../../../main/common/form/models/statementOfMeans/residence/residenceType';
-import {Residence} from '../../../../../main/common/form/models/statementOfMeans/residence/residence';
-import {NumberOfChildren} from '../../../../../main/common/form/models/statementOfMeans/dependants/numberOfChildren';
-import {Dependants} from '../../../../../main/common/form/models/statementOfMeans/dependants/dependants';
-import {EmploymentCategory} from '../../../../../main/common/form/models/statementOfMeans/employment/employmentCategory';
-import {RegularIncome} from '../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
-import {Transaction} from '../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transaction';
-import {RegularExpenses} from '../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
-import {CourtOrder} from '../../../../../main/common/form/models/statementOfMeans/courtOrders/courtOrder';
-import {PriorityDebts} from '../../../../../main/common/form/models/statementOfMeans/priorityDebts';
-import {PriorityDebtDetails} from '../../../../../main/common/form/models/statementOfMeans/priorityDebtDetails';
-import {Debts} from '../../../../../main/common/form/models/statementOfMeans/debts/debts';
-import {DebtItems} from '../../../../../main/common/form/models/statementOfMeans/debts/debtItems';
-import {CCJRequest} from '../../../../../main/common/models/claimantResponse/ccj/ccjRequest';
+} from 'services/features/claimantResponse/claimantResponseService';
+import {ClaimantResponse} from 'common/models/claimantResponse';
+import {getLng} from 'common/utils/languageToggleUtils';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
+import {ResidenceType} from 'common/form/models/statementOfMeans/residence/residenceType';
+import {Residence} from 'common/form/models/statementOfMeans/residence/residence';
+import {NumberOfChildren} from 'common/form/models/statementOfMeans/dependants/numberOfChildren';
+import {Dependants} from 'common/form/models/statementOfMeans/dependants/dependants';
+import {EmploymentCategory} from 'common/form/models/statementOfMeans/employment/employmentCategory';
+import {RegularIncome} from 'common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
+import {Transaction} from 'common/form/models/statementOfMeans/expensesAndIncome/transaction';
+import {RegularExpenses} from 'common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
+import {CourtOrder} from 'common/form/models/statementOfMeans/courtOrders/courtOrder';
+import {PriorityDebts} from 'common/form/models/statementOfMeans/priorityDebts';
+import {PriorityDebtDetails} from 'common/form/models/statementOfMeans/priorityDebtDetails';
+import {Debts} from 'common/form/models/statementOfMeans/debts/debts';
+import {DebtItems} from 'common/form/models/statementOfMeans/debts/debtItems';
+import {CCJRequest} from 'common/models/claimantResponse/ccj/ccjRequest';
 import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
-import {RejectionReason} from '../../../../../main/common/form/models/claimantResponse/rejectionReason';
+import {RejectionReason} from 'common/form/models/claimantResponse/rejectionReason';
 
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../main/common/utils/languageToggleUtils');
-jest.mock('../../../../../main/modules/i18n');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('common/utils/languageToggleUtils');
+jest.mock('modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

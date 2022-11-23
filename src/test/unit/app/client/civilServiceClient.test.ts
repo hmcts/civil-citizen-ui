@@ -1,7 +1,7 @@
-import {CivilServiceClient} from '../../../../main/app/client/civilServiceClient';
+import {CivilServiceClient} from 'app/client/civilServiceClient';
 import axios, {AxiosInstance} from 'axios';
-import * as requestModels from '../../../../main/common/models/AppRequest';
-import {CCDClaim, CivilClaimResponse} from '../../../../main/common/models/civilClaimResponse';
+import * as requestModels from 'common/models/AppRequest';
+import {CCDClaim, CivilClaimResponse} from 'common/models/civilClaimResponse';
 import config from 'config';
 import {
   CIVIL_SERVICE_CALCULATE_DEADLINE,
@@ -10,12 +10,12 @@ import {
   CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_FEES_RANGES,
   CIVIL_SERVICE_SUBMIT_EVENT,
-} from '../../../../main/app/client/civilServiceUrls';
-import {PartyType} from '../../../../main/common/models/partyType';
+} from 'app/client/civilServiceUrls';
+import {PartyType} from 'common/models/partyType';
 import {mockClaim} from '../../../utils/mockClaim';
 import {TestMessages} from '../../../utils/errorMessageTestConstants';
-import {CaseState} from '../../../../main/common/form/models/claimDetails';
-import {CourtLocation} from '../../../../main/common/models/courts/courtLocations';
+import {CaseState} from 'common/form/models/claimDetails';
+import {CourtLocation} from 'common/models/courts/courtLocations';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;

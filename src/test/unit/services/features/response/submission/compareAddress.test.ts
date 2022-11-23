@@ -2,7 +2,7 @@ import {Address} from 'common/form/models/address';
 import {
   addressHasChange,
   processAddressLine,
-} from '../../../../../../main/services/features/response/submission/compareAddress';
+} from '../services/features/response/submission/compareAddress';
 
 const addressData: Address = new Address('Street', '1', '5A', 'XXX123');
 const completeAddress: Address = new Address('Street', '1', '5A', 'XXX123', '');

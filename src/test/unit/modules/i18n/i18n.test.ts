@@ -4,7 +4,7 @@ import express from 'express';
 const request = require('supertest');
 const nock = require('nock');
 
-const {app} = require('../../../../main/app');
+const {app} = require('app');
 
 const agent = request.agent(app);
 

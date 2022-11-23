@@ -1,4 +1,4 @@
-import * as urls from '../../main/routes/urls';
+import * as urls from 'routes/urls';
 
 interface ActionModel {
   url: string,

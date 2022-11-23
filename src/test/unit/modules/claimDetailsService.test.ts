@@ -1,10 +1,10 @@
-import {getTotalAmountWithInterestAndFees, isFullAmountReject} from '../../../main/modules/claimDetailsService';
-import {convertToPoundsFilter} from '../../../main/common/utils/currencyFormat';
+import {getTotalAmountWithInterestAndFees, isFullAmountReject} from 'modules/claimDetailsService';
+import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {deepCopy} from '../../utils/deepCopy';
-import {Claim} from '../../../main/common/models/claim';
+import {Claim} from 'common/models/claim';
 import {createClaimWithBasicRespondentDetails} from '../../utils/mockClaimForCheckAnswers';
-import {Party} from '../../../main/common/models/party';
-import {ResponseType} from '../../../main/common/form/models/responseType';
+import {Party} from 'common/models/party';
+import {ResponseType} from 'common/form/models/responseType';
 
 describe('Claim Details service', () => {
   const mockClaim = require('../../utils/mocks/civilClaimResponseMock.json');

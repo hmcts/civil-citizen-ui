@@ -1,17 +1,17 @@
-import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {
   getFullAdmitSetDatePaymentDetails,
-} from '../../../../../main/services/features/claimantResponse/fullAdmitSetDatePaymentService';
-import {Claim} from '../../../../../main/common/models/claim';
-import {ClaimantResponse} from '../../../../../main/common/models/claimantResponse';
-import {YesNo} from '../../../../../main/common/form/models/yesNo';
-import {formatDateToFullDate} from '../../../../../main/common/utils/dateUtils';
-import {Party} from '../../../../../main/common/models/party';
-import {PartyDetails} from '../../../../../main/common/form/models/partyDetails';
+} from 'services/features/claimantResponse/fullAdmitSetDatePaymentService';
+import {Claim} from 'common/models/claim';
+import {ClaimantResponse} from 'common/models/claimantResponse';
+import {YesNo} from 'common/form/models/yesNo';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {Party} from 'common/models/party';
+import {PartyDetails} from 'common/form/models/partyDetails';
 
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 

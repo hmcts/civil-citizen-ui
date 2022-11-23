@@ -2,7 +2,7 @@ import express from 'express';
 import nock from 'nock';
 import config from 'config';
 import request from 'supertest';
-import {app} from '../../../../../main/app';
+import {app} from 'app';
 import {
   mockCivilClaimWithExpertAndWitness,
   mockRedisFailure,
@@ -14,8 +14,8 @@ import {
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {YesNo} from 'form/models/yesNo';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 const supportRequiredUrl = SUPPORT_REQUIRED_URL.replace(':id', 'aaa');
 

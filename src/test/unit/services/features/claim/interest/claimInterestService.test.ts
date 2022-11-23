@@ -1,5 +1,5 @@
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {getClaimInterest, saveClaimInterest} from '../../../../../../main/services/features/claim/interest/claimInterestService';
+import {getClaimInterest, saveClaimInterest} from '../services/features/claim/interest/claimInterestService';
 import {YesNo} from 'common/form/models/yesNo';
 import {Claim} from 'common/models/claim';
 import {GenericYesNo} from 'common/form/models/genericYesNo';

@@ -7,12 +7,12 @@ import {ResponseType} from 'form/models/responseType';
 import {PartAdmitHowMuchHaveYouPaidGuard} from 'routes/guards/partAdmitHowMuchHaveYouPaidGuard';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
-jest.mock('../../../../main/modules/oidc');
-jest.mock('../../../../main/modules/draft-store');
-jest.mock('../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../main/routes/features/response/checkAnswersController');
-jest.mock('../../../../main/services/features/response/taskListService');
-jest.mock('../../../../main/modules/i18n');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('routes/features/response/checkAnswersController');
+jest.mock('services/features/response/taskListService');
+jest.mock('modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

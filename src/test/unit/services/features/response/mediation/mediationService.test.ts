@@ -4,7 +4,7 @@ import {YesNo} from 'common/form/models/yesNo';
 import {
   getMediation,
   saveMediation,
-} from '../../../../../../main/services/features/response/mediation/mediationService';
+} from '../services/features/response/mediation/mediationService';
 import {Mediation} from 'common/models/mediation/mediation';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 

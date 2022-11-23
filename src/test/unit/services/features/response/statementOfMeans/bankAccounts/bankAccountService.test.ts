@@ -1,6 +1,6 @@
 import {
   BankAccountService,
-} from '../../../../../../../main/services/features/response/statementOfMeans/bankAccounts/bankAccountService';
+} from '../../services/features/response/statementOfMeans/bankAccounts/bankAccountService';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {BankAccounts} from '../common/form/models/bankAndSavings/bankAccounts';
 import {BankAccount} from '../common/form/models/bankAndSavings/bankAccount';

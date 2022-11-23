@@ -1,4 +1,4 @@
-import {HtmlConverter} from '../../../../main/common/utils/htmlFormConverter';
+import {HtmlConverter} from 'common/utils/htmlFormConverter';
 
 describe('Html converter', ()=>{
   it('should convert from html to property successfully', () => {

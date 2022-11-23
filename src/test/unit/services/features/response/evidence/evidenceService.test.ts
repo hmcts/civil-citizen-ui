@@ -1,5 +1,5 @@
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {getEvidence, saveEvidence} from '../../../../../../main/services/features/response/evidence/evidenceService';
+import {getEvidence, saveEvidence} from '../services/features/response/evidence/evidenceService';
 import {Claim} from 'common/models/claim';
 import {EvidenceType} from 'common/models/evidence/evidenceType';
 import {Evidence} from 'common/form/models/evidence/evidence';

@@ -1,5 +1,5 @@
 import request from 'supertest';
-import {app} from '../../../../../main/app';
+import {app} from 'app';
 import nock from 'nock';
 import config from 'config';
 import {CLAIM_TASK_LIST_URL, DONT_WANT_FREE_MEDIATION_URL} from 'routes/urls';
@@ -7,8 +7,8 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure, mockRedisWithMediationProperties} from '../../../../utils/mockDraftStore';
 import {NoMediationReasonOptions} from 'form/models/mediation/noMediationReasonOptions';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('I dont want free meditation', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

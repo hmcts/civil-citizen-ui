@@ -1,4 +1,4 @@
-import {app} from '../../../../../../main/app';
+import {app} from '../app';
 import config from 'config';
 import request from 'supertest';
 import {

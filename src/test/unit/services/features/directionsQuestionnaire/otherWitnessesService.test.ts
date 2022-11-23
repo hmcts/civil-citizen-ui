@@ -1,14 +1,14 @@
 import {request} from 'express';
-import {getOtherWitnesses} from '../../../../../main/services/features/directionsQuestionnaire/otherWitnessesService';
-import {getCaseDataFromStore} from '../../../../../main/modules/draft-store/draftStoreService';
-import {OtherWitnesses} from '../../../../../main/common/models/directionsQuestionnaire/witnesses/otherWitnesses';
-import {Claim} from '../../../../../main/common/models/claim';
+import {getOtherWitnesses} from 'services/features/directionsQuestionnaire/otherWitnessesService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {OtherWitnesses} from 'common/models/directionsQuestionnaire/witnesses/otherWitnesses';
+import {Claim} from 'common/models/claim';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import civilClaimResponseExpertAndWitnessMock from '../../../../utils/mocks/civilClaimResponseExpertAndWitnessMock.json';
-import {Witnesses} from '../../../../../main/common/models/directionsQuestionnaire/witnesses/witnesses';
+import {Witnesses} from 'common/models/directionsQuestionnaire/witnesses/witnesses';
 
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 const mockGetCaseDataFromStore = getCaseDataFromStore as jest.Mock;
 
 describe('Other witnesses service', () => {

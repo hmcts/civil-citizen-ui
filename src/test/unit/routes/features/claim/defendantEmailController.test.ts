@@ -1,17 +1,17 @@
 import request from 'supertest';
-import {app} from '../../../../../main/app';
+import {app} from 'app';
 import nock from 'nock';
 import config from 'config';
-import {CLAIM_DEFENDANT_EMAIL_URL, CLAIM_DEFENDANT_PHONE_NUMBER_URL} from '../../../../../main/routes/urls';
+import {CLAIM_DEFENDANT_EMAIL_URL, CLAIM_DEFENDANT_PHONE_NUMBER_URL} from 'routes/urls';
 import {t} from 'i18next';
 import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {Claim} from '../../../../../main/common/models/claim';
-import {getCaseDataFromStore} from '../../../../../main/modules/draft-store/draftStoreService';
+import {Claim} from 'common/models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const EMAIL_ADDRESS = 'test@gmail.com';

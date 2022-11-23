@@ -1,4 +1,4 @@
-import {getExpertDetails} from '../../../../../../main/services/features/directionsQuestionnaire/expertDetailsService';
+import {getExpertDetails} from '../services/features/directionsQuestionnaire/expertDetailsService';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
 import {ExpertDetailsList} from 'common/models/directionsQuestionnaire/experts/expertDetailsList';

@@ -16,7 +16,7 @@ jest.mock('ioredis', () => {
   });
 });
 
-import {app} from '../../../../main/app';
+import {app} from 'app';
 
 describe('Draft Store Health Check - DOWN', () => {
   it('When draft store not responding, health check should return DOWN', async () => {

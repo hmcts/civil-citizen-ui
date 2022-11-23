@@ -6,7 +6,7 @@ import {
 import {GenericForm} from 'common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {ExpertCanStillExamine} from 'common/models/directionsQuestionnaire/experts/expertCanStillExamine';
-import {getClaimantResponse, saveClaimantResponse} from '../../../../../main/services/features/claimantResponse/claimantResponseService';
+import {getClaimantResponse, saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
 import {DefendantDOB} from 'common/models/claimantResponse/ccj/defendantDOB';
 import {getDOBforAgeFromCurrentTime} from 'common/utils/dateUtils';
 import {DateOfBirth} from 'common/models/claimantResponse/ccj/dateOfBirth';

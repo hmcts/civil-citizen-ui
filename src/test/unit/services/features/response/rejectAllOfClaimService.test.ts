@@ -1,15 +1,15 @@
 import {
   getRejectAllOfClaim,
   saveRejectAllOfClaim,
-} from '../../../../../main/services/features/response/rejectAllOfClaimService';
-import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../main/common/models/claim';
-import {RejectAllOfClaim} from '../../../../../main/common/form/models/rejectAllOfClaim';
-import {PartyType} from '../../../../../main/common/models/partyType';
-import {RejectAllOfClaimType} from '../../../../../main/common/form/models/rejectAllOfClaimType';
+} from 'services/features/response/rejectAllOfClaimService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {Claim} from 'common/models/claim';
+import {RejectAllOfClaim} from 'common/form/models/rejectAllOfClaim';
+import {PartyType} from 'common/models/partyType';
+import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
 
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('rejectAllOfClaim service', () => {
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;

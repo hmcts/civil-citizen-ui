@@ -1,17 +1,17 @@
-import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {
   getDefendantEmail,
   saveDefendantEmail,
-} from '../../../../../main/services/features/claim/yourDetails/defendantEmailService';
-import {Claim} from '../../../../../main/common/models/claim';
-import {PartyType} from '../../../../../main/common/models/partyType';
+} from 'services/features/claim/yourDetails/defendantEmailService';
+import {Claim} from 'common/models/claim';
+import {PartyType} from 'common/models/partyType';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {Party} from '../../../../../main/common/models/party';
-import {DefendantEmail} from '../../../../../main/common/form/models/claim/yourDetails/defendantEmail';
-import {Email} from '../../../../../main/common/models/Email';
+import {Party} from 'common/models/party';
+import {DefendantEmail} from 'common/form/models/claim/yourDetails/defendantEmail';
+import {Email} from 'common/models/Email';
 
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 const EMAIL_ADDRESS = 'test@gmail.com';
 

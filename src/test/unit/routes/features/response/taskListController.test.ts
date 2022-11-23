@@ -1,12 +1,12 @@
 import request from 'supertest';
-import {app} from '../../../../../main/app';
+import {app} from 'app';
 import nock from 'nock';
 import config from 'config';
-import {CLAIM_TASK_LIST_URL} from '../../../../../main/routes/urls';
+import {CLAIM_TASK_LIST_URL} from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Claimant details', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

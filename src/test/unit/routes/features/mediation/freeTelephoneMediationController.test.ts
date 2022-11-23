@@ -1,16 +1,16 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../main/app';
-import {CITIZEN_FREE_TELEPHONE_MEDIATION_URL} from '../../../../../main/routes/urls';
+import {app} from 'app';
+import {CITIZEN_FREE_TELEPHONE_MEDIATION_URL} from 'routes/urls';
 import {
   mockCivilClaim, mockCivilClaimUnemploymentRetired,
   mockRedisFailure,
 } from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Free Telephone Mediation Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

@@ -1,4 +1,4 @@
-import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {TestMessages} from '../../../../../../src/test/utils/errorMessageTestConstants';
 import {YesNo} from 'form/models/yesNo';
@@ -16,8 +16,8 @@ import {ExpertDetails} from 'models/directionsQuestionnaire/experts/expertDetail
 import {OtherWitnessItems} from 'models/directionsQuestionnaire/witnesses/otherWitnessItems';
 import {Witnesses} from 'models/directionsQuestionnaire/witnesses/witnesses';
 
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;

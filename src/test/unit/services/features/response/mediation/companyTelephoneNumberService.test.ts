@@ -2,7 +2,7 @@ import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {
   getCompanyTelephoneNumberData,
   saveCompanyTelephoneNumberData,
-} from '../../../../../../main/services/features/response/mediation/companyTelephoneNumberService';
+} from '../services/features/response/mediation/companyTelephoneNumberService';
 import {Claim} from 'common/models/claim';
 import {Mediation} from 'common/models/mediation/mediation';
 import {YesNo} from 'common/form/models/yesNo';

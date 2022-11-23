@@ -1,6 +1,6 @@
 import {
   getSummarySections,
-} from '../../../../../../../main/services/features/response/checkAnswers/checkAnswersService';
+} from '../../services/features/response/checkAnswers/checkAnswersService';
 import {
   CITIZEN_COURT_ORDERS_URL,
 } from '../routes/urls';

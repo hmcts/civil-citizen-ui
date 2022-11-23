@@ -3,7 +3,7 @@ import {PartyType} from 'common/models/partyType';
 import {
   getAddress,
   getSolicitorName,
-} from '../../../../../../main/services/features/response/contactThem/contactThemService';
+} from '../services/features/response/contactThem/contactThemService';
 import {Party} from 'common/models/party';
 import {PartyDetails} from 'common/form/models/partyDetails';
 import {Address} from 'common/form/models/address';

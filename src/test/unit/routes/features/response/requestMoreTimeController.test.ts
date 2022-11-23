@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../main/app';
+import {app} from 'app';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {
@@ -12,11 +12,11 @@ import {ResponseDeadline} from 'form/models/responseDeadline';
 import {AdditionalTimeOptions} from 'form/models/additionalTime';
 import {PartyType} from 'models/partyType';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {Party} from '../../../../../main/common/models/party';
+import {Party} from 'common/models/party';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockSaveCaseData = saveDraftClaim as jest.Mock;

@@ -1,5 +1,5 @@
 import dependantsService
-  from '../../../../../../../main/services/features/response/statementOfMeans/dependants/dependantsService';
+  from '../../services/features/response/statementOfMeans/dependants/dependantsService';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Dependants} from '../common/form/models/statementOfMeans/dependants/dependants';
 import {

@@ -2,11 +2,11 @@ import {
   getCaseDataFromStore,
   getDraftClaimFromStore,
   saveDraftClaim,
-} from '../../../../main/modules/draft-store/draftStoreService';
-import {app} from '../../../../main/app';
-import {Claim} from '../../../../main/common/models/claim';
+} from 'modules/draft-store/draftStoreService';
+import {app} from 'app';
+import {Claim} from 'common/models/claim';
 
-const REDIS_DATA = require('../../../../main/modules/draft-store/redisData.json');
+const REDIS_DATA = require('modules/draft-store/redisData.json');
 const CLAIM_ID = '1645882162449409';
 
 jest.mock('ioredis', () => {

@@ -2,7 +2,7 @@ import {AppRequest} from 'models/AppRequest';
 import config from 'config';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {CivilServiceClient} from '../app/client/civilServiceClient';
-import {Claim} from '../../main/common/models/claim';
+import {Claim} from 'common/models/claim';
 import {Request} from 'express';
 import {ClaimDetails} from 'common/form/models/claim/details/claimDetails';
 import {Reason} from 'common/form/models/claim/details/reason';

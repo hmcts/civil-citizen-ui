@@ -1,27 +1,27 @@
-import {Party} from '../../main/common/models/party';
-import {Claim} from '../../main/common/models/claim';
-import {PartyType} from '../../main/common/models/partyType';
-import {DocumentType} from '../../main/common/models/document/documentType';
-import {YesNo} from '../../main/common/form/models/yesNo';
+import {Party} from 'common/models/party';
+import {Claim} from 'common/models/claim';
+import {PartyType} from 'common/models/partyType';
+import {DocumentType} from 'common/models/document/documentType';
+import {YesNo} from 'common/form/models/yesNo';
 import {
   CaseState,
   InterestClaimFromType,
   InterestEndDateType,
   SameRateInterestType,
-} from '../../main/common/form/models/claimDetails';
-import {ResponseOptions} from '../../main/common/form/models/responseDeadline';
-import {AdditionalTimeOptions} from '../../main/common/form/models/additionalTime';
-import {InterestClaimOptionsType} from '../../main/common/form/models/claim/interest/interestClaimOptionsType';
-import {ClaimDetails} from '../../main/common/form/models/claim/details/claimDetails';
-import {Reason} from '../../main/common/form/models/claim/details/reason';
-import {Address} from '../../main/common/form/models/address';
-import {PartyDetails} from '../../main/common/form/models/partyDetails';
-import {PartyPhone} from '../../main/common/models/PartyPhone';
-import {CitizenDate} from '../../main/common/form/models/claim/claimant/citizenDate';
-import {DefendantTimeline} from '../../main/common/form/models/timeLineOfEvents/defendantTimeline';
-import {TimelineRow} from '../../main/common/form/models/timeLineOfEvents/timelineRow';
-import {EvidenceItem} from '../../main/common/form/models/evidence/evidenceItem';
-import {EvidenceType} from '../../main/common/models/evidence/evidenceType';
+} from 'common/form/models/claimDetails';
+import {ResponseOptions} from 'common/form/models/responseDeadline';
+import {AdditionalTimeOptions} from 'common/form/models/additionalTime';
+import {InterestClaimOptionsType} from 'common/form/models/claim/interest/interestClaimOptionsType';
+import {ClaimDetails} from 'common/form/models/claim/details/claimDetails';
+import {Reason} from 'common/form/models/claim/details/reason';
+import {Address} from 'common/form/models/address';
+import {PartyDetails} from 'common/form/models/partyDetails';
+import {PartyPhone} from 'common/models/PartyPhone';
+import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
+import {DefendantTimeline} from 'common/form/models/timeLineOfEvents/defendantTimeline';
+import {TimelineRow} from 'common/form/models/timeLineOfEvents/timelineRow';
+import {EvidenceItem} from 'common/form/models/evidence/evidenceItem';
+import {EvidenceType} from 'common/models/evidence/evidenceType';
 
 export const buildAddress = (): Address => {
   return new Address('addressLine1', 'addressLine2', 'addressLine3', 'city', 'postCode');

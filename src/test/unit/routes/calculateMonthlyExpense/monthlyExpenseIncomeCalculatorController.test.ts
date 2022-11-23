@@ -1,12 +1,12 @@
-import {app} from '../../../../main/app';
+import {app} from 'app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {TOTAL_AMOUNT_CALCULATION_URL} from '../../../../main/routes/urls';
+import {TOTAL_AMOUNT_CALCULATION_URL} from 'routes/urls';
 
-jest.mock('.../../../../main/modules/oidc');
-jest.mock('../../../../main/modules/draft-store');
-jest.mock('../../../../main/modules/draft-store/draftStoreService');
+jest.mock('.modules/oidc');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('Monthly income expense calculator controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

@@ -1,7 +1,7 @@
 import {
   getEmploymentForm,
   saveEmploymentData,
-} from '../../../../../../../main/services/features/response/statementOfMeans/employment/employmentService';
+} from '../../services/features/response/statementOfMeans/employment/employmentService';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from '../common/models/claim';
 import {StatementOfMeans} from '../common/models/statementOfMeans';

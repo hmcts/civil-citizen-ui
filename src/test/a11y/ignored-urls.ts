@@ -1,4 +1,4 @@
-import * as urls from '../../main/routes/urls';
+import * as urls from 'routes/urls';
 
 export const IGNORED_URLS = [
   urls.SIGN_IN_URL,

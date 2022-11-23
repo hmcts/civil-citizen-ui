@@ -2,7 +2,7 @@ import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from '../common/models/claim';
 import {
   OtherDependantsService,
-} from '../../../../../../../main/services/features/response/statementOfMeans/otherDependants/otherDependantsService';
+} from '../../services/features/response/statementOfMeans/otherDependants/otherDependantsService';
 import {OtherDependants} from '../common/form/models/statementOfMeans/otherDependants';
 import {GenericForm} from '../common/form/models/genericForm';
 import {StatementOfMeans} from '../common/models/statementOfMeans';

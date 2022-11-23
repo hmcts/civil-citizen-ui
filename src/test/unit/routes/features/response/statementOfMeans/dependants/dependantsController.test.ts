@@ -8,16 +8,16 @@ import {
   CITIZEN_OTHER_DEPENDANTS_URL,
 } from '../routes/urls';
 import {hasDisabledChildren}
-  from '../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService';
+  from '../../services/features/response/statementOfMeans/dependants/childrenDisabilityService';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
 const request = require('supertest');
-const {app} = require('../../../../../../../main/app');
+const {app} = require('../../app');
 
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store');
-jest.mock('../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService');
+jest.mock('../../services/features/response/statementOfMeans/dependants/childrenDisabilityService');
 const mockHasDisabledChildren = hasDisabledChildren as jest.Mock;
 
 const respondentDependantsUrl = CITIZEN_DEPENDANTS_URL.replace(':id', 'aaa');

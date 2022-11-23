@@ -1,4 +1,4 @@
-import {getSummarySections} from '../../../../../../../main/services/features/claim/checkAnswers/checkAnswersService';
+import {getSummarySections} from '../../services/features/claim/checkAnswers/checkAnswersService';
 import {
   CLAIMANT_DOB_URL,
   CLAIMANT_INDIVIDUAL_DETAILS_URL,

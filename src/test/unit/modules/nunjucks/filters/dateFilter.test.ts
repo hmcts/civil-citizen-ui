@@ -1,8 +1,8 @@
-import {addDaysFilterTranslated} from '../../../../../main/modules/nunjucks/filters/dateFilter';
+import {addDaysFilterTranslated} from 'modules/nunjucks/filters/dateFilter';
 import {t} from 'i18next';
 import {DateTime} from 'luxon';
 
-jest.mock('../../../../../main/modules/i18n');
+jest.mock('modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

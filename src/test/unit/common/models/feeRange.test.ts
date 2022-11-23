@@ -1,4 +1,4 @@
-import {CurrentVersion, FeeRange, FlatAmount} from '../../../../main/common/models/feeRange';
+import {CurrentVersion, FeeRange, FlatAmount} from 'common/models/feeRange';
 
 describe('Fee range', ()=>{
   it('should convert fee ranges to table items successfully', ()=>{

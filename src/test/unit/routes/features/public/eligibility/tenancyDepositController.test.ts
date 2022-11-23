@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {app} from '../app';
 import {
   ELIGIBILITY_TENANCY_DEPOSIT_URL,
   ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL,

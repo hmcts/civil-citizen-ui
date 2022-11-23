@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {app} from '../app';
 import {
   ELIGIBILITY_DEFENDANT_AGE_URL,
   ELIGIBILITY_CLAIMANT_AGE_URL,

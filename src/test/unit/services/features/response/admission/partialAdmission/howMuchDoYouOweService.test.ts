@@ -2,7 +2,7 @@ import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {
   getHowMuchDoYouOweForm,
   saveHowMuchDoYouOweData,
-} from '../../../../../../../main/services/features/response/admission/partialAdmission/howMuchDoYouOweService';
+} from '../../services/features/response/admission/partialAdmission/howMuchDoYouOweService';
 import {Claim} from '../common/models/claim';
 import {PartialAdmission} from '../common/models/partialAdmission';
 import {HowMuchDoYouOwe} from '../common/form/models/admission/partialAdmission/howMuchDoYouOwe';

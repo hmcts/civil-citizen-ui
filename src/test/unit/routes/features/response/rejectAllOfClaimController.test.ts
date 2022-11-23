@@ -1,4 +1,4 @@
-import {app} from '../../../../../main/app';
+import {app} from 'app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
@@ -17,8 +17,8 @@ import {
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('rejectAllOfClaim', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

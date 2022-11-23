@@ -1,17 +1,17 @@
-import {app} from '../../../../../main/app';
+import {app} from 'app';
 import config from 'config';
 import Module from 'module';
-import {DASHBOARD_URL} from '../../../../../main/routes/urls';
-import {CIVIL_SERVICE_CASES_URL} from '../../../../../main/app/client/civilServiceUrls';
+import {DASHBOARD_URL} from 'routes/urls';
+import {CIVIL_SERVICE_CASES_URL} from 'app/client/civilServiceUrls';
 const nock = require('nock');
 
 const session = require('supertest-session');
 const citizenRoleToken: string = config.get('citizenRoleToken');
 const testSession = session(app);
 
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/app/auth/user/oidc', () => ({
-  ...jest.requireActual('../../../../../main/app/auth/user/oidc') as Module,
+jest.mock('modules/draft-store');
+jest.mock('app/auth/user/oidc', () => ({
+  ...jest.requireActual('app/auth/user/oidc') as Module,
   getUserDetails: jest.fn(() => USER_DETAILS),
 }));
 

@@ -2,10 +2,10 @@ import * as express from 'express';
 import {
   toRegularExpenseForm,
   toRegularIncomeForm,
-} from '../../../../../main/common/utils/expenseAndIncome/regularIncomeExpenseCoverter';
+} from 'common/utils/expenseAndIncome/regularIncomeExpenseCoverter';
 import {
   TransactionSchedule,
-} from '../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 
 describe('regular income converter', () => {
   describe('convert to regular expenses form', () => {

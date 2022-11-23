@@ -1,6 +1,6 @@
-import {PaymentOptionType} from '../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
-import {CCDPaymentOption} from '../../../../../main/common/models/ccdResponse/ccdPaymentOption';
-import {toCCDPaymentOption} from '../../../../../main/services/translation/response/convertToCCDPaymentOption';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {CCDPaymentOption} from 'common/models/ccdResponse/ccdPaymentOption';
+import {toCCDPaymentOption} from 'services/translation/response/convertToCCDPaymentOption';
 
 describe('translate payment option to ccd version', ()=> {
   it('should translate pay immediately to ccd version', ()=> {

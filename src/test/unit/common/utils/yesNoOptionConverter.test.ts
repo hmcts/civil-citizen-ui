@@ -1,5 +1,5 @@
-import {convertFromYesNo, convertToYesNo} from '../../../../main/common/utils/yesNoOptionConverter';
-import {YesNo} from '../../../../main/common/form/models/yesNo';
+import {convertFromYesNo, convertToYesNo} from 'common/utils/yesNoOptionConverter';
+import {YesNo} from 'common/form/models/yesNo';
 
 describe('yes no option converter', () => {
   describe('convertToYesNo', () => {

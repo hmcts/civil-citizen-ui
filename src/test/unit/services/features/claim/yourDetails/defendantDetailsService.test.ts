@@ -5,7 +5,7 @@ import {Party} from 'common/models/party';
 import {
   getDefendantInformation,
   saveDefendantProperty,
-} from '../../../../../../main/services/features/common/defendantDetailsService';
+} from '../services/features/common/defendantDetailsService';
 import {PartyType} from 'common/models/partyType';
 
 jest.mock('modules/draft-store');

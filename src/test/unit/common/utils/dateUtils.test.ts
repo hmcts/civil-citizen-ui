@@ -1,4 +1,4 @@
-import {getDOBforAgeFromCurrentTime} from '../../../../main/common/utils/dateUtils';
+import {getDOBforAgeFromCurrentTime} from 'common/utils/dateUtils';
 
 describe('getDOBforAgeFromCurrentTime', () => {
   it('should return the maximim date for age', () => {

@@ -1,16 +1,16 @@
 import * as supertest from 'supertest';
-import * as urls from '../../main/routes/urls';
+import * as urls from 'routes/urls';
 import config from 'config';
 import nock from 'nock';
-import {app} from '../../main/app';
+import {app} from 'app';
 import {fail} from 'assert';
 import {IGNORED_URLS} from './ignored-urls';
 import {mockCivilClaim} from '../utils/mockDraftStore';
 import CivilClaimResponseMock from '../utils/mocks/civilClaimResponseMock.json';
-import {CIVIL_SERVICE_CALCULATE_DEADLINE} from '../../main/app/client/civilServiceUrls';
+import {CIVIL_SERVICE_CALCULATE_DEADLINE} from 'app/client/civilServiceUrls';
 
-jest.mock('../../main/modules/oidc');
-jest.mock('../../main/modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 const pa11y = require('pa11y');
 app.locals.draftStoreClient = mockCivilClaim;

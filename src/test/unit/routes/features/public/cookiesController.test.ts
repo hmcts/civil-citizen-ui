@@ -1,14 +1,14 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../main/app';
+import {app} from 'app';
 import {
   COOKIES_URL,
 } from 'routes/urls';
 import {defaultCookiePreferences} from 'routes/features/public/cookiesController';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Cookies page', () => {
   // TODO: remove this once paths become publicly available as mocking the response token will not be needed

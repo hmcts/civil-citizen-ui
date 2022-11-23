@@ -1,4 +1,4 @@
-import {app} from '../../../../../main/app';
+import {app} from 'app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
@@ -8,8 +8,8 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore
 import {YesNo} from 'form/models/yesNo';
 import civilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('Mediation - Company or Organisation - Confirm telephone number', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

@@ -1,5 +1,5 @@
 import Axios, { AxiosStatic } from 'axios';
-import {getUserDetails} from '../../../../../main/app/auth/user/oidc';
+import {getUserDetails} from 'app/auth/user/oidc';
 
 jest.mock('axios');
 

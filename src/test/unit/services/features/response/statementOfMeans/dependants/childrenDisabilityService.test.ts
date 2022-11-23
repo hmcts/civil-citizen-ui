@@ -7,7 +7,7 @@ import {
   isDefendantNotDisabled,
   isDefendantPartnerDisabled,
   saveChildrenDisability,
-} from '../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService';
+} from '../../services/features/response/statementOfMeans/dependants/childrenDisabilityService';
 import {CivilClaimResponse} from '../common/models/civilClaimResponse';
 import {
   NumberOfChildren,

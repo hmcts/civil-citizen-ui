@@ -6,7 +6,7 @@ import {RejectionReason} from 'common/form/models/claimantResponse/rejectionReas
 import {
   getClaimantResponse,
   saveClaimantResponse,
-} from '../../../../main/services/features/claimantResponse/claimantResponseService';
+} from 'services/features/claimantResponse/claimantResponseService';
 
 const claimantRejectionReasonPath = 'features/claimantResponse/rejection-reason';
 const rejectionReasonController = Router();

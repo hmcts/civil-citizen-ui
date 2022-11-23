@@ -3,7 +3,7 @@ import {mockClaim} from '../../../../../utils/mockClaim';
 
 import {
   saveResponseType,
-} from '../../../../../../main/services/features/response/responseType/citizenResponseTypeService';
+} from '../services/features/response/responseType/citizenResponseTypeService';
 import {ResponseType} from 'common/form/models/responseType';
 
 jest.mock('modules/draft-store');

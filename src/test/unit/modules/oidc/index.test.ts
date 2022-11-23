@@ -1,8 +1,8 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../main/app';
-import {SIGN_OUT_URL} from '../../../../main/routes/urls';
+import {app} from 'app';
+import {SIGN_OUT_URL} from 'routes/urls';
 
 describe('OIDC middleware', () => {
   describe('Sign out', () => {

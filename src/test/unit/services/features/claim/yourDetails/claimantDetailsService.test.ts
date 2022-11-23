@@ -3,7 +3,7 @@ import {
   getClaimantInformation,
   saveClaimant,
   saveClaimantProperty,
-} from '../../../../../../main/services/features/claim/yourDetails/claimantDetailsService';
+} from '../services/features/claim/yourDetails/claimantDetailsService';
 import {Claim} from 'common/models/claim';
 import {buildAddress, mockClaim} from '../../../../../utils/mockClaim';
 import {Party} from 'common/models/party';

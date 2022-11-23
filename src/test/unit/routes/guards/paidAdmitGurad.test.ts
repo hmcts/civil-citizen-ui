@@ -1,15 +1,15 @@
 import express, { NextFunction } from 'express';
-import {getCaseDataFromStore} from '../../../../main/modules/draft-store/draftStoreService';
-import {CLAIM_TASK_LIST_URL} from '../../../../main/routes/urls';
-import {Claim} from '../../../../main/common/models/claim';
-import {PartAdmitGuard} from '../../../../main/routes/guards/partAdmitGuard';
-import {HowMuchDoYouOwe} from '../../../../main/common/form/models/admission/partialAdmission/howMuchDoYouOwe';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {CLAIM_TASK_LIST_URL} from 'routes/urls';
+import {Claim} from 'common/models/claim';
+import {PartAdmitGuard} from 'routes/guards/partAdmitGuard';
+import {HowMuchDoYouOwe} from 'common/form/models/admission/partialAdmission/howMuchDoYouOwe';
 
-jest.mock('../../../../main/modules/oidc');
-jest.mock('../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../main/routes/features/response/checkAnswersController');
-jest.mock('../../../../main/services/features/response/taskListService');
-jest.mock('../../../../main/modules/i18n');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('routes/features/response/checkAnswersController');
+jest.mock('services/features/response/taskListService');
+jest.mock('modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

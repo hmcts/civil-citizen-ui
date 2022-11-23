@@ -1,8 +1,8 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../main/app';
-import {PartyType} from '../../../../../main/common/models/partyType';
+import {app} from 'app';
+import {PartyType} from 'common/models/partyType';
 import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {
   CLAIM_DEFENDANT_COMPANY_DETAILS_URL,
@@ -10,14 +10,14 @@ import {
   CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL,
   CLAIM_DEFENDANT_PARTY_TYPE_URL,
   CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL,
-} from '../../../../../main/routes/urls';
+} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../main/common/models/claim';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'common/models/claim';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('Defendant party type controller', () => {
   const mockGetClaim = getCaseDataFromStore as jest.Mock;

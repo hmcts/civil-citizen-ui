@@ -1,4 +1,4 @@
-import {getLng} from '../../../../main/common/utils/languageToggleUtils';
+import {getLng} from 'common/utils/languageToggleUtils';
 
 describe('language tolggle utils', () => {
   describe('getLng', () => {

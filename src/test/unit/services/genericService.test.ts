@@ -3,7 +3,7 @@ import {
   translatePriorityDebt,
   translateRepaymentSchedule,
   translateResidenceType,
-} from '../../../main/services/genericService';
+} from 'services/genericService';
 
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,

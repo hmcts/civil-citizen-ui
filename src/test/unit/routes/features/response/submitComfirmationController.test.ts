@@ -1,18 +1,18 @@
 import request from 'supertest';
-import {app} from '../../../../../main/app';
+import {app} from 'app';
 import nock from 'nock';
 import config from 'config';
-import {CONFIRMATION_URL} from '../../../../../main/routes/urls';
+import {CONFIRMATION_URL} from 'routes/urls';
 import civilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
-import {getCaseDataFromStore} from '../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../main/common/models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'common/models/claim';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {PartyType} from '../../../../../main/common/models/partyType';
-import {Party} from '../../../../../main/common/models/party';
+import {PartyType} from 'common/models/partyType';
+import {Party} from 'common/models/party';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 const mockClaim = new Claim();

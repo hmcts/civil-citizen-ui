@@ -1,4 +1,4 @@
-import {DraftStoreClient} from '../../../../main/modules/draft-store';
+import {DraftStoreClient} from 'modules/draft-store';
 import {Logger} from 'winston';
 import express from 'express';
 

@@ -1,6 +1,6 @@
 import {
   getSummarySections,
-} from '../../../../../../../main/services/features/response/checkAnswers/checkAnswersService';
+} from '../../services/features/response/checkAnswers/checkAnswersService';
 import {
   CITIZEN_EMPLOYMENT_URL,
   CITIZEN_WHO_EMPLOYS_YOU_URL,

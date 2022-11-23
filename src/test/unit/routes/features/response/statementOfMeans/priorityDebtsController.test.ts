@@ -5,7 +5,7 @@ import {CITIZEN_PRIORITY_DEBTS_URL, CITIZEN_DEBTS_URL} from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
-const {app} = require('../../../../../../main/app');
+const {app} = require('../app');
 
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store');

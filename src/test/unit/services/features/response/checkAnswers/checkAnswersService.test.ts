@@ -3,7 +3,7 @@ import {
   getStatementOfTruth,
   resetCheckboxFields,
   saveStatementOfTruth,
-} from '../../../../../../main/services/features/response/checkAnswers/checkAnswersService';
+} from '../services/features/response/checkAnswers/checkAnswersService';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {TestMessages} from '../../../../../../../src/test/utils/errorMessageTestConstants';
 import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';

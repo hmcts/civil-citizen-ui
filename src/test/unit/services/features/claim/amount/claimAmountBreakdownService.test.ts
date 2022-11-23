@@ -2,7 +2,7 @@ import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
 import {
   getClaimAmountBreakdownForm, saveClaimAmountBreakdownForm,
-} from '../../../../../../main/services/features/claim/amount/claimAmountBreakdownService';
+} from '../services/features/claim/amount/claimAmountBreakdownService';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {AmountBreakdown} from 'common/form/models/claim/amount/amountBreakdown';
 import {ClaimAmountRow} from 'common/form/models/claim/amount/claimAmountRow';

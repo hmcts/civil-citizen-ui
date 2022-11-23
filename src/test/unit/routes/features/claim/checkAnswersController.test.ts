@@ -1,7 +1,7 @@
 import nock from 'nock';
 import config from 'config';
-import {getSummarySections} from '../../../../../main/services/features/claim/checkAnswers/checkAnswersService';
-import {CLAIM_CHECK_ANSWERS_URL} from '../../../../../main/routes/urls';
+import {getSummarySections} from 'services/features/claim/checkAnswers/checkAnswersService';
+import {CLAIM_CHECK_ANSWERS_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {getElementsByXPath} from '../../../../utils/xpathExtractor';
 import {createClaimWithBasicDetails} from '../../../../utils/mocks/claimDetailsMock';
@@ -10,14 +10,14 @@ const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 
 const request = require('supertest');
-const {app} = require('../../../../../main/app');
+const {app} = require('app');
 const session = require('supertest-session');
 const civilServiceUrl = config.get<string>('services.civilService.url');
 const data = require('../../../../utils/mocks/defendantClaimsMock.json');
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/claimDetailsService');
-jest.mock('../../../../../main/services/features/claim/checkAnswers/checkAnswersService');
+jest.mock('modules/oidc');
+jest.mock('modules/claimDetailsService');
+jest.mock('services/features/claim/checkAnswers/checkAnswersService');
 
 const mockGetSummarySections = getSummarySections as jest.Mock;
 const PARTY_NAME = 'Mrs. Mary Richards';

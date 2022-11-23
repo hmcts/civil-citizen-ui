@@ -2,7 +2,7 @@ import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
-import {getInterest, saveInterest} from '../../../../../../main/services/features/claim/interest/interestService';
+import {getInterest, saveInterest} from '../services/features/claim/interest/interestService';
 import {Interest} from 'common/form/models/interest/interest';
 import {InterestStartDate} from 'common/form/models/interest/interestStartDate';
 import {

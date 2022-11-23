@@ -1,16 +1,16 @@
 import request from 'supertest';
-import {app} from '../../../../../main/app';
+import {app} from 'app';
 import nock from 'nock';
 import config from 'config';
 import {
   CLAIM_DEFENDANT_PHONE_NUMBER_URL, CLAIMANT_TASK_LIST_URL,
-} from '../../../../../main/routes/urls';
+} from 'routes/urls';
 import {t} from 'i18next';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 const PHONE_NUMBER = '01632960001';
 

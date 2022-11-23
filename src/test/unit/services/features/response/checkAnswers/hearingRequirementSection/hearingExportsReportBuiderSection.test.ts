@@ -6,7 +6,7 @@ import {YesNo} from '../common/form/models/yesNo';
 import {Experts} from '../common/models/directionsQuestionnaire/experts/experts';
 import {
   buildExportReportSection,
-} from '../../../../../../../main/services/features/response/checkAnswers/hearingRequirementsSection/hearingExportsReportBuilderSection';
+} from '../../services/features/response/checkAnswers/hearingRequirementsSection/hearingExportsReportBuilderSection';
 import {
   ExpertReportDetails,
 } from '../common/models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails';

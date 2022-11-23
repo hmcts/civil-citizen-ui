@@ -1,4 +1,4 @@
-import {DmStoreClient} from '../../../../main/app/client/dmStoreClient';
+import {DmStoreClient} from 'app/client/dmStoreClient';
 import axios, {AxiosInstance} from 'axios';
 import config from 'config';
 import {TestMessages} from '../../../utils/errorMessageTestConstants';

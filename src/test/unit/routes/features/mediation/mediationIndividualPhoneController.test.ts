@@ -1,4 +1,4 @@
-import {app} from '../../../../../main/app';
+import {app} from 'app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
@@ -9,8 +9,8 @@ import {
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 const civilClaimResponseMock = require('../../../../utils/mocks/noRespondentTelephoneMock.json');
 civilClaimResponseMock.case_data.respondent1.telephoneNumber = '';

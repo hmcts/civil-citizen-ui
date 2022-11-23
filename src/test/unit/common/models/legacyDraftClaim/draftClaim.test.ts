@@ -1,7 +1,7 @@
 import {
   DraftOcmcClaim,
   draftOcmcClaimToDashboardItem,
-} from '../../../../../main/common/models/legacyDraftClaim/draftClaim';
+} from 'common/models/legacyDraftClaim/draftClaim';
 
 describe('draftOcmcClaimToDashboardItem', () => {
   it('should translate ocmc draft claim to dashboard item successfully when ocmc draft claim exists', ()=>{

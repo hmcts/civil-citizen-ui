@@ -5,7 +5,7 @@ import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
 import {Claim} from 'common/models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
-import {saveClaimantProperty} from '../../../../../main/services/features/claim/yourDetails/claimantDetailsService';
+import {saveClaimantProperty} from 'services/features/claim/yourDetails/claimantDetailsService';
 
 const claimantDoBController = Router();
 const claimantDoBViewPath = 'features/response/citizenDob/citizen-dob';

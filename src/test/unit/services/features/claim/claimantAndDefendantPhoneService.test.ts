@@ -1,14 +1,14 @@
-import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import {getTelephone, saveTelephone} from '../../../../../main/services/features/claim/yourDetails/phoneService';
-import {Claim} from '../../../../../main/common/models/claim';
-import {Party} from '../../../../../main/common/models/party';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getTelephone, saveTelephone} from 'services/features/claim/yourDetails/phoneService';
+import {Claim} from 'common/models/claim';
+import {Party} from 'common/models/party';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {CitizenTelephoneNumber} from '../../../../../main/common/form/models/citizenTelephoneNumber';
-import {ClaimantOrDefendant, PartyType} from '../../../../../main/common/models/partyType';
-import {PartyPhone} from '../../../../../main/common/models/PartyPhone';
+import {CitizenTelephoneNumber} from 'common/form/models/citizenTelephoneNumber';
+import {ClaimantOrDefendant, PartyType} from 'common/models/partyType';
+import {PartyPhone} from 'common/models/PartyPhone';
 
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 const party: Party = {
   partyDetails: {

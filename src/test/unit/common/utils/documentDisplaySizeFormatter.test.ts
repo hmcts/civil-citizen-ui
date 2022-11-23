@@ -1,4 +1,4 @@
-import {displayDocumentSizeInKB} from '../../../../main/common/utils/documentSizeDisplayFormatter';
+import {displayDocumentSizeInKB} from 'common/utils/documentSizeDisplayFormatter';
 
 describe('display document in KB', ()=>{
   it('should display document size in KB successfully when size is greater than 0 and maximum decimal is specified ', ()=>{

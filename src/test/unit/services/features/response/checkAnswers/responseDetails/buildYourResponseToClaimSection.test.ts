@@ -1,7 +1,7 @@
 import {SummarySections} from '../common/models/summaryList/summarySections';
 import {
   getSummarySections,
-} from '../../../../../../../main/services/features/response/checkAnswers/checkAnswersService';
+} from '../../services/features/response/checkAnswers/checkAnswersService';
 import {
   CITIZEN_ALREADY_PAID_URL,
   CITIZEN_REJECT_ALL_CLAIM_URL,

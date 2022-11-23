@@ -1,5 +1,5 @@
-import {convertToNotEligibleReason} from  '../../../../main/common/utils/notEligibleReasonConvertor';
-import {NotEligibleReason} from '../../../../main/common/form/models/eligibility/NotEligibleReason';
+import {convertToNotEligibleReason} from  'common/utils/notEligibleReasonConvertor';
+import {NotEligibleReason} from 'common/form/models/eligibility/NotEligibleReason';
 
 describe('NotEligibleReason converter', () => {
   it('should return undefined when reaosn is empty', () => {

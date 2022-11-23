@@ -1,8 +1,8 @@
-import {app} from '../../../../../main/app';
+import {app} from 'app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {CITIZEN_TIMELINE_URL, RESPONSE_YOUR_DEFENCE_URL} from '../../../../../main/routes/urls';
+import {CITIZEN_TIMELINE_URL, RESPONSE_YOUR_DEFENCE_URL} from 'routes/urls';
 import {
   mockCivilClaim,
   mockCivilClaimUnemploymentRetired,
@@ -12,8 +12,8 @@ import {
 } from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
 
 describe('yourDefence', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

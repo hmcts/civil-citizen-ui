@@ -1,16 +1,16 @@
-import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../main/common/models/claim';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {Claim} from 'common/models/claim';
 import {
   getBreathingSpace,
   saveBreathingSpace,
-} from '../../../../../main/services/features/breathingSpace/breathingSpaceService';
+} from 'services/features/breathingSpace/breathingSpaceService';
 
-import {BreathingSpace} from '../../../../../main/common/models/breathingSpace';
-import {ClaimDetails} from '../../../../../main/common/form/models/claim/details/claimDetails';
-import {DebtRespiteOptionType} from '../../../../../main/common/models/breathingSpace/debtRespiteOptionType';
+import {BreathingSpace} from 'common/models/breathingSpace';
+import {ClaimDetails} from 'common/form/models/claim/details/claimDetails';
+import {DebtRespiteOptionType} from 'common/models/breathingSpace/debtRespiteOptionType';
 
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;

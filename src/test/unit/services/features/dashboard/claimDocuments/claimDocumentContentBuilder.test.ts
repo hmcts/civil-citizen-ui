@@ -1,7 +1,7 @@
 import {mockClaim} from '../../../../../utils/mockClaim';
 import {
   buildDownloadSealedClaimSection,
-} from '../../../../../../main/services/features/dashboard/claimDocuments/claimDocumentContentBuilder';
+} from '../services/features/dashboard/claimDocuments/claimDocumentContentBuilder';
 import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
 import {DocumentUri} from 'common/models/document/documentType';
 

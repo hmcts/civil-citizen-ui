@@ -1,6 +1,6 @@
-import {CCDRepaymentPlanFrequency} from '../../../../../main/common/models/ccdResponse/ccdRepaymentPlan';
-import {RepaymentPlan} from '../../../../../main/common/models/repaymentPlan';
-import {toCCDRepaymentPlan} from '../../../../../main/services/translation/response/convertToCCDRepaymentPlan';
+import {CCDRepaymentPlanFrequency} from 'common/models/ccdResponse/ccdRepaymentPlan';
+import {RepaymentPlan} from 'common/models/repaymentPlan';
+import {toCCDRepaymentPlan} from 'services/translation/response/convertToCCDRepaymentPlan';
 
 describe('translate repayment plan to ccd', ()=> {
   it('should translate weekly repayment plan', ()=> {

@@ -1,11 +1,11 @@
-import {Address} from '../../main/common/form/models/address';
-import {Debts} from '../../main/common/form/models/statementOfMeans/debts/debts';
-import {YesNo} from '../../main/common/form/models/yesNo';
-import {DebtItems} from '../../main/common/form/models/statementOfMeans/debts/debtItems';
-import {GenericForm} from '../../main/common/form/models/genericForm';
-import {Party} from '../../main/common/models/party';
-import {PartyDetails} from '../../main/common/form/models/partyDetails';
-import {PartyPhone} from '../../main/common/models/PartyPhone';
+import {Address} from 'common/form/models/address';
+import {Debts} from 'common/form/models/statementOfMeans/debts/debts';
+import {YesNo} from 'common/form/models/yesNo';
+import {DebtItems} from 'common/form/models/statementOfMeans/debts/debtItems';
+import {GenericForm} from 'common/form/models/genericForm';
+import {Party} from 'common/models/party';
+import {PartyDetails} from 'common/form/models/partyDetails';
+import {PartyPhone} from 'common/models/PartyPhone';
 
 export const buildCitizenAddress = (): GenericForm<Address> => {
   const address = new Address();

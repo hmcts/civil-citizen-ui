@@ -7,9 +7,9 @@ import {
   CLAIM_INTEREST_TYPE_URL,
   CLAIM_INTEREST_URL,
   CLAIMANT_INTEREST_RATE_URL,
-} from '../../../main/routes/urls';
-import {SummarySections} from '../../../main/common/models/summaryList/summarySections';
-import {constructResponseUrlWithIdParams} from '../../../main/common/utils/urlFormatter';
+} from 'routes/urls';
+import {SummarySections} from 'common/models/summaryList/summarySections';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const PARTY_NAME = 'Mrs. Mary Richards';
 const CLAIM_ID = 'aaa';

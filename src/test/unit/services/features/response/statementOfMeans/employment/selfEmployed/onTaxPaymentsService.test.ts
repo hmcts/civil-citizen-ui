@@ -2,7 +2,7 @@ import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {
   getOnTaxPaymentsForm,
   saveTaxPaymentsData,
-} from '../../../../../../../../main/services/features/response/statementOfMeans/employment/selfEmployed/onTaxPaymentsService';
+} from '../../../services/features/response/statementOfMeans/employment/selfEmployed/onTaxPaymentsService';
 import {Claim} from '../../common/models/claim';
 import {StatementOfMeans} from '../../common/models/statementOfMeans';
 import {YesNo} from '../../common/form/models/yesNo';

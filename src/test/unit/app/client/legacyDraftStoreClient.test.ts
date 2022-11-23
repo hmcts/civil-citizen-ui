@@ -1,8 +1,8 @@
-import {getOcmcDraftClaims} from '../../../../main/app/client/legacyDraftStoreClient';
-import {generateServiceToken} from '../../../../main/app/client/serviceAuthProviderClient';
+import {getOcmcDraftClaims} from 'app/client/legacyDraftStoreClient';
+import {generateServiceToken} from 'app/client/serviceAuthProviderClient';
 import axios from 'axios';
 
-jest.mock('../../../../main/app/client/serviceAuthProviderClient');
+jest.mock('app/client/serviceAuthProviderClient');
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 

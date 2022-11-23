@@ -1,4 +1,4 @@
-import {DashboardClaimantItem, DashboardDefendantItem} from '../../../../../main/common/models/dashboard/dashboardItem';
+import {DashboardClaimantItem, DashboardDefendantItem} from 'common/models/dashboard/dashboardItem';
 import config from 'config';
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 describe('Dashboard Items', ()=> {

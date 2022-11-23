@@ -1,5 +1,5 @@
 import {SupportRequired} from '../common/models/directionsQuestionnaire/supportRequired';
-import {generateSupportDetails} from '../../../../../../../main/services/features/response/checkAnswers/hearingRequirementsSection/addSupportRequiredList';
+import {generateSupportDetails} from '../../services/features/response/checkAnswers/hearingRequirementsSection/addSupportRequiredList';
 
 jest.mock('modules/i18n');
 

@@ -1,16 +1,16 @@
 import config from 'config';
 import nock from 'nock';
 import {mockCivilClaimPDFTimeline, mockRedisFailure} from '../../../../utils/mockDraftStore';
-import {CASE_DOCUMENT_DOWNLOAD_URL} from '../../../../../main/routes/urls';
-import {app} from '../../../../../main/app';
+import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
+import {app} from 'app';
 import request from 'supertest';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import * as documentUtils from '../../../../../main/common/utils/downloadUtils';
-import {DocumentUri} from '../../../../../main/common/models/document/documentType';
+import * as documentUtils from 'common/utils/downloadUtils';
+import {DocumentUri} from 'common/models/document/documentType';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/app/client/civilServiceClient');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
+jest.mock('app/client/civilServiceClient');
 
 describe('Document download controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

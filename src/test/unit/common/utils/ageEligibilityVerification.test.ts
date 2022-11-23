@@ -1,4 +1,4 @@
-import {AgeEligibilityVerification} from '../../../../main/common/utils/ageEligibilityVerification';
+import {AgeEligibilityVerification} from 'common/utils/ageEligibilityVerification';
 
 describe('Age eligibility is over 18', () =>{
   it('should return true when age is over 18', ()=> {
