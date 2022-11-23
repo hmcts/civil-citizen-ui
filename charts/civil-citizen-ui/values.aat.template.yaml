@@ -238,6 +238,7 @@ ccd:
       keyVaults: []
       ingressHost: civil-citizen-ui-definition-store-staging-aat.service.core-compute-aat.internal
   ccd-user-profile-api:
+    releaseNameOverride: ${SERVICE_NAME}-ccd-user-profile
     java:
       imagePullPolicy: Always
       enviroment:
