@@ -6,10 +6,10 @@ import {
   RESPONSE_DEADLINE_OPTIONS_URL,
 } from '../../../urls';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {ResponseDeadline, ResponseOptions} from '../../../../common/form/models/responseDeadline';
-import {Claim} from '../../../../common/models/claim';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+import {GenericForm} from 'common/form/models/genericForm';
+import {ResponseDeadline, ResponseOptions} from 'common/form/models/responseDeadline';
+import {Claim} from 'common/models/claim';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {ResponseDeadlineService} from '../../../../services/features/response/responseDeadlineService';
 import {deadLineGuard} from '../../../../routes/guards/deadLineGuard';
 

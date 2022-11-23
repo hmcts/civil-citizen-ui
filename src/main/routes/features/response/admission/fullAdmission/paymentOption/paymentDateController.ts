@@ -1,11 +1,11 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {PaymentDate} from '../../../../../../common/form/models/admission/fullAdmission/paymentOption/paymentDate';
+import {PaymentDate} from 'common/form/models/admission/fullAdmission/paymentOption/paymentDate';
 import {CITIZEN_PAYMENT_DATE_URL, CLAIM_TASK_LIST_URL} from '../../../../../urls';
-import {GenericForm} from '../../../../../../common/form/models/genericForm';
-import {constructResponseUrlWithIdParams} from '../../../../../../common/utils/urlFormatter';
+import {GenericForm} from 'common/form/models/genericForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {paymentDateService}
   from '../../../../../../services/features/response/admission/fullAdmission/paymentOption/paymentDateService';
-import {ResponseType} from '../../../../../../common/form/models/responseType';
+import {ResponseType} from 'common/form/models/responseType';
 
 const paymentDatePath = 'features/response/admission/payment-date';
 const paymentDateController = Router();

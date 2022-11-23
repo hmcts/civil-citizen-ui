@@ -4,10 +4,10 @@ import {
   CLAIM_INTEREST_FROM_URL,
   CLAIM_INTEREST_START_DATE_URL,
 } from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {InterestClaimFromSelection} from '../../../../common/form/models/claim/interest/interestClaimFromSelection';
-import {InterestClaimFromType} from '../../../../common/form/models/claimDetails';
-import {AppRequest} from '../../../../common/models/AppRequest';
+import {GenericForm} from 'common/form/models/genericForm';
+import {InterestClaimFromSelection} from 'common/form/models/claim/interest/interestClaimFromSelection';
+import {InterestClaimFromType} from 'common/form/models/claimDetails';
+import {AppRequest} from 'common/models/AppRequest';
 import {getInterest, saveInterest} from '../../../../services/features/claim/interest/interestService';
 
 const claimantInterestFromController = Router();

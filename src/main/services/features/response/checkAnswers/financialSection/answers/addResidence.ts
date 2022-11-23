@@ -1,12 +1,12 @@
-import {SummarySection} from '../../../../../../common/models/summaryList/summarySections';
-import {Claim} from '../../../../../../common/models/claim';
-import {summaryRow} from '../../../../../../common/models/summaryList/summaryList';
+import {SummarySection} from 'common/models/summaryList/summarySections';
+import {Claim} from 'common/models/claim';
+import {summaryRow} from 'common/models/summaryList/summaryList';
 import {t} from 'i18next';
-import {getLng} from '../../../../../../common/utils/languageToggleUtils';
+import {getLng} from 'common/utils/languageToggleUtils';
 import {
   CITIZEN_RESIDENCE_URL,
 } from '../../../../../../routes/urls';
-import {ResidenceType} from '../../../../../../common/form/models/statementOfMeans/residence/residenceType';
+import {ResidenceType} from 'common/form/models/statementOfMeans/residence/residenceType';
 
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 

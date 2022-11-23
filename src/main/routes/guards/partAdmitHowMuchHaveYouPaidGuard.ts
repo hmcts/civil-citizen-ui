@@ -1,8 +1,8 @@
 import {NextFunction, Request, Response} from 'express';
-import {constructResponseUrlWithIdParams} from '../../common/utils/urlFormatter';
-import {Claim} from '../../common/models/claim';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {Claim} from 'common/models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {YesNo} from '../../common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
 
 export class PartAdmitHowMuchHaveYouPaidGuard {
   static apply(redirectUrl: string) {

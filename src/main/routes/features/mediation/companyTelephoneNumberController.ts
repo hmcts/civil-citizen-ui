@@ -1,15 +1,15 @@
 import {NextFunction, Response, Router} from 'express';
-import {GenericForm} from '../../../common/form/models/genericForm';
-import {CompanyTelephoneNumber} from '../../../common/form/models/mediation/companyTelephoneNumber';
+import {GenericForm} from 'common/form/models/genericForm';
+import {CompanyTelephoneNumber} from 'common/form/models/mediation/companyTelephoneNumber';
 import {CAN_WE_USE_COMPANY_URL, CLAIM_TASK_LIST_URL} from '../../urls';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getCompanyTelephoneNumberData,
   saveCompanyTelephoneNumberData,
 } from '../../../services/features/response/mediation/companyTelephoneNumberService';
-import {YesNo} from '../../../common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
 import {getMediation, saveMediation} from '../../../services/features/response/mediation/mediationService';
-import {GenericYesNo} from '../../../common/form/models/genericYesNo';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
 
 const companyTelephoneNumberController = Router();
 

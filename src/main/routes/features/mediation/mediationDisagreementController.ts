@@ -5,14 +5,14 @@ import {
   DONT_WANT_FREE_MEDIATION_URL,
   MEDIATION_DISAGREEMENT_URL,
 } from '../../urls';
-import {GenericForm} from '../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../common/form/models/genericYesNo';
+import {GenericForm} from 'common/form/models/genericForm';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {getMediation, saveMediation} from '../../../services/features/response/mediation/mediationService';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {YesNo} from '../../../common/form/models/yesNo';
-import {Claim} from '../../../common/models/claim';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {YesNo} from 'common/form/models/yesNo';
+import {Claim} from 'common/models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {PartyType} from '../../../common/models/partyType';
+import {PartyType} from 'common/models/partyType';
 
 const mediationDisagreementViewPath = 'features/mediation/mediation-disagreement';
 const mediationDisagreementController = Router();

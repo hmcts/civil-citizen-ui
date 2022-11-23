@@ -7,7 +7,7 @@ import {
   ELIGIBILITY_APPLY_HELP_FEES_URL,
   ELIGIBILITY_APPLY_HELP_WITH_FEES_URL,
 } from 'routes/urls';
-import {YesNo} from '.common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
 
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store');

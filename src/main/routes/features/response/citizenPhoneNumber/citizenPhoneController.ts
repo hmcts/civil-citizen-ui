@@ -1,9 +1,9 @@
 import {NextFunction, Response, Router} from 'express';
-import {CitizenTelephoneNumber} from '../../../../common/form/models/citizenTelephoneNumber';
+import {CitizenTelephoneNumber} from 'common/form/models/citizenTelephoneNumber';
 import {CITIZEN_PHONE_NUMBER_URL, CLAIM_TASK_LIST_URL} from '../../../urls';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {ClaimantOrDefendant} from '../../../../common/models/partyType';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {GenericForm} from 'common/form/models/genericForm';
+import {ClaimantOrDefendant} from 'common/models/partyType';
 import {getTelephone, saveTelephone} from '../../../../services/features/claim/yourDetails/phoneService';
 
 const citizenPhoneViewPath = 'features/response/citizenPhoneNumber/citizen-phone';

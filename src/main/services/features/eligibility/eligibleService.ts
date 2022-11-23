@@ -1,4 +1,4 @@
-import {ClaimSummarySection, ClaimSummaryType} from '../../../common/form/models/claimSummarySection';
+import {ClaimSummarySection, ClaimSummaryType} from 'common/form/models/claimSummarySection';
 import {t} from 'i18next';
 import {ELIGIBILITY_HWF_ELIGIBLE_URL, ELIGIBILITY_HWF_ELIGIBLE_REFERENCE_URL, ELIGIBLE_FOR_THIS_SERVICE_URL} from '../../../routes/urls';
 

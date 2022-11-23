@@ -5,9 +5,9 @@ import {
   CITIZEN_PARTNER_SEVERE_DISABILITY_URL,
 } from '../../../../urls';
 import {PartnerDisabilityService} from '../../../../../services/features/response/statementOfMeans/partner/partnerDisabilityService';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {GenericForm} from 'common/form/models/genericForm';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
 
 const partnerViewPath = 'features/response/statementOfMeans/partner/partner-disability';
 const partnerDisabilityController = Router();

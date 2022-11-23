@@ -1,4 +1,4 @@
-import {SummarySections} from '../.common/models/summaryList/summarySections';
+import {SummarySections} from '../common/models/summaryList/summarySections';
 import {
   getSummarySections,
 } from '../../../../../../../main/services/features/response/checkAnswers/checkAnswersService';
@@ -12,13 +12,13 @@ import {
   createClaimWithFullRejection,
   createClaimWithRespondentDetailsWithPaymentOption,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
-import {PaymentOptionType} from '../.common/form/models/admission/paymentOption/paymentOptionType';
+import {PaymentOptionType} from '../common/form/models/admission/paymentOption/paymentOptionType';
 import {
   PaymentIntention,
-} from '../.common/form/models/admission/partialAdmission/paymentIntention';
+} from '../common/form/models/admission/partialAdmission/paymentIntention';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
-import {YesNo} from '../.common/form/models/yesNo';
-import {RejectAllOfClaimType} from '../.common/form/models/rejectAllOfClaimType';
+import {YesNo} from '../common/form/models/yesNo';
+import {RejectAllOfClaimType} from '../common/form/models/rejectAllOfClaimType';
 
 jest.mock('modules/draft-store');
 jest.mock('modules/draft-store/draftStoreService');

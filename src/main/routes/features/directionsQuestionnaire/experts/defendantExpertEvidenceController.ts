@@ -9,10 +9,10 @@ import {
   getGenericOptionForm,
   saveDirectionQuestionnaire,
 } from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {YesNo} from '../../../../common/form/models/yesNo';
-import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
+import {GenericForm} from 'common/form/models/genericForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {YesNo} from 'common/form/models/yesNo';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
 
 const defendantExpertEvidenceController = Router();
 const defendantExpertEvidenceViewPath = 'features/directionsQuestionnaire/experts/defendant-expert-evidence';

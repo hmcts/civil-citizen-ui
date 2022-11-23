@@ -4,12 +4,12 @@ import {
   getEmployers,
   saveEmployers,
 } from '../../../../../services/features/response/statementOfMeans/employment/employerService';
-import {Employers} from '../../../../../common/form/models/statementOfMeans/employment/employers';
-import {Employer} from '../../../../../common/form/models/statementOfMeans/employment/employer';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
+import {Employers} from 'common/form/models/statementOfMeans/employment/employers';
+import {Employer} from 'common/form/models/statementOfMeans/employment/employer';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getEmploymentForm} from '../../../../../services/features/response/statementOfMeans/employment/employmentService';
-import {EmploymentForm} from '../../../../../common/form/models/statementOfMeans/employment/employmentForm';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
+import {EmploymentForm} from 'common/form/models/statementOfMeans/employment/employmentForm';
+import {GenericForm} from 'common/form/models/genericForm';
 
 const whoEmploysYouViewPath = 'features/response/statementOfMeans/employment/who-employs-you';
 const whoEmploysYouController = Router();

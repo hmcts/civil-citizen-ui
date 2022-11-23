@@ -1,6 +1,6 @@
 import {Request, Response, Router} from 'express';
 import {DQ_EXPERT_REPORT_DETAILS_URL, DQ_EXPERT_SMALL_CLAIMS_URL, DQ_GIVE_EVIDENCE_YOURSELF_URL} from '../../../urls';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const expertSmallClaimsController = Router();
 const expertSmallClaimsViewPath = 'features/directionsQuestionnaire/experts/expert-small-claims';

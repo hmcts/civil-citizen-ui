@@ -1,5 +1,5 @@
 import {IsDefined, IsNotEmpty, MaxLength, ValidateIf, ValidateNested} from 'class-validator';
-import {Address} from '../../../common/form/models/address';
+import {Address} from 'common/form/models/address';
 
 export class PartyDetails {
 

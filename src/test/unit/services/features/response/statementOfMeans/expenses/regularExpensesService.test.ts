@@ -3,15 +3,15 @@ import {
   getRegularExpenses,
   saveRegularExpenses,
 } from '../../../../../../../main/services/features/response/statementOfMeans/expenses/regularExpensesService';
-import {Claim} from '../.common/models/claim';
-import {StatementOfMeans} from '../.common/models/statementOfMeans';
-import {Transaction} from '../.common/form/models/statementOfMeans/expensesAndIncome/transaction';
+import {Claim} from '../common/models/claim';
+import {StatementOfMeans} from '../common/models/statementOfMeans';
+import {Transaction} from '../common/form/models/statementOfMeans/expensesAndIncome/transaction';
 import {
   TransactionSchedule,
-} from '../.common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+} from '../common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {
   RegularExpenses,
-} from '../.common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
+} from '../common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
 jest.mock('modules/draft-store');

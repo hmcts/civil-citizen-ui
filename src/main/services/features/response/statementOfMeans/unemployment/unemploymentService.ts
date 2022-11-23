@@ -1,9 +1,9 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {Unemployment} from '../../../../../common/form/models/statementOfMeans/unemployment/unemployment';
-import {UnemploymentDetails} from '../../../../../common/form/models/statementOfMeans/unemployment/unemploymentDetails';
-import {OtherDetails} from '../../../../../common/form/models/statementOfMeans/unemployment/otherDetails';
-import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
-import {UnemploymentCategory} from '../../../../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
+import {Unemployment} from 'common/form/models/statementOfMeans/unemployment/unemployment';
+import {UnemploymentDetails} from 'common/form/models/statementOfMeans/unemployment/unemploymentDetails';
+import {OtherDetails} from 'common/form/models/statementOfMeans/unemployment/otherDetails';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
+import {UnemploymentCategory} from 'common/form/models/statementOfMeans/unemployment/unemploymentCategory';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('employmentService');

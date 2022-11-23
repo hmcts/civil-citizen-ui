@@ -1,15 +1,15 @@
 import {Response, Router} from 'express';
 import {DQ_EXPERT_GUIDANCE_URL, DQ_EXPERT_REPORT_DETAILS_URL, DQ_GIVE_EVIDENCE_YOURSELF_URL} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
+import {GenericForm} from 'common/form/models/genericForm';
 import {
   ExpertReportDetails,
-} from '../../../../common/models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails';
+} from 'common/models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails';
 import {
   getExpertReportDetails,
   getExpertReportDetailsForm,
 } from '../../../../services/features/directionsQuestionnaire/expertReportDetailsService';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {YesNo} from '../../../../common/form/models/yesNo';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {YesNo} from 'common/form/models/yesNo';
 import {
   saveDirectionQuestionnaire,
 } from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';

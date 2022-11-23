@@ -1,10 +1,10 @@
-import {Defence} from '.common/form/models/defence';
-import {Claim} from '.common/models/claim';
-import {TaskStatus} from '.common/models/taskList/TaskStatus';
+import {Defence} from 'common/form/models/defence';
+import {Claim} from 'common/models/claim';
+import {TaskStatus} from 'common/models/taskList/TaskStatus';
 import {
   getTellUsWhyDisagreeWithClaimTask,
-} from '.common/utils/taskList/tasks/tellUsWhyDisagreeWithClaim';
-import {RejectAllOfClaim} from '.common/form/models/rejectAllOfClaim';
+} from 'common/utils/taskList/tasks/tellUsWhyDisagreeWithClaim';
+import {RejectAllOfClaim} from 'common/form/models/rejectAllOfClaim';
 
 jest.mock('modules/i18n');
 jest.mock('i18next', () => ({

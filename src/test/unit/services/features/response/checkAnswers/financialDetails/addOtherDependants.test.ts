@@ -8,7 +8,7 @@ import {
   createClaimWithOtherDependants,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
-import {YesNo} from '../.common/form/models/yesNo';
+import {YesNo} from '../common/form/models/yesNo';
 
 jest.mock('modules/draft-store');
 jest.mock('modules/draft-store/draftStoreService');

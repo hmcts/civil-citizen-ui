@@ -1,11 +1,11 @@
 import config from 'config';
 import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {generateServiceToken} from './serviceAuthProviderClient';
-import {DashboardClaimantItem} from '../../common/models/dashboard/dashboardItem';
+import {DashboardClaimantItem} from 'common/models/dashboard/dashboardItem';
 import {
   draftOcmcClaimToDashboardItem,
   OcmcDraftData,
-} from '../../common/models/legacyDraftClaim/draftClaim';
+} from 'common/models/legacyDraftClaim/draftClaim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('legacyDraftStoreClient');

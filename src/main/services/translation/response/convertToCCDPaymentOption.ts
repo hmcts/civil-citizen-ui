@@ -1,5 +1,5 @@
-import {PaymentOptionType} from '../../../common/form/models/admission/paymentOption/paymentOptionType';
-import {CCDPaymentOption} from '../../../common/models/ccdResponse/ccdPaymentOption';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {CCDPaymentOption} from 'common/models/ccdResponse/ccdPaymentOption';
 
 export const toCCDPaymentOption = (paymentOptionType: PaymentOptionType) : CCDPaymentOption => {
   switch(paymentOptionType) {

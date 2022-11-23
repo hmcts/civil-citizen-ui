@@ -1,8 +1,8 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {CITIZEN_CONTACT_THEM_URL, CLAIM_DETAILS_URL, FINANCIAL_DETAILS_URL} from '../../urls';
-import {Claim} from '../../../common/models/claim';
+import {Claim} from 'common/models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getAddress, getSolicitorName} from '../../../../main/services/features/response/contactThem/contactThemService';
 
 const citizenContactThemViewPath = 'features/dashboard/contact-them';

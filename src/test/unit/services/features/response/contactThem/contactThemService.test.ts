@@ -1,12 +1,12 @@
-import {Claim} from '.common/models/claim';
-import {PartyType} from '.common/models/partyType';
+import {Claim} from 'common/models/claim';
+import {PartyType} from 'common/models/partyType';
 import {
   getAddress,
   getSolicitorName,
 } from '../../../../../../main/services/features/response/contactThem/contactThemService';
-import {Party} from '.common/models/party';
-import {PartyDetails} from '.common/form/models/partyDetails';
-import {Address} from '.common/form/models/address';
+import {Party} from 'common/models/party';
+import {PartyDetails} from 'common/form/models/partyDetails';
+import {Address} from 'common/form/models/address';
 
 describe('contact them service', () => {
   describe('getAddress', () => {

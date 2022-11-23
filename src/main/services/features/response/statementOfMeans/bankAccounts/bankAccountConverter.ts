@@ -1,6 +1,6 @@
-import {BankAccounts} from '../../../../../common/form/models/bankAndSavings/bankAccounts';
-import {CitizenBankAccount} from '../../../../../common/models/citizenBankAccount';
-import {BankAccount} from '../../../../../common/form/models/bankAndSavings/bankAccount';
+import {BankAccounts} from 'common/form/models/bankAndSavings/bankAccounts';
+import {CitizenBankAccount} from 'common/models/citizenBankAccount';
+import {BankAccount} from 'common/form/models/bankAndSavings/bankAccount';
 
 export function convertFormToCitizenBankAccount(bankAccountForm: BankAccounts): CitizenBankAccount[] {
   if (bankAccountsExist) {

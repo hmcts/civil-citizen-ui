@@ -1,14 +1,14 @@
 import {Request, Response, Router} from 'express';
-import {GenericForm} from '../../../../common/form/models/genericForm';
+import {GenericForm} from 'common/form/models/genericForm';
 import {
   ELIGIBILITY_CLAIM_VALUE_URL,
   NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
   ELIGIBILITY_SINGLE_DEFENDANT_URL,
 } from '../../../../routes/urls';
-import {TotalAmount} from '../../../../common/models/eligibility/totalAmount';
-import {TotalAmountOptions} from '../../../../common/models/eligibility/totalAmountOptions';
-import {constructUrlWithNotEligibleReason} from '../../../../common/utils/urlFormatter';
-import {NotEligibleReason} from '../../../../common/form/models/eligibility/NotEligibleReason';
+import {TotalAmount} from 'common/models/eligibility/totalAmount';
+import {TotalAmountOptions} from 'common/models/eligibility/totalAmountOptions';
+import {constructUrlWithNotEligibleReason} from 'common/utils/urlFormatter';
+import {NotEligibleReason} from 'common/form/models/eligibility/NotEligibleReason';
 
 const totalAmountController = Router();
 const totalAmountViewPath = 'features/public/eligibility/total-amount';

@@ -1,6 +1,6 @@
 import {app} from '../../app';
-import {CivilClaimResponse} from '../../common/models/civilClaimResponse';
-import {Claim} from '../../common/models/claim';
+import {CivilClaimResponse} from 'common/models/civilClaimResponse';
+import {Claim} from 'common/models/claim';
 import {isUndefined} from 'lodash';
 
 const {Logger} = require('@hmcts/nodejs-logging');

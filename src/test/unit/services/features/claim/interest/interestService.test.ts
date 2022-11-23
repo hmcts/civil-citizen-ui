@@ -1,18 +1,18 @@
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {Claim} from '.common/models/claim';
+import {Claim} from 'common/models/claim';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 import {getInterest, saveInterest} from '../../../../../../main/services/features/claim/interest/interestService';
-import {Interest} from '.common/form/models/interest/interest';
-import {InterestStartDate} from '.common/form/models/interest/interestStartDate';
+import {Interest} from 'common/form/models/interest/interest';
+import {InterestStartDate} from 'common/form/models/interest/interestStartDate';
 import {
   InterestClaimFromType,
   InterestEndDateType,
   SameRateInterestSelection,
   SameRateInterestType,
-} from '.common/form/models/claimDetails';
-import {TotalInterest} from '.common/form/models/interest/totalInterest';
-import {InterestClaimOptionsType} from '.common/form/models/claim/interest/interestClaimOptionsType';
+} from 'common/form/models/claimDetails';
+import {TotalInterest} from 'common/form/models/interest/totalInterest';
+import {InterestClaimOptionsType} from 'common/form/models/claim/interest/interestClaimOptionsType';
 
 jest.mock('modules/draft-store');
 jest.mock('modules/draft-store/draftStoreService');

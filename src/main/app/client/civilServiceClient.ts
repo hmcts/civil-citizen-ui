@@ -1,8 +1,8 @@
-import {Claim} from '../../common/models/claim';
+import {Claim} from 'common/models/claim';
 import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
-import {AppRequest} from '../../common/models/AppRequest';
-import {CivilClaimResponse} from '../../common/models/civilClaimResponse';
+import {AppRequest} from 'common/models/AppRequest';
+import {CivilClaimResponse} from 'common/models/civilClaimResponse';
 import {
   CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
@@ -12,13 +12,13 @@ import {
   CIVIL_SERVICE_SUBMIT_EVENT,
   CIVIL_SERVICE_VALIDATE_PIN_URL,
 } from './civilServiceUrls';
-import {FeeRange, FeeRanges} from '../../common/models/feeRange';
+import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
 import {CaseDocument} from 'common/models/document/caseDocument';
-import {DashboardClaimantItem, DashboardDefendantItem} from '../../common/models/dashboard/dashboardItem';
-import {ClaimUpdate, EventDto} from '../../common/models/events/eventDto';
-import {CaseEvent} from '../../common/models/events/caseEvent';
-import {CourtLocation} from '../../common/models/courts/courtLocations';
+import {DashboardClaimantItem, DashboardDefendantItem} from 'common/models/dashboard/dashboardItem';
+import {ClaimUpdate, EventDto} from 'common/models/events/eventDto';
+import {CaseEvent} from 'common/models/events/caseEvent';
+import {CourtLocation} from 'common/models/courts/courtLocations';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');

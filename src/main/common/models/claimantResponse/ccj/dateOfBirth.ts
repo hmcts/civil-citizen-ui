@@ -1,7 +1,7 @@
 import {IsDate, Max, Min, MaxDate, Validate, ValidateIf} from 'class-validator';
-import {OptionalDateFourDigitValidator} from '../../../form/validators/optionalDateFourDigitValidator';
+import {OptionalDateFourDigitValidator} from 'form/validators/optionalDateFourDigitValidator';
 import {DateConverter} from '../../../utils/dateConverter';
-import {getDOBforAgeFromCurrentTime} from '../../../../common/utils/dateUtils';
+import {getDOBforAgeFromCurrentTime} from 'common/utils/dateUtils';
 
 export class DateOfBirth {
   @ValidateIf(o => (o.day < 32 && o.month < 13 && o.year > 999))

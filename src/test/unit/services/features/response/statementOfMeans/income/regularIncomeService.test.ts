@@ -3,15 +3,15 @@ import {
   getRegularIncome,
   saveRegularIncome,
 } from '../../../../../../../main/services/features/response/statementOfMeans/income/regularIncomeService';
-import {Claim} from '../.common/models/claim';
-import {StatementOfMeans} from '../.common/models/statementOfMeans';
-import {Transaction} from '../.common/form/models/statementOfMeans/expensesAndIncome/transaction';
+import {Claim} from '../common/models/claim';
+import {StatementOfMeans} from '../common/models/statementOfMeans';
+import {Transaction} from '../common/form/models/statementOfMeans/expensesAndIncome/transaction';
 import {
   TransactionSchedule,
-} from '../.common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+} from '../common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {RegularIncome}
-  from '../.common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
+  from '../common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
 
 jest.mock('modules/draft-store');
 jest.mock('modules/draft-store/draftStoreService');

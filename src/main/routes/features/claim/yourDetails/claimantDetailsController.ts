@@ -7,16 +7,16 @@ import {
   CLAIMANT_PHONE_NUMBER_URL,
   CLAIMANT_SOLE_TRADER_DETAILS_URL,
 } from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
+import {GenericForm} from 'common/form/models/genericForm';
 import {
   getClaimantInformation,
   saveClaimantProperty,
 } from '../../../../services/features/claim/yourDetails/claimantDetailsService';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {Party} from '../../../../common/models/party';
-import {AppRequest} from '../../../../common/models/AppRequest';
-import {PartyType} from '../../../../common/models/partyType';
-import {PartyDetails} from '../../../../common/form/models/partyDetails';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {Party} from 'common/models/party';
+import {AppRequest} from 'common/models/AppRequest';
+import {PartyType} from 'common/models/partyType';
+import {PartyDetails} from 'common/form/models/partyDetails';
 
 const claimantDetailsController = Router();
 const claimantOrganisationDetailsPath = 'features/claim/yourDetails/claimant-organisation-details';

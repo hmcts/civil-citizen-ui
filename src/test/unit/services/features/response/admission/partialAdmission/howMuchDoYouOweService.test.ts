@@ -3,9 +3,9 @@ import {
   getHowMuchDoYouOweForm,
   saveHowMuchDoYouOweData,
 } from '../../../../../../../main/services/features/response/admission/partialAdmission/howMuchDoYouOweService';
-import {Claim} from '../.common/models/claim';
-import {PartialAdmission} from '../.common/models/partialAdmission';
-import {HowMuchDoYouOwe} from '../.common/form/models/admission/partialAdmission/howMuchDoYouOwe';
+import {Claim} from '../common/models/claim';
+import {PartialAdmission} from '../common/models/partialAdmission';
+import {HowMuchDoYouOwe} from '../common/form/models/admission/partialAdmission/howMuchDoYouOwe';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
 jest.mock('modules/draft-store');

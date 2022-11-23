@@ -1,9 +1,9 @@
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {YesNo} from '../../../common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
 import {
   ExpertReportDetails,
-} from '../../../common/models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails';
-import {ReportDetail} from '../../../common/models/directionsQuestionnaire/experts/expertReportDetails/reportDetail';
+} from 'common/models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails';
+import {ReportDetail} from 'common/models/directionsQuestionnaire/experts/expertReportDetails/reportDetail';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('expertReportDetailsService');

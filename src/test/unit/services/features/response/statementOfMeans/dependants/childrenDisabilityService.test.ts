@@ -1,5 +1,5 @@
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {YesNo} from '../.common/form/models/yesNo';
+import {YesNo} from '../common/form/models/yesNo';
 import {
   getChildrenDisability,
   hasDisabledChildren,
@@ -8,14 +8,14 @@ import {
   isDefendantPartnerDisabled,
   saveChildrenDisability,
 } from '../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService';
-import {CivilClaimResponse} from '../.common/models/civilClaimResponse';
+import {CivilClaimResponse} from '../common/models/civilClaimResponse';
 import {
   NumberOfChildren,
-} from '../.common/form/models/statementOfMeans/dependants/numberOfChildren';
-import {GenericForm} from '../.common/form/models/genericForm';
+} from '../common/form/models/statementOfMeans/dependants/numberOfChildren';
+import {GenericForm} from '../common/form/models/genericForm';
 import {mockClaim} from '../../../../../../utils/mockClaim';
-import {GenericYesNo} from '../.common/form/models/genericYesNo';
-import {Claim} from '../.common/models/claim';
+import {GenericYesNo} from '../common/form/models/genericYesNo';
+import {Claim} from '../common/models/claim';
 
 const civilClaimResponseMock = require('../civilClaimResponseMock.json');
 const civilClaimResponse: string = JSON.stringify(civilClaimResponseMock);

@@ -1,8 +1,8 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {RepaymentPlanForm} from '../../../../../../common/form/models/repaymentPlan/repaymentPlanForm';
-import {constructResponseUrlWithIdParams} from '../../../../../../common/utils/urlFormatter';
-import {DateFormatter} from '../../../../../../common/utils/dateFormatter';
-import {GenericForm} from '../../../../../../common/form/models/genericForm';
+import {RepaymentPlanForm} from 'common/form/models/repaymentPlan/repaymentPlanForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {DateFormatter} from 'common/utils/dateFormatter';
+import {GenericForm} from 'common/form/models/genericForm';
 import {
   getRepaymentPlanForm,
   saveRepaymentPlanData,

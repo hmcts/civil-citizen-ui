@@ -1,4 +1,4 @@
-import {OptionalIntegerValidator} from '../../../form/validators/optionalIntegerValidator';
+import {OptionalIntegerValidator} from 'form/validators/optionalIntegerValidator';
 import {IsNotEmpty, IsEmail, Validate, ValidateIf} from 'class-validator';
 
 export class OtherWitnessItems {

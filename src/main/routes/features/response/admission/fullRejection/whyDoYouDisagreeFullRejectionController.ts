@@ -1,10 +1,10 @@
 import {Response, Router} from 'express';
-import {WhyDoYouDisagree} from '../../../../../common/form/models/admission/partialAdmission/whyDoYouDisagree';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
+import {WhyDoYouDisagree} from 'common/form/models/admission/partialAdmission/whyDoYouDisagree';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {CITIZEN_TIMELINE_URL, CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL} from '../../../../urls';
-import {WhyDoYouDisagreeForm} from '../../../../../common/models/whyDoYouDisagreeForm';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
-import {ResponseType} from '../../../../../common/form/models/responseType';
+import {WhyDoYouDisagreeForm} from 'common/models/whyDoYouDisagreeForm';
+import {GenericForm} from 'common/form/models/genericForm';
+import {ResponseType} from 'common/form/models/responseType';
 import {
   getWhyDoYouDisagreeForm,
   saveWhyDoYouDisagreeData,

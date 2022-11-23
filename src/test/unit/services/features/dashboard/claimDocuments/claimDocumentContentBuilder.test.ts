@@ -3,7 +3,7 @@ import {
   buildDownloadSealedClaimSection,
 } from '../../../../../../main/services/features/dashboard/claimDocuments/claimDocumentContentBuilder';
 import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
-import {DocumentUri} from '.common/models/document/documentType';
+import {DocumentUri} from 'common/models/document/documentType';
 
 describe('Claim document content builder', ()=>{
   it('should return json with document size in KB and link to download the pdf', ()=>{

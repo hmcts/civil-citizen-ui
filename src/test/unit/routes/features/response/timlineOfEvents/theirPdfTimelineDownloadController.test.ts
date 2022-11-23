@@ -4,7 +4,7 @@ import {mockCivilClaimPDFTimeline, mockRedisFailure} from '../../../../../utils/
 import {app} from '../../../../../../main/app';
 import request from 'supertest';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import * as documentUtils from '.common/utils/downloadUtils';
+import * as documentUtils from 'common/utils/downloadUtils';
 
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store');

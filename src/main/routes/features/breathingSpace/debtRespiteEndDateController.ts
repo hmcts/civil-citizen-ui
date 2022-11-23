@@ -1,13 +1,13 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {GenericForm} from '../../../common/form/models/genericForm';
+import {GenericForm} from 'common/form/models/genericForm';
 import {
   BREATHING_SPACE_RESPITE_END_DATE_URL,
   BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL,
 } from '../../../routes/urls';
-import {AppRequest} from '../../../common/models/AppRequest';
-import {DebtRespiteEndDate} from '../../../common/models/breathingSpace/debtRespiteEndDate';
+import {AppRequest} from 'common/models/AppRequest';
+import {DebtRespiteEndDate} from 'common/models/breathingSpace/debtRespiteEndDate';
 import {getBreathingSpace, saveBreathingSpace} from '../../../services/features/breathingSpace/breathingSpaceService';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const debtRespiteEndDateController = Router();
 const debtRespiteEndDatePath = 'features/breathingSpace/debt-respite-end-date';

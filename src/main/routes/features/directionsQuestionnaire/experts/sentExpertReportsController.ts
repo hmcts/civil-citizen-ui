@@ -1,13 +1,13 @@
 import {Response, Router} from 'express';
 import {DQ_SENT_EXPERT_REPORTS_URL, DQ_SHARE_AN_EXPERT_URL} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {SentExpertReports} from '../../../../common/models/directionsQuestionnaire/experts/sentExpertReports';
+import {GenericForm} from 'common/form/models/genericForm';
+import {SentExpertReports} from 'common/models/directionsQuestionnaire/experts/sentExpertReports';
 import {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
 } from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const sentExpertReportsController = Router();
 const expertReportsViewPath = 'features/directionsQuestionnaire/experts/sent-expert-reports';

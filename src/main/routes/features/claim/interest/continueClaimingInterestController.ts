@@ -1,13 +1,13 @@
 import {NextFunction, Response, Router} from 'express';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
+import {GenericForm} from 'common/form/models/genericForm';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {
   CLAIM_HELP_WITH_FEES_URL,
   CLAIM_INTEREST_CONTINUE_CLAIMING_URL,
   CLAIM_INTEREST_HOW_MUCH_URL,
 } from '../../../../routes/urls';
-import {AppRequest} from '../../../../common/models/AppRequest';
-import {YesNo} from '../../../../common/form/models/yesNo';
+import {AppRequest} from 'common/models/AppRequest';
+import {YesNo} from 'common/form/models/yesNo';
 import {getInterest, saveInterest} from '../../../../services/features/claim/interest/interestService';
 import {getClaimInterestForm} from '../../../../services/features/claim/interest/claimInterestService';
 

@@ -1,11 +1,11 @@
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {Claim} from '.common/models/claim';
-import {YesNo} from '.common/form/models/yesNo';
+import {Claim} from 'common/models/claim';
+import {YesNo} from 'common/form/models/yesNo';
 import {
   getMediation,
   saveMediation,
 } from '../../../../../../main/services/features/response/mediation/mediationService';
-import {Mediation} from '.common/models/mediation/mediation';
+import {Mediation} from 'common/models/mediation/mediation';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('modules/draft-store/draftStoreService');

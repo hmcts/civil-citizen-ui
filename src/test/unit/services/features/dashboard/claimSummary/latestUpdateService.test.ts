@@ -1,4 +1,4 @@
-import {Claim} from '.common/models/claim';
+import {Claim} from 'common/models/claim';
 import {
   getLatestUpdateContent,
 } from '../../../../../../main/services/features/dashboard/claimSummary/latestUpdateService';

@@ -1,16 +1,16 @@
-import {SummarySection, summarySection} from '../../../../../common/models/summaryList/summarySections';
-import {Claim} from '../../../../../common/models/claim';
-import {summaryRow} from '../../../../../common/models/summaryList/summaryList';
+import {SummarySection, summarySection} from 'common/models/summaryList/summarySections';
+import {Claim} from 'common/models/claim';
+import {summaryRow} from 'common/models/summaryList/summaryList';
 import {t} from 'i18next';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {getLng} from '../../../../../common/utils/languageToggleUtils';
-import {RejectAllOfClaimType} from '../../../../../common/form/models/rejectAllOfClaimType';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getLng} from 'common/utils/languageToggleUtils';
+import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
 import {
   CITIZEN_RESPONSE_TYPE_URL,
   CITIZEN_ALREADY_PAID_URL,
   CITIZEN_REJECT_ALL_CLAIM_URL,
 } from '../../../../../routes/urls';
-import {YesNo,YesNoUpperCase} from '../../../../../common/form/models/yesNo';
+import {YesNo,YesNoUpperCase} from 'common/form/models/yesNo';
 
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 

@@ -1,12 +1,12 @@
 import {t} from 'i18next';
-import {Claim} from '../../../../../common/models/claim';
-import {SummarySection} from '../../../../../common/models/summaryList/summarySections';
+import {Claim} from 'common/models/claim';
+import {SummarySection} from 'common/models/summaryList/summarySections';
 import {SupportRequired} from 'common/models/directionsQuestionnaire/supportRequired';
-import {summaryRow} from '../../../../../common/models/summaryList/summaryList';
-import {YesNoUpperCase} from '../../../../../common/form/models/yesNo';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
+import {summaryRow} from 'common/models/summaryList/summaryList';
+import {YesNoUpperCase} from 'common/form/models/yesNo';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {SUPPORT_REQUIRED_URL} from '../../../../../routes/urls';
-import {changeLabel} from '../../../../../common/utils/checkYourAnswer/changeButton';
+import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 
 export const generateSupportDetails = (item: SupportRequired) => {
   const supportDetails = [];

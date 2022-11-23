@@ -1,8 +1,8 @@
 import {CCDPaymentOption} from './ccdPaymentOption';
-import {ClaimUpdate} from '../../models/events/eventDto';
+import {ClaimUpdate} from 'models/events/eventDto';
 import {CCDRepaymentPlan} from './ccdRepaymentPlan';
 import {CCDPayBySetDate} from './ccdPayBySetDate';
-import {YesNoUpperCamelCase} from '../../../common/form/models/yesNo';
+import {YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {CCDParty} from './ccdParty';
 
 export interface CCDResponse extends ClaimUpdate {

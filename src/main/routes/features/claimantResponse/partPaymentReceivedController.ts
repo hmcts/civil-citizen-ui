@@ -3,8 +3,8 @@ import {
   CLAIMANT_RESPONSE_TASK_LIST_URL,
   CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL,
 } from '../../urls';
-import {GenericForm} from '../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../common/form/models/genericYesNo';
+import {GenericForm} from 'common/form/models/genericForm';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {
   saveClaimantResponse,
 } from '../../../services/features/claimantResponse/claimantResponseService';
@@ -12,11 +12,11 @@ import {
   getGenericOptionForm,
 } from '../../../services/genericForm/genericFormService';
 
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {Claim} from '../../../common/models/claim';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {Claim} from 'common/models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {ClaimantResponse} from '../../../common/models/claimantResponse';
-import {ClaimantResponseErrorMessages} from '../../../common/form/models/claimantResponse/claimantResponseErrorMessages';
+import {ClaimantResponse} from 'common/models/claimantResponse';
+import {ClaimantResponseErrorMessages} from 'common/form/models/claimantResponse/claimantResponseErrorMessages';
 
 const partPaymentReceivedController = Router();
 const partPaymentReceivedViewPath = 'features/claimantResponse/part-payment-received';

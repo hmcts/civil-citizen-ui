@@ -1,8 +1,8 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {HowMuchHaveYouPaid} from '../../../../common/form/models/admission/howMuchHaveYouPaid';
-import {PartialAdmission} from '../../../../common/models/partialAdmission';
-import {RejectAllOfClaim} from '../../../../common/form/models/rejectAllOfClaim';
-import {ResponseType} from '../../../../common/form/models/responseType';
+import {HowMuchHaveYouPaid} from 'common/form/models/admission/howMuchHaveYouPaid';
+import {PartialAdmission} from 'common/models/partialAdmission';
+import {RejectAllOfClaim} from 'common/form/models/rejectAllOfClaim';
+import {ResponseType} from 'common/form/models/responseType';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('howMuchHaveYouPaidService');

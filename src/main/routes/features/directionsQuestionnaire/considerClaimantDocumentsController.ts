@@ -1,15 +1,15 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, DQ_DEFENDANT_EXPERT_EVIDENCE_URL} from '../../urls';
-import {GenericForm} from '../../../common/form/models/genericForm';
+import {GenericForm} from 'common/form/models/genericForm';
 import {
   ConsiderClaimantDocuments,
-} from '../../../common/models/directionsQuestionnaire/hearing/considerClaimantDocuments';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
+} from 'common/models/directionsQuestionnaire/hearing/considerClaimantDocuments';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
 } from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
-import {YesNo} from '../../../common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
 
 const considerClaimantDocumentsController = Router();
 const considerClaimantDocumentsViewPath = 'features/directionsQuestionnaire/consider-claimant-documents';

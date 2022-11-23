@@ -1,8 +1,8 @@
-import {SummarySection, summarySection} from '../../../../../common/models/summaryList/summarySections';
-import {Claim} from '../../../../../common/models/claim';
-import {SummaryRow, summaryRow} from '../../../../../common/models/summaryList/summaryList';
+import {SummarySection, summarySection} from 'common/models/summaryList/summarySections';
+import {Claim} from 'common/models/claim';
+import {SummaryRow, summaryRow} from 'common/models/summaryList/summaryList';
 import {t} from 'i18next';
-import {getLng} from '../../../../../common/utils/languageToggleUtils';
+import {getLng} from 'common/utils/languageToggleUtils';
 import {
   CITIZEN_EXPLANATION_URL,
   CITIZEN_PAYMENT_OPTION_URL,
@@ -11,11 +11,11 @@ import {
   CITIZEN_RESPONSE_TYPE_URL,
   CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL,
 } from '../../../../../routes/urls';
-import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {PaymentOptionType} from '../../../../../common/form/models/admission/paymentOption/paymentOptionType';
-import {ResponseType} from '../../../../../common/form/models/responseType';
-import {currencyFormatWithNoTrailingZeros} from '../../../../../common/utils/currencyFormat';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {ResponseType} from 'common/form/models/responseType';
+import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 

@@ -6,17 +6,17 @@ import {
 } from '../../../../../../main/services/features/response/checkAnswers/checkAnswersService';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {TestMessages} from '../../../../../../../src/test/utils/errorMessageTestConstants';
-import {StatementOfTruthForm} from '.common/form/models/statementOfTruth/statementOfTruthForm';
-import {SignatureType} from '.common/models/signatureType';
+import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
+import {SignatureType} from 'common/models/signatureType';
 import {
   createClaimWithBasicRespondentDetails,
 } from '../../../../../utils/mockClaimForCheckAnswers';
-import {Party} from '.common/models/party';
+import {Party} from 'common/models/party';
 import {
   QualifiedStatementOfTruth,
-} from '.common/form/models/statementOfTruth/qualifiedStatementOfTruth';
-import {PartyType} from '.common/models/partyType';
-import {Claim} from '.common/models/claim';
+} from 'common/form/models/statementOfTruth/qualifiedStatementOfTruth';
+import {PartyType} from 'common/models/partyType';
+import {Claim} from 'common/models/claim';
 import {
   CLAIM_ID,
 } from '../../../../../utils/checkAnswersConstants';

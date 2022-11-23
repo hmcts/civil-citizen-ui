@@ -1,6 +1,6 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {PartialAdmission} from '../../../../../common/models/partialAdmission';
-import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
+import {PartialAdmission} from 'common/models/partialAdmission';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('partialAdmissionService');

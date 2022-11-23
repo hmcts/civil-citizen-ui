@@ -1,9 +1,9 @@
 import {NextFunction, Response, Router} from 'express';
 import {CITIZEN_DEPENDANTS_URL, CITIZEN_PARTNER_AGE_URL, CITIZEN_PARTNER_URL} from '../../../../urls';
 import {CohabitingService} from '../../../../../services/features/response/statementOfMeans/partner/cohabitingService';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {GenericForm} from 'common/form/models/genericForm';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
 
 const partnerViewPath = 'features/response/statementOfMeans/partner/partner';
 const partnerController = Router();

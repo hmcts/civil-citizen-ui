@@ -1,18 +1,18 @@
 import {NextFunction, Response, Router} from 'express';
-import {EmploymentForm} from '../../../../../common/form/models/statementOfMeans/employment/employmentForm';
-import {EmploymentCategory} from '../../../../../common/form/models/statementOfMeans/employment/employmentCategory';
+import {EmploymentForm} from 'common/form/models/statementOfMeans/employment/employmentForm';
+import {EmploymentCategory} from 'common/form/models/statementOfMeans/employment/employmentCategory';
 import {
   CITIZEN_EMPLOYMENT_URL,
   CITIZEN_SELF_EMPLOYED_URL,
   CITIZEN_WHO_EMPLOYS_YOU_URL,
   CITIZEN_UNEMPLOYED_URL,
 } from '../../../../../routes/urls';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getEmploymentForm,
   saveEmploymentData,
 } from '../../../../../services/features/response/statementOfMeans/employment/employmentService';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
+import {GenericForm} from 'common/form/models/genericForm';
 
 const citizenEmploymentStatusViewPath = 'features/response/statementOfMeans/employment/employment-status';
 const employmentStatusController = Router();

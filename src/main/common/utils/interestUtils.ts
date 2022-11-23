@@ -1,5 +1,5 @@
-import {Claim} from '../models/claim';
-import {YesNo} from '../form/models/yesNo';
+import {Claim} from 'models/claim';
+import {YesNo} from 'form/models/yesNo';
 import {getNumberOfDaysBetweenTwoDays} from './dateUtils';
 
 export const getInterestDetails = (claim: Claim) => {

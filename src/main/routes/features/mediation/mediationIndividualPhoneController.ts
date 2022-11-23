@@ -1,14 +1,14 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {MediationIndividualPhoneNumber} from '../../../common/form/models/mediation/mediationIndividualPhoneNumber';
-import {GenericForm} from '../../../common/form/models/genericForm';
-import {Mediation} from '../../../common/models/mediation/mediation';
-import {Claim} from '../../../common/models/claim';
-import {YesNo} from '../../../common/form/models/yesNo';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
+import {MediationIndividualPhoneNumber} from 'common/form/models/mediation/mediationIndividualPhoneNumber';
+import {GenericForm} from 'common/form/models/genericForm';
+import {Mediation} from 'common/models/mediation/mediation';
+import {Claim} from 'common/models/claim';
+import {YesNo} from 'common/form/models/yesNo';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {getMediation, saveMediation} from '../../../services/features/response/mediation/mediationService';
 import {CAN_WE_USE_URL, CLAIM_TASK_LIST_URL} from '../../urls';
-import {GenericYesNo} from '../../../common/form/models/genericYesNo';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
 
 const mediationIndividualPhoneViewPath = 'features/mediation/can-we-use';
 const mediationIndividualPhoneController = Router();

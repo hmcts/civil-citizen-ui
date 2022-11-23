@@ -1,10 +1,10 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {
   SelfEmployedAsForm,
-} from '../../../../../../common/form/models/statementOfMeans/employment/selfEmployed/selfEmployedAsForm';
-import {Claim} from '../../../../../../common/models/claim';
-import {StatementOfMeans} from '../../../../../../common/models/statementOfMeans';
-import {GenericForm} from '../../../../../../common/form/models/genericForm';
+} from 'common/form/models/statementOfMeans/employment/selfEmployed/selfEmployedAsForm';
+import {Claim} from 'common/models/claim';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
+import {GenericForm} from 'common/form/models/genericForm';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('selfEmployedAsService');

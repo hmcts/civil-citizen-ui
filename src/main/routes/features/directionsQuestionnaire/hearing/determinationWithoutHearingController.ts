@@ -2,15 +2,15 @@ import {Response, Router} from 'express';
 import {DETERMINATION_WITHOUT_HEARING_URL, EXPERT_GUIDANCE_URL} from '../../../urls';
 import {
   DeterminationWithoutHearing,
-} from '../../../../common/models/directionsQuestionnaire/hearing/determinationWithoutHearing';
-import {GenericForm} from '../../../../common/form/models/genericForm';
+} from 'common/models/directionsQuestionnaire/hearing/determinationWithoutHearing';
+import {GenericForm} from 'common/form/models/genericForm';
 
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
 } from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
-import {YesNo} from '../../../../common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
 
 const determinationWithoutHearingController = Router();
 const determinationWithoutHearingViewPath = 'features/directionsQuestionnaire/hearing/determination-without-hearing';

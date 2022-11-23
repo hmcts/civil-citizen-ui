@@ -1,8 +1,8 @@
-import {SummarySection, summarySection} from '../../../../../common/models/summaryList/summarySections';
-import {Claim} from '../../../../../common/models/claim';
-import {summaryRow} from '../../../../../common/models/summaryList/summaryList';
+import {SummarySection, summarySection} from 'common/models/summaryList/summarySections';
+import {Claim} from 'common/models/claim';
+import {summaryRow} from 'common/models/summaryList/summaryList';
 import {t} from 'i18next';
-import {getLng} from '../../../../../common/utils/languageToggleUtils';
+import {getLng} from 'common/utils/languageToggleUtils';
 import {
   CLAIM_AMOUNT_URL,
   CLAIM_HELP_WITH_FEES_URL,
@@ -11,8 +11,8 @@ import {
   CLAIM_INTEREST_URL,
   CLAIMANT_INTEREST_RATE_URL,
 } from '../../../../../routes/urls';
-import {InterestClaimFromType, SameRateInterestType} from '../../../../../common/form/models/claimDetails';
-import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
+import {InterestClaimFromType, SameRateInterestType} from 'common/form/models/claimDetails';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {addClaimAmounts} from './addClaimAmounts';
 
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});

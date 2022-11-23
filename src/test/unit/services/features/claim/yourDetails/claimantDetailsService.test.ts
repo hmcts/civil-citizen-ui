@@ -4,13 +4,13 @@ import {
   saveClaimant,
   saveClaimantProperty,
 } from '../../../../../../main/services/features/claim/yourDetails/claimantDetailsService';
-import {Claim} from '.common/models/claim';
+import {Claim} from 'common/models/claim';
 import {buildAddress, mockClaim} from '../../../../../utils/mockClaim';
-import {Party} from '.common/models/party';
-import {YesNo} from '.common/form/models/yesNo';
+import {Party} from 'common/models/party';
+import {YesNo} from 'common/form/models/yesNo';
 import {buildCitizenAddress} from '../../../../../utils/mockForm';
-import {PartyDetails} from '.common/form/models/partyDetails';
-import {PartyType} from '.common/models/partyType';
+import {PartyDetails} from 'common/form/models/partyDetails';
+import {PartyType} from 'common/models/partyType';
 
 jest.mock('modules/draft-store');
 jest.mock('modules/draft-store/draftStoreService');

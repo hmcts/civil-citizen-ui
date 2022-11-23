@@ -1,9 +1,9 @@
-import {Claim} from '.common/models/claim';
-import {StatementOfMeans} from '.common/models/statementOfMeans';
-import {ResponseType} from '.common/form/models/responseType';
-import {PartyType} from '.common/models/partyType';
-import {Party} from '.common/models/party';
-import {PaymentOptionType} from '.common/form/models/admission/paymentOption/paymentOptionType';
+import {Claim} from 'common/models/claim';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
+import {ResponseType} from 'common/form/models/responseType';
+import {PartyType} from 'common/models/partyType';
+import {Party} from 'common/models/party';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {getDefendantsResponseContent} from '../../../../../../main/services/features/claimantResponse/defendantResponse/defendantResponseSummaryService';
 import {mockClaim} from '../../../../../utils/mockClaim';
 

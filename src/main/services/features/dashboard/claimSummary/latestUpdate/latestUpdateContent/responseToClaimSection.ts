@@ -1,5 +1,5 @@
-import {ClaimSummarySection, ClaimSummaryType} from '../../../../../../common/form/models/claimSummarySection';
-import {Claim} from '../../../../../../common/models/claim';
+import {ClaimSummarySection, ClaimSummaryType} from 'common/form/models/claimSummarySection';
+import {Claim} from 'common/models/claim';
 import {CLAIM_TASK_LIST_URL} from '../../../../../../routes/urls';
 
 export const getResponseNotSubmittedTitle = (isResponseDeadlineExtended: boolean): ClaimSummarySection => {

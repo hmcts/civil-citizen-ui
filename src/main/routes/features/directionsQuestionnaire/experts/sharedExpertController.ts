@@ -1,8 +1,8 @@
 import {Response, Router} from 'express';
 import {DQ_EXPERT_DETAILS_URL, DQ_SHARE_AN_EXPERT_URL} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
+import {GenericForm} from 'common/form/models/genericForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {
   getGenericOption,
   getGenericOptionForm,

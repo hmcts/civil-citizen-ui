@@ -1,6 +1,6 @@
-import {CCDParty} from '../../../common/models/ccdResponse/ccdParty';
-import {Party} from '../../../common/models/party';
-import {PartyType} from '../../../common/models/partyType';
+import {CCDParty} from 'common/models/ccdResponse/ccdParty';
+import {Party} from 'common/models/party';
+import {PartyType} from 'common/models/partyType';
 import {toCCDAddress} from './convertToCCDAddress';
 
 export const toCCDParty = (party: Party): CCDParty => {

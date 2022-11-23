@@ -1,6 +1,6 @@
-import {RegularExpenses} from '../../../../../common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
+import {RegularExpenses} from 'common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('regularExpensesService');

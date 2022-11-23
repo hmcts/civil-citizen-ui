@@ -8,7 +8,7 @@ import {
   createClaimWithDebts,
   createClaimWithMultipleDebt,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
-import {YesNo} from '../.common/form/models/yesNo';
+import {YesNo} from '../common/form/models/yesNo';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
 
 jest.mock('modules/draft-store');

@@ -1,19 +1,19 @@
-import {Claim} from '../../../../../common/models/claim';
-import {summaryRow, SummaryRow} from '../../../../../common/models/summaryList/summaryList';
+import {Claim} from 'common/models/claim';
+import {summaryRow, SummaryRow} from 'common/models/summaryList/summaryList';
 import {t} from 'i18next';
-import {getLng} from '../../../../../common/utils/languageToggleUtils';
-import {changeLabel} from '../../../../../common/utils/checkYourAnswer/changeButton';
+import {getLng} from 'common/utils/languageToggleUtils';
+import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import {
   DQ_DEFENDANT_CAN_STILL_EXAMINE_URL,
   DQ_EXPERT_DETAILS_URL,
   DQ_EXPERT_REPORT_DETAILS_URL,
   PERMISSION_FOR_EXPERT_URL,
 } from '../../../../../routes/urls';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   ReportDetail,
-} from '../../../../../common/models/directionsQuestionnaire/experts/expertReportDetails/reportDetail';
-import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
+} from 'common/models/directionsQuestionnaire/experts/expertReportDetails/reportDetail';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
 
 const buildExportReportSection = (claim: Claim, claimId: string, lang: string): SummaryRow[] => {
   const hrefReportDetails = constructResponseUrlWithIdParams(claimId, DQ_EXPERT_REPORT_DETAILS_URL);

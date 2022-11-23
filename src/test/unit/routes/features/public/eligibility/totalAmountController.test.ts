@@ -2,9 +2,9 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
-import {NotEligibleReason} from '.common/form/models/eligibility/NotEligibleReason';
-import {TotalAmountOptions} from '.common/models/eligibility/totalAmountOptions';
-import {constructUrlWithNotEligibleReason} from '.common/utils/urlFormatter';
+import {NotEligibleReason} from 'common/form/models/eligibility/NotEligibleReason';
+import {TotalAmountOptions} from 'common/models/eligibility/totalAmountOptions';
+import {constructUrlWithNotEligibleReason} from 'common/utils/urlFormatter';
 import {
   ELIGIBILITY_CLAIM_VALUE_URL,
   NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,

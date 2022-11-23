@@ -1,6 +1,6 @@
 import {IsDefined, IsNotEmpty, Validate, ValidateIf, ValidateNested} from 'class-validator';
-import {AtLeastOneCheckboxSelectedValidator} from '../../form/validators/atLeastOneCheckboxSelectedValidator';
-import {YesNo} from '../../form/models/yesNo';
+import {AtLeastOneCheckboxSelectedValidator} from 'form/validators/atLeastOneCheckboxSelectedValidator';
+import {YesNo} from 'form/models/yesNo';
 
 export enum SupportType {
   SIGN_LANGUAGE_INTERPRETER = 'signLanguageInterpreter',

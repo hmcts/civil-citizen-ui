@@ -1,12 +1,12 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {
   OnTaxPayments,
-} from '../../../../../../common/form/models/statementOfMeans/employment/selfEmployed/onTaxPayments';
-import {convertFromYesNo, convertToYesNo} from '../../../../../../common/utils/yesNoOptionConverter';
-import {Claim} from '../../../../../../common/models/claim';
-import {StatementOfMeans} from '../../../../../../common/models/statementOfMeans';
-import {GenericForm} from '../../../../../../common/form/models/genericForm';
-import {YesNo} from '../../../../../../common/form/models/yesNo';
+} from 'common/form/models/statementOfMeans/employment/selfEmployed/onTaxPayments';
+import {convertFromYesNo, convertToYesNo} from 'common/utils/yesNoOptionConverter';
+import {Claim} from 'common/models/claim';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
+import {GenericForm} from 'common/form/models/genericForm';
+import {YesNo} from 'common/form/models/yesNo';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('onTaxPaymentsService');

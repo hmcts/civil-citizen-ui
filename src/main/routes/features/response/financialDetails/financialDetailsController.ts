@@ -5,11 +5,11 @@ import {
   CLAIM_TASK_LIST_URL,
   FINANCIAL_DETAILS_URL,
 } from '../../../urls';
-import {Claim} from '../../../../common/models/claim';
+import {Claim} from 'common/models/claim';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {PartyType} from '../../../../common/models/partyType';
+import {PartyType} from 'common/models/partyType';
 import {Logger as winLogger} from 'winston' ;
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const financialDetailsViewPath = 'features/response/financialDetails/financial-details';
 const financialDetailsController = Router();

@@ -9,8 +9,8 @@ import {
   CLAIM_TASK_LIST_URL,
 } from 'routes/urls';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {Claim} from '.common/models/claim';
-import {Party} from '.common/models/party';
+import {Claim} from 'common/models/claim';
+import {Party} from 'common/models/party';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('modules/oidc');

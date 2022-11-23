@@ -1,6 +1,6 @@
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {ExpertDetails} from '../../../common/models/directionsQuestionnaire/experts/expertDetails';
-import {ExpertDetailsList} from '../../../common/models/directionsQuestionnaire/experts/expertDetailsList';
+import {ExpertDetails} from 'common/models/directionsQuestionnaire/experts/expertDetails';
+import {ExpertDetailsList} from 'common/models/directionsQuestionnaire/experts/expertDetailsList';
 import {toNumber} from 'lodash';
 
 const {Logger} = require('@hmcts/nodejs-logging');

@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {NOT_ELIGIBLE_FOR_THIS_SERVICE_URL} from '../../../urls';
-import {convertToNotEligibleReason} from '../../../../common/utils/notEligibleReasonConvertor';
+import {convertToNotEligibleReason} from 'common/utils/notEligibleReasonConvertor';
 
 const notEligibleController = Router();
 const notEligibleControllerViewPath = 'features/public/eligibility/not-eligible';

@@ -1,4 +1,4 @@
-import {NotEligibleReason} from '../../common/form/models/eligibility/NotEligibleReason';
+import {NotEligibleReason} from 'common/form/models/eligibility/NotEligibleReason';
 
 export const convertToNotEligibleReason = (reason: string): NotEligibleReason => {
   switch (reason) {

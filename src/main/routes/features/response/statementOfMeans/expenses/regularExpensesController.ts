@@ -1,13 +1,13 @@
 import {NextFunction, Response, Router} from 'express';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
-import {RegularExpenses} from '../../../../../common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
+import {GenericForm} from 'common/form/models/genericForm';
+import {RegularExpenses} from 'common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
 import {CITIZEN_MONTHLY_EXPENSES_URL, CITIZEN_MONTHLY_INCOME_URL} from '../../../../urls';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getRegularExpenses,
   saveRegularExpenses,
 } from '../../../../../services/features/response/statementOfMeans/expenses/regularExpensesService';
-import {toRegularExpenseForm} from '../../../../../common/utils/expenseAndIncome/regularIncomeExpenseCoverter';
+import {toRegularExpenseForm} from 'common/utils/expenseAndIncome/regularIncomeExpenseCoverter';
 
 const regularExpensesController = Router();
 const regularExpensesView = 'features/response/statementOfMeans/expenses/regular-expenses';

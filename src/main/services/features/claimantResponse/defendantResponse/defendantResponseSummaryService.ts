@@ -1,6 +1,6 @@
-import {Claim} from '../../../../common/models/claim';
-import {ClaimSummarySection} from '../../../../common/form/models/claimSummarySection';
-import {ClaimResponseStatus} from '../../../../common/models/claimResponseStatus';
+import {Claim} from 'common/models/claim';
+import {ClaimSummarySection} from 'common/form/models/claimSummarySection';
+import {ClaimResponseStatus} from 'common/models/claimResponseStatus';
 import {buildFullDisputeResponseContent} from './fullDisputeDefendantsResponseContent';
 import {buildFullAdmissionResponseContent} from './fullAdmissinionDefendantsResponseContent';
 

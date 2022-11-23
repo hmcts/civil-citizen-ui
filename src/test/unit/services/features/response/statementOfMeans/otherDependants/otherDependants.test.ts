@@ -1,12 +1,12 @@
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {Claim} from '../.common/models/claim';
+import {Claim} from '../common/models/claim';
 import {
   OtherDependantsService,
 } from '../../../../../../../main/services/features/response/statementOfMeans/otherDependants/otherDependantsService';
-import {OtherDependants} from '../.common/form/models/statementOfMeans/otherDependants';
-import {GenericForm} from '../.common/form/models/genericForm';
-import {StatementOfMeans} from '../.common/models/statementOfMeans';
-import {YesNo} from '../.common/form/models/yesNo';
+import {OtherDependants} from '../common/form/models/statementOfMeans/otherDependants';
+import {GenericForm} from '../common/form/models/genericForm';
+import {StatementOfMeans} from '../common/models/statementOfMeans';
+import {YesNo} from '../common/form/models/yesNo';
 
 jest.mock('modules/draft-store');
 jest.mock('modules/draft-store/draftStoreService');

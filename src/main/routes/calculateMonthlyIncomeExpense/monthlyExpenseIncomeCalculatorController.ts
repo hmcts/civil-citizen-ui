@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import {TOTAL_AMOUNT_CALCULATION_URL} from '../urls';
-import {calculateTotalAmount} from '../../common/utils/calculateMonthlyIncomeExpenses/monthlyIncomeExpensesCalculator';
+import {calculateTotalAmount} from 'common/utils/calculateMonthlyIncomeExpenses/monthlyIncomeExpensesCalculator';
 
 const monthlyExpenseIncomeCalculatorController = Router();
 

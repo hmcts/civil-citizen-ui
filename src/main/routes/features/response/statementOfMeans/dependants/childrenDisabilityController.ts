@@ -4,9 +4,9 @@ import {
   getChildrenDisability,
   saveChildrenDisability,
 } from '../../../../../services/features/response/statementOfMeans/dependants/childrenDisabilityService';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {GenericForm} from 'common/form/models/genericForm';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
 
 const childrenDisabilityViewPath = 'features/response/statementOfMeans/dependants/children-disability';
 const childrenDisabilityController = Router();

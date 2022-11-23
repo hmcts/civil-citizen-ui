@@ -1,5 +1,5 @@
 import {Validate} from 'class-validator';
-import {ClaimReferenceValidator} from '../../../common/form/validators/claimReferenceValidator';
+import {ClaimReferenceValidator} from 'common/form/validators/claimReferenceValidator';
 
 export class ClaimReference {
   @Validate(ClaimReferenceValidator)

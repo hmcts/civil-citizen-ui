@@ -9,7 +9,7 @@ import {
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {t} from 'i18next';
-import {YesNo} from '.common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
 
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store');

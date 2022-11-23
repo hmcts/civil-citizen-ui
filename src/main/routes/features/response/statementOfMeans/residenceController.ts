@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {Residence} from 'common/form/models/statementOfMeans/residence/residence';
 import {CITIZEN_PARTNER_URL, CITIZEN_RESIDENCE_URL} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
+import {GenericForm} from 'common/form/models/genericForm';
 import {
   getResidence,
   getResidenceForm,

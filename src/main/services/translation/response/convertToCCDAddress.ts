@@ -1,5 +1,5 @@
-import {CCDAddress} from '../../../common/models/ccdResponse/ccdAddress';
-import {Address} from '../../../common/form/models/address';
+import {CCDAddress} from 'common/models/ccdResponse/ccdAddress';
+import {Address} from 'common/form/models/address';
 
 export const toCCDAddress = (primaryAddress: Address): CCDAddress => {
   return {

@@ -12,7 +12,7 @@ import {
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
 import {PaymentOptionType}
-  from '../.common/form/models/admission/paymentOption/paymentOptionType';
+  from '../common/form/models/admission/paymentOption/paymentOptionType';
 
 jest.mock('modules/draft-store');
 jest.mock('modules/draft-store/draftStoreService');

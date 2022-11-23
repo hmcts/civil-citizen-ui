@@ -1,6 +1,6 @@
-import {TimelineRow} from '../../models/timeLineOfEvents/timelineRow';
+import {TimelineRow} from 'models/timeLineOfEvents/timelineRow';
 import {ValidateNested} from 'class-validator';
-import {AtLeastOneRowIsPopulated} from '../../../../common/form/validators/atLeastOneRowIsPopulated';
+import {AtLeastOneRowIsPopulated} from 'common/form/validators/atLeastOneRowIsPopulated';
 
 const MINIMUM_ROWS = 4;
 

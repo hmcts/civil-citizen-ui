@@ -12,7 +12,7 @@ import {PartyType} from 'models/partyType';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {PartyDetails} from '.common/form/models/partyDetails';
+import {PartyDetails} from 'common/form/models/partyDetails';
 
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store');

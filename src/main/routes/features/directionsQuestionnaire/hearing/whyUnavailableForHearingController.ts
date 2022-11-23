@@ -1,14 +1,14 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {DQ_PHONE_OR_VIDEO_HEARING_URL, DQ_UNAVAILABLE_FOR_HEARING_URL} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+import {GenericForm} from 'common/form/models/genericForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
 } from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {
   WhyUnavailableForHearing,
-} from '../../../../common/models/directionsQuestionnaire/hearing/whyUnavailableForHearing';
+} from 'common/models/directionsQuestionnaire/hearing/whyUnavailableForHearing';
 import {getCalculatedDays} from '../../../../services/features/directionsQuestionnaire/whyUnavailableForHearingService';
 
 const whyUnavailableForHearingController = Router();

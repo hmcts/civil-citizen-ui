@@ -1,8 +1,8 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {StatementOfMeans} from '../../../../common/models/statementOfMeans';
-import {PriorityDebts} from '../../../../common/form/models/statementOfMeans/priorityDebts';
-import {convertToForm} from '../../../../common/utils/priorityDebts/priorityDebtsConvertors';
-import {GenericForm} from '../../../../common/form/models/genericForm';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
+import {PriorityDebts} from 'common/form/models/statementOfMeans/priorityDebts';
+import {convertToForm} from 'common/utils/priorityDebts/priorityDebtsConvertors';
+import {GenericForm} from 'common/form/models/genericForm';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('priorityDebtsSerice');

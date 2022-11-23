@@ -1,5 +1,5 @@
 import {IsEmail, IsNotEmpty, IsNumber, Min, Validate, ValidateIf} from 'class-validator';
-import {OptionalIntegerValidator} from '../../../form/validators/optionalIntegerValidator';
+import {OptionalIntegerValidator} from 'form/validators/optionalIntegerValidator';
 
 export class ExpertDetails {
   firstName?: string;

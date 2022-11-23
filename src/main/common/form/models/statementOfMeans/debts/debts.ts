@@ -1,7 +1,7 @@
 import {IsDefined, ValidateIf, ValidateNested} from 'class-validator';
-import {DebtItems} from '../../../../../common/form/models/statementOfMeans/debts/debtItems';
-import {YesNo} from '../../../../../common/form/models/yesNo';
-import {AtLeastOnePopulatedRow} from '../../../../../common/form/validators/atLeastOnePopulatedRow';
+import {DebtItems} from 'common/form/models/statementOfMeans/debts/debtItems';
+import {YesNo} from 'common/form/models/yesNo';
+import {AtLeastOnePopulatedRow} from 'common/form/validators/atLeastOnePopulatedRow';
 
 export class Debts{
   @IsDefined({message: 'ERRORS.VALID_YES_NO_OPTION'})

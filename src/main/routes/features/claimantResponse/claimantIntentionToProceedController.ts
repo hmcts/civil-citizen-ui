@@ -3,9 +3,9 @@ import {
   CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from '../../urls';
-import {GenericForm} from '../../../common/form/models/genericForm';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {GenericYesNo} from '../../../common/form/models/genericYesNo';
+import {GenericForm} from 'common/form/models/genericForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {
   getClaimantResponse,
   saveClaimantResponse,

@@ -9,7 +9,7 @@ import {
 } from 'routes/urls';
 import {t} from 'i18next';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {SameRateInterestType} from '.common/form/models/claimDetails';
+import {SameRateInterestType} from 'common/form/models/claimDetails';
 
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store');

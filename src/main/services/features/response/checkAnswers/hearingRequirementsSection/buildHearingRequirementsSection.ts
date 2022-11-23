@@ -1,18 +1,18 @@
-import {Claim} from '../../../../../common/models/claim';
-import {summarySection, SummarySection} from '../../../../../common/models/summaryList/summarySections';
-import {getLng} from '../../../../../common/utils/languageToggleUtils';
+import {Claim} from 'common/models/claim';
+import {summarySection, SummarySection} from 'common/models/summaryList/summarySections';
+import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
-import {SummaryRow, summaryRow} from '../../../../../common/models/summaryList/summaryList';
+import {SummaryRow, summaryRow} from 'common/models/summaryList/summaryList';
 import {
   DETERMINATION_WITHOUT_HEARING_URL,
   DQ_GIVE_EVIDENCE_YOURSELF_URL,
   DQ_WELSH_LANGUAGE_URL,
   VULNERABILITY_URL,
 } from '../../../../../routes/urls';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {YesNo, YesNoUpperCamelCase} from '../../../../../common/form/models/yesNo';
-import {LanguageOptions} from '../../../../../common/models/directionsQuestionnaire/languageOptions';
-import {changeLabel} from '../../../../../common/utils/checkYourAnswer/changeButton';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
+import {LanguageOptions} from 'common/models/directionsQuestionnaire/languageOptions';
+import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import {addSupportRequiredList} from './addSupportRequiredList';
 
 const determinationWithoutHearingQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {

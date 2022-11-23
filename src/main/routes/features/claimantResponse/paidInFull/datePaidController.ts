@@ -1,10 +1,10 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {DATE_PAID_URL,DATE_PAID_CONFIRMATION_URL} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
+import {GenericForm} from 'common/form/models/genericForm';
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import {getClaimantResponse, saveClaimantResponse} from '../../../../services/features/claimantResponse/claimantResponseService';
-import {CitizenDate} from '../../../../common/form/models/claim/claimant/citizenDate';
+import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
 
 const claimantResponsePropertyName = 'datePaid';
 const datePaidViewPath = 'features/claimantResponse/paidInFull/date-paid';

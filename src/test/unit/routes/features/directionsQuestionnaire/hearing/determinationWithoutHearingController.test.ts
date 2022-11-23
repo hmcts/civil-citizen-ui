@@ -5,7 +5,7 @@ import {app} from '../../../../../../main/app';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {DETERMINATION_WITHOUT_HEARING_URL, EXPERT_GUIDANCE_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {YesNo} from '.common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
 
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store');

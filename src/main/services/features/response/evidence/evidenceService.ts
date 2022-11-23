@@ -1,7 +1,7 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {Claim} from '../../../../common/models/claim';
-import {Evidence} from '../../../../common/form/models/evidence/evidence';
-import {EvidenceItem} from '../../../../common/form/models/evidence/evidenceItem';
+import {Claim} from 'common/models/claim';
+import {Evidence} from 'common/form/models/evidence/evidence';
+import {EvidenceItem} from 'common/form/models/evidence/evidenceItem';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('selfEmployedAsService');

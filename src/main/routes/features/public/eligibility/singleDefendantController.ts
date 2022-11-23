@@ -4,9 +4,9 @@ import {
   ELIGIBILITY_SINGLE_DEFENDANT_URL,
   NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
 } from '../../../../routes/urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
-import {YesNo} from '../../../../common/form/models/yesNo';
+import {GenericForm} from 'common/form/models/genericForm';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {YesNo} from 'common/form/models/yesNo';
 
 const singleDefendantController = Router();
 const singleDefendantViewPath = 'features/public/eligibility/single-defendant';

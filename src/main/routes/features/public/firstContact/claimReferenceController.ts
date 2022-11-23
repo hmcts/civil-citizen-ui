@@ -1,10 +1,10 @@
 import {Request, Response, Router} from 'express';
-import {GenericForm} from '../../../../common/form/models/genericForm';
+import {GenericForm} from 'common/form/models/genericForm';
 import {
   FIRST_CONTACT_PIN_URL,
   FIRST_CONTACT_CLAIM_REFERENCE_URL,
 } from '../../../../routes/urls';
-import {ClaimReference} from '../../../../common/models/firstContact/claimReference';
+import {ClaimReference} from 'common/models/firstContact/claimReference';
 
 const claimReferenceController = Router();
 const claimReferenceViewPath = 'features/public/firstContact/claim-reference';

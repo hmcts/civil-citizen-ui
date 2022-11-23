@@ -1,4 +1,4 @@
-import {BankAccountTypeValues} from '../common/form/models/bankAndSavings/bankAccountTypeValues';
+import {BankAccountTypeValues} from 'common/form/models/bankAndSavings/bankAccountTypeValues';
 import {t} from 'i18next';
 
 const translateAccountType = (accountType: string, lng: string): string => {

@@ -1,11 +1,11 @@
 import {DateTime, Settings} from 'luxon';
-import {Claim} from '../.common/models/claim';
+import {Claim} from '../common/models/claim';
 import {
   buildResponseToClaimSection,
 } from '../../../../../../../main/services/features/dashboard/claimSummary/latestUpdate/latestUpdateContentBuilder';
-import {CaseState} from '../.common/form/models/claimDetails';
-import {PartyType} from '../.common/models/partyType';
-import {ClaimSummaryType} from '../.common/form/models/claimSummarySection';
+import {CaseState} from '../common/form/models/claimDetails';
+import {PartyType} from '../common/models/partyType';
+import {ClaimSummaryType} from '../common/form/models/claimSummarySection';
 import {CLAIM_TASK_LIST_URL} from '../routes/urls';
 
 describe('Latest Update Content Builder', () => {

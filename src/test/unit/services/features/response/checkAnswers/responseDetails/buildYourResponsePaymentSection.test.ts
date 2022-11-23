@@ -20,11 +20,11 @@ import {
   CITIZEN_RESIDENCE_URL,
   CITIZEN_RESPONSE_TYPE_URL,
 } from '../routes/urls';
-import {PaymentOptionType} from '../.common/form/models/admission/paymentOption/paymentOptionType';
+import {PaymentOptionType} from '../common/form/models/admission/paymentOption/paymentOptionType';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
-import {formatDateToFullDate} from '../.common/utils/dateUtils';
-import {ResponseType} from '../.common/form/models/responseType';
-import {YesNo} from '../.common/form/models/yesNo';
+import {formatDateToFullDate} from '../common/utils/dateUtils';
+import {ResponseType} from '../common/form/models/responseType';
+import {YesNo} from '../common/form/models/yesNo';
 
 jest.mock('modules/draft-store');
 jest.mock('modules/draft-store/draftStoreService');
@@ -75,7 +75,7 @@ describe('Response Payment Section', () => {
     expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].summaryList.rows.length).toBe(2);
     expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].title).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_WHEN_PAY_TITLE);
     expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].summaryList.rows[0].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_WHEN_PAY);
-    expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].summaryList.rows[0].value.html).toContain(constVal.COMMON_PAYMENT_OPTION_BY_SET_DATE + ': ' + formatDateToFullDate(new Date(Date.now() + (3600 * 1000 * 24))));
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].summaryList.rows[0].value.html).toContain(constValcommon_PAYMENT_OPTION_BY_SET_DATE + ': ' + formatDateToFullDate(new Date(Date.now() + (3600 * 1000 * 24))));
     expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CITIZEN_PAYMENT_OPTION_URL.replace(':id', constVal.CLAIM_ID));
   });
 
@@ -118,7 +118,7 @@ describe('Response Payment Section - PART ADMIT', () => {
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
     //Then
     expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].summaryList.rows[0].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_WHEN_PAY);
-    expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].summaryList.rows[0].value.html).toBe(constVal.COMMON_PAYMENT_OPTION_BY_SET_DATE + ': ' + formatDateToFullDate(new Date(Date.now() + (3600 * 1000 * 24))));
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].summaryList.rows[0].value.html).toBe(constValcommon_PAYMENT_OPTION_BY_SET_DATE + ': ' + formatDateToFullDate(new Date(Date.now() + (3600 * 1000 * 24))));
     expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL.replace(':id', constVal.CLAIM_ID));
   });
 

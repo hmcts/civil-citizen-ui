@@ -4,12 +4,12 @@ import {
   CITIZEN_EMPLOYMENT_URL,
   CITIZEN_CARER_URL,
 } from '../../../../urls';
-import {OtherDependants} from '../../../../../common/form/models/statementOfMeans/otherDependants';
+import {OtherDependants} from 'common/form/models/statementOfMeans/otherDependants';
 import {OtherDependantsService} from '../../../../../services/features/response/statementOfMeans/otherDependants/otherDependantsService';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {Claim} from '../../../../../common/models/claim';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {Claim} from 'common/models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
+import {GenericForm} from 'common/form/models/genericForm';
 
 const citizenOtherDependantsViewPath = 'features/response/statementOfMeans/otherDependants/other-dependants';
 const otherDependantsController = Router();

@@ -1,13 +1,13 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {HowMuchDoYouOwe} from '../../../../../common/form/models/admission/partialAdmission/howMuchDoYouOwe';
+import {HowMuchDoYouOwe} from 'common/form/models/admission/partialAdmission/howMuchDoYouOwe';
 import {CITIZEN_OWED_AMOUNT_URL, CLAIM_TASK_LIST_URL} from '../../../../urls';
 import {
   getHowMuchDoYouOweForm,
   saveHowMuchDoYouOweData,
 } from '../../../../../services/features/response/admission/partialAdmission/howMuchDoYouOweService';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {toNumberOrUndefined} from '../../../../../common/utils/numberConverter';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {toNumberOrUndefined} from 'common/utils/numberConverter';
+import {GenericForm} from 'common/form/models/genericForm';
 import {PartAdmitHowMuchHaveYouPaidGuard} from '../../../../../routes/guards/partAdmitHowMuchHaveYouPaidGuard';
 
 const howMuchDoYouOweViewPath = 'features/response/admission/partialAdmission/how-much-do-you-owe';

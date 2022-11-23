@@ -4,13 +4,13 @@ import {
   CLAIMANT_RESPONSE_SETTLE_CLAIM_URL,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from '../../urls';
-import {GenericForm} from '../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../common/form/models/genericYesNo';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {Claim} from '../../../common/models/claim';
+import {GenericForm} from 'common/form/models/genericForm';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {Claim} from 'common/models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {saveClaimantResponse} from '../../../services/features/claimantResponse/claimantResponseService';
-import {YesNo} from '../../../common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
 
 const settleClaimController = Router();
 const settleClaimViewPath = 'features/claimantResponse/settle-claim';

@@ -1,8 +1,8 @@
-import {SummarySection, summarySection} from '../../../../../common/models/summaryList/summarySections';
-import {Claim} from '../../../../../common/models/claim';
-import {summaryRow} from '../../../../../common/models/summaryList/summaryList';
+import {SummarySection, summarySection} from 'common/models/summaryList/summarySections';
+import {Claim} from 'common/models/claim';
+import {summaryRow} from 'common/models/summaryList/summaryList';
 import {t} from 'i18next';
-import {getLng} from '../../../../../common/utils/languageToggleUtils';
+import {getLng} from 'common/utils/languageToggleUtils';
 import {
   CLAIMANT_COMPANY_DETAILS_URL,
   CLAIMANT_DOB_URL,
@@ -11,9 +11,9 @@ import {
   CLAIMANT_PHONE_NUMBER_URL,
   CLAIMANT_SOLE_TRADER_DETAILS_URL,
 } from 'routes/urls';
-import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
-import {PartyType} from '../../../../../common/models/partyType';
-import {Address} from '../../../../../common/form/models/address';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {PartyType} from 'common/models/partyType';
+import {Address} from 'common/form/models/address';
 
 const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', {lng: lang});
 

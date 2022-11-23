@@ -1,6 +1,6 @@
 import {NextFunction, Response, Router} from 'express';
-import {SelfEmployedAsForm} from '../../../../../../common/form/models/statementOfMeans/employment/selfEmployed/selfEmployedAsForm';
-import {constructResponseUrlWithIdParams} from '../../../../../../common/utils/urlFormatter';
+import {SelfEmployedAsForm} from 'common/form/models/statementOfMeans/employment/selfEmployed/selfEmployedAsForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getSelfEmployedAsForm,
   saveSelfEmployedAsData,
@@ -9,7 +9,7 @@ import {
   CITIZEN_SELF_EMPLOYED_URL,
   ON_TAX_PAYMENTS_URL,
 } from '../../../../../urls';
-import {GenericForm} from '../../../../../../common/form/models/genericForm';
+import {GenericForm} from 'common/form/models/genericForm';
 
 const selfEmployedAsViewPath = 'features/response/statementOfMeans/employment/selfEmployed/self-employed-as';
 const selfEmployedAsController = Router();

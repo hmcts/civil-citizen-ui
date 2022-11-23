@@ -4,10 +4,10 @@ import {
   CASE_TIMELINE_DOCUMENTS_URL,
   CASE_DOCUMENT_DOWNLOAD_URL,
 } from '../../../urls';
-import {Claim} from '../../../../common/models/claim';
-import {getInterestDetails} from '../../../../common/utils/interestUtils';
+import {Claim} from 'common/models/claim';
+import {getInterestDetails} from 'common/utils/interestUtils';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
-import {DocumentUri} from '../../../../common/models/document/documentType';
+import {DocumentUri} from 'common/models/document/documentType';
 import {getClaimById} from 'modules/utilityService';
 
 const claimDetailsController = Router();

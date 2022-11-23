@@ -1,9 +1,9 @@
 import {NextFunction, Response, Router} from 'express';
-import {DefendantEmail} from '../../../../common/form/models/claim/yourDetails/defendantEmail';
+import {DefendantEmail} from 'common/form/models/claim/yourDetails/defendantEmail';
 import {CLAIM_DEFENDANT_EMAIL_URL, CLAIM_DEFENDANT_PHONE_NUMBER_URL} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
+import {GenericForm} from 'common/form/models/genericForm';
 import {getDefendantEmail,saveDefendantEmail} from '../../../../services/features/claim/yourDetails/defendantEmailService';
-import {AppRequest} from '../../../../common/models/AppRequest';
+import {AppRequest} from 'common/models/AppRequest';
 
 const defendantEmailViewPath = 'features/claim/yourDetails/defendant-email';
 const defendantEmailController = Router();

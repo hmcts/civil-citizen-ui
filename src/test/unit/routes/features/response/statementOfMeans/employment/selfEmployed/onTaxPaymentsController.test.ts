@@ -5,7 +5,7 @@ import nock from 'nock';
 import {CITIZEN_COURT_ORDERS_URL, ON_TAX_PAYMENTS_URL} from '../../routes/urls';
 import {TestMessages} from '../../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../../utils/mockDraftStore';
-import {YesNo} from '../../.common/form/models/yesNo';
+import {YesNo} from '../../common/form/models/yesNo';
 
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store');

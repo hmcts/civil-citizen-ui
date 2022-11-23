@@ -1,9 +1,9 @@
-import {Claim} from '../../../../common/models/claim';
-import {ClaimSummarySection, ClaimSummaryType} from '../../../../common/form/models/claimSummarySection';
-import {DocumentType, DocumentUri} from '../../../../common/models/document/documentType';
+import {Claim} from 'common/models/claim';
+import {ClaimSummarySection, ClaimSummaryType} from 'common/form/models/claimSummarySection';
+import {DocumentType, DocumentUri} from 'common/models/document/documentType';
 import {CASE_DOCUMENT_DOWNLOAD_URL} from '../../../../routes/urls';
-import {formatDateToFullDate} from '../../../../common/utils/dateUtils';
-import {displayDocumentSizeInKB} from '../../../../common/utils/documentSizeDisplayFormatter';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {displayDocumentSizeInKB} from 'common/utils/documentSizeDisplayFormatter';
 
 const buildDownloadSealedClaimSection = (claim: Claim, claimId: string, lang: string): ClaimSummarySection => {
   const document = claim.getDocumentDetails(DocumentType.SEALED_CLAIM);

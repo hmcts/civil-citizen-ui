@@ -1,15 +1,15 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {CITIZEN_DETAILS_URL, CITIZEN_PHONE_NUMBER_URL, CLAIM_TASK_LIST_URL, DOB_URL} from '../../../urls';
-import {Party} from '../../../../common/models/party';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+import {Party} from 'common/models/party';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getDefendantInformation,
   saveDefendantProperty,
 } from '../../../../services/features/common/defendantDetailsService';
-import {PartyType} from '../../../../common/models/partyType';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {PartyDetails} from '../../../../common/form/models/partyDetails';
-import {PartyPhone} from '../../../../common/models/PartyPhone';
+import {PartyType} from 'common/models/partyType';
+import {GenericForm} from 'common/form/models/genericForm';
+import {PartyDetails} from 'common/form/models/partyDetails';
+import {PartyPhone} from 'common/models/PartyPhone';
 
 const citizenDetailsController = Router();
 

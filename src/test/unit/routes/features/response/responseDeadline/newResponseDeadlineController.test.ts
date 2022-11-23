@@ -4,9 +4,9 @@ import config from 'config';
 import nock from 'nock';
 import {CIVIL_SERVICE_CALCULATE_DEADLINE} from '../../../../../../main/app/client/civilServiceUrls';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {Claim} from '.common/models/claim';
+import {Claim} from 'common/models/claim';
 import {CLAIM_TASK_LIST_URL, NEW_RESPONSE_DEADLINE_URL} from 'routes/urls';
-import {PartyType} from '.common/models/partyType';
+import {PartyType} from 'common/models/partyType';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('modules/oidc');

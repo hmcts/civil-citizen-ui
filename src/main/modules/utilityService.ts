@@ -4,8 +4,8 @@ import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftSto
 import {CivilServiceClient} from '../app/client/civilServiceClient';
 import {Claim} from '../../main/common/models/claim';
 import {Request} from 'express';
-import {ClaimDetails} from '../common/form/models/claim/details/claimDetails';
-import {Reason} from '../common/form/models/claim/details/reason';
+import {ClaimDetails} from 'common/form/models/claim/details/claimDetails';
+import {Reason} from 'common/form/models/claim/details/reason';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);

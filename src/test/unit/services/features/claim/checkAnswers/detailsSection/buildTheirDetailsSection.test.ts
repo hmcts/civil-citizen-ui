@@ -9,11 +9,11 @@ import {
   createClaimWithContactPersonDetails,
   createClaimWithIndividualDetails,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
-import {PartyType} from '../.common/models/partyType';
-import {formatDateToFullDate} from '../.common/utils/dateUtils';
-import {PartyDetails} from '../.common/form/models/partyDetails';
-import {Email} from '../.common/models/Email';
-import {CitizenDate} from '../.common/form/models/claim/claimant/citizenDate';
+import {PartyType} from '../common/models/partyType';
+import {formatDateToFullDate} from '../common/utils/dateUtils';
+import {PartyDetails} from '../common/form/models/partyDetails';
+import {Email} from '../common/models/Email';
+import {CitizenDate} from '../common/form/models/claim/claimant/citizenDate';
 
 jest.mock('modules/i18n');
 jest.mock('i18next', () => ({

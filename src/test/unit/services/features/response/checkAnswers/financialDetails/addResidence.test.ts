@@ -8,7 +8,7 @@ import {
   createClaimWithResidence,
   createClaimWithResidenceOther,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
-import {ResidenceType} from '../.common/form/models/statementOfMeans/residence/residenceType';
+import {ResidenceType} from '../common/form/models/statementOfMeans/residence/residenceType';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
 
 jest.mock('modules/draft-store');

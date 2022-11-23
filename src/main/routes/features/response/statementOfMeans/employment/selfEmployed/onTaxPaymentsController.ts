@@ -1,14 +1,14 @@
 import {NextFunction, Response, Router} from 'express';
 import {
   OnTaxPayments,
-} from '../../../../../../common/form/models/statementOfMeans/employment/selfEmployed/onTaxPayments';
+} from 'common/form/models/statementOfMeans/employment/selfEmployed/onTaxPayments';
 import {CITIZEN_COURT_ORDERS_URL, ON_TAX_PAYMENTS_URL} from '../../../../../urls';
 import {
   getOnTaxPaymentsForm,
   saveTaxPaymentsData,
 } from '../../../../../../services/features/response/statementOfMeans/employment/selfEmployed/onTaxPaymentsService';
-import {constructResponseUrlWithIdParams} from '../../../../../../common/utils/urlFormatter';
-import {GenericForm} from '../../../../../../common/form/models/genericForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {GenericForm} from 'common/form/models/genericForm';
 
 const citizenOnTaxPaymentsViewPath = 'features/response/statementOfMeans/employment/selfEmployed/on-tax-payments';
 const onTaxPaymentsController = Router();

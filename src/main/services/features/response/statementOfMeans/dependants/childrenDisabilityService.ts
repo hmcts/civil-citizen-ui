@@ -1,9 +1,9 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
-import {Claim} from '../../../../../common/models/claim';
-import {YesNo} from '../../../../../common/form/models/yesNo';
-import {NumberOfChildren} from '../../../../../common/form/models/statementOfMeans/dependants/numberOfChildren';
-import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
+import {Claim} from 'common/models/claim';
+import {YesNo} from 'common/form/models/yesNo';
+import {NumberOfChildren} from 'common/form/models/statementOfMeans/dependants/numberOfChildren';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('childrenDisabilityService');

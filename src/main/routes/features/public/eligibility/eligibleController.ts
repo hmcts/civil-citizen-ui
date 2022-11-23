@@ -5,7 +5,7 @@ import {
   ELIGIBLE_FOR_THIS_SERVICE_URL,
 } from '../../../../routes/urls';
 import {getYouCanUseContent} from '../../../../services/features/eligibility/eligibleService';
-import {getLng} from '../../../../common/utils/languageToggleUtils';
+import {getLng} from 'common/utils/languageToggleUtils';
 
 const eligibleController = Router();
 const youCanUseViewPath = 'features/public/eligibility/eligible';

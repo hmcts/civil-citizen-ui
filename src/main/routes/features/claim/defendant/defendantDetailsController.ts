@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {AppRequest} from '../../../../common/models/AppRequest';
+import {AppRequest} from 'common/models/AppRequest';
 import {
   CLAIM_DEFENDANT_COMPANY_DETAILS_URL,
   CLAIM_DEFENDANT_EMAIL_URL,
@@ -11,10 +11,10 @@ import {
   getDefendantInformation,
   saveDefendantProperty,
 } from '../../../../services/features/common/defendantDetailsService';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {PartyType} from '../../../../common/models/partyType';
-import {PartyDetails} from '../../../../common/form/models/partyDetails';
-import {Party} from '../../../../common/models/party';
+import {GenericForm} from 'common/form/models/genericForm';
+import {PartyType} from 'common/models/partyType';
+import {PartyDetails} from 'common/form/models/partyDetails';
+import {Party} from 'common/models/party';
 
 const defendantDetailsController = Router();
 const defendantDetailsCompanyOrOrganisationViewPath = 'features/claim/defendant/defendant-details-company-or-organisation';

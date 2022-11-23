@@ -1,8 +1,8 @@
-import {AppRequest} from '../../../../common/models/AppRequest';
+import {AppRequest} from 'common/models/AppRequest';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import config from 'config';
 import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
-import {Claim} from '../../../../common/models/claim';
+import {Claim} from 'common/models/claim';
 import {translateDraftResponseToCCD} from '../../../translation/response/ccdTranslation';
 import {addressHasChange} from './compareAddress';
 

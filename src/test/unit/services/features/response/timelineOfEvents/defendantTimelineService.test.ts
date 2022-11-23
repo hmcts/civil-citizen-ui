@@ -1,13 +1,13 @@
-import {Claim} from '.common/models/claim';
-import {PartialAdmission} from '.common/models/partialAdmission';
-import {DefendantTimeline} from '.common/form/models/timeLineOfEvents/defendantTimeline';
+import {Claim} from 'common/models/claim';
+import {PartialAdmission} from 'common/models/partialAdmission';
+import {DefendantTimeline} from 'common/form/models/timeLineOfEvents/defendantTimeline';
 import {
   getPartialAdmitTimeline,
   savePartialAdmitTimeline,
 } from '../../../../../../main/services/features/response/timelineOfEvents/defendantTimelineService';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {TimelineRow} from '.common/form/models/timeLineOfEvents/timelineRow';
+import {TimelineRow} from 'common/form/models/timeLineOfEvents/timelineRow';
 
 jest.mock('modules/draft-store');
 jest.mock('modules/draft-store/draftStoreService');

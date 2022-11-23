@@ -1,8 +1,8 @@
 import {Response, Router} from 'express';
 import {DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, DQ_REQUEST_EXTRA_4WEEKS_URL} from '../../urls';
-import {GenericForm} from '../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../common/form/models/genericYesNo';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
+import {GenericForm} from 'common/form/models/genericForm';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getGenericOption,
   getGenericOptionForm,

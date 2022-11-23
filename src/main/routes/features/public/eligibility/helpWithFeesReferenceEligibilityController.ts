@@ -2,9 +2,9 @@ import {Response, Router} from 'express';
 import {
   ELIGIBILITY_HWF_ELIGIBLE_URL, ELIGIBILITY_HELP_WITH_FEES_REFERENCE_URL, ELIGIBILITY_HWF_ELIGIBLE_REFERENCE_URL,
 } from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
-import {YesNo} from '../../../../common/form/models/yesNo';
+import {GenericForm} from 'common/form/models/genericForm';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {YesNo} from 'common/form/models/yesNo';
 
 const helpWithFeesReferenceEligibilityController = Router();
 const helpWithFeesViewPath = 'features/public/eligibility/help-with-fees-reference';

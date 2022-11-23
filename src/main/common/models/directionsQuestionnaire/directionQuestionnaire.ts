@@ -1,4 +1,4 @@
-import {GenericYesNo} from '../../../common/form/models/genericYesNo';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {Experts} from './experts/experts';
 import {VulnerabilityQuestions} from './vulnerabilityQuestions/vulnerabilityQuestions';
 import {WelshLanguageRequirements} from './welshLanguageRequirements/welshLanguageRequirements';

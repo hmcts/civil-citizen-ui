@@ -1,5 +1,5 @@
 import {IsNotEmpty, Validate, ValidateIf} from 'class-validator';
-import {CurrencyValidator} from '../../../../../common/form/validators/currencyValidator';
+import {CurrencyValidator} from 'common/form/validators/currencyValidator';
 
 export class DebtItems{
 

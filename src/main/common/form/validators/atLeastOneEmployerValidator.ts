@@ -1,5 +1,5 @@
 import {ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator';
-import {Employer} from '../models/statementOfMeans/employment/employer';
+import {Employer} from 'models/statementOfMeans/employment/employer';
 
 @ValidatorConstraint({ name: 'customAtLeastOneEmployerValidator', async: false })
 export class AtLeastOneEmployerValidator implements ValidatorConstraintInterface {

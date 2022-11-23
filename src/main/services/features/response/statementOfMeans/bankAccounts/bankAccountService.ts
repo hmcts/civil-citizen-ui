@@ -1,8 +1,8 @@
-import {BankAccounts} from '../../../../../common/form/models/bankAndSavings/bankAccounts';
-import {BankAccount} from '../../../../../common/form/models/bankAndSavings/bankAccount';
+import {BankAccounts} from 'common/form/models/bankAndSavings/bankAccounts';
+import {BankAccount} from 'common/form/models/bankAndSavings/bankAccount';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../common/models/claim';
-import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
+import {Claim} from 'common/models/claim';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
 import {convertCitizenBankAccountsToForm, convertFormToCitizenBankAccount} from './bankAccountConverter';
 
 export class BankAccountService {

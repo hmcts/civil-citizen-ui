@@ -4,7 +4,7 @@ const {app} = require('../../../../../../main/app');
 import nock from 'nock';
 import config from 'config';
 import {CITIZEN_PARTNER_URL, CITIZEN_RESIDENCE_URL} from 'routes/urls';
-import {FREE_TEXT_MAX_LENGTH} from '.common/form/validators/validationConstraints';
+import {FREE_TEXT_MAX_LENGTH} from 'common/form/validators/validationConstraints';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 

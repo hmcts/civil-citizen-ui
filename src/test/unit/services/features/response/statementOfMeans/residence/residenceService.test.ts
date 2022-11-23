@@ -4,10 +4,10 @@ import {
   saveResidence,
 } from '../../../../../../../main/services/features/response/statementOfMeans/residence/residenceService';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {Claim} from '../.common/models/claim';
-import {StatementOfMeans} from '../.common/models/statementOfMeans';
-import {Residence} from '../.common/form/models/statementOfMeans/residence/residence';
-import {ResidenceType} from '../.common/form/models/statementOfMeans/residence/residenceType';
+import {Claim} from '../common/models/claim';
+import {StatementOfMeans} from '../common/models/statementOfMeans';
+import {Residence} from '../common/form/models/statementOfMeans/residence/residence';
+import {ResidenceType} from '../common/form/models/statementOfMeans/residence/residenceType';
 
 jest.mock('modules/draft-store/draftStoreService');
 

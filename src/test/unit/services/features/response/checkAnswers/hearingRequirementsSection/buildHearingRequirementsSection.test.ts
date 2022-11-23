@@ -1,20 +1,20 @@
-import {Claim} from '../.common/models/claim';
+import {Claim} from '../common/models/claim';
 import {
   DirectionQuestionnaire,
-} from '../.common/models/directionsQuestionnaire/directionQuestionnaire';
-import {Hearing} from '../.common/models/directionsQuestionnaire/hearing/hearing';
+} from '../common/models/directionsQuestionnaire/directionQuestionnaire';
+import {Hearing} from '../common/models/directionsQuestionnaire/hearing/hearing';
 import * as hearingRequirementsSection from '../../../../../../../main/services/features/response/checkAnswers/hearingRequirementsSection/buildHearingRequirementsSection';
 import * as supportRequiredList from '../../../../../../../main/services/features/response/checkAnswers/hearingRequirementsSection/addSupportRequiredList';
-import {summaryRow} from '../.common/models/summaryList/summaryList';
-import {YesNo} from '../.common/form/models/yesNo';
+import {summaryRow} from '../common/models/summaryList/summaryList';
+import {YesNo} from '../common/form/models/yesNo';
 import {
   WelshLanguageRequirements,
-} from '../.common/models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
-import {LanguageOptions} from '../.common/models/directionsQuestionnaire/languageOptions';
+} from '../common/models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
+import {LanguageOptions} from '../common/models/directionsQuestionnaire/languageOptions';
 import {
   VulnerabilityQuestions,
-} from '../.common/models/directionsQuestionnaire/vulnerabilityQuestions/vulnerabilityQuestions';
-import {summarySection} from '../.common/models/summaryList/summarySections';
+} from '../common/models/directionsQuestionnaire/vulnerabilityQuestions/vulnerabilityQuestions';
+import {summarySection} from '../common/models/summaryList/summarySections';
 import {t} from 'i18next';
 
 jest.mock('modules/draft-store');

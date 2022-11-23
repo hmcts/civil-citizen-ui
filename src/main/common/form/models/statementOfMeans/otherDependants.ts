@@ -1,5 +1,5 @@
 import {IsDefined, IsNotEmpty, ValidateIf, Validate} from 'class-validator';
-import {NumberOfPeopleValidator} from '../../../form/validators/numberOfPeopleValidator';
+import {NumberOfPeopleValidator} from 'form/validators/numberOfPeopleValidator';
 
 export class OtherDependants {
   @IsDefined({message: 'ERRORS.VALID_YES_NO_OPTION'})

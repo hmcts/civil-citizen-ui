@@ -1,6 +1,6 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {ClaimDetails} from '../../../../common/form/models/claim/details/claimDetails';
-import {Claim} from '../../../../common/models/claim';
+import {ClaimDetails} from 'common/form/models/claim/details/claimDetails';
+import {Claim} from 'common/models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimDetailsService');

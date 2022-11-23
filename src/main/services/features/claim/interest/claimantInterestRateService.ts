@@ -1,4 +1,4 @@
-import {SameRateInterestSelection, SameRateInterestType} from '../../../../common/form/models/claimDetails';
+import {SameRateInterestSelection, SameRateInterestType} from 'common/form/models/claimDetails';
 
 const getInterestRateForm = async (option: SameRateInterestType, rate: number | undefined, reason: string): Promise<SameRateInterestSelection> => {
   return {

@@ -1,10 +1,10 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {FIRST_CONTACT_ACCESS_DENIED_URL, FIRST_CONTACT_CLAIM_SUMMARY_URL} from '../../../../routes/urls';
-import {Claim} from '../../../../common/models/claim';
+import {Claim} from 'common/models/claim';
 import {getClaimById} from 'modules/utilityService';
-import {getInterestDetails} from '../../../../common/utils/interestUtils';
+import {getInterestDetails} from 'common/utils/interestUtils';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
-import {YesNo} from '../../../../common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
 
 const firstContactClaimSummaryController = Router();
 

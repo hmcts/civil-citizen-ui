@@ -1,11 +1,11 @@
-import {CCDParty} from '../../../../common/models/ccdResponse/ccdParty';
-import {Party} from '../../../../common/models/party';
-import {PartyType} from '../../../../common/models/partyType';
-import {PartyDetails} from '../../../../common/form/models/partyDetails';
-import {Address} from '../../../../common/form/models/address';
-import {PartyPhone} from '../../../../common/models/PartyPhone';
-import {Email} from '../../../../common/models/Email';
-import {CitizenDate} from '../../../../common/form/models/claim/claimant/citizenDate';
+import {CCDParty} from 'common/models/ccdResponse/ccdParty';
+import {Party} from 'common/models/party';
+import {PartyType} from 'common/models/partyType';
+import {PartyDetails} from 'common/form/models/partyDetails';
+import {Address} from 'common/form/models/address';
+import {PartyPhone} from 'common/models/PartyPhone';
+import {Email} from 'common/models/Email';
+import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
 
 export const toCUIParty = (ccdParty: CCDParty): Party => {
   const cuiParty = new Party();

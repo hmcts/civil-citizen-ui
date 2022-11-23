@@ -18,20 +18,20 @@ import {
   createClaimWithFullRejection,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
-import {DefendantTimeline} from '../.common/form/models/timeLineOfEvents/defendantTimeline';
-import {DefendantEvidence} from '../.common/models/evidence/evidence';
-import {EvidenceItem} from '../.common/form/models/evidence/evidenceItem';
-import {Evidence} from '../.common/form/models/evidence/evidence';
-import {EvidenceType} from '../.common/models/evidence/evidenceType';
-import {YesNo} from '../.common/form/models/yesNo';
-import {RejectAllOfClaimType} from '../.common/form/models/rejectAllOfClaimType';
-import {ResponseType} from '../.common/form/models/responseType';
-import {RejectAllOfClaim} from '../.common/form/models/rejectAllOfClaim';
+import {DefendantTimeline} from '../common/form/models/timeLineOfEvents/defendantTimeline';
+import {DefendantEvidence} from '../common/models/evidence/evidence';
+import {EvidenceItem} from '../common/form/models/evidence/evidenceItem';
+import {Evidence} from '../common/form/models/evidence/evidence';
+import {EvidenceType} from '../common/models/evidence/evidenceType';
+import {YesNo} from '../common/form/models/yesNo';
+import {RejectAllOfClaimType} from '../common/form/models/rejectAllOfClaimType';
+import {ResponseType} from '../common/form/models/responseType';
+import {RejectAllOfClaim} from '../common/form/models/rejectAllOfClaim';
 import {
   WhyDoYouDisagree,
-} from '../.common/form/models/admission/partialAdmission/whyDoYouDisagree';
-import {Defence} from '../.common/form/models/defence';
-import {TimelineRow} from '../.common/form/models/timeLineOfEvents/timelineRow';
+} from '../common/form/models/admission/partialAdmission/whyDoYouDisagree';
+import {Defence} from '../common/form/models/defence';
+import {TimelineRow} from '../common/form/models/timeLineOfEvents/timelineRow';
 
 jest.mock('modules/draft-store');
 jest.mock('modules/draft-store/draftStoreService');

@@ -3,14 +3,14 @@ import {
   saveEmploymentData,
 } from '../../../../../../../main/services/features/response/statementOfMeans/employment/employmentService';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {Claim} from '../.common/models/claim';
-import {StatementOfMeans} from '../.common/models/statementOfMeans';
+import {Claim} from '../common/models/claim';
+import {StatementOfMeans} from '../common/models/statementOfMeans';
 import {
   EmploymentCategory,
-} from '../.common/form/models/statementOfMeans/employment/employmentCategory';
-import {EmploymentForm} from '../.common/form/models/statementOfMeans/employment/employmentForm';
-import {YesNo} from '../.common/form/models/yesNo';
-import {GenericForm} from '../.common/form/models/genericForm';
+} from '../common/form/models/statementOfMeans/employment/employmentCategory';
+import {EmploymentForm} from '../common/form/models/statementOfMeans/employment/employmentForm';
+import {YesNo} from '../common/form/models/yesNo';
+import {GenericForm} from '../common/form/models/genericForm';
 
 jest.mock('modules/draft-store');
 jest.mock('modules/draft-store/draftStoreService');

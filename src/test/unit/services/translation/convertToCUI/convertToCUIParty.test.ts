@@ -41,7 +41,7 @@ const partyCompany: Party = {
   emailAddress: email,
   partyDetails: {
     partyName: companyName,
-    ...commonParty,
+    ..commonParty,
   },
 };
 
@@ -53,7 +53,7 @@ const partyIndividual: Party = {
     individualTitle: title,
     individualFirstName: firstName,
     individualLastName: lastName,
-    ...commonParty,
+    ..commonParty,
   },
   dateOfBirth: {date: dateOfBirth.date, year: NaN, month: NaN, day: NaN},
 };
@@ -67,7 +67,7 @@ const partySoleTrader: Party = {
     individualFirstName: firstName,
     individualLastName: lastName,
     soleTraderTradingAs: soleTraderTradingAs,
-    ...commonParty,
+    ..commonParty,
   },
   dateOfBirth: {date: dateOfBirth.date, year: NaN, month: NaN, day: NaN},
 };

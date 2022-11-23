@@ -1,5 +1,5 @@
 import {IsDefined, ValidateIf, ValidateNested} from 'class-validator';
-import {YesNo} from '../../../form/models/yesNo';
+import {YesNo} from 'form/models/yesNo';
 import {DateOfBirth} from './dateOfBirth';
 
 export class DefendantDOB {

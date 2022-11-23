@@ -5,15 +5,15 @@ import {
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {
   BetweenSixteenAndNineteenDependants,
-} from '../.common/form/models/statementOfMeans/dependants/betweenSixteenAndNineteenDependants';
-import {Claim} from '../.common/models/claim';
-import {StatementOfMeans} from '../.common/models/statementOfMeans';
+} from '../common/form/models/statementOfMeans/dependants/betweenSixteenAndNineteenDependants';
+import {Claim} from '../common/models/claim';
+import {StatementOfMeans} from '../common/models/statementOfMeans';
 import {
   NumberOfChildren,
-} from '../.common/form/models/statementOfMeans/dependants/numberOfChildren';
-import {Dependants} from '../.common/form/models/statementOfMeans/dependants/dependants';
+} from '../common/form/models/statementOfMeans/dependants/numberOfChildren';
+import {Dependants} from '../common/form/models/statementOfMeans/dependants/dependants';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {GenericForm} from '../.common/form/models/genericForm';
+import {GenericForm} from '../common/form/models/genericForm';
 
 jest.mock('modules/draft-store');
 jest.mock('modules/draft-store/draftStoreService');

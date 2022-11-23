@@ -1,16 +1,16 @@
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {Claim} from '.common/models/claim';
+import {Claim} from 'common/models/claim';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 import {
   getClaimDetails,
   saveClaimDetails,
 } from '../../../../../../main/services/features/claim/details/claimDetailsService';
-import {Reason} from '.common/form/models/claim/details/reason';
-import {ClaimDetails} from '.common/form/models/claim/details/claimDetails';
-import {Evidence} from '.common/form/models/evidence/evidence';
-import {EvidenceItem} from '.common/form/models/evidence/evidenceItem';
-import {EvidenceType} from '.common/models/evidence/evidenceType';
+import {Reason} from 'common/form/models/claim/details/reason';
+import {ClaimDetails} from 'common/form/models/claim/details/claimDetails';
+import {Evidence} from 'common/form/models/evidence/evidence';
+import {EvidenceItem} from 'common/form/models/evidence/evidenceItem';
+import {EvidenceType} from 'common/models/evidence/evidenceType';
 
 jest.mock('modules/draft-store');
 jest.mock('modules/draft-store/draftStoreService');

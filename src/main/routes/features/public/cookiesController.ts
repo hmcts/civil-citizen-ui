@@ -1,6 +1,6 @@
 import {Response, Router} from 'express';
-import {AppRequest} from '../../../common/models/AppRequest';
-import {CookiesModel} from '../../../common/form/models/cookies';
+import {AppRequest} from 'common/models/AppRequest';
+import {CookiesModel} from 'common/form/models/cookies';
 import {
   COOKIES_URL,
   DASHBOARD_URL,

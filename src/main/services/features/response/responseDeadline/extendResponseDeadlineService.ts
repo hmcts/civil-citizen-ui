@@ -1,10 +1,10 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import config from 'config';
 import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
-import {AppRequest} from '../../../../common/models/AppRequest';
-import {Claim} from '../../../../common/models/claim';
-import {getViewOptionsBeforeDeadlineTask} from '../../../../common/utils/taskList/tasks/viewOptionsBeforeDeadline';
-import {TaskStatus} from '../../../../common/models/taskList/TaskStatus';
+import {AppRequest} from 'common/models/AppRequest';
+import {Claim} from 'common/models/claim';
+import {getViewOptionsBeforeDeadlineTask} from 'common/utils/taskList/tasks/viewOptionsBeforeDeadline';
+import {TaskStatus} from 'common/models/taskList/TaskStatus';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);

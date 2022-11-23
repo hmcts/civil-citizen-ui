@@ -1,7 +1,7 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {Employer} from '../../../../../common/form/models/statementOfMeans/employment/employer';
-import {Employers} from '../../../../../common/form/models/statementOfMeans/employment/employers';
-import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
+import {Employer} from 'common/form/models/statementOfMeans/employment/employer';
+import {Employers} from 'common/form/models/statementOfMeans/employment/employers';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('employmentService');

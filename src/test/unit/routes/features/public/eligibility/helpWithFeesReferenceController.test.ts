@@ -7,7 +7,7 @@ import {
   ELIGIBILITY_HWF_ELIGIBLE_REFERENCE_URL,
   ELIGIBILITY_HWF_ELIGIBLE_URL,
 } from 'routes/urls';
-import {YesNo} from '.common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
 
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store');

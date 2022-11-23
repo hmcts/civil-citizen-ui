@@ -1,12 +1,12 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {AgreedResponseDeadline} from '../../../../common/form/models/agreedResponseDeadline';
+import {AgreedResponseDeadline} from 'common/form/models/agreedResponseDeadline';
 import {
   AGREED_TO_MORE_TIME_URL,
   RESPONSE_DEADLINE_OPTIONS_URL,
   NEW_RESPONSE_DEADLINE_URL,
 } from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+import {GenericForm} from 'common/form/models/genericForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {ResponseDeadlineService} from '../../../../services/features/response/responseDeadlineService';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {deadLineGuard} from '../../../../routes/guards/deadLineGuard';

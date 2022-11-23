@@ -5,7 +5,7 @@ import {app} from '../../../../../../main/app';
 import {CLAIM_INTEREST_END_DATE_URL, CLAIM_HELP_WITH_FEES_URL} from 'routes/urls';
 import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {InterestEndDateType} from '.common/form/models/claimDetails';
+import {InterestEndDateType} from 'common/form/models/claimDetails';
 
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store');

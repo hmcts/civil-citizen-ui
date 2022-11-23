@@ -1,9 +1,9 @@
 import {Request} from 'express';
 import {ValidationError} from 'class-validator';
-import {PriorityDebts, DebtType, DebtsError} from '../../../common/form/models/statementOfMeans/priorityDebts';
-import {PriorityDebtDetails, DebtDetailsError, DebtValidationError} from '../../form/models/statementOfMeans/priorityDebtDetails';
+import {PriorityDebts, DebtType, DebtsError} from 'common/form/models/statementOfMeans/priorityDebts';
+import {PriorityDebtDetails, DebtDetailsError, DebtValidationError} from 'form/models/statementOfMeans/priorityDebtDetails';
 import {checkBoxFields} from './priorityDebtsConstants';
-import {GenericForm} from '../../../common/form/models/genericForm';
+import {GenericForm} from 'common/form/models/genericForm';
 
 export const convertToForm = (debts: PriorityDebts): GenericForm<PriorityDebts> => {
   if (debts) {

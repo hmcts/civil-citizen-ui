@@ -1,11 +1,11 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {CLAIM_HELP_WITH_FEES_URL, CLAIM_INTEREST_HOW_MUCH_URL} from '../../../../routes/urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {AppRequest} from '../../../../common/models/AppRequest';
+import {GenericForm} from 'common/form/models/genericForm';
+import {AppRequest} from 'common/models/AppRequest';
 import {getInterest, saveInterest} from '../../../../services/features/claim/interest/interestService';
-import {HowMuchContinueClaiming} from '../../../../common/form/models/interest/howMuchContinueClaiming';
-import { SameRateInterestType } from '../../../../common/form/models/claimDetails';
-import {toNumberOrUndefined} from '../../../../common/utils/numberConverter';
+import {HowMuchContinueClaiming} from 'common/form/models/interest/howMuchContinueClaiming';
+import { SameRateInterestType } from 'common/form/models/claimDetails';
+import {toNumberOrUndefined} from 'common/utils/numberConverter';
 
 const howMuchContinueClaimingController = Router();
 const howMuchContinueClaimingPath = 'features/claim/interest/how-much-continue-claiming';

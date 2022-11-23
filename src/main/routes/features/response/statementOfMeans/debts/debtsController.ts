@@ -1,13 +1,13 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {CITIZEN_DEBTS_URL, CITIZEN_MONTHLY_EXPENSES_URL} from '../../../../urls';
-import {Debts} from '../../../../../common/form/models/statementOfMeans/debts/debts';
-import {DebtItems} from '../../../../../common/form/models/statementOfMeans/debts/debtItems';
-import {Claim} from '../../../../../common/models/claim';
+import {Debts} from 'common/form/models/statementOfMeans/debts/debts';
+import {DebtItems} from 'common/form/models/statementOfMeans/debts/debtItems';
+import {Claim} from 'common/models/claim';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
-import {YesNo} from '../../../../../common/form/models/yesNo';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
+import {YesNo} from 'common/form/models/yesNo';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {GenericForm} from 'common/form/models/genericForm';
 
 const debtsViewPath = 'features/response/statementOfMeans/debts/debts';
 const debtsController = Router();

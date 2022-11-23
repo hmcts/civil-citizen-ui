@@ -1,10 +1,10 @@
-import {Task} from '../../../models/taskList/task';
-import {Claim} from '../../../models/claim';
-import {TaskStatus} from '../../../models/taskList/TaskStatus';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+import {Task} from 'models/taskList/task';
+import {Claim} from 'models/claim';
+import {TaskStatus} from 'models/taskList/TaskStatus';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {CITIZEN_FREE_TELEPHONE_MEDIATION_URL} from '../../../../routes/urls';
-import {YesNo} from '../../../../common/form/models/yesNo';
-import {getLng} from '../../../../common/utils/languageToggleUtils';
+import {YesNo} from 'common/form/models/yesNo';
+import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
 import {hasContactPersonAndCompanyPhone} from './taskListHelpers';
 

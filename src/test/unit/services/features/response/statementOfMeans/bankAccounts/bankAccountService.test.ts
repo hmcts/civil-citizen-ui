@@ -2,11 +2,11 @@ import {
   BankAccountService,
 } from '../../../../../../../main/services/features/response/statementOfMeans/bankAccounts/bankAccountService';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {BankAccounts} from '../.common/form/models/bankAndSavings/bankAccounts';
-import {BankAccount} from '../.common/form/models/bankAndSavings/bankAccount';
-import {StatementOfMeans} from '../.common/models/statementOfMeans';
-import {CitizenBankAccount} from '../.common/models/citizenBankAccount';
-import {Claim} from '../.common/models/claim';
+import {BankAccounts} from '../common/form/models/bankAndSavings/bankAccounts';
+import {BankAccount} from '../common/form/models/bankAndSavings/bankAccount';
+import {StatementOfMeans} from '../common/models/statementOfMeans';
+import {CitizenBankAccount} from '../common/models/citizenBankAccount';
+import {Claim} from '../common/models/claim';
 
 jest.mock('modules/draft-store');
 jest.mock('modules/draft-store/draftStoreService');

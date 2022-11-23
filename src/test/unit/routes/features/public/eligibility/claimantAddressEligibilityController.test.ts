@@ -7,10 +7,10 @@ import {
   ELIGIBILITY_CLAIMANT_ADDRESS_URL,
   NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
 } from 'routes/urls';
-import {YesNo} from '.common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
 import {t} from 'i18next';
-import {constructUrlWithNotEligibleReason} from '.common/utils/urlFormatter';
-import {NotEligibleReason} from '.common/form/models/eligibility/NotEligibleReason';
+import {constructUrlWithNotEligibleReason} from 'common/utils/urlFormatter';
+import {NotEligibleReason} from 'common/form/models/eligibility/NotEligibleReason';
 
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store');

@@ -1,12 +1,12 @@
-import {SummarySection} from '../../../../../../common/models/summaryList/summarySections';
-import {Claim} from '../../../../../../common/models/claim';
-import {summaryRow} from '../../../../../../common/models/summaryList/summaryList';
+import {SummarySection} from 'common/models/summaryList/summarySections';
+import {Claim} from 'common/models/claim';
+import {summaryRow} from 'common/models/summaryList/summaryList';
 import {t} from 'i18next';
-import {getLng} from '../../../../../../common/utils/languageToggleUtils';
+import {getLng} from 'common/utils/languageToggleUtils';
 import {
   CITIZEN_OTHER_DEPENDANTS_URL,
 } from '../../../../../../routes/urls';
-import {YesNo} from '../../../../../../common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
 
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 

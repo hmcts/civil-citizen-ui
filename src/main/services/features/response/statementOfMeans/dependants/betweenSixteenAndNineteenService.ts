@@ -1,10 +1,10 @@
 import {
   BetweenSixteenAndNineteenDependants,
-} from '../../../../../common/form/models/statementOfMeans/dependants/betweenSixteenAndNineteenDependants';
+} from 'common/form/models/statementOfMeans/dependants/betweenSixteenAndNineteenDependants';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../common/models/claim';
-import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
+import {Claim} from 'common/models/claim';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
+import {GenericForm} from 'common/form/models/genericForm';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('betweenSixteenAndNineteenService');

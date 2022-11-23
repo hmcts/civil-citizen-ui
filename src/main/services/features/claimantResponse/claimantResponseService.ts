@@ -1,7 +1,7 @@
-import {ClaimantResponse} from '../../../common/models/claimantResponse';
+import {ClaimantResponse} from 'common/models/claimantResponse';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {Claim} from '../../../common/models/claim';
-import {getLng} from '../../../common/utils/languageToggleUtils';
+import {Claim} from 'common/models/claim';
+import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
 import {
   translateAccountType,
@@ -9,10 +9,10 @@ import {
   translateRepaymentSchedule,
   translateResidenceType,
 } from '../../genericService';
-import {currencyFormatWithNoTrailingZeros} from '../../../common/utils/currencyFormat';
-import {YesNo} from '../../../common/form/models/yesNo';
-import {EmploymentCategory} from '../../../common/form/models/statementOfMeans/employment/employmentCategory';
-import {PriorityDebts} from '../../../common/form/models/statementOfMeans/priorityDebts';
+import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
+import {YesNo} from 'common/form/models/yesNo';
+import {EmploymentCategory} from 'common/form/models/statementOfMeans/employment/employmentCategory';
+import {PriorityDebts} from 'common/form/models/statementOfMeans/priorityDebts';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');

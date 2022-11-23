@@ -1,12 +1,12 @@
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {Claim} from '.common/models/claim';
+import {Claim} from 'common/models/claim';
 import {buildAddress, mockClaim} from '../../../../../utils/mockClaim';
-import {Party} from '.common/models/party';
+import {Party} from 'common/models/party';
 import {
   getDefendantInformation,
   saveDefendantProperty,
 } from '../../../../../../main/services/features/common/defendantDetailsService';
-import {PartyType} from '.common/models/partyType';
+import {PartyType} from 'common/models/partyType';
 
 jest.mock('modules/draft-store');
 jest.mock('modules/draft-store/draftStoreService');

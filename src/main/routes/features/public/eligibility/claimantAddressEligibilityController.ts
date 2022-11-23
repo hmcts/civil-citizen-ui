@@ -2,11 +2,11 @@ import {Request, Response, Router} from 'express';
 import {
   NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, ELIGIBILITY_CLAIMANT_ADDRESS_URL, ELIGIBILITY_TENANCY_DEPOSIT_URL,
 } from '../../../../routes/urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
-import {YesNo} from '../../../../common/form/models/yesNo';
-import {constructUrlWithNotEligibleReason} from '../../../../common/utils/urlFormatter';
-import {NotEligibleReason} from '../../../../common/form/models/eligibility/NotEligibleReason';
+import {GenericForm} from 'common/form/models/genericForm';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {YesNo} from 'common/form/models/yesNo';
+import {constructUrlWithNotEligibleReason} from 'common/utils/urlFormatter';
+import {NotEligibleReason} from 'common/form/models/eligibility/NotEligibleReason';
 
 const claimantAddressEligibilityController = Router();
 const claimantEligibilityViewPath = 'features/public/eligibility/claimant-address-eligibility';

@@ -1,9 +1,9 @@
 import {t} from 'i18next';
-import {Claim} from '../../../../../common/models/claim';
-import {ClaimSummarySection, ClaimSummaryType} from '../../../../../common/form/models/claimSummarySection';
+import {Claim} from 'common/models/claim';
+import {ClaimSummarySection, ClaimSummaryType} from 'common/form/models/claimSummarySection';
 import {CITIZEN_CONTACT_THEM_URL} from '../../../../../routes/urls';
-import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
-import {addDaysToDate} from '../../../../../common/utils/dateUtils';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {addDaysToDate} from 'common/utils/dateUtils';
 
 export function getPA_AlreadyPaidStatus(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantName = claim.getClaimantName();

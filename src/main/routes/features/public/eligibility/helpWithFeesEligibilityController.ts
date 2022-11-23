@@ -4,9 +4,9 @@ import {
   ELIGIBILITY_INFORMATION_ABOUT_HELP_WITH_FEES_URL,
   ELIGIBLE_FOR_THIS_SERVICE_URL,
 } from '../../../../routes/urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
-import {YesNo} from '../../../../common/form/models/yesNo';
+import {GenericForm} from 'common/form/models/genericForm';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {YesNo} from 'common/form/models/yesNo';
 
 const helpWithFeesEligibilityController = Router();
 const helpWithFeesEligibilityViewPath = 'features/public/eligibility/help-with-fees';

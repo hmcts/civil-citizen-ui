@@ -1,9 +1,9 @@
-import {WhyDoYouDisagree} from '../../../../common/form/models/admission/partialAdmission/whyDoYouDisagree';
+import {WhyDoYouDisagree} from 'common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {PartialAdmission} from '../../../../common/models/partialAdmission';
-import {WhyDoYouDisagreeForm} from '../../../../common/models/whyDoYouDisagreeForm';
-import {RejectAllOfClaim} from '../../../../common/form/models/rejectAllOfClaim';
-import {ResponseType} from '../../../../common/form/models/responseType';
+import {PartialAdmission} from 'common/models/partialAdmission';
+import {WhyDoYouDisagreeForm} from 'common/models/whyDoYouDisagreeForm';
+import {RejectAllOfClaim} from 'common/form/models/rejectAllOfClaim';
+import {ResponseType} from 'common/form/models/responseType';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('paymentOptionService');

@@ -1,9 +1,9 @@
 import {NextFunction, Response, Router} from 'express';
 import {CLAIM_TASK_LIST_URL, CITIZEN_ALREADY_PAID_URL} from '../../../../urls';
 import {PartialAdmissionService} from '../../../../../services/features/response/admission/partialAdmission/partialAdmissionService';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
+import {GenericForm} from 'common/form/models/genericForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
 
 const alreadyPaidController = Router();
 const citizenAlreadyPaidViewPath = 'features/response/admission/partialAdmission/already-paid';

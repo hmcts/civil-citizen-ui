@@ -1,8 +1,8 @@
 import {NextFunction, Response, Router} from 'express';
-import {GenericForm} from '../../../../common/form/models/genericForm';
+import {GenericForm} from 'common/form/models/genericForm';
 import {DQ_DEFENDANT_WITNESSES_URL, DQ_OTHER_WITNESSES_AVAILABILITY_DATES_FOR_HEARING_URL} from '../../../urls';
-import {OtherWitnesses} from '../../../../common/models/directionsQuestionnaire/witnesses/otherWitnesses';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+import {OtherWitnesses} from 'common/models/directionsQuestionnaire/witnesses/otherWitnesses';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   saveDirectionQuestionnaire,
 } from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';

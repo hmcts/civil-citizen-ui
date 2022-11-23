@@ -1,7 +1,7 @@
 import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {Defence} from '../../../common/form/models/defence';
-import {RejectAllOfClaim} from '../../../common/form/models/rejectAllOfClaim';
-import {Claim} from '../../../common/models/claim';
+import {Defence} from 'common/form/models/defence';
+import {RejectAllOfClaim} from 'common/form/models/rejectAllOfClaim';
+import {Claim} from 'common/models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('yourDefenceService');

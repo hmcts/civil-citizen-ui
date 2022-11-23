@@ -1,5 +1,5 @@
 import {BankAccountType} from './bankAccountType';
-import {BankAccountTypeValues} from '../../../form/models/bankAndSavings/bankAccountTypeValues';
+import {BankAccountTypeValues} from 'form/models/bankAndSavings/bankAccountTypeValues';
 
 export class BankAccountTypes{
   readonly CHOOSE = new BankAccountType(undefined, 'COMMON.CHOOSE');

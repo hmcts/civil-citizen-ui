@@ -7,7 +7,7 @@ import {
   ELIGIBILITY_CLAIM_TYPE_URL,
   NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
 } from 'routes/urls';
-import {YesNo} from '.common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
 
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store');

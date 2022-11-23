@@ -1,9 +1,9 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {CitizenTelephoneNumber} from '../../../../common/form/models/citizenTelephoneNumber';
-import {ClaimantOrDefendant} from '../../../../common/models/partyType';
-import {Party} from '../../../../common/models/party';
-import {Claim} from '../../../../common/models/claim';
-import {PartyPhone} from '../../../../common/models/PartyPhone';
+import {CitizenTelephoneNumber} from 'common/form/models/citizenTelephoneNumber';
+import {ClaimantOrDefendant} from 'common/models/partyType';
+import {Party} from 'common/models/party';
+import {Claim} from 'common/models/claim';
+import {PartyPhone} from 'common/models/PartyPhone';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantPhoneAsService');

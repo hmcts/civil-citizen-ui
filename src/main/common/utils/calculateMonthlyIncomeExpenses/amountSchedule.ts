@@ -1,4 +1,4 @@
-import {TransactionSchedule} from '../../form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 
 export class AmountSchedule {
   static readonly WEEK = new AmountSchedule(TransactionSchedule.WEEK, 52 / 12);

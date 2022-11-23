@@ -5,13 +5,13 @@ import {
   CITIZEN_RESPONSE_TYPE_URL,
   CLAIM_TASK_LIST_URL,
 } from '../../../urls';
-import {Claim} from '../../../../common/models/claim';
-import {CitizenResponseType} from '../../../../common/form/models/citizenResponseType';
-import {ResponseType} from '../../../../common/form/models/responseType';
-import {ComponentDetailItems} from '../../../../common/form/models/componentDetailItems/componentDetailItems';
+import {Claim} from 'common/models/claim';
+import {CitizenResponseType} from 'common/form/models/citizenResponseType';
+import {ResponseType} from 'common/form/models/responseType';
+import {ComponentDetailItems} from 'common/form/models/componentDetailItems/componentDetailItems';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {GenericForm} from '../../../../common/form/models/genericForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {GenericForm} from 'common/form/models/genericForm';
 import {saveResponseType} from '../../../../services/features/response/responseType/citizenResponseTypeService';
 
 const citizenResponseTypeViewPath = 'features/response/citizenResponseType/citizen-response-type';

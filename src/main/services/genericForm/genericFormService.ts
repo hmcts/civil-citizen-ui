@@ -1,4 +1,4 @@
-import {GenericYesNo} from '../../common/form/models/genericYesNo';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
 
 const getGenericOptionForm = (option: string, propertyName: string, errorMessages: any): GenericYesNo => {
   return new GenericYesNo(option, getErrorMessage(propertyName, errorMessages));

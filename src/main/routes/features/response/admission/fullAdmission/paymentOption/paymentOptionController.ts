@@ -1,15 +1,15 @@
 import {NextFunction, Response, Router} from 'express';
 import {CITIZEN_PAYMENT_DATE_URL, CITIZEN_PAYMENT_OPTION_URL, CLAIM_TASK_LIST_URL} from '../../../../../urls';
-import {PaymentOption} from '../../../../../../common/form/models/admission/paymentOption/paymentOption';
+import {PaymentOption} from 'common/form/models/admission/paymentOption/paymentOption';
 import {PaymentOptionType}
-  from '../../../../../../common/form/models/admission/paymentOption/paymentOptionType';
+  from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {
   getPaymentOptionForm,
   savePaymentOptionData,
 } from '../../../../../../services/features/response/admission/paymentOptionService';
-import {constructResponseUrlWithIdParams} from '../../../../../../common/utils/urlFormatter';
-import {ResponseType} from '../../../../../../common/form/models/responseType';
-import {GenericForm} from '../../../../../../common/form/models/genericForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {ResponseType} from 'common/form/models/responseType';
+import {GenericForm} from 'common/form/models/genericForm';
 
 const paymentOptionController = Router();
 const citizenPaymentOptionViewPath = 'features/response/admission/payment-option';

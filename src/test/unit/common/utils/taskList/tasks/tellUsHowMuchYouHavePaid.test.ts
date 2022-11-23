@@ -1,8 +1,8 @@
-import {HowMuchHaveYouPaid} from '.common/form/models/admission/howMuchHaveYouPaid';
-import {RejectAllOfClaim} from '.common/form/models/rejectAllOfClaim';
-import {Claim} from '.common/models/claim';
-import {TaskStatus} from '.common/models/taskList/TaskStatus';
-import {getTellUsHowMuchYouHavePaidTask} from '.common/utils/taskList/tasks/tellUsHowMuchYouHavePaid';
+import {HowMuchHaveYouPaid} from 'common/form/models/admission/howMuchHaveYouPaid';
+import {RejectAllOfClaim} from 'common/form/models/rejectAllOfClaim';
+import {Claim} from 'common/models/claim';
+import {TaskStatus} from 'common/models/taskList/TaskStatus';
+import {getTellUsHowMuchYouHavePaidTask} from 'common/utils/taskList/tasks/tellUsHowMuchYouHavePaid';
 
 jest.mock('modules/i18n');
 jest.mock('i18next', () => ({

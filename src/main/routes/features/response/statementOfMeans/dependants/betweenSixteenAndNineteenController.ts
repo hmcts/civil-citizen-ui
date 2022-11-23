@@ -6,14 +6,14 @@ import {
 } from '../../../../../routes/urls';
 import {
   BetweenSixteenAndNineteenDependants,
-} from '../../../../../common/form/models/statementOfMeans/dependants/betweenSixteenAndNineteenDependants';
+} from 'common/form/models/statementOfMeans/dependants/betweenSixteenAndNineteenDependants';
 import {
   getForm,
   saveFormToDraftStore,
 } from '../../../../../services/features/response/statementOfMeans/dependants/betweenSixteenAndNineteenService';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {hasDisabledChildren} from '../../../../../services/features/response/statementOfMeans/dependants/childrenDisabilityService';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
+import {GenericForm} from 'common/form/models/genericForm';
 
 const dependantTeenagersViewPath = 'features/response/statementOfMeans/dependants/between_16_and_19';
 const betweenSixteenAndNineteenController = Router();

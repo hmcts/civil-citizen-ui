@@ -1,5 +1,5 @@
-import {Claim} from '../../../../common/models/claim';
-import {Address} from '../../../../common/form/models/address';
+import {Claim} from 'common/models/claim';
+import {Address} from 'common/form/models/address';
 
 const getAddress = (claim: Claim): Address => {
   if (claim.applicant1.partyDetails?.correspondenceAddress?.addressLine1) {

@@ -1,5 +1,5 @@
 import {Min, Max, Validate, IsDate, ValidateIf} from 'class-validator';
-import {DateConverter} from '../../../common/utils/dateConverter';
+import {DateConverter} from 'common/utils/dateConverter';
 import {OptionalDateNotInFutureValidator} from '../validators/optionalDateNotInFutureValidator';
 import {OptionalDateFourDigitValidator} from '../validators/optionalDateFourDigitValidator';
 

@@ -3,10 +3,10 @@ import {
   CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAYMENT_URL,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from '../../../routes/urls';
-import {GenericForm} from '../../../common/form/models/genericForm';
-import {AppRequest} from '../../../common/models/AppRequest';
-import {GenericYesNo} from '../../../common/form/models/genericYesNo';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
+import {GenericForm} from 'common/form/models/genericForm';
+import {AppRequest} from 'common/models/AppRequest';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {saveClaimantResponse} from '../../../services/features/claimantResponse/claimantResponseService';
 import {getFullAdmitSetDatePaymentDetails} from '../../../services/features/claimantResponse/fullAdmitSetDatePaymentService';
 

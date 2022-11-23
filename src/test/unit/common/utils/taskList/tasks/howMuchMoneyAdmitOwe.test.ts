@@ -1,8 +1,8 @@
-import {HowMuchDoYouOwe} from '.common/form/models/admission/partialAdmission/howMuchDoYouOwe';
-import {Claim} from '.common/models/claim';
-import {PartialAdmission} from '.common/models/partialAdmission';
-import {TaskStatus} from '.common/models/taskList/TaskStatus';
-import {getHowMuchMoneyAdmitOweTask} from '.common/utils/taskList/tasks/howMuchMoneyAdmitOwe';
+import {HowMuchDoYouOwe} from 'common/form/models/admission/partialAdmission/howMuchDoYouOwe';
+import {Claim} from 'common/models/claim';
+import {PartialAdmission} from 'common/models/partialAdmission';
+import {TaskStatus} from 'common/models/taskList/TaskStatus';
+import {getHowMuchMoneyAdmitOweTask} from 'common/utils/taskList/tasks/howMuchMoneyAdmitOwe';
 
 jest.mock('modules/i18n');
 jest.mock('i18next', () => ({

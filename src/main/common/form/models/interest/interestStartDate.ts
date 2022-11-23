@@ -1,8 +1,8 @@
 import {IsDate, IsDefined, IsNotEmpty, Max, MaxLength, Min, Validate, ValidateIf} from 'class-validator';
-import {OptionalDateNotInFutureValidator} from '../../../../common/form/validators/optionalDateNotInFutureValidator';
-import {OptionalDateFourDigitValidator} from '../../../../common/form/validators/optionalDateFourDigitValidator';
-import {DateConverter} from '../../../../common/utils/dateConverter';
-import {FREE_TEXT_1000_MAX_LENGTH} from '../../../../common/form/validators/validationConstraints';
+import {OptionalDateNotInFutureValidator} from 'common/form/validators/optionalDateNotInFutureValidator';
+import {OptionalDateFourDigitValidator} from 'common/form/validators/optionalDateFourDigitValidator';
+import {DateConverter} from 'common/utils/dateConverter';
+import {FREE_TEXT_1000_MAX_LENGTH} from 'common/form/validators/validationConstraints';
 
 export class InterestStartDate {
 

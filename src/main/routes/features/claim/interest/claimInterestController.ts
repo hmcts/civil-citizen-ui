@@ -4,15 +4,15 @@ import {
   CLAIM_INTEREST_TYPE_URL,
   CLAIM_HELP_WITH_FEES_URL,
 } from  '../../../../routes/urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
-import {YesNo} from '../../../../common/form/models/yesNo';
+import {GenericForm} from 'common/form/models/genericForm';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {YesNo} from 'common/form/models/yesNo';
 import {
   getClaimInterest,
   getClaimInterestForm,
   saveClaimInterest,
 } from '../../../../services/features/claim/interest/claimInterestService';
-import {AppRequest} from '../../../../common/models/AppRequest';
+import {AppRequest} from 'common/models/AppRequest';
 
 const claimInterestController = express.Router();
 const claimInterestPath = 'features/claim/interest/claim-interest';

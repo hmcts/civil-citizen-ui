@@ -2,12 +2,12 @@ import {Response, Router} from 'express';
 import {
   CITIZEN_BANK_ACCOUNT_URL, CITIZEN_DISABILITY_URL,
 } from '../../../../../routes/urls';
-import {BankAccounts} from '../../../../../common/form/models/bankAndSavings/bankAccounts';
-import {BankAccount} from '../../../../../common/form/models/bankAndSavings/bankAccount';
-import {BankAccountTypes} from '../../../../../common/form/models/bankAndSavings/bankAccountTypes';
+import {BankAccounts} from 'common/form/models/bankAndSavings/bankAccounts';
+import {BankAccount} from 'common/form/models/bankAndSavings/bankAccount';
+import {BankAccountTypes} from 'common/form/models/bankAndSavings/bankAccountTypes';
 import {BankAccountService} from '../../../../../services/features/response/statementOfMeans/bankAccounts/bankAccountService';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {GenericForm} from 'common/form/models/genericForm';
 
 const citizenBankAccountsViewPath = 'features/response/statementOfMeans/citizenBankAndSavings/citizen-bank-accounts';
 const bankAccountsController = Router();

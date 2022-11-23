@@ -3,8 +3,8 @@ import {
   getRepaymentPlanForm,
   saveRepaymentPlanData,
 } from '../../../../../../main/services/features/response/repaymentPlan/repaymentPlanService';
-import {Claim} from '.common/models/claim';
-import {RepaymentPlanForm} from '.common/form/models/repaymentPlan/repaymentPlanForm';
+import {Claim} from 'common/models/claim';
+import {RepaymentPlanForm} from 'common/form/models/repaymentPlan/repaymentPlanForm';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('modules/draft-store');

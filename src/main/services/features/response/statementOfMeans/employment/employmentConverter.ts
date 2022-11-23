@@ -1,7 +1,7 @@
-import {Employment} from '../../../../../common/models/employment';
-import {EmploymentForm} from '../../../../../common/form/models/statementOfMeans/employment/employmentForm';
-import {convertFromYesNo, convertToYesNo} from '../../../../../common/utils/yesNoOptionConverter';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
+import {Employment} from 'common/models/employment';
+import {EmploymentForm} from 'common/form/models/statementOfMeans/employment/employmentForm';
+import {convertFromYesNo, convertToYesNo} from 'common/utils/yesNoOptionConverter';
+import {GenericForm} from 'common/form/models/genericForm';
 
 export const convertToForm = (employmentEntity: Employment): GenericForm<EmploymentForm> => {
   if (employmentEntity) {

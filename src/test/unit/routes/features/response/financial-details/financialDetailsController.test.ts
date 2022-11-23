@@ -2,7 +2,7 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {constructResponseUrlWithIdParams} from '.common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   setFinancialDetailsControllerLogger,
 } from 'routes/features/response/financialDetails/financialDetailsController';

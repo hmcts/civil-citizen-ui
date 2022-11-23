@@ -3,11 +3,11 @@ import {
   getCompanyTelephoneNumberData,
   saveCompanyTelephoneNumberData,
 } from '../../../../../../main/services/features/response/mediation/companyTelephoneNumberService';
-import {Claim} from '.common/models/claim';
-import {Mediation} from '.common/models/mediation/mediation';
-import {YesNo} from '.common/form/models/yesNo';
+import {Claim} from 'common/models/claim';
+import {Mediation} from 'common/models/mediation/mediation';
+import {YesNo} from 'common/form/models/yesNo';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {CompanyTelephoneNumber} from '.common/form/models/mediation/companyTelephoneNumber';
+import {CompanyTelephoneNumber} from 'common/form/models/mediation/companyTelephoneNumber';
 
 jest.mock('modules/draft-store');
 jest.mock('modules/draft-store/draftStoreService');

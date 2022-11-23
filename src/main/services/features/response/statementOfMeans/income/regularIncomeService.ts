@@ -1,6 +1,6 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
-import {RegularIncome} from '../../../../../common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
+import {RegularIncome} from 'common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('regularIncomeService');

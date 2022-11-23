@@ -5,7 +5,7 @@ import config from 'config';
 import {CITIZEN_OWED_AMOUNT_URL, CLAIM_TASK_LIST_URL} from '../routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
-import {ResponseType} from '../.common/form/models/responseType';
+import {ResponseType} from '../common/form/models/responseType';
 
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store');

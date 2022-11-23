@@ -1,8 +1,8 @@
 import {NextFunction, Router} from 'express';
 import {CLAIMANT_RESPONSE_REJECTION_REASON_URL, CLAIMANT_RESPONSE_TASK_LIST_URL} from '../../urls';
-import {GenericForm} from '../../../common/form/models/genericForm';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {RejectionReason} from '../../../common/form/models/claimantResponse/rejectionReason';
+import {GenericForm} from 'common/form/models/genericForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {RejectionReason} from 'common/form/models/claimantResponse/rejectionReason';
 import {
   getClaimantResponse,
   saveClaimantResponse,

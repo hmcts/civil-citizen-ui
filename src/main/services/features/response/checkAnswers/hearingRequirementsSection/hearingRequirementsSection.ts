@@ -1,6 +1,6 @@
-import {getLng} from '../../../../../common/utils/languageToggleUtils';
-import {SummarySection, summarySection} from '../../../../../common/models/summaryList/summarySections';
-import {Claim} from '../../../../../common/models/claim';
+import {getLng} from 'common/utils/languageToggleUtils';
+import {SummarySection, summarySection} from 'common/models/summaryList/summarySections';
+import {Claim} from 'common/models/claim';
 import {t} from 'i18next';
 import {buildExportReportSection} from './hearingExportsReportBuilderSection';
 

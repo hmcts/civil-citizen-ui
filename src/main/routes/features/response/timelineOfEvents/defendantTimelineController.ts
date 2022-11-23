@@ -4,15 +4,15 @@ import {
   CITIZEN_TIMELINE_URL,
   CASE_TIMELINE_DOCUMENTS_URL,
 } from '../../../urls';
-import {GenericForm} from '../../../../common/form//models/genericForm';
-import {DefendantTimeline} from '../../../../common/form//models/timeLineOfEvents/defendantTimeline';
+import {GenericForm} from 'common/form//models/genericForm';
+import {DefendantTimeline} from 'common/form//models/timeLineOfEvents/defendantTimeline';
 import {
   getPartialAdmitTimeline,
   savePartialAdmitTimeline,
 } from '../../../../services/features/response/timelineOfEvents/defendantTimelineService';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {TimeLineOfEvents} from '../../../../common/models/timelineOfEvents/timeLineOfEvents';
+import {TimeLineOfEvents} from 'common/models/timelineOfEvents/timeLineOfEvents';
 
 const defendantTimelineController = Router();
 const defendantTimelineView = 'features/response/timelineOfEvents/defendant-timeline';

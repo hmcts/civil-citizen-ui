@@ -1,9 +1,9 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../common/models/claim';
-import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
-import {EmploymentForm} from '../../../../../common/form/models/statementOfMeans/employment/employmentForm';
+import {Claim} from 'common/models/claim';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
+import {EmploymentForm} from 'common/form/models/statementOfMeans/employment/employmentForm';
 import {convertFromForm, convertToForm} from './employmentConverter';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
+import {GenericForm} from 'common/form/models/genericForm';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('employmentService');

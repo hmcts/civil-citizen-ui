@@ -1,6 +1,6 @@
 import {IsNotEmpty, IsIn, Validate, ValidateIf} from 'class-validator';
-import {AccountBalanceValidator} from '../../../form/validators/accountBalanceValidator';
-import {BankAccountTypeValues} from '../../../form/models/bankAndSavings/bankAccountTypeValues';
+import {AccountBalanceValidator} from 'form/validators/accountBalanceValidator';
+import {BankAccountTypeValues} from 'form/models/bankAndSavings/bankAccountTypeValues';
 
 export class BankAccount {
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())

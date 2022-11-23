@@ -24,7 +24,7 @@ module "citizen-ui-draft-store" {
   location = var.location
   env      = var.env
   subnetid = data.azurerm_subnet.core_infra_redis_subnet.id
-  common_tags  = var.common_tags
+  common_tags  = varcommon_tags
 }
 
 resource "azurerm_key_vault_secret" "draft_store_access_key" {

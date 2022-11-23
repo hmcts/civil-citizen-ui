@@ -7,9 +7,9 @@ import {
   ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL,
   NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
 } from 'routes/urls';
-import {YesNo} from '.common/form/models/yesNo';
-import {NotEligibleReason} from '.common/form/models/eligibility/NotEligibleReason';
-import {constructUrlWithNotEligibleReason} from '.common/utils/urlFormatter';
+import {YesNo} from 'common/form/models/yesNo';
+import {NotEligibleReason} from 'common/form/models/eligibility/NotEligibleReason';
+import {constructUrlWithNotEligibleReason} from 'common/utils/urlFormatter';
 
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store');

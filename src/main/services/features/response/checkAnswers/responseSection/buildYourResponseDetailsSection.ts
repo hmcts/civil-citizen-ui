@@ -1,10 +1,10 @@
-import {SummarySection, summarySection} from '../../../../../common/models/summaryList/summarySections';
-import {Claim} from '../../../../../common/models/claim';
-import {summaryRow} from '../../../../../common/models/summaryList/summaryList';
-import {currencyFormatWithNoTrailingZeros} from '../../../../../common/utils/currencyFormat';
+import {SummarySection, summarySection} from 'common/models/summaryList/summarySections';
+import {Claim} from 'common/models/claim';
+import {summaryRow} from 'common/models/summaryList/summaryList';
+import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {t} from 'i18next';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {getLng} from '../../../../../common/utils/languageToggleUtils';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getLng} from 'common/utils/languageToggleUtils';
 import {
   CITIZEN_AMOUNT_YOU_PAID_URL,
   CITIZEN_EVIDENCE_URL,
@@ -15,11 +15,11 @@ import {
   CITIZEN_WHY_DO_YOU_DISAGREE_URL,
   RESPONSE_YOUR_DEFENCE_URL,
 } from '../../../../../routes/urls';
-import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
-import {DefendantTimeline} from '../../../../../common/form/models/timeLineOfEvents/defendantTimeline';
-import {YesNo} from '../../../../../common/form/models/yesNo';
-import {ResponseType} from '../../../../../common/form/models/responseType';
-import {RejectAllOfClaimType} from '../../../../../common/form/models/rejectAllOfClaimType';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {DefendantTimeline} from 'common/form/models/timeLineOfEvents/defendantTimeline';
+import {YesNo} from 'common/form/models/yesNo';
+import {ResponseType} from 'common/form/models/responseType';
+import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
 
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 

@@ -7,9 +7,9 @@ import {
 } from '../../../../urls';
 import {PartnerAgeService} from '../../../../../services/features/response/statementOfMeans/partner/partnerAgeService';
 import {DisabilityService} from '../../../../../services/features/response/statementOfMeans/disabilityService';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {GenericForm} from 'common/form/models/genericForm';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
 
 const citizenPartnerAgeViewPath = 'features/response/statementOfMeans/partner/partner-age';
 const partnerAgeController = Router();

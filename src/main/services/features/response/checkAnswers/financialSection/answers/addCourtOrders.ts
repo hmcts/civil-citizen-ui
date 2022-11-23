@@ -1,13 +1,13 @@
-import {SummarySection} from '../../../../../../common/models/summaryList/summarySections';
-import {Claim} from '../../../../../../common/models/claim';
-import {summaryRow} from '../../../../../../common/models/summaryList/summaryList';
+import {SummarySection} from 'common/models/summaryList/summarySections';
+import {Claim} from 'common/models/claim';
+import {summaryRow} from 'common/models/summaryList/summaryList';
 import {t} from 'i18next';
-import {getLng} from '../../../../../../common/utils/languageToggleUtils';
+import {getLng} from 'common/utils/languageToggleUtils';
 import {
   CITIZEN_COURT_ORDERS_URL,
 } from '../../../../../../routes/urls';
-import {currencyFormatWithNoTrailingZeros} from '../../../../../../common/utils/currencyFormat';
-import {YesNoUpperCase} from '../../../../../../common/form/models/yesNo';
+import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
+import {YesNoUpperCase} from 'common/form/models/yesNo';
 
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 

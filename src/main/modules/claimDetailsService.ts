@@ -1,6 +1,6 @@
-import {Claim} from '../common/models/claim';
-import {convertToPoundsFilter} from '../common/utils/currencyFormat';
-import {ResponseType} from '../common/form/models/responseType';
+import {Claim} from 'common/models/claim';
+import {convertToPoundsFilter} from 'common/utils/currencyFormat';
+import {ResponseType} from 'common/form/models/responseType';
 
 export const getTotalAmountWithInterestAndFees = (claim: Claim) => {
   return claim.totalClaimAmount + claim.totalInterest + convertToPoundsFilter(claim.claimFee.calculatedAmountInPence);

@@ -3,14 +3,14 @@ import {
   getOnTaxPaymentsForm,
   saveTaxPaymentsData,
 } from '../../../../../../../../main/services/features/response/statementOfMeans/employment/selfEmployed/onTaxPaymentsService';
-import {Claim} from '../../.common/models/claim';
-import {StatementOfMeans} from '../../.common/models/statementOfMeans';
-import {YesNo} from '../../.common/form/models/yesNo';
+import {Claim} from '../../common/models/claim';
+import {StatementOfMeans} from '../../common/models/statementOfMeans';
+import {YesNo} from '../../common/form/models/yesNo';
 import {
   OnTaxPayments,
-} from '../../.common/form/models/statementOfMeans/employment/selfEmployed/onTaxPayments';
+} from '../../common/form/models/statementOfMeans/employment/selfEmployed/onTaxPayments';
 import {TestMessages} from '../../../../../../../utils/errorMessageTestConstants';
-import {GenericForm} from '../../.common/form/models/genericForm';
+import {GenericForm} from '../../common/form/models/genericForm';
 
 jest.mock('modules/draft-store');
 jest.mock('modules/draft-store/draftStoreService');

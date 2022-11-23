@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {CITIZEN_DEBTS_URL, CITIZEN_PRIORITY_DEBTS_URL} from '../../../urls';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {checkBoxFields} from '../../../../common/utils/priorityDebts/priorityDebtsConstants';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {checkBoxFields} from 'common/utils/priorityDebts/priorityDebtsConstants';
 import {
   getPriorityDebts,
   savePriorityDebts,
@@ -10,7 +10,7 @@ import {
   convertRequestBodyToForm,
   formatFormErrors,
   listFormErrors,
-} from '../../../../common/utils/priorityDebts/priorityDebtsConvertors';
+} from 'common/utils/priorityDebts/priorityDebtsConvertors';
 
 const priorityDebtsController = Router();
 const debtsViewPath = 'features/response/statementOfMeans/priority-debts';

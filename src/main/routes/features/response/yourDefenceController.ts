@@ -1,9 +1,9 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {CITIZEN_TIMELINE_URL, RESPONSE_YOUR_DEFENCE_URL} from '../../urls';
 import {saveYourDefence} from '../../../services/features/response/yourDefenceService';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {GenericForm} from '../../../common/form/models/genericForm';
-import {Defence} from '../../../common/form/models/defence';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {GenericForm} from 'common/form/models/genericForm';
+import {Defence} from 'common/form/models/defence';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 const yourDefenceViewPath = 'features/response/your-defence';

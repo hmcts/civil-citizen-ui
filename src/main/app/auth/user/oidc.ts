@@ -1,7 +1,7 @@
 import Axios, { AxiosResponse } from 'axios';
 import config from 'config';
 import jwt_decode from 'jwt-decode';
-import {UserDetails} from '../../../common/models/AppRequest';
+import {UserDetails} from 'common/models/AppRequest';
 
 export const getUserDetails = async (
   callbackUrl: string,

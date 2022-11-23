@@ -1,6 +1,6 @@
 import {IsDefined, IsNotEmpty, MaxLength, ValidateIf} from 'class-validator';
-import {FREE_TEXT_MAX_LENGTH} from '../../../form/validators/validationConstraints';
-import {YesNo} from '../../../form/models/yesNo';
+import {FREE_TEXT_MAX_LENGTH} from 'form/validators/validationConstraints';
+import {YesNo} from 'form/models/yesNo';
 
 export class PhoneOrVideoHearing {
   @IsDefined({message: 'ERRORS.VALID_PHONE_OR_VIDEO_HEARING.YES_NO'})

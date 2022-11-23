@@ -1,10 +1,10 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {GenericForm} from '../../../../common/form/models/genericForm';
+import {GenericForm} from 'common/form/models/genericForm';
 import {CLAIMANT_INTEREST_RATE_URL,CLAIMANT_INTEREST_DATE_URL} from '../../../urls';
 import {
   getInterestRateForm,
 } from '../../../../services/features/claim/interest/claimantInterestRateService';
-import {ClaimantInterestRate} from '../../../../common/form/models/claim/interest/claimantInterestRate';
+import {ClaimantInterestRate} from 'common/form/models/claim/interest/claimantInterestRate';
 import {AppRequest} from 'common/models/AppRequest';
 import {getInterest, saveInterest} from '../../../../services/features/claim/interest/interestService';
 

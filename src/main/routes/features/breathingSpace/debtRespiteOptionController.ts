@@ -3,16 +3,16 @@ import {
   BREATHING_SPACE_RESPITE_TYPE_URL,
   BREATHING_SPACE_RESPITE_END_DATE_URL,
 } from '../../urls';
-import {GenericForm} from '../../../common/form/models/genericForm';
+import {GenericForm} from 'common/form/models/genericForm';
 
 import {
   saveBreathingSpace,
   getBreathingSpace,
 } from '../../../services/features/breathingSpace/breathingSpaceService';
 
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {DebtRespiteOption} from '../../../common/models/breathingSpace/debtRespiteOption';
-import {DebtRespiteOptionType} from '../../../common/models/breathingSpace/debtRespiteOptionType';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {DebtRespiteOption} from 'common/models/breathingSpace/debtRespiteOption';
+import {DebtRespiteOptionType} from 'common/models/breathingSpace/debtRespiteOptionType';
 
 const debtRespiteOptionController = Router();
 const debtRespiteOptionViewPath = 'features/breathingSpace/respite-type';

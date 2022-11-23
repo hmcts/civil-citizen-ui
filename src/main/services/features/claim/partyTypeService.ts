@@ -1,5 +1,5 @@
 import {Response} from 'express';
-import {ClaimantOrDefendant, PartyType} from '../../../common/models/partyType';
+import {ClaimantOrDefendant, PartyType} from 'common/models/partyType';
 import {
   CLAIM_DEFENDANT_COMPANY_DETAILS_URL,
   CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL,

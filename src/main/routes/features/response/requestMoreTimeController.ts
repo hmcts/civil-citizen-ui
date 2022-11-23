@@ -1,10 +1,10 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {CLAIM_TASK_LIST_URL, REQUEST_MORE_TIME_URL} from '../../urls';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {GenericForm} from '../../../common/form/models/genericForm';
-import {Claim} from '../../../common/models/claim';
-import {AdditionalTime, AdditionalTimeOptions} from '../../../common/form/models/additionalTime';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
+import {GenericForm} from 'common/form/models/genericForm';
+import {Claim} from 'common/models/claim';
+import {AdditionalTime, AdditionalTimeOptions} from 'common/form/models/additionalTime';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {ResponseDeadlineService} from '../../../services/features/response/responseDeadlineService';
 import {deadLineGuard} from '../../../routes/guards/deadLineGuard';
 

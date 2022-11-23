@@ -1,5 +1,5 @@
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {Claim} from '../.common/models/claim';
+import {Claim} from '../common/models/claim';
 import {
   PartialAdmissionService,
 } from '../../../../../../../main/services/features/response/admission/partialAdmission/partialAdmissionService';

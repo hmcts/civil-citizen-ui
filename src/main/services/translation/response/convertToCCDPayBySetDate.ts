@@ -1,4 +1,4 @@
-import {CCDPayBySetDate} from '../../../common/models/ccdResponse/ccdPayBySetDate';
+import {CCDPayBySetDate} from 'common/models/ccdResponse/ccdPayBySetDate';
 
 export const toCCDPayBySetDate = (paymentDate: Date): CCDPayBySetDate => {
   return {

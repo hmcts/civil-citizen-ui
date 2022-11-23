@@ -1,8 +1,8 @@
 import {IsDate, Max, Min, Validate, ValidateIf} from 'class-validator';
-import {OptionalDateFourDigitValidator} from '../../../common/form/validators/optionalDateFourDigitValidator';
-import {OptionalDateNotInPastValidator} from '../../../common/form/validators/optionalDateNotInPastValidator';
-import {DateConverter} from '../../../common/utils/dateConverter';
-import {toNumberOrUndefined} from '../../../common/utils/numberConverter';
+import {OptionalDateFourDigitValidator} from 'common/form/validators/optionalDateFourDigitValidator';
+import {OptionalDateNotInPastValidator} from 'common/form/validators/optionalDateNotInPastValidator';
+import {DateConverter} from 'common/utils/dateConverter';
+import {toNumberOrUndefined} from 'common/utils/numberConverter';
 
 export class DebtRespiteEndDate {
 

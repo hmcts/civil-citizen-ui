@@ -8,7 +8,7 @@ import {
   FIRST_CONTACT_PIN_URL,
 } from 'routes/urls';
 import {t} from 'i18next';
-import {YesNo} from '.common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 

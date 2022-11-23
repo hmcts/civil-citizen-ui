@@ -1,14 +1,14 @@
 import {Request, Response, Router} from 'express';
-import {GenericForm} from '../../../../common/form/models/genericForm';
+import {GenericForm} from 'common/form/models/genericForm';
 import {
   ELIGIBILITY_CLAIM_TYPE_URL,
   NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
   ELIGIBILITY_CLAIMANT_ADDRESS_URL,
 } from '../../../../routes/urls';
-import {ClaimType} from '../../../../common/models/eligibility/claimType';
-import {ClaimTypeOptions} from '../../../../common/models/eligibility/claimTypeOptions';
-import {constructUrlWithNotEligibleReason} from '../../../../common/utils/urlFormatter';
-import {NotEligibleReason} from '../../../../common/form/models/eligibility/NotEligibleReason';
+import {ClaimType} from 'common/models/eligibility/claimType';
+import {ClaimTypeOptions} from 'common/models/eligibility/claimTypeOptions';
+import {constructUrlWithNotEligibleReason} from 'common/utils/urlFormatter';
+import {NotEligibleReason} from 'common/form/models/eligibility/NotEligibleReason';
 
 const claimTypeController = Router();
 const claimTypeViewPath = 'features/public/eligibility/claim-type';

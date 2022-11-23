@@ -3,13 +3,13 @@ import {
   CCJ_DEFENDANT_DOB_URL,
   CCJ_PAID_AMOUNT_URL,
 } from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {ExpertCanStillExamine} from '../../../../common/models/directionsQuestionnaire/experts/expertCanStillExamine';
+import {GenericForm} from 'common/form/models/genericForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {ExpertCanStillExamine} from 'common/models/directionsQuestionnaire/experts/expertCanStillExamine';
 import {getClaimantResponse, saveClaimantResponse} from '../../../../../main/services/features/claimantResponse/claimantResponseService';
-import {DefendantDOB} from '../../../../common/models/claimantResponse/ccj/defendantDOB';
-import {getDOBforAgeFromCurrentTime} from '../../../../common/utils/dateUtils';
-import {DateOfBirth} from '../../../../common/models/claimantResponse/ccj/dateOfBirth';
+import {DefendantDOB} from 'common/models/claimantResponse/ccj/defendantDOB';
+import {getDOBforAgeFromCurrentTime} from 'common/utils/dateUtils';
+import {DateOfBirth} from 'common/models/claimantResponse/ccj/dateOfBirth';
 
 const defendantDOBController = Router();
 const defendantDOBViewPath = 'features/claimantResponse/ccj/defendant-dob';

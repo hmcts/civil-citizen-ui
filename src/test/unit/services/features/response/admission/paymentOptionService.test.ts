@@ -1,17 +1,17 @@
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {Claim} from '.common/models/claim';
+import {Claim} from 'common/models/claim';
 import {
   getPaymentOptionForm,
   savePaymentOptionData,
 } from '../../../../../../main/services/features/response/admission/paymentOptionService';
 import {PaymentOptionType}
-  from '.common/form/models/admission/paymentOption/paymentOptionType';
+  from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {PaymentOption}
-  from '.common/form/models/admission/paymentOption/paymentOption';
+  from 'common/form/models/admission/paymentOption/paymentOption';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {ResponseType} from '.common/form/models/responseType';
-import {PartialAdmission} from '.common/models/partialAdmission';
-import {PaymentIntention} from '.common/form/models/admission/partialAdmission/paymentIntention';
+import {ResponseType} from 'common/form/models/responseType';
+import {PartialAdmission} from 'common/models/partialAdmission';
+import {PaymentIntention} from 'common/form/models/admission/partialAdmission/paymentIntention';
 import {mockClaim} from '../../../../../utils/mockClaim';
 
 jest.mock('modules/draft-store');

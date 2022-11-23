@@ -1,8 +1,8 @@
 import {Reason} from './reason';
 import {Evidence} from '../../evidence/evidence';
 import {HelpWithFees} from './helpWithFees';
-import {ClaimantTimeline} from '../../../../../common/form/models/timeLineOfEvents/claimantTimeline';
-import {BreathingSpace} from '../../../../models/breathingSpace';
+import {ClaimantTimeline} from 'common/form/models/timeLineOfEvents/claimantTimeline';
+import {BreathingSpace} from 'models/breathingSpace';
 
 export class ClaimDetails {
   reason?: Reason;

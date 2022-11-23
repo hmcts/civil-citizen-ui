@@ -1,4 +1,4 @@
-import {Claim} from '.common/models/claim';
+import {Claim} from 'common/models/claim';
 import {
   buildNextStepsSection,
   buildSubmitStatus,
@@ -6,18 +6,18 @@ import {
 import {
   getNextStepsTitle,
 } from '../../../../../../main/services/features/response/submitConfirmation/submitConfirmationBuilder/admissionSubmitConfirmationContent';
-import {ResponseType} from '.common/form/models/responseType';
-import {PartyType} from '.common/models/partyType';
-import {Party} from '.common/models/party';
-import {PaymentOptionType} from '.common/form/models/admission/paymentOption/paymentOptionType';
-import {HowMuchHaveYouPaid} from '.common/form/models/admission/howMuchHaveYouPaid';
-import {PartialAdmission} from '.common/models/partialAdmission';
-import {PaymentIntention} from '.common/form/models/admission/partialAdmission/paymentIntention';
-import {RejectAllOfClaim} from '.common/form/models/rejectAllOfClaim';
-import {WhyDoYouDisagree} from '.common/form/models/admission/partialAdmission/whyDoYouDisagree';
-import {Defence} from '.common/form/models/defence';
-import {RejectAllOfClaimType} from '.common/form/models/rejectAllOfClaimType';
-import {PartyDetails} from '.common/form/models/partyDetails';
+import {ResponseType} from 'common/form/models/responseType';
+import {PartyType} from 'common/models/partyType';
+import {Party} from 'common/models/party';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {HowMuchHaveYouPaid} from 'common/form/models/admission/howMuchHaveYouPaid';
+import {PartialAdmission} from 'common/models/partialAdmission';
+import {PaymentIntention} from 'common/form/models/admission/partialAdmission/paymentIntention';
+import {RejectAllOfClaim} from 'common/form/models/rejectAllOfClaim';
+import {WhyDoYouDisagree} from 'common/form/models/admission/partialAdmission/whyDoYouDisagree';
+import {Defence} from 'common/form/models/defence';
+import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
+import {PartyDetails} from 'common/form/models/partyDetails';
 
 jest.mock('modules/i18n');
 jest.mock('i18next', () => ({

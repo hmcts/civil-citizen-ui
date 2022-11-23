@@ -2,8 +2,8 @@ import {
   getCaseDataFromStore,
   saveDraftClaim,
 } from 'modules/draft-store/draftStoreService';
-import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
-import {CourtOrders} from '../../../../../common/form/models/statementOfMeans/courtOrders/courtOrders';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
+import {CourtOrders} from 'common/form/models/statementOfMeans/courtOrders/courtOrders';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('courtOrdersService');

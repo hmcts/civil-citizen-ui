@@ -1,10 +1,10 @@
 import {NextFunction, Request, Response} from 'express';
-import {Claim} from '../../common/models/claim';
+import {Claim} from 'common/models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {isPastDeadline} from '../../common/utils/dateUtils';
-import {getViewOptionsBeforeDeadlineTask} from '../../common/utils/taskList/tasks/viewOptionsBeforeDeadline';
-import {TaskStatus} from '../../common/models/taskList/TaskStatus';
-import {constructResponseUrlWithIdParams} from '../../common/utils/urlFormatter';
+import {isPastDeadline} from 'common/utils/dateUtils';
+import {getViewOptionsBeforeDeadlineTask} from 'common/utils/taskList/tasks/viewOptionsBeforeDeadline';
+import {TaskStatus} from 'common/models/taskList/TaskStatus';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {CLAIM_TASK_LIST_URL} from '../../routes/urls';
 
 export const deadLineGuard = async (req: Request, res: Response, next: NextFunction) => {

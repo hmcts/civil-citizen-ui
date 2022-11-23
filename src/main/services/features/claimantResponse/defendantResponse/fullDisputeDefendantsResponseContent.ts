@@ -1,9 +1,9 @@
 import {t} from 'i18next';
-import {Claim} from '../../../../common/models/claim';
-import {ClaimSummarySection, ClaimSummaryType} from '../../../../common/form/models/claimSummarySection';
-import {EvidenceItem} from '../../../../common/form/models/evidence/evidenceItem';
-import {TimelineRow} from '../../../../common/form/models/timeLineOfEvents/timelineRow';
-import {TableCell} from '../../../../common/models/summaryList/summaryList';
+import {Claim} from 'common/models/claim';
+import {ClaimSummarySection, ClaimSummaryType} from 'common/form/models/claimSummarySection';
+import {EvidenceItem} from 'common/form/models/evidence/evidenceItem';
+import {TimelineRow} from 'common/form/models/timeLineOfEvents/timelineRow';
+import {TableCell} from 'common/models/summaryList/summaryList';
 
 export const generateTableRowsForTOEs = (theirTOERows: TimelineRow[]): TableCell[][] => {
   return theirTOERows.map(row => {

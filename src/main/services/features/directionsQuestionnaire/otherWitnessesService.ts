@@ -1,7 +1,7 @@
 import {Request} from 'express';
 import {getDirectionQuestionnaire} from './directionQuestionnaireService';
-import {OtherWitnessItems} from '../../../common/models/directionsQuestionnaire/witnesses/otherWitnessItems';
-import {OtherWitnesses} from '../../../common/models/directionsQuestionnaire/witnesses/otherWitnesses';
+import {OtherWitnessItems} from 'common/models/directionsQuestionnaire/witnesses/otherWitnessItems';
+import {OtherWitnesses} from 'common/models/directionsQuestionnaire/witnesses/otherWitnesses';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('otherWitnessesService');

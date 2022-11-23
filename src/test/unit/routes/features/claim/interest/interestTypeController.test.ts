@@ -11,7 +11,7 @@ import {
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {
   InterestClaimOptionsType,
-} from '.common/form/models/claim/interest/interestClaimOptionsType';
+} from 'common/form/models/claim/interest/interestClaimOptionsType';
 
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store');

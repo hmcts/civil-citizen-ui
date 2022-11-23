@@ -1,9 +1,9 @@
-import {Task} from '../../../models/taskList/task';
-import {Claim} from '../../../models/claim';
-import {TaskStatus} from '../../../models/taskList/TaskStatus';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+import {Task} from 'models/taskList/task';
+import {Claim} from 'models/claim';
+import {TaskStatus} from 'models/taskList/TaskStatus';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {DETERMINATION_WITHOUT_HEARING_URL} from '../../../../routes/urls';
-import {getLng} from '../../../../common/utils/languageToggleUtils';
+import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
 
 export const getGiveUsDetailsHearingTask = (_caseData: Claim, claimId: string, lang: string): Task => {

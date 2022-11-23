@@ -1,14 +1,14 @@
 import {NextFunction, Response, Router} from 'express';
 import {CITIZEN_COURT_ORDERS_URL, CITIZEN_UNEMPLOYED_URL} from '../../../../../routes/urls';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {Unemployment} from '../../../../../common/form/models/statementOfMeans/unemployment/unemployment';
-import {UnemploymentDetails} from '../../../../../common/form/models/statementOfMeans/unemployment/unemploymentDetails';
-import {OtherDetails} from '../../../../../common/form/models/statementOfMeans/unemployment/otherDetails';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {Unemployment} from 'common/form/models/statementOfMeans/unemployment/unemployment';
+import {UnemploymentDetails} from 'common/form/models/statementOfMeans/unemployment/unemploymentDetails';
+import {OtherDetails} from 'common/form/models/statementOfMeans/unemployment/otherDetails';
 import {UnemploymentService} from '../../../../../services/features/response/statementOfMeans/unemployment/unemploymentService';
 import {
   UnemploymentCategory,
-} from '../../../../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
+} from 'common/form/models/statementOfMeans/unemployment/unemploymentCategory';
+import {GenericForm} from 'common/form/models/genericForm';
 import {Validator} from 'class-validator';
 
 const citizenEmploymentStatusViewPath = 'features/response/statementOfMeans/unemployment';

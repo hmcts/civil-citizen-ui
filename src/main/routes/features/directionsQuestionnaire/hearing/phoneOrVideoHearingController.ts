@@ -1,10 +1,10 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {DQ_PHONE_OR_VIDEO_HEARING_URL, VULNERABILITY_URL} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {PhoneOrVideoHearing} from '../../../../common/models/directionsQuestionnaire/hearing/phoneOrVideoHearing';
-import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
-import {YesNo} from '../../../../common/form/models/yesNo';
+import {GenericForm} from 'common/form/models/genericForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {PhoneOrVideoHearing} from 'common/models/directionsQuestionnaire/hearing/phoneOrVideoHearing';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {YesNo} from 'common/form/models/yesNo';
 import {
   getGenericOption,
   saveDirectionQuestionnaire,

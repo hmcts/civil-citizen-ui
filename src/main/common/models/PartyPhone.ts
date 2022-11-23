@@ -1,5 +1,5 @@
 import {IsNotEmpty, MaxLength, Validate, ValidateIf} from 'class-validator';
-import {OptionalIntegerValidator} from '../../common/form/validators/optionalIntegerValidator';
+import {OptionalIntegerValidator} from 'common/form/validators/optionalIntegerValidator';
 
 export class PartyPhone {
 

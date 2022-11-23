@@ -1,5 +1,5 @@
-import {Claim} from '../../../../../common/models/claim';
-import {ClaimSummarySection} from '../../../../../common/form/models/claimSummarySection';
+import {Claim} from 'common/models/claim';
+import {ClaimSummarySection} from 'common/form/models/claimSummarySection';
 import {
   getContactYouStatement,
   getFAPayByDateNextSteps,
@@ -18,7 +18,7 @@ import {
   getRC_PaidFullNextSteps,
 } from './rejectClaimConfirmationContent';
 
-import {ClaimResponseStatus} from '../../../../../common/models/claimResponseStatus';
+import {ClaimResponseStatus} from 'common/models/claimResponseStatus';
 import {getRCDisputeNextSteps, getRCDisputeStatus} from './fullDefenceConfirmationContent';
 import {
   getPA_AlreadyPaidStatus,

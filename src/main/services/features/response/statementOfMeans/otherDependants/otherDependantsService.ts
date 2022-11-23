@@ -1,13 +1,13 @@
-import {OtherDependants} from '../../../../../common/form/models/statementOfMeans/otherDependants';
+import {OtherDependants} from 'common/form/models/statementOfMeans/otherDependants';
 import {
   getCaseDataFromStore,
   getDraftClaimFromStore,
   saveDraftClaim,
 } from 'modules/draft-store/draftStoreService';
-import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
 import {get} from 'lodash';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
-import {YesNo} from '../../../../../common/form/models/yesNo';
+import {GenericForm} from 'common/form/models/genericForm';
+import {YesNo} from 'common/form/models/yesNo';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('otherDependantsService');

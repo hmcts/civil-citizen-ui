@@ -3,13 +3,13 @@ import {
   getSelfEmployedAsForm,
   saveSelfEmployedAsData,
 } from '../../../../../../../main/services/features/response/statementOfMeans/employment/selfEmployed/selfEmployedAsService';
-import {Claim} from '../.common/models/claim';
-import {StatementOfMeans} from '../.common/models/statementOfMeans';
+import {Claim} from '../common/models/claim';
+import {StatementOfMeans} from '../common/models/statementOfMeans';
 import {
   SelfEmployedAsForm,
-} from '../.common/form/models/statementOfMeans/employment/selfEmployed/selfEmployedAsForm';
+} from '../common/form/models/statementOfMeans/employment/selfEmployed/selfEmployedAsForm';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {GenericForm} from '../.common/form/models/genericForm';
+import {GenericForm} from '../common/form/models/genericForm';
 
 jest.mock('modules/draft-store');
 jest.mock('modules/draft-store/draftStoreService');

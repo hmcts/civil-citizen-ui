@@ -1,7 +1,7 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {CompanyTelephoneNumber} from '../../../../common/form/models/mediation/companyTelephoneNumber';
-import {Mediation} from '../../../../common/models/mediation/mediation';
-import {YesNo} from '../../../../common/form/models/yesNo';
+import {CompanyTelephoneNumber} from 'common/form/models/mediation/companyTelephoneNumber';
+import {Mediation} from 'common/models/mediation/mediation';
+import {YesNo} from 'common/form/models/yesNo';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('companyTelephoneNumberService');

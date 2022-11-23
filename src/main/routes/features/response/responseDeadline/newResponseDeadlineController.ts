@@ -4,9 +4,9 @@ import {
   CLAIM_TASK_LIST_URL,
   NEW_RESPONSE_DEADLINE_URL,
 } from '../../../urls';
-import {AppRequest} from '../../../../common/models/AppRequest';
-import {formatDateToFullDate} from '../../../../common/utils/dateUtils';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+import {AppRequest} from 'common/models/AppRequest';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getClaimWithExtendedResponseDeadline,
   submitExtendedResponseDeadline,

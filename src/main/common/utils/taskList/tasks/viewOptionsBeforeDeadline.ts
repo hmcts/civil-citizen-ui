@@ -1,12 +1,12 @@
-import {Task} from '../../../models/taskList/task';
-import {Claim} from '../../../models/claim';
-import {TaskStatus} from '../../../models/taskList/TaskStatus';
+import {Task} from 'models/taskList/task';
+import {Claim} from 'models/claim';
+import {TaskStatus} from 'models/taskList/TaskStatus';
 import {t} from 'i18next';
 import {getLng} from '../../languageToggleUtils';
 import {NEW_RESPONSE_DEADLINE_URL, UNDERSTANDING_RESPONSE_OPTIONS_URL} from '../../../../routes/urls';
 import {constructResponseUrlWithIdParams} from '../../urlFormatter';
-import {ResponseOptions} from '../../../form/models/responseDeadline';
-import {AdditionalTimeOptions} from '../../../form/models/additionalTime';
+import {ResponseOptions} from 'form/models/responseDeadline';
+import {AdditionalTimeOptions} from 'form/models/additionalTime';
 import {isPastDeadline} from '../../dateUtils';
 
 export const getViewOptionsBeforeDeadlineTask = (claim: Claim, claimId: string, language: string): Task => {
