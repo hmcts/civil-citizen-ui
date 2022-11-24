@@ -19,6 +19,9 @@
     ],
     "baseUrl": "src/main",
     "paths": {
+      "app/*": [
+        "app/*"
+      ],
       "common/*": [
         "common/*"
       ],
@@ -39,9 +42,6 @@
       ],
       "services/*": [
         "services/*"
-      ],
-      "app/*": [
-        "app/*"
       ]
     },
     "typeRoots": [
