@@ -59,6 +59,7 @@ describe('CCJ Repayment Plan page', () => {
             year: '2060',
           },
           paymentFrequency: TransactionSchedule.WEEK,
+          totalClaimAmount: 5000,
         })
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -79,6 +80,7 @@ describe('CCJ Repayment Plan page', () => {
               year: '2060',
             },
             paymentFrequency: TransactionSchedule.WEEK,
+            totalClaimAmount: 5000,
           })
           .expect((res) => {
             expect(res.status).toBe(200);
@@ -98,6 +100,7 @@ describe('CCJ Repayment Plan page', () => {
               year: '2060',
             },
             paymentFrequency: TransactionSchedule.WEEK,
+            totalClaimAmount: 5000,
           })
           .expect((res) => {
             expect(res.status).toBe(200);
@@ -117,10 +120,31 @@ describe('CCJ Repayment Plan page', () => {
               year: '2060',
             },
             paymentFrequency: TransactionSchedule.WEEK,
+            totalClaimAmount: 5000,
           })
           .expect((res) => {
             expect(res.status).toBe(200);
             expect(res.text).toContain(t('ERRORS.AMOUNT_INVALID_DECIMALS'));
+          });
+      });
+
+      it('should return error when amount is more than total claim amount', async () => {
+        app.locals.draftStoreClient = mockCivilClaim;
+        await request(app)
+          .post(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL)
+          .send({
+            amount: '5000',
+            firstPaymentDate: {
+              day: '01',
+              month: '12',
+              year: '2060',
+            },
+            paymentFrequency: TransactionSchedule.WEEK,
+            totalClaimAmount: 1000,
+          })
+          .expect((res) => {
+            expect(res.status).toBe(200);
+            expect(res.text).toContain(t('ERRORS.VALID_INSTALMENT_AMOUNT'));
           });
       });
     });
@@ -138,6 +162,7 @@ describe('CCJ Repayment Plan page', () => {
               year: '2060',
             },
             paymentFrequency: TransactionSchedule.WEEK,
+            totalClaimAmount: 5000,
           })
           .expect((res) => {
             expect(res.status).toBe(200);
@@ -157,6 +182,7 @@ describe('CCJ Repayment Plan page', () => {
               year: '2060',
             },
             paymentFrequency: TransactionSchedule.WEEK,
+            totalClaimAmount: 5000,
           })
           .expect((res) => {
             expect(res.status).toBe(200);
@@ -176,6 +202,7 @@ describe('CCJ Repayment Plan page', () => {
               year: '2060',
             },
             paymentFrequency: TransactionSchedule.WEEK,
+            totalClaimAmount: 5000,
           })
           .expect((res) => {
             expect(res.status).toBe(200);
@@ -195,6 +222,7 @@ describe('CCJ Repayment Plan page', () => {
               year: '2060',
             },
             paymentFrequency: TransactionSchedule.WEEK,
+            totalClaimAmount: 5000,
           })
           .expect((res) => {
             expect(res.status).toBe(200);
@@ -214,6 +242,7 @@ describe('CCJ Repayment Plan page', () => {
               year: '999',
             },
             paymentFrequency: TransactionSchedule.WEEK,
+            totalClaimAmount: 5000,
           })
           .expect((res) => {
             expect(res.status).toBe(200);
@@ -233,6 +262,7 @@ describe('CCJ Repayment Plan page', () => {
               year: '',
             },
             paymentFrequency: TransactionSchedule.WEEK,
+            totalClaimAmount: 5000,
           })
           .expect((res) => {
             expect(res.status).toBe(200);
@@ -252,6 +282,7 @@ describe('CCJ Repayment Plan page', () => {
               year: '10000',
             },
             paymentFrequency: TransactionSchedule.WEEK,
+            totalClaimAmount: 5000,
           })
           .expect((res) => {
             expect(res.status).toBe(200);
@@ -259,7 +290,7 @@ describe('CCJ Repayment Plan page', () => {
           });
       });
 
-      it('should return error for date is in past', async () => {
+      it('should return error for date that is before a month from now', async () => {
         app.locals.draftStoreClient = mockCivilClaim;
         await request(app)
           .post(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL)
@@ -271,10 +302,11 @@ describe('CCJ Repayment Plan page', () => {
               year: '2010',
             },
             paymentFrequency: TransactionSchedule.WEEK,
+            totalClaimAmount: 5000,
           })
           .expect((res) => {
             expect(res.status).toBe(200);
-            expect(res.text).toContain(t('ERRORS.VALID_DATE_NOT_IN_PAST'));
+            expect(res.text).toContain(t('ERRORS.VALID_DATE_ONE_MONTH_FROM_TODAY'));
           });
       });
     });
@@ -292,6 +324,7 @@ describe('CCJ Repayment Plan page', () => {
               year: '2010',
             },
             paymentFrequency: undefined,
+            totalClaimAmount: 5000,
           })
           .expect((res) => {
             expect(res.status).toBe(200);
@@ -312,6 +345,7 @@ describe('CCJ Repayment Plan page', () => {
               year: '2060',
             },
             paymentFrequency: TransactionSchedule.WEEK,
+            totalClaimAmount: 5000,
           })
           .expect((res) => {
             expect(res.status).toBe(302);
@@ -331,6 +365,7 @@ describe('CCJ Repayment Plan page', () => {
               year: '2060',
             },
             paymentFrequency: TransactionSchedule.TWO_WEEKS,
+            totalClaimAmount: 5000,
           })
           .expect((res) => {
             expect(res.status).toBe(302);
@@ -350,6 +385,7 @@ describe('CCJ Repayment Plan page', () => {
               year: '2060',
             },
             paymentFrequency: TransactionSchedule.MONTH,
+            totalClaimAmount: 5000,
           })
           .expect((res) => {
             expect(res.status).toBe(302);
@@ -371,6 +407,7 @@ describe('CCJ Repayment Plan page', () => {
             year: '2060',
           },
           paymentFrequency: TransactionSchedule.WEEK,
+          totalClaimAmount: 5000,
         })
         .expect((res) => {
           expect(res.status).toBe(500);

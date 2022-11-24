@@ -2123,6 +2123,7 @@
     "VALID_DATE": "Rhowch ddyddiad dilys",
     "VALID_DATE_IN_PAST": "Nodwch ddyddiad cyn {{dateToday}}",
     "VALID_DATE_NOT_IN_PAST": "Nodwch ddyddiad heddiw neu ddyddiad yn y dyfodol",
+    "VALID_DATE_ONE_MONTH_FROM_TODAY": "Date must be at least a month from today's date",
     "VALID_DATE_START_NOT_AFTER_TODAY": "Start date must not be after today's date",
     "VALID_DAY": "Rhowch ddydd dilys",
     "VALID_DEBT_AMOUNT": {
@@ -2145,6 +2146,7 @@
     "VALID_FOUR_DIGIT_YEAR": "Nodwch flwyddyn sy'n cynnwys 4 digid",
     "VALID_FREE_TEXT_DATE_LENGTH": "Rhowch ddyddiad sydd ddim hirach na $constraint1 nod",
     "VALID_HOUSING": "Disgrifiwch eich cartref",
+    "VALID_INSTALMENT_AMOUNT": "Instalment amount cannot be more than, or equal to the claim amount",
     "VALID_INTEGER": "Rhowch rif, er enghraifft 3",
     "VALID_INTEREST_TYPE_OPTION": "Choose same rate or breakdown",
     "VALID_MONTH": "Rhowch fis dilys",
