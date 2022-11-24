@@ -22,6 +22,9 @@
       "app/*": [
         "app/*"
       ],
+      "app": [
+        "app"
+      ],
       "common/*": [
         "common/*"
       ],
