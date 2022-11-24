@@ -206,7 +206,7 @@ ccd:
     java:
       imagePullPolicy: Always
       devcpuRequests: 500m
-      releaseNameOverride: ${SERVICE_NAME}-ccd-data-store-api
+      releaseNameOverride: ${SERVICE_NAME}-data-store-api
       environment:
         CASE_DOCUMENT_AM_API_ATTACH_DOCUMENT_ENABLED: false
         DATA_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
@@ -234,7 +234,7 @@ ccd:
       devmemoryRequests: 512Mi
       devcpuLimits: 2
       devmemoryLimits: 1Gi
-      releaseNameOverride: ${SERVICE_NAME}-ccd-definition-store-api
+      releaseNameOverride: ${SERVICE_NAME}-definition-store-api
       environment:
         DEFINITION_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
         DEFINITION_STORE_IDAM_KEY: ${CCD_DEFINITION_STORE_S2S_SECRET}
