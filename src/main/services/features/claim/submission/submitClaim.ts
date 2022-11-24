@@ -13,7 +13,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 export const submitClaim = async (req: AppRequest): Promise<Claim> => {
   try {
-    const claim = await getCaseDataFromStore(req.session.user?.id);
+    const claim = await getCaseDataFromStore(req.session?.user?.id);
     const ccdClaim = translateDraftClaimToCCD(claim);
     logger.info(ccdClaim);
     return await civilServiceClient.submitDraftClaim(ccdClaim, req);
