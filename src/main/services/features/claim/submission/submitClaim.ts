@@ -1,9 +1,9 @@
-import {AppRequest} from '../../../../common/models/AppRequest';
-import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
+import {AppRequest} from 'common/models/AppRequest';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import config from 'config';
-import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
-import {Claim} from '../../../../common/models/claim';
-import {translateDraftClaimToCCD} from '../../../translation/claim/ccdTranslation';
+import {CivilServiceClient} from 'app/client/civilServiceClient';
+import {Claim} from 'common/models/claim';
+import {translateDraftClaimToCCD} from 'services/translation/claim/ccdTranslation';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('partialAdmissionService');
