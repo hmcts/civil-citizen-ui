@@ -1,5 +1,5 @@
-import {CCDClaim} from '../../../common/models/civilClaimResponse';
-import {Claim} from '../../../common/models/claim';
+import {CCDClaim} from 'common/models/civilClaimResponse';
+import {Claim} from 'common/models/claim';
 import {toCCDParty} from '../response/convertToCCDParty';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
