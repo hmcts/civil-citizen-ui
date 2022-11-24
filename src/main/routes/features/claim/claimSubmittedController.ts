@@ -10,7 +10,6 @@ const claimSubmittedController = Router();
 claimSubmittedController.get(CLAIM_SUBMITTED_URL, async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    // const submittedClaim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest> req);
     const claim = await getClaimById(claimId, req);
     if(!claim.isEmpty()) {
       const claimNumber = claim.legacyCaseReference;
