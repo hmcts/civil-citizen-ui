@@ -28,8 +28,8 @@ export const getFutureMonthDate = (numberOfMonths: number): Date => {
   monthFromNow.setDate(monthFromNow.getDate() - 1);
   monthFromNow.setMonth(monthFromNow.getMonth() + numberOfMonths);
 
-  return monthFromNow
-}
+  return monthFromNow;
+};
 
 export const formatDateToFullDate = (date: Date, lang?: string | unknown): string => {
   const dateTime = convertDateToLuxonDate(date);
