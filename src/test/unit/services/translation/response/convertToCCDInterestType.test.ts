@@ -21,4 +21,11 @@ describe('translate InterestType to CCD model', () => {
     const interestTypeResponseCCD = toCCDInterestType(claim.interest.interestClaimOptions);
     expect(interestTypeResponseCCD).toBe(CCDInterestType.SAME_RATE_INTEREST);
   });
+  
+  it('should return undefined', () => {
+    const claim = new Claim();
+    claim.interest = new Interest();
+    const interestTypeResponseCCD = toCCDInterestType(claim.interest.interestClaimOptions);
+    expect(interestTypeResponseCCD).toBe(undefined);
+  });
 });

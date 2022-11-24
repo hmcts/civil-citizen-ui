@@ -2,7 +2,12 @@ import {InterestClaimOptionsType} from '../../../common/form/models/claim/intere
 import {CCDInterestType} from '../../../common/models/ccdResponse/ccdInterestType';
 
 export const toCCDInterestType = (interestClaimOptions: InterestClaimOptionsType): CCDInterestType => {
-  return interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST
-    ? CCDInterestType.BREAK_DOWN_INTEREST
-    : CCDInterestType.SAME_RATE_INTEREST;
+  switch (interestClaimOptions) {
+    case InterestClaimOptionsType.BREAK_DOWN_INTEREST:
+      return CCDInterestType.BREAK_DOWN_INTEREST;
+    case InterestClaimOptionsType.SAME_RATE_INTEREST:
+      return CCDInterestType.SAME_RATE_INTEREST;
+    default:
+      return undefined;
+  } 
 };
