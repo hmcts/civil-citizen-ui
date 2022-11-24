@@ -206,6 +206,7 @@ ccd:
     java:
       imagePullPolicy: Always
       devcpuRequests: 500m
+      releaseNameOverride: ${SERVICE_NAME}-ccd-data-store-api
       environment:
         CASE_DOCUMENT_AM_API_ATTACH_DOCUMENT_ENABLED: false
         DATA_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
