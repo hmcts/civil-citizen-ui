@@ -3,8 +3,8 @@ import {GenericForm} from 'common/form/models/genericForm';
 import {
   getExpertDetails,
   getExpertDetailsForm,
-} from '../../../../services/features/directionsQuestionnaire/expertDetailsService';
-import {saveDirectionQuestionnaire} from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
+} from 'services/features/directionsQuestionnaire/expertDetailsService';
+import {saveDirectionQuestionnaire} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {DQ_EXPERT_DETAILS_URL, DQ_DEFENDANT_EXPERT_EVIDENCE_URL} from '../../../urls';
 

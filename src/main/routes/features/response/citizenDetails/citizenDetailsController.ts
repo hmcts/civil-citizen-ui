@@ -5,7 +5,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getDefendantInformation,
   saveDefendantProperty,
-} from '../../../../services/features/common/defendantDetailsService';
+} from 'services/features/common/defendantDetailsService';
 import {PartyType} from 'common/models/partyType';
 import {GenericForm} from 'common/form/models/genericForm';
 import {PartyDetails} from 'common/form/models/partyDetails';

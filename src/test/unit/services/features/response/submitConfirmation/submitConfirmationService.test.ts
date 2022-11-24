@@ -2,10 +2,10 @@ import {Claim} from 'common/models/claim';
 import {
   buildNextStepsSection,
   buildSubmitStatus,
-} from '../services/features/response/submitConfirmation/submitConfirmationBuilder/submitConfirmationBuilder';
+} from 'services/features/response/submitConfirmation/submitConfirmationBuilder/submitConfirmationBuilder';
 import {
   getNextStepsTitle,
-} from '../services/features/response/submitConfirmation/submitConfirmationBuilder/admissionSubmitConfirmationContent';
+} from 'services/features/response/submitConfirmation/submitConfirmationBuilder/admissionSubmitConfirmationContent';
 import {ResponseType} from 'common/form/models/responseType';
 import {PartyType} from 'common/models/partyType';
 import {Party} from 'common/models/party';

@@ -6,7 +6,7 @@ import {PaymentOptionType}
 import {
   getPaymentOptionForm,
   savePaymentOptionData,
-} from '../../../../../../services/features/response/admission/paymentOptionService';
+} from 'services/features/response/admission/paymentOptionService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {ResponseType} from 'common/form/models/responseType';
 import {GenericForm} from 'common/form/models/genericForm';

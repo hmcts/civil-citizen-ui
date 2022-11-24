@@ -4,7 +4,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getSelfEmployedAsForm,
   saveSelfEmployedAsData,
-} from '../../../../../../services/features/response/statementOfMeans/employment/selfEmployed/selfEmployedAsService';
+} from 'services/features/response/statementOfMeans/employment/selfEmployed/selfEmployedAsService';
 import {
   CITIZEN_SELF_EMPLOYED_URL,
   ON_TAX_PAYMENTS_URL,

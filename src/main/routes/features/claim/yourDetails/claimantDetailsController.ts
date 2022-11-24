@@ -11,7 +11,7 @@ import {GenericForm} from 'common/form/models/genericForm';
 import {
   getClaimantInformation,
   saveClaimantProperty,
-} from '../../../../services/features/claim/yourDetails/claimantDetailsService';
+} from 'services/features/claim/yourDetails/claimantDetailsService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {Party} from 'common/models/party';
 import {AppRequest} from 'common/models/AppRequest';

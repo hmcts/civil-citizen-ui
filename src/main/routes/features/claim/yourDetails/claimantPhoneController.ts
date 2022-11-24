@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {CLAIMANT_PHONE_NUMBER_URL, CLAIMANT_TASK_LIST_URL} from '../../../urls';
 import {GenericForm} from 'common/form/models/genericForm';
-import {getTelephone, saveTelephone} from '../../../../services/features/claim/yourDetails/phoneService';
+import {getTelephone, saveTelephone} from 'services/features/claim/yourDetails/phoneService';
 import {AppRequest} from 'common/models/AppRequest';
 import {CitizenTelephoneNumber} from 'common/form/models/citizenTelephoneNumber';
 import {ClaimantOrDefendant} from 'common/models/partyType';

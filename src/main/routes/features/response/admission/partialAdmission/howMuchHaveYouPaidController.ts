@@ -2,7 +2,7 @@ import {NextFunction, Request, Response, Router} from 'express';
 import {CITIZEN_AMOUNT_YOU_PAID_URL, CLAIM_TASK_LIST_URL} from '../../../../../routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import howMuchHaveYouPaidService from '../../../../../services/features/response/admission/howMuchHaveYouPaidService';
+import howMuchHaveYouPaidService from 'services/features/response/admission/howMuchHaveYouPaidService';
 import {HowMuchHaveYouPaid} from 'common/form/models/admission/howMuchHaveYouPaid';
 import {toNumberOrUndefined} from 'common/utils/numberConverter';
 import {ResponseType} from 'common/form/models/responseType';

@@ -10,7 +10,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getClaimWithExtendedResponseDeadline,
   submitExtendedResponseDeadline,
-} from '../../../../services/features/response/responseDeadline/extendResponseDeadlineService';
+} from 'services/features/response/responseDeadline/extendResponseDeadlineService';
 
 const newResponseDeadlineController = Router();
 const newResponseDeadlineViewPath = 'features/response/responseDeadline/new-response-deadline';

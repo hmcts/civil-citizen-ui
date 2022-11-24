@@ -1,5 +1,5 @@
 import howMuchHaveYouPaidService
-  from '../../services/features/response/admission/howMuchHaveYouPaidService';
+  from 'services/features/response/admission/howMuchHaveYouPaidService';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {HowMuchHaveYouPaid} from '../common/form/models/admission/howMuchHaveYouPaid';
 import {GenericForm} from '../common/form/models/genericForm';

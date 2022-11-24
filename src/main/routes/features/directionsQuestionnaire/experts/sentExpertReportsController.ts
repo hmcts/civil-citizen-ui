@@ -5,7 +5,7 @@ import {SentExpertReports} from 'common/models/directionsQuestionnaire/experts/s
 import {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
-} from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
+} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 

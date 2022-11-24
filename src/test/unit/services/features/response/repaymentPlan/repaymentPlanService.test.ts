@@ -2,7 +2,7 @@ import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {
   getRepaymentPlanForm,
   saveRepaymentPlanData,
-} from '../services/features/response/repaymentPlan/repaymentPlanService';
+} from 'services/features/response/repaymentPlan/repaymentPlanService';
 import {Claim} from 'common/models/claim';
 import {RepaymentPlanForm} from 'common/form/models/repaymentPlan/repaymentPlanForm';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';

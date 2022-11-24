@@ -5,12 +5,12 @@ import {app} from 'app';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import {CLAIM_CONTINUE_CLAIMING_INTEREST, CLAIM_TOTAL_INTEREST_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {getInterest, saveInterest} from '../services/features/claim/interest/interestService';
+import {getInterest, saveInterest} from 'services/features/claim/interest/interestService';
 import {Claim} from 'common/models/claim';
 
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store');
-jest.mock('../services/features/claim/interest/interestService');
+jest.mock('services/features/claim/interest/interestService');
 const getInterestMock = getInterest as jest.Mock;
 const saveInterestMock = saveInterest as jest.Mock;
 

@@ -4,7 +4,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getRepaymentPlanForm,
   saveRepaymentPlanData,
-} from '../../../../../../services/features/response/repaymentPlan/repaymentPlanService';
+} from 'services/features/response/repaymentPlan/repaymentPlanService';
 import {GenericForm} from 'common/form/models/genericForm';
 import {CITIZEN_REPAYMENT_PLAN_PARTIAL_URL, CLAIM_TASK_LIST_URL} from '../../../../../urls';
 import {getFirstPaymentExampleDate} from '../../fullAdmission/repaymentPlan/repaymentPlanController';

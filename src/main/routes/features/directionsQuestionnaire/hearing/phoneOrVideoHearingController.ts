@@ -8,7 +8,7 @@ import {YesNo} from 'common/form/models/yesNo';
 import {
   getGenericOption,
   saveDirectionQuestionnaire,
-} from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
+} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 
 const phoneOrVideoHearingController = Router();
 const phoneOrVideoHearingViewPath = 'features/directionsQuestionnaire/hearing/phone-or-video-hearing';

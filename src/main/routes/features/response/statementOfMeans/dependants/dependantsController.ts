@@ -7,8 +7,8 @@ import {
   CITIZEN_OTHER_DEPENDANTS_URL,
 } from '../../../../urls';
 import {GenericForm} from 'common/form/models/genericForm';
-import dependantsService from '../../../../../services/features/response/statementOfMeans/dependants/dependantsService';
-import {hasDisabledChildren} from '../../../../../services/features/response/statementOfMeans/dependants/childrenDisabilityService';
+import dependantsService from 'services/features/response/statementOfMeans/dependants/dependantsService';
+import {hasDisabledChildren} from 'services/features/response/statementOfMeans/dependants/childrenDisabilityService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const residenceViewPath = 'features/response/statementOfMeans/dependants/dependants';

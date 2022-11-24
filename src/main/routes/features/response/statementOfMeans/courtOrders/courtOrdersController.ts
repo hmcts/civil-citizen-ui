@@ -2,7 +2,7 @@ import {NextFunction, Request, Response, Router} from 'express';
 import {CITIZEN_COURT_ORDERS_URL, CITIZEN_PRIORITY_DEBTS_URL} from '../../../../urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {courtOrdersService}
-  from '../../../../../services/features/response/statementOfMeans/courtOrders/courtOrdersService';
+  from 'services/features/response/statementOfMeans/courtOrders/courtOrdersService';
 import {CourtOrders} from 'common/form/models/statementOfMeans/courtOrders/courtOrders';
 
 const residenceViewPath = 'features/response/statementOfMeans/courtOrders/court-orders';

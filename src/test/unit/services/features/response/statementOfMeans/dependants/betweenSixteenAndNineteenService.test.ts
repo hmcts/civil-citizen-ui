@@ -1,7 +1,7 @@
 import {
   getForm,
   saveFormToDraftStore,
-} from '../../services/features/response/statementOfMeans/dependants/betweenSixteenAndNineteenService';
+} from 'services/features/response/statementOfMeans/dependants/betweenSixteenAndNineteenService';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {
   BetweenSixteenAndNineteenDependants,

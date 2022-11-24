@@ -5,9 +5,9 @@ import {Claim} from 'common/models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getFinancialDetails,
-} from '../../../services/features/claimantResponse/claimantResponseService';
+} from 'services/features/claimantResponse/claimantResponseService';
 import {getLng} from 'common/utils/languageToggleUtils';
-import {getDefendantsResponseContent} from '../../../services/features/claimantResponse/defendantResponse/defendantResponseSummaryService';
+import {getDefendantsResponseContent} from 'services/features/claimantResponse/defendantResponse/defendantResponseSummaryService';
 
 const reviewDefendantsResponseController = Router();
 

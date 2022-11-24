@@ -2,7 +2,7 @@ import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {
   getSelfEmployedAsForm,
   saveSelfEmployedAsData,
-} from '../../services/features/response/statementOfMeans/employment/selfEmployed/selfEmployedAsService';
+} from 'services/features/response/statementOfMeans/employment/selfEmployed/selfEmployedAsService';
 import {Claim} from '../common/models/claim';
 import {StatementOfMeans} from '../common/models/statementOfMeans';
 import {

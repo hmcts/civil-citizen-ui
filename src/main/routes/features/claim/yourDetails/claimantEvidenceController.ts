@@ -3,7 +3,7 @@ import {Evidence} from 'common/form/models/evidence/evidence'; //buildEmptyForm
 import {
   getClaimDetails,
   saveClaimDetails,
-} from '../../../../services/features/claim/details/claimDetailsService';
+} from 'services/features/claim/details/claimDetailsService';
 import * as utilEvidence from 'common/form/models/evidence/transformAndRemoveEmptyValues';
 import {
   CLAIM_EVIDENCE_URL,

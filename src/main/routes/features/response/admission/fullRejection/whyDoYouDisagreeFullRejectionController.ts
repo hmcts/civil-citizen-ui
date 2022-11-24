@@ -8,7 +8,7 @@ import {ResponseType} from 'common/form/models/responseType';
 import {
   getWhyDoYouDisagreeForm,
   saveWhyDoYouDisagreeData,
-} from '../../../../../services/features/response/admission/whyDoYouDisagreeService';
+} from 'services/features/response/admission/whyDoYouDisagreeService';
 
 const whyDoYouDisagreeFullRejectionController = Router();
 const whyDoYouDisagreeViewPath = 'features/response/admission/why-do-you-disagree';

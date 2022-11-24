@@ -7,7 +7,7 @@ import {
 } from '../../../urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {ResponseDeadlineService} from '../../../../services/features/response/responseDeadlineService';
+import {ResponseDeadlineService} from 'services/features/response/responseDeadlineService';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {deadLineGuard} from '../../../../routes/guards/deadLineGuard';
 

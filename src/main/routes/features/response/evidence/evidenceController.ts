@@ -4,7 +4,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getEvidence,
   saveEvidence,
-} from '../../../../services/features/response/evidence/evidenceService';
+} from 'services/features/response/evidence/evidenceService';
 import {
   CITIZEN_EVIDENCE_URL,
   CLAIM_TASK_LIST_URL,

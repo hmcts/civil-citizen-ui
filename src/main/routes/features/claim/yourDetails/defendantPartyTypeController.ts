@@ -2,12 +2,12 @@ import {NextFunction, Response, Router} from 'express';
 import {CLAIM_DEFENDANT_PARTY_TYPE_URL} from '../../../urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {PartyTypeSelection} from 'common/form/models/claim/partyTypeSelection';
-import {redirectToPage} from '../../../../services/features/claim/partyTypeService';
+import {redirectToPage} from 'services/features/claim/partyTypeService';
 import {ClaimantOrDefendant} from 'common/models/partyType';
 import {
   getDefendantInformation,
   saveDefendantProperty,
-} from '../../../../services/features/common/defendantDetailsService';
+} from 'services/features/common/defendantDetailsService';
 import {Party} from 'common/models/party';
 import {AppRequest} from 'common/models/AppRequest';
 

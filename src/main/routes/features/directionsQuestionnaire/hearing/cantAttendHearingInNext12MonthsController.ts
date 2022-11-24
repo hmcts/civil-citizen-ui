@@ -7,7 +7,7 @@ import {
   getGenericOption,
   getGenericOptionForm,
   saveDirectionQuestionnaire,
-} from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
+} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 
 const cantAttendHearingInNext12MonthsController = Router();
 const dqPropertyName = 'cantAttendHearingInNext12Months';

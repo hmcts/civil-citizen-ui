@@ -7,12 +7,12 @@ import {
 import {
   getExpertReportDetails,
   getExpertReportDetailsForm,
-} from '../../../../services/features/directionsQuestionnaire/expertReportDetailsService';
+} from 'services/features/directionsQuestionnaire/expertReportDetailsService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {YesNo} from 'common/form/models/yesNo';
 import {
   saveDirectionQuestionnaire,
-} from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
+} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 
 const expertReportDetailsController = Router();
 const dqPropertyName = 'expertReportDetails';

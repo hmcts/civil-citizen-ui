@@ -6,7 +6,7 @@ import {CITIZEN_COURT_ORDERS_URL, ON_TAX_PAYMENTS_URL} from '../../../../../urls
 import {
   getOnTaxPaymentsForm,
   saveTaxPaymentsData,
-} from '../../../../../../services/features/response/statementOfMeans/employment/selfEmployed/onTaxPaymentsService';
+} from 'services/features/response/statementOfMeans/employment/selfEmployed/onTaxPaymentsService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'common/form/models/genericForm';
 

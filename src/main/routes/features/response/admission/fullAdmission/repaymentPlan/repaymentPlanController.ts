@@ -6,7 +6,7 @@ import {GenericForm} from 'common/form/models/genericForm';
 import {
   getRepaymentPlanForm,
   saveRepaymentPlanData,
-} from '../../../../../../services/features/response/repaymentPlan/repaymentPlanService';
+} from 'services/features/response/repaymentPlan/repaymentPlanService';
 import {CITIZEN_REPAYMENT_PLAN_FULL_URL, CLAIM_TASK_LIST_URL} from '../../../../../urls';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 

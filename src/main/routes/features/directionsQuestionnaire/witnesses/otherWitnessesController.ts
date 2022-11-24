@@ -5,11 +5,11 @@ import {OtherWitnesses} from 'common/models/directionsQuestionnaire/witnesses/ot
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   saveDirectionQuestionnaire,
-} from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
+} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {
   getOtherWitnessDetailsForm,
   getOtherWitnesses,
-} from '../../../../services/features/directionsQuestionnaire/otherWitnessesService';
+} from 'services/features/directionsQuestionnaire/otherWitnessesService';
 
 const otherWitnessesController = Router();
 const otherWitnessesViewPath = 'features/directionsQuestionnaire/witnesses/otherWitnesses/other-witnesses';

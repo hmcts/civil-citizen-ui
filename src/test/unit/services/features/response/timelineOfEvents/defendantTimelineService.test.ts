@@ -4,7 +4,7 @@ import {DefendantTimeline} from 'common/form/models/timeLineOfEvents/defendantTi
 import {
   getPartialAdmitTimeline,
   savePartialAdmitTimeline,
-} from '../services/features/response/timelineOfEvents/defendantTimelineService';
+} from 'services/features/response/timelineOfEvents/defendantTimelineService';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {TimelineRow} from 'common/form/models/timeLineOfEvents/timelineRow';

@@ -5,11 +5,11 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
-} from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
+} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {
   WhyUnavailableForHearing,
 } from 'common/models/directionsQuestionnaire/hearing/whyUnavailableForHearing';
-import {getCalculatedDays} from '../../../../services/features/directionsQuestionnaire/whyUnavailableForHearingService';
+import {getCalculatedDays} from 'services/features/directionsQuestionnaire/whyUnavailableForHearingService';
 
 const whyUnavailableForHearingController = Router();
 const whyUnavailableForHearingViewPath = 'features/directionsQuestionnaire/hearing/why-unavailable-for-hearing';

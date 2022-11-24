@@ -1,6 +1,6 @@
 import {
   getSummarySections,
-} from '../../services/features/response/checkAnswers/checkAnswersService';
+} from 'services/features/response/checkAnswers/checkAnswersService';
 import {
   CITIZEN_BANK_ACCOUNT_URL,
 } from '../routes/urls';

@@ -6,12 +6,12 @@ import {GenericForm} from 'common/form/models/genericForm';
 import {
   getListOfCourtLocations,
   getSpecificCourtLocationForm,
-} from '../../../../services/features/directionsQuestionnaire/hearing/specificCourtLocationService';
+} from 'services/features/directionsQuestionnaire/hearing/specificCourtLocationService';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   saveDirectionQuestionnaire,
-} from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
+} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 
 const specificCourtController = Router();
 const viewPath = 'features/directionsQuestionnaire/hearing/specific-court';

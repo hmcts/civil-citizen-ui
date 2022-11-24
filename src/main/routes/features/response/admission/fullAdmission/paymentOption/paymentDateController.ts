@@ -4,7 +4,7 @@ import {CITIZEN_PAYMENT_DATE_URL, CLAIM_TASK_LIST_URL} from '../../../../../urls
 import {GenericForm} from 'common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {paymentDateService}
-  from '../../../../../../services/features/response/admission/fullAdmission/paymentOption/paymentDateService';
+  from 'services/features/response/admission/fullAdmission/paymentOption/paymentDateService';
 import {ResponseType} from 'common/form/models/responseType';
 
 const paymentDatePath = 'features/response/admission/payment-date';

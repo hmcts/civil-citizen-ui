@@ -1,6 +1,6 @@
 import {
   getSummarySections,
-} from '../../services/features/response/checkAnswers/checkAnswersService';
+} from 'services/features/response/checkAnswers/checkAnswersService';
 import {
   CITIZEN_DETAILS_URL,
   CITIZEN_PHONE_NUMBER_URL,

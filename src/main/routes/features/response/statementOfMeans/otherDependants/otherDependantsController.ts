@@ -5,7 +5,7 @@ import {
   CITIZEN_CARER_URL,
 } from '../../../../urls';
 import {OtherDependants} from 'common/form/models/statementOfMeans/otherDependants';
-import {OtherDependantsService} from '../../../../../services/features/response/statementOfMeans/otherDependants/otherDependantsService';
+import {OtherDependantsService} from 'services/features/response/statementOfMeans/otherDependants/otherDependantsService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {Claim} from 'common/models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';

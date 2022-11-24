@@ -3,8 +3,8 @@ import {
   DirectionQuestionnaire,
 } from '../common/models/directionsQuestionnaire/directionQuestionnaire';
 import {Hearing} from '../common/models/directionsQuestionnaire/hearing/hearing';
-import * as hearingRequirementsSection from '../../services/features/response/checkAnswers/hearingRequirementsSection/buildHearingRequirementsSection';
-import * as supportRequiredList from '../../services/features/response/checkAnswers/hearingRequirementsSection/addSupportRequiredList';
+import * as hearingRequirementsSection from 'services/features/response/checkAnswers/hearingRequirementsSection/buildHearingRequirementsSection';
+import * as supportRequiredList from 'services/features/response/checkAnswers/hearingRequirementsSection/addSupportRequiredList';
 import {summaryRow} from '../common/models/summaryList/summaryList';
 import {YesNo} from '../common/form/models/yesNo';
 import {

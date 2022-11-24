@@ -3,7 +3,7 @@ import {app} from 'app';
 import nock from 'nock';
 import config from 'config';
 import * as claimAmountbreakdownService
-  from '../services/features/claim/amount/claimAmountBreakdownService';
+  from 'services/features/claim/amount/claimAmountBreakdownService';
 import {AmountBreakdown} from 'form/models/claim/amount/amountBreakdown';
 import {ClaimAmountRow} from 'form/models/claim/amount/claimAmountRow';
 import {CLAIM_AMOUNT_URL, CLAIM_INTEREST_URL, NOT_ELIGIBLE_FOR_THIS_SERVICE_URL} from 'routes/urls';
@@ -11,7 +11,7 @@ import {TestMessages} from '../../../../../../../src/test/utils/errorMessageTest
 
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store');
-jest.mock('../services/features/claim/amount/claimAmountBreakdownService');
+jest.mock('services/features/claim/amount/claimAmountBreakdownService');
 
 const mockServiceGet = claimAmountbreakdownService.getClaimAmountBreakdownForm as jest.Mock;
 

@@ -3,7 +3,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {DATE_PAID_URL,DATE_PAID_CONFIRMATION_URL} from '../../../urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {ClaimantResponse} from 'common/models/claimantResponse';
-import {getClaimantResponse, saveClaimantResponse} from '../../../../services/features/claimantResponse/claimantResponseService';
+import {getClaimantResponse, saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
 import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
 
 const claimantResponsePropertyName = 'datePaid';

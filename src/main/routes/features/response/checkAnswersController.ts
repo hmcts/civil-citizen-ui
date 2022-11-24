@@ -4,7 +4,7 @@ import {
   getStatementOfTruth,
   getSummarySections,
   saveStatementOfTruth,
-} from '../../../services/features/response/checkAnswers/checkAnswersService';
+} from 'services/features/response/checkAnswers/checkAnswersService';
 import {GenericForm} from 'common/form/models/genericForm';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
@@ -14,7 +14,7 @@ import {QualifiedStatementOfTruth} from 'common/form/models/statementOfTruth/qua
 import {isFullAmountReject} from 'modules/claimDetailsService';
 import {AppRequest} from 'common/models/AppRequest';
 import {AllResponseTasksCompletedGuard} from '../../../routes/guards/allResponseTasksCompletedGuard';
-import {submitResponse} from '../../../services/features/response/submission/submitResponse';
+import {submitResponse} from 'services/features/response/submission/submitResponse';
 
 const checkAnswersViewPath = 'features/response/check-answers';
 const checkAnswersController = Router();

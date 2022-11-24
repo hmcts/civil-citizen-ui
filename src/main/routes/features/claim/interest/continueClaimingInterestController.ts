@@ -8,8 +8,8 @@ import {
 } from '../../../../routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {YesNo} from 'common/form/models/yesNo';
-import {getInterest, saveInterest} from '../../../../services/features/claim/interest/interestService';
-import {getClaimInterestForm} from '../../../../services/features/claim/interest/claimInterestService';
+import {getInterest, saveInterest} from 'services/features/claim/interest/interestService';
+import {getClaimInterestForm} from 'services/features/claim/interest/claimInterestService';
 
 const continueClaimingInterestController = Router();
 const continueClaimingInterestPath = 'features/claim/interest/continue-claiming-interest';

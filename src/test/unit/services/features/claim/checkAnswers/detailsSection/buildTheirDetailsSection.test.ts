@@ -1,4 +1,4 @@
-import {getSummarySections} from '../../services/features/claim/checkAnswers/checkAnswersService';
+import {getSummarySections} from 'services/features/claim/checkAnswers/checkAnswersService';
 import {
   CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL,
   CLAIM_DEFENDANT_PHONE_NUMBER_URL,

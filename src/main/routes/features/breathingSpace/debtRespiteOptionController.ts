@@ -8,7 +8,7 @@ import {GenericForm} from 'common/form/models/genericForm';
 import {
   saveBreathingSpace,
   getBreathingSpace,
-} from '../../../services/features/breathingSpace/breathingSpaceService';
+} from 'services/features/breathingSpace/breathingSpaceService';
 
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {DebtRespiteOption} from 'common/models/breathingSpace/debtRespiteOption';

@@ -10,9 +10,9 @@ import {
 import {
   getForm,
   saveFormToDraftStore,
-} from '../../../../../services/features/response/statementOfMeans/dependants/betweenSixteenAndNineteenService';
+} from 'services/features/response/statementOfMeans/dependants/betweenSixteenAndNineteenService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {hasDisabledChildren} from '../../../../../services/features/response/statementOfMeans/dependants/childrenDisabilityService';
+import {hasDisabledChildren} from 'services/features/response/statementOfMeans/dependants/childrenDisabilityService';
 import {GenericForm} from 'common/form/models/genericForm';
 
 const dependantTeenagersViewPath = 'features/response/statementOfMeans/dependants/between_16_and_19';

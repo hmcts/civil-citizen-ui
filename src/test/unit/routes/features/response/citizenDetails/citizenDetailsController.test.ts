@@ -18,7 +18,7 @@ import {PartyDetails} from 'form/models/partyDetails';
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store');
 jest.mock('modules/draft-store/draftStoreService');
-jest.mock('../services/features/common/defendantDetailsService');
+jest.mock('services/features/common/defendantDetailsService');
 
 const mockGetRespondentInformation = getDefendantInformation as jest.Mock;
 const mockSaveRespondent = saveDefendantProperty as jest.Mock;

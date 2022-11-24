@@ -1,7 +1,7 @@
 import {NextFunction, Response, Router} from 'express';
 import {CITIZEN_CARER_URL, CITIZEN_EMPLOYMENT_URL} from '../../../urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {getCarer, saveCarer} from '../../../../services/features/response/statementOfMeans/carerService';
+import {getCarer, saveCarer} from 'services/features/response/statementOfMeans/carerService';
 import {GenericForm} from 'common/form/models/genericForm';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 

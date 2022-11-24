@@ -2,7 +2,7 @@ import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {
   getRegularExpenses,
   saveRegularExpenses,
-} from '../../services/features/response/statementOfMeans/expenses/regularExpensesService';
+} from 'services/features/response/statementOfMeans/expenses/regularExpensesService';
 import {Claim} from '../common/models/claim';
 import {StatementOfMeans} from '../common/models/statementOfMeans';
 import {Transaction} from '../common/form/models/statementOfMeans/expensesAndIncome/transaction';

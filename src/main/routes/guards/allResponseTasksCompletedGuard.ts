@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response} from 'express';
 import {Task} from 'common/models/taskList/task';
-import {getTaskLists, outstandingTasksFromTaskLists} from '../../services/features/response/taskListService';
+import {getTaskLists, outstandingTasksFromTaskLists} from 'services/features/response/taskListService';
 import assert from 'assert';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {Claim} from 'common/models/claim';

@@ -5,7 +5,7 @@ import {CITIZEN_EXPLANATION_URL, CITIZEN_MONTHLY_INCOME_URL} from '../../../../u
 import {
   getRegularIncome,
   saveRegularIncome,
-} from '../../../../../services/features/response/statementOfMeans/income/regularIncomeService';
+} from 'services/features/response/statementOfMeans/income/regularIncomeService';
 import {toRegularIncomeForm} from 'common/utils/expenseAndIncome/regularIncomeExpenseCoverter';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 

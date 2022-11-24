@@ -1,5 +1,5 @@
 import request from 'supertest';
-import {app} from 'app';
+import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {CLAIM_COMPLETING_CLAIM_URL} from 'routes/urls';

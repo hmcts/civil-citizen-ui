@@ -5,7 +5,7 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {
   getClaimDetails,
   saveClaimDetails,
-} from '../services/features/claim/details/claimDetailsService';
+} from 'services/features/claim/details/claimDetailsService';
 import {Reason} from 'common/form/models/claim/details/reason';
 import {ClaimDetails} from 'common/form/models/claim/details/claimDetails';
 import {Evidence} from 'common/form/models/evidence/evidence';

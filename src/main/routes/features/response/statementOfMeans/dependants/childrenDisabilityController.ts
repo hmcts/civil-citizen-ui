@@ -3,7 +3,7 @@ import {CHILDREN_DISABILITY_URL, CITIZEN_OTHER_DEPENDANTS_URL} from '../../../..
 import {
   getChildrenDisability,
   saveChildrenDisability,
-} from '../../../../../services/features/response/statementOfMeans/dependants/childrenDisabilityService';
+} from 'services/features/response/statementOfMeans/dependants/childrenDisabilityService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'common/form/models/genericForm';
 import {GenericYesNo} from 'common/form/models/genericYesNo';

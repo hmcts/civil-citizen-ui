@@ -4,7 +4,7 @@ import {CITIZEN_OWED_AMOUNT_URL, CLAIM_TASK_LIST_URL} from '../../../../urls';
 import {
   getHowMuchDoYouOweForm,
   saveHowMuchDoYouOweData,
-} from '../../../../../services/features/response/admission/partialAdmission/howMuchDoYouOweService';
+} from 'services/features/response/admission/partialAdmission/howMuchDoYouOweService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {toNumberOrUndefined} from 'common/utils/numberConverter';
 import {GenericForm} from 'common/form/models/genericForm';

@@ -2,7 +2,7 @@ import {
   getResidence,
   getResidenceForm,
   saveResidence,
-} from '../../services/features/response/statementOfMeans/residence/residenceService';
+} from 'services/features/response/statementOfMeans/residence/residenceService';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from '../common/models/claim';
 import {StatementOfMeans} from '../common/models/statementOfMeans';

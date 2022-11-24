@@ -3,7 +3,7 @@ import {Claim} from 'common/models/claim';
 import {
   getPaymentOptionForm,
   savePaymentOptionData,
-} from '../services/features/response/admission/paymentOptionService';
+} from 'services/features/response/admission/paymentOptionService';
 import {PaymentOptionType}
   from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {PaymentOption}

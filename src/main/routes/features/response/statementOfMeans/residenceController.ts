@@ -6,7 +6,7 @@ import {
   getResidence,
   getResidenceForm,
   saveResidence,
-} from '../../../../services/features/response/statementOfMeans/residence/residenceService';
+} from 'services/features/response/statementOfMeans/residence/residenceService';
 
 const residenceViewPath = 'features/response/statementOfMeans/residence';
 

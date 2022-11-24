@@ -6,9 +6,9 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getCompanyTelephoneNumberData,
   saveCompanyTelephoneNumberData,
-} from '../../../services/features/response/mediation/companyTelephoneNumberService';
+} from 'services/features/response/mediation/companyTelephoneNumberService';
 import {YesNo} from 'common/form/models/yesNo';
-import {getMediation, saveMediation} from '../../../services/features/response/mediation/mediationService';
+import {getMediation, saveMediation} from 'services/features/response/mediation/mediationService';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 
 const companyTelephoneNumberController = Router();

@@ -1,7 +1,7 @@
 import {
   convertCitizenBankAccountsToForm,
   convertFormToCitizenBankAccount,
-} from '../../services/features/response/statementOfMeans/bankAccounts/bankAccountConverter';
+} from 'services/features/response/statementOfMeans/bankAccounts/bankAccountConverter';
 import {BankAccounts} from '../common/form/models/bankAndSavings/bankAccounts';
 import {BankAccount} from '../common/form/models/bankAndSavings/bankAccount';
 import {CitizenBankAccount} from '../common/models/citizenBankAccount';

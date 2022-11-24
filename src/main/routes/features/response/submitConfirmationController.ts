@@ -1,6 +1,6 @@
 import {NextFunction, Router} from 'express';
 import config from 'config';
-import {getSubmitConfirmationContent} from '../../../services/features/response/submitConfirmation/submitConfirmationService';
+import {getSubmitConfirmationContent} from 'services/features/response/submitConfirmation/submitConfirmationService';
 import {CONFIRMATION_URL} from '../../urls';
 import {getClaimById} from 'modules/utilityService';
 import {getLng} from 'common/utils/languageToggleUtils';

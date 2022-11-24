@@ -1,10 +1,10 @@
 import {Claim} from 'common/models/claim';
 import {
   getLatestUpdateContent,
-} from '../services/features/dashboard/claimSummary/latestUpdateService';
+} from 'services/features/dashboard/claimSummary/latestUpdateService';
 import {
   buildResponseToClaimSection,
-} from '../services/features/dashboard/claimSummary/latestUpdate/latestUpdateContentBuilder';
+} from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContentBuilder';
 
 describe('Latest Update Content service', () => {
   const mockClaim = require('../../../../../utils/mocks/civilClaimResponseMock.json');

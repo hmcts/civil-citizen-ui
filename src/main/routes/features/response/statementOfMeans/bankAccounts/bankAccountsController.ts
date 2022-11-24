@@ -5,7 +5,7 @@ import {
 import {BankAccounts} from 'common/form/models/bankAndSavings/bankAccounts';
 import {BankAccount} from 'common/form/models/bankAndSavings/bankAccount';
 import {BankAccountTypes} from 'common/form/models/bankAndSavings/bankAccountTypes';
-import {BankAccountService} from '../../../../../services/features/response/statementOfMeans/bankAccounts/bankAccountService';
+import {BankAccountService} from 'services/features/response/statementOfMeans/bankAccounts/bankAccountService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'common/form/models/genericForm';
 

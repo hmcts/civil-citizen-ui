@@ -4,7 +4,7 @@ import {GenericForm} from 'common/form/models/genericForm';
 import {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
-} from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
+} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {Language} from 'common/models/directionsQuestionnaire/welshLanguageRequirements/language';
 

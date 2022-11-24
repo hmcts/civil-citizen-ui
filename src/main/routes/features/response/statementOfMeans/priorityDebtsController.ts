@@ -5,7 +5,7 @@ import {checkBoxFields} from 'common/utils/priorityDebts/priorityDebtsConstants'
 import {
   getPriorityDebts,
   savePriorityDebts,
-} from '../../../../services/features/response/statementOfMeans/priorityDebtsService';
+} from 'services/features/response/statementOfMeans/priorityDebtsService';
 import {
   convertRequestBodyToForm,
   formatFormErrors,

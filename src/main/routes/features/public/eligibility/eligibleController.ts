@@ -4,7 +4,7 @@ import {
   ELIGIBILITY_HWF_ELIGIBLE_REFERENCE_URL,
   ELIGIBLE_FOR_THIS_SERVICE_URL,
 } from '../../../../routes/urls';
-import {getYouCanUseContent} from '../../../../services/features/eligibility/eligibleService';
+import {getYouCanUseContent} from 'services/features/eligibility/eligibleService';
 import {getLng} from 'common/utils/languageToggleUtils';
 
 const eligibleController = Router();

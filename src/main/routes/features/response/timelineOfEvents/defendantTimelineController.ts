@@ -9,7 +9,7 @@ import {DefendantTimeline} from 'common/form//models/timeLineOfEvents/defendantT
 import {
   getPartialAdmitTimeline,
   savePartialAdmitTimeline,
-} from '../../../../services/features/response/timelineOfEvents/defendantTimelineService';
+} from 'services/features/response/timelineOfEvents/defendantTimelineService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {TimeLineOfEvents} from 'common/models/timelineOfEvents/timeLineOfEvents';

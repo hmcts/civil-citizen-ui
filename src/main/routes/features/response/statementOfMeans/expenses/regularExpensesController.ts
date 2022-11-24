@@ -6,7 +6,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getRegularExpenses,
   saveRegularExpenses,
-} from '../../../../../services/features/response/statementOfMeans/expenses/regularExpensesService';
+} from 'services/features/response/statementOfMeans/expenses/regularExpensesService';
 import {toRegularExpenseForm} from 'common/utils/expenseAndIncome/regularIncomeExpenseCoverter';
 
 const regularExpensesController = Router();

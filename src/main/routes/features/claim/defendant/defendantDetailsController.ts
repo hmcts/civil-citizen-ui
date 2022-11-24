@@ -10,7 +10,7 @@ import {
 import {
   getDefendantInformation,
   saveDefendantProperty,
-} from '../../../../services/features/common/defendantDetailsService';
+} from 'services/features/common/defendantDetailsService';
 import {GenericForm} from 'common/form/models/genericForm';
 import {PartyType} from 'common/models/partyType';
 import {PartyDetails} from 'common/form/models/partyDetails';

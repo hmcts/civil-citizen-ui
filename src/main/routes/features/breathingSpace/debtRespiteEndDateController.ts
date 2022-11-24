@@ -6,7 +6,7 @@ import {
 } from '../../../routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {DebtRespiteEndDate} from 'common/models/breathingSpace/debtRespiteEndDate';
-import {getBreathingSpace, saveBreathingSpace} from '../../../services/features/breathingSpace/breathingSpaceService';
+import {getBreathingSpace, saveBreathingSpace} from 'services/features/breathingSpace/breathingSpaceService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const debtRespiteEndDateController = Router();

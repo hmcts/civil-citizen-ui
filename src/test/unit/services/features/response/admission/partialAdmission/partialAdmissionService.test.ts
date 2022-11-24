@@ -2,7 +2,7 @@ import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from '../common/models/claim';
 import {
   PartialAdmissionService,
-} from '../../services/features/response/admission/partialAdmission/partialAdmissionService';
+} from 'services/features/response/admission/partialAdmission/partialAdmissionService';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
 jest.mock('modules/draft-store');

@@ -3,11 +3,11 @@ import {CITIZEN_COURT_ORDERS_URL, CITIZEN_SELF_EMPLOYED_URL, CITIZEN_WHO_EMPLOYS
 import {
   getEmployers,
   saveEmployers,
-} from '../../../../../services/features/response/statementOfMeans/employment/employerService';
+} from 'services/features/response/statementOfMeans/employment/employerService';
 import {Employers} from 'common/form/models/statementOfMeans/employment/employers';
 import {Employer} from 'common/form/models/statementOfMeans/employment/employer';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {getEmploymentForm} from '../../../../../services/features/response/statementOfMeans/employment/employmentService';
+import {getEmploymentForm} from 'services/features/response/statementOfMeans/employment/employmentService';
 import {EmploymentForm} from 'common/form/models/statementOfMeans/employment/employmentForm';
 import {GenericForm} from 'common/form/models/genericForm';
 

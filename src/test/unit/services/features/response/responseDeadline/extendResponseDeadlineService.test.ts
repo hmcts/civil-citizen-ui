@@ -1,6 +1,6 @@
 import {
   submitExtendedResponseDeadline,
-} from '../services/features/response/responseDeadline/extendResponseDeadlineService';
+} from 'services/features/response/responseDeadline/extendResponseDeadlineService';
 import * as requestModels from 'common/models/AppRequest';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';

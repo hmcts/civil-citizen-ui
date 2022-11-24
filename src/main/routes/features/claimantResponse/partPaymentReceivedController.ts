@@ -7,10 +7,10 @@ import {GenericForm} from 'common/form/models/genericForm';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {
   saveClaimantResponse,
-} from '../../../services/features/claimantResponse/claimantResponseService';
+} from 'services/features/claimantResponse/claimantResponseService';
 import {
   getGenericOptionForm,
-} from '../../../services/genericForm/genericFormService';
+} from 'services/genericForm/genericFormService';
 
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {Claim} from 'common/models/claim';

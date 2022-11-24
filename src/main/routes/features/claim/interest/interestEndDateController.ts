@@ -7,7 +7,7 @@ import {GenericForm} from 'common/form/models/genericForm';
 import {InterestEndDate} from 'common/form/models/interest/interestEndDate';
 import {InterestEndDateType} from 'common/form/models/claimDetails';
 import {AppRequest} from 'common/models/AppRequest';
-import {getInterest, saveInterest} from '../../../../services/features/claim/interest/interestService';
+import {getInterest, saveInterest} from 'services/features/claim/interest/interestService';
 
 const interestEndDateController = Router();
 const interestEndDateViewPath = 'features/claim/interest/interest-end-date';

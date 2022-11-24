@@ -7,8 +7,8 @@ import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {saveClaimantResponse} from '../../../services/features/claimantResponse/claimantResponseService';
-import {getFullAdmitSetDatePaymentDetails} from '../../../services/features/claimantResponse/fullAdmitSetDatePaymentService';
+import {saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
+import {getFullAdmitSetDatePaymentDetails} from 'services/features/claimantResponse/fullAdmitSetDatePaymentService';
 
 const fullAdmitSetDatePaymentController = Router();
 const fullAdmitSetDatePaymentPath = 'features/claimantResponse/full-admit-set-date-payment';

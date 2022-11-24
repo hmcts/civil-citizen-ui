@@ -7,7 +7,7 @@ import {GenericForm} from 'common/form/models/genericForm';
 import {
   getBreathingSpace,
   saveBreathingSpace,
-} from '../../../services/features/breathingSpace/breathingSpaceService';
+} from 'services/features/breathingSpace/breathingSpaceService';
 
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {DebtRespiteStartDate} from 'common/models/breathingSpace/debtRespiteStartDate';

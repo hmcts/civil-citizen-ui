@@ -1,4 +1,4 @@
-import {getSummarySections} from '../../services/features/claim/checkAnswers/checkAnswersService';
+import {getSummarySections} from 'services/features/claim/checkAnswers/checkAnswersService';
 import {
   CLAIM_INTEREST_FROM_URL,
   CLAIM_INTEREST_TYPE_URL,

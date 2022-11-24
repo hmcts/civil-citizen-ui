@@ -1,6 +1,6 @@
 import {NextFunction, Response, Router} from 'express';
 import {CITIZEN_DISABILITY_URL, CITIZEN_RESIDENCE_URL, CITIZEN_SEVERELY_DISABLED_URL} from '../../../urls';
-import {DisabilityService} from '../../../../services/features/response/statementOfMeans/disabilityService';
+import {DisabilityService} from 'services/features/response/statementOfMeans/disabilityService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'common/form/models/genericForm';
 import {GenericYesNo} from 'common/form/models/genericYesNo';

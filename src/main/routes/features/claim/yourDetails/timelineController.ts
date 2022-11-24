@@ -4,11 +4,11 @@ import {CLAIM_EVIDENCE_URL, CLAIM_TIMELINE_URL} from '../../../../routes/urls';
 import {ClaimantTimeline} from 'common/form/models/timeLineOfEvents/claimantTimeline';
 import {GenericForm} from 'common/form/models/genericForm';
 import {getDateInThePast} from 'common/utils/dateUtils';
-import {getClaimDetails} from '../../../../services/features/claim/details/claimDetailsService';
+import {getClaimDetails} from 'services/features/claim/details/claimDetailsService';
 import {
   getTimeline,
   saveTimeline,
-} from '../../../../services/features/claim/yourDetails/timelineService';
+} from 'services/features/claim/yourDetails/timelineService';
 
 const timelineController = Router();
 const timelineViewPath = 'features/claim/yourDetails/timeline';

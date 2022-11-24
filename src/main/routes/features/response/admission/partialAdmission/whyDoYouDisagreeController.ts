@@ -3,7 +3,7 @@ import {WhyDoYouDisagree} from 'common/form/models/admission/partialAdmission/wh
 import {
   getWhyDoYouDisagreeForm,
   saveWhyDoYouDisagreeData,
-} from '../../../../../services/features/response/admission/whyDoYouDisagreeService';
+} from 'services/features/response/admission/whyDoYouDisagreeService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {CITIZEN_TIMELINE_URL, CITIZEN_WHY_DO_YOU_DISAGREE_URL, CLAIM_TASK_LIST_URL} from '../../../../urls';
 import {WhyDoYouDisagreeForm} from 'common/models/whyDoYouDisagreeForm';

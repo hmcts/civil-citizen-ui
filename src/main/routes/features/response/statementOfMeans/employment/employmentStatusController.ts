@@ -11,7 +11,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getEmploymentForm,
   saveEmploymentData,
-} from '../../../../../services/features/response/statementOfMeans/employment/employmentService';
+} from 'services/features/response/statementOfMeans/employment/employmentService';
 import {GenericForm} from 'common/form/models/genericForm';
 
 const citizenEmploymentStatusViewPath = 'features/response/statementOfMeans/employment/employment-status';

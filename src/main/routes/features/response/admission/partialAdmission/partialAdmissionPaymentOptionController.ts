@@ -10,7 +10,7 @@ import {PaymentOptionType}
 import {
   getPaymentOptionForm,
   savePaymentOptionData,
-} from '../../../../../services/features/response/admission/paymentOptionService';
+} from 'services/features/response/admission/paymentOptionService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';

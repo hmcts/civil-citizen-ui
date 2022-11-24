@@ -9,7 +9,7 @@ import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {
   getClaimantResponse,
   saveClaimantResponse,
-} from '../../../services/features/claimantResponse/claimantResponseService';
+} from 'services/features/claimantResponse/claimantResponseService';
 
 const claimantIntentionToProceedController = Router();
 const claimantIntentionToProceedViewPath = 'features/claimant-response/claimant-intention-to-proceed';

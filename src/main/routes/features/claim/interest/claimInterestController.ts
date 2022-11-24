@@ -11,7 +11,7 @@ import {
   getClaimInterest,
   getClaimInterestForm,
   saveClaimInterest,
-} from '../../../../services/features/claim/interest/claimInterestService';
+} from 'services/features/claim/interest/claimInterestService';
 import {AppRequest} from 'common/models/AppRequest';
 
 const claimInterestController = express.Router();
