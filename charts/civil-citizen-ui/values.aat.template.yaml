@@ -1,8 +1,270 @@
+tags:
+  civil-ccd-stack: true
+
+postgresql:
+  enabled: true
+  image:
+    registry: hmctspublic.azurecr.io
+    repository: imported/bitnami/postgresql
+    tag: '11.6.0'
+    pullPolicy: Always
+    debug: true
+  resources:
+    requests:
+      cpu: 25m
+  initdbScripts:
+    init.sql: |-
+      CREATE DATABASE cmc WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+      CREATE DATABASE "data-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+      CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+      CREATE DATABASE "camunda" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+      CREATE DATABASE "role_assignment" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+  postgresqlUsername: hmcts
+  postgresqlPassword: hmcts
+  persistence:
+    enabled: false
+
 nodejs:
   # Don't modify below here
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
+  keyVaults:
+    civil:
+      resourceGroup: civil-service
+      secrets:
+        - AppInsightsInstrumentationKey
+        - draft-store-access-key
+        - name: ordnance-survey-api-key
+          alias: ORDNANCE_SURVEY_API_KEY
+        - citizen-ui-idam-secret
+    cmc:
+      resourceGroup: cmc
+      secrets:
+        - cmc-s2s-secret
+        - citizen-draft-store-primary
+        - citizen-draft-store-secondary
+  environment:
+    ORDNANCE_SURVEY_API_KEY: ${ORDNANCE_SURVEY_API_KEY}
+    OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
+    CIVIL_SERVICE_URL: http://${SERVICE_NAME}-civil-service
+    IDAM_SIGN_OUT_REDIRECT_URL: https://${SERVICE_FQDN}/dashboard
+civil-service:
+  enabled: true
+  java:
+    applicationPort: 4000
+    releaseNameOverride: ${SERVICE_NAME}-civil-service
+    image: 'hmctspublic.azurecr.io/civil/service:latest'
+    imagePullPolicy: Always
+    ingressHost: civil-service-${SERVICE_FQDN}
+    keyVaults:
+      civil:
+        resourceGroup: civil
+        secrets:
+          - civil-idam-client-secret
+          - microservicekey-civil-service
+          - system-update-user-username
+          - system-update-user-password
+          - cross-access-user-username
+          - cross-access-user-password
+          - prd-admin-user-username
+          - prd-admin-user-password
+          - AppInsightsInstrumentationKey
+          - docmosis-api-key
+          - gov-notify-api-key
+          - sendgrid-api-key
+          - robotics-notification-sender
+          - robotics-notification-recipient
+          - robotics-notification-recipient-spec
+          - launch-darkly-sdk-key
+          - ordnance-survey-api-key
+          - robotics-notification-multipartyrecipient
+          - citizen-ui-idam-secret
+          - notification-caseworker-spec-receiver
+    environment:
+      IDAM_CLIENT_ID: civil-service
+      IDAM_CLIENT_REDIRECT_URI: https://civil-citizen-ui-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/oauth2/callback
+      IDAM_API_URL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net
+      IDAM_WEB_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net
+      IDAM_END_SESSION_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/o/endSession
+      IDAM_S2S_AUTH_URL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      MANAGE_CASE_UI_BASE_URL: https://manage-case.{{ .Values.global.environment }}.platform.hmcts.net
+      SPRING_SECURITY_ENABLED: true
+      CMC_DB_NAME: cmc
+      CMC_DB_PORT: 5432
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI: https://forgerock-am.service.core-compute-idam-{{ .Values.global.environment }}.internal:8443/openam/oauth2/hmcts
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKSETURI: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/o/jwks
+      AUTH_IDAM_CLIENT_BASEURL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net
+      AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      OIDC_ISSUER: https://forgerock-am.service.core-compute-idam-aat2.internal:8443/openam/oauth2/realms/root/realms/hmcts
+      FEES_API_URL: http://fees-register-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      GENAPP_LRD_URL: http://rd-location-ref-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      GENAPP_JRD_URL: http://rd-judicial-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      PAYMENTS_API_URL: http://payment-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      SEND_LETTER_URL: http://rpe-send-letter-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      CUI_URL: https://civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net
+      CUI_URL_RESPOND_TO_CLAIM: https://civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net/first-contact/start
+      CLAIM_STORE_URL: http://cmc-claim-store-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      DOCMOSIS_TORNADO_URL: https://docmosis.aat.platform.hmcts.net
+      DOCUMENT_MANAGEMENT_URL: http://dm-store-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      SPRING_CLOUD_BOOTSTRAP_ENABLED: true
+      RD_PROFESSIONAL_API_URL: http://rd-professional-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      CORE_CASE_DATA_API_URL: http://${SERVICE_NAME}-ccd-data-store-api
+      CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-aat.service.core-compute-aat.internal
+      CMC_DB_HOST: ${SERVICE_NAME}-postgresql
+      CMC_DB_USERNAME: hmcts
+      CMC_DB_PASSWORD: hmcts
+      CMC_DB_CONNECTION_OPTIONS: '?sslmode=allow'
+      REFERENCE_DATABASE_MIGRATION: true
+      FEIGN_CLIENT_CONFIG_REMOTERUNTIMESERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
+      FEIGN_CLIENT_CONFIG_REMOTEEXTERNALTASKSERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
+      FEIGN_CLIENT_CONFIG_REMOTEREPOSITORYSERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
+      PAYMENTS_CALLBACK_URL: http://${SERVICE_FQDN}/service-request-update
+      TESTING_SUPPORT_ENABLED: true
+      POLLING_EVENT_EMITTER_ENABLED: false
+      LAUNCH_DARKLY_ENV: citizen-ui-staging
+      EM_CCD_ORCHESTRATOR_URL: http://em-ccd-orchestrator-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      ACA_SERVICE_API_BASEURL: http://${SERVICE_NAME}-aac-manage-case-assignment
+      RELEASE_REVISION: "{{ .Release.Revision }}"
+      DOCUMENT_MANAGEMENT_SECURED: true
+      STITCHING_API_ENABLED: false
 
 idam-pr:
-  enabled: false
+  releaseNameOverride: ${SERVICE_NAME}-xui-idam-pr
+  enabled: true
+  redirect_uris:
+    Civil Citizen UI:
+      - https://civil-citizen-ui.aat.platform.hmcts.net/oauth2/callback
+    XUI:
+      - https://civil-citizen-ui-xui-staging.aat.platform.hmcts.net/oauth2/callback
 
+xui-webapp:
+  enabled: true
+  nodejs:
+    imagePullPolicy: Always
+    releaseNameOverride: ${SERVICE_NAME}-xui-webapp
+    image: hmctspublic.azurecr.io/xui/webapp:latest
+    ingressHost: civil-citizen-ui-xui-staging.aat.platform.hmcts.net
+    devcpuRequests: 500m
+    devmemoryRequests: 512Mi
+    devcpuLimits: 1
+    devmemoryLimits: 1Gi
+    environment:
+      HEALTH_CCD_COMPONENT_API: http://${SERVICE_NAME}-ccd-api-gw/health
+      HEALTH_CCD_DATA_API: http://${SERVICE_NAME}-ccd-data-store-api/health
+      HEALTH_TERMS_AND_CONDITIONS_API: http://xui-terms-and-conditions-aat.service.core-compute-aat.internal/health
+      SERVICES_CCD_COMPONENT_API: http://${SERVICE_NAME}-ccd-api-gw
+      SERVICES_CCD_DATA_STORE_API: http://${SERVICE_NAME}-ccd-data-store-api
+      SERVICES_TERMS_AND_CONDITIONS: http://xui-terms-and-conditions-aat.service.core-compute-aat.internal
+      JURISDICTIONS: CIVIL
+      SERVICES_IDAM_ISS_URL: https://forgerock-am.service.core-compute-idam-aat2.internal:8443/openam/oauth2/realms/root/realms/hmcts
+      SERVICES_CCD_CASE_ASSIGNMENT_API: http://${SERVICE_NAME}-aac-manage-case-assignment
+
+ccd:
+  enabled: true
+  ccd:
+    adminWeb:
+      enabled: false
+    apiGatewayWeb:
+      enabled: true
+    definitionImporter:
+      enabled: false
+    managementWeb:
+      enabled: false
+    s2s:
+      enabled: false
+    postgresql:
+      enabled: false
+    ras:
+      enabled: false
+    userProfileImporter:
+      enabled: false
+    userProfile:
+      enabled: false
+
+  global:
+    ccdApiGatewayIngress: http://${SERVICE_NAME}-ccd-api-gw
+    ccdDataStoreUrl: http://${SERVICE_NAME}-ccd-data-store-api
+    ccdDefinitionStoreUrl: http://${SERVICE_NAME}-ccd-definition-store
+    ccdUserProfileUrl: http://ccd-user-profile-api-aat.service.core-compute-aat.internal
+    dmStoreUrl: http://dm-store-aat.service.core-compute-aat.internal
+    idamApiUrl: https://idam-api.aat.platform.hmcts.net
+    idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
+    s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+
+  ccd-api-gateway-web:
+    nodejs:
+      imagePullPolicy: Always
+      environment:
+        ADDRESS_LOOKUP_TOKEN: ${ADDRESS_LOOKUP_TOKEN}
+        IDAM_SERVICE_KEY: ${CCD_API_GATEWAY_S2S_SECRET}
+        IDAM_OAUTH2_CLIENT_SECRET: ${CCD_API_GATEWAY_IDAM_CLIENT_SECRET}
+        PROXY_DOCUMENT_MANAGEMENT: http://dm-store-aat.service.core-compute-aat.internal
+      ingressHost: civil-citizen-ui-gateway-staging-aat.service.core-compute-aat.internal
+      ingressIP: ${INGRESS_IP}
+      keyVaults: []
+  ccd-data-store-api:
+    java:
+      imagePullPolicy: Always
+      devcpuRequests: 500m
+      releaseNameOverride: ${SERVICE_NAME}-ccd-data-store-api
+      environment:
+        CASE_DOCUMENT_AM_API_ATTACH_DOCUMENT_ENABLED: false
+        DATA_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
+        DATA_STORE_IDAM_KEY: ${CCD_DATA_STORE_S2S_SECRET}
+        DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_ps,bulk_scan_orchestrator,ccpay_bubble,ctsc_work_allocation,em_ccd_orchestrator,xui_webapp,civil_service,ccd_case_document_am_api,aac_manage_case_assignment
+        IDAM_API_BASE_URL: https://idam-api.aat.platform.hmcts.net
+        IDAM_OIDC_URL:  https://idam-web-public.aat.platform.hmcts.net
+        OIDC_ISSUER: https://forgerock-am.service.core-compute-idam-aat2.internal:8443/openam/oauth2/realms/root/realms/hmcts
+        CCD_S2S_AUTHORISED_SERVICES_CASE_USER_ROLES: civil_service
+        CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-aat.service.core-compute-aat.internal
+        IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET: ${IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET}
+        IDAM_DATA_STORE_SYSTEM_USER_USERNAME: ${IDAM_DATA_STORE_SYSTEM_USER_USERNAME}
+        IDAM_DATA_STORE_SYSTEM_USER_PASSWORD: ${IDAM_DATA_STORE_SYSTEM_USER_PASSWORD}
+        ROLE_ASSIGNMENT_URL: http://am-role-assignment-service-aat.service.core-compute-aat.internal
+        ELASTIC_SEARCH_ENABLED: true
+        ELASTIC_SEARCH_HOSTS: ${SERVICE_NAME}-es-master:9200
+        ELASTIC_SEARCH_DATA_NODES_HOSTS: http://${SERVICE_NAME}-es-master:9200
+      keyVaults: []
+      ingressHost: civil-citizen-ui-data-store-staging-aat.service.core-compute-aat.internal
+
+  ccd-definition-store-api:
+    java:
+      imagePullPolicy: Always
+      devcpuRequests: 500m
+      devmemoryRequests: 512Mi
+      devcpuLimits: 2
+      devmemoryLimits: 1Gi
+      releaseNameOverride: ${SERVICE_NAME}-ccd-definition-store-api
+      environment:
+        DEFINITION_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
+        DEFINITION_STORE_IDAM_KEY: ${CCD_DEFINITION_STORE_S2S_SECRET}
+        IDAM_USER_URL: https://idam-web-public.aat.platform.hmcts.net
+        RELEASE_REVISION: "{{ .Release.Revision }}"
+      keyVaults: []
+      ingressHost: civil-citizen-ui-definition-store-staging-aat.service.core-compute-aat.internal
+
+  postgresql:
+    persistence:
+      enabled: false
+
+camunda-bpm:
+  enabled: true
+  java:
+    imagePullPolicy: Always
+    disableKeyVaults: true
+    releaseNameOverride: ${SERVICE_NAME}-camunda
+    ingressHost: civil-citizen-ui-camunda-staging-aat.service.core-compute-aat.internal
+    devcpuRequests: 500m
+    devmemoryRequests: 512Mi
+    devcpuLimits: 1
+    devmemoryLimits: 1Gi
+    environment:
+      CAMUNDA_API_AUTH_ENABLED: false
+      CAMUNDA_DB_HOST: ${SERVICE_NAME}-postgresql
+      CAMUNDA_DB_NAME: camunda
+      CAMUNDA_DB_USER_NAME: hmcts
+      CAMUNDA_DB_PASSWORD: hmcts
+      CAMUNDA_BPM_DATABASE_SCHEMA_UPDATE: true
+      S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+      CAMUNDA_DB_CONN_OPTIONS: ""
+      RELEASE_REVISION: "{{ .Release.Revision }}"

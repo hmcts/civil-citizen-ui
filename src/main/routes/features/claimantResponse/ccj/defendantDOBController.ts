@@ -8,8 +8,8 @@ import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlForm
 import {ExpertCanStillExamine} from '../../../../common/models/directionsQuestionnaire/experts/expertCanStillExamine';
 import {getClaimantResponse, saveClaimantResponse} from '../../../../../main/services/features/claimantResponse/claimantResponseService';
 import {DefendantDOB} from '../../../../common/models/claimantResponse/ccj/defendantDOB';
-import {DateOfBirth} from '../../../../common/models/claimantResponse/ccj/dateOfBirth';
 import {getDOBforAgeFromCurrentTime} from '../../../../common/utils/dateUtils';
+import {DateOfBirth} from '../../../../common/models/claimantResponse/ccj/dateOfBirth';
 
 const defendantDOBController = Router();
 const defendantDOBViewPath = 'features/claimantResponse/ccj/defendant-dob';

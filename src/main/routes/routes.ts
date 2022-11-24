@@ -158,12 +158,19 @@ import claimCheckAnswersController from './features/claim/checkAnswersController
 import claimantEvidenceController from './features/claim/yourDetails/claimantEvidenceController';
 import howMuchContinueClaimingController from './features/claim/interest/howMuchContinueClaimingController';
 import helpWithFeesController from './features/claim/details/helpWithFeesController';
+import datePaidViewController from './features/claimantResponse/paidInFull/datePaidController';
 import settleClaimController from './features/claimantResponse/settleClaimController';
+import fullAdmitSetDatePaymentController from './features/claimantResponse/fullAdmitSetDatePaymentController';
 import partPaymentReceivedController from './features/claimantResponse/partPaymentReceivedController';
 import defendantDOBController from './features/claimantResponse/ccj/defendantDOBController';
 import claimantIntentionToProceedController from './features/claimantResponse/claimantIntentionToProceedController';
 import breathingSpaceCheckAnswersController from './features/claim/breathingSpace/checkAnswersController';
 import rejectionReasonController from './features/claimantResponse/rejectionReasonController';
+import specificCourtController from './features/directionsQuestionnaire/hearing/specificCourtController';
+import debtRespiteOptionController from './features/breathingSpace/debtRespiteOptionController';
+import debtStartDateController from './features/breathingSpace/debtRespiteStartDateController';
+import debtRespiteEndDateController from './features/breathingSpace/debtRespiteEndDateController';
+import reviewDefendantsResponseController from './features/claimantResponse/reviewDefendantsResponseController';
 
 export default [
   homeController,
@@ -309,10 +316,17 @@ export default [
   claimantEvidenceController,
   howMuchContinueClaimingController,
   helpWithFeesController,
+  datePaidViewController,
   settleClaimController,
+  fullAdmitSetDatePaymentController,
   partPaymentReceivedController,
   defendantDOBController,
   claimantIntentionToProceedController,
   breathingSpaceCheckAnswersController,
   rejectionReasonController,
+  specificCourtController,
+  debtRespiteOptionController,
+  debtStartDateController,
+  debtRespiteEndDateController,
+  reviewDefendantsResponseController,
 ];
