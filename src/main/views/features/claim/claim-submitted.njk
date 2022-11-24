@@ -1,0 +1,55 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/external-link.njk" import externalLink %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.CLAIM_SUBMITTED.PAGE_TITLE') }}
+{% endblock %}
+
+{% set panelContent %}
+  {{ t('PAGES.SUBMIT_CONFIRMATION.CLAIM_NUMBER')}}:
+  <br><strong>{{ claimNumber }}</strong><br>
+  <br>{{ defendantResponseLimit }}
+  <br><string><a href={{ downloadHref }} >{{ t('PAGES.CLAIM_SUBMITTED.DOWNLOAD_CLAIM') }}</a></strong>
+{% endset %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-three-thirds">
+      {{ govukPanel({
+        titleText: t('PAGES.CLAIM_SUBMITTED.PAGE_TITLE'),
+        html: panelContent
+      }) }}
+    </div>
+      {% if helpWithFee %}
+        <div class="govuk-body">
+          <h2>{{ t('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT') }}</h2>
+          <p>
+          Your claim will be issued once your Help With Fees application has been confirmed.
+          We'll email you within 5 days to confirm this.
+          </p>
+        </div>
+      {% else %}
+        <div class="govuk-body">
+          <h2>{{ t('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT') }}</h2>
+          <p>
+          {{ defendantFullName }} has until {{ defendantResponseLimit }}
+          </p>
+        </div>
+      {% endif %}
+      <p class="govuk-body">
+        {{ externalLink(t, 'PAGES.SUBMIT_CONFIRMATION.YOUR_OPINION_OF_SERVICE', externalURLs.smartSurveyUrl, true) }}
+      </p>
+      <div class="form-group">
+        {{ govukButton({
+          text: t('PAGES.SUBMIT_CONFIRMATION.GO_TO_ACCOUNT'),
+          href: '/dashboard'
+        }) }}
+      </div>
+      {{ contactUsForHelp(t, '', true) }}
+  </div>
+{% endblock %}

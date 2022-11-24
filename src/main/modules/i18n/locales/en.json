@@ -593,6 +593,10 @@
         "TITLE": "When are you claiming interest from?"
       }
     },
+    "CLAIM_SUBMITTED": {
+      "PAGE_TITLE": "Claim submitted",
+      "DOWNLOAD_CLAIM": "Download your claim form"
+    },
     "CLAIM_SUMMARY": {
       "ABOUT_CLAIM": "About claim",
       "CLAIM_DETAILS": "Claim details:",
