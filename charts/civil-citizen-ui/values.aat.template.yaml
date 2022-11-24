@@ -3,6 +3,7 @@ tags:
 
 postgresql:
   enabled: true
+  releaseNameOverride: ${SERVICE_NAME}-pgsql
   image:
     registry: hmctspublic.azurecr.io
     repository: imported/bitnami/postgresql
