@@ -20,7 +20,7 @@
     "test:functional": "yarn test:functional:codeceptjs run --grep @admitAll1 --reporter mocha-multi --verbose",
     "test:crossbrowser": "SAUCE='true' yarn test:crossbrowser:codeceptjs run",
     "test:crossbrowser:playwright": "yarn test:crossbrowser:codeceptjs run-multiple crossBrowser",
-    "test:crossbrowser:codeceptjs": "codeceptjs --config ./src/test/cross-browser/codecept.conf.js",
+    "test:crossbrowser:codeceptjs": "codeceptjs --config ./src/t est/cross-browser/codecept.conf.js",
     "test:functional:codeceptjs": "codeceptjs --config src/test/functionalTests/codecept.conf.js",
     "test:api": "MOCHAWESOME_REPORTFILENAME=api npx codeceptjs -c 'e2e/codecept.conf.js' run --grep @test --reporter mocha-multi --verbose",
     "cichecks": "yarn && yarn build && yarn lint  && yarn test && yarn test:routes &&  yarn test:a11y"

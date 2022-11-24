@@ -5,7 +5,7 @@ import {buildTheirDetailsSection} from './detailsSection/buildTheirDetailsSectio
 import {buildClaimAmountSection} from './financialSection/buildClaimAmountSection';
 import {buildYourTotalClaimAmountSection} from './financialSection/buildTotalClaimAmount';
 
-const buildSummarySections = (claim: Claim, claimId: string, claimFee: number, lang: string | unknown): SummarySections => {
+const buildSummarySections = (claim: Claim, claimId: string, claimFee?: number, lang?: string | unknown): SummarySections => {
 
   return {
     sections: [
@@ -17,6 +17,6 @@ const buildSummarySections = (claim: Claim, claimId: string, claimFee: number, l
   };
 };
 
-export const getSummarySections = (claimId: string, claim: Claim, claimFee: number, lang?: string | unknown): SummarySections => {
+export const getSummarySections = (claimId: string, claim: Claim, claimFee?: number, lang?: string | unknown): SummarySections => {
   return buildSummarySections(claim, claimId, claimFee, lang);
 };

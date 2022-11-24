@@ -20,7 +20,3 @@ export class Interest {
   sameRateInterestSelection?: SameRateInterestSelection;
   breakDownInterestTotal?: number;
 }
-
-export enum InterestRatePercentage {
-    INTEREST_8 = 8
-}

@@ -4,37 +4,21 @@ import {summaryRow} from '../../../../../common/models/summaryList/summaryList';
 import {t} from 'i18next';
 import {getLng} from '../../../../../common/utils/languageToggleUtils';
 import {currencyFormatWithNoTrailingZeros} from '../../../../../common/utils/currencyFormat';
-import {YesNo} from '../../../../../common/form/models/yesNo';
 import {calculateInterestToDate} from 'common/utils/interestUtils';
-
-const getClaimAmount = (claim?: Claim): number => {
-  return Number(claim.totalClaimAmount);
-};
-
-const getInterestToDate = (claim: Claim): number => {
-  return Number(calculateInterestToDate(claim));
-};
-
-const getTotalAmount = (claim: Claim): number => {
-  return !hasClaimInterest(claim) ? Number(getClaimAmount(claim)) : Number(getClaimAmount(claim)) + getInterestToDate(claim);
-};
-
-const hasClaimInterest = (claim: Claim) => {
-  return claim.claimInterest === YesNo.YES;
-};
 
 export const buildYourTotalClaimAmountSection = (claim: Claim, claimFee: number, lang: string | unknown): SummarySection => {
   const lng = getLng(lang);
-  const grandTotal = getTotalAmount(claim) + claimFee;
+  const interestToDate = (claim.hasInterest()) ? calculateInterestToDate(claim) : 0;
+  const grandTotal = Number(claim.totalClaimAmount) + interestToDate + claimFee;
 
   const yourTotalClaimAmountSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.TOTAL_AMOUNT.TITLE', {lng}),
-    summaryRows: [summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TOTAL_AMOUNT.CLAIM_AMOUNT', {lng}), currencyFormatWithNoTrailingZeros(getClaimAmount(claim)), '', '')],
+    summaryRows: [summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TOTAL_AMOUNT.CLAIM_AMOUNT', {lng}), currencyFormatWithNoTrailingZeros(Number(claim.totalClaimAmount)), '', '')],
   });
 
-  if (hasClaimInterest(claim)) {
+  if (claim.hasInterest()) {
     yourTotalClaimAmountSection.summaryList.rows.push(
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TOTAL_AMOUNT.INTEREST_TO_DATE', {lng}), currencyFormatWithNoTrailingZeros(getInterestToDate(claim)), '', ''),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TOTAL_AMOUNT.INTEREST_TO_DATE', {lng}), currencyFormatWithNoTrailingZeros(interestToDate), '', ''),
     );
   }
 

@@ -8,7 +8,6 @@ import {AppRequest} from '../../../common/models/AppRequest';
 import {submitResponse} from '../../../services/features/response/submission/submitResponse';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -18,8 +17,7 @@ const claimCheckAnswersController = Router();
 
 async function renderView(req: AppRequest, res: Response, claim: Claim, userId: string) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const claimFeeResponse = await civilServiceClient.getClaimAmountFee(claim.totalClaimAmount, req);
-  const claimFee = convertToPoundsFilter(claimFeeResponse.calculatedAmountInPence);
+  const claimFee = await civilServiceClient.getClaimAmountFee(claim.totalClaimAmount, req);
   const summarySections = getSummarySections(userId, claim, claimFee, lang);
   res.render(checkAnswersViewPath, {summarySections});
 }
