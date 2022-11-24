@@ -340,6 +340,14 @@ export class Claim {
   hasRespondentAskedForMoreThan28Days(): boolean {
     return this.responseDeadline?.option === ResponseOptions.YES && this.responseDeadline?.additionalTime === AdditionalTimeOptions.MORE_THAN_28_DAYS;
   }
+  
+  hasInterest(): boolean {
+    return this.claimInterest === YesNo.YES;
+  }
+
+  hasHelpWithFees(): boolean {
+    return this.claimDetails?.helpWithFees?.option === YesNo.YES;
+  }
 
   isRequestToExtendDeadlineRefused(): boolean {
     return this.responseDeadline?.option === ResponseOptions.REQUEST_REFUSED;

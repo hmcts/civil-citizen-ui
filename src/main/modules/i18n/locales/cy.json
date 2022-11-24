@@ -1771,6 +1771,25 @@
       "NO_EXACT_DATE": "If you don’t know exact date, tell us the month and year",
       "TITLE": "Timeline of events"
     },
+    "TOTAL_AMOUNT": {
+      "ADDITIONAL_FEES": "There may be additional fees as your case progresses.",
+      "CLAIM_FEE": "Claim fee",
+      "FIND_OUT_MORE": "Find out more about court fees (opens in a new tab)",
+      "HEARING_FEE": "Hearing fee",
+      "HOW_INTEREST_IS_CALCULATED": "How interest to date is calculated",
+      "IF_SUCCESSFUL": "If it’s successful, you may not have to pay any or all of the claim fee.",
+      "IF_UNSUCCESSFUL": "If it’s unsuccessful, we’ll ask you to pay the claim fee shown on this page in full.",
+      "IF_YOU_SETTLE": "If you settle out of court",
+      "INTEREST_TO_DATE": "Interest to date",
+      "OTHER_FEES": "Other fees",
+      "PAGE_TITLE": "Total amount you’re claiming",
+      "TITLE": "Total amount you’re claiming",
+      "TOTAL_CLAIM_AMOUNT": "Total claim amount",
+      "TOTAL_WOULD_BE_LOWER": "That would mean the total claim amount would be lower than the amount shown on this page.",
+      "WE_WILL_REVIEW": "We’ll review your Help With Fees application after you submit the claim",
+      "WE_WONT_REFOUND": "We won’t refund your claim fee. You can ask the defendant to pay back your claim fee as part of the settlement.",
+      "YOU_DONT_HAVE_TO_PAY": "You don’t have to pay a hearing fee unless the claim goes to a hearing."
+    },
     "TOTAL_INTEREST": {
       "ADD_TO_CLAIM_AMOUNT": "We’ll add it to your claim amount.",
       "CALCULATE_INTEREST": "You need to calculate interest for the different time periods or items and let us know the total.",
