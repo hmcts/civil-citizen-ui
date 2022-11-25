@@ -21,10 +21,10 @@ describe('Total Claim Amount Section', () => {
     expect(summarySections.sections[3].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.TOTAL_AMOUNT.CLAIM_AMOUNT');
     expect(summarySections.sections[3].summaryList.rows[0].value.html).toBe('£9,110');
     expect(summarySections.sections[3].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.TOTAL_AMOUNT.INTEREST_TO_DATE');
-    expect(summarySections.sections[3].summaryList.rows[1].value.html).toBe('£134.78');
+    expect(summarySections.sections[3].summaryList.rows[1].value.html).toBe('£139.77');
     expect(summarySections.sections[3].summaryList.rows[2].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.TOTAL_AMOUNT.CLAIM_FEE');
     expect(summarySections.sections[3].summaryList.rows[3].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.TOTAL_AMOUNT.TOTAL');
-    expect(summarySections.sections[3].summaryList.rows[3].value.html).toBe('£9,699.78');
+    expect(summarySections.sections[3].summaryList.rows[3].value.html).toBe('£9,704.77');
   });
 
   it('should return your total claim amount sections and interest to date if claim interest option is YES', async () => {
@@ -37,10 +37,10 @@ describe('Total Claim Amount Section', () => {
     expect(summarySections.sections[3].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.TOTAL_AMOUNT.CLAIM_AMOUNT');
     expect(summarySections.sections[3].summaryList.rows[0].value.html).toBe('£9,110');
     expect(summarySections.sections[3].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.TOTAL_AMOUNT.INTEREST_TO_DATE');
-    expect(summarySections.sections[3].summaryList.rows[1].value.html).toBe('£107.82');
+    expect(summarySections.sections[3].summaryList.rows[1].value.html).toBe('£111.82');
     expect(summarySections.sections[3].summaryList.rows[2].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.TOTAL_AMOUNT.CLAIM_FEE');
     expect(summarySections.sections[3].summaryList.rows[3].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.TOTAL_AMOUNT.TOTAL');
-    expect(summarySections.sections[3].summaryList.rows[3].value.html).toBe('£9,672.82');
+    expect(summarySections.sections[3].summaryList.rows[3].value.html).toBe('£9,676.82');
   });
 
   it('should return your total claim amount sections and interest to date if claim interest option is NO', async () => {
