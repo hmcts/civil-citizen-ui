@@ -11,15 +11,14 @@ import {
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {BreathingSpace} from 'models/breathingSpace';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
-
-const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
+import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 
 export const buildDebtRespiteSection = (breathingSpace: BreathingSpace, claimId: string, lang: string | unknown): SummarySection => {
   const referenceNumberHref = constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_CHECK_ANSWERS_URL);
   const debtRespiteStartDateHref = constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_RESPITE_START_DATE_URL);
   const debtRespiteOptionDateHref = constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_RESPITE_TYPE_URL);
   const debtRespiteEndDateHref = constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_RESPITE_END_DATE_URL);
-  
+
   const lng = getLng(lang);
   const referenceNumber = breathingSpace?.debtRespiteReferenceNumber?.referenceNumber ?? '';
   const breathingType = 'PAGES.BREATHING_SPACE_DEBT_RESPITE_TYPE' + '.' + breathingSpace.debtRespiteOption.type;

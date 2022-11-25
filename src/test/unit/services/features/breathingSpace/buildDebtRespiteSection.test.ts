@@ -12,7 +12,6 @@ jest.mock('i18next', () => ({
 
 describe('Dept Respite Section', () => {
   const claim = getClaimWithFewDetails();
-  //breathingSpace: BreathingSpace
   it('should return debt respite summary sections', async () => {
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim.claimDetails.breathingSpace, 'cimode');
