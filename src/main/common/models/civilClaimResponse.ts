@@ -74,8 +74,6 @@ export interface CCDClaim extends ClaimUpdate {
   claimFee?: ClaimFee;
   specClaimTemplateDocumentFiles?: Document;
   systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
-  ccdState?: CaseState;
-  responseDeadline?: ResponseDeadline;
   respondentSolicitor1AgreedDeadlineExtension?: Date;
   ccdState?: CaseState;
   responseDeadline?: ResponseDeadline;
