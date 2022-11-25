@@ -1,8 +1,8 @@
-import {Claim} from '../../common/models/claim';
+import {Claim} from 'common/models/claim';
 import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
-import {AppRequest} from '../../common/models/AppRequest';
-import {CCDClaim, CivilClaimResponse} from '../../common/models/civilClaimResponse';
+import {AppRequest} from 'common/models/AppRequest';
+import {CivilClaimResponse} from 'common/models/civilClaimResponse';
 import {
   CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
@@ -14,7 +14,7 @@ import {
   CIVIL_SERVICE_SUBMIT_EVENT,
   CIVIL_SERVICE_VALIDATE_PIN_URL,
 } from './civilServiceUrls';
-import {FeeRange, FeeRanges} from '../../common/models/feeRange';
+import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
 import {CaseDocument} from 'common/models/document/caseDocument';
 import {DashboardClaimantItem, DashboardDefendantItem} from '../../common/models/dashboard/dashboardItem';
@@ -178,7 +178,7 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.INFORM_AGREED_EXTENSION_DATE_SPEC, claimId, updatedClaim, req);
   }
 
-  async submitDraftClaim(updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
+  async submitDraftClaim(updatedClaim: ClaimUpdate, req: AppRequest):  Promise<Claim> {
     return this.submitEvent(CaseEvent.CREATE_LIP_CLAIM, 'draft', updatedClaim, req);
   }
 
@@ -194,7 +194,8 @@ export class CivilServiceClient {
         .replace(':submitterId', userId)
         .replace(':caseId', claimId), data, config);// nosonar
       logger.info('submitted event ' + data.event + ' with update ' + data.caseDataUpdate);
-      return Claim.fromCCDCaseData(response.data as CCDClaim);
+      const claimResponse = response.data as CivilClaimResponse;
+      return Claim.fromCCDCaseData(claimResponse.case_data);
     } catch (err: unknown) {
       logger.error(err);
       throw err;

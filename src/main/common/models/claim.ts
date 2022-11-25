@@ -87,8 +87,8 @@ export class Claim {
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
 
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
-    claim.applicant1 = toCUIParty(ccdClaim.applicant1);
-    claim.respondent1 = toCUIParty(ccdClaim.respondent1);
+    claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
+    claim.respondent1 = toCUIParty(ccdClaim?.respondent1);
     return claim;
   }
 

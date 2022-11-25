@@ -77,6 +77,8 @@ export interface CCDClaim extends ClaimUpdate {
   ccdState?: CaseState;
   responseDeadline?: ResponseDeadline;
   respondentSolicitor1AgreedDeadlineExtension?: Date;
+  ccdState?: CaseState;
+  responseDeadline?: ResponseDeadline;
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
   specResponseTimelineOfEvents?: CCDTimeLineOfEvents[],
