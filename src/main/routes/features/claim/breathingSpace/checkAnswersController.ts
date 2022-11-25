@@ -5,7 +5,6 @@ import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlForm
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {getBreathingSpace} from 'services/features/breathingSpace/breathingSpaceService';
 import {BreathingSpace} from 'models/breathingSpace';
-//import {getBreathingSpace} from 'services/features/breathingSpace/breathingSpaceService';
 
 const checkAnswersViewPath = 'features/breathingSpace/check-answers';
 const breathingSpaceCheckAnswersController = Router();
