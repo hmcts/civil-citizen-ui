@@ -1,9 +1,5 @@
-import {
-  getSummarySections,
-} from '../../../../../main/services/features/breathingSpace/checkAnswersService';
-import {
-  createClaimWithBasicRespondentDetails,
-} from '../../../../utils/mockClaimForCheckAnswers';
+import {getSummarySections} from '../../../../../main/services/features/breathingSpace/checkAnswersService';
+import {getClaimWithFewDetails} from '../../../../utils/mockClaimForCheckAnswers';
 import * as constVal from '../../../../utils/checkAnswersConstants';
 
 jest.mock('../../../../../main/modules/draft-store');
@@ -14,12 +10,12 @@ jest.mock('i18next', () => ({
   use: jest.fn(),
 }));
 
-
 describe('Dept Respite Section', () => {
-  const claim = createClaimWithBasicRespondentDetails();
+  const claim = getClaimWithFewDetails();
+  //breathingSpace: BreathingSpace
   it('should return debt respite summary sections', async () => {
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim.claimDetails.breathingSpace, 'cimode');
     //Then
     expect(summarySections.sections[0].summaryList.rows.length).toBe(4);
     expect(summarySections.sections[0].summaryList.rows[0].key.text).toBe('PAGES.CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS.REFERENCE_NUMBER');

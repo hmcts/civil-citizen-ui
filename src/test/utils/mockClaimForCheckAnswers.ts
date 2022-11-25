@@ -56,6 +56,10 @@ import {
   SameRateInterestType,
 } from '../../main/common/form/models/claimDetails';
 import {Address} from '../../main/common/form/models/address';
+import {ClaimDetails} from 'form/models/claim/details/claimDetails';
+import {DebtRespiteStartDate} from 'models/breathingSpace/debtRespiteStartDate';
+import {DebtRespiteEndDate} from 'models/breathingSpace/debtRespiteEndDate';
+import {DebtRespiteOptionType} from 'models/breathingSpace/debtRespiteOptionType';
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -954,5 +958,22 @@ export const claimWithClaimAmountOneBreakDown = (): Claim => {
 
   claim.claimAmountBreakup = [{value: {claimAmount: '200', claimReason: 'roof'}}];
 
+  return claim;
+};
+
+export const getClaimWithFewDetails = (): Claim => {
+  const claim = new Claim();
+  claim.claimDetails = new ClaimDetails();
+  claim.claimDetails.breathingSpace = {
+    debtRespiteReferenceNumber: {
+      referenceNumber: 'R225B1230',
+    },
+    debtRespiteOption: {
+      type: DebtRespiteOptionType.STANDARD || DebtRespiteOptionType.MENTAL_HEALTH,
+    },
+    debtRespiteStartDate: new DebtRespiteStartDate('10', 'January', '2022'),
+    debtRespiteEndDate: new DebtRespiteEndDate('10', 'December', '2022'),
+
+  };
   return claim;
 };

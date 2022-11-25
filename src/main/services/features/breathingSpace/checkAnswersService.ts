@@ -1,16 +1,16 @@
 import {SummarySections} from '../../../common/models/summaryList/summarySections';
-import {Claim} from '../../../common/models/claim';
 import {buildDebtRespiteSection} from './debtRespiteScheme/buildDebtRespiteSection';
+import {BreathingSpace} from 'models/breathingSpace';
 
-const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): SummarySections => {
+const buildSummarySections = (breathingSpace: BreathingSpace, claimId: string, lang: string | unknown): SummarySections => {
 
   return {
     sections: [
-      buildDebtRespiteSection(claim, claimId, lang),
+      buildDebtRespiteSection(breathingSpace, claimId, lang),
     ],
   };
 };
 
-export const getSummarySections = (claimId: string, claim: Claim, lang?: string | unknown): SummarySections => {
-  return buildSummarySections(claim, claimId, lang);
+export const getSummarySections = (claimId: string, breathingSpace: BreathingSpace, lang?: string | unknown): SummarySections => {
+  return buildSummarySections(breathingSpace, claimId, lang);
 };

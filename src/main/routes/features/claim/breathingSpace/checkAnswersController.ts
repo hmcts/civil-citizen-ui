@@ -1,26 +1,27 @@
 import {NextFunction, Response, Router} from 'express';
 import {BREATHING_SPACE_CHECK_ANSWERS_URL, DASHBOARD_CLAIMANT_URL} from '../../../urls';
 import {getSummarySections} from '../../../../services/features/breathingSpace/checkAnswersService';
-import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
-import {Claim} from '../../../../common/models/claim';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {AppRequest} from '../../../../common/models/AppRequest';
+import {getBreathingSpace} from 'services/features/breathingSpace/breathingSpaceService';
+import {BreathingSpace} from 'models/breathingSpace';
+//import {getBreathingSpace} from 'services/features/breathingSpace/breathingSpaceService';
 
 const checkAnswersViewPath = 'features/breathingSpace/check-answers';
 const breathingSpaceCheckAnswersController = Router();
 
-function renderView(req: AppRequest, res: Response, claim: Claim, userId: string) {
+function renderView(req: AppRequest, res: Response, breathingSpace: BreathingSpace, userId: string) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const summarySections = getSummarySections(userId, claim, lang);
+  const summarySections = getSummarySections(userId, breathingSpace, lang);
   res.render(checkAnswersViewPath, {summarySections});
 }
 
 breathingSpaceCheckAnswersController.get(BREATHING_SPACE_CHECK_ANSWERS_URL,
   async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
-      const userId = req.session?.user?.id;
-      const claim = await getCaseDataFromStore(userId);
-      renderView(req, res, claim, userId);
+      const claimId = req.params.id;
+      const breathingSpace = await getBreathingSpace(claimId);
+      renderView(req, res, breathingSpace, claimId);
     } catch (error) {
       next(error);
     }
