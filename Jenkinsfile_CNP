@@ -7,7 +7,7 @@ import uk.gov.hmcts.contino.GithubAPI
 def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
-def ccddefbranch = "master"
+def ccddefbranch = "feat/CIV-5369-Legal-ITP-Full-Admit-Instalments"
 AppPipelineConfig pipelineConf
 
 static Map<String, Object> secret(String secretName, String envVariable) {
