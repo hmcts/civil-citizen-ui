@@ -5,8 +5,8 @@ import {CCDClaimAmountBreakup} from 'common/models/ccdResponse/ccdClaimAmountBre
 describe('translate Claim Amount to CCD model', () => {
   const claim = new Claim();
   claim.claimAmountBreakup = [
-    { value: { claimAmount: "5000", claimReason: "car" } },
-    { value: { claimAmount: "1000", claimReason: "roof" } },
+    { value: { claimAmount: '5000', claimReason: 'car' } },
+    { value: { claimAmount: '1000', claimReason: 'roof' } },
   ];
 
   it('should return undefined if claimAmountBreakup doesnt exist', () => {
@@ -19,11 +19,11 @@ describe('translate Claim Amount to CCD model', () => {
     const claimAmountCCD: CCDClaimAmountBreakup[] = [
       {
         id: '0',
-        value: { claimAmount: '5000', claimReason: 'car' }
+        value: { claimAmount: '5000', claimReason: 'car' },
       },
       {
         id: '1',
-        value: { claimAmount: '1000', claimReason: 'roof' }
+        value: { claimAmount: '1000', claimReason: 'roof' },
       },
     ];
     const claimAmountResponseCCD = toCCDClaimAmount(claim.claimAmountBreakup);

@@ -16,7 +16,7 @@ describe('translate InterestType to CCD model', () => {
   it('should return SAME_RATE_INTEREST_8_PC', () => {
     const claim = new Claim();
     claim.interest = new Interest();
-    claim.interest.sameRateInterestSelection = { sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC }
+    claim.interest.sameRateInterestSelection = { sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC };
     const claimAmountResponseCCD = toCCDSameRateInterestSelection(claim.interest.sameRateInterestSelection);
     expect(claimAmountResponseCCD).toMatchObject({
       sameRateInterestType: CCDRepaymentPlanFrequency.SAME_RATE_INTEREST_8_PC,
@@ -32,7 +32,7 @@ describe('translate InterestType to CCD model', () => {
       sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
       differentRate: 200,
       reason: 'test',
-    }
+    };
     const claimAmountResponseCCD = toCCDSameRateInterestSelection(claim.interest.sameRateInterestSelection);
     expect(claimAmountResponseCCD).toMatchObject({
       sameRateInterestType: CCDRepaymentPlanFrequency.SAME_RATE_INTEREST_DIFFERENT_RATE,

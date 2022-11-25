@@ -13,9 +13,8 @@ describe('translate TimeLine to CCD model', () => {
       new TimelineRow('01-01-2001', 'test 1'),
       new TimelineRow('02-02-2002', 'test 2'),
     ],
-    'test comment'
+    'test comment',
   );
-
 
   it('should return undefined if claimAmountBreakup doesnt exist', () => {
     const claimEmpty = new Claim();
@@ -28,11 +27,11 @@ describe('translate TimeLine to CCD model', () => {
     const claimAmountCCD: CCDTimeLineOfEvents[] = [
       {
         id: '0',
-        value: { timelineDate: '01-01-2001', timelineDescription: 'test 1' }
+        value: { timelineDate: '01-01-2001', timelineDescription: 'test 1' },
       },
       {
         id: '1',
-        value: { timelineDate: '02-02-2002', timelineDescription: 'test 2' }
+        value: { timelineDate: '02-02-2002', timelineDescription: 'test 2' },
       },
     ];
     const timelineResponseCCD = toCCDTimeline(claim.partialAdmission.timeline);
