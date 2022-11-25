@@ -1,11 +1,14 @@
 import {Claim} from 'common/models/claim';
 import {EvidenceType} from 'common/models/evidence/evidenceType';
-import {CCDEvidence} from 'common/models/ccdResponse/ccdEvidence';
+import {CCDEvidence, CCDEvidenceType} from 'common/models/ccdResponse/ccdEvidence';
 import {toCCDEvidence} from 'services/translation/response/convertToCCDEvidence';
+import {ClaimDetails} from 'common/form/models/claim/details/claimDetails';
+import {Evidence} from 'common/form/models/evidence/evidence';
 
 describe('translate Evidence to CCD model', () => {
   const claim = new Claim();
-  claim.evidence = {
+  claim.claimDetails = new ClaimDetails();
+  const evidencesMock = {
     comment: 'test',
     evidenceItem: [
       {
@@ -36,12 +39,14 @@ describe('translate Evidence to CCD model', () => {
         type: EvidenceType.OTHER,
         description: 'test other',
       },
-    ]
+    ],
   };
+  claim.claimDetails.evidence = new Evidence(evidencesMock.comment, evidencesMock.evidenceItem);
 
   it('should return undefined if Evidence doesnt exist', () => {
     const claimEmpty = new Claim();
-    const evidenceResponseCCD = toCCDEvidence(claimEmpty.evidence);
+    claimEmpty.claimDetails = new ClaimDetails();
+    const evidenceResponseCCD = toCCDEvidence(claimEmpty.claimDetails.evidence);
     expect(evidenceResponseCCD).toBe(undefined);
   });
 
@@ -50,55 +55,55 @@ describe('translate Evidence to CCD model', () => {
       {
         id: '0',
         value: {
-          evidenceType: EvidenceType.CONTRACTS_AND_AGREEMENTS,
-          contractAndAgreementsEvidence: 'test contract'
-        }
+          evidenceType: CCDEvidenceType.CONTRACTS_AND_AGREEMENTS,
+          contractAndAgreementsEvidence: 'test contract',
+        },
       },
       {
         id: '1',
         value: {
-          evidenceType: EvidenceType.EXPERT_WITNESS,
-          expertWitnessEvidence: 'test witness'
-        }
+          evidenceType: CCDEvidenceType.EXPERT_WITNESS,
+          expertWitnessEvidence: 'test witness',
+        },
       },
       {
         id: '2',
         value: {
-          evidenceType: EvidenceType.CORRESPONDENCE,
-          lettersEmailsAndOtherCorrespondenceEvidence: 'test correspondence'
-        }
+          evidenceType: CCDEvidenceType.LETTERS_EMAILS_AND_OTHER_CORRESPONDENCE,
+          lettersEmailsAndOtherCorrespondenceEvidence: 'test correspondence',
+        },
       },
       {
         id: '3',
         value: {
-          evidenceType: EvidenceType.PHOTO,
-          photoEvidence: 'test photo'
-        }
+          evidenceType: CCDEvidenceType.PHOTO_EVIDENCE,
+          photoEvidence: 'test photo',
+        },
       },
       {
         id: '4',
         value: {
-          evidenceType: EvidenceType.RECEIPTS,
-          receiptsEvidence: 'test receipts'
-        }
+          evidenceType: CCDEvidenceType.RECEIPTS,
+          receiptsEvidence: 'test receipts',
+        },
       },
       {
         id: '5',
         value: {
-          evidenceType: EvidenceType.STATEMENT_OF_ACCOUNT,
-          statementOfTruthEvidence: 'test statement'
-        }
+          evidenceType: CCDEvidenceType.STATEMENT_OF_ACCOUNT,
+          statementOfTruthEvidence: 'test statement',
+        },
       },
       {
         id: '6',
         value: {
-          evidenceType: EvidenceType.OTHER,
-          otherEvidence: 'test other'
-        }
+          evidenceType: CCDEvidenceType.OTHER,
+          otherEvidence: 'test other',
+        },
       },
     ];
 
-    const evidenceResponseCCD = toCCDEvidence(claim.evidence);
+    const evidenceResponseCCD = toCCDEvidence(claim.claimDetails.evidence);
     expect(evidenceResponseCCD).toMatchObject(claimAmountCCD);
   });
 });

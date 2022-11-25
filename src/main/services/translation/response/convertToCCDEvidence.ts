@@ -1,6 +1,6 @@
 import {EvidenceItem} from '../../../common/models/evidence/evidenceItem';
 import {EvidenceType} from '../../../common/models/evidence/evidenceType';
-import {CCDEvidence} from '../../../common/models/ccdResponse/ccdEvidence';
+import {CCDEvidence, CCDEvidenceType} from '../../../common/models/ccdResponse/ccdEvidence';
 import {Evidence} from '../../../common/form/models/evidence/evidence';
 
 export const toCCDEvidence = (evidence: Evidence): CCDEvidence[] => {
@@ -10,7 +10,7 @@ export const toCCDEvidence = (evidence: Evidence): CCDEvidence[] => {
     const ccdEvidence: CCDEvidence = {
       id: index.toString(),
       value: {
-        evidenceType: row.type,
+        evidenceType: convertToCCDEvidenceType(row.type),
         ...calculateCCDEvidenceValue(row),
       },
     };
@@ -35,5 +35,24 @@ const calculateCCDEvidenceValue = (row: EvidenceItem) => {
       return { statementOfTruthEvidence: row.description };
     case EvidenceType.OTHER:
       return { otherEvidence: row.description };
+  }
+};
+
+const convertToCCDEvidenceType = (type: EvidenceType) => {
+  switch (type) {
+    case EvidenceType.CONTRACTS_AND_AGREEMENTS:
+      return CCDEvidenceType.CONTRACTS_AND_AGREEMENTS;
+    case EvidenceType.EXPERT_WITNESS:
+      return CCDEvidenceType.EXPERT_WITNESS;
+    case EvidenceType.CORRESPONDENCE:
+      return CCDEvidenceType.LETTERS_EMAILS_AND_OTHER_CORRESPONDENCE;
+    case EvidenceType.PHOTO:
+      return CCDEvidenceType.PHOTO_EVIDENCE;
+    case EvidenceType.RECEIPTS:
+      return CCDEvidenceType.RECEIPTS;
+    case EvidenceType.STATEMENT_OF_ACCOUNT:
+      return CCDEvidenceType.STATEMENT_OF_ACCOUNT;
+    case EvidenceType.OTHER:
+      return CCDEvidenceType.OTHER;
   }
 };
