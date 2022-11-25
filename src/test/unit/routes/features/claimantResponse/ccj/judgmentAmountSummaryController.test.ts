@@ -6,6 +6,7 @@ import {CCJ_PAID_AMOUNT_SUMMARY_URL} from '../../../../../../main/routes/urls';
 import {Claim} from 'models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {mockCivilClaimUndefined} from '../../../../../utils/mockDraftStore';
+import {TestMessages} from '../../../../../../test/utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -39,14 +40,16 @@ describe('Judgment Amount Summary', () => {
     });
 
     it('should return http 500 when has error in the get method', async () => {
+
       nock('http://localhost:4000')
-        .get('/fees/claim/undefined')
+        .get('/fees/claim/1000')
         .reply(500, mockCivilClaimUndefined);
 
       await request(app)
         .get(CCJ_PAID_AMOUNT_SUMMARY_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

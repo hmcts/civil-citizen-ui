@@ -1,12 +1,11 @@
 import request from 'supertest';
-const session = require('supertest-session');
 import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {CLAIM_TOTAL_URL, CLAIMANT_TASK_LIST_URL} from '../../../../../main/routes/urls';
-import {
-  mockCivilClaimUndefined,
-} from '../../../../utils/mockDraftStore';
+import {mockCivilClaimUndefined} from '../../../../utils/mockDraftStore';
+
+const session = require('supertest-session');
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -28,7 +27,7 @@ describe('Total amount', () => {
         .reply(200, '100');
       nock('http://localhost:4000')
         .get('/fees/claim/undefined')
-        .reply(200, '50');
+        .reply(200, {'calculatedAmountInPence': '50'});
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       const res = await request(app)
         .get(CLAIM_TOTAL_URL.replace(':id', '5129'));

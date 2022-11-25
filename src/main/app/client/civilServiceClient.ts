@@ -138,7 +138,7 @@ export class CivilServiceClient {
     const config = this.getConfig(req);
     try {
       const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_CLAIM_AMOUNT_URL}/${amount}`, config);
-      const claimFeeResponse: ClaimFeeData = response.data as object;
+      const claimFeeResponse: ClaimFeeData = response.data;
       return convertToPoundsFilter(claimFeeResponse?.calculatedAmountInPence.toString());
     } catch (err: unknown) {
       logger.error(err);

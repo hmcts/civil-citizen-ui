@@ -9,6 +9,13 @@ export const getJudgmentAmountSummary = (claim: Claim, claimFee: number, lang: s
   const subTotal = claim.totalClaimAmount + claimFee + (interestDetails ? interestDetails.interestToDate : 0);
   const total = Number(subTotal - alreadyPaidAmount).toFixed(2);
 
-  return {hasDefendantAlreadyPaid, alreadyPaidAmount, claimHasInterest, interestDetails, subTotal, total};
+  return {
+    hasDefendantAlreadyPaid,
+    alreadyPaidAmount,
+    claimHasInterest,
+    subTotal,
+    total,
+    ...interestDetails,
+  };
 
 };
