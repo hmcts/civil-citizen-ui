@@ -1,12 +1,15 @@
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import * as ccdTranslationService from '../../../../../../main/services/translation/claim/ccdTranslation';
-import {Claim} from '../../../../../../main/common/models/claim';
-import * as requestModels from '../../../../../../main/common/models/AppRequest';
-import {submitClaim} from '../../../../../../main/services/features/claim/submission/submitClaim';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import * as ccdTranslationService from 'services/translation/claim/ccdTranslation';
+import {Claim} from 'common/models/claim';
+import * as requestModels from 'common/models/AppRequest';
+import {submitClaim} from 'services/features/claim/submission/submitClaim';
 import nock from 'nock';
 import config from 'config';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {Party} from '../../../../../../main/common/models/party';
+import {Party} from 'common/models/party';
+import {CCDClaim, CivilClaimResponse} from 'models/civilClaimResponse';
+import {CaseState} from 'form/models/claimDetails';
+import {PartyType} from 'models/partyType';
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/services/translation/response/ccdTranslation');
@@ -16,23 +19,43 @@ const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 mockedAppRequest.params = {id: '1'};
 
 const citizenBaseUrl: string = config.get('services.civilService.url');
-
+const ccdClaim: CCDClaim = {
+  legacyCaseReference: '000MC003',
+  applicant1: {
+    companyName: undefined,
+    individualDateOfBirth: undefined,
+    organisationName: undefined,
+    partyEmail: undefined,
+    partyPhone: undefined,
+    primaryAddress: undefined,
+    soleTraderDateOfBirth: undefined,
+    soleTraderFirstName: undefined,
+    soleTraderLastName: undefined,
+    soleTraderTitle: undefined,
+    soleTraderTradingAs: undefined,
+    individualTitle: 'Mrs',
+    individualLastName: 'Clark',
+    individualFirstName: 'Jane',
+    type: PartyType.INDIVIDUAL,
+  },
+};
 describe('Submit claim to ccd', () => {
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
   const claim = new Claim();
   claim.respondent1 = new Party();
   const claimFromService = new Claim();
   claimFromService.respondent1 = new Party();
-  beforeEach(() => {
-    nock(citizenBaseUrl)
-      .get('/cases/draft')
-      .reply(200, claimFromService);
-  });
+
   it('should submit claim successfully when there are no errors', async () => {
     //Given
+    const data: CivilClaimResponse = {
+      id: '1',
+      case_data: ccdClaim,
+      state: CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT,
+    };
     nock(citizenBaseUrl)
       .post('/cases/draft/citizen/undefined/event')
-      .reply(200, {});
+      .reply(200, {data});
     mockGetCaseData.mockImplementation(async () => {
       return claim;
     });
