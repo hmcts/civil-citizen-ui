@@ -5,7 +5,7 @@ import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreServi
 import {Claim} from '../../../common/models/claim';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {AppRequest} from '../../../common/models/AppRequest';
-import {submitClaim} from '../../../services/features/claim/submission/submitClaim';
+import {submitClaim} from 'services/features/claim/submission/submitClaim';
 
 const checkAnswersViewPath = 'features/claim/check-answers';
 const claimCheckAnswersController = Router();

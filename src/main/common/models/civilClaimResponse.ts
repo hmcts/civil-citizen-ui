@@ -37,7 +37,8 @@ export class CivilClaimResponse {
   }
 }
 
-export interface CCDClaim extends ClaimUpdate {
+export interface CCDClaim extends ClaimUpdate{
+  applicant1Represented?: string;
   legacyCaseReference?: string;
   applicant1?: CCDParty;
   claimantResponse?: ClaimantResponse;
@@ -68,7 +69,6 @@ export interface CCDClaim extends ClaimUpdate {
   systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
   ccdState?: CaseState;
   responseDeadline?: ResponseDeadline;
-  respondentSolicitor1AgreedDeadlineExtension?: Date;
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
 }

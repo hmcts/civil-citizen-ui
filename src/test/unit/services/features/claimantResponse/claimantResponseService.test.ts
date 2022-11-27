@@ -1,6 +1,5 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../main/common/models/claim';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
 import {GenericYesNo} from '../../../../../main/common/form/models/genericYesNo';
 import {
@@ -48,6 +47,7 @@ jest.mock('i18next', () => ({
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 const languageMock = getLng as jest.Mock;
+const REDIS_FAILURE = 'Redis DraftStore failure.';
 
 describe('Claimant Response Service', () => {
   describe('getClaimantResponse', () => {
@@ -238,10 +238,10 @@ describe('Claimant Response Service', () => {
 
     it('should return an error on redis failure', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
+        throw new Error(REDIS_FAILURE);
       });
 
-      await expect(getClaimantResponse('claimId')).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(getClaimantResponse('claimId')).rejects.toThrow(REDIS_FAILURE);
     });
   });
 
@@ -367,10 +367,10 @@ describe('Claimant Response Service', () => {
           return new Claim();
         });
         mockSaveDraftClaim.mockImplementation(async () => {
-          throw new Error(TestMessages.REDIS_FAILURE);
+          throw new Error(REDIS_FAILURE);
         });
         await expect(saveClaimantResponse('claimId', mockGetCaseDataFromDraftStore, ''))
-          .rejects.toThrow(TestMessages.REDIS_FAILURE);
+          .rejects.toThrow(REDIS_FAILURE);
       });
     });
 

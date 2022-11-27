@@ -21,16 +21,16 @@ export const toCUIParty = (ccdParty: CCDParty): Party => {
     cuiParty.partyDetails.individualLastName = ccdParty.soleTraderLastName ? ccdParty?.soleTraderLastName : undefined;
     cuiParty.partyDetails.individualTitle = ccdParty.soleTraderTitle ? ccdParty?.soleTraderTitle : undefined;
     cuiParty.dateOfBirth = new CitizenDate();
-    cuiParty.dateOfBirth.date = ccdParty?.soleTraderDateOfBirth ? new Date(ccdParty.soleTraderDateOfBirth) : undefined;
-    cuiParty.partyDetails.soleTraderTradingAs = ccdParty?.soleTraderTradingAs ? ccdParty.soleTraderTradingAs : undefined;
+    cuiParty.dateOfBirth.date = ccdParty.soleTraderDateOfBirth ? new Date(ccdParty?.soleTraderDateOfBirth) : undefined;
+    cuiParty.partyDetails.soleTraderTradingAs = ccdParty.soleTraderTradingAs ? ccdParty?.soleTraderTradingAs : undefined;
   } else if (ccdParty?.type === PartyType.COMPANY) {
     cuiParty.partyDetails.partyName = ccdParty?.companyName ? ccdParty.companyName : undefined;
   } else {
     cuiParty.partyDetails.partyName = ccdParty?.organisationName ? ccdParty.organisationName : undefined;
   }
-  cuiParty.partyPhone = ccdParty?.partyPhone ? new PartyPhone(ccdParty.partyPhone) : undefined;
-  cuiParty.emailAddress = ccdParty?.partyEmail ? new Email(ccdParty.partyEmail) : undefined;
-  cuiParty.type = ccdParty?.type ? ccdParty.type : undefined;
+  cuiParty.partyPhone = ccdParty?.partyPhone ? new PartyPhone(ccdParty?.partyPhone) : undefined;
+  cuiParty.emailAddress = ccdParty?.partyEmail ? new Email(ccdParty?.partyEmail) : undefined;
+  cuiParty.type = ccdParty?.type ? ccdParty?.type : undefined;
   cuiParty.partyDetails.primaryAddress = new Address(ccdParty?.primaryAddress?.AddressLine1, ccdParty?.primaryAddress?.AddressLine2, ccdParty?.primaryAddress?.AddressLine3, ccdParty?.primaryAddress?.PostTown, ccdParty?.primaryAddress?.PostCode);
   return cuiParty;
 };

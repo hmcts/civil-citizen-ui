@@ -1,7 +1,6 @@
-import {CivilServiceClient} from '../../../../main/app/client/civilServiceClient';
 import axios, {AxiosInstance} from 'axios';
-import * as requestModels from '../../../../main/common/models/AppRequest';
-import {CCDClaim, CivilClaimResponse} from '../../../../main/common/models/civilClaimResponse';
+import * as requestModels from 'common/models/AppRequest';
+import {CCDClaim, CivilClaimResponse} from 'common/models/civilClaimResponse';
 import config from 'config';
 import {
   CIVIL_SERVICE_CALCULATE_DEADLINE,
@@ -10,18 +9,40 @@ import {
   CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_FEES_RANGES,
   CIVIL_SERVICE_SUBMIT_EVENT,
-} from '../../../../main/app/client/civilServiceUrls';
-import {PartyType} from '../../../../main/common/models/partyType';
+} from 'client/civilServiceUrls';
+import {PartyType} from 'common/models/partyType';
 import {mockClaim} from '../../../utils/mockClaim';
+
+import {CaseState} from 'common/form/models/claimDetails';
+import {CourtLocation} from 'common/models/courts/courtLocations';
 import {TestMessages} from '../../../utils/errorMessageTestConstants';
-import {CaseState} from '../../../../main/common/form/models/claimDetails';
-import {CourtLocation} from '../../../../main/common/models/courts/courtLocations';
+import { CivilServiceClient } from 'client/civilServiceClient';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 const baseUrl: string = config.get('baseUrl');
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
+const ccdClaim : CCDClaim = {
+  legacyCaseReference : '000MC003',
+  applicant1 : {
+    companyName: undefined,
+    individualDateOfBirth: undefined,
+    organisationName: undefined,
+    partyEmail: undefined,
+    partyPhone: undefined,
+    primaryAddress: undefined,
+    soleTraderDateOfBirth: undefined,
+    soleTraderFirstName: undefined,
+    soleTraderLastName: undefined,
+    soleTraderTitle: undefined,
+    soleTraderTradingAs: undefined,
+    individualTitle: 'Mrs',
+    individualLastName: 'Clark',
+    individualFirstName: 'Jane',
+    type: PartyType.INDIVIDUAL,
+  },
+};
 
 describe('Civil Service Client', () => {
   describe('get dashboard claims for claimant', () => {
@@ -50,29 +71,9 @@ describe('Civil Service Client', () => {
   describe('retrieveByDefendantId', () => {
     it('should retrieve cases successfully', async () => {
       //Given
-      const claim: CCDClaim = {
-        legacyCaseReference: '000MC003',
-        applicant1: {
-          companyName: undefined,
-          individualDateOfBirth: undefined,
-          organisationName: undefined,
-          partyEmail: undefined,
-          partyPhone: undefined,
-          primaryAddress: undefined,
-          soleTraderDateOfBirth: undefined,
-          soleTraderFirstName: undefined,
-          soleTraderLastName: undefined,
-          soleTraderTitle: undefined,
-          soleTraderTradingAs: undefined,
-          individualTitle: 'Mrs',
-          individualLastName: 'Clark',
-          individualFirstName: 'Jane',
-          type: PartyType.INDIVIDUAL,
-        },
-      };
       const mockResponse: CivilClaimResponse = {
         id: '1',
-        case_data: claim,
+        case_data: ccdClaim,
         state: CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT,
       };
 
@@ -147,7 +148,7 @@ describe('Civil Service Client', () => {
       //Given
       const mockResponse = new CivilClaimResponse();
       mockResponse.id = '1';
-      mockResponse.case_data = {};
+      mockResponse.case_data = ccdClaim;
       mockResponse.state = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
 
       const mockPost = jest.fn().mockResolvedValue({data: mockResponse});
@@ -162,7 +163,9 @@ describe('Civil Service Client', () => {
       expect(mockPost.mock.calls[0][0]).toEqual(CIVIL_SERVICE_SUBMIT_EVENT
         .replace(':submitterId', 'undefined')
         .replace(':caseId', '123'));
-      expect(claim).toEqual(mockResponse);
+      expect(claim.applicant1.partyDetails.individualTitle).toEqual(mockClaim.applicant1.partyDetails.individualTitle);
+      expect(claim.applicant1.partyDetails.individualFirstName).toEqual(mockClaim.applicant1.partyDetails.individualFirstName);
+      expect(claim.applicant1.partyDetails.individualLastName).toEqual(mockClaim.applicant1.partyDetails.individualLastName);
     });
     it('should throw error when there is an error with api', async () => {
       //Given
