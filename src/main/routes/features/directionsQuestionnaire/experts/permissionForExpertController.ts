@@ -2,7 +2,7 @@ import {Response, Router} from 'express';
 import {
   DQ_EXPERT_DETAILS_URL, 
   DQ_GIVE_EVIDENCE_YOURSELF_URL, 
-  PERMISSION_FOR_EXPERT_URL
+  PERMISSION_FOR_EXPERT_URL,
 } from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';

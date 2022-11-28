@@ -1,7 +1,7 @@
 import {Response, Router} from 'express';
 import {
   DETERMINATION_WITHOUT_HEARING_URL, 
-  DQ_EXPERT_SMALL_CLAIMS_URL
+  DQ_EXPERT_SMALL_CLAIMS_URL,
 } from '../../../urls';
 import {
   DeterminationWithoutHearing,

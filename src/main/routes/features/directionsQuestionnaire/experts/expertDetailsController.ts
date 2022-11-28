@@ -8,7 +8,7 @@ import {saveDirectionQuestionnaire} from '../../../../services/features/directio
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {
   DQ_EXPERT_DETAILS_URL, 
-  DQ_GIVE_EVIDENCE_YOURSELF_URL
+  DQ_GIVE_EVIDENCE_YOURSELF_URL,
 } from '../../../urls';
 
 const expertDetailsController = Router();

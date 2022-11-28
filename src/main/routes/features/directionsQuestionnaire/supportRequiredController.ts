@@ -2,7 +2,7 @@ import {Router, Response} from 'express';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {
   DQ_COURT_LOCATION_URL, 
-  SUPPORT_REQUIRED_URL
+  SUPPORT_REQUIRED_URL,
 } from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {saveDirectionQuestionnaire} from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
