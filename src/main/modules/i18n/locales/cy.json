@@ -588,6 +588,13 @@
         "TITLE": "When are you claiming interest from?"
       }
     },
+    "CLAIM_SUBMITTED": {
+      "PAGE_TITLE": "Claim submitted",
+      "DOWNLOAD_CLAIM": "Download your claim form",
+      "YOUR_CLAIM_WILL_BE_ISSUED": "Your claim will be issued once your Help With Fees application has been confirmed.",
+      "WE_EMAIL_YOU_IN_5_DAYS": "We'll email you within 5 days to confirm this.",
+      "HAS_UNTIL": "has until"
+    },
     "CLAIM_SUMMARY": {
       "ABOUT_CLAIM": "Am hawliad",
       "CLAIM_DETAILS": "Manylion yr hawliad:",

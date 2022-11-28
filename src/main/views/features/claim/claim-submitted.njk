@@ -29,15 +29,17 @@
         <div class="govuk-body">
           <h2>{{ t('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT') }}</h2>
           <p>
-          Your claim will be issued once your Help With Fees application has been confirmed.
-          We'll email you within 5 days to confirm this.
+          {{ t('PAGES.CLAIM_SUBMITTED.YOUR_CLAIM_WILL_BE_ISSUED') }}
+          {{ t('PAGES.CLAIM_SUBMITTED.WE_EMAIL_YOU_IN_5_DAYS') }}
           </p>
         </div>
       {% else %}
         <div class="govuk-body">
           <h2>{{ t('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT') }}</h2>
           <p>
-          {{ defendantFullName }} has until {{ defendantResponseLimit }}
+          {{ defendantFullName }}
+          {{ t('PAGES.CLAIM_SUBMITTED.HAS_UNTIL') }}
+          {{ defendantResponseLimit }}
           </p>
         </div>
       {% endif %}

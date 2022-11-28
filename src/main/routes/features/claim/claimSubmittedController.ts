@@ -1,5 +1,5 @@
 import {NextFunction, Router} from 'express';
-import {CASE_DOCUMENT_DOWNLOAD_URL, CLAIM_SUBMITTED_URL} from '../../urls';
+import {CASE_DOCUMENT_DOWNLOAD_URL, CLAIM_CONFIRMATION_URL} from '../../urls';
 import {getClaimById} from 'modules/utilityService';
 import {DocumentUri} from 'models/document/documentType';
 import {YesNo} from 'form/models/yesNo';
@@ -7,7 +7,7 @@ import {YesNo} from 'form/models/yesNo';
 const claimSubmittedView = 'features/claim/claim-submitted';
 const claimSubmittedController = Router();
 
-claimSubmittedController.get(CLAIM_SUBMITTED_URL, async (req, res, next: NextFunction) => {
+claimSubmittedController.get(CLAIM_CONFIRMATION_URL, async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req);
