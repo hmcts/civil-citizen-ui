@@ -28,12 +28,13 @@ import {Transaction} from '../../../../../main/common/form/models/statementOfMea
 import {RegularExpenses} from '../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
 import {CourtOrder} from '../../../../../main/common/form/models/statementOfMeans/courtOrders/courtOrder';
 import {PriorityDebts} from '../../../../../main/common/form/models/statementOfMeans/priorityDebts';
-import {PriorityDebtDetails} from '../../../../../main/common/form/models/statementOfMeans/priorityDebtDetails';
 import {Debts} from '../../../../../main/common/form/models/statementOfMeans/debts/debts';
 import {DebtItems} from '../../../../../main/common/form/models/statementOfMeans/debts/debtItems';
 import {CCJRequest} from '../../../../../main/common/models/claimantResponse/ccj/ccjRequest';
 import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
 import {RejectionReason} from '../../../../../main/common/form/models/claimantResponse/rejectionReason';
+import {TransactionSource} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSource';
+import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -996,10 +997,20 @@ describe('Claimant Response Service', () => {
       });
 
       it('should display rows data if data is provided', () => {
-        claim.statementOfMeans.priorityDebts = new PriorityDebts(
-          new PriorityDebtDetails(true, 'mortgage', 8, 'WEEK'),
-          new PriorityDebtDetails(true, 'rent', 88, 'MONTH'),
-        );
+        claim.statementOfMeans.priorityDebts = new PriorityDebts({
+          mortgage: new Transaction(true, new TransactionSource({
+            name: 'Mortgage',
+            amount: 8,
+            schedule: TransactionSchedule.WEEK,
+            isIncome: false,
+          })),
+          rent: new Transaction(true, new TransactionSource({
+            name: 'Rent',
+            amount: 88,
+            schedule: TransactionSchedule.MONTH,
+            isIncome: false,
+          })),
+        });
         claim.statementOfMeans.debts = new Debts('yes', [
           new DebtItems('Bad investment', '888', '22'),
           new DebtItems('Fish insurance', '75', '2'),
