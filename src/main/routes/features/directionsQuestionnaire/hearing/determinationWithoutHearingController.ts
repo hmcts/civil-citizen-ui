@@ -1,5 +1,8 @@
 import {Response, Router} from 'express';
-import {DETERMINATION_WITHOUT_HEARING_URL, EXPERT_GUIDANCE_URL} from '../../../urls';
+import {
+  DETERMINATION_WITHOUT_HEARING_URL, 
+  DQ_EXPERT_SMALL_CLAIMS_URL
+} from '../../../urls';
 import {
   DeterminationWithoutHearing,
 } from '../../../../common/models/directionsQuestionnaire/hearing/determinationWithoutHearing';
@@ -46,7 +49,7 @@ determinationWithoutHearingController
         renderView(determinationWithoutHearing, res);
       } else {
         await saveDirectionQuestionnaire(claimId, determinationWithoutHearing.model, dqPropertyName, dqParentName);
-        res.redirect(constructResponseUrlWithIdParams(claimId, EXPERT_GUIDANCE_URL));
+        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_EXPERT_SMALL_CLAIMS_URL));
       }
     } catch (error) {
       next(error);
