@@ -1,4 +1,4 @@
-import {CLAIM_SUBMITTED_URL} from 'routes/urls';
+import {CLAIM_CONFIRMATION_URL} from 'routes/urls';
 
 import nock from 'nock';
 import request from 'supertest';
@@ -25,7 +25,7 @@ describe('Claim - Claim Submitted', () => {
       app.locals.draftStoreClient = mockCivilClaim;
 
       await request(app)
-        .get(CLAIM_SUBMITTED_URL)
+        .get(CLAIM_CONFIRMATION_URL)
         .expect((res) => {
           console.log(res.text);
           expect(res.status).toBe(200);
