@@ -59,3 +59,7 @@ const createNewCivilClaimResponse = (claimId: string) => {
   storedClaimResponse.id = claimId;
   return storedClaimResponse;
 };
+
+export const deleteDraftClaimFromStore = async (claimId: string): Promise<void> => {
+  await app.locals.draftStoreClient.delete(claimId);
+};

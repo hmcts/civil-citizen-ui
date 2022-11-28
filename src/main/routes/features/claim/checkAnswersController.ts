@@ -1,7 +1,7 @@
 import {NextFunction, Response, Router} from 'express';
 import {CLAIM_CHECK_ANSWERS_URL, CLAIM_CONFIRMATION_URL} from '../../urls';
 import {getSummarySections} from '../../../services/features/claim/checkAnswers/checkAnswersService';
-import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
+import {deleteDraftClaimFromStore, getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
 import {Claim} from '../../../common/models/claim';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {AppRequest} from '../../../common/models/AppRequest';
@@ -33,6 +33,7 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest
   try {
     await submitResponse(<AppRequest>req);
     const userId = req.session?.user?.id;
+    await deleteDraftClaimFromStore(userId);
     res.redirect(constructResponseUrlWithIdParams(userId, CLAIM_CONFIRMATION_URL));
   } catch (error) {
     next(error);

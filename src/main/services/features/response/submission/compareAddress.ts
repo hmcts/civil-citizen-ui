@@ -12,11 +12,11 @@ export const addressHasChange = (address: Address, originalAddress: Address): bo
   };
 
   const originalAddressObject = {
-    postCode: processAddressLine(originalAddress.postCode),
-    city: processAddressLine(originalAddress.city),
-    addressLine1: processAddressLine(originalAddress.addressLine1),
-    addressLine2: processAddressLine(originalAddress.addressLine2),
-    addressLine3: processAddressLine(originalAddress.addressLine3),
+    postCode: processAddressLine(originalAddress?.postCode),
+    city: processAddressLine(originalAddress?.city),
+    addressLine1: processAddressLine(originalAddress?.addressLine1),
+    addressLine2: processAddressLine(originalAddress?.addressLine2),
+    addressLine3: processAddressLine(originalAddress?.addressLine3),
   };
 
   return !isEqual(addressObject, originalAddressObject);
