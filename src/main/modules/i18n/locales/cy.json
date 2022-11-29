@@ -316,6 +316,11 @@
       "PAGE_TITLE": "Do you know the defendant's date of birth?",
       "TITLE": "Do you know the defendant's date of birth?"
     },
+    "CCJ_PAID_AMOUNT": {
+      "AMOUNT_PAID": "Amount already paid",
+      "PAGE_TITLE": "Has the defendant paid some of the amount owed?",
+      "TITLE": "Has the defendant paid some of the amount owed?"
+    },
     "CCJ_PAYMENT_TYPE": {
       "WOULD_PAY": "I would like the defendant to pay:",
       "PAGE_TITLE": "Payment Options",
@@ -2024,6 +2029,7 @@
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Rhowch ddyddiad talu cyntaf yn y dyfodol",
     "GIVE_DETAILS_DOCUMENTS": "Give details of the documents",
     "HELP_WITH_FEES_REFERENCE_REQUIRED": "Enter your Help With Fees reference number",
+    "INVALID_AMOUNT": "Invalid amount",
     "HOW_YOU_CALCULATED_AMOUNT": "You must tell us how you calculated the amount",
     "JOB_TITLE_REQUIRED": "Rhowch deitl swydd",
     "NAME_REQUIRED": "Nodwch enw os gwelwch yn dda",
@@ -2036,6 +2042,7 @@
     "ONE_ROW_REQUIRED": "Enter at least one row",
     "OPTION_REQUIRED": "Dewiswch un rheswm",
     "OPTION_REQUIRED_RESPONSE": "Please select a response",
+    "PAID_AMOUNT_NOT_GREATER": "Paid amount cannot be greater than or equal to admitted amount",
     "PAGE_NOT_FOUND": "Page Not Found",
     "PAYMENT_FREQUENCY_REQUIRED": "Dewiswch amlder talu",
     "PHONE_NUMBER_REQUIRED": "Nodwch rif ffôn",
