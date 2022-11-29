@@ -33,3 +33,5 @@ test-results/
 .yarn/
 .yarnrc
 package-lock.json
+
+**/Chart.lock
