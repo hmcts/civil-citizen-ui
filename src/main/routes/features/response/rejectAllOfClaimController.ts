@@ -20,7 +20,7 @@ rejectAllOfClaimController.get(CITIZEN_REJECT_ALL_CLAIM_URL, async (req: Request
     res.render(rejectAllOfClaimViewPath, {
       form,
       rejectAllOfClaimType: RejectAllOfClaimType,
-      claimantName: claim.getClaimantName(),
+      claimantName: claim.getClaimantFullName(),
     });
   } catch (error) {
     next(error);
@@ -38,7 +38,7 @@ rejectAllOfClaimController.post(CITIZEN_REJECT_ALL_CLAIM_URL, async (req: Reques
       res.render(rejectAllOfClaimViewPath, {
         form,
         rejectAllOfClaimType: RejectAllOfClaimType,
-        claimantName: claim.getClaimantName(),
+        claimantName: claim.getClaimantFullName(),
       });
     } else {
       if (req.body.option === RejectAllOfClaimType.DISPUTE) {

@@ -26,14 +26,16 @@
       }
     ],
     "respondent1": {
-      "individualLastName": "Doe",
-      "partyTypeDisplayValue": "Individual",
-      "partyName": "Jane Doe",
-      "individualFirstName": "Jane",
-      "primaryAddress": {
-        "AddressLine1": "44 Thoday Street",
-        "PostCode": "CB1 3AX"
-      }
+      "partyDetails": {
+        "individualFirstName": "Jane",
+        "individualLastName": "Doe",
+        "partyName": "Jane Doe",
+        "primaryAddress": {
+          "postCode": "CB1 3AX",
+          "addressLine1": "44 Thoday Street"
+        }
+      },
+      "partyTypeDisplayValue": "Individual"
     },
     "applicantSolicitor1PbaAccounts": {
       "value": {
@@ -52,16 +54,16 @@
       ]
     },
     "applicant1": {
-      "individualLastName": "Doe",
-      "partyTypeDisplayValue": "Individual",
-      "partyName": "John Doe",
-      "individualFirstName": "John",
-      "primaryAddress": {
-        "AddressLine1": "22 Thoday Street",
-        "PostCode": "CB1 3AX"
-      },
       "type": "INDIVIDUAL",
-      "individualDateOfBirth": "1980-02-01"
+      "partyDetails": {
+        "individualFirstName": "John",
+        "individualLastName": "Doe",
+        "primaryAddress": {
+          "postCode": "CB1 3AX",
+          "addressLine1": "22 Thoday Street"
+        }
+      },
+      "dateOfBirth": "1980-02-01"
     },
     "timelineOfEvents": [
       {
