@@ -158,6 +158,8 @@ import claimCheckAnswersController from './features/claim/checkAnswersController
 import claimantEvidenceController from './features/claim/yourDetails/claimantEvidenceController';
 import howMuchContinueClaimingController from './features/claim/interest/howMuchContinueClaimingController';
 import helpWithFeesController from './features/claim/details/helpWithFeesController';
+import debtRespiteReferenceNumberController
+  from './features/breathingSpace/debtRespiteReferenceNumberController';
 import datePaidViewController from './features/claimantResponse/paidInFull/datePaidController';
 import settleClaimController from './features/claimantResponse/settleClaimController';
 import fullAdmitSetDatePaymentController from './features/claimantResponse/fullAdmitSetDatePaymentController';
@@ -316,6 +318,7 @@ export default [
   claimantEvidenceController,
   howMuchContinueClaimingController,
   helpWithFeesController,
+  debtRespiteReferenceNumberController,
   datePaidViewController,
   settleClaimController,
   fullAdmitSetDatePaymentController,

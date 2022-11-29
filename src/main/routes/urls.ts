@@ -197,6 +197,7 @@ export const CCJ_PAID_AMOUNT_URL = `${BASE_CCJ_URL}/paid-amount`;
 export const CCJ_PAY_BY_SET_DATE_URL = `${BASE_CCJ_URL}/pay-by-set-date`;
 export const CCJ_PAYMENT_OPTIONS_URL = `${BASE_CCJ_URL}/payment-options`;
 export const CCJ_REPAYMENT_PLAN_URL = `${BASE_CCJ_URL}/repayment-plan`;
+export const BREATHING_SPACE_RESPITE_REFERENCE_NUMBER_URL = `${BASE_BREATHING_SPACE_URL}/respite-reference-number`;
 export const BREATHING_SPACE_RESPITE_START_DATE_URL = `${BASE_BREATHING_SPACE_URL}/respite-start`;
 export const BREATHING_SPACE_RESPITE_END_DATE_URL = `${BASE_BREATHING_SPACE_URL}/respite-end`;
 export const BREATHING_SPACE_RESPITE_TYPE_URL = `${BASE_BREATHING_SPACE_URL}/respite-type`;

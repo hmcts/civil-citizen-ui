@@ -824,6 +824,11 @@
       "PAGE_TITLE": "Any debts?",
       "TITLE": "A oes gennych fenthyciadau neu ddyledion cerdyn credyd?"
     },
+    "DEBT_RESPITE_REF_NUMBER": {
+      "ENTER_REFERENCE": "Enter the reference number (optional):",
+      "PAGE_TITLE": "Debt Respite Scheme reference number",
+      "TITLE": "Do you have a Debt Respite Scheme reference number?"
+    },
     "DEBT_RESPITE_END_DATE": {
       "PAGE_TITLE": "Expected end date",
       "THIS_IS_THE": "This is the end date that it is due to finish (optional)",
