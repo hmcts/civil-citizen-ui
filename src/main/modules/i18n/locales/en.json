@@ -321,6 +321,11 @@
       "PAGE_TITLE": "Do you know the defendant's date of birth?",
       "TITLE": "Do you know the defendant's date of birth?"
     },
+    "CCJ_PAYMENT_TYPE": {
+      "WOULD_PAY": "I would like the defendant to pay:",
+      "PAGE_TITLE": "Payment Options",
+      "TITLE": "Payment Options"
+    },
     "CHECK_YOUR_ANSWER": {
       "BANK_BALANCE": "Balance",
       "CARER_CREDIT_DO_YOU_CLAIM": "Do you claim Carer’s Allowance or Carer’s Credit?",
@@ -825,6 +830,11 @@
       "LIST": "List each loan or credit card debt",
       "PAGE_TITLE": "Any debts?",
       "TITLE": "Do you have loans or credit card debts?"
+    },
+    "DEBT_RESPITE_REF_NUMBER": {
+      "ENTER_REFERENCE": "Enter the reference number (optional):",
+      "PAGE_TITLE": "Debt Respite Scheme reference number",
+      "TITLE": "Do you have a Debt Respite Scheme reference number?"
     },
     "DEBT_RESPITE_END_DATE": {
       "PAGE_TITLE": "Expected end date",
@@ -1778,6 +1788,25 @@
       "NO_EXACT_DATE": "If you don’t know exact date, tell us the month and year",
       "TITLE": "Timeline of events"
     },
+    "TOTAL_AMOUNT": {
+      "ADDITIONAL_FEES": "There may be additional fees as your case progresses.",
+      "CLAIM_FEE": "Claim fee",
+      "FIND_OUT_MORE": "Find out more about court fees (opens in a new tab)",
+      "HEARING_FEE": "Hearing fee",
+      "HOW_INTEREST_IS_CALCULATED": "How interest to date is calculated",
+      "IF_SUCCESSFUL": "If it’s successful, you may not have to pay any or all of the claim fee.",
+      "IF_UNSUCCESSFUL": "If it’s unsuccessful, we’ll ask you to pay the claim fee shown on this page in full.",
+      "IF_YOU_SETTLE": "If you settle out of court",
+      "INTEREST_TO_DATE": "Interest to date",
+      "OTHER_FEES": "Other fees",
+      "PAGE_TITLE": "Total amount you’re claiming",
+      "TITLE": "Total amount you’re claiming",
+      "TOTAL_CLAIM_AMOUNT": "Total claim amount",
+      "TOTAL_WOULD_BE_LOWER": "That would mean the total claim amount would be lower than the amount shown on this page.",
+      "WE_WILL_REVIEW": "We’ll review your Help With Fees application after you submit the claim",
+      "WE_WONT_REFOUND": "We won’t refund your claim fee. You can ask the defendant to pay back your claim fee as part of the settlement.",
+      "YOU_DONT_HAVE_TO_PAY": "You don’t have to pay a hearing fee unless the claim goes to a hearing."
+    },
     "TOTAL_INTEREST": {
       "ADD_TO_CLAIM_AMOUNT": "We’ll add it to your claim amount.",
       "CALCULATE_INTEREST": "You need to calculate interest for the different time periods or items and let us know the total.",
@@ -2108,6 +2137,7 @@
     "VALID_AT_LEAST_ONE_OPTION": "You must select at least one option",
     "VALID_BETWEEN_NUMBERS_0_11": "Enter a number between 0 and 11",
     "VALID_BETWEEN_NUMBERS_0_80": "Enter a number between 0 and 80",
+    "VALID_CCJ_PAYMENT_OPTION": "Choose option",
     "VALID_CHOOSE": "Choose your response",
     "VALID_CITY": "Enter a valid town/city",
     "VALID_CLAIM_AMOUNT": "Enter an amount of money",
