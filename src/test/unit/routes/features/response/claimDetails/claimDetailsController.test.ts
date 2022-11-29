@@ -5,25 +5,37 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import {
   mockCivilClaim,
+  mockCivilClaimPDFTimeline,
   mockCivilClaimUndefined,
   mockRedisFailure,
-  mockCivilClaimPDFTimeline,
 } from '../../../../../utils/mockDraftStore';
 import CivilClaimResponseMock from '../../../../../utils/mocks/civilClaimResponseMock.json';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
 import {dateFilter} from 'modules/nunjucks/filters/dateFilter';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
+import {Claim} from 'models/claim';
+import {Party} from 'models/party';
+import {PartyType} from 'models/partyType';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
-
 const nock = require('nock');
 
 describe('Claim details page', () => {
   const idamUrl: string = config.get('idamUrl');
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
-
+  const mockClaim = new Claim();
+  const now = new Date();
+  mockClaim.legacyCaseReference = '000MC009';
+  mockClaim.respondent1ResponseDate = new Date(now.setDate(now.getDate() - 1));
+  mockClaim.applicant1 = new Party();
+  mockClaim.applicant1 = {
+    type: PartyType.INDIVIDUAL,
+    partyDetails: {
+      partyName: 'Joe Bloggs',
+    },
+  };
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')

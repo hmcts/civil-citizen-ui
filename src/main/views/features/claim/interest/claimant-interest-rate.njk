@@ -11,18 +11,18 @@
 {% endblock %}
 {% set noHtml %}
 {{ govukInput({
-  id: 'rate',
-  name: 'rate',
+  id: 'differentRate',
+  name: 'differentRate',
   type: "number",
   autocomplete: "number",
   classes: "govuk-!-width-one-quarter",
   label: {
     text: t('PAGES.CLAIMANT_INTEREST_RATE.RATE_CLAIMING')
   },
-  value: form.model.rate if form.model.option === SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE else '',
+  value: form.model.differentRate if form.model.sameRateInterestType === SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE else '',
   errorMessage: {
-    text: t(form.errorFor('rate'))
-  } if form.hasFieldError('rate')
+    text: t(form.errorFor('differentRate'))
+  } if form.hasFieldError('differentRate')
 }) }}
 {{ govukInput({
   id: 'reason',
@@ -33,7 +33,7 @@
   label: {
     text: t('PAGES.CLAIMANT_INTEREST_RATE.WHY_YOU_ARE_ENTITLED')
   },
-  value: form.model.reason if form.model.option === SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE else '',
+  value: form.model.reason if form.model.sameRateInterestType === SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE else '',
   errorMessage: {
     text: t(form.errorFor('reason'))
   } if form.hasFieldError('reason')
@@ -42,7 +42,7 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set optionError = form.errorFor("option") %}
+      {% set optionError = form.errorFor("sameRateInterestType") %}
       {% if form.hasErrors() %}
         <div class="govuk-grid-row">
           {{ errorSummary(form.getAllErrors(), t) }}
@@ -56,17 +56,17 @@
             <form method="post" novalidate autocomplete="off">
               {{ csrfProtection(csrf) }}
               {{ govukRadios({
-                idPrefix: "option",
-                name: "option",
+                idPrefix: "sameRateInterestType",
+                name: "sameRateInterestType",
                 items: [
                   {
                     value: SameRateInterestType.SAME_RATE_INTEREST_8_PC,
-                    checked: true if form.model.option === SameRateInterestType.SAME_RATE_INTEREST_8_PC,
+                    checked: true if form.model.sameRateInterestType === SameRateInterestType.SAME_RATE_INTEREST_8_PC,
                     text: '8%'
                   },
                   {
                     value: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
-                    checked: true if form.model.option  === SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
+                    checked: true if form.model.sameRateInterestType === SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
                     html: t('PAGES.CLAIMANT_INTEREST_RATE.DIFFERENT_RATE_LABEL'),
                     conditional:{html: noHtml}
                   }
