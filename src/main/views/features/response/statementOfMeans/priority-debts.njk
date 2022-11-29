@@ -17,27 +17,6 @@
   {% set amountLabel = t('COMMON.CONDITIONAL_CHECKBOX.REPAYMENT_AMOUNT') %}
   {% set scheduleLabel = t('COMMON.CONDITIONAL_CHECKBOX.PRIORITY_DEBTS') %}
   {% set amountHint = t('COMMON.CONDITIONAL_CHECKBOX.REPAYMENT_AMOUNT_HINT') %}
-  {% set checkedMortgageHtml %}
-  {{ transactionDetails(t, amountHint, 'model[mortgage][transactionSource]',  form.model.mortgage.transactionSource, {amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
-  {% endset -%}
-  {% set checkedRentHtml %}
-  {{ transactionDetails(t, amountHint, 'model[rent][transactionSource]',  form.model.rent.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
-  {% endset -%}
-  {% set checkedCouncilTaxHtml %}
-  {{ transactionDetails(t, amountHint, 'model[councilTax][transactionSource]',  form.model.councilTax.transactionSource, {amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
-  {% endset -%}
-  {% set checkedGasHtml %}
-  {{ transactionDetails(t, amountHint, 'model[gas][transactionSource]', form.model.gas.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
-  {% endset -%}
-  {% set checkedElectricityHtml %}
-  {{ transactionDetails(t, amountHint, 'model[electricity][transactionSource]', form.model.electricity.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
-  {% endset -%}
-  {% set checkedWaterHtml %}
-  {{ transactionDetails(t, amountHint, 'model[water][transactionSource]', form.model.water.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
-  {% endset -%}
-  {% set checkedMaintenanceHtml %}
-  {{ transactionDetails(t, amountHint, 'model[maintenance][transactionSource]', form.model.maintenance.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
-  {% endset -%}
   {% set hint %}
   <p>{{ t('PAGES.PRIORITY_DEBTS.DEBTS_DETAILS') }}</p>
   <ul>
@@ -70,7 +49,7 @@
                   value: "mortgage",
                   text: t('COMMON.CHECKBOX_FIELDS.MORTGAGE'),
                   conditional: {
-                    html: checkedMortgageHtml
+                    html: transactionDetails(t, amountHint, 'model[mortgage][transactionSource]', form.model.mortgage.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form)
                   },
                   checked: true if form.model.mortgage.declared
                 },
@@ -79,7 +58,7 @@
                   value: 'rent',
                   text: t('COMMON.CHECKBOX_FIELDS.RENT'),
                   conditional: {
-                    html: checkedRentHtml
+                    html: transactionDetails(t, amountHint, 'model[rent][transactionSource]', form.model.rent.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form)
                   },
                   checked: true if form.model.rent.declared
                 },
@@ -88,7 +67,7 @@
                   value: 'councilTax',
                   text: t('COMMON.CHECKBOX_FIELDS.COUNCIL_TAX_AND_COMMUNITY_CHARGE'),
                   conditional: {
-                    html: checkedCouncilTaxHtml
+                    html: transactionDetails(t, amountHint, 'model[councilTax][transactionSource]', form.model.councilTax.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form)
                   },
                   checked: true if form.model.councilTax.declared
                 },
@@ -97,7 +76,7 @@
                   value: "gas",
                   text: t('COMMON.CHECKBOX_FIELDS.GAS'),
                   conditional: {
-                    html: checkedGasHtml
+                    html: transactionDetails(t, amountHint, 'model[gas][transactionSource]', form.model.gas.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form)
                   },
                   checked: true if form.model.gas.declared
                 },
@@ -106,7 +85,7 @@
                   value: "electricity",
                   text: t('COMMON.CHECKBOX_FIELDS.ELECTRICITY'),
                   conditional: {
-                    html: checkedElectricityHtml
+                    html: transactionDetails(t, amountHint, 'model[electricity][transactionSource]', form.model.electricity.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form)
                   },
                   checked: true if form.model.electricity.declared
                 },
@@ -115,7 +94,7 @@
                   value: "water",
                   text: t('COMMON.CHECKBOX_FIELDS.WATER'),
                   conditional: {
-                    html: checkedWaterHtml
+                    html: transactionDetails(t, amountHint, 'model[water][transactionSource]', form.model.water.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form)
                   },
                   checked: true if form.model.water.declared
                 },
@@ -124,7 +103,7 @@
                   value: "maintenance",
                   text: t('COMMON.CHECKBOX_FIELDS.MAINTENANCE'),
                   conditional: {
-                    html: checkedMaintenanceHtml
+                    html: transactionDetails(t, amountHint, 'model[maintenance][transactionSource]', form.model.maintenance.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form)
                   },
                   checked: true if form.model.maintenance.declared
                 }

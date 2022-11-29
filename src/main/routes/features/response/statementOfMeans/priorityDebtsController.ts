@@ -18,8 +18,8 @@ function renderForm(form: GenericForm<PriorityDebts>, res: Response) {
 
 priorityDebtsController.get(CITIZEN_PRIORITY_DEBTS_URL, async (req, res, next: NextFunction) => {
   try {
-    const model = await getPriorityDebts(req.params.id);
-    renderForm(new GenericForm<PriorityDebts>(model), res);
+    const priorityDebts = await getPriorityDebts(req.params.id);
+    renderForm(new GenericForm<PriorityDebts>(priorityDebts), res);
   } catch (error) {
     next(error);
   }
