@@ -25,7 +25,7 @@ agreedResponseDeadlineController
         res.render(agreedResponseDeadlineViewPath, {
           form: new GenericForm(agreedResponseDeadline),
           today: new Date(),
-          claimantName: claim.getClaimantName(),
+          claimantName: claim.getClaimantFullName(),
           backLink,
         });
       } catch (error) {
@@ -47,7 +47,7 @@ agreedResponseDeadlineController
           res.render(agreedResponseDeadlineViewPath, {
             form,
             today: new Date(),
-            claimantName: claim.getClaimantName(),
+            claimantName: claim.getClaimantFullName(),
             backLink,
           });
         } else {

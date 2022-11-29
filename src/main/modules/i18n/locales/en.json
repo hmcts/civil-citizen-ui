@@ -321,6 +321,11 @@
       "PAGE_TITLE": "Do you know the defendant's date of birth?",
       "TITLE": "Do you know the defendant's date of birth?"
     },
+    "CCJ_PAYMENT_TYPE": {
+      "WOULD_PAY": "I would like the defendant to pay:",
+      "PAGE_TITLE": "Payment Options",
+      "TITLE": "Payment Options"
+    },
     "CHECK_YOUR_ANSWER": {
       "BANK_BALANCE": "Balance",
       "CARER_CREDIT_DO_YOU_CLAIM": "Do you claim Carer’s Allowance or Carer’s Credit?",
@@ -818,6 +823,11 @@
       "LIST": "List each loan or credit card debt",
       "PAGE_TITLE": "Any debts?",
       "TITLE": "Do you have loans or credit card debts?"
+    },
+    "DEBT_RESPITE_REF_NUMBER": {
+      "ENTER_REFERENCE": "Enter the reference number (optional):",
+      "PAGE_TITLE": "Debt Respite Scheme reference number",
+      "TITLE": "Do you have a Debt Respite Scheme reference number?"
     },
     "DEBT_RESPITE_END_DATE": {
       "PAGE_TITLE": "Expected end date",
@@ -2120,6 +2130,7 @@
     "VALID_AT_LEAST_ONE_OPTION": "You must select at least one option",
     "VALID_BETWEEN_NUMBERS_0_11": "Enter a number between 0 and 11",
     "VALID_BETWEEN_NUMBERS_0_80": "Enter a number between 0 and 80",
+    "VALID_CCJ_PAYMENT_OPTION": "Choose option",
     "VALID_CHOOSE": "Choose your response",
     "VALID_CITY": "Enter a valid town/city",
     "VALID_CLAIM_AMOUNT": "Enter an amount of money",

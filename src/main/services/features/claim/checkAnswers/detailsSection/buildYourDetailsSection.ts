@@ -21,13 +21,6 @@ const addressToString = (address: Address) => {
   return address?.addressLine1 + '<br>' + address?.city + '<br>' + address?.postCode;
 };
 
-const getApplicantFullName = (claim: Claim): string => {
-  if (claim.applicant1?.type === PartyType.ORGANISATION || claim.applicant1?.type === PartyType.COMPANY) {
-    return claim.applicant1?.partyDetails.partyName;
-  }
-  return `${claim.applicant1?.partyDetails.individualTitle} ${claim.applicant1?.partyDetails.individualFirstName} ${claim.applicant1?.partyDetails.individualLastName}`;
-};
-
 export const buildYourDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
 
   let yourDetailsHref = CLAIMANT_COMPANY_DETAILS_URL;
@@ -46,7 +39,7 @@ export const buildYourDetailsSection = (claim: Claim, claimId: string, lang: str
   const yourDetailsSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.DETAILS_TITLE_CLAIMANT', {lng}),
     summaryRows: [
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FULL_NAME', {lng}), getApplicantFullName(claim), yourDetailsHref, changeLabel(lng)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FULL_NAME', {lng}), claim.getClaimantFullName(), yourDetailsHref, changeLabel(lng)),
     ],
   });
 
