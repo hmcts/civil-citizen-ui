@@ -24,10 +24,11 @@ export const getPriorityDebtsForm = (req: Request): PriorityDebts => {
   const priorityDebts = new PriorityDebts(req.body.model);
   Object.keys(req.body.model).forEach((key: keyof PriorityDebts) => {
     priorityDebts[key] = req.body.model[key]?.declared ?
-      Transaction.buildPopulatedForm(req.body.model[key].transactionSource.name,
+      Transaction.buildPopulatedForm(
+        req.body.model[key].transactionSource.name,
         req.body.model[key].transactionSource.amount,
-        req.body.model[key].transactionSource.schedule)
-      : new Transaction();
+        req.body.model[key].transactionSource.schedule,
+      ) : Transaction.buildEmptyForm(req.body.model[key].transactionSource.name);
   });
   return priorityDebts;
 };

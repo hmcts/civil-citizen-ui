@@ -37,13 +37,13 @@ export class PriorityDebts {
 
   public static buildEmptyForm(): PriorityDebts {
     const params = {
-      mortgage: PriorityDebts.buildPriorityDebt(ExpenseType.MORTGAGE_PRIORITY),
-      rent: PriorityDebts.buildPriorityDebt(ExpenseType.RENT_PRIORITY),
+      mortgage: PriorityDebts.buildPriorityDebt(ExpenseType.MORTGAGE_DEBT),
+      rent: PriorityDebts.buildPriorityDebt(ExpenseType.RENT_DEBT),
       councilTax: PriorityDebts.buildPriorityDebt(ExpenseType.COUNCIL_TAX_OR_COMMUNITY_CHARGE),
-      gas: PriorityDebts.buildPriorityDebt(ExpenseType.GAS_PRIORITY),
-      electricity: PriorityDebts.buildPriorityDebt(ExpenseType.ELECTRICITY_PRIORITY),
-      water: PriorityDebts.buildPriorityDebt(ExpenseType.WATER_PRIORITY),
-      maintenance: PriorityDebts.buildPriorityDebt(ExpenseType.MAINTENANCE_PAYMENTS_PRIORITY),
+      gas: PriorityDebts.buildPriorityDebt(ExpenseType.GAS_DEBT),
+      electricity: PriorityDebts.buildPriorityDebt(ExpenseType.ELECTRICITY_DEBT),
+      water: PriorityDebts.buildPriorityDebt(ExpenseType.WATER_DEBT),
+      maintenance: PriorityDebts.buildPriorityDebt(ExpenseType.MAINTENANCE_PAYMENTS_DEBT),
     };
     return new PriorityDebts(params);
   }
