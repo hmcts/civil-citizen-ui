@@ -1,5 +1,5 @@
 postgresql:
-  enabled: true
+  enabled: false
   image:
     registry: hmctspublic.azurecr.io
     repository: imported/bitnami/postgresql
@@ -42,10 +42,11 @@ nodejs:
   environment:
     ORDNANCE_SURVEY_API_KEY: ${ORDNANCE_SURVEY_API_KEY}
     OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
-    CIVIL_SERVICE_URL: http://${SERVICE_NAME}-civil-service
+    CIVIL_SERVICE_URL: http://civil-service-aat.service.core-compute-aat.internal/
     IDAM_SIGN_OUT_REDIRECT_URL: https://${SERVICE_FQDN}/dashboard
+
 civil-service:
-  enabled: true
+  enabled: false
   java:
     applicationPort: 4000
     releaseNameOverride: ${SERVICE_NAME}-civil-service
@@ -120,7 +121,7 @@ civil-service:
 
 idam-pr:
   releaseNameOverride: ${SERVICE_NAME}-xui-idam-pr
-  enabled: true
+  enabled: false
   redirect_uris:
     Civil Citizen UI:
       - https://${SERVICE_FQDN}/oauth2/callback
@@ -128,7 +129,7 @@ idam-pr:
       - https://xui-${SERVICE_FQDN}/oauth2/callback
 
 xui-webapp:
-  enabled: true
+  enabled: false
   nodejs:
     imagePullPolicy: Always
     releaseNameOverride: ${SERVICE_NAME}-xui-webapp
@@ -145,7 +146,7 @@ xui-webapp:
       LAUNCH_DARKLY_CLIENT_ID: ~
 
 ccd:
-  enabled: true
+  enabled: false
   ccd:
     adminWeb:
       enabled: false
@@ -227,7 +228,7 @@ ccd:
       enabled: false
 
 camunda-bpm:
-  enabled: true
+  enabled: false
   java:
     disableKeyVaults: true
     releaseNameOverride: ${SERVICE_NAME}-camunda
