@@ -28,10 +28,12 @@
     ],
     "respondent1": {
       "partyTypeDisplayValue": "Organisation",
-      "partyName": "Everton FC",
-      "primaryAddress": {
-        "AddressLine1": "Goodison Park",
-        "PostCode": "L4 4EL"
+      "partyDetails":{
+        "partyName": "Everton FC",
+        "primaryAddress": {
+          "addressLine1": "Goodison Park",
+          "postCode": "L4 4EL"
+        }
       },
       "type": "ORGANISATION"
     },
@@ -52,16 +54,17 @@
       ]
     },
     "applicant1": {
-      "individualLastName": "Doe",
-      "partyTypeDisplayValue": "Individual",
-      "partyName": "John Doe",
-      "individualFirstName": "John",
-      "primaryAddress": {
-        "AddressLine1": "100 Ross Street",
-        "PostCode": "CB1 3AZ"
-      },
       "type": "INDIVIDUAL",
-      "individualDateOfBirth": "1980-01-01"
+      "partyTypeDisplayValue": "Individual",
+      "partyDetails": {
+        "individualFirstName": "John",
+        "individualLastName": "Doe",
+        "primaryAddress": {
+          "postCode": "CB1 3AX",
+          "addressLine1": "100 Ross Street"
+        }
+      },
+      "dateOfBirth": "1980-01-01"
     },
     "timelineOfEvents": [
       {
