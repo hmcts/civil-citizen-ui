@@ -6,7 +6,6 @@ params="$@"
 params="$1"
 branchName="$2"
 
-cd ..
 git clone https://github.com/hmcts/civil-ccd-definition.git
 cd civil-ccd-definition
 
