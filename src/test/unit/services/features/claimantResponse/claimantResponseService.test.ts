@@ -1253,4 +1253,3 @@ describe('Claimant Response Service', () => {
       });
     });
   });
-});
