@@ -158,6 +158,8 @@ import claimCheckAnswersController from './features/claim/checkAnswersController
 import claimantEvidenceController from './features/claim/yourDetails/claimantEvidenceController';
 import howMuchContinueClaimingController from './features/claim/interest/howMuchContinueClaimingController';
 import helpWithFeesController from './features/claim/details/helpWithFeesController';
+import debtRespiteReferenceNumberController
+  from './features/breathingSpace/debtRespiteReferenceNumberController';
 import datePaidViewController from './features/claimantResponse/paidInFull/datePaidController';
 import settleClaimController from './features/claimantResponse/settleClaimController';
 import fullAdmitSetDatePaymentController from './features/claimantResponse/fullAdmitSetDatePaymentController';
@@ -166,6 +168,9 @@ import defendantDOBController from './features/claimantResponse/ccj/defendantDOB
 import claimantIntentionToProceedController from './features/claimantResponse/claimantIntentionToProceedController';
 import rejectionReasonController from './features/claimantResponse/rejectionReasonController';
 import specificCourtController from './features/directionsQuestionnaire/hearing/specificCourtController';
+import debtRespiteOptionController from './features/breathingSpace/debtRespiteOptionController';
+import debtStartDateController from './features/breathingSpace/debtRespiteStartDateController';
+import debtRespiteEndDateController from './features/breathingSpace/debtRespiteEndDateController';
 import reviewDefendantsResponseController from './features/claimantResponse/reviewDefendantsResponseController';
 
 export default [
@@ -312,6 +317,7 @@ export default [
   claimantEvidenceController,
   howMuchContinueClaimingController,
   helpWithFeesController,
+  debtRespiteReferenceNumberController,
   datePaidViewController,
   settleClaimController,
   fullAdmitSetDatePaymentController,
@@ -320,5 +326,8 @@ export default [
   claimantIntentionToProceedController,
   rejectionReasonController,
   specificCourtController,
+  debtRespiteOptionController,
+  debtStartDateController,
+  debtRespiteEndDateController,
   reviewDefendantsResponseController,
 ];

@@ -303,6 +303,17 @@
     "ARE_YOU_SEVERELY_DISABLED": {
       "PAGE_TITLE": "Severely disabled"
     },
+    "BREATHING_SPACE_DEBT_RESPITE_START": {
+      "DATE_START_OPTIONAL": "This is the date it started, not the date you received notification of it (optional).",
+      "PAGE_TITLE": "When did it start?",
+      "TITLE": "When did it start?"
+    },
+    "BREATHING_SPACE_DEBT_RESPITE_TYPE": {
+      "MENTAL_HEALTH": "Mental health crisis moratorium",
+      "PAGE_TITLE": "What type is it?",
+      "STANDARD": "Standard breathing space",
+      "TITLE": "What type is it?"
+    },
     "CARER": {
       "PAGE_TITLE": "Carer's allowance"
     },
@@ -807,6 +818,16 @@
       "LIST": "List each loan or credit card debt",
       "PAGE_TITLE": "Any debts?",
       "TITLE": "Do you have loans or credit card debts?"
+    },
+    "DEBT_RESPITE_REF_NUMBER": {
+      "ENTER_REFERENCE": "Enter the reference number (optional):",
+      "PAGE_TITLE": "Debt Respite Scheme reference number",
+      "TITLE": "Do you have a Debt Respite Scheme reference number?"
+    },
+    "DEBT_RESPITE_END_DATE": {
+      "PAGE_TITLE": "Expected end date",
+      "THIS_IS_THE": "This is the end date that it is due to finish (optional)",
+      "TITLE": "Expected end date"
     },
     "DEFENDANT_DETAILS": {
       "BUSINESS_NAME": "Trading as (If you know it)",
@@ -1540,13 +1561,20 @@
       "PAY_EXPENSES": "Do they pay any expenses?",
       "PAYMENT_DATE": "They’ve offered to pay you this by {{ paymentDate }}",
       "RECEIVE_INCOME": "Do they receive any income?",
+      "REJECT_CLAIM_STATEMENT": "{{ defendant }} has rejected the claim.",
       "SEE_FINANCIAL_DETAILS": "See their financial details",
       "SELF_EMPLOYMENT_DETAILS": "Self-employment details",
       "SUPPORT_ANYONE_ELSE": "Do they support anyone else financially?",
+      "THEIR_DEFENCE": "Their defence",
+      "THEIR_EVIDENCE": "Their evidence",
+      "THEIR_TOE": "Their timeline of events",
       "TITLE": "The defendant’s response",
       "TOTAL_PAID_AMOUNT": "This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
       "UNABLE_TO_PAY_FULL_AMOUNT": "Why they can’t pay the full amount now",
-      "WHERE_THEY_LIVE": "Where are they living?"
+      "WHERE_THEY_LIVE": "Where are they living?",
+      "WHY_THEY_DISAGREE_CLAIM": "Why they disagree with the claim",
+      "WHY_THEY_DISAGREE_EVIDENCE": "Why they disagree with your evidence",
+      "WHY_THEY_DISAGREE_TIMELINE": "Why they disagree with your timeline"
     },
     "SELF_EMPLOYED": {
       "PAGE_TITLE": "Self employment details",
@@ -2091,6 +2119,7 @@
     "VALID_DATE": "Please enter a valid date",
     "VALID_DATE_IN_PAST": "Enter date before {{dateToday}}",
     "VALID_DATE_NOT_IN_PAST": "Enter a date that is today or in the future",
+    "VALID_DATE_START_NOT_AFTER_TODAY": "Start date must not be after today's date",
     "VALID_DAY": "Enter a valid day",
     "VALID_DEBT_AMOUNT": {
       "COUNCIL_TAX": "Enter a valid Council Tax or Community Charge amount, maximum two decimal places",
@@ -2101,6 +2130,7 @@
       "RENT": "Enter a valid Rent amount, maximum two decimal places",
       "WATER": "Enter a valid Water amount, maximum two decimal places"
     },
+    "VALID_DEBT_RESPITE_END_DATE": "Expected end date must not be before today’s date",
     "VALID_DEBT_RESPITE_OPTION": "You must select the Type before continuing",
     "VALID_DISAGREE_REASON_REQUIRED": "Enter text explaining why do you disagree",
     "VALID_ENTER_A_DATE_BEFORE": "Please enter a date of birth before {{ maxDate }}",

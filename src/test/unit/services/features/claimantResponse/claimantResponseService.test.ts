@@ -1,6 +1,5 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../main/common/models/claim';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
 import {GenericYesNo} from '../../../../../main/common/form/models/genericYesNo';
 import {
@@ -48,6 +47,7 @@ jest.mock('i18next', () => ({
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 const languageMock = getLng as jest.Mock;
+const REDIS_FAILURE = 'Redis DraftStore failure.';
 
 describe('Claimant Response Service', () => {
   describe('getClaimantResponse', () => {
@@ -238,10 +238,10 @@ describe('Claimant Response Service', () => {
 
     it('should return an error on redis failure', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
+        throw new Error(REDIS_FAILURE);
       });
 
-      await expect(getClaimantResponse('claimId')).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(getClaimantResponse('claimId')).rejects.toThrow(REDIS_FAILURE);
     });
   });
 
@@ -363,51 +363,53 @@ describe('Claimant Response Service', () => {
       });
 
       it('should return an error on redis failure', async () => {
+      //Given
         mockGetCaseDataFromDraftStore.mockImplementation(async () => {
           return new Claim();
         });
         mockSaveDraftClaim.mockImplementation(async () => {
-          throw new Error(TestMessages.REDIS_FAILURE);
+          throw new Error(REDIS_FAILURE);
         });
+        //Then
         await expect(saveClaimantResponse('claimId', mockGetCaseDataFromDraftStore, ''))
-          .rejects.toThrow(TestMessages.REDIS_FAILURE);
+          .rejects.toThrow(REDIS_FAILURE);
       });
-    });
 
-    describe('get rejection reason form model', () => {
-      it('should return an empty form model when no data retrieved', async () => {
+      describe('get rejection reason form model', () => {
+        it('should return an empty form model when no data retrieved', async () => {
         //Given
-        const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
-        const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+          const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+          const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 
-        mockGetCaseData.mockImplementation(async () => {
-          return new Claim();
+          mockGetCaseData.mockImplementation(async () => {
+            return new Claim();
+          });
+          //When
+          const result = await getClaimantResponse('claimId');
+          //Then
+          expect(spyGetCaseDataFromStore).toBeCalled();
+          expect(result).toEqual(new RejectionReason());
         });
-        //When
-        const result = await getClaimantResponse('claimId');
-        //Then
-        expect(spyGetCaseDataFromStore).toBeCalled();
-        expect(result).toEqual(new RejectionReason());
-      });
-      it('should return populated form model when data exists', async () => {
+        it('should return populated form model when data exists', async () => {
         //Given
-        const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
-        const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-        const newClaim = new Claim();
-        const response = new ClaimantResponse();
-        const reason = new RejectionReason('not agree');
-        response.rejectionReason = reason;
-        newClaim.claimantResponse = response;
+          const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+          const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+          const newClaim = new Claim();
+          const response = new ClaimantResponse();
+          const reason = new RejectionReason('not agree');
+          response.rejectionReason = reason;
+          newClaim.claimantResponse = response;
 
-        mockGetCaseData.mockImplementation(async () => {
-          return newClaim;
+          mockGetCaseData.mockImplementation(async () => {
+            return newClaim;
+          });
+          //When
+          const claimantResponse = await getClaimantResponse('claimId');
+          //Then
+          expect(spyGetCaseDataFromStore).toBeCalled();
+          expect(claimantResponse).not.toBeNull();
+          expect(claimantResponse?.rejectionReason.text).toBe('not agree');
         });
-        //When
-        const claimantResponse = await getClaimantResponse('claimId');
-        //Then
-        expect(spyGetCaseDataFromStore).toBeCalled();
-        expect(claimantResponse).not.toBeNull();
-        expect(claimantResponse?.rejectionReason.text).toBe('not agree');
       });
     });
   });
