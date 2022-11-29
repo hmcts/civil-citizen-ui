@@ -84,7 +84,7 @@ import requestMoreTimeController from './features/response/requestMoreTimeContro
 import agreedResponseDeadlineController from './features/response/responseDeadline/agreedResponseDeadlineController';
 import determinationWithoutHearingController
   from './features/directionsQuestionnaire/hearing/determinationWithoutHearingController';
-import totalAmountController from './features/public/eligibility/totalAmountController';
+import totalAmountEligibilityController from './features/public/eligibility/totalAmountController';
 import claimTypeController from './features/public/eligibility/claimTypeController';
 import notEligibleController from './features/public/eligibility/notEligibleController';
 import claimantAddressEligibilityController from './features/public/eligibility/claimantAddressEligibilityController';
@@ -158,18 +158,23 @@ import claimCheckAnswersController from './features/claim/checkAnswersController
 import claimantEvidenceController from './features/claim/yourDetails/claimantEvidenceController';
 import howMuchContinueClaimingController from './features/claim/interest/howMuchContinueClaimingController';
 import helpWithFeesController from './features/claim/details/helpWithFeesController';
+import debtRespiteReferenceNumberController
+  from './features/breathingSpace/debtRespiteReferenceNumberController';
 import datePaidViewController from './features/claimantResponse/paidInFull/datePaidController';
 import settleClaimController from './features/claimantResponse/settleClaimController';
 import fullAdmitSetDatePaymentController from './features/claimantResponse/fullAdmitSetDatePaymentController';
 import partPaymentReceivedController from './features/claimantResponse/partPaymentReceivedController';
 import defendantDOBController from './features/claimantResponse/ccj/defendantDOBController';
 import claimantIntentionToProceedController from './features/claimantResponse/claimantIntentionToProceedController';
+import totalAmountController from './features/claim/totalAmountController';
 import rejectionReasonController from './features/claimantResponse/rejectionReasonController';
 import specificCourtController from './features/directionsQuestionnaire/hearing/specificCourtController';
 import debtRespiteOptionController from './features/breathingSpace/debtRespiteOptionController';
 import debtStartDateController from './features/breathingSpace/debtRespiteStartDateController';
 import debtRespiteEndDateController from './features/breathingSpace/debtRespiteEndDateController';
 import reviewDefendantsResponseController from './features/claimantResponse/reviewDefendantsResponseController';
+import ccjPaymentOptionController from './features/claimantResponse/ccj/ccjPaymentOptionController';
+import paidSomeAmountController from './features/claimantResponse/ccj/paidAmountController';
 
 export default [
   homeController,
@@ -248,7 +253,7 @@ export default [
   agreedResponseDeadlineController,
   newDeadlineResponseController,
   determinationWithoutHearingController,
-  totalAmountController,
+  totalAmountEligibilityController,
   claimTypeController,
   notEligibleController,
   claimantAddressEligibilityController,
@@ -315,16 +320,20 @@ export default [
   claimantEvidenceController,
   howMuchContinueClaimingController,
   helpWithFeesController,
+  debtRespiteReferenceNumberController,
   datePaidViewController,
   settleClaimController,
   fullAdmitSetDatePaymentController,
   partPaymentReceivedController,
   defendantDOBController,
   claimantIntentionToProceedController,
+  totalAmountController,
   rejectionReasonController,
   specificCourtController,
   debtRespiteOptionController,
   debtStartDateController,
   debtRespiteEndDateController,
   reviewDefendantsResponseController,
+  ccjPaymentOptionController,
+  paidSomeAmountController,
 ];
