@@ -35,3 +35,4 @@ test-results/
 package-lock.json
 
 **/Chart.lock
+**/charts/civil-citizen-ui/charts

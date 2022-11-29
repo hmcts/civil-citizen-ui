@@ -244,7 +244,7 @@ camunda-bpm:
       CAMUNDA_DB_CONN_OPTIONS: ""
 
 elastic:
-  enabled: true
+  enabled: false
 
 elasticsearch:
   nameOverride: ${SERVICE_NAME}-es
