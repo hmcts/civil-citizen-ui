@@ -68,7 +68,6 @@ withPipeline(type, product, component) {
     enableAksStagingDeployment()
     enableSlackNotifications('#civil_notifications')
     syncBranchesWithMaster(branchesToSync)
-    setEnv(CHANGE_ID)
 
     onPR {
         env.ENVIRONMENT = "preview"
@@ -97,6 +96,7 @@ withPipeline(type, product, component) {
           ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json"
           ./bin/import-bpmn-diagram.sh .
         """
+      setEnv("${CHANGE_ID}")
 
     }
 
@@ -115,6 +115,7 @@ withPipeline(type, product, component) {
         steps.archiveArtifacts artifacts: "ccd-release-config/civil-ccd-staging.xlsx"
       }
       uploadCoreCaseDataDefinitions('staging')
+      setEnv("${CHANGE_ID}")
     }
 
     after('smoketest:aat') {
@@ -123,6 +124,7 @@ withPipeline(type, product, component) {
 
     before('functionalTest:aat') {
       env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+      setEnv("${CHANGE_ID}")
     }
 
     after('functionalTest:aat') {
