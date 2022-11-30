@@ -34,6 +34,8 @@ import {DebtItems} from '../../../../../main/common/form/models/statementOfMeans
 import {CCJRequest} from '../../../../../main/common/models/claimantResponse/ccj/ccjRequest';
 import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
 import {RejectionReason} from '../../../../../main/common/form/models/claimantResponse/rejectionReason';
+import {PaymentOptionType} from '../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import {CcjPaymentOption} from 'form/models/claimantResponse/ccj/ccjPaymentOption';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -236,6 +238,94 @@ describe('Claimant Response Service', () => {
       });
     });
 
+    describe('CCJ-Payment option get', () => {
+      it('should return undefined if ccj payment option is not set', async () => {
+        //Given
+        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+          return new Claim();
+        });
+        //When
+        const claimantResponse = await getClaimantResponse('validClaimId');
+        //Then
+        expect(claimantResponse?.ccjRequest?.ccjPaymentOption).toBeUndefined();
+      });
+
+      it('should return Claimant Response object', async () => {
+        //Given
+        const claim = new Claim();
+        claim.claimantResponse = new ClaimantResponse();
+        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+          return claim;
+        });
+        //When
+        const claimantResponse = await getClaimantResponse('validClaimId');
+        //Then
+        expect(claimantResponse).toBeDefined();
+        expect(claimantResponse.ccjRequest?.ccjPaymentOption).toBeUndefined();
+      });
+
+      it('should return Claimant Response object with ccj request', async () => {
+        //Given
+        const claim = new Claim();
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.ccjRequest = new CCJRequest();
+        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+          return claim;
+        });
+        //When
+        const claimantResponse = await getClaimantResponse('validClaimId');
+        //Then
+        expect(claimantResponse).toBeDefined();
+        expect(claimantResponse.ccjRequest).toBeDefined();
+        expect(claimantResponse.ccjRequest.ccjPaymentOption).toBeUndefined();
+      });
+
+      it('should return Claimant Response object with option IMMEDIATELY', async () => {
+        //Given
+        const claim = new Claim();
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.ccjRequest = new CCJRequest();
+        claim.claimantResponse.ccjRequest.ccjPaymentOption = new CcjPaymentOption(PaymentOptionType.IMMEDIATELY);
+        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+          return claim;
+        });
+        //When
+        const claimantResponse = await getClaimantResponse('validClaimId');
+        //Then
+        expect(claimantResponse?.ccjRequest.ccjPaymentOption.type).toBe(PaymentOptionType.IMMEDIATELY);
+      });
+
+      it('should return Claimant Response object with option INSTALMENTS', async () => {
+        //Given
+        const claim = new Claim();
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.ccjRequest = new CCJRequest();
+        claim.claimantResponse.ccjRequest.ccjPaymentOption = new CcjPaymentOption(PaymentOptionType.INSTALMENTS);
+        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+          return claim;
+        });
+        //When
+        const claimantResponse = await getClaimantResponse('validClaimId');
+        //Then
+        expect(claimantResponse?.ccjRequest.ccjPaymentOption.type).toBe(PaymentOptionType.INSTALMENTS);
+      });
+
+      it('should return Claimant Response object with option BY_SET_DATE', async () => {
+        //Given
+        const claim = new Claim();
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.ccjRequest = new CCJRequest();
+        claim.claimantResponse.ccjRequest.ccjPaymentOption = new CcjPaymentOption(PaymentOptionType.BY_SET_DATE);
+        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+          return claim;
+        });
+        //When
+        const claimantResponse = await getClaimantResponse('validClaimId');
+        //Then
+        expect(claimantResponse?.ccjRequest.ccjPaymentOption.type).toBe(PaymentOptionType.BY_SET_DATE);
+      });
+    });
+
     it('should return an error on redis failure', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         throw new Error(REDIS_FAILURE);
@@ -361,753 +451,805 @@ describe('Claimant Response Service', () => {
         //Then
         expect(spySave).toBeCalled();
       });
+    });
 
-      it('should return an error on redis failure', async () => {
-      //Given
+    describe('CCJ-Payment option save', () => {
+
+      it('should save claimant response successfully', async () => {
+        //Given
         mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-          return new Claim();
+          const claim = new Claim();
+          claim.claimantResponse = new ClaimantResponse();
+          return claim;
         });
-        mockSaveDraftClaim.mockImplementation(async () => {
-          throw new Error(REDIS_FAILURE);
-        });
+        const ccjPaymentOption = {
+          type: PaymentOptionType.IMMEDIATELY,
+        };
+        const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+        const claimantResponseToSave = {
+          ccjRequest: {
+            ccjPaymentOption: {
+              type: PaymentOptionType.IMMEDIATELY,
+            }},
+        };
+        //When
+        await saveClaimantResponse('validClaimId', ccjPaymentOption, 'ccjPaymentOption', 'ccjRequest');
         //Then
-        await expect(saveClaimantResponse('claimId', mockGetCaseDataFromDraftStore, ''))
-          .rejects.toThrow(REDIS_FAILURE);
+        expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToSave});
       });
 
-      describe('get rejection reason form model', () => {
-        it('should return an empty form model when no data retrieved', async () => {
+      it('should update claim defendant dob successfully', async () => {
         //Given
-          const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
-          const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-
-          mockGetCaseData.mockImplementation(async () => {
-            return new Claim();
-          });
-          //When
-          const result = await getClaimantResponse('claimId');
-          //Then
-          expect(spyGetCaseDataFromStore).toBeCalled();
-          expect(result).toEqual(new RejectionReason());
+        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+          const claim = new Claim();
+          claim.claimantResponse = new ClaimantResponse();
+          claim.claimantResponse.ccjRequest = new CCJRequest();
+          claim.claimantResponse.ccjRequest.ccjPaymentOption = new CcjPaymentOption(PaymentOptionType.BY_SET_DATE);
+          return claim;
         });
-        it('should return populated form model when data exists', async () => {
+        const ccjPaymentOptionUpdate = {
+          type: PaymentOptionType.BY_SET_DATE,
+        };
+        const claimantResponseToUpdate =
+          {
+            ccjRequest: {
+              ccjPaymentOption: {
+                type: PaymentOptionType.BY_SET_DATE,
+              }},
+          };
+        const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+        //When
+        await saveClaimantResponse('validClaimId', ccjPaymentOptionUpdate, 'ccjPaymentOption', 'ccjRequest');
+        //Then
+        expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
+      });
+    });
+
+    it('should return an error on redis failure', async () => {
+      //Given
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return new Claim();
+      });
+      mockSaveDraftClaim.mockImplementation(async () => {
+        throw new Error(REDIS_FAILURE);
+      });
+      //Then
+      await expect(saveClaimantResponse('claimId', mockGetCaseDataFromDraftStore, ''))
+        .rejects.toThrow(REDIS_FAILURE);
+    });
+
+    describe('get rejection reason form model', () => {
+      it('should return an empty form model when no data retrieved', async () => {
         //Given
-          const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
-          const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-          const newClaim = new Claim();
-          const response = new ClaimantResponse();
-          const reason = new RejectionReason('not agree');
-          response.rejectionReason = reason;
-          newClaim.claimantResponse = response;
+        const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+        const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 
-          mockGetCaseData.mockImplementation(async () => {
-            return newClaim;
-          });
-          //When
-          const claimantResponse = await getClaimantResponse('claimId');
-          //Then
-          expect(spyGetCaseDataFromStore).toBeCalled();
-          expect(claimantResponse).not.toBeNull();
-          expect(claimantResponse?.rejectionReason.text).toBe('not agree');
+        mockGetCaseData.mockImplementation(async () => {
+          return new Claim();
         });
+        //When
+        const result = await getClaimantResponse('claimId');
+        //Then
+        expect(spyGetCaseDataFromStore).toBeCalled();
+        expect(result).toEqual(new RejectionReason());
+      });
+      it('should return populated form model when data exists', async () => {
+        //Given
+        const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+        const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+        const newClaim = new Claim();
+        const response = new ClaimantResponse();
+        const reason = new RejectionReason('not agree');
+        response.rejectionReason = reason;
+        newClaim.claimantResponse = response;
+
+        mockGetCaseData.mockImplementation(async () => {
+          return newClaim;
+        });
+        //When
+        const claimantResponse = await getClaimantResponse('claimId');
+        //Then
+        expect(spyGetCaseDataFromStore).toBeCalled();
+        expect(claimantResponse).not.toBeNull();
+        expect(claimantResponse?.rejectionReason.text).toBe('not agree');
       });
     });
   });
+});
 
-  describe('Summary section', () => {
-    const noBorderClass = 'govuk-summary-list__row--no-border';
-    const emptyObject = {text: ''};
-    const claim = new Claim();
-    claim.statementOfMeans = new StatementOfMeans();
+describe('Summary section', () => {
+  const noBorderClass = 'govuk-summary-list__row--no-border';
+  const emptyObject = {text: ''};
+  const claim = new Claim();
+  claim.statementOfMeans = new StatementOfMeans();
 
-    beforeAll(() => {
-      languageMock.mockImplementation(() => 'cimode');
+  beforeAll(() => {
+    languageMock.mockImplementation(() => 'cimode');
+  });
+
+  describe('constructBanksAndSavingsAccountSection', () => {
+    it('should return empty values if statement of means does not have bank and savings account data', () => {
+      const response = constructBanksAndSavingsAccountSection(new Claim(), 'cimode');
+      const expectedData = [
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'COMMON.ACCOUNT_TYPE',
+          },
+          value: emptyObject,
+        },
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'COMMON.BALANCE',
+          },
+          value: emptyObject,
+        },
+        {
+          key: {
+            text: 'COMMON.BANK_JOINT_ACCOUNT',
+          },
+          value: emptyObject,
+        },
+        {
+          key: {
+            text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.WHERE_THEY_LIVE',
+          },
+          value: {
+            text: undefined,
+          },
+        },
+      ];
+      expect(response).toStrictEqual(expectedData);
     });
 
-    describe('constructBanksAndSavingsAccountSection', () => {
-      it('should return empty values if statement of means does not have bank and savings account data', () => {
-        const response = constructBanksAndSavingsAccountSection(new Claim(), 'cimode');
-        const expectedData = [
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'COMMON.ACCOUNT_TYPE',
-            },
-            value: emptyObject,
-          },
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'COMMON.BALANCE',
-            },
-            value: emptyObject,
-          },
-          {
-            key: {
-              text: 'COMMON.BANK_JOINT_ACCOUNT',
-            },
-            value: emptyObject,
-          },
-          {
-            key: {
-              text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.WHERE_THEY_LIVE',
-            },
-            value: {
-              text: undefined,
-            },
-          },
-        ];
-        expect(response).toStrictEqual(expectedData);
-      });
+    it ('should return rows with set data if bank accounts are provided', () => {
+      claim.statementOfMeans.residence = new Residence(ResidenceType.OTHER);
+      claim.statementOfMeans.bankAccounts = [
+        {
+          typeOfAccount: 'CURRENT_ACCOUNT',
+          joint: 'yes',
+          balance: '80',
+        },
+        {
+          typeOfAccount: '',
+          joint: 'no',
+          balance: '20',
+        },
+      ];
+      const response = constructBanksAndSavingsAccountSection(claim, 'cimode');
 
-      it ('should return rows with set data if bank accounts are provided', () => {
-        claim.statementOfMeans.residence = new Residence(ResidenceType.OTHER);
-        claim.statementOfMeans.bankAccounts = [
-          {
-            typeOfAccount: 'CURRENT_ACCOUNT',
-            joint: 'yes',
-            balance: '80',
+      const expectedData = [
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'COMMON.ACCOUNT_TYPE',
           },
-          {
-            typeOfAccount: '',
-            joint: 'no',
-            balance: '20',
+          value: {
+            text: 'PAGES.CITIZEN_BANK_ACCOUNTS.CURRENT_ACCOUNT',
           },
-        ];
-        const response = constructBanksAndSavingsAccountSection(claim, 'cimode');
+        },
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'COMMON.BALANCE',
+          },
+          value: {
+            text: '£80',
+          },
+        },
+        {
+          key: {
+            text: 'COMMON.BANK_JOINT_ACCOUNT',
+          },
+          value: {
+            text: 'COMMON.YES',
+          },
+        },
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'COMMON.ACCOUNT_TYPE',
+          },
+          value: emptyObject,
+        },
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'COMMON.BALANCE',
+          },
+          value: {
+            text: '£20',
+          },
+        },
+        {
+          key: {
+            text: 'COMMON.BANK_JOINT_ACCOUNT',
+          },
+          value: {
+            text: 'COMMON.NO',
+          },
+        },
+        {
+          key: {
+            text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.WHERE_THEY_LIVE',
+          },
+          value: {
+            text: 'OTHER',
+          },
+        },
+      ];
+      expect(response).toStrictEqual(expectedData);
+    });
+  });
 
-        const expectedData = [
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'COMMON.ACCOUNT_TYPE',
-            },
-            value: {
-              text: 'PAGES.CITIZEN_BANK_ACCOUNTS.CURRENT_ACCOUNT',
-            },
+  describe('constructChildrenSection', () => {
+    it('should return dependant selection as no if there are no dependants living with defendant', () => {
+      const response = constructChildrenSection(new Claim(), 'cimode');
+      const expectedData = [
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.CHILDREN_LIVING_WITH_THEM',
           },
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'COMMON.BALANCE',
-            },
-            value: {
-              text: '£80',
-            },
+          value: {
+            text: 'COMMON.NO',
           },
-          {
-            key: {
-              text: 'COMMON.BANK_JOINT_ACCOUNT',
-            },
-            value: {
-              text: 'COMMON.YES',
-            },
-          },
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'COMMON.ACCOUNT_TYPE',
-            },
-            value: emptyObject,
-          },
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'COMMON.BALANCE',
-            },
-            value: {
-              text: '£20',
-            },
-          },
-          {
-            key: {
-              text: 'COMMON.BANK_JOINT_ACCOUNT',
-            },
-            value: {
-              text: 'COMMON.NO',
-            },
-          },
-          {
-            key: {
-              text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.WHERE_THEY_LIVE',
-            },
-            value: {
-              text: 'OTHER',
-            },
-          },
-        ];
-        expect(response).toStrictEqual(expectedData);
-      });
+        },
+      ];
+
+      expect(response).toStrictEqual(expectedData);
     });
 
-    describe('constructChildrenSection', () => {
-      it('should return dependant selection as no if there are no dependants living with defendant', () => {
-        const response = constructChildrenSection(new Claim(), 'cimode');
-        const expectedData = [
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.CHILDREN_LIVING_WITH_THEM',
-            },
-            value: {
-              text: 'COMMON.NO',
-            },
+    it('should return rows with data if there are dependants provided', () => {
+      claim.statementOfMeans.dependants = new Dependants(true, new NumberOfChildren(1, 0, 2));
+      claim.statementOfMeans.numberOfChildrenLivingWithYou = 1;
+      const response = constructChildrenSection(claim, 'cimode');
+      const expectedData = [
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.CHILDREN_LIVING_WITH_THEM',
           },
-        ];
+          value: {
+            text: 'COMMON.YES',
+          },
+        },
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.AGED_UNDER_11',
+          },
+          value: {
+            text: 1,
+          },
+        },
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.AGED_11_TO_15',
+          },
+          value: {
+            text: 0,
+          },
+        },
+        {
+          key: {
+            text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.AGED_16_TO_19',
+          },
+          value: {
+            text: 2,
+          },
+        },
+        {
+          key: {
+            text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.AGED_16_TO_19_AND_EDUCATION',
+          },
+          value: {
+            text: 1,
+          },
+        },
+      ];
 
-        expect(response).toStrictEqual(expectedData);
-      });
+      expect(response).toStrictEqual(expectedData);
+    });
+  });
 
-      it('should return rows with data if there are dependants provided', () => {
-        claim.statementOfMeans.dependants = new Dependants(true, new NumberOfChildren(1, 0, 2));
-        claim.statementOfMeans.numberOfChildrenLivingWithYou = 1;
-        const response = constructChildrenSection(claim, 'cimode');
-        const expectedData = [
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.CHILDREN_LIVING_WITH_THEM',
-            },
-            value: {
-              text: 'COMMON.YES',
-            },
+  describe('constructFinancialSupportSection', () => {
+    it('should return other dependants selection as no if there are no other dependants living with defendant', () => {
+      const response = constructFinancialSupportSection(new Claim(), 'cimode');
+      const expectedData = [
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.SUPPORT_ANYONE_ELSE',
           },
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.AGED_UNDER_11',
-            },
-            value: {
-              text: 1,
-            },
+          value: {
+            text: 'COMMON.NO',
           },
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.AGED_11_TO_15',
-            },
-            value: {
-              text: 0,
-            },
-          },
-          {
-            key: {
-              text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.AGED_16_TO_19',
-            },
-            value: {
-              text: 2,
-            },
-          },
-          {
-            key: {
-              text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.AGED_16_TO_19_AND_EDUCATION',
-            },
-            value: {
-              text: 1,
-            },
-          },
-        ];
+        },
+      ];
 
-        expect(response).toStrictEqual(expectedData);
-      });
+      expect(response).toStrictEqual(expectedData);
     });
 
-    describe('constructFinancialSupportSection', () => {
-      it('should return other dependants selection as no if there are no other dependants living with defendant', () => {
-        const response = constructFinancialSupportSection(new Claim(), 'cimode');
-        const expectedData = [
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.SUPPORT_ANYONE_ELSE',
-            },
-            value: {
-              text: 'COMMON.NO',
-            },
+    it('should display other dependants if data is provided', () => {
+      claim.statementOfMeans.otherDependants = {
+        option: YesNo.YES,
+        numberOfPeople: 3,
+        details: 'Number of people details',
+      };
+      const response = constructFinancialSupportSection(claim, 'cimode');
+      const expectedData = [
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.SUPPORT_ANYONE_ELSE',
           },
-        ];
+          value: {
+            text: 'COMMON.YES',
+          },
+        },
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'COMMON.NUMBER_OF_PEOPLE',
+          },
+          value: {
+            text: claim.statementOfMeans.otherDependants.numberOfPeople,
+          },
+        },
+        {
+          key: {
+            text: 'COMMON.GIVE_DETAILS',
+          },
+          value: {
+            text: claim.statementOfMeans.otherDependants.details,
+          },
+        },
+      ];
 
-        expect(response).toStrictEqual(expectedData);
-      });
+      expect(response).toStrictEqual(expectedData);
+    });
+  });
 
-      it('should display other dependants if data is provided', () => {
-        claim.statementOfMeans.otherDependants = {
-          option: YesNo.YES,
-          numberOfPeople: 3,
-          details: 'Number of people details',
-        };
-        const response = constructFinancialSupportSection(claim, 'cimode');
-        const expectedData = [
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.SUPPORT_ANYONE_ELSE',
-            },
-            value: {
-              text: 'COMMON.YES',
-            },
+  describe('constructEmploymentDetailsSection', () => {
+    it('should return no selection if employment details are not provided', () => {
+      const response = constructEmploymentDetailsSection(new Claim(), 'cimode');
+      const expectedData = [
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.EMPLOYED',
           },
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'COMMON.NUMBER_OF_PEOPLE',
-            },
-            value: {
-              text: claim.statementOfMeans.otherDependants.numberOfPeople,
-            },
+          value: {
+            text: 'COMMON.NO',
           },
-          {
-            key: {
-              text: 'COMMON.GIVE_DETAILS',
-            },
-            value: {
-              text: claim.statementOfMeans.otherDependants.details,
-            },
-          },
-        ];
+        },
+      ];
 
-        expect(response).toStrictEqual(expectedData);
-      });
+      expect(response).toStrictEqual(expectedData);
     });
 
-    describe('constructEmploymentDetailsSection', () => {
-      it('should return no selection if employment details are not provided', () => {
-        const response = constructEmploymentDetailsSection(new Claim(), 'cimode');
-        const expectedData = [
+    it('should return employment details rows if details are provided', () => {
+      claim.statementOfMeans.employment = {
+        declared: true,
+        employmentType: [EmploymentCategory.EMPLOYED, EmploymentCategory.SELF_EMPLOYED],
+      };
+      claim.statementOfMeans.employers = {
+        rows: [
           {
-            classes: noBorderClass,
-            key: {
-              text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.EMPLOYED',
-            },
-            value: {
-              text: 'COMMON.NO',
-            },
+            employerName: 'Bobs Burger',
+            jobTitle: 'Master flipper',
           },
-        ];
+          {
+            employerName: 'Avengers',
+            jobTitle: 'Part Time Superhero',
+          },
+        ],
+      };
+      const response = constructEmploymentDetailsSection(claim, 'cimode');
+      const expectedData = [
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.EMPLOYED',
+          },
+          value: {
+            text: 'COMMON.YES',
+          },
+        },
+        {
+          key: {
+            text: 'COMMON.EMPLOYMENT_TYPE',
+          },
+          value: {
+            text: 'PAGES.EMPLOYMENT_STATUS.EMPLOYED',
+          },
+        },
+        {
+          key: {
+            text: 'COMMON.EMPLOYMENT_TYPE',
+          },
+          value: {
+            text: 'PAGES.EMPLOYMENT_STATUS.SELF_EMPLOYED',
+          },
+        },
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'COMMON.EMPLOYER_NAME',
+          },
+          value: {
+            text: claim.statementOfMeans.employers.rows[0].employerName,
+          },
+        },
+        {
+          key: {
+            text: 'COMMON.JOB_TITLE',
+          },
+          value: {
+            text: claim.statementOfMeans.employers.rows[0].jobTitle,
+          },
+        },
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'COMMON.EMPLOYER_NAME',
+          },
+          value: {
+            text: claim.statementOfMeans.employers.rows[1].employerName,
+          },
+        },
+        {
+          key: {
+            text: 'COMMON.JOB_TITLE',
+          },
+          value: {
+            text: claim.statementOfMeans.employers.rows[1].jobTitle,
+          },
+        },
+      ];
 
-        expect(response).toStrictEqual(expectedData);
-      });
+      expect(response).toStrictEqual(expectedData);
+    });
+  });
 
-      it('should return employment details rows if details are provided', () => {
-        claim.statementOfMeans.employment = {
-          declared: true,
-          employmentType: [EmploymentCategory.EMPLOYED, EmploymentCategory.SELF_EMPLOYED],
-        };
-        claim.statementOfMeans.employers = {
-          rows: [
-            {
-              employerName: 'Bobs Burger',
-              jobTitle: 'Master flipper',
-            },
-            {
-              employerName: 'Avengers',
-              jobTitle: 'Part Time Superhero',
-            },
-          ],
-        };
-        const response = constructEmploymentDetailsSection(claim, 'cimode');
-        const expectedData = [
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.EMPLOYED',
-            },
-            value: {
-              text: 'COMMON.YES',
-            },
-          },
-          {
-            key: {
-              text: 'COMMON.EMPLOYMENT_TYPE',
-            },
-            value: {
-              text: 'PAGES.EMPLOYMENT_STATUS.EMPLOYED',
-            },
-          },
-          {
-            key: {
-              text: 'COMMON.EMPLOYMENT_TYPE',
-            },
-            value: {
-              text: 'PAGES.EMPLOYMENT_STATUS.SELF_EMPLOYED',
-            },
-          },
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'COMMON.EMPLOYER_NAME',
-            },
-            value: {
-              text: claim.statementOfMeans.employers.rows[0].employerName,
-            },
-          },
-          {
-            key: {
-              text: 'COMMON.JOB_TITLE',
-            },
-            value: {
-              text: claim.statementOfMeans.employers.rows[0].jobTitle,
-            },
-          },
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'COMMON.EMPLOYER_NAME',
-            },
-            value: {
-              text: claim.statementOfMeans.employers.rows[1].employerName,
-            },
-          },
-          {
-            key: {
-              text: 'COMMON.JOB_TITLE',
-            },
-            value: {
-              text: claim.statementOfMeans.employers.rows[1].jobTitle,
-            },
-          },
-        ];
-
-        expect(response).toStrictEqual(expectedData);
-      });
+  describe('constructSelfEmploymentDetailsSection', () => {
+    it('should return empty list if self-employment details are not provided', () => {
+      const response = constructSelfEmploymentDetailsSection(new Claim(), 'cimode');
+      expect(response).toStrictEqual([]);
     });
 
-    describe('constructSelfEmploymentDetailsSection', () => {
-      it('should return empty list if self-employment details are not provided', () => {
-        const response = constructSelfEmploymentDetailsSection(new Claim(), 'cimode');
-        expect(response).toStrictEqual([]);
-      });
+    it('should return list with data if sel-employment details are provided', () => {
+      claim.statementOfMeans.selfEmployedAs = {
+        jobTitle: 'Venture Capitalist',
+        annualTurnover: 200,
+      };
+      claim.statementOfMeans.taxPayments = {
+        owed: true,
+        amountOwed: 800,
+        reason: 'Bad investment',
+      };
 
-      it('should return list with data if sel-employment details are provided', () => {
-        claim.statementOfMeans.selfEmployedAs = {
-          jobTitle: 'Venture Capitalist',
-          annualTurnover: 200,
-        };
-        claim.statementOfMeans.taxPayments = {
-          owed: true,
-          amountOwed: 800,
-          reason: 'Bad investment',
-        };
+      const response = constructSelfEmploymentDetailsSection(claim, 'cimode');
+      const expectedData = [
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'COMMON.JOB_TITLE',
+          },
+          value: {
+            text: claim.statementOfMeans.selfEmployedAs.jobTitle,
+          },
+        },
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'COMMON.ANNUAL_TURNOVER',
+          },
+          value: {
+            text: '£200',
+          },
+        },
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.BEHIND_ON_TAX_PAYMENTS',
+          },
+          value: {
+            text: 'COMMON.YES',
+          },
+        },
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.AMOUNT_OWED',
+          },
+          value: {
+            text: '£800',
+          },
+        },
+        {
+          key: {
+            text: 'COMMON.REASON',
+          },
+          value: {
+            text: claim.statementOfMeans.taxPayments.reason,
+          },
+        },
+      ];
 
-        const response = constructSelfEmploymentDetailsSection(claim, 'cimode');
-        const expectedData = [
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'COMMON.JOB_TITLE',
-            },
-            value: {
-              text: claim.statementOfMeans.selfEmployedAs.jobTitle,
-            },
-          },
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'COMMON.ANNUAL_TURNOVER',
-            },
-            value: {
-              text: '£200',
-            },
-          },
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.BEHIND_ON_TAX_PAYMENTS',
-            },
-            value: {
-              text: 'COMMON.YES',
-            },
-          },
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.AMOUNT_OWED',
-            },
-            value: {
-              text: '£800',
-            },
-          },
-          {
-            key: {
-              text: 'COMMON.REASON',
-            },
-            value: {
-              text: claim.statementOfMeans.taxPayments.reason,
-            },
-          },
-        ];
+      expect(response).toStrictEqual(expectedData);
+    });
+  });
 
-        expect(response).toStrictEqual(expectedData);
-      });
+  describe('constructMonthlyIncomeSection', () => {
+    it('should display no option if data is not provided', () => {
+      const response = constructMonthlyIncomeSection(new Claim(), 'cimode');
+      const expectedData = [
+        {
+          key: {
+            text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.RECEIVE_INCOME',
+          },
+          value: {
+            text: 'COMMON.NO',
+          },
+        },
+      ];
+
+      expect(response).toStrictEqual(expectedData);
     });
 
-    describe('constructMonthlyIncomeSection', () => {
-      it('should display no option if data is not provided', () => {
-        const response = constructMonthlyIncomeSection(new Claim(), 'cimode');
-        const expectedData = [
-          {
-            key: {
-              text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.RECEIVE_INCOME',
-            },
-            value: {
-              text: 'COMMON.NO',
-            },
+    it('should display rows data if data is provided', () => {
+      claim.statementOfMeans.regularIncome = new RegularIncome({job: new Transaction()});
+      const response = constructMonthlyIncomeSection(claim, 'cimode');
+      const expectedData = [
+        {
+          key: {
+            text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.RECEIVE_INCOME',
           },
-        ];
-
-        expect(response).toStrictEqual(expectedData);
-      });
-
-      it('should display rows data if data is provided', () => {
-        claim.statementOfMeans.regularIncome = new RegularIncome({job: new Transaction()});
-        const response = constructMonthlyIncomeSection(claim, 'cimode');
-        const expectedData = [
-          {
-            key: {
-              text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.RECEIVE_INCOME',
-            },
-            value: {
-              text: 'COMMON.YES',
-            },
+          value: {
+            text: 'COMMON.YES',
           },
-        ];
+        },
+      ];
 
-        expect(response).toStrictEqual(expectedData);
-      });
+      expect(response).toStrictEqual(expectedData);
+    });
+  });
+
+  describe('constructMonthlyExpensesSection', () => {
+    it('should display no option if data is not provided', () => {
+      const response = constructMonthlyExpensesSection(new Claim(), 'cimode');
+      const expectedData = [
+        {
+          key: {
+            text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.PAY_EXPENSES',
+          },
+          value: {
+            text: 'COMMON.NO',
+          },
+        },
+      ];
+
+      expect(response).toStrictEqual(expectedData);
     });
 
-    describe('constructMonthlyExpensesSection', () => {
-      it('should display no option if data is not provided', () => {
-        const response = constructMonthlyExpensesSection(new Claim(), 'cimode');
-        const expectedData = [
-          {
-            key: {
-              text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.PAY_EXPENSES',
-            },
-            value: {
-              text: 'COMMON.NO',
-            },
+    it('should display rows data if data is provided', () => {
+      claim.statementOfMeans.regularExpenses = new RegularExpenses({mortgage: new Transaction()});
+      const response = constructMonthlyExpensesSection(claim, 'cimode');
+      const expectedData = [
+        {
+          key: {
+            text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.PAY_EXPENSES',
           },
-        ];
-
-        expect(response).toStrictEqual(expectedData);
-      });
-
-      it('should display rows data if data is provided', () => {
-        claim.statementOfMeans.regularExpenses = new RegularExpenses({mortgage: new Transaction()});
-        const response = constructMonthlyExpensesSection(claim, 'cimode');
-        const expectedData = [
-          {
-            key: {
-              text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.PAY_EXPENSES',
-            },
-            value: {
-              text: 'COMMON.YES',
-            },
+          value: {
+            text: 'COMMON.YES',
           },
-        ];
+        },
+      ];
 
-        expect(response).toStrictEqual(expectedData);
-      });
+      expect(response).toStrictEqual(expectedData);
+    });
+  });
+
+  describe('constructCourtOrdersSection', () => {
+    it('should display no option if data is not provided', () => {
+      const response = constructCourtOrdersSection(new Claim(), 'cimode');
+      const expectedData = [
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.COURT_ORDERS_TO_PAY',
+          },
+          value: {
+            text: 'COMMON.NO',
+          },
+        },
+      ];
+
+      expect(response).toStrictEqual(expectedData);
     });
 
-    describe('constructCourtOrdersSection', () => {
-      it('should display no option if data is not provided', () => {
-        const response = constructCourtOrdersSection(new Claim(), 'cimode');
-        const expectedData = [
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.COURT_ORDERS_TO_PAY',
-            },
-            value: {
-              text: 'COMMON.NO',
-            },
+    it('should display rows data if data is provided', () => {
+      claim.statementOfMeans.courtOrders = {
+        declared: true,
+        rows: [
+          new CourtOrder(99, 9, '000CLAIM123'),
+        ],
+      };
+      const response = constructCourtOrdersSection(claim, 'cimode');
+      const expectedData = [
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.COURT_ORDERS_TO_PAY',
           },
-        ];
+          value: {
+            text: 'COMMON.YES',
+          },
+        },
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'COMMON.CLAIM_NUMBER',
+          },
+          value: {
+            text: claim.statementOfMeans.courtOrders.rows[0].claimNumber,
+          },
+        },
+        {
+          key: {
+            text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.AMOUNT_OWED',
+          },
+          value: {
+            text: '£99',
+          },
+        },
+      ];
 
-        expect(response).toStrictEqual(expectedData);
-      });
+      expect(response).toStrictEqual(expectedData);
+    });
+  });
 
-      it('should display rows data if data is provided', () => {
-        claim.statementOfMeans.courtOrders = {
-          declared: true,
-          rows: [
-            new CourtOrder(99, 9, '000CLAIM123'),
-          ],
-        };
-        const response = constructCourtOrdersSection(claim, 'cimode');
-        const expectedData = [
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.COURT_ORDERS_TO_PAY',
-            },
-            value: {
-              text: 'COMMON.YES',
-            },
+  describe('constructDebtsSection', () => {
+    it('should display no options if data is not provided', () => {
+      const response = constructDebtsSection(new Claim(), 'cimode');
+      const expectedData = [
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.DEBTS_BEHIND_ON',
           },
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'COMMON.CLAIM_NUMBER',
-            },
-            value: {
-              text: claim.statementOfMeans.courtOrders.rows[0].claimNumber,
-            },
+          value: {
+            text: 'COMMON.NO',
           },
-          {
-            key: {
-              text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.AMOUNT_OWED',
-            },
-            value: {
-              text: '£99',
-            },
+        },
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.DEBTS_LOAN_OR_CREDIT_CARD',
           },
-        ];
+          value: {
+            text: 'COMMON.NO',
+          },
+        },
+      ];
 
-        expect(response).toStrictEqual(expectedData);
-      });
+      expect(response).toStrictEqual(expectedData);
     });
 
-    describe('constructDebtsSection', () => {
-      it('should display no options if data is not provided', () => {
-        const response = constructDebtsSection(new Claim(), 'cimode');
-        const expectedData = [
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.DEBTS_BEHIND_ON',
-            },
-            value: {
-              text: 'COMMON.NO',
-            },
+    it('should display rows data if data is provided', () => {
+      claim.statementOfMeans.priorityDebts = new PriorityDebts(
+        new PriorityDebtDetails(true, 'mortgage', 8, 'WEEK'),
+        new PriorityDebtDetails(true, 'rent', 88, 'MONTH'),
+      );
+      claim.statementOfMeans.debts = new Debts('yes', [
+        new DebtItems('Bad investment', '888', '22'),
+        new DebtItems('Fish insurance', '75', '2'),
+      ]);
+      const response = constructDebtsSection(claim, 'cimode');
+      const expectedData = [
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.DEBTS_BEHIND_ON',
           },
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.DEBTS_LOAN_OR_CREDIT_CARD',
-            },
-            value: {
-              text: 'COMMON.NO',
-            },
+          value: {
+            text: 'COMMON.YES',
           },
-        ];
+        },
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'COMMON.DEBT',
+          },
+          value: {
+            text: 'COMMON.CHECKBOX_FIELDS.MORTGAGE',
+          },
+        },
+        {
+          key: {
+            text: 'COMMON.PAYMENT_SCHEDULE.WEEKLY',
+          },
+          value: {
+            text: '£8',
+          },
+        },
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.DEBTS_LOAN_OR_CREDIT_CARD',
+          },
+          value: {
+            text: 'COMMON.YES',
+          },
+        },
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'COMMON.DEBT',
+          },
+          value: {
+            text: claim.statementOfMeans.debts.debtsItems[0].debt,
+          },
+        },
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'COMMON.TOTAL_DEBT',
+          },
+          value: {
+            text: '£888',
+          },
+        },
+        {
+          key: {
+            text: 'COMMON.MONTHLY_PAYMENTS',
+          },
+          value: {
+            text: '£22',
+          },
+        },
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'COMMON.DEBT',
+          },
+          value: {
+            text: claim.statementOfMeans.debts.debtsItems[1].debt,
+          },
+        },
+        {
+          classes: noBorderClass,
+          key: {
+            text: 'COMMON.TOTAL_DEBT',
+          },
+          value: {
+            text: '£75',
+          },
+        },
+        {
+          key: {
+            text: 'COMMON.MONTHLY_PAYMENTS',
+          },
+          value: {
+            text: '£2',
+          },
+        },
+      ];
 
-        expect(response).toStrictEqual(expectedData);
-      });
-
-      it('should display rows data if data is provided', () => {
-        claim.statementOfMeans.priorityDebts = new PriorityDebts(
-          new PriorityDebtDetails(true, 'mortgage', 8, 'WEEK'),
-          new PriorityDebtDetails(true, 'rent', 88, 'MONTH'),
-        );
-        claim.statementOfMeans.debts = new Debts('yes', [
-          new DebtItems('Bad investment', '888', '22'),
-          new DebtItems('Fish insurance', '75', '2'),
-        ]);
-        const response = constructDebtsSection(claim, 'cimode');
-        const expectedData = [
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.DEBTS_BEHIND_ON',
-            },
-            value: {
-              text: 'COMMON.YES',
-            },
-          },
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'COMMON.DEBT',
-            },
-            value: {
-              text: 'COMMON.CHECKBOX_FIELDS.MORTGAGE',
-            },
-          },
-          {
-            key: {
-              text: 'COMMON.PAYMENT_SCHEDULE.WEEKLY',
-            },
-            value: {
-              text: '£8',
-            },
-          },
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.DEBTS_LOAN_OR_CREDIT_CARD',
-            },
-            value: {
-              text: 'COMMON.YES',
-            },
-          },
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'COMMON.DEBT',
-            },
-            value: {
-              text: claim.statementOfMeans.debts.debtsItems[0].debt,
-            },
-          },
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'COMMON.TOTAL_DEBT',
-            },
-            value: {
-              text: '£888',
-            },
-          },
-          {
-            key: {
-              text: 'COMMON.MONTHLY_PAYMENTS',
-            },
-            value: {
-              text: '£22',
-            },
-          },
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'COMMON.DEBT',
-            },
-            value: {
-              text: claim.statementOfMeans.debts.debtsItems[1].debt,
-            },
-          },
-          {
-            classes: noBorderClass,
-            key: {
-              text: 'COMMON.TOTAL_DEBT',
-            },
-            value: {
-              text: '£75',
-            },
-          },
-          {
-            key: {
-              text: 'COMMON.MONTHLY_PAYMENTS',
-            },
-            value: {
-              text: '£2',
-            },
-          },
-        ];
-
-        for (let i = 0; i < expectedData.length; i++) {
-          expect(response).toContainEqual(expectedData[i]);
-        }
-      });
+      for (let i = 0; i < expectedData.length; i++) {
+        expect(response).toContainEqual(expectedData[i]);
+      }
     });
+  });
 
-    describe('getFinancialDetails', () => {
-      it('should call all construct sections', () => {
-        const financialDetails = getFinancialDetails(claim, 'cimode');
-        expect(financialDetails.length).toBe(9);
-      });
+  describe('getFinancialDetails', () => {
+    it('should call all construct sections', () => {
+      const financialDetails = getFinancialDetails(claim, 'cimode');
+      expect(financialDetails.length).toBe(9);
     });
   });
 });

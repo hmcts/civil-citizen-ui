@@ -1,0 +1,61 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../macro/page-title.njk" import setPageTitle %}
+{% from "../../../macro/error-summary.njk" import errorSummary %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.CCJ_PAYMENT_TYPE.PAGE_TITLE') }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% set errors = form.getErrors() %}
+      {% if form.hasErrors() %}
+        {{ errorSummary(errors, t) }}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t('PAGES.CCJ_PAYMENT_TYPE.TITLE') }}</h1>
+          <h2 class="govuk-heading-s">{{ t('PAGES.CCJ_PAYMENT_TYPE.WOULD_PAY') }}</h2>
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            {{ govukRadios({
+              idPrefix: "type",
+              name: "type",
+              items: [
+                {
+                  value: PaymentOptionType.IMMEDIATELY,
+                  text: t('COMMON.PAYMENT_OPTION.IMMEDIATELY'),
+                  checked: true if form.model.type == PaymentOptionType.IMMEDIATELY
+                },
+                {
+                  value: PaymentOptionType.BY_SET_DATE,
+                  text: t('COMMON.PAYMENT_OPTION.BY_SET_DATE'),
+                  checked: true if form.model.type == PaymentOptionType.BY_SET_DATE
+                },
+                {
+                  value: PaymentOptionType.INSTALMENTS,
+                  text: t('PAGES.PAYMENT_OPTION.REPAYMENT'),
+                  checked: true if form.model.type == PaymentOptionType.INSTALMENTS
+                }
+              ],
+              errorMessage: {
+                text: t(form.errorFor('type'))
+              } if form.hasFieldError('type')
+            }) }}
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
