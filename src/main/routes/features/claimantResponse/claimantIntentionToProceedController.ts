@@ -12,7 +12,7 @@ import {
 } from '../../../services/features/claimantResponse/claimantResponseService';
 
 const claimantIntentionToProceedController = Router();
-const claimantIntentionToProceedViewPath = 'features/claimant-response/claimant-intention-to-proceed';
+const claimantIntentionToProceedViewPath = 'features/claimantResponse/claimant-intention-to-proceed';
 const crPropertyName = 'option';
 const crParentName = 'intentionToProceed';
 
