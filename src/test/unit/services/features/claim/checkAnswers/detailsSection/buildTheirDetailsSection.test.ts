@@ -33,7 +33,8 @@ const ADDRESS = '23 Brook lane<br>Bristol<br>BS13SS';
 const DOB = '12 December 2000';
 const CLAIM_ID = 'claimId';
 const INDEX_THEIRDETAILS_SECTION = 1;
-describe('Cirizen Details Section', () => {
+
+describe('Citizen Details Section', () => {
   const claim = createClaimWithBasicRespondentDetails();
   it('should return your Individual details summary sections', async () => {
     //When
