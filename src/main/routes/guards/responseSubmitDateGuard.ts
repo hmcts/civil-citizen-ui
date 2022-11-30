@@ -8,8 +8,8 @@ export const responseSubmitDateGuard = async (req: Request, res: Response, next:
   try {
     const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
     const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
-    const submittedClaim = await civilServiceClient.retrieveClaimDetails(req.params?.id, <AppRequest>req);
-    return submittedClaim?.respondent1ResponseDate
+    const claim = await civilServiceClient.retrieveClaimDetails(req.params?.id, <AppRequest>req);
+    return claim?.respondent1ResponseDate
       ? next()
       : res.redirect(DASHBOARD_URL);
   } catch (error) {
