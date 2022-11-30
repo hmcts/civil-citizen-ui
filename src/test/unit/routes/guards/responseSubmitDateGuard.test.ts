@@ -13,7 +13,7 @@ describe('Response Submit Date Guard', () => {
     nock('http://localhost:4000')
       .get('/cases/123')
       .reply(200, new Claim());
-      
+
     await responseSubmitDateGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
     expect(MOCK_NEXT).not.toHaveBeenCalled();
   });
@@ -23,7 +23,12 @@ describe('Response Submit Date Guard', () => {
       .get('/cases/123')
       .reply(200, CivilClaimResponseMock);
 
-      await responseSubmitDateGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+    await responseSubmitDateGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
     expect(MOCK_NEXT).toHaveBeenCalled();
+  });
+
+  it('should catch an error', async () => {
+    await responseSubmitDateGuard(null, MOCK_RESPONSE, MOCK_NEXT);
+    expect(MOCK_NEXT).toHaveBeenCalledWith();
   });
 });
