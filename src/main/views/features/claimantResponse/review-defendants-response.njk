@@ -21,13 +21,6 @@
           {% endfor %}
 
           {% if claim.responseStatus === 'FULL_ADMISSION_PAY_BY_DATE' %}
-            <p class="govuk-body">
-              {{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.FULL_ADMISSION', {defendant: claim.getDefendantFullName() }) }}
-              {{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.TOTAL_PAID_AMOUNT') }}
-            </p>
-            <p class="govuk-body">
-              {{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PAYMENT_DATE', {paymentDate: paymentDate}) }}
-            </p>
             {{ theirFinancialDetails(t, 'PAGES.REVIEW_DEFENDANTS_RESPONSE.SEE_FINANCIAL_DETAILS', claim, financialDetails) }}
           {% endif %}
 
