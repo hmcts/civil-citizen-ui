@@ -39,7 +39,7 @@ const showSelfEmploymentTaxPayments = (claim: Claim, financialSection: SummarySe
   if (taxPayments?.owed) {
     financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TAX_PAYMENT_ARE_YOU_BEHIND', { lng: getLng(lang) }), t(`COMMON.${isBehindTaxPayments}`, {lng: getLng(lang)}), '', changeLabel(lang)));
     financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TAX_PAYMENT_AMOUNT_YOU_OWE', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(taxPayments.amountOwed), '', changeLabel(lang)));
-    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TAX_PAYMENT_REASON', { lng: getLng(lang) }), taxPayments.reason, '', changeLabel(lang)));
+    financialSection.summaryList.rows.push(summaryRow(t('COMMON.REASON', { lng: getLng(lang) }), taxPayments.reason, '', changeLabel(lang)));
   } else {
     financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TAX_PAYMENT_ARE_YOU_BEHIND', { lng: getLng(lang) }), t(`COMMON.${isBehindTaxPayments}`, {lng: getLng(lang)}), '', changeLabel(lang)));
   }
@@ -48,13 +48,13 @@ const showSelfEmploymentTaxPayments = (claim: Claim, financialSection: SummarySe
 const showEmploymentDetails = (claim: Claim, financialSection: SummarySection, employment: Employment, whoEmploysYouHref: string, selfemploymentHref: string, lang: string | unknown) => {
   const isSelfEmployedAs = claim.statementOfMeans?.selfEmployedAs;
 
-  financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_TYPE', { lng: getLng(lang) }), getTypeOfJobTranslation(employment, lang), '', changeLabel(lang)));
+  financialSection.summaryList.rows.push(summaryRow(t('COMMON.EMPLOYMENT_TYPE', { lng: getLng(lang) }), getTypeOfJobTranslation(employment, lang), '', changeLabel(lang)));
 
   if (claim.statementOfMeans?.employers?.rows
     && ((employment.employmentType[0] === EmploymentCategory.EMPLOYED && employment.employmentType[1] === EmploymentCategory.SELF_EMPLOYED) || employment.employmentType[0] === EmploymentCategory.EMPLOYED)) {
     financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_WHO_EMPLOYS_YOU', { lng: getLng(lang) }), '', whoEmploysYouHref, changeLabel(lang)));
     for (const item of claim.statementOfMeans.employers.rows) {
-      financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_NAME', { lng: getLng(lang) }), item.employerName, '', changeLabel(lang)));
+      financialSection.summaryList.rows.push(summaryRow(t('COMMON.EMPLOYER_NAME', { lng: getLng(lang) }), item.employerName, '', changeLabel(lang)));
       financialSection.summaryList.rows.push(summaryRow(t('COMMON.JOB_TITLE', { lng: getLng(lang) }), item.jobTitle, '', changeLabel(lang)));
     }
   }
@@ -62,7 +62,7 @@ const showEmploymentDetails = (claim: Claim, financialSection: SummarySection, e
   if (isSelfEmployedAs) {
     financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_SELF_DETAILS', { lng: getLng(lang) }), '', selfemploymentHref, changeLabel(lang)));
     financialSection.summaryList.rows.push(summaryRow(t('COMMON.JOB_TITLE', { lng: getLng(lang) }), isSelfEmployedAs.jobTitle, '', changeLabel(lang)));
-    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_SELF_ANNUAL_TURNOVER', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(isSelfEmployedAs.annualTurnover), '', changeLabel(lang)));
+    financialSection.summaryList.rows.push(summaryRow(t('COMMON.ANNUAL_TURNOVER', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(isSelfEmployedAs.annualTurnover), '', changeLabel(lang)));
     showSelfEmploymentTaxPayments(claim, financialSection, lang);
   }
 };
@@ -86,7 +86,7 @@ const showUnemploymentDetails = (financialSection: SummarySection, unemployment:
     default:
   }
 
-  financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_TYPE', { lng: getLng(lang) }), unemploymentLengthOrOther, '', changeLabel(lang)));
+  financialSection.summaryList.rows.push(summaryRow(t('COMMON.EMPLOYMENT_TYPE', { lng: getLng(lang) }), unemploymentLengthOrOther, '', changeLabel(lang)));
 };
 
 export const addEmploymentDetails = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
@@ -98,7 +98,7 @@ export const addEmploymentDetails = (claim: Claim, financialSection: SummarySect
   const unemployment = claim.statementOfMeans?.unemployment;
 
   financialSection.summaryList.rows.push(
-    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_DETAILS', { lng: getLng(lang) }), '', yourEmploymentHref, changeLabel(lang)),
+    summaryRow(t('COMMON.EMPLOYMENT_DETAILS', { lng: getLng(lang) }), '', yourEmploymentHref, changeLabel(lang)),
     summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_DO_YOU_HAVE_A_JOB', { lng: getLng(lang) }), t(`COMMON.${hasAjob}`, {lng: getLng(lang)}), yourEmploymentHref, changeLabel(lang)),
   );
 

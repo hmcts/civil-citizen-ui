@@ -3,7 +3,7 @@ import {Claim} from '../../../../../common/models/claim';
 import {ClaimSummarySection, ClaimSummaryType} from '../../../../../common/form/models/claimSummarySection';
 
 export const getRCDisputeStatus = (claim: Claim, lng: string): ClaimSummarySection[] => {
-  const claimantName = claim.getClaimantName();
+  const claimantName = claim.getClaimantFullName();
   return [
     {
       type: ClaimSummaryType.PARAGRAPH,
@@ -16,7 +16,7 @@ export const getRCDisputeStatus = (claim: Claim, lng: string): ClaimSummarySecti
 
 export const getRCDisputeNextSteps = (claimId: string, claim: Claim, lng: string): ClaimSummarySection[] => {
 
-  const claimantName = claim.getClaimantName();
+  const claimantName = claim.getClaimantFullName();
 
   return [
     {

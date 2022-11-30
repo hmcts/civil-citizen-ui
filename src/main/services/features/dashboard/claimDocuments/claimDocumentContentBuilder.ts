@@ -4,6 +4,7 @@ import {DocumentType, DocumentUri} from '../../../../common/models/document/docu
 import {CASE_DOCUMENT_DOWNLOAD_URL} from '../../../../routes/urls';
 import {formatDateToFullDate} from '../../../../common/utils/dateUtils';
 import {displayDocumentSizeInKB} from '../../../../common/utils/documentSizeDisplayFormatter';
+import {t} from 'i18next';
 
 const buildDownloadSealedClaimSection = (claim: Claim, claimId: string, lang: string): ClaimSummarySection => {
   const document = claim.getDocumentDetails(DocumentType.SEALED_CLAIM);
@@ -14,8 +15,8 @@ const buildDownloadSealedClaimSection = (claim: Claim, claimId: string, lang: st
       type: ClaimSummaryType.LINK,
       data: {
         href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentType', DocumentUri.SEALED_CLAIM),
-        text: `${downloadClaimLabel}(PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
-        subtitle: `${createdLabel}${formatDateToFullDate(document.createdDatetime)}`,
+        text: `${t(downloadClaimLabel, lang)} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
+        subtitle: `${t(createdLabel, lang)} ${formatDateToFullDate(document.createdDatetime)}`,
       },
     };
   }

@@ -30,7 +30,7 @@ export const getNotPastResponseDeadlineContent = (claim: Claim): ClaimSummarySec
 };
 
 export const getPastResponseDeadlineContent = (claim: Claim): ClaimSummarySection[] => {
-  const claimantName = claim.getClaimantName();
+  const claimantName = claim.getClaimantFullName();
   return [
     {
       type: ClaimSummaryType.PARAGRAPH,
