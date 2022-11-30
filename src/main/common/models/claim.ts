@@ -39,7 +39,7 @@ import {Interest} from '../form/models/interest/interest';
 import {RejectAllOfClaimType} from '../../common/form/models/rejectAllOfClaimType';
 import {ClaimDetails} from '../../common/form/models/claim/details/claimDetails';
 import {ClaimantResponse} from './claimantResponse';
-import {CCDClaim} from 'models/civilClaimResponse';
+import {CCDClaim} from '../models/civilClaimResponse';
 import {toCUIParty} from 'services/translation/response/convertToCUI/convertToCUIParty';
 import {SelfEmployedAs} from '../models/selfEmployedAs';
 import {TaxPayments} from '../models/taxPayments';
@@ -141,14 +141,6 @@ export class Claim {
     claim.applicant1 = toCUIParty(ccdClaim.applicant1);
     claim.respondent1 = toCUIParty(ccdClaim.respondent1);
     return claim;
-  }
-
-  getClaimantName(): string {
-    return this.applicant1?.partyDetails?.partyName;
-  }
-
-  getDefendantName(): string {
-    return this.respondent1?.partyDetails?.partyName;
   }
 
   getClaimantFullName(): string {

@@ -158,6 +158,7 @@ import claimCheckAnswersController from './features/claim/checkAnswersController
 import claimantEvidenceController from './features/claim/yourDetails/claimantEvidenceController';
 import howMuchContinueClaimingController from './features/claim/interest/howMuchContinueClaimingController';
 import helpWithFeesController from './features/claim/details/helpWithFeesController';
+import debtRespiteReferenceNumberController from './features/breathingSpace/debtRespiteReferenceNumberController';
 import datePaidViewController from './features/claimantResponse/paidInFull/datePaidController';
 import settleClaimController from './features/claimantResponse/settleClaimController';
 import fullAdmitSetDatePaymentController from './features/claimantResponse/fullAdmitSetDatePaymentController';
@@ -170,8 +171,11 @@ import specificCourtController from './features/directionsQuestionnaire/hearing/
 import debtRespiteOptionController from './features/breathingSpace/debtRespiteOptionController';
 import debtStartDateController from './features/breathingSpace/debtRespiteStartDateController';
 import debtRespiteEndDateController from './features/breathingSpace/debtRespiteEndDateController';
-import paidSomeAmountController from './features/claimantResponse/ccj/paidAmountController';
 import reviewDefendantsResponseController from './features/claimantResponse/reviewDefendantsResponseController';
+import ccjPaymentOptionController from './features/claimantResponse/ccj/ccjPaymentOptionController';
+import paidSomeAmountController from './features/claimantResponse/ccj/paidAmountController';
+import defendantPaymentDateController from './features/claimantResponse/ccj/defendantPaymentDateController';
+import ccjConfirmationController from './features/claimantResponse/ccj/ccjConfirmationController';
 import judgmentAmountSummaryController from 'routes/features/claimantResponse/ccj/judgmentAmountSummaryController';
 
 export default [
@@ -318,6 +322,7 @@ export default [
   claimantEvidenceController,
   howMuchContinueClaimingController,
   helpWithFeesController,
+  debtRespiteReferenceNumberController,
   datePaidViewController,
   settleClaimController,
   fullAdmitSetDatePaymentController,
@@ -330,7 +335,10 @@ export default [
   debtRespiteOptionController,
   debtStartDateController,
   debtRespiteEndDateController,
-  paidSomeAmountController,
   reviewDefendantsResponseController,
+  ccjPaymentOptionController,
+  paidSomeAmountController,
+  defendantPaymentDateController,
+  ccjConfirmationController,
   judgmentAmountSummaryController,
 ];

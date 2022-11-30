@@ -317,6 +317,15 @@
     "CARER": {
       "PAGE_TITLE": "Carer's allowance"
     },
+    "CCJ_CONFIRMATION": {
+      "ACTIONS_LINK_TEXT": "Find out about actions you can take after a CCJ is issued ",
+      "PAGE_TITLE": "County Court Judgement confirmation",
+      "PROCESS_YOUR_REQUEST": "We’ll process your request and post a copy of the judgment to you and to {{ defendantName }}. We aim to do this within 10 working days.",
+      "POSTAL_RESPONSE": "If a postal response is received before the judgment is issued your request will be rejected.",
+      "TITLE": "County Court Judgement requested",
+      "UPDATES": "Your online account will not be updated with the progress of this claim - any further updates will be by post.",
+      "NO_LONGER_RESPONSE": "{{ defendantName }} can no longer respond to your claim online."
+    },
     "CCJ_DEFENDANT_DOB": {
       "PAGE_TITLE": "Do you know the defendant's date of birth?",
       "TITLE": "Do you know the defendant's date of birth?"
@@ -325,6 +334,14 @@
       "AMOUNT_PAID": "Amount already paid",
       "PAGE_TITLE": "Has the defendant paid some of the amount owed?",
       "TITLE": "Has the defendant paid some of the amount owed?"
+    },
+    "CCJ_PAYMENT_TYPE": {
+      "WOULD_PAY": "I would like the defendant to pay:",
+      "PAGE_TITLE": "Payment Options",
+      "TITLE": "Payment Options"
+    },
+    "CCJ_DEFENDANT_PAYMENT_DATE": {
+      "TITLE": "When do you want the defendant to pay?"
     },
     "JUDGMENT_AMOUNT": {
       "TITLE": "Judgment amount",
@@ -360,13 +377,24 @@
       "DETAILS_TITLE": "Your details",
       "DETAILS_TITLE_CLAIMANT": "Your details (claimant)",
       "DISABILITY_ARE_YOU_DISABLED": "Are you disabled?",
+      "DO_YOU_HAVE_OTHER_WITNESSES": "Do you have other witnesses?",
       "DOB": "Date of birth",
       "EMAIL": "Email",
+      "EMAIL_ADDRESS": "Email address",
       "EMPLOYMENT_DETAILS": "Employment details",
       "EMPLOYMENT_DO_YOU_HAVE_A_JOB": "Do you have a job?",
       "EMPLOYMENT_WHO_EMPLOYS_YOU": "Who employs you?",
       "EMPLOYMENT_SELF_DETAILS": "Self employment details?",
       "EMPLOYED_AND_SELF_EMPLOYED": "Employed and Self-employed",
+      "EVIDENCE_COMMENTS": "Comments about their evidence (optional)",
+      "EVIDENCE_CONTRACTS_AND_AGREEMENTS": "Contracts and agreements",
+      "EVIDENCE_CORRESPONDENCE": "Letters, emails and other correspondence",
+      "EVIDENCE_EXPERT_WITNESS": "Expert witness",
+      "EVIDENCE_OTHER": "Other",
+      "EVIDENCE_PHOTO": "Photo evidence",
+      "EVIDENCE_RECEIPTS": "Receipts",
+      "EVIDENCE_STATEMENT_OF_ACCOUNT": "Statements of account",
+      "EVIDENCE_TITLE": "Your evidence (optional)",
       "EXPENSES_REGULAR": "Regular expenses",
       "FREE_TELEPHONE_CONTACT_NAME": "Contact name",
       "FREE_TELEPHONE_CONTACT_NUMBER": "Contact number",
@@ -374,6 +402,7 @@
       "FIRST_PAYMENT": "Make the first payment on",
       "FULL_NAME": "Full name",
       "GIVE_EVIDENCE": "Do you want to give evidence?",
+      "HEARING_REQUIREMENTS_TITLE": "Hearing requirements",
       "INCOME_REGULAR": "Regular income",
       "INCOME_JOB": "Income from your job",
       "INCOME_UNIVERSAL_CREDIT": "Universal Credit",
@@ -392,6 +421,7 @@
       "PARTNER_DOES_RECEIVE_A_PENSION": "Does your partner receive a pension?",
       "PARTNER_IS_DISABLED": "Is your partner disabled?",
       "PARTNER_IS_SEVERELY_DISABLED": "Is your partner severely disabled?",
+      "PHONE_NUMBER": "Phone number",
       "PRIORITY_DEBTS_YOU_ARE_BEHIND_ON": "Debts you are behind on",
       "PRIORITY_DEBT_TYPE": "Debt type",
       "PRIORITY_DEBT_ARREARS_REPAYMENT": "Arrears repayment",
@@ -420,25 +450,19 @@
       "SUPPORT_REQUIRED_DETAILS": "Support details:",
       "TAX_PAYMENT_ARE_YOU_BEHIND": "Are you behind on tax payments?",
       "TAX_PAYMENT_AMOUNT_YOU_OWE": "Amount you owe?",
+      "TAX_PAYMENT_REASON": "Reason",
+      "TELL_US_WHY": "Tell us what they witnessed",
       "THEIR_DETAILS_TITLE": "Their details",
       "THEIR_DETAILS_TITLE_DEFENDANT": "Their details (defendant)",
       "TITLE": "Check your answers",
       "TIMELINE_TITLE": "Your timeline of what happened (optional)",
       "TIMELINE_COMMENTS": "Comments about their timeline (optional)",
-      "EVIDENCE_TITLE": "Your evidence (optional)",
-      "EVIDENCE_CONTRACTS_AND_AGREEMENTS": "Contracts and agreements",
-      "EVIDENCE_EXPERT_WITNESS": "Expert witness",
-      "EVIDENCE_CORRESPONDENCE": "Letters, emails and other correspondence",
-      "EVIDENCE_PHOTO": "Photo evidence",
-      "EVIDENCE_RECEIPTS": "Receipts",
-      "EVIDENCE_STATEMENT_OF_ACCOUNT": "Statements of account",
-      "EVIDENCE_OTHER": "Other",
-      "EVIDENCE_COMMENTS": "Comments about their evidence (optional)",
       "VULNERABILITY_INFO": "Tell us who is vulnerable and what support they need",
       "VULNERABILITY_QUESTION": "Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider?",
       "WHEN_PAY": "When will you pay",
       "WHEN_PAY_TITLE": "When you'll pay",
       "WHERE_DO_YOU_LIVE": "Where do you live?",
+      "WITNESS": "Witness",
       "YOUR_FINANCIAL_DETAILS_TITLE": "Your financial details"
     },
     "CITIZEN_BANK_ACCOUNTS": {
@@ -836,6 +860,11 @@
       "LIST": "List each loan or credit card debt",
       "PAGE_TITLE": "Any debts?",
       "TITLE": "Do you have loans or credit card debts?"
+    },
+    "DEBT_RESPITE_REF_NUMBER": {
+      "ENTER_REFERENCE": "Enter the reference number (optional):",
+      "PAGE_TITLE": "Debt Respite Scheme reference number",
+      "TITLE": "Do you have a Debt Respite Scheme reference number?"
     },
     "DEBT_RESPITE_END_DATE": {
       "PAGE_TITLE": "Expected end date",
@@ -2140,6 +2169,7 @@
     "VALID_AT_LEAST_ONE_OPTION": "You must select at least one option",
     "VALID_BETWEEN_NUMBERS_0_11": "Enter a number between 0 and 11",
     "VALID_BETWEEN_NUMBERS_0_80": "Enter a number between 0 and 80",
+    "VALID_CCJ_PAYMENT_OPTION": "Choose option",
     "VALID_CHOOSE": "Choose your response",
     "VALID_CITY": "Enter a valid town/city",
     "VALID_CLAIM_AMOUNT": "Enter an amount of money",
