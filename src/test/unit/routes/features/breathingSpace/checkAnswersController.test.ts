@@ -96,7 +96,7 @@ export function createDebtrespite(): SummarySections {
   };
 }
 
-const data = {_csrf: 'oAu8p5bV-glpP78Yowsar_iK4UPB4fKSSXCc'};
+const data = {_csrf: 'oAu8p5bV-glpP78Yowsar_iK4UPB4fKSSXCc'}
 
 describe('Response - Check answers', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -106,7 +106,7 @@ describe('Response - Check answers', () => {
   beforeAll(() => {
     nock(idamServiceUrl)
       .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+      .reply(200, { id_token: citizenRoleToken });
   });
 
   describe('on GET', () => {
