@@ -158,8 +158,7 @@ import claimCheckAnswersController from './features/claim/checkAnswersController
 import claimantEvidenceController from './features/claim/yourDetails/claimantEvidenceController';
 import howMuchContinueClaimingController from './features/claim/interest/howMuchContinueClaimingController';
 import helpWithFeesController from './features/claim/details/helpWithFeesController';
-import debtRespiteReferenceNumberController
-  from './features/breathingSpace/debtRespiteReferenceNumberController';
+import debtRespiteReferenceNumberController from './features/breathingSpace/debtRespiteReferenceNumberController';
 import datePaidViewController from './features/claimantResponse/paidInFull/datePaidController';
 import settleClaimController from './features/claimantResponse/settleClaimController';
 import fullAdmitSetDatePaymentController from './features/claimantResponse/fullAdmitSetDatePaymentController';
@@ -174,6 +173,9 @@ import debtStartDateController from './features/breathingSpace/debtRespiteStartD
 import debtRespiteEndDateController from './features/breathingSpace/debtRespiteEndDateController';
 import reviewDefendantsResponseController from './features/claimantResponse/reviewDefendantsResponseController';
 import ccjPaymentOptionController from './features/claimantResponse/ccj/ccjPaymentOptionController';
+import paidSomeAmountController from './features/claimantResponse/ccj/paidAmountController';
+import defendantPaymentDateController from './features/claimantResponse/ccj/defendantPaymentDateController';
+import ccjConfirmationController from './features/claimantResponse/ccj/ccjConfirmationController';
 
 export default [
   homeController,
@@ -334,4 +336,7 @@ export default [
   debtRespiteEndDateController,
   reviewDefendantsResponseController,
   ccjPaymentOptionController,
+  paidSomeAmountController,
+  defendantPaymentDateController,
+  ccjConfirmationController,
 ];
