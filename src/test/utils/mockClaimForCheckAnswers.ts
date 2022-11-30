@@ -245,7 +245,7 @@ export const createClaimWithPriorityDebts = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
 
-  const priority_debts: PriorityDebts = new PriorityDebts(
+  const priorityDebts: PriorityDebts = new PriorityDebts(
     {
       mortgage: new Transaction(true, new TransactionSource({
         name: 'Mortgage',
@@ -292,7 +292,7 @@ export const createClaimWithPriorityDebts = (): Claim => {
     });
 
   claim.statementOfMeans = {
-    priorityDebts: priority_debts,
+    priorityDebts: priorityDebts,
   };
 
   return claim as Claim;
