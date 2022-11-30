@@ -9,7 +9,7 @@ const youHavePaidLessViewPath = 'features/response/admission/fullRejection/you-h
 youHavePaidLessController.get(CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL, async (req, res, next: NextFunction) => {
   try {
     const claim = await getCaseDataFromStore(req.params.id);
-    res.render(youHavePaidLessViewPath, {claimantName: claim.getClaimantName()});
+    res.render(youHavePaidLessViewPath, {claimantName: claim.getClaimantFullName()});
   }
   catch (error) {
     next(error);

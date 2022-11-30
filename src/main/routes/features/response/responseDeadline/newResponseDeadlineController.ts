@@ -21,7 +21,7 @@ newResponseDeadlineController
       const claim = await getClaimWithExtendedResponseDeadline(req);
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       res.render(newResponseDeadlineViewPath, {
-        claimantName: claim.getClaimantName(),
+        claimantName: claim.getClaimantFullName(),
         responseDeadline: formatDateToFullDate(claim.responseDeadline.calculatedResponseDeadline, lang),
         backUrl: constructResponseUrlWithIdParams(req.params.id, AGREED_TO_MORE_TIME_URL),
       });
