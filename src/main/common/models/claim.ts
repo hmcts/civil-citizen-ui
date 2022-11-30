@@ -39,7 +39,7 @@ import {Interest} from '../form/models/interest/interest';
 import {RejectAllOfClaimType} from '../../common/form/models/rejectAllOfClaimType';
 import {ClaimDetails} from '../../common/form/models/claim/details/claimDetails';
 import {ClaimantResponse} from './claimantResponse';
-import {CCDClaim} from 'models/civilClaimResponse';
+import {CCDClaim} from '../models/civilClaimResponse';
 import {toCUIParty} from 'services/translation/response/convertToCUI/convertToCUIParty';
 import {SelfEmployedAs} from '../models/selfEmployedAs';
 import {TaxPayments} from '../models/taxPayments';
@@ -339,6 +339,14 @@ export class Claim {
 
   hasRespondentAskedForMoreThan28Days(): boolean {
     return this.responseDeadline?.option === ResponseOptions.YES && this.responseDeadline?.additionalTime === AdditionalTimeOptions.MORE_THAN_28_DAYS;
+  }
+
+  hasInterest(): boolean {
+    return this.claimInterest === YesNo.YES;
+  }
+
+  hasHelpWithFees(): boolean {
+    return this.claimDetails?.helpWithFees?.option === YesNo.YES;
   }
 
   isRequestToExtendDeadlineRefused(): boolean {
