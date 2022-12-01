@@ -10,38 +10,37 @@ def component = "citizen-ui"
 AppPipelineConfig pipelineConf
 
 static Map<String, Object> secret(String secretName, String envVariable) {
-    [$class     : 'AzureKeyVaultSecret',
-     secretType : 'Secret',
-     name       : secretName,
-     envVariable: envVariable
-    ]
+  [$class     : 'AzureKeyVaultSecret',
+   secretType : 'Secret',
+   name       : secretName,
+   envVariable: envVariable
+  ]
 }
 
-
 def secrets = [
-        's2s-${env}': [
-                secret('microservicekey-ccd-gw', 'CCD_API_GATEWAY_S2S_SECRET'),
-                secret('microservicekey-ccd-data', 'CCD_DATA_STORE_S2S_SECRET'),
-                secret('microservicekey-ccd-definition', 'CCD_DEFINITION_STORE_S2S_SECRET')
-        ],
-        'ccd-${env}': [
-                secret('ccd-api-gateway-oauth2-client-secret', 'CCD_API_GATEWAY_IDAM_CLIENT_SECRET'),
-                secret('postcode-info-address-lookup-token', 'ADDRESS_LOOKUP_TOKEN'),
-                secret('ccd-admin-web-oauth2-client-secret', 'ADMIN_WEB_IDAM_SECRET'),
-                secret('idam-data-store-client-secret','IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET'),
-                secret('idam-data-store-system-user-username','IDAM_DATA_STORE_SYSTEM_USER_USERNAME'),
-                secret('idam-data-store-system-user-password','IDAM_DATA_STORE_SYSTEM_USER_PASSWORD')
-        ],
-        'civil-${env}': [
-                secret('microservicekey-civil-service', 'S2S_SECRET'),
-                secret('ccd-importer-username', 'CCD_CONFIGURER_IMPORTER_USERNAME'),
-                secret('ccd-importer-password', 'CCD_CONFIGURER_IMPORTER_PASSWORD'),
-                secret('postgres-user', 'POSTGRES_USER'),
-                secret('postgres-password', 'POSTGRES_PASSWORD'),
-                secret('ordnance-survey-api-key', 'ORDNANCE_SURVEY_API_KEY'),
-                secret('citizen-ui-test-username', 'CITIZEN_USERNAME'),
-                secret('citizen-ui-test-password', 'CITIZEN_PASSWORD')
-        ]
+  's2s-${env}': [
+    secret('microservicekey-ccd-gw', 'CCD_API_GATEWAY_S2S_SECRET'),
+    secret('microservicekey-ccd-data', 'CCD_DATA_STORE_S2S_SECRET'),
+    secret('microservicekey-ccd-definition', 'CCD_DEFINITION_STORE_S2S_SECRET')
+  ],
+  'ccd-${env}': [
+    secret('ccd-api-gateway-oauth2-client-secret', 'CCD_API_GATEWAY_IDAM_CLIENT_SECRET'),
+    secret('postcode-info-address-lookup-token', 'ADDRESS_LOOKUP_TOKEN'),
+    secret('ccd-admin-web-oauth2-client-secret', 'ADMIN_WEB_IDAM_SECRET'),
+    secret('idam-data-store-client-secret','IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET'),
+    secret('idam-data-store-system-user-username','IDAM_DATA_STORE_SYSTEM_USER_USERNAME'),
+    secret('idam-data-store-system-user-password','IDAM_DATA_STORE_SYSTEM_USER_PASSWORD')
+  ],
+  'civil-${env}': [
+    secret('microservicekey-civil-service', 'S2S_SECRET'),
+    secret('ccd-importer-username', 'CCD_CONFIGURER_IMPORTER_USERNAME'),
+    secret('ccd-importer-password', 'CCD_CONFIGURER_IMPORTER_PASSWORD'),
+    secret('postgres-user', 'POSTGRES_USER'),
+    secret('postgres-password', 'POSTGRES_PASSWORD'),
+    secret('ordnance-survey-api-key', 'ORDNANCE_SURVEY_API_KEY'),
+    secret('citizen-ui-test-username', 'CITIZEN_USERNAME'),
+    secret('citizen-ui-test-password', 'CITIZEN_PASSWORD')
+  ]
 ]
 
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
@@ -56,39 +55,39 @@ def setEnv(change_id) {
         env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "https://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
         env.CCD_DATA_STORE_URL = "https://ccd-data-store-api-aat.service.core-compute-aat.internal/"
         env.DM_STORE_URL = "https://dm-store-aat.service.core-compute-aat.internal"
+
 }
 
 def checkForEnableHelmLabel(branch_name) {
-    return new GithubAPI(this).getLabelsbyPattern(branch_name, "enableHelm").contains("enableHelm")
+  return new GithubAPI(this).getLabelsbyPattern(branch_name, "enableHelm").contains("enableHelm")
 }
 
 withPipeline(type, product, component) {
-    pipelineConf = config
-    disableLegacyDeployment()
-    enableAksStagingDeployment()
-    enableSlackNotifications('#civil_notifications')
-    syncBranchesWithMaster(branchesToSync)
+  pipelineConf = config
+  disableLegacyDeployment()
+  enableAksStagingDeployment()
+  enableSlackNotifications('#civil_notifications')
+  syncBranchesWithMaster(branchesToSync)
 
-    onPR {
-        env.ENVIRONMENT = "preview"
-        env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-        loadVaultSecrets(secrets)
-        if (!checkForEnableHelmLabel(env.BRANCH_NAME)) {
-          enableCleanupOfHelmReleaseOnSuccess();
-        }
+  onPR {
+    env.ENVIRONMENT = "preview"
+    env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+    loadVaultSecrets(secrets)
+    if (!checkForEnableHelmLabel(env.BRANCH_NAME)) {
+      enableCleanupOfHelmReleaseOnSuccess();
     }
-    onMaster {
-      setEnv(CHANGE_ID)
-      env.ENVIRONMENT="aat"
-        loadVaultSecrets(secrets)
-    }
-    onDemo {
-        env.ENVIRONMENT = "demo"
-        loadVaultSecrets(secrets)
-    }
+  }
+  onMaster {
+    env.ENVIRONMENT="aat"
+    loadVaultSecrets(secrets)
+  }
+  onDemo {
+    env.ENVIRONMENT = "demo"
+    loadVaultSecrets(secrets)
+  }
 
-    before('smoketest:preview') {
-        sh """
+  before('smoketest:preview') {
+    sh """
           eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
           ./bin/add-roles.sh
           ./bin/pull-latest-release-asset.sh civil-ccd-definition civil-ccd-definition.zip
@@ -131,5 +130,4 @@ withPipeline(type, product, component) {
       createGithubRelease()
       steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
     }
-
 }
