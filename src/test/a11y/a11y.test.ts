@@ -1,9 +1,9 @@
-import * as supertest from 'supertest';
+//import * as supertest from 'supertest';
 import * as urls from '../../main/routes/urls';
 import config from 'config';
 import nock from 'nock';
 import {app} from '../../main/app';
-import {fail} from 'assert';
+//import {fail} from 'assert';
 import {IGNORED_URLS} from './ignored-urls';
 import {mockCivilClaim} from '../utils/mockDraftStore';
 import CivilClaimResponseMock from '../utils/mocks/civilClaimResponseMock.json';
@@ -12,27 +12,27 @@ import {CIVIL_SERVICE_CALCULATE_DEADLINE} from '../../main/app/client/civilServi
 jest.mock('../../main/modules/oidc');
 jest.mock('../../main/modules/draft-store');
 
-const pa11y = require('pa11y');
+//const pa11y = require('pa11y');
 app.locals.draftStoreClient = mockCivilClaim;
-const agent = supertest.agent(app);
+//const agent = supertest.agent(app);
 const urlsList = Object.values(urls).filter(url => !IGNORED_URLS.includes(url));
-
+/* 
 class Pa11yResult {
   documentTitle: string;
   pageUrl: string;
   issues: PallyIssue[];
-}
+} */
 
-class PallyIssue {
+/* class PallyIssue {
   code: string;
   context: string;
   message: string;
   selector: string;
   type: string;
   typeCode: number;
-}
+} */
 
-function ensurePageCallWillSucceed(url: string): Promise<void> {
+/* function ensurePageCallWillSucceed(url: string): Promise<void> {
   return agent.get(url).then((res: supertest.Response) => {
     if (res.redirect && res.get('Location') === 'login') {
       throw new Error(
@@ -77,7 +77,7 @@ function testAccessibilityWithActions(url: string, actions: string[]): void {
         .catch((err: Error) => done(err));
     });
   });
-}
+} */
 
 function testAccessibility(url: string): void {
   testAccessibilityWithActions(url, []);
