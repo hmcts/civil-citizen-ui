@@ -11,87 +11,76 @@ def ccddefbranch = "feat/CIV-5369-Legal-ITP-Full-Admit-Instalments"
 AppPipelineConfig pipelineConf
 
 static Map<String, Object> secret(String secretName, String envVariable) {
-    [$class     : 'AzureKeyVaultSecret',
-     secretType : 'Secret',
-     name       : secretName,
-     envVariable: envVariable
-    ]
+  [$class     : 'AzureKeyVaultSecret',
+   secretType : 'Secret',
+   name       : secretName,
+   envVariable: envVariable
+  ]
 }
-def setEnv(change_id) {
-  env.IDAM_API_URL = "https://idam-api.aat.platform.hmcts.net"
-  env.URL="http://manage-case.aat.platform.hmcts.net/ "
-  env.TEST_URL="https://civil-citizen-ui.aat.platform.hmcts.net"
-  env.CIVIL_SERVICE_URL="http://civil-service-aat.service.core-compute-aat.internal/"
-  env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
-  env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-aat.service.core-compute-aat.internal/"
-  env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
-}
-
 
 def secrets = [
-        's2s-${env}': [
-                secret('microservicekey-ccd-gw', 'CCD_API_GATEWAY_S2S_SECRET'),
-                secret('microservicekey-ccd-data', 'CCD_DATA_STORE_S2S_SECRET'),
-                secret('microservicekey-ccd-definition', 'CCD_DEFINITION_STORE_S2S_SECRET')
-        ],
-        'ccd-${env}': [
-                secret('ccd-api-gateway-oauth2-client-secret', 'CCD_API_GATEWAY_IDAM_CLIENT_SECRET'),
-                secret('postcode-info-address-lookup-token', 'ADDRESS_LOOKUP_TOKEN'),
-                secret('ccd-admin-web-oauth2-client-secret', 'ADMIN_WEB_IDAM_SECRET'),
-                secret('idam-data-store-client-secret','IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET'),
-                secret('idam-data-store-system-user-username','IDAM_DATA_STORE_SYSTEM_USER_USERNAME'),
-                secret('idam-data-store-system-user-password','IDAM_DATA_STORE_SYSTEM_USER_PASSWORD')
-        ],
-        'civil-${env}': [
-                secret('microservicekey-civil-service', 'S2S_SECRET'),
-                secret('ccd-importer-username', 'CCD_CONFIGURER_IMPORTER_USERNAME'),
-                secret('ccd-importer-password', 'CCD_CONFIGURER_IMPORTER_PASSWORD'),
-                secret('postgres-user', 'POSTGRES_USER'),
-                secret('postgres-password', 'POSTGRES_PASSWORD'),
-                secret('ordnance-survey-api-key', 'ORDNANCE_SURVEY_API_KEY'),
-                secret('citizen-ui-test-username', 'CITIZEN_USERNAME'),
-                secret('citizen-ui-test-password', 'CITIZEN_PASSWORD')
-        ]
+  's2s-${env}': [
+    secret('microservicekey-ccd-gw', 'CCD_API_GATEWAY_S2S_SECRET'),
+    secret('microservicekey-ccd-data', 'CCD_DATA_STORE_S2S_SECRET'),
+    secret('microservicekey-ccd-definition', 'CCD_DEFINITION_STORE_S2S_SECRET')
+  ],
+  'ccd-${env}': [
+    secret('ccd-api-gateway-oauth2-client-secret', 'CCD_API_GATEWAY_IDAM_CLIENT_SECRET'),
+    secret('postcode-info-address-lookup-token', 'ADDRESS_LOOKUP_TOKEN'),
+    secret('ccd-admin-web-oauth2-client-secret', 'ADMIN_WEB_IDAM_SECRET'),
+    secret('idam-data-store-client-secret','IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET'),
+    secret('idam-data-store-system-user-username','IDAM_DATA_STORE_SYSTEM_USER_USERNAME'),
+    secret('idam-data-store-system-user-password','IDAM_DATA_STORE_SYSTEM_USER_PASSWORD')
+  ],
+  'civil-${env}': [
+    secret('microservicekey-civil-service', 'S2S_SECRET'),
+    secret('ccd-importer-username', 'CCD_CONFIGURER_IMPORTER_USERNAME'),
+    secret('ccd-importer-password', 'CCD_CONFIGURER_IMPORTER_PASSWORD'),
+    secret('postgres-user', 'POSTGRES_USER'),
+    secret('postgres-password', 'POSTGRES_PASSWORD'),
+    secret('ordnance-survey-api-key', 'ORDNANCE_SURVEY_API_KEY'),
+    secret('citizen-ui-test-username', 'CITIZEN_USERNAME'),
+    secret('citizen-ui-test-password', 'CITIZEN_PASSWORD')
+  ]
 ]
 
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 def branchesToSync = ['demo', 'perftest']
 
 def checkForFullDeployLabel(branch_name) {
-    return new GithubAPI(this).getLabelsbyPattern(branch_name, "fullDeploy").contains("fullDeploy")
+  return new GithubAPI(this).getLabelsbyPattern(branch_name, "fullDeploy").contains("fullDeploy")
 }
 
 def checkForEnableHelmLabel(branch_name) {
-    return new GithubAPI(this).getLabelsbyPattern(branch_name, "enableHelm").contains("enableHelm")
+  return new GithubAPI(this).getLabelsbyPattern(branch_name, "enableHelm").contains("enableHelm")
 }
 
 withPipeline(type, product, component) {
-    pipelineConf = config
-    disableLegacyDeployment()
-    enableAksStagingDeployment()
-    enableSlackNotifications('#civil_notifications')
-    syncBranchesWithMaster(branchesToSync)
+  pipelineConf = config
+  disableLegacyDeployment()
+  enableAksStagingDeployment()
+  enableSlackNotifications('#civil_notifications')
+  syncBranchesWithMaster(branchesToSync)
 
-    onPR {
-        env.ENVIRONMENT = "preview"
-        env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-        loadVaultSecrets(secrets)
-        if (!checkForEnableHelmLabel(env.BRANCH_NAME)) {
-          enableCleanupOfHelmReleaseOnSuccess();
-        }
+  onPR {
+    env.ENVIRONMENT = "preview"
+    env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+    loadVaultSecrets(secrets)
+    if (!checkForEnableHelmLabel(env.BRANCH_NAME)) {
+      enableCleanupOfHelmReleaseOnSuccess();
     }
-    onMaster {
-      setEnv(CHANGE_ID)
-      env.ENVIRONMENT="aat"
-        loadVaultSecrets(secrets)
-    }
-    onDemo {
-        env.ENVIRONMENT = "demo"
-        loadVaultSecrets(secrets)
-    }
+  }
+  onMaster {
+    env.ENVIRONMENT="aat"
+    loadVaultSecrets(secrets)
+  }
+  onDemo {
+    env.ENVIRONMENT = "demo"
+    loadVaultSecrets(secrets)
+  }
 
-    before('smoketest:preview') {
-        sh """
+  before('smoketest:preview') {
+    sh """
           eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
           ./bin/add-roles.sh
           ./bin/pull-latest-release-asset.sh civil-ccd-definition civil-ccd-definition.zip
@@ -99,73 +88,73 @@ withPipeline(type, product, component) {
           ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json,*ClaimantResponseLRspec-nonprod.json" ${ccddefbranch}
           ./bin/import-bpmn-diagram.sh .
         """
-        env.IDAM_API_URL = "https://idam-api.aat.platform.hmcts.net"
-        env.URL="https://xui-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-        env.TEST_URL="https://civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-        env.CIVIL_SERVICE_URL="https://civil-service-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-        env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
-        env.CCD_DATA_STORE_URL = "https://ccd-data-store-api-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-        env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
-    }
+    env.IDAM_API_URL = "https://idam-api.aat.platform.hmcts.net"
+    env.URL="https://xui-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.TEST_URL="https://civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.CIVIL_SERVICE_URL="https://civil-service-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+    env.CCD_DATA_STORE_URL = "https://ccd-data-store-api-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
+  }
 
-    after('smoketest:preview') {
-        steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/smokeTest/**/*'
-    }
+  after('smoketest:preview') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/smokeTest/**/*'
+  }
 
-    before('functionalTest:preview') {
-      env.IDAM_API_URL = "https://idam-api.aat.platform.hmcts.net"
-      env.URL="https://xui-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-      env.TEST_URL="https://civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-      env.CIVIL_SERVICE_URL="https://civil-service-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-      env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
-      env.CCD_DATA_STORE_URL = "https://ccd-data-store-api-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-      env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
-    }
+  before('functionalTest:preview') {
+    env.IDAM_API_URL = "https://idam-api.aat.platform.hmcts.net"
+    env.URL="https://xui-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.TEST_URL="https://civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.CIVIL_SERVICE_URL="https://civil-service-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+    env.CCD_DATA_STORE_URL = "https://ccd-data-store-api-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
+  }
 
-    after('functionalTest:preview') {
-      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
-    }
+  after('functionalTest:preview') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
+  }
 
-    before('smoketest:aat') {
-      /*env.IDAM_API_URL = "https://idam-api.aat.platform.hmcts.net"
-      env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
-      env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-aat.service.core-compute-aat.internal"
-      env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
-      env.CIVIL_SERVICE_URL="http://civil-service-aat.service.core-compute-aat.internal"
-      env.URL="https://manage-case.aat.platform.hmcts.net"
-      env.TEST_URL="https://civil-citizen-ui.aat.platform.hmcts.net"
-*/
-      dir("${WORKSPACE}/build") {
-        steps.archiveArtifacts artifacts: "ccd-release-config/civil-ccd-staging.xlsx"
+  before('smoketest:aat') {
+    env.IDAM_API_URL = "https://idam-api.aat.platform.hmcts.net"
+    env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+    env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-aat.service.core-compute-aat.internal"
+    env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
+    env.CIVIL_SERVICE_URL="http://civil-service-aat.service.core-compute-aat.internal"
+    env.URL="https://manage-case.aat.platform.hmcts.net"
+    env.TEST_URL="https://civil-citizen-ui.aat.platform.hmcts.net"
+
+    dir("${WORKSPACE}/build") {
+      steps.archiveArtifacts artifacts: "ccd-release-config/civil-ccd-staging.xlsx"
+    }
+    uploadCoreCaseDataDefinitions('staging')
+  }
+
+  after('smoketest:aat') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/smokeTest/**/*'
+  }
+
+  before('functionalTest:aat') {
+    env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+    env.IDAM_API_URL = "https://idam-api.aat.platform.hmcts.net"
+    env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+    env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-aat.service.core-compute-aat.internal"
+    env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
+    env.CIVIL_SERVICE_URL="http://civil-service-aat.service.core-compute-aat.internal"
+    env.URL="https://manage-case.aat.platform.hmcts.net"
+    env.TEST_URL="https://civil-citizen-ui.aat.platform.hmcts.net"
+  }
+
+  after('functionalTest:aat') {
+    createGithubRelease()
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
+  }
+
+  before('akschartsinstall') {
+    onPR() {
+      if (!checkForFullDeployLabel(env.BRANCH_NAME)) {
+        error("Build failed because there is no label full deploy.")
       }
-      uploadCoreCaseDataDefinitions('staging')
     }
-
-    after('smoketest:aat') {
-      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/smokeTest/**/*'
-    }
-
-    before('functionalTest:aat') {
-      env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-  /*    env.IDAM_API_URL = "https://idam-api.aat.platform.hmcts.net"
-      env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
-      env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-aat.service.core-compute-aat.internal"
-      env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
-      env.CIVIL_SERVICE_URL="http://civil-service-aat.service.core-compute-aat.internal"
-      env.URL="https://manage-case.aat.platform.hmcts.net"
-      env.TEST_URL="https://civil-citizen-ui.aat.platform.hmcts.net"*/
-    }
-
-    after('functionalTest:aat') {
-      createGithubRelease()
-      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
-    }
-
-    before('akschartsinstall') {
-      onPR() {
-          if (!checkForFullDeployLabel(env.BRANCH_NAME)) {
-             error("Build failed because there is no label full deploy.")
-          }
-      }
-    }
+  }
 }
