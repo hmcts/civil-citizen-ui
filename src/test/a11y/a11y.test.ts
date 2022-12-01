@@ -110,6 +110,5 @@ describe('Accessibility', () => {
 
   urlsList.forEach((url) => {
     //testAccessibility(url);
-    done();
   });
 });
