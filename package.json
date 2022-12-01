@@ -43,7 +43,7 @@
     "@types/express-session": "^1.17.5",
     "@types/glob": "^8.0.0",
     "@types/helmet": "^4.0.0",
-    "@types/lodash": "^4.14.187",
+    "@types/lodash": "^4.14.191",
     "@types/luxon": "^3.0.2",
     "@types/node": "^18.11.10",
     "@types/nunjucks": "^3.2.1",
