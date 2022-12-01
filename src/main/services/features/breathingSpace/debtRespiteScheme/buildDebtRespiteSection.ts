@@ -21,8 +21,8 @@ export const buildDebtRespiteSection = (breathingSpace: BreathingSpace, claimId:
 
   const lng = getLng(lang);
   const referenceNumber = breathingSpace?.debtRespiteReferenceNumber?.referenceNumber ?? '';
-  const debtRespiteStartDate = (breathingSpace.debtRespiteStartDate)? formatDateToFullDate(breathingSpace?.debtRespiteStartDate?.date):''
-  const debtRespiteEndDate = (breathingSpace.debtRespiteEndDate)? formatDateToFullDate(breathingSpace?.debtRespiteEndDate?.date):''
+  const debtRespiteStartDate = (breathingSpace.debtRespiteStartDate)? formatDateToFullDate(breathingSpace?.debtRespiteStartDate?.date):'';
+  const debtRespiteEndDate = (breathingSpace.debtRespiteEndDate)? formatDateToFullDate(breathingSpace?.debtRespiteEndDate?.date):'';
 
   const breathingType = (breathingSpace?.debtRespiteOption)?'PAGES.BREATHING_SPACE_DEBT_RESPITE_TYPE' + '.' + breathingSpace?.debtRespiteOption?.type:'';
 
