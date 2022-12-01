@@ -1,13 +1,13 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL, CLAIMANT_RESPONSE_TASK_LIST_URL} from '../../../routes/urls';
-import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
-import {Claim} from '../../../common/models/claim';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {getFinancialDetails} from '../../../services/features/claimantResponse/claimantResponseService';
-import {getLng} from '../../../common/utils/languageToggleUtils';
+import {CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL, CLAIMANT_RESPONSE_TASK_LIST_URL} from 'routes/urls';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getFinancialDetails} from 'services/features/claimantResponse/claimantResponseService';
+import {getLng} from 'common/utils/languageToggleUtils';
 import {
   getDefendantsResponseContent,
-} from '../../../services/features/claimantResponse/defendantResponse/defendantResponseSummaryService';
+} from 'services/features/claimantResponse/defendantResponse/defendantResponseSummaryService';
 import {ClaimResponseStatus} from 'models/claimResponseStatus';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 
@@ -45,7 +45,7 @@ reviewDefendantsResponseController.post(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESP
         claim,
         continueLink,
         financialDetails,
-        paid_by_date: formatDateToFullDate(claim.partialAdmission.paymentIntention.paymentDate),
+        paymentDate: formatDateToFullDate(claim.partialAdmission.paymentIntention.paymentDate, lang),
       });
     } else {
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
