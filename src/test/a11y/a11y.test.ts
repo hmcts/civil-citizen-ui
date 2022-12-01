@@ -110,5 +110,8 @@ describe('Accessibility', () => {
 
   urlsList.forEach((url) => {
     //testAccessibility(url);
+    it('do something', done => {
+      console.log("Did I do well?");
+    });
   });
 });
