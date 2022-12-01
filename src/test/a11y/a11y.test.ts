@@ -32,7 +32,7 @@ class PallyIssue {
   typeCode: number;
 }
 
-/* function ensurePageCallWillSucceed(url: string): Promise<void> {
+function ensurePageCallWillSucceed(url: string): Promise<void> {
   return agent.get(url).then((res: supertest.Response) => {
     if (res.redirect && res.get('Location') === 'login') {
       throw new Error(
@@ -77,7 +77,7 @@ function testAccessibilityWithActions(url: string, actions: string[]): void {
         .catch((err: Error) => done(err));
     });
   });
-} 
+}
 
 function testAccessibility(url: string): void {
   testAccessibilityWithActions(url, []);
@@ -111,12 +111,3 @@ describe('Accessibility', () => {
     testAccessibility(url);
   });
 });
-*/
-
-function testDummy(url: string, actions: string[]): void {
-  describe(`Doing something`, () => {
-    it(`should work`, done => {
-      done();
-    });
-  });
-} 
