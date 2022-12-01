@@ -21,15 +21,15 @@ export const buildDebtRespiteSection = (breathingSpace: BreathingSpace, claimId:
 
   const lng = getLng(lang);
   const referenceNumber = breathingSpace?.debtRespiteReferenceNumber?.referenceNumber ?? '';
-  const breathingType = 'PAGES.BREATHING_SPACE_DEBT_RESPITE_TYPE' + '.' + breathingSpace.debtRespiteOption.type;
+  const breathingType = 'PAGES.BREATHING_SPACE_DEBT_RESPITE_TYPE' + '.' + breathingSpace?.debtRespiteOption?.type;
 
   return summarySection({
     title: '',
     summaryRows: [
       summaryRow(t('PAGES.CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS.REFERENCE_NUMBER', {lng}), referenceNumber, referenceNumberHref, changeLabel(lang)),
-      summaryRow(t('PAGES.CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS.WHEN_DID_IT_START', {lng}), formatDateToFullDate(breathingSpace.debtRespiteStartDate.date), debtRespiteStartDateHref, changeLabel(lang)),
+      summaryRow(t('PAGES.CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS.WHEN_DID_IT_START', {lng}), formatDateToFullDate(breathingSpace?.debtRespiteStartDate?.date), debtRespiteStartDateHref, changeLabel(lang)),
       summaryRow(t('PAGES.CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS.TYPE.WHAT_TYPE_IS_IT', {lng}), t(breathingType), debtRespiteOptionDateHref, changeLabel(lang)),
-      summaryRow(t('PAGES.CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS.EXPECTED_END_DATE', {lng}), formatDateToFullDate(breathingSpace.debtRespiteEndDate.date), debtRespiteEndDateHref, changeLabel(lang)),
+      summaryRow(t('PAGES.CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS.EXPECTED_END_DATE', {lng}), formatDateToFullDate(breathingSpace?.debtRespiteEndDate?.date), debtRespiteEndDateHref, changeLabel(lang)),
     ],
   });
 };
