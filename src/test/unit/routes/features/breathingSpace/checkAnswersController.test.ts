@@ -105,8 +105,8 @@ describe('Response - Check answers', () => {
 
   beforeAll(() => {
     nock(idamServiceUrl)
-        .post('/o/token')
-        .reply(200, { id_token: citizenRoleToken });
+      .post('/o/token')
+      .reply(200, {id_token: citizenRoleToken});
   });
 
   describe('on GET', () => {
@@ -124,20 +124,20 @@ describe('Response - Check answers', () => {
       const header = getElementsByXPath("//h1[@class='govuk-heading-l']", htmlDocument);
 
       const referenceNumber = getElementsByXPath(
-          "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'Reference number')]]",
-          htmlDocument);
+        "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'Reference number')]]",
+        htmlDocument);
 
       const whenDidItStart = getElementsByXPath(
-          "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'When did it start')]]",
-          htmlDocument);
+        "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'When did it start')]]",
+        htmlDocument);
 
       const whatTypeIsIt = getElementsByXPath(
-          "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'What type is it')]]",
-          htmlDocument);
+        "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'What type is it')]]",
+        htmlDocument);
 
       const expectedEndDate = getElementsByXPath(
-          "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'Expected end date')]]",
-          htmlDocument);
+        "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'Expected end date')]]",
+        htmlDocument);
 
       expect(header.length).toBe(1);
       expect(header[0].textContent).toBe(checkYourAnswerEng);
@@ -153,32 +153,32 @@ describe('Response - Check answers', () => {
 
     it('should pass english translation via query', async () => {
       await session(app).get(BREATHING_SPACE_CHECK_ANSWERS_URL)
-          .query({lang: 'en'})
-          .expect((res: Response) => {
-            expect(res.status).toBe(200);
-            expect(res.text).toContain(checkYourAnswerEng);
-          });
+        .query({lang: 'en'})
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(checkYourAnswerEng);
+        });
     });
     it('should return status 500 when error thrown', async () => {
       mockGetSummarySections.mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       await session(app)
-          .get(BREATHING_SPACE_CHECK_ANSWERS_URL)
-          .expect((res: Response) => {
-            expect(res.status).toBe(500);
-            expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-          });
+        .get(BREATHING_SPACE_CHECK_ANSWERS_URL)
+        .expect((res: Response) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
     });
   });
   describe('on Post', () => {
     it('should redirect dashboard claimant', async () => {
       await session(app)
-          .post(BREATHING_SPACE_CHECK_ANSWERS_URL)
-          .send(data)
-          .expect((res: Response) => {
-            expect(res.status).toBe(302);
-          });
+        .post(BREATHING_SPACE_CHECK_ANSWERS_URL)
+        .send(data)
+        .expect((res: Response) => {
+          expect(res.status).toBe(302);
+        });
     });
   });
 });

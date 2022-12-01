@@ -16,15 +16,15 @@ function renderView(req: AppRequest, res: Response, breathingSpace: BreathingSpa
 }
 
 breathingSpaceCheckAnswersController.get(BREATHING_SPACE_CHECK_ANSWERS_URL,
-    async (req: AppRequest, res: Response, next: NextFunction) => {
-      try {
-        const claimId = req.params.id;
-        const breathingSpace = await getBreathingSpace(claimId);
-        renderView(req, res, breathingSpace, claimId);
-      } catch (error) {
-        next(error);
-      }
-    });
+  async (req: AppRequest, res: Response, next: NextFunction) => {
+    try {
+      const claimId = req.params.id;
+      const breathingSpace = await getBreathingSpace(claimId);
+      renderView(req, res, breathingSpace, claimId);
+    } catch (error) {
+      next(error);
+    }
+  });
 
 breathingSpaceCheckAnswersController.post(BREATHING_SPACE_CHECK_ANSWERS_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
