@@ -100,7 +100,7 @@ withPipeline(type, product, component) {
     }
 
     after('smoketest:preview') {
-        steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/smokeTest/**/*'
+        //steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/smokeTest/**/*'
     }
 
 
