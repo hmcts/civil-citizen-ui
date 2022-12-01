@@ -62,6 +62,7 @@
       "SUBMIT_CLAIM": "Submit claim",
       "SUBMIT_RESPONSE": "Cyflwyno'r ymateb",
       "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})"
+      "SUBMIT": "Submit"
     },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Treth Cyngor",
@@ -412,7 +413,6 @@
       "PRIORITY_DEBT_COUNCIL_TAX": "Treth y Cyngor",
       "PRIORITY_DEBT_WATER": "Dwfr",
       "PRIORITY_DEBT_MAINTENANCE": "Cynnal a chadw",
-      "REASON_TITLE": "Why you believe you’re owed the money:",
       "REGULAR_PAYMENTS": "Taliadau rheolaidd o",
       "RESPONSE_TITLE": "Eich ymateb i'r hawliad",
       "RESPONSE_CHECKBOX": "Credaf fod y ffeithiau a nodir yn yr ymateb hwn yn wir.",
@@ -441,7 +441,6 @@
       "THEIR_DETAILS_TITLE_DEFENDANT": "Their details (defendant)",
       "TITLE": "Gwiriwch eich ateb",
       "TIMELINE_TITLE": "Eich llinell amser o'r hyn a ddigwyddodd (dewisol)",
-      "TIMELINE_CLAIM_TITLE": "Timeline of what happened",
       "TIMELINE_COMMENTS": "Sylwadau am eu llinell amser (dewisol)",
       "VULNERABILITY_INFO": "Tell us who is vulnerable and what support they need",
       "VULNERABILITY_QUESTION": "Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider?",
@@ -609,6 +608,18 @@
         },
         "PAGE_TITLE": "Try to resolve the dispute",
         "TITLE": "Try to resolve the dispute"
+      },
+      "CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS": {
+        "PAGE_TITLE": "Check your answers before submitting",
+        "TITLE": "Check your answers before submitting",
+        "REFERENCE_NUMBER": "Reference number",
+        "WHEN_DID_IT_START": "When did it start",
+        "TYPE": {
+          "WHAT_TYPE_IS_IT": "What type is it",
+          "MENTAL_HEALTH_CRISIS_MORATORIUM": "Mental health crisis moratorium",
+          "STANDARD_BREATHING_SPACE": "Standard breathing space"
+        },
+        "EXPECTED_END_DATE": "Expected end date"
       },
       "WHEN_CLAIM_INTEREST_FROM": {
         "DATE_INTEREST": "Date interest applied from",
