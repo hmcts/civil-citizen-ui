@@ -39,8 +39,8 @@ import {Interest} from '../form/models/interest/interest';
 import {RejectAllOfClaimType} from '../../common/form/models/rejectAllOfClaimType';
 import {ClaimDetails} from '../../common/form/models/claim/details/claimDetails';
 import {ClaimantResponse} from './claimantResponse';
-import {CCDClaim} from 'models/civilClaimResponse';
-import {toCUIParty} from 'services/translation/convertToCUI/convertToCUIParty';
+import {CCDClaim} from '../models/civilClaimResponse';
+import {toCUIParty} from 'services/translation/response/convertToCUI/convertToCUIParty';
 import {SelfEmployedAs} from '../models/selfEmployedAs';
 import {TaxPayments} from '../models/taxPayments';
 import {RegularIncome} from '../../common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
@@ -131,14 +131,6 @@ export class Claim {
 
   }
 
-  getClaimantName(): string {
-    return this.applicant1?.partyDetails?.partyName;
-  }
-
-  getDefendantName(): string {
-    return this.respondent1?.partyDetails?.partyName;
-  }
-
   getClaimantFullName(): string {
     return this.getName(this.applicant1);
   }
@@ -148,14 +140,14 @@ export class Claim {
   }
 
   private getName(party: Party): string {
-    if (party.type == PartyType.INDIVIDUAL || party.type == PartyType.SOLE_TRADER) {
+    if (party?.type == PartyType.INDIVIDUAL || party?.type == PartyType.SOLE_TRADER) {
       if (party.partyDetails?.individualTitle) {
         return `${party.partyDetails.individualTitle} ${party.partyDetails.individualFirstName} ${party.partyDetails.individualLastName}`;
       } else {
         return `${party.partyDetails.individualFirstName} ${party.partyDetails.individualLastName}`;
       }
     }
-    return party.partyDetails.partyName;
+    return party?.partyDetails?.partyName;
   }
 
   formattedResponseDeadline(lng?: string): string {

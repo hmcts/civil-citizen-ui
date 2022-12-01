@@ -45,7 +45,6 @@ citizenDobController.get(DOB_URL, async (req: Request, res: Response, next: Next
 });
 
 citizenDobController.post(DOB_URL, async (req, res, next: NextFunction) => {
-  console.log(req.body);
   const {year, month, day} = req.body;
   try {
     const citizenDob = new GenericForm(new CitizenDob(year, month, day));
