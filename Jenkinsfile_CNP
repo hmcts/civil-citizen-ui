@@ -99,12 +99,12 @@ withPipeline(type, product, component) {
 
     }
 
-    after('smoketest:preview') {
+    afterSuccess('smoketest:preview') {
         //steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/smokeTest/**/*'
     }
 
 
-    after('functionalTest:preview') {
+    afterSuccess('functionalTest:preview') {
       steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
     }
 
@@ -117,7 +117,7 @@ withPipeline(type, product, component) {
       setEnv("${CHANGE_ID}")
     }
 
-    after('smoketest:aat') {
+    afterSuccess('smoketest:aat') {
       steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/smokeTest/**/*'
     }
 
@@ -126,7 +126,7 @@ withPipeline(type, product, component) {
       setEnv("${CHANGE_ID}")
     }
 
-    after('functionalTest:aat') {
+    afterSuccess('functionalTest:aat') {
       createGithubRelease()
       steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
     }
