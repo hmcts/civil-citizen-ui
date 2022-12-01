@@ -4,13 +4,13 @@ import {BreathingSpace} from 'models/breathingSpace';
 
 const buildSummarySections = (breathingSpace: BreathingSpace, claimId: string, lang: string | unknown): SummarySections => {
 
-    return {
-        sections: [
-            buildDebtRespiteSection(breathingSpace, claimId, lang),
-        ],
-    };
+  return {
+    sections: [
+      buildDebtRespiteSection(breathingSpace, claimId, lang),
+    ],
+  };
 };
 
 export const getSummarySections = (claimId: string, breathingSpace: BreathingSpace, lang?: string | unknown): SummarySections => {
-    return buildSummarySections(breathingSpace, claimId, lang);
+  return buildSummarySections(breathingSpace, claimId, lang);
 };
