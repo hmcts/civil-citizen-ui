@@ -216,10 +216,6 @@ export class Claim {
     return this.interest?.interestClaimOptions === InterestClaimOptionsType.SAME_RATE_INTEREST;
   }
 
-  isInterestClaimOptionsBreakDownInterest(): boolean {
-    return this.interest?.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST;
-  }
-
   isSameRateTypeEightPercent(): boolean {
     return this.interest?.sameRateInterestSelection?.sameRateInterestType === SameRateInterestType.SAME_RATE_INTEREST_8_PC;
   }
@@ -406,6 +402,10 @@ export class Claim {
     return this.statementOfMeans?.debts;
   }
 
+  isInterestClaimOptionsBreakDownInterest(): boolean {
+    return this.interest?.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST;
+  }
+
   getDefendantPaidAmount(): number | undefined {
     return this.claimantResponse?.ccjRequest?.paidAmount?.amount;
   }
@@ -419,14 +419,14 @@ export class Claim {
   }
 
   private getName(party: Party): string {
-    if (party.type == PartyType.INDIVIDUAL || party.type == PartyType.SOLE_TRADER) {
+    if (party?.type == PartyType.INDIVIDUAL || party?.type == PartyType.SOLE_TRADER) {
       if (party.partyDetails?.individualTitle) {
         return `${party.partyDetails.individualTitle} ${party.partyDetails.individualFirstName} ${party.partyDetails.individualLastName}`;
       } else {
         return `${party.partyDetails.individualFirstName} ${party.partyDetails.individualLastName}`;
       }
     }
-    return party.partyDetails.partyName;
+    return party?.partyDetails?.partyName;
   }
 }
 
