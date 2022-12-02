@@ -3,7 +3,7 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import {
-  DQ_EXPERT_EXAMINATION_URL,
+  DQ_EXPERT_DETAILS_URL,
   DQ_GIVE_EVIDENCE_YOURSELF_URL,
   PERMISSION_FOR_EXPERT_URL,
 } from '../../../../../../main/routes/urls';
@@ -59,7 +59,7 @@ describe('Permission For Expert Controller', () => {
       await request(app).post(PERMISSION_FOR_EXPERT_URL).send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(DQ_EXPERT_EXAMINATION_URL);
+          expect(res.get('location')).toBe(DQ_EXPERT_DETAILS_URL);
         });
     });
 
