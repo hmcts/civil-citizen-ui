@@ -271,7 +271,6 @@ describe('Response - Check answers', () => {
       expect(expectedEndDate[0].textContent?.trim()).toBe('1 January 2023');
     });
 
-
     it('should pass english translation via query', async () => {
       await session(app).get(BREATHING_SPACE_CHECK_ANSWERS_URL)
         .query({lang: 'en'})
