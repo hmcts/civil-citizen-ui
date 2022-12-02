@@ -1,6 +1,6 @@
 import {app} from '../../app';
-import {CivilClaimResponse} from '../../common/models/civilClaimResponse';
-import {Claim} from '../../common/models/claim';
+import {CivilClaimResponse} from 'models/civilClaimResponse';
+import {Claim} from 'models/claim';
 import {isUndefined} from 'lodash';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -58,4 +58,8 @@ const createNewCivilClaimResponse = (claimId: string) => {
   const storedClaimResponse = new CivilClaimResponse();
   storedClaimResponse.id = claimId;
   return storedClaimResponse;
+};
+
+export const deleteDraftClaimFromStore = async (claimId: string): Promise<void> => {
+  await app.locals.draftStoreClient.del(claimId);
 };
