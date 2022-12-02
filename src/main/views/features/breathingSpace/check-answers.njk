@@ -14,7 +14,6 @@
                 <div class="govuk-grid-column-two-thirds">
                     <h1 class="govuk-heading-l">{{ t('PAGES.CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS.TITLE') }}</h1>
                     {% for section in summarySections.sections %}
-                        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h2>
                         <div class="govuk-form-group">
                             {{ govukSummaryList({
                                 rows: section.summaryList.rows

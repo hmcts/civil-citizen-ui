@@ -3,7 +3,7 @@ import {summaryRow} from '../../../../common/models/summaryList/summaryList';
 import {t} from 'i18next';
 import {getLng} from '../../../../common/utils/languageToggleUtils';
 import {
-  BREATHING_SPACE_CHECK_ANSWERS_URL,
+  BREATHING_SPACE_RESPITE_REFERENCE_NUMBER_URL,
   BREATHING_SPACE_RESPITE_END_DATE_URL,
   BREATHING_SPACE_RESPITE_START_DATE_URL,
   BREATHING_SPACE_RESPITE_TYPE_URL,
@@ -14,7 +14,7 @@ import {formatDateToFullDate} from 'common/utils/dateUtils';
 
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 export const buildDebtRespiteSection = (breathingSpace: BreathingSpace, claimId: string, lang: string | unknown): SummarySection => {
-  const referenceNumberHref = constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_CHECK_ANSWERS_URL);
+  const referenceNumberHref = constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_RESPITE_REFERENCE_NUMBER_URL);
   const debtRespiteStartDateHref = constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_RESPITE_START_DATE_URL);
   const debtRespiteOptionDateHref = constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_RESPITE_TYPE_URL);
   const debtRespiteEndDateHref = constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_RESPITE_END_DATE_URL);
