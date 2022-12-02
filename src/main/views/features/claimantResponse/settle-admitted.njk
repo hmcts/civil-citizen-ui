@@ -7,10 +7,10 @@
 {% from "../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.PART_ADMIT_SETTLE_ADMITTED.PAGE_TITLE') }}
+  {{ setPageTitle('PAGES.PARTIAL_ADMISSION_SETTLE_ADMITTED.PAGE_TITLE') }}
 {% endblock %}
 
-{% set noHint = 'PAGES.PART_ADMIT_SETTLE_ADMITTED.CONTINUE_AMOUNT_YOU_CLAIMED'  %}
+{% set noHint = 'PAGES.PARTIAL_ADMISSION_SETTLE_ADMITTED.CONTINUE_AMOUNT_YOU_CLAIMED'  %}
 
 {% block content %}
   <div class="govuk-width-container">
@@ -22,8 +22,8 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.PART_ADMIT_SETTLE_ADMITTED.TITLE', { admittedAmount: admittedAmount }) }}</h1>
-          <p class="govuk-body">{{ t('PAGES.PART_ADMIT_SETTLE_ADMITTED.THIS_IS_THE_TOTAL_AMOUNT')}}</p>
+          <h1 class="govuk-heading-l">{{ t('PAGES.PARTIAL_ADMISSION_SETTLE_ADMITTED.TITLE', { admittedAmount: admittedAmount }) }}</h1>
+          <p class="govuk-body">{{ t('PAGES.PARTIAL_ADMISSION_SETTLE_ADMITTED.THIS_IS_THE_TOTAL_AMOUNT')}}</p>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {{ yesNoRadioButton(t, 'option', 'option', '', form, '', { noHint: noHint }) }}
