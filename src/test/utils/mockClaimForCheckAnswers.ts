@@ -977,3 +977,20 @@ export const getClaimWithFewDetails = (): Claim => {
   };
   return claim;
 };
+
+export const getClaimWithNoDetails = (): Claim => {
+  const claim = new Claim();
+  claim.claimDetails = new ClaimDetails();
+  claim.claimDetails.breathingSpace = {
+    debtRespiteReferenceNumber: {
+      referenceNumber: '',
+    },
+    debtRespiteOption: {
+      type: DebtRespiteOptionType.STANDARD || DebtRespiteOptionType.MENTAL_HEALTH,
+    },
+    debtRespiteStartDate: new DebtRespiteStartDate(),
+    debtRespiteEndDate: new DebtRespiteEndDate(),
+
+  };
+  return claim;
+};
