@@ -43,19 +43,21 @@ def secrets = [
   ]
 ]
 
+def setUrls(suffix){
+  env.IDAM_API_URL = "https://idam-api.aat.platform.hmcts.net"
+  env.URL="https://xui-${suffix}.service.core-compute-preview.internal"
+  env.TEST_URL="https://${suffix}.service.core-compute-preview.internal"
+  env.CIVIL_SERVICE_URL="https://civil-service-${suffix}.service.core-compute-preview.internal"
+  env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+  env.CCD_DATA_STORE_URL = "https://ccd-data-store-api-${suffix}.service.core-compute-preview.internal"
+  env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
+}
+
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 def branchesToSync = ['demo', 'perftest']
 
-def setEnv(change_id) {
-    
-        env.IDAM_API_URL = "https://idam-api.aat.platform.hmcts.net"
-        env.URL="https://manage-case.aat.platform.hmcts.net "
-        env.TEST_URL="http://civil-citizen-ui-pr-${change_id}.service.core-compute-preview.internal"
-        env.CIVIL_SERVICE_URL="http://civil-service-aat.service.core-compute-aat.internal"
-        env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
-        env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-aat.service.core-compute-aat.internal"
-        env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
-
+def checkForFullDeployLabel(branch_name) {
+  return new GithubAPI(this).getLabelsbyPattern(branch_name, "fullDeploy").contains("fullDeploy")
 }
 
 def checkForEnableHelmLabel(branch_name) {
@@ -87,47 +89,48 @@ withPipeline(type, product, component) {
   }
 
   before('smoketest:preview') {
-    /*sh """
+    sh """
           eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
           ./bin/add-roles.sh
           ./bin/pull-latest-release-asset.sh civil-ccd-definition civil-ccd-definition.zip
           ./bin/pull-latest-release-asset.sh civil-camunda-bpmn-definition civil-camunda-bpmn-definition.zip
           ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json"
           ./bin/import-bpmn-diagram.sh .
-        """*/
-      setEnv("${CHANGE_ID}")
+        """
+    setUrls("civil-citizen-ui-pr-${CHANGE_ID}")
+  }
 
+  afterSuccess('smoketest:preview') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/smokeTest/**/*'
+  }
+
+  afterSuccess('functionalTest:preview') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
+  }
+
+  before('smoketest:aat') {
+    setUrls("aat")
+
+    dir("${WORKSPACE}/build") {
+      steps.archiveArtifacts artifacts: "ccd-release-config/civil-ccd-staging.xlsx"
     }
+    uploadCoreCaseDataDefinitions('staging')
+  }
 
-    afterSuccess('smoketest:preview') {
-        //steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/smokeTest/**/*'
-    }
+  afterSuccess('smoketest:aat') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/smokeTest/**/*'
+  }
 
+  afterSuccess('functionalTest:aat') {
+    createGithubRelease()
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
+  }
 
-    afterSuccess('functionalTest:preview') {
-      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
-    }
-
-    before('smoketest:aat') {
-
-      dir("${WORKSPACE}/build") {
-        steps.archiveArtifacts artifacts: "ccd-release-config/civil-ccd-staging.xlsx"
+  before('akschartsinstall') {
+    onPR() {
+      if (!checkForFullDeployLabel(env.BRANCH_NAME)) {
+        error("Build failed because there is no label full deploy.")
       }
-      uploadCoreCaseDataDefinitions('staging')
-      setEnv("${CHANGE_ID}")
     }
-
-    afterSuccess('smoketest:aat') {
-      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/smokeTest/**/*'
-    }
-
-    before('functionalTest:aat') {
-      env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-      setEnv("${CHANGE_ID}")
-    }
-
-    afterSuccess('functionalTest:aat') {
-      createGithubRelease()
-      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
-    }
+  }
 }
