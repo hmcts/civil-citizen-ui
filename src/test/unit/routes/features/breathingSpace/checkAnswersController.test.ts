@@ -18,7 +18,7 @@ jest.mock('../../../../../main/services/features/breathingSpace/checkAnswersServ
 
 const mockGetSummarySections = getSummarySections as jest.Mock;
 
-export function createDebtrespite(): SummarySections {
+export function createDebtRespite(): SummarySections {
   return {
     sections: [
       {
@@ -96,6 +96,84 @@ export function createDebtrespite(): SummarySections {
   };
 }
 
+export function getDebtRespite(): SummarySections {
+  return {
+    sections: [
+      {
+        title: '',
+        summaryList: {
+          rows: [
+            {
+              key: {
+                text: 'Reference number',
+              },
+              value: {
+                html: '',
+              },
+              actions: {
+                items: [
+                  {
+                    href: BREATHING_SPACE_CHECK_ANSWERS_URL,
+                    text: 'Change',
+                  },
+                ],
+              },
+            },
+            {
+              key: {
+                text: 'When did it start',
+              },
+              value: {
+                html: '',
+              },
+              actions: {
+                items: [
+                  {
+                    href: BREATHING_SPACE_CHECK_ANSWERS_URL,
+                    text: 'Change',
+                  },
+                ],
+              },
+            },
+            {
+              key: {
+                text: 'What type is it',
+              },
+              value: {
+                html: '',
+              },
+              actions: {
+                items: [
+                  {
+                    href: BREATHING_SPACE_CHECK_ANSWERS_URL,
+                    text: 'Change',
+                  },
+                ],
+              },
+            },
+            {
+              key: {
+                text: 'Expected end date',
+              },
+              value: {
+                html: '',
+              },
+              actions: {
+                items: [
+                  {
+                    href: BREATHING_SPACE_CHECK_ANSWERS_URL,
+                    text: 'Change',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+    ],
+  };
+}
+
 const data = {_csrf: 'oAu8p5bV-glpP78Yowsar_iK4UPB4fKSSXCc'};
 
 describe('Response - Check answers', () => {
@@ -110,9 +188,51 @@ describe('Response - Check answers', () => {
   });
 
   describe('on GET', () => {
+
+    it('should return check answers page empty', async () => {
+      mockGetSummarySections.mockImplementation(() => {
+        return getDebtRespite();
+      });
+
+      const response = await session(app).get(BREATHING_SPACE_CHECK_ANSWERS_URL);
+      expect(response.status).toBe(200);
+
+      const dom = new JSDOM(response.text);
+      const htmlDocument = dom.window.document;
+
+      const header = getElementsByXPath("//h1[@class='govuk-heading-l']", htmlDocument);
+
+      const referenceNumber = getElementsByXPath(
+        "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'Reference number')]]",
+        htmlDocument);
+
+      const whenDidItStart = getElementsByXPath(
+        "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'When did it start')]]",
+        htmlDocument);
+
+      const whatTypeIsIt = getElementsByXPath(
+        "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'What type is it')]]",
+        htmlDocument);
+
+      const expectedEndDate = getElementsByXPath(
+        "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'Expected end date')]]",
+        htmlDocument);
+
+      expect(header.length).toBe(1);
+      expect(header[0].textContent).toBe(checkYourAnswerEng);
+      expect(referenceNumber.length).toBe(1);
+      expect(referenceNumber[0].textContent?.trim()).toBe('');
+      expect(whenDidItStart.length).toBe(1);
+      expect(whenDidItStart[0].textContent?.trim()).toBe('');
+      expect(whatTypeIsIt.length).toBe(1);
+      expect(whatTypeIsIt[0].textContent?.trim()).toBe('');
+      expect(expectedEndDate.length).toBe(1);
+      expect(expectedEndDate[0].textContent?.trim()).toBe('');
+    });
+
     it('should return check answers page', async () => {
       mockGetSummarySections.mockImplementation(() => {
-        return createDebtrespite();
+        return createDebtRespite();
       });
 
       const response = await session(app).get(BREATHING_SPACE_CHECK_ANSWERS_URL);
@@ -150,6 +270,7 @@ describe('Response - Check answers', () => {
       expect(expectedEndDate.length).toBe(1);
       expect(expectedEndDate[0].textContent?.trim()).toBe('1 January 2023');
     });
+
 
     it('should pass english translation via query', async () => {
       await session(app).get(BREATHING_SPACE_CHECK_ANSWERS_URL)
