@@ -1,6 +1,9 @@
 import {Router, Response} from 'express';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {CLAIM_TASK_LIST_URL, SUPPORT_REQUIRED_URL} from '../../urls';
+import {
+  DQ_COURT_LOCATION_URL, 
+  SUPPORT_REQUIRED_URL,
+} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {saveDirectionQuestionnaire} from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {
@@ -43,7 +46,7 @@ supportRequiredController.post(SUPPORT_REQUIRED_URL, async (req, res, next) => {
       renderView(form, claimId, lang, res);
     } else {
       await saveDirectionQuestionnaire(claimId, form.model, dqPropertyName, dqParentName);
-      res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_TASK_LIST_URL));
+      res.redirect(constructResponseUrlWithIdParams(claimId, DQ_COURT_LOCATION_URL));
     }
   } catch (error) {
     next(error);
