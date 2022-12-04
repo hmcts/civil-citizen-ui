@@ -4,7 +4,7 @@ import currencyFormat from '../utils/currencyFormat';
 import {Party} from './party';
 import {StatementOfMeans} from './statementOfMeans';
 import {PartyType} from './partyType';
-import {RepaymentPlan} from './repaymentPlan';
+import {FullAdmission} from './fullAdmission';
 import {PartialAdmission} from './partialAdmission';
 import {DefendantEvidence} from './evidence/evidence';
 import {Mediation} from './mediation/mediation';
@@ -48,7 +48,6 @@ import {RegularExpenses} from '../../common/form/models/statementOfMeans/expense
 import {CourtOrders} from '../../common/form/models/statementOfMeans/courtOrders/courtOrders';
 import {PriorityDebts} from '../../common/form/models/statementOfMeans/priorityDebts';
 import {Debts} from '../../common/form/models/statementOfMeans/debts/debts';
-
 export class Claim {
   legacyCaseReference: string;
   applicant1?: Party;
@@ -59,9 +58,7 @@ export class Claim {
   claimDetails: ClaimDetails;
   respondent1?: Party;
   statementOfMeans?: StatementOfMeans;
-  paymentOption?: PaymentOptionType;
-  repaymentPlan?: RepaymentPlan;
-  paymentDate?: Date;
+  fullAdmission?: FullAdmission;
   partialAdmission?: PartialAdmission;
   rejectAllOfClaim?: RejectAllOfClaim;
   mediation?: Mediation;
@@ -172,11 +169,11 @@ export class Claim {
   }
 
   isPaymentOptionBySetDate(): boolean {
-    return this.paymentOption === PaymentOptionType.BY_SET_DATE;
+    return this.fullAdmission?.paymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE;
   }
 
   isPaymentOptionPayImmediately(): boolean {
-    return this.paymentOption === PaymentOptionType.IMMEDIATELY;
+    return this.fullAdmission?.paymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY;
   }
 
   isPAPaymentOptionPayImmediately(): boolean {
@@ -192,7 +189,7 @@ export class Claim {
   }
 
   isPaymentOptionInstallments(): boolean {
-    return this.paymentOption === PaymentOptionType.INSTALMENTS;
+    return this.fullAdmission?.paymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS;
   }
 
   isInterestEndDateUntilSubmitDate(): boolean {
@@ -258,7 +255,7 @@ export class Claim {
   }
 
   isFullAdmissionPaymentOptionExists(): boolean {
-    return this.paymentOption?.length > 0;
+    return this.fullAdmission?.paymentIntention?.paymentOption?.length > 0;
   }
 
   isPartialAdmissionPaymentOptionExists(): boolean {
@@ -332,7 +329,7 @@ export class Claim {
   hasRespondentAskedForMoreThan28Days(): boolean {
     return this.responseDeadline?.option === ResponseOptions.YES && this.responseDeadline?.additionalTime === AdditionalTimeOptions.MORE_THAN_28_DAYS;
   }
-  
+
   hasInterest(): boolean {
     return this.claimInterest === YesNo.YES;
   }

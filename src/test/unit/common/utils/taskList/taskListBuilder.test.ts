@@ -1,5 +1,5 @@
 import {HowMuchDoYouOwe} from '../../../../../main/common/form/models/admission/partialAdmission/howMuchDoYouOwe';
-import {PaymentIntention} from '../../../../../main/common/form/models/admission/partialAdmission/paymentIntention';
+import {PaymentIntention} from '../../../../../main/common/form/models/admission/paymentIntention';
 import {WhyDoYouDisagree} from '../../../../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {PaymentOptionType} from '../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {ResponseType} from '../../../../../main/common/form/models/responseType';
@@ -33,6 +33,7 @@ import {RejectAllOfClaim} from '../../../../../main/common/form/models/rejectAll
 import {RejectAllOfClaimType} from '../../../../../main/common/form/models/rejectAllOfClaimType';
 import {HowMuchHaveYouPaid} from '../../../../../main/common/form/models/admission/howMuchHaveYouPaid';
 import {GenericYesNo} from '../../../../../main/common/form/models/genericYesNo';
+import {FullAdmission} from 'common/models/fullAdmission';
 
 describe('Task List Builder', () => {
   const claimId = '5129';
@@ -75,7 +76,10 @@ describe('Task List Builder', () => {
         const claim = new Claim();
         claim.respondent1 = new Party();
         claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
-        claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+        claim.fullAdmission = new FullAdmission();
+        claim.fullAdmission.paymentIntention = new PaymentIntention();
+        claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+        claim.fullAdmission.paymentIntention.paymentDate = new Date(Date.now());
         const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
         expect(respondToClaimSection.tasks.length).toBe(3);
         expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
@@ -86,7 +90,15 @@ describe('Task List Builder', () => {
         const claim = new Claim();
         claim.respondent1 = new Party();
         claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
-        claim.paymentOption = PaymentOptionType.INSTALMENTS;
+        claim.fullAdmission = new FullAdmission();
+        claim.fullAdmission.paymentIntention = new PaymentIntention();
+        claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
+        const repaymentPlan = {
+          paymentAmount: 100,
+          repaymentFrequency: 'MONTH',
+          firstRepaymentDate: new Date(Date.now()),
+        };
+        claim.fullAdmission.paymentIntention.repaymentPlan = repaymentPlan;
         const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
         expect(respondToClaimSection.tasks.length).toBe(4);
         expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);

@@ -6,6 +6,7 @@ import {
   hasDateOfBirthIfIndividual,
   isCounterpartyCompany,
   isCounterpartyIndividual,
+  isFullAdmissionRepaymentPlanMissing,
   isFullDefenceAndNotCounterClaim,
   isNotPayImmediatelyResponse,
   isPaymentOptionMissing,
@@ -24,6 +25,10 @@ import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 import {PartyDetails} from '../../../../../../main/common/form/models/partyDetails';
 import {CitizenDate} from '../../../../../../main/common/form/models/claim/claimant/citizenDate';
 import {Address} from '../../../../../../main/common/form/models/address';
+import {FullAdmission} from '../../../../../../main/common/models/fullAdmission';
+import {PaymentIntention} from '../../../../../../main/common/form/models/admission/paymentIntention';
+import {PartialAdmission} from 'common/models/partialAdmission';
+import {HowMuchDoYouOwe} from 'common/form/models/admission/partialAdmission/howMuchDoYouOwe';
 
 const mockClaim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
 const mockRespondent: Party = {
@@ -127,21 +132,61 @@ describe('Task List Helpers', () => {
       expect(isRepaymentPlanMissing(caseData)).toEqual(true);
     });
 
-    it('should return true if repayment plan is not set', () => {
-      caseData.repaymentPlan = undefined;
+    it('should return true if there is no repayment plan for full admit', () => {
+      expect(isFullAdmissionRepaymentPlanMissing(caseData)).toEqual(true);
+    });
+
+    it('should return true if repayment plan is not set for part admit journey', () => {
+      caseData.partialAdmission = new PartialAdmission();
+      caseData.partialAdmission.paymentIntention = new PaymentIntention();
+      caseData.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe();
+      caseData.partialAdmission.paymentIntention.repaymentPlan = undefined;
       expect(isRepaymentPlanMissing(caseData)).toEqual(true);
     });
 
-    it('should return false if repayment plan object is set', () => {
-      caseData.repaymentPlan = {};
+    it('should return true if repayment plan is not set for full admit journey', () => {
+      caseData.fullAdmission = new FullAdmission();
+      caseData.fullAdmission.paymentIntention = new PaymentIntention();
+      caseData.fullAdmission.paymentIntention.repaymentPlan = undefined;
+      expect(isFullAdmissionRepaymentPlanMissing(caseData)).toEqual(true);
+    });
+
+    it('should return false if repayment plan object is set for part admit', () => {
+      mockRespondent.responseType = ResponseType.PART_ADMISSION;
+      caseData.partialAdmission = new PartialAdmission();
+      caseData.partialAdmission.paymentIntention = new PaymentIntention();
+      caseData.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe();
+      caseData.partialAdmission.paymentIntention.repaymentPlan = {};
       expect(isRepaymentPlanMissing(caseData)).toEqual(false);
     });
 
+    it('should return false if repayment plan object is set for full admit', () => {
+      mockRespondent.responseType = ResponseType.FULL_ADMISSION;
+      caseData.fullAdmission = new FullAdmission();
+      caseData.fullAdmission.paymentIntention = new PaymentIntention();
+      caseData.fullAdmission.paymentIntention.repaymentPlan = {};
+      expect(isFullAdmissionRepaymentPlanMissing(caseData)).toEqual(false);
+    });
+
     it('should return false if repayment plan object is set', () => {
-      caseData.repaymentPlan = {
+      mockRespondent.responseType = ResponseType.PART_ADMISSION;
+      caseData.partialAdmission = new PartialAdmission();
+      caseData.partialAdmission.paymentIntention = new PaymentIntention();
+      caseData.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe();
+      caseData.partialAdmission.paymentIntention.repaymentPlan = {
         paymentAmount: 800,
       };
       expect(isRepaymentPlanMissing(caseData)).toEqual(false);
+    });
+
+    it('should return false if repayment plan object is set for full admit', () => {
+      mockRespondent.responseType = ResponseType.FULL_ADMISSION;
+      caseData.fullAdmission = new FullAdmission();
+      caseData.fullAdmission.paymentIntention = new PaymentIntention();
+      caseData.fullAdmission.paymentIntention.repaymentPlan = {
+        paymentAmount: 800,
+      };
+      expect(isFullAdmissionRepaymentPlanMissing(caseData)).toEqual(false);
     });
   });
 
@@ -151,22 +196,30 @@ describe('Task List Helpers', () => {
     });
 
     it('should return true if payment option is undefined', () => {
-      caseData.paymentOption = undefined;
+      caseData.fullAdmission = new FullAdmission();
+      caseData.fullAdmission.paymentIntention = new PaymentIntention();
+      caseData.fullAdmission.paymentIntention.paymentOption = undefined;
       expect(isNotPayImmediatelyResponse(caseData)).toEqual(true);
     });
 
     it('should return true if payment option is INSTALMENTS', () => {
-      caseData.paymentOption = PaymentOptionType.INSTALMENTS;
+      caseData.fullAdmission = new FullAdmission();
+      caseData.fullAdmission.paymentIntention = new PaymentIntention();
+      caseData.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
       expect(isNotPayImmediatelyResponse(caseData)).toEqual(true);
     });
 
     it('should return true if payment option is BY_SET_DATE', () => {
-      caseData.paymentOption = PaymentOptionType.BY_SET_DATE;
+      caseData.fullAdmission = new FullAdmission();
+      caseData.fullAdmission.paymentIntention = new PaymentIntention();
+      caseData.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
       expect(isNotPayImmediatelyResponse(caseData)).toEqual(true);
     });
 
     it('should return false if payment option is IMMEDIATELY', () => {
-      caseData.paymentOption = PaymentOptionType.IMMEDIATELY;
+      caseData.fullAdmission = new FullAdmission();
+      caseData.fullAdmission.paymentIntention = new PaymentIntention();
+      caseData.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
       expect(isNotPayImmediatelyResponse(caseData)).toEqual(false);
     });
   });
@@ -177,12 +230,16 @@ describe('Task List Helpers', () => {
     });
 
     it('should return true if paymentOption is undefined', () => {
-      caseData.paymentOption = undefined;
+      caseData.fullAdmission = new FullAdmission();
+      caseData.fullAdmission.paymentIntention = new PaymentIntention();
+      caseData.fullAdmission.paymentIntention .paymentOption = undefined;
       expect(isPaymentOptionMissing(caseData)).toEqual(true);
     });
 
     it('should return false if paymentOption is set', () => {
-      caseData.paymentOption = PaymentOptionType.IMMEDIATELY;
+      caseData.fullAdmission = new FullAdmission();
+      caseData.fullAdmission.paymentIntention = new PaymentIntention();
+      caseData.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
       expect(isPaymentOptionMissing(caseData)).toEqual(false);
     });
   });

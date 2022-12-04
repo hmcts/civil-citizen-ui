@@ -47,7 +47,7 @@ repaymentPlanPartAdmissionController.post(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL,
       if (repaymentPlanForm.hasErrors()) {
         renderView(repaymentPlanForm, res, amount);
       } else {
-        await saveRepaymentPlanData(req.params.id, repaymentPlanForm.model);
+        await saveRepaymentPlanData(req.params.id, repaymentPlanForm.model, true);
         res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
       }
     } catch (error) {

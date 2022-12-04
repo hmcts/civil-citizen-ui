@@ -1,4 +1,4 @@
-import {PaymentIntention} from '../../../../../../main/common/form/models/admission/partialAdmission/paymentIntention';
+import {PaymentIntention} from '../../../../../../main/common/form/models/admission/paymentIntention';
 import {PaymentOptionType} from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {PartialAdmission} from '../../../../../../main/common/models/partialAdmission';

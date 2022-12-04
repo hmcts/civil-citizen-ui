@@ -4,7 +4,7 @@ import {formatDateToFullDate} from '../../../../common/utils/dateUtils';
 
 const getResponseStatement = (claim: Claim, lang: string) => {
   const defendantName = claim.getDefendantFullName();
-  const paymentDate = claim.paymentDate;
+  const paymentDate = claim.fullAdmission.paymentIntention.paymentDate;
   return [
     {
       type: ClaimSummaryType.PARAGRAPH,

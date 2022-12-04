@@ -130,7 +130,11 @@ function buildMockClaim(): Claim {
   };
   _mockClaim.submittedDate = new Date('2022-05-23T17:02:02.38407');
   _mockClaim.totalInterest = 15;
-  _mockClaim.paymentDate = new Date('2022-06-01T00:00:00');
+  _mockClaim.fullAdmission = {
+    paymentIntention: {
+      paymentDate: new Date('2022-06-01T00:00:00'),
+    },
+  };
   _mockClaim.systemGeneratedCaseDocuments = [
     {
       id: '1234556',

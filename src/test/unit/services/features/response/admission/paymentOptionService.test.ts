@@ -11,8 +11,9 @@ import {PaymentOption}
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {ResponseType} from '../../../../../../main/common/form/models/responseType';
 import {PartialAdmission} from '../../../../../../main/common/models/partialAdmission';
-import {PaymentIntention} from '../../../../../../main/common/form/models/admission/partialAdmission/paymentIntention';
+import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {mockClaim} from '../../../../../utils/mockClaim';
+import {FullAdmission} from 'common/models/fullAdmission';
 
 jest.mock('.../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -160,7 +161,9 @@ describe('payment option service', () => {
 
 function createClaim(paymentOption: PaymentOptionType) {
   const claim = new Claim();
-  claim.paymentOption = paymentOption;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = paymentOption;
   return claim;
 }
 

@@ -20,7 +20,7 @@ const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
 
 const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): SummarySections => {
-  const paymentOption: string = claim.paymentOption;
+  const paymentOption: string = claim.fullAdmission?.paymentIntention?.paymentOption;
   const alreadyPaidPartAdmit: string = claim.partialAdmission?.alreadyPaid?.option;
   const paidResponse: string = claim.partialAdmission?.paymentIntention?.paymentOption;
 

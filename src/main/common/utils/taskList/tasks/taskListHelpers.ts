@@ -22,15 +22,19 @@ export const isResponseTypeMissing = (respondent1: Party): boolean => {
 };
 
 export const isPaymentOptionMissing = (caseData: Claim): boolean => {
-  return !caseData?.paymentOption;
+  return !caseData?.fullAdmission?.paymentIntention?.paymentOption;
 };
 
 export const isNotPayImmediatelyResponse = (caseData: Claim): boolean => {
-  return (caseData?.paymentOption !== PaymentOptionType.IMMEDIATELY);
+  return (caseData?.fullAdmission?.paymentIntention?.paymentOption !== PaymentOptionType.IMMEDIATELY);
 };
 
 export const isRepaymentPlanMissing = (caseData: Claim): boolean => {
-  return !caseData.repaymentPlan;
+  return !caseData.partialAdmission?.paymentIntention?.repaymentPlan;
+};
+
+export const isFullAdmissionRepaymentPlanMissing = (caseData: Claim): boolean => {
+  return !caseData.fullAdmission?.paymentIntention?.repaymentPlan;
 };
 
 export const isStatementOfMeansComplete = (caseData: Claim): boolean => {

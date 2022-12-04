@@ -12,12 +12,13 @@ import {Party} from '../../../../../../main/common/models/party';
 import {PaymentOptionType} from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {HowMuchHaveYouPaid} from '../../../../../../main/common/form/models/admission/howMuchHaveYouPaid';
 import {PartialAdmission} from '../../../../../../main/common/models/partialAdmission';
-import {PaymentIntention} from '../../../../../../main/common/form/models/admission/partialAdmission/paymentIntention';
+import {PaymentIntention} from '../../../../../../main/common/form/models/admission/paymentIntention';
 import {RejectAllOfClaim} from '../../../../../../main/common/form/models/rejectAllOfClaim';
 import {WhyDoYouDisagree} from '../../../../../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {Defence} from '../../../../../../main/common/form/models/defence';
 import {RejectAllOfClaimType} from '../../../../../../main/common/form/models/rejectAllOfClaimType';
 import {PartyDetails} from '../../../../../../main/common/form/models/partyDetails';
+import {FullAdmission} from 'common/models/fullAdmission';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -31,8 +32,10 @@ describe('Submit Confirmation service', () => {
 
   describe('Full admission pay immediately scenario', () => {
     const claim = new Claim();
-    claim.paymentOption = PaymentOptionType.IMMEDIATELY;
-    claim.paymentDate = new Date('2035-06-01T00:00:00.000Z');
+    claim.fullAdmission = new FullAdmission();
+    claim.fullAdmission.paymentIntention = new PaymentIntention();
+    claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
+    claim.fullAdmission.paymentIntention.paymentDate = new Date('2035-06-01T00:00:00.000Z');
     claim.respondent1 = new Party();
     claim.applicant1 = new Party();
     claim.applicant1.partyDetails = new PartyDetails({partyName: 'Some Very Important Company Ltd'});
@@ -65,7 +68,9 @@ describe('Submit Confirmation service', () => {
 
   describe('Full admission pay by date scenario', () => {
     const claim = new Claim();
-    claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+    claim.fullAdmission = new FullAdmission();
+    claim.fullAdmission.paymentIntention = new PaymentIntention();
+    claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
     claim.respondent1 = new Party();
     claim.respondent1.partyDetails = new PartyDetails({partyName: 'Version 1'});
     claim.respondent1.type = PartyType.ORGANISATION;
@@ -105,7 +110,9 @@ describe('Submit Confirmation service', () => {
 
   describe('Full admission pay by installment scenario', () => {
     const claim = new Claim();
-    claim.paymentOption = PaymentOptionType.INSTALMENTS;
+    claim.fullAdmission = new FullAdmission();
+    claim.fullAdmission.paymentIntention = new PaymentIntention();
+    claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
     claim.respondent1 = new Party();
     claim.respondent1.partyDetails = new PartyDetails({partyName: 'Version 1'});
     claim.respondent1.type = PartyType.ORGANISATION;

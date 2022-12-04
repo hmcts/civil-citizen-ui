@@ -15,7 +15,7 @@ import {PartyType} from '../../../../main/common/models/partyType';
 import {PartialAdmission} from '../../../../main/common/models/partialAdmission';
 import {Party} from '../../../../main/common/models/party';
 import {HowMuchDoYouOwe} from '../../../../main/common/form/models/admission/partialAdmission/howMuchDoYouOwe';
-import {PaymentIntention} from '../../../../main/common/form/models/admission/partialAdmission/paymentIntention';
+import {PaymentIntention} from '../../../../main/common/form/models/admission/paymentIntention';
 import {PaymentOptionType} from '../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {mockClaim} from '../../../utils/mockClaim';
 import {DocumentType} from '../../../../main/common/models/document/documentType';
@@ -33,6 +33,7 @@ import {InterestClaimOptionsType} from '../../../../main/common/form/models/clai
 import {DirectionQuestionnaire} from '../../../../main/common/models/directionsQuestionnaire/directionQuestionnaire';
 import {Hearing} from '../../../../main/common/models/directionsQuestionnaire/hearing/hearing';
 import {Address} from '../../../../main/common/form/models/address';
+import {FullAdmission} from 'common/models/fullAdmission';
 
 describe('Claim isInterestEnDateUntilSubmitDate', () => {
   const claim = new Claim();
@@ -526,6 +527,8 @@ describe('Claim isPartialAdmission', () => {
 
 describe('Claim isFullAdmissionPaymentOptionExists', () => {
   const claim = new Claim();
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
   it('should return false with empty claim', () => {
     //When
     const result = claim.isFullAdmissionPaymentOptionExists();
@@ -534,7 +537,7 @@ describe('Claim isFullAdmissionPaymentOptionExists', () => {
   });
   it('should return false with empty payment option', () => {
     //Given
-    claim.paymentOption = undefined;
+    claim.fullAdmission.paymentIntention.paymentOption = undefined;
     //When
     const result = claim.isFullAdmissionPaymentOptionExists();
     //Then
@@ -542,7 +545,7 @@ describe('Claim isFullAdmissionPaymentOptionExists', () => {
   });
   it('should return true with payment option', () => {
     //Given
-    claim.paymentOption = PaymentOptionType.INSTALMENTS;
+    claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
     //When
     const result = claim.isFullAdmissionPaymentOptionExists();
     //Then

@@ -3,8 +3,6 @@ import {CaseState, ClaimAmountBreakup, ClaimFee} from '../form/models/claimDetai
 import {ClaimantResponse} from '../../common/models/claimantResponse';
 import {ClaimDetails} from '../../common/form/models/claim/details/claimDetails';
 import {StatementOfMeans} from '../../common/models/statementOfMeans';
-import {PaymentOptionType} from '../../common/form/models/admission/paymentOption/paymentOptionType';
-import {RepaymentPlan} from '../../common/models/repaymentPlan';
 import {PartialAdmission} from '../../common/models/partialAdmission';
 import {RejectAllOfClaim} from '../../common/form/models/rejectAllOfClaim';
 import {Mediation} from '../../common/models/mediation/mediation';
@@ -19,6 +17,7 @@ import {SystemGeneratedCaseDocuments} from '../../common/models/document/systemG
 import {ResponseDeadline} from '../../common/models/responseDeadline';
 import {DirectionQuestionnaire} from '../../common/models/directionsQuestionnaire/directionQuestionnaire';
 import {CCDParty} from '../../common/models/ccdResponse/ccdParty';
+import {FullAdmission} from './fullAdmission';
 
 export class CivilClaimResponse {
   id: string;
@@ -46,9 +45,7 @@ export class CCDClaim {
   claimDetails: ClaimDetails;
   respondent1?: CCDParty;
   statementOfMeans?: StatementOfMeans;
-  paymentOption?: PaymentOptionType;
-  repaymentPlan?: RepaymentPlan;
-  paymentDate?: Date;
+  fullAdmission?: FullAdmission;
   partialAdmission?: PartialAdmission;
   rejectAllOfClaim?: RejectAllOfClaim;
   mediation?: Mediation;
