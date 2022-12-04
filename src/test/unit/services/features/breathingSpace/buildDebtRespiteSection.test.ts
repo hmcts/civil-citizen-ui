@@ -5,9 +5,9 @@ import {
   BREATHING_SPACE_RESPITE_END_DATE_URL,
   BREATHING_SPACE_RESPITE_REFERENCE_NUMBER_URL,
   BREATHING_SPACE_RESPITE_START_DATE_URL,
-  BREATHING_SPACE_RESPITE_TYPE_URL
-} from "routes/urls";
-import {Claim} from "models/claim";
+  BREATHING_SPACE_RESPITE_TYPE_URL,
+} from 'routes/urls';
+import {Claim} from 'models/claim';
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/i18n');
@@ -38,32 +38,31 @@ describe('Dept Respite Section', () => {
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim.claimDetails.breathingSpace, 'cimode');
     //Then
     expect(summarySections.sections[0].summaryList.rows.length).toBe(4);
-    expect(summarySections.sections[0].summaryList.rows[0].value.html).toBe("R225B1230");
-    expect(summarySections.sections[0].summaryList.rows[1].value.html).toBe("10 January 2022");
-    expect(summarySections.sections[0].summaryList.rows[2].value.html).toBe("PAGES.BREATHING_SPACE_DEBT_RESPITE_TYPE.STANDARD");
-    expect(summarySections.sections[0].summaryList.rows[3].value.html).toBe("10 December 2022");
+    expect(summarySections.sections[0].summaryList.rows[0].value.html).toBe('R225B1230');
+    expect(summarySections.sections[0].summaryList.rows[1].value.html).toBe('10 January 2022');
+    expect(summarySections.sections[0].summaryList.rows[2].value.html).toBe('PAGES.BREATHING_SPACE_DEBT_RESPITE_TYPE.STANDARD');
+    expect(summarySections.sections[0].summaryList.rows[3].value.html).toBe('10 December 2022');
   });
 
   it('should return debt respite summary sections with href link', async () =>{
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim.claimDetails.breathingSpace, 'cimode');
     //Then
     expect(summarySections.sections[0].summaryList.rows.length).toBe(4);
-    expect(summarySections.sections[0].summaryList.rows[0].actions.items[0].href).toBe("/case/claimId/breathing-space/respite-reference-number");
-    expect(summarySections.sections[0].summaryList.rows[1].actions.items[0].href).toBe("/case/claimId/breathing-space/respite-start");
-    expect(summarySections.sections[0].summaryList.rows[2].actions.items[0].href).toBe("/case/claimId/breathing-space/respite-type");
-    expect(summarySections.sections[0].summaryList.rows[3].actions.items[0].href).toBe("/case/claimId/breathing-space/respite-end");
+    expect(summarySections.sections[0].summaryList.rows[0].actions.items[0].href).toBe('/case/claimId/breathing-space/respite-reference-number');
+    expect(summarySections.sections[0].summaryList.rows[1].actions.items[0].href).toBe('/case/claimId/breathing-space/respite-start');
+    expect(summarySections.sections[0].summaryList.rows[2].actions.items[0].href).toBe('/case/claimId/breathing-space/respite-type');
+    expect(summarySections.sections[0].summaryList.rows[3].actions.items[0].href).toBe('/case/claimId/breathing-space/respite-end');
   });
 
   it('should return debt respite summary sections with button change label', async () =>{
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim.claimDetails.breathingSpace, 'cimode');
     //Then
     expect(summarySections.sections[0].summaryList.rows.length).toBe(4);
-    expect(summarySections.sections[0].summaryList.rows[0].actions.items[0].text).toBe("COMMON.BUTTONS.CHANGE");
-    expect(summarySections.sections[0].summaryList.rows[1].actions.items[0].text).toBe("COMMON.BUTTONS.CHANGE");
-    expect(summarySections.sections[0].summaryList.rows[2].actions.items[0].text).toBe("COMMON.BUTTONS.CHANGE");
-    expect(summarySections.sections[0].summaryList.rows[3].actions.items[0].text).toBe("COMMON.BUTTONS.CHANGE");
+    expect(summarySections.sections[0].summaryList.rows[0].actions.items[0].text).toBe('COMMON.BUTTONS.CHANGE');
+    expect(summarySections.sections[0].summaryList.rows[1].actions.items[0].text).toBe('COMMON.BUTTONS.CHANGE');
+    expect(summarySections.sections[0].summaryList.rows[2].actions.items[0].text).toBe('COMMON.BUTTONS.CHANGE');
+    expect(summarySections.sections[0].summaryList.rows[3].actions.items[0].text).toBe('COMMON.BUTTONS.CHANGE');
   });
-
 
   it('should return empty debt respite summary sections', async () => {
     //When
