@@ -20,7 +20,7 @@ import {Claim} from '../../../../../../main/common/models/claim';
 import {
   CLAIM_ID,
 } from '../../../../../utils/checkAnswersConstants';
-import {getSummarySections} from "services/features/breathingSpace/checkAnswersService";
+import {getSummarySections} from 'services/features/breathingSpace/checkAnswersService';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -140,10 +140,10 @@ describe('Check Answers service', () => {
       const summarySections = getSummarySections(CLAIM_ID, claim.claimDetails.breathingSpace, 'en');
       //Then
       expect(summarySections.sections[0].summaryList.rows.length).toBe(4);
-      expect(summarySections.sections[0].summaryList.rows[0].value.html).toBe("R225B1230");
-      expect(summarySections.sections[0].summaryList.rows[1].value.html).toBe("10 January 2022");
-      expect(summarySections.sections[0].summaryList.rows[2].value.html).toBe("PAGES.BREATHING_SPACE_DEBT_RESPITE_TYPE.STANDARD");
-      expect(summarySections.sections[0].summaryList.rows[3].value.html).toBe("10 December 2022");
+      expect(summarySections.sections[0].summaryList.rows[0].value.html).toBe('R225B1230');
+      expect(summarySections.sections[0].summaryList.rows[1].value.html).toBe('10 January 2022');
+      expect(summarySections.sections[0].summaryList.rows[2].value.html).toBe('PAGES.BREATHING_SPACE_DEBT_RESPITE_TYPE.STANDARD');
+      expect(summarySections.sections[0].summaryList.rows[3].value.html).toBe('10 December 2022');
     });
   });
 });
