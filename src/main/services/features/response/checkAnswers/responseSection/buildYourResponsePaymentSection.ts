@@ -49,15 +49,15 @@ export const buildYourResponsePaymentSection = (claim: Claim, claimId: string, l
   switch (claim.respondent1.responseType) {
     case ResponseType.FULL_ADMISSION:
       paymentOption = claim.fullAdmission?.paymentIntention?.paymentOption;
-      paymentDate = new Date(claim.fullAdmission.paymentIntention.paymentDate);
-      repaymentPlan = claim.fullAdmission.paymentIntention.repaymentPlan;
+      paymentDate = new Date(claim.fullAdmission?.paymentIntention?.paymentDate);
+      repaymentPlan = claim.fullAdmission?.paymentIntention?.repaymentPlan;
       paymentOptionHref = constructResponseUrlWithIdParams(claimId, CITIZEN_PAYMENT_OPTION_URL);
       repaymentPlanHref = constructResponseUrlWithIdParams(claimId, CITIZEN_REPAYMENT_PLAN_FULL_URL);
       break;
     case ResponseType.PART_ADMISSION:
-      paymentOption = claim.partialAdmission.paymentIntention.paymentOption;
-      paymentDate = new Date(claim.partialAdmission.paymentIntention.paymentDate);
-      repaymentPlan = claim.partialAdmission.paymentIntention.repaymentPlan;
+      paymentOption = claim.partialAdmission?.paymentIntention?.paymentOption;
+      paymentDate = new Date(claim.partialAdmission?.paymentIntention?.paymentDate);
+      repaymentPlan = claim.partialAdmission?.paymentIntention?.repaymentPlan;
       paymentOptionHref = constructResponseUrlWithIdParams(claimId, CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL);
       repaymentPlanHref = constructResponseUrlWithIdParams(claimId, CITIZEN_REPAYMENT_PLAN_PARTIAL_URL);
       break;

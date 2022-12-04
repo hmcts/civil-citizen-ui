@@ -15,7 +15,7 @@ import {
 import {PaymentOptionType} from '../../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {
   PaymentIntention,
-} from '../../../../../../../main/common/form/models/admission/partialAdmission/paymentIntention';
+} from '../../../../../../../main/common/form/models/admission/paymentIntention';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
 import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
 import {RejectAllOfClaimType} from '../../../../../../../main/common/form/models/rejectAllOfClaimType';
