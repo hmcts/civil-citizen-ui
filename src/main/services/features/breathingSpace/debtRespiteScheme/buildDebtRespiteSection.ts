@@ -12,7 +12,6 @@ import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlForm
 import {BreathingSpace} from 'models/breathingSpace';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 
-
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 export const buildDebtRespiteSection = (breathingSpace: BreathingSpace, claimId: string, lang: string | unknown): SummarySection => {
   const lng = getLng(lang);
