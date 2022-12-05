@@ -6,10 +6,10 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {getElementsByXPath} from '../../../../utils/xpathExtractor';
 import {createClaimWithBasicDetails} from '../../../../utils/mocks/claimDetailsMock';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {Claim} from "models/claim";
-import {ClaimDetails} from "form/models/claim/details/claimDetails";
-import {getBreathingSpace} from "services/features/breathingSpace/breathingSpaceService";
-import {DebtRespiteOptionType} from "models/breathingSpace/debtRespiteOptionType";
+import {Claim} from 'models/claim';
+import {ClaimDetails} from 'form/models/claim/details/claimDetails';
+import {getBreathingSpace} from 'services/features/breathingSpace/breathingSpaceService';
+import {DebtRespiteOptionType} from 'models/breathingSpace/debtRespiteOptionType';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
