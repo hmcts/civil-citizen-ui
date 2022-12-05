@@ -2,7 +2,8 @@ import {Claim} from 'common/models/claim';
 import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
 import {AppRequest} from 'common/models/AppRequest';
-import {CivilClaimResponse} from 'common/models/civilClaimResponse';
+import {CivilClaimResponse, ClaimFeeData} from 'common/models/civilClaimResponse';
+
 import {
   CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
@@ -21,6 +22,7 @@ import {DashboardClaimantItem, DashboardDefendantItem} from '../../common/models
 import {ClaimUpdate, EventDto} from '../../common/models/events/eventDto';
 import {CaseEvent} from '../../common/models/events/caseEvent';
 import {CourtLocation} from '../../common/models/courts/courtLocations';
+import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -124,7 +126,7 @@ export class CivilServiceClient {
 
   async getHearingAmount(amount: number, req: AppRequest): Promise<any> {
     const config = this.getConfig(req);
-    try{
+    try {
       const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_HEARING_URL}/${amount}`, config);
       return response.data;
     } catch (err: unknown) {
@@ -133,11 +135,12 @@ export class CivilServiceClient {
     }
   }
 
-  async getClaimAmountFee(amount: number, req: AppRequest): Promise<any> {
+  async getClaimAmountFee(amount: number, req: AppRequest): Promise<number> {
     const config = this.getConfig(req);
-    try{
+    try {
       const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_CLAIM_AMOUNT_URL}/${amount}`, config);
-      return response.data;
+      const claimFeeResponse: ClaimFeeData = response.data;
+      return convertToPoundsFilter(claimFeeResponse?.calculatedAmountInPence.toString());
     } catch (err: unknown) {
       logger.error(err);
       throw err;

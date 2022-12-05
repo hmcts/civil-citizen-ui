@@ -74,3 +74,9 @@ export interface CCDClaim extends ClaimUpdate{
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
 }
+
+export interface ClaimFeeData {
+  calculatedAmountInPence?: number;
+  code?: string;
+  version?: number;
+}

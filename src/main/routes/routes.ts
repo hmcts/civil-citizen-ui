@@ -179,6 +179,7 @@ import ccjConfirmationController from './features/claimantResponse/ccj/ccjConfir
 import bilingualLangPreferenceController from './features/response/bilingualLangPreferenceController';
 import chooseHowToProceedController from './features/claimantResponse/chooseHowToProceedcController';
 import repaymentPlanInstalmentsController from './features/claimantResponse/ccj/repaymentPlanInstalmentsController';
+import judgmentAmountSummaryController from './features/claimantResponse/ccj/judgmentAmountSummaryController';
 
 export default [
   homeController,
@@ -345,4 +346,5 @@ export default [
   bilingualLangPreferenceController,
   chooseHowToProceedController,
   repaymentPlanInstalmentsController,
+  judgmentAmountSummaryController,
 ];

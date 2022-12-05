@@ -1,8 +1,9 @@
 import {Claim} from '../models/claim';
 import {YesNo} from '../form/models/yesNo';
-import {getNumberOfDaysBetweenTwoDays} from './dateUtils';
+import {formatDateToFullDate, getNumberOfDaysBetweenTwoDays} from './dateUtils';
 import {InterestClaimFromType} from '../../common/form/models/claimDetails';
 import {InterestClaimOptionsType} from '../../common/form/models/claim/interest/interestClaimOptionsType';
+import {getLng} from 'common/utils/languageToggleUtils';
 
 const INTEREST_8 = 8;
 
@@ -64,10 +65,30 @@ export const getInterestStartDate = (claim: Claim): Date => {
   if (claim.interest?.interestClaimFrom === InterestClaimFromType.FROM_A_SPECIFIC_DATE) {
     return new Date(claim.interest.interestStartDate?.date);
   }
-  return new Date();
+  return claim.submittedDate ? claim.submittedDate : new Date();
 };
 
 export const calculateInterest = (amount: number, interest: number, startDate: Date, endDate: Date): number => {
   const days = getNumberOfDaysBetweenTwoDays(startDate, endDate);
   return ((amount * (interest / 100)) / 365) * days;
+};
+
+export const getInterestData = (claim: Claim, lang: string) => {
+  const interestStartDate = formatDateToFullDate(getInterestStartDate(claim), getLng(lang));
+  const interestEndDate = formatDateToFullDate(new Date());
+  const numberOfDays = getNumberOfDaysBetweenTwoDays(interestStartDate, interestEndDate);
+  const interestToDate = calculateInterestToDate(claim);
+  const interestRate = getInterestRate(claim);
+  const isBreakDownInterest = claim.isInterestClaimOptionsBreakDownInterest();
+  const howInterestIsCalculatedReason = isBreakDownInterest ? claim.getHowTheInterestCalculatedReason() : undefined;
+
+  return {
+    interestStartDate,
+    interestEndDate,
+    numberOfDays,
+    interestToDate,
+    interestRate,
+    isBreakDownInterest,
+    howInterestIsCalculatedReason,
+  };
 };
