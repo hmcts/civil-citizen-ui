@@ -84,14 +84,6 @@ export class Claim {
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
 
-  public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
-
-    const claim: Claim = Object.assign(new Claim(), ccdClaim);
-    claim.applicant1 = toCUIParty(ccdClaim.applicant1);
-    claim.respondent1 = toCUIParty(ccdClaim.respondent1);
-    return claim;
-  }
-
   get responseStatus(): ClaimResponseStatus {
     if (this.isFullAdmission() && this.isPaymentOptionPayImmediately()) {
       return ClaimResponseStatus.FA_PAY_IMMEDIATELY;
@@ -131,23 +123,32 @@ export class Claim {
 
   }
 
+  get hasSupportRequiredList(): boolean {
+    return !!this.directionQuestionnaire?.hearing?.supportRequiredList;
+  }
+
+  get isSupportRequiredYes(): boolean {
+    return this.directionQuestionnaire?.hearing?.supportRequiredList?.option === YesNo.YES;
+  }
+
+  get isSupportRequiredDetailsAvailable(): boolean {
+    return this.directionQuestionnaire?.hearing?.supportRequiredList?.items?.length > 0;
+  }
+
+  public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
+
+    const claim: Claim = Object.assign(new Claim(), ccdClaim);
+    claim.applicant1 = toCUIParty(ccdClaim.applicant1);
+    claim.respondent1 = toCUIParty(ccdClaim.respondent1);
+    return claim;
+  }
+
   getClaimantFullName(): string {
     return this.getName(this.applicant1);
   }
 
   getDefendantFullName(): string {
     return this.getName(this.respondent1);
-  }
-
-  private getName(party: Party): string {
-    if (party?.type == PartyType.INDIVIDUAL || party?.type == PartyType.SOLE_TRADER) {
-      if (party.partyDetails?.individualTitle) {
-        return `${party.partyDetails.individualTitle} ${party.partyDetails.individualFirstName} ${party.partyDetails.individualLastName}`;
-      } else {
-        return `${party.partyDetails.individualFirstName} ${party.partyDetails.individualLastName}`;
-      }
-    }
-    return party?.partyDetails?.partyName;
   }
 
   formattedResponseDeadline(lng?: string): string {
@@ -332,9 +333,9 @@ export class Claim {
   hasRespondentAskedForMoreThan28Days(): boolean {
     return this.responseDeadline?.option === ResponseOptions.YES && this.responseDeadline?.additionalTime === AdditionalTimeOptions.MORE_THAN_28_DAYS;
   }
-  
+
   hasInterest(): boolean {
-    return this.claimInterest === YesNo.YES;
+    return this.claimInterest?.toLowerCase() === YesNo.YES;
   }
 
   hasHelpWithFees(): boolean {
@@ -351,18 +352,6 @@ export class Claim {
 
   isResponseDateInThePast(): boolean {
     return this.respondent1ResponseDate <= new Date();
-  }
-
-  get hasSupportRequiredList(): boolean {
-    return !!this.directionQuestionnaire?.hearing?.supportRequiredList;
-  }
-
-  get isSupportRequiredYes(): boolean {
-    return this.directionQuestionnaire?.hearing?.supportRequiredList?.option === YesNo.YES;
-  }
-
-  get isSupportRequiredDetailsAvailable(): boolean {
-    return this.directionQuestionnaire?.hearing?.supportRequiredList?.items?.length > 0;
   }
 
   hasExpertReportDetails(): boolean {
@@ -411,6 +400,33 @@ export class Claim {
 
   getDebts(): Debts | undefined {
     return this.statementOfMeans?.debts;
+  }
+
+  isInterestClaimOptionsBreakDownInterest(): boolean {
+    return this.interest?.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST;
+  }
+
+  getDefendantPaidAmount(): number | undefined {
+    return this.claimantResponse?.ccjRequest?.paidAmount?.amount;
+  }
+
+  hasDefendantPaid(): boolean {
+    return this.claimantResponse?.ccjRequest?.paidAmount?.option === YesNo.YES;
+  }
+
+  getHowTheInterestCalculatedReason(): string {
+    return this.interest?.totalInterest?.reason;
+  }
+
+  private getName(party: Party): string {
+    if (party?.type == PartyType.INDIVIDUAL || party?.type == PartyType.SOLE_TRADER) {
+      if (party.partyDetails?.individualTitle) {
+        return `${party.partyDetails.individualTitle} ${party.partyDetails.individualFirstName} ${party.partyDetails.individualLastName}`;
+      } else {
+        return `${party.partyDetails.individualFirstName} ${party.partyDetails.individualLastName}`;
+      }
+    }
+    return party?.partyDetails?.partyName;
   }
 }
 

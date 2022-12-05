@@ -22,6 +22,7 @@ import {DefendantTimeline} from '../../main/common/form/models/timeLineOfEvents/
 import {TimelineRow} from '../../main/common/form/models/timeLineOfEvents/timelineRow';
 import {EvidenceItem} from '../../main/common/form/models/evidence/evidenceItem';
 import {EvidenceType} from '../../main/common/models/evidence/evidenceType';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 
 export const buildAddress = (): Address => {
   return new Address('addressLine1', 'addressLine2', 'addressLine3', 'city', 'postCode');
@@ -58,6 +59,25 @@ function buildMockClaim(): Claim {
       partyName: 'Mrs Jane Clark',
     },
     type: PartyType.INDIVIDUAL,
+  };
+  _mockClaim.claimantResponse = {
+    ccjRequest: {
+      paidAmount: {
+        option: YesNo.YES,
+        amount: 10,
+        totalAmount: 110,
+      },
+      ccjPaymentOption: {
+        type: PaymentOptionType.BY_SET_DATE,
+        isCcjPaymentOptionBySetDate() {
+          return this.type === PaymentOptionType.BY_SET_DATE;
+        },
+
+        isCcjPaymentOptionInstalments() {
+          return this.type === PaymentOptionType.INSTALMENTS;
+        },
+      },
+    },
   };
   _mockClaim.evidence = {
     'comment': 'evidence comments',
@@ -120,6 +140,13 @@ function buildMockClaim(): Claim {
   ];
 
   _mockClaim.interest = {
+    interestStartDate: {
+      date: new Date('2022-08-21T00:00:00.000Z'),
+      year: 2022,
+      month: 8,
+      day: 21,
+      reason: 'test 1',
+    },
     interestEndDate: InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE,
     interestClaimFrom: InterestClaimFromType.FROM_A_SPECIFIC_DATE,
     interestClaimOptions: InterestClaimOptionsType.SAME_RATE_INTEREST,
