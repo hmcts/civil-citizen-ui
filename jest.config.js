@@ -8,6 +8,9 @@ module.exports = {
   transform: {
     '^.+\\.ts?$': 'ts-jest',
   },
+  reporters: [
+      ['jest-slow-test-reporter', {"warnOnSlowerThan": 300, "color": true}]
+    ]
   globals: {
           'ts-jest': {
               isolatedModules: true
