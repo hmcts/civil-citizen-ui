@@ -45,7 +45,6 @@ settleAdmittedController.post(CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL, async
   } catch (error) {
     next(error);
   }
-
 });
 
 export default settleAdmittedController;
