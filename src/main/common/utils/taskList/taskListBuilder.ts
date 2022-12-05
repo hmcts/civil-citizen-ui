@@ -63,7 +63,7 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string, lang: stri
       if (decideHowYouPayTask.status === TaskStatus.COMPLETE && isNotPayImmediatelyResponse(caseData)) {
         tasks.push(shareFinancialDetailsTask);
 
-        if (caseData.fullAdmission?.paymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS) {
+        if(caseData.isFAPaymentOptionInstallments()) {
           tasks.push(repaymentPlanTask);
         }
       }
