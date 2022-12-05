@@ -4,8 +4,6 @@ import {getSummarySections} from '../../../../../main/services/features/claim/ch
 import {CLAIM_CHECK_ANSWERS_URL, CLAIM_CONFIRMATION_URL} from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {getElementsByXPath} from '../../../../utils/xpathExtractor';
-import {getBreathingSpace} from 'services/features/breathingSpace/breathingSpaceService';
-import {DebtRespiteOptionType} from 'models/breathingSpace/debtRespiteOptionType';
 import {createClaimWithBasicDetails, createClaimWithYourDetails} from '../../../../utils/mocks/claimDetailsMock';
 import {getCaseDataFromStore} from '../../../../../main/modules/draft-store/draftStoreService';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
@@ -25,11 +23,8 @@ jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/claimDetailsService');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/services/features/claim/checkAnswers/checkAnswersService');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 const mockGetSummarySections = getSummarySections as jest.Mock;
-const mockGetCaseDataFromDraftStore = getCaseDataFromStore as jest.Mock;
 const mockGetClaim = getCaseDataFromStore as jest.Mock;
 const PARTY_NAME = 'Mrs. Mary Richards';
 
@@ -118,20 +113,6 @@ describe('Response - Check answers', () => {
       expect(contact[1].textContent?.trim()).toBe('98765');
       expect(email.length).toBe(1);
       expect(email[0].textContent?.trim()).toBe('contact@gmail.com');
-    });
-    it('should return breathing space object on check your answers page', async function () {
-      const claim = new Claim();
-      claim.claimDetails = new ClaimDetails();
-      claim.claimDetails.breathingSpace = {
-        debtRespiteOption: {
-          type: DebtRespiteOptionType.STANDARD,
-        },
-      };
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        return claim;
-      });
-      const breathingSpace = await getBreathingSpace('validClaimId');
-      expect(breathingSpace?.debtRespiteOption.type).toBe(DebtRespiteOptionType.STANDARD);
     });
     it('should pass english translation via query', async () => {
       await session(app).get(CLAIM_CHECK_ANSWERS_URL)
