@@ -3,12 +3,10 @@ import {
   CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
-import {Claim} from 'common/models/claim';
-
 import {GenericForm} from 'common/form/models/genericForm';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
+import {getClaimantResponse, saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
@@ -26,8 +24,8 @@ async function renderView(form: GenericForm<GenericYesNo>, claimId: string, res:
 
 settleAdmittedController.get(CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL, async (req: Request, res, next: NextFunction) => {  const claimId = req.params.id;
   try {
-    const claim: Claim = await getCaseDataFromStore(claimId);
-    await renderView(new GenericForm(claim.claimantResponse?.hasPartAdmittedBeenAccepted), claimId, res);
+    const claimantResponse = await getClaimantResponse(claimId);
+    await renderView(new GenericForm(claimantResponse?.hasPartAdmittedBeenAccepted), claimId, res);
   } catch (error) {
     next(error);
   }
