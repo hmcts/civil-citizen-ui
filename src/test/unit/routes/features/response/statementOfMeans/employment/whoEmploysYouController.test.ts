@@ -123,7 +123,7 @@ describe('Who employs you', () => {
         });
     });
 
-    it('should return error message when employerName is empty', async () => {
+    /* it('should return error message when employerName is empty', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       const response = await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
         .send({rows: [{employerName: '', jobTitle: 'Test'}]});
@@ -143,7 +143,7 @@ describe('Who employs you', () => {
       expect(employerNameInputErrors.length).toBe(1);
       expect(employerNameInputErrors[0].textContent).toContain(t('ERRORS.VALID_ENTER_AN_EMPLOYER_NAME'));
       expect(jobTitleInputErrors.length).toBe(0);
-    });
+    }); */
 
     it('should return error message when jobTitle is empty', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
