@@ -57,6 +57,8 @@ import {
 } from '../../main/common/form/models/claimDetails';
 import {Address} from '../../main/common/form/models/address';
 import {FullAdmission} from 'common/models/fullAdmission';
+import {ClaimDetails} from '../../main/common/form/models/claim/details/claimDetails';
+import {ClaimantTimeline} from '../../main/common/form/models/timeLineOfEvents/claimantTimeline';
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -95,6 +97,64 @@ export const createClaimWithBasicRespondentDetails = (contactPerson?: string): C
   claim.fullAdmission.paymentIntention.repaymentPlan = repaymentPlan;
   return claim;
 };
+export const createClaimWithBasicClaimDetails = (contactPerson?: string): Claim => {
+  const claim = new Claim();
+  claim.applicant1 = {
+    partyPhone: {phone: CONTACT_NUMBER},
+    dateOfBirth: {date: new Date('2000-12-12'), year: 1985, month: 2, day: 2},
+    responseType: ResponseType.FULL_ADMISSION,
+    type: PartyType.INDIVIDUAL,
+    partyDetails: {
+      partyName: PARTY_NAME,
+      contactPerson: contactPerson,
+      individualTitle: TITLE,
+      individualLastName: LAST_NAME,
+      individualFirstName: FIRST_NAME,
+    },
+  };
+  claim.claimDetails = new ClaimDetails();
+  claim.applicant1.partyDetails.primaryAddress = new Address('23 Brook lane', '', '', 'Bristol', 'BS13SS');
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
+  return claim;
+};
+export const createClaimWithBasicDetails = (contactPerson?: string): Claim => {
+  const claim = new Claim();
+  claim.applicant1 = {
+    partyPhone: {phone: CONTACT_NUMBER},
+    dateOfBirth: {date: new Date('2000-12-12'), year: 1985, month: 2, day: 2},
+    responseType: ResponseType.FULL_ADMISSION,
+    type: PartyType.INDIVIDUAL,
+    partyDetails: {
+      partyName: PARTY_NAME,
+      contactPerson: contactPerson,
+      individualTitle: TITLE,
+      individualLastName: LAST_NAME,
+      individualFirstName: FIRST_NAME,
+    },
+  };
+  claim.respondent1 = {
+    partyPhone: {phone: CONTACT_NUMBER},
+    dateOfBirth: {date: new Date('2000-12-12'), year: 1985, month: 2, day: 2},
+    responseType: ResponseType.FULL_ADMISSION,
+    type: PartyType.INDIVIDUAL,
+    partyDetails: {
+      partyName: PARTY_NAME,
+      contactPerson: contactPerson,
+      individualTitle: TITLE,
+      individualLastName: LAST_NAME,
+      individualFirstName: FIRST_NAME,
+    },
+  };
+  claim.claimDetails = new ClaimDetails();
+  claim.respondent1.partyDetails.primaryAddress = new Address('23 Brook lane', '', '', 'Bristol', 'BS13SS');
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
+  return claim;
+};
+
 export const createClaimWithBasicApplicantDetails = (contactPerson?: string): Claim => {
   const claim = new Claim();
   claim.applicant1 = {
@@ -1028,6 +1088,15 @@ export const claimWithClaimAmountOneBreakDown = (): Claim => {
   const claim = new Claim();
 
   claim.claimAmountBreakup = [{value: {claimAmount: '200', claimReason: 'roof'}}];
+
+  return claim;
+};
+
+export const claimWithClaimTimeLineAndEvents = (): Claim => {
+  const claim = new Claim();
+  claim.claimDetails = new ClaimDetails();
+  claim.claimDetails.evidence = new Evidence('test', [new EvidenceItem(EvidenceType.CONTRACTS_AND_AGREEMENTS, 'roof'), new EvidenceItem(EvidenceType.EXPERT_WITNESS, 'door')]);
+  claim.claimDetails.timeline = new ClaimantTimeline([new TimelineRow('01022000', 'contract'), new TimelineRow('123', 'meeting'), new TimelineRow('01021999', 'damages')]);
 
   return claim;
 };
