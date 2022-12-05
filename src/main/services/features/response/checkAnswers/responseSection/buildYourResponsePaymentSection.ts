@@ -21,7 +21,7 @@ import {RepaymentPlan} from '../../../../../common/models/repaymentPlan';
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
 const getResponseTitle = (claim: Claim, lang: string | unknown): string => {
-  if (claim.isFullAdmission() && claim.isPaymentOptionPayImmediately()) {
+  if (claim.isFullAdmission() && claim.isFAPaymentOptionPayImmediately()) {
     return t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_TITLE', {lng: getLng(lang)});
   }
   return t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY_TITLE', {lng: getLng(lang)});
@@ -48,16 +48,16 @@ export const buildYourResponsePaymentSection = (claim: Claim, claimId: string, l
 
   switch (claim.respondent1.responseType) {
     case ResponseType.FULL_ADMISSION:
-      paymentOption = claim.fullAdmission?.paymentIntention?.paymentOption;
+      paymentOption = claim.fullAdmission?.paymentIntention?.paymentOption ? claim.fullAdmission.paymentIntention.paymentOption : undefined;
       paymentDate = new Date(claim.fullAdmission?.paymentIntention?.paymentDate);
-      repaymentPlan = claim.fullAdmission?.paymentIntention?.repaymentPlan;
+      repaymentPlan = claim.fullAdmission?.paymentIntention?.repaymentPlan ? claim.fullAdmission.paymentIntention.repaymentPlan : undefined;
       paymentOptionHref = constructResponseUrlWithIdParams(claimId, CITIZEN_PAYMENT_OPTION_URL);
       repaymentPlanHref = constructResponseUrlWithIdParams(claimId, CITIZEN_REPAYMENT_PLAN_FULL_URL);
       break;
     case ResponseType.PART_ADMISSION:
-      paymentOption = claim.partialAdmission?.paymentIntention?.paymentOption;
+      paymentOption = claim.partialAdmission?.paymentIntention?.paymentOption ? claim.partialAdmission.paymentIntention.paymentOption : undefined;
       paymentDate = new Date(claim.partialAdmission?.paymentIntention?.paymentDate);
-      repaymentPlan = claim.partialAdmission?.paymentIntention?.repaymentPlan;
+      repaymentPlan = claim.partialAdmission?.paymentIntention?.repaymentPlan ? claim.partialAdmission.paymentIntention.repaymentPlan : undefined;
       paymentOptionHref = constructResponseUrlWithIdParams(claimId, CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL);
       repaymentPlanHref = constructResponseUrlWithIdParams(claimId, CITIZEN_REPAYMENT_PLAN_PARTIAL_URL);
       break;

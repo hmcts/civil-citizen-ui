@@ -158,8 +158,8 @@ function buildMockClaim(): Claim {
     additionalTime: AdditionalTimeOptions.MORE_THAN_28_DAYS,
   };
 
-  _mockClaim.isPaymentOptionPayImmediately = (): boolean => false;
-  _mockClaim.isPaymentOptionBySetDate = (): boolean => false;
+  _mockClaim.isFAPaymentOptionPayImmediately = (): boolean => false;
+  _mockClaim.isFAPaymentOptionBySetDate = (): boolean => false;
 
   return _mockClaim;
 }

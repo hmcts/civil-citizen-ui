@@ -90,15 +90,15 @@ export class Claim {
   }
 
   get responseStatus(): ClaimResponseStatus {
-    if (this.isFullAdmission() && this.isPaymentOptionPayImmediately()) {
+    if (this.isFullAdmission() && this.isFAPaymentOptionPayImmediately()) {
       return ClaimResponseStatus.FA_PAY_IMMEDIATELY;
     }
 
-    if (this.isFullAdmission() && this.isPaymentOptionInstallments()) {
+    if (this.isFullAdmission() && this.isFAPaymentOptionInstallments()) {
       return ClaimResponseStatus.FA_PAY_INSTALLMENTS;
     }
 
-    if (this.isFullAdmission() && this.isPaymentOptionBySetDate()) {
+    if (this.isFullAdmission() && this.isFAPaymentOptionBySetDate()) {
       return ClaimResponseStatus.FA_PAY_BY_DATE;
     }
 
@@ -168,12 +168,16 @@ export class Claim {
     return !this.applicant1;
   }
 
-  isPaymentOptionBySetDate(): boolean {
+  isFAPaymentOptionBySetDate(): boolean {
     return this.fullAdmission?.paymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE;
   }
 
-  isPaymentOptionPayImmediately(): boolean {
+  isFAPaymentOptionPayImmediately(): boolean {
     return this.fullAdmission?.paymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY;
+  }
+
+  isFAPaymentOptionInstallments(): boolean {
+    return this.fullAdmission?.paymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS;
   }
 
   isPAPaymentOptionPayImmediately(): boolean {
@@ -186,10 +190,6 @@ export class Claim {
 
   isPAPaymentOptionByDate(): boolean {
     return this.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE;
-  }
-
-  isPaymentOptionInstallments(): boolean {
-    return this.fullAdmission?.paymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS;
   }
 
   isInterestEndDateUntilSubmitDate(): boolean {

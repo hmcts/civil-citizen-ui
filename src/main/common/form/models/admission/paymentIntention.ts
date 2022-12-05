@@ -1,5 +1,5 @@
-import {RepaymentPlan} from '../../../../common/models/repaymentPlan';
-import {PaymentOptionType} from '../../models/admission/paymentOption/paymentOptionType';
+import {RepaymentPlan} from 'common/models/repaymentPlan';
+import { PaymentOptionType } from './paymentOption/paymentOptionType';
 export class PaymentIntention {
   paymentOption?: PaymentOptionType;
   paymentDate?: Date;

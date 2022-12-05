@@ -1,16 +1,16 @@
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../../main/common/models/claim';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {Claim} from 'common/models/claim';
 import {
   getPaymentOptionForm,
   savePaymentOptionData,
-} from '../../../../../../main/services/features/response/admission/paymentOptionService';
+} from 'services/features/response/admission/paymentOptionService';
 import {PaymentOptionType}
-  from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+  from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {PaymentOption}
-  from '../../../../../../main/common/form/models/admission/paymentOption/paymentOption';
+  from 'common/form/models/admission/paymentOption/paymentOption';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {ResponseType} from '../../../../../../main/common/form/models/responseType';
-import {PartialAdmission} from '../../../../../../main/common/models/partialAdmission';
+import {ResponseType} from 'common/form/models/responseType';
+import {PartialAdmission} from 'common/models/partialAdmission';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {mockClaim} from '../../../../../utils/mockClaim';
 import {FullAdmission} from 'common/models/fullAdmission';
