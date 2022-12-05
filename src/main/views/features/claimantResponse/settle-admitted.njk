@@ -10,7 +10,7 @@
   {{ setPageTitle('PAGES.PARTIAL_ADMISSION_SETTLE_ADMITTED.PAGE_TITLE') }}
 {% endblock %}
 
-{% set noHint = 'PAGES.PARTIAL_ADMISSION_SETTLE_ADMITTED.CONTINUE_AMOUNT_YOU_CLAIMED'  %}
+{% set noHint = t('PAGES.PARTIAL_ADMISSION_SETTLE_ADMITTED.CONTINUE_AMOUNT_YOU_CLAIMED')+ ': '+ totalAmount %}
 
 {% block content %}
   <div class="govuk-width-container">
