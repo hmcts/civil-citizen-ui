@@ -1,9 +1,9 @@
-import {PaymentIntention} from '../../../../../../main/common/form/models/admission/paymentIntention';
-import {PaymentOptionType} from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
-import {Claim} from '../../../../../../main/common/models/claim';
-import {PartialAdmission} from '../../../../../../main/common/models/partialAdmission';
-import {TaskStatus} from '../../../../../../main/common/models/taskList/TaskStatus';
-import {getWhenWillYouPayTask} from '../../../../../../main/common/utils/taskList/tasks/whenWillYouPay';
+import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {Claim} from 'common/models/claim';
+import {PartialAdmission} from 'common/models/partialAdmission';
+import {TaskStatus} from 'common/models/taskList/TaskStatus';
+import {getWhenWillYouPayTask} from 'common/utils/taskList/tasks/whenWillYouPay';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({

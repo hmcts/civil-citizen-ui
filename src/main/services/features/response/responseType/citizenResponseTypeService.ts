@@ -1,10 +1,10 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../main/common/models/claim';
-import {PartialAdmission} from '../../../../../main/common/models/partialAdmission';
-import {RejectAllOfClaim} from '../../../../common/form/models/rejectAllOfClaim';
-import {StatementOfMeans} from '../../../../../main/common/models/statementOfMeans';
-import {Party} from '../../../../../main/common/models/party';
-import {FullAdmission} from '../../../../../main/common/models/fullAdmission';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'common/models/claim';
+import {PartialAdmission} from 'common/models/partialAdmission';
+import {RejectAllOfClaim} from 'common/form/models/rejectAllOfClaim';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
+import {Party} from 'common/models/party';
+import {FullAdmission} from 'common/models/fullAdmission';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 
 const {Logger} = require('@hmcts/nodejs-logging');

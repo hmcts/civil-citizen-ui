@@ -1,7 +1,7 @@
-import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
-import {ClaimantResponse} from '../../../common/models/claimantResponse';
-import {GenericYesNo} from '../../../common/form/models/genericYesNo';
-import {formatDateToFullDate} from '../../../common/utils/dateUtils';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {ClaimantResponse} from 'common/models/claimantResponse';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('fullAdmitSetDatePaymentService');

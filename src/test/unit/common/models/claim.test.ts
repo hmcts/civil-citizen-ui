@@ -1,38 +1,38 @@
-import {Claim} from '../../../../main/common/models/claim';
+import {Claim} from 'common/models/claim';
 import {
   CaseState,
   InterestClaimFromType,
   InterestEndDateType,
   SameRateInterestType,
-} from '../../../../main/common/form/models/claimDetails';
-import {StatementOfMeans} from '../../../../main/common/models/statementOfMeans';
-import {YesNo} from '../../../../main/common/form/models/yesNo';
-import {Dependants} from '../../../../main/common/form/models/statementOfMeans/dependants/dependants';
+} from 'common/form/models/claimDetails';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
+import {YesNo} from 'common/form/models/yesNo';
+import {Dependants} from 'common/form/models/statementOfMeans/dependants/dependants';
 import civilClaimResponseApplicantCompany from '../../../utils/mocks/civilClaimResponseApplicantCompanyMock.json';
 import civilClaimResponseApplicantIndividual from '../../../utils/mocks/civilClaimResponseApplicanIndividualMock.json';
-import {ResponseType} from '../../../../main/common/form/models/responseType';
-import {PartyType} from '../../../../main/common/models/partyType';
-import {PartialAdmission} from '../../../../main/common/models/partialAdmission';
-import {Party} from '../../../../main/common/models/party';
-import {HowMuchDoYouOwe} from '../../../../main/common/form/models/admission/partialAdmission/howMuchDoYouOwe';
-import {PaymentIntention} from '../../../../main/common/form/models/admission/paymentIntention';
-import {PaymentOptionType} from '../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import {ResponseType} from 'common/form/models/responseType';
+import {PartyType} from 'common/models/partyType';
+import {PartialAdmission} from 'common/models/partialAdmission';
+import {Party} from 'common/models/party';
+import {HowMuchDoYouOwe} from 'common/form/models/admission/partialAdmission/howMuchDoYouOwe';
+import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {mockClaim} from '../../../utils/mockClaim';
-import {DocumentType} from '../../../../main/common/models/document/documentType';
-import {GenericYesNo} from '../../../../main/common/form/models/genericYesNo';
-import {RejectAllOfClaim} from '../../../../main/common/form/models/rejectAllOfClaim';
-import {RejectAllOfClaimType} from '../../../../main/common/form/models/rejectAllOfClaimType';
+import {DocumentType} from 'common/models/document/documentType';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {RejectAllOfClaim} from 'common/form/models/rejectAllOfClaim';
+import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
 import {
   HowMuchHaveYouPaid,
   HowMuchHaveYouPaidParams,
-} from '../../../../main/common/form/models/admission/howMuchHaveYouPaid';
-import {WhyDoYouDisagree} from '../../../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
-import {Defence} from '../../../../main/common/form/models/defence';
-import {ClaimResponseStatus} from '../../../../main/common/models/claimResponseStatus';
-import {InterestClaimOptionsType} from '../../../../main/common/form/models/claim/interest/interestClaimOptionsType';
-import {DirectionQuestionnaire} from '../../../../main/common/models/directionsQuestionnaire/directionQuestionnaire';
-import {Hearing} from '../../../../main/common/models/directionsQuestionnaire/hearing/hearing';
-import {Address} from '../../../../main/common/form/models/address';
+} from 'common/form/models/admission/howMuchHaveYouPaid';
+import {WhyDoYouDisagree} from 'common/form/models/admission/partialAdmission/whyDoYouDisagree';
+import {Defence} from 'common/form/models/defence';
+import {ClaimResponseStatus} from 'common/models/claimResponseStatus';
+import {InterestClaimOptionsType} from 'common/form/models/claim/interest/interestClaimOptionsType';
+import {DirectionQuestionnaire} from 'common/models/directionsQuestionnaire/directionQuestionnaire';
+import {Hearing} from 'common/models/directionsQuestionnaire/hearing/hearing';
+import {Address} from 'common/form/models/address';
 import {FullAdmission} from 'common/models/fullAdmission';
 
 describe('Claim isInterestEnDateUntilSubmitDate', () => {

@@ -1,7 +1,7 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
-import {RepaymentPlanForm} from '../../../../common/form/models/repaymentPlan/repaymentPlanForm';
-import {Claim} from '../../../../common/models/claim';
-import {RepaymentPlan} from '../../../../../main/common/models/repaymentPlan';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {RepaymentPlanForm} from 'common/form/models/repaymentPlan/repaymentPlanForm';
+import {Claim} from 'common/models/claim';
+import {RepaymentPlan} from 'common/models/repaymentPlan';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('selfEmployedAsService');

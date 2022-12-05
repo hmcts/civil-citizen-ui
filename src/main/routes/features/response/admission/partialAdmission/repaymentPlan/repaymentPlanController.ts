@@ -1,16 +1,16 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {RepaymentPlanForm} from '../../../../../../common/form/models/repaymentPlan/repaymentPlanForm';
-import {constructResponseUrlWithIdParams} from '../../../../../../common/utils/urlFormatter';
+import {RepaymentPlanForm} from 'common/form/models/repaymentPlan/repaymentPlanForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getRepaymentPlanForm,
   saveRepaymentPlanData,
-} from '../../../../../../services/features/response/repaymentPlan/repaymentPlanService';
-import {GenericForm} from '../../../../../../common/form/models/genericForm';
+} from 'services/features/response/repaymentPlan/repaymentPlanService';
+import {GenericForm} from 'common/form/models/genericForm';
 import {CITIZEN_REPAYMENT_PLAN_PARTIAL_URL, CLAIM_TASK_LIST_URL} from '../../../../../urls';
 import {getFirstPaymentExampleDate} from '../../fullAdmission/repaymentPlan/repaymentPlanController';
-import {ResponseType} from '../../../../../../common/form/models/responseType';
-import {getCaseDataFromStore} from '../../../../../../modules/draft-store/draftStoreService';
-import {PartAdmitGuard} from '../../../../../../routes/guards/partAdmitGuard';
+import {ResponseType} from 'common/form/models/responseType';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {PartAdmitGuard} from 'routes/guards/partAdmitGuard';
 
 const repaymentPlanViewPath = 'features/response/repaymentPlan/repaymentPlan';
 const repaymentPlanPartAdmissionController = Router();

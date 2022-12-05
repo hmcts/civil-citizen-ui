@@ -1,10 +1,10 @@
-import {Task} from '../../../models/taskList/task';
-import {Claim} from '../../../models/claim';
-import {TaskStatus} from '../../../models/taskList/TaskStatus';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {CITIZEN_REPAYMENT_PLAN_FULL_URL, CITIZEN_REPAYMENT_PLAN_PARTIAL_URL} from '../../../../routes/urls';
+import {Task} from 'models/taskList/task';
+import {Claim} from 'models/claim';
+import {TaskStatus} from 'models/taskList/TaskStatus';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {CITIZEN_REPAYMENT_PLAN_FULL_URL, CITIZEN_REPAYMENT_PLAN_PARTIAL_URL} from 'routes/urls';
 import {isRepaymentPlanMissing,isFullAdmissionRepaymentPlanMissing} from './taskListHelpers';
-import {getLng} from '../../../../common/utils/languageToggleUtils';
+import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
 
 export const getRepaymentPlanTask = (caseData: Claim, claimId: string, lang: string): Task => {

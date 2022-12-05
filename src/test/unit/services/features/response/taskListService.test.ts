@@ -1,21 +1,21 @@
-import {Claim} from '../../../../../main/common/models/claim';
-import {getDescription, getTaskLists, getTitle} from '../../../../../main/services/features/response/taskListService';
+import {Claim} from 'common/models/claim';
+import {getDescription, getTaskLists, getTitle} from 'services/features/response/taskListService';
 import {
   buildPrepareYourResponseSection,
   buildRespondToClaimSection,
   buildSubmitSection,
-} from '../../../../../main/common/utils/taskList/taskListBuilder';
-import {ResponseType} from '../../../../../main/common/form/models/responseType';
-import {TaskStatus} from '../../../../../main/common/models/taskList/TaskStatus';
+} from 'common/utils/taskList/taskListBuilder';
+import {ResponseType} from 'common/form/models/responseType';
+import {TaskStatus} from 'common/models/taskList/TaskStatus';
 import {deepCopy} from '../../../../utils/deepCopy';
-import {PartyType} from '../../../../../main/common/models/partyType';
-import {Party} from '../../../../../main/common/models/party';
-import {PaymentOptionType} from '../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
-import {StatementOfMeans} from '../../../../../main/common/models/statementOfMeans';
-import {YesNo} from '../../../../../main/common/form/models/yesNo';
-import {GenericYesNo} from '../../../../../main/common/form/models/genericYesNo';
-import {PartyDetails} from '../../../../../main/common/form/models/partyDetails';
-import {Address} from '../../../../../main/common/form/models/address';
+import {PartyType} from 'common/models/partyType';
+import {Party} from 'common/models/party';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
+import {YesNo} from 'common/form/models/yesNo';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {PartyDetails} from 'common/form/models/partyDetails';
+import {Address} from 'common/form/models/address';
 import {FullAdmission} from 'common/models/fullAdmission';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 

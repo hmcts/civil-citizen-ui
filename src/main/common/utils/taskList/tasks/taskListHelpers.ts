@@ -1,9 +1,9 @@
-import {Claim} from '../../../models/claim';
+import {Claim} from 'models/claim';
 import {Party} from 'models/party';
-import {PartyType} from '../../../models/partyType';
-import {PaymentOptionType} from '../../../../common/form/models/admission/paymentOption/paymentOptionType';
-import {YesNo} from '../../../../common/form/models/yesNo';
-import {RejectAllOfClaimType} from '../../../../common/form/models/rejectAllOfClaimType';
+import {PartyType} from 'models/partyType';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {YesNo} from 'common/form/models/yesNo';
+import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
 
 export const isCaseDataMissing = (caseData: Claim): boolean => {
   return !caseData;

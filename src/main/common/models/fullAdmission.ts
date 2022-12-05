@@ -1,4 +1,4 @@
-import {PaymentIntention} from '../form/models/admission/paymentIntention';
+import {PaymentIntention} from 'form/models/admission/paymentIntention';
 
 export class FullAdmission {
   paymentIntention?: PaymentIntention;

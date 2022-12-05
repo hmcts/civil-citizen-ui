@@ -8,11 +8,11 @@ import {FullAdmission} from './fullAdmission';
 import {PartialAdmission} from './partialAdmission';
 import {DefendantEvidence} from './evidence/evidence';
 import {Mediation} from './mediation/mediation';
-import {RejectAllOfClaim} from '../form/models/rejectAllOfClaim';
+import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
 import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
 import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/dateUtils';
-import {StatementOfTruthForm} from '../form/models/statementOfTruth/statementOfTruthForm';
-import {PaymentOptionType} from '../form/models/admission/paymentOption/paymentOptionType';
+import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {
   CaseState,
   ClaimAmountBreakup,
@@ -20,34 +20,34 @@ import {
   InterestClaimFromType,
   InterestEndDateType,
   SameRateInterestType,
-} from '../form/models/claimDetails';
-import {YesNo} from '../form/models/yesNo';
-import {ResponseType} from '../form/models/responseType';
-import {Document} from '../../common/models/document/document';
-import {QualifiedStatementOfTruth} from '../form/models/statementOfTruth/qualifiedStatementOfTruth';
+} from 'form/models/claimDetails';
+import {YesNo} from 'form/models/yesNo';
+import {ResponseType} from 'form/models/responseType';
+import {Document} from 'common/models/document/document';
+import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {SystemGeneratedCaseDocuments} from './document/systemGeneratedCaseDocuments';
 import {CaseDocument} from './document/caseDocument';
 import {DocumentType} from './document/documentType';
 import {ResponseDeadline} from './responseDeadline';
-import {getLng} from '../../common/utils/languageToggleUtils';
+import {getLng} from 'common/utils/languageToggleUtils';
 import {ClaimResponseStatus} from './claimResponseStatus';
-import {DirectionQuestionnaire} from '../models/directionsQuestionnaire/directionQuestionnaire';
-import {ResponseOptions} from '../../common/form/models/responseDeadline';
-import {AdditionalTimeOptions} from '../../common/form/models/additionalTime';
-import {InterestClaimOptionsType} from '../../common/form/models/claim/interest/interestClaimOptionsType';
-import {Interest} from '../form/models/interest/interest';
-import {RejectAllOfClaimType} from '../../common/form/models/rejectAllOfClaimType';
-import {ClaimDetails} from '../../common/form/models/claim/details/claimDetails';
+import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
+import {ResponseOptions} from 'common/form/models/responseDeadline';
+import {AdditionalTimeOptions} from 'common/form/models/additionalTime';
+import {InterestClaimOptionsType} from 'common/form/models/claim/interest/interestClaimOptionsType';
+import {Interest} from 'form/models/interest/interest';
+import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
+import {ClaimDetails} from 'common/form/models/claim/details/claimDetails';
 import {ClaimantResponse} from './claimantResponse';
-import {CCDClaim} from '../models/civilClaimResponse';
+import {CCDClaim} from 'models/civilClaimResponse';
 import {toCUIParty} from 'services/translation/response/convertToCUI/convertToCUIParty';
-import {SelfEmployedAs} from '../models/selfEmployedAs';
-import {TaxPayments} from '../models/taxPayments';
-import {RegularIncome} from '../../common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
-import {RegularExpenses} from '../../common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
-import {CourtOrders} from '../../common/form/models/statementOfMeans/courtOrders/courtOrders';
-import {PriorityDebts} from '../../common/form/models/statementOfMeans/priorityDebts';
-import {Debts} from '../../common/form/models/statementOfMeans/debts/debts';
+import {SelfEmployedAs} from 'models/selfEmployedAs';
+import {TaxPayments} from 'models/taxPayments';
+import {RegularIncome} from 'common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
+import {RegularExpenses} from 'common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
+import {CourtOrders} from 'common/form/models/statementOfMeans/courtOrders/courtOrders';
+import {PriorityDebts} from 'common/form/models/statementOfMeans/priorityDebts';
+import {Debts} from 'common/form/models/statementOfMeans/debts/debts';
 export class Claim {
   legacyCaseReference: string;
   applicant1?: Party;

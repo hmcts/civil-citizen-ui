@@ -1,6 +1,6 @@
-import {Claim} from '../../../../common/models/claim';
-import {ClaimSummarySection, ClaimSummaryType} from '../../../../common/form/models/claimSummarySection';
-import {formatDateToFullDate} from '../../../../common/utils/dateUtils';
+import {Claim} from 'common/models/claim';
+import {ClaimSummarySection, ClaimSummaryType} from 'common/form/models/claimSummarySection';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
 
 const getResponseStatement = (claim: Claim, lang: string) => {
   const defendantName = claim.getDefendantFullName();
