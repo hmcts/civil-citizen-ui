@@ -29,8 +29,6 @@ const addressCCD: CCDAddress = {
   AddressLine3: '1A',
   PostTown: 'test',
   PostCode: 'sl11gf',
-  Country: 'test',
-  County: 'test',
 };
 
 const commonParty = {
@@ -111,7 +109,7 @@ const partyCompanyCCD: CCDParty = {
 
 const partyIndividualCCD: CCDParty = {
   companyName: undefined,
-  individualDateOfBirth: new Date('10/10/1990').toLocaleDateString(),
+  individualDateOfBirth: new Date('1990-10-10T00:00:00.000Z'),
   individualTitle: title,
   individualFirstName: firstName,
   individualLastName: lastName,
@@ -137,7 +135,7 @@ const partySoleTraderCCD: CCDParty = {
   partyEmail: emailCCD,
   partyPhone: phoneCCD,
   primaryAddress: addressCCD,
-  soleTraderDateOfBirth: new Date('10/10/1990').toLocaleDateString(),
+  soleTraderDateOfBirth: new Date('1990-10-10T00:00:00.000Z'),
   soleTraderTitle: title,
   soleTraderFirstName: firstName,
   soleTraderLastName: lastName,

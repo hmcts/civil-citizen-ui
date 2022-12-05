@@ -2,7 +2,7 @@
 const PropertiesVolume = require('./secretsConfig');
 
 const defaultPassword = process.env.CITIZEN_PASSWORD;
-const testUrl = process.env.TEST_URL || 'https://civil-citizen-ui-pr-998.service.core-compute-preview.internal';
+const testUrl = process.env.TEST_URL || 'https://civil-citizen-ui.demo.platform.hmcts.net/';
 const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
 
 if (!process.env.TEST_PASSWORD) {
@@ -46,7 +46,7 @@ module.exports = {
   },
   applicantSolicitorUser: {
     password: defaultPassword,
-    email: 'hmcts.civil+organisation.1.solicitor.1@gmail.com',
+    email: 'hmcts.civil+organisation.2.solicitor.1@gmail.com',
     type: 'applicant_solicitor',
   },
   defendantCitizenUser: {

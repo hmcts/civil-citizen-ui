@@ -219,7 +219,7 @@ export const buildFullDisputeResponseContent = (claim: Claim, lng: string): Clai
 };
 export const buildFullDisputePaidLessResponseContent = (claim: Claim, lng: string): ClaimSummarySection[] => {
   return [
-    ...getResponseStatement(claim.getDefendantName(), 'PAGES.REVIEW_DEFENDANTS_RESPONSE.REJECT_CLAIM_PAID_LESS_STATEMENT', claim.isRejectAllOfClaimAlreadyPaid()),
+    ...getResponseStatement(claim.getDefendantFullName(), 'PAGES.REVIEW_DEFENDANTS_RESPONSE.REJECT_CLAIM_PAID_LESS_STATEMENT', claim.isRejectAllOfClaimAlreadyPaid()),
     ...getPaymentDate(claim.getRejectAllOfClaimPaidLessPaymentDate(), lng),
     ...getHowTheyPaid(claim.getRejectAllOfClaimPaidLessPaymentMode()),
     ...getWhyTheyDisagreeWithClaim(claim.getRejectAllOfClaimDisagreementReason()),
