@@ -71,11 +71,11 @@ const getClaim = async (claimId: string, isPartialAdmission?: boolean): Promise<
     firstRepaymentDate: null,
   };
   if (isPartialAdmission) {
-    if (!claim.partialAdmission?.paymentIntention?.repaymentPlan) {
+    if (!claim.partialAdmission.paymentIntention.repaymentPlan) {
       claim.partialAdmission.paymentIntention.repaymentPlan = repaymentPlan;
     }
   } else {
-    if (!claim.fullAdmission?.paymentIntention?.repaymentPlan) {
+    if (!claim.fullAdmission.paymentIntention.repaymentPlan) {
       claim.fullAdmission.paymentIntention.repaymentPlan = repaymentPlan;
     }
   }
