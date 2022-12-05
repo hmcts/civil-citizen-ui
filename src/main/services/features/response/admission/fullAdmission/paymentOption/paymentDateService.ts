@@ -3,6 +3,7 @@ import {ResponseType} from 'form/models/responseType';
 import {PartialAdmission} from 'models/partialAdmission';
 import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
+import {FullAdmission} from 'common/models/fullAdmission';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('paymentDateService');
@@ -36,9 +37,14 @@ export class PaymentDateService {
           case_data.partialAdmission.paymentIntention.paymentOption = paymentType;
         }
         case_data.partialAdmission.paymentIntention.paymentDate = paymentDate;
-      } else {
+      } else if (responseType === ResponseType.FULL_ADMISSION) {
+        if (!case_data.fullAdmission) {
+          case_data.fullAdmission = new FullAdmission();
+        }
         if (!case_data.fullAdmission?.paymentIntention?.paymentDate) {
-          case_data.fullAdmission.paymentIntention.paymentDate = new Date();
+          const paymentType = case_data.fullAdmission?.paymentIntention?.paymentOption;
+          case_data.fullAdmission.paymentIntention = new PaymentIntention();
+          case_data.fullAdmission.paymentIntention.paymentOption = paymentType;
         }
         case_data.fullAdmission.paymentIntention.paymentDate = paymentDate;
       }
