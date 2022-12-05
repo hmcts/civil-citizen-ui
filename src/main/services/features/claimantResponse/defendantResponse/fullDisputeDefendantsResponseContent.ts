@@ -209,7 +209,7 @@ export const getWhyTheyDisagreeWithClaim = (text: string): ClaimSummarySection[]
 
 export const buildFullDisputeResponseContent = (claim: Claim, lng: string): ClaimSummarySection[] => {
   return [
-    ...getResponseStatement(claim.getDefendantName(), 'PAGES.REVIEW_DEFENDANTS_RESPONSE.REJECT_CLAIM_STATEMENT'),
+    ...getResponseStatement(claim.getDefendantFullName(), 'PAGES.REVIEW_DEFENDANTS_RESPONSE.REJECT_CLAIM_STATEMENT'),
     ...getTheirDefence(claim.rejectAllOfClaim?.defence?.text),
     ...getTheirTOEs(claim, lng),
     ...getDisagreementStatementWithTimeline(claim),
