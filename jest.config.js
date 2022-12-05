@@ -10,8 +10,7 @@ module.exports = {
   },
   globals: {
           'ts-jest': {
-              isolatedModules: true,
-              maxWorkers: '50%'
+              isolatedModules: true
           }
       },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
