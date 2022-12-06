@@ -65,7 +65,7 @@ export const getTheirPaidMethod = (text: string): ClaimSummarySection[] => {
 
 export const buildPartAdmitAlreadyPaidResponseContent = (claim: Claim, lng: string): ClaimSummarySection[] => {
   return [
-    ...getResponseStatement(claim.getDefendantName(), claim.partialAdmissionPaidAmount()),
+    ...getResponseStatement(claim.getDefendantFullName(), claim.partialAdmissionPaidAmount()),
     ...getTheirDatePaid(formatDateToFullDate(claim.partialAdmission.howMuchHaveYouPaid.date)),
     ...getTheirPaidMethod(claim.partialAdmission.howMuchHaveYouPaid.text),
     ...getWhyTheyDisagree(claim.partialAdmission.whyDoYouDisagree.text),
