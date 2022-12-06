@@ -3,7 +3,7 @@ import {Claim} from '../../../../../common/models/claim';
 import {ClaimSummarySection, ClaimSummaryType} from '../../../../../common/form/models/claimSummarySection';
 
 export function getRC_PaidLessStatus(claim: Claim, lang: string): ClaimSummarySection[] {
-  const claimantName = claim.getClaimantName();
+  const claimantName = claim.getClaimantFullName();
   const amount = claim.isRejectAllOfClaimAlreadyPaid();
   return [
     {
@@ -17,7 +17,7 @@ export function getRC_PaidLessStatus(claim: Claim, lang: string): ClaimSummarySe
 }
 
 export function getRC_PaidFullStatus(claim: Claim, lang: string): ClaimSummarySection[] {
-  const claimantName = claim.getClaimantName();
+  const claimantName = claim.getClaimantFullName();
   const amount = claim.isRejectAllOfClaimAlreadyPaid();
   return [
     {
@@ -31,7 +31,7 @@ export function getRC_PaidFullStatus(claim: Claim, lang: string): ClaimSummarySe
 }
 
 export function getRC_PaidLessNextSteps(claim: Claim, lang: string): ClaimSummarySection[]{
-  const claimantName = claim.getClaimantName();
+  const claimantName = claim.getClaimantFullName();
   return [
     {
       type: ClaimSummaryType.HTML,
@@ -50,7 +50,7 @@ export function getRC_PaidLessNextSteps(claim: Claim, lang: string): ClaimSummar
 }
 
 export function getRC_PaidFullNextSteps(claim: Claim,lang: string): ClaimSummarySection[]{
-  const claimantName = claim.getClaimantName();
+  const claimantName = claim.getClaimantFullName();
   return [
     {
       type: ClaimSummaryType.HTML,
