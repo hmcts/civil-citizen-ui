@@ -61,9 +61,6 @@ import {DebtRespiteEndDate} from 'models/breathingSpace/debtRespiteEndDate';
 import {DebtRespiteOptionType} from 'models/breathingSpace/debtRespiteOptionType';
 import {ClaimDetails} from '../../main/common/form/models/claim/details/claimDetails';
 import {ClaimantTimeline} from '../../main/common/form/models/timeLineOfEvents/claimantTimeline';
-import {DebtRespiteStartDate} from 'models/breathingSpace/debtRespiteStartDate';
-import {DebtRespiteEndDate} from 'models/breathingSpace/debtRespiteEndDate';
-import {DebtRespiteOptionType} from 'models/breathingSpace/debtRespiteOptionType';
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -1059,39 +1056,5 @@ export const claimWithClaimTimeLineAndEvents = (): Claim => {
   claim.claimDetails.evidence = new Evidence('test', [new EvidenceItem(EvidenceType.CONTRACTS_AND_AGREEMENTS, 'roof'), new EvidenceItem(EvidenceType.EXPERT_WITNESS, 'door')]);
   claim.claimDetails.timeline = new ClaimantTimeline([new TimelineRow('01022000', 'contract'), new TimelineRow('123', 'meeting'), new TimelineRow('01021999', 'damages')]);
 
-  return claim;
-};
-
-export const getClaimWithFewDetails = (): Claim => {
-  const claim = new Claim();
-  claim.claimDetails = new ClaimDetails();
-  claim.claimDetails.breathingSpace = {
-    debtRespiteReferenceNumber: {
-      referenceNumber: 'R225B1230',
-    },
-    debtRespiteOption: {
-      type: DebtRespiteOptionType.STANDARD || DebtRespiteOptionType.MENTAL_HEALTH,
-    },
-    debtRespiteStartDate: new DebtRespiteStartDate('10', 'January', '2022'),
-    debtRespiteEndDate: new DebtRespiteEndDate('10', 'December', '2022'),
-
-  };
-  return claim;
-};
-
-export const getClaimWithNoDetails = (): Claim => {
-  const claim = new Claim();
-  claim.claimDetails = new ClaimDetails();
-  claim.claimDetails.breathingSpace = {
-    debtRespiteReferenceNumber: {
-      referenceNumber: '',
-    },
-    debtRespiteOption: {
-      type: DebtRespiteOptionType.STANDARD || DebtRespiteOptionType.MENTAL_HEALTH,
-    },
-    debtRespiteStartDate: new DebtRespiteStartDate(),
-    debtRespiteEndDate: new DebtRespiteEndDate(),
-
-  };
   return claim;
 };
