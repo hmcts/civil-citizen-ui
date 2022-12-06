@@ -21,7 +21,7 @@ function renderView(res: Response, form: GenericForm<ResponseDeadline>, claim: C
   res.render(responseDeadlineOptionsViewPath, {
     form,
     responseDate: claim.formattedResponseDeadline(language),
-    claimantName: claim.getClaimantName(),
+    claimantName: claim.getClaimantFullName(),
   });
 }
 

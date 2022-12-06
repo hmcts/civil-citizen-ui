@@ -4,17 +4,17 @@ import {
   getStatementOfTruth,
   getSummarySections,
   saveStatementOfTruth,
-} from '../../../services/features/response/checkAnswers/checkAnswersService';
-import {GenericForm} from '../../../common/form/models/genericForm';
-import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
-import {StatementOfTruthForm} from '../../../common/form/models/statementOfTruth/statementOfTruthForm';
-import {Claim} from '../../../common/models/claim';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {QualifiedStatementOfTruth} from '../../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
-import {isFullAmountReject} from '../../../modules/claimDetailsService';
-import {AppRequest} from '../../../common/models/AppRequest';
-import {AllResponseTasksCompletedGuard} from '../../../routes/guards/allResponseTasksCompletedGuard';
-import {submitResponse} from '../../../services/features/response/submission/submitResponse';
+} from 'services/features/response/checkAnswers/checkAnswersService';
+import {GenericForm} from 'form/models/genericForm';
+import {deleteDraftClaimFromStore, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
+import {Claim} from 'models/claim';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
+import {isFullAmountReject} from 'modules/claimDetailsService';
+import {AllResponseTasksCompletedGuard} from 'routes/guards/allResponseTasksCompletedGuard';
+import {submitResponse} from 'services/features/response/submission/submitResponse';
+import {AppRequest} from 'models/AppRequest';
 
 const checkAnswersViewPath = 'features/response/check-answers';
 const checkAnswersController = Router();
@@ -57,6 +57,7 @@ checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, async (req: Request, res
     } else {
       await saveStatementOfTruth(req.params.id, form.model);
       await submitResponse(<AppRequest>req);
+      await deleteDraftClaimFromStore(req.params.id);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CONFIRMATION_URL));
     }
   } catch (error) {
