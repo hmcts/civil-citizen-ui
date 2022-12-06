@@ -61,7 +61,7 @@
       "START_AGAIN": "Start again",
       "SUBMIT_CLAIM": "Submit claim",
       "SUBMIT_RESPONSE": "Submit Response",
-      "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})"
+      "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})",
       "SUBMIT": "Submit"
     },
     "CHECKBOX_FIELDS": {
@@ -641,6 +641,18 @@
       "DOWNLOAD_RESPONSE": "Download response",
       "LATEST_UPDATE": "Latest update",
       "VIEW_CLAIM": "View claim"
+    },
+    "CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS": {
+      "PAGE_TITLE": "Check your answers before submitting",
+      "TITLE": "Check your answers before submitting",
+      "REFERENCE_NUMBER": "Reference number",
+      "WHEN_DID_IT_START": "When did it start",
+      "TYPE": {
+        "WHAT_TYPE_IS_IT": "What type is it",
+        "MENTAL_HEALTH_CRISIS_MORATORIUM": "Mental health crisis moratorium",
+        "STANDARD_BREATHING_SPACE": "Standard breathing space"
+      },
+      "EXPECTED_END_DATE": "Expected end date"
     },
     "CLAIMANT_DOB": {
       "PAGE_TITLE": "Your date of birth",

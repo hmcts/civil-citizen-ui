@@ -13,7 +13,6 @@ import {HelpWithFees} from '../../../../../main/common/form/models/claim/details
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
-
 const request = require('supertest');
 const {app} = require('../../../../../main/app');
 const session = require('supertest-session');
@@ -115,7 +114,6 @@ describe('Response - Check answers', () => {
       expect(email.length).toBe(1);
       expect(email[0].textContent?.trim()).toBe('contact@gmail.com');
     });
-
     it('should pass english translation via query', async () => {
       await session(app).get(CLAIM_CHECK_ANSWERS_URL)
         .query({lang: 'en'})
