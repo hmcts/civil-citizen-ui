@@ -48,7 +48,7 @@ import {RegularExpenses} from '../../common/form/models/statementOfMeans/expense
 import {CourtOrders} from '../../common/form/models/statementOfMeans/courtOrders/courtOrders';
 import {PriorityDebts} from '../../common/form/models/statementOfMeans/priorityDebts';
 import {Debts} from '../../common/form/models/statementOfMeans/debts/debts';
-
+import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreference';
 export class Claim {
   legacyCaseReference: string;
   applicant1?: Party;
@@ -83,6 +83,7 @@ export class Claim {
   respondentSolicitor1AgreedDeadlineExtension?: Date;
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
+  claimBilingualLanguagePreference: ClaimBilingualLanguagePreference;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
 
@@ -332,7 +333,7 @@ export class Claim {
   hasRespondentAskedForMoreThan28Days(): boolean {
     return this.responseDeadline?.option === ResponseOptions.YES && this.responseDeadline?.additionalTime === AdditionalTimeOptions.MORE_THAN_28_DAYS;
   }
-  
+
   hasInterest(): boolean {
     return this.claimInterest === YesNo.YES;
   }
