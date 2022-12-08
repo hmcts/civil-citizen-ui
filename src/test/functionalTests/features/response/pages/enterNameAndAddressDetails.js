@@ -1,14 +1,14 @@
 const I = actor();
 
 const fields = {
-  addressLine1: 'input[id="addressLine1"]',
-  addressLine2: 'input[id="addressLine2"]',
-  addressLine3: 'input[id="addressLine3"]',
-  city: 'input[id="city"]',
-  postcode: 'input[id="postCode"]',
+  addressLine1: 'input[id="primaryaddressLine1"]',
+  addressLine2: 'input[id="primaryaddressLine2"]',
+  addressLine3: 'input[id="primaryaddressLine3"]',
+  city: 'input[id="primarycity"]',
+  postcode: 'input[id="primarypostCode"]',
   correspondenceAddress_yes: 'input[id="postToThisAddress-2"]',
   enterAddressManuallyLink: 'a[id="enterAddressManually"]',
-  correspondenceAddressLine1: 'input[id="correspondenceAddressLine1"]',
+  correspondenceAddressLine1: 'input[id="correspondenceaddressLine1"]',
   correspondenceAddressLine2: 'input[id="correspondenceAddressLine2"]',
   correspondenceAddressLine3: 'input[id="correspondenceAddressLine3"]',
   correspondenceCity: 'input[id="correspondenceCity"]',
