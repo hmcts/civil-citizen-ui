@@ -1,8 +1,7 @@
 import {NextFunction, Router} from 'express';
-import {CASE_DOCUMENT_DOWNLOAD_URL, CLAIM_CONFIRMATION_URL} from '../../urls';
-import {getClaimById} from 'modules/utilityService';
-import {DocumentUri} from 'models/document/documentType';
+import {CLAIM_CONFIRMATION_URL} from '../../urls';
 import {YesNo} from 'form/models/yesNo';
+import {getClaimById} from 'modules/utilityService';
 
 const claimSubmittedView = 'features/claim/claim-submitted';
 const claimSubmittedController = Router();
@@ -12,14 +11,13 @@ claimSubmittedController.get(CLAIM_CONFIRMATION_URL, async (req, res, next: Next
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req);
     if(!claim.isEmpty()) {
-      const claimNumber = claim.legacyCaseReference;
-      const downloadHref = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentType', DocumentUri.SEALED_CLAIM);
+      const claimNumber = claimId;
       const defendantFullName = claim.getDefendantFullName();
       const defendantResponseLimit = claim.responseDeadline?.calculatedResponseDeadline;
       const helpWithFee = claim.claimDetails?.helpWithFees?.option == YesNo.YES;
 
       res.render(claimSubmittedView, {
-        claimNumber, downloadHref, defendantFullName, defendantResponseLimit,
+        claimNumber, defendantFullName, defendantResponseLimit,
         helpWithFee,
       });
     }
