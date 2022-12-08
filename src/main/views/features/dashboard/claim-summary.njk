@@ -9,8 +9,8 @@
   <div class="govuk-width-container govuk-!-padding-top-0">
     <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
       {% set totalClaimAmount = '£' + claim.totalClaimAmount %}
-      {% set claimantName = claim.getClaimantName() %}
-      {% set defendantName = claim.getDefendantName() %}
+      {% set claimantName = claim.getClaimantFullName() %}
+      {% set defendantName = claim.getDefendantFullName() %}
       {% set latestUpdate %}
         {% for latestUpdateSection in latestUpdateContent %}
           {{ claimSummaryContent({
@@ -60,12 +60,10 @@
           header: t('PAGES.CLAIM_SUMMARY.ABOUT_CLAIM'),
           lines:[
             {title: t('PAGES.CLAIM_SUMMARY.CLAIMANT_NAME'), href: 'contact-them', hrefContact: claimantName},
-            {title: t('PAGES.CLAIM_SUMMARY.CLAIM_AMOUNT'), content: totalClaimAmount},
+            {title: t('COMMON.CLAIM_AMOUNT'), content: totalClaimAmount},
             {title: t('PAGES.CLAIM_SUMMARY.CLAIM_DETAILS'), href: '/case/' + claimId + '/response/claim-details', hrefContact: t('PAGES.CLAIM_SUMMARY.VIEW_CLAIM')}]
           }) }}
       </div>
     </main>
   </div>
-</div>
-
 {% endblock %}

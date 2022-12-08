@@ -1,10 +1,11 @@
 import {
+  deleteDraftClaimFromStore,
   getCaseDataFromStore,
   getDraftClaimFromStore,
   saveDraftClaim,
-} from '../../../../main/modules/draft-store/draftStoreService';
+} from 'modules/draft-store/draftStoreService';
 import {app} from '../../../../main/app';
-import {Claim} from '../../../../main/common/models/claim';
+import {Claim} from 'models/claim';
 
 const REDIS_DATA = require('../../../../main/modules/draft-store/redisData.json');
 const CLAIM_ID = '1645882162449409';
@@ -27,6 +28,9 @@ function createMockDraftStore(returnData: unknown) {
   return {
     get: jest.fn(async () => JSON.stringify(returnData)),
     set: jest.fn(async () => {
+      return;
+    }),
+    del: jest.fn(async () => {
       return;
     }),
   };
@@ -90,7 +94,7 @@ describe('Draft store service to save and retrieve claim', () => {
     expect(spyGet).toBeCalled();
     expect(result).not.toBeUndefined();
   });
-  it('should return undefined when getting case data data in redis exists', async () => {
+  it('should return undefined when getting case data and data in redis exists', async () => {
     //Given
     const draftStoreWithData = createMockDraftStore(undefined);
     app.locals.draftStoreClient = draftStoreWithData;
@@ -101,4 +105,16 @@ describe('Draft store service to save and retrieve claim', () => {
     expect(spyGet).toBeCalled();
     expect(result).toEqual({});
   });
+
+  it('should delete the claim successfully', async () => {
+    //Given
+    const draftStoreWithData = createMockDraftStore(REDIS_DATA[0]);
+    app.locals.draftStoreClient = draftStoreWithData;
+    const spyDel = jest.spyOn(app.locals.draftStoreClient, 'del');
+    //When
+    await deleteDraftClaimFromStore(CLAIM_ID);
+    //Then
+    expect(spyDel).toBeCalled();
+  });
+
 });
