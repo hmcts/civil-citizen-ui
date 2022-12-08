@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import {getFlagValue} from './app/auth/launchdarkly/launchDarklyClient';
+
 const { Logger } = require('@hmcts/nodejs-logging');
 import {readFileSync} from 'fs';
 import {createServer} from 'https';
@@ -14,12 +16,21 @@ if (app.locals.ENV === 'development') {
     cert: readFileSync(path.join(sslDirectory, 'localhost.crt')),
     key: readFileSync(path.join(sslDirectory, 'localhost.key')),
   };
-  const server = createServer(sslOptions, app);
-  server.listen(port, () => {
-    logger.info(`Application started: https://localhost:${port}`);
+  getFlagValue('cui-enabled').then(flagValue=>{
+    if(flagValue){
+      const server = createServer(sslOptions, app);
+      server.listen(port, () => {
+        logger.info(`Application started: https://localhost:${port}`);
+      });
+    }
   });
 } else {
-  app.listen(port, () => {
-    logger.info(`Application started: http://localhost:${port}`);
+  getFlagValue('cui-enabled').then(flagValue=>{
+    if(flagValue) {
+      app.listen(port, () => {
+        logger.info(`Application started: http://localhost:${port}`);
+      });
+    }
   });
+
 }
