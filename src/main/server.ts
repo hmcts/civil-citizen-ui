@@ -23,7 +23,7 @@ if (app.locals.ENV === 'development') {
         logger.info(`Application started: https://localhost:${port}`);
       });
     }
-  });
+  }).catch(err => logger.info('Failed to start application with LaunchDarkly error: ',err));
 } else {
   getFlagValue('cui-enabled').then(flagValue=>{
     if(flagValue) {
@@ -31,6 +31,5 @@ if (app.locals.ENV === 'development') {
         logger.info(`Application started: http://localhost:${port}`);
       });
     }
-  });
-
+  }).catch(err => logger.info('Failed to start application with LaunchDarkly error: ',err));
 }
