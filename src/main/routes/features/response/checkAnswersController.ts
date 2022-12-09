@@ -11,7 +11,6 @@ import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTrut
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
-import {isFullAmountReject} from 'modules/claimDetailsService';
 import {AllResponseTasksCompletedGuard} from 'routes/guards/allResponseTasksCompletedGuard';
 import {submitResponse} from 'services/features/response/submission/submitResponse';
 import {AppRequest} from 'models/AppRequest';
@@ -23,12 +22,10 @@ function renderView(req: Request, res: Response, form: GenericForm<StatementOfTr
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const summarySections = getSummarySections(req.params.id, claim, lang);
   const signatureType = form.model?.type;
-  const isFullAmountRejected = isFullAmountReject(claim);
   res.render(checkAnswersViewPath, {
     form,
     summarySections,
     signatureType,
-    isFullAmountRejected,
   });
 }
 

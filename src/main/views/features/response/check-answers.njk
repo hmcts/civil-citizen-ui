@@ -36,11 +36,11 @@
             {{ statementOfTruth(
               t,
               form,
-              SignatureType.RESPONSE,
-              t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX') + '<p class="govuk-!-margin-top-2">' +
-              t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX_PROCEEDINGS') +'</p>',
-              (signatureType === SignatureType.QUALIFIED),
-              isFullAmountRejected
+              statementOfTruthType = SignatureType.RESPONSE,
+              labelHtml = t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX') + '<p class="govuk-!-margin-top-2">' +
+                            t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX_PROCEEDINGS') +'</p>',
+              isQualified = (signatureType === SignatureType.QUALIFIED),
+              isFullAmountRejected = form.model.isFullAmountRejected
             ) }}
 
             <div class="govuk-form-group">
