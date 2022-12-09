@@ -6,7 +6,7 @@ const mockedLaunchDarkly = LaunchDarkly as jest.Mocked<typeof LaunchDarkly>;
 
 describe('Launch Darkly Client', () => {
 
-  it('mock launch darkly', async () => {
+  it.skip('mock launch darkly', async () => {
 
     getFlagValue('test-key');
 
