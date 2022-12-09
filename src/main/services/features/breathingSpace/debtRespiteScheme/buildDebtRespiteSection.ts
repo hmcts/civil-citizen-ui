@@ -16,8 +16,13 @@ const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE
 export const buildDebtRespiteSection = (breathingSpace: BreathingSpace, claimId: string, lang: string | unknown): SummarySection => {
   const lng = getLng(lang);
   const referenceNumber = breathingSpace?.debtRespiteReferenceNumber?.referenceNumber;
-  const debtRespiteStartDate = (breathingSpace.debtRespiteStartDate)? formatDateToFullDate(breathingSpace?.debtRespiteStartDate?.date):'';
-  const debtRespiteEndDate = (breathingSpace.debtRespiteEndDate)? formatDateToFullDate(breathingSpace?.debtRespiteEndDate?.date):'';
+  const debtRespiteStartDate = (breathingSpace.debtRespiteStartDate)?
+    (Object.keys(breathingSpace.debtRespiteStartDate).length !== 0)?
+      formatDateToFullDate(breathingSpace?.debtRespiteStartDate?.date):''
+    :'';
+  const debtRespiteEndDate = (breathingSpace.debtRespiteEndDate)?
+    (Object.keys(breathingSpace.debtRespiteEndDate).length !== 0)? formatDateToFullDate(breathingSpace?.debtRespiteEndDate?.date):''
+    :'';
   const breathingType = (breathingSpace?.debtRespiteOption)? t('PAGES.BREATHING_SPACE_DEBT_RESPITE_TYPE' + '.' + breathingSpace?.debtRespiteOption?.type):'';
 
   return summarySection({
