@@ -26,6 +26,7 @@ import {InterestClaimFromType} from '../../common/form/models/claimDetails';
 import {InterestEndDateType} from '../../common/form/models/claimDetails';
 import * as urls from '../../routes/urls';
 import {InterestClaimOptionsType} from '../../common/form/models/claim/interest/interestClaimOptionsType';
+import {ChooseHowToProceed} from 'common/models/chooseHowToProceed';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -119,6 +120,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('InterestEndDateType', InterestEndDateType);
     nunjucksEnv.addGlobal('urls', urls);
     nunjucksEnv.addGlobal('InterestClaimOptionsType', InterestClaimOptionsType);
+    nunjucksEnv.addGlobal('ChooseHowToProceed', ChooseHowToProceed);
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;
