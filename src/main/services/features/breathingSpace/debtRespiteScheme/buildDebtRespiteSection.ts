@@ -11,14 +11,14 @@ import {
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {BreathingSpace} from 'models/breathingSpace';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
-import {DebtRespiteOptionType} from "models/breathingSpace/debtRespiteOptionType";
+import {DebtRespiteOptionType} from 'models/breathingSpace/debtRespiteOptionType';
 
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 export const buildDebtRespiteSection = (breathingSpace: BreathingSpace, claimId: string, lang: string | unknown): SummarySection => {
   const lng = getLng(lang);
   const referenceNumber = breathingSpace?.debtRespiteReferenceNumber?.referenceNumber;
   const debtRespiteStartDate = (breathingSpace?.debtRespiteStartDate?.date)? formatDateToFullDate(breathingSpace?.debtRespiteStartDate?.date):'';
-  const debtRespiteEndDate = (breathingSpace.debtRespiteEndDate?.date)? formatDateToFullDate(breathingSpace?.debtRespiteEndDate?.date):''
+  const debtRespiteEndDate = (breathingSpace.debtRespiteEndDate?.date)? formatDateToFullDate(breathingSpace?.debtRespiteEndDate?.date):'';
   const debtRespiteOption = (breathingSpace?.debtRespiteOption?.type === DebtRespiteOptionType.STANDARD )?
     t('PAGES.BREATHING_SPACE_DEBT_RESPITE_TYPE.STANDARD') :t('PAGES.BREATHING_SPACE_DEBT_RESPITE_TYPE.MENTAL_HEALTH');
 
