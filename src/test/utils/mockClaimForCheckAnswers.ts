@@ -1,7 +1,7 @@
 import {Claim} from 'models/claim';
 import {ResponseType} from 'form/models/responseType';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
-import {TransactionSchedule,} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {PartyType} from 'models/partyType';
 import {DebtItems} from 'form/models/statementOfMeans/debts/debtItems';
 import {Debts} from 'form/models/statementOfMeans/debts/debts';
@@ -48,7 +48,7 @@ import {GenericYesNo} from 'form/models/genericYesNo';
 import {TimelineRow} from 'form/models/timeLineOfEvents/timelineRow';
 import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
 import {InterestClaimOptionsType} from 'form/models/claim/interest/interestClaimOptionsType';
-import {InterestClaimFromType, InterestEndDateType, SameRateInterestType,} from 'form/models/claimDetails';
+import {InterestClaimFromType, InterestEndDateType, SameRateInterestType} from 'form/models/claimDetails';
 import {Address} from 'form/models/address';
 import {FullAdmission} from 'common/models/fullAdmission';
 import {DebtRespiteStartDate} from 'models/breathingSpace/debtRespiteStartDate';
