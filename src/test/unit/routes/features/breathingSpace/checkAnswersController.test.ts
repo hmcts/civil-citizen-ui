@@ -18,84 +18,6 @@ jest.mock('../../../../../main/services/features/breathingSpace/checkAnswersServ
 
 const mockGetSummarySections = getSummarySections as jest.Mock;
 
-export function createDebtRespite(): SummarySections {
-  return {
-    sections: [
-      {
-        title: '',
-        summaryList: {
-          rows: [
-            {
-              key: {
-                text: 'Reference number',
-              },
-              value: {
-                html: '123',
-              },
-              actions: {
-                items: [
-                  {
-                    href: BREATHING_SPACE_CHECK_ANSWERS_URL,
-                    text: 'Change',
-                  },
-                ],
-              },
-            },
-            {
-              key: {
-                text: 'When did it start',
-              },
-              value: {
-                html: '1 November 2022',
-              },
-              actions: {
-                items: [
-                  {
-                    href: BREATHING_SPACE_CHECK_ANSWERS_URL,
-                    text: 'Change',
-                  },
-                ],
-              },
-            },
-            {
-              key: {
-                text: 'What type is it',
-              },
-              value: {
-                html: 'Standard breathing space	',
-              },
-              actions: {
-                items: [
-                  {
-                    href: BREATHING_SPACE_CHECK_ANSWERS_URL,
-                    text: 'Change',
-                  },
-                ],
-              },
-            },
-            {
-              key: {
-                text: 'Expected end date',
-              },
-              value: {
-                html: '1 January 2023',
-              },
-              actions: {
-                items: [
-                  {
-                    href: BREATHING_SPACE_CHECK_ANSWERS_URL,
-                    text: 'Change',
-                  },
-                ],
-              },
-            },
-          ],
-        },
-      },
-    ],
-  };
-}
-
 export function getDebtRespite(): SummarySections {
   return {
     sections: [
@@ -302,3 +224,81 @@ describe('Response - Check answers', () => {
     });
   });
 });
+
+export function createDebtRespite(): SummarySections {
+  return {
+    sections: [
+      {
+        title: '',
+        summaryList: {
+          rows: [
+            {
+              key: {
+                text: 'Reference number',
+              },
+              value: {
+                html: '123',
+              },
+              actions: {
+                items: [
+                  {
+                    href: BREATHING_SPACE_CHECK_ANSWERS_URL,
+                    text: 'Change',
+                  },
+                ],
+              },
+            },
+            {
+              key: {
+                text: 'When did it start',
+              },
+              value: {
+                html: '1 November 2022',
+              },
+              actions: {
+                items: [
+                  {
+                    href: BREATHING_SPACE_CHECK_ANSWERS_URL,
+                    text: 'Change',
+                  },
+                ],
+              },
+            },
+            {
+              key: {
+                text: 'What type is it',
+              },
+              value: {
+                html: 'Standard breathing space	',
+              },
+              actions: {
+                items: [
+                  {
+                    href: BREATHING_SPACE_CHECK_ANSWERS_URL,
+                    text: 'Change',
+                  },
+                ],
+              },
+            },
+            {
+              key: {
+                text: 'Expected end date',
+              },
+              value: {
+                html: '1 January 2023',
+              },
+              actions: {
+                items: [
+                  {
+                    href: BREATHING_SPACE_CHECK_ANSWERS_URL,
+                    text: 'Change',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+    ],
+  };
+}
