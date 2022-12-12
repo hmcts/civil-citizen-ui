@@ -20,21 +20,16 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ title }}</h1>
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {{ govukRadios({
               idPrefix: id,
               name: name,
-              fieldset: {
-                legend: {
-                  text: title,
-                  isPageHeading: true,
-                  classes: "govuk-fieldset__legend--l"
-                }
-              } if title,
-              hint: {
-                text: description
-              },
               items: [
                 {
                   value: ClaimBilingualLanguagePreference.ENGLISH,
