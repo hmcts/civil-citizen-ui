@@ -59,7 +59,9 @@
       "SAVE": "Save",
       "SETTLE_THE_CLAIM": "Settle the claim",
       "START_AGAIN": "Start again",
-      "SUBMIT_RESPONSE": "Submit Response"
+      "SUBMIT_CLAIM": "Submit claim",
+      "SUBMIT_RESPONSE": "Submit Response",
+      "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})"
     },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Council Tax or Community Charge",
@@ -415,6 +417,7 @@
       "PRIORITY_DEBT_COUNCIL_TAX": "Council tax or community charge",
       "PRIORITY_DEBT_WATER": "Water",
       "PRIORITY_DEBT_MAINTENANCE": "Maintenance payments",
+      "REASON_TITLE": "Why you believe you’re owed the money:",
       "REGULAR_PAYMENTS": "Regular payments of",
       "RESPONSE_CHECKBOX": "I believe that the facts stated in this response are true.",
       "RESPONSE_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
@@ -443,6 +446,7 @@
       "THEIR_DETAILS_TITLE_DEFENDANT": "Their details (defendant)",
       "TITLE": "Check your answers",
       "TIMELINE_TITLE": "Your timeline of what happened (optional)",
+      "TIMELINE_CLAIM_TITLE": "Timeline of what happened",
       "TIMELINE_COMMENTS": "Comments about their timeline (optional)",
       "VULNERABILITY_INFO": "Tell us who is vulnerable and what support they need",
       "VULNERABILITY_QUESTION": "Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider?",
@@ -2090,6 +2094,7 @@
     "SELECT_SUPPORT": "Select the support the person needs to attend a hearing",
     "SELECT_YES_IF_DOCUMENTS": "Select yes if there are documents the claimant has that you want the court to consider",
     "SELECT_YES_IF_SUPPORT": "Select yes if someone needs support to attend a hearing",
+    "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
     "SIGNER_NAME_TOO_LONG": "You've entered too many characters",
     "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",
     "SOMETHING_WENT_WRONG": "Something went wrong",

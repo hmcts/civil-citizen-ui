@@ -2,7 +2,7 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
-import {DQ_EXPERT_DETAILS_URL, DQ_DEFENDANT_EXPERT_EVIDENCE_URL} from '../../../../../../main/routes/urls';
+import {DQ_EXPERT_DETAILS_URL, DQ_GIVE_EVIDENCE_YOURSELF_URL} from '../../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
@@ -71,7 +71,7 @@ describe('Expert Report Details Controller', () => {
         })
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(DQ_DEFENDANT_EXPERT_EVIDENCE_URL);
+          expect(res.get('location')).toBe(DQ_GIVE_EVIDENCE_YOURSELF_URL);
         });
     });
 

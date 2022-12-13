@@ -6,7 +6,10 @@ import {
 } from '../../../../services/features/directionsQuestionnaire/expertDetailsService';
 import {saveDirectionQuestionnaire} from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {DQ_EXPERT_DETAILS_URL, DQ_DEFENDANT_EXPERT_EVIDENCE_URL} from '../../../urls';
+import {
+  DQ_EXPERT_DETAILS_URL, 
+  DQ_GIVE_EVIDENCE_YOURSELF_URL,
+} from '../../../urls';
 
 const expertDetailsController = Router();
 const expertDetailsViewPath = 'features/directionsQuestionnaire/experts/expert-details';
@@ -33,7 +36,7 @@ expertDetailsController.post(DQ_EXPERT_DETAILS_URL, async (req, res, next: NextF
       res.render(expertDetailsViewPath, {form});
     } else {
       await saveDirectionQuestionnaire(claimId, expertDetailsList, dqPropertyName, dqParentName);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, DQ_DEFENDANT_EXPERT_EVIDENCE_URL));
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, DQ_GIVE_EVIDENCE_YOURSELF_URL));
     }
   } catch (error) {
     next(error);
