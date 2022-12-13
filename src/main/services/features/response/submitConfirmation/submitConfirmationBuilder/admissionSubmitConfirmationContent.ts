@@ -20,7 +20,7 @@ export function getFAPAyImmediatelyStatus(claim: Claim, lang: string): ClaimSumm
 
 export function getFAPayByDateStatus(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantName = claim.getClaimantFullName();
-  const paymentDate = formatDateToFullDate(claim.paymentDate, lang);
+  const paymentDate = formatDateToFullDate(claim.fullAdmission?.paymentIntention?.paymentDate, lang);
   return [
     {
       type: ClaimSummaryType.PARAGRAPH,
@@ -122,7 +122,7 @@ export function getFAPayImmediatelyNextSteps(claimId: string, claim: Claim, lang
 
 export function getFAPayByDateNextSteps(claimId: string, claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantName = claim.getClaimantFullName();
-  const paymentDate = formatDateToFullDate(claim.paymentDate, lang);
+  const paymentDate = formatDateToFullDate(claim.fullAdmission?.paymentIntention?.paymentDate, lang);
   const contactThemUrl = CITIZEN_CONTACT_THEM_URL.replace(':id', claimId);
   const acceptedOfferContent = [
     {

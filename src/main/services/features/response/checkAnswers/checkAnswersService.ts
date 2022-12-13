@@ -1,26 +1,26 @@
-import {SummarySections} from '../../../../common/models/summaryList/summarySections';
-import {Claim} from '../../../../common/models/claim';
-import {PaymentOptionType} from '../../../../common/form/models/admission/paymentOption/paymentOptionType';
-import {StatementOfTruthForm} from '../../../../common/form/models/statementOfTruth/statementOfTruthForm';
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
-import {SignatureType} from '../../../../common/models/signatureType';
-import {isCounterpartyIndividual} from '../../../../common/utils/taskList/tasks/taskListHelpers';
-import {QualifiedStatementOfTruth} from '../../../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
-import {isFullAmountReject} from '../../../../modules/claimDetailsService';
+import {SummarySections} from 'common/models/summaryList/summarySections';
+import {Claim} from 'common/models/claim';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {SignatureType} from 'common/models/signatureType';
+import {isCounterpartyIndividual} from 'common/utils/taskList/tasks/taskListHelpers';
+import {QualifiedStatementOfTruth} from 'common/form/models/statementOfTruth/qualifiedStatementOfTruth';
+import {isFullAmountReject} from 'modules/claimDetailsService';
 import {buildYourDetailsSection} from './detailsSection/buildYourDetailsSection';
 import {buildYourResponseToClaimSection} from './responseSection/buildYourResponseToClaimSection';
 import {buildYourResponsePaymentSection} from './responseSection/buildYourResponsePaymentSection';
 import {buildYourFinancialSection} from './financialSection/buildYourFinancialSection';
 import {buildYourResponseDetailsSection} from './responseSection/buildYourResponseDetailsSection';
 import {buildFreeTelephoneMediationSection} from './responseSection/buildFreeTelephoneMediationSection';
-import {YesNo} from '../../../../common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
 import {buildHearingRequirementSection} from './hearingRequirementSection/buildHearingRequirementSection';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
 
 const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): SummarySections => {
-  const paymentOption: string = claim.paymentOption;
+  const paymentOption: string = claim.fullAdmission?.paymentIntention?.paymentOption;
   const alreadyPaidPartAdmit: string = claim.partialAdmission?.alreadyPaid?.option;
   const paidResponse: string = claim.partialAdmission?.paymentIntention?.paymentOption;
 

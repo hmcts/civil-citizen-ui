@@ -44,6 +44,7 @@ nodejs:
     OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
     CIVIL_SERVICE_URL: http://${SERVICE_NAME}-civil-service
     IDAM_SIGN_OUT_REDIRECT_URL: https://${SERVICE_FQDN}/dashboard
+
 civil-service:
   enabled: true
   java:
@@ -219,6 +220,7 @@ ccd:
         IDAM_USER_URL: https://idam-web-public.aat.platform.hmcts.net
         ELASTIC_SEARCH_ENABLED: true
         ELASTIC_SEARCH_HOST: ${SERVICE_NAME}-es-master
+        ELASTIC_SEARCH_CASE_INDEX_MAPPING_FIELDS_LIMIT: 10000
       keyVaults: []
       ingressHost: ccd-definition-store-${SERVICE_FQDN}
 

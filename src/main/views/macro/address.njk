@@ -19,7 +19,7 @@
       html: textInputLabel + ' <span class="govuk-visually-hidden">line 1 of 3</span>'
     },
     classes: "govuk-input--width-20",
-    id: "addressLine1",
+    id: addressType + "addressLine1",
     name: "addressLine1",
     autocomplete: addressType + "AddressLine-1",
     value: citizenAddress.addressLine1 if addressType == 'primary' else citizenCorrespondenceAddress.addressLine1,
@@ -31,7 +31,7 @@
       html: '<span class="govuk-visually-hidden">' + textInputLabel + ' line 2 of 3</span>'
     },
     classes: "govuk-input--width-20",
-    id: "addressLine2",
+    id: addressType + "addressLine2",
     name: "addressLine2",
     autocomplete: addressType + "AddressLine-2",
     value: citizenAddress.addressLine2 if addressType == 'primary' else citizenCorrespondenceAddress.addressLine2
@@ -41,7 +41,7 @@
       html: '<span class="govuk-visually-hidden">' + textInputLabel + ' <span class="govuk-visually-hidden">line 3 of 3</span>'
     },
     classes: "govuk-input--width-20",
-    id: "addressLine3",
+    id: addressType + "addressLine3",
     name: "addressLine3",
     autocomplete: addressType + "AddressLine-3",
     value: citizenAddress.addressLine3 if addressType == 'primary' else citizenCorrespondenceAddress.addressLine3
@@ -52,7 +52,7 @@
       text: t('COMMON.ADDRESS_FORM.TOWN_OR_CITY')
     },
     classes: "govuk-input--width-20",
-    id: "city",
+    id: addressType + "city",
     name: "city",
     autocomplete: addressType + "address-level2",
      value: citizenAddress.city if addressType == 'primary' else citizenCorrespondenceAddress.city,
@@ -64,7 +64,7 @@
       text: t('COMMON.ADDRESS_FORM.POSTCODE')
     },
     classes: "govuk-input--width-10",
-    id: "postCode",
+    id: addressType + "postCode",
     name: "postCode",
     autocomplete: addressType + "postal-code",
     value: citizenAddress.postCode if addressType == 'primary' else citizenCorrespondenceAddress.postCode,

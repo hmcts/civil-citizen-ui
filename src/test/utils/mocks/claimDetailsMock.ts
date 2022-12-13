@@ -374,3 +374,29 @@ export function claimAmountParticularDate(): SummarySections {
     ],
   };
 }
+
+export function createClaimWithYourDetails(): SummarySections {
+  return {
+    sections: [{
+      title: 'Your details',
+      summaryList: {
+        rows: [
+          {
+            key: {
+              text: 'Full name',
+            },
+            value: {
+              text: PARTY_NAME,
+            },
+            actions: {
+              items: [{
+                href: CLAIM_DETAILS_URL,
+                text: 'Change',
+              }],
+            },
+          },
+        ],
+      },
+    }],
+  };
+}
