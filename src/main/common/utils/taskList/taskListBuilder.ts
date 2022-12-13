@@ -1,7 +1,7 @@
-import {Task} from '../../models/taskList/task';
-import {TaskList} from '../../models/taskList/taskList';
-import {Claim} from '../../models/claim';
-import {TaskStatus} from '../../models/taskList/TaskStatus';
+import {Task} from 'models/taskList/task';
+import {TaskList} from 'models/taskList/taskList';
+import {Claim} from 'models/claim';
+import {TaskStatus} from 'models/taskList/TaskStatus';
 import {getConfirmYourDetailsTask} from './tasks/confirmYourDetails';
 import {getViewOptionsBeforeDeadlineTask} from './tasks/viewOptionsBeforeDeadline';
 import {getChooseAResponseTask} from './tasks/chooseAResponse';
@@ -11,20 +11,20 @@ import {getDecideHowYouPayTask} from './tasks/decideHowYouPay';
 import {getShareFinancialDetailsTask} from './tasks/shareFinancialDetails';
 import {getRepaymentPlanTask} from './tasks/repaymentPlan';
 import {isFullDefenceAndNotCounterClaim, isNotPayImmediatelyResponse} from './tasks/taskListHelpers';
-import {ResponseType} from '../../../common/form/models/responseType';
-import {YesNo} from '../../../common/form/models/yesNo';
+import {ResponseType} from 'common/form/models/responseType';
+import {YesNo} from 'common/form/models/yesNo';
 import {getHowMuchHaveYouPaidTask} from './tasks/howMuchHaveYouPaid';
 import {getWhyDisagreeWithAmountClaimedTask} from './tasks/whyDisagreeWithAmountClaimed';
 import {getGiveUsDetailsHearingTask} from './tasks/giveUsDetailsHearing';
 import {getHowMuchMoneyAdmitOweTask} from './tasks/howMuchMoneyAdmitOwe';
 import {getFreeTelephoneMediationTask} from './tasks/freeTelephoneMediation';
 import {getWhenWillYouPayTask} from './tasks/whenWillYouPay';
-import {PaymentOptionType} from '../../../common/form/models/admission/paymentOption/paymentOptionType';
-import {getLng} from '../../../common/utils/languageToggleUtils';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
 import {getTellUsHowMuchYouHavePaidTask} from './tasks/tellUsHowMuchYouHavePaid';
 import {getTellUsWhyDisagreeWithClaimTask} from './tasks/tellUsWhyDisagreeWithClaim';
-import {RejectAllOfClaimType} from '../../../common/form/models/rejectAllOfClaimType';
+import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
 
 const buildPrepareYourResponseSection = (caseData: Claim, claimId: string, lang: string): TaskList => {
   const tasks: Task[] = [];
@@ -63,7 +63,7 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string, lang: stri
       if (decideHowYouPayTask.status === TaskStatus.COMPLETE && isNotPayImmediatelyResponse(caseData)) {
         tasks.push(shareFinancialDetailsTask);
 
-        if (caseData.paymentOption === PaymentOptionType.INSTALMENTS) {
+        if(caseData.isFAPaymentOptionInstallments()) {
           tasks.push(repaymentPlanTask);
         }
       }

@@ -37,7 +37,7 @@ import {HowMuchHaveYouPaid, HowMuchHaveYouPaidParams} from '../../main/common/fo
 import {WhyDoYouDisagree} from '../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {PartialAdmission} from '../../main/common/models/partialAdmission';
 import {DefendantTimeline} from '../../main/common/form/models/timeLineOfEvents/defendantTimeline';
-import {PaymentIntention} from '../../main/common/form/models/admission/partialAdmission/paymentIntention';
+import {PaymentIntention} from '../../main/common/form/models/admission/paymentIntention';
 import {NoMediationReason} from '../../main/common/form/models/mediation/noMediationReason';
 import {CompanyTelephoneNumber} from '../../main/common/form/models/mediation/companyTelephoneNumber';
 import {Mediation} from '../../main/common/models/mediation/mediation';
@@ -55,6 +55,9 @@ import {
   SameRateInterestType,
 } from '../../main/common/form/models/claimDetails';
 import {Address} from '../../main/common/form/models/address';
+import {FullAdmission} from 'common/models/fullAdmission';
+import {ClaimDetails} from '../../main/common/form/models/claim/details/claimDetails';
+import {ClaimantTimeline} from '../../main/common/form/models/timeLineOfEvents/claimantTimeline';
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -79,9 +82,78 @@ export const createClaimWithBasicRespondentDetails = (contactPerson?: string): C
     },
   };
   claim.respondent1.partyDetails.primaryAddress = new Address('23 Brook lane', '', '', 'Bristol', 'BS13SS');
-  claim.paymentOption = PaymentOptionType.IMMEDIATELY;
+  claim.fullAdmission = new FullAdmission();
+  const repaymentPlan = {
+    paymentAmount: 100,
+    repaymentFrequency: 'MONTH',
+    firstRepaymentDate: new Date(Date.now()),
+  };
+  const mockDate = new Date(Date.now());
+  mockDate.getMonth() + 1;
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
+  claim.fullAdmission.paymentIntention.paymentDate = mockDate;
+  claim.fullAdmission.paymentIntention.repaymentPlan = repaymentPlan;
   return claim;
 };
+export const createClaimWithBasicClaimDetails = (contactPerson?: string): Claim => {
+  const claim = new Claim();
+  claim.applicant1 = {
+    partyPhone: {phone: CONTACT_NUMBER},
+    dateOfBirth: {date: new Date('2000-12-12'), year: 1985, month: 2, day: 2},
+    responseType: ResponseType.FULL_ADMISSION,
+    type: PartyType.INDIVIDUAL,
+    partyDetails: {
+      partyName: PARTY_NAME,
+      contactPerson: contactPerson,
+      individualTitle: TITLE,
+      individualLastName: LAST_NAME,
+      individualFirstName: FIRST_NAME,
+    },
+  };
+  claim.claimDetails = new ClaimDetails();
+  claim.applicant1.partyDetails.primaryAddress = new Address('23 Brook lane', '', '', 'Bristol', 'BS13SS');
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
+  return claim;
+};
+export const createClaimWithBasicDetails = (contactPerson?: string): Claim => {
+  const claim = new Claim();
+  claim.applicant1 = {
+    partyPhone: {phone: CONTACT_NUMBER},
+    dateOfBirth: {date: new Date('2000-12-12'), year: 1985, month: 2, day: 2},
+    responseType: ResponseType.FULL_ADMISSION,
+    type: PartyType.INDIVIDUAL,
+    partyDetails: {
+      partyName: PARTY_NAME,
+      contactPerson: contactPerson,
+      individualTitle: TITLE,
+      individualLastName: LAST_NAME,
+      individualFirstName: FIRST_NAME,
+    },
+  };
+  claim.respondent1 = {
+    partyPhone: {phone: CONTACT_NUMBER},
+    dateOfBirth: {date: new Date('2000-12-12'), year: 1985, month: 2, day: 2},
+    responseType: ResponseType.FULL_ADMISSION,
+    type: PartyType.INDIVIDUAL,
+    partyDetails: {
+      partyName: PARTY_NAME,
+      contactPerson: contactPerson,
+      individualTitle: TITLE,
+      individualLastName: LAST_NAME,
+      individualFirstName: FIRST_NAME,
+    },
+  };
+  claim.claimDetails = new ClaimDetails();
+  claim.respondent1.partyDetails.primaryAddress = new Address('23 Brook lane', '', '', 'Bristol', 'BS13SS');
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
+  return claim;
+};
+
 export const createClaimWithBasicApplicantDetails = (contactPerson?: string): Claim => {
   const claim = new Claim();
   claim.applicant1 = {
@@ -98,19 +170,23 @@ export const createClaimWithBasicApplicantDetails = (contactPerson?: string): Cl
     },
   };
   claim.applicant1.partyDetails.primaryAddress = new Address('23 Brook lane', '', '', 'Bristol', 'BS13SS');
-  claim.paymentOption = PaymentOptionType.IMMEDIATELY;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
   return claim;
 };
 
 export const createClaimWithRespondentDetailsWithPaymentOption = (paymentOption: PaymentOptionType): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = paymentOption;
-  claim.repaymentPlan = {
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = paymentOption;
+  claim.fullAdmission.paymentIntention.repaymentPlan = {
     paymentAmount: 33,
     repaymentFrequency: TransactionSchedule.WEEK,
     firstRepaymentDate: new Date('2022-06-25'),
   };
-  claim.paymentDate = new Date('2022-06-25');
+  claim.fullAdmission.paymentIntention.paymentDate = new Date('2022-06-25');
   claim.statementOfMeans = {
     explanation: {
       text: 'Reasons cannot pay immediately',
@@ -164,7 +240,9 @@ export const createClaimWithContactPersonApplicantDetails = (): Claim => {
 
 export const createClaimWithOneBankAccount = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
   const bankAccounts: BankAccount[] = [
     new BankAccount('CURRENT_ACCOUNT', 'true', '1000'),
   ];
@@ -176,7 +254,9 @@ export const createClaimWithOneBankAccount = (): Claim => {
 
 export const createClaimWithBankAccounts = () => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
   const bankAccounts: BankAccount[] = [
     new BankAccount('CURRENT_ACCOUNT', 'true', '1000'),
     new BankAccount('SAVINGS_ACCOUNT', 'false', '2000'),
@@ -193,13 +273,17 @@ export const createClaimWithBankAccounts = () => {
 
 export const createClaimWithNoBankAccounts = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
   return claim as Claim;
 };
 
 export const createClaimWithCourtOrders = () => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
   const courtOrders: CourtOrders = new CourtOrders(true, [
     new CourtOrder(100, 1500, '1'),
     new CourtOrder(250, 2500, '2'),
@@ -214,7 +298,9 @@ export const createClaimWithCourtOrders = () => {
 
 export const createClaimWithNoCourtOrders = () => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
   const courtOrders: CourtOrders = new CourtOrders(true, []);
 
   claim.statementOfMeans = {
@@ -226,7 +312,9 @@ export const createClaimWithNoCourtOrders = () => {
 
 export const createClaimWithDebts = (option: YesNo) => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
 
   const debts: Debts = new Debts();
   debts.option = option;
@@ -243,7 +331,9 @@ export const createClaimWithDebts = (option: YesNo) => {
 
 export const createClaimWithPriorityDebts = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
 
   const priorityDebts: PriorityDebts = new PriorityDebts(
     {
@@ -300,7 +390,9 @@ export const createClaimWithPriorityDebts = (): Claim => {
 
 export const createClaimWithMultipleDebt = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
 
   const debts: Debts = new Debts();
   debts.option = 'yes';
@@ -318,7 +410,9 @@ export const createClaimWithMultipleDebt = (): Claim => {
 
 export const createClaimWithRegularExpenses = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
 
   const otherExpenses: TransactionSource[] = [
     new TransactionSource({
@@ -429,7 +523,9 @@ export const createClaimWithRegularExpenses = (): Claim => {
 
 export const createClaimWithRegularIncome = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
 
   const otherIncome: TransactionSource[] = [
     new TransactionSource({
@@ -532,7 +628,9 @@ export const createEmployers = () => {
 
 export const createClaimWithEmplymentDetails = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
 
   const employmentType: EmploymentCategory[] = [EmploymentCategory.EMPLOYED, EmploymentCategory.SELF_EMPLOYED];
   const employment: Employment = {declared: true, employmentType: employmentType};
@@ -549,7 +647,9 @@ export const createClaimWithEmplymentDetails = (): Claim => {
 
 export const createClaimWithEmployedCategory = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
 
   const employmentType: EmploymentCategory[] = [EmploymentCategory.EMPLOYED];
   const employment: Employment = {declared: true, employmentType: employmentType};
@@ -564,7 +664,9 @@ export const createClaimWithEmployedCategory = (): Claim => {
 
 export const createClaimWithSelfEmployedAndTaxBehind = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
 
   const employmentType: EmploymentCategory[] = [EmploymentCategory.SELF_EMPLOYED];
   const employment: Employment = {declared: true, employmentType: employmentType};
@@ -582,7 +684,9 @@ export const createClaimWithSelfEmployedAndTaxBehind = (): Claim => {
 
 export const createClaimWithSelfEmployedNoTaxBehind = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
 
   const employmentType: EmploymentCategory[] = [EmploymentCategory.SELF_EMPLOYED];
   const employment: Employment = {declared: true, employmentType: employmentType};
@@ -600,7 +704,9 @@ export const createClaimWithSelfEmployedNoTaxBehind = (): Claim => {
 
 export const createClaimWithUnemplymentDetailsOne = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
   const unemployment = new Unemployment(UnemploymentCategory.UNEMPLOYED, new UnemploymentDetails('1', '1'), undefined);
 
   claim.statementOfMeans = {
@@ -612,7 +718,9 @@ export const createClaimWithUnemplymentDetailsOne = (): Claim => {
 
 export const createClaimWithUnemplymentDetailsTwo = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
   const unemployment = new Unemployment(UnemploymentCategory.UNEMPLOYED, new UnemploymentDetails('10', '10'), undefined);
 
   claim.statementOfMeans = {
@@ -624,7 +732,9 @@ export const createClaimWithUnemplymentDetailsTwo = (): Claim => {
 
 export const createClaimWithUnemploymentCategoryRETIRED = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
   const unemployment = new Unemployment(UnemploymentCategory.RETIRED, undefined, undefined);
 
   claim.statementOfMeans = {
@@ -636,7 +746,9 @@ export const createClaimWithUnemploymentCategoryRETIRED = (): Claim => {
 
 export const createClaimWithUnemploymentCategoryOTHER = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
   const unemployment = new Unemployment(UnemploymentCategory.OTHER, undefined, new OtherDetails('Other details here'));
 
   claim.statementOfMeans = {
@@ -648,7 +760,9 @@ export const createClaimWithUnemploymentCategoryOTHER = (): Claim => {
 
 export const createClaimWithDisability = (option: YesNo): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
   const disability: GenericYesNo = new GenericYesNo(option);
   const severeDisability: GenericYesNo = new GenericYesNo(option);
   claim.statementOfMeans = {
@@ -660,7 +774,9 @@ export const createClaimWithDisability = (option: YesNo): Claim => {
 
 export const createClaimWithDisabilityAndSevereDisability = (optionDisability: YesNo, optionSevereDisability: YesNo): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
   const disability: GenericYesNo = new GenericYesNo(optionDisability);
   const severeDisability: GenericYesNo = new GenericYesNo(optionSevereDisability);
   claim.statementOfMeans = {
@@ -672,7 +788,9 @@ export const createClaimWithDisabilityAndSevereDisability = (optionDisability: Y
 
 export const createClaimWithResidence = (value: ResidenceType): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
   const residence: Residence = new Residence(value, '');
   claim.statementOfMeans = {
     residence: residence,
@@ -682,7 +800,9 @@ export const createClaimWithResidence = (value: ResidenceType): Claim => {
 
 export const createClaimWithResidenceOther = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
   const residence: Residence = new Residence(ResidenceType.OTHER, 'Flat');
   claim.statementOfMeans = {
     residence: residence,
@@ -699,7 +819,9 @@ export const createClaimWithCohabiting = (
   partnerSevereDisabilityOption: YesNo): Claim => {
 
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
   const disability: GenericYesNo = new GenericYesNo(disabilityOption);
   const cohabiting: GenericYesNo = new GenericYesNo(cohabitingOption);
   const partnerAge: GenericYesNo = new GenericYesNo(partnerAgeOption);
@@ -719,7 +841,9 @@ export const createClaimWithCohabiting = (
 
 export const createClaimWithDependants = (declared: boolean, under11?: number, between11and15?: number, between16and19?: number, numberOfChildrenLivingWithYou?: number): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
   const numberOfChildren: NumberOfChildren = new NumberOfChildren(under11, between11and15, between16and19);
   const dependants: Dependants = new Dependants(declared, numberOfChildren);
   claim.statementOfMeans = {
@@ -731,7 +855,9 @@ export const createClaimWithDependants = (declared: boolean, under11?: number, b
 
 export const createClaimWithCarer = (option: YesNo): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
   const carer: GenericYesNo = new GenericYesNo(option);
   claim.statementOfMeans = {
     carer: carer,
@@ -741,7 +867,9 @@ export const createClaimWithCarer = (option: YesNo): Claim => {
 
 export const createClaimWithOtherDependants = (option: YesNo, numberOfPeople: number, details: string): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
   const otherDependants: OtherDependants = new OtherDependants(option, numberOfPeople, details);
   claim.statementOfMeans = {
     otherDependants: otherDependants,
@@ -877,7 +1005,9 @@ export const createClaimWithFullRejection = (option: RejectAllOfClaimType, paidA
     },
   };
   claim.totalClaimAmount = 1000;
-  claim.paymentOption = undefined;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = undefined;
   return claim;
 };
 
@@ -888,14 +1018,14 @@ export const createClaimWithPaymentOption = (responseType: ResponseType, payment
   if (claim.respondent1) {
     claim.respondent1.responseType = responseType;
   }
-  claim.paymentOption = paymentOption;
-  claim.repaymentPlan = {
+  claim.fullAdmission.paymentIntention.paymentOption = paymentOption;
+  claim.fullAdmission.paymentIntention.repaymentPlan = {
     paymentAmount: 33,
     repaymentFrequency: TransactionSchedule.WEEK,
     firstRepaymentDate: new Date(getDate()),
   };
 
-  claim.paymentDate = new Date(getDate());
+  claim.fullAdmission.paymentIntention.paymentDate = new Date(getDate());
   claim.statementOfMeans = {
     explanation: {
       text: 'Reasons cannot pay immediately',
@@ -905,6 +1035,11 @@ export const createClaimWithPaymentOption = (responseType: ResponseType, payment
   claim.partialAdmission = new PartialAdmission();
   claim.partialAdmission.paymentIntention = new PaymentIntention();
   claim.partialAdmission.paymentIntention.paymentOption = paymentOption;
+  claim.partialAdmission.paymentIntention.repaymentPlan = {
+    paymentAmount: 33,
+    repaymentFrequency: TransactionSchedule.WEEK,
+    firstRepaymentDate: new Date(getDate()),
+  };
 
   if (responseType === ResponseType.PART_ADMISSION && paymentOption === PaymentOptionType.BY_SET_DATE) {
     claim.partialAdmission.paymentIntention.paymentDate = new Date(getDate());
@@ -989,6 +1124,15 @@ export const claimWithClaimAmountOneBreakDown = (): Claim => {
   const claim = new Claim();
 
   claim.claimAmountBreakup = [{value: {claimAmount: '200', claimReason: 'roof'}}];
+
+  return claim;
+};
+
+export const claimWithClaimTimeLineAndEvents = (): Claim => {
+  const claim = new Claim();
+  claim.claimDetails = new ClaimDetails();
+  claim.claimDetails.evidence = new Evidence('test', [new EvidenceItem(EvidenceType.CONTRACTS_AND_AGREEMENTS, 'roof'), new EvidenceItem(EvidenceType.EXPERT_WITNESS, 'door')]);
+  claim.claimDetails.timeline = new ClaimantTimeline([new TimelineRow('01022000', 'contract'), new TimelineRow('123', 'meeting'), new TimelineRow('01021999', 'damages')]);
 
   return claim;
 };
