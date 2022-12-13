@@ -22,6 +22,14 @@ describe('translate response to ccd version', () => {
     //Then
     expect(ccdResponse.defenceAdmitPartPaymentTimeRouteRequired).toBe(CCDPaymentOption.BY_SET_DATE);
   });
+  it('should handle when payment option is not defined', ()=>{
+    //Given
+    const claim = new Claim();
+    //When
+    const ccdResponse = translateDraftResponseToCCD(claim, false);
+    //Then
+    expect(ccdResponse.defenceAdmitPartPaymentTimeRouteRequired).toBeUndefined();
+  });
   it('should translate repayment plan to ccd', () => {
     //Given
     const claim = new Claim();
