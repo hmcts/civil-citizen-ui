@@ -30,6 +30,9 @@
             {{ govukRadios({
               idPrefix: id,
               name: name,
+              hint: {
+                text: t('PAGES.BILINGUAL_LANGUAGE_PREFERENCE.DESCRIPTION')
+              },
               items: [
                 {
                   value: ClaimBilingualLanguagePreference.ENGLISH,
