@@ -25,7 +25,7 @@
   {% set addressTitle = '' %}
 {% endif %}
 {% set formErrors = form.getAllErrors() %}
-{% set primaryAddressFormErrors = primaryAddressForm.getAllErrors() %}
+
 {% block pageTitle %}
   {{ setPageTitle(title) }}
 {% endblock %}
@@ -33,16 +33,18 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
-        {% if form.hasErrors() or primaryAddressForm.hasErrors() %}
-          {{ errorSummary(formErrors.concat(primaryAddressFormErrors), t) }}
+        {% if form.hasErrors() %}
+          {{ errorSummary(form.getAllErrors(), t) }}
         {% endif %}
       </div>
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ title }}</h1>
           <p class="govuk-body">{{ payingExtra }}</p>
+
           <form method="post" name="address" novalidate>
             {{ csrfProtection(csrf) }}
+
             {{ govukInput({
               label: {
                 text: inputTitle
@@ -53,6 +55,7 @@
               value: form.model.partyName,
               errorMessage: { text: t(form.errorFor('partyName')) } if form.errorFor('partyName')
             }) }}
+
             {{ govukInput({
               label: {
                 text: t('PAGES.DEFENDANT_DETAILS.CONTACT_PERSON')
@@ -84,7 +87,7 @@
                 <p class="govuk-body">{{ t('PAGES.DEFENDANT_DETAILS.ENGLAND_OR_WALES_ADDRESS') }}</p>
               {% endif %}
               {{ postcodeLookupAndAddressForm(t, {
-                citizenAddress:primaryAddressForm,
+                party: form,
                 addressType:'primary',
                 addressTitle:''
               }) }}

@@ -5,14 +5,11 @@ import nock from 'nock';
 import {
   CITIZEN_EVIDENCE_URL,
   CLAIM_TASK_LIST_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {EvidenceType} from '../../../../../../main/common/models/evidence/evidenceType';
-import {FREE_TEXT_MAX_LENGTH} from '../../../../../../main/common/form/validators/validationConstraints';
-import {
-  VALID_TEXT_LENGTH,
-} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {EvidenceType} from 'models/evidence/evidenceType';
+import {FREE_TEXT_MAX_LENGTH} from 'form/validators/validationConstraints';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -96,7 +93,7 @@ describe('Repayment Plan', () => {
         .send({comment: tooLongEvidenceDetails, evidenceItem: EVIDENCE_ITEM})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_TEXT_LENGTH);
+          expect(res.text).toContain(TestMessages.VALID_TEXT_LENGTH);
         });
     });
 
@@ -107,7 +104,7 @@ describe('Repayment Plan', () => {
         .send({comment: COMMENT, evidenceItem: EVIDENCE_ITEM_INVALID})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_TEXT_LENGTH);
+          expect(res.text).toContain(TestMessages.VALID_TEXT_LENGTH);
         });
     });
 

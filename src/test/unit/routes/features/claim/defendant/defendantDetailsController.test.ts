@@ -10,12 +10,14 @@ import {
   CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL,
 } from '../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {Claim} from '../../../../../../main/common/models/claim';
 import {Party} from '../../../../../../main/common/models/party';
 import {PartyType} from '../../../../../../main/common/models/partyType';
 import {
   getDefendantInformation,
   saveDefendantParty,
 } from '../../../../../../main/services/features/claim/yourDetails/defendantDetailsService';
+import {Address} from '../../../../../../main/common/form/models/address';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -28,14 +30,14 @@ const mockSaveData = {
   individualTitle: 'Mr',
   individualFirstName: 'John',
   individualLastName: 'Doe',
-  businessName: 'John`s Sons Ltd',
+  soleTraderTradingAs: 'John`s Sons Ltd',
   partyName: 'Bob Ltd',
   contactPerson: 'Louise',
-  primaryAddressLine1: 'Fake Org',
-  primaryAddressLine2: 'Somewhere Defined',
-  primaryAddressLine3: 'Floor 4',
-  primaryCity: 'Valid city',
-  primaryPostCode: 'SN12RA',
+  addressLine1: 'Fake Org',
+  addressLine2: 'Somewhere undefined',
+  addressLine3: 'Floor 4',
+  city: 'Valid city',
+  postCode: 'SN12RA',
 };
 
 describe('Defendant details controller', () => {
@@ -78,16 +80,15 @@ describe('Defendant details controller', () => {
     describe('Organisation', () => {
       it('should render defendant details page when data is already set in redis', async () => {
         mockDefendantInformation.mockImplementation(async () => {
-          const party = new Party();
-          party.type = PartyType.ORGANISATION;
-          party.primaryAddress = {
-            PostCode: 'SN1 2RA',
-            PostTown: 'Bath',
-            AddressLine1: 'Valid address',
-            AddressLine2: 'Valid address number',
-            AddressLine3: '',
+          const claim = new Claim();
+          claim.respondent1 = new Party();
+          claim.respondent1 = {
+            type: PartyType.ORGANISATION,
+            partyDetails: {
+              primaryAddress: new Address('Valid address', 'Valid address number', '', 'Bath', 'SN1 2RA'),
+            },
           };
-          return party;
+          return claim;
         });
 
         const res = await request(app).get(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL);
@@ -119,14 +120,13 @@ describe('Defendant details controller', () => {
 
       it('should render defendant details page when data is already set in redis', async () => {
         mockDefendantInformation.mockImplementation(async () => {
-          const party = new Party();
-          party.type = PartyType.SOLE_TRADER;
-          party.primaryAddress = {
-            PostCode: 'SN1 2RA',
-            PostTown: 'Bath',
-            AddressLine1: 'Valid address',
-            AddressLine2: 'Valid address number',
-            AddressLine3: '',
+          const claim = new Claim();
+          claim.respondent1 = new Party();
+          claim.respondent1 = {
+            type: PartyType.SOLE_TRADER,
+            partyDetails: {
+              primaryAddress: new Address('Valid address', 'Valid address number', '', 'Bath', 'SN1 2RA'),
+            },
           };
           return party;
         });
@@ -151,7 +151,7 @@ describe('Defendant details controller', () => {
     describe('Individual', () => {
       it('should redirect to the defendant email page if data is successfully saved', async () => {
         const _mockSaveData = mockSaveData;
-        _mockSaveData.businessName = '';
+        _mockSaveData.soleTraderTradingAs = '';
         _mockSaveData.individualFirstName = 'Jane';
         mockDefendantInformation.mockImplementation(async () => {
           const party = new Party();

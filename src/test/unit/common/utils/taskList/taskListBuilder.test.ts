@@ -1,18 +1,18 @@
-import {HowMuchDoYouOwe} from '../../../../../main/common/form/models/admission/partialAdmission/howMuchDoYouOwe';
-import {PaymentIntention} from '../../../../../main/common/form/models/admission/partialAdmission/paymentIntention';
-import {WhyDoYouDisagree} from '../../../../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
-import {PaymentOptionType} from '../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
-import {ResponseType} from '../../../../../main/common/form/models/responseType';
-import {YesNo} from '../../../../../main/common/form/models/yesNo';
-import {Claim} from '../../../../../main/common/models/claim';
-import {PartialAdmission} from '../../../../../main/common/models/partialAdmission';
-import {Party} from '../../../../../main/common/models/party';
-import {constructResponseUrlWithIdParams} from '../../../../../main/common/utils/urlFormatter';
+import {HowMuchDoYouOwe} from 'common/form/models/admission/partialAdmission/howMuchDoYouOwe';
+import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
+import {WhyDoYouDisagree} from 'common/form/models/admission/partialAdmission/whyDoYouDisagree';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {ResponseType} from 'common/form/models/responseType';
+import {YesNo} from 'common/form/models/yesNo';
+import {Claim} from 'common/models/claim';
+import {PartialAdmission} from 'common/models/partialAdmission';
+import {Party} from 'common/models/party';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   buildResolvingTheClaimSection,
   buildRespondToClaimSection,
   buildYourHearingRequirementsSection,
-} from '../../../../../main/common/utils/taskList/taskListBuilder';
+} from 'common/utils/taskList/taskListBuilder';
 import {
   CITIZEN_AMOUNT_YOU_PAID_URL,
   CITIZEN_FR_AMOUNT_YOU_PAID_URL,
@@ -25,14 +25,15 @@ import {
   CITIZEN_RESPONSE_TYPE_URL,
   CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL,
   CITIZEN_WHY_DO_YOU_DISAGREE_URL,
+  DETERMINATION_WITHOUT_HEARING_URL,
   FINANCIAL_DETAILS_URL,
   RESPONSE_YOUR_DEFENCE_URL,
-  SUPPORT_REQUIRED_URL,
-} from '../../../../../main/routes/urls';
-import {RejectAllOfClaim} from '../../../../../main/common/form/models/rejectAllOfClaim';
-import {RejectAllOfClaimType} from '../../../../../main/common/form/models/rejectAllOfClaimType';
-import {HowMuchHaveYouPaid} from '../../../../../main/common/form/models/admission/howMuchHaveYouPaid';
-import {GenericYesNo} from '../../../../../main/common/form/models/genericYesNo';
+} from 'routes/urls';
+import {RejectAllOfClaim} from 'common/form/models/rejectAllOfClaim';
+import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
+import {HowMuchHaveYouPaid} from 'common/form/models/admission/howMuchHaveYouPaid';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {FullAdmission} from 'common/models/fullAdmission';
 
 describe('Task List Builder', () => {
   const claimId = '5129';
@@ -47,7 +48,7 @@ describe('Task List Builder', () => {
   const howMuchHaveYouPaidUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_AMOUNT_YOU_PAID_URL);
   const howMuchMoneyAdmitOweUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_OWED_AMOUNT_URL);
   const freeTelephoneMediationUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_FREE_TELEPHONE_MEDIATION_URL);
-  const giveUsDetailsHearingUrl = constructResponseUrlWithIdParams(claimId, SUPPORT_REQUIRED_URL);
+  const giveUsDetailsHearingUrl = constructResponseUrlWithIdParams(claimId, DETERMINATION_WITHOUT_HEARING_URL);
   const whenWillYouPayUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL);
 
   const tellUsHowMuchYouHavePaidUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_FR_AMOUNT_YOU_PAID_URL);
@@ -75,7 +76,10 @@ describe('Task List Builder', () => {
         const claim = new Claim();
         claim.respondent1 = new Party();
         claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
-        claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+        claim.fullAdmission = new FullAdmission();
+        claim.fullAdmission.paymentIntention = new PaymentIntention();
+        claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+        claim.fullAdmission.paymentIntention.paymentDate = new Date(Date.now());
         const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
         expect(respondToClaimSection.tasks.length).toBe(3);
         expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
@@ -86,7 +90,15 @@ describe('Task List Builder', () => {
         const claim = new Claim();
         claim.respondent1 = new Party();
         claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
-        claim.paymentOption = PaymentOptionType.INSTALMENTS;
+        claim.fullAdmission = new FullAdmission();
+        claim.fullAdmission.paymentIntention = new PaymentIntention();
+        claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
+        const repaymentPlan = {
+          paymentAmount: 100,
+          repaymentFrequency: 'MONTH',
+          firstRepaymentDate: new Date(Date.now()),
+        };
+        claim.fullAdmission.paymentIntention.repaymentPlan = repaymentPlan;
         const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
         expect(respondToClaimSection.tasks.length).toBe(4);
         expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);

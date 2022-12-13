@@ -1,14 +1,11 @@
-import {NextFunction, Response, Request, Router} from 'express';
-import {
-  CLAIM_HELP_WITH_FEES_URL,
-  CLAIM_TOTAL_URL,
-} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {AppRequest} from '../../../../common/models/AppRequest';
-import {YesNo} from '../../../../common/form/models/yesNo';
-import {HelpWithFees} from '../../../../common/form/models/claim/details/helpWithFees';
-import {ClaimDetails} from '../../../../common/form/models/claim/details/claimDetails';
-import {getClaimDetails, saveClaimDetails} from '../../../../../main/services/features/claim/details/claimDetailsService';
+import {NextFunction, Request, Response, Router} from 'express';
+import {CLAIM_HELP_WITH_FEES_URL, CLAIM_TOTAL_URL} from 'routes/urls';
+import {GenericForm} from 'form/models/genericForm';
+import {AppRequest} from 'models/AppRequest';
+import {YesNo} from 'form/models/yesNo';
+import {HelpWithFees} from 'form/models/claim/details/helpWithFees';
+import {ClaimDetails} from 'form/models/claim/details/claimDetails';
+import {getClaimDetails, saveClaimDetails} from 'services/features/claim/details/claimDetailsService';
 
 const helpWithFeesController = Router();
 const helpWithFeesViewPath = 'features/claim/details/help-with-fees';

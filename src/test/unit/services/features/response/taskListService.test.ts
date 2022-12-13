@@ -1,20 +1,23 @@
-import {CorrespondenceAddress} from '../../../../../main/common/models/correspondenceAddress';
-import {Claim} from '../../../../../main/common/models/claim';
-import {getDescription, getTaskLists, getTitle} from '../../../../../main/services/features/response/taskListService';
+import {Claim} from 'common/models/claim';
+import {getDescription, getTaskLists, getTitle} from 'services/features/response/taskListService';
 import {
   buildPrepareYourResponseSection,
   buildRespondToClaimSection,
   buildSubmitSection,
-} from '../../../../../main/common/utils/taskList/taskListBuilder';
-import {ResponseType} from '../../../../../main/common/form/models/responseType';
-import {TaskStatus} from '../../../../../main/common/models/taskList/TaskStatus';
+} from 'common/utils/taskList/taskListBuilder';
+import {ResponseType} from 'common/form/models/responseType';
+import {TaskStatus} from 'common/models/taskList/TaskStatus';
 import {deepCopy} from '../../../../utils/deepCopy';
-import {PartyType} from '../../../../../main/common/models/partyType';
-import {Party} from '../../../../../main/common/models/party';
-import {PaymentOptionType} from '../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
-import {StatementOfMeans} from '../../../../../main/common/models/statementOfMeans';
-import {YesNo} from '../../../../../main/common/form/models/yesNo';
-import {GenericYesNo} from '../../../../../main/common/form/models/genericYesNo';
+import {PartyType} from 'common/models/partyType';
+import {Party} from 'common/models/party';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
+import {YesNo} from 'common/form/models/yesNo';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {PartyDetails} from 'common/form/models/partyDetails';
+import {Address} from 'common/form/models/address';
+import {FullAdmission} from 'common/models/fullAdmission';
+import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -94,8 +97,8 @@ describe('Response Task List service', () => {
     const CORRESPONDENCE_TOWN = 'Bristol';
     const CORRESPONDENCE_POSTCODE = 'BS1 4HK';
     const caseData = Object.assign(new Claim(), deepCopy(mockClaim.case_data));
-    caseData.respondent1.correspondenceAddress = buildAddress(CORRESPONDENCE_ADDRESS_LINE_1, CORRESPONDENCE_ADDRESS_LINE_2, CORRESPONDENCE_TOWN, CORRESPONDENCE_POSTCODE);
-    caseData.respondent1.primaryAddress = {};
+    caseData.respondent1.partyDetails.correspondenceAddress = buildAddress(CORRESPONDENCE_ADDRESS_LINE_1, CORRESPONDENCE_ADDRESS_LINE_2, CORRESPONDENCE_TOWN, CORRESPONDENCE_POSTCODE);
+    caseData.respondent1.partyDetails.primaryAddress = {};
     caseData.respondent1.responseType = ResponseType.FULL_ADMISSION;
     caseData.respondent1.dateOfBirth = '15 May 1978';
     const actualTaskLists = getTaskLists(caseData, mockClaimId, lang);
@@ -125,10 +128,13 @@ describe('Response Task List service', () => {
   describe('Respond to claim task list', () => {
     const caseData = new Claim();
     caseData.respondent1 = new Party();
-    caseData.respondent1.individualFirstName = 'Joe';
+    caseData.respondent1.partyDetails = new PartyDetails({});
+    caseData.respondent1.partyDetails.individualFirstName = 'Joe';
     caseData.respondent1.type = PartyType.INDIVIDUAL;
     caseData.respondent1.responseType = ResponseType.FULL_ADMISSION;
-    delete caseData.paymentOption;
+    caseData.fullAdmission = new FullAdmission();
+    caseData.fullAdmission.paymentIntention = new PaymentIntention();
+    delete caseData.fullAdmission.paymentIntention.paymentOption;
 
     it('should display choose a response task as incomplete', () => {
       const respondToClaim = buildRespondToClaimSection(new Claim(), mockClaimId, lang);
@@ -152,7 +158,9 @@ describe('Response Task List service', () => {
     });
 
     it('should display decide how you\'ll pay task as complete', () => {
-      caseData.paymentOption = PaymentOptionType.IMMEDIATELY;
+      caseData.fullAdmission = new FullAdmission();
+      caseData.fullAdmission.paymentIntention = new PaymentIntention();
+      caseData.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
 
       const respondToClaim = buildRespondToClaimSection(caseData, mockClaimId, lang);
       expect(respondToClaim.tasks[1].description).toEqual('TASK_LIST.RESPOND_TO_CLAIM.DECIDE_HOW_YOU_WILL_PAYS');
@@ -164,7 +172,9 @@ describe('Response Task List service', () => {
     });
 
     it('should display share your financial details task as incomplete if payment option is by set date', () => {
-      caseData.paymentOption = PaymentOptionType.BY_SET_DATE;
+      caseData.fullAdmission = new FullAdmission();
+      caseData.fullAdmission.paymentIntention = new PaymentIntention();
+      caseData.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
 
       const respondToClaim = buildRespondToClaimSection(caseData, mockClaimId, lang);
       expect(respondToClaim.tasks[2].description).toEqual('TASK_LIST.RESPOND_TO_CLAIM.SHARE_YOUR_FINANCIAL_DETAILS');
@@ -195,7 +205,9 @@ describe('Response Task List service', () => {
     });
 
     it('should display your repayment plan as incomplete if payment option is installments', () => {
-      caseData.paymentOption = PaymentOptionType.INSTALMENTS;
+      caseData.fullAdmission = new FullAdmission();
+      caseData.fullAdmission.paymentIntention = new PaymentIntention();
+      caseData.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
 
       const respondToClaim = buildRespondToClaimSection(caseData, mockClaimId, lang);
       expect(respondToClaim.tasks[3].description).toEqual('TASK_LIST.RESPOND_TO_CLAIM.YOUR_REPAYMENT_PLAN');
@@ -203,8 +215,10 @@ describe('Response Task List service', () => {
     });
 
     it('should display your repayment plan as complete if payment option is installments', () => {
-      caseData.paymentOption = PaymentOptionType.INSTALMENTS;
-      caseData.repaymentPlan = {
+      caseData.fullAdmission = new FullAdmission();
+      caseData.fullAdmission.paymentIntention = new PaymentIntention();
+      caseData.fullAdmission.paymentIntention .paymentOption = PaymentOptionType.INSTALMENTS;
+      caseData.fullAdmission.paymentIntention.repaymentPlan = {
         paymentAmount: 5,
         repaymentFrequency: 'monthly',
       };
@@ -218,11 +232,6 @@ describe('Response Task List service', () => {
   });
 });
 
-function buildAddress(line1: string, line2: string, postcode: string, postTown: string): CorrespondenceAddress {
-  return {
-    AddressLine1: line1,
-    AddressLine2: line2,
-    PostCode: postcode,
-    PostTown: postTown,
-  };
+function buildAddress(line1: string, line2: string, postcode: string, postTown: string): Address {
+  return new Address(line1, line2, '', postcode, postTown);
 }

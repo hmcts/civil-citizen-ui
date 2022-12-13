@@ -63,7 +63,7 @@ describe('Claim Details - Reason', () => {
     it('should return errors on no input', async () => {
       await request(app)
         .post(CLAIM_REASON_URL)
-        .send({text:''})
+        .send({text: ''})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.REASON_REQUIRED'));
@@ -74,7 +74,7 @@ describe('Claim Details - Reason', () => {
       mockSaveClaimDetails.mockImplementation(async () => Promise<void>);
       await request(app)
         .post(CLAIM_REASON_URL)
-        .send({text:'reason'})
+        .send({text: 'reason'})
         .expect((res) => {
           expect(res.status).toBe(302);
         });
@@ -83,7 +83,7 @@ describe('Claim Details - Reason', () => {
       mockSaveClaimDetails.mockImplementation(async () => Promise<void>);
       await request(app)
         .post(CLAIM_REASON_URL)
-        .send({text:'reason'})
+        .send({text: 'reason'})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.text).toContain(`Redirecting to ${CLAIM_TIMELINE_URL}`);
@@ -94,7 +94,7 @@ describe('Claim Details - Reason', () => {
       mockSaveClaimDetails.mockImplementation(async () => {throw new Error(TestMessages.REDIS_FAILURE);});
       await request(app)
         .post(CLAIM_REASON_URL)
-        .send({text:'reason'})
+        .send({text: 'reason'})
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

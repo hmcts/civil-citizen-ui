@@ -2,17 +2,18 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
-import {NotEligibleReason} from '../../../../../../main/common/form/models/eligibility/NotEligibleReason';
-import {ClaimTypeOptions} from '../../../../../../main/common/models/eligibility/claimTypeOptions';
+import {NotEligibleReason} from 'form/models/eligibility/NotEligibleReason';
+import {ClaimTypeOptions} from 'models/eligibility/claimTypeOptions';
 import {t} from 'i18next';
-import {constructUrlWithNotEligibleReason} from '../../../../../../main/common/utils/urlFormatter';
+import {constructUrlWithNotEligibleReason} from 'common/utils/urlFormatter';
 import {
   ELIGIBILITY_CLAIM_TYPE_URL,
   NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
   ELIGIBILITY_CLAIMANT_ADDRESS_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 
 jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/draft-store');
 
 describe('Claim Type Options Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

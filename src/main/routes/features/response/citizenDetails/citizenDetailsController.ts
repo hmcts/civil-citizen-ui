@@ -1,22 +1,23 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {CITIZEN_DETAILS_URL, DOB_URL, CITIZEN_PHONE_NUMBER_URL, CLAIM_TASK_LIST_URL} from '../../../urls';
-import {Address} from '../../../../common/form/models/address';
-import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citizenCorrespondenceAddress';
+import {CITIZEN_DETAILS_URL, CITIZEN_PHONE_NUMBER_URL, CLAIM_TASK_LIST_URL, DOB_URL} from '../../../urls';
 import {Party} from '../../../../common/models/party';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {YesNo} from '../../../../common/form/models/yesNo';
 import {
-  getCorrespondenceAddressForm,
-  getRespondentInformation,
-  saveRespondent,
-} from '../../../../services/features/response/citizenDetails/citizenDetailsService';
-import {PartyType} from '../../../../common/models/partyType';
+  getDefendantInformation,
+  saveDefendantProperty,
+} from '../../../../services/features/common/defendantDetailsService';
+import {ClaimantOrDefendant, PartyType} from '../../../../common/models/partyType';
 import {GenericForm} from '../../../../common/form/models/genericForm';
+import {PartyDetails} from '../../../../common/form/models/partyDetails';
+import {PartyPhone} from '../../../../common/models/PartyPhone';
+import {saveTelephone} from '../../../../services/features/claim/yourDetails/phoneService';
+import {CitizenTelephoneNumber} from '../../../../common/form/models/citizenTelephoneNumber';
 
 const citizenDetailsController = Router();
 
 const CITIZEN_DETAILS_COMPANY_VIEW_PATH = 'features/response/citizenDetails/citizen-details-company';
 const CITIZEN_DETAILS_VIEW_PATH = 'features/response/citizenDetails/citizen-details';
+const propertyName = 'partyDetails';
 
 const getViewPathWithType = (type: PartyType) => {
   if (type === PartyType.ORGANISATION || type === PartyType.COMPANY) {
@@ -25,13 +26,12 @@ const getViewPathWithType = (type: PartyType) => {
   return CITIZEN_DETAILS_VIEW_PATH;
 };
 
-function renderPage(res: Response, req: Request, party: GenericForm<Party>, citizenAddress: GenericForm<Address>, citizenCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>, respondent: Party): void {
+function renderPage(res: Response, req: Request, partyDetails: GenericForm<PartyDetails>, type: PartyType, partyPhone: GenericForm<PartyPhone>): void {
 
-  res.render(getViewPathWithType(respondent.type), {
-    respondent,
-    citizenAddress,
-    citizenCorrespondenceAddress,
-    party,
+  res.render(getViewPathWithType(type), {
+    party: partyDetails,
+    type: type,
+    partyPhone: partyPhone,
   });
 }
 
@@ -39,9 +39,9 @@ const redirect = (respondent: Party, req: Request, res: Response) => {
   if (respondent?.type === PartyType.INDIVIDUAL) {
     res.redirect(constructResponseUrlWithIdParams(req.params.id, DOB_URL));
   } else {
-    if(respondent?.partyPhone){
+    if (respondent?.partyPhone) {
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
-    }else{
+    } else {
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PHONE_NUMBER_URL));
     }
   }
@@ -49,11 +49,10 @@ const redirect = (respondent: Party, req: Request, res: Response) => {
 
 citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const respondent: Party = await getRespondentInformation(req.params.id);
-    const party = new GenericForm(respondent);
-    const citizenAddress = new GenericForm<Address>(Address.fromJson(respondent?.primaryAddress));
-    const citizenCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(CitizenCorrespondenceAddress.fromJson(respondent?.correspondenceAddress));
-    renderPage(res, req, party, citizenAddress, citizenCorrespondenceAddress, respondent);
+    const respondent: Party = await getDefendantInformation(req.params.id);
+    const partyDetails = new GenericForm(respondent.partyDetails);
+    const partyPhoneForm = new GenericForm<PartyPhone>(new PartyPhone(respondent.partyPhone?.phone));
+    renderPage(res, req, partyDetails, respondent.type, partyPhoneForm);
   } catch (error) {
     next(error);
   }
@@ -61,22 +60,20 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: Request, res: Resp
 
 citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const respondent = await getRespondentInformation(req.params.id);
-    const party = new GenericForm(new Party(req.body));
-    const citizenAddress = new GenericForm<Address>(Address.fromObject(req.body));
-    const citizenCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(getCorrespondenceAddressForm(req.body));
+    const respondent = await getDefendantInformation(req.params.id);
+    const partyDetails = new GenericForm(new PartyDetails(req.body));
+    const partyPhone = new GenericForm<PartyPhone>(new PartyPhone(req.body.partyPhone));
 
-    party.validateSync();
-    citizenAddress.validateSync();
+    partyDetails.validateSync();
 
-    if (req.body.postToThisAddress === YesNo.YES) {
-      citizenCorrespondenceAddress.validateSync();
-      respondent.postToThisAddress = YesNo.YES;
-    }
-    if (party.hasErrors() || citizenAddress.hasErrors() || citizenCorrespondenceAddress.hasErrors()) {
-      renderPage(res, req, party, citizenAddress, citizenCorrespondenceAddress, respondent);
+    if (partyDetails.hasErrors()) {
+      renderPage(res, req, partyDetails, respondent.type, partyPhone);
     } else {
-      await saveRespondent(req.params.id, citizenAddress.model, citizenCorrespondenceAddress.model, party.model);
+      await saveDefendantProperty(req.params.id, propertyName, partyDetails.model);
+      if (req.body?.partyPhone) {
+        const citizenTelephoneNumber = new CitizenTelephoneNumber(req.body.partyPhone);
+        await saveTelephone(req.params.id, citizenTelephoneNumber, ClaimantOrDefendant.DEFENDANT);
+      }
       redirect(respondent, req, res);
     }
   } catch (error) {

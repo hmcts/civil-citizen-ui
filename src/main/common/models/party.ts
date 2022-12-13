@@ -1,42 +1,14 @@
-import {IsNotEmpty, Validate, ValidateIf} from 'class-validator';
 import {PartyType} from '../models/partyType';
-import {PrimaryAddress} from '../models/primaryAddress';
-import {CorrespondenceAddress} from '../models/correspondenceAddress';
-import {OptionalIntegerValidator} from '../../common/form/validators/optionalIntegerValidator';
+import {PartyDetails} from '../../common/form/models/partyDetails';
+import {Email} from '../models/Email';
+import {CitizenDate} from '../../common/form/models/claim/claimant/citizenDate';
+import {PartyPhone} from '../models/PartyPhone';
 
 export class Party {
-  individualTitle?: string;
-  individualLastName?: string;
-  individualFirstName?: string;
-  soleTraderTitle?: string;
-  soleTraderFirstName?: string;
-  soleTraderLastName?: string;
-  soleTraderTradingAs?: string;
-  @ValidateIf(o => o.partyName !== undefined)
-  @IsNotEmpty({message: 'ERRORS.VALID_PARTY_NAME'})
-    partyName?: string;
+  partyDetails?: PartyDetails;
   type?: PartyType;
-  primaryAddress?: PrimaryAddress;
-  postToThisAddress?: string;
-  @ValidateIf(o => o.partyPhone !== undefined)
-  @IsNotEmpty({message: 'ERRORS.NOT_TO_REMOVE_PHONE_NUMBER'})
-  @Validate(OptionalIntegerValidator, {message: 'ERRORS.VALID_PHONE_NUMBER'})
-    partyPhone?: string;
-  provideCorrespondenceAddress?: string;
-  correspondenceAddress?: CorrespondenceAddress;
-  dateOfBirth?: Date;
   responseType?: string;
-  contactPerson?: string;
-  emailAddress?: string;
-
-  constructor(value?: Party) {
-    this.partyName = value?.partyName;
-    this.contactPerson = value?.contactPerson;
-    this.partyPhone = value?.partyPhone?.trim();
-    this.postToThisAddress = value?.postToThisAddress;
-    this.individualTitle = value?.individualTitle;
-    this.individualLastName = value?.individualLastName;
-    this.individualFirstName = value?.individualFirstName;
-    this.soleTraderTradingAs = value?.soleTraderTradingAs;
-  }
+  emailAddress?: Email;
+  dateOfBirth?: CitizenDate;
+  partyPhone?: PartyPhone;
 }

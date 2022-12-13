@@ -2,11 +2,10 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {
-  CLAIM_COMPLETING_CLAIM_URL,
-} from '../../../../../main/routes/urls';
+import {CLAIM_COMPLETING_CLAIM_URL} from 'routes/urls';
 
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/draft-store');
 
 describe('Completing Claim', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

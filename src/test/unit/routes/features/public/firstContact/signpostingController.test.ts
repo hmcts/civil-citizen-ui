@@ -4,9 +4,10 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import {
   FIRST_CONTACT_SIGNPOSTING_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 
 jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/draft-store');
 
 describe('Signposting Controller', () => {
   // TODO: remove this once paths become publicly available as mocking the response token will not be needed
