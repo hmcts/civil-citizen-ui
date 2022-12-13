@@ -643,7 +643,8 @@
     "CLAIMANT_FORMALISE_REPAYMENT_TYPE": {
       "PAGE_TITLE": "Choose how to formalise repayment",
       "REQUEST_A_CCJ": {
-        "DESCRIPTION": "You can ask the court to make a formal order binding the defendant to the repayment plan. This adds the defendant to the CCJ register, which may make it more difficult for them to borrow money to repay you.",        "LABEL": "Request a CCJ"
+        "DESCRIPTION": "You can ask the court to make a formal order binding the defendant to the repayment plan. This adds the defendant to the CCJ register, which may make it more difficult for them to borrow money to repay you.",
+        "LABEL": "Request a CCJ"
       },
       "SIGN_A_SETTLEMENT_AGREEMENT": {
         "DESCRIPTION": "This is a legal agreement between you and the defendant agreeing to the repayment plan. If they break it you can request a County Court Judgment(CCJ). We'll show you a suggested format for the agreement.",
