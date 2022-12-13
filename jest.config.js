@@ -2,6 +2,8 @@ module.exports = {
   roots: ['<rootDir>/src/test/unit'],
   testRegex: '(/src/test/.*|\\.(test|spec))\\.(ts|js)$',
   testEnvironment: 'node',
+  testPathIgnorePatterns:['src/test/unit/app',
+  'src/test/unit/routes'],
   transform: {
     '^.+\\.ts?$': 'ts-jest',
   },
