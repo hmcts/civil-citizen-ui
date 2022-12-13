@@ -1,24 +1,24 @@
-import {SummarySections} from '../../../../../../../main/common/models/summaryList/summarySections';
+import {SummarySections} from 'common/models/summaryList/summarySections';
 import {
   getSummarySections,
-} from '../../../../../../../main/services/features/response/checkAnswers/checkAnswersService';
+} from 'services/features/response/checkAnswers/checkAnswersService';
 import {
   CITIZEN_ALREADY_PAID_URL,
   CITIZEN_REJECT_ALL_CLAIM_URL,
   CITIZEN_RESPONSE_TYPE_URL,
-} from '../../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {
   ceateClaimWithPartialAdmission,
   createClaimWithFullRejection,
   createClaimWithRespondentDetailsWithPaymentOption,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
-import {PaymentOptionType} from '../../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {
   PaymentIntention,
-} from '../../../../../../../main/common/form/models/admission/partialAdmission/paymentIntention';
+} from 'common/form/models/admission/paymentIntention';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
-import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
-import {RejectAllOfClaimType} from '../../../../../../../main/common/form/models/rejectAllOfClaimType';
+import {YesNo} from 'common/form/models/yesNo';
+import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
