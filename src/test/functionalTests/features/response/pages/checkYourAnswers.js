@@ -22,9 +22,9 @@ class CheckYourAnswersPage {
     //WIP Progerss :Please do not remove this comment
     }
     I.click(buttons.submit);
-    I.amOnPage('/case/'+claimRef+'/dashboard/');
-    // Remove the above line and uncomment the below line once CIV-6033 is fixed
-    //I.see('You\'ve submitted your response','h1');
+    I.amOnPage('/case/'+claimRef+'/response/confirmation');
+    I.see('You\'ve submitted your response','h1');
+    I.see('What happens next');
   }
 
   navigateToCheckYourAnswersPage(claimRef) {
