@@ -8,7 +8,6 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {InterestClaimFromType} from '../../../../../../main/common/form/models/claimDetails';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
 
 describe('Claimant Interest From Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

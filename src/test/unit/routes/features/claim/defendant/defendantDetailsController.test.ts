@@ -15,8 +15,8 @@ import {Party} from '../../../../../../main/common/models/party';
 import {PartyType} from '../../../../../../main/common/models/partyType';
 import {
   getDefendantInformation,
-  saveDefendantParty,
-} from '../../../../../../main/services/features/claim/yourDetails/defendantDetailsService';
+  saveDefendantProperty,
+} from '../../../../../../main/services/features/common/defendantDetailsService';
 import {Address} from '../../../../../../main/common/form/models/address';
 
 jest.mock('../../../../../../main/modules/oidc');
@@ -24,7 +24,7 @@ jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/services/features/claim/yourDetails/defendantDetailsService');
 
 const mockDefendantInformation = getDefendantInformation as jest.Mock;
-const mockSaveDefendant = saveDefendantParty as jest.Mock;
+const mockSaveDefendant = saveDefendantProperty as jest.Mock;
 
 const mockSaveData = {
   individualTitle: 'Mr',
@@ -128,7 +128,7 @@ describe('Defendant details controller', () => {
               primaryAddress: new Address('Valid address', 'Valid address number', '', 'Bath', 'SN1 2RA'),
             },
           };
-          return party;
+          return claim;
         });
         const res = await request(app).get(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL);
         expect(res.status).toBe(200);

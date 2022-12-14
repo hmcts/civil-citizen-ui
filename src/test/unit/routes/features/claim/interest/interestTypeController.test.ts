@@ -14,7 +14,6 @@ import {
 } from '../../../../../../main/common/form/models/claim/interest/interestClaimOptionsType';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
 
 describe('Interest type controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
