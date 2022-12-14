@@ -8,18 +8,15 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
-
 describe('Claimant details', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   const claim = require('../../../../utils/mocks/civilClaimResponseMock.json');
-
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
-
   describe('on GET', () => {
     it('should return contact claimant details from claim', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
@@ -42,7 +39,6 @@ describe('Claimant details', () => {
           expect(res.text).toContain(claim.case_data.applicant1.partyDetails.primaryAddress.postCode);
         });
     });
-
     it('should return http 500 when has error in the get method', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)

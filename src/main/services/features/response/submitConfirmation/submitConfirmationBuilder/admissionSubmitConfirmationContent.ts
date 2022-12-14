@@ -6,7 +6,7 @@ import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 import {addDaysToDate} from '../../../../../common/utils/dateUtils';
 
 export function getFAPAyImmediatelyStatus(claim: Claim, lang: string): ClaimSummarySection[] {
-  const claimantName = claim.getClaimantName();
+  const claimantName = claim.getClaimantFullName();
   return [
     {
       type: ClaimSummaryType.PARAGRAPH,
@@ -19,8 +19,8 @@ export function getFAPAyImmediatelyStatus(claim: Claim, lang: string): ClaimSumm
 }
 
 export function getFAPayByDateStatus(claim: Claim, lang: string): ClaimSummarySection[] {
-  const claimantName = claim.getClaimantName();
-  const paymentDate = formatDateToFullDate(claim.paymentDate, lang);
+  const claimantName = claim.getClaimantFullName();
+  const paymentDate = formatDateToFullDate(claim.fullAdmission?.paymentIntention?.paymentDate, lang);
   return [
     {
       type: ClaimSummaryType.PARAGRAPH,
@@ -33,7 +33,7 @@ export function getFAPayByDateStatus(claim: Claim, lang: string): ClaimSummarySe
 }
 
 export function getFAPayByInstallmentsStatus(claim: Claim, lang: string): ClaimSummarySection[] {
-  const claimantName = claim.getClaimantName();
+  const claimantName = claim.getClaimantFullName();
   return [
     {
       type: ClaimSummaryType.PARAGRAPH,
@@ -57,7 +57,7 @@ export function getContactYouStatement(lang: string): ClaimSummarySection[] {
 }
 
 export function getfinancialDetails(claimId: string, claim: Claim, lang: string): ClaimSummarySection[] {
-  const claimantName = claim.getClaimantName();
+  const claimantName = claim.getClaimantFullName();
   const financialDetails = [
     {
       type: ClaimSummaryType.TITLE,
@@ -99,7 +99,7 @@ export function getNextStepsTitle(lang: string):ClaimSummarySection[] {
 }
 
 export function getFAPayImmediatelyNextSteps(claimId: string, claim: Claim, lang: string): ClaimSummarySection[]{
-  const claimantName = claim.getClaimantName();
+  const claimantName = claim.getClaimantFullName();
   const immediatePaymentDate = addDaysToDate(claim?.respondent1ResponseDate, 5);
   const immediatePaymentDeadline = formatDateToFullDate(immediatePaymentDate, lang);
   return [
@@ -121,8 +121,8 @@ export function getFAPayImmediatelyNextSteps(claimId: string, claim: Claim, lang
 }
 
 export function getFAPayByDateNextSteps(claimId: string, claim: Claim, lang: string): ClaimSummarySection[] {
-  const claimantName = claim.getClaimantName();
-  const paymentDate = formatDateToFullDate(claim.paymentDate, lang);
+  const claimantName = claim.getClaimantFullName();
+  const paymentDate = formatDateToFullDate(claim.fullAdmission?.paymentIntention?.paymentDate, lang);
   const contactThemUrl = CITIZEN_CONTACT_THEM_URL.replace(':id', claimId);
   const acceptedOfferContent = [
     {
@@ -144,7 +144,7 @@ export function getFAPayByDateNextSteps(claimId: string, claim: Claim, lang: str
 }
 
 export function getFAPayByInstallmentsNextSteps(claimId: string, claim: Claim, lang:string): ClaimSummarySection[] {
-  const claimantName = claim.getClaimantName();
+  const claimantName = claim.getClaimantFullName();
   const contactThemUrl = CITIZEN_CONTACT_THEM_URL.replace(':id', claimId);
   const acceptedOfferContent = [
     {
@@ -166,7 +166,7 @@ export function getFAPayByInstallmentsNextSteps(claimId: string, claim: Claim, l
 }
 
 export function getNotPayImmediatelyContent(claim: Claim, lang: string): ClaimSummarySection[]{
-  const claimantName = claim.getClaimantName();
+  const claimantName = claim.getClaimantFullName();
   return [
     {
       type: ClaimSummaryType.HTML,
@@ -179,7 +179,7 @@ export function getNotPayImmediatelyContent(claim: Claim, lang: string): ClaimSu
 }
 
 export function getFARejectOfferContent(claim: Claim, lang: string): ClaimSummarySection[] {
-  const claimantName = claim.getClaimantName();
+  const claimantName = claim.getClaimantFullName();
   return [
     {
       type: ClaimSummaryType.SUBTITLE,

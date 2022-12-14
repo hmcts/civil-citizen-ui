@@ -8,7 +8,7 @@ import {
   mockRedisFailure,
 } from '../../../../utils/mockDraftStore';
 import {
-  CLAIM_TASK_LIST_URL,
+  DQ_COURT_LOCATION_URL,
   SUPPORT_REQUIRED_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
@@ -83,7 +83,7 @@ describe('Support required', () => {
         })
         .expect((res: express.Response) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(CLAIM_TASK_LIST_URL.replace(':id', 'aaa'));
+          expect(res.get('location')).toBe(DQ_COURT_LOCATION_URL.replace(':id', 'aaa'));
         });
     });
 
@@ -96,7 +96,7 @@ describe('Support required', () => {
         })
         .expect((res: express.Response) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(CLAIM_TASK_LIST_URL.replace(':id', 'aaa'));
+          expect(res.get('location')).toBe(DQ_COURT_LOCATION_URL.replace(':id', 'aaa'));
         });
     });
 
@@ -114,7 +114,7 @@ describe('Support required', () => {
         })
         .expect((res: express.Response) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(CLAIM_TASK_LIST_URL.replace(':id', 'aaa'));
+          expect(res.get('location')).toBe(DQ_COURT_LOCATION_URL.replace(':id', 'aaa'));
         });
     });
 
