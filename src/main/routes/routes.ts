@@ -176,6 +176,7 @@ import ccjPaymentOptionController from './features/claimantResponse/ccj/ccjPayme
 import paidSomeAmountController from './features/claimantResponse/ccj/paidAmountController';
 import defendantPaymentDateController from './features/claimantResponse/ccj/defendantPaymentDateController';
 import ccjConfirmationController from './features/claimantResponse/ccj/ccjConfirmationController';
+import debtRespiteLiftedController from './features/breathingSpace/debtRespiteLiftedController';
 
 export default [
   homeController,
@@ -334,6 +335,7 @@ export default [
   debtRespiteOptionController,
   debtStartDateController,
   debtRespiteEndDateController,
+  debtRespiteLiftedController,
   reviewDefendantsResponseController,
   ccjPaymentOptionController,
   paidSomeAmountController,
