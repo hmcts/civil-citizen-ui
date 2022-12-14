@@ -23,7 +23,7 @@ debtRespiteLiftedController.get(BREATHING_SPACE_RESPITE_LIFTED_URL, async (req, 
   const claimId = req.params.id;
   try {
     const breathingSpace = await getBreathingSpace(claimId);
-    const debtRespiteLiftDate = breathingSpace?.debtRespiteLiftDate ?? new DebtRespiteLiftDate();
+    const debtRespiteLiftDate = breathingSpace.debtRespiteLiftDate ?? new DebtRespiteLiftDate();
     renderView(new GenericForm(debtRespiteLiftDate), res);
   } catch (error) {
     next(error);
