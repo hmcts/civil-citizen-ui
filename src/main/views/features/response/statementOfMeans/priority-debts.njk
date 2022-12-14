@@ -1,62 +1,128 @@
 {% extends "claim-details-tpl.njk" %}
-{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "macro/csrf.njk" import csrfProtection %}
-{% from "../../../macro/conditional-checkBoxHTML.njk" import conditionalCheckBoxHTML %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../macro/transaction-details.njk" import transactionDetails %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
-{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
-
 {% block pageTitle %}
   {{ setPageTitle('PAGES.PRIORITY_DEBTS.PAGE_TITLE') }}
 {% endblock %}
-
 {% block content %}
+  {% set errors = form.getNestedErrors('model') %}
+  {% if form.hasErrors() %}
+    {{ errorSummary(errors, t) }}
+  {% endif %}
+  {% set amountLabel = t('COMMON.CONDITIONAL_CHECKBOX.REPAYMENT_AMOUNT') %}
+  {% set scheduleLabel = t('COMMON.CONDITIONAL_CHECKBOX.PRIORITY_DEBTS') %}
+  {% set amountHint = t('COMMON.CONDITIONAL_CHECKBOX.REPAYMENT_AMOUNT_HINT') %}
+  {% set hint %}
+  <p>{{ t('PAGES.PRIORITY_DEBTS.DEBTS_DETAILS') }}</p>
+  <ul>
+    <li>{{ t('PAGES.PRIORITY_DEBTS.ARREARS') }}</li>
+    <li>{{ t('PAGES.PRIORITY_DEBTS.REGULAR_PAYMENTS') }}</li>
+  </ul>
+  {% endset -%}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
-        {% if errors.length %}
-          {{ errorSummary(errors, t) }}
-        {% endif %}
-      </div>
-      <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-            <h1 class="govuk-fieldset__heading"> {{ t('PAGES.PRIORITY_DEBTS.DEBTS') }}</h1>
-          </legend>
-          <div id="waste-hint" class="govuk-hint">
-            <p>{{ t('PAGES.PRIORITY_DEBTS.DEBTS_DETAILS') }}</p>
-            <ul>
-              <li>{{ t('PAGES.PRIORITY_DEBTS.ARREARS') }}</li>
-              <li>{{ t('PAGES.PRIORITY_DEBTS.REGULAR_PAYMENTS') }}</li>
-            </ul>
-          </div>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            {% for checkBoxField in checkBoxFields %}
-              {{ govukCheckboxes({
-                idPrefix: checkBoxField.name,
-                name: checkBoxField.name,
-                items: [{
-                  value: checkBoxField.name,
-                  text: t(checkBoxField.text),
-                  checked: priorityDebts.model[checkBoxField.name].isDeclared if priorityDebts.model[checkBoxField.name],
+            {{ govukCheckboxes({
+              idPrefix: "declared",
+              name: "declared",
+              fieldset: {
+                legend: {
+                  text: t('PAGES.PRIORITY_DEBTS.DEBTS'),
+                  isPageHeading: true,
+                  classes: "govuk-fieldset__legend--l"
+                }
+              },
+              hint: {
+                html: hint
+              },
+              items: [
+                {
+                  name: "model[mortgage][declared]",
+                  value: "mortgage",
+                  text: t('COMMON.CHECKBOX_FIELDS.MORTGAGE'),
                   conditional: {
-                  html: conditionalCheckBoxHTML(checkBoxField.name, priorityDebts.model[checkBoxField.name], priorityDebtErrors[checkBoxField.name], t)
-                  }
-                }]
-              }) }}
-            {% endfor %}
-            <p class="govuk-fieldset__legend govuk-fieldset__legend--m" role="status" aria-live="polite">
-              {{ t('PAGES.PRIORITY_DEBTS.TOTAL_MONTHLY_REPAYMENTS') }}: £
-              <span class="total-monthly-income-expense">0</span>
-            </p>
-            {{ govukButton({
-              text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+                    html: transactionDetails(t, amountHint, 'model[mortgage][transactionSource]', form.model.mortgage.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form)
+                  },
+                  checked: true if form.model.mortgage.declared
+                },
+                {
+                  name: "model[rent][declared]",
+                  value: 'rent',
+                  text: t('COMMON.CHECKBOX_FIELDS.RENT'),
+                  conditional: {
+                    html: transactionDetails(t, amountHint, 'model[rent][transactionSource]', form.model.rent.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form)
+                  },
+                  checked: true if form.model.rent.declared
+                },
+                {
+                  name: "model[councilTax][declared]",
+                  value: 'councilTax',
+                  text: t('COMMON.CHECKBOX_FIELDS.COUNCIL_TAX_AND_COMMUNITY_CHARGE'),
+                  conditional: {
+                    html: transactionDetails(t, amountHint, 'model[councilTax][transactionSource]', form.model.councilTax.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form)
+                  },
+                  checked: true if form.model.councilTax.declared
+                },
+                {
+                  name: "model[gas][declared]",
+                  value: "gas",
+                  text: t('COMMON.CHECKBOX_FIELDS.GAS'),
+                  conditional: {
+                    html: transactionDetails(t, amountHint, 'model[gas][transactionSource]', form.model.gas.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form)
+                  },
+                  checked: true if form.model.gas.declared
+                },
+                {
+                  name: "model[electricity][declared]",
+                  value: "electricity",
+                  text: t('COMMON.CHECKBOX_FIELDS.ELECTRICITY'),
+                  conditional: {
+                    html: transactionDetails(t, amountHint, 'model[electricity][transactionSource]', form.model.electricity.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form)
+                  },
+                  checked: true if form.model.electricity.declared
+                },
+                {
+                  name: "model[water][declared]",
+                  value: "water",
+                  text: t('COMMON.CHECKBOX_FIELDS.WATER'),
+                  conditional: {
+                    html: transactionDetails(t, amountHint, 'model[water][transactionSource]', form.model.water.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form)
+                  },
+                  checked: true if form.model.water.declared
+                },
+                {
+                  name: "model[maintenance][declared]",
+                  value: "maintenance",
+                  text: t('COMMON.CHECKBOX_FIELDS.MAINTENANCE'),
+                  conditional: {
+                    html: transactionDetails(t, amountHint, 'model[maintenance][transactionSource]', form.model.maintenance.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form)
+                  },
+                  checked: true if form.model.maintenance.declared
+                }
+              ]
             }) }}
-            {{ contactUsForHelp(t) }}
+            <div class="govuk-form-group">
+              <p class="govuk-fieldset__legend govuk-fieldset__legend--m" role="status" aria-live="polite">
+                {{ t('PAGES.REGULAR_EXPENSES.TOTAL_MONTHLY_EXPENDITURE') }}: £
+                <span class="total-monthly-income-expense">
+                  0
+                </span>
+              </p>
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
           </form>
-        <div/>
+        </div>
       </div>
     </main>
   </div>
