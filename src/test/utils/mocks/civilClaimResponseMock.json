@@ -204,6 +204,9 @@
     "claimDetails": {
       "reason": {
         "text": "Test details of claim"
+      },
+      "helpWithFees": {
+        "option": "yes"
       }
     },
     "claimAmountBreakup": [
