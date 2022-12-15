@@ -14,12 +14,7 @@ describe('Claim - Claim Submitted', () => {
   const idamServiceUrl: string = config.get('services.idam.url');
   const citizenRoleToken: string = config.get('citizenRoleToken');
 
-  // const claimId = '1645882162449409';
   const claimId = '1111111111';
-
-  nock('http://localhost:3000')
-    .get(CLAIM_CONFIRMATION_URL.replace(':id', claimId))
-    .reply(200, {id: claimId});
 
   beforeAll(() => {
     nock(idamServiceUrl)
