@@ -20,28 +20,24 @@
     {% endif %}
   {% endif %}
   <div class="govuk-form-group postcode-container">
-    <label class="govuk-label" for="primaryPostcode">
+    <label class="govuk-label" for="{{ params.addressType + "Postcode" }}">
       {{ t('COMMON.POSTCODE.UK_POSTCODE') }}
     </label>
-    <div id="primaryPostcode-error" class="govuk-visually-hidden govuk-error-message">
+    <div class="govuk-visually-hidden govuk-error-message">
       {{ t('ERRORS.ADDRESS_NOT_FOUND') + t('ERRORS.TRY_AGAIN') }}
     </div>
-    <input class="govuk-input govuk-input--width-10 postcode-val"
-           title="{{ t('COMMON.POSTCODE.UK_POSTCODE') }}"
-           name="primaryPostcode"
-           type="text"
-           autocomplete="postal-code" />
+    <input class="govuk-input govuk-input--width-10 postcode-val" title="{{ t('COMMON.POSTCODE.UK_POSTCODE') }}" name="{{ params.addressType + "Postcode" }}" type="text" autocomplete="postal-code"/>
     <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button">
       {{ t('COMMON.POSTCODE.FIND_ADDRESS') }}
     </button>
     <div class="govuk-visually-hidden govuk-!-margin-bottom-2">
       {{ govukSelect({
-        id: 'postcodeAddress',
+        id: params.addressType + 'postcodeAddress',
       name: "addressList",
       classes: 'addressList',
       label: {
         text: t('COMMON.POSTCODE.PICK_ADDRESS'),
-        for: 'postcodeAddress'
+        for: params.addressType + 'postcodeAddress'
       },
       items: [
         {

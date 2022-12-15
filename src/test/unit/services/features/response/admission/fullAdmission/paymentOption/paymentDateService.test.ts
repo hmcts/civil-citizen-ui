@@ -74,10 +74,10 @@ describe('Payment Date service', () => {
       //When
       const paymentDate = await (paymentDateService.getPaymentDate('claimId', ResponseType.FULL_ADMISSION));
       let mockPaymentDate;
-      if (mockClaim?.paymentDate) {
-        const year = mockClaim.paymentDate.getFullYear();
-        const month = mockClaim.paymentDate.getMonth() + 1;
-        const day = mockClaim.paymentDate.getDate();
+      if (mockClaim.fullAdmission.paymentIntention.paymentDate) {
+        const year = mockClaim.fullAdmission.paymentIntention.paymentDate.getFullYear();
+        const month = mockClaim.fullAdmission.paymentIntention.paymentDate.getMonth() + 1;
+        const day = mockClaim.fullAdmission.paymentIntention.paymentDate.getDate();
         mockPaymentDate = new PaymentDate(year.toString(), month.toString(), day.toString());
       }
 
@@ -134,10 +134,10 @@ describe('Payment Date service', () => {
       //When
       const paymentDate = await (paymentDateService.getPaymentDate('claimId', ResponseType.PART_ADMISSION));
       let mockPaymentDate;
-      if (mockClaim?.paymentDate) {
-        const year = mockClaim.paymentDate.getFullYear();
-        const month = mockClaim.paymentDate.getMonth() + 1;
-        const day = mockClaim.paymentDate.getDate();
+      if (mockClaim.partialAdmission.paymentIntention.paymentDate) {
+        const year = mockClaim.partialAdmission.paymentIntention.paymentDate.getFullYear();
+        const month = mockClaim.partialAdmission.paymentIntention.paymentDate.getMonth() + 1;
+        const day = mockClaim.partialAdmission.paymentIntention.paymentDate.getDate();
         mockPaymentDate = new PaymentDate(year.toString(), month.toString(), day.toString());
       }
 
