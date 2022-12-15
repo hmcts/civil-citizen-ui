@@ -1,21 +1,19 @@
 import {BreathingSpace} from 'common/models/breathingSpace';
 import {DebtRespiteLiftDate} from 'common/models/breathingSpace/debtRespiteLiftDate';
-import {CCDLift} from 'common/models/ccd/ccdBreathingSpace/ccdLift';
-import {convertLiftToCCD} from 'services/translation/breathingSpace/convertToCCDLift';
+import {ccdBreathingSpace} from 'common/models/ccd/ccdBreathingSpace/ccdBreathingSpace';
+import {convertBreathingSpaceToCCD} from 'services/translation/breathingSpace/convertBreathingSpaceToCCD';
 
 const breathingSpace: BreathingSpace = {
   debtRespiteLiftDate: new DebtRespiteLiftDate('29', '09', '2020'),
 };
 
-const expectedLift: CCDLift = {
-  event: undefined,
-  eventDescription: undefined,
+const expectedLift: ccdBreathingSpace = {
   expectedEnd: '2020-09-29',
 };
 
 describe('translate lift to ccd model', () => {
   it('should translate to Lift to ccd', () => {
-    const liftCCD = convertLiftToCCD(breathingSpace);
+    const liftCCD = convertBreathingSpaceToCCD(breathingSpace);
     expect(liftCCD).toMatchObject(expectedLift);
   });
 });
