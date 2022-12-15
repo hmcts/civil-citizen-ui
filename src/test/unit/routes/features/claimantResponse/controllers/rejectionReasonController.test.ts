@@ -1,13 +1,13 @@
 import request from 'supertest';
 import nock from 'nock';
 import config from 'config';
-import {CLAIMANT_RESPONSE_REJECTION_REASON_URL, CLAIMANT_RESPONSE_TASK_LIST_URL} from '../../../../../main/routes/urls';
-import {TestMessages} from '../../../../../test/utils/errorMessageTestConstants';
-import {app} from '../../../../../main/app';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {CLAIMANT_RESPONSE_REJECTION_REASON_URL, CLAIMANT_RESPONSE_TASK_LIST_URL} from '../../../../../../main/routes/urls';
+import {TestMessages} from '../../../../../../test/utils/errorMessageTestConstants';
+import {app} from '../../../../../../main/app';
+import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/draft-store');
 
 describe('Claimant Response - Rejection reason', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

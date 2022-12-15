@@ -1,18 +1,18 @@
 import config from 'config';
 import nock from 'nock';
-import {app} from '../../../../../main/app';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {app} from '../../../../../../main/app';
+import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import request from 'supertest';
 import {
   CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAYMENT_URL,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
-} from '../../../../../main/routes/urls';
+} from '../../../../../../main/routes/urls';
 import {t} from 'i18next';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {YesNo} from '../../../../../main/common/form/models/yesNo';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/draft-store');
 
 describe('Full Admit How They Want To Pay Page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
