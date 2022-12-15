@@ -176,6 +176,7 @@ import ccjPaymentOptionController from './features/claimantResponse/ccj/ccjPayme
 import paidSomeAmountController from './features/claimantResponse/ccj/paidAmountController';
 import defendantPaymentDateController from './features/claimantResponse/ccj/defendantPaymentDateController';
 import ccjConfirmationController from './features/claimantResponse/ccj/ccjConfirmationController';
+import judgmentAmountSummaryController from 'routes/features/claimantResponse/ccj/judgmentAmountSummaryController';
 
 export default [
   homeController,
@@ -339,4 +340,5 @@ export default [
   paidSomeAmountController,
   defendantPaymentDateController,
   ccjConfirmationController,
+  judgmentAmountSummaryController,
 ];

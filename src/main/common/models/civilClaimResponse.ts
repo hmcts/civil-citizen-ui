@@ -69,3 +69,9 @@ export class CCDClaim {
   respondent1ResponseDate?: Date;
 
 }
+
+export interface ClaimFeeData {
+  calculatedAmountInPence?: number;
+  code?: string;
+  version?: number;
+}
