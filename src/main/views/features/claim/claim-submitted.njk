@@ -13,7 +13,7 @@
 {% set panelContent %}
   {{ t('PAGES.SUBMIT_CONFIRMATION.CLAIM_NUMBER')}}:
   <br><strong>{{ claimNumber }}</strong><br>
-  <br>{{ defendantResponseLimit }}
+  <br><string><a href={{ downloadHref }} >{{ t('PAGES.CLAIM_SUBMITTED.DOWNLOAD_CLAIM') }}</a></strong>
 {% endset %}
 
 {% block content %}
@@ -39,6 +39,11 @@
           {{ defendantFullName }}
           {{ t('PAGES.CLAIM_SUBMITTED.HAS_UNTIL') }}
           {{ defendantResponseLimit }}
+          {{ t('PAGES.CLAIM_SUBMITTED.TO_RESPOND_TO') }}
+          {{ t('PAGES.CLAIM_SUBMITTED.THEY_CAN_REQUEST_EXTRA_DAYS') }}
+          </p>
+          <p>
+          {{ t('PAGES.CLAIM_SUBMITTED.YOU_CAN_REQUEST_COUNTY_COURT') }}
           </p>
         </div>
       {% endif %}

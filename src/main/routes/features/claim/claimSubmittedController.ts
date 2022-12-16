@@ -1,7 +1,8 @@
 import {NextFunction, Router} from 'express';
-import {CLAIM_CONFIRMATION_URL} from '../../urls';
-import {YesNo} from 'form/models/yesNo';
+import {CASE_DOCUMENT_DOWNLOAD_URL, CLAIM_CONFIRMATION_URL} from '../../urls';
 import {getClaimById} from 'modules/utilityService';
+import {DocumentUri} from 'models/document/documentType';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
 
 const claimSubmittedView = 'features/claim/claim-submitted';
 const claimSubmittedController = Router();
@@ -10,15 +11,18 @@ claimSubmittedController.get(CLAIM_CONFIRMATION_URL, async (req, res, next: Next
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req);
+    const lang = req.query.lang? req.query.lang : req.cookies.lang;
+
     if(!claim.isEmpty()) {
       const claimNumber = claimId;
+      const downloadHref = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentType', DocumentUri.SEALED_CLAIM);
       const defendantFullName = claim.getDefendantFullName();
-      const defendantResponseLimit = claim.responseDeadline?.calculatedResponseDeadline;
-      const helpWithFee = claim.claimDetails?.helpWithFees?.option == YesNo.YES;
+      const defendantResponseLimit = formatDateToFullDate(claim.respondent1ResponseDeadline, lang);
+      const helpWithFee = claim.hasHelpWithFees();
 
       res.render(claimSubmittedView, {
         claimNumber, defendantFullName, defendantResponseLimit,
-        helpWithFee,
+        helpWithFee, downloadHref,
       });
     }
   } catch (error) {
