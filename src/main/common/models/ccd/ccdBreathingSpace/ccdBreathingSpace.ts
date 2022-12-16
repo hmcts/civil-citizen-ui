@@ -1,4 +1,4 @@
-export interface ccdBreathingSpace {
+export interface CCDBreathingSpace {
   event?: string,
   eventDescription?: string,
   expectedEnd?: string,
