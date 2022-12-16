@@ -15,7 +15,7 @@ export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimS
 export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummarySection[] {
   const RCDisputeNotContinueNextSteps = getRCDisputeNotContinueNextSteps(claim, lang);
 
-  if (claim.responseStatus === ClaimResponseStatus.RC_DISPUTE && claim.claimantResponse?.intentionToProceed.option === YesNo.NO) {
+  if (claim.responseStatus === ClaimResponseStatus.RC_DISPUTE && claim.claimantResponse?.intentionToProceed?.option === YesNo.NO) {
     return RCDisputeNotContinueNextSteps;
   }
 }
