@@ -1,17 +1,16 @@
 import request from 'supertest';
-import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-
-import civilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
-import {getCaseDataFromStore} from '../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../main/common/models/claim';
-import {PartyType} from '../../../../../main/common/models/partyType';
-import {Party} from '../../../../../main/common/models/party';
-import {CLAIMANT_RESPONSE_CONFIRMATION_URL} from 'routes/urls';
+import {app} from '../../../../../main/app';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'common/models/claim';
 import {ClaimantResponse} from 'common/models/claimantResponse';
+import {Party} from 'common/models/party';
+import {PartyType} from 'common/models/partyType';
+import {CLAIMANT_RESPONSE_CONFIRMATION_URL} from 'routes/urls';
 import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import civilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
