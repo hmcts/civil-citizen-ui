@@ -38,5 +38,6 @@ export enum ClaimSummaryType {
   HTML = 'html',
   INSET_TEXT = 'insetText',
   SUMMARY = 'summary',
-  TABLE = 'table'
+  TABLE = 'table',
+  PANEL = 'panel'
 }
