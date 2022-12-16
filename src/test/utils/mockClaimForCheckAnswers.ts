@@ -57,6 +57,8 @@ import {
 } from '../../main/common/form/models/claimDetails';
 import {Address} from '../../main/common/form/models/address';
 import {ClaimDetails} from "form/models/claim/details/claimDetails";
+import {ClaimDetails} from '../../main/common/form/models/claim/details/claimDetails';
+import {ClaimantTimeline} from '../../main/common/form/models/timeLineOfEvents/claimantTimeline';
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -84,7 +86,6 @@ export const createClaimWithBasicRespondentDetails = (contactPerson?: string): C
   claim.paymentOption = PaymentOptionType.IMMEDIATELY;
   return claim;
 };
-
 export const createClaimWithBasicClaimDetails = (contactPerson?: string): Claim => {
   const claim = new Claim();
   claim.applicant1 = {
@@ -1009,6 +1010,15 @@ export const claimWithClaimAmountOneBreakDown = (): Claim => {
   const claim = new Claim();
 
   claim.claimAmountBreakup = [{value: {claimAmount: '200', claimReason: 'roof'}}];
+
+  return claim;
+};
+
+export const claimWithClaimTimeLineAndEvents = (): Claim => {
+  const claim = new Claim();
+  claim.claimDetails = new ClaimDetails();
+  claim.claimDetails.evidence = new Evidence('test', [new EvidenceItem(EvidenceType.CONTRACTS_AND_AGREEMENTS, 'roof'), new EvidenceItem(EvidenceType.EXPERT_WITNESS, 'door')]);
+  claim.claimDetails.timeline = new ClaimantTimeline([new TimelineRow('01022000', 'contract'), new TimelineRow('123', 'meeting'), new TimelineRow('01021999', 'damages')]);
 
   return claim;
 };
