@@ -23,6 +23,7 @@ export interface ClaimSummaryItem {
   variables?: any;
   head?: TableCell[];
   tableRows?: TableCell[][];
+  title?: string;
 }
 
 /**

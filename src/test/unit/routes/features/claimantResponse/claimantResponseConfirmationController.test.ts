@@ -57,7 +57,7 @@ describe('Claimant response confirmation controller', () => {
       mockGetCaseData.mockImplementation(() => mockRedisFailure);
       const res = await request(app).get(CLAIMANT_RESPONSE_CONFIRMATION_URL);
       expect(res.status).toBe(500);
-      expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG)
+      expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
     });
   });
 });
