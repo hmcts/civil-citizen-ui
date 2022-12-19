@@ -98,10 +98,13 @@
             "country": "United Kingdom",
             "postCode": "RG4 7AA",
             "postTown": "Reading",
-            "addressLine1": "Flat 2",
+            "addressLine1": "Flat 3",
             "addressLine2": "Caversham House 15-17",
             "addressLine3": "Church Road"
           }
+        },
+        "emailAddress": {
+          "emailAddress": "fakeemail@version1.com"
         },
         "partyPhone": {
           "phone": "01632960001"

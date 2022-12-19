@@ -45,11 +45,14 @@ export const buildTheirDetailsSection = (claim: Claim, claimId: string, lang: st
     ],
   });
   if (claim.respondent1?.type === PartyType.SOLE_TRADER && claim.respondent1?.partyDetails.soleTraderTradingAs) {
-    yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CITIZEN_DETAILS.BUSINESS_NAME', {lng}), claim.respondent1.partyDetails.soleTraderTradingAs, theirDetailsHref));
+    yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CITIZEN_DETAILS.BUSINESS_NAME', {lng}),
+      claim.respondent1.partyDetails.soleTraderTradingAs, theirDetailsHref));
   }
-  yourDetailsSection.summaryList.rows.push(summaryRow(t('COMMON.ADDRESS', {lng}), addressToString(claim.respondent1?.partyDetails.primaryAddress), theirDetailsHref));
+  yourDetailsSection.summaryList.rows.push(summaryRow(t('COMMON.ADDRESS', {lng}),
+    addressToString(claim.respondent1?.partyDetails.primaryAddress), theirDetailsHref));
   if (claim.respondent1?.emailAddress?.emailAddress) {
-    yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMAIL', {lng}), claim.respondent1.emailAddress.emailAddress, CLAIM_DEFENDANT_EMAIL_URL));
+    yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMAIL', {lng}),
+      claim.respondent1.emailAddress.emailAddress, CLAIM_DEFENDANT_EMAIL_URL));
   }
   return yourDetailsSection;
 };

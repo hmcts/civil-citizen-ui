@@ -59,7 +59,7 @@
       "SAVE_AND_CONTINUE": "Cadw a Pharhau",
       "SETTLE_THE_CLAIM": "Settle the claim",
       "START_AGAIN": "Start again",
-      "SIGN_AND_SUBMIT_RESPONSE": "Sign and submit"
+      "SIGN_AND_SUBMIT_RESPONSE": "Sign and submit",
       "SUBMIT_CLAIM": "Submit claim",
       "SUBMIT_RESPONSE": "Cyflwyno'r ymateb",
       "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})"
@@ -347,8 +347,11 @@
       "CCJ_HAS_DEFENDANT_PAID_SOME": "Has the defendant paid you some of the amount owed?",
       "CCJ_AMOUNT_ALREADY_PAID": "Amount already paid",
       "CCJ_TOTAL_TO_BE_PAID": "Total to be paid by defendant",
-      "CCJ_HOW_TO_PAY": "How do you want the defendant to pay",
-      "CCJ_WHEN_DO_YOU_WANT_TO_BE_PAID_BY": "When do you want the defendant to pay",
+      "CCJ_HOW_TO_PAY": "How you want the defendant to pay",
+      "CCJ_WHEN_DO_YOU_WANT_TO_BE_PAID_BY": "When you want the defendant to pay",
+      "CCJ_INSTALMENTS_OF": "Instalments of",
+      "CCJ_FIRST_PAYMENT_DATE": "When you want them to make the first payment",
+      "CCJ_INSTALMENTS_PAYMENT_FREQUENCY": "How often you want them to make this payment",
       "CHILDREN": "Children",
       "CHILDREN_DO_YOU_HAVE_ANY_LIVE_WITH_YOU": "Oes unrhyw blant yn byw gyda chi?",
       "CHILDREN_UNDER_11": "dan 11",

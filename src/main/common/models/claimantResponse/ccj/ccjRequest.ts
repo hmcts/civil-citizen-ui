@@ -1,4 +1,8 @@
+import { CcjPaymentOption } from 'common/form/models/claimantResponse/ccj/ccjPaymentOption';
+import { QualifiedStatementOfTruth } from 'common/form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {DefendantDOB} from './defendantDOB';
+import { PaidAmount } from './paidAmount';
+import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
 
 export class CCJRequest {
   defendantDOB?: DefendantDOB;
