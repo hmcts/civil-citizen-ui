@@ -24,7 +24,7 @@ describe('save responsetype = "PART_ADMISSION" setting to datastore and clear pr
     //Then
     expect(spyGetCaseDataFromStore).toBeCalled();
     expect(spySaveDraftClaim).toBeCalled();
-    expect(mockClaim?.paymentOption).toBeUndefined();
+    expect(mockClaim?.partialAdmission.paymentIntention.paymentOption).toBeUndefined();
   });
 });
 
@@ -59,7 +59,8 @@ describe('save responsetype = "FULL_DEFENCE" setting to datastore and clear prev
     //Then
     expect(spyGetCaseDataFromStore).toBeCalled();
     expect(spySaveDraftClaim).toBeCalled();
-    expect(mockClaim?.repaymentPlan).toBeUndefined();
+    expect(mockClaim?.partialAdmission?.paymentIntention?.repaymentPlan).toBeUndefined();
+    expect(mockClaim?.fullAdmission?.paymentIntention?.repaymentPlan).toBeUndefined();
   });
 });
 
@@ -77,7 +78,8 @@ describe('save responseType setting to datastore when respondent1 is not set.', 
     //Then
     expect(spyGetCaseDataFromStore).toBeCalled();
     expect(spySaveDraftClaim).toBeCalled();
-    expect(mockClaim?.repaymentPlan).toBeUndefined();
+    expect(mockClaim?.partialAdmission?.paymentIntention?.repaymentPlan).toBeUndefined();
+    expect(mockClaim?.fullAdmission?.paymentIntention?.repaymentPlan).toBeUndefined();
   });
 });
 

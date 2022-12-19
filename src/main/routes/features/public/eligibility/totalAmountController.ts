@@ -10,15 +10,15 @@ import {TotalAmountOptions} from '../../../../common/models/eligibility/totalAmo
 import {constructUrlWithNotEligibleReason} from '../../../../common/utils/urlFormatter';
 import {NotEligibleReason} from '../../../../common/form/models/eligibility/NotEligibleReason';
 
-const totalAmountController = Router();
+const totalAmountEligibilityController = Router();
 const totalAmountViewPath = 'features/public/eligibility/total-amount';
 
-totalAmountController.get(ELIGIBILITY_CLAIM_VALUE_URL, (req: Request, res: Response) => {
+totalAmountEligibilityController.get(ELIGIBILITY_CLAIM_VALUE_URL, (req: Request, res: Response) => {
   const totalAmount = req.cookies?.eligibility?.totalAmount;
   res.render(totalAmountViewPath, { form: new GenericForm(new TotalAmount(totalAmount))});
 });
 
-totalAmountController.post(ELIGIBILITY_CLAIM_VALUE_URL, async (req: Request, res: Response) => {
+totalAmountEligibilityController.post(ELIGIBILITY_CLAIM_VALUE_URL, async (req: Request, res: Response) => {
   const totalAmount = new TotalAmount(req.body.totalAmount);
   const form = new GenericForm(totalAmount);
   await form.validate();
@@ -43,4 +43,4 @@ totalAmountController.post(ELIGIBILITY_CLAIM_VALUE_URL, async (req: Request, res
 },
 );
 
-export default totalAmountController;
+export default totalAmountEligibilityController;

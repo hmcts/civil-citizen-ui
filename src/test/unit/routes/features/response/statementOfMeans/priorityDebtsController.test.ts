@@ -45,26 +45,50 @@ describe('Priority Debts Controller', () => {
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
         .send({
-          gas: 'gas',
-          'gas-payment-amount': '',
-          'gas-payment-schedule': '',
+          model: {
+            gas: {
+              declared: 'gas',
+              transactionSource: {
+                name: 'Gas',
+                amount: '',
+              },
+            },
+            electricity: {
+              declared: 'electricity',
+              transactionSource: {
+                name: 'Electricity',
+                amount: '55',
+              },
+            },
+          },
         })
         .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.GAS_AMOUNT_ERROR);
           expect(res.text).toContain(TestMessages.GAS_SCHEDULE_ERROR);
+          expect(res.text).toContain(TestMessages.ELECTRICITY_DEBT_SCHEDULE_ERROR);
         });
     });
     it('should show errors when gas and water are selected but no amount or schedule selected', async () => {
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
         .send({
-          gas: 'gas',
-          'gas-payment-amount': '',
-          'gas-payment-schedule': '',
-          water: 'water',
-          'water-payment-amount': '',
-          'water-payment-schedule': '',
+          model: {
+            gas: {
+              declared: 'gas',
+              transactionSource: {
+                name: 'Gas',
+                amount: '',
+              },
+            },
+            water: {
+              declared: 'water',
+              transactionSource: {
+                name: 'Water',
+                amount: '',
+              },
+            },
+          },
         })
         .expect((res: Response) => {
           expect(res.status).toBe(200);
@@ -74,50 +98,70 @@ describe('Priority Debts Controller', () => {
           expect(res.text).toContain(TestMessages.WATER_AMOUNT_ERROR);
         });
     });
-    it('should show errors when gas is selected but no schedule selected', async () => {
+    it('should show errors when mortgage is selected but no schedule selected', async () => {
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
         .send({
-          gas: 'gas',
-          'gas-payment-amount': '5129',
-          'gas-payment-schedule': '',
+          model: {
+            gas: {
+              declared: 'mortgage',
+              transactionSource: {
+                name: 'Mortgage',
+                amount: '5129',
+              },
+            },
+          },
         })
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.GAS_SCHEDULE_ERROR);
+          expect(res.text).toContain(TestMessages.MORTGAGE_DEBT_SCHEDULE_ERROR);
         });
     });
-    it('should show errors when gas is selected and amount is negative', async () => {
+    it('should show errors when rent is selected and amount is negative', async () => {
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
         .send({
-          gas: 'gas',
-          'gas-payment-amount': '-5129',
-          'gas-payment-schedule': '',
+          model: {
+            gas: {
+              declared: 'rent',
+              transactionSource: {
+                name: 'Rent',
+                amount: '-5129',
+              },
+            },
+          },
         })
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.GAS_CORRECT_AMOUNT_ERROR);
+          expect(res.text).toContain(TestMessages.RENT_DEBT_CORRECT_AMOUNT_ERROR);
         });
     });
-    it('should show errors when gas is selected and amount has three decimal places', async () => {
+    it('should show errors when couincil tax is selected and amount has three decimal places', async () => {
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
         .send({
-          gas: 'gas',
-          'gas-payment-amount': '2000.859',
-          'gas-payment-schedule': '',
+          model: {
+            gas: {
+              declared: 'councilTax',
+              transactionSource: {
+                name: 'Council Tax or Community Charge',
+                amount: '2000.859',
+              },
+            },
+          },
         })
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.GAS_CORRECT_AMOUNT_ERROR);
+          expect(res.text).toContain(TestMessages.COUINCIL_TAX_CORRECT_AMOUNT_ERROR);
         });
     });
     it('should redirect when no data is selected', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
-        .send({})
+        .send({
+          model: {},
+        })
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_DEBTS_URL);
@@ -128,9 +172,16 @@ describe('Priority Debts Controller', () => {
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
         .send({
-          gas: 'gas',
-          'gas-payment-amount': '85.92',
-          'gas-payment-schedule': 'month',
+          model: {
+            gas: {
+              declared: 'gas',
+              transactionSource: {
+                name: 'Gas',
+                amount: '85.92',
+                schedule: 'MONTH',
+              },
+            },
+          },
         })
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -143,9 +194,16 @@ describe('Priority Debts Controller', () => {
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
         .send({
-          gas: 'gas',
-          'gas-payment-amount': '85.92',
-          'gas-payment-schedule': 'month',
+          model: {
+            gas: {
+              declared: 'gas',
+              transactionSource: {
+                name: 'Gas',
+                amount: '85.92',
+                schedule: 'MONTH',
+              },
+            },
+          },
         })
         .expect((res) => {
           expect(res.status).toBe(500);
