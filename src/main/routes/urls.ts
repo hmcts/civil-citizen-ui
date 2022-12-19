@@ -195,6 +195,7 @@ export const CLAIMANT_RESPONSE_TASK_LIST_URL = `${BASE_CLAIMANT_RESPONSE_URL}/ta
 export const CCJ_CHECK_AND_SEND_URL = `${BASE_CCJ_URL}/check-and-send`;
 export const CCJ_DEFENDANT_DOB_URL = `${BASE_CCJ_URL}/date-of-birth`;
 export const CCJ_PAID_AMOUNT_URL = `${BASE_CCJ_URL}/paid-amount`;
+export const CCJ_REPAYMENT_PLAN_INSTALMENTS_URL = `${BASE_CCJ_URL}/repayment-plan`;
 export const CCJ_PAY_BY_SET_DATE_URL = `${BASE_CCJ_URL}/pay-by-set-date`;
 export const CCJ_PAYMENT_OPTIONS_URL = `${BASE_CCJ_URL}/payment-options`;
 export const CCJ_REPAYMENT_PLAN_URL = `${BASE_CCJ_URL}/repayment-plan`;
