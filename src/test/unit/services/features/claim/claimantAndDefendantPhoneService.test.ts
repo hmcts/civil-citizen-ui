@@ -1,39 +1,24 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import {
-  getTelephone,
-  saveTelephone,
-} from '../../../../../main/services/features/claim/yourDetails/claimantAndDefendantPhoneService';
+import {getTelephone, saveTelephone} from '../../../../../main/services/features/claim/yourDetails/phoneService';
 import {Claim} from '../../../../../main/common/models/claim';
 import {Party} from '../../../../../main/common/models/party';
-import {CorrespondenceAddress} from '../../../../../main/common/models/correspondenceAddress';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {CitizenTelephoneNumber} from '../../../../../main/common/form/models/citizenTelephoneNumber';
 import {ClaimantOrDefendant, PartyType} from '../../../../../main/common/models/partyType';
+import {PartyPhone} from '../../../../../main/common/models/PartyPhone';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
-const correspondenceAddress: CorrespondenceAddress = {
-  County: '',
-  Country: '',
-  PostCode: '',
-  PostTown: '',
-  AddressLine1: '',
-  AddressLine2: '',
-  AddressLine3: '',
-};
-
 const party: Party = {
-  individualTitle: '',
-  individualLastName: '',
-  individualFirstName: '',
-  soleTraderTitle: '',
-  soleTraderFirstName: '',
-  soleTraderLastName: '',
-  partyName: '',
+  partyDetails: {
+    individualTitle: '',
+    individualLastName: '',
+    individualFirstName: '',
+    partyName: '',
+  },
+  partyPhone: {phone: '01632960001'},
   type: PartyType.INDIVIDUAL,
-  primaryAddress: correspondenceAddress,
-  phoneNumber: '',
 };
 
 const PHONE_NUMBER = '01632960001';
@@ -47,7 +32,7 @@ describe('Claimant Phone Service', () => {
         return new Claim();
       });
       //When
-      const form = await getTelephone('123',ClaimantOrDefendant.CLAIMANT);
+      const form = await getTelephone('123', ClaimantOrDefendant.CLAIMANT);
       //Then
       expect(form.telephoneNumber).toBeUndefined();
       expect(form.telephoneNumber).toEqual(undefined);
@@ -59,7 +44,7 @@ describe('Claimant Phone Service', () => {
         return new Claim();
       });
       //When
-      const form = await getTelephone('123',ClaimantOrDefendant.DEFENDANT);
+      const form = await getTelephone('123', ClaimantOrDefendant.DEFENDANT);
       //Then
       expect(form.telephoneNumber).toBeUndefined();
       expect(form.telephoneNumber).toEqual(undefined);
@@ -70,10 +55,11 @@ describe('Claimant Phone Service', () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
         claim.applicant1 = party;
+        claim.applicant1.partyPhone.phone = '';
         return claim;
       });
       //When
-      const form = await getTelephone('123',ClaimantOrDefendant.CLAIMANT);
+      const form = await getTelephone('123', ClaimantOrDefendant.CLAIMANT);
       //Then
       expect(form.telephoneNumber).toEqual('');
     });
@@ -82,12 +68,12 @@ describe('Claimant Phone Service', () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
-        //claim.respondent1 = respondent;
-        claim.respondent1 = party;
+        claim.respondent1 = new Party();
+        claim.respondent1.partyPhone = new PartyPhone('');
         return claim;
       });
       //When
-      const form = await getTelephone('123',ClaimantOrDefendant.DEFENDANT);
+      const form = await getTelephone('123', ClaimantOrDefendant.DEFENDANT);
       //Then
       expect(form.telephoneNumber).toEqual('');
     });
@@ -96,12 +82,12 @@ describe('Claimant Phone Service', () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
-        party.phoneNumber = PHONE_NUMBER;
-        claim.applicant1 = party;
+        claim.applicant1 = new Party();
+        claim.applicant1.partyPhone = new PartyPhone(PHONE_NUMBER);
         return claim;
       });
       //When
-      const form = await getTelephone('123',ClaimantOrDefendant.CLAIMANT);
+      const form = await getTelephone('123', ClaimantOrDefendant.CLAIMANT);
 
       //Then
       expect(form.telephoneNumber).toEqual(PHONE_NUMBER);
@@ -111,12 +97,12 @@ describe('Claimant Phone Service', () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
-        party.phoneNumber = PHONE_NUMBER;
-        claim.respondent1 = party;
+        claim.respondent1 = new Party();
+        claim.respondent1.partyPhone = new PartyPhone(PHONE_NUMBER);
         return claim;
       });
       //When
-      const form = await getTelephone('123',ClaimantOrDefendant.DEFENDANT);
+      const form = await getTelephone('123', ClaimantOrDefendant.DEFENDANT);
 
       //Then
       expect(form.telephoneNumber).toEqual(PHONE_NUMBER);
@@ -131,7 +117,7 @@ describe('Claimant Phone Service', () => {
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveTelephone('123', new CitizenTelephoneNumber(PHONE_NUMBER),ClaimantOrDefendant.DEFENDANT);
+      await saveTelephone('123', new CitizenTelephoneNumber(PHONE_NUMBER), ClaimantOrDefendant.DEFENDANT);
       //Then
       expect(spySave).toBeCalled();
     });
@@ -144,7 +130,7 @@ describe('Claimant Phone Service', () => {
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveTelephone('123', new CitizenTelephoneNumber(PHONE_NUMBER),ClaimantOrDefendant.CLAIMANT);
+      await saveTelephone('123', new CitizenTelephoneNumber(PHONE_NUMBER), ClaimantOrDefendant.CLAIMANT);
       //Then
       expect(spySave).toBeCalled();
     });
@@ -155,7 +141,7 @@ describe('Claimant Phone Service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(getTelephone('123',ClaimantOrDefendant.CLAIMANT)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(getTelephone('123', ClaimantOrDefendant.CLAIMANT)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
 
     it('should rethrow error when error occurs for defendant', async () => {
@@ -164,7 +150,7 @@ describe('Claimant Phone Service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(getTelephone('123',ClaimantOrDefendant.DEFENDANT)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(getTelephone('123', ClaimantOrDefendant.DEFENDANT)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 
@@ -179,7 +165,7 @@ describe('Claimant Phone Service', () => {
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveTelephone('123', new CitizenTelephoneNumber(PHONE_NUMBER),ClaimantOrDefendant.CLAIMANT);
+      await saveTelephone('123', new CitizenTelephoneNumber(PHONE_NUMBER), ClaimantOrDefendant.CLAIMANT);
       //Then
       expect(spySave).toBeCalled();
     });
@@ -195,7 +181,7 @@ describe('Claimant Phone Service', () => {
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveTelephone('123', new CitizenTelephoneNumber(PHONE_NUMBER),ClaimantOrDefendant.DEFENDANT);
+      await saveTelephone('123', new CitizenTelephoneNumber(PHONE_NUMBER), ClaimantOrDefendant.DEFENDANT);
       //Then
       expect(spySave).toBeCalled();
     });
@@ -209,7 +195,7 @@ describe('Claimant Phone Service', () => {
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveTelephone('123', new CitizenTelephoneNumber(PHONE_NUMBER),ClaimantOrDefendant.DEFENDANT);
+      await saveTelephone('123', new CitizenTelephoneNumber(PHONE_NUMBER), ClaimantOrDefendant.DEFENDANT);
       //Then
       expect(spySave).toBeCalled();
     });
@@ -220,7 +206,7 @@ describe('Claimant Phone Service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(saveTelephone('123', new CitizenTelephoneNumber(PHONE_NUMBER),ClaimantOrDefendant.DEFENDANT)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(saveTelephone('123', new CitizenTelephoneNumber(PHONE_NUMBER), ClaimantOrDefendant.DEFENDANT)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
 
     it('should rethrow error when error occurs on get claim or defendant', async () => {
@@ -229,7 +215,7 @@ describe('Claimant Phone Service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(saveTelephone('123', new CitizenTelephoneNumber(PHONE_NUMBER),ClaimantOrDefendant.CLAIMANT)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(saveTelephone('123', new CitizenTelephoneNumber(PHONE_NUMBER), ClaimantOrDefendant.CLAIMANT)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 });

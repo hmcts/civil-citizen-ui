@@ -3,7 +3,8 @@
   {{ govukInput({
     id: param.id,
     name: param.name,
-    value: form.model.telephoneNumber,
+    value: form.model[param.name],
+    classes: param.className,
     label: {
       text: t(param.label),
       classes: 'govuk-visually-hidden'
@@ -12,7 +13,7 @@
       text: t(param.hint) if param.hint else ''
     },
     errorMessage: {
-      html: t(form.errorFor('telephoneNumber'))
+      html: t(form.errorFor(param.id))
     } if form.hasErrors()
   }) }}
 {% endmacro %}

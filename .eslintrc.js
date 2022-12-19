@@ -1,5 +1,5 @@
 module.exports = {
-  'env': { 'browser': true, 'es6': true, 'node': true, 'jest': true},
+  'env': { 'browser': true, 'es6': true, 'node': true, 'jest': true, 'codeceptjs/codeceptjs': true},
   'extends': ['eslint:recommended'],
   'globals': { 'Atomics': 'readonly', 'SharedArrayBuffer': 'readonly' },
   'parser': '@babel/eslint-parser',
@@ -32,7 +32,7 @@ module.exports = {
         'sourceType': 'module',
         'project': './tsconfig.json',
       },
-      'plugins': ['@typescript-eslint'],
+      'plugins': ['@typescript-eslint', 'codeceptjs'],
       'rules': {
         'indent': ['error', 2, { 'SwitchCase': 1 }],
         'linebreak-style': ['error', 'unix'],

@@ -60,14 +60,8 @@ export function addDaysFilter(value: string, num: number): DateTime {
 }
 
 export function addDaysFilterTranslated(value: string, num: number, t: (key:string) => string): string {
-  let date = DateTime.now();
+  const newDate = addDaysFilter(value, num);
+  const month = t('COMMON.MONTH_NAMES.' + newDate.monthLong.toUpperCase());
 
-  if (value === 'now') {
-    date = DateTime.now();
-  }
-
-  date.plus({days: num});
-  const month = t('COMMON.MONTH_NAMES.' + date.monthLong.toUpperCase());
-
-  return (date.day + ' ' + month + ' ' + date.year);
+  return (newDate.day + ' ' + month + ' ' + newDate.year);
 }

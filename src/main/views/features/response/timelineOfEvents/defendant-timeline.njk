@@ -29,8 +29,8 @@
               {% if theirTimeline.length %}
               <thead class="govuk-table__head">
               <tr class="govuk-table__row">
-                <th scope="col" class="govuk-table__header">{{ t('PAGES.DEFENDANT_TIMELINE.DATE') }}</th>
-                <th scope="col" class="govuk-table__header">{{ t('PAGES.DEFENDANT_TIMELINE.WHAT_HAPPENED') }}</th>
+                <th scope="col" class="govuk-table__header">{{ t('COMMON.DATE') }}</th>
+                <th scope="col" class="govuk-table__header">{{ t('COMMON.TIMELINE.WHAT_HAPPENED') }}</th>
               </tr>
               </thead>
               <tbody class="govuk-table__body">
@@ -56,23 +56,23 @@
             {{ csrfProtection(csrf) }}
             <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
               <label class="govuk-label--s">
-                {{ t('PAGES.DEFENDANT_TIMELINE.DATE') }}
+                {{ t('COMMON.DATE') }}
               </label>
               <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">
-                {{ t('PAGES.DEFENDANT_TIMELINE.FOR_EXAMPLE', { sixMonthAgo: "now" | addDaysTranslated(-180, t) }) }}
+                {{ t('COMMON.DATE_EXAMPLE', { date: "now" | addDaysTranslated(-180, t) }) }}
               </p>
             </div>
             <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
-              <label class="govuk-label--s">{{ t('PAGES.DEFENDANT_TIMELINE.WHAT_HAPPENED') }}</label>
+              <label class="govuk-label--s">{{ t('COMMON.TIMELINE.WHAT_HAPPENED') }}</label>
               <p
-                class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">{{ t('PAGES.DEFENDANT_TIMELINE.YOU_MIGHT_HAVE_SIGNED_A_CONTRACT') }}</p>
+                class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">{{ t('COMMON.TIMELINE.EXAMPLE_EVENT') }}</p>
             </div>
             {% for timeline in form.model.rows %}
               {{ timelineRow(timeline, loop.index0, form, t) }}
             {% endfor %}
 
             {{ govukButton({
-              text: t('PAGES.DEFENDANT_TIMELINE.ADD_ANOTHER_EVENT'),
+              text: t('COMMON.BUTTONS.ADD_ANOTHER_EVENT'),
               classes: "govuk-button--secondary append-row"
             }) }}
             {{ govukTextarea({

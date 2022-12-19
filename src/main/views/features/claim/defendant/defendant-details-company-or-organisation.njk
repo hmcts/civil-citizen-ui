@@ -7,14 +7,14 @@
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
-
+{% from "../../../macro/postcode-address-form.njk" import postcodeLookupAndAddressForm %}
 {% set payingExtra = t('PAGES.DEFENDANT_DETAILS.PAYING_EXTRA') %}
 {% set correspondenceAddressClass = 'govuk-visually-hidden' %}
 {% if defendantType === partyType.COMPANY %}
   {% set title = t('PAGES.DEFENDANT_DETAILS.PAGE_TITLES.COMPANY') %}
   {% set inputTitle = t('PAGES.DEFENDANT_DETAILS.COMPANY_NAME') %}
   {% set addressTitle = t('PAGES.DEFENDANT_DETAILS.COMPANY_ADDRESS') %}
-  {% elif defendantType === partyType.ORGANISATION %}
+{% elif defendantType === partyType.ORGANISATION %}
   {% set title = t('PAGES.DEFENDANT_DETAILS.PAGE_TITLES.ORGANISATION') %}
   {% set payingExtra = t('PAGES.DEFENDANT_DETAILS.PAYING_EXTRA_ORGANISATION') %}
   {% set inputTitle = t('PAGES.DEFENDANT_DETAILS.ORGANISATION_NAME') %}
@@ -24,20 +24,17 @@
   {% set inputTitle = '' %}
   {% set addressTitle = '' %}
 {% endif %}
-
 {% set formErrors = form.getAllErrors() %}
-{% set primaryAddressFormErrors = primaryAddressForm.getAllErrors() %}
 
 {% block pageTitle %}
   {{ setPageTitle(title) }}
 {% endblock %}
-
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
-        {% if form.hasErrors() or primaryAddressForm.hasErrors() %}
-          {{ errorSummary(formErrors.concat(primaryAddressFormErrors), t) }}
+        {% if form.hasErrors() %}
+          {{ errorSummary(form.getAllErrors(), t) }}
         {% endif %}
       </div>
       <div class="govuk-grid-row">
@@ -72,11 +69,11 @@
               value: form.model.contactPerson,
               errorMessage: { text: t(form.errorFor('contactPerson')) } if form.errorFor('contactPerson')
             }) }}
-
-            <div class="govuk-form-group" id="primaryPostcodeContainer">
+            <div class="govuk-form-group">
               <h2 class="govuk-heading-m">{{ addressTitle }}</h2>
               <p class="govuk-body">
-                {{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }} {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}
+                {{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }}
+                {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}
               </p>
               {% if defendantType === partyType.COMPANY %}
                 <p class="govuk-body">
@@ -89,46 +86,12 @@
               {% else %}
                 <p class="govuk-body">{{ t('PAGES.DEFENDANT_DETAILS.ENGLAND_OR_WALES_ADDRESS') }}</p>
               {% endif %}
-
-              <label class="govuk-label" for="primaryPostcode">
-                {{ t('PAGES.DEFENDANT_DETAILS.UK_POSTCODE') }}
-              </label>
-              <div id="primaryPostcode-error" class="govuk-visually-hidden govuk-error-message">
-                {{ t('ERRORS.ADDRESS_NOT_FOUND') + t('ERRORS.TRY_AGAIN') }}
-              </div>
-              <input class="govuk-input govuk-input--width-10" id="primaryPostcode" name="primaryPostcode" type="text"
-                     autocomplete="postal-code"/>
-              <button class="govuk-button govuk-button--secondary findAddressButton" data-module="govuk-button"
-                      id="primaryfindAddressButton">
-                {{ t('PAGES.DEFENDANT_DETAILS.FIND_ADDRESS') }}
-              </button>
-              <div id="primarySelectAddress" class="govuk-visually-hidden">
-                {{ govukSelect({
-                  id: "primaryAddressList",
-                  name: "primaryAddressList",
-                  classes: 'addressList',
-                  label: {
-                    text: t('PAGES.DEFENDANT_DETAILS.PICK_ADDRESS')
-                  },
-                  items: []
-                }) }}
-              </div>
+              {{ postcodeLookupAndAddressForm(t, {
+                party: form,
+                addressType:'primary',
+                addressTitle:''
+              }) }}
             </div>
-            <div>
-              <a id="primaryEnterAddressManually" aria-controls="enterAddressManually" href="#"
-                 class="govuk-body govuk-link enterAddressManually">
-                {{ t('PAGES.DEFENDANT_DETAILS.MANUAL_ADDRESS') }}
-              </a>
-            </div>
-            <div id="primaryAddress" class="{{ correspondenceAddressClass }}">
-              {{ addressForm(
-                t,
-                citizenAddress = primaryAddressForm,
-                addressType = 'primary',
-                addressTitle = ''
-              ) }}
-            </div>
-
             {{ govukButton({
               text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),
               classes: 'govuk-!-margin-top-4'

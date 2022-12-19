@@ -1,10 +1,14 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import {getDefendantEmail,saveDefendantEmail} from '../../../../../main/services/features/claim/yourDetails/defendantEmailService';
+import {
+  getDefendantEmail,
+  saveDefendantEmail,
+} from '../../../../../main/services/features/claim/yourDetails/defendantEmailService';
 import {Claim} from '../../../../../main/common/models/claim';
 import {PartyType} from '../../../../../main/common/models/partyType';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {Party} from '../../../../../main/common/models/party';
 import {DefendantEmail} from '../../../../../main/common/form/models/claim/yourDetails/defendantEmail';
+import {Email} from '../../../../../main/common/models/Email';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -12,18 +16,16 @@ jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 const EMAIL_ADDRESS = 'test@gmail.com';
 
 const respondent: Party = {
-  primaryAddress: {},
-  postToThisAddress: '',
-  correspondenceAddress: {},
-  individualTitle: '',
-  individualLastName: '',
-  individualFirstName: '',
-  phoneNumber: '',
+  partyDetails: {
+    postToThisAddress: '',
+    individualTitle: '',
+    individualLastName: '',
+    individualFirstName: '',
+    partyName: '',
+    contactPerson: '',
+  },
   responseType: '',
   type: PartyType.INDIVIDUAL,
-  partyName: '',
-  contactPerson: '',
-  emailAddress: '',
 };
 
 describe('Claimant Defendant Email Service', () => {
@@ -51,14 +53,14 @@ describe('Claimant Defendant Email Service', () => {
       //When
       const form = await getDefendantEmail('123');
       //Then
-      expect(form.emailAddress).toEqual('');
+      expect(form.emailAddress).toBeUndefined();
     });
 
     it('should return populated form when claimant defendant email exists', async () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
-        respondent.emailAddress = EMAIL_ADDRESS;
+        respondent.emailAddress = new Email(EMAIL_ADDRESS);
         claim.respondent1 = respondent;
         return claim;
       });

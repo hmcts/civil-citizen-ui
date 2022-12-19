@@ -1,34 +1,14 @@
 import {PartyType} from '../models/partyType';
-import {PrimaryAddress} from '../models/primaryAddress';
-import {CorrespondenceAddress} from '../models/correspondenceAddress';
-import {IsNotEmpty} from 'class-validator';
+import {PartyDetails} from '../../common/form/models/partyDetails';
+import {Email} from '../models/Email';
+import {CitizenDate} from '../../common/form/models/claim/claimant/citizenDate';
+import {PartyPhone} from '../models/PartyPhone';
 
 export class Party {
-  individualTitle?: string;
-  individualLastName?: string;
-  individualFirstName?: string;
-  soleTraderTitle?: string;
-  soleTraderFirstName?: string;
-  soleTraderLastName?: string;
-  soleTraderTradingAs?: string;
-  @IsNotEmpty({message: 'ERRORS.VALID_PARTY_NAME'})
-    partyName?: string;
+  partyDetails?: PartyDetails;
   type?: PartyType;
-  primaryAddress?: PrimaryAddress;
-  postToThisAddress?: string;
-  phoneNumber?: string;
-  provideCorrespondenceAddress?: string;
-  correspondenceAddress?: CorrespondenceAddress;
-  dateOfBirth?: Date;
   responseType?: string;
-  contactPerson?: string;
-  emailAddress?: string;
-
-  constructor(
-    partyName?: string,
-    contactPerson?: string,
-  ) {
-    this.partyName = partyName;
-    this.contactPerson = contactPerson;
-  }
+  emailAddress?: Email;
+  dateOfBirth?: CitizenDate;
+  partyPhone?: PartyPhone;
 }

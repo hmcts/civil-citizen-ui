@@ -12,8 +12,8 @@ export const getExpertReportDetails = async (claimId: string): Promise<ExpertRep
   try {
     const caseData = await getCaseDataFromStore(claimId);
     if (caseData.directionQuestionnaire?.experts?.expertReportDetails) {
-      const reportDetails = caseData.directionQuestionnaire.experts.expertReportDetails.reportDetails?.map(reportDetail => ReportDetail.fromJson(reportDetail));
-      caseData.directionQuestionnaire.experts.expertReportDetails.reportDetails = reportDetails;
+      caseData.directionQuestionnaire.experts.expertReportDetails.reportDetails =
+        caseData.directionQuestionnaire.experts.expertReportDetails.reportDetails?.map(reportDetail => ReportDetail.fromJson(reportDetail));
       return caseData.directionQuestionnaire.experts.expertReportDetails;
     }
     return new ExpertReportDetails();

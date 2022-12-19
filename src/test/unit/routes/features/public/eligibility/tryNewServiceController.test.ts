@@ -2,12 +2,11 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {
-  BASE_ELIGIBILITY_URL,
-} from '../../../../../../main/routes/urls';
+import {BASE_ELIGIBILITY_URL} from 'routes/urls';
 import {t} from 'i18next';
 
 jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/draft-store');
 
 describe('Try the new online service', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
