@@ -1,10 +1,15 @@
 import {Request} from 'express';
 import {t} from 'i18next';
-import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
-import {SupportRequiredList, SupportRequired, Support, SupportRequiredParams} from '../../../common/models/directionsQuestionnaire/supportRequired';
-import {Claim} from '../../../common/models/claim';
-import {YesNo} from '../../../common/form/models/yesNo';
-import {getLng} from '../../../common/utils/languageToggleUtils';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {
+  Support,
+  SupportRequired,
+  SupportRequiredList,
+  SupportRequiredParams,
+} from 'models/directionsQuestionnaire/supportRequired';
+import {Claim} from 'models/claim';
+import {YesNo} from 'form/models/yesNo';
+import {getLng} from 'common/utils/languageToggleUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');
@@ -23,11 +28,10 @@ export interface FullName {
 const generateList = (list: FullName[]): NameListType[] => {
   return list?.filter((item: FullName)=> item.firstName || item.lastName)
     .map((item: FullName) => {
-      const name = `${item?.firstName} ${item?.lastName}`;
-      const value = (item?.firstName + item?.lastName)?.toLocaleLowerCase();
+      const fullName = `${item?.firstName} ${item?.lastName}`;
       return {
-        value: value,
-        text: name,
+        value: fullName,
+        text: fullName,
       };
     });
 };
@@ -35,12 +39,10 @@ const generateList = (list: FullName[]): NameListType[] => {
 export const generateExpertAndWitnessList = (caseData: Claim, lang: string): NameListType[] => {
   const experts = generateList(caseData.directionQuestionnaire?.experts?.expertDetailsList?.items?.map(item => ({firstName: item.firstName, lastName: item.lastName})));
   const witnesses = generateList(caseData.directionQuestionnaire?.witnesses?.otherWitnesses?.witnessItems?.map(item => ({firstName: item.firstName, lastName: item.lastName})));
-  const defaultOption = [{
+  let nameList = [{
     value: '',
     text: t('PAGES.SUPPORT_REQUIRED.CHOOSE_NAME', {lng: getLng(lang)}),
   }];
-
-  let nameList = defaultOption;
   if (witnesses?.length) {
     nameList = nameList.concat(witnesses);
   }
@@ -59,7 +61,7 @@ export const generatePeopleListWithSelectedValues = async (claimId: string, sele
     }
     return selectedNames?.map(selectedName => {
       return defaultList.map(name => {
-        return {...name, selected: selectedName?.includes(name.value)};
+        return {...name, selected: selectedName?.replace(/ /g, '') === name.value.replace(/ /g, '')};
       });
     });
   } catch (error) {
@@ -68,14 +70,12 @@ export const generatePeopleListWithSelectedValues = async (claimId: string, sele
   }
 };
 
-export const getSupportRequired = async (claimId: string, lang: string): Promise<[SupportRequiredList, NameListType[][]| NameListType[]]> => {
+export const getSupportRequired = async (claimId: string): Promise<SupportRequiredList> => {
   try {
     const caseData = await getCaseDataFromStore(claimId);
-    const selectedNames = caseData.directionQuestionnaire?.hearing?.supportRequiredList?.items?.map(item => item.fullName);
-    const peopleLists = await generatePeopleListWithSelectedValues(claimId, selectedNames, lang);
     return caseData?.directionQuestionnaire?.hearing?.supportRequiredList ?
-      [caseData.directionQuestionnaire.hearing?.supportRequiredList, peopleLists] :
-      [new SupportRequiredList(undefined, [new SupportRequired()]), peopleLists];
+      caseData.directionQuestionnaire.hearing?.supportRequiredList :
+      new SupportRequiredList(undefined, [new SupportRequired()]);
   } catch (error) {
     logger.error(error);
     throw error;

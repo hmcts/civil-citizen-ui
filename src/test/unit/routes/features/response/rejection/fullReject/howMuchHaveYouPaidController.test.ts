@@ -6,16 +6,7 @@ import {
   CITIZEN_FR_AMOUNT_YOU_PAID_URL,
   CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL,
   CLAIM_TASK_LIST_URL,
-} from '../../../../../../../main/routes/urls';
-import {
-  ENTER_PAYMENT_EXPLANATION,
-  VALID_AMOUNT,
-  VALID_DATE_IN_PAST,
-  VALID_DAY,
-  VALID_FOUR_DIGIT_YEAR,
-  VALID_MONTH,
-  VALID_YEAR,
-} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+} from 'routes/urls';
 import {
   mockCivilClaim,
   mockCivilClaimUndefined,
@@ -109,11 +100,11 @@ describe('How Much Have You Paid', () => {
         })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_AMOUNT);
-          expect(res.text).toContain(VALID_DAY);
-          expect(res.text).toContain(VALID_MONTH);
-          expect(res.text).toContain(VALID_YEAR);
-          expect(res.text).toContain(ENTER_PAYMENT_EXPLANATION);
+          expect(res.text).toContain(TestMessages.ENTER_VALID_AMOUNT);
+          expect(res.text).toContain(TestMessages.VALID_DAY);
+          expect(res.text).toContain(TestMessages.VALID_MONTH);
+          expect(res.text).toContain(TestMessages.VALID_YEAR);
+          expect(res.text).toContain(TestMessages.ENTER_PAYMENT_EXPLANATION);
         });
     });
     it('should return error on date in future', async () => {
@@ -123,7 +114,7 @@ describe('How Much Have You Paid', () => {
         .send({amount: 20, totalClaimAmount: 110, year: '2040', month: '1', day: '1', text: 'text'})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_DATE_IN_PAST);
+          expect(res.text).toContain(TestMessages.VALID_DATE_IN_PAST);
         });
     });
     it('should return error for a 2 digit year', async () => {
@@ -133,7 +124,7 @@ describe('How Much Have You Paid', () => {
         .send({amount: 20, totalClaimAmount: 110, year: '22', month: '1', day: '1', text: 'text'})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_FOUR_DIGIT_YEAR);
+          expect(res.text).toContain(TestMessages.VALID_FOUR_DIGIT_YEAR);
         });
     });
     it('should redirect to claim task list page on valid amount, date in past, text', async () => {

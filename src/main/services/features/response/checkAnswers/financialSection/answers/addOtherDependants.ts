@@ -8,7 +8,7 @@ import {
 } from '../../../../../../routes/urls';
 import {YesNo} from '../../../../../../common/form/models/yesNo';
 
-const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', { lng: getLng(lang) });
+const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 
 export const addOtherDependants = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
   const yourOtherDependantsHref = CITIZEN_OTHER_DEPENDANTS_URL.replace(':id', claimId);
@@ -17,7 +17,7 @@ export const addOtherDependants = (claim: Claim, financialSection: SummarySectio
 
   if (otherDependantsOption === YesNo.YES) {
     financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.SUPPORT_ANYONE_ELSE_FINANCIALLY', { lng: getLng(lang) }), '', yourOtherDependantsHref, changeLabel(lang)));
-    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.SUPPORT_NUMBER_OF_PEOPLE', { lng: getLng(lang) }), otherDependants.numberOfPeople.toString(), '', changeLabel(lang)));
-    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.SUPPORT_GIVE_DETAILS', { lng: getLng(lang) }), otherDependants.details, '', changeLabel(lang)));
+    financialSection.summaryList.rows.push(summaryRow(t('COMMON.NUMBER_OF_PEOPLE', { lng: getLng(lang) }), otherDependants.numberOfPeople.toString(), '', changeLabel(lang)));
+    financialSection.summaryList.rows.push(summaryRow(t('COMMON.GIVE_DETAILS', { lng: getLng(lang) }), otherDependants.details, '', changeLabel(lang)));
   }
 };

@@ -6,18 +6,17 @@ import {getLng} from '../../../../../../common/utils/languageToggleUtils';
 import {
   CITIZEN_PRIORITY_DEBTS_URL,
 } from '../../../../../../routes/urls';
-import {PriorityDebtDetails} from '../../../../../../common/form/models/statementOfMeans/priorityDebtDetails';
-
+import {Transaction} from '../../../../../../common/form/models/statementOfMeans/expensesAndIncome/transaction';
 import {currencyFormatWithNoTrailingZeros} from '../../../../../../common/utils/currencyFormat';
 
-const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', { lng: getLng(lang) });
+const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 
 let count: number;
 
-const addPriorityDebtsListRow = (section:SummarySection, sectionHref:string, debtType:PriorityDebtDetails, tKey:string, lang: string | unknown) => {
-  if (debtType?.isDeclared && debtType?.amount) {
+const addPriorityDebtsListRow = (section:SummarySection, sectionHref:string, debtType:Transaction, tKey:string, lang: string | unknown) => {
+  if (debtType?.declared && debtType?.transactionSource?.amount) {
     section.summaryList.rows.push(summaryRow((count++) + '. ' + t('PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_TYPE', { lng: getLng(lang) }), t(tKey, { lng: getLng(lang) }), sectionHref, changeLabel(lang)));
-    section.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_ARREARS_REPAYMENT', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(debtType.amount), sectionHref, changeLabel(lang)));
+    section.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_ARREARS_REPAYMENT', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(debtType.transactionSource.amount), sectionHref, changeLabel(lang)));
   }
 };
 
@@ -31,11 +30,11 @@ export const addPriorityDebts = (claim: Claim, financialSection: SummarySection,
   }
 
   count = 1;
-  addPriorityDebtsListRow(financialSection, yourPriorityDebtsHref, claim.statementOfMeans?.priorityDebts?.mortgage, 'PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_MORTGAGE', lang);
-  addPriorityDebtsListRow(financialSection, yourPriorityDebtsHref, claim.statementOfMeans?.priorityDebts?.rent, 'PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_RENT', lang);
+  addPriorityDebtsListRow(financialSection, yourPriorityDebtsHref, claim.statementOfMeans?.priorityDebts?.mortgage, 'COMMON.CHECKBOX_FIELDS.MORTGAGE', lang);
+  addPriorityDebtsListRow(financialSection, yourPriorityDebtsHref, claim.statementOfMeans?.priorityDebts?.rent, 'COMMON.CHECKBOX_FIELDS.RENT', lang);
   addPriorityDebtsListRow(financialSection, yourPriorityDebtsHref, claim.statementOfMeans?.priorityDebts?.councilTax, 'PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_COUNCIL_TAX', lang);
-  addPriorityDebtsListRow(financialSection, yourPriorityDebtsHref, claim.statementOfMeans?.priorityDebts?.gas, 'PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_GAS', lang);
-  addPriorityDebtsListRow(financialSection, yourPriorityDebtsHref, claim.statementOfMeans?.priorityDebts?.electricity, 'PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_ELECTRICITY', lang);
+  addPriorityDebtsListRow(financialSection, yourPriorityDebtsHref, claim.statementOfMeans?.priorityDebts?.gas, 'COMMON.CHECKBOX_FIELDS.GAS', lang);
+  addPriorityDebtsListRow(financialSection, yourPriorityDebtsHref, claim.statementOfMeans?.priorityDebts?.electricity, 'COMMON.CHECKBOX_FIELDS.ELECTRICITY', lang);
   addPriorityDebtsListRow(financialSection, yourPriorityDebtsHref, claim.statementOfMeans?.priorityDebts?.water, 'PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_WATER', lang);
   addPriorityDebtsListRow(financialSection, yourPriorityDebtsHref, claim.statementOfMeans?.priorityDebts?.maintenance, 'PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_MAINTENANCE', lang);
 };

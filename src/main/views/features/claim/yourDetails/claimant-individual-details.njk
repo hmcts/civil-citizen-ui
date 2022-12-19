@@ -3,67 +3,34 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% from "govuk/components/select/macro.njk" import govukSelect %}
-
 {% from "../../../macro/address.njk" import addressForm %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
-
+{% from "../../../macro/postcode-address-form.njk" import postcodeLookupAndAddressForm %}
 {% set correspondenceAddressClass = 'govuk-visually-hidden' %}
 {% set addressTitle = t('PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.YOUR_POSTAL_ADDRESS') %}
-{% set claimantIndividualAddressErrors = claimantIndividualAddress.getAllErrors() %}
-{% set claimantDetailsErrors = claimantDetails.getAllErrors() %}
-
-{% if claimantIndividualCorrespondenceAddress %}
-  {% set claimantDetailsErrors = claimantDetails.getAllErrors() %}
-  {% set claimantIndividualCorrespondenceAddressErrors = claimantIndividualCorrespondenceAddress.getAllErrors() %}
-  {% set claimantIndividualAddressErrors = claimantIndividualAddressErrors.concat(claimantIndividualCorrespondenceAddress.getAllErrors()) %}
+{% if party.model.provideCorrespondenceAddress == YesNo.YES or
+  party.errorFor('correspondenceAddress') %}
+  {% set radioChecked = true %}
+{% else %}
+  {% set radioChecked = false %}
 {% endif %}
-
 {% block pageTitle %}
   {{ setPageTitle('PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.PAGE_TITLE') }}
 {% endblock %}
 
 {% set correspondenceAddressHtml %}
-  <div class="govuk-form-group" id="postcodeContainer">
+  <div class="govuk-form-group">
     <p class="govuk-label govuk-!-margin-bottom-5">
-    <p class="govuk-body">{{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }} {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}</p>
-    <label class="govuk-label" for="postcode">
-      {{ t('PAGES.CITIZEN_DETAILS.UK_POSTCODE') }}
-    </label>
-    <div id="postcode-error" class="govuk-visually-hidden govuk-error-message">
-      {{ t('PAGES.CITIZEN_DETAILS.ADDRESS_NOT_FOUND') + t('PAGES.CITIZEN_DETAILS.TRY_AGAIN') }}
-    </div>
-    <input class="govuk-input govuk-input--width-10" id="postcode" name="postcode" type="text" autocomplete="postal-code"/>
-    <button href="#" class="govuk-button govuk-button--secondary findAddressButton" data-module="govuk-button" id="findAddressButton">
-      {{ t('PAGES.CITIZEN_DETAILS.FIND_ADDRESS') }}
-    </button>
-    <div id="selectAddress" class="govuk-visually-hidden govuk-!-margin-bottom-2">
-      {{ govukSelect({
-        id: "correspondenceAddressList",
-        name: "correspondenceAddressList",
-        classes: 'addressList',
-        label: {
-          text: t('PAGES.CITIZEN_DETAILS.PICK_ADDRESS')
-        },
-        items: []
-      }) }}
-    </div>
-  </div>
-  <div>
-    <a id="enterAddressManually" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link enterAddressManually">
-      {{ t('PAGES.CITIZEN_DETAILS.MANUAL_ADDRESS') }}
-    </a>
-  </div>
-  <div id="correspondenceAddress" class="{{ correspondenceAddressClass }}">
-    {{ addressForm(
-      t,
-      citizenCorrespondenceAddress = claimantIndividualCorrespondenceAddress,
-      addressType = 'correspondence',
-      addressTitle = addressTitle
-    ) }}
+    <p class="govuk-body">{{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }}
+      {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}</p>
+    {{ postcodeLookupAndAddressForm(t, {
+      party: party,
+      addressType:'correspondence',
+      addressTitle:addressTitle
+    }) }}
   </div>
 {% endset -%}
 
@@ -71,8 +38,8 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
-        {% if claimantDetails.hasErrors() or claimantIndividualCorrespondenceAddress.hasErrors() or claimantIndividualAddress.hasErrors() %}
-          {{ errorSummary(claimantDetailsErrors.concat(claimantIndividualAddressErrors), t) }}
+        {% if party.hasErrors() %}
+          {{ errorSummary(party.getAllErrors(), t) }}
         {% endif %}
       </div>
 
@@ -94,8 +61,8 @@
               classes: "govuk-!-width-one-half",
               id: "individualTitle",
               name: "individualTitle",
-              value: claimantDetails.model.individualTitle,
-                errorMessage: { text: t(claimantDetails.errorFor('individualTitle')) } if claimantDetails.errorFor('tiindividualTitle')
+              value: party.model.individualTitle,
+              errorMessage: { text: t(party.errorFor('individualTitle')) } if party.errorFor('individualTitle')
             }) }}
             {{ govukInput({
               label: {
@@ -104,8 +71,8 @@
               classes: "govuk-!-width-one-half",
               id: "individualFirstName",
               name: "individualFirstName",
-              value: claimantDetails.model.individualFirstName,
-              errorMessage: { text: t(claimantDetails.errorFor('individualFirstName')) } if claimantDetails.errorFor('individualFirstName')
+              value: party.model.individualFirstName,
+              errorMessage: { text: t(party.errorFor('individualFirstName')) } if party.errorFor('individualFirstName')
             }) }}
             {{ govukInput({
               label: {
@@ -114,49 +81,31 @@
               classes: "govuk-!-width-one-half",
               id: "individualLastName",
               name: "individualLastName",
-              value: claimantDetails.model.individualLastName,
-               errorMessage: { text: t(claimantDetails.errorFor('individualLastName')) } if claimantDetails.errorFor('individualLastName')
+              value: party.model.individualLastName,
+              errorMessage: { text: t(party.errorFor('individualLastName')) } if party.errorFor('individualLastName')
             }) }}
-
-            <div class="govuk-form-group" id="primaryPostcodeContainer">
+            {% if type === partyType.SOLE_TRADER %}
+              {{ govukInput({
+                label: {
+                  text: t('PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.TRADING')
+                },
+                classes: "govuk-!-width-one-half",
+                id: "soleTraderTradingAs",
+                name: "soleTraderTradingAs",
+                value: party.model.soleTraderTradingAs
+              }) }}
+            {% endif %}
+            <div class="govuk-form-group">
               <h2 class="govuk-heading-m">{{ addressTitle }}</h2>
-              <p class="govuk-body">{{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }} {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}</p>
-              <label class="govuk-label" for="primaryPostcode">
-                {{ t('PAGES.CITIZEN_DETAILS.UK_POSTCODE') }}
-              </label>
-              <div id="primaryPostcode-error" class="govuk-visually-hidden govuk-error-message">
-                {{ t('PAGES.CITIZEN_DETAILS.ADDRESS_NOT_FOUND') + t('PAGES.CITIZEN_DETAILS.TRY_AGAIN') }}
-              </div>
-              <input class="govuk-input govuk-input--width-10" id="primaryPostcode" name="primaryPostcode" type="text" autocomplete="postal-code"/>
-              <button href="#" class="govuk-button govuk-button--secondary findAddressButton" data-module="govuk-button" id="primaryfindAddressButton">
-                {{ t('PAGES.CITIZEN_DETAILS.FIND_ADDRESS') }}
-              </button>
-              <div id="primarySelectAddress" class="govuk-visually-hidden govuk-!-margin-bottom-2">
-                {{ govukSelect({
-                  id: "primaryAddressList",
-                  name: "primaryAddressList",
-                  classes: 'addressList',
-                  label: {
-                    text: t('PAGES.CITIZEN_DETAILS.PICK_ADDRESS')
-                  },
-                  items: []
-                }) }}
-              </div>
+              <p class="govuk-body">{{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }}
+                {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}</p>
+              {{ postcodeLookupAndAddressForm(t, {
+                party: party,
+                addressType:'primary',
+                addressTitle:''
+              }) }}
             </div>
-            <div>
-              <a id="primaryEnterAddressManually" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link enterAddressManually">
-                {{ t('PAGES.CITIZEN_DETAILS.MANUAL_ADDRESS') }}
-              </a>
-            </div>
-            <div id="primaryAddress" class="{{ correspondenceAddressClass }}">
-              {{ addressForm(
-                t,
-                citizenAddress = claimantIndividualAddress,
-                addressType = 'primary',
-                addressTitle = ''
-              ) }}
-            </div>
-            <br>
+
             <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_DETAILS.CORRESPONDENCE_ADDRESS') }}</h2>
             {{ govukRadios({
               idPrefix: "provideCorrespondenceAddress",
@@ -171,15 +120,15 @@
                 {
                   value: YesNo.NO,
                   text: t('COMMON.NO'),
-                  checked: false if claimant.provideCorrespondenceAddress == YesNo.YES else true
+                  checked: false if party.model.provideCorrespondenceAddress == YesNo.YES else true
                 },
                 {
                   value: YesNo.YES,
-                  checked: true if claimant.provideCorrespondenceAddress == YesNo.YES else false,
+                  checked: radioChecked,
                   text: t('PAGES.CITIZEN_DETAILS.YES_CORRESPONDENCE'),
                   conditional: {
-                    html: correspondenceAddressHtml
-                  }
+                  html: correspondenceAddressHtml
+                }
                 }
               ]
             }) }}

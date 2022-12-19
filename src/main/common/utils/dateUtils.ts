@@ -17,6 +17,12 @@ export const isPastDeadline = (deadline: Date | string) => {
   return currentDateTime() >= setTimeFourPM(deadline);
 };
 
+export const getDateInThePast = (lang: string, numberOfDays: number): string => {
+  const date = new Date;
+  const daysAgo = new Date(date.setDate(date.getDate() - numberOfDays));
+  return formatDateToFullDate(daysAgo, lang);
+};
+
 export const formatDateToFullDate = (date: Date, lang?: string | unknown): string => {
   const dateTime = convertDateToLuxonDate(date);
   const localeValue = lang === 'cy' ? 'cy' : 'en-gb';
@@ -31,4 +37,10 @@ export const addDaysToDate = (date: Date, value: number) => {
   const updatedDate = new Date(date);
   updatedDate.setDate(updatedDate.getDate() + value);
   return updatedDate;
+};
+
+export const getDOBforAgeFromCurrentTime = (age: number): Date => {
+  const referenceDate = new Date();
+  referenceDate.setFullYear(referenceDate.getFullYear() - age);
+  return referenceDate;
 };

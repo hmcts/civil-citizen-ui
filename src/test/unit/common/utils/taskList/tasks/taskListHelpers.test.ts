@@ -1,4 +1,4 @@
-import {Claim} from '../../../../../../main/common/models/claim';
+import {Claim} from 'common/models/claim';
 import {
   financialDetailsShared,
   hasContactPersonAndCompanyPhone,
@@ -6,38 +6,42 @@ import {
   hasDateOfBirthIfIndividual,
   isCounterpartyCompany,
   isCounterpartyIndividual,
+  isFullAdmissionRepaymentPlanMissing,
   isFullDefenceAndNotCounterClaim,
   isNotPayImmediatelyResponse,
   isPaymentOptionMissing,
   isRepaymentPlanMissing,
   isStatementOfMeansComplete,
-} from '../../../../../../main/common/utils/taskList/tasks/taskListHelpers';
-import {PartyType} from '../../../../../../main/common/models/partyType';
-import {Party} from '../../../../../../main/common/models/party';
-import {PaymentOptionType} from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
-import {Mediation} from '../../../../../../main/common/models/mediation/mediation';
-import {CompanyTelephoneNumber} from '../../../../../../main/common/form/models/mediation/companyTelephoneNumber';
-import {ResponseType} from '../../../../../../main/common/form/models/responseType';
-import {RejectAllOfClaim} from '../../../../../../main/common/form/models/rejectAllOfClaim';
-import {RejectAllOfClaimType} from '../../../../../../main/common/form/models/rejectAllOfClaimType';
-import {YesNo} from '../../../../../../main/common/form/models/yesNo';
+} from 'common/utils/taskList/tasks/taskListHelpers';
+import {PartyType} from 'common/models/partyType';
+import {Party} from 'common/models/party';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {Mediation} from 'common/models/mediation/mediation';
+import {CompanyTelephoneNumber} from 'common/form/models/mediation/companyTelephoneNumber';
+import {ResponseType} from 'common/form/models/responseType';
+import {RejectAllOfClaim} from 'common/form/models/rejectAllOfClaim';
+import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
+import {YesNo} from 'common/form/models/yesNo';
+import {PartyDetails} from 'common/form/models/partyDetails';
+import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
+import {Address} from 'common/form/models/address';
+import {FullAdmission} from 'common/models/fullAdmission';
+import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
+import {PartialAdmission} from 'common/models/partialAdmission';
+import {HowMuchDoYouOwe} from 'common/form/models/admission/partialAdmission/howMuchDoYouOwe';
 
 const mockClaim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
 const mockRespondent: Party = {
-  dateOfBirth: new Date(),
+  dateOfBirth: {date: new Date('2000-12-12'), year: 1985, month: 2, day: 2},
   responseType: '',
-  phoneNumber: '',
-  individualLastName: '',
-  individualFirstName: '',
-  individualTitle: '',
-  primaryAddress: {
-    PostCode: '',
-    PostTown: '',
-    AddressLine1: '',
-    AddressLine2: '',
-    AddressLine3: '',
+  partyPhone: {phone: ''},
+  partyDetails: {
+    individualLastName: '',
+    individualFirstName: '',
+    individualTitle: '',
+    primaryAddress: new Address('', '', '', '', ''),
+    correspondenceAddress: new Address(),
   },
-  correspondenceAddress: {},
   type: PartyType.ORGANISATION,
 };
 
@@ -128,21 +132,61 @@ describe('Task List Helpers', () => {
       expect(isRepaymentPlanMissing(caseData)).toEqual(true);
     });
 
-    it('should return true if repayment plan is not set', () => {
-      caseData.repaymentPlan = undefined;
+    it('should return true if there is no repayment plan for full admit', () => {
+      expect(isFullAdmissionRepaymentPlanMissing(caseData)).toEqual(true);
+    });
+
+    it('should return true if repayment plan is not set for part admit journey', () => {
+      caseData.partialAdmission = new PartialAdmission();
+      caseData.partialAdmission.paymentIntention = new PaymentIntention();
+      caseData.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe();
+      caseData.partialAdmission.paymentIntention.repaymentPlan = undefined;
       expect(isRepaymentPlanMissing(caseData)).toEqual(true);
     });
 
-    it('should return false if repayment plan object is set', () => {
-      caseData.repaymentPlan = {};
+    it('should return true if repayment plan is not set for full admit journey', () => {
+      caseData.fullAdmission = new FullAdmission();
+      caseData.fullAdmission.paymentIntention = new PaymentIntention();
+      caseData.fullAdmission.paymentIntention.repaymentPlan = undefined;
+      expect(isFullAdmissionRepaymentPlanMissing(caseData)).toEqual(true);
+    });
+
+    it('should return false if repayment plan object is set for part admit', () => {
+      mockRespondent.responseType = ResponseType.PART_ADMISSION;
+      caseData.partialAdmission = new PartialAdmission();
+      caseData.partialAdmission.paymentIntention = new PaymentIntention();
+      caseData.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe();
+      caseData.partialAdmission.paymentIntention.repaymentPlan = {};
       expect(isRepaymentPlanMissing(caseData)).toEqual(false);
     });
 
+    it('should return false if repayment plan object is set for full admit', () => {
+      mockRespondent.responseType = ResponseType.FULL_ADMISSION;
+      caseData.fullAdmission = new FullAdmission();
+      caseData.fullAdmission.paymentIntention = new PaymentIntention();
+      caseData.fullAdmission.paymentIntention.repaymentPlan = {};
+      expect(isFullAdmissionRepaymentPlanMissing(caseData)).toEqual(false);
+    });
+
     it('should return false if repayment plan object is set', () => {
-      caseData.repaymentPlan = {
+      mockRespondent.responseType = ResponseType.PART_ADMISSION;
+      caseData.partialAdmission = new PartialAdmission();
+      caseData.partialAdmission.paymentIntention = new PaymentIntention();
+      caseData.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe();
+      caseData.partialAdmission.paymentIntention.repaymentPlan = {
         paymentAmount: 800,
       };
       expect(isRepaymentPlanMissing(caseData)).toEqual(false);
+    });
+
+    it('should return false if repayment plan object is set for full admit', () => {
+      mockRespondent.responseType = ResponseType.FULL_ADMISSION;
+      caseData.fullAdmission = new FullAdmission();
+      caseData.fullAdmission.paymentIntention = new PaymentIntention();
+      caseData.fullAdmission.paymentIntention.repaymentPlan = {
+        paymentAmount: 800,
+      };
+      expect(isFullAdmissionRepaymentPlanMissing(caseData)).toEqual(false);
     });
   });
 
@@ -152,22 +196,30 @@ describe('Task List Helpers', () => {
     });
 
     it('should return true if payment option is undefined', () => {
-      caseData.paymentOption = undefined;
+      caseData.fullAdmission = new FullAdmission();
+      caseData.fullAdmission.paymentIntention = new PaymentIntention();
+      caseData.fullAdmission.paymentIntention.paymentOption = undefined;
       expect(isNotPayImmediatelyResponse(caseData)).toEqual(true);
     });
 
     it('should return true if payment option is INSTALMENTS', () => {
-      caseData.paymentOption = PaymentOptionType.INSTALMENTS;
+      caseData.fullAdmission = new FullAdmission();
+      caseData.fullAdmission.paymentIntention = new PaymentIntention();
+      caseData.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
       expect(isNotPayImmediatelyResponse(caseData)).toEqual(true);
     });
 
     it('should return true if payment option is BY_SET_DATE', () => {
-      caseData.paymentOption = PaymentOptionType.BY_SET_DATE;
+      caseData.fullAdmission = new FullAdmission();
+      caseData.fullAdmission.paymentIntention = new PaymentIntention();
+      caseData.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
       expect(isNotPayImmediatelyResponse(caseData)).toEqual(true);
     });
 
     it('should return false if payment option is IMMEDIATELY', () => {
-      caseData.paymentOption = PaymentOptionType.IMMEDIATELY;
+      caseData.fullAdmission = new FullAdmission();
+      caseData.fullAdmission.paymentIntention = new PaymentIntention();
+      caseData.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
       expect(isNotPayImmediatelyResponse(caseData)).toEqual(false);
     });
   });
@@ -178,12 +230,16 @@ describe('Task List Helpers', () => {
     });
 
     it('should return true if paymentOption is undefined', () => {
-      caseData.paymentOption = undefined;
+      caseData.fullAdmission = new FullAdmission();
+      caseData.fullAdmission.paymentIntention = new PaymentIntention();
+      caseData.fullAdmission.paymentIntention .paymentOption = undefined;
       expect(isPaymentOptionMissing(caseData)).toEqual(true);
     });
 
     it('should return false if paymentOption is set', () => {
-      caseData.paymentOption = PaymentOptionType.IMMEDIATELY;
+      caseData.fullAdmission = new FullAdmission();
+      caseData.fullAdmission.paymentIntention = new PaymentIntention();
+      caseData.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
       expect(isPaymentOptionMissing(caseData)).toEqual(false);
     });
   });
@@ -269,7 +325,7 @@ describe('Task List Helpers', () => {
     it('should return true if individual and has dateOfBirth', () => {
       caseData.respondent1 = new Party();
       caseData.respondent1.type = PartyType.INDIVIDUAL;
-      caseData.respondent1.dateOfBirth = new Date();
+      caseData.respondent1.dateOfBirth = new CitizenDate('1', '1', '2000');
       expect(hasDateOfBirthIfIndividual(caseData.respondent1)).toEqual(true);
     });
 
@@ -281,41 +337,37 @@ describe('Task List Helpers', () => {
   });
 
   describe('hasCorrespondenceAndPrimaryAddress helper', () => {
-    const adress = {
-      County: 'test',
-      Country: 'test',
-      PostCode: 'test',
-      PostTown: 'test',
-      AddressLine1: 'test',
-      AddressLine2: 'test',
-      AddressLine3: 'test',
-    };
+    const address = new Address('test', 'test', 'test', 'test', 'test');
 
     it('should return false if only has primaryAdress', () => {
       caseData.respondent1 = new Party();
-      caseData.respondent1.primaryAddress = adress;
+      caseData.respondent1.partyDetails = new PartyDetails({});
+      caseData.respondent1.partyDetails.primaryAddress = address;
       expect(hasCorrespondenceAndPrimaryAddress(caseData.respondent1)).toEqual(false);
     });
 
     it('should return false if has primaryAdress, YES and doesnt has correspondenceAdress', () => {
       caseData.respondent1 = new Party();
-      caseData.respondent1.primaryAddress = adress;
-      caseData.respondent1.postToThisAddress = YesNo.YES;
+      caseData.respondent1.partyDetails = new PartyDetails({});
+      caseData.respondent1.partyDetails.primaryAddress = address;
+      caseData.respondent1.partyDetails.postToThisAddress = YesNo.YES;
       expect(hasCorrespondenceAndPrimaryAddress(caseData.respondent1)).toEqual(false);
     });
 
     it('should return true if has primaryAdress and NO', () => {
       caseData.respondent1 = new Party();
-      caseData.respondent1.primaryAddress = adress;
-      caseData.respondent1.postToThisAddress = YesNo.NO;
+      caseData.respondent1.partyDetails = new PartyDetails({});
+      caseData.respondent1.partyDetails.primaryAddress = new Address('test', 'test', 'test', 'test', 'test');
+      caseData.respondent1.partyDetails.postToThisAddress = YesNo.NO;
       expect(hasCorrespondenceAndPrimaryAddress(caseData.respondent1)).toEqual(true);
     });
 
     it('should return true if has primaryAdress, YES and has correspondenceAdress', () => {
       caseData.respondent1 = new Party();
-      caseData.respondent1.primaryAddress = adress;
-      caseData.respondent1.postToThisAddress = YesNo.YES;
-      caseData.respondent1.correspondenceAddress = adress;
+      caseData.respondent1.partyDetails = new PartyDetails({});
+      caseData.respondent1.partyDetails.primaryAddress = address;
+      caseData.respondent1.partyDetails.correspondenceAddress = address;
+      caseData.respondent1.partyDetails.postToThisAddress = YesNo.YES;
       expect(hasCorrespondenceAndPrimaryAddress(caseData.respondent1)).toEqual(true);
     });
   });
