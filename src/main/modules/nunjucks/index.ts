@@ -2,16 +2,16 @@ import * as path from 'path';
 import {join} from 'path';
 import {Express} from 'express';
 import {configure} from 'nunjucks';
-import * as numeral from '../../common/utils/currencyFormat';
-import {convertToPoundsFilter} from '../../common/utils/currencyFormat';
+import * as numeral from 'common/utils/currencyFormat';
+import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {t} from 'i18next';
-import {ResponseType} from '../../common/form/models/responseType';
-import {YesNo, YesNoNotReceived} from '../../common/form/models/yesNo';
-import {ResidenceType} from '../../common/form/models/statementOfMeans/residence/residenceType';
-import {PartyType} from '../../common/models/partyType';
-import {UnemploymentCategory} from '../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
-import {TransactionSchedule} from '../../common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
-import {EvidenceType} from '../../common/models/evidence/evidenceType';
+import {ResponseType} from 'common/form/models/responseType';
+import {YesNo, YesNoNotReceived} from 'common/form/models/yesNo';
+import {ResidenceType} from 'common/form/models/statementOfMeans/residence/residenceType';
+import {PartyType} from 'common/models/partyType';
+import {UnemploymentCategory} from 'common/form/models/statementOfMeans/unemployment/unemploymentCategory';
+import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {EvidenceType} from 'common/models/evidence/evidenceType';
 import {addDaysFilter, dateFilter, formatDate, addDaysFilterTranslated} from './filters/dateFilter';
 import {SignatureType} from '../../common/models/signatureType';
 import {ClaimSummaryType} from '../../common/form/models/claimSummarySection';
@@ -26,6 +26,7 @@ import {InterestClaimFromType} from '../../common/form/models/claimDetails';
 import {InterestEndDateType} from '../../common/form/models/claimDetails';
 import * as urls from '../../routes/urls';
 import {InterestClaimOptionsType} from '../../common/form/models/claim/interest/interestClaimOptionsType';
+import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -119,6 +120,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('InterestEndDateType', InterestEndDateType);
     nunjucksEnv.addGlobal('urls', urls);
     nunjucksEnv.addGlobal('InterestClaimOptionsType', InterestClaimOptionsType);
+    nunjucksEnv.addGlobal('ClaimBilingualLanguagePreference', ClaimBilingualLanguagePreference);
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;
