@@ -1,10 +1,10 @@
 import {BreathingSpace} from 'common/models/breathingSpace';
-import {DebtRespiteLiftDate} from 'common/models/breathingSpace/debtRespiteLiftDate';
+import {DebtRespiteStartDate} from 'common/models/breathingSpace/debtRespiteStartDate';
 import {CCDBreathingSpace} from 'common/models/ccd/ccdBreathingSpace/ccdBreathingSpace';
 import {convertBreathingSpaceToCCD} from 'services/translation/breathingSpace/convertBreathingSpaceToCCD';
 
 const breathingSpace: BreathingSpace = {
-  debtRespiteLiftDate: new DebtRespiteLiftDate('29', '09', '2020'),
+  debtRespiteLiftDate: new DebtRespiteStartDate('29', '09', '2020'),
 };
 
 const expectedLift: CCDBreathingSpace = {

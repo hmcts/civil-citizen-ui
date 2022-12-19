@@ -9,13 +9,13 @@ import {
   getBreathingSpace,
 } from '../../../services/features/breathingSpace/breathingSpaceService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {DebtRespiteLiftDate} from '../../../common/models/breathingSpace/debtRespiteLiftDate';
+import { DebtRespiteStartDate } from 'common/models/breathingSpace/debtRespiteStartDate';
 
 const debtRespiteLiftedController = Router();
 const debtRespiteLiftDateViewPath = 'features/breathingSpace/debt-respite-lift-date';
 const breathingSpacePropertyName = 'debtRespiteLiftDate';
 
-function renderView(form: GenericForm<DebtRespiteLiftDate>, res: Response): void {
+function renderView(form: GenericForm<DebtRespiteStartDate>, res: Response): void {
   res.render(debtRespiteLiftDateViewPath, {form, today: new Date()});
 }
 
@@ -23,7 +23,7 @@ debtRespiteLiftedController.get(BREATHING_SPACE_RESPITE_LIFTED_URL, async (req, 
   const claimId = req.params.id;
   try {
     const breathingSpace = await getBreathingSpace(claimId);
-    const debtRespiteLiftDate = breathingSpace.debtRespiteLiftDate ?? new DebtRespiteLiftDate();
+    const debtRespiteLiftDate = breathingSpace.debtRespiteLiftDate ?? new DebtRespiteStartDate();
     renderView(new GenericForm(debtRespiteLiftDate), res);
   } catch (error) {
     next(error);
@@ -33,7 +33,7 @@ debtRespiteLiftedController.get(BREATHING_SPACE_RESPITE_LIFTED_URL, async (req, 
 debtRespiteLiftedController.post(BREATHING_SPACE_RESPITE_LIFTED_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const debtRespiteLiftDate = new DebtRespiteLiftDate(req.body.day, req.body.month, req.body.year);
+    const debtRespiteLiftDate = new DebtRespiteStartDate(req.body.day, req.body.month, req.body.year, 'ERRORS.VALID_DATE_LIFT_NOT_AFTER_TODAY');
     const genericForm = new GenericForm(debtRespiteLiftDate);
     genericForm.validateSync();
     
