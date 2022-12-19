@@ -178,6 +178,7 @@ import paidSomeAmountController from './features/claimantResponse/ccj/paidAmount
 import defendantPaymentDateController from './features/claimantResponse/ccj/defendantPaymentDateController';
 import ccjConfirmationController from './features/claimantResponse/ccj/ccjConfirmationController';
 import chooseHowToProceedController from './features/claimantResponse/chooseHowToProceedcController';
+import repaymentPlanInstalmentsController from './features/claimantResponse/ccj/repaymentPlanInstalmentsController';
 
 export default [
   homeController,
@@ -343,4 +344,5 @@ export default [
   defendantPaymentDateController,
   ccjConfirmationController,
   chooseHowToProceedController,
+  repaymentPlanInstalmentsController,
 ];

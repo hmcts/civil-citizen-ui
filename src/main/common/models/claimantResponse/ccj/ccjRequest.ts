@@ -3,6 +3,7 @@ import { QualifiedStatementOfTruth } from 'common/form/models/statementOfTruth/q
 import {DefendantDOB} from './defendantDOB';
 import { PaidAmount } from './paidAmount';
 import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
+import {RepaymentPlanInstalments} from './repaymentPlanInstalments';
 
 export class CCJRequest {
   defendantDOB?: DefendantDOB;
@@ -10,4 +11,5 @@ export class CCJRequest {
   ccjPaymentOption: CcjPaymentOption;
   paidAmount?: PaidAmount;
   defendantPaymentDate?: PaymentDate;
+  repaymentPlanInstalments?: RepaymentPlanInstalments;
 }
