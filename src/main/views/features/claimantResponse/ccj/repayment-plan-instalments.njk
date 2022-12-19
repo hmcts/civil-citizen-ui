@@ -1,0 +1,137 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../macro/page-title.njk" import setPageTitle %}
+{% from "../../../macro/error-summary.njk" import errorSummary %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.CCJ_REPAYMENT_PLAN_INSTALMENTS.PAGE_TITLE') }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% set errors = form.getAllErrors() %}
+      {% if form.hasErrors() %}
+        {{ errorSummary(errors, t) }}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t('PAGES.CCJ_REPAYMENT_PLAN_INSTALMENTS.TITLE') }}</h1>
+          <p class="govuk-body">{{ t('PAGES.CCJ_REPAYMENT_PLAN_INSTALMENTS.TOTAL_CLAIM_AMOUNT', {totalClaimAmount: totalClaimAmount}) }}</p>
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            <div id="instalment-amount">
+              {% set instalmentAmountError = form.errorFor('amount') %}
+              {{ govukInput({
+                id: 'amount',
+                name: 'amount',
+                type: "number",
+                autocomplete: "number",
+                label: {
+                  text: t('PAGES.CCJ_REPAYMENT_PLAN_INSTALMENTS.EACH_INSTALMENT_AMOUNT'),
+                  classes: 'govuk-!-font-weight-bold govuk-!-font-size-24'
+                },
+                hint: {
+                  text: t('PAGES.CCJ_REPAYMENT_PLAN_INSTALMENTS.INSTALMENT_AMOUNT_HELP')
+                },
+                prefix: {
+                  text: "£"
+                },
+                classes: "govuk-!-width-one-half",
+                value: '' + form.model.amount,
+                errorMessage: { text: t(instalmentAmountError) } if t(instalmentAmountError)
+              }) }}
+            </div>
+            <div id="first-payment-date">
+              <h2 class='govuk-heading-m'>{{ t('PAGES.CCJ_REPAYMENT_PLAN_INSTALMENTS.FIRST_PAYMENT_DATE') }}</h2>
+              {{ govukDateInput({
+                id: "firstPaymentDate",
+                type: "number",
+                inputmode: "numeric",
+                name: "firstPaymentDate",
+                hint: {
+                  text: t('COMMON.DATE_EXAMPLE', {
+                    date: exampleDate.getDate() + ' ' + exampleDate.getMonth() + ' ' + (exampleDate.getFullYear() - 18)
+                  })
+                },
+                errorMessage: {
+                  html: '<p class="govuk-error-message">' + t(form.errorFor('firstPaymentDate[date]')) + '</p>' +
+                  '<p class="govuk-error-message">' + t(form.errorFor('firstPaymentDate[day]')) + '</p>' +
+                  '<p class="govuk-error-message">' + t(form.errorFor('firstPaymentDate[month]')) + '</p>' +
+                  '<p class="govuk-error-message">' + t(form.errorFor('firstPaymentDate[year]')) + '</p>'
+                } if form.hasNestedErrors(),
+                items: [
+                  {
+                    classes: "govuk-input--width-2 govuk-input--error" if form.errorFor('firstPaymentDate[day]') else "govuk-input--width-2",
+                    id: "firstPaymentDate[day]",
+                    label: t('COMMON.DAY'),
+                    name: "firstPaymentDate[day]",
+                    value: form.model.firstPaymentDate.day,
+                    max: 31
+                  },
+                  {
+                    classes:"govuk-input--width-2 govuk-input--error" if form.errorFor('firstPaymentDate[month]') else "govuk-input--width-2",
+                    id: "firstPaymentDate[month]",
+                    label: t('COMMON.MONTH'),
+                    name: "firstPaymentDate[month]",
+                    value: form.model.firstPaymentDate.month,
+                    max: 12
+                  },
+                  {
+                    classes: "govuk-input--width-4 govuk-input--error" if form.errorFor('firstPaymentDate[year]') else "govuk-input--width-4",
+                    id: "firstPaymentDate[year]",
+                    label: t('COMMON.YEAR'),
+                    name: "firstPaymentDate[year]",
+                    value: form.model.firstPaymentDate.year,
+                    max: 9999
+                  }
+                ]
+              }) }}
+            </div>
+            <div id="payment-frequency">
+              <h2 class='govuk-heading-m'>{{ t('PAGES.CCJ_REPAYMENT_PLAN_INSTALMENTS.HOW_OFTEN') }}</h2>
+              {% set paymentFrequencyError = form.errorFor('paymentFrequency') %}
+              {{ govukRadios({
+                idPrefix: "paymentFrequency",
+                name: "paymentFrequency",
+                items: [
+                  {
+                    value: TransactionSchedule.WEEK,
+                    checked: true if form.model.paymentFrequency === TransactionSchedule.WEEK,
+                    text: t('COMMON.PAYMENT_FREQUENCY.WEEK')
+                  },
+                  {
+                    value: TransactionSchedule.TWO_WEEKS,
+                    checked: true if form.model.paymentFrequency === TransactionSchedule.TWO_WEEKS,
+                    text: t('COMMON.PAYMENT_FREQUENCY.TWO_WEEKS')
+                  },
+                  {
+                    value: TransactionSchedule.MONTH,
+                    checked: true if form.model.paymentFrequency === TransactionSchedule.MONTH,
+                    text: t('COMMON.PAYMENT_FREQUENCY.MONTH')
+                  }
+                ],
+                errorMessage: { text: t(paymentFrequencyError) } if t(paymentFrequencyError)
+              }) }}
+            </div>
+            {{ govukButton({ text: t("COMMON.BUTTONS.SAVE_AND_CONTINUE") }) }}
+          </form>
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-three-thirds">
+          {{ contactUsForHelp(t) }}
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
