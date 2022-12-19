@@ -18,44 +18,54 @@
 
 {% block content %}
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-three-thirds">
+    <div class="govuk-grid-column-two-thirds">
       {{ govukPanel({
         titleText: t('PAGES.CLAIM_SUBMITTED.PAGE_TITLE'),
         html: panelContent
       }) }}
     </div>
-      {% if helpWithFee %}
-        <div class="govuk-body">
-          <h2>{{ t('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT') }}</h2>
-          <p>
-          {{ t('PAGES.CLAIM_SUBMITTED.YOUR_CLAIM_WILL_BE_ISSUED') }}
-          {{ t('PAGES.CLAIM_SUBMITTED.WE_EMAIL_YOU_IN_5_DAYS') }}
-          </p>
+  </div>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="govuk-body">
+        {% if helpWithFee %}
+          <div class="govuk-body">
+            <h2>{{ t('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT') }}</h2>
+            <p>
+            {{ t('PAGES.CLAIM_SUBMITTED.YOUR_CLAIM_WILL_BE_ISSUED') }}
+            {{ t('PAGES.CLAIM_SUBMITTED.WE_EMAIL_YOU_IN_5_DAYS') }}
+            </p>
+          </div>
+        {% else %}
+          <div class="govuk-body">
+            <h2>{{ t('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT') }}</h2>
+            <p>
+            {{ defendantFullName }}
+            {{ t('PAGES.CLAIM_SUBMITTED.HAS_UNTIL') }}
+            {{ defendantResponseLimit }}
+            {{ t('PAGES.CLAIM_SUBMITTED.TO_RESPOND_TO') }}
+            {{ t('PAGES.CLAIM_SUBMITTED.THEY_CAN_REQUEST_EXTRA_DAYS') }}
+            </p>
+            <p>
+            {{ t('PAGES.CLAIM_SUBMITTED.YOU_CAN_REQUEST_COUNTY_COURT') }}
+            </p>
+          </div>
+        {% endif %}
+        <h2>{{ t('PAGES.CLAIM_SUBMITTED.IF_DEFENDANT_PAYS_YOU_HEADER') }}</h2>
+        <p>
+          {{ t('PAGES.CLAIM_SUBMITTED.IF_DEFENDANT_PAYS_YOU_CONTENT') }}
+        </p>
+        <p class="govuk-body">
+          {{ externalLink(t, 'PAGES.SUBMIT_CONFIRMATION.YOUR_OPINION_OF_SERVICE', externalURLs.smartSurveyUrl, true) }}
+        </p>
+        <div class="form-group">
+          {{ govukButton({
+            text: t('PAGES.SUBMIT_CONFIRMATION.GO_TO_ACCOUNT'),
+            href: '/dashboard'
+          }) }}
         </div>
-      {% else %}
-        <div class="govuk-body">
-          <h2>{{ t('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT') }}</h2>
-          <p>
-          {{ defendantFullName }}
-          {{ t('PAGES.CLAIM_SUBMITTED.HAS_UNTIL') }}
-          {{ defendantResponseLimit }}
-          {{ t('PAGES.CLAIM_SUBMITTED.TO_RESPOND_TO') }}
-          {{ t('PAGES.CLAIM_SUBMITTED.THEY_CAN_REQUEST_EXTRA_DAYS') }}
-          </p>
-          <p>
-          {{ t('PAGES.CLAIM_SUBMITTED.YOU_CAN_REQUEST_COUNTY_COURT') }}
-          </p>
-        </div>
-      {% endif %}
-      <p class="govuk-body">
-        {{ externalLink(t, 'PAGES.SUBMIT_CONFIRMATION.YOUR_OPINION_OF_SERVICE', externalURLs.smartSurveyUrl, true) }}
-      </p>
-      <div class="form-group">
-        {{ govukButton({
-          text: t('PAGES.SUBMIT_CONFIRMATION.GO_TO_ACCOUNT'),
-          href: '/dashboard'
-        }) }}
+        {{ contactUsForHelp(t, '', true) }}
       </div>
-      {{ contactUsForHelp(t, '', true) }}
+    </div>
   </div>
 {% endblock %}
