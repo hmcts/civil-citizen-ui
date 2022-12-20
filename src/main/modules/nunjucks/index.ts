@@ -13,20 +13,20 @@ import {UnemploymentCategory} from 'common/form/models/statementOfMeans/unemploy
 import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {EvidenceType} from 'common/models/evidence/evidenceType';
 import {addDaysFilter, dateFilter, formatDate, addDaysFilterTranslated} from './filters/dateFilter';
-import {SignatureType} from 'common/models/signatureType';
-import {ClaimSummaryType} from 'common/form/models/claimSummarySection';
-import {FormValidationError} from 'common/form/validationErrors/formValidationError';
-import {NotEligibleReason} from 'common/form/models/eligibility/NotEligibleReason';
-import {TotalAmountOptions} from 'common/models/eligibility/totalAmountOptions';
-import {ClaimTypeOptions} from 'common/models/eligibility/claimTypeOptions';
-import {AgeEligibilityOptions} from 'common/form/models/eligibility/defendant/AgeEligibilityOptions';
-import {LanguageOptions} from 'common/models/directionsQuestionnaire/languageOptions';
-import {SameRateInterestType} from 'common/form/models/claimDetails';
-import {InterestClaimFromType} from 'common/form/models/claimDetails';
-import {InterestEndDateType} from 'common/form/models/claimDetails';
-import * as urls from 'routes/urls';
-import {InterestClaimOptionsType} from 'common/form/models/claim/interest/interestClaimOptionsType';
-import {ChooseHowToProceed} from 'common/models/chooseHowToProceed';
+import {SignatureType} from '../../common/models/signatureType';
+import {ClaimSummaryType} from '../../common/form/models/claimSummarySection';
+import {FormValidationError} from '../../common/form/validationErrors/formValidationError';
+import {NotEligibleReason} from '../../common/form/models/eligibility/NotEligibleReason';
+import {TotalAmountOptions} from '../../common/models/eligibility/totalAmountOptions';
+import {ClaimTypeOptions} from '../../common/models/eligibility/claimTypeOptions';
+import {AgeEligibilityOptions} from '../../common/form/models/eligibility/defendant/AgeEligibilityOptions';
+import {LanguageOptions} from '../../common/models/directionsQuestionnaire/languageOptions';
+import {SameRateInterestType} from '../../common/form/models/claimDetails';
+import {InterestClaimFromType} from '../../common/form/models/claimDetails';
+import {InterestEndDateType} from '../../common/form/models/claimDetails';
+import * as urls from '../../routes/urls';
+import {InterestClaimOptionsType} from '../../common/form/models/claim/interest/interestClaimOptionsType';
+import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -120,7 +120,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('InterestEndDateType', InterestEndDateType);
     nunjucksEnv.addGlobal('urls', urls);
     nunjucksEnv.addGlobal('InterestClaimOptionsType', InterestClaimOptionsType);
-    nunjucksEnv.addGlobal('ChooseHowToProceed', ChooseHowToProceed);
+    nunjucksEnv.addGlobal('ClaimBilingualLanguagePreference', ClaimBilingualLanguagePreference);
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;

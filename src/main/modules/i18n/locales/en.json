@@ -305,6 +305,13 @@
     "ARE_YOU_SEVERELY_DISABLED": {
       "PAGE_TITLE": "Severely disabled"
     },
+    "BILINGUAL_LANGUAGE_PREFERENCE": {
+      "PAGE_TITLE": "Do you want to respond to this claim in Welsh?",
+      "TITLE": "Do you want to respond to this claim in Welsh?",
+      "DESCRIPTION": "You can respond to this claim in Welsh. After you've submitted your response, anything else you may have to do relating to the claim will be in English. You'll receive emails and letters in English.",
+      "ENGLISH": "English",
+      "WELSH_AND_ENGLISH": "Welsh and English"
+    },
     "BREATHING_SPACE_DEBT_RESPITE_START": {
       "DATE_START_OPTIONAL": "This is the date it started, not the date you received notification of it (optional).",
       "PAGE_TITLE": "When did it start?",
@@ -344,6 +351,15 @@
     },
     "CCJ_DEFENDANT_PAYMENT_DATE": {
       "TITLE": "When do you want the defendant to pay?"
+    },
+    "CCJ_REPAYMENT_PLAN_INSTALMENTS": {
+      "EACH_INSTALMENT_AMOUNT": "Amount for each instalment",
+      "FIRST_PAYMENT_DATE": "Date for first payment",
+      "HOW_OFTEN": "How often do you want them to pay instalments?",
+      "INSTALMENT_AMOUNT_HELP": "For example £10",
+      "PAGE_TITLE": "Suggest instalments for the defendant",
+      "TITLE": "Suggest instalments for the defendant",
+      "TOTAL_CLAIM_AMOUNT": "Total claim amount is £{{ totalClaimAmount }}"
     },
     "CHECK_YOUR_ANSWER": {
       "BANK_BALANCE": "Balance",
@@ -2114,6 +2130,7 @@
     "REDIS_FAILURE": "Redis DraftStore failure.",
     "SECURITY_CODE_WRONG_OR_EXPIRED": "The security code was not right or has expired",
     "SELECT_ADDITIONAL_TIME": "Select how much additional time you are asking for",
+    "SELECT_WELSH_AND_ENGLISH_OPTION": "Select Welsh and English if you want to respond to this claim in Welsh",
     "SELECT_AN_OPTION": "Select an option",
     "SELECT_AMOUNT": {
       "COUNCIL_TAX": "Enter how much you pay for Council Tax or Community Charge",
@@ -2220,6 +2237,7 @@
     "VALID_DATE": "Please enter a valid date",
     "VALID_DATE_IN_PAST": "Enter date before {{dateToday}}",
     "VALID_DATE_NOT_IN_PAST": "Enter a date that is today or in the future",
+    "VALID_DATE_ONE_MONTH_FROM_TODAY": "Date must be at least a month from today's date",
     "VALID_DATE_START_NOT_AFTER_TODAY": "Start date must not be after today's date",
     "VALID_DAY": "Enter a valid day",
     "VALID_DEBT_AMOUNT": {
@@ -2242,6 +2260,7 @@
     "VALID_FOUR_DIGIT_YEAR": "Enter a 4 digit year",
     "VALID_FREE_TEXT_DATE_LENGTH": "Enter a date no longer than $constraint1 characters",
     "VALID_HOUSING": "Describe your housing",
+    "VALID_INSTALMENT_AMOUNT": "Instalment amount cannot be more than, or equal to the claim amount",
     "VALID_INTEGER": "Enter a numeric, for example 3",
     "VALID_INTEREST_TYPE_OPTION": "Choose same rate or breakdown",
     "VALID_MONTH": "Enter a valid month",
