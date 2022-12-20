@@ -41,13 +41,14 @@ import {ClaimDetails} from 'common/form/models/claim/details/claimDetails';
 import {ClaimantResponse} from './claimantResponse';
 import {CCDClaim} from 'models/civilClaimResponse';
 import {toCUIParty} from 'services/translation/response/convertToCUI/convertToCUIParty';
-import {SelfEmployedAs} from 'models/selfEmployedAs';
-import {TaxPayments} from 'models/taxPayments';
-import {RegularIncome} from 'common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
-import {RegularExpenses} from 'common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
-import {CourtOrders} from 'common/form/models/statementOfMeans/courtOrders/courtOrders';
-import {PriorityDebts} from 'common/form/models/statementOfMeans/priorityDebts';
-import {Debts} from 'common/form/models/statementOfMeans/debts/debts';
+import {SelfEmployedAs} from '../models/selfEmployedAs';
+import {TaxPayments} from '../models/taxPayments';
+import {RegularIncome} from '../../common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
+import {RegularExpenses} from '../../common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
+import {CourtOrders} from '../../common/form/models/statementOfMeans/courtOrders/courtOrders';
+import {PriorityDebts} from '../../common/form/models/statementOfMeans/priorityDebts';
+import {Debts} from '../../common/form/models/statementOfMeans/debts/debts';
+import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreference';
 export class Claim {
   legacyCaseReference: string;
   applicant1?: Party;
@@ -80,6 +81,7 @@ export class Claim {
   respondentSolicitor1AgreedDeadlineExtension?: Date;
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
+  claimBilingualLanguagePreference: ClaimBilingualLanguagePreference;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
 
