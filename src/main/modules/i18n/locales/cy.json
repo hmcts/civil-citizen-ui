@@ -305,6 +305,13 @@
     "ARE_YOU_SEVERELY_DISABLED": {
       "PAGE_TITLE": "Severely disabled"
     },
+    "BILINGUAL_LANGUAGE_PREFERENCE": {
+      "PAGE_TITLE": "Do you want to respond to this claim in Welsh?",
+      "TITLE": "Do you want to respond to this claim in Welsh?",
+      "DESCRIPTION": "You can respond to this claim in Welsh. After you've submitted your response, anything else you may have to do relating to the claim will be in English. You'll receive emails and letters in English.",
+      "ENGLISH": "English",
+      "WELSH_AND_ENGLISH": "Welsh and English"
+    },
     "BREATHING_SPACE_DEBT_RESPITE_TYPE": {
       "MENTAL_HEALTH": "Mental health crisis moratorium",
       "PAGE_TITLE": "What type is it?",
@@ -339,6 +346,15 @@
     },
     "CCJ_DEFENDANT_PAYMENT_DATE": {
       "TITLE": "When do you want the defendant to pay?"
+    },
+    "CCJ_REPAYMENT_PLAN_INSTALMENTS": {
+      "EACH_INSTALMENT_AMOUNT": "Amount for each instalment",
+      "FIRST_PAYMENT_DATE": "Date for first payment",
+      "HOW_OFTEN": "How often do you want them to pay instalments?",
+      "INSTALMENT_AMOUNT_HELP": "For example £10",
+      "PAGE_TITLE": "Suggest instalments for the defendant",
+      "TITLE": "Suggest instalments for the defendant",
+      "TOTAL_CLAIM_AMOUNT": "Total claim amount is £{{ totalClaimAmount }}"
     },
     "CHECK_YOUR_ANSWER": {
       "BANK_BALANCE": "Cydbwysedd",
@@ -639,6 +655,18 @@
     "CLAIMANT_DOB": {
       "PAGE_TITLE": "Your date of birth",
       "TITLE": "What is your date of birth?"
+    },
+    "CLAIMANT_FORMALISE_REPAYMENT_TYPE": {
+      "PAGE_TITLE": "Choose how to formalise repayment",
+      "REQUEST_A_CCJ": {
+        "DESCRIPTION": "You can ask the court to make a formal order binding the defendant to the repayment plan. This adds the defendant to the CCJ register, which may make it more difficult for them to borrow money to repay you.",
+        "LABEL": "Request a CCJ"
+      },
+      "SIGN_A_SETTLEMENT_AGREEMENT": {
+        "DESCRIPTION": "This is a legal agreement between you and the defendant agreeing to the repayment plan. If they break it you can request a County Court Judgment(CCJ). We'll show you a suggested format for the agreement.",
+        "LABEL": "Sign a settlement agreement"
+      },
+      "TITLE": "Choose how to formalise repayment"
     },
     "CLAIMANT_INTEREST_RATE": {
       "DIFFERENT_RATE_LABEL": "A different rate",
@@ -1994,51 +2022,72 @@
     "EXPENSES_ENTER_OTHER_SOURCE": "Rhowch fanylion unrhyw ffynhonnell arall o wariant",
     "EXPENSES_AMOUNT": {
       "COUNCIL_TAX": "Nodwch faint o Dreth y Cyngor ydych chi’n talu ",
+      "COUNCIL_TAX_OR_COMMUNITY_CHARGE": "Nodwch faint o Dreth y Cyngor neu Dâl Cymunedol ydych chi'n ei dalu",
       "ELECTRICITY": "Nodwch faint ydych chi’n ei dalu am drydan",
+      "ELECTRICITY_DEBT": "Nodwch faint ydych chi'n ei dalu am drydan",
       "FOOD_HOUSEKEEPING": "Nodwch faint ydych chi’n ei dalu am fwyd a chostau cadw tŷ",
       "GAS": "Nodwch faint ydych chi’n ei dalu am nwy",
+      "GAS_DEBT": "Nodwch faint ydych chi'n ei dalu am nwy",
       "HIRE_PURCHASES": "Nodwch faint ydych chi’n ei dalu am gytundebau hurbrynu",
       "MAINTENANCE_PAYMENTS": "Nodwch faint o daliadau cynhaliaeth ydych chi’n talu",
+      "MAINTENANCE_PAYMENTS_DEBT": "Nodwch faint o daliadau cynhaliaeth ydych chi'n talu",
       "MOBILE_PHONE": "Nodwch faint ydych chi’n ei dalu am ffôn symudol",
       "MORTGAGE": "Nodwch faint yw eich taliadau morgais",
+      "MORTGAGE_DEBT": "ENodwch faint yw eich taliadau morgais",
       "OTHER": "Nodwch faint ydych chi’n ei dalu am unrhyw ffynhonnell arall o wariant",
       "RENT": "Nodwch faint o rent ydych chi’n ei dalu",
+      "RENT_DEBT": "Nodwch faint o rent ydych chi'n ei dalu",
       "SCHOOL_COSTS": "Nodwch faint ydych chi’n ei dalu am gostau ysgol (gan gynnwys dillad)",
       "TRAVEL": "Nodwch faint yw eich costau teithio (gwaith neu ysgol)",
       "TV_AND_BROADBAND": "Nodwch faint ydych chi’n ei dalu am wasanaethau teledu a band eang",
-      "WATER": "Nodwch faint ydych chi’n ei dalu am ddŵr"
+      "WATER": "Nodwch faint ydych chi’n ei dalu am ddŵr",
+      "WATER_DEBT": "Nodwch faint ydych chi'n ei dalu am ddŵr"
     },
     "EXPENSES_AMOUNT_FORMAT": {
       "COUNCIL_TAX": "Nodwch swm treth gyngor dilys, uchafswm o ddau le degol",
+      "COUNCIL_TAX_OR_COMMUNITY_CHARGE": "Enter a valid Council Tax or Community Charge amount, maximum two decimal places",
       "ELECTRICITY": "Nodwch swm trydan dilys, uchafswm o ddau le degol",
+      "ELECTRICITY_DEBT": "Enter a valid Electricity amount, maximum two decimal places",
       "FOOD_HOUSEKEEPING": "Nodwch swm cadw tŷ dilys, uchafswm o ddau le degol",
       "GAS": "Nodwch swm nwy dilys, uchafswm o ddau le degol",
+      "GAS_DEBT": "Enter a valid Gas amount, maximum two decimal places",
       "HIRE_PURCHASES": "Nodwch swm hurbwrcasu dilys, uchafswm o ddau le degol",
       "MAINTENANCE_PAYMENTS": "Nodwch swm taliadau cynnal a chadw dilys, uchafswm o ddau le degol",
+      "MAINTENANCE_PAYMENTS_DEBT": "Enter a valid Maintenance payments amount, maximum two decimal places",
       "MOBILE_PHONE": "Nodwch swm ffôn symudol dilys, uchafswm o ddau le degol",
       "MORTGAGE": "Nodwch swm morgais dilys, uchafswm o ddau le degol",
+      "MORTGAGE_DEBT": "Enter a valid Mortgage amount, maximum two decimal places",
       "OTHER": "Nodwch swm gwariant arall dilys, uchafswm o ddau le degol",
       "RENT": "Nodwch swm rhent dilys, uchafswm o ddau le degol",
+      "RENT_DEBT": "Enter a valid Rent amount, maximum two decimal places",
       "SCHOOL_COSTS": "Nodwch swm costau ysgol dilys, uchafswm o ddau le degol",
       "TRAVEL": "Nodwch swm teithio dilys, uchafswm o ddau le degol",
       "TV_AND_BROADBAND": "Nodwch swm teledu a band eang dilys, uchafswm o ddau le degol",
-      "WATER": "Nodwch swm dŵr dilys, uchafswm o ddau le degol"
+      "WATER": "Nodwch swm dŵr dilys, uchafswm o ddau le degol",
+      "WATER_DEBT": "Enter a valid Water amount, maximum two decimal places"
     },
     "EXPENSES_FREQUENCY": {
       "COUNCIL_TAX": "Dewiswch pa mor aml ydych chi’n talu Treth y Cyngor",
+      "COUNCIL_TAX_OR_COMMUNITY_CHARGE": "Dewiswch pa mor aml ydych chi'n talu Treth y Cyngor neu Dâl Cymunedol",
       "ELECTRICITY": "Dewiswch pa mor aml ydych chi’n talu am drydan",
+      "ELECTRICITY_DEBT": "Dewiswch pa mor aml ydych chi'n talu am drydan",
       "FOOD_HOUSEKEEPING": "Dewiswch pa mor aml ydych chi’n talu am fwyd a chostau cadw tŷ",
       "GAS": "Dewiswch pa mor aml ydych chi’n talu am nwy",
+      "GAS_DEBT": "Dewiswch pa mor aml ydych chi'n talu am nwy",
       "HIRE_PURCHASES": "Dewiswch pa mor aml ydych chi’n talu am gytundebau hurbrynu",
       "MAINTENANCE_PAYMENTS": "Dewiswch pa mor aml ydych chi’n talu am daliadau cynhaliaeth",
+      "MAINTENANCE_PAYMENTS_DEBT": "Dewiswch pa mor aml ydych chi'n talu am daliadau cynhaliaeth",
       "MOBILE_PHONE": "Dewiswch pa mor aml ydych chi’n talu am ffôn symudol",
       "MORTGAGE": "Dewiswch pa mor aml ydych chi’n talu morgais",
+      "MORTGAGE_DEBT": "Dewiswch pa mor aml ydych chi'n talu morgais",
       "OTHER": "Dewiswch pa mor aml ydych chi’n talu am unrhyw ffynhonnell arall o wariant",
       "RENT": "Dewiswch pa mor aml ydych chi’n talu rhent",
+      "RENT_DEBT": "Dewiswch pa mor aml ydych chi'n talu rhent",
       "SCHOOL_COSTS": "Dewiswch pa mor aml ydych chi’n talu am gostau ysgol (gan gynnwys dillad)",
       "TRAVEL": "Dewiswch pa mor aml ydych chi’n talu costau teithio (gwaith neu ysgol)",
       "TV_AND_BROADBAND": "Dewiswch pa mor aml ydych chi’n talu am wasanaethau teledu a band eang",
-      "WATER": "Dewiswch pa mor aml ydych chi’n talu am ddŵr"
+      "WATER": "Dewiswch pa mor aml ydych chi’n talu am ddŵr",
+      "WATER_DEBT": "Dewiswch pa mor aml ydych chi'n talu am ddŵr"
     },
     "EXPERT_NAME_REQUIRED": "Enter the expert’s name",
     "ERROR": "Error",
@@ -2068,6 +2117,7 @@
     "REASON_REQUIRED": "You need to explain why you believe you’re owed the money",
     "REDIS_FAILURE": "Redis DraftStore failure.",
     "SELECT_ADDITIONAL_TIME": "Dewiswch faint o amser ychwanegol yr ydych yn gwneud cais amdano",
+    "SELECT_WELSH_AND_ENGLISH_OPTION": "Select Welsh and English if you want to respond to this claim in Welsh",
     "SECURITY_CODE_WRONG_OR_EXPIRED": "The security code was not right or has expired",
     "SELECT_AN_OPTION": "Dewiswch opsiwn",
     "SELECT_AMOUNT": {
@@ -2174,6 +2224,7 @@
     "VALID_DATE": "Rhowch ddyddiad dilys",
     "VALID_DATE_IN_PAST": "Nodwch ddyddiad cyn {{dateToday}}",
     "VALID_DATE_NOT_IN_PAST": "Nodwch ddyddiad heddiw neu ddyddiad yn y dyfodol",
+    "VALID_DATE_ONE_MONTH_FROM_TODAY": "Date must be at least a month from today's date",
     "VALID_DATE_START_NOT_AFTER_TODAY": "Start date must not be after today's date",
     "VALID_DAY": "Rhowch ddydd dilys",
     "VALID_DEBT_AMOUNT": {
@@ -2196,6 +2247,7 @@
     "VALID_FOUR_DIGIT_YEAR": "Nodwch flwyddyn sy'n cynnwys 4 digid",
     "VALID_FREE_TEXT_DATE_LENGTH": "Rhowch ddyddiad sydd ddim hirach na $constraint1 nod",
     "VALID_HOUSING": "Disgrifiwch eich cartref",
+    "VALID_INSTALMENT_AMOUNT": "Instalment amount cannot be more than, or equal to the claim amount",
     "VALID_INTEGER": "Rhowch rif, er enghraifft 3",
     "VALID_INTEREST_TYPE_OPTION": "Choose same rate or breakdown",
     "VALID_MONTH": "Rhowch fis dilys",
