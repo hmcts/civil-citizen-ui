@@ -58,6 +58,13 @@ import {Address} from '../../main/common/form/models/address';
 import {FullAdmission} from 'common/models/fullAdmission';
 import {ClaimDetails} from '../../main/common/form/models/claim/details/claimDetails';
 import {ClaimantTimeline} from '../../main/common/form/models/timeLineOfEvents/claimantTimeline';
+import {ClaimantResponse} from 'models/claimantResponse';
+import {CCJRequest} from 'models/claimantResponse/ccj/ccjRequest';
+import {CcjPaymentOption} from 'form/models/claimantResponse/ccj/ccjPaymentOption';
+import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
+import {PaidAmount} from "models/claimantResponse/ccj/paidAmount";
+import {RepaymentPlanInstalments} from "models/claimantResponse/ccj/repaymentPlanInstalments";
+import {InstalmentFirstPaymentDate} from "models/claimantResponse/ccj/instalmentFirstPaymentDate";
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -65,11 +72,13 @@ const TITLE = 'Mr';
 const FIRST_NAME = 'John';
 const LAST_NAME = 'Richards';
 const CONTACT_NUMBER = '077777777779';
+const EMAIL_ADDRESS = 'contact@gmail.com';
 
 export const createClaimWithBasicRespondentDetails = (contactPerson?: string): Claim => {
   const claim = new Claim();
   claim.respondent1 = {
     partyPhone: {phone: CONTACT_NUMBER},
+    emailAddress: {emailAddress: EMAIL_ADDRESS},
     dateOfBirth: {date: new Date('2000-12-12'), year: 1985, month: 2, day: 2},
     responseType: ResponseType.FULL_ADMISSION,
     type: PartyType.INDIVIDUAL,
@@ -228,6 +237,73 @@ export const createClaimWithApplicantIndividualDetails = (): Claim => {
   claim.applicant1.partyDetails.primaryAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
   claim.applicant1.partyDetails.correspondenceAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
 
+  return claim;
+};
+
+export const createCCJClaimWithClaimResponseDetailsForPayBySetDate = (): Claim => {
+  const claim = new Claim();
+  // claim.applicant1 = {
+  //   type: PartyType.INDIVIDUAL,
+  //   partyPhone: {phone: CONTACT_NUMBER},
+  //   responseType: ResponseType.FULL_ADMISSION,
+  //   partyDetails: {
+  //     individualTitle: TITLE,
+  //     individualLastName: LAST_NAME,
+  //     individualFirstName: FIRST_NAME,
+  //     partyName: PARTY_NAME,
+  //   },
+  // };
+  // claim.applicant1.partyDetails.primaryAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
+  // claim.applicant1.partyDetails.correspondenceAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
+  claim.claimantResponse = new ClaimantResponse();
+  claim.claimantResponse.hasPartPaymentBeenAccepted = new GenericYesNo('Yes');
+  claim.claimantResponse.ccjRequest = new CCJRequest();
+  claim.claimantResponse.ccjRequest.ccjPaymentOption = new CcjPaymentOption();
+  claim.claimantResponse.ccjRequest.ccjPaymentOption.type = PaymentOptionType.BY_SET_DATE;
+  claim.claimantResponse.ccjRequest.defendantPaymentDate = new PaymentDate();
+  claim.claimantResponse.ccjRequest.defendantPaymentDate.date = new Date('2023-12-25');
+  claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount();
+  claim.claimantResponse.ccjRequest.paidAmount.option = YesNo.YES;
+  claim.claimantResponse.ccjRequest.paidAmount.totalAmount = 1000;
+  claim.claimantResponse.ccjRequest.paidAmount.amount = 200;
+  claim.totalClaimAmount = 1000;
+  return claim;
+};
+
+export const createCCJClaimWithClaimResponseDetailsForPayByInstalments = (): Claim => {
+  const claim = new Claim();
+  // claim.applicant1 = {
+  //   type: PartyType.INDIVIDUAL,
+  //   partyPhone: {phone: CONTACT_NUMBER},
+  //   responseType: ResponseType.FULL_ADMISSION,
+  //   partyDetails: {
+  //     individualTitle: TITLE,
+  //     individualLastName: LAST_NAME,
+  //     individualFirstName: FIRST_NAME,
+  //     partyName: PARTY_NAME,
+  //   },
+  // };
+  // claim.applicant1.partyDetails.primaryAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
+  // claim.applicant1.partyDetails.correspondenceAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
+  claim.claimantResponse = new ClaimantResponse();
+  claim.claimantResponse.hasPartPaymentBeenAccepted = new GenericYesNo('Yes');
+  claim.claimantResponse.ccjRequest = new CCJRequest();
+  claim.claimantResponse.ccjRequest.ccjPaymentOption = new CcjPaymentOption();
+  claim.claimantResponse.ccjRequest.ccjPaymentOption.type = PaymentOptionType.INSTALMENTS;
+  claim.totalClaimAmount = 1000;
+  claim.claimantResponse.ccjRequest.repaymentPlanInstalments = new RepaymentPlanInstalments();
+  claim.claimantResponse.ccjRequest.repaymentPlanInstalments.amount = 200;
+  const firstPaymentDate: Record<string, string> = {};
+  firstPaymentDate['year'] = '2023';
+  firstPaymentDate['month'] = '6';
+  firstPaymentDate['day'] = '6';
+  claim.claimantResponse.ccjRequest.repaymentPlanInstalments.firstPaymentDate = new InstalmentFirstPaymentDate(firstPaymentDate);
+  claim.claimantResponse.ccjRequest.repaymentPlanInstalments.paymentFrequency = TransactionSchedule.WEEK;
+  claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount();
+  claim.claimantResponse.ccjRequest.paidAmount.totalAmount = 1000;
+  claim.claimantResponse.ccjRequest.paidAmount.amount = 200;
+  claim.totalClaimAmount = 1000;
+  claim.claimantResponse.ccjRequest.paidAmount.option = YesNo.YES;
   return claim;
 };
 

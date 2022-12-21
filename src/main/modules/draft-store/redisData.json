@@ -69,7 +69,7 @@
       },
       "issueDate": "2022-01-08",
       "applicant1": {
-        "type": "ORGANISATION",
+        "type": "INDIVIDUAL",
         "partyDetails": {
           "individualTitle": "Mrs.",
           "individualFirstName": "Jane",
@@ -82,7 +82,8 @@
             "PostTown": "Reading",
             "AddressLine1": "Flat 2",
             "AddressLine2": "Caversham House 15-17",
-            "AddressLine3": "Church Road"
+            "AddressLine3": "Church Road",
+            "city": "London"
           }
         }
       },
@@ -98,9 +99,10 @@
             "country": "United Kingdom",
             "postCode": "RG4 7AA",
             "postTown": "Reading",
-            "addressLine1": "Flat 3",
+            "addressLine1": "Flat 2",
             "addressLine2": "Caversham House 15-17",
-            "addressLine3": "Church Road"
+            "addressLine3": "Church Road",
+            "city": "London"
           }
         },
         "emailAddress": {

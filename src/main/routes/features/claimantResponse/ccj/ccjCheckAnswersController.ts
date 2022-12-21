@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {CCJ_CHECK_AND_SEND, CCJ_CLAIM_CONFIRMATION_URL} from '../../../urls';
+import {CCJ_CHECK_AND_SEND_URL, CCJ_CLAIM_CONFIRMATION_URL} from '../../../urls';
 import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
 import {Claim} from '../../../../common/models/claim';
 import {AppRequest} from '../../../../common/models/AppRequest';
@@ -27,7 +27,7 @@ function renderView(req: Request, res: Response, form: GenericForm<StatementOfTr
   });
 }
 
-ccjCheckAnswersController.get(CCJ_CHECK_AND_SEND,
+ccjCheckAnswersController.get(CCJ_CHECK_AND_SEND_URL,
   async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
       const userId = req.session?.user?.id;
@@ -39,11 +39,11 @@ ccjCheckAnswersController.get(CCJ_CHECK_AND_SEND,
     }
   });
 
-ccjCheckAnswersController.post(CCJ_CHECK_AND_SEND, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+ccjCheckAnswersController.post(CCJ_CHECK_AND_SEND_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     await submitResponse(<AppRequest>req);
     const userId = (<AppRequest>req).session?.user?.id;
-    
+
     const form = new GenericForm((req.body.type === 'qualified')
       ? new QualifiedStatementOfTruth(req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole)
       : new StatementOfTruthForm(req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned));

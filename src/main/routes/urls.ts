@@ -205,7 +205,6 @@ export const BREATHING_SPACE_RESPITE_START_DATE_URL = `${BASE_BREATHING_SPACE_UR
 export const BREATHING_SPACE_RESPITE_END_DATE_URL = `${BASE_BREATHING_SPACE_URL}/respite-end`;
 export const BREATHING_SPACE_RESPITE_TYPE_URL = `${BASE_BREATHING_SPACE_URL}/respite-type`;
 export const BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL = `${BASE_BREATHING_SPACE_URL}/check-answers`;
-export const CCJ_CHECK_AND_SEND = `${BASE_CCJ_URL}/check-and-send`;
 export const CCJ_CLAIM_CONFIRMATION_URL = `${BASE_CCJ_URL}/confirmation`;
 export const CCJ_PAID_AMOUNT_SUMMARY_URL = `${BASE_CCJ_URL}/paid-amount-summary`;
 export const CCJ_DEPENDANT_PAYMENT_DATE_URL = `${BASE_CCJ_URL}/pay-by-set-date`;
