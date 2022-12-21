@@ -11,4 +11,5 @@ export class ClaimantResponse {
   ccjRequest?: CCJRequest;
   intentionToProceed?: GenericYesNo;
   rejectionReason?: RejectionReason;
+  chooseHowToProceed?: GenericYesNo;
 }

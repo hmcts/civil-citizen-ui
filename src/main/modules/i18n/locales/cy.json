@@ -305,6 +305,13 @@
     "ARE_YOU_SEVERELY_DISABLED": {
       "PAGE_TITLE": "Severely disabled"
     },
+    "BILINGUAL_LANGUAGE_PREFERENCE": {
+      "PAGE_TITLE": "Do you want to respond to this claim in Welsh?",
+      "TITLE": "Do you want to respond to this claim in Welsh?",
+      "DESCRIPTION": "You can respond to this claim in Welsh. After you've submitted your response, anything else you may have to do relating to the claim will be in English. You'll receive emails and letters in English.",
+      "ENGLISH": "English",
+      "WELSH_AND_ENGLISH": "Welsh and English"
+    },
     "BREATHING_SPACE_DEBT_RESPITE_TYPE": {
       "MENTAL_HEALTH": "Mental health crisis moratorium",
       "PAGE_TITLE": "What type is it?",
@@ -340,18 +347,14 @@
     "CCJ_DEFENDANT_PAYMENT_DATE": {
       "TITLE": "When do you want the defendant to pay?"
     },
-    "JUDGMENT_AMOUNT": {
-      "TITLE": "Judgment amount",
-      "PAGE_TITLE": "Judgment amount",
-      "INTEREST_TO_DATE": "Interest to date",
-      "CLAIM_FEE_AMOUNT": "Claim fee amount",
-      "SUBTOTAL": "Subtotal",
-      "AMOUNT_ALREADY_PAID": "Minus amount already paid",
-      "CLAIM_TOTAL": "Total",
-      "JUDGMENT_STATEMENT": "The judgment will order the defendant to pay £{{ subTotal }}, including your claim fee, as shown in this table:",
-      "INTEREST_TO_DATE_RESPONSE": "Interest calculated at {{interestRate}}% for {{numberOfDays}} days.",
-      "TOTAL_PERIOD": "({{ interestFromDate }} to {{ interestToDate}})",
-      "HOW_INTEREST_IS_CALCULATED": "Interest calculated as \"{{ reason }}\" for {{numberOfDays}} days."
+    "CCJ_REPAYMENT_PLAN_INSTALMENTS": {
+      "EACH_INSTALMENT_AMOUNT": "Amount for each instalment",
+      "FIRST_PAYMENT_DATE": "Date for first payment",
+      "HOW_OFTEN": "How often do you want them to pay instalments?",
+      "INSTALMENT_AMOUNT_HELP": "For example £10",
+      "PAGE_TITLE": "Suggest instalments for the defendant",
+      "TITLE": "Suggest instalments for the defendant",
+      "TOTAL_CLAIM_AMOUNT": "Total claim amount is £{{ totalClaimAmount }}"
     },
     "CHECK_YOUR_ANSWER": {
       "BANK_BALANCE": "Cydbwysedd",
@@ -652,6 +655,18 @@
     "CLAIMANT_DOB": {
       "PAGE_TITLE": "Your date of birth",
       "TITLE": "What is your date of birth?"
+    },
+    "CLAIMANT_FORMALISE_REPAYMENT_TYPE": {
+      "PAGE_TITLE": "Choose how to formalise repayment",
+      "REQUEST_A_CCJ": {
+        "DESCRIPTION": "You can ask the court to make a formal order binding the defendant to the repayment plan. This adds the defendant to the CCJ register, which may make it more difficult for them to borrow money to repay you.",
+        "LABEL": "Request a CCJ"
+      },
+      "SIGN_A_SETTLEMENT_AGREEMENT": {
+        "DESCRIPTION": "This is a legal agreement between you and the defendant agreeing to the repayment plan. If they break it you can request a County Court Judgment(CCJ). We'll show you a suggested format for the agreement.",
+        "LABEL": "Sign a settlement agreement"
+      },
+      "TITLE": "Choose how to formalise repayment"
     },
     "CLAIMANT_INTEREST_RATE": {
       "DIFFERENT_RATE_LABEL": "A different rate",
@@ -1253,6 +1268,19 @@
       "SKIP_THIS_SECTION": "Hepgor yr adran hon",
       "WOULD_NOT_SOLVE": "Nid wyf yn credu y byddai cyfryngu yn datrys yr anghydfod",
       "YOU_HAVE_CHOSEN_TELL_US_WHY": "Rydych wedi dewis peidio â rhoi cyfle i gyfryngu am ddim. Dywedwch wrthym pam:"
+    },
+    "JUDGMENT_AMOUNT": {
+      "TITLE": "Judgment amount",
+      "PAGE_TITLE": "Judgment amount",
+      "INTEREST_TO_DATE": "Interest to date",
+      "CLAIM_FEE_AMOUNT": "Claim fee amount",
+      "SUBTOTAL": "Subtotal",
+      "AMOUNT_ALREADY_PAID": "Minus amount already paid",
+      "CLAIM_TOTAL": "Total",
+      "JUDGMENT_STATEMENT": "The judgment will order the defendant to pay £{{ subTotal }}, including your claim fee, as shown in this table:",
+      "INTEREST_TO_DATE_RESPONSE": "Interest calculated at {{interestRate}}% for {{numberOfDays}} days.",
+      "TOTAL_PERIOD": "({{ interestFromDate }} to {{ interestToDate}})",
+      "HOW_INTEREST_IS_CALCULATED": "Interest calculated as \"{{ reason }}\" for {{numberOfDays}} days."
     },
     "LATEST_UPDATE_CONTENT": {
       "CLAIMANT_CAN_ASK_FOR_CCJ_AGAINST_YOU": "You haven't responded to the claim. {{ claimantName }} can now ask for a County Court Judgement against you.",
@@ -2102,6 +2130,7 @@
     "REASON_REQUIRED": "You need to explain why you believe you’re owed the money",
     "REDIS_FAILURE": "Redis DraftStore failure.",
     "SELECT_ADDITIONAL_TIME": "Dewiswch faint o amser ychwanegol yr ydych yn gwneud cais amdano",
+    "SELECT_WELSH_AND_ENGLISH_OPTION": "Select Welsh and English if you want to respond to this claim in Welsh",
     "SECURITY_CODE_WRONG_OR_EXPIRED": "The security code was not right or has expired",
     "SELECT_AN_OPTION": "Dewiswch opsiwn",
     "SELECT_AMOUNT": {
@@ -2208,6 +2237,7 @@
     "VALID_DATE": "Rhowch ddyddiad dilys",
     "VALID_DATE_IN_PAST": "Nodwch ddyddiad cyn {{dateToday}}",
     "VALID_DATE_NOT_IN_PAST": "Nodwch ddyddiad heddiw neu ddyddiad yn y dyfodol",
+    "VALID_DATE_ONE_MONTH_FROM_TODAY": "Date must be at least a month from today's date",
     "VALID_DATE_START_NOT_AFTER_TODAY": "Start date must not be after today's date",
     "VALID_DAY": "Rhowch ddydd dilys",
     "VALID_DEBT_AMOUNT": {
@@ -2230,6 +2260,7 @@
     "VALID_FOUR_DIGIT_YEAR": "Nodwch flwyddyn sy'n cynnwys 4 digid",
     "VALID_FREE_TEXT_DATE_LENGTH": "Rhowch ddyddiad sydd ddim hirach na $constraint1 nod",
     "VALID_HOUSING": "Disgrifiwch eich cartref",
+    "VALID_INSTALMENT_AMOUNT": "Instalment amount cannot be more than, or equal to the claim amount",
     "VALID_INTEGER": "Rhowch rif, er enghraifft 3",
     "VALID_INTEREST_TYPE_OPTION": "Choose same rate or breakdown",
     "VALID_MONTH": "Rhowch fis dilys",
