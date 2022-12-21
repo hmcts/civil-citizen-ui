@@ -81,14 +81,6 @@ export class Claim {
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
 
-  public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
-
-    const claim: Claim = Object.assign(new Claim(), ccdClaim);
-    claim.applicant1 = toCUIParty(ccdClaim.applicant1);
-    claim.respondent1 = toCUIParty(ccdClaim.respondent1);
-    return claim;
-  }
-
   get responseStatus(): ClaimResponseStatus {
     if (this.isFullAdmission() && this.isFAPaymentOptionPayImmediately()) {
       return ClaimResponseStatus.FA_PAY_IMMEDIATELY;
@@ -353,18 +345,6 @@ export class Claim {
 
   isResponseToExtendDeadlineNo(): boolean {
     return this.responseDeadline?.option === ResponseOptions.NO;
-  }
-
-  get hasSupportRequiredList(): boolean {
-    return !!this.directionQuestionnaire?.hearing?.supportRequiredList;
-  }
-
-  get isSupportRequiredYes(): boolean {
-    return this.directionQuestionnaire?.hearing?.supportRequiredList?.option === YesNo.YES;
-  }
-
-  get isSupportRequiredDetailsAvailable(): boolean {
-    return this.directionQuestionnaire?.hearing?.supportRequiredList?.items?.length > 0;
   }
 
   isResponseDateInThePast(): boolean {
