@@ -858,10 +858,13 @@
     "DASHBOARD": {
       "ACTIONS": "Actions",
       "ACTION_PROMPT": "You need to respond before ",
+      "CASE_SENT_COURT": "Case sent to court",
       "CLAIMANT_NAME": "Claimant name",
       "CLAIM_NUMBER": "Claim number",
       "CLAIM_PROMPT": "To view or progress your claim click on your claim number. Most recently created claims are listed first.",
+      "CLAIM_SETTLED": "This claim is settled.",
       "CLAIM_STATUS": "Status",
+      "CONFIRMED_PAID": "{{ claimantName }} confirmed you’ve paid.",
       "CLAIMANT_TITLE": "Claims you've made",
       "DEADLINE": "Deadline",
       "DEFENDANT_NAME": "Defendant name",
@@ -871,6 +874,7 @@
       "MAKE_A_NEW_CLAIM": "Make a new money claim",
       "NEXT_STEPS": "Next steps",
       "PAGE_TITLE": "Claims made by or against you",
+      "REQUESTED_CCJ": "{{ claimantName }} requested a County Court Judgment against you",
       "TITLE": "Your money claims account",
       "VIEW": "View"
     },

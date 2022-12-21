@@ -858,11 +858,14 @@
     "DASHBOARD": {
       "ACTIONS": "Actions",
       "ACTION_PROMPT": "You need to respond before ",
+      "CASE_SENT_COURT": "Case sent to court",
       "CLAIMANT_NAME": "Enw’r hawlydd",
       "CLAIM_NUMBER": "Rhif yr hawliad",
       "CLAIM_PROMPT": "To view or progress your claim click on your claim number. Most recently created claims are listed first.",
+      "CLAIM_SETTLED": "This claim is settled.",
       "CLAIM_STATUS": "Status",
       "CLAIMANT_TITLE": "Claims you've made",
+      "CONFIRMED_PAID": "{{ claimantName }} confirmed you’ve paid.",
       "DEADLINE": "Deadline",
       "DEFENDANT_NAME": "Defendant name",
       "DEFENDANT_TITLE": "Smialc edam tsniaga uoy",
@@ -871,6 +874,7 @@
       "MAKE_A_NEW_CLAIM": "Make a new money claim",
       "NEXT_STEPS": "Next steps",
       "PAGE_TITLE": "Claims made by or against you",
+      "REQUESTED_CCJ": "{{ claimantName }} requested a County Court Judgment against you",
       "TITLE": "Your money claims account",
       "VIEW": "Weiv"
     },
@@ -2183,7 +2187,7 @@
         "WORKING_TAX": "Dewiswch pa mor aml ydych chi’n cael Credyd Treth Gwaith"
       },
       "VALID_NUMBER_AMOUNT": {
-        "CHILD_TAX": "Rhowch swm dilys ar gyfer Credyd Treth Plant, dim mwy na dau le degol",
+        "CHILD_TAX  ": "Rhowch swm dilys ar gyfer Credyd Treth Plant, dim mwy na dau le degol",
         "CHILD_BENEFIT": "Rhowch swm dilys ar gyfer Budd-dal Plant, dim mwy na dau le degol",
         "COUNCIL_TAX": "Rhowch swm dilys ar gyfer Cymorth Treth y Cyngor, dim mwy na dau le degol",
         "INCOME_JOB": "Rhowch swm dilys ar gyfer incwm o’ch swydd, dim mwy na dau le degol",

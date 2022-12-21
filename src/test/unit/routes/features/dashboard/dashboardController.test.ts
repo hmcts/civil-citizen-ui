@@ -3,6 +3,10 @@ import config from 'config';
 import Module from 'module';
 import {DASHBOARD_URL} from '../../../../../main/routes/urls';
 import {CIVIL_SERVICE_CASES_URL} from '../../../../../main/app/client/civilServiceUrls';
+import {DashboardStatus} from 'common/models/dashboard/dashboardStatus';
+import {DashboardDefendantItem} from 'common/models/dashboard/dashboardItem';
+import {updateStatus} from 'routes/features/dashboard/dashboardController';
+import {t} from 'i18next';
 const nock = require('nock');
 
 const session = require('supertest-session');
@@ -64,4 +68,30 @@ describe('Dashboard page', () => {
         });
     });
   });
+
+  // describe('updateStatus', () => {
+  //   // const claimsAsDefendantMock: DashboardDefendantItem[] = [
+  //   const claimsAsDefendantMock = [
+  //     { claimantName: 'Jon Doe', status: DashboardStatus.CLAIMANT_ACCEPTED_STATES_PAID },
+  //     { claimantName: 'Jon Doe', status: DashboardStatus.PAID_IN_FULL_CCJ_CANCELLED },
+  //     { claimantName: 'Jon Doe', status: DashboardStatus.PAID_IN_FULL_CCJ_SATISFIED },
+  //     { claimantName: 'Jon Doe', status: DashboardStatus.REDETERMINATION_BY_JUDGE },
+  //     { claimantName: 'Jon Doe', status: DashboardStatus.TRANSFERRED },
+  //   ];
+
+  //   const expectedStatus = [
+  //     { status: t('PAGES.DASHBOARD.CLAIM_SETTLED') },
+  //     { status: t('PAGES.DASHBOARD.CONFIRMED_PAID', { claimantName: 'Jon Doe' }) },
+  //     { status: t('PAGES.DASHBOARD.CONFIRMED_PAID', { claimantName: 'Jon Doe' }) },
+  //     { status: t('PAGES.DASHBOARD.REQUESTED_CCJ', { claimantName: 'Jon Doe' }) },
+  //     { status: t('PAGES.DASHBOARD.CASE_SENT_COURT') },
+  //   ];
+
+  //   it('should return dashboard page', async () => {
+  //     const result = updateStatus(claimsAsDefendantMock as DashboardDefendantItem[]);
+  //     result.forEach((item, index) => {
+  //       expect(item.status).toBe(expectedStatus[index].status);
+  //     });
+  //   });
+  // });
 });
