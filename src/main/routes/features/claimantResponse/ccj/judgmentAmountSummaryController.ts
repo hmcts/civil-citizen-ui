@@ -14,7 +14,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 async function renderView(req: AppRequest, res: Response, claim: Claim, lang: string) {
   const claimFee = await civilServiceClient.getClaimAmountFee(claim?.totalClaimAmount, req);
-  const judgmentSummaryDetails = getJudgmentAmountSummary(claim, claimFee, lang, req.url);
+  const judgmentSummaryDetails = getJudgmentAmountSummary(claim, claimFee, lang);
   res.render(judgementAmountSummaryViewPath, {
     claimAmount: claim.totalClaimAmount,
     claimFee,
