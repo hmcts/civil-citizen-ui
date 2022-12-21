@@ -1,5 +1,7 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {
+  CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL,
+  CCJ_EXTENDED_PAID_AMOUNT_URL,
   CCJ_PAID_AMOUNT_SUMMARY_URL,
   CCJ_PAID_AMOUNT_URL,
 } from '../../../urls';
@@ -13,34 +15,40 @@ const paidAmountController = Router();
 const paidAmountViewPath = 'features/claimantResponse/ccj/paid-amount';
 const crPropertyName = 'paidAmount';
 const crParentName = 'ccjRequest';
+const urlFromTaskList = 'county-court-judgement';
 
 function renderView(form: GenericForm<PaidAmount>, res: Response): void {
   res.render(paidAmountViewPath, {form});
 }
 
-paidAmountController.get(CCJ_PAID_AMOUNT_URL, async (req, res, next: NextFunction) => {
+paidAmountController.get([CCJ_PAID_AMOUNT_URL, CCJ_EXTENDED_PAID_AMOUNT_URL], async (req, res, next: NextFunction) => {
   try {
-    const claimantReponse = await getClaimantResponse(req.params.id);
-    const paidAmount = claimantReponse.ccjRequest ?
-      claimantReponse.ccjRequest.paidAmount : new PaidAmount();
+    const claimantResponse = await getClaimantResponse(req.params.id);
+    const paidAmount = claimantResponse.ccjRequest ?
+      claimantResponse.ccjRequest.paidAmount : new PaidAmount();
     renderView(new GenericForm(paidAmount), res);
   } catch (error) {
     next(error);
   }
 });
 
-paidAmountController.post(CCJ_PAID_AMOUNT_URL, async (req: Request, res: Response, next: NextFunction) => {
+paidAmountController.post([CCJ_PAID_AMOUNT_URL, CCJ_EXTENDED_PAID_AMOUNT_URL], async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getCaseDataFromStore(claimId);
     const claimedAmount = claim.totalClaimAmount;
     const paidAmount = new GenericForm(new PaidAmount(req.body.option, (Number(req.body.amount)), claimedAmount));
+    let redirectURL: string = CCJ_PAID_AMOUNT_SUMMARY_URL;
+    if(req.url.includes(urlFromTaskList)){
+      paidAmount.model.valueFromTaskList = true;
+      redirectURL = CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL;
+    }
     paidAmount.validateSync();
     if (paidAmount.hasErrors()) {
       renderView(paidAmount, res);
     } else {
       await saveClaimantResponse(claimId, paidAmount.model, crPropertyName, crParentName);
-      res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_PAID_AMOUNT_SUMMARY_URL));
+      res.redirect(constructResponseUrlWithIdParams(claimId, redirectURL));
     }
   } catch (error) {
     next(error);
