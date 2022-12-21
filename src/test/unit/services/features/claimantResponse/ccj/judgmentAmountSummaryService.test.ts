@@ -3,6 +3,7 @@ import {deepCopy} from '../../../../../utils/deepCopy';
 import {mockClaim} from '../../../../../utils/mockClaim';
 import {getJudgmentAmountSummary} from 'services/features/claimantResponse/ccj/judgmentAmountSummaryService';
 import {YesNo} from 'form/models/yesNo';
+import {CCJ_PAID_AMOUNT_URL} from '../../../../../../main/routes/urls';
 
 describe('Get Judgment amount summary', () => {
   const claim: Claim = Object.assign(new Claim(), deepCopy(mockClaim));
@@ -11,7 +12,7 @@ describe('Get Judgment amount summary', () => {
   it('get summary details when claimInterest=Yes.', () => {
 
     //When
-    const result = getJudgmentAmountSummary(claim, claimFee, 'en');
+    const result = getJudgmentAmountSummary(claim, claimFee, 'en', CCJ_PAID_AMOUNT_URL);
 
     //Then
     expect(result.hasDefendantAlreadyPaid).toEqual(true);
@@ -27,7 +28,7 @@ describe('Get Judgment amount summary', () => {
 
     //When
     claim.claimInterest = YesNo.NO;
-    const result = getJudgmentAmountSummary(claim, claimFee, 'en');
+    const result = getJudgmentAmountSummary(claim, claimFee, 'en', CCJ_PAID_AMOUNT_URL);
 
     //Then
     expect(result.hasDefendantAlreadyPaid).toEqual(true);
@@ -43,7 +44,7 @@ describe('Get Judgment amount summary', () => {
     //When
     claim.claimInterest = YesNo.YES;
     claim.claimantResponse.ccjRequest.paidAmount.option = YesNo.NO;
-    const result = getJudgmentAmountSummary(claim, claimFee, 'en');
+    const result = getJudgmentAmountSummary(claim, claimFee, 'en', CCJ_PAID_AMOUNT_URL);
 
     //Then
     expect(result.hasDefendantAlreadyPaid).toEqual(false);
@@ -57,7 +58,7 @@ describe('Get Judgment amount summary', () => {
     //When
     claim.claimantResponse.ccjRequest.paidAmount.option = YesNo.NO;
     claim.claimInterest = YesNo.NO;
-    const result = getJudgmentAmountSummary(claim, claimFee, 'en');
+    const result = getJudgmentAmountSummary(claim, claimFee, 'en',CCJ_PAID_AMOUNT_URL);
 
     //Then
     expect(result.hasDefendantAlreadyPaid).toEqual(false);

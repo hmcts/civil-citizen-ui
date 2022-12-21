@@ -4,7 +4,7 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import {
   CCJ_PAID_AMOUNT_URL,
-  CCJ_PAID_AMOUNT_SUMMARY_URL,
+  CCJ_PAID_AMOUNT_SUMMARY_URL, CCJ_EXTENDED_PAID_AMOUNT_URL, CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL,
 } from '../../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
@@ -33,6 +33,22 @@ describe('CCJ - Paid amount', () => {
     it('should return status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       const res = await request(app).get(CCJ_PAID_AMOUNT_URL);
+      expect(res.status).toBe(500);
+      expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+    });
+  });
+
+  describe('on GET from task-list', () => {
+    it('should return Paid amount page from task-list', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      const res = await request(app).get(CCJ_EXTENDED_PAID_AMOUNT_URL);
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('Has the defendant paid some of the amount owed?');
+    });
+
+    it('should return status 500 when error thrown from task-list', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      const res = await request(app).get(CCJ_EXTENDED_PAID_AMOUNT_URL);
       expect(res.status).toBe(500);
       expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
     });
@@ -111,6 +127,28 @@ describe('CCJ - Paid amount', () => {
         .send({option: 'no'});
       expect(res.status).toBe(500);
       expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+    });
+  });
+
+  describe('on POST', () => {
+    beforeAll(() => {
+      app.locals.draftStoreClient = mockCivilClaim;
+    });
+
+    it('(FROM TASK-LIST) should redirect to paid amount summary page if option yes is selected with valid amount', async () => {
+      const res = await request(app).post(CCJ_EXTENDED_PAID_AMOUNT_URL)
+        .send({
+          option: 'yes',
+          amount: '10',
+        });
+      expect(res.status).toBe(302);
+      expect(res.get('location')).toBe(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL);
+    });
+
+    it('(FROM TASK-LIST) should redirect to paid amount summary page if option no is selected', async () => {
+      const res = await request(app).post(CCJ_EXTENDED_PAID_AMOUNT_URL).send({option: 'no'});
+      expect(res.status).toBe(302);
+      expect(res.get('location')).toBe(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL);
     });
   });
 });
