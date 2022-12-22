@@ -7,7 +7,7 @@ let paymentAmount = 0;
 let repaymentFrequency = '';
 let firstRepaymentDate = new Date(Date.now());
 
-export const isFullOrPartAdmit = (claim: Claim) => {
+export const isRepaymentPlanFullOrPartAdmit = (claim: Claim) => {
   if (claim.respondent1.responseType === ResponseType.FULL_ADMISSION) {
     const repaymentPlan = claim.fullAdmission?.paymentIntention?.repaymentPlan;
     paymentAmount = repaymentPlan?.paymentAmount;

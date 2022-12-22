@@ -8,7 +8,7 @@ import {GenericForm} from 'common/form/models/genericForm';
 import {getClaimantResponse, saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {SignSettlmentAgreement} from 'common/form/models/claimantResponse/signSettlementAgreement';
-import {getAmount, getFinalPaymentDate, getFirstRepaymentDate, getPaymentAmount, getRepaymentFrequency, isFullOrPartAdmit} from 'common/utils/repaymentUtils';
+import {getAmount, getFinalPaymentDate, getFirstRepaymentDate, getPaymentAmount, getRepaymentFrequency, isRepaymentPlanFullOrPartAdmit} from 'common/utils/repaymentUtils';
 
 const signSettlementAgreementViewPath = 'features/claimantResponse/sign-settlement-agreement';
 const signSettlementAgreementController = Router();
@@ -22,7 +22,7 @@ function renderView(form: GenericForm<SignSettlmentAgreement>, res: Response, da
 signSettlementAgreementController.get(CLAIMANT_SIGN_SETTLEMENT_AGREEMENT, async (req:Request, res:Response, next: NextFunction) => {
   try {
     const claim = await getCaseDataFromStore(req.params.id);
-    isFullOrPartAdmit(claim);
+    isRepaymentPlanFullOrPartAdmit(claim);
     const data = {
       amount:getAmount(claim),
       defendant: claim.getDefendantFullName(),
