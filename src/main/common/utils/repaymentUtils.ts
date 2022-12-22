@@ -3,6 +3,7 @@ import {addDaysToDate, addMonths, formatDateToFullDate} from './dateUtils';
 import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {ResponseType} from 'common/form/models/responseType';
 
+const WEEKDAYS = 7;
 let paymentAmount = 0;
 let repaymentFrequency = '';
 let firstRepaymentDate = new Date(Date.now());
@@ -29,10 +30,10 @@ export const getFinalPaymentDate = (claim: Claim) => {
 
   switch (repaymentFrequency) {
     case TransactionSchedule.WEEK:
-      finalRepaymentDate = addDaysToDate(firstRepaymentDate, (numberOfInstalments * 7));
+      finalRepaymentDate = addDaysToDate(firstRepaymentDate, (numberOfInstalments * WEEKDAYS));
       break;
     case TransactionSchedule.TWO_WEEKS:
-      finalRepaymentDate = addDaysToDate(firstRepaymentDate, ((numberOfInstalments * 2) * 14));
+      finalRepaymentDate = addDaysToDate(firstRepaymentDate, ((numberOfInstalments * 2) * WEEKDAYS));
       break;
     case TransactionSchedule.MONTH:
       finalRepaymentDate = addMonths(firstRepaymentDate, numberOfInstalments);
