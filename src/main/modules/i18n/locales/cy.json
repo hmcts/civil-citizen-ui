@@ -643,9 +643,11 @@
       "DOWNLOAD_CLAIM": "Download your claim form",
       "YOUR_CLAIM_WILL_BE_ISSUED": "Your claim will be issued once your Help With Fees application has been confirmed.",
       "WE_EMAIL_YOU_IN_5_DAYS": "We'll email you within 5 days to confirm this.",
-      "HAS_UNTIL": "has until",
+      "ONCE_CLAIM_ISSUED": "Once the claim is issued, ",
+      "WILL_HAVE_14_DAYS": "will have 14 days to respond to your claim.",
+      "HAS_UNTIL": "has until 4pm on ",
       "TO_RESPOND_TO": " to respond to your claim.",
-      "THEY_CAN_REQUEST_EXTRA_DAYS": "They can request an extra 28 days if they need it.",
+      "THEY_CAN_REQUEST_EXTRA_DAYS": "They can request up to an extra 28 days if they need it.",
       "YOU_CAN_REQUEST_COUNTY_COURT": "You can request a County Court Judgment against them if they don't respond by the deadline.",
       "IF_DEFENDANT_PAYS_YOU_HEADER": "If defendant pays you",
       "IF_DEFENDANT_PAYS_YOU_CONTENT": "You need to sign in to your account to tell us you've been paid."
