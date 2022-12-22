@@ -3,7 +3,6 @@ import {addDaysToDate, addMonths, formatDateToFullDate} from './dateUtils';
 import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {ResponseType} from 'common/form/models/responseType';
 
-let lengthOfRepayment = 0;
 let paymentAmount = 0;
 let repaymentFrequency = '';
 let firstRepaymentDate = new Date(Date.now());
@@ -30,15 +29,12 @@ export const getFinalPaymentDate = (claim: Claim) => {
 
   switch (repaymentFrequency) {
     case TransactionSchedule.WEEK:
-      lengthOfRepayment = numberOfInstalments;
-      finalRepaymentDate = addDaysToDate(firstRepaymentDate, (lengthOfRepayment * 7));
+      finalRepaymentDate = addDaysToDate(firstRepaymentDate, (numberOfInstalments * 7));
       break;
     case TransactionSchedule.TWO_WEEKS:
-      lengthOfRepayment = numberOfInstalments * 2;
-      finalRepaymentDate = addDaysToDate(firstRepaymentDate, (lengthOfRepayment * 14));
+      finalRepaymentDate = addDaysToDate(firstRepaymentDate, ((numberOfInstalments * 2) * 14));
       break;
     case TransactionSchedule.MONTH:
-      lengthOfRepayment = numberOfInstalments;
       finalRepaymentDate = addMonths(firstRepaymentDate, numberOfInstalments);
       break;
   }
@@ -50,6 +46,5 @@ export const getFinalPaymentDate = (claim: Claim) => {
 export const getAmount = (claim: Claim) => claim.partialAdmission?.howMuchDoYouOwe?.amount ? claim.partialAdmission.howMuchDoYouOwe.amount : claim.totalClaimAmount;
 export const getPaymentAmount = () => paymentAmount;
 export const getRepaymentFrequency = () => repaymentFrequency;
-export const getLengthOfRepayment = () => lengthOfRepayment;
 export const getFirstRepaymentDate = () => formatDateToFullDate(firstRepaymentDate);
 
