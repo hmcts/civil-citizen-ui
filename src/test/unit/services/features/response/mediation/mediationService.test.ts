@@ -7,6 +7,8 @@ import {
 } from '../../../../../../main/services/features/response/mediation/mediationService';
 import {Mediation} from '../../../../../../main/common/models/mediation/mediation';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {CaseState} from 'common/form/models/claimDetails';
+import {ClaimantResponse} from 'common/models/claimantResponse';
 
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 
@@ -32,10 +34,42 @@ describe('Mediation service', () => {
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(result).toEqual(new Mediation());
     });
+    it('should return an empty claimant mediation model when no data retrieved', async () => {
+      //Given
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+        return claim;
+      });
+      //When
+      const result = await getMediation(claimId);
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(result).toEqual(new Mediation());
+    });
     it('should return populated form model when data exists', async () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const claim = createClaim();
+      const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+      mockGetCaseData.mockImplementation(async () => {
+        return claim;
+      });
+      //When
+      const mediation = await getMediation(claimId);
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(mediation).not.toBeNull();
+      expect(mediation.canWeUse?.mediationPhoneNumber).toBe(mediationPhoneNumber);
+      expect(mediation.canWeUse?.option).toBeTruthy();
+      expect(mediation.mediationDisagreement?.option).toBeTruthy();
+    });
+    it('should return populated claimant form model when data exists', async () => {
+      //Given
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      const claim = createClaimWithClaimantMediation();
       const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
       mockGetCaseData.mockImplementation(async () => {
         return claim;
@@ -76,12 +110,41 @@ describe('Mediation service', () => {
       const mediation = await getMediation(claimId);
       expect(mediation.mediationDisagreement?.option).toBe(YesNo.NO);
     });
-    it('should save data successfully when mediation doesn´t exist', async () => {
+    it('should save claimant data successfully when mediation exist', async () => {
+      //Given
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const claim = createClaimWithClaimantMediation();
+      const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+      mockGetCaseData.mockImplementation(async () => {
+        return claim;
+      });
+      //When
+      await saveMediation(claimId, {option: YesNo.NO}, 'mediationDisagreement');
+      //Then
+      expect(spySave).toBeCalled();
+      const mediation = await getMediation(claimId);
+      expect(mediation.mediationDisagreement?.option).toBe(YesNo.NO);
+    });
+    it('should save data successfully when claimant mediation doesn´t exist', async () => {
       //Given
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
       mockGetCaseData.mockImplementation(async () => {
         return new Claim();
+      });
+      //When
+      await saveMediation(claimId, {option: YesNo.NO}, 'mediationDisagreement');
+      //Then
+      expect(spySave).toBeCalled();
+    });
+    it('should save data successfully when mediation doesn´t exist', async () => {
+      //Given
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+        return claim;
       });
       //When
       await saveMediation(claimId, {option: YesNo.NO}, 'mediationDisagreement');
@@ -104,6 +167,14 @@ describe('Mediation service', () => {
 function createClaim() {
   const claim = new Claim();
   claim.mediation = createMediation();
+  return claim;
+}
+
+function createClaimWithClaimantMediation() {
+  const claim = new Claim();
+  claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+  claim.claimantResponse = new ClaimantResponse();
+  claim.claimantResponse.mediation = createMediation();
   return claim;
 }
 
