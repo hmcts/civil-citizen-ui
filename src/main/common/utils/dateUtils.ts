@@ -52,3 +52,9 @@ export const getDOBforAgeFromCurrentTime = (age: number): Date => {
   referenceDate.setFullYear(referenceDate.getFullYear() - age);
   return referenceDate;
 };
+
+export const addMonths = (date: Date, months: number) => {
+  date.setMonth(date.getMonth() + months);
+  return date;
+};
+
