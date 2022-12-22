@@ -14,7 +14,7 @@ claimSubmittedController.get(CLAIM_CONFIRMATION_URL, async (req, res, next: Next
     const lang = req.query.lang? req.query.lang : req.cookies.lang;
 
     if(!claim.isEmpty()) {
-      const claimNumber = claimId;
+      const claimNumber = claim.legacyCaseReference;
       const downloadHref = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentType', DocumentUri.SEALED_CLAIM);
       const defendantFullName = claim.getDefendantFullName();
       const defendantResponseLimit = formatDateToFullDate(claim.respondent1ResponseDeadline, lang);
