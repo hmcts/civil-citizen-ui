@@ -10,12 +10,12 @@ let firstRepaymentDate = new Date(Date.now());
 
 export const isRepaymentPlanFullOrPartAdmit = (claim: Claim) => {
   if (claim.respondent1.responseType === ResponseType.FULL_ADMISSION) {
-    const repaymentPlan = claim.fullAdmission?.paymentIntention?.repaymentPlan;
+    const repaymentPlan = claim.fullAdmission.paymentIntention.repaymentPlan;
     paymentAmount = repaymentPlan?.paymentAmount;
     repaymentFrequency = repaymentPlan?.repaymentFrequency;
     firstRepaymentDate = new Date(repaymentPlan?.firstRepaymentDate);
   } else if (claim.respondent1.responseType === ResponseType.PART_ADMISSION) {
-    const repaymentPlan = claim.partialAdmission?.paymentIntention?.repaymentPlan;
+    const repaymentPlan = claim.partialAdmission.paymentIntention.repaymentPlan;
     paymentAmount = repaymentPlan?.paymentAmount;
     repaymentFrequency = repaymentPlan?.repaymentFrequency;
     firstRepaymentDate = new Date(repaymentPlan?.firstRepaymentDate);
