@@ -9,7 +9,7 @@ import {GenericForm} from 'common/form/models/genericForm';
 import {getClaimantResponse, saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {SignSettlmentAgreement} from 'common/form/models/claimantResponse/signSettlementAgreement';
-import {getAmount, getFinalPaymentDate, getFirstRepaymentDate, getPaymentAmount, getRepaymentFrequency} from 'common/utils/repaymentUtils'; // isRepaymentPlanFullOrPartAdmit
+import {getAmount, getFinalPaymentDate, getFirstRepaymentDate, getPaymentAmount, getRepaymentFrequency} from 'common/utils/repaymentUtils';
 import {SignSettlmentAgreementGuard} from 'routes/guards/signSettlmentAgreementGuard';
 
 const signSettlementAgreementViewPath = 'features/claimantResponse/sign-settlement-agreement';
