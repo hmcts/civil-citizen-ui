@@ -65,7 +65,7 @@ describe('Repayment Plan', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CAN_WE_USE_URL)
-        .send({option: 'no', telephoneNumber: ''})
+        .send({option: 'no', mediationPhoneNumber: ''})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.PHONE_NUMBER_REQUIRED);
@@ -75,7 +75,7 @@ describe('Repayment Plan', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CAN_WE_USE_URL)
-        .send({option: 'no', telephoneNumber: '1234567890123456789012345678900'})
+        .send({option: 'no', mediationPhoneNumber: '1234567890123456789012345678900'})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.VALID_TEXT_LENGTH);
@@ -85,7 +85,7 @@ describe('Repayment Plan', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CAN_WE_USE_URL)
-        .send({option: 'no', telephoneNumber: '01632960001'})
+        .send({option: 'no', mediationPhoneNumber: '01632960001'})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
@@ -95,7 +95,7 @@ describe('Repayment Plan', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CAN_WE_USE_URL)
-        .send({option: 'yes', telephoneNumber: ''})
+        .send({option: 'yes', mediationPhoneNumber: ''})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
@@ -105,7 +105,7 @@ describe('Repayment Plan', () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CAN_WE_USE_URL)
-        .send({option: 'yes', telephoneNumber: ''})
+        .send({option: 'yes', mediationPhoneNumber: ''})
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -117,7 +117,7 @@ describe('Repayment Plan', () => {
         app.locals.draftStoreClient = mockWithoutRespondentPhone;
         await request(app)
           .post(CAN_WE_USE_URL)
-          .send({option: 'no', telephoneNumber: '01632960002'})
+          .send({option: 'no', mediationPhoneNumber: '01632960002'})
           .expect((res) => {
             expect(res.status).toBe(302);
             expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
