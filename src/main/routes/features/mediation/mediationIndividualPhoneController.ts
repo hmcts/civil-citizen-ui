@@ -24,9 +24,9 @@ const getGenericForm = (mediationIndividualPhoneNumber: MediationIndividualPhone
 
 const isTelephoneNumberSaved = (telephoneNumber: string, req: Request) => {
   if (!telephoneNumber) {
-    return getGenericForm(new MediationIndividualPhoneNumber(YesNo.NO, req.body.telephoneNumber));
+    return getGenericForm(new MediationIndividualPhoneNumber(YesNo.NO, req.body.mediationPhoneNumber));
   }
-  return getGenericForm(new MediationIndividualPhoneNumber(req.body.option, req.body.telephoneNumber));
+  return getGenericForm(new MediationIndividualPhoneNumber(req.body.option, req.body.mediationPhoneNumber));
 };
 
 mediationIndividualPhoneController.get(CAN_WE_USE_URL, async (req, res, next: NextFunction) => {
