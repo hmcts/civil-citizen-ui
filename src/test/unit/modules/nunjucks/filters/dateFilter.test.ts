@@ -1,4 +1,4 @@
-import {addDaysFilterTranslated} from '../../../../../main/modules/nunjucks/filters/dateFilter';
+import {addDaysFilterTranslated, monthTranslated} from '../../../../../main/modules/nunjucks/filters/dateFilter';
 import {t} from 'i18next';
 import {DateTime} from 'luxon';
 
@@ -31,5 +31,15 @@ describe('Add the days to current date to get the expected result', () => {
     //Then
     expect(result).not.toBeNull();
     expect(result).toContain('3 COMMON.MONTH_NAMES.DECEMBER 2004');
+  });
+
+  it('should translate month of the provided date', () => {
+    //Given
+    const referenceDate = new Date('2004-11-28T17:33:46.763Z');
+    //When
+    const result = monthTranslated(referenceDate, t);
+    //Then
+    expect(result).not.toBeNull();
+    expect(result).toContain('28 COMMON.MONTH_NAMES.NOVEMBER 2004');
   });
 });
