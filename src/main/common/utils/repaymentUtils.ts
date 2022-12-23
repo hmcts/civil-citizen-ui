@@ -1,7 +1,6 @@
 import {Claim} from 'common/models/claim';
 import {addDaysToDate, addMonths, formatDateToFullDate} from './dateUtils';
 import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
-import {ResponseType} from 'common/form/models/responseType';
 
 const WEEKDAYS = 7;
 let paymentAmount = 0;
@@ -9,12 +8,12 @@ let repaymentFrequency = '';
 let firstRepaymentDate = new Date(Date.now());
 
 export const isRepaymentPlanFullOrPartAdmit = (claim: Claim) => {
-  if (claim.respondent1.responseType === ResponseType.FULL_ADMISSION) {
+  if (claim.isFullAdmission()) {
     const repaymentPlan = claim.fullAdmission.paymentIntention.repaymentPlan;
     paymentAmount = repaymentPlan?.paymentAmount;
     repaymentFrequency = repaymentPlan?.repaymentFrequency;
     firstRepaymentDate = new Date(repaymentPlan?.firstRepaymentDate);
-  } else if (claim.respondent1.responseType === ResponseType.PART_ADMISSION) {
+  } else if (claim.isPartialAdmission()) {
     const repaymentPlan = claim.partialAdmission.paymentIntention.repaymentPlan;
     paymentAmount = repaymentPlan?.paymentAmount;
     repaymentFrequency = repaymentPlan?.repaymentFrequency;
@@ -25,6 +24,7 @@ export const isRepaymentPlanFullOrPartAdmit = (claim: Claim) => {
 const getNumberOfInstalments = (claim: Claim) => Math.ceil(getAmount(claim) / paymentAmount);
 
 export const getFinalPaymentDate = (claim: Claim) => {
+  isRepaymentPlanFullOrPartAdmit(claim);
   const numberOfInstalments = getNumberOfInstalments(claim);
   let finalRepaymentDate = new Date(Date.now());
 
@@ -47,5 +47,7 @@ export const getFinalPaymentDate = (claim: Claim) => {
 export const getAmount = (claim: Claim) => claim.partialAdmission?.howMuchDoYouOwe?.amount ? claim.partialAdmission.howMuchDoYouOwe.amount : claim.totalClaimAmount;
 export const getPaymentAmount = () => paymentAmount;
 export const getRepaymentFrequency = () => repaymentFrequency;
-export const getFirstRepaymentDate = () => formatDateToFullDate(firstRepaymentDate);
-
+export const getFirstRepaymentDate = (claim: Claim) => {
+  isRepaymentPlanFullOrPartAdmit(claim);
+  return formatDateToFullDate(firstRepaymentDate);
+};

@@ -111,7 +111,6 @@ describe('repaymentUtils', () => {
       //Given
       claim.fullAdmission.paymentIntention.repaymentPlan.repaymentFrequency = TransactionSchedule.WEEK;
       //When
-      isRepaymentPlanFullOrPartAdmit(claim);
       const finalRepaymentDate = getFinalPaymentDate(claim);
       //Then
       const expected = addDaysToDate(claim.fullAdmission.paymentIntention.repaymentPlan.firstRepaymentDate, (4 * WEEKDAYS));
@@ -122,7 +121,6 @@ describe('repaymentUtils', () => {
       //Given
       claim.fullAdmission.paymentIntention.repaymentPlan.repaymentFrequency = TransactionSchedule.TWO_WEEKS;
       //When
-      isRepaymentPlanFullOrPartAdmit(claim);
       const finalRepaymentDate = getFinalPaymentDate(claim);
       //Then
       const expected = addDaysToDate(claim.fullAdmission.paymentIntention.repaymentPlan.firstRepaymentDate, (8 * WEEKDAYS));
@@ -133,7 +131,6 @@ describe('repaymentUtils', () => {
       //Given
       claim.fullAdmission.paymentIntention.repaymentPlan.repaymentFrequency = TransactionSchedule.MONTH;
       //When
-      isRepaymentPlanFullOrPartAdmit(claim);
       const finalRepaymentDate = getFinalPaymentDate(claim);
       //Then
       const expected = addMonths(claim.fullAdmission.paymentIntention.repaymentPlan.firstRepaymentDate, 4);
