@@ -8,10 +8,8 @@ export class SignSettlmentAgreementGuard {
     return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
       try {
         const caseData: Claim = await getCaseDataFromStore(req.params.id);
-        if (caseData.isPartialAdmission() || caseData.isFullAdmission()) {
-          if (caseData.partialAdmission?.paymentIntention?.repaymentPlan || caseData.fullAdmission?.paymentIntention?.repaymentPlan) {
-            return next();
-          }
+        if (caseData.partialAdmission?.paymentIntention?.repaymentPlan || caseData.fullAdmission?.paymentIntention?.repaymentPlan) {
+          return next();
         }
         res.redirect(constructResponseUrlWithIdParams(req.params.id, redirectUrl));
       } catch (error) {
