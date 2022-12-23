@@ -65,10 +65,3 @@ export function addDaysFilterTranslated(value: string, num: number, t: (key:stri
 
   return (newDate.day + ' ' + month + ' ' + newDate.year);
 }
-
-export function monthTranslated(value: Date, t: (key: string) => string): string {
-  const newDate = new Date(value);
-  const month = t('COMMON.MONTH_NAMES.' + newDate.toLocaleString('default', { month: 'long' }).toUpperCase());
-
-  return (newDate.getDate() + ' ' + month + ' ' + newDate.getFullYear());
-}

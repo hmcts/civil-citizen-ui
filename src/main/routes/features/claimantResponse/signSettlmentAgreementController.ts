@@ -11,6 +11,7 @@ import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {SignSettlmentAgreement} from 'common/form/models/claimantResponse/signSettlementAgreement';
 import {getAmount, getFinalPaymentDate, getFirstRepaymentDate, getPaymentAmount, getRepaymentFrequency} from 'common/utils/repaymentUtils';
 import {SignSettlmentAgreementGuard} from 'routes/guards/signSettlmentAgreementGuard';
+import { formatDateToFullDate } from 'common/utils/dateUtils';
 
 const signSettlementAgreementViewPath = 'features/claimantResponse/sign-settlement-agreement';
 const signSettlementAgreementController = Router();
@@ -24,11 +25,12 @@ function renderView(form: GenericForm<SignSettlmentAgreement>, res: Response, da
 signSettlementAgreementController.get(CLAIMANT_SIGN_SETTLEMENT_AGREEMENT, SignSettlmentAgreementGuard.apply(CLAIM_TASK_LIST_URL), async (req:Request, res:Response, next: NextFunction) => {
   try {
     const claim = await getCaseDataFromStore(req.params.id);
+    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const data = {
       amount:getAmount(claim),
       defendant: claim.getDefendantFullName(),
-      firstRepaymentDate: getFirstRepaymentDate(claim),
-      finalRepaymentDate: getFinalPaymentDate(claim),
+      firstRepaymentDate: formatDateToFullDate(getFirstRepaymentDate(claim),lang),
+      finalRepaymentDate: formatDateToFullDate(getFinalPaymentDate(claim), lang),
       paymentAmount:getPaymentAmount(),
       repaymentFrequency:getRepaymentFrequency(),
     };

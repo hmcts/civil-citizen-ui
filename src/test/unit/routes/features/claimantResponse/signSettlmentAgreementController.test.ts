@@ -9,6 +9,8 @@ import {
 } from '../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {ResponseType} from 'common/form/models/responseType';
+import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -25,7 +27,34 @@ describe('Sign Settlement Agreement', () => {
 
   describe('on GET', () => {
     it('should return sign settlement agreement page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      const civilClaimResponseMock = {
+        'case_data': {
+          'respondent1': {
+            'responseType': ResponseType.PART_ADMISSION,
+          },
+          'partialAdmission': {
+            'alreadyPaid': {
+              'option': 'yes',
+            },
+            'howMuchDoYouOwe': {
+              'amount': 200,
+              'totalAmount': 1000,
+            },
+            'paymentIntention': {
+              'repaymentPlan': {
+                'paymentAmount': 50,
+                'repaymentFrequency': TransactionSchedule.WEEK,
+                'firstRepaymentDate': new Date(Date.now()),
+              },
+            },
+          },
+        },
+      };
+      app.locals.draftStoreClient = {
+        set: jest.fn(() => Promise.resolve({})),
+        get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseMock))),
+      };
+
       await request(app).get(CLAIMANT_SIGN_SETTLEMENT_AGREEMENT).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.TITLE'));

@@ -23,7 +23,7 @@
 {% if data.repaymentFrequency === TransactionSchedule.MONTH %}
   {% set theAgreementRepaymentFrequency = t('COMMON.SCHEDULE.MONTH') %}
 {% endif %}
-{% set theAgreementPartTwo = t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.THE_AGREEMENT.REPAYMENT_PLAN_PART_TWO', {firstRepaymentDate: data.firstRepaymentDate | monthTranslated(t) }) %}
+{% set theAgreementPartTwo = t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.THE_AGREEMENT.REPAYMENT_PLAN_PART_TWO', {firstRepaymentDate: data.firstRepaymentDate }) %}
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -50,7 +50,7 @@
                   text: t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.COMPLETION_DATE.LABEL')
                 },
                 value: {
-                  text: t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.COMPLETION_DATE.DATE', { finalRepaymentDate : data.finalRepaymentDate | monthTranslated(t) })
+                  text: t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.COMPLETION_DATE.DATE', { finalRepaymentDate : data.finalRepaymentDate })
                 }
               }
             ]

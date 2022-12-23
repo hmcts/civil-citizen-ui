@@ -1,5 +1,5 @@
 import {Claim} from 'common/models/claim';
-import {addDaysToDate, addMonths, formatDateToFullDate} from './dateUtils';
+import {addDaysToDate, addMonths} from './dateUtils';
 import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 
 const WEEKDAYS = 7;
@@ -39,8 +39,7 @@ export const getFinalPaymentDate = (claim: Claim) => {
       finalRepaymentDate = addMonths(firstRepaymentDate, numberOfInstalments);
       break;
   }
-
-  return formatDateToFullDate(finalRepaymentDate);
+  return finalRepaymentDate;
 
 };
 
@@ -49,5 +48,5 @@ export const getPaymentAmount = () => paymentAmount;
 export const getRepaymentFrequency = () => repaymentFrequency;
 export const getFirstRepaymentDate = (claim: Claim) => {
   isRepaymentPlanFullOrPartAdmit(claim);
-  return formatDateToFullDate(firstRepaymentDate);
+  return firstRepaymentDate;
 };

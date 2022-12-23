@@ -67,7 +67,7 @@ describe('repaymentUtils', () => {
       const finalRepaymentDate = getFinalPaymentDate(claim);
       //Then
       const expected = addDaysToDate(claim.partialAdmission.paymentIntention.repaymentPlan.firstRepaymentDate, (4 * WEEKDAYS));
-      expect(finalRepaymentDate).toEqual(formatDateToFullDate(expected));
+      expect(finalRepaymentDate).toEqual(expected);
     });
 
     it('should return final repayment date when repayment frequency is set to TWO_WEEKS', () => {
@@ -78,7 +78,7 @@ describe('repaymentUtils', () => {
       const finalRepaymentDate = getFinalPaymentDate(claim);
       //Then
       const expected = addDaysToDate(claim.partialAdmission.paymentIntention.repaymentPlan.firstRepaymentDate, (8 * WEEKDAYS));
-      expect(finalRepaymentDate).toEqual(formatDateToFullDate(expected));
+      expect(finalRepaymentDate).toEqual(expected);
     });
 
     it('should return final repayment date when repayment frequency is set to MONTH', () => {
@@ -89,7 +89,7 @@ describe('repaymentUtils', () => {
       const finalRepaymentDate = getFinalPaymentDate(claim);
       //Then
       const expected = addMonths(claim.partialAdmission.paymentIntention.repaymentPlan.firstRepaymentDate, 4);
-      expect(finalRepaymentDate).toEqual(formatDateToFullDate(expected));
+      expect(finalRepaymentDate).toEqual(expected);
     });
   });
 
@@ -114,7 +114,7 @@ describe('repaymentUtils', () => {
       const finalRepaymentDate = getFinalPaymentDate(claim);
       //Then
       const expected = addDaysToDate(claim.fullAdmission.paymentIntention.repaymentPlan.firstRepaymentDate, (4 * WEEKDAYS));
-      expect(finalRepaymentDate).toEqual(formatDateToFullDate(expected));
+      expect(finalRepaymentDate).toEqual(expected);
     });
 
     it('should return final repayment date when repayment frequency is set to TWO_WEEKS', () => {
@@ -124,7 +124,7 @@ describe('repaymentUtils', () => {
       const finalRepaymentDate = getFinalPaymentDate(claim);
       //Then
       const expected = addDaysToDate(claim.fullAdmission.paymentIntention.repaymentPlan.firstRepaymentDate, (8 * WEEKDAYS));
-      expect(finalRepaymentDate).toEqual(formatDateToFullDate(expected));
+      expect(finalRepaymentDate).toEqual(expected);
     });
 
     it('should return final repayment date when repayment frequency is set to MONTH', () => {
@@ -134,7 +134,7 @@ describe('repaymentUtils', () => {
       const finalRepaymentDate = getFinalPaymentDate(claim);
       //Then
       const expected = addMonths(claim.fullAdmission.paymentIntention.repaymentPlan.firstRepaymentDate, 4);
-      expect(finalRepaymentDate).toEqual(formatDateToFullDate(expected));
+      expect(finalRepaymentDate).toEqual(expected);
     });
 
   });
