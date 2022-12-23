@@ -1,13 +1,13 @@
-import { HowMuchDoYouOwe } from "common/form/models/admission/partialAdmission/howMuchDoYouOwe";
-import {PaymentIntention} from "common/form/models/admission/paymentIntention";
-import {ResponseType} from "common/form/models/responseType";
-import { TransactionSchedule } from "common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule";
-import {FullAdmission} from "common/models/fullAdmission";
-import {PartialAdmission} from "common/models/partialAdmission";
-import {Party} from "common/models/party";
-import {addDaysToDate, addMonths, formatDateToFullDate} from "common/utils/dateUtils";
-import {getFinalPaymentDate, isRepaymentPlanFullOrPartAdmit} from "common/utils/repaymentUtils";
-import {createClaimWithBasicRespondentDetails} from "../../../utils/mockClaimForCheckAnswers";
+import { HowMuchDoYouOwe } from 'common/form/models/admission/partialAdmission/howMuchDoYouOwe';
+import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
+import {ResponseType} from 'common/form/models/responseType';
+import { TransactionSchedule } from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {FullAdmission} from 'common/models/fullAdmission';
+import {PartialAdmission} from 'common/models/partialAdmission';
+import {Party} from 'common/models/party';
+import {addDaysToDate, addMonths, formatDateToFullDate} from 'common/utils/dateUtils';
+import {getFinalPaymentDate, isRepaymentPlanFullOrPartAdmit} from 'common/utils/repaymentUtils';
+import {createClaimWithBasicRespondentDetails} from '../../../utils/mockClaimForCheckAnswers';
 
 describe('repaymentUtils', () => {
 
@@ -58,7 +58,7 @@ describe('repaymentUtils', () => {
         repaymentFrequency: TransactionSchedule.WEEK,
         firstRepaymentDate: new Date(Date.now()),
       };
-    })
+    });
     it('should return final repayment date when repayment frequency is set to WEEK', () => {
       //Given
       claim.partialAdmission.paymentIntention.repaymentPlan.repaymentFrequency = TransactionSchedule.WEEK;
@@ -105,7 +105,7 @@ describe('repaymentUtils', () => {
         repaymentFrequency: TransactionSchedule.WEEK,
         firstRepaymentDate: new Date(Date.now()),
       };
-    })
+    });
 
     it('should return final repayment date when repayment frequency is set to WEEK', () => {
       //Given
