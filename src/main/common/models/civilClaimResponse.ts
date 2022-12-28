@@ -55,6 +55,9 @@ export interface CCDClaim extends ClaimUpdate {
   respondent1?: CCDParty;
   statementOfMeans?: StatementOfMeans;
   fullAdmission?: FullAdmission;
+  paymentOption?: PaymentOptionType;
+  repaymentPlan?: RepaymentPlan;
+  paymentDate?: Date;
   partialAdmission?: PartialAdmission;
   rejectAllOfClaim?: RejectAllOfClaim;
   mediation?: Mediation;

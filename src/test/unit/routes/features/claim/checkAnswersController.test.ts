@@ -190,8 +190,7 @@ describe('Response - Check answers', () => {
           expect(res.text).toContain('Submit claim');
         });
     });
-
-    it('should redirect to claim confirmation page when Fee is yes', async () => {
+    it('should redirect to claim submitted confirmation page when help with fees is set to yes', async () => {
       mockGetSummarySections.mockImplementation(() => {
         return createClaimWithYourDetails();
       });
@@ -213,9 +212,9 @@ describe('Response - Check answers', () => {
       await request(app)
         .post(CLAIM_CHECK_ANSWERS_URL)
         .send(data)
-        .expect((res: Response) => {
+        .expect((res ) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain(CLAIM_CONFIRMATION_URL);
+          expect(res.header.location).toBe(CLAIM_CONFIRMATION_URL);
         });
     });
     it('should redirect to claim confirmation page when Fee is no', async () => {

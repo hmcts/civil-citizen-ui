@@ -4,9 +4,9 @@ import {
   getStatementOfTruth,
   getSummarySections,
   saveStatementOfTruth,
-} from '../../../services/features/claim/checkAnswers/checkAnswersService';
-import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
-import {Claim} from '../../../common/models/claim';
+} from 'services/features/claim/checkAnswers/checkAnswersService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'common/models/claim';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {AppRequest} from '../../../common/models/AppRequest';
 import {GenericForm} from '../../../common/form/models/genericForm';
@@ -46,7 +46,7 @@ claimCheckAnswersController.get(CLAIM_CHECK_ANSWERS_URL,
     }
   });
 
-claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | AppRequest, res: Response, next: NextFunction) => {
   try {
     const userId = (<AppRequest>req).session?.user?.id;
     const isFullAmountRejected = (req.body?.isFullAmountRejected === 'true');
@@ -60,6 +60,7 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest
       renderView(res, form, claim, userId, lang);
     } else {
       await saveStatementOfTruth(userId, form.model);
+      await submitClaim(<AppRequest>req);
       if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
         res.redirect(constructResponseUrlWithIdParams(userId, paymentUrl));
       } else {
