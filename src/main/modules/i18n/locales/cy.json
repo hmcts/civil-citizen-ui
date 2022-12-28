@@ -2203,7 +2203,10 @@
     "THERE_WAS_A_PROBLEM": "Roedd problem",
     "TRY_AGAIN": "Try again or enter the address manually.",
     "TYPE_OF_ACCOUNT_REQUIRED": "Dewiswch math o gyfrif",
-    "VALID_ADDRESS_LINE_1": "Rhowch linell gyntaf y cyfeiriad",
+    "VALID_ADDRESS_LINE_1":{
+      "PRIMARY": "Rhowch linell gyntaf y cyfeiriad",
+      "CORRESPONDENCE": "Rhowch linell gyntaf y cyfeiriad ar gyfer gohebiaeth"
+    } ,
     "VALID_AGREED_RESPONSE_DATE": "Rhowch y dyddiad ymateb yr ydych wedi’i gytuno",
     "VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST": "Rhaid i’r dyddiad ymateb yr ydych wedi’i gytuno fod yn y dyfodol",
     "VALID_AMOUNT": "Nodwch swm dilys",
@@ -2213,15 +2216,15 @@
     "VALID_BETWEEN_NUMBERS_0_80": "Enter a number between 0 and 80",
     "VALID_CCJ_PAYMENT_OPTION": "Choose option",
     "VALID_CHOOSE": "Choose your response",
-    "VALID_CITY": "Rhowch enw tref/dinas dilys",
+    "VALID_CITY":{
+      "PRIMARY": "Rhowch enw tref/dinas dilys",
+      "CORRESPONDENCE": "Rhowch enw tref/dinas ar gyfer gohebiaeth"
+    },
     "VALID_CLAIM_AMOUNT": "Enter an amount of money",
     "VALID_CLAIM_INTEREST_FROM": "Choose when to claim interest from",
     "VALID_CLAIM_INTEREST_END_DATE": "Choose when you want to stop claiming interest",
     "VALID_CLAIM_NUMBER": "Enter a claim number",
     "VALID_CLAIM_REFERENCE_NUMBER": "Enter a valid claim number",
-    "VALID_CORRESPONDENCE_ADDRESS_LINE_1": "Rhowch linell gyntaf y cyfeiriad ar gyfer gohebiaeth",
-    "VALID_CORRESPONDENCE_CITY": "Rhowch enw tref/dinas ar gyfer gohebiaeth",
-    "VALID_CORRESPONDENCE_POSTCODE": "Rhowch god post y cyfeiriad ar gyfer gohebiaeth",
     "VALID_DATE": "Rhowch ddyddiad dilys",
     "VALID_DATE_IN_PAST": "Nodwch ddyddiad cyn {{dateToday}}",
     "VALID_DATE_NOT_IN_PAST": "Nodwch ddyddiad heddiw neu ddyddiad yn y dyfodol",
@@ -2265,7 +2268,10 @@
       "YES_NO": "Select yes if you want to ask for a telephone or video hearing"
     },
     "VALID_POSITIVE_NUMBER": "Peidiwch â rhoi rhif negyddol",
-    "VALID_POSTCODE": "Rhowch y cod post",
+    "VALID_POSTCODE": {
+      "PRIMARY": "Rhowch y cod post",
+      "CORRESPONDENCE": "Rhowch god post y cyfeiriad ar gyfer gohebiaeth"
+    },
     "VALID_REASON_REQUIRED": "Rhowch reswm",
     "VALID_REQUEST_EXTRA_4_WEEKS": "Dewiswch ‘ydw’ os ydych chi eisiau 4 wythnos arall i geisio setlo’r hawliad",
     "VALID_SENT_EXPERT_REPORTS": "Select yes if you have sent expert reports to the other parties",

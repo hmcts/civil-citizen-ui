@@ -2204,7 +2204,10 @@
     "THERE_WAS_A_PROBLEM": "There was a problem",
     "TRY_AGAIN": "Try again or enter the address manually.",
     "TYPE_OF_ACCOUNT_REQUIRED": "Select a type of account",
-    "VALID_ADDRESS_LINE_1": "Enter first address line",
+    "VALID_ADDRESS_LINE_1": {
+      "PRIMARY": "Enter first address line",
+      "CORRESPONDENCE": "Enter first correspondence address line"
+    },
     "VALID_AGREED_RESPONSE_DATE": "Enter the agreed response date",
     "VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST": "Agreed response date must be in the future",
     "VALID_AMOUNT": "Enter a valid amount",
@@ -2214,15 +2217,15 @@
     "VALID_BETWEEN_NUMBERS_0_80": "Enter a number between 0 and 80",
     "VALID_CCJ_PAYMENT_OPTION": "Choose option",
     "VALID_CHOOSE": "Choose your response",
-    "VALID_CITY": "Enter a valid town/city",
+    "VALID_CITY": {
+      "PRIMARY": "Enter a valid town/city",
+      "CORRESPONDENCE": "Enter correspondence town/city"
+    },
     "VALID_CLAIM_AMOUNT": "Enter an amount of money",
     "VALID_CLAIM_INTEREST_FROM": "Choose when to claim interest from",
     "VALID_CLAIM_INTEREST_END_DATE": "Choose when you want to stop claiming interest",
     "VALID_CLAIM_NUMBER": "Enter a claim number",
     "VALID_CLAIM_REFERENCE_NUMBER": "Enter a valid claim number",
-    "VALID_CORRESPONDENCE_ADDRESS_LINE_1": "Enter first correspondence address line",
-    "VALID_CORRESPONDENCE_CITY": "Enter correspondence town/city",
-    "VALID_CORRESPONDENCE_POSTCODE": "Enter correspondence address postcode",
     "VALID_DATE": "Please enter a valid date",
     "VALID_DATE_IN_PAST": "Enter date before {{dateToday}}",
     "VALID_DATE_NOT_IN_PAST": "Enter a date that is today or in the future",
@@ -2266,7 +2269,10 @@
       "YES_NO": "Select yes if you want to ask for a telephone or video hearing"
     },
     "VALID_POSITIVE_NUMBER": "Don’t enter a negative number",
-    "VALID_POSTCODE": "Enter address postcode",
+    "VALID_POSTCODE": {
+      "PRIMARY": "Enter address postcode",
+      "CORRESPONDENCE": "Enter correspondence address postcode"
+    },
     "VALID_REASON_REQUIRED": "Enter a reason",
     "VALID_REQUEST_EXTRA_4_WEEKS": "Select yes if you want an extra 4 weeks to try to settle the claim",
     "VALID_SENT_EXPERT_REPORTS": "Select yes if you have sent expert reports to the other parties",
