@@ -52,7 +52,7 @@ const saveMediation = async (claimId: string, value: any, mediationPropertyName:
       }
     } else if (claim.mediation) {
       claim.mediation[mediationPropertyName] = value;
-    } else if (!claim.mediation) {
+    } else {
       const mediation = new Mediation();
       mediation[mediationPropertyName] = value;
       claim.mediation = mediation;
