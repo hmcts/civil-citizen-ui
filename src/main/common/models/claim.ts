@@ -41,13 +41,14 @@ import {ClaimDetails} from 'common/form/models/claim/details/claimDetails';
 import {ClaimantResponse} from './claimantResponse';
 import {CCDClaim} from 'models/civilClaimResponse';
 import {toCUIParty} from 'services/translation/response/convertToCUI/convertToCUIParty';
-import {SelfEmployedAs} from 'models/selfEmployedAs';
-import {TaxPayments} from 'models/taxPayments';
-import {RegularIncome} from 'common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
-import {RegularExpenses} from 'common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
-import {CourtOrders} from 'common/form/models/statementOfMeans/courtOrders/courtOrders';
-import {PriorityDebts} from 'common/form/models/statementOfMeans/priorityDebts';
-import {Debts} from 'common/form/models/statementOfMeans/debts/debts';
+import {SelfEmployedAs} from '../models/selfEmployedAs';
+import {TaxPayments} from '../models/taxPayments';
+import {RegularIncome} from '../../common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
+import {RegularExpenses} from '../../common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
+import {CourtOrders} from '../../common/form/models/statementOfMeans/courtOrders/courtOrders';
+import {PriorityDebts} from '../../common/form/models/statementOfMeans/priorityDebts';
+import {Debts} from '../../common/form/models/statementOfMeans/debts/debts';
+import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreference';
 export class Claim {
   legacyCaseReference: string;
   applicant1?: Party;
@@ -80,6 +81,7 @@ export class Claim {
   respondentSolicitor1AgreedDeadlineExtension?: Date;
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
+  claimBilingualLanguagePreference: ClaimBilingualLanguagePreference;
 
   get responseStatus(): ClaimResponseStatus {
     if (this.isFullAdmission() && this.isFAPaymentOptionPayImmediately()) {
@@ -118,18 +120,6 @@ export class Claim {
       return ClaimResponseStatus.RC_DISPUTE;
     }
 
-  }
-
-  get hasSupportRequiredList(): boolean {
-    return !!this.directionQuestionnaire?.hearing?.supportRequiredList;
-  }
-
-  get isSupportRequiredYes(): boolean {
-    return this.directionQuestionnaire?.hearing?.supportRequiredList?.option === YesNo.YES;
-  }
-
-  get isSupportRequiredDetailsAvailable(): boolean {
-    return this.directionQuestionnaire?.hearing?.supportRequiredList?.items?.length > 0;
   }
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
@@ -349,6 +339,18 @@ export class Claim {
 
   isResponseDateInThePast(): boolean {
     return this.respondent1ResponseDate <= new Date();
+  }
+
+  get hasSupportRequiredList(): boolean {
+    return !!this.directionQuestionnaire?.hearing?.supportRequiredList;
+  }
+
+  get isSupportRequiredYes(): boolean {
+    return this.directionQuestionnaire?.hearing?.supportRequiredList?.option === YesNo.YES;
+  }
+
+  get isSupportRequiredDetailsAvailable(): boolean {
+    return this.directionQuestionnaire?.hearing?.supportRequiredList?.items?.length > 0;
   }
 
   hasExpertReportDetails(): boolean {

@@ -8,7 +8,6 @@ import {PartyType} from '../../main/common/models/partyType';
 import {DebtItems} from '../../main/common/form/models/statementOfMeans/debts/debtItems';
 import {Debts} from '../../main/common/form/models/statementOfMeans/debts/debts';
 import {PriorityDebts} from '../../main/common/form/models/statementOfMeans/priorityDebts';
-import {PriorityDebtDetails} from '../../main/common/form/models/statementOfMeans/priorityDebtDetails';
 import {Transaction} from '../../main/common/form/models/statementOfMeans/expensesAndIncome/transaction';
 import {TransactionSource} from '../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSource';
 import {RegularExpenses} from '../../main/common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
@@ -336,14 +335,51 @@ export const createClaimWithPriorityDebts = (): Claim => {
   claim.fullAdmission.paymentIntention = new PaymentIntention();
   claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
 
-  const mortgage: PriorityDebtDetails = new PriorityDebtDetails(true, 'Mortgage', 1000, 'WEEK');
-  const rent: PriorityDebtDetails = new PriorityDebtDetails(true, 'Rent', 2000, 'FOUR_WEEKS');
-  const councilTax: PriorityDebtDetails = new PriorityDebtDetails(true, 'Council Tax or Community Charge', 500.55, 'FOUR_WEEKS');
-  const gas: PriorityDebtDetails = new PriorityDebtDetails(true, 'Gas', 300, 'WEEK');
-  const electricity: PriorityDebtDetails = new PriorityDebtDetails(true, 'Electricity', 400, 'TWO_WEEKS');
-  const water: PriorityDebtDetails = new PriorityDebtDetails(true, 'Water', 500, 'MONTH');
-  const maintenance: PriorityDebtDetails = new PriorityDebtDetails(true, 'Maintenance Payments', 500, 'TWO_WEEKS');
-  const priorityDebts: PriorityDebts = new PriorityDebts(mortgage, rent, councilTax, gas, electricity, water, maintenance);
+  const priorityDebts: PriorityDebts = new PriorityDebts(
+    {
+      mortgage: new Transaction(true, new TransactionSource({
+        name: 'Mortgage',
+        amount: 1000,
+        schedule: TransactionSchedule.WEEK,
+        isIncome: false,
+      })),
+      rent: new Transaction(true, new TransactionSource({
+        name: 'Rent',
+        amount: 2000,
+        schedule: TransactionSchedule.FOUR_WEEKS,
+        isIncome: false,
+      })),
+      gas: new Transaction(true, new TransactionSource({
+        name: 'Gas',
+        amount: 300,
+        schedule: TransactionSchedule.WEEK,
+        isIncome: false,
+      })),
+      councilTax: new Transaction(true, new TransactionSource({
+        name: 'Council Tax or Community Charge',
+        amount: 500.55,
+        schedule: TransactionSchedule.FOUR_WEEKS,
+        isIncome: false,
+      })),
+      electricity: new Transaction(true, new TransactionSource({
+        name: 'Electricity',
+        amount: 400,
+        schedule: TransactionSchedule.TWO_WEEKS,
+        isIncome: false,
+      })),
+      water: new Transaction(true, new TransactionSource({
+        name: 'Water',
+        amount: 500,
+        schedule: TransactionSchedule.MONTH,
+        isIncome: false,
+      })),
+      maintenance: new Transaction(true, new TransactionSource({
+        name: 'Maintenance Payments',
+        amount: 500,
+        schedule: TransactionSchedule.TWO_WEEKS,
+        isIncome: false,
+      })),
+    });
 
   claim.statementOfMeans = {
     priorityDebts: priorityDebts,
