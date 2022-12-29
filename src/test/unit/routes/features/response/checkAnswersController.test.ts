@@ -8,14 +8,10 @@ import {
 import {CITIZEN_DETAILS_URL, CLAIM_TASK_LIST_URL, RESPONSE_CHECK_ANSWERS_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {SummarySections} from 'models/summaryList/summarySections';
-import {getElementsByXPath} from '../../../../utils/xpathExtractor';
+
 import {TaskStatus} from 'models/taskList/TaskStatus';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {isFullAmountReject} from 'modules/claimDetailsService';
-
-const jsdom = require('jsdom');
-const {JSDOM} = jsdom;
-
 const request = require('supertest');
 const {app} = require('../../../../../main/app');
 const session = require('supertest-session');
@@ -80,27 +76,6 @@ describe('Response - Check answers', () => {
         });
     });
 
-    it('should return check answers page', async () => {
-      mockGetSummarySections.mockImplementation(() => {
-        return createClaimWithBasicRespondentDetails();
-      });
-
-      const response = await session(app).get(respondentCheckAnswersUrl);
-      expect(response.status).toBe(200);
-
-      const dom = new JSDOM(response.text);
-      const htmlDocument = dom.window.document;
-      const header = getElementsByXPath("//h1[@class='govuk-heading-l']", htmlDocument);
-      const fullName = getElementsByXPath(
-        "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'Full name')]]",
-        htmlDocument);
-
-      expect(header.length).toBe(1);
-      expect(header[0].textContent).toBe(checkYourAnswerEng);
-      expect(fullName.length).toBe(1);
-      expect(fullName[0].textContent?.trim()).toBe(PARTY_NAME);
-
-    });
     it('should pass english translation via query', async () => {
       await session(app).get(respondentCheckAnswersUrl)
         .query({lang: 'en'})
