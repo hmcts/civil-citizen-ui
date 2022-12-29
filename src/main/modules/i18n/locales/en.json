@@ -715,6 +715,11 @@
       "PAGE_TITLE": "Has the defendant paid you £{{ paidAmount }}?",
       "TITLE": "Has the defendant paid you £{{ paidAmount }}?"
     },
+    "CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED": {
+      "PAGE_TITLE": "Repayment plan accepted",
+      "TITLE": "Repayment plan accepted",
+      "THE_COURT_HAS_ACCEPTED_YOUR_REPAYMENT_PLAN": "The court has accepted your repayment plan"
+    },
     "CLAIMANT_RESPONSE_REJECTION_REASON": {
       "PAGE_TITLE": "Rejection reason",
       "TITLE": "Why did you reject their response?"
