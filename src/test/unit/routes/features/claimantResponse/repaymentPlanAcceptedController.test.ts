@@ -23,16 +23,4 @@ describe('Claimant Response - Rejection reason', () => {
         });
     });
   });
-
-  describe('on POST', () => {
-    it('should redirect to claimant-response task list page when clicking continue button', async () => {
-      await request(app)
-        .post(CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED_URL)
-        .send()
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIMANT_RESPONSE_TASK_LIST_URL);
-        });
-    });
-  });
 });

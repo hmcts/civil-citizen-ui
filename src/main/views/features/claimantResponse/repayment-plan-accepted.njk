@@ -18,7 +18,8 @@
             {{ csrfProtection(csrf) }}
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t('COMMON.BUTTONS.CONTINUE')
+                text: t('COMMON.BUTTONS.CONTINUE'),
+                href: '/case/' + claimId + '/claimant-response/task-list'
               }) }}
               {{ contactUsForHelp(t) }}
             </div>
