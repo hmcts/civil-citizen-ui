@@ -1,9 +1,10 @@
-import { NextFunction, Request, Response, Router } from 'express';
-import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
-import { GenericForm } from 'common/form/models/genericForm';
-import { getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
-import { Claim } from 'common/models/claim';
-import { formatDateToFullDate } from 'common/utils/dateUtils';
+import {NextFunction, Request, Response, Router} from 'express';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {GenericForm} from 'common/form/models/genericForm';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'common/models/claim';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {getLng} from 'common/utils/languageToggleUtils';
 import {
   CourtProposedPlan,
   CourtProposedPlanOptions,
@@ -23,9 +24,8 @@ import {
   convertFrequencyToText,
   getNumberOfInstalments,
   getPaymentAmount,
-  getRepaymentFrequency
+  getRepaymentFrequency,
 } from 'common/utils/repaymentUtils';
-import { getLng } from 'common/utils/languageToggleUtils';
 
 const courtProposedPlanViewPath = 'features/claimantResponse/court-proposed-plan';
 const courtProposedPlanController = Router();

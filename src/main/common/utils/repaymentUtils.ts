@@ -24,7 +24,7 @@ export const isRepaymentPlanFullOrPartAdmit = (claim: Claim) => {
 
 export const getNumberOfInstalments = (claim: Claim) => {
   isRepaymentPlanFullOrPartAdmit(claim);
-  return Math.ceil(getAmount(claim) / paymentAmount)
+  return Math.ceil(getAmount(claim) / paymentAmount);
 };
 
 export const getFinalPaymentDate = (claim: Claim) => {
@@ -51,12 +51,12 @@ export const getAmount = (claim: Claim) => claim.partialAdmission?.howMuchDoYouO
 
 export const getPaymentAmount = (claim: Claim) => {
   isRepaymentPlanFullOrPartAdmit(claim);
-  return paymentAmount
+  return paymentAmount;
 };
 
 export const getRepaymentFrequency = (claim: Claim) => {
   isRepaymentPlanFullOrPartAdmit(claim);
-  return repaymentFrequency
+  return repaymentFrequency;
 };
 
 export const getFirstRepaymentDate = (claim: Claim) => {
