@@ -9,9 +9,9 @@
 // import {getFinalPaymentDate, isRepaymentPlanFullOrPartAdmit} from 'common/utils/repaymentUtils';
 // import {createClaimWithBasicRespondentDetails} from '../../../utils/mockClaimForCheckAnswers';
 
-import {TransactionSchedule} from "common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule";
-import {convertFrequencyToText} from "common/utils/repaymentUtils";
-import {t} from "i18next";
+import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {convertFrequencyToText} from 'common/utils/repaymentUtils';
+import {t} from 'i18next';
 
 describe('repaymentUtils', () => {
 
