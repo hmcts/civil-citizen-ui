@@ -20,7 +20,7 @@ import {
 import {
   getFinalPaymentDate,
   getFirstRepaymentDate,
-  getFrequencyText,
+  convertFrequencyToText,
   getNumberOfInstalments,
   getPaymentAmount,
   getRepaymentFrequency
@@ -42,11 +42,10 @@ courtProposedPlanController.get(CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL,
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimantResponse = await getClaimantResponse(claimId);
     const claim: Claim = await getCaseDataFromStore(claimId);
-    const repaymentFrequency = getRepaymentFrequency(claim)
 
     const repaymentPlan = {
       paymentAmount: getPaymentAmount(claim),
-      repaymentFrequency: getFrequencyText(repaymentFrequency, getLng(lang)),
+      repaymentFrequency: convertFrequencyToText(getRepaymentFrequency(claim), getLng(lang)),
       firstRepaymentDate: formatDateToFullDate(new Date(getFirstRepaymentDate(claim))),
       finalRepaymentDate: formatDateToFullDate(new Date(getFinalPaymentDate(claim))),
       repaymentLength: getNumberOfInstalments(claim),

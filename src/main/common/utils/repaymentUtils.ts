@@ -48,19 +48,23 @@ export const getFinalPaymentDate = (claim: Claim) => {
 };
 
 export const getAmount = (claim: Claim) => claim.partialAdmission?.howMuchDoYouOwe?.amount ? claim.partialAdmission.howMuchDoYouOwe.amount : claim.totalClaimAmount;
+
 export const getPaymentAmount = (claim: Claim) => {
   isRepaymentPlanFullOrPartAdmit(claim);
   return paymentAmount
 };
+
 export const getRepaymentFrequency = (claim: Claim) => {
   isRepaymentPlanFullOrPartAdmit(claim);
   return repaymentFrequency
 };
+
 export const getFirstRepaymentDate = (claim: Claim) => {
   isRepaymentPlanFullOrPartAdmit(claim);
   return firstRepaymentDate;
 };
-export const getFrequencyText = (frequency: string, lng: string) => {
+
+export const convertFrequencyToText = (frequency: string, lng: string) => {
   switch (frequency as TransactionSchedule) {
     case TransactionSchedule.WEEK:
       return t('COMMON.FREQUENCY_OF_PAYMENTS.WEEKLY', {lng});
