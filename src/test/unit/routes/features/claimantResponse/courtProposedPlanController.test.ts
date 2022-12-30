@@ -52,11 +52,11 @@ describe('Claimant court proposed plan Controller', () => {
 
     it('should return error on empty post', async () => {
       await request(app).post(CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL)
-      .send({decision: null})
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('ERRORS.ACCEPT_REPAYMENT_PLAN'));
-      });
+        .send({decision: null})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.ACCEPT_REPAYMENT_PLAN'));
+        });
     });
 
     it('should redirect to the claimant response task-list if option ACCEPT_REPAYMENT_PLAN is selected', async () => {
