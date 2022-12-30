@@ -2001,7 +2001,7 @@
     }
   },
   "ERRORS": {
-    "ACCEPT_REPAYMENT_PLAN": "Select I want to accept this repayment plan to accept the court's proposed repayment plan",
+    "ACCEPT_REPAYMENT_PLAN": "Select I want to accept this repayment plan to accept the court’s proposed repayment plan",
     "ADDRESS_NOT_FOUND": "We can't find an address for that postcode.",
     "AMOUNT_INVALID_DECIMALS": "Enter a valid amount, maximum two decimal places",
     "AMOUNT_LESS_THAN_CLAIMED": "Enter a value less than the amount claimed",
