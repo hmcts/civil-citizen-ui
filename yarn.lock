@@ -6999,10 +6999,10 @@ json-stringify-safe@^5.0.1, json-stringify-safe@~5.0.1:
   resolved "https://registry.yarnpkg.com/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
   integrity sha512-ZClg6AaYvamvYEE82d3Iyd3vSSIjQ+odgjaTzRuO3s7toCdFKczob2i0zCh7JE8kWn17yvAWhUVxvqGwUalsRA==
 
-json5@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/json5/-/json5-2.2.1.tgz#655d50ed1e6f95ad1a3caababd2b0efda10b395c"
-  integrity sha512-1hqLFMSrGHRHxav9q9gNjJ5EXznIxGVO09xQRrwplcS8qs28pZ8s8hupZAmqDwZUmVZ2Qb2jnyPOWcDH8m8dlA==
+json5@^2.2.1, json5@^2.2.2:
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/json5/-/json5-2.2.3.tgz#78cd6f1a19bdc12b73db5ad0c61efd66c1e29283"
+  integrity sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==
 
 jsonfile@^3.0.0:
   version "3.0.1"
@@ -7621,10 +7621,10 @@ mocha-junit-reporter@1.23.1:
     strip-ansi "^4.0.0"
     xml "^1.0.0"
 
-mocha-multi@^1.1.6:
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/mocha-multi/-/mocha-multi-1.1.6.tgz#f9386098038b75eabf53e40061f420ddad89c3b2"
-  integrity sha512-hMVmd9C1h4PEiFNwHxn8aa5/EgGLg0UswdOrlrq1Y8ieKmot8hZLYaiESIgg/He3E4oxwaXPWT1V1PJ0qNJlUQ==
+mocha-multi@^1.1.7:
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/mocha-multi/-/mocha-multi-1.1.7.tgz#0f94d00c22ae39d20c253545d8eee0d2c4420205"
+  integrity sha512-SXZRgHy0XiRTASyOp0p6fjOkdj+R62L6cqutnYyQOvIjNznJuUwzykxctypeRiOwPd+gfn4yt3NRulMQyI8Tzg==
   dependencies:
     debug "^4.1.1"
     is-string "^1.0.4"
