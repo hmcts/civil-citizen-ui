@@ -70,7 +70,7 @@
     "i18next-fs-backend": "^2.0.0",
     "i18next-http-middleware": "^3.2.1",
     "ioredis": "^5.2.3",
-    "jquery": "^3.6.1",
+    "jquery": "^3.6.3",
     "jsdom": "^20.0.3",
     "jwt-decode": "^3.1.2",
     "launchdarkly-node-client-sdk": "^2.2.1",
