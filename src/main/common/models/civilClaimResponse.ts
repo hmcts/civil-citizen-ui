@@ -80,3 +80,9 @@ export interface ClaimFeeData {
   code?: string;
   version?: number;
 }
+
+export interface ClaimFeeData {
+  calculatedAmountInPence?: number;
+  code?: string;
+  version?: number;
+}
