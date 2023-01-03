@@ -1,7 +1,6 @@
 import {Claim} from 'common/models/claim';
 import {addDaysToDate, addMonths} from './dateUtils';
 import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
-import {t} from 'i18next';
 
 const WEEKDAYS = 7;
 
