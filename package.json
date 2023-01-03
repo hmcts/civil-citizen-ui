@@ -111,7 +111,7 @@
     "jest-junit": "^15.0.0",
     "jest-launchdarkly-mock": "^1.0.6",
     "mini-css-extract-plugin": "^2.6.1",
-    "mocha-multi": "^1.1.6",
+    "mocha-multi": "^1.1.7",
     "mochawesome": "^7.0.1",
     "nock": "^13.2.9",
     "node-cache": "^5.1.2",
