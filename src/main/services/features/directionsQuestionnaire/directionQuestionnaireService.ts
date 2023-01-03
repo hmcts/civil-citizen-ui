@@ -64,9 +64,7 @@ const saveDirectionQuestionnaire = async (claimId: string, value: any, direction
         claim.claimantResponse = claim?.claimantResponse ? claim.claimantResponse : new ClaimantResponse();
         claim.claimantResponse.directionQuestionnaire = directionQuestionnaire;
       }
-    }
-
-    if (claim.directionQuestionnaire && claim.isDefendantNotResponded()) {
+    } else if (claim.directionQuestionnaire) {
       if (parentPropertyName && claim.directionQuestionnaire[parentPropertyName]) {
         claim.directionQuestionnaire[parentPropertyName][directionQuestionnairePropertyName] = value;
       } else if (parentPropertyName && !claim.directionQuestionnaire[parentPropertyName]) {
@@ -74,7 +72,7 @@ const saveDirectionQuestionnaire = async (claimId: string, value: any, direction
       } else {
         claim.directionQuestionnaire[directionQuestionnairePropertyName] = value;
       }
-    } else if (claim.isDefendantNotResponded()) {
+    } else {
       const directionQuestionnaire: any = new DirectionQuestionnaire();
       if (parentPropertyName) {
         directionQuestionnaire[parentPropertyName] = {[directionQuestionnairePropertyName]: value};
