@@ -53,7 +53,7 @@
     "axios": "^1.2.0",
     "boolean": "^3.2.0",
     "class-transformer": "^0.5.1",
-    "class-validator": "^0.13.2",
+    "class-validator": "^0.14.0",
     "codeceptjs": "^3.3.6",
     "config": "^3.3.8",
     "cookie-parser": "^1.4.6",
