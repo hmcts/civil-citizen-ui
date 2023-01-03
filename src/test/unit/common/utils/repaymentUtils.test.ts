@@ -5,8 +5,8 @@ import { TransactionSchedule } from 'common/form/models/statementOfMeans/expense
 import {FullAdmission} from 'common/models/fullAdmission';
 import {PartialAdmission} from 'common/models/partialAdmission';
 import {Party} from 'common/models/party';
-import {addDaysToDate, addMonths} from 'common/utils/dateUtils'; // formatDateToFullDate
-import {getFinalPaymentDate, getFirstRepaymentDate, getPaymentAmount, getRepaymentFrequency} from 'common/utils/repaymentUtils'; // isRepaymentPlanFullOrPartAdmit
+import {addDaysToDate, addMonths} from 'common/utils/dateUtils';
+import {getFinalPaymentDate, getFirstRepaymentDate, getPaymentAmount, getRepaymentFrequency} from 'common/utils/repaymentUtils';
 import {createClaimWithBasicRespondentDetails} from '../../../utils/mockClaimForCheckAnswers';
 
 describe('repaymentUtils', () => {
