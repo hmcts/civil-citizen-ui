@@ -33,32 +33,21 @@ export const getAmount = (claim: Claim) => claim.partialAdmission?.howMuchDoYouO
 
 export const getPaymentAmount = (claim: Claim) => {
   if (claim.isFullAdmission()) {
-    return claim.fullAdmission.paymentIntention.repaymentPlan.paymentAmount;
+    return claim.fullAdmission.paymentIntention.repaymentPlan?.paymentAmount;
   }
-  return claim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount;
+  return claim.partialAdmission.paymentIntention.repaymentPlan?.paymentAmount;
 };
 
 export const getRepaymentFrequency = (claim: Claim) => {
   if (claim.isFullAdmission()) {
-    return claim.fullAdmission.paymentIntention.repaymentPlan.repaymentFrequency;
+    return claim.fullAdmission.paymentIntention.repaymentPlan?.repaymentFrequency;
   }
-  return claim.partialAdmission.paymentIntention.repaymentPlan.repaymentFrequency;
+  return claim.partialAdmission.paymentIntention.repaymentPlan?.repaymentFrequency;
 };
 
 export const getFirstRepaymentDate = (claim: Claim) => {
   if (claim.isFullAdmission()) {
-    return new Date(claim.fullAdmission.paymentIntention.repaymentPlan.firstRepaymentDate);
+    return new Date(claim.fullAdmission.paymentIntention.repaymentPlan?.firstRepaymentDate);
   }
-  return new Date(claim.partialAdmission.paymentIntention.repaymentPlan.firstRepaymentDate);
-};
-
-export const convertFrequencyToText = (frequency: string, lng: string): string => {
-  switch (frequency as TransactionSchedule) {
-    case TransactionSchedule.WEEK:
-      return t('COMMON.FREQUENCY_OF_PAYMENTS.WEEKLY', { lng });
-    case TransactionSchedule.TWO_WEEKS:
-      return t('COMMON.FREQUENCY_OF_PAYMENTS.TWO_WEEKS', { lng });
-    case TransactionSchedule.MONTH:
-      return t('COMMON.FREQUENCY_OF_PAYMENTS.MONTHLY', { lng });
-  }
+  return new Date(claim.partialAdmission.paymentIntention.repaymentPlan?.firstRepaymentDate);
 };
