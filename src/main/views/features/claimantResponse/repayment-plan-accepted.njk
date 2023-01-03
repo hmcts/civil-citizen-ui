@@ -14,16 +14,14 @@
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t('PAGES.CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED.TITLE') }}</h1>
           <p class="govuk-body">{{ t('PAGES.CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED.THE_COURT_HAS_ACCEPTED_YOUR_REPAYMENT_PLAN') }}</p>
-          <form method="post" novalidate>
-            {{ csrfProtection(csrf) }}
-            <div class="govuk-form-group">
-              {{ govukButton({
+          {{ csrfProtection(csrf) }}
+          <div class="govuk-form-group">
+            {{ govukButton({
                 text: t('COMMON.BUTTONS.CONTINUE'),
                 href: '/case/' + claimId + '/claimant-response/task-list'
               }) }}
-              {{ contactUsForHelp(t) }}
-            </div>
-          </form>
+            {{ contactUsForHelp(t) }}
+          </div>
         </div>
       </div>
     </main>
