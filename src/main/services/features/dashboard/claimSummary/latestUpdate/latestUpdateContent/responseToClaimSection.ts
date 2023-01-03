@@ -1,6 +1,6 @@
 import {ClaimSummarySection, ClaimSummaryType} from '../../../../../../common/form/models/claimSummarySection';
 import {Claim} from '../../../../../../common/models/claim';
-import {CLAIM_TASK_LIST_URL} from '../../../../../../routes/urls';
+import {BILINGUAL_LANGUAGE_PREFERENCE_URL} from '../../../../../../routes/urls';
 
 export const getResponseNotSubmittedTitle = (isResponseDeadlineExtended: boolean): ClaimSummarySection => {
   return isResponseDeadlineExtended ? ({
@@ -30,7 +30,7 @@ export const getNotPastResponseDeadlineContent = (claim: Claim): ClaimSummarySec
 };
 
 export const getPastResponseDeadlineContent = (claim: Claim): ClaimSummarySection[] => {
-  const claimantName = claim.getClaimantName();
+  const claimantName = claim.getClaimantFullName();
   return [
     {
       type: ClaimSummaryType.PARAGRAPH,
@@ -60,7 +60,7 @@ export const getRespondToClaimLink = (claimId: string): ClaimSummarySection => {
       type: ClaimSummaryType.LINK,
       data: {
         text: 'COMMON.BUTTONS.RESPOND_TO_CLAIM',
-        href: CLAIM_TASK_LIST_URL.replace(':id', claimId),
+        href: BILINGUAL_LANGUAGE_PREFERENCE_URL.replace(':id', claimId),
       },
     }
   );

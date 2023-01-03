@@ -20,6 +20,7 @@ import {ResponseDeadline} from '../../common/models/responseDeadline';
 import {DirectionQuestionnaire} from '../../common/models/directionsQuestionnaire/directionQuestionnaire';
 import {CCDParty} from '../../common/models/ccdResponse/ccdParty';
 import {ClaimUpdate} from 'models/events/eventDto';
+import {FullAdmission} from './fullAdmission';
 
 export class CivilClaimResponse {
   id: string;
@@ -48,6 +49,7 @@ export interface CCDClaim extends ClaimUpdate{
   claimDetails?: ClaimDetails;
   respondent1?: CCDParty;
   statementOfMeans?: StatementOfMeans;
+  fullAdmission?: FullAdmission;
   paymentOption?: PaymentOptionType;
   repaymentPlan?: RepaymentPlan;
   paymentDate?: Date;

@@ -51,8 +51,8 @@ describe('Claimant Interest Rate', () => {
       await request(app)
         .post(CLAIMANT_INTEREST_RATE_URL)
         .send({
-          option: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
-          rate: 40,
+          sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
+          differentRate: 40,
           reason: 'Reasons....',
         })
         .expect((res) => {
@@ -66,8 +66,8 @@ describe('Claimant Interest Rate', () => {
       await request(app)
         .post(CLAIMANT_INTEREST_RATE_URL)
         .send({
-          option: SameRateInterestType.SAME_RATE_INTEREST_8_PC,
-          rate: '',
+          sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC,
+          differentRate: '',
           reason: '',
         })
         .expect((res) => {
@@ -81,8 +81,8 @@ describe('Claimant Interest Rate', () => {
       await request(app)
         .post(CLAIMANT_INTEREST_RATE_URL)
         .send({
-          option: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
-          rate: '',
+          sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
+          differentRate: '',
           reason: '',
         })
         .expect((res) => {
@@ -95,8 +95,8 @@ describe('Claimant Interest Rate', () => {
       await request(app)
         .post(CLAIMANT_INTEREST_RATE_URL)
         .send({
-          option: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
-          rate: 40,
+          sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
+          differentRate: 40,
           reason: '',
         })
         .expect((res) => {
@@ -109,8 +109,8 @@ describe('Claimant Interest Rate', () => {
       await request(app)
         .post(CLAIMANT_INTEREST_RATE_URL)
         .send({
-          option: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
-          rate: 40,
+          sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
+          differentRate: 40,
           reason: 'Reasons....',
         })
         .expect((res) => {
