@@ -64,7 +64,7 @@ export const getFirstRepaymentDate = (claim: Claim) => {
   return firstRepaymentDate;
 };
 
-export const convertFrequencyToText = (frequency: string, lng: string) => {
+export const convertFrequencyToText = (frequency: string, lng: string) : string => {
   switch (frequency as TransactionSchedule) {
     case TransactionSchedule.WEEK:
       return t('COMMON.FREQUENCY_OF_PAYMENTS.WEEKLY', {lng});
