@@ -696,7 +696,7 @@
         "FIRST_PAYMENT_DATE": "First payment date",
         "LAST_PAYMENT_DATE": "Last payment date",
         "LENGTH_OF_REPAYMENT": "Length of repayment plan",
-        "DO_YOU_ACCEPT": "Do you accept the court’s proposed repayment plan",
+        "DO_YOU_ACCEPT": "Do you accept the court’s proposed repayment plan?",
         "I_WANT_ACCEPT": "I want to accept this repayment plan",
         "I_WANT_JUDGE": "I want a judge to make a repayment plan"
       }
