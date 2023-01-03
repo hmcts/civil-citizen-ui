@@ -1,22 +1,25 @@
 import {StatementOfTruth} from './claim';
-import {CaseState, ClaimAmountBreakup, ClaimFee} from 'form/models/claimDetails';
-import {ClaimantResponse} from 'common/models/claimantResponse';
-import {ClaimDetails} from 'common/form/models/claim/details/claimDetails';
-import {StatementOfMeans} from 'common/models/statementOfMeans';
-import {PartialAdmission} from 'common/models/partialAdmission';
-import {RejectAllOfClaim} from 'common/form/models/rejectAllOfClaim';
-import {Mediation} from 'common/models/mediation/mediation';
-import {DefendantEvidence} from 'common/models/evidence/evidence';
-import {TimeLineOfEvents} from 'common/models/timelineOfEvents/timeLineOfEvents';
-import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
-import {QualifiedStatementOfTruth} from 'common/form/models/statementOfTruth/qualifiedStatementOfTruth';
-import {YesNo} from 'common/form/models/yesNo';
-import {Interest} from 'common/form/models/interest/interest';
-import {Document} from 'common/models/document/document';
-import {SystemGeneratedCaseDocuments} from 'common/models/document/systemGeneratedCaseDocuments';
-import {ResponseDeadline} from 'common/models/responseDeadline';
-import {DirectionQuestionnaire} from 'common/models/directionsQuestionnaire/directionQuestionnaire';
-import {CCDParty} from 'common/models/ccdResponse/ccdParty';
+import {CaseState, ClaimAmountBreakup, ClaimFee} from '../form/models/claimDetails';
+import {ClaimantResponse} from '../../common/models/claimantResponse';
+import {ClaimDetails} from '../../common/form/models/claim/details/claimDetails';
+import {StatementOfMeans} from '../../common/models/statementOfMeans';
+import {PaymentOptionType} from '../../common/form/models/admission/paymentOption/paymentOptionType';
+import {RepaymentPlan} from '../../common/models/repaymentPlan';
+import {PartialAdmission} from '../../common/models/partialAdmission';
+import {RejectAllOfClaim} from '../../common/form/models/rejectAllOfClaim';
+import {Mediation} from '../../common/models/mediation/mediation';
+import {DefendantEvidence} from '../../common/models/evidence/evidence';
+import {TimeLineOfEvents} from '../../common/models/timelineOfEvents/timeLineOfEvents';
+import {StatementOfTruthForm} from '../../common/form/models/statementOfTruth/statementOfTruthForm';
+import {QualifiedStatementOfTruth} from '../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
+import {YesNo} from '../../common/form/models/yesNo';
+import {Interest} from '../../common/form/models/interest/interest';
+import {Document} from '../../common/models/document/document';
+import {SystemGeneratedCaseDocuments} from '../../common/models/document/systemGeneratedCaseDocuments';
+import {ResponseDeadline} from '../../common/models/responseDeadline';
+import {DirectionQuestionnaire} from '../../common/models/directionsQuestionnaire/directionQuestionnaire';
+import {CCDParty} from '../../common/models/ccdResponse/ccdParty';
+import {ClaimUpdate} from 'models/events/eventDto';
 import {FullAdmission} from './fullAdmission';
 
 export class CivilClaimResponse {
@@ -35,17 +38,21 @@ export class CivilClaimResponse {
   }
 }
 
-export class CCDClaim {
-  legacyCaseReference: string;
+export interface CCDClaim extends ClaimUpdate{
+  applicant1Represented?: string;
+  legacyCaseReference?: string;
   applicant1?: CCDParty;
   claimantResponse?: ClaimantResponse;
   applicantSolicitor1ClaimStatementOfTruth?: StatementOfTruth;
-  totalClaimAmount: number;
-  respondent1ResponseDeadline: Date;
-  claimDetails: ClaimDetails;
+  totalClaimAmount?: number;
+  respondent1ResponseDeadline?: Date;
+  claimDetails?: ClaimDetails;
   respondent1?: CCDParty;
   statementOfMeans?: StatementOfMeans;
   fullAdmission?: FullAdmission;
+  paymentOption?: PaymentOptionType;
+  repaymentPlan?: RepaymentPlan;
+  paymentDate?: Date;
   partialAdmission?: PartialAdmission;
   rejectAllOfClaim?: RejectAllOfClaim;
   mediation?: Mediation;
@@ -62,12 +69,10 @@ export class CCDClaim {
   claimFee?: ClaimFee;
   specClaimTemplateDocumentFiles?: Document;
   systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
-  ccdState: CaseState;
-  responseDeadline: ResponseDeadline;
-  respondentSolicitor1AgreedDeadlineExtension?: Date;
+  ccdState?: CaseState;
+  responseDeadline?: ResponseDeadline;
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
-
 }
 
 export interface ClaimFeeData {
