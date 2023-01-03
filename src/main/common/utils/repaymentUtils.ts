@@ -1,6 +1,7 @@
 import {Claim} from 'common/models/claim';
 import {addDaysToDate, addMonths} from './dateUtils';
 import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {t} from 'i18next';
 
 const WEEKDAYS = 7;
 let paymentAmount = 0;
@@ -21,7 +22,10 @@ export const isRepaymentPlanFullOrPartAdmit = (claim: Claim) => {
   }
 };
 
-const getNumberOfInstalments = (claim: Claim) => Math.ceil(getAmount(claim) / paymentAmount);
+export const getNumberOfInstalments = (claim: Claim) => {
+  isRepaymentPlanFullOrPartAdmit(claim);
+  return Math.ceil(getAmount(claim) / paymentAmount);
+};
 
 export const getFinalPaymentDate = (claim: Claim) => {
   isRepaymentPlanFullOrPartAdmit(claim);
@@ -44,9 +48,29 @@ export const getFinalPaymentDate = (claim: Claim) => {
 };
 
 export const getAmount = (claim: Claim) => claim.partialAdmission?.howMuchDoYouOwe?.amount ? claim.partialAdmission.howMuchDoYouOwe.amount : claim.totalClaimAmount;
-export const getPaymentAmount = () => paymentAmount;
-export const getRepaymentFrequency = () => repaymentFrequency;
+
+export const getPaymentAmount = (claim: Claim) => {
+  isRepaymentPlanFullOrPartAdmit(claim);
+  return paymentAmount;
+};
+
+export const getRepaymentFrequency = (claim: Claim) => {
+  isRepaymentPlanFullOrPartAdmit(claim);
+  return repaymentFrequency;
+};
+
 export const getFirstRepaymentDate = (claim: Claim) => {
   isRepaymentPlanFullOrPartAdmit(claim);
   return firstRepaymentDate;
+};
+
+export const convertFrequencyToText = (frequency: string, lng: string) => {
+  switch (frequency as TransactionSchedule) {
+    case TransactionSchedule.WEEK:
+      return t('COMMON.FREQUENCY_OF_PAYMENTS.WEEKLY', {lng});
+    case TransactionSchedule.TWO_WEEKS:
+      return t('COMMON.FREQUENCY_OF_PAYMENTS.TWO_WEEKS', {lng});
+    case TransactionSchedule.MONTH:
+      return t('COMMON.FREQUENCY_OF_PAYMENTS.MONTHLY', {lng});
+  }
 };

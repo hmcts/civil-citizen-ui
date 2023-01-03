@@ -31,8 +31,8 @@ signSettlementAgreementController.get(CLAIMANT_SIGN_SETTLEMENT_AGREEMENT, SignSe
       defendant: claim.getDefendantFullName(),
       firstRepaymentDate: formatDateToFullDate(getFirstRepaymentDate(claim),lang),
       finalRepaymentDate: formatDateToFullDate(getFinalPaymentDate(claim), lang),
-      paymentAmount:getPaymentAmount(),
-      repaymentFrequency:getRepaymentFrequency(),
+      paymentAmount:getPaymentAmount(claim),
+      repaymentFrequency:getRepaymentFrequency(claim),
     };
 
     const claimantResponse = await getClaimantResponse(req.params.id);
