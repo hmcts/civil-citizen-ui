@@ -42,7 +42,7 @@ mediationDisagreementController.post(MEDIATION_DISAGREEMENT_URL, async (req, res
       renderView(mediationDisagreementForm, res);
     } else {
       await saveMediation(req.params.id, mediationDisagreement, 'mediationDisagreement');
-      if (claim.mediation?.canWeUse) {
+      if (claim.mediation?.canWeUse || claim.claimantResponse?.mediation?.canWeUse) {
         await saveMediation(req.params.id, undefined, 'canWeUse');
       }
       if (req.body.option === YesNo.NO) {
