@@ -733,6 +733,11 @@
       "PAGE_TITLE": "When did you settle with the defendant?",
       "TITLE": "When did you settle with the defendant?"
     },
+    "CLAIMANT_RESPONSE_DEBT_WHEN_START": {
+      "DATE_START_OPTIONAL": "This is the date it started, not the date you received notification of it (optional).",
+      "PAGE_TITLE": "When did it start?",
+      "TITLE": "When did it start?"
+    },
     "CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED": {
       "PAGE_TITLE": "Has the defendant paid you £{{ paidAmount }}?",
       "TITLE": "Has the defendant paid you £{{ paidAmount }}?"
