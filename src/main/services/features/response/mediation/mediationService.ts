@@ -1,24 +1,20 @@
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {Mediation} from '../../../../common/models/mediation/mediation';
 import {ClaimantResponse} from  '../../../../common/models/claimantResponse';
+import {Claim} from '../../../../common/models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('freeMediationService');
 
 const getMediation = async (claimId: string): Promise<Mediation> => {
   try {
-    const claim = await getCaseDataFromStore(claimId);
+    const claim: Claim = await getCaseDataFromStore(claimId);
     if(claim.isClaimantIntentionPending()){
       if (!claim.claimantResponse?.mediation) return new Mediation();
       return claim.claimantResponse.mediation;
     }else{
       if (!claim.mediation) return new Mediation();
-      return new Mediation(
-        claim.mediation.canWeUse,
-        claim.mediation.mediationDisagreement,
-        claim.mediation.noMediationReason,
-        claim.mediation.companyTelephoneNumber,
-      );
+      return claim.mediation;
     }
   } catch (error) {
     logger.error(error);
@@ -28,28 +24,20 @@ const getMediation = async (claimId: string): Promise<Mediation> => {
 
 const saveMediation = async (claimId: string, value: any, mediationPropertyName: keyof Mediation): Promise<void> => {
   try {
-    const claim: any = await getCaseDataFromStore(claimId);
+    const claim: Claim = await getCaseDataFromStore(claimId);
     if(claim.isClaimantIntentionPending()){
-      if (claim.claimantResponse?.mediation) {
-        claim.claimantResponse.mediation[mediationPropertyName] = value;
-      } else if (claim.claimantResponse) {
-        const mediation = new Mediation();
-        mediation[mediationPropertyName] = value;
-        claim.claimantResponse.mediation = mediation;
-      } else {
+      if(!claim.claimantResponse){
         claim.claimantResponse = new ClaimantResponse();
-        const mediation = new Mediation();
-        mediation[mediationPropertyName] = value;
-        claim.claimantResponse.mediation = mediation;
       }
+      if(!claim.claimantResponse.mediation){
+        claim.claimantResponse.mediation = new Mediation();
+      }
+      claim.claimantResponse.mediation[mediationPropertyName] = value;
     }else{
-      if (claim.mediation) {
-        claim.mediation[mediationPropertyName] = value;
-      } else {
-        const mediation: Mediation = new Mediation();
-        mediation[mediationPropertyName] = value;
-        claim.mediation = mediation;
+      if (!claim.mediation) {
+        claim.mediation = new Mediation();
       }
+      claim.mediation[mediationPropertyName] = value;
     }
     await saveDraftClaim(claimId, claim);
   } catch (error) {
