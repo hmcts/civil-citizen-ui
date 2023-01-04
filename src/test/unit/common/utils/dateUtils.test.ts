@@ -3,7 +3,7 @@ import {addMonths, getDOBforAgeFromCurrentTime} from '../../../../main/common/ut
 describe('getDOBforAgeFromCurrentTime', () => {
   it('should return the maximim date for age', () => {
     //Given
-    const mockDate = new Date('2022-03-01') as unknown as string;
+    const mockDate = new Date('2022-03-01');
     const spy = jest
       .spyOn(global, 'Date')
       .mockImplementation(() => mockDate);
