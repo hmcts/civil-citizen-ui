@@ -52,7 +52,6 @@ describe('Direction questionnaire Service', () => {
       const claim = new Claim();
       claim.claimantResponse = new ClaimantResponse();
 
-
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return claim;
       });
