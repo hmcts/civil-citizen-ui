@@ -1,7 +1,7 @@
-import { HowMuchDoYouOwe } from 'common/form/models/admission/partialAdmission/howMuchDoYouOwe';
+import {HowMuchDoYouOwe} from 'common/form/models/admission/partialAdmission/howMuchDoYouOwe';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {ResponseType} from 'common/form/models/responseType';
-import { TransactionSchedule } from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {FullAdmission} from 'common/models/fullAdmission';
 import {PartialAdmission} from 'common/models/partialAdmission';
 import {Party} from 'common/models/party';
@@ -11,7 +11,7 @@ import {
   getFirstRepaymentDate, 
   getPaymentAmount, 
   getRepaymentFrequency, 
-  convertFrequencyToText
+  convertFrequencyToText,
 } from 'common/utils/repaymentUtils'; 
 import {createClaimWithBasicRespondentDetails} from '../../../utils/mockClaimForCheckAnswers';
 import {t} from 'i18next';
