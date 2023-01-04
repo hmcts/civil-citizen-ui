@@ -1,14 +1,19 @@
-import {HowMuchDoYouOwe} from 'common/form/models/admission/partialAdmission/howMuchDoYouOwe';
+import { HowMuchDoYouOwe } from 'common/form/models/admission/partialAdmission/howMuchDoYouOwe';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {ResponseType} from 'common/form/models/responseType';
-import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import { TransactionSchedule } from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {FullAdmission} from 'common/models/fullAdmission';
 import {PartialAdmission} from 'common/models/partialAdmission';
 import {Party} from 'common/models/party';
-import {addDaysToDate, addMonths} from 'common/utils/dateUtils';
-import {getFinalPaymentDate, isRepaymentPlanFullOrPartAdmit} from 'common/utils/repaymentUtils';
+import {addDaysToDate, addMonths} from 'common/utils/dateUtils'; 
+import {
+  getFinalPaymentDate, 
+  getFirstRepaymentDate, 
+  getPaymentAmount, 
+  getRepaymentFrequency, 
+  convertFrequencyToText
+} from 'common/utils/repaymentUtils'; 
 import {createClaimWithBasicRespondentDetails} from '../../../utils/mockClaimForCheckAnswers';
-import {convertFrequencyToText} from 'common/utils/repaymentUtils';
 import {t} from 'i18next';
 
 describe('repaymentUtils', () => {
@@ -24,7 +29,9 @@ describe('repaymentUtils', () => {
       claim.fullAdmission = new FullAdmission();
       claim.fullAdmission.paymentIntention = new PaymentIntention();
       //When
-      isRepaymentPlanFullOrPartAdmit(claim);
+      getPaymentAmount(claim);
+      getRepaymentFrequency(claim);
+      getFirstRepaymentDate(claim);
       //Then
       expect(claim.fullAdmission?.paymentIntention?.repaymentPlan?.paymentAmount).not.toBeNull();
       expect(claim.fullAdmission?.paymentIntention?.repaymentPlan?.repaymentFrequency).not.toBeNull();
@@ -38,7 +45,9 @@ describe('repaymentUtils', () => {
       claim.partialAdmission = new PartialAdmission();
       claim.partialAdmission.paymentIntention = new PaymentIntention();
       //When
-      isRepaymentPlanFullOrPartAdmit(claim);
+      getPaymentAmount(claim);
+      getRepaymentFrequency(claim);
+      getFirstRepaymentDate(claim);
       //Then
       expect(claim.partialAdmission?.paymentIntention?.repaymentPlan?.paymentAmount).not.toBeNull();
       expect(claim.partialAdmission?.paymentIntention?.repaymentPlan?.repaymentFrequency).not.toBeNull();
@@ -65,7 +74,9 @@ describe('repaymentUtils', () => {
       //Given
       claim.partialAdmission.paymentIntention.repaymentPlan.repaymentFrequency = TransactionSchedule.WEEK;
       //When
-      isRepaymentPlanFullOrPartAdmit(claim);
+      getPaymentAmount(claim);
+      getRepaymentFrequency(claim);
+      getFirstRepaymentDate(claim);
       const finalRepaymentDate = getFinalPaymentDate(claim);
       //Then
       const expected = addDaysToDate(claim.partialAdmission.paymentIntention.repaymentPlan.firstRepaymentDate, (4 * WEEKDAYS));
@@ -76,7 +87,9 @@ describe('repaymentUtils', () => {
       //Given
       claim.partialAdmission.paymentIntention.repaymentPlan.repaymentFrequency = TransactionSchedule.TWO_WEEKS;
       //When
-      isRepaymentPlanFullOrPartAdmit(claim);
+      getPaymentAmount(claim);
+      getRepaymentFrequency(claim);
+      getFirstRepaymentDate(claim);
       const finalRepaymentDate = getFinalPaymentDate(claim);
       //Then
       const expected = addDaysToDate(claim.partialAdmission.paymentIntention.repaymentPlan.firstRepaymentDate, (8 * WEEKDAYS));
@@ -87,7 +100,9 @@ describe('repaymentUtils', () => {
       //Given
       claim.partialAdmission.paymentIntention.repaymentPlan.repaymentFrequency = TransactionSchedule.MONTH;
       //When
-      isRepaymentPlanFullOrPartAdmit(claim);
+      getPaymentAmount(claim);
+      getRepaymentFrequency(claim);
+      getFirstRepaymentDate(claim);
       const finalRepaymentDate = getFinalPaymentDate(claim);
       //Then
       const expected = addMonths(claim.partialAdmission.paymentIntention.repaymentPlan.firstRepaymentDate, 4);
@@ -154,5 +169,4 @@ describe('repaymentUtils', () => {
       expect(result).toBe(t('COMMON.FREQUENCY_OF_PAYMENTS.MONTHLY'));
     });
   });
-
 });
