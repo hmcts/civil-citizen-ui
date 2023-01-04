@@ -15,6 +15,9 @@ import {PhoneOrVideoHearing} from 'models/directionsQuestionnaire/hearing/phoneO
 import {ExpertDetails} from 'models/directionsQuestionnaire/experts/expertDetails';
 import {OtherWitnessItems} from 'models/directionsQuestionnaire/witnesses/otherWitnessItems';
 import {Witnesses} from 'models/directionsQuestionnaire/witnesses/witnesses';
+import {ClaimantResponse} from 'common/models/claimantResponse';
+import {ReportDetail} from 'common/models/directionsQuestionnaire/experts/expertReportDetails/reportDetail';
+import {CaseState} from 'common/form/models/claimDetails';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -45,6 +48,20 @@ describe('Direction questionnaire Service', () => {
       expect(directionQuestionnaire?.hearing?.triedToSettle).toBeUndefined();
     });
 
+    it('should return claimant Direction questionnaire object', async () => {
+      const claim = new Claim();
+      claim.claimantResponse = new ClaimantResponse();
+
+
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return claim;
+      });
+      const directionQuestionnaire = await getDirectionQuestionnaire('validClaimId');
+
+      expect(directionQuestionnaire?.experts?.expertReportDetails).toBeUndefined();
+      expect(directionQuestionnaire?.hearing?.determinationWithoutHearing).toBeUndefined();
+    });
+
     it('should return Direction questionnaire object with defendantExpertEvidence no', async () => {
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
@@ -60,6 +77,48 @@ describe('Direction questionnaire Service', () => {
       expect(directionQuestionnaire?.experts?.defendantExpertEvidence?.option).toBe(YesNo.NO);
       expect(directionQuestionnaire?.hearing?.triedToSettle).toBeUndefined();
     });
+
+    it('should return claimant Direction questionnaire object with determinationWithoutHearing no', async () => {
+      const claim = new Claim();
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
+      claim.claimantResponse.directionQuestionnaire.hearing = new Hearing();
+      claim.claimantResponse.directionQuestionnaire.hearing.determinationWithoutHearing = {
+        option: YesNo.NO,
+        reasonForHearing: 'test',
+      };
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return claim;
+      });
+      const directionQuestionnaire = await getDirectionQuestionnaire('validClaimId');
+
+      expect(directionQuestionnaire?.hearing?.determinationWithoutHearing?.option).toBe(YesNo.NO);
+      expect(directionQuestionnaire?.experts?.expertReportDetails).toBeUndefined();
+    });
+
+    it('should return claimant Direction questionnaire object with expert report details', async () => {
+      const claim = new Claim();
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
+      claim.claimantResponse.directionQuestionnaire.experts = new Experts();
+      claim.claimantResponse.directionQuestionnaire.experts.expertReportDetails = {
+        option: YesNo.YES,
+        reportDetails: [
+          new ReportDetail('John Doe'),
+        ],
+      };
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return claim;
+      });
+      const directionQuestionnaire = await getDirectionQuestionnaire('validClaimId');
+
+      expect(directionQuestionnaire?.hearing?.determinationWithoutHearing).toBeUndefined();
+      expect(directionQuestionnaire?.experts?.expertReportDetails?.option).toBe(YesNo.YES);
+      expect(directionQuestionnaire?.experts?.expertReportDetails?.reportDetails[0].expertName).toBe('John Doe');
+    });
+
     it('should return Direction questionnaire object with triedToSettle no', async () => {
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
@@ -180,12 +239,53 @@ describe('Direction questionnaire Service', () => {
       expect(spySave).toHaveBeenCalledWith('validClaimId', {directionQuestionnaire});
     });
 
+    it('should save claimant direction questionnaire successfully', async () => {
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+        claim.claimantResponse = new ClaimantResponse();
+        const directionQuestionnaire = new DirectionQuestionnaire();
+        directionQuestionnaire.experts = new Experts();
+        directionQuestionnaire.hearing = new Hearing();
+        claim.claimantResponse.directionQuestionnaire = directionQuestionnaire;
+        return claim;
+      });
+      directionQuestionnaire.experts = new Experts();
+      directionQuestionnaire.hearing = new Hearing();
+      directionQuestionnaire.experts.defendantExpertEvidence = new GenericYesNo(YesNo.NO);
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+
+      await saveDirectionQuestionnaire('validClaimId', directionQuestionnaire?.hearing?.triedToSettle, 'triedToSettle', 'hearing');
+      expect(spySave).toHaveBeenCalledWith('validClaimId', {directionQuestionnaire});
+    });
+
     it('should update claim determination successfully', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         const claim = new Claim();
         claim.directionQuestionnaire = new DirectionQuestionnaire();
         claim.directionQuestionnaire.experts = new Experts();
         claim.directionQuestionnaire.hearing = new Hearing();
+        return claim;
+      });
+      directionQuestionnaire.experts = new Experts();
+      directionQuestionnaire.hearing = new Hearing();
+      directionQuestionnaire.experts.defendantExpertEvidence = undefined;
+      directionQuestionnaire.hearing.triedToSettle = new GenericYesNo(YesNo.NO);
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+
+      await saveDirectionQuestionnaire('validClaimId', directionQuestionnaire?.hearing?.triedToSettle, 'triedToSettle', 'hearing');
+      expect(spySave).toHaveBeenCalledWith('validClaimId', {directionQuestionnaire});
+    });
+
+    it('should update claimant direction questionnaire successfully', async () => {
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+        claim.claimantResponse = new ClaimantResponse();
+        const directionQuestionnaire = new DirectionQuestionnaire();
+        directionQuestionnaire.experts = new Experts();
+        directionQuestionnaire.hearing = new Hearing();
+        claim.claimantResponse.directionQuestionnaire = directionQuestionnaire;
         return claim;
       });
       directionQuestionnaire.experts = new Experts();
