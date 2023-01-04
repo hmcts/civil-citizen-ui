@@ -3,7 +3,7 @@ import {
   createClaimWithIndividualDetails,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
-import {Email} from '../../../../../../../main/common/models/Email';
+import {Email} from 'models/Email';
 import {getSummarySections} from 'services/features/claimantResponse/ccj/ccjCheckAnswersService';
 
 jest.mock('../../../../../../../main/modules/i18n');
@@ -33,6 +33,7 @@ describe('Citizen Details Section', () => {
     expect(summarySections.sections[constVal.INDEX_CCJ_THEIR_DETAILS_SECTION].summaryList.rows[2].value.html).toBe(EMAIL_ADDRESS);
     expect(summarySections.sections[constVal.INDEX_CCJ_THEIR_DETAILS_SECTION].summaryList.rows[2].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EMAIL');
   });
+
   it('should return address when it exists', async () => {
     //Given
     const claim = createClaimWithIndividualDetails();
@@ -42,6 +43,7 @@ describe('Citizen Details Section', () => {
     //Then
     expect(summarySections.sections[constVal.INDEX_CCJ_THEIR_DETAILS_SECTION].summaryList.rows[1].value.html).toBe(address);
   });
+
   it('should return full name of a person when full name is present', async () => {
     //Given
     const claim = createClaimWithIndividualDetails();
@@ -50,6 +52,7 @@ describe('Citizen Details Section', () => {
     //Then
     expect(summarySections.sections[constVal.INDEX_CCJ_THEIR_DETAILS_SECTION].summaryList.rows[0].value.html).toBe(FULL_NAME);
   });
+
   it('should return email when it exists', async () => {
     //Given
     const claim = createClaimWithIndividualDetails();

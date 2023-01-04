@@ -7,7 +7,7 @@ import * as constVal from '../../../../../../utils/checkAnswersConstants';
 import {
   CCJ_PAID_AMOUNT_URL,
 } from 'routes/urls';
-import {constructResponseUrlWithIdParams} from '../../../../../../../main/common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 jest.mock('../../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({

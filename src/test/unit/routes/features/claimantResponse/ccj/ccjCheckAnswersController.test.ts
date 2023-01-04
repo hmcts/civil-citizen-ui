@@ -2,7 +2,7 @@ import nock from 'nock';
 import config from 'config';
 import {
   CCJ_CHECK_AND_SEND_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 
@@ -61,6 +61,7 @@ describe('Response - Check answers', () => {
       });
   });
 });
+
 describe('on Post', () => {
   it('should return errors when form is incomplete', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
