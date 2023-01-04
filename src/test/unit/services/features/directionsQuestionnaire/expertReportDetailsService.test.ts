@@ -19,6 +19,8 @@ import {
 } from '../../../../../main/services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {DirectionQuestionnaire} from '../../../../../main/common/models/directionsQuestionnaire/directionQuestionnaire';
 import {Experts} from '../../../../../main/common/models/directionsQuestionnaire/experts/experts';
+import {CaseState} from 'common/form/models/claimDetails';
+import {ClaimantResponse} from 'common/models/claimantResponse';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -333,6 +335,35 @@ describe('Expert Report Details service', () => {
         expect(expertReportDetails.reportDetails[0].reportDate?.toDateString()).toEqual('Tue Mar 01 2022');
         expect(expertReportDetails.reportDetails[0].year).toBe(2022);
         expect(expertReportDetails.reportDetails[0].month).toBe(3);
+        expect(expertReportDetails.reportDetails[0].day).toBe(1);
+      }
+    });
+    it('should return claimant expert report details from draft store if present', async () => {
+      //Given
+      mockGetCaseDataFromStore.mockImplementation(async () => {
+        const reportDetail = new ReportDetail('John Doe', '2022', '1', '1');
+        const mockDetails = new ExpertReportDetails(YesNo.YES, [reportDetail]);
+        const mockDQ = {
+          experts: {
+            expertReportDetails: mockDetails,
+          },
+        };
+        const claim = new Claim();
+        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+        claim.claimantResponse = {directionQuestionnaire : mockDQ};
+        return claim;
+      });
+      //When
+      const expertReportDetails = await getExpertReportDetails('1234');
+      //Then
+      if (expertReportDetails.reportDetails) {
+        expect(expertReportDetails).toBeTruthy();
+        expect(expertReportDetails.reportDetails.length).toBe(1);
+        expect(expertReportDetails.option).toBe('yes');
+        expect(expertReportDetails.reportDetails[0]?.expertName).toEqual('John Doe');
+        expect(expertReportDetails.reportDetails[0].reportDate?.toDateString()).toEqual('Sat Jan 01 2022');
+        expect(expertReportDetails.reportDetails[0].year).toBe(2022);
+        expect(expertReportDetails.reportDetails[0].month).toBe(1);
         expect(expertReportDetails.reportDetails[0].day).toBe(1);
       }
     });
