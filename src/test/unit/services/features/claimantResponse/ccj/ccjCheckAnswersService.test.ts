@@ -1,5 +1,5 @@
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import {TestMessages} from '../../../../../../../src/test/utils/errorMessageTestConstants';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {StatementOfTruthForm} from '../../../../../../main/common/form/models/statementOfTruth/statementOfTruthForm';
 import {SignatureType} from '../../../../../../main/common/models/signatureType';
 import {Party} from '../../../../../../main/common/models/party';
@@ -17,6 +17,7 @@ import {
   createClaimWithBasicClaimDetails,
   createClaimWithBasicDetails,
 } from '../../../../../utils/mockClaimForCheckAnswers';
+import {CCJRequest} from '../../../../../../main/common/models/claimantResponse/ccj/ccjRequest';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -30,6 +31,7 @@ const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.
 const expectedStatementOfTruth = {
   type: 'basic',
   directionsQuestionnaireSigned: '',
+  isFullAmountRejected: false,
   signed: '',
 };
 
@@ -69,6 +71,8 @@ describe('Check Answers service', () => {
 
     it('should return statement of truth if it is set in the draft store', () => {
       claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.ccjRequest = new CCJRequest();
       claim.claimantResponse.ccjRequest.statementOfTruth = new StatementOfTruthForm(false, SignatureType.BASIC, '', '');
       expect(getStatementOfTruth(claim)).toEqual(expectedStatementOfTruth);
     });

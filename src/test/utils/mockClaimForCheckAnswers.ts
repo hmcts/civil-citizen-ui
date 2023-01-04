@@ -62,9 +62,9 @@ import {ClaimantResponse} from 'models/claimantResponse';
 import {CCJRequest} from 'models/claimantResponse/ccj/ccjRequest';
 import {CcjPaymentOption} from 'form/models/claimantResponse/ccj/ccjPaymentOption';
 import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
-import {PaidAmount} from "models/claimantResponse/ccj/paidAmount";
-import {RepaymentPlanInstalments} from "models/claimantResponse/ccj/repaymentPlanInstalments";
-import {InstalmentFirstPaymentDate} from "models/claimantResponse/ccj/instalmentFirstPaymentDate";
+import {PaidAmount} from 'models/claimantResponse/ccj/paidAmount';
+import {RepaymentPlanInstalments} from 'models/claimantResponse/ccj/repaymentPlanInstalments';
+import {InstalmentFirstPaymentDate} from 'models/claimantResponse/ccj/instalmentFirstPaymentDate';
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -242,19 +242,6 @@ export const createClaimWithApplicantIndividualDetails = (): Claim => {
 
 export const createCCJClaimWithClaimResponseDetailsForPayBySetDate = (): Claim => {
   const claim = new Claim();
-  // claim.applicant1 = {
-  //   type: PartyType.INDIVIDUAL,
-  //   partyPhone: {phone: CONTACT_NUMBER},
-  //   responseType: ResponseType.FULL_ADMISSION,
-  //   partyDetails: {
-  //     individualTitle: TITLE,
-  //     individualLastName: LAST_NAME,
-  //     individualFirstName: FIRST_NAME,
-  //     partyName: PARTY_NAME,
-  //   },
-  // };
-  // claim.applicant1.partyDetails.primaryAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
-  // claim.applicant1.partyDetails.correspondenceAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
   claim.claimantResponse = new ClaimantResponse();
   claim.claimantResponse.hasPartPaymentBeenAccepted = new GenericYesNo('Yes');
   claim.claimantResponse.ccjRequest = new CCJRequest();
@@ -272,19 +259,6 @@ export const createCCJClaimWithClaimResponseDetailsForPayBySetDate = (): Claim =
 
 export const createCCJClaimWithClaimResponseDetailsForPayByInstalments = (): Claim => {
   const claim = new Claim();
-  // claim.applicant1 = {
-  //   type: PartyType.INDIVIDUAL,
-  //   partyPhone: {phone: CONTACT_NUMBER},
-  //   responseType: ResponseType.FULL_ADMISSION,
-  //   partyDetails: {
-  //     individualTitle: TITLE,
-  //     individualLastName: LAST_NAME,
-  //     individualFirstName: FIRST_NAME,
-  //     partyName: PARTY_NAME,
-  //   },
-  // };
-  // claim.applicant1.partyDetails.primaryAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
-  // claim.applicant1.partyDetails.correspondenceAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
   claim.claimantResponse = new ClaimantResponse();
   claim.claimantResponse.hasPartPaymentBeenAccepted = new GenericYesNo('Yes');
   claim.claimantResponse.ccjRequest = new CCJRequest();

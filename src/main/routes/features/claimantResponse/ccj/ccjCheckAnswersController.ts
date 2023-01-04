@@ -1,9 +1,8 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {CCJ_CHECK_AND_SEND_URL, CCJ_CLAIM_CONFIRMATION_URL} from '../../../urls';
-import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
-import {Claim} from '../../../../common/models/claim';
-import {AppRequest} from '../../../../common/models/AppRequest';
-import {submitResponse} from '../../../../services/features/response/submission/submitResponse';
+import {CCJ_CHECK_AND_SEND_URL, CCJ_CONFIRMATION_URL} from 'routes/urls';
+import {deleteDraftClaimFromStore, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
@@ -12,13 +11,14 @@ import {
   getSummarySections,
   saveStatementOfTruth,
 } from 'services/features/claimantResponse/ccj/ccjCheckAnswersService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const checkAnswersViewPath = 'features/claimantResponse/ccj/check-answers';
 const ccjCheckAnswersController = Router();
 
-function renderView(req: Request, res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim, userId: string) {
+function renderView(req: Request, res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const summarySections = getSummarySections(userId, claim, lang);
+  const summarySections = getSummarySections(req.params.id, claim, lang);
   const signatureType = form.model?.type;
   res.render(checkAnswersViewPath, {
     form,
@@ -30,10 +30,9 @@ function renderView(req: Request, res: Response, form: GenericForm<StatementOfTr
 ccjCheckAnswersController.get(CCJ_CHECK_AND_SEND_URL,
   async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
-      const userId = req.session?.user?.id;
-      const claim = await getCaseDataFromStore(req.params.id);
+      const claim = await getCaseDataFromStore(req.params?.id);
       const form = new GenericForm(getStatementOfTruth(claim));
-      renderView(req, res, form, claim, userId);
+      renderView(req, res, form, claim);
     } catch (error) {
       next(error);
     }
@@ -41,19 +40,19 @@ ccjCheckAnswersController.get(CCJ_CHECK_AND_SEND_URL,
 
 ccjCheckAnswersController.post(CCJ_CHECK_AND_SEND_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
-    await submitResponse(<AppRequest>req);
-    const userId = (<AppRequest>req).session?.user?.id;
-
+    const isFullAmountRejected = (req.body?.isFullAmountRejected === 'true');
+    const userId = req.params.id;
     const form = new GenericForm((req.body.type === 'qualified')
-      ? new QualifiedStatementOfTruth(req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole)
-      : new StatementOfTruthForm(req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned));
-    const claim = await getCaseDataFromStore(userId);
+      ? new QualifiedStatementOfTruth(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole)
+      : new StatementOfTruthForm(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned));
     await form.validate();
     if (form.hasErrors()) {
-      renderView(req, res, form, claim, userId);
+      const claim = await getCaseDataFromStore(userId);
+      renderView(req, res, form, claim);
     } else {
       await saveStatementOfTruth(userId, form.model);
-      res.redirect(CCJ_CLAIM_CONFIRMATION_URL);
+      await deleteDraftClaimFromStore(userId);
+      res.redirect(constructResponseUrlWithIdParams(userId, CCJ_CONFIRMATION_URL));
     }
   } catch (error) {
     next(error);

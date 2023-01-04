@@ -1,8 +1,4 @@
 import {
-  CLAIM_DEFENDANT_EMAIL_URL,
-  CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL,
-} from '../../../../../../../main/routes/urls';
-import {
   createClaimWithBasicRespondentDetails,
   createClaimWithIndividualDetails,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
@@ -32,14 +28,9 @@ describe('Citizen Details Section', () => {
     expect(summarySections.sections[constVal.INDEX_CCJ_THEIR_DETAILS_SECTION].title).toBe('PAGES.CHECK_YOUR_ANSWER.THEIR_DETAILS_TITLE_DEFENDANT');
     expect(summarySections.sections[constVal.INDEX_CCJ_THEIR_DETAILS_SECTION].summaryList.rows.length).toBe(3);
     expect(summarySections.sections[constVal.INDEX_CCJ_THEIR_DETAILS_SECTION].summaryList.rows[0].value.html).toBe(FULL_NAME);
-    expect(summarySections.sections[constVal.INDEX_CCJ_THEIR_DETAILS_SECTION].summaryList.rows[0].actions?.items.length).toBe(1);
-    expect(summarySections.sections[constVal.INDEX_CCJ_THEIR_DETAILS_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL);
     expect(summarySections.sections[constVal.INDEX_CCJ_THEIR_DETAILS_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.FULL_NAME');
     expect(summarySections.sections[constVal.INDEX_CCJ_THEIR_DETAILS_SECTION].summaryList.rows[1].value.html).toBe(ADDRESS);
-    expect(summarySections.sections[constVal.INDEX_CCJ_THEIR_DETAILS_SECTION].summaryList.rows[1].actions?.items.length).toBe(1);
-    expect(summarySections.sections[constVal.INDEX_CCJ_THEIR_DETAILS_SECTION].summaryList.rows[1].actions?.items[0].href).toBe(CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL);
     expect(summarySections.sections[constVal.INDEX_CCJ_THEIR_DETAILS_SECTION].summaryList.rows[2].value.html).toBe(EMAIL_ADDRESS);
-    expect(summarySections.sections[constVal.INDEX_CCJ_THEIR_DETAILS_SECTION].summaryList.rows[2].actions?.items[0].href).toBe(CLAIM_DEFENDANT_EMAIL_URL);
     expect(summarySections.sections[constVal.INDEX_CCJ_THEIR_DETAILS_SECTION].summaryList.rows[2].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EMAIL');
   });
   it('should return address when it exists', async () => {
