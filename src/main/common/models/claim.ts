@@ -353,10 +353,6 @@ export class Claim {
     return this.respondent1ResponseDate <= new Date();
   }
 
-  isResponseDateInThePast(): boolean {
-    return this.respondent1ResponseDate <= new Date();
-  }
-
   hasExpertReportDetails(): boolean {
     return this.directionQuestionnaire?.experts?.expertReportDetails?.option === YesNo.YES;
   }
