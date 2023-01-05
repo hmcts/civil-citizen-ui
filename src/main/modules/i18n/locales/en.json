@@ -87,6 +87,7 @@
     },
     "CONTACT_US_FOR_HELP": {
       "CALL_CHARGES": "Find out about call charges (opens in a new window)",
+      "EMAIL": "Email",
       "OPENING_HOURS": "Monday to Friday, 8.30am to 5pm.",
       "RESPONSE_DELAY": "We'll get back to you within 10 days",
       "TITLE": "Contact us for help",
@@ -311,6 +312,11 @@
       "DESCRIPTION": "You can respond to this claim in Welsh. After you've submitted your response, anything else you may have to do relating to the claim will be in English. You'll receive emails and letters in English.",
       "ENGLISH": "English",
       "WELSH_AND_ENGLISH": "Welsh and English"
+    },
+    "BREATHING_SPACE_DEBT_RESPITE_LIFT": {
+      "DATE_LIFT_OPTIONAL": "This is the date that you have been told it will finish (optional):",
+      "PAGE_TITLE": "Date for lifting debt respite scheme (breathing space)",
+      "TITLE": "Date for lifting debt respite scheme (breathing space)"
     },
     "BREATHING_SPACE_DEBT_RESPITE_START": {
       "DATE_START_OPTIONAL": "This is the date it started, not the date you received notification of it (optional).",
@@ -2234,6 +2240,7 @@
     "VALID_DATE_IN_PAST": "Enter date before {{dateToday}}",
     "VALID_DATE_NOT_IN_PAST": "Enter a date that is today or in the future",
     "VALID_DATE_ONE_MONTH_FROM_TODAY": "Date must be at least a month from today's date",
+    "VALID_DATE_LIFT_NOT_AFTER_TODAY": "Date entered must not be after today’s date",
     "VALID_DATE_START_NOT_AFTER_TODAY": "Start date must not be after today's date",
     "VALID_DAY": "Enter a valid day",
     "VALID_DEBT_AMOUNT": {

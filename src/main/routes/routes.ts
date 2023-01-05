@@ -179,6 +179,7 @@ import ccjConfirmationController from './features/claimantResponse/ccj/ccjConfir
 import bilingualLangPreferenceController from './features/response/bilingualLangPreferenceController';
 import chooseHowToProceedController from './features/claimantResponse/chooseHowToProceedcController';
 import repaymentPlanInstalmentsController from './features/claimantResponse/ccj/repaymentPlanInstalmentsController';
+import debtRespiteLiftedController from './features/breathingSpace/debtRespiteLiftedController';
 import claimantResponseConfirmationController from './features/claimantResponse/claimantResponseConfirmationController';
 
 export default [
@@ -338,6 +339,7 @@ export default [
   debtRespiteOptionController,
   debtStartDateController,
   debtRespiteEndDateController,
+  debtRespiteLiftedController,
   reviewDefendantsResponseController,
   ccjPaymentOptionController,
   paidSomeAmountController,
