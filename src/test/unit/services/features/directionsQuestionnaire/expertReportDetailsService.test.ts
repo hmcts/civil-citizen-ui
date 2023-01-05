@@ -322,7 +322,7 @@ describe('Expert Report Details service', () => {
     it('should return expert report details from draft store if present', async () => {
       //Given
       mockGetCaseDataFromStore.mockImplementation(async () => {
-        return CivilClaimResponseMock.case_data;
+        return Object.assign(new Claim, CivilClaimResponseMock.case_data);
       });
       //When
       const expertReportDetails = await getExpertReportDetails('1234');
