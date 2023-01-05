@@ -180,6 +180,8 @@ import bilingualLangPreferenceController from './features/response/bilingualLang
 import chooseHowToProceedController from './features/claimantResponse/chooseHowToProceedcController';
 import repaymentPlanInstalmentsController from './features/claimantResponse/ccj/repaymentPlanInstalmentsController';
 import signSettlementAgreementController from './features/claimantResponse/signSettlmentAgreementController';
+import debtRespiteLiftedController from './features/breathingSpace/debtRespiteLiftedController';
+import claimantResponseConfirmationController from './features/claimantResponse/claimantResponseConfirmationController';
 
 export default [
   homeController,
@@ -338,6 +340,7 @@ export default [
   debtRespiteOptionController,
   debtStartDateController,
   debtRespiteEndDateController,
+  debtRespiteLiftedController,
   reviewDefendantsResponseController,
   ccjPaymentOptionController,
   paidSomeAmountController,
@@ -347,4 +350,5 @@ export default [
   chooseHowToProceedController,
   repaymentPlanInstalmentsController,
   signSettlementAgreementController,
+  claimantResponseConfirmationController,
 ];
