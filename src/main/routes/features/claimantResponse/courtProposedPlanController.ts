@@ -31,6 +31,7 @@ const courtProposedPlanViewPath = 'features/claimantResponse/court-proposed-plan
 const courtProposedPlanController = Router();
 const crPropertyName = 'decision';
 const crParentName = 'courtProposedPlan';
+let repaymentPlan= {};
 
 function renderView(form: GenericForm<CourtProposedPlan>, repaymentPlan: any, res: Response): void {
   res.render(courtProposedPlanViewPath, { form, repaymentPlan });
@@ -43,7 +44,7 @@ courtProposedPlanController.get(CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL,
     const claimantResponse = await getClaimantResponse(claimId);
     const claim: Claim = await getCaseDataFromStore(claimId);
 
-    const repaymentPlan = {
+    repaymentPlan = {
       paymentAmount: getPaymentAmount(claim),
       repaymentFrequency: convertFrequencyToText(getRepaymentFrequency(claim), getLng(lang)),
       firstRepaymentDate: formatDateToFullDate(new Date(getFirstRepaymentDate(claim))),
@@ -63,7 +64,7 @@ courtProposedPlanController.post(CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL
     const courtProposedPlan = new GenericForm(new CourtProposedPlan(req.body.decision));
     courtProposedPlan.validateSync();
     if (courtProposedPlan.hasErrors()) {
-      renderView(courtProposedPlan, {}, res);
+      renderView(courtProposedPlan, repaymentPlan, res);
     } else {
       await saveClaimantResponse(claimId, courtProposedPlan.model.decision, crPropertyName, crParentName);
       if (courtProposedPlan.model.decision === CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN) {
