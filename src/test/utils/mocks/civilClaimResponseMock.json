@@ -14,7 +14,10 @@
       "calculatedAmountInPence": "7000"
     },
     "claimantResponse": {
-      "hasPartPaymentBeenAccepted": "Yes"
+      "hasPartPaymentBeenAccepted": "Yes",
+      "intentionToProceed" : {
+        "option": "no"
+      }
     },
     "respondent1ResponseDate": "2022-09-25T13:46:07.287428",
     "supportRequired": {
