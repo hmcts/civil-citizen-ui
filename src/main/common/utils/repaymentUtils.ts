@@ -33,23 +33,23 @@ export const getAmount = (claim: Claim): number => claim.partialAdmission?.howMu
 
 export const getPaymentAmount = (claim: Claim): number => {
   if (claim.isFullAdmission()) {
-    return claim.fullAdmission.paymentIntention.repaymentPlan?.paymentAmount;
+    return claim.fullAdmission?.paymentIntention?.repaymentPlan?.paymentAmount;
   }
-  return claim.partialAdmission.paymentIntention.repaymentPlan?.paymentAmount;
+  return claim.partialAdmission?.paymentIntention?.repaymentPlan?.paymentAmount;
 };
 
 export const getRepaymentFrequency = (claim: Claim): string => {
   if (claim.isFullAdmission()) {
-    return claim.fullAdmission.paymentIntention.repaymentPlan?.repaymentFrequency;
+    return claim.fullAdmission?.paymentIntention?.repaymentPlan?.repaymentFrequency;
   }
-  return claim.partialAdmission.paymentIntention.repaymentPlan?.repaymentFrequency;
+  return claim.partialAdmission?.paymentIntention?.repaymentPlan?.repaymentFrequency;
 };
 
 export const getFirstRepaymentDate = (claim: Claim): Date => {
   if (claim.isFullAdmission()) {
-    return new Date(claim.fullAdmission.paymentIntention.repaymentPlan?.firstRepaymentDate);
+    return new Date(claim.fullAdmission?.paymentIntention?.repaymentPlan?.firstRepaymentDate);
   }
-  return new Date(claim.partialAdmission.paymentIntention.repaymentPlan?.firstRepaymentDate);
+  return new Date(claim.partialAdmission?.paymentIntention?.repaymentPlan?.firstRepaymentDate);
 };
 
 export const convertFrequencyToText = (frequency: string, lng: string): string => {
