@@ -12,6 +12,7 @@ import {SignSettlmentAgreement} from 'common/form/models/claimantResponse/signSe
 import {getAmount, getFinalPaymentDate, getFirstRepaymentDate, getPaymentAmount, getRepaymentFrequency} from 'common/utils/repaymentUtils';
 import {SignSettlmentAgreementGuard} from 'routes/guards/signSettlmentAgreementGuard';
 import { formatDateToFullDate } from 'common/utils/dateUtils';
+import {Claim} from 'common/models/claim';
 
 const signSettlementAgreementViewPath = 'features/claimantResponse/sign-settlement-agreement';
 const signSettlementAgreementController = Router();
@@ -22,21 +23,25 @@ function renderView(form: GenericForm<SignSettlmentAgreement>, res: Response, da
   res.render(signSettlementAgreementViewPath, {form,data});
 }
 
+const getRepaymentPlan = (claim:Claim,req: Request) => {
+  const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+  const data = {
+    amount:getAmount(claim),
+    defendant: claim.getDefendantFullName(),
+    firstRepaymentDate: formatDateToFullDate(getFirstRepaymentDate(claim),lang),
+    finalRepaymentDate: formatDateToFullDate(getFinalPaymentDate(claim), lang),
+    paymentAmount:getPaymentAmount(claim),
+    repaymentFrequency:getRepaymentFrequency(claim),
+  };
+
+  return data;
+};
+
 signSettlementAgreementController.get(CLAIMANT_SIGN_SETTLEMENT_AGREEMENT, SignSettlmentAgreementGuard.apply(CLAIM_TASK_LIST_URL), async (req:Request, res:Response, next: NextFunction) => {
   try {
     const claim = await getCaseDataFromStore(req.params.id);
-    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const data = {
-      amount:getAmount(claim),
-      defendant: claim.getDefendantFullName(),
-      firstRepaymentDate: formatDateToFullDate(getFirstRepaymentDate(claim),lang),
-      finalRepaymentDate: formatDateToFullDate(getFinalPaymentDate(claim), lang),
-      paymentAmount:getPaymentAmount(claim),
-      repaymentFrequency:getRepaymentFrequency(claim),
-    };
-
     const claimantResponse = await getClaimantResponse(req.params.id);
-    renderView(new GenericForm(claimantResponse.signSettlementAgreement), res, data);
+    renderView(new GenericForm(claimantResponse.signSettlementAgreement), res, getRepaymentPlan(claim,req));
   } catch (error) {
     next(error);
   }
@@ -49,7 +54,8 @@ signSettlementAgreementController.post(CLAIMANT_SIGN_SETTLEMENT_AGREEMENT, async
     signSettlementAgreement.validateSync();
 
     if (signSettlementAgreement.hasErrors()) {
-      renderView(signSettlementAgreement, res);
+      const claim = await getCaseDataFromStore(req.params.id);
+      renderView(signSettlementAgreement, res, getRepaymentPlan(claim,req));
     } else {
       await saveClaimantResponse(claimId, signSettlementAgreement.model.signed, crPropertyName, crParentName);
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
