@@ -45,32 +45,18 @@ const saveDirectionQuestionnaire = async (claimId: string, value: any, direction
   try {
     const claim: any = await getCaseDataFromStore(claimId);
 
-    if (claim.isClaimantIntentionPending()) {
-      if (claim.claimantResponse?.directionQuestionnaire) {
-        if (parentPropertyName && claim.claimantResponse.directionQuestionnaire[parentPropertyName]) {
-          claim.claimantResponse.directionQuestionnaire[parentPropertyName][directionQuestionnairePropertyName] = value;
-        } else if (parentPropertyName && !claim.directionQuestionnaire[parentPropertyName]) {
-          claim.claimantResponse.directionQuestionnaire[parentPropertyName] = {[directionQuestionnairePropertyName]: value};
-        } else {
-          claim.claimantResponse.directionQuestionnaire[directionQuestionnairePropertyName] = value;
-        }
+    if (claim.isClaimantIntentionPending() && !claim.claimantResponse) {
+      claim.claimantResponse = new ClaimantResponse();
+    }
+    const baseProperty = claim.isClaimantIntentionPending() ? claim.claimantResponse : claim;
+
+    if (baseProperty?.directionQuestionnaire) {
+      if (parentPropertyName && baseProperty.directionQuestionnaire[parentPropertyName]) {
+        baseProperty.directionQuestionnaire[parentPropertyName][directionQuestionnairePropertyName] = value;
+      } else if (parentPropertyName && !baseProperty.directionQuestionnaire[parentPropertyName]) {
+        baseProperty.directionQuestionnaire[parentPropertyName] = {[directionQuestionnairePropertyName]: value};
       } else {
-        const directionQuestionnaire: any = new DirectionQuestionnaire();
-        if (parentPropertyName) {
-          directionQuestionnaire[parentPropertyName] = {[directionQuestionnairePropertyName]: value};
-        } else {
-          directionQuestionnaire[directionQuestionnairePropertyName] = value;
-        }
-        claim.claimantResponse = claim?.claimantResponse ? claim.claimantResponse : new ClaimantResponse();
-        claim.claimantResponse.directionQuestionnaire = directionQuestionnaire;
-      }
-    } else if (claim.directionQuestionnaire) {
-      if (parentPropertyName && claim.directionQuestionnaire[parentPropertyName]) {
-        claim.directionQuestionnaire[parentPropertyName][directionQuestionnairePropertyName] = value;
-      } else if (parentPropertyName && !claim.directionQuestionnaire[parentPropertyName]) {
-        claim.directionQuestionnaire[parentPropertyName] = {[directionQuestionnairePropertyName]: value};
-      } else {
-        claim.directionQuestionnaire[directionQuestionnairePropertyName] = value;
+        baseProperty.directionQuestionnaire[directionQuestionnairePropertyName] = value;
       }
     } else {
       const directionQuestionnaire: any = new DirectionQuestionnaire();
@@ -79,7 +65,7 @@ const saveDirectionQuestionnaire = async (claimId: string, value: any, direction
       } else {
         directionQuestionnaire[directionQuestionnairePropertyName] = value;
       }
-      claim.directionQuestionnaire = directionQuestionnaire;
+      baseProperty.directionQuestionnaire = directionQuestionnaire;
     }
     await saveDraftClaim(claimId, claim);
   } catch (error) {
