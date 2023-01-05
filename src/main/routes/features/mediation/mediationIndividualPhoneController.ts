@@ -7,7 +7,7 @@ import {YesNo} from '../../../common/form/models/yesNo';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
 import {getMediation, saveMediation} from '../../../services/features/response/mediation/mediationService';
-import {CAN_WE_USE_URL, CLAIM_TASK_LIST_URL} from '../../urls';
+import {CAN_WE_USE_URL, CLAIMANT_RESPONSE_TASK_LIST_URL, CLAIM_TASK_LIST_URL} from '../../urls';
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
 
 const mediationIndividualPhoneViewPath = 'features/mediation/can-we-use';
@@ -42,7 +42,7 @@ mediationIndividualPhoneController.post(CAN_WE_USE_URL,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const claim: Claim = await getCaseDataFromStore(req.params.id);
-      const mediationIndividualPhoneForm: GenericForm<MediationIndividualPhoneNumber> = isTelephoneNumberSaved(claim.respondent1?.partyPhone?.phone, req);
+      const mediationIndividualPhoneForm: GenericForm<MediationIndividualPhoneNumber> = isTelephoneNumberSaved(claim.isClaimantIntentionPending() ? claim.applicant1?.partyPhone?.phone : claim.respondent1?.partyPhone?.phone, req);
       await mediationIndividualPhoneForm.validate();
       if (mediationIndividualPhoneForm.hasErrors()) {
         await renderView(mediationIndividualPhoneForm, res, req.params.id);
@@ -54,7 +54,7 @@ mediationIndividualPhoneController.post(CAN_WE_USE_URL,
           await saveMediation(req.params.id, new GenericYesNo(), 'mediationDisagreement');
         }
         await saveMediation(req.params.id, mediationIndividualPhoneForm.model, 'canWeUse');
-        res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
+        res.redirect(constructResponseUrlWithIdParams(req.params.id, claim.isClaimantIntentionPending() ? CLAIMANT_RESPONSE_TASK_LIST_URL : CLAIM_TASK_LIST_URL));
       }
     } catch (error) {
       next(error);

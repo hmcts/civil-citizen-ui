@@ -2034,6 +2034,9 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
+        },
+        "partyPhone": {
+          "phone": "01632960001"
         }
       },
       "respondent1": {
