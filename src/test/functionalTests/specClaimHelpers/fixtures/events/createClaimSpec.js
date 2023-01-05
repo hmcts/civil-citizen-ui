@@ -24,7 +24,7 @@ const applicant1WithPartyName = {
   partyTypeDisplayValue: 'Company',
 };
 
-const solicitor1Email = 'hmcts.civil+organisation.2.solicitor.1@gmail.com';
+const solicitor1Email = 'hmcts.civil+organisation.1.solicitor.1@gmail.com';
 const claimAmount = '150000';
 
 const validPba = listElement('PBA0088192');
@@ -41,16 +41,16 @@ module.exports = {
             respondentSolicitor1Reference: 'Respondent reference',
           },
         },
-        Court: {
-          courtLocation: {
-            applicantPreferredCourtLocationList: {
-              list_items: [
-                listElement('Barnet Civil and Family Centre - ST MARY\'S COURT, REGENTS PARK ROAD - N3 1BQ'),
-              ],
-              value: listElement('Barnet Civil and Family Centre - ST MARY\'S COURT, REGENTS PARK ROAD - N3 1BQ'),
-            },
-          },
-        },
+        // Court: {
+        //   courtLocation: {
+        //     applicantPreferredCourtLocationList: {
+        //       list_items: [
+        //         listElement('Barnet Civil and Family Centre - ST MARY\'S COURT, REGENTS PARK ROAD - N3 1BQ'),
+        //       ],
+        //       value: listElement('Barnet Civil and Family Centre - ST MARY\'S COURT, REGENTS PARK ROAD - N3 1BQ'),
+        //     },
+        //   },
+        // },
         Claimant: {
           applicant1: applicant1WithPartyName,
         },

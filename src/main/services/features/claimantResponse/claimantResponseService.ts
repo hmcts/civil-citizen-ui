@@ -451,10 +451,10 @@ const constructDebtsSection = (claim: Claim, lng: string) => {
 
       sectionRows.push({
         key: {
-          text: translateRepaymentSchedule(priorityDebt?.schedule, lng),
+          text: translateRepaymentSchedule(priorityDebt?.transactionSource?.schedule, lng),
         },
         value: {
-          text: currencyFormatWithNoTrailingZeros(priorityDebt?.amount),
+          text: currencyFormatWithNoTrailingZeros(priorityDebt?.transactionSource?.amount),
         },
       });
     });
