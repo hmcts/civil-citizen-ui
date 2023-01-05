@@ -41,18 +41,18 @@ ccjCheckAnswersController.get(CCJ_CHECK_AND_SEND_URL,
 ccjCheckAnswersController.post(CCJ_CHECK_AND_SEND_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const isFullAmountRejected = (req.body?.isFullAmountRejected === 'true');
-    const userId = req.params.id;
+    const claimId = req.params.id;
     const form = new GenericForm((req.body.type === 'qualified')
       ? new QualifiedStatementOfTruth(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole)
       : new StatementOfTruthForm(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned));
     await form.validate();
     if (form.hasErrors()) {
-      const claim = await getCaseDataFromStore(userId);
+      const claim = await getCaseDataFromStore(claimId);
       renderView(req, res, form, claim);
     } else {
-      await saveStatementOfTruth(userId, form.model);
+      await saveStatementOfTruth(claimId, form.model);
       // TODO implement submit ccj claimant response and delete from draftstore;
-      res.redirect(constructResponseUrlWithIdParams(userId, CCJ_CONFIRMATION_URL));
+      res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_CONFIRMATION_URL));
     }
   } catch (error) {
     next(error);

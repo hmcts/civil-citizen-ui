@@ -12,7 +12,7 @@ import {GenericForm} from 'form/models/genericForm';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {PaymentOptionType} from "form/models/admission/paymentOption/paymentOptionType";
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 
 const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', {lng: lang});
 
@@ -48,7 +48,7 @@ export const buildPaymentDetailsSection = (claim: Claim, claimId: string, lang: 
 
     if (ccjPaymentOption.model.isCcjPaymentOptionBySetDate() && claim.claimantResponse?.ccjRequest?.defendantPaymentDate?.date) {
       paymentDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_WHEN_DO_YOU_WANT_TO_BE_PAID_BY', {lng}),
-        formatDateToFullDate(claim.claimantResponse.ccjRequest.defendantPaymentDate.date)));
+        formatDateToFullDate(claim.claimantResponse.ccjRequest.defendantPaymentDate.date, lng)));
     }
 
     if (ccjPaymentOption.model.isCcjPaymentOptionInstalments() && claim.claimantResponse?.ccjRequest?.repaymentPlanInstalments) {
@@ -58,7 +58,7 @@ export const buildPaymentDetailsSection = (claim: Claim, claimId: string, lang: 
 
     if (ccjPaymentOption.model.isCcjPaymentOptionInstalments() && claim.claimantResponse?.ccjRequest?.repaymentPlanInstalments?.firstPaymentDate) {
       paymentDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_FIRST_PAYMENT_DATE', {lng}),
-        formatDateToFullDate(claim.claimantResponse.ccjRequest.repaymentPlanInstalments.firstPaymentDate.date)));
+        formatDateToFullDate(claim.claimantResponse.ccjRequest.repaymentPlanInstalments.firstPaymentDate.date, lng)));
     }
 
     if (ccjPaymentOption.model.isCcjPaymentOptionInstalments() && claim.claimantResponse?.ccjRequest?.repaymentPlanInstalments) {
