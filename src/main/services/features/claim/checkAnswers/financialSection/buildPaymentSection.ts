@@ -12,6 +12,7 @@ import {GenericForm} from 'form/models/genericForm';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {PaymentOptionType} from "form/models/admission/paymentOption/paymentOptionType";
 
 const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', {lng: lang});
 
@@ -43,7 +44,7 @@ export const buildPaymentDetailsSection = (claim: Claim, claimId: string, lang: 
   if(claim.claimantResponse?.ccjRequest?.ccjPaymentOption?.type) {
     const ccjPaymentOption = new GenericForm(new CcjPaymentOption(claim.claimantResponse.ccjRequest.ccjPaymentOption.type));
     paymentDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_HOW_TO_PAY', {lng}),
-      ccjPaymentOption.model.formatOptionType(claim.claimantResponse.ccjRequest.ccjPaymentOption.type)));
+      formatOptionType(claim.claimantResponse.ccjRequest.ccjPaymentOption.type)));
 
     if (ccjPaymentOption.model.isCcjPaymentOptionBySetDate() && claim.claimantResponse?.ccjRequest?.defendantPaymentDate?.date) {
       paymentDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_WHEN_DO_YOU_WANT_TO_BE_PAID_BY', {lng}),
@@ -68,11 +69,21 @@ export const buildPaymentDetailsSection = (claim: Claim, claimId: string, lang: 
 
   function formatPaymentFrequency(paymentFrequency: TransactionSchedule) {
     if(paymentFrequency === TransactionSchedule.WEEK){
-      return 'Each week';
+      return t('COMMON.PAYMENT_FREQUENCY.WEEK', {lng});
     }else if(paymentFrequency === TransactionSchedule.TWO_WEEKS){
-      return 'Every two weeks';
+      return t('COMMON.PAYMENT_FREQUENCY.TWO_WEEKS', {lng});
     }else if(paymentFrequency === TransactionSchedule.MONTH){
-      return 'Every month';
+      return t('COMMON.PAYMENT_FREQUENCY.MONTH', {lng});
+    }
+  }
+
+  function formatOptionType(type: PaymentOptionType) {
+    if(type === PaymentOptionType.INSTALMENTS) {
+      return t('COMMON.PAYMENT_OPTION.INSTALMENTS', {lng});
+    }else if(type === PaymentOptionType.BY_SET_DATE){
+      return t('COMMON.PAYMENT_OPTION.BY_SET_DATE', {lng});
+    }else if(type === PaymentOptionType.IMMEDIATELY){
+      return t('COMMON.PAYMENT_OPTION.IMMEDIATELY', {lng});
     }
   }
 

@@ -17,13 +17,4 @@ export class CcjPaymentOption {
     return this.type === PaymentOptionType.INSTALMENTS;
   }
 
-  formatOptionType(type: PaymentOptionType) {
-    if(type === PaymentOptionType.INSTALMENTS) {
-      return 'By instalments';
-    }else if(type === PaymentOptionType.BY_SET_DATE){
-      return 'By a set date';
-    }else if(type === PaymentOptionType.IMMEDIATELY){
-      return 'Immediately';
-    }
-  }
 }
