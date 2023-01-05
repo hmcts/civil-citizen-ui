@@ -11,9 +11,11 @@
 {% endblock %}
 
 {% block content %}
+  {% set yesHtml %}
     <p class="govuk-body">
       {{ t('PAGES.MEDIATION_DISAGREEMENT.WELL_ASK_THE_CLAIMANT') }}
     </p>
+  {% endset -%}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set errors = form.getErrors() %}
@@ -50,7 +52,7 @@
 
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {classes: 'govuk-radios', yes: 'COMMON.VARIATION.YES', no: 'COMMON.VARIATION.NO'}) }}
+            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml:yesHtml, classes: 'govuk-radios', yes: 'COMMON.VARIATION.YES', no: 'COMMON.VARIATION.NO'}) }}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t("COMMON.BUTTONS.SAVE_AND_CONTINUE")
