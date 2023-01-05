@@ -32,21 +32,21 @@ export const getAmount = (claim: Claim) => claim.partialAdmission?.howMuchDoYouO
 
 export const getPaymentAmount = (claim: Claim) => {
   if (claim.isFullAdmission()) {
-    return claim.fullAdmission.paymentIntention.repaymentPlan?.paymentAmount;
+    return claim.fullAdmission?.paymentIntention?.repaymentPlan?.paymentAmount;
   }
-  return claim.partialAdmission.paymentIntention.repaymentPlan?.paymentAmount;
+  return claim.partialAdmission?.paymentIntention?.repaymentPlan?.paymentAmount;
 };
 
 export const getRepaymentFrequency = (claim: Claim) => {
   if (claim.isFullAdmission()) {
-    return claim.fullAdmission.paymentIntention.repaymentPlan?.repaymentFrequency;
+    return claim.fullAdmission?.paymentIntention?.repaymentPlan?.repaymentFrequency;
   }
-  return claim.partialAdmission.paymentIntention.repaymentPlan?.repaymentFrequency;
+  return claim.partialAdmission?.paymentIntention?.repaymentPlan?.repaymentFrequency;
 };
 
 export const getFirstRepaymentDate = (claim: Claim) => {
   if (claim.isFullAdmission()) {
-    return new Date(claim.fullAdmission.paymentIntention.repaymentPlan?.firstRepaymentDate);
+    return new Date(claim.fullAdmission?.paymentIntention?.repaymentPlan?.firstRepaymentDate);
   }
-  return new Date(claim.partialAdmission.paymentIntention.repaymentPlan?.firstRepaymentDate);
+  return new Date(claim.partialAdmission?.paymentIntention?.repaymentPlan?.firstRepaymentDate);
 };
