@@ -44,7 +44,7 @@ export const buildPaymentDetailsSection = (claim: Claim, claimId: string, lang: 
   if(claim.claimantResponse?.ccjRequest?.ccjPaymentOption?.type) {
     const ccjPaymentOption = new GenericForm(new CcjPaymentOption(claim.claimantResponse.ccjRequest.ccjPaymentOption.type));
     paymentDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_HOW_TO_PAY', {lng}),
-      formatOptionType(claim.claimantResponse.ccjRequest.ccjPaymentOption.type)));
+      formatOptionType(claim.claimantResponse.ccjRequest.ccjPaymentOption.type, lng)));
 
     if (ccjPaymentOption.model.isCcjPaymentOptionBySetDate() && claim.claimantResponse?.ccjRequest?.defendantPaymentDate?.date) {
       paymentDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_WHEN_DO_YOU_WANT_TO_BE_PAID_BY', {lng}),
@@ -63,11 +63,11 @@ export const buildPaymentDetailsSection = (claim: Claim, claimId: string, lang: 
 
     if (ccjPaymentOption.model.isCcjPaymentOptionInstalments() && claim.claimantResponse?.ccjRequest?.repaymentPlanInstalments) {
       paymentDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_INSTALMENTS_PAYMENT_FREQUENCY', {lng}),
-        formatPaymentFrequency(claim.claimantResponse.ccjRequest.repaymentPlanInstalments.paymentFrequency)));
+        formatPaymentFrequency(claim.claimantResponse.ccjRequest.repaymentPlanInstalments.paymentFrequency, lng)));
     }
   }
 
-  function formatPaymentFrequency(paymentFrequency: TransactionSchedule) {
+  function formatPaymentFrequency(paymentFrequency: TransactionSchedule, lng: string) {
     if(paymentFrequency === TransactionSchedule.WEEK){
       return t('COMMON.PAYMENT_FREQUENCY.WEEK', {lng});
     }else if(paymentFrequency === TransactionSchedule.TWO_WEEKS){
@@ -77,7 +77,7 @@ export const buildPaymentDetailsSection = (claim: Claim, claimId: string, lang: 
     }
   }
 
-  function formatOptionType(type: PaymentOptionType) {
+  function formatOptionType(type: PaymentOptionType, lng: string) {
     if(type === PaymentOptionType.INSTALMENTS) {
       return t('COMMON.PAYMENT_OPTION.INSTALMENTS', {lng});
     }else if(type === PaymentOptionType.BY_SET_DATE){

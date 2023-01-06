@@ -53,6 +53,7 @@ describe('Check Answers service', () => {
       mockGetCaseDataFromStore.mockImplementation(async () => {
         const claim = new Claim();
         claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.ccjRequest = new CCJRequest();
         claim.claimantResponse.ccjRequest.statementOfTruth = {isFullAmountRejected: false, type: SignatureType.BASIC, signed: 'true'};
         return claim;
       });

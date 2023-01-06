@@ -1,5 +1,6 @@
 import {getSummarySections} from '../../../../../../../main/services/features/claim/checkAnswers/checkAnswersService';
 import {
+  CLAIM_DEFENDANT_EMAIL_URL,
   CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL,
   CLAIM_DEFENDANT_PHONE_NUMBER_URL,
   DOB_URL,
@@ -41,7 +42,7 @@ describe('Citizen Details Section', () => {
     const summarySections = await getSummarySections(CLAIM_ID, claim, 'cimode');
     //Then
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].title).toBe('PAGES.CHECK_YOUR_ANSWER.THEIR_DETAILS_TITLE_DEFENDANT');
-    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows.length).toBe(5);
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows.length).toBe(6);
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[0].value.html).toBe(FULL_NAME);
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[0].actions?.items.length).toBe(1);
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL);
@@ -53,9 +54,12 @@ describe('Citizen Details Section', () => {
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[2].actions?.items[0].href).toBe(CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL);
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[3].value.html).toBe(DOB);
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[3].actions?.items[0].href).toBe(DOB_URL.replace(':id', CLAIM_ID));
-    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[4].value.html).toBe(CONTACT_NUMBER);
-    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[4].actions?.items[0].href).toBe(CLAIM_DEFENDANT_PHONE_NUMBER_URL);
-    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[4].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER');
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[4].value.html).toBe(EMAIL_ADDRESS);
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[4].actions?.items[0].href).toBe(CLAIM_DEFENDANT_EMAIL_URL);
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[4].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EMAIL');
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[5].value.html).toBe(CONTACT_NUMBER);
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[5].actions?.items[0].href).toBe(CLAIM_DEFENDANT_PHONE_NUMBER_URL);
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[5].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER');
   });
 
   it('should return full name of a person when full name is present', async () => {
