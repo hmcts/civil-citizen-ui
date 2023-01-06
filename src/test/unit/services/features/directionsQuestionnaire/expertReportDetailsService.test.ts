@@ -367,6 +367,32 @@ describe('Expert Report Details service', () => {
         expect(expertReportDetails.reportDetails[0].day).toBe(1);
       }
     });
+    it('should return new form when claimant DQ is empty', async () => {
+      //Given
+      mockGetCaseDataFromStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+        return claim;
+      });
+      //When
+      const expertReportDetails = await getExpertReportDetails('1234');
+      //Then
+      expect(expertReportDetails).toBeTruthy();
+      expect(expertReportDetails.option).toBeUndefined();
+      expect(expertReportDetails.reportDetails).toBeUndefined();
+    });
+    it('should return new form when defendant DQ is empty', async () => {
+      //Given
+      mockGetCaseDataFromStore.mockImplementation(async () => {
+        return new Claim();
+      });
+      //When
+      const expertReportDetails = await getExpertReportDetails('1234');
+      //Then
+      expect(expertReportDetails).toBeTruthy();
+      expect(expertReportDetails.option).toBeUndefined();
+      expect(expertReportDetails.reportDetails).toBeUndefined();
+    });
     it('should return new form when option is empty', async () => {
       //Given
       mockGetCaseDataFromStore.mockImplementation(async () => {
