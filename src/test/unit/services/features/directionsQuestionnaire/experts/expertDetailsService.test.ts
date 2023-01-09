@@ -6,6 +6,8 @@ import {DirectionQuestionnaire} from '../../../../../../main/common/models/direc
 import {Experts} from '../../../../../../main/common/models/directionsQuestionnaire/experts/experts';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {ExpertDetails} from '../../../../../../main/common/models/directionsQuestionnaire/experts/expertDetails';
+import {CaseState} from '../../../../../../main/common/form/models/claimDetails';
+import {ClaimantResponse} from '../../../../../../main/common/models/claimantResponse';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -40,6 +42,23 @@ describe('Expert Details service', () => {
 
       expect(expertDetails.items.length).toBe(1);
       expect(expertDetails.items[0].firstName).toBe('Joe');
+    });
+
+    it('should return claimant expertDetails object', async () => {
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
+        claim.claimantResponse.directionQuestionnaire.experts = new Experts();
+        claim.claimantResponse.directionQuestionnaire.experts.expertDetailsList = mockExpertDetailsList;
+        return claim;
+      });
+
+      const claimantExpertDetails = await getExpertDetails('validClaimId');
+
+      expect(claimantExpertDetails.items.length).toBe(1);
+      expect(claimantExpertDetails.items[0].firstName).toBe('Joe');
     });
 
     it('should return an error on redis failure', async () => {

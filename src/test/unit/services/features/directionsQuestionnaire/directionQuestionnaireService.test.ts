@@ -208,6 +208,60 @@ describe('Direction questionnaire Service', () => {
       expect(expertEvidence.option).toBe(YesNo.YES);
     });
 
+    it('should return claimant permissionForExpert option with Yes option', async () => {
+      const claim = new Claim();
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
+      claim.claimantResponse.directionQuestionnaire.experts = new Experts();
+      claim.claimantResponse.directionQuestionnaire.experts.permissionForExpert = {option: YesNo.YES};
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return claim;
+      });
+      const permissionForExpert = await getGenericOption('validClaimId', 'permissionForExpert', 'experts');
+      expect(permissionForExpert.option).toBe(YesNo.YES);
+    });
+
+    it('should return claimant permissionForExpert option with No option', async () => {
+      const claim = new Claim();
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
+      claim.claimantResponse.directionQuestionnaire.experts = new Experts();
+      claim.claimantResponse.directionQuestionnaire.experts.permissionForExpert = {option: YesNo.NO};
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return claim;
+      });
+      const permissionForExpert = await getGenericOption('validClaimId', 'permissionForExpert', 'experts');
+      expect(permissionForExpert.option).toBe(YesNo.NO);
+    });
+
+    it('should return claimant defendantYourselfEvidence option with Yes option', async () => {
+      const claim = new Claim();
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
+      claim.claimantResponse.directionQuestionnaire.defendantYourselfEvidence = {option: YesNo.YES};
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return claim;
+      });
+      const defendantYourselfEvidence = await getGenericOption('validClaimId', 'defendantYourselfEvidence');
+      expect(defendantYourselfEvidence.option).toBe(YesNo.YES);
+    });
+
+    it('should return claimant defendantYourselfEvidence option with No option', async () => {
+      const claim = new Claim();
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
+      claim.claimantResponse.directionQuestionnaire.defendantYourselfEvidence = {option: YesNo.NO};
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return claim;
+      });
+      const defendantYourselfEvidence = await getGenericOption('validClaimId', 'defendantYourselfEvidence');
+      expect(defendantYourselfEvidence.option).toBe(YesNo.NO);
+    });
+
     it('should return error on redis failure', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
