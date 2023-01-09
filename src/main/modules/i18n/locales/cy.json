@@ -61,7 +61,8 @@
       "START_AGAIN": "Start again",
       "SUBMIT_CLAIM": "Submit claim",
       "SUBMIT_RESPONSE": "Cyflwyno'r ymateb",
-      "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})"
+      "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})",
+      "SUBMIT": "Submit"
     },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Treth Cyngor",
@@ -631,6 +632,18 @@
         },
         "PAGE_TITLE": "Try to resolve the dispute",
         "TITLE": "Try to resolve the dispute"
+      },
+      "CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS": {
+        "PAGE_TITLE": "Check your answers before submitting",
+        "TITLE": "Check your answers before submitting",
+        "REFERENCE_NUMBER": "Reference number",
+        "WHEN_DID_IT_START": "When did it start",
+        "TYPE": {
+          "WHAT_TYPE_IS_IT": "What type is it",
+          "MENTAL_HEALTH_CRISIS_MORATORIUM": "Mental health crisis moratorium",
+          "STANDARD_BREATHING_SPACE": "Standard breathing space"
+        },
+        "EXPECTED_END_DATE": "Expected end date"
       },
       "WHEN_CLAIM_INTEREST_FROM": {
         "DATE_INTEREST": "Date interest applied from",
