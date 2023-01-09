@@ -5,7 +5,7 @@ import {
   getSummarySections,
   saveStatementOfTruth,
 } from 'services/features/claim/checkAnswers/checkAnswersService';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {deleteDraftClaimFromStore, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {AppRequest} from 'common/models/AppRequest';
@@ -61,6 +61,7 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
     } else {
       await saveStatementOfTruth(userId, form.model);
       await submitClaim(<AppRequest>req);
+      await deleteDraftClaimFromStore(userId);
       if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
         res.redirect(constructResponseUrlWithIdParams(userId, paymentUrl));
       } else {
