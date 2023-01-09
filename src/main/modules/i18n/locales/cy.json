@@ -61,7 +61,8 @@
       "START_AGAIN": "Start again",
       "SUBMIT_CLAIM": "Submit claim",
       "SUBMIT_RESPONSE": "Cyflwyno'r ymateb",
-      "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})"
+      "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})",
+      "SUBMIT": "Submit"
     },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Treth Cyngor",
@@ -87,6 +88,7 @@
     },
     "CONTACT_US_FOR_HELP": {
       "CALL_CHARGES": "Gwybodaeth am brisiau galwadau (yn agor mewn ffenestr newydd)",
+      "EMAIL": "E-bost",
       "OPENING_HOURS": "Dydd Llun i ddydd Gwener, 8.30am i 5pm.",
       "RESPONSE_DELAY": "Byddwn yn cysylltu â chi o fewn 10 diwrnod.",
       "TITLE": "Cysylltwch â ni i gael cymorth",
@@ -305,6 +307,18 @@
     "ARE_YOU_SEVERELY_DISABLED": {
       "PAGE_TITLE": "Severely disabled"
     },
+    "BILINGUAL_LANGUAGE_PREFERENCE": {
+      "PAGE_TITLE": "Do you want to respond to this claim in Welsh?",
+      "TITLE": "Do you want to respond to this claim in Welsh?",
+      "DESCRIPTION": "You can respond to this claim in Welsh. After you've submitted your response, anything else you may have to do relating to the claim will be in English. You'll receive emails and letters in English.",
+      "ENGLISH": "English",
+      "WELSH_AND_ENGLISH": "Welsh and English"
+    },
+    "BREATHING_SPACE_DEBT_RESPITE_LIFT": {
+      "DATE_LIFT_OPTIONAL": "This is the date that you have been told it will finish (optional):",
+      "PAGE_TITLE": "Date for lifting debt respite scheme (breathing space)",
+      "TITLE": "Date for lifting debt respite scheme (breathing space)"
+    },
     "BREATHING_SPACE_DEBT_RESPITE_TYPE": {
       "MENTAL_HEALTH": "Mental health crisis moratorium",
       "PAGE_TITLE": "What type is it?",
@@ -339,6 +353,15 @@
     },
     "CCJ_DEFENDANT_PAYMENT_DATE": {
       "TITLE": "When do you want the defendant to pay?"
+    },
+    "CCJ_REPAYMENT_PLAN_INSTALMENTS": {
+      "EACH_INSTALMENT_AMOUNT": "Amount for each instalment",
+      "FIRST_PAYMENT_DATE": "Date for first payment",
+      "HOW_OFTEN": "How often do you want them to pay instalments?",
+      "INSTALMENT_AMOUNT_HELP": "For example £10",
+      "PAGE_TITLE": "Suggest instalments for the defendant",
+      "TITLE": "Suggest instalments for the defendant",
+      "TOTAL_CLAIM_AMOUNT": "Total claim amount is £{{ totalClaimAmount }}"
     },
     "CHECK_YOUR_ANSWER": {
       "BANK_BALANCE": "Cydbwysedd",
@@ -610,6 +633,18 @@
         "PAGE_TITLE": "Try to resolve the dispute",
         "TITLE": "Try to resolve the dispute"
       },
+      "CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS": {
+        "PAGE_TITLE": "Check your answers before submitting",
+        "TITLE": "Check your answers before submitting",
+        "REFERENCE_NUMBER": "Reference number",
+        "WHEN_DID_IT_START": "When did it start",
+        "TYPE": {
+          "WHAT_TYPE_IS_IT": "What type is it",
+          "MENTAL_HEALTH_CRISIS_MORATORIUM": "Mental health crisis moratorium",
+          "STANDARD_BREATHING_SPACE": "Standard breathing space"
+        },
+        "EXPECTED_END_DATE": "Expected end date"
+      },
       "WHEN_CLAIM_INTEREST_FROM": {
         "DATE_INTEREST": "Date interest applied from",
         "FROM_A_SPECIFIC_DATE": "A particular date",
@@ -640,6 +675,18 @@
       "PAGE_TITLE": "Your date of birth",
       "TITLE": "What is your date of birth?"
     },
+    "CLAIMANT_FORMALISE_REPAYMENT_TYPE": {
+      "PAGE_TITLE": "Choose how to formalise repayment",
+      "REQUEST_A_CCJ": {
+        "DESCRIPTION": "You can ask the court to make a formal order binding the defendant to the repayment plan. This adds the defendant to the CCJ register, which may make it more difficult for them to borrow money to repay you.",
+        "LABEL": "Request a CCJ"
+      },
+      "SIGN_A_SETTLEMENT_AGREEMENT": {
+        "DESCRIPTION": "This is a legal agreement between you and the defendant agreeing to the repayment plan. If they break it you can request a County Court Judgment(CCJ). We'll show you a suggested format for the agreement.",
+        "LABEL": "Sign a settlement agreement"
+      },
+      "TITLE": "Choose how to formalise repayment"
+    },
     "CLAIMANT_INTEREST_RATE": {
       "DIFFERENT_RATE_LABEL": "A different rate",
       "PAGE_TITLE": "Annual rate interest you want to claim",
@@ -649,6 +696,14 @@
       "SAME_RATE_INTEREST_8_PC": "8.00%",
       "TITLE": "What annual rate of interest do you want to claim?",
       "WHY_YOU_ARE_ENTITLED": "Why you're entitled to this rate"
+    },
+    "CLAIMANT_RESPONSE_CONFIRMATION": {
+      "CLAIM_NUMBER": "Your claim number:",
+      "PAGE_TITLE": "Claimant Intention Confirmation",
+      "RC_DISPUTE": {
+        "NOT_PROCEED_WITH_CLAIM": "You didn't proceed with the claim",
+        "CLAIM_ENDED": "The claim has now ended. We've emailed {{ defendantName }} to tell them."
+      }
     },
     "CLAIMANT_RESPONSE_PROCEED": {
       "PAGE_TITLE": "Do you want to proceed with claim?",
@@ -2089,6 +2144,7 @@
     "REASON_REQUIRED": "You need to explain why you believe you’re owed the money",
     "REDIS_FAILURE": "Redis DraftStore failure.",
     "SELECT_ADDITIONAL_TIME": "Dewiswch faint o amser ychwanegol yr ydych yn gwneud cais amdano",
+    "SELECT_WELSH_AND_ENGLISH_OPTION": "Select Welsh and English if you want to respond to this claim in Welsh",
     "SECURITY_CODE_WRONG_OR_EXPIRED": "The security code was not right or has expired",
     "SELECT_AN_OPTION": "Dewiswch opsiwn",
     "SELECT_AMOUNT": {
@@ -2195,6 +2251,8 @@
     "VALID_DATE": "Rhowch ddyddiad dilys",
     "VALID_DATE_IN_PAST": "Nodwch ddyddiad cyn {{dateToday}}",
     "VALID_DATE_NOT_IN_PAST": "Nodwch ddyddiad heddiw neu ddyddiad yn y dyfodol",
+    "VALID_DATE_ONE_MONTH_FROM_TODAY": "Date must be at least a month from today's date",
+    "VALID_DATE_LIFT_NOT_AFTER_TODAY": "Date entered must not be after today’s date",
     "VALID_DATE_START_NOT_AFTER_TODAY": "Start date must not be after today's date",
     "VALID_DAY": "Rhowch ddydd dilys",
     "VALID_DEBT_AMOUNT": {
@@ -2217,6 +2275,7 @@
     "VALID_FOUR_DIGIT_YEAR": "Nodwch flwyddyn sy'n cynnwys 4 digid",
     "VALID_FREE_TEXT_DATE_LENGTH": "Rhowch ddyddiad sydd ddim hirach na $constraint1 nod",
     "VALID_HOUSING": "Disgrifiwch eich cartref",
+    "VALID_INSTALMENT_AMOUNT": "Instalment amount cannot be more than, or equal to the claim amount",
     "VALID_INTEGER": "Rhowch rif, er enghraifft 3",
     "VALID_INTEREST_TYPE_OPTION": "Choose same rate or breakdown",
     "VALID_MONTH": "Rhowch fis dilys",
