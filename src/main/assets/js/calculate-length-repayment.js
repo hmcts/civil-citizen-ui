@@ -22,8 +22,6 @@
   const repaymentAmount = document.querySelector('.repayment-amount');
   const repaymentInstalments = document.querySelector('.repayment-instalments');
   const repaymentFrequency = document.querySelector('.repayment-frequency');
-  let frequencyVal = null;
-
   const instalmentsContainer = document.querySelector('#numberOfInstalments');
   const scheduleContainer = document.querySelector('.schedule');
   const weekContainer = document.querySelector('#week_schedule');
@@ -32,6 +30,8 @@
   const monthContainer = document.querySelector('#month_schedule');
   const monthsContainer = document.querySelector('#months_schedule');
   const twoMonthsContainer = document.querySelector('#two-months_schedule');
+  const repaymentFrequencyRadioBox = 'input[name=repaymentFrequency]:checked';
+  let repaymentFrequencyValue = null;
   const CLASS_HIDE = 'hide';
 
   const hideAll = () => {
@@ -45,12 +45,22 @@
   hideAll();
 
   if (repaymentFrequency) {
+
+    window.addEventListener('load', () => {
+      repaymentFrequencyValue = repaymentFrequency.querySelector(repaymentFrequencyRadioBox);
+      if (repaymentFrequencyValue && repaymentFrequencyValue.value) {
+        getRepaymentSchedule(repaymentFrequencyValue.value);
+      }
+    });
+
     repaymentInstalments.addEventListener('keyup', () => {
-      getRepaymentSchedule(frequencyVal);
+      repaymentFrequencyValue = repaymentFrequency.querySelector(repaymentFrequencyRadioBox);
+      if (repaymentFrequencyValue && repaymentFrequencyValue.value) {
+        getRepaymentSchedule(repaymentFrequencyValue.value);
+      }
     });
 
     repaymentFrequency.addEventListener('click', (event) => {
-      frequencyVal = event.target.value;
       getRepaymentSchedule(event.target.value);
     });
 
