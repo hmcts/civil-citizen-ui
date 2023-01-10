@@ -831,8 +831,8 @@
     },
     "CONSIDER_CLAIMANT_DOCUMENTS": {
       "GIVE_DETAILS": "Give details of the documents",
-      "PAGE_TITLE": "Are there any documents the claimant has that you want the court to consider?",
-      "TITLE": "Are there any documents the claimant has that you want the court to consider?"
+      "PAGE_TITLE": "Are there any documents the other party has that you want the court to consider?",
+      "TITLE": "Are there any documents the other party has that you want the court to consider?"
     },
     "CONTACT_THEM": {
       "ABOUT": "About claim",
