@@ -48,14 +48,14 @@
 
     window.addEventListener('load', () => {
       repaymentFrequencyValue = repaymentFrequency.querySelector(repaymentFrequencyRadioBox);
-      if (repaymentFrequencyValue && repaymentFrequencyValue.value) {
+      if (repaymentFrequencyValue && repaymentFrequencyValue?.value) {
         getRepaymentSchedule(repaymentFrequencyValue.value);
       }
     });
 
     repaymentInstalments.addEventListener('keyup', () => {
       repaymentFrequencyValue = repaymentFrequency.querySelector(repaymentFrequencyRadioBox);
-      if (repaymentFrequencyValue && repaymentFrequencyValue.value) {
+      if (repaymentFrequencyValue && repaymentFrequencyValue?.value) {
         getRepaymentSchedule(repaymentFrequencyValue.value);
       }
     });
