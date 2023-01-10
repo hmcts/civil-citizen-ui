@@ -12,7 +12,7 @@ export const getExpertDetails = async (claimId: string): Promise<ExpertDetailsLi
     if (case_data.isClaimantIntentionPending()) {
       return case_data.claimantResponse?.directionQuestionnaire?.experts?.expertDetailsList
         ? case_data.claimantResponse.directionQuestionnaire.experts.expertDetailsList
-        : new ExpertDetailsList([new ExpertDetails()])
+        : new ExpertDetailsList([new ExpertDetails()]);
     }
     return case_data.directionQuestionnaire?.experts?.expertDetailsList
       ? case_data.directionQuestionnaire.experts.expertDetailsList
