@@ -49,14 +49,16 @@ describe('Direction questionnaire Service', () => {
     });
 
     it('should return claimant Direction questionnaire object', async () => {
+      // Given
       const claim = new Claim();
       claim.claimantResponse = new ClaimantResponse();
 
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return claim;
       });
+      // When
       const directionQuestionnaire = await getDirectionQuestionnaire('validClaimId');
-
+      // Then
       expect(directionQuestionnaire?.experts?.expertReportDetails).toBeUndefined();
       expect(directionQuestionnaire?.hearing?.determinationWithoutHearing).toBeUndefined();
     });
@@ -78,6 +80,7 @@ describe('Direction questionnaire Service', () => {
     });
 
     it('should return claimant Direction questionnaire object with determinationWithoutHearing no', async () => {
+      // Given
       const claim = new Claim();
       claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
       claim.claimantResponse = new ClaimantResponse();
@@ -90,13 +93,15 @@ describe('Direction questionnaire Service', () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return claim;
       });
+      // When
       const directionQuestionnaire = await getDirectionQuestionnaire('validClaimId');
-
+      // Then
       expect(directionQuestionnaire?.hearing?.determinationWithoutHearing?.option).toBe(YesNo.NO);
       expect(directionQuestionnaire?.experts?.expertReportDetails).toBeUndefined();
     });
 
     it('should return claimant Direction questionnaire object with expert report details', async () => {
+      // Given
       const claim = new Claim();
       claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
       claim.claimantResponse = new ClaimantResponse();
@@ -111,8 +116,9 @@ describe('Direction questionnaire Service', () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return claim;
       });
+      // When
       const directionQuestionnaire = await getDirectionQuestionnaire('validClaimId');
-
+      // Then
       expect(directionQuestionnaire?.hearing?.determinationWithoutHearing).toBeUndefined();
       expect(directionQuestionnaire?.experts?.expertReportDetails?.option).toBe(YesNo.YES);
       expect(directionQuestionnaire?.experts?.expertReportDetails?.reportDetails[0].expertName).toBe('John Doe');
@@ -239,6 +245,7 @@ describe('Direction questionnaire Service', () => {
     });
 
     it('should save claimant direction questionnaire successfully', async () => {
+      // Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         const claim = new Claim();
         claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
@@ -253,8 +260,9 @@ describe('Direction questionnaire Service', () => {
       directionQuestionnaire.hearing = new Hearing();
       directionQuestionnaire.experts.defendantExpertEvidence = new GenericYesNo(YesNo.NO);
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-
+      // When
       await saveDirectionQuestionnaire('validClaimId', directionQuestionnaire?.hearing?.triedToSettle, 'triedToSettle', 'hearing');
+      // Then
       expect(spySave).toHaveBeenCalledWith('validClaimId', {directionQuestionnaire});
     });
 
@@ -277,6 +285,7 @@ describe('Direction questionnaire Service', () => {
     });
 
     it('should update claimant direction questionnaire successfully', async () => {
+      // Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         const claim = new Claim();
         claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
@@ -292,8 +301,9 @@ describe('Direction questionnaire Service', () => {
       directionQuestionnaire.experts.defendantExpertEvidence = undefined;
       directionQuestionnaire.hearing.triedToSettle = new GenericYesNo(YesNo.NO);
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-
+      // When
       await saveDirectionQuestionnaire('validClaimId', directionQuestionnaire?.hearing?.triedToSettle, 'triedToSettle', 'hearing');
+      // Then
       expect(spySave).toHaveBeenCalledWith('validClaimId', {directionQuestionnaire});
     });
 
