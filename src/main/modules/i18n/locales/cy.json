@@ -61,7 +61,8 @@
       "START_AGAIN": "Start again",
       "SUBMIT_CLAIM": "Submit claim",
       "SUBMIT_RESPONSE": "Cyflwyno'r ymateb",
-      "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})"
+      "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})",
+      "SUBMIT": "Submit"
     },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Treth Cyngor",
@@ -312,6 +313,11 @@
       "DESCRIPTION": "You can respond to this claim in Welsh. After you've submitted your response, anything else you may have to do relating to the claim will be in English. You'll receive emails and letters in English.",
       "ENGLISH": "English",
       "WELSH_AND_ENGLISH": "Welsh and English"
+    },
+    "BREATHING_SPACE_DEBT_RESPITE_LIFT": {
+      "DATE_LIFT_OPTIONAL": "This is the date that you have been told it will finish (optional):",
+      "PAGE_TITLE": "Date for lifting debt respite scheme (breathing space)",
+      "TITLE": "Date for lifting debt respite scheme (breathing space)"
     },
     "BREATHING_SPACE_DEBT_RESPITE_TYPE": {
       "MENTAL_HEALTH": "Mental health crisis moratorium",
@@ -627,6 +633,18 @@
         "PAGE_TITLE": "Try to resolve the dispute",
         "TITLE": "Try to resolve the dispute"
       },
+      "CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS": {
+        "PAGE_TITLE": "Check your answers before submitting",
+        "TITLE": "Check your answers before submitting",
+        "REFERENCE_NUMBER": "Reference number",
+        "WHEN_DID_IT_START": "When did it start",
+        "TYPE": {
+          "WHAT_TYPE_IS_IT": "What type is it",
+          "MENTAL_HEALTH_CRISIS_MORATORIUM": "Mental health crisis moratorium",
+          "STANDARD_BREATHING_SPACE": "Standard breathing space"
+        },
+        "EXPECTED_END_DATE": "Expected end date"
+      },
       "WHEN_CLAIM_INTEREST_FROM": {
         "DATE_INTEREST": "Date interest applied from",
         "FROM_A_SPECIFIC_DATE": "A particular date",
@@ -678,6 +696,14 @@
       "SAME_RATE_INTEREST_8_PC": "8.00%",
       "TITLE": "What annual rate of interest do you want to claim?",
       "WHY_YOU_ARE_ENTITLED": "Why you're entitled to this rate"
+    },
+    "CLAIMANT_RESPONSE_CONFIRMATION": {
+      "CLAIM_NUMBER": "Your claim number:",
+      "PAGE_TITLE": "Claimant Intention Confirmation",
+      "RC_DISPUTE": {
+        "NOT_PROCEED_WITH_CLAIM": "You didn't proceed with the claim",
+        "CLAIM_ENDED": "The claim has now ended. We've emailed {{ defendantName }} to tell them."
+      }
     },
     "CLAIMANT_RESPONSE_PROCEED": {
       "PAGE_TITLE": "Do you want to proceed with claim?",
@@ -1119,16 +1145,16 @@
     "EXPERT_GUIDANCE": {
       "ASK_PERMISSION": "You must ask for permission to use an expert - a judge will then decide whether the expert is necessary.",
       "CLAIMANT": "claimant",
-      "COST_HIRING_EXPERT": "The cost of hiring an expert depends on which expert you and the {{ otherParty }} choose.",
+      "COST_HIRING_EXPERT": "The cost of hiring an expert depends on which expert you and the other party choose.",
       "EXPERT_REPORT": "The expert will provide a written report - they won't usually come to court in person.",
       "FOR_EXAMPLE": "For example, they might allow a structural engineer to be used in a claim about building works or a mechanic in a claim about car repairs.",
-      "IF_JUDGE_ALLOWS": "If a judge allows you to use an expert, you'll usually have to share one expert with the {{ otherParty }}.",
+      "IF_JUDGE_ALLOWS": "If a judge allows you to use an expert, you'll usually have to share one expert with the other party.",
       "IF_PERMISSION": "If you get permission to use an expert",
       "IF_YOU_WIN": "If you win the case you may be able to recover a maximum of £750 of the cost you paid. A judge will rule on this at the end of the hearing.",
       "JUDGE_ALLOW_EXPERT": "A judge will only allow you to use an expert if they believe they need the expert's specialist knowledge.",
       "JUDGE_DECIDE_COST": "The judge will also decide whether the cost of the expert is reasonable compared to the value of the claim.",
       "JUDGE_MAY_ASK": "The judge may ask one of you to make a list of 3 independent experts who can provide a written report in return for a fee.",
-      "JUDGES_RESPONSIBLE_COST": "Even though you and the {{ otherParty }} share the cost of hiring the expert, judges are still responsible for keeping costs in proportion to value.",
+      "JUDGES_RESPONSIBLE_COST": "Even though you and the other party share the cost of hiring the expert, judges are still responsible for keeping costs in proportion to value.",
       "MUST_AVOID_DISCUSSING": "You must avoid discussing the case in detail with the 3 experts.",
       "OTHER_PARTY_CHOOSES": "The other party then chooses one expert from the list. After that, you both need to follow these steps",
       "PAGE_TITLE": "Expert guidance",
@@ -2226,6 +2252,7 @@
     "VALID_DATE_IN_PAST": "Nodwch ddyddiad cyn {{dateToday}}",
     "VALID_DATE_NOT_IN_PAST": "Nodwch ddyddiad heddiw neu ddyddiad yn y dyfodol",
     "VALID_DATE_ONE_MONTH_FROM_TODAY": "Date must be at least a month from today's date",
+    "VALID_DATE_LIFT_NOT_AFTER_TODAY": "Date entered must not be after today’s date",
     "VALID_DATE_START_NOT_AFTER_TODAY": "Start date must not be after today's date",
     "VALID_DAY": "Rhowch ddydd dilys",
     "VALID_DEBT_AMOUNT": {
