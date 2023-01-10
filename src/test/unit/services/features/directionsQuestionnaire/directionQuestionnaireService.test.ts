@@ -209,6 +209,7 @@ describe('Direction questionnaire Service', () => {
     });
 
     it('should return claimant permissionForExpert option with Yes option', async () => {
+      //Given
       const claim = new Claim();
       claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
       claim.claimantResponse = new ClaimantResponse();
@@ -218,11 +219,16 @@ describe('Direction questionnaire Service', () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return claim;
       });
+
+      //When
       const permissionForExpert = await getGenericOption('validClaimId', 'permissionForExpert', 'experts');
+
+      //Then
       expect(permissionForExpert.option).toBe(YesNo.YES);
     });
 
     it('should return claimant permissionForExpert option with No option', async () => {
+      //Given
       const claim = new Claim();
       claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
       claim.claimantResponse = new ClaimantResponse();
@@ -232,11 +238,16 @@ describe('Direction questionnaire Service', () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return claim;
       });
+
+      //When
       const permissionForExpert = await getGenericOption('validClaimId', 'permissionForExpert', 'experts');
+
+      //Then
       expect(permissionForExpert.option).toBe(YesNo.NO);
     });
 
     it('should return claimant defendantYourselfEvidence option with Yes option', async () => {
+      //Given
       const claim = new Claim();
       claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
       claim.claimantResponse = new ClaimantResponse();
@@ -245,11 +256,16 @@ describe('Direction questionnaire Service', () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return claim;
       });
+
+      //When
       const defendantYourselfEvidence = await getGenericOption('validClaimId', 'defendantYourselfEvidence');
+
+      //Then
       expect(defendantYourselfEvidence.option).toBe(YesNo.YES);
     });
 
     it('should return claimant defendantYourselfEvidence option with No option', async () => {
+      //Given
       const claim = new Claim();
       claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
       claim.claimantResponse = new ClaimantResponse();
@@ -258,7 +274,11 @@ describe('Direction questionnaire Service', () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return claim;
       });
+
+      //When
       const defendantYourselfEvidence = await getGenericOption('validClaimId', 'defendantYourselfEvidence');
+
+      //Then
       expect(defendantYourselfEvidence.option).toBe(YesNo.NO);
     });
 

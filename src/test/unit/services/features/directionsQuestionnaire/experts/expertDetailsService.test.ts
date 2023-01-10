@@ -45,6 +45,7 @@ describe('Expert Details service', () => {
     });
 
     it('should return claimant expertDetails object', async () => {
+      //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         const claim = new Claim();
         claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
@@ -55,8 +56,10 @@ describe('Expert Details service', () => {
         return claim;
       });
 
+      //When
       const claimantExpertDetails = await getExpertDetails('validClaimId');
 
+      //Then
       expect(claimantExpertDetails.items.length).toBe(1);
       expect(claimantExpertDetails.items[0].firstName).toBe('Joe');
     });
