@@ -4,10 +4,11 @@ import config from 'config';
 import nock from 'nock';
 import {
   CAN_WE_USE_URL,
+  CLAIMANT_RESPONSE_TASK_LIST_URL,
   CLAIM_TASK_LIST_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {mockCivilClaim, mockRedisFailure, mockCivilClaimantInetntion} from '../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -91,6 +92,16 @@ describe('Repayment Plan', () => {
           expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
         });
     });
+    it('should redirect to claimant task list with valid input', async () => {
+      app.locals.draftStoreClient = mockCivilClaimantInetntion;
+      await request(app)
+        .post(CAN_WE_USE_URL)
+        .send({option: 'no', mediationPhoneNumber: '01632960001'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CLAIMANT_RESPONSE_TASK_LIST_URL);
+        });
+    });
     it('should redirect with input option equal to "yes" ', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
@@ -121,6 +132,16 @@ describe('Repayment Plan', () => {
           .expect((res) => {
             expect(res.status).toBe(302);
             expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          });
+      });
+      it('should redirect claimant task list with valid input', async () => {
+        app.locals.draftStoreClient = mockCivilClaimantInetntion;
+        await request(app)
+          .post(CAN_WE_USE_URL)
+          .send({option: 'no', mediationPhoneNumber: '01632960002'})
+          .expect((res) => {
+            expect(res.status).toBe(302);
+            expect(res.header.location).toEqual(CLAIMANT_RESPONSE_TASK_LIST_URL);
           });
       });
     });
