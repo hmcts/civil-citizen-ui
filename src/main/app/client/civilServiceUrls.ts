@@ -10,3 +10,4 @@ export const CIVIL_SERVICE_CLAIMANT = `${CIVIL_SERVICE_CASES_URL}claimant/`;
 export const CIVIL_SERVICE_SUBMIT_EVENT = `${CIVIL_SERVICE_CASES_URL}:caseId/citizen/:submitterId/event`;
 export const CIVIL_SERVICE_CALCULATE_DEADLINE = `${CIVIL_SERVICE_CASES_URL}response/deadline`;
 export const CIVIL_SERVICE_COURT_LOCATIONS = '/locations/courtLocations';
+

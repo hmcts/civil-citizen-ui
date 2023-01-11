@@ -3,7 +3,6 @@ import config from 'config';
 import {getSummarySections} from 'services/features/claim/checkAnswers/checkAnswersService';
 import {CLAIM_CHECK_ANSWERS_URL, CLAIM_CONFIRMATION_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import request from 'supertest';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {createClaimWithYourDetails} from '../../../../utils/mocks/claimDetailsMock';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
