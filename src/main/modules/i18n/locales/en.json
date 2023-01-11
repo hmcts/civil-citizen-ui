@@ -715,8 +715,8 @@
         "PAGE_TITLE": "The defendant can’t pay by your proposed date",
         "TITLE": "The defendant can’t pay by your proposed date",
         "BASED_ON": "Based on financial details the defendant gave us, we don't believe they can pay by your proposed date.",
-        "COURT_CALCULATOR": "The court's calculator has determined DYNAMIC DATE as the date when they can pay you in full.",
-        "DO_YOU_ACCEPT": "Do you accept a repayment date of DYNAMIC DATE?",
+        "COURT_CALCULATOR": "The court's calculator has determined {{ paymentDate }} as the date when they can pay you in full.",
+        "DO_YOU_ACCEPT": "Do you accept a repayment date of {{ paymentDate }}?",
         "YES": "Yes",
         "NO_I_WANT_JUDGE": "No - I want a judge to make a new repayment plan"
       },

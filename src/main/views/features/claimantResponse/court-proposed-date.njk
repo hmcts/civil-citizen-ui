@@ -23,7 +23,9 @@
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t('PAGES.CLAIMANT_RESPONSE.COURT_PROPOSED_DATE.TITLE') }}</h1>
           <p class="govuk-body">{{ t('PAGES.CLAIMANT_RESPONSE.COURT_PROPOSED_DATE.BASED_ON') }}</p>
-          <p class="govuk-body">{{ t('PAGES.CLAIMANT_RESPONSE.COURT_PROPOSED_DATE.COURT_CALCULATOR') }}</p>
+          <p class="govuk-body">
+            {{ t('PAGES.CLAIMANT_RESPONSE.COURT_PROPOSED_DATE.COURT_CALCULATOR',  {paymentDate: paymentDate}) }}
+          </p>
 
           <form method="post" novalidate autocomplete="off">
             {{ csrfProtection(csrf) }}
@@ -33,20 +35,20 @@
               name: "decision",
               fieldset: {
                 legend: {
-                  text: t('PAGES.CLAIMANT_RESPONSE.COURT_PROPOSED_DATE.DO_YOU_ACCEPT'),
+                  text: t('PAGES.CLAIMANT_RESPONSE.COURT_PROPOSED_DATE.DO_YOU_ACCEPT',  {paymentDate: paymentDate}),
                   isPageHeading: true,
                   classes: "govuk-fieldset__legend--s"
                 }
               },
               items: [
                 {
-                  value: CourtProposedDateOptions.ACCEPT_REPAYMENT_PLAN,
-                  checked: form.model.decision === CourtProposedDateOptions.ACCEPT_REPAYMENT_PLAN,
+                  value: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE,
+                  checked: form.model.decision === CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE,
                   text: t('PAGES.CLAIMANT_RESPONSE.COURT_PROPOSED_DATE.YES')
                 },
                 {
-                  value: CourtProposedDateOptions.JUDGE_REPAYMENT_PLAN,
-                  checked: form.model.decision === CourtProposedDateOptions.JUDGE_REPAYMENT_PLAN,
+                  value: CourtProposedDateOptions.JUDGE_REPAYMENT_DATE,
+                  checked: form.model.decision === CourtProposedDateOptions.JUDGE_REPAYMENT_DATE,
                   text: t('PAGES.CLAIMANT_RESPONSE.COURT_PROPOSED_DATE.NO_I_WANT_JUDGE')
                 }
               ],

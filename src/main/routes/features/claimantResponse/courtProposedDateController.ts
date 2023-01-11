@@ -15,16 +15,10 @@ import {
   CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from '../../urls';
 import {
-  getClaimantResponse,
   saveClaimantResponse,
 } from 'services/features/claimantResponse/claimantResponseService';
 import {
-  getFinalPaymentDate,
-  getFirstRepaymentDate,
-  convertFrequencyToText,
-  getNumberOfInstalments,
-  getPaymentAmount,
-  getRepaymentFrequency,
+  getPaymentDate,
 } from 'common/utils/repaymentUtils';
 
 const courtProposedDateViewPath = 'features/claimantResponse/court-proposed-date';
@@ -32,26 +26,18 @@ const courtProposedDateController = Router();
 const crPropertyName = 'decision';
 const crParentName = 'courtProposedDate';
 
-function renderView(form: GenericForm<CourtProposedDate>, repaymentPlan: any, res: Response): void {
-  res.render(courtProposedDateViewPath, { form, repaymentPlan });
+function renderView(form: GenericForm<CourtProposedDate>, paymentDate: any, res: Response): void {
+  res.render(courtProposedDateViewPath, { form, paymentDate });
 }
 
 courtProposedDateController.get(CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimantResponse = await getClaimantResponse(claimId);
     const claim: Claim = await getCaseDataFromStore(claimId);
+    const paymentDate = formatDateToFullDate(new Date(getPaymentDate(claim)), getLng(lang));
 
-    const repaymentPlan = {
-      paymentAmount: getPaymentAmount(claim),
-      repaymentFrequency: convertFrequencyToText(getRepaymentFrequency(claim), getLng(lang)),
-      firstRepaymentDate: formatDateToFullDate(new Date(getFirstRepaymentDate(claim))),
-      finalRepaymentDate: formatDateToFullDate(new Date(getFinalPaymentDate(claim))),
-      repaymentLength: getNumberOfInstalments(claim),
-    };
-
-    renderView(new GenericForm(new CourtProposedDate(claimantResponse.courtProposedDate?.decision)), repaymentPlan, res);
+    renderView(new GenericForm(new CourtProposedDate(claim.claimantResponse?.courtProposedDate?.decision)), paymentDate, res);
   } catch (error) {
     next(error);
   }
