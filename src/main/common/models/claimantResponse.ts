@@ -3,6 +3,7 @@ import {GenericYesNo} from '../form/models/genericYesNo';
 import {CCJRequest} from './claimantResponse/ccj/ccjRequest';
 import {RejectionReason} from '../form/models/claimantResponse/rejectionReason';
 import {DirectionQuestionnaire} from './directionsQuestionnaire/directionQuestionnaire';
+import {CourtProposedPlan} from '../form/models/claimantResponse/courtProposedPlan';
 import {Mediation} from '../models/mediation/mediation';
 
 export class ClaimantResponse {
@@ -15,5 +16,6 @@ export class ClaimantResponse {
   rejectionReason?: RejectionReason;
   chooseHowToProceed?: GenericYesNo;
   directionQuestionnaire?: DirectionQuestionnaire;
+  courtProposedPlan?: CourtProposedPlan;
   mediation?: Mediation;
 }
