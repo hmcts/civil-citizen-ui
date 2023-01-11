@@ -21,7 +21,7 @@ import {TotalAmountOptions} from '../../common/models/eligibility/totalAmountOpt
 import {ClaimTypeOptions} from '../../common/models/eligibility/claimTypeOptions';
 import {AgeEligibilityOptions} from '../../common/form/models/eligibility/defendant/AgeEligibilityOptions';
 import {LanguageOptions} from '../../common/models/directionsQuestionnaire/languageOptions';
-import {SameRateInterestType} from '../../common/form/models/claimDetails';
+import {CaseState, SameRateInterestType} from '../../common/form/models/claimDetails';
 import {InterestClaimFromType} from '../../common/form/models/claimDetails';
 import {InterestEndDateType} from '../../common/form/models/claimDetails';
 import * as urls from '../../routes/urls';
@@ -123,6 +123,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('InterestClaimOptionsType', InterestClaimOptionsType);
     nunjucksEnv.addGlobal('ClaimBilingualLanguagePreference', ClaimBilingualLanguagePreference);
     nunjucksEnv.addGlobal('CourtProposedDateOptions', CourtProposedDateOptions);
+    nunjucksEnv.addGlobal('CaseState', CaseState);
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;
