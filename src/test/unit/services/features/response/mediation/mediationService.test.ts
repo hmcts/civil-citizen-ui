@@ -7,8 +7,8 @@ import {
 } from '../../../../../../main/services/features/response/mediation/mediationService';
 import {Mediation} from '../../../../../../main/common/models/mediation/mediation';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {CaseState} from 'common/form/models/claimDetails';
-import {ClaimantResponse} from 'common/models/claimantResponse';
+import {CaseState} from '../../../../../../main/common/form/models/claimDetails';
+import {ClaimantResponse} from '../../../../../../main/common/models/claimantResponse';
 
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 
@@ -151,7 +151,6 @@ describe('Mediation service', () => {
       //Then
       expect(spySave).toBeCalled();
     });
-
     it('should rethrow error when error occurs', async () => {
       //When
       const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
