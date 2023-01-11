@@ -230,6 +230,20 @@ describe('Direction questionnaire Service', () => {
       expect(expertEvidence.option).toBe(YesNo.YES);
     });
 
+    it('should return request defendantExpertEvidence option with Yes option - defendant journey', async () => {
+      const claim = new Claim();
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
+      claim.claimantResponse.directionQuestionnaire.experts = new Experts();
+      claim.claimantResponse.directionQuestionnaire.experts.defendantExpertEvidence = {option: YesNo.YES};
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return claim;
+      });
+      const expertEvidence = await getGenericOption('validClaimId', 'defendantExpertEvidence', 'experts');
+      expect(expertEvidence.option).toBe(YesNo.YES);
+    });
+
     it('should return error on redis failure', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
