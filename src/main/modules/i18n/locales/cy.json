@@ -768,6 +768,11 @@
       "PAGE_TITLE": "Has the defendant paid you £{{ paidAmount }}?",
       "TITLE": "Has the defendant paid you £{{ paidAmount }}?"
     },
+    "CLAIMANT_REPAYMNET_PLAN_REJECT_REASON": {
+      "EXPLAIN_WHY_DEFENDANT_CAN_AFFORD": "Explain why you believe the defendant can afford to pay more or to pay sooner.",
+      "PAGE_TITLE": "Why did you reject the repayment plan?",
+      "TITLE": "Why did you reject the repayment plan?"
+    },
     "CLAIMANT_RESPONSE_REJECTION_REASON": {
       "PAGE_TITLE": "Rejection reason",
       "TITLE": "Why did you reject their response?"
