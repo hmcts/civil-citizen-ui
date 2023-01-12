@@ -66,7 +66,7 @@ const mockCivilClaimWithTimelineAndEvidence = {
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseWithTimelineAndEvidenceMock))),
 };
 
-const mockCivilClaimantInetntion = {
+const mockCivilClaimanIntention = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(noRespondentTelephoneClaimantIntentionMock))),
 };
@@ -135,5 +135,5 @@ export {
   mockClaimantClaims,
   mockCivilClaimWithTimelineAndEvidence,
   mockCivilClaimWithExpertAndWitness,
-  mockCivilClaimantInetntion,
+  mockCivilClaimanIntention,
 };

@@ -8,7 +8,7 @@ import {
   CLAIM_TASK_LIST_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure, mockCivilClaimantInetntion} from '../../../../utils/mockDraftStore';
+import {mockCivilClaim, mockRedisFailure, mockCivilClaimanIntention} from '../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -93,7 +93,7 @@ describe('Repayment Plan', () => {
         });
     });
     it('should redirect to claimant task list with valid input', async () => {
-      app.locals.draftStoreClient = mockCivilClaimantInetntion;
+      app.locals.draftStoreClient = mockCivilClaimanIntention;
       await request(app)
         .post(CAN_WE_USE_URL)
         .send({option: 'no', mediationPhoneNumber: '01632960001'})
@@ -135,7 +135,7 @@ describe('Repayment Plan', () => {
           });
       });
       it('should redirect claimant task list with valid input', async () => {
-        app.locals.draftStoreClient = mockCivilClaimantInetntion;
+        app.locals.draftStoreClient = mockCivilClaimanIntention;
         await request(app)
           .post(CAN_WE_USE_URL)
           .send({option: 'no', mediationPhoneNumber: '01632960002'})
