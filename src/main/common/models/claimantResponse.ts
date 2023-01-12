@@ -5,6 +5,7 @@ import {RejectionReason} from '../form/models/claimantResponse/rejectionReason';
 import {CourtProposedDate} from '../form/models/claimantResponse/courtProposedDate';
 import {CourtProposedPlan} from '../form/models/claimantResponse/courtProposedPlan';
 import {Mediation} from '../models/mediation/mediation';
+import {DirectionQuestionnaire} from './directionsQuestionnaire/directionQuestionnaire';
 
 export class ClaimantResponse {
   hasDefendantPaidYou?: GenericYesNo;
@@ -18,4 +19,5 @@ export class ClaimantResponse {
   courtProposedDate?: CourtProposedDate;
   courtProposedPlan?: CourtProposedPlan;
   mediation?: Mediation;
+  directionQuestionnaire?: DirectionQuestionnaire;
 }
