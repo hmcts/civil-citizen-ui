@@ -4,6 +4,7 @@ import {CCJRequest} from './claimantResponse/ccj/ccjRequest';
 import {RejectionReason} from '../form/models/claimantResponse/rejectionReason';
 import {CourtProposedPlan} from '../form/models/claimantResponse/courtProposedPlan';
 import {Mediation} from '../models/mediation/mediation';
+import {DirectionQuestionnaire} from './directionsQuestionnaire/directionQuestionnaire';
 
 export class ClaimantResponse {
   hasDefendantPaidYou?: GenericYesNo;
@@ -16,4 +17,5 @@ export class ClaimantResponse {
   chooseHowToProceed?: GenericYesNo;
   courtProposedPlan?: CourtProposedPlan;
   mediation?: Mediation;
+  directionQuestionnaire?: DirectionQuestionnaire;
 }
