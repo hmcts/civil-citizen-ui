@@ -195,7 +195,7 @@
       "TELEPHONE": "Tel: 0300 303 5174"
     },
     "POSTCODE": {
-      "ADDESSES_FOUND": "addresses found (Welsh)",
+      "ADDESSES_FOUND": "wedi dod o hyd i gyfeiriadau",
       "FIND_ADDRESS": "Dod o hyd i gyfeiriad",
       "MANUAL_ADDRESS": "Teipio'r cyfeiriad",
       "PICK_ADDRESS": "Dewiswch gyfeiriad",
@@ -218,7 +218,8 @@
       "WEEK_LOWER_CASE": "wythnos",
       "WEEKS_LOWER_CASE": "wythnos",
       "MONTHS_LOWER_CASE": "mis",
-      "TWO_MONTHS_LOWER_CASE": "2 fis"
+      "TWO_MONTHS_LOWER_CASE": "2 fis",
+      "TWO_WEEKS_LOWER_CASE": "pythefnos"
     },
     "STATEMENT_OF_TRUTH": {
       "CORRECT_INFORMATION_CONFIRMATION": "Rwy'n cadarnhau fy mod i'n credu bod y manylion rwyf wedi'u darparu yn gywir.",
@@ -776,6 +777,29 @@
     "CLAIMANT_RESPONSE_REJECTION_REASON": {
       "PAGE_TITLE": "Rejection reason",
       "TITLE": "Why did you reject their response?"
+    },
+    "CLAIMANT_TERMS_OF_AGREEMENT": {
+      "PAGE_TITLE": "Terms of the agreement",
+      "TITLE": "Terms of the agreement",
+      "DETAILS": {
+        "THE_AGREEMENT": {
+          "LABEL": "The agreement",
+          "REPAYMENT_PLAN_PART_ONE": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every  ",
+          "REPAYMENT_PLAN_PART_TWO": "The first instalment will be paid by {{ firstRepaymentDate }}"
+        },
+        "COMPLETION_DATE": {
+          "LABEL": "Completion date",
+          "DATE": "{{ finalRepaymentDate }}"
+        },
+        "FIRST_PARAGRAPH": "This agreement settles the claim made by {{ claimant }} against {{ defendant }}. This includes all money owed in the claim, for example court fees, expenses or interest.",
+        "SECOND_PARAGRAPH": "Neither party can make any further claims relating to this case, other than to enforce it.",
+        "THIRD_PARAGRAPH": "Either party can view and download this agreement from their Money Claims account. Both parties should keep a copy of this agreement.",
+        "IF_THE_AGREEMENT_IS_BROKEN": "If the agreement is broken",
+        "CLAIMANT_REQUEST_CCJ": "The claimant can request a County Court Judgment (CCJ) for any money still owed from this agreement.",
+        "SIGN_THE_AGREEMENT": "Sign the agreement",
+        "AGREEMENT_NOTE": "Make sure this agreement includes everything you’ve agreed with {{ defendant }} before signing. You won’t be able to change this later.",
+        "CONFIRMATION": "I confirm I’ve read and accept the terms of the agreement."
+      }
     },
     "COMPANY_DETAILS": {
       "ADDRESS_FOR_SERVICE": "Gelwir hwn yn 'gyfeiriad cyflwyno'.",
@@ -2047,6 +2071,7 @@
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_NUMBER_REQUIRED": "You need to enter the claim number",
     "CLAIM_VALID_AMOUNT": "Rhowch swm dilys",
+    "CLAIMANT_ACCEPT_TERMS_OF_THE_AGREEMENT": "Please select I confirm I’ve read and accept the terms of the agreement",
     "CORRECT_DATE_NOT_IN_FUTURE": "Cywirwch y dyddiad, ni allwch ddefnyddio dyddiad yn y dyfodol.",
     "DATE_REQUIRED": "Nodwch ddyddiad",
     "DATE_NOT_MORE_THAN_28_DAYS": "Ni all y dyddiad ymateb yr ydych wedi’i gytuno fod mwy na 28 diwrnod ar ôl y dyddiad ymateb gwreiddiol",
