@@ -14,8 +14,13 @@
       "calculatedAmountInPence": "7000"
     },
     "respondent1": {
-      "dateOfBirth": "2022-03-01T13:29:24.971",
-      "partyPhone": ""
+      "dateOfBirth": "2022-03-01T13:29:24.971"
+    },
+    "mediation": {
+      "mediationDisagreement": {
+        "messageName": "",
+        "option": "no"
+      }
     }
   }
 }
