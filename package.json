@@ -76,7 +76,7 @@
     "launchdarkly-node-client-sdk": "^2.2.1",
     "launchdarkly-node-server-sdk": "^6.4.3",
     "lodash": "^4.17.21",
-    "luxon": "^3.2.0",
+    "luxon": "^3.2.1",
     "nunjucks": "^3.2.3",
     "otplib": "^12.0.1",
     "reflect-metadata": "^0.1.13",
@@ -152,6 +152,7 @@
     "shelljs": "^0.8.5",
     "glob-parent": "^6.0.1",
     "qs": "^6.9.3",
-    "flat": "^5.0.1"
+    "flat": "^5.0.1",
+    "debug": "^4.3.4"
   }
 }

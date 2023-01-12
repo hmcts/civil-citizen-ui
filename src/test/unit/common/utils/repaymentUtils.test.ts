@@ -1,13 +1,20 @@
-import { HowMuchDoYouOwe } from 'common/form/models/admission/partialAdmission/howMuchDoYouOwe';
+import {HowMuchDoYouOwe} from 'common/form/models/admission/partialAdmission/howMuchDoYouOwe';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {ResponseType} from 'common/form/models/responseType';
-import { TransactionSchedule } from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {FullAdmission} from 'common/models/fullAdmission';
 import {PartialAdmission} from 'common/models/partialAdmission';
 import {Party} from 'common/models/party';
 import {addDaysToDate, addMonths} from 'common/utils/dateUtils';
-import {getFinalPaymentDate, getFirstRepaymentDate, getPaymentAmount, getRepaymentFrequency} from 'common/utils/repaymentUtils';
+import {
+  getFinalPaymentDate,
+  getFirstRepaymentDate,
+  getPaymentAmount,
+  getRepaymentFrequency,
+  convertFrequencyToText,
+} from 'common/utils/repaymentUtils';
 import {createClaimWithBasicRespondentDetails} from '../../../utils/mockClaimForCheckAnswers';
+import {t} from 'i18next';
 
 describe('repaymentUtils', () => {
 
@@ -146,6 +153,20 @@ describe('repaymentUtils', () => {
       const expected = addMonths(claim.fullAdmission.paymentIntention.repaymentPlan.firstRepaymentDate, 4);
       expect(finalRepaymentDate).toEqual(expected);
     });
+  });
 
+  describe('convertFrequencyToText', () => {
+    it('should translate frequency weekly to text', () => {
+      const result = convertFrequencyToText(TransactionSchedule.WEEK, 'en');
+      expect(result).toBe(t('COMMON.FREQUENCY_OF_PAYMENTS.WEEKLY'));
+    });
+    it('should translate frequency each two week to text', () => {
+      const result = convertFrequencyToText(TransactionSchedule.TWO_WEEKS, 'en');
+      expect(result).toBe(t('COMMON.FREQUENCY_OF_PAYMENTS.TWO_WEEKS'));
+    });
+    it('should translate frequency monthly to text', () => {
+      const result = convertFrequencyToText(TransactionSchedule.MONTH, 'en');
+      expect(result).toBe(t('COMMON.FREQUENCY_OF_PAYMENTS.MONTHLY'));
+    });
   });
 });

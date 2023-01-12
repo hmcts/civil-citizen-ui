@@ -14,7 +14,6 @@ describe('getDOBforAgeFromCurrentTime', () => {
     expect(spy).toBeCalled();
     expect(result.toISOString()).toContain('2004-03-01');
   });
-
   it('should add month to date provided', () => {
     //Given
     const mockDate = new Date('2023-02-05T00:00:00.000Z');

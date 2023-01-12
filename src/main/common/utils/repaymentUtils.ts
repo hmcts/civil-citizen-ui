@@ -1,16 +1,17 @@
 import {Claim} from 'common/models/claim';
 import {addDaysToDate, addMonths} from './dateUtils';
 import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {t} from 'i18next';
 
 const WEEKDAYS = 7;
 
-export const getNumberOfInstalments = (claim: Claim) => {
+export const getNumberOfInstalments = (claim: Claim): number => {
   return Math.ceil(getAmount(claim) / getPaymentAmount(claim));
 };
 
-export const getFinalPaymentDate = (claim: Claim) => {
-  const numberOfInstalments = getNumberOfInstalments(claim);
+export const getFinalPaymentDate = (claim: Claim): Date => {
   let finalRepaymentDate = new Date(Date.now());
+  const numberOfInstalments = getNumberOfInstalments(claim);
   const firstRepaymentDate = getFirstRepaymentDate(claim);
   const repaymentFrequency = getRepaymentFrequency(claim);
 
@@ -28,25 +29,36 @@ export const getFinalPaymentDate = (claim: Claim) => {
   return finalRepaymentDate;
 };
 
-export const getAmount = (claim: Claim) => claim.partialAdmission?.howMuchDoYouOwe?.amount ? claim.partialAdmission.howMuchDoYouOwe.amount : claim.totalClaimAmount;
+export const getAmount = (claim: Claim): number => claim.partialAdmission?.howMuchDoYouOwe?.amount ? claim.partialAdmission.howMuchDoYouOwe.amount : claim.totalClaimAmount;
 
-export const getPaymentAmount = (claim: Claim) => {
+export const getPaymentAmount = (claim: Claim): number => {
   if (claim.isFullAdmission()) {
     return claim.fullAdmission?.paymentIntention?.repaymentPlan?.paymentAmount;
   }
   return claim.partialAdmission?.paymentIntention?.repaymentPlan?.paymentAmount;
 };
 
-export const getRepaymentFrequency = (claim: Claim) => {
+export const getRepaymentFrequency = (claim: Claim): string => {
   if (claim.isFullAdmission()) {
     return claim.fullAdmission?.paymentIntention?.repaymentPlan?.repaymentFrequency;
   }
   return claim.partialAdmission?.paymentIntention?.repaymentPlan?.repaymentFrequency;
 };
 
-export const getFirstRepaymentDate = (claim: Claim) => {
+export const getFirstRepaymentDate = (claim: Claim): Date => {
   if (claim.isFullAdmission()) {
     return new Date(claim.fullAdmission?.paymentIntention?.repaymentPlan?.firstRepaymentDate);
   }
   return new Date(claim.partialAdmission?.paymentIntention?.repaymentPlan?.firstRepaymentDate);
+};
+
+export const convertFrequencyToText = (frequency: string, lng: string): string => {
+  switch (frequency as TransactionSchedule) {
+    case TransactionSchedule.WEEK:
+      return t('COMMON.FREQUENCY_OF_PAYMENTS.WEEKLY', { lng });
+    case TransactionSchedule.TWO_WEEKS:
+      return t('COMMON.FREQUENCY_OF_PAYMENTS.TWO_WEEKS', { lng });
+    case TransactionSchedule.MONTH:
+      return t('COMMON.FREQUENCY_OF_PAYMENTS.MONTHLY', { lng });
+  }
 };

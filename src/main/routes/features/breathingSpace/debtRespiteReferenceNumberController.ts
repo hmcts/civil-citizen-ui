@@ -10,7 +10,7 @@ import {getBreathingSpace, saveBreathingSpace} from '../../../services/features/
 
 const debtRespiteReferenceNumberController = Router();
 const debtRespiteReferenceNumberViewPath = 'features/breathingSpace/debt-respite-reference-number';
-const bsPropertyName = 'debtRespiteScheme';
+const bsPropertyName = 'debtRespiteReferenceNumber';
 
 function renderView(form: GenericForm<DebtRespiteReferenceNumber>, res: Response): void {
   res.render(debtRespiteReferenceNumberViewPath, {form});
