@@ -20,7 +20,7 @@ describe('Other witnesses service', () => {
     it('should return other witnesses from draft store if present', async () => {
       //Given
       mockGetCaseDataFromStore.mockImplementation(async () => {
-        return civilClaimResponseExpertAndWitnessMock.case_data;
+        return Object.assign(new Claim(), civilClaimResponseExpertAndWitnessMock.case_data);
       });
       //When
       const form = await getOtherWitnesses(req);
