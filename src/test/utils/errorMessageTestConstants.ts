@@ -71,6 +71,7 @@ export const enum TestMessages {
   SELECT_YES_IF_SUPPORT = 'Select yes if someone needs support to attend a hearing',
   SEND_YOUR_RESPONSE_BY_EMAIL = 'Reject all of the claim and counterclaim',
   SOMETHING_WENT_WRONG = 'Something went wrong',
+  SPECIFY_A_REASON = 'You must specify a reason',
   STATEMENT_OF_TRUTH_REQUIRED_MESSAGE = 'Tell us if you believe the facts stated in this response are true',
   TYPE_OF_ACCOUNT_REQUIRED = 'Select a type of account',
   UNIVERSAL_CREDIT_AMOUNT_ERROR = 'Enter how much you pay for Universal Credit',
