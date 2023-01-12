@@ -5,14 +5,15 @@ import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesA
 import {FullAdmission} from 'common/models/fullAdmission';
 import {PartialAdmission} from 'common/models/partialAdmission';
 import {Party} from 'common/models/party';
-import {addDaysToDate, addMonths} from 'common/utils/dateUtils'; 
+import {addDaysToDate, addMonths} from 'common/utils/dateUtils';
 import {
-  getFinalPaymentDate, 
-  getFirstRepaymentDate, 
-  getPaymentAmount, 
-  getRepaymentFrequency, 
+  getFinalPaymentDate,
+  getFirstRepaymentDate,
+  getPaymentAmount,
+  getRepaymentFrequency,
   convertFrequencyToText,
-} from 'common/utils/repaymentUtils'; 
+  getPaymentDate,
+} from 'common/utils/repaymentUtils';
 import {createClaimWithBasicRespondentDetails} from '../../../utils/mockClaimForCheckAnswers';
 import {t} from 'i18next';
 
@@ -22,7 +23,7 @@ describe('repaymentUtils', () => {
   const claim = createClaimWithBasicRespondentDetails();
 
   describe('isRepaymentPlanFullOrPartAdmit', () => {
-    it('should refer to replayment plan for full admit journey', () => {
+    it('should refer to repayment plan for full admit journey', () => {
       //Given
       claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
@@ -48,10 +49,12 @@ describe('repaymentUtils', () => {
       getPaymentAmount(claim);
       getRepaymentFrequency(claim);
       getFirstRepaymentDate(claim);
+      getPaymentDate(claim);
       //Then
       expect(claim.partialAdmission?.paymentIntention?.repaymentPlan?.paymentAmount).not.toBeNull();
       expect(claim.partialAdmission?.paymentIntention?.repaymentPlan?.repaymentFrequency).not.toBeNull();
       expect(claim.partialAdmission?.paymentIntention?.repaymentPlan?.firstRepaymentDate).not.toBeNull();
+      expect(claim.partialAdmission?.paymentIntention?.paymentDate).not.toBeNull();
     });
   });
 
