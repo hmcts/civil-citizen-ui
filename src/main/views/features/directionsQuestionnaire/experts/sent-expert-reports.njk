@@ -7,7 +7,7 @@
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.SENT_EXPERT_REPORTS.TITLE') }}
+  {{ setPageTitle('PAGES.SENT_EXPERT_REPORTS.PAGE_TITLE') }}
 {% endblock %}
 
 {% block content %}
@@ -20,7 +20,7 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.SENT_EXPERT_REPORTS.PAGE_TITLE') }}</h1>
+          <h1 class="govuk-heading-l">{{ t('PAGES.SENT_EXPERT_REPORTS.TITLE') }}</h1>
 
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
@@ -31,12 +31,12 @@
               items: [
                 {
                   value: YesNoNotReceived.YES,
-                  text: t('PAGES.SENT_EXPERT_REPORTS.OPTION_YES'),
+                  text: t('COMMON.YES'),
                   checked: form.model.option === YesNoNotReceived.YES
                 },
                 {
                   value: YesNoNotReceived.NO,
-                  text: t('PAGES.SENT_EXPERT_REPORTS.OPTION_NO'),
+                  text: t('COMMON.NO'),
                   checked: form.model.option === YesNoNotReceived.NO
                 },
                 {

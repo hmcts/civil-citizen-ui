@@ -10,7 +10,7 @@ import {DebtItems} from '../../../../../../common/form/models/statementOfMeans/d
 import {currencyFormatWithNoTrailingZeros} from '../../../../../../common/utils/currencyFormat';
 import {YesNoUpperCase,YesNo} from '../../../../../../common/form/models/yesNo';
 
-const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', { lng: getLng(lang) });
+const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 
 export const addLoansOrCreditCardDebts = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
   const yourLoansOrCreditCardsDebtsHref = CITIZEN_DEBTS_URL.replace(':id', claimId);
@@ -21,9 +21,9 @@ export const addLoansOrCreditCardDebts = (claim: Claim, financialSection: Summar
     financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DEBTS_LOANS_OR_CREDIT_CARDS', { lng: getLng(lang) }), t(`COMMON.${option}`, {lng: getLng(lang)}), yourLoansOrCreditCardsDebtsHref, changeLabel(lang)));
     for (let i = 0; i < debtsItems.length; i++) {
       financialSection.summaryList.rows.push(
-        summaryRow((debtsItems.length > 1 ? (i + 1) + '. ' : '') + t('PAGES.CHECK_YOUR_ANSWER.DEBT', { lng: getLng(lang) }), debtsItems[i].debt, '', changeLabel(lang)),
-        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DEBTS_TOTAL_OWED', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(Number(debtsItems[i].totalOwned)), '', changeLabel(lang)),
-        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DEBTS_MONTHLY_PAYMENTS', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(Number(debtsItems[i].monthlyPayments)), '', changeLabel(lang)),
+        summaryRow((debtsItems.length > 1 ? (i + 1) + '. ' : '') + t('COMMON.DEBT', { lng: getLng(lang) }), debtsItems[i].debt, '', changeLabel(lang)),
+        summaryRow(t('COMMON.TOTAL_DEBT', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(Number(debtsItems[i].totalOwned)), '', changeLabel(lang)),
+        summaryRow(t('COMMON.MONTHLY_PAYMENTS', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(Number(debtsItems[i].monthlyPayments)), '', changeLabel(lang)),
       );
     }
   }

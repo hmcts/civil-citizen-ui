@@ -1,8 +1,6 @@
-import {CivilServiceClient} from '../../../../main/app/client/civilServiceClient';
 import axios, {AxiosInstance} from 'axios';
-import {Claim} from '../../../../main/common/models/claim';
-import * as requestModels from '../../../../main/common/models/AppRequest';
-import {CivilClaimResponse} from '../../../../main/common/models/civilClaimResponse';
+import * as requestModels from 'common/models/AppRequest';
+import {CCDClaim, CivilClaimResponse} from 'common/models/civilClaimResponse';
 import config from 'config';
 import {
   CIVIL_SERVICE_CALCULATE_DEADLINE,
@@ -11,20 +9,43 @@ import {
   CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_FEES_RANGES,
   CIVIL_SERVICE_SUBMIT_EVENT,
-} from '../../../../main/app/client/civilServiceUrls';
-import {PartyType} from '../../../../main/common/models/partyType';
+} from 'client/civilServiceUrls';
+import {PartyType} from 'common/models/partyType';
 import {mockClaim} from '../../../utils/mockClaim';
+
+import {CaseState} from 'common/form/models/claimDetails';
+import {CourtLocation} from 'common/models/courts/courtLocations';
 import {TestMessages} from '../../../utils/errorMessageTestConstants';
-import {CaseState} from '../../../../main/common/form/models/claimDetails';
+import { CivilServiceClient } from 'client/civilServiceClient';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 const baseUrl: string = config.get('baseUrl');
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
+const ccdClaim : CCDClaim = {
+  legacyCaseReference : '000MC003',
+  applicant1 : {
+    companyName: undefined,
+    individualDateOfBirth: undefined,
+    organisationName: undefined,
+    partyEmail: undefined,
+    partyPhone: undefined,
+    primaryAddress: undefined,
+    soleTraderDateOfBirth: undefined,
+    soleTraderFirstName: undefined,
+    soleTraderLastName: undefined,
+    soleTraderTitle: undefined,
+    soleTraderTradingAs: undefined,
+    individualTitle: 'Mrs',
+    individualLastName: 'Clark',
+    individualFirstName: 'Jane',
+    type: PartyType.INDIVIDUAL,
+  },
+};
 
 describe('Civil Service Client', () => {
-  describe('get dashboard claims for claimant', ()=>{
+  describe('get dashboard claims for claimant', () => {
     it('should return claimant claims successfully', async () => {
       //Given
       const data = require('../../../utils/mocks/claimantClaimsMock.json');
@@ -47,23 +68,12 @@ describe('Civil Service Client', () => {
       expect(claimantDashboardItems[0].responseDeadline).toEqual(data[0].responseDeadline);
     });
   });
-  describe('retrieveByDefendantId', ()=>{
+  describe('retrieveByDefendantId', () => {
     it('should retrieve cases successfully', async () => {
       //Given
-      const claim = new Claim();
-      claim.legacyCaseReference = '000MC003';
-      claim.applicant1 =
-        {
-          individualTitle: 'Mrs',
-          individualLastName: 'Clark',
-          individualFirstName: 'Jane',
-          type: PartyType.INDIVIDUAL,
-        };
-      claim.totalClaimAmount = 1500;
-
       const mockResponse: CivilClaimResponse = {
         id: '1',
-        case_data: claim,
+        case_data: ccdClaim,
         state: CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT,
       };
 
@@ -134,18 +144,18 @@ describe('Civil Service Client', () => {
     });
   });
   describe('submitDefendantResponseEvent', () => {
-    it('should sumit defendant response successfully', async () => {
+    it('should submit defendant response successfully', async () => {
       //Given
-      const mockResponse: CivilClaimResponse = {
-        id: '1',
-        case_data: new Claim(),
-        state: CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT,
-      };
+      const mockResponse = new CivilClaimResponse();
+      mockResponse.id = '1';
+      mockResponse.case_data = ccdClaim;
+      mockResponse.state = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+
       const mockPost = jest.fn().mockResolvedValue({data: mockResponse});
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //When
-      const claim = await civilServiceClient.submitDefendantResponseEvent('123',{}, mockedAppRequest);
+      const claim = await civilServiceClient.submitDefendantResponseEvent('123', {}, mockedAppRequest);
       //Then
       expect(mockedAxios.create).toHaveBeenCalledWith({
         baseURL: baseUrl,
@@ -153,7 +163,9 @@ describe('Civil Service Client', () => {
       expect(mockPost.mock.calls[0][0]).toEqual(CIVIL_SERVICE_SUBMIT_EVENT
         .replace(':submitterId', 'undefined')
         .replace(':caseId', '123'));
-      expect(claim).toEqual(mockResponse);
+      expect(claim.applicant1.partyDetails.individualTitle).toEqual(mockClaim.applicant1.partyDetails.individualTitle);
+      expect(claim.applicant1.partyDetails.individualFirstName).toEqual(mockClaim.applicant1.partyDetails.individualFirstName);
+      expect(claim.applicant1.partyDetails.individualLastName).toEqual(mockClaim.applicant1.partyDetails.individualLastName);
     });
     it('should throw error when there is an error with api', async () => {
       //Given
@@ -163,7 +175,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
-      await expect(civilServiceClient.submitDefendantResponseEvent('123', {},mockedAppRequest)).rejects.toThrow('error');
+      await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, mockedAppRequest)).rejects.toThrow('error');
     });
   });
   describe('getClaimsForDefendant', () => {
@@ -188,7 +200,7 @@ describe('Civil Service Client', () => {
     });
   });
   describe('calculateExtendedResponseDeadline', () => {
-    it('should return calculated deadline date successfully', async () =>{
+    it('should return calculated deadline date successfully', async () => {
       //Given
       const responseDeadlineDate = new Date(2022, 10, 31);
       const mockPost = jest.fn().mockResolvedValue({data: responseDeadlineDate});
@@ -215,6 +227,23 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
       await expect(civilServiceClient.calculateExtendedResponseDeadline(responseDeadlineDate, mockedAppRequest)).rejects.toThrow('error');
+    });
+  });
+  describe('getCourtLocations test', () => {
+    it('should return court locations successfully', async () => {
+      //Given
+      const courtLocations = [new CourtLocation('1', 'location1'), new CourtLocation('2', 'location2')];
+      const mockGet = jest.fn().mockResolvedValue({data: courtLocations});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //When
+      const locations = await civilServiceClient.getCourtLocations(mockedAppRequest);
+      //Then
+      expect(locations.length).toBe(2);
+      expect(locations[0].label).toBe(courtLocations[0].label);
+      expect(locations[0].code).toBe(courtLocations[0].code);
+      expect(locations[1].label).toBe(courtLocations[1].label);
+      expect(locations[1].code).toBe(courtLocations[1].code);
     });
   });
 });

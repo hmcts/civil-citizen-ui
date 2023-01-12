@@ -1,4 +1,4 @@
-import {IsDefined, IsIn, MaxLength, ValidateIf} from 'class-validator';
+import {IsDefined, IsIn, IsNotEmpty, MaxLength, ValidateIf} from 'class-validator';
 import {NoMediationReasonOptions} from '../mediation/noMediationReasonOptions';
 
 export class NoMediationReason {
@@ -7,6 +7,7 @@ export class NoMediationReason {
     iDoNotWantMediationReason?: string;
 
   @ValidateIf(o => o.iDoNotWantMediationReason === NoMediationReasonOptions.OTHER)
+  @IsNotEmpty({message: 'ERRORS.SPECIFY_A_REASON'})
   @MaxLength(500, {message: 'ERRORS.TEXT_TOO_LONG'})
     otherReason?: string;
 

@@ -1,16 +1,16 @@
-import {Claim} from '../../../models/claim';
+import {Claim} from 'models/claim';
 import {Party} from 'models/party';
-import {PartyType} from '../../../models/partyType';
-import {PaymentOptionType} from '../../../../common/form/models/admission/paymentOption/paymentOptionType';
-import {YesNo} from '../../../../common/form/models/yesNo';
-import {RejectAllOfClaimType} from '../../../../common/form/models/rejectAllOfClaimType';
+import {PartyType} from 'models/partyType';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {YesNo} from 'common/form/models/yesNo';
+import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
 
 export const isCaseDataMissing = (caseData: Claim): boolean => {
   return !caseData;
 };
 
 export const hasCorrespondenceAndPrimaryAddress = (respondent1: Party): boolean => {
-  return !!(respondent1?.primaryAddress && (respondent1?.postToThisAddress === YesNo.NO || respondent1?.correspondenceAddress));
+  return !!(respondent1?.partyDetails?.primaryAddress && (respondent1?.partyDetails?.postToThisAddress === YesNo.NO || respondent1?.partyDetails?.correspondenceAddress?.addressLine1));
 };
 
 export const hasDateOfBirthIfIndividual = (respondent1: Party): boolean => {
@@ -22,15 +22,19 @@ export const isResponseTypeMissing = (respondent1: Party): boolean => {
 };
 
 export const isPaymentOptionMissing = (caseData: Claim): boolean => {
-  return !caseData?.paymentOption;
+  return !caseData?.fullAdmission?.paymentIntention?.paymentOption;
 };
 
 export const isNotPayImmediatelyResponse = (caseData: Claim): boolean => {
-  return (caseData?.paymentOption !== PaymentOptionType.IMMEDIATELY);
+  return (caseData?.fullAdmission?.paymentIntention?.paymentOption !== PaymentOptionType.IMMEDIATELY);
 };
 
 export const isRepaymentPlanMissing = (caseData: Claim): boolean => {
-  return !caseData.repaymentPlan;
+  return !caseData.partialAdmission?.paymentIntention?.repaymentPlan;
+};
+
+export const isFullAdmissionRepaymentPlanMissing = (caseData: Claim): boolean => {
+  return !caseData.fullAdmission?.paymentIntention?.repaymentPlan;
 };
 
 export const isStatementOfMeansComplete = (caseData: Claim): boolean => {

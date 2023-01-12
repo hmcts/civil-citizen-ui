@@ -1,14 +1,7 @@
 import express from 'express';
 import nock from 'nock';
 import config from 'config';
-import {CITIZEN_COURT_ORDERS_URL, CITIZEN_PRIORITY_DEBTS_URL} from '../../../../../../../main/routes/urls';
-import {
-  VALID_AMOUNT_ONE_POUND_OR_MORE,
-  VALID_CLAIM_NUMBER,
-  VALID_ENTER_AT_LEAST_ONE_COURT_ORDER,
-  VALID_STRICTLY_POSITIVE_NUMBER,
-  VALID_YES_NO_SELECTION,
-} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {CITIZEN_COURT_ORDERS_URL, CITIZEN_PRIORITY_DEBTS_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
 const request = require('supertest');
@@ -85,7 +78,7 @@ describe('Citizen court orders', () => {
         .send('_csrf=')
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_YES_NO_SELECTION);
+          expect(res.text).toContain(TestMessages.VALID_YES_NO_SELECTION);
         });
     });
 
@@ -98,7 +91,7 @@ describe('Citizen court orders', () => {
         .send('rows[0][instalmentAmount]=')
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_ENTER_AT_LEAST_ONE_COURT_ORDER);
+          expect(res.text).toContain(TestMessages.VALID_AT_LEAST_ONE_COURT_ORDER);
         });
     });
 
@@ -111,7 +104,7 @@ describe('Citizen court orders', () => {
         .send('rows[0][instalmentAmount]=10')
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_CLAIM_NUMBER);
+          expect(res.text).toContain(TestMessages.VALID_CLAIM_NUMBER);
         });
     });
 
@@ -124,7 +117,7 @@ describe('Citizen court orders', () => {
         .send('rows[0][instalmentAmount]=10')
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_AMOUNT_ONE_POUND_OR_MORE);
+          expect(res.text).toContain(TestMessages.VALID_AMOUNT_ONE_POUND_OR_MORE);
         });
     });
 
@@ -137,7 +130,7 @@ describe('Citizen court orders', () => {
         .send('rows[0][instalmentAmount]=')
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_STRICTLY_POSITIVE_NUMBER);
+          expect(res.text).toContain(TestMessages.VALID_STRICTLY_POSITIVE_NUMBER);
         });
     });
 

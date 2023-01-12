@@ -84,7 +84,7 @@ import requestMoreTimeController from './features/response/requestMoreTimeContro
 import agreedResponseDeadlineController from './features/response/responseDeadline/agreedResponseDeadlineController';
 import determinationWithoutHearingController
   from './features/directionsQuestionnaire/hearing/determinationWithoutHearingController';
-import totalAmountController from './features/public/eligibility/totalAmountController';
+import totalAmountEligibilityController from './features/public/eligibility/totalAmountController';
 import claimTypeController from './features/public/eligibility/claimTypeController';
 import notEligibleController from './features/public/eligibility/notEligibleController';
 import claimantAddressEligibilityController from './features/public/eligibility/claimantAddressEligibilityController';
@@ -97,7 +97,8 @@ import claimAgainstGovernmentController from './features/public/eligibility/clai
 import claimantOver18EligibilityController from './features/public/eligibility/claimantOver18EligibilityController';
 import defendantAgeEligibilityController from './features/public/eligibility/defendantAgeEligibilityController';
 import someUsefulInfoFeesController from './features/public/eligibility/someUsefulInfoFeesController';
-import helpWithFeesReferenceController from './features/public/eligibility/helpWithFeesReferenceController';
+import helpWithFeesReferenceEligibilityController
+  from './features/public/eligibility/helpWithFeesReferenceEligibilityController';
 import applyForHelpWithFeesController from './features/public/eligibility/applyForHelpWithFeesController';
 import signpostingController from './features/public/firstContact/signpostingController';
 import accessDeniedController from './features/public/firstContact/accessDeniedController';
@@ -107,7 +108,7 @@ import firstContactClaimSummaryController from './features/public/firstContact/c
 import eligibleController from './features/public/eligibility/eligibleController';
 import claimantPartyTypeController from './features/claim/yourDetails/claimantPartyTypeController';
 import completingClaimController from './features/claim/completingClaimController';
-import submitComfirmationController from './features/response/submitComfirmationController';
+import submitConfirmationController from './features/response/submitConfirmationController';
 import resolvingThisDisputeController from './features/claim/resolvingThisDisputeController';
 import cookiesController from './features/public/cookiesController';
 import defendantExpertEvidenceController
@@ -129,7 +130,6 @@ import otherWitnessesController from './features/directionsQuestionnaire/witness
 import expertReportDetailsController from './features/directionsQuestionnaire/experts/expertReportDetailsController';
 import defendantPartyTypeController from './features/claim/yourDetails/defendantPartyTypeController';
 import claimantDoBController from './features/claim/yourDetails/claimantDoBController';
-import claimantIndividualDetailsController from './features/claim/yourDetails/claimantIndividualDetailsController';
 import welshLanguageController
   from './features/directionsQuestionnaire/welshLanguageRequirements/welshLanguageController';
 import claimantPhoneController from './features/claim/yourDetails/claimantPhoneController';
@@ -143,15 +143,48 @@ import defendantDetailsController from './features/claim/defendant/defendantDeta
 import interestTypeController from './features/claim/interest/interestTypeController';
 import interestRateController from './features/claim/interest/claimantInterestRateController';
 import interestStartDateController from './features/claim/interest/interestStartDateController';
+import interestEndDateController from './features/claim/interest/interestEndDateController';
 import claimAmountBreakdownController from './features/claim/amount/claimAmountBreakdownController';
 import claimInterestController from './features/claim/interest/claimInterestController';
 import claimantInterestFromController from './features/claim/interest/claimantInterestFromController';
-import claimantOrganisationDetailsController from './features/claim/yourDetails/claimantOrganisationDetailsController';
+import claimantDetailsController from './features/claim/yourDetails/claimantDetailsController';
 import defendantEmailController from './features/claim/yourDetails/defendantEmailController';
 import claimTotalInterestController from './features/claim/interest/claimTotalInterestController';
 import reasonController from './features/claim/details/reasonController';
+import timelineController from './features/claim/yourDetails/timelineController';
 import defendantPhoneController from './features/claim/yourDetails/defendantPhoneController';
 import continueClaimingInterestController from './features/claim/interest/continueClaimingInterestController';
+import claimCheckAnswersController from './features/claim/checkAnswersController';
+import claimantEvidenceController from './features/claim/yourDetails/claimantEvidenceController';
+import howMuchContinueClaimingController from './features/claim/interest/howMuchContinueClaimingController';
+import helpWithFeesController from './features/claim/details/helpWithFeesController';
+import debtRespiteReferenceNumberController from './features/breathingSpace/debtRespiteReferenceNumberController';
+import datePaidViewController from './features/claimantResponse/paidInFull/datePaidController';
+import settleClaimController from './features/claimantResponse/settleClaimController';
+import fullAdmitSetDatePaymentController from './features/claimantResponse/fullAdmitSetDatePaymentController';
+import partPaymentReceivedController from './features/claimantResponse/partPaymentReceivedController';
+import defendantDOBController from './features/claimantResponse/ccj/defendantDOBController';
+import claimantIntentionToProceedController from './features/claimantResponse/claimantIntentionToProceedController';
+import breathingSpaceCheckAnswersController from './features/claim/breathingSpace/checkAnswersController';
+import totalAmountController from './features/claim/totalAmountController';
+import rejectionReasonController from './features/claimantResponse/rejectionReasonController';
+import specificCourtController from './features/directionsQuestionnaire/hearing/specificCourtController';
+import debtRespiteOptionController from './features/breathingSpace/debtRespiteOptionController';
+import debtStartDateController from './features/breathingSpace/debtRespiteStartDateController';
+import debtRespiteEndDateController from './features/breathingSpace/debtRespiteEndDateController';
+import reviewDefendantsResponseController from './features/claimantResponse/reviewDefendantsResponseController';
+import ccjPaymentOptionController from './features/claimantResponse/ccj/ccjPaymentOptionController';
+import paidSomeAmountController from './features/claimantResponse/ccj/paidAmountController';
+import defendantPaymentDateController from './features/claimantResponse/ccj/defendantPaymentDateController';
+import ccjConfirmationController from './features/claimantResponse/ccj/ccjConfirmationController';
+import bilingualLangPreferenceController from './features/response/bilingualLangPreferenceController';
+import chooseHowToProceedController from './features/claimantResponse/chooseHowToProceedcController';
+import repaymentPlanInstalmentsController from './features/claimantResponse/ccj/repaymentPlanInstalmentsController';
+import signSettlementAgreementController from './features/claimantResponse/signSettlmentAgreementController';
+import repaymentPlanAcceptedController from './features/claimantResponse/repaymentPlanAcceptedController';
+import courtProposedPlanController from './features/claimantResponse/courtProposedPlanController';
+import debtRespiteLiftedController from './features/breathingSpace/debtRespiteLiftedController';
+import claimantResponseConfirmationController from './features/claimantResponse/claimantResponseConfirmationController';
 
 export default [
   homeController,
@@ -230,7 +263,7 @@ export default [
   agreedResponseDeadlineController,
   newDeadlineResponseController,
   determinationWithoutHearingController,
-  totalAmountController,
+  totalAmountEligibilityController,
   claimTypeController,
   notEligibleController,
   claimantAddressEligibilityController,
@@ -244,7 +277,7 @@ export default [
   defendantAgeEligibilityController,
   someUsefulInfoFeesController,
   applyForHelpWithFeesController,
-  helpWithFeesReferenceController,
+  helpWithFeesReferenceEligibilityController,
   signpostingController,
   accessDeniedController,
   claimReferenceController,
@@ -253,7 +286,7 @@ export default [
   eligibleController,
   claimantPartyTypeController,
   completingClaimController,
-  submitComfirmationController,
+  submitConfirmationController,
   resolvingThisDisputeController,
   cookiesController,
   considerClaimantDocumentsController,
@@ -270,7 +303,6 @@ export default [
   otherWitnessesController,
   expertReportDetailsController,
   defendantPartyTypeController,
-  claimantIndividualDetailsController,
   welshLanguageController,
   claimantPhoneController,
   whyUnavailableForHearingController,
@@ -284,12 +316,45 @@ export default [
   claimAmountBreakdownController,
   claimInterestController,
   interestStartDateController,
-  claimantOrganisationDetailsController,
+  claimantDetailsController,
   interestStartDateController,
+  interestEndDateController,
   claimantInterestFromController,
   defendantEmailController,
   claimTotalInterestController,
   reasonController,
+  timelineController,
   defendantPhoneController,
   continueClaimingInterestController,
+  claimCheckAnswersController,
+  claimantEvidenceController,
+  howMuchContinueClaimingController,
+  helpWithFeesController,
+  debtRespiteReferenceNumberController,
+  breathingSpaceCheckAnswersController,
+  datePaidViewController,
+  settleClaimController,
+  fullAdmitSetDatePaymentController,
+  partPaymentReceivedController,
+  defendantDOBController,
+  claimantIntentionToProceedController,
+  totalAmountController,
+  rejectionReasonController,
+  specificCourtController,
+  debtRespiteOptionController,
+  debtStartDateController,
+  debtRespiteEndDateController,
+  debtRespiteLiftedController,
+  reviewDefendantsResponseController,
+  ccjPaymentOptionController,
+  paidSomeAmountController,
+  defendantPaymentDateController,
+  ccjConfirmationController,
+  bilingualLangPreferenceController,
+  chooseHowToProceedController,
+  repaymentPlanInstalmentsController,
+  signSettlementAgreementController,
+  repaymentPlanAcceptedController,
+  courtProposedPlanController,
+  claimantResponseConfirmationController,
 ];

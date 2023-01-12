@@ -2,17 +2,16 @@ import * as path from 'path';
 import {join} from 'path';
 import {Express} from 'express';
 import {configure} from 'nunjucks';
-import * as numeral from '../../common/utils/currencyFormat';
-import {convertToPoundsFilter} from '../../common/utils/currencyFormat';
-import {i18n, TOptions} from 'i18next';
-import {ResponseType} from '../../common/form/models/responseType';
-import {YesNo, YesNoNotReceived} from '../../common/form/models/yesNo';
-import {ResidenceType} from '../../common/form/models/statementOfMeans/residenceType';
-import {PartyType} from '../../common/models/partyType';
-import {UnemploymentCategory} from '../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
-import {TransactionSchedule} from '../../common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
-import {EvidenceType} from '../../common/models/evidence/evidenceType';
-import {EvidenceDetails} from '../../common/models/evidence/evidenceDetails';
+import * as numeral from 'common/utils/currencyFormat';
+import {convertToPoundsFilter} from 'common/utils/currencyFormat';
+import {t} from 'i18next';
+import {ResponseType} from 'common/form/models/responseType';
+import {YesNo, YesNoNotReceived} from 'common/form/models/yesNo';
+import {ResidenceType} from 'common/form/models/statementOfMeans/residence/residenceType';
+import {PartyType} from 'common/models/partyType';
+import {UnemploymentCategory} from 'common/form/models/statementOfMeans/unemployment/unemploymentCategory';
+import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {EvidenceType} from 'common/models/evidence/evidenceType';
 import {addDaysFilter, dateFilter, formatDate, addDaysFilterTranslated} from './filters/dateFilter';
 import {SignatureType} from '../../common/models/signatureType';
 import {ClaimSummaryType} from '../../common/form/models/claimSummarySection';
@@ -22,10 +21,13 @@ import {TotalAmountOptions} from '../../common/models/eligibility/totalAmountOpt
 import {ClaimTypeOptions} from '../../common/models/eligibility/claimTypeOptions';
 import {AgeEligibilityOptions} from '../../common/form/models/eligibility/defendant/AgeEligibilityOptions';
 import {LanguageOptions} from '../../common/models/directionsQuestionnaire/languageOptions';
-import {SameRateInterestType} from '../../common/form/models/claimDetails';
+import {CaseState, SameRateInterestType} from '../../common/form/models/claimDetails';
 import {InterestClaimFromType} from '../../common/form/models/claimDetails';
+import {InterestEndDateType} from '../../common/form/models/claimDetails';
 import * as urls from '../../routes/urls';
 import {InterestClaimOptionsType} from '../../common/form/models/claim/interest/interestClaimOptionsType';
+import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
+import {CourtProposedPlanOptions} from 'common/form/models/claimantResponse/courtProposedPlan';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -41,9 +43,8 @@ const appAssetPaths = {
 };
 
 export class Nunjucks {
-  constructor(public developmentMode: boolean, public i18next: i18n) {
+  constructor(public developmentMode: boolean) {
     this.developmentMode = developmentMode;
-    this.i18next = i18next;
   }
 
   enableFor(app: Express): void {
@@ -97,7 +98,7 @@ export class Nunjucks {
     nunjucksEnv.addFilter('addDaysTranslated', addDaysFilterTranslated);
     nunjucksEnv.addFilter('date', dateFilter);
     nunjucksEnv.addFilter('formatDate', formatDate);
-    nunjucksEnv.addGlobal('t', (key: string, options?: TOptions): string => this.i18next.t(key, options));
+    nunjucksEnv.addGlobal('t', t);
     nunjucksEnv.addGlobal('translateErrors', translateErrors);
     nunjucksEnv.addGlobal('ResponseType', ResponseType);
     nunjucksEnv.addGlobal('YesNo', YesNo);
@@ -106,7 +107,6 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('UnemploymentCategory', UnemploymentCategory);
     nunjucksEnv.addGlobal('TransactionSchedule', TransactionSchedule);
     nunjucksEnv.addGlobal('EvidenceType', EvidenceType);
-    nunjucksEnv.addGlobal('EvidenceDetails', EvidenceDetails);
     nunjucksEnv.addFilter('pennies2pounds', convertToPoundsFilter);
     nunjucksEnv.addGlobal('SignatureType', SignatureType);
     nunjucksEnv.addGlobal('ClaimSummaryType', ClaimSummaryType);
@@ -118,8 +118,12 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('LanguageOptions', LanguageOptions);
     nunjucksEnv.addGlobal('SameRateInterestType', SameRateInterestType);
     nunjucksEnv.addGlobal('InterestClaimFromType', InterestClaimFromType);
+    nunjucksEnv.addGlobal('InterestEndDateType', InterestEndDateType);
     nunjucksEnv.addGlobal('urls', urls);
     nunjucksEnv.addGlobal('InterestClaimOptionsType', InterestClaimOptionsType);
+    nunjucksEnv.addGlobal('ClaimBilingualLanguagePreference', ClaimBilingualLanguagePreference);
+    nunjucksEnv.addGlobal('CourtProposedPlanOptions', CourtProposedPlanOptions);
+    nunjucksEnv.addGlobal('CaseState', CaseState);
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;

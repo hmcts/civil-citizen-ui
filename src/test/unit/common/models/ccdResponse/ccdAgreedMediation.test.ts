@@ -1,4 +1,4 @@
-import {toAgreedMediation} from '../../../../../main/common/models/ccdResponse/ccdAgreedMediation';
+import {toAgreedMediation} from '../../../../../main/services/translation/response/convertToCCDAgreedMediation';
 import {YesNo, YesNoUpperCamelCase} from '../../../../../main/common/form/models/yesNo';
 
 describe('translate mediation option to ccd version', ()=> {

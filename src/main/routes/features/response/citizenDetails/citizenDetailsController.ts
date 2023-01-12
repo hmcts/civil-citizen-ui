@@ -1,21 +1,23 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {CITIZEN_DETAILS_URL, DOB_URL, CITIZEN_PHONE_NUMBER_URL} from '../../../urls';
-import {Address} from '../../../../common/form/models/address';
-import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citizenCorrespondenceAddress';
-import {Party} from 'models/party';
+import {CITIZEN_DETAILS_URL, CITIZEN_PHONE_NUMBER_URL, CLAIM_TASK_LIST_URL, DOB_URL} from '../../../urls';
+import {Party} from '../../../../common/models/party';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {YesNo} from '../../../../common/form/models/yesNo';
 import {
-  getRespondentInformation,
-  saveRespondent,
-} from '../../../../services/features/response/citizenDetails/citizenDetailsService';
-import {PartyType} from '../../../../common/models/partyType';
+  getDefendantInformation,
+  saveDefendantProperty,
+} from '../../../../services/features/common/defendantDetailsService';
+import {ClaimantOrDefendant, PartyType} from '../../../../common/models/partyType';
 import {GenericForm} from '../../../../common/form/models/genericForm';
+import {PartyDetails} from '../../../../common/form/models/partyDetails';
+import {PartyPhone} from '../../../../common/models/PartyPhone';
+import {saveTelephone} from '../../../../services/features/claim/yourDetails/phoneService';
+import {CitizenTelephoneNumber} from '../../../../common/form/models/citizenTelephoneNumber';
 
 const citizenDetailsController = Router();
 
 const CITIZEN_DETAILS_COMPANY_VIEW_PATH = 'features/response/citizenDetails/citizen-details-company';
 const CITIZEN_DETAILS_VIEW_PATH = 'features/response/citizenDetails/citizen-details';
+const propertyName = 'partyDetails';
 
 const getViewPathWithType = (type: PartyType) => {
   if (type === PartyType.ORGANISATION || type === PartyType.COMPANY) {
@@ -24,84 +26,55 @@ const getViewPathWithType = (type: PartyType) => {
   return CITIZEN_DETAILS_VIEW_PATH;
 };
 
-function renderPage(res: Response, req: Request, respondent: Party, citizenAddress: GenericForm<Address>, citizenCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>): void {
-  const type = respondent?.type;
+function renderPage(res: Response, req: Request, partyDetails: GenericForm<PartyDetails>, type: PartyType, partyPhone: GenericForm<PartyPhone>): void {
 
   res.render(getViewPathWithType(type), {
-    respondent,
-    citizenAddress,
-    citizenCorrespondenceAddress,
-    partyName: respondent?.partyName,
-    contactPerson: respondent?.contactPerson,
-    type,
+    party: partyDetails,
+    type: type,
+    partyPhone: partyPhone,
   });
 }
 
-const redirect = (responseDataRedis: Party, req: Request, res: Response) => {
-  if (responseDataRedis?.type === PartyType.SOLE_TRADER || responseDataRedis?.type === PartyType.INDIVIDUAL) {
+const redirect = (respondent: Party, req: Request, res: Response) => {
+  if (respondent?.type === PartyType.INDIVIDUAL) {
     res.redirect(constructResponseUrlWithIdParams(req.params.id, DOB_URL));
   } else {
-    res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PHONE_NUMBER_URL));
+    if (respondent?.partyPhone) {
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
+    } else {
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PHONE_NUMBER_URL));
+    }
   }
 };
 
 citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const respondent: Party = await getRespondentInformation(req.params.id);
-
-    const citizenAddress = new GenericForm<Address>(new Address(
-      respondent?.primaryAddress ? respondent.primaryAddress.AddressLine1 : undefined,
-      respondent?.primaryAddress ? respondent.primaryAddress.AddressLine2 : undefined,
-      respondent?.primaryAddress ? respondent.primaryAddress.AddressLine3 : undefined,
-      respondent?.primaryAddress ? respondent.primaryAddress.PostTown : undefined,
-      respondent?.primaryAddress ? respondent.primaryAddress.PostCode : undefined));
-
-    const citizenCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress(
-      respondent?.correspondenceAddress ? respondent.correspondenceAddress.AddressLine1 : undefined,
-      respondent?.correspondenceAddress ? respondent.correspondenceAddress.AddressLine2 : undefined,
-      respondent?.correspondenceAddress ? respondent.correspondenceAddress.AddressLine3 : undefined,
-      respondent?.correspondenceAddress ? respondent.correspondenceAddress.PostTown : undefined,
-      respondent?.correspondenceAddress ? respondent.correspondenceAddress.PostCode : undefined));
-
-    renderPage(res, req, respondent, citizenAddress, citizenCorrespondenceAddress);
+    const respondent: Party = await getDefendantInformation(req.params.id);
+    const partyDetails = new GenericForm(respondent.partyDetails);
+    const partyPhoneForm = new GenericForm<PartyPhone>(new PartyPhone(respondent.partyPhone?.phone));
+    renderPage(res, req, partyDetails, respondent.type, partyPhoneForm);
   } catch (error) {
     next(error);
   }
 });
 
 citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
-  const responseDataRedis: Party = await getRespondentInformation(req.params.id);
   try {
-    const citizenAddress = new GenericForm<Address>(new Address(
-      req.body.primaryAddressLine1,
-      req.body.primaryAddressLine2,
-      req.body.primaryAddressLine3,
-      req.body.primaryCity,
-      req.body.primaryPostCode,
-    ));
+    const respondent = await getDefendantInformation(req.params.id);
+    const partyDetails = new GenericForm(new PartyDetails(req.body));
+    const partyPhone = new GenericForm<PartyPhone>(new PartyPhone(req.body.partyPhone));
 
-    let citizenCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress(
-      req.body.correspondenceAddressLine1,
-      req.body.correspondenceAddressLine2,
-      req.body.correspondenceAddressLine3,
-      req.body.correspondenceCity,
-      req.body.correspondencePostCode,
-    ));
+    partyDetails.validateSync();
 
-    await citizenAddress.validate();
-    if (req.body.postToThisAddress === YesNo.YES) {
-      await citizenCorrespondenceAddress.validate();
-      responseDataRedis.postToThisAddress = YesNo.YES;
-    }
-
-    if (citizenAddress.hasErrors() || citizenCorrespondenceAddress.hasErrors()) {
-      renderPage(res, req, responseDataRedis, citizenAddress, citizenCorrespondenceAddress);
+    if (partyDetails.hasErrors()) {
+      renderPage(res, req, partyDetails, respondent.type, partyPhone);
     } else {
-      if (req.body.postToThisAddress === YesNo.NO) {
-        citizenCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress());
+      await saveDefendantProperty(req.params.id, propertyName, partyDetails.model);
+      if (req.body?.partyPhone) {
+        const citizenTelephoneNumber = new CitizenTelephoneNumber(req.body.partyPhone);
+        await saveTelephone(req.params.id, citizenTelephoneNumber, ClaimantOrDefendant.DEFENDANT);
       }
-      await saveRespondent(req.params.id, citizenAddress, citizenCorrespondenceAddress, req.body.postToThisAddress, req.body.contactPerson);
-      redirect(responseDataRedis, req, res);
+      redirect(respondent, req, res);
     }
   } catch (error) {
     next(error);
