@@ -1,6 +1,8 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
 
 {% macro itemContent(content) %}
   {% if content.type === ClaimSummaryType.HTML %}
@@ -52,5 +54,26 @@
       <a class="govuk-link" href={{ content.data.href }}>{{ t(content.data.text) }}</a>
       {{ t(content.data.textAfter) }}</p>
     <p class="govuk-body-s mid-grey">{{ t(content.data.subtitle) }}</p>
+  {% endif %}
+
+  {% if content.type === ClaimSummaryType.TABLE %}
+    <div>
+      {{ govukTable({
+        classes: content.data.classes,
+        head: content.data.head,
+        rows: content.data.tableRows
+      }) }}
+    </div>
+  {% endif %}
+
+  {% if content.type === ClaimSummaryType.PANEL %}
+    <div>
+      {{ govukPanel({
+        classes: content.data.classes,
+        titleHtml: content.data.title,
+        html: content.data.html
+
+      }) }}
+    </div>
   {% endif %}
 {% endmacro %}

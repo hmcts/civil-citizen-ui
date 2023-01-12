@@ -29,6 +29,10 @@ smoke-output/
 functional-output/
 test-results/
 
+.vscode/
 .yarn/
 .yarnrc
 package-lock.json
+
+**/Chart.lock
+**/charts/civil-citizen-ui/charts*

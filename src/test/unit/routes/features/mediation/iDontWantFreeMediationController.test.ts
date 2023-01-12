@@ -2,11 +2,10 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {CLAIM_TASK_LIST_URL, DONT_WANT_FREE_MEDIATION_URL} from '../../../../../main/routes/urls';
-import {OPTION_REQUIRED} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {CLAIM_TASK_LIST_URL, DONT_WANT_FREE_MEDIATION_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure, mockRedisWithMediationProperties} from '../../../../utils/mockDraftStore';
-import {NoMediationReasonOptions} from '../../../../../main/common/form/models/mediation/noMediationReasonOptions';
+import {NoMediationReasonOptions} from 'form/models/mediation/noMediationReasonOptions';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -63,7 +62,7 @@ describe('I dont want free meditation', () => {
       app.locals.draftStoreClient = mockRedisWithMediationProperties;
       await request(app)
         .post(DONT_WANT_FREE_MEDIATION_URL)
-        .send({disagreeMediationOption: NoMediationReasonOptions.OTHER, otherReason: ''})
+        .send({disagreeMediationOption: NoMediationReasonOptions.OTHER, otherReason: 'Other reason'})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
@@ -126,7 +125,17 @@ describe('I dont want free meditation', () => {
         .send()
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(OPTION_REQUIRED);
+          expect(res.text).toContain(TestMessages.OPTION_REQUIRED);
+        });
+    });
+    it('should return error when no reason enter', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      await request(app)
+        .post(DONT_WANT_FREE_MEDIATION_URL)
+        .send({disagreeMediationOption: NoMediationReasonOptions.OTHER, otherReason: ''})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.SPECIFY_A_REASON);
         });
     });
     it('should return http 500 when has error', async () => {

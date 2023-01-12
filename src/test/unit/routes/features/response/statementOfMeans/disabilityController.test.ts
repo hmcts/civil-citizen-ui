@@ -1,15 +1,14 @@
 import request from 'supertest';
-import { app } from '../../../../../../main/app';
+import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
   CITIZEN_DISABILITY_URL,
   CITIZEN_RESIDENCE_URL,
   CITIZEN_SEVERELY_DISABLED_URL,
-} from '../../../../../../main/routes/urls';
-import { VALID_YES_NO_OPTION } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
-import { mockCivilClaim, mockCivilClaimOptionNo, mockRedisFailure } from '../../../../../utils/mockDraftStore';
+} from 'routes/urls';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {mockCivilClaim, mockCivilClaimOptionNo, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -21,7 +20,7 @@ describe('Disability', () => {
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
+      .reply(200, {id_token: citizenRoleToken});
   });
 
   describe('on GET', () => {
@@ -72,7 +71,7 @@ describe('Disability', () => {
         .send('')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_YES_NO_OPTION);
+          expect(res.text).toContain(TestMessages.VALID_YES_NO_OPTION);
         });
     });
     it('should redirect page when "no" and haven´t statementOfMeans', async () => {

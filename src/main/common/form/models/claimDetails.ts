@@ -3,7 +3,7 @@ export enum InterestClaimFromType {
   FROM_A_SPECIFIC_DATE = 'FROM_A_SPECIFIC_DATE'
 }
 
-export enum InterestClaimUntilType {
+export enum InterestEndDateType {
   UNTIL_CLAIM_SUBMIT_DATE = 'UNTIL_CLAIM_SUBMIT_DATE',
   UNTIL_SETTLED_OR_JUDGEMENT_MADE = 'UNTIL_SETTLED_OR_JUDGEMENT_MADE'
 }

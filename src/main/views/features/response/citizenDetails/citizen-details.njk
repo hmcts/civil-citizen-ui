@@ -7,15 +7,34 @@
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
+{% from "../../../macro/citizen-telephone.njk" import citizenTelephone %}
+{% from "../../../macro/postcode-address-form.njk" import postcodeLookupAndAddressForm %}
+{% macro citizenDetailsSection(t, type) %}
+  {% if type === partyType.INDIVIDUAL %}
+    <h2 class="govuk-heading-m">{{ t('COMMON.INPUT_LABELS.TITLE') }}</h2>
+    <p class="govuk-body">{% if party.model.individualTitle %}{{ party.model.individualTitle }}{% else %} individualTitle Test{% endif %}</p>
+    <input type="hidden" id="individualTitle" name="individualTitle" value="{{ party.model.individualTitle }}"/>
+    <h2 class="govuk-heading-m">{{ t('COMMON.INPUT_LABELS.FIRST_NAME') }}</h2>
+    <p class="govuk-body">{% if party.model.individualFirstName %}{{ party.model.individualFirstName }}{% else %} individualFirstName Test{% endif %}</p>
+    <input type="hidden" id="individualFirstName" name="individualFirstName" value="{{ party.model.individualFirstName }}"/>
+    <h2 class="govuk-heading-m">{{ t('COMMON.INPUT_LABELS.LAST_NAME') }}</h2>
+    <p class="govuk-body">{% if party.model.individualLastName %}{{ party.model.individualLastName }}{% else %} individualLastName Test{% endif %}</p>
+    <input type="hidden" id="individualLastName" name="individualLastName" value="{{ party.model.individualLastName }}"/>
+  {% else %}
+    <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_DETAILS.FULL_NAME') }}</h2>
+    <p class="govuk-body">{% if party.model.partyName %}{{ party.model.partyName }}{% else %} fullName Test{% endif %}</p>
+    <input type="hidden" id="partyName" name="partyName" value="{{ party.model.partyName }}"/>
+    {% if party.model.soleTraderTradingAs %}
+      <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_DETAILS.BUSINESS_NAME') }}</h2>
+      <p class="govuk-body">{{ party.model.soleTraderTradingAs }}</p>
+      <input type="hidden" name="soleTraderTradingAs" value="{{ party.model.soleTraderTradingAs }}"/>
+    {% endif %}
+  {% endif %}
+{% endmacro %}
 
 {% set correspondenceAddressClass = 'govuk-visually-hidden' %}
 {% set addressTitle = t('PAGES.CITIZEN_DETAILS.ADDRESS') %}
-{% set citizenAddressErrors = citizenAddress.getAllErrors() %}
-
-{% if citizenCorrespondenceAddress %}
-  {% set citizenCorrespondenceAddressErrors = citizenCorrespondenceAddress.getAllErrors() %}
-  {% set citizenAddressErrors = citizenAddressErrors.concat(citizenCorrespondenceAddress.getAllErrors()) %}
-{% endif %}
+{% set partyErrors = party.getAllErrors() %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.CITIZEN_DETAILS.PAGE_TITLE') }}
@@ -25,77 +44,34 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
-        {% if citizenCorrespondenceAddress.hasErrors() or citizenAddress.hasErrors() %}
-          {{ errorSummary(citizenAddressErrors, t) }}
+        {% if party.hasErrors() %}
+          {{ errorSummary(party.getAllErrors(), t) }}
         {% endif %}
       </div>
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.CITIZEN_DETAILS.CONFIRM_YOUR_DETAILS') }}</h1>
+          <h1 class="govuk-heading-l">{{ t('COMMON.CONFIRM_YOUR_DETAILS') }}</h1>
           <p class="govuk-body">{{ t('PAGES.CITIZEN_DETAILS.CLAIMANT_DETAILS_PROVIDED') }}</p>
         </div>
       </div>
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h2 class="govuk-heading-m">{{ t('COMMON.INPUT_LABELS.TITLE') }}</h2>
-          <p
-            class="govuk-body">{% if respondent.individualTitle %}{{ respondent.individualTitle }}{% else %} individualTitle Test{% endif %}</p>
-          <h2 class="govuk-heading-m">{{ t('COMMON.INPUT_LABELS.FIRST_NAME') }}</h2>
-          <p
-            class="govuk-body">{% if respondent.individualFirstName %}{{ respondent.individualFirstName }}{% else %} individualFirstName Test{% endif %}</p>
-          <h2 class="govuk-heading-m">{{ t('COMMON.INPUT_LABELS.LAST_NAME') }}</h2>
-          <p
-            class="govuk-body">{% if respondent.individualLastName %}{{ respondent.individualLastName }}{% else %} individualLastName Test{% endif %}</p>
           <form method="post" class="govuk-!-padding-top-4" name="address" novalidate>
             {{ csrfProtection(csrf) }}
+            {{ citizenDetailsSection(t, type) }}
             {{ addressForm(
               t,
-              citizenAddress,
-              citizenCorrespondenceAddress,
+              party = party,
               addressType = 'primary',
               addressTitle = addressTitle
             ) }}
             {% set correspondenceAddressHtml %}
-              <div class="govuk-form-group" id="postcode">
-                <p
-                  class="govuk-label govuk-!-margin-bottom-5">{{ t('PAGES.CITIZEN_DETAILS.ALL_CORRESPONDENCE') + t('PAGES.CITIZEN_DETAILS.ADDRESS_FOR_SERVICE') }}</p>
-                <label class="govuk-label" for="postcode">
-                  {{ t('PAGES.CITIZEN_DETAILS.UK_POSTCODE') }}
-                </label>
-                <div id="postcode-error" class="govuk-visually-hidden govuk-error-message">
-                  {{ t('PAGES.CITIZEN_DETAILS.ADDRESS_NOT_FOUND') + t('PAGES.CITIZEN_DETAILS.TRY_AGAIN') }}
-                </div>
-                <input class="govuk-input govuk-input--width-10" id="postcode" name="postcode" type="text"
-                       autocomplete="postal-code"/>
-                <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button"
-                        id="findAddressButton">
-                  {{ t('PAGES.CITIZEN_DETAILS.FIND_ADDRESS') }}
-                </button>
-                <div id="selectAddress" class="govuk-visually-hidden govuk-!-margin-bottom-2">
-                  {{ govukSelect({
-                    id: "correspondenceAddressList",
-                    name: "correspondenceAddressList",
-                    label: {
-                      text: t('PAGES.CITIZEN_DETAILS.PICK_ADDRESS')
-                    },
-                    items: []
-                  }) }}
-                </div>
-              </div>
-              <div>
-                <a id="enterAddressManually" aria-controls="enterAddressManually" href="#"
-                   class="govuk-body govuk-link enterAddressManually">
-                  {{ t('PAGES.CITIZEN_DETAILS.MANUAL_ADDRESS') }}
-                </a>
-              </div>
-              <div id="correspondenceAddress" class="{{ correspondenceAddressClass }}">
-                {{ addressForm(
-                  t,
-                  citizenCorrespondenceAddress = citizenCorrespondenceAddress,
-                  addressType = 'correspondence',
-                  addressTitle = addressTitle
-                ) }}
-              </div>
+            <p class="govuk-label govuk-!-margin-bottom-5">{{ t('PAGES.CITIZEN_DETAILS.ALL_CORRESPONDENCE') + t('PAGES.CITIZEN_DETAILS.ADDRESS_FOR_SERVICE') }}</p>
+            {{ postcodeLookupAndAddressForm(t, {
+              party: party,
+              addressType:'correspondence',
+              addressTitle:addressTitle
+            }) }}
             {% endset -%}
             <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_DETAILS.CORRESPONDENCE_ADDRESS') }}</h2>
             {{ govukRadios({
@@ -111,11 +87,11 @@
                 {
                   value: YesNo.NO,
                   text: t('COMMON.NO'),
-                  checked: false if respondent.postToThisAddress == YesNo.YES else true
+                  checked: true
                 },
                 {
                   value: YesNo.YES,
-                  checked: true if respondent.postToThisAddress == YesNo.YES else false,
+                  checked: true if party.model.postToThisAddress === YesNo.YES or party.errorFor('correspondenceAddress') else false,
                   text: t('PAGES.CITIZEN_DETAILS.YES_CORRESPONDENCE'),
                   conditional: {
                   html: correspondenceAddressHtml
@@ -123,6 +99,15 @@
                 }
               ]
             }) }}
+            {% if party.model.partyPhone !== undefined %}
+              <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_PHONE.PAGE_TITLE') }}</h2>
+              <p class="govuk-body">{{ t('PAGES.CLAIMANT_PHONE.INFORMATION') }}</p>
+              {{ citizenTelephone(party, t, {
+                id: "partyPhone",
+                name: "partyPhone",
+                className: "govuk-input--width-20"
+            }) }}
+            {% endif %}
             {{ govukButton({
               text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
             }) }}

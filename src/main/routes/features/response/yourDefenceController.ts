@@ -15,7 +15,7 @@ yourDefenceController.get(RESPONSE_YOUR_DEFENCE_URL, async (req: Request, res: R
     const form = new GenericForm(claim);
     res.render(yourDefenceViewPath, {
       form,
-      claimantName: claim.getClaimantName(),
+      claimantName: claim.getClaimantFullName(),
     });
   } catch (error) {
     next(error);
@@ -32,7 +32,7 @@ yourDefenceController.post(RESPONSE_YOUR_DEFENCE_URL, async (req: Request, res: 
     if (form.hasErrors()) {
       res.render(yourDefenceViewPath, {
         form,
-        claimantName: claim.getClaimantName(),
+        claimantName: claim.getClaimantFullName(),
       });
     } else {
       await saveYourDefence(claim, claimId, defence);

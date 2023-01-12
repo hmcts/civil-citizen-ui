@@ -1,69 +1,68 @@
-import {ValidateIf, ValidateNested} from 'class-validator';
-import {PriorityDebtDetails, DebtDetailsError} from './priorityDebtDetails';
-
-export type DebtType =
-  | 'mortgage'
-  | 'rent'
-  | 'councilTax'
-  | 'gas'
-  | 'electricity'
-  | 'water'
-  | 'maintenance';
-
-export interface DebtsError {
-  mortgage?: DebtDetailsError;
-  rent?: DebtDetailsError;
-  councilTax?: DebtDetailsError;
-  gas?: DebtDetailsError;
-  electricity?: DebtDetailsError;
-  water?: DebtDetailsError;
-  maintenance?: DebtDetailsError;
-}
-
+import {ValidateNested} from 'class-validator';
+import {ScheduledAmount} from '../../../utils/calculateMonthlyIncomeExpenses/monthlyIncomeExpensesCalculator';
+import {ExpenseType} from './expensesAndIncome/expenseType';
+import {Transaction} from './expensesAndIncome/transaction';
 export class PriorityDebts {
-  @ValidateIf((o: PriorityDebts) => o.mortgage?.populated)
   @ValidateNested()
-    mortgage?: PriorityDebtDetails;
+    mortgage?: Transaction;
 
-  @ValidateIf((o: PriorityDebts) => o.rent?.populated)
   @ValidateNested()
-    rent?: PriorityDebtDetails;
+    rent?: Transaction;
 
-  @ValidateIf((o: PriorityDebts) => o.councilTax?.populated)
   @ValidateNested()
-    councilTax?: PriorityDebtDetails;
+    councilTax?: Transaction;
 
-  @ValidateIf((o: PriorityDebts) => o.gas?.populated)
   @ValidateNested()
-    gas?: PriorityDebtDetails;
+    gas?: Transaction;
 
-  @ValidateIf((o: PriorityDebts) => o.electricity?.populated)
   @ValidateNested()
-    electricity?: PriorityDebtDetails;
+    electricity?: Transaction;
 
-  @ValidateIf((o: PriorityDebts) => o.water?.populated)
   @ValidateNested()
-    water?: PriorityDebtDetails;
-
-  @ValidateIf((o: PriorityDebts) => o.maintenance?.populated)
+    water?: Transaction;
   @ValidateNested()
-    maintenance?: PriorityDebtDetails;
+    maintenance?: Transaction;
 
-  constructor(
-    mortgage?: PriorityDebtDetails,
-    rent?: PriorityDebtDetails,
-    councilTax?: PriorityDebtDetails,
-    gas?: PriorityDebtDetails,
-    electricity?: PriorityDebtDetails,
-    water?: PriorityDebtDetails,
-    maintenance?: PriorityDebtDetails,
-  ) {
-    this.mortgage = mortgage;
-    this.rent = rent;
-    this.councilTax = councilTax;
-    this.gas = gas;
-    this.electricity = electricity;
-    this.water = water;
-    this.maintenance = maintenance;
+  [key: string]: Transaction;
+
+  constructor(priorityDebts?: Record<string, Transaction>) {
+    this.mortgage = priorityDebts?.mortgage;
+    this.rent = priorityDebts?.rent;
+    this.gas = priorityDebts?.gas;
+    this.councilTax = priorityDebts?.councilTax;
+    this.electricity = priorityDebts?.electricity;
+    this.water = priorityDebts?.water;
+    this.maintenance = priorityDebts?.maintenance;
+  }
+
+  public static buildEmptyForm(): PriorityDebts {
+    const params = {
+      mortgage: PriorityDebts.buildPriorityDebt(ExpenseType.MORTGAGE_DEBT),
+      rent: PriorityDebts.buildPriorityDebt(ExpenseType.RENT_DEBT),
+      councilTax: PriorityDebts.buildPriorityDebt(ExpenseType.COUNCIL_TAX_OR_COMMUNITY_CHARGE),
+      gas: PriorityDebts.buildPriorityDebt(ExpenseType.GAS_DEBT),
+      electricity: PriorityDebts.buildPriorityDebt(ExpenseType.ELECTRICITY_DEBT),
+      water: PriorityDebts.buildPriorityDebt(ExpenseType.WATER_DEBT),
+      maintenance: PriorityDebts.buildPriorityDebt(ExpenseType.MAINTENANCE_PAYMENTS_DEBT),
+    };
+    return new PriorityDebts(params);
+  }
+
+  public static convertToScheduledAmount(priorityDebts: PriorityDebts): ScheduledAmount[] {
+    const keys = Object.keys(priorityDebts);
+    const scheduledAmounts: ScheduledAmount[] = [];
+    keys.forEach(key => {
+      if (priorityDebts[key as keyof PriorityDebts]) {
+        const expense = priorityDebts[key as keyof PriorityDebts];
+        if (expense instanceof Transaction) {
+          scheduledAmounts.push(expense?.transactionSource.convertToScheduledAmount());
+        }
+      }
+    });
+    return scheduledAmounts;
+  }
+
+  private static buildPriorityDebt(type: ExpenseType): Transaction {
+    return Transaction.buildEmptyForm(type);
   }
 }

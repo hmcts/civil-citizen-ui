@@ -11,9 +11,15 @@ const logger = Logger.getLogger('expertReportDetailsService');
 export const getExpertReportDetails = async (claimId: string): Promise<ExpertReportDetails> => {
   try {
     const caseData = await getCaseDataFromStore(claimId);
-    if (caseData.directionQuestionnaire?.experts?.expertReportDetails) {
-      const reportDetails = caseData.directionQuestionnaire.experts.expertReportDetails.reportDetails?.map(reportDetail => ReportDetail.fromJson(reportDetail));
-      caseData.directionQuestionnaire.experts.expertReportDetails.reportDetails = reportDetails;
+    if (caseData.isClaimantIntentionPending() && caseData.claimantResponse?.directionQuestionnaire?.experts?.expertReportDetails) {
+      caseData.claimantResponse.directionQuestionnaire.experts.expertReportDetails.reportDetails =
+        caseData.claimantResponse.directionQuestionnaire.experts.expertReportDetails.reportDetails?.map(reportDetail => ReportDetail.fromJson(reportDetail));
+      return caseData.claimantResponse.directionQuestionnaire.experts.expertReportDetails;
+    }
+
+    if (!caseData.isClaimantIntentionPending() && caseData.directionQuestionnaire?.experts?.expertReportDetails) {
+      caseData.directionQuestionnaire.experts.expertReportDetails.reportDetails =
+        caseData.directionQuestionnaire.experts.expertReportDetails.reportDetails?.map(reportDetail => ReportDetail.fromJson(reportDetail));
       return caseData.directionQuestionnaire.experts.expertReportDetails;
     }
     return new ExpertReportDetails();

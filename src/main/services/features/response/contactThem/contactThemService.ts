@@ -1,17 +1,17 @@
 import {Claim} from '../../../../common/models/claim';
-import {CorrespondenceAddress} from '../../../../common/models/correspondenceAddress';
+import {Address} from '../../../../common/form/models/address';
 
-const getAddress = (claim: Claim): CorrespondenceAddress => {
-  if (claim.applicantSolicitor1ServiceAddress?.AddressLine1) {
-    return claim.applicantSolicitor1ServiceAddress;
-  } else if (claim.specApplicantCorrespondenceAddressdetails?.AddressLine1) {
-    return claim.specApplicantCorrespondenceAddressdetails;
+const getAddress = (claim: Claim): Address => {
+  if (claim.applicant1.partyDetails?.correspondenceAddress?.addressLine1) {
+    return claim.applicant1.partyDetails.correspondenceAddress;
+  } else if (claim.applicant1.partyDetails?.primaryAddress?.addressLine1) {
+    return claim.applicant1.partyDetails.primaryAddress;
   }
-  return claim.applicant1?.primaryAddress;
+  return claim.applicant1?.partyDetails.primaryAddress;
 };
 
 const getSolicitorName = (claim: Claim): string => {
-  return claim.applicantSolicitor1ClaimStatementOfTruth?.name;
+  return claim?.applicantSolicitor1ClaimStatementOfTruth ? claim.applicantSolicitor1ClaimStatementOfTruth.name : claim.claimDetails?.statementOfTruth?.signerName;
 };
 
 export {

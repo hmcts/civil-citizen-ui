@@ -1,8 +1,9 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../../../modules/draft-store/draftStoreService';
-import {ResponseType} from '../../../../../../common/form/models/responseType';
-import {PartialAdmission} from '../../../../../../common/models/partialAdmission';
-import {PaymentDate} from '../../../../../../common/form/models/admission/fullAdmission/paymentOption/paymentDate';
-import {PaymentIntention} from '../../../../../../common/form/models/admission/partialAdmission/paymentIntention';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {ResponseType} from 'form/models/responseType';
+import {PartialAdmission} from 'models/partialAdmission';
+import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
+import {PaymentIntention} from 'form/models/admission/paymentIntention';
+import {FullAdmission} from 'common/models/fullAdmission';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('paymentDateService');
@@ -13,8 +14,8 @@ export class PaymentDateService {
       const claim = await getCaseDataFromStore(claimId);
       if (responseType === ResponseType.PART_ADMISSION && claim?.partialAdmission?.paymentIntention?.paymentDate) {
         return this.setDate(claim.partialAdmission.paymentIntention.paymentDate);
-      } else if (claim?.paymentDate) {
-        return this.setDate(claim.paymentDate);
+      } else if (claim?.fullAdmission?.paymentIntention?.paymentDate) {
+        return this.setDate(claim.fullAdmission.paymentIntention.paymentDate);
       }
       return undefined;
     } catch (error) {
@@ -31,16 +32,21 @@ export class PaymentDateService {
           case_data.partialAdmission = new PartialAdmission();
         }
         if (!case_data.partialAdmission?.paymentIntention?.paymentDate) {
-          const paymentType =  case_data.partialAdmission?.paymentIntention?.paymentOption;
+          const paymentType = case_data.partialAdmission?.paymentIntention?.paymentOption;
           case_data.partialAdmission.paymentIntention = new PaymentIntention();
           case_data.partialAdmission.paymentIntention.paymentOption = paymentType;
         }
         case_data.partialAdmission.paymentIntention.paymentDate = paymentDate;
-      } else {
-        if (!case_data.paymentDate) {
-          case_data.paymentDate = new Date();
+      } else if (responseType === ResponseType.FULL_ADMISSION) {
+        if (!case_data.fullAdmission) {
+          case_data.fullAdmission = new FullAdmission();
         }
-        case_data.paymentDate = paymentDate;
+        if (!case_data.fullAdmission?.paymentIntention?.paymentDate) {
+          const paymentType = case_data.fullAdmission?.paymentIntention?.paymentOption;
+          case_data.fullAdmission.paymentIntention = new PaymentIntention();
+          case_data.fullAdmission.paymentIntention.paymentOption = paymentType;
+        }
+        case_data.fullAdmission.paymentIntention.paymentDate = paymentDate;
       }
       await saveDraftClaim(claimId, case_data);
     } catch (error) {

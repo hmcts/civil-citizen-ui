@@ -6,75 +6,73 @@
 {% from "../../../../macro/transaction-details.njk" import transactionDetails, otherTransactionDetails %}
 {% from "../../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../../macro/error-summary.njk" import errorSummary %}
-
 {% block pageTitle %}
   {{ setPageTitle('PAGES.REGULAR_EXPENSES.PAGE_TITLE') }}
 {% endblock %}
-
 {% block content %}
   {% set errors = form.getNestedErrors('model') %}
   {% if form.hasErrors() %}
     {{ errorSummary(errors, t) }}
   {% endif %}
   {% set rowNumberToShowRemoveButton = 2 %}
-  {% set amountLabel = 'Amount paid' %}
-  {% set scheduleLabel = 'Paid every' %}
-  {% set expenseSourceLabel = 'Source of expense' %}
+  {% set amountLabel = t('PAGES.REGULAR_EXPENSES.AMOUNT_PAID') %}
+  {% set scheduleLabel = t('PAGES.REGULAR_EXPENSES.PAID_EVERY') %}
+  {% set expenseSourceLabel = t('PAGES.REGULAR_EXPENSES.SOURCE_OF_EXPENSES') %}
   {% set checkedMortgageHtml %}
-    {{ transactionDetails(t,'Include all mortgages', 'model[mortgage][transactionSource]',  form.model.mortgage.transactionSource, {amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
+  {{ transactionDetails(t,'PAGES.REGULAR_EXPENSES.INCLUDE_ALL_MORTGAGES', 'model[mortgage][transactionSource]',  form.model.mortgage.transactionSource, {amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
   {% endset -%}
   {% set checkedRentHtml %}
-    {{ transactionDetails(t,'', 'model[rent][transactionSource]',  form.model.rent.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
+  {{ transactionDetails(t,'', 'model[rent][transactionSource]',  form.model.rent.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
   {% endset -%}
   {% set checkedCouncilTaxHtml %}
-    {{ transactionDetails(t,'', 'model[councilTax][transactionSource]',  form.model.councilTax.transactionSource, {amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
+  {{ transactionDetails(t,'', 'model[councilTax][transactionSource]',  form.model.councilTax.transactionSource, {amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
   {% endset -%}
   {% set checkedGasHtml %}
-    {{ transactionDetails(t,'', 'model[gas][transactionSource]', form.model.gas.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
+  {{ transactionDetails(t,'', 'model[gas][transactionSource]', form.model.gas.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
   {% endset -%}
   {% set checkedElectricityHtml %}
-    {{ transactionDetails(t,'', 'model[electricity][transactionSource]', form.model.electricity.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
+  {{ transactionDetails(t,'', 'model[electricity][transactionSource]', form.model.electricity.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
   {% endset -%}
   {% set checkedWaterHtml %}
-    {{ transactionDetails(t,'Include sewerage payments', 'model[water][transactionSource]', form.model.water.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
+  {{ transactionDetails(t,'PAGES.REGULAR_EXPENSES.INCLUDE_SEWERAGE_PAYMENTS', 'model[water][transactionSource]', form.model.water.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
   {% endset -%}
   {% set checkedTravelHtml %}
-    {{ transactionDetails(t,'', 'model[travel][transactionSource]', form.model.travel.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
+  {{ transactionDetails(t,'', 'model[travel][transactionSource]', form.model.travel.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
   {% endset -%}
   {% set checkedSchoolHtml %}
-    {{ transactionDetails(t,'', 'model[schoolCosts][transactionSource]', form.model.schoolCosts.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
+  {{ transactionDetails(t,'', 'model[schoolCosts][transactionSource]', form.model.schoolCosts.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
   {% endset -%}
   {% set checkedFoodHtml %}
-    {{ transactionDetails(t,'', 'model[foodAndHousekeeping][transactionSource]',  form.model.foodAndHousekeeping.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
+  {{ transactionDetails(t,'', 'model[foodAndHousekeeping][transactionSource]',  form.model.foodAndHousekeeping.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
   {% endset -%}
   {% set checkedTvHtml %}
-    {{ transactionDetails(t,'', 'model[tvAndBroadband][transactionSource]',  form.model.tvAndBroadband.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
+  {{ transactionDetails(t,'', 'model[tvAndBroadband][transactionSource]',  form.model.tvAndBroadband.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
   {% endset -%}
   {% set checkedHirePurchaseHtml %}
-    {{ transactionDetails(t,'', 'model[hirePurchase][transactionSource]',  form.model.hirePurchase.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
+  {{ transactionDetails(t,'', 'model[hirePurchase][transactionSource]',  form.model.hirePurchase.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
   {% endset -%}
   {% set checkedMobileHtml %}
-    {{ transactionDetails(t,'', 'model[mobilePhone][transactionSource]', form.model.mobilePhone.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
+  {{ transactionDetails(t,'', 'model[mobilePhone][transactionSource]', form.model.mobilePhone.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
   {% endset -%}
   {% set checkedMaintenanceHtml %}
-    {{ transactionDetails(t,'', 'model[maintenance][transactionSource]', form.model.maintenance.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
+  {{ transactionDetails(t,'', 'model[maintenance][transactionSource]', form.model.maintenance.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
   {% endset -%}
   {% set checkedOtherHtml %}
-    <div class="govuk-form-group">
-      {% for transactionSource in form.model.other.transactionSources %}
-        {% if form.model.other.transactionSources.length < rowNumberToShowRemoveButton %}
-          {{ otherTransactionDetails( t,'model[other][transactionSources]', loop.index0, transactionSource,  {name:expenseSourceLabel, amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form, {text:'Remove this expense source', hidden:true}) }}
-        {% else %}
-          {{ otherTransactionDetails( t,'model[other][transactionSources]', loop.index0, transactionSource,  {name:expenseSourceLabel, amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form, {text:'Remove this expense source'}) }}
-        {% endif %}
-      {% endfor %}
-    </div>
-    <div class="govuk-form-group">
-      {{ govukButton({
-        text: t("Add another expense"),
+  <div class="govuk-form-group">
+    {% for transactionSource in form.model.other.transactionSources %}
+      {% if form.model.other.transactionSources.length < rowNumberToShowRemoveButton %}
+        {{ otherTransactionDetails( t,'model[other][transactionSources]', loop.index0, transactionSource,  {name:expenseSourceLabel, amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form, {text:'Remove this expense source', hidden:true}) }}
+      {% else %}
+        {{ otherTransactionDetails( t,'model[other][transactionSources]', loop.index0, transactionSource,  {name:expenseSourceLabel, amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form, {text:'Remove this expense source'}) }}
+      {% endif %}
+    {% endfor %}
+  </div>
+  <div class="govuk-form-group">
+    {{ govukButton({
+        text: t('PAGES.REGULAR_EXPENSES.ADD_ANOTHER_EXPENSE'),
         classes: "govuk-button--secondary append-row"
       }) }}
-    </div>
+  </div>
   {% endset -%}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -82,24 +80,23 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-
             {{ govukCheckboxes({
               idPrefix: "declared",
               name: "declared",
               fieldset: {
                 legend: {
-                  text: t("What are your regular expenses?"),
+                  text: t('PAGES.REGULAR_EXPENSES.WHAT_ARE_YOUR_REGUALAR_EXPENSES'),
                   isPageHeading: true,
                   classes: "govuk-fieldset__legend--l"
                 }
               },
               hint: {
-                text: t('Select all that apply. The information you enter must be truthful and accurate. Do not include any arrears repayments.')
+                text: t('PAGES.REGULAR_EXPENSES.INFORMATION_NOTE')
               },
               items: [
                 {
                   value: "mortgage",
-                  text: t("Mortgage"),
+                  text: t('COMMON.CHECKBOX_FIELDS.MORTGAGE'),
                   conditional: {
                   html: checkedMortgageHtml
                 },
@@ -107,7 +104,7 @@
                 },
                 {
                   value: "rent",
-                  text: t("Rent"),
+                  text: t('COMMON.CHECKBOX_FIELDS.RENT'),
                   conditional: {
                   html: checkedRentHtml
                 },
@@ -115,7 +112,7 @@
                 },
                 {
                   value: "councilTax",
-                  text: t("Council Tax"),
+                  text: t('COMMON.CHECKBOX_FIELDS.COUNCIL_TAX'),
                   conditional: {
                   html: checkedCouncilTaxHtml
                 },
@@ -123,7 +120,7 @@
                 },
                 {
                   value: "gas",
-                  text: t("Gas"),
+                  text: t('COMMON.CHECKBOX_FIELDS.GAS'),
                   conditional: {
                   html: checkedGasHtml
                 },
@@ -131,7 +128,7 @@
                 },
                 {
                   value: "electricity",
-                  text: t("Electricity"),
+                  text: t('COMMON.CHECKBOX_FIELDS.ELECTRICITY'),
                   conditional: {
                   html: checkedElectricityHtml
                 },
@@ -139,7 +136,7 @@
                 },
                 {
                   value: "water",
-                  text: t("Water"),
+                  text: t('COMMON.CHECKBOX_FIELDS.WATER'),
                   conditional: {
                   html: checkedWaterHtml
                 },
@@ -147,7 +144,7 @@
                 },
                 {
                   value: "travel",
-                  text: t("Travel (work or school)"),
+                  text: t('COMMON.CHECKBOX_FIELDS.TRAVEL'),
                   conditional: {
                   html: checkedTravelHtml
                 },
@@ -155,7 +152,7 @@
                 },
                 {
                   value: "schoolCosts",
-                  text: t("School costs (include clothing)"),
+                  text: t('COMMON.CHECKBOX_FIELDS.SCHOOL_COSTS'),
                   conditional: {
                   html: checkedSchoolHtml
                 },
@@ -163,7 +160,7 @@
                 },
                 {
                   value: "foodAndHousekeeping",
-                  text: t("Food and housekeeping"),
+                  text: t('COMMON.CHECKBOX_FIELDS.FOOD_AND_HOUSEKEEPING'),
                   conditional: {
                   html: checkedFoodHtml
                 },
@@ -171,7 +168,7 @@
                 },
                 {
                   value: "tvAndBroadband",
-                  text: t("TV and broadband"),
+                  text: t('COMMON.CHECKBOX_FIELDS.TV_AND_BROADBAND'),
                   conditional: {
                   html: checkedTvHtml
                 },
@@ -179,7 +176,7 @@
                 },
                 {
                   value: "hirePurchase",
-                  text: t("Hire purchase"),
+                  text: t('COMMON.CHECKBOX_FIELDS.HIRE_PURCHASE'),
                   conditional: {
                   html: checkedHirePurchaseHtml
                 },
@@ -187,7 +184,7 @@
                 },
                 {
                   value: "mobilePhone",
-                  text: t("Mobile phone"),
+                  text: t('COMMON.CHECKBOX_FIELDS.MOBILE_PHONE'),
                   conditional: {
                   html: checkedMobileHtml
                 },
@@ -195,7 +192,7 @@
                 },
                 {
                   value: "maintenance",
-                  text: t("Maintenance payments"),
+                  text: t('COMMON.CHECKBOX_FIELDS.MAINTENANCE'),
                   conditional: {
                   html: checkedMaintenanceHtml
                 },
@@ -203,7 +200,7 @@
                 },
                 {
                   value: "other",
-                  text: t("Other expenses"),
+                  text: t('COMMON.CHECKBOX_FIELDS.OTHER'),
                   conditional: {
                   html: checkedOtherHtml
                 },
@@ -211,16 +208,15 @@
                 }
               ]
             }) }}
-
             <div class="govuk-form-group">
               <p class="govuk-fieldset__legend govuk-fieldset__legend--m" role="status" aria-live="polite">
-                {{ t('Total monthly expenditure') }}: £
+                {{ t('PAGES.REGULAR_EXPENSES.TOTAL_MONTHLY_EXPENDITURE') }}: £
                 <span class="total-monthly-income-expense">
                   0
-               </span>
+                </span>
               </p>
               {{ govukButton({
-                text: t("Save and continue")
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
               }) }}
               {{ contactUsForHelp(t) }}
             </div>

@@ -31,7 +31,7 @@
         },
         "experts": {
           "expertReportDetails": {
-            "hasExpertReports": "yes",
+            "option": "yes",
             "reportDetails": [
               {
                 "expertName": "Ahmet",
@@ -55,32 +55,6 @@
               }
             ]
           }
-        },
-        "hearing": {
-          "supportRequiredList": {
-            "items": [
-              {
-                "fullName": "johndoe",
-                "disabledAccess": {
-                  "selected": true
-                },
-                "otherSupport": {
-                  "selected": true,
-                  "content": "bla bla"
-                }
-              },
-              {
-                "fullName": "mikebrown",
-                "hearingLoop": {
-                  "selected": true
-                },
-                "languageInterpreter": {
-                  "selected": true,
-                  "content": "zla zla"
-                }
-              }
-            ]
-          }
         }
       },
       "supportRequired": {
@@ -96,33 +70,42 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "ORGANISATION",
-        "partyName": "Version 1",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "partyDetails": {
+          "partyName": "Version 1",
+          "primaryAddress": {
+            "postCode": "RG4 7AA",
+            "city": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         }
       },
       "respondent1": {
         "type": "INDIVIDUAL",
-        "individualTitle": "Mrs.",
-        "individualFirstName": "Jane",
-        "individualLastName": "Doe",
-        "partyName": "Mrs. Jane Doe",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "partyDetails": {
+          "individualTitle": "Mrs.",
+          "individualFirstName": "Jane",
+          "individualLastName": "Doe",
+          "partyName": "Mrs. Jane Doe",
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         },
-        "telephoneNumber": "01632960001"
+        "partyPhone": {
+          "phone": "01632960001"
+        }
+      },
+      "rejectAllOfClaim": {
+        "howMuchHaveYouPaid": {
+          "amount": "1000"
+        }
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
@@ -158,7 +141,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -273,36 +258,36 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "SOLE_TRADER",
-        "telephoneNumber": "(0)207 127 0000",
-        "individualTitle": "Mr.",
-        "individualFirstName": "Jan",
-        "individualLastName": "Clark",
-        "soleTraderTitle": "Mr.",
-        "soleTraderFirstName": "Jan",
-        "soleTraderLastName": "Clark",
-        "soleTraderTradingAs": "Gardener",
-        "partyName": "Mr. Jan Clark",
-        "primaryAddress": {
-          "County": "London",
-          "Country": "United Kingdom",
-          "PostCode": "SW1H 9AJ",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "partyPhone": "(0)207 127 0000",
+        "partyDetails": {
+          "individualTitle": "Mr.",
+          "individualFirstName": "Jan",
+          "individualLastName": "Clark",
+          "soleTraderTradingAs": "Gardener",
+          "primaryAddress": {
+            "county": "London",
+            "country": "United Kingdom",
+            "postCode": "SW1H 9AJ",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         }
       },
       "respondent1": {
         "type": "ORGANISATION",
-        "partyName": "Version 1",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "partyDetails": {
+          "partyName": "Version 1",
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         }
       },
       "claimInterest": "Yes",
@@ -339,7 +324,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -427,7 +414,7 @@
         "AddressLine3": "Church Road"
       },
       "specRespondentCorrespondenceAddressRequired": "Yes",
-      "responseDeadline":{
+      "responseDeadline": {
         "option": "already-agreed",
         "agreedResponseDeadline": "2022-08-30T15:59:59"
       }
@@ -450,36 +437,38 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "INDIVIDUAL",
-        "telephoneNumber": "(0)207 127 0000",
-        "individualTitle": "Mr.",
-        "individualFirstName": "Alex",
-        "individualLastName": "Van",
-        "partyName": "Mr. Alex Van",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "partyPhone": "(0)207 127 0000",
+        "partyDetails": {
+          "individualTitle": "Mr.",
+          "individualFirstName": "Alex",
+          "individualLastName": "Van",
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         }
       },
       "respondent1": {
         "type": "INDIVIDUAL",
-        "telephoneNumber": "(0)207 127 0000",
-        "individualTitle": "Mr.",
-        "individualFirstName": "Jhon",
-        "individualLastName": "Smith",
-        "partyName": "Mr. Jhon Smith",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "partyPhone": "(0)207 127 0000",
+        "partyDetails": {
+          "individualTitle": "Mr.",
+          "individualFirstName": "Jhon",
+          "individualLastName": "Smith",
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         }
       },
       "claimInterest": "Yes",
@@ -516,7 +505,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -623,34 +614,34 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "INDIVIDUAL",
-        "individualTitle": "Mr.",
-        "individualFirstName": "Jan",
-        "individualLastName": "Clark",
-        "partyName": "Mr. Jan Clark",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "partyDetails": {
+          "individualTitle": "Mr.",
+          "individualFirstName": "Jan",
+          "individualLastName": "Clark",
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         }
       },
       "respondent1": {
-        "type": "INDIVIDUAL",
-        "individualTitle": "Mr.",
-        "individualFirstName": "Jan",
-        "individualLastName": "Clark",
-        "partyName": "Mr. Jan Clark",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "type": "SOLE_TRADER",
+        "partyDetails": {
+          "partyName": "Mr. Jan Clark",
+          "primaryAddress": {
+            "County": "Kent",
+            "Country": "United Kingdom",
+            "PostCode": "RG4 7AA",
+            "PostTown": "Reading",
+            "AddressLine1": "Flat 2",
+            "AddressLine2": "Caversham House 15-17",
+            "AddressLine3": "Church Road"
+          }
         }
       },
       "claimInterest": "Yes",
@@ -694,7 +685,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -703,7 +696,6 @@
       "interestClaimOptions": "SAME_RATE_INTEREST",
       "claimNotificationDate": "2022-03-01T11:57:10.592492",
       "paymentSuccessfulDate": "2022-03-01T11:57:10.592492",
-      "interestFromSpecificDate": "2022-05-01",
       "respondent1Represented": "Yes",
       "respondent1OrgRegistered": "Yes",
       "speclistYourEvidenceList": [
@@ -785,7 +777,7 @@
         "AddressLine3": "Church Road"
       },
       "specRespondentCorrespondenceAddressRequired": "Yes",
-      "responseDeadline":{
+      "responseDeadline": {
         "option": "already-agreed",
         "agreedResponseDeadline": "2022-08-30T15:59:59"
       }
@@ -808,30 +800,33 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "COMPANY",
-        "partyName": "Google",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "partyDetails": {
+          "partyName": "Google",
+          "primaryAddress": {
+            "postCode": "RG4 7AA",
+            "city": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         }
       },
       "respondent1": {
         "type": "COMPANY",
-        "partyName": "Version 1",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "partyDetails": {
+          "partyName": "Version 1",
+          "primaryAddress": {
+            "postCode": "RG4 7AA",
+            "city": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          },
+          "contactPerson": "Jane Smith"
         },
-        "telephoneNumber": "01632960001"
+        "partyPhone": {
+          "phone": "01632960001"
+        }
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
@@ -863,7 +858,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -976,7 +973,7 @@
         "AddressLine3": "Church Road"
       },
       "specRespondentCorrespondenceAddressRequired": "Yes",
-      "responseDeadline":{
+      "responseDeadline": {
         "option": "yes",
         "additionalTime": "more-than-28-days"
       }
@@ -998,35 +995,40 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "INDIVIDUAL",
-        "individualTitle": "Mr.",
-        "individualFirstName": "Jan",
-        "individualLastName": "Clark",
-        "partyName": "Mr. Jan Clark",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "partyDetails": {
+          "individualTitle": "Mr.",
+          "individualFirstName": "Jan",
+          "individualLastName": "Clark",
+          "partyName": "Mr. Jan Clark",
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         }
       },
       "respondent1": {
         "type": "SOLE_TRADER",
-        "individualTitle": "Mr.",
-        "individualFirstName": "Jan",
-        "individualLastName": "Clark",
-        "partyName": "Mr. Jan Clark",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
-        }
+        "partyDetails": {
+          "individualTitle": "Mr.",
+          "individualFirstName": "Jan",
+          "individualLastName": "Clark",
+          "soleTraderTradingAs": "Clark's Sons Ltd.",
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
+        },
+        "partyPhone": "678765432"
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
@@ -1090,7 +1092,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -1099,7 +1103,6 @@
       "interestClaimOptions": "SAME_RATE_INTEREST",
       "claimNotificationDate": "2022-03-01T11:57:10.592492",
       "paymentSuccessfulDate": "2022-03-01T11:57:10.592492",
-      "interestFromSpecificDate": "2022-05-01",
       "respondent1Represented": "Yes",
       "respondent1OrgRegistered": "Yes",
       "speclistYourEvidenceList": [
@@ -1181,7 +1184,7 @@
         "AddressLine3": "Church Road"
       },
       "specRespondentCorrespondenceAddressRequired": "Yes",
-      "responseDeadline":{
+      "responseDeadline": {
         "option": "request-refused"
       },
       "evidence": {
@@ -1215,34 +1218,36 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "INDIVIDUAL",
-        "individualTitle": "Mr.",
-        "individualFirstName": "Jan",
-        "individualLastName": "Clark",
-        "partyName": "Mr. Jan Clark",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "partyDetails": {
+          "individualTitle": "Mr.",
+          "individualFirstName": "Jan",
+          "individualLastName": "Clark",
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         }
       },
       "respondent1": {
         "type": "SOLE_TRADER",
-        "individualTitle": "Mr.",
-        "individualFirstName": "Jan",
-        "individualLastName": "Clark",
-        "partyName": "Mr. Jan Clark",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "partyDetails": {
+          "individualTitle": "Mr.",
+          "individualFirstName": "Jan",
+          "individualLastName": "Clark",
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         }
       },
       "claimInterest": "Yes",
@@ -1286,7 +1291,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -1295,7 +1302,6 @@
       "interestClaimOptions": "SAME_RATE_INTEREST",
       "claimNotificationDate": "2022-03-01T11:57:10.592492",
       "paymentSuccessfulDate": "2022-03-01T11:57:10.592492",
-      "interestFromSpecificDate": "2022-05-01",
       "respondent1Represented": "Yes",
       "respondent1OrgRegistered": "Yes",
       "speclistYourEvidenceList": [
@@ -1423,33 +1429,36 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "ORGANISATION",
-        "partyName": "Version 1",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "partyDetails": {
+          "partyName": "Version 1",
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         }
       },
       "respondent1": {
         "type": "INDIVIDUAL",
-        "individualTitle": "Mrs.",
-        "individualFirstName": "Jane",
-        "individualLastName": "Doe",
-        "partyName": "Mrs. Jane Doe",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "partyDetails": {
+          "individualTitle": "Mrs.",
+          "individualFirstName": "Jane",
+          "individualLastName": "Doe",
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         },
-        "telephoneNumber": "01632960001"
+        "partyPhone": "01632960001"
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
@@ -1485,7 +1494,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -1581,8 +1592,8 @@
         "AddressLine3": "Church Road"
       },
       "specRespondentCorrespondenceAddressRequired": "Yes",
-      "responseDeadline":{
-        "option":"no"
+      "responseDeadline": {
+        "option": "no"
       }
     }
   },
@@ -1603,36 +1614,37 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "SOLE_TRADER",
-        "telephoneNumber": "(0)207 127 0000",
-        "individualTitle": "Mr.",
-        "individualFirstName": "Jan",
-        "individualLastName": "Clark",
-        "soleTraderTitle": "Mr.",
-        "soleTraderFirstName": "Jan",
-        "soleTraderLastName": "Clark",
-        "soleTraderTradingAs": "Gardener",
-        "partyName": "Mr. Jan Clark",
-        "primaryAddress": {
-          "County": "London",
-          "Country": "United Kingdom",
-          "PostCode": "SW1H 9AJ",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "partyPhone": "(0)207 127 0000",
+        "partyDetails": {
+          "individualTitle": "Mr.",
+          "individualFirstName": "Jan",
+          "individualLastName": "Clark",
+          "soleTraderTradingAs": "Gardener",
+          "primaryAddress": {
+            "county": "London",
+            "country": "United Kingdom",
+            "postCode": "SW1H 9AJ",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         }
       },
       "respondent1": {
         "type": "ORGANISATION",
-        "partyName": "Version 1",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "partyPhone": "435321672",
+        "partyDetails": {
+          "partyName": "Version 1",
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         }
       },
       "claimInterest": "Yes",
@@ -1669,7 +1681,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -1776,36 +1790,37 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "INDIVIDUAL",
-        "telephoneNumber": "(0)207 127 0000",
-        "individualTitle": "Mr.",
-        "individualFirstName": "Alex",
-        "individualLastName": "Van",
-        "partyName": "Mr. Alex Van",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "partyPhone": "(0)207 127 0000",
+        "partyDetails": {
+          "individualTitle": "Mr.",
+          "individualFirstName": "Alex",
+          "individualLastName": "Van",
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         }
       },
       "respondent1": {
         "type": "INDIVIDUAL",
-        "telephoneNumber": "(0)207 127 0000",
-        "individualTitle": "Mr.",
-        "individualFirstName": "Jhon",
-        "individualLastName": "Smith",
-        "partyName": "Mr. Jhon Smith",
-        "primaryAddress": {
-          "County": "Kent",
-          "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
-          "PostTown": "Reading",
-          "AddressLine1": "Flat 2",
-          "AddressLine2": "Caversham House 15-17",
-          "AddressLine3": "Church Road"
+        "partyDetails": {
+          "individualTitle": "Mr.",
+          "individualFirstName": "Jhon",
+          "individualLastName": "Smith",
+          "primaryAddress": {
+            "county": "Kent",
+            "country": "United Kingdom",
+            "postCode": "RG4 7AA",
+            "postTown": "Reading",
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road"
+          }
         }
       },
       "claimInterest": "Yes",
@@ -1842,7 +1857,9 @@
           }
         }
       ],
-      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -1930,11 +1947,737 @@
         "AddressLine3": "Church Road"
       },
       "specRespondentCorrespondenceAddressRequired": "Yes",
-      "responseDeadline":{
+      "responseDeadline": {
         "option": "already-agreed",
         "additionalTime": "more-than-28-days",
         "agreedResponseDeadline": "2022-08-30T15:59:59"
       }
+    }
+  },
+  {
+    "id": 9999,
+    "jurisdiction": "CIVIL",
+    "case_type_id": "CIVIL",
+    "created_date": "2022-03-01T13:29:22.447",
+    "last_modified": "2022-03-01T13:29:24.971",
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "ccdState": "AWAITING_APPLICANT_INTENTION",
+      "claimFee": {
+        "code": "FEE0204",
+        "version": "4",
+        "calculatedAmountInPence": "7000"
+      },
+      "directionQuestionnaire": {
+        "witnesses": {
+          "otherWitnesses": {
+            "option": "",
+            "witnessItems": [
+              {
+                "firstName": "John",
+                "lastName": "Doe"
+              },
+              {
+                "firstName": "Jane",
+                "lastName": "Smith"
+              }
+            ]
+          }
+        },
+        "experts": {
+          "expertReportDetails": {
+            "option": "yes",
+            "reportDetails": [
+              {
+                "expertName": "Ahmet",
+                "reportDate": "2022-03-01T11:57:10.592492"
+              },
+              {
+                "expertName": "Mahmut",
+                "reportDate": "2022-06-01T11:57:10.592492"
+              }
+            ]
+          },
+          "expertDetailsList": {
+            "items": [
+              {
+                "firstName": "Mike",
+                "lastName": "Brown"
+              },
+              {
+                "firstName": "Jasmine",
+                "lastName": "Williams"
+              }
+            ]
+          }
+        }
+      },
+      "supportRequired": {
+        "languageSelected": true,
+        "languageInterpreted": "Swahili",
+        "signLanguageSelected": true,
+        "signLanguageInterpreted": "Sign",
+        "hearingLoopSelected": false,
+        "disabledAccessSelected": false,
+        "otherSupportSelected": false,
+        "otherSupport": ""
+      },
+      "issueDate": "2022-01-08",
+      "applicant1": {
+        "type": "ORGANISATION",
+        "partyName": "Version 1",
+        "primaryAddress": {
+          "County": "Kent",
+          "Country": "United Kingdom",
+          "PostCode": "RG4 7AA",
+          "PostTown": "Reading",
+          "AddressLine1": "Flat 2",
+          "AddressLine2": "Caversham House 15-17",
+          "AddressLine3": "Church Road"
+        }
+      },
+      "respondent1": {
+        "type": "INDIVIDUAL",
+        "partyDetails": {
+          "individualTitle": "Mrs.",
+          "individualFirstName": "Jane",
+          "individualLastName": "Doe",
+          "partyName": "Mrs. Jane Doe",
+          "postToThisAddress": "no",
+          "primaryAddress": {
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road",
+            "city": "London",
+            "postCode": "RG4 7AA"
+          },
+          "correspondenceAddress": {
+            "addressLine1": "",
+            "addressLine2": "",
+            "addressLine3": "",
+            "city": "",
+            "postCode": ""
+          }
+        },
+        "partyPhone": {
+          "phone": "01632960001"
+        },
+        "dateOfBirth": {
+          "date": "1980-11-11T00:00:00.000Z",
+          "year": 1980,
+          "month": 11,
+          "day": 11
+        },
+        "responseType": "FULL_ADMISSION"
+      },
+      "rejectAllOfClaim": {},
+      "claimInterest": "Yes",
+      "submittedDate": "2022-03-01T11:57:10.592492",
+      "totalInterest": 0,
+      "claimDetails": {
+        "reason": {
+          "text": "Test details of claim"
+        }
+      },
+      "superClaimType": "SPEC_CLAIM",
+      "businessProcess": {
+        "status": "FINISHED",
+        "camundaEvent": "CREATE_CLAIM_SPEC"
+      },
+      "timelineOfEvents": [
+        {
+          "id": "97e59389-1e6a-49bf-8957-f7fccb86e838",
+          "value": {
+            "timelineDate": "2021-01-01",
+            "timelineDescription": "Test details of claim"
+          }
+        }
+      ],
+      "totalClaimAmount": 1000,
+      "interestClaimFrom": "FROM_CLAIM_SUBMIT_DATE",
+      "calculatedInterest": "| Description | Amount | \n |---|---| \n | Claim amount | £ 1000 | \n | Interest amount | £ 0.00 | \n | Total amount | £ 1000.00 |",
+      "claimAmountBreakup": [
+        {
+          "id": "da31f19f-157f-4c2d-8a31-2225ecf155fa",
+          "value": {
+            "claimAmount": "100000",
+            "claimReason": "Test claim item details"
+          }
+        }
+      ],
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
+      "legacyCaseReference": "000MC009",
+      "solicitorReferences": {
+        "applicantSolicitor1Reference": "Applicant Reference",
+        "respondentSolicitor1Reference": "Respondent Reference"
+      },
+      "interestClaimOptions": "SAME_RATE_INTEREST",
+      "claimNotificationDate": "2022-03-01T11:57:10.592492",
+      "paymentSuccessfulDate": "2022-03-01T11:57:10.592492",
+      "respondent1Represented": "Yes",
+      "respondent1OrgRegistered": "Yes",
+      "speclistYourEvidenceList": [
+        {
+          "id": "339536de-eeb8-4b74-968d-4b9d02c00ef7",
+          "value": {
+            "evidenceType": "OTHER",
+            "otherEvidence": "evidence"
+          }
+        }
+      ],
+      "claimIssuedPaymentDetails": {
+        "status": "SUCCESS",
+        "reference": "RC-1234-1234-1234-1234",
+        "customerReference": "abcdefg"
+      },
+      "claimNotificationDeadline": "2022-12-01T23:59:59",
+      "sameRateInterestSelection": {
+        "sameRateInterestType": "SAME_RATE_INTEREST_8_PC"
+      },
+      "specRespondent1Represented": "Yes",
+      "respondent1ResponseDeadline": "2023-08-20T15:59:59",
+      "applicant1OrganisationPolicy": {
+        "Organisation": {
+          "OrganisationID": "Q1KOKP2"
+        },
+        "OrgPolicyReference": "Claimant policy reference",
+        "OrgPolicyCaseAssignedRole": "[APPLICANTSOLICITORONE]"
+      },
+      "respondent1OrganisationPolicy": {
+        "Organisation": {
+          "OrganisationID": "Q1KOKP2"
+        },
+        "OrgPolicyReference": "Defendant policy reference",
+        "OrgPolicyCaseAssignedRole": "[RESPONDENTSOLICITORONE]"
+      },
+      "applicantSolicitor1PbaAccounts": {
+        "value": {
+          "code": "399990cf-7706-4591-bea6-2769da11ec1f",
+          "label": "PBA0088192"
+        },
+        "list_items": [
+          {
+            "code": "399990cf-7706-4591-bea6-2769da11ec1f",
+            "label": "PBA0088192"
+          },
+          {
+            "code": "3c2e91e9-d1dd-421c-8b9c-0a5268a99d8d",
+            "label": "PBA0078095"
+          }
+        ]
+      },
+      "applicantSolicitor1UserDetails": {
+        "email": "hmcts.civil+organisation.1.solicitor.1@gmail.com"
+      },
+      "claimAmountBreakupSummaryObject": "| Description | Amount | \n |---|---| \n | Test claim item details | £ 1000.00 |\n  | **Total** | £ 1000.00 |",
+      "respondentSolicitor1EmailAddress": "civilmoneyclaimsdemo@gmail.com",
+      "applicantSolicitor1ClaimStatementOfTruth": {
+        "name": "John Smith",
+        "role": "Solicitor"
+      },
+      "applicantSolicitor1ServiceAddress": {
+        "Country": "United Kingdom",
+        "PostCode": "RG4 7AD",
+        "PostTown": "Berkshire",
+        "AddressLine1": "Solicitor Org",
+        "AddressLine2": "20",
+        "AddressLine3": "Church Road"
+      },
+      "specApplicantCorrespondenceAddressdetails": {
+        "Country": "United Kingdom",
+        "PostCode": "RG4 7AD",
+        "PostTown": "Berkshire",
+        "AddressLine1": "Claimant House",
+        "AddressLine2": "20",
+        "AddressLine3": "Church Road"
+      },
+      "specApplicantCorrespondenceAddressRequired": "Yes",
+      "specRespondentCorrespondenceAddressdetails": {
+        "Country": "United Kingdom",
+        "PostCode": "RG4 7AD",
+        "PostTown": "Berkshire",
+        "AddressLine1": "Defendant House",
+        "AddressLine2": "21",
+        "AddressLine3": "Church Road"
+      },
+      "specRespondentCorrespondenceAddressRequired": "Yes",
+      "responseDeadline": {
+        "option": "no"
+      },
+      "partialAdmission": {},
+      "paymentOption": "BY_SET_DATE",
+      "paymentDate": "2023-11-11T00:00:00.000Z",
+      "statementOfMeans": {
+        "bankAccounts": [
+          {
+            "typeOfAccount": "CURRENT_ACCOUNT",
+            "joint": "true",
+            "balance": "100"
+          }
+        ],
+        "disability": {
+          "option": "no"
+        },
+        "residence": {
+          "type": "PRIVATE_RENTAL",
+          "housingDetails": ""
+        },
+        "cohabiting": {
+          "option": "no"
+        },
+        "dependants": {
+          "declared": false
+        },
+        "otherDependants": {
+          "option": "no",
+          "numberOfPeople": null
+        },
+        "carer": {
+          "option": "no"
+        },
+        "employment": {
+          "declared": false
+        },
+        "unemployment": {
+          "option": "Retired",
+          "unemploymentDetails": {
+            "years": null,
+            "months": null
+          },
+          "otherDetails": {
+            "details": ""
+          }
+        },
+        "courtOrders": {
+          "declared": false,
+          "rows": []
+        },
+        "priorityDebts": {
+          "mortgage": {
+            "name": "COMMON.CHECKBOX_FIELDS.MORTGAGE",
+            "isDeclared": true,
+            "amount": 100,
+            "schedule": "WEEK"
+          }
+        },
+        "debts": {
+          "option": "no",
+          "debtsItems": []
+        },
+        "regularExpenses": {
+          "mortgage": {
+            "declared": true,
+            "transactionSource": {
+              "name": "mortgage",
+              "amount": 100,
+              "schedule": "MONTH",
+              "isIncome": false
+            }
+          },
+          "rent": {
+            "transactionSource": {
+              "name": "rent"
+            }
+          },
+          "gas": {
+            "transactionSource": {
+              "name": "gas"
+            }
+          },
+          "councilTax": {
+            "transactionSource": {
+              "name": "Council Tax"
+            }
+          },
+          "electricity": {
+            "transactionSource": {
+              "name": "electricity"
+            }
+          },
+          "water": {
+            "transactionSource": {
+              "name": "water"
+            }
+          },
+          "travel": {
+            "transactionSource": {
+              "name": "travel"
+            }
+          },
+          "schoolCosts": {
+            "transactionSource": {
+              "name": "school costs (include clothing)"
+            }
+          },
+          "foodAndHousekeeping": {
+            "transactionSource": {
+              "name": "food and housekeeping"
+            }
+          },
+          "tvAndBroadband": {
+            "transactionSource": {
+              "name": "TV and broadband"
+            }
+          },
+          "hirePurchase": {
+            "transactionSource": {
+              "name": "hire purchase"
+            }
+          },
+          "mobilePhone": {
+            "transactionSource": {
+              "name": "mobile phone"
+            }
+          },
+          "maintenance": {
+            "transactionSource": {
+              "name": "maintenance payments"
+            }
+          },
+          "other": {
+            "declared": false,
+            "transactionSources": [
+              {
+                "isIncome": false
+              }
+            ]
+          }
+        },
+        "regularIncome": {
+          "job": {
+            "declared": true,
+            "transactionSource": {
+              "name": "Income from your job",
+              "amount": 400,
+              "schedule": "WEEK",
+              "isIncome": true
+            }
+          },
+          "universalCredit": {
+            "transactionSource": {
+              "name": "Universal Credit",
+              "isIncome": true
+            }
+          },
+          "incomeSupport": {
+            "transactionSource": {
+              "name": "Income Support",
+              "isIncome": true
+            }
+          },
+          "pension": {
+            "transactionSource": {
+              "name": "Pension",
+              "isIncome": true
+            }
+          },
+          "councilTaxSupport": {
+            "transactionSource": {
+              "name": "Council Tax Support",
+              "isIncome": true
+            }
+          },
+          "childTaxCredit": {
+            "transactionSource": {
+              "name": "Child Tax Credit",
+              "isIncome": true
+            }
+          },
+          "childBenefit": {
+            "transactionSource": {
+              "name": "Child Benefit",
+              "isIncome": true
+            }
+          },
+          "jobseekerAllowanceIncome": {
+            "transactionSource": {
+              "name": "Jobseeker’s Allowance (income based)",
+              "isIncome": true
+            }
+          },
+          "jobseekerAllowanceContribution": {
+            "transactionSource": {
+              "name": "Jobseeker’s Allowance (contribution based)",
+              "isIncome": true
+            }
+          },
+          "workingTaxCredit": {
+            "transactionSource": {
+              "name": "Working Tax Credit",
+              "isIncome": true
+            }
+          },
+          "other": {
+            "declared": false,
+            "transactionSources": [
+              {
+                "isIncome": true
+              }
+            ]
+          }
+        },
+        "explanation": {
+          "text": "I disagree with claim"
+        }
+      },
+      "taskSharedFinancialDetails": true
+    }
+  },
+  {
+    "id": 7777,
+    "jurisdiction": "CIVIL",
+    "case_type_id": "CIVIL",
+    "created_date": "2022-03-01T13:29:22.447",
+    "last_modified": "2022-03-01T13:29:24.971",
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "ccdState": "AWAITING_APPLICANT_INTENTION",
+      "claimFee": {
+        "code": "FEE0204",
+        "version": "4",
+        "calculatedAmountInPence": "7000"
+      },
+      "directionQuestionnaire": {
+        "witnesses": {
+          "otherWitnesses": {
+            "option": "",
+            "witnessItems": [
+              {
+                "firstName": "John",
+                "lastName": "Doe"
+              },
+              {
+                "firstName": "Jane",
+                "lastName": "Smith"
+              }
+            ]
+          }
+        },
+        "experts": {
+          "expertReportDetails": {
+            "hasExpertReports": "yes",
+            "reportDetails": [
+              {
+                "expertName": "Ahmet",
+                "reportDate": "2022-03-01T11:57:10.592492"
+              },
+              {
+                "expertName": "Mahmut",
+                "reportDate": "2022-06-01T11:57:10.592492"
+              }
+            ]
+          },
+          "expertDetailsList": {
+            "items": [
+              {
+                "firstName": "Mike",
+                "lastName": "Brown"
+              },
+              {
+                "firstName": "Jasmine",
+                "lastName": "Williams"
+              }
+            ]
+          }
+        }
+      },
+      "supportRequired": {
+        "languageSelected": true,
+        "languageInterpreted": "Swahili",
+        "signLanguageSelected": true,
+        "signLanguageInterpreted": "Sign",
+        "hearingLoopSelected": false,
+        "disabledAccessSelected": false,
+        "otherSupportSelected": false,
+        "otherSupport": ""
+      },
+      "issueDate": "2022-01-08",
+      "applicant1": {
+        "type": "ORGANISATION",
+        "partyName": "Version 1",
+        "primaryAddress": {
+          "County": "Kent",
+          "Country": "United Kingdom",
+          "PostCode": "RG4 7AA",
+          "PostTown": "Reading",
+          "AddressLine1": "Flat 2",
+          "AddressLine2": "Caversham House 15-17",
+          "AddressLine3": "Church Road"
+        }
+      },
+      "respondent1": {
+        "type": "INDIVIDUAL",
+        "partyDetails": {
+          "individualTitle": "Mrs.",
+          "individualFirstName": "Jane",
+          "individualLastName": "Doe",
+          "partyName": "Mrs. Jane Doe",
+          "postToThisAddress": "no",
+          "primaryAddress": {
+            "addressLine1": "Flat 2",
+            "addressLine2": "Caversham House 15-17",
+            "addressLine3": "Church Road",
+            "city": "London",
+            "postCode": "RG4 7AA"
+          },
+          "correspondenceAddress": {
+            "addressLine1": "",
+            "addressLine2": "",
+            "addressLine3": "",
+            "city": "",
+            "postCode": ""
+          }
+        },
+        "dateOfBirth": {
+          "date": "1980-11-11T00:00:00.000Z",
+          "year": 1980,
+          "month": 11,
+          "day": 11
+        },
+        "responseType": "FULL_ADMISSION"
+      },
+      "rejectAllOfClaim": {},
+      "claimInterest": "Yes",
+      "submittedDate": "2022-03-01T11:57:10.592492",
+      "totalInterest": 0,
+      "claimDetails": {
+        "reason": {
+          "text": "Test details of claim"
+        }
+      },
+      "superClaimType": "SPEC_CLAIM",
+      "businessProcess": {
+        "status": "FINISHED",
+        "camundaEvent": "CREATE_CLAIM_SPEC"
+      },
+      "timelineOfEvents": [
+        {
+          "id": "97e59389-1e6a-49bf-8957-f7fccb86e838",
+          "value": {
+            "timelineDate": "2021-01-01",
+            "timelineDescription": "Test details of claim"
+          }
+        }
+      ],
+      "totalClaimAmount": 1000,
+      "interestClaimFrom": "FROM_CLAIM_SUBMIT_DATE",
+      "calculatedInterest": "| Description | Amount | \n |---|---| \n | Claim amount | £ 1000 | \n | Interest amount | £ 0.00 | \n | Total amount | £ 1000.00 |",
+      "claimAmountBreakup": [
+        {
+          "id": "da31f19f-157f-4c2d-8a31-2225ecf155fa",
+          "value": {
+            "claimAmount": "100000",
+            "claimReason": "Test claim item details"
+          }
+        }
+      ],
+      "interest": {
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+      },
+      "legacyCaseReference": "000MC009",
+      "solicitorReferences": {
+        "applicantSolicitor1Reference": "Applicant Reference",
+        "respondentSolicitor1Reference": "Respondent Reference"
+      },
+      "interestClaimOptions": "SAME_RATE_INTEREST",
+      "claimNotificationDate": "2022-03-01T11:57:10.592492",
+      "paymentSuccessfulDate": "2022-03-01T11:57:10.592492",
+      "respondent1Represented": "Yes",
+      "respondent1OrgRegistered": "Yes",
+      "speclistYourEvidenceList": [
+        {
+          "id": "339536de-eeb8-4b74-968d-4b9d02c00ef7",
+          "value": {
+            "evidenceType": "OTHER",
+            "otherEvidence": "evidence"
+          }
+        }
+      ],
+      "claimIssuedPaymentDetails": {
+        "status": "SUCCESS",
+        "reference": "RC-1234-1234-1234-1234",
+        "customerReference": "abcdefg"
+      },
+      "claimNotificationDeadline": "2022-12-01T23:59:59",
+      "sameRateInterestSelection": {
+        "sameRateInterestType": "SAME_RATE_INTEREST_8_PC"
+      },
+      "specRespondent1Represented": "Yes",
+      "respondent1ResponseDeadline": "2023-08-20T15:59:59",
+      "applicant1OrganisationPolicy": {
+        "Organisation": {
+          "OrganisationID": "Q1KOKP2"
+        },
+        "OrgPolicyReference": "Claimant policy reference",
+        "OrgPolicyCaseAssignedRole": "[APPLICANTSOLICITORONE]"
+      },
+      "respondent1OrganisationPolicy": {
+        "Organisation": {
+          "OrganisationID": "Q1KOKP2"
+        },
+        "OrgPolicyReference": "Defendant policy reference",
+        "OrgPolicyCaseAssignedRole": "[RESPONDENTSOLICITORONE]"
+      },
+      "applicantSolicitor1PbaAccounts": {
+        "value": {
+          "code": "399990cf-7706-4591-bea6-2769da11ec1f",
+          "label": "PBA0088192"
+        },
+        "list_items": [
+          {
+            "code": "399990cf-7706-4591-bea6-2769da11ec1f",
+            "label": "PBA0088192"
+          },
+          {
+            "code": "3c2e91e9-d1dd-421c-8b9c-0a5268a99d8d",
+            "label": "PBA0078095"
+          }
+        ]
+      },
+      "applicantSolicitor1UserDetails": {
+        "email": "hmcts.civil+organisation.1.solicitor.1@gmail.com"
+      },
+      "claimAmountBreakupSummaryObject": "| Description | Amount | \n |---|---| \n | Test claim item details | £ 1000.00 |\n  | **Total** | £ 1000.00 |",
+      "respondentSolicitor1EmailAddress": "civilmoneyclaimsdemo@gmail.com",
+      "applicantSolicitor1ClaimStatementOfTruth": {
+        "name": "John Smith",
+        "role": "Solicitor"
+      },
+      "applicantSolicitor1ServiceAddress": {
+        "Country": "United Kingdom",
+        "PostCode": "RG4 7AD",
+        "PostTown": "Berkshire",
+        "AddressLine1": "Solicitor Org",
+        "AddressLine2": "20",
+        "AddressLine3": "Church Road"
+      },
+      "specApplicantCorrespondenceAddressdetails": {
+        "Country": "United Kingdom",
+        "PostCode": "RG4 7AD",
+        "PostTown": "Berkshire",
+        "AddressLine1": "Claimant House",
+        "AddressLine2": "20",
+        "AddressLine3": "Church Road"
+      },
+      "specApplicantCorrespondenceAddressRequired": "Yes",
+      "specRespondentCorrespondenceAddressdetails": {
+        "Country": "United Kingdom",
+        "PostCode": "RG4 7AD",
+        "PostTown": "Berkshire",
+        "AddressLine1": "Defendant House",
+        "AddressLine2": "21",
+        "AddressLine3": "Church Road"
+      },
+      "specRespondentCorrespondenceAddressRequired": "Yes",
+      "responseDeadline": {
+        "option": "no"
+      },
+      "partialAdmission": {},
+      "paymentOption": "BY_SET_DATE",
+      "paymentDate": "2023-11-11T00:00:00.000Z",
+      "taskSharedFinancialDetails": true
     }
   }
 ]

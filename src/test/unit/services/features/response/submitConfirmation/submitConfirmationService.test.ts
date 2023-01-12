@@ -1,22 +1,24 @@
-import {Claim} from '../../../../../../main/common/models/claim';
+import {Claim} from 'common/models/claim';
 import {
-  buildSubmitStatus,
   buildNextStepsSection,
-} from '../../../../../../main/services/features/response/submitConfirmation/submitConfirmationBuilder/submitConfirmationBuilder';
+  buildSubmitStatus,
+} from 'services/features/response/submitConfirmation/submitConfirmationBuilder/submitConfirmationBuilder';
 import {
   getNextStepsTitle,
-} from '../../../../../../main/services/features/response/submitConfirmation/submitConfirmationBuilder/admissionSubmitConfirmationContent';
-import {ResponseType} from '../../../../../../main/common/form/models/responseType';
-import {PartyType} from '../../../../../../main/common/models/partyType';
-import {Party} from '../../../../../../main/common/models/party';
-import {PaymentOptionType} from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
-import {HowMuchHaveYouPaid} from '../../../../../../main/common/form/models/admission/howMuchHaveYouPaid';
-import {PartialAdmission} from '../../../../../../main/common/models/partialAdmission';
-import {PaymentIntention} from '../../../../../../main/common/form/models/admission/partialAdmission/paymentIntention';
-import {RejectAllOfClaim} from '../../../../../../main/common/form/models/rejectAllOfClaim';
-import {WhyDoYouDisagree} from '../../../../../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
-import {Defence} from '../../../../../../main/common/form/models/defence';
-import {RejectAllOfClaimType} from '../../../../../../main/common/form/models/rejectAllOfClaimType';
+} from 'services/features/response/submitConfirmation/submitConfirmationBuilder/admissionSubmitConfirmationContent';
+import {ResponseType} from 'common/form/models/responseType';
+import {PartyType} from 'common/models/partyType';
+import {Party} from 'common/models/party';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {HowMuchHaveYouPaid} from 'common/form/models/admission/howMuchHaveYouPaid';
+import {PartialAdmission} from 'common/models/partialAdmission';
+import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
+import {RejectAllOfClaim} from 'common/form/models/rejectAllOfClaim';
+import {WhyDoYouDisagree} from 'common/form/models/admission/partialAdmission/whyDoYouDisagree';
+import {Defence} from 'common/form/models/defence';
+import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
+import {PartyDetails} from 'common/form/models/partyDetails';
+import {FullAdmission} from 'common/models/fullAdmission';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -30,14 +32,15 @@ describe('Submit Confirmation service', () => {
 
   describe('Full admission pay immediately scenario', () => {
     const claim = new Claim();
-    claim.paymentOption = PaymentOptionType.IMMEDIATELY;
-    claim.paymentDate = new Date('2035-06-01T00:00:00.000Z');
+    claim.fullAdmission = new FullAdmission();
+    claim.fullAdmission.paymentIntention = new PaymentIntention();
+    claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
+    claim.fullAdmission.paymentIntention.paymentDate = new Date('2035-06-01T00:00:00.000Z');
     claim.respondent1 = new Party();
-    claim.applicant1 = {
-      partyName: 'Some Very Important Company Ltd',
-      type: PartyType.COMPANY,
-    };
-    claim.respondent1.partyName = 'Version 1';
+    claim.applicant1 = new Party();
+    claim.applicant1.partyDetails = new PartyDetails({partyName: 'Some Very Important Company Ltd'});
+    claim.applicant1.type = PartyType.COMPANY;
+    claim.respondent1.partyDetails = new PartyDetails({partyName: 'Version 1'});
     claim.respondent1.type = PartyType.ORGANISATION;
     claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
     it('should display submit status', () => {
@@ -65,15 +68,18 @@ describe('Submit Confirmation service', () => {
 
   describe('Full admission pay by date scenario', () => {
     const claim = new Claim();
-    claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+    claim.fullAdmission = new FullAdmission();
+    claim.fullAdmission.paymentIntention = new PaymentIntention();
+    claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
     claim.respondent1 = new Party();
-    claim.applicant1 = {
-      partyName: 'Some Very Important Company Ltd',
-      type: PartyType.COMPANY,
-    };
-    claim.respondent1.partyName = 'Version 1';
+    claim.respondent1.partyDetails = new PartyDetails({partyName: 'Version 1'});
     claim.respondent1.type = PartyType.ORGANISATION;
     claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+
+    claim.applicant1 = new Party();
+    claim.applicant1.partyDetails = new PartyDetails({partyName: 'Some Very Important Company Ltd'});
+    claim.applicant1.type = PartyType.COMPANY;
+
     it('should display submit status', () => {
       const submitStatusSection = buildSubmitStatus(mockClaimId, claim, lang);
       expect(submitStatusSection[0].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.FA_PAY_BY_DATE.WE_EMAILED_CLAIMANT_YOUR_INTENTION');
@@ -104,15 +110,18 @@ describe('Submit Confirmation service', () => {
 
   describe('Full admission pay by installment scenario', () => {
     const claim = new Claim();
-    claim.paymentOption = PaymentOptionType.INSTALMENTS;
+    claim.fullAdmission = new FullAdmission();
+    claim.fullAdmission.paymentIntention = new PaymentIntention();
+    claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
     claim.respondent1 = new Party();
-    claim.applicant1 = {
-      partyName: 'Some Very Important Company Ltd',
-      type: PartyType.COMPANY,
-    };
-    claim.respondent1.partyName = 'Version 1';
+    claim.respondent1.partyDetails = new PartyDetails({partyName: 'Version 1'});
     claim.respondent1.type = PartyType.ORGANISATION;
     claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+
+    claim.applicant1 = new Party();
+    claim.applicant1.partyDetails = new PartyDetails({partyName: 'Some Very Important Company Ltd'});
+    claim.applicant1.type = PartyType.COMPANY;
+
     it('should display submit status', () => {
       const submitStatusSection = buildSubmitStatus(mockClaimId, claim, lang);
       expect(submitStatusSection[0].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.FA_PAY_BY_INSTALLMENTS.WE_EMAILED_CLAIMANT_YOUR_INTENTION');
@@ -145,12 +154,13 @@ describe('Submit Confirmation service', () => {
     claim.partialAdmission = new PartialAdmission();
     claim.partialAdmission.paymentIntention = new PaymentIntention();
     claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
-    claim.applicant1 = {
-      partyName: 'Some Very Important Company Ltd',
-      type: PartyType.COMPANY,
-    };
+
+    claim.applicant1 = new Party();
+    claim.applicant1.partyDetails = new PartyDetails({partyName: 'Some Very Important Company Ltd'});
+    claim.applicant1.type = PartyType.COMPANY;
+
     claim.respondent1 = new Party();
-    claim.respondent1.partyName = 'Version 1';
+    claim.respondent1.partyDetails = new PartyDetails({partyName: 'Version 1'});
     claim.respondent1.type = PartyType.INDIVIDUAL;
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
 
@@ -188,12 +198,12 @@ describe('Submit Confirmation service', () => {
     claim.partialAdmission = new PartialAdmission();
     claim.partialAdmission.paymentIntention = new PaymentIntention();
     claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
-    claim.applicant1 = {
-      partyName: 'Some Very Important Company Ltd',
-      type: PartyType.COMPANY,
-    };
+    claim.applicant1 = new Party();
+    claim.applicant1.partyDetails = new PartyDetails({partyName: 'Some Very Important Company Ltd'});
+    claim.applicant1.type = PartyType.COMPANY;
+
     claim.respondent1 = new Party();
-    claim.respondent1.partyName = 'Version 1';
+    claim.respondent1.partyDetails = new PartyDetails({partyName: 'Version 1'});
     claim.respondent1.type = PartyType.INDIVIDUAL;
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
 
@@ -205,7 +215,9 @@ describe('Submit Confirmation service', () => {
     });
 
     it('should display financial details in status if type isBussines', () => {
-      claim.respondent1.type = PartyType.ORGANISATION;
+      if (claim.respondent1) {
+        claim.respondent1.type = PartyType.ORGANISATION;
+      }
       const submitStatusSection = buildSubmitStatus(mockClaimId, claim, lang);
       expect(submitStatusSection[0].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_PAY_INSTALLMENTS.YOU_BELIEVE_YOU_OWE');
       expect(submitStatusSection[1].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_PAY_INSTALLMENTS.WE_SENT_EXPLANATION');
@@ -242,12 +254,12 @@ describe('Submit Confirmation service', () => {
     claim.partialAdmission = new PartialAdmission();
     claim.partialAdmission.paymentIntention = new PaymentIntention();
     claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
-    claim.applicant1 = {
-      partyName: 'Some Very Important Company Ltd',
-      type: PartyType.COMPANY,
-    };
+    claim.applicant1 = new Party();
+    claim.applicant1.partyDetails = new PartyDetails({partyName: 'Some Very Important Company Ltd'});
+    claim.applicant1.type = PartyType.COMPANY;
+
     claim.respondent1 = new Party();
-    claim.respondent1.partyName = 'Version 1';
+    claim.respondent1.partyDetails = new PartyDetails({partyName: 'Version 1'});
     claim.respondent1.type = PartyType.INDIVIDUAL;
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
 
@@ -259,7 +271,9 @@ describe('Submit Confirmation service', () => {
     });
 
     it('should display financial details in status if type isBussines', () => {
-      claim.respondent1.type = PartyType.ORGANISATION;
+      if (claim.respondent1) {
+        claim.respondent1.type = PartyType.ORGANISATION;
+      }
       const submitStatusSection = buildSubmitStatus(mockClaimId, claim, lang);
       expect(submitStatusSection[0].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.YOU_BELIEVE_YOU_OWE');
       expect(submitStatusSection[1].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.SENT_EXPLANATION');
@@ -293,11 +307,11 @@ describe('Submit Confirmation service', () => {
     const getClaim = () => {
       const claim = new Claim();
       claim.respondent1 = new Party();
-      claim.applicant1 = {
-        partyName: 'Some Very Important Company Ltd',
-        type: PartyType.COMPANY,
-      };
-      claim.respondent1.partyName = 'Version 1';
+      claim.applicant1 = new Party();
+      claim.applicant1.partyDetails = new PartyDetails({partyName: 'Some Very Important Company Ltd'});
+      claim.applicant1.type = PartyType.COMPANY;
+
+      claim.respondent1.partyDetails = new PartyDetails({partyName: 'Version 1'});
       claim.respondent1.type = PartyType.ORGANISATION;
       claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
 
@@ -383,14 +397,12 @@ describe('Submit Confirmation service', () => {
     const getClaim = () => {
       const claim = new Claim();
       claim.respondent1 = new Party();
-      claim.applicant1 = {
-        partyName: 'Some Very Important Company Ltd',
-        type: PartyType.COMPANY,
-      };
-      claim.respondent1.partyName = 'Version 1';
+      claim.respondent1.partyDetails = new PartyDetails({partyName: 'Version 1'});
       claim.respondent1.type = PartyType.ORGANISATION;
       claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
-
+      claim.applicant1 = new Party();
+      claim.applicant1.partyDetails = new PartyDetails({partyName: 'Some Very Important Company Ltd'});
+      claim.applicant1.type = PartyType.COMPANY;
       return claim;
     };
 

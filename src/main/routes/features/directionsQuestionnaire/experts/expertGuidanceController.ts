@@ -1,23 +1,15 @@
-import {NextFunction, Router} from 'express';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {EXPERT_GUIDANCE_URL, PERMISSION_FOR_EXPERT_URL} from '../../../urls';
+import {Router} from 'express';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {EXPERT_GUIDANCE_URL, PERMISSION_FOR_EXPERT_URL} from 'routes/urls';
 
 const expertGuidanceController = Router();
 
-expertGuidanceController.get(EXPERT_GUIDANCE_URL, async (_req, res, next: NextFunction) => {
-  try {
-    res.render('features/directionsQuestionnaire/experts/expert-guidance');
-  } catch (error) {
-    next(error);
-  }
+expertGuidanceController.get(EXPERT_GUIDANCE_URL, (_req, res) => {
+  res.render('features/directionsQuestionnaire/experts/expert-guidance');
 });
 
-expertGuidanceController.post(EXPERT_GUIDANCE_URL, async (req, res, next: NextFunction) => {
-  try {
-    res.redirect(constructResponseUrlWithIdParams(req.params.id, PERMISSION_FOR_EXPERT_URL));
-  } catch (error) {
-    next(error);
-  }
+expertGuidanceController.post(EXPERT_GUIDANCE_URL, (req, res) => {
+  res.redirect(constructResponseUrlWithIdParams(req.params.id, PERMISSION_FOR_EXPERT_URL));
 });
 
 export default expertGuidanceController;
