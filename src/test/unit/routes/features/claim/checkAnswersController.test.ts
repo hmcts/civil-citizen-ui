@@ -14,6 +14,7 @@ import {HelpWithFees} from '../../../../../main/common/form/models/claim/details
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 const request = require('supertest');
+
 const {app} = require('../../../../../main/app');
 const session = require('supertest-session');
 const civilServiceUrl = config.get<string>('services.civilService.url');
@@ -115,10 +116,10 @@ describe('Response - Check answers', () => {
       expect(email[0].textContent?.trim()).toBe('contact@gmail.com');
     });
 
-    it('should pass english translation via query', async () => {
-      await session(app).get(CLAIM_CHECK_ANSWERS_URL)
-        .query({lang: 'en'})
-        .expect((res: Response) => {
+    it('should return check your answer page', async () => {
+      await request(app).get(CLAIM_CHECK_ANSWERS_URL)
+        .expect((res) => {
+
           expect(res.status).toBe(200);
           expect(res.text).toContain(checkYourAnswerEng);
         });
