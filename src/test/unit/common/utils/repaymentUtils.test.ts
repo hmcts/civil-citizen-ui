@@ -33,13 +33,15 @@ describe('repaymentUtils', () => {
       getPaymentAmount(claim);
       getRepaymentFrequency(claim);
       getFirstRepaymentDate(claim);
+      getPaymentDate(claim);
       //Then
       expect(claim.fullAdmission?.paymentIntention?.repaymentPlan?.paymentAmount).not.toBeNull();
       expect(claim.fullAdmission?.paymentIntention?.repaymentPlan?.repaymentFrequency).not.toBeNull();
       expect(claim.fullAdmission?.paymentIntention?.repaymentPlan?.firstRepaymentDate).not.toBeNull();
+      expect(claim.fullAdmission?.paymentIntention?.paymentDate).not.toBeNull();
     });
 
-    it('should refer to replayment plan for part admit journey', () => {
+    it('should refer to repayment plan for part admit journey', () => {
       //Given
       claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.PART_ADMISSION;
