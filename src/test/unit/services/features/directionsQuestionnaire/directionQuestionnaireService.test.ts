@@ -244,6 +244,17 @@ describe('Direction questionnaire Service', () => {
       expect(expertEvidence.option).toBe(YesNo.YES);
     });
 
+    it('should return generic option object with undefined option - defendant journey - no directionQuestionnaire', async () => {
+      const claim = new Claim();
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.claimantResponse = new ClaimantResponse();
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return new Claim();
+      });
+      const expertEvidence = await getGenericOption('validClaimId', 'Test');
+      expect(expertEvidence.option).toBeUndefined();
+    });
+
     it('should return error on redis failure', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);

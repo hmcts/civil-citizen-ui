@@ -25,11 +25,7 @@ const getGenericOption = async (claimId: string, directionQuestionnairePropertyN
     const caseData = await getCaseDataFromStore(claimId);
     let directionQuestionnaire: any;
     if(caseData.isClaimantIntentionPending()){
-      if(caseData.claimantResponse){
-        directionQuestionnaire = caseData.claimantResponse.directionQuestionnaire ? caseData.claimantResponse.directionQuestionnaire : new DirectionQuestionnaire();
-      }else {
-        directionQuestionnaire = new DirectionQuestionnaire();
-      }
+      directionQuestionnaire = caseData.claimantResponse.directionQuestionnaire ? caseData.claimantResponse.directionQuestionnaire : new DirectionQuestionnaire();
     }else{
       directionQuestionnaire = caseData?.directionQuestionnaire ? caseData.directionQuestionnaire : new DirectionQuestionnaire();
     }
