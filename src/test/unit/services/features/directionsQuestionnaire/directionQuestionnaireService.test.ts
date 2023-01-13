@@ -256,7 +256,20 @@ describe('Direction questionnaire Service', () => {
       claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
       claim.claimantResponse = new ClaimantResponse();
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        return new Claim();
+        return claim;
+      });
+      //When
+      const expertEvidence = await getGenericOption('validClaimId', 'Test');
+      //Then
+      expect(expertEvidence.option).toBeUndefined();
+    });
+
+    it('should return generic option object with undefined option - defendant journey - no claimantResponse', async () => {
+      //Given
+      const claim = new Claim();
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return claim;
       });
       //When
       const expertEvidence = await getGenericOption('validClaimId', 'Test');
