@@ -60,12 +60,13 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
       renderView(res, form, claim, userId, lang);
     } else {
       await saveStatementOfTruth(userId, form.model);
-      await submitClaim(<AppRequest>req);
+      const submittedClaim = await submitClaim(<AppRequest>req);
       await deleteDraftClaimFromStore(userId);
+      console.log('controller---', submitClaim.bind, constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL))
       if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
         res.redirect(constructResponseUrlWithIdParams(userId, paymentUrl));
       } else {
-        res.redirect(CLAIM_CONFIRMATION_URL);
+        res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
       }
     }
   } catch (error) {
