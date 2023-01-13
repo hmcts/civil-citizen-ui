@@ -62,7 +62,7 @@ describe('I dont want free meditation', () => {
       app.locals.draftStoreClient = mockRedisWithMediationProperties;
       await request(app)
         .post(DONT_WANT_FREE_MEDIATION_URL)
-        .send({disagreeMediationOption: NoMediationReasonOptions.OTHER, otherReason: ''})
+        .send({disagreeMediationOption: NoMediationReasonOptions.OTHER, otherReason: 'Other reason'})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
@@ -126,6 +126,16 @@ describe('I dont want free meditation', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.OPTION_REQUIRED);
+        });
+    });
+    it('should return error when no reason enter', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      await request(app)
+        .post(DONT_WANT_FREE_MEDIATION_URL)
+        .send({disagreeMediationOption: NoMediationReasonOptions.OTHER, otherReason: ''})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.SPECIFY_A_REASON);
         });
     });
     it('should return http 500 when has error', async () => {

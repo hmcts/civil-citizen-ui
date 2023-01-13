@@ -12,6 +12,9 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {PartyType} from '../../../../../main/common/models/partyType';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
+import {CaseState} from '../../../../../main/common/form/models/claimDetails';
+import {ClaimantResponse} from '../../../../../main/common/models/claimantResponse';
+import {Mediation} from '../../../../../main/common/models/mediation/mediation';
 
 const applicantTypeMock = require('./applicantTypeMock.json');
 
@@ -121,6 +124,41 @@ describe('Mediation Disagreement', () => {
     });
     it('should redirect page when YES and applicant type is COMPANY', async () => {
       applicantTypeMock.case_data.respondent1.type = PartyType.COMPANY;
+      const companyTypeMock: string = JSON.stringify(applicantTypeMock);
+      app.locals.draftStoreClient = {
+        set: jest.fn(() => Promise.resolve({})),
+        get: jest.fn(() => Promise.resolve(companyTypeMock)),
+      };
+      await request(app)
+        .post(MEDIATION_DISAGREEMENT_URL)
+        .send({option: 'yes'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CAN_WE_USE_COMPANY_URL);
+        });
+    });
+    it('should redirect page when YES and applicant type is COMPANY - from claimant response without mediation object on the case data', async () => {
+      applicantTypeMock.case_data.respondent1.type = PartyType.COMPANY;
+      applicantTypeMock.case_data.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      applicantTypeMock.case_data.claimantResponse = new ClaimantResponse();
+      const companyTypeMock: string = JSON.stringify(applicantTypeMock);
+      app.locals.draftStoreClient = {
+        set: jest.fn(() => Promise.resolve({})),
+        get: jest.fn(() => Promise.resolve(companyTypeMock)),
+      };
+      await request(app)
+        .post(MEDIATION_DISAGREEMENT_URL)
+        .send({option: 'yes'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CAN_WE_USE_COMPANY_URL);
+        });
+    });
+    it('should redirect page when YES and applicant type is COMPANY - from claimant response with mediation object on the case data', async () => {
+      applicantTypeMock.case_data.respondent1.type = PartyType.COMPANY;
+      applicantTypeMock.case_data.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      applicantTypeMock.case_data.claimantResponse = new ClaimantResponse();
+      applicantTypeMock.case_data.claimantResponse.mediation = new Mediation({option: YesNo.YES, mediationPhoneNumber: '6000000'},{option: YesNo.YES});
       const companyTypeMock: string = JSON.stringify(applicantTypeMock);
       app.locals.draftStoreClient = {
         set: jest.fn(() => Promise.resolve({})),

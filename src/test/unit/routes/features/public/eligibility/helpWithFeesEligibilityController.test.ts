@@ -6,8 +6,8 @@ import {
   ELIGIBILITY_HELP_WITH_FEES_URL,
   ELIGIBILITY_INFORMATION_ABOUT_HELP_WITH_FEES_URL,
   ELIGIBLE_FOR_THIS_SERVICE_URL,
-} from '../../../../../../main/routes/urls';
-import {YesNo} from '../../../../../../main/common/form/models/yesNo';
+} from 'routes/urls';
+import {YesNo} from 'common/form/models/yesNo';
 import {t} from 'i18next';
 
 jest.mock('../../../../../../main/modules/oidc');

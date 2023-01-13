@@ -13,19 +13,21 @@ import {YesNo} from '../../../common/form/models/yesNo';
 import {Claim} from '../../../common/models/claim';
 import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
 import {PartyType} from '../../../common/models/partyType';
+import {CaseState} from '../../../common/form/models/claimDetails';
 
 const mediationDisagreementViewPath = 'features/mediation/mediation-disagreement';
 const mediationDisagreementController = Router();
 
-function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
-  res.render(mediationDisagreementViewPath, {form});
+function renderView(form: GenericForm<GenericYesNo>, res: Response, claimStatus: CaseState): void {
+  res.render(mediationDisagreementViewPath, {form, claimStatus});
 }
 
 mediationDisagreementController.get(MEDIATION_DISAGREEMENT_URL, async (req, res, next: NextFunction) => {
   try {
+    const claim: Claim = await getCaseDataFromStore(req.params.id);
     const mediation = await getMediation(req.params.id);
     const freeMediationForm = new GenericForm(new GenericYesNo(mediation.mediationDisagreement?.option));
-    renderView(freeMediationForm, res);
+    renderView(freeMediationForm, res, claim.ccdState);
   } catch (error) {
     next(error);
   }
@@ -39,10 +41,10 @@ mediationDisagreementController.post(MEDIATION_DISAGREEMENT_URL, async (req, res
     await mediationDisagreementForm.validate();
 
     if (mediationDisagreementForm.hasErrors()) {
-      renderView(mediationDisagreementForm, res);
+      renderView(mediationDisagreementForm, res, claim.ccdState);
     } else {
       await saveMediation(req.params.id, mediationDisagreement, 'mediationDisagreement');
-      if (claim.mediation?.canWeUse) {
+      if (claim.mediation?.canWeUse || claim.claimantResponse?.mediation?.canWeUse) {
         await saveMediation(req.params.id, undefined, 'canWeUse');
       }
       if (req.body.option === YesNo.NO) {

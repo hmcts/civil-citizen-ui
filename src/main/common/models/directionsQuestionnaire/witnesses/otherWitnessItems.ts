@@ -9,7 +9,7 @@ export class OtherWitnessItems {
     lastName?: string;
 
   @ValidateIf(o => o.email)
-  @IsEmail({IsEmailOption: 'allow_display_name'}, {message: 'ERRORS.ENTER_VALID_EMAIL'})
+  @IsEmail({allow_display_name: true}, {message: 'ERRORS.ENTER_VALID_EMAIL'})
     email?: string;
 
   @ValidateIf(o => o.telephone)
