@@ -62,7 +62,7 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
       await saveStatementOfTruth(userId, form.model);
       const submittedClaim = await submitClaim(<AppRequest>req);
       await deleteDraftClaimFromStore(userId);
-      console.log('controller---', submitClaim.bind, constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL)),
+      console.log('controller---', submitClaim.bind, constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
       if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
         res.redirect(constructResponseUrlWithIdParams(userId, paymentUrl));
       } else {
