@@ -1,4 +1,5 @@
 const I = actor();
+const config = require('../../../../config');
 
 const fields = {
   cyaSigned: 'input[id="signed"]',
@@ -21,10 +22,16 @@ class CheckYourAnswersPage {
     } else if (responseType == 'admitPartTwo') {
     //WIP Progerss :Please do not remove this comment
     }
-    I.click(buttons.submit);
-    I.amOnPage('/case/'+claimRef+'/dashboard/');
-    // Remove the above line and uncomment the below line once CIV-6033 is fixed
-    //I.see('You\'ve submitted your response','h1');
+
+    //Added the below IF statement to exclude these steps in AAT as we are ignoring cui non prod files in AAT
+    //Once the CUI Release is done, we can remove this IF statement.
+
+    if (['preview', 'demo'].includes(config.env)) {
+      I.click(buttons.submit);
+      I.amOnPage('/case/'+claimRef+'/response/confirmation');
+      I.see('You\'ve submitted your response','h1');
+      I.see('What happens next');
+    }
   }
 
   navigateToCheckYourAnswersPage(claimRef) {

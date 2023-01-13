@@ -4,15 +4,15 @@ import currencyFormat from '../utils/currencyFormat';
 import {Party} from './party';
 import {StatementOfMeans} from './statementOfMeans';
 import {PartyType} from './partyType';
-import {RepaymentPlan} from './repaymentPlan';
+import {FullAdmission} from './fullAdmission';
 import {PartialAdmission} from './partialAdmission';
 import {DefendantEvidence} from './evidence/evidence';
 import {Mediation} from './mediation/mediation';
-import {RejectAllOfClaim} from '../form/models/rejectAllOfClaim';
+import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
 import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
 import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/dateUtils';
-import {StatementOfTruthForm} from '../form/models/statementOfTruth/statementOfTruthForm';
-import {PaymentOptionType} from '../form/models/admission/paymentOption/paymentOptionType';
+import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {
   CaseState,
   ClaimAmountBreakup,
@@ -20,35 +20,35 @@ import {
   InterestClaimFromType,
   InterestEndDateType,
   SameRateInterestType,
-} from '../form/models/claimDetails';
-import {YesNo} from '../form/models/yesNo';
-import {ResponseType} from '../form/models/responseType';
-import {Document} from '../../common/models/document/document';
-import {QualifiedStatementOfTruth} from '../form/models/statementOfTruth/qualifiedStatementOfTruth';
+} from 'form/models/claimDetails';
+import {YesNo} from 'form/models/yesNo';
+import {ResponseType} from 'form/models/responseType';
+import {Document} from 'common/models/document/document';
+import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {SystemGeneratedCaseDocuments} from './document/systemGeneratedCaseDocuments';
 import {CaseDocument} from './document/caseDocument';
 import {DocumentType} from './document/documentType';
 import {ResponseDeadline} from './responseDeadline';
-import {getLng} from '../../common/utils/languageToggleUtils';
+import {getLng} from 'common/utils/languageToggleUtils';
 import {ClaimResponseStatus} from './claimResponseStatus';
-import {DirectionQuestionnaire} from '../models/directionsQuestionnaire/directionQuestionnaire';
-import {ResponseOptions} from '../../common/form/models/responseDeadline';
-import {AdditionalTimeOptions} from '../../common/form/models/additionalTime';
-import {InterestClaimOptionsType} from '../../common/form/models/claim/interest/interestClaimOptionsType';
-import {Interest} from '../form/models/interest/interest';
-import {RejectAllOfClaimType} from '../../common/form/models/rejectAllOfClaimType';
-import {ClaimDetails} from '../../common/form/models/claim/details/claimDetails';
+import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
+import {ResponseOptions} from 'common/form/models/responseDeadline';
+import {AdditionalTimeOptions} from 'common/form/models/additionalTime';
+import {InterestClaimOptionsType} from 'common/form/models/claim/interest/interestClaimOptionsType';
+import {Interest} from 'form/models/interest/interest';
+import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
+import {ClaimDetails} from 'common/form/models/claim/details/claimDetails';
 import {ClaimantResponse} from './claimantResponse';
-import {CCDClaim} from '../models/civilClaimResponse';
+import {CCDClaim} from 'models/civilClaimResponse';
 import {toCUIParty} from 'services/translation/response/convertToCUI/convertToCUIParty';
-import {SelfEmployedAs} from '../models/selfEmployedAs';
-import {TaxPayments} from '../models/taxPayments';
-import {RegularIncome} from '../../common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
-import {RegularExpenses} from '../../common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
-import {CourtOrders} from '../../common/form/models/statementOfMeans/courtOrders/courtOrders';
-import {PriorityDebts} from '../../common/form/models/statementOfMeans/priorityDebts';
-import {Debts} from '../../common/form/models/statementOfMeans/debts/debts';
-
+import {SelfEmployedAs} from 'models/selfEmployedAs';
+import {TaxPayments} from 'models/taxPayments';
+import {RegularIncome} from 'form/models/statementOfMeans/expensesAndIncome/regularIncome';
+import {RegularExpenses} from 'form/models/statementOfMeans/expensesAndIncome/regularExpenses';
+import {CourtOrders} from 'form/models/statementOfMeans/courtOrders/courtOrders';
+import {PriorityDebts} from 'form/models/statementOfMeans/priorityDebts';
+import {Debts} from 'form/models/statementOfMeans/debts/debts';
+import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreference';
 export class Claim {
   legacyCaseReference: string;
   applicant1?: Party;
@@ -59,9 +59,7 @@ export class Claim {
   claimDetails: ClaimDetails;
   respondent1?: Party;
   statementOfMeans?: StatementOfMeans;
-  paymentOption?: PaymentOptionType;
-  repaymentPlan?: RepaymentPlan;
-  paymentDate?: Date;
+  fullAdmission?: FullAdmission;
   partialAdmission?: PartialAdmission;
   rejectAllOfClaim?: RejectAllOfClaim;
   mediation?: Mediation;
@@ -83,17 +81,26 @@ export class Claim {
   respondentSolicitor1AgreedDeadlineExtension?: Date;
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
+  claimBilingualLanguagePreference: ClaimBilingualLanguagePreference;
+
+  public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
+
+    const claim: Claim = Object.assign(new Claim(), ccdClaim);
+    claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
+    claim.respondent1 = toCUIParty(ccdClaim?.respondent1);
+    return claim;
+  }
 
   get responseStatus(): ClaimResponseStatus {
-    if (this.isFullAdmission() && this.isPaymentOptionPayImmediately()) {
+    if (this.isFullAdmission() && this.isFAPaymentOptionPayImmediately()) {
       return ClaimResponseStatus.FA_PAY_IMMEDIATELY;
     }
 
-    if (this.isFullAdmission() && this.isPaymentOptionInstallments()) {
+    if (this.isFullAdmission() && this.isFAPaymentOptionInstallments()) {
       return ClaimResponseStatus.FA_PAY_INSTALLMENTS;
     }
 
-    if (this.isFullAdmission() && this.isPaymentOptionBySetDate()) {
+    if (this.isFullAdmission() && this.isFAPaymentOptionBySetDate()) {
       return ClaimResponseStatus.FA_PAY_BY_DATE;
     }
 
@@ -120,27 +127,6 @@ export class Claim {
     if (this.isFullDefence() && this.isRejectAllOfClaimDispute()) {
       return ClaimResponseStatus.RC_DISPUTE;
     }
-
-  }
-
-  get hasSupportRequiredList(): boolean {
-    return !!this.directionQuestionnaire?.hearing?.supportRequiredList;
-  }
-
-  get isSupportRequiredYes(): boolean {
-    return this.directionQuestionnaire?.hearing?.supportRequiredList?.option === YesNo.YES;
-  }
-
-  get isSupportRequiredDetailsAvailable(): boolean {
-    return this.directionQuestionnaire?.hearing?.supportRequiredList?.items?.length > 0;
-  }
-
-  public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
-
-    const claim: Claim = Object.assign(new Claim(), ccdClaim);
-    claim.applicant1 = toCUIParty(ccdClaim.applicant1);
-    claim.respondent1 = toCUIParty(ccdClaim.respondent1);
-    return claim;
   }
 
   getClaimantFullName(): string {
@@ -172,12 +158,16 @@ export class Claim {
     return !this.applicant1;
   }
 
-  isPaymentOptionBySetDate(): boolean {
-    return this.paymentOption === PaymentOptionType.BY_SET_DATE;
+  isFAPaymentOptionBySetDate(): boolean {
+    return this.fullAdmission?.paymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE;
   }
 
-  isPaymentOptionPayImmediately(): boolean {
-    return this.paymentOption === PaymentOptionType.IMMEDIATELY;
+  isFAPaymentOptionPayImmediately(): boolean {
+    return this.fullAdmission?.paymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY;
+  }
+
+  isFAPaymentOptionInstallments(): boolean {
+    return this.fullAdmission?.paymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS;
   }
 
   isPAPaymentOptionPayImmediately(): boolean {
@@ -190,10 +180,6 @@ export class Claim {
 
   isPAPaymentOptionByDate(): boolean {
     return this.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE;
-  }
-
-  isPaymentOptionInstallments(): boolean {
-    return this.paymentOption === PaymentOptionType.INSTALMENTS;
   }
 
   isInterestEndDateUntilSubmitDate(): boolean {
@@ -259,7 +245,7 @@ export class Claim {
   }
 
   isFullAdmissionPaymentOptionExists(): boolean {
-    return this.paymentOption?.length > 0;
+    return this.fullAdmission?.paymentIntention?.paymentOption?.length > 0;
   }
 
   isPartialAdmissionPaymentOptionExists(): boolean {
@@ -334,6 +320,10 @@ export class Claim {
     return this.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
   }
 
+  isClaimantIntentionPending(): boolean {
+    return this.ccdState === CaseState.AWAITING_APPLICANT_INTENTION;
+  }
+
   isBusiness(): boolean {
     return this.respondent1?.type === PartyType.COMPANY || this.respondent1?.type === PartyType.ORGANISATION;
   }
@@ -364,6 +354,30 @@ export class Claim {
 
   isResponseDateInThePast(): boolean {
     return this.respondent1ResponseDate <= new Date();
+  }
+
+  get hasSupportRequiredList(): boolean {
+    return !!this.directionQuestionnaire?.hearing?.supportRequiredList;
+  }
+
+  get isSupportRequiredYes(): boolean {
+    return this.directionQuestionnaire?.hearing?.supportRequiredList?.option === YesNo.YES;
+  }
+
+  get isSupportRequiredDetailsAvailable(): boolean {
+    return this.directionQuestionnaire?.hearing?.supportRequiredList?.items?.length > 0;
+  }
+
+  hasExpertReportDetails(): boolean {
+    return this.directionQuestionnaire?.experts?.expertReportDetails?.option === YesNo.YES;
+  }
+
+  hasPermissionForExperts(): boolean {
+    return this.directionQuestionnaire?.experts?.permissionForExpert?.option === YesNo.YES;
+  }
+
+  hasEvidenceExpertCanStillExamine(): boolean {
+    return this.directionQuestionnaire?.experts?.expertCanStillExamine?.option === YesNo.YES;
   }
 
   getExplanationText(): string {
@@ -400,18 +414,6 @@ export class Claim {
 
   getDebts(): Debts | undefined {
     return this.statementOfMeans?.debts;
-  }
-
-  hasExpertReportDetails(): boolean {
-    return this.directionQuestionnaire?.experts?.expertReportDetails?.option === YesNo.YES;
-  }
-
-  hasPermissionForExperts(): boolean {
-    return this.directionQuestionnaire?.experts?.permissionForExpert?.option === YesNo.YES;
-  }
-
-  hasEvidenceExpertCanStillExamine(): boolean {
-    return this.directionQuestionnaire?.experts?.expertCanStillExamine?.option === YesNo.YES;
   }
 
   private getName(party: Party): string {

@@ -2,10 +2,10 @@ import request from 'supertest';
 import {app} from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {CITIZEN_OWED_AMOUNT_URL, CLAIM_TASK_LIST_URL} from '../../../../../../../main/routes/urls';
+import {CITIZEN_OWED_AMOUNT_URL, CLAIM_TASK_LIST_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
-import {ResponseType} from '../../../../../../../main/common/form/models/responseType';
+import {ResponseType} from 'common/form/models/responseType';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');

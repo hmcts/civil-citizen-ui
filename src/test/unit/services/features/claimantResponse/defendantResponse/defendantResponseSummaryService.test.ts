@@ -1,13 +1,15 @@
-import {Claim} from 'models/claim';
-import {StatementOfMeans} from 'models/statementOfMeans';
-import {ResponseType} from 'form/models/responseType';
-import {PartyType} from 'models/partyType';
-import {Party} from 'models/party';
-import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {Claim} from 'common/models/claim';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
+import {ResponseType} from 'common/form/models/responseType';
+import {PartyType} from 'common/models/partyType';
+import {Party} from 'common/models/party';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {
   getDefendantsResponseContent,
 } from 'services/features/claimantResponse/defendantResponse/defendantResponseSummaryService';
 import {mockClaim} from '../../../../../utils/mockClaim';
+import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
+import {FullAdmission} from 'common/models/fullAdmission';
 import howMuchHaveYouPaidService from 'services/features/response/admission/howMuchHaveYouPaidService';
 
 jest.mock('../../../../../../main/modules/i18n');
@@ -20,11 +22,19 @@ describe("Defendant's response summary service", () => {
   const lang = 'en';
   describe('Full admission pay by date scenario', () => {
     const claim = new Claim();
-    claim.paymentOption = PaymentOptionType.BY_SET_DATE;
-    claim.paymentDate = new Date();
+    claim.fullAdmission = new FullAdmission();
+    claim.fullAdmission.paymentIntention = new PaymentIntention();
+    claim.fullAdmission.paymentIntention.paymentDate = new Date();
     claim.respondent1 = new Party();
     claim.statementOfMeans = new StatementOfMeans();
     claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+    claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+    claim.fullAdmission.paymentIntention.repaymentPlan = {
+      paymentAmount: 100,
+      repaymentFrequency: 'MONTH',
+      firstRepaymentDate: new Date(Date.now()),
+    };
+
     it('should display for individual', () => {
       // Given
       const reason = "I don't agree with the claim";
