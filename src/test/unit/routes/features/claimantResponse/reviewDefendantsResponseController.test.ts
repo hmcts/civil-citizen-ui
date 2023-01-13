@@ -14,7 +14,7 @@ import {ResponseType} from 'form/models/responseType';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {Party} from 'models/party';
 import {PartialAdmission} from 'models/partialAdmission';
-import {PaymentIntention} from 'form/models/admission/partialAdmission/paymentIntention';
+import {PaymentIntention} from 'form/models/admission/paymentIntention';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
