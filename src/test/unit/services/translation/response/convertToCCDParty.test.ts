@@ -167,6 +167,12 @@ describe('translate party to ccd model', () => {
     expect(partyResponseCCD).toMatchObject(partyIndividualCCD);
   });
 
+  it('should translate INDIVIDUAL party to ccd with applicantEmail', () => {
+    const mockApplicantEmail = 'abc@def.com';
+    const partyResponseCCD = toCCDParty(partyIndividual, mockApplicantEmail);
+    expect(partyResponseCCD).toMatchObject({...partyIndividualCCD, partyEmail: mockApplicantEmail });
+  });
+
   it('should translate SOLE TRADER party to ccd', () => {
     const partyResponseCCD = toCCDParty(partySoleTrader);
     expect(partyResponseCCD).toMatchObject(partySoleTraderCCD);
