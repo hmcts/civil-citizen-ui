@@ -165,6 +165,7 @@ import fullAdmitSetDatePaymentController from './features/claimantResponse/fullA
 import partPaymentReceivedController from './features/claimantResponse/partPaymentReceivedController';
 import defendantDOBController from './features/claimantResponse/ccj/defendantDOBController';
 import claimantIntentionToProceedController from './features/claimantResponse/claimantIntentionToProceedController';
+import breathingSpaceCheckAnswersController from './features/claim/breathingSpace/checkAnswersController';
 import totalAmountController from './features/claim/totalAmountController';
 import rejectionReasonController from './features/claimantResponse/rejectionReasonController';
 import specificCourtController from './features/directionsQuestionnaire/hearing/specificCourtController';
@@ -177,6 +178,14 @@ import paidSomeAmountController from './features/claimantResponse/ccj/paidAmount
 import defendantPaymentDateController from './features/claimantResponse/ccj/defendantPaymentDateController';
 import ccjConfirmationController from './features/claimantResponse/ccj/ccjConfirmationController';
 import settleAdmittedController from './features/claimantResponse/settleAdmittedController';
+import bilingualLangPreferenceController from './features/response/bilingualLangPreferenceController';
+import chooseHowToProceedController from './features/claimantResponse/chooseHowToProceedcController';
+import repaymentPlanInstalmentsController from './features/claimantResponse/ccj/repaymentPlanInstalmentsController';
+import signSettlementAgreementController from './features/claimantResponse/signSettlmentAgreementController';
+import repaymentPlanAcceptedController from './features/claimantResponse/repaymentPlanAcceptedController';
+import courtProposedPlanController from './features/claimantResponse/courtProposedPlanController';
+import debtRespiteLiftedController from './features/breathingSpace/debtRespiteLiftedController';
+import claimantResponseConfirmationController from './features/claimantResponse/claimantResponseConfirmationController';
 
 export default [
   homeController,
@@ -323,6 +332,7 @@ export default [
   howMuchContinueClaimingController,
   helpWithFeesController,
   debtRespiteReferenceNumberController,
+  breathingSpaceCheckAnswersController,
   datePaidViewController,
   settleClaimController,
   fullAdmitSetDatePaymentController,
@@ -335,10 +345,18 @@ export default [
   debtRespiteOptionController,
   debtStartDateController,
   debtRespiteEndDateController,
+  debtRespiteLiftedController,
   reviewDefendantsResponseController,
   ccjPaymentOptionController,
   paidSomeAmountController,
   defendantPaymentDateController,
   ccjConfirmationController,
   settleAdmittedController,
+  bilingualLangPreferenceController,
+  chooseHowToProceedController,
+  repaymentPlanInstalmentsController,
+  signSettlementAgreementController,
+  repaymentPlanAcceptedController,
+  courtProposedPlanController,
+  claimantResponseConfirmationController,
 ];

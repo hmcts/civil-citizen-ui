@@ -6,18 +6,17 @@ import {getLng} from '../../../../../../common/utils/languageToggleUtils';
 import {
   CITIZEN_PRIORITY_DEBTS_URL,
 } from '../../../../../../routes/urls';
-import {PriorityDebtDetails} from '../../../../../../common/form/models/statementOfMeans/priorityDebtDetails';
-
+import {Transaction} from '../../../../../../common/form/models/statementOfMeans/expensesAndIncome/transaction';
 import {currencyFormatWithNoTrailingZeros} from '../../../../../../common/utils/currencyFormat';
 
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 
 let count: number;
 
-const addPriorityDebtsListRow = (section:SummarySection, sectionHref:string, debtType:PriorityDebtDetails, tKey:string, lang: string | unknown) => {
-  if (debtType?.isDeclared && debtType?.amount) {
+const addPriorityDebtsListRow = (section:SummarySection, sectionHref:string, debtType:Transaction, tKey:string, lang: string | unknown) => {
+  if (debtType?.declared && debtType?.transactionSource?.amount) {
     section.summaryList.rows.push(summaryRow((count++) + '. ' + t('PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_TYPE', { lng: getLng(lang) }), t(tKey, { lng: getLng(lang) }), sectionHref, changeLabel(lang)));
-    section.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_ARREARS_REPAYMENT', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(debtType.amount), sectionHref, changeLabel(lang)));
+    section.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_ARREARS_REPAYMENT', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(debtType.transactionSource.amount), sectionHref, changeLabel(lang)));
   }
 };
 
