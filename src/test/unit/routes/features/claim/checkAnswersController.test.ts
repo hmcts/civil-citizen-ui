@@ -30,7 +30,7 @@ const mockGetSummarySections = getSummarySections as jest.Mock;
 const mockGetClaim = getCaseDataFromStore as jest.Mock;
 const PARTY_NAME = 'Mrs. Mary Richards';
 
-describe('Response - Check answers', () => {
+describe('Claim - Check answers', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamServiceUrl: string = config.get('services.idam.url');
   const checkYourAnswerEng = 'Check your answers';

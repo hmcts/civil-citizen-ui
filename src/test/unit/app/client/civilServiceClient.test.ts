@@ -71,26 +71,6 @@ describe('Civil Service Client', () => {
   describe('retrieveByDefendantId', () => {
     it('should retrieve cases successfully', async () => {
       //Given
-      const claim: CCDClaim = {
-        legacyCaseReference: '000MC003',
-        applicant1: {
-          companyName: undefined,
-          individualDateOfBirth: undefined,
-          organisationName: undefined,
-          partyEmail: undefined,
-          partyPhone: undefined,
-          primaryAddress: undefined,
-          soleTraderDateOfBirth: undefined,
-          soleTraderFirstName: undefined,
-          soleTraderLastName: undefined,
-          soleTraderTitle: undefined,
-          soleTraderTradingAs: undefined,
-          individualTitle: 'Mrs',
-          individualLastName: 'Clark',
-          individualFirstName: 'Jane',
-          type: PartyType.INDIVIDUAL,
-        },
-      };
       const mockResponse: CivilClaimResponse = {
         id: '1',
         case_data: ccdClaim,
@@ -168,7 +148,7 @@ describe('Civil Service Client', () => {
       //Given
       const mockResponse = new CivilClaimResponse();
       mockResponse.id = '1';
-      mockResponse.case_data = {};
+      mockResponse.case_data = ccdClaim;
       mockResponse.state = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
 
       const mockPost = jest.fn().mockResolvedValue({data: mockResponse});
