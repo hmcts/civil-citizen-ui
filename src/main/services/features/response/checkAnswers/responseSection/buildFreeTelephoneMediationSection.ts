@@ -19,7 +19,7 @@ const getContactNumber = (claim: Claim) => {
   } else if (claim.mediation?.canWeUse?.mediationPhoneNumber) {
     return claim.mediation.canWeUse.mediationPhoneNumber;
   } else {
-    return claim.respondent1.partyPhone;
+    return claim.respondent1.partyPhone.phone;
   }
 };
 

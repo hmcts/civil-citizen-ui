@@ -2,17 +2,17 @@ const I = actor();
 
 const fields ={
   mortgage: 'Mortgage',
-  mortgagePayment: 'input[id="mortgage-payment-amount"]',
-  mortgagePaymentScheduleMonthly: 'input[id="mortgage-payment-schedule-4"]',
+  mortgagePayment: 'input[id="model[mortgage][transactionSource][amount]"]',
+  mortgagePaymentScheduleMonthly: 'input[id="model[mortgage][transactionSource][schedule]-4"]',
   councilTax: 'Council Tax or Community Charge',
-  councilTaxPayment: 'input[id="councilTax-payment-amount"]',
-  councilTaxPaymentScheduleMonthly: 'input[id="councilTax-payment-schedule-4"]',
+  councilTaxPayment: 'input[id="model[councilTax][transactionSource][amount]"]',
+  councilTaxPaymentScheduleMonthly: 'input[id="model[councilTax][transactionSource][schedule]-4"]',
   gas: 'Gas',
-  gasPayment: 'input[id="gas-payment-amount"]',
-  gasPaymentScheduleWeekly: 'input[id="gas-payment-schedule"]',
+  gasPayment: 'input[id="model[gas][transactionSource][amount]"]',
+  gasPaymentScheduleWeekly: 'input[id="model[gas][transactionSource][schedule]"]',
   electricity: 'Electricity',
-  electricityPayment: 'input[id="electricity-payment-amount"]',
-  electricityPaymentScheduleFortnightly: 'input[id="electricity-payment-schedule-2"]',
+  electricityPayment: 'input[id="model[electricity][transactionSource][amount]"]',
+  electricityPaymentScheduleFortnightly: 'input[id="model[electricity][transactionSource][schedule]-2"]',
 };
 const buttons = {
   saveAndContinue: 'Save and continue',

@@ -41,13 +41,14 @@ import {ClaimDetails} from 'common/form/models/claim/details/claimDetails';
 import {ClaimantResponse} from './claimantResponse';
 import {CCDClaim} from 'models/civilClaimResponse';
 import {toCUIParty} from 'services/translation/response/convertToCUI/convertToCUIParty';
-import {SelfEmployedAs} from 'models/selfEmployedAs';
-import {TaxPayments} from 'models/taxPayments';
-import {RegularIncome} from 'common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
-import {RegularExpenses} from 'common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
-import {CourtOrders} from 'common/form/models/statementOfMeans/courtOrders/courtOrders';
-import {PriorityDebts} from 'common/form/models/statementOfMeans/priorityDebts';
-import {Debts} from 'common/form/models/statementOfMeans/debts/debts';
+import {SelfEmployedAs} from '../models/selfEmployedAs';
+import {TaxPayments} from '../models/taxPayments';
+import {RegularIncome} from '../../common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
+import {RegularExpenses} from '../../common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
+import {CourtOrders} from '../../common/form/models/statementOfMeans/courtOrders/courtOrders';
+import {PriorityDebts} from '../../common/form/models/statementOfMeans/priorityDebts';
+import {Debts} from '../../common/form/models/statementOfMeans/debts/debts';
+import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreference';
 export class Claim {
   legacyCaseReference: string;
   applicant1?: Party;
@@ -80,12 +81,13 @@ export class Claim {
   respondentSolicitor1AgreedDeadlineExtension?: Date;
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
+  claimBilingualLanguagePreference: ClaimBilingualLanguagePreference;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
 
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
-    claim.applicant1 = toCUIParty(ccdClaim.applicant1);
-    claim.respondent1 = toCUIParty(ccdClaim.respondent1);
+    claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
+    claim.respondent1 = toCUIParty(ccdClaim?.respondent1);
     return claim;
   }
 
@@ -318,6 +320,10 @@ export class Claim {
     return this.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
   }
 
+  isClaimantIntentionPending(): boolean {
+    return this.ccdState === CaseState.AWAITING_APPLICANT_INTENTION;
+  }
+
   isBusiness(): boolean {
     return this.respondent1?.type === PartyType.COMPANY || this.respondent1?.type === PartyType.ORGANISATION;
   }
@@ -344,10 +350,6 @@ export class Claim {
 
   isResponseToExtendDeadlineNo(): boolean {
     return this.responseDeadline?.option === ResponseOptions.NO;
-  }
-
-  isResponseDateInThePast(): boolean {
-    return this.respondent1ResponseDate <= new Date();
   }
 
   get hasSupportRequiredList(): boolean {
