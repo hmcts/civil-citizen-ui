@@ -1,5 +1,7 @@
 import {TestMessages} from './errorMessageTestConstants';
 import civilClaimResponseMock from './mocks/civilClaimResponseMock.json';
+import civilClaimResponseOptionBySpecifiedDateMock from './mocks/civilClaimResponseBySpecifiedDateMock.json';
+import civilClaimResponseOptionInstalmentsMock from './mocks/civilClaimResponseInstalmentsMock.json';
 import noStatementOfMeansMock from './mocks/noStatementOfMeansMock.json';
 import civilClaimResponseOptionNoMock from './mocks/civilClaimResponseOptionNoMock.json';
 import civilClaimResponseUnemploymentRetired from './mocks/civilClaimResponseUnemploymentRetiredMock.json';
@@ -71,6 +73,16 @@ const mockCivilClaimantInetntion = {
   get: jest.fn(() => Promise.resolve(JSON.stringify(noRespondentTelephoneClaimantIntentionMock))),
 };
 
+const mockCivilClaimFullAdmissionPaymentOptionBySpecifiedDate = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseOptionBySpecifiedDateMock))),
+};
+
+const mockCivilClaimFullAdmissionPaymentOptionInstalments = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseOptionInstalmentsMock))),
+};
+
 const mockRedisFailure = {
   set: jest.fn(() => {
     throw new Error(TestMessages.REDIS_FAILURE);
@@ -136,4 +148,6 @@ export {
   mockCivilClaimWithTimelineAndEvidence,
   mockCivilClaimWithExpertAndWitness,
   mockCivilClaimantInetntion,
+  mockCivilClaimFullAdmissionPaymentOptionBySpecifiedDate,
+  mockCivilClaimFullAdmissionPaymentOptionInstalments,
 };

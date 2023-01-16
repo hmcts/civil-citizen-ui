@@ -1,4 +1,5 @@
 import config from 'config';
+import {DefendantResponseStatus} from 'models/DefendantResponseStatus';
 
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
@@ -10,6 +11,7 @@ export class DashboardItem {
   defendantName: string;
   responseDeadline?: Date;
   ocmc?: boolean;
+  defendantResponseStatus: DefendantResponseStatus;
   draft?: boolean;
   url: string;
 

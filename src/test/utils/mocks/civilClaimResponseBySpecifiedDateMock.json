@@ -76,7 +76,7 @@
     "partialAdmission": {
       "paymentIntention": {
         "paymentDate": "2025-06-01T00:00:00.000Z",
-        "paymentOption": "IMMEDIATELY"
+        "paymentOption": "BY_SPECIFIED_DATE"
       },
       "howMuchDoYouOwe": {
         "amount": 500
@@ -94,7 +94,7 @@
     "fullAdmission": {
       "paymentIntention": {
         "paymentDate": "2025-06-01T00:00:00.000Z",
-        "paymentOption": "IMMEDIATELY"
+        "paymentOption": "BY_SPECIFIED_DATE"
       }
     },
     "rejectAllOfClaim": {

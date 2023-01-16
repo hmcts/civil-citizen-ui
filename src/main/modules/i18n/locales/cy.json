@@ -955,7 +955,19 @@
       "NEXT_STEPS": "Next steps",
       "PAGE_TITLE": "Claims made by or against you",
       "TITLE": "Your money claims account",
-      "VIEW": "Weiv"
+      "VIEW": "Weiv",
+      "RESPONSE_TO_CLAIM": "Response to claim. ({{ noRemainingDays }})",
+      "ELIGIBLE_FOR_CCJ_1": "You haven't responded to the claim. ",
+      "ELIGIBLE_FOR_CCJ_2": "{{ item.claimantName }} can now ask for a County Court Judgment (CCJ) against you.",
+      "ELIGIBLE_FOR_CCJ_3": "You can still respond to this claim before they ask for a CCJ.",
+      "PAST_DEADLINE_IMMEDIATELY": "You've admitted all of the claim and said you'll pay the full amount immediately.",
+      "PAST_DEADLINE_BY_SPECIFIED_DATE": "You've admitted all of the claim and offered to pay the full amount by {{ paymentDate }}.",
+      "PAST_DEADLINE_INSTALMENTS": "You've admitted all of the claim and offered to pay the full amount in instalments.",
+      "MORE_TIME_REQUESTED": "You need to respond before 4pm on {{ responseDeadline }}.",
+      "CLAIM_SETTLED": "This claim is settled.",
+      "CONFIRMED_PAID": "{{ claimantName }} confirmed you've paid.",
+      "CASE_SENT_TO_COURT": "Case sent to court.",
+      "REDETERMINATION_BY_JUDGE": "{{ claimantName }} requested a County Court Judgment against you."
     },
     "DEBTS": {
       "ADD": "Ychwanegu dyled",

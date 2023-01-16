@@ -82,6 +82,7 @@ export class Claim {
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
   claimBilingualLanguagePreference: ClaimBilingualLanguagePreference;
+  defendantResponseStatus: string;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
 
@@ -160,6 +161,10 @@ export class Claim {
   getRemainingDays(): number {
     const remainingDuration = convertDateToLuxonDate(this.respondent1ResponseDeadline).diff(currentDateTime(), 'days');
     return Math.trunc(remainingDuration.days);
+  }
+
+  getDefendantResponseStatus(): string {
+    return this.defendantResponseStatus;
   }
 
   isDeadLinePassed(): boolean {

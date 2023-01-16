@@ -91,6 +91,7 @@
               <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.CLAIM_NUMBER') }}</th>
               <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.CLAIMANT_NAME') }}</th>
               <th scope="col" class="govuk-table__header">{{ t('COMMON.CLAIM_AMOUNT') }}</th>
+              <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.DEADLINE') }}</th>
               <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.CLAIM_STATUS') }}</th>
             </tr>
           </thead>
@@ -105,6 +106,7 @@
                 <td class="govuk-table__cell">{{ item.claimantName }}</td>
                 <td class="govuk-table__cell">£{{ item.claimAmount }}</td>
                 <td class="govuk-table__cell">{{ t('PAGES.DASHBOARD.ACTION_PROMPT') }}{{ item.responseDeadline | formatDate }}</td>
+                <td class="govuk-table__cell">{{ item.status }}</td>
               </tr>
             {% endfor %}
           </tbody>
