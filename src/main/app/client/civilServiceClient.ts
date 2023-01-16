@@ -2,7 +2,7 @@ import {Claim} from 'common/models/claim';
 import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
 import {AppRequest} from 'common/models/AppRequest';
-import {CivilClaimResponse} from 'common/models/civilClaimResponse';
+import {CivilClaimResponse, ClaimFeeData} from 'common/models/civilClaimResponse';
 import {
   CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
