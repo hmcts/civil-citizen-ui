@@ -53,9 +53,9 @@ courtProposedDateController.post(CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL, a
     } else {
       await saveClaimantResponse(claimId, courtProposedDate.model.decision, crPropertyName, crParentName);
       if (courtProposedDate.model.decision === CourtProposedDateOptions.JUDGE_REPAYMENT_DATE) {
-        res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
-      } else {
         res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_REJECTION_REASON_URL));
+      } else {
+        res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
       }
     }
   } catch (error) {
