@@ -52,11 +52,17 @@ function buildMockClaim(): Claim {
   _mockClaim.legacyCaseReference = '497MC585';
   _mockClaim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
   _mockClaim.applicant1 = {
+    dateOfBirth: {
+      day: null,
+      month: null,
+      year: null,
+    },
     partyDetails: {
       individualTitle: 'Mrs',
       individualLastName: 'Clark',
       individualFirstName: 'Jane',
       partyName: 'Mrs Jane Clark',
+      primaryAddress: new Address(),
     },
     type: PartyType.INDIVIDUAL,
   };
