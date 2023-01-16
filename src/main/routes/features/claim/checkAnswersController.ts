@@ -7,13 +7,13 @@ import {
 } from 'services/features/claim/checkAnswers/checkAnswersService';
 import {deleteDraftClaimFromStore, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {AppRequest} from '../../../common/models/AppRequest';
-import {GenericForm} from '../../../common/form/models/genericForm';
-import {StatementOfTruthForm} from '../../../common/form/models/statementOfTruth/statementOfTruthForm';
-import {QualifiedStatementOfTruth} from '../../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
-import {YesNo} from '../../../common/form/models/yesNo';
-import {submitClaim} from '../../../services/features/claim/submission/submitClaim';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {AppRequest} from 'common/models/AppRequest';
+import {submitClaim} from 'services/features/claim/submission/submitClaim';
+import {GenericForm} from 'common/form/models/genericForm';
+import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
+import {QualifiedStatementOfTruth} from 'common/form/models/statementOfTruth/qualifiedStatementOfTruth';
+import {YesNo} from 'common/form/models/yesNo';
 
 const checkAnswersViewPath = 'features/claim/check-answers';
 const claimCheckAnswersController = Router();
