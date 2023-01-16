@@ -246,18 +246,18 @@ describe('Claim - Check answers', () => {
         });
     });
 
-    // it('should return 500 when error in service', async () => {
-    //   mockGetSummarySections.mockImplementation(() => {
-    //     throw new Error(TestMessages.REDIS_FAILURE);
-    //   });
-    //   await request(app)
-    //     .post(CLAIM_CHECK_ANSWERS_URL)
-    //     .send(data)
-    //     .expect((res: Response) => {
-    //       expect(res.status).toBe(302);
-    //       expect(res.).toBe(CLAIM_CONFIRMATION_URL);
-    //     });
-    // });
+    it('should return 500 when error in service', async () => {
+      mockGetSummarySections.mockImplementation(() => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+      await request(app)
+        .post(CLAIM_CHECK_ANSWERS_URL)
+        .send(data)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toBe(CLAIM_CONFIRMATION_URL);
+        });
+    });
     it('should return 500 when error in service', async () => {
       mockGetSummarySections.mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);
