@@ -51,11 +51,17 @@ function buildMockClaim(): Claim {
   _mockClaim.legacyCaseReference = '497MC585';
   _mockClaim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
   _mockClaim.applicant1 = {
+    dateOfBirth: {
+      day: null,
+      month: null,
+      year: null,
+    },
     partyDetails: {
       individualTitle: 'Mrs',
       individualLastName: 'Clark',
       individualFirstName: 'Jane',
       partyName: 'Mrs Jane Clark',
+      primaryAddress: new Address(),
     },
     type: PartyType.INDIVIDUAL,
   };
@@ -130,7 +136,11 @@ function buildMockClaim(): Claim {
   };
   _mockClaim.submittedDate = new Date('2022-05-23T17:02:02.38407');
   _mockClaim.totalInterest = 15;
-  _mockClaim.paymentDate = new Date('2022-06-01T00:00:00');
+  _mockClaim.fullAdmission = {
+    paymentIntention: {
+      paymentDate: new Date('2022-06-01T00:00:00'),
+    },
+  };
   _mockClaim.systemGeneratedCaseDocuments = [
     {
       id: '1234556',
@@ -154,8 +164,8 @@ function buildMockClaim(): Claim {
     additionalTime: AdditionalTimeOptions.MORE_THAN_28_DAYS,
   };
 
-  _mockClaim.isPaymentOptionPayImmediately = (): boolean => false;
-  _mockClaim.isPaymentOptionBySetDate = (): boolean => false;
+  _mockClaim.isFAPaymentOptionPayImmediately = (): boolean => false;
+  _mockClaim.isFAPaymentOptionBySetDate = (): boolean => false;
 
   return _mockClaim;
 }
