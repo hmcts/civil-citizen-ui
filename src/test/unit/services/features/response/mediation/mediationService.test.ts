@@ -125,7 +125,7 @@ describe('Mediation service', () => {
       const mediation = await getMediation(claimId);
       expect(mediation.mediationDisagreement?.option).toBe(YesNo.NO);
     });
-    it('should save data successfully when mediation doesn´t exist', async () => {
+    it('should save data successfully when claimant mediation doesn´t exist', async () => {
       //Given
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
@@ -169,18 +169,18 @@ function createClaim() {
   return claim;
 }
 
-function createMediation() {
-  return new Mediation(
-    mediationExample.canWeUse,
-    mediationExample.mediationDisagreement,
-  );
-}
-
 function createClaimWithClaimantMediation() {
   const claim = new Claim();
   claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
   claim.claimantResponse = new ClaimantResponse();
   claim.claimantResponse.mediation = createMediation();
   return claim;
+}
+
+function createMediation() {
+  return new Mediation(
+    mediationExample.canWeUse,
+    mediationExample.mediationDisagreement,
+  );
 }
 
