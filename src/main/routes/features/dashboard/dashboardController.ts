@@ -10,6 +10,7 @@ import {
 } from 'services/features/claimantResponse/defendantResponse/defendantResponseStatusService';
 import {ParamsDictionary} from 'express-serve-static-core';
 import {ParsedQs} from 'qs';
+import {getClaimById} from 'modules/utilityService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
@@ -34,8 +35,9 @@ const dashboardController = Router();
 const updateStatusForDefendantCases = async (claimsAsDefendant: DashboardDefendantItem[], req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>) => {
   if(claimsAsDefendant != undefined) {
     for(let i = 0; i < claimsAsDefendant.length; i++) {
-      const claim = claimsAsDefendant[i];
-      const updatedClaim = {...claim, status: await getStringStatus(claim, req)};
+      const defendantClaim = claimsAsDefendant[i];
+      const claim = await getClaimById(defendantClaim.claimId, req);
+      const updatedClaim = {...defendantClaim , status: getStringStatus(defendantClaim, claim)};
       claimsAsDefendant[i] = Object.assign(new DashboardDefendantItem(), updatedClaim);
     }
   }

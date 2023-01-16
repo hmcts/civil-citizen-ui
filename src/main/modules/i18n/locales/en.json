@@ -957,9 +957,9 @@
       "TITLE": "Your money claims account",
       "VIEW": "View",
       "RESPONSE_TO_CLAIM": "Response to claim. ({{ noRemainingDays }})",
-      "ELIGIBLE_FOR_CCJ_1": "You haven't responded to the claim. ",
-      "ELIGIBLE_FOR_CCJ_2": "{{ claimantName }} can now ask for a County Court Judgment (CCJ) against you.",
-      "ELIGIBLE_FOR_CCJ_3": "You can still respond to this claim before they ask for a CCJ.",
+      "ELIGIBLE_FOR_CCJ_YOU_HAVE_NOT_RESPONDED": "You haven't responded to the claim. ",
+      "ELIGIBLE_FOR_CCJ_ASK_FOR_CCJ": "{{ claimantName }} can now ask for a County Court Judgment (CCJ) against you.",
+      "ELIGIBLE_FOR_CCJ_STILL_CAN_RESPOND": "You can still respond to this claim before they ask for a CCJ.",
       "PAST_DEADLINE_IMMEDIATELY": "You've admitted all of the claim and said you'll pay the full amount immediately.",
       "PAST_DEADLINE_BY_SPECIFIED_DATE": "You've admitted all of the claim and offered to pay the full amount by {{ paymentDate }}.",
       "PAST_DEADLINE_INSTALMENTS": "You've admitted all of the claim and offered to pay the full amount in instalments.",
@@ -967,7 +967,10 @@
       "CLAIM_SETTLED": "This claim is settled.",
       "CONFIRMED_PAID": "{{ claimantName }} confirmed you've paid.",
       "CASE_SENT_TO_COURT": "Case sent to court.",
-      "REDETERMINATION_BY_JUDGE": "{{ claimantName }} requested a County Court Judgment against you."
+      "REDETERMINATION_BY_JUDGE": "{{ claimantName }} requested a County Court Judgment against you.",
+      "DAYS_REMAINING": "{{ days }} days remaining",
+      "DAYS_OVERDUE": "{{ days }} overdue",
+      "DUE_TODAY": "Due today"
     },
     "DEBTS": {
       "ADD": "Add a debt",

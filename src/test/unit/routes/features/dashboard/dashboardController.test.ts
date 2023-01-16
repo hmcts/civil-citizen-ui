@@ -3,7 +3,11 @@ import config from 'config';
 import Module from 'module';
 import {DASHBOARD_URL} from 'routes/urls';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
-import { mockCivilClaim, mockCivilClaimFullAdmissionPaymentOptionBySpecifiedDate, mockCivilClaimFullAdmissionPaymentOptionInstalments} from '../../../../utils/mockDraftStore';
+import {
+  mockCivilClaim,
+  mockCivilClaimFullAdmissionPaymentOptionBySpecifiedDate,
+  mockCivilClaimFullAdmissionPaymentOptionInstalments,
+} from '../../../../utils/mockDraftStore';
 import request from 'supertest';
 
 const nock = require('nock');
@@ -57,14 +61,14 @@ describe('Dashboard page', () => {
   });
 
   describe('on GET', () => {
-    // it('should return dashboard page', async () => {
-    //   await request(app)
-    //     .get(DASHBOARD_URL)
-    //     .expect((res: Response) => {
-    //       expect(res.status).toBe(200);
-    //       expect(res.text).toContain('Claims made against you');
-    //     });
-    // });
+    it('should return dashboard page', async () => {
+      await request(app)
+        .get(DASHBOARD_URL)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Claims made by or against you');
+        });
+    });
 
     it('should have proper text for NO_RESPONSE status', async () => {
       mockClaimWithStatus('NO_RESPONSE');

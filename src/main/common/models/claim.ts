@@ -163,10 +163,6 @@ export class Claim {
     return Math.trunc(remainingDuration.days);
   }
 
-  getDefendantResponseStatus(): string {
-    return this.defendantResponseStatus;
-  }
-
   isDeadLinePassed(): boolean {
     return isPastDeadline(this.respondent1ResponseDeadline);
   }
