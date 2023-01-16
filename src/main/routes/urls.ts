@@ -184,7 +184,6 @@ export const CLAIMANT_TASK_LIST_URL = `${BASE_CLAIM_URL}/task-list`;
 export const CLAIMANT_PARTY_TYPE_SELECTION_URL = `${BASE_CLAIM_URL}/claimant-party-type-selection`;
 export const CLAIMANT_PHONE_NUMBER_URL = `${BASE_CLAIM_URL}/claimant-phone`;
 export const CLAIMANT_SOLE_TRADER_DETAILS_URL = `${BASE_CLAIM_URL}/claimant-sole-trader-details`;
-export const CLAIMANT_RESPONSE_TASK_LIST_URL = `${BASE_CLAIMANT_RESPONSE_URL}/task-list`;
 export const CLAIMANT_INTEREST_RATE_URL = `${BASE_CLAIM_URL}/interest-rate`;
 export const CLAIMANT_INTEREST_DATE_URL = `${BASE_CLAIM_URL}/interest-date`;
 export const CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAYMENT_URL = `${BASE_CLAIMANT_RESPONSE_URL}/accept-payment-method`;

@@ -26,6 +26,8 @@ import {CCDPaymentOption} from './ccdResponse/ccdPaymentOption';
 import {CCDRepaymentPlan} from './ccdResponse/ccdRepaymentPlan';
 import {CCDPayBySetDate} from './ccdResponse/ccdPayBySetDate';
 import {FullAdmission} from './fullAdmission';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {RepaymentPlan} from './repaymentPlan';
 
 export class CivilClaimResponse {
   id: string;
