@@ -26,7 +26,7 @@ class CheckYourAnswersPage {
     //Added the below IF statement to exclude these steps in AAT as we are ignoring cui non prod files in AAT
     //Once the CUI Release is done, we can remove this IF statement.
 
-    if (['preview', 'demo'].includes(config.env)) {
+    if((config.TestUrl).includes('preview')  ){
       I.click(buttons.submit);
       I.amOnPage('/case/'+claimRef+'/response/confirmation');
       I.see('You\'ve submitted your response','h1');
