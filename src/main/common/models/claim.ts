@@ -82,6 +82,7 @@ export class Claim {
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
   claimBilingualLanguagePreference: ClaimBilingualLanguagePreference;
+  id: string;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
 
