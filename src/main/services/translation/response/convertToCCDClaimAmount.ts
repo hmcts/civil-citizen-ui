@@ -5,14 +5,14 @@ export const toCCDClaimAmount = (claimAmountBreakup: ClaimAmountBreakup[]): CCDC
   if (!claimAmountBreakup) return undefined;
   const ccdClaimAmountBreakupList: CCDClaimAmountBreakup[] = [];
   claimAmountBreakup.forEach((item, index) => {
-    const ccdEvidence: CCDClaimAmountBreakup = {
+    const ccdClaimAmountBreakup: CCDClaimAmountBreakup = {
       id: index.toString(),
       value: {
         claimAmount: item.value.claimAmount,
         claimReason: item.value.claimReason,
       },
     };
-    ccdClaimAmountBreakupList.push(ccdEvidence);
+    ccdClaimAmountBreakupList.push(ccdClaimAmountBreakup);
   });
   return ccdClaimAmountBreakupList;
 };
