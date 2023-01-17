@@ -13,6 +13,7 @@ import {formatDateToFullDate} from 'common/utils/dateUtils';
 
 const reviewDefendantsResponseController = Router();
 const howDoTheyWantToPayViewPath = 'features/claimantResponse/how-they-want-to-pay-response';
+const revieDefendantResponseViewPath = 'features/claimantResponse/review-defendants-response';
 
 reviewDefendantsResponseController.get(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -23,7 +24,7 @@ reviewDefendantsResponseController.get(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPO
     const downloadResponseLink = '#';
     const financialDetails = getFinancialDetails(claim, lang);
     const defendantsResponseContent = getDefendantsResponseContent(claim, getLng(lang));
-    res.render('features/claimantResponse/review-defendants-response', {
+    res.render(revieDefendantResponseViewPath, {
       claim,
       downloadResponseLink,
       financialDetails,
