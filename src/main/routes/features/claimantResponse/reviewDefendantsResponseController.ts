@@ -12,8 +12,8 @@ import {ClaimResponseStatus} from 'models/claimResponseStatus';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 
 const reviewDefendantsResponseController = Router();
-const howDoTheyWantToPayViewPath = 'features/claimantResponse/how-they-want-to-pay-response';
 const revieDefendantResponseViewPath = 'features/claimantResponse/review-defendants-response';
+const howDoTheyWantToPayViewPath = 'features/claimantResponse/how-they-want-to-pay-response';
 
 reviewDefendantsResponseController.get(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -42,6 +42,7 @@ reviewDefendantsResponseController.post(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESP
     const claim: Claim = await getCaseDataFromStore(claimId);
     const continueLink = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL);
     let financialDetails: object[];
+    let repaymentPlan: object;
     switch (claim?.responseStatus) {
       case ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE:
         financialDetails = getFinancialDetails(claim, lang);
@@ -54,7 +55,7 @@ reviewDefendantsResponseController.post(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESP
         break;
       case ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS:
         financialDetails = getFinancialDetails(claim, lang);
-        const repaymentPlan = constructRepaymentPlanSection(claim, getLng(lang));
+        repaymentPlan = constructRepaymentPlanSection(claim, getLng(lang));
         res.render(howDoTheyWantToPayViewPath, {
           claim,
           continueLink,
