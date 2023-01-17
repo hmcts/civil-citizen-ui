@@ -40,28 +40,30 @@ reviewDefendantsResponseController.post(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESP
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim: Claim = await getCaseDataFromStore(claimId);
     const continueLink = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL);
-    if (claim?.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE) {
-      const financialDetails = getFinancialDetails(claim, lang);
-      res.render(howDoTheyWantToPayViewPath, {
-        claim,
-        continueLink,
-        financialDetails,
-        paymentDate: formatDateToFullDate(claim.partialAdmission.paymentIntention.paymentDate, lang),
-      });
-    } else if (claim?.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS) {
-      const financialDetails = getFinancialDetails(claim, lang);
-      const repaymentPlan = constructRepaymentPlanSection(claim, getLng(lang));
-      res.render(howDoTheyWantToPayViewPath, {
-        claim,
-        continueLink,
-        financialDetails,
-        repaymentPlan,
-      });
+    let financialDetails: object[];
+    switch (claim?.responseStatus) {
+      case ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE:
+        financialDetails = getFinancialDetails(claim, lang);
+        res.render(howDoTheyWantToPayViewPath, {
+          claim,
+          continueLink,
+          financialDetails,
+          paymentDate: formatDateToFullDate(claim.partialAdmission.paymentIntention.paymentDate, lang),
+        });
+        break;
+      case ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS:
+        financialDetails = getFinancialDetails(claim, lang);
+        const repaymentPlan = constructRepaymentPlanSection(claim, getLng(lang));
+        res.render(howDoTheyWantToPayViewPath, {
+          claim,
+          continueLink,
+          financialDetails,
+          repaymentPlan,
+        });
+        break;
+      default:
+        res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
     }
-    else {
-      res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
-    }
-
   } catch (error) {
     next(error);
   }
