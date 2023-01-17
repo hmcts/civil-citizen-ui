@@ -19,4 +19,6 @@ export interface CCDParty {
   soleTraderTitle: string,
   soleTraderTradingAs: string,
   type: PartyType,
+  idamEmail: string,
+  idamId: string,
 }

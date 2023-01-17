@@ -37,6 +37,8 @@ const ccdClaim : CCDClaim = {
     individualLastName: 'Clark',
     individualFirstName: 'Jane',
     type: PartyType.INDIVIDUAL,
+    idamEmail: undefined,
+    idamId: undefined,
   },
 };
 describe('Submit claim to ccd', () => {

@@ -1,14 +1,19 @@
-import {Party} from '../../../../../main/common/models/party';
-import {toCCDParty} from '../../../../../main/services/translation/response/convertToCCDParty';
-import {PartyType} from '../../../../../main/common/models/partyType';
-import {ResponseType} from '../../../../../main/common/form/models/responseType';
-import {YesNo} from '../../../../../main/common/form/models/yesNo';
-import {Address} from '../../../../../main/common/form/models/address';
-import {CCDParty} from '../../../../../main/common/models/ccdResponse/ccdParty';
-import {CCDAddress} from '../../../../../main/common/models/ccdResponse/ccdAddress';
-import {CitizenDate} from '../../../../../main/common/form/models/claim/claimant/citizenDate';
-import {PartyPhone} from '../../../../../main/common/models/PartyPhone';
-import {Email} from '../../../../../main/common/models/Email';
+import {Party} from 'models/party';
+import {toCCDParty} from 'services/translation/response/convertToCCDParty';
+import {PartyType} from 'models/partyType';
+import {ResponseType} from 'form/models/responseType';
+import {YesNo} from 'form/models/yesNo';
+import {Address} from 'form/models/address';
+import {CCDParty} from 'models/ccdResponse/ccdParty';
+import {CCDAddress} from 'models/ccdResponse/ccdAddress';
+import {CitizenDate} from 'form/models/claim/claimant/citizenDate';
+import {PartyPhone} from 'models/PartyPhone';
+import {Email} from 'models/Email';
+import * as requestModels from 'models/AppRequest';
+
+declare const appRequest: requestModels.AppRequest;
+const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
+mockedAppRequest.params = {id: '1'};
 
 const companyName = 'Version 1';
 const phone = new PartyPhone('123456789');
@@ -90,6 +95,8 @@ const partySoleTrader: Party = {
 };
 
 const partyCompanyCCD: CCDParty = {
+  idamEmail: undefined,
+  idamId: undefined,
   companyName: companyName,
   individualDateOfBirth: undefined,
   individualFirstName: undefined,
@@ -108,6 +115,8 @@ const partyCompanyCCD: CCDParty = {
 };
 
 const partyIndividualCCD: CCDParty = {
+  idamEmail: undefined,
+  idamId: undefined,
   companyName: undefined,
   individualDateOfBirth: new Date('1990-10-10T00:00:00.000Z'),
   individualTitle: title,
@@ -126,6 +135,8 @@ const partyIndividualCCD: CCDParty = {
 };
 
 const partySoleTraderCCD: CCDParty = {
+  idamEmail: undefined,
+  idamId: undefined,
   companyName: undefined,
   individualDateOfBirth: undefined,
   individualFirstName: undefined,
@@ -145,7 +156,7 @@ const partySoleTraderCCD: CCDParty = {
 
 describe('translate party to ccd model', () => {
   it('should translate COMPANY party to ccd', () => {
-    const partyResponseCCD = toCCDParty(partyCompany);
+    const partyResponseCCD = toCCDParty(partyCompany, mockedAppRequest, true);
     expect(partyResponseCCD).toMatchObject(partyCompanyCCD);
   });
 
@@ -158,17 +169,17 @@ describe('translate party to ccd model', () => {
       type: PartyType.ORGANISATION,
     };
 
-    const partyResponseCCD = toCCDParty(party);
+    const partyResponseCCD = toCCDParty(party, mockedAppRequest, true);
     expect(partyResponseCCD).toMatchObject(partyOrganisationCCD);
   });
 
   it('should translate INDIVIDUAL party to ccd', () => {
-    const partyResponseCCD = toCCDParty(partyIndividual);
+    const partyResponseCCD = toCCDParty(partyIndividual, mockedAppRequest, true);
     expect(partyResponseCCD).toMatchObject(partyIndividualCCD);
   });
 
   it('should translate SOLE TRADER party to ccd', () => {
-    const partyResponseCCD = toCCDParty(partySoleTrader);
+    const partyResponseCCD = toCCDParty(partySoleTrader, mockedAppRequest, true);
     expect(partyResponseCCD).toMatchObject(partySoleTraderCCD);
   });
 });

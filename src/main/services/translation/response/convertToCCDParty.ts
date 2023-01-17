@@ -1,9 +1,10 @@
-import {CCDParty} from '../../../common/models/ccdResponse/ccdParty';
-import {Party} from '../../../common/models/party';
-import {PartyType} from '../../../common/models/partyType';
+import {CCDParty} from 'models/ccdResponse/ccdParty';
+import {Party} from 'models/party';
+import {PartyType} from 'models/partyType';
 import {toCCDAddress} from './convertToCCDAddress';
+import {AppRequest} from 'models/AppRequest';
 
-export const toCCDParty = (party: Party): CCDParty => {
+export const toCCDParty = (party: Party, req: AppRequest, translateIdamFields: boolean): CCDParty => {
   return {
     companyName: party?.type === PartyType.COMPANY ? party?.partyDetails?.partyName : undefined,
     individualDateOfBirth: party?.type === PartyType.INDIVIDUAL ? party?.dateOfBirth?.date : undefined,
@@ -20,5 +21,7 @@ export const toCCDParty = (party: Party): CCDParty => {
     soleTraderTitle: party?.type === PartyType.SOLE_TRADER ? party?.partyDetails?.individualTitle : undefined,
     soleTraderTradingAs: party?.partyDetails?.soleTraderTradingAs,
     type: party?.type,
+    idamEmail: translateIdamFields ? req.session?.user?.email : undefined,
+    idamId: translateIdamFields ? req.session?.user?.id : undefined,
   };
 };
