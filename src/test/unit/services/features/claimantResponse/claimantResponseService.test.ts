@@ -38,14 +38,14 @@ import {PaymentOptionType} from '../../../../../main/common/form/models/admissio
 import {CcjPaymentOption} from 'form/models/claimantResponse/ccj/ccjPaymentOption';
 import {TransactionSource} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSource';
 import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
-import { PartialAdmission } from 'common/models/partialAdmission';
-import { PaymentIntention } from 'common/form/models/admission/paymentIntention';
-import { HowMuchDoYouOwe } from 'common/form/models/admission/partialAdmission/howMuchDoYouOwe';
-import { ResponseType } from 'common/form/models/responseType';
-import { Party } from 'common/models/party';
-import { formatDateToFullDate } from 'common/utils/dateUtils';
-import { getFinalPaymentDate } from 'common/utils/repaymentUtils';
-import { t } from 'i18next';
+import {PartialAdmission} from 'common/models/partialAdmission';
+import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
+import {HowMuchDoYouOwe} from 'common/form/models/admission/partialAdmission/howMuchDoYouOwe';
+import {ResponseType} from 'common/form/models/responseType';
+import {Party} from 'common/models/party';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {getFinalPaymentDate} from 'common/utils/repaymentUtils';
+import {t} from 'i18next';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
