@@ -22,17 +22,9 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t('PAGES.FULL_ADMIT_SET_DATE_PAYMENT.TITLE') }}</h1>
-          <p class="govuk-body">
-            {{ defendantResponse }}
-            {# {{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.HOW_THEY_WANT_TO_PAY_RESPONSE',{
-                                                                                                  amount: claim.partialAdmission.howMuchDoYouOwe.amount,
-                                                                                                  paymentDate: paymentDate}) }} #}
-          </p>
+          <p class="govuk-body">{{ defendantResponse }}</p>
           <h2 class="govuk-heading-s">{{ unableToPayFullAmunt }}</h2>
-          {# <h2 class="govuk-heading-s">{{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.UNABLE_TO_PAY_FULL_AMOUNT') }}</h2> #}
-          <p
-            class="govuk-body">
-            {# {{ t(claim.statementOfMeans.explanation.text) }} #}
+          <p class="govuk-body">
             {{ reasonsWhyYouCantPayImmediately }}
           </p>
           {% if claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS %}
