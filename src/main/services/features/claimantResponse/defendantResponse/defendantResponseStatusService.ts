@@ -1,6 +1,5 @@
 import {DashboardDefendantItem} from 'common/models/dashboard/dashboardItem';
 import {DefendantResponseStatus} from 'models/DefendantResponseStatus';
-import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {t} from 'i18next';
 import { Claim } from 'common/models/claim';
 
@@ -9,7 +8,7 @@ const daysRemainingString = (days: number): string => {
     return t('PAGES.DASHBOARD.DAYS_REMAINING', {days: days});
   } else if(days < 0) {
     return t('PAGES.DASHBOARD.DAYS_OVERDUE', {days: days});
-  } else if(days == 0) {
+  } else if(days === 0) {
     return t('PAGES.DASHBOARD.DUE_TODAY');
   }
 };
@@ -25,14 +24,14 @@ export const getStringStatus = (item: DashboardDefendantItem, claim: Claim): str
         t('PAGES.DASHBOARD.ELIGIBLE_FOR_CCJ_STILL_CAN_RESPOND');
 
     case DefendantResponseStatus.ELIGIBLE_FOR_CCJ_AFTER_FULL_ADMIT_PAY_IMMEDIATELY_PAST_DEADLINE:
-      if(claim.fullAdmission.paymentIntention.paymentOption == PaymentOptionType.IMMEDIATELY ||
-        claim.partialAdmission.paymentIntention.paymentOption == PaymentOptionType.IMMEDIATELY)
+      if(claim.isFAPaymentOptionPayImmediately() ||
+        claim.isPAPaymentOptionPayImmediately())
         return t('PAGES.DASHBOARD.PAST_DEADLINE_IMMEDIATELY');
-      if(claim.fullAdmission.paymentIntention.paymentOption == PaymentOptionType.BY_SET_DATE ||
-        claim.partialAdmission.paymentIntention.paymentOption == PaymentOptionType.BY_SET_DATE)
+      if(claim.isFAPaymentOptionBySetDate() ||
+        claim.isPAPaymentOptionByDate())
         return t('PAGES.DASHBOARD.PAST_DEADLINE_BY_SPECIFIED_DATE', { paymentDate: claim.fullAdmission.paymentIntention.paymentDate });
-      if(claim.fullAdmission.paymentIntention.paymentOption == PaymentOptionType.INSTALMENTS ||
-        claim.partialAdmission.paymentIntention.paymentOption == PaymentOptionType.INSTALMENTS)
+      if(claim.isFAPaymentOptionInstallments() ||
+        claim.isPAPaymentOptionInstallments())
         return t('PAGES.DASHBOARD.PAST_DEADLINE_INSTALMENTS');
       break;
 

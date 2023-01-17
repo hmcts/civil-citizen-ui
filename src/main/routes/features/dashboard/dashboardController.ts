@@ -33,7 +33,7 @@ function renderPage(res: Response, claimsAsClaimant: DashboardClaimantItem[], cl
 const dashboardController = Router();
 
 const updateStatusForDefendantCases = async (claimsAsDefendant: DashboardDefendantItem[], req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>) => {
-  if(claimsAsDefendant != undefined) {
+  if(claimsAsDefendant !== undefined) {
     for(let i = 0; i < claimsAsDefendant.length; i++) {
       const defendantClaim = claimsAsDefendant[i];
       const claim = await getClaimById(defendantClaim.claimId, req);
