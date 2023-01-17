@@ -1,4 +1,3 @@
-import {DateTime} from 'luxon';
 import {YesNoUpperCamelCase} from '../../../common/form/models/yesNo';
 import {InterestClaimOptionsType} from '../../../common/form/models/claim/interest/interestClaimOptionsType';
 import {CCDClaim} from '../../../common/models/civilClaimResponse';
@@ -27,7 +26,7 @@ export const translateDraftClaimToCCD = (claim: Claim): CCDClaim => {
     breakDownInterestDescription: claim.interest?.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST ? claim.interest?.totalInterest?.reason : undefined,
     sameRateInterestSelection: toCCDSameRateInterestSelection(claim.interest?.sameRateInterestSelection),
     interestClaimFrom: claim.interest?.interestClaimFrom,
-    interestFromSpecificDate: DateTime.fromJSDate(new Date(claim.interest?.interestStartDate?.date)).toFormat('yyyy-MM-dd'),
+    interestFromSpecificDate: claim.interest?.interestStartDate?.date,
     interestFromSpecificDateDescription: claim.interest?.interestStartDate?.reason,
     interestClaimUntil: claim.interest?.interestEndDate,
   };

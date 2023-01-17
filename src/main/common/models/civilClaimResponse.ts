@@ -89,7 +89,7 @@ export interface CCDClaim extends ClaimUpdate {
   breakDownInterestDescription?: string,
   sameRateInterestSelection?: CCDSameRateInterestSelection,
   interestClaimFrom?: InterestClaimFromType,
-  interestFromSpecificDate?: string,
+  interestFromSpecificDate?: Date,
   interestFromSpecificDateDescription?: string,
   interestClaimUntil?: InterestEndDateType,
   respondent1ClaimResponseTypeForSpec?: string;
