@@ -40,12 +40,11 @@ reviewDefendantsResponseController.post(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESP
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim: Claim = await getCaseDataFromStore(claimId);
+    const financialDetails = getFinancialDetails(claim, lang);
     const continueLink = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL);
-    let financialDetails: object[];
     let repaymentPlan: object;
     switch (claim?.responseStatus) {
       case ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE:
-        financialDetails = getFinancialDetails(claim, lang);
         res.render(howDoTheyWantToPayViewPath, {
           claim,
           continueLink,
@@ -54,7 +53,6 @@ reviewDefendantsResponseController.post(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESP
         });
         break;
       case ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS:
-        financialDetails = getFinancialDetails(claim, lang);
         repaymentPlan = constructRepaymentPlanSection(claim, getLng(lang));
         res.render(howDoTheyWantToPayViewPath, {
           claim,
@@ -65,6 +63,7 @@ reviewDefendantsResponseController.post(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESP
         break;
       default:
         res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
+        break;
     }
   } catch (error) {
     next(error);
