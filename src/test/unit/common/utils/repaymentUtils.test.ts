@@ -12,9 +12,54 @@ import {
   getPaymentAmount,
   getRepaymentFrequency,
   convertFrequencyToText,
+  getConvertFrequencyToText,
+  getRepaymentLength,
+  getAmount,
 } from 'common/utils/repaymentUtils';
 import {createClaimWithBasicRespondentDetails} from '../../../utils/mockClaimForCheckAnswers';
 import {t} from 'i18next';
+import {YesNo} from 'common/form/models/yesNo';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import { Claim } from 'common/models/claim';
+
+const getClaimForFA = (repaymentFrequency:TransactionSchedule) => {
+  const claim = new Claim();
+  const respondent1 = new Party();
+  respondent1.responseType = ResponseType.FULL_ADMISSION;
+  claim.totalClaimAmount = 1000;
+  claim.respondent1 = respondent1;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
+  claim.fullAdmission.paymentIntention.repaymentPlan = {
+    paymentAmount: 50,
+    repaymentFrequency: repaymentFrequency,
+    firstRepaymentDate: new Date(Date.now()),
+  };
+
+  return claim;
+};
+
+const getClaimForPA = (repaymentFrequency:TransactionSchedule) => {
+  const claim = new Claim();
+  claim.totalClaimAmount = 1000;
+  claim.respondent1 = new Party();
+  claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+  claim.partialAdmission = new PartialAdmission();
+  claim.partialAdmission.paymentIntention = new PaymentIntention();
+  claim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe();
+  claim.partialAdmission.alreadyPaid = {
+    option: YesNo.NO,
+  };
+  claim.partialAdmission.howMuchDoYouOwe.amount = 200;
+  claim.partialAdmission.howMuchDoYouOwe.totalAmount = 1000;
+  claim.partialAdmission.paymentIntention.repaymentPlan = {
+    paymentAmount: 50,
+    repaymentFrequency: repaymentFrequency,
+    firstRepaymentDate: new Date(Date.now()),
+  };
+  return claim;
+};
 
 describe('repaymentUtils', () => {
 
@@ -167,6 +212,276 @@ describe('repaymentUtils', () => {
     it('should translate frequency monthly to text', () => {
       const result = convertFrequencyToText(TransactionSchedule.MONTH, 'en');
       expect(result).toBe(t('COMMON.FREQUENCY_OF_PAYMENTS.MONTHLY'));
+    });
+  });
+
+  describe('getRepaymentFrequency', () => {
+    it('should return weekly payment frequency of repayment plan when response type is full admission', () => {
+      //Given
+      const claim = getClaimForFA(TransactionSchedule.WEEK);
+      //When
+      const result = getRepaymentFrequency(claim);
+      //Then
+      expect(result).toBe(TransactionSchedule.WEEK);
+    });
+
+    it('should return two weeks payment frequency of repayment plan when response type is full admission', () => {
+      //Given
+      const claim = getClaimForFA(TransactionSchedule.TWO_WEEKS);
+      //When
+      const result = getRepaymentFrequency(claim);
+      //Then
+      expect(result).toBe(TransactionSchedule.TWO_WEEKS);
+    });
+
+    it('should return monthly payment frequency of repayment plan when response type is full admission', () => {
+      //Given
+      const claim = getClaimForFA(TransactionSchedule.MONTH);
+      //When
+      const result = getRepaymentFrequency(claim);
+      //Then
+      expect(result).toBe(TransactionSchedule.MONTH);
+    });
+
+    it('should return weekly payment frequency of repayment plan when response type is part admission', () => {
+      //Given
+      const claim = getClaimForFA(TransactionSchedule.WEEK);
+      //When
+      const result = getRepaymentFrequency(claim);
+      //Then
+      expect(result).toBe(TransactionSchedule.WEEK);
+    });
+
+    it('should return two weeks payment frequency of repayment plan when response type is part admission', () => {
+      //Given
+      const claim = getClaimForFA(TransactionSchedule.TWO_WEEKS);
+      //When
+      const result = getRepaymentFrequency(claim);
+      //Then
+      expect(result).toBe(TransactionSchedule.TWO_WEEKS);
+    });
+
+    it('should return monthly payment frequency of repayment plan when response type is part admission', () => {
+      //Given
+      const claim = getClaimForFA(TransactionSchedule.MONTH);
+      //When
+      const result = getRepaymentFrequency(claim);
+      //Then
+      expect(result).toBe(TransactionSchedule.MONTH);
+    });
+  });
+
+  describe('getPaymentAmount', () => {
+    it('should return payment amount of repayment plan when response type is full admission on weekly schedule', () => {
+      //Given
+      const claim = getClaimForFA(TransactionSchedule.WEEK);
+      //When
+      const result = getPaymentAmount(claim);
+      //Then
+      expect(result).toBe(50);
+    });
+
+    it('should return payment amount of repayment plan when response type is full admission on two weeks schedule', () => {
+      //Given
+      const claim = getClaimForFA(TransactionSchedule.TWO_WEEKS);
+      //When
+      const result = getPaymentAmount(claim);
+      //Then
+      expect(result).toBe(50);
+    });
+
+    it('should return payment amount of repayment plan when response type is full admission on monthly schedule', () => {
+      //Given
+      const claim = getClaimForFA(TransactionSchedule.MONTH);
+      //When
+      const result = getPaymentAmount(claim);
+      //Then
+      expect(result).toBe(50);
+    });
+
+    it('should return payment amount of repayment plan when response type is part admission on weekly schedule', () => {
+      //Given
+      const claim = getClaimForPA(TransactionSchedule.WEEK);
+      //When
+      const result = getPaymentAmount(claim);
+      //Then
+      expect(result).toBe(50);
+    });
+
+    it('should return payment amount of repayment plan when response type is part admission two weeks schedule', () => {
+      //Given
+      const claim = getClaimForPA(TransactionSchedule.TWO_WEEKS);
+      //When
+      const result = getPaymentAmount(claim);
+      //Then
+      expect(result).toBe(50);
+    });
+
+    it('should return payment amount of repayment plan when response type is part admission monthly schedule', () => {
+      //Given
+      const claim = getClaimForPA(TransactionSchedule.MONTH);
+      //When
+      const result = getPaymentAmount(claim);
+      //Then
+      expect(result).toBe(50);
+    });
+  });
+
+  describe('getAmount', () => {
+    it('should return amount you owe when response type is part admission on weekly schedule', () => {
+      //Given
+      const claim = getClaimForPA(TransactionSchedule.WEEK);
+      //When
+      const result = getAmount(claim);
+      //Then
+      expect(result).toBe(200);
+    });
+
+    it('should return amount you owe when response type is part admission on two weeks schedule', () => {
+      //Given
+      const claim = getClaimForPA(TransactionSchedule.TWO_WEEKS);
+      //When
+      const result = getAmount(claim);
+      //Then
+      expect(result).toBe(200);
+    });
+
+    it('should return amount you owe when response type is part admission on monthly schedule', () => {
+      //Given
+      const claim = getClaimForPA(TransactionSchedule.MONTH);
+      //When
+      const result = getAmount(claim);
+      //Then
+      expect(result).toBe(200);
+    });
+
+    it('should return total claim amount when response type is full admission on weekly schedule', () => {
+      //Given
+      const claim = getClaimForFA(TransactionSchedule.WEEK);
+      //When
+      const result = getAmount(claim);
+      //Then
+      expect(result).toBe(1000);
+    });
+
+    it('should return total claim amount when response type is full admission on two weeks schedule', () => {
+      //Given
+      const claim = getClaimForFA(TransactionSchedule.TWO_WEEKS);
+      //When
+      const result = getAmount(claim);
+      //Then
+      expect(result).toBe(1000);
+    });
+
+    it('should return total claim amount when response type is full admission on monthly schedule', () => {
+      //Given
+      const claim = getClaimForFA(TransactionSchedule.MONTH);
+      //When
+      const result = getAmount(claim);
+      //Then
+      expect(result).toBe(1000);
+    });
+  });
+
+  describe('getConvertFrequencyToText', () => {
+    it('should convert translate frequency weekly to text when response type is part admission', () => {
+      //Given
+      const claim = getClaimForPA(TransactionSchedule.WEEK);
+      //When
+      const result = getConvertFrequencyToText(claim, 'en');
+      //Then
+      expect(result).toBe(t('COMMON.FREQUENCY_OF_PAYMENTS.WEEKLY'));
+    });
+    it('should convert translate frequency two weeks to text when response type is part admission', () => {
+      //Given
+      const claim = getClaimForPA(TransactionSchedule.TWO_WEEKS);
+      //When
+      const result = getConvertFrequencyToText(claim, 'en');
+      //Then
+      expect(result).toBe(t('COMMON.FREQUENCY_OF_PAYMENTS.TWO_WEEKS'));
+    });
+    it('should convert translate frequency monthly to text when response type is part admission', () => {
+      //Given
+      const claim = getClaimForPA(TransactionSchedule.MONTH);
+      //When
+      const result = getConvertFrequencyToText(claim, 'en');
+      //Then
+      expect(result).toBe(t('COMMON.FREQUENCY_OF_PAYMENTS.MONTHLY'));
+    });
+    it('should convert translate frequency weekly to text when response type is full admission', () => {
+      //Given
+      const claim = getClaimForFA(TransactionSchedule.WEEK);
+      //When
+      const result = getConvertFrequencyToText(claim, 'en');
+      //Then
+      expect(result).toBe(t('COMMON.FREQUENCY_OF_PAYMENTS.WEEKLY'));
+    });
+    it('should convert translate frequency two weeks to text when response type is full admission', () => {
+      //Given
+      const claim = getClaimForFA(TransactionSchedule.TWO_WEEKS);
+      //When
+      const result = getConvertFrequencyToText(claim, 'en');
+      //Then
+      expect(result).toBe(t('COMMON.FREQUENCY_OF_PAYMENTS.TWO_WEEKS'));
+    });
+    it('should convert translate frequency monthly to text when response type is full admission', () => {
+      //Given
+      const claim = getClaimForFA(TransactionSchedule.MONTH);
+      //When
+      const result = getConvertFrequencyToText(claim, 'en');
+      //Then
+      expect(result).toBe(t('COMMON.FREQUENCY_OF_PAYMENTS.MONTHLY'));
+    });
+  });
+
+  describe('getRepaymentLength', () => {
+    it('should return repayment length when response type is part admission on weekly schedule', () => {
+      //Given
+      const claim = getClaimForPA(TransactionSchedule.WEEK);
+      //When
+      const repaymentLength = getRepaymentLength(claim, 'en');
+      //Then
+      expect(repaymentLength).toContain('4');
+    });
+    it('should return repayment length when response type is part admission on two weeks schedule', () => {
+      //Given
+      const claim = getClaimForPA(TransactionSchedule.TWO_WEEKS);
+      //When
+      const repaymentLength = getRepaymentLength(claim, 'en');
+      //Then
+      expect(repaymentLength).toContain('8');
+    });
+    it('should return repayment length when response type is part admission on monthly schedule', () => {
+      //Given
+      const claim = getClaimForPA(TransactionSchedule.MONTH);
+      //When
+      const repaymentLength = getRepaymentLength(claim, 'en');
+      //Then
+      expect(repaymentLength).toContain('4');
+    });
+    it('should return repayment length when response type is full admission on weekly schedule', () => {
+      //Given
+      const claim = getClaimForFA(TransactionSchedule.WEEK);
+      //When
+      const repaymentLength = getRepaymentLength(claim, 'en');
+      //Then
+      expect(repaymentLength).toContain('20');
+    });
+    it('should return repayment length when response type is full admission on two weeks schedule', () => {
+      //Given
+      const claim = getClaimForFA(TransactionSchedule.TWO_WEEKS);
+      //When
+      const repaymentLength = getRepaymentLength(claim, 'en');
+      //Then
+      expect(repaymentLength).toContain('40');
+    });
+    it('should return repayment length when response type is full admission on monthly schedule', () => {
+      //Given
+      const claim = getClaimForFA(TransactionSchedule.MONTH);
+      //When
+      const repaymentLength = getRepaymentLength(claim, 'en');
+      //Then
+      expect(repaymentLength).toContain('20');
     });
   });
 });

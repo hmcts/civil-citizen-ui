@@ -28,6 +28,7 @@ import * as urls from '../../routes/urls';
 import {InterestClaimOptionsType} from '../../common/form/models/claim/interest/interestClaimOptionsType';
 import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
 import {CourtProposedPlanOptions} from 'common/form/models/claimantResponse/courtProposedPlan';
+import {ClaimResponseStatus} from 'common/models/claimResponseStatus';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -124,6 +125,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('ClaimBilingualLanguagePreference', ClaimBilingualLanguagePreference);
     nunjucksEnv.addGlobal('CourtProposedPlanOptions', CourtProposedPlanOptions);
     nunjucksEnv.addGlobal('CaseState', CaseState);
+    nunjucksEnv.addGlobal('ClaimResponseStatus', ClaimResponseStatus);
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;

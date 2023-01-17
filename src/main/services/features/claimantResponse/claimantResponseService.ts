@@ -13,6 +13,9 @@ import {currencyFormatWithNoTrailingZeros} from '../../../common/utils/currencyF
 import {YesNo} from '../../../common/form/models/yesNo';
 import {EmploymentCategory} from '../../../common/form/models/statementOfMeans/employment/employmentCategory';
 import {PriorityDebts} from '../../../common/form/models/statementOfMeans/priorityDebts';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {getConvertFrequencyToText, getFinalPaymentDate, getRepaymentLength} from 'common/utils/repaymentUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -53,6 +56,62 @@ const saveClaimantResponse = async (claimId: string, value: any, claimantRespons
     logger.error(error);
     throw error;
   }
+};
+
+const constructRepaymentPlanSection = (claim: Claim, lng: string) => {
+  const sectionRows = [];
+
+  if (claim.partialAdmission?.alreadyPaid?.option === YesNo.NO && claim.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS) {
+    sectionRows.push(
+      {
+        key: {
+          text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.REGULAR_PAYMENTS', {lng}),
+        },
+        value: {
+          text: currencyFormatWithNoTrailingZeros(Number(claim.partialAdmission?.paymentIntention?.repaymentPlan?.paymentAmount)),
+        },
+        classes: 'govuk-summary-list__row--no-border',
+      },
+      {
+        key: {
+          text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.FREQUENCY_OF_PAYMENTS', {lng}),
+        },
+        value: {
+          text: getConvertFrequencyToText(claim, lng),
+        },
+        classes: 'govuk-summary-list__row--no-border',
+      },
+      {
+        key: {
+          text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.FIRST_PAYMENT_DATE', {lng}),
+        },
+        value: {
+          text: formatDateToFullDate(claim.partialAdmission?.paymentIntention?.repaymentPlan?.firstRepaymentDate,lng),
+        },
+        classes: 'govuk-summary-list__row--no-border',
+      },
+      {
+        key: {
+          text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.FINAL_PAYMENT_DATE', {lng}),
+        },
+        value: {
+          text: formatDateToFullDate(getFinalPaymentDate(claim), lng),
+        },
+        classes: 'govuk-summary-list__row--no-border',
+      },
+      {
+        key: {
+          text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.LENGTH', {lng}),
+        },
+        value: {
+          text: getRepaymentLength(claim, lng),
+        },
+        classes: 'govuk-summary-list__row--no-border',
+      },
+    );
+  }
+
+  return sectionRows;
 };
 
 const constructBanksAndSavingsAccountSection = (claim: Claim, lng: string) => {
@@ -419,6 +478,20 @@ const constructCourtOrdersSection = (claim: Claim, lng: string) => {
   return sectionRows;
 };
 
+const hasDebtAmount = (priorityDebts: PriorityDebts) => {
+  let amountFlag = false;
+  if (priorityDebts) {
+    const priorityDebtsKeys = Object.keys(priorityDebts);
+    priorityDebtsKeys.forEach((priorityDebtKey) => {
+      const priorityDebt = priorityDebts[priorityDebtKey as keyof PriorityDebts];
+      if (priorityDebt?.transactionSource?.amount) {
+        return amountFlag = true;
+      }
+    });
+  }
+  return amountFlag;
+};
+
 const constructDebtsSection = (claim: Claim, lng: string) => {
   const sectionRows = [];
   const priorityDebts = claim.getPriorityDebts();
@@ -430,7 +503,7 @@ const constructDebtsSection = (claim: Claim, lng: string) => {
       text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.DEBTS_BEHIND_ON', {lng}),
     },
     value: {
-      text: priorityDebts ? t('COMMON.YES', {lng}) : t('COMMON.NO', {lng}),
+      text: hasDebtAmount(priorityDebts) ? t('COMMON.YES', {lng}) : t('COMMON.NO', {lng}),
     },
     classes: 'govuk-summary-list__row--no-border',
   });
@@ -439,24 +512,26 @@ const constructDebtsSection = (claim: Claim, lng: string) => {
     const priorityDebtsKeys = Object.keys(priorityDebts);
     priorityDebtsKeys.forEach((priorityDebtKey) => {
       const priorityDebt = priorityDebts[priorityDebtKey as keyof PriorityDebts] ;
-      sectionRows.push({
-        key: {
-          text: t('COMMON.DEBT', {lng}),
-        },
-        value: {
-          text: translatePriorityDebt(priorityDebtKey, lng),
-        },
-        classes: 'govuk-summary-list__row--no-border',
-      });
+      if (priorityDebt?.transactionSource?.amount) {
+        sectionRows.push({
+          key: {
+            text: t('COMMON.DEBT', { lng }),
+          },
+          value: {
+            text: translatePriorityDebt(priorityDebtKey, lng),
+          },
+          classes: 'govuk-summary-list__row--no-border',
+        });
 
-      sectionRows.push({
-        key: {
-          text: translateRepaymentSchedule(priorityDebt?.transactionSource?.schedule, lng),
-        },
-        value: {
-          text: currencyFormatWithNoTrailingZeros(priorityDebt?.transactionSource?.amount),
-        },
-      });
+        sectionRows.push({
+          key: {
+            text: translateRepaymentSchedule(priorityDebt?.transactionSource?.schedule, lng),
+          },
+          value: {
+            text: currencyFormatWithNoTrailingZeros(priorityDebt.transactionSource.amount),
+          },
+        });
+      }
     });
   }
 
@@ -531,6 +606,7 @@ export {
   constructMonthlyExpensesSection,
   constructCourtOrdersSection,
   constructDebtsSection,
+  constructRepaymentPlanSection,
   getFinancialDetails,
   getClaimantResponse,
   saveClaimantResponse,

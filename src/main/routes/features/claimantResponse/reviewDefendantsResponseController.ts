@@ -3,7 +3,7 @@ import {CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL, CLAIMANT_RESPONSE_TASK
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {getFinancialDetails} from 'services/features/claimantResponse/claimantResponseService';
+import {constructRepaymentPlanSection,getFinancialDetails} from 'services/features/claimantResponse/claimantResponseService';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {
   getDefendantsResponseContent,
@@ -12,6 +12,7 @@ import {ClaimResponseStatus} from 'models/claimResponseStatus';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 
 const reviewDefendantsResponseController = Router();
+const howDoTheyWantToPayViewPath = 'features/claimantResponse/how-they-want-to-pay-response';
 
 reviewDefendantsResponseController.get(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -41,13 +42,23 @@ reviewDefendantsResponseController.post(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESP
     const continueLink = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL);
     if (claim?.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE) {
       const financialDetails = getFinancialDetails(claim, lang);
-      res.render('features/claimantResponse/how-they-want-to-pay-response', {
+      res.render(howDoTheyWantToPayViewPath, {
         claim,
         continueLink,
         financialDetails,
         paymentDate: formatDateToFullDate(claim.partialAdmission.paymentIntention.paymentDate, lang),
       });
-    } else {
+    } else if (claim?.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS) {
+      const financialDetails = getFinancialDetails(claim, lang);
+      const repaymentPlan = constructRepaymentPlanSection(claim, getLng(lang));
+      res.render(howDoTheyWantToPayViewPath, {
+        claim,
+        continueLink,
+        financialDetails,
+        repaymentPlan,
+      });
+    }
+    else {
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
     }
 

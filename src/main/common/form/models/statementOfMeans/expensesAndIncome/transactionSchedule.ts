@@ -4,3 +4,8 @@ export enum TransactionSchedule {
   FOUR_WEEKS = 'FOUR_WEEKS',
   MONTH = 'MONTH',
 }
+
+export enum FrequencyOfPayment {
+  MONTHLY = 'Monthly',
+  WEEKLY = 'Weekly',
+}

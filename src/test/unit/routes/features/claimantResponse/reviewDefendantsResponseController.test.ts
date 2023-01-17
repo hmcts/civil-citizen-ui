@@ -14,7 +14,8 @@ import {ResponseType} from 'form/models/responseType';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {Party} from 'models/party';
 import {PartialAdmission} from 'models/partialAdmission';
-import {PaymentIntention} from 'form/models/admission/partialAdmission/paymentIntention';
+import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
+import { ClaimResponseStatus } from 'common/models/claimResponseStatus';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -61,7 +62,8 @@ describe('Review Defendant\'s Response Controller', () => {
     });
   });
 
-  it('should redirect *How they want to pay* page', async () => {
+  it('should redirect *How they want to pay* page when claimant response status is set to partial admit paid by set date', async () => {
+    claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE;
     claim.respondent1 = new Party();
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
     claim.partialAdmission = new PartialAdmission();
@@ -76,6 +78,23 @@ describe('Review Defendant\'s Response Controller', () => {
       });
   });
 
+  it('should redirect *How they want to pay* page when claimant response status is set to partial admit paid by instalments', async () => {
+    claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS;
+    claim.respondent1 = new Party();
+    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+    claim.partialAdmission = new PartialAdmission();
+    claim.partialAdmission.paymentIntention = new PaymentIntention();
+    claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
+    mockGetCaseData.mockImplementation(() => claim);
+    await request(app)
+      .post(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('How they want to pay');
+        expect(res.text).toContain('The defendant suggested this repayment plan:');
+      });
+  });
+
   it('should redirect to claimant response task list.', async () => {
     claim.respondent1 = new Party();
     claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
@@ -87,5 +106,4 @@ describe('Review Defendant\'s Response Controller', () => {
         expect(res.header.location).toEqual('VALID_URL');
       });
   });
-
 });
