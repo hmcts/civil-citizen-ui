@@ -62,7 +62,8 @@
       "SIGN_AND_SUBMIT_RESPONSE": "Sign and submit",
       "SUBMIT_CLAIM": "Submit claim",
       "SUBMIT_RESPONSE": "Cyflwyno'r ymateb",
-      "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})"
+      "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})",
+      "SUBMIT": "Submit"
     },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Treth Cyngor",
@@ -171,6 +172,11 @@
       "TWO_WEEKS": "Pob pythefnos",
       "MONTH": "Pob mis"
     },
+    "FREQUENCY_OF_PAYMENTS": {
+      "TWO_WEEKS": "Every 2 Weeks",
+      "MONTHLY": "Monthly",
+      "WEEKLY": "Weekly"
+    },
     "PAYMENT_OPTION": {
       "BY_SET_DATE": "Erbyn dyddiad penodol",
       "IMMEDIATELY": "Ar unwaith",
@@ -190,7 +196,7 @@
       "TELEPHONE": "Tel: 0300 303 5174"
     },
     "POSTCODE": {
-      "ADDESSES_FOUND": "addresses found (Welsh)",
+      "ADDESSES_FOUND": "wedi dod o hyd i gyfeiriadau",
       "FIND_ADDRESS": "Dod o hyd i gyfeiriad",
       "MANUAL_ADDRESS": "Teipio'r cyfeiriad",
       "PICK_ADDRESS": "Dewiswch gyfeiriad",
@@ -213,7 +219,8 @@
       "WEEK_LOWER_CASE": "wythnos",
       "WEEKS_LOWER_CASE": "wythnos",
       "MONTHS_LOWER_CASE": "mis",
-      "TWO_MONTHS_LOWER_CASE": "2 fis"
+      "TWO_MONTHS_LOWER_CASE": "2 fis",
+      "TWO_WEEKS_LOWER_CASE": "pythefnos"
     },
     "STATEMENT_OF_TRUTH": {
       "CORRECT_INFORMATION_CONFIRMATION": "Rwy'n cadarnhau fy mod i'n credu bod y manylion rwyf wedi'u darparu yn gywir.",
@@ -313,6 +320,16 @@
       "DESCRIPTION": "You can respond to this claim in Welsh. After you've submitted your response, anything else you may have to do relating to the claim will be in English. You'll receive emails and letters in English.",
       "ENGLISH": "English",
       "WELSH_AND_ENGLISH": "Welsh and English"
+    },
+    "BREATHING_SPACE_DEBT_RESPITE_LIFT": {
+      "DATE_LIFT_OPTIONAL": "This is the date that you have been told it will finish (optional):",
+      "PAGE_TITLE": "Date for lifting debt respite scheme (breathing space)",
+      "TITLE": "Date for lifting debt respite scheme (breathing space)"
+    },
+    "BREATHING_SPACE_DEBT_RESPITE_START": {
+      "DATE_START_OPTIONAL": "This is the date it started, not the date you received notification of it (optional).",
+      "PAGE_TITLE": "When did it start?",
+      "TITLE": "When did it start?"
     },
     "BREATHING_SPACE_DEBT_RESPITE_TYPE": {
       "MENTAL_HEALTH": "Mental health crisis moratorium",
@@ -640,6 +657,18 @@
         "PAGE_TITLE": "Try to resolve the dispute",
         "TITLE": "Try to resolve the dispute"
       },
+      "CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS": {
+        "PAGE_TITLE": "Check your answers before submitting",
+        "TITLE": "Check your answers before submitting",
+        "REFERENCE_NUMBER": "Reference number",
+        "WHEN_DID_IT_START": "When did it start",
+        "TYPE": {
+          "WHAT_TYPE_IS_IT": "What type is it",
+          "MENTAL_HEALTH_CRISIS_MORATORIUM": "Mental health crisis moratorium",
+          "STANDARD_BREATHING_SPACE": "Standard breathing space"
+        },
+        "EXPECTED_END_DATE": "Expected end date"
+      },
       "WHEN_CLAIM_INTEREST_FROM": {
         "DATE_INTEREST": "Date interest applied from",
         "FROM_A_SPECIFIC_DATE": "A particular date",
@@ -692,6 +721,31 @@
       "TITLE": "What annual rate of interest do you want to claim?",
       "WHY_YOU_ARE_ENTITLED": "Why you're entitled to this rate"
     },
+    "CLAIMANT_RESPONSE": {
+      "COURT_PROPOSED_PLAN": {
+        "PAGE_TITLE": "The defendant can’t afford your plan",
+        "TITLE": "The defendant can’t afford your plan",
+        "BASED_ON": "Based on the financial details provided by the defendant, we don’t believe they would be able to make these repayments.",
+        "COURT_AFFORDABILITY": "The court affordability calculator has determined a new repayment plan as the most the defendant can repay.",
+        "COURT_PROPOSED_PLAN": "The court’s proposed repayment plan",
+        "REGULAR_PAYMENTS_OF": "Regular payments of",
+        "FREQUENCY_OF_PAYMENTS": "Frequency of payments",
+        "FIRST_PAYMENT_DATE": "First payment date",
+        "LAST_PAYMENT_DATE": "Last payment date",
+        "LENGTH_OF_REPAYMENT": "Length of repayment plan",
+        "DO_YOU_ACCEPT": "Do you accept the court’s proposed repayment plan?",
+        "I_WANT_ACCEPT": "I want to accept this repayment plan",
+        "I_WANT_JUDGE": "I want a judge to make a repayment plan"
+      }
+    },
+    "CLAIMANT_RESPONSE_CONFIRMATION": {
+      "CLAIM_NUMBER": "Your claim number:",
+      "PAGE_TITLE": "Claimant Intention Confirmation",
+      "RC_DISPUTE": {
+        "NOT_PROCEED_WITH_CLAIM": "You didn't proceed with the claim",
+        "CLAIM_ENDED": "The claim has now ended. We've emailed {{ defendantName }} to tell them."
+      }
+    },
     "CLAIMANT_RESPONSE_PROCEED": {
       "PAGE_TITLE": "Do you want to proceed with claim?",
       "TITLE": "Do you want to proceed with claim?"
@@ -728,9 +782,37 @@
       "PAGE_TITLE": "Has the defendant paid you £{{ paidAmount }}?",
       "TITLE": "Has the defendant paid you £{{ paidAmount }}?"
     },
+    "CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED": {
+      "PAGE_TITLE": "Repayment plan accepted",
+      "TITLE": "Repayment plan accepted",
+      "THE_COURT_HAS_ACCEPTED_YOUR_REPAYMENT_PLAN": "The court has accepted your repayment plan"
+    },
     "CLAIMANT_RESPONSE_REJECTION_REASON": {
       "PAGE_TITLE": "Rejection reason",
       "TITLE": "Why did you reject their response?"
+    },
+    "CLAIMANT_TERMS_OF_AGREEMENT": {
+      "PAGE_TITLE": "Terms of the agreement",
+      "TITLE": "Terms of the agreement",
+      "DETAILS": {
+        "THE_AGREEMENT": {
+          "LABEL": "The agreement",
+          "REPAYMENT_PLAN_PART_ONE": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every  ",
+          "REPAYMENT_PLAN_PART_TWO": "The first instalment will be paid by {{ firstRepaymentDate }}"
+        },
+        "COMPLETION_DATE": {
+          "LABEL": "Completion date",
+          "DATE": "{{ finalRepaymentDate }}"
+        },
+        "FIRST_PARAGRAPH": "This agreement settles the claim made by {{ claimant }} against {{ defendant }}. This includes all money owed in the claim, for example court fees, expenses or interest.",
+        "SECOND_PARAGRAPH": "Neither party can make any further claims relating to this case, other than to enforce it.",
+        "THIRD_PARAGRAPH": "Either party can view and download this agreement from their Money Claims account. Both parties should keep a copy of this agreement.",
+        "IF_THE_AGREEMENT_IS_BROKEN": "If the agreement is broken",
+        "CLAIMANT_REQUEST_CCJ": "The claimant can request a County Court Judgment (CCJ) for any money still owed from this agreement.",
+        "SIGN_THE_AGREEMENT": "Sign the agreement",
+        "AGREEMENT_NOTE": "Make sure this agreement includes everything you’ve agreed with {{ defendant }} before signing. You won’t be able to change this later.",
+        "CONFIRMATION": "I confirm I’ve read and accept the terms of the agreement."
+      }
     },
     "COMPANY_DETAILS": {
       "ADDRESS_FOR_SERVICE": "Gelwir hwn yn 'gyfeiriad cyflwyno'.",
@@ -1132,16 +1214,16 @@
     "EXPERT_GUIDANCE": {
       "ASK_PERMISSION": "You must ask for permission to use an expert - a judge will then decide whether the expert is necessary.",
       "CLAIMANT": "claimant",
-      "COST_HIRING_EXPERT": "The cost of hiring an expert depends on which expert you and the {{ otherParty }} choose.",
+      "COST_HIRING_EXPERT": "The cost of hiring an expert depends on which expert you and the other party choose.",
       "EXPERT_REPORT": "The expert will provide a written report - they won't usually come to court in person.",
       "FOR_EXAMPLE": "For example, they might allow a structural engineer to be used in a claim about building works or a mechanic in a claim about car repairs.",
-      "IF_JUDGE_ALLOWS": "If a judge allows you to use an expert, you'll usually have to share one expert with the {{ otherParty }}.",
+      "IF_JUDGE_ALLOWS": "If a judge allows you to use an expert, you'll usually have to share one expert with the other party.",
       "IF_PERMISSION": "If you get permission to use an expert",
       "IF_YOU_WIN": "If you win the case you may be able to recover a maximum of £750 of the cost you paid. A judge will rule on this at the end of the hearing.",
       "JUDGE_ALLOW_EXPERT": "A judge will only allow you to use an expert if they believe they need the expert's specialist knowledge.",
       "JUDGE_DECIDE_COST": "The judge will also decide whether the cost of the expert is reasonable compared to the value of the claim.",
       "JUDGE_MAY_ASK": "The judge may ask one of you to make a list of 3 independent experts who can provide a written report in return for a fee.",
-      "JUDGES_RESPONSIBLE_COST": "Even though you and the {{ otherParty }} share the cost of hiring the expert, judges are still responsible for keeping costs in proportion to value.",
+      "JUDGES_RESPONSIBLE_COST": "Even though you and the other party share the cost of hiring the expert, judges are still responsible for keeping costs in proportion to value.",
       "MUST_AVOID_DISCUSSING": "You must avoid discussing the case in detail with the 3 experts.",
       "OTHER_PARTY_CHOOSES": "The other party then chooses one expert from the list. After that, you both need to follow these steps",
       "PAGE_TITLE": "Expert guidance",
@@ -1992,6 +2074,7 @@
     }
   },
   "ERRORS": {
+    "ACCEPT_REPAYMENT_PLAN": "Select I want to accept this repayment plan to accept the court's proposed repayment plan",
     "ADDRESS_NOT_FOUND": "We can't find an address for that postcode.",
     "AMOUNT_INVALID_DECIMALS": "Rhowch swm, dim mwy na dau le degol",
     "AMOUNT_LESS_THAN_CLAIMED": "Nodwch werth sy'n llai na'r swm a hawlir",
@@ -2001,6 +2084,7 @@
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_NUMBER_REQUIRED": "You need to enter the claim number",
     "CLAIM_VALID_AMOUNT": "Rhowch swm dilys",
+    "CLAIMANT_ACCEPT_TERMS_OF_THE_AGREEMENT": "Please select I confirm I’ve read and accept the terms of the agreement",
     "CORRECT_DATE_NOT_IN_FUTURE": "Cywirwch y dyddiad, ni allwch ddefnyddio dyddiad yn y dyfodol.",
     "DATE_REQUIRED": "Nodwch ddyddiad",
     "DATE_NOT_MORE_THAN_28_DAYS": "Ni all y dyddiad ymateb yr ydych wedi’i gytuno fod mwy na 28 diwrnod ar ôl y dyddiad ymateb gwreiddiol",
@@ -2012,7 +2096,7 @@
     "DEFENDANT_EXPERT_EXPLAIN_EXAMINE": "Eglurwch beth ellir ei archwilio",
     "DEFENDANT_WITNESS_ENTER_FIRST_NAME": "Nodwch enw cyntaf y tyst",
     "DEFENDANT_WITNESS_ENTER_LAST_NAME": "Nodwch enw olaf y tyst",
-    "DEFENDANT_WITNESS_SELECT_OTHER": "Select yes if you have other witnesses",
+    "DEFENDANT_WITNESS_SELECT_OTHER": "Dewiswch oes os oes gennych chi dystion eraill",
     "DEFENDANT_WITNESS_WHAT_THEY_WITNESSED": "Dywedwch wrthym beth welsant",
     "DESCRIPTION_REQUIRED": "Rhowch ddisgrifiad o beth ddigwyddodd",
     "DETAILS_REQUIRED": "Rhowch fanylion",
@@ -2159,6 +2243,7 @@
     "SELECT_YES_IF_DOCUMENTS": "Dewiswch ‘oes’ os oes gan yr hawlydd ddogfennau yr ydych eisiau i’r llys eu hystyried",
     "SELECT_YES_IF_SUPPORT": "Select yes if someone needs support to attend a hearing",
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
+    "SIGNER_NAME_TOO_LONG": "You've entered too many characters",
     "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",
     "SOMETHING_WENT_WRONG": "Something went wrong",
     "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Dywedwch wrthym os ydych yn credu bod y ffeithiau a nodir yn yr ymateb hwn yn wir",
@@ -2166,6 +2251,7 @@
       "SELECT_YES_NO": "Select yes if you want to ask for the hearing to be held at a specific court",
       "SELECT_COURT_LOCATION": "Select a court"
     },
+    "SPECIFY_A_REASON": "You must specify a reason",
     "TELL_US_WHY": "Dywedwch wrthym pam",
     "TELL_US_WHY_UNAVAILABLE": "Tell us why you, your experts or witnesses are unavailable for a hearing",
     "TRANSACTION_SOURCE": {
@@ -2239,6 +2325,7 @@
     "VALID_DATE_IN_PAST": "Nodwch ddyddiad cyn {{dateToday}}",
     "VALID_DATE_NOT_IN_PAST": "Nodwch ddyddiad heddiw neu ddyddiad yn y dyfodol",
     "VALID_DATE_ONE_MONTH_FROM_TODAY": "Date must be at least a month from today's date",
+    "VALID_DATE_LIFT_NOT_AFTER_TODAY": "Date entered must not be after today’s date",
     "VALID_DATE_START_NOT_AFTER_TODAY": "Start date must not be after today's date",
     "VALID_DAY": "Rhowch ddydd dilys",
     "VALID_DEBT_AMOUNT": {

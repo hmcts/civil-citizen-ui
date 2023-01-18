@@ -1,9 +1,7 @@
 import {Claim} from '../../main/common/models/claim';
 import {ResponseType} from '../../main/common/form/models/responseType';
 import {PaymentOptionType} from '../../main/common/form/models/admission/paymentOption/paymentOptionType';
-import {
-  TransactionSchedule,
-} from '../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {TransactionSchedule} from '../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {PartyType} from '../../main/common/models/partyType';
 import {DebtItems} from '../../main/common/form/models/statementOfMeans/debts/debtItems';
 import {Debts} from '../../main/common/form/models/statementOfMeans/debts/debts';
@@ -49,13 +47,12 @@ import {GenericYesNo} from '../../main/common/form/models/genericYesNo';
 import {TimelineRow} from '../../main/common/form/models/timeLineOfEvents/timelineRow';
 import {RejectAllOfClaimType} from '../../main/common/form/models/rejectAllOfClaimType';
 import {InterestClaimOptionsType} from '../../main/common/form/models/claim/interest/interestClaimOptionsType';
-import {
-  InterestClaimFromType,
-  InterestEndDateType,
-  SameRateInterestType,
-} from '../../main/common/form/models/claimDetails';
+import {InterestClaimFromType, InterestEndDateType, SameRateInterestType} from '../../main/common/form/models/claimDetails';
 import {Address} from '../../main/common/form/models/address';
-import {FullAdmission} from 'common/models/fullAdmission';
+import {FullAdmission} from '../../main/common/models/fullAdmission';
+import {DebtRespiteStartDate} from '../../main/common/models/breathingSpace/debtRespiteStartDate';
+import {DebtRespiteEndDate} from '../../main/common/models/breathingSpace/debtRespiteEndDate';
+import {DebtRespiteOptionType} from '../../main/common/models/breathingSpace/debtRespiteOptionType';
 import {ClaimDetails} from '../../main/common/form/models/claim/details/claimDetails';
 import {ClaimantTimeline} from '../../main/common/form/models/timeLineOfEvents/claimantTimeline';
 import {ClaimantResponse} from 'models/claimantResponse';
@@ -1021,7 +1018,7 @@ export const createClaimWithFreeTelephoneMediationSectionForIndividual = (): Cla
   const howMuchDoYouOwe: HowMuchDoYouOwe = new HowMuchDoYouOwe(100, 200);
   const whyDoYouDisagree: WhyDoYouDisagree = new WhyDoYouDisagree('Reasons for disagree');
   const howMuchHaveYouPaid: HowMuchHaveYouPaid = new HowMuchHaveYouPaid(param);
-  const partialAdmission: PartialAdmission = {
+  claim.partialAdmission = {
     whyDoYouDisagree: whyDoYouDisagree,
     howMuchDoYouOwe: howMuchDoYouOwe,
     alreadyPaid: new GenericYesNo(YesNo.YES),
@@ -1029,7 +1026,6 @@ export const createClaimWithFreeTelephoneMediationSectionForIndividual = (): Cla
     timeline,
     paymentIntention: new PaymentIntention(),
   };
-  claim.partialAdmission = partialAdmission;
   claim.mediation = new Mediation({option: YesNo.NO, mediationPhoneNumber: '01632960001'});
 
   return claim as Claim;
@@ -1175,6 +1171,40 @@ export const claimWithClaimAmountOneBreakDown = (): Claim => {
 
   claim.claimAmountBreakup = [{value: {claimAmount: '200', claimReason: 'roof'}}];
 
+  return claim;
+};
+
+export const getClaimWithFewDetails = (): Claim => {
+  const claim = new Claim();
+  claim.claimDetails = new ClaimDetails();
+  claim.claimDetails.breathingSpace = {
+    debtRespiteReferenceNumber: {
+      referenceNumber: 'R225B1230',
+    },
+    debtRespiteOption: {
+      type: DebtRespiteOptionType.STANDARD || DebtRespiteOptionType.MENTAL_HEALTH,
+    },
+    debtRespiteStartDate: new DebtRespiteStartDate('10', 'January', '2022'),
+    debtRespiteEndDate: new DebtRespiteEndDate('10', 'December', '2022'),
+
+  };
+  return claim;
+};
+
+export const getClaimWithNoDetails = (): Claim => {
+  const claim = new Claim();
+  claim.claimDetails = new ClaimDetails();
+  claim.claimDetails.breathingSpace = {
+    debtRespiteReferenceNumber: {
+      referenceNumber: '',
+    },
+    debtRespiteOption: {
+      type: DebtRespiteOptionType.STANDARD || DebtRespiteOptionType.MENTAL_HEALTH,
+    },
+    debtRespiteStartDate: new DebtRespiteStartDate(),
+    debtRespiteEndDate: new DebtRespiteEndDate(),
+
+  };
   return claim;
 };
 
