@@ -142,29 +142,29 @@
         }
       ],
       "interest": {
-        "sameRateInterestSelection": {
-          "sameRateInterestType": "SAME_RATE_INTEREST_8_PC",
-          "reason": ""
-        },
-        "interestClaimFrom": "FROM_A_SPECIFIC_DATE",
-        "interestStartDate": {
-          "date": "2022-08-21T00:00:00.000Z",
-          "year": "2022",
-          "month": "8",
-          "day": "21",
-          "reason": "test 1"
-        },
-        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
-        "interestClaimOptions": "SAME_RATE_INTEREST",
-        "totalInterest": {
-          "amount": "90",
-          "reason": "test"
-        },
-        "continueClaimingInterest": "yes",
-        "howMuchContinueClaiming": {
-          "option": "SAME_RATE_INTEREST_DIFFERENT_RATE",
-          "dailyInterestAmount": "50"
-        }
+          "sameRateInterestSelection": {
+            "sameRateInterestType": "SAME_RATE_INTEREST_8_PC",
+            "reason": ""
+          },
+          "interestClaimFrom": "FROM_A_SPECIFIC_DATE",
+          "interestStartDate": {
+            "date": "2022-08-21T00:00:00.000Z",
+            "year": "2022",
+            "month": "8",
+            "day": "21",
+            "reason": "test 1"
+          },
+          "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+          "interestClaimOptions": "SAME_RATE_INTEREST",
+          "totalInterest": {
+            "amount": "90",
+            "reason": "test"
+          },
+          "continueClaimingInterest": "yes",
+          "howMuchContinueClaiming": {
+            "option": "SAME_RATE_INTEREST_DIFFERENT_RATE",
+            "dailyInterestAmount": "50"
+          }
       },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
@@ -873,7 +873,7 @@
           "phone": "01632960001"
         }
       },
-      "claimInterest": "Yes",
+      "claimInterest": "No",
       "submittedDate": "2022-03-01T11:57:10.592492",
       "totalInterest": 15,
       "claimDetails": {
@@ -903,9 +903,6 @@
           }
         }
       ],
-      "interest": {
-        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
-      },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
         "applicantSolicitor1Reference": "Applicant Reference",
@@ -1337,29 +1334,7 @@
         }
       ],
       "interest": {
-        "sameRateInterestSelection": {
-          "sameRateInterestType": "SAME_RATE_INTEREST_8_PC",
-          "reason": ""
-        },
-        "interestClaimFrom": "FROM_A_SPECIFIC_DATE",
-        "interestStartDate": {
-          "date": "2022-08-21T00:00:00.000Z",
-          "year": "2022",
-          "month": "8",
-          "day": "21",
-          "reason": "test 1"
-        },
-        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
-        "interestClaimOptions": "SAME_RATE_INTEREST",
-        "totalInterest": {
-          "amount": "90",
-          "reason": "test"
-        },
-        "continueClaimingInterest": "yes",
-        "howMuchContinueClaiming": {
-          "option": "SAME_RATE_INTEREST_DIFFERENT_RATE",
-          "dailyInterestAmount": "50"
-        }
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
       },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
@@ -1925,7 +1900,30 @@
         }
       ],
       "interest": {
-        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE"
+        "sameRateInterestSelection": {
+          "sameRateInterestType": "SAME_RATE_INTEREST_DIFFERENT_RATE",
+          "differentRate": "8",
+          "reason": "sd"
+        },
+        "interestClaimFrom": "FROM_A_SPECIFIC_DATE",
+        "interestStartDate": {
+          "date": "2022-08-20T23:00:00.000Z",
+          "year": "2022",
+          "month": "8",
+          "day": "21",
+          "reason": "test 1"
+        },
+        "interestEndDate": "UNTIL_CLAIM_SUBMIT_DATE",
+        "interestClaimOptions": "BREAK_DOWN_INTEREST",
+        "totalInterest": {
+          "amount": 444,
+          "reason": "total days * 8% of 1000"
+        },
+        "continueClaimingInterest": "yes",
+        "howMuchContinueClaiming": {
+          "option": "SAME_RATE_INTEREST_DIFFERENT_RATE",
+          "dailyInterestAmount": 100
+        }
       },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {

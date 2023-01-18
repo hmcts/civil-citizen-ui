@@ -185,7 +185,7 @@ import repaymentPlanAcceptedController from './features/claimantResponse/repayme
 import courtProposedPlanController from './features/claimantResponse/courtProposedPlanController';
 import debtRespiteLiftedController from './features/breathingSpace/debtRespiteLiftedController';
 import claimantResponseConfirmationController from './features/claimantResponse/claimantResponseConfirmationController';
-import judgmentAmountSummaryController from 'routes/features/claimantResponse/ccj/judgmentAmountSummaryController';
+import judgmentAmountSummaryController from './features/claimantResponse/ccj/judgmentAmountSummaryController';
 
 export default [
   homeController,
@@ -354,9 +354,9 @@ export default [
   bilingualLangPreferenceController,
   chooseHowToProceedController,
   repaymentPlanInstalmentsController,
-  judgmentAmountSummaryController,
   signSettlementAgreementController,
   repaymentPlanAcceptedController,
   courtProposedPlanController,
   claimantResponseConfirmationController,
+  judgmentAmountSummaryController,
 ];
