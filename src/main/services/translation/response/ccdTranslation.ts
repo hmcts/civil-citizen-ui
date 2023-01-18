@@ -17,6 +17,6 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     responseClaimMediationSpecRequired: toAgreedMediation(claim.mediation),
     specAoSApplicantCorrespondenceAddressRequired: addressHasChange ? YesNoUpperCamelCase.NO : YesNoUpperCamelCase.YES,
     totalClaimAmount: claim.totalClaimAmount,
-    respondent1: toCCDParty(claim.respondent1, req, true),
+    respondent1: toCCDParty(claim.respondent1, req),
   };
 };

@@ -8,7 +8,7 @@ export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClai
   return {
     applicant1Represented: YesNoUpperCamelCase.NO,
     applicant1: toCCDParty(claim.applicant1, req, true),
-    respondent1: toCCDParty(claim.respondent1, req, false),
+    respondent1: toCCDParty(claim.respondent1, req),
 
   };
 };
