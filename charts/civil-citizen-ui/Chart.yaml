@@ -9,7 +9,7 @@ maintainers:
 
 dependencies:
   - name: nodejs
-    version: 2.4.9
+    version: 2.4.11
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
   - name: civil-service
     version: 0.0.28
