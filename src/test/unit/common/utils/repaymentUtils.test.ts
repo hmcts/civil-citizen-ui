@@ -20,7 +20,7 @@ import {createClaimWithBasicRespondentDetails} from '../../../utils/mockClaimFor
 import {t} from 'i18next';
 import {YesNo} from 'common/form/models/yesNo';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
-import { Claim } from 'common/models/claim';
+import {Claim} from 'common/models/claim';
 
 const getClaimForFA = (repaymentFrequency:TransactionSchedule) => {
   const claim = new Claim();
@@ -36,7 +36,6 @@ const getClaimForFA = (repaymentFrequency:TransactionSchedule) => {
     repaymentFrequency: repaymentFrequency,
     firstRepaymentDate: new Date(Date.now()),
   };
-
   return claim;
 };
 
