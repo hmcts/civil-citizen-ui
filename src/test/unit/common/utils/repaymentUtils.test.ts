@@ -22,7 +22,8 @@ import {YesNo} from 'common/form/models/yesNo';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {Claim} from 'common/models/claim';
 
-const getClaimForFA = (repaymentFrequency:TransactionSchedule) => {
+const getClaimForFA = (repaymentFrequency: TransactionSchedule, paymentAmount?: number) => {
+  const amount = paymentAmount ? paymentAmount : 50;
   const claim = new Claim();
   const respondent1 = new Party();
   respondent1.responseType = ResponseType.FULL_ADMISSION;
@@ -32,14 +33,15 @@ const getClaimForFA = (repaymentFrequency:TransactionSchedule) => {
   claim.fullAdmission.paymentIntention = new PaymentIntention();
   claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
   claim.fullAdmission.paymentIntention.repaymentPlan = {
-    paymentAmount: 50,
+    paymentAmount: amount,
     repaymentFrequency: repaymentFrequency,
     firstRepaymentDate: new Date(Date.now()),
   };
   return claim;
 };
 
-const getClaimForPA = (repaymentFrequency:TransactionSchedule) => {
+const getClaimForPA = (repaymentFrequency: TransactionSchedule, paymentAmount?: number) => {
+  const amount = paymentAmount ? paymentAmount : 50;
   const claim = new Claim();
   claim.totalClaimAmount = 1000;
   claim.respondent1 = new Party();
@@ -53,7 +55,7 @@ const getClaimForPA = (repaymentFrequency:TransactionSchedule) => {
   claim.partialAdmission.howMuchDoYouOwe.amount = 200;
   claim.partialAdmission.howMuchDoYouOwe.totalAmount = 1000;
   claim.partialAdmission.paymentIntention.repaymentPlan = {
-    paymentAmount: 50,
+    paymentAmount: amount,
     repaymentFrequency: repaymentFrequency,
     firstRepaymentDate: new Date(Date.now()),
   };
@@ -436,6 +438,14 @@ describe('repaymentUtils', () => {
   describe('getRepaymentLength', () => {
     it('should return repayment length when response type is part admission on weekly schedule', () => {
       //Given
+      const claim = getClaimForPA(TransactionSchedule.WEEK, 100);
+      //When
+      const repaymentLength = getRepaymentLength(claim, 'en');
+      //Then
+      expect(repaymentLength).toBeUndefined();
+    });
+    it('should return repayment length when response type is part admission on weekly schedule', () => {
+      //Given
       const claim = getClaimForPA(TransactionSchedule.WEEK);
       //When
       const repaymentLength = getRepaymentLength(claim, 'en');
@@ -457,6 +467,14 @@ describe('repaymentUtils', () => {
       const repaymentLength = getRepaymentLength(claim, 'en');
       //Then
       expect(repaymentLength).toContain('4');
+    });
+    it('should return repayment length when response type is full admission on weekly schedule', () => {
+      //Given
+      const claim = getClaimForFA(TransactionSchedule.WEEK, 500);
+      //When
+      const repaymentLength = getRepaymentLength(claim, 'en');
+      //Then
+      expect(repaymentLength).toBeUndefined();
     });
     it('should return repayment length when response type is full admission on weekly schedule', () => {
       //Given
