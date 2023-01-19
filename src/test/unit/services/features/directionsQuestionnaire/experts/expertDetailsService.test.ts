@@ -64,7 +64,7 @@ describe('Expert Details service', () => {
       expect(claimantExpertDetails.items[0].firstName).toBe('Joe');
     });
 
-    it('should return claimant new expertDetails object if not existing', async () => {
+    it('should return claimant new expertDetails object if expertDetails not existing', async () => {
       //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         const claim = new Claim();
@@ -72,6 +72,57 @@ describe('Expert Details service', () => {
         claim.claimantResponse = new ClaimantResponse();
         claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
         claim.claimantResponse.directionQuestionnaire.experts = new Experts();
+        return claim;
+      });
+
+      //When
+      const claimantExpertDetails = await getExpertDetails('validClaimId');
+
+      //Then
+      expect(claimantExpertDetails.items.length).toBe(1);
+      expect(claimantExpertDetails.items[0].firstName).toBeUndefined();
+    });
+
+    it('should return claimant new expertDetails object if experts not existing', async () => {
+      //Given
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
+        return claim;
+      });
+
+      //When
+      const claimantExpertDetails = await getExpertDetails('validClaimId');
+
+      //Then
+      expect(claimantExpertDetails.items.length).toBe(1);
+      expect(claimantExpertDetails.items[0].firstName).toBeUndefined();
+    });
+
+    it('should return claimant new expertDetails object if DQ not existing', async () => {
+      //Given
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+        claim.claimantResponse = new ClaimantResponse();
+        return claim;
+      });
+
+      //When
+      const claimantExpertDetails = await getExpertDetails('validClaimId');
+
+      //Then
+      expect(claimantExpertDetails.items.length).toBe(1);
+      expect(claimantExpertDetails.items[0].firstName).toBeUndefined();
+    });
+
+    it('should return claimant new expertDetails object if claimantResponse not existing', async () => {
+      //Given
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
         return claim;
       });
 
