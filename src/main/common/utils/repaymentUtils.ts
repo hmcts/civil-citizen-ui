@@ -94,9 +94,6 @@ export const getRepaymentLength = (claim: Claim, lng: string) => {
       repaymentLength = getNumberOfInstalments(claim) + ' ' + t('COMMON.SCHEDULE.MONTHS_LOWER_CASE', { lng });
       break;
   }
-  // console.log('Amount',claim.partialAdmission.howMuchDoYouOwe.amount);
-  // console.log('Payment Amount', claim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount);
-  // console.log('Instalment', getNumberOfInstalments(claim));
-  // console.log('Repayment Length:', repaymentLength);
+
   return repaymentLength;
 };
