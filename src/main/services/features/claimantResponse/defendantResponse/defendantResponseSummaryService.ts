@@ -6,6 +6,7 @@ import {
   buildFullDisputeResponseContent,
 } from './fullDisputeDefendantsResponseContent';
 import {buildFullAdmissionResponseContent} from './fullAdmissinionDefendantsResponseContent';
+import {buildPartAdmitAlreadyPaidResponseContent} from './partAdmissionAlreadyPaidDefendantsResponseContent';
 
 export const getDefendantsResponseContent = (claim: Claim, lang: string): ClaimSummarySection[] => {
   switch (claim.responseStatus) {
@@ -15,5 +16,7 @@ export const getDefendantsResponseContent = (claim: Claim, lang: string): ClaimS
       return buildFullDisputeResponseContent(claim, lang);
     case ClaimResponseStatus.RC_PAID_LESS:
       return buildFullDisputePaidLessResponseContent(claim, lang);
+    case ClaimResponseStatus.PA_ALREADY_PAID:
+      return buildPartAdmitAlreadyPaidResponseContent(claim, lang);
   }
 };
