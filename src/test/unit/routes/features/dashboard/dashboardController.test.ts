@@ -1,6 +1,5 @@
 import {app} from '../../../../../main/app';
 import config from 'config';
-import Module from 'module';
 import {DASHBOARD_URL} from 'routes/urls';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {
@@ -10,19 +9,11 @@ import {
 } from '../../../../utils/mockDraftStore';
 import request from 'supertest';
 
-const nock = require('nock');
 const citizenRoleToken: string = config.get('citizenRoleToken');
+const nock = require('nock');
 
 jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/app/auth/user/oidc', () => ({
-  ...jest.requireActual('../../../../../main/app/auth/user/oidc') as Module,
-  getUserDetails: jest.fn(() => USER_DETAILS),
-}));
-
-export const USER_DETAILS = {
-  accessToken: citizenRoleToken,
-  roles: ['citizen'],
-};
+jest.mock('../../../../../main/modules/oidc');
 
 const mockClaimWithStatus = (stat: string) => {
   nock('http://localhost:4000')
@@ -41,27 +32,21 @@ const mockClaimWithStatus = (stat: string) => {
 };
 
 describe('Dashboard page', () => {
-  const idamUrl: string = config.get('idamUrl');
-  const serviceAuthProviderUrl = config.get<string>('services.serviceAuthProvider.baseUrl');
-  const draftStoreUrl = config.get<string>('services.draftStore.legacy.url');
+  const idamUrl: string = config.get('services.idam.url');
 
-  beforeEach(() => {
+  beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    nock('http://localhost:4000')
-      .post(CIVIL_SERVICE_CASES_URL)
-      .reply(200, {});
-    nock(serviceAuthProviderUrl)
-      .post('/lease')
-      .reply(200, {});
-    nock(draftStoreUrl)
-      .get('/drafts')
-      .reply(200, {});
   });
+
+  nock('http://localhost:4000')
+    .post(CIVIL_SERVICE_CASES_URL)
+    .reply(200, {});
 
   describe('on GET', () => {
     it('should return dashboard page', async () => {
+
       await request(app)
         .get(DASHBOARD_URL)
         .expect((res: Response) => {
