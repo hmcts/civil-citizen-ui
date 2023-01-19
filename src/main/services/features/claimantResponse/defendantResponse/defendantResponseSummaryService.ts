@@ -3,6 +3,7 @@ import {ClaimSummarySection} from '../../../../common/form/models/claimSummarySe
 import {ClaimResponseStatus} from '../../../../common/models/claimResponseStatus';
 import {buildFullDisputeResponseContent} from './fullDisputeDefendantsResponseContent';
 import {buildFullAdmissionResponseContent} from './fullAdmissinionDefendantsResponseContent';
+import {buildPartAdmitAlreadyPaidResponseContent} from './partAdmissionAlreadyPaidDefendantsResponseContent';
 
 export const getDefendantsResponseContent = (claim: Claim, lang: string): ClaimSummarySection[] => {
   switch (claim.responseStatus) {
@@ -10,5 +11,7 @@ export const getDefendantsResponseContent = (claim: Claim, lang: string): ClaimS
       return buildFullAdmissionResponseContent(claim, lang);
     case ClaimResponseStatus.RC_DISPUTE:
       return buildFullDisputeResponseContent(claim, lang);
+    case ClaimResponseStatus.PA_ALREADY_PAID:
+      return buildPartAdmitAlreadyPaidResponseContent(claim, lang);
   }
 };
