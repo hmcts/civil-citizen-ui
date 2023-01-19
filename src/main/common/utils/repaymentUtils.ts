@@ -38,6 +38,13 @@ export const getPaymentAmount = (claim: Claim): number => {
   return claim.partialAdmission?.paymentIntention?.repaymentPlan?.paymentAmount;
 };
 
+export const getPaymentDate = (claim: Claim): Date => {
+  if (claim.isFullAdmission()) {
+    return claim.fullAdmission?.paymentIntention?.paymentDate;
+  }
+  return claim.partialAdmission?.paymentIntention?.paymentDate;
+};
+
 export const getRepaymentFrequency = (claim: Claim): string => {
   if (claim.isFullAdmission()) {
     return claim.fullAdmission?.paymentIntention?.repaymentPlan?.repaymentFrequency;

@@ -27,6 +27,7 @@ import {InterestEndDateType} from '../../common/form/models/claimDetails';
 import * as urls from '../../routes/urls';
 import {InterestClaimOptionsType} from '../../common/form/models/claim/interest/interestClaimOptionsType';
 import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
+import {CourtProposedDateOptions} from 'common/form/models/claimantResponse/courtProposedDate';
 import {CourtProposedPlanOptions} from 'common/form/models/claimantResponse/courtProposedPlan';
 import {ClaimResponseStatus} from 'common/models/claimResponseStatus';
 
@@ -123,6 +124,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('urls', urls);
     nunjucksEnv.addGlobal('InterestClaimOptionsType', InterestClaimOptionsType);
     nunjucksEnv.addGlobal('ClaimBilingualLanguagePreference', ClaimBilingualLanguagePreference);
+    nunjucksEnv.addGlobal('CourtProposedDateOptions', CourtProposedDateOptions);
     nunjucksEnv.addGlobal('CourtProposedPlanOptions', CourtProposedPlanOptions);
     nunjucksEnv.addGlobal('CaseState', CaseState);
     nunjucksEnv.addGlobal('ClaimResponseStatus', ClaimResponseStatus);
