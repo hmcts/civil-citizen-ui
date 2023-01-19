@@ -218,7 +218,8 @@
       "WEEK_LOWER_CASE": "week",
       "WEEKS_LOWER_CASE": "weeks",
       "MONTHS_LOWER_CASE": "months",
-      "TWO_MONTHS_LOWER_CASE": "2 months"
+      "TWO_MONTHS_LOWER_CASE": "2 months",
+      "TWO_WEEKS_LOWER_CASE": "two weeks"
     },
     "STATEMENT_OF_TRUTH": {
       "CORRECT_INFORMATION_CONFIRMATION": "I confirm that I believe the details I have provided are correct.",
@@ -732,6 +733,32 @@
         "CLAIM_ENDED": "The claim has now ended. We've emailed {{ defendantName }} to tell them."
       }
     },
+    "CLAIMANT_RESPONSE": {
+      "COURT_PROPOSED_DATE": {
+        "PAGE_TITLE": "The defendant can’t pay by your proposed date",
+        "TITLE": "The defendant can’t pay by your proposed date",
+        "BASED_ON": "Based on financial details the defendant gave us, we don't believe they can pay by your proposed date.",
+        "COURT_CALCULATOR": "The court's calculator has determined {{ paymentDate }} as the date when they can pay you in full.",
+        "DO_YOU_ACCEPT": "Do you accept a repayment date of {{ paymentDate }}?",
+        "YES": "Yes",
+        "NO_I_WANT_JUDGE": "No - I want a judge to make a new repayment plan"
+      },
+      "COURT_PROPOSED_PLAN": {
+        "PAGE_TITLE": "The defendant can’t afford your plan",
+        "TITLE": "The defendant can’t afford your plan",
+        "BASED_ON": "Based on the financial details provided by the defendant, we don’t believe they would be able to make these repayments.",
+        "COURT_AFFORDABILITY": "The court affordability calculator has determined a new repayment plan as the most the defendant can repay.",
+        "COURT_PROPOSED_PLAN": "The court’s proposed repayment plan",
+        "REGULAR_PAYMENTS_OF": "Regular payments of",
+        "FREQUENCY_OF_PAYMENTS": "Frequency of payments",
+        "FIRST_PAYMENT_DATE": "First payment date",
+        "LAST_PAYMENT_DATE": "Last payment date",
+        "LENGTH_OF_REPAYMENT": "Length of repayment plan",
+        "DO_YOU_ACCEPT": "Do you accept the court’s proposed repayment plan",
+        "I_WANT_ACCEPT": "I want to accept this repayment plan",
+        "I_WANT_JUDGE": "I want a judge to make a repayment plan"
+      }
+    },
     "CLAIMANT_RESPONSE_PROCEED": {
       "PAGE_TITLE": "Do you want to proceed with claim?",
       "TITLE": "Do you want to proceed with claim?"
@@ -768,9 +795,37 @@
       "PAGE_TITLE": "Has the defendant paid you £{{ paidAmount }}?",
       "TITLE": "Has the defendant paid you £{{ paidAmount }}?"
     },
+    "CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED": {
+      "PAGE_TITLE": "Repayment plan accepted",
+      "TITLE": "Repayment plan accepted",
+      "THE_COURT_HAS_ACCEPTED_YOUR_REPAYMENT_PLAN": "The court has accepted your repayment plan"
+    },
     "CLAIMANT_RESPONSE_REJECTION_REASON": {
       "PAGE_TITLE": "Rejection reason",
       "TITLE": "Why did you reject their response?"
+    },
+    "CLAIMANT_TERMS_OF_AGREEMENT": {
+      "PAGE_TITLE": "Terms of the agreement",
+      "TITLE": "Terms of the agreement",
+      "DETAILS": {
+        "THE_AGREEMENT": {
+          "LABEL": "The agreement",
+          "REPAYMENT_PLAN_PART_ONE": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every  ",
+          "REPAYMENT_PLAN_PART_TWO": "The first instalment will be paid by {{ firstRepaymentDate }}"
+        },
+        "COMPLETION_DATE": {
+          "LABEL": "Completion date",
+          "DATE": "{{ finalRepaymentDate }}"
+        },
+        "FIRST_PARAGRAPH": "This agreement settles the claim made by {{ claimant }} against {{ defendant }}. This includes all money owed in the claim, for example court fees, expenses or interest.",
+        "SECOND_PARAGRAPH": "Neither party can make any further claims relating to this case, other than to enforce it.",
+        "THIRD_PARAGRAPH": "Either party can view and download this agreement from their Money Claims account. Both parties should keep a copy of this agreement.",
+        "IF_THE_AGREEMENT_IS_BROKEN": "If the agreement is broken",
+        "CLAIMANT_REQUEST_CCJ": "The claimant can request a County Court Judgment (CCJ) for any money still owed from this agreement.",
+        "SIGN_THE_AGREEMENT": "Sign the agreement",
+        "AGREEMENT_NOTE": "Make sure this agreement includes everything you’ve agreed with {{ defendant }} before signing. You won’t be able to change this later.",
+        "CONFIRMATION": "I confirm I’ve read and accept the terms of the agreement."
+      }
     },
     "COMPANY_DETAILS": {
       "ADDRESS_FOR_SERVICE": "This is known as an \"address for service\".",
@@ -1172,16 +1227,16 @@
     "EXPERT_GUIDANCE": {
       "ASK_PERMISSION": "You must ask for permission to use an expert - a judge will then decide whether the expert is necessary.",
       "CLAIMANT": "claimant",
-      "COST_HIRING_EXPERT": "The cost of hiring an expert depends on which expert you and the {{ otherParty }} choose.",
+      "COST_HIRING_EXPERT": "The cost of hiring an expert depends on which expert you and the other party choose.",
       "EXPERT_REPORT": "The expert will provide a written report - they won't usually come to court in person.",
       "FOR_EXAMPLE": "For example, they might allow a structural engineer to be used in a claim about building works or a mechanic in a claim about car repairs.",
-      "IF_JUDGE_ALLOWS": "If a judge allows you to use an expert, you'll usually have to share one expert with the {{ otherParty }}.",
+      "IF_JUDGE_ALLOWS": "If a judge allows you to use an expert, you'll usually have to share one expert with the other party.",
       "IF_PERMISSION": "If you get permission to use an expert",
       "IF_YOU_WIN": "If you win the case you may be able to recover a maximum of £750 of the cost you paid. A judge will rule on this at the end of the hearing.",
       "JUDGE_ALLOW_EXPERT": "A judge will only allow you to use an expert if they believe they need the expert's specialist knowledge.",
       "JUDGE_DECIDE_COST": "The judge will also decide whether the cost of the expert is reasonable compared to the value of the claim.",
       "JUDGE_MAY_ASK": "The judge may ask one of you to make a list of 3 independent experts who can provide a written report in return for a fee.",
-      "JUDGES_RESPONSIBLE_COST": "Even though you and the {{ otherParty }} share the cost of hiring the expert, judges are still responsible for keeping costs in proportion to value.",
+      "JUDGES_RESPONSIBLE_COST": "Even though you and the other party share the cost of hiring the expert, judges are still responsible for keeping costs in proportion to value.",
       "MUST_AVOID_DISCUSSING": "You must avoid discussing the case in detail with the 3 experts.",
       "OTHER_PARTY_CHOOSES": "The other party then chooses one expert from the list. After that, you both need to follow these steps",
       "PAGE_TITLE": "Expert guidance",
@@ -1670,9 +1725,11 @@
       "FINANCIAL_SUPPORT": "Financial support",
       "FULL_ADMISSION": "{{ defendant }} admits they owe all the money you’ve claimed.",
       "FULL_RESPONSE": "Full response",
+      "HOW_PAID": "How they say they paid",
       "MONTHLY_EXPENSES": "Monthly expenses",
       "MONTHLY_INCOME": "Monthly income",
       "PAGE_TITLE": "Review defendant’s response",
+      "PART_ADMIT_ALREADY_PAID_STATEMENT": "{{ defendant }} said they paid you £{{ paidAmount }}. They said this is all they owe, not the amount you claimed.",
       "PAY_EXPENSES": "Do they pay any expenses?",
       "PAYMENT_DATE": "They’ve offered to pay you this by {{ paymentDate }}",
       "RECEIVE_INCOME": "Do they receive any income?",
@@ -1687,9 +1744,16 @@
       "TOTAL_PAID_AMOUNT": "This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
       "UNABLE_TO_PAY_FULL_AMOUNT": "Why they can’t pay the full amount now",
       "WHERE_THEY_LIVE": "Where are they living?",
+      "WHEN_THEY_SAY_THEY_PAID": "When they say they paid this amount",
+      "WHY_THEY_DISAGREE_AMOUNT": "Why they say they don’t owe the amount you claimed",
       "WHY_THEY_DISAGREE_CLAIM": "Why they disagree with the claim",
       "WHY_THEY_DISAGREE_EVIDENCE": "Why they disagree with your evidence",
-      "WHY_THEY_DISAGREE_TIMELINE": "Why they disagree with your timeline"
+      "WHY_THEY_DISAGREE_TIMELINE": "Why they disagree with your timeline",
+      "HOW_THEY_WANT_TO_PAY_RESPONSE": "They've offered to pay you £{{ amount }} by {{ paymentDate }}. This is the total amount you'll be paid, including the claim fee and interest if applicable.",
+      "WHEN_THEY_PAID_THIS_AMOUNT": "When they say they paid this amount",
+      "HOW_THEY_PAID": "How they said they paid",
+      "THEY_DONT_OWE_CLAIM_AMOUNT": "Why they say they dont owe the amount you claimed",
+      "REJECT_CLAIM_PAID_LESS_STATEMENT": "{{ defendant }} said they paid you £{{ paidAmount}}. They said this is all they owe, not the amount you claim."
     },
     "SELF_EMPLOYED": {
       "PAGE_TITLE": "Self employment details",
@@ -1758,10 +1822,10 @@
     },
     "SHARED_EXPERT": {
       "IF_YOU_SHARE": "If you share an expert, you will also share the costs unless the judge decides that one party must pay the other party’s share.",
-      "PAGE_TITLE": "Do you want to share an expert with the claimant?",
+      "PAGE_TITLE": "Do you want to share an expert with the other party?",
       "PREPARE_REPORT": "They will prepare a report for the court on behalf of two or more of the parties, including the claimant.",
       "SINGLE_JOINT_EXPERT": "This is known as a ’single joint expert’.",
-      "TITLE": "Do you want to share an expert with the claimant?"
+      "TITLE": "Do you want to share an expert with the other party?"
     },
     "SPECIFIC_COURT": {
       "EXPlANATION": "You can ask for the hearing to be held at a specific court, for example, if you spend weekdays a long distance from your home. The court will consider both parties' circumstances when deciding where to hold the hearing.",
@@ -2042,6 +2106,7 @@
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_NUMBER_REQUIRED": "You need to enter the claim number",
     "CLAIM_VALID_AMOUNT": "Enter a valid amount",
+    "CLAIMANT_ACCEPT_TERMS_OF_THE_AGREEMENT": "Please select I confirm I’ve read and accept the terms of the agreement",
     "CORRECT_DATE_NOT_IN_FUTURE": "Correct the date. You can’t use a future date.",
     "DATE_REQUIRED": "Enter a date",
     "DATE_NOT_MORE_THAN_28_DAYS": "Agreed response date cannot be more than 28 days after the original response date",
@@ -2326,7 +2391,7 @@
     "VALID_REASON_REQUIRED": "Enter a reason",
     "VALID_REQUEST_EXTRA_4_WEEKS": "Select yes if you want an extra 4 weeks to try to settle the claim",
     "VALID_SENT_EXPERT_REPORTS": "Select yes if you have sent expert reports to the other parties",
-    "VALID_SHARED_EXPERT": "Select yes if you want to share an expert with the claimant",
+    "VALID_SHARED_EXPERT": "Select yes if you want to share an expert with the other party",
     "VALID_STRICTLY_POSITIVE_NUMBER": "Enter a number higher than 0",
     "VALID_TEXT_LENGTH": "You’ve entered too many characters",
     "VALID_TRIED_TO_SETTLE": "Select yes if you have tried to settle this claim before going to court",
