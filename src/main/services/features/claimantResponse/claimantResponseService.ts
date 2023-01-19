@@ -486,7 +486,7 @@ const hasDebtAmount = (priorityDebts: PriorityDebts) => {
       const priorityDebt = priorityDebts[priorityDebtKey as keyof PriorityDebts];
       if (priorityDebt?.transactionSource?.amount) {
         amountFlag = true;
-        return amountFlag;
+        return;
       }
     });
   }
