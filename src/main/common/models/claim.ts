@@ -49,6 +49,7 @@ import {CourtOrders} from '../../common/form/models/statementOfMeans/courtOrders
 import {PriorityDebts} from '../../common/form/models/statementOfMeans/priorityDebts';
 import {Debts} from '../../common/form/models/statementOfMeans/debts/debts';
 import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreference';
+import {DefendantResponseStatus} from "models/defendantResponseStatus";
 export class Claim {
   legacyCaseReference: string;
   applicant1?: Party;
@@ -82,7 +83,7 @@ export class Claim {
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
   claimBilingualLanguagePreference: ClaimBilingualLanguagePreference;
-  defendantResponseStatus: string;
+  defendantResponseStatus: DefendantResponseStatus;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
 

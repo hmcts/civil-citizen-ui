@@ -1,5 +1,5 @@
 import {DashboardDefendantItem} from 'common/models/dashboard/dashboardItem';
-import {DefendantResponseStatus} from 'models/DefendantResponseStatus';
+import {DefendantResponseStatus} from 'models/defendantResponseStatus';
 import {t} from 'i18next';
 import { Claim } from 'common/models/claim';
 

@@ -1,5 +1,5 @@
 import config from 'config';
-import {DefendantResponseStatus} from 'models/DefendantResponseStatus';
+import {DefendantResponseStatus} from 'models/defendantResponseStatus';
 
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
