@@ -249,6 +249,36 @@ describe('Direction questionnaire Service', () => {
       expect(permissionForExpert.option).toBe(YesNo.YES);
     });
 
+    it('should return claimant directionQuestionnaire if existing', async () => {
+      //Given
+      const claim = new Claim();
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return claim;
+      });
+
+      //When
+      const permissionForExpert = await getGenericOption('validClaimId', 'permissionForExpert', 'experts');
+      //Then
+      expect(permissionForExpert.option).toBeUndefined();
+    });
+
+    it('should return new claimant directionQuestionnaire if not existing', async () => {
+      //Given
+      const claim = new Claim();
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.claimantResponse = new ClaimantResponse();
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return claim;
+      });
+
+      //When
+      const permissionForExpert = await getGenericOption('validClaimId', 'permissionForExpert', 'experts');
+      //Then
+      expect(permissionForExpert.option).toBeUndefined();
+    });
     it('should return claimant permissionForExpert option with No option', async () => {
       //Given
       const claim = new Claim();
