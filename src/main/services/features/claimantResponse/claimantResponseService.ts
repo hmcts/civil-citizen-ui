@@ -485,7 +485,8 @@ const hasDebtAmount = (priorityDebts: PriorityDebts) => {
     priorityDebtsKeys.forEach((priorityDebtKey) => {
       const priorityDebt = priorityDebts[priorityDebtKey as keyof PriorityDebts];
       if (priorityDebt?.transactionSource?.amount) {
-        return amountFlag = true;
+        amountFlag = true;
+        return amountFlag;
       }
     });
   }
