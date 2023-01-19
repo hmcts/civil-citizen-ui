@@ -35,9 +35,13 @@
           <p class="govuk-body">
             <a href="{{ downloadResponseLink }}">{{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.DOWNLOAD_RESPONSE') }}</a>
           </p>
-          <h2 class="govuk-heading-s">{{ howDoTheyWantToPay }}</h2>
+          {% if howDoTheyWantToPay %}
+            <h2 class="govuk-heading-s">{{ howDoTheyWantToPay }}</h2>
+          {% endif %}
           <p class="govuk-body">{{ defendantResponse }}</p>
-          <h2 class="govuk-heading-s">{{ unableToPayFullAmunt }}</h2>
+          {% if unableToPayFullAmunt %}
+            <h2 class="govuk-heading-s">{{ unableToPayFullAmunt }}</h2>
+          {% endif %}
           <p class="govuk-body">
             {{ reasonsWhyYouCantPayImmediately }}
           </p>
