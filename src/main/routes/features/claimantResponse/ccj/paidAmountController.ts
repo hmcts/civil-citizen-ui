@@ -15,7 +15,6 @@ const paidAmountController = Router();
 const paidAmountViewPath = 'features/claimantResponse/ccj/paid-amount';
 const crPropertyName = 'paidAmount';
 const crParentName = 'ccjRequest';
-const urlFromTaskList = 'county-court-judgement';
 
 function renderView(form: GenericForm<PaidAmount>, res: Response): void {
   res.render(paidAmountViewPath, {form});
@@ -24,7 +23,7 @@ function renderView(form: GenericForm<PaidAmount>, res: Response): void {
 paidAmountController.get([CCJ_PAID_AMOUNT_URL, CCJ_EXTENDED_PAID_AMOUNT_URL], async (req, res, next: NextFunction) => {
   try {
     const claimantResponse = await getClaimantResponse(req.params.id);
-    const paidAmount = claimantResponse.ccjRequest ?
+    const paidAmount = claimantResponse.ccjRequest?.paidAmount ?
       claimantResponse.ccjRequest.paidAmount : new PaidAmount();
     renderView(new GenericForm(paidAmount), res);
   } catch (error) {
@@ -40,7 +39,6 @@ paidAmountController.post([CCJ_PAID_AMOUNT_URL, CCJ_EXTENDED_PAID_AMOUNT_URL], a
     const paidAmount = new GenericForm(new PaidAmount(req.body.option, (Number(req.body.amount)), claimedAmount));
     let redirectURL: string = CCJ_PAID_AMOUNT_SUMMARY_URL;
     if(req.url.includes(urlFromTaskList)){
-      paidAmount.model.valueFromTaskList = true;
       redirectURL = CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL;
     }
     paidAmount.validateSync();
