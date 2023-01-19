@@ -1,10 +1,10 @@
 import {PaymentOptionType} from '../../../common/form/models/admission/paymentOption/paymentOptionType';
 import {CCDPaymentOption} from '../../../common/models/ccdResponse/ccdPaymentOption';
-import {Claim} from "models/claim";
-import {ResponseType} from "form/models/responseType";
+import {Claim} from 'models/claim';
+import {ResponseType} from 'form/models/responseType';
 
 export const toCCDPaymentOption = (claim: Claim) : CCDPaymentOption => {
-  let paymentOptionType
+  let paymentOptionType;
 
   switch(claim.respondent1?.responseType) {
     case ResponseType.PART_ADMISSION:
@@ -16,8 +16,6 @@ export const toCCDPaymentOption = (claim: Claim) : CCDPaymentOption => {
     default:
       paymentOptionType = undefined;
   }
-
-  logger.info('payment type 2' + paymentOptionType)
 
   switch(paymentOptionType) {
     case PaymentOptionType.INSTALMENTS:
