@@ -5,14 +5,14 @@ import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesA
 import {FullAdmission} from 'common/models/fullAdmission';
 import {PartialAdmission} from 'common/models/partialAdmission';
 import {Party} from 'common/models/party';
-import {addDaysToDate, addMonths} from 'common/utils/dateUtils'; 
+import {addDaysToDate, addMonths} from 'common/utils/dateUtils';
 import {
-  getFinalPaymentDate, 
-  getFirstRepaymentDate, 
-  getPaymentAmount, 
-  getRepaymentFrequency, 
+  getFinalPaymentDate,
+  getFirstRepaymentDate,
+  getPaymentAmount,
+  getRepaymentFrequency,
   convertFrequencyToText,
-} from 'common/utils/repaymentUtils'; 
+} from 'common/utils/repaymentUtils';
 import {createClaimWithBasicRespondentDetails} from '../../../utils/mockClaimForCheckAnswers';
 import {t} from 'i18next';
 

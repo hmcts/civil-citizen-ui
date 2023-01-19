@@ -181,6 +181,7 @@ import ccjConfirmationController from './features/claimantResponse/ccj/ccjConfir
 import bilingualLangPreferenceController from './features/response/bilingualLangPreferenceController';
 import chooseHowToProceedController from './features/claimantResponse/chooseHowToProceedcController';
 import repaymentPlanInstalmentsController from './features/claimantResponse/ccj/repaymentPlanInstalmentsController';
+import signSettlementAgreementController from './features/claimantResponse/signSettlmentAgreementController';
 import repaymentPlanAcceptedController from './features/claimantResponse/repaymentPlanAcceptedController';
 import courtProposedPlanController from './features/claimantResponse/courtProposedPlanController';
 import debtRespiteLiftedController from './features/breathingSpace/debtRespiteLiftedController';
@@ -354,6 +355,7 @@ export default [
   bilingualLangPreferenceController,
   chooseHowToProceedController,
   repaymentPlanInstalmentsController,
+  signSettlementAgreementController,
   repaymentPlanAcceptedController,
   courtProposedPlanController,
   claimantResponseConfirmationController,
