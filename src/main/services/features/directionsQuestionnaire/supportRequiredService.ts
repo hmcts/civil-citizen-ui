@@ -10,6 +10,7 @@ import {
 import {Claim} from 'models/claim';
 import {YesNo} from 'form/models/yesNo';
 import {getLng} from 'common/utils/languageToggleUtils';
+import {ClaimantResponse} from 'common/models/claimantResponse';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');
@@ -37,8 +38,12 @@ const generateList = (list: FullName[]): NameListType[] => {
 };
 
 export const generateExpertAndWitnessList = (caseData: Claim, lang: string): NameListType[] => {
-  const experts = generateList(caseData.directionQuestionnaire?.experts?.expertDetailsList?.items?.map(item => ({firstName: item.firstName, lastName: item.lastName})));
-  const witnesses = generateList(caseData.directionQuestionnaire?.witnesses?.otherWitnesses?.witnessItems?.map(item => ({firstName: item.firstName, lastName: item.lastName})));
+  if (caseData.isClaimantIntentionPending() && !caseData.claimantResponse) {
+    caseData.claimantResponse = new ClaimantResponse();
+  }
+  const baseProperty = caseData.isClaimantIntentionPending() ? caseData.claimantResponse : caseData;
+  const experts = generateList(baseProperty.directionQuestionnaire?.experts?.expertDetailsList?.items?.map(item => ({firstName: item.firstName, lastName: item.lastName})));
+  const witnesses = generateList(baseProperty.directionQuestionnaire?.witnesses?.otherWitnesses?.witnessItems?.map(item => ({firstName: item.firstName, lastName: item.lastName})));
   let nameList = [{
     value: '',
     text: t('PAGES.SUPPORT_REQUIRED.CHOOSE_NAME', {lng: getLng(lang)}),
@@ -73,9 +78,12 @@ export const generatePeopleListWithSelectedValues = async (claimId: string, sele
 export const getSupportRequired = async (claimId: string): Promise<SupportRequiredList> => {
   try {
     const caseData = await getCaseDataFromStore(claimId);
-    return caseData?.directionQuestionnaire?.hearing?.supportRequiredList ?
-      caseData.directionQuestionnaire.hearing?.supportRequiredList :
-      new SupportRequiredList(undefined, [new SupportRequired()]);
+    if (caseData.isClaimantIntentionPending() && caseData.claimantResponse?.directionQuestionnaire?.hearing?.supportRequiredList) {
+      return caseData.claimantResponse.directionQuestionnaire.hearing.supportRequiredList;
+    } else if (!caseData.isClaimantIntentionPending() && caseData.directionQuestionnaire?.hearing?.supportRequiredList) {
+      return caseData.directionQuestionnaire.hearing.supportRequiredList;
+    }
+    return new SupportRequiredList(undefined, [new SupportRequired()]);
   } catch (error) {
     logger.error(error);
     throw error;
