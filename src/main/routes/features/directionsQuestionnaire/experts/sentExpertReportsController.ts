@@ -21,7 +21,7 @@ function renderView(form: GenericForm<SentExpertReports>, res: Response): void {
 sentExpertReportsController.get(DQ_SENT_EXPERT_REPORTS_URL, async (req, res, next) => {
   try {
     const directionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
-    const sentExpertReports = directionQuestionnaire.experts.sentExpertReports ? directionQuestionnaire.experts.sentExpertReports : new SentExpertReports();
+    const sentExpertReports = directionQuestionnaire.experts?.sentExpertReports ? directionQuestionnaire.experts.sentExpertReports : new SentExpertReports();
     renderView(new GenericForm(sentExpertReports), res);
   } catch (error) {
     next(error);
