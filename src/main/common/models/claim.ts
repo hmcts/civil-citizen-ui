@@ -416,6 +416,22 @@ export class Claim {
     return this.statementOfMeans?.debts;
   }
 
+  isInterestClaimOptionsBreakDownInterest(): boolean {
+    return this.interest?.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST;
+  }
+
+  getDefendantPaidAmount(): number | undefined {
+    return this.claimantResponse?.ccjRequest?.paidAmount?.amount;
+  }
+
+  hasDefendantPaid(): boolean {
+    return this.claimantResponse?.ccjRequest?.paidAmount?.option === YesNo.YES;
+  }
+
+  getHowTheInterestCalculatedReason(): string {
+    return this.interest?.totalInterest?.reason;
+  }
+
   private getName(party: Party): string {
     if (party?.type == PartyType.INDIVIDUAL || party?.type == PartyType.SOLE_TRADER) {
       if (party.partyDetails?.individualTitle) {
