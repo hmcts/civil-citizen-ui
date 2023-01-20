@@ -41,13 +41,13 @@ import {ClaimDetails} from 'common/form/models/claim/details/claimDetails';
 import {ClaimantResponse} from './claimantResponse';
 import {CCDClaim} from 'models/civilClaimResponse';
 import {toCUIParty} from 'services/translation/response/convertToCUI/convertToCUIParty';
-import {SelfEmployedAs} from '../models/selfEmployedAs';
-import {TaxPayments} from '../models/taxPayments';
-import {RegularIncome} from '../../common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
-import {RegularExpenses} from '../../common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
-import {CourtOrders} from '../../common/form/models/statementOfMeans/courtOrders/courtOrders';
-import {PriorityDebts} from '../../common/form/models/statementOfMeans/priorityDebts';
-import {Debts} from '../../common/form/models/statementOfMeans/debts/debts';
+import {SelfEmployedAs} from 'models/selfEmployedAs';
+import {TaxPayments} from 'models/taxPayments';
+import {RegularIncome} from 'form/models/statementOfMeans/expensesAndIncome/regularIncome';
+import {RegularExpenses} from 'form/models/statementOfMeans/expensesAndIncome/regularExpenses';
+import {CourtOrders} from 'form/models/statementOfMeans/courtOrders/courtOrders';
+import {PriorityDebts} from 'form/models/statementOfMeans/priorityDebts';
+import {Debts} from 'form/models/statementOfMeans/debts/debts';
 import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreference';
 export class Claim {
   legacyCaseReference: string;
@@ -127,19 +127,6 @@ export class Claim {
     if (this.isFullDefence() && this.isRejectAllOfClaimDispute()) {
       return ClaimResponseStatus.RC_DISPUTE;
     }
-
-  }
-
-  get hasSupportRequiredList(): boolean {
-    return !!this.directionQuestionnaire?.hearing?.supportRequiredList;
-  }
-
-  get isSupportRequiredYes(): boolean {
-    return this.directionQuestionnaire?.hearing?.supportRequiredList?.option === YesNo.YES;
-  }
-
-  get isSupportRequiredDetailsAvailable(): boolean {
-    return this.directionQuestionnaire?.hearing?.supportRequiredList?.items?.length > 0;
   }
 
   getClaimantFullName(): string {
@@ -289,6 +276,18 @@ export class Claim {
     return this.rejectAllOfClaim.howMuchHaveYouPaid.amount === this.rejectAllOfClaim.howMuchHaveYouPaid.totalClaimAmount;
   }
 
+  getRejectAllOfClaimPaidLessPaymentDate(): Date {
+    return this.rejectAllOfClaim.howMuchHaveYouPaid.date;
+  }
+
+  getRejectAllOfClaimPaidLessPaymentMode(): string {
+    return this.rejectAllOfClaim?.howMuchHaveYouPaid?.text ?? '';
+  }
+
+  getRejectAllOfClaimDisagreementReason(): string {
+    return this.rejectAllOfClaim?.whyDoYouDisagree?.text ?? '';
+  }
+
   extractDocumentId(): string {
     const documentUrl = this.specClaimTemplateDocumentFiles?.document_url;
     let documentId: string;
@@ -357,6 +356,18 @@ export class Claim {
     return this.respondent1ResponseDate <= new Date();
   }
 
+  get hasSupportRequiredList(): boolean {
+    return !!this.directionQuestionnaire?.hearing?.supportRequiredList;
+  }
+
+  get isSupportRequiredYes(): boolean {
+    return this.directionQuestionnaire?.hearing?.supportRequiredList?.option === YesNo.YES;
+  }
+
+  get isSupportRequiredDetailsAvailable(): boolean {
+    return this.directionQuestionnaire?.hearing?.supportRequiredList?.items?.length > 0;
+  }
+
   hasExpertReportDetails(): boolean {
     return this.directionQuestionnaire?.experts?.expertReportDetails?.option === YesNo.YES;
   }
@@ -403,22 +414,6 @@ export class Claim {
 
   getDebts(): Debts | undefined {
     return this.statementOfMeans?.debts;
-  }
-
-  isInterestClaimOptionsBreakDownInterest(): boolean {
-    return this.interest?.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST;
-  }
-
-  getDefendantPaidAmount(): number | undefined {
-    return this.claimantResponse?.ccjRequest?.paidAmount?.amount;
-  }
-
-  hasDefendantPaid(): boolean {
-    return this.claimantResponse?.ccjRequest?.paidAmount?.option === YesNo.YES;
-  }
-
-  getHowTheInterestCalculatedReason(): string {
-    return this.interest?.totalInterest?.reason;
   }
 
   private getName(party: Party): string {
