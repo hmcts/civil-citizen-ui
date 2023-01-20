@@ -28,7 +28,7 @@ describe('Consider Claimant Documents Controller', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Are there any documents the claimant has that you want the court to consider?');
+        expect(res.text).toContain('Are there any documents the other party has that you want the court to consider?');
       });
     });
 
@@ -51,7 +51,7 @@ describe('Consider Claimant Documents Controller', () => {
     it('should return consider claimant documents page', async () => {
       await request(app).post(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Are there any documents the claimant has that you want the court to consider?');
+        expect(res.text).toContain('Are there any documents the other party has that you want the court to consider?');
       });
     });
 
