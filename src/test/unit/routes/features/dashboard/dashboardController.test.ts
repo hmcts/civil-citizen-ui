@@ -1,6 +1,7 @@
 import {app} from '../../../../../main/app';
 import config from 'config';
 import request from 'supertest';
+import nock from 'nock';
 import {DASHBOARD_URL} from 'routes/urls';
 import {CIVIL_SERVICE_CASES_URL} from '../../../../../main/app/client/civilServiceUrls';
 import {
@@ -9,7 +10,6 @@ import {
   mockCivilClaimFullAdmissionPaymentOptionInstalments,
 } from '../../../../utils/mockDraftStore';
 
-const nock = require('nock');
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/oidc');
