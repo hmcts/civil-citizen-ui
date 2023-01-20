@@ -23,8 +23,4 @@ module.exports = {
   },
   setupFilesAfterEnv: ['./jest.setup.redis-mock.js'],
   coverageProvider: 'v8',
-  fakeTimers: {
-    doNotFake: ['nextTick'],
-    timerLimit: 1000
-  }
 };

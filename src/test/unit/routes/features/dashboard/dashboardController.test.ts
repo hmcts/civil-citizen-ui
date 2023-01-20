@@ -1,7 +1,7 @@
 import {app} from '../../../../../main/app';
 import config from 'config';
-import {DASHBOARD_URL} from 'routes/urls';
-import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
+import {DASHBOARD_URL} from '../../../../../main/routes/urls';
+import {CIVIL_SERVICE_CASES_URL} from '../../../../../main/app/client/civilServiceUrls';
 import {
   mockCivilClaim,
   mockCivilClaimFullAdmissionPaymentOptionBySpecifiedDate,
@@ -9,7 +9,6 @@ import {
 } from '../../../../utils/mockDraftStore';
 import request from 'supertest';
 
-const citizenRoleToken: string = config.get('citizenRoleToken');
 const nock = require('nock');
 
 jest.mock('../../../../../main/modules/draft-store');
@@ -32,16 +31,13 @@ const mockClaimWithStatus = (stat: string) => {
 };
 
 describe('Dashboard page', () => {
-  const idamUrl: string = config.get('services.idam.url');
+  const citizenRoleToken: string = config.get('citizenRoleToken');
+  const idamUrl: string = config.get('idamUrl');
 
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-
-    nock('http://localhost:4000')
-      .post(CIVIL_SERVICE_CASES_URL)
-      .reply(200, {});
   });
 
   describe('on GET', () => {
