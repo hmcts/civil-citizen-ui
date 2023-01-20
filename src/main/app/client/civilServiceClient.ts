@@ -18,7 +18,7 @@ import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
 import {CaseDocument} from 'common/models/document/caseDocument';
 import {DashboardClaimantItem, DashboardDefendantItem} from '../../common/models/dashboard/dashboardItem';
-import {ClaimUpdate, EventBreathing, EventDto} from '../../common/models/events/eventDto';
+import {ClaimUpdate, EventDto} from '../../common/models/events/eventDto';
 import {CaseEvent} from '../../common/models/events/caseEvent';
 import {CourtLocation} from '../../common/models/courts/courtLocations';
 import {BreathingSpace} from "models/breathingSpace";
@@ -183,10 +183,10 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.CREATE_LIP_CLAIM, 'draft', updatedClaim, req);
   }
 
-  async submitEvent(event: CaseEvent, claimId: string, updatedClaim?: ClaimUpdate, req?: AppRequest): Promise<Claim> {
+  async submitEvent<T>(event: CaseEvent, claimId: string, updatedClaim?: T, req?: AppRequest): Promise<Claim> {
     const config = this.getConfig(req);
     const userId = req.session?.user?.id;
-    const data: EventDto = {
+    const data: EventDto<T> = {
       event: event,
       caseDataUpdate: updatedClaim,
     };
@@ -203,26 +203,8 @@ export class CivilServiceClient {
     }
   }
 
-  async submitBreathingSpaceEvent(event: CaseEvent, claimId: string, breathingSpace: BreathingSpace, req?: AppRequest): Promise<BreathingSpace>{
-    const config = this.getConfig(req);
-    const userId = req.session?.user?.id;
-    const data: EventBreathing = {
-      event:event,
-      breathingSpec: breathingSpace
-    }
-    try {
-      const response: AxiosResponse<Object> = await this.client.post(CIVIL_SERVICE_SUBMIT_EVENT
-        .replace(':submitterId', userId)
-        .replace(':caseId', claimId), data, config);
-      console.log(response);
-      logger.info('Submitted event');
-      //TODO Call CCD Translation
-      return null;
-    }catch (err: unknown) {
-      logger.error(err);
-      throw err;
-    }
-
+  async submitBreathingSpaceEvent(event: CaseEvent, claimId: string, breathingSpace: BreathingSpace, req?: AppRequest): Promise<Claim>{
+    return this.submitEvent(event, claimId, breathingSpace,req);
   }
 
   async calculateExtendedResponseDeadline(extendedDeadline: Date, req: AppRequest): Promise<Date> {

@@ -5,6 +5,7 @@ import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlForm
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {getBreathingSpace} from 'services/features/breathingSpace/breathingSpaceService';
 import {BreathingSpace} from 'models/breathingSpace';
+import {submitBreathingSpace} from "services/features/breathingSpace/submission/submitBreathSpace";
 
 const checkAnswersViewPath = 'features/breathingSpace/check-answers';
 const breathingSpaceCheckAnswersController = Router();
@@ -29,8 +30,13 @@ breathingSpaceCheckAnswersController.get(BREATHING_SPACE_CHECK_ANSWERS_URL,
 breathingSpaceCheckAnswersController.post(BREATHING_SPACE_CHECK_ANSWERS_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.session?.user?.id;
+    const claimId = req.params.id;
     //TODO:: Submit button:
-    console.log("Update Camunda");
+    const breathingSpace = await getBreathingSpace(claimId);
+    console.log(JSON.stringify(breathingSpace));
+    const response = await submitBreathingSpace(claimId, breathingSpace,req);
+    console.log(JSON.stringify(response));
+
     res.redirect(constructResponseUrlWithIdParams(userId, DASHBOARD_CLAIMANT_URL));
   } catch (error) {
     next(error);

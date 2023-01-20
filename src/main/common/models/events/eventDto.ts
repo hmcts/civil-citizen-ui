@@ -1,17 +1,12 @@
 import {CaseEvent} from './caseEvent';
-import {BreathingSpace} from "models/breathingSpace";
 
-export interface EventDto {
+export interface EventDto<T> {
   event: CaseEvent,
-  caseDataUpdate?: ClaimUpdate
+  caseDataUpdate?: T
 }
 
 export interface ClaimUpdate {
   respondentSolicitor1AgreedDeadlineExtension?:Date;
 }
 
-export interface EventBreathing{
-  event: CaseEvent,
-  breathingSpec: BreathingSpace
-}
 
