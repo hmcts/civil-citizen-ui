@@ -4,6 +4,7 @@ import {AssertionError} from 'assert';
 import {AppRequest} from 'common/models/AppRequest';
 import {CivilClaimResponse} from 'common/models/civilClaimResponse';
 import {
+  ASSIGN_CLAIM_TO_DEFENDANT,
   CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
   CIVIL_SERVICE_CLAIM_AMOUNT_URL,
@@ -218,6 +219,16 @@ export class CivilServiceClient {
     try {
       const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_COURT_LOCATIONS, config);
       return plainToInstance(CourtLocation, response.data as object[]);
+    } catch (error: unknown) {
+      logger.error(error);
+      throw error;
+    }
+  }
+
+  async assignDefendantToClaim(claimId:string, req:AppRequest): Promise<void> {
+    const config = this.getConfig(req);
+    try{
+      await this.client.get(ASSIGN_CLAIM_TO_DEFENDANT.replace(':caseId', claimId), config);
     } catch (error: unknown) {
       logger.error(error);
       throw error;

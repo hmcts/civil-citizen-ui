@@ -16,6 +16,7 @@ services:
     clientID: 'civil_citizen_ui'
     clientSecret: 'citizen-ui-secret'
     callbackURL: 'http://localhost:3001/oauth2/callback'
+    assignclaimUrl: 'http://localhost:3001/assignclaim'
     citizenRole: 'citizen'
     scope: '&scope=profile%20openid%20roles%20manage-user%20create-user%20search-user'
     terminateSessionURL: 'http://localhost:9002/o/endSession'
