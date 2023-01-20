@@ -20,4 +20,5 @@ export class ClaimantResponse {
   courtProposedPlan?: CourtProposedPlan;
   mediation?: Mediation;
   directionQuestionnaire?: DirectionQuestionnaire;
+  defendantResponseViewed?: boolean;
 }
