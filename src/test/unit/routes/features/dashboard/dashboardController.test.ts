@@ -15,23 +15,24 @@ const nock = require('nock');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/oidc');
 
+const mockClaimWithStatus = (stat: string) => {
+  nock('http://localhost:4000')
+    .get(CIVIL_SERVICE_CASES_URL + 'defendant/undefined')
+    .reply(200, [
+      {
+        claimId: '1645882162449409',
+        claimNumber: '000MC009',
+        claimantName: 'John Test',
+        claimAmount: '1000',
+        responseDeadline: '2023-09-25T13:46:07.287',
+        defendantResponseStatus: stat,
+        respondent1ResponseDeadline: '2023-09-25T13:46:07.287',
+      },
+    ]);
+};
+
 describe('Dashboard page', () => {
   const idamUrl: string = config.get('services.idam.url');
-  const mockClaimWithStatus = (stat: string) => {
-    nock('http://localhost:4000')
-      .get(CIVIL_SERVICE_CASES_URL + 'defendant/undefined')
-      .reply(200, [
-        {
-          claimId: '1645882162449409',
-          claimNumber: '000MC009',
-          claimantName: 'John Test',
-          claimAmount: '1000',
-          responseDeadline: '2023-09-25T13:46:07.287',
-          defendantResponseStatus: stat,
-          respondent1ResponseDeadline: '2023-09-25T13:46:07.287',
-        },
-      ]);
-  };
 
   beforeAll(() => {
     nock(idamUrl)
