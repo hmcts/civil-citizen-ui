@@ -15,7 +15,7 @@ import {EmploymentCategory} from '../../../common/form/models/statementOfMeans/e
 import {PriorityDebts} from '../../../common/form/models/statementOfMeans/priorityDebts';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
-import {getConvertFrequencyToText, getFinalPaymentDate, getRepaymentLength} from 'common/utils/repaymentUtils';
+import {convertFrequencyToText, getFinalPaymentDate, getRepaymentFrequency, getRepaymentLength} from 'common/utils/repaymentUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -77,7 +77,7 @@ const constructRepaymentPlanSection = (claim: Claim, lng: string) => {
           text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.FREQUENCY_OF_PAYMENTS', {lng}),
         },
         value: {
-          text: getConvertFrequencyToText(claim, lng),
+          text: convertFrequencyToText(getRepaymentFrequency(claim), getLng(lng)),
         },
         classes: 'govuk-summary-list__row--no-border',
       },
