@@ -42,153 +42,114 @@ describe('Dashboard page', () => {
   describe('on GET', () => {
     it('should return dashboard page', async () => {
 
-      await request(app)
-        .get(DASHBOARD_URL)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Claims made by or against you');
-        });
+      const res = await request(app).get(DASHBOARD_URL);
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('Claims made by or against you');
     });
 
     it('should have proper text for NO_RESPONSE status', async () => {
       mockClaimWithStatus('NO_RESPONSE');
       app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .get(DASHBOARD_URL)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Response to claim.');
-        });
+      const res = await request(app).get(DASHBOARD_URL);
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('Response to claim.');
     });
 
     it('should have proper text for ELIGIBLE_FOR_CCJ status', async () => {
       mockClaimWithStatus('ELIGIBLE_FOR_CCJ');
       app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .get(DASHBOARD_URL)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('County Court Judgment (CCJ) against you.');
-        });
+      const res = await request(app).get(DASHBOARD_URL);
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('County Court Judgment (CCJ) against you.');
     });
 
     it('should have proper text for ELIGIBLE_FOR_CCJ_AFTER_FULL_ADMIT_PAY_IMMEDIATELY_PAST_DEADLINE and pay IMMEDIATELY status', async () => {
       mockClaimWithStatus('ELIGIBLE_FOR_CCJ_AFTER_FULL_ADMIT_PAY_IMMEDIATELY_PAST_DEADLINE');
       app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .get(DASHBOARD_URL)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('pay the full amount immediately');
-        });
+      const res = await request(app).get(DASHBOARD_URL);
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('pay the full amount immediately');
     });
 
     it('should have proper text for ELIGIBLE_FOR_CCJ_AFTER_FULL_ADMIT_PAY_IMMEDIATELY_PAST_DEADLINE and pay BY_SPECIFIED_DATE status', async () => {
       mockClaimWithStatus('ELIGIBLE_FOR_CCJ_AFTER_FULL_ADMIT_PAY_IMMEDIATELY_PAST_DEADLINE');
       app.locals.draftStoreClient = mockCivilClaimFullAdmissionPaymentOptionBySpecifiedDate;
 
-      await request(app)
-        .get(DASHBOARD_URL)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('pay the full amount by');
-        });
+      const res = await request(app).get(DASHBOARD_URL);
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('pay the full amount by');
     });
 
     it('should have proper text for ELIGIBLE_FOR_CCJ_AFTER_FULL_ADMIT_PAY_IMMEDIATELY_PAST_DEADLINE and pay INSTALMENTS status', async () => {
       mockClaimWithStatus('ELIGIBLE_FOR_CCJ_AFTER_FULL_ADMIT_PAY_IMMEDIATELY_PAST_DEADLINE');
       app.locals.draftStoreClient = mockCivilClaimFullAdmissionPaymentOptionInstalments;
 
-      await request(app)
-        .get(DASHBOARD_URL)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('pay the full amount in instalments');
-        });
+      const res = await request(app).get(DASHBOARD_URL);
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('pay the full amount in instalments');
     });
 
     it('should have proper text for MORE_TIME_REQUESTED', async () => {
       mockClaimWithStatus('MORE_TIME_REQUESTED');
       app.locals.draftStoreClient = mockCivilClaimFullAdmissionPaymentOptionInstalments;
 
-      await request(app)
-        .get(DASHBOARD_URL)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('You need to respond before 4pm on');
-        });
+      const res = await request(app).get(DASHBOARD_URL);
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('You need to respond before 4pm on');
     });
 
     it('should have proper text for PAID_IN_FULL', async () => {
       mockClaimWithStatus('PAID_IN_FULL');
       app.locals.draftStoreClient = mockCivilClaimFullAdmissionPaymentOptionInstalments;
 
-      await request(app)
-        .get(DASHBOARD_URL)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('This claim is settled.');
-        });
+      const res = await request(app).get(DASHBOARD_URL);
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('This claim is settled.');
     });
 
     it('should have proper text for CLAIMANT_ACCEPTED_STATES_PAID', async () => {
       mockClaimWithStatus('CLAIMANT_ACCEPTED_STATES_PAID');
       app.locals.draftStoreClient = mockCivilClaimFullAdmissionPaymentOptionInstalments;
 
-      await request(app)
-        .get(DASHBOARD_URL)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('This claim is settled.');
-        });
+      const res = await request(app).get(DASHBOARD_URL);
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('This claim is settled.');
     });
 
     it('should have proper text for PAID_IN_FULL_CCJ_CANCELLED', async () => {
       mockClaimWithStatus('PAID_IN_FULL_CCJ_CANCELLED');
       app.locals.draftStoreClient = mockCivilClaimFullAdmissionPaymentOptionInstalments;
 
-      await request(app)
-        .get(DASHBOARD_URL)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('John Test confirmed');
-        });
+      const res = await request(app).get(DASHBOARD_URL);
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('John Test confirmed');
     });
 
     it('should have proper text for PAID_IN_FULL_CCJ_SATISFIED', async () => {
       mockClaimWithStatus('PAID_IN_FULL_CCJ_SATISFIED');
       app.locals.draftStoreClient = mockCivilClaimFullAdmissionPaymentOptionInstalments;
 
-      await request(app)
-        .get(DASHBOARD_URL)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('John Test confirmed');
-        });
+      const res = await request(app).get(DASHBOARD_URL);
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('John Test confirmed');
     });
 
     it('should have proper text for TRANSFERRED', async () => {
       mockClaimWithStatus('TRANSFERRED');
       app.locals.draftStoreClient = mockCivilClaimFullAdmissionPaymentOptionInstalments;
 
-      await request(app)
-        .get(DASHBOARD_URL)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Case sent to court.');
-        });
+      const res = await request(app).get(DASHBOARD_URL);
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('Case sent to court.');
     });
 
     it('should have proper text for REDETERMINATION_BY_JUDGE', async () => {
       mockClaimWithStatus('REDETERMINATION_BY_JUDGE');
       app.locals.draftStoreClient = mockCivilClaimFullAdmissionPaymentOptionInstalments;
 
-      await request(app)
-        .get(DASHBOARD_URL)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('John Test requested a County Court Judgment against you.');
-        });
+      const res = await request(app).get(DASHBOARD_URL);
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('John Test requested a County Court Judgment against you.');
     });
   });
 });
