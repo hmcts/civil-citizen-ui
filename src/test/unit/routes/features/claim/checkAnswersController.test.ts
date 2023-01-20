@@ -28,7 +28,7 @@ jest.mock('../../../../../main/services/features/claim/submission/submitClaim');
 const mockGetSummarySections = getSummarySections as jest.Mock;
 const mockGetClaim = getCaseDataFromStore as jest.Mock;
 
-describe('Response - Check answers', () => {
+describe('Claim - Check answers', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamServiceUrl: string = config.get('services.idam.url');
   const checkYourAnswerEng = 'Check your answers';
