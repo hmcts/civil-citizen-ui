@@ -1,0 +1,92 @@
+[
+  {
+    "claimId": "1645882162449409",
+    "claimNumber": "000MC009",
+    "claimantName": "John Test",
+    "claimAmount": "1000",
+    "responseDeadline": "2023-09-25T13:46:07.287",
+    "defendantResponseStatus": "NO_RESPONSE",
+    "respondent1ResponseDeadline": "2023-09-25T13:46:07.287"
+  },
+  {
+    "claimId": "1645882162449409",
+    "claimNumber": "000MC009",
+    "claimantName": "John Test",
+    "claimAmount": "1000",
+    "responseDeadline": "2023-09-25T13:46:07.287",
+    "defendantResponseStatus": "ELIGIBLE_FOR_CCJ_AFTER_FULL_ADMIT_PAY_IMMEDIATELY_PAST_DEADLINE",
+    "respondent1ResponseDeadline": "2023-09-25T13:46:07.287"
+  },
+  {
+    "claimId": "1645882162449409",
+    "claimNumber": "000MC009",
+    "claimantName": "John Test",
+    "claimAmount": "1000",
+    "responseDeadline": "2023-09-25T13:46:07.287",
+    "defendantResponseStatus": "ELIGIBLE_FOR_CCJ",
+    "respondent1ResponseDeadline": "2023-09-25T13:46:07.287"
+  },
+  {
+    "claimId": "1645882162449409",
+    "claimNumber": "000MC009",
+    "claimantName": "John Test",
+    "claimAmount": "1000",
+    "responseDeadline": "2023-09-25T13:46:07.287",
+    "defendantResponseStatus": "MORE_TIME_REQUESTED",
+    "respondent1ResponseDeadline": "2023-09-25T13:46:07.287"
+  },
+  {
+    "claimId": "1645882162449409",
+    "claimNumber": "000MC009",
+    "claimantName": "John Test",
+    "claimAmount": "1000",
+    "responseDeadline": "2023-09-25T13:46:07.287",
+    "defendantResponseStatus": "PAID_IN_FULL",
+    "respondent1ResponseDeadline": "2023-09-25T13:46:07.287"
+  },
+  {
+    "claimId": "1645882162449409",
+    "claimNumber": "000MC009",
+    "claimantName": "John Test",
+    "claimAmount": "1000",
+    "responseDeadline": "2023-09-25T13:46:07.287",
+    "defendantResponseStatus": "CLAIMANT_ACCEPTED_STATES_PAID",
+    "respondent1ResponseDeadline": "2023-09-25T13:46:07.287"
+  },
+  {
+    "claimId": "1645882162449409",
+    "claimNumber": "000MC009",
+    "claimantName": "John Test",
+    "claimAmount": "1000",
+    "responseDeadline": "2023-09-25T13:46:07.287",
+    "defendantResponseStatus": "PAID_IN_FULL_CCJ_CANCELLED",
+    "respondent1ResponseDeadline": "2023-09-25T13:46:07.287"
+  },
+  {
+    "claimId": "1645882162449409",
+    "claimNumber": "000MC009",
+    "claimantName": "John Test",
+    "claimAmount": "1000",
+    "responseDeadline": "2023-09-25T13:46:07.287",
+    "defendantResponseStatus": "PAID_IN_FULL_CCJ_SATISFIED",
+    "respondent1ResponseDeadline": "2023-09-25T13:46:07.287"
+  },
+  {
+    "claimId": "1645882162449409",
+    "claimNumber": "000MC009",
+    "claimantName": "John Test",
+    "claimAmount": "1000",
+    "responseDeadline": "2023-09-25T13:46:07.287",
+    "defendantResponseStatus": "TRANSFERRED",
+    "respondent1ResponseDeadline": "2023-09-25T13:46:07.287"
+  },
+  {
+    "claimId": "1645882162449409",
+    "claimNumber": "000MC009",
+    "claimantName": "John Test",
+    "claimAmount": "1000",
+    "responseDeadline": "2023-09-25T13:46:07.287",
+    "defendantResponseStatus": "REDETERMINATION_BY_JUDGE",
+    "respondent1ResponseDeadline": "2023-09-25T13:46:07.287"
+  }
+]
