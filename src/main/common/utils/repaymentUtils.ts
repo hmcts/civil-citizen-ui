@@ -70,7 +70,7 @@ export const convertFrequencyToText = (frequency: string, lng: string): string =
   }
 };
 
-export const getRepaymentLength = (claim: Claim, lng: string) => {
+export const getRepaymentLength = (claim: Claim, lng: string): string => {
   const repaymentFrequency = getRepaymentFrequency(claim);
   let repaymentLength = '';
   switch (repaymentFrequency) {

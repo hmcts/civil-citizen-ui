@@ -13,7 +13,6 @@ import {currencyFormatWithNoTrailingZeros} from '../../../common/utils/currencyF
 import {YesNo} from '../../../common/form/models/yesNo';
 import {EmploymentCategory} from '../../../common/form/models/statementOfMeans/employment/employmentCategory';
 import {PriorityDebts} from '../../../common/form/models/statementOfMeans/priorityDebts';
-import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {convertFrequencyToText, getFinalPaymentDate, getRepaymentFrequency, getRepaymentLength} from 'common/utils/repaymentUtils';
 
@@ -58,10 +57,10 @@ const saveClaimantResponse = async (claimId: string, value: any, claimantRespons
   }
 };
 
-const constructRepaymentPlanSection = (claim: Claim, lng: string) => {
+const constructRepaymentPlanSection = (claim: Claim, lng: string): Array<object> => {
   const sectionRows = [];
 
-  if (claim.partialAdmission?.alreadyPaid?.option === YesNo.NO && claim.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS) {
+  if(claim.isPartialAdmission) {
     sectionRows.push(
       {
         key: {
@@ -478,18 +477,21 @@ const constructCourtOrdersSection = (claim: Claim, lng: string) => {
   return sectionRows;
 };
 
-const hasDebtAmount = (priorityDebts: PriorityDebts) => {
+const hasDebtAmount = (priorityDebts: PriorityDebts): boolean => {
   let amountFlag = false;
   if (priorityDebts) {
     const priorityDebtsKeys = Object.keys(priorityDebts);
-    priorityDebtsKeys.forEach((priorityDebtKey) => {
-      const priorityDebt = priorityDebts[priorityDebtKey as keyof PriorityDebts];
+
+    for (let i = 0; i <= priorityDebtsKeys.length; i++) {
+      const priorityDebt = priorityDebts[priorityDebtsKeys[i] as keyof PriorityDebts];
       if (priorityDebt?.transactionSource?.amount) {
         amountFlag = true;
+        break;
       }
-    });
+    }
+
+    return amountFlag;
   }
-  return amountFlag;
 };
 
 const constructDebtsSection = (claim: Claim, lng: string) => {
