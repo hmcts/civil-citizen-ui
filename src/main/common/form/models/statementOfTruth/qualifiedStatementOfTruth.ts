@@ -1,10 +1,7 @@
 import {IsNotEmpty, MaxLength} from 'class-validator';
 import {StatementOfTruthForm} from './statementOfTruthForm';
 import {SignatureType} from 'models/signatureType';
-import {
-  SIGNER_NAME_MAX_LENGTH,
-  SIGNER_ROLE_MAX_LENGTH,
-} from 'form/validators/validationConstraints';
+import {SIGNER_NAME_MAX_LENGTH, SIGNER_ROLE_MAX_LENGTH} from 'form/validators/validationConstraints';
 
 export class QualifiedStatementOfTruth extends StatementOfTruthForm {
 
@@ -16,7 +13,7 @@ export class QualifiedStatementOfTruth extends StatementOfTruthForm {
   @IsNotEmpty({message: 'ERRORS.SIGNER_ROLE_REQUIRED'})
     signerRole?: string;
 
-  constructor(isFullAmountRejected: boolean, signed?: string, directionsQuestionnaireSigned?: string, signerName?: string, signerRole?: string) {
+  constructor(isFullAmountRejected: boolean, signed?: boolean, directionsQuestionnaireSigned?: boolean, signerName?: string, signerRole?: string) {
     super(isFullAmountRejected, SignatureType.QUALIFIED, signed, directionsQuestionnaireSigned);
     this.signerName = signerName?.trim();
     this.signerRole = signerRole?.trim();

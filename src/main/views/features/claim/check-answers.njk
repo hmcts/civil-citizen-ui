@@ -46,9 +46,11 @@
            {{ statementOfTruth(
              t,
              form,
-             SignatureType.RESPONSE,
+             statementOfTruthType=SignatureType.RESPONSE,
              labelHtml,
-             isQualified = (signatureType === SignatureType.QUALIFIED)
+             isQualified = (signatureType === SignatureType.QUALIFIED),
+             typeOfStatement,
+             isFullAmountRejected = form.model.isFullAmountRejected
            ) }}
             <div class="govuk-form-group">
               {{ govukButton({
