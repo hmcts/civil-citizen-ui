@@ -134,6 +134,21 @@ describe('CCJ - Paid amount', () => {
     beforeAll(() => {
       app.locals.draftStoreClient = mockCivilClaim;
     });
+    it('should redirect to paid amount summary page if option yes is selected with valid amount', async () => {
+      const res = await request(app).post(CCJ_PAID_AMOUNT_URL)
+        .send({
+          option: 'yes',
+          amount: '10',
+        });
+      expect(res.status).toBe(302);
+      expect(res.get('location')).toBe(CCJ_PAID_AMOUNT_SUMMARY_URL);
+    });
+
+    it('should redirect to paid amount summary page if option no is selected', async () => {
+      const res = await request(app).post(CCJ_PAID_AMOUNT_URL).send({option: 'no'});
+      expect(res.status).toBe(302);
+      expect(res.get('location')).toBe(CCJ_PAID_AMOUNT_SUMMARY_URL);
+    });
 
     it('(FROM TASK-LIST) should redirect to paid amount summary page if option yes is selected with valid amount', async () => {
       const res = await request(app).post(CCJ_EXTENDED_PAID_AMOUNT_URL)
