@@ -15,7 +15,7 @@ const paidAmountController = Router();
 const paidAmountViewPath = 'features/claimantResponse/ccj/paid-amount';
 const crPropertyName = 'paidAmount';
 const crParentName = 'ccjRequest';
-
+const urlFromTaskList = 'county-court-judgement';
 function renderView(form: GenericForm<PaidAmount>, res: Response): void {
   res.render(paidAmountViewPath, {form});
 }

@@ -16,13 +16,10 @@ export class PaidAmount {
   @Validate(EqualToOrLessThanPropertyValueValidator, ['totalAmount', 'strictComparison'], {message: 'ERRORS.PAID_AMOUNT_NOT_GREATER'})
     amount?: number;
 
-  valueFromTaskList?: boolean;
-
-  constructor(option?: YesNo, amount?: number, totalAmount?: number, valueFromTaskList?: boolean) {
+  constructor(option?: YesNo, amount?: number, totalAmount?: number) {
     this.option = option;
     this.amount = option === YesNo.YES ? amount : undefined;
     this.totalAmount = totalAmount;
-    this.valueFromTaskList = valueFromTaskList;
   }
 }
 
