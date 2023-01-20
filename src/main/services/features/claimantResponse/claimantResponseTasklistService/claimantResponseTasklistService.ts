@@ -12,18 +12,17 @@ import {
 export function getClaimantResponseTaskLists (claim: Claim, claimId: string, lng: string) {
   const lang = getLng(lng);
 
-  // TASK BUILDER
   const taskListHowDefendantRespond: TaskList = buildHowDefendantRespondSection(claim, claimId, lang);
   const taskListWhatToDoNext: TaskList = buildWhatToDoNextSection(claim, claimId, lang);
   // TODO : Dq screens needs refactioring
-  const taskListYourHearingRequirements: TaskList = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+  const taskListClaimantHearingRequirements: TaskList = buildClaimantHearingRequirementsSection(claim, claimId, lang);
 
-  const taskGroups = [taskListHowDefendantRespond, taskListWhatToDoNext, taskListYourHearingRequirements];
+  const taskGroups = [taskListHowDefendantRespond, taskListWhatToDoNext, taskListClaimantHearingRequirements];
   const filteredTaskGroups = taskGroups.filter(item => item.tasks.length !== 0);
   // check if all tasks are completed except check and submit
   calculateTotalAndCompleted(taskGroups);
-  const taskListSubmitYourResponse: TaskList = buildClaimantResponseSubmitSection(claimId, lang);
+  const taskListSubmitClaimantResponse: TaskList = buildClaimantResponseSubmitSection(claimId, lang);
 
-  filteredTaskGroups.push(taskListSubmitYourResponse);
+  filteredTaskGroups.push(taskListSubmitClaimantResponse);
   return filteredTaskGroups;
 }

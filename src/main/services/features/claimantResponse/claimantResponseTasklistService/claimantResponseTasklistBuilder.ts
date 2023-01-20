@@ -1,9 +1,10 @@
 import {t} from 'i18next';
 import {Claim} from 'common/models/claim';
 import {Task} from 'common/models/taskList/task';
-import {getViewDefendantsReponseTask, getAcceptOrRejectDefendantAdmittedTask} from './claimantResponseTasks/viewDefendantsReponse';
-import {getCheckAndSubmitClaimantResponseTask} from './claimantResponseTasks/checkAndSubmitClaimantResponse';
-import {getGiveUsDetailsClaimantHearingTask} from './claimantResponseTasks/giveUsDetailsClaimantHearing';
+import {getViewDefendantsReponseTask} from './claimantResponseTasks/howDefendantRespondSectionTaks';
+import {getCheckAndSubmitClaimantResponseTask} from './claimantResponseTasks/claimantResponseSubmitSectionTasks';
+import {getGiveUsDetailsClaimantHearingTask} from './claimantResponseTasks/claimantHearingRequirementsSectionTasks';
+import {getAcceptOrRejectDefendantAdmittedTask} from './claimantResponseTasks/whatToDoNextSectionTasks';
 
 export function buildHowDefendantRespondSection(claim: Claim, claimId: string, lang: string){
   const tasks: Task[] = [];
@@ -22,7 +23,6 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
 export function buildClaimantResponseSubmitSection(claimId: string, lang: string) {
   const tasks: Task[] = [];
 
-  // TODO: when check and submit tasks page is developed we need to update logic of this task
   const checkAndSubmitYourResponseTask = getCheckAndSubmitClaimantResponseTask(claimId, lang);
 
   tasks.push(checkAndSubmitYourResponseTask);
@@ -31,6 +31,7 @@ export function buildClaimantResponseSubmitSection(claimId: string, lang: string
 
 export function buildClaimantHearingRequirementsSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
+  // TODO : update the logic here with the jira ticket --> settle-addmitted is 'No'
   if (claim.isClaimantIntentionPending()) {
     const giveUsDetailsClaimantHearingTask = getGiveUsDetailsClaimantHearingTask(claim, claimId, lang);
     tasks.push(giveUsDetailsClaimantHearingTask);

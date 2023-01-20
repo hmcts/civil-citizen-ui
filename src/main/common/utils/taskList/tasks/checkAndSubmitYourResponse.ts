@@ -1,9 +1,9 @@
 import {Task} from '../../../models/taskList/task';
 import {TaskStatus} from '../../../models/taskList/TaskStatus';
+import {RESPONSE_CHECK_ANSWERS_URL} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from '../../urlFormatter';
 import {getLng} from '../../../../common/utils/languageToggleUtils';
 import {t} from 'i18next';
-import {RESPONSE_CHECK_ANSWERS_URL} from 'routes/urls';
 
 /**
  *
