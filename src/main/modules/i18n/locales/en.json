@@ -877,7 +877,24 @@
       "PAGE_TITLE": "Claims made by or against you",
       "REQUESTED_CCJ": "{{ claimantName }} requested a County Court Judgment against you",
       "TITLE": "Your money claims account",
-      "VIEW": "View"
+      "VIEW": "View",
+
+      "CLAIMANT_HAS_REQUESTED_CCJ": "The claimant has requested a County Court Judgment (CCJ) against you on {{ ccjRequestedAt }}",
+      "WAIT_CLAIMANT_RESPONSE": "Wait for the claimant to respond",
+      "CLAIM_CONTINUE_BY_POST": "The claim will continue by post",
+      "YOU_APPLIED_TO_CHANGE_CLAIM": "You applied to change the claim",
+      "CLAIMANT_APPLIED_TO_CHANGE_CLAIM": "The claimant applied to change something about the claim",
+      "CASE_PASSED_TO_CCBC": "Case passed to County Court Business Centre",
+      "CLAIMANT_REQUESTED_CCJ_AGAINS_YOU": "{{ claimantName }} requested a County Court Judgment against you.",
+      "ASKED_TO_SIGN_SETTLEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
+      "CLAIMANT_ACCEPTED_ADMISSION": "{{ claimantName }} accepted your admission of {{ amount }}",
+      "BOTH_SIGNED_SETTLEMENT": "You’ve both signed a settlement agreement.",
+      "CLAIMANT_EMAILED": "We’ve emailed {{ claimantName }} telling them when and how you said you paid the claim.",
+      "REJECTED_CLAIM": "You’ve rejected the claim.",
+      "REJECTED_CLAIM_AND_SUGGESTED_MEDIATION": "You’ve rejected the claim and suggested mediation. We’ll ask the claimant if they agree to take part in mediation.",
+      "ADMITTED_PART_OF_CLAIM": "You’ve admitted part of the claim.",
+      "ADMITTED_ALL_PAY_IMMEDIATELY": "You’ve admitted all of the claim and said you’ll pay the full amount immediately.",
+      "ADMITTED_ALL_PAY_BY_SET_DATE": "You’ve admitted all of the claim and offered to pay the full amount by {{ paymentDate }}"
     },
     "DEBTS": {
       "ADD": "Add a debt",
