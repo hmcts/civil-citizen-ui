@@ -28,4 +28,3 @@ claimantResponseTasklistController.get(CLAIMANT_RESPONSE_TASK_LIST_URL, async (r
 });
 
 export default claimantResponseTasklistController;
-

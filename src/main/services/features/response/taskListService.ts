@@ -11,7 +11,6 @@ import {Task} from '../../../common/models/taskList/task';
 import {getLng} from '../../../common/utils/languageToggleUtils';
 import {t} from 'i18next';
 import {Claim} from '../../../common/models/claim';
-import {RESPONSE_CHECK_ANSWERS_URL} from 'routes/urls';
 
 const getTaskLists = (caseData: Claim, currentClaimId: string, lang: string) => {
 
@@ -27,7 +26,7 @@ const getTaskLists = (caseData: Claim, currentClaimId: string, lang: string) => 
   // check if all tasks are completed except check and submit
   calculateTotalAndCompleted(taskGroups);
 
-  const taskListSubmitYourResponse: TaskList = buildSubmitSection(currentClaimId, lang, RESPONSE_CHECK_ANSWERS_URL);
+  const taskListSubmitYourResponse: TaskList = buildSubmitSection(currentClaimId, lang);
 
   filteredTaskGroups.push(taskListSubmitYourResponse);
   return filteredTaskGroups;
@@ -80,4 +79,3 @@ export {
   outstandingTasksFromCase,
   outstandingTasksFromTaskLists,
 };
-

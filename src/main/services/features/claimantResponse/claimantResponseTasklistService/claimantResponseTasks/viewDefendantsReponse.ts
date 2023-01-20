@@ -8,6 +8,7 @@ import {Task} from 'models/taskList/task';
 
 export function getViewDefendantsReponseTask (claim: Claim, claimId: string, lang: string): Task {
   // update complete status
+  // defendantResponseViewed
   const viewDefendantsReponseTask = {
     description: t('CLAIMANT_RESPONSE_TASK_LIST.HOW_THEY_RESPONDED.VIEW_DEFENDANTS_RESPONSE', {lng: lang}),
     url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL),
@@ -31,4 +32,3 @@ export function getAcceptOrRejectDefendantAdmittedTask(claim: Claim, claimId: st
   }
   return accceptOrRejectDefendantAdmittedTask;
 }
-

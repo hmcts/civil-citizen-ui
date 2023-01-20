@@ -3,6 +3,7 @@ import {TaskStatus} from '../../../models/taskList/TaskStatus';
 import {constructResponseUrlWithIdParams} from '../../urlFormatter';
 import {getLng} from '../../../../common/utils/languageToggleUtils';
 import {t} from 'i18next';
+import {RESPONSE_CHECK_ANSWERS_URL} from 'routes/urls';
 
 /**
  *
@@ -10,12 +11,12 @@ import {t} from 'i18next';
  *
  */
 
-export const getCheckAndSubmitYourResponseTask = (claimId: string, lang: string, url: string): Task => {
+export const getCheckAndSubmitYourResponseTask = (claimId: string, lang: string): Task => {
   // TODO : create the logic for successfull submit and change the taskStatus to TaskStatus.COMPLETE
   // TODO : update the URL constants with the correct ones when these pages developed
   return {
     description: t('TASK_LIST.SUBMIT.CHECK_AND_SUBMIT', { lng: getLng(lang) }),
-    url: constructResponseUrlWithIdParams(claimId, url),
+    url: constructResponseUrlWithIdParams(claimId, RESPONSE_CHECK_ANSWERS_URL),
     status: TaskStatus.INCOMPLETE,
     isCheckTask: true,
   };

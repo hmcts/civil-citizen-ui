@@ -135,11 +135,11 @@ const buildYourHearingRequirementsSection = (caseData: Claim, claimId: string, l
   return {title: t('TASK_LIST.YOUR_HEARING_REQUIREMENTS.TITLE', {lng: getLng(lang)}), tasks};
 };
 
-const buildSubmitSection = (claimId: string, lang: string, url: string): TaskList => {
+const buildSubmitSection = (claimId: string, lang: string): TaskList => {
   const tasks: Task[] = [];
 
   // TODO: when check and submit tasks page is developed we need to update logic of this task
-  const checkAndSubmitYourResponseTask = getCheckAndSubmitYourResponseTask(claimId, lang, url);
+  const checkAndSubmitYourResponseTask = getCheckAndSubmitYourResponseTask(claimId, lang);
 
   tasks.push(checkAndSubmitYourResponseTask);
   return {title: t('TASK_LIST.SUBMIT.TITLE', {lng: getLng(lang)}), tasks};
