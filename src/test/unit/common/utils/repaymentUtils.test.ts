@@ -12,7 +12,6 @@ import {
   getPaymentAmount,
   getRepaymentFrequency,
   convertFrequencyToText,
-  getConvertFrequencyToText,
   getRepaymentLength,
   getAmount,
   getPaymentDate,
@@ -386,57 +385,6 @@ describe('repaymentUtils', () => {
       const result = getAmount(claim);
       //Then
       expect(result).toBe(1000);
-    });
-  });
-
-  describe('getConvertFrequencyToText', () => {
-    it('should convert translate frequency weekly to text when response type is part admission', () => {
-      //Given
-      const claim = getClaimForPA(TransactionSchedule.WEEK);
-      //When
-      const result = getConvertFrequencyToText(claim, 'en');
-      //Then
-      expect(result).toBe(t('COMMON.FREQUENCY_OF_PAYMENTS.WEEKLY'));
-    });
-    it('should convert translate frequency two weeks to text when response type is part admission', () => {
-      //Given
-      const claim = getClaimForPA(TransactionSchedule.TWO_WEEKS);
-      //When
-      const result = getConvertFrequencyToText(claim, 'en');
-      //Then
-      expect(result).toBe(t('COMMON.FREQUENCY_OF_PAYMENTS.TWO_WEEKS'));
-    });
-    it('should convert translate frequency monthly to text when response type is part admission', () => {
-      //Given
-      const claim = getClaimForPA(TransactionSchedule.MONTH);
-      //When
-      const result = getConvertFrequencyToText(claim, 'en');
-      //Then
-      expect(result).toBe(t('COMMON.FREQUENCY_OF_PAYMENTS.MONTHLY'));
-    });
-    it('should convert translate frequency weekly to text when response type is full admission', () => {
-      //Given
-      const claim = getClaimForFA(TransactionSchedule.WEEK);
-      //When
-      const result = getConvertFrequencyToText(claim, 'en');
-      //Then
-      expect(result).toBe(t('COMMON.FREQUENCY_OF_PAYMENTS.WEEKLY'));
-    });
-    it('should convert translate frequency two weeks to text when response type is full admission', () => {
-      //Given
-      const claim = getClaimForFA(TransactionSchedule.TWO_WEEKS);
-      //When
-      const result = getConvertFrequencyToText(claim, 'en');
-      //Then
-      expect(result).toBe(t('COMMON.FREQUENCY_OF_PAYMENTS.TWO_WEEKS'));
-    });
-    it('should convert translate frequency monthly to text when response type is full admission', () => {
-      //Given
-      const claim = getClaimForFA(TransactionSchedule.MONTH);
-      //When
-      const result = getConvertFrequencyToText(claim, 'en');
-      //Then
-      expect(result).toBe(t('COMMON.FREQUENCY_OF_PAYMENTS.MONTHLY'));
     });
   });
 

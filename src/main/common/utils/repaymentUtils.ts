@@ -70,23 +70,6 @@ export const convertFrequencyToText = (frequency: string, lng: string): string =
   }
 };
 
-export const getConvertFrequencyToText = (claim: Claim, lng: string) => {
-  let frequencyPaymentToText = '';
-  switch (getRepaymentFrequency(claim)) {
-    case TransactionSchedule.WEEK:
-      frequencyPaymentToText = convertFrequencyToText(TransactionSchedule.WEEK, lng);
-      break;
-    case TransactionSchedule.TWO_WEEKS:
-      frequencyPaymentToText = convertFrequencyToText(TransactionSchedule.TWO_WEEKS, lng);
-      break;
-    case TransactionSchedule.MONTH:
-      frequencyPaymentToText = convertFrequencyToText(TransactionSchedule.MONTH, lng);
-      break;
-  }
-
-  return frequencyPaymentToText;
-};
-
 export const getRepaymentLength = (claim: Claim, lng: string) => {
   const repaymentFrequency = getRepaymentFrequency(claim);
   let repaymentLength = '';
