@@ -7,7 +7,7 @@ import {
 } from 'services/features/claim/checkAnswers/checkAnswersService';
 import {deleteDraftClaimFromStore, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'common/models/AppRequest';
 import {submitClaim} from 'services/features/claim/submission/submitClaim';
 import {GenericForm} from 'common/form/models/genericForm';
@@ -75,4 +75,3 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
 });
 
 export default claimCheckAnswersController;
-

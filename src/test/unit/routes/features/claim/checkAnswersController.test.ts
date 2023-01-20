@@ -1,21 +1,22 @@
 import nock from 'nock';
 import config from 'config';
-import {getSummarySections} from 'services/features/claim/checkAnswers/checkAnswersService';
-import {CLAIM_CHECK_ANSWERS_URL, CLAIM_CONFIRMATION_URL} from 'routes/urls';
+import {getSummarySections} from '../../../../../main/services/features/claim/checkAnswers/checkAnswersService';
+import {CLAIM_CHECK_ANSWERS_URL, CLAIM_CONFIRMATION_URL} from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import request from 'supertest';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {createClaimWithYourDetails} from '../../../../utils/mocks/claimDetailsMock';
-import {ClaimDetails} from 'form/models/claim/details/claimDetails';
-import {HelpWithFees} from 'form/models/claim/details/helpWithFees';
-import {YesNo} from 'form/models/yesNo';
-import {Claim} from 'models/claim';
+import {getElementsByXPath} from '../../../../utils/xpathExtractor';
+import {createClaimWithBasicDetails, createClaimWithYourDetails} from '../../../../utils/mocks/claimDetailsMock';
+import {getCaseDataFromStore} from '../../../../../main/modules/draft-store/draftStoreService';
+import {YesNo} from '../../../../../main/common/form/models/yesNo';
+import {Claim} from '../../../../../main/common/models/claim';
+import {ClaimDetails} from '../../../../../main/common/form/models/claim/details/claimDetails';
+import {HelpWithFees} from '../../../../../main/common/form/models/claim/details/helpWithFees';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 const request = require('supertest');
 
 const {app} = require('../../../../../main/app');
+const session = require('supertest-session');
 const civilServiceUrl = config.get<string>('services.civilService.url');
 const data = require('../../../../utils/mocks/defendantClaimsMock.json');
 
@@ -27,6 +28,7 @@ jest.mock('../../../../../main/services/features/claim/submission/submitClaim');
 
 const mockGetSummarySections = getSummarySections as jest.Mock;
 const mockGetClaim = getCaseDataFromStore as jest.Mock;
+const PARTY_NAME = 'Mrs. Mary Richards';
 
 describe('Claim - Check answers', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -129,7 +131,7 @@ describe('Claim - Check answers', () => {
       });
       await request(app)
         .get(CLAIM_CHECK_ANSWERS_URL)
-        .expect((res) => {
+        .expect((res: Response) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
@@ -243,6 +245,7 @@ describe('Claim - Check answers', () => {
           expect(res.text).toContain('https://www.payments.service.gov.uk/card_details/');
         });
     });
+
     it('should return 500 when error in service', async () => {
       mockGetSummarySections.mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);
@@ -250,6 +253,18 @@ describe('Claim - Check answers', () => {
       await request(app)
         .post(CLAIM_CHECK_ANSWERS_URL)
         .send(data)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toBe(CLAIM_CONFIRMATION_URL);
+        });
+    });
+    it('should return 500 when error in service', async () => {
+      mockGetSummarySections.mockImplementation(() => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+      await request(app)
+        .post(CLAIM_CHECK_ANSWERS_URL)
+        .send()
         .expect((res: Response) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -257,4 +272,3 @@ describe('Claim - Check answers', () => {
     });
   });
 });
-
