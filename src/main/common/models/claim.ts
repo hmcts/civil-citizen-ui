@@ -41,13 +41,13 @@ import {ClaimDetails} from 'common/form/models/claim/details/claimDetails';
 import {ClaimantResponse} from './claimantResponse';
 import {CCDClaim} from 'models/civilClaimResponse';
 import {toCUIParty} from 'services/translation/response/convertToCUI/convertToCUIParty';
-import {SelfEmployedAs} from '../models/selfEmployedAs';
-import {TaxPayments} from '../models/taxPayments';
-import {RegularIncome} from '../../common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
-import {RegularExpenses} from '../../common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
-import {CourtOrders} from '../../common/form/models/statementOfMeans/courtOrders/courtOrders';
-import {PriorityDebts} from '../../common/form/models/statementOfMeans/priorityDebts';
-import {Debts} from '../../common/form/models/statementOfMeans/debts/debts';
+import {SelfEmployedAs} from 'models/selfEmployedAs';
+import {TaxPayments} from 'models/taxPayments';
+import {RegularIncome} from 'form/models/statementOfMeans/expensesAndIncome/regularIncome';
+import {RegularExpenses} from 'form/models/statementOfMeans/expensesAndIncome/regularExpenses';
+import {CourtOrders} from 'form/models/statementOfMeans/courtOrders/courtOrders';
+import {PriorityDebts} from 'form/models/statementOfMeans/priorityDebts';
+import {Debts} from 'form/models/statementOfMeans/debts/debts';
 import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreference';
 export class Claim {
   legacyCaseReference: string;
@@ -84,7 +84,6 @@ export class Claim {
   claimBilingualLanguagePreference: ClaimBilingualLanguagePreference;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
-
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
     claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
     claim.respondent1 = toCUIParty(ccdClaim?.respondent1);
@@ -127,7 +126,6 @@ export class Claim {
     if (this.isFullDefence() && this.isRejectAllOfClaimDispute()) {
       return ClaimResponseStatus.RC_DISPUTE;
     }
-
   }
 
   get hasSupportRequiredList(): boolean {
@@ -287,6 +285,18 @@ export class Claim {
 
   hasPaidInFull(): boolean {
     return this.rejectAllOfClaim.howMuchHaveYouPaid.amount === this.rejectAllOfClaim.howMuchHaveYouPaid.totalClaimAmount;
+  }
+
+  getRejectAllOfClaimPaidLessPaymentDate(): Date {
+    return this.rejectAllOfClaim.howMuchHaveYouPaid.date;
+  }
+
+  getRejectAllOfClaimPaidLessPaymentMode(): string {
+    return this.rejectAllOfClaim?.howMuchHaveYouPaid?.text ?? '';
+  }
+
+  getRejectAllOfClaimDisagreementReason(): string {
+    return this.rejectAllOfClaim?.whyDoYouDisagree?.text ?? '';
   }
 
   extractDocumentId(): string {

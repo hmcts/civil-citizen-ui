@@ -11,7 +11,7 @@ variable "location" {
 
 variable "env" {}
 
-variable "ilbIp" { }
+variable "ilbIp" {}
 
 variable "subscription" {}
 

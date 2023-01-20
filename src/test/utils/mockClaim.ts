@@ -14,15 +14,15 @@ import {AdditionalTimeOptions} from '../../main/common/form/models/additionalTim
 import {InterestClaimOptionsType} from '../../main/common/form/models/claim/interest/interestClaimOptionsType';
 import {ClaimDetails} from '../../main/common/form/models/claim/details/claimDetails';
 import {Reason} from '../../main/common/form/models/claim/details/reason';
-import {Address} from '../../main/common/form/models/address';
-import {PartyDetails} from '../../main/common/form/models/partyDetails';
-import {PartyPhone} from '../../main/common/models/PartyPhone';
-import {CitizenDate} from '../../main/common/form/models/claim/claimant/citizenDate';
 import {DefendantTimeline} from '../../main/common/form/models/timeLineOfEvents/defendantTimeline';
 import {TimelineRow} from '../../main/common/form/models/timeLineOfEvents/timelineRow';
 import {EvidenceItem} from '../../main/common/form/models/evidence/evidenceItem';
 import {EvidenceType} from '../../main/common/models/evidence/evidenceType';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {Address} from '../../main/common/form/models/address';
+import {PartyDetails} from '../../main/common/form/models/partyDetails';
+import {PartyPhone} from '../../main/common/models/PartyPhone';
+import {CitizenDate} from '../../main/common/form/models/claim/claimant/citizenDate';
 
 export const buildAddress = (): Address => {
   return new Address('addressLine1', 'addressLine2', 'addressLine3', 'city', 'postCode');
