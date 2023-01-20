@@ -10,7 +10,6 @@ import {
   mockCivilClaimFullAdmissionPaymentOptionInstalments,
 } from '../../../../utils/mockDraftStore';
 
-
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/oidc');
 
