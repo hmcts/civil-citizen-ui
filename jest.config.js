@@ -2,15 +2,15 @@ module.exports = {
   roots: ['<rootDir>/src/test/unit'],
   testRegex: '(/src/test/.*|\\.(test|spec))\\.(ts|js)$',
   testEnvironment: 'node',
-  testPathIgnorePatterns:['src/test/unit/routes/features/claim', 'src/test/unit/routes/features/claimantResponse'],
+  testPathIgnorePatterns: ['src/test/unit/routes/features/claim', 'src/test/unit/routes/features/claimantResponse', 'src/main/routes/features/dashboard/dashboardController.ts'],
   transform: {
     '^.+\\.ts?$': 'ts-jest',
   },
   globals: {
-          'ts-jest': {
-              isolatedModules: true
-          }
-      },
+    'ts-jest': {
+      isolatedModules: true,
+    },
+  },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper: {
     '^common/(.*)$': '<rootDir>/src/main/common/$1',
