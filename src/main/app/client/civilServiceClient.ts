@@ -21,7 +21,7 @@ import {DashboardClaimantItem, DashboardDefendantItem} from '../../common/models
 import {ClaimUpdate, EventDto} from '../../common/models/events/eventDto';
 import {CaseEvent} from '../../common/models/events/caseEvent';
 import {CourtLocation} from '../../common/models/courts/courtLocations';
-import {BreathingSpace} from "models/breathingSpace";
+import {CcdBreathingSpace} from "models/ccdBreathingSpace/ccdBreathingScpace";
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -203,7 +203,7 @@ export class CivilServiceClient {
     }
   }
 
-  async submitBreathingSpaceEvent(event: CaseEvent, claimId: string, breathingSpace: BreathingSpace, req?: AppRequest): Promise<Claim>{
+  async submitBreathingSpaceEvent(event: CaseEvent, claimId: string, breathingSpace: CcdBreathingSpace, req?: AppRequest): Promise<Claim>{
     return this.submitEvent(event, claimId, breathingSpace,req);
   }
 

@@ -33,10 +33,8 @@ breathingSpaceCheckAnswersController.post(BREATHING_SPACE_CHECK_ANSWERS_URL, asy
     const claimId = req.params.id;
     //TODO:: Submit button:
     const breathingSpace = await getBreathingSpace(claimId);
-    console.log(JSON.stringify(breathingSpace));
     const response = await submitBreathingSpace(claimId, breathingSpace,req);
     console.log(JSON.stringify(response));
-
     res.redirect(constructResponseUrlWithIdParams(userId, DASHBOARD_CLAIMANT_URL));
   } catch (error) {
     next(error);

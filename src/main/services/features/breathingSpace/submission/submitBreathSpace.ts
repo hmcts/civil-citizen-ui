@@ -3,6 +3,7 @@ import {CivilServiceClient} from "client/civilServiceClient";
 import {AppRequest} from "models/AppRequest";
 import {CaseEvent} from "models/events/caseEvent";
 import {BreathingSpace} from "models/breathingSpace";
+import {translateBreathSpaceToCCD} from "services/translation/breathingSpace/ccdTranslation";
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('partialAdmissionService');
@@ -13,7 +14,8 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 export const submitBreathingSpace = async (claimId:string, breathingSpace: BreathingSpace, req: AppRequest): Promise<any> => {
   try {
     //TODO:: Translate CCD
-    return civilServiceClient.submitBreathingSpaceEvent(CaseEvent.ENTER_BREATHING_SPACE_SPEC, claimId, breathingSpace, req);
+    const breathingSpaceResponse = translateBreathSpaceToCCD(breathingSpace);
+    return civilServiceClient.submitBreathingSpaceEvent(CaseEvent.ENTER_BREATHING_SPACE_SPEC, claimId, breathingSpaceResponse, req);
   } catch (err) {
     logger.error(err);
     throw err;
