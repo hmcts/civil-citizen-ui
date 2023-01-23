@@ -39,7 +39,7 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: Request, res: Response, ne
     if (pinForm.hasErrors()) {
       renderView(pinForm, !!req.body.pin, res);
     } else {
-      const response: AxiosResponse = await civilServiceClient.verifyPin(<AppRequest>req, pinForm.model.pin, cookie.claimReference);
+      const response: AxiosResponse = await civilServiceClient.verifyPin(<AppRequest>req, req.body.pin, cookie.claimReference);
       await saveDraftClaim(response.data.id, response.data.case_data);
       cookie.claimId = response.data.id;
       cookie.pinVerified = YesNo.YES;
