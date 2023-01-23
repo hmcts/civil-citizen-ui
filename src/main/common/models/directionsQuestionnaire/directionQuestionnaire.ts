@@ -29,4 +29,12 @@ export class DirectionQuestionnaire {
     this.witnesses = witnesses;
   }
 
+  get isExpertRequired(): boolean{
+    return !!this.experts?.expertReportDetails?.option;
+  }
+
+  get isWithoutExpertJournetCompleted(): boolean {
+    return !!this.defendantYourselfEvidence?.option &&
+      !!this.witnesses?.otherWitnesses.option;
+  }
 }

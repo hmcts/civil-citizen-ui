@@ -11,6 +11,7 @@ export class ClaimantResponse {
   hasDefendantPaidYou?: GenericYesNo;
   datePaid?: CitizenDate;
   hasPartPaymentBeenAccepted?: GenericYesNo;
+  hasPartAdmittedBeenAccepted?: GenericYesNo;
   fullAdmitSetDateAcceptPayment?: GenericYesNo;
   ccjRequest?: CCJRequest;
   intentionToProceed?: GenericYesNo;

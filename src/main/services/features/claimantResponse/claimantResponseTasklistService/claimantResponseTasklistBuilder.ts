@@ -5,6 +5,7 @@ import {getViewDefendantsReponseTask} from './claimantResponseTasks/howDefendant
 import {getCheckAndSubmitClaimantResponseTask} from './claimantResponseTasks/claimantResponseSubmitSectionTasks';
 import {getGiveUsDetailsClaimantHearingTask} from './claimantResponseTasks/claimantHearingRequirementsSectionTasks';
 import {getAcceptOrRejectDefendantAdmittedTask} from './claimantResponseTasks/whatToDoNextSectionTasks';
+// import {YesNo} from 'common/form/models/yesNo';
 
 export function buildHowDefendantRespondSection(claim: Claim, claimId: string, lang: string){
   const tasks: Task[] = [];
@@ -20,10 +21,10 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
   return {title: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.TITLE', {lng: lang}), tasks};
 }
 
-export function buildClaimantResponseSubmitSection(claimId: string, lang: string) {
+export function buildClaimantResponseSubmitSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
 
-  const checkAndSubmitYourResponseTask = getCheckAndSubmitClaimantResponseTask(claimId, lang);
+  const checkAndSubmitYourResponseTask = getCheckAndSubmitClaimantResponseTask(claim, claimId, lang);
 
   tasks.push(checkAndSubmitYourResponseTask);
   return {title: t('TASK_LIST.SUBMIT.TITLE', {lng: lang}), tasks};
@@ -31,7 +32,8 @@ export function buildClaimantResponseSubmitSection(claimId: string, lang: string
 
 export function buildClaimantHearingRequirementsSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
-  // TODO : update the logic here with the jira ticket --> settle-addmitted is 'No'
+  // TODO : remove the comment before generating PR
+  // if (claim.isClaimantIntentionPending() && claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO) {
   if (claim.isClaimantIntentionPending()) {
     const giveUsDetailsClaimantHearingTask = getGiveUsDetailsClaimantHearingTask(claim, claimId, lang);
     tasks.push(giveUsDetailsClaimantHearingTask);

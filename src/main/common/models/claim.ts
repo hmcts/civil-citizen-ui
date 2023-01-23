@@ -324,6 +324,10 @@ export class Claim {
     return this.ccdState === CaseState.AWAITING_APPLICANT_INTENTION;
   }
 
+  isClaimantIntentionSubmitted(): boolean {
+    return this.ccdState !== CaseState.AWAITING_APPLICANT_INTENTION && this.claimantResponse && !!(Object.keys(this.claimantResponse));
+  }
+
   isBusiness(): boolean {
     return this.respondent1?.type === PartyType.COMPANY || this.respondent1?.type === PartyType.ORGANISATION;
   }

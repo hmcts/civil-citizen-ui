@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {CLAIM_TASK_LIST_URL, DQ_WELSH_LANGUAGE_URL} from '../../../urls';
+import {CLAIMANT_RESPONSE_TASK_LIST_URL, DQ_WELSH_LANGUAGE_URL} from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {
   getDirectionQuestionnaire,
@@ -38,7 +38,7 @@ welshLanguageController.post(DQ_WELSH_LANGUAGE_URL, async (req, res, next) => {
       renderView(form, res);
     } else {
       await saveDirectionQuestionnaire(claimId, form.model, languageProperty, welshLanguageRequirementsProperty);
-      res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_TASK_LIST_URL));
+      res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
     }
   } catch (error) {
     next(error);
