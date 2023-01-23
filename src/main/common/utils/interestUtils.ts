@@ -65,7 +65,7 @@ export const getInterestStartDate = (claim: Claim): Date => {
   if (claim.interest?.interestClaimFrom === InterestClaimFromType.FROM_A_SPECIFIC_DATE) {
     return new Date(claim.interest.interestStartDate?.date);
   }
-  return claim.submittedDate ? claim.submittedDate : new Date();
+  return claim.submittedDate ?? new Date();
 };
 
 export const calculateInterest = (amount: number, interest: number, startDate: Date, endDate: Date): number => {
