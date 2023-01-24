@@ -42,7 +42,7 @@ export class DirectionQuestionnaire {
     return this.experts?.permissionForExpert?.option === YesNo.YES;
   }
 
-  get expertStillExamineSomething(): boolean {
+  get expertCanStillExamineSomething(): boolean {
     return this.experts?.expertCanStillExamine?.option === YesNo.YES;
   }
 
@@ -56,10 +56,10 @@ export class DirectionQuestionnaire {
     } else if (!this.expertReportDetailsAvailable && !this.requestedToAskPermissiontoUseExpert) {
       return true;
     } else if (!this.expertReportDetailsAvailable && this.requestedToAskPermissiontoUseExpert &&
-      !this.expertStillExamineSomething) {
+      !this.expertCanStillExamineSomething) {
       return true;
     } else if (!this.expertReportDetailsAvailable && this.requestedToAskPermissiontoUseExpert &&
-      this.expertStillExamineSomething && !!this.experts?.expertDetailsList?.items?.length) {
+      this.expertCanStillExamineSomething && !!this.experts?.expertDetailsList?.items?.length) {
       return true;
     }
     return true;

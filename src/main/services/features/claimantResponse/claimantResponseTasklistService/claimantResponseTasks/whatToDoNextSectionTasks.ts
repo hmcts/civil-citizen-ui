@@ -13,8 +13,5 @@ export function getAcceptOrRejectDefendantAdmittedTask(claim: Claim, claimId: st
     url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_URL),
     status: TaskStatus.INCOMPLETE,
   };
-  // if (isCaseDataMissing(claim) || isResponseTypeMissing(claim?.respondent1)) {
-  //   accceptOrRejectDefendantAdmittedTask.status = TaskStatus.INCOMPLETE;
-  // }
   return accceptOrRejectDefendantAdmittedTask;
 }

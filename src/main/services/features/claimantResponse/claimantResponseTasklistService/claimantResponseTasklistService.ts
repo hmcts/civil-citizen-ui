@@ -20,7 +20,7 @@ export function getClaimantResponseTaskLists (claim: Claim, claimId: string, lng
   const filteredTaskGroups = taskGroups.filter(item => item.tasks.length !== 0);
   // check if all tasks are completed except check and submit
   calculateTotalAndCompleted(taskGroups);
-  const taskListSubmitClaimantResponse: TaskList = buildClaimantResponseSubmitSection(claim, claimId, lang);
+  const taskListSubmitClaimantResponse: TaskList = buildClaimantResponseSubmitSection(claimId, lang);
 
   filteredTaskGroups.push(taskListSubmitClaimantResponse);
   return filteredTaskGroups;

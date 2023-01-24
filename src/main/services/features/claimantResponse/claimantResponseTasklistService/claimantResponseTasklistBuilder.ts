@@ -21,10 +21,10 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
   return {title: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.TITLE', {lng: lang}), tasks};
 }
 
-export function buildClaimantResponseSubmitSection(claim: Claim, claimId: string, lang: string) {
+export function buildClaimantResponseSubmitSection(claimId: string, lang: string) {
   const tasks: Task[] = [];
 
-  const checkAndSubmitYourResponseTask = getCheckAndSubmitClaimantResponseTask(claim, claimId, lang);
+  const checkAndSubmitYourResponseTask = getCheckAndSubmitClaimantResponseTask(claimId, lang);
 
   tasks.push(checkAndSubmitYourResponseTask);
   return {title: t('TASK_LIST.SUBMIT.TITLE', {lng: lang}), tasks};
