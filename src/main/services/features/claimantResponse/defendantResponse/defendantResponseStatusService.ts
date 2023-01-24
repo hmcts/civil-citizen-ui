@@ -1,7 +1,10 @@
-import { DashboardDefendantItem } from 'common/models/dashboard/dashboardItem';
-import { DefendantResponseStatus } from 'models/defendantResponseStatus';
-import { t } from 'i18next';
-import { Claim } from 'common/models/claim';
+import {DashboardDefendantItem} from 'common/models/dashboard/dashboardItem';
+import {DefendantResponseStatus} from 'models/defendantResponseStatus';
+import {t} from 'i18next';
+import {Claim} from 'common/models/claim';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
+import {YesNo} from 'common/form/models/yesNo';
 
 const daysRemainingString = (days: number): string => {
   if (days > 0) {
@@ -51,9 +54,9 @@ export const getStringStatus = (item: DashboardDefendantItem, claim: Claim): str
     case DefendantResponseStatus.REDETERMINATION_BY_JUDGE:
       return t('PAGES.DASHBOARD.REDETERMINATION_BY_JUDGE', { claimantName: item.claimantName });
 
-    // My new part from here -----------------
-    case DefendantResponseStatus.CCJ_REQUESTED:
-      return t('PAGES.DASHBOARD.CLAIMANT_HAS_REQUESTED_CCJ', { ccjRequestedAt: claim.countyCourtJudgmentRequestedAt });
+    // TODO: CCJ requested is waiting on a Business decision as to how to process this
+    // case DefendantResponseStatus.CCJ_REQUESTED:
+    //   return t('PAGES.DASHBOARD.CLAIMANT_HAS_REQUESTED_CCJ', { ccjRequestedAt: claim.countyCourtJudgmentRequestedAt });
 
     case DefendantResponseStatus.DEFENDANT_OCON_FORM_RESPONSE:
       return t('PAGES.DASHBOARD.WAIT_CLAIMANT_RESPONSE');
@@ -61,11 +64,12 @@ export const getStringStatus = (item: DashboardDefendantItem, claim: Claim): str
     case DefendantResponseStatus.DEFENDANT_PAPER_RESPONSE:
       return t('PAGES.DASHBOARD.CLAIM_CONTINUE_BY_POST');
 
-    case DefendantResponseStatus.PROCEED_OFFLINE:
-      if (claim.proceedOfflineReason === APPLICATION_BY_DEFENDANT) {
-        return t('PAGES.DASHBOARD.YOU_APPLIED_TO_CHANGE_CLAIM');
-      }
-      return t('PAGES.DASHBOARD.CLAIMANT_APPLIED_TO_CHANGE_CLAIM');
+    // TODO: proceed offline is waiting on OCON to be complete
+    // case DefendantResponseStatus.PROCEED_OFFLINE:
+    //   if (claim.proceedOfflineReason === APPLICATION_BY_DEFENDANT) {
+    //     return t('PAGES.DASHBOARD.YOU_APPLIED_TO_CHANGE_CLAIM');
+    //   }
+    //   return t('PAGES.DASHBOARD.CLAIMANT_APPLIED_TO_CHANGE_CLAIM');
 
     case DefendantResponseStatus.BUSINESS_QUEUE:
       return t('PAGES.DASHBOARD.CASE_PASSED_TO_CCBC');
@@ -89,30 +93,27 @@ export const getStringStatus = (item: DashboardDefendantItem, claim: Claim): str
       return t('PAGES.DASHBOARD.BOTH_SIGNED_SETTLEMENT');
 
     case DefendantResponseStatus.RESPONSE_SUBMITTED:
-
       if (claim.isFullDefence()) {
-        if (claim.response.defenceType = ALREADY_PAID) {
+        if (claim.rejectAllOfClaim?.option === RejectAllOfClaimType.ALREADY_PAID) {
           return t('PAGES.DASHBOARD.CLAIMANT_EMAILED', { claimantName: claim.getClaimantFullName() });
         }
-        if (claim.response.freeMediation = NO) {
+        if (claim.mediation.mediationDisagreement.option === YesNo.NO) {
           return t('PAGES.DASHBOARD.REJECTED_CLAIM');
         }
-        if (claim.response.defenceType not ALREADY_PAID(claim.response.defenceType not ALREADY_PAID OR claim.response.freeMediation not NO)) {
+        if (claim.rejectAllOfClaim?.option !== RejectAllOfClaimType.ALREADY_PAID || claim.mediation.mediationDisagreement.option === YesNo.YES) {
           return t('PAGES.DASHBOARD.REJECTED_CLAIM_AND_SUGGESTED_MEDIATION');
         }
       } else if (claim.isPartialAdmission()) {
-        if (claim.response.paymentDeclaration) {
+        if (claim.partialAdmission.paymentIntention) {
           return t('PAGES.DASHBOARD.CLAIMANT_EMAILED', { claimantName: claim.getClaimantFullName() });
         }
-        if (!claim.response.paymentDeclaration) {
-          return t('PAGES.DASHBOARD.ADMITTED_PART_OF_CLAIM');
-        }
+        return t('PAGES.DASHBOARD.ADMITTED_PART_OF_CLAIM');
       } else if (claim.isFullAdmission()) {
-        if (claim.response.paymentIntention.paymentOption = IMMEDIATELY) {
+        if (claim.fullAdmission.paymentIntention.paymentOption === PaymentOptionType.IMMEDIATELY) {
           return t('PAGES.DASHBOARD.ADMITTED_ALL_PAY_IMMEDIATELY');
         }
-        if (claim.response.paymentIntention.paymentOption = BY_SPECIFIED_DATE) {
-          return t('PAGES.DASHBOARD.ADMITTED_ALL_PAY_BY_SET_DATE', { paymentDate: claim.response.paymentIntention.paymentDate });
+        if (claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE) {
+          return t('PAGES.DASHBOARD.ADMITTED_ALL_PAY_BY_SET_DATE', { paymentDate: claim.fullAdmission.paymentIntention.paymentDate });
         }
       }
 
