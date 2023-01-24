@@ -64,8 +64,6 @@ export class OidcMiddleware {
         return res.redirect(DASHBOARD_URL);
       }
       if(req.originalUrl.startsWith(ASSIGN_CLAIM_URL)) {
-        console.log(ASSIGN_CLAIM_URL);
-        console.log(req.query);
         appReq.session.assignClaimId = <string>req.query.id;
       }
       res.redirect(SIGN_IN_URL);
