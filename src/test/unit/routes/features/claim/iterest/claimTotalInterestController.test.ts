@@ -3,7 +3,7 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
-import {CLAIM_CONTINUE_CLAIMING_INTEREST, CLAIM_TOTAL_INTEREST_URL} from '../../../../../../main/routes/urls';
+import {CLAIM_INTEREST_CONTINUE_CLAIMING_URL, CLAIM_INTEREST_TOTAL_URL} from '../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {getInterest, saveInterest} from '../../../../../../main/services/features/claim/interest/interestService';
 import {Claim} from '../../../../../../main/common/models/claim';
@@ -27,7 +27,7 @@ describe('Claim Total Interest Controller', () => {
   describe('on GET', () => {
     it('should render total claim interest controller', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(CLAIM_TOTAL_INTEREST_URL).expect((res) => {
+      await request(app).get(CLAIM_INTEREST_TOTAL_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('What is the total interest for your claim?');
       });
@@ -44,7 +44,7 @@ describe('Claim Total Interest Controller', () => {
         };
         return claim;
       });
-      await request(app).get(CLAIM_TOTAL_INTEREST_URL).expect((res) => {
+      await request(app).get(CLAIM_INTEREST_TOTAL_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('What is the total interest for your claim?');
       });
@@ -54,7 +54,7 @@ describe('Claim Total Interest Controller', () => {
       getInterestMock.mockImplementationOnce(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
-      await request(app).get(CLAIM_TOTAL_INTEREST_URL).expect((res) => {
+      await request(app).get(CLAIM_INTEREST_TOTAL_URL).expect((res) => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
@@ -67,7 +67,7 @@ describe('Claim Total Interest Controller', () => {
         return new Claim();
       });
 
-      await request(app).post(CLAIM_TOTAL_INTEREST_URL).send({amount: '', reason: ''}).expect((res) => {
+      await request(app).post(CLAIM_INTEREST_TOTAL_URL).send({amount: '', reason: ''}).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Enter a valid amount');
         expect(res.text).toContain('You must tell us how you calculated the amount');
@@ -79,9 +79,9 @@ describe('Claim Total Interest Controller', () => {
         return new Claim();
       });
 
-      await request(app).post(CLAIM_TOTAL_INTEREST_URL).send({amount: '8', reason: '99 reasons'}).expect((res) => {
+      await request(app).post(CLAIM_INTEREST_TOTAL_URL).send({amount: '8', reason: '99 reasons'}).expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toBe(CLAIM_CONTINUE_CLAIMING_INTEREST);
+        expect(res.header.location).toBe(CLAIM_INTEREST_CONTINUE_CLAIMING_URL);
       });
     });
 
@@ -89,7 +89,7 @@ describe('Claim Total Interest Controller', () => {
       saveInterestMock.mockImplementationOnce(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
-      await request(app).post(CLAIM_TOTAL_INTEREST_URL).send({amount: '321', reason: 'my reason'}).expect((res) => {
+      await request(app).post(CLAIM_INTEREST_TOTAL_URL).send({amount: '321', reason: 'my reason'}).expect((res) => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });

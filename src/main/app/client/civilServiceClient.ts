@@ -147,7 +147,7 @@ export class CivilServiceClient {
   async verifyPin(req: AppRequest, pin: string, caseReference: string): Promise<AxiosResponse> {
     try {
       const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_VALIDATE_PIN_URL //nosonar
-        .replace(':caseReference', caseReference), pin, {headers: {'Content-Type': 'application/json'}});// nosonar
+        .replace(':caseReference', caseReference), {pin:pin}, {headers: {'Content-Type': 'application/json'}});// nosonar
       return response;
 
     } catch (err: unknown) {
@@ -195,7 +195,11 @@ export class CivilServiceClient {
         .replace(':caseId', claimId), data, config);// nosonar
       logger.info('submitted event ' + data.event + ' with update ' + data.caseDataUpdate);
       const claimResponse = response.data as CivilClaimResponse;
-      return Claim.fromCCDCaseData(claimResponse.case_data);
+      logger.info('claimResponse after submit ', claimResponse);
+      const caseData = Claim.fromCCDCaseData(claimResponse.case_data);
+      caseData.id = claimResponse.id;
+      logger.info('updated casedat with id ', caseData);
+      return caseData;
     } catch (err: unknown) {
       logger.error(err);
       throw err;
