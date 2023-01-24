@@ -3,9 +3,9 @@ import {Claim} from 'models/claim';
 import {DashboardDefendantItem} from 'models/dashboard/dashboardItem';
 import {DefendantResponseStatus} from 'models/defendantResponseStatus';
 import {t} from 'i18next';
-import {PaymentOptionType} from "form/models/admission/paymentOption/paymentOptionType";
-import {FullAdmission} from "models/fullAdmission";
-import {PaymentIntention} from "form/models/admission/paymentIntention";
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {FullAdmission} from 'models/fullAdmission';
+import {PaymentIntention} from 'form/models/admission/paymentIntention';
 
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
