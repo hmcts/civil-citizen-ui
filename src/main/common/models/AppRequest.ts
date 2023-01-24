@@ -13,6 +13,7 @@ export interface AppRequest<T = Partial<Claim>> extends Request {
 
 export interface AppSession extends Session {
   user: UserDetails;
+  assignClaimId: string;
   lang: string | undefined;
 }
 

@@ -1,8 +1,15 @@
-import {Application, NextFunction, Response} from 'express';
+import {Application, NextFunction, Request, Response} from 'express';
 import config from 'config';
 import {AppRequest} from '../../common/models/AppRequest';
 import {getUserDetails} from '../../app/auth/user/oidc';
-import {CALLBACK_URL, DASHBOARD_URL, SIGN_IN_URL, SIGN_OUT_URL, UNAUTHORISED_URL, ASSIGN_CLAIM_URL} from '../../routes/urls';
+import {
+  ASSIGN_CLAIM_URL,
+  CALLBACK_URL,
+  DASHBOARD_URL,
+  SIGN_IN_URL,
+  SIGN_OUT_URL,
+  UNAUTHORISED_URL,
+} from '../../routes/urls';
 
 export class OidcMiddleware {
   public enableFor(app: Application): void {
@@ -14,7 +21,6 @@ export class OidcMiddleware {
     const idamUrlLogin: string = loginUrl + '?client_id=' + clientId + '&response_type=code&redirect_uri=' + encodeURI(redirectUri) + scope;
     const idamSignOutUrl: string = config.get('services.idam.terminateSessionURL');
     const applicationUrl: string = config.get('services.idam.signOutCallBackURL');
-    // const assignClaimUrl: string = config.get('services.idam.assignclaimUrl');
 
     app.get(SIGN_IN_URL, (_req: AppRequest, res: Response) => {
       res.redirect(idamUrlLogin);
@@ -23,19 +29,15 @@ export class OidcMiddleware {
     app.get(CALLBACK_URL, async (req: AppRequest, res: Response) => {
       if (typeof req.query.code === 'string') {
         req.session.user = app.locals.user = await getUserDetails(redirectUri, req.query.code);
+        if(req.session.assignClaimId){
+          return res.redirect(ASSIGN_CLAIM_URL);
+        }
         if (req.session.user?.roles?.includes(citizenRole)) {
-          return res.redirect(DASHBOARD_URL);
+          return  res.redirect(DASHBOARD_URL);
         }
         return res.redirect(UNAUTHORISED_URL);
       } else {
         res.redirect(DASHBOARD_URL);
-      }
-    });
-
-    app.get(ASSIGN_CLAIM_URL, async (req: AppRequest, res: Response, next: NextFunction) =>{
-      if (typeof req.query.code === 'string') {
-        req.session.user = app.locals.user = await getUserDetails(redirectUri, req.query.code);
-        return next();
       }
     });
 
@@ -53,12 +55,18 @@ export class OidcMiddleware {
       res.redirect(DASHBOARD_URL);
     });
 
-    app.use((req: AppRequest, res: Response, next: NextFunction) => {
-      if (req.session.user) {
-        if (req.session?.user?.roles?.includes(citizenRole)) {
+    app.use((req: Request, res: Response, next:NextFunction) => {
+      const appReq: AppRequest = <AppRequest> req;
+      if (appReq.session.user) {
+        if (appReq.session?.user?.roles?.includes(citizenRole)) {
           return next();
         }
         return res.redirect(DASHBOARD_URL);
+      }
+      if(req.originalUrl.startsWith(ASSIGN_CLAIM_URL)) {
+        console.log(ASSIGN_CLAIM_URL);
+        console.log(req.query);
+        appReq.session.assignClaimId = <string>req.query.id;
       }
       res.redirect(SIGN_IN_URL);
     });

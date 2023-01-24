@@ -9,11 +9,18 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 assignClaimController.get(ASSIGN_CLAIM_URL, async ( req:AppRequest, res, next: NextFunction) => {
-  const claimId = req.params.id;
+  const claimId = req.session.assignClaimId;
+  req.session.assignClaimId = undefined;
+  console.log(claimId);
   try{
-    await civilServiceClient.assignDefendantToClaim(claimId, req);
+    if(claimId){
+      await civilServiceClient.assignDefendantToClaim(claimId, req);
+    }
     res.redirect(DASHBOARD_URL);
   }catch (error){
-    next();
+    res.redirect(DASHBOARD_URL);
   }
+
 });
+
+export default assignClaimController;
