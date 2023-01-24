@@ -13,13 +13,6 @@
       "version": "4",
       "calculatedAmountInPence": "7000"
     },
-    "claimantResponse": {
-      "hasPartPaymentBeenAccepted": "Yes",
-      "intentionToProceed" : {
-        "option": "no"
-      }
-    },
-    "respondent1ResponseDate": "2022-09-25T13:46:07.287428",
     "supportRequired": {
       "languageSelected": true,
       "languageInterpreted": "Croatian",
@@ -32,43 +25,87 @@
     },
     "applicant1": {
       "type": "ORGANISATION",
-      "partyPhone": {
-        "phone": "(0)207 127 0000"
-      },
-      "emailAddress": "hmcts@hmcts.com",
+      "partyPhone": "(0)207 127 0000",
       "partyDetails": {
+        "partyName": "Mr. Jan Clark",
         "primaryAddress": {
           "postCode": "RG4 7AA",
           "city": "Reading",
           "addressLine1": "Flat 2",
           "addressLine2": "Caversham House 15-17",
           "addressLine3": "Church Road"
-        },
-        "partyName": "Mr. Jan Clark"
+        }
       },
       "partyTypeDisplayValue": "Organisation"
     },
-    "directionQuestionnaire": {
-      "hearing": {},
-      "vulnerabilityQuestions": {},
-      "welshLanguageRequirements": {
-        "speakLanguage": "en",
-        "documentsLanguage": "en"
-      },
-      "experts": {
-        "expertReportDetails": {
-          "option": "yes",
-          "reportDetails": [
-            {
-              "expertName": "John Doe",
-              "reportDate": "2022-03-01T11:57:10.592492"
-            }
-          ]
+    "claimantResponse": {
+      "directionQuestionnaire": {
+        "hearing": {
+          "supportRequiredList": {
+            "items": [
+              {
+                "fullName": "Jasmine Williams",
+                "disabledAccess": {
+                  "selected": true
+                },
+                "otherSupport": {
+                  "selected": true,
+                  "content": "other support text"
+                }
+              },
+              {
+                "fullName": "Mike Brown",
+                "hearingLoop": {
+                  "selected": true
+                },
+                "languageInterpreter": {
+                  "selected": true,
+                  "content": "language support text"
+                }
+              }
+            ]
+          }
+        },
+        "vulnerabilityQuestions": {},
+        "experts": {
+          "expertReportDetails": {
+            "option": "yes",
+            "reportDetails": [
+              {
+                "expertName": "John Doe",
+                "reportDate": "2022-03-01T11:57:10.592492"
+              }
+            ]
+          },
+          "expertDetailsList": {
+            "items": [
+              {
+                "firstName": "Mike",
+                "lastName": "Brown"
+              },
+              {
+                "firstName": "Jasmine",
+                "lastName": "Williams"
+              }
+            ]
+          }
+        },
+        "witnesses": {
+          "otherWitnesses": {
+            "option": "",
+            "witnessItems": [
+              {
+                "firstName": "John",
+                "lastName": "Doe"
+              },
+              {
+                "firstName": "Jane",
+                "lastName": "Smith"
+              }
+            ]
+          }
         }
-      },
-      "witnessItems": [
-        {}
-      ]
+      }
     },
     "applicantSolicitor1UserDetails": {
       "email": "hmcts.civil+organisation.1.solicitor.1@gmail.com"
@@ -88,11 +125,6 @@
         "month": "1",
         "year": "2022",
         "text": "text"
-      }
-    },
-    "fullAdmission": {
-      "paymentIntention": {
-        "paymentDate": "2025-06-01T00:00:00.000Z"
       }
     },
     "rejectAllOfClaim": {
@@ -181,9 +213,7 @@
     "respondent1": {
       "type": "ORGANISATION",
       "dateOfBirth": "2022-03-01T13:29:24.971",
-      "partyPhone": {
-        "phone": "111"
-      },
+      "partyNumber": "111",
       "partyDetails": {
         "contactPerson": "Felipe",
         "partyName": "Version 1"
@@ -193,7 +223,6 @@
     "legacyCaseReference": "000MC009",
     "totalClaimAmount": 110,
     "claimInterest": "Yes",
-    "continueClaimingInterest": "Yes",
     "submittedDate": "2022-05-23T17:02:02.38407",
     "totalInterest": 15,
     "interestClaimFrom": "FROM_A_SPECIFIC_DATE",
@@ -207,9 +236,6 @@
     "claimDetails": {
       "reason": {
         "text": "Test details of claim"
-      },
-      "helpWithFees": {
-        "option": "yes"
       }
     },
     "claimAmountBreakup": [
@@ -253,8 +279,7 @@
       }
     ],
     "responseDeadline": {
-      "agreedResponseDeadline": "2025-06-01T00:00:00.000Z",
-      "calculatedResponseDeadline": "2024-05-01T00:00:00.000Z"
+      "agreedResponseDeadline": "2025-06-01T00:00:00.000Z"
     }
   }
 }

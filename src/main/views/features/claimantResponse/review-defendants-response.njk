@@ -29,11 +29,14 @@
           <p class="govuk-body">
             <a href="{{ downloadResponseLink }}">{{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.DOWNLOAD_RESPONSE') }}</a>
           </p>
+
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            {{ govukButton({
-              text: t('COMMON.BUTTONS.CONTINUE')
-            }) }}
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.CONTINUE')
+              }) }}
+            </div>
           </form>
           {{ contactUsForHelp(t) }}
         </div>
