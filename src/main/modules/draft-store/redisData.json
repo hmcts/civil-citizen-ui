@@ -1965,7 +1965,7 @@
     }
   },
   {
-    "id": 9999,
+    "id": 5555,
     "jurisdiction": "CIVIL",
     "case_type_id": "CIVIL",
     "created_date": "2022-03-01T13:29:22.447",
@@ -2090,6 +2090,10 @@
       "claimDetails": {
         "reason": {
           "text": "Test details of claim"
+        },
+        "helpWithFees": {
+          "option": "yes",
+          "referenceNumber": "0000000"
         }
       },
       "superClaimType": "SPEC_CLAIM",
