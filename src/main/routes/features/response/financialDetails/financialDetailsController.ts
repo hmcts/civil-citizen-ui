@@ -2,13 +2,13 @@ import {NextFunction, Request, Response, Router} from 'express';
 import {
   CITIZEN_BANK_ACCOUNT_URL,
   CITIZEN_CONTACT_THEM_URL,
-  CLAIM_TASK_LIST_URL,
   FINANCIAL_DETAILS_URL,
+  RESPONSE_TASK_LIST_URL,
 } from '../../../urls';
 import {Claim} from '../../../../common/models/claim';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {PartyType} from '../../../../common/models/partyType';
-import {Logger as winLogger} from 'winston' ;
+import {Logger as winLogger} from 'winston';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 
 const financialDetailsViewPath = 'features/response/financialDetails/financial-details';
@@ -46,7 +46,7 @@ financialDetailsController
         } else if (partyType == PartyType.COMPANY || partyType == PartyType.ORGANISATION) {
           claim.taskSharedFinancialDetails = true;
           await saveDraftClaim(req.params.id, claim);
-          res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
+          res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
         }
       } else {
         logger.error('No partyType found.');
