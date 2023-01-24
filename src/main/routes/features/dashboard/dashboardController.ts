@@ -32,12 +32,12 @@ function renderPage(res: Response, claimsAsClaimant: DashboardClaimantItem[], cl
 
 const dashboardController = Router();
 
-const updateStatusForDefendantCases = async (claimsAsDefendant: DashboardDefendantItem[], req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>) => {
+const updateStatusForDefendantCases = async (claimsAsDefendant: DashboardDefendantItem[], req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, lang: string) => {
   if(claimsAsDefendant !== undefined) {
     for(let i = 0; i < claimsAsDefendant.length; i++) {
       const defendantClaim = claimsAsDefendant[i];
       const claim = await getClaimById(defendantClaim.claimId, req);
-      const updatedClaim = {...defendantClaim , status: getStringStatus(defendantClaim, claim)};
+      const updatedClaim = {...defendantClaim , status: getStringStatus(defendantClaim, claim, lang)};
       claimsAsDefendant[i] = Object.assign(new DashboardDefendantItem(), updatedClaim);
     }
   }
@@ -53,8 +53,8 @@ dashboardController.get(DASHBOARD_URL, async function (req: AppRequest, res) {
   const responseDraftSaved = false;
   const paginationArgumentClaimant: object = {};
   const paginationArgumentDefendant: object = {};
-
-  await updateStatusForDefendantCases(claimsAsDefendant, req);
+  const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+  await updateStatusForDefendantCases(claimsAsDefendant, req, lang);
 
   renderPage(res, claimsAsClaimant, claimDraftSaved, claimsAsDefendant, responseDraftSaved, paginationArgumentClaimant, paginationArgumentDefendant);
 });
