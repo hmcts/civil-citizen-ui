@@ -9,6 +9,12 @@
   {{ setPageTitle('PAGES.CLAIMANT_RESPONSE_REJECTION_REASON.PAGE_TITLE') }}
 {% endblock %}
 {% block content %}
+  {% if courtProposedPlanDecision %}
+    {% set title = t('PAGES.CLAIMANT_REPAYMNET_PLAN_REJECT_REASON.TITLE') %}
+    {% set paragraph = t('PAGES.CLAIMANT_REPAYMNET_PLAN_REJECT_REASON.EXPLAIN_WHY_DEFENDANT_CAN_AFFORD') %}
+  {% else %}
+    {% set title = t('PAGES.CLAIMANT_RESPONSE_REJECTION_REASON.TITLE') %}
+  {% endif %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set errors = form.getErrors() %}
@@ -17,7 +23,8 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.CLAIMANT_RESPONSE_REJECTION_REASON.TITLE') }}</h1>
+          <h1 class="govuk-heading-l">{{ title }}</h1>
+          <p class="govuk-body">{{ paragraph }}</p>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             <div class="govuk-form-group {% if errors.length %} govuk-form-group--error {% endif %}">

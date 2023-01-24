@@ -11,7 +11,7 @@ import {toCCDParty} from '../response/convertToCCDParty';
 import {toCCDSameRateInterestSelection} from '../response/convertToCCDtoSameRateInterestSelection';
 import {toCCDYesNo} from '../response/convertToCCDYesNo';
 
-export const translateDraftClaimToCCD = (claim: Claim): CCDClaim => {
+export const translateDraftClaimToCCD = (claim: Claim, applicantEmail: string): CCDClaim => {
   return {
     applicant1: toCCDParty(claim.applicant1),
     respondent1: toCCDParty(claim.respondent1),
