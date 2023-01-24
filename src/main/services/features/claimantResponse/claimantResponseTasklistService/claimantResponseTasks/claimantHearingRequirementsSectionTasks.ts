@@ -6,20 +6,37 @@ import {Task} from 'models/taskList/task';
 import {DETERMINATION_WITHOUT_HEARING_URL} from 'routes/urls';
 import {DirectionQuestionnaire} from 'common/models/directionsQuestionnaire/directionQuestionnaire';
 
-export function getGiveUsDetailsClaimantHearingTask (claim: Claim, claimId: string, lang: string): Task {
-  const giveUsDetailsClaimantHearingTask = {
+export function getGiveUsDetailsClaimantHearingTask(claim: Claim, claimId: string, lang: string): Task {
+  const claimantDQ = Object.assign(new DirectionQuestionnaire(), claim.claimantResponse?.directionQuestionnaire);
+  const claimantHearingTaskCompleted = getSmallClaimsDQCompleted(claimantDQ);
+  return {
     description: t('TASK_LIST.YOUR_HEARING_REQUIREMENTS.GIVE_US_DETAILS', {lng: lang}),
     url: constructResponseUrlWithIdParams(claimId, DETERMINATION_WITHOUT_HEARING_URL),
-    status: TaskStatus.INCOMPLETE,
+    status: claimantHearingTaskCompleted ? TaskStatus.COMPLETE : TaskStatus.INCOMPLETE,
   };
-  // TODO: add task complete logic
-  const claimantDQ = Object.assign(new DirectionQuestionnaire(), claim.claimantResponse?.directionQuestionnaire);
-  // 1- claimantDQ.hearing.determinationWithoutHearing?.option
-  //--/-/-/-/-/-/-/-/
-  // 2- with expert
-  // 2-without-expert
-  if (!claimantDQ?.isExpertRequired && claimantDQ?.isWithoutExpertJournetCompleted) {
-    giveUsDetailsClaimantHearingTask.status = TaskStatus.COMPLETE;
+}
+
+export function getSmallClaimsDQCompleted(dq: DirectionQuestionnaire) {
+  if (!dq.hearing?.determinationWithoutHearing) {
+    return false;
+  } else if (dq.isExpertRequired && !dq.isWithExpertJourneyCompleted) {
+    return false;
+  } else if (!dq.defendantYourselfEvidence) {
+    return false;
+  } else if (!dq.witnesses?.otherWitnesses) {
+    return false;
+  } else if (!dq.isUnavailabilityDatesCompleted) {
+    return false;
+  } else if (!dq.hearing?.phoneOrVideoHearing) {
+    return false;
+  } else if (!dq.vulnerabilityQuestions?.vulnerability) {
+    return false;
+  } else if (!dq.hearing?.supportRequiredList) {
+    return false;
+  } else if (!dq.hearing?.specificCourtLocation) {
+    return false;
+  } else if (!dq.welshLanguageRequirements?.language) {
+    return false;
   }
-  return giveUsDetailsClaimantHearingTask;
+  return true;
 }

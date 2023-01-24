@@ -38,12 +38,10 @@ reviewDefendantsResponseController.post(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESP
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim: Claim = await getCaseDataFromStore(claimId);
-    const continueLink = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL);
     if (claim?.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE) {
       const financialDetails = getFinancialDetails(claim, lang);
       res.render('features/claimantResponse/how-they-want-to-pay-response', {
         claim,
-        continueLink,
         financialDetails,
         paymentDate: formatDateToFullDate(claim.partialAdmission.paymentIntention.paymentDate, lang),
       });

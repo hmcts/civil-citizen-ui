@@ -4,6 +4,7 @@ import {VulnerabilityQuestions} from './vulnerabilityQuestions/vulnerabilityQues
 import {WelshLanguageRequirements} from './welshLanguageRequirements/welshLanguageRequirements';
 import {Witnesses} from './witnesses/witnesses';
 import {Hearing} from './hearing/hearing';
+import {YesNo} from 'common/form/models/yesNo';
 
 export class DirectionQuestionnaire {
   defendantYourselfEvidence?: GenericYesNo;
@@ -30,11 +31,45 @@ export class DirectionQuestionnaire {
   }
 
   get isExpertRequired(): boolean{
-    return !!this.experts?.expertReportDetails?.option;
+    return !this.experts?.expertNotRequired;
   }
 
-  get isWithoutExpertJournetCompleted(): boolean {
-    return !!this.defendantYourselfEvidence?.option &&
-      !!this.witnesses?.otherWitnesses.option;
+  get expertReportDetailsAvailable(): boolean {
+    return this.experts?.expertReportDetails?.option === YesNo.YES;
+  }
+
+  get requestedToAskPermissiontoUseExpert(): boolean {
+    return this.experts?.permissionForExpert?.option === YesNo.YES;
+  }
+
+  get expertStillExamineSomething(): boolean {
+    return this.experts?.expertCanStillExamine?.option === YesNo.YES;
+  }
+
+  get isExpertDetailsAvailable(): boolean {
+    return !this.experts?.expertDetailsList?.items?.length;
+  }
+
+  get isWithExpertJourneyCompleted(): boolean {
+    if (this.expertReportDetailsAvailable) {
+      return true;
+    } else if (!this.expertReportDetailsAvailable && !this.requestedToAskPermissiontoUseExpert) {
+      return true;
+    } else if (!this.expertReportDetailsAvailable && this.requestedToAskPermissiontoUseExpert &&
+      !this.expertStillExamineSomething) {
+      return true;
+    } else if (!this.expertReportDetailsAvailable && this.requestedToAskPermissiontoUseExpert &&
+      this.expertStillExamineSomething && !!this.experts?.expertDetailsList?.items?.length) {
+      return true;
+    }
+    return true;
+  }
+
+  get isUnavailabilityDatesCompleted(): boolean {
+    // TODO : include completion logic for unavailable dates when `unavailable-for-hearing` page is developed
+    if (!this.hearing?.whyUnavailableForHearing) {
+      return false;
+    }
+    return true;
   }
 }
