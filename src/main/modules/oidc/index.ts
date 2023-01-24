@@ -3,7 +3,7 @@ import config from 'config';
 import {AppRequest} from '../../common/models/AppRequest';
 import {getUserDetails} from '../../app/auth/user/oidc';
 import {
-  ASSIGN_CLAIM_URL,
+  ASSIGN_CLAIM_URL, BASE_FIRST_CONTACT_URL,
   CALLBACK_URL,
   DASHBOARD_URL,
   SIGN_IN_URL,
@@ -63,10 +63,13 @@ export class OidcMiddleware {
         }
         return res.redirect(DASHBOARD_URL);
       }
-      if(req.originalUrl.startsWith(ASSIGN_CLAIM_URL)) {
+      if(req.originalUrl.startsWith(BASE_FIRST_CONTACT_URL)){
+        return next();
+      }
+      if(req.originalUrl.startsWith(ASSIGN_CLAIM_URL) && req.query.id) {
         appReq.session.assignClaimId = <string>req.query.id;
       }
-      res.redirect(SIGN_IN_URL);
+      return res.redirect(SIGN_IN_URL);
     });
   }
 }

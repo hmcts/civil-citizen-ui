@@ -32,6 +32,8 @@ app.use(cookieSession({
   secure: false,
 }));
 
+app.use(express.static(path.join(__dirname, 'public')));
+
 declare module 'express-session' {
   interface Session {
     claimId: string;
