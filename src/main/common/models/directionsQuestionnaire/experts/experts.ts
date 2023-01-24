@@ -12,5 +12,5 @@ export class Experts {
   permissionForExpert?: GenericYesNo;
   expertCanStillExamine?: ExpertCanStillExamine;
   expertDetailsList?: ExpertDetailsList;
-
+  expertNotRequired?: boolean;
 }
