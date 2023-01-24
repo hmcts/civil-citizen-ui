@@ -173,6 +173,7 @@ import debtRespiteOptionController from './features/breathingSpace/debtRespiteOp
 import debtStartDateController from './features/breathingSpace/debtRespiteStartDateController';
 import debtRespiteEndDateController from './features/breathingSpace/debtRespiteEndDateController';
 import reviewDefendantsResponseController from './features/claimantResponse/reviewDefendantsResponseController';
+import claimSubmittedController from './features/claim/claimSubmittedController';
 import ccjPaymentOptionController from './features/claimantResponse/ccj/ccjPaymentOptionController';
 import paidSomeAmountController from './features/claimantResponse/ccj/paidAmountController';
 import defendantPaymentDateController from './features/claimantResponse/ccj/defendantPaymentDateController';
@@ -180,11 +181,13 @@ import ccjConfirmationController from './features/claimantResponse/ccj/ccjConfir
 import bilingualLangPreferenceController from './features/response/bilingualLangPreferenceController';
 import chooseHowToProceedController from './features/claimantResponse/chooseHowToProceedcController';
 import repaymentPlanInstalmentsController from './features/claimantResponse/ccj/repaymentPlanInstalmentsController';
+import courtProposedDateController from './features/claimantResponse/courtProposedDateController';
 import signSettlementAgreementController from './features/claimantResponse/signSettlmentAgreementController';
 import repaymentPlanAcceptedController from './features/claimantResponse/repaymentPlanAcceptedController';
 import courtProposedPlanController from './features/claimantResponse/courtProposedPlanController';
 import debtRespiteLiftedController from './features/breathingSpace/debtRespiteLiftedController';
 import claimantResponseConfirmationController from './features/claimantResponse/claimantResponseConfirmationController';
+import ccjCheckAnswersController from './features/claimantResponse/ccj/ccjCheckAnswersController';
 
 export default [
   homeController,
@@ -346,6 +349,7 @@ export default [
   debtRespiteEndDateController,
   debtRespiteLiftedController,
   reviewDefendantsResponseController,
+  claimSubmittedController,
   ccjPaymentOptionController,
   paidSomeAmountController,
   defendantPaymentDateController,
@@ -353,8 +357,10 @@ export default [
   bilingualLangPreferenceController,
   chooseHowToProceedController,
   repaymentPlanInstalmentsController,
+  courtProposedDateController,
   signSettlementAgreementController,
   repaymentPlanAcceptedController,
   courtProposedPlanController,
   claimantResponseConfirmationController,
+  ccjCheckAnswersController,
 ];

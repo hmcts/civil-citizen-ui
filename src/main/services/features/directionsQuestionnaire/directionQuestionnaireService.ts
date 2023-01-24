@@ -23,7 +23,12 @@ const getDirectionQuestionnaire = async (claimId: string): Promise<DirectionQues
 const getGenericOption = async (claimId: string, directionQuestionnairePropertyName: string, parentPropertyName?: string): Promise<GenericYesNo> => {
   try {
     const caseData = await getCaseDataFromStore(claimId);
-    const directionQuestionnaire: any = caseData?.directionQuestionnaire ? caseData.directionQuestionnaire : new DirectionQuestionnaire();
+    let directionQuestionnaire: any;
+    if(caseData.isClaimantIntentionPending()){
+      directionQuestionnaire = caseData.claimantResponse?.directionQuestionnaire ? caseData.claimantResponse.directionQuestionnaire : new DirectionQuestionnaire();
+    }else{
+      directionQuestionnaire = caseData?.directionQuestionnaire ? caseData.directionQuestionnaire : new DirectionQuestionnaire();
+    }
     if (parentPropertyName && directionQuestionnaire[parentPropertyName] && directionQuestionnaire[parentPropertyName][directionQuestionnairePropertyName]) {
       return directionQuestionnaire[parentPropertyName][directionQuestionnairePropertyName];
     } else if (!parentPropertyName && directionQuestionnaire[directionQuestionnairePropertyName]) {
