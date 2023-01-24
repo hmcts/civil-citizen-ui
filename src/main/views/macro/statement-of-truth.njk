@@ -7,7 +7,7 @@
   labelHtml
   ) %}
   <legend><h2 class="govuk-heading-m">{{ t('COMMON.STATEMENT_OF_TRUTH.TITLE') }}</h2></legend>
-  {% if form.model.type == SignatureType.RESPONSE or form.model.type == SignatureType.BASIC %}
+  {% if form.model.type === SignatureType.RESPONSE or form.model.type === SignatureType.BASIC %}
     <p class="govuk-body">{{ t('COMMON.STATEMENT_OF_TRUTH.INFORMATION_ON_PAGE', { type: form.model.type }) }}</p>
     <p class="govuk-body">{{ t('COMMON.STATEMENT_OF_TRUTH.WHEN_SATISFIED') }}</p>
   {% endif %}

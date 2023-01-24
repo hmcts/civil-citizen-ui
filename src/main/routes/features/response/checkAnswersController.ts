@@ -42,7 +42,6 @@ checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL,
 
 checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    console.log('TEST:', req.body);
     const isFullAmountRejected = (req.body.isFullAmountRejected === 'true');
     const form = new GenericForm((req.body.type === SignatureType.QUALIFIED)
       ? new QualifiedStatementOfTruth(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole)
