@@ -878,7 +878,6 @@
       "REQUESTED_CCJ": "{{ claimantName }} requested a County Court Judgment against you",
       "TITLE": "Your money claims account",
       "VIEW": "View",
-
       "CLAIMANT_HAS_REQUESTED_CCJ": "The claimant has requested a County Court Judgment (CCJ) against you on {{ ccjRequestedAt }}",
       "WAIT_CLAIMANT_RESPONSE": "Wait for the claimant to respond",
       "CLAIM_CONTINUE_BY_POST": "The claim will continue by post",
