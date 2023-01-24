@@ -1,6 +1,7 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {
   CASE_DOCUMENT_DOWNLOAD_URL,
+  CASE_TIMELINE_DOCUMENTS_URL,
   FIRST_CONTACT_ACCESS_DENIED_URL,
   FIRST_CONTACT_CLAIM_SUMMARY_URL,
 } from '../../../../routes/urls';
@@ -22,9 +23,10 @@ firstContactClaimSummaryController.get(FIRST_CONTACT_CLAIM_SUMMARY_URL,
         const claim: Claim = await getClaimById(claimId, req);
         const interestData = getInterestDetails(claim);
         const totalAmount = getTotalAmountWithInterestAndFees(claim);
+        const timelinePdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', claimId);
         const sealedClaimPdfUrl = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentType', DocumentUri.SEALED_CLAIM);
         res.render('features/public/firstContact/claim-summary', {
-          claim, totalAmount, interestData,sealedClaimPdfUrl,
+          claim, totalAmount, interestData,timelinePdfUrl,,sealedClaimPdfUrl,
         });
       } else {
         res.redirect(FIRST_CONTACT_ACCESS_DENIED_URL);
