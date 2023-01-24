@@ -3,7 +3,7 @@ import {Party} from '../../../common/models/party';
 import {PartyType} from '../../../common/models/partyType';
 import {toCCDAddress} from './convertToCCDAddress';
 
-export const toCCDParty = (party: Party, applicantEmail: string): CCDParty => {
+export const toCCDParty = (party: Party, applicantEmail?: string): CCDParty => {
   return {
     companyName: party?.type === PartyType.COMPANY ? party?.partyDetails?.partyName : undefined,
     individualDateOfBirth: party?.type === PartyType.INDIVIDUAL ? party?.dateOfBirth?.date : undefined,

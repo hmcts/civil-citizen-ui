@@ -173,6 +173,7 @@ import debtRespiteOptionController from './features/breathingSpace/debtRespiteOp
 import debtStartDateController from './features/breathingSpace/debtRespiteStartDateController';
 import debtRespiteEndDateController from './features/breathingSpace/debtRespiteEndDateController';
 import reviewDefendantsResponseController from './features/claimantResponse/reviewDefendantsResponseController';
+import claimSubmittedController from './features/claim/claimSubmittedController';
 import ccjPaymentOptionController from './features/claimantResponse/ccj/ccjPaymentOptionController';
 import paidSomeAmountController from './features/claimantResponse/ccj/paidAmountController';
 import defendantPaymentDateController from './features/claimantResponse/ccj/defendantPaymentDateController';
@@ -348,6 +349,7 @@ export default [
   debtRespiteEndDateController,
   debtRespiteLiftedController,
   reviewDefendantsResponseController,
+  claimSubmittedController,
   ccjPaymentOptionController,
   paidSomeAmountController,
   defendantPaymentDateController,

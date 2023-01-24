@@ -1,14 +1,14 @@
-import {Party} from '../../../../../main/common/models/party';
-import {toCCDParty} from '../../../../../main/services/translation/response/convertToCCDParty';
-import {PartyType} from '../../../../../main/common/models/partyType';
-import {ResponseType} from '../../../../../main/common/form/models/responseType';
-import {YesNo} from '../../../../../main/common/form/models/yesNo';
-import {Address} from '../../../../../main/common/form/models/address';
-import {CCDParty} from '../../../../../main/common/models/ccdResponse/ccdParty';
-import {CCDAddress} from '../../../../../main/common/models/ccdResponse/ccdAddress';
-import {CitizenDate} from '../../../../../main/common/form/models/claim/claimant/citizenDate';
-import {PartyPhone} from '../../../../../main/common/models/PartyPhone';
-import {Email} from '../../../../../main/common/models/Email';
+import {Party} from 'common/models/party';
+import {toCCDParty} from 'services/translation/response/convertToCCDParty';
+import {PartyType} from 'common/models/partyType';
+import {ResponseType} from 'common/form/models/responseType';
+import {YesNo} from 'common/form/models/yesNo';
+import {Address} from 'common/form/models/address';
+import {CCDParty} from 'common/models/ccdResponse/ccdParty';
+import {CCDAddress} from 'common/models/ccdResponse/ccdAddress';
+import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
+import {PartyPhone} from 'common/models/PartyPhone';
+import {Email} from 'common/models/Email';
 
 const companyName = 'Version 1';
 const phone = new PartyPhone('123456789');
@@ -165,6 +165,12 @@ describe('translate party to ccd model', () => {
   it('should translate INDIVIDUAL party to ccd', () => {
     const partyResponseCCD = toCCDParty(partyIndividual);
     expect(partyResponseCCD).toMatchObject(partyIndividualCCD);
+  });
+
+  it('should translate INDIVIDUAL party to ccd with applicantEmail', () => {
+    const mockApplicantEmail = 'abc@def.com';
+    const partyResponseCCD = toCCDParty(partyIndividual, mockApplicantEmail);
+    expect(partyResponseCCD).toMatchObject({...partyIndividualCCD, partyEmail: mockApplicantEmail });
   });
 
   it('should translate SOLE TRADER party to ccd', () => {

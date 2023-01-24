@@ -40,14 +40,14 @@ import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
 import {ClaimDetails} from 'common/form/models/claim/details/claimDetails';
 import {ClaimantResponse} from './claimantResponse';
 import {CCDClaim} from 'models/civilClaimResponse';
-import {toCUIParty} from 'services/translation/response/convertToCUI/convertToCUIParty';
-import {SelfEmployedAs} from 'models/selfEmployedAs';
-import {TaxPayments} from 'models/taxPayments';
-import {RegularIncome} from 'form/models/statementOfMeans/expensesAndIncome/regularIncome';
-import {RegularExpenses} from 'form/models/statementOfMeans/expensesAndIncome/regularExpenses';
-import {CourtOrders} from 'form/models/statementOfMeans/courtOrders/courtOrders';
-import {PriorityDebts} from 'form/models/statementOfMeans/priorityDebts';
-import {Debts} from 'form/models/statementOfMeans/debts/debts';
+import {toCUIParty} from 'services/translation/convertToCUI/convertToCUIParty';
+import {SelfEmployedAs} from '../models/selfEmployedAs';
+import {TaxPayments} from '../models/taxPayments';
+import {RegularIncome} from '../../common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
+import {RegularExpenses} from '../../common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
+import {CourtOrders} from '../../common/form/models/statementOfMeans/courtOrders/courtOrders';
+import {PriorityDebts} from '../../common/form/models/statementOfMeans/priorityDebts';
+import {Debts} from '../../common/form/models/statementOfMeans/debts/debts';
 import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreference';
 export class Claim {
   legacyCaseReference: string;
@@ -82,6 +82,7 @@ export class Claim {
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
   claimBilingualLanguagePreference: ClaimBilingualLanguagePreference;
+  id: string;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
