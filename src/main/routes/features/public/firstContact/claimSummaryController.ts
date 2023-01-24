@@ -26,7 +26,7 @@ firstContactClaimSummaryController.get(FIRST_CONTACT_CLAIM_SUMMARY_URL,
         const timelinePdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', claimId);
         const sealedClaimPdfUrl = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentType', DocumentUri.SEALED_CLAIM);
         res.render('features/public/firstContact/claim-summary', {
-          claim, totalAmount, interestData,timelinePdfUrl,,sealedClaimPdfUrl,
+          claim, totalAmount, interestData,timelinePdfUrl,sealedClaimPdfUrl,
         });
       } else {
         res.redirect(FIRST_CONTACT_ACCESS_DENIED_URL);
