@@ -3,7 +3,6 @@ import {deepCopy} from '../../../../../utils/deepCopy';
 import {mockClaim} from '../../../../../utils/mockClaim';
 import {getJudgmentAmountSummary} from 'services/features/claimantResponse/ccj/judgmentAmountSummaryService';
 import {YesNo} from 'form/models/yesNo';
-import {CCJ_PAID_AMOUNT_URL} from '../../../../../../main/routes/urls';
 
 describe('Get Judgment amount summary', () => {
   const claim: Claim = Object.assign(new Claim(), deepCopy(mockClaim));
@@ -12,13 +11,13 @@ describe('Get Judgment amount summary', () => {
   it('get summary details when claimInterest=Yes.', () => {
 
     //When
-    const result = getJudgmentAmountSummary(claim, claimFee, 'en', CCJ_PAID_AMOUNT_URL);
+    const result = getJudgmentAmountSummary(claim, claimFee, 'en');
 
     //Then
     expect(result.hasDefendantAlreadyPaid).toEqual(true);
     expect(result.claimHasInterest).toEqual(true);
     const subTotal = claim.totalClaimAmount + result.interestToDate + claimFee;
-    expect(result.subTotal.toString()).toEqual(subTotal.toString());
+    expect(result.subTotal.toString()).toEqual(subTotal.toFixed(2).toString());
     expect(result.alreadyPaidAmount).toEqual(claim.claimantResponse.ccjRequest.paidAmount.amount);
     const total = claim.totalClaimAmount + result.interestToDate + claimFee - claim.getDefendantPaidAmount();
     expect(result.total).toEqual(Number(total).toFixed(2));
@@ -28,7 +27,7 @@ describe('Get Judgment amount summary', () => {
 
     //When
     claim.claimInterest = YesNo.NO;
-    const result = getJudgmentAmountSummary(claim, claimFee, 'en', CCJ_PAID_AMOUNT_URL);
+    const result = getJudgmentAmountSummary(claim, claimFee, 'en');
 
     //Then
     expect(result.hasDefendantAlreadyPaid).toEqual(true);
@@ -44,7 +43,7 @@ describe('Get Judgment amount summary', () => {
     //When
     claim.claimInterest = YesNo.YES;
     claim.claimantResponse.ccjRequest.paidAmount.option = YesNo.NO;
-    const result = getJudgmentAmountSummary(claim, claimFee, 'en', CCJ_PAID_AMOUNT_URL);
+    const result = getJudgmentAmountSummary(claim, claimFee, 'en');
 
     //Then
     expect(result.hasDefendantAlreadyPaid).toEqual(false);
@@ -58,7 +57,7 @@ describe('Get Judgment amount summary', () => {
     //When
     claim.claimantResponse.ccjRequest.paidAmount.option = YesNo.NO;
     claim.claimInterest = YesNo.NO;
-    const result = getJudgmentAmountSummary(claim, claimFee, 'en',CCJ_PAID_AMOUNT_URL);
+    const result = getJudgmentAmountSummary(claim, claimFee, 'en');
 
     //Then
     expect(result.hasDefendantAlreadyPaid).toEqual(false);
