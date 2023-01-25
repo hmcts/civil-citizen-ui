@@ -6,7 +6,6 @@ import {DQ_REQUEST_EXTRA_4WEEKS_URL, DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL} from '.
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 
 describe('Request extra 4 weeks to Settle Claim Controller', () => {

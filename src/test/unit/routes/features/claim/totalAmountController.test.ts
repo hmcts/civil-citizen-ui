@@ -8,7 +8,6 @@ import {
   mockCivilClaimUndefined,
 } from '../../../../utils/mockDraftStore';
 
-jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 
 describe('Total amount', () => {

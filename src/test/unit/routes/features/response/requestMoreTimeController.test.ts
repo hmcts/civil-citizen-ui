@@ -14,7 +14,6 @@ import {PartyType} from 'models/partyType';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {Party} from '../../../../../main/common/models/party';
 
-jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 

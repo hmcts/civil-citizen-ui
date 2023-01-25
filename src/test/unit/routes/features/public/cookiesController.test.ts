@@ -7,7 +7,6 @@ import {
 } from 'routes/urls';
 import {defaultCookiePreferences} from 'routes/features/public/cookiesController';
 
-jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 
 describe('Cookies page', () => {

@@ -6,7 +6,6 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore
 import {DQ_DEFENDANT_WITNESSES_URL, DQ_GIVE_EVIDENCE_YOURSELF_URL} from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 
 describe('Defendant yourself evidence Controller', () => {

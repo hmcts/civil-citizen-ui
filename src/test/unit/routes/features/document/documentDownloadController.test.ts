@@ -8,7 +8,6 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as documentUtils from '../../../../../main/common/utils/downloadUtils';
 import {DocumentUri} from '../../../../../main/common/models/document/documentType';
 
-jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/app/client/civilServiceClient');
 

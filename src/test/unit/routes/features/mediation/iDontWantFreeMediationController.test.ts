@@ -7,7 +7,6 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure, mockRedisWithMediationProperties} from '../../../../utils/mockDraftStore';
 import {NoMediationReasonOptions} from 'form/models/mediation/noMediationReasonOptions';
 
-jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 
 describe('I dont want free meditation', () => {

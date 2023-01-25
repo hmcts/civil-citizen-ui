@@ -12,7 +12,6 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {CourtProposedDateOptions} from 'common/form/models/claimantResponse/CourtProposedDate';
 
-jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 
 describe('Claimant court proposed date Controller', () => {
