@@ -6,7 +6,6 @@ import {CLAIMANT_DOB_URL, CLAIMANT_PHONE_NUMBER_URL} from '../../../../../main/r
 import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../main/modules/draft-store');
 
 describe('Claimant Date of Birth Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

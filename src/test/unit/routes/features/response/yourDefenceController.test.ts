@@ -12,7 +12,6 @@ import {
 } from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../main/modules/draft-store');
 
 describe('yourDefence', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

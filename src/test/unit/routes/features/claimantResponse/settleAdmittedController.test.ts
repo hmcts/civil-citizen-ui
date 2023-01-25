@@ -6,7 +6,6 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL, CLAIMANT_RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 
-jest.mock('../../../../../main/modules/draft-store');
 
 describe('Claimant Response - Settle Part Admit Claim Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

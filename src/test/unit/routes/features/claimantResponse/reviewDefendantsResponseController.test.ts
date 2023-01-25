@@ -16,7 +16,6 @@ import {Party} from 'models/party';
 import {PartialAdmission} from 'models/partialAdmission';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 
-jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/common/utils/urlFormatter');
 jest.mock('../../../../../main/common/utils/dateUtils');
 jest.mock('../../../../../main/services/features/claimantResponse/claimantResponseService');

@@ -9,7 +9,6 @@ const session = require('supertest-session');
 const citizenRoleToken: string = config.get('citizenRoleToken');
 const testSession = session(app);
 
-jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/app/auth/user/oidc', () => ({
   ...jest.requireActual('../../../../../main/app/auth/user/oidc') as Module,
   getUserDetails: jest.fn(() => USER_DETAILS),

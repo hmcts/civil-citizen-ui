@@ -38,7 +38,6 @@ import {CcjPaymentOption} from 'form/models/claimantResponse/ccj/ccjPaymentOptio
 import {TransactionSource} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSource';
 import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 
-jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/common/utils/languageToggleUtils');
 jest.mock('../../../../../main/modules/i18n');

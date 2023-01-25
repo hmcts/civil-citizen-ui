@@ -7,7 +7,6 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockCivilClaimantInetntion, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {PartyPhone} from '../../../../../main/common/models/PartyPhone';
 
-jest.mock('../../../../../main/modules/draft-store');
 
 const noRespondentTelephoneMock = require('../../../../utils/mocks/noRespondentTelephoneMock.json');
 

@@ -17,7 +17,6 @@ import {
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
 
-jest.mock('../../../../../main/modules/draft-store');
 
 describe('rejectAllOfClaim', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

@@ -8,7 +8,6 @@ import {RejectAllOfClaim} from '../../../../../main/common/form/models/rejectAll
 import {PartyType} from '../../../../../main/common/models/partyType';
 import {RejectAllOfClaimType} from '../../../../../main/common/form/models/rejectAllOfClaimType';
 
-jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 describe('rejectAllOfClaim service', () => {

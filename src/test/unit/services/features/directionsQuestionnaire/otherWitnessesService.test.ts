@@ -7,7 +7,6 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import civilClaimResponseExpertAndWitnessMock from '../../../../utils/mocks/civilClaimResponseExpertAndWitnessMock.json';
 import {Witnesses} from '../../../../../main/common/models/directionsQuestionnaire/witnesses/witnesses';
 
-jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseDataFromStore = getCaseDataFromStore as jest.Mock;
 

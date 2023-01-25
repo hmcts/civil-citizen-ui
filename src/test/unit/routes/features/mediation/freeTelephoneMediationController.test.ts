@@ -9,7 +9,6 @@ import {
 } from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../main/modules/draft-store');
 
 describe('Free Telephone Mediation Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

@@ -18,7 +18,6 @@ import {Mediation} from '../../../../../main/common/models/mediation/mediation';
 
 const applicantTypeMock = require('./applicantTypeMock.json');
 
-jest.mock('../../../../../main/modules/draft-store');
 
 describe('Mediation Disagreement', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

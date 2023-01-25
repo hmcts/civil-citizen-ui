@@ -14,7 +14,6 @@ import {
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {YesNo} from 'form/models/yesNo';
 
-jest.mock('../../../../../main/modules/draft-store');
 
 const supportRequiredUrl = SUPPORT_REQUIRED_URL.replace(':id', 'aaa');
 

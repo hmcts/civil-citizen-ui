@@ -5,7 +5,6 @@ import config from 'config';
 import {CLAIM_TASK_LIST_URL} from '../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 
-jest.mock('../../../../../main/modules/draft-store');
 
 describe('Claimant details', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

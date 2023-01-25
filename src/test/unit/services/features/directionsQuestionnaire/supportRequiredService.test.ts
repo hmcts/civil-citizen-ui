@@ -18,7 +18,6 @@ import civilClaimantIntentionMock from '../../../../utils/mocks/civilClaimantInt
 import {Claim} from '../../../../../main/common/models/claim';
 import {CaseState} from 'common/form/models/claimDetails';
 
-jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({

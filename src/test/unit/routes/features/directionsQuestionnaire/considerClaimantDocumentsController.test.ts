@@ -10,7 +10,6 @@ import {
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 
-jest.mock('../../../../../main/modules/draft-store');
 
 describe('Consider Claimant Documents Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

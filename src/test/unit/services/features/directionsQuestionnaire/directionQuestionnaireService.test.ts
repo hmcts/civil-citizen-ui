@@ -19,7 +19,6 @@ import {ClaimantResponse} from 'common/models/claimantResponse';
 import {ReportDetail} from 'common/models/directionsQuestionnaire/experts/expertReportDetails/reportDetail';
 import {CaseState} from 'common/form/models/claimDetails';
 
-jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;

@@ -12,7 +12,6 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {ResponseType} from 'common/form/models/responseType';
 import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 
-jest.mock('../../../../../main/modules/draft-store');
 
 describe('Sign Settlement Agreement', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

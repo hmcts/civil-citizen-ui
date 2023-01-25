@@ -12,7 +12,6 @@ import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import civilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
 
-jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 

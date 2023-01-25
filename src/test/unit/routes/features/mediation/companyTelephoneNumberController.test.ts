@@ -8,7 +8,6 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore
 import {YesNo} from 'form/models/yesNo';
 import civilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
 
-jest.mock('../../../../../main/modules/draft-store');
 
 describe('Mediation - Company or Organisation - Confirm telephone number', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

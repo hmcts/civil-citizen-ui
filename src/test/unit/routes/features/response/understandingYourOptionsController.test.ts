@@ -10,7 +10,6 @@ import {
 import {UNDERSTANDING_RESPONSE_OPTIONS_URL} from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../main/modules/draft-store');
 
 describe('Understanding Your Options Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

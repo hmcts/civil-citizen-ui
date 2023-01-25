@@ -7,7 +7,6 @@ import {CitizenTelephoneNumber} from '../../../../../main/common/form/models/cit
 import {ClaimantOrDefendant, PartyType} from '../../../../../main/common/models/partyType';
 import {PartyPhone} from '../../../../../main/common/models/PartyPhone';
 
-jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 const party: Party = {

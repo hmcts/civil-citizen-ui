@@ -5,7 +5,6 @@ import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLang
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 
-jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 describe('Bilingual Langiage Preference Service', () => {

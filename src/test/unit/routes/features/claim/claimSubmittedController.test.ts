@@ -7,7 +7,6 @@ import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 
 const {app} = require('../../../../../main/app');
 
-jest.mock('../../../../../main/modules/draft-store');
 
 describe('Claim - Claim Submitted', () => {
   const idamServiceUrl: string = config.get('services.idam.url');

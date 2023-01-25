@@ -16,7 +16,6 @@ import {ResponseOptions} from 'form/models/responseDeadline';
 import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../main/modules/draft-store');
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockSaveCaseData = saveDraftClaim as jest.Mock;

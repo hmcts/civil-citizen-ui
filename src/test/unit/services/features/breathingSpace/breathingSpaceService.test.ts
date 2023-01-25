@@ -10,7 +10,6 @@ import {ClaimDetails} from '../../../../../main/common/form/models/claim/details
 import {DebtRespiteOptionType} from '../../../../../main/common/models/breathingSpace/debtRespiteOptionType';
 import {DebtRespiteReferenceNumber} from '../../../../../main/common/models/breathingSpace/debtRespiteReferenceNumber';
 
-jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;

@@ -7,7 +7,6 @@ import {PartyType} from '../../../../../main/common/models/partyType';
 import {Defence} from '../../../../../main/common/form/models/defence';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 describe('rejectAllOfClaim defence service', () => {
