@@ -69,15 +69,21 @@
       },
       "issueDate": "2022-01-08",
       "applicant1": {
-        "type": "ORGANISATION",
+        "type": "INDIVIDUAL",
         "partyDetails": {
+          "individualTitle": "Mrs.",
+          "individualFirstName": "Jane",
+          "individualLastName": "Doe",
           "partyName": "Version 1",
           "primaryAddress": {
-            "postCode": "RG4 7AA",
-            "city": "Reading",
-            "addressLine1": "Flat 2",
-            "addressLine2": "Caversham House 15-17",
-            "addressLine3": "Church Road"
+            "County": "Kent",
+            "Country": "United Kingdom",
+            "PostCode": "RG4 7AA",
+            "PostTown": "Reading",
+            "AddressLine1": "Flat 2",
+            "AddressLine2": "Caversham House 15-17",
+            "AddressLine3": "Church Road",
+            "city": "London"
           }
         }
       },
@@ -95,8 +101,12 @@
             "postTown": "Reading",
             "addressLine1": "Flat 2",
             "addressLine2": "Caversham House 15-17",
-            "addressLine3": "Church Road"
+            "addressLine3": "Church Road",
+            "city": "London"
           }
+        },
+        "emailAddress": {
+          "emailAddress": "fakeemail@version1.com"
         },
         "partyPhone": {
           "phone": "01632960001"
@@ -1955,7 +1965,7 @@
     }
   },
   {
-    "id": 9999,
+    "id": 5555,
     "jurisdiction": "CIVIL",
     "case_type_id": "CIVIL",
     "created_date": "2022-03-01T13:29:22.447",
@@ -2108,6 +2118,10 @@
       "claimDetails": {
         "reason": {
           "text": "Test details of claim"
+        },
+        "helpWithFees": {
+          "option": "yes",
+          "referenceNumber": "0000000"
         }
       },
       "superClaimType": "SPEC_CLAIM",

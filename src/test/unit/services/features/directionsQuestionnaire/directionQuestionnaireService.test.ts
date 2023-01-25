@@ -219,6 +219,7 @@ describe('Direction questionnaire Service', () => {
     });
 
     it('should return request defendantExpertEvidence option with Yes option', async () => {
+      //Given
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.experts = new Experts();
@@ -226,7 +227,26 @@ describe('Direction questionnaire Service', () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return claim;
       });
+      //When
       const expertEvidence = await getGenericOption('validClaimId', 'defendantExpertEvidence', 'experts');
+      //Then
+      expect(expertEvidence.option).toBe(YesNo.YES);
+    });
+
+    it('should return request defendantExpertEvidence option with Yes option - defendant journey', async () => {
+      //Given
+      const claim = new Claim();
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
+      claim.claimantResponse.directionQuestionnaire.experts = new Experts();
+      claim.claimantResponse.directionQuestionnaire.experts.defendantExpertEvidence = {option: YesNo.YES};
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return claim;
+      });
+      //When
+      const expertEvidence = await getGenericOption('validClaimId', 'defendantExpertEvidence', 'experts');
+      //Then
       expect(expertEvidence.option).toBe(YesNo.YES);
     });
 
@@ -332,6 +352,33 @@ describe('Direction questionnaire Service', () => {
 
       //Then
       expect(defendantYourselfEvidence.option).toBe(YesNo.NO);
+    });
+
+    it('should return generic option object with undefined option - defendant journey - no directionQuestionnaire', async () => {
+      //Given
+      const claim = new Claim();
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.claimantResponse = new ClaimantResponse();
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return claim;
+      });
+      //When
+      const expertEvidence = await getGenericOption('validClaimId', 'Test');
+      //Then
+      expect(expertEvidence.option).toBeUndefined();
+    });
+
+    it('should return generic option object with undefined option - defendant journey - no claimantResponse', async () => {
+      //Given
+      const claim = new Claim();
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return claim;
+      });
+      //When
+      const expertEvidence = await getGenericOption('validClaimId', 'Test');
+      //Then
+      expect(expertEvidence.option).toBeUndefined();
     });
 
     it('should return error on redis failure', async () => {
