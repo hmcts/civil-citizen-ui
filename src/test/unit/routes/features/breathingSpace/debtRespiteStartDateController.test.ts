@@ -10,9 +10,6 @@ import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure} from '../../.
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-
 describe('Claimant Response - Debt Respite When Start Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
