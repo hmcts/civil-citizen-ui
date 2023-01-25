@@ -17,26 +17,19 @@ export function getGiveUsDetailsClaimantHearingTask(claim: Claim, claimId: strin
 }
 
 export function getSmallClaimsDQCompleted(dq: DirectionQuestionnaire) {
-  if (!dq.hearing?.determinationWithoutHearing) {
-    return false;
-  } else if (dq.isExpertRequired && !dq.isWithExpertJourneyCompleted) {
-    return false;
-  } else if (!dq.defendantYourselfEvidence) {
-    return false;
-  } else if (!dq.witnesses?.otherWitnesses) {
-    return false;
-  } else if (!dq.isUnavailabilityDatesCompleted) {
-    return false;
-  } else if (!dq.hearing?.phoneOrVideoHearing) {
-    return false;
-  } else if (!dq.vulnerabilityQuestions?.vulnerability) {
-    return false;
-  } else if (!dq.hearing?.supportRequiredList) {
-    return false;
-  } else if (!dq.hearing?.specificCourtLocation) {
-    return false;
-  } else if (!dq.welshLanguageRequirements?.language) {
-    return false;
+  if (
+    dq.hearing?.determinationWithoutHearing &&
+    dq.isExpertJourneyCompleted &&
+    dq.defendantYourselfEvidence &&
+    dq.witnesses?.otherWitnesses &&
+    dq.isUnavailabilityDatesCompleted &&
+    dq.hearing?.phoneOrVideoHearing &&
+    dq.vulnerabilityQuestions?.vulnerability &&
+    dq.hearing?.supportRequiredList &&
+    dq.hearing?.specificCourtLocation &&
+    dq.welshLanguageRequirements?.language
+  ) {
+    return true;
   }
-  return true;
+  return false;
 }

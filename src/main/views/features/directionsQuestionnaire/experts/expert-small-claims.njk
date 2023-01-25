@@ -22,10 +22,10 @@
             {{ govukButton({
               text: t("PAGES.EXPERT_SMALL_CLAIMS.CONTINUE")
             }) }}
+            <p class="govuk-body">
+              <input type="submit" class="link-button" name="expertYes" id="expertYes" value="{{t('PAGES.EXPERT_SMALL_CLAIMS.NEEDS_AN_EXPERT')}}">
+            </p>
           </form>
-          <p class="govuk-body">
-            <a href="{{reportWrittenByExpertScreenURL}}">{{t('PAGES.EXPERT_SMALL_CLAIMS.NEEDS_AN_EXPERT')}}</a>
-          </p>
           {{ contactUsForHelp(t) }}
         </div>
       </div>
