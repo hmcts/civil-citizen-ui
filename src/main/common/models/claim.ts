@@ -40,14 +40,15 @@ import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
 import {ClaimDetails} from 'common/form/models/claim/details/claimDetails';
 import {ClaimantResponse} from './claimantResponse';
 import {CCDClaim} from 'models/civilClaimResponse';
-import {toCUIParty} from 'services/translation/response/convertToCUI/convertToCUIParty';
-import {SelfEmployedAs} from 'models/selfEmployedAs';
-import {TaxPayments} from 'models/taxPayments';
-import {RegularIncome} from 'common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
-import {RegularExpenses} from 'common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
-import {CourtOrders} from 'common/form/models/statementOfMeans/courtOrders/courtOrders';
-import {PriorityDebts} from 'common/form/models/statementOfMeans/priorityDebts';
-import {Debts} from 'common/form/models/statementOfMeans/debts/debts';
+import {toCUIParty} from 'services/translation/convertToCUI/convertToCUIParty';
+import {SelfEmployedAs} from '../models/selfEmployedAs';
+import {TaxPayments} from '../models/taxPayments';
+import {RegularIncome} from '../../common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
+import {RegularExpenses} from '../../common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
+import {CourtOrders} from '../../common/form/models/statementOfMeans/courtOrders/courtOrders';
+import {PriorityDebts} from '../../common/form/models/statementOfMeans/priorityDebts';
+import {Debts} from '../../common/form/models/statementOfMeans/debts/debts';
+import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreference';
 export class Claim {
   legacyCaseReference: string;
   applicant1?: Party;
@@ -80,12 +81,14 @@ export class Claim {
   respondentSolicitor1AgreedDeadlineExtension?: Date;
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
+  claimBilingualLanguagePreference: ClaimBilingualLanguagePreference;
+  id: string;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
 
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
-    claim.applicant1 = toCUIParty(ccdClaim.applicant1);
-    claim.respondent1 = toCUIParty(ccdClaim.respondent1);
+    claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
+    claim.respondent1 = toCUIParty(ccdClaim?.respondent1);
     return claim;
   }
 
@@ -125,7 +128,6 @@ export class Claim {
     if (this.isFullDefence() && this.isRejectAllOfClaimDispute()) {
       return ClaimResponseStatus.RC_DISPUTE;
     }
-
   }
 
   getClaimantFullName(): string {
@@ -134,17 +136,6 @@ export class Claim {
 
   getDefendantFullName(): string {
     return this.getName(this.respondent1);
-  }
-
-  private getName(party: Party): string {
-    if (party?.type == PartyType.INDIVIDUAL || party?.type == PartyType.SOLE_TRADER) {
-      if (party.partyDetails?.individualTitle) {
-        return `${party.partyDetails.individualTitle} ${party.partyDetails.individualFirstName} ${party.partyDetails.individualLastName}`;
-      } else {
-        return `${party.partyDetails.individualFirstName} ${party.partyDetails.individualLastName}`;
-      }
-    }
-    return party?.partyDetails?.partyName;
   }
 
   formattedResponseDeadline(lng?: string): string {
@@ -286,6 +277,18 @@ export class Claim {
     return this.rejectAllOfClaim.howMuchHaveYouPaid.amount === this.rejectAllOfClaim.howMuchHaveYouPaid.totalClaimAmount;
   }
 
+  getRejectAllOfClaimPaidLessPaymentDate(): Date {
+    return this.rejectAllOfClaim.howMuchHaveYouPaid.date;
+  }
+
+  getRejectAllOfClaimPaidLessPaymentMode(): string {
+    return this.rejectAllOfClaim?.howMuchHaveYouPaid?.text ?? '';
+  }
+
+  getRejectAllOfClaimDisagreementReason(): string {
+    return this.rejectAllOfClaim?.whyDoYouDisagree?.text ?? '';
+  }
+
   extractDocumentId(): string {
     const documentUrl = this.specClaimTemplateDocumentFiles?.document_url;
     let documentId: string;
@@ -318,6 +321,10 @@ export class Claim {
     return this.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
   }
 
+  isClaimantIntentionPending(): boolean {
+    return this.ccdState === CaseState.AWAITING_APPLICANT_INTENTION;
+  }
+
   isBusiness(): boolean {
     return this.respondent1?.type === PartyType.COMPANY || this.respondent1?.type === PartyType.ORGANISATION;
   }
@@ -344,6 +351,10 @@ export class Claim {
 
   isResponseToExtendDeadlineNo(): boolean {
     return this.responseDeadline?.option === ResponseOptions.NO;
+  }
+
+  isResponseDateInThePast(): boolean {
+    return this.respondent1ResponseDate <= new Date();
   }
 
   get hasSupportRequiredList(): boolean {
@@ -404,6 +415,17 @@ export class Claim {
 
   getDebts(): Debts | undefined {
     return this.statementOfMeans?.debts;
+  }
+
+  private getName(party: Party): string {
+    if (party?.type == PartyType.INDIVIDUAL || party?.type == PartyType.SOLE_TRADER) {
+      if (party.partyDetails?.individualTitle) {
+        return `${party.partyDetails.individualTitle} ${party.partyDetails.individualFirstName} ${party.partyDetails.individualLastName}`;
+      } else {
+        return `${party.partyDetails.individualFirstName} ${party.partyDetails.individualLastName}`;
+      }
+    }
+    return party?.partyDetails?.partyName;
   }
 }
 

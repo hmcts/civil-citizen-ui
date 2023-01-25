@@ -14,7 +14,10 @@
       "calculatedAmountInPence": "7000"
     },
     "claimantResponse": {
-      "hasPartPaymentBeenAccepted": "Yes"
+      "hasPartPaymentBeenAccepted": "Yes",
+      "intentionToProceed" : {
+        "option": "no"
+      }
     },
     "respondent1ResponseDate": "2022-09-25T13:46:07.287428",
     "supportRequired": {
@@ -204,6 +207,9 @@
     "claimDetails": {
       "reason": {
         "text": "Test details of claim"
+      },
+      "helpWithFees": {
+        "option": "yes"
       }
     },
     "claimAmountBreakup": [
@@ -247,7 +253,8 @@
       }
     ],
     "responseDeadline": {
-      "agreedResponseDeadline": "2025-06-01T00:00:00.000Z"
+      "agreedResponseDeadline": "2025-06-01T00:00:00.000Z",
+      "calculatedResponseDeadline": "2024-05-01T00:00:00.000Z"
     }
   }
 }

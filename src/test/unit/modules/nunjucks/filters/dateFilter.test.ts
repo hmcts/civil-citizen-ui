@@ -1,4 +1,4 @@
-import {addDaysFilterTranslated} from '../../../../../main/modules/nunjucks/filters/dateFilter';
+import {addDaysFilterTranslated, monthTranslated} from '../../../../../main/modules/nunjucks/filters/dateFilter';
 import {t} from 'i18next';
 import {DateTime} from 'luxon';
 

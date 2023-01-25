@@ -1,5 +1,5 @@
 import {Party} from '../../../../../main/common/models/party';
-import {toCUIParty} from '../../../../../main/services/translation/response/convertToCUI/convertToCUIParty';
+import {toCUIParty} from '../../../../../main/services/translation/convertToCUI/convertToCUIParty';
 import {PartyType} from '../../../../../main/common/models/partyType';
 import {Address} from '../../../../../main/common/form/models/address';
 import {CCDParty} from '../../../../../main/common/models/ccdResponse/ccdParty';
@@ -92,7 +92,7 @@ const partyCompanyCCD: CCDParty = {
 
 const partyIndividualCCD: CCDParty = {
   companyName: undefined,
-  individualDateOfBirth: new Date('Wed Oct 10 1990 01:00:00 GMT+0100').toLocaleString(),
+  individualDateOfBirth: new Date('Wed Oct 10 1990 01:00:00 GMT+0100'),
   individualTitle: title,
   individualFirstName: firstName,
   individualLastName: lastName,
@@ -118,7 +118,7 @@ const partySoleTraderCCD: CCDParty = {
   partyEmail: emailCCD,
   partyPhone: phoneCCD,
   primaryAddress: addressCCD,
-  soleTraderDateOfBirth: new Date('Wed Oct 10 1990 01:00:00 GMT+0100').toLocaleString(),
+  soleTraderDateOfBirth: new Date('Wed Oct 10 1990 01:00:00 GMT+0100'),
   soleTraderTitle: title,
   soleTraderFirstName: firstName,
   soleTraderLastName: lastName,

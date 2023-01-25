@@ -4,15 +4,16 @@ import {
   getStatementOfTruth,
   getSummarySections,
   saveStatementOfTruth,
-} from '../../../services/features/claim/checkAnswers/checkAnswersService';
-import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
-import {Claim} from '../../../common/models/claim';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {AppRequest} from '../../../common/models/AppRequest';
-import {GenericForm} from '../../../common/form/models/genericForm';
-import {StatementOfTruthForm} from '../../../common/form/models/statementOfTruth/statementOfTruthForm';
-import {QualifiedStatementOfTruth} from '../../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
-import {YesNo} from '../../../common/form/models/yesNo';
+} from 'services/features/claim/checkAnswers/checkAnswersService';
+import {deleteDraftClaimFromStore, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'common/models/claim';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {AppRequest} from 'common/models/AppRequest';
+import {submitClaim} from 'services/features/claim/submission/submitClaim';
+import {GenericForm} from 'common/form/models/genericForm';
+import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
+import {QualifiedStatementOfTruth} from 'common/form/models/statementOfTruth/qualifiedStatementOfTruth';
+import {YesNo} from 'common/form/models/yesNo';
 
 const checkAnswersViewPath = 'features/claim/check-answers';
 const claimCheckAnswersController = Router();
@@ -45,7 +46,7 @@ claimCheckAnswersController.get(CLAIM_CHECK_ANSWERS_URL,
     }
   });
 
-claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | AppRequest, res: Response, next: NextFunction) => {
   try {
     const userId = (<AppRequest>req).session?.user?.id;
     const isFullAmountRejected = (req.body?.isFullAmountRejected === 'true');
@@ -59,10 +60,13 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest
       renderView(res, form, claim, userId, lang);
     } else {
       await saveStatementOfTruth(userId, form.model);
+      const submittedClaim = await submitClaim(<AppRequest>req);
+      await deleteDraftClaimFromStore(userId);
+      console.log('controller---', submitClaim.bind, constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
       if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
         res.redirect(constructResponseUrlWithIdParams(userId, paymentUrl));
       } else {
-        res.redirect(CLAIM_CONFIRMATION_URL);
+        res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
       }
     }
   } catch (error) {
@@ -71,4 +75,3 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest
 });
 
 export default claimCheckAnswersController;
-

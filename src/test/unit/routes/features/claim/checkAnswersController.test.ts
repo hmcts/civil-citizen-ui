@@ -13,8 +13,8 @@ import {HelpWithFees} from '../../../../../main/common/form/models/claim/details
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
-
 const request = require('supertest');
+
 const {app} = require('../../../../../main/app');
 const session = require('supertest-session');
 const civilServiceUrl = config.get<string>('services.civilService.url');
@@ -26,16 +26,16 @@ jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/claimDetailsService');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/services/features/claim/checkAnswers/checkAnswersService');
+jest.mock('../../../../../main/services/features/claim/submission/submitClaim');
 
 const mockGetSummarySections = getSummarySections as jest.Mock;
 const mockGetClaim = getCaseDataFromStore as jest.Mock;
 const PARTY_NAME = 'Mrs. Mary Richards';
 
-describe('Response - Check answers', () => {
+describe('Claim - Check answers', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamServiceUrl: string = config.get('services.idam.url');
   const checkYourAnswerEng = 'Check your answers';
-  const checkYourAnswerCy = 'Gwiriwch eich ateb';
 
   beforeAll(() => {
     nock(idamServiceUrl)
@@ -110,20 +110,12 @@ describe('Response - Check answers', () => {
       expect(email[0].textContent?.trim()).toBe('contact@gmail.com');
     });
 
-    it('should pass english translation via query', async () => {
-      await session(app).get(CLAIM_CHECK_ANSWERS_URL)
-        .query({lang: 'en'})
-        .expect((res: Response) => {
+    it('should return check your answer page', async () => {
+      await request(app).get(CLAIM_CHECK_ANSWERS_URL)
+        .expect((res) => {
+
           expect(res.status).toBe(200);
           expect(res.text).toContain(checkYourAnswerEng);
-        });
-    });
-    it('should pass cy translation via query', async () => {
-      await session(app).get(CLAIM_CHECK_ANSWERS_URL)
-        .query({lang: 'cy'})
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(checkYourAnswerCy);
         });
     });
 
@@ -131,7 +123,7 @@ describe('Response - Check answers', () => {
       mockGetSummarySections.mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
-      await session(app)
+      await request(app)
         .get(CLAIM_CHECK_ANSWERS_URL)
         .expect((res: Response) => {
           expect(res.status).toBe(500);
@@ -193,8 +185,7 @@ describe('Response - Check answers', () => {
           expect(res.text).toContain('Submit claim');
         });
     });
-
-    it('should redirect to claim confirmation page when Fee is yes', async () => {
+    it('should redirect to claim submitted confirmation page when help with fees is set to yes', async () => {
       mockGetSummarySections.mockImplementation(() => {
         return createClaimWithYourDetails();
       });
@@ -216,9 +207,9 @@ describe('Response - Check answers', () => {
       await request(app)
         .post(CLAIM_CHECK_ANSWERS_URL)
         .send(data)
-        .expect((res: Response) => {
+        .expect((res ) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain(CLAIM_CONFIRMATION_URL);
+          expect(res.header.location).toBe(CLAIM_CONFIRMATION_URL);
         });
     });
     it('should redirect to claim confirmation page when Fee is no', async () => {
@@ -256,6 +247,18 @@ describe('Response - Check answers', () => {
       await request(app)
         .post(CLAIM_CHECK_ANSWERS_URL)
         .send(data)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toBe(CLAIM_CONFIRMATION_URL);
+        });
+    });
+    it('should return 500 when error in service', async () => {
+      mockGetSummarySections.mockImplementation(() => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+      await request(app)
+        .post(CLAIM_CHECK_ANSWERS_URL)
+        .send()
         .expect((res: Response) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -263,4 +266,3 @@ describe('Response - Check answers', () => {
     });
   });
 });
-

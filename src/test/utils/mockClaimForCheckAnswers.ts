@@ -1,9 +1,7 @@
 import {Claim} from '../../main/common/models/claim';
 import {ResponseType} from '../../main/common/form/models/responseType';
 import {PaymentOptionType} from '../../main/common/form/models/admission/paymentOption/paymentOptionType';
-import {
-  TransactionSchedule,
-} from '../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {TransactionSchedule} from '../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {PartyType} from '../../main/common/models/partyType';
 import {DebtItems} from '../../main/common/form/models/statementOfMeans/debts/debtItems';
 import {Debts} from '../../main/common/form/models/statementOfMeans/debts/debts';
@@ -49,15 +47,21 @@ import {GenericYesNo} from '../../main/common/form/models/genericYesNo';
 import {TimelineRow} from '../../main/common/form/models/timeLineOfEvents/timelineRow';
 import {RejectAllOfClaimType} from '../../main/common/form/models/rejectAllOfClaimType';
 import {InterestClaimOptionsType} from '../../main/common/form/models/claim/interest/interestClaimOptionsType';
-import {
-  InterestClaimFromType,
-  InterestEndDateType,
-  SameRateInterestType,
-} from '../../main/common/form/models/claimDetails';
+import {InterestClaimFromType, InterestEndDateType, SameRateInterestType} from '../../main/common/form/models/claimDetails';
 import {Address} from '../../main/common/form/models/address';
-import {FullAdmission} from 'common/models/fullAdmission';
+import {FullAdmission} from '../../main/common/models/fullAdmission';
+import {DebtRespiteStartDate} from '../../main/common/models/breathingSpace/debtRespiteStartDate';
+import {DebtRespiteEndDate} from '../../main/common/models/breathingSpace/debtRespiteEndDate';
+import {DebtRespiteOptionType} from '../../main/common/models/breathingSpace/debtRespiteOptionType';
 import {ClaimDetails} from '../../main/common/form/models/claim/details/claimDetails';
 import {ClaimantTimeline} from '../../main/common/form/models/timeLineOfEvents/claimantTimeline';
+import {ClaimantResponse} from 'models/claimantResponse';
+import {CCJRequest} from 'models/claimantResponse/ccj/ccjRequest';
+import {CcjPaymentOption} from 'form/models/claimantResponse/ccj/ccjPaymentOption';
+import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
+import {PaidAmount} from 'models/claimantResponse/ccj/paidAmount';
+import {RepaymentPlanInstalments} from 'models/claimantResponse/ccj/repaymentPlanInstalments';
+import {InstalmentFirstPaymentDate} from 'models/claimantResponse/ccj/instalmentFirstPaymentDate';
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -65,11 +69,13 @@ const TITLE = 'Mr';
 const FIRST_NAME = 'John';
 const LAST_NAME = 'Richards';
 const CONTACT_NUMBER = '077777777779';
+const EMAIL_ADDRESS = 'contact@gmail.com';
 
 export const createClaimWithBasicRespondentDetails = (contactPerson?: string): Claim => {
   const claim = new Claim();
   claim.respondent1 = {
     partyPhone: {phone: CONTACT_NUMBER},
+    emailAddress: {emailAddress: EMAIL_ADDRESS},
     dateOfBirth: {date: new Date('2000-12-12'), year: 1985, month: 2, day: 2},
     responseType: ResponseType.FULL_ADMISSION,
     type: PartyType.INDIVIDUAL,
@@ -228,6 +234,47 @@ export const createClaimWithApplicantIndividualDetails = (): Claim => {
   claim.applicant1.partyDetails.primaryAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
   claim.applicant1.partyDetails.correspondenceAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
 
+  return claim;
+};
+
+export const createCCJClaimWithClaimResponseDetailsForPayBySetDate = (): Claim => {
+  const claim = new Claim();
+  claim.claimantResponse = new ClaimantResponse();
+  claim.claimantResponse.hasPartPaymentBeenAccepted = new GenericYesNo('Yes');
+  claim.claimantResponse.ccjRequest = new CCJRequest();
+  claim.claimantResponse.ccjRequest.ccjPaymentOption = new CcjPaymentOption();
+  claim.claimantResponse.ccjRequest.ccjPaymentOption.type = PaymentOptionType.BY_SET_DATE;
+  claim.claimantResponse.ccjRequest.defendantPaymentDate = new PaymentDate();
+  claim.claimantResponse.ccjRequest.defendantPaymentDate.date = new Date('2023-12-25');
+  claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount();
+  claim.claimantResponse.ccjRequest.paidAmount.option = YesNo.YES;
+  claim.claimantResponse.ccjRequest.paidAmount.totalAmount = 1000;
+  claim.claimantResponse.ccjRequest.paidAmount.amount = 200;
+  claim.totalClaimAmount = 1000;
+  return claim;
+};
+
+export const createCCJClaimWithClaimResponseDetailsForPayByInstalments = (): Claim => {
+  const claim = new Claim();
+  claim.claimantResponse = new ClaimantResponse();
+  claim.claimantResponse.hasPartPaymentBeenAccepted = new GenericYesNo('Yes');
+  claim.claimantResponse.ccjRequest = new CCJRequest();
+  claim.claimantResponse.ccjRequest.ccjPaymentOption = new CcjPaymentOption();
+  claim.claimantResponse.ccjRequest.ccjPaymentOption.type = PaymentOptionType.INSTALMENTS;
+  claim.totalClaimAmount = 1000;
+  claim.claimantResponse.ccjRequest.repaymentPlanInstalments = new RepaymentPlanInstalments();
+  claim.claimantResponse.ccjRequest.repaymentPlanInstalments.amount = 200;
+  const firstPaymentDate: Record<string, string> = {};
+  firstPaymentDate['year'] = '2023';
+  firstPaymentDate['month'] = '6';
+  firstPaymentDate['day'] = '6';
+  claim.claimantResponse.ccjRequest.repaymentPlanInstalments.firstPaymentDate = new InstalmentFirstPaymentDate(firstPaymentDate);
+  claim.claimantResponse.ccjRequest.repaymentPlanInstalments.paymentFrequency = TransactionSchedule.WEEK;
+  claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount();
+  claim.claimantResponse.ccjRequest.paidAmount.totalAmount = 1000;
+  claim.claimantResponse.ccjRequest.paidAmount.amount = 200;
+  claim.totalClaimAmount = 1000;
+  claim.claimantResponse.ccjRequest.paidAmount.option = YesNo.YES;
   return claim;
 };
 
@@ -971,7 +1018,7 @@ export const createClaimWithFreeTelephoneMediationSectionForIndividual = (): Cla
   const howMuchDoYouOwe: HowMuchDoYouOwe = new HowMuchDoYouOwe(100, 200);
   const whyDoYouDisagree: WhyDoYouDisagree = new WhyDoYouDisagree('Reasons for disagree');
   const howMuchHaveYouPaid: HowMuchHaveYouPaid = new HowMuchHaveYouPaid(param);
-  const partialAdmission: PartialAdmission = {
+  claim.partialAdmission = {
     whyDoYouDisagree: whyDoYouDisagree,
     howMuchDoYouOwe: howMuchDoYouOwe,
     alreadyPaid: new GenericYesNo(YesNo.YES),
@@ -979,7 +1026,6 @@ export const createClaimWithFreeTelephoneMediationSectionForIndividual = (): Cla
     timeline,
     paymentIntention: new PaymentIntention(),
   };
-  claim.partialAdmission = partialAdmission;
   claim.mediation = new Mediation({option: YesNo.NO, mediationPhoneNumber: '01632960001'});
 
   return claim as Claim;
@@ -1125,6 +1171,40 @@ export const claimWithClaimAmountOneBreakDown = (): Claim => {
 
   claim.claimAmountBreakup = [{value: {claimAmount: '200', claimReason: 'roof'}}];
 
+  return claim;
+};
+
+export const getClaimWithFewDetails = (): Claim => {
+  const claim = new Claim();
+  claim.claimDetails = new ClaimDetails();
+  claim.claimDetails.breathingSpace = {
+    debtRespiteReferenceNumber: {
+      referenceNumber: 'R225B1230',
+    },
+    debtRespiteOption: {
+      type: DebtRespiteOptionType.STANDARD || DebtRespiteOptionType.MENTAL_HEALTH,
+    },
+    debtRespiteStartDate: new DebtRespiteStartDate('10', 'January', '2022'),
+    debtRespiteEndDate: new DebtRespiteEndDate('10', 'December', '2022'),
+
+  };
+  return claim;
+};
+
+export const getClaimWithNoDetails = (): Claim => {
+  const claim = new Claim();
+  claim.claimDetails = new ClaimDetails();
+  claim.claimDetails.breathingSpace = {
+    debtRespiteReferenceNumber: {
+      referenceNumber: '',
+    },
+    debtRespiteOption: {
+      type: DebtRespiteOptionType.STANDARD || DebtRespiteOptionType.MENTAL_HEALTH,
+    },
+    debtRespiteStartDate: new DebtRespiteStartDate(),
+    debtRespiteEndDate: new DebtRespiteEndDate(),
+
+  };
   return claim;
 };
 

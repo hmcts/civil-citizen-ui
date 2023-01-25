@@ -19,6 +19,8 @@ import {
 } from '../../../../../main/services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {DirectionQuestionnaire} from '../../../../../main/common/models/directionsQuestionnaire/directionQuestionnaire';
 import {Experts} from '../../../../../main/common/models/directionsQuestionnaire/experts/experts';
+import {CaseState} from 'common/form/models/claimDetails';
+import {ClaimantResponse} from 'common/models/claimantResponse';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -259,7 +261,7 @@ describe('Expert Report Details service', () => {
     it('should raise future date error if option "yes" and future date for year field', async () => {
       //Given
       const reportDetails = [
-        new ReportDetail('John Doe', '2023', '1', '1'),
+        new ReportDetail('John Doe', '3023', '1', '1'),
       ];
       const expertReportDetails = new ExpertReportDetails(YesNo.YES, reportDetails);
       const form = new GenericForm(expertReportDetails);
@@ -320,7 +322,7 @@ describe('Expert Report Details service', () => {
     it('should return expert report details from draft store if present', async () => {
       //Given
       mockGetCaseDataFromStore.mockImplementation(async () => {
-        return CivilClaimResponseMock.case_data;
+        return Object.assign(new Claim, CivilClaimResponseMock.case_data);
       });
       //When
       const expertReportDetails = await getExpertReportDetails('1234');
@@ -335,6 +337,61 @@ describe('Expert Report Details service', () => {
         expect(expertReportDetails.reportDetails[0].month).toBe(3);
         expect(expertReportDetails.reportDetails[0].day).toBe(1);
       }
+    });
+    it('should return claimant expert report details from draft store if present', async () => {
+      //Given
+      mockGetCaseDataFromStore.mockImplementation(async () => {
+        const reportDetail = new ReportDetail('John Doe', '2022', '1', '1');
+        const mockDetails = new ExpertReportDetails(YesNo.YES, [reportDetail]);
+        const mockDQ = {
+          experts: {
+            expertReportDetails: mockDetails,
+          },
+        };
+        const claim = new Claim();
+        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+        claim.claimantResponse = {directionQuestionnaire : mockDQ};
+        return claim;
+      });
+      //When
+      const expertReportDetails = await getExpertReportDetails('1234');
+      //Then
+      if (expertReportDetails.reportDetails) {
+        expect(expertReportDetails).toBeTruthy();
+        expect(expertReportDetails.reportDetails.length).toBe(1);
+        expect(expertReportDetails.option).toBe('yes');
+        expect(expertReportDetails.reportDetails[0]?.expertName).toEqual('John Doe');
+        expect(expertReportDetails.reportDetails[0].reportDate?.toDateString()).toEqual('Sat Jan 01 2022');
+        expect(expertReportDetails.reportDetails[0].year).toBe(2022);
+        expect(expertReportDetails.reportDetails[0].month).toBe(1);
+        expect(expertReportDetails.reportDetails[0].day).toBe(1);
+      }
+    });
+    it('should return new form when claimant DQ is empty', async () => {
+      //Given
+      mockGetCaseDataFromStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+        return claim;
+      });
+      //When
+      const expertReportDetails = await getExpertReportDetails('1234');
+      //Then
+      expect(expertReportDetails).toBeTruthy();
+      expect(expertReportDetails.option).toBeUndefined();
+      expect(expertReportDetails.reportDetails).toBeUndefined();
+    });
+    it('should return new form when defendant DQ is empty', async () => {
+      //Given
+      mockGetCaseDataFromStore.mockImplementation(async () => {
+        return new Claim();
+      });
+      //When
+      const expertReportDetails = await getExpertReportDetails('1234');
+      //Then
+      expect(expertReportDetails).toBeTruthy();
+      expect(expertReportDetails.option).toBeUndefined();
+      expect(expertReportDetails.reportDetails).toBeUndefined();
     });
     it('should return new form when option is empty', async () => {
       //Given
@@ -410,4 +467,3 @@ function createClaimWithExpertReportDetails(): Claim {
   };
   return claim;
 }
-

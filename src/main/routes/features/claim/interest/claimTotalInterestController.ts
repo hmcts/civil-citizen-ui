@@ -1,5 +1,5 @@
 import {NextFunction, Router, Response, Request} from 'express';
-import {CLAIM_CONTINUE_CLAIMING_INTEREST, CLAIM_TOTAL_INTEREST_URL} from '../../../../routes/urls';
+import {CLAIM_INTEREST_CONTINUE_CLAIMING_URL, CLAIM_INTEREST_TOTAL_URL} from '../../../../routes/urls';
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {TotalInterest} from '../../../../common/form/models/interest/totalInterest';
@@ -9,7 +9,7 @@ const claimTotalInterestController = Router();
 const claimTotalInterestViewPath = 'features/claim/interest/total-claim-interest';
 const propertyName = 'totalInterest';
 
-claimTotalInterestController.get(CLAIM_TOTAL_INTEREST_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+claimTotalInterestController.get(CLAIM_INTEREST_TOTAL_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const interest = await getInterest(req.session?.user?.id);
     res.render(claimTotalInterestViewPath, {
@@ -20,7 +20,7 @@ claimTotalInterestController.get(CLAIM_TOTAL_INTEREST_URL, async (req: AppReques
   }
 });
 
-claimTotalInterestController.post(CLAIM_TOTAL_INTEREST_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+claimTotalInterestController.post(CLAIM_INTEREST_TOTAL_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const form = new GenericForm(new TotalInterest(req.body.amount, req.body.reason));
     form.validateSync();
@@ -30,7 +30,7 @@ claimTotalInterestController.post(CLAIM_TOTAL_INTEREST_URL, async (req: AppReque
     } else {
       const appRequest = <AppRequest>req;
       await saveInterest(appRequest.session?.user?.id, form.model, propertyName);
-      res.redirect(CLAIM_CONTINUE_CLAIMING_INTEREST);
+      res.redirect(CLAIM_INTEREST_CONTINUE_CLAIMING_URL);
     }
   } catch (error) {
     next(error);

@@ -9,14 +9,14 @@ maintainers:
 
 dependencies:
   - name: nodejs
-    version: 2.4.8
+    version: 2.4.12
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
   - name: civil-service
-    version: 0.0.25
+    version: 0.0.28
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: civil-service.enabled
   - name: ccd
-    version: 8.0.17
+    version: 8.0.23
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: ccd.enabled
   - name: xui-webapp
@@ -27,10 +27,6 @@ dependencies:
     version: ~2.2.3
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: idam-pr.enabled
-  - name: postgresql
-    version: ~10.16.0
-    repository: https://charts.bitnami.com/bitnami
-    condition: postgresql.enabled
   - name: camunda-bpm
     version: 0.0.25
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
