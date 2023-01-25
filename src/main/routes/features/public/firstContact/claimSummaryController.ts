@@ -1,10 +1,10 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {FIRST_CONTACT_ACCESS_DENIED_URL, FIRST_CONTACT_CLAIM_SUMMARY_URL} from '../../../../routes/urls';
-import {Claim} from '../../../../common/models/claim';
-import {getClaimById} from '../../../../modules/utilityService';
-import {getInterestDetails} from '../../../../common/utils/interestUtils';
-import {getTotalAmountWithInterestAndFees} from '../../../../modules/claimDetailsService';
-import {YesNo} from '../../../../common/form/models/yesNo';
+import {FIRST_CONTACT_ACCESS_DENIED_URL, FIRST_CONTACT_CLAIM_SUMMARY_URL} from 'routes/urls';
+import {Claim} from 'common/models/claim';
+import {getClaimById} from 'modules/utilityService';
+import {getInterestDetails} from 'common/utils/interestUtils';
+import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
+import {YesNo} from 'common/form/models/yesNo';
 
 const firstContactClaimSummaryController = Router();
 
@@ -18,7 +18,7 @@ firstContactClaimSummaryController.get(FIRST_CONTACT_CLAIM_SUMMARY_URL,
         const interestData = getInterestDetails(claim);
         const totalAmount = getTotalAmountWithInterestAndFees(claim);
         res.render('features/public/firstContact/claim-summary', {
-          claim, totalAmount, interestData,
+          claim, totalAmount, interestData, claimId,
         });
       } else {
         res.redirect(FIRST_CONTACT_ACCESS_DENIED_URL);
