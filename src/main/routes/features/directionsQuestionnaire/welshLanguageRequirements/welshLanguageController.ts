@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {CLAIMANT_RESPONSE_TASK_LIST_URL, DQ_WELSH_LANGUAGE_URL} from '../../../urls';
+import {CLAIMANT_RESPONSE_TASK_LIST_URL, CLAIM_TASK_LIST_URL, DQ_WELSH_LANGUAGE_URL} from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {
   getDirectionQuestionnaire,
@@ -7,6 +7,7 @@ import {
 } from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {Language} from '../../../../common/models/directionsQuestionnaire/welshLanguageRequirements/language';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 const welshLanguageController = express.Router();
 const welshLanguageViewPath = 'features/directionsQuestionnaire/welshLanguageRequirements/welsh-language';
@@ -32,13 +33,15 @@ welshLanguageController.get(DQ_WELSH_LANGUAGE_URL, async (req, res, next) => {
 welshLanguageController.post(DQ_WELSH_LANGUAGE_URL, async (req, res, next) => {
   try {
     const claimId = req.params.id;
+    const claim = await getCaseDataFromStore(claimId);
     const form = new GenericForm(new Language(req.body.speakLanguage, req.body.documentsLanguage));
     form.validateSync();
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
       await saveDirectionQuestionnaire(claimId, form.model, languageProperty, welshLanguageRequirementsProperty);
-      res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
+      const redirectUrl = claim.isClaimantIntentionPending() ? CLAIMANT_RESPONSE_TASK_LIST_URL : CLAIM_TASK_LIST_URL;
+      res.redirect(constructResponseUrlWithIdParams(claimId, redirectUrl));
     }
   } catch (error) {
     next(error);
