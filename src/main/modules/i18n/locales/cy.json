@@ -59,6 +59,7 @@
       "SAVE_AND_CONTINUE": "Cadw a Pharhau",
       "SETTLE_THE_CLAIM": "Settle the claim",
       "START_AGAIN": "Start again",
+      "SIGN_AND_SUBMIT_RESPONSE": "Sign and submit",
       "SUBMIT_CLAIM": "Submit claim",
       "SUBMIT_RESPONSE": "Cyflwyno'r ymateb",
       "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})",
@@ -390,6 +391,15 @@
     "CHECK_YOUR_ANSWER": {
       "BANK_BALANCE": "Cydbwysedd",
       "CARER_CREDIT_DO_YOU_CLAIM": "Ydych chi'n hawlio Lwfans Gofalwr neu Gredyd Gofalwr?",
+      "CCJ_HAS_DEFENDANT_PAID_SOME": "Has the defendant paid you some of the amount owed?",
+      "CCJ_AMOUNT_ALREADY_PAID": "Amount already paid",
+      "CCJ_TOTAL_TO_BE_PAID": "Total to be paid by defendant",
+      "CCJ_HOW_TO_PAY": "How you want the defendant to pay",
+      "CCJ_WHEN_DO_YOU_WANT_TO_BE_PAID_BY": "When you want the defendant to pay",
+      "CCJ_INSTALMENTS_OF": "Instalments of",
+      "CCJ_FIRST_PAYMENT_DATE": "When you want them to make the first payment",
+      "CCJ_INSTALMENTS_PAYMENT_FREQUENCY": "How often you want them to make this payment",
+      "CHILDREN": "Children",
       "CHILDREN_DO_YOU_HAVE_ANY_LIVE_WITH_YOU": "Oes unrhyw blant yn byw gyda chi?",
       "CHILDREN_UNDER_11": "dan 11",
       "CHILDREN_BETWEEN_11_TO_15": "11 i 15",
@@ -405,6 +415,8 @@
       "COURT_ORDERS_AMOUNT_OWNED": "Swm sy'n ddyledus gennych",
       "COURT_ORDERS_MONTHLY_INSTALMENT": "Swm rhandaliad misol",
       "DEBTS_LOANS_OR_CREDIT_CARDS": "A oes gennych fenthyciadau neu ddyledion cerdyn credyd?",
+      "DECLARATION": "I declare that the details I have given are true to the best of my knowledge.",
+      "DECLARATION_TITLE": "Declaration",
       "DETAILS_TITLE": "Eich manylion",
       "DETAILS_TITLE_CLAIMANT": "Eich manylion (yr hawlydd)",
       "DISABILITY_ARE_YOU_DISABLED": "Ydych chi'n anabl?",
@@ -451,6 +463,7 @@
       "PARTNER_DOES_RECEIVE_A_PENSION": "A yw eich partner yn cael pensiwn?",
       "PARTNER_IS_DISABLED": "Ydy'ch partner yn anabl?",
       "PARTNER_IS_SEVERELY_DISABLED": "A yw eich partner yn ddifrifol anabl?",
+      "PAYMENT_TITLE": "Payment",
       "PAYMENT_FREQUENCY": "Amlder taliadau",
       "PHONE_NUMBER": "Phone number",
       "PRIORITY_DEBTS_YOU_ARE_BEHIND_ON": "Dyledion yr ydych ar ei hôl hi",
@@ -679,6 +692,20 @@
         "REASON": "Explain why you're claiming for this date",
         "TITLE": "When are you claiming interest from?"
       }
+    },
+    "CLAIM_SUBMITTED": {
+      "PAGE_TITLE": "Claim submitted",
+      "DOWNLOAD_CLAIM": "Download your claim form",
+      "YOUR_CLAIM_WILL_BE_ISSUED": "Your claim will be issued once your Help With Fees application has been confirmed.",
+      "WE_EMAIL_YOU_IN_5_DAYS": "We'll email you within 5 days to confirm this.",
+      "ONCE_CLAIM_ISSUED": "Once the claim is issued, ",
+      "WILL_HAVE_28_DAYS": "will have 28 days to respond to your claim.",
+      "HAS_UNTIL": "has until 4pm on ",
+      "TO_RESPOND_TO": " to respond to your claim.",
+      "THEY_CAN_REQUEST_EXTRA_DAYS": "They can request up to an extra 28 days if they need it.",
+      "YOU_CAN_REQUEST_COUNTY_COURT": "You can request a County Court Judgment against them if they don't respond by the deadline.",
+      "IF_DEFENDANT_PAYS_YOU_HEADER": "If defendant pays you",
+      "IF_DEFENDANT_PAYS_YOU_CONTENT": "You need to sign in to your account to tell us you've been paid."
     },
     "CLAIM_SUMMARY": {
       "ABOUT_CLAIM": "Am hawliad",
@@ -1553,6 +1580,12 @@
       "TOTAL_CLAIMED": "Y cyfanswm a hawlir yw £{{totalClaimAmount}}. Mae hyn yn cynnwys ffi’r hawliad ac unrhyw log.",
       "WHEN_DID": "Pryd y gwnaethoch dalu’r swm hwn?"
     },
+    "PARTIAL_ADMISSION_SETTLE_ADMITTED": {
+      "PAGE_TITLE": "Do you want to settle the claim for the £{{ admittedAmount }} the defendant admitted?",
+      "CONTINUE_AMOUNT_YOU_CLAIMED": "The claim will continue for the total amount you claimed",
+      "THIS_IS_THE_TOTAL_AMOUNT": "This is the total amount you'll be paid, including the claim fee and interest if applicable",
+      "TITLE": "Do you want to settle the claim for the £{{ admittedAmount }} the defendant admitted?"
+    },
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
       "PAGE_TITLE": "Why do you disagree?",
       "SUBTITLE": "Y cyfanswm a hawlir yw £{{ claimAmount }}. Mae hyn yn cynnwys ffi'r hawliad.",
@@ -1748,6 +1781,13 @@
       "MONTHLY_INCOME": "Monthly income",
       "PAGE_TITLE": "Review defendant’s response",
       "PART_ADMIT_ALREADY_PAID_STATEMENT": "{{ defendant }} said they paid you £{{ paidAmount }}. They said this is all they owe, not the amount you claimed.",
+      "PART_ADMIT_NOT_PAID": {
+        "DEFENDANT_ADMITS_THEY_OWE": "{{ defendant }} admits they owe you £{{ paidAmount }}. They don’t believe they owe the full amount claimed.",
+        "THEY_OFFERED_TO_PAY_YOU": "They’ve offered to pay you £{{ paidAmount }} in instalments. This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
+        "THEY_OFFERED_TO_PAY_YOU_BY_DATE": "They’ve offered to pay you £{{ paidAmount }} by {{datePaid}}. This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
+        "THEY_OFFERED_TO_PAY_YOU_IMMEDIATELY": "They’ve offered to pay you £{{ paidAmount }} immediately. This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
+        "WHY_THEY_DONT_OWE": "Why they don’t owe the amount claimed"
+      },
       "PAY_EXPENSES": "Do they pay any expenses?",
       "PAYMENT_DATE": "They’ve offered to pay you this by {{ paymentDate }}",
       "RECEIVE_INCOME": "Do they receive any income?",
