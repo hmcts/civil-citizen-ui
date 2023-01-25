@@ -13,7 +13,7 @@ jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 
 const mockExpertDetails: ExpertDetails = new ExpertDetails('Joe', 'Doe', 'test@test.com', 600000000, 'Test', 'Test', 100);
-const mockExpertDetailsList: ExpertDetailsList = new ExpertDetailsList([mockExpertDetails]);
+export const mockExpertDetailsList: ExpertDetailsList = new ExpertDetailsList([mockExpertDetails]);
 
 const claim = new Claim();
 claim.directionQuestionnaire = new DirectionQuestionnaire();

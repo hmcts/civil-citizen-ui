@@ -47,22 +47,26 @@ export class DirectionQuestionnaire {
   }
 
   get isExpertDetailsAvailable(): boolean {
-    return !this.experts?.expertDetailsList?.items?.length;
+    return !!this.experts?.expertDetailsList?.items?.length;
   }
 
   get isWithExpertJourneyCompleted(): boolean {
     if (this.expertReportDetailsAvailable) {
       return true;
-    } else if (!this.expertReportDetailsAvailable && !this.requestedToAskPermissiontoUseExpert) {
+    } else if (this.experts?.expertReportDetails?.option === YesNo.NO &&
+      this.experts?.permissionForExpert?.option === YesNo.NO) {
       return true;
-    } else if (!this.expertReportDetailsAvailable && this.requestedToAskPermissiontoUseExpert &&
-      !this.expertCanStillExamineSomething) {
+    } else if (this.experts?.expertReportDetails?.option === YesNo.NO &&
+      this.experts?.permissionForExpert?.option === YesNo.YES &&
+      this.experts?.expertCanStillExamine?.option === YesNo.NO) {
       return true;
-    } else if (!this.expertReportDetailsAvailable && this.requestedToAskPermissiontoUseExpert &&
-      this.expertCanStillExamineSomething && !!this.experts?.expertDetailsList?.items?.length) {
+    } else if (this.experts?.expertReportDetails?.option === YesNo.NO &&
+      this.experts?.permissionForExpert?.option === YesNo.YES &&
+      this.experts?.expertCanStillExamine?.option === YesNo.YES &&
+      this.isExpertDetailsAvailable) {
       return true;
     }
-    return true;
+    return false;
   }
 
   get isUnavailabilityDatesCompleted(): boolean {

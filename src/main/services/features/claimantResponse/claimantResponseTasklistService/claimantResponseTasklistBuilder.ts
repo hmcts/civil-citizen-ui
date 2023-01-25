@@ -5,7 +5,7 @@ import {getViewDefendantsReponseTask} from './claimantResponseTasks/howDefendant
 import {getCheckAndSubmitClaimantResponseTask} from './claimantResponseTasks/claimantResponseSubmitSectionTasks';
 import {getGiveUsDetailsClaimantHearingTask} from './claimantResponseTasks/claimantHearingRequirementsSectionTasks';
 import {getAcceptOrRejectDefendantAdmittedTask} from './claimantResponseTasks/whatToDoNextSectionTasks';
-// import {YesNo} from 'common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
 
 export function buildHowDefendantRespondSection(claim: Claim, claimId: string, lang: string){
   const tasks: Task[] = [];
@@ -32,9 +32,7 @@ export function buildClaimantResponseSubmitSection(claimId: string, lang: string
 
 export function buildClaimantHearingRequirementsSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
-  // TODO : remove the comment before generating PR
-  // if (claim.isClaimantIntentionPending() && claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO) {
-  if (claim.isClaimantIntentionPending()) {
+  if (claim.isClaimantIntentionPending() && claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO) {
     const giveUsDetailsClaimantHearingTask = getGiveUsDetailsClaimantHearingTask(claim, claimId, lang);
     tasks.push(giveUsDetailsClaimantHearingTask);
   }

@@ -2456,6 +2456,11 @@
         "version": "4",
         "calculatedAmountInPence": "7000"
       },
+      "claimantResponse":{
+        "hasPartAdmittedBeenAccepted": {
+          "option": "no"
+        }
+      },
       "directionQuestionnaire": {
         "witnesses": {
           "otherWitnesses": {
