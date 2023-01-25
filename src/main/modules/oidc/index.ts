@@ -19,6 +19,12 @@ const requestIsForPinAndPost = (req: Request): boolean => {
   return req.originalUrl.startsWith(BASE_FIRST_CONTACT_URL);
 };
 
+const buildAssignClaimUrlWithId = (req: AppRequest) : string => {
+  const claimId = req.session.assignClaimId;
+  req.session.assignClaimId = undefined;
+  return `${ASSIGN_CLAIM_URL}?${claimId}`;
+};
+
 export class OidcMiddleware {
   public enableFor(app: Application): void {
     const loginUrl: string = config.get('services.idam.authorizationURL');
@@ -38,7 +44,8 @@ export class OidcMiddleware {
       if (typeof req.query.code === 'string') {
         req.session.user = app.locals.user = await getUserDetails(redirectUri, req.query.code);
         if (req.session.assignClaimId) {
-          return res.redirect(ASSIGN_CLAIM_URL);
+          const assignClaimUrlWithClaimId = buildAssignClaimUrlWithId(req);
+          return res.redirect(assignClaimUrlWithClaimId);
         }
         if (req.session.user?.roles?.includes(citizenRole)) {
           return res.redirect(DASHBOARD_URL);
