@@ -10,18 +10,16 @@ import {
   CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL,
 } from '../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {Claim} from '../../../../../../main/common/models/claim';
 import {Party} from '../../../../../../main/common/models/party';
 import {PartyType} from '../../../../../../main/common/models/partyType';
 import {
   getDefendantInformation,
   saveDefendantProperty,
 } from '../../../../../../main/services/features/common/defendantDetailsService';
-import {Address} from '../../../../../../main/common/form/models/address';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/services/features/claim/yourDetails/defendantDetailsService');
+jest.mock('../../../../../../main/services/features/common/defendantDetailsService');
 
 const mockDefendantInformation = getDefendantInformation as jest.Mock;
 const mockSaveDefendant = saveDefendantProperty as jest.Mock;
@@ -80,15 +78,9 @@ describe('Defendant details controller', () => {
     describe('Organisation', () => {
       it('should render defendant details page when data is already set in redis', async () => {
         mockDefendantInformation.mockImplementation(async () => {
-          const claim = new Claim();
-          claim.respondent1 = new Party();
-          claim.respondent1 = {
-            type: PartyType.ORGANISATION,
-            partyDetails: {
-              primaryAddress: new Address('Valid address', 'Valid address number', '', 'Bath', 'SN1 2RA'),
-            },
-          };
-          return claim;
+          const party = new Party();
+          party.type = PartyType.ORGANISATION;
+          return party;
         });
 
         const res = await request(app).get(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL);
@@ -120,15 +112,9 @@ describe('Defendant details controller', () => {
 
       it('should render defendant details page when data is already set in redis', async () => {
         mockDefendantInformation.mockImplementation(async () => {
-          const claim = new Claim();
-          claim.respondent1 = new Party();
-          claim.respondent1 = {
-            type: PartyType.SOLE_TRADER,
-            partyDetails: {
-              primaryAddress: new Address('Valid address', 'Valid address number', '', 'Bath', 'SN1 2RA'),
-            },
-          };
-          return claim;
+          const party = new Party();
+          party.type = PartyType.SOLE_TRADER;
+          return party;
         });
         const res = await request(app).get(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL);
         expect(res.status).toBe(200);
