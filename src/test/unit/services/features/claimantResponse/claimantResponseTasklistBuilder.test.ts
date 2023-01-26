@@ -3,6 +3,7 @@ import {TaskStatus} from 'common/models/taskList/TaskStatus';
 import {YesNo} from 'common/form/models/yesNo';
 import {
   buildClaimantHearingRequirementsSection,
+  buildClaimantResponseSubmitSection,
   buildHowDefendantRespondSection,
   buildWhatToDoNextSection,
 } from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistBuilder';
@@ -16,7 +17,7 @@ import {WelshLanguageRequirements} from 'common/models/directionsQuestionnaire/w
 import {LanguageOptions} from 'common/models/directionsQuestionnaire/languageOptions';
 import {mockExpertDetailsList} from '../directionsQuestionnaire/experts/expertDetailsService.test';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL, DETERMINATION_WITHOUT_HEARING_URL} from 'routes/urls';
+import {CLAIMANT_RESPONSE_CHECK_ANSWERS_URL, CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL, DETERMINATION_WITHOUT_HEARING_URL} from 'routes/urls';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -29,6 +30,7 @@ describe('Claimant Response Task List builder', () => {
   const lang = 'en';
   const viewDefendantsReponseUrl = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL);
   const giveUsDetailsClaimantHearingUrl = constructResponseUrlWithIdParams(claimId, DETERMINATION_WITHOUT_HEARING_URL);
+  const checkAndSubmitUrl = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_CHECK_ANSWERS_URL);
   const claim = new Claim();
   claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
 
@@ -239,6 +241,17 @@ describe('Claimant Response Task List builder', () => {
       const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
       //Then
       expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+    });
+  });
+
+  describe('Submit section', () => {
+    it('should display check and submit your response task as incomplete', () => {
+      //When
+      const submit = buildClaimantResponseSubmitSection(claimId, lang);
+      //Then
+      expect(submit.tasks[0].description).toEqual('TASK_LIST.SUBMIT.CHECK_AND_SUBMIT');
+      expect(submit.tasks[0].url).toEqual(checkAndSubmitUrl);
+      expect(submit.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
     });
   });
 });

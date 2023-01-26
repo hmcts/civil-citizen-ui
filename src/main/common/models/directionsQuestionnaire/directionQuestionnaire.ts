@@ -34,16 +34,12 @@ export class DirectionQuestionnaire {
     return this.experts?.expertReportDetails?.option === YesNo.YES;
   }
 
-  get expertReportDetailsNotAvailable(): boolean {
-    return this.experts?.expertReportDetails?.option === YesNo.NO;
+  get notRequestedToAskPermissiontoUseExpert(): boolean {
+    return this.experts?.permissionForExpert?.option === YesNo.NO;
   }
 
-  get requestedToAskPermissiontoUseExpert(): boolean {
-    return this.experts?.permissionForExpert?.option === YesNo.YES;
-  }
-
-  get expertCanStillExamineSomething(): boolean {
-    return this.experts?.expertCanStillExamine?.option === YesNo.YES;
+  get nothingExpertCanExamine(): boolean {
+    return this.experts?.expertCanStillExamine?.option === YesNo.NO;
   }
 
   get isExpertDetailsAvailable(): boolean {
@@ -56,17 +52,11 @@ export class DirectionQuestionnaire {
     }
     if (this.expertReportDetailsAvailable) {
       return true;
-    } else if (this.expertReportDetailsNotAvailable &&
-      this.experts?.permissionForExpert?.option === YesNo.NO) {
+    } else if (this.notRequestedToAskPermissiontoUseExpert) {
       return true;
-    } else if (this.expertReportDetailsNotAvailable &&
-      this.requestedToAskPermissiontoUseExpert &&
-      this.experts?.expertCanStillExamine?.option === YesNo.NO) {
+    } else if (this.nothingExpertCanExamine) {
       return true;
-    } else if (this.expertReportDetailsNotAvailable &&
-      this.requestedToAskPermissiontoUseExpert &&
-      this.expertCanStillExamineSomething &&
-      this.isExpertDetailsAvailable) {
+    } else if (this.isExpertDetailsAvailable) {
       return true;
     }
     return false;
