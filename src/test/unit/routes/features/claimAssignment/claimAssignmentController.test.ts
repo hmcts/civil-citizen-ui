@@ -28,7 +28,7 @@ describe('claim assignment controller', ()=>{
           expect(res.get('location')).toBe(DASHBOARD_URL);
         });
     });
-    it('sbould not call civil service api and redirect to dashboard', async () =>{
+    it('should not call civil service api and redirect to dashboard', async () =>{
       request(app).post(ASSIGN_CLAIM_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
