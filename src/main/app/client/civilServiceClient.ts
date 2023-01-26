@@ -197,11 +197,7 @@ export class CivilServiceClient {
         .replace(':caseId', claimId), data, config);// nosonar
       logger.info('submitted event ' + data.event + ' with update ' + data.caseDataUpdate);
       const claimResponse = response.data as CivilClaimResponse;
-      logger.info('claimResponse after submit ', claimResponse);
-      const caseData = Claim.fromCCDCaseData(claimResponse.case_data);
-      caseData.id = claimResponse.id;
-      logger.info('updated casedat with id ', caseData);
-      return caseData;
+      return Claim.fromCCDCaseData(claimResponse.case_data);
     } catch (err: unknown) {
       logger.error(err);
       throw err;

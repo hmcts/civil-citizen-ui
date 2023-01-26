@@ -9,10 +9,11 @@
   labelHtml = t('COMMON.STATEMENT_OF_TRUTH.CORRECT_INFORMATION_CONFIRMATION'),
   isQualified = false,
   typeOfStatement = t('COMMON.STATEMENT_OF_TRUTH.STATEMENT_OF_WORK'),
-  isFullAmountRejected = false
+  isFullAmountRejected = false,
+  title = t('COMMON.STATEMENT_OF_TRUTH.TITLE')
   ) %}
 
-  <legend><h2 class="govuk-heading-m">{{ t('COMMON.STATEMENT_OF_TRUTH.TITLE') }}</h2></legend>
+  <legend><h2 class="govuk-heading-m">{{ title }}</h2></legend>
 
   {% if statementOfTruthType == SignatureType.CLAIM or statementOfTruthType == SignatureType.RESPONSE %}
     <p class="govuk-body">{{ t('COMMON.STATEMENT_OF_TRUTH.INFORMATION_ON_PAGE', { type: statementOfTruthType }) }}</p>
