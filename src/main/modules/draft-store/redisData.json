@@ -2043,6 +2043,34 @@
         "version": "4",
         "calculatedAmountInPence": "7000"
       },
+      "claimantResponse": {
+        "directionQuestionnaire": {
+          "defendantYourselfEvidence": {
+            "option": "no"
+          },
+          "experts": {
+            "expertCanStillExamine": {
+              "option": "yes",
+              "details": "Test 123456"
+            },
+            "permissionForExpert": {
+              "option": "no"
+            },
+            "expertDetailsList": {
+              "items": [
+                {
+                  "firstName": "James",
+                  "lastName": "White"
+                },
+                {
+                  "firstName": "Brian",
+                  "lastName": "Roberts"
+                }
+              ]
+            }
+          }
+        }
+      },
       "directionQuestionnaire": {
         "witnesses": {
           "otherWitnesses": {
