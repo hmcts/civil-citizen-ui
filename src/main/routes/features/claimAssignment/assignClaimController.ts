@@ -14,7 +14,7 @@ assignClaimController.get(ASSIGN_CLAIM_URL, async ( req:AppRequest, res) => {
     if (claimId) {
       await civilServiceClient.assignDefendantToClaim(claimId, req);
     }
-  }finally {
+  } finally {
     res.redirect(DASHBOARD_URL);
   }
 });
