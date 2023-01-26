@@ -54,7 +54,7 @@ describe('Citizen phone number', () => {
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
-        .send('telephoneNumber= 123')
+        .send('telephoneNumber=01234567890')
         .expect((res) => {
           expect(res.status).toBe(302);
         });
@@ -81,7 +81,7 @@ describe('Citizen phone number', () => {
     it('should accept input with trailing whitespaces', async () => {
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
-        .send('telephoneNumber= 123 ')
+        .send('telephoneNumber= 01234567890 ')
         .expect((res) => {
           expect(res.status).toBe(302);
         });
@@ -89,7 +89,7 @@ describe('Citizen phone number', () => {
     it('should redirect on correct input when has information on redis', async () => {
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
-        .send('telephoneNumber=123')
+        .send('telephoneNumber=01234567890')
         .expect((res) => {
           expect(res.status).toBe(302);
         });
@@ -98,7 +98,7 @@ describe('Citizen phone number', () => {
       app.locals.draftStoreClient = mockNoStatementOfMeans;
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
-        .send('telephoneNumber=123')
+        .send('telephoneNumber=01234567890')
         .expect((res) => {
           expect(res.status).toBe(302);
         });
