@@ -227,8 +227,8 @@ export class CivilServiceClient {
 
   async assignDefendantToClaim(claimId:string, req:AppRequest): Promise<void> {
     try{
-      await this.client.post(ASSIGN_CLAIM_TO_DEFENDANT.replace(':caseId', claimId),{},
-        {headers: {'Authorization': `Bearer ${req.session?.user?.accessToken}`}});
+      await this.client.post(ASSIGN_CLAIM_TO_DEFENDANT.replace(':claimId', claimId),{}, // nosonar
+        {headers: {'Authorization': `Bearer ${req.session?.user?.accessToken}`}}); // nosonar
     } catch (error: unknown) {
       logger.error(error);
       throw error;
