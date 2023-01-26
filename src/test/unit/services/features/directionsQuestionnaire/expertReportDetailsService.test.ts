@@ -467,4 +467,3 @@ function createClaimWithExpertReportDetails(): Claim {
   };
   return claim;
 }
-
