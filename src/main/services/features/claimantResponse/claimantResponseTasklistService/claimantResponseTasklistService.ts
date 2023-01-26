@@ -11,7 +11,6 @@ import {
 
 export function getClaimantResponseTaskLists (claim: Claim, claimId: string, lng: string) {
   const lang = getLng(lng);
-
   const taskListHowDefendantRespond: TaskList = buildHowDefendantRespondSection(claim, claimId, lang);
   const taskListWhatToDoNext: TaskList = buildWhatToDoNextSection(claim, claimId, lang);
   const taskListClaimantHearingRequirements: TaskList = buildClaimantHearingRequirementsSection(claim, claimId, lang);
@@ -21,7 +20,6 @@ export function getClaimantResponseTaskLists (claim: Claim, claimId: string, lng
   // check if all tasks are completed except check and submit
   calculateTotalAndCompleted(taskGroups);
   const taskListSubmitClaimantResponse: TaskList = buildClaimantResponseSubmitSection(claimId, lang);
-
   filteredTaskGroups.push(taskListSubmitClaimantResponse);
   return filteredTaskGroups;
 }

@@ -159,10 +159,22 @@
 }
 
 .link-button {
-  font-size: inherit;
   background: none;
   border: 0;
-  color: #005ea5;
+  color: $govuk-link-colour;
+  font-size: inherit;
   cursor: pointer;
   text-decoration: underline;
+}
+
+.link-button:hover {
+  color: $govuk-link-hover-colour;
+}
+
+.link-button:visited {
+  color: $govuk-link-visited-colour;
+}
+
+.link-button:active {
+  color: $govuk-link-active-colour;
 }

@@ -23,9 +23,7 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
 
 export function buildClaimantResponseSubmitSection(claimId: string, lang: string) {
   const tasks: Task[] = [];
-
   const checkAndSubmitYourResponseTask = getCheckAndSubmitClaimantResponseTask(claimId, lang);
-
   tasks.push(checkAndSubmitYourResponseTask);
   return {title: t('TASK_LIST.SUBMIT.TITLE', {lng: lang}), tasks};
 }
