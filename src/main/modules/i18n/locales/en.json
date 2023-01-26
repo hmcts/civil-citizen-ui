@@ -746,31 +746,6 @@
       "WHY_YOU_ARE_ENTITLED": "Why you're entitled to this rate"
     },
     "CLAIMANT_RESPONSE": {
-      "COURT_PROPOSED_PLAN": {
-        "PAGE_TITLE": "The defendant can’t afford your plan",
-        "TITLE": "The defendant can’t afford your plan",
-        "BASED_ON": "Based on the financial details provided by the defendant, we don’t believe they would be able to make these repayments.",
-        "COURT_AFFORDABILITY": "The court affordability calculator has determined a new repayment plan as the most the defendant can repay.",
-        "COURT_PROPOSED_PLAN": "The court’s proposed repayment plan",
-        "REGULAR_PAYMENTS_OF": "Regular payments of",
-        "FREQUENCY_OF_PAYMENTS": "Frequency of payments",
-        "FIRST_PAYMENT_DATE": "First payment date",
-        "LAST_PAYMENT_DATE": "Last payment date",
-        "LENGTH_OF_REPAYMENT": "Length of repayment plan",
-        "DO_YOU_ACCEPT": "Do you accept the court’s proposed repayment plan?",
-        "I_WANT_ACCEPT": "I want to accept this repayment plan",
-        "I_WANT_JUDGE": "I want a judge to make a repayment plan"
-      }
-    },
-    "CLAIMANT_RESPONSE_CONFIRMATION": {
-      "CLAIM_NUMBER": "Your claim number:",
-      "PAGE_TITLE": "Claimant Intention Confirmation",
-      "RC_DISPUTE": {
-        "NOT_PROCEED_WITH_CLAIM": "You didn't proceed with the claim",
-        "CLAIM_ENDED": "The claim has now ended. We've emailed {{ defendantName }} to tell them."
-      }
-    },
-    "CLAIMANT_RESPONSE": {
       "COURT_PROPOSED_DATE": {
         "PAGE_TITLE": "The defendant can’t pay by your proposed date",
         "TITLE": "The defendant can’t pay by your proposed date",
@@ -794,6 +769,14 @@
         "DO_YOU_ACCEPT": "Do you accept the court’s proposed repayment plan",
         "I_WANT_ACCEPT": "I want to accept this repayment plan",
         "I_WANT_JUDGE": "I want a judge to make a repayment plan"
+      }
+    },
+    "CLAIMANT_RESPONSE_CONFIRMATION": {
+      "CLAIM_NUMBER": "Your claim number:",
+      "PAGE_TITLE": "Claimant Intention Confirmation",
+      "RC_DISPUTE": {
+        "NOT_PROCEED_WITH_CLAIM": "You didn't proceed with the claim",
+        "CLAIM_ENDED": "The claim has now ended. We've emailed {{ defendantName }} to tell them."
       }
     },
     "CLAIMANT_RESPONSE_PROCEED": {
