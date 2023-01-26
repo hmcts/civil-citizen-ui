@@ -22,7 +22,7 @@ const requestIsForPinAndPost = (req: Request): boolean => {
 const buildAssignClaimUrlWithId = (req: AppRequest) : string => {
   const claimId = req.session.assignClaimId;
   req.session.assignClaimId = undefined;
-  return `${ASSIGN_CLAIM_URL}?${claimId}`;
+  return `${ASSIGN_CLAIM_URL}?id=${claimId}`;
 };
 
 export class OidcMiddleware {
