@@ -9,7 +9,6 @@ import {t} from 'i18next';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
-
 const PHONE_NUMBER = '01632960001';
 
 describe('Completing Claim', () => {

@@ -14,7 +14,6 @@ import {
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {YesNo} from 'form/models/yesNo';
 
-
 const supportRequiredUrl = SUPPORT_REQUIRED_URL.replace(':id', 'aaa');
 
 describe('Support required', () => {

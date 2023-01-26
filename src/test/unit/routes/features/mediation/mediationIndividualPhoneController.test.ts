@@ -7,7 +7,6 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockCivilClaimantInetntion, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {PartyPhone} from '../../../../../main/common/models/PartyPhone';
 
-
 const noRespondentTelephoneMock = require('../../../../utils/mocks/noRespondentTelephoneMock.json');
 
 const civilClaimResponseMockWithoutRespondentPhone: string = JSON.stringify(noRespondentTelephoneMock);
