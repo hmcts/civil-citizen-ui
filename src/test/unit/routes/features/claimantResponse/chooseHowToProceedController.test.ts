@@ -11,7 +11,6 @@ import {mockCivilClaim,mockRedisFailure} from '../../../../utils/mockDraftStore'
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import { ChooseHowToProceed } from 'common/models/chooseHowToProceed';
 
-
 describe('Choose how to proceed Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');

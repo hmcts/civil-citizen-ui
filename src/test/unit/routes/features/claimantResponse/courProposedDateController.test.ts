@@ -12,7 +12,6 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {CourtProposedDateOptions} from 'common/form/models/claimantResponse/CourtProposedDate';
 
-
 describe('Claimant court proposed date Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');

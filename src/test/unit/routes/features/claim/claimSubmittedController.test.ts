@@ -7,7 +7,6 @@ import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 
 const {app} = require('../../../../../main/app');
 
-
 describe('Claim - Claim Submitted', () => {
   const idamServiceUrl: string = config.get('services.idam.url');
   const citizenRoleToken: string = config.get('citizenRoleToken');

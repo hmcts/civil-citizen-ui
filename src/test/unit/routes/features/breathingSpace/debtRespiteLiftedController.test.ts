@@ -10,7 +10,6 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 
-
 describe('Claimant Response - Debt Respite Lifted Date Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');

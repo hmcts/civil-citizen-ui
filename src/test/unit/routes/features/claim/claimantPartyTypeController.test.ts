@@ -14,7 +14,6 @@ import {
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 
-
 describe('Claim Party Type Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');

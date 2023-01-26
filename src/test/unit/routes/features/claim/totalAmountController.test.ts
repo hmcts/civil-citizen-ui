@@ -8,7 +8,6 @@ import {
   mockCivilClaimUndefined,
 } from '../../../../utils/mockDraftStore';
 
-
 describe('Total amount', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');

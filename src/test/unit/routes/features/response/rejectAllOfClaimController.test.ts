@@ -17,7 +17,6 @@ import {
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
 
-
 describe('rejectAllOfClaim', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');

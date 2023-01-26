@@ -10,7 +10,6 @@ import {
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 
-
 describe('Consider Claimant Documents Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');

@@ -7,7 +7,6 @@ import {
 } from 'routes/urls';
 import {defaultCookiePreferences} from 'routes/features/public/cookiesController';
 
-
 describe('Cookies page', () => {
   // TODO: remove this once paths become publicly available as mocking the response token will not be needed
   const citizenRoleToken: string = config.get('citizenRoleToken');
