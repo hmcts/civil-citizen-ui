@@ -49,10 +49,8 @@ reviewDefendantsResponseController.post(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESP
       await saveClaimantResponse(claimId, true, 'defendantResponseViewed');
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
     }
-
   } catch (error) {
     next(error);
   }
 });
-
 export default reviewDefendantsResponseController;
