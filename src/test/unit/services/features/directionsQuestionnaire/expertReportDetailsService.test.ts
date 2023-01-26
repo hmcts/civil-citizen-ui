@@ -20,7 +20,6 @@ import {
 import {DirectionQuestionnaire} from '../../../../../main/common/models/directionsQuestionnaire/directionQuestionnaire';
 import {Experts} from '../../../../../main/common/models/directionsQuestionnaire/experts/experts';
 import {CaseState} from 'common/form/models/claimDetails';
-import {ClaimantResponse} from 'common/models/claimantResponse';
 
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
