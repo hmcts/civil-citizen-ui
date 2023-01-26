@@ -267,6 +267,16 @@
       "NO": "Nac ydy"
     }
   },
+  "CLAIMANT_RESPONSE_TASK_LIST": {
+    "HOW_THEY_RESPONDED": {
+      "TITLE": "How they responded",
+      "VIEW_DEFENDANTS_RESPONSE": "View the defendant's response"
+    },
+    "CHOOSE_WHAT_TODO_NEXT": {
+      "TITLE": "Choose what to do next",
+      "ACCEPT_OR_REJECT_ADMITTED": "Accept or reject the £{{ admittedAmount }}"
+    }
+  },
   "TASK_LIST": {
     "APPLICATION_COMPLETE": "Application complete",
     "APPLICATION_INCOMPLETE": "Application incomplete",
@@ -835,6 +845,18 @@
     "CLAIMANT_RESPONSE_REJECTION_REASON": {
       "PAGE_TITLE": "Rejection reason",
       "TITLE": "Why did you reject their response?"
+    },
+    "CLAIMANT_RESPONSE_TASK_LIST": {
+      "PAGE_TITLE": "Claimant response task list",
+      "HEADER": "Your response",
+      "HOW_THEY_RESPONDED": {
+        "TITLE": "How they responded",
+        "VIEW_DEFENDANTS_RESPONSE": "View the defendant's response"
+      },
+      "CHOOSE_WHAT_TODO_NEXT": {
+        "TITLE": "Choose what to do next",
+        "ACCEPT_OR_REJECT_ADMITTED": "Accept or reject the £{{ admittedAmount }}"
+      }
     },
     "CLAIMANT_TERMS_OF_AGREEMENT": {
       "PAGE_TITLE": "Terms of the agreement",
