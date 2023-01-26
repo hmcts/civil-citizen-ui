@@ -11,7 +11,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 assignClaimController.get(ASSIGN_CLAIM_URL, async ( req:AppRequest, res) => {
   const claimId = <string>req.query?.id;
   try{
-    if(claimId){
+    if (claimId) {
       await civilServiceClient.assignDefendantToClaim(claimId, req);
     }
   }finally {
