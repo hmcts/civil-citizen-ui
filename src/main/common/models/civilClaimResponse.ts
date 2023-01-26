@@ -99,3 +99,15 @@ export interface CCDClaim extends ClaimUpdate {
   responseClaimMediationSpecRequired?: string;
   specAoSApplicantCorrespondenceAddressRequired?: YesNoUpperCamelCase;
 }
+
+export interface ClaimFeeData {
+  calculatedAmountInPence?: number;
+  code?: string;
+  version?: number;
+}
+
+export interface ClaimFeeData {
+  calculatedAmountInPence?: number;
+  code?: string;
+  version?: number;
+}
