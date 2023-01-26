@@ -15,7 +15,6 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {YesNo} from 'form/models/yesNo';
 
 const supportRequiredUrl = SUPPORT_REQUIRED_URL.replace(':id', 'aaa');
-
 describe('Support required', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamServiceUrl: string = config.get('services.idam.url');

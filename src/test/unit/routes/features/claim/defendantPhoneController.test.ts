@@ -10,7 +10,6 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
 const PHONE_NUMBER = '01632960001';
-
 describe('Completing Claim', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
