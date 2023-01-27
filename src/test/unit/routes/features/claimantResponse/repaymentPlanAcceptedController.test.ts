@@ -1,7 +1,7 @@
 import request from 'supertest';
 import nock from 'nock';
 import config from 'config';
-import {CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED_URL,CLAIMANT_RESPONSE_TASK_LIST_URL} from '../../../../../main/routes/urls';
+import {CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED_URL} from '../../../../../main/routes/urls';
 import {app} from '../../../../../main/app';
 
 describe('Claimant Response - Rejection reason', () => {
