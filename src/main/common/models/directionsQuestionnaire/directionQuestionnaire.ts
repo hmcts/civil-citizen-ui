@@ -46,17 +46,32 @@ export class DirectionQuestionnaire {
     return !!this.experts?.expertDetailsList?.items?.length;
   }
 
+  get isSmallClaimsDQJourneyCompleted(): boolean {
+    if (
+      this.hearing?.determinationWithoutHearing &&
+      this.isExpertJourneyCompleted &&
+      this.defendantYourselfEvidence &&
+      this.witnesses?.otherWitnesses &&
+      this.isUnavailabilityDatesCompleted &&
+      this.hearing?.phoneOrVideoHearing &&
+      this.vulnerabilityQuestions?.vulnerability &&
+      this.hearing?.supportRequiredList &&
+      this.hearing?.specificCourtLocation &&
+      this.welshLanguageRequirements?.language
+    ) {
+      return true;
+    }
+    return false;
+  }
+
   get isExpertJourneyCompleted(): boolean {
     if (!this.experts?.expertRequired) {
       return true;
     }
-    if (this.expertReportDetailsAvailable) {
-      return true;
-    } else if (this.notRequestedToAskPermissiontoUseExpert) {
-      return true;
-    } else if (this.nothingExpertCanExamine) {
-      return true;
-    } else if (this.isExpertDetailsAvailable) {
+    if (this.expertReportDetailsAvailable ||
+      this.notRequestedToAskPermissiontoUseExpert ||
+      this.nothingExpertCanExamine ||
+      this.isExpertDetailsAvailable) {
       return true;
     }
     return false;

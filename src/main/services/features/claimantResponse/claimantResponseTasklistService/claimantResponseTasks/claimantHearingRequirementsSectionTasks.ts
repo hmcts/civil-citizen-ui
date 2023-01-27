@@ -8,28 +8,10 @@ import {DirectionQuestionnaire} from 'common/models/directionsQuestionnaire/dire
 
 export function getGiveUsDetailsClaimantHearingTask(claim: Claim, claimId: string, lang: string): Task {
   const claimantDQ = Object.assign(new DirectionQuestionnaire(), claim.claimantResponse?.directionQuestionnaire);
-  const claimantHearingTaskCompleted = getSmallClaimsDQCompleted(claimantDQ);
   return {
     description: t('TASK_LIST.YOUR_HEARING_REQUIREMENTS.GIVE_US_DETAILS', {lng: lang}),
     url: constructResponseUrlWithIdParams(claimId, DETERMINATION_WITHOUT_HEARING_URL),
-    status: claimantHearingTaskCompleted ? TaskStatus.COMPLETE : TaskStatus.INCOMPLETE,
+    status: claimantDQ.isSmallClaimsDQJourneyCompleted ? TaskStatus.COMPLETE : TaskStatus.INCOMPLETE,
   };
 }
 
-export function getSmallClaimsDQCompleted(dq: DirectionQuestionnaire) {
-  if (
-    dq.hearing?.determinationWithoutHearing &&
-    dq.isExpertJourneyCompleted &&
-    dq.defendantYourselfEvidence &&
-    dq.witnesses?.otherWitnesses &&
-    dq.isUnavailabilityDatesCompleted &&
-    dq.hearing?.phoneOrVideoHearing &&
-    dq.vulnerabilityQuestions?.vulnerability &&
-    dq.hearing?.supportRequiredList &&
-    dq.hearing?.specificCourtLocation &&
-    dq.welshLanguageRequirements?.language
-  ) {
-    return true;
-  }
-  return false;
-}
