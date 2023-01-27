@@ -19,9 +19,9 @@ const requestIsForPinAndPost = (req: Request): boolean => {
   return req.originalUrl.startsWith(BASE_FIRST_CONTACT_URL);
 };
 
-const buildAssignClaimUrlWithId = (req: AppRequest) : string => {
-  const claimId = req.session.assignClaimId;
-  req.session.assignClaimId = undefined;
+const buildAssignClaimUrlWithId = (req: AppRequest, app: Application) : string => {
+  const claimId = app.locals.assignClaimId;
+  app.locals.assignClaimId = undefined;
   return `${ASSIGN_CLAIM_URL}?id=${claimId}`;
 };
 
@@ -43,8 +43,8 @@ export class OidcMiddleware {
     app.get(CALLBACK_URL, async (req: AppRequest, res: Response) => {
       if (typeof req.query.code === 'string') {
         req.session.user = app.locals.user = await getUserDetails(redirectUri, req.query.code);
-        if (req.session.assignClaimId) {
-          const assignClaimUrlWithClaimId = buildAssignClaimUrlWithId(req);
+        if (app.locals.assignClaimId) {
+          const assignClaimUrlWithClaimId = buildAssignClaimUrlWithId(req, app);
           return res.redirect(assignClaimUrlWithClaimId);
         }
         if (req.session.user?.roles?.includes(citizenRole)) {
@@ -82,7 +82,7 @@ export class OidcMiddleware {
         return next();
       }
       if (requestIsForAssigningClaimForDefendant(req)) {
-        appReq.session.assignClaimId = <string>req.query.id;
+        app.locals.assignClaimId = <string>req.query.id;
       }
       return res.redirect(SIGN_IN_URL);
     });
