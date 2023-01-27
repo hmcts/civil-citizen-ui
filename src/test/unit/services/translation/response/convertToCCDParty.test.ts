@@ -1,14 +1,14 @@
-import {Party} from 'models/party';
+import {Party} from 'common/models/party';
 import {toCCDParty} from 'services/translation/response/convertToCCDParty';
-import {PartyType} from 'models/partyType';
-import {ResponseType} from 'form/models/responseType';
-import {YesNo} from 'form/models/yesNo';
-import {Address} from 'form/models/address';
-import {CCDParty} from 'models/ccdResponse/ccdParty';
-import {CCDAddress} from 'models/ccdResponse/ccdAddress';
-import {CitizenDate} from 'form/models/claim/claimant/citizenDate';
-import {PartyPhone} from 'models/PartyPhone';
-import {Email} from 'models/Email';
+import {PartyType} from 'common/models/partyType';
+import {ResponseType} from 'common/form/models/responseType';
+import {YesNo} from 'common/form/models/yesNo';
+import {Address} from 'common/form/models/address';
+import {CCDParty} from 'common/models/ccdResponse/ccdParty';
+import {CCDAddress} from 'common/models/ccdResponse/ccdAddress';
+import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
+import {PartyPhone} from 'common/models/PartyPhone';
+import {Email} from 'common/models/Email';
 import * as requestModels from 'models/AppRequest';
 
 declare const appRequest: requestModels.AppRequest;
@@ -176,6 +176,12 @@ describe('translate party to ccd model', () => {
   it('should translate INDIVIDUAL party to ccd', () => {
     const partyResponseCCD = toCCDParty(partyIndividual, mockedAppRequest, true);
     expect(partyResponseCCD).toMatchObject(partyIndividualCCD);
+  });
+
+  it('should translate INDIVIDUAL party to ccd with applicantEmail', () => {
+    const mockApplicantEmail = 'abc@def.com';
+    const partyResponseCCD = toCCDParty(partyIndividual, mockApplicantEmail);
+    expect(partyResponseCCD).toMatchObject({...partyIndividualCCD, partyEmail: mockApplicantEmail });
   });
 
   it('should translate SOLE TRADER party to ccd', () => {

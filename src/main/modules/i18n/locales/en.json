@@ -59,6 +59,7 @@
       "SAVE": "Save",
       "SETTLE_THE_CLAIM": "Settle the claim",
       "START_AGAIN": "Start again",
+      "SIGN_AND_SUBMIT_RESPONSE": "Sign and submit",
       "SUBMIT_CLAIM": "Submit claim",
       "SUBMIT_RESPONSE": "Submit Response",
       "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})",
@@ -377,6 +378,15 @@
     "CHECK_YOUR_ANSWER": {
       "BANK_BALANCE": "Balance",
       "CARER_CREDIT_DO_YOU_CLAIM": "Do you claim Carer’s Allowance or Carer’s Credit?",
+      "CCJ_HAS_DEFENDANT_PAID_SOME": "Has the defendant paid you some of the amount owed?",
+      "CCJ_AMOUNT_ALREADY_PAID": "Amount already paid",
+      "CCJ_TOTAL_TO_BE_PAID": "Total to be paid by defendant",
+      "CCJ_HOW_TO_PAY": "How you want the defendant to pay",
+      "CCJ_WHEN_DO_YOU_WANT_TO_BE_PAID_BY": "When you want the defendant to pay",
+      "CCJ_INSTALMENTS_OF": "Instalments of",
+      "CCJ_FIRST_PAYMENT_DATE": "When you want them to make the first payment",
+      "CCJ_INSTALMENTS_PAYMENT_FREQUENCY": "How often you want them to make this payment",
+      "CHILDREN": "Children",
       "CHILDREN_DO_YOU_HAVE_ANY_LIVE_WITH_YOU": "Do any children live with you?",
       "CHILDREN_UNDER_11": "Under 11",
       "CHILDREN_BETWEEN_11_TO_15": "11 to 15",
@@ -392,6 +402,8 @@
       "COURT_ORDERS_AMOUNT_OWNED": "Amount you owe",
       "COURT_ORDERS_MONTHLY_INSTALMENT": "Monthly instalment amount",
       "DEBTS_LOANS_OR_CREDIT_CARDS": "Do you have loans or credit card debts?",
+      "DECLARATION": "I declare that the details I have given are true to the best of my knowledge.",
+      "DECLARATION_TITLE": "Declaration",
       "DETAILS_TITLE": "Your details",
       "DETAILS_TITLE_CLAIMANT": "Your details (claimant)",
       "DISABILITY_ARE_YOU_DISABLED": "Are you disabled?",
@@ -433,6 +445,7 @@
       "INCOME_JOB_SEEKER_ALLOWANCE_CONTRIBUTION": "Jobseeker's Allowance (contribution based)",
       "INCOME_WORKING_TAX_CREDIT": "Working Tax Credit",
       "OWE_MONEY": "Do you owe the money claimed?",
+      "PAYMENT_TITLE": "Payment",
       "PAYMENT_FREQUENCY": "Frequency of payments",
       "PARTNER_DO_YOU_LIVE_WITH_A": "Do you live with a partner?",
       "PARTNER_IS_AGED_18_OR_OVER": "Is your partner aged 18 or over?",
@@ -655,6 +668,20 @@
         "TITLE": "When are you claiming interest from?"
       }
     },
+    "CLAIM_SUBMITTED": {
+      "PAGE_TITLE": "Claim submitted",
+      "DOWNLOAD_CLAIM": "Download your claim form",
+      "YOUR_CLAIM_WILL_BE_ISSUED": "Your claim will be issued once your Help With Fees application has been confirmed.",
+      "WE_EMAIL_YOU_IN_5_DAYS": "We'll email you within 5 days to confirm this.",
+      "ONCE_CLAIM_ISSUED": "Once the claim is issued, ",
+      "WILL_HAVE_28_DAYS": "will have 28 days to respond to your claim.",
+      "HAS_UNTIL": "has until 4pm on ",
+      "TO_RESPOND_TO": " to respond to your claim.",
+      "THEY_CAN_REQUEST_EXTRA_DAYS": "They can request up to an extra 28 days if they need it.",
+      "YOU_CAN_REQUEST_COUNTY_COURT": "You can request a County Court Judgment against them if they don't respond by the deadline.",
+      "IF_DEFENDANT_PAYS_YOU_HEADER": "If defendant pays you",
+      "IF_DEFENDANT_PAYS_YOU_CONTENT": "You need to sign in to your account to tell us you've been paid."
+    },
     "CLAIM_SUMMARY": {
       "ABOUT_CLAIM": "About claim",
       "CLAIM_DETAILS": "Claim details:",
@@ -709,6 +736,15 @@
       "WHY_YOU_ARE_ENTITLED": "Why you're entitled to this rate"
     },
     "CLAIMANT_RESPONSE": {
+      "COURT_PROPOSED_DATE": {
+        "PAGE_TITLE": "The defendant can’t pay by your proposed date",
+        "TITLE": "The defendant can’t pay by your proposed date",
+        "BASED_ON": "Based on financial details the defendant gave us, we don't believe they can pay by your proposed date.",
+        "COURT_CALCULATOR": "The court's calculator has determined {{ paymentDate }} as the date when they can pay you in full.",
+        "DO_YOU_ACCEPT": "Do you accept a repayment date of {{ paymentDate }}?",
+        "YES": "Yes",
+        "NO_I_WANT_JUDGE": "No - I want a judge to make a new repayment plan"
+      },
       "COURT_PROPOSED_PLAN": {
         "PAGE_TITLE": "The defendant can’t afford your plan",
         "TITLE": "The defendant can’t afford your plan",
@@ -720,7 +756,7 @@
         "FIRST_PAYMENT_DATE": "First payment date",
         "LAST_PAYMENT_DATE": "Last payment date",
         "LENGTH_OF_REPAYMENT": "Length of repayment plan",
-        "DO_YOU_ACCEPT": "Do you accept the court’s proposed repayment plan?",
+        "DO_YOU_ACCEPT": "Do you accept the court’s proposed repayment plan",
         "I_WANT_ACCEPT": "I want to accept this repayment plan",
         "I_WANT_JUDGE": "I want a judge to make a repayment plan"
       }
@@ -768,6 +804,11 @@
     "CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED": {
       "PAGE_TITLE": "Has the defendant paid you £{{ paidAmount }}?",
       "TITLE": "Has the defendant paid you £{{ paidAmount }}?"
+    },
+    "CLAIMANT_REPAYMNET_PLAN_REJECT_REASON": {
+      "EXPLAIN_WHY_DEFENDANT_CAN_AFFORD": "Explain why you believe the defendant can afford to pay more or to pay sooner.",
+      "PAGE_TITLE": "Why did you reject the repayment plan?",
+      "TITLE": "Why did you reject the repayment plan?"
     },
     "CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED": {
       "PAGE_TITLE": "Repayment plan accepted",
@@ -831,8 +872,8 @@
     },
     "CONSIDER_CLAIMANT_DOCUMENTS": {
       "GIVE_DETAILS": "Give details of the documents",
-      "PAGE_TITLE": "Are there any documents the claimant has that you want the court to consider?",
-      "TITLE": "Are there any documents the claimant has that you want the court to consider?"
+      "PAGE_TITLE": "Are there any documents the other party has that you want the court to consider?",
+      "TITLE": "Are there any documents the other party has that you want the court to consider?"
     },
     "CONTACT_THEM": {
       "ABOUT": "About claim",
@@ -1509,6 +1550,12 @@
       "TOTAL_CLAIMED": "The total amount claimed is £{{totalClaimAmount}}. This includes the claim fee and any interest.",
       "WHEN_DID": "When did you pay this amount?"
     },
+    "PARTIAL_ADMISSION_SETTLE_ADMITTED": {
+      "PAGE_TITLE": "Do you want to settle the claim for the £{{ admittedAmount }} the defendant admitted?",
+      "CONTINUE_AMOUNT_YOU_CLAIMED": "The claim will continue for the total amount you claimed",
+      "THIS_IS_THE_TOTAL_AMOUNT": "This is the total amount you'll be paid, including the claim fee and interest if applicable",
+      "TITLE": "Do you want to settle the claim for the £{{ admittedAmount }} the defendant admitted?"
+    },
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
       "PAGE_TITLE": "Why do you disagree?",
       "SUBTITLE": "The total amount claimed is £{{ claimAmount }}. This includes the claim fee and any interest.",
@@ -1699,9 +1746,18 @@
       "FINANCIAL_SUPPORT": "Financial support",
       "FULL_ADMISSION": "{{ defendant }} admits they owe all the money you’ve claimed.",
       "FULL_RESPONSE": "Full response",
+      "HOW_PAID": "How they say they paid",
       "MONTHLY_EXPENSES": "Monthly expenses",
       "MONTHLY_INCOME": "Monthly income",
       "PAGE_TITLE": "Review defendant’s response",
+      "PART_ADMIT_ALREADY_PAID_STATEMENT": "{{ defendant }} said they paid you £{{ paidAmount }}. They said this is all they owe, not the amount you claimed.",
+      "PART_ADMIT_NOT_PAID": {
+        "DEFENDANT_ADMITS_THEY_OWE": "{{ defendant }} admits they owe you £{{ paidAmount }}. They don’t believe they owe the full amount claimed.",
+        "THEY_OFFERED_TO_PAY_YOU": "They’ve offered to pay you £{{ paidAmount }} in instalments. This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
+        "THEY_OFFERED_TO_PAY_YOU_BY_DATE": "They’ve offered to pay you £{{ paidAmount }} by {{datePaid}}. This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
+        "THEY_OFFERED_TO_PAY_YOU_IMMEDIATELY": "They’ve offered to pay you £{{ paidAmount }} immediately. This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
+        "WHY_THEY_DONT_OWE": "Why they don’t owe the amount claimed"
+      },
       "PAY_EXPENSES": "Do they pay any expenses?",
       "PAYMENT_DATE": "They’ve offered to pay you this by {{ paymentDate }}",
       "RECEIVE_INCOME": "Do they receive any income?",
@@ -1716,9 +1772,16 @@
       "TOTAL_PAID_AMOUNT": "This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
       "UNABLE_TO_PAY_FULL_AMOUNT": "Why they can’t pay the full amount now",
       "WHERE_THEY_LIVE": "Where are they living?",
+      "WHEN_THEY_SAY_THEY_PAID": "When they say they paid this amount",
+      "WHY_THEY_DISAGREE_AMOUNT": "Why they say they don’t owe the amount you claimed",
       "WHY_THEY_DISAGREE_CLAIM": "Why they disagree with the claim",
       "WHY_THEY_DISAGREE_EVIDENCE": "Why they disagree with your evidence",
-      "WHY_THEY_DISAGREE_TIMELINE": "Why they disagree with your timeline"
+      "WHY_THEY_DISAGREE_TIMELINE": "Why they disagree with your timeline",
+      "HOW_THEY_WANT_TO_PAY_RESPONSE": "They've offered to pay you £{{ amount }} by {{ paymentDate }}. This is the total amount you'll be paid, including the claim fee and interest if applicable.",
+      "WHEN_THEY_PAID_THIS_AMOUNT": "When they say they paid this amount",
+      "HOW_THEY_PAID": "How they said they paid",
+      "THEY_DONT_OWE_CLAIM_AMOUNT": "Why they say they dont owe the amount you claimed",
+      "REJECT_CLAIM_PAID_LESS_STATEMENT": "{{ defendant }} said they paid you £{{ paidAmount}}. They said this is all they owe, not the amount you claim."
     },
     "SELF_EMPLOYED": {
       "PAGE_TITLE": "Self employment details",
@@ -1787,10 +1850,10 @@
     },
     "SHARED_EXPERT": {
       "IF_YOU_SHARE": "If you share an expert, you will also share the costs unless the judge decides that one party must pay the other party’s share.",
-      "PAGE_TITLE": "Do you want to share an expert with the claimant?",
+      "PAGE_TITLE": "Do you want to share an expert with the other party?",
       "PREPARE_REPORT": "They will prepare a report for the court on behalf of two or more of the parties, including the claimant.",
       "SINGLE_JOINT_EXPERT": "This is known as a ’single joint expert’.",
-      "TITLE": "Do you want to share an expert with the claimant?"
+      "TITLE": "Do you want to share an expert with the other party?"
     },
     "SPECIFIC_COURT": {
       "EXPlANATION": "You can ask for the hearing to be held at a specific court, for example, if you spend weekdays a long distance from your home. The court will consider both parties' circumstances when deciding where to hold the hearing.",
@@ -2227,7 +2290,7 @@
     "SELECT_LANGUAGE_SPEAK": "Select the language you, your experts, and your witnesses will speak at the hearing",
     "SELECT_REQUEST": "Select if you want to request more time, have already agreed more time, have had your request for more time refused, or you do not want more time",
     "SELECT_SUPPORT": "Select the support the person needs to attend a hearing",
-    "SELECT_YES_IF_DOCUMENTS": "Select yes if there are documents the claimant has that you want the court to consider",
+    "SELECT_YES_IF_DOCUMENTS": "Select yes if there are documents the other party has that you want the court to consider",
     "SELECT_YES_IF_SUPPORT": "Select yes if someone needs support to attend a hearing",
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
     "SIGNER_NAME_TOO_LONG": "You've entered too many characters",
@@ -2356,7 +2419,7 @@
     "VALID_REASON_REQUIRED": "Enter a reason",
     "VALID_REQUEST_EXTRA_4_WEEKS": "Select yes if you want an extra 4 weeks to try to settle the claim",
     "VALID_SENT_EXPERT_REPORTS": "Select yes if you have sent expert reports to the other parties",
-    "VALID_SHARED_EXPERT": "Select yes if you want to share an expert with the claimant",
+    "VALID_SHARED_EXPERT": "Select yes if you want to share an expert with the other party",
     "VALID_STRICTLY_POSITIVE_NUMBER": "Enter a number higher than 0",
     "VALID_TEXT_LENGTH": "You’ve entered too many characters",
     "VALID_TRIED_TO_SETTLE": "Select yes if you have tried to settle this claim before going to court",
