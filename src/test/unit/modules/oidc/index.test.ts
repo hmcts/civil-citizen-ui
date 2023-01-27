@@ -2,7 +2,7 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../main/app';
-import {SIGN_OUT_URL} from '../../../../main/routes/urls';
+import {FIRST_CONTACT_SIGNPOSTING_URL, SIGN_OUT_URL} from '../../../../main/routes/urls';
 
 describe('OIDC middleware', () => {
   describe('Sign out', () => {
@@ -31,6 +31,13 @@ describe('OIDC middleware', () => {
       await request(app).get(SIGN_OUT_URL).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.text).toContain(signOutUrl);
+      });
+    });
+  });
+  describe('should allow public pages witout authentication', () => {
+    it('should not redirect to login for first contact pages', async () => {
+      await request(app).get(FIRST_CONTACT_SIGNPOSTING_URL).expect((res) => {
+        expect(res.status).toBe(200);
       });
     });
   });
