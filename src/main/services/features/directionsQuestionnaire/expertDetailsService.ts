@@ -9,6 +9,11 @@ const logger = Logger.getLogger('supportRequiredService');
 export const getExpertDetails = async (claimId: string): Promise<ExpertDetailsList> => {
   try {
     const case_data = await getCaseDataFromStore(claimId);
+    if (case_data.isClaimantIntentionPending()) {
+      return case_data.claimantResponse?.directionQuestionnaire?.experts?.expertDetailsList
+        ? case_data.claimantResponse.directionQuestionnaire.experts.expertDetailsList
+        : new ExpertDetailsList([new ExpertDetails()]);
+    }
     return case_data.directionQuestionnaire?.experts?.expertDetailsList
       ? case_data.directionQuestionnaire.experts.expertDetailsList
       : new ExpertDetailsList([new ExpertDetails()]);
