@@ -5,6 +5,7 @@ import config from 'config';
 import {CITIZEN_PHONE_NUMBER_URL} from '../../../../../../main/routes/urls';
 import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure, mockNoStatementOfMeans} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {t} from 'i18next';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -66,7 +67,7 @@ describe('Citizen phone number', () => {
         .send('telephoneNumber=abc')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_PHONE_NUMBER);
+          expect(res.text).toContain(t('ERRORS.VALID_PHONE_NUMBER'));
         });
     });
     it('should return error on input with interior spaces', async () => {
@@ -75,7 +76,7 @@ describe('Citizen phone number', () => {
         .send('telephoneNumber=123 456')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_PHONE_NUMBER);
+          expect(res.text).toContain(t('ERRORS.VALID_PHONE_NUMBER'));
         });
     });
     it('should accept input with trailing whitespaces', async () => {
