@@ -74,7 +74,7 @@ describe('OIDC middleware', () => {
         });
       expect(app.locals.assignClaimId).toBeUndefined();
     });
-    it('should not redirect to dashboard when user is logged in and claim is not set', async () => {
+    it('should redirect to dashboard when user is logged in and claim is not set', async () => {
       mockGetUserDetails.mockImplementation(async () => userDetails);
       await request(app).get(CALLBACK_URL)
         .query({code: 'string'})
