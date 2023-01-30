@@ -7,7 +7,7 @@ import {
   getRepaymentPlanForm,
   saveRepaymentPlanData,
 } from 'services/features/response/repaymentPlan/repaymentPlanService';
-import {CITIZEN_REPAYMENT_PLAN_FULL_URL, CLAIM_TASK_LIST_URL} from '../../../../../urls';
+import {CITIZEN_REPAYMENT_PLAN_FULL_URL, RESPONSE_TASK_LIST_URL} from '../../../../../urls';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 const repaymentPlanViewPath = 'features/response/repaymentPlan/repaymentPlan';
@@ -46,7 +46,7 @@ repaymentPlanFullAdmissionController.post(CITIZEN_REPAYMENT_PLAN_FULL_URL,
         renderView(form, res);
       } else {
         await saveRepaymentPlanData(req.params.id, form.model);
-        res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
+        res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
       }
     } catch (error) {
       next(error);

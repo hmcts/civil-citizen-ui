@@ -4,7 +4,7 @@ import request from 'supertest';
 import {
   CITIZEN_DETAILS_URL,
   CITIZEN_PHONE_NUMBER_URL,
-  CLAIM_TASK_LIST_URL,
+  RESPONSE_TASK_LIST_URL,
   DOB_URL,
 } from 'routes/urls';
 import {getDefendantInformation, saveDefendantProperty} from 'services/features/common/defendantDetailsService';
@@ -342,7 +342,7 @@ describe('Confirm Details page', () => {
         .send(validDataForPost)
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
     it('should redirect to task-list screen if respondent type is ORGANISATION', async () => {
@@ -354,7 +354,7 @@ describe('Confirm Details page', () => {
         .send(validDataForPost)
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
     it('should redirect to confirm DOB screen if respondent type is INDIVIDUAL', async () => {
@@ -378,7 +378,7 @@ describe('Confirm Details page', () => {
         .send(validDataForPost)
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
   });
