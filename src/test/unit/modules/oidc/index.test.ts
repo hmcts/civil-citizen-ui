@@ -2,13 +2,29 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../main/app';
-import {ASSIGN_CLAIM_URL, FIRST_CONTACT_SIGNPOSTING_URL, SIGN_IN_URL, SIGN_OUT_URL} from '../../../../main/routes/urls';
+import {
+  ASSIGN_CLAIM_URL,
+  CALLBACK_URL, DASHBOARD_URL,
+  FIRST_CONTACT_SIGNPOSTING_URL,
+  SIGN_IN_URL,
+  SIGN_OUT_URL, UNAUTHORISED_URL,
+} from '../../../../main/routes/urls';
 
+import {getUserDetails} from '../../../../main/app/auth/user/oidc';
+
+// const mockOidc = {
+//   getUserDetails: jest.fn( () => Promise.resolve(userDetails)),
+// };
 jest.mock('../../../../main/modules/draft-store');
+
+const mockGetUserDetais = getUserDetails as jest.Mock;
 
 const citizenRoleToken: string = config.get('citizenRoleToken');
 const idamServiceUrl: string = config.get('services.idam.authorizationURL');
 const signOutUrl = idamServiceUrl.replace('/login', '/o/endSession');
+const userDetails = {accessToken: citizenRoleToken, email:'dfkdh', id: 'jfkdljfd', familyName:'masslover', givenName:'tatiana', roles:['citizen']};
+
+jest.mock('../../../../main/app/auth/user/oidc');
 describe('OIDC middleware', () => {
   describe('Sign out', () => {
     beforeEach(() => {
@@ -49,6 +65,43 @@ describe('OIDC middleware', () => {
         expect(res.text).toContain(SIGN_IN_URL);
       });
       expect(app.locals.assignClaimId).toBe('1');
+    });
+    it('should redirect to assign claim url when claim id is set', async () => {
+      mockGetUserDetais.mockImplementation(async () => userDetails);
+      app.locals.assignClaimId = '1';
+      await request(app).get(CALLBACK_URL)
+        .query({code: 'string'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.text).toContain('/assignclaim?id=1');
+        });
+      expect(app.locals.assignClaimId).toBeUndefined();
+    });
+    it('should not redirect to dashboard when user is logged in and claim is not set', async () => {
+      mockGetUserDetais.mockImplementation(async () => userDetails);
+      await request(app).get(CALLBACK_URL)
+        .query({code: 'string'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.text).toContain(DASHBOARD_URL);
+        });
+    });
+    it('should redirect to unauthorised when user is logged in but has no citizen role', async ()=> {
+      userDetails.roles = [];
+      mockGetUserDetais.mockImplementation(async () => userDetails);
+      await request(app).get(CALLBACK_URL)
+        .query({code: 'string'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.text).toContain(UNAUTHORISED_URL);
+        });
+    });
+    it ('should redirect to dashboard when query type is not string', async () => {
+      await request(app).get(CALLBACK_URL)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.text).toContain(DASHBOARD_URL);
+        });
     });
   });
 });
