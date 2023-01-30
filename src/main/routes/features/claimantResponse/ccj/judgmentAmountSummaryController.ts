@@ -12,8 +12,7 @@ const judgementAmountSummaryViewPath = 'features/claimantResponse/ccj/judgement-
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-async function renderView(req: AppRequest, res: Response, claim: Claim, lang: string) {
-  const claimFee = await civilServiceClient.getClaimAmountFee(claim?.totalClaimAmount, req);
+async function renderView(req: AppRequest, res: Response, claim: Claim, lang: string, claimFee: number) {
   const judgmentSummaryDetails = getJudgmentAmountSummary(claim, claimFee, lang);
   res.render(judgementAmountSummaryViewPath, {
     claimAmount: claim.totalClaimAmount,
@@ -26,7 +25,8 @@ judgmentAmountSummaryController.get(CCJ_PAID_AMOUNT_SUMMARY_URL, async (req: App
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await getCaseDataFromStore(req.params.id);
-    await renderView(req, res, claim, lang);
+    const claimFee = await civilServiceClient.getClaimAmountFee(claim?.totalClaimAmount, req);
+    await renderView(req, res, claim, lang, claimFee);
   } catch (error) {
     next(error);
   }

@@ -129,18 +129,6 @@ export class Claim {
     }
   }
 
-  get hasSupportRequiredList(): boolean {
-    return !!this.directionQuestionnaire?.hearing?.supportRequiredList;
-  }
-
-  get isSupportRequiredYes(): boolean {
-    return this.directionQuestionnaire?.hearing?.supportRequiredList?.option === YesNo.YES;
-  }
-
-  get isSupportRequiredDetailsAvailable(): boolean {
-    return this.directionQuestionnaire?.hearing?.supportRequiredList?.items?.length > 0;
-  }
-
   getClaimantFullName(): string {
     return this.getName(this.applicant1);
   }
@@ -366,6 +354,18 @@ export class Claim {
 
   isResponseDateInThePast(): boolean {
     return this.respondent1ResponseDate <= new Date();
+  }
+
+  get hasSupportRequiredList(): boolean {
+    return !!this.directionQuestionnaire?.hearing?.supportRequiredList;
+  }
+
+  get isSupportRequiredYes(): boolean {
+    return this.directionQuestionnaire?.hearing?.supportRequiredList?.option === YesNo.YES;
+  }
+
+  get isSupportRequiredDetailsAvailable(): boolean {
+    return this.directionQuestionnaire?.hearing?.supportRequiredList?.items?.length > 0;
   }
 
   hasExpertReportDetails(): boolean {
