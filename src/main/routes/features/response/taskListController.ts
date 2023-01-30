@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import {CLAIM_DETAILS_URL, CLAIM_TASK_LIST_URL} from '../../urls';
-import {getDescription, getTaskLists, getTitle} from '../../../services/features/response/taskListService';
+import {getDescription, getTaskLists, getTitle} from '../../../services/features/common/taskListService';
 import {Claim} from '../../../common/models/claim';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {AppRequest} from 'models/AppRequest';

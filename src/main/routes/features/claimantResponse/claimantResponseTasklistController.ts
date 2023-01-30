@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import {CLAIMANT_RESPONSE_TASK_LIST_URL} from '../../urls';
-import {getDescription, getTitle} from '../../../services/features/response/taskListService';
+import {getDescription, getTitle} from '../../../services/features/common/taskListService';
 import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from '../../../modules/utilityService';
 import {getClaimantResponseTaskLists} from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistService';

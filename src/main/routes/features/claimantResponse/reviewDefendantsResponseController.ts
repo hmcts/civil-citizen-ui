@@ -12,6 +12,7 @@ import {ClaimResponseStatus} from 'models/claimResponseStatus';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 
 const reviewDefendantsResponseController = Router();
+const crPropertyName = 'defendantResponseViewed';
 
 reviewDefendantsResponseController.get(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -46,7 +47,7 @@ reviewDefendantsResponseController.post(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESP
         paymentDate: formatDateToFullDate(claim.partialAdmission.paymentIntention.paymentDate, lang),
       });
     } else {
-      await saveClaimantResponse(claimId, true, 'defendantResponseViewed');
+      await saveClaimantResponse(claimId, true, crPropertyName);
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
     }
   } catch (error) {
