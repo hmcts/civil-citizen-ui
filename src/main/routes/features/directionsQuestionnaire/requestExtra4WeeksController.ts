@@ -11,7 +11,7 @@ import {
 
 const requestExtra4WeeksController = Router();
 const dqPropertyName = 'requestExtra4weeks';
-const dqParentName = 'experts';
+const dqParentName = 'hearing';
 
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render('features/directionsQuestionnaire/request-extra-4weeks', {form});

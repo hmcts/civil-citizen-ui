@@ -5,6 +5,7 @@ import {WelshLanguageRequirements} from './welshLanguageRequirements/welshLangua
 import {Witnesses} from './witnesses/witnesses';
 import {Hearing} from './hearing/hearing';
 import {YesNo} from 'common/form/models/yesNo';
+import {getCalculatedDays} from 'services/features/directionsQuestionnaire/whyUnavailableForHearingService';
 
 export class DirectionQuestionnaire {
   defendantYourselfEvidence?: GenericYesNo;
@@ -50,6 +51,28 @@ export class DirectionQuestionnaire {
     if (
       this.hearing?.determinationWithoutHearing &&
       this.isExpertJourneyCompleted &&
+      this.isCommonDQJourneyCompleted
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  get isFastTrackDQJourneyCompleted(): boolean {
+    if (
+      this.hearing?.triedToSettle &&
+      this.hearing?.requestExtra4weeks &&
+      this.hearing?.considerClaimantDocuments &&
+      this.isExpertEvidenceJourneyCompleted &&
+      this.isCommonDQJourneyCompleted
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  get isCommonDQJourneyCompleted(): boolean {
+    if (
       this.defendantYourselfEvidence &&
       this.witnesses?.otherWitnesses &&
       this.isUnavailabilityDatesCompleted &&
@@ -77,9 +100,22 @@ export class DirectionQuestionnaire {
     return false;
   }
 
-  get isUnavailabilityDatesCompleted(): boolean {
+  get isExpertEvidenceJourneyCompleted(): boolean {
+    if (this.experts?.defendantExpertEvidence?.option === YesNo.NO) {
+      return true;
+    }
+    if (this.experts?.sentExpertReports &&
+      this.experts?.sharedExpert &&
+      this.isExpertDetailsAvailable) {
+      return true;
+    }
+    return false;
+  }
+
+  async isUnavailabilityDatesCompleted (): Promise<boolean> {
     // TODO : include completion logic for unavailable dates when `unavailable-for-hearing` page is developed
-    if (!this.hearing?.whyUnavailableForHearing) {
+    const days = await getCalculatedDays();
+    if (days > 30 && !this.hearing?.whyUnavailableForHearing) {
       return false;
     }
     return true;
