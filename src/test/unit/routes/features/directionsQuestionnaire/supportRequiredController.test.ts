@@ -14,6 +14,8 @@ import {
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {YesNo} from 'form/models/yesNo';
 
+jest.mock('../../../../../main/modules/oidc');
+
 const supportRequiredUrl = SUPPORT_REQUIRED_URL.replace(':id', 'aaa');
 describe('Support required', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

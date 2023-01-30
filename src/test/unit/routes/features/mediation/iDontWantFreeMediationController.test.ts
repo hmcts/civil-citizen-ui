@@ -7,6 +7,8 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure, mockRedisWithMediationProperties} from '../../../../utils/mockDraftStore';
 import {NoMediationReasonOptions} from 'form/models/mediation/noMediationReasonOptions';
 
+jest.mock('../../../../../main/modules/oidc');
+
 describe('I dont want free meditation', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');

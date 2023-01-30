@@ -5,6 +5,8 @@ import config from 'config';
 import {RESPONSE_TASK_LIST_URL} from '../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 
+jest.mock('../../../../../main/modules/oidc');
+
 describe('Claimant details', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');

@@ -8,6 +8,8 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore
 import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
 import {t} from 'i18next';
 
+jest.mock('../../../../../main/modules/oidc');
+
 describe('Repayment Plan', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');

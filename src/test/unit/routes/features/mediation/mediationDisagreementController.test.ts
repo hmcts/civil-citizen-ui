@@ -16,6 +16,8 @@ import {CaseState} from '../../../../../main/common/form/models/claimDetails';
 import {ClaimantResponse} from '../../../../../main/common/models/claimantResponse';
 import {Mediation} from '../../../../../main/common/models/mediation/mediation';
 
+jest.mock('../../../../../main/modules/oidc');
+
 const applicantTypeMock = require('./applicantTypeMock.json');
 
 describe('Mediation Disagreement', () => {

@@ -10,6 +10,8 @@ import {
 import {UNDERSTANDING_RESPONSE_OPTIONS_URL} from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
+jest.mock('../../../../../main/modules/oidc');
+
 describe('Understanding Your Options Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');

@@ -10,6 +10,8 @@ import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure} from '../../.
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 
+jest.mock('../../../../../main/modules/oidc');
+
 describe('Expected end date page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
