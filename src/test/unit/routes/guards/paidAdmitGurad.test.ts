@@ -1,6 +1,6 @@
-import express, { NextFunction } from 'express';
+import express, {NextFunction} from 'express';
 import {getCaseDataFromStore} from '../../../../main/modules/draft-store/draftStoreService';
-import {CLAIM_TASK_LIST_URL} from '../../../../main/routes/urls';
+import {RESPONSE_TASK_LIST_URL} from '../../../../main/routes/urls';
 import {Claim} from '../../../../main/common/models/claim';
 import {PartAdmitGuard} from '../../../../main/routes/guards/partAdmitGuard';
 import {HowMuchDoYouOwe} from '../../../../main/common/form/models/admission/partialAdmission/howMuchDoYouOwe';
@@ -16,8 +16,8 @@ jest.mock('i18next', () => ({
 }));
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
-const MOCK_REQUEST = { params: { id: '123' } } as unknown as express.Request;
-const MOCK_RESPONSE = { redirect: jest.fn() } as unknown as express.Response;
+const MOCK_REQUEST = {params: {id: '123'}} as unknown as express.Request;
+const MOCK_RESPONSE = {redirect: jest.fn()} as unknown as express.Response;
 const MOCK_NEXT = jest.fn() as NextFunction;
 
 describe('Response - Part Admit Amount not entered', () => {
@@ -29,7 +29,7 @@ describe('Response - Part Admit Amount not entered', () => {
     it('should call next middleware function which will render payment plan screen', async () => {
       // Given
       const claim = new Claim();
-      const howMuchDoYouOwe = new HowMuchDoYouOwe(100,1000);
+      const howMuchDoYouOwe = new HowMuchDoYouOwe(100, 1000);
       claim.partialAdmission = {
         alreadyPaid: {
           option: 'Yes',
@@ -41,7 +41,7 @@ describe('Response - Part Admit Amount not entered', () => {
         return claim;
       });
       // When
-      await PartAdmitGuard.apply(CLAIM_TASK_LIST_URL)(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+      await PartAdmitGuard.apply(RESPONSE_TASK_LIST_URL)(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
       // Then
       expect(MOCK_NEXT).toHaveBeenCalledWith();
     });
@@ -61,7 +61,7 @@ describe('Response - Part Admit Amount not entered', () => {
         return claim;
       });
       // When
-      await PartAdmitGuard.apply(CLAIM_TASK_LIST_URL)(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+      await PartAdmitGuard.apply(RESPONSE_TASK_LIST_URL)(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
       // Then
       expect(MOCK_RESPONSE.redirect).toHaveBeenCalled();
     });
@@ -70,7 +70,7 @@ describe('Response - Part Admit Amount not entered', () => {
   it('should throw an error when redis throws an error', async () => {
     // Given
     const claim = new Claim();
-    const howMuchDoYouOwe = new HowMuchDoYouOwe(100,1000);
+    const howMuchDoYouOwe = new HowMuchDoYouOwe(100, 1000);
     claim.partialAdmission = {
       alreadyPaid: {
         option: 'Yes',
@@ -83,7 +83,7 @@ describe('Response - Part Admit Amount not entered', () => {
     });
 
     // When
-    await PartAdmitGuard.apply(CLAIM_TASK_LIST_URL)(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+    await PartAdmitGuard.apply(RESPONSE_TASK_LIST_URL)(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
     // Then
     expect(MOCK_NEXT).toHaveBeenCalled();
   });
