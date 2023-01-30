@@ -12,9 +12,6 @@ import {
 
 import {getUserDetails} from '../../../../main/app/auth/user/oidc';
 
-// const mockOidc = {
-//   getUserDetails: jest.fn( () => Promise.resolve(userDetails)),
-// };
 jest.mock('../../../../main/modules/draft-store');
 
 const mockGetUserDetais = getUserDetails as jest.Mock;
