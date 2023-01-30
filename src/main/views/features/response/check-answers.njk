@@ -11,6 +11,10 @@
   {{ setPageTitle('PAGES.CHECK_YOUR_ANSWER.TITLE') }}
 {% endblock %}
 
+{% set labelHtml = t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX')
+                    + '<p class="govuk-!-margin-top-2">'
+                    + t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX_PROCEEDINGS')
+                    +'</p>' %}
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -36,13 +40,8 @@
             {{ statementOfTruth(
               t,
               form,
-              SignatureType.RESPONSE,
-              t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX') + '<p class="govuk-!-margin-top-2">' +
-              t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX_PROCEEDINGS') +'</p>',
-              (signatureType === SignatureType.QUALIFIED),
-              isFullAmountRejected
+              labelHtml
             ) }}
-
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SUBMIT_RESPONSE')

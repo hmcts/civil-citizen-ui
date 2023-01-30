@@ -1,6 +1,6 @@
 import {NextFunction, Response, Router} from 'express';
 import {CitizenTelephoneNumber} from '../../../../common/form/models/citizenTelephoneNumber';
-import {CITIZEN_PHONE_NUMBER_URL, CLAIM_TASK_LIST_URL} from '../../../urls';
+import {CITIZEN_PHONE_NUMBER_URL, RESPONSE_TASK_LIST_URL} from '../../../urls';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {ClaimantOrDefendant} from '../../../../common/models/partyType';
@@ -31,7 +31,7 @@ citizenPhoneController.post(CITIZEN_PHONE_NUMBER_URL,
         renderView(citizenTelephoneNumberForm, res);
       } else {
         await saveTelephone(req.params.id, model, ClaimantOrDefendant.DEFENDANT);
-        const redirectURL = constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL);
+        const redirectURL = constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL);
         res.redirect(redirectURL);
       }
     } catch (error) {
