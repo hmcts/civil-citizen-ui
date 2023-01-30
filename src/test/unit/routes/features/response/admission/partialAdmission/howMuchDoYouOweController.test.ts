@@ -2,7 +2,7 @@ import request from 'supertest';
 import {app} from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {CITIZEN_OWED_AMOUNT_URL, CLAIM_TASK_LIST_URL} from 'routes/urls';
+import {CITIZEN_OWED_AMOUNT_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 import {ResponseType} from 'common/form/models/responseType';
@@ -17,7 +17,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
+      .reply(200, {id_token: citizenRoleToken});
   });
 
   describe('on GET', () => {
@@ -72,7 +72,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OWED_AMOUNT_URL)
-        .send({ amount: '' })
+        .send({amount: ''})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.ENTER_VALID_AMOUNT);
@@ -82,7 +82,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OWED_AMOUNT_URL)
-        .send({ amount: 0 })
+        .send({amount: 0})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.ENTER_VALID_AMOUNT);
@@ -92,7 +92,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OWED_AMOUNT_URL)
-        .send({ amount: 10.123 })
+        .send({amount: 10.123})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.ENTER_VALID_AMOUNT);
@@ -102,7 +102,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OWED_AMOUNT_URL)
-        .send({ amount: -110 })
+        .send({amount: -110})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.ENTER_VALID_AMOUNT);
@@ -112,7 +112,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OWED_AMOUNT_URL)
-        .send({ amount: 'abc' })
+        .send({amount: 'abc'})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.ENTER_VALID_AMOUNT);
@@ -122,7 +122,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OWED_AMOUNT_URL)
-        .send({ amount: 9999999999999 })
+        .send({amount: 9999999999999})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.AMOUNT_LESS_THAN_CLAIMED);
@@ -132,7 +132,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OWED_AMOUNT_URL)
-        .send({ amount: 110 })
+        .send({amount: 110})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.AMOUNT_LESS_THAN_CLAIMED);
@@ -142,17 +142,17 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OWED_AMOUNT_URL)
-        .send({ amount: 100 })
+        .send({amount: 100})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
     it('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_OWED_AMOUNT_URL)
-        .send({ amount: 200 })
+        .send({amount: 200})
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

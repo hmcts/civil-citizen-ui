@@ -4,7 +4,7 @@ import config from 'config';
 import nock from 'nock';
 import {
   CITIZEN_EVIDENCE_URL,
-  CLAIM_TASK_LIST_URL,
+  RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
@@ -115,7 +115,7 @@ describe('Repayment Plan', () => {
         .send({comment: '', evidenceItem: []})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
 
@@ -126,7 +126,7 @@ describe('Repayment Plan', () => {
         .send({comment: COMMENT, evidenceItem: EVIDENCE_ITEM})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
 
@@ -137,7 +137,7 @@ describe('Repayment Plan', () => {
         .send({comment: '', evidenceItem: []})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
 
@@ -148,7 +148,7 @@ describe('Repayment Plan', () => {
         .send({comment: COMMENT, evidenceItem: EVIDENCE_ITEM})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
 

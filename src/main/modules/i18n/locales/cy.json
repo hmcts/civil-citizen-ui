@@ -736,31 +736,6 @@
       "WHY_YOU_ARE_ENTITLED": "Why you're entitled to this rate"
     },
     "CLAIMANT_RESPONSE": {
-      "COURT_PROPOSED_PLAN": {
-        "PAGE_TITLE": "The defendant can’t afford your plan",
-        "TITLE": "The defendant can’t afford your plan",
-        "BASED_ON": "Based on the financial details provided by the defendant, we don’t believe they would be able to make these repayments.",
-        "COURT_AFFORDABILITY": "The court affordability calculator has determined a new repayment plan as the most the defendant can repay.",
-        "COURT_PROPOSED_PLAN": "The court’s proposed repayment plan",
-        "REGULAR_PAYMENTS_OF": "Regular payments of",
-        "FREQUENCY_OF_PAYMENTS": "Frequency of payments",
-        "FIRST_PAYMENT_DATE": "First payment date",
-        "LAST_PAYMENT_DATE": "Last payment date",
-        "LENGTH_OF_REPAYMENT": "Length of repayment plan",
-        "DO_YOU_ACCEPT": "Do you accept the court’s proposed repayment plan?",
-        "I_WANT_ACCEPT": "I want to accept this repayment plan",
-        "I_WANT_JUDGE": "I want a judge to make a repayment plan"
-      }
-    },
-    "CLAIMANT_RESPONSE_CONFIRMATION": {
-      "CLAIM_NUMBER": "Your claim number:",
-      "PAGE_TITLE": "Claimant Intention Confirmation",
-      "RC_DISPUTE": {
-        "NOT_PROCEED_WITH_CLAIM": "You didn't proceed with the claim",
-        "CLAIM_ENDED": "The claim has now ended. We've emailed {{ defendantName }} to tell them."
-      }
-    },
-    "CLAIMANT_RESPONSE": {
       "COURT_PROPOSED_DATE": {
         "PAGE_TITLE": "The defendant can’t pay by your proposed date",
         "TITLE": "The defendant can’t pay by your proposed date",
@@ -784,6 +759,14 @@
         "DO_YOU_ACCEPT": "Do you accept the court’s proposed repayment plan",
         "I_WANT_ACCEPT": "I want to accept this repayment plan",
         "I_WANT_JUDGE": "I want a judge to make a repayment plan"
+      }
+    },
+    "CLAIMANT_RESPONSE_CONFIRMATION": {
+      "CLAIM_NUMBER": "Your claim number:",
+      "PAGE_TITLE": "Claimant Intention Confirmation",
+      "RC_DISPUTE": {
+        "NOT_PROCEED_WITH_CLAIM": "You didn't proceed with the claim",
+        "CLAIM_ENDED": "The claim has now ended. We've emailed {{ defendantName }} to tell them."
       }
     },
     "CLAIMANT_RESPONSE_PROCEED": {
@@ -1567,6 +1550,12 @@
       "TOTAL_CLAIMED": "Y cyfanswm a hawlir yw £{{totalClaimAmount}}. Mae hyn yn cynnwys ffi’r hawliad ac unrhyw log.",
       "WHEN_DID": "Pryd y gwnaethoch dalu’r swm hwn?"
     },
+    "PARTIAL_ADMISSION_SETTLE_ADMITTED": {
+      "PAGE_TITLE": "Do you want to settle the claim for the £{{ admittedAmount }} the defendant admitted?",
+      "CONTINUE_AMOUNT_YOU_CLAIMED": "The claim will continue for the total amount you claimed",
+      "THIS_IS_THE_TOTAL_AMOUNT": "This is the total amount you'll be paid, including the claim fee and interest if applicable",
+      "TITLE": "Do you want to settle the claim for the £{{ admittedAmount }} the defendant admitted?"
+    },
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
       "PAGE_TITLE": "Why do you disagree?",
       "SUBTITLE": "Y cyfanswm a hawlir yw £{{ claimAmount }}. Mae hyn yn cynnwys ffi'r hawliad.",
@@ -1762,6 +1751,13 @@
       "MONTHLY_INCOME": "Monthly income",
       "PAGE_TITLE": "Review defendant’s response",
       "PART_ADMIT_ALREADY_PAID_STATEMENT": "{{ defendant }} said they paid you £{{ paidAmount }}. They said this is all they owe, not the amount you claimed.",
+      "PART_ADMIT_NOT_PAID": {
+        "DEFENDANT_ADMITS_THEY_OWE": "{{ defendant }} admits they owe you £{{ paidAmount }}. They don’t believe they owe the full amount claimed.",
+        "THEY_OFFERED_TO_PAY_YOU": "They’ve offered to pay you £{{ paidAmount }} in instalments. This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
+        "THEY_OFFERED_TO_PAY_YOU_BY_DATE": "They’ve offered to pay you £{{ paidAmount }} by {{datePaid}}. This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
+        "THEY_OFFERED_TO_PAY_YOU_IMMEDIATELY": "They’ve offered to pay you £{{ paidAmount }} immediately. This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
+        "WHY_THEY_DONT_OWE": "Why they don’t owe the amount claimed"
+      },
       "PAY_EXPENSES": "Do they pay any expenses?",
       "PAYMENT_DATE": "They’ve offered to pay you this by {{ paymentDate }}",
       "RECEIVE_INCOME": "Do they receive any income?",

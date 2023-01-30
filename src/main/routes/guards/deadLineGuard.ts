@@ -5,13 +5,13 @@ import {isPastDeadline} from '../../common/utils/dateUtils';
 import {getViewOptionsBeforeDeadlineTask} from '../../common/utils/taskList/tasks/viewOptionsBeforeDeadline';
 import {TaskStatus} from '../../common/models/taskList/TaskStatus';
 import {constructResponseUrlWithIdParams} from '../../common/utils/urlFormatter';
-import {CLAIM_TASK_LIST_URL} from '../../routes/urls';
+import {RESPONSE_TASK_LIST_URL} from '../../routes/urls';
 
 export const deadLineGuard = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const unauthorized = await isUnauthorized(req);
     if (unauthorized) {
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
     } else {
       next();
     }
