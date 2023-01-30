@@ -2409,7 +2409,7 @@
     "VALID_OWED_AMOUNT_REQUIRED": "Enter a valid amount owed",
     "VALID_PARTY_NAME": "Enter name",
     "VALID_PAYMENT_OPTION": "Choose a payment option",
-    "VALID_PHONE_NUMBER": "Enter a phone number in the correct format",
+    "VALID_PHONE_NUMBER": "Phone number must be a UK number",
     "VALID_PHONE_OR_VIDEO_HEARING": {
       "TELL_US_WHY": "Tell us why you want a telephone or video hearing",
       "YES_NO": "Select yes if you want to ask for a telephone or video hearing"
