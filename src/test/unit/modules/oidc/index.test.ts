@@ -14,7 +14,7 @@ import {getUserDetails} from '../../../../main/app/auth/user/oidc';
 
 jest.mock('../../../../main/modules/draft-store');
 
-const mockGetUserDetais = getUserDetails as jest.Mock;
+const mockGetUserDetails = getUserDetails as jest.Mock;
 
 const citizenRoleToken: string = config.get('citizenRoleToken');
 const idamServiceUrl: string = config.get('services.idam.authorizationURL');
@@ -64,7 +64,7 @@ describe('OIDC middleware', () => {
       expect(app.locals.assignClaimId).toBe('1');
     });
     it('should redirect to assign claim url when claim id is set', async () => {
-      mockGetUserDetais.mockImplementation(async () => userDetails);
+      mockGetUserDetails.mockImplementation(async () => userDetails);
       app.locals.assignClaimId = '1';
       await request(app).get(CALLBACK_URL)
         .query({code: 'string'})
@@ -75,7 +75,7 @@ describe('OIDC middleware', () => {
       expect(app.locals.assignClaimId).toBeUndefined();
     });
     it('should not redirect to dashboard when user is logged in and claim is not set', async () => {
-      mockGetUserDetais.mockImplementation(async () => userDetails);
+      mockGetUserDetails.mockImplementation(async () => userDetails);
       await request(app).get(CALLBACK_URL)
         .query({code: 'string'})
         .expect((res) => {
@@ -85,7 +85,7 @@ describe('OIDC middleware', () => {
     });
     it('should redirect to unauthorised when user is logged in but has no citizen role', async ()=> {
       userDetails.roles = [];
-      mockGetUserDetais.mockImplementation(async () => userDetails);
+      mockGetUserDetails.mockImplementation(async () => userDetails);
       await request(app).get(CALLBACK_URL)
         .query({code: 'string'})
         .expect((res) => {
