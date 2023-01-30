@@ -1,6 +1,6 @@
-import {Claim} from '../../../common/models/claim';
-import {CCDResponse} from '../../../common/models/ccdResponse/ccdResponse';
-import {YesNoUpperCamelCase} from '../../../common/form/models/yesNo';
+import {Claim} from 'models/claim';
+import {CCDResponse} from 'models/ccdResponse/ccdResponse';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {toAgreedMediation} from './convertToCCDAgreedMediation';
 import {toCCDParty} from './convertToCCDParty';
 import {toCCDRepaymentPlan} from './convertToCCDRepaymentPlan';
@@ -8,7 +8,7 @@ import {toCCDPaymentOption} from './convertToCCDPaymentOption';
 import {toCCDPayBySetDate} from './convertToCCDPayBySetDate';
 import {AppRequest} from 'models/AppRequest';
 
-export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean, req: AppRequest): CCDResponse => {
+export const translateDraftResponseToCCD = (claim: Claim,  addressHasChange: boolean, req: AppRequest): CCDResponse => {
   return {
     respondent1ClaimResponseTypeForSpec: claim.respondent1?.responseType,
     defenceAdmitPartPaymentTimeRouteRequired: toCCDPaymentOption(claim.partialAdmission.paymentIntention.paymentOption),

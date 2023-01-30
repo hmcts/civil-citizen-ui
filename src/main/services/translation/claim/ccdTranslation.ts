@@ -1,8 +1,8 @@
 import {DateTime} from 'luxon';
-import {YesNoUpperCamelCase} from '../../../common/form/models/yesNo';
-import {InterestClaimOptionsType} from '../../../common/form/models/claim/interest/interestClaimOptionsType';
-import {CCDClaim} from '../../../common/models/civilClaimResponse';
-import {Claim} from '../../../common/models/claim';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import {InterestClaimOptionsType} from 'form/models/claim/interest/interestClaimOptionsType';
+import {CCDClaim} from 'models/civilClaimResponse';
+import {Claim} from 'models/claim';
 import {toCCDClaimAmount} from '../response/convertToCCDClaimAmount';
 import {toCCDEvidence} from '../response/convertToCCDEvidence';
 import {toCCDInterestType} from '../response/convertToCCDInterestType';
@@ -14,7 +14,7 @@ import {AppRequest} from 'models/AppRequest';
 
 export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest, _applicantEmail: string): CCDClaim => {
   return {
-    applicant1: toCCDParty(claim.applicant1, req, true),
+    applicant1: toCCDParty(claim.applicant1, req),
     respondent1: toCCDParty(claim.respondent1, req),
     applicant1Represented: YesNoUpperCamelCase.NO,
     totalClaimAmount: claim.totalClaimAmount,
