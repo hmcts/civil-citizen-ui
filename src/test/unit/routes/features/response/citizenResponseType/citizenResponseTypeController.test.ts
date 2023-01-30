@@ -6,7 +6,7 @@ import {
   CITIZEN_ALREADY_PAID_URL,
   CITIZEN_REJECT_ALL_CLAIM_URL,
   CITIZEN_RESPONSE_TYPE_URL,
-  CLAIM_TASK_LIST_URL,
+  RESPONSE_TASK_LIST_URL,
 } from '../../../../../../main/routes/urls';
 import {getCaseDataFromStore} from '../../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../../main/common/models/claim';
@@ -127,7 +127,7 @@ describe('Citizen response type', () => {
         .send('responseType=test')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
 
@@ -154,7 +154,7 @@ describe('Citizen response type', () => {
         .send('responseType=FULL_ADMISSION')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
 
