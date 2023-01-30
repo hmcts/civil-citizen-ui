@@ -2,7 +2,7 @@ import {app} from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import request from 'supertest';
-import {CITIZEN_AMOUNT_YOU_PAID_URL, CLAIM_TASK_LIST_URL} from 'routes/urls';
+import {CITIZEN_AMOUNT_YOU_PAID_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {ResponseType} from 'form/models/responseType';
@@ -35,7 +35,7 @@ describe('How Much Have You Paid', () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_AMOUNT_YOU_PAID_URL)
-        .send({ amount: 50, totalClaimAmount: 110, year: '2022', month: '1', day: '31', text: 'text' })
+        .send({amount: 50, totalClaimAmount: 110, year: '2022', month: '1', day: '31', text: 'text'})
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -119,7 +119,14 @@ describe('How Much Have You Paid', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_AMOUNT_YOU_PAID_URL)
-        .send({ amount: undefined, totalClaimAmount: undefined, year: undefined, month: undefined, day: undefined, text: undefined })
+        .send({
+          amount: undefined,
+          totalClaimAmount: undefined,
+          year: undefined,
+          month: undefined,
+          day: undefined,
+          text: undefined,
+        })
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.ENTER_VALID_AMOUNT);
@@ -133,7 +140,7 @@ describe('How Much Have You Paid', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_AMOUNT_YOU_PAID_URL)
-        .send({ amount: 20, totalClaimAmount: 110, year: '2040', month: '1', day: '1', text: 'text' })
+        .send({amount: 20, totalClaimAmount: 110, year: '2040', month: '1', day: '1', text: 'text'})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.VALID_DATE_IN_PAST);
@@ -143,7 +150,7 @@ describe('How Much Have You Paid', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_AMOUNT_YOU_PAID_URL)
-        .send({ amount: 20, totalClaimAmount: 110, year: '22', month: '1', day: '1', text: 'text' })
+        .send({amount: 20, totalClaimAmount: 110, year: '22', month: '1', day: '1', text: 'text'})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.VALID_FOUR_DIGIT_YEAR);
@@ -153,10 +160,10 @@ describe('How Much Have You Paid', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_AMOUNT_YOU_PAID_URL)
-        .send({ amount: 20, totalClaimAmount: 110, year: '2022', month: '1', day: '1', text: 'text' })
+        .send({amount: 20, totalClaimAmount: 110, year: '2022', month: '1', day: '1', text: 'text'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain(`Redirecting to ${CLAIM_TASK_LIST_URL}`);
+          expect(res.text).toContain(`Redirecting to ${RESPONSE_TASK_LIST_URL}`);
         });
     });
   });

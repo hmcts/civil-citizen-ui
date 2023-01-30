@@ -2,7 +2,7 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {CLAIM_TASK_LIST_URL} from '../../../../../main/routes/urls';
+import {RESPONSE_TASK_LIST_URL} from '../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 
 describe('Claimant details', () => {
@@ -20,7 +20,7 @@ describe('Claimant details', () => {
     it('should return contact claimant details from claim', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .get(CLAIM_TASK_LIST_URL)
+        .get(RESPONSE_TASK_LIST_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Respond to a money claim');
@@ -40,7 +40,7 @@ describe('Claimant details', () => {
     it('should return http 500 when has error in the get method', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .get(CLAIM_TASK_LIST_URL)
+        .get(RESPONSE_TASK_LIST_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
         });

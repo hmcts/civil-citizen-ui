@@ -6,7 +6,7 @@ import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftSto
 import {Claim} from 'models/claim';
 import {
   AGREED_TO_MORE_TIME_URL,
-  CLAIM_TASK_LIST_URL,
+  RESPONSE_TASK_LIST_URL,
   REQUEST_MORE_TIME_URL,
   RESPONSE_DEADLINE_OPTIONS_URL,
 } from 'routes/urls';
@@ -171,7 +171,7 @@ describe('Response Deadline Options Controller', () => {
         mockGetCaseData.mockImplementation(async () => mockClaim);
         await request(app).post(RESPONSE_DEADLINE_OPTIONS_URL).send({'option': 'no'}).expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toBe(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toBe(RESPONSE_TASK_LIST_URL);
         });
       });
 
@@ -179,7 +179,7 @@ describe('Response Deadline Options Controller', () => {
         mockGetCaseData.mockImplementation(async () => mockClaim);
         await request(app).post(RESPONSE_DEADLINE_OPTIONS_URL).send({'option': 'request-refused'}).expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toBe(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toBe(RESPONSE_TASK_LIST_URL);
         });
       });
 

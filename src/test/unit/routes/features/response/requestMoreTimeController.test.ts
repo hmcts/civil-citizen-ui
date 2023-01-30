@@ -5,7 +5,7 @@ import {app} from '../../../../../main/app';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {
-  CLAIM_TASK_LIST_URL,
+  RESPONSE_TASK_LIST_URL,
   REQUEST_MORE_TIME_URL,
 } from 'routes/urls';
 import {ResponseDeadline} from 'form/models/responseDeadline';
@@ -99,7 +99,7 @@ describe('Request More Time Controller', () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app).post(REQUEST_MORE_TIME_URL).send({'option': 'up-to-28-days'}).expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toBe(CLAIM_TASK_LIST_URL);
+        expect(res.header.location).toBe(RESPONSE_TASK_LIST_URL);
       });
     });
 
@@ -107,7 +107,7 @@ describe('Request More Time Controller', () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app).post(REQUEST_MORE_TIME_URL).send({'option': 'more-than-28-days'}).expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toBe(CLAIM_TASK_LIST_URL);
+        expect(res.header.location).toBe(RESPONSE_TASK_LIST_URL);
       });
     });
 

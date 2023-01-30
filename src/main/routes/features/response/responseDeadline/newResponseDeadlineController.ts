@@ -1,7 +1,7 @@
 import {NextFunction, Router} from 'express';
 import {
   AGREED_TO_MORE_TIME_URL,
-  CLAIM_TASK_LIST_URL,
+  RESPONSE_TASK_LIST_URL,
   NEW_RESPONSE_DEADLINE_URL,
 } from '../../../urls';
 import {AppRequest} from '../../../../common/models/AppRequest';
@@ -32,7 +32,7 @@ newResponseDeadlineController
   .post(NEW_RESPONSE_DEADLINE_URL, async (req: AppRequest, res, next: NextFunction) => {
     try {
       await submitExtendedResponseDeadline(req);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
     } catch (error) {
       next(error);
     }

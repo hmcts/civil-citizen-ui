@@ -1,8 +1,7 @@
 import {NextFunction, Response, Router} from 'express';
-import {CITIZEN_PAYMENT_DATE_URL, CITIZEN_PAYMENT_OPTION_URL, CLAIM_TASK_LIST_URL} from '../../../../../urls';
+import {CITIZEN_PAYMENT_DATE_URL, CITIZEN_PAYMENT_OPTION_URL, RESPONSE_TASK_LIST_URL} from '../../../../../urls';
 import {PaymentOption} from '../../../../../../common/form/models/admission/paymentOption/paymentOption';
-import {PaymentOptionType}
-  from '../../../../../../common/form/models/admission/paymentOption/paymentOptionType';
+import {PaymentOptionType} from '../../../../../../common/form/models/admission/paymentOption/paymentOptionType';
 import {
   getPaymentOptionForm,
   savePaymentOptionData,
@@ -22,7 +21,7 @@ function redirectToNextPage(claimId: string, form: PaymentOption, res: Response)
   if (form.paymentOptionBySetDateSelected()) {
     res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_PAYMENT_DATE_URL));
   } else {
-    res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_TASK_LIST_URL));
+    res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
   }
 }
 

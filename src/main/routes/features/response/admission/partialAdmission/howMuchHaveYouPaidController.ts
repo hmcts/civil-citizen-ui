@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {CITIZEN_AMOUNT_YOU_PAID_URL, CLAIM_TASK_LIST_URL} from '../../../../../routes/urls';
+import {CITIZEN_AMOUNT_YOU_PAID_URL, RESPONSE_TASK_LIST_URL} from '../../../../../routes/urls';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import howMuchHaveYouPaidService from '../../../../../services/features/response/admission/howMuchHaveYouPaidService';
@@ -15,7 +15,7 @@ lastMonth.setMonth(lastMonth.getMonth() - 1);
 let totalClaimAmount: number;
 howMuchHaveYouPaidController
   .get(
-    CITIZEN_AMOUNT_YOU_PAID_URL, PartAdmitHowMuchHaveYouPaidGuard.apply(CLAIM_TASK_LIST_URL), async (req: Request, res: Response, next: NextFunction) => {
+    CITIZEN_AMOUNT_YOU_PAID_URL, PartAdmitHowMuchHaveYouPaidGuard.apply(RESPONSE_TASK_LIST_URL), async (req: Request, res: Response, next: NextFunction) => {
       try {
         const howMuchHaveYouPaid: HowMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid(req.params.id, ResponseType.PART_ADMISSION);
         totalClaimAmount = howMuchHaveYouPaid.totalClaimAmount;
@@ -40,7 +40,7 @@ howMuchHaveYouPaidController
       } else {
         try {
           await howMuchHaveYouPaidService.saveHowMuchHaveYouPaid(req.params.id, howMuchHaveYouPaid, ResponseType.PART_ADMISSION);
-          res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
+          res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
         } catch (error) {
           next(error);
         }
