@@ -4,6 +4,8 @@ import nock from 'nock';
 import config from 'config';
 import {CLAIM_RESOLVING_DISPUTE_URL} from 'routes/urls';
 
+jest.mock('../../../../../main/modules/oidc');
+
 describe('Resolving Dispute', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');

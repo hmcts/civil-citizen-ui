@@ -11,6 +11,8 @@ import {t} from 'i18next';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
 
+jest.mock('../../../../../main/modules/oidc');
+
 describe('Full Admit How They Want To Pay Page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');

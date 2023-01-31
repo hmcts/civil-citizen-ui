@@ -4,6 +4,8 @@ import config from 'config';
 import {CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED_URL} from '../../../../../main/routes/urls';
 import {app} from '../../../../../main/app';
 
+jest.mock('../../../../../main/modules/oidc');
+
 describe('Claimant Response - Rejection reason', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');

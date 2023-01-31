@@ -10,6 +10,8 @@ import {
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
+jest.mock('../../../../../main/modules/oidc');
+
 describe('Claimant Response - Settle Claim Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');

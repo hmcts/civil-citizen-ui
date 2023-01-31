@@ -15,6 +15,7 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../main/common/models/claim';
 
+jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 describe('Defendant party type controller', () => {

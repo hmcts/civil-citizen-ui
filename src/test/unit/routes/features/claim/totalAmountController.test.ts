@@ -8,6 +8,8 @@ import {
   mockCivilClaimUndefined,
 } from '../../../../utils/mockDraftStore';
 
+jest.mock('../../../../../main/modules/oidc');
+
 describe('Total amount', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');

@@ -20,6 +20,7 @@ import {HowMuchDoYouOwe} from 'common/form/models/admission/partialAdmission/how
 import {WhyDoYouDisagree} from 'common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 
+jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/common/utils/urlFormatter');
 jest.mock('../../../../../main/common/utils/dateUtils');
 jest.mock('../../../../../main/services/features/claimantResponse/claimantResponseService');

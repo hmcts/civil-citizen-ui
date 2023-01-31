@@ -4,6 +4,8 @@ import nock from 'nock';
 import config from 'config';
 import {CLAIM_COMPLETING_CLAIM_URL} from 'routes/urls';
 
+jest.mock('../../../../../main/modules/oidc');
+
 describe('Completing Claim', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');

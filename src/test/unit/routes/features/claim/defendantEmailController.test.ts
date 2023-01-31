@@ -9,6 +9,7 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {Claim} from '../../../../../main/common/models/claim';
 import {getCaseDataFromStore} from '../../../../../main/modules/draft-store/draftStoreService';
 
+jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
