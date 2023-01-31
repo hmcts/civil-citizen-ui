@@ -7,11 +7,12 @@ import {
 } from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {PinType} from '../../../../common/models/firstContact/pin';
-import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
+import {CivilServiceClient, convertCaseToClaimAndIncludeState} from '../../../../app/client/civilServiceClient';
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {YesNo} from '../../../../common/form/models/yesNo';
 import {saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {AxiosResponse} from 'axios';
+import {Claim} from '../../../../common/models/claim';
 
 const pinController = Router();
 const pinViewPath = 'features/public/firstContact/pin';
@@ -40,7 +41,8 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: Request, res: Response, ne
       renderView(pinForm, !!req.body.pin, res);
     } else {
       const response: AxiosResponse = await civilServiceClient.verifyPin(<AppRequest>req, pinForm.model.pin, cookie.claimReference);
-      await saveDraftClaim(response.data.id, response.data.case_data);
+      const claim: Claim = await convertCaseToClaimAndIncludeState(response.data);
+      await saveDraftClaim(claim.id, claim);
       cookie.claimId = response.data.id;
       cookie.pinVerified = YesNo.YES;
       res.cookie('firstContact', cookie);

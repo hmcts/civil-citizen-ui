@@ -25,7 +25,7 @@ import {CourtLocation} from '../../common/models/courts/courtLocations';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
 
-const convertCaseToClaimAndIncludeState = (caseDetails: CivilClaimResponse): Claim => {
+export const convertCaseToClaimAndIncludeState = (caseDetails: CivilClaimResponse): Claim => {
   const claim: Claim = Claim.fromCCDCaseData(caseDetails.case_data);
   claim.ccdState = caseDetails.state;
   return claim;
