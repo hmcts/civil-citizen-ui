@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {
   AGREED_TO_MORE_TIME_URL,
-  CLAIM_TASK_LIST_URL,
+  RESPONSE_TASK_LIST_URL,
   REQUEST_MORE_TIME_URL,
   RESPONSE_DEADLINE_OPTIONS_URL,
 } from '../../../urls';
@@ -31,8 +31,7 @@ responseDeadlineOptionsController.get(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGua
       const claim = await getCaseDataFromStore(req.params.id);
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       renderView(res, new GenericForm(new ResponseDeadline(claim.responseDeadline?.option)), claim, lang);
-    }
-    catch (error) {
+    } catch (error) {
       next(error);
     }
   });
@@ -52,11 +51,11 @@ responseDeadlineOptionsController.post(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGu
           break;
         case 'no':
           responseOption = ResponseOptions.NO;
-          redirectUrl = constructResponseUrlWithIdParams(claimId, CLAIM_TASK_LIST_URL);
+          redirectUrl = constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL);
           break;
         case 'request-refused':
           responseOption = ResponseOptions.REQUEST_REFUSED;
-          redirectUrl = constructResponseUrlWithIdParams(claimId, CLAIM_TASK_LIST_URL);
+          redirectUrl = constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL);
           break;
         case 'yes':
           responseOption = ResponseOptions.YES;
@@ -73,8 +72,7 @@ responseDeadlineOptionsController.post(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGu
         await responseDeadlineService.saveDeadlineResponse(claimId, responseOption);
         res.redirect(redirectUrl);
       }
-    }
-    catch (error) {
+    } catch (error) {
       next(error);
     }
   });

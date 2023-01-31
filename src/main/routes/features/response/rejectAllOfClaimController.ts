@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {CITIZEN_REJECT_ALL_CLAIM_URL, CLAIM_TASK_LIST_URL, SEND_RESPONSE_BY_EMAIL_URL} from '../../urls';
+import {CITIZEN_REJECT_ALL_CLAIM_URL, RESPONSE_TASK_LIST_URL, SEND_RESPONSE_BY_EMAIL_URL} from '../../urls';
 import {getRejectAllOfClaim, saveRejectAllOfClaim} from '../../../services/features/response/rejectAllOfClaimService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../common/form/models/genericForm';
@@ -49,7 +49,7 @@ rejectAllOfClaimController.post(CITIZEN_REJECT_ALL_CLAIM_URL, async (req: Reques
       if (req.body.option === RejectAllOfClaimType.COUNTER_CLAIM) {
         res.redirect(constructResponseUrlWithIdParams(claimId, SEND_RESPONSE_BY_EMAIL_URL));
       } else {
-        res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_TASK_LIST_URL));
+        res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
       }
     }
   } catch (error) {
