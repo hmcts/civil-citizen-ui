@@ -78,12 +78,7 @@ app.use((_req, res) => {
 
 // error handler
 app.use((err: HTTPError, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
-  // Redis DraftStore failure message is thrown by our tests therefore we are excluding the stack trace
-  if (err.message.includes('Redis DraftStore failure', 0)) {
-    logger.error(err.message);
-  } else {
-    logger.error(`${err.stack || err}`);
-  }
+  logger.error(`${err.stack || err}`);
 
   // set locals, only providing error in development
   res.locals.message = err.message;
