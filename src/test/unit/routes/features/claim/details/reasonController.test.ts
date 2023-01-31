@@ -12,7 +12,6 @@ import {
 import {Claim} from '../../../../../../main/common/models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/services/features/claim/details/claimDetailsService');
 
 const mockClaimDetails = getClaimDetails as jest.Mock;
