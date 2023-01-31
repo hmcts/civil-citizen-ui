@@ -14,7 +14,11 @@ import {ResponseType} from 'form/models/responseType';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {Party} from 'models/party';
 import {PartialAdmission} from 'models/partialAdmission';
-import {PaymentIntention} from 'form/models/admission/paymentIntention';
+import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
+import {ClaimResponseStatus} from 'common/models/claimResponseStatus';
+import {HowMuchDoYouOwe} from 'common/form/models/admission/partialAdmission/howMuchDoYouOwe';
+import {WhyDoYouDisagree} from 'common/form/models/admission/partialAdmission/whyDoYouDisagree';
+import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 
 jest.mock('../../../../../main/common/utils/urlFormatter');
 jest.mock('../../../../../main/common/utils/dateUtils');
@@ -46,6 +50,8 @@ describe('Review Defendant\'s Response Controller', () => {
     await request(app).get(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL).expect((res) => {
       expect(res.status).toBe(200);
       expect(res.text).toContain('The defendant’s response');
+      expect(res.text).toContain('Full response');
+      expect(res.text).toContain('Download their full response and hearing requirements (PDF)');
     });
   });
 
@@ -59,31 +65,50 @@ describe('Review Defendant\'s Response Controller', () => {
     });
   });
 
-  it('should redirect *How they want to pay* page', async () => {
+  it('should display *How they want to pay* section when claimant response status is set to partial admit paid by set date', async () => {
+    claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE;
     claim.respondent1 = new Party();
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
     claim.partialAdmission = new PartialAdmission();
     claim.partialAdmission.paymentIntention = new PaymentIntention();
+    claim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(100, 1000);
+    claim.partialAdmission.paymentIntention.paymentDate = new Date(Date.now());
+    claim.partialAdmission.whyDoYouDisagree = new WhyDoYouDisagree('Reasons here...');
     claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
     mockGetCaseData.mockImplementation(() => claim);
     await request(app)
-      .post(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL)
+      .get(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL)
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('How they want to pay');
+        expect(res.text).toContain('Why they can’t pay the full amount now');
+        expect(res.text).toContain('See their financial details');
       });
   });
 
-  it('should redirect to claimant response task list.', async () => {
+  it('should display *How they want to pay* section when claimant response status is set to partial admit paid by instalments', async () => {
+    claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS;
     claim.respondent1 = new Party();
-    claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+    claim.partialAdmission = new PartialAdmission();
+    claim.partialAdmission.paymentIntention = new PaymentIntention();
+    claim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(100, 1000);
+    claim.partialAdmission.whyDoYouDisagree = new WhyDoYouDisagree('Reasons here...');
+    claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
+    const firstRepaymentDate = new Date(Date.now());
+    firstRepaymentDate.setDate(firstRepaymentDate.getDate() + 1);
+    claim.partialAdmission.paymentIntention.repaymentPlan = {
+      paymentAmount: 10,
+      repaymentFrequency: TransactionSchedule.WEEK,
+      firstRepaymentDate: firstRepaymentDate,
+    };
     mockGetCaseData.mockImplementation(() => claim);
     await request(app)
-      .post(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL)
+      .get(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL)
       .expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toEqual('VALID_URL');
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('How they want to pay');
+        expect(res.text).toContain('The defendant suggested this repayment plan:');
       });
   });
-
 });

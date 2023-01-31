@@ -11,6 +11,7 @@ import {
   constructFinancialSupportSection,
   constructMonthlyExpensesSection,
   constructMonthlyIncomeSection,
+  constructRepaymentPlanSection,
   constructSelfEmploymentDetailsSection,
   getClaimantResponse, getFinancialDetails,
   saveClaimantResponse,
@@ -37,6 +38,14 @@ import {PaymentOptionType} from '../../../../../main/common/form/models/admissio
 import {CcjPaymentOption} from 'form/models/claimantResponse/ccj/ccjPaymentOption';
 import {TransactionSource} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSource';
 import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {PartialAdmission} from 'common/models/partialAdmission';
+import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
+import {HowMuchDoYouOwe} from 'common/form/models/admission/partialAdmission/howMuchDoYouOwe';
+import {ResponseType} from 'common/form/models/responseType';
+import {Party} from 'common/models/party';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {getFinalPaymentDate} from 'common/utils/repaymentUtils';
+import {t} from 'i18next';
 
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/common/utils/languageToggleUtils');
@@ -1260,6 +1269,111 @@ describe('Summary section', () => {
     it('should call all construct sections', () => {
       const financialDetails = getFinancialDetails(claim, 'cimode');
       expect(financialDetails.length).toBe(9);
+    });
+  });
+
+  describe('constructRepaymentPlanSection', () => {
+
+    const getExpectedData = (frequency:string,planLength:string) => {
+      return  [
+        {
+          classes: 'govuk-summary-list__row--no-border',
+          key: {
+            text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.REGULAR_PAYMENTS'),
+          },
+          value: {
+            text: '£50',
+          },
+        },
+        {
+          classes: 'govuk-summary-list__row--no-border',
+          key: {
+            text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.FREQUENCY_OF_PAYMENTS'),
+          },
+          value: {
+            text: frequency,
+          },
+        },
+        {
+          classes: 'govuk-summary-list__row--no-border',
+          key: {
+            text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.FIRST_PAYMENT_DATE'),
+          },
+          value: {
+            text: formatDateToFullDate(new Date(Date.now())),
+          },
+        },
+        {
+          classes: 'govuk-summary-list__row--no-border',
+          key: {
+            text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.FINAL_PAYMENT_DATE'),
+          },
+          value: {
+            text: formatDateToFullDate(getFinalPaymentDate(claim)),
+          },
+        },
+        {
+          classes: 'govuk-summary-list__row--no-border',
+          key: {
+            text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.LENGTH'),
+          },
+          value: {
+            text: planLength,
+          },
+        },
+      ];
+    };
+
+    beforeAll(() => {
+      claim.respondent1 = new Party();
+      claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+      claim.partialAdmission = new PartialAdmission();
+      claim.partialAdmission.alreadyPaid = {
+        option: YesNo.NO,
+      };
+      claim.partialAdmission.paymentIntention = new PaymentIntention();
+      claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
+      claim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe();
+      claim.partialAdmission.howMuchDoYouOwe.amount = 200;
+      claim.partialAdmission.howMuchDoYouOwe.totalAmount = 1000;
+      claim.partialAdmission.paymentIntention.repaymentPlan = {
+        paymentAmount: 50,
+        repaymentFrequency: TransactionSchedule.WEEK,
+        firstRepaymentDate: new Date(Date.now()),
+      };
+    });
+    it('should call all construct sections when transaction schedule is set to WEEK', () => {
+      const response = constructRepaymentPlanSection(claim, 'cimode');
+      const expectedData = getExpectedData('COMMON.FREQUENCY_OF_PAYMENTS.WEEKLY','4 COMMON.SCHEDULE.WEEKS_LOWER_CASE');
+      for (let i = 0; i < expectedData.length; i++) {
+        expect(response).toContainEqual(expectedData[i]);
+      }
+    });
+
+    it('should call all construct sections when transaction schedule is set to TWO_WEEKS', () => {
+      claim.partialAdmission.paymentIntention.repaymentPlan = {
+        paymentAmount: 50,
+        repaymentFrequency: TransactionSchedule.TWO_WEEKS,
+        firstRepaymentDate: new Date(Date.now()),
+      };
+      const response = constructRepaymentPlanSection(claim, 'cimode');
+      const expectedData = getExpectedData('COMMON.FREQUENCY_OF_PAYMENTS.TWO_WEEKS','8 COMMON.SCHEDULE.WEEKS_LOWER_CASE');
+      for (let i = 0; i < expectedData.length; i++) {
+        expect(response).toContainEqual(expectedData[i]);
+      }
+    });
+
+    it('should call all construct sections when transaction schedule is set to MONTH', () => {
+      claim.partialAdmission.paymentIntention.repaymentPlan = {
+        paymentAmount: 50,
+        repaymentFrequency: TransactionSchedule.MONTH,
+        firstRepaymentDate: new Date(Date.now()),
+      };
+      const response = constructRepaymentPlanSection(claim, 'cimode');
+      const expectedData = getExpectedData('COMMON.FREQUENCY_OF_PAYMENTS.MONTHLY','4 COMMON.SCHEDULE.MONTHS_LOWER_CASE');
+      for (let i = 0; i < expectedData.length; i++) {
+        expect(response).toContainEqual(expectedData[i]);
+      }
     });
   });
 });
