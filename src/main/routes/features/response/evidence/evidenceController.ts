@@ -7,7 +7,7 @@ import {
 } from '../../../../services/features/response/evidence/evidenceService';
 import {
   CITIZEN_EVIDENCE_URL,
-  CLAIM_TASK_LIST_URL,
+  RESPONSE_TASK_LIST_URL,
 } from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import * as utilEvidence from '../../../../common/form/models/evidence/transformAndRemoveEmptyValues';
@@ -41,7 +41,7 @@ evidenceController.post(CITIZEN_EVIDENCE_URL, async (req: Request, res: Response
     } else {
       form = new GenericForm(new Evidence(req.body.comment, utilEvidence.removeEmptyValueToEvidences(req.body)));
       await saveEvidence(req.params.id, form.model);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
     }
   } catch (error) {
     next(error);

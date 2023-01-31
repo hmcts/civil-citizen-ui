@@ -5,7 +5,7 @@ import {app} from '../../../../../../../../main/app';
 import {
   CITIZEN_PAYMENT_DATE_URL,
   CITIZEN_PAYMENT_OPTION_URL,
-  CLAIM_TASK_LIST_URL,
+  RESPONSE_TASK_LIST_URL,
 } from '../../../../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../../utils/errorMessageTestConstants';
@@ -65,7 +65,7 @@ describe('Payment Option Controller', () => {
         .send('paymentType=IMMEDIATELY')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
     it('should redirect to claim list when instalments option is selected', async () => {
@@ -74,7 +74,7 @@ describe('Payment Option Controller', () => {
         .send('paymentType=IMMEDIATELY')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
     it('should redirect to claim list when instalments option is selected', async () => {

@@ -4,7 +4,7 @@ import config from 'config';
 import nock from 'nock';
 import {
   CITIZEN_REJECT_ALL_CLAIM_URL,
-  CLAIM_TASK_LIST_URL,
+  RESPONSE_TASK_LIST_URL,
   SEND_RESPONSE_BY_EMAIL_URL,
 } from 'routes/urls';
 import {
@@ -89,7 +89,7 @@ describe('rejectAllOfClaim', () => {
         .send({option: RejectAllOfClaimType.DISPUTE})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
 
@@ -99,7 +99,7 @@ describe('rejectAllOfClaim', () => {
         .send({option: RejectAllOfClaimType.ALREADY_PAID})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
 

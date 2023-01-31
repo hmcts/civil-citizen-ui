@@ -1,7 +1,7 @@
 import {NextFunction, Response, Router} from 'express';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {CompanyTelephoneNumber} from '../../../common/form/models/mediation/companyTelephoneNumber';
-import {CAN_WE_USE_COMPANY_URL, CLAIM_TASK_LIST_URL} from '../../urls';
+import {CAN_WE_USE_COMPANY_URL, RESPONSE_TASK_LIST_URL} from '../../urls';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {
   getCompanyTelephoneNumberData,
@@ -49,7 +49,7 @@ companyTelephoneNumberController.post(CAN_WE_USE_COMPANY_URL, async (req, res, n
         await saveMediation(req.params.id, new GenericYesNo(), 'mediationDisagreement');
       }
       await saveCompanyTelephoneNumberData(req.params.id, form.model);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
     }
   } catch (error) {
     next(error);
