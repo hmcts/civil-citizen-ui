@@ -85,7 +85,6 @@ export class Claim {
   id: string;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
-
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
     claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
     claim.respondent1 = toCUIParty(ccdClaim?.respondent1);
@@ -338,7 +337,7 @@ export class Claim {
   }
 
   hasInterest(): boolean {
-    return this.claimInterest === YesNo.YES;
+    return this.claimInterest?.toLowerCase() === YesNo.YES;
   }
 
   hasHelpWithFees(): boolean {
@@ -415,6 +414,22 @@ export class Claim {
 
   getDebts(): Debts | undefined {
     return this.statementOfMeans?.debts;
+  }
+
+  isInterestClaimOptionsBreakDownInterest(): boolean {
+    return this.interest?.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST;
+  }
+
+  getDefendantPaidAmount(): number | undefined {
+    return this.claimantResponse?.ccjRequest?.paidAmount?.amount;
+  }
+
+  hasDefendantPaid(): boolean {
+    return this.claimantResponse?.ccjRequest?.paidAmount?.option === YesNo.YES;
+  }
+
+  getHowTheInterestCalculatedReason(): string {
+    return this.interest?.totalInterest?.reason;
   }
 
   private getName(party: Party): string {
