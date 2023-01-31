@@ -26,7 +26,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
 
   const getResponseToClaim = () => {
     return claim.isFullDefence()
-      || claim.isFullAdmission() && paymentOption !== PaymentOptionType.IMMEDIATELY
+    || claim.isFullAdmission() && paymentOption !== PaymentOptionType.IMMEDIATELY
       ? buildYourResponseToClaimSection(claim, claimId, lang)
       : null;
   };
@@ -57,14 +57,14 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
 
   const getResponsePaymentSection = () => {
     return claim.isFullAdmission()
-      || claim.isPartialAdmission() && alreadyPaidPartAdmit === YesNo.NO
+    || claim.isPartialAdmission() && alreadyPaidPartAdmit === YesNo.NO
       ? buildYourResponsePaymentSection(claim, claimId, lang)
       : null;
   };
 
   const getFreeTelephoneMediationSection = () => {
     return claim.isFullDefence()
-      || claim.isPartialAdmission()
+    || claim.isPartialAdmission()
       ? buildFreeTelephoneMediationSection(claim, claimId, lang)
       : null;
   };
@@ -89,8 +89,8 @@ export const getSummarySections = (claimId: string, claim: Claim, lang?: string 
 };
 
 export const resetCheckboxFields = (statementOfTruth: StatementOfTruthForm | QualifiedStatementOfTruth): StatementOfTruthForm | QualifiedStatementOfTruth => {
-  statementOfTruth.directionsQuestionnaireSigned = '';
-  statementOfTruth.signed = '';
+  statementOfTruth.directionsQuestionnaireSigned = undefined;
+  statementOfTruth.signed = undefined;
   return statementOfTruth;
 };
 
