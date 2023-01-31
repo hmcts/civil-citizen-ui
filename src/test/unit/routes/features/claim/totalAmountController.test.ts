@@ -1,4 +1,5 @@
 import request from 'supertest';
+
 const session = require('supertest-session');
 import {app} from '../../../../../main/app';
 import nock from 'nock';
@@ -27,7 +28,7 @@ describe('Total amount', () => {
         .reply(200, '100');
       nock('http://localhost:4000')
         .get('/fees/claim/undefined')
-        .reply(200, '50');
+        .reply(200, {'calculatedAmountInPence': '50'});
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       const res = await request(app)
         .get(CLAIM_TOTAL_URL.replace(':id', '5129'));
