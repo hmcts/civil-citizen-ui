@@ -420,9 +420,7 @@ describe('Claimant Response Task List builder', () => {
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
       });
-    })
-
-
+    });
   });
 
   describe('Submit section', () => {
