@@ -28,7 +28,7 @@ describe('Judgment Amount Summary', () => {
   });
 
   describe('on GET', () => {
-    it('should return total amount page', async () => {
+    it('should return judgement summary page', async () => {
       nock('http://localhost:4000')
         .get('/fees/claim/1000')
         .reply(200, {'calculatedAmountInPence': '50'});

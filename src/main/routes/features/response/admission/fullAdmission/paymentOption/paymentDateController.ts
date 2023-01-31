@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {PaymentDate} from '../../../../../../common/form/models/admission/fullAdmission/paymentOption/paymentDate';
-import {CITIZEN_PAYMENT_DATE_URL, CLAIM_TASK_LIST_URL} from '../../../../../urls';
+import {CITIZEN_PAYMENT_DATE_URL, RESPONSE_TASK_LIST_URL} from '../../../../../urls';
 import {GenericForm} from '../../../../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../../../../common/utils/urlFormatter';
 import {
@@ -39,7 +39,7 @@ paymentDateController
       } else {
         try {
           await paymentDateService.savePaymentDate(req.params.id, paymentDate.date, ResponseType.FULL_ADMISSION);
-          res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
+          res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
         } catch (error) {
           next(error);
         }
