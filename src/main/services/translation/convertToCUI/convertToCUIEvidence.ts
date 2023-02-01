@@ -1,58 +1,56 @@
-import {EvidenceItem} from '../../../common/models/evidence/evidenceItem';
-import {EvidenceType} from '../../../common/models/evidence/evidenceType';
-import {CCDEvidence, CCDEvidenceType} from '../../../common/models/ccdResponse/ccdEvidence';
-import {Evidence} from '../../../common/form/models/evidence/evidence';
+import {EvidenceItem} from 'models/evidence/evidenceItem';
+import {EvidenceType} from 'models/evidence/evidenceType';
+import {CCDEvidence, CCDEvidenceType} from 'models/ccdResponse/ccdEvidence';
+import {Evidence} from 'form/models/evidence/evidence';
 
-export const toCCDEvidence = (evidence: Evidence): CCDEvidence[] => {
-  if (!evidence?.evidenceItem) return undefined;
-  const ccdEvidences: CCDEvidence[] = [];
-  evidence.evidenceItem.forEach((row, index) => {
-    const ccdEvidence: CCDEvidence = {
-      id: index.toString(),
-      value: {
-        evidenceType: convertToCCDEvidenceType(row.type),
-        ...calculateCCDEvidenceValue(row),
-      },
+export const toCUIEvidence = (ccdEvidence: CCDEvidence[]): Evidence => {
+  if (!ccdEvidence) return undefined;
+  const cuiEvidenceItems: EvidenceItem[] = [];
+  ccdEvidence.forEach((row) => {
+    const evidenceItem: EvidenceItem = {
+      type: convertToCUIEvidenceType(row.value.evidenceType),
+      description: calculateCUIEvidenceValue(row),
     };
-    ccdEvidences.push(ccdEvidence);
+    cuiEvidenceItems.push(evidenceItem);
   });
-  return ccdEvidences;
+  return new Evidence('', cuiEvidenceItems);
 };
 
-const calculateCCDEvidenceValue = (row: EvidenceItem) => {
-  switch (row.type) {
-    case EvidenceType.CONTRACTS_AND_AGREEMENTS:
-      return { contractAndAgreementsEvidence: row.description };
-    case EvidenceType.EXPERT_WITNESS:
-      return { expertWitnessEvidence: row.description };
-    case EvidenceType.CORRESPONDENCE:
-      return { lettersEmailsAndOtherCorrespondenceEvidence: row.description };
-    case EvidenceType.PHOTO:
-      return { photoEvidence: row.description };
-    case EvidenceType.RECEIPTS:
-      return { receiptsEvidence: row.description };
-    case EvidenceType.STATEMENT_OF_ACCOUNT:
-      return { statementOfTruthEvidence: row.description };
-    case EvidenceType.OTHER:
-      return { otherEvidence: row.description };
+const calculateCUIEvidenceValue = (row: CCDEvidence) => {
+  switch (row.value.evidenceType) {
+    case CCDEvidenceType.CONTRACTS_AND_AGREEMENTS:
+      return row.value.contractAndAgreementsEvidence;
+    case CCDEvidenceType.EXPERT_WITNESS:
+      return row.value.expertWitnessEvidence;
+    case CCDEvidenceType.LETTERS_EMAILS_AND_OTHER_CORRESPONDENCE:
+      return row.value.lettersEmailsAndOtherCorrespondenceEvidence;
+    case CCDEvidenceType.PHOTO_EVIDENCE:
+      return row.value.photoEvidence;
+    case CCDEvidenceType.RECEIPTS:
+      return row.value.receiptsEvidence;
+    case CCDEvidenceType.STATEMENT_OF_ACCOUNT:
+      return row.value.statementOfTruthEvidence;
+    case CCDEvidenceType.OTHER:
+      return row.value.otherEvidence;
   }
 };
 
-const convertToCCDEvidenceType = (type: EvidenceType) => {
+const convertToCUIEvidenceType = (type: CCDEvidenceType) => {
   switch (type) {
-    case EvidenceType.CONTRACTS_AND_AGREEMENTS:
-      return CCDEvidenceType.CONTRACTS_AND_AGREEMENTS;
-    case EvidenceType.EXPERT_WITNESS:
-      return CCDEvidenceType.EXPERT_WITNESS;
-    case EvidenceType.CORRESPONDENCE:
-      return CCDEvidenceType.LETTERS_EMAILS_AND_OTHER_CORRESPONDENCE;
-    case EvidenceType.PHOTO:
-      return CCDEvidenceType.PHOTO_EVIDENCE;
-    case EvidenceType.RECEIPTS:
-      return CCDEvidenceType.RECEIPTS;
-    case EvidenceType.STATEMENT_OF_ACCOUNT:
-      return CCDEvidenceType.STATEMENT_OF_ACCOUNT;
-    case EvidenceType.OTHER:
-      return CCDEvidenceType.OTHER;
+    case CCDEvidenceType.CONTRACTS_AND_AGREEMENTS:
+      return EvidenceType.CONTRACTS_AND_AGREEMENTS;
+    case CCDEvidenceType.EXPERT_WITNESS:
+      return EvidenceType.EXPERT_WITNESS;
+    case CCDEvidenceType.LETTERS_EMAILS_AND_OTHER_CORRESPONDENCE:
+      return EvidenceType.CORRESPONDENCE;
+    case CCDEvidenceType.PHOTO_EVIDENCE:
+      return EvidenceType.PHOTO;
+    case CCDEvidenceType.RECEIPTS:
+      return EvidenceType.RECEIPTS;
+    case CCDEvidenceType.STATEMENT_OF_ACCOUNT:
+      return EvidenceType.STATEMENT_OF_ACCOUNT;
+    case CCDEvidenceType.OTHER:
+      return EvidenceType.OTHER;
   }
 };
+

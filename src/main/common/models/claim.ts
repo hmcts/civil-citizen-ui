@@ -49,7 +49,8 @@ import {CourtOrders} from '../../common/form/models/statementOfMeans/courtOrders
 import {PriorityDebts} from '../../common/form/models/statementOfMeans/priorityDebts';
 import {Debts} from '../../common/form/models/statementOfMeans/debts/debts';
 import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreference';
-import {Reason} from '../../common/form/models/claim/details/reason';
+import {toCUIEvidence} from 'services/translation/convertToCUI/convertToCUIEvidence';
+import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIClaimDetails';
 export class Claim {
   legacyCaseReference: string;
   applicant1?: Party;
@@ -87,8 +88,8 @@ export class Claim {
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
-    claim.claimDetails = new ClaimDetails();
-    claim.claimDetails.reason = new Reason(ccdClaim.detailsOfClaim);
+    claim.claimDetails = toCUIClaimDetails(ccdClaim);
+    claim.evidence = toCUIEvidence(ccdClaim?.speclistYourEvidenceList);
     claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
     claim.respondent1 = toCUIParty(ccdClaim?.respondent1);
     return claim;
