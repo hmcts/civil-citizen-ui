@@ -6,7 +6,7 @@ import {
   saveRepaymentPlanData,
 } from 'services/features/response/repaymentPlan/repaymentPlanService';
 import {GenericForm} from 'common/form/models/genericForm';
-import {CITIZEN_REPAYMENT_PLAN_PARTIAL_URL, CLAIM_TASK_LIST_URL} from '../../../../../urls';
+import {CITIZEN_REPAYMENT_PLAN_PARTIAL_URL, RESPONSE_TASK_LIST_URL} from '../../../../../urls';
 import {getFirstPaymentExampleDate} from '../../fullAdmission/repaymentPlan/repaymentPlanController';
 import {ResponseType} from 'common/form/models/responseType';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
@@ -25,7 +25,7 @@ function renderView(form: GenericForm<RepaymentPlanForm>, res: Response, amount:
   });
 }
 
-repaymentPlanPartAdmissionController.get(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL, PartAdmitGuard.apply(CLAIM_TASK_LIST_URL),
+repaymentPlanPartAdmissionController.get(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL, PartAdmitGuard.apply(RESPONSE_TASK_LIST_URL),
   async (req, res, next: NextFunction) => {
     try {
       const claim = await getCaseDataFromStore(req.params.id);
@@ -48,7 +48,7 @@ repaymentPlanPartAdmissionController.post(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL,
         renderView(repaymentPlanForm, res, amount);
       } else {
         await saveRepaymentPlanData(req.params.id, repaymentPlanForm.model, true);
-        res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
+        res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
       }
     } catch (error) {
       next(error);

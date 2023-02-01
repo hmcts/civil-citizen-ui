@@ -5,7 +5,7 @@ import {
   saveWhyDoYouDisagreeData,
 } from '../../../../../services/features/response/admission/whyDoYouDisagreeService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {CITIZEN_TIMELINE_URL, CITIZEN_WHY_DO_YOU_DISAGREE_URL, CLAIM_TASK_LIST_URL} from '../../../../urls';
+import {CITIZEN_TIMELINE_URL, CITIZEN_WHY_DO_YOU_DISAGREE_URL, RESPONSE_TASK_LIST_URL} from '../../../../urls';
 import {WhyDoYouDisagreeForm} from '../../../../../common/models/whyDoYouDisagreeForm';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {ResponseType} from '../../../../../common/form/models/responseType';
@@ -19,7 +19,7 @@ function renderView(form: GenericForm<WhyDoYouDisagree>, _claimAmount: number, r
   res.render(whyDoYouDisagreeViewPath, {form, claimAmount: _claimAmount});
 }
 
-whyDoYouDisagreeController.get(CITIZEN_WHY_DO_YOU_DISAGREE_URL, PartAdmitHowMuchHaveYouPaidGuard.apply(CLAIM_TASK_LIST_URL), async (req, res, next: NextFunction) => {
+whyDoYouDisagreeController.get(CITIZEN_WHY_DO_YOU_DISAGREE_URL, PartAdmitHowMuchHaveYouPaidGuard.apply(RESPONSE_TASK_LIST_URL), async (req, res, next: NextFunction) => {
   try {
     const form = await getWhyDoYouDisagreeForm(req.params.id, ResponseType.PART_ADMISSION);
     claimAmount = form.claimAmount;

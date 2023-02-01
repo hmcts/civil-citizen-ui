@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {CLAIM_DETAILS_URL, CLAIM_TASK_LIST_URL} from '../../urls';
+import {CLAIM_DETAILS_URL, RESPONSE_TASK_LIST_URL} from '../../urls';
 import {getDescription, getTaskLists, getTitle} from '../../../services/features/response/taskListService';
 import {Claim} from '../../../common/models/claim';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
@@ -9,7 +9,7 @@ import {getClaimById} from '../../../modules/utilityService';
 const taskListViewPath = 'features/response/task-list';
 const taskListController = Router();
 
-taskListController.get(CLAIM_TASK_LIST_URL, async (req: AppRequest, res, next) => {
+taskListController.get(RESPONSE_TASK_LIST_URL, async (req: AppRequest, res, next) => {
   try {
     const currentClaimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;

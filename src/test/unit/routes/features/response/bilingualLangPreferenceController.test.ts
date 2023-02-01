@@ -2,14 +2,11 @@ import {app} from '../../../../../main/app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {
-  BILINGUAL_LANGUAGE_PREFERENCE_URL,
-  CLAIM_TASK_LIST_URL,
-} from 'routes/urls';
+import {BILINGUAL_LANGUAGE_PREFERENCE_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim,mockRedisFailure} from '../../../../utils/mockDraftStore';
-import { ClaimBilingualLanguagePreference } from 'common/models/claimBilingualLanguagePreference';
-import { t } from 'i18next';
+import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
+import {t} from 'i18next';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -21,7 +18,7 @@ describe('Repayment Plan', () => {
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
+      .reply(200, {id_token: citizenRoleToken});
   });
 
   describe('on Get', () => {
@@ -64,7 +61,7 @@ describe('Repayment Plan', () => {
         .send({option: ClaimBilingualLanguagePreference.ENGLISH})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
 
@@ -75,7 +72,7 @@ describe('Repayment Plan', () => {
         .send({option: ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
 

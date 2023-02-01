@@ -2,7 +2,7 @@ import {app} from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import request from 'supertest';
-import {CITIZEN_PA_PAYMENT_DATE_URL, CLAIM_TASK_LIST_URL} from 'routes/urls';
+import {CITIZEN_PA_PAYMENT_DATE_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {
   mockCivilClaim,
   mockCivilClaimUndefined,
@@ -93,7 +93,7 @@ describe('Payment date', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
     it('should return errors on no input', async () => {
@@ -150,7 +150,7 @@ describe('Payment date', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain(`Redirecting to ${CLAIM_TASK_LIST_URL}`);
+          expect(res.text).toContain(`Redirecting to ${RESPONSE_TASK_LIST_URL}`);
         });
     });
   });
