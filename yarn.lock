@@ -5742,7 +5742,7 @@ interpret@^3.1.1:
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-3.1.1.tgz#5be0ceed67ca79c6c4bc5cf0d7ee843dcea110c4"
   integrity sha512-6xwYfHbajpoF0xLW+iwLkhwgvLoZDfjYfoFNu8ftMoXINzwuymNLd9u/KmwtdT2GbR+/Cz66otEGEVVUHX9QLQ==
 
-ioredis-mock@^8.2.3:
+ioredis-mock@^8.2.6:
   version "8.2.6"
   resolved "https://registry.yarnpkg.com/ioredis-mock/-/ioredis-mock-8.2.6.tgz#66af2165e39dd957dedfbc44118fc3d323a59610"
   integrity sha512-Dc4fWVicryn1O6ZLT77TgKTATVBnk4XpUAYMQetKTLlKs4j7+/+6SUTYy0xnsQHVJedR0RBP3nCeqePobU/kog==
@@ -8980,12 +8980,10 @@ serialize-javascript@4.0.0:
   dependencies:
     randombytes "^2.1.0"
 
-serialize-javascript@^1.7.0, serialize-javascript@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/serialize-javascript/-/serialize-javascript-3.1.0.tgz#8bf3a9170712664ef2561b44b691eafe399214ea"
-  integrity sha512-JIJT1DGiWmIKhzRsG91aS6Ze4sFUrYbltlkg2onR5OrnNM02Kl/hnY/T4FN2omvyeBbQmMJv+K4cPOpGzOTFBg==
-  dependencies:
-    randombytes "^2.1.0"
+serialize-javascript@^1.7.0:
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/serialize-javascript/-/serialize-javascript-1.9.1.tgz#cfc200aef77b600c47da9bb8149c943e798c2fdb"
+  integrity sha512-0Vb/54WJ6k5v8sSWN09S0ora+Hnr+cX40r9F170nT+mSkaxltoE/7R3OrIdBSUv1OoiobH1QoWQbCnAO+e8J1A==
 
 serialize-javascript@^6.0.0:
   version "6.0.1"
