@@ -13,6 +13,7 @@ import {t} from 'i18next';
 import {CourtProposedPlanOptions} from 'common/form/models/claimantResponse/courtProposedPlan';
 
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/draft-store');
 
 describe('Claimant court proposed plan Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

@@ -8,6 +8,7 @@ import {mockCivilClaim, mockRedisFailure, mockRedisWithMediationProperties} from
 import {NoMediationReasonOptions} from 'form/models/mediation/noMediationReasonOptions';
 
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/draft-store');
 
 describe('I dont want free meditation', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

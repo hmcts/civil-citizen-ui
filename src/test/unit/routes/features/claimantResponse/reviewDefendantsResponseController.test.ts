@@ -21,6 +21,7 @@ import {WhyDoYouDisagree} from 'common/form/models/admission/partialAdmission/wh
 import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/common/utils/urlFormatter');
 jest.mock('../../../../../main/common/utils/dateUtils');
 jest.mock('../../../../../main/services/features/claimantResponse/claimantResponseService');

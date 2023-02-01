@@ -12,6 +12,7 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
 
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/draft-store');
 
 describe('Full Admit How They Want To Pay Page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

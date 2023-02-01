@@ -7,6 +7,7 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/draft-store');
 
 describe('Request extra 4 weeks to Settle Claim Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

@@ -9,6 +9,7 @@ import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLang
 import {t} from 'i18next';
 
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/draft-store');
 
 describe('Repayment Plan', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

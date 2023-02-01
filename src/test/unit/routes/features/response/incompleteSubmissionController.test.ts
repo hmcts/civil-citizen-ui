@@ -16,6 +16,7 @@ const {app} = require('../../../../../main/app');
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/services/features/response/checkAnswers/checkAnswersService');
+jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/services/features/response/taskListService');
 const mockGetCaseDataFromStore = getCaseDataFromStore as jest.Mock;

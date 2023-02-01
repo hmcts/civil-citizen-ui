@@ -17,6 +17,7 @@ import {ClaimantResponse} from '../../../../../main/common/models/claimantRespon
 import {Mediation} from '../../../../../main/common/models/mediation/mediation';
 
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/draft-store');
 
 const applicantTypeMock = require('./applicantTypeMock.json');
 

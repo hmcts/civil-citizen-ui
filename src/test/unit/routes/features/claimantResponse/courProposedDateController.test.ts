@@ -13,6 +13,7 @@ import {t} from 'i18next';
 import {CourtProposedDateOptions} from '../../../../../main/common/form/models/claimantResponse/courtProposedDate.ts';
 
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/draft-store');
 
 describe('Claimant court proposed date Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

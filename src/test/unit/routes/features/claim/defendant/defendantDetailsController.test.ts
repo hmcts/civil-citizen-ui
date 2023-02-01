@@ -18,7 +18,6 @@ import {
 } from '../../../../../../main/services/features/common/defendantDetailsService';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/services/features/common/defendantDetailsService');
 
 const mockDefendantInformation = getDefendantInformation as jest.Mock;
@@ -107,7 +106,8 @@ describe('Defendant details controller', () => {
         });
         const res = await request(app).get(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL);
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Enter the defendant');
+        console.log(res.text);
+        expect(res.text).toContain('Enter the defendant&#39;s details');
       });
 
       it('should render defendant details page when data is already set in redis', async () => {

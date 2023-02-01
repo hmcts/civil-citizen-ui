@@ -12,6 +12,7 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import { ChooseHowToProceed } from 'common/models/chooseHowToProceed';
 
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/draft-store');
 
 describe('Choose how to proceed Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
