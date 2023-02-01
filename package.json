@@ -73,7 +73,7 @@
     "jquery": "^3.6.3",
     "jsdom": "^20.0.3",
     "jwt-decode": "^3.1.2",
-    "launchdarkly-node-client-sdk": "^2.2.1",
+    "launchdarkly-node-client-sdk": "^3.0.0",
     "launchdarkly-node-server-sdk": "^6.4.3",
     "lodash": "^4.17.21",
     "luxon": "^3.2.1",
