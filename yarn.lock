@@ -6307,10 +6307,10 @@ jest-junit@^15.0.0:
     uuid "^8.3.2"
     xml "^1.0.1"
 
-jest-launchdarkly-mock@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/jest-launchdarkly-mock/-/jest-launchdarkly-mock-1.0.6.tgz#bf45eba3fdc00a6c77d9ecbf93ee09248125c915"
-  integrity sha512-R1+c2HX5M5cil1skK4qJnbSf7oYjXwoz11qjJFdzLyetyinmFXX8xZlvqlwB6MqWem03TucbquFowIUhDOh9ng==
+jest-launchdarkly-mock@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/jest-launchdarkly-mock/-/jest-launchdarkly-mock-2.0.3.tgz#e0196e9e5a31666813f66c31a771a01af00283b1"
+  integrity sha512-SVTfdemR9pdjeTRL1Hi75ydbAr8kkRONNFLy/btvLMeHJGh7pw8WCe9PC3YA4pney954CbxBmEiRWalLBvAZXQ==
   dependencies:
     lodash.camelcase "^4.3.0"
     lodash.kebabcase "^4.1.1"
