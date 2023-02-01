@@ -1,5 +1,5 @@
 import {NextFunction, Response, Router} from 'express';
-import {CCJ_PAID_AMOUNT_SUMMARY_URL} from '../../../urls';
+import {CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL, CCJ_PAID_AMOUNT_SUMMARY_URL} from '../../../urls';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {CivilServiceClient} from 'client/civilServiceClient';
@@ -21,7 +21,7 @@ function renderView(req: AppRequest, res: Response, claim: Claim, lang: string, 
   });
 }
 
-judgmentAmountSummaryController.get(CCJ_PAID_AMOUNT_SUMMARY_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+judgmentAmountSummaryController.get([CCJ_PAID_AMOUNT_SUMMARY_URL,CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL], async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await getCaseDataFromStore(req.params.id);
