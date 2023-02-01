@@ -18,11 +18,11 @@ import {DefendantTimeline} from '../../main/common/form/models/timeLineOfEvents/
 import {TimelineRow} from '../../main/common/form/models/timeLineOfEvents/timelineRow';
 import {EvidenceItem} from '../../main/common/form/models/evidence/evidenceItem';
 import {EvidenceType} from '../../main/common/models/evidence/evidenceType';
-import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {Address} from '../../main/common/form/models/address';
 import {PartyDetails} from '../../main/common/form/models/partyDetails';
 import {PartyPhone} from '../../main/common/models/PartyPhone';
 import {CitizenDate} from '../../main/common/form/models/claim/claimant/citizenDate';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 
 export const buildAddress = (): Address => {
   return new Address('addressLine1', 'addressLine2', 'addressLine3', 'city', 'postCode');
