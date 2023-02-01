@@ -18,6 +18,7 @@ import {LanguageOptions} from 'common/models/directionsQuestionnaire/languageOpt
 import {mockExpertDetailsList} from '../directionsQuestionnaire/experts/expertDetailsService.test';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {CLAIMANT_RESPONSE_CHECK_ANSWERS_URL, CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL, DETERMINATION_WITHOUT_HEARING_URL, DQ_TRIED_TO_SETTLE_CLAIM_URL} from 'routes/urls';
+import {ClaimantResponse} from 'common/models/claimantResponse';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -261,20 +262,12 @@ describe('Claimant Response Task List builder', () => {
     });
 
     describe('Fast track DQ', () => {
-      // it('shouldn`t display hearingRequirement section when claimant rejected settlement for defendent`s partial admission amount', () => {
-      //   //Given
-      //   claim.claimantResponse.hasPartAdmittedBeenAccepted = {option: YesNo.YES};
-      //   claim.totalClaimAmount = 26000;
-      //   //When
-      //   const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
-      //   //Then
-      //   expect(hearingRequirement.tasks[0]).toBeUndefined();
-      // });
-
+      const claim = new Claim();
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.totalClaimAmount = 24000;
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.hasPartAdmittedBeenAccepted = {option: YesNo.NO};
       it('should display give us details for hearing task as incomplete when claimant rejected settlement for defendent`s partial admission amount', () => {
-        //Given
-        claim.claimantResponse.hasPartAdmittedBeenAccepted = {option: YesNo.NO};
-        claim.totalClaimAmount = 24000;
         //When
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
@@ -360,7 +353,7 @@ describe('Claimant Response Task List builder', () => {
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.COMPLETE);
       });
 
-      it('should display give us details for hearing task as incomplete when expert evidence used but expert reports not available', () => {
+      it('should display give us details for hearing task as incomplete when expert evidence used but sent expert reports not available', () => {
         //Given
         claim.claimantResponse.directionQuestionnaire.experts.defendantExpertEvidence = {option: YesNo.YES};
         claim.claimantResponse.directionQuestionnaire.experts.sentExpertReports = {};
@@ -381,9 +374,9 @@ describe('Claimant Response Task List builder', () => {
         expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingFastTrackUrl);
       });
 
-      it('should display give us details for hearing task as incomplete when expert evidence used and expert details not available', () => {
+      it('should display give us details for hearing task as incomplete when expert evidence used used and expert details not available', () => {
         //Given
-        claim.claimantResponse.directionQuestionnaire.experts.expertDetailsList = undefined;
+        claim.claimantResponse.directionQuestionnaire.experts.expertDetailsList = {items: []};
         //When
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
@@ -402,44 +395,6 @@ describe('Claimant Response Task List builder', () => {
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.COMPLETE);
         expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingFastTrackUrl);
       });
-
-      // also check the urls
-
-      // it('should display give us details for hearing task as complete when expert required, expert report details not available, wanted to ask for court permission to use an expert but there is nothing expert can still examine', () => {
-      //   //Given
-      //   claim.claimantResponse.directionQuestionnaire.experts.expertCanStillExamine = {option: YesNo.NO};
-      //   //When
-      //   const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
-      //   //Then
-      //   expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.COMPLETE);
-      // });
-
-      // it('should display give us details for hearing task as incomplete when expert required, expert report details not available, wanted to ask for court permission to use an expert and there is something expert can still exomine ', () => {
-      //   //Given
-      //   claim.claimantResponse.directionQuestionnaire.experts.expertCanStillExamine = {option: YesNo.YES};
-      //   //When
-      //   const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
-      //   //Then
-      //   expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
-      // });
-
-      // it('should display give us details for hearing task as complete when expert required, expert report details not available, wanted to ask for court permission to use an expert, there is something expert can still examine but expert details not available', () => {
-      //   //Given
-      //   claim.claimantResponse.directionQuestionnaire.experts.expertDetailsList = mockExpertDetailsList;
-      //   //When
-      //   const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
-      //   //Then
-      //   expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.COMPLETE);
-      // });
-
-      // it('should display give us details for hearing task as incomplete when expert required, expert report details not available, wanted to ask for court permission to use an expert and there is something expert can still exomine ', () => {
-      //   //Given
-      //   claim.claimantResponse.directionQuestionnaire.experts.expertDetailsList = undefined;
-      //   //When
-      //   const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
-      //   //Then
-      //   expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
-      // });
     });
   });
 

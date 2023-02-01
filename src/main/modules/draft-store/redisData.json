@@ -2536,7 +2536,7 @@
     }
   },
   {
-    "id": 7777,
+    "id": 12345,
     "jurisdiction": "CIVIL",
     "case_type_id": "CIVIL",
     "created_date": "2022-03-01T13:29:22.447",
@@ -2796,9 +2796,9 @@
     }
   },
   {
-    "id": 666,
+    "id": 6789,
     "case_data": {
-      "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
+      "ccdState": "AWAITING_APPLICANT_INTENTION",
       "claimFee": {
         "code": "FEE0204",
         "version": "4",
