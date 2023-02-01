@@ -11,10 +11,10 @@ import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTrut
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
-import {isFullAmountReject} from 'modules/claimDetailsService';
 import {AllResponseTasksCompletedGuard} from 'routes/guards/allResponseTasksCompletedGuard';
 import {submitResponse} from 'services/features/response/submission/submitResponse';
 import {AppRequest} from 'models/AppRequest';
+import {SignatureType} from 'models/signatureType';
 
 const checkAnswersViewPath = 'features/response/check-answers';
 const checkAnswersController = Router();
@@ -22,13 +22,9 @@ const checkAnswersController = Router();
 function renderView(req: Request, res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const summarySections = getSummarySections(req.params.id, claim, lang);
-  const signatureType = form.model?.type;
-  const isFullAmountRejected = isFullAmountReject(claim);
   res.render(checkAnswersViewPath, {
     form,
     summarySections,
-    signatureType,
-    isFullAmountRejected,
   });
 }
 
@@ -46,8 +42,8 @@ checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL,
 
 checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const isFullAmountRejected = (req.body?.isFullAmountRejected === 'true');
-    const form = new GenericForm((req.body.type === 'qualified')
+    const isFullAmountRejected = (req.body.isFullAmountRejected === 'true');
+    const form = new GenericForm((req.body.type === SignatureType.QUALIFIED)
       ? new QualifiedStatementOfTruth(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole)
       : new StatementOfTruthForm(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned));
     await form.validate();

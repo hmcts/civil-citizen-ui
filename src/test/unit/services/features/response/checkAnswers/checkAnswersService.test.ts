@@ -9,7 +9,8 @@ import {TestMessages} from '../../../../../../../src/test/utils/errorMessageTest
 import {StatementOfTruthForm} from '../../../../../../main/common/form/models/statementOfTruth/statementOfTruthForm';
 import {SignatureType} from '../../../../../../main/common/models/signatureType';
 import {
-  createClaimWithBasicRespondentDetails, getClaimWithFewDetails,
+  createClaimWithBasicRespondentDetails,
+  getClaimWithFewDetails,
 } from '../../../../../utils/mockClaimForCheckAnswers';
 import {Party} from '../../../../../../main/common/models/party';
 import {
@@ -17,9 +18,7 @@ import {
 } from '../../../../../../main/common/form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {PartyType} from '../../../../../../main/common/models/partyType';
 import {Claim} from '../../../../../../main/common/models/claim';
-import {
-  CLAIM_ID,
-} from '../../../../../utils/checkAnswersConstants';
+import {CLAIM_ID} from '../../../../../utils/checkAnswersConstants';
 import {getSummarySections} from 'services/features/breathingSpace/checkAnswersService';
 
 jest.mock('../../../../../../main/modules/draft-store');
@@ -34,8 +33,6 @@ const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.
 const expectedStatementOfTruth = {
   isFullAmountRejected: false,
   type: 'basic',
-  directionsQuestionnaireSigned: '',
-  signed: '',
 };
 
 describe('Check Answers service', () => {
@@ -48,19 +45,19 @@ describe('Check Answers service', () => {
 
       //Then
       await expect(
-        saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(false, SignatureType.BASIC, 'true'))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+        saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(false, SignatureType.BASIC, true))).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
     it('should retrieve data from draft store', async () => {
       //Given
       mockGetCaseDataFromStore.mockImplementation(async () => {
         const claim = new Claim();
-        claim.defendantStatementOfTruth = {isFullAmountRejected: false, type: SignatureType.BASIC, signed: 'true'};
+        claim.defendantStatementOfTruth = {isFullAmountRejected: false, type: SignatureType.BASIC, signed: true};
         return claim;
       });
 
       //Then
       await expect(
-        saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(false, SignatureType.BASIC, 'true'))).toBeTruthy();
+        saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(false, SignatureType.BASIC, true))).toBeTruthy();
     });
   });
 
@@ -133,8 +130,8 @@ describe('Check Answers service', () => {
     });
   });
 
-  describe('Obtain data summary from Draft', ()=>{
-    it('should provide the data summary', async  () =>{
+  describe('Obtain data summary from Draft', () => {
+    it('should provide the data summary', async () => {
       //Given
       const claim = await getClaimWithFewDetails();
       const summarySections = getSummarySections(CLAIM_ID, claim.claimDetails.breathingSpace, 'en');

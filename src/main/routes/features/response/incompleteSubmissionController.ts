@@ -1,5 +1,5 @@
 import {NextFunction, Router} from 'express';
-import {CLAIM_TASK_LIST_URL, RESPONSE_INCOMPLETE_SUBMISSION_URL} from '../../urls';
+import {RESPONSE_TASK_LIST_URL, RESPONSE_INCOMPLETE_SUBMISSION_URL} from '../../urls';
 import {outstandingTasksFromCase} from '../../../services/features/response/taskListService';
 import {Task} from '../../../common/models/taskList/task';
 import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
@@ -16,7 +16,7 @@ incompleteSubmissionController.get(RESPONSE_INCOMPLETE_SUBMISSION_URL, async (re
     const tasks: Task[] = outstandingTasksFromCase(claim, claimId, lang);
     res.render(incompleteSubmissionViewPath, {
       tasks: tasks,
-      taskListUri: constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL),
+      taskListUri: constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL),
     });
   } catch (error) {
     next(error);
