@@ -10,6 +10,7 @@ import {Party} from '../../../../../main/common/models/party';
 import {DefendantEmail} from '../../../../../main/common/form/models/claim/yourDetails/defendantEmail';
 import {Email} from '../../../../../main/common/models/Email';
 
+jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 const EMAIL_ADDRESS = 'test@gmail.com';

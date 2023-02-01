@@ -47,6 +47,7 @@ import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {getFinalPaymentDate} from 'common/utils/repaymentUtils';
 import {t} from 'i18next';
 
+jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/common/utils/languageToggleUtils');
 jest.mock('../../../../../main/modules/i18n');

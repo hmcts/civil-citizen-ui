@@ -21,6 +21,7 @@ import {DirectionQuestionnaire} from '../../../../../main/common/models/directio
 import {Experts} from '../../../../../main/common/models/directionsQuestionnaire/experts/experts';
 import {CaseState} from 'common/form/models/claimDetails';
 
+jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;

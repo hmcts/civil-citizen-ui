@@ -6,6 +6,7 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {AdditionalTimeOptions} from '../../../../../main/common/form/models/additionalTime';
 import {mockClaim} from '../../../../utils/mockClaim';
 
+jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 const responseDeadlineService = new ResponseDeadlineService();
