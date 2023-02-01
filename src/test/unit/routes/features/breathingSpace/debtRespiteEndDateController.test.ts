@@ -10,6 +10,7 @@ import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure} from '../../.
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 
+jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/oidc');
 
 describe('Expected end date page', () => {

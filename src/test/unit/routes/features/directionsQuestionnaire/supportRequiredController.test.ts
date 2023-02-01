@@ -18,6 +18,7 @@ jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 
 const supportRequiredUrl = SUPPORT_REQUIRED_URL.replace(':id', 'aaa');
+
 describe('Support required', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamServiceUrl: string = config.get('services.idam.url');

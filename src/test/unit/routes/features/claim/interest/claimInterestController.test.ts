@@ -12,6 +12,7 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftSt
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/draft-store');
 
 describe('Claim Interest page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

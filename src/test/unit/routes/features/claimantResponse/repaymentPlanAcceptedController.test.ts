@@ -5,6 +5,7 @@ import {CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED_URL} from '../../../../../main
 import {app} from '../../../../../main/app';
 
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/draft-store');
 
 describe('Claimant Response - Rejection reason', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
