@@ -95,8 +95,6 @@ const partySoleTrader: Party = {
 };
 
 const partyCompanyCCD: CCDParty = {
-  idamEmail: undefined,
-  idamId: undefined,
   companyName: companyName,
   individualDateOfBirth: undefined,
   individualFirstName: undefined,
@@ -115,8 +113,6 @@ const partyCompanyCCD: CCDParty = {
 };
 
 const partyIndividualCCD: CCDParty = {
-  idamEmail: undefined,
-  idamId: undefined,
   companyName: undefined,
   individualDateOfBirth: new Date('1990-10-10T00:00:00.000Z'),
   individualTitle: title,
@@ -135,8 +131,6 @@ const partyIndividualCCD: CCDParty = {
 };
 
 const partySoleTraderCCD: CCDParty = {
-  idamEmail: undefined,
-  idamId: undefined,
   companyName: undefined,
   individualDateOfBirth: undefined,
   individualFirstName: undefined,

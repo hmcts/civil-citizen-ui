@@ -23,7 +23,7 @@ function renderView(res: Response, form: GenericForm<StatementOfTruthForm> | Gen
   const summarySections = getSummarySections(userId, claim, lang);
   const signatureType = form.model?.type;
   let payment;
-  if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
+  if (claim.claimDetails?.helpWithFees?.option === YesNo.NO) {
     payment = 100;
   }
   res.render(checkAnswersViewPath, {

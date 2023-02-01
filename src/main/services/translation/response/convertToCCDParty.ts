@@ -21,7 +21,5 @@ export const toCCDParty = (party: Party, req: AppRequest, applicantEmail?: strin
     soleTraderTitle: party?.type === PartyType.SOLE_TRADER ? party?.partyDetails?.individualTitle : undefined,
     soleTraderTradingAs: party?.partyDetails?.soleTraderTradingAs,
     type: party?.type,
-    idamEmail: translateIdamFields ? req.session?.user?.email : undefined,
-    idamId: translateIdamFields ? req.session?.user?.id : undefined,
   };
 };
