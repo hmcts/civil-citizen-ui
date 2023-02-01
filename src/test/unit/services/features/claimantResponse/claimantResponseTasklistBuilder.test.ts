@@ -88,11 +88,11 @@ describe('Claimant Response Task List builder', () => {
       expect(hearingRequirement.tasks[0]).toBeUndefined();
     });
 
-    describe('xxxx', () => {
+    describe('Small Claims track DQ', () => {
       it('should display give us details for hearing task as incomplete when claimant rejected settlement for defendent`s partial admission amount', () => {
         //Given
         claim.claimantResponse.hasPartAdmittedBeenAccepted = {option: YesNo.NO};
-        claim.totalClaimAmount = 10000;
+        claim.totalClaimAmount = 9000;
         //When
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
@@ -121,6 +121,7 @@ describe('Claimant Response Task List builder', () => {
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+        expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingSmallClaimsUrl);
       });
 
       it('should display give us details for hearing task as incomplete when phone or video hearing is not available', () => {
@@ -130,6 +131,7 @@ describe('Claimant Response Task List builder', () => {
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+        expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingSmallClaimsUrl);
       });
 
       it('should display give us details for hearing task as incomplete when vulnerability not available', () => {
@@ -139,6 +141,7 @@ describe('Claimant Response Task List builder', () => {
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+        expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingSmallClaimsUrl);
       });
 
       it('should display give us details for hearing task as incomplete when welsh language requirements not available', () => {
@@ -148,6 +151,7 @@ describe('Claimant Response Task List builder', () => {
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+        expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingSmallClaimsUrl);
       });
 
       it('should display give us details for hearing task as complete for small claims when all information provided - expert not required scneraio', () => {
@@ -180,6 +184,7 @@ describe('Claimant Response Task List builder', () => {
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+        expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingSmallClaimsUrl);
       });
 
       it('should display give us details for hearing task as incomplete when expert required and expert report details not available', () => {
@@ -190,6 +195,7 @@ describe('Claimant Response Task List builder', () => {
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+        expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingSmallClaimsUrl);
       });
 
       it('should display give us details for hearing task as complete when expert required, expert report details not available but not wanted to ask for court permission to use an expert ', () => {
@@ -199,6 +205,7 @@ describe('Claimant Response Task List builder', () => {
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+        expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingSmallClaimsUrl);
       });
 
       it('should display give us details for hearing task as incomplete when expert required, expert report details not available but wanted to ask for court permission to use an expert ', () => {
@@ -208,6 +215,7 @@ describe('Claimant Response Task List builder', () => {
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+        expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingSmallClaimsUrl);
       });
 
       it('should display give us details for hearing task as complete when expert required, expert report details not available, wanted to ask for court permission to use an expert but there is nothing expert can still examine', () => {
@@ -217,6 +225,7 @@ describe('Claimant Response Task List builder', () => {
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+        expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingSmallClaimsUrl);
       });
 
       it('should display give us details for hearing task as incomplete when expert required, expert report details not available, wanted to ask for court permission to use an expert and there is something expert can still exomine ', () => {
@@ -226,6 +235,7 @@ describe('Claimant Response Task List builder', () => {
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+        expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingSmallClaimsUrl);
       });
 
       it('should display give us details for hearing task as complete when expert required, expert report details not available, wanted to ask for court permission to use an expert, there is something expert can still examine but expert details not available', () => {
@@ -235,20 +245,22 @@ describe('Claimant Response Task List builder', () => {
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+        expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingSmallClaimsUrl);
       });
 
-      it('should display give us details for hearing task as incomplete when expert required, expert report details not available, wanted to ask for court permission to use an expert and there is something expert can still exomine ', () => {
+      it('should display give us details for hearing task as incomplete when expert required, expert details not available, wanted to ask for court permission to use an expert and there is something expert can still exomine ', () => {
         //Given
         claim.claimantResponse.directionQuestionnaire.experts.expertDetailsList = undefined;
         //When
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+        expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingSmallClaimsUrl);
       });
 
     });
 
-    describe('yyyyy', () => {
+    describe('Fast track DQ', () => {
       // it('shouldn`t display hearingRequirement section when claimant rejected settlement for defendent`s partial admission amount', () => {
       //   //Given
       //   claim.claimantResponse.hasPartAdmittedBeenAccepted = {option: YesNo.YES};
@@ -262,7 +274,7 @@ describe('Claimant Response Task List builder', () => {
       it('should display give us details for hearing task as incomplete when claimant rejected settlement for defendent`s partial admission amount', () => {
         //Given
         claim.claimantResponse.hasPartAdmittedBeenAccepted = {option: YesNo.NO};
-        claim.totalClaimAmount = 26000;
+        claim.totalClaimAmount = 24000;
         //When
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
@@ -291,6 +303,7 @@ describe('Claimant Response Task List builder', () => {
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+        expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingFastTrackUrl);
       });
 
       it('should display give us details for hearing task as incomplete when phone or video hearing is not available', () => {
@@ -300,6 +313,7 @@ describe('Claimant Response Task List builder', () => {
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+        expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingFastTrackUrl);
       });
 
       it('should display give us details for hearing task as incomplete when vulnerability not available', () => {
@@ -309,6 +323,7 @@ describe('Claimant Response Task List builder', () => {
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+        expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingFastTrackUrl);
       });
 
       it('should display give us details for hearing task as incomplete when welsh language requirements not available', () => {
@@ -318,6 +333,7 @@ describe('Claimant Response Task List builder', () => {
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+        expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingFastTrackUrl);
       });
 
       it('should display give us details for hearing task as complete for fast track claims when all information provided - expert evidence not used sceneraio', () => {
@@ -352,6 +368,7 @@ describe('Claimant Response Task List builder', () => {
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+        expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingFastTrackUrl);
       });
 
       it('should display give us details for hearing task as incomplete when expert evidence used and sharing expert with other party not available', () => {
@@ -361,6 +378,7 @@ describe('Claimant Response Task List builder', () => {
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+        expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingFastTrackUrl);
       });
 
       it('should display give us details for hearing task as incomplete when expert evidence used and expert details not available', () => {
@@ -370,6 +388,7 @@ describe('Claimant Response Task List builder', () => {
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+        expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingFastTrackUrl);
       });
 
       it('should display give us details for hearing task as complete when expert evidence used, sent expert reports, sharedExpert and expert details available', () => {
@@ -381,45 +400,46 @@ describe('Claimant Response Task List builder', () => {
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+        expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingFastTrackUrl);
       });
 
       // also check the urls
 
-      it('should display give us details for hearing task as complete when expert required, expert report details not available, wanted to ask for court permission to use an expert but there is nothing expert can still examine', () => {
-        //Given
-        claim.claimantResponse.directionQuestionnaire.experts.expertCanStillExamine = {option: YesNo.NO};
-        //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
-        //Then
-        expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.COMPLETE);
-      });
+      // it('should display give us details for hearing task as complete when expert required, expert report details not available, wanted to ask for court permission to use an expert but there is nothing expert can still examine', () => {
+      //   //Given
+      //   claim.claimantResponse.directionQuestionnaire.experts.expertCanStillExamine = {option: YesNo.NO};
+      //   //When
+      //   const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+      //   //Then
+      //   expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+      // });
 
-      it('should display give us details for hearing task as incomplete when expert required, expert report details not available, wanted to ask for court permission to use an expert and there is something expert can still exomine ', () => {
-        //Given
-        claim.claimantResponse.directionQuestionnaire.experts.expertCanStillExamine = {option: YesNo.YES};
-        //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
-        //Then
-        expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
-      });
+      // it('should display give us details for hearing task as incomplete when expert required, expert report details not available, wanted to ask for court permission to use an expert and there is something expert can still exomine ', () => {
+      //   //Given
+      //   claim.claimantResponse.directionQuestionnaire.experts.expertCanStillExamine = {option: YesNo.YES};
+      //   //When
+      //   const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+      //   //Then
+      //   expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+      // });
 
-      it('should display give us details for hearing task as complete when expert required, expert report details not available, wanted to ask for court permission to use an expert, there is something expert can still examine but expert details not available', () => {
-        //Given
-        claim.claimantResponse.directionQuestionnaire.experts.expertDetailsList = mockExpertDetailsList;
-        //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
-        //Then
-        expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.COMPLETE);
-      });
+      // it('should display give us details for hearing task as complete when expert required, expert report details not available, wanted to ask for court permission to use an expert, there is something expert can still examine but expert details not available', () => {
+      //   //Given
+      //   claim.claimantResponse.directionQuestionnaire.experts.expertDetailsList = mockExpertDetailsList;
+      //   //When
+      //   const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+      //   //Then
+      //   expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+      // });
 
-      it('should display give us details for hearing task as incomplete when expert required, expert report details not available, wanted to ask for court permission to use an expert and there is something expert can still exomine ', () => {
-        //Given
-        claim.claimantResponse.directionQuestionnaire.experts.expertDetailsList = undefined;
-        //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
-        //Then
-        expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
-      });
+      // it('should display give us details for hearing task as incomplete when expert required, expert report details not available, wanted to ask for court permission to use an expert and there is something expert can still exomine ', () => {
+      //   //Given
+      //   claim.claimantResponse.directionQuestionnaire.experts.expertDetailsList = undefined;
+      //   //When
+      //   const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+      //   //Then
+      //   expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+      // });
     });
   });
 
