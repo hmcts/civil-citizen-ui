@@ -5,7 +5,6 @@ import {WelshLanguageRequirements} from './welshLanguageRequirements/welshLangua
 import {Witnesses} from './witnesses/witnesses';
 import {Hearing} from './hearing/hearing';
 import {YesNo} from 'common/form/models/yesNo';
-import {getCalculatedDays} from 'services/features/directionsQuestionnaire/whyUnavailableForHearingService';
 
 export class DirectionQuestionnaire {
   defendantYourselfEvidence?: GenericYesNo;
@@ -112,10 +111,10 @@ export class DirectionQuestionnaire {
     return false;
   }
 
-  async isUnavailabilityDatesCompleted (): Promise<boolean> {
-    // TODO : include completion logic for unavailable dates when `unavailable-for-hearing` page is developed
-    const days = await getCalculatedDays();
-    if (days > 30 && !this.hearing?.whyUnavailableForHearing) {
+  get isUnavailabilityDatesCompleted (): boolean {
+    // TODO : include completion logic for unavailable dates when `available-dates` page is developed
+    // TODO : update if condition for whyUnavailableForHearing when getCalculatedDays function return real value instead mock dat
+    if (!this.hearing?.whyUnavailableForHearing) {
       return false;
     }
     return true;
