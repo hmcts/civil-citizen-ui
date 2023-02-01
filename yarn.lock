@@ -5804,10 +5804,10 @@ interpret@^3.1.1:
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-3.1.1.tgz#5be0ceed67ca79c6c4bc5cf0d7ee843dcea110c4"
   integrity sha512-6xwYfHbajpoF0xLW+iwLkhwgvLoZDfjYfoFNu8ftMoXINzwuymNLd9u/KmwtdT2GbR+/Cz66otEGEVVUHX9QLQ==
 
-ioredis-mock@^8.2.2:
-  version "8.2.2"
-  resolved "https://registry.yarnpkg.com/ioredis-mock/-/ioredis-mock-8.2.2.tgz#9bae98378a396d3ba748fab604ede1b90c53eadf"
-  integrity sha512-XyJfcF6pqcLHwAYtldkzaLtjRxPw7d8U0FUfjgQ5U/d0vVhFxiXbqsILR4FEOp+ygzyZgBA8xye+uPKu74IH1A==
+ioredis-mock@^8.2.3:
+  version "8.2.3"
+  resolved "https://registry.yarnpkg.com/ioredis-mock/-/ioredis-mock-8.2.3.tgz#5f47c11f31de813dbab3ac1af02fe00faae89e4d"
+  integrity sha512-E8c78cnvB3q/EeMteWzWqT6B+4RJIdA9RVcGyYmmApqVVqIxRbyd5sjUC7yDqHxbmKrv7HY+BzqPJGE1QreycA==
   dependencies:
     "@ioredis/as-callback" "^3.0.0"
     "@ioredis/commands" "^1.1.1"
