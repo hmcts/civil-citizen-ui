@@ -335,7 +335,7 @@ describe('Claimant Response Task List builder', () => {
         claim.claimantResponse.directionQuestionnaire.hearing.requestExtra4weeks = {option: YesNo.YES};
         claim.claimantResponse.directionQuestionnaire.hearing.considerClaimantDocuments = {option: YesNo.YES};
         claim.claimantResponse.directionQuestionnaire.experts = new Experts();
-        claim.claimantResponse.directionQuestionnaire.experts.defendantExpertEvidence = {option: YesNo.NO};
+        claim.claimantResponse.directionQuestionnaire.experts.expertEvidence = {option: YesNo.NO};
         claim.claimantResponse.directionQuestionnaire.defendantYourselfEvidence = {option: YesNo.NO};
         claim.claimantResponse.directionQuestionnaire.witnesses.otherWitnesses = {option: YesNo.NO};
         claim.claimantResponse.directionQuestionnaire.hearing.whyUnavailableForHearing = {reason: 'test'};
@@ -355,7 +355,7 @@ describe('Claimant Response Task List builder', () => {
 
       it('should display give us details for hearing task as incomplete when expert evidence used but sent expert reports not available', () => {
         //Given
-        claim.claimantResponse.directionQuestionnaire.experts.defendantExpertEvidence = {option: YesNo.YES};
+        claim.claimantResponse.directionQuestionnaire.experts.expertEvidence = {option: YesNo.YES};
         claim.claimantResponse.directionQuestionnaire.experts.sentExpertReports = {};
         //When
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);

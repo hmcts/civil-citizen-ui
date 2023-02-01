@@ -100,7 +100,7 @@ export class DirectionQuestionnaire {
   }
 
   get isExpertEvidenceJourneyCompleted(): boolean {
-    if (this.experts?.defendantExpertEvidence?.option === YesNo.NO) {
+    if (this.experts?.expertEvidence?.option === YesNo.NO) {
       return true;
     }
     if (this.experts?.sentExpertReports &&
