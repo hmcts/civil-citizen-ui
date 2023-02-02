@@ -274,7 +274,8 @@
     },
     "CHOOSE_WHAT_TODO_NEXT": {
       "TITLE": "Choose what to do next",
-      "ACCEPT_OR_REJECT_ADMITTED": "Accept or reject the £{{ admittedAmount }}"
+      "ACCEPT_OR_REJECT_ADMITTED": "Accept or reject the £{{ admittedAmount }}",
+      "FREE_TELEPHONE_MEDIATION": "Free telephone mediation"
     }
   },
   "TASK_LIST": {
