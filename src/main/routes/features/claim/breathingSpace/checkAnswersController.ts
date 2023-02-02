@@ -5,8 +5,8 @@ import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlForm
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {getBreathingSpace} from 'services/features/breathingSpace/breathingSpaceService';
 import {BreathingSpace} from 'models/breathingSpace';
-import {deleteDraftClaimFromStore} from "modules/draft-store/draftStoreService";
-import {submitBreathingSpace} from "services/features/breathingSpace/submission/submitBreathingSpace";
+import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
+import {submitBreathingSpace} from 'services/features/breathingSpace/submission/submitBreathingSpace';
 
 const checkAnswersViewPath = 'features/breathingSpace/check-answers';
 const breathingSpaceCheckAnswersController = Router();

@@ -1,8 +1,8 @@
-import config from "config";
-import {CivilServiceClient} from "client/civilServiceClient";
-import {AppRequest} from "models/AppRequest";
-import {translateBreathingSpaceToCCD} from "services/translation/breathingSpace/ccdTranslation";
-import {getBreathingSpace} from "services/features/breathingSpace/breathingSpaceService";
+import config from 'config';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {AppRequest} from 'models/AppRequest';
+import {translateBreathingSpaceToCCD} from 'services/translation/breathingSpace/ccdTranslation';
+import {getBreathingSpace} from 'services/features/breathingSpace/breathingSpaceService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('partialAdmissionService');
@@ -20,4 +20,4 @@ export const submitBreathingSpace = async (req: AppRequest): Promise<any> => {
     logger.error(err);
     throw err;
   }
-}
+};
