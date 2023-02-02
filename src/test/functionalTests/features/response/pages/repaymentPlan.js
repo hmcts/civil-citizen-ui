@@ -13,8 +13,8 @@ const buttons = {
 };
 
 const currentDate = new Date();
-const day = currentDate.getDay();
-const month = currentDate.getMonth();
+const day = currentDate.getDay() + 1;
+const month = currentDate.getMonth() + 1;
 const year = currentDate.getFullYear() + 1;
 
 class RepaymentPlan {

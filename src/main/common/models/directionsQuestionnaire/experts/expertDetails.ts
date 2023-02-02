@@ -6,7 +6,7 @@ export class ExpertDetails {
   lastName?: string;
 
   @ValidateIf(o => o.emailAddress)
-  @IsEmail({IsEmailOption: 'allow_display_name'}, {message: 'ERRORS.ENTER_VALID_EMAIL'})
+  @IsEmail({allow_display_name: true}, {message: 'ERRORS.ENTER_VALID_EMAIL'})
     emailAddress?: string;
 
   @ValidateIf(o => o.phoneNumber)

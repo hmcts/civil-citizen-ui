@@ -9,7 +9,6 @@
 {% endblock %}
 
 {% block content %}
-  {% set otherParty = t('PAGES.EXPERT_GUIDANCE.CLAIMANT') %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
@@ -19,16 +18,16 @@
           <p class="govuk-body">{{ t('PAGES.EXPERT_GUIDANCE.RARE') }}</p>
           <p class="govuk-body">{{ t('PAGES.EXPERT_GUIDANCE.ASK_PERMISSION') }}</p>
           <p class="govuk-body">{{ t('PAGES.EXPERT_GUIDANCE.JUDGE_DECIDE_COST') }}</p>
-          <p class="govuk-body">{{ t('PAGES.EXPERT_GUIDANCE.JUDGES_RESPONSIBLE_COST', { otherParty: otherParty }) }}</p>
+          <p class="govuk-body">{{ t('PAGES.EXPERT_GUIDANCE.JUDGES_RESPONSIBLE_COST') }}</p>
 
           <h2 class='govuk-heading-m'>{{ t('PAGES.EXPERT_GUIDANCE.WHEN_EXPERT_ALLOWED') }}</h2>
           <p class="govuk-body">{{ t('PAGES.EXPERT_GUIDANCE.JUDGE_ALLOW_EXPERT') }}</p>
           <p class="govuk-body">{{ t('PAGES.EXPERT_GUIDANCE.FOR_EXAMPLE') }}</p>
-          <p class="govuk-body">{{ t('PAGES.EXPERT_GUIDANCE.IF_JUDGE_ALLOWS', { otherParty: otherParty }) }}</p>
+          <p class="govuk-body">{{ t('PAGES.EXPERT_GUIDANCE.IF_JUDGE_ALLOWS') }}</p>
           <p class="govuk-body">{{ t('PAGES.EXPERT_GUIDANCE.EXPERT_REPORT') }}</p>
 
           <h2 class='govuk-heading-m'>{{ t('PAGES.EXPERT_GUIDANCE.PAYING_EXPERT') }}</h2>
-          <p class="govuk-body">{{ t('PAGES.EXPERT_GUIDANCE.COST_HIRING_EXPERT', { otherParty: otherParty }) }}</p>
+          <p class="govuk-body">{{ t('PAGES.EXPERT_GUIDANCE.COST_HIRING_EXPERT') }}</p>
           <p class="govuk-body">{{ t('PAGES.EXPERT_GUIDANCE.USUALLY_SHARE_COST') }}</p>
           <p class="govuk-body">{{ t('PAGES.EXPERT_GUIDANCE.IF_YOU_WIN') }}</p>
 

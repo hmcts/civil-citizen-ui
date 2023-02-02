@@ -4,7 +4,7 @@
 
 {% macro reportDetail(reportDetailIndex, reportDetailValue, errorFor, t, removeButton, today) %}
 {% set dateHint = t('COMMON.DATE_EXAMPLE', {
-  date: today.getDate()+' '+(today.getMonth()-2)+' '+today.getFullYear()
+  date: today.getDate()+' '+(today.getMonth()+1)+' '+(today.getFullYear()-1)
 }) %}
 
   <div class="multiple-row">

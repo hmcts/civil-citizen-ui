@@ -2,7 +2,7 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
-import {CLAIM_TASK_LIST_URL, DQ_WELSH_LANGUAGE_URL} from '../../../../../../main/routes/urls';
+import {RESPONSE_TASK_LIST_URL, DQ_WELSH_LANGUAGE_URL} from '../../../../../../main/routes/urls';
 import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
@@ -66,7 +66,7 @@ describe('Welsh Language Controller', () => {
         .send({speakLanguage: 'en', documentsLanguage: 'en-cy'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(CLAIM_TASK_LIST_URL);
+          expect(res.get('location')).toBe(RESPONSE_TASK_LIST_URL);
         });
     });
 

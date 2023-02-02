@@ -5,11 +5,17 @@ import {app} from '../../../../../../../main/app';
 import {
   CITIZEN_PA_PAYMENT_DATE_URL,
   CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL,
-  CLAIM_TASK_LIST_URL,
+  RESPONSE_TASK_LIST_URL,
 } from '../../../../../../../main/routes/urls';
-import {mockRedisWithPaymentAmount, mockRedisFullAdmission, mockRedisWithoutAdmittedPaymentAmount, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
+import {
+  mockRedisWithPaymentAmount,
+  mockRedisFullAdmission,
+  mockRedisWithoutAdmittedPaymentAmount,
+  mockRedisFailure,
+} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import civilClaimResponseWithAdmittedPaymentAmountMock from '../../../../../../utils/mocks/civilClaimResponseWithAdmittedPaymentAmountMock.json';
+import civilClaimResponseWithAdmittedPaymentAmountMock
+  from '../../../../../../utils/mocks/civilClaimResponseWithAdmittedPaymentAmountMock.json';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -40,7 +46,7 @@ describe('Part Admit - Payment Option Controller', () => {
         .get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL)
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
     it('should redirect to claim task list when admitted payment amount is not provided', async () => {
@@ -49,7 +55,7 @@ describe('Part Admit - Payment Option Controller', () => {
         .get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL)
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
     it('should return status 500 when there is an error', async () => {
@@ -81,7 +87,7 @@ describe('Part Admit - Payment Option Controller', () => {
         .send('paymentType=IMMEDIATELY')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
     it('should redirect to claim task list when instalments option is selected', async () => {
@@ -90,7 +96,7 @@ describe('Part Admit - Payment Option Controller', () => {
         .send('paymentType=IMMEDIATELY')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
     it('should redirect to claim task list when instalments option is selected', async () => {

@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {PaymentDate} from '../../../../../common/form/models/admission/fullAdmission/paymentOption/paymentDate';
-import {CITIZEN_PA_PAYMENT_DATE_URL, CLAIM_TASK_LIST_URL} from '../../../../urls';
+import {CITIZEN_PA_PAYMENT_DATE_URL, RESPONSE_TASK_LIST_URL} from '../../../../urls';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {
@@ -16,7 +16,7 @@ nextMonth.setMonth(nextMonth.getMonth() + 1);
 
 paymentDateController
   .get(
-    CITIZEN_PA_PAYMENT_DATE_URL, PartAdmitGuard.apply(CLAIM_TASK_LIST_URL), async (req: Request, res: Response, next: NextFunction) => {
+    CITIZEN_PA_PAYMENT_DATE_URL, PartAdmitGuard.apply(RESPONSE_TASK_LIST_URL), async (req: Request, res: Response, next: NextFunction) => {
       try {
         const paymentDate = await paymentDateService.getPaymentDate(req.params.id, ResponseType.PART_ADMISSION);
         res.render(paymentDatePath, {
@@ -40,7 +40,7 @@ paymentDateController
       } else {
         try {
           await paymentDateService.savePaymentDate(req.params.id, paymentDate.date, ResponseType.PART_ADMISSION);
-          res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
+          res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
         } catch (error) {
           next(error);
         }

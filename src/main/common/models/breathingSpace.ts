@@ -8,4 +8,5 @@ export class BreathingSpace {
   debtRespiteReferenceNumber?: DebtRespiteReferenceNumber;
   debtRespiteStartDate?: DebtRespiteStartDate;
   debtRespiteEndDate?: DebtRespiteEndDate;
+  debtRespiteLiftDate?: DebtRespiteStartDate;
 }

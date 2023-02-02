@@ -1,6 +1,8 @@
 import {NextFunction, Response, Router} from 'express';
-import {CLAIM_TASK_LIST_URL, CITIZEN_ALREADY_PAID_URL} from '../../../../urls';
-import {PartialAdmissionService} from '../../../../../services/features/response/admission/partialAdmission/partialAdmissionService';
+import {CITIZEN_ALREADY_PAID_URL, RESPONSE_TASK_LIST_URL} from '../../../../urls';
+import {
+  PartialAdmissionService,
+} from '../../../../../services/features/response/admission/partialAdmission/partialAdmissionService';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
@@ -16,7 +18,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 alreadyPaidController.get(CITIZEN_ALREADY_PAID_URL, async (req, res, next: NextFunction) => {
   try {
     const alreadyPaidForm = new GenericForm(new GenericYesNo(await partialAdmissionService.getClaimAlreadyPaid(req.params.id)));
-    renderView(alreadyPaidForm , res);
+    renderView(alreadyPaidForm, res);
   } catch (error) {
     next(error);
   }
@@ -31,7 +33,7 @@ alreadyPaidController.post(CITIZEN_ALREADY_PAID_URL, async (req, res, next: Next
       renderView(alreadyPaidForm, res);
     } else {
       await partialAdmissionService.saveClaimAlreadyPaid(req.params.id, alreadyPaidForm.model.option);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
     }
   } catch (error) {
     next(error);

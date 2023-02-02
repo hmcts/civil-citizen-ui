@@ -2,7 +2,7 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {CLAIM_TASK_LIST_URL, DONT_WANT_FREE_MEDIATION_URL} from 'routes/urls';
+import {RESPONSE_TASK_LIST_URL, DONT_WANT_FREE_MEDIATION_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure, mockRedisWithMediationProperties} from '../../../../utils/mockDraftStore';
 import {NoMediationReasonOptions} from 'form/models/mediation/noMediationReasonOptions';
@@ -62,10 +62,10 @@ describe('I dont want free meditation', () => {
       app.locals.draftStoreClient = mockRedisWithMediationProperties;
       await request(app)
         .post(DONT_WANT_FREE_MEDIATION_URL)
-        .send({disagreeMediationOption: NoMediationReasonOptions.OTHER, otherReason: ''})
+        .send({disagreeMediationOption: NoMediationReasonOptions.OTHER, otherReason: 'Other reason'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
     it('should redirect page when NOT_SURE', async () => {
@@ -75,7 +75,7 @@ describe('I dont want free meditation', () => {
         .send({disagreeMediationOption: NoMediationReasonOptions.NOT_SURE, otherReason: ''})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
     it('should redirect page when WOULD_NOT_SOLVE', async () => {
@@ -85,7 +85,7 @@ describe('I dont want free meditation', () => {
         .send({disagreeMediationOption: NoMediationReasonOptions.WOULD_NOT_SOLVE, otherReason: ''})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
     it('should redirect page when JUDGE_TO_DECIDE', async () => {
@@ -95,7 +95,7 @@ describe('I dont want free meditation', () => {
         .send({disagreeMediationOption: NoMediationReasonOptions.JUDGE_TO_DECIDE, otherReason: ''})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
     it('should redirect page when ALREADY_TRIED', async () => {
@@ -105,7 +105,7 @@ describe('I dont want free meditation', () => {
         .send({disagreeMediationOption: NoMediationReasonOptions.ALREADY_TRIED, otherReason: ''})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
     it('should redirect page when NO_DELAY_IN_HEARING', async () => {
@@ -115,7 +115,7 @@ describe('I dont want free meditation', () => {
         .send({disagreeMediationOption: NoMediationReasonOptions.NO_DELAY_IN_HEARING, otherReason: ''})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
     it('should return error on incorrect input', async () => {
@@ -126,6 +126,16 @@ describe('I dont want free meditation', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.OPTION_REQUIRED);
+        });
+    });
+    it('should return error when no reason enter', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      await request(app)
+        .post(DONT_WANT_FREE_MEDIATION_URL)
+        .send({disagreeMediationOption: NoMediationReasonOptions.OTHER, otherReason: ''})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.SPECIFY_A_REASON);
         });
     });
     it('should return http 500 when has error', async () => {

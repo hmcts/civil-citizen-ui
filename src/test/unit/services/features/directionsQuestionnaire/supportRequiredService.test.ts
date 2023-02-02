@@ -14,7 +14,9 @@ import {
 import {GenericForm} from '../../../../../main/common/form/models/genericForm';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
 import civilClaimResponseExpertAndWitnessMock from '../../../../utils/mocks/civilClaimResponseExpertAndWitnessMock.json';
+import civilClaimantIntentionMock from '../../../../utils/mocks/civilClaimantIntentionMock.json';
 import {Claim} from '../../../../../main/common/models/claim';
+import {CaseState} from 'common/form/models/claimDetails';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -295,10 +297,10 @@ describe('Support Required service', () => {
   describe('Get Support Required List', () => {
     const lang = 'en';
     const claimId = '1234';
-    it('should return support required details from draft store if present', async () => {
+    it('should return defendant support required details from draft store if present', async () => {
       //Given
       mockGetCaseDataFromStore.mockImplementation(async () => {
-        return civilClaimResponseExpertAndWitnessMock.case_data;
+        return Object.assign(new Claim(), civilClaimResponseExpertAndWitnessMock.case_data);
       });
       //When
       const supportRequiredList = await getSupportRequired(claimId);
@@ -314,8 +316,8 @@ describe('Support Required service', () => {
         expect(supportRequiredList.items[0].otherSupport?.content).toEqual('other support text');
       }
       if (peopleLists.length) {
-        const firstRow = peopleLists[0] as NameListType[];
-        const secondRow = peopleLists[1] as NameListType[];
+        const firstRow = peopleLists[0];
+        const secondRow = peopleLists[1];
         expect(peopleLists.length).toBe(2);
         expect(firstRow[0].text).toBe('PAGES.SUPPORT_REQUIRED.CHOOSE_NAME');
         expect(firstRow[1].text).toBe('John Doe');
@@ -328,10 +330,75 @@ describe('Support Required service', () => {
       }
     });
 
-    it('should return empty support required details with empty dropdown from draft store if non-present', async () => {
+    it('should return empty defendant support required details with empty dropdown from draft store if non-present', async () => {
       //Given
       mockGetCaseDataFromStore.mockImplementation(async () => {
         return new Claim();
+      });
+      //When
+      const supportRequiredList = await getSupportRequired(claimId);
+      const selectedNames = supportRequiredList?.items?.map(item => item.fullName);
+      const peopleLists = await generatePeopleListWithSelectedValues(claimId, selectedNames, lang);
+      //Then
+      if (supportRequiredList.items) {
+        expect(supportRequiredList.items).toBeTruthy();
+        expect(supportRequiredList.items.length).toBe(1);
+        expect(supportRequiredList.items[0]?.fullName).toBeUndefined();
+        expect(supportRequiredList.items[0].disabledAccess).toBeUndefined();
+        expect(supportRequiredList.items[0].hearingLoop).toBeUndefined();
+        expect(supportRequiredList.items[0].signLanguageInterpreter).toBeUndefined();
+        expect(supportRequiredList.items[0].languageInterpreter).toBeUndefined();
+        expect(supportRequiredList.items[0].otherSupport).toBeUndefined();
+      }
+      if (peopleLists.length) {
+        const firstRow = peopleLists[0];
+        expect(peopleLists.length).toBe(1);
+        expect(firstRow[0].text).toBe('PAGES.SUPPORT_REQUIRED.CHOOSE_NAME');
+        expect(firstRow[0].value).toBe('');
+        expect(firstRow[0].selected).toBe(false);
+      }
+    });
+    it('should return claimant support required details from draft store if present', async () => {
+      //Given
+      mockGetCaseDataFromStore.mockImplementation(async () => {
+        const claim = Object.assign(new Claim(), civilClaimantIntentionMock.case_data);
+        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+        return claim;
+      });
+      //When
+      const supportRequiredList = await getSupportRequired(claimId);
+      const selectedNames = supportRequiredList?.items?.map(item => item.fullName);
+      const peopleLists = await generatePeopleListWithSelectedValues(claimId, selectedNames, lang);
+      //Then
+      if (supportRequiredList.items) {
+        expect(supportRequiredList.items).toBeTruthy();
+        expect(supportRequiredList.items.length).toBe(2);
+        expect(supportRequiredList.items[0]?.fullName).toEqual('Jasmine Williams');
+        expect(supportRequiredList.items[0].disabledAccess?.selected).toBe(true);
+        expect(supportRequiredList.items[0].otherSupport?.selected).toBe(true);
+        expect(supportRequiredList.items[0].otherSupport?.content).toEqual('other support text');
+      }
+      if (peopleLists.length) {
+        const firstRow = peopleLists[0];
+        const secondRow = peopleLists[1];
+        expect(peopleLists.length).toBe(2);
+        expect(firstRow[0].text).toBe('PAGES.SUPPORT_REQUIRED.CHOOSE_NAME');
+        expect(firstRow[4].text).toBe('Jasmine Williams');
+        expect(firstRow[4].value).toBe('Jasmine Williams');
+        expect(firstRow[4].selected).toBe(true);
+        expect(secondRow[0].text).toBe('PAGES.SUPPORT_REQUIRED.CHOOSE_NAME');
+        expect(secondRow[3].text).toBe('Mike Brown');
+        expect(secondRow[3].value).toBe('Mike Brown');
+        expect(secondRow[3].selected).toBe(true);
+      }
+    });
+
+    it('should return empty claimant support required details with empty dropdown from draft store if non-present', async () => {
+      //Given
+      mockGetCaseDataFromStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+        return claim;
       });
       //When
       const supportRequiredList = await getSupportRequired(claimId);

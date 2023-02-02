@@ -2,7 +2,7 @@ import {app} from '../../../../../main/app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {CAN_WE_USE_COMPANY_URL, CLAIM_TASK_LIST_URL} from 'routes/urls';
+import {CAN_WE_USE_COMPANY_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {YesNo} from 'form/models/yesNo';
@@ -122,7 +122,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
         .send({option: YesNo.NO, mediationPhoneNumber: validPhoneNumber, mediationContactPerson: validName})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
     it('should return status 500 when there is error', async () => {

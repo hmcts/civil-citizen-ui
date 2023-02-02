@@ -2,7 +2,7 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
-import {CLAIM_INTEREST_FROM_URL, CLAIM_INTEREST_START_DATE_URL, CLAIM_HELP_WITH_FEES_URL} from '../../../../../../main/routes/urls';
+import {CLAIM_INTEREST_DATE_URL, CLAIM_INTEREST_START_DATE_URL, CLAIM_HELP_WITH_FEES_URL} from '../../../../../../main/routes/urls';
 import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {InterestClaimFromType} from '../../../../../../main/common/form/models/claimDetails';
@@ -23,14 +23,14 @@ describe('Claimant Interest From Controller', () => {
 
   describe('on GET', () => {
     it('should render claimant interest from page', async () => {
-      const res = await request(app).get(CLAIM_INTEREST_FROM_URL);
+      const res = await request(app).get(CLAIM_INTEREST_DATE_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain('When are you claiming interest from?');
     });
 
     it('should render date of birth page with values', async () => {
       app.locals.draftStoreClient = mockNoStatementOfMeans;
-      const res = await request(app).get(CLAIM_INTEREST_FROM_URL);
+      const res = await request(app).get(CLAIM_INTEREST_DATE_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain('When are you claiming interest from?');
     });
@@ -38,7 +38,7 @@ describe('Claimant Interest From Controller', () => {
     it('should return http 500 when has error in the get method', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .get(CLAIM_INTEREST_FROM_URL)
+        .get(CLAIM_INTEREST_DATE_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -48,14 +48,14 @@ describe('Claimant Interest From Controller', () => {
 
   describe('on POST', () => {
     it('should render claimant interest from page if there are form errors', async () => {
-      const res = await request(app).post(CLAIM_INTEREST_FROM_URL);
+      const res = await request(app).post(CLAIM_INTEREST_DATE_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain('There was a problem');
     });
 
     it('should redirect to the help with fees page', async () => {
       app.locals.draftStoreClient = mockNoStatementOfMeans;
-      await request(app).post(CLAIM_INTEREST_FROM_URL)
+      await request(app).post(CLAIM_INTEREST_DATE_URL)
         .send({'option': InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE})
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -64,7 +64,7 @@ describe('Claimant Interest From Controller', () => {
     });
 
     it('should redirect to the interest enter date from page', async () => {
-      await request(app).post(CLAIM_INTEREST_FROM_URL)
+      await request(app).post(CLAIM_INTEREST_DATE_URL)
         .send({'option': InterestClaimFromType.FROM_A_SPECIFIC_DATE})
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -75,7 +75,7 @@ describe('Claimant Interest From Controller', () => {
     it('should return http 500 when has error in the post method', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .post(CLAIM_INTEREST_FROM_URL)
+        .post(CLAIM_INTEREST_DATE_URL)
         .send({'option': InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE})
         .expect((res) => {
           expect(res.status).toBe(500);

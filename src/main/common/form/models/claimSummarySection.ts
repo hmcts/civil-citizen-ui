@@ -23,6 +23,7 @@ export interface ClaimSummaryItem {
   variables?: any;
   head?: TableCell[];
   tableRows?: TableCell[][];
+  title?: string;
 }
 
 /**
@@ -38,5 +39,6 @@ export enum ClaimSummaryType {
   HTML = 'html',
   INSET_TEXT = 'insetText',
   SUMMARY = 'summary',
-  TABLE = 'table'
+  TABLE = 'table',
+  PANEL = 'panel'
 }

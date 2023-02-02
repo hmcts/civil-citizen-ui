@@ -4,6 +4,7 @@ import {ClaimSummarySection, ClaimSummaryType} from '../../../../common/form/mod
 import {EvidenceItem} from '../../../../common/form/models/evidence/evidenceItem';
 import {TimelineRow} from '../../../../common/form/models/timeLineOfEvents/timelineRow';
 import {TableCell} from '../../../../common/models/summaryList/summaryList';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
 
 export const generateTableRowsForTOEs = (theirTOERows: TimelineRow[]): TableCell[][] => {
   return theirTOERows.map(row => {
@@ -26,19 +27,19 @@ export const generateTableRowsForEvidence = (evidenceRows: EvidenceItem[]): Tabl
   });
 };
 
-const getResponseStatement = (name: string) => {
+const getResponseStatement = (name: string, text: string, amount?: number) => {
   return [{
     type: ClaimSummaryType.PARAGRAPH,
     data: {
-      text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.REJECT_CLAIM_STATEMENT',
-      variables: {defendant: name},
+      text: text,
+      variables: {defendant: name, paidAmount: amount},
     },
   }];
 };
 
 export const getTheirTOEs = (claim: Claim, lng: string): ClaimSummarySection[] => {
   const theirTOERows = claim.partialAdmission?.timeline?.rows;
-  if (!theirTOERows?.length){
+  if (!theirTOERows?.length) {
     return [];
   }
   return [
@@ -155,10 +156,73 @@ export const getTheirDefence = (text: string): ClaimSummarySection[] => {
   }];
 };
 
+export const getPaymentDate = (paymentDate: Date, lng: string): ClaimSummarySection[] => {
+  return [
+    {
+      type: ClaimSummaryType.SUBTITLE,
+      data: {
+        text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.WHEN_THEY_PAID_THIS_AMOUNT',
+      },
+    },
+    {
+      type: ClaimSummaryType.PARAGRAPH,
+      data: {
+        text: formatDateToFullDate(paymentDate, lng),
+      },
+    },
+  ];
+};
+
+export const getHowTheyPaid = (text: string): ClaimSummarySection[] => {
+  return [
+    {
+      type: ClaimSummaryType.SUBTITLE,
+      data: {
+        text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.HOW_THEY_PAID',
+      },
+    },
+    {
+      type: ClaimSummaryType.PARAGRAPH,
+      data: {
+        text: text,
+      },
+    },
+  ];
+};
+
+export const getWhyTheyDisagreeWithClaim = (text: string): ClaimSummarySection[] => {
+  return [
+    {
+      type: ClaimSummaryType.SUBTITLE,
+      data: {
+        text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.THEY_DONT_OWE_CLAIM_AMOUNT',
+      },
+    },
+    {
+      type: ClaimSummaryType.PARAGRAPH,
+      data: {
+        text: text,
+      },
+    },
+  ];
+};
+
 export const buildFullDisputeResponseContent = (claim: Claim, lng: string): ClaimSummarySection[] => {
   return [
-    ...getResponseStatement(claim.getDefendantFullName()),
+    ...getResponseStatement(claim.getDefendantFullName(), 'PAGES.REVIEW_DEFENDANTS_RESPONSE.REJECT_CLAIM_STATEMENT'),
     ...getTheirDefence(claim.rejectAllOfClaim?.defence?.text),
+    ...getTheirTOEs(claim, lng),
+    ...getDisagreementStatementWithTimeline(claim),
+    ...getTheirEvidence(claim, lng),
+    ...getDisagreementStatementWithEvidence(claim),
+  ];
+};
+export const buildFullDisputePaidLessResponseContent = (claim: Claim, lng: string): ClaimSummarySection[] => {
+  return [
+    ...getResponseStatement(claim.getDefendantFullName(), 'PAGES.REVIEW_DEFENDANTS_RESPONSE.REJECT_CLAIM_PAID_LESS_STATEMENT', claim.isRejectAllOfClaimAlreadyPaid()),
+    ...getPaymentDate(claim.getRejectAllOfClaimPaidLessPaymentDate(), lng),
+    ...getHowTheyPaid(claim.getRejectAllOfClaimPaidLessPaymentMode()),
+    ...getWhyTheyDisagreeWithClaim(claim.getRejectAllOfClaimDisagreementReason()),
     ...getTheirTOEs(claim, lng),
     ...getDisagreementStatementWithTimeline(claim),
     ...getTheirEvidence(claim, lng),

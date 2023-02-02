@@ -33,24 +33,24 @@
           <div class="govuk-grid-column-two-thirds">
             {% if respondentTelNumber %}
               {% set noHtml %}
-              {{ telephone(form, {id: "telephoneNumber",
-                  name: "telephoneNumber",
+              {{ telephone(form, {id: "mediationPhoneNumber",
+                  name: "mediationPhoneNumber",
                   value: form.model.mediationPhoneNumber,
                   type: "number",
                   autocomplete: "number",
                   classes: "govuk-!-width-two-thirds",
-                  label: pTextEnterPhone})
+                  label: pTextEnterPhone}, t)
               }}
               {% endset %}
               {{ yesNoRadioButton(t,id,name,'',form,'',{noHtml:noHtml}) }}
             {% else %}
-              {{ telephone(form, {id: "telephoneNumber",
-                  name: "telephoneNumber",
+              {{ telephone(form, {id: "mediationPhoneNumber",
+                  name: "mediationPhoneNumber",
                   type: "number",
                   value: form.model.mediationPhoneNumber,
                   autocomplete: "number",
                   classes: "govuk-!-width-two-thirds",
-                  label: ''})
+                  label: ''}, t)
               }}
             {% endif %}
             <div class="govuk-form-group">

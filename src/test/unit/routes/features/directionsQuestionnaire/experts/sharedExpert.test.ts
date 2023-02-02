@@ -5,6 +5,7 @@ import {app} from '../../../../../../main/app';
 import {DQ_EXPERT_DETAILS_URL, DQ_SHARE_AN_EXPERT_URL} from '../../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {t} from 'i18next';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -24,7 +25,7 @@ describe('Shared Expert Controller', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(DQ_SHARE_AN_EXPERT_URL).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Do you want to share an expert with the claimant?');
+        expect(res.text).toContain(t('PAGES.SHARED_EXPERT.TITLE'));
       });
     });
 
@@ -47,7 +48,7 @@ describe('Shared Expert Controller', () => {
     it('should return shared expert page on empty post', async () => {
       await request(app).post(DQ_SHARE_AN_EXPERT_URL).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.VALID_SHARED_EXPERT);
+        expect(res.text).toContain(t('ERRORS.VALID_SHARED_EXPERT'));
       });
     });
 
