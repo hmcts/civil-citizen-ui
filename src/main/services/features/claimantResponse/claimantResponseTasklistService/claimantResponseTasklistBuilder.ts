@@ -22,8 +22,8 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
   const acceptOrRejectDefendantAdmittedTask = getAcceptOrRejectDefendantAdmittedTask(claim, claimId, lang);
   tasks.push(acceptOrRejectDefendantAdmittedTask);
   if (claim.isPartialAdmission()) {
-    const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
     if(claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO) {
+      const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
       tasks.push(freeTelephoneMediationTask);
     }
   }
