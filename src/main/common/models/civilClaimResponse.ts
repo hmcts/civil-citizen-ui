@@ -28,6 +28,7 @@ import {CCDPayBySetDate} from './ccdResponse/ccdPayBySetDate';
 import {FullAdmission} from './fullAdmission';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {RepaymentPlan} from './repaymentPlan';
+import {CCDBreathingSpaceStartInfo} from "models/ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo";
 
 export class CivilClaimResponse {
   id: string;
@@ -98,6 +99,7 @@ export interface CCDClaim extends ClaimUpdate {
   respondToClaimAdmitPartLRspec?: CCDPayBySetDate;
   responseClaimMediationSpecRequired?: string;
   specAoSApplicantCorrespondenceAddressRequired?: YesNoUpperCamelCase;
+  enterBreathing?: CCDBreathingSpaceStartInfo;
 }
 
 export interface ClaimFeeData {
