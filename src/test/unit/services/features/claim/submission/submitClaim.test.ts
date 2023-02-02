@@ -1,91 +1,57 @@
+import {submitClaim} from 'services/features/claim/submission/submitClaim';
+import {AppRequest, UserDetails} from "common/models/AppRequest";
+import {CivilServiceClient} from "client/civilServiceClient";
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import * as ccdTranslationService from 'services/translation/claim/ccdTranslation';
-import {Claim} from 'common/models/claim';
-import * as requestModels from 'common/models/AppRequest';
-import {submitClaim} from 'services/features/claim/submission/submitClaim';
-import nock from 'nock';
-import config from 'config';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {Party} from 'common/models/party';
-import {CCDClaim, CivilClaimResponse} from 'models/civilClaimResponse';
-import {CaseState} from 'form/models/claimDetails';
-import {PartyType} from 'models/partyType';
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../main/services/translation/response/ccdTranslation');
-jest.mock('../../../../../../main/services/features/response/submission/compareAddress');
-declare const appRequest: requestModels.AppRequest;
-const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
-mockedAppRequest.params = {id: '1'};
+import {Claim} from "models/claim";
+import {TestMessages} from "../../../../../utils/errorMessageTestConstants";
+jest.mock('modules/draft-store');
 
-const citizenBaseUrl: string = config.get('services.civilService.url');
-const ccdClaim: CCDClaim = {
-  legacyCaseReference: '000MC003',
-  applicant1: {
-    companyName: undefined,
-    individualDateOfBirth: undefined,
-    organisationName: undefined,
-    partyEmail: undefined,
-    partyPhone: undefined,
-    primaryAddress: undefined,
-    soleTraderDateOfBirth: undefined,
-    soleTraderFirstName: undefined,
-    soleTraderLastName: undefined,
-    soleTraderTitle: undefined,
-    soleTraderTradingAs: undefined,
-    individualTitle: 'Mrs',
-    individualLastName: 'Clark',
-    individualFirstName: 'Jane',
-    type: PartyType.INDIVIDUAL,
+const userInfo: UserDetails = {
+  accessToken: "accessToken",
+  id: "1",
+  email: "email@email.com",
+  givenName: "givenName",
+  familyName: "familyName",
+  roles: []
+};
+
+const req = {
+  session: {
+    user: userInfo,
   },
 };
+
+const claim = new Claim();
+
+afterEach(() => {
+  jest.clearAllMocks();
+});
 describe('Submit claim to ccd', () => {
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-  const claim = new Claim();
-  claim.respondent1 = new Party();
-  const claimFromService = new Claim();
-  claimFromService.respondent1 = new Party();
 
   it('should submit claim successfully when there are no errors', async () => {
     //Given
-    const data: CivilClaimResponse = {
-      id: '1',
-      case_data: ccdClaim,
-      state: CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT,
-    };
-    nock(citizenBaseUrl)
-      .post('/cases/draft/citizen/undefined/event')
-      .reply(200, {data});
-    mockGetCaseData.mockImplementation(async () => {
-      return claim;
-    });
-    const spyOnTranslation = jest.spyOn(ccdTranslationService, 'translateDraftClaimToCCD');
+    const draftStoreServiceMock = jest.spyOn(draftStoreService, 'getCaseDataFromStore').mockReturnValue(claim);
+    const ccdTranslationServiceMock = jest.spyOn(ccdTranslationService, 'translateDraftClaimToCCD');
+    const CivilServiceClientServiceMock = jest.spyOn(CivilServiceClient.prototype, 'submitDraftClaim').mockReturnValue(claim);
     //When
-    await submitClaim(mockedAppRequest);
-    //Then
-    expect(spyOnTranslation).toHaveBeenCalled();
-    if (!nock.isDone()) {
-      nock.cleanAll();
-      fail('did not submit event to civil service');
-    }
+    const result = await submitClaim(req as AppRequest);
+    //then
+    expect(result).toBe(claim);
+    expect(draftStoreServiceMock).toBeCalled();
+    expect(ccdTranslationServiceMock).toBeCalled();
+    expect(CivilServiceClientServiceMock).toBeCalled();
   });
-  it('should rethrow error when there is an error with redis', async () => {
+
+  it('should throw an error', async () => {
     //Given
-    mockGetCaseData.mockImplementation(async () => {
-      throw new Error(TestMessages.REDIS_FAILURE);
+    const draftStoreServiceMock = jest
+      .spyOn(draftStoreService, 'getCaseDataFromStore')
+      .mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+    //when then
+    await expect(submitClaim(req as AppRequest)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
-    //Then
-    await expect(submitClaim(mockedAppRequest)).rejects.toThrow(TestMessages.REDIS_FAILURE);
-  });
-  it('should rethrow error when civil service returns 500', async () => {
-    //Given
-    mockGetCaseData.mockImplementation(async () => {
-      return claim;
-    });
-    nock(citizenBaseUrl)
-      .post('/cases/draft/citizen/undefined/event')
-      .reply(500, {error: 'error'});
-    //Then
-    await expect(submitClaim(mockedAppRequest)).rejects.toThrow(TestMessages.REQUEST_FAILED);
-  });
+
 });

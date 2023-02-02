@@ -7,13 +7,12 @@ import {toCCDClaimAmount} from '../response/convertToCCDClaimAmount';
 import {toCCDEvidence} from '../response/convertToCCDEvidence';
 import {toCCDInterestType} from '../response/convertToCCDInterestType';
 import {toCCDParty} from '../response/convertToCCDParty';
-// import {toCCDTimeline} from '../response/convertToCCDTimeLine';
 import {toCCDSameRateInterestSelection} from '../response/convertToCCDtoSameRateInterestSelection';
 import {toCCDYesNo} from '../response/convertToCCDYesNo';
 import {AppRequest} from 'models/AppRequest';
 import {getClaimantIdamDetails} from 'services/translation/response/claimantIdamDetails';
 
-export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest, _applicantEmail: string): CCDClaim => {
+export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClaim => {
   return {
     applicant1: toCCDParty(claim.applicant1, req),
     respondent1: toCCDParty(claim.respondent1, req),
