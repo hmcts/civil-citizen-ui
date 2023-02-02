@@ -118,7 +118,7 @@ describe('Claim - Check answers', () => {
 
     it('should return check your answer page', async () => {
       await request(app).get(CLAIM_CHECK_ANSWERS_URL)
-        .expect((res) => {
+        .expect((res:any) => {
 
           expect(res.status).toBe(200);
           expect(res.text).toContain(checkYourAnswerEng);
@@ -213,7 +213,7 @@ describe('Claim - Check answers', () => {
       await request(app)
         .post(CLAIM_CHECK_ANSWERS_URL)
         .send(data)
-        .expect((res ) => {
+        .expect((res:any ) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toBe(CLAIM_CONFIRMATION_URL);
         });
@@ -253,7 +253,7 @@ describe('Claim - Check answers', () => {
       await request(app)
         .post(CLAIM_CHECK_ANSWERS_URL)
         .send(data)
-        .expect((res) => {
+        .expect((res:any) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toBe(CLAIM_CONFIRMATION_URL);
         });
