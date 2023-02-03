@@ -9,7 +9,7 @@ describe('translate draft claim to ccd version', () => {
     //Given
     const claim = new Claim();
     //When
-    const ccdClaim = translateDraftClaimToCCD(claim);
+    const ccdClaim = translateDraftClaimToCCD(claim, undefined);
     //Then
     expect(ccdClaim.applicant1Represented).toBe(YesNoUpperCamelCase.NO);
   });
@@ -22,7 +22,7 @@ describe('translate draft claim to ccd version', () => {
       partyName: 'test',
     };
     //When
-    const ccdClaim = translateDraftClaimToCCD(claim);
+    const ccdClaim = translateDraftClaimToCCD(claim, undefined);
     //Then
     expect(ccdClaim.applicant1).not.toBeUndefined();
     expect(ccdClaim.applicant1?.companyName).toBe('test');
@@ -36,7 +36,7 @@ describe('translate draft claim to ccd version', () => {
       partyName: 'test',
     };
     //When
-    const ccdClaim = translateDraftClaimToCCD(claim);
+    const ccdClaim = translateDraftClaimToCCD(claim, undefined);
     //Then
     expect(ccdClaim.respondent1).not.toBeUndefined();
     expect(ccdClaim.respondent1?.companyName).toBe('test');
