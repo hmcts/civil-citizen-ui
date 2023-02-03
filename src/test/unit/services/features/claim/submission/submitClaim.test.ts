@@ -1,11 +1,11 @@
 import {submitClaim} from 'services/features/claim/submission/submitClaim';
-import {AppRequest} from "common/models/AppRequest";
-import {CivilServiceClient} from "client/civilServiceClient";
+import {AppRequest} from 'common/models/AppRequest';
+import {CivilServiceClient} from 'client/civilServiceClient';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import * as ccdTranslationService from 'services/translation/claim/ccdTranslation';
-import {Claim} from "models/claim";
-import {TestMessages} from "../../../../../utils/errorMessageTestConstants";
-import {req} from "../../../../../utils/UserDetails";
+import {Claim} from 'models/claim';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {req} from '../../../../../utils/UserDetails';
 
 jest.mock('modules/draft-store');
 
@@ -21,9 +21,9 @@ describe('Submit claim to ccd', () => {
     const draftStoreServiceMock = jest
       .spyOn(draftStoreService, 'getCaseDataFromStore')
       .mockReturnValue(
-        new Promise((resolve, reject) => resolve(claim)
-        )
-    );
+        new Promise((resolve, reject) => resolve(claim),
+        ),
+      );
 
     const ccdTranslationServiceMock = jest
       .spyOn(ccdTranslationService, 'translateDraftClaimToCCD');
@@ -31,9 +31,9 @@ describe('Submit claim to ccd', () => {
     const CivilServiceClientServiceMock = jest
       .spyOn(CivilServiceClient.prototype, 'submitDraftClaim')
       .mockReturnValue(
-        new Promise((resolve, reject) => resolve(claim)
-        )
-    );
+        new Promise((resolve, reject) => resolve(claim),
+        ),
+      );
 
     //When
     const result = await submitClaim(req as AppRequest);
