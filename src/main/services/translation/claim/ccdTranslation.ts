@@ -14,8 +14,8 @@ import {getClaimantIdamDetails} from 'services/translation/response/claimantIdam
 
 export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClaim => {
   return {
-    applicant1: toCCDParty(claim.applicant1, req.session.user.email),
-    respondent1: toCCDParty(claim.respondent1, req.session.user.email),
+    applicant1: toCCDParty(claim.applicant1),
+    respondent1: toCCDParty(claim.respondent1),
     applicant1Represented: YesNoUpperCamelCase.NO,
     totalClaimAmount: claim.totalClaimAmount,
     claimAmountBreakup: toCCDClaimAmount(claim.claimAmountBreakup),

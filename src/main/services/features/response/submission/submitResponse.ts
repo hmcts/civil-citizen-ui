@@ -18,7 +18,7 @@ export const submitResponse = async (req: AppRequest): Promise<Claim> => {
     const claim = await getCaseDataFromStore(claimId);
     const claimFromCivilService = await civilServiceClient.retrieveClaimDetails(claimId, req);
     const isAddressUpdated = addressHasChange(claim.respondent1?.partyDetails?.primaryAddress, claimFromCivilService?.respondent1?.partyDetails?.primaryAddress);
-    const ccdResponse = translateDraftResponseToCCD(claim, isAddressUpdated, req);
+    const ccdResponse = translateDraftResponseToCCD(claim, isAddressUpdated);
     logger.info(ccdResponse);
     return await civilServiceClient.submitDefendantResponseEvent(req.params.id, ccdResponse, req);
   } catch (err) {

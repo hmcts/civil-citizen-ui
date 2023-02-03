@@ -9,6 +9,7 @@ import {CCDAddress} from 'common/models/ccdResponse/ccdAddress';
 import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
 import {PartyPhone} from 'common/models/PartyPhone';
 import {req} from '../../../../utils/UserDetails';
+import {Email} from "models/Email";
 
 const companyName = 'Version 1';
 const phone = new PartyPhone('123456789');
@@ -18,7 +19,7 @@ const firstName = 'Jon';
 const lastName = 'Doe';
 const soleTraderTradingAs = 'test';
 const dateOfBirth = new CitizenDate('10', '10', '1990');
-const email = req.session.user.email;
+const email = new Email(req.session.user.email);
 const emailCCD = req.session.user.email;
 
 const address: Address = new Address('Street test', '1', '1A', 'test', 'sl11gf');
@@ -145,7 +146,7 @@ const partySoleTraderCCD: CCDParty = {
 
 describe('translate party to ccd model', () => {
   it('should translate COMPANY party to ccd', () => {
-    const partyResponseCCD = toCCDParty(partyCompany, req.session.user.email);
+    const partyResponseCCD = toCCDParty(partyCompany);
     expect(partyResponseCCD).toMatchObject(partyCompanyCCD);
   });
 
@@ -158,22 +159,22 @@ describe('translate party to ccd model', () => {
       type: PartyType.ORGANISATION,
     };
 
-    const partyResponseCCD = toCCDParty(party, req.session.user.email);
+    const partyResponseCCD = toCCDParty(party);
     expect(partyResponseCCD).toMatchObject(partyOrganisationCCD);
   });
 
   it('should translate INDIVIDUAL party to ccd', () => {
-    const partyResponseCCD = toCCDParty(partyIndividual, req.session.user.email);
+    const partyResponseCCD = toCCDParty(partyIndividual);
     expect(partyResponseCCD).toMatchObject(partyIndividualCCD);
   });
 
   it('should translate INDIVIDUAL party to ccd with applicantEmail', () => {
-    const partyResponseCCD = toCCDParty(partyIndividual, req.session.user.email);
+    const partyResponseCCD = toCCDParty(partyIndividual);
     expect(partyResponseCCD).toMatchObject({...partyIndividualCCD, partyEmail: req.session.user.email });
   });
 
   it('should translate SOLE TRADER party to ccd', () => {
-    const partyResponseCCD = toCCDParty(partySoleTrader, req.session.user.email);
+    const partyResponseCCD = toCCDParty(partySoleTrader);
     expect(partyResponseCCD).toMatchObject(partySoleTraderCCD);
   });
 });

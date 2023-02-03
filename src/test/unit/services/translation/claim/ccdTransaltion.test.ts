@@ -4,13 +4,14 @@ import {Party} from 'common/models/party';
 import {YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {PartyType} from 'models/partyType';
 import {req} from '../../../../utils/UserDetails';
+import {AppRequest} from "models/AppRequest";
 
 describe('translate draft claim to ccd version', () => {
   it('should translate applicant1 to ccd', () => {
     //Given
     const claim = new Claim();
     //When
-    const ccdClaim = translateDraftClaimToCCD(claim, req);
+    const ccdClaim = translateDraftClaimToCCD(claim, req as AppRequest);
     //Then
     expect(ccdClaim.applicant1Represented).toBe(YesNoUpperCamelCase.NO);
   });
@@ -23,7 +24,7 @@ describe('translate draft claim to ccd version', () => {
       partyName: 'test',
     };
     //When
-    const ccdClaim = translateDraftClaimToCCD(claim, req);
+    const ccdClaim = translateDraftClaimToCCD(claim, req as AppRequest);
     //Then
     expect(ccdClaim.applicant1).not.toBeUndefined();
     expect(ccdClaim.applicant1?.companyName).toBe('test');
@@ -37,7 +38,7 @@ describe('translate draft claim to ccd version', () => {
       partyName: 'test',
     };
     //When
-    const ccdClaim = translateDraftClaimToCCD(claim, req);
+    const ccdClaim = translateDraftClaimToCCD(claim, req as AppRequest);
     //Then
     expect(ccdClaim.respondent1).not.toBeUndefined();
     expect(ccdClaim.respondent1?.companyName).toBe('test');
