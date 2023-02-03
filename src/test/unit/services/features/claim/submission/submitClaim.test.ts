@@ -1,5 +1,5 @@
 import {submitClaim} from 'services/features/claim/submission/submitClaim';
-import {AppRequest, UserDetails} from "common/models/AppRequest";
+import {AppRequest} from "common/models/AppRequest";
 import {CivilServiceClient} from "client/civilServiceClient";
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import * as ccdTranslationService from 'services/translation/claim/ccdTranslation';
