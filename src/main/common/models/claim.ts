@@ -442,6 +442,23 @@ export class Claim {
     }
     return party?.partyDetails?.partyName;
   }
+
+  get DQTrackType(): DQTrackOptions {
+    if (this.totalClaimAmount <= 10000) {
+      return DQTrackOptions.SMALL_CLAIMS_TRACK_DQ;
+    } else if (this.totalClaimAmount < 25000) {
+      return DQTrackOptions.FAST_TRACK_DQ;
+    }
+  }
+
+  get isFastTrackClaim(): boolean {
+    return this.DQTrackType === DQTrackOptions.FAST_TRACK_DQ;
+  }
+}
+
+export enum DQTrackOptions {
+  SMALL_CLAIMS_TRACK_DQ = 'SMALL_CLAIMS_TRACK_DQ',
+  FAST_TRACK_DQ = 'FAST_TRACK_DQ',
 }
 
 export interface StatementOfTruth {

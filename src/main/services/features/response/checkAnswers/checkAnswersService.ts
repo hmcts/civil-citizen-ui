@@ -69,6 +69,12 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
       : null;
   };
 
+  const getHearingRequirementSection = () => {
+    return claim.directionQuestionnaire?.hearing != null
+      ? buildHearingRequirementSection(claim, claimId, lang)
+      :null;
+  };
+
   return {
     sections: [
       buildYourDetailsSection(claim, claimId, lang),
@@ -79,7 +85,8 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
       getFinancialSectionPA(),
       getResponsePaymentSection(),
       getFreeTelephoneMediationSection(),
-      buildHearingRequirementSection(claim, claimId, lang),
+      getHearingRequirementSection(),
+
     ],
   };
 };
