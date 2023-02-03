@@ -9,8 +9,7 @@ import {YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {PartialAdmission} from 'common/models/partialAdmission';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {FullAdmission} from 'common/models/fullAdmission';
-import {req} from "../../../../utils/UserDetails";
-
+import {req} from '../../../../utils/UserDetails';
 
 describe('translate response to ccd version', () => {
   it('should translate payment option to ccd', () => {
