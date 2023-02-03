@@ -2,9 +2,8 @@ import {CCDParty} from 'models/ccdResponse/ccdParty';
 import {Party} from 'models/party';
 import {PartyType} from 'models/partyType';
 import {toCCDAddress} from './convertToCCDAddress';
-import {AppRequest} from 'common/models/AppRequest';
 
-export const toCCDParty = (party: Party, req: AppRequest, applicantEmail?: string, translateIdamFields=false): CCDParty => {
+export const toCCDParty = (party: Party, applicantEmail?: string): CCDParty => {
   return {
     companyName: party?.type === PartyType.COMPANY ? party?.partyDetails?.partyName : undefined,
     individualDateOfBirth: party?.type === PartyType.INDIVIDUAL ? party?.dateOfBirth?.date : undefined,
