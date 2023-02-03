@@ -5,23 +5,9 @@ import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import * as ccdTranslationService from 'services/translation/claim/ccdTranslation';
 import {Claim} from "models/claim";
 import {TestMessages} from "../../../../../utils/errorMessageTestConstants";
+import {req} from "../../../../../utils/UserDetails";
 
 jest.mock('modules/draft-store');
-
-const userInfo: UserDetails = {
-  accessToken: "accessToken",
-  id: "1",
-  email: "email@email.com",
-  givenName: "givenName",
-  familyName: "familyName",
-  roles: []
-};
-
-const req = {
-  session: {
-    user: userInfo,
-  },
-};
 
 const claim = new Claim();
 
