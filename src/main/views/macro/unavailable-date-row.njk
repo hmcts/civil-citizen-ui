@@ -1,0 +1,180 @@
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% macro unavailableDateRow(unavailableDate, index, errorFor, t, removeButton, today) %}
+{% set exampleDate = today.getDate() + ' ' + (today.getMonth() + 1)+ ' ' + (today.getFullYear() + 1) %}
+{% set unavailableDateType = unavailableDateType.LONGER_PERIOD if unavailableDate.untilDate else unavailableDateType.SINGLE_DATE %}
+{% set singleDateHTML %}
+<p>'single'</p>
+  {{ govukDateInput({
+    id: "startDate",
+    type: "number",
+    inputmode: "numeric",
+    hint: {
+      text: t('COMMON.DATE_EXAMPLE', { date: exampleDate })
+    },
+    items: [
+      {
+        classes: "govuk-input--width-4 govuk-input--error" ,
+        id: 'items[' + index + '][start][day]',
+        name: 'items[' + index + '][single][start][day]',
+        label: t('COMMON.DAY'),
+        value: unavailableDate.startDay if unavailableDateType === unavailableDateType.SINGLE_DATE,
+        max: 31
+      },
+      {
+                    classes: "govuk-input--width-4 govuk-input--error" ,
+                    id: 'items[' + index + '][start][month]',
+                    name: 'items[' + index + '][single][start][month]',
+                    label: t('COMMON.MONTH'),
+                    value: unavailableDate.startMonth if unavailableDateType === unavailableDateType.SINGLE_DATE,
+                    max: 12
+                  },
+                  {
+                    classes: "govuk-input--width-4 govuk-input--error" ,
+                    id: 'items[' + index + '][start][year]',
+                    name: 'items[' + index + '][single][start][year]',
+                    label: t('COMMON.YEAR'),
+                    value: unavailableDate.startYear if unavailableDateType === unavailableDateType.SINGLE_DATE,
+
+                    max: 9999
+                  }
+                ]
+              }) }}
+    {% endset -%}
+
+
+    {% set longerPeriodHTML %}
+    <p>'longer'</p>
+               {{ govukDateInput({
+                id: "startDate",
+                type: "number",
+                inputmode: "numeric",
+                fieldset: {
+                  legend: {
+                    text: t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.FROM')
+                  }
+                },
+                hint: {
+                  text: t('COMMON.DATE_EXAMPLE', { date: exampleDate })
+                },
+                items: [
+                  {
+                    classes: "govuk-input--width-4 govuk-input--error" ,
+                    id: 'items[' + index + '][start][day]',
+                    name: 'items[' + index + '][period][start][day]',
+                    label: t('COMMON.DAY'),
+                    value: unavailableDate.startDay if unavailableDateType === unavailableDateType.LONGER_PERIOD,
+                    max: 31
+                  },
+                  {
+                    classes: "govuk-input--width-4 govuk-input--error" ,
+                    id: 'items[' + index + '][start][month]',
+                    name: 'items[' + index + '][period][start][month]',
+                    label: t('COMMON.MONTH'),
+                    value: unavailableDate.startMonth if unavailableDateType === unavailableDateType.LONGER_PERIOD,
+                    max: 12
+                  },
+                  {
+                    classes: "govuk-input--width-4 govuk-input--error" ,
+                    id: 'items[' + index + '][start][year]',
+                    name: 'items[' + index + '][period][start][year]',
+                    label: t('COMMON.YEAR'),
+                    value: unavailableDate.startYear if unavailableDateType === unavailableDateType.LONGER_PERIOD,
+                    max: 9999
+                  }
+                ]
+              }) }}
+
+            {{ govukDateInput({
+                id: "endDate",
+                type: "number",
+                inputmode: "numeric",
+                fieldset: {
+                  legend: {
+                    text: t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.TO')
+                  }
+                },
+                hint: {
+                  text: t('COMMON.DATE_EXAMPLE', { date: exampleDate })
+                },
+                items: [
+                  {
+                    classes: "govuk-input--width-4 govuk-input--error" ,
+                    id: 'items[' + index + '][end][day]',
+                    name: 'items[' + index + '][period][end][day]',
+                    label: t('COMMON.DAY'),
+                    value: unavailableDate.endDay,
+                    max: 31
+                  },
+                  {
+                    classes: "govuk-input--width-4 govuk-input--error" ,
+                    id: 'items[' + index + '][end][month]',
+                    name: 'items[' + index + '][period][end][month]',
+                    label: t('COMMON.MONTH'),
+                    value: unavailableDate.endMonth,
+                    max: 12
+                  },
+                  {
+                    classes: "govuk-input--width-4 govuk-input--error" ,
+                    id: 'items[' + index + '][end][year]',
+                    name: 'items[' + index + '][period][end][year]',
+                    label: t('COMMON.YEAR'),
+                    value: unavailableDate.endYear,
+                    max: 9999
+                  }
+                ]
+              }) }}
+    {% endset -%}
+
+
+  <div class="row-container">
+    <div class="multiple-row">
+          {{ govukRadios({
+                id: 'items-' + index + '=type',
+                name: 'items[' + index + '][type]',
+                items: [
+                  {
+                    id: 'items-' +index+ 'single-date',
+                    value: unavailableDateType.SINGLE_DATE,
+                    html: t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.SINGLE_DATE'),
+                    checked: unavailableDate.untilDate == undefined,
+                    conditional: {
+                      html: singleDateHTML
+                    }
+                  },
+                  {
+                    id: 'items-' +index+ 'longer-period',
+                    value: unavailableDateType.LONGER_PERIOD,
+                    html:  t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.LONGER_PERIOD'),
+                    checked: unavailableDate.untilDate,
+                    conditional: {
+                      html: longerPeriodHTML
+                    }
+                  }
+                ],
+                errorMessage: {
+                  text: t(typeError)
+                } if typeError
+              }) }}
+
+      {% if removeButton %}
+        {% if removeButton.hidden %}
+          {{ govukButton({
+            text: t('COMMON.REMOVE'),
+            classes: "govuk-button--secondary remove-row govuk-visually-hidden"
+          }) }}
+        {% else %}
+          {{ govukButton({
+            text: t('COMMON.REMOVE'),
+            classes: "govuk-button--secondary remove-row"
+          }) }}
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+
+{% endmacro %}

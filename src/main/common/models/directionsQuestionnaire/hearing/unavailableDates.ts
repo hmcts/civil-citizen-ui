@@ -75,7 +75,7 @@ export class UnavailableDatePeriod {
   // use -->getNumberOfDaysBetweenTwoDays
 }
 
-export enum UnavailableDatesType {
+export enum unavailableDateType {
   SINGLE_DATE = 'SINGLE_DATE',
   LONGER_PERIOD = ' LONGER_PERIOD',
 }

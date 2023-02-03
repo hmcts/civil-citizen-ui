@@ -7,7 +7,7 @@ import {
   DQ_PHONE_OR_VIDEO_HEARING_URL,
 } from 'routes/urls';
 import {getDirectionQuestionnaire, saveDirectionQuestionnaire} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
-import {UnavailableDatePeriod, UnavailableDates, UnavailableDatesType} from 'common/models/directionsQuestionnaire/hearing/unavailableDates';
+import {UnavailableDatePeriod, UnavailableDates, unavailableDateType} from 'common/models/directionsQuestionnaire/hearing/unavailableDates';
 
 const unavailableDatesForHearingController = Router();
 const unavailableDatesForHearingViewPath = 'features/directionsQuestionnaire/hearing/unavailable-dates-for-hearing';
@@ -34,10 +34,10 @@ unavailableDatesForHearingController.post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL,
   try {
     const claimId = req.params.id;
     const unavailableDates: UnavailableDatePeriod[] = req.body.items.map((item:any) => {
-      if (item.type === UnavailableDatesType.SINGLE_DATE) {
+      if (item.type === unavailableDateType.SINGLE_DATE) {
         return new UnavailableDatePeriod(item.single.start, undefined);
       }
-      if (item.type === UnavailableDatesType.LONGER_PERIOD) {
+      if (item.type === unavailableDateType.LONGER_PERIOD) {
         return new UnavailableDatePeriod(item.period.start, item.period.end);
       }
     });

@@ -14,6 +14,31 @@
         "calculatedAmountInPence": "7000"
       },
       "directionQuestionnaire": {
+        "hearing": {
+          "unavailableDatesForHearing": {
+            "items": [
+              {
+                "fromDate": "2000-01-01T00:00:00.000Z",
+                "startYear": 2000,
+                "startMonth": 1,
+                "startDay": 1,
+                "untilDate": "2000-01-01T00:00:00.000Z",
+                "endYear": 8,
+                "endMonth": 8,
+                "endDay": 8888
+              },
+              {
+                "fromDate": "2222-02-02T00:00:00.000Z",
+                "startYear": 2222,
+                "startMonth": 2,
+                "startDay": 2,
+                "endYear": null,
+                "endMonth": null,
+                "endDay": null
+              }
+            ]
+          }
+        },
         "witnesses": {
           "otherWitnesses": {
             "option": "",

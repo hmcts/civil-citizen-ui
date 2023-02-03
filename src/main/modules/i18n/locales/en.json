@@ -2066,6 +2066,16 @@
       "TITLE": "Do you, your experts or witnesses need support to attend a hearing",
       "WHAT_LANGUAGE": "What language needs to be interpreted?"
     },
+    "UNAVAILABLE_DATES_FOR_HEARING": {
+      "ADD_ANOTHER_DATE": "Add another date or period of time",
+      "CONTENT": "These should only be the dates of important events like medical appointments, other court hearing, or holidays you have already booked",
+      "FROM": "From",
+      "LONGER_PERIOD": "Longer period of time",
+      "PAGE_TITLE": "Unavailable dates for hearing",
+      "SINGLE_DATE": "Single date",
+      "TITLE": "Add a single date or longer period of time that you cannot attend a hearing",
+      "TO": "To"
+    },
     "UNDER_18": {
       "ABLE_TO_GET_ADVICE": "You might be able to get advice about the claim from",
       "CITIZEN_ADVICE": "Citizens Advice (opens in a new window)",

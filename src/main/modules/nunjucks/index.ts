@@ -30,6 +30,7 @@ import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLang
 import {CourtProposedDateOptions} from 'common/form/models/claimantResponse/courtProposedDate';
 import {CourtProposedPlanOptions} from 'common/form/models/claimantResponse/courtProposedPlan';
 import {ClaimResponseStatus} from 'common/models/claimResponseStatus';
+import {unavailableDateType} from 'common/models/directionsQuestionnaire/hearing/unavailableDates';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -128,6 +129,9 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('CourtProposedPlanOptions', CourtProposedPlanOptions);
     nunjucksEnv.addGlobal('CaseState', CaseState);
     nunjucksEnv.addGlobal('ClaimResponseStatus', ClaimResponseStatus);
+    nunjucksEnv.addGlobal('unavailableDateType', unavailableDateType);
+    nunjucksEnv.addGlobal('today', new Date());
+
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;
