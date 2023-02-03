@@ -8,12 +8,9 @@ import {CCDParty} from 'common/models/ccdResponse/ccdParty';
 import {CCDAddress} from 'common/models/ccdResponse/ccdAddress';
 import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
 import {PartyPhone} from 'common/models/PartyPhone';
-import {Email} from 'common/models/Email';
-import * as requestModels from 'models/AppRequest';
+import {req} from "../../../../utils/UserDetails";
 
-declare const appRequest: requestModels.AppRequest;
-const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
-mockedAppRequest.params = {id: '1'};
+
 
 const companyName = 'Version 1';
 const phone = new PartyPhone('123456789');
@@ -23,8 +20,8 @@ const firstName = 'Jon';
 const lastName = 'Doe';
 const soleTraderTradingAs = 'test';
 const dateOfBirth = new CitizenDate('10', '10', '1990');
-const email = new Email('test@test.com');
-const emailCCD = 'test@test.com';
+const email = req.session.user.email;
+const emailCCD = req.session.user.email;
 
 const address: Address = new Address('Street test', '1', '1A', 'test', 'sl11gf');
 
@@ -150,7 +147,7 @@ const partySoleTraderCCD: CCDParty = {
 
 describe('translate party to ccd model', () => {
   it('should translate COMPANY party to ccd', () => {
-    const partyResponseCCD = toCCDParty(partyCompany, mockedAppRequest, null,true);
+    const partyResponseCCD = toCCDParty(partyCompany, req.session.user.email);
     expect(partyResponseCCD).toMatchObject(partyCompanyCCD);
   });
 
@@ -163,23 +160,22 @@ describe('translate party to ccd model', () => {
       type: PartyType.ORGANISATION,
     };
 
-    const partyResponseCCD = toCCDParty(party, mockedAppRequest, null, true);
+    const partyResponseCCD = toCCDParty(party, req.session.user.email);
     expect(partyResponseCCD).toMatchObject(partyOrganisationCCD);
   });
 
   it('should translate INDIVIDUAL party to ccd', () => {
-    const partyResponseCCD = toCCDParty(partyIndividual, mockedAppRequest, null ,true);
+    const partyResponseCCD = toCCDParty(partyIndividual, req.session.user.email);
     expect(partyResponseCCD).toMatchObject(partyIndividualCCD);
   });
 
   it('should translate INDIVIDUAL party to ccd with applicantEmail', () => {
-    const mockApplicantEmail = 'abc@def.com';
-    const partyResponseCCD = toCCDParty(partyIndividual, mockedAppRequest, mockApplicantEmail, false);
-    expect(partyResponseCCD).toMatchObject({...partyIndividualCCD, partyEmail: mockApplicantEmail });
+    const partyResponseCCD = toCCDParty(partyIndividual, req.session.user.email);
+    expect(partyResponseCCD).toMatchObject({...partyIndividualCCD, partyEmail: req.session.user.email });
   });
 
   it('should translate SOLE TRADER party to ccd', () => {
-    const partyResponseCCD = toCCDParty(partySoleTrader, mockedAppRequest, null, true);
+    const partyResponseCCD = toCCDParty(partySoleTrader, req.session.user.email);
     expect(partyResponseCCD).toMatchObject(partySoleTraderCCD);
   });
 });
