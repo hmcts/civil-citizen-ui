@@ -3,8 +3,7 @@ import {translateDraftClaimToCCD} from 'services/translation/claim/ccdTranslatio
 import {Party} from 'common/models/party';
 import {YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {PartyType} from 'models/partyType';
-import {req} from "../../../../utils/UserDetails";
-
+import {req} from '../../../../utils/UserDetails';
 
 describe('translate draft claim to ccd version', () => {
   it('should translate applicant1 to ccd', () => {
