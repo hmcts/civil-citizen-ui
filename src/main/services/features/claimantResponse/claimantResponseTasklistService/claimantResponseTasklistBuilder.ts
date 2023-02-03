@@ -5,12 +5,14 @@ import {getViewDefendantsReponseTask} from './claimantResponseTasks/howDefendant
 import {getCheckAndSubmitClaimantResponseTask} from './claimantResponseTasks/claimantResponseSubmitSectionTasks';
 import {getGiveUsDetailsClaimantHearingTask} from './claimantResponseTasks/claimantHearingRequirementsSectionTasks';
 import {
-  getAcceptOrRejectDefendantAdmittedTask, 
-  getFreeTelephoneMediationTask
+  getAcceptOrRejectDefendantAdmittedTask,
+  getChooseHowFormaliseTaskTask,
+  getFreeTelephoneMediationTask,
+  getSignSettlementAgreementTask,
 } from './claimantResponseTasks/whatToDoNextSectionTasks';
 import {YesNo} from 'common/form/models/yesNo';
 
-export function buildHowDefendantRespondSection(claim: Claim, claimId: string, lang: string){
+export function buildHowDefendantRespondSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
   const viewDefendantsReponseTask = getViewDefendantsReponseTask(claim, claimId, lang);
   tasks.push(viewDefendantsReponseTask);
@@ -22,11 +24,15 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
   const acceptOrRejectDefendantAdmittedTask = getAcceptOrRejectDefendantAdmittedTask(claim, claimId, lang);
   tasks.push(acceptOrRejectDefendantAdmittedTask);
   if (claim.isPartialAdmission()) {
-    if(claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO) {
+    if (claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO) {
       const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
       tasks.push(freeTelephoneMediationTask);
     }
   }
+  const chooseHowFormaliseTask = getChooseHowFormaliseTaskTask(claim, claimId, lang);
+  tasks.push(chooseHowFormaliseTask);
+  const signSettlementAgreement = getSignSettlementAgreementTask(claim, claimId, lang);
+  tasks.push(signSettlementAgreement);
   return {title: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.TITLE', {lng: lang}), tasks};
 }
 

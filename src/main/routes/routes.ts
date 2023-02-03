@@ -111,8 +111,7 @@ import completingClaimController from './features/claim/completingClaimControlle
 import submitConfirmationController from './features/response/submitConfirmationController';
 import resolvingThisDisputeController from './features/claim/resolvingThisDisputeController';
 import cookiesController from './features/public/cookiesController';
-import defendantExpertEvidenceController
-  from './features/directionsQuestionnaire/experts/defendantExpertEvidenceController';
+import defendantExpertEvidenceController from './features/directionsQuestionnaire/experts/expertEvidenceController';
 import considerClaimantDocumentsController
   from './features/directionsQuestionnaire/considerClaimantDocumentsController';
 import triedToSettleController from './features/directionsQuestionnaire/triedToSettleController';
