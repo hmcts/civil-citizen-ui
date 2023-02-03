@@ -4,7 +4,10 @@ import {Task} from 'common/models/taskList/task';
 import {getViewDefendantsReponseTask} from './claimantResponseTasks/howDefendantRespondSectionTaks';
 import {getCheckAndSubmitClaimantResponseTask} from './claimantResponseTasks/claimantResponseSubmitSectionTasks';
 import {getGiveUsDetailsClaimantHearingTask} from './claimantResponseTasks/claimantHearingRequirementsSectionTasks';
-import {getAcceptOrRejectDefendantAdmittedTask} from './claimantResponseTasks/whatToDoNextSectionTasks';
+import {
+  getAcceptOrRejectDefendantAdmittedTask, 
+  getFreeTelephoneMediationTask
+} from './claimantResponseTasks/whatToDoNextSectionTasks';
 import {YesNo} from 'common/form/models/yesNo';
 
 export function buildHowDefendantRespondSection(claim: Claim, claimId: string, lang: string){
@@ -18,6 +21,12 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
   const tasks: Task[] = [];
   const acceptOrRejectDefendantAdmittedTask = getAcceptOrRejectDefendantAdmittedTask(claim, claimId, lang);
   tasks.push(acceptOrRejectDefendantAdmittedTask);
+  if (claim.isPartialAdmission()) {
+    if(claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO) {
+      const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
+      tasks.push(freeTelephoneMediationTask);
+    }
+  }
   return {title: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.TITLE', {lng: lang}), tasks};
 }
 
