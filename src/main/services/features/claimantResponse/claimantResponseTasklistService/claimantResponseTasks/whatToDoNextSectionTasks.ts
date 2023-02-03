@@ -35,10 +35,14 @@ export function getFreeTelephoneMediationTask(claim: Claim, claimId: string, lan
     freeTelephoneMediationTask.status = TaskStatus.COMPLETE;
   } else {
     if (mediation?.canWeUse?.option === YesNo.YES || mediation?.canWeUse?.mediationPhoneNumber) {
+      console.log('1');
       freeTelephoneMediationTask.status = TaskStatus.COMPLETE;
     }
     if (mediation?.companyTelephoneNumber?.option === YesNo.NO) {
+      console.log('2');
+      console.log('has', hasClaimantResponseContactPersonAndCompanyPhone(claim));
       if (hasClaimantResponseContactPersonAndCompanyPhone(claim)) {
+        console.log('INSIDEEEEEEEEEE');
         freeTelephoneMediationTask.status = TaskStatus.COMPLETE;
       }
     } else if (mediation?.companyTelephoneNumber?.mediationPhoneNumberConfirmation) {
