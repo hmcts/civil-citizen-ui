@@ -6,7 +6,7 @@ import {getCheckAndSubmitClaimantResponseTask} from './claimantResponseTasks/cla
 import {getGiveUsDetailsClaimantHearingTask} from './claimantResponseTasks/claimantHearingRequirementsSectionTasks';
 import {
   getAcceptOrRejectDefendantAdmittedTask, 
-  getFreeTelephoneMediationTask
+  getFreeTelephoneMediationTask,
 } from './claimantResponseTasks/whatToDoNextSectionTasks';
 import {YesNo} from 'common/form/models/yesNo';
 
