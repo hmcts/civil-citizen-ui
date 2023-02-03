@@ -1,4 +1,4 @@
-import {CompanyTelephoneNumber} from 'common/form/models/mediation/companyTelephoneNumber';
+// import {CompanyTelephoneNumber} from 'common/form/models/mediation/companyTelephoneNumber';
 import {YesNo} from 'common/form/models/yesNo';
 import {Claim} from 'common/models/claim';
 import {Mediation} from 'common/models/mediation/mediation';
@@ -97,40 +97,41 @@ describe('What to do next section task', () => {
 
     it('should return complete if companyTelephoneNumber NO', () => {
       //Given
-      claim.mediation = new Mediation(
+      claim.claimantResponse = {
+        mediation: new Mediation(
         undefined,
         { option: YesNo.YES },
         undefined,
-        new CompanyTelephoneNumber(YesNo.NO, '666555444', 'Jon Doe', '1234567'),
-      );
+        { option: YesNo.NO, mediationPhoneNumber: '666555444', mediationContactPerson: 'Jon Doe' },
+      )};
       //When
       const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
       //Then
       expect(freeTelephoneMediationTask).toEqual(resultComplete);
     });
 
-    it('should return complete if companyTelephoneNumber NO and has contact person and mediation phone', () => {
+    it('should return incomplete if companyTelephoneNumber NO and doesnt has contact person', () => {
       //Given
-      claim.mediation = new Mediation(
+      claim.claimantResponse = {mediation: new Mediation(
         undefined,
         { option: YesNo.YES },
         undefined,
-        { option: YesNo.NO, mediationContactPerson: 'Joe', mediationPhoneNumber:'666555444' },
-      );
+        { option: YesNo.NO, mediationPhoneNumber: '666555444' },
+      )};
       //When
       const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
       //Then
-      expect(freeTelephoneMediationTask).toEqual(resultComplete);
+      expect(freeTelephoneMediationTask).toEqual(resultIncomplete);
     });
 
     it('should return complete if companyTelephoneNumber YES', () => {
       //Given
-      claim.mediation = new Mediation(
+      claim.claimantResponse = {mediation: new Mediation(
         undefined,
         { option: YesNo.YES },
         undefined,
         { option: YesNo.YES, mediationPhoneNumberConfirmation: '666555444' },
-      );
+      )};
       //When
       const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
       //Then
