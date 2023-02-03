@@ -69,3 +69,21 @@ export const convertFrequencyToText = (frequency: string, lng: string): string =
       return t('COMMON.FREQUENCY_OF_PAYMENTS.MONTHLY', { lng });
   }
 };
+
+export const getRepaymentLength = (claim: Claim, lng: string): string => {
+  const repaymentFrequency = getRepaymentFrequency(claim);
+  let repaymentLength = '';
+  switch (repaymentFrequency) {
+    case TransactionSchedule.WEEK:
+      repaymentLength = getNumberOfInstalments(claim) === 2 ? t('COMMON.SCHEDULE.TWO_WEEKS', { lng }) : getNumberOfInstalments(claim) + ' ' + t('COMMON.SCHEDULE.WEEKS_LOWER_CASE', { lng });
+      break;
+    case TransactionSchedule.TWO_WEEKS:
+      repaymentLength = getNumberOfInstalments(claim) * 2 +  ' ' + t('COMMON.SCHEDULE.WEEKS_LOWER_CASE', {lng});
+      break;
+    case TransactionSchedule.MONTH:
+      repaymentLength = getNumberOfInstalments(claim) + ' ' + t('COMMON.SCHEDULE.MONTHS_LOWER_CASE', { lng });
+      break;
+  }
+
+  return repaymentLength;
+};
