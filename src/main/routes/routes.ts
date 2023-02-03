@@ -366,7 +366,7 @@ export default [
   repaymentPlanAcceptedController,
   courtProposedPlanController,
   claimantResponseConfirmationController,
-  judgmentAmountSummaryController,
   ccjCheckAnswersController,
+  judgmentAmountSummaryController,
   claimantResponseTasklistController,
 ];
