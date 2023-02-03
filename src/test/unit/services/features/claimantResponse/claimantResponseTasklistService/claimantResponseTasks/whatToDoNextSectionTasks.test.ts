@@ -1,4 +1,3 @@
-// import {CompanyTelephoneNumber} from 'common/form/models/mediation/companyTelephoneNumber';
 import {YesNo} from 'common/form/models/yesNo';
 import {Claim} from 'common/models/claim';
 import {Mediation} from 'common/models/mediation/mediation';
@@ -65,7 +64,7 @@ describe('What to do next section task', () => {
     it('should return complete if no mediation', () => {
       //Given
       claim.claimantResponse = {
-        mediation: new Mediation(undefined, { option: YesNo.NO }, undefined, undefined)
+        mediation: new Mediation(undefined, { option: YesNo.NO }, undefined, undefined),
       };
       //When
       const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
@@ -76,7 +75,7 @@ describe('What to do next section task', () => {
     it('should return complete if canWeUse NO and provide new phone', () => {
       //Given
       claim.claimantResponse = {
-        mediation: new Mediation({ option: YesNo.NO, mediationPhoneNumber: '666555444' }, { option: YesNo.YES }, undefined, undefined)
+        mediation: new Mediation({ option: YesNo.NO, mediationPhoneNumber: '666555444' }, { option: YesNo.YES }, undefined, undefined),
       };
       //When
       const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
@@ -87,7 +86,7 @@ describe('What to do next section task', () => {
     it('should return complete if canWeUse YES and use same phone', () => {
       //Given
       claim.claimantResponse = {
-        mediation: new Mediation({ option: YesNo.YES }, { option: YesNo.YES }, undefined, undefined )
+        mediation: new Mediation({ option: YesNo.YES }, { option: YesNo.YES }, undefined, undefined),
       };
       //When
       const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
@@ -99,11 +98,12 @@ describe('What to do next section task', () => {
       //Given
       claim.claimantResponse = {
         mediation: new Mediation(
-        undefined,
-        { option: YesNo.YES },
-        undefined,
-        { option: YesNo.NO, mediationPhoneNumber: '666555444', mediationContactPerson: 'Jon Doe' },
-      )};
+          undefined,
+          { option: YesNo.YES },
+          undefined,
+          { option: YesNo.NO, mediationPhoneNumber: '666555444', mediationContactPerson: 'Jon Doe' },
+        ),
+      };
       //When
       const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
       //Then
@@ -112,12 +112,14 @@ describe('What to do next section task', () => {
 
     it('should return incomplete if companyTelephoneNumber NO and doesnt has contact person', () => {
       //Given
-      claim.claimantResponse = {mediation: new Mediation(
-        undefined,
-        { option: YesNo.YES },
-        undefined,
-        { option: YesNo.NO, mediationPhoneNumber: '666555444' },
-      )};
+      claim.claimantResponse = {
+        mediation: new Mediation(
+          undefined,
+          { option: YesNo.YES },
+          undefined,
+          { option: YesNo.NO, mediationPhoneNumber: '666555444' },
+        ),
+      };
       //When
       const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
       //Then
@@ -126,12 +128,14 @@ describe('What to do next section task', () => {
 
     it('should return complete if companyTelephoneNumber YES', () => {
       //Given
-      claim.claimantResponse = {mediation: new Mediation(
-        undefined,
-        { option: YesNo.YES },
-        undefined,
-        { option: YesNo.YES, mediationPhoneNumberConfirmation: '666555444' },
-      )};
+      claim.claimantResponse = {
+        mediation: new Mediation(
+          undefined,
+          { option: YesNo.YES },
+          undefined,
+          { option: YesNo.YES, mediationPhoneNumberConfirmation: '666555444' },
+        ),
+      };
       //When
       const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
       //Then
