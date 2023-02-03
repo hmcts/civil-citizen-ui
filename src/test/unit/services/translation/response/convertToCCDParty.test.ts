@@ -8,9 +8,7 @@ import {CCDParty} from 'common/models/ccdResponse/ccdParty';
 import {CCDAddress} from 'common/models/ccdResponse/ccdAddress';
 import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
 import {PartyPhone} from 'common/models/PartyPhone';
-import {req} from "../../../../utils/UserDetails";
-
-
+import {req} from '../../../../utils/UserDetails';
 
 const companyName = 'Version 1';
 const phone = new PartyPhone('123456789');
