@@ -70,7 +70,7 @@ describe('translate Evidence to CUI model', () => {
   });
 
   it('should translate Evidence to CUI', () => {
-    const claimAmountCUI: EvidenceItem[] = [
+    const evidenceCUI: EvidenceItem[] = [
       {
         type: EvidenceType.CONTRACTS_AND_AGREEMENTS,
         description: 'test contract',
@@ -102,6 +102,6 @@ describe('translate Evidence to CUI model', () => {
     ];
 
     const evidenceResponseCUI = toCUIEvidence(evidencesMock.ccdEvidence);
-    expect(evidenceResponseCUI.evidenceItem).toMatchObject(claimAmountCUI);
+    expect(evidenceResponseCUI.evidenceItem).toMatchObject(evidenceCUI);
   });
 });
