@@ -80,7 +80,6 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
       getResponsePaymentSection(),
       getFreeTelephoneMediationSection(),
       buildHearingRequirementSection(claim, claimId, lang),
-
     ],
   };
 };
