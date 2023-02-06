@@ -45,7 +45,7 @@ export const buildHearingRequirementSection = (claim: Claim, claimId: string, la
     summaryRows: [],
   });
 
-  if (claim.isFastTrackClaim && claim.directionQuestionnaire?.hearing != null) {
+  if (claim.isFastTrackClaim && claim.directionQuestionnaire?.hearing) {
     const considerClaimantDoc = claim.directionQuestionnaire?.hearing?.considerClaimantDocuments;
     const triedToSettle = claim.directionQuestionnaire?.hearing?.triedToSettle?.option;
     const requestExtra4Weeks = claim.directionQuestionnaire?.hearing?.requestExtra4weeks?.option;

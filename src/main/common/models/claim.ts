@@ -50,6 +50,9 @@ import {PriorityDebts} from 'form/models/statementOfMeans/priorityDebts';
 import {Debts} from 'form/models/statementOfMeans/debts/debts';
 import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreference';
 import {claimType} from 'form/models/claimType';
+const SMALL_CLAIM_AMOUNT = 10000;
+const FAST_TRACK_CLAIM_AMOUNT = 25000;
+
 export class Claim {
   legacyCaseReference: string;
   applicant1?: Party;
@@ -445,9 +448,9 @@ export class Claim {
   }
 
   get claimType(): claimType {
-    if (this.totalClaimAmount <= 10000) {
+    if (this.totalClaimAmount <= SMALL_CLAIM_AMOUNT) {
       return claimType.SMALL_CLAIM;
-    } else if (this.totalClaimAmount < 25000) {
+    } else if (this.totalClaimAmount < FAST_TRACK_CLAIM_AMOUNT) {
       return claimType.FAST_TRACK_CLAIM;
     }
   }
