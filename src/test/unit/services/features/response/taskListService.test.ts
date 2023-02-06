@@ -1,5 +1,5 @@
 import {Claim} from 'common/models/claim';
-import {getDescription, getTaskLists, getTitle} from 'services/features/response/taskListService';
+import {getDescription, getTaskLists, getTitle} from 'services/features/common/taskListService';
 import {
   buildPrepareYourResponseSection,
   buildRespondToClaimSection,

@@ -12,9 +12,6 @@ import {getLng} from '../../../common/utils/languageToggleUtils';
 import {t} from 'i18next';
 import {Claim} from '../../../common/models/claim';
 
-let completed = 0;
-let total = 0;
-
 const getTaskLists = (caseData: Claim, currentClaimId: string, lang: string) => {
 
   // TASK BUILDER
@@ -50,22 +47,23 @@ const outstandingTasksFromTaskLists = (taskLists: TaskList[]): Task[] => {
     .filter(task => isOutstanding(task));
 };
 
-const calculateTotalAndCompleted = (taskLists: TaskList[]) => {
-  completed = 0;
-  total = 0;
+export const calculateTotalAndCompleted = (taskLists: TaskList[]) => {
+  let completed = 0;
+  let total = 0;
   taskLists.forEach(taskList => {
     total += taskList.tasks.length;
     completed += countCompletedTasks(taskList);
   });
+  return {completed, total};
 };
 
 const getTitle = (taskLists: TaskList[], lang: string) => {
-  calculateTotalAndCompleted(taskLists);
+  const {completed, total} = calculateTotalAndCompleted(taskLists);
   return completed < total ? t('TASK_LIST.APPLICATION_INCOMPLETE', {lng: getLng(lang)}) : t('TASK_LIST.APPLICATION_COMPLETE', {lng: getLng(lang)});
 };
 
 const getDescription = (taskLists: TaskList[], lang: string) => {
-  calculateTotalAndCompleted(taskLists);
+  const {completed, total} = calculateTotalAndCompleted(taskLists);
   return t('TASK_LIST.COMPLETED_SECTIONS', {completed, total, lng: getLng(lang)});
 };
 
@@ -81,4 +79,3 @@ export {
   outstandingTasksFromCase,
   outstandingTasksFromTaskLists,
 };
-
