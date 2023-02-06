@@ -1,7 +1,7 @@
 import nock from 'nock';
 import config from 'config';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {outstandingTasksFromCase} from 'services/features/response/taskListService';
+import {outstandingTasksFromCase} from 'services/features/common/taskListService';
 import {RESPONSE_INCOMPLETE_SUBMISSION_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {getElementsByXPath} from '../../../../utils/xpathExtractor';
@@ -18,7 +18,7 @@ jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/services/features/response/checkAnswers/checkAnswersService');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../main/services/features/response/taskListService');
+jest.mock('../../../../../main/services/features/common/taskListService');
 const mockGetCaseDataFromStore = getCaseDataFromStore as jest.Mock;
 const mockOutstandingTasksFromCase = outstandingTasksFromCase as jest.Mock;
 
