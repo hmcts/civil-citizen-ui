@@ -267,6 +267,16 @@
       "NO": "No"
     }
   },
+  "CLAIMANT_RESPONSE_TASK_LIST": {
+    "HOW_THEY_RESPONDED": {
+      "TITLE": "How they responded",
+      "VIEW_DEFENDANTS_RESPONSE": "View the defendant's response"
+    },
+    "CHOOSE_WHAT_TODO_NEXT": {
+      "TITLE": "Choose what to do next",
+      "ACCEPT_OR_REJECT_ADMITTED": "Accept or reject the £{{ admittedAmount }}"
+    }
+  },
   "TASK_LIST": {
     "APPLICATION_COMPLETE": "Application complete",
     "APPLICATION_INCOMPLETE": "Application incomplete",
@@ -374,19 +384,6 @@
       "PAGE_TITLE": "Suggest instalments for the defendant",
       "TITLE": "Suggest instalments for the defendant",
       "TOTAL_CLAIM_AMOUNT": "Total claim amount is £{{ totalClaimAmount }}"
-    },
-    "JUDGMENT_AMOUNT": {
-      "TITLE": "Judgment amount",
-      "PAGE_TITLE": "Judgment amount",
-      "INTEREST_TO_DATE": "Interest to date",
-      "CLAIM_FEE_AMOUNT": "Claim fee amount",
-      "SUBTOTAL": "Subtotal",
-      "AMOUNT_ALREADY_PAID": "Minus amount already paid",
-      "CLAIM_TOTAL": "Total",
-      "JUDGMENT_STATEMENT": "The judgment will order the defendant to pay £{{ subTotal }}, including your claim fee and any interest, as shown in this table:",
-      "INTEREST_TO_DATE_RESPONSE": "Interest calculated at {{interestRate}}% for {{numberOfDays}} days.",
-      "TOTAL_PERIOD": "({{ interestFromDate }} to {{ interestToDate}})",
-      "HOW_INTEREST_IS_CALCULATED": "Interest calculated as \"{{ reason }}\" for {{numberOfDays}} days."
     },
     "CHECK_YOUR_ANSWER": {
       "BANK_BALANCE": "Balance",
@@ -835,6 +832,10 @@
     "CLAIMANT_RESPONSE_REJECTION_REASON": {
       "PAGE_TITLE": "Rejection reason",
       "TITLE": "Why did you reject their response?"
+    },
+    "CLAIMANT_RESPONSE_TASK_LIST": {
+      "PAGE_TITLE": "Claimant response task list",
+      "HEADER": "Your response"
     },
     "CLAIMANT_TERMS_OF_AGREEMENT": {
       "PAGE_TITLE": "Terms of the agreement",
@@ -1410,6 +1411,19 @@
       "WOULD_NOT_SOLVE": "I do not think mediation would solve the dispute",
       "YOU_HAVE_CHOSEN_TELL_US_WHY": "You have chosen not to try free mediation. Please tell us why:"
     },
+    "JUDGMENT_AMOUNT": {
+      "TITLE": "Judgment amount",
+      "PAGE_TITLE": "Judgment amount",
+      "INTEREST_TO_DATE": "Interest to date",
+      "CLAIM_FEE_AMOUNT": "Claim fee amount",
+      "SUBTOTAL": "Subtotal",
+      "AMOUNT_ALREADY_PAID": "Minus amount already paid",
+      "CLAIM_TOTAL": "Total",
+      "JUDGMENT_STATEMENT": "The judgment will order the defendant to pay £{{ subTotal }}, including your claim fee and any interest, as shown in this table:",
+      "INTEREST_TO_DATE_RESPONSE": "Interest calculated at {{interestRate}}% for {{numberOfDays}} days.",
+      "TOTAL_PERIOD": "({{ interestFromDate }} to {{ interestToDate}})",
+      "HOW_INTEREST_IS_CALCULATED": "Interest calculated as \"{{ reason }}\" for {{numberOfDays}} days."
+    },
     "LATEST_UPDATE_CONTENT": {
       "CLAIMANT_CAN_ASK_FOR_CCJ_AGAINST_YOU": "You haven't responded to the claim. {{ claimantName }} can now ask for a County Court Judgement against you.",
       "CCJ_COULD_SEND_BAILIFFS_TO_YOUR_HOME": "A County Court Judgment can mean you find it difficult to get credit, like a mortgage or mobile phone contract. Bailiffs could also be sent to your home.",
@@ -1795,6 +1809,17 @@
       "WHY_THEY_DISAGREE_EVIDENCE": "Why they disagree with your evidence",
       "WHY_THEY_DISAGREE_TIMELINE": "Why they disagree with your timeline",
       "HOW_THEY_WANT_TO_PAY_RESPONSE": "They've offered to pay you £{{ amount }} by {{ paymentDate }}. This is the total amount you'll be paid, including the claim fee and interest if applicable.",
+      "PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE": {
+        "TITLE": "How they want to pay",
+        "SUGGESTED_REPAYMENT": "The defendant suggested this repayment plan",
+        "REPAYMENT_PLAN": {
+          "REGULAR_PAYMENTS": "Regular payments of",
+          "FREQUENCY_OF_PAYMENTS": "Frequency of payments",
+          "FIRST_PAYMENT_DATE": "First payment date",
+          "FINAL_PAYMENT_DATE": "Final payment date",
+          "LENGTH": "Length of repayment plan"
+        }
+      },
       "WHEN_THEY_PAID_THIS_AMOUNT": "When they say they paid this amount",
       "HOW_THEY_PAID": "How they said they paid",
       "THEY_DONT_OWE_CLAIM_AMOUNT": "Why they say they dont owe the amount you claimed",
