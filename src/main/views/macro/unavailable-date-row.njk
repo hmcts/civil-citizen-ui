@@ -6,7 +6,6 @@
 
 {% macro unavailableDateRow(unavailableDate, index, errorFor, t, removeButton, today) %}
 {% set exampleDate = today.getDate() + ' ' + (today.getMonth() + 1)+ ' ' + (today.getFullYear() + 1) %}
-{% set unavailableDateType = unavailableDateType.LONGER_PERIOD if unavailableDate.untilDate else unavailableDateType.SINGLE_DATE %}
 {% set singleDateHTML %}
 <p>'single'</p>
   {{ govukDateInput({
@@ -18,28 +17,27 @@
     },
     items: [
       {
-        classes: "govuk-input--width-4 govuk-input--error" ,
-        id: 'items[' + index + '][start][day]',
+        classes: "govuk-input--width-4 govuk-input--error",
+        id: 'items[' + index + '][startDay]-single' if unavailableDate.until else 'items[' + index + '][startDay]',
         name: 'items[' + index + '][single][start][day]',
         label: t('COMMON.DAY'),
-        value: unavailableDate.startDay if unavailableDateType === unavailableDateType.SINGLE_DATE,
+        value: unavailableDate.startDay if unavailableDate.type === UnavailableDateType.SINGLE_DATE,
         max: 31
       },
       {
                     classes: "govuk-input--width-4 govuk-input--error" ,
-                    id: 'items[' + index + '][start][month]',
+                    id: 'items[' + index + '][startMonth]',
                     name: 'items[' + index + '][single][start][month]',
                     label: t('COMMON.MONTH'),
-                    value: unavailableDate.startMonth if unavailableDateType === unavailableDateType.SINGLE_DATE,
+                    value: unavailableDate.startMonth if unavailableDate.type === UnavailableDateType.SINGLE_DATE,
                     max: 12
                   },
                   {
                     classes: "govuk-input--width-4 govuk-input--error" ,
-                    id: 'items[' + index + '][start][year]',
+                    id: 'items[' + index + '][startYear]',
                     name: 'items[' + index + '][single][start][year]',
                     label: t('COMMON.YEAR'),
-                    value: unavailableDate.startYear if unavailableDateType === unavailableDateType.SINGLE_DATE,
-
+                    value: unavailableDate.startYear if unavailableDate.type === UnavailableDateType.SINGLE_DATE,
                     max: 9999
                   }
                 ]
@@ -64,26 +62,26 @@
                 items: [
                   {
                     classes: "govuk-input--width-4 govuk-input--error" ,
-                    id: 'items[' + index + '][start][day]',
+                    id: 'items[' + index + '][startDay]' ,
                     name: 'items[' + index + '][period][start][day]',
                     label: t('COMMON.DAY'),
-                    value: unavailableDate.startDay if unavailableDateType === unavailableDateType.LONGER_PERIOD,
+                    value: unavailableDate.startDay if unavailableDate.type === UnavailableDateType.LONGER_PERIOD,
                     max: 31
                   },
                   {
                     classes: "govuk-input--width-4 govuk-input--error" ,
-                    id: 'items[' + index + '][start][month]',
+                    id: 'items[' + index + '][startMonth]',
                     name: 'items[' + index + '][period][start][month]',
                     label: t('COMMON.MONTH'),
-                    value: unavailableDate.startMonth if unavailableDateType === unavailableDateType.LONGER_PERIOD,
+                    value: unavailableDate.startMonth if unavailableDate.type === UnavailableDateType.LONGER_PERIOD,
                     max: 12
                   },
                   {
                     classes: "govuk-input--width-4 govuk-input--error" ,
-                    id: 'items[' + index + '][start][year]',
+                    id: 'items[' + index + '][startYear]',
                     name: 'items[' + index + '][period][start][year]',
                     label: t('COMMON.YEAR'),
-                    value: unavailableDate.startYear if unavailableDateType === unavailableDateType.LONGER_PERIOD,
+                    value: unavailableDate.startYear if unavailableDate.type === UnavailableDateType.LONGER_PERIOD,
                     max: 9999
                   }
                 ]
@@ -133,24 +131,29 @@
 
   <div class="row-container">
     <div class="multiple-row">
+      {{ index }}
+      <hr>
+      <div id='items[{{index}}][type]'>
+      {% set typeError = errorFor('items['+ index+ '][type]') %}
+
           {{ govukRadios({
-                id: 'items-' + index + '=type',
+                id: 'items-' + index + '-type',
                 name: 'items[' + index + '][type]',
                 items: [
                   {
-                    id: 'items-' +index+ 'single-date',
-                    value: unavailableDateType.SINGLE_DATE,
+                    id: 'items-' +index+ '-single-date',
+                    value: UnavailableDateType.SINGLE_DATE,
                     html: t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.SINGLE_DATE'),
-                    checked: unavailableDate.untilDate == undefined,
+                    checked: unavailableDate.type === UnavailableDateType.SINGLE_DATE,
                     conditional: {
                       html: singleDateHTML
                     }
                   },
                   {
-                    id: 'items-' +index+ 'longer-period',
-                    value: unavailableDateType.LONGER_PERIOD,
+                    id: 'items-' +index+ '-longer-period',
+                    value: UnavailableDateType.LONGER_PERIOD,
                     html:  t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.LONGER_PERIOD'),
-                    checked: unavailableDate.untilDate,
+                    checked: unavailableDate.type === UnavailableDateType.LONGER_PERIOD,
                     conditional: {
                       html: longerPeriodHTML
                     }
@@ -160,6 +163,7 @@
                   text: t(typeError)
                 } if typeError
               }) }}
+          </div>
 
       {% if removeButton %}
         {% if removeButton.hidden %}
