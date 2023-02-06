@@ -5,6 +5,7 @@ import config from 'config';
 import {CITIZEN_PHONE_NUMBER_URL} from '../../../../../../main/routes/urls';
 import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure, mockNoStatementOfMeans} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {t} from 'i18next';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -54,7 +55,7 @@ describe('Citizen phone number', () => {
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
-        .send('telephoneNumber= 123')
+        .send('telephoneNumber=01234567890')
         .expect((res) => {
           expect(res.status).toBe(302);
         });
@@ -66,7 +67,7 @@ describe('Citizen phone number', () => {
         .send('telephoneNumber=abc')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_PHONE_NUMBER);
+          expect(res.text).toContain(t('ERRORS.VALID_PHONE_NUMBER'));
         });
     });
     it('should return error on input with interior spaces', async () => {
@@ -75,13 +76,13 @@ describe('Citizen phone number', () => {
         .send('telephoneNumber=123 456')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_PHONE_NUMBER);
+          expect(res.text).toContain(t('ERRORS.VALID_PHONE_NUMBER'));
         });
     });
     it('should accept input with trailing whitespaces', async () => {
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
-        .send('telephoneNumber= 123 ')
+        .send('telephoneNumber= 01234567890 ')
         .expect((res) => {
           expect(res.status).toBe(302);
         });
@@ -89,7 +90,7 @@ describe('Citizen phone number', () => {
     it('should redirect on correct input when has information on redis', async () => {
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
-        .send('telephoneNumber=123')
+        .send('telephoneNumber=01234567890')
         .expect((res) => {
           expect(res.status).toBe(302);
         });
@@ -98,7 +99,7 @@ describe('Citizen phone number', () => {
       app.locals.draftStoreClient = mockNoStatementOfMeans;
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
-        .send('telephoneNumber=123')
+        .send('telephoneNumber=01234567890')
         .expect((res) => {
           expect(res.status).toBe(302);
         });

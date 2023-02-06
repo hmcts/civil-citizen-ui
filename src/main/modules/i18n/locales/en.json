@@ -767,7 +767,7 @@
         "FIRST_PAYMENT_DATE": "First payment date",
         "LAST_PAYMENT_DATE": "Last payment date",
         "LENGTH_OF_REPAYMENT": "Length of repayment plan",
-        "DO_YOU_ACCEPT": "Do you accept the court’s proposed repayment plan",
+        "DO_YOU_ACCEPT": "Do you accept the court’s proposed repayment plan?",
         "I_WANT_ACCEPT": "I want to accept this repayment plan",
         "I_WANT_JUDGE": "I want a judge to make a repayment plan"
       }
@@ -2448,7 +2448,7 @@
     "VALID_OWED_AMOUNT_REQUIRED": "Enter a valid amount owed",
     "VALID_PARTY_NAME": "Enter name",
     "VALID_PAYMENT_OPTION": "Choose a payment option",
-    "VALID_PHONE_NUMBER": "Enter a phone number in the correct format",
+    "VALID_PHONE_NUMBER": "Phone number must be a UK number",
     "VALID_PHONE_OR_VIDEO_HEARING": {
       "TELL_US_WHY": "Tell us why you want a telephone or video hearing",
       "YES_NO": "Select yes if you want to ask for a telephone or video hearing"
