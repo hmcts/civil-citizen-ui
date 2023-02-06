@@ -12,7 +12,7 @@ import {hasClaimantResponseContactPersonAndCompanyPhone} from 'common/utils/task
 
 export function getAcceptOrRejectDefendantAdmittedTask(claim: Claim, claimId: string, lang: string): Task {
   const accceptOrRejectDefendantAdmittedTask = {
-    description: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_ADMITTED', {lng: lang, admittedAmount : '500'}),
+    description: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_ADMITTED', {lng: lang, admittedAmount: claim.partialAdmission?.howMuchDoYouOwe?.amount}),
     url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL),
     status: TaskStatus.INCOMPLETE,
   };
@@ -35,14 +35,10 @@ export function getFreeTelephoneMediationTask(claim: Claim, claimId: string, lan
     freeTelephoneMediationTask.status = TaskStatus.COMPLETE;
   } else {
     if (mediation?.canWeUse?.option === YesNo.YES || mediation?.canWeUse?.mediationPhoneNumber) {
-      console.log('1');
       freeTelephoneMediationTask.status = TaskStatus.COMPLETE;
     }
     if (mediation?.companyTelephoneNumber?.option === YesNo.NO) {
-      console.log('2');
-      console.log('has', hasClaimantResponseContactPersonAndCompanyPhone(claim));
       if (hasClaimantResponseContactPersonAndCompanyPhone(claim)) {
-        console.log('INSIDEEEEEEEEEE');
         freeTelephoneMediationTask.status = TaskStatus.COMPLETE;
       }
     } else if (mediation?.companyTelephoneNumber?.mediationPhoneNumberConfirmation) {
