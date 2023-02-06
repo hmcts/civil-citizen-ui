@@ -10,7 +10,7 @@ import {YesNo} from 'form/models/yesNo';
 import {Claim} from 'models/claim';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {HelpWithFees} from 'form/models/claim/details/helpWithFees';
-import {Response} from "supertest";
+import {Response} from 'supertest';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
