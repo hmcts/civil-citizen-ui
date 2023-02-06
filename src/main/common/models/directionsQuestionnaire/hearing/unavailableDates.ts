@@ -1,15 +1,22 @@
 import {
   IsDate,
-  // IsDefined,
-  // IsNotEmpty,
-  Max, Min,
+  IsIn,
+  Max,
+  MaxDate,
+  Min,
   Validate,
   ValidateIf,
   ValidateNested,
 } from 'class-validator';
 import {OptionalDateFourDigitValidator} from 'common/form/validators/optionalDateFourDigitValidator';
+import {OptionalDateNotInPastValidator} from 'common/form/validators/optionalDateNotInPastValidator';
 import {DateConverter} from 'common/utils/dateConverter';
-// import {AtLeastOneCheckboxSelectedValidator} from '../../../form/validators/atLeastOneCheckboxSelectedValidator';
+import {addMonths} from 'common/utils/dateUtils';
+
+export enum UnavailableDateType {
+  SINGLE_DATE = 'SINGLE_DATE',
+  LONGER_PERIOD = 'LONGER_PERIOD',
+}
 
 export class UnavailableDates {
   @ValidateNested()
@@ -23,108 +30,59 @@ export class UnavailableDates {
 }
 
 export class UnavailableDatePeriod {
+  @IsIn(Object.values(UnavailableDateType), {message: 'ERRORS.SELECT_SINGLE_DATE_OR_PERIOD'})
+    type?: UnavailableDateType;
 
-  @ValidateIf(o => (o.startDay < 32 && o.startMonth < 13 && o.startYear > 999))
-  @IsDate({message: 'ERRORS.VALID_DATE'})
-    fromDate?: Date;
+  @ValidateIf(o => o.type && ((!!o.startDay && o.startDay < 32 && !!o.startMonth && o.startMonth < 13 && o.startYear > 999) ||
+    (!o.startDay && !o.startMonth && !o.startYear)))
+  @MaxDate(addMonths(new Date(), 12), {message: 'ERRORS.ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS'})
+  @IsDate({message: 'ERRORS.ENTER_DATE_FOR_UNAVAILABILITY'})
+  @Validate(OptionalDateNotInPastValidator, {message: 'ERRORS.ENTER_UNAVAILABILITY_DATE_IN_FUTURE'})
+    from?: Date;
 
-  @Min(1, {message: 'ERRORS.VALID_DAY'})
-  @Max(31, {message: 'ERRORS.VALID_DAY'})
+  @ValidateIf(o => o.type && (o.startDay || o.startMonth || o.startYear))
+  @Min(1, {message: 'ERRORS.ENTER_DAY_FOR_UNAVAILABILITY'})
+  @Max(31, {message: 'ERRORS.ENTER_DAY_FOR_UNAVAILABILITY'})
     startDay?: number;
 
-  @Min(1, {message: 'ERRORS.VALID_MONTH'})
-  @Max(12, {message: 'ERRORS.VALID_MONTH'})
+  @ValidateIf(o => o.type && (o.startDay || o.startMonth || o.startYear))
+  @Min(1, {message: 'ERRORS.ENTER_MONTH_FOR_UNAVAILABILITY'})
+  @Max(12, {message: 'ERRORS.ENTER_MONTH_FOR_UNAVAILABILITY'})
     startMonth?: number;
 
-  @Min((new Date().getFullYear() - 150), {message: 'ERRORS.VALID_YEAR'})
+  @ValidateIf(o => o.type && (o.startDay || o.startMonth || o.startYear))
   @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
+  @Min(1872, {message: 'ERRORS.ENTER_YEAR_FOR_UNAVAILABILITY'})
     startYear?: number;
 
   @ValidateIf(o => (o.endDay < 32 && o.endMonth < 13 && o.endYear > 999))
-  @IsDate({message: 'ERRORS.VALID_DATE'})
-    untilDate?: Date;
+  @IsDate({message: 'ERRORS.ENTER_DATE_FOR_UNAVAILABILITY'})
+    until?: Date;
 
-  @ValidateIf(o => (o.untilDate))
+  @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD)
   @Min(1, {message: 'ERRORS.VALID_DAY'})
   @Max(31, {message: 'ERRORS.VALID_DAY'})
     endDay?: number;
 
-  @ValidateIf(o => (o.untilDate))
+  @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD)
   @Min(1, {message: 'ERRORS.VALID_MONTH'})
   @Max(12, {message: 'ERRORS.VALID_MONTH'})
     endMonth?: number;
 
-  @ValidateIf(o => (o.untilDate))
-  @Min((new Date().getFullYear() - 150), {message: 'ERRORS.VALID_YEAR'})
+  @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD)
   @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
     endYear?: number;
 
-  [key: string]: Date | number;
-  constructor(paramsStart?: Record<string, string>, paramsEnd?: Record<string, string>) {
-    this.fromDate = DateConverter.convertToDate(paramsStart?.year, paramsStart?.month, paramsStart?.day);
-    this.untilDate = DateConverter.convertToDate(paramsEnd?.year, paramsEnd?.month, paramsEnd?.day);
-    this.startYear = Number(paramsStart?.year);
-    this.startMonth = Number(paramsStart?.month);
-    this.startDay = Number(paramsStart?.day);
-    this.endYear = Number(paramsEnd?.year);
-    this.endMonth = Number(paramsEnd?.month);
-    this.endDay = Number(paramsEnd?.day);
+  [key: string]: UnavailableDateType | Date | number;
+  constructor(type?: UnavailableDateType, paramsFrom?: Record<string, string>, paramsUntil?: Record<string, string>) {
+    this.type = type;
+    this.from = DateConverter.convertToDate(paramsFrom?.year, paramsFrom?.month, paramsFrom?.day);
+    this.until = DateConverter.convertToDate(paramsUntil?.year, paramsUntil?.month, paramsUntil?.day);
+    this.startYear = Number(paramsFrom?.year);
+    this.startMonth = Number(paramsFrom?.month);
+    this.startDay = Number(paramsFrom?.day);
+    this.endYear = Number(paramsUntil?.year);
+    this.endMonth = Number(paramsUntil?.month);
+    this.endDay = Number(paramsUntil?.day);
   }
-  //TODO : create a method to find the type of date is it single or period comparing from date equal until date
-  // if the interval betwween dates are --> 0
-  // use -->getNumberOfDaysBetweenTwoDays
 }
-
-export enum unavailableDateType {
-  SINGLE_DATE = 'SINGLE_DATE',
-  LONGER_PERIOD = ' LONGER_PERIOD',
-}
-
-// export class Support {
-//   sourceName?: string;
-//   selected?: boolean;
-//   @ValidateIf(o => o.selected)
-//   @IsDefined({message: withMessage(generateErrorMessage)})
-//   @IsNotEmpty({message: withMessage(generateErrorMessage)})
-//     content?: string;
-
-//   [key: string]: boolean | string;
-//   constructor(sourceName?: string, selected?: boolean, content?: string) {
-//     this.sourceName = sourceName;
-//     this.selected = selected;
-//     this.content = content;
-//   }
-// }
-
-// function generateErrorMessage(sourceName: string): string {
-//   switch (sourceName) {
-//     case SupportType.SIGN_LANGUAGE_INTERPRETER:
-//       return 'ERRORS.NO_SIGN_LANGUAGE_ENTERED';
-//     case SupportType.LANGUAGE_INTERPRETER:
-//       return 'ERRORS.NO_LANGUAGE_ENTERED';
-//     default:
-//       return 'ERRORS.NO_OTHER_SUPPORT';
-//   }
-// }
-
-// function withMessage(buildErrorFn: (sourceName: string) => string) {
-//   return (args: any): string => {
-//     return buildErrorFn(args.object.sourceName);
-//   };
-// }
-
-// export enum SupportType {
-//   SIGN_LANGUAGE_INTERPRETER = 'signLanguageInterpreter',
-//   LANGUAGE_INTERPRETER = 'languageInterpreter',
-//   OTHER_SUPPORT = 'otherSupport',
-// }
-
-// export interface SupportRequiredParams {
-//   fullName?: string,
-//   disabledAccess?: Support,
-//   hearingLoop?: Support,
-//   signLanguageInterpreter?: Support,
-//   languageInterpreter?: Support,
-//   otherSupport?: Support,
-//   declared?: string,
-// }
