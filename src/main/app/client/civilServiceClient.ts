@@ -26,9 +26,10 @@ import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
 
-export const convertCaseToClaimAndIncludeState = (caseDetails: CivilClaimResponse): Claim => {
+const convertCaseToClaim = (caseDetails: CivilClaimResponse): Claim => {
   const claim: Claim = Claim.fromCCDCaseData(caseDetails.case_data);
   claim.ccdState = caseDetails.state;
+  claim.id = caseDetails.id;
   return claim;
 };
 
@@ -104,7 +105,7 @@ export class CivilServiceClient {
         throw new AssertionError({message: 'Claim details not available!'});
       }
       const caseDetails: CivilClaimResponse = response.data;
-      const claim: Claim = convertCaseToClaimAndIncludeState(caseDetails);
+      const claim: Claim = convertCaseToClaim(caseDetails);
 
       return claim;
     } catch (err: unknown) {
@@ -146,11 +147,16 @@ export class CivilServiceClient {
     }
   }
 
-  async verifyPin(req: AppRequest, pin: string, caseReference: string): Promise<AxiosResponse> {
+  async verifyPin(req: AppRequest, pin: string, caseReference: string): Promise<Claim> {
     try {
-      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_VALIDATE_PIN_URL //nosonar
+      const response = await this.client.post(CIVIL_SERVICE_VALIDATE_PIN_URL //nosonar
         .replace(':caseReference', caseReference), {pin:pin}, {headers: {'Content-Type': 'application/json'}});// nosonar
-      return response;
+      if (!response.data) {
+        return new Claim();
+      }
+      const caseDetails: CivilClaimResponse = response.data;
+      const claim: Claim = convertCaseToClaim(caseDetails);
+      return claim;
 
     } catch (err: unknown) {
       logger.error(err);
