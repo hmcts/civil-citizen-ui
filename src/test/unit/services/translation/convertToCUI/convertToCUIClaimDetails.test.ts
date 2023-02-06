@@ -4,8 +4,8 @@ import {toCUIClaimDetails} from '../../../../../main/services/translation/conver
 
 describe('translate Claim Details to CUI model', () => {
   const ccdClaimMock = {
-    detailsOfClaim: 'test detailsOfClaim to reason'
-  }
+    detailsOfClaim: 'test detailsOfClaim to reason',
+  };
 
   it('should return undefined if CCDClaim doesnt exist', () => {
     const ccdClaimDetailsEmpty = undefined;
@@ -14,7 +14,7 @@ describe('translate Claim Details to CUI model', () => {
   });
 
   it('should translate Claim Details to CUI', () => {
-    const claimDetailsCUI = new ClaimDetails(new Reason("test detailsOfClaim to reason"));
+    const claimDetailsCUI = new ClaimDetails(new Reason('test detailsOfClaim to reason'));
 
     const claimDetailsResponseCUI = toCUIClaimDetails(ccdClaimMock);
     expect(claimDetailsResponseCUI).toMatchObject(claimDetailsCUI);
