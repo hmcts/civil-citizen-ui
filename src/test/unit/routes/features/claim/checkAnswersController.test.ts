@@ -1,15 +1,16 @@
 import nock from 'nock';
 import config from 'config';
-import {getSummarySections} from '../../../../../main/services/features/claim/checkAnswers/checkAnswersService';
-import {CLAIM_CHECK_ANSWERS_URL, CLAIM_CONFIRMATION_URL} from '../../../../../main/routes/urls';
+import {getSummarySections} from 'services/features/claim/checkAnswers/checkAnswersService';
+import {CLAIM_CHECK_ANSWERS_URL, CLAIM_CONFIRMATION_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {getElementsByXPath} from '../../../../utils/xpathExtractor';
 import {createClaimWithBasicDetails, createClaimWithYourDetails} from '../../../../utils/mocks/claimDetailsMock';
-import {getCaseDataFromStore} from '../../../../../main/modules/draft-store/draftStoreService';
-import {YesNo} from '../../../../../main/common/form/models/yesNo';
-import {Claim} from '../../../../../main/common/models/claim';
-import {ClaimDetails} from '../../../../../main/common/form/models/claim/details/claimDetails';
-import {HelpWithFees} from '../../../../../main/common/form/models/claim/details/helpWithFees';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {YesNo} from 'form/models/yesNo';
+import {Claim} from 'models/claim';
+import {ClaimDetails} from 'form/models/claim/details/claimDetails';
+import {HelpWithFees} from 'form/models/claim/details/helpWithFees';
+import {Response} from "supertest";
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -118,8 +119,7 @@ describe('Claim - Check answers', () => {
 
     it('should return check your answer page', async () => {
       await request(app).get(CLAIM_CHECK_ANSWERS_URL)
-        .expect((res:any) => {
-
+        .expect((res:Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(checkYourAnswerEng);
         });
@@ -213,7 +213,7 @@ describe('Claim - Check answers', () => {
       await request(app)
         .post(CLAIM_CHECK_ANSWERS_URL)
         .send(data)
-        .expect((res:any ) => {
+        .expect((res: Response ) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toBe(CLAIM_CONFIRMATION_URL);
         });
@@ -253,7 +253,7 @@ describe('Claim - Check answers', () => {
       await request(app)
         .post(CLAIM_CHECK_ANSWERS_URL)
         .send(data)
-        .expect((res:any) => {
+        .expect((res:Response) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toBe(CLAIM_CONFIRMATION_URL);
         });
