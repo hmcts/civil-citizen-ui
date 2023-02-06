@@ -5,7 +5,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {CITIZEN_FREE_TELEPHONE_MEDIATION_URL, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL} from 'routes/urls';
 import {Task} from 'models/taskList/task';
 import {YesNo} from 'common/form/models/yesNo';
-import {hasContactPersonAndCompanyPhone} from 'common/utils/taskList/tasks/taskListHelpers';
+import {hasClaimantResponseContactPersonAndCompanyPhone} from 'common/utils/taskList/tasks/taskListHelpers';
 
 export function getAcceptOrRejectDefendantAdmittedTask(claim: Claim, claimId: string, lang: string): Task {
   const accceptOrRejectDefendantAdmittedTask = {
@@ -29,17 +29,23 @@ export function getFreeTelephoneMediationTask(claim: Claim, claimId: string, lan
     status: TaskStatus.INCOMPLETE,
   };
 
-  if (claim.claimantResponse?.mediation?.mediationDisagreement?.option === YesNo.NO) {
+  const mediation = claim.claimantResponse?.mediation;
+
+  if (mediation?.mediationDisagreement?.option === YesNo.NO) {
     freeTelephoneMediationTask.status = TaskStatus.COMPLETE;
   } else {
-    if (claim.claimantResponse?.mediation?.canWeUse?.option === YesNo.YES || claim.claimantResponse?.mediation?.canWeUse?.mediationPhoneNumber) {
+    if (mediation?.canWeUse?.option === YesNo.YES || mediation?.canWeUse?.mediationPhoneNumber) {
+      console.log('1');
       freeTelephoneMediationTask.status = TaskStatus.COMPLETE;
     }
-    if (claim.claimantResponse?.mediation?.companyTelephoneNumber?.option === YesNo.NO) {
-      if (hasContactPersonAndCompanyPhone(claim)) {
+    if (mediation?.companyTelephoneNumber?.option === YesNo.NO) {
+      console.log('2');
+      console.log('has', hasClaimantResponseContactPersonAndCompanyPhone(claim));
+      if (hasClaimantResponseContactPersonAndCompanyPhone(claim)) {
+        console.log('INSIDEEEEEEEEEE');
         freeTelephoneMediationTask.status = TaskStatus.COMPLETE;
       }
-    } else if (claim.claimantResponse?.mediation?.companyTelephoneNumber?.mediationPhoneNumberConfirmation) {
+    } else if (mediation?.companyTelephoneNumber?.mediationPhoneNumberConfirmation) {
       freeTelephoneMediationTask.status = TaskStatus.COMPLETE;
     }
   }
