@@ -1,12 +1,12 @@
-import {Claim} from '../../../../../../../main/common/models/claim';
-import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
+import {Claim} from 'models/claim';
+import {YesNo} from 'form/models/yesNo';
 import {
   buildHearingRequirementSection,
-} from '../../../../../../../main/services/features/response/checkAnswers/hearingRequirementSection/buildHearingRequirementSection';
-import {DirectionQuestionnaire} from '../../../../../../../main/common/models/directionsQuestionnaire/directionQuestionnaire';
-import {Witnesses} from '../../../../../../../main/common/models/directionsQuestionnaire/witnesses/witnesses';
-import {OtherWitnesses} from '../../../../../../../main/common/models/directionsQuestionnaire/witnesses/otherWitnesses';
-import {OtherWitnessItems} from '../../../../../../../main/common/models/directionsQuestionnaire/witnesses/otherWitnessItems';
+} from 'services/features/response/checkAnswers/hearingRequirementSection/buildHearingRequirementSection';
+import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
+import {Witnesses} from 'models/directionsQuestionnaire/witnesses/witnesses';
+import {OtherWitnesses} from 'models/directionsQuestionnaire/witnesses/otherWitnesses';
+import {OtherWitnessItems} from 'models/directionsQuestionnaire/witnesses/otherWitnessItems';
 import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
 
 jest.mock('i18next', () => ({
