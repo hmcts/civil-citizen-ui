@@ -46,7 +46,7 @@ export const buildHearingRequirementSection = (claim: Claim, claimId: string, la
     summaryRows: [],
   });
 
-  if (claim.isFastTrackClaim) {
+  if (claim.isFastTrackClaim && claim.directionQuestionnaire?.hearing != null) {
     const considerClaimantDoc = claim.directionQuestionnaire?.hearing?.considerClaimantDocuments?.option;
     hearingRequirementSection.summaryList.rows.push(...[
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE', {lng: getLng(lang)}), claim.directionQuestionnaire?.hearing?.triedToSettle?.option, constructResponseUrlWithIdParams(claimId, DQ_TRIED_TO_SETTLE_CLAIM_URL), changeLabel(getLng(lang))),
