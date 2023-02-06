@@ -1,13 +1,13 @@
 import {BreathingSpace} from 'common/models/breathingSpace';
 import {DebtRespiteStartDate} from 'common/models/breathingSpace/debtRespiteStartDate';
-import {toCCDBreathingSpaceStartInfo} from "services/translation/breathingSpace/convertToCCDBreathingSpaceStrartInfo";
-import {CCDBreathingSpaceStartInfo} from "models/ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo";
-import {DebtRespiteOptionType} from "models/breathingSpace/debtRespiteOptionType";
-import {DebtRespiteEndDate} from "models/breathingSpace/debtRespiteEndDate";
+import {toCCDBreathingSpaceStartInfo} from 'services/translation/breathingSpace/convertToCCDBreathingSpaceStrartInfo';
+import {CCDBreathingSpaceStartInfo} from 'models/ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
+import {DebtRespiteOptionType} from 'models/breathingSpace/debtRespiteOptionType';
+import {DebtRespiteEndDate} from 'models/breathingSpace/debtRespiteEndDate';
 
 describe('translate start to ccd model', () => {
   it('should translate to undefined to ccd', () => {
-    let breathingSpace = undefined;
+    const breathingSpace: BreathingSpace = undefined;
 
     const expectedResult: CCDBreathingSpaceStartInfo = {
     };
@@ -15,7 +15,6 @@ describe('translate start to ccd model', () => {
     const startCCD = toCCDBreathingSpaceStartInfo(breathingSpace);
     expect(startCCD).toMatchObject(expectedResult);
   });
-
 
   it('should translate field put undefined to ccd', () => {
     const breathingSpace: BreathingSpace = {

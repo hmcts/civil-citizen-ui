@@ -1,5 +1,5 @@
 import {translateBreathingSpaceToCCD} from 'services/translation/breathingSpace/ccdTranslation';
-import {BreathingSpace} from "models/breathingSpace";
+import {BreathingSpace} from 'models/breathingSpace';
 
 describe('translate breathing space enter to ccd version', () => {
   it('should translate breathing space to ccd', () => {
