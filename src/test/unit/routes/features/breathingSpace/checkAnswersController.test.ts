@@ -13,7 +13,6 @@ const {app} = require('../../../../../main/app');
 const session = require('supertest-session');
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/claimDetailsService');
 jest.mock('../../../../../main/services/features/breathingSpace/checkAnswersService');
 
 const mockGetSummarySections = getSummarySections as jest.Mock;
