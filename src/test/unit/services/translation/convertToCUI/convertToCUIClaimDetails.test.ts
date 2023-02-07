@@ -1,6 +1,7 @@
-import {ClaimDetails} from '../../../../../main/common/form/models/claim/details/claimDetails';
-import {Reason} from '../../../../../main/common/form/models/claim/details/reason';
-import {toCUIClaimDetails} from '../../../../../main/services/translation/convertToCUI/convertToCUIClaimDetails';
+import {ClaimDetails} from 'form/models/claim/details/claimDetails';
+import {Reason} from 'form/models/claim/details/reason';
+import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIClaimDetails';
+import {CCDClaim} from 'models/civilClaimResponse';
 
 describe('translate Claim Details to CUI model', () => {
   const ccdClaimMock = {
@@ -8,15 +9,20 @@ describe('translate Claim Details to CUI model', () => {
   };
 
   it('should return undefined if CCDClaim doesnt exist', () => {
-    const ccdClaimDetailsEmpty = undefined;
-    const claimDetailsResponseCUI = toCUIClaimDetails(ccdClaimDetailsEmpty);
+    //Given
+    const ccdClaimEmpty: CCDClaim = {};
+    //When
+    const claimDetailsResponseCUI = toCUIClaimDetails(ccdClaimEmpty);
+    //Then
     expect(claimDetailsResponseCUI).toBe(undefined);
   });
 
   it('should translate Claim Details to CUI', () => {
+    //Given
     const claimDetailsCUI = new ClaimDetails(new Reason('test detailsOfClaim to reason'));
-
+    //When
     const claimDetailsResponseCUI = toCUIClaimDetails(ccdClaimMock);
+    //Then
     expect(claimDetailsResponseCUI).toMatchObject(claimDetailsCUI);
   });
 });
