@@ -190,6 +190,7 @@ import debtRespiteLiftedController from './features/breathingSpace/debtRespiteLi
 import claimantResponseConfirmationController from './features/claimantResponse/claimantResponseConfirmationController';
 import judgmentAmountSummaryController from './features/claimantResponse/ccj/judgmentAmountSummaryController';
 import ccjCheckAnswersController from './features/claimantResponse/ccj/ccjCheckAnswersController';
+import claimantResponseTasklistController from './features/claimantResponse/claimantResponseTasklistController';
 import unavailableDatesForHearingController from './features/directionsQuestionnaire/hearing/unavailableDatesForHearingController';
 
 export default [
@@ -368,5 +369,6 @@ export default [
   claimantResponseConfirmationController,
   ccjCheckAnswersController,
   judgmentAmountSummaryController,
+  claimantResponseTasklistController,
   unavailableDatesForHearingController,
 ];
