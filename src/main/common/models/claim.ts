@@ -49,9 +49,7 @@ import {CourtOrders} from 'form/models/statementOfMeans/courtOrders/courtOrders'
 import {PriorityDebts} from 'form/models/statementOfMeans/priorityDebts';
 import {Debts} from 'form/models/statementOfMeans/debts/debts';
 import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreference';
-import {claimType} from 'form/models/claimType';
-const SMALL_CLAIM_AMOUNT = 10000;
-const FAST_TRACK_CLAIM_AMOUNT = 25000;
+import {analyseClaimType, claimType} from 'form/models/claimType';
 
 export class Claim {
   legacyCaseReference: string;
@@ -447,16 +445,12 @@ export class Claim {
     return party?.partyDetails?.partyName;
   }
 
-  get claimType(): claimType {
-    if (this.totalClaimAmount <= SMALL_CLAIM_AMOUNT) {
-      return claimType.SMALL_CLAIM;
-    } else if (this.totalClaimAmount < FAST_TRACK_CLAIM_AMOUNT) {
-      return claimType.FAST_TRACK_CLAIM;
-    }
+  get claimType(): string {
+    return analyseClaimType(this.totalClaimAmount);
   }
 
   get isFastTrackClaim(): boolean {
-    return this.claimType === claimType.FAST_TRACK_CLAIM;
+    return this.claimType == claimType.FAST_TRACK_CLAIM;
   }
 }
 

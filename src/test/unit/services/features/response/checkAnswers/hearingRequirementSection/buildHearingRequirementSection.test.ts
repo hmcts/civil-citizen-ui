@@ -118,7 +118,7 @@ describe('test hearingRequirementSection', () => {
     expect(summaryRows.summaryList.rows[12].value.html).toEqual('Some details of Jane Does');
   });
 
-  it('build hearing requirement for Fast Track Claim when there is no witnesses', () => {
+  it('build hearing requirement for Fast Track Claim when there are no witnesses', () => {
     const claim = new Claim();
     claim.totalClaimAmount = 11000;
     claim.directionQuestionnaire = new DirectionQuestionnaire();
