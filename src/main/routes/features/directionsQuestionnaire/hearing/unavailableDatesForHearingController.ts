@@ -22,9 +22,8 @@ function renderView(form: GenericForm<SupportRequiredList|UnavailableDates>, res
 unavailableDatesForHearingController.get(DQ_AVAILABILITY_DATES_FOR_HEARING_URL, async (req, res, next) => {
   try {
     const directionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
-    const unavailableDates = directionQuestionnaire?.hearing?.unavailableDatesForHearing ?
-      directionQuestionnaire.hearing.unavailableDatesForHearing : new UnavailableDates();
-    const form = new GenericForm(unavailableDates);
+    const unavailableDatesForHearing = directionQuestionnaire?.hearing?.unavailableDatesForHearing ?? new UnavailableDates();
+    const form = new GenericForm(unavailableDatesForHearing);
     renderView(form, res);
   } catch (error) {
     next(error);
@@ -41,7 +40,7 @@ unavailableDatesForHearingController.post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL,
       renderView(form, res);
     } else {
       await saveDirectionQuestionnaire(claimId, form.model, dqPropertyName, dqParentName);
-      // TODO : update redirection if  more than 30 days goto why anaavailable else phone or video hearing
+      // TODO : update redirection : if more than 30 days goto why anaavailable else phone or video hearing
       res.redirect(constructResponseUrlWithIdParams(claimId, DQ_PHONE_OR_VIDEO_HEARING_URL));
     }
   } catch (error) {
