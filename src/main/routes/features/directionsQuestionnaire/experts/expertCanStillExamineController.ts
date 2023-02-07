@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {
-  DQ_DEFENDANT_CAN_STILL_EXAMINE_URL,
-  DQ_DEFENDANT_EXPERT_REPORTS_URL,
+  DQ_EXPERT_CAN_STILL_EXAMINE_URL,
+  DQ_EXPERT_DETAILS_URL,
   DQ_GIVE_EVIDENCE_YOURSELF_URL,
 } from '../../../urls';
 import {
@@ -22,7 +22,7 @@ function renderView(form: GenericForm<ExpertCanStillExamine>, res: Response): vo
   res.render(expertCanStillExamineViewPath, {form});
 }
 
-expertCanStillExamineController.get(DQ_DEFENDANT_CAN_STILL_EXAMINE_URL, async (req, res, next: NextFunction) => {
+expertCanStillExamineController.get(DQ_EXPERT_CAN_STILL_EXAMINE_URL, async (req, res, next: NextFunction) => {
   try {
     const directionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
     const expertCanStillExamine = directionQuestionnaire.experts?.expertCanStillExamine ?
@@ -34,7 +34,7 @@ expertCanStillExamineController.get(DQ_DEFENDANT_CAN_STILL_EXAMINE_URL, async (r
   }
 });
 
-expertCanStillExamineController.post(DQ_DEFENDANT_CAN_STILL_EXAMINE_URL, async (req: Request, res: Response, next: NextFunction) => {
+expertCanStillExamineController.post(DQ_EXPERT_CAN_STILL_EXAMINE_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const details = req.body.option === YesNo.YES ? req.body.details : undefined;
@@ -46,7 +46,7 @@ expertCanStillExamineController.post(DQ_DEFENDANT_CAN_STILL_EXAMINE_URL, async (
     } else {
       await saveDirectionQuestionnaire(claimId, expertCanStillExamine.model, dqPropertyName, dqParentName);
       if (req.body.option === YesNo.YES) {
-        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_EXPERT_REPORTS_URL));
+        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_EXPERT_DETAILS_URL));
       } else {
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL));
       }
