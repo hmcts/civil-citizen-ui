@@ -7,13 +7,17 @@ export const toCUIEvidence = (ccdEvidence: CCDEvidence[]): Evidence => {
   if (!ccdEvidence) return undefined;
   const cuiEvidenceItems: EvidenceItem[] = [];
   ccdEvidence.forEach((row) => {
-    const evidenceItem: EvidenceItem = {
-      type: convertToCUIEvidenceType(row.value.evidenceType),
-      description: calculateCUIEvidenceValue(row),
-    };
+    const evidenceItem: EvidenceItem = createCUIEvidence(row);
     cuiEvidenceItems.push(evidenceItem);
   });
   return new Evidence('', cuiEvidenceItems);
+};
+
+const createCUIEvidence = (ccdEvidence: CCDEvidence) : EvidenceItem => {
+  return {
+    type: convertToCUIEvidenceType(ccdEvidence.value.evidenceType),
+    description: calculateCUIEvidenceValue(ccdEvidence),
+  };
 };
 
 const calculateCUIEvidenceValue = (row: CCDEvidence) => {
@@ -53,4 +57,3 @@ const convertToCUIEvidenceType = (type: CCDEvidenceType) => {
       return EvidenceType.OTHER;
   }
 };
-

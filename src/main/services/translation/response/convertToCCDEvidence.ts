@@ -13,6 +13,16 @@ export const toCCDEvidence = (evidence: Evidence): CCDEvidence[] => {
   return ccdEvidences;
 };
 
+const createCCDEvidence = (evidenceItem: EvidenceItem, index: number) : CCDEvidence => {
+  return {
+    id: index.toString(),
+    value: {
+      evidenceType: convertToCCDEvidenceType(evidenceItem.type),
+      ...calculateCCDEvidenceValue(evidenceItem),
+    },
+  };
+};
+
 const calculateCCDEvidenceValue = (row: EvidenceItem) => {
   switch (row.type) {
     case EvidenceType.CONTRACTS_AND_AGREEMENTS:
@@ -49,14 +59,4 @@ const convertToCCDEvidenceType = (type: EvidenceType) => {
     case EvidenceType.OTHER:
       return CCDEvidenceType.OTHER;
   }
-};
-
-const createCCDEvidence = (evidenceItem: EvidenceItem, index: number) : CCDEvidence => {
-  return {
-    id: index.toString(),
-    value: {
-      evidenceType: convertToCCDEvidenceType(evidenceItem.type),
-      ...calculateCCDEvidenceValue(evidenceItem),
-    },
-  };
 };
