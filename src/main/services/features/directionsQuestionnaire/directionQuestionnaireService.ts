@@ -70,6 +70,7 @@ const saveDirectionQuestionnaire = async (claimId: string, value: any, direction
       }
       baseProperty.directionQuestionnaire = directionQuestionnaire;
     }
+    console.log(claim.directionQuestionnaire);
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);

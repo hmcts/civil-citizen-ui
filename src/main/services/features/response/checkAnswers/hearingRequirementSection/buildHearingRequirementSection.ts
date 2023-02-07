@@ -9,6 +9,9 @@ import {
   DQ_DEFENDANT_WITNESSES_URL,
   DQ_REQUEST_EXTRA_4WEEKS_URL,
   DQ_TRIED_TO_SETTLE_CLAIM_URL,
+  DQ_SENT_EXPERT_REPORTS_URL,
+  DQ_SHARE_AN_EXPERT_URL,
+  DQ_GIVE_EVIDENCE_YOURSELF_URL, DQ_DEFENDANT_EXPERT_EVIDENCE_URL,
 } from 'routes/urls';
 import {OtherWitnessItems} from 'models/directionsQuestionnaire/witnesses/otherWitnessItems';
 import {YesNo} from 'form/models/yesNo';
@@ -64,7 +67,19 @@ export const buildHearingRequirementSection = (claim: Claim, claimId: string, la
   }
 
   //TODO: add common rows here
+  // TODO Witnesses: Reference 32
   hearingRequirementSection.summaryList.rows.push(...getWitnesses(claim, claimId, getLng(lang)));
+  const hasReportSend = claim.directionQuestionnaire?.experts?.expertReportDetails?.option || '';
+  const wantUseExpectEvidence = '';
+  const shareExpert = '';
+  const giveEvidence = '';
+
+  hearingRequirementSection.summaryList.rows.push(...[
+    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_USE_EXPERT_EVIDENCE', {lng: getLng(lang)}), t(`${wantUseExpectEvidence}`, {lng: getLng(lang)}), constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_EXPERT_EVIDENCE_URL ), changeLabel(getLng(lang))),
+    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.HAVE_YOU_ALREADY_SENT_EXPERT_REPORTS_TO_OTHER_PARTIES', {lng: getLng(lang)}), t(`${hasReportSend}`, {lng: getLng(lang)}), constructResponseUrlWithIdParams(claimId, DQ_SENT_EXPERT_REPORTS_URL ), changeLabel(getLng(lang))),
+    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_SHARE_AN_EXPERT_WITH_CLAIMANT', {lng: getLng(lang)}), t(`${shareExpert}`, {lng: getLng(lang)}), constructResponseUrlWithIdParams(claimId, DQ_SHARE_AN_EXPERT_URL ), changeLabel(getLng(lang))),
+    // TODO:Witnesses: Reference 32
+    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_GIVE_EVIDENCE_YOURSELF', {lng: getLng(lang)}), t(`${giveEvidence}`, {lng: getLng(lang)}), constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL ), changeLabel(getLng(lang)))]);
 
   return hearingRequirementSection;
 };

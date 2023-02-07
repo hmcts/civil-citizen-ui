@@ -510,7 +510,11 @@
       "TRIED_TO_SETTLE" : "Have you tried to settle this claim before going to court?",
       "REQUEST_EXTRA_4WEEKS" : "Do you want an extra 4 weeks to try to settle the claim?",
       "CONSIDER_CLAIMANT_DOCUMENT" : "Are there any documents the claimant has that you want the court to consider?",
-      "GIVE_DOC_DETAILS" : "Give details of the documents"
+      "GIVE_DOC_DETAILS" : "Give details of the documents",
+      "DO_YOU_WANT_USE_EXPERT_EVIDENCE": "Do you want to use expert evidence?",
+      "HAVE_YOU_ALREADY_SENT_EXPERT_REPORTS_TO_OTHER_PARTIES": "Have you already sent expert reports to other parties?",
+      "DO_YOU_WANT_SHARE_AN_EXPERT_WITH_CLAIMANT": "Do you want to share an expert with the claimant?",
+      "DO_YOU_WANT_GIVE_EVIDENCE_YOURSELF": "Do you want to give evidence yourself?"
     },
     "CITIZEN_BANK_ACCOUNTS": {
       "ADD_ANOTHER": "Add another account",
