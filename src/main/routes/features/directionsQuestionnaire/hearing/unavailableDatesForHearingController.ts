@@ -34,6 +34,7 @@ unavailableDatesForHearingController.post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL,
   try {
     const claimId = req.params.id;
     // TODO : move it into service and fix any
+    const datt = new Date();
     const unavailableDates: UnavailableDatePeriod[] = req.body.items.map((item:any) => {
       if (item.type === UnavailableDateType.SINGLE_DATE) {
         return new UnavailableDatePeriod(UnavailableDateType.SINGLE_DATE, item.single.start, undefined);

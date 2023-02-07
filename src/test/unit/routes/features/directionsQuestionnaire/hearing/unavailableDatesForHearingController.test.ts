@@ -7,9 +7,18 @@ import {mockCivilClaimWithExpertAndWitness, mockRedisFailure} from '../../../../
 import {DQ_AVAILABILITY_DATES_FOR_HEARING_URL, DQ_PHONE_OR_VIDEO_HEARING_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {YesNo} from 'common/form/models/yesNo';
+import * as directionQuestionnaireService
+  from "services/features/directionsQuestionnaire/directionQuestionnaireService";
+import {DirectionQuestionnaire} from "models/directionsQuestionnaire/directionQuestionnaire";
+import {Hearing} from "models/directionsQuestionnaire/hearing/hearing";
+import {SpecificCourtLocation} from "models/directionsQuestionnaire/hearing/specificCourtLocation";
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('services/features/directionsQuestionnaire/hearing/specificCourtLocationService');
+jest.mock('services/features/directionsQuestionnaire/directionQuestionnaireService');
+const getDirectionQuestionnaire = directionQuestionnaireService.getDirectionQuestionnaire as jest.Mock;
+
 
 describe('Unavailable dates for hearing Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -45,7 +54,19 @@ describe('Unavailable dates for hearing Controller', () => {
   // govuk-error-message
 
   describe('on POST', () => {
-    const getNow = () => new Date(Date.now());
+
+    const mockedData = new Date('2020-11-26T00:00:00.000Z');
+    global.Date = class extends Date {
+      constructor(date) {
+        if (date) {
+          return super(date);
+        }
+
+        return mockedData;
+      }
+    };
+
+
     // const literallyJustDateNow = () => Date.now();
     // const realDate = Date;
     // const dateNow = Date.now();
@@ -55,10 +76,10 @@ describe('Unavailable dates for hearing Controller', () => {
     // afterEach(() => {
     //   global.Date = realDate;
     // });
-    // beforeAll(() => {
-    //   app.locals.draftStoreClient = mockCivilClaimWithExpertAndWitness;
+     beforeAll(() => {
+       app.locals.draftStoreClient = mockCivilClaimWithExpertAndWitness;
 
-    // });
+     });
     // afterAll(() => {
     //   // jest.useRealTimers();
     // });
@@ -78,10 +99,9 @@ describe('Unavailable dates for hearing Controller', () => {
       // expect(Date.now()).toEqual(dateNow);
 
 
-      const mockedData = new Date('2020-11-26T00:00:00.000Z');
-      jest.spyOn(global, 'Date').mockImplementationOnce(() => mockedData);
-      jest.spyOn(global.Date.prototype, 'setMonth').mockReturnValue(2)
-      jest.spyOn(global.Date.prototype, 'getMonth').mockReturnValue(11);
+
+      //jest.spyOn(global.Date.prototype, 'setMonth').mockReturnValue(2)
+      //jest.spyOn(global.Date.prototype, 'getMonth').mockReturnValue(11);
 
       const actualDate1 = new Date();
 
@@ -114,7 +134,7 @@ describe('Unavailable dates for hearing Controller', () => {
     });
 
     it('should display error when single date is selected but no date is provided', async () => {
-      await request(app)
+     await request(app)
         .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
         .send({
           items: [{
