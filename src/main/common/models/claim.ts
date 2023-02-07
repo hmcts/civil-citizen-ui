@@ -49,6 +49,8 @@ import {CourtOrders} from '../../common/form/models/statementOfMeans/courtOrders
 import {PriorityDebts} from '../../common/form/models/statementOfMeans/priorityDebts';
 import {Debts} from '../../common/form/models/statementOfMeans/debts/debts';
 import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreference';
+import {analyseClaimType, claimType} from 'common/form/models/claimType';
+
 export class Claim {
   legacyCaseReference: string;
   applicant1?: Party;
@@ -443,22 +445,13 @@ export class Claim {
     return party?.partyDetails?.partyName;
   }
 
-  get DQTrackType(): DQTrackOptions {
-    if (this.totalClaimAmount <= 10000) {
-      return DQTrackOptions.SMALL_CLAIMS_TRACK_DQ;
-    } else if (this.totalClaimAmount < 25000) {
-      return DQTrackOptions.FAST_TRACK_DQ;
-    }
+  get claimType(): string {
+    return analyseClaimType(this.totalClaimAmount);
   }
 
   get isSmallClaimsTrackDQ(): boolean {
-    return this.DQTrackType === DQTrackOptions.SMALL_CLAIMS_TRACK_DQ;
+    return this.claimType === claimType.SMALL_CLAIM;
   }
-}
-
-export enum DQTrackOptions {
-  SMALL_CLAIMS_TRACK_DQ = 'SMALL_CLAIMS_TRACK_DQ',
-  FAST_TRACK_DQ = 'FAST_TRACK_DQ',
 }
 
 export interface StatementOfTruth {
