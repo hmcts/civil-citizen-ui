@@ -6,6 +6,7 @@ import {toCCDParty} from './convertToCCDParty';
 import {toCCDRepaymentPlan} from './convertToCCDRepaymentPlan';
 import {toCCDPaymentOption} from './convertToCCDPaymentOption';
 import {toCCDPayBySetDate} from './convertToCCDPayBySetDate';
+import {toCCDBankAccountList} from "services/translation/response/convertToCCDBankAccount";
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   return {
@@ -17,5 +18,6 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     specAoSApplicantCorrespondenceAddressRequired: addressHasChange ? YesNoUpperCamelCase.NO : YesNoUpperCamelCase.YES,
     totalClaimAmount: claim.totalClaimAmount,
     respondent1: toCCDParty(claim.respondent1, undefined),
+    respondent1BankAccountList: toCCDBankAccountList(claim.statementOfMeans?.bankAccounts)
   };
 };
