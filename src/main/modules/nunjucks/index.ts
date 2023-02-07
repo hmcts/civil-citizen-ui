@@ -132,7 +132,6 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('UnavailableDateType', UnavailableDateType);
     nunjucksEnv.addGlobal('today', new Date());
 
-
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;
       next();
