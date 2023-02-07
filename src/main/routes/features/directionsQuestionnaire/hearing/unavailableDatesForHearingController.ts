@@ -7,7 +7,8 @@ import {
   DQ_PHONE_OR_VIDEO_HEARING_URL,
 } from 'routes/urls';
 import {getDirectionQuestionnaire, saveDirectionQuestionnaire} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
-import {UnavailableDatePeriod, UnavailableDates, UnavailableDateType} from 'common/models/directionsQuestionnaire/hearing/unavailableDates';
+import {UnavailableDates} from 'common/models/directionsQuestionnaire/hearing/unavailableDates';
+import {getUnavailableDatesForm} from 'services/features/directionsQuestionnaire/hearing/unavailableDatesForHearingService';
 
 const unavailableDatesForHearingController = Router();
 const unavailableDatesForHearingViewPath = 'features/directionsQuestionnaire/hearing/unavailable-dates-for-hearing';
@@ -21,9 +22,9 @@ function renderView(form: GenericForm<SupportRequiredList|UnavailableDates>, res
 unavailableDatesForHearingController.get(DQ_AVAILABILITY_DATES_FOR_HEARING_URL, async (req, res, next) => {
   try {
     const directionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
-    const xForm = directionQuestionnaire?.hearing?.unavailableDatesForHearing ?
+    const unavailableDates = directionQuestionnaire?.hearing?.unavailableDatesForHearing ?
       directionQuestionnaire.hearing.unavailableDatesForHearing : new UnavailableDates();
-    const form = new GenericForm(xForm);
+    const form = new GenericForm(unavailableDates);
     renderView(form, res);
   } catch (error) {
     next(error);
@@ -33,18 +34,8 @@ unavailableDatesForHearingController.get(DQ_AVAILABILITY_DATES_FOR_HEARING_URL, 
 unavailableDatesForHearingController.post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL, async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    // TODO : move it into service and fix any
-    const datt = new Date();
-    const unavailableDates: UnavailableDatePeriod[] = req.body.items.map((item:any) => {
-      if (item.type === UnavailableDateType.SINGLE_DATE) {
-        return new UnavailableDatePeriod(UnavailableDateType.SINGLE_DATE, item.single.start, undefined);
-      }
-      if (item.type === UnavailableDateType.LONGER_PERIOD) {
-        return new UnavailableDatePeriod(UnavailableDateType.LONGER_PERIOD, item.period.start, item.period.end);
-      }
-      return new UnavailableDatePeriod(undefined);
-    });
-    const form = new GenericForm(new UnavailableDates(unavailableDates));
+    const unavailableDatesForHearing = getUnavailableDatesForm(req.body);
+    const form = new GenericForm(unavailableDatesForHearing);
     form.validateSync();
     if (form.hasErrors()) {
       renderView(form, res);
