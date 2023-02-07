@@ -12,7 +12,6 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 export const submitBreathingSpace = async (req: AppRequest): Promise<any> => {
   try {
-    //TODO:: Translate CCD
     const breathingSpace = await getBreathingSpace(req.params.id);
     const breathingSpaceResponse = translateBreathingSpaceToCCD(breathingSpace);
     return await civilServiceClient.submitBreathingSpaceEvent(req.params.id, breathingSpaceResponse, req);
