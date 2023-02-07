@@ -11,9 +11,7 @@ jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 
 const noRespondentTelephoneMock = require('../../../../utils/mocks/noRespondentTelephoneMock.json');
-
 const civilClaimResponseMockWithoutRespondentPhone: string = JSON.stringify(noRespondentTelephoneMock);
-
 const mockWithoutRespondentPhone = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponseMockWithoutRespondentPhone)),
@@ -21,7 +19,6 @@ const mockWithoutRespondentPhone = {
 noRespondentTelephoneMock.case_data.respondent1.partyPhone = new PartyPhone('1234');
 
 const civilClaimResponseMockWithRespondentPhone: string = JSON.stringify(noRespondentTelephoneMock);
-
 const mockWithRespondentPhone = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponseMockWithRespondentPhone)),
