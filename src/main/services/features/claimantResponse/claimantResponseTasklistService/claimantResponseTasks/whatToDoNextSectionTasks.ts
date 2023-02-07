@@ -2,10 +2,19 @@ import {t} from 'i18next';
 import {Claim} from 'common/models/claim';
 import {TaskStatus} from 'common/models/taskList/TaskStatus';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {CITIZEN_FREE_TELEPHONE_MEDIATION_URL, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL} from 'routes/urls';
+import {
+  CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL,
+  CITIZEN_FREE_TELEPHONE_MEDIATION_URL,
+  CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL,
+  CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL,
+  CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAYMENT_URL,
+  CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL,
+  CLAIMANT_SIGN_SETTLEMENT_AGREEMENT
+} from 'routes/urls';
 import {Task} from 'models/taskList/task';
 import {YesNo} from 'common/form/models/yesNo';
 import {hasClaimantResponseContactPersonAndCompanyPhone} from 'common/utils/taskList/tasks/taskListHelpers';
+import {PaymentOptionType} from "form/models/admission/paymentOption/paymentOptionType";
 
 export function getAcceptOrRejectDefendantAdmittedTask(claim: Claim, claimId: string, lang: string): Task {
   const accceptOrRejectDefendantAdmittedTask = {
@@ -22,6 +31,20 @@ export function getAcceptOrRejectDefendantAdmittedTask(claim: Claim, claimId: st
   return accceptOrRejectDefendantAdmittedTask;
 }
 
+export function getAcceptOrRejectRepaymentTask(claim: Claim, claimId: string, lang: string): Task {
+  const acceptOrRejectRepaymentTask = {
+    description: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_REPAYMENT', {
+      lng: lang,
+    }),
+    url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAYMENT_URL),
+    status: TaskStatus.INCOMPLETE,
+  };
+  if (claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option) {
+    acceptOrRejectRepaymentTask.status = TaskStatus.COMPLETE;
+  }
+  return acceptOrRejectRepaymentTask;
+}
+
 export function getFreeTelephoneMediationTask(claim: Claim, claimId: string, lang: string): Task {
   const freeTelephoneMediationTask = {
     description: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.FREE_TELEPHONE_MEDIATION', {lng: lang}),
@@ -35,14 +58,10 @@ export function getFreeTelephoneMediationTask(claim: Claim, claimId: string, lan
     freeTelephoneMediationTask.status = TaskStatus.COMPLETE;
   } else {
     if (mediation?.canWeUse?.option === YesNo.YES || mediation?.canWeUse?.mediationPhoneNumber) {
-      console.log('1');
       freeTelephoneMediationTask.status = TaskStatus.COMPLETE;
     }
     if (mediation?.companyTelephoneNumber?.option === YesNo.NO) {
-      console.log('2');
-      console.log('has', hasClaimantResponseContactPersonAndCompanyPhone(claim));
       if (hasClaimantResponseContactPersonAndCompanyPhone(claim)) {
-        console.log('INSIDEEEEEEEEEE');
         freeTelephoneMediationTask.status = TaskStatus.COMPLETE;
       }
     } else if (mediation?.companyTelephoneNumber?.mediationPhoneNumberConfirmation) {
@@ -53,32 +72,59 @@ export function getFreeTelephoneMediationTask(claim: Claim, claimId: string, lan
   return freeTelephoneMediationTask;
 }
 
-export function getChooseHowFormaliseTaskTask(claim: Claim, claimId: string, lang: string): Task {
-  const accceptOrRejectDefendantAdmittedTask = {
-    description: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_ADMITTED', {
+export function getChooseHowFormaliseTask(claim: Claim, claimId: string, lang: string): Task {
+  const chooseHowFormaliseTask = {
+    description: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.HOW_FORMALISE', {
       lng: lang,
-      admittedAmount: '500',
     }),
-    url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL),
+    url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL),
     status: TaskStatus.INCOMPLETE,
   };
-  if (claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option) {
-    accceptOrRejectDefendantAdmittedTask.status = TaskStatus.COMPLETE;
+  if (claim.claimantResponse?.chooseHowToProceed) {
+    chooseHowFormaliseTask.status = TaskStatus.COMPLETE;
   }
-  return accceptOrRejectDefendantAdmittedTask;
+  return chooseHowFormaliseTask;
 }
 
 export function getSignSettlementAgreementTask(claim: Claim, claimId: string, lang: string): Task {
-  const accceptOrRejectDefendantAdmittedTask = {
-    description: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_ADMITTED', {
+  const signSettlementAgreementTask = {
+    description: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.SIGN_SETTLEMENT', {
       lng: lang,
-      admittedAmount: '500',
     }),
-    url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL),
+    url: constructResponseUrlWithIdParams(claimId, CLAIMANT_SIGN_SETTLEMENT_AGREEMENT),
     status: TaskStatus.INCOMPLETE,
   };
-  if (claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option) {
-    accceptOrRejectDefendantAdmittedTask.status = TaskStatus.COMPLETE;
+  if (claim.claimantResponse?.signSettlementAgreement) {
+    signSettlementAgreementTask.status = TaskStatus.COMPLETE;
   }
-  return accceptOrRejectDefendantAdmittedTask;
+  return signSettlementAgreementTask;
+}
+
+export function getProposeAlternativeRepaymentTask(claim: Claim, claimId: string, lang: string): Task {
+  const proposeAlternativeRepaymentTask = {
+    description: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.PROPOSE_ALTERNATIVE_REPAYMENT', {
+      lng: lang,
+    }),
+    url: constructResponseUrlWithIdParams(claimId, CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL),
+    status: TaskStatus.INCOMPLETE,
+  };
+  if ((claim.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY && claim.claimantResponse?.courtProposedDate?.decision)
+    || (claim.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE && claim.partialAdmission?.paymentIntention?.paymentDate)) {
+    proposeAlternativeRepaymentTask.status = TaskStatus.COMPLETE;
+  }
+  return proposeAlternativeRepaymentTask;
+}
+
+export function getCountyCourtJudgmentTask(claim: Claim, claimId: string, lang: string): Task {
+  const countyCourtJudgmentTask = {
+    description: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.REQUEST_COUNTY_COURT_JUDGMENT', {
+      lng: lang,
+    }),
+    url: constructResponseUrlWithIdParams(claimId, CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL),
+    status: TaskStatus.INCOMPLETE,
+  };
+  if (claim.claimantResponse?.ccjRequest?.paidAmount?.option) {
+    countyCourtJudgmentTask.status = TaskStatus.COMPLETE;
+  }
+  return countyCourtJudgmentTask;
 }
