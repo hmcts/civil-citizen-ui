@@ -9,8 +9,8 @@ export const getUnavailableDatesLength = (unavailableDates: UnavailableDates) =>
     if (item.type === UnavailableDateType.SINGLE_DATE) {
       result.push(item.from);
     } else {
-      const test = getDatesBetween(item.from, item.until);
-      result = [...result, ...test];
+      const datesBetween = getDatesBetween(item.from, item.until);
+      result = [...result, ...datesBetween];
     }
   });
   const uniqueDates = [...new Set(result.map(date => date.toString()))];
