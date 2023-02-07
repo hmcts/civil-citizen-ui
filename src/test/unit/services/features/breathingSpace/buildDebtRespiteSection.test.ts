@@ -8,7 +8,6 @@ import {
   BREATHING_SPACE_RESPITE_TYPE_URL,
 } from 'routes/urls';
 import {Claim} from 'models/claim';
-jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({

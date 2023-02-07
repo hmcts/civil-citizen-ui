@@ -22,6 +22,8 @@ const civilServiceUrl = config.get<string>('services.civilService.url');
 const data = require('../../../../utils/mocks/defendantClaimsMock.json');
 
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/claimDetailsService');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/services/features/claim/checkAnswers/checkAnswersService');
@@ -49,14 +51,6 @@ describe('Claim - Check answers', () => {
   });
 
   describe('on GET', () => {
-    mockGetClaim.mockImplementation(() => {
-      const claim = new Claim();
-      claim.claimDetails = new ClaimDetails();
-      claim.claimDetails.helpWithFees = new HelpWithFees();
-      claim.claimDetails.helpWithFees.option = YesNo.YES;
-      return claim;
-    });
-
     it('should return check answers page', async () => {
       mockGetSummarySections.mockImplementation(() => {
         return createClaimWithBasicDetails();
