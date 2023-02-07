@@ -30,7 +30,7 @@ import {FullAdmission} from 'common/models/fullAdmission';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {PartialAdmission} from 'common/models/partialAdmission';
 import {HowMuchDoYouOwe} from 'common/form/models/admission/partialAdmission/howMuchDoYouOwe';
-import { ClaimantResponse } from 'common/models/claimantResponse';
+import {ClaimantResponse} from 'common/models/claimantResponse';
 
 const mockClaim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
 const mockRespondent: Party = {

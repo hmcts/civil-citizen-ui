@@ -18,10 +18,7 @@ import {PaymentOptionType} from "form/models/admission/paymentOption/paymentOpti
 
 export function getAcceptOrRejectDefendantAdmittedTask(claim: Claim, claimId: string, lang: string): Task {
   const accceptOrRejectDefendantAdmittedTask = {
-    description: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_ADMITTED', {
-      lng: lang,
-      admittedAmount: '500',
-    }),
+    description: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_ADMITTED', {lng: lang, admittedAmount: claim.partialAdmission?.howMuchDoYouOwe?.amount}),
     url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL),
     status: TaskStatus.INCOMPLETE,
   };
