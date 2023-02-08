@@ -1,7 +1,5 @@
 import {translateBreathingSpaceToCCD} from 'services/translation/breathingSpace/ccdTranslation';
 import {BreathingSpace} from 'models/breathingSpace';
-import {req} from '../../../../utils/UserDetails';
-import {AppRequest} from 'models/AppRequest';
 
 describe('translate breathing space enter to ccd version', () => {
   it('should translate breathing space to ccd', () => {
@@ -11,7 +9,7 @@ describe('translate breathing space enter to ccd version', () => {
       referenceNumber: '0000',
     };
     //When
-    const ccdClaim = translateBreathingSpaceToCCD(breathingSpace, req as AppRequest);
+    const ccdClaim = translateBreathingSpaceToCCD(breathingSpace);
     //Then
     expect(ccdClaim.enterBreathing.reference).toBe('0000');
   });

@@ -99,7 +99,7 @@ export interface CCDClaim extends ClaimUpdate {
   respondToClaimAdmitPartLRspec?: CCDPayBySetDate;
   responseClaimMediationSpecRequired?: string;
   specAoSApplicantCorrespondenceAddressRequired?: YesNoUpperCamelCase;
-  claimantUserDetails: IdamUserDetails;
+  claimantUserDetails?: IdamUserDetails;
   enterBreathing?: CCDBreathingSpaceStartInfo;
 }
 
