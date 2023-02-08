@@ -13,8 +13,6 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set title = t("PAGES.CLAIMANT_FORMALISE_REPAYMENT_TYPE.TITLE") %}
-      {% set id = "option" %}
-      {% set name = "option" %}
       {% set errors = form.getErrors() %}
       {% if form.hasErrors() %}
         {{ errorSummary(errors, t) }}
@@ -29,20 +27,20 @@
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {{ govukRadios({
-              idPrefix: id,
-              name: name,
+              idPrefix: "option",
+              name: "option",
               items: [
                 {
-                  value: ChooseHowToProceed.SIGN_A_SETTLEMENT_AGREEMENT,
-                  checked: true if form.model.option==ChooseHowToProceed.SIGN_A_SETTLEMENT_AGREEMENT else false,
+                  value: chooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT,
+                  checked: true if form.model.option==chooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT else false,
                   html: '<span class="govuk-body govuk-!-font-weight-bold">' + t('PAGES.CLAIMANT_FORMALISE_REPAYMENT_TYPE.SIGN_A_SETTLEMENT_AGREEMENT.LABEL') + '</span>',
                   hint: {
                     text: t('PAGES.CLAIMANT_FORMALISE_REPAYMENT_TYPE.SIGN_A_SETTLEMENT_AGREEMENT.DESCRIPTION')
                   }
                 },
                 {
-                  value: ChooseHowToProceed.REQUEST_A_CCJ,
-                  checked: true if form.model.option==ChooseHowToProceed.REQUEST_A_CCJ else false,
+                  value: chooseHowProceed.REQUEST_A_CCJ,
+                  checked: true if form.model.option==chooseHowProceed.REQUEST_A_CCJ else false,
                   html: '<span class="govuk-body govuk-!-font-weight-bold">' + t('PAGES.CLAIMANT_FORMALISE_REPAYMENT_TYPE.REQUEST_A_CCJ.LABEL') + '</span>',
                   hint: {
                     text: t('PAGES.CLAIMANT_FORMALISE_REPAYMENT_TYPE.REQUEST_A_CCJ.DESCRIPTION')

@@ -14,8 +14,10 @@ import {
   getSignSettlementAgreementTask,
 } from './claimantResponseTasks/whatToDoNextSectionTasks';
 import {YesNo} from 'common/form/models/yesNo';
-import {ChooseHowToProceed} from "models/chooseHowToProceed";
+
 import {PaymentOptionType} from "form/models/admission/paymentOption/paymentOptionType";
+import {ChooseHowProceed} from "models/chooseHowProceed";
+
 
 export function buildHowDefendantRespondSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
@@ -52,10 +54,10 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
         tasks.push(proposeAlternativeRepayment);
       }
 
-      if (claim.claimantResponse?.chooseHowToProceed?.option === ChooseHowToProceed.REQUEST_A_CCJ) {
+      if (claim.claimantResponse?.chooseHowToProceed?.option === ChooseHowProceed.REQUEST_A_CCJ) {
         const countyCourtJudgment = getCountyCourtJudgmentTask(claim, claimId, lang);
         tasks.push(countyCourtJudgment);
-      } else if (claim.claimantResponse?.chooseHowToProceed?.option === ChooseHowToProceed.SIGN_A_SETTLEMENT_AGREEMENT) {
+      } else if (claim.claimantResponse?.chooseHowToProceed?.option === ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT) {
         const signSettlementAgreement = getSignSettlementAgreementTask(claim, claimId, lang);
         tasks.push(signSettlementAgreement);
       }
