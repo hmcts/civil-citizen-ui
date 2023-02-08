@@ -3,7 +3,7 @@ import {
   UnavailableDates,
   UnavailableDateType,
 } from "common/models/directionsQuestionnaire/hearing/unavailableDates";
-import {getUnavailableDatesLength} from "services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation";
+import {getNumberOfUnavailableDays} from "services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation";
 
 const singleDateMock: UnavailableDatePeriod = {
   from: new Date("2024-01-01T00:00:00.000Z"),
@@ -41,14 +41,14 @@ const longerPeriod5DaysOverlapMock: UnavailableDatePeriod = {
 };
 
 describe('unavailable dates calculation service test', () => {
-  describe('getUnavailableDatesLength', () => {
+  describe('getNumberOfUnavailableDays', () => {
     it('should return 1 unavailable day', async () => {
       //Given
       const unavailableDates: UnavailableDates = {
         items: [singleDateMock]
       };
       //When
-      const result = getUnavailableDatesLength(unavailableDates);
+      const result = getNumberOfUnavailableDays(unavailableDates);
       //Then
       expect(result).toBe(1);
     });
@@ -58,7 +58,7 @@ describe('unavailable dates calculation service test', () => {
         items: [longerPeriod10DaysMock, longerPeriod5DaysOverlapMock]
       };
       //When
-      const result = getUnavailableDatesLength(unavailableDates);
+      const result = getNumberOfUnavailableDays(unavailableDates);
       //Then
       expect(result).toBe(16);
     });

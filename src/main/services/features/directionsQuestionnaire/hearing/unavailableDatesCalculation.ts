@@ -3,7 +3,7 @@ import {
   UnavailableDateType,
 } from "common/models/directionsQuestionnaire/hearing/unavailableDates";
 
-export const getUnavailableDatesLength = (unavailableDates: UnavailableDates) => {
+export const getNumberOfUnavailableDays = (unavailableDates: UnavailableDates) => {
   let result: Date[] = [];
   unavailableDates.items.forEach(item => {
     if (item.type === UnavailableDateType.SINGLE_DATE) {
