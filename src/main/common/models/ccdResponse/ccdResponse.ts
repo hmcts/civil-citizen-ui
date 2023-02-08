@@ -7,6 +7,7 @@ import {CCDParty} from './ccdParty';
 import {CCDBankAccount} from "models/ccdResponse/ccdBankAccount";
 import {CCDHomeDetails} from "models/ccdResponse/ccdHomeDetails";
 import {CCDPartnerAndDependent} from "models/ccdResponse/ccdPartnerAndDependent";
+import {CCDUnemploymentDetails} from "models/ccdResponse/ccdUnemploymentDetails";
 
 export interface CCDResponse extends ClaimUpdate {
   respondent1ClaimResponseTypeForSpec: string;
@@ -20,4 +21,6 @@ export interface CCDResponse extends ClaimUpdate {
   respondent1BankAccountList?: CCDBankAccount[];
   respondent1DQHomeDetails?: CCDHomeDetails;
   respondent1PartnerAndDependent?: CCDPartnerAndDependent;
+  defenceAdmitPartEmploymentTypeRequired?: YesNoUpperCamelCase;
+  respondToClaimAdmitPartUnemployedLRspec?: CCDUnemploymentDetails;
 }

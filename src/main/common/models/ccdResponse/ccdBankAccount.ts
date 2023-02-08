@@ -5,7 +5,7 @@ export interface CCDBankAccount {
   value?: CCDBankAccountItem,
 }
 
-export interface CCDBankAccountItem {
+interface CCDBankAccountItem {
   accountType?: CCDBankAccountType,
   jointAccount?: YesNoUpperCamelCase,
   balance?: number,
