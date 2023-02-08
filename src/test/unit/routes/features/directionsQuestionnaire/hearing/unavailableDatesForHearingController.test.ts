@@ -3,8 +3,13 @@ import config from 'config';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import {mockCivilClaimWithExpertAndWitness, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {DQ_AVAILABILITY_DATES_FOR_HEARING_URL, DQ_PHONE_OR_VIDEO_HEARING_URL} from 'routes/urls';
+import {
+  DQ_AVAILABILITY_DATES_FOR_HEARING_URL,
+  DQ_PHONE_OR_VIDEO_HEARING_URL,
+  DQ_UNAVAILABLE_FOR_HEARING_URL,
+} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import { UnavailableDateType } from 'common/models/directionsQuestionnaire/hearing/unavailableDates';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -60,7 +65,7 @@ describe('Unavailable dates for hearing Controller', () => {
         .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
         .send({
           items: [{
-            type: 'SINGLE_DATE',
+            type: UnavailableDateType.SINGLE_DATE,
             single: {},
           }],
         })
@@ -75,7 +80,7 @@ describe('Unavailable dates for hearing Controller', () => {
         .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
         .send({
           items: [{
-            type: 'SINGLE_DATE',
+            type: UnavailableDateType.SINGLE_DATE,
             single: {},
           }],
         })
@@ -90,7 +95,7 @@ describe('Unavailable dates for hearing Controller', () => {
         .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
         .send({
           items: [{
-            type: 'SINGLE_DATE',
+            type: UnavailableDateType.SINGLE_DATE,
             single: {
               start: {
                 day: '',
@@ -111,7 +116,7 @@ describe('Unavailable dates for hearing Controller', () => {
         .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
         .send({
           items: [{
-            type: 'SINGLE_DATE',
+            type: UnavailableDateType.SINGLE_DATE,
             single: {
               start: {
                 day: 3,
@@ -132,7 +137,7 @@ describe('Unavailable dates for hearing Controller', () => {
         .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
         .send({
           items: [{
-            type: 'SINGLE_DATE',
+            type: UnavailableDateType.SINGLE_DATE,
             single: {
               start: {
                 day: 3,
@@ -153,7 +158,7 @@ describe('Unavailable dates for hearing Controller', () => {
         .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
         .send({
           items: [{
-            type: 'SINGLE_DATE',
+            type: UnavailableDateType.SINGLE_DATE,
             single: {
               start: {
                 day: 3,
@@ -174,7 +179,7 @@ describe('Unavailable dates for hearing Controller', () => {
         .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
         .send({
           items: [{
-            type: 'SINGLE_DATE',
+            type: UnavailableDateType.SINGLE_DATE,
             single: {
               start: {
                 day: 3,
@@ -190,17 +195,18 @@ describe('Unavailable dates for hearing Controller', () => {
         });
     });
 
-    it('should redirect next page if all information provided', async () => {
+    it('should redirect next page if unavailable days are less than 30', async () => {
+      const today = new Date();
       await request(app)
         .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
         .send({
           items: [{
-            type: 'SINGLE_DATE',
+            type: UnavailableDateType.SINGLE_DATE,
             single: {
               start: {
-                day: 7,
-                month: 2,
-                year: 2024,
+                day: today.getDate(),
+                month: today.getMonth() + 1,
+                year: today.getFullYear() + 1,
               },
             },
           }],
@@ -211,13 +217,40 @@ describe('Unavailable dates for hearing Controller', () => {
         });
     });
 
+    it('should redirect next page if unavailable days are more than 30', async () => {
+      const today = new Date();
+      await request(app)
+        .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
+        .send({
+          items: [{
+              type: UnavailableDateType.LONGER_PERIOD,
+              period: {
+                start: {
+                  day: today.getDate(),
+                  month: today.getMonth() + 1,
+                  year: today.getFullYear() + 1,
+                },
+                end: {
+                  day: today.getDate(),
+                  month: today.getMonth() + 3,
+                  year: today.getFullYear() + 1,
+                },
+              },
+          }],
+        })
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.get('location')).toBe(DQ_UNAVAILABLE_FOR_HEARING_URL);
+        });
+    });
+
     it('should status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
         .send({
           items: [{
-            type: 'SINGLE_DATE',
+            type: UnavailableDateType.SINGLE_DATE,
             single: {
               start: {
                 day: 7,
