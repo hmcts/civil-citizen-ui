@@ -1,9 +1,9 @@
-import {CCDParty} from '../../../common/models/ccdResponse/ccdParty';
-import {Party} from '../../../common/models/party';
-import {PartyType} from '../../../common/models/partyType';
+import {CCDParty} from 'models/ccdResponse/ccdParty';
+import {Party} from 'models/party';
+import {PartyType} from 'models/partyType';
 import {toCCDAddress} from './convertToCCDAddress';
 
-export const toCCDParty = (party: Party, applicantEmail?: string): CCDParty => {
+export const toCCDParty = (party: Party): CCDParty => {
   return {
     companyName: party?.type === PartyType.COMPANY ? party?.partyDetails?.partyName : undefined,
     individualDateOfBirth: party?.type === PartyType.INDIVIDUAL ? party?.dateOfBirth?.date : undefined,
@@ -11,7 +11,7 @@ export const toCCDParty = (party: Party, applicantEmail?: string): CCDParty => {
     individualLastName: party?.type === PartyType.INDIVIDUAL ? party?.partyDetails?.individualLastName : undefined,
     individualTitle: party?.type === PartyType.INDIVIDUAL ? party?.partyDetails?.individualTitle : undefined,
     organisationName: party?.type === PartyType.ORGANISATION ? party?.partyDetails?.partyName : undefined,
-    partyEmail: applicantEmail ? applicantEmail : party?.emailAddress?.emailAddress,
+    partyEmail: party?.emailAddress?.emailAddress,
     partyPhone: party?.partyPhone?.phone,
     primaryAddress: toCCDAddress(party?.partyDetails?.primaryAddress),
     soleTraderDateOfBirth: party?.type === PartyType.SOLE_TRADER ? party?.dateOfBirth?.date : undefined,
