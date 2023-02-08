@@ -1,5 +1,5 @@
 import {Claim} from 'models/claim';
-import {YesNo} from 'form/models/yesNo';
+import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 import {
   buildHearingRequirementSection,
 } from 'services/features/response/checkAnswers/hearingRequirementSection/buildHearingRequirementSection';
@@ -43,7 +43,7 @@ describe('test hearingRequirementSection', () => {
 
     expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
     expect(summaryRows.summaryList.rows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
-    expect(summaryRows.summaryList.rows[0].value.html).toEqual(YesNo.NO);
+    expect(summaryRows.summaryList.rows[0].value.html).toEqual(YesNoUpperCamelCase.NO);
   });
 
   it('should display \'yes\' and 1 witness details', () => {
@@ -58,7 +58,7 @@ describe('test hearingRequirementSection', () => {
 
     expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
     expect(summaryRows.summaryList.rows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
-    expect(summaryRows.summaryList.rows[0].value.html).toEqual(YesNo.YES);
+    expect(summaryRows.summaryList.rows[0].value.html).toEqual(YesNoUpperCamelCase.YES);
 
     expect(summaryRows.summaryList.rows[1].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WITNESS 1');
 
@@ -91,7 +91,7 @@ describe('test hearingRequirementSection', () => {
 
     expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
     expect(summaryRows.summaryList.rows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
-    expect(summaryRows.summaryList.rows[0].value.html).toEqual(YesNo.YES);
+    expect(summaryRows.summaryList.rows[0].value.html).toEqual(YesNoUpperCamelCase.YES);
     // Witness 1
     expect(summaryRows.summaryList.rows[1].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WITNESS 1');
     expect(summaryRows.summaryList.rows[2].key.text).toEqual('COMMON.INPUT_LABELS.FIRST_NAME');
@@ -139,11 +139,11 @@ describe('test hearingRequirementSection', () => {
 
     expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
     expect(summaryRows.summaryList.rows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE');
-    expect(summaryRows.summaryList.rows[0].value.html).toEqual(YesNo.YES);
+    expect(summaryRows.summaryList.rows[0].value.html).toEqual(YesNoUpperCamelCase.YES);
     expect(summaryRows.summaryList.rows[1].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.REQUEST_EXTRA_4WEEKS');
-    expect(summaryRows.summaryList.rows[1].value.html).toEqual(YesNo.YES);
+    expect(summaryRows.summaryList.rows[1].value.html).toEqual(YesNoUpperCamelCase.YES);
     expect(summaryRows.summaryList.rows[2].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.CONSIDER_CLAIMANT_DOCUMENT');
-    expect(summaryRows.summaryList.rows[2].value.html).toEqual(YesNo.YES);
+    expect(summaryRows.summaryList.rows[2].value.html).toEqual(YesNoUpperCamelCase.YES);
     expect(summaryRows.summaryList.rows[3].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.GIVE_DOC_DETAILS');
     expect(summaryRows.summaryList.rows[3].value.html).toEqual('Test Doc');
   });
