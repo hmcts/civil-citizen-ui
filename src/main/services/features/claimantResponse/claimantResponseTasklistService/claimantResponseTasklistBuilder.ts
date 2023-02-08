@@ -14,9 +14,7 @@ import {
   getSignSettlementAgreementTask,
 } from './claimantResponseTasks/whatToDoNextSectionTasks';
 import {YesNo} from 'common/form/models/yesNo';
-
-import {PaymentOptionType} from "form/models/admission/paymentOption/paymentOptionType";
-import {ChooseHowProceed} from "models/chooseHowProceed";
+import {ChooseHowProceed} from 'common/models/chooseHowProceed';
 
 
 export function buildHowDefendantRespondSection(claim: Claim, claimId: string, lang: string) {
@@ -43,8 +41,8 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
         const proposeAlternativeRepayment = getProposeAlternativeRepaymentTask(claim, claimId, lang);
         tasks.push(proposeAlternativeRepayment);
 
-        if ((claim.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY && claim.claimantResponse?.courtProposedDate?.decision) ||
-          (claim.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE && claim.partialAdmission?.paymentIntention?.paymentDate)) {
+        if ((claim.isPAPaymentOptionPayImmediately() && claim.claimantResponse?.courtProposedDate?.decision) ||
+          (claim.isPAPaymentOptionByDate() && claim.partialAdmission?.paymentIntention?.paymentDate)) {
           const chooseHowFormaliseTask = getChooseHowFormaliseTask(claim, claimId, lang);
           tasks.push(chooseHowFormaliseTask);
         }

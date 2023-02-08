@@ -14,11 +14,13 @@ import {
 import {Task} from 'models/taskList/task';
 import {YesNo} from 'common/form/models/yesNo';
 import {hasClaimantResponseContactPersonAndCompanyPhone} from 'common/utils/taskList/tasks/taskListHelpers';
-import {PaymentOptionType} from "form/models/admission/paymentOption/paymentOptionType";
 
 export function getAcceptOrRejectDefendantAdmittedTask(claim: Claim, claimId: string, lang: string): Task {
   const accceptOrRejectDefendantAdmittedTask = {
-    description: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_ADMITTED', {lng: lang, admittedAmount: claim.partialAdmission?.howMuchDoYouOwe?.amount}),
+    description: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_ADMITTED', {
+      lng: lang,
+      admittedAmount: claim.partialAdmission?.howMuchDoYouOwe?.amount
+    }),
     url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL),
     status: TaskStatus.INCOMPLETE,
   };
@@ -105,8 +107,8 @@ export function getProposeAlternativeRepaymentTask(claim: Claim, claimId: string
     url: constructResponseUrlWithIdParams(claimId, CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL),
     status: TaskStatus.INCOMPLETE,
   };
-  if ((claim.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY && claim.claimantResponse?.courtProposedDate?.decision)
-    || (claim.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE && claim.partialAdmission?.paymentIntention?.paymentDate)) {
+  if ((claim.isPAPaymentOptionPayImmediately() && claim.claimantResponse?.courtProposedDate?.decision) ||
+    (claim.isPAPaymentOptionByDate() && claim.partialAdmission?.paymentIntention?.paymentDate)) {
     proposeAlternativeRepaymentTask.status = TaskStatus.COMPLETE;
   }
   return proposeAlternativeRepaymentTask;
