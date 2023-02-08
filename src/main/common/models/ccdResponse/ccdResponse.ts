@@ -10,6 +10,7 @@ import {CCDPartnerAndDependent} from "models/ccdResponse/ccdPartnerAndDependent"
 import {CCDUnemploymentDetails} from "models/ccdResponse/ccdUnemploymentDetails";
 import {CCDEmployerDetails} from "models/ccdResponse/ccdEmployerDetails";
 import {CCDSelfEmploymentDetails} from "models/ccdResponse/ccdSelfEmploymentDetails";
+import {CCDCourtOrders} from "models/ccdResponse/ccdCourtOrders";
 
 export interface CCDResponse extends ClaimUpdate {
   respondent1ClaimResponseTypeForSpec: string;
@@ -28,4 +29,6 @@ export interface CCDResponse extends ClaimUpdate {
   responseClaimAdmitPartEmployer?: CCDEmployerDetails;
   specDefendant1SelfEmploymentDetails?: CCDSelfEmploymentDetails;
   respondToClaimAdmitPartUnemployedLRspec?: CCDUnemploymentDetails;
+  respondent1CourtOrderPaymentOption?: YesNoUpperCamelCase;
+  respondent1CourtOrderDetails?: CCDCourtOrders[];
 }

@@ -13,6 +13,7 @@ import {toCCDUnemploymentDetails} from "./convertToCCDUnemploymentDetails";
 import {toCCDEmploymentSelection} from "./convertToCCDEmploymentSelection";
 import {toCCDEmploymentDetails} from "services/translation/response/convertToCCDEmployerDetails";
 import {toCCDSelfEmploymentDetails} from "services/translation/response/convertToCCDSelfEmploymentDetails";
+import {toCCDCourtOrders} from "services/translation/response/convertToCCDCourtOrders";
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   return {
@@ -32,5 +33,7 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     responseClaimAdmitPartEmployer: toCCDEmploymentDetails(claim.statementOfMeans?.employers),
     specDefendant1SelfEmploymentDetails: toCCDSelfEmploymentDetails(claim.statementOfMeans),
     respondToClaimAdmitPartUnemployedLRspec: toCCDUnemploymentDetails(claim.statementOfMeans?.unemployment),
+    respondent1CourtOrderPaymentOption: claim.statementOfMeans?.courtOrders?.declared ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
+    respondent1CourtOrderDetails: toCCDCourtOrders(claim.statementOfMeans?.courtOrders),
   };
 };
