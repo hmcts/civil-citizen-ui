@@ -18,6 +18,8 @@ import {LanguageOptions} from 'common/models/directionsQuestionnaire/languageOpt
 import {mockExpertDetailsList} from '../directionsQuestionnaire/experts/expertDetailsService.test';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {CLAIMANT_RESPONSE_CHECK_ANSWERS_URL, CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL, DETERMINATION_WITHOUT_HEARING_URL} from 'routes/urls';
+import {ResponseType} from 'common/form/models/responseType';
+import { Party } from 'common/models/party';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -65,6 +67,18 @@ describe('Claimant Response Task List builder', () => {
       //Then
       expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_ADMITTED');
       expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+    });
+    it('should display Free telephone mediation task as incomplete', () => {
+      //Given
+      claim.respondent1 = { responseType: ResponseType.PART_ADMISSION };
+      claim.claimantResponse = { hasPartAdmittedBeenAccepted: { option: YesNo.NO } };
+      //When
+      const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
+      //Then
+      expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_ADMITTED');
+      expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.FREE_TELEPHONE_MEDIATION');
+      expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+      expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
     });
   });
 
