@@ -22,7 +22,7 @@ function renderView(form: GenericForm<SupportRequiredList|UnavailableDates>, res
 unavailableDatesForHearingController.get(DQ_AVAILABILITY_DATES_FOR_HEARING_URL, async (req, res, next) => {
   try {
     const directionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
-    const unavailableDatesForHearing = directionQuestionnaire?.hearing?.unavailableDatesForHearing ?? new UnavailableDates();
+    const unavailableDatesForHearing = directionQuestionnaire.hearing?.unavailableDatesForHearing ?? new UnavailableDates();
     const form = new GenericForm(unavailableDatesForHearing);
     renderView(form, res);
   } catch (error) {
