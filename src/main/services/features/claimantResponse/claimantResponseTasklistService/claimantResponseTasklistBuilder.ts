@@ -65,7 +65,6 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
 
   }
 
-
   return {title: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.TITLE', {lng: lang}), tasks};
 }
 
