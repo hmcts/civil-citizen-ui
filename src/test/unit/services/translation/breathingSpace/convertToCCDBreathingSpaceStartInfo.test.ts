@@ -1,6 +1,6 @@
 import {BreathingSpace} from 'common/models/breathingSpace';
 import {DebtRespiteStartDate} from 'common/models/breathingSpace/debtRespiteStartDate';
-import {toCCDBreathingSpaceStartInfo} from 'services/translation/breathingSpace/convertToCCDBreathingSpaceStrartInfo';
+import {toCCDBreathingSpaceStartInfo} from 'services/translation/breathingSpace/convertToCCDBreathingSpaceStartInfo';
 import {CCDBreathingSpaceStartInfo} from 'models/ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
 import {DebtRespiteOptionType} from 'models/breathingSpace/debtRespiteOptionType';
 import {DebtRespiteEndDate} from 'models/breathingSpace/debtRespiteEndDate';

@@ -7,9 +7,11 @@ import config from 'config';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {submitBreathingSpace} from 'services/features/breathingSpace/submission/submitBreathingSpace';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
+
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/services/translation/breathingSpace/ccdTranslation');
+
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 mockedAppRequest.params = {id: '1'};
