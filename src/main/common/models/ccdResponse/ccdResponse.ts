@@ -22,5 +22,6 @@ export interface CCDResponse extends ClaimUpdate {
   respondent1DQHomeDetails?: CCDHomeDetails;
   respondent1PartnerAndDependent?: CCDPartnerAndDependent;
   defenceAdmitPartEmploymentTypeRequired?: YesNoUpperCamelCase;
+  respondToClaimAdmitPartEmploymentTypeLRspec?: string[];
   respondToClaimAdmitPartUnemployedLRspec?: CCDUnemploymentDetails;
 }
