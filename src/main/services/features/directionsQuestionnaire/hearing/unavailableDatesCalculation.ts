@@ -2,7 +2,7 @@ import {
   UnavailableDates,
   UnavailableDateType,
   UnavailableDatePeriod,
- } from "models/directionsQuestionnaire/hearing/unavailableDates";
+} from 'models/directionsQuestionnaire/hearing/unavailableDates';
 
 export const getNumberOfUnavailableDays = (unavailableDates: UnavailableDates): number => {
   let result = new Set<string>();
@@ -11,11 +11,11 @@ export const getNumberOfUnavailableDays = (unavailableDates: UnavailableDates): 
       result.add(item.from.toString());
     } else {
       const datesBetween = getDatesBetween(item.from, item.until);
-      result = new Set([...result, ...datesBetween])
+      result = new Set([...result, ...datesBetween]);
     }
   });
   return result.size;
-}
+};
 
 const getDatesBetween = (startDate: Date, endDate: Date): Set<string> => {
   const currentDate = new Date(startDate.getTime());
@@ -25,4 +25,4 @@ const getDatesBetween = (startDate: Date, endDate: Date): Set<string> => {
     currentDate.setDate(currentDate.getDate() + 1);
   }
   return dates;
-}
+};
