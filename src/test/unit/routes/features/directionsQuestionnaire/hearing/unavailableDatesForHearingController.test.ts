@@ -192,6 +192,7 @@ describe('Unavailable dates for hearing Controller', () => {
     });
 
     it('should redirect next page if all information provided', async () => {
+      const today = new Date();
       await request(app)
         .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
         .send({
@@ -199,9 +200,9 @@ describe('Unavailable dates for hearing Controller', () => {
             type: UnavailableDateType.SINGLE_DATE,
             single: {
               start: {
-                day: 7,
-                month: 2,
-                year: 2024,
+                day: today.getDate(),
+                month: today.getMonth()+1,
+                year: today.getFullYear()+1,
               },
             },
           }],
