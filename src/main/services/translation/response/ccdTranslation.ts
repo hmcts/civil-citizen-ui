@@ -12,6 +12,7 @@ import {toCCDPartnerAndDependents} from "./convertToCCDPartnerAndDependent";
 import {toCCDUnemploymentDetails} from "./convertToCCDUnemploymentDetails";
 import {toCCDEmploymentSelection} from "./convertToCCDEmploymentSelection";
 import {toCCDEmploymentDetails} from "services/translation/response/convertToCCDEmployerDetails";
+import {toCCDSelfEmploymentDetails} from "services/translation/response/convertToCCDSelfEmploymentDetails";
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   return {
@@ -29,6 +30,7 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     defenceAdmitPartEmploymentTypeRequired: claim.statementOfMeans?.employment?.declared ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
     respondToClaimAdmitPartEmploymentTypeLRspec: toCCDEmploymentSelection(claim.statementOfMeans?.employment?.employmentType),
     responseClaimAdmitPartEmployer: toCCDEmploymentDetails(claim.statementOfMeans?.employers),
+    specDefendant1SelfEmploymentDetails: toCCDSelfEmploymentDetails(claim.statementOfMeans),
     respondToClaimAdmitPartUnemployedLRspec: toCCDUnemploymentDetails(claim.statementOfMeans?.unemployment),
   };
 };
