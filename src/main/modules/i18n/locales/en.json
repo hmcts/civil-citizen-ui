@@ -1001,8 +1001,8 @@
       "CLAIM_PROMPT": "To view or progress your claim click on your claim number. Most recently created claims are listed first.",
       "CLAIM_STATUS": "Status",
       "STATUS": {
-        "NO_RESPONSE_ON_TIME": "Respond to claim: {{ number }} days remaining",
-        "NO_RESPONSE_OVERDUE": "Respond to claim: {{ number}} days overdue",
+        "NO_RESPONSE_ON_TIME": "Respond to claim: {{ numberOfDays }} days remaining",
+        "NO_RESPONSE_OVERDUE": "Respond to claim: {{ numberOfDays }} days overdue",
         "NO_RESPONSE_DUE_TODAY": "Respond to claim: due today",
         "NO_RESPONSE_ELIGIBLE_CCJ":  "You haven’t responded to the claim. {{ claimantName }} can now ask for a County Court Judgment (CCJ) against you. You can still respond to this claim before they ask for a CCJ.",
         "ADMIT_PAY_IMMEDIATELY": "You’ve admitted all of the claim and said you’ll pay the full amount immediately.",
