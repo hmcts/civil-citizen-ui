@@ -38,5 +38,6 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     respondent1CourtOrderDetails: toCCDCourtOrders(claim.statementOfMeans?.courtOrders),
     respondent1LoanCreditOption: claim.statementOfMeans?.debts?.option === 'true' ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
     respondent1LoanCreditDetails: toCCDLoanCredit(claim.statementOfMeans?.debts?.debtsItems),
+    responseToClaimAdmitPartWhyNotPayLRspec: claim.statementOfMeans.explanation.text,
   };
 };
