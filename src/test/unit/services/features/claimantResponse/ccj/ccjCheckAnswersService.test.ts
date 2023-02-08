@@ -30,9 +30,9 @@ const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.
 
 const expectedStatementOfTruth = {
   type: 'basic',
-  directionsQuestionnaireSigned: '',
+  directionsQuestionnaireSigned: false,
   isFullAmountRejected: false,
-  signed: '',
+  signed: false,
 };
 
 describe('Check Answers service', () => {
@@ -45,7 +45,7 @@ describe('Check Answers service', () => {
       });
       //Then
       await expect(
-        saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(false, SignatureType.BASIC, 'true'))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+        saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(false, SignatureType.BASIC, true))).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
 
     it('should retrieve data from draft store', async () => {
@@ -54,13 +54,13 @@ describe('Check Answers service', () => {
         const claim = new Claim();
         claim.claimantResponse = new ClaimantResponse();
         claim.claimantResponse.ccjRequest = new CCJRequest();
-        claim.claimantResponse.ccjRequest.statementOfTruth = {isFullAmountRejected: false, type: SignatureType.BASIC, signed: 'true'};
+        claim.claimantResponse.ccjRequest.statementOfTruth = new StatementOfTruthForm(false, SignatureType.BASIC, true,false);
         return claim;
       });
 
       //Then
       await expect(
-        saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(false, SignatureType.BASIC, 'true'))).toBeTruthy();
+        saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(false, SignatureType.BASIC, true))).toBeTruthy();
     });
   });
 
@@ -75,7 +75,8 @@ describe('Check Answers service', () => {
       claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
       claim.claimantResponse = new ClaimantResponse();
       claim.claimantResponse.ccjRequest = new CCJRequest();
-      claim.claimantResponse.ccjRequest.statementOfTruth = new StatementOfTruthForm(false, SignatureType.BASIC, '', '');
+
+      claim.claimantResponse.ccjRequest.statementOfTruth = new StatementOfTruthForm(false, SignatureType.BASIC, false,false);
       expect(getStatementOfTruth(claim)).toEqual(expectedStatementOfTruth);
     });
 
