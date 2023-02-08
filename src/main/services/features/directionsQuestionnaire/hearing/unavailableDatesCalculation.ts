@@ -3,25 +3,24 @@ import {
   UnavailableDateType,
 } from "common/models/directionsQuestionnaire/hearing/unavailableDates";
 
-export const getNumberOfUnavailableDays = (unavailableDates: UnavailableDates) => {
-  let result: Date[] = [];
+export const getNumberOfUnavailableDays = (unavailableDates: UnavailableDates): number => {
+  let result = new Set<string>();
   unavailableDates.items.forEach(item => {
     if (item.type === UnavailableDateType.SINGLE_DATE) {
-      result.push(item.from);
+      result.add(item.from.toString());
     } else {
       const datesBetween = getDatesBetween(item.from, item.until);
-      result = [...result, ...datesBetween];
+      result = new Set([...result, ...datesBetween])
     }
   });
-  const uniqueDates = [...new Set(result.map(date => date.toString()))];
-  return uniqueDates.length;
+  return result.size;
 }
 
-const getDatesBetween = (startDate: Date, endDate: Date) => {
+const getDatesBetween = (startDate: Date, endDate: Date): Set<string> => {
   const currentDate = new Date(startDate.getTime());
-  const dates = [];
+  const dates = new Set<string>();
   while (currentDate <= endDate) {
-    dates.push(new Date(currentDate));
+    dates.add(new Date(currentDate).toString());
     currentDate.setDate(currentDate.getDate() + 1);
   }
   return dates;
