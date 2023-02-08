@@ -3,7 +3,7 @@ import {CitizenBankAccount} from "models/citizenBankAccount";
 import {YesNoUpperCamelCase} from "form/models/yesNo";
 
 export const toCCDBankAccountList = (citizenBankAccount: CitizenBankAccount[]): CCDBankAccount[] => {
-  if (!citizenBankAccount?.length) return undefined;
+  if (!citizenBankAccount?.length || citizenBankAccount?.length <= 0) return undefined;
   const ccdBankAccountList: CCDBankAccount[] = [];
   citizenBankAccount.forEach((citizenBankAccountItem, index) => {
     const ccdBankAccount: CCDBankAccount = {

@@ -6,11 +6,12 @@ import {toCCDParty} from './convertToCCDParty';
 import {toCCDRepaymentPlan} from './convertToCCDRepaymentPlan';
 import {toCCDPaymentOption} from './convertToCCDPaymentOption';
 import {toCCDPayBySetDate} from './convertToCCDPayBySetDate';
-import {toCCDBankAccountList} from "services/translation/response/convertToCCDBankAccount";
-import {toCCDHomeDetails} from "services/translation/response/convertToCCDHomeDetails";
-import {toCCDPartnerAndDependents} from "services/translation/response/convertToCCDPartnerAndDependent";
-import {toCCDUnemploymentDetails} from "services/translation/response/convertToCCDUnemploymentDetails";
-import {toCCDEmploymentSelection} from "services/translation/response/convertToCCDEmploymentSelection";
+import {toCCDBankAccountList} from "./convertToCCDBankAccount";
+import {toCCDHomeDetails} from "./convertToCCDHomeDetails";
+import {toCCDPartnerAndDependents} from "./convertToCCDPartnerAndDependent";
+import {toCCDUnemploymentDetails} from "./convertToCCDUnemploymentDetails";
+import {toCCDEmploymentSelection} from "./convertToCCDEmploymentSelection";
+import {toCCDEmploymentDetails} from "services/translation/response/convertToCCDEmployerDetails";
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   return {
@@ -27,6 +28,7 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     respondent1PartnerAndDependent: toCCDPartnerAndDependents(claim.statementOfMeans),
     defenceAdmitPartEmploymentTypeRequired: claim.statementOfMeans?.employment?.declared ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
     respondToClaimAdmitPartEmploymentTypeLRspec: toCCDEmploymentSelection(claim.statementOfMeans?.employment?.employmentType),
+    responseClaimAdmitPartEmployer: toCCDEmploymentDetails(claim.statementOfMeans?.employers),
     respondToClaimAdmitPartUnemployedLRspec: toCCDUnemploymentDetails(claim.statementOfMeans?.unemployment),
   };
 };
