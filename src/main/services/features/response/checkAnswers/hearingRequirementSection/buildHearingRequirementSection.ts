@@ -11,19 +11,19 @@ import {
   DQ_TRIED_TO_SETTLE_CLAIM_URL,
 } from 'routes/urls';
 import {OtherWitnessItems} from 'models/directionsQuestionnaire/witnesses/otherWitnessItems';
-import {YesNo} from 'form/models/yesNo';
+import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 
 const getEmptyStringIfUndefined = (value: string): string => value || '';
 
 const getWitnesses = (claim: Claim, claimId: string, lang: string): SummaryRow [] => {
   const witnessesHref = constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_WITNESSES_URL);
-  const otherWitnesses = claim.directionQuestionnaire?.witnesses?.otherWitnesses?.option;
+  const otherWitnesses = claim.directionQuestionnaire?.witnesses?.otherWitnesses?.option === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO;
   const summaryRows: SummaryRow [] = [];
 
   summaryRows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES', {lng: getLng(lang)}), otherWitnesses, witnessesHref, changeLabel(lang)));
 
-  if(otherWitnesses === YesNo.YES)
+  if(otherWitnesses === YesNoUpperCamelCase.YES)
   {
     const witnesses: OtherWitnessItems[] = claim.directionQuestionnaire.witnesses?.otherWitnesses?.witnessItems;
     witnesses.forEach((witness, index) => {
@@ -47,13 +47,13 @@ export const buildHearingRequirementSection = (claim: Claim, claimId: string, la
 
   if (claim.isFastTrackClaim && claim.directionQuestionnaire?.hearing) {
     const considerClaimantDoc = claim.directionQuestionnaire?.hearing?.considerClaimantDocuments;
-    const triedToSettle = claim.directionQuestionnaire?.hearing?.triedToSettle?.option;
-    const requestExtra4Weeks = claim.directionQuestionnaire?.hearing?.requestExtra4weeks?.option;
+    const triedToSettle = claim.directionQuestionnaire?.hearing?.triedToSettle?.option === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO;
+    const requestExtra4Weeks = claim.directionQuestionnaire?.hearing?.requestExtra4weeks?.option === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO;
 
     hearingRequirementSection.summaryList.rows.push(...[
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE', {lng: getLng(lang)}), triedToSettle, constructResponseUrlWithIdParams(claimId, DQ_TRIED_TO_SETTLE_CLAIM_URL), changeLabel(getLng(lang))),
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.REQUEST_EXTRA_4WEEKS', {lng: getLng(lang)}), requestExtra4Weeks, constructResponseUrlWithIdParams(claimId, DQ_REQUEST_EXTRA_4WEEKS_URL), changeLabel(getLng(lang))),
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONSIDER_CLAIMANT_DOCUMENT', {lng: getLng(lang)}), considerClaimantDoc?.option, constructResponseUrlWithIdParams(claimId, DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL), changeLabel(getLng(lang))),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONSIDER_CLAIMANT_DOCUMENT', {lng: getLng(lang)}), considerClaimantDoc?.option === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO, constructResponseUrlWithIdParams(claimId, DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL), changeLabel(getLng(lang))),
     ]);
 
     if (considerClaimantDoc?.option === YesNo.YES)
