@@ -191,6 +191,7 @@ import claimantResponseConfirmationController from './features/claimantResponse/
 import judgmentAmountSummaryController from './features/claimantResponse/ccj/judgmentAmountSummaryController';
 import ccjCheckAnswersController from './features/claimantResponse/ccj/ccjCheckAnswersController';
 import claimantResponseTasklistController from './features/claimantResponse/claimantResponseTasklistController';
+import unavailableDatesForHearingController from './features/directionsQuestionnaire/hearing/unavailableDatesForHearingController';
 
 export default [
   homeController,
@@ -369,4 +370,5 @@ export default [
   ccjCheckAnswersController,
   judgmentAmountSummaryController,
   claimantResponseTasklistController,
+  unavailableDatesForHearingController,
 ];

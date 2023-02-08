@@ -1,0 +1,107 @@
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% macro unavailableDateRow(unavailableDate, index, errorFor, t, removeButton, today) %}
+
+  {% set exampleDate = today.getDate() + ' ' + (today.getMonth() + 1)+ ' ' + (today.getFullYear() + 1) %}
+
+  {% set singleDateHTML %}
+    {% set singleDateError = '<p class="govuk-error-message">' + t(errorFor('items[' +index+ '][from]')) + '</p>' +
+      '<p class="govuk-error-message">' + t(errorFor('items[' +index+ '][startDay]')) + '</p>' +
+      '<p class="govuk-error-message">' + t(errorFor('items[' +index+ '][startMonth]')) + '</p>' +
+      '<p class="govuk-error-message">' + t(errorFor('items[' +index+ '][startYear]')) + '</p>' %}
+  {{ govukDateInput({
+    id: 'items[' + index + '][from]',
+    type: 'number',
+    inputmode: 'numeric',
+    hint: {
+      text: t('COMMON.DATE_EXAMPLE', { date: exampleDate })
+    },
+    errorMessage: {
+      html: singleDateError
+    } if (errorFor('items['+index+'][from]') or errorFor('items['+index+'][startDay]') or errorFor('items['+index+'][startMonth]') or errorFor('items['+index+'][startYear]')),
+    items: [
+      {
+        classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items[' +index+ '][startDay]') or errorFor('items[' +index+ '][from]')) else "govuk-input--width-4",
+        id: 'items[' +index+ '][startDay]-single' if unavailableDate.until else 'items[' +index+ '][startDay]',
+        name: 'items[' +index+ '][single][start][day]',
+        label: t('COMMON.DAY'),
+        value: unavailableDate.startDay if unavailableDate.type === UnavailableDateType.SINGLE_DATE,
+        max: 31
+      },
+      {
+        classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items[' +index+ '][startMonth]') or errorFor('items[' +index+ '][from]')) else "govuk-input--width-4",
+        id: 'items[' +index+ '][startMonth]',
+        name: 'items[' +index+ '][single][start][month]',
+        label: t('COMMON.MONTH'),
+        value: unavailableDate.startMonth if unavailableDate.type === UnavailableDateType.SINGLE_DATE,
+        max: 12
+      },
+      {
+        classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items[' +index+ '][startYear]') or errorFor('items[' +index+ '][from]')) else "govuk-input--width-4",
+        id: 'items[' +index+ '][startYear]',
+        name: 'items[' +index+ '][single][start][year]',
+        label: t('COMMON.YEAR'),
+        value: unavailableDate.startYear if unavailableDate.type === UnavailableDateType.SINGLE_DATE,
+        max: 9999
+      }
+    ]
+  }) }}
+{% endset -%}
+
+{% set longerPeriodHTML %}
+
+{% endset -%}
+
+
+  <div class="row-container">
+    <div class="multiple-row">
+      <div id='items[{{index}}][type]'>
+        {% set typeError = errorFor('items['+ index+ '][type]') %}
+        {{ govukRadios({
+          id: 'items-' +index+ '-type',
+          name: 'items[' +index+ '][type]',
+          items: [
+                  {
+                    id: 'items-' +index+ '-single-date',
+                    value: UnavailableDateType.SINGLE_DATE,
+                    html: t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.SINGLE_DATE'),
+                    checked: unavailableDate.type === UnavailableDateType.SINGLE_DATE,
+                    conditional: {
+                      html: singleDateHTML
+                    }
+                  },
+                  {
+                    id: 'items-' +index+ '-longer-period',
+                    value: UnavailableDateType.LONGER_PERIOD,
+                    html:  t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.LONGER_PERIOD'),
+                    checked: unavailableDate.type === UnavailableDateType.LONGER_PERIOD,
+                    conditional: {
+                      html: longerPeriodHTML
+                    }
+                  }
+                ],
+          errorMessage: {
+            text: t(typeError)
+          } if typeError
+        }) }}
+      </div>
+
+      {% if removeButton %}
+        {% if removeButton.hidden %}
+          {{ govukButton({
+            text: t('COMMON.REMOVE'),
+            classes: "govuk-button--secondary remove-row govuk-visually-hidden"
+          }) }}
+        {% else %}
+          {{ govukButton({
+            text: t('COMMON.REMOVE'),
+            classes: "govuk-button--secondary remove-row"
+          }) }}
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+
+{% endmacro %}
