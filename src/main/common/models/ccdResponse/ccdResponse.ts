@@ -5,6 +5,8 @@ import {CCDPayBySetDate} from './ccdPayBySetDate';
 import {YesNoUpperCamelCase} from '../../../common/form/models/yesNo';
 import {CCDParty} from './ccdParty';
 import {CCDBankAccount} from "models/ccdResponse/ccdBankAccount";
+import {CCDHomeDetails} from "models/ccdResponse/ccdHomeDetails";
+import {CCDPartnerAndDependent} from "models/ccdResponse/ccdPartnerAndDependent";
 
 export interface CCDResponse extends ClaimUpdate {
   respondent1ClaimResponseTypeForSpec: string;
@@ -16,4 +18,6 @@ export interface CCDResponse extends ClaimUpdate {
   totalClaimAmount: number,
   respondent1: CCDParty;
   respondent1BankAccountList?: CCDBankAccount[];
+  respondent1DQHomeDetails?: CCDHomeDetails;
+  respondent1PartnerAndDependent?: CCDPartnerAndDependent;
 }
