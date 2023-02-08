@@ -1,11 +1,12 @@
 import {
   UnavailableDates,
   UnavailableDateType,
-} from "common/models/directionsQuestionnaire/hearing/unavailableDates";
+  UnavailableDatePeriod,
+ } from "models/directionsQuestionnaire/hearing/unavailableDates";
 
 export const getNumberOfUnavailableDays = (unavailableDates: UnavailableDates): number => {
   let result = new Set<string>();
-  unavailableDates.items.forEach(item => {
+  unavailableDates.items.forEach((item: UnavailableDatePeriod) => {
     if (item.type === UnavailableDateType.SINGLE_DATE) {
       result.add(item.from.toString());
     } else {
