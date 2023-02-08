@@ -2,18 +2,16 @@ import {app} from '../../../../../main/app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {CAN_WE_USE_URL, CLAIM_TASK_LIST_URL, CLAIMANT_RESPONSE_TASK_LIST_URL} from 'routes/urls';
+import {CAN_WE_USE_URL, RESPONSE_TASK_LIST_URL, CLAIMANT_RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockCivilClaimantInetntion, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {mockCivilClaim, mockCivilClaimantIntention, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {PartyPhone} from '../../../../../main/common/models/PartyPhone';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 
 const noRespondentTelephoneMock = require('../../../../utils/mocks/noRespondentTelephoneMock.json');
-
 const civilClaimResponseMockWithoutRespondentPhone: string = JSON.stringify(noRespondentTelephoneMock);
-
 const mockWithoutRespondentPhone = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponseMockWithoutRespondentPhone)),
@@ -21,7 +19,6 @@ const mockWithoutRespondentPhone = {
 noRespondentTelephoneMock.case_data.respondent1.partyPhone = new PartyPhone('1234');
 
 const civilClaimResponseMockWithRespondentPhone: string = JSON.stringify(noRespondentTelephoneMock);
-
 const mockWithRespondentPhone = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponseMockWithRespondentPhone)),
@@ -101,11 +98,11 @@ describe('Repayment Plan', () => {
         .send({option: 'no', mediationPhoneNumber: '01632960001'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
     it('should redirect with mediationDisagreement', async () => {
-      app.locals.draftStoreClient = mockCivilClaimantInetntion;
+      app.locals.draftStoreClient = mockCivilClaimantIntention;
       await request(app)
         .post(CAN_WE_USE_URL)
         .send({option: 'no', mediationPhoneNumber: '01632960001'})
@@ -115,7 +112,7 @@ describe('Repayment Plan', () => {
         });
     });
     it('should redirect to claimant task list with valid input', async () => {
-      app.locals.draftStoreClient = mockCivilClaimantInetntion;
+      app.locals.draftStoreClient = mockCivilClaimantIntention;
       await request(app)
         .post(CAN_WE_USE_URL)
         .send({option: 'no', mediationPhoneNumber: '01632960001'})
@@ -131,7 +128,7 @@ describe('Repayment Plan', () => {
         .send({option: 'yes', mediationPhoneNumber: ''})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
     it('should return status 500 when there is error', async () => {
@@ -153,7 +150,7 @@ describe('Repayment Plan', () => {
           .send({option: 'no', mediationPhoneNumber: '01632960002'})
           .expect((res) => {
             expect(res.status).toBe(302);
-            expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+            expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
           });
       });
       it('should redirect with valid input diferent ccdState with respondent phone', async () => {
@@ -163,11 +160,11 @@ describe('Repayment Plan', () => {
           .send({option: 'no', mediationPhoneNumber: '01632960002'})
           .expect((res) => {
             expect(res.status).toBe(302);
-            expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+            expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
           });
       });
       it('should redirect claimant task list with valid input', async () => {
-        app.locals.draftStoreClient = mockCivilClaimantInetntion;
+        app.locals.draftStoreClient = mockCivilClaimantIntention;
         await request(app)
           .post(CAN_WE_USE_URL)
           .send({option: 'no', mediationPhoneNumber: '01632960002'})

@@ -40,7 +40,7 @@ import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
 import {ClaimDetails} from 'common/form/models/claim/details/claimDetails';
 import {ClaimantResponse} from './claimantResponse';
 import {CCDClaim} from 'models/civilClaimResponse';
-import {toCUIParty} from 'services/translation/response/convertToCUI/convertToCUIParty';
+import {toCUIParty} from 'services/translation/convertToCUI/convertToCUIParty';
 import {SelfEmployedAs} from '../models/selfEmployedAs';
 import {TaxPayments} from '../models/taxPayments';
 import {RegularIncome} from '../../common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
@@ -82,9 +82,9 @@ export class Claim {
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
   claimBilingualLanguagePreference: ClaimBilingualLanguagePreference;
+  id: string;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
-
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
     claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
     claim.respondent1 = toCUIParty(ccdClaim?.respondent1);
@@ -127,7 +127,6 @@ export class Claim {
     if (this.isFullDefence() && this.isRejectAllOfClaimDispute()) {
       return ClaimResponseStatus.RC_DISPUTE;
     }
-
   }
 
   getClaimantFullName(): string {
@@ -136,17 +135,6 @@ export class Claim {
 
   getDefendantFullName(): string {
     return this.getName(this.respondent1);
-  }
-
-  private getName(party: Party): string {
-    if (party?.type == PartyType.INDIVIDUAL || party?.type == PartyType.SOLE_TRADER) {
-      if (party.partyDetails?.individualTitle) {
-        return `${party.partyDetails.individualTitle} ${party.partyDetails.individualFirstName} ${party.partyDetails.individualLastName}`;
-      } else {
-        return `${party.partyDetails.individualFirstName} ${party.partyDetails.individualLastName}`;
-      }
-    }
-    return party?.partyDetails?.partyName;
   }
 
   formattedResponseDeadline(lng?: string): string {
@@ -288,6 +276,18 @@ export class Claim {
     return this.rejectAllOfClaim.howMuchHaveYouPaid.amount === this.rejectAllOfClaim.howMuchHaveYouPaid.totalClaimAmount;
   }
 
+  getRejectAllOfClaimPaidLessPaymentDate(): Date {
+    return this.rejectAllOfClaim.howMuchHaveYouPaid.date;
+  }
+
+  getRejectAllOfClaimPaidLessPaymentMode(): string {
+    return this.rejectAllOfClaim?.howMuchHaveYouPaid?.text ?? '';
+  }
+
+  getRejectAllOfClaimDisagreementReason(): string {
+    return this.rejectAllOfClaim?.whyDoYouDisagree?.text ?? '';
+  }
+
   extractDocumentId(): string {
     const documentUrl = this.specClaimTemplateDocumentFiles?.document_url;
     let documentId: string;
@@ -337,7 +337,7 @@ export class Claim {
   }
 
   hasInterest(): boolean {
-    return this.claimInterest === YesNo.YES;
+    return this.claimInterest?.toLowerCase() === YesNo.YES;
   }
 
   hasHelpWithFees(): boolean {
@@ -350,6 +350,10 @@ export class Claim {
 
   isResponseToExtendDeadlineNo(): boolean {
     return this.responseDeadline?.option === ResponseOptions.NO;
+  }
+
+  isResponseDateInThePast(): boolean {
+    return this.respondent1ResponseDate <= new Date();
   }
 
   get hasSupportRequiredList(): boolean {
@@ -410,6 +414,33 @@ export class Claim {
 
   getDebts(): Debts | undefined {
     return this.statementOfMeans?.debts;
+  }
+
+  isInterestClaimOptionsBreakDownInterest(): boolean {
+    return this.interest?.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST;
+  }
+
+  getDefendantPaidAmount(): number | undefined {
+    return this.claimantResponse?.ccjRequest?.paidAmount?.amount;
+  }
+
+  hasDefendantPaid(): boolean {
+    return this.claimantResponse?.ccjRequest?.paidAmount?.option === YesNo.YES;
+  }
+
+  getHowTheInterestCalculatedReason(): string {
+    return this.interest?.totalInterest?.reason;
+  }
+
+  private getName(party: Party): string {
+    if (party?.type == PartyType.INDIVIDUAL || party?.type == PartyType.SOLE_TRADER) {
+      if (party.partyDetails?.individualTitle) {
+        return `${party.partyDetails.individualTitle} ${party.partyDetails.individualFirstName} ${party.partyDetails.individualLastName}`;
+      } else {
+        return `${party.partyDetails.individualFirstName} ${party.partyDetails.individualLastName}`;
+      }
+    }
+    return party?.partyDetails?.partyName;
   }
 }
 

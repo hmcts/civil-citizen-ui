@@ -8,23 +8,23 @@ data "azurerm_key_vault" "civil_vault" {
 }
 
 data "azurerm_key_vault" "cmc_key_vault" {
-  name = "cmc-${var.env}"
+  name                = "cmc-${var.env}"
   resource_group_name = "cmc-${var.env}"
 }
 
 data "azurerm_subnet" "core_infra_redis_subnet" {
   name                 = "core-infra-subnet-1-${var.env}"
   virtual_network_name = "core-infra-vnet-${var.env}"
-  resource_group_name = "core-infra-${var.env}"
+  resource_group_name  = "core-infra-${var.env}"
 }
 
 module "citizen-ui-draft-store" {
-  source   = "git@github.com:hmcts/cnp-module-redis?ref=master"
-  product  = "${var.product}-${var.component}-draft-store"
-  location = var.location
-  env      = var.env
-  subnetid = data.azurerm_subnet.core_infra_redis_subnet.id
-  common_tags  = var.common_tags
+  source      = "git@github.com:hmcts/cnp-module-redis?ref=master"
+  product     = "${var.product}-${var.component}-draft-store"
+  location    = var.location
+  env         = var.env
+  subnetid    = data.azurerm_subnet.core_infra_redis_subnet.id
+  common_tags = var.common_tags
 }
 
 resource "azurerm_key_vault_secret" "draft_store_access_key" {
@@ -34,6 +34,6 @@ resource "azurerm_key_vault_secret" "draft_store_access_key" {
 }
 
 data "azurerm_key_vault_secret" "ordnance-survey-api-key" {
-  name = "ordnance-survey-api-key"
+  name         = "ordnance-survey-api-key"
   key_vault_id = data.azurerm_key_vault.civil_vault.id
 }

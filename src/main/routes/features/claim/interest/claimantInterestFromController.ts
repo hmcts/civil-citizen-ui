@@ -1,7 +1,7 @@
 import {NextFunction, Response, Router} from 'express';
 import {
   CLAIM_HELP_WITH_FEES_URL,
-  CLAIM_INTEREST_FROM_URL,
+  CLAIM_INTEREST_DATE_URL,
   CLAIM_INTEREST_START_DATE_URL,
 } from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
@@ -18,7 +18,7 @@ function renderView(form: GenericForm<InterestClaimFromSelection>, res: Response
   res.render(claimantInterestFromViewPath, {form});
 }
 
-claimantInterestFromController.get(CLAIM_INTEREST_FROM_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+claimantInterestFromController.get(CLAIM_INTEREST_DATE_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   const claimId = req.session?.user?.id;
   try {
     const interest = await getInterest(claimId);
@@ -28,7 +28,7 @@ claimantInterestFromController.get(CLAIM_INTEREST_FROM_URL, async (req: AppReque
   }
 });
 
-claimantInterestFromController.post(CLAIM_INTEREST_FROM_URL, async (req: any, res: Response, next: NextFunction) => {
+claimantInterestFromController.post(CLAIM_INTEREST_DATE_URL, async (req: any, res: Response, next: NextFunction) => {
   try {
     const claimId = req.session?.user?.id;
     const form: GenericForm<InterestClaimFromSelection> = new GenericForm(new InterestClaimFromSelection(req.body.option as InterestClaimFromType));

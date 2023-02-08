@@ -1,14 +1,15 @@
-import {Party} from '../../../../../main/common/models/party';
-import {toCCDParty} from '../../../../../main/services/translation/response/convertToCCDParty';
-import {PartyType} from '../../../../../main/common/models/partyType';
-import {ResponseType} from '../../../../../main/common/form/models/responseType';
-import {YesNo} from '../../../../../main/common/form/models/yesNo';
-import {Address} from '../../../../../main/common/form/models/address';
-import {CCDParty} from '../../../../../main/common/models/ccdResponse/ccdParty';
-import {CCDAddress} from '../../../../../main/common/models/ccdResponse/ccdAddress';
-import {CitizenDate} from '../../../../../main/common/form/models/claim/claimant/citizenDate';
-import {PartyPhone} from '../../../../../main/common/models/PartyPhone';
-import {Email} from '../../../../../main/common/models/Email';
+import {Party} from 'common/models/party';
+import {toCCDParty} from 'services/translation/response/convertToCCDParty';
+import {PartyType} from 'common/models/partyType';
+import {ResponseType} from 'common/form/models/responseType';
+import {YesNo} from 'common/form/models/yesNo';
+import {Address} from 'common/form/models/address';
+import {CCDParty} from 'common/models/ccdResponse/ccdParty';
+import {CCDAddress} from 'common/models/ccdResponse/ccdAddress';
+import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
+import {PartyPhone} from 'common/models/PartyPhone';
+import {req} from '../../../../utils/UserDetails';
+import {Email} from 'models/Email';
 
 const companyName = 'Version 1';
 const phone = new PartyPhone('123456789');
@@ -18,8 +19,8 @@ const firstName = 'Jon';
 const lastName = 'Doe';
 const soleTraderTradingAs = 'test';
 const dateOfBirth = new CitizenDate('10', '10', '1990');
-const email = new Email('test@test.com');
-const emailCCD = 'test@test.com';
+const email = new Email(req.session.user.email);
+const emailCCD = req.session.user.email;
 
 const address: Address = new Address('Street test', '1', '1A', 'test', 'sl11gf');
 
@@ -165,6 +166,11 @@ describe('translate party to ccd model', () => {
   it('should translate INDIVIDUAL party to ccd', () => {
     const partyResponseCCD = toCCDParty(partyIndividual);
     expect(partyResponseCCD).toMatchObject(partyIndividualCCD);
+  });
+
+  it('should translate INDIVIDUAL party to ccd with applicantEmail', () => {
+    const partyResponseCCD = toCCDParty(partyIndividual);
+    expect(partyResponseCCD).toMatchObject({...partyIndividualCCD, partyEmail: req.session.user.email });
   });
 
   it('should translate SOLE TRADER party to ccd', () => {

@@ -16,4 +16,5 @@ export class CcjPaymentOption {
   isCcjPaymentOptionInstalments() {
     return this.type === PaymentOptionType.INSTALMENTS;
   }
+
 }

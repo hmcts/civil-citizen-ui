@@ -4,7 +4,7 @@ import {t} from 'i18next';
 import {getLng} from '../../../../../common/utils/languageToggleUtils';
 import {changeLabel} from '../../../../../common/utils/checkYourAnswer/changeButton';
 import {
-  DQ_DEFENDANT_CAN_STILL_EXAMINE_URL,
+  DQ_EXPERT_CAN_STILL_EXAMINE_URL,
   DQ_EXPERT_DETAILS_URL,
   DQ_EXPERT_REPORT_DETAILS_URL,
   PERMISSION_FOR_EXPERT_URL,
@@ -53,10 +53,10 @@ const whatIsThereToExamineRows = (claim: Claim, claimId: string, lang: string): 
   const examineRows = [summaryRow(t('PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE', lang),
     valueForExpertPermission, constructResponseUrlWithIdParams(claimId, PERMISSION_FOR_EXPERT_URL), changeLabel(lang)),
   summaryRow(t('PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE', getLng(lang)), valueForDefendantExpertEvidence,
-    constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_CAN_STILL_EXAMINE_URL), changeLabel(lang))];
+    constructResponseUrlWithIdParams(claimId, DQ_EXPERT_CAN_STILL_EXAMINE_URL), changeLabel(lang))];
   if (claim.hasEvidenceExpertCanStillExamine()) {
     examineRows.push(summaryRow(t('PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.EXAMINE', lang),
-      claim?.directionQuestionnaire?.experts?.expertCanStillExamine?.details, constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_CAN_STILL_EXAMINE_URL),
+      claim?.directionQuestionnaire?.experts?.expertCanStillExamine?.details, constructResponseUrlWithIdParams(claimId, DQ_EXPERT_CAN_STILL_EXAMINE_URL),
       changeLabel(lang)));
     examineRows.push(...buildExpertsDetailsRows(claim, claimId, lang));
   }

@@ -1,0 +1,71 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.CLAIMANT_RESPONSE.COURT_PROPOSED_DATE.PAGE_TITLE') }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% if form.hasErrors() %}
+        <div class="govuk-grid-row">
+          {{ errorSummary(form.getErrors(), t) }}
+        </div>
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t('PAGES.CLAIMANT_RESPONSE.COURT_PROPOSED_DATE.TITLE') }}</h1>
+          <p class="govuk-body">{{ t('PAGES.CLAIMANT_RESPONSE.COURT_PROPOSED_DATE.BASED_ON') }}</p>
+          <p class="govuk-body">
+            {{ t('PAGES.CLAIMANT_RESPONSE.COURT_PROPOSED_DATE.COURT_CALCULATOR',  {paymentDate: paymentDate}) }}
+          </p>
+
+          <form method="post" novalidate autocomplete="off">
+            {{ csrfProtection(csrf) }}
+
+            {{ govukRadios({
+              idPrefix: "decision",
+              name: "decision",
+              fieldset: {
+                legend: {
+                  text: t('PAGES.CLAIMANT_RESPONSE.COURT_PROPOSED_DATE.DO_YOU_ACCEPT',  {paymentDate: paymentDate}),
+                  isPageHeading: true,
+                  classes: "govuk-fieldset__legend--s"
+                }
+              },
+              items: [
+                {
+                  value: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE,
+                  checked: form.model.decision === CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE,
+                  text: t('PAGES.CLAIMANT_RESPONSE.COURT_PROPOSED_DATE.YES')
+                },
+                {
+                  value: CourtProposedDateOptions.JUDGE_REPAYMENT_DATE,
+                  checked: form.model.decision === CourtProposedDateOptions.JUDGE_REPAYMENT_DATE,
+                  text: t('PAGES.CLAIMANT_RESPONSE.COURT_PROPOSED_DATE.NO_I_WANT_JUDGE')
+                }
+              ],
+              errorMessage: {
+                text: t(form.errorFor('decision'))
+              } if form.hasFieldError('decision')
+            }) }}
+
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

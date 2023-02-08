@@ -5,9 +5,9 @@ import {
   getSummarySections,
   saveStatementOfTruth,
 } from 'services/features/claim/checkAnswers/checkAnswersService';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {deleteDraftClaimFromStore, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'common/models/AppRequest';
 import {submitClaim} from 'services/features/claim/submission/submitClaim';
 import {GenericForm} from 'common/form/models/genericForm';
@@ -23,7 +23,7 @@ function renderView(res: Response, form: GenericForm<StatementOfTruthForm> | Gen
   const summarySections = getSummarySections(userId, claim, lang);
   const signatureType = form.model?.type;
   let payment;
-  if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
+  if (claim.claimDetails?.helpWithFees?.option === YesNo.NO) {
     payment = 100;
   }
   res.render(checkAnswersViewPath, {
@@ -60,11 +60,12 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
       renderView(res, form, claim, userId, lang);
     } else {
       await saveStatementOfTruth(userId, form.model);
-      await submitClaim(<AppRequest>req);
+      const submittedClaim = await submitClaim(<AppRequest>req);
+      await deleteDraftClaimFromStore(userId);
       if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
         res.redirect(constructResponseUrlWithIdParams(userId, paymentUrl));
       } else {
-        res.redirect(CLAIM_CONFIRMATION_URL);
+        res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
       }
     }
   } catch (error) {
@@ -73,4 +74,3 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
 });
 
 export default claimCheckAnswersController;
-

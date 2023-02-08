@@ -128,7 +128,7 @@ const buildResolvingTheClaimSection = (caseData: Claim, claimId: string, lang: s
 
 const buildYourHearingRequirementsSection = (caseData: Claim, claimId: string, lang: string): TaskList => {
   const tasks: Task[] = [];
-  if (caseData.respondent1?.responseType === ResponseType.PART_ADMISSION || isFullDefenceAndNotCounterClaim(caseData)) {
+  if (caseData.isPartialAdmission() || isFullDefenceAndNotCounterClaim(caseData)) {
     const giveUsDetailsHearingTask = getGiveUsDetailsHearingTask(caseData, claimId, lang);
     tasks.push(giveUsDetailsHearingTask);
   }

@@ -1,9 +1,12 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {getBilingualLangPreference, saveBilingualLangPreference} from 'services/features/response/bilingualLangPreferenceService';
+import {
+  getBilingualLangPreference,
+  saveBilingualLangPreference,
+} from 'services/features/response/bilingualLangPreferenceService';
 import {
   BILINGUAL_LANGUAGE_PREFERENCE_URL,
-  CLAIM_TASK_LIST_URL,
+  RESPONSE_TASK_LIST_URL,
 } from '../../urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
@@ -27,14 +30,14 @@ bilingualLangPreferenceController.get(BILINGUAL_LANGUAGE_PREFERENCE_URL, async (
 
 bilingualLangPreferenceController.post(BILINGUAL_LANGUAGE_PREFERENCE_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const form = new GenericForm(new GenericYesNo(req.body.option,'ERRORS.SELECT_WELSH_AND_ENGLISH_OPTION'));
+    const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.SELECT_WELSH_AND_ENGLISH_OPTION'));
     form.validateSync();
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
       res.cookie('lang', form.model.option === ClaimBilingualLanguagePreference.ENGLISH ? 'en' : 'cy');
       await saveBilingualLangPreference(req.params.id, form.model);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
     }
   } catch (error) {
     next(error);

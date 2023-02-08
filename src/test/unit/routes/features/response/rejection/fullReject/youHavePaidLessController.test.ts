@@ -2,7 +2,7 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../../main/app';
-import {CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL, CLAIM_TASK_LIST_URL} from '../../../../../../../main/routes/urls';
+import {CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL, RESPONSE_TASK_LIST_URL} from '../../../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
@@ -44,7 +44,7 @@ describe('You Have Paid Less Controller', () => {
         .post(CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL)
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
   });
