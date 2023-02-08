@@ -13,7 +13,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 export const submitBreathingSpace = async (req: AppRequest): Promise<any> => {
   try {
     const breathingSpace = await getBreathingSpace(req.params.id);
-    const breathingSpaceResponse = translateBreathingSpaceToCCD(breathingSpace);
+    const breathingSpaceResponse = translateBreathingSpaceToCCD(breathingSpace, req);
     return await civilServiceClient.submitBreathingSpaceEvent(req.params.id, breathingSpaceResponse, req);
   } catch (err) {
     logger.error(err);
