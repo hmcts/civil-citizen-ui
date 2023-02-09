@@ -2,9 +2,9 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {RESPONSE_TASK_LIST_URL, DONT_WANT_FREE_MEDIATION_URL} from 'routes/urls';
+import {RESPONSE_TASK_LIST_URL, DONT_WANT_FREE_MEDIATION_URL, CLAIMANT_RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure, mockRedisWithMediationProperties} from '../../../../utils/mockDraftStore';
+import {mockCivilClaim, mockCivilClaimantIntention, mockRedisFailure, mockRedisWithMediationProperties} from '../../../../utils/mockDraftStore';
 import {NoMediationReasonOptions} from 'form/models/mediation/noMediationReasonOptions';
 
 jest.mock('../../../../../main/modules/oidc');
@@ -116,6 +116,16 @@ describe('I dont want free meditation', () => {
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
+        });
+    });
+    it('should redirect page when Claimant Response journey', async () => {
+      app.locals.draftStoreClient = mockCivilClaimantIntention;
+      await request(app)
+        .post(DONT_WANT_FREE_MEDIATION_URL)
+        .send({disagreeMediationOption: NoMediationReasonOptions.NO_DELAY_IN_HEARING, otherReason: ''})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CLAIMANT_RESPONSE_TASK_LIST_URL);
         });
     });
     it('should return error on incorrect input', async () => {

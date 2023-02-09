@@ -62,6 +62,10 @@ export const hasContactPersonAndCompanyPhone = (caseData: Claim): boolean => {
   return !!(caseData.mediation?.companyTelephoneNumber?.mediationContactPerson && caseData.mediation?.companyTelephoneNumber?.mediationPhoneNumber);
 };
 
+export const hasClaimantResponseContactPersonAndCompanyPhone = (caseData: Claim): boolean => {
+  return !!(caseData.claimantResponse?.mediation?.companyTelephoneNumber?.mediationContactPerson && caseData.claimantResponse?.mediation?.companyTelephoneNumber?.mediationPhoneNumber);
+};
+
 export const isFullDefenceAndNotCounterClaim = (caseData: Claim): boolean => {
   return caseData.isFullDefence() && caseData.rejectAllOfClaim?.option !== RejectAllOfClaimType.COUNTER_CLAIM;
 };
