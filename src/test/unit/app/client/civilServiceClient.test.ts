@@ -42,6 +42,10 @@ const ccdClaim : CCDClaim = {
     individualFirstName: 'Jane',
     type: PartyType.INDIVIDUAL,
   },
+  claimantUserDetails: {
+    email: 'email',
+    id: '1',
+  },
 };
 
 describe('Civil Service Client', () => {

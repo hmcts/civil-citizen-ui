@@ -267,6 +267,17 @@
       "NO": "Nac ydy"
     }
   },
+  "CLAIMANT_RESPONSE_TASK_LIST": {
+    "HOW_THEY_RESPONDED": {
+      "TITLE": "How they responded",
+      "VIEW_DEFENDANTS_RESPONSE": "View the defendant's response"
+    },
+    "CHOOSE_WHAT_TODO_NEXT": {
+      "TITLE": "Choose what to do next",
+      "ACCEPT_OR_REJECT_ADMITTED": "Accept or reject the £{{ admittedAmount }}",
+      "FREE_TELEPHONE_MEDIATION": "Gwasanaeth cyfryngu dros y ffôn am ddim"
+    }
+  },
   "TASK_LIST": {
     "APPLICATION_COMPLETE": "Application complete",
     "APPLICATION_INCOMPLETE": "Application incomplete",
@@ -756,7 +767,7 @@
         "FIRST_PAYMENT_DATE": "First payment date",
         "LAST_PAYMENT_DATE": "Last payment date",
         "LENGTH_OF_REPAYMENT": "Length of repayment plan",
-        "DO_YOU_ACCEPT": "Do you accept the court’s proposed repayment plan",
+        "DO_YOU_ACCEPT": "Do you accept the court’s proposed repayment plan?",
         "I_WANT_ACCEPT": "I want to accept this repayment plan",
         "I_WANT_JUDGE": "I want a judge to make a repayment plan"
       }
@@ -818,6 +829,10 @@
     "CLAIMANT_RESPONSE_REJECTION_REASON": {
       "PAGE_TITLE": "Rejection reason",
       "TITLE": "Why did you reject their response?"
+    },
+    "CLAIMANT_RESPONSE_TASK_LIST": {
+      "PAGE_TITLE": "Claimant response task list",
+      "HEADER": "Your response"
     },
     "CLAIMANT_TERMS_OF_AGREEMENT": {
       "PAGE_TITLE": "Terms of the agreement",
@@ -2433,7 +2448,7 @@
     "VALID_OWED_AMOUNT_REQUIRED": "Rhowch swm dilys",
     "VALID_PARTY_NAME": "Enter name",
     "VALID_PAYMENT_OPTION": "Dewis opsiwn ad-dalu",
-    "VALID_PHONE_NUMBER": "Rhowch rif ffôn gan ddefnyddio'r fformat cywir",
+    "VALID_PHONE_NUMBER": "Phone number must be a UK number",
     "VALID_PHONE_OR_VIDEO_HEARING": {
       "TELL_US_WHY": "Tell us why you want a telephone or video hearing",
       "YES_NO": "Select yes if you want to ask for a telephone or video hearing"
