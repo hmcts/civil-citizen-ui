@@ -11,7 +11,7 @@ import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {YesNo} from '../../../../common/form/models/yesNo';
 import {saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
-import {AxiosResponse} from 'axios';
+import {Claim} from '../../../../common/models/claim';
 
 const pinController = Router();
 const pinViewPath = 'features/public/firstContact/pin';
@@ -39,9 +39,9 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: Request, res: Response, ne
     if (pinForm.hasErrors()) {
       renderView(pinForm, !!req.body.pin, res);
     } else {
-      const response: AxiosResponse = await civilServiceClient.verifyPin(<AppRequest>req, pinForm.model.pin, cookie.claimReference);
-      await saveDraftClaim(response.data.id, response.data.case_data);
-      cookie.claimId = response.data.id;
+      const claim: Claim = await civilServiceClient.verifyPin(<AppRequest>req, pinForm.model.pin, cookie.claimReference);
+      await saveDraftClaim(claim.id, claim);
+      cookie.claimId = claim.id;
       cookie.pinVerified = YesNo.YES;
       res.cookie('firstContact', cookie);
       res.redirect(FIRST_CONTACT_CLAIM_SUMMARY_URL);
