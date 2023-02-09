@@ -51,14 +51,17 @@
 {% endset -%}
 
 {% set longerPeriodHTML %}
-   {% set longerPeriodError = '<p class="govuk-error-message">' + t(errorFor('items[' +index+ '][from]')) + '</p>' +
-      '<p class="govuk-error-message">' + t(errorFor('items[' +index+ '][startDay]')) + '</p>' +
-      '<p class="govuk-error-message">' + t(errorFor('items[' +index+ '][startMonth]')) + '</p>' +
-      '<p class="govuk-error-message">' + t(errorFor('items[' +index+ '][startYear]')) + '</p>' %}
 
-
-
-
+  <div>
+    <p class="govuk-error-message">{{ t(errorFor('items['+index+'][from]')) }} </p>
+    <p class="govuk-error-message">{{ t(errorFor('items['+index+'][startDay]')) }}</p>
+    <p class="govuk-error-message">{{ t(errorFor('items['+index+'][startMonth]')) }}</p>
+    <p class="govuk-error-message">{{ t(errorFor('items['+index+'][startYear]')) }}</p>
+    <p class="govuk-error-message">{{ t(errorFor('items['+index+'][until]')) }}</p>
+    <p class="govuk-error-message">{{ t(errorFor('items['+index+'][endDay]')) }}</p>
+    <p class="govuk-error-message">{{ t(errorFor('items['+index+'][endMonth]')) }}</p>
+    <p class="govuk-error-message">{{ t(errorFor('items['+index+'][endYear]')) }}</p>
+  </div>
   {{ govukDateInput({
     id: 'items[' +index+ '][from]',
     type: "number",
@@ -71,12 +74,9 @@
     hint: {
       text: t('COMMON.DATE_EXAMPLE', { date: exampleDate })
     },
-errorMessage: {
-      html: longerPeriodError
-    } if (errorFor('items['+index+'][from]') or errorFor('items['+index+'][startDay]') or errorFor('items['+index+'][startMonth]') or errorFor('items['+index+'][startYear]')),
     items: [
       {
-        classes: "govuk-input--width-4 govuk-input--error" ,
+        classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items['+index+'][startDay]') or errorFor('items['+index+'][from]')) else "govuk-input--width-4",
         id: 'items[' + index + '][startDay]' ,
         name: 'items[' + index + '][period][start][day]',
         label: t('COMMON.DAY'),
@@ -84,7 +84,7 @@ errorMessage: {
         max: 31
       },
       {
-        classes: "govuk-input--width-4 govuk-input--error" ,
+        classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items['+index+'][startMonth]') or errorFor('items['+index+'][from]')) else "govuk-input--width-4",
         id: 'items[' + index + '][startMonth]',
         name: 'items[' + index + '][period][start][month]',
         label: t('COMMON.MONTH'),
@@ -92,7 +92,7 @@ errorMessage: {
         max: 12
       },
       {
-        classes: "govuk-input--width-4 govuk-input--error" ,
+        classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items['+index+'][startYear]') or errorFor('items['+index+'][from]')) else "govuk-input--width-4",
         id: 'items[' + index + '][startYear]',
         name: 'items[' + index + '][period][start][year]',
         label: t('COMMON.YEAR'),
@@ -116,7 +116,7 @@ errorMessage: {
     },
     items: [
       {
-        classes: "govuk-input--width-4 govuk-input--error" ,
+        classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items['+index+'][endDay]') or errorFor('items['+index+'][until]')) else "govuk-input--width-4",
         id: 'items[' + index + '][endDay]',
         name: 'items[' + index + '][period][end][day]',
         label: t('COMMON.DAY'),
@@ -124,7 +124,7 @@ errorMessage: {
         max: 31
       },
       {
-        classes: "govuk-input--width-4 govuk-input--error" ,
+        classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items['+index+'][endMonth]') or errorFor('items['+index+'][until]')) else "govuk-input--width-4",
         id: 'items[' + index + '][endMonth]',
         name: 'items[' + index + '][period][end][month]',
         label: t('COMMON.MONTH'),
@@ -132,7 +132,7 @@ errorMessage: {
         max: 12
       },
       {
-        classes: "govuk-input--width-4 govuk-input--error" ,
+        classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items['+index+'][endYear]') or errorFor('items['+index+'][until]')) else "govuk-input--width-4",
         id: 'items[' + index + '][endYear]',
         name: 'items[' + index + '][period][end][year]',
         label: t('COMMON.YEAR'),
@@ -141,9 +141,7 @@ errorMessage: {
       }
     ]
   }) }}
-
 {% endset -%}
-
 
   <div class="row-container">
     <div class="multiple-row">
