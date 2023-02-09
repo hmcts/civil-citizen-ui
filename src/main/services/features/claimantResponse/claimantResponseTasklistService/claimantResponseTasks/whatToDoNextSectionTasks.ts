@@ -59,15 +59,12 @@ export function getFreeTelephoneMediationTask(claim: Claim, claimId: string, lan
     if (mediation?.canWeUse?.option === YesNo.YES || mediation?.canWeUse?.mediationPhoneNumber) {
       freeTelephoneMediationTask.status = TaskStatus.COMPLETE;
     }
-    if (mediation?.companyTelephoneNumber?.option === YesNo.NO) {
-      if (hasClaimantResponseContactPersonAndCompanyPhone(claim)) {
-        freeTelephoneMediationTask.status = TaskStatus.COMPLETE;
-      }
+    if (mediation?.companyTelephoneNumber?.option === YesNo.NO && hasClaimantResponseContactPersonAndCompanyPhone(claim)) {
+      freeTelephoneMediationTask.status = TaskStatus.COMPLETE;
     } else if (mediation?.companyTelephoneNumber?.mediationPhoneNumberConfirmation) {
       freeTelephoneMediationTask.status = TaskStatus.COMPLETE;
     }
   }
-
   return freeTelephoneMediationTask;
 }
 
