@@ -15,6 +15,8 @@ import {toCCDEmploymentDetails} from "services/translation/response/convertToCCD
 import {toCCDSelfEmploymentDetails} from "services/translation/response/convertToCCDSelfEmploymentDetails";
 import {toCCDCourtOrders} from "services/translation/response/convertToCCDCourtOrders";
 import {toCCDLoanCredit} from "services/translation/response/convertToCCDLoanCredit";
+import {toCCDCarerAllowanceCredit} from "services/translation/response/convertToCCDCarerAllowanceCredit";
+import {ResponseType} from "form/models/responseType";
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   return {
@@ -38,6 +40,9 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     respondent1CourtOrderDetails: toCCDCourtOrders(claim.statementOfMeans?.courtOrders),
     respondent1LoanCreditOption: claim.statementOfMeans?.debts?.option === 'true' ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
     respondent1LoanCreditDetails: toCCDLoanCredit(claim.statementOfMeans?.debts?.debtsItems),
-    responseToClaimAdmitPartWhyNotPayLRspec: claim.statementOfMeans.explanation.text,
+    responseToClaimAdmitPartWhyNotPayLRspec: claim.statementOfMeans?.explanation?.text,
+    respondent1DQCarerAllowanceCredit: toCCDCarerAllowanceCredit(claim, ResponseType.PART_ADMISSION),
+    respondent1DQCarerAllowanceCreditFullAdmission: toCCDCarerAllowanceCredit(claim, ResponseType.FULL_ADMISSION),
+
   };
 };

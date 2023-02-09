@@ -35,4 +35,6 @@ export interface CCDResponse extends ClaimUpdate {
   respondent1LoanCreditOption?: YesNoUpperCamelCase;
   respondent1LoanCreditDetails?: CCDLoanCredit[];
   responseToClaimAdmitPartWhyNotPayLRspec?: string;
+  respondent1DQCarerAllowanceCredit?: YesNoUpperCamelCase;
+  respondent1DQCarerAllowanceCreditFullAdmission?: YesNoUpperCamelCase;
 }
