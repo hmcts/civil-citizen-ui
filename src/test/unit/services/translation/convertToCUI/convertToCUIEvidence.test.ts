@@ -96,7 +96,7 @@ describe('translate Evidence to CUI model', () => {
 
   it('should return undefined if Evidence doesnt exist', () => {
     //Given
-    const ccdEvidenceEmpty: CCDEvidence[] = [];
+    const ccdEvidenceEmpty: CCDEvidence[] = undefined;
     //When
     const evidenceResponseCUI = toCUIEvidence(ccdEvidenceEmpty);
     //Then

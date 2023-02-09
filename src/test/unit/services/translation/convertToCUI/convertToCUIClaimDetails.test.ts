@@ -4,13 +4,13 @@ import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIC
 import {CCDClaim} from 'models/civilClaimResponse';
 
 describe('translate Claim Details to CUI model', () => {
-  const ccdClaimMock = {
+  const ccdClaimMock : CCDClaim = {
     detailsOfClaim: 'test detailsOfClaim to reason',
   };
 
   it('should return undefined if CCDClaim doesnt exist', () => {
     //Given
-    const ccdClaimEmpty: CCDClaim = {};
+    const ccdClaimEmpty: CCDClaim = undefined;
     //When
     const claimDetailsResponseCUI = toCUIClaimDetails(ccdClaimEmpty);
     //Then
