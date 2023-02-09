@@ -31,11 +31,8 @@
 
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            {% if itemsErrors %}
-              <p class="govuk-error-message">
-                <span class="govuk-visually-hidden">{{ t('ERRORS.ERROR') }} :</span> {{ t(itemsErrors) }}
-              </p>
-            {% endif %}
+
+
 
             {% for unavailableDate in form.model.items %}
               {{ unavailableDateRow(unavailableDate, loop.index0, form.errorFor, t, {hidden:isRemoveButtonHidden}, today) }}
