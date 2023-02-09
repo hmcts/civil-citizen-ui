@@ -78,7 +78,9 @@ const toCCDRecurringIncomeOtherItem = (otherTransactions: TransactionSource[], i
   if (!otherTransactions?.length || otherTransactions?.length <= 0) return undefined;
   const ccdOtherRecurringIncomeList: CCDRecurringIncome[] = [];
   otherTransactions.forEach((otherTransactionItem, index) => {
-    ccdOtherRecurringIncomeList.push(toCCDRecurringIncomeItem(otherTransactionItem, incomeType));
+    const ccdRecurringIncome = toCCDRecurringIncomeItem(otherTransactionItem, incomeType);
+    ccdRecurringIncome.typeOtherDetails = otherTransactionItem?.name
+    ccdOtherRecurringIncomeList.push(ccdRecurringIncome);
   });
   return ccdOtherRecurringIncomeList;
 }
