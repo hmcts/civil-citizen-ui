@@ -5,6 +5,7 @@ import {
 } from 'models/directionsQuestionnaire/hearing/unavailableDates';
 
 export const getNumberOfUnavailableDays = (unavailableDates: UnavailableDates): number => {
+  if (!unavailableDates) return 0;
   let result = new Set<string>();
   unavailableDates.items.forEach((item: UnavailableDatePeriod) => {
     if (item.type === UnavailableDateType.SINGLE_DATE) {
