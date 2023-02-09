@@ -19,6 +19,7 @@ import {toCCDCarerAllowanceCredit} from "services/translation/response/convertTo
 import {ResponseType} from "form/models/responseType";
 import {toCCDDebtDetails} from "services/translation/response/convertToCCDDebtDetails";
 import {toCCDRecurringIncomeField} from "services/translation/response/convertToCCDRecurringIncome";
+import {toCCDRecurringExpensesField} from "services/translation/response/convertToCCDRecurringExpense";
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   return {
@@ -48,5 +49,7 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     specDefendant1Debts: toCCDDebtDetails(claim.statementOfMeans?.priorityDebts),
     respondent1DQRecurringIncome: toCCDRecurringIncomeField(claim, ResponseType.PART_ADMISSION),
     respondent1DQRecurringIncomeFA: toCCDRecurringIncomeField(claim, ResponseType.FULL_ADMISSION),
+    respondent1DQRecurringExpenses: toCCDRecurringExpensesField(claim, ResponseType.PART_ADMISSION),
+    respondent1DQRecurringExpensesFA: toCCDRecurringExpensesField(claim, ResponseType.PART_ADMISSION),
   };
 };

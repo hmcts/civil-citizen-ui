@@ -14,6 +14,7 @@ import {CCDCourtOrders} from "models/ccdResponse/ccdCourtOrders";
 import {CCDLoanCredit} from "models/ccdResponse/ccdLoanCredit";
 import {CCDDebtDetails} from "models/ccdResponse/ccdDebtDetails";
 import {CCDRecurringIncome} from "models/ccdResponse/ccdRecurringIncome";
+import {CCDRecurringExpenses} from "models/ccdResponse/ccdRecurringExpenses";
 
 export interface CCDResponse extends ClaimUpdate {
   respondent1ClaimResponseTypeForSpec: string;
@@ -42,4 +43,6 @@ export interface CCDResponse extends ClaimUpdate {
   specDefendant1Debts?: CCDDebtDetails;
   respondent1DQRecurringIncome?: CCDRecurringIncome[];
   respondent1DQRecurringIncomeFA?: CCDRecurringIncome[];
+  respondent1DQRecurringExpenses?: CCDRecurringExpenses[];
+  respondent1DQRecurringExpensesFA?: CCDRecurringExpenses[];
 }
