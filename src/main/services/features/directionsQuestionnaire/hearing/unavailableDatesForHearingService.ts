@@ -8,7 +8,7 @@ export const getUnavailableDatesForm = (reqBody: Record<string, []>): Unavailabl
     if (item.type === UnavailableDateType.LONGER_PERIOD) {
       return new UnavailableDatePeriod(UnavailableDateType.LONGER_PERIOD, item.period.start, item.period.end);
     }
-    return new UnavailableDatePeriod(undefined);
+    return new UnavailableDatePeriod();
   });
   return new UnavailableDates(unavailableDates);
 };
