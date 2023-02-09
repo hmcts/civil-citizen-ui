@@ -32,7 +32,7 @@
               items: [
                 {
                   value: chooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT,
-                  checked: true if form.model.option==chooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT else false,
+                  checked: true if form.model.option===chooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT else false,
                   html: '<span class="govuk-body govuk-!-font-weight-bold">' + t('PAGES.CLAIMANT_FORMALISE_REPAYMENT_TYPE.SIGN_A_SETTLEMENT_AGREEMENT.LABEL') + '</span>',
                   hint: {
                     text: t('PAGES.CLAIMANT_FORMALISE_REPAYMENT_TYPE.SIGN_A_SETTLEMENT_AGREEMENT.DESCRIPTION')
@@ -40,7 +40,7 @@
                 },
                 {
                   value: chooseHowProceed.REQUEST_A_CCJ,
-                  checked: true if form.model.option==chooseHowProceed.REQUEST_A_CCJ else false,
+                  checked: true if form.model.option===chooseHowProceed.REQUEST_A_CCJ else false,
                   html: '<span class="govuk-body govuk-!-font-weight-bold">' + t('PAGES.CLAIMANT_FORMALISE_REPAYMENT_TYPE.REQUEST_A_CCJ.LABEL') + '</span>',
                   hint: {
                     text: t('PAGES.CLAIMANT_FORMALISE_REPAYMENT_TYPE.REQUEST_A_CCJ.DESCRIPTION')
