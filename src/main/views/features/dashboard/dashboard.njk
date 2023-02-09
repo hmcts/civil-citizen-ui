@@ -104,7 +104,11 @@
                 </td>
                 <td class="govuk-table__cell">{{ item.claimantName }}</td>
                 <td class="govuk-table__cell">£{{ item.claimAmount }}</td>
-                <td class="govuk-table__cell">{{ t(item.getStatus(), item.responseDeadline | formatDate)}}</td>
+                {% if item.getStatus.parameter %}
+                    <td class="govuk-table__cell">{{ t(item.getStatus().translationKey,{item.getStatus().parameter.name: item.getStatus.value}) }}</td>
+                {% else %}
+                    <td class="govuk-table__cell">{{ t(item.getStatus().translationKey) }}</td>
+              {% endif %}
               </tr>
             {% endfor %}
           </tbody>

@@ -25,10 +25,11 @@ function renderPage(res: Response, claimsAsClaimant: DashboardClaimantItem[], cl
 
 const dashboardController = Router();
 
-dashboardController.get(DASHBOARD_URL, async function (req: AppRequest, res) {
-  const user: UserDetails = req.session.user;
+dashboardController.get(DASHBOARD_URL, async function (req, res) {
+  const appRequest = <AppRequest> req;
+  const user: UserDetails = appRequest.session.user;
   const claimsAsClaimant : DashboardClaimantItem[] = await getClaimsForClaimant(req);
-  const claimsAsDefendant : DashboardDefendantItem[] = await getClaimsForDefendant(<AppRequest>req);
+  const claimsAsDefendant : DashboardDefendantItem[] = await getClaimsForDefendant(req);
   const claimDraftSaved = await getOcmcDraftClaims(user?.accessToken);
   const responseDraftSaved = false;
   const paginationArgumentClaimant: object = {};

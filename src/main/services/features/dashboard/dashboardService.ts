@@ -3,14 +3,12 @@ import {Request} from 'express';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
 import {AppRequest} from 'models/AppRequest';
-import {getLng} from 'common/utils/languageToggleUtils';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 export const getClaimsForDefendant = async (req : Request): Promise<DashboardDefendantItem[]> => {
-  const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const claimsForDefendant : DashboardDefendantItem[] = await civilServiceClient.getClaimsForDefendant(<AppRequest>req);
-  claimsForDefendant.forEach(item => item.setTranslatedStatus(getLng(lang)));
+  const claimsForDefendant = await civilServiceClient.getClaimsForDefendant(<AppRequest>req);
+  console.log(claimsForDefendant);
   return claimsForDefendant;
 };
 
