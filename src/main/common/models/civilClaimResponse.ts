@@ -98,4 +98,16 @@ export interface CCDClaim extends ClaimUpdate {
   respondToClaimAdmitPartLRspec?: CCDPayBySetDate;
   responseClaimMediationSpecRequired?: string;
   specAoSApplicantCorrespondenceAddressRequired?: YesNoUpperCamelCase;
+  claimantUserDetails: IdamUserDetails;
+}
+
+export interface ClaimFeeData {
+  calculatedAmountInPence?: number;
+  code?: string;
+  version?: number;
+}
+
+export interface IdamUserDetails {
+  email: string;
+  id: string;
 }

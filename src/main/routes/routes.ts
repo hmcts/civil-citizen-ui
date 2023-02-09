@@ -189,7 +189,9 @@ import courtProposedPlanController from './features/claimantResponse/courtPropos
 import debtRespiteLiftedController from './features/breathingSpace/debtRespiteLiftedController';
 import claimantResponseConfirmationController from './features/claimantResponse/claimantResponseConfirmationController';
 import assignClaimController from './features/claimAssignment/assignClaimController';
+import judgmentAmountSummaryController from './features/claimantResponse/ccj/judgmentAmountSummaryController';
 import ccjCheckAnswersController from './features/claimantResponse/ccj/ccjCheckAnswersController';
+import claimantResponseTasklistController from './features/claimantResponse/claimantResponseTasklistController';
 
 export default [
   homeController,
@@ -367,4 +369,6 @@ export default [
   claimantResponseConfirmationController,
   assignClaimController,
   ccjCheckAnswersController,
+  judgmentAmountSummaryController,
+  claimantResponseTasklistController,
 ];
