@@ -23,7 +23,7 @@
     } if (errorFor('items['+index+'][from]') or errorFor('items['+index+'][startDay]') or errorFor('items['+index+'][startMonth]') or errorFor('items['+index+'][startYear]')),
     items: [
       {
-        classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items[' +index+ '][startDay]') or errorFor('items[' +index+ '][from]')) else "govuk-input--width-4",
+        classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items['+index+'][startDay]') or errorFor('items['+index+'][from]')) else "govuk-input--width-4",
         id: 'items[' +index+ '][startDay]' if unavailableDate.type === UnavailableDateType.SINGLE_DATE else 'items[' +index+ '][startDay]-single',
         name: 'items[' +index+ '][single][start][day]',
         label: t('COMMON.DAY'),
@@ -76,7 +76,7 @@
     },
     items: [
       {
-        classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items['+index+'][startDay]') or errorFor('items['+index+'][from]')) else "govuk-input--width-4",
+        classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items['+index+'][startDay]') or errorFor('items['+index+'][from]') or (not unavailableDate.from and errorFor('items['+index+'][until]'))) else "govuk-input--width-4",
         id: 'items[' + index + '][startDay]' ,
         name: 'items[' + index + '][period][start][day]',
         label: t('COMMON.DAY'),
@@ -84,7 +84,7 @@
         max: 31
       },
       {
-        classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items['+index+'][startMonth]') or errorFor('items['+index+'][from]')) else "govuk-input--width-4",
+        classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items['+index+'][startMonth]') or errorFor('items['+index+'][from]') or (not unavailableDate.from and errorFor('items['+index+'][until]'))) else "govuk-input--width-4",
         id: 'items[' + index + '][startMonth]',
         name: 'items[' + index + '][period][start][month]',
         label: t('COMMON.MONTH'),
@@ -92,7 +92,7 @@
         max: 12
       },
       {
-        classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items['+index+'][startYear]') or errorFor('items['+index+'][from]')) else "govuk-input--width-4",
+        classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items['+index+'][startYear]') or errorFor('items['+index+'][from]') or (not unavailableDate.from and errorFor('items['+index+'][until]'))) else "govuk-input--width-4",
         id: 'items[' + index + '][startYear]',
         name: 'items[' + index + '][period][start][year]',
         label: t('COMMON.YEAR'),
