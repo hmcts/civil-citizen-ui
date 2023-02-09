@@ -3,7 +3,7 @@ import {UnavailableDatePeriod, UnavailableDates, UnavailableDateType} from 'comm
 export const getUnavailableDatesForm = (reqBody: Record<string, []>): UnavailableDates => {
   const unavailableDates = reqBody.items.map((item: any) => {
     if (item.type === UnavailableDateType.SINGLE_DATE) {
-      return new UnavailableDatePeriod(UnavailableDateType.SINGLE_DATE, item.single.start, undefined);
+      return new UnavailableDatePeriod(UnavailableDateType.SINGLE_DATE, item.single.start);
     }
     if (item.type === UnavailableDateType.LONGER_PERIOD) {
       return new UnavailableDatePeriod(UnavailableDateType.LONGER_PERIOD, item.period.start, item.period.end);
