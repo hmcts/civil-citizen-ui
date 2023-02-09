@@ -1,14 +1,16 @@
 import config from 'config';
-import {formatDateToFullDate} from 'common/utils/dateUtils';
+
+import {formatDate} from 'modules/nunjucks/filters/dateFilter';
 
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
+export interface DashboardStatusTranslationParam {
+  key: string;
+  value: string;
+}
 export interface StatusTranslation {
   translationKey: string;
-  parameter?: {
-    name?: string;
-    value?: string;
-  };
+  parameter?: DashboardStatusTranslationParam;
 }
 
 type DashboardDefendantStatus = {
@@ -43,7 +45,8 @@ export class DashboardDefendantItem extends DashboardItem {
   status: string;
   translatedStatus: string;
   numberOfDays?: string;
-  paymentDate? : Date;
+  numberOfDaysOverdue?: string;
+  paymentDate?: Date;
 
   constructor() {
     super();
@@ -51,15 +54,18 @@ export class DashboardDefendantItem extends DashboardItem {
   }
 
   getStatus() {
+    console.log(this.numberOfDays);
 
-    const paramNumberOfDays = {name: 'numberOfDays', value: this.numberOfDays};
-    const paramPaymentDate = {name: 'paymentDate', value: formatDateToFullDate(this.paymentDate)};
-    const paramClaimantName = {name: 'claimantName', value: this.claimantName};
-    const paramResponseDeadline = {name: 'responseDeadline', value: formatDateToFullDate(this.responseDeadline)};
+    const paramNumberOfDays = {key: 'numberOfDays', value: this.numberOfDays};
+    const paramNumberOfDaysOverdue = {key: 'numberOfDays', value: this.numberOfDaysOverdue};
+    const paramPaymentDate = {key: 'paymentDate', value: formatDate(this.paymentDate?.toString())};
+    const paramClaimantName = {key: 'claimantName', value: this.claimantName};
+    const paramResponseDeadline = {key: 'responseDeadline', value: formatDate(this.responseDeadline?.toString())};
+    console.log(paramResponseDeadline);
     const dashboardStatus: DashboardDefendantStatus =  {
       NO_STATUS: {translationKey:''},
       NO_RESPONSE: {translationKey:'PAGES.DASHBOARD.STATUS.NO_RESPONSE_ON_TIME', parameter: paramNumberOfDays},
-      RESPONSE_OVERDUE: {translationKey: 'PAGES.DASHBOARD.STATUS.NO_RESPONSE_OVERDUE', parameter: paramNumberOfDays},
+      RESPONSE_OVERDUE: {translationKey: 'PAGES.DASHBOARD.STATUS.NO_RESPONSE_OVERDUE', parameter: paramNumberOfDaysOverdue},
       RESPONSE_DUE_NOW: {translationKey: 'PAGES.DASHBOARD.STATUS.NO_RESPONSE_DUE_TODAY'},
       ADMIT_PAY_IMMEDIATELY: {translationKey:'PAGES.DASHBOARD.STATUS.ADMIT_PAY_IMMEDIATELY'},
       ADMIT_PAY_BY_SET_DATE: {translationKey:'PAGES.DASHBOARD.STATUS.ADMIT_PAY_BY_SET_DATE', parameter: paramPaymentDate},
