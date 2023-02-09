@@ -9,7 +9,7 @@ import {
   CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL,
   CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAYMENT_URL,
   CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL,
-  CLAIMANT_SIGN_SETTLEMENT_AGREEMENT
+  CLAIMANT_SIGN_SETTLEMENT_AGREEMENT,
 } from 'routes/urls';
 import {Task} from 'models/taskList/task';
 import {YesNo} from 'common/form/models/yesNo';
@@ -19,7 +19,7 @@ export function getAcceptOrRejectDefendantAdmittedTask(claim: Claim, claimId: st
   const accceptOrRejectDefendantAdmittedTask = {
     description: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_ADMITTED', {
       lng: lang,
-      admittedAmount: claim.partialAdmission?.howMuchDoYouOwe?.amount
+      admittedAmount: claim.partialAdmission?.howMuchDoYouOwe?.amount,
     }),
     url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL),
     status: TaskStatus.INCOMPLETE,

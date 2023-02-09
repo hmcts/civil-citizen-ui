@@ -1,10 +1,10 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL, CLAIMANT_RESPONSE_TASK_LIST_URL,} from 'routes/urls';
+import {CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL, CLAIMANT_RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {getClaimantResponse, saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
-import {ChooseHowToProceed} from "form/models/claimantResponse/chooseHowToProceed";
+import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
 
 const chooseHowToProceedViewPath = 'features/claimantResponse/choose-how-to-proceed';
 const chooseHowToProceedController = Router();

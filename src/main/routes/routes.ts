@@ -179,7 +179,7 @@ import defendantPaymentDateController from './features/claimantResponse/ccj/defe
 import ccjConfirmationController from './features/claimantResponse/ccj/ccjConfirmationController';
 import settleAdmittedController from './features/claimantResponse/settleAdmittedController';
 import bilingualLangPreferenceController from './features/response/bilingualLangPreferenceController';
-import chooseHowToProceedController from './features/claimantResponse/chooseHowToProceedcController';
+import chooseHowToProceedController from './features/claimantResponse/chooseHowToProceedController';
 import repaymentPlanInstalmentsController from './features/claimantResponse/ccj/repaymentPlanInstalmentsController';
 import courtProposedDateController from './features/claimantResponse/courtProposedDateController';
 import signSettlementAgreementController from './features/claimantResponse/signSettlmentAgreementController';

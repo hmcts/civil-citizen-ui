@@ -26,7 +26,7 @@ import {
   CaseState,
   InterestClaimFromType,
   InterestEndDateType,
-  SameRateInterestType
+  SameRateInterestType,
 } from '../../common/form/models/claimDetails';
 import * as urls from '../../routes/urls';
 import {InterestClaimOptionsType} from '../../common/form/models/claim/interest/interestClaimOptionsType';

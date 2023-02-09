@@ -13,10 +13,10 @@ import {Hearing} from 'common/models/directionsQuestionnaire/hearing/hearing';
 import {DirectionQuestionnaire} from 'common/models/directionsQuestionnaire/directionQuestionnaire';
 import {Witnesses} from 'common/models/directionsQuestionnaire/witnesses/witnesses';
 import {
-  VulnerabilityQuestions
+  VulnerabilityQuestions,
 } from 'common/models/directionsQuestionnaire/vulnerabilityQuestions/vulnerabilityQuestions';
 import {
-  WelshLanguageRequirements
+  WelshLanguageRequirements,
 } from 'common/models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
 import {LanguageOptions} from 'common/models/directionsQuestionnaire/languageOptions';
 import {mockExpertDetailsList} from '../directionsQuestionnaire/experts/expertDetailsService.test';
@@ -24,12 +24,12 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
   CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL,
-  DETERMINATION_WITHOUT_HEARING_URL
+  DETERMINATION_WITHOUT_HEARING_URL,
 } from 'routes/urls';
 import {ResponseType} from 'common/form/models/responseType';
 import {ChooseHowProceed} from 'common/models/chooseHowProceed';
-import {PaymentOptionType} from "form/models/admission/paymentOption/paymentOptionType";
-import {CourtProposedDateOptions} from "form/models/claimantResponse/courtProposedDate";
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -106,7 +106,7 @@ describe('Claimant Response Task List builder', () => {
       //Given
       claim.claimantResponse = {
         hasPartAdmittedBeenAccepted: {option: YesNo.YES},
-        fullAdmitSetDateAcceptPayment: {option: YesNo.YES}
+        fullAdmitSetDateAcceptPayment: {option: YesNo.YES},
       };
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
@@ -122,7 +122,7 @@ describe('Claimant Response Task List builder', () => {
       //Given
       claim.claimantResponse = {
         hasPartAdmittedBeenAccepted: {option: YesNo.YES},
-        fullAdmitSetDateAcceptPayment: {option: YesNo.NO}
+        fullAdmitSetDateAcceptPayment: {option: YesNo.NO},
       };
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
@@ -143,7 +143,7 @@ describe('Claimant Response Task List builder', () => {
         courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},
       };
       claim.partialAdmission = {
-        paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY}
+        paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY},
       };
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
@@ -165,7 +165,7 @@ describe('Claimant Response Task List builder', () => {
         courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},
       };
       claim.partialAdmission = {
-        paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY}
+        paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY},
       };
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
@@ -188,7 +188,7 @@ describe('Claimant Response Task List builder', () => {
         courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},
       };
       claim.partialAdmission = {
-        paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY}
+        paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY},
       };
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
@@ -203,17 +203,16 @@ describe('Claimant Response Task List builder', () => {
       expect(whatToDoNext.tasks[3].status).toEqual(TaskStatus.INCOMPLETE);
     });
 
-
     it('should display Request a County Court Judgment task as incomplete', () => {
       //Given
       claim.claimantResponse = {
         hasPartAdmittedBeenAccepted: {option: YesNo.YES},
         fullAdmitSetDateAcceptPayment: {option: YesNo.NO},
         chooseHowToProceed: {option: ChooseHowProceed.REQUEST_A_CCJ},
-        courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE}
+        courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},
       };
       claim.partialAdmission = {
-        paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY}
+        paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY},
       };
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
@@ -236,10 +235,10 @@ describe('Claimant Response Task List builder', () => {
         fullAdmitSetDateAcceptPayment: {option: YesNo.NO},
         chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT},
         signSettlementAgreement: {signed: YesNo.YES},
-        courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE}
+        courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},
       };
       claim.partialAdmission = {
-        paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY}
+        paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY},
       };
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
@@ -261,10 +260,10 @@ describe('Claimant Response Task List builder', () => {
         fullAdmitSetDateAcceptPayment: {option: YesNo.NO},
         chooseHowToProceed: {option: ChooseHowProceed.REQUEST_A_CCJ},
         courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},
-        ccjRequest: {paidAmount: {option: YesNo.YES}}
+        ccjRequest: {paidAmount: {option: YesNo.YES}},
       };
       claim.partialAdmission = {
-        paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY}
+        paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY},
       };
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
@@ -372,7 +371,7 @@ describe('Claimant Response Task List builder', () => {
       claim.claimantResponse.directionQuestionnaire.hearing.specificCourtLocation = {option: YesNo.NO};
       claim.claimantResponse.directionQuestionnaire.welshLanguageRequirements.language = {
         speakLanguage: LanguageOptions.WELSH,
-        documentsLanguage: LanguageOptions.ENGLISH
+        documentsLanguage: LanguageOptions.ENGLISH,
       };
       claim.claimantResponse.directionQuestionnaire.experts = new Experts();
       claim.claimantResponse.directionQuestionnaire.experts.expertRequired = false;
