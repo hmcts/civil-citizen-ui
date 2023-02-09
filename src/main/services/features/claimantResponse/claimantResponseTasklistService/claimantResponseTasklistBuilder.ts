@@ -17,7 +17,7 @@ import {YesNo} from 'common/form/models/yesNo';
 import {ChooseHowProceed} from 'common/models/chooseHowProceed';
 
 
-export function buildHowDefendantRespondSection(claim: Claim, claimId: string, lang: string) {
+export function buildHowDefendantRespondSection(claim: Claim, claimId: string, lang: string){
   const tasks: Task[] = [];
   const viewDefendantsReponseTask = getViewDefendantsReponseTask(claim, claimId, lang);
   tasks.push(viewDefendantsReponseTask);

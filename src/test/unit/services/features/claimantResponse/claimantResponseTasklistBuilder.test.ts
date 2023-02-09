@@ -12,12 +12,8 @@ import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
 import {Hearing} from 'common/models/directionsQuestionnaire/hearing/hearing';
 import {DirectionQuestionnaire} from 'common/models/directionsQuestionnaire/directionQuestionnaire';
 import {Witnesses} from 'common/models/directionsQuestionnaire/witnesses/witnesses';
-import {
-  VulnerabilityQuestions
-} from 'common/models/directionsQuestionnaire/vulnerabilityQuestions/vulnerabilityQuestions';
-import {
-  WelshLanguageRequirements
-} from 'common/models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
+import {VulnerabilityQuestions} from 'common/models/directionsQuestionnaire/vulnerabilityQuestions/vulnerabilityQuestions';
+import {WelshLanguageRequirements} from 'common/models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
 import {LanguageOptions} from 'common/models/directionsQuestionnaire/languageOptions';
 import {mockExpertDetailsList} from '../directionsQuestionnaire/experts/expertDetailsService.test';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -30,6 +26,8 @@ import {ResponseType} from 'common/form/models/responseType';
 import {ChooseHowProceed} from 'common/models/chooseHowProceed';
 import {PaymentOptionType} from "form/models/admission/paymentOption/paymentOptionType";
 import {CourtProposedDateOptions} from "form/models/claimantResponse/courtProposedDate";
+import {ResponseType} from 'common/form/models/responseType';
+import { Party } from 'common/models/party';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -80,8 +78,8 @@ describe('Claimant Response Task List builder', () => {
     });
     it('should display Free telephone mediation task as incomplete', () => {
       //Given
-      claim.respondent1 = {responseType: ResponseType.PART_ADMISSION};
-      claim.claimantResponse = {hasPartAdmittedBeenAccepted: {option: YesNo.NO}};
+      claim.respondent1 = { responseType: ResponseType.PART_ADMISSION };
+      claim.claimantResponse = { hasPartAdmittedBeenAccepted: { option: YesNo.NO } };
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
       //Then
@@ -301,7 +299,6 @@ describe('Claimant Response Task List builder', () => {
     it('should display give us details for hearing task as incomplete when claimant rejected settlement for defendent`s partial admission amount', () => {
       //Given
       claim.claimantResponse.hasPartAdmittedBeenAccepted = {option: YesNo.NO};
-      claim.totalClaimAmount = 5000;
       //When
       const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
       //Then
