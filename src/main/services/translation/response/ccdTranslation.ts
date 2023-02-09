@@ -17,6 +17,7 @@ import {toCCDCourtOrders} from "services/translation/response/convertToCCDCourtO
 import {toCCDLoanCredit} from "services/translation/response/convertToCCDLoanCredit";
 import {toCCDCarerAllowanceCredit} from "services/translation/response/convertToCCDCarerAllowanceCredit";
 import {ResponseType} from "form/models/responseType";
+import {toCCDDebtDetails} from "services/translation/response/convertToCCDDebtDetails";
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   return {
@@ -43,6 +44,6 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     responseToClaimAdmitPartWhyNotPayLRspec: claim.statementOfMeans?.explanation?.text,
     respondent1DQCarerAllowanceCredit: toCCDCarerAllowanceCredit(claim, ResponseType.PART_ADMISSION),
     respondent1DQCarerAllowanceCreditFullAdmission: toCCDCarerAllowanceCredit(claim, ResponseType.FULL_ADMISSION),
-
+    specDefendant1Debts: toCCDDebtDetails(claim.statementOfMeans?.priorityDebts)
   };
 };
