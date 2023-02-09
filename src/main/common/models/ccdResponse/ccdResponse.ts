@@ -13,6 +13,7 @@ import {CCDSelfEmploymentDetails} from "models/ccdResponse/ccdSelfEmploymentDeta
 import {CCDCourtOrders} from "models/ccdResponse/ccdCourtOrders";
 import {CCDLoanCredit} from "models/ccdResponse/ccdLoanCredit";
 import {CCDDebtDetails} from "models/ccdResponse/ccdDebtDetails";
+import {CCDRecurringIncome} from "models/ccdResponse/ccdRecurringIncome";
 
 export interface CCDResponse extends ClaimUpdate {
   respondent1ClaimResponseTypeForSpec: string;
@@ -39,4 +40,6 @@ export interface CCDResponse extends ClaimUpdate {
   respondent1DQCarerAllowanceCredit?: YesNoUpperCamelCase;
   respondent1DQCarerAllowanceCreditFullAdmission?: YesNoUpperCamelCase;
   specDefendant1Debts?: CCDDebtDetails;
+  respondent1DQRecurringIncome?: CCDRecurringIncome[];
+  respondent1DQRecurringIncomeFA?: CCDRecurringIncome[];
 }

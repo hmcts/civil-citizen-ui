@@ -5,8 +5,8 @@ import {
   CCDDebtType,
   CCDPaymentFrequency
 } from "models/ccdResponse/ccdDebtDetails";
-import {Transaction} from "form/models/statementOfMeans/expensesAndIncome/transaction";
 import {TransactionSchedule} from "form/models/statementOfMeans/expensesAndIncome/transactionSchedule";
+import {TransactionSource} from "form/models/statementOfMeans/expensesAndIncome/transactionSource";
 
 export const toCCDDebtDetails = (priorityDebts: PriorityDebts): CCDDebtDetails => {
   if (!priorityDebts?.mortgage &&
@@ -20,25 +20,25 @@ export const toCCDDebtDetails = (priorityDebts: PriorityDebts): CCDDebtDetails =
 
   const ccdDebtDetailsList: CCDDebtDetailsList[] = [];
   if (priorityDebts?.mortgage?.declared) {
-    ccdDebtDetailsList.push(toCCDDebtDetailsItem(priorityDebts?.mortgage, CCDDebtType.MORTGAGE));
+    ccdDebtDetailsList.push(toCCDDebtDetailsItem(priorityDebts?.mortgage?.transactionSource, CCDDebtType.MORTGAGE));
   }
   if (priorityDebts?.rent?.declared) {
-    ccdDebtDetailsList.push(toCCDDebtDetailsItem(priorityDebts?.rent, CCDDebtType.RENT));
+    ccdDebtDetailsList.push(toCCDDebtDetailsItem(priorityDebts?.rent?.transactionSource, CCDDebtType.RENT));
   }
   if (priorityDebts?.councilTax?.declared) {
-    ccdDebtDetailsList.push(toCCDDebtDetailsItem(priorityDebts?.councilTax, CCDDebtType.COUNCIL_TAX));
+    ccdDebtDetailsList.push(toCCDDebtDetailsItem(priorityDebts?.councilTax?.transactionSource, CCDDebtType.COUNCIL_TAX));
   }
   if (priorityDebts?.gas?.declared) {
-    ccdDebtDetailsList.push(toCCDDebtDetailsItem(priorityDebts?.gas, CCDDebtType.GAS));
+    ccdDebtDetailsList.push(toCCDDebtDetailsItem(priorityDebts?.gas?.transactionSource, CCDDebtType.GAS));
   }
   if (priorityDebts?.electricity?.declared) {
-    ccdDebtDetailsList.push(toCCDDebtDetailsItem(priorityDebts?.electricity, CCDDebtType.ELECTRICITY));
+    ccdDebtDetailsList.push(toCCDDebtDetailsItem(priorityDebts?.electricity?.transactionSource, CCDDebtType.ELECTRICITY));
   }
   if (priorityDebts?.water?.declared) {
-    ccdDebtDetailsList.push(toCCDDebtDetailsItem(priorityDebts?.water, CCDDebtType.WATER));
+    ccdDebtDetailsList.push(toCCDDebtDetailsItem(priorityDebts?.water?.transactionSource, CCDDebtType.WATER));
   }
   if (priorityDebts?.maintenance?.declared) {
-    ccdDebtDetailsList.push(toCCDDebtDetailsItem(priorityDebts?.maintenance, CCDDebtType.MAINTENANCE_PAYMENTS));
+    ccdDebtDetailsList.push(toCCDDebtDetailsItem(priorityDebts?.maintenance?.transactionSource, CCDDebtType.MAINTENANCE_PAYMENTS));
   }
 
   return {
@@ -46,12 +46,12 @@ export const toCCDDebtDetails = (priorityDebts: PriorityDebts): CCDDebtDetails =
   };
 }
 
-const toCCDDebtDetailsItem = (transaction: Transaction, debtType: CCDDebtType): CCDDebtDetailsList => {
+const toCCDDebtDetailsItem = (transactionSource: TransactionSource, debtType: CCDDebtType): CCDDebtDetailsList => {
   const ccdDebtDetails: CCDDebtDetailsList = {
     value: {
       debtType: debtType,
-      paymentAmount: transaction?.transactionSource?.amount,
-      paymentFrequency: toCCDPaymentFrequency(transaction?.transactionSource.schedule),
+      paymentAmount: transactionSource?.amount,
+      paymentFrequency: toCCDPaymentFrequency(transactionSource?.schedule),
     }
   };
   return ccdDebtDetails;
