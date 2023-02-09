@@ -6,16 +6,34 @@ import {toCCDParty} from './convertToCCDParty';
 import {toCCDRepaymentPlan} from './convertToCCDRepaymentPlan';
 import {toCCDPaymentOption} from './convertToCCDPaymentOption';
 import {toCCDPayBySetDate} from './convertToCCDPayBySetDate';
+import {ResponseType} from 'form/models/responseType';
+import {PaymentIntention} from "form/models/admission/paymentIntention";
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
+  const paymentIntention = getPaymentIntetntion(claim);
   return {
     respondent1ClaimResponseTypeForSpec: claim.respondent1?.responseType,
-    defenceAdmitPartPaymentTimeRouteRequired: toCCDPaymentOption(claim.partialAdmission.paymentIntention.paymentOption),
-    respondent1RepaymentPlan: toCCDRepaymentPlan(claim.partialAdmission?.paymentIntention?.repaymentPlan),
-    respondToClaimAdmitPartLRspec: toCCDPayBySetDate(claim.partialAdmission.paymentIntention.paymentDate),
+    defenceAdmitPartPaymentTimeRouteRequired: toCCDPaymentOption(paymentIntention?.paymentOption),
+    respondent1RepaymentPlan: toCCDRepaymentPlan(paymentIntention?.repaymentPlan),
+    respondToClaimAdmitPartLRspec: toCCDPayBySetDate(paymentIntention?.paymentDate),
     responseClaimMediationSpecRequired: toAgreedMediation(claim.mediation),
     specAoSApplicantCorrespondenceAddressRequired: addressHasChange ? YesNoUpperCamelCase.NO : YesNoUpperCamelCase.YES,
     totalClaimAmount: claim.totalClaimAmount,
     respondent1: toCCDParty(claim.respondent1, undefined),
   };
 };
+
+const getPaymentIntetntion(claim: Claim): PaymentIntention => {
+  let paymentIntention;
+  switch(claim.respondent1?.responseType) {
+    case ResponseType.PART_ADMISSION:
+      paymentIntention = claim.partialAdmission?.paymentIntention;
+      break;
+    case ResponseType.FULL_ADMISSION:
+      paymentIntention = claim.fullAdmission?.paymentIntention;
+      break;
+    default:
+      paymentIntention = undefined;
+  }
+  return paymentIntention;
+}

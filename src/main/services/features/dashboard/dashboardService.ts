@@ -15,7 +15,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 export const getClaimsForDefendant = async (req : Request): Promise<DashboardDefendantItem[]> => {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const claimsForDefendant = await civilServiceClient.getClaimsForDefendant(<AppRequest>req);
-  claimsForDefendant?.forEach(item => item.translatedStatus = translate(item.getStatus().translationKey,item.getStatus().parameter, lang));
+  claimsForDefendant?.forEach(item => item.translatedStatus = translate(item.getStatus().translationKey, item.getStatus().parameter, lang));
   console.log(claimsForDefendant);
   return claimsForDefendant;
 };
