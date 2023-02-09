@@ -1,22 +1,39 @@
 variable "product" {
-  default = "civil"
+  type        = string
+  default     = "civil"
+  description = "The Project Product"
 }
 variable "component" {
-  default = "citizen-ui"
+  type        = string
+  default     = "citizen-ui"
+  description = "The Resource"
 }
 
 variable "location" {
+  type    = string
   default = "UK South"
 }
 
-variable "env" {}
+variable "env" {
+  type        = string
+  description = "Current Environment"
+}
+variable "tenant_id" {
+  type        = string
+  description = "Target Tenant ID"
+}
 
-variable "subscription" {}
+variable "subscription" {
+  description = "Target Subscription ID"
+  type        = string
+}
 
 variable "jenkins_AAD_objectId" {
+  type        = string
   description = "(Required) The Azure AD object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. The object ID must be unique for the list of access policies."
 }
 
 variable "common_tags" {
-  type = map(string)
+  type        = map(string)
+  description = "Default Common HMCTs Tags"
 }

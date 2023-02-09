@@ -3,7 +3,6 @@ data "azurerm_key_vault" "civil_vault" {
   resource_group_name = "civil-service-${var.env}"
 }
 
-
 resource "azurerm_key_vault_secret" "draft_store_access_key" {
   name         = "draft-store-access-key"
   value        = module.citizen-ui-draft-store.access_key
@@ -11,3 +10,8 @@ resource "azurerm_key_vault_secret" "draft_store_access_key" {
 }
 
 
+resource "azurerm_resource_group" "rg" {
+  name     = "${var.product}-${var.component}-${var.env}"
+  location = var.location
+  tags     = var.common_tags
+}
