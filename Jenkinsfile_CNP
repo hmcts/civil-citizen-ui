@@ -6,6 +6,8 @@ import uk.gov.hmcts.contino.GithubAPI
 
 def type = "nodejs"
 def product = "civil"
+def ccddefbranch = "feat/CIV-6536-CCJ-Notification"
+def camundaBranch = "feat/CIV-6536-CCJ-Notifications"
 def component = "citizen-ui"
 AppPipelineConfig pipelineConf
 
@@ -102,8 +104,8 @@ withPipeline(type, product, component) {
           eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
           ./bin/add-roles.sh
           ./bin/pull-latest-release-asset.sh civil-ccd-definition civil-ccd-definition.zip
-          ./bin/pull-latest-release-asset.sh civil-camunda-bpmn-definition civil-camunda-bpmn-definition.zip
-          ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json,*ClaimantResponseLRspec-nonprod.json,*DocmosisEvents-nonprod.json,*UserEventsLRspec-nonprod.json"
+          ./bin/pull-latest-camunda-files.sh ${camundaBranch}
+          ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json,*ClaimantResponseLRspec-nonprod.json,*DocmosisEvents-nonprod.json,*UserEventsLRspec-nonprod.json" ${ccddefbranch}
           ./bin/import-bpmn-diagram.sh .
         """
     setUrls("civil-citizen-ui-pr-${CHANGE_ID}")
