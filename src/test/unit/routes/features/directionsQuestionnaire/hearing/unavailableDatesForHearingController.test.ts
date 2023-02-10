@@ -2,8 +2,15 @@ import nock from 'nock';
 import config from 'config';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
-import {mockCivilClaimWithExpertAndWitness, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {DQ_AVAILABILITY_DATES_FOR_HEARING_URL, DQ_PHONE_OR_VIDEO_HEARING_URL} from 'routes/urls';
+import {
+  mockCivilClaimWithExpertAndWitness,
+  mockRedisFailure,
+} from '../../../../../utils/mockDraftStore';
+import {
+  DQ_AVAILABILITY_DATES_FOR_HEARING_URL,
+  DQ_PHONE_OR_VIDEO_HEARING_URL,
+  DQ_UNAVAILABLE_FOR_HEARING_URL,
+} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {UnavailableDateType} from 'common/models/directionsQuestionnaire/hearing/unavailableDates';
 
@@ -17,7 +24,7 @@ describe('Unavailable dates for hearing Controller', () => {
   beforeAll(() => {
     nock(idamServiceUrl)
       .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+      .reply(200, { id_token: citizenRoleToken });
   });
 
   describe('on GET', () => {
@@ -50,7 +57,8 @@ describe('Unavailable dates for hearing Controller', () => {
       await request(app)
         .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
         .send({
-          items: [ {single: {}} ]})
+          items: [{ single: {} }],
+        })
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.SELECT_SINGLE_DATE_OR_PERIOD);
@@ -478,7 +486,7 @@ describe('Unavailable dates for hearing Controller', () => {
         });
     });
 
-    it('should redirect next page if all information provided', async () => {
+    it('should redirect phone or video hearing page if all information provided and unavailable dates are less than 30 days', async () => {
       await request(app)
         .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
         .send({
@@ -496,6 +504,32 @@ describe('Unavailable dates for hearing Controller', () => {
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.get('location')).toBe(DQ_PHONE_OR_VIDEO_HEARING_URL);
+        });
+    });
+
+    it('should redirect why unavailable for hearing if unavailable days are more than 30', async () => {
+      await request(app)
+        .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
+        .send({
+          items: [{
+            type: UnavailableDateType.LONGER_PERIOD,
+            period: {
+              start: {
+                day: today.getDate(),
+                month: today.getMonth() + 1,
+                year: today.getFullYear(),
+              },
+              end: {
+                day: today.getDate(),
+                month: today.getMonth() + 3,
+                year: today.getFullYear(),
+              },
+            },
+          }],
+        })
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.get('location')).toBe(DQ_UNAVAILABLE_FOR_HEARING_URL);
         });
     });
 

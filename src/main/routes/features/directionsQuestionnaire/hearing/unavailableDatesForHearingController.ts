@@ -5,11 +5,14 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   DQ_AVAILABILITY_DATES_FOR_HEARING_URL,
   DQ_PHONE_OR_VIDEO_HEARING_URL,
+  DQ_UNAVAILABLE_FOR_HEARING_URL,
 } from 'routes/urls';
 import {getDirectionQuestionnaire, saveDirectionQuestionnaire} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {UnavailableDates} from 'common/models/directionsQuestionnaire/hearing/unavailableDates';
 import {getUnavailableDatesForm} from 'services/features/directionsQuestionnaire/hearing/unavailableDatesForHearingService';
+import {getNumberOfUnavailableDays} from 'services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation';
 
+const UNAVAILABLE_DAYS_LIMIT = 30;
 const unavailableDatesForHearingController = Router();
 const unavailableDatesForHearingViewPath = 'features/directionsQuestionnaire/hearing/unavailable-dates-for-hearing';
 const dqPropertyName = 'unavailableDatesForHearing';
@@ -40,8 +43,12 @@ unavailableDatesForHearingController.post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL,
       renderView(form, res);
     } else {
       await saveDirectionQuestionnaire(claimId, form.model, dqPropertyName, dqParentName);
-      // TODO : update redirection : if more than 30 days goto why anaavailable else phone or video hearing
-      res.redirect(constructResponseUrlWithIdParams(claimId, DQ_PHONE_OR_VIDEO_HEARING_URL));
+      const numberOfUnavailableDays = getNumberOfUnavailableDays(form.model);
+      if(numberOfUnavailableDays <= UNAVAILABLE_DAYS_LIMIT) {
+        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_PHONE_OR_VIDEO_HEARING_URL));
+      } else if (numberOfUnavailableDays > UNAVAILABLE_DAYS_LIMIT) {
+        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_UNAVAILABLE_FOR_HEARING_URL));
+      }
     }
   } catch (error) {
     next(error);
