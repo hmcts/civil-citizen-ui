@@ -1,6 +1,6 @@
-import {Claim} from '../../../common/models/claim';
-import {CCDResponse} from '../../../common/models/ccdResponse/ccdResponse';
-import {YesNoUpperCamelCase} from '../../../common/form/models/yesNo';
+import {Claim} from 'models/claim';
+import {CCDResponse} from 'models/ccdResponse/ccdResponse';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {toAgreedMediation} from './convertToCCDAgreedMediation';
 import {toCCDParty} from './convertToCCDParty';
 import {toCCDRepaymentPlan} from './convertToCCDRepaymentPlan';
@@ -18,7 +18,7 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     responseClaimMediationSpecRequired: toAgreedMediation(claim.mediation),
     specAoSApplicantCorrespondenceAddressRequired: addressHasChange ? YesNoUpperCamelCase.NO : YesNoUpperCamelCase.YES,
     totalClaimAmount: claim.totalClaimAmount,
-    respondent1: toCCDParty(claim.respondent1, undefined),
+    respondent1: toCCDParty(claim.respondent1),
   };
 };
 
