@@ -51,6 +51,7 @@ import {Debts} from '../../common/form/models/statementOfMeans/debts/debts';
 import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreference';
 import {toCUIEvidence} from 'services/translation/convertToCUI/convertToCUIEvidence';
 import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIClaimDetails';
+import {PaymentIntention} from "form/models/admission/paymentIntention";
 export class Claim {
   legacyCaseReference: string;
   applicant1?: Party;
@@ -435,6 +436,17 @@ export class Claim {
   getHowTheInterestCalculatedReason(): string {
     return this.interest?.totalInterest?.reason;
   }
+
+  getPaymentIntention() : PaymentIntention {
+    let paymentIntention;
+    if(this.isPartialAdmission()) {
+      paymentIntention = this.partialAdmission?.paymentIntention;
+    }else {
+      paymentIntention = this.fullAdmission?.paymentIntention;
+    }
+    return paymentIntention;
+
+}
 
   private getName(party: Party): string {
     if (party?.type == PartyType.INDIVIDUAL || party?.type == PartyType.SOLE_TRADER) {

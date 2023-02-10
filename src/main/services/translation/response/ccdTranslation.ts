@@ -6,10 +6,9 @@ import {toCCDParty} from './convertToCCDParty';
 import {toCCDRepaymentPlan} from './convertToCCDRepaymentPlan';
 import {toCCDPaymentOption} from './convertToCCDPaymentOption';
 import {toCCDPayBySetDate} from './convertToCCDPayBySetDate';
-import {PaymentIntention} from 'form/models/admission/paymentIntention';
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
-  const paymentIntention = getPaymentIntetntion(claim);
+  const paymentIntention = claim.getPaymentIntention();
   return {
     respondent1ClaimResponseTypeForSpec: claim.respondent1?.responseType,
     defenceAdmitPartPaymentTimeRouteRequired: toCCDPaymentOption(paymentIntention?.paymentOption),
@@ -20,14 +19,4 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     totalClaimAmount: claim.totalClaimAmount,
     respondent1: toCCDParty(claim.respondent1),
   };
-};
-
-const getPaymentIntetntion = (claim: Claim): PaymentIntention => {
-  let paymentIntention;
-  if(claim.isPartialAdmission()) {
-    paymentIntention = claim.partialAdmission?.paymentIntention;
-  }else {
-    paymentIntention = claim.fullAdmission?.paymentIntention;
-  }
-  return paymentIntention;
 };
