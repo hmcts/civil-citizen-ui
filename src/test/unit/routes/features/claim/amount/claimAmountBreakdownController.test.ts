@@ -15,7 +15,7 @@ jest.mock('../../../../../../main/services/features/claim/amount/claimAmountBrea
 
 const mockServiceGet = claimAmountbreakdownService.getClaimAmountBreakdownForm as jest.Mock;
 
-describe('claimAmountBreakdownController test', () => {
+describe('claimAmountBreakdownController test', ()=>{
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 

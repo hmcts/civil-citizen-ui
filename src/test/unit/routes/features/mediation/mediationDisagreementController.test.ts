@@ -16,10 +16,10 @@ import {CaseState} from '../../../../../main/common/form/models/claimDetails';
 import {ClaimantResponse} from '../../../../../main/common/models/claimantResponse';
 import {Mediation} from '../../../../../main/common/models/mediation/mediation';
 
-const applicantTypeMock = require('./applicantTypeMock.json');
-
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+
+const applicantTypeMock = require('./applicantTypeMock.json');
 
 describe('Mediation Disagreement', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
