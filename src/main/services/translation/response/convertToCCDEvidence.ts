@@ -1,22 +1,26 @@
-import {EvidenceItem} from '../../../common/models/evidence/evidenceItem';
-import {EvidenceType} from '../../../common/models/evidence/evidenceType';
-import {CCDEvidence, CCDEvidenceType} from '../../../common/models/ccdResponse/ccdEvidence';
-import {Evidence} from '../../../common/form/models/evidence/evidence';
+import {EvidenceItem} from 'models/evidence/evidenceItem';
+import {EvidenceType} from 'models/evidence/evidenceType';
+import {CCDEvidence, CCDEvidenceType} from 'models/ccdResponse/ccdEvidence';
+import {Evidence} from 'form/models/evidence/evidence';
 
 export const toCCDEvidence = (evidence: Evidence): CCDEvidence[] => {
   if (!evidence?.evidenceItem) return undefined;
   const ccdEvidences: CCDEvidence[] = [];
   evidence.evidenceItem.forEach((row, index) => {
-    const ccdEvidence: CCDEvidence = {
-      id: index.toString(),
-      value: {
-        evidenceType: convertToCCDEvidenceType(row.type),
-        ...calculateCCDEvidenceValue(row),
-      },
-    };
+    const ccdEvidence: CCDEvidence = createCCDEvidence(row, index);
     ccdEvidences.push(ccdEvidence);
   });
   return ccdEvidences;
+};
+
+const createCCDEvidence = (evidenceItem: EvidenceItem, index: number) : CCDEvidence => {
+  return {
+    id: index.toString(),
+    value: {
+      evidenceType: convertToCCDEvidenceType(evidenceItem.type),
+      ...calculateCCDEvidenceValue(evidenceItem),
+    },
+  };
 };
 
 const calculateCCDEvidenceValue = (row: EvidenceItem) => {
