@@ -55,7 +55,7 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
       ? new QualifiedStatementOfTruth(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole)
       : new StatementOfTruthForm(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned));
     const claim = await getCaseDataFromStore(userId);
-    await form.validate();
+    // await form.validate();
     if (form.hasErrors()) {
       renderView(res, form, claim, userId, lang);
     } else {
