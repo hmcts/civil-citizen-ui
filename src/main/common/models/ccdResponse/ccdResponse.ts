@@ -15,6 +15,7 @@ import {CCDLoanCredit} from "models/ccdResponse/ccdLoanCredit";
 import {CCDDebtDetails} from "models/ccdResponse/ccdDebtDetails";
 import {CCDRecurringIncome} from "models/ccdResponse/ccdRecurringIncome";
 import {CCDRecurringExpenses} from "models/ccdResponse/ccdRecurringExpenses";
+import {CCDResponseCuiFields} from "models/ccdResponse/ccdResponseCuiFields";
 
 export interface CCDResponse extends ClaimUpdate {
   respondent1ClaimResponseTypeForSpec: string;
@@ -26,6 +27,8 @@ export interface CCDResponse extends ClaimUpdate {
   totalClaimAmount: number,
   respondent1: CCDParty;
   respondent1BankAccountList?: CCDBankAccount[];
+  disabilityPremiumPayments?: YesNoUpperCamelCase;
+  severeDisabilityPremiumPayments?: YesNoUpperCamelCase;
   respondent1DQHomeDetails?: CCDHomeDetails;
   respondent1PartnerAndDependent?: CCDPartnerAndDependent;
   defenceAdmitPartEmploymentTypeRequired?: YesNoUpperCamelCase;
@@ -45,4 +48,5 @@ export interface CCDResponse extends ClaimUpdate {
   respondent1DQRecurringIncomeFA?: CCDRecurringIncome[];
   respondent1DQRecurringExpenses?: CCDRecurringExpenses[];
   respondent1DQRecurringExpensesFA?: CCDRecurringExpenses[];
+  respondent1ResponseFromCui?: CCDResponseCuiFields;
 }

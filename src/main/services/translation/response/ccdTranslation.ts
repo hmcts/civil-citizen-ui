@@ -20,6 +20,7 @@ import {ResponseType} from "form/models/responseType";
 import {toCCDDebtDetails} from "services/translation/response/convertToCCDDebtDetails";
 import {toCCDRecurringIncomeField} from "services/translation/response/convertToCCDRecurringIncome";
 import {toCCDRecurringExpensesField} from "services/translation/response/convertToCCDRecurringExpense";
+import {toCCDFieldsOnlyInCui} from "services/translation/response/convertToCCDFromCuiOnlyFields";
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   return {
@@ -32,6 +33,8 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     totalClaimAmount: claim.totalClaimAmount,
     respondent1: toCCDParty(claim.respondent1, undefined),
     respondent1BankAccountList: toCCDBankAccountList(claim.statementOfMeans?.bankAccounts),
+    disabilityPremiumPayments: claim.statementOfMeans?.disability.option === 'true' ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
+    severeDisabilityPremiumPayments: claim.statementOfMeans?.severeDisability.option === 'true' ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
     respondent1DQHomeDetails: toCCDHomeDetails(claim.statementOfMeans?.residence),
     respondent1PartnerAndDependent: toCCDPartnerAndDependents(claim.statementOfMeans),
     defenceAdmitPartEmploymentTypeRequired: claim.statementOfMeans?.employment?.declared ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
@@ -51,5 +54,6 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     respondent1DQRecurringIncomeFA: toCCDRecurringIncomeField(claim, ResponseType.FULL_ADMISSION),
     respondent1DQRecurringExpenses: toCCDRecurringExpensesField(claim, ResponseType.PART_ADMISSION),
     respondent1DQRecurringExpensesFA: toCCDRecurringExpensesField(claim, ResponseType.PART_ADMISSION),
+    respondent1ResponseFromCui: toCCDFieldsOnlyInCui(claim),
   };
 };
