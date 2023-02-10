@@ -445,8 +445,7 @@ export class Claim {
       paymentIntention = this.fullAdmission?.paymentIntention;
     }
     return paymentIntention;
-
-}
+  }
 
   private getName(party: Party): string {
     if (party?.type == PartyType.INDIVIDUAL || party?.type == PartyType.SOLE_TRADER) {
