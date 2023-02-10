@@ -51,7 +51,7 @@ import {Debts} from '../../common/form/models/statementOfMeans/debts/debts';
 import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreference';
 import {toCUIEvidence} from 'services/translation/convertToCUI/convertToCUIEvidence';
 import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIClaimDetails';
-import {PaymentIntention} from "form/models/admission/paymentIntention";
+import {PaymentIntention} from 'form/models/admission/paymentIntention';
 export class Claim {
   legacyCaseReference: string;
   applicant1?: Party;

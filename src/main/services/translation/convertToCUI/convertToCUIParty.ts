@@ -9,6 +9,7 @@ import {CitizenDate} from '../../../common/form/models/claim/claimant/citizenDat
 
 export const toCUIParty = (ccdParty: CCDParty): Party => {
   const cuiParty = new Party();
+  console.log(ccdParty);
   cuiParty.partyDetails = new PartyDetails({});
   if (ccdParty?.type === PartyType.INDIVIDUAL) {
     cuiParty.partyDetails.individualFirstName = ccdParty?.individualFirstName ? ccdParty.individualFirstName : undefined;
@@ -24,9 +25,9 @@ export const toCUIParty = (ccdParty: CCDParty): Party => {
     cuiParty.dateOfBirth.date = ccdParty.soleTraderDateOfBirth ? new Date(ccdParty?.soleTraderDateOfBirth) : undefined;
     cuiParty.partyDetails.soleTraderTradingAs = ccdParty.soleTraderTradingAs ? ccdParty?.soleTraderTradingAs : undefined;
   } else if (ccdParty?.type === PartyType.COMPANY) {
-    cuiParty.partyDetails.partyName = ccdParty?.companyName ? ccdParty.companyName : undefined;
+    cuiParty.partyDetails.partyName = ccdParty?.partyName ? ccdParty.partyName : undefined;
   } else {
-    cuiParty.partyDetails.partyName = ccdParty?.organisationName ? ccdParty.organisationName : undefined;
+    cuiParty.partyDetails.partyName = ccdParty?.partyName ? ccdParty.partyName : undefined;
   }
   cuiParty.partyPhone = ccdParty?.partyPhone ? new PartyPhone(ccdParty?.partyPhone) : undefined;
   cuiParty.emailAddress = ccdParty?.partyEmail ? new Email(ccdParty?.partyEmail) : undefined;
