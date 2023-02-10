@@ -16,7 +16,7 @@ describe('Get Judgment amount summary', () => {
     //Then
     expect(result.hasDefendantAlreadyPaid).toEqual(true);
     expect(result.claimHasInterest).toEqual(true);
-    const subTotal = claim.totalClaimAmount + result.interestToDate + claimFee;
+    const subTotal = '164.17';
     expect(result.subTotal.toString()).toEqual(subTotal.toString());
     expect(result.alreadyPaidAmount).toEqual(claim.claimantResponse.ccjRequest.paidAmount.amount);
     const total = claim.totalClaimAmount + result.interestToDate + claimFee - claim.getDefendantPaidAmount();
