@@ -3,6 +3,8 @@ import {DirectionQuestionnaire} from 'common/models/directionsQuestionnaire/dire
 import {ExpertReportDetails} from 'common/models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails';
 import {WhyUnavailableForHearing} from 'common/models/directionsQuestionnaire/hearing/whyUnavailableForHearing';
 import {LanguageOptions} from 'common/models/directionsQuestionnaire/languageOptions';
+import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
+import {WelshLanguageRequirements} from 'models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
 
 describe('DirectionQuestionnaire', () => {
 
@@ -116,7 +118,7 @@ describe('DirectionQuestionnaire', () => {
 
     it('should return false with empty welshLanguageRequirements', () => {
       //Given
-      dq.welshLanguageRequirements = {};
+      dq.welshLanguageRequirements = <WelshLanguageRequirements>{};
       //When
       const result = dq.isCommonDQJourneyCompleted;
       //Then
@@ -131,7 +133,7 @@ describe('DirectionQuestionnaire', () => {
       dq.hearing.phoneOrVideoHearing = {option: YesNo.NO};
       dq.vulnerabilityQuestions.vulnerability = {option: YesNo.NO};
       dq.hearing.supportRequiredList = {option: YesNo.NO};
-      dq.hearing.specificCourtLocation = {option: YesNo.NO};
+      dq.hearing.specificCourtLocation = <SpecificCourtLocation>{option: YesNo.NO};
       dq.welshLanguageRequirements.language = {speakLanguage: LanguageOptions.WELSH, documentsLanguage: LanguageOptions.ENGLISH};
       //When
       const result = dq.isCommonDQJourneyCompleted;
