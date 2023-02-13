@@ -5,4 +5,13 @@ export interface CCDResponseCuiFields {
   partnerDisabilityCui?: YesNoUpperCamelCase,
   partnerSevereDisabilityCui?: YesNoUpperCamelCase,
   childrenEducationCui?: string,
+  canWeUseMediationCui?: YesNoUpperCamelCase,
+  canWeUseMediationPhoneCui?: string,
+  mediationDisagreementCui?: YesNoUpperCamelCase,
+  noMediationReasonCui?: string,
+  moMediationOtherReasonCui?: string,
+  companyTelephoneOptionMediationCui: YesNoUpperCamelCase,
+  companyTelephoneConfirmationMediationCui?: string,
+  companyTelephoneContactPersonMediationCui?: string,
+  companyTelephonePhoneNumberMediationCui?: string,
 }
