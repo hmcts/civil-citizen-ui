@@ -20,6 +20,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {CLAIMANT_RESPONSE_CHECK_ANSWERS_URL, CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL, DETERMINATION_WITHOUT_HEARING_URL, DQ_TRIED_TO_SETTLE_CLAIM_URL} from 'routes/urls';
 import {ResponseType} from 'common/form/models/responseType';
 import {ClaimantResponse} from 'common/models/claimantResponse';
+import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -168,7 +169,7 @@ describe('Claimant Response Task List builder', () => {
         expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingSmallClaimsUrl);
       });
 
-      it('should display give us details for hearing task as complete for small claims when all information provided - expert not required scneraio', () => {
+      it('should display give us details for hearing task as complete for small claims when all information provided - expert not required scenario', () => {
         //Given
         claim.claimantResponse.directionQuestionnaire.hearing.determinationWithoutHearing = {option: YesNo.YES};
         claim.claimantResponse.directionQuestionnaire.defendantYourselfEvidence = {option: YesNo.YES};
@@ -177,7 +178,7 @@ describe('Claimant Response Task List builder', () => {
         claim.claimantResponse.directionQuestionnaire.hearing.phoneOrVideoHearing = {option: YesNo.NO};
         claim.claimantResponse.directionQuestionnaire.vulnerabilityQuestions.vulnerability = {option: YesNo.NO};
         claim.claimantResponse.directionQuestionnaire.hearing.supportRequiredList = {option: YesNo.NO};
-        claim.claimantResponse.directionQuestionnaire.hearing.specificCourtLocation = {option: 'no'};
+        claim.claimantResponse.directionQuestionnaire.hearing.specificCourtLocation = <SpecificCourtLocation>{option: 'no'};
         claim.claimantResponse.directionQuestionnaire.welshLanguageRequirements.language = {speakLanguage: LanguageOptions.WELSH, documentsLanguage: LanguageOptions.ENGLISH};
         claim.claimantResponse.directionQuestionnaire.experts = new Experts();
         claim.claimantResponse.directionQuestionnaire.experts.expertRequired = false;
@@ -355,7 +356,7 @@ describe('Claimant Response Task List builder', () => {
         claim.claimantResponse.directionQuestionnaire.hearing.phoneOrVideoHearing = {option: YesNo.NO};
         claim.claimantResponse.directionQuestionnaire.vulnerabilityQuestions.vulnerability = {option: YesNo.NO};
         claim.claimantResponse.directionQuestionnaire.hearing.supportRequiredList = {option: YesNo.NO};
-        claim.claimantResponse.directionQuestionnaire.hearing.specificCourtLocation = {option: 'no'};
+        claim.claimantResponse.directionQuestionnaire.hearing.specificCourtLocation = <SpecificCourtLocation>{option: 'no'};
         claim.claimantResponse.directionQuestionnaire.welshLanguageRequirements.language = {speakLanguage: LanguageOptions.WELSH, documentsLanguage: LanguageOptions.ENGLISH};
         //When
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
