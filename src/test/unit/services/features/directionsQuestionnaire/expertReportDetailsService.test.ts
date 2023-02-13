@@ -20,6 +20,7 @@ import {
 import {DirectionQuestionnaire} from '../../../../../main/common/models/directionsQuestionnaire/directionQuestionnaire';
 import {Experts} from '../../../../../main/common/models/directionsQuestionnaire/experts/experts';
 import {CaseState} from 'common/form/models/claimDetails';
+import {ClaimantResponse} from 'models/claimantResponse';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -349,7 +350,7 @@ describe('Expert Report Details service', () => {
         };
         const claim = new Claim();
         claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
-        claim.claimantResponse = {directionQuestionnaire : mockDQ};
+        claim.claimantResponse = <ClaimantResponse>{directionQuestionnaire : mockDQ};
         return claim;
       });
       //When
@@ -459,7 +460,7 @@ describe('Expert Report Details service', () => {
 function createClaimWithExpertReportDetails(): Claim {
   const claim = new Claim();
   const mockDetails = new ExpertReportDetails(undefined, []);
-  claim.directionQuestionnaire = {
+  claim.directionQuestionnaire = <DirectionQuestionnaire>{
     experts: {
       expertReportDetails: mockDetails,
     },

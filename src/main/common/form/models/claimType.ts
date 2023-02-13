@@ -1,4 +1,3 @@
-
 const SMALL_CLAIM_AMOUNT = 10000;
 const FAST_TRACK_CLAIM_AMOUNT = 25000;
 
@@ -14,4 +13,3 @@ export function analyseClaimType(totalClaimAmount: number): claimType {
     return claimType.FAST_TRACK_CLAIM;
   }
 }
-
