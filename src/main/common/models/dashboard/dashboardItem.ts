@@ -77,7 +77,7 @@ export class DashboardDefendantItem extends DashboardItem {
       SETTLED: {translationKey:'PAGES.DASHBOARD.STATUS.CLAIM_SETTLED'},
     };
     const currentStatus = dashboardStatus[this.status];
-    return translate(currentStatus.translationKey, currentStatus.parameter);
+    return translate(currentStatus.translationKey, currentStatus.parameter, lang);
   }
 }
 
