@@ -9,9 +9,9 @@ export const getNumberOfUnavailableDays = (unavailableDates: UnavailableDates): 
   let result = new Set<string>();
   unavailableDates.items.forEach((item: UnavailableDatePeriod) => {
     if (item.type === UnavailableDateType.SINGLE_DATE) {
-      result.add(item.from.toString());
+      result.add(new Date(item.from).toString());
     } else {
-      const datesBetween = getDatesBetween(item.from, item.until);
+      const datesBetween = getDatesBetween(new Date(item.from), new Date(item.until));
       result = new Set([...result, ...datesBetween]);
     }
   });
