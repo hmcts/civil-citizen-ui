@@ -52,6 +52,7 @@ import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreferen
 import {toCUIEvidence} from 'services/translation/convertToCUI/convertToCUIEvidence';
 import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIClaimDetails';
 import {analyseClaimType, claimType} from 'common/form/models/claimType';
+
 export class Claim {
   legacyCaseReference: string;
   applicant1?: Party;
