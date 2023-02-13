@@ -17,15 +17,8 @@ jest.mock('../../../../../../main/modules/draft-store');
 
 const mockFullClaim = { 'id': 1662129391355637, 'case_data': {}};
 describe('Respond to Claim - Pin Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  const civilServiceUrl = config.get<string>('services.civilService.url');
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
-  });
+  const civilServiceUrl = config.get<string>('services.civilService.url');
 
   describe('on GET', () => {
     it('should display page successfully', async () => {

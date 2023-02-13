@@ -8,7 +8,8 @@ import {CCDParty} from 'common/models/ccdResponse/ccdParty';
 import {CCDAddress} from 'common/models/ccdResponse/ccdAddress';
 import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
 import {PartyPhone} from 'common/models/PartyPhone';
-import {Email} from 'common/models/Email';
+import {req} from '../../../../utils/UserDetails';
+import {Email} from 'models/Email';
 
 const companyName = 'Version 1';
 const phone = new PartyPhone('123456789');
@@ -18,8 +19,8 @@ const firstName = 'Jon';
 const lastName = 'Doe';
 const soleTraderTradingAs = 'test';
 const dateOfBirth = new CitizenDate('10', '10', '1990');
-const email = new Email('test@test.com');
-const emailCCD = 'test@test.com';
+const email = new Email(req.session.user.email);
+const emailCCD = req.session.user.email;
 
 const address: Address = new Address('Street test', '1', '1A', 'test', 'sl11gf');
 
@@ -168,9 +169,8 @@ describe('translate party to ccd model', () => {
   });
 
   it('should translate INDIVIDUAL party to ccd with applicantEmail', () => {
-    const mockApplicantEmail = 'abc@def.com';
-    const partyResponseCCD = toCCDParty(partyIndividual, mockApplicantEmail);
-    expect(partyResponseCCD).toMatchObject({...partyIndividualCCD, partyEmail: mockApplicantEmail });
+    const partyResponseCCD = toCCDParty(partyIndividual);
+    expect(partyResponseCCD).toMatchObject({...partyIndividualCCD, partyEmail: req.session.user.email });
   });
 
   it('should translate SOLE TRADER party to ccd', () => {

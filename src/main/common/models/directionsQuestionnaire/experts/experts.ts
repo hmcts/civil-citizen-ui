@@ -8,9 +8,9 @@ export class Experts {
   expertReportDetails?: ExpertReportDetails;
   sentExpertReports?: SentExpertReports;
   sharedExpert?: GenericYesNo;
-  defendantExpertEvidence?: GenericYesNo;
+  expertEvidence?: GenericYesNo;
   permissionForExpert?: GenericYesNo;
   expertCanStillExamine?: ExpertCanStillExamine;
   expertDetailsList?: ExpertDetailsList;
-
+  expertRequired?: boolean;
 }

@@ -157,3 +157,24 @@
     width: fit-content;
   }
 }
+
+.link-button {
+  background: none;
+  border: 0;
+  color: $govuk-link-colour;
+  cursor: pointer;
+  font-size: inherit;
+  text-decoration: underline;
+
+  &:hover {
+    color: $govuk-link-hover-colour;
+  }
+
+  &:visited {
+    color: $govuk-link-visited-colour;
+  }
+
+  &:active {
+    color: $govuk-link-active-colour;
+  }
+}

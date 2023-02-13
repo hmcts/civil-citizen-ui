@@ -4,6 +4,7 @@ import {VulnerabilityQuestions} from './vulnerabilityQuestions/vulnerabilityQues
 import {WelshLanguageRequirements} from './welshLanguageRequirements/welshLanguageRequirements';
 import {Witnesses} from './witnesses/witnesses';
 import {Hearing} from './hearing/hearing';
+import {YesNo} from 'common/form/models/yesNo';
 
 export class DirectionQuestionnaire {
   defendantYourselfEvidence?: GenericYesNo;
@@ -29,4 +30,93 @@ export class DirectionQuestionnaire {
     this.witnesses = witnesses;
   }
 
+  get expertReportDetailsAvailable(): boolean {
+    return this.experts?.expertReportDetails?.option === YesNo.YES;
+  }
+
+  get notRequestedToAskPermissiontoUseExpert(): boolean {
+    return this.experts?.permissionForExpert?.option === YesNo.NO;
+  }
+
+  get nothingExpertCanExamine(): boolean {
+    return this.experts?.expertCanStillExamine?.option === YesNo.NO;
+  }
+
+  get isExpertDetailsAvailable(): boolean {
+    return !!this.experts?.expertDetailsList?.items?.length;
+  }
+
+  get isSmallClaimsDQJourneyCompleted(): boolean {
+    if (
+      this.hearing?.determinationWithoutHearing &&
+      this.isExpertJourneyCompleted &&
+      this.isCommonDQJourneyCompleted
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  get isFastTrackDQJourneyCompleted(): boolean {
+    if (
+      this.hearing?.triedToSettle &&
+      this.hearing?.requestExtra4weeks &&
+      this.hearing?.considerClaimantDocuments &&
+      this.isExpertEvidenceJourneyCompleted &&
+      this.isCommonDQJourneyCompleted
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  get isCommonDQJourneyCompleted(): boolean {
+    if (
+      this.defendantYourselfEvidence &&
+      this.witnesses?.otherWitnesses &&
+      this.isUnavailabilityDatesCompleted &&
+      this.hearing?.phoneOrVideoHearing &&
+      this.vulnerabilityQuestions?.vulnerability &&
+      this.hearing?.supportRequiredList &&
+      this.hearing?.specificCourtLocation &&
+      this.welshLanguageRequirements?.language
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  get isExpertJourneyCompleted(): boolean {
+    if (!this.experts?.expertRequired) {
+      return true;
+    }
+    if (this.expertReportDetailsAvailable ||
+      this.notRequestedToAskPermissiontoUseExpert ||
+      this.nothingExpertCanExamine ||
+      this.isExpertDetailsAvailable) {
+      return true;
+    }
+    return false;
+  }
+
+  get isExpertEvidenceJourneyCompleted(): boolean {
+    if (this.experts?.expertEvidence?.option === YesNo.NO) {
+      return true;
+    }
+    if (this.experts?.sentExpertReports &&
+      this.experts?.sharedExpert &&
+      this.isExpertDetailsAvailable) {
+      return true;
+    }
+    return false;
+  }
+
+  get isUnavailabilityDatesCompleted (): boolean {
+    // TODO : include completion logic for unavailable dates when `available-dates` page is developed
+    // TODO : update if condition for whyUnavailableForHearing when getCalculatedDays function return real value instead mock dat
+    if (!this.hearing?.whyUnavailableForHearing) {
+      return false;
+    }
+    return true;
+  }
 }

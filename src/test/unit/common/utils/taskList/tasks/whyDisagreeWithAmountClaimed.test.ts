@@ -6,7 +6,6 @@ import {PartialAdmission} from 'models/partialAdmission';
 import {TaskStatus} from 'models/taskList/TaskStatus';
 import {getWhyDisagreeWithAmountClaimedTask} from 'common/utils/taskList/tasks/whyDisagreeWithAmountClaimed';
 
-jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,

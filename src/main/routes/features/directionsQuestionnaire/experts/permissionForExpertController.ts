@@ -1,7 +1,7 @@
 import {Response, Router} from 'express';
 import {
-  DQ_EXPERT_DETAILS_URL, 
-  DQ_GIVE_EVIDENCE_YOURSELF_URL, 
+  DQ_EXPERT_CAN_STILL_EXAMINE_URL,
+  DQ_GIVE_EVIDENCE_YOURSELF_URL,
   PERMISSION_FOR_EXPERT_URL,
 } from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
@@ -43,7 +43,7 @@ permissionForExpertController.post(PERMISSION_FOR_EXPERT_URL, async (req, res, n
     } else {
       await saveDirectionQuestionnaire(claimId, permissionForExpert.model, dqPropertyName, dqParentName);
       (permissionForExpert.model.option === YesNo.YES) ?
-        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_EXPERT_DETAILS_URL)) :
+        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_EXPERT_CAN_STILL_EXAMINE_URL)) :
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL));
     }
   } catch (error) {
