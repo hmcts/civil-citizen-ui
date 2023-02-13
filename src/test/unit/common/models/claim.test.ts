@@ -34,6 +34,7 @@ import {DirectionQuestionnaire} from 'common/models/directionsQuestionnaire/dire
 import {Hearing} from 'common/models/directionsQuestionnaire/hearing/hearing';
 import {Address} from 'common/form/models/address';
 import {FullAdmission} from 'common/models/fullAdmission';
+import {claimType} from 'form/models/claimType';
 
 describe('Claim isInterestEnDateUntilSubmitDate', () => {
   const claim = new Claim();
@@ -1187,6 +1188,21 @@ describe('Documents', () => {
       const result = claim.isSupportRequiredDetailsAvailable;
       //Then
       expect(result).toBe(true);
+    });
+  });
+  describe('Identify if its a SMALL or FAST_TRACK claim', () => {
+    it('Its a small claim', () => {
+      const  claim = new Claim();
+      claim.totalClaimAmount = 10000;
+
+      expect(claim.claimType).toEqual(claimType.SMALL_CLAIM);
+    });
+    it('Its a fast track claim', () => {
+      const  claim = new Claim();
+      claim.totalClaimAmount = 11000;
+
+      expect(claim.claimType).toEqual(claimType.FAST_TRACK_CLAIM);
+      expect(claim.isFastTrackClaim).toBe(true);
     });
   });
 });

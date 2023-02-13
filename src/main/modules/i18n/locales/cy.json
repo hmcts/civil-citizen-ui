@@ -507,7 +507,11 @@
       "WHEN_PAY_TITLE": "Pryd fyddwch chi'n talu",
       "WHERE_DO_YOU_LIVE": "Ble rydych chi'n byw?",
       "WITNESS": "Witness",
-      "YOUR_FINANCIAL_DETAILS_TITLE": "Eich manylion ariannol"
+      "YOUR_FINANCIAL_DETAILS_TITLE": "Eich manylion ariannol",
+      "TRIED_TO_SETTLE" : "Have you tried to settle this claim before going to court?",
+      "REQUEST_EXTRA_4WEEKS" : "Do you want an extra 4 weeks to try to settle the claim?",
+      "CONSIDER_CLAIMANT_DOCUMENT" : "Are there any documents the claimant has that you want the court to consider?",
+      "GIVE_DOC_DETAILS" : "Give details of the documents"
     },
     "CITIZEN_BANK_ACCOUNTS": {
       "ADD_ANOTHER": "Ychwanegu cyfrif arall",

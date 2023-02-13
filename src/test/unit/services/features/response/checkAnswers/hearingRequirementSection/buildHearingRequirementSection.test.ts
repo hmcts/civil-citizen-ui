@@ -7,6 +7,7 @@ import {DirectionQuestionnaire} from '../../../../../../../main/common/models/di
 import {Witnesses} from '../../../../../../../main/common/models/directionsQuestionnaire/witnesses/witnesses';
 import {OtherWitnesses} from '../../../../../../../main/common/models/directionsQuestionnaire/witnesses/otherWitnesses';
 import {OtherWitnessItems} from '../../../../../../../main/common/models/directionsQuestionnaire/witnesses/otherWitnessItems';
+import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
 
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
@@ -115,5 +116,35 @@ describe('test hearingRequirementSection', () => {
     expect(summaryRows.summaryList.rows[11].value.html).toEqual('111111111');
     expect(summaryRows.summaryList.rows[12].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY');
     expect(summaryRows.summaryList.rows[12].value.html).toEqual('Some details of Jane Does');
+  });
+
+  it('build hearing requirement for Fast Track Claim when there is no witnesses', () => {
+    const claim = new Claim();
+    claim.totalClaimAmount = 11000;
+    claim.directionQuestionnaire = new DirectionQuestionnaire();
+    claim.directionQuestionnaire.hearing = new Hearing();
+    claim.directionQuestionnaire.hearing = {
+      triedToSettle : {
+        option: YesNo.YES,
+      },
+      requestExtra4weeks : {
+        option: YesNo.YES,
+      },
+      considerClaimantDocuments : {
+        option: YesNo.YES,
+        details: 'Test Doc',
+      },
+    };
+    const summaryRows = buildHearingRequirementSection(claim, '1', 'eng');
+
+    expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
+    expect(summaryRows.summaryList.rows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE');
+    expect(summaryRows.summaryList.rows[0].value.html).toEqual(YesNo.YES);
+    expect(summaryRows.summaryList.rows[1].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.REQUEST_EXTRA_4WEEKS');
+    expect(summaryRows.summaryList.rows[1].value.html).toEqual(YesNo.YES);
+    expect(summaryRows.summaryList.rows[2].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.CONSIDER_CLAIMANT_DOCUMENT');
+    expect(summaryRows.summaryList.rows[2].value.html).toEqual(YesNo.YES);
+    expect(summaryRows.summaryList.rows[3].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.GIVE_DOC_DETAILS');
+    expect(summaryRows.summaryList.rows[3].value.html).toEqual('Test Doc');
   });
 });
