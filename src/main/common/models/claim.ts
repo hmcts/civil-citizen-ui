@@ -51,6 +51,7 @@ import {Debts} from '../../common/form/models/statementOfMeans/debts/debts';
 import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreference';
 import {toCUIEvidence} from 'services/translation/convertToCUI/convertToCUIEvidence';
 import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIClaimDetails';
+import {analyseClaimType, claimType} from 'common/form/models/claimType';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 export class Claim {
   legacyCaseReference: string;
@@ -456,6 +457,14 @@ export class Claim {
       }
     }
     return party?.partyDetails?.partyName;
+  }
+
+  get claimType(): string {
+    return analyseClaimType(this.totalClaimAmount);
+  }
+
+  get isSmallClaimsTrackDQ(): boolean {
+    return this.claimType === claimType.SMALL_CLAIM;
   }
 }
 

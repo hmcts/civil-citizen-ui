@@ -9,10 +9,11 @@ import {ResponseType} from 'common/form/models/responseType';
 import {YesNo, YesNoNotReceived} from 'common/form/models/yesNo';
 import {ResidenceType} from 'common/form/models/statementOfMeans/residence/residenceType';
 import {PartyType} from 'common/models/partyType';
+import {ChooseHowProceed} from 'common/models/chooseHowProceed';
 import {UnemploymentCategory} from 'common/form/models/statementOfMeans/unemployment/unemploymentCategory';
 import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {EvidenceType} from 'common/models/evidence/evidenceType';
-import {addDaysFilter, dateFilter, formatDate, addDaysFilterTranslated} from './filters/dateFilter';
+import {addDaysFilter, addDaysFilterTranslated, dateFilter, formatDate} from './filters/dateFilter';
 import {SignatureType} from '../../common/models/signatureType';
 import {ClaimSummaryType} from '../../common/form/models/claimSummarySection';
 import {FormValidationError} from '../../common/form/validationErrors/formValidationError';
@@ -21,9 +22,12 @@ import {TotalAmountOptions} from '../../common/models/eligibility/totalAmountOpt
 import {ClaimTypeOptions} from '../../common/models/eligibility/claimTypeOptions';
 import {AgeEligibilityOptions} from '../../common/form/models/eligibility/defendant/AgeEligibilityOptions';
 import {LanguageOptions} from '../../common/models/directionsQuestionnaire/languageOptions';
-import {CaseState, SameRateInterestType} from '../../common/form/models/claimDetails';
-import {InterestClaimFromType} from '../../common/form/models/claimDetails';
-import {InterestEndDateType} from '../../common/form/models/claimDetails';
+import {
+  CaseState,
+  InterestClaimFromType,
+  InterestEndDateType,
+  SameRateInterestType,
+} from '../../common/form/models/claimDetails';
 import * as urls from '../../routes/urls';
 import {InterestClaimOptionsType} from '../../common/form/models/claim/interest/interestClaimOptionsType';
 import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
@@ -78,11 +82,11 @@ export class Nunjucks {
 
     const currencyFormat = (value: number) => numeral.default(value);
 
-    const translateErrors = (keys: FormValidationError[], t: (key:string) => string, formatValues: { keyError: string,keyToReplace: string, valueToReplace: string }[]) => {
+    const translateErrors = (keys: FormValidationError[], t: (key: string) => string, formatValues: { keyError: string, keyToReplace: string, valueToReplace: string }[]) => {
       return keys.map((key) => {
-        if(formatValues){
+        if (formatValues) {
           const formatValue = formatValues.find(v => v.keyError === key.text);
-          if(formatValue){
+          if (formatValue) {
             const translation = t(key.text);
             const replaced = translation.replace(formatValue.keyToReplace, formatValue.valueToReplace);
             return ({...key, text: replaced});
@@ -106,6 +110,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('YesNo', YesNo);
     nunjucksEnv.addGlobal('ResidenceType', ResidenceType);
     nunjucksEnv.addGlobal('partyType', PartyType);
+    nunjucksEnv.addGlobal('chooseHowProceed', ChooseHowProceed);
     nunjucksEnv.addGlobal('UnemploymentCategory', UnemploymentCategory);
     nunjucksEnv.addGlobal('TransactionSchedule', TransactionSchedule);
     nunjucksEnv.addGlobal('EvidenceType', EvidenceType);

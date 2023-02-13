@@ -273,9 +273,14 @@
       "VIEW_DEFENDANTS_RESPONSE": "View the defendant's response"
     },
     "CHOOSE_WHAT_TODO_NEXT": {
-      "TITLE": "Choose what to do next",
       "ACCEPT_OR_REJECT_ADMITTED": "Accept or reject the £{{ admittedAmount }}",
-      "FREE_TELEPHONE_MEDIATION": "Free telephone mediation"
+      "ACCEPT_OR_REJECT_REPAYMENT": " Accept or reject their repayment plan",
+      "FREE_TELEPHONE_MEDIATION": "Free telephone mediation",
+      "HOW_FORMALISE": "Choose how to formalise repayment",
+      "PROPOSE_ALTERNATIVE_REPAYMENT": "Propose an alternative repayment plan",
+      "REQUEST_COUNTY_COURT_JUDGMENT": "Request a County Court Judgment",
+      "SIGN_SETTLEMENT": "Sign a settlement agreement",
+      "TITLE": "Choose what to do next"
     }
   },
   "TASK_LIST": {
@@ -1001,20 +1006,6 @@
       "CLAIM_NUMBER": "Claim number",
       "CLAIM_PROMPT": "To view or progress your claim click on your claim number. Most recently created claims are listed first.",
       "CLAIM_STATUS": "Status",
-      "STATUS": {
-        "NO_RESPONSE_ON_TIME": "Respond to claim: {{ numberOfDays }} days remaining",
-        "NO_RESPONSE_OVERDUE": "Respond to claim: {{ numberOfDays }} days overdue",
-        "NO_RESPONSE_DUE_TODAY": "Respond to claim: due today",
-        "NO_RESPONSE_ELIGIBLE_CCJ":  "You haven’t responded to the claim. {{ claimantName }} can now ask for a County Court Judgment (CCJ) against you. You can still respond to this claim before they ask for a CCJ.",
-        "ADMIT_PAY_IMMEDIATELY": "You’ve admitted all of the claim and said you’ll pay the full amount immediately.",
-        "ADMIT_PAY_BY_SET_DATE": "You’ve admitted all of the claim and offered to pay the full amount by {{ paymentDate }}.",
-        "ADMIT_PAY_BY_INSTALLMENTS": "You’ve admitted all of the claim and offered to pay the full amount in instalments.",
-        "REQUESTED_MORE_TIME_TO_RESPOND": "You need to respond before 4pm on {{ responseDeadline }}.",
-        "CLAIM_SETTLED": "This claim is settled.",
-        "CLAIMANT_CONFIRMED_PAYMENT": "{{ claimantName }} confirmed you’ve paid",
-        "CASE_SENT_TO_COURT": "Case sent to court",
-        "CLAIMANT_REQUESTED_CCJ": "{{ claimantName }} requested a County Court Judgment against you"
-      },
       "CLAIMANT_TITLE": "Claims you've made",
       "DEADLINE": "Deadline",
       "DEFENDANT_NAME": "Defendant name",
@@ -1024,6 +1015,20 @@
       "MAKE_A_NEW_CLAIM": "Make a new money claim",
       "NEXT_STEPS": "Next steps",
       "PAGE_TITLE": "Claims made by or against you",
+      "STATUS": {
+        "ADMIT_PAY_BY_SET_DATE": "You’ve admitted all of the claim and offered to pay the full amount by {{ paymentDate }}.",
+        "ADMIT_PAY_BY_INSTALLMENTS": "You’ve admitted all of the claim and offered to pay the full amount in instalments.",
+        "ADMIT_PAY_IMMEDIATELY": "You’ve admitted all of the claim and said you’ll pay the full amount immediately.",
+        "CLAIM_SETTLED": "This claim is settled.",
+        "CLAIMANT_CONFIRMED_PAYMENT": "{{ claimantName }} confirmed you’ve paid",
+        "CASE_SENT_TO_COURT": "Case sent to court",
+        "CLAIMANT_REQUESTED_CCJ": "{{ claimantName }} requested a County Court Judgment against you",
+        "NO_RESPONSE_ON_TIME": "Respond to claim: {{ numberOfDays }} days remaining",
+        "NO_RESPONSE_OVERDUE": "Respond to claim: {{ numberOfDays }} days overdue",
+        "NO_RESPONSE_DUE_TODAY": "Respond to claim: due today",
+        "NO_RESPONSE_ELIGIBLE_CCJ":  "You haven’t responded to the claim. {{ claimantName }} can now ask for a County Court Judgment (CCJ) against you. You can still respond to this claim before they ask for a CCJ.",
+        "REQUESTED_MORE_TIME_TO_RESPOND": "You need to respond before 4pm on {{ responseDeadline }}.",
+      },
       "TITLE": "Your money claims account",
       "VIEW": "View"
     },
