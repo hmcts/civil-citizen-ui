@@ -45,7 +45,6 @@ export class DashboardClaimantItem extends DashboardItem {
 
 export class DashboardDefendantItem extends DashboardItem {
   status: string;
-  translatedStatus: string;
   numberOfDays?: string;
   numberOfDaysOverdue?: string;
   paymentDate?: Date;
