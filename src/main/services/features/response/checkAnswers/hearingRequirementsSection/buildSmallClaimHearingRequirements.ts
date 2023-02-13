@@ -21,7 +21,9 @@ export const determinationWithoutHearingQuestion = (claim: Claim, claimId: strin
 };
 
 export const determinationWithoutHearingReason = (claim: Claim, claimId: string, lng: string) => {
-  const reason = claim?.directionQuestionnaire?.hearing?.determinationWithoutHearing?.reasonForHearing;
+  const reason = claim?.directionQuestionnaire?.hearing?.determinationWithoutHearing?.reasonForHearing
+    ? claim?.directionQuestionnaire?.hearing?.determinationWithoutHearing?.reasonForHearing
+    : '';
 
   return summaryRow(
     t('PAGES.DETERMINATION_WITHOUT_HEARING.TELL_US_WHY', {lng}),
