@@ -1,1 +1,1 @@
-const getEmptyStringIfUndefined = (value: string): string => value || '';
+export const getEmptyStringIfUndefined = (value: string): string => value || '';
