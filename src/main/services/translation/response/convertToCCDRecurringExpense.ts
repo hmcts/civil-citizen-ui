@@ -30,7 +30,7 @@ const toCCDRecurringExpensesList = (regularExpenses: RegularExpenses): CCDRecurr
     !regularExpenses?.other
   ) return undefined;
 
-  const ccdRecurringExpensesList: CCDRecurringExpenses[] = [];
+  let ccdRecurringExpensesList: CCDRecurringExpenses[] = [];
   if (regularExpenses?.mortgage?.declared) {
     ccdRecurringExpensesList.push(toCCDRecurringExpensesItem(regularExpenses?.mortgage?.transactionSource, CCDExpensesType.MORTGAGE))
   }
@@ -71,7 +71,7 @@ const toCCDRecurringExpensesList = (regularExpenses: RegularExpenses): CCDRecurr
     ccdRecurringExpensesList.push(toCCDRecurringExpensesItem(regularExpenses?.maintenance?.transactionSource, CCDExpensesType.MAINTENANCE))
   }
   if (regularExpenses?.other?.declared) {
-    ccdRecurringExpensesList.concat(toCCDRecurringExpensesOtherItem(regularExpenses?.other?.transactionSources, CCDExpensesType.OTHER))
+    ccdRecurringExpensesList = ccdRecurringExpensesList.concat(toCCDRecurringExpensesOtherItem(regularExpenses?.other?.transactionSources, CCDExpensesType.OTHER))
   }
 
   return ccdRecurringExpensesList
@@ -79,9 +79,11 @@ const toCCDRecurringExpensesList = (regularExpenses: RegularExpenses): CCDRecurr
 
 const toCCDRecurringExpensesItem = (transactionSource: TransactionSource, expensesType: CCDExpensesType): CCDRecurringExpenses => {
   const ccdRecurringExpenses: CCDRecurringExpenses = {
+    value :{
       type: expensesType,
       amount: transactionSource?.amount,
       frequency: toCCDPaymentFrequency(transactionSource?.schedule),
+    }
   };
   return ccdRecurringExpenses;
 }
@@ -91,7 +93,7 @@ const toCCDRecurringExpensesOtherItem = (otherTransactions: TransactionSource[],
   const ccdOtherRecurringExpensesList: CCDRecurringExpenses[] = [];
   otherTransactions.forEach((otherTransactionItem, index) => {
     const ccdRecurringExpenses = toCCDRecurringExpensesItem(otherTransactionItem, expensesType);
-    ccdRecurringExpenses.typeOtherDetails = otherTransactionItem?.name
+    ccdRecurringExpenses.value.typeOtherDetails = otherTransactionItem?.name
     ccdOtherRecurringExpensesList.push(ccdRecurringExpenses);
   });
   return ccdOtherRecurringExpensesList;

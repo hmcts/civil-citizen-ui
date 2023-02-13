@@ -1,6 +1,11 @@
 import {CCDPaymentFrequency} from "models/ccdResponse/ccdDebtDetails";
 
 export interface CCDRecurringExpenses {
+  id?: string,
+  value?: CCDRecurringExpensesItem,
+}
+
+export interface CCDRecurringExpensesItem {
   type?: CCDExpensesType,
   typeOtherDetails?: string,
   amount?: number,
