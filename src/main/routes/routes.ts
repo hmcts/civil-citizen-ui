@@ -111,8 +111,7 @@ import completingClaimController from './features/claim/completingClaimControlle
 import submitConfirmationController from './features/response/submitConfirmationController';
 import resolvingThisDisputeController from './features/claim/resolvingThisDisputeController';
 import cookiesController from './features/public/cookiesController';
-import defendantExpertEvidenceController
-  from './features/directionsQuestionnaire/experts/defendantExpertEvidenceController';
+import expertEvidenceController from './features/directionsQuestionnaire/experts/expertEvidenceController';
 import considerClaimantDocumentsController
   from './features/directionsQuestionnaire/considerClaimantDocumentsController';
 import triedToSettleController from './features/directionsQuestionnaire/triedToSettleController';
@@ -188,6 +187,7 @@ import repaymentPlanAcceptedController from './features/claimantResponse/repayme
 import courtProposedPlanController from './features/claimantResponse/courtProposedPlanController';
 import debtRespiteLiftedController from './features/breathingSpace/debtRespiteLiftedController';
 import claimantResponseConfirmationController from './features/claimantResponse/claimantResponseConfirmationController';
+import assignClaimController from './features/claimAssignment/assignClaimController';
 import judgmentAmountSummaryController from './features/claimantResponse/ccj/judgmentAmountSummaryController';
 import ccjCheckAnswersController from './features/claimantResponse/ccj/ccjCheckAnswersController';
 import claimantResponseTasklistController from './features/claimantResponse/claimantResponseTasklistController';
@@ -302,7 +302,7 @@ export default [
   expertSmallClaimsController,
   requestExtra4WeeksController,
   permissionForExpertController,
-  defendantExpertEvidenceController,
+  expertEvidenceController,
   expertCanStillExamineController,
   defendantYourselfEvidenceController,
   expertDetailsController,
@@ -367,6 +367,7 @@ export default [
   repaymentPlanAcceptedController,
   courtProposedPlanController,
   claimantResponseConfirmationController,
+  assignClaimController,
   ccjCheckAnswersController,
   judgmentAmountSummaryController,
   claimantResponseTasklistController,
