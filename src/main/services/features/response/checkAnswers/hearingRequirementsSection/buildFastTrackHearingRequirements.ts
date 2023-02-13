@@ -11,8 +11,6 @@ import {
 } from 'routes/urls';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 
-const getEmptyStringIfUndefined = (value: string): string => value || '';
-
 export const triedToSettleQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const option = claim.directionQuestionnaire?.hearing?.triedToSettle?.option === YesNo.YES
     ? YesNoUpperCamelCase.YES

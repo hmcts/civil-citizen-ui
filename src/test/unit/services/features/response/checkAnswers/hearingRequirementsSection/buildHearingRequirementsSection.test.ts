@@ -98,7 +98,7 @@ describe('Hearing Requirements Section', () => {
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.hearing = new Hearing();
       claim.directionQuestionnaire.hearing.determinationWithoutHearing = {
-        option: YesNo.YES,
+        option: YesNo.NO,
         reasonForHearing: 'my reason',
       };
       claim.directionQuestionnaire.defendantYourselfEvidence = {
@@ -124,7 +124,7 @@ describe('Hearing Requirements Section', () => {
       const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
       expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
       expect(summaryRows.summaryList.rows[0].key.text).toEqual('PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE');
-      expect(summaryRows.summaryList.rows[0].value.html).toEqual(YesNoUpperCamelCase.YES);
+      expect(summaryRows.summaryList.rows[0].value.html).toEqual(YesNoUpperCamelCase.NO);
       expect(summaryRows.summaryList.rows[1].key.text).toEqual('PAGES.DETERMINATION_WITHOUT_HEARING.TELL_US_WHY');
       expect(summaryRows.summaryList.rows[1].value.html).toEqual('my reason');
       expect(summaryRows.summaryList.rows[2].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.GIVE_EVIDENCE');
