@@ -1,8 +1,29 @@
-import {Application, NextFunction, Response} from 'express';
+import {Application, NextFunction, Request, Response} from 'express';
 import config from 'config';
 import {AppRequest} from '../../common/models/AppRequest';
 import {getUserDetails} from '../../app/auth/user/oidc';
-import {CALLBACK_URL, DASHBOARD_URL, SIGN_IN_URL, SIGN_OUT_URL, UNAUTHORISED_URL} from '../../routes/urls';
+import {
+  ASSIGN_CLAIM_URL, BASE_FIRST_CONTACT_URL,
+  CALLBACK_URL,
+  DASHBOARD_URL,
+  SIGN_IN_URL,
+  SIGN_OUT_URL,
+  UNAUTHORISED_URL,
+} from '../../routes/urls';
+
+const requestIsForAssigningClaimForDefendant = (req: Request): boolean => {
+  return req.originalUrl.startsWith(ASSIGN_CLAIM_URL) && req.query?.id !== undefined;
+};
+
+const requestIsForPinAndPost = (req: Request): boolean => {
+  return req.originalUrl.startsWith(BASE_FIRST_CONTACT_URL);
+};
+
+const buildAssignClaimUrlWithId = (req: AppRequest, app: Application) : string => {
+  const claimId = app.locals.assignClaimId;
+  app.locals.assignClaimId = undefined;
+  return `${ASSIGN_CLAIM_URL}?id=${claimId}`;
+};
 
 export class OidcMiddleware {
   public enableFor(app: Application): void {
@@ -22,6 +43,10 @@ export class OidcMiddleware {
     app.get(CALLBACK_URL, async (req: AppRequest, res: Response) => {
       if (typeof req.query.code === 'string') {
         req.session.user = app.locals.user = await getUserDetails(redirectUri, req.query.code);
+        if (app.locals.assignClaimId) {
+          const assignClaimUrlWithClaimId = buildAssignClaimUrlWithId(req, app);
+          return res.redirect(assignClaimUrlWithClaimId);
+        }
         if (req.session.user?.roles?.includes(citizenRole)) {
           return res.redirect(DASHBOARD_URL);
         }
@@ -45,14 +70,22 @@ export class OidcMiddleware {
       res.redirect(DASHBOARD_URL);
     });
 
-    app.use((req: AppRequest, res: Response, next: NextFunction) => {
-      if (req.session.user) {
-        if (req.session?.user?.roles?.includes(citizenRole)) {
+    app.use((req: Request, res: Response, next: NextFunction) => {
+      const appReq: AppRequest = <AppRequest>req;
+      if (appReq.session?.user) {
+        if (appReq.session.user.roles?.includes(citizenRole)) {
           return next();
         }
         return res.redirect(DASHBOARD_URL);
       }
-      res.redirect(SIGN_IN_URL);
+      if (requestIsForPinAndPost(req)) {
+        return next();
+      }
+      if (requestIsForAssigningClaimForDefendant(req)) {
+        app.locals.assignClaimId = <string>req.query.id;
+      }
+      return res.redirect(SIGN_IN_URL);
     });
   }
 }
+

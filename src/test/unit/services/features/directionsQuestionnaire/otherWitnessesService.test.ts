@@ -6,6 +6,7 @@ import {Claim} from '../../../../../main/common/models/claim';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import civilClaimResponseExpertAndWitnessMock from '../../../../utils/mocks/civilClaimResponseExpertAndWitnessMock.json';
 import {Witnesses} from '../../../../../main/common/models/directionsQuestionnaire/witnesses/witnesses';
+import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -37,7 +38,7 @@ describe('Other witnesses service', () => {
       mockGetCaseDataFromStore.mockImplementation(async () => {
         const claim = new Claim();
         const mockDetails = new OtherWitnesses(undefined, []);
-        claim.directionQuestionnaire = {
+        claim.directionQuestionnaire = <DirectionQuestionnaire>{
           witnesses: {
             otherWitnesses: mockDetails,
           },
@@ -56,7 +57,7 @@ describe('Other witnesses service', () => {
       //Given
       mockGetCaseDataFromStore.mockImplementation(async () => {
         const claim = new Claim();
-        claim.directionQuestionnaire = {
+        claim.directionQuestionnaire = <DirectionQuestionnaire>{
           witnesses: {
             otherWitnesses: new OtherWitnesses(),
           },
@@ -74,7 +75,7 @@ describe('Other witnesses service', () => {
       //Given
       mockGetCaseDataFromStore.mockImplementation(async () => {
         const claim = new Claim();
-        claim.directionQuestionnaire = {
+        claim.directionQuestionnaire = <DirectionQuestionnaire>{
           witnesses: new Witnesses(),
         };
         return claim;
