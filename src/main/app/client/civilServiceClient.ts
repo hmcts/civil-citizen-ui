@@ -75,7 +75,6 @@ export class CivilServiceClient {
     const submitterId = req.session?.user?.id;
     try {
       const response = await this.client.get('/cases/defendant/' + submitterId, config);
-      console.log(response.data);
       return plainToInstance(DashboardDefendantItem, response.data as object[]);
     } catch (err) {
       logger.error(err);

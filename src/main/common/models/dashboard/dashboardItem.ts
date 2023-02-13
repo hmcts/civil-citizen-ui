@@ -1,6 +1,8 @@
 import config from 'config';
 
 import {formatDate} from 'modules/nunjucks/filters/dateFilter';
+import {getLng} from 'common/utils/languageToggleUtils';
+import {t} from 'i18next';
 
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
@@ -53,15 +55,13 @@ export class DashboardDefendantItem extends DashboardItem {
     this.url = '/dashboard/:claimId/defendant';
   }
 
-  getStatus() {
-    console.log(this.numberOfDays);
-
+  getStatus(lang: string) {
     const paramNumberOfDays = {key: 'numberOfDays', value: this.numberOfDays};
     const paramNumberOfDaysOverdue = {key: 'numberOfDays', value: this.numberOfDaysOverdue};
     const paramPaymentDate = {key: 'paymentDate', value: formatDate(this.paymentDate?.toString())};
     const paramClaimantName = {key: 'claimantName', value: this.claimantName};
     const paramResponseDeadline = {key: 'responseDeadline', value: formatDate(this.responseDeadline?.toString())};
-    console.log(paramResponseDeadline);
+
     const dashboardStatus: DashboardDefendantStatus =  {
       NO_STATUS: {translationKey:''},
       NO_RESPONSE: {translationKey:'PAGES.DASHBOARD.STATUS.NO_RESPONSE_ON_TIME', parameter: paramNumberOfDays},
@@ -77,7 +77,16 @@ export class DashboardDefendantItem extends DashboardItem {
       REQUESTED_COUNTRY_COURT_JUDGEMENT: {translationKey: 'PAGES.DASHBOARD.STATUS.CLAIMANT_REQUESTED_CCJ', parameter: paramClaimantName},
       SETTLED: {translationKey:'PAGES.DASHBOARD.STATUS.CLAIM_SETTLED'},
     };
-    return (dashboardStatus[this.status]);
+    const currentStatus = dashboardStatus[this.status];
+    return translate(currentStatus.translationKey, currentStatus.parameter);
   }
 }
+
+const translate = (translationKey: string, param?: DashboardStatusTranslationParam, lang?: string | unknown) =>{
+  if(param) {
+    const keyValue = {[param.key]: param.value, lng: getLng(lang)};
+    return t(translationKey, keyValue);
+  }
+  return t(translationKey);
+};
 
