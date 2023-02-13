@@ -35,5 +35,5 @@ variable "jenkins_AAD_objectId" {
 
 variable "common_tags" {
   type        = map(string)
-  description = "Default Common HMCTs Tags"
+  description = "Default Common HMCTS Tags"
 }
