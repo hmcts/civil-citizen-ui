@@ -51,6 +51,7 @@ export const considerClaimantDocQuestion = (claim: Claim, claimId: string, lng: 
     changeLabel(lng),
   );
 };
+
 export const considerClaimantDocResponse = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const details = claim.directionQuestionnaire?.hearing?.considerClaimantDocuments?.details;
 
@@ -59,6 +60,7 @@ export const considerClaimantDocResponse = (claim: Claim, claimId: string, lng: 
     getEmptyStringIfUndefined(details),
   );
 };
+
 export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequirementsSection: SummarySection, claimId: string, lng: string) => {
 
   if (claim?.directionQuestionnaire?.hearing) {
