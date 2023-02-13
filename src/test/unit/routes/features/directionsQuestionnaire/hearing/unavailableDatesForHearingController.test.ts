@@ -49,6 +49,7 @@ describe('Unavailable dates for hearing Controller', () => {
   });
 
   describe('on POST', () => {
+    const today = new Date();
     beforeAll(() => {
       app.locals.draftStoreClient = mockCivilClaimWithExpertAndWitness;
     });
@@ -76,6 +77,7 @@ describe('Unavailable dates for hearing Controller', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.ENTER_DATE_FOR_UNAVAILABILITY);
+
         });
     });
 
@@ -199,8 +201,292 @@ describe('Unavailable dates for hearing Controller', () => {
         });
     });
 
-    it('should redirect next page if unavailable days are less than 30', async () => {
-      const today = new Date();
+    it('should display error when longer priod is selected but no date is provided', async () => {
+      await request(app)
+        .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
+        .send({
+          items: [{
+            type: UnavailableDateType.LONGER_PERIOD,
+            period: {},
+          }],
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.ENTER_DATES_FOR_UNAVAILABILITY);
+        });
+    });
+
+    it('should display error when longer priod is selected but no from/to day is provided', async () => {
+      await request(app)
+        .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
+        .send({
+          items: [{
+            type: UnavailableDateType.LONGER_PERIOD,
+            period: {
+              start: {
+                day: '',
+                month: '5',
+                year: '2023',
+              },
+              end: {
+                day: '',
+                month: '5',
+                year: '2023',
+              },
+            },
+          }],
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.ENTER_DAY_FOR_UNAVAILABILITY_FROM);
+          expect(res.text).toContain(TestMessages.ENTER_DAY_FOR_UNAVAILABILITY_TO);
+        });
+    });
+
+    it('should display error when longer priod is selected but no from/to month is provided', async () => {
+      await request(app)
+        .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
+        .send({
+          items: [{
+            type: UnavailableDateType.LONGER_PERIOD,
+            period: {
+              start: {
+                day: '5',
+                month: '',
+                year: '2023',
+              },
+              end: {
+                day: '5',
+                month: '',
+                year: '2023',
+              },
+            },
+          }],
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.ENTER_MONTH_FOR_UNAVAILABILITY_FROM);
+          expect(res.text).toContain(TestMessages.ENTER_MONTH_FOR_UNAVAILABILITY_TO);
+        });
+    });
+
+    it('should display error when longer priod is selected but no from/to year is provided', async () => {
+      await request(app)
+        .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
+        .send({
+          items: [{
+            type: UnavailableDateType.LONGER_PERIOD,
+            period: {
+              start: {
+                day: '5',
+                month: '5',
+                year: '',
+              },
+              end: {
+                day: '5',
+                month: '5',
+                year: '',
+              },
+            },
+          }],
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.ENTER_YEAR_FOR_UNAVAILABILITY_FROM);
+          expect(res.text).toContain(TestMessages.ENTER_YEAR_FOR_UNAVAILABILITY_TO);
+        });
+    });
+
+    it('should display error when longer priod is selected but from/to dates are in the past', async () => {
+      await request(app)
+        .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
+        .send({
+          items: [{
+            type: UnavailableDateType.LONGER_PERIOD,
+            period: {
+              start: {
+                day: '5',
+                month: '5',
+                year: '2000',
+              },
+              end: {
+                day: '15',
+                month: '5',
+                year: '2000',
+              },
+            },
+          }],
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.ENTER_UNAVAILABILITY_DATE_IN_FUTURE_FROM);
+          expect(res.text).toContain(TestMessages.ENTER_UNAVAILABILITY_DATE_IN_FUTURE_TO);
+        });
+    });
+
+    it('should display error when longer priod is selected but from/to dates are beyond neext 12 months', async () => {
+      await request(app)
+        .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
+        .send({
+          items: [{
+            type: UnavailableDateType.LONGER_PERIOD,
+            period: {
+              start: {
+                day: '5',
+                month: '5',
+                year: '3022',
+              },
+              end: {
+                day: '15',
+                month: '5',
+                year: '3022',
+              },
+            },
+          }],
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS_FROM);
+          expect(res.text).toContain(TestMessages.ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS_TO);
+        });
+    });
+
+    it('should display error when longer priod is selected, but from month and to date is missing', async () => {
+      await request(app)
+        .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
+        .send({
+          items: [{
+            type: UnavailableDateType.LONGER_PERIOD,
+            period: {
+              start: {
+                day: today.getDate(),
+                month: '',
+                year: today.getFullYear() + 1,
+              },
+              end: {
+                day: '',
+                month: '',
+                year: '',
+              },
+            },
+          }],
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.ENTER_DATE_FOR_UNAVAILABILITY_TO);
+          expect(res.text).toContain(TestMessages.ENTER_MONTH_FOR_UNAVAILABILITY_FROM);
+        });
+    });
+
+    it('should display error when longer priod is selected, from date is provided but to date is missing', async () => {
+      await request(app)
+        .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
+        .send({
+          items: [{
+            type: UnavailableDateType.LONGER_PERIOD,
+            period: {
+              start: {
+                day: today.getDate(),
+                month: today.getMonth() + 1,
+                year: today.getFullYear() + 1,
+              },
+              end: {
+                day: '',
+                month: '',
+                year: '',
+              },
+            },
+          }],
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.ENTER_DATE_FOR_UNAVAILABILITY_TO);
+        });
+    });
+
+    it('should display error when longer priod is selected, but to month and from date is missing', async () => {
+      await request(app)
+        .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
+        .send({
+          items: [{
+            type: UnavailableDateType.LONGER_PERIOD,
+            period: {
+              start: {
+                day: '',
+                month: '',
+                year: '',
+              },
+              end: {
+                day: today.getDate(),
+                month: '',
+                year: today.getFullYear() + 1,
+
+              },
+            },
+          }],
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.ENTER_DATE_FOR_UNAVAILABILITY_FROM);
+          expect(res.text).toContain(TestMessages.ENTER_MONTH_FOR_UNAVAILABILITY_TO);
+        });
+    });
+
+    it('should display error when longer priod is selected, to date is provided but from date is missing', async () => {
+      await request(app)
+        .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
+        .send({
+          items: [{
+            type: UnavailableDateType.LONGER_PERIOD,
+            period: {
+              start: {
+                day: '',
+                month: '',
+                year: '',
+              },
+              end: {
+                day: today.getDate(),
+                month: today.getMonth() + 1,
+                year: today.getFullYear() + 1,
+
+              },
+            },
+          }],
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.ENTER_DATE_FOR_UNAVAILABILITY_FROM);
+        });
+    });
+
+    it('should display error when longer priod is selected, but from date is before to date', async () => {
+      await request(app)
+        .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
+        .send({
+          items: [{
+            type: UnavailableDateType.LONGER_PERIOD,
+            period: {
+              start: {
+                day: today.getDate(),
+                month: today.getMonth() + 2,
+                year: today.getFullYear() + 1,
+              },
+              end: {
+                day: today.getDate(),
+                month: today.getMonth() + 1,
+                year: today.getFullYear() + 1,
+
+              },
+            },
+          }],
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE);
+        });
+    });
+
+    it('should redirect phone or video hearing page if all information provided and unavailable dates are less than 30 days', async () => {
       await request(app)
         .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
         .send({
@@ -221,8 +507,7 @@ describe('Unavailable dates for hearing Controller', () => {
         });
     });
 
-    it('should redirect next page if unavailable days are more than 30', async () => {
-      const today = new Date();
+    it('should redirect why unavailable for hearing if unavailable days are more than 30', async () => {
       await request(app)
         .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
         .send({
@@ -232,12 +517,12 @@ describe('Unavailable dates for hearing Controller', () => {
               start: {
                 day: today.getDate(),
                 month: today.getMonth() + 1,
-                year: today.getFullYear() + 1,
+                year: today.getFullYear(),
               },
               end: {
                 day: today.getDate(),
                 month: today.getMonth() + 3,
-                year: today.getFullYear() + 1,
+                year: today.getFullYear(),
               },
             },
           }],

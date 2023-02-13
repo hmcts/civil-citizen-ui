@@ -12,7 +12,7 @@
       '<p class="govuk-error-message">' + t(errorFor('items[' +index+ '][startMonth]')) + '</p>' +
       '<p class="govuk-error-message">' + t(errorFor('items[' +index+ '][startYear]')) + '</p>' %}
   {{ govukDateInput({
-    id: 'items[' + index + '][from]',
+    id: 'items[' + index + '][from]' if unavailableDate.type === UnavailableDateType.SINGLE_DATE else 'items[' + index + '][from]-single',
     type: 'number',
     inputmode: 'numeric',
     hint: {
@@ -23,8 +23,8 @@
     } if (errorFor('items['+index+'][from]') or errorFor('items['+index+'][startDay]') or errorFor('items['+index+'][startMonth]') or errorFor('items['+index+'][startYear]')),
     items: [
       {
-        classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items[' +index+ '][startDay]') or errorFor('items[' +index+ '][from]')) else "govuk-input--width-4",
-        id: 'items[' +index+ '][startDay]-single' if unavailableDate.until else 'items[' +index+ '][startDay]',
+        classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items['+index+'][startDay]') or errorFor('items['+index+'][from]')) else "govuk-input--width-4",
+        id: 'items[' +index+ '][startDay]' if unavailableDate.type === UnavailableDateType.SINGLE_DATE else 'items[' +index+ '][startDay]-single',
         name: 'items[' +index+ '][single][start][day]',
         label: t('COMMON.DAY'),
         value: unavailableDate.startDay if unavailableDate.type === UnavailableDateType.SINGLE_DATE,
@@ -32,7 +32,7 @@
       },
       {
         classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items[' +index+ '][startMonth]') or errorFor('items[' +index+ '][from]')) else "govuk-input--width-4",
-        id: 'items[' +index+ '][startMonth]',
+        id: 'items[' +index+ '][startMonth]' if unavailableDate.type === UnavailableDateType.SINGLE_DATE else 'items[' +index+ '][startMonth]-single',
         name: 'items[' +index+ '][single][start][month]',
         label: t('COMMON.MONTH'),
         value: unavailableDate.startMonth if unavailableDate.type === UnavailableDateType.SINGLE_DATE,
@@ -40,7 +40,7 @@
       },
       {
         classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items[' +index+ '][startYear]') or errorFor('items[' +index+ '][from]')) else "govuk-input--width-4",
-        id: 'items[' +index+ '][startYear]',
+        id: 'items[' +index+ '][startYear]' if unavailableDate.type === UnavailableDateType.SINGLE_DATE else 'items[' +index+ '][startYear]-single',
         name: 'items[' +index+ '][single][start][year]',
         label: t('COMMON.YEAR'),
         value: unavailableDate.startYear if unavailableDate.type === UnavailableDateType.SINGLE_DATE,
@@ -52,8 +52,96 @@
 
 {% set longerPeriodHTML %}
 
-{% endset -%}
+  <div>
+    <p class="govuk-error-message">{{ t(errorFor('items['+index+'][from]')) }} </p>
+    <p class="govuk-error-message">{{ t(errorFor('items['+index+'][startDay]')) }}</p>
+    <p class="govuk-error-message">{{ t(errorFor('items['+index+'][startMonth]')) }}</p>
+    <p class="govuk-error-message">{{ t(errorFor('items['+index+'][startYear]')) }}</p>
+    <p class="govuk-error-message">{{ t(errorFor('items['+index+'][until]')) }}</p>
+    <p class="govuk-error-message">{{ t(errorFor('items['+index+'][endDay]')) }}</p>
+    <p class="govuk-error-message">{{ t(errorFor('items['+index+'][endMonth]')) }}</p>
+    <p class="govuk-error-message">{{ t(errorFor('items['+index+'][endYear]')) }}</p>
+  </div>
+  {{ govukDateInput({
+    id: 'items[' +index+ '][from]',
+    type: "number",
+    inputmode: "numeric",
+    fieldset: {
+      legend: {
+        text: t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.FROM')
+      }
+    },
+    hint: {
+      text: t('COMMON.DATE_EXAMPLE', { date: exampleDate })
+    },
+    items: [
+      {
+        classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items['+index+'][startDay]') or errorFor('items['+index+'][from]') or (not unavailableDate.from and errorFor('items['+index+'][until]'))) else "govuk-input--width-4",
+        id: 'items[' + index + '][startDay]' ,
+        name: 'items[' + index + '][period][start][day]',
+        label: t('COMMON.DAY'),
+        value: unavailableDate.startDay if unavailableDate.type === UnavailableDateType.LONGER_PERIOD,
+        max: 31
+      },
+      {
+        classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items['+index+'][startMonth]') or errorFor('items['+index+'][from]') or (not unavailableDate.from and errorFor('items['+index+'][until]'))) else "govuk-input--width-4",
+        id: 'items[' + index + '][startMonth]',
+        name: 'items[' + index + '][period][start][month]',
+        label: t('COMMON.MONTH'),
+        value: unavailableDate.startMonth if unavailableDate.type === UnavailableDateType.LONGER_PERIOD,
+        max: 12
+      },
+      {
+        classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items['+index+'][startYear]') or errorFor('items['+index+'][from]') or (not unavailableDate.from and errorFor('items['+index+'][until]'))) else "govuk-input--width-4",
+        id: 'items[' + index + '][startYear]',
+        name: 'items[' + index + '][period][start][year]',
+        label: t('COMMON.YEAR'),
+        value: unavailableDate.startYear if unavailableDate.type === UnavailableDateType.LONGER_PERIOD,
+        max: 9999
+      }
+    ]
+  }) }}
 
+  {{ govukDateInput({
+    id: 'items[' + index + '][until]',
+    type: "number",
+    inputmode: "numeric",
+    fieldset: {
+      legend: {
+        text: t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.TO')
+      }
+    },
+    hint: {
+      text: t('COMMON.DATE_EXAMPLE', { date: exampleDate })
+    },
+    items: [
+      {
+        classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items['+index+'][endDay]') or errorFor('items['+index+'][until]')) else "govuk-input--width-4",
+        id: 'items[' + index + '][endDay]',
+        name: 'items[' + index + '][period][end][day]',
+        label: t('COMMON.DAY'),
+        value: unavailableDate.endDay,
+        max: 31
+      },
+      {
+        classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items['+index+'][endMonth]') or errorFor('items['+index+'][until]')) else "govuk-input--width-4",
+        id: 'items[' + index + '][endMonth]',
+        name: 'items[' + index + '][period][end][month]',
+        label: t('COMMON.MONTH'),
+        value: unavailableDate.endMonth,
+        max: 12
+      },
+      {
+        classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items['+index+'][endYear]') or errorFor('items['+index+'][until]')) else "govuk-input--width-4",
+        id: 'items[' + index + '][endYear]',
+        name: 'items[' + index + '][period][end][year]',
+        label: t('COMMON.YEAR'),
+        value: unavailableDate.endYear,
+        max: 9999
+      }
+    ]
+  }) }}
+{% endset -%}
 
   <div class="row-container">
     <div class="multiple-row">
