@@ -29,8 +29,9 @@ const toCCDUnemploymentType = (option: UnemploymentCategory): CCDUnemploymentTyp
 }
 
 const toCCDLengthOfUnemployment = (unemploymentDetails: UnemploymentDetails): CCDLengthOfUnemployment => {
+  if (!unemploymentDetails) return undefined;
   return {
-    numberOfYearsInUnemployment: unemploymentDetails.years,
-    numberOfMonthsInUnemployment: unemploymentDetails.months,
+    numberOfYearsInUnemployment: unemploymentDetails?.years,
+    numberOfMonthsInUnemployment: unemploymentDetails?.months,
   };
 }

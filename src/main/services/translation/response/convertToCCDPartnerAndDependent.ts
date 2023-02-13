@@ -9,9 +9,9 @@ export const toCCDPartnerAndDependents = (statementOfMeans: StatementOfMeans): C
     partnerAgedOver: (statementOfMeans?.partnerAge === YesNo.YES) ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
     haveAnyChildrenRequired: (statementOfMeans?.dependants?.declared) ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
     howManyChildrenByAgeGroup: toCCDChildrenByAgeGroup(statementOfMeans?.dependants),
-    receiveDisabilityPayments: (statementOfMeans?.childrenDisability?.option === 'true') ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
-    supportedAnyoneFinancialRequired: (statementOfMeans?.otherDependants?.option === 'true') ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
-    supportPeopleNumber: statementOfMeans?.otherDependants?.numberOfPeople.toString(),
+    receiveDisabilityPayments: (statementOfMeans?.childrenDisability?.option === YesNo.YES) ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
+    supportedAnyoneFinancialRequired: (statementOfMeans?.otherDependants?.option === YesNo.YES) ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
+    supportPeopleNumber: statementOfMeans?.otherDependants?.numberOfPeople?.toString(),
     supportPeopleDetails: statementOfMeans?.otherDependants?.details,
   }
 }

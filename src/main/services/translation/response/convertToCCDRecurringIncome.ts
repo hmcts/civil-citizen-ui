@@ -14,20 +14,20 @@ export const toCCDRecurringIncomeField = (claim: Claim, responseType: ResponseTy
 }
 
 const toCCDRecurringIncomeList = (regularIncome: RegularIncome): CCDRecurringIncome[] => {
-  if (!regularIncome?.job &&
-    !regularIncome?.universalCredit &&
-    !regularIncome?.jobseekerAllowanceIncome &&
-    !regularIncome?.jobseekerAllowanceContribution &&
-    !regularIncome?.incomeSupport &&
-    !regularIncome?.workingTaxCredit &&
-    !regularIncome?.childTaxCredit &&
-    !regularIncome?.childBenefit &&
-    !regularIncome?.councilTaxSupport &&
-    !regularIncome?.pension &&
-    !regularIncome?.other
+  if (!regularIncome?.job?.declared &&
+    !regularIncome?.universalCredit?.declared &&
+    !regularIncome?.jobseekerAllowanceIncome?.declared &&
+    !regularIncome?.jobseekerAllowanceContribution?.declared &&
+    !regularIncome?.incomeSupport?.declared &&
+    !regularIncome?.workingTaxCredit?.declared &&
+    !regularIncome?.childTaxCredit?.declared &&
+    !regularIncome?.childBenefit?.declared &&
+    !regularIncome?.councilTaxSupport?.declared &&
+    !regularIncome?.pension?.declared &&
+    !regularIncome?.other?.declared
   ) return undefined;
 
-  const ccdRecurringIncomeList: CCDRecurringIncome[] = [];
+  let ccdRecurringIncomeList: CCDRecurringIncome[] = [];
   if (regularIncome?.job?.declared) {
     ccdRecurringIncomeList.push(toCCDRecurringIncomeItem(regularIncome?.job?.transactionSource, CCDIncomeType.JOB))
   }
@@ -59,7 +59,7 @@ const toCCDRecurringIncomeList = (regularIncome: RegularIncome): CCDRecurringInc
     ccdRecurringIncomeList.push(toCCDRecurringIncomeItem(regularIncome?.pension?.transactionSource, CCDIncomeType.PENSION))
   }
   if (regularIncome?.other?.declared) {
-    ccdRecurringIncomeList.concat(toCCDRecurringIncomeOtherItem(regularIncome?.other?.transactionSources, CCDIncomeType.OTHER))
+    ccdRecurringIncomeList = ccdRecurringIncomeList.concat(toCCDRecurringIncomeOtherItem(regularIncome?.other?.transactionSources, CCDIncomeType.OTHER))
   }
 
   return ccdRecurringIncomeList
@@ -67,9 +67,11 @@ const toCCDRecurringIncomeList = (regularIncome: RegularIncome): CCDRecurringInc
 
 const toCCDRecurringIncomeItem = (transactionSource: TransactionSource, incomeType: CCDIncomeType): CCDRecurringIncome => {
   const ccdRecurringIncome: CCDRecurringIncome = {
+    value :{
       type: incomeType,
       amount: transactionSource?.amount,
       frequency: toCCDPaymentFrequency(transactionSource?.schedule),
+    }
   };
   return ccdRecurringIncome;
 }
@@ -79,7 +81,7 @@ const toCCDRecurringIncomeOtherItem = (otherTransactions: TransactionSource[], i
   const ccdOtherRecurringIncomeList: CCDRecurringIncome[] = [];
   otherTransactions.forEach((otherTransactionItem, index) => {
     const ccdRecurringIncome = toCCDRecurringIncomeItem(otherTransactionItem, incomeType);
-    ccdRecurringIncome.typeOtherDetails = otherTransactionItem?.name
+    ccdRecurringIncome.value.typeOtherDetails = otherTransactionItem?.name
     ccdOtherRecurringIncomeList.push(ccdRecurringIncome);
   });
   return ccdOtherRecurringIncomeList;
