@@ -202,20 +202,21 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  let elementSelectedBefore;
+  let elementSelectedBefore = [];
 
   function addEventToAddedRadios(radioButton) {
     radioButton.addEventListener('click', (event) => {
-  
-      if(elementSelectedBefore?.id === radioButton.id) return;
-      elementSelectedBefore = radioButton;
+      const index = event.target.id.split('-')[1];
 
-      const index = event.target.id.match(checkboxIndexRegex);
+      if(elementSelectedBefore[index]?.id === radioButton.id) return;
+        
+      elementSelectedBefore[index] = radioButton;
+      
       const fieldName = event.target.id.split('-')[2];
       const name = fieldName === 'longer' ? 'longer-period' : 'single-date'
       const oppositeName = fieldName === 'longer' ? 'single-date' : 'longer-period'
-      const conditional = document.getElementById(`conditional-items-${index[1]}-${name}`);
-      const oppositeConditional = document.getElementById(`conditional-items-${index[1]}-${oppositeName}`);
+      const conditional = document.getElementById(`conditional-items-${index}-${name}`);
+      const oppositeConditional = document.getElementById(`conditional-items-${index}-${oppositeName}`);
       
       if (conditional?.className?.includes(radioButtonConditionalHidden)) {
         conditional.classList.remove(radioButtonConditionalHidden);
