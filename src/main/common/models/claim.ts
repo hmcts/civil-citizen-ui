@@ -51,7 +51,8 @@ import {Debts} from '../../common/form/models/statementOfMeans/debts/debts';
 import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreference';
 import {toCUIEvidence} from 'services/translation/convertToCUI/convertToCUIEvidence';
 import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIClaimDetails';
-import {analyseClaimType, claimType} from 'common/form/models/claimType';
+import {analyseClaimType, claimType} from 'form/models/claimType';
+
 export class Claim {
   legacyCaseReference: string;
   applicant1?: Party;
@@ -457,7 +458,7 @@ export class Claim {
   }
 
   get isFastTrackClaim(): boolean {
-    return this.claimType === claimType.FAST_TRACK_CLAIM;
+    return this.claimType == claimType.FAST_TRACK_CLAIM;
   }
 }
 
