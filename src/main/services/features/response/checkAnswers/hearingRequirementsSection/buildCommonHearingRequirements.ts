@@ -163,12 +163,16 @@ export const buildCommonHearingRequirements = (claim: Claim, hearingRequirements
 
   if (claim?.directionQuestionnaire?.hearing?.phoneOrVideoHearing?.option) {
     hearingRequirementsSection.summaryList.rows.push(phoneAndVideoQuestion(claim, claimId, getLng(lng)));
-    hearingRequirementsSection.summaryList.rows.push(phoneAndVideoInfo(claim, claimId, getLng(lng)));
+
+    if(claim?.directionQuestionnaire?.hearing?.phoneOrVideoHearing?.option === YesNo.YES)
+      hearingRequirementsSection.summaryList.rows.push(phoneAndVideoInfo(claim, claimId, getLng(lng)));
   }
 
   if (claim?.directionQuestionnaire?.vulnerabilityQuestions?.vulnerability) {
     hearingRequirementsSection.summaryList.rows.push(vulnerabilityQuestion(claim, claimId, lng));
-    hearingRequirementsSection.summaryList.rows.push(vulnerabilityInfo(claim, claimId, lng));
+
+    if(claim?.directionQuestionnaire?.vulnerabilityQuestions?.vulnerability?.option === YesNo.YES)
+      hearingRequirementsSection.summaryList.rows.push(vulnerabilityInfo(claim, claimId, lng));
   }
 
   if (claim?.hasSupportRequiredList) {
