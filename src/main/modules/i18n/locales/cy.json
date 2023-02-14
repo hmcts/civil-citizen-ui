@@ -1629,10 +1629,10 @@
       "TITLE": "Permission for expert"
     },
     "PHONE_OR_VIDEO_HEARING": {
-      "JUDGE_DECISION": "The judge will decide if the hearing can be held by telephone or video.",
-      "PAGE_TITLE": "Do you want to ask for a telephone or video hearing?",
-      "TELL_US_WHY": "Tell us why you want a telephone or video hearing",
-      "TITLE": "Do you want to ask for a telephone or video hearing?"
+      "JUDGE_DECISION": "Bydd y barnwr yn penderfynu a ellir cynnal y gwrandawiad dros y ffôn neu drwy fideo.",
+      "PAGE_TITLE": "Ydych chi eisiau gwneud cais i gael gwrandawiad dros y ffôn neu wrandawiad fideo?",
+      "TELL_US_WHY": "Dywedwch wrthym pam ydych chi eisiau gwrandawiad dros y ffôn neu wrandawiad fideo",
+      "TITLE": "Ydych chi eisiau gwneud cais i gael gwrandawiad dros y ffôn neu wrandawiad fideo?"
     },
     "PRIORITY_DEBTS": {
       "ARREARS": "'mewn ôl-ddyled' (rydych wedi methu taliadau rheolaidd)",
