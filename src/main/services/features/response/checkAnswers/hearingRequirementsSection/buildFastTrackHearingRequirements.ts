@@ -13,7 +13,7 @@ import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import {getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/getEmptyStringIfUndefined';
 
 export const triedToSettleQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const option = claim.directionQuestionnaire?.hearing?.triedToSettle?.option === YesNo.YES
+  const option = claim?.directionQuestionnaire?.hearing?.triedToSettle?.option === YesNo.YES
     ? YesNoUpperCamelCase.YES
     : YesNoUpperCamelCase.NO;
 
@@ -26,7 +26,7 @@ export const triedToSettleQuestion = (claim: Claim, claimId: string, lng: string
 };
 
 export const requestExtra4WeeksQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const option = claim.directionQuestionnaire?.hearing?.requestExtra4weeks?.option === YesNo.YES
+  const option = claim?.directionQuestionnaire?.hearing?.requestExtra4weeks?.option === YesNo.YES
     ? YesNoUpperCamelCase.YES
     : YesNoUpperCamelCase.NO;
 
@@ -39,7 +39,7 @@ export const requestExtra4WeeksQuestion = (claim: Claim, claimId: string, lng: s
 };
 
 export const considerClaimantDocQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const option = claim.directionQuestionnaire?.hearing?.considerClaimantDocuments?.option === YesNo.YES
+  const option = claim?.directionQuestionnaire?.hearing?.considerClaimantDocuments?.option === YesNo.YES
     ? YesNoUpperCamelCase.YES
     : YesNoUpperCamelCase.NO;
 
@@ -52,7 +52,7 @@ export const considerClaimantDocQuestion = (claim: Claim, claimId: string, lng: 
 };
 
 export const considerClaimantDocResponse = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const details = claim.directionQuestionnaire?.hearing?.considerClaimantDocuments?.details;
+  const details = claim?.directionQuestionnaire?.hearing?.considerClaimantDocuments?.details;
 
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.GIVE_DOC_DETAILS', {lng}),
@@ -62,12 +62,10 @@ export const considerClaimantDocResponse = (claim: Claim, claimId: string, lng: 
 
 export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequirementsSection: SummarySection, claimId: string, lng: string) => {
 
-  if (claim?.directionQuestionnaire?.hearing) {
-    hearingRequirementsSection.summaryList.rows.push(triedToSettleQuestion(claim, claimId, lng));
-    hearingRequirementsSection.summaryList.rows.push(requestExtra4WeeksQuestion(claim, claimId, lng));
-    hearingRequirementsSection.summaryList.rows.push(considerClaimantDocQuestion(claim, claimId, lng));
+  hearingRequirementsSection.summaryList.rows.push(triedToSettleQuestion(claim, claimId, lng));
+  hearingRequirementsSection.summaryList.rows.push(requestExtra4WeeksQuestion(claim, claimId, lng));
+  hearingRequirementsSection.summaryList.rows.push(considerClaimantDocQuestion(claim, claimId, lng));
 
-    if(claim.directionQuestionnaire?.hearing?.considerClaimantDocuments.option == YesNo.YES)
-      hearingRequirementsSection.summaryList.rows.push(considerClaimantDocResponse(claim, claimId, lng));
-  }
+  if(claim?.directionQuestionnaire?.hearing?.considerClaimantDocuments?.option == YesNo.YES)
+    hearingRequirementsSection.summaryList.rows.push(considerClaimantDocResponse(claim, claimId, lng));
 };
