@@ -111,8 +111,7 @@ import completingClaimController from './features/claim/completingClaimControlle
 import submitConfirmationController from './features/response/submitConfirmationController';
 import resolvingThisDisputeController from './features/claim/resolvingThisDisputeController';
 import cookiesController from './features/public/cookiesController';
-import defendantExpertEvidenceController
-  from './features/directionsQuestionnaire/experts/defendantExpertEvidenceController';
+import defendantExpertEvidenceController from './features/directionsQuestionnaire/experts/expertEvidenceController';
 import considerClaimantDocumentsController
   from './features/directionsQuestionnaire/considerClaimantDocumentsController';
 import triedToSettleController from './features/directionsQuestionnaire/triedToSettleController';
@@ -180,7 +179,7 @@ import defendantPaymentDateController from './features/claimantResponse/ccj/defe
 import ccjConfirmationController from './features/claimantResponse/ccj/ccjConfirmationController';
 import settleAdmittedController from './features/claimantResponse/settleAdmittedController';
 import bilingualLangPreferenceController from './features/response/bilingualLangPreferenceController';
-import chooseHowToProceedController from './features/claimantResponse/chooseHowToProceedcController';
+import chooseHowToProceedController from './features/claimantResponse/chooseHowToProceedController';
 import repaymentPlanInstalmentsController from './features/claimantResponse/ccj/repaymentPlanInstalmentsController';
 import courtProposedDateController from './features/claimantResponse/courtProposedDateController';
 import signSettlementAgreementController from './features/claimantResponse/signSettlmentAgreementController';
@@ -188,6 +187,7 @@ import repaymentPlanAcceptedController from './features/claimantResponse/repayme
 import courtProposedPlanController from './features/claimantResponse/courtProposedPlanController';
 import debtRespiteLiftedController from './features/breathingSpace/debtRespiteLiftedController';
 import claimantResponseConfirmationController from './features/claimantResponse/claimantResponseConfirmationController';
+import assignClaimController from './features/claimAssignment/assignClaimController';
 import judgmentAmountSummaryController from './features/claimantResponse/ccj/judgmentAmountSummaryController';
 import ccjCheckAnswersController from './features/claimantResponse/ccj/ccjCheckAnswersController';
 import claimantResponseTasklistController from './features/claimantResponse/claimantResponseTasklistController';
@@ -367,6 +367,7 @@ export default [
   repaymentPlanAcceptedController,
   courtProposedPlanController,
   claimantResponseConfirmationController,
+  assignClaimController,
   ccjCheckAnswersController,
   judgmentAmountSummaryController,
   claimantResponseTasklistController,
