@@ -1900,12 +1900,12 @@
       "TITLE": "Ydych chi eisiau rhannu arbenigwr gyda’r hawlydd?"
     },
     "SPECIFIC_COURT": {
-      "EXPlANATION": "You can ask for the hearing to be held at a specific court, for example, if you spend weekdays a long distance from your home. The court will consider both parties' circumstances when deciding where to hold the hearing.",
+      "EXPlANATION": "Gallwch ofyn i’r gwrandawiad gael ei gynnal mewn llys penodol, er enghraifft os ydych yn treulio diwrnodau’r wythnos ymhell i ffwrdd o’ch cartref. Bydd y llys yn ystyried amgylchiadau’r ddau barti wrth benderfynu ble i gynnal y gwrandawiad.",
       "PAGE_TITLE": "Specific court",
-      "SELECT_COURT": "Select a court",
+      "SELECT_COURT": "Dewiswch lys",
       "SELECT_VALUE": "Select a value",
-      "REASON": "Tell us why you want the hearing to be held at this court",
-      "TITLE": "Do you want to ask for the hearing to be held at a specific court?"
+      "REASON": "Dywedwch wrthym pam ydych chi eisiau i’r gwrandawiad gael ei gynnal yn y llys hwn",
+      "TITLE": "Ydych chi eisiau gwneud cais i’r gwrandawiad gael ei gynnal mewn llys penodol?"
     },
     "SUBMIT_CONFIRMATION": {
       "FA_PAY_BY_DATE": {
