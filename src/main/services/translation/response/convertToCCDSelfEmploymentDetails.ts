@@ -1,12 +1,12 @@
 import {CCDSelfEmploymentDetails} from "models/ccdResponse/ccdSelfEmploymentDetails";
 import {StatementOfMeans} from "models/statementOfMeans";
-import {YesNoUpperCamelCase} from "form/models/yesNo";
+import {toCCDYesNoFromBoolean} from "services/translation/response/convertToCCDYesNo";
 
 export const toCCDSelfEmploymentDetails = (statementOfMeans: StatementOfMeans): CCDSelfEmploymentDetails => {
   return {
     jobTitle: statementOfMeans?.selfEmployedAs?.jobTitle,
     annualTurnover: statementOfMeans?.selfEmployedAs?.annualTurnover,
-    isBehindOnTaxPayment: statementOfMeans?.taxPayments?.owed ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
+    isBehindOnTaxPayment: toCCDYesNoFromBoolean(statementOfMeans?.taxPayments?.owed),
     amountOwed: statementOfMeans?.taxPayments?.amountOwed,
     reason: statementOfMeans?.taxPayments?.reason,
   };

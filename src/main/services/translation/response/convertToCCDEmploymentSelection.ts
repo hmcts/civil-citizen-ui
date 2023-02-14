@@ -2,7 +2,7 @@ import {EmploymentCategory} from 'form/models/statementOfMeans/employment/employ
 import {CCDEmploymentOption} from "models/ccdResponse/ccdEmploymentOption";
 
 export const toCCDEmploymentSelection = (employmentType: EmploymentCategory[]): string[] => {
-  if (!employmentType?.length) return undefined;
+  if (!employmentType?.length || employmentType?.length <= 0) return undefined;
   const ccdEmploymentTypeList: string[] = [];
   employmentType.forEach((employmentTypeItem) => {
     ccdEmploymentTypeList.push(toCCDEmploymentOption(employmentTypeItem));

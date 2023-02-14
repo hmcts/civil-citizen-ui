@@ -1,12 +1,12 @@
 import {StatementOfMeans} from "models/statementOfMeans";
-import {YesNo, YesNoUpperCamelCase} from "form/models/yesNo";
 import {CCDFinancialDetailsCuiFields} from "models/ccdResponse/ccdFinancialDetailsCuiFields";
+import {toCCDYesNoFromGenericYesNo} from "services/translation/response/convertToCCDYesNo";
 
 export const toCCDFieldsOnlyInCuiFinancialDetails = (statementOfMeans: StatementOfMeans): CCDFinancialDetailsCuiFields => {
   return {
-    partnerPensionCui: statementOfMeans?.partnerPension?.option === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
-    partnerDisabilityCui: statementOfMeans?.partnerDisability?.option === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
-    partnerSevereDisabilityCui: statementOfMeans?.partnerSevereDisability?.option === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
+    partnerPensionCui: toCCDYesNoFromGenericYesNo(statementOfMeans?.partnerPension),
+    partnerDisabilityCui: toCCDYesNoFromGenericYesNo(statementOfMeans?.partnerDisability),
+    partnerSevereDisabilityCui: toCCDYesNoFromGenericYesNo(statementOfMeans?.partnerSevereDisability),
     childrenEducationCui: statementOfMeans?.numberOfChildrenLivingWithYou?.toString()
   }
 }

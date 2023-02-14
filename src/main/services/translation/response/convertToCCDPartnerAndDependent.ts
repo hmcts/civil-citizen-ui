@@ -1,16 +1,16 @@
 import {StatementOfMeans} from "models/statementOfMeans";
 import {CCDChildrenByAgeGroup, CCDPartnerAndDependent} from "models/ccdResponse/ccdPartnerAndDependent";
-import {YesNo, YesNoUpperCamelCase} from "form/models/yesNo";
 import {Dependants} from "form/models/statementOfMeans/dependants/dependants";
+import {toCCDYesNoFromBoolean, toCCDYesNoFromGenericYesNo} from "services/translation/response/convertToCCDYesNo";
 
 export const toCCDPartnerAndDependents = (statementOfMeans: StatementOfMeans): CCDPartnerAndDependent => {
   return {
-    liveWithPartnerRequired: (statementOfMeans?.cohabiting === YesNo.YES) ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
-    partnerAgedOver: (statementOfMeans?.partnerAge === YesNo.YES) ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
-    haveAnyChildrenRequired: (statementOfMeans?.dependants?.declared) ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
+    liveWithPartnerRequired: toCCDYesNoFromGenericYesNo(statementOfMeans?.cohabiting),
+    partnerAgedOver: toCCDYesNoFromGenericYesNo(statementOfMeans?.partnerAge),
+    haveAnyChildrenRequired: toCCDYesNoFromBoolean(statementOfMeans?.dependants?.declared),
     howManyChildrenByAgeGroup: toCCDChildrenByAgeGroup(statementOfMeans?.dependants),
-    receiveDisabilityPayments: (statementOfMeans?.childrenDisability?.option === YesNo.YES) ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
-    supportedAnyoneFinancialRequired: (statementOfMeans?.otherDependants?.option === YesNo.YES) ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
+    receiveDisabilityPayments: toCCDYesNoFromGenericYesNo(statementOfMeans?.childrenDisability),
+    supportedAnyoneFinancialRequired: toCCDYesNoFromGenericYesNo(statementOfMeans?.otherDependants),
     supportPeopleNumber: statementOfMeans?.otherDependants?.numberOfPeople?.toString(),
     supportPeopleDetails: statementOfMeans?.otherDependants?.details,
   }

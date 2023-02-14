@@ -1,10 +1,11 @@
 import {Claim} from "models/claim";
 import {ResponseType} from "form/models/responseType";
-import {YesNo, YesNoUpperCamelCase} from "form/models/yesNo";
+import {YesNoUpperCamelCase} from "form/models/yesNo";
+import {toCCDYesNoFromGenericYesNo} from "services/translation/response/convertToCCDYesNo";
 
 export const toCCDCarerAllowanceCredit = (claim: Claim, responseType: ResponseType): YesNoUpperCamelCase => {
   if (claim.respondent1?.responseType === responseType) {
-    return claim.statementOfMeans?.carer?.option === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO
+    return toCCDYesNoFromGenericYesNo(claim.statementOfMeans?.carer);
   }
   return undefined;
 };
