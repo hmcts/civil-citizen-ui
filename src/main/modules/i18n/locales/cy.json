@@ -23,6 +23,7 @@
     "EMPLOYER_NAME": "Enw’r cyflogwr",
     "EMPLOYMENT_DETAILS": "Manylion cyflogaeth",
     "EMPLOYMENT_TYPE": "Math o swydd",
+    "ENGLISH": "Cymraeg",
     "FREE_TELEPHONE_MEDIATION": "Gwasanaeth cyfryngu dros y ffôn am ddim",
     "GIVE_DETAILS": "Rhowch fanylion",
     "GO_TO_HOMEPAGE": "Go to homepage",
@@ -37,6 +38,8 @@
     "REMOVE": "Tynnu",
     "RETURN_PAGE": "You can return to RETURN-PAGE and start your claim or defence again.",
     "TECHNICAL_PROBLEMS": "Sorry, we had some technical problems during your last operation. Please try again later.",
+    "WELSH": "Saesneg",
+    "WELSH_AND_ENGLISH": "Cymraeg a Saesneg",
     "TOTAL_DEBT": "Cyfanswm sy’n ddyledus gennych",
     "YEAR": "Blwyddyn",
     "YEARS": "Blwyddyn",
@@ -334,8 +337,8 @@
       "PAGE_TITLE": "Do you want to respond to this claim in Welsh?",
       "TITLE": "Do you want to respond to this claim in Welsh?",
       "DESCRIPTION": "You can respond to this claim in Welsh. After you've submitted your response, anything else you may have to do relating to the claim will be in English. You'll receive emails and letters in English.",
-      "ENGLISH": "English",
-      "WELSH_AND_ENGLISH": "Welsh and English"
+      "ENGLISH": "Cymraeg",
+      "WELSH_AND_ENGLISH": "Cymraeg a Saesneg"
     },
     "BREATHING_SPACE_DEBT_RESPITE_LIFT": {
       "DATE_LIFT_OPTIONAL": "This is the date that you have been told it will finish (optional):",
@@ -2116,13 +2119,13 @@
       "TITLE": "A ydych chi, eich arbenigwyr neu eich tystion yn agored i niwed mewn ffordd y mae angen i’r llys ei ystyried?"
     },
     "WELSH_LANGUAGE": {
-      "ENGLISH": "English",
-      "OFFICIAL_LANGUAGE": "Welsh is an official language of Wales. You can use Welsh in court hearings. Asking to speak in Welsh in your hearing will not delay the hearing or have any effect on proceedings or the outcome of a case.",
-      "PAGE_TITLE": "Welsh language",
-      "WELSH": "Welsh",
-      "WELSH_AND_ENGLISH": "Welsh and English",
-      "WHAT_LANGUAGE_DOCUMENTS": "What languages will the documents be provided in?",
-      "WHAT_LANGUAGE_SPEAK": "What languages will you, your experts and your witnesses speak at the hearing?"
+      "ENGLISH": "Cymraeg",
+      "OFFICIAL_LANGUAGE": "Mae’r Gymraeg yn iaith swyddogol yng Nghymru. Gallwch ddefnyddio’r Gymraeg mewn gwrandawiad llys. Ni fydd gofyn am gael siarad Cymraeg yn eich gwrandawiad yn achosi oedi wrth ei drefnu neu’n cael unrhyw effaith ar yr achos neu ganlyniad yr achos.",
+      "PAGE_TITLE": "Yr iaith Gymraeg",
+      "WELSH": "Saesneg",
+      "WELSH_AND_ENGLISH": "Cymraeg a Saesneg",
+      "WHAT_LANGUAGE_DOCUMENTS": "Ym mha iaith y darperir y dogfennau?",
+      "WHAT_LANGUAGE_SPEAK": "Pa ieithoedd fyddwch chi, eich arbenigwyr a’ch tystion yn siarad yn y gwrandawiad?"
     },
     "WHO_EMPLOYS_YOU": {
       "ADD_ANOTHER_JOB": "Ychwanegu swydd arall",
@@ -2130,9 +2133,9 @@
       "WHO_EMPLOYS": "Pwy sy’n eich cyflogi"
     },
     "WHY_UNAVAILABLE_FOR_HEARING": {
-      "MUST_TELL_US_WHY": "You must tell us why you, your experts or witnesses cannot go to a hearing. The court will consider the reasons when deciding when to hold the hearing.",
+      "MUST_TELL_US_WHY": "Mae’n rhaid i chi ddweud wrthym pam nad ydych chi, eich arbenigwyr neu eich tystion yn gallu mynychu gwrandawiad. Bydd y llys yn ystyried y rhesymau wrth benderfynu pryd i gynnal y gwrandawiad.",
       "PAGE_TITLE": "Why are they not available for hearing?",
-      "TITLE": "Why are you, your experts or witnesses unavailable for a hearing for {{days}} days?"
+      "TITLE": "Pam nad ydych chi, eich arbenigwyr neu eich tystion ar gael i fynychu gwrandawiad am {{days}} diwrnod?"
     },
     "YOU_CAN_USE_SERVICE": {
       "PAGE_TITLE": "You can use this service",
@@ -2347,7 +2350,7 @@
     },
     "SPECIFY_A_REASON": "You must specify a reason",
     "TELL_US_WHY": "Dywedwch wrthym pam",
-    "TELL_US_WHY_UNAVAILABLE": "Tell us why you, your experts or witnesses are unavailable for a hearing",
+    "TELL_US_WHY_UNAVAILABLE": "Dywedwch wrthym pam nad ydych chi, eich arbenigwyr neu eich tystion yn gallu mynychu gwrandawiad",
     "TRANSACTION_SOURCE": {
       "ENTER_OTHER_INCOME": "Tynnu'r ffynhonnell incwm hon",
       "HOW_MUCH_INCOME": {
