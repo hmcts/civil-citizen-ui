@@ -1027,7 +1027,7 @@
         "NO_RESPONSE_OVERDUE": "Respond to claim: {{ numberOfDays }} days overdue",
         "NO_RESPONSE_DUE_TODAY": "Respond to claim: due today",
         "NO_RESPONSE_ELIGIBLE_CCJ":  "You haven’t responded to the claim. {{ claimantName }} can now ask for a County Court Judgment (CCJ) against you. You can still respond to this claim before they ask for a CCJ.",
-        "REQUESTED_MORE_TIME_TO_RESPOND": "You need to respond before 4pm on {{ responseDeadline }}.",
+        "REQUESTED_MORE_TIME_TO_RESPOND": "You need to respond before 4pm on {{ responseDeadline }}."
       },
       "TITLE": "Your money claims account",
       "VIEW": "View"
