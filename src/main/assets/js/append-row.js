@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function () {
           element.classList.add(radioButtonConditionalHidden);
         }
         if (element.type === 'radio') {
-          addEventToAddedRadios(element);
+          addEventToUnavailableDatesRadios(element);
         }
       });
     }
@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   let elementSelectedBefore = [];
 
-  function addEventToAddedRadios(radioButton) {
+  function addEventToUnavailableDatesRadios(radioButton) {
     radioButton.addEventListener('click', (event) => {
       const index = event.target.id.split('-')[1];
 
