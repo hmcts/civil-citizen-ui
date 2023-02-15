@@ -13,7 +13,7 @@ const{addTotalClaimAmountCalculationEventListener} = require('./calculate-total-
 document.addEventListener('DOMContentLoaded', function () {
   const indexRegex = /\[(\d+)\]/;
   const checkboxIndexRegex = /-(\d+)-/;
-  const chechboxConditionalHidden = 'govuk-checkboxes__conditional--hidden';
+  const checkboxConditionalHidden = 'govuk-checkboxes__conditional--hidden';
   const checkboxConditional = 'govuk-checkboxes__conditional';
   const checkboxConditionalClassName = '.govuk-checkboxes__conditional';
   const radioButtonConditionalHidden = 'govuk-radios__conditional--hidden';
@@ -108,8 +108,8 @@ document.addEventListener('DOMContentLoaded', function () {
         incrementIndexOnNameAndId(element);
         updateAttributes(element);
         if (element.className?.includes(checkboxConditional) 
-            && !element.className?.includes(chechboxConditionalHidden)) {
-          element.classList.add(chechboxConditionalHidden);
+            && !element.className?.includes(checkboxConditionalHidden)) {
+          element.classList.add(checkboxConditionalHidden);
         }
         if (element.type === 'checkbox') {
           addEventToAddedCheckbox(element);
@@ -190,10 +190,10 @@ document.addEventListener('DOMContentLoaded', function () {
       const index = event.target.id.match(checkboxIndexRegex);
       const fieldName = event.target.id.split('-')[2];
       const conditional = document.getElementById(`conditional-declared-${index[1]}-${fieldName}`);
-      if (conditional?.className?.includes(chechboxConditionalHidden)) {
-        conditional.classList.remove(chechboxConditionalHidden);
+      if (conditional?.className?.includes(checkboxConditionalHidden)) {
+        conditional.classList.remove(checkboxConditionalHidden);
       } else {
-        conditional.classList.add(chechboxConditionalHidden);
+        conditional.classList.add(checkboxConditionalHidden);
       }
     });
   }
