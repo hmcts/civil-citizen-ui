@@ -1,12 +1,12 @@
-import {PriorityDebts} from "form/models/statementOfMeans/priorityDebts";
+import {PriorityDebts} from 'form/models/statementOfMeans/priorityDebts';
 import {
   CCDDebtDetails,
   CCDDebtDetailsList,
   CCDDebtType,
-  CCDPaymentFrequency
-} from "models/ccdResponse/ccdDebtDetails";
-import {TransactionSchedule} from "form/models/statementOfMeans/expensesAndIncome/transactionSchedule";
-import {TransactionSource} from "form/models/statementOfMeans/expensesAndIncome/transactionSource";
+  CCDPaymentFrequency,
+} from 'models/ccdResponse/ccdDebtDetails';
+import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {TransactionSource} from 'form/models/statementOfMeans/expensesAndIncome/transactionSource';
 
 export const toCCDDebtDetails = (priorityDebts: PriorityDebts): CCDDebtDetails => {
   if (!priorityDebts?.mortgage &&
@@ -42,9 +42,9 @@ export const toCCDDebtDetails = (priorityDebts: PriorityDebts): CCDDebtDetails =
   }
 
   return {
-    debtDetails: ccdDebtDetailsList
+    debtDetails: ccdDebtDetailsList,
   };
-}
+};
 
 const toCCDDebtDetailsItem = (transactionSource: TransactionSource, debtType: CCDDebtType): CCDDebtDetailsList => {
   const ccdDebtDetails: CCDDebtDetailsList = {
@@ -52,10 +52,10 @@ const toCCDDebtDetailsItem = (transactionSource: TransactionSource, debtType: CC
       debtType: debtType,
       paymentAmount: transactionSource?.amount,
       paymentFrequency: toCCDPaymentFrequency(transactionSource?.schedule),
-    }
+    },
   };
   return ccdDebtDetails;
-}
+};
 
 const toCCDPaymentFrequency = (schedule: TransactionSchedule): CCDPaymentFrequency => {
   switch (schedule) {
@@ -70,4 +70,4 @@ const toCCDPaymentFrequency = (schedule: TransactionSchedule): CCDPaymentFrequen
     default:
       return undefined;
   }
-}
+};

@@ -1,4 +1,4 @@
-import {CCDPaymentFrequency} from "models/ccdResponse/ccdDebtDetails";
+import {CCDPaymentFrequency} from 'models/ccdResponse/ccdDebtDetails';
 
 export interface CCDRecurringIncome {
   id?: string,

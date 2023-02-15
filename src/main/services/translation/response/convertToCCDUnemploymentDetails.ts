@@ -1,19 +1,19 @@
-import {Unemployment} from "form/models/statementOfMeans/unemployment/unemployment";
+import {Unemployment} from 'form/models/statementOfMeans/unemployment/unemployment';
 import {
   CCDLengthOfUnemployment,
   CCDUnemploymentDetails,
-  CCDUnemploymentType
-} from "models/ccdResponse/ccdUnemploymentDetails";
-import {UnemploymentCategory} from "form/models/statementOfMeans/unemployment/unemploymentCategory";
-import {UnemploymentDetails} from "form/models/statementOfMeans/unemployment/unemploymentDetails";
+  CCDUnemploymentType,
+} from 'models/ccdResponse/ccdUnemploymentDetails';
+import {UnemploymentCategory} from 'form/models/statementOfMeans/unemployment/unemploymentCategory';
+import {UnemploymentDetails} from 'form/models/statementOfMeans/unemployment/unemploymentDetails';
 
 export const toCCDUnemploymentDetails = (unemployment: Unemployment): CCDUnemploymentDetails => {
   return {
     unemployedComplexTypeRequired: toCCDUnemploymentType(unemployment?.option),
     lengthOfUnemployment: toCCDLengthOfUnemployment(unemployment?.unemploymentDetails),
     otherUnemployment: unemployment?.otherDetails?.details,
-  }
-}
+  };
+};
 
 const toCCDUnemploymentType = (option: UnemploymentCategory): CCDUnemploymentType => {
   switch (option) {
@@ -26,7 +26,7 @@ const toCCDUnemploymentType = (option: UnemploymentCategory): CCDUnemploymentTyp
     default:
       return undefined;
   }
-}
+};
 
 const toCCDLengthOfUnemployment = (unemploymentDetails: UnemploymentDetails): CCDLengthOfUnemployment => {
   if (!unemploymentDetails) return undefined;
@@ -34,4 +34,4 @@ const toCCDLengthOfUnemployment = (unemploymentDetails: UnemploymentDetails): CC
     numberOfYearsInUnemployment: unemploymentDetails?.years,
     numberOfMonthsInUnemployment: unemploymentDetails?.months,
   };
-}
+};

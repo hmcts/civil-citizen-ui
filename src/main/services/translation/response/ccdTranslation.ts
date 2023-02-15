@@ -6,25 +6,25 @@ import {toCCDParty} from './convertToCCDParty';
 import {toCCDRepaymentPlan} from './convertToCCDRepaymentPlan';
 import {toCCDPaymentOption} from './convertToCCDPaymentOption';
 import {toCCDPayBySetDate} from './convertToCCDPayBySetDate';
-import {toCCDBankAccountList} from "./convertToCCDBankAccount";
-import {toCCDHomeDetails} from "./convertToCCDHomeDetails";
-import {toCCDPartnerAndDependents} from "./convertToCCDPartnerAndDependent";
-import {toCCDUnemploymentDetails} from "./convertToCCDUnemploymentDetails";
-import {toCCDEmploymentSelection} from "./convertToCCDEmploymentSelection";
-import {toCCDEmploymentDetails} from "services/translation/response/convertToCCDEmployerDetails";
-import {toCCDSelfEmploymentDetails} from "services/translation/response/convertToCCDSelfEmploymentDetails";
-import {toCCDCourtOrders} from "services/translation/response/convertToCCDCourtOrders";
-import {toCCDLoanCredit} from "services/translation/response/convertToCCDLoanCredit";
-import {toCCDCarerAllowanceCredit} from "services/translation/response/convertToCCDCarerAllowanceCredit";
-import {ResponseType} from "form/models/responseType";
-import {toCCDDebtDetails} from "services/translation/response/convertToCCDDebtDetails";
-import {toCCDRecurringIncomeField} from "services/translation/response/convertToCCDRecurringIncome";
-import {toCCDRecurringExpensesField} from "services/translation/response/convertToCCDRecurringExpense";
-import {toCCDFieldsOnlyInCui} from "services/translation/response/convertToCCDFromCuiOnlyFields";
+import {toCCDBankAccountList} from './convertToCCDBankAccount';
+import {toCCDHomeDetails} from './convertToCCDHomeDetails';
+import {toCCDPartnerAndDependents} from './convertToCCDPartnerAndDependent';
+import {toCCDUnemploymentDetails} from './convertToCCDUnemploymentDetails';
+import {toCCDEmploymentSelection} from './convertToCCDEmploymentSelection';
+import {toCCDEmploymentDetails} from 'services/translation/response/convertToCCDEmployerDetails';
+import {toCCDSelfEmploymentDetails} from 'services/translation/response/convertToCCDSelfEmploymentDetails';
+import {toCCDCourtOrders} from 'services/translation/response/convertToCCDCourtOrders';
+import {toCCDLoanCredit} from 'services/translation/response/convertToCCDLoanCredit';
+import {toCCDCarerAllowanceCredit} from 'services/translation/response/convertToCCDCarerAllowanceCredit';
+import {ResponseType} from 'form/models/responseType';
+import {toCCDDebtDetails} from 'services/translation/response/convertToCCDDebtDetails';
+import {toCCDRecurringIncomeField} from 'services/translation/response/convertToCCDRecurringIncome';
+import {toCCDRecurringExpensesField} from 'services/translation/response/convertToCCDRecurringExpense';
+import {toCCDFieldsOnlyInCui} from 'services/translation/response/convertToCCDFromCuiOnlyFields';
 import {
   toCCDYesNoFromBoolean,
-  toCCDYesNoFromGenericYesNo
-} from "services/translation/response/convertToCCDYesNo";
+  toCCDYesNoFromGenericYesNo,
+} from 'services/translation/response/convertToCCDYesNo';
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   return {

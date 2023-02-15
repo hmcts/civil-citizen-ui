@@ -1,7 +1,7 @@
-import {CCDBankAccount, CCDBankAccountType} from "models/ccdResponse/ccdBankAccount";
-import {CitizenBankAccount} from "models/citizenBankAccount";
-import {YesNoUpperCamelCase} from "form/models/yesNo";
-import {BankAccountTypeValues} from "form/models/bankAndSavings/bankAccountTypeValues";
+import {CCDBankAccount, CCDBankAccountType} from 'models/ccdResponse/ccdBankAccount';
+import {CitizenBankAccount} from 'models/citizenBankAccount';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import {BankAccountTypeValues} from 'form/models/bankAndSavings/bankAccountTypeValues';
 
 export const toCCDBankAccountList = (citizenBankAccount: CitizenBankAccount[]): CCDBankAccount[] => {
   if (!citizenBankAccount?.length
@@ -18,7 +18,7 @@ export const toCCDBankAccountList = (citizenBankAccount: CitizenBankAccount[]): 
     ccdBankAccountList.push(ccdBankAccount);
   });
   return ccdBankAccountList;
-}
+};
 
 const toCCDBankAccountType = (typeOfAccount: string): CCDBankAccountType => {
   switch (typeOfAccount) {
@@ -33,7 +33,7 @@ const toCCDBankAccountType = (typeOfAccount: string): CCDBankAccountType => {
     default:
       return undefined;
   }
-}
+};
 
 const toJointAccountCheck = (joint: string): YesNoUpperCamelCase => {
   if (joint === 'true') {
@@ -43,4 +43,4 @@ const toJointAccountCheck = (joint: string): YesNoUpperCamelCase => {
   } else {
     return undefined;
   }
-}
+};

@@ -30,4 +30,3 @@ export enum CCDPaymentFrequency {
   ONCE_ONE_MONTH = 'ONCE_ONE_MONTH',
 }
 
-

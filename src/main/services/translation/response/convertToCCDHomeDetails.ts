@@ -1,13 +1,13 @@
-import {Residence} from "form/models/statementOfMeans/residence/residence";
-import {CCDHomeDetails, CCDHomeType} from "models/ccdResponse/ccdHomeDetails";
-import {ResidenceType} from "form/models/statementOfMeans/residence/residenceType";
+import {Residence} from 'form/models/statementOfMeans/residence/residence';
+import {CCDHomeDetails, CCDHomeType} from 'models/ccdResponse/ccdHomeDetails';
+import {ResidenceType} from 'form/models/statementOfMeans/residence/residenceType';
 
 export const toCCDHomeDetails = (residence: Residence): CCDHomeDetails => {
   return {
     type: toCCDHomeType(residence?.type),
     typeOtherDetails: residence?.housingDetails,
-  }
-}
+  };
+};
 
 const toCCDHomeType = (type: ResidenceType): CCDHomeType => {
   switch (type) {
@@ -24,4 +24,4 @@ const toCCDHomeType = (type: ResidenceType): CCDHomeType => {
     default:
       return undefined;
   }
-}
+};

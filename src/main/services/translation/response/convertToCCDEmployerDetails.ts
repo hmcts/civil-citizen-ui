@@ -1,8 +1,8 @@
-import {Employers} from "form/models/statementOfMeans/employment/employers";
+import {Employers} from 'form/models/statementOfMeans/employment/employers';
 import {
   CCDEmployerDetails,
-  CCDEmployerDetailsList
-} from "models/ccdResponse/ccdEmployerDetails";
+  CCDEmployerDetailsList,
+} from 'models/ccdResponse/ccdEmployerDetails';
 
 export const toCCDEmploymentDetails = (employers: Employers): CCDEmployerDetails => {
   if (!employers?.rows) return undefined;
@@ -13,12 +13,12 @@ export const toCCDEmploymentDetails = (employers: Employers): CCDEmployerDetails
       value: {
         employerName: employersItem.employerName,
         jobTitle: employersItem.jobTitle,
-      }
+      },
     };
     ccdEmployerDetailsList.push(ccdEmployerDetails);
   });
 
   return {
-    employerDetails: ccdEmployerDetailsList
+    employerDetails: ccdEmployerDetailsList,
   };
-}
+};

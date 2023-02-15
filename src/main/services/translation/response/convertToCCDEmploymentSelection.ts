@@ -1,5 +1,5 @@
 import {EmploymentCategory} from 'form/models/statementOfMeans/employment/employmentCategory';
-import {CCDEmploymentOption} from "models/ccdResponse/ccdEmploymentOption";
+import {CCDEmploymentOption} from 'models/ccdResponse/ccdEmploymentOption';
 
 export const toCCDEmploymentSelection = (employmentType: EmploymentCategory[]): string[] => {
   if (!employmentType?.length || employmentType?.length <= 0) return undefined;
@@ -19,4 +19,4 @@ const toCCDEmploymentOption = (option: EmploymentCategory): CCDEmploymentOption 
     default:
       return undefined;
   }
-}
+};

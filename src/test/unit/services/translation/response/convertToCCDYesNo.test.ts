@@ -1,10 +1,10 @@
 import {
   toCCDYesNo,
   toCCDYesNoFromBoolean,
-  toCCDYesNoFromGenericYesNo
+  toCCDYesNoFromGenericYesNo,
 } from 'services/translation/response/convertToCCDYesNo';
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
-import {GenericYesNo} from "form/models/genericYesNo";
+import {GenericYesNo} from 'form/models/genericYesNo';
 
 describe('translate YesNo to CCD model', () => {
 
@@ -61,5 +61,4 @@ describe('translate YesNo to CCD model From Generic YesNo', () => {
     expect(yesNoResponseCCD).toBe(undefined);
   });
 });
-
 

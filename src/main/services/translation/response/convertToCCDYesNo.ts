@@ -1,5 +1,5 @@
 import {YesNo, YesNoUpperCamelCase} from '../../../common/form/models/yesNo';
-import {GenericYesNo} from "form/models/genericYesNo";
+import {GenericYesNo} from 'form/models/genericYesNo';
 
 export const toCCDYesNo = (value: YesNo) => {
   return value === undefined ? undefined :
