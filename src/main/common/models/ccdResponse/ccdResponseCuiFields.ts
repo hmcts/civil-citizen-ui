@@ -1,8 +1,5 @@
-import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import {CCDFinancialDetailsCuiFields} from "models/ccdResponse/ccdFinancialDetailsCuiFields";
 
 export interface CCDResponseCuiFields {
-  partnerPensionCui?: YesNoUpperCamelCase,
-  partnerDisabilityCui?: YesNoUpperCamelCase,
-  partnerSevereDisabilityCui?: YesNoUpperCamelCase,
-  childrenEducationCui?: string,
+  respondent1FinancialDetailsFromCui?: CCDFinancialDetailsCuiFields,
 }
