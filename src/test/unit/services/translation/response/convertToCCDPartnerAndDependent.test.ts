@@ -9,7 +9,6 @@ import {Dependants} from 'form/models/statementOfMeans/dependants/dependants';
 describe('translate partner and dependents to CCD model', () => {
   it('should return undefined if it is undefined', () => {
     //input
-    const output = toCCDPartnerAndDependents(undefined);
     const expected: CCDPartnerAndDependent = {
       liveWithPartnerRequired: undefined,
       partnerAgedOver: undefined,
@@ -25,13 +24,13 @@ describe('translate partner and dependents to CCD model', () => {
       supportPeopleDetails: undefined,
     };
     //output
+    const output = toCCDPartnerAndDependents(undefined);
     expect(output).toEqual(expected);
   });
 
   it('should return with data if there is empty', () => {
     //input
     const input = new StatementOfMeans();
-    const output = toCCDPartnerAndDependents(input);
     const expected: CCDPartnerAndDependent = {
       liveWithPartnerRequired: undefined,
       partnerAgedOver: undefined,
@@ -47,6 +46,7 @@ describe('translate partner and dependents to CCD model', () => {
       supportPeopleDetails: undefined,
     };
     //output
+    const output = toCCDPartnerAndDependents(input);
     expect(output).toEqual(expected);
   });
 
@@ -81,7 +81,7 @@ describe('translate partner and dependents to CCD model', () => {
     expect(output).toEqual(expected);
   });
 
-  it('should return with data if there is input', () => {
+  it('should return with data if there is input for all No', () => {
     //input
     const input = new StatementOfMeans();
     input.cohabiting = new GenericYesNo(YesNo.NO);
@@ -103,30 +103,6 @@ describe('translate partner and dependents to CCD model', () => {
       },
       receiveDisabilityPayments: YesNoUpperCamelCase.NO,
       supportedAnyoneFinancialRequired: YesNoUpperCamelCase.NO,
-      supportPeopleNumber: undefined,
-      supportPeopleDetails: undefined,
-    };
-    //output
-    const output = toCCDPartnerAndDependents(input);
-    expect(output).toEqual(expected);
-  });
-
-  it('should return with data if there is input', () => {
-    //input
-    const input = new StatementOfMeans();
-    input.cohabiting = new GenericYesNo(undefined);
-
-    const expected: CCDPartnerAndDependent = {
-      liveWithPartnerRequired: undefined,
-      partnerAgedOver: undefined,
-      haveAnyChildrenRequired: undefined,
-      howManyChildrenByAgeGroup: {
-        numberOfUnderEleven: undefined,
-        numberOfElevenToFifteen: undefined,
-        numberOfSixteenToNineteen: undefined,
-      },
-      receiveDisabilityPayments: undefined,
-      supportedAnyoneFinancialRequired: undefined,
       supportPeopleNumber: undefined,
       supportPeopleDetails: undefined,
     };
