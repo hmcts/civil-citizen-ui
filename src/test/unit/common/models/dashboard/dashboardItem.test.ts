@@ -10,45 +10,44 @@ jest.mock('i18next', () => ({
 
 describe('Dashboard Items', ()=> {
   describe('Dashboard claimant item', ()=>{
+    const ocmcClaimantClaim = new DashboardClaimantItem();
+    ocmcClaimantClaim.claimId = '1';
+    ocmcClaimantClaim.ocmc = true;
+
+    const ccdClaimantClaim = new DashboardClaimantItem();
+    ccdClaimantClaim.claimId = '1';
+    ccdClaimantClaim.ocmc = false;
+
     it('should return correct url for ocmc claim', ()=> {
-      //Given
-      const ocmcClaim = new DashboardClaimantItem();
-      ocmcClaim.claimId = '1';
-      ocmcClaim.ocmc = true;
       //When
-      const href = ocmcClaim.getHref();
+      const href = ocmcClaimantClaim.getHref();
       //Then
       expect(href).toEqual(ocmcBaseUrl + '/dashboard/1/claimant');
     });
     it('should return correct url for ccd claims', ()=> {
-      //Given
-      const ocmcClaim = new DashboardClaimantItem();
-      ocmcClaim.claimId = '1';
-      ocmcClaim.ocmc = false;
       //When
-      const href = ocmcClaim.getHref();
+      const href = ccdClaimantClaim.getHref();
       //Then
       expect(href).toEqual( '/dashboard/1/claimant');
     });
   });
   describe('Dashboard defendant item', ()=>{
+    const ocmcDefendantClaim = new DashboardDefendantItem();
+    ocmcDefendantClaim.claimId = '1';
+    ocmcDefendantClaim.ocmc = true;
+
+    const ccdDefendantClaim = new DashboardDefendantItem();
+    ccdDefendantClaim.claimId = '1';
+    ccdDefendantClaim.ocmc = false;
     it('should return correct url for ocmc claim', ()=> {
-      //Given
-      const ocmcClaim = new DashboardDefendantItem();
-      ocmcClaim.claimId = '1';
-      ocmcClaim.ocmc = true;
       //When
-      const href = ocmcClaim.getHref();
+      const href = ocmcDefendantClaim.getHref();
       //Then
       expect(href).toEqual(ocmcBaseUrl + '/dashboard/1/defendant');
     });
     it('should return correct url for ccd claims', ()=> {
-      //Given
-      const ccdClaim = new DashboardDefendantItem();
-      ccdClaim.claimId = '1';
-      ccdClaim.ocmc = false;
       //When
-      const href = ccdClaim.getHref();
+      const href = ccdDefendantClaim.getHref();
       //Then
       expect(href).toEqual( '/dashboard/1/defendant');
     });
