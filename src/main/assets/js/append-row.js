@@ -107,19 +107,15 @@ document.addEventListener('DOMContentLoaded', function () {
         element.parentNode.classList.remove('govuk-form-group--error');
         incrementIndexOnNameAndId(element);
         updateAttributes(element);
-        if (
-          element.className?.includes(checkboxConditional) &&
-          !element.className?.includes(chechboxConditionalHidden)
-        ) {
+        if (element.className?.includes(checkboxConditional) 
+            && !element.className?.includes(chechboxConditionalHidden)) {
           element.classList.add(chechboxConditionalHidden);
         }
         if (element.type === 'checkbox') {
           addEventToAddedCheckbox(element);
         }
-        if (
-          element.className?.includes(radioButtonConditional) &&
-          !element.className?.includes(radioButtonConditionalHidden)
-          ) {
+        if (element.className?.includes(radioButtonConditional) 
+            && !element.className?.includes(radioButtonConditionalHidden)) {
           element.classList.add(radioButtonConditionalHidden);
         }
         if (element.type === 'radio') {
