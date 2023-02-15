@@ -36,3 +36,8 @@ package-lock.json
 
 **/Chart.lock
 **/charts/civil-citizen-ui/charts*
+
+## Terraform
+**/.terraform
+**/.terraform.lock.hcl
+**/override.tf
