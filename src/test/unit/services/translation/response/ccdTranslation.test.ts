@@ -19,7 +19,7 @@ const createFullAdmitClaim = (): Claim => {
   return claim;
 };
 
-const createPartAdmitClaim = ():Claim =>{
+const createPartAdmitClaim = (): Claim => {
   const claim = new Claim();
   claim.respondent1 = new Party();
   claim.respondent1.responseType = ResponseType.PART_ADMISSION;
