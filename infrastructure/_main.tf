@@ -4,3 +4,6 @@ resource "azurerm_resource_group" "rg" {
   location = var.location
   tags     = var.common_tags
 }
+
+
+data "azurerm_client_config" "current" {}
