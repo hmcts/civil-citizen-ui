@@ -13,9 +13,12 @@ const{addTotalClaimAmountCalculationEventListener} = require('./calculate-total-
 document.addEventListener('DOMContentLoaded', function () {
   const indexRegex = /\[(\d+)\]/;
   const checkboxIndexRegex = /-(\d+)-/;
-  const chechboxCondtionalHidden = 'govuk-checkboxes__conditional--hidden';
+  const chechboxConditionalHidden = 'govuk-checkboxes__conditional--hidden';
   const checkboxConditional = 'govuk-checkboxes__conditional';
   const checkboxConditionalClassName = '.govuk-checkboxes__conditional';
+  const radioButtonConditionalHidden = 'govuk-radios__conditional--hidden';
+  const radioButtonConditional = 'govuk-radios__conditional';
+  const radioButtonConditionalClassName = '.govuk-radios__conditional';
   const appendRowButton = document.getElementsByClassName('append-row');
   if (elementExists(appendRowButton)) {
     appendRowButton[0].addEventListener('click', (event) => {
@@ -51,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const newRow = lastRow.cloneNode(true);
       const children = newRow.children;
       Array.from(children).forEach((child) => {
-        const elements = child.querySelectorAll('input, textarea, select, label,' + checkboxConditionalClassName);
+        const elements = child.querySelectorAll(`input, textarea, select, label, ${checkboxConditionalClassName}, ${radioButtonConditionalClassName}`);
         updateInputs(elements);
         removeErrors(child);
       });
@@ -106,12 +109,21 @@ document.addEventListener('DOMContentLoaded', function () {
         updateAttributes(element);
         if (
           element.className?.includes(checkboxConditional) &&
-          !element.className?.includes(chechboxCondtionalHidden)
+          !element.className?.includes(chechboxConditionalHidden)
         ) {
-          element.classList.add(chechboxCondtionalHidden);
+          element.classList.add(chechboxConditionalHidden);
         }
         if (element.type === 'checkbox') {
           addEventToAddedCheckbox(element);
+        }
+        if (
+          element.className?.includes(radioButtonConditional) &&
+          !element.className?.includes(radioButtonConditionalHidden)
+          ) {
+          element.classList.add(radioButtonConditionalHidden);
+        }
+        if (element.type === 'radio') {
+          addEventToAddedRadios(element);
         }
       });
     }
@@ -186,10 +198,36 @@ document.addEventListener('DOMContentLoaded', function () {
       const index = event.target.id.match(checkboxIndexRegex);
       const fieldName = event.target.id.split('-')[2];
       const conditional = document.getElementById(`conditional-declared-${index[1]}-${fieldName}`);
-      if (conditional?.className?.includes(chechboxCondtionalHidden)) {
-        conditional.classList.remove(chechboxCondtionalHidden);
+      if (conditional?.className?.includes(chechboxConditionalHidden)) {
+        conditional.classList.remove(chechboxConditionalHidden);
       } else {
-        conditional.classList.add(chechboxCondtionalHidden);
+        conditional.classList.add(chechboxConditionalHidden);
+      }
+    });
+  }
+
+  let elementSelectedBefore = [];
+
+  function addEventToAddedRadios(radioButton) {
+    radioButton.addEventListener('click', (event) => {
+      const index = event.target.id.split('-')[1];
+
+      if(elementSelectedBefore[index]?.id === radioButton.id) return;
+        
+      elementSelectedBefore[index] = radioButton;
+      
+      const fieldName = event.target.id.split('-')[2];
+      const name = fieldName === 'longer' ? 'longer-period' : 'single-date'
+      const oppositeName = fieldName === 'longer' ? 'single-date' : 'longer-period'
+      const conditional = document.getElementById(`conditional-items-${index}-${name}`);
+      const oppositeConditional = document.getElementById(`conditional-items-${index}-${oppositeName}`);
+      
+      if (conditional?.className?.includes(radioButtonConditionalHidden)) {
+        conditional.classList.remove(radioButtonConditionalHidden);
+        oppositeConditional.classList.add(radioButtonConditionalHidden);
+      } else {
+        conditional.classList.add(radioButtonConditionalHidden);
+        oppositeConditional.classList.remove(radioButtonConditionalHidden);
       }
     });
   }
