@@ -1,17 +1,18 @@
 import {DateTime} from 'luxon';
-import {YesNoUpperCamelCase} from '../../../common/form/models/yesNo';
-import {InterestClaimOptionsType} from '../../../common/form/models/claim/interest/interestClaimOptionsType';
-import {CCDClaim} from '../../../common/models/civilClaimResponse';
-import {Claim} from '../../../common/models/claim';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import {InterestClaimOptionsType} from 'form/models/claim/interest/interestClaimOptionsType';
+import {CCDClaim} from 'models/civilClaimResponse';
+import {Claim} from 'models/claim';
 import {toCCDClaimAmount} from '../response/convertToCCDClaimAmount';
 import {toCCDEvidence} from '../response/convertToCCDEvidence';
 import {toCCDInterestType} from '../response/convertToCCDInterestType';
 import {toCCDParty} from '../response/convertToCCDParty';
-// import {toCCDTimeline} from '../response/convertToCCDTimeLine';
 import {toCCDSameRateInterestSelection} from '../response/convertToCCDtoSameRateInterestSelection';
 import {toCCDYesNo} from '../response/convertToCCDYesNo';
+import {AppRequest} from 'models/AppRequest';
+import {getClaimantIdamDetails} from 'services/translation/response/claimantIdamDetails';
 
-export const translateDraftClaimToCCD = (claim: Claim, _applicantEmail: string): CCDClaim => {
+export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClaim => {
   return {
     applicant1: toCCDParty(claim.applicant1),
     respondent1: toCCDParty(claim.respondent1),
@@ -30,5 +31,6 @@ export const translateDraftClaimToCCD = (claim: Claim, _applicantEmail: string):
     interestFromSpecificDate: claim.isInterestFromASpecificDate() ? DateTime.fromJSDate(new Date(claim.interest?.interestStartDate?.date)).toFormat('yyyy-MM-dd') : undefined,
     interestFromSpecificDateDescription: claim.isInterestFromASpecificDate() ? claim.interest?.interestStartDate?.reason : undefined,
     interestClaimUntil: claim.interest?.interestEndDate,
+    claimantUserDetails: getClaimantIdamDetails(req.session?.user),
   };
 };

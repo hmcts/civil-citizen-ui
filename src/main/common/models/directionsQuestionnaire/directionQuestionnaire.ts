@@ -50,6 +50,28 @@ export class DirectionQuestionnaire {
     if (
       this.hearing?.determinationWithoutHearing &&
       this.isExpertJourneyCompleted &&
+      this.isCommonDQJourneyCompleted
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  get isFastTrackDQJourneyCompleted(): boolean {
+    if (
+      this.hearing?.triedToSettle &&
+      this.hearing?.requestExtra4weeks &&
+      this.hearing?.considerClaimantDocuments &&
+      this.isExpertEvidenceJourneyCompleted &&
+      this.isCommonDQJourneyCompleted
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  get isCommonDQJourneyCompleted(): boolean {
+    if (
       this.defendantYourselfEvidence &&
       this.witnesses?.otherWitnesses &&
       this.isUnavailabilityDatesCompleted &&
@@ -77,8 +99,21 @@ export class DirectionQuestionnaire {
     return false;
   }
 
-  get isUnavailabilityDatesCompleted(): boolean {
-    // TODO : include completion logic for unavailable dates when `unavailable-for-hearing` page is developed
+  get isExpertEvidenceJourneyCompleted(): boolean {
+    if (this.experts?.expertEvidence?.option === YesNo.NO) {
+      return true;
+    }
+    if (this.experts?.sentExpertReports &&
+      this.experts?.sharedExpert &&
+      this.isExpertDetailsAvailable) {
+      return true;
+    }
+    return false;
+  }
+
+  get isUnavailabilityDatesCompleted (): boolean {
+    // TODO : include completion logic for unavailable dates when `available-dates` page is developed
+    // TODO : update if condition for whyUnavailableForHearing when getCalculatedDays function return real value instead mock dat
     if (!this.hearing?.whyUnavailableForHearing) {
       return false;
     }

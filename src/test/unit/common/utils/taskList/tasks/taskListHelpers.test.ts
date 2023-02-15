@@ -2,6 +2,7 @@ import {Claim} from 'common/models/claim';
 import {
   financialDetailsShared,
   hasContactPersonAndCompanyPhone,
+  hasClaimantResponseContactPersonAndCompanyPhone,
   hasCorrespondenceAndPrimaryAddress,
   hasDateOfBirthIfIndividual,
   isCounterpartyCompany,
@@ -29,6 +30,7 @@ import {FullAdmission} from 'common/models/fullAdmission';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {PartialAdmission} from 'common/models/partialAdmission';
 import {HowMuchDoYouOwe} from 'common/form/models/admission/partialAdmission/howMuchDoYouOwe';
+import {ClaimantResponse} from 'common/models/claimantResponse';
 
 const mockClaim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
 const mockRespondent: Party = {
@@ -290,6 +292,21 @@ describe('Task List Helpers', () => {
       caseData.mediation.companyTelephoneNumber.mediationContactPerson = 'test';
       caseData.mediation.companyTelephoneNumber.mediationPhoneNumber = '123';
       expect(hasContactPersonAndCompanyPhone(caseData)).toEqual(true);
+    });
+  });
+
+  describe('hasClaimantResponseContactPersonAndCompanyPhone helper', () => {
+    it('should return false if companyTelephoneNumber are not set', () => {
+      caseData.claimantResponse = new ClaimantResponse();
+      expect(hasClaimantResponseContactPersonAndCompanyPhone(caseData)).toEqual(false);
+    });
+    it('should return true if contact person and mediation phone are set', () => {
+      caseData.claimantResponse = new ClaimantResponse();
+      caseData.claimantResponse.mediation = new Mediation();
+      caseData.claimantResponse.mediation.companyTelephoneNumber = new CompanyTelephoneNumber();
+      caseData.claimantResponse.mediation.companyTelephoneNumber.mediationContactPerson = 'test';
+      caseData.claimantResponse.mediation.companyTelephoneNumber.mediationPhoneNumber = '123';
+      expect(hasClaimantResponseContactPersonAndCompanyPhone(caseData)).toEqual(true);
     });
   });
 
