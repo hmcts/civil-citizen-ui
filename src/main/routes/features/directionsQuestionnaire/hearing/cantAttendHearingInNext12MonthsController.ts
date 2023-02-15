@@ -1,5 +1,9 @@
 import {Response, Router} from 'express';
-import {DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL, UNAUTHORISED_URL} from '../../../urls';
+import {
+  DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL,
+  DQ_PHONE_OR_VIDEO_HEARING_URL,
+  DQ_AVAILABILITY_DATES_FOR_HEARING_URL,
+} from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
@@ -8,6 +12,7 @@ import {
   getGenericOptionForm,
   saveDirectionQuestionnaire,
 } from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
+import {YesNo} from 'common/form/models/yesNo';
 
 const cantAttendHearingInNext12MonthsController = Router();
 const dqPropertyName = 'cantAttendHearingInNext12Months';
@@ -35,7 +40,8 @@ cantAttendHearingInNext12MonthsController.post(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_
       renderView(form, res);
     } else {
       await saveDirectionQuestionnaire(claimId, form.model, dqPropertyName, dqParentName);
-      res.redirect(constructResponseUrlWithIdParams(claimId, UNAUTHORISED_URL));
+      const redirectUrl = form.model.option === YesNo.YES ? DQ_AVAILABILITY_DATES_FOR_HEARING_URL : DQ_PHONE_OR_VIDEO_HEARING_URL;
+      res.redirect(constructResponseUrlWithIdParams(claimId, redirectUrl));
     }
   } catch (error) {
     next(error);
