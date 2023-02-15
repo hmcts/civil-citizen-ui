@@ -13,5 +13,5 @@ module "key-vault" {
   resource_group_name     = azurerm_resource_group.rg.name
   product_group_object_id = data.azuread_group.dts_civil.object_id
   common_tags             = var.common_tags
-  create_managed_identity = true
+  create_managed_identity = false
 }
