@@ -49,7 +49,9 @@ import {CourtOrders} from 'form/models/statementOfMeans/courtOrders/courtOrders'
 import {PriorityDebts} from 'form/models/statementOfMeans/priorityDebts';
 import {Debts} from 'form/models/statementOfMeans/debts/debts';
 import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreference';
-import {analyseClaimType, claimType} from 'form/models/claimType';
+import {toCUIEvidence} from 'services/translation/convertToCUI/convertToCUIEvidence';
+import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIClaimDetails';
+import {analyseClaimType, claimType} from 'common/form/models/claimType';
 
 export class Claim {
   legacyCaseReference: string;
@@ -88,6 +90,8 @@ export class Claim {
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
+    claim.claimDetails = toCUIClaimDetails(ccdClaim);
+    claim.evidence = toCUIEvidence(ccdClaim?.speclistYourEvidenceList);
     claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
     claim.respondent1 = toCUIParty(ccdClaim?.respondent1);
     return claim;
@@ -451,6 +455,9 @@ export class Claim {
 
   get isFastTrackClaim(): boolean {
     return this.claimType == claimType.FAST_TRACK_CLAIM;
+  }
+  get isSmallClaimsTrackDQ(): boolean {
+    return this.claimType === claimType.SMALL_CLAIM;
   }
 }
 

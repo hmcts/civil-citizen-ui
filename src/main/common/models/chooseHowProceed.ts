@@ -1,4 +1,4 @@
-export enum ChooseHowToProceed {
+export enum ChooseHowProceed {
   SIGN_A_SETTLEMENT_AGREEMENT = 'SIGN_A_SETTLEMENT_AGREEMENT',
   REQUEST_A_CCJ = 'REQUEST_A_CCJ',
 }

@@ -4,6 +4,7 @@ import {AssertionError} from 'assert';
 import {AppRequest} from 'common/models/AppRequest';
 import {CivilClaimResponse, ClaimFeeData} from 'common/models/civilClaimResponse';
 import {
+  ASSIGN_CLAIM_TO_DEFENDANT,
   CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
   CIVIL_SERVICE_CLAIM_AMOUNT_URL,
@@ -26,9 +27,10 @@ import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
 
-const convertCaseToClaimAndIncludeState = (caseDetails: CivilClaimResponse): Claim => {
+const convertCaseToClaim = (caseDetails: CivilClaimResponse): Claim => {
   const claim: Claim = Claim.fromCCDCaseData(caseDetails.case_data);
   claim.ccdState = caseDetails.state;
+  claim.id = caseDetails.id;
   return claim;
 };
 
@@ -104,7 +106,7 @@ export class CivilServiceClient {
         throw new AssertionError({message: 'Claim details not available!'});
       }
       const caseDetails: CivilClaimResponse = response.data;
-      const claim: Claim = convertCaseToClaimAndIncludeState(caseDetails);
+      const claim: Claim = convertCaseToClaim(caseDetails);
 
       return claim;
     } catch (err: unknown) {
@@ -146,11 +148,16 @@ export class CivilServiceClient {
     }
   }
 
-  async verifyPin(req: AppRequest, pin: string, caseReference: string): Promise<AxiosResponse> {
+  async verifyPin(req: AppRequest, pin: string, caseReference: string): Promise<Claim> {
     try {
-      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_VALIDATE_PIN_URL //nosonar
+      const response = await this.client.post(CIVIL_SERVICE_VALIDATE_PIN_URL //nosonar
         .replace(':caseReference', caseReference), {pin:pin}, {headers: {'Content-Type': 'application/json'}});// nosonar
-      return response;
+      if (!response.data) {
+        return new Claim();
+      }
+      const caseDetails: CivilClaimResponse = response.data;
+      const claim: Claim = convertCaseToClaim(caseDetails);
+      return claim;
 
     } catch (err: unknown) {
       logger.error(err);
@@ -220,6 +227,16 @@ export class CivilServiceClient {
     try {
       const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_COURT_LOCATIONS, config);
       return plainToInstance(CourtLocation, response.data as object[]);
+    } catch (error: unknown) {
+      logger.error(error);
+      throw error;
+    }
+  }
+
+  async assignDefendantToClaim(claimId:string, req:AppRequest): Promise<void> {
+    try{
+      await this.client.post(ASSIGN_CLAIM_TO_DEFENDANT.replace(':claimId', claimId),{}, // nosonar
+        {headers: {'Authorization': `Bearer ${req.session?.user?.accessToken}`}}); // nosonar
     } catch (error: unknown) {
       logger.error(error);
       throw error;

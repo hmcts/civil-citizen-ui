@@ -14,6 +14,23 @@
         "calculatedAmountInPence": "7000"
       },
       "directionQuestionnaire": {
+        "hearing": {
+          "unavailableDatesForHearing": {
+            "items": [
+              {
+                "from": "2024-01-01T00:00:00.000Z",
+                "startYear": 2024,
+                "startMonth": 1,
+                "startDay": 1,
+                "until": null,
+                "endYear": null,
+                "endMonth": null,
+                "endDay": null,
+                "type": "SINGLE_DATE"
+              }
+            ]
+          }
+        },
         "witnesses": {
           "otherWitnesses": {
             "option": "",
@@ -286,6 +303,34 @@
         "code": "FEE0204",
         "version": "4",
         "calculatedAmountInPence": "8000"
+      },
+      "directionQuestionnaire": {
+        "hearing": {
+          "unavailableDatesForHearing": {
+            "items": [
+              {
+                "from": "2000-01-01T00:00:00.000Z",
+                "startYear": 2000,
+                "startMonth": 1,
+                "startDay": 1,
+                "endYear": 8,
+                "endMonth": 8,
+                "endDay": 8888,
+                "type": "SINGLE_DATE"
+              },
+              {
+                "from": "2222-02-02T00:00:00.000Z",
+                "startYear": 2222,
+                "startMonth": 2,
+                "startDay": 2,
+                "endYear": null,
+                "endMonth": null,
+                "endDay": null,
+                "type": "SINGLE_DATE"
+              }
+            ]
+          }
+        }
       },
       "issueDate": "2022-01-08",
       "applicant1": {
@@ -2536,7 +2581,7 @@
     }
   },
   {
-    "id": 7777,
+    "id": 12345,
     "jurisdiction": "CIVIL",
     "case_type_id": "CIVIL",
     "created_date": "2022-03-01T13:29:22.447",
@@ -2676,7 +2721,7 @@
           }
         }
       ],
-      "totalClaimAmount": 1000,
+      "totalClaimAmount": 11000,
       "interestClaimFrom": "FROM_CLAIM_SUBMIT_DATE",
       "calculatedInterest": "| Description | Amount | \n |---|---| \n | Claim amount | £ 1000 | \n | Interest amount | £ 0.00 | \n | Total amount | £ 1000.00 |",
       "claimAmountBreakup": [
@@ -2796,9 +2841,9 @@
     }
   },
   {
-    "id": 666,
+    "id": 6789,
     "case_data": {
-      "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
+      "ccdState": "AWAITING_APPLICANT_INTENTION",
       "claimFee": {
         "code": "FEE0204",
         "version": "4",
