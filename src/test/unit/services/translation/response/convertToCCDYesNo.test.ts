@@ -57,7 +57,7 @@ describe('translate YesNo to CCD model From Generic YesNo', () => {
   });
 
   it('should return undefined', () => {
-    const yesNoResponseCCD = toCCDYesNoFromBoolean(undefined);
+    const yesNoResponseCCD = toCCDYesNoFromGenericYesNo(undefined);
     expect(yesNoResponseCCD).toBe(undefined);
   });
 });

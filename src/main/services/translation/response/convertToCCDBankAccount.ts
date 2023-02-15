@@ -1,9 +1,11 @@
 import {CCDBankAccount, CCDBankAccountType} from "models/ccdResponse/ccdBankAccount";
 import {CitizenBankAccount} from "models/citizenBankAccount";
 import {YesNoUpperCamelCase} from "form/models/yesNo";
+import {BankAccountTypeValues} from "form/models/bankAndSavings/bankAccountTypeValues";
 
 export const toCCDBankAccountList = (citizenBankAccount: CitizenBankAccount[]): CCDBankAccount[] => {
-  if (!citizenBankAccount?.length || citizenBankAccount?.length <= 0) return undefined;
+  if (!citizenBankAccount?.length
+    || citizenBankAccount?.length <= 0) return undefined;
   const ccdBankAccountList: CCDBankAccount[] = [];
   citizenBankAccount.forEach((citizenBankAccountItem, index) => {
     const ccdBankAccount: CCDBankAccount = {
@@ -20,13 +22,13 @@ export const toCCDBankAccountList = (citizenBankAccount: CitizenBankAccount[]): 
 
 const toCCDBankAccountType = (typeOfAccount: string): CCDBankAccountType => {
   switch (typeOfAccount) {
-    case 'CURRENT_ACCOUNT':
+    case BankAccountTypeValues.CURRENT_ACCOUNT:
       return CCDBankAccountType.CURRENT;
-    case 'SAVINGS_ACCOUNT':
+    case BankAccountTypeValues.SAVINGS_ACCOUNT:
       return CCDBankAccountType.SAVINGS;
-    case 'ISA':
+    case BankAccountTypeValues.ISA:
       return CCDBankAccountType.ISA;
-    case 'OTHER':
+    case BankAccountTypeValues.OTHER:
       return CCDBankAccountType.OTHER;
     default:
       return undefined;
