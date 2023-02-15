@@ -30,32 +30,53 @@ const witness2 =  new OtherWitnessItems({
   details: 'Some details of Jane Does',
 });
 
+const createHearing = (): Hearing => {
+
+  const hearing = new Hearing();
+  hearing.triedToSettle = {
+    option: YesNo.YES,
+  };
+  hearing.requestExtra4weeks = {
+    option: YesNo.YES,
+  };
+  hearing.considerClaimantDocuments = {
+    option: YesNo.YES,
+    details: 'Test Doc',
+  };
+  return hearing;
+};
+
 describe('test hearingRequirementSection', () => {
+  const claim = new Claim();
   it('should display \'no\' when there is no witnesses', () => {
-    const claim = new Claim();
+    //Given
     claim.directionQuestionnaire = new DirectionQuestionnaire();
     claim.directionQuestionnaire.witnesses = new Witnesses();
     claim.directionQuestionnaire.witnesses.otherWitnesses = new OtherWitnesses();
     claim.directionQuestionnaire.witnesses.otherWitnesses.witnessItems = [];
     claim.directionQuestionnaire.witnesses.otherWitnesses.option = YesNo.NO;
 
+    //When
     const summaryRows = buildHearingRequirementSection(claim, '1', 'eng');
 
+    //Then
     expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
     expect(summaryRows.summaryList.rows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
     expect(summaryRows.summaryList.rows[0].value.html).toEqual(YesNoUpperCamelCase.NO);
   });
 
   it('should display \'yes\' and 1 witness details', () => {
-    const claim = new Claim();
+    //Given
     claim.directionQuestionnaire = new DirectionQuestionnaire();
     claim.directionQuestionnaire.witnesses = new Witnesses();
     claim.directionQuestionnaire.witnesses.otherWitnesses = new OtherWitnesses();
     claim.directionQuestionnaire.witnesses.otherWitnesses.option = YesNo.YES;
     claim.directionQuestionnaire.witnesses.otherWitnesses.witnessItems = [witness1];
 
+    //When
     const summaryRows = buildHearingRequirementSection(claim, '1', 'eng');
 
+    //Then
     expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
     expect(summaryRows.summaryList.rows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
     expect(summaryRows.summaryList.rows[0].value.html).toEqual(YesNoUpperCamelCase.YES);
@@ -80,15 +101,17 @@ describe('test hearingRequirementSection', () => {
   });
 
   it('should display \'yes\' and have 2 witnesses', () => {
-    const claim = new Claim();
+    //Given
     claim.directionQuestionnaire = new DirectionQuestionnaire();
     claim.directionQuestionnaire.witnesses = new Witnesses();
     claim.directionQuestionnaire.witnesses.otherWitnesses = new OtherWitnesses();
     claim.directionQuestionnaire.witnesses.otherWitnesses.option = YesNo.YES;
     claim.directionQuestionnaire.witnesses.otherWitnesses.witnessItems = [witness1, witness2];
 
+    //When
     const summaryRows = buildHearingRequirementSection(claim, '1', 'eng');
 
+    //Then
     expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
     expect(summaryRows.summaryList.rows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
     expect(summaryRows.summaryList.rows[0].value.html).toEqual(YesNoUpperCamelCase.YES);
@@ -119,24 +142,15 @@ describe('test hearingRequirementSection', () => {
   });
 
   it('build hearing requirement for Fast Track Claim when there are no witnesses', () => {
-    const claim = new Claim();
+    //Given
     claim.totalClaimAmount = 11000;
     claim.directionQuestionnaire = new DirectionQuestionnaire();
-    claim.directionQuestionnaire.hearing = new Hearing();
-    claim.directionQuestionnaire.hearing = {
-      triedToSettle : {
-        option: YesNo.YES,
-      },
-      requestExtra4weeks : {
-        option: YesNo.YES,
-      },
-      considerClaimantDocuments : {
-        option: YesNo.YES,
-        details: 'Test Doc',
-      },
-    };
+    claim.directionQuestionnaire.hearing = createHearing();
+
+    //When
     const summaryRows = buildHearingRequirementSection(claim, '1', 'eng');
 
+    //Then
     expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
     expect(summaryRows.summaryList.rows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE');
     expect(summaryRows.summaryList.rows[0].value.html).toEqual(YesNoUpperCamelCase.YES);
