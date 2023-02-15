@@ -1,5 +1,5 @@
 import config from 'config';
-import { t } from 'i18next';
+import {t} from 'i18next';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
@@ -7,9 +7,9 @@ import {
   CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from '../../../../../main/routes/urls';
-import {mockCivilClaim,mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import { ChooseHowToProceed } from 'common/models/chooseHowToProceed';
+import {ChooseHowToProceed} from 'models/chooseHowProceed';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -21,7 +21,7 @@ describe('Choose how to proceed Controller', () => {
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
+      .reply(200, {id_token: citizenRoleToken});
   });
 
   describe('on GET', () => {
