@@ -19,8 +19,6 @@ module "key-vault" {
   product_group_object_id = data.azuread_group.dts_civil.object_id
   common_tags             = var.common_tags
   create_managed_identity = false
-<<<<<<< HEAD
-=======
 }
 
 resource "azurerm_key_vault_access_policy" "civil_mi" {
@@ -44,5 +42,4 @@ resource "azurerm_key_vault_access_policy" "civil_mi" {
     "List",
   ]
 
->>>>>>> CIV-5698-fix-infra
 }
