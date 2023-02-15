@@ -9,7 +9,6 @@ import {CitizenDate} from '../../../common/form/models/claim/claimant/citizenDat
 
 export const toCUIParty = (ccdParty: CCDParty): Party => {
   const cuiParty = new Party();
-  console.log(ccdParty);
   cuiParty.partyDetails = new PartyDetails({});
   if (ccdParty?.type === PartyType.INDIVIDUAL) {
     cuiParty.partyDetails.individualFirstName = ccdParty?.individualFirstName ? ccdParty.individualFirstName : undefined;
