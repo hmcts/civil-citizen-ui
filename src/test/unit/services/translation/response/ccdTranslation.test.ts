@@ -10,7 +10,7 @@ import {PartialAdmission} from 'common/models/partialAdmission';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {FullAdmission} from 'common/models/fullAdmission';
 
-const createFullAdmitClaim = ():Claim =>{
+const createFullAdmitClaim = (): Claim => {
   const claim = new Claim();
   claim.respondent1 = new Party();
   claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
