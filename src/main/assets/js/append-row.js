@@ -118,7 +118,11 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function incrementIndexOnNameAndId(element) {
-    const newIndex = document.getElementsByClassName('multiple-row').length;
+    const elements = document.getElementsByClassName('multiple-row')
+    const lastItem = elements[elements.length-1];
+    const lastInput = lastItem.getElementsByClassName('govuk-radios__input');
+    const number = lastInput[0].id.split('-')[1];
+    const newIndex = Number(number) + 1;
     if (element.name) {
       element.name = element.name.replace(indexRegex, '[' + newIndex + ']');
       element.id = element.id.replace(checkboxIndexRegex, '-' + newIndex + '-');
