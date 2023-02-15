@@ -29,7 +29,7 @@ const createPartAdmitClaim = (): Claim => {
 };
 
 describe('translate response to ccd version', () => {
-  it('should translate payment option for full admit claim to ccd', () =>{
+  it('should translate payment option for full admit claim to ccd', () => {
     //Given
     const claim: Claim = createFullAdmitClaim();
     claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
