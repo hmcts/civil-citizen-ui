@@ -4,7 +4,7 @@ import config from 'config';
 import nock from 'nock';
 import {
   DQ_DEFENDANT_WITNESSES_URL,
-  DQ_OTHER_WITNESSES_AVAILABILITY_DATES_FOR_HEARING_URL,
+  DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL,
 } from '../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockRedisFailure} from '../../../../../utils/mockDraftStore';
@@ -72,14 +72,14 @@ describe('Other Witnesses', () => {
   });
 
   describe('on Post', () => {
-    test('should redirect with correct input and redirect to availability dates screen', async () => {
+    test('should redirect with correct input and redirect to availability dates in next 12 months screen', async () => {
       app.locals.draftStoreClient = mockOtherWitnesses;
       await request(app)
         .post(DQ_DEFENDANT_WITNESSES_URL)
         .send({option: YesNo.NO, witnessItems: []})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(DQ_OTHER_WITNESSES_AVAILABILITY_DATES_FOR_HEARING_URL);
+          expect(res.header.location).toEqual(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL);
         });
     });
 
@@ -131,7 +131,7 @@ describe('Other Witnesses', () => {
         })
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(DQ_OTHER_WITNESSES_AVAILABILITY_DATES_FOR_HEARING_URL);
+          expect(res.header.location).toEqual(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL);
         });
     });
 
