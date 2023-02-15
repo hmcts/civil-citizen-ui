@@ -439,13 +439,7 @@ export class Claim {
   }
 
   getPaymentIntention() : PaymentIntention {
-    let paymentIntention;
-    if(this.isPartialAdmission()) {
-      paymentIntention = this.partialAdmission?.paymentIntention;
-    }else {
-      paymentIntention = this.fullAdmission?.paymentIntention;
-    }
-    return paymentIntention;
+    return this.isPartialAdmission()? this.partialAdmission?.paymentIntention : this.fullAdmission?.paymentIntention;
   }
 
   private getName(party: Party): string {
