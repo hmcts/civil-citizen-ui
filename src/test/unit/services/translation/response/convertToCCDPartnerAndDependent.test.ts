@@ -110,5 +110,29 @@ describe('translate partner and dependents to CCD model', () => {
     const output = toCCDPartnerAndDependents(input);
     expect(output).toEqual(expected);
   });
+
+  it('should return with data if there is input', () => {
+    //input
+    const input = new StatementOfMeans();
+    input.cohabiting = new GenericYesNo(undefined);
+
+    const expected: CCDPartnerAndDependent = {
+      liveWithPartnerRequired: undefined,
+      partnerAgedOver: undefined,
+      haveAnyChildrenRequired: undefined,
+      howManyChildrenByAgeGroup: {
+        numberOfUnderEleven: undefined,
+        numberOfElevenToFifteen: undefined,
+        numberOfSixteenToNineteen: undefined,
+      },
+      receiveDisabilityPayments: undefined,
+      supportedAnyoneFinancialRequired: undefined,
+      supportPeopleNumber: undefined,
+      supportPeopleDetails: undefined,
+    };
+    //output
+    const output = toCCDPartnerAndDependents(input);
+    expect(output).toEqual(expected);
+  });
 });
 
