@@ -1,21 +1,15 @@
-import {Claim} from '../../../../../../../main/common/models/claim';
+import {Claim} from 'models/claim';
+import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
+import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
+import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 import {
-  DirectionQuestionnaire,
-} from '../../../../../../../main/common/models/directionsQuestionnaire/directionQuestionnaire';
-import {Hearing} from '../../../../../../../main/common/models/directionsQuestionnaire/hearing/hearing';
-import * as hearingRequirementsSection from '../../../../../../../main/services/features/response/checkAnswers/hearingRequirementsSection/buildHearingRequirementsSection';
-import * as supportRequiredList from '../../../../../../../main/services/features/response/checkAnswers/hearingRequirementsSection/addSupportRequiredList';
-import {summaryRow} from '../../../../../../../main/common/models/summaryList/summaryList';
-import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
+  buildHearingRequirementsSection,
+} from 'services/features/response/checkAnswers/hearingRequirementsSection/buildHearingRequirementsSection';
+import {VulnerabilityQuestions} from 'models/directionsQuestionnaire/vulnerabilityQuestions/vulnerabilityQuestions';
 import {
   WelshLanguageRequirements,
-} from '../../../../../../../main/common/models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
-import {LanguageOptions} from '../../../../../../../main/common/models/directionsQuestionnaire/languageOptions';
-import {
-  VulnerabilityQuestions,
-} from '../../../../../../../main/common/models/directionsQuestionnaire/vulnerabilityQuestions/vulnerabilityQuestions';
-import {summarySection} from '../../../../../../../main/common/models/summaryList/summarySections';
-import {t} from 'i18next';
+} from 'models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
+import {LanguageOptions} from 'models/directionsQuestionnaire/languageOptions';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -26,494 +20,132 @@ jest.mock('i18next', () => ({
 }));
 
 describe('Hearing Requirements Section', () => {
-  const claimId = 'validClaimId';
-  const lng = 'cimode';
-  const changeButton = 'COMMON.BUTTONS.CHANGE';
-
-  describe('determinationWithoutHearingQuestion', () => {
-    it('should return summaryRow if determination without hearing option is no', () => {
+  describe('FastTrack Claim ', () => {
+    it('build hearing requirement for Fast Track Claim.', () => {
       const claim = new Claim();
+      claim.totalClaimAmount = 11000;
+      claim.directionQuestionnaire = new DirectionQuestionnaire();
+      claim.directionQuestionnaire.hearing = new Hearing();
+      claim.directionQuestionnaire.hearing = {
+        triedToSettle : {
+          option: YesNo.YES,
+        },
+        requestExtra4weeks : {
+          option: YesNo.YES,
+        },
+        considerClaimantDocuments : {
+          option: YesNo.YES,
+          details: 'Test Doc',
+        },
+      };
+      claim.directionQuestionnaire.defendantYourselfEvidence = {
+        option: YesNo.YES,
+      };
+      claim.directionQuestionnaire.vulnerabilityQuestions = new VulnerabilityQuestions();
+      claim.directionQuestionnaire.vulnerabilityQuestions.vulnerability = {
+        option: YesNo.YES,
+        vulnerabilityDetails: 'Test vulnerability details',
+      };
+
+      claim.directionQuestionnaire.hearing.phoneOrVideoHearing = {
+        option: YesNo.YES,
+        details: 'Test Phone or video hearing',
+      };
+
+      claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
+      claim.directionQuestionnaire.welshLanguageRequirements.language = {
+        speakLanguage : LanguageOptions.ENGLISH,
+        documentsLanguage : LanguageOptions.WELSH_AND_ENGLISH,
+      };
+
+      const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
+
+      expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
+      expect(summaryRows.summaryList.rows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE');
+      expect(summaryRows.summaryList.rows[0].value.html).toEqual(YesNoUpperCamelCase.YES);
+      expect(summaryRows.summaryList.rows[1].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.REQUEST_EXTRA_4WEEKS');
+      expect(summaryRows.summaryList.rows[1].value.html).toEqual(YesNoUpperCamelCase.YES);
+      expect(summaryRows.summaryList.rows[2].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.CONSIDER_CLAIMANT_DOCUMENT');
+      expect(summaryRows.summaryList.rows[2].value.html).toEqual(YesNoUpperCamelCase.YES);
+      expect(summaryRows.summaryList.rows[3].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.GIVE_DOC_DETAILS');
+      expect(summaryRows.summaryList.rows[3].value.html).toEqual('Test Doc');
+      expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.GIVE_EVIDENCE');
+      expect(summaryRows.summaryList.rows[4].value.html).toEqual(YesNoUpperCamelCase.YES);
+      expect(summaryRows.summaryList.rows[5].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
+      expect(summaryRows.summaryList.rows[5].value.html).toEqual(YesNoUpperCamelCase.NO);
+      expect(summaryRows.summaryList.rows[6].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_PHONE_OR_VIDEO_HEARING');
+      expect(summaryRows.summaryList.rows[6].value.html).toEqual(YesNoUpperCamelCase.YES);
+      expect(summaryRows.summaryList.rows[7].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY_DO_YOU_WANT_PHONE_VIDEO_HEARING');
+      expect(summaryRows.summaryList.rows[7].value.html).toEqual('Test Phone or video hearing');
+      expect(summaryRows.summaryList.rows[8].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION');
+      expect(summaryRows.summaryList.rows[8].value.html).toEqual(YesNoUpperCamelCase.YES);
+      expect(summaryRows.summaryList.rows[9].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_INFO');
+      expect(summaryRows.summaryList.rows[9].value.html).toEqual('Test vulnerability details');
+      expect(summaryRows.summaryList.rows[10].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WELSH_LANGUAGE');
+      expect(summaryRows.summaryList.rows[10].value.html).toEqual(null);
+      expect(summaryRows.summaryList.rows[11].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK');
+      expect(summaryRows.summaryList.rows[11].value.html).toEqual('PAGES.WELSH_LANGUAGE.ENGLISH');
+      expect(summaryRows.summaryList.rows[12].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS');
+      expect(summaryRows.summaryList.rows[12].value.html).toEqual('PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH');
+
+    });
+  });
+
+  describe('Small Claim', () => {
+    it('build hearing requirement for Small Claim.', () => {
+      const claim = new Claim();
+      claim.totalClaimAmount = 1000;
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.hearing = new Hearing();
       claim.directionQuestionnaire.hearing.determinationWithoutHearing = {
         option: YesNo.NO,
-      };
-      const mockSummarySection = summaryRow(
-        'PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE',
-        'No',
-        `/case/${claimId}/directions-questionnaire/determination-without-hearing`,
-        changeButton,
-      );
-
-      expect(hearingRequirementsSection.determinationWithoutHearingQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
-    });
-
-    it('should return summaryRow if determination without hearing option is yes', () => {
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.hearing = new Hearing();
-      claim.directionQuestionnaire.hearing.determinationWithoutHearing = {
-        option: YesNo.YES,
-      };
-      const mockSummarySection = summaryRow(
-        'PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE',
-        'Yes',
-        `/case/${claimId}/directions-questionnaire/determination-without-hearing`,
-        changeButton,
-      );
-
-      expect(hearingRequirementsSection.determinationWithoutHearingQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
-    });
-  });
-
-  describe('determinationWithoutHearingReason', () => {
-    it('should return summaryRow if determination without hearing reason is set', () => {
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.hearing = new Hearing();
-      claim.directionQuestionnaire.hearing.determinationWithoutHearing = {
         reasonForHearing: 'my reason',
       };
-      const mockSummarySection = summaryRow(
-        'PAGES.DETERMINATION_WITHOUT_HEARING.TELL_US_WHY',
-        'my reason',
-        `/case/${claimId}/directions-questionnaire/determination-without-hearing`,
-        changeButton,
-      );
-
-      expect(hearingRequirementsSection.determinationWithoutHearingReason(claim, claimId, lng)).toStrictEqual(mockSummarySection);
-    });
-
-    it('should return summaryRow if determination without hearing reason is not set', () => {
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.hearing = new Hearing();
-      claim.directionQuestionnaire.hearing.determinationWithoutHearing = {};
-      const mockSummarySection = summaryRow(
-        'PAGES.DETERMINATION_WITHOUT_HEARING.TELL_US_WHY',
-        '',
-        `/case/${claimId}/directions-questionnaire/determination-without-hearing`,
-        changeButton,
-      );
-
-      expect(hearingRequirementsSection.determinationWithoutHearingReason(claim, claimId, lng)).toStrictEqual(mockSummarySection);
-    });
-  });
-
-  describe('speakingLanguagePreference', () => {
-    it('should return summaryRow if language preference is english', () => {
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
-      claim.directionQuestionnaire.welshLanguageRequirements.language = {
-        speakLanguage: LanguageOptions.ENGLISH,
-        documentsLanguage: LanguageOptions.WELSH,
-      };
-      const mockSummarySection = summaryRow(
-        'PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK',
-        'PAGES.WELSH_LANGUAGE.ENGLISH',
-        `/case/${claimId}/directions-questionnaire/welsh-language`,
-        changeButton,
-      );
-
-      expect(hearingRequirementsSection.speakingLanguagePreference(claim, claimId, lng)).toStrictEqual(mockSummarySection);
-    });
-
-    it('should return summaryRow if language preference is welsh', () => {
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
-      claim.directionQuestionnaire.welshLanguageRequirements.language = {
-        speakLanguage: LanguageOptions.WELSH,
-        documentsLanguage: LanguageOptions.ENGLISH,
-      };
-      const mockSummarySection = summaryRow(
-        'PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK',
-        'PAGES.WELSH_LANGUAGE.WELSH',
-        `/case/${claimId}/directions-questionnaire/welsh-language`,
-        changeButton,
-      );
-
-      expect(hearingRequirementsSection.speakingLanguagePreference(claim, claimId, lng)).toStrictEqual(mockSummarySection);
-    });
-
-    it('should return summaryRow if language preference is english and welsh', () => {
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
-      claim.directionQuestionnaire.welshLanguageRequirements.language = {
-        speakLanguage: LanguageOptions.WELSH_AND_ENGLISH,
-        documentsLanguage: LanguageOptions.ENGLISH,
-      };
-      const mockSummarySection = summaryRow(
-        'PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK',
-        'PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH',
-        `/case/${claimId}/directions-questionnaire/welsh-language`,
-        changeButton,
-      );
-
-      expect(hearingRequirementsSection.speakingLanguagePreference(claim, claimId, lng)).toStrictEqual(mockSummarySection);
-    });
-
-    it('should return summaryRow if language preference is not provided', () => {
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
-      claim.directionQuestionnaire.welshLanguageRequirements.language = {
-        speakLanguage: LanguageOptions.WELSH_AND_ENGLISH,
-        documentsLanguage: LanguageOptions.ENGLISH,
-      };
-      const claimCopy = Object.assign(claim);
-      claimCopy.directionQuestionnaire.welshLanguageRequirements.language.speakLanguage = undefined;
-      const mockSummarySection = summaryRow(
-        'PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK',
-        '',
-        `/case/${claimId}/directions-questionnaire/welsh-language`,
-        changeButton,
-      );
-
-      expect(hearingRequirementsSection.speakingLanguagePreference(claimCopy, claimId, lng)).toStrictEqual(mockSummarySection);
-    });
-  });
-
-  describe('documentsLanguagePreference', () => {
-    it('should return summaryRow if document language preference is english', () => {
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
-      claim.directionQuestionnaire.welshLanguageRequirements.language = {
-        speakLanguage: LanguageOptions.WELSH,
-        documentsLanguage: LanguageOptions.ENGLISH,
-      };
-      const mockSummarySection = summaryRow(
-        'PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS',
-        'PAGES.WELSH_LANGUAGE.ENGLISH',
-        `/case/${claimId}/directions-questionnaire/welsh-language`,
-        changeButton,
-      );
-
-      expect(hearingRequirementsSection.documentsLanguagePreference(claim, claimId, lng)).toStrictEqual(mockSummarySection);
-    });
-
-    it('should return summaryRow if document language preference is welsh', () => {
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
-      claim.directionQuestionnaire.welshLanguageRequirements.language = {
-        speakLanguage: LanguageOptions.ENGLISH,
-        documentsLanguage: LanguageOptions.WELSH,
-      };
-      const mockSummarySection = summaryRow(
-        'PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS',
-        'PAGES.WELSH_LANGUAGE.WELSH',
-        `/case/${claimId}/directions-questionnaire/welsh-language`,
-        changeButton,
-      );
-
-      expect(hearingRequirementsSection.documentsLanguagePreference(claim, claimId, lng)).toStrictEqual(mockSummarySection);
-    });
-
-    it('should return summaryRow if document language preference is not provided', () => {
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
-      claim.directionQuestionnaire.welshLanguageRequirements.language = {
-        speakLanguage: LanguageOptions.WELSH_AND_ENGLISH,
-        documentsLanguage: LanguageOptions.ENGLISH,
-      };
-      const claimCopy = Object.assign(claim);
-      claimCopy.directionQuestionnaire.welshLanguageRequirements.language.documentsLanguage = undefined;
-      const mockSummarySection = summaryRow(
-        'PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS',
-        '',
-        `/case/${claimId}/directions-questionnaire/welsh-language`,
-        changeButton,
-      );
-
-      expect(hearingRequirementsSection.documentsLanguagePreference(claimCopy, claimId, lng)).toStrictEqual(mockSummarySection);
-    });
-
-    it('should return summaryRow if document language preference is english and welsh', () => {
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
-      claim.directionQuestionnaire.welshLanguageRequirements.language = {
-        speakLanguage: LanguageOptions.ENGLISH,
-        documentsLanguage: LanguageOptions.WELSH_AND_ENGLISH,
-      };
-      const mockSummarySection = summaryRow(
-        'PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS',
-        'PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH',
-        `/case/${claimId}/directions-questionnaire/welsh-language`,
-        changeButton,
-      );
-
-      expect(hearingRequirementsSection.documentsLanguagePreference(claim, claimId, lng)).toStrictEqual(mockSummarySection);
-    });
-  });
-
-  describe('giveEvidenceYourself', () => {
-    it('should return summaryRow if give evidence yourself option is no', () => {
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.defendantYourselfEvidence = {
-        option: YesNo.NO,
-      };
-      const mockSummarySection = summaryRow(
-        'PAGES.CHECK_YOUR_ANSWER.GIVE_EVIDENCE',
-        'No',
-        `/case/${claimId}/directions-questionnaire/give-evidence-yourself`,
-        changeButton,
-      );
-
-      expect(hearingRequirementsSection.giveEvidenceYourself(claim, claimId, lng)).toStrictEqual(mockSummarySection);
-    });
-
-    it('should return summaryRow if give evidence yourself option is yes', () => {
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.defendantYourselfEvidence = {
         option: YesNo.YES,
       };
-      const mockSummarySection = summaryRow(
-        'PAGES.CHECK_YOUR_ANSWER.GIVE_EVIDENCE',
-        'Yes',
-        `/case/${claimId}/directions-questionnaire/give-evidence-yourself`,
-        changeButton,
-      );
-
-      expect(hearingRequirementsSection.giveEvidenceYourself(claim, claimId, lng)).toStrictEqual(mockSummarySection);
-    });
-  });
-
-  describe('vulnerabilityQuestion', () => {
-    it('should return summaryRow if vulnerability question option is no', () => {
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.vulnerabilityQuestions = new VulnerabilityQuestions();
-      claim.directionQuestionnaire.vulnerabilityQuestions.vulnerability = {
-        option: YesNo.NO,
-      };
-      const mockSummarySection = summaryRow(
-        'PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION',
-        'No',
-        `/case/${claimId}/directions-questionnaire/vulnerability`,
-        changeButton,
-      );
-
-      expect(hearingRequirementsSection.vulnerabilityQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
-    });
-
-    it('should return summaryRow if vulnerability question option is yes', () => {
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.vulnerabilityQuestions = new VulnerabilityQuestions();
       claim.directionQuestionnaire.vulnerabilityQuestions.vulnerability = {
         option: YesNo.YES,
+        vulnerabilityDetails: 'Test vulnerability details',
       };
-      const mockSummarySection = summaryRow(
-        'PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION',
-        'Yes',
-        `/case/${claimId}/directions-questionnaire/vulnerability`,
-        changeButton,
-      );
 
-      expect(hearingRequirementsSection.vulnerabilityQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
-    });
-  });
-
-  describe('vulnerabilityInfo', () => {
-    it('should return summaryRow if vulnerability details is set', () => {
-      const vulnerabilityDetails = 'Test vulnerability details';
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.vulnerabilityQuestions = new VulnerabilityQuestions();
-      claim.directionQuestionnaire.vulnerabilityQuestions.vulnerability = {vulnerabilityDetails};
-
-      const mockSummarySection = summaryRow(
-        'PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_INFO',
-        vulnerabilityDetails,
-        `/case/${claimId}/directions-questionnaire/vulnerability`,
-        changeButton,
-      );
-
-      expect(hearingRequirementsSection.vulnerabilityInfo(claim, claimId, lng)).toStrictEqual(mockSummarySection);
-    });
-
-    it('should return summaryRow if vulnerability details is not set', () => {
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.vulnerabilityQuestions = new VulnerabilityQuestions();
-
-      const mockSummarySection = summaryRow(
-        'PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_INFO',
-        '',
-        `/case/${claimId}/directions-questionnaire/vulnerability`,
-        changeButton,
-      );
-
-      expect(hearingRequirementsSection.vulnerabilityInfo(claim, claimId, lng)).toStrictEqual(mockSummarySection);
-    });
-  });
-
-  describe('addSupportRequiredList', () => {
-    it('should return summaryRow if supportRequiredList option is no', () => {
-      //Given
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.hearing = new Hearing();
-      claim.directionQuestionnaire.hearing.supportRequiredList = {
-        option: YesNo.NO,
-      };
-      //When
-      const hearingRequirementsSection = summarySection({
-        title: t('TASK_LIST.YOUR_HEARING_REQUIREMENTS.TITLE', {lng}),
-        summaryRows: [],
-      });
-      const mockSummarySection = summaryRow(
-        'PAGES.SUPPORT_REQUIRED.TITLE',
-        t('COMMON.NO'),
-        `/case/${claimId}/directions-questionnaire/support-required`,
-        changeButton,
-      );
-      //Then
-      supportRequiredList.addSupportRequiredList(claim, hearingRequirementsSection, claimId, lng);
-      expect(hearingRequirementsSection.summaryList.rows[0]).toStrictEqual(mockSummarySection);
-    });
-
-    it('should return summaryRow if supportRequiredList option is yes', () => {
-      //Given
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.hearing = new Hearing();
-      claim.directionQuestionnaire.hearing.supportRequiredList = {
+      claim.directionQuestionnaire.hearing.phoneOrVideoHearing = {
         option: YesNo.YES,
-        items: [
-          {fullName: 'John Doe'},
-        ],
+        details: 'Test Phone or video hearing',
       };
-      //When
-      const hearingRequirementsSection = summarySection({
-        title: t('TASK_LIST.YOUR_HEARING_REQUIREMENTS.TITLE', {lng}),
-        summaryRows: [],
-      });
-      const mockSummarySection = summaryRow(
-        'PAGES.SUPPORT_REQUIRED.TITLE',
-        t('COMMON.YES'),
-        `/case/${claimId}/directions-questionnaire/support-required`,
-        changeButton,
-      );
-      //Then
-      supportRequiredList.addSupportRequiredList(claim, hearingRequirementsSection, claimId, lng);
-      expect(hearingRequirementsSection.summaryList.rows[0]).toStrictEqual(mockSummarySection);
+
+      claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
+      claim.directionQuestionnaire.welshLanguageRequirements.language = {
+        speakLanguage : LanguageOptions.ENGLISH,
+        documentsLanguage : LanguageOptions.WELSH_AND_ENGLISH,
+      };
+
+      const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
+      expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
+      expect(summaryRows.summaryList.rows[0].key.text).toEqual('PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE');
+      expect(summaryRows.summaryList.rows[0].value.html).toEqual(YesNoUpperCamelCase.NO);
+      expect(summaryRows.summaryList.rows[1].key.text).toEqual('PAGES.DETERMINATION_WITHOUT_HEARING.TELL_US_WHY');
+      expect(summaryRows.summaryList.rows[1].value.html).toEqual('my reason');
+      expect(summaryRows.summaryList.rows[2].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.GIVE_EVIDENCE');
+      expect(summaryRows.summaryList.rows[2].value.html).toEqual(YesNoUpperCamelCase.YES);
+      expect(summaryRows.summaryList.rows[3].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
+      expect(summaryRows.summaryList.rows[3].value.html).toEqual(YesNoUpperCamelCase.NO);
+      expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_PHONE_OR_VIDEO_HEARING');
+      expect(summaryRows.summaryList.rows[4].value.html).toEqual(YesNoUpperCamelCase.YES);
+      expect(summaryRows.summaryList.rows[5].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY_DO_YOU_WANT_PHONE_VIDEO_HEARING');
+      expect(summaryRows.summaryList.rows[5].value.html).toEqual('Test Phone or video hearing');
+      expect(summaryRows.summaryList.rows[6].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION');
+      expect(summaryRows.summaryList.rows[6].value.html).toEqual(YesNoUpperCamelCase.YES);
+      expect(summaryRows.summaryList.rows[7].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_INFO');
+      expect(summaryRows.summaryList.rows[7].value.html).toEqual('Test vulnerability details');
+      expect(summaryRows.summaryList.rows[8].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WELSH_LANGUAGE');
+      expect(summaryRows.summaryList.rows[8].value.html).toEqual(null);
+      expect(summaryRows.summaryList.rows[9].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK');
+      expect(summaryRows.summaryList.rows[9].value.html).toEqual('PAGES.WELSH_LANGUAGE.ENGLISH');
+      expect(summaryRows.summaryList.rows[10].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS');
+      expect(summaryRows.summaryList.rows[10].value.html).toEqual('PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH');
     });
   });
 
-  describe('buildHearingRequirementsSection', () => {
-    afterEach(() => {
-      jest.clearAllMocks();
-    });
-
-    it('should not call determinationWithoutHearingReason if option is yes', () => {
-      //Given
-      const determinationWithoutHearingReasonSpy = jest.spyOn(hearingRequirementsSection, 'determinationWithoutHearingReason');
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.hearing = new Hearing();
-      claim.directionQuestionnaire.hearing.determinationWithoutHearing = {
-        option: YesNo.YES,
-      };
-      //When
-      hearingRequirementsSection.buildHearingRequirementsSection(claim, claimId, lng);
-      //Then
-      expect(determinationWithoutHearingReasonSpy).not.toBeCalled();
-    });
-
-    it('should not call determinationWithoutHearingReason if option is undefined', () => {
-      //Given
-      const determinationWithoutHearingReasonSpy = jest.spyOn(hearingRequirementsSection, 'determinationWithoutHearingReason');
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.hearing = new Hearing();
-      claim.directionQuestionnaire.hearing.determinationWithoutHearing = {
-        option: undefined,
-      };
-      //When
-      hearingRequirementsSection.buildHearingRequirementsSection(claim, claimId, lng);
-      //Then
-      expect(determinationWithoutHearingReasonSpy).not.toBeCalled();
-    });
-
-    it('should not call giveEvidenceYourself if option is not set', () => {
-      //Given
-      const giveEvidenceYourselfSpy = jest.spyOn(hearingRequirementsSection, 'giveEvidenceYourself');
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      //When
-      hearingRequirementsSection.buildHearingRequirementsSection(claim, claimId, lng);
-      //Then
-      expect(giveEvidenceYourselfSpy).not.toBeCalled();
-    });
-
-    it('should not call vulnerabilityQuestion if vulnerability is not set', () => {
-      //Given
-      const vulnerabilityQuestionSpy = jest.spyOn(hearingRequirementsSection, 'vulnerabilityQuestion');
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.vulnerabilityQuestions = new VulnerabilityQuestions();
-      //When
-      hearingRequirementsSection.buildHearingRequirementsSection(claim, claimId, lng);
-      //Then
-      expect(vulnerabilityQuestionSpy).not.toBeCalled();
-    });
-
-    it('should not call vulnerabilityInfo if vulnerability is not set', () => {
-      //Given
-      const vulnerabilityInfoSpy = jest.spyOn(hearingRequirementsSection, 'vulnerabilityInfo');
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.vulnerabilityQuestions = new VulnerabilityQuestions();
-      //When
-      hearingRequirementsSection.buildHearingRequirementsSection(claim, claimId, lng);
-      //Then
-      expect(vulnerabilityInfoSpy).not.toBeCalled();
-    });
-
-    it('should not call speakingLanguagePreference if welshLanguageRequirements is not set', () => {
-      //Given
-      const speakingLanguagePreferenceSpy = jest.spyOn(hearingRequirementsSection, 'speakingLanguagePreference');
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
-      //When
-      hearingRequirementsSection.buildHearingRequirementsSection(claim, claimId, lng);
-      //Then
-      expect(speakingLanguagePreferenceSpy).not.toBeCalled();
-    });
-
-    it('should not call documentsLanguagePreference if welshLanguageRequirements is not set', () => {
-      //Given
-      const documentsLanguagePreferenceSpy = jest.spyOn(hearingRequirementsSection, 'documentsLanguagePreference');
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
-      //When
-      hearingRequirementsSection.buildHearingRequirementsSection(claim, claimId, lng);
-      //Then
-      expect(documentsLanguagePreferenceSpy).not.toBeCalled();
-    });
-
-    it('should not call addSupportRequiredList if supportRequiredList is not set', () => {
-      //Given
-      const addSupportRequiredListSpy = jest.spyOn(supportRequiredList, 'addSupportRequiredList');
-      const generateSupportDetailsSpy = jest.spyOn(supportRequiredList, 'generateSupportDetails');
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      //When
-      hearingRequirementsSection.buildHearingRequirementsSection(claim, claimId, lng);
-      //Then
-      expect(addSupportRequiredListSpy).not.toBeCalled();
-      expect(generateSupportDetailsSpy).not.toBeCalled();
-    });
-  });
 });
