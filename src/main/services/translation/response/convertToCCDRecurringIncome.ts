@@ -3,7 +3,7 @@ import {ResponseType} from 'form/models/responseType';
 import {Claim} from 'models/claim';
 import {RegularIncome} from 'form/models/statementOfMeans/expensesAndIncome/regularIncome';
 import {TransactionSource} from 'form/models/statementOfMeans/expensesAndIncome/transactionSource';
-import {toCCDPaymentFrequency} from "services/translation/response/convertToCCDPaymentFrequency";
+import {toCCDPaymentFrequency} from 'services/translation/response/convertToCCDPaymentFrequency';
 
 export const toCCDRecurringIncomeField = (claim: Claim, responseType: ResponseType): CCDRecurringIncome[] => {
   if (claim.respondent1?.responseType === responseType) {

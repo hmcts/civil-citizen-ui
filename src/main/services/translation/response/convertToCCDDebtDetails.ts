@@ -5,7 +5,7 @@ import {
   CCDDebtType,
 } from 'models/ccdResponse/ccdDebtDetails';
 import {TransactionSource} from 'form/models/statementOfMeans/expensesAndIncome/transactionSource';
-import {toCCDPaymentFrequency} from "services/translation/response/convertToCCDPaymentFrequency";
+import {toCCDPaymentFrequency} from 'services/translation/response/convertToCCDPaymentFrequency';
 
 export const toCCDDebtDetails = (priorityDebts: PriorityDebts): CCDDebtDetails => {
   if (!priorityDebts?.mortgage &&

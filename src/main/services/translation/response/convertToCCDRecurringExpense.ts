@@ -3,7 +3,7 @@ import {Claim} from 'models/claim';
 import {RegularExpenses} from 'form/models/statementOfMeans/expensesAndIncome/regularExpenses';
 import {TransactionSource} from 'form/models/statementOfMeans/expensesAndIncome/transactionSource';
 import {CCDExpensesType, CCDRecurringExpenses} from 'models/ccdResponse/ccdRecurringExpenses';
-import {toCCDPaymentFrequency} from "services/translation/response/convertToCCDPaymentFrequency";
+import {toCCDPaymentFrequency} from 'services/translation/response/convertToCCDPaymentFrequency';
 
 export const toCCDRecurringExpensesField = (claim: Claim, responseType: ResponseType): CCDRecurringExpenses[] => {
   if (claim.respondent1?.responseType === responseType) {

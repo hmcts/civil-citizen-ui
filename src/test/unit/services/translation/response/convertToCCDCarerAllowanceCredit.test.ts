@@ -1,9 +1,9 @@
-import {toCCDCarerAllowanceCredit} from "services/translation/response/convertToCCDCarerAllowanceCredit";
-import {ResponseType} from "form/models/responseType";
-import {Claim} from "models/claim";
-import {StatementOfMeans} from "models/statementOfMeans";
-import {GenericYesNo} from "form/models/genericYesNo";
-import {YesNo, YesNoUpperCamelCase} from "form/models/yesNo";
+import {toCCDCarerAllowanceCredit} from 'services/translation/response/convertToCCDCarerAllowanceCredit';
+import {ResponseType} from 'form/models/responseType';
+import {Claim} from 'models/claim';
+import {StatementOfMeans} from 'models/statementOfMeans';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 
 describe('translate carer allowance credit to CCD model', () => {
   it('should return undefined if it is empty', () => {
@@ -22,8 +22,8 @@ describe('translate carer allowance credit to CCD model', () => {
   it('should return value if it is same Response Type', () => {
     const input = new Claim();
     input.respondent1 = {
-      responseType: ResponseType.FULL_ADMISSION
-    }
+      responseType: ResponseType.FULL_ADMISSION,
+    };
     input.statementOfMeans = new StatementOfMeans();
     input.statementOfMeans.carer = new GenericYesNo((YesNo.YES));
 
@@ -34,8 +34,8 @@ describe('translate carer allowance credit to CCD model', () => {
   it('should return undefined if it is different Response Type', () => {
     const input = new Claim();
     input.respondent1 = {
-      responseType: ResponseType.PART_ADMISSION
-    }
+      responseType: ResponseType.PART_ADMISSION,
+    };
     input.statementOfMeans = new StatementOfMeans();
     input.statementOfMeans.carer = new GenericYesNo((YesNo.YES));
 
@@ -46,8 +46,8 @@ describe('translate carer allowance credit to CCD model', () => {
   it('should return undefined if it is undefined carer allowance', () => {
     const input = new Claim();
     input.respondent1 = {
-      responseType: ResponseType.PART_ADMISSION
-    }
+      responseType: ResponseType.PART_ADMISSION,
+    };
     input.statementOfMeans = new StatementOfMeans();
     input.statementOfMeans.carer = undefined;
 
@@ -58,8 +58,8 @@ describe('translate carer allowance credit to CCD model', () => {
   it('should return undefined if it is undefined carer allowance option', () => {
     const input = new Claim();
     input.respondent1 = {
-      responseType: ResponseType.PART_ADMISSION
-    }
+      responseType: ResponseType.PART_ADMISSION,
+    };
     input.statementOfMeans = new StatementOfMeans();
     input.statementOfMeans.carer = new GenericYesNo(undefined);
 

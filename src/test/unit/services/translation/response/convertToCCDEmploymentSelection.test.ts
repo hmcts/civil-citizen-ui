@@ -1,16 +1,16 @@
-import {toCCDEmploymentSelection} from "services/translation/response/convertToCCDEmploymentSelection";
-import {EmploymentCategory} from "form/models/statementOfMeans/employment/employmentCategory";
+import {toCCDEmploymentSelection} from 'services/translation/response/convertToCCDEmploymentSelection';
+import {EmploymentCategory} from 'form/models/statementOfMeans/employment/employmentCategory';
 
 describe('translate employment selection to CCD model', () => {
   it('should return values if there is input', () => {
 
     const input : EmploymentCategory[] = [
       EmploymentCategory.SELF_EMPLOYED,
-      EmploymentCategory.EMPLOYED
+      EmploymentCategory.EMPLOYED,
     ];
     const expected: string[] = [
-      'SELF', 'EMPLOYED'
-    ]
+      'SELF', 'EMPLOYED',
+    ];
 
     const output = toCCDEmploymentSelection(input);
     expect(output).toEqual(expected);
@@ -18,11 +18,11 @@ describe('translate employment selection to CCD model', () => {
 
   it('should return values if input is undefined', () => {
     const input : EmploymentCategory[] = [
-      undefined
+      undefined,
     ];
     const expected: string[] = [
-      undefined
-    ]
+      undefined,
+    ];
 
     const output = toCCDEmploymentSelection(input);
     expect(output).toEqual(expected);

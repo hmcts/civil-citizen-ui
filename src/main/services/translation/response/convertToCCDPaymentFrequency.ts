@@ -1,5 +1,5 @@
-import {TransactionSchedule} from "form/models/statementOfMeans/expensesAndIncome/transactionSchedule";
-import {CCDPaymentFrequency} from "models/ccdResponse/ccdPaymentFrequency";
+import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {CCDPaymentFrequency} from 'models/ccdResponse/ccdPaymentFrequency';
 
 export const toCCDPaymentFrequency = (schedule: TransactionSchedule): CCDPaymentFrequency => {
   switch (schedule) {

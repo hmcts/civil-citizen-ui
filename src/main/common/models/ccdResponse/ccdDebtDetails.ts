@@ -1,4 +1,4 @@
-import {CCDPaymentFrequency} from "models/ccdResponse/ccdPaymentFrequency";
+import {CCDPaymentFrequency} from 'models/ccdResponse/ccdPaymentFrequency';
 
 export interface CCDDebtDetails {
   debtDetails?: CCDDebtDetailsList[],
