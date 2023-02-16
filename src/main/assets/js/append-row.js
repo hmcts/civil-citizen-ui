@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  function getNumberFromElementName(element) {
+  function getNumberFromElementName() {
     const elements = document.getElementsByClassName('multiple-row')
     const lastItem = elements[elements.length-1];
     const lastInput = lastItem.getElementsByClassName('govuk-radios__input');
