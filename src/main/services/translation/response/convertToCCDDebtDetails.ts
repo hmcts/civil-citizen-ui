@@ -3,10 +3,9 @@ import {
   CCDDebtDetails,
   CCDDebtDetailsList,
   CCDDebtType,
-  CCDPaymentFrequency,
 } from 'models/ccdResponse/ccdDebtDetails';
-import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {TransactionSource} from 'form/models/statementOfMeans/expensesAndIncome/transactionSource';
+import {toCCDPaymentFrequency} from "services/translation/response/convertToCCDPaymentFrequency";
 
 export const toCCDDebtDetails = (priorityDebts: PriorityDebts): CCDDebtDetails => {
   if (!priorityDebts?.mortgage &&
@@ -55,19 +54,4 @@ const toCCDDebtDetailsItem = (transactionSource: TransactionSource, debtType: CC
     },
   };
   return ccdDebtDetails;
-};
-
-const toCCDPaymentFrequency = (schedule: TransactionSchedule): CCDPaymentFrequency => {
-  switch (schedule) {
-    case TransactionSchedule.WEEK:
-      return CCDPaymentFrequency.ONCE_ONE_WEEK;
-    case TransactionSchedule.TWO_WEEKS:
-      return CCDPaymentFrequency.ONCE_TWO_WEEKS;
-    case TransactionSchedule.FOUR_WEEKS:
-      return CCDPaymentFrequency.ONCE_FOUR_WEEKS;
-    case TransactionSchedule.MONTH:
-      return CCDPaymentFrequency.ONCE_ONE_MONTH;
-    default:
-      return undefined;
-  }
 };

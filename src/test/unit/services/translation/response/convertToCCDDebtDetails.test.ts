@@ -1,12 +1,13 @@
 import {toCCDDebtDetails} from "services/translation/response/convertToCCDDebtDetails";
 import {PriorityDebts} from "form/models/statementOfMeans/priorityDebts";
 import {Transaction} from "form/models/statementOfMeans/expensesAndIncome/transaction";
-import {CCDDebtDetails, CCDDebtDetailsList, CCDDebtType, CCDPaymentFrequency} from "models/ccdResponse/ccdDebtDetails";
+import {CCDDebtDetails, CCDDebtDetailsList, CCDDebtType} from "models/ccdResponse/ccdDebtDetails";
 import {
   TransactionSource,
   TransactionSourceParams
 } from "form/models/statementOfMeans/expensesAndIncome/transactionSource";
 import {TransactionSchedule} from "form/models/statementOfMeans/expensesAndIncome/transactionSchedule";
+import {CCDPaymentFrequency} from "models/ccdResponse/ccdPaymentFrequency";
 
 describe('translate priority debts to CCD model', () => {
   it('should return undefined if it is undefined', () => {
@@ -91,113 +92,6 @@ describe('translate priority debts to CCD model', () => {
     expect(output).toEqual(expected);
   });
 });
-
-describe('translate frequency to CCD model', () => {
-  it('should return two weeks if input is two weeks', () => {
-    const transactionSourceParams : TransactionSourceParams = {
-      isIncome: false,
-      nameRequired: true,
-      name: 'test',
-      amount: Number(1),
-      schedule: TransactionSchedule.TWO_WEEKS,
-    }
-    const transactionSource = new TransactionSource(transactionSourceParams);
-    const input =  setUpTransaction(true, transactionSource)
-    const expected : CCDDebtDetails = {
-      debtDetails: [
-        setUpDebtDetailsItem(CCDDebtType.MORTGAGE, CCDPaymentFrequency.ONCE_TWO_WEEKS),
-        setUpDebtDetailsItem(CCDDebtType.RENT, CCDPaymentFrequency.ONCE_TWO_WEEKS),
-        setUpDebtDetailsItem(CCDDebtType.COUNCIL_TAX, CCDPaymentFrequency.ONCE_TWO_WEEKS),
-        setUpDebtDetailsItem(CCDDebtType.GAS, CCDPaymentFrequency.ONCE_TWO_WEEKS),
-        setUpDebtDetailsItem(CCDDebtType.ELECTRICITY, CCDPaymentFrequency.ONCE_TWO_WEEKS),
-        setUpDebtDetailsItem(CCDDebtType.WATER, CCDPaymentFrequency.ONCE_TWO_WEEKS),
-        setUpDebtDetailsItem(CCDDebtType.MAINTENANCE_PAYMENTS, CCDPaymentFrequency.ONCE_TWO_WEEKS),
-      ]
-    }
-
-    const output = toCCDDebtDetails(input);
-    expect(output).toEqual(expected);
-  })
-
-  it('should return four weeks if input is four weeks', () => {
-    const transactionSourceParams : TransactionSourceParams = {
-      isIncome: false,
-      nameRequired: true,
-      name: 'test',
-      amount: Number(1),
-      schedule: TransactionSchedule.FOUR_WEEKS,
-    }
-    const transactionSource = new TransactionSource(transactionSourceParams);
-    const input =  setUpTransaction(true, transactionSource)
-    const expected : CCDDebtDetails = {
-      debtDetails: [
-        setUpDebtDetailsItem(CCDDebtType.MORTGAGE, CCDPaymentFrequency.ONCE_FOUR_WEEKS),
-        setUpDebtDetailsItem(CCDDebtType.RENT, CCDPaymentFrequency.ONCE_FOUR_WEEKS),
-        setUpDebtDetailsItem(CCDDebtType.COUNCIL_TAX, CCDPaymentFrequency.ONCE_FOUR_WEEKS),
-        setUpDebtDetailsItem(CCDDebtType.GAS, CCDPaymentFrequency.ONCE_FOUR_WEEKS),
-        setUpDebtDetailsItem(CCDDebtType.ELECTRICITY, CCDPaymentFrequency.ONCE_FOUR_WEEKS),
-        setUpDebtDetailsItem(CCDDebtType.WATER, CCDPaymentFrequency.ONCE_FOUR_WEEKS),
-        setUpDebtDetailsItem(CCDDebtType.MAINTENANCE_PAYMENTS, CCDPaymentFrequency.ONCE_FOUR_WEEKS),
-      ]
-    }
-
-    const output = toCCDDebtDetails(input);
-    expect(output).toEqual(expected);
-  })
-
-  it('should return month if input is month', () => {
-    const transactionSourceParams : TransactionSourceParams = {
-      isIncome: false,
-      nameRequired: true,
-      name: 'test',
-      amount: Number(1),
-      schedule: TransactionSchedule.MONTH,
-    }
-    const transactionSource = new TransactionSource(transactionSourceParams);
-    const input =  setUpTransaction(true, transactionSource)
-    const expected : CCDDebtDetails = {
-      debtDetails: [
-        setUpDebtDetailsItem(CCDDebtType.MORTGAGE, CCDPaymentFrequency.ONCE_ONE_MONTH),
-        setUpDebtDetailsItem(CCDDebtType.RENT, CCDPaymentFrequency.ONCE_ONE_MONTH),
-        setUpDebtDetailsItem(CCDDebtType.COUNCIL_TAX, CCDPaymentFrequency.ONCE_ONE_MONTH),
-        setUpDebtDetailsItem(CCDDebtType.GAS, CCDPaymentFrequency.ONCE_ONE_MONTH),
-        setUpDebtDetailsItem(CCDDebtType.ELECTRICITY, CCDPaymentFrequency.ONCE_ONE_MONTH),
-        setUpDebtDetailsItem(CCDDebtType.WATER, CCDPaymentFrequency.ONCE_ONE_MONTH),
-        setUpDebtDetailsItem(CCDDebtType.MAINTENANCE_PAYMENTS, CCDPaymentFrequency.ONCE_ONE_MONTH),
-      ]
-    }
-
-    const output = toCCDDebtDetails(input);
-    expect(output).toEqual(expected);
-  })
-
-  it('should return month if input is month', () => {
-    const transactionSourceParams : TransactionSourceParams = {
-      isIncome: false,
-      nameRequired: true,
-      name: 'test',
-      amount: Number(1),
-      schedule: undefined,
-    }
-    const transactionSource = new TransactionSource(transactionSourceParams);
-    const input =  setUpTransaction(true, transactionSource)
-    const expected : CCDDebtDetails = {
-      debtDetails: [
-        setUpDebtDetailsItem(CCDDebtType.MORTGAGE, undefined),
-        setUpDebtDetailsItem(CCDDebtType.RENT, undefined),
-        setUpDebtDetailsItem(CCDDebtType.COUNCIL_TAX, undefined),
-        setUpDebtDetailsItem(CCDDebtType.GAS, undefined),
-        setUpDebtDetailsItem(CCDDebtType.ELECTRICITY, undefined),
-        setUpDebtDetailsItem(CCDDebtType.WATER, undefined),
-        setUpDebtDetailsItem(CCDDebtType.MAINTENANCE_PAYMENTS, undefined),
-      ]
-    }
-
-    const output = toCCDDebtDetails(input);
-    expect(output).toEqual(expected);
-  })
-});
-
 
 const setUpDebtDetailsItem = (debtType: CCDDebtType, frequency: CCDPaymentFrequency): CCDDebtDetailsList => {
   const ccdDebtDetails: CCDDebtDetailsList = {

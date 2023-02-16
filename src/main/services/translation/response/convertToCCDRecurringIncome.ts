@@ -2,9 +2,8 @@ import {CCDIncomeType, CCDRecurringIncome} from 'models/ccdResponse/ccdRecurring
 import {ResponseType} from 'form/models/responseType';
 import {Claim} from 'models/claim';
 import {RegularIncome} from 'form/models/statementOfMeans/expensesAndIncome/regularIncome';
-import {CCDPaymentFrequency} from 'models/ccdResponse/ccdDebtDetails';
-import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {TransactionSource} from 'form/models/statementOfMeans/expensesAndIncome/transactionSource';
+import {toCCDPaymentFrequency} from "services/translation/response/convertToCCDPaymentFrequency";
 
 export const toCCDRecurringIncomeField = (claim: Claim, responseType: ResponseType): CCDRecurringIncome[] => {
   if (claim.respondent1?.responseType === responseType) {
@@ -85,20 +84,5 @@ const toCCDRecurringIncomeOtherItem = (otherTransactions: TransactionSource[], i
     ccdOtherRecurringIncomeList.push(ccdRecurringIncome);
   });
   return ccdOtherRecurringIncomeList;
-};
-
-const toCCDPaymentFrequency = (schedule: TransactionSchedule): CCDPaymentFrequency => {
-  switch (schedule) {
-    case TransactionSchedule.WEEK:
-      return CCDPaymentFrequency.ONCE_ONE_WEEK;
-    case TransactionSchedule.TWO_WEEKS:
-      return CCDPaymentFrequency.ONCE_TWO_WEEKS;
-    case TransactionSchedule.FOUR_WEEKS:
-      return CCDPaymentFrequency.ONCE_FOUR_WEEKS;
-    case TransactionSchedule.MONTH:
-      return CCDPaymentFrequency.ONCE_ONE_MONTH;
-    default:
-      return undefined;
-  }
 };
 

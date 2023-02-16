@@ -1,3 +1,5 @@
+import {CCDPaymentFrequency} from "models/ccdResponse/ccdPaymentFrequency";
+
 export interface CCDDebtDetails {
   debtDetails?: CCDDebtDetailsList[],
 }
@@ -22,11 +24,3 @@ export enum CCDDebtType {
   WATER = 'WATER',
   MAINTENANCE_PAYMENTS = 'MAINTENANCE_PAYMENTS',
 }
-
-export enum CCDPaymentFrequency {
-  ONCE_ONE_WEEK = 'ONCE_ONE_WEEK',
-  ONCE_TWO_WEEKS = 'ONCE_TWO_WEEKS',
-  ONCE_FOUR_WEEKS = 'ONCE_FOUR_WEEKS',
-  ONCE_ONE_MONTH = 'ONCE_ONE_MONTH',
-}
-
