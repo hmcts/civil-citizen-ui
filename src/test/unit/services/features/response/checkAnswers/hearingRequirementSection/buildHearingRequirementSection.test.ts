@@ -47,9 +47,10 @@ const createHearing = (): Hearing => {
 };
 
 describe('test hearingRequirementSection', () => {
-  const claim = new Claim();
+
   it('should display \'no\' when there is no witnesses', () => {
     //Given
+    const claim = new Claim();
     claim.directionQuestionnaire = new DirectionQuestionnaire();
     claim.directionQuestionnaire.witnesses = new Witnesses();
     claim.directionQuestionnaire.witnesses.otherWitnesses = new OtherWitnesses();
@@ -67,6 +68,7 @@ describe('test hearingRequirementSection', () => {
 
   it('should display \'yes\' and 1 witness details', () => {
     //Given
+    const claim = new Claim();
     claim.directionQuestionnaire = new DirectionQuestionnaire();
     claim.directionQuestionnaire.witnesses = new Witnesses();
     claim.directionQuestionnaire.witnesses.otherWitnesses = new OtherWitnesses();
@@ -102,6 +104,7 @@ describe('test hearingRequirementSection', () => {
 
   it('should display \'yes\' and have 2 witnesses', () => {
     //Given
+    const claim = new Claim();
     claim.directionQuestionnaire = new DirectionQuestionnaire();
     claim.directionQuestionnaire.witnesses = new Witnesses();
     claim.directionQuestionnaire.witnesses.otherWitnesses = new OtherWitnesses();
@@ -143,6 +146,28 @@ describe('test hearingRequirementSection', () => {
 
   it('build hearing requirement for Fast Track Claim when there are no witnesses', () => {
     //Given
+    const claim = new Claim();
+    claim.totalClaimAmount = 11000;
+    claim.directionQuestionnaire = new DirectionQuestionnaire();
+    claim.directionQuestionnaire.hearing = createHearing();
+
+    //When
+    const summaryRows = buildHearingRequirementSection(claim, '1', 'eng');
+
+    //Then
+    expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
+    expect(summaryRows.summaryList.rows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE');
+    expect(summaryRows.summaryList.rows[0].value.html).toEqual(YesNoUpperCamelCase.YES);
+    expect(summaryRows.summaryList.rows[1].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.REQUEST_EXTRA_4WEEKS');
+    expect(summaryRows.summaryList.rows[1].value.html).toEqual(YesNoUpperCamelCase.YES);
+    expect(summaryRows.summaryList.rows[2].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.CONSIDER_CLAIMANT_DOCUMENT');
+    expect(summaryRows.summaryList.rows[2].value.html).toEqual(YesNoUpperCamelCase.YES);
+    expect(summaryRows.summaryList.rows[3].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.GIVE_DOC_DETAILS');
+    expect(summaryRows.summaryList.rows[3].value.html).toEqual('Test Doc');
+  });
+  it('build hearing requirement for Fast Track Claim with EmptyStringUndefined', () => {
+    //Given
+    const claim = new Claim();
     claim.totalClaimAmount = 11000;
     claim.directionQuestionnaire = new DirectionQuestionnaire();
     claim.directionQuestionnaire.hearing = createHearing();
