@@ -13,21 +13,20 @@ import {
 } from 'services/features/response/checkAnswers/hearingRequirementsSection/buildCommonHearingRequirements';
 
 export const buildHearingRequirementsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
+
   const lng = getLng(lang);
   const hearingRequirementsSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE', {lng}),
     summaryRows: [],
   });
 
-  if (claim.isFastTrackClaim)
-  {
+  if (claim.isFastTrackClaim) {
     buildFastTrackHearingRequirements(claim, hearingRequirementsSection, claimId, lng);
-  }
-  else
-  {
+  } else   {
     buildSmallClaimHearingRequirements(claim, hearingRequirementsSection, claimId, lng);
   }
 
   buildCommonHearingRequirements(claim, hearingRequirementsSection, claimId, lng);
+
   return hearingRequirementsSection;
 };

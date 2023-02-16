@@ -13,4 +13,3 @@ export function analyseClaimType(totalClaimAmount: number): claimType {
     return claimType.FAST_TRACK_CLAIM;
   }
 }
-

@@ -65,7 +65,7 @@ describe('Small Claim Hearing Requirements Section', () => {
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.hearing = new Hearing();
       claim.directionQuestionnaire.hearing.determinationWithoutHearing = new DeterminationWithoutHearing();
-      claim.directionQuestionnaire.hearing.determinationWithoutHearing.option = YesNo.YES;
+      claim.directionQuestionnaire.hearing.determinationWithoutHearing.option = YesNo.NO;
       claim.directionQuestionnaire.hearing.determinationWithoutHearing = {
         reasonForHearing: 'my reason',
       };
