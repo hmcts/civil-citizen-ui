@@ -5,7 +5,6 @@ import {UnemploymentCategory} from "form/models/statementOfMeans/unemployment/un
 
 describe('translate unemployment to CCD model', () => {
   it('should return undefined if it is empty', () => {
-    //output
     const expected: CCDUnemploymentDetails = {
       unemployedComplexTypeRequired: undefined,
       lengthOfUnemployment: undefined,
@@ -17,7 +16,6 @@ describe('translate unemployment to CCD model', () => {
   });
 
   it('should return undefined if it is undefined', () => {
-    //output
     const expected: CCDUnemploymentDetails = {
       unemployedComplexTypeRequired: undefined,
       lengthOfUnemployment: undefined,
@@ -29,10 +27,8 @@ describe('translate unemployment to CCD model', () => {
   });
 
   it('should return value if it is retired', () => {
-    //input
     const input = new Unemployment();
     input.option = UnemploymentCategory.RETIRED
-    //output
     const expected: CCDUnemploymentDetails = {
       unemployedComplexTypeRequired: CCDUnemploymentType.RETIRED,
       lengthOfUnemployment: undefined,
@@ -44,13 +40,11 @@ describe('translate unemployment to CCD model', () => {
   });
 
   it('should return value if it is other', () => {
-    //input
     const input = new Unemployment();
     input.option = UnemploymentCategory.OTHER;
     input.otherDetails = {
       details : 'test'
     }
-    //output
     const expected: CCDUnemploymentDetails = {
       unemployedComplexTypeRequired: CCDUnemploymentType.OTHER,
       lengthOfUnemployment: undefined,
@@ -62,14 +56,12 @@ describe('translate unemployment to CCD model', () => {
   });
 
   it('should return value if it is unemployed', () => {
-    //input
     const input = new Unemployment();
     input.option = UnemploymentCategory.UNEMPLOYED;
     input.unemploymentDetails = {
       years: Number(1),
       months: Number(1)
     }
-    //output
     const expected: CCDUnemploymentDetails = {
       unemployedComplexTypeRequired: CCDUnemploymentType.UNEMPLOYED,
       lengthOfUnemployment: {
@@ -84,7 +76,6 @@ describe('translate unemployment to CCD model', () => {
   });
 
   it('should return undefined if all input is undefined', () => {
-    //input
     const input = new Unemployment();
     input.option = undefined;
     input.unemploymentDetails = {
@@ -94,7 +85,6 @@ describe('translate unemployment to CCD model', () => {
     input.otherDetails = {
       details : undefined
     }
-    //output
     const expected: CCDUnemploymentDetails = {
       unemployedComplexTypeRequired: undefined,
       lengthOfUnemployment: {

@@ -7,7 +7,6 @@ import {YesNo, YesNoUpperCamelCase} from "form/models/yesNo";
 
 describe('translate carer allowance credit to CCD model', () => {
   it('should return undefined if it is empty', () => {
-    //output
     const output = toCCDCarerAllowanceCredit(new Claim(), ResponseType.FULL_ADMISSION);
     expect(output).toEqual(undefined);
   });
@@ -15,7 +14,7 @@ describe('translate carer allowance credit to CCD model', () => {
   it('should return undefined if it is undefined', () => {
     const input = new Claim();
     input.respondent1 = undefined;
-    //output
+
     const output = toCCDCarerAllowanceCredit(input, ResponseType.FULL_ADMISSION);
     expect(output).toEqual(undefined);
   });
@@ -27,7 +26,7 @@ describe('translate carer allowance credit to CCD model', () => {
     }
     input.statementOfMeans = new StatementOfMeans();
     input.statementOfMeans.carer = new GenericYesNo((YesNo.YES));
-    //output
+
     const output = toCCDCarerAllowanceCredit(input, ResponseType.FULL_ADMISSION);
     expect(output).toEqual(YesNoUpperCamelCase.YES);
   });
@@ -39,7 +38,7 @@ describe('translate carer allowance credit to CCD model', () => {
     }
     input.statementOfMeans = new StatementOfMeans();
     input.statementOfMeans.carer = new GenericYesNo((YesNo.YES));
-    //output
+
     const output = toCCDCarerAllowanceCredit(input, ResponseType.FULL_ADMISSION);
     expect(output).toEqual(undefined);
   });
@@ -51,7 +50,7 @@ describe('translate carer allowance credit to CCD model', () => {
     }
     input.statementOfMeans = new StatementOfMeans();
     input.statementOfMeans.carer = undefined;
-    //output
+
     const output = toCCDCarerAllowanceCredit(input, ResponseType.FULL_ADMISSION);
     expect(output).toEqual(undefined);
   });
@@ -63,7 +62,7 @@ describe('translate carer allowance credit to CCD model', () => {
     }
     input.statementOfMeans = new StatementOfMeans();
     input.statementOfMeans.carer = new GenericYesNo(undefined);
-    //output
+
     const output = toCCDCarerAllowanceCredit(input, ResponseType.FULL_ADMISSION);
     expect(output).toEqual(undefined);
   });

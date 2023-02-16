@@ -4,19 +4,17 @@ import {CCDEmployerDetails} from "models/ccdResponse/ccdEmployerDetails";
 
 describe('translate employer details to CCD model', () => {
   it('should return undefined if it is undefined', () => {
-    //input
     const input : Employers = undefined;
-    //output
+
     const output = toCCDEmploymentDetails(input);
     expect(output).toEqual(undefined);
   })
 
   it('should return empty if it is empty', () => {
-    //input
     const input : Employers = {
       rows: []
     };
-    //output
+
     const expected : CCDEmployerDetails = {
       employerDetails: []
     }
@@ -25,7 +23,6 @@ describe('translate employer details to CCD model', () => {
   })
 
   it('should return value if there is input', () => {
-    //input
     const input : Employers = {
       rows: [
         {
@@ -43,7 +40,7 @@ describe('translate employer details to CCD model', () => {
         }
       }]
     }
-    //output
+
     const output = toCCDEmploymentDetails(input);
     expect(output).toEqual(expected);
   })
