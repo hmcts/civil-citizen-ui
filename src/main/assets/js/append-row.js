@@ -125,9 +125,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  function getNumberFromElementName() {
+  function getNumberFromElementName(element) {
     if(element.tpye === 'radio') {
-      const elements = document.getElementsByClassName('multiple-row')
+      const elements = document.getElementsByClassName('multiple-row');
       const lastItem = elements[elements.length-1];
       const lastInput = lastItem.getElementsByClassName('govuk-radios__input');
       const number = lastInput[0].id.split('-')[1];
@@ -221,8 +221,8 @@ document.addEventListener('DOMContentLoaded', function () {
       elementSelectedBefore[index] = radioButton;
       
       const fieldName = event.target.id.split('-')[2];
-      const name = fieldName === 'longer' ? 'longer-period' : 'single-date'
-      const oppositeName = fieldName === 'longer' ? 'single-date' : 'longer-period'
+      const name = fieldName === 'longer' ? 'longer-period' : 'single-date';
+      const oppositeName = fieldName === 'longer' ? 'single-date' : 'longer-period';
       const conditional = document.getElementById(`conditional-items-${index}-${name}`);
       const oppositeConditional = document.getElementById(`conditional-items-${index}-${oppositeName}`);
       
