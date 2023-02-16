@@ -9,7 +9,7 @@ import {
 } from '../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {ChooseHowToProceed} from 'models/chooseHowProceed';
+import {ChooseHowProceed} from 'models/chooseHowProceed';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -57,7 +57,7 @@ describe('Choose how to proceed Controller', () => {
     });
 
     it('should redirect to the claimant response task-list if option SIGN_A_SETTLEMENT_AGREEMENT is selected', async () => {
-      await request(app).post(CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL).send({option: ChooseHowToProceed.SIGN_A_SETTLEMENT_AGREEMENT})
+      await request(app).post(CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL).send({option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.get('location')).toBe(CLAIMANT_RESPONSE_TASK_LIST_URL);
@@ -65,7 +65,7 @@ describe('Choose how to proceed Controller', () => {
     });
 
     it('should redirect to the claimant response task-list if option REQUEST_A_CCJ is selected', async () => {
-      await request(app).post(CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL).send({option: ChooseHowToProceed.REQUEST_A_CCJ})
+      await request(app).post(CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL).send({option: ChooseHowProceed.REQUEST_A_CCJ})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.get('location')).toBe(CLAIMANT_RESPONSE_TASK_LIST_URL);
