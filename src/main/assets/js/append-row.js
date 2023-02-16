@@ -126,11 +126,15 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function getNumberFromElementName() {
-    const elements = document.getElementsByClassName('multiple-row')
-    const lastItem = elements[elements.length-1];
-    const lastInput = lastItem.getElementsByClassName('govuk-radios__input');
-    const number = lastInput[0].id.split('-')[1];
-    return Number(number) + 1;
+    if(element.tpye === 'radio') {
+      const elements = document.getElementsByClassName('multiple-row')
+      const lastItem = elements[elements.length-1];
+      const lastInput = lastItem.getElementsByClassName('govuk-radios__input');
+      const number = lastInput[0].id.split('-')[1];
+      return Number(number) + 1;
+    } else {
+      return document.getElementsByClassName('multiple-row').length;
+    }
   }
 
   function incrementIndexOnNameAndId(element) {
