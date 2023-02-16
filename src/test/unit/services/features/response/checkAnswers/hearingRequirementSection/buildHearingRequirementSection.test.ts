@@ -29,6 +29,13 @@ const witness2 =  new OtherWitnessItems({
   email: 'jane@does.com',
   details: 'Some details of Jane Does',
 });
+const witnessUndefined =  new OtherWitnessItems({
+  firstName: undefined,
+  lastName: undefined,
+  telephone: undefined,
+  email: undefined,
+  details: undefined,
+});
 
 const createHearing = (): Hearing => {
 
@@ -46,6 +53,8 @@ const createHearing = (): Hearing => {
   return hearing;
 };
 
+const claimId = '1';
+const lang = 'eng';
 describe('test hearingRequirementSection', () => {
 
   it('should display \'no\' when there is no witnesses', () => {
@@ -58,7 +67,7 @@ describe('test hearingRequirementSection', () => {
     claim.directionQuestionnaire.witnesses.otherWitnesses.option = YesNo.NO;
 
     //When
-    const summaryRows = buildHearingRequirementSection(claim, '1', 'eng');
+    const summaryRows = buildHearingRequirementSection(claim, claimId, lang);
 
     //Then
     expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
@@ -76,7 +85,7 @@ describe('test hearingRequirementSection', () => {
     claim.directionQuestionnaire.witnesses.otherWitnesses.witnessItems = [witness1];
 
     //When
-    const summaryRows = buildHearingRequirementSection(claim, '1', 'eng');
+    const summaryRows = buildHearingRequirementSection(claim, claimId, lang);
 
     //Then
     expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
@@ -112,7 +121,7 @@ describe('test hearingRequirementSection', () => {
     claim.directionQuestionnaire.witnesses.otherWitnesses.witnessItems = [witness1, witness2];
 
     //When
-    const summaryRows = buildHearingRequirementSection(claim, '1', 'eng');
+    const summaryRows = buildHearingRequirementSection(claim, claimId, lang);
 
     //Then
     expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
@@ -152,7 +161,7 @@ describe('test hearingRequirementSection', () => {
     claim.directionQuestionnaire.hearing = createHearing();
 
     //When
-    const summaryRows = buildHearingRequirementSection(claim, '1', 'eng');
+    const summaryRows = buildHearingRequirementSection(claim, claimId, lang);
 
     //Then
     expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
@@ -168,22 +177,32 @@ describe('test hearingRequirementSection', () => {
   it('build hearing requirement for Fast Track Claim with EmptyStringUndefined', () => {
     //Given
     const claim = new Claim();
-    claim.totalClaimAmount = 11000;
     claim.directionQuestionnaire = new DirectionQuestionnaire();
-    claim.directionQuestionnaire.hearing = createHearing();
+    claim.directionQuestionnaire.witnesses = new Witnesses();
+    claim.directionQuestionnaire.witnesses.otherWitnesses = new OtherWitnesses();
+    claim.directionQuestionnaire.witnesses.otherWitnesses.option = YesNo.YES;
+    claim.directionQuestionnaire.witnesses.otherWitnesses.witnessItems = [witnessUndefined];
 
     //When
-    const summaryRows = buildHearingRequirementSection(claim, '1', 'eng');
+    const summaryRows = buildHearingRequirementSection(claim, claimId, lang);
 
     //Then
     expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
-    expect(summaryRows.summaryList.rows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE');
+    expect(summaryRows.summaryList.rows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
     expect(summaryRows.summaryList.rows[0].value.html).toEqual(YesNoUpperCamelCase.YES);
-    expect(summaryRows.summaryList.rows[1].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.REQUEST_EXTRA_4WEEKS');
-    expect(summaryRows.summaryList.rows[1].value.html).toEqual(YesNoUpperCamelCase.YES);
-    expect(summaryRows.summaryList.rows[2].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.CONSIDER_CLAIMANT_DOCUMENT');
-    expect(summaryRows.summaryList.rows[2].value.html).toEqual(YesNoUpperCamelCase.YES);
-    expect(summaryRows.summaryList.rows[3].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.GIVE_DOC_DETAILS');
-    expect(summaryRows.summaryList.rows[3].value.html).toEqual('Test Doc');
+    // Witness 1
+    expect(summaryRows.summaryList.rows[1].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WITNESS 1');
+    expect(summaryRows.summaryList.rows[2].key.text).toEqual('COMMON.INPUT_LABELS.FIRST_NAME');
+    expect(summaryRows.summaryList.rows[2].value.html).toEqual('');
+    expect(summaryRows.summaryList.rows[3].key.text).toEqual('COMMON.INPUT_LABELS.LAST_NAME');
+    expect(summaryRows.summaryList.rows[3].value.html).toEqual('');
+    expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.EMAIL_ADDRESS');
+    expect(summaryRows.summaryList.rows[4].value.html).toEqual('');
+    expect(summaryRows.summaryList.rows[5].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.PHONE_NUMBER');
+    expect(summaryRows.summaryList.rows[5].value.html).toEqual('');
+    expect(summaryRows.summaryList.rows[6].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY');
+    expect(summaryRows.summaryList.rows[6].value.html).toEqual('');
+
   });
+
 });
