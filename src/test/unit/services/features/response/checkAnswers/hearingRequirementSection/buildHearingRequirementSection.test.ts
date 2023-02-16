@@ -37,17 +37,17 @@ const witnessUndefined =  new OtherWitnessItems({
   details: undefined,
 });
 
-const createHearing = (option : YesNo): Hearing => {
+const createHearing = (triedToSettleOption : YesNo,  requestExtra4weeksOption : YesNo, considerClaimantDocumentsOption: YesNo): Hearing => {
 
   const hearing = new Hearing();
   hearing.triedToSettle = {
-    option: option,
+    option: triedToSettleOption,
   };
   hearing.requestExtra4weeks = {
-    option: option,
+    option: requestExtra4weeksOption,
   };
   hearing.considerClaimantDocuments = {
-    option: option,
+    option: considerClaimantDocumentsOption,
     details: 'Test Doc',
   };
   return hearing;
@@ -56,6 +56,8 @@ const createHearing = (option : YesNo): Hearing => {
 const claimId = '1';
 const lang = 'eng';
 const fastTrackValue = 11000;
+const emptyString = '';
+
 describe('test hearingRequirementSection', () => {
 
   it('should display \'no\' when there is no witnesses', () => {
@@ -114,19 +116,19 @@ describe('test hearingRequirementSection', () => {
     expect(summaryRows.summaryList.rows[1].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WITNESS 1');
 
     expect(summaryRows.summaryList.rows[2].key.text).toEqual('COMMON.INPUT_LABELS.FIRST_NAME');
-    expect(summaryRows.summaryList.rows[2].value.html).toEqual('Joe');
+    expect(summaryRows.summaryList.rows[2].value.html).toEqual(witness1.firstName);
 
     expect(summaryRows.summaryList.rows[3].key.text).toEqual('COMMON.INPUT_LABELS.LAST_NAME');
-    expect(summaryRows.summaryList.rows[3].value.html).toEqual('Doe');
+    expect(summaryRows.summaryList.rows[3].value.html).toEqual(witness1.lastName);
 
     expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.EMAIL_ADDRESS');
-    expect(summaryRows.summaryList.rows[4].value.html).toEqual('joe@doe.com');
+    expect(summaryRows.summaryList.rows[4].value.html).toEqual(witness1.email);
 
     expect(summaryRows.summaryList.rows[5].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.PHONE_NUMBER');
-    expect(summaryRows.summaryList.rows[5].value.html).toEqual('000000000');
+    expect(summaryRows.summaryList.rows[5].value.html).toEqual(witness1.telephone);
 
     expect(summaryRows.summaryList.rows[6].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY');
-    expect(summaryRows.summaryList.rows[6].value.html).toEqual('Here is some of details');
+    expect(summaryRows.summaryList.rows[6].value.html).toEqual(witness1.details);
 
   });
 
@@ -147,37 +149,39 @@ describe('test hearingRequirementSection', () => {
     expect(summaryRows.summaryList.rows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
     expect(summaryRows.summaryList.rows[0].value.html).toEqual(YesNoUpperCamelCase.YES);
     // Witness 1
+
     expect(summaryRows.summaryList.rows[1].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WITNESS 1');
     expect(summaryRows.summaryList.rows[2].key.text).toEqual('COMMON.INPUT_LABELS.FIRST_NAME');
-    expect(summaryRows.summaryList.rows[2].value.html).toEqual('Joe');
+    expect(summaryRows.summaryList.rows[2].value.html).toEqual(witness1.firstName);
     expect(summaryRows.summaryList.rows[3].key.text).toEqual('COMMON.INPUT_LABELS.LAST_NAME');
-    expect(summaryRows.summaryList.rows[3].value.html).toEqual('Doe');
+    expect(summaryRows.summaryList.rows[3].value.html).toEqual(witness1.lastName);
     expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.EMAIL_ADDRESS');
-    expect(summaryRows.summaryList.rows[4].value.html).toEqual('joe@doe.com');
+    expect(summaryRows.summaryList.rows[4].value.html).toEqual(witness1.email);
     expect(summaryRows.summaryList.rows[5].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.PHONE_NUMBER');
-    expect(summaryRows.summaryList.rows[5].value.html).toEqual('000000000');
+    expect(summaryRows.summaryList.rows[5].value.html).toEqual(witness1.telephone);
     expect(summaryRows.summaryList.rows[6].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY');
-    expect(summaryRows.summaryList.rows[6].value.html).toEqual('Here is some of details');
+    expect(summaryRows.summaryList.rows[6].value.html).toEqual(witness1.details);
     // Witness 2
     expect(summaryRows.summaryList.rows[7].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WITNESS 2');
     expect(summaryRows.summaryList.rows[8].key.text).toEqual('COMMON.INPUT_LABELS.FIRST_NAME');
-    expect(summaryRows.summaryList.rows[8].value.html).toEqual('Jane');
+    expect(summaryRows.summaryList.rows[8].value.html).toEqual(witness2.firstName);
     expect(summaryRows.summaryList.rows[9].key.text).toEqual('COMMON.INPUT_LABELS.LAST_NAME');
-    expect(summaryRows.summaryList.rows[9].value.html).toEqual('Does');
+    expect(summaryRows.summaryList.rows[9].value.html).toEqual(witness2.lastName);
     expect(summaryRows.summaryList.rows[10].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.EMAIL_ADDRESS');
-    expect(summaryRows.summaryList.rows[10].value.html).toEqual('jane@does.com');
+    expect(summaryRows.summaryList.rows[10].value.html).toEqual(witness2.email);
     expect(summaryRows.summaryList.rows[11].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.PHONE_NUMBER');
-    expect(summaryRows.summaryList.rows[11].value.html).toEqual('111111111');
+    expect(summaryRows.summaryList.rows[11].value.html).toEqual(witness2.telephone);
     expect(summaryRows.summaryList.rows[12].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY');
-    expect(summaryRows.summaryList.rows[12].value.html).toEqual('Some details of Jane Does');
+    expect(summaryRows.summaryList.rows[12].value.html).toEqual(witness2.details);
   });
 
   it('build hearing requirement for Fast Track Claim when there are no witnesses', () => {
     //Given
     const claim = new Claim();
+    const hearing = createHearing(YesNo.YES, YesNo.YES, YesNo.YES);
     claim.totalClaimAmount = fastTrackValue;
     claim.directionQuestionnaire = new DirectionQuestionnaire();
-    claim.directionQuestionnaire.hearing = createHearing(YesNo.YES);
+    claim.directionQuestionnaire.hearing = hearing;
 
     //When
     const summaryRows = buildHearingRequirementSection(claim, claimId, lang);
@@ -191,7 +195,7 @@ describe('test hearingRequirementSection', () => {
     expect(summaryRows.summaryList.rows[2].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.CONSIDER_CLAIMANT_DOCUMENT');
     expect(summaryRows.summaryList.rows[2].value.html).toEqual(YesNoUpperCamelCase.YES);
     expect(summaryRows.summaryList.rows[3].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.GIVE_DOC_DETAILS');
-    expect(summaryRows.summaryList.rows[3].value.html).toEqual('Test Doc');
+    expect(summaryRows.summaryList.rows[3].value.html).toEqual(hearing.considerClaimantDocuments.details);
   });
   it('build hearing requirement for Fast Track Claim with EmptyStringUndefined', () => {
     //Given
@@ -212,24 +216,25 @@ describe('test hearingRequirementSection', () => {
     // Witness 1
     expect(summaryRows.summaryList.rows[1].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WITNESS 1');
     expect(summaryRows.summaryList.rows[2].key.text).toEqual('COMMON.INPUT_LABELS.FIRST_NAME');
-    expect(summaryRows.summaryList.rows[2].value.html).toEqual('');
+    expect(summaryRows.summaryList.rows[2].value.html).toEqual(emptyString);
     expect(summaryRows.summaryList.rows[3].key.text).toEqual('COMMON.INPUT_LABELS.LAST_NAME');
-    expect(summaryRows.summaryList.rows[3].value.html).toEqual('');
+    expect(summaryRows.summaryList.rows[3].value.html).toEqual(emptyString);
     expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.EMAIL_ADDRESS');
-    expect(summaryRows.summaryList.rows[4].value.html).toEqual('');
+    expect(summaryRows.summaryList.rows[4].value.html).toEqual(emptyString);
     expect(summaryRows.summaryList.rows[5].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.PHONE_NUMBER');
-    expect(summaryRows.summaryList.rows[5].value.html).toEqual('');
+    expect(summaryRows.summaryList.rows[5].value.html).toEqual(emptyString);
     expect(summaryRows.summaryList.rows[6].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY');
-    expect(summaryRows.summaryList.rows[6].value.html).toEqual('');
+    expect(summaryRows.summaryList.rows[6].value.html).toEqual(emptyString);
 
   });
 
-  it('build hearing requirement for Fast Track Claim with hearing no ', () => {
+  it('build hearing requirement for Fast Track Claim with Hearing all elements NO ', () => {
     //Given
     const claim = new Claim();
+    const hearing = createHearing(YesNo.NO, YesNo.NO, YesNo.NO);
     claim.totalClaimAmount = fastTrackValue;
     claim.directionQuestionnaire = new DirectionQuestionnaire();
-    claim.directionQuestionnaire.hearing = createHearing(YesNo.NO);
+    claim.directionQuestionnaire.hearing = hearing;
 
     //When
     const summaryRows = buildHearingRequirementSection(claim, claimId, lang);
@@ -244,6 +249,29 @@ describe('test hearingRequirementSection', () => {
     expect(summaryRows.summaryList.rows[2].value.html).toEqual(YesNoUpperCamelCase.NO);
     expect(summaryRows.summaryList.rows[3].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
     expect(summaryRows.summaryList.rows[3].value.html).toEqual(YesNoUpperCamelCase.NO);
+
+  });
+  it('build hearing requirement for Fast Track Claim with Hearing all elements YES ', () => {
+    //Given
+    const claim = new Claim();
+    const hearing = createHearing(YesNo.YES, YesNo.YES, YesNo.YES);
+    claim.totalClaimAmount = fastTrackValue;
+    claim.directionQuestionnaire = new DirectionQuestionnaire();
+    claim.directionQuestionnaire.hearing = hearing;
+
+    //When
+    const summaryRows = buildHearingRequirementSection(claim, claimId, lang);
+
+    //Then
+    expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
+    expect(summaryRows.summaryList.rows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE');
+    expect(summaryRows.summaryList.rows[0].value.html).toEqual(YesNoUpperCamelCase.YES);
+    expect(summaryRows.summaryList.rows[1].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.REQUEST_EXTRA_4WEEKS');
+    expect(summaryRows.summaryList.rows[1].value.html).toEqual(YesNoUpperCamelCase.YES);
+    expect(summaryRows.summaryList.rows[2].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.CONSIDER_CLAIMANT_DOCUMENT');
+    expect(summaryRows.summaryList.rows[2].value.html).toEqual(YesNoUpperCamelCase.YES);
+    expect(summaryRows.summaryList.rows[3].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.GIVE_DOC_DETAILS');
+    expect(summaryRows.summaryList.rows[3].value.html).toEqual(hearing.considerClaimantDocuments.details);
 
   });
 
