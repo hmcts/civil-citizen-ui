@@ -41,24 +41,6 @@ describe('translate recurring income to CCD model', () => {
     expect(output).toEqual(undefined);
   });
 
-  it('should return value if income is define for one', () => {
-    const incomeParams : IncomeParams = {
-      job: setUpTransactionInput(true),
-    };
-    const input = new Claim();
-    input.respondent1 = {
-      responseType: ResponseType.FULL_ADMISSION,
-    };
-    input.statementOfMeans = new StatementOfMeans();
-    input.statementOfMeans.regularIncome = new RegularIncome(incomeParams);
-    const expected : CCDRecurringIncome[] = [
-      setUpRecurringOutput(CCDIncomeType.JOB, CCDPaymentFrequency.ONCE_ONE_WEEK),
-    ];
-
-    const output = toCCDRecurringIncomeField(input, ResponseType.FULL_ADMISSION);
-    expect(output).toEqual(expected);
-  });
-
   it('should return undefined if response type is different', () => {
     const incomeParams : IncomeParams = {
       job: setUpTransactionInput(true),

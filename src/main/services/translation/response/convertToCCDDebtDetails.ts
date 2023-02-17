@@ -10,13 +10,13 @@ import {toCCDPaymentFrequency} from 'services/translation/response/convertToCCDP
 export const toCCDDebtDetails = (priorityDebts: PriorityDebts): CCDDebtDetails => {
   if (!priorityDebts) return undefined;
 
-  if (!priorityDebts.mortgage &&
-    !priorityDebts.rent &&
-    !priorityDebts.councilTax &&
-    !priorityDebts.gas &&
-    !priorityDebts.electricity &&
-    !priorityDebts.water &&
-    !priorityDebts.maintenance
+  if (!priorityDebts.mortgage?.declared &&
+    !priorityDebts.rent?.declared &&
+    !priorityDebts.councilTax?.declared &&
+    !priorityDebts.gas?.declared &&
+    !priorityDebts.electricity?.declared &&
+    !priorityDebts.water?.declared &&
+    !priorityDebts.maintenance?.declared
   ) return undefined;
 
   const ccdDebtDetailsList: CCDDebtDetailsList[] = [];

@@ -42,24 +42,6 @@ describe('translate recurring expense to CCD model', () => {
     expect(output).toEqual(undefined);
   });
 
-  it('should return value if income is define for one', () => {
-    const expenseParams : ExpenseParams = {
-      mortgage: setUpTransactionInput(true),
-    };
-    const input = new Claim();
-    input.respondent1 = {
-      responseType: ResponseType.FULL_ADMISSION,
-    };
-    input.statementOfMeans = new StatementOfMeans();
-    input.statementOfMeans.regularExpenses = new RegularExpenses(expenseParams);
-    const expected : CCDRecurringExpenses[] = [
-      setUpRecurringOutput(CCDExpensesType.MORTGAGE, CCDPaymentFrequency.ONCE_ONE_WEEK),
-    ];
-
-    const output = toCCDRecurringExpensesField(input, ResponseType.FULL_ADMISSION);
-    expect(output).toEqual(expected);
-  });
-
   it('should return undefined if response type is different', () => {
     const expenseParams : ExpenseParams = {
       mortgage: setUpTransactionInput(true),

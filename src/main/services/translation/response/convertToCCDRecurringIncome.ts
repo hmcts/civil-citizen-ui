@@ -13,52 +13,54 @@ export const toCCDRecurringIncomeField = (claim: Claim, responseType: ResponseTy
 };
 
 const toCCDRecurringIncomeList = (regularIncome: RegularIncome): CCDRecurringIncome[] => {
-  if (!regularIncome?.job?.declared &&
-    !regularIncome?.universalCredit?.declared &&
-    !regularIncome?.jobseekerAllowanceIncome?.declared &&
-    !regularIncome?.jobseekerAllowanceContribution?.declared &&
-    !regularIncome?.incomeSupport?.declared &&
-    !regularIncome?.workingTaxCredit?.declared &&
-    !regularIncome?.childTaxCredit?.declared &&
-    !regularIncome?.childBenefit?.declared &&
-    !regularIncome?.councilTaxSupport?.declared &&
-    !regularIncome?.pension?.declared &&
-    !regularIncome?.other?.declared
+  if (!regularIncome) return undefined;
+
+  if (!regularIncome.job?.declared &&
+    !regularIncome.universalCredit?.declared &&
+    !regularIncome.jobseekerAllowanceIncome?.declared &&
+    !regularIncome.jobseekerAllowanceContribution?.declared &&
+    !regularIncome.incomeSupport?.declared &&
+    !regularIncome.workingTaxCredit?.declared &&
+    !regularIncome.childTaxCredit?.declared &&
+    !regularIncome.childBenefit?.declared &&
+    !regularIncome.councilTaxSupport?.declared &&
+    !regularIncome.pension?.declared &&
+    !regularIncome.other?.declared
   ) return undefined;
 
   let ccdRecurringIncomeList: CCDRecurringIncome[] = [];
-  if (regularIncome?.job?.declared) {
-    ccdRecurringIncomeList.push(toCCDRecurringIncomeItem(regularIncome?.job?.transactionSource, CCDIncomeType.JOB));
+  if (regularIncome.job.declared) {
+    ccdRecurringIncomeList.push(toCCDRecurringIncomeItem(regularIncome.job.transactionSource, CCDIncomeType.JOB));
   }
-  if (regularIncome?.universalCredit?.declared) {
-    ccdRecurringIncomeList.push(toCCDRecurringIncomeItem(regularIncome?.universalCredit?.transactionSource, CCDIncomeType.UNIVERSAL_CREDIT));
+  if (regularIncome.universalCredit.declared) {
+    ccdRecurringIncomeList.push(toCCDRecurringIncomeItem(regularIncome.universalCredit.transactionSource, CCDIncomeType.UNIVERSAL_CREDIT));
   }
-  if (regularIncome?.jobseekerAllowanceIncome?.declared) {
-    ccdRecurringIncomeList.push(toCCDRecurringIncomeItem(regularIncome?.jobseekerAllowanceIncome?.transactionSource, CCDIncomeType.JOBSEEKER_ALLOWANCE_INCOME));
+  if (regularIncome.jobseekerAllowanceIncome.declared) {
+    ccdRecurringIncomeList.push(toCCDRecurringIncomeItem(regularIncome.jobseekerAllowanceIncome.transactionSource, CCDIncomeType.JOBSEEKER_ALLOWANCE_INCOME));
   }
-  if (regularIncome?.jobseekerAllowanceContribution?.declared) {
-    ccdRecurringIncomeList.push(toCCDRecurringIncomeItem(regularIncome?.jobseekerAllowanceContribution?.transactionSource, CCDIncomeType.JOBSEEKER_ALLOWANCE_CONTRIBUTION));
+  if (regularIncome.jobseekerAllowanceContribution.declared) {
+    ccdRecurringIncomeList.push(toCCDRecurringIncomeItem(regularIncome.jobseekerAllowanceContribution.transactionSource, CCDIncomeType.JOBSEEKER_ALLOWANCE_CONTRIBUTION));
   }
-  if (regularIncome?.incomeSupport?.declared) {
-    ccdRecurringIncomeList.push(toCCDRecurringIncomeItem(regularIncome?.incomeSupport?.transactionSource, CCDIncomeType.INCOME_SUPPORT));
+  if (regularIncome.incomeSupport.declared) {
+    ccdRecurringIncomeList.push(toCCDRecurringIncomeItem(regularIncome.incomeSupport.transactionSource, CCDIncomeType.INCOME_SUPPORT));
   }
-  if (regularIncome?.workingTaxCredit?.declared) {
-    ccdRecurringIncomeList.push(toCCDRecurringIncomeItem(regularIncome?.workingTaxCredit?.transactionSource, CCDIncomeType.WORKING_TAX_CREDIT));
+  if (regularIncome.workingTaxCredit.declared) {
+    ccdRecurringIncomeList.push(toCCDRecurringIncomeItem(regularIncome.workingTaxCredit.transactionSource, CCDIncomeType.WORKING_TAX_CREDIT));
   }
-  if (regularIncome?.childTaxCredit?.declared) {
-    ccdRecurringIncomeList.push(toCCDRecurringIncomeItem(regularIncome?.childTaxCredit?.transactionSource, CCDIncomeType.CHILD_TAX));
+  if (regularIncome.childTaxCredit.declared) {
+    ccdRecurringIncomeList.push(toCCDRecurringIncomeItem(regularIncome.childTaxCredit.transactionSource, CCDIncomeType.CHILD_TAX));
   }
-  if (regularIncome?.childBenefit?.declared) {
-    ccdRecurringIncomeList.push(toCCDRecurringIncomeItem(regularIncome?.childBenefit?.transactionSource, CCDIncomeType.CHILD_BENEFIT));
+  if (regularIncome.childBenefit.declared) {
+    ccdRecurringIncomeList.push(toCCDRecurringIncomeItem(regularIncome.childBenefit.transactionSource, CCDIncomeType.CHILD_BENEFIT));
   }
-  if (regularIncome?.councilTaxSupport?.declared) {
-    ccdRecurringIncomeList.push(toCCDRecurringIncomeItem(regularIncome?.councilTaxSupport?.transactionSource, CCDIncomeType.COUNCIL_TAX_SUPPORT));
+  if (regularIncome.councilTaxSupport.declared) {
+    ccdRecurringIncomeList.push(toCCDRecurringIncomeItem(regularIncome.councilTaxSupport.transactionSource, CCDIncomeType.COUNCIL_TAX_SUPPORT));
   }
-  if (regularIncome?.pension?.declared) {
-    ccdRecurringIncomeList.push(toCCDRecurringIncomeItem(regularIncome?.pension?.transactionSource, CCDIncomeType.PENSION));
+  if (regularIncome.pension.declared) {
+    ccdRecurringIncomeList.push(toCCDRecurringIncomeItem(regularIncome.pension.transactionSource, CCDIncomeType.PENSION));
   }
-  if (regularIncome?.other?.declared) {
-    ccdRecurringIncomeList = ccdRecurringIncomeList.concat(toCCDRecurringIncomeOtherItem(regularIncome?.other?.transactionSources, CCDIncomeType.OTHER));
+  if (regularIncome.other.declared) {
+    ccdRecurringIncomeList = ccdRecurringIncomeList.concat(toCCDRecurringIncomeOtherItem(regularIncome.other.transactionSources, CCDIncomeType.OTHER));
   }
 
   return ccdRecurringIncomeList;

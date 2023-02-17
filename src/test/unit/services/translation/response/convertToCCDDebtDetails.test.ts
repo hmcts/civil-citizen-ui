@@ -22,22 +22,16 @@ describe('translate priority debts to CCD model', () => {
 
   it('should return empty if not declared', () => {
     const input = setUpTransaction(false, undefined);
-    const expected : CCDDebtDetails = {
-      debtDetails: [],
-    };
 
     const output = toCCDDebtDetails(input);
-    expect(output).toEqual(expected);
+    expect(output).toEqual(undefined);
   });
 
   it('should return empty if declared undefined', () => {
     const input = setUpTransaction(undefined, undefined);
-    const expected : CCDDebtDetails = {
-      debtDetails: [],
-    };
 
     const output = toCCDDebtDetails(input);
-    expect(output).toEqual(expected);
+    expect(output).toEqual(undefined);
   });
 
   it('should return value if there is input', () => {
