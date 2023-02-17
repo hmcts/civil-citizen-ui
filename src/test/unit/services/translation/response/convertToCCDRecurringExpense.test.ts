@@ -82,7 +82,7 @@ describe('translate recurring expense to CCD model', () => {
     input.statementOfMeans.regularExpenses = new RegularExpenses(expenseParams);
 
     const output = toCCDRecurringExpensesField(input, ResponseType.FULL_ADMISSION);
-    expect(output).toEqual([]);
+    expect(output).toEqual(undefined);
   });
 
   it('should return empty if all are declared', () => {
