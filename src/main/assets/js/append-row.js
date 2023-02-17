@@ -126,13 +126,24 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function getNumberFromElementName(element) {
-    if(element.tpye === 'radio') {
-      const elements = document.getElementsByClassName('multiple-row');
-      const lastItem = elements[elements.length-1];
-      const lastInput = lastItem.getElementsByClassName('govuk-radios__input');
-      const number = lastInput[0].id.split('-')[1];
+    console.log('TYPE: ', element.type);
+    const elements = document.getElementsByClassName('multiple-row');
+    
+    const lastItem = elements[elements.length-1];
+    const lastRadioInput = lastItem.getElementsByClassName('govuk-radios__input');
+    const lastCheckboxInput = lastItem.getElementsByClassName('govuk-checkboxes__input');
+    
+    if(lastRadioInput.length) {
+      console.log('lastRadioInput: ', lastRadioInput);
+      const number = lastRadioInput[0].id.split('-')[1];
       return Number(number) + 1;
-    } else {
+    } else if (lastCheckboxInput.length) {
+      //TODO: get number from last checkbox
+      console.log('lastCheckboxInput: ', lastCheckboxInput);
+
+    } 
+    else {
+      console.log('ELSE');
       return document.getElementsByClassName('multiple-row').length;
     }
   }
