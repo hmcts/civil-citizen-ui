@@ -19,27 +19,5 @@ module "key-vault" {
   product_group_object_id = data.azuread_group.dts_civil.object_id
   common_tags             = var.common_tags
   create_managed_identity = false
-}
-
-resource "azurerm_key_vault_access_policy" "civil_mi" {
-  key_vault_id = module.key-vault.key_vault_id
-
-  object_id = data.azurerm_user_assigned_identity.civil.principal_id
-  tenant_id = data.azurerm_client_config.current.tenant_id
-
-  key_permissions = [
-    "Get",
-    "List",
-  ]
-
-  certificate_permissions = [
-    "Get",
-    "List",
-  ]
-
-  secret_permissions = [
-    "Get",
-    "List",
-  ]
-
+  managed_identity_object_ids = [data.azurerm_user_assigned_identity.civil.principal_id]
 }
