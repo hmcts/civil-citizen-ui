@@ -10,23 +10,23 @@ import {
   DQ_WELSH_LANGUAGE_URL,
   VULNERABILITY_URL,
 } from 'routes/urls';
-import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
+import {YesNo} from 'form/models/yesNo';
 import {t} from 'i18next';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import {OtherWitnessItems} from 'models/directionsQuestionnaire/witnesses/otherWitnessItems';
 import {LanguageOptions} from 'models/directionsQuestionnaire/languageOptions';
 import {Claim} from 'models/claim';
 import {SummarySection} from 'models/summaryList/summarySections';
-import {getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/getEmptyStringIfUndefined';
+import {getAffirmation, getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/getEmptyStringIfUndefined';
 
 export const getWitnesses = (claim: Claim, claimId: string, lang: string): SummaryRow[]  => {
   const witnessesHref = constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_WITNESSES_URL);
-  const otherWitnesses = claim?.directionQuestionnaire?.witnesses?.otherWitnesses?.option === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO;
+  const otherWitnesses = getAffirmation(claim?.directionQuestionnaire?.witnesses?.otherWitnesses?.option);
   const summaryRows: SummaryRow [] = [];
 
-  summaryRows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES', {lng: getLng(lang)}), otherWitnesses, witnessesHref, changeLabel(lang)));
+  summaryRows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES', {lng: getLng(lang)}), t(otherWitnesses, {lang}), witnessesHref, changeLabel(lang)));
 
-  if(otherWitnesses === YesNoUpperCamelCase.YES)
+  if(claim?.directionQuestionnaire?.witnesses?.otherWitnesses?.option === YesNo.YES)
   {
     const witnesses: OtherWitnessItems[] = claim?.directionQuestionnaire?.witnesses?.otherWitnesses?.witnessItems;
     witnesses.forEach((witness, index) => {
@@ -43,13 +43,11 @@ export const getWitnesses = (claim: Claim, claimId: string, lang: string): Summa
 };
 
 export const vulnerabilityQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const option = claim?.directionQuestionnaire?.vulnerabilityQuestions?.vulnerability?.option === YesNo.YES
-    ? YesNoUpperCamelCase.YES
-    : YesNoUpperCamelCase.NO;
+  const option = getAffirmation(claim?.directionQuestionnaire?.vulnerabilityQuestions?.vulnerability?.option);
 
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION', {lng}),
-    option,
+    t(option, {lng}),
     constructResponseUrlWithIdParams(claimId, VULNERABILITY_URL),
     changeLabel(lng),
   );
@@ -69,13 +67,11 @@ export const vulnerabilityInfo = (claim: Claim, claimId: string, lng: string): S
 };
 
 export const giveEvidenceYourself = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const option = claim?.directionQuestionnaire?.defendantYourselfEvidence?.option === YesNo.YES
-    ? YesNoUpperCamelCase.YES
-    : YesNoUpperCamelCase.NO;
+  const option = getAffirmation(claim?.directionQuestionnaire?.defendantYourselfEvidence?.option );
 
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.GIVE_EVIDENCE', {lng}),
-    option,
+    t(option, {lng}),
     constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL),
     changeLabel(lng),
   );
@@ -130,13 +126,11 @@ export const documentsLanguagePreference = (claim: Claim, claimId: string, lng: 
 };
 
 export const phoneAndVideoQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const option =  claim?.directionQuestionnaire?.hearing?.phoneOrVideoHearing?.option === YesNo.YES
-    ? YesNoUpperCamelCase.YES
-    : YesNoUpperCamelCase.NO;
+  const option =  getAffirmation(claim?.directionQuestionnaire?.hearing?.phoneOrVideoHearing?.option);
 
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_PHONE_OR_VIDEO_HEARING', {lng}),
-    option,
+    t(option, lng),
     constructResponseUrlWithIdParams(claimId, DQ_PHONE_OR_VIDEO_HEARING_URL),
     changeLabel(lng),
   );
