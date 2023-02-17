@@ -3,6 +3,7 @@ import {Mediation} from 'models/mediation/mediation';
 import {CCDMediation} from 'models/ccdResponse/ccdMediation';
 
 export const toCCDMediation = (mediation: Mediation): CCDMediation => {
+  if (!mediation) return undefined;
   return {
     canWeUseMediationCui: toCCDYesNo(mediation?.canWeUse?.option),
     canWeUseMediationPhoneCui: mediation?.canWeUse?.mediationPhoneNumber,

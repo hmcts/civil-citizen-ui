@@ -8,7 +8,7 @@ export const toCCDYesNo = (value: YesNo) => {
 
 export const toCCDYesNoFromGenericYesNo = (value: GenericYesNo) => {
   return value?.option === undefined ? undefined :
-    value?.option ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO;
+    value?.option === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO;
 };
 
 export const toCCDYesNoFromBoolean = (value: boolean) => {
