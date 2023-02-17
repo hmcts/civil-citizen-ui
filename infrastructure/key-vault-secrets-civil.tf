@@ -1,5 +1,5 @@
 data "azurerm_key_vault" "civil_vault" {
-  name                = "civil-${var.env}"
+  name                = "civil-${var.env}-mi"
   resource_group_name = "civil-service-${var.env}"
 }
 
