@@ -146,6 +146,34 @@ describe('translate recurring expense to CCD model', () => {
     const output = toCCDRecurringExpensesField(input, ResponseType.FULL_ADMISSION);
     expect(output).toEqual(expected);
   });
+
+  it('should return empty if all are declared', () => {
+    const expenseParams : ExpenseParams = {
+      mortgage: undefined,
+      rent: undefined,
+      councilTax: undefined,
+      gas: undefined,
+      electricity: undefined,
+      water: undefined,
+      travel: undefined,
+      schoolCosts: undefined,
+      foodAndHousekeeping: undefined,
+      tvAndBroadband: undefined,
+      hirePurchase: undefined,
+      mobilePhone: undefined,
+      maintenance: undefined,
+      other: undefined,
+    };
+    const input = new Claim();
+    input.respondent1 = {
+      responseType: ResponseType.FULL_ADMISSION,
+    };
+    input.statementOfMeans = new StatementOfMeans();
+    input.statementOfMeans.regularExpenses = new RegularExpenses(expenseParams);
+
+    const output = toCCDRecurringExpensesField(input, ResponseType.FULL_ADMISSION);
+    expect(output).toEqual(undefined);
+  });
 });
 
 const setUpTransactionInput = (declared : boolean): Transaction => {

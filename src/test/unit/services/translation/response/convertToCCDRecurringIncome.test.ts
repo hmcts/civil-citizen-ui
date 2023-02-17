@@ -136,6 +136,31 @@ describe('translate recurring income to CCD model', () => {
     const output = toCCDRecurringIncomeField(input, ResponseType.FULL_ADMISSION);
     expect(output).toEqual(expected);
   });
+
+  it('should return undefined if all are undefined', () => {
+    const incomeParams : IncomeParams = {
+      job: undefined,
+      universalCredit: undefined,
+      jobseekerAllowanceIncome: undefined,
+      jobseekerAllowanceContribution: undefined,
+      incomeSupport: undefined,
+      workingTaxCredit: undefined,
+      childTaxCredit: undefined,
+      childBenefit: undefined,
+      councilTaxSupport: undefined,
+      pension: undefined,
+      other: undefined,
+    };
+    const input = new Claim();
+    input.respondent1 = {
+      responseType: ResponseType.FULL_ADMISSION,
+    };
+    input.statementOfMeans = new StatementOfMeans();
+    input.statementOfMeans.regularIncome = new RegularIncome(incomeParams);
+
+    const output = toCCDRecurringIncomeField(input, ResponseType.FULL_ADMISSION);
+    expect(output).toEqual(undefined);
+  });
 });
 
 const setUpTransactionInput = (declared : boolean): Transaction => {
