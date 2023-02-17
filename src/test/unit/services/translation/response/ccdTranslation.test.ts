@@ -5,10 +5,13 @@ import {CCDPaymentOption} from 'common/models/ccdResponse/ccdPaymentOption';
 import {CCDRepaymentPlanFrequency} from 'common/models/ccdResponse/ccdRepaymentPlan';
 import {Party} from 'common/models/party';
 import {ResponseType} from 'common/form/models/responseType';
-import {YesNoUpperCamelCase} from 'common/form/models/yesNo';
+import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {PartialAdmission} from 'common/models/partialAdmission';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {FullAdmission} from 'common/models/fullAdmission';
+import {StatementOfMeans} from 'models/statementOfMeans';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {Employment} from 'models/employment';
 
 describe('translate response to ccd version', () => {
   it('should translate payment option to ccd', () => {
@@ -127,4 +130,63 @@ describe('translate response to ccd version', () => {
     expect(ccdResponse.specAoSApplicantCorrespondenceAddressRequired).toBe(YesNoUpperCamelCase.YES);
   });
 
+  it('should translate bank list has not changed to ccd', ()=>{
+    //Given
+    const claim = new Claim();
+    claim.statementOfMeans = new StatementOfMeans();
+    claim.statementOfMeans.bankAccounts = undefined;
+    const addressChanged = false;
+    claim.partialAdmission = new PartialAdmission();
+    claim.partialAdmission.paymentIntention = new PaymentIntention();
+    //When
+    const ccdResponse = translateDraftResponseToCCD(claim, addressChanged);
+    //Then
+    expect(ccdResponse.respondent1BankAccountList).toBe(undefined);
+  });
+
+  it('should disability changed to ccd', ()=>{
+    //Given
+    const claim = new Claim();
+    claim.statementOfMeans = new StatementOfMeans();
+    claim.statementOfMeans.disability = new GenericYesNo(YesNo.YES);
+    const addressChanged = false;
+    claim.partialAdmission = new PartialAdmission();
+    claim.partialAdmission.paymentIntention = new PaymentIntention();
+    //When
+    const ccdResponse = translateDraftResponseToCCD(claim, addressChanged);
+    //Then
+    expect(ccdResponse.disabilityPremiumPayments).toBe(YesNoUpperCamelCase.YES);
+  });
+
+  it('should severe disability changed to ccd', ()=>{
+    //Given
+    const claim = new Claim();
+    claim.statementOfMeans = new StatementOfMeans();
+    claim.statementOfMeans.severeDisability = new GenericYesNo(YesNo.YES);
+    const addressChanged = false;
+    claim.partialAdmission = new PartialAdmission();
+    claim.partialAdmission.paymentIntention = new PaymentIntention();
+    //When
+    const ccdResponse = translateDraftResponseToCCD(claim, addressChanged);
+    //Then
+    expect(ccdResponse.severeDisabilityPremiumPayments).toBe(YesNoUpperCamelCase.YES);
+  });
+
+  it('should employment changed to ccd', ()=>{
+    //Given
+    const claim = new Claim();
+    claim.statementOfMeans = new StatementOfMeans();
+    const employment : Employment = {
+      declared: true,
+      employmentType: undefined,
+    };
+    claim.statementOfMeans.employment = employment;
+    const addressChanged = false;
+    claim.partialAdmission = new PartialAdmission();
+    claim.partialAdmission.paymentIntention = new PaymentIntention();
+    //When
+    const ccdResponse = translateDraftResponseToCCD(claim, addressChanged);
+    //Then
+    expect(ccdResponse.defenceAdmitPartEmploymentTypeRequired).toBe(YesNoUpperCamelCase.YES);
+  });
 });

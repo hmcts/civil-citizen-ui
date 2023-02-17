@@ -123,26 +123,26 @@ const setUpDebtDetailsUndefinedItem = (debtType: CCDDebtType): CCDDebtDetailsLis
 };
 
 const setUpTransaction = (declare: boolean, transactionSource: TransactionSource): PriorityDebts => {
-  const input = new PriorityDebts();
+  const priorityDebts = new PriorityDebts();
   const transaction = new Transaction(declare, transactionSource);
-  input.mortgage = transaction;
-  input.rent = transaction;
-  input.councilTax = transaction;
-  input.gas = transaction;
-  input.electricity = transaction;
-  input.water = transaction;
-  input.maintenance = transaction;
-  return input;
+  priorityDebts.mortgage = transaction;
+  priorityDebts.rent = transaction;
+  priorityDebts.councilTax = transaction;
+  priorityDebts.gas = transaction;
+  priorityDebts.electricity = transaction;
+  priorityDebts.water = transaction;
+  priorityDebts.maintenance = transaction;
+  return priorityDebts;
 };
 
 const setUpTransactionUndefined = (): PriorityDebts => {
-  const input = new PriorityDebts();
-  input.mortgage = undefined;
-  input.rent = undefined;
-  input.councilTax = undefined;
-  input.gas = undefined;
-  input.electricity = undefined;
-  input.water = undefined;
-  input.maintenance = undefined;
-  return input;
+  const priorityDebts = new PriorityDebts();
+  priorityDebts.mortgage = undefined;
+  priorityDebts.rent = undefined;
+  priorityDebts.councilTax = undefined;
+  priorityDebts.gas = undefined;
+  priorityDebts.electricity = undefined;
+  priorityDebts.water = undefined;
+  priorityDebts.maintenance = undefined;
+  return priorityDebts;
 };
