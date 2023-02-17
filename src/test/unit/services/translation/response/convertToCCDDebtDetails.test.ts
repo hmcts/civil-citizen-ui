@@ -91,6 +91,13 @@ describe('translate priority debts to CCD model', () => {
     const output = toCCDDebtDetails(input);
     expect(output).toEqual(expected);
   });
+
+  it('should return value if there is input item undefined', () => {
+    const input =  setUpTransactionUndefined();
+
+    const output = toCCDDebtDetails(input);
+    expect(output).toEqual(undefined);
+  });
 });
 
 const setUpDebtDetailsItem = (debtType: CCDDebtType, frequency: CCDPaymentFrequency): CCDDebtDetailsList => {
@@ -128,3 +135,14 @@ const setUpTransaction = (declare: boolean, transactionSource: TransactionSource
   return input;
 };
 
+const setUpTransactionUndefined = (): PriorityDebts => {
+  const input = new PriorityDebts();
+  input.mortgage = undefined;
+  input.rent = undefined;
+  input.councilTax = undefined;
+  input.gas = undefined;
+  input.electricity = undefined;
+  input.water = undefined;
+  input.maintenance = undefined;
+  return input;
+};
