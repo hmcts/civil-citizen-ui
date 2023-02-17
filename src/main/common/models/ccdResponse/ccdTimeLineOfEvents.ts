@@ -3,7 +3,7 @@ export class CCDTimeLineOfEvents {
   value: CCDTimeLineOfEventsItem;
 }
 
-export interface CCDTimeLineOfEventsItem {
-  timelineDate: string,
-  timelineDescription: string,
+export class CCDTimeLineOfEventsItem {
+  timelineDate: string;
+  timelineDescription: string;
 }

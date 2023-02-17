@@ -16,6 +16,7 @@ import {toCCDRespondentDQ} from 'services/translation/response/convertToCCDRespo
 import {toCCDFieldsOnlyInCui} from 'services/translation/response/convertToCCDFromCuiOnlyFields';
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
+
   return {
     defenceAdmitPartPaymentTimeRouteRequired: toCCDPaymentOption(claim.partialAdmission.paymentIntention.paymentOption),
     respondent1RepaymentPlan: toCCDRepaymentPlan(claim.partialAdmission?.paymentIntention?.repaymentPlan),
@@ -29,8 +30,8 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     specDefenceAdmittedRequired: toCCDAdmitPartRoutePaid(claim.partialAdmission?.alreadyPaid?.option),
     detailsOfWhyDoesYouDisputeTheClaim: claim.partialAdmission?.whyDoYouDisagree?.text,
     specClaimResponseTimelineList: TimelineUploadTypeSpec.MANUAL, // sets to manual cause CUI do not have other option
-    specResponseTimelineOfEvents: toCCDResponseTimelineOfEvents(claim.timelineOfEvents),
-    defenceAdmitPartPaymentTimeRouteRequired2: toCCDTimeRouteRequired(claim.partialAdmission.paymentIntention.paymentOption),
+    specResponseTimelineOfEvents: toCCDResponseTimelineOfEvents(claim.partialAdmission?.timeline),
+    defenceAdmitPartPaymentTimeRouteRequired2: toCCDTimeRouteRequired(claim.partialAdmission?.paymentIntention?.paymentOption),
     responseClaimExpertSpecRequired: toCCDExpertRequired(claim.directionQuestionnaire?.experts?.expertRequired),
     respondent1DQ: toCCDRespondentDQ(claim),
     respondent1ResponseCui: toCCDFieldsOnlyInCui(claim),
