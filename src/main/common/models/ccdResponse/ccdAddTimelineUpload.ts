@@ -1,5 +1,5 @@
 import {CCDResponseDocument} from 'models/ccdResponse/ccdUpload';
 
-export interface CCDAddTimelineUpload {
+export interface CcdAddTimelineUpload {
   specResponseTimelineDocumentFiles: CCDResponseDocument
 }

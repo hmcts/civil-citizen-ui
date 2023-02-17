@@ -1,6 +1,6 @@
-export interface CCDTimeLineOfEvents {
-  id: string,
-  value: CCDTimeLineOfEventsItem,
+export class CCDTimeLineOfEvents {
+  id: string;
+  value: CCDTimeLineOfEventsItem;
 }
 
 export interface CCDTimeLineOfEventsItem {

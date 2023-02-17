@@ -8,7 +8,10 @@ export interface CCDAdmitPartRoute {
 export interface RespondToClaim {
   howMuchWasPaid?: number
   whenWasThisAmountPaid?: Date
-  howWasThisAmountPaid?: PaymentMethod
+  // this field is used in CCD but cannot be used in CUI
+  // there is no way to translate textbox (CUI) to enum (CCD)
+  // instead CUI use howWasThisAmountPaidOther for all payment method
+  // howWasThisAmountPaid?: PaymentMethod
   howWasThisAmountPaidOther?: string
   respondToAdmittedClaimOwingAmount?: number
 }
