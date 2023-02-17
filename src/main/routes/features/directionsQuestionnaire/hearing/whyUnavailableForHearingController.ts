@@ -9,12 +9,13 @@ import {
 import {
   WhyUnavailableForHearing,
 } from '../../../../common/models/directionsQuestionnaire/hearing/whyUnavailableForHearing';
-import {getCalculatedDays} from '../../../../services/features/directionsQuestionnaire/whyUnavailableForHearingService';
+import {getNumberOfUnavailableDays} from 'services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation';
 
 const whyUnavailableForHearingController = Router();
 const whyUnavailableForHearingViewPath = 'features/directionsQuestionnaire/hearing/why-unavailable-for-hearing';
 const dqPropertyName = 'whyUnavailableForHearing';
 const dqParentName = 'hearing';
+let days = 0;
 
 function renderView(form: GenericForm<WhyUnavailableForHearing>, res: Response, days: number): void {
   res.render(whyUnavailableForHearingViewPath, {form, days});
@@ -22,11 +23,10 @@ function renderView(form: GenericForm<WhyUnavailableForHearing>, res: Response, 
 
 whyUnavailableForHearingController.get(DQ_UNAVAILABLE_FOR_HEARING_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
-
     const directionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
     const whyUnavailableForHearing = directionQuestionnaire.hearing?.whyUnavailableForHearing ?
       directionQuestionnaire.hearing.whyUnavailableForHearing : new WhyUnavailableForHearing();
-    const days = await getCalculatedDays();
+    days = getNumberOfUnavailableDays(directionQuestionnaire.hearing?.unavailableDatesForHearing);
     renderView(new GenericForm(whyUnavailableForHearing), res, days);
   } catch (error) {
     next(error);
@@ -37,7 +37,6 @@ whyUnavailableForHearingController.post(DQ_UNAVAILABLE_FOR_HEARING_URL, async (r
   try {
     const claimId = req.params.id;
     const whyUnavailableForHearing = new GenericForm(new WhyUnavailableForHearing(req.body.reason));
-    const days = await getCalculatedDays();
     whyUnavailableForHearing.validateSync();
 
     if (whyUnavailableForHearing.hasErrors()) {
