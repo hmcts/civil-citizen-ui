@@ -1,6 +1,6 @@
-import {toCCDPaymentFrequency} from "services/translation/response/convertToCCDPaymentFrequency";
-import {TransactionSchedule} from "form/models/statementOfMeans/expensesAndIncome/transactionSchedule";
-import {CCDPaymentFrequency} from "models/ccdResponse/ccdPaymentFrequency";
+import {toCCDPaymentFrequency} from 'services/translation/response/convertToCCDPaymentFrequency';
+import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {CCDPaymentFrequency} from 'models/ccdResponse/ccdPaymentFrequency';
 
 describe('translate payment frequency to CCD model', () => {
   it('should return undefined if it is undefined', () => {
@@ -27,4 +27,4 @@ describe('translate payment frequency to CCD model', () => {
     const output = toCCDPaymentFrequency(TransactionSchedule.MONTH);
     expect(output).toBe(CCDPaymentFrequency.ONCE_ONE_MONTH);
   });
-})
+});

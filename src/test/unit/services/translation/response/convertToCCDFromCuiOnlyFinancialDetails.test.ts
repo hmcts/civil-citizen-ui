@@ -1,8 +1,8 @@
-import {toCCDFieldsOnlyInCuiFinancialDetails} from "services/translation/response/convertToCCDFromCuiOnlyFinancialDetails";
-import {CCDFinancialDetailsCuiFields} from "models/ccdResponse/ccdFinancialDetailsCuiFields";
-import {StatementOfMeans} from "models/statementOfMeans";
-import {GenericYesNo} from "form/models/genericYesNo";
-import {YesNo, YesNoUpperCamelCase} from "form/models/yesNo";
+import {toCCDFieldsOnlyInCuiFinancialDetails} from 'services/translation/response/convertToCCDFromCuiOnlyFinancialDetails';
+import {CCDFinancialDetailsCuiFields} from 'models/ccdResponse/ccdFinancialDetailsCuiFields';
+import {StatementOfMeans} from 'models/statementOfMeans';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 
 describe('translate cui fields to CCD model', () => {
   it('should return undefined if it is undefined', () => {
@@ -11,7 +11,7 @@ describe('translate cui fields to CCD model', () => {
       partnerDisabilityCui: undefined,
       partnerSevereDisabilityCui: undefined,
       childrenEducationCui: undefined,
-    }
+    };
     const output = toCCDFieldsOnlyInCuiFinancialDetails(undefined);
     expect(output).toEqual(expected);
   });
@@ -27,7 +27,7 @@ describe('translate cui fields to CCD model', () => {
       partnerDisabilityCui: YesNoUpperCamelCase.YES,
       partnerSevereDisabilityCui: YesNoUpperCamelCase.YES,
       childrenEducationCui: '1',
-    }
+    };
     const output = toCCDFieldsOnlyInCuiFinancialDetails(input);
     expect(output).toEqual(expected);
   });
@@ -43,7 +43,7 @@ describe('translate cui fields to CCD model', () => {
       partnerDisabilityCui: undefined,
       partnerSevereDisabilityCui: undefined,
       childrenEducationCui: undefined,
-    }
+    };
     const output = toCCDFieldsOnlyInCuiFinancialDetails(input);
     expect(output).toEqual(expected);
   });
