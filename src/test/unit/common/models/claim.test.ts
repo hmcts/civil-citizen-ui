@@ -1191,16 +1191,18 @@ describe('Documents', () => {
     });
   });
   describe('Identify if its a SMALL or FAST_TRACK claim', () => {
+    const  claim = new Claim();
     it('Its a small claim', () => {
-      const  claim = new Claim();
+      //Given
       claim.totalClaimAmount = 10000;
-
+      //when Then
       expect(claim.claimType).toEqual(claimType.SMALL_CLAIM);
+      expect(claim.isFastTrackClaim).toBe(false);
     });
     it('Its a fast track claim', () => {
-      const  claim = new Claim();
+      //Given
       claim.totalClaimAmount = 11000;
-
+      //when Then
       expect(claim.claimType).toEqual(claimType.FAST_TRACK_CLAIM);
       expect(claim.isFastTrackClaim).toBe(true);
     });
