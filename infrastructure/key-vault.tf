@@ -4,7 +4,7 @@ data "azuread_group" "dts_civil" {
 }
 
 data "azurerm_user_assigned_identity" "civil" {
-  name                = "civil-${var.env}"
+  name                = "civil-${var.env}-mi"
   resource_group_name = "managed-identities-${var.env}-rg"
 }
 
