@@ -11,7 +11,7 @@ import {toCCDFieldsOnlyInCui} from 'services/translation/response/convertToCCDFr
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   return {
     respondent1ClaimResponseTypeForSpec: claim.respondent1?.responseType,
-    defenceAdmitPartPaymentTimeRouteRequired: toCCDPaymentOption(claim.partialAdmission.paymentIntention.paymentOption),
+    defenceAdmitPartPaymentTimeRouteRequired: toCCDPaymentOption(claim),
     respondent1RepaymentPlan: toCCDRepaymentPlan(claim.partialAdmission?.paymentIntention?.repaymentPlan),
     respondToClaimAdmitPartLRspec: toCCDPayBySetDate(claim.partialAdmission.paymentIntention.paymentDate),
     responseClaimMediationSpecRequired: toAgreedMediation(claim.mediation),
