@@ -1,6 +1,6 @@
-import {Claim} from '../../../../../common/models/claim';
-import {summarySection, SummarySection} from '../../../../../common/models/summaryList/summarySections';
-import {getLng} from '../../../../../common/utils/languageToggleUtils';
+import {Claim} from 'models/claim';
+import {summarySection, SummarySection} from 'models/summaryList/summarySections';
+import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
 import {
   buildFastTrackHearingRequirements,
@@ -22,7 +22,7 @@ export const buildHearingRequirementsSection = (claim: Claim, claimId: string, l
 
   if (claim.isFastTrackClaim) {
     buildFastTrackHearingRequirements(claim, hearingRequirementsSection, claimId, lng);
-  } else   {
+  } else {
     buildSmallClaimHearingRequirements(claim, hearingRequirementsSection, claimId, lng);
   }
 

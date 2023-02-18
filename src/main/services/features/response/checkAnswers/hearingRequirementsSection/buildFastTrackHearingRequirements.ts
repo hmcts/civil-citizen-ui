@@ -1,6 +1,6 @@
 import {Claim} from 'models/claim';
 import {SummarySection} from 'models/summaryList/summarySections';
-import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
+import {YesNo, YesNoUpperCase} from 'form/models/yesNo';
 import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
 import {t} from 'i18next';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -13,26 +13,26 @@ import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import {getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/getEmptyStringIfUndefined';
 
 export const triedToSettleQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const option = claim?.directionQuestionnaire?.hearing?.triedToSettle?.option === YesNo.YES
-    ? YesNoUpperCamelCase.YES
-    : YesNoUpperCamelCase.NO;
+  const option = claim.directionQuestionnaire?.hearing?.triedToSettle?.option === YesNo.YES
+    ? YesNoUpperCase.YES
+    : YesNoUpperCase.NO;
 
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE', {lng}),
-    option,
+    t(`COMMON.${option}`, {lng}),
     constructResponseUrlWithIdParams(claimId, DQ_TRIED_TO_SETTLE_CLAIM_URL),
     changeLabel(lng),
   );
 };
 
 export const requestExtra4WeeksQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const option = claim?.directionQuestionnaire?.hearing?.requestExtra4weeks?.option === YesNo.YES
-    ? YesNoUpperCamelCase.YES
-    : YesNoUpperCamelCase.NO;
+  const option = claim.directionQuestionnaire?.hearing?.requestExtra4weeks?.option === YesNo.YES
+    ? YesNoUpperCase.YES
+    : YesNoUpperCase.NO;
 
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.REQUEST_EXTRA_4WEEKS', {lng}),
-    option,
+    t(`COMMON.${option}`, {lng}),
     constructResponseUrlWithIdParams(claimId, DQ_REQUEST_EXTRA_4WEEKS_URL),
     changeLabel(lng),
   );
@@ -40,12 +40,12 @@ export const requestExtra4WeeksQuestion = (claim: Claim, claimId: string, lng: s
 
 export const considerClaimantDocQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const option = claim?.directionQuestionnaire?.hearing?.considerClaimantDocuments?.option === YesNo.YES
-    ? YesNoUpperCamelCase.YES
-    : YesNoUpperCamelCase.NO;
+    ? YesNoUpperCase.YES
+    : YesNoUpperCase.NO;
 
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.CONSIDER_CLAIMANT_DOCUMENT', {lng}),
-    option,
+    t(`COMMON.${option}`, {lng}),
     constructResponseUrlWithIdParams(claimId, DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL),
     changeLabel(lng),
   );

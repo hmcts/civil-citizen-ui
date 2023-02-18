@@ -24,6 +24,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
 
   describe('triedToSettleQuestion', () => {
     it('should return summaryRow if triedToSettle option is no', () => {
+      //Given
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.hearing = new Hearing();
@@ -32,11 +33,11 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       };
       const mockSummarySection = summaryRow(
         'PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE',
-        'No',
+        'COMMON.NO',
         `/case/${claimId}/directions-questionnaire/tried-to-settle`,
         changeButton,
       );
-
+      //Then
       expect(triedToSettleQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
     });
 
@@ -44,6 +45,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
 
   describe('requestExtra4WeeksQuestion', () => {
     it('should return summaryRow if requestExtra4Weeks option is yes', () => {
+      //Given
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.hearing = new Hearing();
@@ -52,11 +54,11 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       };
       const mockSummarySection = summaryRow(
         'PAGES.CHECK_YOUR_ANSWER.REQUEST_EXTRA_4WEEKS',
-        'Yes',
+        'COMMON.YES',
         `/case/${claimId}/directions-questionnaire/request-extra-4-weeks`,
         changeButton,
       );
-
+      //Then
       expect(requestExtra4WeeksQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
     });
 
@@ -64,6 +66,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
 
   describe('considerClaimantDocQuestion', () => {
     it('should return summaryRow if considerClaimantDocuments option is no', () => {
+      //Given
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.hearing = new Hearing();
@@ -72,15 +75,16 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       };
       const mockSummarySection = summaryRow(
         'PAGES.CHECK_YOUR_ANSWER.CONSIDER_CLAIMANT_DOCUMENT',
-        'No',
+        'COMMON.NO',
         `/case/${claimId}/directions-questionnaire/consider-claimant-documents`,
         changeButton,
       );
-
+      //Then
       expect(considerClaimantDocQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow for document details if considerClaimantDocuments option is Yes', () => {
+      //Given
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.hearing = new Hearing();
@@ -92,7 +96,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         'PAGES.CHECK_YOUR_ANSWER.GIVE_DOC_DETAILS',
         'Test doc',
       );
-
+      //Then
       expect(considerClaimantDocResponse(claim, claimId, lng)).toStrictEqual(mockSummarySection);
     });
 
