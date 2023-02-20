@@ -9,23 +9,48 @@ import {GenericYesNo} from '../../../common/form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {saveClaimantResponse} from '../../../services/features/claimantResponse/claimantResponseService';
 import {getFullAdmitSetDatePaymentDetails} from '../../../services/features/claimantResponse/fullAdmitSetDatePaymentService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'common/models/claim';
+import {getLng} from 'common/utils/languageToggleUtils';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+import { 
+  getPaymentAmount, 
+  getRepaymentFrequency,
+  getFirstRepaymentDate,
+  getFinalPaymentDate,
+  getRepaymentLength,
+  convertFrequencyToText,
+ } from 'common/utils/repaymentUtils';
 
 const fullAdmitSetDatePaymentController = Router();
 const fullAdmitSetDatePaymentPath = 'features/claimantResponse/full-admit-set-date-payment';
+let repaymentPlan: any;
 
-function renderView(form: GenericForm<GenericYesNo>, defendantName: string, proposedSetDate: string, res: Response): void {
+function renderView(form: GenericForm<GenericYesNo>, defendantName: string, proposedSetDate: string, repaymentPlan: any, res: Response): void {
   res.render(fullAdmitSetDatePaymentPath, {
     form,
     defendantName,
     proposedSetDate,
+    repaymentPlan,
   });
 }
 
 fullAdmitSetDatePaymentController.get(CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAYMENT_URL, async (req:AppRequest, res:Response, next: NextFunction) => {
   try {
+    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
     const details = await getFullAdmitSetDatePaymentDetails(claimId);
-    renderView(new GenericForm(details.fullAdmitAcceptPayment), details.defendantName, details.proposedSetDate, res);
+    const claim: Claim = await getCaseDataFromStore(claimId);
+    const frequency = getRepaymentFrequency(claim);
+    
+    repaymentPlan = {
+      paymentAmount: getPaymentAmount(claim),
+      repaymentFrequency: convertFrequencyToText(frequency, getLng(lang)),
+      firstRepaymentDate: formatDateToFullDate(new Date(getFirstRepaymentDate(claim))),
+      finalRepaymentDate: formatDateToFullDate(new Date(getFinalPaymentDate(claim))),
+      lengthOfRepaymentPlan: getRepaymentLength(claim, getLng(lang)),
+    };
+    renderView(new GenericForm(details.fullAdmitAcceptPayment), details.defendantName, details.proposedSetDate, repaymentPlan, res);
   } catch (error) {
     next(error);
   }
@@ -40,7 +65,7 @@ fullAdmitSetDatePaymentController.post(CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAY
 
     if (form.hasErrors()) {
       const details = await getFullAdmitSetDatePaymentDetails(claimId);
-      renderView(form, details.defendantName, details.proposedSetDate, res);
+      renderView(form, details.defendantName, details.proposedSetDate, repaymentPlan, res);
     } else {
       await saveClaimantResponse(claimId, form.model, propertyName);
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
