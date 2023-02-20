@@ -2,7 +2,7 @@ import {CCDRespondentLiPResponse} from 'models/ccdResponse/CCDRespondentLiPRespo
 import {Claim} from 'models/claim';
 import {toCCDMediation} from 'services/translation/response/convertToCCDMediation';
 
-export const toCCDFieldsOnlyInCui = (claim: Claim): CCDRespondentLiPResponse => {
+export const toCCDRespondentLiPResponse = (claim: Claim): CCDRespondentLiPResponse => {
   return {
     respondent1MediationLipResponse: toCCDMediation(claim.mediation),
   };
