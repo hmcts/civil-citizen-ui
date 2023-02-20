@@ -174,7 +174,7 @@ export const buildCommonHearingRequirements = (claim: Claim, hearingRequirements
     addSupportRequiredList(claim, hearingRequirementsSection, claimId, lng);
   }
 
-  if (claim?.directionQuestionnaire?.welshLanguageRequirements?.language) {
+  if (claim.directionQuestionnaire?.welshLanguageRequirements?.language) {
     hearingRequirementsSection.summaryList.rows.push(summaryRow(
       t('PAGES.CHECK_YOUR_ANSWER.WELSH_LANGUAGE', {lng}),null ,constructResponseUrlWithIdParams(claimId, DQ_WELSH_LANGUAGE_URL), changeLabel(lng)));
     hearingRequirementsSection.summaryList.rows.push(speakingLanguagePreference(claim, claimId, lng));
