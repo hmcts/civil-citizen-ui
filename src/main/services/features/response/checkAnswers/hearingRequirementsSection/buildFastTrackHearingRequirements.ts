@@ -84,8 +84,7 @@ export const getExpert = (claim: Claim, claimId: string, lang: string): SummaryR
 }
 
 export const getUseExpertEvidence = (claim:Claim, claimId: string, lng:string): SummaryRow =>{
-  let shouldConsiderExpertEvidence = affirmation(claim?.directionQuestionnaire?.experts?.expertEvidence?.option, lng);
-  shouldConsiderExpertEvidence.affirming();
+  let shouldConsiderExpertEvidence = affirmation(claim.directionQuestionnaire?.experts?.expertEvidence?.option, lng);
 
   return summaryRow(
     t('PAGES.DEFENDANT_EXPERT_EVIDENCE.TITLE', {lng}),
@@ -96,8 +95,7 @@ export const getUseExpertEvidence = (claim:Claim, claimId: string, lng:string): 
 }
 
 export const getSentReportToOtherParties = (claim:Claim, claimId: string, lng:string): SummaryRow =>{
-  const shouldConsiderSentExpertReports = affirmation(claim?.directionQuestionnaire?.experts?.sentExpertReports?.option, lng);
-  shouldConsiderSentExpertReports.affirming();
+  const shouldConsiderSentExpertReports = affirmation(claim.directionQuestionnaire?.experts?.sentExpertReports?.option, lng);
 
   return summaryRow(
     t('PAGES.SENT_EXPERT_REPORTS.TITLE', {lng}),
@@ -108,8 +106,7 @@ export const getSentReportToOtherParties = (claim:Claim, claimId: string, lng:st
 }
 
 export const getShareExpertWithClaimant = (claim:Claim, claimId: string, lng:string): SummaryRow =>{
-  const shouldConsiderSharedExpert = affirmation(claim?.directionQuestionnaire?.experts?.sharedExpert?.option, lng);
-  shouldConsiderSharedExpert.affirming();
+  const shouldConsiderSharedExpert = affirmation(claim.directionQuestionnaire?.experts?.sharedExpert?.option, lng);
 
   return summaryRow(
     t('PAGES.SHARED_EXPERT.TITLE', {lng}),
@@ -121,16 +118,16 @@ export const getShareExpertWithClaimant = (claim:Claim, claimId: string, lng:str
 
 export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequirementsSection: SummarySection, claimId: string, lng: string) => {
 
-  if (claim?.directionQuestionnaire?.hearing?.triedToSettle?.option)
+  if (claim.directionQuestionnaire?.hearing?.triedToSettle?.option)
     hearingRequirementsSection.summaryList.rows.push(triedToSettleQuestion(claim, claimId, lng));
 
-  if (claim?.directionQuestionnaire?.hearing?.requestExtra4weeks?.option)
+  if (claim.directionQuestionnaire?.hearing?.requestExtra4weeks?.option)
     hearingRequirementsSection.summaryList.rows.push(requestExtra4WeeksQuestion(claim, claimId, lng));
 
-  if (claim?.directionQuestionnaire?.hearing?.considerClaimantDocuments?.option)
+  if (claim.directionQuestionnaire?.hearing?.considerClaimantDocuments?.option)
     hearingRequirementsSection.summaryList.rows.push(considerClaimantDocQuestion(claim, claimId, lng));
 
-  if (claim?.directionQuestionnaire?.hearing?.considerClaimantDocuments?.option == YesNo.YES)
+  if (claim.directionQuestionnaire?.hearing?.considerClaimantDocuments?.option == YesNo.YES)
     hearingRequirementsSection.summaryList.rows.push(considerClaimantDocResponse(claim, claimId, lng));
 
   hearingRequirementsSection.summaryList.rows.push(getUseExpertEvidence(claim, claimId, lng));
