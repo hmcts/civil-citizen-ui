@@ -20,7 +20,9 @@ import {ResponseType} from 'form/models/responseType';
 import {toCCDDebtDetails} from 'services/translation/response/convertToCCDDebtDetails';
 import {toCCDRecurringIncomeField} from 'services/translation/response/convertToCCDRecurringIncome';
 import {toCCDRecurringExpensesField} from 'services/translation/response/convertToCCDRecurringExpense';
-import {toCCDFieldsOnlyInCui} from 'services/translation/response/convertToCCDFromCuiOnlyFields';
+import {
+  toCCDRespondentLiPResponse,
+} from 'services/translation/response/convertToCCDRespondentLiPResponse';
 import {
   toCCDYesNoFromBoolean,
   toCCDYesNoFromGenericYesNo,
@@ -58,7 +60,7 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     respondent1DQRecurringIncomeFA: toCCDRecurringIncomeField(claim, ResponseType.FULL_ADMISSION),
     respondent1DQRecurringExpenses: toCCDRecurringExpensesField(claim, ResponseType.PART_ADMISSION),
     respondent1DQRecurringExpensesFA: toCCDRecurringExpensesField(claim, ResponseType.FULL_ADMISSION),
-    respondent1ResponseCui: toCCDFieldsOnlyInCui(claim),
+    respondent1LiPResponse: toCCDRespondentLiPResponse(claim),
 
   };
 };
