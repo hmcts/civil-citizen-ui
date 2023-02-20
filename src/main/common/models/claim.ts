@@ -465,7 +465,7 @@ export class Claim {
   }
 
   getPaymentIntention(): PaymentIntention {
-    return this.isPartialAdmission()? this.partialAdmission.paymentIntention : this.fullAdmission.paymentIntention;
+    return this.isPartialAdmission()? this.partialAdmission?.paymentIntention : this.fullAdmission?.paymentIntention;
   }
 }
 

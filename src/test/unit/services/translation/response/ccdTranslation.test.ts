@@ -27,9 +27,9 @@ describe('translate response to ccd version', () => {
   it('should translate repayment plan to ccd', () => {
     //Given
     const claim = new Claim();
-    claim.partialAdmission = new PartialAdmission();
-    claim.partialAdmission.paymentIntention = new PaymentIntention();
-    claim.partialAdmission.paymentIntention.repaymentPlan = {
+    claim.fullAdmission = new FullAdmission();
+    claim.fullAdmission.paymentIntention = new PaymentIntention();
+    claim.fullAdmission.paymentIntention.repaymentPlan = {
       paymentAmount: 100,
       firstRepaymentDate: new Date(),
       repaymentFrequency: 'MONTH',
@@ -39,8 +39,8 @@ describe('translate response to ccd version', () => {
     //Then
     expect(ccdResponse.respondent1RepaymentPlan).not.toBeUndefined();
     expect(ccdResponse.respondent1RepaymentPlan?.repaymentFrequency).toBe(CCDRepaymentPlanFrequency.ONCE_ONE_MONTH);
-    expect(ccdResponse.respondent1RepaymentPlan?.firstRepaymentDate).toBe(claim.partialAdmission.paymentIntention.repaymentPlan.firstRepaymentDate);
-    expect(ccdResponse.respondent1RepaymentPlan?.paymentAmount).toBe(claim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount);
+    expect(ccdResponse.respondent1RepaymentPlan?.firstRepaymentDate).toBe(claim.fullAdmission.paymentIntention.repaymentPlan.firstRepaymentDate);
+    expect(ccdResponse.respondent1RepaymentPlan?.paymentAmount).toBe(claim.fullAdmission.paymentIntention.repaymentPlan.paymentAmount);
   });
   it('should translate response type to CCD', () => {
     //Given
@@ -59,6 +59,8 @@ describe('translate response to ccd version', () => {
   it('should translate payment date to CCD', () => {
     //Given
     const claim = new Claim();
+    claim.respondent1 = new Party();
+    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
     claim.partialAdmission = new PartialAdmission();
     claim.partialAdmission.paymentIntention = new PaymentIntention();
     claim.partialAdmission.paymentIntention.paymentDate = new Date();

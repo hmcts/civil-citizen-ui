@@ -5,7 +5,10 @@ import {Claim} from 'models/claim';
 import {ResponseType} from 'form/models/responseType';
 
 describe('translate payment option to ccd version', ()=> {
-  const claim = new Claim();
+  let claim: Claim;
+  beforeEach(()=> {
+    claim = new Claim();
+  });
 
   it('should translate pay immediately to ccd version for part admit', ()=> {
     //Given
@@ -18,7 +21,7 @@ describe('translate payment option to ccd version', ()=> {
       responseType : ResponseType.PART_ADMISSION,
     };
     //When
-    const result = toCCDPaymentOption(claim);
+    const result = toCCDPaymentOption(claim.getPaymentIntention().paymentOption);
     //Then
     expect(result).toBe(CCDPaymentOption.IMMEDIATELY);
   });
@@ -33,7 +36,7 @@ describe('translate payment option to ccd version', ()=> {
       responseType : ResponseType.PART_ADMISSION,
     };
     //When
-    const result = toCCDPaymentOption(claim);
+    const result = toCCDPaymentOption(claim.getPaymentIntention().paymentOption);
     //Then
     expect(result).toBe(CCDPaymentOption.BY_SET_DATE);
   });
@@ -48,7 +51,7 @@ describe('translate payment option to ccd version', ()=> {
       responseType : ResponseType.PART_ADMISSION,
     };
     //When
-    const result = toCCDPaymentOption(claim);
+    const result = toCCDPaymentOption(claim.getPaymentIntention().paymentOption);
     //Then
     expect(result).toBe(CCDPaymentOption.REPAYMENT_PLAN);
   });
@@ -63,7 +66,7 @@ describe('translate payment option to ccd version', ()=> {
       responseType : ResponseType.FULL_ADMISSION,
     };
     //When
-    const result = toCCDPaymentOption(claim);
+    const result = toCCDPaymentOption(claim.getPaymentIntention().paymentOption);
     //Then
     expect(result).toBe(CCDPaymentOption.IMMEDIATELY);
   });
@@ -78,7 +81,7 @@ describe('translate payment option to ccd version', ()=> {
       responseType : ResponseType.FULL_ADMISSION,
     };
     //When
-    const result = toCCDPaymentOption(claim);
+    const result = toCCDPaymentOption(claim.getPaymentIntention().paymentOption);
     //Then
     expect(result).toBe(CCDPaymentOption.BY_SET_DATE);
   });
@@ -93,7 +96,7 @@ describe('translate payment option to ccd version', ()=> {
       responseType : ResponseType.FULL_ADMISSION,
     };
     //When
-    const result = toCCDPaymentOption(claim);
+    const result = toCCDPaymentOption(claim.getPaymentIntention().paymentOption);
     //Then
     expect(result).toBe(CCDPaymentOption.REPAYMENT_PLAN);
   });
