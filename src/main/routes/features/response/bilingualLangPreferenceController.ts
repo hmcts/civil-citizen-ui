@@ -21,7 +21,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 
 bilingualLangPreferenceController.get(BILINGUAL_LANGUAGE_PREFERENCE_URL, async (req, res, next: NextFunction) => {
   try {
-    const form: GenericYesNo = await getBilingualLangPreference(req.params.id);
+    const form: GenericYesNo = await getBilingualLangPreference(req.params.id, req);
     renderView(new GenericForm<GenericYesNo>(form), res);
   } catch (error) {
     next(error);
@@ -36,7 +36,7 @@ bilingualLangPreferenceController.post(BILINGUAL_LANGUAGE_PREFERENCE_URL, async 
       renderView(form, res);
     } else {
       res.cookie('lang', form.model.option === ClaimBilingualLanguagePreference.ENGLISH ? 'en' : 'cy');
-      await saveBilingualLangPreference(req.params.id, form.model, req);
+      await saveBilingualLangPreference(req.params.id, form.model);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
     }
   } catch (error) {

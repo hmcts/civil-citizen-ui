@@ -17,15 +17,15 @@ describe('translate Mediation to CCD model', () => {
   it('should translate claimAmountBreakup to CCD', () => {
     const mediationCCD: CCDMediation=
       {
-        canWeUseMediationCui: YesNoUpperCamelCase.NO,
-        canWeUseMediationPhoneCui: '666555444',
-        mediationDisagreementCui: YesNoUpperCamelCase.YES,
-        noMediationReasonCui: 'test',
-        noMediationOtherReasonCui: 'reason',
-        companyTelephoneOptionMediationCui: YesNoUpperCamelCase.YES,
-        companyTelephoneConfirmationMediationCui: '111222333',
-        companyTelephoneContactPersonMediationCui: 'lawyer',
-        companyTelephonePhoneNumberMediationCui: '222444666',
+        canWeUseMediationLiP: YesNoUpperCamelCase.NO,
+        canWeUseMediationPhoneLiP: '666555444',
+        mediationDisagreementLiP: YesNoUpperCamelCase.YES,
+        noMediationReasonLiP: 'test',
+        noMediationOtherReasonLiP: 'reason',
+        companyTelephoneOptionMediationLiP: YesNoUpperCamelCase.YES,
+        companyTelephoneConfirmationMediationLiP: '111222333',
+        companyTelephoneContactPersonMediationLiP: 'lawyer',
+        companyTelephonePhoneNumberMediationLiP: '222444666',
       };
     const mediationResponseCCD = toCCDMediation(claim.mediation);
     expect(mediationResponseCCD).toMatchObject(mediationCCD);
