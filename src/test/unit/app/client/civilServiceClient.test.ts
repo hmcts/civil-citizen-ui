@@ -42,6 +42,10 @@ const ccdClaim : CCDClaim = {
     individualFirstName: 'Jane',
     type: PartyType.INDIVIDUAL,
   },
+  claimantUserDetails: {
+    email: 'email',
+    id: '1',
+  },
 };
 
 describe('Civil Service Client', () => {
@@ -244,6 +248,30 @@ describe('Civil Service Client', () => {
       expect(locations[0].code).toBe(courtLocations[0].code);
       expect(locations[1].label).toBe(courtLocations[1].label);
       expect(locations[1].code).toBe(courtLocations[1].code);
+    });
+  });
+  describe('assignDefendantToClaim', ()=> {
+    it('should call civil service api to assign a logged in user to a claim successfully', async () => {
+      //Given
+      const claimId = '1';
+      const mockPost = jest.fn().mockResolvedValue({data:{}});
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //When
+      await civilServiceClient.assignDefendantToClaim(claimId, mockedAppRequest);
+      //Then
+      expect(mockedAxios.create).toHaveBeenCalledWith({
+        baseURL: baseUrl,
+      });
+    });
+    it('should throw error when there is an error calling civil service to assign logged in user to a claim', async () => {
+      const mockPost = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.assignDefendantToClaim('1', mockedAppRequest)).rejects.toThrow('error');
     });
   });
 });

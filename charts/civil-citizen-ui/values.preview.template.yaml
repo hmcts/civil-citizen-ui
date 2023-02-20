@@ -1,19 +1,17 @@
 nodejs:
   # Don't modify below here
   image: ${IMAGE_NAME}
+  memoryLimits: 768Mi
   ingressHost: ${SERVICE_FQDN}
   keyVaults:
-    civil:
-      resourceGroup: civil-service
+    civil-citizen-ui:
+      resourceGroup: civil-citizen-ui
       secrets:
-        - AppInsightsInstrumentationKey
+        - appinsights-instrumentation-key
         - draft-store-access-key
+        - citizen-ui-idam-secret
         - name: ordnance-survey-api-key
           alias: ORDNANCE_SURVEY_API_KEY
-        - citizen-ui-idam-secret
-    cmc:
-      resourceGroup: cmc
-      secrets:
         - cmc-s2s-secret
         - citizen-draft-store-primary
         - citizen-draft-store-secondary
@@ -132,11 +130,16 @@ idam-pr:
 
 xui-webapp:
   enabled: true
+  memoryLimits: 1Gi
   nodejs:
     imagePullPolicy: Always
     releaseNameOverride: ${SERVICE_NAME}-xui-webapp
     image: hmctspublic.azurecr.io/xui/webapp:latest
     ingressHost: xui-${SERVICE_FQDN}
+    devcpuRequests: 500m
+    devmemoryRequests: 1Gi
+    devcpuLimits: 1
+    devmemoryLimits: 2Gi
     environment:
       HEALTH_CCD_COMPONENT_API: http://${SERVICE_NAME}-ccd-api-gw/health
       HEALTH_CCD_DATA_API: http://${SERVICE_NAME}-ccd-data-store-api/health

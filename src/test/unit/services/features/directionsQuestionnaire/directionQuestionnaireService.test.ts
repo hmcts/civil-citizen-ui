@@ -35,7 +35,7 @@ describe('Direction questionnaire Service', () => {
       //When
       const directionQuestionnaire = await getDirectionQuestionnaire('validClaimId');
       //Then
-      expect(directionQuestionnaire?.experts?.defendantExpertEvidence).toBeUndefined();
+      expect(directionQuestionnaire?.experts?.expertEvidence).toBeUndefined();
       expect(directionQuestionnaire?.hearing?.triedToSettle).toBeUndefined();
     });
     it('should return defendant Direction questionnaire object', async () => {
@@ -49,7 +49,7 @@ describe('Direction questionnaire Service', () => {
       //When
       const directionQuestionnaire = await getDirectionQuestionnaire('validClaimId');
       //Then
-      expect(directionQuestionnaire?.experts?.defendantExpertEvidence).toBeUndefined();
+      expect(directionQuestionnaire?.experts?.expertEvidence).toBeUndefined();
       expect(directionQuestionnaire?.hearing?.triedToSettle).toBeUndefined();
     });
 
@@ -69,12 +69,12 @@ describe('Direction questionnaire Service', () => {
       expect(directionQuestionnaire?.hearing?.determinationWithoutHearing).toBeUndefined();
     });
 
-    it('should return defendant Direction questionnaire object with defendantExpertEvidence no', async () => {
+    it('should return defendant Direction questionnaire object with expertEvidence no', async () => {
       //Given
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.experts = new Experts();
-      claim.directionQuestionnaire.experts.defendantExpertEvidence = {
+      claim.directionQuestionnaire.experts.expertEvidence = {
         option: YesNo.NO,
       };
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -83,7 +83,7 @@ describe('Direction questionnaire Service', () => {
       //When
       const directionQuestionnaire = await getDirectionQuestionnaire('validClaimId');
       //Then
-      expect(directionQuestionnaire?.experts?.defendantExpertEvidence?.option).toBe(YesNo.NO);
+      expect(directionQuestionnaire?.experts?.expertEvidence?.option).toBe(YesNo.NO);
       expect(directionQuestionnaire?.hearing?.triedToSettle).toBeUndefined();
     });
 
@@ -147,16 +147,16 @@ describe('Direction questionnaire Service', () => {
       const directionQuestionnaire = await getDirectionQuestionnaire('validClaimId');
       //Then
       expect(directionQuestionnaire.hearing?.triedToSettle?.option).toBe(YesNo.NO);
-      expect(directionQuestionnaire.experts?.defendantExpertEvidence).toBeUndefined();
+      expect(directionQuestionnaire.experts?.expertEvidence).toBeUndefined();
     });
 
-    it('should return defendant Direction questionnaire object with defendantExpertEvidence yes and triedToSettle no', async () => {
+    it('should return defendant Direction questionnaire object with expertEvidence yes and triedToSettle no', async () => {
       //Given
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.experts = new Experts();
       claim.directionQuestionnaire.hearing = new Hearing();
-      claim.directionQuestionnaire.experts.defendantExpertEvidence = {
+      claim.directionQuestionnaire.experts.expertEvidence = {
         option: YesNo.YES,
       };
       claim.directionQuestionnaire.hearing.triedToSettle = {
@@ -168,7 +168,7 @@ describe('Direction questionnaire Service', () => {
       //When
       const directionQuestionnaire = await getDirectionQuestionnaire('validClaimId');
       //Then
-      expect(directionQuestionnaire?.experts?.defendantExpertEvidence?.option).toBe(YesNo.YES);
+      expect(directionQuestionnaire?.experts?.expertEvidence?.option).toBe(YesNo.YES);
       expect(directionQuestionnaire?.hearing?.triedToSettle?.option).toBe(YesNo.NO);
     });
 
@@ -218,36 +218,140 @@ describe('Direction questionnaire Service', () => {
       expect(expertEvidence.option).toBeUndefined();
     });
 
-    it('should return request defendantExpertEvidence option with Yes option', async () => {
+    it('should return request expertEvidence option with Yes option', async () => {
       //Given
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.experts = new Experts();
-      claim.directionQuestionnaire.experts.defendantExpertEvidence = {option: YesNo.YES};
+      claim.directionQuestionnaire.experts.expertEvidence = {option: YesNo.YES};
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return claim;
       });
       //When
-      const expertEvidence = await getGenericOption('validClaimId', 'defendantExpertEvidence', 'experts');
+      const expertEvidence = await getGenericOption('validClaimId', 'expertEvidence', 'experts');
       //Then
       expect(expertEvidence.option).toBe(YesNo.YES);
     });
 
-    it('should return request defendantExpertEvidence option with Yes option - defendant journey', async () => {
+    it('should return request expertEvidence option with Yes option - defendant journey', async () => {
       //Given
       const claim = new Claim();
       claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
       claim.claimantResponse = new ClaimantResponse();
       claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
       claim.claimantResponse.directionQuestionnaire.experts = new Experts();
-      claim.claimantResponse.directionQuestionnaire.experts.defendantExpertEvidence = {option: YesNo.YES};
+      claim.claimantResponse.directionQuestionnaire.experts.expertEvidence = {option: YesNo.YES};
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return claim;
       });
       //When
-      const expertEvidence = await getGenericOption('validClaimId', 'defendantExpertEvidence', 'experts');
+      const expertEvidence = await getGenericOption('validClaimId', 'expertEvidence', 'experts');
       //Then
       expect(expertEvidence.option).toBe(YesNo.YES);
+    });
+
+    it('should return claimant permissionForExpert option with Yes option', async () => {
+      //Given
+      const claim = new Claim();
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
+      claim.claimantResponse.directionQuestionnaire.experts = new Experts();
+      claim.claimantResponse.directionQuestionnaire.experts.permissionForExpert = {option: YesNo.YES};
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return claim;
+      });
+
+      //When
+      const permissionForExpert = await getGenericOption('validClaimId', 'permissionForExpert', 'experts');
+
+      //Then
+      expect(permissionForExpert.option).toBe(YesNo.YES);
+    });
+
+    it('should return claimant directionQuestionnaire if existing', async () => {
+      //Given
+      const claim = new Claim();
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return claim;
+      });
+
+      //When
+      const permissionForExpert = await getGenericOption('validClaimId', 'permissionForExpert', 'experts');
+      //Then
+      expect(permissionForExpert.option).toBeUndefined();
+    });
+
+    it('should return new claimant directionQuestionnaire if not existing', async () => {
+      //Given
+      const claim = new Claim();
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.claimantResponse = new ClaimantResponse();
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return claim;
+      });
+
+      //When
+      const permissionForExpert = await getGenericOption('validClaimId', 'permissionForExpert', 'experts');
+      //Then
+      expect(permissionForExpert.option).toBeUndefined();
+    });
+    it('should return claimant permissionForExpert option with No option', async () => {
+      //Given
+      const claim = new Claim();
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
+      claim.claimantResponse.directionQuestionnaire.experts = new Experts();
+      claim.claimantResponse.directionQuestionnaire.experts.permissionForExpert = {option: YesNo.NO};
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return claim;
+      });
+
+      //When
+      const permissionForExpert = await getGenericOption('validClaimId', 'permissionForExpert', 'experts');
+
+      //Then
+      expect(permissionForExpert.option).toBe(YesNo.NO);
+    });
+
+    it('should return claimant defendantYourselfEvidence option with Yes option', async () => {
+      //Given
+      const claim = new Claim();
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
+      claim.claimantResponse.directionQuestionnaire.defendantYourselfEvidence = {option: YesNo.YES};
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return claim;
+      });
+
+      //When
+      const defendantYourselfEvidence = await getGenericOption('validClaimId', 'defendantYourselfEvidence');
+
+      //Then
+      expect(defendantYourselfEvidence.option).toBe(YesNo.YES);
+    });
+
+    it('should return claimant defendantYourselfEvidence option with No option', async () => {
+      //Given
+      const claim = new Claim();
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
+      claim.claimantResponse.directionQuestionnaire.defendantYourselfEvidence = {option: YesNo.NO};
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return claim;
+      });
+
+      //When
+      const defendantYourselfEvidence = await getGenericOption('validClaimId', 'defendantYourselfEvidence');
+
+      //Then
+      expect(defendantYourselfEvidence.option).toBe(YesNo.NO);
     });
 
     it('should return generic option object with undefined option - defendant journey - no directionQuestionnaire', async () => {
@@ -288,7 +392,7 @@ describe('Direction questionnaire Service', () => {
   describe('saveDirectionQuestionnaire', () => {
     const directionQuestionnaire = new DirectionQuestionnaire();
     directionQuestionnaire.experts = new Experts();
-    directionQuestionnaire.experts.defendantExpertEvidence = new GenericYesNo(YesNo.YES);
+    directionQuestionnaire.experts.expertEvidence = new GenericYesNo(YesNo.YES);
 
     it('should save defendant direction questionnaire successfully', async () => {
       //Given
@@ -301,10 +405,10 @@ describe('Direction questionnaire Service', () => {
       });
       directionQuestionnaire.experts = new Experts();
       directionQuestionnaire.hearing = new Hearing();
-      directionQuestionnaire.experts.defendantExpertEvidence = new GenericYesNo(YesNo.NO);
+      directionQuestionnaire.experts.expertEvidence = new GenericYesNo(YesNo.NO);
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveDirectionQuestionnaire('validClaimId', directionQuestionnaire?.experts?.defendantExpertEvidence, 'defendantExpertEvidence', 'experts');
+      await saveDirectionQuestionnaire('validClaimId', directionQuestionnaire?.experts?.expertEvidence, 'expertEvidence', 'experts');
       //Then
       expect(spySave).toHaveBeenCalledWith('validClaimId', {directionQuestionnaire});
     });
@@ -323,7 +427,7 @@ describe('Direction questionnaire Service', () => {
       });
       directionQuestionnaire.experts = new Experts();
       directionQuestionnaire.hearing = new Hearing();
-      directionQuestionnaire.experts.defendantExpertEvidence = new GenericYesNo(YesNo.NO);
+      directionQuestionnaire.experts.expertEvidence = new GenericYesNo(YesNo.NO);
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
       await saveDirectionQuestionnaire('validClaimId', directionQuestionnaire?.hearing?.triedToSettle, 'triedToSettle', 'hearing');
@@ -342,7 +446,7 @@ describe('Direction questionnaire Service', () => {
       });
       directionQuestionnaire.experts = new Experts();
       directionQuestionnaire.hearing = new Hearing();
-      directionQuestionnaire.experts.defendantExpertEvidence = undefined;
+      directionQuestionnaire.experts.expertEvidence = undefined;
       directionQuestionnaire.hearing.triedToSettle = new GenericYesNo(YesNo.NO);
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
@@ -365,7 +469,7 @@ describe('Direction questionnaire Service', () => {
       });
       directionQuestionnaire.experts = new Experts();
       directionQuestionnaire.hearing = new Hearing();
-      directionQuestionnaire.experts.defendantExpertEvidence = undefined;
+      directionQuestionnaire.experts.expertEvidence = undefined;
       directionQuestionnaire.hearing.triedToSettle = new GenericYesNo(YesNo.NO);
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When

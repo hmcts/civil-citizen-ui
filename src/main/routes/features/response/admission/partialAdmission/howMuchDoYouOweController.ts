@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {HowMuchDoYouOwe} from '../../../../../common/form/models/admission/partialAdmission/howMuchDoYouOwe';
-import {CITIZEN_OWED_AMOUNT_URL, CLAIM_TASK_LIST_URL} from '../../../../urls';
+import {CITIZEN_OWED_AMOUNT_URL, RESPONSE_TASK_LIST_URL} from '../../../../urls';
 import {
   getHowMuchDoYouOweForm,
   saveHowMuchDoYouOweData,
@@ -17,7 +17,7 @@ function renderView(form: GenericForm<HowMuchDoYouOwe>, res: Response) {
   res.render(howMuchDoYouOweViewPath, {form: form});
 }
 
-howMuchDoYouOweController.get(CITIZEN_OWED_AMOUNT_URL, PartAdmitHowMuchHaveYouPaidGuard.apply(CLAIM_TASK_LIST_URL), async (req: Request, res: Response, next: NextFunction) => {
+howMuchDoYouOweController.get(CITIZEN_OWED_AMOUNT_URL, PartAdmitHowMuchHaveYouPaidGuard.apply(RESPONSE_TASK_LIST_URL), async (req: Request, res: Response, next: NextFunction) => {
   try {
     const howMuchDoYouOweForm = await getHowMuchDoYouOweForm(req.params.id);
     renderView(new GenericForm(howMuchDoYouOweForm), res);
@@ -36,7 +36,7 @@ howMuchDoYouOweController.post(CITIZEN_OWED_AMOUNT_URL, async (req: Request, res
       renderView(form, res);
     } else {
       await saveHowMuchDoYouOweData(req.params.id, form.model);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
     }
   } catch (error) {
     next(error);

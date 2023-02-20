@@ -5,7 +5,7 @@ import nock from 'nock';
 import {CIVIL_SERVICE_CALCULATE_DEADLINE} from '../../../../../../main/app/client/civilServiceUrls';
 import {getCaseDataFromStore} from '../../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../../main/common/models/claim';
-import {CLAIM_TASK_LIST_URL, NEW_RESPONSE_DEADLINE_URL} from '../../../../../../main/routes/urls';
+import {RESPONSE_TASK_LIST_URL, NEW_RESPONSE_DEADLINE_URL} from '../../../../../../main/routes/urls';
 import {PartyType} from '../../../../../../main/common/models/partyType';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
@@ -83,7 +83,7 @@ describe('Response - New response deadline', () => {
       await request(app).post(NEW_RESPONSE_DEADLINE_URL)
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toBe(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toBe(RESPONSE_TASK_LIST_URL);
         });
     });
     it('should show error when there is error with the call to submit event', async () => {

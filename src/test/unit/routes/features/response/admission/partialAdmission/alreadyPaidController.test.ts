@@ -4,7 +4,7 @@ import nock from 'nock';
 import {app} from '../../../../../../../main/app';
 import {
   CITIZEN_ALREADY_PAID_URL,
-  CLAIM_TASK_LIST_URL,
+  RESPONSE_TASK_LIST_URL,
 } from '../../../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
@@ -62,7 +62,7 @@ describe('Already Paid Controller', () => {
         .send({option: 'No'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
 
@@ -72,7 +72,7 @@ describe('Already Paid Controller', () => {
         .send({option: 'Yes'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
   });

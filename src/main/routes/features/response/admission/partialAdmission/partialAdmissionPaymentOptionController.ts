@@ -2,7 +2,7 @@ import {NextFunction, Response, Router} from 'express';
 import {
   CITIZEN_PA_PAYMENT_DATE_URL,
   CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL,
-  CLAIM_TASK_LIST_URL,
+  RESPONSE_TASK_LIST_URL,
 } from '../../../../urls';
 import {PaymentOption} from '../../../../../common/form/models/admission/paymentOption/paymentOption';
 import {PaymentOptionType}
@@ -29,18 +29,18 @@ function redirectToNextPage(claimId: string, form: PaymentOption, res: Response)
   if (form.paymentOptionBySetDateSelected()) {
     res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_PA_PAYMENT_DATE_URL));
   } else {
-    res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_TASK_LIST_URL));
+    res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
   }
 }
 
 let admittedPaymentAmount: number;
 
-partialAdmissionPaymentOptionController.get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL, PartAdmitGuard.apply(CLAIM_TASK_LIST_URL), async (req, res, next: NextFunction) => {
+partialAdmissionPaymentOptionController.get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL, PartAdmitGuard.apply(RESPONSE_TASK_LIST_URL), async (req, res, next: NextFunction) => {
   const claimId = req.params.id;
   try {
     const claim: Claim = await getCaseDataFromStore(claimId);
     if (!claim.partialAdmissionPaymentAmount() || !claim.isPartialAdmission()) {
-      res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_TASK_LIST_URL));
+      res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
     } else {
       const paymentOption = await getPaymentOptionForm(claimId, ResponseType.PART_ADMISSION);
       admittedPaymentAmount = claim.partialAdmissionPaymentAmount();

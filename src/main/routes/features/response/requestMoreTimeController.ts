@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {CLAIM_TASK_LIST_URL, REQUEST_MORE_TIME_URL} from '../../urls';
+import {RESPONSE_TASK_LIST_URL, REQUEST_MORE_TIME_URL} from '../../urls';
 import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {Claim} from '../../../common/models/claim';
@@ -45,7 +45,7 @@ requestMoreTimeController.post(REQUEST_MORE_TIME_URL, deadLineGuard,
         renderView(res, form, claim, language);
       } else {
         await responseDeadlineService.saveAdditionalTime(claimId, selectedOption);
-        res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_TASK_LIST_URL));
+        res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
       }
     } catch (error) {
       next(error);

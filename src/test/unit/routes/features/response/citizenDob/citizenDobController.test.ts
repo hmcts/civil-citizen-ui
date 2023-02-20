@@ -6,7 +6,7 @@ import {
   AGE_ELIGIBILITY_URL,
   DOB_URL,
   CITIZEN_PHONE_NUMBER_URL,
-  CLAIM_TASK_LIST_URL,
+  RESPONSE_TASK_LIST_URL,
 } from '../../../../../../main/routes/urls';
 import {
   mockCivilClaim,
@@ -28,7 +28,7 @@ describe('Citizen date of birth', () => {
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
+      .reply(200, {id_token: citizenRoleToken});
   });
 
   describe('on GET', () => {
@@ -171,7 +171,7 @@ describe('Citizen date of birth', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain(`Redirecting to ${CLAIM_TASK_LIST_URL}`);
+          expect(res.text).toContain(`Redirecting to ${RESPONSE_TASK_LIST_URL}`);
         });
     });
     it('should redirect to phone number page on valid DOB when has undefined on redis', async () => {
@@ -208,7 +208,7 @@ describe('Citizen date of birth', () => {
           .send('day=1')
           .expect((res) => {
             expect(res.status).toBe(302);
-            expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+            expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
           });
       });
       it('should redirect to phone-number screen if phone-number NOT provided', async () => {

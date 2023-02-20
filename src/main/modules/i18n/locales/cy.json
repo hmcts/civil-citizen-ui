@@ -59,6 +59,7 @@
       "SAVE_AND_CONTINUE": "Cadw a Pharhau",
       "SETTLE_THE_CLAIM": "Settle the claim",
       "START_AGAIN": "Start again",
+      "SIGN_AND_SUBMIT_RESPONSE": "Sign and submit",
       "SUBMIT_CLAIM": "Submit claim",
       "SUBMIT_RESPONSE": "Cyflwyno'r ymateb",
       "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})",
@@ -266,6 +267,22 @@
       "NO": "Nac ydy"
     }
   },
+  "CLAIMANT_RESPONSE_TASK_LIST": {
+    "HOW_THEY_RESPONDED": {
+      "TITLE": "How they responded",
+      "VIEW_DEFENDANTS_RESPONSE": "View the defendant's response"
+    },
+    "CHOOSE_WHAT_TODO_NEXT": {
+      "ACCEPT_OR_REJECT_ADMITTED": "Accept or reject the £{{ admittedAmount }}",
+      "ACCEPT_OR_REJECT_REPAYMENT": " Accept or reject their repayment plan",
+      "FREE_TELEPHONE_MEDIATION": "Gwasanaeth cyfryngu dros y ffôn am ddim",
+      "HOW_FORMALISE": "Choose how to formalise repayment",
+      "PROPOSE_ALTERNATIVE_REPAYMENT": "Propose an alternative repayment plan",
+      "REQUEST_COUNTY_COURT_JUDGMENT": "Request a County Court Judgment",
+      "SIGN_SETTLEMENT": "Sign a settlement agreement",
+      "TITLE": "Choose what to do next"
+    }
+  },
   "TASK_LIST": {
     "APPLICATION_COMPLETE": "Application complete",
     "APPLICATION_INCOMPLETE": "Application incomplete",
@@ -377,6 +394,15 @@
     "CHECK_YOUR_ANSWER": {
       "BANK_BALANCE": "Cydbwysedd",
       "CARER_CREDIT_DO_YOU_CLAIM": "Ydych chi'n hawlio Lwfans Gofalwr neu Gredyd Gofalwr?",
+      "CCJ_HAS_DEFENDANT_PAID_SOME": "Has the defendant paid you some of the amount owed?",
+      "CCJ_AMOUNT_ALREADY_PAID": "Amount already paid",
+      "CCJ_TOTAL_TO_BE_PAID": "Total to be paid by defendant",
+      "CCJ_HOW_TO_PAY": "How you want the defendant to pay",
+      "CCJ_WHEN_DO_YOU_WANT_TO_BE_PAID_BY": "When you want the defendant to pay",
+      "CCJ_INSTALMENTS_OF": "Instalments of",
+      "CCJ_FIRST_PAYMENT_DATE": "When you want them to make the first payment",
+      "CCJ_INSTALMENTS_PAYMENT_FREQUENCY": "How often you want them to make this payment",
+      "CHILDREN": "Children",
       "CHILDREN_DO_YOU_HAVE_ANY_LIVE_WITH_YOU": "Oes unrhyw blant yn byw gyda chi?",
       "CHILDREN_UNDER_11": "dan 11",
       "CHILDREN_BETWEEN_11_TO_15": "11 i 15",
@@ -386,12 +412,15 @@
       "CLAIM_INTEREST": "Claim Interest",
       "CONTACT_PERSON": "Cyswllt",
       "CONTACT_NUMBER": "Rhif cyswllt (dewisol)",
+      "CONSIDER_CLAIMANT_DOCUMENT" : "Are there any documents the claimant has that you want the court to consider?",
       "CORRESPONDENCE_ADDRESS": "Gohebiaeth cyfeiriad",
       "COURT_ORDERS_TITLE": "A ydych yn talu arian o ganlyniad i unrhyw orchmynion llys?",
       "COURT_ORDERS_CLAIM_NUMBER": "Rhif hawlio",
       "COURT_ORDERS_AMOUNT_OWNED": "Swm sy'n ddyledus gennych",
       "COURT_ORDERS_MONTHLY_INSTALMENT": "Swm rhandaliad misol",
       "DEBTS_LOANS_OR_CREDIT_CARDS": "A oes gennych fenthyciadau neu ddyledion cerdyn credyd?",
+      "DECLARATION": "I declare that the details I have given are true to the best of my knowledge.",
+      "DECLARATION_TITLE": "Declaration",
       "DETAILS_TITLE": "Eich manylion",
       "DETAILS_TITLE_CLAIMANT": "Eich manylion (yr hawlydd)",
       "DISABILITY_ARE_YOU_DISABLED": "Ydych chi'n anabl?",
@@ -419,6 +448,7 @@
       "FREE_TELEPHONE_MEDIATION": "A wnewch chi roi cynnig ar gyfryngu am ddim",
       "FIRST_PAYMENT": "Gwnewch y taliad cyntaf ymlaen",
       "FULL_NAME": "Enw llawn",
+      "GIVE_DOC_DETAILS" : "Give details of the documents",
       "GIVE_EVIDENCE": "Do you want to give evidence?",
       "HEARING_REQUIREMENTS_TILE": "Hearing requirements",
       "INCOME_REGULAR": "Incwm rheolaidd",
@@ -438,6 +468,7 @@
       "PARTNER_DOES_RECEIVE_A_PENSION": "A yw eich partner yn cael pensiwn?",
       "PARTNER_IS_DISABLED": "Ydy'ch partner yn anabl?",
       "PARTNER_IS_SEVERELY_DISABLED": "A yw eich partner yn ddifrifol anabl?",
+      "PAYMENT_TITLE": "Payment",
       "PAYMENT_FREQUENCY": "Amlder taliadau",
       "PHONE_NUMBER": "Phone number",
       "PRIORITY_DEBTS_YOU_ARE_BEHIND_ON": "Dyledion yr ydych ar ei hôl hi",
@@ -462,6 +493,7 @@
       "RESPONSE_DETAILS_HOW_MUCH_HAVE_YOU_PAID": "Faint ydych chi wedi'i dalu?",
       "RESPONSE_DETAILS_HOW_DID_YOU_PAY_THIS_AMOUNT": "Sut wnaethoch chi dalu'r swm hwn?",
       "RESPONSE_WHY_DO_YOU_REJECT_ALL_OF_THIS_CLAIM": "Pam ydych chi'n gwrthod yr holl honiad hwn?",
+      "REQUEST_EXTRA_4WEEKS" : "Do you want an extra 4 weeks to try to settle the claim?",
       "SAME_ADDRESS": "Yr un fath â'r cyfeiriad",
       "SUPPORT_ANYONE_ELSE_FINANCIALLY": "Ydych chi'n cefnogi unrhyw un arall yn ariannol?",
       "SUPPORT_REQUIRED_INTERPRETER": "Interpreter",
@@ -477,6 +509,7 @@
       "TIMELINE_TITLE": "Eich llinell amser o'r hyn a ddigwyddodd (dewisol)",
       "TIMELINE_CLAIM_TITLE": "Timeline of what happened",
       "TIMELINE_COMMENTS": "Sylwadau am eu llinell amser (dewisol)",
+      "TRIED_TO_SETTLE" : "Have you tried to settle this claim before going to court?",
       "VULNERABILITY_INFO": "Tell us who is vulnerable and what support they need",
       "VULNERABILITY_QUESTION": "Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider?",
       "WHEN_PAY": "Pryd fyddwch chi'n talu",
@@ -723,6 +756,15 @@
       "WHY_YOU_ARE_ENTITLED": "Why you're entitled to this rate"
     },
     "CLAIMANT_RESPONSE": {
+      "COURT_PROPOSED_DATE": {
+        "PAGE_TITLE": "The defendant can’t pay by your proposed date",
+        "TITLE": "The defendant can’t pay by your proposed date",
+        "BASED_ON": "Based on financial details the defendant gave us, we don't believe they can pay by your proposed date.",
+        "COURT_CALCULATOR": "The court's calculator has determined {{ paymentDate }} as the date when they can pay you in full.",
+        "DO_YOU_ACCEPT": "Do you accept a repayment date of {{ paymentDate }}?",
+        "YES": "Yes",
+        "NO_I_WANT_JUDGE": "No - I want a judge to make a new repayment plan"
+      },
       "COURT_PROPOSED_PLAN": {
         "PAGE_TITLE": "The defendant can’t afford your plan",
         "TITLE": "The defendant can’t afford your plan",
@@ -745,32 +787,6 @@
       "RC_DISPUTE": {
         "NOT_PROCEED_WITH_CLAIM": "You didn't proceed with the claim",
         "CLAIM_ENDED": "The claim has now ended. We've emailed {{ defendantName }} to tell them."
-      }
-    },
-    "CLAIMANT_RESPONSE": {
-      "COURT_PROPOSED_DATE": {
-        "PAGE_TITLE": "The defendant can’t pay by your proposed date",
-        "TITLE": "The defendant can’t pay by your proposed date",
-        "BASED_ON": "Based on financial details the defendant gave us, we don't believe they can pay by your proposed date.",
-        "COURT_CALCULATOR": "The court's calculator has determined {{ paymentDate }} as the date when they can pay you in full.",
-        "DO_YOU_ACCEPT": "Do you accept a repayment date of {{ paymentDate }}?",
-        "YES": "Yes",
-        "NO_I_WANT_JUDGE": "No - I want a judge to make a new repayment plan"
-      },
-      "COURT_PROPOSED_PLAN": {
-        "PAGE_TITLE": "The defendant can’t afford your plan",
-        "TITLE": "The defendant can’t afford your plan",
-        "BASED_ON": "Based on the financial details provided by the defendant, we don’t believe they would be able to make these repayments.",
-        "COURT_AFFORDABILITY": "The court affordability calculator has determined a new repayment plan as the most the defendant can repay.",
-        "COURT_PROPOSED_PLAN": "The court’s proposed repayment plan",
-        "REGULAR_PAYMENTS_OF": "Regular payments of",
-        "FREQUENCY_OF_PAYMENTS": "Frequency of payments",
-        "FIRST_PAYMENT_DATE": "First payment date",
-        "LAST_PAYMENT_DATE": "Last payment date",
-        "LENGTH_OF_REPAYMENT": "Length of repayment plan",
-        "DO_YOU_ACCEPT": "Do you accept the court’s proposed repayment plan",
-        "I_WANT_ACCEPT": "I want to accept this repayment plan",
-        "I_WANT_JUDGE": "I want a judge to make a repayment plan"
       }
     },
     "CLAIMANT_RESPONSE_PROCEED": {
@@ -822,6 +838,10 @@
     "CLAIMANT_RESPONSE_REJECTION_REASON": {
       "PAGE_TITLE": "Rejection reason",
       "TITLE": "Why did you reject their response?"
+    },
+    "CLAIMANT_RESPONSE_TASK_LIST": {
+      "PAGE_TITLE": "Claimant response task list",
+      "HEADER": "Your response"
     },
     "CLAIMANT_TERMS_OF_AGREEMENT": {
       "PAGE_TITLE": "Terms of the agreement",
@@ -1412,6 +1432,19 @@
       "WOULD_NOT_SOLVE": "Nid wyf yn credu y byddai cyfryngu yn datrys yr anghydfod",
       "YOU_HAVE_CHOSEN_TELL_US_WHY": "Rydych wedi dewis peidio â rhoi cyfle i gyfryngu am ddim. Dywedwch wrthym pam:"
     },
+    "JUDGMENT_AMOUNT": {
+      "TITLE": "Judgment amount",
+      "PAGE_TITLE": "Judgment amount",
+      "INTEREST_TO_DATE": "Interest to date",
+      "CLAIM_FEE_AMOUNT": "Claim fee amount",
+      "SUBTOTAL": "Subtotal",
+      "AMOUNT_ALREADY_PAID": "Minus amount already paid",
+      "CLAIM_TOTAL": "Total",
+      "JUDGMENT_STATEMENT": "The judgment will order the defendant to pay £{{ subTotal }}, including your claim fee and any interest, as shown in this table:",
+      "INTEREST_TO_DATE_RESPONSE": "Interest calculated at {{interestRate}}% for {{numberOfDays}} days.",
+      "TOTAL_PERIOD": "({{ interestFromDate }} to {{ interestToDate}})",
+      "HOW_INTEREST_IS_CALCULATED": "Interest calculated as \"{{ reason }}\" for {{numberOfDays}} days."
+    },
     "LATEST_UPDATE_CONTENT": {
       "CLAIMANT_CAN_ASK_FOR_CCJ_AGAINST_YOU": "You haven't responded to the claim. {{ claimantName }} can now ask for a County Court Judgement against you.",
       "CCJ_COULD_SEND_BAILIFFS_TO_YOUR_HOME": "A County Court Judgment can mean you find it difficult to get credit, like a mortgage or mobile phone contract. Bailiffs could also be sent to your home.",
@@ -1568,6 +1601,12 @@
       "TITLE": "Faint ydych chi wedi ei dalu i’r hawlydd?",
       "TOTAL_CLAIMED": "Y cyfanswm a hawlir yw £{{totalClaimAmount}}. Mae hyn yn cynnwys ffi’r hawliad ac unrhyw log.",
       "WHEN_DID": "Pryd y gwnaethoch dalu’r swm hwn?"
+    },
+    "PARTIAL_ADMISSION_SETTLE_ADMITTED": {
+      "PAGE_TITLE": "Do you want to settle the claim for the £{{ admittedAmount }} the defendant admitted?",
+      "CONTINUE_AMOUNT_YOU_CLAIMED": "The claim will continue for the total amount you claimed",
+      "THIS_IS_THE_TOTAL_AMOUNT": "This is the total amount you'll be paid, including the claim fee and interest if applicable",
+      "TITLE": "Do you want to settle the claim for the £{{ admittedAmount }} the defendant admitted?"
     },
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
       "PAGE_TITLE": "Why do you disagree?",
@@ -1764,6 +1803,13 @@
       "MONTHLY_INCOME": "Monthly income",
       "PAGE_TITLE": "Review defendant’s response",
       "PART_ADMIT_ALREADY_PAID_STATEMENT": "{{ defendant }} said they paid you £{{ paidAmount }}. They said this is all they owe, not the amount you claimed.",
+      "PART_ADMIT_NOT_PAID": {
+        "DEFENDANT_ADMITS_THEY_OWE": "{{ defendant }} admits they owe you £{{ paidAmount }}. They don’t believe they owe the full amount claimed.",
+        "THEY_OFFERED_TO_PAY_YOU": "They’ve offered to pay you £{{ paidAmount }} in instalments. This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
+        "THEY_OFFERED_TO_PAY_YOU_BY_DATE": "They’ve offered to pay you £{{ paidAmount }} by {{datePaid}}. This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
+        "THEY_OFFERED_TO_PAY_YOU_IMMEDIATELY": "They’ve offered to pay you £{{ paidAmount }} immediately. This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
+        "WHY_THEY_DONT_OWE": "Why they don’t owe the amount claimed"
+      },
       "PAY_EXPENSES": "Do they pay any expenses?",
       "PAYMENT_DATE": "They’ve offered to pay you this by {{ paymentDate }}",
       "RECEIVE_INCOME": "Do they receive any income?",
@@ -1784,6 +1830,17 @@
       "WHY_THEY_DISAGREE_EVIDENCE": "Why they disagree with your evidence",
       "WHY_THEY_DISAGREE_TIMELINE": "Why they disagree with your timeline",
       "HOW_THEY_WANT_TO_PAY_RESPONSE": "They've offered to pay you £{{ amount }} by {{ paymentDate }}. This is the total amount you'll be paid, including the claim fee and interest if applicable.",
+      "PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE": {
+        "TITLE": "How they want to pay",
+        "SUGGESTED_REPAYMENT": "The defendant suggested this repayment plan",
+        "REPAYMENT_PLAN": {
+          "REGULAR_PAYMENTS": "Taliadau rheolaidd o",
+          "PAYMENTS_FREQUENCY": "Amlder taliadau",
+          "FIRST_PAYMENT_DATE": "First payment date",
+          "FINAL_PAYMENT_DATE": "Final payment date",
+          "LENGTH": "Hyd y cynllun ad-dalu"
+        }
+      },
       "WHEN_THEY_PAID_THIS_AMOUNT": "When they say they paid this amount",
       "HOW_THEY_PAID": "How they said they paid",
       "THEY_DONT_OWE_CLAIM_AMOUNT": "Why they say they dont owe the amount you claimed",
@@ -2048,6 +2105,16 @@
       "TITLE": "Do you, your experts or witnesses need support to attend a hearing",
       "WHAT_LANGUAGE": "What language needs to be interpreted?"
     },
+    "UNAVAILABLE_DATES_FOR_HEARING": {
+      "ADD_ANOTHER_DATE": "Add another date or period of time",
+      "CONTENT": "These should only be the dates of important events like medical appointments, other court hearing, or holidays you have already booked",
+      "FROM": "From",
+      "LONGER_PERIOD": "Longer period of time",
+      "PAGE_TITLE": "Unavailable dates for hearing",
+      "SINGLE_DATE": "Single date",
+      "TITLE": "Add a single date or longer period of time when you, your experts or witnesses cannot go to a hearing",
+      "TO": "To"
+    },
     "UNDER_18": {
       "ABLE_TO_GET_ADVICE": "Efallai y gallwch gael cyngor am y ffurflen hawlio gan",
       "CITIZEN_ADVICE": "Cyngor ar Bopeth (yn agor mewn ffenest newydd)",
@@ -2168,6 +2235,26 @@
     "ENTER_LAST_NAME": "Enter last name",
     "ENTER_PERSON_NAME": "Enter the name of the person who needs support",
     "ENTER_PAYMENT_EXPLANATION": "Rhowch eglurhad o sut y gwnaethoch dalu",
+    "ENTER_DATES_FOR_UNAVAILABILITY": "Enter the dates they are unavailable",
+    "ENTER_DATE_FOR_UNAVAILABILITY": "Enter the date they are unavailable",
+    "ENTER_DATE_FOR_UNAVAILABILITY_FROM": "Enter the date they are unavailable from",
+    "ENTER_DATE_FOR_UNAVAILABILITY_TO": "Enter the date they are unavailable to",
+    "ENTER_DAY_FOR_UNAVAILABILITY_FROM": "Date they are unavailable from must include a day",
+    "ENTER_DAY_FOR_UNAVAILABILITY": "Date they are unavailable must include a day",
+    "ENTER_DAY_FOR_UNAVAILABILITY_TO": "Date they are unavailable to must include a day",
+    "ENTER_MONTH_FOR_UNAVAILABILITY": "Date they are unavailable must include a month",
+    "ENTER_MONTH_FOR_UNAVAILABILITY_FROM": "Date they are unavailable from must include a month",
+    "ENTER_MONTH_FOR_UNAVAILABILITY_TO": "Date they are unavailable to must include a month",
+    "ENTER_YEAR_FOR_UNAVAILABILITY": "Date they are unavailable must include a year",
+    "ENTER_YEAR_FOR_UNAVAILABILITY_FROM": "Date they are unavailable from must include a year",
+    "ENTER_YEAR_FOR_UNAVAILABILITY_TO": "Date they are unavailable to must include a year",
+    "ENTER_UNAVAILABILITY_DATE_IN_FUTURE": "Date they are unavailable must be today or in the future",
+    "ENTER_UNAVAILABILITY_DATE_IN_FUTURE_FROM": "Date they are unavailable from must be today or in the future",
+    "ENTER_UNAVAILABILITY_DATE_IN_FUTURE_TO": "Date they are unavailable to must be today or in the future",
+    "ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS": "Date they are unavailable must be in the next 12 months",
+    "ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS_FROM": "Date they are unavailable from must be in the next 12 months",
+    "ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS_TO": "Date they are unavailable to must be in the next 12 months",
+    "ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE": "Date they are unavailable from must be before the date they are unavailable to",
     "ENTER_VALID_EMAIL": "Enter a valid email address",
     "ENTER_SECURITY_CODE": "Enter your security code",
     "ENTER_VALID_SECURITY_CODE": "Enter a valid security code",
@@ -2292,6 +2379,7 @@
       "RENT": "Dewiswch pa mor aml ydych chi'n talu rhent",
       "WATER": "Dewiswch pa mor aml ydych chi'n talu am ddŵr"
     },
+    "SELECT_SINGLE_DATE_OR_PERIOD": "Select if it is single date or longer period of time",
     "SELECT_LANGUAGE_DOCUMENTS": "Select the language your documents will be provided in",
     "SELECT_LANGUAGE_SPEAK": "Select the language you, your experts, and your witnesses will speak at the hearing",
     "SELECT_REQUEST": "Dewiswch os ydych eisiau gwneud cais am ragor o amser i ymateb, os ydych eisoes wedi cytuno ar ragor o amser i ymateb, os yw eich cais am ragor o amser wedi’i wrthod, neu nid ydych angen rhagor o amser i ymateb",
@@ -2415,7 +2503,7 @@
     "VALID_OWED_AMOUNT_REQUIRED": "Rhowch swm dilys",
     "VALID_PARTY_NAME": "Enter name",
     "VALID_PAYMENT_OPTION": "Dewis opsiwn ad-dalu",
-    "VALID_PHONE_NUMBER": "Rhowch rif ffôn gan ddefnyddio'r fformat cywir",
+    "VALID_PHONE_NUMBER": "Phone number must be a UK number",
     "VALID_PHONE_OR_VIDEO_HEARING": {
       "TELL_US_WHY": "Tell us why you want a telephone or video hearing",
       "YES_NO": "Select yes if you want to ask for a telephone or video hearing"

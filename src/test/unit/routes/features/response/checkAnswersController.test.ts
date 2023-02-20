@@ -5,13 +5,14 @@ import {
   getSummarySections,
   saveStatementOfTruth,
 } from 'services/features/response/checkAnswers/checkAnswersService';
-import {CITIZEN_DETAILS_URL, CLAIM_TASK_LIST_URL, RESPONSE_CHECK_ANSWERS_URL} from 'routes/urls';
+import {CITIZEN_DETAILS_URL, RESPONSE_TASK_LIST_URL, RESPONSE_CHECK_ANSWERS_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {SummarySections} from 'models/summaryList/summarySections';
 
 import {TaskStatus} from 'models/taskList/TaskStatus';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {isFullAmountReject} from 'modules/claimDetailsService';
+
 const request = require('supertest');
 const {app} = require('../../../../../main/app');
 const session = require('supertest-session');
@@ -20,8 +21,8 @@ const data = require('../../../../utils/mocks/defendantClaimsMock.json');
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/claimDetailsService');
 jest.mock('../../../../../main/services/features/response/checkAnswers/checkAnswersService');
-jest.mock('../../../../../main/services/features/response/taskListService', () => ({
-  ...jest.requireActual('../../../../../main/services/features/response/taskListService') as Module,
+jest.mock('../../../../../main/services/features/common/taskListService', () => ({
+  ...jest.requireActual('../../../../../main/services/features/common/taskListService') as Module,
   getTaskLists: jest.fn(() => TASK_LISTS),
 }));
 const mockGetSummarySections = getSummarySections as jest.Mock;
@@ -66,7 +67,7 @@ describe('Response - Check answers', () => {
   describe('on GET', () => {
     beforeEach((done) => {
       session(app)
-        .get(constructResponseUrlWithIdParams(CLAIM_ID, CLAIM_TASK_LIST_URL))
+        .get(constructResponseUrlWithIdParams(CLAIM_ID, RESPONSE_TASK_LIST_URL))
         .expect(200)
         .end(function (err: Error) {
           if (err) {

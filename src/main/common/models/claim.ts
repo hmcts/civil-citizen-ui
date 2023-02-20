@@ -41,15 +41,20 @@ import {ClaimDetails} from 'common/form/models/claim/details/claimDetails';
 import {ClaimantResponse} from './claimantResponse';
 import {CCDClaim} from 'models/civilClaimResponse';
 import {toCUIParty} from 'services/translation/convertToCUI/convertToCUIParty';
-import {SelfEmployedAs} from '../models/selfEmployedAs';
-import {TaxPayments} from '../models/taxPayments';
-import {RegularIncome} from '../../common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
-import {RegularExpenses} from '../../common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
-import {CourtOrders} from '../../common/form/models/statementOfMeans/courtOrders/courtOrders';
-import {PriorityDebts} from '../../common/form/models/statementOfMeans/priorityDebts';
-import {Debts} from '../../common/form/models/statementOfMeans/debts/debts';
+import {SelfEmployedAs} from 'models/selfEmployedAs';
+import {TaxPayments} from 'models/taxPayments';
+import {RegularIncome} from 'form/models/statementOfMeans/expensesAndIncome/regularIncome';
+import {RegularExpenses} from 'form/models/statementOfMeans/expensesAndIncome/regularExpenses';
+import {CourtOrders} from 'form/models/statementOfMeans/courtOrders/courtOrders';
+import {PriorityDebts} from 'form/models/statementOfMeans/priorityDebts';
+import {Debts} from 'form/models/statementOfMeans/debts/debts';
 import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreference';
+import {toCUIEvidence} from 'services/translation/convertToCUI/convertToCUIEvidence';
+import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIClaimDetails';
+import {analyseClaimType, claimType} from 'common/form/models/claimType';
+
 import {DefendantResponseStatus} from 'models/defendantResponseStatus';
+import {PaymentIntention} from 'form/models/admission/paymentIntention';
 
 export class Claim {
   legacyCaseReference: string;
@@ -88,8 +93,9 @@ export class Claim {
   id: string;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
-
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
+    claim.claimDetails = toCUIClaimDetails(ccdClaim);
+    claim.evidence = toCUIEvidence(ccdClaim?.speclistYourEvidenceList);
     claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
     claim.respondent1 = toCUIParty(ccdClaim?.respondent1);
     return claim;
@@ -341,7 +347,7 @@ export class Claim {
   }
 
   hasInterest(): boolean {
-    return this.claimInterest === YesNo.YES;
+    return this.claimInterest?.toLowerCase() === YesNo.YES;
   }
 
   hasHelpWithFees(): boolean {
@@ -420,6 +426,22 @@ export class Claim {
     return this.statementOfMeans?.debts;
   }
 
+  isInterestClaimOptionsBreakDownInterest(): boolean {
+    return this.interest?.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST;
+  }
+
+  getDefendantPaidAmount(): number | undefined {
+    return this.claimantResponse?.ccjRequest?.paidAmount?.amount;
+  }
+
+  hasDefendantPaid(): boolean {
+    return this.claimantResponse?.ccjRequest?.paidAmount?.option === YesNo.YES;
+  }
+
+  getHowTheInterestCalculatedReason(): string {
+    return this.interest?.totalInterest?.reason;
+  }
+
   private getName(party: Party): string {
     if (party?.type == PartyType.INDIVIDUAL || party?.type == PartyType.SOLE_TRADER) {
       if (party.partyDetails?.individualTitle) {
@@ -429,6 +451,21 @@ export class Claim {
       }
     }
     return party?.partyDetails?.partyName;
+  }
+
+  get claimType(): string {
+    return analyseClaimType(this.totalClaimAmount);
+  }
+
+  get isFastTrackClaim(): boolean {
+    return this.claimType == claimType.FAST_TRACK_CLAIM;
+  }
+  get isSmallClaimsTrackDQ(): boolean {
+    return this.claimType === claimType.SMALL_CLAIM;
+  }
+
+  getPaymentIntention(): PaymentIntention {
+    return this.isPartialAdmission()? this.partialAdmission.paymentIntention : this.fullAdmission.paymentIntention;
   }
 }
 
