@@ -18,6 +18,6 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     specAoSApplicantCorrespondenceAddressRequired: addressHasChange ? YesNoUpperCamelCase.NO : YesNoUpperCamelCase.YES,
     totalClaimAmount: claim.totalClaimAmount,
     respondent1: toCCDParty(claim.respondent1),
-    respondent1ResponseCui: toCCDFieldsOnlyInCui(claim),
+    respondent1LipResponse: toCCDFieldsOnlyInCui(claim),
   };
 };
