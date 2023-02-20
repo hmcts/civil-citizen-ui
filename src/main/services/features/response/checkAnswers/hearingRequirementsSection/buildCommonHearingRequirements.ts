@@ -81,7 +81,7 @@ export const giveEvidenceYourself = (claim: Claim, claimId: string, lng: string)
 export const speakingLanguagePreference = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   let speakingLanguageName;
 
-  switch (claim?.directionQuestionnaire?.welshLanguageRequirements?.language?.speakLanguage) {
+  switch (claim.directionQuestionnaire?.welshLanguageRequirements?.language?.speakLanguage) {
     case LanguageOptions.ENGLISH:
       speakingLanguageName = t('PAGES.WELSH_LANGUAGE.ENGLISH', {lng});
       break;
@@ -105,7 +105,7 @@ export const speakingLanguagePreference = (claim: Claim, claimId: string, lng: s
 export const documentsLanguagePreference = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   let documentsLanguageName;
 
-  switch (claim?.directionQuestionnaire?.welshLanguageRequirements?.language?.documentsLanguage) {
+  switch (claim.directionQuestionnaire?.welshLanguageRequirements?.language?.documentsLanguage) {
     case LanguageOptions.ENGLISH:
       documentsLanguageName = t('PAGES.WELSH_LANGUAGE.ENGLISH', {lng});
       break;
