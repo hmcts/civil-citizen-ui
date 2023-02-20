@@ -1,18 +1,18 @@
-import {toCCDFieldsOnlyInLiPFinancialDetails} from 'services/translation/response/convertToCCDResponseLiPFinancialDetails';
-import {CcdFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
 import {StatementOfMeans} from 'models/statementOfMeans';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
+import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
+import {toCCDResponseLiPFinancialDetails} from 'services/translation/response/convertToCCDResponseLiPFinancialDetails';
 
 describe('translate cui fields to CCD model', () => {
   it('should return undefined if it is undefined', () => {
-    const expected : CcdFinancialDetailsLiP = {
+    const expected : CCDFinancialDetailsLiP = {
       partnerPensionLiP: undefined,
       partnerDisabilityLiP: undefined,
       partnerSevereDisabilityLiP: undefined,
       childrenEducationLiP: undefined,
     };
-    const output = toCCDFieldsOnlyInLiPFinancialDetails(undefined);
+    const output = toCCDResponseLiPFinancialDetails(undefined);
     expect(output).toEqual(expected);
   });
 
@@ -22,13 +22,13 @@ describe('translate cui fields to CCD model', () => {
     input.partnerDisability = new GenericYesNo(YesNo.YES);
     input.partnerSevereDisability = new GenericYesNo(YesNo.YES);
     input.numberOfChildrenLivingWithYou = Number(1);
-    const expected : CcdFinancialDetailsLiP = {
+    const expected : CCDFinancialDetailsLiP = {
       partnerPensionLiP: YesNoUpperCamelCase.YES,
       partnerDisabilityLiP: YesNoUpperCamelCase.YES,
       partnerSevereDisabilityLiP: YesNoUpperCamelCase.YES,
       childrenEducationLiP: '1',
     };
-    const output = toCCDFieldsOnlyInLiPFinancialDetails(input);
+    const output = toCCDResponseLiPFinancialDetails(input);
     expect(output).toEqual(expected);
   });
 
@@ -38,13 +38,13 @@ describe('translate cui fields to CCD model', () => {
     input.partnerDisability = undefined;
     input.partnerSevereDisability = undefined;
     input.numberOfChildrenLivingWithYou = undefined;
-    const expected : CcdFinancialDetailsLiP = {
+    const expected : CCDFinancialDetailsLiP = {
       partnerPensionLiP: undefined,
       partnerDisabilityLiP: undefined,
       partnerSevereDisabilityLiP: undefined,
       childrenEducationLiP: undefined,
     };
-    const output = toCCDFieldsOnlyInLiPFinancialDetails(input);
+    const output = toCCDResponseLiPFinancialDetails(input);
     expect(output).toEqual(expected);
   });
 });
