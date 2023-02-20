@@ -18,8 +18,8 @@ export const toCCDPartnerAndDependents = (statementOfMeans: StatementOfMeans): C
 
 const toCCDChildrenByAgeGroup = (dependents: Dependants) : CCDChildrenByAgeGroup => {
   return {
-    numberOfUnderEleven: dependents?.numberOfChildren?.under11.toString(),
-    numberOfElevenToFifteen: dependents?.numberOfChildren?.between11and15.toString(),
-    numberOfSixteenToNineteen: dependents?.numberOfChildren?.between16and19.toString(),
+    numberOfUnderEleven: dependents?.numberOfChildren?.under11?.toString(),
+    numberOfElevenToFifteen: dependents?.numberOfChildren?.between11and15?.toString(),
+    numberOfSixteenToNineteen: dependents?.numberOfChildren?.between16and19?.toString(),
   };
 };
