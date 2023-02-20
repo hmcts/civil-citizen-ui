@@ -66,7 +66,7 @@ export const getExpert = (claim: Claim, claimId: string, lang: string): SummaryR
   const expertDetails = claim.directionQuestionnaire?.experts?.expertDetailsList?.items;
   const expertDetailsSummaryRows: Array<SummaryRow> = [];
 
-  if (claim.directionQuestionnaire?.experts.expertEvidence?.option !== YesNo.YES) {
+  if (claim.directionQuestionnaire?.experts?.expertEvidence?.option !== YesNo.YES) {
     return expertDetailsSummaryRows;
   }
   expertDetails?.map((expert, index)=>{

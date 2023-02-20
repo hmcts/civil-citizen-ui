@@ -119,8 +119,11 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       //Given
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.experts = {};
+      claim.directionQuestionnaire.experts = new Experts();
       //When
+      claim.directionQuestionnaire.experts.expertEvidence =  {option:YesNo.NO};
+      claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList();
+      claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList([new ExpertDetails('Mike', 'James', 'mike@gmail.com', 7411111, 'reason', 'expert', 500)]);
       const result: any[] = []
       //Then
       expect(getExpert(claim, claimId, lng)).toStrictEqual(result);
@@ -163,8 +166,8 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
 
       //Given
       const mockSummarySection = summaryRow(
-        'PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_USE_EXPERT_EVIDENCE',
-        'No',
+        'PAGES.DEFENDANT_EXPERT_EVIDENCE.TITLE',
+        'COMMON.NO',
         `/case/validClaimId/directions-questionnaire/expert-evidence`,
         changeButton,
       );
@@ -180,7 +183,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       //Given
       const mockSummarySection = summaryRow(
         'PAGES.CHECK_YOUR_ANSWER.GIVE_EVIDENCE',
-        'No',
+        'COMMON.NO',
         `/case/validClaimId/directions-questionnaire/give-evidence-yourself`,
         changeButton,
       );
@@ -196,8 +199,8 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       claim.directionQuestionnaire.experts.sharedExpert = {option: YesNo.NO};
       //Given
       const mockSummarySection = summaryRow(
-        'PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_SHARE_AN_EXPERT_WITH_CLAIMANT',
-        'No',
+        'PAGES.SHARED_EXPERT.TITLE',
+        'COMMON.NO',
         `/case/validClaimId/directions-questionnaire/shared-expert`,
         changeButton,
       );
@@ -214,8 +217,8 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
 
       //Given
       const mockSummarySection = summaryRow(
-        'PAGES.CHECK_YOUR_ANSWER.HAVE_YOU_ALREADY_SENT_EXPERT_REPORTS_TO_OTHER_PARTIES',
-        'No',
+        'PAGES.SENT_EXPERT_REPORTS.TITLE',
+        'COMMON.NO',
         `/case/validClaimId/directions-questionnaire/sent-expert-reports`,
         changeButton,
       );
@@ -232,8 +235,8 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
 
       //Given
       const mockSummarySection = summaryRow(
-        'PAGES.CHECK_YOUR_ANSWER.HAVE_YOU_ALREADY_SENT_EXPERT_REPORTS_TO_OTHER_PARTIES',
-        YesNoNotReceived.NOT_RECEIVED,
+        'PAGES.SENT_EXPERT_REPORTS.TITLE',
+        'PAGES.SENT_EXPERT_REPORTS.OPTION_NOT_RECEIVED',
         `/case/validClaimId/directions-questionnaire/sent-expert-reports`,
         changeButton,
       );

@@ -133,7 +133,7 @@ describe('Hearing Requirements Section', () => {
       expect(summaryRows.summaryList.rows[1].value.html).toEqual('COMMON.NO');
       expect(summaryRows.summaryList.rows[2].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.CONSIDER_CLAIMANT_DOCUMENT');
       expect(summaryRows.summaryList.rows[2].value.html).toEqual('COMMON.NO');
-      expect(summaryRows.summaryList.rows[3].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.GIVE_EVIDENCE');
+      expect(summaryRows.summaryList.rows[3].key.text).toEqual('PAGES..DEFENDANT_EXPERT_EVIDENCE.TITLE');
       expect(summaryRows.summaryList.rows[3].value.html).toEqual('COMMON.NO');
       expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
       expect(summaryRows.summaryList.rows[4].value.html).toEqual('COMMON.NO');
