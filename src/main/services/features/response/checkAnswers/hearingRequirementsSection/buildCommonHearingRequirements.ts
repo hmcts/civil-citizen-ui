@@ -78,23 +78,21 @@ export const giveEvidenceYourself = (claim: Claim, claimId: string, lng: string)
   );
 };
 
-export const speakingLanguagePreference = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  let speakingLanguageName;
-
-  switch (claim.directionQuestionnaire?.welshLanguageRequirements?.language?.speakLanguage) {
+function getLanguageSelected(languageOptions: LanguageOptions, lng: string) {
+  switch (languageOptions) {
     case LanguageOptions.ENGLISH:
-      speakingLanguageName = t('PAGES.WELSH_LANGUAGE.ENGLISH', {lng});
-      break;
+      return t('PAGES.WELSH_LANGUAGE.ENGLISH', {lng});
     case LanguageOptions.WELSH:
-      speakingLanguageName = t('PAGES.WELSH_LANGUAGE.WELSH', {lng});
-      break;
+      return t('PAGES.WELSH_LANGUAGE.WELSH', {lng});
     case LanguageOptions.WELSH_AND_ENGLISH:
-      speakingLanguageName = t('PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH', {lng});
-      break;
+      return t('PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH', {lng});
     default:
-      speakingLanguageName = '';
-      break;
+      return '';
   }
+}
+
+export const speakingLanguagePreference = (claim: Claim, claimId: string, lng: string): SummaryRow => {
+  const speakingLanguageName = getLanguageSelected(claim.directionQuestionnaire?.welshLanguageRequirements?.language?.speakLanguage, lng);
 
   return summaryRow(
     t('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK', {lng}),
@@ -103,22 +101,8 @@ export const speakingLanguagePreference = (claim: Claim, claimId: string, lng: s
 };
 
 export const documentsLanguagePreference = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  let documentsLanguageName;
 
-  switch (claim.directionQuestionnaire?.welshLanguageRequirements?.language?.documentsLanguage) {
-    case LanguageOptions.ENGLISH:
-      documentsLanguageName = t('PAGES.WELSH_LANGUAGE.ENGLISH', {lng});
-      break;
-    case LanguageOptions.WELSH:
-      documentsLanguageName = t('PAGES.WELSH_LANGUAGE.WELSH', {lng});
-      break;
-    case LanguageOptions.WELSH_AND_ENGLISH:
-      documentsLanguageName = t('PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH', {lng});
-      break;
-    default:
-      documentsLanguageName = '';
-      break;
-  }
+  const documentsLanguageName = getLanguageSelected(claim.directionQuestionnaire?.welshLanguageRequirements?.language?.documentsLanguage, lng);
 
   return summaryRow(
     t('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS', {lng}),
