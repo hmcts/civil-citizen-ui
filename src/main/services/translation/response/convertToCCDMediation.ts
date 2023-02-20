@@ -5,14 +5,14 @@ import {CCDMediation} from 'models/ccdResponse/ccdMediation';
 export const toCCDMediation = (mediation: Mediation): CCDMediation => {
   if (!mediation) return undefined;
   return {
-    canWeUseMediationCui: toCCDYesNo(mediation?.canWeUse?.option),
-    canWeUseMediationPhoneCui: mediation?.canWeUse?.mediationPhoneNumber,
-    mediationDisagreementCui: toCCDYesNoFromGenericYesNo(mediation?.mediationDisagreement),
-    noMediationReasonCui: mediation?.noMediationReason?.iDoNotWantMediationReason,
-    noMediationOtherReasonCui: mediation?.noMediationReason?.otherReason,
-    companyTelephoneOptionMediationCui: toCCDYesNo(mediation?.companyTelephoneNumber?.option),
-    companyTelephoneConfirmationMediationCui: mediation?.companyTelephoneNumber?.mediationPhoneNumberConfirmation,
-    companyTelephoneContactPersonMediationCui: mediation?.companyTelephoneNumber?.mediationContactPerson,
-    companyTelephonePhoneNumberMediationCui: mediation?.companyTelephoneNumber?.mediationPhoneNumber,
+    canWeUseMediationLiP: toCCDYesNo(mediation?.canWeUse?.option),
+    canWeUseMediationPhoneLiP: mediation?.canWeUse?.mediationPhoneNumber,
+    mediationDisagreementLiP: toCCDYesNoFromGenericYesNo(mediation?.mediationDisagreement),
+    noMediationReasonLiP: mediation?.noMediationReason?.iDoNotWantMediationReason,
+    noMediationOtherReasonLiP: mediation?.noMediationReason?.otherReason,
+    companyTelephoneOptionMediationLiP: toCCDYesNo(mediation?.companyTelephoneNumber?.option),
+    companyTelephoneConfirmationMediationLiP: mediation?.companyTelephoneNumber?.mediationPhoneNumberConfirmation,
+    companyTelephoneContactPersonMediationLiP: mediation?.companyTelephoneNumber?.mediationContactPerson,
+    companyTelephonePhoneNumberMediationLiP: mediation?.companyTelephoneNumber?.mediationPhoneNumber,
   };
 };

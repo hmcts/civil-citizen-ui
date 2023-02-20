@@ -1,13 +1,13 @@
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 export interface CCDMediation {
-  canWeUseMediationCui?: YesNoUpperCamelCase;
-  canWeUseMediationPhoneCui?: string;
-  mediationDisagreementCui?: YesNoUpperCamelCase;
-  noMediationReasonCui?: string;
-  noMediationOtherReasonCui?: string;
-  companyTelephoneOptionMediationCui: YesNoUpperCamelCase;
-  companyTelephoneConfirmationMediationCui?: string;
-  companyTelephoneContactPersonMediationCui?: string;
-  companyTelephonePhoneNumberMediationCui?: string;
+  canWeUseMediationLiP?: YesNoUpperCamelCase;
+  canWeUseMediationPhoneLiP?: string;
+  mediationDisagreementLiP?: YesNoUpperCamelCase;
+  noMediationReasonLiP?: string;
+  noMediationOtherReasonLiP?: string;
+  companyTelephoneOptionMediationLiP: YesNoUpperCamelCase;
+  companyTelephoneConfirmationMediationLiP?: string;
+  companyTelephoneContactPersonMediationLiP?: string;
+  companyTelephonePhoneNumberMediationLiP?: string;
 }
