@@ -36,7 +36,7 @@ bilingualLangPreferenceController.post(BILINGUAL_LANGUAGE_PREFERENCE_URL, async 
       renderView(form, res);
     } else {
       res.cookie('lang', form.model.option === ClaimBilingualLanguagePreference.ENGLISH ? 'en' : 'cy');
-      await saveBilingualLangPreference(req.params.id, form.model);
+      await saveBilingualLangPreference(req.params.id, form.model, req);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
     }
   } catch (error) {
