@@ -13,6 +13,7 @@ import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {RepaymentPlanSummary} from 'common/form/models/admission/repaymentPlanSummary';
 import { 
   getPaymentAmount, 
   getRepaymentFrequency,
@@ -24,9 +25,9 @@ import {
 
 const fullAdmitSetDatePaymentController = Router();
 const fullAdmitSetDatePaymentPath = 'features/claimantResponse/full-admit-set-date-payment';
-let repaymentPlan: any;
+let repaymentPlan: RepaymentPlanSummary;
 
-function renderView(form: GenericForm<GenericYesNo>, defendantName: string, proposedSetDate: string, repaymentPlan: any, res: Response): void {
+function renderView(form: GenericForm<GenericYesNo>, defendantName: string, proposedSetDate: string, repaymentPlan: RepaymentPlanSummary, res: Response): void {
   res.render(fullAdmitSetDatePaymentPath, {
     form,
     defendantName,
@@ -42,7 +43,6 @@ fullAdmitSetDatePaymentController.get(CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAYM
     const details = await getFullAdmitSetDatePaymentDetails(claimId);
     const claim: Claim = await getCaseDataFromStore(claimId);
     const frequency = getRepaymentFrequency(claim);
-    
     repaymentPlan = {
       paymentAmount: getPaymentAmount(claim),
       repaymentFrequency: convertFrequencyToText(frequency, getLng(lang)),
