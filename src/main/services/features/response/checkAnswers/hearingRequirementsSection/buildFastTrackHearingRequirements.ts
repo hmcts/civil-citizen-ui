@@ -1,6 +1,6 @@
 import {Claim} from 'models/claim';
 import {SummarySection} from 'models/summaryList/summarySections';
-import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
+import {YesNo, YesNoUpperCase} from 'form/models/yesNo';
 import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
 import {t} from 'i18next';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -10,30 +10,30 @@ import {
   DQ_TRIED_TO_SETTLE_CLAIM_URL,
 } from 'routes/urls';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
-import {getAffirmation, getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/getEmptyStringIfUndefined';
+import {affirmation, getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/getEmptyStringIfUndefined';
 import {getLng} from "common/utils/languageToggleUtils";
 
 export const triedToSettleQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const option = claim?.directionQuestionnaire?.hearing?.triedToSettle?.option === YesNo.YES
-    ? YesNoUpperCamelCase.YES
-    : YesNoUpperCamelCase.NO;
+  const option = claim.directionQuestionnaire?.hearing?.triedToSettle?.option === YesNo.YES
+    ? YesNoUpperCase.YES
+    : YesNoUpperCase.NO;
 
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE', {lng}),
-    option,
+    t(`COMMON.${option}`, {lng}),
     constructResponseUrlWithIdParams(claimId, DQ_TRIED_TO_SETTLE_CLAIM_URL),
     changeLabel(lng),
   );
 };
 
 export const requestExtra4WeeksQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const option = claim?.directionQuestionnaire?.hearing?.requestExtra4weeks?.option === YesNo.YES
-    ? YesNoUpperCamelCase.YES
-    : YesNoUpperCamelCase.NO;
+  const option = claim.directionQuestionnaire?.hearing?.requestExtra4weeks?.option === YesNo.YES
+    ? YesNoUpperCase.YES
+    : YesNoUpperCase.NO;
 
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.REQUEST_EXTRA_4WEEKS', {lng}),
-    option,
+    t(`COMMON.${option}`, {lng}),
     constructResponseUrlWithIdParams(claimId, DQ_REQUEST_EXTRA_4WEEKS_URL),
     changeLabel(lng),
   );
@@ -41,12 +41,12 @@ export const requestExtra4WeeksQuestion = (claim: Claim, claimId: string, lng: s
 
 export const considerClaimantDocQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const option = claim?.directionQuestionnaire?.hearing?.considerClaimantDocuments?.option === YesNo.YES
-    ? YesNoUpperCamelCase.YES
-    : YesNoUpperCamelCase.NO;
+    ? YesNoUpperCase.YES
+    : YesNoUpperCase.NO;
 
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.CONSIDER_CLAIMANT_DOCUMENT', {lng}),
-    option,
+    t(`COMMON.${option}`, {lng}),
     constructResponseUrlWithIdParams(claimId, DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL),
     changeLabel(lng),
   );
@@ -84,35 +84,36 @@ export const getExpert = (claim: Claim, claimId: string, lang: string): SummaryR
 }
 
 export const getUseExpertEvidence = (claim:Claim, claimId: string, lng:string): SummaryRow =>{
-  const shouldConsiderExpertEvidence = getAffirmation(claim?.directionQuestionnaire?.experts?.expertEvidence?.option);
+  let shouldConsiderExpertEvidence = affirmation(claim?.directionQuestionnaire?.experts?.expertEvidence?.option, lng);
+  shouldConsiderExpertEvidence.affirming();
 
   return summaryRow(
     t('PAGES.DEFENDANT_EXPERT_EVIDENCE.TITLE', {lng}),
-    t(shouldConsiderExpertEvidence, {lng}),
+    shouldConsiderExpertEvidence.get(),
     constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_EXPERT_EVIDENCE_URL),
     changeLabel(lng),
   );
 }
 
 export const getSentReportToOtherParties = (claim:Claim, claimId: string, lng:string): SummaryRow =>{
-  const shouldConsiderSentExpertReports = (claim?.directionQuestionnaire?.experts?.sentExpertReports?.option ==="not-received")?
-    "PAGES.SENT_EXPERT_REPORTS.OPTION_NOT_RECEIVED":
-    getAffirmation(claim?.directionQuestionnaire?.experts?.sentExpertReports?.option);
+  const shouldConsiderSentExpertReports = affirmation(claim?.directionQuestionnaire?.experts?.sentExpertReports?.option, lng);
+  shouldConsiderSentExpertReports.affirming();
 
   return summaryRow(
     t('PAGES.SENT_EXPERT_REPORTS.TITLE', {lng}),
-    t(shouldConsiderSentExpertReports, {lng}),
+    shouldConsiderSentExpertReports.get(),
     constructResponseUrlWithIdParams(claimId, DQ_SENT_EXPERT_REPORTS_URL),
     changeLabel(lng),
   );
 }
 
 export const getShareExpertWithClaimant = (claim:Claim, claimId: string, lng:string): SummaryRow =>{
-  const shouldConsiderSharedExpert = getAffirmation(claim?.directionQuestionnaire?.experts?.sharedExpert?.option);
+  const shouldConsiderSharedExpert = affirmation(claim?.directionQuestionnaire?.experts?.sharedExpert?.option, lng);
+  shouldConsiderSharedExpert.affirming();
 
   return summaryRow(
     t('PAGES.SHARED_EXPERT.TITLE', {lng}),
-    t(shouldConsiderSharedExpert, {lng}),
+    shouldConsiderSharedExpert.get(),
     constructResponseUrlWithIdParams(claimId, DQ_SHARE_AN_EXPERT_URL),
     changeLabel(lng),
   );

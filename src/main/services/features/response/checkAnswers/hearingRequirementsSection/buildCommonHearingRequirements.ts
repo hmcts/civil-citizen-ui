@@ -1,4 +1,3 @@
-import {getLng} from 'common/utils/languageToggleUtils';
 import {
   addSupportRequiredList,
 } from 'services/features/response/checkAnswers/hearingRequirementsSection/addSupportRequiredList';
@@ -10,32 +9,32 @@ import {
   DQ_WELSH_LANGUAGE_URL,
   VULNERABILITY_URL,
 } from 'routes/urls';
-import {YesNo} from 'form/models/yesNo';
+import {YesNo, YesNoUpperCase} from 'form/models/yesNo';
 import {t} from 'i18next';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import {OtherWitnessItems} from 'models/directionsQuestionnaire/witnesses/otherWitnessItems';
 import {LanguageOptions} from 'models/directionsQuestionnaire/languageOptions';
 import {Claim} from 'models/claim';
 import {SummarySection} from 'models/summaryList/summarySections';
-import {getAffirmation, getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/getEmptyStringIfUndefined';
+import {getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/getEmptyStringIfUndefined';
 
-export const getWitnesses = (claim: Claim, claimId: string, lang: string): SummaryRow[]  => {
+export const getWitnesses = (claim: Claim, claimId: string, lng: string): SummaryRow[]  => {
   const witnessesHref = constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_WITNESSES_URL);
-  const otherWitnesses = getAffirmation(claim?.directionQuestionnaire?.witnesses?.otherWitnesses?.option);
+  const otherWitnesses = claim.directionQuestionnaire?.witnesses?.otherWitnesses?.option === YesNo.YES ? YesNoUpperCase.YES : YesNoUpperCase.NO;
   const summaryRows: SummaryRow [] = [];
 
-  summaryRows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES', {lng: getLng(lang)}), t(otherWitnesses, {lang}), witnessesHref, changeLabel(lang)));
+  summaryRows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES', {lng}),  t(`COMMON.${otherWitnesses}`, {lng}), witnessesHref, changeLabel(lng)));
 
-  if(claim?.directionQuestionnaire?.witnesses?.otherWitnesses?.option === YesNo.YES)
+  if(otherWitnesses === YesNoUpperCase.YES)
   {
     const witnesses: OtherWitnessItems[] = claim?.directionQuestionnaire?.witnesses?.otherWitnesses?.witnessItems;
     witnesses.forEach((witness, index) => {
-      summaryRows.push(summaryRow(`${t('PAGES.CHECK_YOUR_ANSWER.WITNESS', {lng: getLng(lang)})} ${index + 1}`, '', witnessesHref, changeLabel(lang)));
-      summaryRows.push(summaryRow(t('COMMON.INPUT_LABELS.FIRST_NAME', {lng: getLng(lang)}), getEmptyStringIfUndefined(witness.firstName)));
-      summaryRows.push(summaryRow(t('COMMON.INPUT_LABELS.LAST_NAME', {lng: getLng(lang)}), getEmptyStringIfUndefined(witness.lastName)));
-      summaryRows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMAIL_ADDRESS', {lng: getLng(lang)}), getEmptyStringIfUndefined(witness.email)));
-      summaryRows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PHONE_NUMBER', {lng: getLng(lang)}), getEmptyStringIfUndefined(witness.telephone)));
-      summaryRows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY', {lng: getLng(lang)}), getEmptyStringIfUndefined(witness.details)));
+      summaryRows.push(summaryRow(`${t('PAGES.CHECK_YOUR_ANSWER.WITNESS', {lng})} ${index + 1}`, '', witnessesHref, changeLabel(lng)));
+      summaryRows.push(summaryRow(t('COMMON.INPUT_LABELS.FIRST_NAME', {lng}), getEmptyStringIfUndefined(witness.firstName)));
+      summaryRows.push(summaryRow(t('COMMON.INPUT_LABELS.LAST_NAME', {lng}), getEmptyStringIfUndefined(witness.lastName)));
+      summaryRows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMAIL_ADDRESS', {lng}), getEmptyStringIfUndefined(witness.email)));
+      summaryRows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PHONE_NUMBER', {lng}), getEmptyStringIfUndefined(witness.telephone)));
+      summaryRows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY', {lng}), getEmptyStringIfUndefined(witness.details)));
     });
   }
 
@@ -43,35 +42,37 @@ export const getWitnesses = (claim: Claim, claimId: string, lang: string): Summa
 };
 
 export const vulnerabilityQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const option = getAffirmation(claim?.directionQuestionnaire?.vulnerabilityQuestions?.vulnerability?.option);
+  const option = claim.directionQuestionnaire?.vulnerabilityQuestions?.vulnerability?.option === YesNo.YES
+    ? YesNoUpperCase.YES
+    : YesNoUpperCase.NO;
 
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION', {lng}),
-    t(option, {lng}),
+    t(`COMMON.${option}`, {lng}),
     constructResponseUrlWithIdParams(claimId, VULNERABILITY_URL),
     changeLabel(lng),
   );
 };
 
 export const vulnerabilityInfo = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const details = claim?.directionQuestionnaire?.vulnerabilityQuestions?.vulnerability?.vulnerabilityDetails
-    ? claim?.directionQuestionnaire?.vulnerabilityQuestions?.vulnerability?.vulnerabilityDetails
-    : '';
+  const details = claim?.directionQuestionnaire?.vulnerabilityQuestions?.vulnerability?.vulnerabilityDetails;
 
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_INFO', {lng}),
-    details,
+    getEmptyStringIfUndefined(details),
     constructResponseUrlWithIdParams(claimId, VULNERABILITY_URL),
     changeLabel(lng),
   );
 };
 
 export const giveEvidenceYourself = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const option = getAffirmation(claim?.directionQuestionnaire?.defendantYourselfEvidence?.option );
+  const option = claim?.directionQuestionnaire?.defendantYourselfEvidence?.option === YesNo.YES
+    ? YesNoUpperCase.YES
+    : YesNoUpperCase.NO;
 
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.GIVE_EVIDENCE', {lng}),
-    t(option, {lng}),
+    t(`COMMON.${option}`, {lng}),
     constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL),
     changeLabel(lng),
   );
@@ -126,20 +127,20 @@ export const documentsLanguagePreference = (claim: Claim, claimId: string, lng: 
 };
 
 export const phoneAndVideoQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const option =  getAffirmation(claim?.directionQuestionnaire?.hearing?.phoneOrVideoHearing?.option);
+  const option =  claim?.directionQuestionnaire?.hearing?.phoneOrVideoHearing?.option === YesNo.YES
+    ? YesNoUpperCase.YES
+    : YesNoUpperCase.NO;
 
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_PHONE_OR_VIDEO_HEARING', {lng}),
-    t(option, lng),
+    t(`COMMON.${option}`, {lng}),
     constructResponseUrlWithIdParams(claimId, DQ_PHONE_OR_VIDEO_HEARING_URL),
     changeLabel(lng),
   );
 };
 
 export const phoneAndVideoInfo = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const details = claim?.directionQuestionnaire?.hearing?.phoneOrVideoHearing?.details
-    ? claim?.directionQuestionnaire?.hearing?.phoneOrVideoHearing?.details
-    : '';
+  const details = claim?.directionQuestionnaire?.hearing?.phoneOrVideoHearing?.details;
 
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY_DO_YOU_WANT_PHONE_VIDEO_HEARING', {lng}),
@@ -153,13 +154,13 @@ export const buildCommonHearingRequirements = (claim: Claim, hearingRequirements
     hearingRequirementsSection.summaryList.rows.push(giveEvidenceYourself(claim, claimId, lng));
   }
 
-  hearingRequirementsSection.summaryList.rows.push(...getWitnesses(claim, claimId, getLng(lng)));
+  hearingRequirementsSection.summaryList.rows.push(...getWitnesses(claim, claimId, lng));
 
   if (claim?.directionQuestionnaire?.hearing?.phoneOrVideoHearing?.option) {
-    hearingRequirementsSection.summaryList.rows.push(phoneAndVideoQuestion(claim, claimId, getLng(lng)));
+    hearingRequirementsSection.summaryList.rows.push(phoneAndVideoQuestion(claim, claimId, lng));
 
     if(claim?.directionQuestionnaire?.hearing?.phoneOrVideoHearing?.option === YesNo.YES)
-      hearingRequirementsSection.summaryList.rows.push(phoneAndVideoInfo(claim, claimId, getLng(lng)));
+      hearingRequirementsSection.summaryList.rows.push(phoneAndVideoInfo(claim, claimId, lng));
   }
 
   if (claim?.directionQuestionnaire?.vulnerabilityQuestions?.vulnerability) {
