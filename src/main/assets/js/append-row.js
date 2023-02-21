@@ -125,19 +125,19 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  function getNumberFromElementName() {
-    const elements = document.getElementsByClassName('multiple-row');
-    const lastItem = elements[elements.length-1];
-    const inputs = lastItem.getElementsByTagName('input');
-    if (inputs.length) {
-      const number = inputs[0].id.split('-')[1];
-      return Number(number) + 1;
-    } 
-    return document.getElementsByClassName('multiple-row').length;
-  }
+  // function getNumberFromElementName() {
+  //   const elements = document.getElementsByClassName('multiple-row');
+  //   const lastItem = elements[elements.length-1];
+  //   const inputs = lastItem.getElementsByTagName('input');
+  //   if (inputs.length) {
+  //     const number = inputs[0].id.split('-')[1];
+  //     return Number(number) + 1;
+  //   } 
+  //   return document.getElementsByClassName('multiple-row').length;
+  // }
 
   function incrementIndexOnNameAndId(element) {
-    const newIndex = getNumberFromElementName();
+    const newIndex = document.getElementsByClassName('multiple-row').length;
     if (element.name) {
       element.name = element.name.replace(indexRegex, '[' + newIndex + ']');
       element.id = element.id.replace(checkboxIndexRegex, '-' + newIndex + '-');
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function updateAttributes(element) {
-    const newIndex = getNumberFromElementName();
+    const newIndex = document.getElementsByClassName('multiple-row').length;
     if (element.getAttribute('for')) {
       element.setAttribute(
         'for',
