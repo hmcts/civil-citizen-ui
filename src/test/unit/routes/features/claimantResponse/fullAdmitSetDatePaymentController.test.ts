@@ -84,5 +84,15 @@ describe('Full Admit How They Want To Pay Page', () => {
           expect(res.text).toContain(t('ERRORS.VALID_YES_NO_SELECTION'));
         });
     });
+    it('should return 500 status code when error occurs', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app)
+        .post(CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAYMENT_URL)
+        .send({option: YesNo.NO})
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
   });
 });
