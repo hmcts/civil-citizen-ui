@@ -160,7 +160,7 @@ import helpWithFeesController from './features/claim/details/helpWithFeesControl
 import debtRespiteReferenceNumberController from './features/breathingSpace/debtRespiteReferenceNumberController';
 import datePaidViewController from './features/claimantResponse/paidInFull/datePaidController';
 import settleClaimController from './features/claimantResponse/settleClaimController';
-import fullAdmitSetDatePaymentController from './features/claimantResponse/fullAdmitSetDatePaymentController';
+import acceptRepaymentPlanController from './features/claimantResponse/acceptRepaymentPlanController';
 import partPaymentReceivedController from './features/claimantResponse/partPaymentReceivedController';
 import defendantDOBController from './features/claimantResponse/ccj/defendantDOBController';
 import claimantIntentionToProceedController from './features/claimantResponse/claimantIntentionToProceedController';
@@ -341,7 +341,7 @@ export default [
   breathingSpaceCheckAnswersController,
   datePaidViewController,
   settleClaimController,
-  fullAdmitSetDatePaymentController,
+  acceptRepaymentPlanController,
   partPaymentReceivedController,
   defendantDOBController,
   claimantIntentionToProceedController,

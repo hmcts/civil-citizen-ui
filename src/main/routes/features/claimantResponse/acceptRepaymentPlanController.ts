@@ -1,8 +1,8 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {
-  CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAYMENT_URL,
+  CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
-} from '../../../routes/urls';
+} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {AppRequest} from '../../../common/models/AppRequest';
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
@@ -23,7 +23,7 @@ import {
   convertFrequencyToText,
  } from 'common/utils/repaymentUtils';
 
-const fullAdmitSetDatePaymentController = Router();
+const acceptRepaymentPlanController = Router();
 const fullAdmitSetDatePaymentPath = 'features/claimantResponse/full-admit-set-date-payment';
 let repaymentPlan: RepaymentPlanSummary;
 
@@ -31,7 +31,7 @@ function renderView(form: GenericForm<GenericYesNo>, repaymentPlan: RepaymentPla
   res.render(fullAdmitSetDatePaymentPath, { form, repaymentPlan});
 }
 
-fullAdmitSetDatePaymentController.get(CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAYMENT_URL, async (req:AppRequest, res:Response, next: NextFunction) => {
+acceptRepaymentPlanController.get(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL, async (req:AppRequest, res:Response, next: NextFunction) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
@@ -51,7 +51,7 @@ fullAdmitSetDatePaymentController.get(CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAYM
   }
 });
 
-fullAdmitSetDatePaymentController.post(CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAYMENT_URL, async (req: Request, res: Response, next: NextFunction) => {
+acceptRepaymentPlanController.post(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const propertyName = 'fullAdmitSetDateAcceptPayment';
@@ -68,4 +68,4 @@ fullAdmitSetDatePaymentController.post(CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAY
   }
 });
 
-export default fullAdmitSetDatePaymentController;
+export default acceptRepaymentPlanController;
