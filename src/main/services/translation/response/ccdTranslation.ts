@@ -6,6 +6,12 @@ import {toCCDParty} from './convertToCCDParty';
 import {toCCDRepaymentPlan} from './convertToCCDRepaymentPlan';
 import {toCCDPaymentOption} from './convertToCCDPaymentOption';
 import {toCCDPayBySetDate} from './convertToCCDPayBySetDate';
+import {toCCDWelshLanguageRequirements} from 'services/translation/response/convertToCCDWelshLanguageRequirements';
+import {toCCDVulenrability} from 'services/translation/response/convertToCCDVulenrabilityQuestions';
+import {toCCDSpecificCourtLocations} from 'services/translation/response/convertToCCDSupportedCourtLocations';
+import {toCCDSHearingSupport} from 'services/translation/response/convertToCCDHearingSupport';
+import {toCCDWitnesses} from 'services/translation/response/convertToCCDWitnesses';
+import {toCCDHearing} from 'services/translation/response/convertToCCDHearing';
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   return {
@@ -17,5 +23,12 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     specAoSApplicantCorrespondenceAddressRequired: addressHasChange ? YesNoUpperCamelCase.NO : YesNoUpperCamelCase.YES,
     totalClaimAmount: claim.totalClaimAmount,
     respondent1: toCCDParty(claim.respondent1),
+    respondent1DQLanguage: toCCDWelshLanguageRequirements(claim.directionQuestionnaire?.welshLanguageRequirements),
+    respondent1DQVulnerabilityQuestions: toCCDVulenrability(claim.directionQuestionnaire?.vulnerabilityQuestions),
+    respondent1DQRequestedCourt: toCCDSpecificCourtLocations(claim.directionQuestionnaire?.hearing?.specificCourtLocation),
+    respondent1DQHearingSupport: toCCDSHearingSupport(claim.directionQuestionnaire?.hearing?.supportRequiredList),
+    respondent1DQWitnesses: toCCDWitnesses(claim.directionQuestionnaire?.witnesses),
+    respondent1DQHearing: toCCDHearing(claim.directionQuestionnaire?.hearing),
   };
 };
+

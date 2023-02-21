@@ -4,6 +4,12 @@ import {CCDRepaymentPlan} from './ccdRepaymentPlan';
 import {CCDPayBySetDate} from './ccdPayBySetDate';
 import {YesNoUpperCamelCase} from '../../../common/form/models/yesNo';
 import {CCDParty} from './ccdParty';
+import {CCDWelshLanguageRequirements} from 'models/ccdResponse/ccdWelshLanguageRequirements';
+import {CCDVulnerability} from 'models/ccdResponse/ccdVulnerability';
+import {CCDSpecificCourtLocations} from 'models/ccdResponse/ccdSpecificCourtLocations';
+import {CCDHearingSupport} from 'models/ccdResponse/ccdHearingSupport';
+import {CCDWitnesses} from 'models/ccdResponse/ccdWitnesses';
+import {CCDHearing} from 'models/ccdResponse/ccdHearing';
 
 export interface CCDResponse extends ClaimUpdate {
   respondent1ClaimResponseTypeForSpec: string;
@@ -13,5 +19,11 @@ export interface CCDResponse extends ClaimUpdate {
   responseClaimMediationSpecRequired?: string;
   specAoSApplicantCorrespondenceAddressRequired?: YesNoUpperCamelCase;
   totalClaimAmount: number,
-  respondent1: CCDParty;
+  respondent1: CCDParty,
+  respondent1DQLanguage: CCDWelshLanguageRequirements;
+  respondent1DQVulnerabilityQuestions: CCDVulnerability;
+  respondent1DQRequestedCourt: CCDSpecificCourtLocations;
+  respondent1DQHearingSupport: CCDHearingSupport;
+  respondent1DQWitnesses: CCDWitnesses;
+  respondent1DQHearing: CCDHearing;
 }
