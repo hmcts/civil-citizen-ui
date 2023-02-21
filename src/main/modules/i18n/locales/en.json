@@ -1491,7 +1491,7 @@
     },
     "CANT_ATTEND_HEARING_IN_NEXT_12MONTHS": {
       "CONTENT": "These should only be the dates of important events like medical appointments, other court hearing, or holidays you have already booked",
-      "PAGE_TITLE": "cant attend hearing in next months",
+      "PAGE_TITLE": "Can't attend hearing in next months",
       "TITLE": "Are there any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing?"
     },
     "NOT_ELIGIBLE_FOR_SERVICE": {
@@ -1914,6 +1914,7 @@
       "EXPlANATION": "You can ask for the hearing to be held at a specific court, for example, if you spend weekdays a long distance from your home. The court will consider both parties' circumstances when deciding where to hold the hearing.",
       "PAGE_TITLE": "Specific court",
       "SELECT_COURT": "Select a court",
+      "SELECTED_COURT": "Selected court",
       "SELECT_VALUE": "Select a value",
       "REASON": "Tell us why you want the hearing to be held at this court",
       "TITLE": "Do you want to ask for the hearing to be held at a specific court?"

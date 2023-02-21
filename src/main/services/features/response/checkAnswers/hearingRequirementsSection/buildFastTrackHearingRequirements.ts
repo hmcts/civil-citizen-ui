@@ -5,8 +5,13 @@ import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
 import {t} from 'i18next';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
-  DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, DQ_DEFENDANT_EXPERT_EVIDENCE_URL, DQ_EXPERT_DETAILS_URL,
-  DQ_REQUEST_EXTRA_4WEEKS_URL, DQ_SENT_EXPERT_REPORTS_URL, DQ_SHARE_AN_EXPERT_URL,
+  DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, DQ_COURT_LOCATION_URL,
+  DQ_DEFENDANT_EXPERT_EVIDENCE_URL,
+  DQ_EXPERT_DETAILS_URL,
+  DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL,
+  DQ_REQUEST_EXTRA_4WEEKS_URL,
+  DQ_SENT_EXPERT_REPORTS_URL,
+  DQ_SHARE_AN_EXPERT_URL,
   DQ_TRIED_TO_SETTLE_CLAIM_URL,
 } from 'routes/urls';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
@@ -88,7 +93,7 @@ export const getUseExpertEvidence = (claim:Claim, claimId: string, lng:string): 
 
   return summaryRow(
     t('PAGES.DEFENDANT_EXPERT_EVIDENCE.TITLE', {lng}),
-    shouldConsiderExpertEvidence.get(),
+    shouldConsiderExpertEvidence,
     constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_EXPERT_EVIDENCE_URL),
     changeLabel(lng),
   );
@@ -99,7 +104,7 @@ export const getSentReportToOtherParties = (claim:Claim, claimId: string, lng:st
 
   return summaryRow(
     t('PAGES.SENT_EXPERT_REPORTS.TITLE', {lng}),
-    shouldConsiderSentExpertReports.get(),
+    shouldConsiderSentExpertReports,
     constructResponseUrlWithIdParams(claimId, DQ_SENT_EXPERT_REPORTS_URL),
     changeLabel(lng),
   );
@@ -110,7 +115,7 @@ export const getShareExpertWithClaimant = (claim:Claim, claimId: string, lng:str
 
   return summaryRow(
     t('PAGES.SHARED_EXPERT.TITLE', {lng}),
-    shouldConsiderSharedExpert.get(),
+    shouldConsiderSharedExpert,
     constructResponseUrlWithIdParams(claimId, DQ_SHARE_AN_EXPERT_URL),
     changeLabel(lng),
   );
@@ -134,5 +139,64 @@ export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequireme
   hearingRequirementsSection.summaryList.rows.push(getSentReportToOtherParties(claim, claimId, lng));
   hearingRequirementsSection.summaryList.rows.push(getShareExpertWithClaimant(claim, claimId, lng));
   hearingRequirementsSection.summaryList.rows.push(...getExpert(claim, claimId, getLng(lng)));
+  hearingRequirementsSection.summaryList.rows.push(getDefendantUnavailableDate(claim, claimId, getLng(lng)));
+  hearingRequirementsSection.summaryList.rows.push(getSpecificCourtLocation(claim, claimId, getLng(lng)));
+
+  if (claim?.directionQuestionnaire?.hearing?.cantAttendHearingInNext12Months?.option === YesNo.YES){
+    hearingRequirementsSection.summaryList.rows.push(displayDefendantUnavailableDate(claim, claimId, getLng(lng)));
+  }
+
+  if (claim.directionQuestionnaire?.hearing?.specificCourtLocation?.option === YesNo.YES){
+    hearingRequirementsSection.summaryList.rows.push(displaySpecificCourtLocation(claim, claimId, getLng(lng)));
+  }else {
+    //TODO:: PRES_SELECTED COURT
+  }
+
 
 };
+
+export const getDefendantUnavailableDate = (claim: Claim, claimId: string, lng: string): SummaryRow =>{
+  const hasUnavailableDatesForHearing = claim.directionQuestionnaire?.hearing?.unavailableDatesForHearing.items;
+
+  console.log({hasUnavailableDatesForHearing})
+  return summaryRow(
+    t('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE', {lng}),
+    '',
+    constructResponseUrlWithIdParams(claimId, DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL),
+    changeLabel(lng),
+  );
+}
+
+export const displayDefendantUnavailableDate = (claim: Claim, claimId: string, lng: string): SummaryRow =>{
+ // const hasUnavailableDatesForHearing = claim.directionQuestionnaire.hearing.unavailableDatesForHearing;
+
+
+  return summaryRow(
+    t('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE', {lng}),
+    '',
+    constructResponseUrlWithIdParams(claimId, DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL),
+    changeLabel(lng),
+  );
+}
+
+export const getSpecificCourtLocation = (claim: Claim, claimId: string, lng:string): SummaryRow=>{
+  const hasSpecificCourtLocation = affirmation(claim.directionQuestionnaire?.hearing?.specificCourtLocation?.option, lng)
+
+  return summaryRow(
+    t('PAGES.SPECIFIC_COURT.TITLE', {lng}),
+    hasSpecificCourtLocation,
+    constructResponseUrlWithIdParams(claimId, DQ_COURT_LOCATION_URL),
+    changeLabel(lng),
+  );
+}
+
+export const displaySpecificCourtLocation = (claim: Claim, claimId: string, lng:string): SummaryRow=>{
+  const hasSpecificCourtLocation = claim.directionQuestionnaire?.hearing?.specificCourtLocation?.courtLocation
+
+  return summaryRow(
+    t('PAGES.SPECIFIC_COURT.SELECTED_COURT', {lng}),
+    hasSpecificCourtLocation,
+    constructResponseUrlWithIdParams(claimId, DQ_COURT_LOCATION_URL),
+    changeLabel(lng),
+  );
+}
