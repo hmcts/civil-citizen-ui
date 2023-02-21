@@ -88,7 +88,7 @@ export const getUseExpertEvidence = (claim:Claim, claimId: string, lng:string): 
 
   return summaryRow(
     t('PAGES.DEFENDANT_EXPERT_EVIDENCE.TITLE', {lng}),
-    shouldConsiderExpertEvidence.get(),
+    shouldConsiderExpertEvidence,
     constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_EXPERT_EVIDENCE_URL),
     changeLabel(lng),
   );
@@ -99,7 +99,7 @@ export const getSentReportToOtherParties = (claim:Claim, claimId: string, lng:st
 
   return summaryRow(
     t('PAGES.SENT_EXPERT_REPORTS.TITLE', {lng}),
-    shouldConsiderSentExpertReports.get(),
+    shouldConsiderSentExpertReports,
     constructResponseUrlWithIdParams(claimId, DQ_SENT_EXPERT_REPORTS_URL),
     changeLabel(lng),
   );
@@ -110,7 +110,7 @@ export const getShareExpertWithClaimant = (claim:Claim, claimId: string, lng:str
 
   return summaryRow(
     t('PAGES.SHARED_EXPERT.TITLE', {lng}),
-    shouldConsiderSharedExpert.get(),
+    shouldConsiderSharedExpert,
     constructResponseUrlWithIdParams(claimId, DQ_SHARE_AN_EXPERT_URL),
     changeLabel(lng),
   );
