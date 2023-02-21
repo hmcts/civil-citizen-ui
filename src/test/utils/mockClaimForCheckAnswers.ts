@@ -212,7 +212,6 @@ export const createClaimWithIndividualDetails = (): Claim => {
       individualLastName: LAST_NAME,
       individualFirstName: FIRST_NAME,
       partyName: PARTY_NAME,
-      postToThisAddress: 'yes',
     },
   };
   claim.respondent1.partyDetails.primaryAddress = new Address('24 Brook lane', '', '', 'Bristol', 'BS13SS');
@@ -1217,3 +1216,4 @@ export const claimWithClaimTimeLineAndEvents = (): Claim => {
 
   return claim;
 };
+

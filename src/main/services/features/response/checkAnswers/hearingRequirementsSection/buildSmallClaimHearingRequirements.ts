@@ -38,7 +38,7 @@ export const buildSmallClaimHearingRequirements = (claim: Claim, hearingRequirem
 
   hearingRequirementsSection.summaryList.rows.push(determinationWithoutHearingQuestion(claim, claimId, lng));
 
-  if (claim?.directionQuestionnaire?.hearing?.determinationWithoutHearing?.option === YesNo.NO) {
+  if (claim.directionQuestionnaire?.hearing?.determinationWithoutHearing?.option === YesNo.NO) {
     hearingRequirementsSection.summaryList.rows.push(determinationWithoutHearingReason(claim, claimId, lng));
   }
 };

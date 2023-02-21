@@ -40,7 +40,7 @@ export const requestExtra4WeeksQuestion = (claim: Claim, claimId: string, lng: s
 };
 
 export const considerClaimantDocQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const option = claim?.directionQuestionnaire?.hearing?.considerClaimantDocuments?.option === YesNo.YES
+  const option = claim.directionQuestionnaire?.hearing?.considerClaimantDocuments?.option === YesNo.YES
     ? YesNoUpperCase.YES
     : YesNoUpperCase.NO;
 
@@ -53,7 +53,7 @@ export const considerClaimantDocQuestion = (claim: Claim, claimId: string, lng: 
 };
 
 export const considerClaimantDocResponse = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const details = claim?.directionQuestionnaire?.hearing?.considerClaimantDocuments?.details;
+  const details = claim.directionQuestionnaire?.hearing?.considerClaimantDocuments?.details;
 
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.GIVE_DOC_DETAILS', {lng}),
