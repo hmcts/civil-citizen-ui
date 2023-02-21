@@ -13,6 +13,7 @@ import {
 } from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {UnavailableDateType} from 'common/models/directionsQuestionnaire/hearing/unavailableDates';
+import {t} from 'i18next';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -34,7 +35,7 @@ describe('Unavailable dates for hearing Controller', () => {
         .get(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Add a single date or longer period of time that you cannot attend a hearing');
+          expect(res.text).toContain(t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.TITLE'));
         });
     });
     it('should return status 500 when error thrown', async () => {
