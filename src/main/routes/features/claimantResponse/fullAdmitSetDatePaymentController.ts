@@ -27,13 +27,8 @@ const fullAdmitSetDatePaymentController = Router();
 const fullAdmitSetDatePaymentPath = 'features/claimantResponse/full-admit-set-date-payment';
 let repaymentPlan: RepaymentPlanSummary;
 
-function renderView(form: GenericForm<GenericYesNo>, defendantName: string, proposedSetDate: string, repaymentPlan: RepaymentPlanSummary, res: Response): void {
-  res.render(fullAdmitSetDatePaymentPath, {
-    form,
-    defendantName,
-    proposedSetDate,
-    repaymentPlan,
-  });
+function renderView(form: GenericForm<GenericYesNo>, repaymentPlan: RepaymentPlanSummary, res: Response): void {
+  res.render(fullAdmitSetDatePaymentPath, { form, repaymentPlan});
 }
 
 fullAdmitSetDatePaymentController.get(CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAYMENT_URL, async (req:AppRequest, res:Response, next: NextFunction) => {
@@ -50,7 +45,7 @@ fullAdmitSetDatePaymentController.get(CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAYM
       finalRepaymentDate: formatDateToFullDate(new Date(getFinalPaymentDate(claim))),
       lengthOfRepaymentPlan: getRepaymentLength(claim, getLng(lang)),
     };
-    renderView(new GenericForm(details.fullAdmitAcceptPayment), details.defendantName, details.proposedSetDate, repaymentPlan, res);
+    renderView(new GenericForm(details.fullAdmitAcceptPayment), repaymentPlan, res);
   } catch (error) {
     next(error);
   }
@@ -62,10 +57,8 @@ fullAdmitSetDatePaymentController.post(CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAY
     const propertyName = 'fullAdmitSetDateAcceptPayment';
     const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_SELECTION'));
     form.validateSync();
-
     if (form.hasErrors()) {
-      const details = await getFullAdmitSetDatePaymentDetails(claimId);
-      renderView(form, details.defendantName, details.proposedSetDate, repaymentPlan, res);
+      renderView(form, repaymentPlan, res);
     } else {
       await saveClaimantResponse(claimId, form.model, propertyName);
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
