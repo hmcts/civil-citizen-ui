@@ -17,6 +17,8 @@ import {
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import {affirmation, getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/getEmptyStringIfUndefined';
 import {getLng} from "common/utils/languageToggleUtils";
+import {DateConverter} from "common/utils/dateConverter";
+//import {DateConverter} from "common/utils/dateConverter";
 
 export const triedToSettleQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const option = claim.directionQuestionnaire?.hearing?.triedToSettle?.option === YesNo.YES
@@ -148,17 +150,15 @@ export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequireme
 
   if (claim.directionQuestionnaire?.hearing?.specificCourtLocation?.option === YesNo.YES){
     hearingRequirementsSection.summaryList.rows.push(displaySpecificCourtLocation(claim, claimId, getLng(lng)));
-  }else {
-    //TODO:: PRES_SELECTED COURT
   }
-
 
 };
 
 export const getDefendantUnavailableDate = (claim: Claim, claimId: string, lng: string): SummaryRow =>{
   const hasUnavailableDatesForHearing = claim.directionQuestionnaire?.hearing?.unavailableDatesForHearing.items;
 
-  console.log({hasUnavailableDatesForHearing})
+  console.log("DATES: ",{hasUnavailableDatesForHearing});
+
   return summaryRow(
     t('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE', {lng}),
     '',
@@ -168,12 +168,11 @@ export const getDefendantUnavailableDate = (claim: Claim, claimId: string, lng: 
 }
 
 export const displayDefendantUnavailableDate = (claim: Claim, claimId: string, lng: string): SummaryRow =>{
- // const hasUnavailableDatesForHearing = claim.directionQuestionnaire.hearing.unavailableDatesForHearing;
-
+  const hasUnavailableDatesForHearing = affirmation(claim.directionQuestionnaire?.hearing?.cantAttendHearingInNext12Months?.option, lng);
 
   return summaryRow(
     t('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE', {lng}),
-    '',
+    hasUnavailableDatesForHearing,
     constructResponseUrlWithIdParams(claimId, DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL),
     changeLabel(lng),
   );
