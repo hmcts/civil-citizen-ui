@@ -5,6 +5,7 @@ import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 describe('translate self employment details to CCD model', () => {
   it('should return values if it is undefined', () => {
+    //Given
     const expected: CCDSelfEmploymentDetails = {
       jobTitle: undefined,
       annualTurnover: undefined,
@@ -12,12 +13,14 @@ describe('translate self employment details to CCD model', () => {
       amountOwed: undefined,
       reason: undefined,
     };
-
+    //When
     const output = toCCDSelfEmploymentDetails(undefined);
+    //Then
     expect(output).toEqual(expected);
   });
 
   it('should return values if there is empty', () => {
+    //Given
     const expected: CCDSelfEmploymentDetails = {
       jobTitle: undefined,
       annualTurnover: undefined,
@@ -25,12 +28,14 @@ describe('translate self employment details to CCD model', () => {
       amountOwed: undefined,
       reason: undefined,
     };
-
+    //When
     const output = toCCDSelfEmploymentDetails(new StatementOfMeans());
+    //Then
     expect(output).toEqual(expected);
   });
 
   it('should return values if there is input', () => {
+    //Given
     const input = new StatementOfMeans();
     input.selfEmployedAs = {
       jobTitle: 'test',
@@ -49,12 +54,14 @@ describe('translate self employment details to CCD model', () => {
       amountOwed: Number(2),
       reason: 'test',
     };
-
+    //When
     const output = toCCDSelfEmploymentDetails(input);
+    //Then
     expect(output).toEqual(expected);
   });
 
   it('should return values if there is input with tax is no', () => {
+    //Given
     const input = new StatementOfMeans();
     input.selfEmployedAs = {
       jobTitle: 'test',
@@ -73,8 +80,9 @@ describe('translate self employment details to CCD model', () => {
       amountOwed: undefined,
       reason: undefined,
     };
-
+    //When
     const output = toCCDSelfEmploymentDetails(input);
+    //Then
     expect(output).toEqual(expected);
   });
 });

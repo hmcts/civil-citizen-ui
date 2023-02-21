@@ -15,19 +15,26 @@ import {OtherTransaction} from 'form/models/statementOfMeans/expensesAndIncome/o
 
 describe('translate recurring income to CCD model', () => {
   it('should return undefined if it is empty', () => {
-    const output = toCCDRecurringIncomeField(new Claim(), ResponseType.FULL_ADMISSION);
+    //Given
+    const input = new Claim();
+    //When
+    const output = toCCDRecurringIncomeField(input, ResponseType.FULL_ADMISSION);
+    //Then
     expect(output).toBe(undefined);
   });
 
   it('should return undefined if it is undefined', () => {
+    //Given
     const input = new Claim();
     input.respondent1 = undefined;
-
+    //When
     const output = toCCDRecurringIncomeField(input, ResponseType.FULL_ADMISSION);
+    //Then
     expect(output).toEqual(undefined);
   });
 
   it('should return value if income is undefined', () => {
+    //Given
     const incomeParams : IncomeParams = {
     };
     const input = new Claim();
@@ -36,12 +43,14 @@ describe('translate recurring income to CCD model', () => {
     };
     input.statementOfMeans = new StatementOfMeans();
     input.statementOfMeans.regularIncome = new RegularIncome(incomeParams);
-
+    //When
     const output = toCCDRecurringIncomeField(input, ResponseType.FULL_ADMISSION);
+    //Then
     expect(output).toEqual(undefined);
   });
 
   it('should return undefined if response type is different', () => {
+    //Given
     const incomeParams : IncomeParams = {
       job: setUpTransactionInput(true),
     };
@@ -51,12 +60,14 @@ describe('translate recurring income to CCD model', () => {
     };
     input.statementOfMeans = new StatementOfMeans();
     input.statementOfMeans.regularIncome = new RegularIncome(incomeParams);
-
+    //When
     const output = toCCDRecurringIncomeField(input, ResponseType.PART_ADMISSION);
+    //Then
     expect(output).toEqual(undefined);
   });
 
   it('should return empty if all are not declared', () => {
+    //Given
     const incomeParams : IncomeParams = {
       job: setUpTransactionInput(false),
       universalCredit: setUpTransactionInput(false),
@@ -76,12 +87,14 @@ describe('translate recurring income to CCD model', () => {
     };
     input.statementOfMeans = new StatementOfMeans();
     input.statementOfMeans.regularIncome = new RegularIncome(incomeParams);
-
+    //When
     const output = toCCDRecurringIncomeField(input, ResponseType.FULL_ADMISSION);
+    //Then
     expect(output).toEqual(undefined);
   });
 
   it('should return empty if all are declared', () => {
+    //Given
     const incomeParams : IncomeParams = {
       job: setUpTransactionInput(true),
       universalCredit: setUpTransactionInput(true),
@@ -114,12 +127,14 @@ describe('translate recurring income to CCD model', () => {
       setUpRecurringOutput(CCDIncomeType.PENSION, CCDPaymentFrequency.ONCE_ONE_WEEK),
       setUpOtherRecurringOutput(CCDIncomeType.OTHER, CCDPaymentFrequency.ONCE_ONE_WEEK),
     ];
-
+    //When
     const output = toCCDRecurringIncomeField(input, ResponseType.FULL_ADMISSION);
+    //Then
     expect(output).toEqual(expected);
   });
 
   it('should return undefined if all are undefined', () => {
+    //Given
     const incomeParams : IncomeParams = {
       job: undefined,
       universalCredit: undefined,
@@ -139,8 +154,9 @@ describe('translate recurring income to CCD model', () => {
     };
     input.statementOfMeans = new StatementOfMeans();
     input.statementOfMeans.regularIncome = new RegularIncome(incomeParams);
-
+    //When
     const output = toCCDRecurringIncomeField(input, ResponseType.FULL_ADMISSION);
+    //Then
     expect(output).toEqual(undefined);
   });
 });

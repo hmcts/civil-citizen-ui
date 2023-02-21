@@ -6,16 +6,25 @@ import {YesNoUpperCamelCase} from 'form/models/yesNo';
 describe('translate Bank Account to CCD model', () => {
 
   it('should return undefined if length is 0', () => {
-    const output = toCCDBankAccountList([]);
+    //Given
+    const input: CitizenBankAccount[] = [];
+    //When
+    const output = toCCDBankAccountList(input);
+    //Then
     expect(output).toBe(undefined);
   });
 
   it('should return undefined if it is undefined', () => {
-    const output = toCCDBankAccountList(undefined);
+    //Given
+    const input: CitizenBankAccount[] = undefined;
+    //When
+    const output = toCCDBankAccountList(input);
+    //Then
     expect(output).toBe(undefined);
   });
 
   it('should return output if there is input', () => {
+    //Given
     const input: CitizenBankAccount[] = [
       new CitizenBankAccount('CURRENT_ACCOUNT', 'true', '123'),
     ];
@@ -24,8 +33,9 @@ describe('translate Bank Account to CCD model', () => {
         accountType: CCDBankAccountType.CURRENT, balance: Number('123'), jointAccount: YesNoUpperCamelCase.YES,
       }},
     ];
-
+    //When
     const output = toCCDBankAccountList(input);
+    //Then
     expect(output).toEqual(expected);
   });
 });
@@ -33,6 +43,7 @@ describe('translate Bank Account to CCD model', () => {
 describe('translate Bank Account to from different Bank Account Type', () => {
 
   it('should return Current Type', () => {
+    //Given
     const input: CitizenBankAccount[] = [
       new CitizenBankAccount('CURRENT_ACCOUNT', 'true', '123'),
     ];
@@ -41,12 +52,14 @@ describe('translate Bank Account to from different Bank Account Type', () => {
         accountType: CCDBankAccountType.CURRENT, balance: Number('123'), jointAccount: YesNoUpperCamelCase.YES,
       }},
     ];
-
+    //When
     const output = toCCDBankAccountList(input);
+    //Then
     expect(output).toEqual(expected);
   });
 
   it('should return Saving Type', () => {
+    //Given
     const input: CitizenBankAccount[] = [
       new CitizenBankAccount('SAVINGS_ACCOUNT', 'true', '123'),
     ];
@@ -55,12 +68,14 @@ describe('translate Bank Account to from different Bank Account Type', () => {
         accountType: CCDBankAccountType.SAVINGS, balance: Number('123'), jointAccount: YesNoUpperCamelCase.YES,
       }},
     ];
-
+    //When
     const output = toCCDBankAccountList(input);
+    //Then
     expect(output).toEqual(expected);
   });
 
   it('should return ISA Type', () => {
+    //Given
     const input: CitizenBankAccount[] = [
       new CitizenBankAccount('ISA', 'true', '123'),
     ];
@@ -69,12 +84,14 @@ describe('translate Bank Account to from different Bank Account Type', () => {
         accountType: CCDBankAccountType.ISA, balance: Number('123'), jointAccount: YesNoUpperCamelCase.YES,
       }},
     ];
-
+    //When
     const output = toCCDBankAccountList(input);
+    //Then
     expect(output).toEqual(expected);
   });
 
   it('should return Other Type', () => {
+    //Given
     const input: CitizenBankAccount[] = [
       new CitizenBankAccount('OTHER', 'true', '123'),
     ];
@@ -83,12 +100,14 @@ describe('translate Bank Account to from different Bank Account Type', () => {
         accountType: CCDBankAccountType.OTHER, balance: Number('123'), jointAccount: YesNoUpperCamelCase.YES,
       }},
     ];
-
+    //When
     const output = toCCDBankAccountList(input);
+    //Then
     expect(output).toEqual(expected);
   });
 
   it('should return undefined', () => {
+    //Given
     const input: CitizenBankAccount[] = [
       new CitizenBankAccount(undefined),
     ];
@@ -97,8 +116,9 @@ describe('translate Bank Account to from different Bank Account Type', () => {
         accountType: undefined, balance: NaN, jointAccount: undefined,
       }},
     ];
-
+    //When
     const output = toCCDBankAccountList(input);
+    //Then
     expect(output).toEqual(expected);
   });
 });
@@ -106,6 +126,7 @@ describe('translate Bank Account to from different Bank Account Type', () => {
 describe('translate Bank Account to from different joint account', () => {
 
   it('should return Yes', () => {
+    //Given
     const input: CitizenBankAccount[] = [
       new CitizenBankAccount('CURRENT_ACCOUNT', 'true', '123'),
     ];
@@ -114,12 +135,14 @@ describe('translate Bank Account to from different joint account', () => {
         accountType: CCDBankAccountType.CURRENT, balance: Number('123'), jointAccount: YesNoUpperCamelCase.YES,
       }},
     ];
-
+    //When
     const output = toCCDBankAccountList(input);
+    //Then
     expect(output).toEqual(expected);
   });
 
   it('should return No', () => {
+    //Given
     const input: CitizenBankAccount[] = [
       new CitizenBankAccount('CURRENT_ACCOUNT', 'false', '123'),
     ];
@@ -128,8 +151,9 @@ describe('translate Bank Account to from different joint account', () => {
         accountType: CCDBankAccountType.CURRENT, balance: Number('123'), jointAccount: YesNoUpperCamelCase.NO,
       }},
     ];
-
+    //When
     const output = toCCDBankAccountList(input);
+    //Then
     expect(output).toEqual(expected);
   });
 });

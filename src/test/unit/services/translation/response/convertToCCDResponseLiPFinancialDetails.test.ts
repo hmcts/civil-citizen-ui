@@ -6,17 +6,21 @@ import {toCCDResponseLiPFinancialDetails} from 'services/translation/response/co
 
 describe('translate cui fields to CCD model', () => {
   it('should return undefined if it is undefined', () => {
+    //Given
     const expected : CCDFinancialDetailsLiP = {
       partnerPensionLiP: undefined,
       partnerDisabilityLiP: undefined,
       partnerSevereDisabilityLiP: undefined,
       childrenEducationLiP: undefined,
     };
+    //When
     const output = toCCDResponseLiPFinancialDetails(undefined);
+    //Then
     expect(output).toEqual(expected);
   });
 
   it('should return value if the input', () => {
+    //Given
     const input = new StatementOfMeans();
     input.partnerPension = new GenericYesNo(YesNo.YES);
     input.partnerDisability = new GenericYesNo(YesNo.YES);
@@ -28,11 +32,14 @@ describe('translate cui fields to CCD model', () => {
       partnerSevereDisabilityLiP: YesNoUpperCamelCase.YES,
       childrenEducationLiP: '1',
     };
+    //When
     const output = toCCDResponseLiPFinancialDetails(input);
+    //Then
     expect(output).toEqual(expected);
   });
 
   it('should return undefined if input is undefined', () => {
+    //Given
     const input = new StatementOfMeans();
     input.partnerPension = undefined;
     input.partnerDisability = undefined;
@@ -44,7 +51,9 @@ describe('translate cui fields to CCD model', () => {
       partnerSevereDisabilityLiP: undefined,
       childrenEducationLiP: undefined,
     };
+    //When
     const output = toCCDResponseLiPFinancialDetails(input);
+    //Then
     expect(output).toEqual(expected);
   });
 });

@@ -15,18 +15,7 @@ export const toCCDRecurringIncomeField = (claim: Claim, responseType: ResponseTy
 const toCCDRecurringIncomeList = (regularIncome: RegularIncome): CCDRecurringIncome[] => {
   if (!regularIncome) return undefined;
 
-  if (!regularIncome.job?.declared &&
-    !regularIncome.universalCredit?.declared &&
-    !regularIncome.jobseekerAllowanceIncome?.declared &&
-    !regularIncome.jobseekerAllowanceContribution?.declared &&
-    !regularIncome.incomeSupport?.declared &&
-    !regularIncome.workingTaxCredit?.declared &&
-    !regularIncome.childTaxCredit?.declared &&
-    !regularIncome.childBenefit?.declared &&
-    !regularIncome.councilTaxSupport?.declared &&
-    !regularIncome.pension?.declared &&
-    !regularIncome.other?.declared
-  ) return undefined;
+  if (isRecurringIncomeNotDeclared(regularIncome)) return undefined;
 
   let ccdRecurringIncomeList: CCDRecurringIncome[] = [];
   if (regularIncome.job.declared) {
@@ -78,7 +67,7 @@ const toCCDRecurringIncomeItem = (transactionSource: TransactionSource, incomeTy
 };
 
 const toCCDRecurringIncomeOtherItem = (otherTransactions: TransactionSource[], incomeType: CCDIncomeType): CCDRecurringIncome[] => {
-  if (!otherTransactions?.length || otherTransactions?.length <= 0) return undefined;
+  if (!otherTransactions?.length) return undefined;
   const ccdOtherRecurringIncomeList: CCDRecurringIncome[] = [];
   otherTransactions.forEach((otherTransactionItem, index) => {
     const ccdRecurringIncome = toCCDRecurringIncomeItem(otherTransactionItem, incomeType);
@@ -86,5 +75,20 @@ const toCCDRecurringIncomeOtherItem = (otherTransactions: TransactionSource[], i
     ccdOtherRecurringIncomeList.push(ccdRecurringIncome);
   });
   return ccdOtherRecurringIncomeList;
+};
+
+const isRecurringIncomeNotDeclared = (regularIncome: RegularIncome): boolean => {
+  return (!regularIncome.job?.declared &&
+    !regularIncome.universalCredit?.declared &&
+    !regularIncome.jobseekerAllowanceIncome?.declared &&
+    !regularIncome.jobseekerAllowanceContribution?.declared &&
+    !regularIncome.incomeSupport?.declared &&
+    !regularIncome.workingTaxCredit?.declared &&
+    !regularIncome.childTaxCredit?.declared &&
+    !regularIncome.childBenefit?.declared &&
+    !regularIncome.councilTaxSupport?.declared &&
+    !regularIncome.pension?.declared &&
+    !regularIncome.other?.declared
+  );
 };
 

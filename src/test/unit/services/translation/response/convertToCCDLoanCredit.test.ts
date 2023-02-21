@@ -4,18 +4,24 @@ import {CCDLoanCredit} from 'models/ccdResponse/ccdLoanCredit';
 
 describe('translate loan credit to CCD model', () => {
   it('should return undefined if it is undefined', () => {
+    //Given
+    //When
     const output = toCCDLoanCredit(undefined);
+    //Then
     expect(output).toEqual(undefined);
   });
 
   it('should return undefined if it is empty', () => {
+    //Given
     const input : DebtItems[] = [];
-
+    //When
     const output = toCCDLoanCredit(input);
+    //Then
     expect(output).toEqual(undefined);
   });
 
   it('should return values if there is input', () => {
+    //Given
     const input : DebtItems[] = [
       new DebtItems('test', '1','1'),
     ];
@@ -26,12 +32,14 @@ describe('translate loan credit to CCD model', () => {
         monthlyPayment: Number('1'),
       },
     }];
-
+    //When
     const output = toCCDLoanCredit(input);
+    //Then
     expect(output).toEqual(expected);
   });
 
   it('should return values if there is input undefined', () => {
+    //Given
     const input : DebtItems[] = [
       new DebtItems(undefined, undefined,undefined),
     ];
@@ -42,8 +50,9 @@ describe('translate loan credit to CCD model', () => {
         monthlyPayment: NaN,
       },
     }];
-
+    //When
     const output = toCCDLoanCredit(input);
+    //Then
     expect(output).toEqual(expected);
   });
 });

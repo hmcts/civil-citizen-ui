@@ -5,28 +5,33 @@ import {UnemploymentCategory} from 'form/models/statementOfMeans/unemployment/un
 
 describe('translate unemployment to CCD model', () => {
   it('should return undefined if it is empty', () => {
+    //Given
     const expected: CCDUnemploymentDetails = {
       unemployedComplexTypeRequired: undefined,
       lengthOfUnemployment: undefined,
       otherUnemployment: undefined,
     };
-
+    //When
     const output = toCCDUnemploymentDetails(new Unemployment());
+    //Then
     expect(output).toEqual(expected);
   });
 
   it('should return undefined if it is undefined', () => {
+    //Given
     const expected: CCDUnemploymentDetails = {
       unemployedComplexTypeRequired: undefined,
       lengthOfUnemployment: undefined,
       otherUnemployment: undefined,
     };
-
+    //When
     const output = toCCDUnemploymentDetails(undefined);
+    //Then
     expect(output).toEqual(expected);
   });
 
   it('should return value if it is retired', () => {
+    //Given
     const input = new Unemployment();
     input.option = UnemploymentCategory.RETIRED;
     const expected: CCDUnemploymentDetails = {
@@ -34,12 +39,14 @@ describe('translate unemployment to CCD model', () => {
       lengthOfUnemployment: undefined,
       otherUnemployment: undefined,
     };
-
+    //When
     const output = toCCDUnemploymentDetails(input);
+    //Then
     expect(output).toEqual(expected);
   });
 
   it('should return value if it is other', () => {
+    //Given
     const input = new Unemployment();
     input.option = UnemploymentCategory.OTHER;
     input.otherDetails = {
@@ -50,12 +57,14 @@ describe('translate unemployment to CCD model', () => {
       lengthOfUnemployment: undefined,
       otherUnemployment: 'test',
     };
-
+    //When
     const output = toCCDUnemploymentDetails(input);
+    //Then
     expect(output).toEqual(expected);
   });
 
   it('should return value if it is unemployed', () => {
+    //Given
     const input = new Unemployment();
     input.option = UnemploymentCategory.UNEMPLOYED;
     input.unemploymentDetails = {
@@ -70,12 +79,14 @@ describe('translate unemployment to CCD model', () => {
       },
       otherUnemployment: undefined,
     };
-
+    //When
     const output = toCCDUnemploymentDetails(input);
+    //Then
     expect(output).toEqual(expected);
   });
 
   it('should return undefined if all input is undefined', () => {
+    //Given
     const input = new Unemployment();
     input.option = undefined;
     input.unemploymentDetails = {
@@ -93,8 +104,9 @@ describe('translate unemployment to CCD model', () => {
       },
       otherUnemployment: undefined,
     };
-
+    //When
     const output = toCCDUnemploymentDetails(input);
+    //Then
     expect(output).toEqual(expected);
   });
 });

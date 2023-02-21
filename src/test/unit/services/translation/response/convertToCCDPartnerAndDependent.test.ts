@@ -8,6 +8,7 @@ import {Dependants} from 'form/models/statementOfMeans/dependants/dependants';
 
 describe('translate partner and dependents to CCD model', () => {
   it('should return undefined if it is undefined', () => {
+    //Given
     const expected: CCDPartnerAndDependent = {
       liveWithPartnerRequired: undefined,
       partnerAgedOver: undefined,
@@ -22,12 +23,14 @@ describe('translate partner and dependents to CCD model', () => {
       supportPeopleNumber: undefined,
       supportPeopleDetails: undefined,
     };
-
+    //When
     const output = toCCDPartnerAndDependents(undefined);
+    //Then
     expect(output).toEqual(expected);
   });
 
   it('should return with data if there is empty', () => {
+    //Given
     const input = new StatementOfMeans();
     const expected: CCDPartnerAndDependent = {
       liveWithPartnerRequired: undefined,
@@ -43,12 +46,14 @@ describe('translate partner and dependents to CCD model', () => {
       supportPeopleNumber: undefined,
       supportPeopleDetails: undefined,
     };
-
+    //When
     const output = toCCDPartnerAndDependents(input);
+    //Then
     expect(output).toEqual(expected);
   });
 
   it('should return with data if there is input', () => {
+    //Given
     const numberOfChildren = new NumberOfChildren(1,2,3);
     const input = new StatementOfMeans();
     input.cohabiting = new GenericYesNo(YesNo.YES);
@@ -73,12 +78,14 @@ describe('translate partner and dependents to CCD model', () => {
       supportPeopleNumber: '1',
       supportPeopleDetails: 'test',
     };
-
+    //When
     const output = toCCDPartnerAndDependents(input);
+    //Then
     expect(output).toEqual(expected);
   });
 
   it('should return with data if there is input for all No', () => {
+    //Given
     const input = new StatementOfMeans();
     input.cohabiting = new GenericYesNo(YesNo.NO);
     input.partnerAge = new GenericYesNo(YesNo.NO);
@@ -102,8 +109,9 @@ describe('translate partner and dependents to CCD model', () => {
       supportPeopleNumber: undefined,
       supportPeopleDetails: undefined,
     };
-
+    //When
     const output = toCCDPartnerAndDependents(input);
+    //Then
     expect(output).toEqual(expected);
   });
 });

@@ -15,21 +15,7 @@ export const toCCDRecurringExpensesField = (claim: Claim, responseType: Response
 const toCCDRecurringExpensesList = (regularExpenses: RegularExpenses): CCDRecurringExpenses[] => {
   if (!regularExpenses) return undefined;
 
-  if (!regularExpenses.mortgage?.declared &&
-    !regularExpenses.rent?.declared &&
-    !regularExpenses.councilTax?.declared &&
-    !regularExpenses.gas?.declared &&
-    !regularExpenses.electricity?.declared &&
-    !regularExpenses.water?.declared &&
-    !regularExpenses.travel?.declared &&
-    !regularExpenses.schoolCosts?.declared &&
-    !regularExpenses.foodAndHousekeeping?.declared &&
-    !regularExpenses.tvAndBroadband?.declared &&
-    !regularExpenses.hirePurchase?.declared &&
-    !regularExpenses.mobilePhone?.declared &&
-    !regularExpenses.maintenance?.declared &&
-    !regularExpenses.other?.declared
-  ) return undefined;
+  if (isRecurringExpensesNotDeclared(regularExpenses)) return undefined;
 
   let ccdRecurringExpensesList: CCDRecurringExpenses[] = [];
   if (regularExpenses.mortgage.declared) {
@@ -90,7 +76,7 @@ const toCCDRecurringExpensesItem = (transactionSource: TransactionSource, expens
 };
 
 const toCCDRecurringExpensesOtherItem = (otherTransactions: TransactionSource[], expensesType: CCDExpensesType): CCDRecurringExpenses[] => {
-  if (!otherTransactions?.length || otherTransactions?.length <= 0) return undefined;
+  if (!otherTransactions?.length) return undefined;
   const ccdOtherRecurringExpensesList: CCDRecurringExpenses[] = [];
   otherTransactions.forEach((otherTransactionItem, index) => {
     const ccdRecurringExpenses = toCCDRecurringExpensesItem(otherTransactionItem, expensesType);
@@ -98,5 +84,23 @@ const toCCDRecurringExpensesOtherItem = (otherTransactions: TransactionSource[],
     ccdOtherRecurringExpensesList.push(ccdRecurringExpenses);
   });
   return ccdOtherRecurringExpensesList;
+};
+
+const isRecurringExpensesNotDeclared = (regularExpenses: RegularExpenses): boolean => {
+  return (!regularExpenses.mortgage?.declared &&
+    !regularExpenses.rent?.declared &&
+    !regularExpenses.councilTax?.declared &&
+    !regularExpenses.gas?.declared &&
+    !regularExpenses.electricity?.declared &&
+    !regularExpenses.water?.declared &&
+    !regularExpenses.travel?.declared &&
+    !regularExpenses.schoolCosts?.declared &&
+    !regularExpenses.foodAndHousekeeping?.declared &&
+    !regularExpenses.tvAndBroadband?.declared &&
+    !regularExpenses.hirePurchase?.declared &&
+    !regularExpenses.mobilePhone?.declared &&
+    !regularExpenses.maintenance?.declared &&
+    !regularExpenses.other?.declared
+  );
 };
 

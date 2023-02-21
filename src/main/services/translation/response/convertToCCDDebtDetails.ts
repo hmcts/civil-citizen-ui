@@ -10,14 +10,7 @@ import {toCCDPaymentFrequency} from 'services/translation/response/convertToCCDP
 export const toCCDDebtDetails = (priorityDebts: PriorityDebts): CCDDebtDetails => {
   if (!priorityDebts) return undefined;
 
-  if (!priorityDebts.mortgage?.declared &&
-    !priorityDebts.rent?.declared &&
-    !priorityDebts.councilTax?.declared &&
-    !priorityDebts.gas?.declared &&
-    !priorityDebts.electricity?.declared &&
-    !priorityDebts.water?.declared &&
-    !priorityDebts.maintenance?.declared
-  ) return undefined;
+  if (isPriorityDebtsNotDeclared(priorityDebts)) return undefined;
 
   const ccdDebtDetailsList: CCDDebtDetailsList[] = [];
   if (priorityDebts.mortgage.declared) {
@@ -56,4 +49,15 @@ const toCCDDebtDetailsItem = (transactionSource: TransactionSource, debtType: CC
     },
   };
   return ccdDebtDetails;
+};
+
+const isPriorityDebtsNotDeclared = (priorityDebts: PriorityDebts): boolean => {
+  return (!priorityDebts.mortgage?.declared &&
+    !priorityDebts.rent?.declared &&
+    !priorityDebts.councilTax?.declared &&
+    !priorityDebts.gas?.declared &&
+    !priorityDebts.electricity?.declared &&
+    !priorityDebts.water?.declared &&
+    !priorityDebts.maintenance?.declared
+  );
 };

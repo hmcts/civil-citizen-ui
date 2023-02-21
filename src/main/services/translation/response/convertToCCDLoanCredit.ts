@@ -2,7 +2,7 @@ import {CCDLoanCredit} from 'models/ccdResponse/ccdLoanCredit';
 import {DebtItems} from 'form/models/statementOfMeans/debts/debtItems';
 
 export const toCCDLoanCredit = (debtsItem: DebtItems[]): CCDLoanCredit[] => {
-  if (!debtsItem?.length || debtsItem?.length <= 0) return undefined;
+  if (!debtsItem?.length) return undefined;
 
   const ccdLoanCreditList: CCDLoanCredit[] = [];
   debtsItem.forEach((item, index) => {

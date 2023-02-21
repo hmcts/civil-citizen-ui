@@ -16,19 +16,26 @@ import {CCDExpensesType, CCDRecurringExpenses} from 'models/ccdResponse/ccdRecur
 
 describe('translate recurring expense to CCD model', () => {
   it('should return undefined if it is empty', () => {
-    const output = toCCDRecurringExpensesField(new Claim(), ResponseType.FULL_ADMISSION);
+    //Given
+    const input = new Claim();
+    //When
+    const output = toCCDRecurringExpensesField(input, ResponseType.FULL_ADMISSION);
+    //Then
     expect(output).toBe(undefined);
   });
 
   it('should return undefined if it is undefined', () => {
+    //Given
     const input = new Claim();
     input.respondent1 = undefined;
-
+    //When
     const output = toCCDRecurringExpensesField(input, ResponseType.FULL_ADMISSION);
+    //Then
     expect(output).toEqual(undefined);
   });
 
   it('should return value if expense is undefined', () => {
+    //Given
     const expenseParams : ExpenseParams = {
     };
     const input = new Claim();
@@ -37,12 +44,14 @@ describe('translate recurring expense to CCD model', () => {
     };
     input.statementOfMeans = new StatementOfMeans();
     input.statementOfMeans.regularExpenses = new RegularExpenses(expenseParams);
-
+    //When
     const output = toCCDRecurringExpensesField(input, ResponseType.FULL_ADMISSION);
+    //Then
     expect(output).toEqual(undefined);
   });
 
   it('should return undefined if response type is different', () => {
+    //Given
     const expenseParams : ExpenseParams = {
       mortgage: setUpTransactionInput(true),
     };
@@ -52,12 +61,14 @@ describe('translate recurring expense to CCD model', () => {
     };
     input.statementOfMeans = new StatementOfMeans();
     input.statementOfMeans.regularExpenses = new RegularIncome(expenseParams);
-
+    //When
     const output = toCCDRecurringExpensesField(input, ResponseType.PART_ADMISSION);
+    //Then
     expect(output).toEqual(undefined);
   });
 
   it('should return empty if all are not declared', () => {
+    //Given
     const expenseParams : ExpenseParams = {
       mortgage: setUpTransactionInput(false),
       rent: setUpTransactionInput(false),
@@ -80,12 +91,14 @@ describe('translate recurring expense to CCD model', () => {
     };
     input.statementOfMeans = new StatementOfMeans();
     input.statementOfMeans.regularExpenses = new RegularExpenses(expenseParams);
-
+    //When
     const output = toCCDRecurringExpensesField(input, ResponseType.FULL_ADMISSION);
+    //Then
     expect(output).toEqual(undefined);
   });
 
   it('should return empty if all are declared', () => {
+    //Given
     const expenseParams : ExpenseParams = {
       mortgage: setUpTransactionInput(true),
       rent: setUpTransactionInput(true),
@@ -124,12 +137,14 @@ describe('translate recurring expense to CCD model', () => {
       setUpRecurringOutput(CCDExpensesType.MAINTENANCE, CCDPaymentFrequency.ONCE_ONE_WEEK),
       setUpOtherRecurringOutput(CCDExpensesType.OTHER, CCDPaymentFrequency.ONCE_ONE_WEEK),
     ];
-
+    //When
     const output = toCCDRecurringExpensesField(input, ResponseType.FULL_ADMISSION);
+    //Then
     expect(output).toEqual(expected);
   });
 
   it('should return empty if all are declared', () => {
+    //Given
     const expenseParams : ExpenseParams = {
       mortgage: undefined,
       rent: undefined,
@@ -152,8 +167,9 @@ describe('translate recurring expense to CCD model', () => {
     };
     input.statementOfMeans = new StatementOfMeans();
     input.statementOfMeans.regularExpenses = new RegularExpenses(expenseParams);
-
+    //When
     const output = toCCDRecurringExpensesField(input, ResponseType.FULL_ADMISSION);
+    //Then
     expect(output).toEqual(undefined);
   });
 });
