@@ -3,17 +3,14 @@ nodejs:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
   keyVaults:
-    civil:
-      resourceGroup: civil-service
+    civil-citizen-ui:
+      resourceGroup: civil-citizen-ui
       secrets:
-        - AppInsightsInstrumentationKey
+        - appinsights-instrumentation-key
         - draft-store-access-key
+        - citizen-ui-idam-secret
         - name: ordnance-survey-api-key
           alias: ORDNANCE_SURVEY_API_KEY
-        - citizen-ui-idam-secret
-    cmc:
-      resourceGroup: cmc
-      secrets:
         - cmc-s2s-secret
         - citizen-draft-store-primary
         - citizen-draft-store-secondary
