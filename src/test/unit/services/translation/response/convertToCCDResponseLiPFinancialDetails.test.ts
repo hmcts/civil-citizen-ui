@@ -7,12 +7,7 @@ import {toCCDResponseLiPFinancialDetails} from 'services/translation/response/co
 describe('translate cui fields to CCD model', () => {
   it('should return undefined if it is undefined', () => {
     //Given
-    const expected : CCDFinancialDetailsLiP = {
-      partnerPensionLiP: undefined,
-      partnerDisabilityLiP: undefined,
-      partnerSevereDisabilityLiP: undefined,
-      childrenEducationLiP: undefined,
-    };
+    const expected : CCDFinancialDetailsLiP = setUpUndefinedOutput();
     //When
     const output = toCCDResponseLiPFinancialDetails(undefined);
     //Then
@@ -45,15 +40,19 @@ describe('translate cui fields to CCD model', () => {
     input.partnerDisability = undefined;
     input.partnerSevereDisability = undefined;
     input.numberOfChildrenLivingWithYou = undefined;
-    const expected : CCDFinancialDetailsLiP = {
-      partnerPensionLiP: undefined,
-      partnerDisabilityLiP: undefined,
-      partnerSevereDisabilityLiP: undefined,
-      childrenEducationLiP: undefined,
-    };
+    const expected : CCDFinancialDetailsLiP = setUpUndefinedOutput();
     //When
     const output = toCCDResponseLiPFinancialDetails(input);
     //Then
     expect(output).toEqual(expected);
   });
 });
+
+const setUpUndefinedOutput = () : CCDFinancialDetailsLiP => {
+  return {
+    partnerPensionLiP: undefined,
+    partnerDisabilityLiP: undefined,
+    partnerSevereDisabilityLiP: undefined,
+    childrenEducationLiP: undefined,
+  };
+};

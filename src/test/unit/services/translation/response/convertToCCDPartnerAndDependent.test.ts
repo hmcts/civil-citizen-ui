@@ -9,20 +9,7 @@ import {Dependants} from 'form/models/statementOfMeans/dependants/dependants';
 describe('translate partner and dependents to CCD model', () => {
   it('should return undefined if it is undefined', () => {
     //Given
-    const expected: CCDPartnerAndDependent = {
-      liveWithPartnerRequired: undefined,
-      partnerAgedOver: undefined,
-      haveAnyChildrenRequired: undefined,
-      howManyChildrenByAgeGroup: {
-        numberOfUnderEleven: undefined,
-        numberOfElevenToFifteen: undefined,
-        numberOfSixteenToNineteen: undefined,
-      },
-      receiveDisabilityPayments: undefined,
-      supportedAnyoneFinancialRequired: undefined,
-      supportPeopleNumber: undefined,
-      supportPeopleDetails: undefined,
-    };
+    const expected: CCDPartnerAndDependent = setUpUndefinedOutput();
     //When
     const output = toCCDPartnerAndDependents(undefined);
     //Then
@@ -32,20 +19,7 @@ describe('translate partner and dependents to CCD model', () => {
   it('should return with data if there is empty', () => {
     //Given
     const input = new StatementOfMeans();
-    const expected: CCDPartnerAndDependent = {
-      liveWithPartnerRequired: undefined,
-      partnerAgedOver: undefined,
-      haveAnyChildrenRequired: undefined,
-      howManyChildrenByAgeGroup: {
-        numberOfUnderEleven: undefined,
-        numberOfElevenToFifteen: undefined,
-        numberOfSixteenToNineteen: undefined,
-      },
-      receiveDisabilityPayments: undefined,
-      supportedAnyoneFinancialRequired: undefined,
-      supportPeopleNumber: undefined,
-      supportPeopleDetails: undefined,
-    };
+    const expected: CCDPartnerAndDependent = setUpUndefinedOutput();
     //When
     const output = toCCDPartnerAndDependents(input);
     //Then
@@ -116,3 +90,19 @@ describe('translate partner and dependents to CCD model', () => {
   });
 });
 
+const setUpUndefinedOutput = () : CCDPartnerAndDependent => {
+  return {
+    liveWithPartnerRequired: undefined,
+    partnerAgedOver: undefined,
+    haveAnyChildrenRequired: undefined,
+    howManyChildrenByAgeGroup: {
+      numberOfUnderEleven: undefined,
+      numberOfElevenToFifteen: undefined,
+      numberOfSixteenToNineteen: undefined,
+    },
+    receiveDisabilityPayments: undefined,
+    supportedAnyoneFinancialRequired: undefined,
+    supportPeopleNumber: undefined,
+    supportPeopleDetails: undefined,
+  };
+};

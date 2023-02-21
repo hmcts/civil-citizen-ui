@@ -6,13 +6,7 @@ import {YesNoUpperCamelCase} from 'form/models/yesNo';
 describe('translate self employment details to CCD model', () => {
   it('should return values if it is undefined', () => {
     //Given
-    const expected: CCDSelfEmploymentDetails = {
-      jobTitle: undefined,
-      annualTurnover: undefined,
-      isBehindOnTaxPayment: undefined,
-      amountOwed: undefined,
-      reason: undefined,
-    };
+    const expected: CCDSelfEmploymentDetails = setUpUndefinedOutput();
     //When
     const output = toCCDSelfEmploymentDetails(undefined);
     //Then
@@ -21,13 +15,7 @@ describe('translate self employment details to CCD model', () => {
 
   it('should return values if there is empty', () => {
     //Given
-    const expected: CCDSelfEmploymentDetails = {
-      jobTitle: undefined,
-      annualTurnover: undefined,
-      isBehindOnTaxPayment: undefined,
-      amountOwed: undefined,
-      reason: undefined,
-    };
+    const expected: CCDSelfEmploymentDetails = setUpUndefinedOutput();
     //When
     const output = toCCDSelfEmploymentDetails(new StatementOfMeans());
     //Then
@@ -86,3 +74,13 @@ describe('translate self employment details to CCD model', () => {
     expect(output).toEqual(expected);
   });
 });
+
+const setUpUndefinedOutput = () : CCDSelfEmploymentDetails => {
+  return {
+    jobTitle: undefined,
+    annualTurnover: undefined,
+    isBehindOnTaxPayment: undefined,
+    amountOwed: undefined,
+    reason: undefined,
+  };
+};
