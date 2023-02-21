@@ -55,7 +55,7 @@ export const vulnerabilityQuestion = (claim: Claim, claimId: string, lng: string
 };
 
 export const vulnerabilityInfo = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const details = claim?.directionQuestionnaire?.vulnerabilityQuestions?.vulnerability?.vulnerabilityDetails;
+  const details = claim.directionQuestionnaire?.vulnerabilityQuestions?.vulnerability?.vulnerabilityDetails;
 
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_INFO', {lng}),
@@ -66,7 +66,7 @@ export const vulnerabilityInfo = (claim: Claim, claimId: string, lng: string): S
 };
 
 export const giveEvidenceYourself = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const option = claim?.directionQuestionnaire?.defendantYourselfEvidence?.option === YesNo.YES
+  const option = claim.directionQuestionnaire?.defendantYourselfEvidence?.option === YesNo.YES
     ? YesNoUpperCase.YES
     : YesNoUpperCase.NO;
 
@@ -78,23 +78,21 @@ export const giveEvidenceYourself = (claim: Claim, claimId: string, lng: string)
   );
 };
 
-export const speakingLanguagePreference = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  let speakingLanguageName;
-
-  switch (claim?.directionQuestionnaire?.welshLanguageRequirements?.language?.speakLanguage) {
+function getLanguageSelected(languageOptions: LanguageOptions, lng: string) {
+  switch (languageOptions) {
     case LanguageOptions.ENGLISH:
-      speakingLanguageName = t('PAGES.WELSH_LANGUAGE.ENGLISH', {lng});
-      break;
+      return t('PAGES.WELSH_LANGUAGE.ENGLISH', {lng});
     case LanguageOptions.WELSH:
-      speakingLanguageName = t('PAGES.WELSH_LANGUAGE.WELSH', {lng});
-      break;
+      return t('PAGES.WELSH_LANGUAGE.WELSH', {lng});
     case LanguageOptions.WELSH_AND_ENGLISH:
-      speakingLanguageName = t('PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH', {lng});
-      break;
+      return t('PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH', {lng});
     default:
-      speakingLanguageName = '';
-      break;
+      return '';
   }
+}
+
+export const speakingLanguagePreference = (claim: Claim, claimId: string, lng: string): SummaryRow => {
+  const speakingLanguageName = getLanguageSelected(claim.directionQuestionnaire?.welshLanguageRequirements?.language?.speakLanguage, lng);
 
   return summaryRow(
     t('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK', {lng}),
@@ -103,22 +101,8 @@ export const speakingLanguagePreference = (claim: Claim, claimId: string, lng: s
 };
 
 export const documentsLanguagePreference = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  let documentsLanguageName;
 
-  switch (claim?.directionQuestionnaire?.welshLanguageRequirements?.language?.documentsLanguage) {
-    case LanguageOptions.ENGLISH:
-      documentsLanguageName = t('PAGES.WELSH_LANGUAGE.ENGLISH', {lng});
-      break;
-    case LanguageOptions.WELSH:
-      documentsLanguageName = t('PAGES.WELSH_LANGUAGE.WELSH', {lng});
-      break;
-    case LanguageOptions.WELSH_AND_ENGLISH:
-      documentsLanguageName = t('PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH', {lng});
-      break;
-    default:
-      documentsLanguageName = '';
-      break;
-  }
+  const documentsLanguageName = getLanguageSelected(claim.directionQuestionnaire?.welshLanguageRequirements?.language?.documentsLanguage, lng);
 
   return summaryRow(
     t('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS', {lng}),
@@ -127,7 +111,7 @@ export const documentsLanguagePreference = (claim: Claim, claimId: string, lng: 
 };
 
 export const phoneAndVideoQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const option =  claim?.directionQuestionnaire?.hearing?.phoneOrVideoHearing?.option === YesNo.YES
+  const option =  claim.directionQuestionnaire?.hearing?.phoneOrVideoHearing?.option === YesNo.YES
     ? YesNoUpperCase.YES
     : YesNoUpperCase.NO;
 
@@ -140,7 +124,7 @@ export const phoneAndVideoQuestion = (claim: Claim, claimId: string, lng: string
 };
 
 export const phoneAndVideoInfo = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const details = claim?.directionQuestionnaire?.hearing?.phoneOrVideoHearing?.details;
+  const details = claim.directionQuestionnaire?.hearing?.phoneOrVideoHearing?.details;
 
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY_DO_YOU_WANT_PHONE_VIDEO_HEARING', {lng}),
@@ -150,31 +134,31 @@ export const phoneAndVideoInfo = (claim: Claim, claimId: string, lng: string): S
 
 export const buildCommonHearingRequirements = (claim: Claim, hearingRequirementsSection: SummarySection, claimId: string, lng: string) => {
 
-  if (claim?.directionQuestionnaire?.defendantYourselfEvidence?.option) {
+  if (claim.directionQuestionnaire?.defendantYourselfEvidence?.option) {
     hearingRequirementsSection.summaryList.rows.push(giveEvidenceYourself(claim, claimId, lng));
   }
 
   hearingRequirementsSection.summaryList.rows.push(...getWitnesses(claim, claimId, lng));
 
-  if (claim?.directionQuestionnaire?.hearing?.phoneOrVideoHearing?.option) {
+  if (claim.directionQuestionnaire?.hearing?.phoneOrVideoHearing?.option) {
     hearingRequirementsSection.summaryList.rows.push(phoneAndVideoQuestion(claim, claimId, lng));
 
-    if(claim?.directionQuestionnaire?.hearing?.phoneOrVideoHearing?.option === YesNo.YES)
+    if(claim.directionQuestionnaire?.hearing?.phoneOrVideoHearing?.option === YesNo.YES)
       hearingRequirementsSection.summaryList.rows.push(phoneAndVideoInfo(claim, claimId, lng));
   }
 
-  if (claim?.directionQuestionnaire?.vulnerabilityQuestions?.vulnerability) {
+  if (claim.directionQuestionnaire?.vulnerabilityQuestions?.vulnerability) {
     hearingRequirementsSection.summaryList.rows.push(vulnerabilityQuestion(claim, claimId, lng));
 
-    if(claim?.directionQuestionnaire?.vulnerabilityQuestions?.vulnerability?.option === YesNo.YES)
+    if(claim.directionQuestionnaire?.vulnerabilityQuestions?.vulnerability?.option === YesNo.YES)
       hearingRequirementsSection.summaryList.rows.push(vulnerabilityInfo(claim, claimId, lng));
   }
 
-  if (claim?.hasSupportRequiredList) {
+  if (claim.hasSupportRequiredList) {
     addSupportRequiredList(claim, hearingRequirementsSection, claimId, lng);
   }
 
-  if (claim?.directionQuestionnaire?.welshLanguageRequirements?.language) {
+  if (claim.directionQuestionnaire?.welshLanguageRequirements?.language) {
     hearingRequirementsSection.summaryList.rows.push(summaryRow(
       t('PAGES.CHECK_YOUR_ANSWER.WELSH_LANGUAGE', {lng}),null ,constructResponseUrlWithIdParams(claimId, DQ_WELSH_LANGUAGE_URL), changeLabel(lng)));
     hearingRequirementsSection.summaryList.rows.push(speakingLanguagePreference(claim, claimId, lng));
