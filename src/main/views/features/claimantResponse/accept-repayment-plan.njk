@@ -9,7 +9,7 @@
 {% from "../../macro/repayment-plan-summary.njk" import repaymentPlanSummary %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.FULL_ADMIT_SET_DATE_PAYMENT.PAGE_TITLE') }}
+  {{ setPageTitle('PAGES.ACCEPT_REPAYMENT_PLAN.PAGE_TITLE') }}
 {% endblock %}
 
 {% block content %}
@@ -23,9 +23,9 @@
       </div>
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.FULL_ADMIT_SET_DATE_PAYMENT.TITLE') }}</h1>
+          <h1 class="govuk-heading-l">{{ t('PAGES.ACCEPT_REPAYMENT_PLAN.TITLE') }}</h1>
           {{ repaymentPlanSummary(repaymentPlan) }}
-          <p class="govuk-body govuk-!-font-weight-bold">{{ t('PAGES.FULL_ADMIT_SET_DATE_PAYMENT.DO_YOU_ACCEPT') }}</p>
+          <p class="govuk-body govuk-!-font-weight-bold">{{ t('PAGES.ACCEPT_REPAYMENT_PLAN.DO_YOU_ACCEPT') }}</p>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {{ govukRadios({
@@ -40,7 +40,7 @@
                 {
                   value: YesNo.NO,
                   checked: form.model.option === YesNo.NO,
-                  text: t('PAGES.FULL_ADMIT_SET_DATE_PAYMENT.NO_OPTION')
+                  text: t('PAGES.ACCEPT_REPAYMENT_PLAN.NO_OPTION')
                 }
               ],
               errorMessage: { text: t(optionError) } if t(optionError)

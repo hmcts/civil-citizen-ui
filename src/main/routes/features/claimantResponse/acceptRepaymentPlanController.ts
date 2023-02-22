@@ -24,7 +24,7 @@ import {
  } from 'common/utils/repaymentUtils';
 
 const acceptRepaymentPlanController = Router();
-const fullAdmitSetDatePaymentPath = 'features/claimantResponse/full-admit-set-date-payment';
+const fullAdmitSetDatePaymentPath = 'features/claimantResponse/accept-repayment-plan';
 let repaymentPlan: RepaymentPlanSummary;
 
 function renderView(form: GenericForm<GenericYesNo>, repaymentPlan: RepaymentPlanSummary, res: Response): void {

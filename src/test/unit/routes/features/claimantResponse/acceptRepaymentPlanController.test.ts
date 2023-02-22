@@ -14,7 +14,7 @@ import {YesNo} from '../../../../../main/common/form/models/yesNo';
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 
-describe('Full Admit How They Want To Pay Page', () => {
+describe('Accept Repayment Plan Page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   beforeAll(() => {
@@ -24,13 +24,13 @@ describe('Full Admit How They Want To Pay Page', () => {
   });
 
   describe('on GET', () => {
-    it('should return on full admit how they want to pay page successfully', async () => {
+    it('should return accept repayment plan page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.FULL_ADMIT_SET_DATE_PAYMENT.TITLE'));
+          expect(res.text).toContain(t('PAGES.ACCEPT_REPAYMENT_PLAN.TITLE'));
         });
     });
 
