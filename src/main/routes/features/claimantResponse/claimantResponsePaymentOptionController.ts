@@ -1,0 +1,59 @@
+import {NextFunction, Request, Response, Router} from 'express';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {CLAIMANT_RESPONSE_PAYMENT_DATE_URL, CLAIMANT_RESPONSE_PAYMENT_OPTION_URL, CLAIMANT_RESPONSE_PAYMENT_PLAN_URL, CLAIMANT_RESPONSE_TASK_LIST_URL} from 'routes/urls';
+import {GenericForm} from 'common/form/models/genericForm';
+import {getClaimantResponse, saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
+import {PaymentOption} from 'common/form/models/admission/paymentOption/paymentOption';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+
+// TODO : convert nunjucks file to generic
+const claimantResponsePaymentOptionViewPath = 'features/response/admission/payment-option';
+const claimantResponsePaymentOptionController = Router();
+const crPropertyName = 'paymentOption';
+const crParentName = 'paymentIntention';
+
+function renderView(form: GenericForm<PaymentOption>, res: Response): void {
+  res.render(claimantResponsePaymentOptionViewPath, {form: form, isClaimantResponse : true});
+}
+
+claimantResponsePaymentOptionController.get(CLAIMANT_RESPONSE_PAYMENT_OPTION_URL, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const claimantResponse = await getClaimantResponse(req.params.id);
+    renderView(new GenericForm(new PaymentOption(claimantResponse.paymentIntention?.paymentOption)), res);
+  } catch (error) {
+    next(error);
+  }
+});
+
+claimantResponsePaymentOptionController.post(CLAIMANT_RESPONSE_PAYMENT_OPTION_URL, async (req: Request, res: Response, next) => {
+  try {
+    const claimId = req.params.id;
+    const claimantResponsePaymentOption = new PaymentOption(req.body.paymentType);
+    const form = new GenericForm(claimantResponsePaymentOption);
+    form.validateSync();
+
+    if (form.hasErrors()) {
+      renderView(form, res);
+    } else {
+      await saveClaimantResponse(claimId, form.model.paymentType, crPropertyName, crParentName);
+      // TODO : update redirection
+      let redirectUrl: string;
+      switch (form.model.paymentType) {
+        case PaymentOptionType.INSTALMENTS:
+          redirectUrl = CLAIMANT_RESPONSE_PAYMENT_PLAN_URL;
+          break;
+        case PaymentOptionType.BY_SET_DATE:
+          redirectUrl = CLAIMANT_RESPONSE_PAYMENT_DATE_URL;
+          break;
+        default:
+          redirectUrl = CLAIMANT_RESPONSE_TASK_LIST_URL;
+          break;
+      }
+      res.redirect(constructResponseUrlWithIdParams(claimId, redirectUrl));
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+export default claimantResponsePaymentOptionController;
