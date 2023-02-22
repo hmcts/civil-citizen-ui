@@ -9,7 +9,6 @@ import {GenericForm} from '../../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {getClaimantResponse, saveClaimantResponse} from '../../../../../main/services/features/claimantResponse/claimantResponseService';
 import {CcjPaymentOption} from 'form/models/claimantResponse/ccj/ccjPaymentOption';
-import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 
 const ccjPaymentOptionController = Router();
 const ccjPaymentOptionViewPath = 'features/claimantResponse/ccj/ccj-payment-options';
@@ -17,7 +16,7 @@ const crPropertyName = 'ccjPaymentOption';
 const crParentName = 'ccjRequest';
 
 function renderView(form: GenericForm<CcjPaymentOption>, res: Response): void {
-  res.render(ccjPaymentOptionViewPath, { form, PaymentOptionType});
+  res.render(ccjPaymentOptionViewPath, {form});
 }
 
 ccjPaymentOptionController.get(CCJ_PAYMENT_OPTIONS_URL, async (req, res, next: NextFunction) => {

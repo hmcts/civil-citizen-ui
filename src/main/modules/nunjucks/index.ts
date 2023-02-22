@@ -35,6 +35,7 @@ import {CourtProposedDateOptions} from 'common/form/models/claimantResponse/cour
 import {CourtProposedPlanOptions} from 'common/form/models/claimantResponse/courtProposedPlan';
 import {ClaimResponseStatus} from 'common/models/claimResponseStatus';
 import {UnavailableDateType} from 'common/models/directionsQuestionnaire/hearing/unavailableDates';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -136,6 +137,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('ClaimResponseStatus', ClaimResponseStatus);
     nunjucksEnv.addGlobal('UnavailableDateType', UnavailableDateType);
     nunjucksEnv.addGlobal('today', new Date());
+    nunjucksEnv.addGlobal('PaymentOptionType', PaymentOptionType);
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;

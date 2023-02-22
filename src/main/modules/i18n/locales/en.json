@@ -789,6 +789,10 @@
         "CLAIM_ENDED": "The claim has now ended. We've emailed {{ defendantName }} to tell them."
       }
     },
+    "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
+      "PAGE_TITLE": "How do you want the defandant to pay?",
+      "TITLE": "How do you want the defandant to pay?"
+    },
     "CLAIMANT_RESPONSE_PROCEED": {
       "PAGE_TITLE": "Do you want to proceed with claim?",
       "TITLE": "Do you want to proceed with claim?"
