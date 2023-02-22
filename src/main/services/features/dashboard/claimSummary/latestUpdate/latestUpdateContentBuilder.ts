@@ -66,7 +66,7 @@ const isPartAdmitPayInstalmentsDefendantIsNotOrgOrCompany = (claim : Claim) => {
 };
 */
 
-function getItems (claimResponseStatus: ClaimResponseStatus, claim: Claim) {
+function generateLastUpdateResponse (claimResponseStatus: ClaimResponseStatus, claim: Claim) {
   const claimResponsesStatus = {
     [ClaimResponseStatus.FA_PAY_IMMEDIATELY] : (claim: Claim ) : ClaimSummarySection[] => {
       const title = getResponseNotSubmittedTitle(claim.isDeadlineExtended());
@@ -75,7 +75,7 @@ function getItems (claimResponseStatus: ClaimResponseStatus, claim: Claim) {
         .setTitle(title)
         .setSections(sections)
         .build();
-      return generateUpdateSections(lastUpdateSection);
+      return lastUpdateSection;
 
     },
     /*[ClaimResponseStatus.FA_PAY_BY_DATE] : (claim: Claim ) : ClaimSummarySection[] => {
@@ -87,15 +87,6 @@ function getItems (claimResponseStatus: ClaimResponseStatus, claim: Claim) {
   };
   return claimResponsesStatus[claimResponseStatus as keyof typeof claimResponsesStatus]?.(claim);
 }
-
-const generateUpdateSections = (lastUpdateSection: { title: ClaimSummarySection; sections: ClaimSummarySection[] }): ClaimSummarySection[] => {
-  const claimSummarySections: ClaimSummarySection[] = [];
-  claimSummarySections.push(lastUpdateSection.title);
-  lastUpdateSection.sections.forEach((item) => {
-    claimSummarySections.push(item);
-  });
-  return claimSummarySections;
-};
 export const buildResponseToClaimSection = (claim: Claim, claimId: string): ClaimSummarySection[] => {
   const sectionContent = [];
 
@@ -113,8 +104,6 @@ export const buildResponseToClaimSection = (claim: Claim, claimId: string): Clai
     }
     sectionContent.push(respondToClaimLink);
   }
-  const v = getItems(ClaimResponseStatus.FA_PAY_IMMEDIATELY, claim);
-  console.log(v);
-  sectionContent.push(v);
+  sectionContent.push(generateLastUpdateResponse(ClaimResponseStatus.FA_PAY_IMMEDIATELY, claim));
   return sectionContent.flat();
 };
