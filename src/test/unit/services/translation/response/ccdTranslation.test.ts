@@ -42,6 +42,7 @@ describe('translate response to ccd version', () => {
     expect(ccdResponse.respondent1RepaymentPlan?.firstRepaymentDate).toBe(claim.partialAdmission.paymentIntention.repaymentPlan.firstRepaymentDate);
     expect(ccdResponse.respondent1RepaymentPlan?.paymentAmount).toBe(claim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount);
   });
+
   it('should translate response type to CCD', () => {
     //Given
     const claim = new Claim();
