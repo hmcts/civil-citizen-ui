@@ -21,7 +21,7 @@ import {
   getFinalPaymentDate,
   getRepaymentLength,
   convertFrequencyToText,
- } from 'common/utils/repaymentUtils';
+} from 'common/utils/repaymentUtils';
 
 const acceptRepaymentPlanController = Router();
 const fullAdmitSetDatePaymentPath = 'features/claimantResponse/accept-repayment-plan';
