@@ -9,7 +9,6 @@ export const toCCDRecurringIncomeField = (claim: Claim, responseType: ResponseTy
   if (claim.respondent1?.responseType === responseType) {
     return toCCDRecurringIncomeList(claim.statementOfMeans?.regularIncome);
   }
-  return undefined;
 };
 
 const toCCDRecurringIncomeList = (regularIncome: RegularIncome): CCDRecurringIncome[] => {

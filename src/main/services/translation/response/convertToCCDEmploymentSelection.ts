@@ -4,7 +4,7 @@ import {CCDEmploymentOption} from 'models/ccdResponse/ccdEmploymentOption';
 export const toCCDEmploymentSelection = (employmentType: EmploymentCategory[]): string[] => {
   if (!employmentType?.length) return undefined;
   const ccdEmploymentTypeList: string[] = [];
-  employmentType.forEach((employmentTypeItem) => {
+  employmentType.map((employmentTypeItem: EmploymentCategory) => {
     ccdEmploymentTypeList.push(toCCDEmploymentOption(employmentTypeItem));
   });
   return ccdEmploymentTypeList;

@@ -5,12 +5,12 @@ export const toCCDLoanCredit = (debtsItem: DebtItems[]): CCDLoanCredit[] => {
   if (!debtsItem?.length) return undefined;
 
   const ccdLoanCreditList: CCDLoanCredit[] = [];
-  debtsItem.forEach((item, index) => {
+  debtsItem.map((debtsItem: DebtItems) => {
     const ccdLoanCredit: CCDLoanCredit = {
       value: {
-        loanCardDebtDetail: item.debt,
-        totalOwed: Number(item.totalOwned),
-        monthlyPayment: Number(item.monthlyPayments),
+        loanCardDebtDetail: debtsItem.debt,
+        totalOwed: Number(debtsItem.totalOwned),
+        monthlyPayment: Number(debtsItem.monthlyPayments),
       },
     };
     ccdLoanCreditList.push(ccdLoanCredit);

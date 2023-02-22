@@ -7,5 +7,4 @@ export const toCCDCarerAllowanceCredit = (claim: Claim, responseType: ResponseTy
   if (claim.respondent1?.responseType === responseType) {
     return toCCDYesNoFromGenericYesNo(claim.statementOfMeans?.carer);
   }
-  return undefined;
 };

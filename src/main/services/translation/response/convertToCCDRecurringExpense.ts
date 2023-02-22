@@ -9,7 +9,6 @@ export const toCCDRecurringExpensesField = (claim: Claim, responseType: Response
   if (claim.respondent1?.responseType === responseType) {
     return toCCDRecurringExpensesList(claim.statementOfMeans?.regularExpenses);
   }
-  return undefined;
 };
 
 const toCCDRecurringExpensesList = (regularExpenses: RegularExpenses): CCDRecurringExpenses[] => {
