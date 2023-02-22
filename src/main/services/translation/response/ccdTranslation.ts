@@ -11,7 +11,7 @@ import {toCCDVulenrability} from 'services/translation/response/convertToCCDVule
 import {toCCDSpecificCourtLocations} from 'services/translation/response/convertToCCDSupportedCourtLocations';
 import {toCCDSHearingSupport} from 'services/translation/response/convertToCCDHearingSupport';
 import {toCCDWitnesses} from 'services/translation/response/convertToCCDWitnesses';
-import {toCCDHearing} from 'services/translation/response/convertToCCDHearing';
+import {toCCDSmallClaimHearing} from 'services/translation/response/convertToCCDSmallClaimHearing';
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   return {
@@ -28,7 +28,7 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     respondent1DQRequestedCourt: toCCDSpecificCourtLocations(claim.directionQuestionnaire?.hearing?.specificCourtLocation),
     respondent1DQHearingSupport: toCCDSHearingSupport(claim.directionQuestionnaire?.hearing?.supportRequiredList),
     respondent1DQWitnesses: toCCDWitnesses(claim.directionQuestionnaire?.witnesses),
-    respondent1DQHearing: toCCDHearing(claim.directionQuestionnaire?.hearing),
+    respondent1DQHearingSmallClaim: toCCDSmallClaimHearing(claim.directionQuestionnaire?.hearing),
   };
 };
 

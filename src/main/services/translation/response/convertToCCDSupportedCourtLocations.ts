@@ -13,7 +13,7 @@ export const toCCDSpecificCourtLocations = (specificCourtLocation: SpecificCourt
   return {
     requestHearingAtSpecificCourt: toCCDYesNo(specificCourtLocation.option),
     otherPartyPreferredSite: '',
-    responseCourtCode: specificCourtLocation?.courtLocation,
+    responseCourtCode: '',
     reasonForHearingAtSpecificCourt : specificCourtLocation.reason,
     responseCourtLocations: courtList,
     caseLocation: toCCDCaseLocationCivil(specificCourtLocation),

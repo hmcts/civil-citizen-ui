@@ -9,7 +9,7 @@ import {CCDVulnerability} from 'models/ccdResponse/ccdVulnerability';
 import {CCDSpecificCourtLocations} from 'models/ccdResponse/ccdSpecificCourtLocations';
 import {CCDHearingSupport} from 'models/ccdResponse/ccdHearingSupport';
 import {CCDWitnesses} from 'models/ccdResponse/ccdWitnesses';
-import {CCDHearing} from 'models/ccdResponse/ccdHearing';
+import {CCDSmallClaimHearing} from 'models/ccdResponse/ccdSmallClaimHearing';
 
 export interface CCDResponse extends ClaimUpdate {
   respondent1ClaimResponseTypeForSpec: string;
@@ -25,5 +25,5 @@ export interface CCDResponse extends ClaimUpdate {
   respondent1DQRequestedCourt: CCDSpecificCourtLocations;
   respondent1DQHearingSupport: CCDHearingSupport;
   respondent1DQWitnesses: CCDWitnesses;
-  respondent1DQHearing: CCDHearing;
+  respondent1DQHearingSmallClaim: CCDSmallClaimHearing;
 }
