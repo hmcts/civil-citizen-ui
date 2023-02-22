@@ -1,14 +1,12 @@
 import {Claim} from 'models/claim';
-import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
+import {ClaimSummarySection, ClaimSummarySectionBuilder, ClaimSummaryType, Variables} from 'form/models/claimSummarySection';
 import {
   getNotPastResponseDeadlineContent,
   getPastResponseDeadlineContent,
   getRespondToClaimLink,
   getResponseNotSubmittedTitle,
 } from './latestUpdateContent/responseToClaimSection';
-import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
-import {BILINGUAL_LANGUAGE_PREFERENCE_URL} from 'routes/urls';
-import {PaymentIntention} from "form/models/admission/paymentIntention";
+import {ClaimResponseStatus} from 'models/claimResponseStatus';
 
 /*
 //SCENARIO 1 - Full Admit Pay Immediately
@@ -65,22 +63,57 @@ const isPartAdmitPayInstalmentsDefendantIsNotOrgOrCompany = (claim : Claim) => {
 };
 */
 
+function getItems (claimResponseStatus: ClaimResponseStatus, claim: Claim) {
+  const claimResponsesStatus = {
+    [ClaimResponseStatus.FA_PAY_IMMEDIATELY] : (claim: Claim ) : ClaimSummarySection[] => {
 
-function getItems (paymentOption: PaymentOptionType, claim: Claim){
-  const paymentOptions  = {
-    [PaymentOptionType.IMMEDIATELY] : (claim: Claim ) : ClaimSummarySection => {
-      return getNotPastResponseDeadlineContent(claim);
+      const sections: SectionInformation[] = [
+        {
+          text: 'PAGES.LATEST_UPDATE_CONTENT.YOU_SAID_YOU_WILL_PAY',
+          variables: [
+            {name: 'amount', value: 'claimantName'},
+            {name: 'claimantName', value: 'claimantName'},
+            {name: 'paymentDate', value: 'paymentDate'},
+          ],
+        },
+        {
+          text: 'PAGES.LATEST_UPDATE_CONTENT.IF_YOU_PAY_BY_CHEQUE',
+        },
+        {
+          text: 'PAGES.LATEST_UPDATE_CONTENT.IF_THEY_DONT_RECEIVE_THE_MONEY_BY_THEN',
+          variables: [
+            {name: 'amount', value: 'claimantName'},
+            {name: 'claimantName', value: 'claimantName'},
+            {name: 'paymentDate', value: 'paymentDate'},
+          ],
+        },
+      ];
+      return generateUpdateSections('PAGES.LATEST_UPDATE_CONTENT.YOUR_RESPONSE_TO_THE_CLAIM',sections, claim);
     },
-    [PaymentOptionType.BY_SET_DATE] : (claim: Claim ) : ClaimSummarySection => {
-      return getNotPastResponseDeadlineContent(claim);
+    /*[ClaimResponseStatus.FA_PAY_BY_DATE] : (claim: Claim ) : ClaimSummarySection[] => {
+      return generateUpdateSections('PAGES.YOUR_RESPONSE_TO_THE_CLAIM', claim);
     },
-    [PaymentOptionType.INSTALMENTS] : (claim: Claim ) : ClaimSummarySection => {
-      return getNotPastResponseDeadlineContent(claim);
-    },
+    [ClaimResponseStatus.FA_PAY_INSTALLMENTS] : (claim: Claim ) : ClaimSummarySection[] => {
+      return generateUpdateSections('PAGES.YOUR_RESPONSE_TO_THE_CLAIM', claim);
+    },*/
   };
-  return paymentOptions[paymentOption]?.(claim) ?? '';
+  return claimResponsesStatus[claimResponseStatus as keyof typeof claimResponsesStatus]?.(claim);
+}
+interface SectionInformation{
+  text: string;
+  variables?: Variables[]
 }
 
+const generateUpdateSections = (titleText: string, sectionInformation?: SectionInformation[], claim?: Claim ): ClaimSummarySection[] => {
+  const claimSummarySections: ClaimSummarySection[] = [];
+  claimSummarySections.push(new ClaimSummarySectionBuilder(ClaimSummaryType.TITLE, titleText, claim.id).getClaimSummarySection());
+  sectionInformation.forEach((item) => {
+    claimSummarySections.push(new ClaimSummarySectionBuilder(ClaimSummaryType.PARAGRAPH, item.text, claim.id, item.variables).getClaimSummarySection());
+  });
+  claimSummarySections.push(new ClaimSummarySectionBuilder(ClaimSummaryType.PARAGRAPH, 'test', claim.id).getClaimSummarySection());
+
+  return claimSummarySections;
+};
 export const buildResponseToClaimSection = (claim: Claim, claimId: string): ClaimSummarySection[] => {
   const sectionContent = [];
 
@@ -98,7 +131,7 @@ export const buildResponseToClaimSection = (claim: Claim, claimId: string): Clai
     }
     sectionContent.push(respondToClaimLink);
   }
-  const v = getItems(PaymentOptionType.IMMEDIATELY, claim);
+  const v = getItems(ClaimResponseStatus.FA_PAY_IMMEDIATELY, claim);
   sectionContent.push(v);
   console.log(v);
   return sectionContent.flat();

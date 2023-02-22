@@ -1436,7 +1436,8 @@
       "MORE_TIME_REQUESTED": "More time requested",
       "YOU_CAN_STILL_RESPOND_TO_CLAIM": "You can still respond to the claim before they ask for a judgment.",
       "YOU_HAVENT_RESPONDED_TO_CLAIM": "You haven't responded to this claim",
-      "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "You need to respond before 4pm on {{ responseDeadline }} ({{ remainingDays }} Days remaining)."
+      "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "You need to respond before 4pm on {{ responseDeadline }} ({{ remainingDays }} Days remaining).",
+      "YOUR_RESPONSE_TO_THE_CLAIM": "Your response to the claim"
     },
     "MEDIATION_CAN_WE_USE": {
       "CAN_MEDIATION_USE": "A all y gwasanaeth cyfryngu ddefnyddio’r rhif {{ respondentTelNumber }} i’ch ffonio?",

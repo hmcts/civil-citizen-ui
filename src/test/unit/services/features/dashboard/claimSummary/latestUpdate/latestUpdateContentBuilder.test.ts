@@ -7,7 +7,7 @@ import {CaseState} from '../../../../../../../main/common/form/models/claimDetai
 import {PartyType} from '../../../../../../../main/common/models/partyType';
 import {ClaimSummaryType} from '../../../../../../../main/common/form/models/claimSummarySection';
 import {BILINGUAL_LANGUAGE_PREFERENCE_URL} from '../../../../../../../main/routes/urls';
-import {PaymentOptionType} from "form/models/admission/paymentOption/paymentOptionType";
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 
 describe('Latest Update Content Builder', () => {
   const partyName = 'Mr. John Doe';
