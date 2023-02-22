@@ -12,14 +12,14 @@ export const toCCDRespondentDQ = (claim: Claim): CCDRespondentDQ => {
       details: getExpertDetails(claim),
     },
     respondent1DQWitnesses: {
-      witnessesToAppear: toUpperYesNo(claim.directionQuestionnaire.witnesses.otherWitnesses.option),
+      witnessesToAppear: toUpperYesNo(claim.directionQuestionnaire?.witnesses?.otherWitnesses?.option),
       details: getWitnessDetails(claim),
     },
   };
 };
 
 const toUpperYesNo = (yesNo: YesNo): YesNoUpperCamelCase => {
-  return yesNo.toLowerCase() === 'yes' ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO;
+  return yesNo?.toLowerCase() === 'yes' ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO;
 };
 
 export const toUpperYesOrNo = (yesNo: GenericYesNo): YesNoUpperCamelCase => {

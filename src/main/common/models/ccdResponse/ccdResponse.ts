@@ -8,7 +8,7 @@ import {RespondToClaim} from 'models/ccdResponse/ccdAdmitPartRoute';
 import {CCDTimeLineOfEvents} from 'models/ccdResponse/ccdTimeLineOfEvents';
 import {TimelineUploadTypeSpec} from 'models/ccdResponse/ccdHowToAddTimeline';
 import {CCDRespondentDQ} from 'models/ccdResponse/ccdExpertReportSent';
-import {CCDResponseCuiFields} from 'models/ccdResponse/ccdResponseCuiFields';
+import {CCDResponseLipFields} from 'models/ccdResponse/CCDResponseLipFields';
 
 export interface CCDResponse extends ClaimUpdate {
   respondent1ClaimResponseTypeForSpec: string;
@@ -27,5 +27,5 @@ export interface CCDResponse extends ClaimUpdate {
   defenceAdmitPartPaymentTimeRouteRequired2: CCDPaymentOption;
   responseClaimExpertSpecRequired: YesNoUpperCamelCase;
   respondent1DQ: CCDRespondentDQ;
-  respondent1ResponseCui: CCDResponseCuiFields;
+  respondent1LiPResponse: CCDResponseLipFields;
 }

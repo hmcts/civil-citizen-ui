@@ -13,14 +13,14 @@ import {toCCDTimeRouteRequired} from 'services/translation/response/convertToCCD
 import {CCDResponse} from 'models/ccdResponse/ccdResponse';
 import {toCCDExpertRequired} from 'services/translation/response/convertToCCDExpertRequired';
 import {toCCDRespondentDQ} from 'services/translation/response/convertToCCDRespondentDQ';
-import {toCCDFieldsOnlyInCui} from 'services/translation/response/convertToCCDFromCuiOnlyFields';
+import {toCCDFieldsOnlyInLip} from 'services/translation/response/convertToCCDCuiOnlyFields';
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
 
   return {
-    defenceAdmitPartPaymentTimeRouteRequired: toCCDPaymentOption(claim.partialAdmission.paymentIntention.paymentOption),
+    defenceAdmitPartPaymentTimeRouteRequired: toCCDPaymentOption(claim.partialAdmission?.paymentIntention?.paymentOption),
     respondent1RepaymentPlan: toCCDRepaymentPlan(claim.partialAdmission?.paymentIntention?.repaymentPlan),
-    respondToClaimAdmitPartLRspec: toCCDPayBySetDate(claim.partialAdmission.paymentIntention.paymentDate),
+    respondToClaimAdmitPartLRspec: toCCDPayBySetDate(claim.partialAdmission?.paymentIntention?.paymentDate),
     responseClaimMediationSpecRequired: toAgreedMediation(claim.mediation),
     specAoSApplicantCorrespondenceAddressRequired: addressHasChange ? YesNoUpperCamelCase.NO : YesNoUpperCamelCase.YES,
     totalClaimAmount: claim.totalClaimAmount,
@@ -34,6 +34,6 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     defenceAdmitPartPaymentTimeRouteRequired2: toCCDTimeRouteRequired(claim.partialAdmission?.paymentIntention?.paymentOption),
     responseClaimExpertSpecRequired: toCCDExpertRequired(claim.directionQuestionnaire?.experts?.expertRequired),
     respondent1DQ: toCCDRespondentDQ(claim),
-    respondent1ResponseCui: toCCDFieldsOnlyInCui(claim),
+    respondent1LiPResponse: toCCDFieldsOnlyInLip(claim),
   };
 };

@@ -4,7 +4,7 @@ import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {ReportDetail} from 'models/directionsQuestionnaire/experts/expertReportDetails/reportDetail';
 import {ExpertCanStillExamine} from 'models/directionsQuestionnaire/experts/expertCanStillExamine';
 
-export interface CCDResponseCuiFields {
+export interface CCDResponseLipFields {
   responseDeadlineMoreTimeRequest: ResponseOptions
   responseDeadlineAdditionalTime: AdditionalTimeOptions
   responseDeadlineAgreedResponseDeadline: Date

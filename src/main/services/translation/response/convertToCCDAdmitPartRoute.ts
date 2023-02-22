@@ -11,9 +11,9 @@ export const toCCDAdmitPartRoutePaid = (paid: string) => {
 };
 export const toCCDAdmitPartRoute = (partialAdmission: PartialAdmission): RespondToClaim => {
   return {
-    howMuchWasPaid: partialAdmission.howMuchHaveYouPaid.amount,
-    whenWasThisAmountPaid: partialAdmission.howMuchHaveYouPaid.date,
-    howWasThisAmountPaidOther: partialAdmission.howMuchHaveYouPaid.text,
-    respondToAdmittedClaimOwingAmount: partialAdmission.howMuchDoYouOwe.amount,
+    howMuchWasPaid: partialAdmission?.howMuchHaveYouPaid?.amount,
+    whenWasThisAmountPaid: partialAdmission?.howMuchHaveYouPaid?.date,
+    howWasThisAmountPaidOther: partialAdmission?.howMuchHaveYouPaid?.text,
+    respondToAdmittedClaimOwingAmount: partialAdmission?.howMuchDoYouOwe?.amount,
   };
 };
