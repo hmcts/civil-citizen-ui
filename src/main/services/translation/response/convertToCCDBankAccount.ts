@@ -5,16 +5,15 @@ import {toCCDYesNoFromBooleanString} from 'services/translation/response/convert
 
 export const toCCDBankAccountList = (citizenBankAccount: CitizenBankAccount[]): CCDBankAccount[] => {
   if (!citizenBankAccount?.length) return undefined;
-  const ccdBankAccountList: CCDBankAccount[] = [];
-  citizenBankAccount.forEach((citizenBankAccountItem, index) => {
-    const ccdBankAccount: CCDBankAccount = {
+  const ccdBankAccountList =
+  citizenBankAccount.map((citizenBankAccountItem: CitizenBankAccount) => {
+    return {
       value: {
         accountType: toCCDBankAccountType(citizenBankAccountItem.typeOfAccount),
         jointAccount: toCCDYesNoFromBooleanString(citizenBankAccountItem.joint),
         balance: Number(citizenBankAccountItem.balance),
       },
     };
-    ccdBankAccountList.push(ccdBankAccount);
   });
   return ccdBankAccountList;
 };

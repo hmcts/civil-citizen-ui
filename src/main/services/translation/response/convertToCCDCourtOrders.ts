@@ -4,16 +4,13 @@ import {CourtOrder} from 'form/models/statementOfMeans/courtOrders/courtOrder';
 
 export const toCCDCourtOrders = (courtOrders: CourtOrders): CCDCourtOrders[] => {
   if (!courtOrders?.rows) return undefined;
-  const ccdCourtOrders: CCDCourtOrders[] = [];
-  courtOrders.rows.map((courtOrder: CourtOrder) => {
-    const ccdCourtOrder: CCDCourtOrders = {
+  return courtOrders.rows.map((courtOrder: CourtOrder) => {
+    return {
       value: {
         claimNumberText: courtOrder.claimNumber,
         amountOwed: courtOrder.amount,
         monthlyInstalmentAmount: courtOrder.instalmentAmount,
       },
     };
-    ccdCourtOrders.push(ccdCourtOrder);
   });
-  return ccdCourtOrders;
 };

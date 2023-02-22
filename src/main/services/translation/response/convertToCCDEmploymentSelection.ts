@@ -3,11 +3,10 @@ import {CCDEmploymentOption} from 'models/ccdResponse/ccdEmploymentOption';
 
 export const toCCDEmploymentSelection = (employmentType: EmploymentCategory[]): string[] => {
   if (!employmentType?.length) return undefined;
-  const ccdEmploymentTypeList: string[] = [];
-  employmentType.map((employmentTypeItem: EmploymentCategory) => {
-    ccdEmploymentTypeList.push(toCCDEmploymentOption(employmentTypeItem));
+
+  return employmentType.map((employmentTypeItem: EmploymentCategory) => {
+    return toCCDEmploymentOption(employmentTypeItem);
   });
-  return ccdEmploymentTypeList;
 };
 
 const toCCDEmploymentOption = (option: EmploymentCategory): CCDEmploymentOption => {
