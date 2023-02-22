@@ -9,7 +9,7 @@ import {
 } from '../../../../../main/routes/urls';
 import {t} from 'i18next';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {YesNo} from '../../../../../main/common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
