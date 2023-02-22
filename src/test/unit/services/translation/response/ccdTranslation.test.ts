@@ -42,6 +42,8 @@ describe('translate response to ccd version', () => {
     //Given
     const claim = createPartAdmitClaim();
     claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+    claim.respondent1 = new Party();
+    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
     //When
     const ccdResponse = translateDraftResponseToCCD(claim, false);
     //Then

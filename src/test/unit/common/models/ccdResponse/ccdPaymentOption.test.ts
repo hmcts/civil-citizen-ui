@@ -1,29 +1,99 @@
 import {PaymentOptionType} from '../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {CCDPaymentOption} from '../../../../../main/common/models/ccdResponse/ccdPaymentOption';
 import {toCCDPaymentOption} from '../../../../../main/services/translation/response/convertToCCDPaymentOption';
+import {Claim} from 'models/claim';
+import {ResponseType} from 'form/models/responseType';
 
 describe('translate payment option to ccd version', ()=> {
-  it('should translate pay immediately to ccd version', ()=> {
+  const claim = new Claim();
+
+  it('should translate pay immediately to ccd version for part admit', ()=> {
     //Given
-    const immediately = PaymentOptionType.IMMEDIATELY;
+    claim.partialAdmission = {
+      paymentIntention: {
+        paymentOption : PaymentOptionType.IMMEDIATELY,
+      },
+    };
+    claim.respondent1 = {
+      responseType : ResponseType.PART_ADMISSION,
+    };
     //When
-    const result = toCCDPaymentOption(immediately);
+    const result = toCCDPaymentOption(claim);
     //Then
     expect(result).toBe(CCDPaymentOption.IMMEDIATELY);
   });
-  it('should translate pay by set date option', ()=> {
+  it('should translate pay by set date to ccd version for part admit', ()=> {
     //Given
-    const bySetDate = PaymentOptionType.BY_SET_DATE;
+    claim.partialAdmission = {
+      paymentIntention: {
+        paymentOption : PaymentOptionType.BY_SET_DATE,
+      },
+    };
+    claim.respondent1 = {
+      responseType : ResponseType.PART_ADMISSION,
+    };
     //When
-    const result = toCCDPaymentOption(bySetDate);
+    const result = toCCDPaymentOption(claim);
     //Then
     expect(result).toBe(CCDPaymentOption.BY_SET_DATE);
   });
-  it('should translate pay by instalments', ()=> {
+  it('should translate pay by pay by instalments to ccd version for part admit', ()=> {
     //Given
-    const byInstallments = PaymentOptionType.INSTALMENTS;
+    claim.partialAdmission = {
+      paymentIntention: {
+        paymentOption : PaymentOptionType.INSTALMENTS,
+      },
+    };
+    claim.respondent1 = {
+      responseType : ResponseType.PART_ADMISSION,
+    };
     //When
-    const result = toCCDPaymentOption(byInstallments);
+    const result = toCCDPaymentOption(claim);
+    //Then
+    expect(result).toBe(CCDPaymentOption.REPAYMENT_PLAN);
+  });
+  it('should translate pay immediately to ccd version for full admit', ()=> {
+    //Given
+    claim.fullAdmission = {
+      paymentIntention: {
+        paymentOption : PaymentOptionType.IMMEDIATELY,
+      },
+    };
+    claim.respondent1 = {
+      responseType : ResponseType.FULL_ADMISSION,
+    };
+    //When
+    const result = toCCDPaymentOption(claim);
+    //Then
+    expect(result).toBe(CCDPaymentOption.IMMEDIATELY);
+  });
+  it('should translate pay by set date to ccd version for full admit', ()=> {
+    //Given
+    claim.fullAdmission = {
+      paymentIntention: {
+        paymentOption : PaymentOptionType.BY_SET_DATE,
+      },
+    };
+    claim.respondent1 = {
+      responseType : ResponseType.FULL_ADMISSION,
+    };
+    //When
+    const result = toCCDPaymentOption(claim);
+    //Then
+    expect(result).toBe(CCDPaymentOption.BY_SET_DATE);
+  });
+  it('should translate pay by pay by instalments to ccd version for full admit', ()=> {
+    //Given
+    claim.fullAdmission = {
+      paymentIntention: {
+        paymentOption : PaymentOptionType.INSTALMENTS,
+      },
+    };
+    claim.respondent1 = {
+      responseType : ResponseType.FULL_ADMISSION,
+    };
+    //When
+    const result = toCCDPaymentOption(claim);
     //Then
     expect(result).toBe(CCDPaymentOption.REPAYMENT_PLAN);
   });
