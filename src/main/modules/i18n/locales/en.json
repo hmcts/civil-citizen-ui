@@ -1461,7 +1461,12 @@
       "MORE_TIME_REQUESTED": "More time requested",
       "YOU_CAN_STILL_RESPOND_TO_CLAIM": "You can still respond to the claim before they ask for a judgment.",
       "YOU_HAVENT_RESPONDED_TO_CLAIM": "You haven't responded to this claim",
-      "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "You need to respond before 4pm on {{ responseDeadline }} ({{ remainingDays }} Days remaining)."
+      "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "You need to respond before 4pm on {{ responseDeadline }} ({{ remainingDays }} Days remaining).",
+      "YOUR_RESPONSE_TO_THE_CLAIM": "Your response to the claim",
+      "YOU_SAID_YOU_WILL_PAY":"You said you’ll pay {{ claimantName }} {{ amount }} before 4pm on {{ paymentDate }}",
+      "IF_YOU_PAY_BY_CHEQUE": "If you pay by cheque or transfer the money must be clear in their account.",
+      "IF_THEY_DONT_RECEIVE_THE_MONEY_BY_THEN": "If they don’t receive the money by then, they can request a County Court Judgment against you."
+
     },
     "MEDIATION_CAN_WE_USE": {
       "CAN_MEDIATION_USE": "Can the mediation service use {{ respondentTelNumber }} to call you?",

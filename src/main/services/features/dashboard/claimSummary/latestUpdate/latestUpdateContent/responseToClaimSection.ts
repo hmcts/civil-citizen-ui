@@ -1,4 +1,7 @@
-import {ClaimSummarySection, ClaimSummaryType} from '../../../../../../common/form/models/claimSummarySection';
+import {
+  ClaimSummarySection,
+  ClaimSummaryType,
+} from '../../../../../../common/form/models/claimSummarySection';
 import {Claim} from '../../../../../../common/models/claim';
 import {BILINGUAL_LANGUAGE_PREFERENCE_URL} from '../../../../../../routes/urls';
 
@@ -65,3 +68,4 @@ export const getRespondToClaimLink = (claimId: string): ClaimSummarySection => {
     }
   );
 };
+
