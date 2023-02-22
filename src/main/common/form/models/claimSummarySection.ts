@@ -40,10 +40,12 @@ export class LastUpdateSectionBuilder {
     return this;
   }
   build() {
-    return {
-      title: this._title,
-      sections: this._sections,
-    };
+    const claimSummarySections: ClaimSummarySection[] = [];
+    claimSummarySections.push(this._title);
+    this.sections.forEach((item) => {
+      claimSummarySections.push(item);
+    });
+    return claimSummarySections;
   }
 }
 
