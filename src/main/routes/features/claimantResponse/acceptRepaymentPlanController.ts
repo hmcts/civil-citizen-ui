@@ -3,12 +3,12 @@ import {
   CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from '../../urls';
-import {GenericForm} from '../../../common/form/models/genericForm';
-import {AppRequest} from '../../../common/models/AppRequest';
-import {GenericYesNo} from '../../../common/form/models/genericYesNo';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {saveClaimantResponse} from '../../../services/features/claimantResponse/claimantResponseService';
-import {getFullAdmitSetDatePaymentDetails} from '../../../services/features/claimantResponse/fullAdmitSetDatePaymentService';
+import {GenericForm} from 'common/form/models/genericForm';
+import {AppRequest} from 'common/models/AppRequest';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
+import {getFullAdmitSetDatePaymentDetails} from 'services/features/claimantResponse/fullAdmitSetDatePaymentService';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
 import {getLng} from 'common/utils/languageToggleUtils';
