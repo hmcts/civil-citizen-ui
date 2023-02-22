@@ -4,17 +4,24 @@ import {CCDWitnessDetails} from 'models/ccdResponse/ccdWitnesses';
 import {OtherWitnessItems} from 'models/directionsQuestionnaire/witnesses/otherWitnessItems';
 
 function ccdWitnessDetails(witnessItems: OtherWitnessItems[] | undefined) {
-  if(!witnessItems.length) return undefined;
-  const witnessDetails : CCDWitnessDetails[] = [];
-  witnessItems.forEach((witness, index) => {
-    const witness : CCDWitnessDetails = {
-      details : {
+  if (!witnessItems?.length) return undefined;
+  const ccdWitnessList: CCDWitnessDetails[] = [];
 
+  witnessItems.forEach((CCDWitnessItem, index) => {
+    const ccdWitnessesDetails: CCDWitnessDetails = {
+      value: {
+        name : CCDWitnessItem?.firstName,
+        firstName: CCDWitnessItem?.firstName,
+        lastName: CCDWitnessItem?.lastName,
+        emailAddress: CCDWitnessItem?.email,
+        phoneNumber: CCDWitnessItem?.telephone,
+        reasonForWitness: CCDWitnessItem?.details,
       },
     };
+    ccdWitnessList.push(ccdWitnessesDetails);
   });
 
-  return witnessDetails;
+  return ccdWitnessList;
 }
 
 export const toCCDWitnesses = (witnesses: Witnesses | undefined) => {
