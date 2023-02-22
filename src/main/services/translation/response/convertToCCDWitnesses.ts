@@ -1,26 +1,21 @@
 import {Witnesses} from 'models/directionsQuestionnaire/witnesses/witnesses';
 import {toCCDYesNo} from 'services/translation/response/convertToCCDYesNo';
-import {CCDWitnessDetails} from 'models/ccdResponse/ccdWitnesses';
 import {OtherWitnessItems} from 'models/directionsQuestionnaire/witnesses/otherWitnessItems';
 
 function ccdWitnessDetails(witnessItems: OtherWitnessItems[] | undefined) {
   if (!witnessItems?.length) return undefined;
-  const ccdWitnessList: CCDWitnessDetails[] = [];
-
-  witnessItems.forEach((CCDWitnessItem, index) => {
-    const ccdWitnessesDetails: CCDWitnessDetails = {
+  const ccdWitnessList = witnessItems.map((witnessItems: OtherWitnessItems) => {
+    return {
       value: {
-        name : CCDWitnessItem?.firstName,
-        firstName: CCDWitnessItem?.firstName,
-        lastName: CCDWitnessItem?.lastName,
-        emailAddress: CCDWitnessItem?.email,
-        phoneNumber: CCDWitnessItem?.telephone,
-        reasonForWitness: CCDWitnessItem?.details,
+        name : witnessItems?.firstName,
+        firstName: witnessItems?.firstName,
+        lastName: witnessItems?.lastName,
+        emailAddress: witnessItems?.email,
+        phoneNumber: witnessItems?.telephone,
+        reasonForWitness: witnessItems?.details,
       },
     };
-    ccdWitnessList.push(ccdWitnessesDetails);
   });
-
   return ccdWitnessList;
 }
 
