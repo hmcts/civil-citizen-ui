@@ -98,6 +98,9 @@ export class Nunjucks {
       });
     };
 
+    const nextMonth = new Date();
+    nextMonth.setMonth(nextMonth.getMonth() + 1);
+
     nunjucksEnv.addGlobal('asset_paths', appAssetPaths);
     nunjucksEnv.addGlobal('development', this.developmentMode);
     nunjucksEnv.addGlobal('govuk_template_version', packageDotJson.dependencies.govuk_template_jinja);
@@ -137,6 +140,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('ClaimResponseStatus', ClaimResponseStatus);
     nunjucksEnv.addGlobal('UnavailableDateType', UnavailableDateType);
     nunjucksEnv.addGlobal('today', new Date());
+    nunjucksEnv.addGlobal('nextMonth', nextMonth);
     nunjucksEnv.addGlobal('PaymentOptionType', PaymentOptionType);
 
     app.use((req, res, next) => {
