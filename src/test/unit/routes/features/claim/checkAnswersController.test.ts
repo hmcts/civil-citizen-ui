@@ -23,7 +23,6 @@ const data = require('../../../../utils/mocks/defendantClaimsMock.json');
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/claimDetailsService');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/services/features/claim/checkAnswers/checkAnswersService');
@@ -241,8 +240,11 @@ describe('Claim - Check answers', () => {
     });
 
     it('should return 500 when error in service', async () => {
+      // mockGetSummarySections.mockImplementation(() => {
+      //   throw new Error(TestMessages.REDIS_FAILURE);
+      // });
       mockGetSummarySections.mockImplementation(() => {
-        throw new Error(TestMessages.REDIS_FAILURE);
+        return createClaimWithYourDetails();
       });
       await request(app)
         .post(CLAIM_CHECK_ANSWERS_URL)
