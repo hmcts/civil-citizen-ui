@@ -1015,7 +1015,7 @@
       "MAKE_A_NEW_CLAIM": "Make a new money claim",
       "NEXT_STEPS": "Next steps",
       "PAGE_TITLE": "Claims made by or against you",
-      "TITLE": "Your money claims account",
+      "TITLE": "Eich cyfrif hawliadau am arian",
       "VIEW": "Weiv"
     },
     "DEBTS": {
@@ -1900,10 +1900,10 @@
       "TITLE": "Ydych chi eisiau rhannu arbenigwr gyda’r hawlydd?"
     },
     "SPECIFIC_COURT": {
-      "EXPlANATION": "Gallwch ofyn i’r gwrandawiad gael ei gynnal mewn llys penodol, er enghraifft os ydych yn treulio diwrnodau’r wythnos ymhell i ffwrdd o’ch cartref. Bydd y llys yn ystyried amgylchiadau’r ddau barti wrth benderfynu ble i gynnal y gwrandawiad.",
-      "PAGE_TITLE": "Specific court",
+      "EXPlANATION": "Gallwch ofyn am gynnal y gwrandawiad mewn llys penodol, er enghraifft, os ydych yn treulio dyddiau'r wythnos yn bell o'ch cartref. Bydd y llys yn ystyried amgylchiadau'r ddau barti wrth benderfynu ble i gynnal y gwrandawiad.",
+      "PAGE_TITLE": "Llys penodol",
       "SELECT_COURT": "Dewiswch lys",
-      "SELECT_VALUE": "Select a value",
+      "SELECT_VALUE": "Dewis gwerth",
       "REASON": "Dywedwch wrthym pam ydych chi eisiau i’r gwrandawiad gael ei gynnal yn y llys hwn",
       "TITLE": "Ydych chi eisiau gwneud cais i’r gwrandawiad gael ei gynnal mewn llys penodol?"
     },
@@ -2071,16 +2071,16 @@
     },
     "SUPPORT_REQUIRED": {
       "ADD_ANOTHER": "Ychwanegu unigolyn arall",
-      "CHOOSE_NAME": "Choose the name of the person",
+      "CHOOSE_NAME": "Dewis enw'r unigolyn",
       "DISABLE": "Mynediad i bobl anabl",
       "ENTER_SIGN_LANGUAGE": "Pa iaith arwyddion sydd angen ei dehongli?",
       "EXTRA_SUPPORT": "Dywedwch wrthym pa gymorth arall sydd ei angen arnynt",
-      "HEARING": "Hearing loop",
+      "HEARING": "Dolen clyw",
       "LANGUAGE": "Cyfieithydd iaith",
       "NAME_OF_PERSON": "Enw’r unigolyn sydd angen cymorth",
-      "OTHER": "Other support",
-      "PAGE_TITLE": "Support required",
-      "PERSON_TEXT": "Person",
+      "OTHER": "Cefnogaeth arall",
+      "PAGE_TITLE": "Angen cymorth",
+      "PERSON_TEXT": "Unigolyn",
       "SELECT_ALL_THAT_APPLY": "Dewiswch bob un sy'n berthnasol.",
       "SIGN_LANGUAGE": "Dehonglydd iaith arwyddion",
       "TITLE": "Ydych chi, eich arbenigwyr neu eich tystion angen cymorth i allu mynychu gwrandawiad?",
@@ -2131,7 +2131,7 @@
     },
     "WHY_UNAVAILABLE_FOR_HEARING": {
       "MUST_TELL_US_WHY": "You must tell us why you, your experts or witnesses cannot go to a hearing. The court will consider the reasons when deciding when to hold the hearing.",
-      "PAGE_TITLE": "Why are they not available for hearing?",
+      "PAGE_TITLE": "Pam nad ydyn nhw ar gael ar gyfer gwrandawiad?",
       "TITLE": "Why are you, your experts or witnesses unavailable for a hearing for {{days}} days?"
     },
     "YOU_CAN_USE_SERVICE": {
@@ -2330,8 +2330,8 @@
       "RENT": "Dewiswch pa mor aml ydych chi'n talu rhent",
       "WATER": "Dewiswch pa mor aml ydych chi'n talu am ddŵr"
     },
-    "SELECT_LANGUAGE_DOCUMENTS": "Select the language your documents will be provided in",
-    "SELECT_LANGUAGE_SPEAK": "Select the language you, your experts, and your witnesses will speak at the hearing",
+    "SELECT_LANGUAGE_DOCUMENTS": "Dewiswch ym mha iaith y bydd eich dogfennau yn cael eu darparu",
+    "SELECT_LANGUAGE_SPEAK": "Dewiswch yr iaith y byddwch chi, eich arbenigwyr, a'ch tystion yn ei siarad yn y gwrandawiad",
     "SELECT_REQUEST": "Dewiswch os ydych eisiau gwneud cais am ragor o amser i ymateb, os ydych eisoes wedi cytuno ar ragor o amser i ymateb, os yw eich cais am ragor o amser wedi’i wrthod, neu nid ydych angen rhagor o amser i ymateb",
     "SELECT_SUPPORT": "Dewiswch y cymorth y mae’r unigolyn ei angen i allu mynychu gwrandawiad",
     "SELECT_YES_IF_DOCUMENTS": "Dewiswch ‘oes’ os oes gan yr hawlydd ddogfennau yr ydych eisiau i’r llys eu hystyried",
