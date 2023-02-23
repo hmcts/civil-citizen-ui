@@ -1,7 +1,6 @@
 import {Claim} from 'models/claim';
 import {
-  ClaimSummarySection,
-  LastUpdateSectionBuilder,
+  ClaimSummarySection, ClaimSummaryType,
 } from 'form/models/claimSummarySection';
 import {
   getNotPastResponseDeadlineContent,
@@ -10,6 +9,57 @@ import {
   getResponseNotSubmittedTitle,
 } from './latestUpdateContent/responseToClaimSection';
 import {ClaimResponseStatus} from 'models/claimResponseStatus';
+import {BILINGUAL_LANGUAGE_PREFERENCE_URL} from 'routes/urls';
+import {getPaymentDate} from 'common/utils/repaymentUtils';
+
+const PAGES_LATEST_UPDATE_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT.';
+export class LastUpdateSectionBuilder {
+  _claimSummarySections: ClaimSummarySection[] = [];
+
+  addTitle(title: string, variables?: any ) {
+    const titleSection = ({
+      type: ClaimSummaryType.TITLE,
+      data: {
+        text: title,
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(titleSection);
+    return this;
+  }
+  addSection(section: ClaimSummarySection){
+    this._claimSummarySections.push(section);
+    return this;
+  }
+  addParagraph(text: string, variables?: any){
+    const paragraphSection = ({
+      type: ClaimSummaryType.PARAGRAPH,
+      data: {
+        text: text,
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(paragraphSection);
+    return this;
+  }
+
+  addLink(text: string, claimId: string, variables?: any, textAfter?: string){
+    const linkSection = ({
+      type: ClaimSummaryType.LINK,
+      data: {
+        text: text,
+        variables: variables,
+        href: BILINGUAL_LANGUAGE_PREFERENCE_URL.replace(':id', claimId),
+        textAfter: textAfter,
+      },
+    });
+    this._claimSummarySections.push(linkSection);
+    return this;
+  }
+  build() {
+    return this._claimSummarySections;
+  }
+}
 
 /*
 //SCENARIO 1 - Full Admit Pay Immediately
@@ -69,21 +119,99 @@ const isPartAdmitPayInstalmentsDefendantIsNotOrgOrCompany = (claim : Claim) => {
 function generateLastUpdateResponse (claimResponseStatus: ClaimResponseStatus, claim: Claim) {
   const claimResponsesStatus = {
     [ClaimResponseStatus.FA_PAY_IMMEDIATELY] : (claim: Claim ) : ClaimSummarySection[] => {
-      const title = getResponseNotSubmittedTitle(claim.isDeadlineExtended());
-      const sections = getPastResponseDeadlineContent(claim);
-      const lastUpdateSection = new LastUpdateSectionBuilder()
-        .setTitle(title)
-        .setSections(sections)
+      return new LastUpdateSectionBuilder()
+        .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
+        .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_SAID_YOU_WILL_PAY`, {claimantName: claim.getClaimantFullName(), amount: claim.totalClaimAmount, paymentDate:  getPaymentDate(claim) })
+        .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}IF_YOU_PAY_BY_CHEQUE`)
+        .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}IF_THEY_DONT_RECEIVE_THE_MONEY_BY_THEN`)
+        .addLink(`${PAGES_LATEST_UPDATE_CONTENT}CONTACT`, claim.id, {claimantName: claim.getClaimantFullName()})
+        .addLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claim.id)
         .build();
-      return lastUpdateSection;
 
     },
-    /*[ClaimResponseStatus.FA_PAY_BY_DATE] : (claim: Claim ) : ClaimSummarySection[] => {
-      return generateUpdateSections('PAGES.YOUR_RESPONSE_TO_THE_CLAIM', claim);
+    [ClaimResponseStatus.FA_PAY_BY_DATE] : (claim: Claim ) : ClaimSummarySection[] => {
+      if (!claim.isBusiness()){
+        return new LastUpdateSectionBuilder()
+          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY`, {claimantName: claim.getClaimantFullName(), paymentDate:  getPaymentDate(claim) })
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
+          .addLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claim.id)
+          .build();
+      }
+      return new LastUpdateSectionBuilder()
+        .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
+        .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY`, {claimantName: claim.getClaimantFullName(), paymentDate:  getPaymentDate(claim) })
+        .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`)
+        .addLink(`${PAGES_LATEST_UPDATE_CONTENT}GET_CONTACT_DETAILS`, claim.id, {claimantName: claim.getClaimantFullName()})
+        .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
+        .addLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claim.id)
+        .build();
+
     },
     [ClaimResponseStatus.FA_PAY_INSTALLMENTS] : (claim: Claim ) : ClaimSummarySection[] => {
-      return generateUpdateSections('PAGES.YOUR_RESPONSE_TO_THE_CLAIM', claim);
-    },*/
+      if (!claim.isBusiness()){
+        return new LastUpdateSectionBuilder()
+          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY_STARRING`, {claimantName: claim.getClaimantFullName(), installmentAmount: claim.totalClaimAmount, paymentSchedule: 'paymentSchedule ' ,paymentDate:  getPaymentDate(claim) })
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
+          .addLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claim.id)
+          .build();
+      }
+      return new LastUpdateSectionBuilder()
+        .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
+        .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY_STARRING`, {claimantName: claim.getClaimantFullName(), installmentAmount: claim.totalClaimAmount, paymentSchedule: 'paymentSchedule ' ,paymentDate:  getPaymentDate(claim) })
+        .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`)
+        .addLink(`${PAGES_LATEST_UPDATE_CONTENT}GET_CONTACT_DETAILS`, claim.id, {claimantName: claim.getClaimantFullName()})
+        .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
+        .addLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claim.id)
+        .build();
+    },
+    [ClaimResponseStatus.PA_PAID_PAY_IMMEDIATELY] : (claim: Claim ) : ClaimSummarySection[] => {
+      if (!claim.isBusiness()){
+        return new LastUpdateSectionBuilder()
+          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_IMMEDIATELY`, {amount: claim.totalClaimAmount, claimantName: claim.getClaimantFullName()})
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
+          .addLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claim.id)
+          .build();
+      }
+    },
+    [ClaimResponseStatus.PA_PAID_PAY_BY_DATE] : (claim: Claim ) : ClaimSummarySection[] => {
+      if (!claim.isBusiness()){
+        return new LastUpdateSectionBuilder()
+          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_BY`, {amount: claim.totalClaimAmount, claimantName: claim.getClaimantFullName(), paymentDate: getPaymentDate(claim)})
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
+          .addLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claim.id)
+          .build();
+      }
+      return new LastUpdateSectionBuilder()
+        .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
+        .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_BY`, {amount: claim.totalClaimAmount, claimantName: claim.getClaimantFullName(), paymentDate: getPaymentDate(claim)})
+        .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`)
+        .addLink(`${PAGES_LATEST_UPDATE_CONTENT}GET_CONTACT_DETAILS`, claim.id, {claimantName: claim.getClaimantFullName()})
+        .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
+        .addLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claim.id)
+        .build();
+    },
+    [ClaimResponseStatus.PA_PAID_PAY_INSTALLMENTS] : (claim: Claim ) : ClaimSummarySection[] => {
+      if (!claim.isBusiness()){
+        return new LastUpdateSectionBuilder()
+          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_STARING`, {amount: claim.totalClaimAmount, claimantName: claim.getClaimantFullName(), installmentAmount: 'installmentAmount', paymentSchedule: 'paymentSchedule', paymentDate: getPaymentDate(claim)})
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
+          .addLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claim.id)
+          .build();
+      }
+      return new LastUpdateSectionBuilder()
+        .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
+        .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_STARING`, {amount: claim.totalClaimAmount, claimantName: claim.getClaimantFullName(), installmentAmount: 'installmentAmount', paymentSchedule: 'paymentSchedule', paymentDate: getPaymentDate(claim)})
+        .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`)
+        .addLink(`${PAGES_LATEST_UPDATE_CONTENT}GET_CONTACT_DETAILS`, claim.id, {claimantName: claim.getClaimantFullName()})
+        .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
+        .addLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claim.id)
+        .build();
+    },
   };
   return claimResponsesStatus[claimResponseStatus as keyof typeof claimResponsesStatus]?.(claim);
 }
