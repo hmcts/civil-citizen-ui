@@ -18,8 +18,7 @@ paymentDateController
       try {
         const paymentDate = await paymentDateService.getPaymentDate(req.params.id, ResponseType.FULL_ADMISSION);
         res.render(paymentDatePath, {
-          form: new GenericForm(paymentDate),
-          title,
+          form: new GenericForm(paymentDate), title,
         });
       } catch (error) {
         next(error);
@@ -32,7 +31,7 @@ paymentDateController
       await form.validate();
 
       if (form.hasErrors()) {
-        res.render(paymentDatePath, {form,title});
+        res.render(paymentDatePath, {form, title});
       } else {
         try {
           await paymentDateService.savePaymentDate(req.params.id, paymentDate.date, ResponseType.FULL_ADMISSION);
