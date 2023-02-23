@@ -3,27 +3,38 @@ import {
   UnavailableDateType,
   UnavailableDatePeriod,
 } from 'models/directionsQuestionnaire/hearing/unavailableDates';
+import {formatDateToFullDate} from "common/utils/dateUtils";
 
 export const getNumberOfUnavailableDays = (unavailableDates: UnavailableDates): number => {
   if (!unavailableDates) return 0;
-  let result = new Set<string>();
-  unavailableDates.items.forEach((item: UnavailableDatePeriod) => {
-    if (item.type === UnavailableDateType.SINGLE_DATE) {
-      result.add(new Date(item.from).toString());
-    } else {
-      const datesBetween = getDatesBetween(new Date(item.from), new Date(item.until));
-      result = new Set([...result, ...datesBetween]);
-    }
-  });
-  return result.size;
+  const unavailableDateSet  = getListOfUnavailableDate(unavailableDates);
+  return unavailableDateSet .size;
 };
 
 const getDatesBetween = (startDate: Date, endDate: Date): Set<string> => {
-  const currentDate = new Date(startDate.getTime());
   const dates = new Set<string>();
-  while (currentDate <= endDate) {
-    dates.add(new Date(currentDate).toString());
-    currentDate.setDate(currentDate.getDate() + 1);
+  for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
+    dates.add(formatDateToFullDate(date));
   }
   return dates;
 };
+
+export const getListOfUnavailableDate = (unavailableDates: UnavailableDates): Set<string> => {
+  const unavailableDateSet = new Set<string>();
+  unavailableDates.items.forEach((item: UnavailableDatePeriod) => {
+    switch (item.type) {
+      case UnavailableDateType.SINGLE_DATE:
+        unavailableDateSet.add(formatDateToFullDate(new Date(item.from)));
+        break;
+      case UnavailableDateType.LONGER_PERIOD:
+        const datesBetween = getDatesBetween(new Date(item.from), new Date(item.until));
+        datesBetween.forEach((date: string) => {
+          unavailableDateSet.add(date);
+        });
+        break;
+      default:
+        break;
+    }
+  });
+  return unavailableDateSet;
+}

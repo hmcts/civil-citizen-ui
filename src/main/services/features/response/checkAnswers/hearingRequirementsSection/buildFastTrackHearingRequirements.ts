@@ -17,8 +17,10 @@ import {
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import {affirmation, getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/getEmptyStringIfUndefined';
 import {getLng} from "common/utils/languageToggleUtils";
-import {DateConverter} from "common/utils/dateConverter";
-//import {DateConverter} from "common/utils/dateConverter";
+import {
+  getListOfUnavailableDate,
+  getNumberOfUnavailableDays
+} from "services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation";
 
 export const triedToSettleQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const option = claim.directionQuestionnaire?.hearing?.triedToSettle?.option === YesNo.YES
@@ -76,7 +78,7 @@ export const getExpert = (claim: Claim, claimId: string, lang: string): SummaryR
   if (claim.directionQuestionnaire?.experts?.expertEvidence?.option !== YesNo.YES) {
     return expertDetailsSummaryRows;
   }
-  expertDetails?.map((expert, index)=>{
+  expertDetails?.map((expert, index) => {
     expertDetailsSummaryRows.push(summaryRow(`${t('PAGES.EXPERT_DETAILS.SECTION_TITLE', {lng: getLng(lang)})} ${index + 1}`, '', expertHref, changeLabel(lang)));
     expertDetailsSummaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.FIRST_NAME_OPTIONAL', lang), expert.firstName));
     expertDetailsSummaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.LAST_NAME_OPTIONAL', lang), expert.lastName));
@@ -141,33 +143,46 @@ export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequireme
   hearingRequirementsSection.summaryList.rows.push(getSentReportToOtherParties(claim, claimId, lng));
   hearingRequirementsSection.summaryList.rows.push(getShareExpertWithClaimant(claim, claimId, lng));
   hearingRequirementsSection.summaryList.rows.push(...getExpert(claim, claimId, getLng(lng)));
-  hearingRequirementsSection.summaryList.rows.push(getDefendantUnavailableDate(claim, claimId, getLng(lng)));
   hearingRequirementsSection.summaryList.rows.push(getSpecificCourtLocation(claim, claimId, getLng(lng)));
+  hearingRequirementsSection.summaryList.rows.push(displaySpecificCourtLocation(claim, claimId, getLng(lng)));
+  hearingRequirementsSection.summaryList.rows.push(displayDefendantUnavailableDate(claim, claimId, getLng(lng)));
 
-  if (claim?.directionQuestionnaire?.hearing?.cantAttendHearingInNext12Months?.option === YesNo.YES){
-    hearingRequirementsSection.summaryList.rows.push(displayDefendantUnavailableDate(claim, claimId, getLng(lng)));
-  }
-
-  if (claim.directionQuestionnaire?.hearing?.specificCourtLocation?.option === YesNo.YES){
-    hearingRequirementsSection.summaryList.rows.push(displaySpecificCourtLocation(claim, claimId, getLng(lng)));
+  if (claim.directionQuestionnaire?.hearing?.cantAttendHearingInNext12Months?.option === YesNo.YES){
+    hearingRequirementsSection.summaryList.rows.push(getDefendantUnavailableDate(claim, claimId, getLng(lng)));
+    hearingRequirementsSection.summaryList.rows.push(getUnavailableHearingDays(claim, claimId, getLng(lng)))
   }
 
 };
 
-export const getDefendantUnavailableDate = (claim: Claim, claimId: string, lng: string): SummaryRow =>{
-  const hasUnavailableDatesForHearing = claim.directionQuestionnaire?.hearing?.unavailableDatesForHearing.items;
-
-  console.log("DATES: ",{hasUnavailableDatesForHearing});
+export const getDefendantUnavailableDate = (claim: Claim, claimId: string, lng: string): SummaryRow => {
+  const hasUnavailableDatesForHearing = getListOfUnavailableDate(claim.directionQuestionnaire?.hearing?.unavailableDatesForHearing);
 
   return summaryRow(
-    t('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE', {lng}),
-    '',
+    t('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.UNAVAILABLE_DATES', {lng}),
+    ` ${[...hasUnavailableDatesForHearing].join('<br>')}`,
     constructResponseUrlWithIdParams(claimId, DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL),
     changeLabel(lng),
   );
 }
 
-export const displayDefendantUnavailableDate = (claim: Claim, claimId: string, lng: string): SummaryRow =>{
+export const getUnavailableHearingDays = (claim: Claim, claimId: string, lng: string): SummaryRow => {
+  const NUMBER_OF_DAYS = 30;
+  const whyUnavailableForHearing = claim.directionQuestionnaire.hearing.whyUnavailableForHearing?.reason;
+  const days = getNumberOfUnavailableDays(claim.directionQuestionnaire.hearing.unavailableDatesForHearing);
+
+  if (days <= NUMBER_OF_DAYS){
+    return;
+  }
+
+  return summaryRow(
+    t("PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.WHY_UNAVAILABLE_FOR_MORE_THAN_30_DAYS", {days:days, lng:lng}),
+    whyUnavailableForHearing,
+    constructResponseUrlWithIdParams(claimId, DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL),
+    changeLabel(lng),
+  );
+}
+
+export const displayDefendantUnavailableDate = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const hasUnavailableDatesForHearing = affirmation(claim.directionQuestionnaire?.hearing?.cantAttendHearingInNext12Months?.option, lng);
 
   return summaryRow(
@@ -178,7 +193,7 @@ export const displayDefendantUnavailableDate = (claim: Claim, claimId: string, l
   );
 }
 
-export const getSpecificCourtLocation = (claim: Claim, claimId: string, lng:string): SummaryRow=>{
+export const getSpecificCourtLocation = (claim: Claim, claimId: string, lng:string): SummaryRow=> {
   const hasSpecificCourtLocation = affirmation(claim.directionQuestionnaire?.hearing?.specificCourtLocation?.option, lng)
 
   return summaryRow(
@@ -189,8 +204,12 @@ export const getSpecificCourtLocation = (claim: Claim, claimId: string, lng:stri
   );
 }
 
-export const displaySpecificCourtLocation = (claim: Claim, claimId: string, lng:string): SummaryRow=>{
+export const displaySpecificCourtLocation = (claim: Claim, claimId: string, lng:string): SummaryRow=> {
   const hasSpecificCourtLocation = claim.directionQuestionnaire?.hearing?.specificCourtLocation?.courtLocation
+
+  if (claim.directionQuestionnaire?.hearing?.specificCourtLocation?.option !== YesNo.YES){
+    return;
+  }
 
   return summaryRow(
     t('PAGES.SPECIFIC_COURT.SELECTED_COURT', {lng}),
