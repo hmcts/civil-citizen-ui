@@ -1,9 +1,9 @@
-import {YesNo, YesNoNotReceived} from "form/models/yesNo";
-import {t} from "i18next";
+import {YesNo, YesNoNotReceived} from 'form/models/yesNo';
+import {t} from 'i18next';
 
 export const getEmptyStringIfUndefined = (value: string): string => value || '';
 
-export const affirmation = (value:string, lng: string)=> {
+export const affirmation = (value:string, lng: string) => {
   switch (value) {
     case YesNo.YES:
       return t(`COMMON.YES`, {lng});
