@@ -14,7 +14,7 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 
-describe('Claimant Response Payment Option Controller', () => {
+describe('Claimant suggested Payment Option Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 

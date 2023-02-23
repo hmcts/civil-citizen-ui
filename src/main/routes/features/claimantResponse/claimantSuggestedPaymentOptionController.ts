@@ -7,16 +7,16 @@ import {PaymentOption} from 'common/form/models/admission/paymentOption/paymentO
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 
 // TODO : convert nunjucks file to generic
-const claimantResponsePaymentOptionViewPath = 'features/response/admission/payment-option';
-const claimantResponsePaymentOptionController = Router();
+const claimantSuggestedPaymentOptionViewPath = 'features/response/admission/payment-option';
+const claimantSuggestedPaymentOptionController = Router();
 const crPropertyName = 'paymentOption';
 const crParentName = 'paymentIntention';
 
 function renderView(form: GenericForm<PaymentOption>, res: Response): void {
-  res.render(claimantResponsePaymentOptionViewPath, {form: form, isClaimantResponse : true});
+  res.render(claimantSuggestedPaymentOptionViewPath, {form: form, isClaimantResponse : true});
 }
 
-claimantResponsePaymentOptionController.get(CLAIMANT_RESPONSE_PAYMENT_OPTION_URL, async (req: Request, res: Response, next: NextFunction) => {
+claimantSuggestedPaymentOptionController.get(CLAIMANT_RESPONSE_PAYMENT_OPTION_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimantResponse = await getClaimantResponse(req.params.id);
     renderView(new GenericForm(new PaymentOption(claimantResponse.paymentIntention?.paymentOption)), res);
@@ -25,7 +25,7 @@ claimantResponsePaymentOptionController.get(CLAIMANT_RESPONSE_PAYMENT_OPTION_URL
   }
 });
 
-claimantResponsePaymentOptionController.post(CLAIMANT_RESPONSE_PAYMENT_OPTION_URL, async (req: Request, res: Response, next) => {
+claimantSuggestedPaymentOptionController.post(CLAIMANT_RESPONSE_PAYMENT_OPTION_URL, async (req: Request, res: Response, next) => {
   try {
     const claimId = req.params.id;
     const claimantResponsePaymentOption = new PaymentOption(req.body.paymentType);
@@ -59,4 +59,4 @@ claimantResponsePaymentOptionController.post(CLAIMANT_RESPONSE_PAYMENT_OPTION_UR
   }
 });
 
-export default claimantResponsePaymentOptionController;
+export default claimantSuggestedPaymentOptionController;
