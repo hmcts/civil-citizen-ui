@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {CLAIMANT_RESPONSE_PAYMENT_DATE_URL, CLAIMANT_RESPONSE_PAYMENT_OPTION_URL, CLAIMANT_RESPONSE_PAYMENT_PLAN_URL, CLAIMANT_RESPONSE_TASK_LIST_URL} from 'routes/urls';
+import {CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL, CLAIMANT_RESPONSE_PAYMENT_DATE_URL, CLAIMANT_RESPONSE_PAYMENT_OPTION_URL, CLAIMANT_RESPONSE_PAYMENT_PLAN_URL, CLAIMANT_RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {getClaimantResponse, saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
 import {PaymentOption} from 'common/form/models/admission/paymentOption/paymentOption';
@@ -36,9 +36,12 @@ claimantResponsePaymentOptionController.post(CLAIMANT_RESPONSE_PAYMENT_OPTION_UR
       renderView(form, res);
     } else {
       await saveClaimantResponse(claimId, form.model.paymentType, crPropertyName, crParentName);
-      // TODO : update redirection
       let redirectUrl: string;
       switch (form.model.paymentType) {
+        case PaymentOptionType.IMMEDIATELY:
+          // TODO : trigger court calculator when it's developed and update redirection url with the result of it
+          redirectUrl = CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL;
+          break;
         case PaymentOptionType.INSTALMENTS:
           redirectUrl = CLAIMANT_RESPONSE_PAYMENT_PLAN_URL;
           break;
