@@ -9,6 +9,24 @@ import {ClaimSummaryType} from '../../../../../../../main/common/form/models/cla
 import {BILINGUAL_LANGUAGE_PREFERENCE_URL} from '../../../../../../../main/routes/urls';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 
+const PARTY_NAME = 'Mr. John Doe';
+const claimGenerator = (partyType: PartyType, paymentOptionType: PaymentOptionType ) =>{
+  const claim = new Claim();
+  claim.ccdState = CaseState.PENDING_CASE_ISSUED;
+  claim.applicant1 = {
+    type: partyType,
+    partyDetails: {
+      partyName: PARTY_NAME,
+    },
+  };
+  claim.fullAdmission = {
+    paymentIntention: {
+      paymentOption: paymentOptionType,
+    },
+  };
+  return claim;
+};
+
 describe('Latest Update Content Builder', () => {
   const partyName = 'Mr. John Doe';
   const claim = new Claim();
@@ -85,26 +103,23 @@ describe('Latest Update Content Builder', () => {
       expect(responseToClaimSection.length).toBe(0);
     });
   });
-  describe('test when claim if FullAdmition', () => {
-    it('Fulladmitions', () => {
-      // Given
-      claim.ccdState = CaseState.PENDING_CASE_ISSUED;
-      claim.fullAdmission = {
-        paymentIntention: {
-          paymentOption : PaymentOptionType.IMMEDIATELY,
-        },
-      };
-      const expectedNow = DateTime.local(2022, 7, 1, 23, 0, 0);
-      Settings.now = () => expectedNow.toMillis();
-      // When
-      const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
-      // Then
-      expect(responseToClaimSection.length).toBe(3);
-      expect(responseToClaimSection[0].type).toEqual(ClaimSummaryType.TITLE);
-      expect(responseToClaimSection[0].data?.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.YOU_HAVENT_RESPONDED_TO_CLAIM');
-      expect(responseToClaimSection[2].type).toEqual(ClaimSummaryType.LINK);
-      expect(responseToClaimSection[2].data?.href).toEqual(bilingualLanguagePreferencetUrl);
+  describe('Response Status ', () => {
+    describe('Full Admit Pay ', () => {
+      it('Immediately', () => {
+        // Given
+        const claim = claimGenerator(PartyType.INDIVIDUAL, PaymentOptionType.INSTALMENTS);
+
+        // When
+        const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
+        // Then
+        expect(responseToClaimSection.length).toBe(3);
+        expect(responseToClaimSection[0].type).toEqual(ClaimSummaryType.TITLE);
+        expect(responseToClaimSection[0].data?.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.YOU_HAVENT_RESPONDED_TO_CLAIM');
+        expect(responseToClaimSection[2].type).toEqual(ClaimSummaryType.LINK);
+        expect(responseToClaimSection[2].data?.href).toEqual(bilingualLanguagePreferencetUrl);
+      });
     });
   });
+
 });
 
