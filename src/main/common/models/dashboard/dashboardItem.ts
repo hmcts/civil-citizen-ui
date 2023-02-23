@@ -1,8 +1,7 @@
 import config from 'config';
-
-import {formatDate} from 'modules/nunjucks/filters/dateFilter';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
 
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
@@ -60,11 +59,11 @@ export class DashboardDefendantItem extends DashboardItem {
   getStatus(lang: string) {
     const paramNumberOfDays = {key: 'numberOfDays', value: this.numberOfDays};
     const paramNumberOfDaysOverdue = {key: 'numberOfDays', value: this.numberOfDaysOverdue};
-    const paramPaymentDate = {key: 'paymentDate', value: formatDate(this.paymentDate?.toString())};
+    const paramPaymentDate = {key: 'paymentDate', value: formatDateToFullDate(this.paymentDate, lang)};
     const paramClaimantName = {key: 'claimantName', value: this.claimantName};
-    const paramCCJRequestedDate = {key: 'ccjRequestedDate', value: formatDate(this.ccjRequestedDate?.toString())};
-    const paramResponseDeadline = {key: 'responseDeadline', value: formatDate(this.responseDeadline?.toString())};
-    const paramAdmittedAmount =  {key: 'amount', value: this.admittedAmount.toString()};
+    const paramCCJRequestedDate = {key: 'ccjRequestedDate', value: formatDateToFullDate(this.ccjRequestedDate, lang)};
+    const paramResponseDeadline = {key: 'responseDeadline', value: formatDateToFullDate(this.responseDeadline, lang)};
+    const paramAdmittedAmount =  {key: 'amount', value: this.admittedAmount?.toString()};
 
     const dashboardStatus: DashboardDefendantStatus =  {
       NO_STATUS: {translationKey:''},
