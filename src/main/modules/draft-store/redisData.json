@@ -14,6 +14,23 @@
         "calculatedAmountInPence": "7000"
       },
       "directionQuestionnaire": {
+        "hearing": {
+          "unavailableDatesForHearing": {
+            "items": [
+              {
+                "from": "2024-01-01T00:00:00.000Z",
+                "startYear": 2024,
+                "startMonth": 1,
+                "startDay": 1,
+                "until": null,
+                "endYear": null,
+                "endMonth": null,
+                "endDay": null,
+                "type": "SINGLE_DATE"
+              }
+            ]
+          }
+        },
         "witnesses": {
           "otherWitnesses": {
             "option": "",
@@ -286,6 +303,34 @@
         "code": "FEE0204",
         "version": "4",
         "calculatedAmountInPence": "8000"
+      },
+      "directionQuestionnaire": {
+        "hearing": {
+          "unavailableDatesForHearing": {
+            "items": [
+              {
+                "from": "2000-01-01T00:00:00.000Z",
+                "startYear": 2000,
+                "startMonth": 1,
+                "startDay": 1,
+                "endYear": 8,
+                "endMonth": 8,
+                "endDay": 8888,
+                "type": "SINGLE_DATE"
+              },
+              {
+                "from": "2222-02-02T00:00:00.000Z",
+                "startYear": 2222,
+                "startMonth": 2,
+                "startDay": 2,
+                "endYear": null,
+                "endMonth": null,
+                "endDay": null,
+                "type": "SINGLE_DATE"
+              }
+            ]
+          }
+        }
       },
       "issueDate": "2022-01-08",
       "applicant1": {
