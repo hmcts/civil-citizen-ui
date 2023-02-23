@@ -13,9 +13,12 @@ const{addTotalClaimAmountCalculationEventListener} = require('./calculate-total-
 document.addEventListener('DOMContentLoaded', function () {
   const indexRegex = /\[(\d+)\]/;
   const checkboxIndexRegex = /-(\d+)-/;
-  const chechboxCondtionalHidden = 'govuk-checkboxes__conditional--hidden';
+  const checkboxConditionalHidden = 'govuk-checkboxes__conditional--hidden';
   const checkboxConditional = 'govuk-checkboxes__conditional';
   const checkboxConditionalClassName = '.govuk-checkboxes__conditional';
+  const radioButtonConditionalHidden = 'govuk-radios__conditional--hidden';
+  const radioButtonConditional = 'govuk-radios__conditional';
+  const radioButtonConditionalClassName = '.govuk-radios__conditional';
   const appendRowButton = document.getElementsByClassName('append-row');
   if (elementExists(appendRowButton)) {
     appendRowButton[0].addEventListener('click', (event) => {
@@ -51,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const newRow = lastRow.cloneNode(true);
       const children = newRow.children;
       Array.from(children).forEach((child) => {
-        const elements = child.querySelectorAll('input, textarea, select, label,' + checkboxConditionalClassName);
+        const elements = child.querySelectorAll(`input, textarea, select, label, ${checkboxConditionalClassName}, ${radioButtonConditionalClassName}`);
         updateInputs(elements);
         removeErrors(child);
       });
@@ -104,21 +107,42 @@ document.addEventListener('DOMContentLoaded', function () {
         element.parentNode.classList.remove('govuk-form-group--error');
         incrementIndexOnNameAndId(element);
         updateAttributes(element);
-        if (
-          element.className?.includes(checkboxConditional) &&
-          !element.className?.includes(chechboxCondtionalHidden)
-        ) {
-          element.classList.add(chechboxCondtionalHidden);
+        if (element.className?.includes(checkboxConditional) 
+            && !element.className?.includes(checkboxConditionalHidden)) {
+          element.classList.add(checkboxConditionalHidden);
         }
         if (element.type === 'checkbox') {
           addEventToAddedCheckbox(element);
+        }
+        if (element.className?.includes(radioButtonConditional) 
+            && !element.className?.includes(radioButtonConditionalHidden)) {
+          element.classList.add(radioButtonConditionalHidden);
+        }
+        if (element.type === 'radio') {
+          addEventToUnavailableDatesRadios(element);
         }
       });
     }
   }
 
+  function getNumberFromElementName() {
+    const elements = document.getElementsByClassName('multiple-row');
+    const lastItem = elements[elements.length-1];
+    const lastRadioInput = lastItem.getElementsByClassName('govuk-radios__input');
+    const lastCheckboxInput = lastItem.getElementsByClassName('govuk-checkboxes__input');
+
+    if (lastRadioInput.length) {
+      const number = lastRadioInput[0].id.split('-')[1];
+      return Number(number) + 1;
+    } else if (lastCheckboxInput.length) {
+      const number = lastCheckboxInput[0].id.split('-')[1];
+      return Number(number) + 1;
+    } 
+    return document.getElementsByClassName('multiple-row').length;
+  }
+
   function incrementIndexOnNameAndId(element) {
-    const newIndex = document.getElementsByClassName('multiple-row').length;
+    const newIndex = getNumberFromElementName();
     if (element.name) {
       element.name = element.name.replace(indexRegex, '[' + newIndex + ']');
       element.id = element.id.replace(checkboxIndexRegex, '-' + newIndex + '-');
@@ -128,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function updateAttributes(element) {
-    const newIndex = document.getElementsByClassName('multiple-row').length;
+    const newIndex = getNumberFromElementName();
     if (element.getAttribute('for')) {
       element.setAttribute(
         'for',
@@ -182,10 +206,36 @@ document.addEventListener('DOMContentLoaded', function () {
       const index = event.target.id.match(checkboxIndexRegex);
       const fieldName = event.target.id.split('-')[2];
       const conditional = document.getElementById(`conditional-declared-${index[1]}-${fieldName}`);
-      if (conditional?.className?.includes(chechboxCondtionalHidden)) {
-        conditional.classList.remove(chechboxCondtionalHidden);
+      if (conditional?.className?.includes(checkboxConditionalHidden)) {
+        conditional.classList.remove(checkboxConditionalHidden);
       } else {
-        conditional.classList.add(chechboxCondtionalHidden);
+        conditional.classList.add(checkboxConditionalHidden);
+      }
+    });
+  }
+
+  let elementSelectedBefore = [];
+
+  function addEventToUnavailableDatesRadios(radioButton) {
+    radioButton.addEventListener('click', (event) => {
+      const index = event.target.id.split('-')[1];
+
+      if(elementSelectedBefore[index]?.id === radioButton.id) return;
+        
+      elementSelectedBefore[index] = radioButton;
+      
+      const fieldName = event.target.id.split('-')[2];
+      const name = fieldName === 'longer' ? 'longer-period' : 'single-date';
+      const oppositeName = fieldName === 'longer' ? 'single-date' : 'longer-period';
+      const conditional = document.getElementById(`conditional-items-${index}-${name}`);
+      const oppositeConditional = document.getElementById(`conditional-items-${index}-${oppositeName}`);
+      
+      if (conditional?.className?.includes(radioButtonConditionalHidden)) {
+        conditional.classList.remove(radioButtonConditionalHidden);
+        oppositeConditional.classList.add(radioButtonConditionalHidden);
+      } else {
+        conditional.classList.add(radioButtonConditionalHidden);
+        oppositeConditional.classList.remove(radioButtonConditionalHidden);
       }
     });
   }
