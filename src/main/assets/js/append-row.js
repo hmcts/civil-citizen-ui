@@ -125,8 +125,24 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
+  function getNumberFromElementName() {
+    const elements = document.getElementsByClassName('multiple-row');
+    const lastItem = elements[elements.length-1];
+    const lastRadioInput = lastItem.getElementsByClassName('govuk-radios__input');
+    const lastCheckboxInput = lastItem.getElementsByClassName('govuk-checkboxes__input');
+
+    if (lastRadioInput.length) {
+      const number = lastRadioInput[0].id.split('-')[1];
+      return Number(number) + 1;
+    } else if (lastCheckboxInput.length) {
+      const number = lastCheckboxInput[0].id.split('-')[1];
+      return Number(number) + 1;
+    } 
+    return document.getElementsByClassName('multiple-row').length;
+  }
+
   function incrementIndexOnNameAndId(element) {
-    const newIndex = document.getElementsByClassName('multiple-row').length;
+    const newIndex = getNumberFromElementName();
     if (element.name) {
       element.name = element.name.replace(indexRegex, '[' + newIndex + ']');
       element.id = element.id.replace(checkboxIndexRegex, '-' + newIndex + '-');
@@ -136,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function updateAttributes(element) {
-    const newIndex = document.getElementsByClassName('multiple-row').length;
+    const newIndex = getNumberFromElementName();
     if (element.getAttribute('for')) {
       element.setAttribute(
         'for',
