@@ -12,6 +12,7 @@ export interface RespondToClaim {
   // there is no way to translate textbox (CUI) to enum (CCD)
   // instead CUI use howWasThisAmountPaidOther for all payment method
   // howWasThisAmountPaid?: PaymentMethod
+  howWasThisAmountPaid?: PaymentMethod
   howWasThisAmountPaidOther?: string
   respondToAdmittedClaimOwingAmount?: number
 }
