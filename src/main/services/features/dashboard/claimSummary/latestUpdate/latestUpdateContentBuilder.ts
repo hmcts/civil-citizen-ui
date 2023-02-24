@@ -12,6 +12,8 @@ import {ClaimResponseStatus} from 'models/claimResponseStatus';
 import {getPaymentDate} from 'common/utils/repaymentUtils';
 import {DocumentUri} from 'models/document/documentType';
 import {CASE_DOCUMENT_DOWNLOAD_URL, CITIZEN_CONTACT_THEM_URL} from 'routes/urls';
+import {formatDateToFullDate} from "common/utils/dateUtils";
+import {getLng} from "common/utils/languageToggleUtils";
 
 const PAGES_LATEST_UPDATE_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT.';
 
@@ -67,7 +69,7 @@ export class LastUpdateSectionBuilder {
       data: {
         text: text,
         variables: variables,
-        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentType', DocumentUri.DEFENDANT_DEFENCE),
+        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentType', DocumentUri.SEALED_CLAIM),
         textAfter: textAfter,
       },
     });
@@ -213,7 +215,8 @@ function getFaPayImmediately(claim: Claim) {
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_SAID_YOU_WILL_PAY`, {
       claimantName: claim.getClaimantFullName(),
       amount: claim.formattedTotalClaimAmount(),
-      paymentDate: getPaymentDate(claim),
+      paymentDate: formatDateToFullDate(new Date(getPaymentDate(claim)), getLng('en')),
+      //paymentDate: formatDateToFullDate(getPaymentDate(claim)),
     })
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}IF_YOU_PAY_BY_CHEQUE`)
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}IF_THEY_DONT_RECEIVE_THE_MONEY_BY_THEN`)
@@ -261,7 +264,9 @@ export const buildResponseToClaimSection = (claim: Claim, claimId: string): Clai
       sectionContent.push(responseDeadlineNotPassedContent);
     }
     sectionContent.push(respondToClaimLink);
+  } else {
+    sectionContent.push(generateLastUpdateResponseSections(ClaimResponseStatus.FA_PAY_IMMEDIATELY, claim));
+
   }
-  sectionContent.push(generateLastUpdateResponseSections(ClaimResponseStatus.FA_PAY_IMMEDIATELY, claim));
   return sectionContent.flat();
 };
