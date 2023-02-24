@@ -392,6 +392,7 @@
       "TOTAL_CLAIM_AMOUNT": "Total claim amount is £{{ totalClaimAmount }}"
     },
     "CHECK_YOUR_ANSWER": {
+      "ASKING_TO_SPEAK_WELSH_NOT_DELAY_HEARING": "Asking to speak Welsh in your hearing will not delay the hearing or have any effect on proceedings or the outcome of a case",
       "BANK_BALANCE": "Balance",
       "CARER_CREDIT_DO_YOU_CLAIM": "Do you claim Carer’s Allowance or Carer’s Credit?",
       "CCJ_HAS_DEFENDANT_PAID_SOME": "Has the defendant paid you some of the amount owed?",

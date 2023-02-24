@@ -392,6 +392,7 @@
       "TOTAL_CLAIM_AMOUNT": "Total claim amount is £{{ totalClaimAmount }}"
     },
     "CHECK_YOUR_ANSWER": {
+      "ASKING_TO_SPEAK_WELSH_NOT_DELAY_HEARING": "Ni fydd gofyn am gael siarad Cymraeg yn eich gwrandawiad yn achosi oedi wrth ei drefnu neu’n cael unrhyw effaith ar yr achos neu ganlyniad yr achos",
       "BANK_BALANCE": "Cydbwysedd",
       "CARER_CREDIT_DO_YOU_CLAIM": "Ydych chi'n hawlio Lwfans Gofalwr neu Gredyd Gofalwr?",
       "CCJ_HAS_DEFENDANT_PAID_SOME": "Has the defendant paid you some of the amount owed?",
@@ -517,8 +518,8 @@
       "VULNERABILITY_INFO": "Tell us who is vulnerable and what support they need",
       "VULNERABILITY_QUESTION": "Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider?",
       "WHAT_LANGUAGE_SPEAK": "What languages will you, your experts and your witnesses speak at the hearing?",
-      "WHAT_LANGUAGE_DOCUMENTS": "What languages will the documents be provided in?",
-      "WELSH_LANGUAGE": "Welsh language",
+      "WHAT_LANGUAGE_DOCUMENTS": "Ym mha iaith y darperir y dogfennau?",
+      "WELSH_LANGUAGE": "Yr iaith Gymraeg",
       "WHEN_PAY": "Pryd fyddwch chi'n talu",
       "WHEN_PAY_TITLE": "Pryd fyddwch chi'n talu",
       "WHERE_DO_YOU_LIVE": "Ble rydych chi'n byw?",
@@ -1492,7 +1493,7 @@
     "CANT_ATTEND_HEARING_IN_NEXT_12MONTHS": {
       "CONTENT": "Dylai’r rhain ond fod yn ddyddiadau digwyddiadau pwysig fel apwyntiadau meddygol, gwrandawiadau eraill neu wyliau rydych eisoes wedi trefnu",
       "UNAVAILABLE_DATES": "Dates unavailable",
-      "WHY_UNAVAILABLE_FOR_MORE_THAN_30_DAYS": "Why are you, your experts or witness unavailable for {{days}} days?",
+      "WHY_UNAVAILABLE_FOR_MORE_THAN_30_DAYS": "Pam nad ydych chi, eich arbenigwyr neu eich tystion ar gael i fynychu gwrandawiad am {{days}} diwrnod?",
       "PAGE_TITLE": "Can’t attend hearing in next months",
       "TITLE": "A oes yna unrhyw ddyddiadau yn y 12 mis nesaf pan na allwch chi, eich arbenigwyr neu eich tystion fynychu gwrandawiad?"
     },
@@ -2141,13 +2142,13 @@
       "TITLE": "A ydych chi, eich arbenigwyr neu eich tystion yn agored i niwed mewn ffordd y mae angen i’r llys ei ystyried?"
     },
     "WELSH_LANGUAGE": {
-      "ENGLISH": "English",
-      "OFFICIAL_LANGUAGE": "Welsh is an official language of Wales. You can use Welsh in court hearings. Asking to speak in Welsh in your hearing will not delay the hearing or have any effect on proceedings or the outcome of a case.",
-      "PAGE_TITLE": "Welsh language",
-      "WELSH": "Welsh",
-      "WELSH_AND_ENGLISH": "Welsh and English",
-      "WHAT_LANGUAGE_DOCUMENTS": "What languages will the documents be provided in?",
-      "WHAT_LANGUAGE_SPEAK": "What languages will you, your experts and your witnesses speak at the hearing?"
+      "ENGLISH": "Cymraeg",
+      "OFFICIAL_LANGUAGE": "Mae’r Gymraeg yn iaith swyddogol yng Nghymru. Gallwch ddefnyddio’r Gymraeg mewn gwrandawiad llys. Ni fydd gofyn am gael siarad Cymraeg yn eich gwrandawiad yn achosi oedi wrth ei drefnu neu’n cael unrhyw effaith ar yr achos neu ganlyniad yr achos.",
+      "PAGE_TITLE": "Yr iaith Gymraeg",
+      "WELSH": "Saesneg",
+      "WELSH_AND_ENGLISH": "Cymraeg a Saesneg",
+      "WHAT_LANGUAGE_DOCUMENTS": "Ym mha iaith y darperir y dogfennau?",
+      "WHAT_LANGUAGE_SPEAK": "Pa ieithoedd fyddwch chi, eich arbenigwyr a’ch tystion yn siarad yn y gwrandawiad?"
     },
     "WHO_EMPLOYS_YOU": {
       "ADD_ANOTHER_JOB": "Ychwanegu swydd arall",
@@ -2155,9 +2156,9 @@
       "WHO_EMPLOYS": "Pwy sy’n eich cyflogi"
     },
     "WHY_UNAVAILABLE_FOR_HEARING": {
-      "MUST_TELL_US_WHY": "You must tell us why you, your experts or witnesses cannot go to a hearing. The court will consider the reasons when deciding when to hold the hearing.",
-      "PAGE_TITLE": "Why are they not available for hearing?",
-      "TITLE": "Why are you, your experts or witnesses unavailable for a hearing for {{days}} days?"
+      "MUST_TELL_US_WHY": "Mae’n rhaid i chi ddweud wrthym pam nad ydych chi, eich arbenigwyr neu eich tystion yn gallu mynychu gwrandawiad. Bydd y llys yn ystyried y rhesymau wrth benderfynu pryd i gynnal y gwrandawiad.",
+      "PAGE_TITLE": "Pam nad ydyn nhw ar gael ar gyfer gwrandawiad?",
+      "TITLE": "Pam nad ydych chi, eich arbenigwyr neu eich tystion ar gael i fynychu gwrandawiad am {{days}} diwrnod?"
     },
     "YOU_CAN_USE_SERVICE": {
       "PAGE_TITLE": "You can use this service",
@@ -2376,8 +2377,8 @@
       "WATER": "Dewiswch pa mor aml ydych chi'n talu am ddŵr"
     },
     "SELECT_SINGLE_DATE_OR_PERIOD": "Select if it is single date or longer period of time",
-    "SELECT_LANGUAGE_DOCUMENTS": "Select the language your documents will be provided in",
-    "SELECT_LANGUAGE_SPEAK": "Select the language you, your experts, and your witnesses will speak at the hearing",
+    "SELECT_LANGUAGE_DOCUMENTS": "Dewiswch ym mha iaith y bydd eich dogfennau yn cael eu darparu",
+    "SELECT_LANGUAGE_SPEAK": "Dewiswch yr iaith y byddwch chi, eich arbenigwyr, a'ch tystion yn ei siarad yn y gwrandawiad",
     "SELECT_REQUEST": "Dewiswch os ydych eisiau gwneud cais am ragor o amser i ymateb, os ydych eisoes wedi cytuno ar ragor o amser i ymateb, os yw eich cais am ragor o amser wedi’i wrthod, neu nid ydych angen rhagor o amser i ymateb",
     "SELECT_SUPPORT": "Select the support the person needs to attend a hearing",
     "SELECT_YES_IF_DOCUMENTS": "Dewiswch ‘oes’ os oes gan yr hawlydd ddogfennau yr ydych eisiau i’r llys eu hystyried",
@@ -2393,7 +2394,7 @@
     },
     "SPECIFY_A_REASON": "You must specify a reason",
     "TELL_US_WHY": "Dywedwch wrthym pam",
-    "TELL_US_WHY_UNAVAILABLE": "Tell us why you, your experts or witnesses are unavailable for a hearing",
+    "TELL_US_WHY_UNAVAILABLE": "Dywedwch wrthym pam nad ydych chi, eich arbenigwyr neu eich tystion yn gallu mynychu gwrandawiad",
     "TRANSACTION_SOURCE": {
       "ENTER_OTHER_INCOME": "Tynnu'r ffynhonnell incwm hon",
       "HOW_MUCH_INCOME": {
