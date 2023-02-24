@@ -63,7 +63,7 @@ export const considerClaimantDocResponse = (claim: Claim, claimId: string, lng: 
 
 export const getExpert = (claim: Claim, claimId: string, lang: string): SummaryRow[]=>{
   const expertHref = constructResponseUrlWithIdParams(claimId, DQ_EXPERT_DETAILS_URL);
-  const expertDetails = claim.directionQuestionnaire?.experts?.expertDetailsList?.items ?? [];
+  const expertDetails = claim.directionQuestionnaire?.experts?.expertDetailsList?.items;
 
   if (claim.directionQuestionnaire?.experts?.expertEvidence?.option !== YesNo.YES) {
     return [];
