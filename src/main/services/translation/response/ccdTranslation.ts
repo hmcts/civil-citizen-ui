@@ -7,11 +7,12 @@ import {toCCDRepaymentPlan} from './convertToCCDRepaymentPlan';
 import {toCCDPaymentOption} from './convertToCCDPaymentOption';
 import {toCCDPayBySetDate} from './convertToCCDPayBySetDate';
 import {toCCDWelshLanguageRequirements} from 'services/translation/response/convertToCCDWelshLanguageRequirements';
-import {toCCDVulenrability} from 'services/translation/response/convertToCCDVulenrabilityQuestions';
-import {toCCDSpecificCourtLocations} from 'services/translation/response/convertToCCDSupportedCourtLocations';
+import {toCCDVulnerability} from 'services/translation/response/convertToCCDVulenrabilityQuestions';
+import {toCCDSpecificCourtLocations} from 'services/translation/response/convertToCCDSpecificCourtLocations';
 import {toCCDSHearingSupport} from 'services/translation/response/convertToCCDHearingSupport';
 import {toCCDWitnesses} from 'services/translation/response/convertToCCDWitnesses';
 import {toCCDSmallClaimHearing} from 'services/translation/response/convertToCCDSmallClaimHearing';
+import {toCCDDQExtraDetails} from 'services/translation/response/convertToCCDDQExtraDetials';
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   return {
@@ -24,11 +25,12 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     totalClaimAmount: claim.totalClaimAmount,
     respondent1: toCCDParty(claim.respondent1),
     respondent1DQLanguage: toCCDWelshLanguageRequirements(claim.directionQuestionnaire?.welshLanguageRequirements),
-    respondent1DQVulnerabilityQuestions: toCCDVulenrability(claim.directionQuestionnaire?.vulnerabilityQuestions),
+    respondent1DQVulnerabilityQuestions: toCCDVulnerability(claim.directionQuestionnaire?.vulnerabilityQuestions),
     respondent1DQRequestedCourt: toCCDSpecificCourtLocations(claim.directionQuestionnaire?.hearing?.specificCourtLocation),
     respondent1DQHearingSupport: toCCDSHearingSupport(claim.directionQuestionnaire?.hearing?.supportRequiredList),
     respondent1DQWitnesses: toCCDWitnesses(claim.directionQuestionnaire?.witnesses),
-    respondent1DQHearingSmallClaim: toCCDSmallClaimHearing(claim.directionQuestionnaire?.hearing),
+    respondent1DQHearingSmallClaim: claim.isSmallClaimsTrackDQ ? toCCDSmallClaimHearing(claim.directionQuestionnaire?.hearing) : undefined,
+    respondent1DQExtraDetails: toCCDDQExtraDetails(claim.directionQuestionnaire),
   };
 };
 

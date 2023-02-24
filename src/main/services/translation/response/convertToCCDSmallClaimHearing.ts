@@ -20,9 +20,9 @@ function toCCDUnavailableDates(dateDetails: UnavailableDatePeriod[] | undefined)
     return {
       value: {
         who: '',
-        date: unavailableDatePeriod?.startDay,
-        fromDate: unavailableDatePeriod?.startDay,
-        toDate: unavailableDatePeriod?.endDay,
+        date: unavailableDatePeriod?.from,
+        fromDate: unavailableDatePeriod?.from,
+        toDate: unavailableDatePeriod?.until,
         unavailableDateType: toCCDUnavailableDateType(unavailableDatePeriod.type),
       },
     };
@@ -33,6 +33,6 @@ function toCCDUnavailableDates(dateDetails: UnavailableDatePeriod[] | undefined)
 export const toCCDSmallClaimHearing = (hearing: Hearing | undefined) => {
   return {
     unavailableDatesRequired: toCCDYesNoFromGenericYesNo(hearing.cantAttendHearingInNext12Months),
-    unavailableDate : toCCDUnavailableDates(hearing.unavailableDatesForHearing.items),
+    unavailableDate : toCCDUnavailableDates(hearing.unavailableDatesForHearing?.items),
   };
 };

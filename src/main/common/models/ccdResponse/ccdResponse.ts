@@ -10,6 +10,7 @@ import {CCDSpecificCourtLocations} from 'models/ccdResponse/ccdSpecificCourtLoca
 import {CCDHearingSupport} from 'models/ccdResponse/ccdHearingSupport';
 import {CCDWitnesses} from 'models/ccdResponse/ccdWitnesses';
 import {CCDSmallClaimHearing} from 'models/ccdResponse/ccdSmallClaimHearing';
+import {CCDDQExtraDetails} from 'models/ccdResponse/ccdDQExtraDetails';
 
 export interface CCDResponse extends ClaimUpdate {
   respondent1ClaimResponseTypeForSpec: string;
@@ -26,4 +27,6 @@ export interface CCDResponse extends ClaimUpdate {
   respondent1DQHearingSupport: CCDHearingSupport;
   respondent1DQWitnesses: CCDWitnesses;
   respondent1DQHearingSmallClaim: CCDSmallClaimHearing;
+  respondent1DQExtraDetails: CCDDQExtraDetails;
+
 }

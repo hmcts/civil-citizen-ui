@@ -12,9 +12,9 @@ export interface CCDUnavailableDates{
 
  interface CCDUnavailableDateItem {
   who?: string,
-  date?: string,
-  fromDate?: string,
-  toDate?: string,
+  date?: Date,
+  fromDate?: Date,
+  toDate?: Date,
   unavailableDateType?: CCDUnavailableDateType,
 }
 

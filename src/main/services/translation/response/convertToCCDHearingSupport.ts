@@ -29,11 +29,11 @@ function ccdHearingSupportRequirmentList(items: SupportRequired[]) {
 
 export const toCCDSHearingSupport = (supportRequiredList: SupportRequiredList | undefined) => {
   return {
-    requirements:ccdHearingSupportRequirmentList(supportRequiredList.items),
+    requirements:ccdHearingSupportRequirmentList(supportRequiredList?.items),
     signLanguageRequired: signLanguage,
     languageToBeInterpreted: languageInterpreter,
     otherSupport: otherSupport,
-    supportRequirements: toCCDYesNo(supportRequiredList.option),
+    supportRequirements: toCCDYesNo(supportRequiredList?.option),
     supportRequirementsAdditional: '',
   };
 };

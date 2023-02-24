@@ -1,9 +1,9 @@
 import {VulnerabilityQuestions} from 'models/directionsQuestionnaire/vulnerabilityQuestions/vulnerabilityQuestions';
 import {toCCDYesNo} from 'services/translation/response/convertToCCDYesNo';
 
-export const toCCDVulenrability = (vulnerabilityQuestions: VulnerabilityQuestions | undefined)  => {
+export const toCCDVulnerability = (vulnerabilityQuestions: VulnerabilityQuestions | undefined)  => {
   return {
-    vulnerabilityAdjustmentsRequired: toCCDYesNo(vulnerabilityQuestions.vulnerability.option),
-    vulnerabilityAdjustments: vulnerabilityQuestions.vulnerability.vulnerabilityDetails,
+    vulnerabilityAdjustmentsRequired: toCCDYesNo(vulnerabilityQuestions?.vulnerability?.option),
+    vulnerabilityAdjustments: vulnerabilityQuestions?.vulnerability?.vulnerabilityDetails,
   };
 };
