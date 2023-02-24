@@ -5,7 +5,7 @@ import {YesNo, YesNoNotReceived} from 'form/models/yesNo';
 import {summaryRow} from 'models/summaryList/summaryList';
 import {
   considerClaimantDocQuestion,
-  considerClaimantDocResponse, getExpert,
+  considerClaimantDocResponse, getExpertDetails,
   getSentReportToOtherParties,
   getShareExpertWithClaimant,
   getUseExpertEvidence,
@@ -130,7 +130,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       const result: any[] = [];
 
       //When
-      const expertDetails = getExpert(claim, claimId, lng);
+      const expertDetails = getExpertDetails(claim, claimId, lng);
 
       //Then
       expect(expertDetails).toStrictEqual(result);
@@ -146,7 +146,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       );
 
       //When
-      const summaryRows = getExpert(claim, '1', 'eng');
+      const summaryRows = getExpertDetails(claim, '1', 'eng');
       //Then
       expect(summaryRows.length).toEqual(8);
       expect(summaryRows[0].key.text).toEqual('PAGES.EXPERT_DETAILS.SECTION_TITLE 1');
