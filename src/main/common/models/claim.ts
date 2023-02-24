@@ -458,8 +458,9 @@ export class Claim {
   }
 
   get isFastTrackClaim(): boolean {
-    return this.claimType == claimType.FAST_TRACK_CLAIM;
+    return this.claimType === claimType.FAST_TRACK_CLAIM;
   }
+
   get isSmallClaimsTrackDQ(): boolean {
     return this.claimType === claimType.SMALL_CLAIM;
   }
