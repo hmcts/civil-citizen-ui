@@ -67,6 +67,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
   });
 
   describe('requestExtra4WeeksQuestion', () => {
+
     it('should return summaryRow if requestExtra4Weeks option is yes', () => {
       //Given
       const claim = new Claim();
@@ -128,12 +129,10 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
   describe('should return summary row relative to expect', ()=>{
     const claim = new Claim();
     claim.directionQuestionnaire = new DirectionQuestionnaire();
+    claim.directionQuestionnaire.experts = new Experts();
+
     it('should not display expert if the the expect evidence is NO',  () => {
       //Given
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.experts = new Experts();
-      //When
       claim.directionQuestionnaire.experts.expertEvidence =  {option:YesNo.NO};
       claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList();
       claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList(
@@ -141,18 +140,23 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
           'reason', 'expert', 500)]);
 
       const result: any[] = []
+
+      //When
+      const expertDetails = getExpert(claim, claimId, lng);
+
       //Then
-      expect(getExpert(claim, claimId, lng)).toStrictEqual(result);
+      expect(expertDetails).toStrictEqual(result);
     });
     it('should display expert details if the expect evidence is YES', function () {
+
       //Given
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.experts = new Experts();
       claim.directionQuestionnaire.experts.expertEvidence = {option:YesNo.YES};
       claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList();
 
-      claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList([new ExpertDetails('Mike', 'James', 'mike@gmail.com', 7411111, 'reason', 'expert', 500)]);
+      claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList(
+        [new ExpertDetails('Mike', 'James', 'mike@gmail.com', 7411111, 'reason', 'expert', 500)]
+      );
+
       //When
       const summaryRows = getExpert(claim, '1', 'eng');
       //Then
@@ -175,12 +179,9 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
 
     });
     it('should display the use of expert evidence No if the claimant choose not',  () => {
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.experts = new Experts();
-      claim.directionQuestionnaire.experts.expertEvidence = {option: YesNo.NO};
 
       //Given
+      claim.directionQuestionnaire.experts.expertEvidence = {option: YesNo.NO};
       const mockSummarySection = summaryRow(
         'PAGES.DEFENDANT_EXPERT_EVIDENCE.TITLE',
         'COMMON.NO',
@@ -193,8 +194,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       expect(doWantUseExpectEvidence).toStrictEqual(mockSummarySection)
     });
     it('should display the use of own evidence No if the claimant choose not',  () => {
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
+
       claim.directionQuestionnaire.defendantYourselfEvidence = {option: YesNo.NO};
       //Given
       const mockSummarySection = summaryRow(
@@ -209,11 +209,9 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       expect(personalEvidence).toStrictEqual(mockSummarySection)
     });
     it('should display No if the defendant does not accept to share expert  with the claimant', function () {
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.experts = new Experts();
-      claim.directionQuestionnaire.experts.sharedExpert = {option: YesNo.NO};
+
       //Given
+      claim.directionQuestionnaire.experts.sharedExpert = {option: YesNo.NO};
       const mockSummarySection = summaryRow(
         'PAGES.SHARED_EXPERT.WITH_CLAIMANT',
         'COMMON.NO',
@@ -226,12 +224,8 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       expect(shareExpertWithClaimant).toStrictEqual(mockSummarySection)
     });
     it('should display No if the defendant has not send expert report to other parties', function () {
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.experts = new Experts();
-      claim.directionQuestionnaire.experts.sentExpertReports = { option: YesNoNotReceived.NO };
-
       //Given
+      claim.directionQuestionnaire.experts.sentExpertReports = { option: YesNoNotReceived.NO };
       const mockSummarySection = summaryRow(
         'PAGES.SENT_EXPERT_REPORTS.TITLE',
         'COMMON.NO',
@@ -244,12 +238,9 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       expect(sentReportToOtherParties).toStrictEqual(mockSummarySection)
     });
     it('should display No if the claimant has not yet received expert report to other parties', function () {
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.experts = new Experts();
-      claim.directionQuestionnaire.experts.sentExpertReports = { option: YesNoNotReceived.NOT_RECEIVED };
 
       //Given
+      claim.directionQuestionnaire.experts.sentExpertReports = { option: YesNoNotReceived.NOT_RECEIVED };
       const mockSummarySection = summaryRow(
         'PAGES.SENT_EXPERT_REPORTS.TITLE',
         'PAGES.SENT_EXPERT_REPORTS.OPTION_NOT_RECEIVED',
@@ -350,7 +341,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       claim.directionQuestionnaire.experts.sharedExpert = {option: YesNo.NO};
       //Given
       const mockSummarySection = summaryRow(
-        'PAGES.SHARED_EXPERT.TITLE',
+        'PAGES.SHARED_EXPERT.WITH_CLAIMANT',
         'COMMON.NO',
         `/case/validClaimId/directions-questionnaire/shared-expert`,
         changeButton,
