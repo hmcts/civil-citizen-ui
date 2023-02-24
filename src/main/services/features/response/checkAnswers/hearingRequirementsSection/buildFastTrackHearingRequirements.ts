@@ -81,10 +81,10 @@ export const getExpert = (claim: Claim, claimId: string, lang: string): SummaryR
     ];
   }).flat();
 
-}
+};
 
 export const getUseExpertEvidence = (claim:Claim, claimId: string, lng:string): SummaryRow =>{
-  let shouldConsiderExpertEvidence = affirmation(claim.directionQuestionnaire?.experts?.expertEvidence?.option, lng);
+  const shouldConsiderExpertEvidence = affirmation(claim.directionQuestionnaire?.experts?.expertEvidence?.option, lng);
 
   return summaryRow(
     t('PAGES.DEFENDANT_EXPERT_EVIDENCE.TITLE', {lng}),
@@ -92,7 +92,7 @@ export const getUseExpertEvidence = (claim:Claim, claimId: string, lng:string): 
     constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_EXPERT_EVIDENCE_URL),
     changeLabel(lng),
   );
-}
+};
 
 export const getSentReportToOtherParties = (claim:Claim, claimId: string, lng:string): SummaryRow =>{
   const shouldConsiderSentExpertReports = affirmation(claim.directionQuestionnaire?.experts?.sentExpertReports?.option, lng);
@@ -103,7 +103,7 @@ export const getSentReportToOtherParties = (claim:Claim, claimId: string, lng:st
     constructResponseUrlWithIdParams(claimId, DQ_SENT_EXPERT_REPORTS_URL),
     changeLabel(lng),
   );
-}
+};
 
 export const getShareExpertWithClaimant = (claim:Claim, claimId: string, lng:string): SummaryRow =>{
   const shouldConsiderSharedExpert = affirmation(claim.directionQuestionnaire?.experts?.sharedExpert?.option, lng);
@@ -114,7 +114,7 @@ export const getShareExpertWithClaimant = (claim:Claim, claimId: string, lng:str
     constructResponseUrlWithIdParams(claimId, DQ_SHARE_AN_EXPERT_URL),
     changeLabel(lng),
   );
-}
+};
 
 export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequirementsSection: SummarySection, claimId: string, lng: string) => {
 

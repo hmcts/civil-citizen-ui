@@ -14,10 +14,10 @@ import {
 } from 'services/features/response/checkAnswers/hearingRequirementsSection/buildFastTrackHearingRequirements';
 import {Experts} from '../../../../../../../main/common/models/directionsQuestionnaire/experts/experts';
 import {
-  giveEvidenceYourself
+  giveEvidenceYourself,
 } from '../../../../../../../main/services/features/response/checkAnswers/hearingRequirementsSection/buildCommonHearingRequirements';
 import {
-  ExpertDetailsList
+  ExpertDetailsList,
 } from '../../../../../../../main/common/models/directionsQuestionnaire/experts/expertDetailsList';
 import {ExpertDetails} from '../../../../../../../main/common/models/directionsQuestionnaire/experts/expertDetails';
 
@@ -127,7 +127,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         [new ExpertDetails('Mike', 'James', 'mike@gmail.com', 7411111,
           'reason', 'expert', 500)]);
 
-      const result: any[] = []
+      const result: any[] = [];
 
       //When
       const expertDetails = getExpert(claim, claimId, lng);
@@ -142,7 +142,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList();
 
       claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList(
-        [new ExpertDetails('Mike', 'James', 'mike@gmail.com', 7411111, 'reason', 'expert', 500)]
+        [new ExpertDetails('Mike', 'James', 'mike@gmail.com', 7411111, 'reason', 'expert', 500)],
       );
 
       //When
@@ -173,13 +173,13 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       const mockSummarySection = summaryRow(
         'PAGES.DEFENDANT_EXPERT_EVIDENCE.TITLE',
         'COMMON.NO',
-        `/case/validClaimId/directions-questionnaire/expert-evidence`,
+        '/case/validClaimId/directions-questionnaire/expert-evidence',
         changeButton,
       );
       //When
       const doWantUseExpectEvidence = getUseExpertEvidence(claim, claimId, lng);
       //Then
-      expect(doWantUseExpectEvidence).toStrictEqual(mockSummarySection)
+      expect(doWantUseExpectEvidence).toStrictEqual(mockSummarySection);
     });
     it('should display the use of own evidence No if the claimant choose not',  () => {
 
@@ -188,13 +188,13 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       const mockSummarySection = summaryRow(
         'PAGES.CHECK_YOUR_ANSWER.GIVE_EVIDENCE',
         'COMMON.NO',
-        `/case/validClaimId/directions-questionnaire/give-evidence-yourself`,
+        '/case/validClaimId/directions-questionnaire/give-evidence-yourself',
         changeButton,
       );
       //When
       const personalEvidence = giveEvidenceYourself(claim, claimId, lng);
       //Then
-      expect(personalEvidence).toStrictEqual(mockSummarySection)
+      expect(personalEvidence).toStrictEqual(mockSummarySection);
     });
     it('should display No if the defendant does not accept to share expert  with the claimant', function () {
 
@@ -203,13 +203,13 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       const mockSummarySection = summaryRow(
         'PAGES.SHARED_EXPERT.WITH_CLAIMANT',
         'COMMON.NO',
-        `/case/validClaimId/directions-questionnaire/shared-expert`,
+        '/case/validClaimId/directions-questionnaire/shared-expert',
         changeButton,
       );
       //When
       const shareExpertWithClaimant = getShareExpertWithClaimant(claim, claimId, lng);
       //Then
-      expect(shareExpertWithClaimant).toStrictEqual(mockSummarySection)
+      expect(shareExpertWithClaimant).toStrictEqual(mockSummarySection);
     });
     it('should display No if the defendant has not send expert report to other parties', function () {
       //Given
@@ -217,13 +217,13 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       const mockSummarySection = summaryRow(
         'PAGES.SENT_EXPERT_REPORTS.TITLE',
         'COMMON.NO',
-        `/case/validClaimId/directions-questionnaire/sent-expert-reports`,
+        '/case/validClaimId/directions-questionnaire/sent-expert-reports',
         changeButton,
       );
       //When
       const sentReportToOtherParties = getSentReportToOtherParties(claim, claimId, lng);
       //Then
-      expect(sentReportToOtherParties).toStrictEqual(mockSummarySection)
+      expect(sentReportToOtherParties).toStrictEqual(mockSummarySection);
     });
     it('should display No if the claimant has not yet received expert report to other parties', function () {
 
@@ -232,13 +232,13 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       const mockSummarySection = summaryRow(
         'PAGES.SENT_EXPERT_REPORTS.TITLE',
         'PAGES.SENT_EXPERT_REPORTS.OPTION_NOT_RECEIVED',
-        `/case/validClaimId/directions-questionnaire/sent-expert-reports`,
+        '/case/validClaimId/directions-questionnaire/sent-expert-reports',
         changeButton,
       );
       //When
       const sentReportToOtherParties = getSentReportToOtherParties(claim, claimId, lng);
       //Then
-      expect(sentReportToOtherParties).toStrictEqual(mockSummarySection)
+      expect(sentReportToOtherParties).toStrictEqual(mockSummarySection);
     });
   });
 
