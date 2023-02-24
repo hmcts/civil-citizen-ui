@@ -23,7 +23,6 @@
     "EMPLOYER_NAME": "Enw’r cyflogwr",
     "EMPLOYMENT_DETAILS": "Manylion cyflogaeth",
     "EMPLOYMENT_TYPE": "Math o swydd",
-    "ENGLISH": "Cymraeg",
     "FREE_TELEPHONE_MEDIATION": "Gwasanaeth cyfryngu dros y ffôn am ddim",
     "GIVE_DETAILS": "Rhowch fanylion",
     "GO_TO_HOMEPAGE": "Go to homepage",
@@ -37,10 +36,8 @@
     "REASON": "Rheswm",
     "REMOVE": "Tynnu",
     "RETURN_PAGE": "You can return to RETURN-PAGE and start your claim or defence again.",
-    "TECHNICAL_PROBLEMS": "Sorry, we had some technical problems during your last operation. Please try again later.",
-    "WELSH": "Saesneg",
-    "WELSH_AND_ENGLISH": "Cymraeg a Saesneg",
     "TOTAL_DEBT": "Cyfanswm sy’n ddyledus gennych",
+    "TECHNICAL_PROBLEMS": "Sorry, we had some technical problems during your last operation. Please try again later.",
     "YEAR": "Blwyddyn",
     "YEARS": "Blwyddyn",
     "YES": "Oes",
@@ -2134,7 +2131,7 @@
     },
     "WHY_UNAVAILABLE_FOR_HEARING": {
       "MUST_TELL_US_WHY": "Mae’n rhaid i chi ddweud wrthym pam nad ydych chi, eich arbenigwyr neu eich tystion yn gallu mynychu gwrandawiad. Bydd y llys yn ystyried y rhesymau wrth benderfynu pryd i gynnal y gwrandawiad.",
-      "PAGE_TITLE": "Why are they not available for hearing?",
+      "PAGE_TITLE": "Pam nad ydyn nhw ar gael ar gyfer gwrandawiad?",
       "TITLE": "Pam nad ydych chi, eich arbenigwyr neu eich tystion ar gael i fynychu gwrandawiad am {{days}} diwrnod?"
     },
     "YOU_CAN_USE_SERVICE": {
@@ -2333,8 +2330,8 @@
       "RENT": "Dewiswch pa mor aml ydych chi'n talu rhent",
       "WATER": "Dewiswch pa mor aml ydych chi'n talu am ddŵr"
     },
-    "SELECT_LANGUAGE_DOCUMENTS": "Select the language your documents will be provided in",
-    "SELECT_LANGUAGE_SPEAK": "Select the language you, your experts, and your witnesses will speak at the hearing",
+    "SELECT_LANGUAGE_DOCUMENTS": "Dewiswch ym mha iaith y bydd eich dogfennau yn cael eu darparu",
+    "SELECT_LANGUAGE_SPEAK": "Dewiswch yr iaith y byddwch chi, eich arbenigwyr, a'ch tystion yn ei siarad yn y gwrandawiad",
     "SELECT_REQUEST": "Dewiswch os ydych eisiau gwneud cais am ragor o amser i ymateb, os ydych eisoes wedi cytuno ar ragor o amser i ymateb, os yw eich cais am ragor o amser wedi’i wrthod, neu nid ydych angen rhagor o amser i ymateb",
     "SELECT_SUPPORT": "Select the support the person needs to attend a hearing",
     "SELECT_YES_IF_DOCUMENTS": "Dewiswch ‘oes’ os oes gan yr hawlydd ddogfennau yr ydych eisiau i’r llys eu hystyried",
