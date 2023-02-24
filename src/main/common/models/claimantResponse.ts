@@ -9,6 +9,7 @@ import {Mediation} from 'models/mediation/mediation';
 import {DirectionQuestionnaire} from './directionsQuestionnaire/directionQuestionnaire';
 import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 
 export class ClaimantResponse {
   hasDefendantPaidYou?: GenericYesNo;
@@ -27,4 +28,16 @@ export class ClaimantResponse {
   directionQuestionnaire?: DirectionQuestionnaire;
   defendantResponseViewed?: boolean;
   paymentIntention?: PaymentIntention;
+
+  get isClaimantSuggestedPayImmediately(): boolean{
+    return this.paymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY;
+  }
+
+  get isClaimantSuggestedPayByDate(): boolean {
+    return this.paymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE;
+  }
+
+  get isClaimantSuggestedPayByInstalments(): boolean {
+    return this.paymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS;
+  }
 }
