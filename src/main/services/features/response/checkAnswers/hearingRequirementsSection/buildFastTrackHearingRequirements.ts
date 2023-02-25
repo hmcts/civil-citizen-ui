@@ -130,7 +130,7 @@ export const getDisplayWantGiveSelfEvidence = (claim:Claim, claimId: string, lng
     constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL),
     changeLabel(lng),
   );
-}
+};
 
 export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequirementsSection: SummarySection, claimId: string, lng: string) => {
 
@@ -146,7 +146,6 @@ export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequireme
   if (claim.directionQuestionnaire?.hearing?.considerClaimantDocuments?.option == YesNo.YES)
     hearingRequirementsSection.summaryList.rows.push(considerClaimantDocResponse(claim, claimId, lng));
 
-
   if (claim.directionQuestionnaire?.experts?.expertEvidence?.option)
     hearingRequirementsSection.summaryList.rows.push(getUseExpertEvidence(claim, claimId, lng));
 
@@ -155,7 +154,6 @@ export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequireme
 
   if (claim.directionQuestionnaire?.experts?.sharedExpert?.option)
     hearingRequirementsSection.summaryList.rows.push(getShareExpertWithClaimant(claim, claimId, lng));
-
 
   if (claim.directionQuestionnaire?.experts?.expertEvidence?.option === YesNo.YES) {
     hearingRequirementsSection.summaryList.rows.push(...getExpertDetails(claim,claimId,lng));

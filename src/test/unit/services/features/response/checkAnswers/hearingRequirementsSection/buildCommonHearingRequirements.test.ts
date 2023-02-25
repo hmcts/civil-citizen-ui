@@ -27,7 +27,7 @@ import {OtherWitnessItems} from 'common/models/directionsQuestionnaire/witnesses
 import {Witnesses} from 'models/directionsQuestionnaire/witnesses/witnesses';
 import {OtherWitnesses} from 'models/directionsQuestionnaire/witnesses/otherWitnesses';
 import {
-  getDisplayWantGiveSelfEvidence
+  getDisplayWantGiveSelfEvidence,
 } from '../../../../../../../main/services/features/response/checkAnswers/hearingRequirementsSection/buildFastTrackHearingRequirements';
 
 jest.mock('../../../../../../../main/modules/draft-store');
