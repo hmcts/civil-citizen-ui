@@ -123,9 +123,6 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       //Given
       claim.directionQuestionnaire.experts.expertEvidence =  {option:YesNo.NO};
       claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList();
-      claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList(
-        [new ExpertDetails('Mike', 'James', 'mike@gmail.com', 7411111,
-          'reason', 'expert', 500)]);
 
       const result: any[] = [];
 

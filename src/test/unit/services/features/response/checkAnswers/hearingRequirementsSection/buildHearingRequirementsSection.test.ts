@@ -68,8 +68,7 @@ describe('Hearing Requirements Section', () => {
     it('build hearing requirement for Fast Track Claim When all questions answer set to yes.', () => {
       //Given
       claim.totalClaimAmount = 11000;
-      const hearing = createHearing(YesNo.YES, YesNo.YES, YesNo.YES, YesNo.YES, undefined);
-      claim.directionQuestionnaire.hearing = hearing;
+      claim.directionQuestionnaire.hearing = createHearing(YesNo.YES, YesNo.YES, YesNo.YES, YesNo.YES, undefined);
       claim.directionQuestionnaire.vulnerabilityQuestions.vulnerability = {
         option: YesNo.YES,
         vulnerabilityDetails: 'Test vulnerability details',
@@ -79,6 +78,7 @@ describe('Hearing Requirements Section', () => {
       const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
 
       //Then
+
       expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
       expect(summaryRows.summaryList.rows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE');
       expect(summaryRows.summaryList.rows[0].value.html).toEqual('COMMON.YES');
@@ -94,24 +94,28 @@ describe('Hearing Requirements Section', () => {
       expect(summaryRows.summaryList.rows[5].value.html).toEqual('');
       expect(summaryRows.summaryList.rows[6].key.text).toEqual('PAGES.SHARED_EXPERT.WITH_CLAIMANT');
       expect(summaryRows.summaryList.rows[6].value.html).toEqual('');
-      expect(summaryRows.summaryList.rows[7].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.GIVE_EVIDENCE');
-      expect(summaryRows.summaryList.rows[7].value.html).toEqual('COMMON.YES');
-      expect(summaryRows.summaryList.rows[8].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
-      expect(summaryRows.summaryList.rows[8].value.html).toEqual('COMMON.NO');
-      expect(summaryRows.summaryList.rows[9].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_PHONE_OR_VIDEO_HEARING');
-      expect(summaryRows.summaryList.rows[9].value.html).toEqual('COMMON.YES');
-      expect(summaryRows.summaryList.rows[10].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY_DO_YOU_WANT_PHONE_VIDEO_HEARING');
-      expect(summaryRows.summaryList.rows[10].value.html).toEqual('Test Phone or video hearing');
-      expect(summaryRows.summaryList.rows[11].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION');
-      expect(summaryRows.summaryList.rows[11].value.html).toEqual('COMMON.YES');
-      expect(summaryRows.summaryList.rows[12].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_INFO');
-      expect(summaryRows.summaryList.rows[12].value.html).toEqual('Test vulnerability details');
-      expect(summaryRows.summaryList.rows[13].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WELSH_LANGUAGE');
-      expect(summaryRows.summaryList.rows[13].value.html).toEqual(null);
-      expect(summaryRows.summaryList.rows[14].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK');
-      expect(summaryRows.summaryList.rows[14].value.html).toEqual('PAGES.WELSH_LANGUAGE.ENGLISH');
-      expect(summaryRows.summaryList.rows[15].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS');
-      expect(summaryRows.summaryList.rows[15].value.html).toEqual('PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH');
+      expect(summaryRows.summaryList.rows[7].key.text).toEqual('PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE');
+      expect(summaryRows.summaryList.rows[7].value.html).toEqual('');
+      expect(summaryRows.summaryList.rows[8].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.GIVE_EVIDENCE');
+      expect(summaryRows.summaryList.rows[8].value.html).toEqual('COMMON.YES');
+      expect(summaryRows.summaryList.rows[9].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
+      expect(summaryRows.summaryList.rows[9].value.html).toEqual('COMMON.NO');
+      expect(summaryRows.summaryList.rows[10].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_PHONE_OR_VIDEO_HEARING');
+      expect(summaryRows.summaryList.rows[10].value.html).toEqual('COMMON.YES');
+      expect(summaryRows.summaryList.rows[11].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY_DO_YOU_WANT_PHONE_VIDEO_HEARING');
+      expect(summaryRows.summaryList.rows[12].value.html).toEqual('Test Phone or video hearing');
+      expect(summaryRows.summaryList.rows[13].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION');
+      expect(summaryRows.summaryList.rows[14].value.html).toEqual('COMMON.YES');
+      expect(summaryRows.summaryList.rows[15].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_INFO');
+      expect(summaryRows.summaryList.rows[15].value.html).toEqual('Test vulnerability details');
+      expect(summaryRows.summaryList.rows[16].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WELSH_LANGUAGE');
+      expect(summaryRows.summaryList.rows[16].value.html).toEqual(null);
+      expect(summaryRows.summaryList.rows[17].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK');
+      expect(summaryRows.summaryList.rows[17].value.html).toEqual('PAGES.WELSH_LANGUAGE.ENGLISH');
+      expect(summaryRows.summaryList.rows[18].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS');
+      expect(summaryRows.summaryList.rows[18].value.html).toEqual('PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH');
+
+
     });
 
     it('build hearing requirement for Fast Track Claim When all questions answer set to no.', () => {
@@ -130,6 +134,8 @@ describe('Hearing Requirements Section', () => {
       //When
       const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
 
+      expect(summaryRows.summaryList).toStrictEqual('test')
+
       //Then
       expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
       expect(summaryRows.summaryList.rows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE');
@@ -142,16 +148,18 @@ describe('Hearing Requirements Section', () => {
       expect(summaryRows.summaryList.rows[3].value.html).toEqual('');
       expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.SENT_EXPERT_REPORTS.TITLE');
       expect(summaryRows.summaryList.rows[4].value.html).toEqual('');
-      expect(summaryRows.summaryList.rows[5].key.text).toEqual('PAGES.SHARED_EXPERT.WITH_CLAIMANT');
+      expect(summaryRows.summaryList.rows[5].key.text).toEqual('PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE');
       expect(summaryRows.summaryList.rows[5].value.html).toEqual('');
-      expect(summaryRows.summaryList.rows[6].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.GIVE_EVIDENCE');
-      expect(summaryRows.summaryList.rows[6].value.html).toEqual('COMMON.NO');
-      expect(summaryRows.summaryList.rows[7].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
+      expect(summaryRows.summaryList.rows[6].key.text).toEqual('PAGES.SHARED_EXPERT.WITH_CLAIMANT');
+      expect(summaryRows.summaryList.rows[6].value.html).toEqual('');
+      expect(summaryRows.summaryList.rows[7].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.GIVE_EVIDENCE');
       expect(summaryRows.summaryList.rows[7].value.html).toEqual('COMMON.NO');
-      expect(summaryRows.summaryList.rows[8].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_PHONE_OR_VIDEO_HEARING');
+      expect(summaryRows.summaryList.rows[8].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
       expect(summaryRows.summaryList.rows[8].value.html).toEqual('COMMON.NO');
-      expect(summaryRows.summaryList.rows[9].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION');
+      expect(summaryRows.summaryList.rows[9].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_PHONE_OR_VIDEO_HEARING');
       expect(summaryRows.summaryList.rows[9].value.html).toEqual('COMMON.NO');
+      expect(summaryRows.summaryList.rows[10].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION');
+      expect(summaryRows.summaryList.rows[10].value.html).toEqual('COMMON.NO');
     });
   });
 

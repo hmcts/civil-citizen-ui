@@ -5,14 +5,18 @@ import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
 import {t} from 'i18next';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
-  DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, DQ_DEFENDANT_EXPERT_EVIDENCE_URL, DQ_EXPERT_DETAILS_URL,
-  DQ_REQUEST_EXTRA_4WEEKS_URL, DQ_SENT_EXPERT_REPORTS_URL, DQ_SHARE_AN_EXPERT_URL,
+  DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL,
+  DQ_DEFENDANT_EXPERT_EVIDENCE_URL,
+  DQ_EXPERT_DETAILS_URL,
+  DQ_GIVE_EVIDENCE_YOURSELF_URL,
+  DQ_REQUEST_EXTRA_4WEEKS_URL,
+  DQ_SENT_EXPERT_REPORTS_URL,
+  DQ_SHARE_AN_EXPERT_URL,
   DQ_TRIED_TO_SETTLE_CLAIM_URL,
 } from 'routes/urls';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import {getLng} from 'common/utils/languageToggleUtils';
-import {affirmation, getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/getEmptyStringIfUndefined';
-
+import {getFormatedUserAnswer, getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/getEmptyStringIfUndefined';
 
 export const triedToSettleQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const option = claim.directionQuestionnaire?.hearing?.triedToSettle?.option === YesNo.YES
@@ -67,23 +71,25 @@ export const getExpertDetails = (claim: Claim, claimId: string, lang: string): S
   const expertDetails = claim.directionQuestionnaire?.experts?.expertDetailsList?.items;
   const summaryRows: SummaryRow [] = [];
 
-  expertDetails.forEach((expert, index) => {
-    summaryRows.push(summaryRow(`${t('PAGES.EXPERT_DETAILS.SECTION_TITLE', { lng: getLng(lang) })} ${index + 1}`, '', expertHref, changeLabel(lang)));
-    summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.FIRST_NAME_OPTIONAL', lang), expert.firstName));
-    summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.LAST_NAME_OPTIONAL', lang), expert.lastName));
-    summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.EMAIL_ADDRESS_OPTIONAL', lang), expert.emailAddress));
-    summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.PHONE_OPTIONAL', lang), expert.phoneNumber?.toString()));
-    summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.FIELD_OF_EXPERTISE', lang), expert.fieldOfExpertise));
-    summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.TELL_US_WHY_NEED_EXPERT', lang), expert.whyNeedExpert));
-    summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.COST_OPTIONAL', lang), expert.estimatedCost?.toString()));
+  if (expertDetails !== undefined){
+    expertDetails.forEach((expert, index) => {
+      summaryRows.push(summaryRow(`${t('PAGES.EXPERT_DETAILS.SECTION_TITLE', { lng: getLng(lang) })} ${index + 1}`, '', expertHref, changeLabel(lang)));
+      summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.FIRST_NAME_OPTIONAL', lang), expert.firstName));
+      summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.LAST_NAME_OPTIONAL', lang), expert.lastName));
+      summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.EMAIL_ADDRESS_OPTIONAL', lang), expert.emailAddress));
+      summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.PHONE_OPTIONAL', lang), expert.phoneNumber?.toString()));
+      summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.FIELD_OF_EXPERTISE', lang), expert.fieldOfExpertise));
+      summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.TELL_US_WHY_NEED_EXPERT', lang), expert.whyNeedExpert));
+      summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.COST_OPTIONAL', lang), expert.estimatedCost?.toString()));
 
-  });
+    });
+  }
 
   return summaryRows;
 };
 
 export const getUseExpertEvidence = (claim:Claim, claimId: string, lng:string): SummaryRow =>{
-  const shouldConsiderExpertEvidence = affirmation(claim.directionQuestionnaire?.experts?.expertEvidence?.option, lng);
+  const shouldConsiderExpertEvidence = getFormatedUserAnswer(claim.directionQuestionnaire?.experts?.expertEvidence?.option, lng);
 
   return summaryRow(
     t('PAGES.DEFENDANT_EXPERT_EVIDENCE.TITLE', {lng}),
@@ -94,7 +100,7 @@ export const getUseExpertEvidence = (claim:Claim, claimId: string, lng:string): 
 };
 
 export const getSentReportToOtherParties = (claim:Claim, claimId: string, lng:string): SummaryRow =>{
-  const shouldConsiderSentExpertReports = affirmation(claim.directionQuestionnaire?.experts?.sentExpertReports?.option, lng);
+  const shouldConsiderSentExpertReports = getFormatedUserAnswer(claim.directionQuestionnaire?.experts?.sentExpertReports?.option, lng);
 
   return summaryRow(
     t('PAGES.SENT_EXPERT_REPORTS.TITLE', {lng}),
@@ -105,7 +111,7 @@ export const getSentReportToOtherParties = (claim:Claim, claimId: string, lng:st
 };
 
 export const getShareExpertWithClaimant = (claim:Claim, claimId: string, lng:string): SummaryRow =>{
-  const shouldConsiderSharedExpert = affirmation(claim.directionQuestionnaire?.experts?.sharedExpert?.option, lng);
+  const shouldConsiderSharedExpert = getFormatedUserAnswer(claim.directionQuestionnaire?.experts?.sharedExpert?.option, lng);
 
   return summaryRow(
     t('PAGES.SHARED_EXPERT.WITH_CLAIMANT', {lng}),
@@ -114,6 +120,17 @@ export const getShareExpertWithClaimant = (claim:Claim, claimId: string, lng:str
     changeLabel(lng),
   );
 };
+
+export const getDisplayWantGiveSelfEvidence = (claim:Claim, claimId: string, lng:string): SummaryRow =>{
+  const shouldConsiderGiveYourselfEvidence = getFormatedUserAnswer(claim.directionQuestionnaire?.experts?.expertEvidence?.option, lng);
+
+  return summaryRow(
+    t('PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE', {lng}),
+    shouldConsiderGiveYourselfEvidence,
+    constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL),
+    changeLabel(lng),
+  );
+}
 
 export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequirementsSection: SummarySection, claimId: string, lng: string) => {
 
@@ -138,4 +155,7 @@ export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequireme
   if (claim.directionQuestionnaire?.experts?.expertEvidence?.option === YesNo.YES) {
     hearingRequirementsSection.summaryList.rows.push(...getExpertDetails(claim,claimId,lng));
   }
+
+  hearingRequirementsSection.summaryList.rows.push(getDisplayWantGiveSelfEvidence(claim, claimId, lng));
+
 };
