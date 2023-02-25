@@ -5,22 +5,24 @@ import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
 import {t} from 'i18next';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
-  DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, DQ_COURT_LOCATION_URL,
+  DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL,
   DQ_DEFENDANT_EXPERT_EVIDENCE_URL,
   DQ_EXPERT_DETAILS_URL,
-  DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL,
+  DQ_GIVE_EVIDENCE_YOURSELF_URL,
   DQ_REQUEST_EXTRA_4WEEKS_URL,
   DQ_SENT_EXPERT_REPORTS_URL,
   DQ_SHARE_AN_EXPERT_URL,
+  DQ_COURT_LOCATION_URL,
+  DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL,
   DQ_TRIED_TO_SETTLE_CLAIM_URL,
 } from 'routes/urls';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
-import {affirmation, getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/getEmptyStringIfUndefined';
-import {getLng} from "common/utils/languageToggleUtils";
+import {getFormattedUserAnswer, getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/getEmptyStringIfUndefined';
+import {getLng} from 'common/utils/languageToggleUtils';
 import {
   getListOfUnavailableDate,
-  getNumberOfUnavailableDays
-} from "services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation";
+  getNumberOfUnavailableDays,
+} from 'services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation';
 
 export const triedToSettleQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const option = claim.directionQuestionnaire?.hearing?.triedToSettle?.option === YesNo.YES
@@ -70,30 +72,30 @@ export const considerClaimantDocResponse = (claim: Claim, claimId: string, lng: 
   );
 };
 
-export const getExpert = (claim: Claim, claimId: string, lang: string): SummaryRow[]=>{
+export const getExpertDetails = (claim: Claim, claimId: string, lang: string): SummaryRow[] => {
   const expertHref = constructResponseUrlWithIdParams(claimId, DQ_EXPERT_DETAILS_URL);
-  const expertDetails = claim.directionQuestionnaire?.experts?.expertDetailsList?.items ?? [];
+  const expertDetails = claim.directionQuestionnaire?.experts?.expertDetailsList?.items;
+  const summaryRows: SummaryRow [] = [];
 
-  if (claim.directionQuestionnaire?.experts?.expertEvidence?.option !== YesNo.YES) {
-    return [];
+  if (expertDetails !== undefined){
+    expertDetails.forEach((expert, index) => {
+      summaryRows.push(summaryRow(`${t('PAGES.EXPERT_DETAILS.SECTION_TITLE', { lng: getLng(lang) })} ${index + 1}`, '', expertHref, changeLabel(lang)));
+      summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.FIRST_NAME_OPTIONAL', lang), expert.firstName));
+      summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.LAST_NAME_OPTIONAL', lang), expert.lastName));
+      summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.EMAIL_ADDRESS_OPTIONAL', lang), expert.emailAddress));
+      summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.PHONE_OPTIONAL', lang), expert.phoneNumber?.toString()));
+      summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.FIELD_OF_EXPERTISE', lang), expert.fieldOfExpertise));
+      summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.TELL_US_WHY_NEED_EXPERT', lang), expert.whyNeedExpert));
+      summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.COST_OPTIONAL', lang), expert.estimatedCost?.toString()));
+
+    });
   }
-  return expertDetails.map((expert, index) => {
-    return [
-      summaryRow(`${t('PAGES.EXPERT_DETAILS.SECTION_TITLE', { lng: getLng(lang) })} ${index + 1}`, '', expertHref, changeLabel(lang)),
-      summaryRow(t('PAGES.EXPERT_DETAILS.FIRST_NAME_OPTIONAL', lang), expert.firstName),
-      summaryRow(t('PAGES.EXPERT_DETAILS.LAST_NAME_OPTIONAL', lang), expert.lastName),
-      summaryRow(t('PAGES.EXPERT_DETAILS.EMAIL_ADDRESS_OPTIONAL', lang), expert.emailAddress),
-      summaryRow(t('PAGES.EXPERT_DETAILS.PHONE_OPTIONAL', lang), expert.phoneNumber?.toString()),
-      summaryRow(t('PAGES.EXPERT_DETAILS.FIELD_OF_EXPERTISE', lang), expert.fieldOfExpertise),
-      summaryRow(t('PAGES.EXPERT_DETAILS.TELL_US_WHY_NEED_EXPERT', lang), expert.whyNeedExpert),
-      summaryRow(t('PAGES.EXPERT_DETAILS.COST_OPTIONAL', lang), expert.estimatedCost?.toString()),
-    ];
-  }).flat();
 
-}
+  return summaryRows;
+};
 
 export const getUseExpertEvidence = (claim:Claim, claimId: string, lng:string): SummaryRow =>{
-  let shouldConsiderExpertEvidence = affirmation(claim.directionQuestionnaire?.experts?.expertEvidence?.option, lng);
+  const shouldConsiderExpertEvidence = getFormattedUserAnswer(claim.directionQuestionnaire?.experts?.expertEvidence?.option, lng);
 
   return summaryRow(
     t('PAGES.DEFENDANT_EXPERT_EVIDENCE.TITLE', {lng}),
@@ -101,10 +103,10 @@ export const getUseExpertEvidence = (claim:Claim, claimId: string, lng:string): 
     constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_EXPERT_EVIDENCE_URL),
     changeLabel(lng),
   );
-}
+};
 
 export const getSentReportToOtherParties = (claim:Claim, claimId: string, lng:string): SummaryRow =>{
-  const shouldConsiderSentExpertReports = affirmation(claim.directionQuestionnaire?.experts?.sentExpertReports?.option, lng);
+  const shouldConsiderSentExpertReports = getFormattedUserAnswer(claim.directionQuestionnaire?.experts?.sentExpertReports?.option, lng);
 
   return summaryRow(
     t('PAGES.SENT_EXPERT_REPORTS.TITLE', {lng}),
@@ -112,10 +114,10 @@ export const getSentReportToOtherParties = (claim:Claim, claimId: string, lng:st
     constructResponseUrlWithIdParams(claimId, DQ_SENT_EXPERT_REPORTS_URL),
     changeLabel(lng),
   );
-}
+};
 
 export const getShareExpertWithClaimant = (claim:Claim, claimId: string, lng:string): SummaryRow =>{
-  const shouldConsiderSharedExpert = affirmation(claim.directionQuestionnaire?.experts?.sharedExpert?.option, lng);
+  const shouldConsiderSharedExpert = getFormattedUserAnswer(claim.directionQuestionnaire?.experts?.sharedExpert?.option, lng);
 
   return summaryRow(
     t('PAGES.SHARED_EXPERT.WITH_CLAIMANT', {lng}),
@@ -123,7 +125,18 @@ export const getShareExpertWithClaimant = (claim:Claim, claimId: string, lng:str
     constructResponseUrlWithIdParams(claimId, DQ_SHARE_AN_EXPERT_URL),
     changeLabel(lng),
   );
-}
+};
+
+export const getDisplayWantGiveSelfEvidence = (claim:Claim, claimId: string, lng:string): SummaryRow =>{
+  const shouldConsiderGiveYourselfEvidence = getFormattedUserAnswer(claim.directionQuestionnaire?.defendantYourselfEvidence?.option, lng);
+
+  return summaryRow(
+    t('PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE', {lng}),
+    shouldConsiderGiveYourselfEvidence,
+    constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL),
+    changeLabel(lng),
+  );
+};
 
 export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequirementsSection: SummarySection, claimId: string, lng: string) => {
 
@@ -139,25 +152,34 @@ export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequireme
   if (claim.directionQuestionnaire?.hearing?.considerClaimantDocuments?.option == YesNo.YES)
     hearingRequirementsSection.summaryList.rows.push(considerClaimantDocResponse(claim, claimId, lng));
 
-  hearingRequirementsSection.summaryList.rows.push(
-    getUseExpertEvidence(claim, claimId, lng),
-    getSentReportToOtherParties(claim, claimId, lng),
-    getShareExpertWithClaimant(claim, claimId, lng),
-    ...getExpert(claim, claimId, lng),
-  );
-  hearingRequirementsSection.summaryList.rows.push(
-    getUseExpertEvidence(claim, claimId, lng),
-    getSentReportToOtherParties(claim, claimId, lng),
-    getShareExpertWithClaimant(claim, claimId, lng),
-    ...getExpert(claim, claimId, getLng(lng)),
-    getSpecificCourtLocation(claim, claimId, getLng(lng)),
-    displaySpecificCourtLocation(claim, claimId, getLng(lng)),
-    displayDefendantUnavailableDate(claim, claimId, getLng(lng))
-  );
+  if (claim.directionQuestionnaire?.experts?.expertEvidence?.option)
+    hearingRequirementsSection.summaryList.rows.push(getUseExpertEvidence(claim, claimId, lng));
+
+  if (claim.directionQuestionnaire?.experts?.sentExpertReports?.option)
+    hearingRequirementsSection.summaryList.rows.push(getSentReportToOtherParties(claim, claimId, lng));
+
+  if (claim.directionQuestionnaire?.experts?.sharedExpert?.option)
+    hearingRequirementsSection.summaryList.rows.push(getShareExpertWithClaimant(claim, claimId, lng));
+
+  if (claim.directionQuestionnaire?.experts?.expertEvidence?.option === YesNo.YES) {
+    hearingRequirementsSection.summaryList.rows.push(...getExpertDetails(claim,claimId,lng));
+  }
+
+  if (claim.directionQuestionnaire?.defendantYourselfEvidence?.option)
+    hearingRequirementsSection.summaryList.rows.push(getDisplayWantGiveSelfEvidence(claim, claimId, lng));
+
+  if (claim.directionQuestionnaire?.hearing?.specificCourtLocation?.option)
+    hearingRequirementsSection.summaryList.rows.push(getSpecificCourtLocation(claim, claimId, getLng(lng)));
+
+  if (claim.directionQuestionnaire?.hearing?.specificCourtLocation?.option === YesNo.YES)
+    hearingRequirementsSection.summaryList.rows.push(displaySpecificCourtLocation(claim, claimId, getLng(lng)));
+
+  if (claim.directionQuestionnaire?.hearing?.cantAttendHearingInNext12Months?.option)
+    hearingRequirementsSection.summaryList.rows.push(displayDefendantUnavailableDate(claim, claimId, getLng(lng)));
 
   if (claim.directionQuestionnaire?.hearing?.cantAttendHearingInNext12Months?.option === YesNo.YES){
     hearingRequirementsSection.summaryList.rows.push(getDefendantUnavailableDate(claim, claimId, getLng(lng)));
-    hearingRequirementsSection.summaryList.rows.push(getUnavailableHearingDays(claim, claimId, getLng(lng)))
+    hearingRequirementsSection.summaryList.rows.push(getUnavailableHearingDays(claim, claimId, getLng(lng)));
   }
 
 };
@@ -171,7 +193,7 @@ export const getDefendantUnavailableDate = (claim: Claim, claimId: string, lng: 
     constructResponseUrlWithIdParams(claimId, DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL),
     changeLabel(lng),
   );
-}
+};
 
 export const getUnavailableHearingDays = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const NUMBER_OF_DAYS = 30;
@@ -183,15 +205,15 @@ export const getUnavailableHearingDays = (claim: Claim, claimId: string, lng: st
   }
 
   return summaryRow(
-    t("PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.WHY_UNAVAILABLE_FOR_MORE_THAN_30_DAYS", {days:days, lng:lng}),
+    t('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.WHY_UNAVAILABLE_FOR_MORE_THAN_30_DAYS', {days:days, lng:lng}),
     whyUnavailableForHearing,
     constructResponseUrlWithIdParams(claimId, DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL),
     changeLabel(lng),
   );
-}
+};
 
 export const displayDefendantUnavailableDate = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const hasUnavailableDatesForHearing = affirmation(claim.directionQuestionnaire?.hearing?.cantAttendHearingInNext12Months?.option, lng);
+  const hasUnavailableDatesForHearing = getFormattedUserAnswer(claim.directionQuestionnaire?.hearing?.cantAttendHearingInNext12Months?.option, lng);
 
   return summaryRow(
     t('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE', {lng}),
@@ -199,10 +221,10 @@ export const displayDefendantUnavailableDate = (claim: Claim, claimId: string, l
     constructResponseUrlWithIdParams(claimId, DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL),
     changeLabel(lng),
   );
-}
+};
 
 export const getSpecificCourtLocation = (claim: Claim, claimId: string, lng:string): SummaryRow=> {
-  const hasSpecificCourtLocation = affirmation(claim.directionQuestionnaire?.hearing?.specificCourtLocation?.option, lng)
+  const hasSpecificCourtLocation = getFormattedUserAnswer(claim.directionQuestionnaire?.hearing?.specificCourtLocation?.option, lng);
 
   return summaryRow(
     t('PAGES.SPECIFIC_COURT.TITLE', {lng}),
@@ -210,14 +232,10 @@ export const getSpecificCourtLocation = (claim: Claim, claimId: string, lng:stri
     constructResponseUrlWithIdParams(claimId, DQ_COURT_LOCATION_URL),
     changeLabel(lng),
   );
-}
+};
 
 export const displaySpecificCourtLocation = (claim: Claim, claimId: string, lng:string): SummaryRow=> {
-  const hasSpecificCourtLocation = claim.directionQuestionnaire?.hearing?.specificCourtLocation?.courtLocation
-
-  if (claim.directionQuestionnaire?.hearing?.specificCourtLocation?.option !== YesNo.YES){
-    return;
-  }
+  const hasSpecificCourtLocation = claim.directionQuestionnaire?.hearing?.specificCourtLocation?.courtLocation;
 
   return summaryRow(
     t('PAGES.SPECIFIC_COURT.SELECTED_COURT', {lng}),
@@ -225,4 +243,4 @@ export const displaySpecificCourtLocation = (claim: Claim, claimId: string, lng:
     constructResponseUrlWithIdParams(claimId, DQ_COURT_LOCATION_URL),
     changeLabel(lng),
   );
-}
+};

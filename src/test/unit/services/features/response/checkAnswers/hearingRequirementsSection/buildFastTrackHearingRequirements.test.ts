@@ -5,8 +5,7 @@ import {YesNo, YesNoNotReceived} from 'form/models/yesNo';
 import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
 import {
   considerClaimantDocQuestion,
-  considerClaimantDocResponse,
-  getExpert,
+  considerClaimantDocResponse, getDisplayWantGiveSelfEvidence, getExpertDetails,
   getSentReportToOtherParties,
   getShareExpertWithClaimant,
   getUseExpertEvidence,
@@ -16,22 +15,18 @@ import {
   requestExtra4WeeksQuestion,
   triedToSettleQuestion,
 } from 'services/features/response/checkAnswers/hearingRequirementsSection/buildFastTrackHearingRequirements';
-import {
-  ExpertDetailsList
-} from '../../../../../../../main/common/models/directionsQuestionnaire/experts/expertDetailsList';
 import {Experts} from 'models/directionsQuestionnaire/experts/experts';
 import {
-  giveEvidenceYourself
-} from "services/features/response/checkAnswers/hearingRequirementsSection/buildCommonHearingRequirements";
-
-import {ExpertDetails} from "models/directionsQuestionnaire/experts/expertDetails";
-import {
   UnavailableDatePeriod,
-  UnavailableDateType
-} from "../../../../../../../main/common/models/directionsQuestionnaire/hearing/unavailableDates";
+  UnavailableDateType,
+} from '../../../../../../../main/common/models/directionsQuestionnaire/hearing/unavailableDates';
 import {
-  SpecificCourtLocation
-} from "../../../../../../../main/common/models/directionsQuestionnaire/hearing/specificCourtLocation";
+  SpecificCourtLocation,
+} from '../../../../../../../main/common/models/directionsQuestionnaire/hearing/specificCourtLocation';
+import {
+  ExpertDetailsList,
+} from '../../../../../../../main/common/models/directionsQuestionnaire/experts/expertDetailsList';
+import {ExpertDetails} from '../../../../../../../main/common/models/directionsQuestionnaire/experts/expertDetails';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/i18n');
@@ -135,14 +130,11 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       //Given
       claim.directionQuestionnaire.experts.expertEvidence =  {option:YesNo.NO};
       claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList();
-      claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList(
-        [new ExpertDetails('Mike', 'James', 'mike@gmail.com', 7411111,
-          'reason', 'expert', 500)]);
 
-      const result: any[] = []
+      const result: any[] = [];
 
       //When
-      const expertDetails = getExpert(claim, claimId, lng);
+      const expertDetails = getExpertDetails(claim, claimId, lng);
 
       //Then
       expect(expertDetails).toStrictEqual(result);
@@ -154,11 +146,11 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList();
 
       claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList(
-        [new ExpertDetails('Mike', 'James', 'mike@gmail.com', 7411111, 'reason', 'expert', 500)]
+        [new ExpertDetails('Mike', 'James', 'mike@gmail.com', 7411111, 'reason', 'expert', 500)],
       );
 
       //When
-      const summaryRows = getExpert(claim, '1', 'eng');
+      const summaryRows = getExpertDetails(claim, '1', 'eng');
       //Then
       expect(summaryRows.length).toEqual(8);
       expect(summaryRows[0].key.text).toEqual('PAGES.EXPERT_DETAILS.SECTION_TITLE 1');
@@ -185,28 +177,28 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       const mockSummarySection = summaryRow(
         'PAGES.DEFENDANT_EXPERT_EVIDENCE.TITLE',
         'COMMON.NO',
-        `/case/validClaimId/directions-questionnaire/expert-evidence`,
+        '/case/validClaimId/directions-questionnaire/expert-evidence',
         changeButton,
       );
       //When
       const doWantUseExpectEvidence = getUseExpertEvidence(claim, claimId, lng);
       //Then
-      expect(doWantUseExpectEvidence).toStrictEqual(mockSummarySection)
+      expect(doWantUseExpectEvidence).toStrictEqual(mockSummarySection);
     });
     it('should display the use of own evidence No if the claimant choose not',  () => {
 
       claim.directionQuestionnaire.defendantYourselfEvidence = {option: YesNo.NO};
       //Given
       const mockSummarySection = summaryRow(
-        'PAGES.CHECK_YOUR_ANSWER.GIVE_EVIDENCE',
+        'PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE',
         'COMMON.NO',
-        `/case/validClaimId/directions-questionnaire/give-evidence-yourself`,
+        '/case/validClaimId/directions-questionnaire/give-evidence-yourself',
         changeButton,
       );
       //When
-      const personalEvidence = giveEvidenceYourself(claim, claimId, lng);
+      const personalEvidence = getDisplayWantGiveSelfEvidence(claim, claimId, lng);
       //Then
-      expect(personalEvidence).toStrictEqual(mockSummarySection)
+      expect(personalEvidence).toStrictEqual(mockSummarySection);
     });
     it('should display No if the defendant does not accept to share expert  with the claimant', function () {
 
@@ -215,13 +207,13 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       const mockSummarySection = summaryRow(
         'PAGES.SHARED_EXPERT.WITH_CLAIMANT',
         'COMMON.NO',
-        `/case/validClaimId/directions-questionnaire/shared-expert`,
+        '/case/validClaimId/directions-questionnaire/shared-expert',
         changeButton,
       );
       //When
       const shareExpertWithClaimant = getShareExpertWithClaimant(claim, claimId, lng);
       //Then
-      expect(shareExpertWithClaimant).toStrictEqual(mockSummarySection)
+      expect(shareExpertWithClaimant).toStrictEqual(mockSummarySection);
     });
     it('should display No if the defendant has not send expert report to other parties', function () {
       //Given
@@ -229,13 +221,13 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       const mockSummarySection = summaryRow(
         'PAGES.SENT_EXPERT_REPORTS.TITLE',
         'COMMON.NO',
-        `/case/validClaimId/directions-questionnaire/sent-expert-reports`,
+        '/case/validClaimId/directions-questionnaire/sent-expert-reports',
         changeButton,
       );
       //When
       const sentReportToOtherParties = getSentReportToOtherParties(claim, claimId, lng);
       //Then
-      expect(sentReportToOtherParties).toStrictEqual(mockSummarySection)
+      expect(sentReportToOtherParties).toStrictEqual(mockSummarySection);
     });
     it('should display No if the claimant has not yet received expert report to other parties', function () {
 
@@ -244,13 +236,13 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       const mockSummarySection = summaryRow(
         'PAGES.SENT_EXPERT_REPORTS.TITLE',
         'PAGES.SENT_EXPERT_REPORTS.OPTION_NOT_RECEIVED',
-        `/case/validClaimId/directions-questionnaire/sent-expert-reports`,
+        '/case/validClaimId/directions-questionnaire/sent-expert-reports',
         changeButton,
       );
       //When
       const sentReportToOtherParties = getSentReportToOtherParties(claim, claimId, lng);
       //Then
-      expect(sentReportToOtherParties).toStrictEqual(mockSummarySection)
+      expect(sentReportToOtherParties).toStrictEqual(mockSummarySection);
     });
   });
 
@@ -265,10 +257,9 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       //When
       claim.directionQuestionnaire.experts.expertEvidence =  {option:YesNo.NO};
       claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList();
-      claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList([new ExpertDetails('Mike', 'James', 'mike@gmail.com', 7411111, 'reason', 'expert', 500)]);
-      const result: any[] = []
+      const result: any[] = [];
       //Then
-      expect(getExpert(claim, claimId, lng)).toStrictEqual(result);
+      expect(getExpertDetails(claim, claimId, lng)).toStrictEqual(result);
     });
     it('should display expert details if the expect evidence is YES', function () {
       //Given
@@ -280,7 +271,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
 
       claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList([new ExpertDetails('Mike', 'James', 'mike@gmail.com', 7411111, 'reason', 'expert', 500)]);
       //When
-      const summaryRows = getExpert(claim, '1', 'eng');
+      const summaryRows = getExpertDetails(claim, '1', 'eng');
       //Then
       expect(summaryRows.length).toEqual(8);
       expect(summaryRows[0].key.text).toEqual('PAGES.EXPERT_DETAILS.SECTION_TITLE 1');
@@ -310,13 +301,13 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       const mockSummarySection = summaryRow(
         'PAGES.DEFENDANT_EXPERT_EVIDENCE.TITLE',
         'COMMON.NO',
-        `/case/validClaimId/directions-questionnaire/expert-evidence`,
+        '/case/validClaimId/directions-questionnaire/expert-evidence',
         changeButton,
       );
       //When
       const doWantUseExpectEvidence = getUseExpertEvidence(claim, claimId, lng);
       //Then
-      expect(doWantUseExpectEvidence).toStrictEqual(mockSummarySection)
+      expect(doWantUseExpectEvidence).toStrictEqual(mockSummarySection);
     });
     it('should display the use of own evidence No if the claimant choose not',  () => {
       const claim = new Claim();
@@ -324,15 +315,15 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       claim.directionQuestionnaire.defendantYourselfEvidence = {option: YesNo.NO};
       //Given
       const mockSummarySection = summaryRow(
-        'PAGES.CHECK_YOUR_ANSWER.GIVE_EVIDENCE',
+        'PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE',
         'COMMON.NO',
-        `/case/validClaimId/directions-questionnaire/give-evidence-yourself`,
+        '/case/validClaimId/directions-questionnaire/give-evidence-yourself',
         changeButton,
       );
       //When
-      const personalEvidence = giveEvidenceYourself(claim, claimId, lng);
+      const personalEvidence = getDisplayWantGiveSelfEvidence(claim, claimId, lng);
       //Then
-      expect(personalEvidence).toStrictEqual(mockSummarySection)
+      expect(personalEvidence).toStrictEqual(mockSummarySection);
     });
     it('should display No if the defendant does not accept to share expert  with the claimant', function () {
       const claim = new Claim();
@@ -343,13 +334,13 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       const mockSummarySection = summaryRow(
         'PAGES.SHARED_EXPERT.WITH_CLAIMANT',
         'COMMON.NO',
-        `/case/validClaimId/directions-questionnaire/shared-expert`,
+        '/case/validClaimId/directions-questionnaire/shared-expert',
         changeButton,
       );
       //When
       const shareExpertWithClaimant = getShareExpertWithClaimant(claim, claimId, lng);
       //Then
-      expect(shareExpertWithClaimant).toStrictEqual(mockSummarySection)
+      expect(shareExpertWithClaimant).toStrictEqual(mockSummarySection);
     });
     it('should display No if the defendant has not send expert report to other parties', function () {
       const claim = new Claim();
@@ -361,13 +352,13 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       const mockSummarySection = summaryRow(
         'PAGES.SENT_EXPERT_REPORTS.TITLE',
         'COMMON.NO',
-        `/case/validClaimId/directions-questionnaire/sent-expert-reports`,
+        '/case/validClaimId/directions-questionnaire/sent-expert-reports',
         changeButton,
       );
       //When
       const sentReportToOtherParties = getSentReportToOtherParties(claim, claimId, lng);
       //Then
-      expect(sentReportToOtherParties).toStrictEqual(mockSummarySection)
+      expect(sentReportToOtherParties).toStrictEqual(mockSummarySection);
     });
     it('should display No if the claimant has not yet received expert report to other parties', function () {
       const claim = new Claim();
@@ -379,15 +370,15 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       const mockSummarySection = summaryRow(
         'PAGES.SENT_EXPERT_REPORTS.TITLE',
         'PAGES.SENT_EXPERT_REPORTS.OPTION_NOT_RECEIVED',
-        `/case/validClaimId/directions-questionnaire/sent-expert-reports`,
+        '/case/validClaimId/directions-questionnaire/sent-expert-reports',
         changeButton,
       );
       //When
       const sentReportToOtherParties = getSentReportToOtherParties(claim, claimId, lng);
       //Then
-      expect(sentReportToOtherParties).toStrictEqual(mockSummarySection)
+      expect(sentReportToOtherParties).toStrictEqual(mockSummarySection);
     });
-  })
+  });
 
   describe('should return summary rows relative to unavailable date for hearing', () => {
     const claim = new Claim();
@@ -402,11 +393,11 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         'PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE',
         'COMMON.NO',
         '/case/validClaimId/directions-questionnaire/cant-attend-hearing-in-next-12-months',
-        changeButton
+        changeButton,
       );
 
       //GIVEN
-      const defendantUnavailableDate = displayDefendantUnavailableDate(claim, claimId, lng)
+      const defendantUnavailableDate = displayDefendantUnavailableDate(claim, claimId, lng);
 
       // THEN
       expect(defendantUnavailableDate).toStrictEqual(mockSummarySection);
@@ -424,11 +415,11 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         'PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE',
         'COMMON.YES',
         '/case/validClaimId/directions-questionnaire/cant-attend-hearing-in-next-12-months',
-        changeButton
+        changeButton,
       );
 
       //GIVEN
-      const defendantUnavailableDate = displayDefendantUnavailableDate(claim, claimId, lng)
+      const defendantUnavailableDate = displayDefendantUnavailableDate(claim, claimId, lng);
 
       //THEN
       expect(defendantUnavailableDate).toStrictEqual(mockSummarySection);
@@ -460,11 +451,11 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         'PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.UNAVAILABLE_DATES',
         ' 30 December 2023',
         '/case/validClaimId/directions-questionnaire/cant-attend-hearing-in-next-12-months',
-        changeButton
+        changeButton,
       );
 
       //GIVEN
-      const defendantUnavailableDate = getDefendantUnavailableDate(claim, claimId, lng)
+      const defendantUnavailableDate = getDefendantUnavailableDate(claim, claimId, lng);
 
       //THEN
       expect(defendantUnavailableDate).toStrictEqual(mockSummarySection);
@@ -491,18 +482,18 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       };
 
       claim.directionQuestionnaire.hearing.unavailableDatesForHearing = {
-        items: [longerPeriod4DaysOverlapMockData]
+        items: [longerPeriod4DaysOverlapMockData],
       };
 
       const mockSummarySection = summaryRow(
         'PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.UNAVAILABLE_DATES',
         ' 10 December 2023<br>11 December 2023<br>12 December 2023<br>13 December 2023<br>14 December 2023',
         '/case/validClaimId/directions-questionnaire/cant-attend-hearing-in-next-12-months',
-        changeButton
+        changeButton,
       );
 
       //GIVEN
-      const defendantUnavailableDates = getDefendantUnavailableDate(claim, claimId, lng)
+      const defendantUnavailableDates = getDefendantUnavailableDate(claim, claimId, lng);
 
       //THEN
       expect(defendantUnavailableDates).toStrictEqual(mockSummarySection);
@@ -529,15 +520,15 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
 
         //WHEN
         claim.directionQuestionnaire.hearing.unavailableDatesForHearing = {
-          items: [longerPeriod4DaysOverlapMockData]
+          items: [longerPeriod4DaysOverlapMockData],
         };
-        claim.directionQuestionnaire.hearing.whyUnavailableForHearing = { reason: "I will be out the country"}
+        claim.directionQuestionnaire.hearing.whyUnavailableForHearing = { reason: 'I will be out the country'};
 
         const mockSummarySection = summaryRow(
           'PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.WHY_UNAVAILABLE_FOR_MORE_THAN_30_DAYS',
           'I will be out the country',
           '/case/validClaimId/directions-questionnaire/cant-attend-hearing-in-next-12-months',
-          changeButton
+          changeButton,
         );
         // GIVEN
         const unavailableHearingDays = getUnavailableHearingDays(claim, claimId, lng);
@@ -551,15 +542,15 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
 
         //WHEN
         claim.directionQuestionnaire.hearing.unavailableDatesForHearing = {
-          items: [longerPeriod4DaysOverlapMockData]
+          items: [longerPeriod4DaysOverlapMockData],
         };
-        claim.directionQuestionnaire.hearing.whyUnavailableForHearing = { reason: "I will be out the country"}
+        claim.directionQuestionnaire.hearing.whyUnavailableForHearing = { reason: 'I will be out the country'};
 
         const mockSummarySection = summaryRow(
           'PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.WHY_UNAVAILABLE_FOR_MORE_THAN_30_DAYS',
           'I will be out the country',
           '/case/validClaimId/directions-questionnaire/cant-attend-hearing-in-next-12-months',
-          changeButton
+          changeButton,
         );
         // GIVEN
         const unavailableHearingDays = getUnavailableHearingDays(claim, claimId, lng);
@@ -568,7 +559,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         expect(unavailableHearingDays).toStrictEqual(mockSummarySection);
 
       });
-    })
+    });
 
   });
 
@@ -578,8 +569,8 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
     claim.directionQuestionnaire.hearing = new Hearing();
     const courtLocations = [{
       code: '28b3277a-92f8-4e6b-a8b5-78c5de5c9a7a',
-      label: "Barnet Civil and Family Centre - ST MARY'S COURT, REGENTS PARK ROAD - N3 1BQ"
-    }]
+      label: "Barnet Civil and Family Centre - ST MARY'S COURT, REGENTS PARK ROAD - N3 1BQ",
+    }];
 
     it('should display NO if the defendant does not have a preference for  hearing court location', function () {
 
@@ -589,12 +580,11 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         'PAGES.SPECIFIC_COURT.TITLE',
         'COMMON.NO',
         '/case/validClaimId/directions-questionnaire/court-location',
-        changeButton
+        changeButton,
       );
 
       //WHEN
-      let specificCourtLocation: SummaryRow = getSpecificCourtLocation(claim, claimId, lng);
-
+      const specificCourtLocation: SummaryRow = getSpecificCourtLocation(claim, claimId, lng);
 
       //THEN
       expect(specificCourtLocation).toStrictEqual(mockSummarySection);
@@ -606,13 +596,13 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       claim.directionQuestionnaire.hearing.specificCourtLocation = new SpecificCourtLocation(YesNo.YES, courtLocations[0].label, 'reason');
 
       //WHEN
-      let specificCourtLocation: SummaryRow = getSpecificCourtLocation(claim, claimId, lng);
+      const specificCourtLocation: SummaryRow = getSpecificCourtLocation(claim, claimId, lng);
 
       const mockSummarySection: SummaryRow = summaryRow(
         'PAGES.SPECIFIC_COURT.TITLE',
         'COMMON.YES',
         '/case/validClaimId/directions-questionnaire/court-location',
-        changeButton
+        changeButton,
       );
       //THEN
       expect(specificCourtLocation).toStrictEqual(mockSummarySection);
@@ -623,18 +613,18 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       claim.directionQuestionnaire.hearing.specificCourtLocation = new SpecificCourtLocation(YesNo.YES, courtLocations[0].label, 'reason');
 
       //WHEN
-      let specificCourtLocation: SummaryRow = displaySpecificCourtLocation(claim, claimId, lng);
+      const specificCourtLocation: SummaryRow = displaySpecificCourtLocation(claim, claimId, lng);
 
       const mockSummarySection: SummaryRow = summaryRow(
         'PAGES.SPECIFIC_COURT.SELECTED_COURT',
         courtLocations[0].label,
         '/case/validClaimId/directions-questionnaire/court-location',
-        changeButton
+        changeButton,
       );
 
       //THEN
       expect(specificCourtLocation).toStrictEqual(mockSummarySection);
     });
-  })
+  });
 
 });

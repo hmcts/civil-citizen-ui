@@ -3,7 +3,7 @@ import {
   UnavailableDateType,
   UnavailableDatePeriod,
 } from 'models/directionsQuestionnaire/hearing/unavailableDates';
-import {formatDateToFullDate} from "common/utils/dateUtils";
+import {formatDateToFullDate} from 'common/utils/dateUtils';
 
 export const getNumberOfUnavailableDays = (unavailableDates: UnavailableDates): number => {
   if (!unavailableDates) return 0;
@@ -26,15 +26,16 @@ export const getListOfUnavailableDate = (unavailableDates: UnavailableDates): Se
       case UnavailableDateType.SINGLE_DATE:
         unavailableDateSet.add(formatDateToFullDate(new Date(item.from)));
         break;
-      case UnavailableDateType.LONGER_PERIOD:
+      case UnavailableDateType.LONGER_PERIOD: {
         const datesBetween = getDatesBetween(new Date(item.from), new Date(item.until));
         datesBetween.forEach((date: string) => {
-          unavailableDateSet.add(date);
-        });
+          unavailableDateSet.add(date);},
+        );
+      }
         break;
       default:
         break;
     }
   });
   return unavailableDateSet;
-}
+};
