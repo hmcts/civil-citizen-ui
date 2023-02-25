@@ -8,7 +8,7 @@ import {summaryRow} from 'models/summaryList/summaryList';
 import {
   documentsLanguagePreference,
   getWitnesses,
-  giveEvidenceYourself, phoneAndVideoInfo, phoneAndVideoQuestion,
+  phoneAndVideoInfo, phoneAndVideoQuestion,
   speakingLanguagePreference,
   vulnerabilityInfo,
   vulnerabilityQuestion,
@@ -26,6 +26,9 @@ import {summarySection} from 'models/summaryList/summarySections';
 import {OtherWitnessItems} from 'common/models/directionsQuestionnaire/witnesses/otherWitnessItems';
 import {Witnesses} from 'models/directionsQuestionnaire/witnesses/witnesses';
 import {OtherWitnesses} from 'models/directionsQuestionnaire/witnesses/otherWitnesses';
+import {
+  getDisplayWantGiveSelfEvidence
+} from '../../../../../../../main/services/features/response/checkAnswers/hearingRequirementsSection/buildFastTrackHearingRequirements';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/i18n');
@@ -209,13 +212,13 @@ describe('Common Hearing Requirements Section', () => {
         option: YesNo.NO,
       };
       const mockSummarySection = summaryRow(
-        'PAGES.CHECK_YOUR_ANSWER.GIVE_EVIDENCE',
+        'PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE',
         'COMMON.NO',
         `/case/${claimId}/directions-questionnaire/give-evidence-yourself`,
         changeButton,
       );
       //Then
-      expect(giveEvidenceYourself(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      expect(getDisplayWantGiveSelfEvidence(claim, claimId, lng)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if give evidence yourself option is yes', () => {
@@ -226,13 +229,13 @@ describe('Common Hearing Requirements Section', () => {
         option: YesNo.YES,
       };
       const mockSummarySection = summaryRow(
-        'PAGES.CHECK_YOUR_ANSWER.GIVE_EVIDENCE',
+        'PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE',
         'COMMON.YES',
         `/case/${claimId}/directions-questionnaire/give-evidence-yourself`,
         changeButton,
       );
       //Then
-      expect(giveEvidenceYourself(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      expect(getDisplayWantGiveSelfEvidence(claim, claimId, lng)).toStrictEqual(mockSummarySection);
     });
   });
 

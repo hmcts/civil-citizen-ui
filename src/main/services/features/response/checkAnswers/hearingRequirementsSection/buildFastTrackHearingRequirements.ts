@@ -122,7 +122,7 @@ export const getShareExpertWithClaimant = (claim:Claim, claimId: string, lng:str
 };
 
 export const getDisplayWantGiveSelfEvidence = (claim:Claim, claimId: string, lng:string): SummaryRow =>{
-  const shouldConsiderGiveYourselfEvidence = getFormatedUserAnswer(claim.directionQuestionnaire?.experts?.expertEvidence?.option, lng);
+  const shouldConsiderGiveYourselfEvidence = getFormatedUserAnswer(claim.directionQuestionnaire?.defendantYourselfEvidence?.option, lng);
 
   return summaryRow(
     t('PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE', {lng}),
@@ -146,16 +146,22 @@ export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequireme
   if (claim.directionQuestionnaire?.hearing?.considerClaimantDocuments?.option == YesNo.YES)
     hearingRequirementsSection.summaryList.rows.push(considerClaimantDocResponse(claim, claimId, lng));
 
-  hearingRequirementsSection.summaryList.rows.push(
-    getUseExpertEvidence(claim, claimId, lng),
-    getSentReportToOtherParties(claim, claimId, lng),
-    getShareExpertWithClaimant(claim, claimId, lng),
-  );
+
+  if (claim.directionQuestionnaire?.experts?.expertEvidence?.option)
+    hearingRequirementsSection.summaryList.rows.push(getUseExpertEvidence(claim, claimId, lng));
+
+  if (claim.directionQuestionnaire?.experts?.sentExpertReports?.option)
+    hearingRequirementsSection.summaryList.rows.push(getSentReportToOtherParties(claim, claimId, lng));
+
+  if (claim.directionQuestionnaire?.experts?.sharedExpert?.option)
+    hearingRequirementsSection.summaryList.rows.push(getShareExpertWithClaimant(claim, claimId, lng));
+
 
   if (claim.directionQuestionnaire?.experts?.expertEvidence?.option === YesNo.YES) {
     hearingRequirementsSection.summaryList.rows.push(...getExpertDetails(claim,claimId,lng));
   }
 
-  hearingRequirementsSection.summaryList.rows.push(getDisplayWantGiveSelfEvidence(claim, claimId, lng));
+  if (claim.directionQuestionnaire?.defendantYourselfEvidence?.option)
+    hearingRequirementsSection.summaryList.rows.push(getDisplayWantGiveSelfEvidence(claim, claimId, lng));
 
 };

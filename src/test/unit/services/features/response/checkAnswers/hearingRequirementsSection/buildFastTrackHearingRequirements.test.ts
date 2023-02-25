@@ -5,7 +5,7 @@ import {YesNo, YesNoNotReceived} from 'form/models/yesNo';
 import {summaryRow} from 'models/summaryList/summaryList';
 import {
   considerClaimantDocQuestion,
-  considerClaimantDocResponse, getExpertDetails,
+  considerClaimantDocResponse, getDisplayWantGiveSelfEvidence, getExpertDetails,
   getSentReportToOtherParties,
   getShareExpertWithClaimant,
   getUseExpertEvidence,
@@ -13,9 +13,6 @@ import {
   triedToSettleQuestion,
 } from 'services/features/response/checkAnswers/hearingRequirementsSection/buildFastTrackHearingRequirements';
 import {Experts} from '../../../../../../../main/common/models/directionsQuestionnaire/experts/experts';
-import {
-  giveEvidenceYourself,
-} from '../../../../../../../main/services/features/response/checkAnswers/hearingRequirementsSection/buildCommonHearingRequirements';
 import {
   ExpertDetailsList,
 } from '../../../../../../../main/common/models/directionsQuestionnaire/experts/expertDetailsList';
@@ -183,13 +180,13 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       claim.directionQuestionnaire.defendantYourselfEvidence = {option: YesNo.NO};
       //Given
       const mockSummarySection = summaryRow(
-        'PAGES.CHECK_YOUR_ANSWER.GIVE_EVIDENCE',
+        'PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE',
         'COMMON.NO',
         '/case/validClaimId/directions-questionnaire/give-evidence-yourself',
         changeButton,
       );
       //When
-      const personalEvidence = giveEvidenceYourself(claim, claimId, lng);
+      const personalEvidence = getDisplayWantGiveSelfEvidence(claim, claimId, lng);
       //Then
       expect(personalEvidence).toStrictEqual(mockSummarySection);
     });

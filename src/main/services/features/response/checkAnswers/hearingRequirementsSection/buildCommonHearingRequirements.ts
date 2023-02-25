@@ -5,7 +5,7 @@ import {summaryRow, SummaryRow} from 'models/summaryList/summaryList';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   DQ_DEFENDANT_WITNESSES_URL,
-  DQ_GIVE_EVIDENCE_YOURSELF_URL, DQ_PHONE_OR_VIDEO_HEARING_URL,
+  DQ_PHONE_OR_VIDEO_HEARING_URL,
   DQ_WELSH_LANGUAGE_URL,
   VULNERABILITY_URL,
 } from 'routes/urls';
@@ -65,19 +65,6 @@ export const vulnerabilityInfo = (claim: Claim, claimId: string, lng: string): S
   );
 };
 
-export const giveEvidenceYourself = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const option = claim.directionQuestionnaire?.defendantYourselfEvidence?.option === YesNo.YES
-    ? YesNoUpperCase.YES
-    : YesNoUpperCase.NO;
-
-  return summaryRow(
-    t('PAGES.CHECK_YOUR_ANSWER.GIVE_EVIDENCE', {lng}),
-    t(`COMMON.${option}`, {lng}),
-    constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL),
-    changeLabel(lng),
-  );
-};
-
 function getLanguageSelected(languageOptions: LanguageOptions, lng: string) {
   switch (languageOptions) {
     case LanguageOptions.ENGLISH:
@@ -133,10 +120,6 @@ export const phoneAndVideoInfo = (claim: Claim, claimId: string, lng: string): S
 };
 
 export const buildCommonHearingRequirements = (claim: Claim, hearingRequirementsSection: SummarySection, claimId: string, lng: string) => {
-
-  if (claim.directionQuestionnaire?.defendantYourselfEvidence?.option) {
-    hearingRequirementsSection.summaryList.rows.push(giveEvidenceYourself(claim, claimId, lng));
-  }
 
   hearingRequirementsSection.summaryList.rows.push(...getWitnesses(claim, claimId, lng));
 
