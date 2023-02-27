@@ -10,7 +10,7 @@ export interface CCDUnavailableDates{
   value?: CCDUnavailableDateItem,
 }
 
- interface CCDUnavailableDateItem {
+export interface CCDUnavailableDateItem {
   who?: string,
   date?: Date,
   fromDate?: Date,

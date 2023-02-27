@@ -18,7 +18,7 @@ function toCCDUnavailableDateType(type: UnavailableDateType) {
 
 function toCCDUnavailableDates(dateDetails: UnavailableDatePeriod[]) {
   if (!dateDetails?.length) return undefined;
-  const smallClaimUnavailableDates = dateDetails.map((unavailableDatePeriod: UnavailableDatePeriod) => {
+  const fastClaimUnavailableDates = dateDetails.map((unavailableDatePeriod: UnavailableDatePeriod) => {
     return {
       value: {
         who: undefined,
@@ -29,12 +29,14 @@ function toCCDUnavailableDates(dateDetails: UnavailableDatePeriod[]) {
       },
     };
   });
-  return smallClaimUnavailableDates;
+  return fastClaimUnavailableDates;
 }
 
-export const toCCDSmallClaimHearing = (hearing: Hearing | undefined) => {
+export const toCCDFastClaimHearing = (hearing: Hearing | undefined) => {
   return {
+    hearingLengthHours: '0',
+    hearingLengthDays: '0',
     unavailableDatesRequired: toCCDYesNoFromGenericYesNo(hearing?.cantAttendHearingInNext12Months),
-    smallClaimUnavailableDate: toCCDUnavailableDates(hearing?.unavailableDatesForHearing?.items),
+    unavailableDates: toCCDUnavailableDates(hearing?.unavailableDatesForHearing?.items),
   };
 };

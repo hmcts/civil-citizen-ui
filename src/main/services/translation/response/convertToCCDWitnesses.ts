@@ -21,7 +21,7 @@ function ccdWitnessDetails(witnessItems: OtherWitnessItems[] | undefined) {
 
 export const toCCDWitnesses = (witnesses: Witnesses | undefined) => {
   return {
-    witnessesToAppear: toCCDYesNo(witnesses.otherWitnesses.option),
+    witnessesToAppear: toCCDYesNo(witnesses?.otherWitnesses?.option),
     details: ccdWitnessDetails(witnesses?.otherWitnesses?.witnessItems),
   };
 };

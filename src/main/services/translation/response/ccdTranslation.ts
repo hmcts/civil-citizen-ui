@@ -13,6 +13,7 @@ import {toCCDSHearingSupport} from 'services/translation/response/convertToCCDHe
 import {toCCDWitnesses} from 'services/translation/response/convertToCCDWitnesses';
 import {toCCDSmallClaimHearing} from 'services/translation/response/convertToCCDSmallClaimHearing';
 import {toCCDDQExtraDetails} from 'services/translation/response/convertToCCDDQExtraDetials';
+import {toCCDFastClaimHearing} from 'services/translation/response/convertToCCDFastClaimHearing';
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   return {
@@ -30,6 +31,7 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     respondent1DQHearingSupport: toCCDSHearingSupport(claim.directionQuestionnaire?.hearing?.supportRequiredList),
     respondent1DQWitnesses: toCCDWitnesses(claim.directionQuestionnaire?.witnesses),
     respondent1DQHearingSmallClaim: claim.isSmallClaimsTrackDQ ? toCCDSmallClaimHearing(claim.directionQuestionnaire?.hearing) : undefined,
+    respondent1DQHearingFastClaim: claim.isFastTrackClaim ? toCCDFastClaimHearing(claim.directionQuestionnaire?.hearing) : undefined,
     respondent1DQExtraDetails: toCCDDQExtraDetails(claim.directionQuestionnaire),
   };
 };

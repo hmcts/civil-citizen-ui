@@ -5,6 +5,7 @@ let signLanguage: string , languageInterpreter: string, otherSupport: string;
 
 function ccdHearingSupportRequirmentList(items: SupportRequired[]) {
   if (!items?.length) return undefined;
+
   const hearingSupportList: CCDSupportRequirements[] = [];
   items.forEach((hearingSupportItem, index) => {
     if (hearingSupportItem.disabledAccess)
