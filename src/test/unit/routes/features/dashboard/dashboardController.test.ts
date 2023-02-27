@@ -15,6 +15,11 @@ jest.mock('../../../../../main/app/auth/user/oidc', () => ({
   getUserDetails: jest.fn(() => USER_DETAILS),
 }));
 
+jest.mock('../../../../../main/modules/i18n/languageService', ()=> ({
+  setLanguage: jest.fn(),
+  getLanguage: jest.fn(),
+}));
+
 export const USER_DETAILS = {
   accessToken: citizenRoleToken,
   roles: ['citizen'],
