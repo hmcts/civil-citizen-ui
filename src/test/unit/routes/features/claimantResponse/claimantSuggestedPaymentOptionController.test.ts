@@ -4,9 +4,9 @@ import nock from 'nock';
 import {app} from  '../../../../../main/app';
 import {
   CLAIMANT_RESPONSE_PAYMENT_OPTION_URL,
-  CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL,
   CLAIMANT_RESPONSE_PAYMENT_PLAN_URL,
   CLAIMANT_RESPONSE_PAYMENT_DATE_URL,
+  CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
@@ -66,7 +66,7 @@ describe('Claimant suggested Payment Option Controller', () => {
         .send('paymentType=IMMEDIATELY')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL);
+          expect(res.header.location).toEqual(CLAIMANT_RESPONSE_TASK_LIST_URL);
         });
     });
     it('should redirect to suggest instalments page when instalments option is selected', async () => {

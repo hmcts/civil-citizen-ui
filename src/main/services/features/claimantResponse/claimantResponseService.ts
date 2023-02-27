@@ -51,7 +51,7 @@ const saveClaimantResponse = async (claimId: string, value: any, claimantRespons
       claim.claimantResponse = claimantResponse;
     }
     const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
-    if (claimantResponse?.paymentIntention) {
+    if (claimantResponse.paymentIntention) {
       if (claimantResponse.isClaimantSuggestedPayImmediately || claimantResponse.isClaimantSuggestedPayByDate) {
         delete claim.claimantResponse.paymentIntention?.repaymentPlan;
       }
