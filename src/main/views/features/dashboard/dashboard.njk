@@ -104,7 +104,7 @@
                 </td>
                 <td class="govuk-table__cell">{{ item.claimantName }}</td>
                 <td class="govuk-table__cell">£{{ item.claimAmount }}</td>
-                <td class="govuk-table__cell">{{ item.getStatus(lang) }} </td>
+                <td class="govuk-table__cell">{{ item.getStatus() }} </td>
               </tr>
             {% endfor %}
           </tbody>
