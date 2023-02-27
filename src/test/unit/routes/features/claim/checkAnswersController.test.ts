@@ -11,6 +11,7 @@ import {Claim} from 'models/claim';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {HelpWithFees} from 'form/models/claim/details/helpWithFees';
 import {Response} from 'supertest';
+import {submitClaim} from 'services/features/claim/submission/submitClaim';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -22,8 +23,6 @@ const civilServiceUrl = config.get<string>('services.civilService.url');
 const data = require('../../../../utils/mocks/defendantClaimsMock.json');
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/claimDetailsService');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/services/features/claim/checkAnswers/checkAnswersService');
@@ -31,6 +30,8 @@ jest.mock('../../../../../main/services/features/claim/submission/submitClaim');
 
 const mockGetSummarySections = getSummarySections as jest.Mock;
 const mockGetClaim = getCaseDataFromStore as jest.Mock;
+const mockSubmitClaim = submitClaim as jest.Mock;
+
 const PARTY_NAME = 'Mrs. Mary Richards';
 
 describe('Claim - Check answers', () => {
@@ -52,8 +53,10 @@ describe('Claim - Check answers', () => {
 
   describe('on GET', () => {
     it('should return check answers page', async () => {
-      mockGetSummarySections.mockImplementation(() => {
-        return createClaimWithBasicDetails();
+      mockGetClaim.mockImplementation(() => {
+        const claim = new Claim();
+        claim.claimDetails = new ClaimDetails();
+        return claim;
       });
 
       const response = await session(app).get(CLAIM_CHECK_ANSWERS_URL);
@@ -113,7 +116,7 @@ describe('Claim - Check answers', () => {
 
     it('should return check your answer page', async () => {
       await request(app).get(CLAIM_CHECK_ANSWERS_URL)
-        .expect((res:Response) => {
+        .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(checkYourAnswerEng);
         });
@@ -146,9 +149,6 @@ describe('Claim - Check answers', () => {
         });
     });
     it('should return payment button when Fee is no', async () => {
-      mockGetSummarySections.mockImplementation(() => {
-        return createClaimWithYourDetails();
-      });
       mockGetClaim.mockImplementation(() => {
         const claim = new Claim();
         claim.claimDetails = new ClaimDetails();
@@ -166,9 +166,6 @@ describe('Claim - Check answers', () => {
         });
     });
     it('should return submit button when Fee is yes', async () => {
-      mockGetSummarySections.mockImplementation(() => {
-        return createClaimWithYourDetails();
-      });
       mockGetClaim.mockImplementation(() => {
         const claim = new Claim();
         claim.claimDetails = new ClaimDetails();
@@ -186,8 +183,10 @@ describe('Claim - Check answers', () => {
         });
     });
     it('should redirect to claim submitted confirmation page when help with fees is set to yes', async () => {
-      mockGetSummarySections.mockImplementation(() => {
-        return createClaimWithYourDetails();
+      mockSubmitClaim.mockImplementation(() => {
+        const submittedClaim = new Claim();
+        submittedClaim.id = ':id';
+        return submittedClaim;
       });
       mockGetClaim.mockImplementation(() => {
         const claim = new Claim();
@@ -207,15 +206,12 @@ describe('Claim - Check answers', () => {
       await request(app)
         .post(CLAIM_CHECK_ANSWERS_URL)
         .send(data)
-        .expect((res: Response ) => {
+        .expect((res: Response) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toBe(CLAIM_CONFIRMATION_URL);
         });
     });
     it('should redirect to claim confirmation page when Fee is no', async () => {
-      mockGetSummarySections.mockImplementation(() => {
-        return createClaimWithYourDetails();
-      });
       mockGetClaim.mockImplementation(() => {
         const claim = new Claim();
         claim.claimDetails = new ClaimDetails();
@@ -237,19 +233,6 @@ describe('Claim - Check answers', () => {
         .expect((res: Response) => {
           expect(res.status).toBe(302);
           expect(res.text).toContain('https://www.payments.service.gov.uk/card_details/');
-        });
-    });
-
-    it('should return 500 when error in service', async () => {
-      mockGetSummarySections.mockImplementation(() => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .post(CLAIM_CHECK_ANSWERS_URL)
-        .send(data)
-        .expect((res:Response) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toBe(CLAIM_CONFIRMATION_URL);
         });
     });
     it('should return 500 when error in service', async () => {
