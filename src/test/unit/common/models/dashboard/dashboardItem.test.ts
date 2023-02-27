@@ -57,7 +57,7 @@ describe('Dashboard Items', ()=> {
       dashboardClaim.numberOfDays = '10';
       dashboardClaim.status ='NO_RESPONSE';
       //When
-      const status = dashboardClaim.getStatus('en');
+      const status = dashboardClaim.getStatus();
       //Then
       expect(status).toBe('PAGES.DASHBOARD.STATUS.NO_RESPONSE_ON_TIME');
     });
