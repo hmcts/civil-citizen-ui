@@ -36,8 +36,8 @@
     "REASON": "Rheswm",
     "REMOVE": "Tynnu",
     "RETURN_PAGE": "You can return to RETURN-PAGE and start your claim or defence again.",
-    "TOTAL_DEBT": "Cyfanswm sy’n ddyledus gennych",
     "TECHNICAL_PROBLEMS": "Sorry, we had some technical problems during your last operation. Please try again later.",
+    "TOTAL_DEBT": "Cyfanswm sy’n ddyledus gennych",
     "YEAR": "Blwyddyn",
     "YEARS": "Blwyddyn",
     "YES": "Oes",
@@ -453,7 +453,7 @@
       "FULL_NAME": "Enw llawn",
       "GIVE_DOC_DETAILS": "Give details of the documents",
       "GIVE_EVIDENCE": "Do you want to give evidence?",
-      "HEARING_REQUIREMENTS_TILE": "Hearing requirements",
+      "HEARING_REQUIREMENTS_TITLE": "Hearing requirements",
       "INCOME_REGULAR": "Incwm rheolaidd",
       "INCOME_JOB": "Incwm o'ch swydd",
       "INCOME_UNIVERSAL_CREDIT": "Credyd Cynhwysol",
@@ -496,6 +496,7 @@
       "RESPONSE_DO_YOU_OWE_THE_MONEY_CLAIMED": "A oes arnoch chi'r arian a hawlir?",
       "RESPONSE_DETAILS_HOW_MUCH_HAVE_YOU_PAID": "Faint ydych chi wedi'i dalu?",
       "RESPONSE_DETAILS_HOW_DID_YOU_PAY_THIS_AMOUNT": "Sut wnaethoch chi dalu'r swm hwn?",
+      "RESPONSE_TITLE": "Eich ymateb i'r hawliad",
       "RESPONSE_WHY_DO_YOU_REJECT_ALL_OF_THIS_CLAIM": "Pam ydych chi'n gwrthod yr holl honiad hwn?",
       "REQUEST_EXTRA_4WEEKS": "Do you want an extra 4 weeks to try to settle the claim?",
       "SAME_ADDRESS": "Yr un fath â'r cyfeiriad",
@@ -635,7 +636,7 @@
     "CLAIM_JOURNEY": {
       "CLAIM_INTEREST": {
         "PAGE_TITLE": "Do you want to claim interest?",
-        "TITLE:": "Do you want to claim interest?",
+        "TITLE": "Do you want to claim interest?",
         "YOU_CAN_CLAIM_INTEREST": "You can claim interest on the money you say you're owed. The court will decide if you're entitled to it."
       },
       "CLAIMANT_INDIVIDUAL_DETAILS": {
@@ -685,18 +686,6 @@
         "PAGE_TITLE": "Try to resolve the dispute",
         "TITLE": "Try to resolve the dispute"
       },
-      "CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS": {
-        "PAGE_TITLE": "Check your answers before submitting",
-        "TITLE": "Check your answers before submitting",
-        "REFERENCE_NUMBER": "Reference number",
-        "WHEN_DID_IT_START": "When did it start",
-        "TYPE": {
-          "WHAT_TYPE_IS_IT": "What type is it",
-          "MENTAL_HEALTH_CRISIS_MORATORIUM": "Mental health crisis moratorium",
-          "STANDARD_BREATHING_SPACE": "Standard breathing space"
-        },
-        "EXPECTED_END_DATE": "Expected end date"
-      },
       "WHEN_CLAIM_INTEREST_FROM": {
         "DATE_INTEREST": "Date interest applied from",
         "FROM_A_SPECIFIC_DATE": "A particular date",
@@ -736,6 +725,18 @@
       "DOWNLOAD_RESPONSE": "Llwytho'r ymateb i lawr",
       "LATEST_UPDATE": "Diweddariad diweddaraf",
       "VIEW_CLAIM": "Gweld yr hawliad"
+    },
+    "CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS": {
+      "PAGE_TITLE": "Check your answers before submitting",
+      "TITLE": "Check your answers before submitting",
+      "REFERENCE_NUMBER": "Reference number",
+      "WHEN_DID_IT_START": "When did it start",
+      "TYPE": {
+        "WHAT_TYPE_IS_IT": "What type is it",
+        "MENTAL_HEALTH_CRISIS_MORATORIUM": "Mental health crisis moratorium",
+        "STANDARD_BREATHING_SPACE": "Standard breathing space"
+      },
+      "EXPECTED_END_DATE": "Expected end date"
     },
     "CLAIMANT_DOB": {
       "PAGE_TITLE": "Your date of birth",
@@ -1120,16 +1121,16 @@
       "PAGE_TITLE": "Their phone number",
       "TITLE": "Their phone number (optional)"
     },
-    "DEFENDANT_YOURSELF_EVIDENCE": {
-      "PAGE_TITLE": "Defendant yourself evidence",
-      "TITLE": "A ydych eisiau rhoi tystiolaeth eich hun?"
-    },
     "DEFENDANT_EXPERT_CAN_STILL_EXAMINE": {
       "CAN_NOT_USE": "Ni allwch ddefnyddio arbenigwr yn yr achos hwn",
       "EXAMINE": "Beth ellir ei archwilio?",
       "PAGE_TITLE": "Defendant expert can still examine",
       "PHOTO_OR_VIDEO": "Gall hyn gynnwys ffotograffau neu fideos.",
       "TITLE": "A yw’r hawliad yn ymwneud â rhywbeth y gall arbenigwr dal ei archwilio?"
+    },
+    "DEFENDANT_YOURSELF_EVIDENCE": {
+      "PAGE_TITLE": "Defendant yourself evidence",
+      "TITLE": "A ydych eisiau rhoi tystiolaeth eich hun?"
     },
     "DEPENDANTS": {
       "GROUP11": "11 i 15",
@@ -1848,11 +1849,11 @@
         "TITLE": "How they want to pay",
         "SUGGESTED_REPAYMENT": "The defendant suggested this repayment plan",
         "REPAYMENT_PLAN": {
-          "REGULAR_PAYMENTS": "Taliadau rheolaidd o",
-          "PAYMENTS_FREQUENCY": "Amlder taliadau",
+          "FREQUENCY_OF_PAYMENTS": "Amlder taliadau",
           "FIRST_PAYMENT_DATE": "First payment date",
           "FINAL_PAYMENT_DATE": "Final payment date",
-          "LENGTH": "Hyd y cynllun ad-dalu"
+          "LENGTH": "Hyd y cynllun ad-dalu",
+          "REGULAR_PAYMENTS": "Taliadau rheolaidd o"
         }
       },
       "WHEN_THEY_PAID_THIS_AMOUNT": "When they say they paid this amount",
@@ -2229,13 +2230,13 @@
     "DEFENDANT_AGE_REQUIRED": "Select yes, no, or company/organisation",
     "DEFENDANT_POSTCODE_NOT_VALID": "Postcode must be in England or Wales",
     "DEFENDANT_POSTCODE_NOT_VALID_CORRESPONDENCE": "Postcode must be in England or Wales",
-    "DEFENDANT_YOURSELF_EVIDENCE_REQUIRED": "Dewiswch ‘ydw’ os ydych eisiau rhoi tystiolaeth eich hun",
     "DEFENDANT_EXPERT_EVIDENCE_REQUIRED": "Dewiswch ‘ydw’ os ydych eisiau defnyddio tystiolaeth arbenigwr",
     "DEFENDANT_EXPERT_EXPLAIN_EXAMINE": "Eglurwch beth ellir ei archwilio",
     "DEFENDANT_WITNESS_ENTER_FIRST_NAME": "Nodwch enw cyntaf y tyst",
     "DEFENDANT_WITNESS_ENTER_LAST_NAME": "Nodwch enw olaf y tyst",
     "DEFENDANT_WITNESS_SELECT_OTHER": "Dewiswch oes os oes gennych chi dystion eraill",
     "DEFENDANT_WITNESS_WHAT_THEY_WITNESSED": "Dywedwch wrthym beth welsant",
+    "DEFENDANT_YOURSELF_EVIDENCE_REQUIRED": "Dewiswch ‘ydw’ os ydych eisiau rhoi tystiolaeth eich hun",
     "DESCRIPTION_REQUIRED": "Rhowch ddisgrifiad o beth ddigwyddodd",
     "DETAILS_REQUIRED": "Rhowch fanylion",
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Tell us if you believe the hearing requirement details on this page are true",
@@ -2372,9 +2373,9 @@
     "RATE_EXPLAIN_CLAIMING_IT": "You haven’t explained why you’re claiming this rate",
     "REASON_REQUIRED": "You need to explain why you believe you’re owed the money",
     "REDIS_FAILURE": "Redis DraftStore failure.",
+    "SECURITY_CODE_WRONG_OR_EXPIRED": "The security code was not right or has expired",
     "SELECT_ADDITIONAL_TIME": "Dewiswch faint o amser ychwanegol yr ydych yn gwneud cais amdano",
     "SELECT_WELSH_AND_ENGLISH_OPTION": "Select Welsh and English if you want to respond to this claim in Welsh",
-    "SECURITY_CODE_WRONG_OR_EXPIRED": "The security code was not right or has expired",
     "SELECT_AN_OPTION": "Dewiswch opsiwn",
     "SELECT_AMOUNT": {
       "COUNCIL_TAX": "Nodwch faint o Dreth y Cyngor neu Dâl Cymunedol ydych chi'n ei dalu",
@@ -2533,8 +2534,8 @@
     "VALID_TEXT_LENGTH": "Rydych wedi defnyddio gormod o nodau",
     "VALID_TRIED_TO_SETTLE": "Dewiswch ‘do’ os ydych wedi ceisio setlo’r hawliad hwn cyn mynd i’r llys",
     "VALID_TWO_DECIMAL_NUMBER": "Rhowch swm, dim mwy na dau le degol",
-    "VALID_YEAR": "Rhowch flwyddyn ddilys",
     "VALID_VALUE": "A ydych yn siŵr bod hwn yn swm dilys?",
+    "VALID_YEAR": "Rhowch flwyddyn ddilys",
     "VALID_YES_NO_OPTION": "Dewiswch opsiwn: ie neu na",
     "VALID_YES_NO_OPTION_NAC_YDW": "Dewiswch opsiwn: ‘ydw’ neu ‘nac ydw’",
     "VALID_YES_NO_SELECTION": "Dewiswch ie neu na, os gwelwch yn dda",
