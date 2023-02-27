@@ -8,6 +8,9 @@ const {app} = require('../../../../main/app');
 
 const agent = request.agent(app);
 
+const en = require('../../../../main/modules/i18n/locales/en.json');
+const cy = require('../../../../main/modules/i18n/locales/cy.json');
+
 jest.mock('ioredis', () => {
   return jest.fn().mockImplementation(() => {
     return {
@@ -80,6 +83,25 @@ describe('i18n test - Dashboard', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Smialc edam tsniaga uoy');
         });
+    });
+  });
+
+  const getKeys = (obj: string[], prefix = ''): string[] =>
+    Object.keys(obj).reduce((res: string[], el: string) => {
+      if(Array.isArray(obj[el])) {
+        return res;
+      } else if( typeof obj[el] === 'object' && obj[el] !== null ) {
+        return [...res, ...getKeys(obj[el], prefix + el + '.')];
+      }
+      return [...res, prefix + el];
+    }, []);
+
+  describe('Compare language file structure', () => {
+    it('should have the same top-level sections in the language files', () => {
+      const allEnKeys = getKeys(en);
+      const allCyKeys = getKeys(cy);
+      expect(allEnKeys.length).toEqual(allCyKeys.length);
+      expect(allEnKeys).toEqual(allCyKeys);
     });
   });
 });
