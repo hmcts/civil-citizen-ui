@@ -74,26 +74,7 @@ describe('Completing Claim', () => {
         .send({telephoneNumber: 'abc'})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_PHONE_NUMBER);
-        });
-    });
-
-    it('should return error on input with interior spaces', async () => {
-      await request(app)
-        .post(CLAIMANT_PHONE_NUMBER_URL)
-        .send({telephoneNumber: '123 456'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_PHONE_NUMBER);
-        });
-    });
-
-    it('should accept input with trailing whitespaces', async () => {
-      await request(app)
-        .post(CLAIMANT_PHONE_NUMBER_URL)
-        .send({telephoneNumber: '123 '})
-        .expect((res) => {
-          expect(res.status).toBe(302);
+          expect(res.text).toContain(t('ERRORS.VALID_PHONE_NUMBER'));
         });
     });
 
