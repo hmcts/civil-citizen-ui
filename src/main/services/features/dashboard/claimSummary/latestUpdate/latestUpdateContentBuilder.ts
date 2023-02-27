@@ -12,8 +12,8 @@ import {ClaimResponseStatus} from 'models/claimResponseStatus';
 import {getPaymentDate} from 'common/utils/repaymentUtils';
 import {DocumentUri} from 'models/document/documentType';
 import {CASE_DOCUMENT_DOWNLOAD_URL, CITIZEN_CONTACT_THEM_URL} from 'routes/urls';
-import {formatDateToFullDate} from "common/utils/dateUtils";
-import {getLng} from "common/utils/languageToggleUtils";
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {getLanguage} from 'modules/i18n/languageService';
 
 const PAGES_LATEST_UPDATE_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT.';
 
@@ -215,8 +215,7 @@ function getFaPayImmediately(claim: Claim) {
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_SAID_YOU_WILL_PAY`, {
       claimantName: claim.getClaimantFullName(),
       amount: claim.formattedTotalClaimAmount(),
-      paymentDate: formatDateToFullDate(new Date(getPaymentDate(claim)), getLng('en')),
-      //paymentDate: formatDateToFullDate(getPaymentDate(claim)),
+      paymentDate: formatDateToFullDate(new Date(getPaymentDate(claim)), getLanguage()),
     })
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}IF_YOU_PAY_BY_CHEQUE`)
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}IF_THEY_DONT_RECEIVE_THE_MONEY_BY_THEN`)
