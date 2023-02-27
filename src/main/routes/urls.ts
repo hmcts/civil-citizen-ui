@@ -20,7 +20,6 @@ export const ASSIGN_CLAIM_URL='/assignclaim';
 export const COOKIES_URL = '/cookies';
 export const SIGN_IN_URL = '/login';
 export const SIGN_OUT_URL = '/logout';
-export const CASES_URL = '/cases';
 export const DASHBOARD_URL = '/dashboard';
 export const DASHBOARD_CLAIMANT_URL = '/dashboard/:id/claimant';
 export const BREATHING_SPACE_CHECK_ANSWERS_URL = `${BASE_BREATHING_SPACE_URL}/check-answers`;
