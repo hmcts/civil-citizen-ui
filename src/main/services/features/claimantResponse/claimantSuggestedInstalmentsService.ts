@@ -8,7 +8,7 @@ const logger = Logger.getLogger('claimantSuggestedInstalmentsService');
 export const getclaimantSuggestedInstalmentsPlan = async (claimId: string): Promise<RepaymentPlanForm> => {
   try {
     const claim = await getCaseDataFromStore(claimId);
-    const claimantSuggestedInstalments = claim.claimantResponse?.paymentIntention?.repaymentPlan;
+    const claimantSuggestedInstalments = claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan;
     const firstRepaymentDate = new Date(claimantSuggestedInstalments?.firstRepaymentDate);
     return claimantSuggestedInstalments ? new RepaymentPlanForm(
       claim.totalClaimAmount,

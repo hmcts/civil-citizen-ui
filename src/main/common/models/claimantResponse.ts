@@ -27,17 +27,17 @@ export class ClaimantResponse {
   mediation?: Mediation;
   directionQuestionnaire?: DirectionQuestionnaire;
   defendantResponseViewed?: boolean;
-  paymentIntention?: PaymentIntention;
+  suggestedPaymentIntention?: PaymentIntention;
 
   get isClaimantSuggestedPayImmediately(): boolean{
-    return this.paymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY;
+    return this.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY;
   }
 
   get isClaimantSuggestedPayByDate(): boolean {
-    return this.paymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE;
+    return this.suggestedPaymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE;
   }
 
   get isClaimantSuggestedPayByInstalments(): boolean {
-    return this.paymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS;
+    return this.suggestedPaymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS;
   }
 }

@@ -16,8 +16,8 @@ import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paym
 
 const claimantSuggestedPaymentOptionViewPath = 'features/response/admission/payment-option';
 const claimantSuggestedPaymentOptionController = Router();
+const crParentName = 'suggestedPaymentIntention';
 const crPropertyName = 'paymentOption';
-const crParentName = 'paymentIntention';
 
 function renderView(form: GenericForm<PaymentOption>, res: Response): void {
   res.render(claimantSuggestedPaymentOptionViewPath, {form: form, isClaimantResponse : true});
@@ -26,7 +26,7 @@ function renderView(form: GenericForm<PaymentOption>, res: Response): void {
 claimantSuggestedPaymentOptionController.get(CLAIMANT_RESPONSE_PAYMENT_OPTION_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimantResponse = await getClaimantResponse(req.params.id);
-    renderView(new GenericForm(new PaymentOption(claimantResponse.paymentIntention?.paymentOption)), res);
+    renderView(new GenericForm(new PaymentOption(claimantResponse.suggestedPaymentIntention?.paymentOption)), res);
   } catch (error) {
     next(error);
   }
@@ -38,7 +38,6 @@ claimantSuggestedPaymentOptionController.post(CLAIMANT_RESPONSE_PAYMENT_OPTION_U
     const claimantResponsePaymentOption = new PaymentOption(req.body.paymentType);
     const form = new GenericForm(claimantResponsePaymentOption);
     form.validateSync();
-
     if (form.hasErrors()) {
       renderView(form, res);
     } else {

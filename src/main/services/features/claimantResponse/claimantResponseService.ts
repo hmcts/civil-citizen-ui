@@ -51,12 +51,12 @@ const saveClaimantResponse = async (claimId: string, value: any, claimantRespons
       claim.claimantResponse = claimantResponse;
     }
     const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
-    if (claimantResponse.paymentIntention) {
+    if (claimantResponse.suggestedPaymentIntention) {
       if (claimantResponse.isClaimantSuggestedPayImmediately || claimantResponse.isClaimantSuggestedPayByDate) {
-        delete claim.claimantResponse.paymentIntention?.repaymentPlan;
+        delete claim.claimantResponse.suggestedPaymentIntention?.repaymentPlan;
       }
       if (claimantResponse.isClaimantSuggestedPayImmediately || claimantResponse.isClaimantSuggestedPayByInstalments) {
-        delete claim.claimantResponse?.paymentIntention?.paymentDate;
+        delete claim.claimantResponse?.suggestedPaymentIntention?.paymentDate;
       }
     }
     await saveDraftClaim(claimId, claim);

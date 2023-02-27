@@ -14,7 +14,7 @@ import {
 
 const claimantSuggestedInstalmentsViewPath = 'features/claimantResponse/instalments-plan';
 const claimantSuggestedInstalmentsController = Router();
-const crParentName = 'paymentIntention';
+const crParentName = 'suggestedPaymentIntention';
 const crPropertyName = 'repaymentPlan';
 
 function renderView(form: GenericForm<RepaymentPlanForm>, res: Response): void {

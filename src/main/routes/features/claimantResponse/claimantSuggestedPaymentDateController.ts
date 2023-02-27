@@ -10,7 +10,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const paymentDatePath = 'features/response/admission/payment-date';
 const claimantSuggestedPaymentDateController = Router();
-const crParentName = 'paymentIntention';
+const crParentName = 'suggestedPaymentIntention';
 const crPropertyName ='paymentDate';
 const title = 'PAGES.CCJ_DEFENDANT_PAYMENT_DATE.TITLE';
 const insetText = 'PAGES.CCJ_DEFENDANT_PAYMENT_DATE.INSET';
@@ -22,7 +22,7 @@ function renderView(form: GenericForm<PaymentDate | Date>, res: Response): void 
 claimantSuggestedPaymentDateController.get(CLAIMANT_RESPONSE_PAYMENT_DATE_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimantResponse = await getClaimantResponse(req.params.id);
-    const claimantSuggestedPaymentDate = claimantResponse.paymentIntention?.paymentDate ?? new PaymentDate();
+    const claimantSuggestedPaymentDate = claimantResponse.suggestedPaymentIntention?.paymentDate ?? new PaymentDate();
     renderView(new GenericForm(claimantSuggestedPaymentDate), res);
   } catch (error) {
     next(error);
