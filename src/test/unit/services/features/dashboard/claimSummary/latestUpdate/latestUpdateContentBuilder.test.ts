@@ -8,22 +8,55 @@ import {PartyType} from '../../../../../../../main/common/models/partyType';
 import {ClaimSummaryType} from '../../../../../../../main/common/form/models/claimSummarySection';
 import {BILINGUAL_LANGUAGE_PREFERENCE_URL} from '../../../../../../../main/routes/urls';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {ResponseType} from "form/models/responseType";
+import {PaymentIntention} from "form/models/admission/paymentIntention";
+import {FullAdmission} from "models/fullAdmission";
+
+jest.mock('../../../../../../../main/modules/i18n/languageService', () => ({
+  getLanguage: jest.fn().mockReturnValue('en'),
+  setLanguage: jest.fn(),
+}));
 
 const PARTY_NAME = 'Mr. John Doe';
 const claimGenerator = (partyType: PartyType, paymentOptionType: PaymentOptionType ) =>{
   const claim = new Claim();
+  claim.totalClaimAmount = 6000;
   claim.ccdState = CaseState.PENDING_CASE_ISSUED;
   claim.applicant1 = {
     type: partyType,
     partyDetails: {
       partyName: PARTY_NAME,
+      individualTitle: 'Mr.',
+      individualFirstName: 'TestName',
+      individualLastName: 'TestLastName',
     },
   };
   claim.fullAdmission = {
     paymentIntention: {
       paymentOption: paymentOptionType,
+      paymentDate: new Date(Date.now()),
     },
   };
+  return claim;
+};
+
+const getClaimFullAdmition = (partyType: PartyType, responseType: ResponseType, paymentOptionType: PaymentOptionType) => {
+  const claim = new Claim();
+  claim.totalClaimAmount = 1000;
+  claim.applicant1 = {
+    type: partyType,
+    responseType: responseType,
+    partyDetails: {
+      partyName: PARTY_NAME,
+      individualTitle: 'Mr.',
+      individualFirstName: 'TestName',
+      individualLastName: 'TestLastName',
+
+    },
+  };
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  claim.fullAdmission.paymentIntention.paymentOption = paymentOptionType;
   return claim;
 };
 
@@ -38,6 +71,7 @@ describe('Latest Update Content Builder', () => {
       partyName: partyName,
     },
   };
+
   const claimId = '5129';
   const bilingualLanguagePreferencetUrl = BILINGUAL_LANGUAGE_PREFERENCE_URL.replace(':id', claimId);
 
@@ -107,19 +141,15 @@ describe('Latest Update Content Builder', () => {
     describe('Full Admit Pay ', () => {
       it('Immediately', () => {
         // Given
-        const claim = claimGenerator(PartyType.INDIVIDUAL, PaymentOptionType.INSTALMENTS);
-
+        const claim = getClaimFullAdmition(PartyType.COMPANY, ResponseType.FULL_ADMISSION, PaymentOptionType.IMMEDIATELY);
         // When
         const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
         // Then
-        expect(responseToClaimSection.length).toBe(3);
+        expect(responseToClaimSection.length).toBe(6);
         expect(responseToClaimSection[0].type).toEqual(ClaimSummaryType.TITLE);
-        expect(responseToClaimSection[0].data?.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.YOU_HAVENT_RESPONDED_TO_CLAIM');
-        expect(responseToClaimSection[2].type).toEqual(ClaimSummaryType.LINK);
-        expect(responseToClaimSection[2].data?.href).toEqual(bilingualLanguagePreferencetUrl);
+        expect(responseToClaimSection[0].data?.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.YOUR_RESPONSE_TO_THE_CLAIM');
+
       });
     });
   });
-
 });
-
