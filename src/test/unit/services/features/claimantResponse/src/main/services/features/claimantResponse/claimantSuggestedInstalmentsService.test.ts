@@ -87,7 +87,7 @@ describe('Claiman Suggested Instalments Plan Service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //When-Then
-      await expect(getClaimantSuggestedInstalmentsPlan(claimId)).rejects.toThrow(TestMessages.REDIS_FAILURE);;
+      await expect(getClaimantSuggestedInstalmentsPlan(claimId)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 
