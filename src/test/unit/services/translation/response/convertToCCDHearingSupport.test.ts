@@ -6,7 +6,7 @@ import {DirectionQuestionnaire} from 'common/models/directionsQuestionnaire/dire
 import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
 import {
   CCDHearingSupport,
-  CCDSupportRequirements,
+  CCDSupportRequirement,
 } from 'models/ccdResponse/ccdHearingSupport';
 
 describe('translate hearingSupportrequirments to CCD model', () => {
@@ -62,11 +62,11 @@ describe('translate hearingSupportrequirments to CCD model', () => {
           'languageToBeInterpreted': 'French',
           'otherSupport': 'help',
           'requirements': [
-            CCDSupportRequirements.DISABLED_ACCESS,
-            CCDSupportRequirements.HEARING_LOOPS,
-            CCDSupportRequirements.LANGUAGE_INTERPRETER,
-            CCDSupportRequirements.SIGN_INTERPRETER,
-            CCDSupportRequirements.OTHER_SUPPORT,
+            CCDSupportRequirement.DISABLED_ACCESS,
+            CCDSupportRequirement.HEARING_LOOPS,
+            CCDSupportRequirement.LANGUAGE_INTERPRETER,
+            CCDSupportRequirement.SIGN_INTERPRETER,
+            CCDSupportRequirement.OTHER_SUPPORT,
           ],
           'signLanguageRequired': 'French',
         }},{
@@ -75,8 +75,8 @@ describe('translate hearingSupportrequirments to CCD model', () => {
           'languageToBeInterpreted': 'French',
           'otherSupport': undefined,
           'requirements': [
-            CCDSupportRequirements.HEARING_LOOPS,
-            CCDSupportRequirements.LANGUAGE_INTERPRETER,
+            CCDSupportRequirement.HEARING_LOOPS,
+            CCDSupportRequirement.LANGUAGE_INTERPRETER,
           ],
           'signLanguageRequired': undefined,
         },
