@@ -1,19 +1,21 @@
 import {Claim} from 'models/claim';
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
 import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
-import {CCDSmallClaimHearing, CCDUnavailableDateType} from 'models/ccdResponse/ccdSmallClaimHearing';
-import {toCCDSmallClaimHearing} from 'services/translation/response/convertToCCDSmallClaimHearing';
+import {CCDUnavailableDateType} from 'models/ccdResponse/ccdSmallClaimHearing';
 import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 import {
-  UnavailableDatePeriod, UnavailableDates,
+  UnavailableDatePeriod,
+  UnavailableDates,
   UnavailableDateType,
 } from 'models/directionsQuestionnaire/hearing/unavailableDates';
+import {CCDFastClaimHearing, CCDHearingLength} from 'models/ccdResponse/ccdFastClaimHearing';
+import {toCCDFastClaimHearing} from 'services/translation/response/convertToCCDFastClaimHearing';
 
 const singleDateMock: UnavailableDatePeriod = {
-  from: new Date('2024-01-01T00:00:00.000Z'),
-  startYear: 2024,
-  startMonth: 1,
-  startDay: 1,
+  from: new Date('2023-03-11T00:00:00.000Z'),
+  startYear: 2023,
+  startMonth: 3,
+  startDay: 11,
   endYear: null,
   endMonth: null,
   endDay: null,
@@ -21,58 +23,68 @@ const singleDateMock: UnavailableDatePeriod = {
 };
 
 const longerPeriod10DaysMock: UnavailableDatePeriod = {
-  from: new Date('2024-01-10T00:00:00.000Z'),
-  until: new Date('2024-01-20T00:00:00.000Z'),
-  startYear: 2024,
-  startMonth: 2,
-  startDay: 2,
-  endYear: 2024,
-  endMonth: 2,
-  endDay: 5,
+  from: new Date('2023-03-11T00:00:00.000Z'),
+  until: new Date('2023-03-29T00:00:00.000Z'),
+  startYear: 2023,
+  startMonth: 3,
+  startDay: 11,
+  endYear: 2023,
+  endMonth: 3,
+  endDay: 29,
   type: UnavailableDateType.LONGER_PERIOD,
 };
 
-describe('translate small claim hearing details to CCD model', () => {
+describe('translate Fast claim hearing details to CCD model', () => {
   const claim = new Claim();
   claim.directionQuestionnaire = new DirectionQuestionnaire();
   claim.directionQuestionnaire.hearing = new Hearing();
 
   it('should return undefined if items doesnt exist', () => {
     //given
-    const expected: CCDSmallClaimHearing = {
+    const expected: CCDFastClaimHearing = {
+      hearingLength: CCDHearingLength.ONE_DAY,
+      hearingLengthHours: '3',
+      hearingLengthDays: '1',
       unavailableDatesRequired: undefined,
-      smallClaimUnavailableDate: undefined,
+      unavailableDates: undefined,
     };
 
     //When
-    const smallClaimHearing = toCCDSmallClaimHearing(claim.directionQuestionnaire.hearing);
+    const FastClaimHearing = toCCDFastClaimHearing(claim.directionQuestionnaire.hearing);
     //then
-    expect(smallClaimHearing).toEqual(expected);
+    expect(FastClaimHearing).toMatchObject(expected);
   });
-  it('should return output if cant attend hearing for next 12 month set to no', () => {
+
+  it('when cant attend hearing for next 12 month set to no', () => {
     //given
     claim.directionQuestionnaire.hearing.cantAttendHearingInNext12Months = {option: YesNo.NO};
 
-    const expected: CCDSmallClaimHearing = {
+    const expected: CCDFastClaimHearing = {
+      hearingLength: CCDHearingLength.ONE_DAY,
+      hearingLengthHours: '3',
+      hearingLengthDays: '1',
       unavailableDatesRequired: YesNoUpperCamelCase.NO,
-      smallClaimUnavailableDate: undefined,
+      unavailableDates: undefined,
     };
 
     //When
-    const smallClaimHearing = toCCDSmallClaimHearing(claim.directionQuestionnaire.hearing);
+    const FastClaimHearing = toCCDFastClaimHearing(claim.directionQuestionnaire.hearing);
     //then
-    expect(smallClaimHearing).toEqual(expected);
+    expect(FastClaimHearing).toEqual(expected);
   });
 
-  it('when cant attend hearing for next 12 month set to yes and unavailable for single day', () => {
+  it('when cant attend hearing for next 12 month set to Yes and unavailable for single day', () => {
     //given
     claim.directionQuestionnaire.hearing.cantAttendHearingInNext12Months = {option: YesNo.YES};
     claim.directionQuestionnaire.hearing.unavailableDatesForHearing =  new UnavailableDates();
     claim.directionQuestionnaire.hearing.unavailableDatesForHearing.items = [singleDateMock];
 
-    const expected: CCDSmallClaimHearing = {
+    const expected: CCDFastClaimHearing = {
+      hearingLength: CCDHearingLength.ONE_DAY,
+      hearingLengthHours: '3',
+      hearingLengthDays: '1',
       unavailableDatesRequired: YesNoUpperCamelCase.YES,
-      smallClaimUnavailableDate: [{
+      unavailableDates: [{
         value: {
           date: singleDateMock.from,
           fromDate: singleDateMock.from,
@@ -84,20 +96,23 @@ describe('translate small claim hearing details to CCD model', () => {
     };
 
     //When
-    const smallClaimHearing = toCCDSmallClaimHearing(claim.directionQuestionnaire.hearing);
+    const FastClaimHearing = toCCDFastClaimHearing(claim.directionQuestionnaire.hearing);
     //then
-    expect(smallClaimHearing).toEqual(expected);
+    expect(FastClaimHearing).toEqual(expected);
   });
 
-  it('when  cant attend hearing for next 12 month set to Yes and unavailable for longer period.', () => {
+  it('when cant attend hearing for next 12 month set to Yes and unavailable for longer period.', () => {
     //given
     claim.directionQuestionnaire.hearing.cantAttendHearingInNext12Months = {option: YesNo.YES};
     claim.directionQuestionnaire.hearing.unavailableDatesForHearing =  new UnavailableDates();
     claim.directionQuestionnaire.hearing.unavailableDatesForHearing.items = [longerPeriod10DaysMock];
 
-    const expected: CCDSmallClaimHearing = {
+    const expected: CCDFastClaimHearing = {
+      hearingLength: CCDHearingLength.ONE_DAY,
+      hearingLengthHours: '3',
+      hearingLengthDays: '1',
       unavailableDatesRequired: YesNoUpperCamelCase.YES,
-      smallClaimUnavailableDate: [{
+      unavailableDates: [{
         value: {
           date: longerPeriod10DaysMock.from,
           fromDate: longerPeriod10DaysMock.from,
@@ -109,8 +124,8 @@ describe('translate small claim hearing details to CCD model', () => {
     };
 
     //When
-    const smallClaimHearing = toCCDSmallClaimHearing(claim.directionQuestionnaire.hearing);
+    const FastClaimHearing = toCCDFastClaimHearing(claim.directionQuestionnaire.hearing);
     //then
-    expect(smallClaimHearing).toEqual(expected);
+    expect(FastClaimHearing).toEqual(expected);
   });
 });

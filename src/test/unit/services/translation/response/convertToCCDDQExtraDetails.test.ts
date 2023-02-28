@@ -10,7 +10,7 @@ describe('translate DQ extra details to CCD model', () => {
   claim.directionQuestionnaire = new DirectionQuestionnaire();
   claim.directionQuestionnaire.hearing = new Hearing();
 
-  it('should return undefined if items doesnt exist', () => {
+  it('should return undefined if data doesnt exist', () => {
     //given
     const expected: CCDDQExtraDetails = {
       wantPhoneOrVideoHearing: undefined,
@@ -25,7 +25,7 @@ describe('translate DQ extra details to CCD model', () => {
     expect(dqExtraDetails).toEqual(expected);
   });
 
-  it('should return values if items exist', () => {
+  it('should return values if data exist', () => {
     //given
     claim.directionQuestionnaire.hearing = {
       phoneOrVideoHearing:{

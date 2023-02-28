@@ -1,40 +1,43 @@
 import {SupportRequired, SupportRequiredList} from 'models/directionsQuestionnaire/supportRequired';
-import {CCDSupportRequirements} from 'models/ccdResponse/ccdHearingSupport';
+import {CCDSupportRequirement} from 'models/ccdResponse/ccdHearingSupport';
 import {toCCDYesNo} from 'services/translation/response/convertToCCDYesNo';
-let signLanguage: string , languageInterpreter: string, otherSupport: string;
 
-function ccdHearingSupportRequirmentList(items: SupportRequired[]) {
+function ccdHearingSupportRequirementList(hearingSupportItem: SupportRequired) {
+  const supportRequirementsList: CCDSupportRequirement[] = [];
+  if (hearingSupportItem.disabledAccess.selected)
+    supportRequirementsList.push(CCDSupportRequirement.DISABLED_ACCESS);
+  if (hearingSupportItem.hearingLoop.selected)
+    supportRequirementsList.push(CCDSupportRequirement.HEARING_LOOPS);
+  if (hearingSupportItem.languageInterpreter.selected)
+    supportRequirementsList.push(CCDSupportRequirement.LANGUAGE_INTERPRETER);
+  if (hearingSupportItem.signLanguageInterpreter.selected)
+    supportRequirementsList.push(CCDSupportRequirement.SIGN_INTERPRETER);
+  if (hearingSupportItem.otherSupport.selected)
+    supportRequirementsList.push(CCDSupportRequirement.OTHER_SUPPORT);
+
+  return supportRequirementsList;
+}
+
+function ccdHearingSupportRequirement(items: SupportRequired[] | undefined) {
   if (!items?.length) return undefined;
 
-  const hearingSupportList: CCDSupportRequirements[] = [];
-  items.forEach((hearingSupportItem, index) => {
-    if (hearingSupportItem.disabledAccess)
-      hearingSupportList.push(CCDSupportRequirements.DISABLED_ACCESS);
-    if (hearingSupportItem.hearingLoop)
-      hearingSupportList.push(CCDSupportRequirements.HEARING_LOOPS);
-    if (hearingSupportItem.languageInterpreter?.selected) {
-      hearingSupportList.push(CCDSupportRequirements.LANGUAGE_INTERPRETER);
-      languageInterpreter = hearingSupportItem.languageInterpreter.content;
-    }
-    if (hearingSupportItem.signLanguageInterpreter?.selected) {
-      hearingSupportList.push(CCDSupportRequirements.SIGN_INTERPRETER);
-      signLanguage = hearingSupportItem.signLanguageInterpreter.content;
-    }
-    if (hearingSupportItem.otherSupport?.selected) {
-      hearingSupportList.push(CCDSupportRequirements.OTHER_SUPPORT);
-      otherSupport = hearingSupportItem.otherSupport.content;
-    }
+  const hearingSupportList = items.map((supportRequired: SupportRequired) => {
+    return {
+      value : {
+        name:supportRequired.fullName,
+        requirements: ccdHearingSupportRequirementList(supportRequired),
+        signLanguageRequired: supportRequired.signLanguageInterpreter?.content,
+        languageToBeInterpreted: supportRequired.languageInterpreter?.content,
+        otherSupport: supportRequired.otherSupport?.content,
+      },
+    };
   });
   return hearingSupportList;
 }
 
 export const toCCDSHearingSupport = (supportRequiredList: SupportRequiredList | undefined) => {
   return {
-    requirements:ccdHearingSupportRequirmentList(supportRequiredList?.items),
-    signLanguageRequired: signLanguage,
-    languageToBeInterpreted: languageInterpreter,
-    otherSupport: otherSupport,
-    supportRequirements: toCCDYesNo(supportRequiredList?.option),
-    supportRequirementsAdditional: '',
+    supportRequirementLip: toCCDYesNo(supportRequiredList?.option),
+    requirementsLip: ccdHearingSupportRequirement(supportRequiredList?.items),
   };
 };

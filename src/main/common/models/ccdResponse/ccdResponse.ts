@@ -10,8 +10,8 @@ import {CCDSpecificCourtLocations} from 'models/ccdResponse/ccdSpecificCourtLoca
 import {CCDHearingSupport} from 'models/ccdResponse/ccdHearingSupport';
 import {CCDWitnesses} from 'models/ccdResponse/ccdWitnesses';
 import {CCDSmallClaimHearing} from 'models/ccdResponse/ccdSmallClaimHearing';
-import {CCDDQExtraDetails} from 'models/ccdResponse/ccdDQExtraDetails';
 import {CCDFastClaimHearing} from 'models/ccdResponse/ccdFastClaimHearing';
+import {CCDRespondentLiPResponse} from 'models/ccdResponse/CCDRespondentLiPResponse';
 
 export interface CCDResponse extends ClaimUpdate {
   respondent1ClaimResponseTypeForSpec: string;
@@ -20,15 +20,15 @@ export interface CCDResponse extends ClaimUpdate {
   respondToClaimAdmitPartLRspec?: CCDPayBySetDate;
   responseClaimMediationSpecRequired?: string;
   specAoSApplicantCorrespondenceAddressRequired?: YesNoUpperCamelCase;
-  totalClaimAmount: number,
-  respondent1: CCDParty,
-  respondent1DQLanguage: CCDWelshLanguageRequirements;
-  respondent1DQVulnerabilityQuestions: CCDVulnerability;
-  respondent1DQRequestedCourt: CCDSpecificCourtLocations;
-  respondent1DQHearingSupport: CCDHearingSupport;
-  respondent1DQWitnesses: CCDWitnesses;
-  respondent1DQHearingSmallClaim: CCDSmallClaimHearing;
-  respondent1DQHearingFastClaim: CCDFastClaimHearing;
-  respondent1DQExtraDetails: CCDDQExtraDetails;
+  totalClaimAmount?: number,
+  respondent1?: CCDParty,
+  respondent1DQLanguage?: CCDWelshLanguageRequirements;
+  respondent1DQVulnerabilityQuestions?: CCDVulnerability;
+  respondent1DQRequestedCourt?: CCDSpecificCourtLocations;
+  respondent1DQHearingSupport?: CCDHearingSupport;
+  respondent1DQWitnesses?: CCDWitnesses;
+  respondent1DQHearingSmallClaim?: CCDSmallClaimHearing;
+  respondent1DQHearingFastClaim?: CCDFastClaimHearing;
+  respondent1LiPResponse?: CCDRespondentLiPResponse;
 
 }

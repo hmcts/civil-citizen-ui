@@ -15,9 +15,9 @@
  {% set courtItems = [{value: '', text: t('PAGES.SPECIFIC_COURT.SELECT_VALUE')}] %}
  {% for item in courtLocations %}
  {% set courtItems = (courtItems.push({
-   value: item.code,
+   value: item.label,
    text: item.label,
-   selected: form.model.courtLocation === item.code
+   selected: form.model.courtLocation === item.label
  }), courtItems) %}
  {% endfor %}
 

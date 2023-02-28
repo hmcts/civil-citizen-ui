@@ -24,13 +24,13 @@ const witness2 =  new OtherWitnessItems({
   details: 'Some details of Jane Does',
 });
 
-describe('translate Welsh Language requirement to CCD model', () => {
+describe('translate witnesses details to CCD model', () => {
   const claim = new Claim();
   claim.directionQuestionnaire = new DirectionQuestionnaire();
   claim.directionQuestionnaire.hearing = new Hearing();
   claim.directionQuestionnaire.witnesses = new Witnesses();
 
-  it('should return undefined if items doesnt exist', () => {
+  it('should return undefined if data doesnt exist', () => {
     //given
     const expected: CCDWitnesses = {
       witnessesToAppear: undefined,
@@ -43,7 +43,7 @@ describe('translate Welsh Language requirement to CCD model', () => {
     expect(witnessesDetails).toEqual(expected);
   });
 
-  it('should return values if items exist', () => {
+  it('should return witness details if data exist', () => {
     //given
     const expected: CCDWitnesses = {
       witnessesToAppear: YesNoUpperCamelCase.YES,

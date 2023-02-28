@@ -9,11 +9,10 @@ import {toCCDPayBySetDate} from './convertToCCDPayBySetDate';
 import {toCCDWelshLanguageRequirements} from 'services/translation/response/convertToCCDWelshLanguageRequirements';
 import {toCCDVulnerability} from 'services/translation/response/convertToCCDVulenrabilityQuestions';
 import {toCCDSpecificCourtLocations} from 'services/translation/response/convertToCCDSpecificCourtLocations';
-import {toCCDSHearingSupport} from 'services/translation/response/convertToCCDHearingSupport';
 import {toCCDWitnesses} from 'services/translation/response/convertToCCDWitnesses';
 import {toCCDSmallClaimHearing} from 'services/translation/response/convertToCCDSmallClaimHearing';
-import {toCCDDQExtraDetails} from 'services/translation/response/convertToCCDDQExtraDetials';
 import {toCCDFastClaimHearing} from 'services/translation/response/convertToCCDFastClaimHearing';
+import {toCCDRespondentLiPResponse} from 'services/translation/response/convertToCCDRespondentLiPResponse';
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   return {
@@ -28,11 +27,10 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     respondent1DQLanguage: toCCDWelshLanguageRequirements(claim.directionQuestionnaire?.welshLanguageRequirements),
     respondent1DQVulnerabilityQuestions: toCCDVulnerability(claim.directionQuestionnaire?.vulnerabilityQuestions),
     respondent1DQRequestedCourt: toCCDSpecificCourtLocations(claim.directionQuestionnaire?.hearing?.specificCourtLocation),
-    respondent1DQHearingSupport: toCCDSHearingSupport(claim.directionQuestionnaire?.hearing?.supportRequiredList),
     respondent1DQWitnesses: toCCDWitnesses(claim.directionQuestionnaire?.witnesses),
     respondent1DQHearingSmallClaim: claim.isSmallClaimsTrackDQ ? toCCDSmallClaimHearing(claim.directionQuestionnaire?.hearing) : undefined,
     respondent1DQHearingFastClaim: claim.isFastTrackClaim ? toCCDFastClaimHearing(claim.directionQuestionnaire?.hearing) : undefined,
-    respondent1DQExtraDetails: toCCDDQExtraDetails(claim.directionQuestionnaire),
+    respondent1LiPResponse: toCCDRespondentLiPResponse(claim),
   };
 };
 
