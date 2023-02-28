@@ -4,7 +4,10 @@ import {
 import {summaryRow, SummaryRow} from 'models/summaryList/summaryList';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
+  DQ_COURT_LOCATION_URL,
   DQ_DEFENDANT_WITNESSES_URL,
+  DQ_GIVE_EVIDENCE_YOURSELF_URL,
+  DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL,
   DQ_PHONE_OR_VIDEO_HEARING_URL,
   DQ_WELSH_LANGUAGE_URL,
   VULNERABILITY_URL,
@@ -16,7 +19,16 @@ import {OtherWitnessItems} from 'models/directionsQuestionnaire/witnesses/otherW
 import {LanguageOptions} from 'models/directionsQuestionnaire/languageOptions';
 import {Claim} from 'models/claim';
 import {SummarySection} from 'models/summaryList/summarySections';
-import {getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/getEmptyStringIfUndefined';
+import {
+  getEmptyStringIfUndefined,
+  getFormattedUserAnswer,
+} from 'common/utils/checkYourAnswer/getEmptyStringIfUndefined';
+import {
+  getListOfUnavailableDate,
+  getNumberOfUnavailableDays,
+} from 'services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation';
+
+const MAX_UNAVAILABLE_DAYS_FOR_HEARING_WITHOUT_REASON = 30;
 
 export const getWitnesses = (claim: Claim, claimId: string, lng: string): SummaryRow[]  => {
   const witnessesHref = constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_WITNESSES_URL);
@@ -25,8 +37,7 @@ export const getWitnesses = (claim: Claim, claimId: string, lng: string): Summar
 
   summaryRows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES', {lng}),  t(`COMMON.${otherWitnesses}`, {lng}), witnessesHref, changeLabel(lng)));
 
-  if(otherWitnesses === YesNoUpperCase.YES)
-  {
+  if(otherWitnesses === YesNoUpperCase.YES){
     const witnesses: OtherWitnessItems[] = claim?.directionQuestionnaire?.witnesses?.otherWitnesses?.witnessItems;
     witnesses.forEach((witness, index) => {
       summaryRows.push(summaryRow(`${t('PAGES.CHECK_YOUR_ANSWER.WITNESS', {lng})} ${index + 1}`, '', witnessesHref, changeLabel(lng)));
@@ -37,7 +48,6 @@ export const getWitnesses = (claim: Claim, claimId: string, lng: string): Summar
       summaryRows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY', {lng}), getEmptyStringIfUndefined(witness.details)));
     });
   }
-
   return summaryRows;
 };
 
@@ -61,6 +71,19 @@ export const vulnerabilityInfo = (claim: Claim, claimId: string, lng: string): S
     t('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_INFO', {lng}),
     getEmptyStringIfUndefined(details),
     constructResponseUrlWithIdParams(claimId, VULNERABILITY_URL),
+    changeLabel(lng),
+  );
+};
+
+export const giveEvidenceYourself = (claim: Claim, claimId: string, lng: string): SummaryRow => {
+  const option = claim.directionQuestionnaire?.defendantYourselfEvidence?.option === YesNo.YES
+    ? YesNoUpperCase.YES
+    : YesNoUpperCase.NO;
+
+  return summaryRow(
+    t('PAGES.CHECK_YOUR_ANSWER.GIVE_EVIDENCE', {lng}),
+    t(`COMMON.${option}`, {lng}),
+    constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL),
     changeLabel(lng),
   );
 };
@@ -119,9 +142,77 @@ export const phoneAndVideoInfo = (claim: Claim, claimId: string, lng: string): S
   );
 };
 
+export const getDefendantUnavailableDate = (claim: Claim, claimId: string, lng: string): SummaryRow => {
+  const hasUnavailableDatesForHearing = getListOfUnavailableDate(claim.directionQuestionnaire?.hearing?.unavailableDatesForHearing);
+
+  return summaryRow(
+    t('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.UNAVAILABLE_DATES', {lng}),
+    ` ${[...hasUnavailableDatesForHearing].join('<br>')}`,
+    constructResponseUrlWithIdParams(claimId, DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL),
+    changeLabel(lng),
+  );
+};
+
+export const getUnavailabilityReason = (claim: Claim, claimId: string, days: number, lng: string): SummaryRow => {
+  const whyUnavailableForHearing = claim.directionQuestionnaire.hearing.whyUnavailableForHearing?.reason;
+  return summaryRow(
+    t('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.WHY_UNAVAILABLE_FOR_MORE_THAN_30_DAYS', {days: days, lng: lng}),
+    whyUnavailableForHearing,
+    constructResponseUrlWithIdParams(claimId, DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL),
+    changeLabel(lng),
+  );
+};
+
+export const displayDefendantUnavailableDate = (claim: Claim, claimId: string, lng: string): SummaryRow => {
+  const hasUnavailableDatesForHearing = getFormattedUserAnswer(claim.directionQuestionnaire?.hearing?.cantAttendHearingInNext12Months?.option, lng);
+
+  return summaryRow(
+    t('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE', {lng}),
+    hasUnavailableDatesForHearing,
+    constructResponseUrlWithIdParams(claimId, DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL),
+    changeLabel(lng),
+  );
+};
+
+export const getSpecificCourtLocation = (claim: Claim, claimId: string, lng: string): SummaryRow => {
+  const hasSpecificCourtLocation = getFormattedUserAnswer(claim.directionQuestionnaire?.hearing?.specificCourtLocation?.option, lng);
+
+  return summaryRow(
+    t('PAGES.SPECIFIC_COURT.TITLE', {lng}),
+    hasSpecificCourtLocation,
+    constructResponseUrlWithIdParams(claimId, DQ_COURT_LOCATION_URL),
+    changeLabel(lng),
+  );
+};
+
+export const displaySpecificCourtLocation = (claim: Claim, claimId: string, lng: string): SummaryRow => {
+  const hasSpecificCourtLocation = claim.directionQuestionnaire?.hearing?.specificCourtLocation?.courtLocation;
+
+  return summaryRow(
+    t('PAGES.SPECIFIC_COURT.SELECTED_COURT', {lng}),
+    hasSpecificCourtLocation,
+    constructResponseUrlWithIdParams(claimId, DQ_COURT_LOCATION_URL),
+    changeLabel(lng),
+  );
+};
+
 export const buildCommonHearingRequirements = (claim: Claim, hearingRequirementsSection: SummarySection, claimId: string, lng: string) => {
 
+  if (claim.directionQuestionnaire?.defendantYourselfEvidence?.option) {
+    hearingRequirementsSection.summaryList.rows.push(giveEvidenceYourself(claim, claimId, lng));
+  }
+
   hearingRequirementsSection.summaryList.rows.push(...getWitnesses(claim, claimId, lng));
+
+  hearingRequirementsSection.summaryList.rows.push(displayDefendantUnavailableDate(claim, claimId, lng));
+
+  if (claim.directionQuestionnaire?.hearing?.cantAttendHearingInNext12Months?.option === YesNo.YES) {
+    hearingRequirementsSection.summaryList.rows.push(getDefendantUnavailableDate(claim, claimId, lng));
+    const unavailableDays = getNumberOfUnavailableDays(claim.directionQuestionnaire.hearing.unavailableDatesForHearing);
+    if (unavailableDays > MAX_UNAVAILABLE_DAYS_FOR_HEARING_WITHOUT_REASON) {
+      hearingRequirementsSection.summaryList.rows.push(getUnavailabilityReason(claim, claimId, unavailableDays, lng));
+    }
+  }
 
   if (claim.directionQuestionnaire?.hearing?.phoneOrVideoHearing?.option) {
     hearingRequirementsSection.summaryList.rows.push(phoneAndVideoQuestion(claim, claimId, lng));
@@ -139,6 +230,11 @@ export const buildCommonHearingRequirements = (claim: Claim, hearingRequirements
 
   if (claim.hasSupportRequiredList) {
     addSupportRequiredList(claim, hearingRequirementsSection, claimId, lng);
+  }
+
+  hearingRequirementsSection.summaryList.rows.push(getSpecificCourtLocation(claim, claimId, lng));
+  if (claim.directionQuestionnaire?.hearing?.specificCourtLocation?.option === YesNo.YES) {
+    hearingRequirementsSection.summaryList.rows.push(displaySpecificCourtLocation(claim, claimId, lng));
   }
 
   if (claim.directionQuestionnaire?.welshLanguageRequirements?.language) {

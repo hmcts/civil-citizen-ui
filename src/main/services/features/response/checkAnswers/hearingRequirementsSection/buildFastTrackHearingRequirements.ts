@@ -7,18 +7,11 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL,
   DQ_REQUEST_EXTRA_4WEEKS_URL,
-  DQ_COURT_LOCATION_URL,
-  DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL,
   DQ_TRIED_TO_SETTLE_CLAIM_URL,
   DQ_GIVE_EVIDENCE_YOURSELF_URL,
 } from 'routes/urls';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import {getFormattedUserAnswer, getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/getEmptyStringIfUndefined';
-import {getLng} from 'common/utils/languageToggleUtils';
-import {
-  getListOfUnavailableDate,
-  getNumberOfUnavailableDays,
-} from 'services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation';
 
 export const triedToSettleQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const option = claim.directionQuestionnaire?.hearing?.triedToSettle?.option === YesNo.YES
@@ -92,79 +85,4 @@ export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequireme
 
   if (claim.directionQuestionnaire?.hearing?.considerClaimantDocuments?.option == YesNo.YES)
     hearingRequirementsSection.summaryList.rows.push(considerClaimantDocResponse(claim, claimId, lng));
-
-  if (claim.directionQuestionnaire?.defendantYourselfEvidence?.option)
-    hearingRequirementsSection.summaryList.rows.push(getDisplayWantGiveSelfEvidence(claim, claimId, lng));
-
-  if (claim.directionQuestionnaire?.hearing?.specificCourtLocation?.option)
-    hearingRequirementsSection.summaryList.rows.push(getSpecificCourtLocation(claim, claimId, getLng(lng)));
-
-  if (claim.directionQuestionnaire?.hearing?.cantAttendHearingInNext12Months?.option)
-    hearingRequirementsSection.summaryList.rows.push(displayDefendantUnavailableDate(claim, claimId, getLng(lng)));
-
-  if (claim.directionQuestionnaire?.hearing?.cantAttendHearingInNext12Months?.option === YesNo.YES){
-    hearingRequirementsSection.summaryList.rows.push(getDefendantUnavailableDate(claim, claimId, getLng(lng)));
-    hearingRequirementsSection.summaryList.rows.push(getUnavailableHearingDays(claim, claimId, getLng(lng)));
-  }
-};
-
-export const getDefendantUnavailableDate = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const hasUnavailableDatesForHearing = getListOfUnavailableDate(claim.directionQuestionnaire?.hearing?.unavailableDatesForHearing);
-
-  return summaryRow(
-    t('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.UNAVAILABLE_DATES', {lng}),
-    ` ${[...hasUnavailableDatesForHearing].join('<br>')}`,
-    constructResponseUrlWithIdParams(claimId, DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL),
-    changeLabel(lng),
-  );
-};
-
-export const getUnavailableHearingDays = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const NUMBER_OF_DAYS = 30;
-  const whyUnavailableForHearing = claim.directionQuestionnaire.hearing.whyUnavailableForHearing?.reason;
-  const days = getNumberOfUnavailableDays(claim.directionQuestionnaire.hearing.unavailableDatesForHearing);
-
-  if (days <= NUMBER_OF_DAYS){
-    return;
-  }
-
-  return summaryRow(
-    t('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.WHY_UNAVAILABLE_FOR_MORE_THAN_30_DAYS', {days:days, lng:lng}),
-    whyUnavailableForHearing,
-    constructResponseUrlWithIdParams(claimId, DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL),
-    changeLabel(lng),
-  );
-};
-
-export const displayDefendantUnavailableDate = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const hasUnavailableDatesForHearing = getFormattedUserAnswer(claim.directionQuestionnaire?.hearing?.cantAttendHearingInNext12Months?.option, lng);
-
-  return summaryRow(
-    t('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE', {lng}),
-    hasUnavailableDatesForHearing,
-    constructResponseUrlWithIdParams(claimId, DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL),
-    changeLabel(lng),
-  );
-};
-
-export const getSpecificCourtLocation = (claim: Claim, claimId: string, lng:string): SummaryRow=> {
-  const hasSpecificCourtLocation = getFormattedUserAnswer(claim.directionQuestionnaire?.hearing?.specificCourtLocation?.option, lng);
-
-  return summaryRow(
-    t('PAGES.SPECIFIC_COURT.TITLE', {lng}),
-    hasSpecificCourtLocation,
-    constructResponseUrlWithIdParams(claimId, DQ_COURT_LOCATION_URL),
-    changeLabel(lng),
-  );
-};
-
-export const displaySpecificCourtLocation = (claim: Claim, claimId: string, lng:string): SummaryRow=> {
-  const hasSpecificCourtLocation = claim.directionQuestionnaire?.hearing?.specificCourtLocation?.courtLocation;
-
-  return summaryRow(
-    t('PAGES.SPECIFIC_COURT.SELECTED_COURT', {lng}),
-    hasSpecificCourtLocation,
-    constructResponseUrlWithIdParams(claimId, DQ_COURT_LOCATION_URL),
-    changeLabel(lng),
-  );
 };
