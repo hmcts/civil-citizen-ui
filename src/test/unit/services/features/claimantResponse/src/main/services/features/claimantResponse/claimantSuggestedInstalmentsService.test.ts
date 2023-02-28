@@ -6,7 +6,6 @@ import {TestMessages} from '../../../../../../../../../utils/errorMessageTestCon
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import {getClaimantSuggestedInstalmentsForm, getClaimantSuggestedInstalmentsPlan} from 'services/features/claimantResponse/claimantSuggestedInstalmentsService';
 
-jest.mock('../../../../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../../../../main/modules/draft-store/draftStoreService');
 
 const TOTAL_CLAIM_AMOUNT = 1000;
