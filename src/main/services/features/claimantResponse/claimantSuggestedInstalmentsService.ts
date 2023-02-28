@@ -5,7 +5,7 @@ import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantSuggestedInstalmentsService');
 
-export const getclaimantSuggestedInstalmentsPlan = async (claimId: string): Promise<RepaymentPlanForm> => {
+export const getClaimantSuggestedInstalmentsPlan = async (claimId: string): Promise<RepaymentPlanForm> => {
   try {
     const claim = await getCaseDataFromStore(claimId);
     const claimantSuggestedInstalments = claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan;

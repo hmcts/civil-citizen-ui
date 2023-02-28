@@ -9,7 +9,7 @@ import {
 import {saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
 import {
   getClaimantSuggestedInstalmentsForm,
-  getclaimantSuggestedInstalmentsPlan,
+  getClaimantSuggestedInstalmentsPlan,
 } from 'services/features/claimantResponse/claimantSuggestedInstalmentsService';
 
 const claimantSuggestedInstalmentsViewPath = 'features/claimantResponse/instalments-plan';
@@ -23,7 +23,7 @@ function renderView(form: GenericForm<RepaymentPlanForm>, res: Response): void {
 
 claimantSuggestedInstalmentsController.get(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL,  async (req, res, next: NextFunction) => {
   try {
-    const claimantSuggestedInstalmentsPlan = await getclaimantSuggestedInstalmentsPlan(req.params.id);
+    const claimantSuggestedInstalmentsPlan = await getClaimantSuggestedInstalmentsPlan(req.params.id);
     renderView(new GenericForm(claimantSuggestedInstalmentsPlan), res);
   } catch (error) {
     next(error);

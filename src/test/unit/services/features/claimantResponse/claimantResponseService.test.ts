@@ -378,6 +378,45 @@ describe('Claimant Response Service', () => {
       expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
     });
 
+    it('should update payment option successfully from payment by date', async () => {
+      //Given
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.suggestedPaymentIntention = {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate : new Date() } ;
+        return claim;
+      });
+      const claimantResponseToUpdate = {
+        suggestedPaymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY},
+      };
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await saveClaimantResponse('validClaimId', PaymentOptionType.IMMEDIATELY, 'paymentOption', 'suggestedPaymentIntention');
+      //Then
+      expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
+    });
+
+    it('should update payment option successfully from pay by instalments', async () => {
+      //Given
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.suggestedPaymentIntention = {
+          paymentOption: PaymentOptionType.INSTALMENTS,
+          repaymentPlan: { paymentAmount: 100},
+        };
+        return claim;
+      });
+      const claimantResponseToUpdate = {
+        suggestedPaymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY},
+      };
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await saveClaimantResponse('validClaimId', PaymentOptionType.IMMEDIATELY, 'paymentOption', 'suggestedPaymentIntention');
+      //Then
+      expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
+    });
+
     describe('intentionToProceed', () => {
       claimantResponse.intentionToProceed = new GenericYesNo(YesNo.YES);
       it('should save claimant response successfully', async () => {
