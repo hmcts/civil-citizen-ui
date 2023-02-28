@@ -15,9 +15,6 @@ import {
 } from 'routes/urls';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import {getFormattedAnswerForYesNoNotReceived, getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/formatAnswer';
-import {
-  getSummaryRowForDisplayEvidenceYourself,
-} from 'services/features/response/checkAnswers/hearingRequirementsSection/buildCommonHearingRequirements';
 
 export const triedToSettleQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const option = claim.directionQuestionnaire?.hearing?.triedToSettle?.option === YesNo.YES
@@ -121,23 +118,29 @@ export const getShareExpertWithClaimant = (claim: Claim, claimId: string, lng: s
 
 export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequirementsSection: SummarySection, claimId: string, lng: string) => {
 
-  if (claim.directionQuestionnaire?.hearing?.triedToSettle?.option)
+  if (claim.directionQuestionnaire?.hearing?.triedToSettle?.option) {
     hearingRequirementsSection.summaryList.rows.push(triedToSettleQuestion(claim, claimId, lng));
+  }
 
-  if (claim.directionQuestionnaire?.hearing?.requestExtra4weeks?.option)
+  if (claim.directionQuestionnaire?.hearing?.requestExtra4weeks?.option) {
     hearingRequirementsSection.summaryList.rows.push(requestExtra4WeeksQuestion(claim, claimId, lng));
+  }
 
-  if (claim.directionQuestionnaire?.hearing?.considerClaimantDocuments?.option)
+  if (claim.directionQuestionnaire?.hearing?.considerClaimantDocuments?.option) {
     hearingRequirementsSection.summaryList.rows.push(considerClaimantDocQuestion(claim, claimId, lng));
+  }
 
-  if (claim.directionQuestionnaire?.hearing?.considerClaimantDocuments?.option == YesNo.YES)
+  if (claim.directionQuestionnaire?.hearing?.considerClaimantDocuments?.option == YesNo.YES) {
     hearingRequirementsSection.summaryList.rows.push(considerClaimantDocResponse(claim, claimId, lng));
+  }
 
-  if (claim.directionQuestionnaire?.experts?.expertEvidence?.option)
+  if (claim.directionQuestionnaire?.experts?.expertEvidence?.option) {
     hearingRequirementsSection.summaryList.rows.push(getUseExpertEvidence(claim, claimId, lng));
+  }
 
-  if (claim.directionQuestionnaire?.experts?.sentExpertReports?.option)
+  if (claim.directionQuestionnaire?.experts?.sentExpertReports?.option){
     hearingRequirementsSection.summaryList.rows.push(getSentReportToOtherParties(claim, claimId, lng));
+  }
 
   if (claim.directionQuestionnaire?.experts?.sharedExpert?.option)
     hearingRequirementsSection.summaryList.rows.push(getShareExpertWithClaimant(claim, claimId, lng));
@@ -145,8 +148,4 @@ export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequireme
   if (claim.directionQuestionnaire?.experts?.expertEvidence?.option === YesNo.YES) {
     hearingRequirementsSection.summaryList.rows.push(...getExpertDetails(claim, claimId, lng));
   }
-
-  if (claim.directionQuestionnaire?.defendantYourselfEvidence?.option)
-    hearingRequirementsSection.summaryList.rows.push(getSummaryRowForDisplayEvidenceYourself(claim, claimId, lng));
-
 };
