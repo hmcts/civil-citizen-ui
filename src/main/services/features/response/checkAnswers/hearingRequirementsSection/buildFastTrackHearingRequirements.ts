@@ -8,7 +8,6 @@ import {
   DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL,
   DQ_DEFENDANT_EXPERT_EVIDENCE_URL,
   DQ_EXPERT_DETAILS_URL,
-  DQ_GIVE_EVIDENCE_YOURSELF_URL,
   DQ_REQUEST_EXTRA_4WEEKS_URL,
   DQ_SENT_EXPERT_REPORTS_URL,
   DQ_SHARE_AN_EXPERT_URL,
@@ -16,6 +15,9 @@ import {
 } from 'routes/urls';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import {getFormattedAnswerForYesNoNotReceived, getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/formatAnswer';
+import {
+  getSummaryRowForDisplayEvidenceYourself,
+} from 'services/features/response/checkAnswers/hearingRequirementsSection/buildCommonHearingRequirements';
 
 export const triedToSettleQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const option = claim.directionQuestionnaire?.hearing?.triedToSettle?.option === YesNo.YES
@@ -117,17 +119,6 @@ export const getShareExpertWithClaimant = (claim: Claim, claimId: string, lng: s
   );
 };
 
-export const getSummaryRowForDisplayEvidenceYourelf = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const giveEvidenceYourselfAnswer = getFormattedAnswerForYesNoNotReceived(claim.directionQuestionnaire?.defendantYourselfEvidence?.option, lng);
-
-  return summaryRow(
-    t('PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE', {lng}),
-    giveEvidenceYourselfAnswer,
-    constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL),
-    changeLabel(lng),
-  );
-};
-
 export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequirementsSection: SummarySection, claimId: string, lng: string) => {
 
   if (claim.directionQuestionnaire?.hearing?.triedToSettle?.option)
@@ -156,6 +147,6 @@ export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequireme
   }
 
   if (claim.directionQuestionnaire?.defendantYourselfEvidence?.option)
-    hearingRequirementsSection.summaryList.rows.push(getSummaryRowForDisplayEvidenceYourelf(claim, claimId, lng));
+    hearingRequirementsSection.summaryList.rows.push(getSummaryRowForDisplayEvidenceYourself(claim, claimId, lng));
 
 };

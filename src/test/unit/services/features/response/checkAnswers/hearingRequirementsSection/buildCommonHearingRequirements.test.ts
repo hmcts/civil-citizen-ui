@@ -6,7 +6,7 @@ import {
 import {LanguageOptions} from 'models/directionsQuestionnaire/languageOptions';
 import {summaryRow} from 'models/summaryList/summaryList';
 import {
-  documentsLanguagePreference,
+  documentsLanguagePreference, getSummaryRowForDisplayEvidenceYourself,
   getWitnesses,
   phoneAndVideoInfo, phoneAndVideoQuestion,
   speakingLanguagePreference,
@@ -26,9 +26,6 @@ import {summarySection} from 'models/summaryList/summarySections';
 import {OtherWitnessItems} from 'common/models/directionsQuestionnaire/witnesses/otherWitnessItems';
 import {Witnesses} from 'models/directionsQuestionnaire/witnesses/witnesses';
 import {OtherWitnesses} from 'models/directionsQuestionnaire/witnesses/otherWitnesses';
-import {
-  getSummaryRowForDisplayEvidenceYourelf,
-} from '../../../../../../../main/services/features/response/checkAnswers/hearingRequirementsSection/buildFastTrackHearingRequirements';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/i18n');
@@ -218,7 +215,7 @@ describe('Common Hearing Requirements Section', () => {
         changeButton,
       );
       //Then
-      expect(getSummaryRowForDisplayEvidenceYourelf(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      expect(getSummaryRowForDisplayEvidenceYourself(claim, claimId, lng)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if give evidence yourself option is yes', () => {
@@ -235,7 +232,7 @@ describe('Common Hearing Requirements Section', () => {
         changeButton,
       );
       //Then
-      expect(getSummaryRowForDisplayEvidenceYourelf(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      expect(getSummaryRowForDisplayEvidenceYourself(claim, claimId, lng)).toStrictEqual(mockSummarySection);
     });
   });
 

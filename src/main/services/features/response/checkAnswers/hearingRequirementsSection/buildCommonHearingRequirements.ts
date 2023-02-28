@@ -4,7 +4,7 @@ import {
 import {summaryRow, SummaryRow} from 'models/summaryList/summaryList';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
-  DQ_DEFENDANT_WITNESSES_URL,
+  DQ_DEFENDANT_WITNESSES_URL, DQ_GIVE_EVIDENCE_YOURSELF_URL,
   DQ_PHONE_OR_VIDEO_HEARING_URL,
   DQ_WELSH_LANGUAGE_URL,
   VULNERABILITY_URL,
@@ -16,7 +16,10 @@ import {OtherWitnessItems} from 'models/directionsQuestionnaire/witnesses/otherW
 import {LanguageOptions} from 'models/directionsQuestionnaire/languageOptions';
 import {Claim} from 'models/claim';
 import {SummarySection} from 'models/summaryList/summarySections';
-import {getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/formatAnswer';
+import {
+  getEmptyStringIfUndefined,
+  getFormattedAnswerForYesNoNotReceived,
+} from 'common/utils/checkYourAnswer/formatAnswer';
 
 export const getWitnesses = (claim: Claim, claimId: string, lng: string): SummaryRow[]  => {
   const witnessesHref = constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_WITNESSES_URL);
@@ -39,6 +42,17 @@ export const getWitnesses = (claim: Claim, claimId: string, lng: string): Summar
   }
 
   return summaryRows;
+};
+
+export const getSummaryRowForDisplayEvidenceYourself = (claim: Claim, claimId: string, lng: string): SummaryRow => {
+  const giveEvidenceYourselfAnswer = getFormattedAnswerForYesNoNotReceived(claim.directionQuestionnaire?.defendantYourselfEvidence?.option, lng);
+
+  return summaryRow(
+    t('PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE', {lng}),
+    giveEvidenceYourselfAnswer,
+    constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL),
+    changeLabel(lng),
+  );
 };
 
 export const vulnerabilityQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
@@ -120,7 +134,9 @@ export const phoneAndVideoInfo = (claim: Claim, claimId: string, lng: string): S
 };
 
 export const buildCommonHearingRequirements = (claim: Claim, hearingRequirementsSection: SummarySection, claimId: string, lng: string) => {
-
+  if (claim.directionQuestionnaire?.defendantYourselfEvidence?.option) {
+    hearingRequirementsSection.summaryList.rows.push(getSummaryRowForDisplayEvidenceYourself(claim, claimId, lng));
+  }
   hearingRequirementsSection.summaryList.rows.push(...getWitnesses(claim, claimId, lng));
 
   if (claim.directionQuestionnaire?.hearing?.phoneOrVideoHearing?.option) {

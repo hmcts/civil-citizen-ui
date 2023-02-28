@@ -5,7 +5,7 @@ import {YesNo, YesNoNotReceived} from 'form/models/yesNo';
 import {summaryRow} from 'models/summaryList/summaryList';
 import {
   considerClaimantDocQuestion,
-  considerClaimantDocResponse, getSummaryRowForDisplayEvidenceYourelf, getExpertDetails,
+  considerClaimantDocResponse, getExpertDetails,
   getSentReportToOtherParties,
   getShareExpertWithClaimant,
   getUseExpertEvidence,
@@ -17,6 +17,7 @@ import {
   ExpertDetailsList,
 } from '../../../../../../../main/common/models/directionsQuestionnaire/experts/expertDetailsList';
 import {ExpertDetails} from '../../../../../../../main/common/models/directionsQuestionnaire/experts/expertDetails';
+import { getSummaryRowForDisplayEvidenceYourself } from 'services/features/response/checkAnswers/hearingRequirementsSection/buildCommonHearingRequirements';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/i18n');
@@ -196,7 +197,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         changeButton,
       );
       //When
-      const personalEvidence = getSummaryRowForDisplayEvidenceYourelf(claim, claimId, lng);
+      const personalEvidence = getSummaryRowForDisplayEvidenceYourself(claim, claimId, lng);
       //Then
       expect(personalEvidence).toStrictEqual(mockSummarySection);
     });
