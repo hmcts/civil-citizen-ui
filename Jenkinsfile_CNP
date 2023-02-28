@@ -8,6 +8,7 @@ def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
 AppPipelineConfig pipelineConf
+def ccddefbranch = "features/CIV-5797_Transform_Mediation_Model"
 
 static Map<String, Object> secret(String secretName, String envVariable) {
   [$class     : 'AzureKeyVaultSecret',
