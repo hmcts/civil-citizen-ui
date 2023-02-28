@@ -21,4 +21,3 @@ export class PhoneUKValidator implements ValidatorConstraintInterface {
     return 'ERRORS.VALID_PHONE_NUMBER';
   }
 }
-

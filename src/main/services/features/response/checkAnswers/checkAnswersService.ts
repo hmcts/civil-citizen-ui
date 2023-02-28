@@ -14,8 +14,9 @@ import {buildYourFinancialSection} from './financialSection/buildYourFinancialSe
 import {buildYourResponseDetailsSection} from './responseSection/buildYourResponseDetailsSection';
 import {buildFreeTelephoneMediationSection} from './responseSection/buildFreeTelephoneMediationSection';
 import {YesNo} from 'common/form/models/yesNo';
-import {buildHearingRequirementSection} from './hearingRequirementSection/buildHearingRequirementSection';
-
+import {
+  buildHearingRequirementsSection,
+} from 'services/features/response/checkAnswers/hearingRequirementsSection/buildHearingRequirementsSection';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
 
@@ -79,7 +80,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
       getFinancialSectionPA(),
       getResponsePaymentSection(),
       getFreeTelephoneMediationSection(),
-      buildHearingRequirementSection(claim, claimId, lang),
+      buildHearingRequirementsSection(claim, claimId, lang),
     ],
   };
 };
