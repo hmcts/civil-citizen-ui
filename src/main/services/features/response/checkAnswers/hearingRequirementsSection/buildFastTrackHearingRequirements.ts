@@ -10,6 +10,7 @@ import {
   DQ_COURT_LOCATION_URL,
   DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL,
   DQ_TRIED_TO_SETTLE_CLAIM_URL,
+  DQ_GIVE_EVIDENCE_YOURSELF_URL,
 } from 'routes/urls';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import {getFormattedUserAnswer, getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/getEmptyStringIfUndefined';
@@ -67,6 +68,16 @@ export const considerClaimantDocResponse = (claim: Claim, claimId: string, lng: 
   );
 };
 
+export const getDisplayWantGiveSelfEvidence = (claim: Claim, claimId: string, lng: string): SummaryRow => {
+  const shouldConsiderGiveYourselfEvidence = getFormattedUserAnswer(claim.directionQuestionnaire?.defendantYourselfEvidence?.option, lng);
+
+  return summaryRow(
+    t('PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE', {lng}),
+    shouldConsiderGiveYourselfEvidence,
+    constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL),
+    changeLabel(lng),
+  );
+};
 
 export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequirementsSection: SummarySection, claimId: string, lng: string) => {
 
@@ -81,6 +92,9 @@ export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequireme
 
   if (claim.directionQuestionnaire?.hearing?.considerClaimantDocuments?.option == YesNo.YES)
     hearingRequirementsSection.summaryList.rows.push(considerClaimantDocResponse(claim, claimId, lng));
+
+  if (claim.directionQuestionnaire?.defendantYourselfEvidence?.option)
+    hearingRequirementsSection.summaryList.rows.push(getDisplayWantGiveSelfEvidence(claim, claimId, lng));
 
   if (claim.directionQuestionnaire?.hearing?.specificCourtLocation?.option)
     hearingRequirementsSection.summaryList.rows.push(getSpecificCourtLocation(claim, claimId, getLng(lng)));

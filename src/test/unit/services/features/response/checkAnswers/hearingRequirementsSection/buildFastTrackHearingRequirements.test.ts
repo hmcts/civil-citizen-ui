@@ -1,17 +1,17 @@
 import {Claim} from 'models/claim';
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
 import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
-import {YesNo, YesNoNotReceived} from 'form/models/yesNo';
+import {YesNo} from 'form/models/yesNo';
 import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
 import {
   considerClaimantDocQuestion,
-  considerClaimantDocResponse, getDisplayWantGiveSelfEvidence, getExpertDetails,
-  getSentReportToOtherParties,
-  getShareExpertWithClaimant,
-  getUseExpertEvidence,
-  displayDefendantUnavailableDate, displaySpecificCourtLocation,
+  considerClaimantDocResponse,
+  getDisplayWantGiveSelfEvidence,
+  displayDefendantUnavailableDate,
+  displaySpecificCourtLocation,
   getDefendantUnavailableDate,
-  getSpecificCourtLocation, getUnavailableHearingDays,
+  getSpecificCourtLocation,
+  getUnavailableHearingDays,
   requestExtra4WeeksQuestion,
   triedToSettleQuestion,
 } from 'services/features/response/checkAnswers/hearingRequirementsSection/buildFastTrackHearingRequirements';
@@ -23,10 +23,6 @@ import {
 import {
   SpecificCourtLocation,
 } from '../../../../../../../main/common/models/directionsQuestionnaire/hearing/specificCourtLocation';
-import {
-  ExpertDetailsList,
-} from '../../../../../../../main/common/models/directionsQuestionnaire/experts/expertDetailsList';
-import {ExpertDetails} from '../../../../../../../main/common/models/directionsQuestionnaire/experts/expertDetails';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/i18n');
@@ -121,71 +117,11 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
 
   });
 
-  describe('should return summary row relative to expect', ()=>{
+  describe('should return summary row relative to expert', ()=>{
     const claim = new Claim();
     claim.directionQuestionnaire = new DirectionQuestionnaire();
     claim.directionQuestionnaire.experts = new Experts();
-
-    it('should not display expert if the the expect evidence is NO',  () => {
-      //Given
-      claim.directionQuestionnaire.experts.expertEvidence =  {option:YesNo.NO};
-      claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList();
-
-      const result: any[] = [];
-
-      //When
-      const expertDetails = getExpertDetails(claim, claimId, lng);
-
-      //Then
-      expect(expertDetails).toStrictEqual(result);
-    });
-    it('should display expert details if the expect evidence is YES', function () {
-
-      //Given
-      claim.directionQuestionnaire.experts.expertEvidence = {option:YesNo.YES};
-      claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList();
-
-      claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList(
-        [new ExpertDetails('Mike', 'James', 'mike@gmail.com', 7411111, 'reason', 'expert', 500)],
-      );
-
-      //When
-      const summaryRows = getExpertDetails(claim, '1', 'eng');
-      //Then
-      expect(summaryRows.length).toEqual(8);
-      expect(summaryRows[0].key.text).toEqual('PAGES.EXPERT_DETAILS.SECTION_TITLE 1');
-      expect(summaryRows[1].key.text).toEqual('PAGES.EXPERT_DETAILS.FIRST_NAME_OPTIONAL');
-      expect(summaryRows[1].value.html).toEqual('Mike');
-      expect(summaryRows[2].key.text).toEqual('PAGES.EXPERT_DETAILS.LAST_NAME_OPTIONAL');
-      expect(summaryRows[2].value.html).toEqual('James');
-      expect(summaryRows[3].key.text).toEqual('PAGES.EXPERT_DETAILS.EMAIL_ADDRESS_OPTIONAL');
-      expect(summaryRows[3].value.html).toEqual('mike@gmail.com');
-      expect(summaryRows[4].key.text).toEqual('PAGES.EXPERT_DETAILS.PHONE_OPTIONAL');
-      expect(summaryRows[4].value.html).toEqual('7411111');
-      expect(summaryRows[5].key.text).toEqual('PAGES.EXPERT_DETAILS.FIELD_OF_EXPERTISE');
-      expect(summaryRows[5].value.html).toEqual('expert');
-      expect(summaryRows[6].key.text).toEqual('PAGES.EXPERT_DETAILS.TELL_US_WHY_NEED_EXPERT');
-      expect(summaryRows[6].value.html).toEqual('reason');
-      expect(summaryRows[7].key.text).toEqual('PAGES.EXPERT_DETAILS.COST_OPTIONAL');
-      expect(summaryRows[7].value.html).toEqual('500');
-
-    });
-    it('should display the use of expert evidence No if the claimant choose not',  () => {
-
-      //Given
-      claim.directionQuestionnaire.experts.expertEvidence = {option: YesNo.NO};
-      const mockSummarySection = summaryRow(
-        'PAGES.DEFENDANT_EXPERT_EVIDENCE.TITLE',
-        'COMMON.NO',
-        '/case/validClaimId/directions-questionnaire/expert-evidence',
-        changeButton,
-      );
-      //When
-      const doWantUseExpectEvidence = getUseExpertEvidence(claim, claimId, lng);
-      //Then
-      expect(doWantUseExpectEvidence).toStrictEqual(mockSummarySection);
-    });
-    it('should display the use of own evidence No if the claimant choose not',  () => {
+    it('should display the use of own evidence No if the claimant choose not', () => {
 
       claim.directionQuestionnaire.defendantYourselfEvidence = {option: YesNo.NO};
       //Given
@@ -200,116 +136,8 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       //Then
       expect(personalEvidence).toStrictEqual(mockSummarySection);
     });
-    it('should display No if the defendant does not accept to share expert  with the claimant', function () {
 
-      //Given
-      claim.directionQuestionnaire.experts.sharedExpert = {option: YesNo.NO};
-      const mockSummarySection = summaryRow(
-        'PAGES.SHARED_EXPERT.WITH_CLAIMANT',
-        'COMMON.NO',
-        '/case/validClaimId/directions-questionnaire/shared-expert',
-        changeButton,
-      );
-      //When
-      const shareExpertWithClaimant = getShareExpertWithClaimant(claim, claimId, lng);
-      //Then
-      expect(shareExpertWithClaimant).toStrictEqual(mockSummarySection);
-    });
-    it('should display No if the defendant has not send expert report to other parties', function () {
-      //Given
-      claim.directionQuestionnaire.experts.sentExpertReports = { option: YesNoNotReceived.NO };
-      const mockSummarySection = summaryRow(
-        'PAGES.SENT_EXPERT_REPORTS.TITLE',
-        'COMMON.NO',
-        '/case/validClaimId/directions-questionnaire/sent-expert-reports',
-        changeButton,
-      );
-      //When
-      const sentReportToOtherParties = getSentReportToOtherParties(claim, claimId, lng);
-      //Then
-      expect(sentReportToOtherParties).toStrictEqual(mockSummarySection);
-    });
-    it('should display No if the claimant has not yet received expert report to other parties', function () {
-
-      //Given
-      claim.directionQuestionnaire.experts.sentExpertReports = { option: YesNoNotReceived.NOT_RECEIVED };
-      const mockSummarySection = summaryRow(
-        'PAGES.SENT_EXPERT_REPORTS.TITLE',
-        'PAGES.SENT_EXPERT_REPORTS.OPTION_NOT_RECEIVED',
-        '/case/validClaimId/directions-questionnaire/sent-expert-reports',
-        changeButton,
-      );
-      //When
-      const sentReportToOtherParties = getSentReportToOtherParties(claim, claimId, lng);
-      //Then
-      expect(sentReportToOtherParties).toStrictEqual(mockSummarySection);
-    });
-  });
-
-  describe('should return summary row relative to expect', ()=>{
-    const claim = new Claim();
-    claim.directionQuestionnaire = new DirectionQuestionnaire();
-    it('should not display expert if the the expect evidence is NO',  () => {
-      //Given
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.experts = new Experts();
-      //When
-      claim.directionQuestionnaire.experts.expertEvidence =  {option:YesNo.NO};
-      claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList();
-      const result: any[] = [];
-      //Then
-      expect(getExpertDetails(claim, claimId, lng)).toStrictEqual(result);
-    });
-    it('should display expert details if the expect evidence is YES', function () {
-      //Given
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.experts = new Experts();
-      claim.directionQuestionnaire.experts.expertEvidence = {option:YesNo.YES};
-      claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList();
-
-      claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList([new ExpertDetails('Mike', 'James', 'mike@gmail.com', 7411111, 'reason', 'expert', 500)]);
-      //When
-      const summaryRows = getExpertDetails(claim, '1', 'eng');
-      //Then
-      expect(summaryRows.length).toEqual(8);
-      expect(summaryRows[0].key.text).toEqual('PAGES.EXPERT_DETAILS.SECTION_TITLE 1');
-      expect(summaryRows[1].key.text).toEqual('PAGES.EXPERT_DETAILS.FIRST_NAME_OPTIONAL');
-      expect(summaryRows[1].value.html).toEqual('Mike');
-      expect(summaryRows[2].key.text).toEqual('PAGES.EXPERT_DETAILS.LAST_NAME_OPTIONAL');
-      expect(summaryRows[2].value.html).toEqual('James');
-      expect(summaryRows[3].key.text).toEqual('PAGES.EXPERT_DETAILS.EMAIL_ADDRESS_OPTIONAL');
-      expect(summaryRows[3].value.html).toEqual('mike@gmail.com');
-      expect(summaryRows[4].key.text).toEqual('PAGES.EXPERT_DETAILS.PHONE_OPTIONAL');
-      expect(summaryRows[4].value.html).toEqual('7411111');
-      expect(summaryRows[5].key.text).toEqual('PAGES.EXPERT_DETAILS.FIELD_OF_EXPERTISE');
-      expect(summaryRows[5].value.html).toEqual('expert');
-      expect(summaryRows[6].key.text).toEqual('PAGES.EXPERT_DETAILS.TELL_US_WHY_NEED_EXPERT');
-      expect(summaryRows[6].value.html).toEqual('reason');
-      expect(summaryRows[7].key.text).toEqual('PAGES.EXPERT_DETAILS.COST_OPTIONAL');
-      expect(summaryRows[7].value.html).toEqual('500');
-
-    });
-    it('should display the use of expert evidence No if the claimant choose not',  () => {
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.experts = new Experts();
-      claim.directionQuestionnaire.experts.expertEvidence = {option: YesNo.NO};
-
-      //Given
-      const mockSummarySection = summaryRow(
-        'PAGES.DEFENDANT_EXPERT_EVIDENCE.TITLE',
-        'COMMON.NO',
-        '/case/validClaimId/directions-questionnaire/expert-evidence',
-        changeButton,
-      );
-      //When
-      const doWantUseExpectEvidence = getUseExpertEvidence(claim, claimId, lng);
-      //Then
-      expect(doWantUseExpectEvidence).toStrictEqual(mockSummarySection);
-    });
-    it('should display the use of own evidence No if the claimant choose not',  () => {
+    it('should display the use of own evidence No if the claimant choose not', () => {
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
       claim.directionQuestionnaire.defendantYourselfEvidence = {option: YesNo.NO};
@@ -324,59 +152,6 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       const personalEvidence = getDisplayWantGiveSelfEvidence(claim, claimId, lng);
       //Then
       expect(personalEvidence).toStrictEqual(mockSummarySection);
-    });
-    it('should display No if the defendant does not accept to share expert  with the claimant', function () {
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.experts = new Experts();
-      claim.directionQuestionnaire.experts.sharedExpert = {option: YesNo.NO};
-      //Given
-      const mockSummarySection = summaryRow(
-        'PAGES.SHARED_EXPERT.WITH_CLAIMANT',
-        'COMMON.NO',
-        '/case/validClaimId/directions-questionnaire/shared-expert',
-        changeButton,
-      );
-      //When
-      const shareExpertWithClaimant = getShareExpertWithClaimant(claim, claimId, lng);
-      //Then
-      expect(shareExpertWithClaimant).toStrictEqual(mockSummarySection);
-    });
-    it('should display No if the defendant has not send expert report to other parties', function () {
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.experts = new Experts();
-      claim.directionQuestionnaire.experts.sentExpertReports = { option: YesNoNotReceived.NO };
-
-      //Given
-      const mockSummarySection = summaryRow(
-        'PAGES.SENT_EXPERT_REPORTS.TITLE',
-        'COMMON.NO',
-        '/case/validClaimId/directions-questionnaire/sent-expert-reports',
-        changeButton,
-      );
-      //When
-      const sentReportToOtherParties = getSentReportToOtherParties(claim, claimId, lng);
-      //Then
-      expect(sentReportToOtherParties).toStrictEqual(mockSummarySection);
-    });
-    it('should display No if the claimant has not yet received expert report to other parties', function () {
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.experts = new Experts();
-      claim.directionQuestionnaire.experts.sentExpertReports = { option: YesNoNotReceived.NOT_RECEIVED };
-
-      //Given
-      const mockSummarySection = summaryRow(
-        'PAGES.SENT_EXPERT_REPORTS.TITLE',
-        'PAGES.SENT_EXPERT_REPORTS.OPTION_NOT_RECEIVED',
-        '/case/validClaimId/directions-questionnaire/sent-expert-reports',
-        changeButton,
-      );
-      //When
-      const sentReportToOtherParties = getSentReportToOtherParties(claim, claimId, lng);
-      //Then
-      expect(sentReportToOtherParties).toStrictEqual(mockSummarySection);
     });
   });
 
