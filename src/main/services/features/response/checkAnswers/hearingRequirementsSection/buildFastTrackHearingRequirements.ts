@@ -8,10 +8,9 @@ import {
   DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL,
   DQ_REQUEST_EXTRA_4WEEKS_URL,
   DQ_TRIED_TO_SETTLE_CLAIM_URL,
-  DQ_GIVE_EVIDENCE_YOURSELF_URL,
 } from 'routes/urls';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
-import {getFormattedUserAnswer, getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/getEmptyStringIfUndefined';
+import {getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/getEmptyStringIfUndefined';
 
 export const triedToSettleQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const option = claim.directionQuestionnaire?.hearing?.triedToSettle?.option === YesNo.YES
@@ -58,17 +57,6 @@ export const considerClaimantDocResponse = (claim: Claim, claimId: string, lng: 
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.GIVE_DOC_DETAILS', {lng}),
     getEmptyStringIfUndefined(details),
-  );
-};
-
-export const getDisplayWantGiveSelfEvidence = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const shouldConsiderGiveYourselfEvidence = getFormattedUserAnswer(claim.directionQuestionnaire?.defendantYourselfEvidence?.option, lng);
-
-  return summaryRow(
-    t('PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE', {lng}),
-    shouldConsiderGiveYourselfEvidence,
-    constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL),
-    changeLabel(lng),
   );
 };
 

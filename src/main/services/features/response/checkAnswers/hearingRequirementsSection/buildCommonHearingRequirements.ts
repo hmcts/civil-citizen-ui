@@ -142,7 +142,7 @@ export const phoneAndVideoInfo = (claim: Claim, claimId: string, lng: string): S
   );
 };
 
-export const getDefendantUnavailableDate = (claim: Claim, claimId: string, lng: string): SummaryRow => {
+export const getUnavailableDatesList = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const hasUnavailableDatesForHearing = getListOfUnavailableDate(claim.directionQuestionnaire?.hearing?.unavailableDatesForHearing);
 
   return summaryRow(
@@ -163,7 +163,7 @@ export const getUnavailabilityReason = (claim: Claim, claimId: string, days: num
   );
 };
 
-export const displayDefendantUnavailableDate = (claim: Claim, claimId: string, lng: string): SummaryRow => {
+export const displayUnavailabilityForHearing = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const hasUnavailableDatesForHearing = getFormattedUserAnswer(claim.directionQuestionnaire?.hearing?.cantAttendHearingInNext12Months?.option, lng);
 
   return summaryRow(
@@ -204,13 +204,13 @@ export const buildCommonHearingRequirements = (claim: Claim, hearingRequirements
 
   hearingRequirementsSection.summaryList.rows.push(...getWitnesses(claim, claimId, lng));
 
-  hearingRequirementsSection.summaryList.rows.push(displayDefendantUnavailableDate(claim, claimId, lng));
+  hearingRequirementsSection.summaryList.rows.push(displayUnavailabilityForHearing(claim, claimId, lng));
 
   if (claim.directionQuestionnaire?.hearing?.cantAttendHearingInNext12Months?.option === YesNo.YES) {
-    hearingRequirementsSection.summaryList.rows.push(getDefendantUnavailableDate(claim, claimId, lng));
-    const unavailableDays = getNumberOfUnavailableDays(claim.directionQuestionnaire.hearing.unavailableDatesForHearing);
-    if (unavailableDays > MAX_UNAVAILABLE_DAYS_FOR_HEARING_WITHOUT_REASON) {
-      hearingRequirementsSection.summaryList.rows.push(getUnavailabilityReason(claim, claimId, unavailableDays, lng));
+    hearingRequirementsSection.summaryList.rows.push(getUnavailableDatesList(claim, claimId, lng));
+    const numberOfUnavailableDays = getNumberOfUnavailableDays(claim.directionQuestionnaire.hearing.unavailableDatesForHearing);
+    if (numberOfUnavailableDays > MAX_UNAVAILABLE_DAYS_FOR_HEARING_WITHOUT_REASON) {
+      hearingRequirementsSection.summaryList.rows.push(getUnavailabilityReason(claim, claimId, numberOfUnavailableDays, lng));
     }
   }
 

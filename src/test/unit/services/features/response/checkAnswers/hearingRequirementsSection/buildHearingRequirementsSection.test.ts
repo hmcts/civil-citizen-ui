@@ -10,6 +10,7 @@ import {
   WelshLanguageRequirements,
 } from 'models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
 import {LanguageOptions} from 'models/directionsQuestionnaire/languageOptions';
+import {SpecificCourtLocation} from 'common/models/directionsQuestionnaire/hearing/specificCourtLocation';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/i18n');
@@ -20,7 +21,9 @@ jest.mock('i18next', () => ({
 
 const createHearing = (triedToSettleOption: YesNo, requestExtra4weeksOption: YesNo,
   considerClaimantDocumentsOption: YesNo, phoneOrVideoHearing: YesNo,
-  determinationWithoutHearing: YesNo): Hearing => {
+  determinationWithoutHearing: YesNo, cantAttendHearingInNext12Months?: YesNo,
+  specificCourtLocation?: YesNo,
+): Hearing => {
 
   const hearing = new Hearing();
   hearing.triedToSettle = {
@@ -41,6 +44,16 @@ const createHearing = (triedToSettleOption: YesNo, requestExtra4weeksOption: Yes
   hearing.determinationWithoutHearing = {
     option: determinationWithoutHearing,
     reasonForHearing: 'my reason',
+  };
+
+  hearing.cantAttendHearingInNext12Months = {
+    option: cantAttendHearingInNext12Months,
+  };
+
+  hearing.specificCourtLocation = <SpecificCourtLocation>{
+    option: specificCourtLocation,
+    courtLocation: 'High Wycombe Law Courts - THE LAW COURTS, EASTON STREET - HP11 1LR',
+    reason: 'test',
   };
   return hearing;
 };
@@ -68,7 +81,7 @@ describe('Hearing Requirements Section', () => {
     it('build hearing requirement for Fast Track Claim When all questions answer set to yes.', () => {
       //Given
       claim.totalClaimAmount = 11000;
-      claim.directionQuestionnaire.hearing = createHearing(YesNo.YES, YesNo.YES, YesNo.YES, YesNo.YES, undefined);
+      claim.directionQuestionnaire.hearing = createHearing(YesNo.YES, YesNo.YES, YesNo.YES, YesNo.YES, undefined, YesNo.NO);
       claim.directionQuestionnaire.vulnerabilityQuestions.vulnerability = {
         option: YesNo.YES,
         vulnerabilityDetails: 'Test vulnerability details',
@@ -88,24 +101,26 @@ describe('Hearing Requirements Section', () => {
       expect(summaryRows.summaryList.rows[2].value.html).toEqual('COMMON.YES');
       expect(summaryRows.summaryList.rows[3].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.GIVE_DOC_DETAILS');
       expect(summaryRows.summaryList.rows[3].value.html).toEqual('Test Doc');
-      expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE');
+      expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.GIVE_EVIDENCE');
       expect(summaryRows.summaryList.rows[4].value.html).toEqual('COMMON.YES');
       expect(summaryRows.summaryList.rows[5].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
       expect(summaryRows.summaryList.rows[5].value.html).toEqual('COMMON.NO');
-      expect(summaryRows.summaryList.rows[6].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_PHONE_OR_VIDEO_HEARING');
-      expect(summaryRows.summaryList.rows[6].value.html).toEqual('COMMON.YES');
-      expect(summaryRows.summaryList.rows[7].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY_DO_YOU_WANT_PHONE_VIDEO_HEARING');
-      expect(summaryRows.summaryList.rows[7].value.html).toEqual('Test Phone or video hearing');
-      expect(summaryRows.summaryList.rows[8].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION');
-      expect(summaryRows.summaryList.rows[8].value.html).toEqual('COMMON.YES');
-      expect(summaryRows.summaryList.rows[9].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_INFO');
-      expect(summaryRows.summaryList.rows[9].value.html).toEqual('Test vulnerability details');
+      expect(summaryRows.summaryList.rows[6].key.text).toEqual('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE');
+      expect(summaryRows.summaryList.rows[6].value.html).toEqual('COMMON.NO');
+      expect(summaryRows.summaryList.rows[7].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_PHONE_OR_VIDEO_HEARING');
+      expect(summaryRows.summaryList.rows[7].value.html).toEqual('COMMON.YES');
+      expect(summaryRows.summaryList.rows[8].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY_DO_YOU_WANT_PHONE_VIDEO_HEARING');
+      expect(summaryRows.summaryList.rows[8].value.html).toEqual('Test Phone or video hearing');
+      expect(summaryRows.summaryList.rows[9].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION');
+      expect(summaryRows.summaryList.rows[9].value.html).toEqual('COMMON.YES');
+      expect(summaryRows.summaryList.rows[10].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_INFO');
+      expect(summaryRows.summaryList.rows[10].value.html).toEqual('Test vulnerability details');
 
     });
 
     it('build hearing requirement for Fast Track Claim When all questions answer set to no.', () => {
       //Given
-      const hearing = createHearing(YesNo.NO, YesNo.NO, YesNo.NO, YesNo.NO, undefined);
+      const hearing = createHearing(YesNo.NO, YesNo.NO, YesNo.NO, YesNo.NO, undefined, YesNo.NO, YesNo.NO, YesNo.NO);
       claim.directionQuestionnaire.hearing = hearing;
 
       claim.directionQuestionnaire.defendantYourselfEvidence = {
@@ -127,20 +142,24 @@ describe('Hearing Requirements Section', () => {
       expect(summaryRows.summaryList.rows[1].value.html).toEqual('COMMON.NO');
       expect(summaryRows.summaryList.rows[2].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.CONSIDER_CLAIMANT_DOCUMENT');
       expect(summaryRows.summaryList.rows[2].value.html).toEqual('COMMON.NO');
-      expect(summaryRows.summaryList.rows[3].key.text).toEqual('PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE');
+      expect(summaryRows.summaryList.rows[3].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.GIVE_EVIDENCE');
       expect(summaryRows.summaryList.rows[3].value.html).toEqual('COMMON.NO');
       expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
       expect(summaryRows.summaryList.rows[4].value.html).toEqual('COMMON.NO');
-      expect(summaryRows.summaryList.rows[5].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_PHONE_OR_VIDEO_HEARING');
+      expect(summaryRows.summaryList.rows[5].key.text).toEqual('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE');
       expect(summaryRows.summaryList.rows[5].value.html).toEqual('COMMON.NO');
-      expect(summaryRows.summaryList.rows[6].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION');
+      expect(summaryRows.summaryList.rows[6].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_PHONE_OR_VIDEO_HEARING');
       expect(summaryRows.summaryList.rows[6].value.html).toEqual('COMMON.NO');
-      expect(summaryRows.summaryList.rows[7].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WELSH_LANGUAGE');
-      expect(summaryRows.summaryList.rows[7].value.html).toEqual(null);
-      expect(summaryRows.summaryList.rows[8].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK');
-      expect(summaryRows.summaryList.rows[8].value.html).toEqual('PAGES.WELSH_LANGUAGE.ENGLISH');
-      expect(summaryRows.summaryList.rows[9].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS');
-      expect(summaryRows.summaryList.rows[9].value.html).toEqual('PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH');
+      expect(summaryRows.summaryList.rows[7].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION');
+      expect(summaryRows.summaryList.rows[7].value.html).toEqual('COMMON.NO');
+      expect(summaryRows.summaryList.rows[8].key.text).toEqual('PAGES.SPECIFIC_COURT.TITLE');
+      expect(summaryRows.summaryList.rows[8].value.html).toEqual('COMMON.NO');
+      expect(summaryRows.summaryList.rows[9].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WELSH_LANGUAGE');
+      expect(summaryRows.summaryList.rows[9].value.html).toEqual(null);
+      expect(summaryRows.summaryList.rows[10].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK');
+      expect(summaryRows.summaryList.rows[10].value.html).toEqual('PAGES.WELSH_LANGUAGE.ENGLISH');
+      expect(summaryRows.summaryList.rows[11].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS');
+      expect(summaryRows.summaryList.rows[11].value.html).toEqual('PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH');
     });
   });
 
@@ -150,7 +169,7 @@ describe('Hearing Requirements Section', () => {
       //Given
       claim.totalClaimAmount = 1000;
       claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.hearing = createHearing(undefined, undefined,undefined,YesNo.YES, YesNo.NO);
+      claim.directionQuestionnaire.hearing = createHearing(undefined, undefined, undefined, YesNo.YES, YesNo.NO, YesNo.NO, YesNo.NO);
       claim.directionQuestionnaire.defendantYourselfEvidence = {
         option: YesNo.YES,
       };
@@ -175,22 +194,28 @@ describe('Hearing Requirements Section', () => {
       expect(summaryRows.summaryList.rows[0].value.html).toEqual('COMMON.NO');
       expect(summaryRows.summaryList.rows[1].key.text).toEqual('PAGES.DETERMINATION_WITHOUT_HEARING.TELL_US_WHY');
       expect(summaryRows.summaryList.rows[1].value.html).toEqual('my reason');
-      expect(summaryRows.summaryList.rows[2].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
-      expect(summaryRows.summaryList.rows[2].value.html).toEqual('COMMON.NO');
-      expect(summaryRows.summaryList.rows[3].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_PHONE_OR_VIDEO_HEARING');
-      expect(summaryRows.summaryList.rows[3].value.html).toEqual('COMMON.YES');
-      expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY_DO_YOU_WANT_PHONE_VIDEO_HEARING');
-      expect(summaryRows.summaryList.rows[4].value.html).toEqual('Test Phone or video hearing');
-      expect(summaryRows.summaryList.rows[5].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION');
+      expect(summaryRows.summaryList.rows[2].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.GIVE_EVIDENCE');
+      expect(summaryRows.summaryList.rows[2].value.html).toEqual('COMMON.YES');
+      expect(summaryRows.summaryList.rows[3].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
+      expect(summaryRows.summaryList.rows[3].value.html).toEqual('COMMON.NO');
+      expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE');
+      expect(summaryRows.summaryList.rows[4].value.html).toEqual('COMMON.NO');
+      expect(summaryRows.summaryList.rows[5].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_PHONE_OR_VIDEO_HEARING');
       expect(summaryRows.summaryList.rows[5].value.html).toEqual('COMMON.YES');
-      expect(summaryRows.summaryList.rows[6].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_INFO');
-      expect(summaryRows.summaryList.rows[6].value.html).toEqual('Test vulnerability details');
-      expect(summaryRows.summaryList.rows[7].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WELSH_LANGUAGE');
-      expect(summaryRows.summaryList.rows[7].value.html).toEqual(null);
-      expect(summaryRows.summaryList.rows[8].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK');
-      expect(summaryRows.summaryList.rows[8].value.html).toEqual('PAGES.WELSH_LANGUAGE.ENGLISH');
-      expect(summaryRows.summaryList.rows[9].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS');
-      expect(summaryRows.summaryList.rows[9].value.html).toEqual('PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH');
+      expect(summaryRows.summaryList.rows[6].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY_DO_YOU_WANT_PHONE_VIDEO_HEARING');
+      expect(summaryRows.summaryList.rows[6].value.html).toEqual('Test Phone or video hearing');
+      expect(summaryRows.summaryList.rows[7].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION');
+      expect(summaryRows.summaryList.rows[7].value.html).toEqual('COMMON.YES');
+      expect(summaryRows.summaryList.rows[8].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_INFO');
+      expect(summaryRows.summaryList.rows[8].value.html).toEqual('Test vulnerability details');
+      expect(summaryRows.summaryList.rows[9].key.text).toEqual('PAGES.SPECIFIC_COURT.TITLE');
+      expect(summaryRows.summaryList.rows[9].value.html).toEqual('COMMON.NO');
+      expect(summaryRows.summaryList.rows[10].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WELSH_LANGUAGE');
+      expect(summaryRows.summaryList.rows[10].value.html).toEqual(null);
+      expect(summaryRows.summaryList.rows[11].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK');
+      expect(summaryRows.summaryList.rows[11].value.html).toEqual('PAGES.WELSH_LANGUAGE.ENGLISH');
+      expect(summaryRows.summaryList.rows[12].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS');
+      expect(summaryRows.summaryList.rows[12].value.html).toEqual('PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH');
     });
   });
 });
