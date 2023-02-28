@@ -27,7 +27,7 @@ import {OtherWitnessItems} from 'common/models/directionsQuestionnaire/witnesses
 import {Witnesses} from 'models/directionsQuestionnaire/witnesses/witnesses';
 import {OtherWitnesses} from 'models/directionsQuestionnaire/witnesses/otherWitnesses';
 import {
-  getDisplayWantGiveSelfEvidence,
+  getSummaryRowForDisplayEvidenceYourelf,
 } from '../../../../../../../main/services/features/response/checkAnswers/hearingRequirementsSection/buildFastTrackHearingRequirements';
 
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -218,7 +218,7 @@ describe('Common Hearing Requirements Section', () => {
         changeButton,
       );
       //Then
-      expect(getDisplayWantGiveSelfEvidence(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      expect(getSummaryRowForDisplayEvidenceYourelf(claim, claimId, lng)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if give evidence yourself option is yes', () => {
@@ -235,7 +235,7 @@ describe('Common Hearing Requirements Section', () => {
         changeButton,
       );
       //Then
-      expect(getDisplayWantGiveSelfEvidence(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      expect(getSummaryRowForDisplayEvidenceYourelf(claim, claimId, lng)).toStrictEqual(mockSummarySection);
     });
   });
 

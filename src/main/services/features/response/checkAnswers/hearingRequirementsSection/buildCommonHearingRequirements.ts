@@ -16,7 +16,7 @@ import {OtherWitnessItems} from 'models/directionsQuestionnaire/witnesses/otherW
 import {LanguageOptions} from 'models/directionsQuestionnaire/languageOptions';
 import {Claim} from 'models/claim';
 import {SummarySection} from 'models/summaryList/summarySections';
-import {getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/getEmptyStringIfUndefined';
+import {getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/formatAnswer';
 
 export const getWitnesses = (claim: Claim, claimId: string, lng: string): SummaryRow[]  => {
   const witnessesHref = constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_WITNESSES_URL);

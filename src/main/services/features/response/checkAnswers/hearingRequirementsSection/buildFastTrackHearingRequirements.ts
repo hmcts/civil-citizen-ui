@@ -117,12 +117,12 @@ export const getShareExpertWithClaimant = (claim: Claim, claimId: string, lng: s
   );
 };
 
-export const getDisplayWantGiveSelfEvidence = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const shouldConsiderGiveYourselfEvidence = getFormattedUserAnswer(claim.directionQuestionnaire?.defendantYourselfEvidence?.option, lng);
+export const getSummaryRowForDisplayEvidenceYourelf = (claim: Claim, claimId: string, lng: string): SummaryRow => {
+  const giveEvidenceYourselfAnswer = getFormattedUserAnswer(claim.directionQuestionnaire?.defendantYourselfEvidence?.option, lng);
 
   return summaryRow(
     t('PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE', {lng}),
-    shouldConsiderGiveYourselfEvidence,
+    giveEvidenceYourselfAnswer,
     constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL),
     changeLabel(lng),
   );
@@ -156,6 +156,6 @@ export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequireme
   }
 
   if (claim.directionQuestionnaire?.defendantYourselfEvidence?.option)
-    hearingRequirementsSection.summaryList.rows.push(getDisplayWantGiveSelfEvidence(claim, claimId, lng));
+    hearingRequirementsSection.summaryList.rows.push(getSummaryRowForDisplayEvidenceYourelf(claim, claimId, lng));
 
 };

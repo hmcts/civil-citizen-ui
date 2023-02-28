@@ -5,7 +5,7 @@ import {YesNo, YesNoNotReceived} from 'form/models/yesNo';
 import {summaryRow} from 'models/summaryList/summaryList';
 import {
   considerClaimantDocQuestion,
-  considerClaimantDocResponse, getDisplayWantGiveSelfEvidence, getExpertDetails,
+  considerClaimantDocResponse, getSummaryRowForDisplayEvidenceYourelf, getExpertDetails,
   getSentReportToOtherParties,
   getShareExpertWithClaimant,
   getUseExpertEvidence,
@@ -186,7 +186,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         changeButton,
       );
       //When
-      const personalEvidence = getDisplayWantGiveSelfEvidence(claim, claimId, lng);
+      const personalEvidence = getSummaryRowForDisplayEvidenceYourelf(claim, claimId, lng);
       //Then
       expect(personalEvidence).toStrictEqual(mockSummarySection);
     });
