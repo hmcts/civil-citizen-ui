@@ -145,7 +145,7 @@ export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequireme
   if (claim.directionQuestionnaire?.experts?.sharedExpert?.option)
     hearingRequirementsSection.summaryList.rows.push(getShareExpertWithClaimant(claim, claimId, lng));
 
-  if (claim.directionQuestionnaire?.experts?.expertEvidence?.option === YesNo.YES) {
+  if (claim.hasExpertDetails()) {
     hearingRequirementsSection.summaryList.rows.push(...getExpertDetails(claim, claimId, lng));
   }
 };

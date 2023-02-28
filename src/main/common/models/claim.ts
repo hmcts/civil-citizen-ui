@@ -438,6 +438,11 @@ export class Claim {
     return this.interest?.totalInterest?.reason;
   }
 
+  hasExpertDetails(): boolean {
+    return this.directionQuestionnaire?.experts?.expertEvidence?.option === YesNo.YES
+      && this.directionQuestionnaire?.experts?.expertDetailsList?.items?.length > 0;
+  }
+
   private getName(party: Party): string {
     if (party?.type == PartyType.INDIVIDUAL || party?.type == PartyType.SOLE_TRADER) {
       if (party.partyDetails?.individualTitle) {
