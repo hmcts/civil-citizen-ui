@@ -25,17 +25,35 @@ jest.mock('i18next', () => ({
   use: jest.fn(),
 }));
 
+const getClaimWithDirectionQuestionnaire = () : Claim => {
+  const claim = new Claim();
+  claim.directionQuestionnaire = new DirectionQuestionnaire();
+  return claim;
+};
+const getClaimWithDirectionQuestionnaireAndHearing = () : Claim => {
+  const claim = getClaimWithDirectionQuestionnaire();
+  claim.directionQuestionnaire.hearing = new Hearing();
+  return claim;
+};
+
+const getClaimWithDirectionQuestionnaireAndExperts = () : Claim => {
+  const claim = getClaimWithDirectionQuestionnaire();
+  claim.directionQuestionnaire.experts = new Experts();
+  return claim;
+};
+
 describe('Fast Track Claim Hearing Requirements Section', () => {
   const claimId = 'validClaimId';
   const lng = 'cimode';
   const changeButton = 'COMMON.BUTTONS.CHANGE';
+  let claim :Claim;
+  beforeEach(() => {
+    claim = getClaimWithDirectionQuestionnaireAndHearing();
+  });
 
   describe('triedToSettleQuestion', () => {
     it('should return summaryRow if triedToSettle option is no', () => {
       //Given
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.hearing = new Hearing();
       claim.directionQuestionnaire.hearing.triedToSettle = {
         option: YesNo.NO,
       };
@@ -55,9 +73,6 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
 
     it('should return summaryRow if requestExtra4Weeks option is yes', () => {
       //Given
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.hearing = new Hearing();
       claim.directionQuestionnaire.hearing.requestExtra4weeks = {
         option: YesNo.YES,
       };
@@ -76,9 +91,6 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
   describe('considerClaimantDocQuestion', () => {
     it('should return summaryRow if considerClaimantDocuments option is no', () => {
       //Given
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.hearing = new Hearing();
       claim.directionQuestionnaire.hearing.considerClaimantDocuments = {
         option: YesNo.NO,
       };
@@ -94,9 +106,6 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
 
     it('should return summaryRow for document details if considerClaimantDocuments option is Yes', () => {
       //Given
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.hearing = new Hearing();
       claim.directionQuestionnaire.hearing.considerClaimantDocuments = {
         option: YesNo.NO,
         details: 'Test doc',
@@ -112,9 +121,10 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
   });
 
   describe('should return summary row relative to expect', ()=>{
-    const claim = new Claim();
-    claim.directionQuestionnaire = new DirectionQuestionnaire();
-    claim.directionQuestionnaire.experts = new Experts();
+    let claim:Claim;
+    beforeEach(() => {
+      claim = getClaimWithDirectionQuestionnaireAndExperts();
+    });
 
     it('should not display expert if the the expect evidence is NO',  () => {
       //Given
@@ -130,7 +140,6 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       expect(expertDetails).toStrictEqual(result);
     });
     it('should display expert details if the expect evidence is YES', function () {
-
       //Given
       claim.directionQuestionnaire.experts.expertEvidence = {option:YesNo.YES};
       claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList();
@@ -161,7 +170,6 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
 
     });
     it('should display the use of expert evidence No if the claimant choose not',  () => {
-
       //Given
       claim.directionQuestionnaire.experts.expertEvidence = {option: YesNo.NO};
       const mockSummarySection = summaryRow(
@@ -176,9 +184,8 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       expect(doWantUseExpectEvidence).toStrictEqual(mockSummarySection);
     });
     it('should display the use of own evidence No if the claimant choose not',  () => {
-
-      claim.directionQuestionnaire.defendantYourselfEvidence = {option: YesNo.NO};
       //Given
+      claim.directionQuestionnaire.defendantYourselfEvidence = {option: YesNo.NO};
       const mockSummarySection = summaryRow(
         'PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE',
         'COMMON.NO',
@@ -191,7 +198,6 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       expect(personalEvidence).toStrictEqual(mockSummarySection);
     });
     it('should display No if the defendant does not accept to share expert  with the claimant', function () {
-
       //Given
       claim.directionQuestionnaire.experts.sharedExpert = {option: YesNo.NO};
       const mockSummarySection = summaryRow(
@@ -220,7 +226,6 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       expect(sentReportToOtherParties).toStrictEqual(mockSummarySection);
     });
     it('should display No if the claimant has not yet received expert report to other parties', function () {
-
       //Given
       claim.directionQuestionnaire.experts.sentExpertReports = { option: YesNoNotReceived.NOT_RECEIVED };
       const mockSummarySection = summaryRow(
