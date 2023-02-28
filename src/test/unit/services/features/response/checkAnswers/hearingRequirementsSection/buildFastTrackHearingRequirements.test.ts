@@ -25,18 +25,18 @@ jest.mock('i18next', () => ({
   use: jest.fn(),
 }));
 
-const getClaimWithDirectionQuestionnaire = () : Claim => {
+const getClaimWithDirectionQuestionnaire = (): Claim => {
   const claim = new Claim();
   claim.directionQuestionnaire = new DirectionQuestionnaire();
   return claim;
 };
-const getClaimWithDirectionQuestionnaireAndHearing = () : Claim => {
+const getClaimWithDirectionQuestionnaireAndHearing = (): Claim => {
   const claim = getClaimWithDirectionQuestionnaire();
   claim.directionQuestionnaire.hearing = new Hearing();
   return claim;
 };
 
-const getClaimWithDirectionQuestionnaireAndExperts = () : Claim => {
+const getClaimWithDirectionQuestionnaireAndExperts = (): Claim => {
   const claim = getClaimWithDirectionQuestionnaire();
   claim.directionQuestionnaire.experts = new Experts();
   return claim;
@@ -46,89 +46,92 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
   const claimId = 'validClaimId';
   const lng = 'cimode';
   const changeButton = 'COMMON.BUTTONS.CHANGE';
-  let claim :Claim;
-  beforeEach(() => {
-    claim = getClaimWithDirectionQuestionnaireAndHearing();
-  });
 
-  describe('triedToSettleQuestion', () => {
-    it('should return summaryRow if triedToSettle option is no', () => {
-      //Given
-      claim.directionQuestionnaire.hearing.triedToSettle = {
-        option: YesNo.NO,
-      };
-      const mockSummarySection = summaryRow(
-        'PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE',
-        'COMMON.NO',
-        `/case/${claimId}/directions-questionnaire/tried-to-settle`,
-        changeButton,
-      );
-      //Then
-      expect(triedToSettleQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+  describe('Hearing requirements', () => {
+    let claim: Claim;
+    beforeEach(() => {
+      claim = getClaimWithDirectionQuestionnaireAndHearing();
+    });
+    describe('triedToSettleQuestion', () => {
+      it('should return summaryRow if triedToSettle option is no', () => {
+        //Given
+        claim.directionQuestionnaire.hearing.triedToSettle = {
+          option: YesNo.NO,
+        };
+        const mockSummarySection = summaryRow(
+          'PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE',
+          'COMMON.NO',
+          `/case/${claimId}/directions-questionnaire/tried-to-settle`,
+          changeButton,
+        );
+        //Then
+        expect(triedToSettleQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      });
+
+    });
+
+    describe('requestExtra4WeeksQuestion', () => {
+
+      it('should return summaryRow if requestExtra4Weeks option is yes', () => {
+        //Given
+        claim.directionQuestionnaire.hearing.requestExtra4weeks = {
+          option: YesNo.YES,
+        };
+        const mockSummarySection = summaryRow(
+          'PAGES.CHECK_YOUR_ANSWER.REQUEST_EXTRA_4WEEKS',
+          'COMMON.YES',
+          `/case/${claimId}/directions-questionnaire/request-extra-4-weeks`,
+          changeButton,
+        );
+        //Then
+        expect(requestExtra4WeeksQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      });
+
+    });
+
+    describe('considerClaimantDocQuestion', () => {
+      it('should return summaryRow if considerClaimantDocuments option is no', () => {
+        //Given
+        claim.directionQuestionnaire.hearing.considerClaimantDocuments = {
+          option: YesNo.NO,
+        };
+        const mockSummarySection = summaryRow(
+          'PAGES.CHECK_YOUR_ANSWER.CONSIDER_CLAIMANT_DOCUMENT',
+          'COMMON.NO',
+          `/case/${claimId}/directions-questionnaire/consider-claimant-documents`,
+          changeButton,
+        );
+        //Then
+        expect(considerClaimantDocQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      });
+
+      it('should return summaryRow for document details if considerClaimantDocuments option is Yes', () => {
+        //Given
+        claim.directionQuestionnaire.hearing.considerClaimantDocuments = {
+          option: YesNo.NO,
+          details: 'Test doc',
+        };
+        const mockSummarySection = summaryRow(
+          'PAGES.CHECK_YOUR_ANSWER.GIVE_DOC_DETAILS',
+          'Test doc',
+        );
+        //Then
+        expect(considerClaimantDocResponse(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      });
+
     });
 
   });
 
-  describe('requestExtra4WeeksQuestion', () => {
-
-    it('should return summaryRow if requestExtra4Weeks option is yes', () => {
-      //Given
-      claim.directionQuestionnaire.hearing.requestExtra4weeks = {
-        option: YesNo.YES,
-      };
-      const mockSummarySection = summaryRow(
-        'PAGES.CHECK_YOUR_ANSWER.REQUEST_EXTRA_4WEEKS',
-        'COMMON.YES',
-        `/case/${claimId}/directions-questionnaire/request-extra-4-weeks`,
-        changeButton,
-      );
-      //Then
-      expect(requestExtra4WeeksQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
-    });
-
-  });
-
-  describe('considerClaimantDocQuestion', () => {
-    it('should return summaryRow if considerClaimantDocuments option is no', () => {
-      //Given
-      claim.directionQuestionnaire.hearing.considerClaimantDocuments = {
-        option: YesNo.NO,
-      };
-      const mockSummarySection = summaryRow(
-        'PAGES.CHECK_YOUR_ANSWER.CONSIDER_CLAIMANT_DOCUMENT',
-        'COMMON.NO',
-        `/case/${claimId}/directions-questionnaire/consider-claimant-documents`,
-        changeButton,
-      );
-      //Then
-      expect(considerClaimantDocQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
-    });
-
-    it('should return summaryRow for document details if considerClaimantDocuments option is Yes', () => {
-      //Given
-      claim.directionQuestionnaire.hearing.considerClaimantDocuments = {
-        option: YesNo.NO,
-        details: 'Test doc',
-      };
-      const mockSummarySection = summaryRow(
-        'PAGES.CHECK_YOUR_ANSWER.GIVE_DOC_DETAILS',
-        'Test doc',
-      );
-      //Then
-      expect(considerClaimantDocResponse(claim, claimId, lng)).toStrictEqual(mockSummarySection);
-    });
-
-  });
-
-  describe('should return summary row relative to expect', ()=>{
-    let claim:Claim;
+  describe('should return summary row relative to expect', () => {
+    let claim: Claim;
     beforeEach(() => {
       claim = getClaimWithDirectionQuestionnaireAndExperts();
     });
 
-    it('should not display expert if the the expect evidence is NO',  () => {
+    it('should not display expert if the the expect evidence is NO', () => {
       //Given
-      claim.directionQuestionnaire.experts.expertEvidence =  {option:YesNo.NO};
+      claim.directionQuestionnaire.experts.expertEvidence = {option: YesNo.NO};
       claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList();
 
       const result: any[] = [];
@@ -141,7 +144,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
     });
     it('should display expert details if the expect evidence is YES', function () {
       //Given
-      claim.directionQuestionnaire.experts.expertEvidence = {option:YesNo.YES};
+      claim.directionQuestionnaire.experts.expertEvidence = {option: YesNo.YES};
       claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList();
 
       claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList(
@@ -169,7 +172,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       expect(summaryRows[7].value.html).toEqual('500');
 
     });
-    it('should display the use of expert evidence No if the claimant choose not',  () => {
+    it('should display the use of expert evidence No if the claimant choose not', () => {
       //Given
       claim.directionQuestionnaire.experts.expertEvidence = {option: YesNo.NO};
       const mockSummarySection = summaryRow(
@@ -183,7 +186,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       //Then
       expect(doWantUseExpectEvidence).toStrictEqual(mockSummarySection);
     });
-    it('should display the use of own evidence No if the claimant choose not',  () => {
+    it('should display the use of own evidence No if the claimant choose not', () => {
       //Given
       claim.directionQuestionnaire.defendantYourselfEvidence = {option: YesNo.NO};
       const mockSummarySection = summaryRow(
@@ -213,7 +216,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
     });
     it('should display No if the defendant has not send expert report to other parties', function () {
       //Given
-      claim.directionQuestionnaire.experts.sentExpertReports = { option: YesNoNotReceived.NO };
+      claim.directionQuestionnaire.experts.sentExpertReports = {option: YesNoNotReceived.NO};
       const mockSummarySection = summaryRow(
         'PAGES.SENT_EXPERT_REPORTS.TITLE',
         'COMMON.NO',
@@ -227,7 +230,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
     });
     it('should display No if the claimant has not yet received expert report to other parties', function () {
       //Given
-      claim.directionQuestionnaire.experts.sentExpertReports = { option: YesNoNotReceived.NOT_RECEIVED };
+      claim.directionQuestionnaire.experts.sentExpertReports = {option: YesNoNotReceived.NOT_RECEIVED};
       const mockSummarySection = summaryRow(
         'PAGES.SENT_EXPERT_REPORTS.TITLE',
         'PAGES.SENT_EXPERT_REPORTS.OPTION_NOT_RECEIVED',
