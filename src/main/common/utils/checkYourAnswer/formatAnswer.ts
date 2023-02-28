@@ -3,7 +3,7 @@ import {t} from 'i18next';
 
 export const getEmptyStringIfUndefined = (value: string): string => value || '';
 
-export const getFormattedUserAnswer = (value:string, lng: string) => {
+export const getFormattedAnswerForYesNoNotRecieved = (value:string, lng: string) => {
   switch (value) {
     case YesNo.YES:
       return t('COMMON.YES', {lng});

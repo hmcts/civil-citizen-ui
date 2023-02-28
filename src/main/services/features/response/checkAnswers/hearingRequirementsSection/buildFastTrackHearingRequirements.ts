@@ -15,7 +15,7 @@ import {
   DQ_TRIED_TO_SETTLE_CLAIM_URL,
 } from 'routes/urls';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
-import {getFormattedUserAnswer, getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/formatAnswer';
+import {getFormattedAnswerForYesNoNotRecieved, getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/formatAnswer';
 
 export const triedToSettleQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const option = claim.directionQuestionnaire?.hearing?.triedToSettle?.option === YesNo.YES
@@ -85,7 +85,7 @@ export const getExpertDetails = (claim: Claim, claimId: string, lang: string): S
 };
 
 export const getUseExpertEvidence = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const shouldConsiderExpertEvidence = getFormattedUserAnswer(claim.directionQuestionnaire?.experts?.expertEvidence?.option, lng);
+  const shouldConsiderExpertEvidence = getFormattedAnswerForYesNoNotRecieved(claim.directionQuestionnaire?.experts?.expertEvidence?.option, lng);
 
   return summaryRow(
     t('PAGES.DEFENDANT_EXPERT_EVIDENCE.TITLE', {lng}),
@@ -96,7 +96,7 @@ export const getUseExpertEvidence = (claim: Claim, claimId: string, lng: string)
 };
 
 export const getSentReportToOtherParties = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const shouldConsiderSentExpertReports = getFormattedUserAnswer(claim.directionQuestionnaire?.experts?.sentExpertReports?.option, lng);
+  const shouldConsiderSentExpertReports = getFormattedAnswerForYesNoNotRecieved(claim.directionQuestionnaire?.experts?.sentExpertReports?.option, lng);
 
   return summaryRow(
     t('PAGES.SENT_EXPERT_REPORTS.TITLE', {lng}),
@@ -107,7 +107,7 @@ export const getSentReportToOtherParties = (claim: Claim, claimId: string, lng: 
 };
 
 export const getShareExpertWithClaimant = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const shouldConsiderSharedExpert = getFormattedUserAnswer(claim.directionQuestionnaire?.experts?.sharedExpert?.option, lng);
+  const shouldConsiderSharedExpert = getFormattedAnswerForYesNoNotRecieved(claim.directionQuestionnaire?.experts?.sharedExpert?.option, lng);
 
   return summaryRow(
     t('PAGES.SHARED_EXPERT.WITH_CLAIMANT', {lng}),
@@ -118,7 +118,7 @@ export const getShareExpertWithClaimant = (claim: Claim, claimId: string, lng: s
 };
 
 export const getSummaryRowForDisplayEvidenceYourelf = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const giveEvidenceYourselfAnswer = getFormattedUserAnswer(claim.directionQuestionnaire?.defendantYourselfEvidence?.option, lng);
+  const giveEvidenceYourselfAnswer = getFormattedAnswerForYesNoNotRecieved(claim.directionQuestionnaire?.defendantYourselfEvidence?.option, lng);
 
   return summaryRow(
     t('PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE', {lng}),
