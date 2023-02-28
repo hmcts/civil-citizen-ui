@@ -15,8 +15,7 @@ import {
   DQ_TRIED_TO_SETTLE_CLAIM_URL,
 } from 'routes/urls';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
-import {getLng} from 'common/utils/languageToggleUtils';
-import {getFormatedUserAnswer, getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/getEmptyStringIfUndefined';
+import {getFormattedUserAnswer, getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/getEmptyStringIfUndefined';
 
 export const triedToSettleQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const option = claim.directionQuestionnaire?.hearing?.triedToSettle?.option === YesNo.YES
@@ -71,25 +70,22 @@ export const getExpertDetails = (claim: Claim, claimId: string, lang: string): S
   const expertDetails = claim.directionQuestionnaire?.experts?.expertDetailsList?.items;
   const summaryRows: SummaryRow [] = [];
 
-  if (expertDetails !== undefined){
-    expertDetails.forEach((expert, index) => {
-      summaryRows.push(summaryRow(`${t('PAGES.EXPERT_DETAILS.SECTION_TITLE', { lng: getLng(lang) })} ${index + 1}`, '', expertHref, changeLabel(lang)));
-      summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.FIRST_NAME_OPTIONAL', lang), expert.firstName));
-      summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.LAST_NAME_OPTIONAL', lang), expert.lastName));
-      summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.EMAIL_ADDRESS_OPTIONAL', lang), expert.emailAddress));
-      summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.PHONE_OPTIONAL', lang), expert.phoneNumber?.toString()));
-      summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.FIELD_OF_EXPERTISE', lang), expert.fieldOfExpertise));
-      summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.TELL_US_WHY_NEED_EXPERT', lang), expert.whyNeedExpert));
-      summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.COST_OPTIONAL', lang), expert.estimatedCost?.toString()));
-
-    });
-  }
+  expertDetails?.forEach((expert, index) => {
+    summaryRows.push(summaryRow(`${t('PAGES.EXPERT_DETAILS.SECTION_TITLE', lang)} ${index + 1}`, '', expertHref, changeLabel(lang)));
+    summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.FIRST_NAME_OPTIONAL', lang), expert.firstName));
+    summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.LAST_NAME_OPTIONAL', lang), expert.lastName));
+    summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.EMAIL_ADDRESS_OPTIONAL', lang), expert.emailAddress));
+    summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.PHONE_OPTIONAL', lang), expert.phoneNumber?.toString()));
+    summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.FIELD_OF_EXPERTISE', lang), expert.fieldOfExpertise));
+    summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.TELL_US_WHY_NEED_EXPERT', lang), expert.whyNeedExpert));
+    summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.COST_OPTIONAL', lang), expert.estimatedCost?.toString()));
+  });
 
   return summaryRows;
 };
 
-export const getUseExpertEvidence = (claim:Claim, claimId: string, lng:string): SummaryRow =>{
-  const shouldConsiderExpertEvidence = getFormatedUserAnswer(claim.directionQuestionnaire?.experts?.expertEvidence?.option, lng);
+export const getUseExpertEvidence = (claim: Claim, claimId: string, lng: string): SummaryRow => {
+  const shouldConsiderExpertEvidence = getFormattedUserAnswer(claim.directionQuestionnaire?.experts?.expertEvidence?.option, lng);
 
   return summaryRow(
     t('PAGES.DEFENDANT_EXPERT_EVIDENCE.TITLE', {lng}),
@@ -99,8 +95,8 @@ export const getUseExpertEvidence = (claim:Claim, claimId: string, lng:string): 
   );
 };
 
-export const getSentReportToOtherParties = (claim:Claim, claimId: string, lng:string): SummaryRow =>{
-  const shouldConsiderSentExpertReports = getFormatedUserAnswer(claim.directionQuestionnaire?.experts?.sentExpertReports?.option, lng);
+export const getSentReportToOtherParties = (claim: Claim, claimId: string, lng: string): SummaryRow => {
+  const shouldConsiderSentExpertReports = getFormattedUserAnswer(claim.directionQuestionnaire?.experts?.sentExpertReports?.option, lng);
 
   return summaryRow(
     t('PAGES.SENT_EXPERT_REPORTS.TITLE', {lng}),
@@ -110,8 +106,8 @@ export const getSentReportToOtherParties = (claim:Claim, claimId: string, lng:st
   );
 };
 
-export const getShareExpertWithClaimant = (claim:Claim, claimId: string, lng:string): SummaryRow =>{
-  const shouldConsiderSharedExpert = getFormatedUserAnswer(claim.directionQuestionnaire?.experts?.sharedExpert?.option, lng);
+export const getShareExpertWithClaimant = (claim: Claim, claimId: string, lng: string): SummaryRow => {
+  const shouldConsiderSharedExpert = getFormattedUserAnswer(claim.directionQuestionnaire?.experts?.sharedExpert?.option, lng);
 
   return summaryRow(
     t('PAGES.SHARED_EXPERT.WITH_CLAIMANT', {lng}),
@@ -121,8 +117,8 @@ export const getShareExpertWithClaimant = (claim:Claim, claimId: string, lng:str
   );
 };
 
-export const getDisplayWantGiveSelfEvidence = (claim:Claim, claimId: string, lng:string): SummaryRow =>{
-  const shouldConsiderGiveYourselfEvidence = getFormatedUserAnswer(claim.directionQuestionnaire?.defendantYourselfEvidence?.option, lng);
+export const getDisplayWantGiveSelfEvidence = (claim: Claim, claimId: string, lng: string): SummaryRow => {
+  const shouldConsiderGiveYourselfEvidence = getFormattedUserAnswer(claim.directionQuestionnaire?.defendantYourselfEvidence?.option, lng);
 
   return summaryRow(
     t('PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE', {lng}),
@@ -156,7 +152,7 @@ export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequireme
     hearingRequirementsSection.summaryList.rows.push(getShareExpertWithClaimant(claim, claimId, lng));
 
   if (claim.directionQuestionnaire?.experts?.expertEvidence?.option === YesNo.YES) {
-    hearingRequirementsSection.summaryList.rows.push(...getExpertDetails(claim,claimId,lng));
+    hearingRequirementsSection.summaryList.rows.push(...getExpertDetails(claim, claimId, lng));
   }
 
   if (claim.directionQuestionnaire?.defendantYourselfEvidence?.option)
