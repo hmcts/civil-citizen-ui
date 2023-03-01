@@ -11,8 +11,7 @@ import {PartAdmitGuard} from '../../../../../routes/guards/partAdmitGuard';
 
 const paymentDatePath = 'features/response/admission/payment-date';
 const paymentDateController = Router();
-const nextMonth = new Date();
-nextMonth.setMonth(nextMonth.getMonth() + 1);
+const title = 'PAGES.ADMISSION_PAYMENT_DATE.TITLE';
 
 paymentDateController
   .get(
@@ -20,7 +19,7 @@ paymentDateController
       try {
         const paymentDate = await paymentDateService.getPaymentDate(req.params.id, ResponseType.PART_ADMISSION);
         res.render(paymentDatePath, {
-          form: new GenericForm(paymentDate), nextMonth: nextMonth, title: 'PAGES.ADMISSION_PAYMENT_DATE.TITLE',
+          form: new GenericForm(paymentDate), title,
         });
       } catch (error) {
         next(error);
@@ -33,10 +32,7 @@ paymentDateController
       await form.validate();
 
       if (form.hasErrors()) {
-        res.render(paymentDatePath, {
-          form: form, nextMonth: nextMonth,
-          title: 'PAGES.ADMISSION_PAYMENT_DATE.TITLE',
-        });
+        res.render(paymentDatePath, {form, title});
       } else {
         try {
           await paymentDateService.savePaymentDate(req.params.id, paymentDate.date, ResponseType.PART_ADMISSION);
