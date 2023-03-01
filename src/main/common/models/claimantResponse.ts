@@ -8,6 +8,8 @@ import {CourtProposedPlan} from 'form/models/claimantResponse/courtProposedPlan'
 import {Mediation} from 'models/mediation/mediation';
 import {DirectionQuestionnaire} from './directionsQuestionnaire/directionQuestionnaire';
 import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
+import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 
 export class ClaimantResponse {
   hasDefendantPaidYou?: GenericYesNo;
@@ -25,4 +27,17 @@ export class ClaimantResponse {
   mediation?: Mediation;
   directionQuestionnaire?: DirectionQuestionnaire;
   defendantResponseViewed?: boolean;
+  suggestedPaymentIntention?: PaymentIntention;
+
+  get isClaimantSuggestedPayImmediately(): boolean{
+    return this.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY;
+  }
+
+  get isClaimantSuggestedPayByDate(): boolean {
+    return this.suggestedPaymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE;
+  }
+
+  get isClaimantSuggestedPayByInstalments(): boolean {
+    return this.suggestedPaymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS;
+  }
 }

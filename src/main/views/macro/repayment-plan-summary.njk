@@ -1,0 +1,28 @@
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
+{% macro repaymentPlanSummary(repaymentPlan) %}
+  {{ govukTable({
+    rows: [
+      [
+        { text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.REGULAR_PAYMENTS') },
+        { text: '£' + repaymentPlan.paymentAmount }
+      ],
+      [
+        { text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.FREQUENCY_OF_PAYMENTS') },
+        { text: repaymentPlan.repaymentFrequency }
+      ],
+      [
+        { text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.FIRST_PAYMENT_DATE') },
+        { text: repaymentPlan.firstRepaymentDate }
+      ],
+      [
+        { text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.FINAL_PAYMENT_DATE') },
+        { text: repaymentPlan.finalRepaymentDate }
+      ],
+      [
+        { text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.LENGTH') },
+        { text: repaymentPlan.lengthOfRepaymentPlan }
+      ]          
+    ]
+  }) }}
+{% endmacro %}
