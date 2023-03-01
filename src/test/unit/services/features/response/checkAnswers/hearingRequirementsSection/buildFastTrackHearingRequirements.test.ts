@@ -9,7 +9,6 @@ import {
   requestExtra4WeeksQuestion,
   triedToSettleQuestion,
 } from 'services/features/response/checkAnswers/hearingRequirementsSection/buildFastTrackHearingRequirements';
-import {Experts} from 'models/directionsQuestionnaire/experts/experts';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/i18n');
@@ -45,7 +44,6 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
   });
 
   describe('requestExtra4WeeksQuestion', () => {
-
     it('should return summaryRow if requestExtra4Weeks option is yes', () => {
       //Given
       const claim = new Claim();
@@ -102,11 +100,5 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       expect(considerClaimantDocResponse(claim, claimId, lng)).toStrictEqual(mockSummarySection);
     });
 
-  });
-
-  describe('should return summary row relative to expect', ()=>{
-    const claim = new Claim();
-    claim.directionQuestionnaire = new DirectionQuestionnaire();
-    claim.directionQuestionnaire.experts = new Experts();
   });
 });

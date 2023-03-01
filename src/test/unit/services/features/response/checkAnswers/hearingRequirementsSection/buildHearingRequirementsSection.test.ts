@@ -11,6 +11,7 @@ import {
 } from 'models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
 import {LanguageOptions} from 'models/directionsQuestionnaire/languageOptions';
 import {SpecificCourtLocation} from 'common/models/directionsQuestionnaire/hearing/specificCourtLocation';
+import {UnavailableDateType} from 'common/models/directionsQuestionnaire/hearing/unavailableDates';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/i18n');
@@ -45,11 +46,21 @@ const createHearing = (triedToSettleOption: YesNo, requestExtra4weeksOption: Yes
     option: determinationWithoutHearing,
     reasonForHearing: 'my reason',
   };
-
   hearing.cantAttendHearingInNext12Months = {
     option: cantAttendHearingInNext12Months,
   };
-
+  if (cantAttendHearingInNext12Months === YesNo.YES){
+    hearing.unavailableDatesForHearing = {
+      items: [{
+        type: UnavailableDateType.LONGER_PERIOD,
+        from: new Date('2023-10-10T00:00:00.000Z'),
+        until: new Date('2023-12-12T00:00:00.000Z'),
+      }],
+    };
+    hearing.whyUnavailableForHearing = {
+      reason: 'test reason',
+    };
+  }
   hearing.specificCourtLocation = <SpecificCourtLocation>{
     option: specificCourtLocation,
     courtLocation: 'High Wycombe Law Courts - THE LAW COURTS, EASTON STREET - HP11 1LR',
@@ -81,7 +92,7 @@ describe('Hearing Requirements Section', () => {
     it('build hearing requirement for Fast Track Claim When all questions answer set to yes.', () => {
       //Given
       claim.totalClaimAmount = 11000;
-      claim.directionQuestionnaire.hearing = createHearing(YesNo.YES, YesNo.YES, YesNo.YES, YesNo.YES, undefined, YesNo.NO);
+      claim.directionQuestionnaire.hearing = createHearing(YesNo.YES, YesNo.YES, YesNo.YES, YesNo.YES, undefined, YesNo.YES, YesNo.YES);
       claim.directionQuestionnaire.vulnerabilityQuestions.vulnerability = {
         option: YesNo.YES,
         vulnerabilityDetails: 'Test vulnerability details',
@@ -106,15 +117,20 @@ describe('Hearing Requirements Section', () => {
       expect(summaryRows.summaryList.rows[5].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
       expect(summaryRows.summaryList.rows[5].value.html).toEqual('COMMON.NO');
       expect(summaryRows.summaryList.rows[6].key.text).toEqual('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE');
-      expect(summaryRows.summaryList.rows[6].value.html).toEqual('COMMON.NO');
-      expect(summaryRows.summaryList.rows[7].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_PHONE_OR_VIDEO_HEARING');
-      expect(summaryRows.summaryList.rows[7].value.html).toEqual('COMMON.YES');
-      expect(summaryRows.summaryList.rows[8].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY_DO_YOU_WANT_PHONE_VIDEO_HEARING');
-      expect(summaryRows.summaryList.rows[8].value.html).toEqual('Test Phone or video hearing');
-      expect(summaryRows.summaryList.rows[9].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION');
+      expect(summaryRows.summaryList.rows[6].value.html).toEqual('COMMON.YES');
+      expect(summaryRows.summaryList.rows[7].key.text).toEqual('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.UNAVAILABLE_DATES');
+      expect(summaryRows.summaryList.rows[7].value.html).toContain('10 October 2023');
+      expect(summaryRows.summaryList.rows[7].value.html).toContain('11 December 2023');
+      expect(summaryRows.summaryList.rows[8].key.text).toEqual('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.WHY_UNAVAILABLE_FOR_MORE_THAN_30_DAYS');
+      expect(summaryRows.summaryList.rows[8].value.html).toEqual('test reason');
+      expect(summaryRows.summaryList.rows[9].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_PHONE_OR_VIDEO_HEARING');
       expect(summaryRows.summaryList.rows[9].value.html).toEqual('COMMON.YES');
-      expect(summaryRows.summaryList.rows[10].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_INFO');
-      expect(summaryRows.summaryList.rows[10].value.html).toEqual('Test vulnerability details');
+      expect(summaryRows.summaryList.rows[10].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY_DO_YOU_WANT_PHONE_VIDEO_HEARING');
+      expect(summaryRows.summaryList.rows[10].value.html).toEqual('Test Phone or video hearing');
+      expect(summaryRows.summaryList.rows[11].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION');
+      expect(summaryRows.summaryList.rows[11].value.html).toEqual('COMMON.YES');
+      expect(summaryRows.summaryList.rows[12].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_INFO');
+      expect(summaryRows.summaryList.rows[12].value.html).toEqual('Test vulnerability details');
 
     });
 

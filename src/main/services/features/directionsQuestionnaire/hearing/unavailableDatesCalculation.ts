@@ -8,7 +8,7 @@ import {formatDateToFullDate} from 'common/utils/dateUtils';
 export const getNumberOfUnavailableDays = (unavailableDates: UnavailableDates): number => {
   if (!unavailableDates) return 0;
   const unavailableDateSet  = getListOfUnavailableDate(unavailableDates);
-  return unavailableDateSet .size;
+  return unavailableDateSet.size;
 };
 
 const getDatesBetween = (startDate: Date, endDate: Date): Set<string> => {

@@ -73,4 +73,5 @@ export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequireme
 
   if (claim.directionQuestionnaire?.hearing?.considerClaimantDocuments?.option == YesNo.YES)
     hearingRequirementsSection.summaryList.rows.push(considerClaimantDocResponse(claim, claimId, lng));
+
 };

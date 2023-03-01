@@ -144,7 +144,6 @@ export const phoneAndVideoInfo = (claim: Claim, claimId: string, lng: string): S
 
 export const getUnavailableDatesList = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const hasUnavailableDatesForHearing = getListOfUnavailableDate(claim.directionQuestionnaire?.hearing?.unavailableDatesForHearing);
-
   return summaryRow(
     t('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.UNAVAILABLE_DATES', {lng}),
     ` ${[...hasUnavailableDatesForHearing].join('<br>')}`,
@@ -165,7 +164,6 @@ export const getUnavailabilityReason = (claim: Claim, claimId: string, days: num
 
 export const displayUnavailabilityForHearing = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const hasUnavailableDatesForHearing = getFormattedUserAnswer(claim.directionQuestionnaire?.hearing?.cantAttendHearingInNext12Months?.option, lng);
-
   return summaryRow(
     t('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE', {lng}),
     hasUnavailableDatesForHearing,
@@ -176,7 +174,6 @@ export const displayUnavailabilityForHearing = (claim: Claim, claimId: string, l
 
 export const getSpecificCourtLocation = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const hasSpecificCourtLocation = getFormattedUserAnswer(claim.directionQuestionnaire?.hearing?.specificCourtLocation?.option, lng);
-
   return summaryRow(
     t('PAGES.SPECIFIC_COURT.TITLE', {lng}),
     hasSpecificCourtLocation,
@@ -187,7 +184,6 @@ export const getSpecificCourtLocation = (claim: Claim, claimId: string, lng: str
 
 export const displaySpecificCourtLocation = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const hasSpecificCourtLocation = claim.directionQuestionnaire?.hearing?.specificCourtLocation?.courtLocation;
-
   return summaryRow(
     t('PAGES.SPECIFIC_COURT.SELECTED_COURT', {lng}),
     hasSpecificCourtLocation,
