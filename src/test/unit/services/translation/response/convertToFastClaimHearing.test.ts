@@ -8,7 +8,7 @@ import {
   UnavailableDates,
   UnavailableDateType,
 } from 'models/directionsQuestionnaire/hearing/unavailableDates';
-import {CCDFastClaimHearing, CCDHearingLength} from 'models/ccdResponse/ccdFastClaimHearing';
+import {CCDFastClaimHearing} from 'models/ccdResponse/ccdFastClaimHearing';
 import {toCCDFastClaimHearing} from 'services/translation/response/convertToCCDFastClaimHearing';
 
 const singleDateMock: UnavailableDatePeriod = {
