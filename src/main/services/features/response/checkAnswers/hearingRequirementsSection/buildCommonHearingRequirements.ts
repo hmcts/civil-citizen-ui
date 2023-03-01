@@ -22,7 +22,7 @@ import {Claim} from 'models/claim';
 import {SummarySection} from 'models/summaryList/summarySections';
 import {
   getEmptyStringIfUndefined,
-  getFormattedUserAnswer,
+  getFormattedAnswerForYesNoNotReceived,
 } from 'common/utils/checkYourAnswer/getEmptyStringIfUndefined';
 import {
   getListOfUnavailableDate,
@@ -164,7 +164,7 @@ export const getUnavailabilityReason = (claim: Claim, claimId: string, days: num
 };
 
 export const displayUnavailabilityForHearing = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const hasUnavailableDatesForHearing = getFormattedUserAnswer(claim.directionQuestionnaire?.hearing?.cantAttendHearingInNext12Months?.option, lng);
+  const hasUnavailableDatesForHearing = getFormattedAnswerForYesNoNotReceived(claim.directionQuestionnaire?.hearing?.cantAttendHearingInNext12Months?.option, lng);
   return summaryRow(
     t('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE', {lng}),
     hasUnavailableDatesForHearing,
@@ -174,7 +174,7 @@ export const displayUnavailabilityForHearing = (claim: Claim, claimId: string, l
 };
 
 export const getSpecificCourtLocation = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const hasSpecificCourtLocation = getFormattedUserAnswer(claim.directionQuestionnaire?.hearing?.specificCourtLocation?.option, lng);
+  const hasSpecificCourtLocation = getFormattedAnswerForYesNoNotReceived(claim.directionQuestionnaire?.hearing?.specificCourtLocation?.option, lng);
   return summaryRow(
     t('PAGES.SPECIFIC_COURT.TITLE', {lng}),
     hasSpecificCourtLocation,
