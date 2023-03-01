@@ -4,6 +4,7 @@ import {toCCDMediation} from 'services/translation/response/convertToCCDMediatio
 
 export const toCCDRespondentLiPResponse = (claim: Claim): CCDRespondentLiPResponse => {
   return {
-    respondent1MediationLipResponse: toCCDMediation(claim.mediation),
+    respondent1MediationLiPResponse: toCCDMediation(claim.mediation),
   };
 };
+
