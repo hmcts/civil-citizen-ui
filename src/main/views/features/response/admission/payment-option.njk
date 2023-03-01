@@ -6,8 +6,15 @@
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 
-{% set pageTitle = 'PAGES.PAYMENT_OPTION.PAGE_TITLE_FOR_PART_ADMIT' if amount else
-  'PAGES.PAYMENT_OPTION.PAGE_TITLE' %}
+{% set pageTitleForClaimant = 'PAGES.CLAIMANT_RESPONSE_PAYMENT_OPTION.PAGE_TITLE' %}
+{% set pageTitleForDefendant = 'PAGES.PAYMENT_OPTION.PAGE_TITLE_FOR_PART_ADMIT' if amount else 'PAGES.PAYMENT_OPTION.PAGE_TITLE' %}
+{% set pageTitle = pageTitleForClaimant if isClaimantResponse else pageTitleForDefendant %}
+
+{% set titleForClaimant = t('PAGES.CLAIMANT_RESPONSE_PAYMENT_OPTION.TITLE')  %}
+{% set titleForDefendant = t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT', { amount : amount}) if amount else t('PAGES.PAYMENT_OPTION.TITLE')%}
+{% set title = titleForClaimant if isClaimantResponse else titleForDefendant %}
+
+{% set instalmentsOrRepaymentPlan = 'COMMON.PAYMENT_OPTION.INSTALMENTS' if isClaimantResponse else 'PAGES.PAYMENT_OPTION.REPAYMENT' %}
 
 {% block pageTitle %}
   {{ setPageTitle(pageTitle) }}
@@ -32,24 +39,19 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+              <h1 class="govuk-fieldset__heading">{{ title }}</h1>
+            </legend>
             {{ govukRadios({
               idPrefix: "paymentType",
               name: "paymentType",
-              fieldset: {
-                legend: {
-                  text: t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT', { amount : amount}) if amount
-                        else t('PAGES.PAYMENT_OPTION.TITLE'),
-                  isPageHeading: true,
-                  classes: "govuk-fieldset__legend--l"
-                }
-              },
               items: [
                 {
                   value: PaymentOptionType.IMMEDIATELY,
                   text: t('COMMON.PAYMENT_OPTION.IMMEDIATELY'),
                   checked: true if form.model.paymentType == PaymentOptionType.IMMEDIATELY,
                   conditional: {
-                  html: hintPayImmediately
+                  html: hintPayImmediately if not isClaimantResponse
                 }
                 },
                 {
@@ -57,15 +59,15 @@
                   text: t('COMMON.PAYMENT_OPTION.BY_SET_DATE'),
                   checked: true if form.model.paymentType == PaymentOptionType.BY_SET_DATE,
                   conditional: {
-                  html: hintPayLater
+                  html: hintPayLater if not isClaimantResponse
                 }
                 },
                 {
                   value: PaymentOptionType.INSTALMENTS,
-                  text: t('PAGES.PAYMENT_OPTION.REPAYMENT'),
+                  text: t(instalmentsOrRepaymentPlan),
                   checked: true if form.model.paymentType == PaymentOptionType.INSTALMENTS,
                   conditional: {
-                  html: hintPayLater
+                  html: hintPayLater if not isClaimantResponse
                 }
                 }
               ],
