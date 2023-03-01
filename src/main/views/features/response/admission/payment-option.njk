@@ -16,7 +16,7 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set hintPayImmediatly %}
+      {% set hintPayImmediately %}
         <div
           class='govuk-hint'>{{ t('PAGES.PAYMENT_OPTION.YOU_MUST_CONTACT') }}</div>
       {% endset -%}
@@ -49,7 +49,7 @@
                   text: t('COMMON.PAYMENT_OPTION.IMMEDIATELY'),
                   checked: true if form.model.paymentType == PaymentOptionType.IMMEDIATELY,
                   conditional: {
-                  html: hintPayImmediatly
+                  html: hintPayImmediately
                 }
                 },
                 {
