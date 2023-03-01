@@ -1,19 +1,27 @@
 import {DateTime, Settings} from 'luxon';
-import {Claim} from '../../../../../../../main/common/models/claim';
+import {Claim} from 'models/claim';
 import {
   buildResponseToClaimSection, LastUpdateSectionBuilder,
-} from '../../../../../../../main/services/features/dashboard/claimSummary/latestUpdate/latestUpdateContentBuilder';
-import {CaseState} from '../../../../../../../main/common/form/models/claimDetails';
-import {PartyType} from '../../../../../../../main/common/models/partyType';
-import {ClaimSummaryType} from '../../../../../../../main/common/form/models/claimSummarySection';
-import {BILINGUAL_LANGUAGE_PREFERENCE_URL} from '../../../../../../../main/routes/urls';
+} from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContentBuilder';
+import {CaseState} from 'form/models/claimDetails';
+import {PartyType} from 'models/partyType';
+import {ClaimSummaryType} from 'form/models/claimSummarySection';
+import {BILINGUAL_LANGUAGE_PREFERENCE_URL} from 'routes/urls';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {ResponseType} from 'form/models/responseType';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {FullAdmission} from 'models/fullAdmission';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
-import {getPaymentDate} from 'common/utils/repaymentUtils';
+import {
+  getAmount,
+  getFirstRepaymentDate,
+  getPaymentAmount,
+  getPaymentDate, getRepaymentFrequency,
+} from 'common/utils/repaymentUtils';
 import {getLanguage} from 'modules/i18n/languageService';
+
+import currencyFormat from 'common/utils/currencyFormat';
+import {PartialAdmission} from 'models/partialAdmission';
 
 jest.mock('../../../../../../../main/modules/i18n/languageService', () => ({
   getLanguage: jest.fn().mockReturnValue('en'),
@@ -24,6 +32,7 @@ const PARTY_NAME = 'Mr. John Doe';
 
 const getClaimFullAdmition = (partyType: PartyType, responseType: ResponseType, paymentOptionType: PaymentOptionType) => {
   const claim = new Claim();
+  claim.id = '1';
   claim.totalClaimAmount = 1000;
   claim.respondent1 = {
     responseType : responseType,
@@ -43,6 +52,22 @@ const getClaimFullAdmition = (partyType: PartyType, responseType: ResponseType, 
   claim.fullAdmission.paymentIntention = new PaymentIntention();
   claim.fullAdmission.paymentIntention.paymentOption = paymentOptionType;
   claim.fullAdmission.paymentIntention.paymentDate = new Date(Date.now());
+  claim.fullAdmission.paymentIntention.repaymentPlan = {
+    paymentAmount: 100,
+    repaymentFrequency: 'Monthly',
+    firstRepaymentDate: new Date(Date.now()),
+
+  };
+  claim.partialAdmission = new PartialAdmission();
+  claim.partialAdmission.paymentIntention = new PaymentIntention();
+  claim.partialAdmission.paymentIntention.paymentOption = paymentOptionType;
+  claim.partialAdmission.paymentIntention.paymentDate = new Date(Date.now());
+  claim.partialAdmission.paymentIntention.repaymentPlan = {
+    paymentAmount: 100,
+    repaymentFrequency: 'Monthly',
+    firstRepaymentDate: new Date(Date.now()),
+  };
+
   return claim;
 };
 
@@ -132,7 +157,7 @@ describe('Latest Update Content Builder', () => {
           .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_SAID_YOU_WILL_PAY`, {
             claimantName: claim.getClaimantFullName(),
-            amount: claim.formattedTotalClaimAmount(),
+            amount: currencyFormat(getAmount(claim)),
             paymentDate: formatDateToFullDate(getPaymentDate(claim), getLanguage()),
           })
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}IF_YOU_PAY_BY_CHEQUE`)
@@ -147,8 +172,7 @@ describe('Latest Update Content Builder', () => {
         // Then
         expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
       });
-
-      it('PAY BY DATE defendant is not company', () => {
+      it('Full Admit Pay Set Date + Defendant ISNOT Company or ORG', () => {
         // Given
         const claim = getClaimFullAdmition(PartyType.INDIVIDUAL, ResponseType.FULL_ADMISSION, PaymentOptionType.BY_SET_DATE);
         const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
@@ -167,10 +191,9 @@ describe('Latest Update Content Builder', () => {
         // Then
         expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
       });
-
-      it('PAY BY DATE defendant is company', () => {
+      it('Full Admit Pay Set Date + Defendant IS Company or ORG', () => {
         // Given
-        const claim = getClaimFullAdmition(PartyType.ORGANISATION, ResponseType.FULL_ADMISSION, PaymentOptionType.BY_SET_DATE);
+        const claim = getClaimFullAdmition(PartyType.COMPANY, ResponseType.FULL_ADMISSION, PaymentOptionType.BY_SET_DATE);
         const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
           .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY`, {
@@ -182,7 +205,48 @@ describe('Latest Update Content Builder', () => {
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
           .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claim.id)
           .build();
+        // When
+        const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
 
+        // Then
+        expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
+      });
+      it(' Full Admit Pay Instalments + Defendant ISNOT Company or ORG ', () => {
+        // Given
+        const claim = getClaimFullAdmition(PartyType.INDIVIDUAL, ResponseType.FULL_ADMISSION, PaymentOptionType.INSTALMENTS);
+        const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
+          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY_STARRING`, {
+            claimantName: claim.getClaimantFullName(),
+            installmentAmount:  currencyFormat(getPaymentAmount(claim)),
+            paymentSchedule: getRepaymentFrequency(claim),
+            paymentDate: formatDateToFullDate(getFirstRepaymentDate(claim),getLanguage()),
+          })
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
+          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claim.id)
+          .build();
+        // When
+        const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
+
+        // Then
+        expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
+      });
+      it('Full Admit Pay Instalments+ Defendant IS Company or ORG', () => {
+        // Given
+        const claim = getClaimFullAdmition(PartyType.COMPANY, ResponseType.FULL_ADMISSION, PaymentOptionType.INSTALMENTS);
+        const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
+          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY_STARRING`, {
+            claimantName: claim.getClaimantFullName(),
+            installmentAmount:  currencyFormat(getPaymentAmount(claim)),
+            paymentSchedule: getRepaymentFrequency(claim),
+            paymentDate: formatDateToFullDate(getFirstRepaymentDate(claim),getLanguage()),
+          })
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`)
+          .addContactLink(`${PAGES_LATEST_UPDATE_CONTENT}GET_CONTACT_DETAILS`, claim.id, {claimantName: claim.getClaimantFullName()})
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
+          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claim.id)
+          .build();
         // When
         const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
 
@@ -190,38 +254,15 @@ describe('Latest Update Content Builder', () => {
         expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
       });
     });
-    describe('Full Admit Pay ', () => {
+    describe('Part Admit Pay', () => {
       it('Immediately', () => {
         // Given
-        const claim = getClaimFullAdmition(PartyType.COMPANY, ResponseType.FULL_ADMISSION, PaymentOptionType.IMMEDIATELY);
+        const claim = getClaimFullAdmition(PartyType.COMPANY, ResponseType.PART_ADMISSION, PaymentOptionType.IMMEDIATELY);
         const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
           .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
-          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_SAID_YOU_WILL_PAY`, {
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_IMMEDIATELY`, {
+            amount: currencyFormat(getAmount(claim)),
             claimantName: claim.getClaimantFullName(),
-            amount: claim.formattedTotalClaimAmount(),
-            paymentDate: formatDateToFullDate(getPaymentDate(claim), getLanguage()),
-          })
-          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}IF_YOU_PAY_BY_CHEQUE`)
-          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}IF_THEY_DONT_RECEIVE_THE_MONEY_BY_THEN`)
-          .addContactLink(`${PAGES_LATEST_UPDATE_CONTENT}CONTACT`, claim.id, {claimantName: claim.getClaimantFullName()})
-          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claim.id)
-          .build();
-
-        // When
-        const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
-
-        // Then
-        expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
-      });
-
-      it('PAY BY DATE defendant is not company', () => {
-        // Given
-        const claim = getClaimFullAdmition(PartyType.INDIVIDUAL, ResponseType.FULL_ADMISSION, PaymentOptionType.BY_SET_DATE);
-        const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
-          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
-          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY`, {
-            claimantName: claim.getClaimantFullName(),
-            paymentDate: formatDateToFullDate(getPaymentDate(claim), getLanguage()),
           })
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
           .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claim.id)
@@ -233,66 +274,86 @@ describe('Latest Update Content Builder', () => {
         // Then
         expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
       });
-
-      it('PAY BY DATE defendant is company', () => {
+      it('Part Admit Pay SET DATE - Defendant IS Org or Company', () => {
         // Given
-        const claim = getClaimFullAdmition(PartyType.ORGANISATION, ResponseType.FULL_ADMISSION, PaymentOptionType.BY_SET_DATE);
+        const claim = getClaimFullAdmition(PartyType.COMPANY, ResponseType.PART_ADMISSION, PaymentOptionType.BY_SET_DATE);
         const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
           .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
-          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY`, {
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_BY`, {
+            amount: currencyFormat(getAmount(claim)),
             claimantName: claim.getClaimantFullName(),
-            paymentDate: formatDateToFullDate(getPaymentDate(claim), getLanguage()),
+            paymentDate: formatDateToFullDate(getFirstRepaymentDate(claim),getLanguage()),
           })
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`)
           .addContactLink(`${PAGES_LATEST_UPDATE_CONTENT}GET_CONTACT_DETAILS`, claim.id, {claimantName: claim.getClaimantFullName()})
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
           .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claim.id)
           .build();
-
         // When
         const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
 
         // Then
         expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
       });
-
-      it('PAY BY Instalments defendant is not company', () => {
+      it('Part Admit Pay SET DATE - Defendant IS NOT Org or Company', () => {
         // Given
-        const claim = getClaimFullAdmition(PartyType.INDIVIDUAL, ResponseType.FULL_ADMISSION, PaymentOptionType.INSTALMENTS);
+        const claim = getClaimFullAdmition(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.BY_SET_DATE);
         const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
           .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
-          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY_STARRING`, {
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_BY`, {
+            amount: currencyFormat(getAmount(claim)),
             claimantName: claim.getClaimantFullName(),
-            paymentDate: formatDateToFullDate(getPaymentDate(claim), getLanguage()),
+            paymentDate: formatDateToFullDate(getFirstRepaymentDate(claim),getLanguage()),
           })
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
           .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claim.id)
           .build();
-
         // When
-        const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
+        const responseToClaimSection = buildResponseToClaimSection(claim, claim.id);
 
         // Then
         expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
       });
-
-      it('PAY BY DATE defendant is company', () => {
+      it('Part Admit Pay Instalments - Defendant IS Org or Company', () => {
         // Given
-        const claim = getClaimFullAdmition(PartyType.ORGANISATION, ResponseType.FULL_ADMISSION, PaymentOptionType.BY_SET_DATE);
+        const claim = getClaimFullAdmition(PartyType.COMPANY, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
         const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
           .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
-          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY`, {
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_STARING`, {
+            amount: currencyFormat(getAmount(claim)),
             claimantName: claim.getClaimantFullName(),
-            paymentDate: formatDateToFullDate(getPaymentDate(claim), getLanguage()),
+            installmentAmount: currencyFormat(getPaymentAmount(claim)),
+            paymentSchedule: getRepaymentFrequency(claim),
+            paymentDate: formatDateToFullDate(getPaymentDate(claim),getLanguage()),
           })
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`)
-          .addContactLink(`${PAGES_LATEST_UPDATE_CONTENT}GET_CONTACT_DETAILS`, claim.id, {claimantName: claim.getClaimantFullName()})
+          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}GET_CONTACT_DETAILS`, claim.id, {claimantName: claim.getClaimantFullName()})
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
           .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claim.id)
           .build();
-
         // When
-        const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
+        const responseToClaimSection = buildResponseToClaimSection(claim, claim.id);
+
+        // Then
+        expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
+      });
+      it(' Part Admit Pay Instalments - Defendant IS NOT Org or Company', () => {
+        // Given
+        const claim = getClaimFullAdmition(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
+        const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
+          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_STARING`, {
+            amount: currencyFormat(getAmount(claim)),
+            claimantName: claim.getClaimantFullName(),
+            installmentAmount: currencyFormat(getPaymentAmount(claim)),
+            paymentSchedule: getRepaymentFrequency(claim),
+            paymentDate: formatDateToFullDate(getPaymentDate(claim),getLanguage()),
+          })
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
+          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claim.id)
+          .build();
+        // When
+        const responseToClaimSection = buildResponseToClaimSection(claim, claim.id);
 
         // Then
         expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
