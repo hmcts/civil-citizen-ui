@@ -4,15 +4,15 @@ import {toCCDYesNo} from 'services/translation/response/convertToCCDYesNo';
 
 function ccdHearingSupportRequirementList(hearingSupportItem: SupportRequired) {
   const supportRequirementsList: CCDSupportRequirement[] = [];
-  if (hearingSupportItem.disabledAccess.selected)
+  if (hearingSupportItem?.disabledAccess?.selected)
     supportRequirementsList.push(CCDSupportRequirement.DISABLED_ACCESS);
-  if (hearingSupportItem.hearingLoop.selected)
+  if (hearingSupportItem?.hearingLoop?.selected)
     supportRequirementsList.push(CCDSupportRequirement.HEARING_LOOPS);
-  if (hearingSupportItem.languageInterpreter.selected)
+  if (hearingSupportItem?.languageInterpreter?.selected)
     supportRequirementsList.push(CCDSupportRequirement.LANGUAGE_INTERPRETER);
-  if (hearingSupportItem.signLanguageInterpreter.selected)
+  if (hearingSupportItem?.signLanguageInterpreter?.selected)
     supportRequirementsList.push(CCDSupportRequirement.SIGN_INTERPRETER);
-  if (hearingSupportItem.otherSupport.selected)
+  if (hearingSupportItem?.otherSupport?.selected)
     supportRequirementsList.push(CCDSupportRequirement.OTHER_SUPPORT);
 
   return supportRequirementsList;

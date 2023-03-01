@@ -21,7 +21,7 @@ function toCCDUnavailableDates(dateDetails: UnavailableDatePeriod[]) {
   const smallClaimUnavailableDates = dateDetails.map((unavailableDatePeriod: UnavailableDatePeriod) => {
     return {
       value: {
-        who: undefined,
+        who: 'defendant',
         date: unavailableDatePeriod?.from,
         fromDate: unavailableDatePeriod?.from,
         toDate: unavailableDatePeriod?.until,

@@ -1,9 +1,7 @@
 import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
 import {toCCDYesNoFromGenericYesNo} from 'services/translation/response/convertToCCDYesNo';
 import {UnavailableDatePeriod, UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavailableDates';
-import {
-  CCDUnavailableDateType,
-} from 'models/ccdResponse/ccdSmallClaimHearing';
+import {CCDUnavailableDateType} from 'models/ccdResponse/ccdSmallClaimHearing';
 import {CCDHearingLength} from 'models/ccdResponse/ccdFastClaimHearing';
 
 function toCCDUnavailableDateType(type: UnavailableDateType) {
@@ -12,6 +10,19 @@ function toCCDUnavailableDateType(type: UnavailableDateType) {
       return CCDUnavailableDateType.SINGLE_DATE;
     case  'LONGER_PERIOD':
       return CCDUnavailableDateType.DATE_RANGE;
+    default:
+      return undefined;
+  }
+}
+
+function toCCDHearingLength(type: CCDHearingLength) {
+  switch (type) {
+    case 'LESS_THAN_DAY':
+      return CCDHearingLength.LESS_THAN_DAY;
+    case 'ONE_DAY':
+      return CCDHearingLength.ONE_DAY;
+    case 'MORE_THAN_DAY':
+      return CCDHearingLength.MORE_THAN_DAY;
     default:
       return undefined;
   }
@@ -37,7 +48,7 @@ export const toCCDFastClaimHearing = (hearing: Hearing | undefined) => {
   //added first 3 field as a placeholder and using just random value as we don't have CUI fields to set those
   //values but mandatory field in CCD.
   return {
-    hearingLength:CCDHearingLength.ONE_DAY,
+    hearingLength:toCCDHearingLength(undefined),
     hearingLengthHours: '3',
     hearingLengthDays: '1',
     unavailableDatesRequired: toCCDYesNoFromGenericYesNo(hearing?.cantAttendHearingInNext12Months),
