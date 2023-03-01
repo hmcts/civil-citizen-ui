@@ -30,7 +30,7 @@ jest.mock('../../../../../../../main/modules/i18n/languageService', () => ({
 const PAGES_LATEST_UPDATE_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT.';
 const PARTY_NAME = 'Mr. John Doe';
 
-const getClaimFullAdmition = (partyType: PartyType, responseType: ResponseType, paymentOptionType: PaymentOptionType) => {
+const getClaim = (partyType: PartyType, responseType: ResponseType, paymentOptionType: PaymentOptionType) => {
   const claim = new Claim();
   claim.id = '1';
   claim.totalClaimAmount = 1000;
@@ -56,7 +56,6 @@ const getClaimFullAdmition = (partyType: PartyType, responseType: ResponseType, 
     paymentAmount: 100,
     repaymentFrequency: 'Monthly',
     firstRepaymentDate: new Date(Date.now()),
-
   };
   claim.partialAdmission = new PartialAdmission();
   claim.partialAdmission.paymentIntention = new PaymentIntention();
@@ -67,7 +66,6 @@ const getClaimFullAdmition = (partyType: PartyType, responseType: ResponseType, 
     repaymentFrequency: 'Monthly',
     firstRepaymentDate: new Date(Date.now()),
   };
-
   return claim;
 };
 
@@ -82,7 +80,6 @@ describe('Latest Update Content Builder', () => {
       partyName: partyName,
     },
   };
-
   const claimId = '5129';
   const bilingualLanguagePreferencetUrl = BILINGUAL_LANGUAGE_PREFERENCE_URL.replace(':id', claimId);
 
@@ -139,20 +136,20 @@ describe('Latest Update Content Builder', () => {
       expect(responseToClaimSection[4].data?.href).toEqual(bilingualLanguagePreferencetUrl);
     });
 
-    it('should be empty when claim state is different from AWAITING_RESPONDENT_ACKNOWLEDGEMENT', () => {
+    it('should be with Response information when claim state is different from AWAITING_RESPONDENT_ACKNOWLEDGEMENT', () => {
       // Given
       claim.ccdState = CaseState.PENDING_CASE_ISSUED;
       // when
       const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
       // Then
-      expect(responseToClaimSection.length).toBe(0);
+      expect(responseToClaimSection.length).toBe(1);
     });
   });
   describe('Test latest Update when we response the claim', () => {
     describe('Full Admit Pay ', () => {
       it('Immediately', () => {
         // Given
-        const claim = getClaimFullAdmition(PartyType.COMPANY, ResponseType.FULL_ADMISSION, PaymentOptionType.IMMEDIATELY);
+        const claim = getClaim(PartyType.COMPANY, ResponseType.FULL_ADMISSION, PaymentOptionType.IMMEDIATELY);
         const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
           .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_SAID_YOU_WILL_PAY`, {
@@ -174,7 +171,7 @@ describe('Latest Update Content Builder', () => {
       });
       it('Full Admit Pay Set Date + Defendant ISNOT Company or ORG', () => {
         // Given
-        const claim = getClaimFullAdmition(PartyType.INDIVIDUAL, ResponseType.FULL_ADMISSION, PaymentOptionType.BY_SET_DATE);
+        const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.FULL_ADMISSION, PaymentOptionType.BY_SET_DATE);
         const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
           .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY`, {
@@ -193,7 +190,7 @@ describe('Latest Update Content Builder', () => {
       });
       it('Full Admit Pay Set Date + Defendant IS Company or ORG', () => {
         // Given
-        const claim = getClaimFullAdmition(PartyType.COMPANY, ResponseType.FULL_ADMISSION, PaymentOptionType.BY_SET_DATE);
+        const claim = getClaim(PartyType.COMPANY, ResponseType.FULL_ADMISSION, PaymentOptionType.BY_SET_DATE);
         const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
           .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY`, {
@@ -213,7 +210,7 @@ describe('Latest Update Content Builder', () => {
       });
       it(' Full Admit Pay Instalments + Defendant ISNOT Company or ORG ', () => {
         // Given
-        const claim = getClaimFullAdmition(PartyType.INDIVIDUAL, ResponseType.FULL_ADMISSION, PaymentOptionType.INSTALMENTS);
+        const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.FULL_ADMISSION, PaymentOptionType.INSTALMENTS);
         const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
           .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY_STARRING`, {
@@ -233,7 +230,7 @@ describe('Latest Update Content Builder', () => {
       });
       it('Full Admit Pay Instalments+ Defendant IS Company or ORG', () => {
         // Given
-        const claim = getClaimFullAdmition(PartyType.COMPANY, ResponseType.FULL_ADMISSION, PaymentOptionType.INSTALMENTS);
+        const claim = getClaim(PartyType.COMPANY, ResponseType.FULL_ADMISSION, PaymentOptionType.INSTALMENTS);
         const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
           .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY_STARRING`, {
@@ -257,7 +254,7 @@ describe('Latest Update Content Builder', () => {
     describe('Part Admit Pay', () => {
       it('Immediately', () => {
         // Given
-        const claim = getClaimFullAdmition(PartyType.COMPANY, ResponseType.PART_ADMISSION, PaymentOptionType.IMMEDIATELY);
+        const claim = getClaim(PartyType.COMPANY, ResponseType.PART_ADMISSION, PaymentOptionType.IMMEDIATELY);
         const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
           .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_IMMEDIATELY`, {
@@ -276,7 +273,7 @@ describe('Latest Update Content Builder', () => {
       });
       it('Part Admit Pay SET DATE - Defendant IS Org or Company', () => {
         // Given
-        const claim = getClaimFullAdmition(PartyType.COMPANY, ResponseType.PART_ADMISSION, PaymentOptionType.BY_SET_DATE);
+        const claim = getClaim(PartyType.COMPANY, ResponseType.PART_ADMISSION, PaymentOptionType.BY_SET_DATE);
         const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
           .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_BY`, {
@@ -297,7 +294,7 @@ describe('Latest Update Content Builder', () => {
       });
       it('Part Admit Pay SET DATE - Defendant IS NOT Org or Company', () => {
         // Given
-        const claim = getClaimFullAdmition(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.BY_SET_DATE);
+        const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.BY_SET_DATE);
         const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
           .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_BY`, {
@@ -316,7 +313,7 @@ describe('Latest Update Content Builder', () => {
       });
       it('Part Admit Pay Instalments - Defendant IS Org or Company', () => {
         // Given
-        const claim = getClaimFullAdmition(PartyType.COMPANY, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
+        const claim = getClaim(PartyType.COMPANY, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
         const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
           .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_STARING`, {
@@ -339,7 +336,7 @@ describe('Latest Update Content Builder', () => {
       });
       it(' Part Admit Pay Instalments - Defendant IS NOT Org or Company', () => {
         // Given
-        const claim = getClaimFullAdmition(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
+        const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
         const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
           .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_STARING`, {

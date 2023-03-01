@@ -39,11 +39,6 @@ export class LastUpdateSectionBuilder {
     return this;
   }
 
-  addSection(section: ClaimSummarySection) {
-    this._claimSummarySections.push(section);
-    return this;
-  }
-
   addParagraph(text: string, variables?: any) {
     const paragraphSection = ({
       type: ClaimSummaryType.PARAGRAPH,
