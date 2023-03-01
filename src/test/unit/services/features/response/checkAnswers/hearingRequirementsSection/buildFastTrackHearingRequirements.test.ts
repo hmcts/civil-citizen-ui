@@ -4,8 +4,7 @@ import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
 import {YesNo} from 'form/models/yesNo';
 import {summaryRow} from 'models/summaryList/summaryList';
 import {
-  considerClaimantDocQuestion,
-  considerClaimantDocResponse,
+  considerClaimantDocQuestion, considerClaimantDocResponse,
   requestExtra4WeeksQuestion,
   triedToSettleQuestion,
 } from 'services/features/response/checkAnswers/hearingRequirementsSection/buildFastTrackHearingRequirements';
@@ -101,4 +100,5 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
     });
 
   });
+
 });

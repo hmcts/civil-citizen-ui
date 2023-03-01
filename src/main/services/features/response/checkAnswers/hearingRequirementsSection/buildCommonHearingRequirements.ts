@@ -4,6 +4,7 @@ import {
 import {summaryRow, SummaryRow} from 'models/summaryList/summaryList';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
+  DQ_AVAILABILITY_DATES_FOR_HEARING_URL,
   DQ_COURT_LOCATION_URL,
   DQ_DEFENDANT_WITNESSES_URL,
   DQ_GIVE_EVIDENCE_YOURSELF_URL,
@@ -147,7 +148,7 @@ export const getUnavailableDatesList = (claim: Claim, claimId: string, lng: stri
   return summaryRow(
     t('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.UNAVAILABLE_DATES', {lng}),
     ` ${[...hasUnavailableDatesForHearing].join('<br>')}`,
-    constructResponseUrlWithIdParams(claimId, DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL),
+    constructResponseUrlWithIdParams(claimId, DQ_AVAILABILITY_DATES_FOR_HEARING_URL),
     changeLabel(lng),
   );
 };

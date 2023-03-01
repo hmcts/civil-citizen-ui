@@ -579,7 +579,7 @@ describe('Common Hearing Requirements Section', () => {
       const mockSummarySection = summaryRow(
         'PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.UNAVAILABLE_DATES',
         ' 30 December 2023',
-        '/case/validClaimId/directions-questionnaire/cant-attend-hearing-in-next-12-months',
+        '/case/validClaimId/directions-questionnaire/availability-dates',
         changeButton,
       );
       //GIVEN
@@ -610,7 +610,7 @@ describe('Common Hearing Requirements Section', () => {
       const mockSummarySection = summaryRow(
         'PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.UNAVAILABLE_DATES',
         ' 10 December 2023<br>11 December 2023<br>12 December 2023<br>13 December 2023<br>14 December 2023',
-        '/case/validClaimId/directions-questionnaire/cant-attend-hearing-in-next-12-months',
+        '/case/validClaimId/directions-questionnaire/availability-dates',
         changeButton,
       );
       //GIVEN
