@@ -7,7 +7,7 @@ import {
   CITIZEN_FREE_TELEPHONE_MEDIATION_URL,
   CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL,
   CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL,
-  CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAYMENT_URL,
+  CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL,
   CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL,
   CLAIMANT_SIGN_SETTLEMENT_AGREEMENT,
 } from 'routes/urls';
@@ -35,7 +35,7 @@ export function getAcceptOrRejectRepaymentTask(claim: Claim, claimId: string, la
     description: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_REPAYMENT', {
       lng: lang,
     }),
-    url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAYMENT_URL),
+    url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL),
     status: TaskStatus.INCOMPLETE,
   };
   if (claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option) {
