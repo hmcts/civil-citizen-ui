@@ -9,6 +9,7 @@ export interface ClaimSummarySection {
   type?: ClaimSummaryType;
   data?: ClaimSummaryItem;
 }
+
 export interface ClaimSummaryItem {
   text?: string;
   href?: string;
