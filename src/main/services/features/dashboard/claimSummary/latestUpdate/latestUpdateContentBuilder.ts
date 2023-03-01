@@ -190,7 +190,7 @@ function getFaPayByDate(claim: Claim) {
       .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
       .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY`, {
         claimantName: claim.getClaimantFullName(),
-        paymentDate: getPaymentDate(claim),
+        paymentDate:  formatDateToFullDate(getPaymentDate(claim),getLanguage()),
       })
       .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
       .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claim.id)
@@ -200,7 +200,7 @@ function getFaPayByDate(claim: Claim) {
     .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY`, {
       claimantName: claim.getClaimantFullName(),
-      paymentDate: getPaymentDate(claim),
+      paymentDate: formatDateToFullDate(getPaymentDate(claim), getLanguage()),
     })
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`)
     .addContactLink(`${PAGES_LATEST_UPDATE_CONTENT}GET_CONTACT_DETAILS`, claim.id, {claimantName: claim.getClaimantFullName()})
@@ -215,7 +215,7 @@ function getFaPayImmediately(claim: Claim) {
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_SAID_YOU_WILL_PAY`, {
       claimantName: claim.getClaimantFullName(),
       amount: claim.formattedTotalClaimAmount(),
-      paymentDate: formatDateToFullDate(new Date(getPaymentDate(claim)), getLanguage()),
+      paymentDate: formatDateToFullDate(getPaymentDate(claim), getLanguage()),
     })
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}IF_YOU_PAY_BY_CHEQUE`)
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}IF_THEY_DONT_RECEIVE_THE_MONEY_BY_THEN`)
@@ -264,7 +264,7 @@ export const buildResponseToClaimSection = (claim: Claim, claimId: string): Clai
     }
     sectionContent.push(respondToClaimLink);
   } else {
-    sectionContent.push(generateLastUpdateResponseSections(ClaimResponseStatus.FA_PAY_IMMEDIATELY, claim));
+    sectionContent.push(generateLastUpdateResponseSections(claim.responseStatus, claim));
 
   }
   return sectionContent.flat();
