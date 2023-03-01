@@ -192,6 +192,9 @@ import judgmentAmountSummaryController from './features/claimantResponse/ccj/jud
 import ccjCheckAnswersController from './features/claimantResponse/ccj/ccjCheckAnswersController';
 import claimantResponseTasklistController from './features/claimantResponse/claimantResponseTasklistController';
 import unavailableDatesForHearingController from './features/directionsQuestionnaire/hearing/unavailableDatesForHearingController';
+import claimantSuggestedPaymentOptionController from './features/claimantResponse/claimantSuggestedPaymentOptionController';
+import claimantSuggestedPaymentDateController from './features/claimantResponse/claimantSuggestedPaymentDateController';
+import claimantSuggestedInstalmentsController from './features/claimantResponse/claimantSuggestedInstalmentsController';
 
 export default [
   homeController,
@@ -372,4 +375,7 @@ export default [
   judgmentAmountSummaryController,
   claimantResponseTasklistController,
   unavailableDatesForHearingController,
+  claimantSuggestedPaymentOptionController,
+  claimantSuggestedPaymentDateController,
+  claimantSuggestedInstalmentsController,
 ];

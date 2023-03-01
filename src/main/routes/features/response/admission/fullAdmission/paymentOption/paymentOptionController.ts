@@ -1,7 +1,6 @@
 import {NextFunction, Response, Router} from 'express';
 import {CITIZEN_PAYMENT_DATE_URL, CITIZEN_PAYMENT_OPTION_URL, RESPONSE_TASK_LIST_URL} from '../../../../../urls';
 import {PaymentOption} from '../../../../../../common/form/models/admission/paymentOption/paymentOption';
-import {PaymentOptionType} from '../../../../../../common/form/models/admission/paymentOption/paymentOptionType';
 import {
   getPaymentOptionForm,
   savePaymentOptionData,
@@ -14,7 +13,7 @@ const paymentOptionController = Router();
 const citizenPaymentOptionViewPath = 'features/response/admission/payment-option';
 
 function renderView(form: GenericForm<PaymentOption>, res: Response) {
-  res.render(citizenPaymentOptionViewPath, {form, PaymentOptionType});
+  res.render(citizenPaymentOptionViewPath, {form});
 }
 
 function redirectToNextPage(claimId: string, form: PaymentOption, res: Response) {
