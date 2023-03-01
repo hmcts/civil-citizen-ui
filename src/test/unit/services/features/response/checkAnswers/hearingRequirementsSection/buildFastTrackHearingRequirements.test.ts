@@ -82,6 +82,20 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         //Then
         expect(row).toStrictEqual(mockSummarySection);
       });
+      it('should return No when hearing is undefined', () => {
+        //Given
+        claim.directionQuestionnaire.hearing = undefined;
+        const mockSummarySection = summaryRow(
+          'PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE',
+          'COMMON.NO',
+          `/case/${claimId}/directions-questionnaire/tried-to-settle`,
+          changeButton,
+        );
+        //When
+        const row = triedToSettleQuestion(claim, claimId, lng);
+        //Then
+        expect(row).toStrictEqual(mockSummarySection);
+      });
     });
     describe('requestExtra4WeeksQuestion', () => {
 
@@ -98,6 +112,20 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         );
         //Then
         expect(requestExtra4WeeksQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      });
+      it('should return No when direction questioner and hearing are undefined', () =>{
+        //Given
+        const claimWithNoHearing = new Claim();
+        const mockSummarySection = summaryRow(
+          'PAGES.CHECK_YOUR_ANSWER.REQUEST_EXTRA_4WEEKS',
+          'COMMON.NO',
+          `/case/${claimId}/directions-questionnaire/request-extra-4-weeks`,
+          changeButton,
+        );
+        //When
+        const row = requestExtra4WeeksQuestion(claimWithNoHearing, claimId, lng);
+        //Then
+        expect(row).toStrictEqual(mockSummarySection);
       });
 
     });
@@ -117,11 +145,22 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         //Then
         expect(considerClaimantDocQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
       });
-
+      it('should return no for considerClaimantDocuments when direction questonnaire and hearin are undefined', ()=>{
+        //Given
+        const claimWithNoHearing = new Claim();
+        const mockSummarySection = summaryRow(
+          'PAGES.CHECK_YOUR_ANSWER.CONSIDER_CLAIMANT_DOCUMENT',
+          'COMMON.NO',
+          `/case/${claimId}/directions-questionnaire/consider-claimant-documents`,
+          changeButton,
+        );
+        //Then
+        expect(considerClaimantDocQuestion(claimWithNoHearing, claimId, lng)).toStrictEqual(mockSummarySection);
+      });
       it('should return summaryRow for document details if considerClaimantDocuments option is Yes', () => {
         //Given
         claim.directionQuestionnaire.hearing.considerClaimantDocuments = {
-          option: YesNo.NO,
+          option: YesNo.YES,
           details: 'Test doc',
         };
         const mockSummarySection = summaryRow(
@@ -130,6 +169,28 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         );
         //Then
         expect(considerClaimantDocResponse(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      });
+      it('should return empty string when details are not provided', ()=> {
+        //Given
+        claim.directionQuestionnaire.hearing.considerClaimantDocuments = {
+          option: YesNo.YES,
+        };
+        const mockSummarySection = summaryRow(
+          'PAGES.CHECK_YOUR_ANSWER.GIVE_DOC_DETAILS',
+          '',
+        );
+        //Then
+        expect(considerClaimantDocResponse(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      });
+      it('should return empty string when no hearing', () => {
+        //Given
+        const claimWithNoHearing = new Claim();
+        const mockSummarySection = summaryRow(
+          'PAGES.CHECK_YOUR_ANSWER.GIVE_DOC_DETAILS',
+          '',
+        );
+        //Then
+        expect(considerClaimantDocResponse(claimWithNoHearing, claimId, lng)).toStrictEqual(mockSummarySection);
       });
 
     });
@@ -147,7 +208,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       claim.directionQuestionnaire.experts.expertEvidence = {option: YesNo.NO};
       claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList();
 
-      const result: any[] = [];
+      const result: [] = [];
 
       //When
       const expertDetails = getExpertDetails(claim, claimId, lng);
@@ -209,6 +270,13 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       expect(summaryRows[7].key.text).toEqual('PAGES.EXPERT_DETAILS.COST_OPTIONAL');
       expect(summaryRows[7].value.html).toEqual('');
     });
+    it('should return an empty array when there are no experts', ()=>{
+      //Given no experts
+      //When
+      const summaryRows = getExpertDetails(claim, '1', 'eng');
+      //Then
+      expect(summaryRows.length).toEqual(0);
+    });
     it('should display the use of expert evidence No if the claimant choose not', () => {
       //Given
       claim.directionQuestionnaire.experts.expertEvidence = {option: YesNo.NO};
@@ -223,12 +291,12 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       //Then
       expect(doWantUseExpectEvidence).toStrictEqual(mockSummarySection);
     });
-    it('should display the use of own evidence No if the claimant choose not', () => {
+    it('should display empty value when there is no hearing', () => {
       //Given
-      claim.directionQuestionnaire.defendantYourselfEvidence = {option: YesNo.NO};
+      claim = new Claim();
       const mockSummarySection = summaryRow(
         'PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE',
-        'COMMON.NO',
+        '',
         '/case/validClaimId/directions-questionnaire/give-evidence-yourself',
         changeButton,
       );
@@ -251,12 +319,40 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       //Then
       expect(shareExpertWithClaimant).toStrictEqual(mockSummarySection);
     });
+    it('should display empty string when empty claim ', function () {
+      //Given
+      claim = new Claim();
+      const mockSummarySection = summaryRow(
+        'PAGES.SHARED_EXPERT.WITH_CLAIMANT',
+        '',
+        '/case/validClaimId/directions-questionnaire/shared-expert',
+        changeButton,
+      );
+      //When
+      const shareExpertWithClaimant = getShareExpertWithClaimant(claim, claimId, lng);
+      //Then
+      expect(shareExpertWithClaimant).toStrictEqual(mockSummarySection);
+    });
     it('should display No if the defendant has not send expert report to other parties', function () {
       //Given
       claim.directionQuestionnaire.experts.sentExpertReports = {option: YesNoNotReceived.NO};
       const mockSummarySection = summaryRow(
         'PAGES.SENT_EXPERT_REPORTS.TITLE',
         'COMMON.NO',
+        '/case/validClaimId/directions-questionnaire/sent-expert-reports',
+        changeButton,
+      );
+      //When
+      const sentReportToOtherParties = getSentReportToOtherParties(claim, claimId, lng);
+      //Then
+      expect(sentReportToOtherParties).toStrictEqual(mockSummarySection);
+    });
+    it('should display empty string when there is no expert reports data', function () {
+      //Given
+      claim = new Claim();
+      const mockSummarySection = summaryRow(
+        'PAGES.SENT_EXPERT_REPORTS.TITLE',
+        '',
         '/case/validClaimId/directions-questionnaire/sent-expert-reports',
         changeButton,
       );
