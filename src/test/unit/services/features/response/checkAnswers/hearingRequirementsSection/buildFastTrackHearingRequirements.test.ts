@@ -17,7 +17,9 @@ import {
   ExpertDetailsList,
 } from '../../../../../../../main/common/models/directionsQuestionnaire/experts/expertDetailsList';
 import {ExpertDetails} from '../../../../../../../main/common/models/directionsQuestionnaire/experts/expertDetails';
-import { getSummaryRowForDisplayEvidenceYourself } from 'services/features/response/checkAnswers/hearingRequirementsSection/buildCommonHearingRequirements';
+import {
+  getSummaryRowForDisplayEvidenceYourself,
+} from 'services/features/response/checkAnswers/hearingRequirementsSection/buildCommonHearingRequirements';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/i18n');
@@ -68,7 +70,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         //Then
         expect(triedToSettleQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
       });
-      it('should return No when direction questionnaire hearing is undefined', () =>{
+      it('should return No when direction questionnaire hearing is undefined', () => {
         //Given
         const claimWithNoHearing = new Claim();
         const mockSummarySection = summaryRow(
@@ -113,7 +115,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         //Then
         expect(requestExtra4WeeksQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
       });
-      it('should return No when direction questioner and hearing are undefined', () =>{
+      it('should return No when direction questioner and hearing are undefined', () => {
         //Given
         const claimWithNoHearing = new Claim();
         const mockSummarySection = summaryRow(
@@ -145,7 +147,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         //Then
         expect(considerClaimantDocQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
       });
-      it('should return no for considerClaimantDocuments when direction questonnaire and hearin are undefined', ()=>{
+      it('should return no for considerClaimantDocuments when direction questonnaire and hearin are undefined', () => {
         //Given
         const claimWithNoHearing = new Claim();
         const mockSummarySection = summaryRow(
@@ -170,7 +172,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         //Then
         expect(considerClaimantDocResponse(claim, claimId, lng)).toStrictEqual(mockSummarySection);
       });
-      it('should return empty string when details are not provided', ()=> {
+      it('should return empty string when details are not provided', () => {
         //Given
         claim.directionQuestionnaire.hearing.considerClaimantDocuments = {
           option: YesNo.YES,
@@ -244,7 +246,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       expect(summaryRows[7].value.html).toEqual('500');
 
     });
-    it('should display empty line for expert when phone number is not present', ()=>{
+    it('should display empty line for expert when phone number is not present', () => {
       //Given
       claim.directionQuestionnaire.experts.expertEvidence = {option: YesNo.YES};
       claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList(
@@ -257,7 +259,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       expect(summaryRows[4].key.text).toEqual('PAGES.EXPERT_DETAILS.PHONE_OPTIONAL');
       expect(summaryRows[4].value.html).toEqual('');
     });
-    it('should display empty line when estimated cost is not present', ()=>{
+    it('should display empty line when estimated cost is not present', () => {
       //Given
       claim.directionQuestionnaire.experts.expertEvidence = {option: YesNo.YES};
       claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList(
@@ -270,7 +272,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       expect(summaryRows[7].key.text).toEqual('PAGES.EXPERT_DETAILS.COST_OPTIONAL');
       expect(summaryRows[7].value.html).toEqual('');
     });
-    it('should return an empty array when there are no experts', ()=>{
+    it('should return an empty array when there are no experts', () => {
       //Given no experts
       //When
       const summaryRows = getExpertDetails(claim, '1', 'eng');
