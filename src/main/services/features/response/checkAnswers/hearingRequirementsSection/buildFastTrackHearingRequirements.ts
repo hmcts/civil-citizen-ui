@@ -14,7 +14,10 @@ import {
   DQ_TRIED_TO_SETTLE_CLAIM_URL,
 } from 'routes/urls';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
-import {getFormattedAnswerForYesNoNotReceived, getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/formatAnswer';
+import {
+  getFormattedAnswerForYesNoNotReceived,
+  getEmptyStringIfUndefined
+} from 'common/utils/checkYourAnswer/formatAnswer';
 
 export const triedToSettleQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const option = claim.directionQuestionnaire?.hearing?.triedToSettle?.option === YesNo.YES
@@ -138,12 +141,13 @@ export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequireme
     hearingRequirementsSection.summaryList.rows.push(getUseExpertEvidence(claim, claimId, lng));
   }
 
-  if (claim.directionQuestionnaire?.experts?.sentExpertReports?.option){
+  if (claim.directionQuestionnaire?.experts?.sentExpertReports?.option) {
     hearingRequirementsSection.summaryList.rows.push(getSentReportToOtherParties(claim, claimId, lng));
   }
 
-  if (claim.directionQuestionnaire?.experts?.sharedExpert?.option)
+  if (claim.directionQuestionnaire?.experts?.sharedExpert?.option) {
     hearingRequirementsSection.summaryList.rows.push(getShareExpertWithClaimant(claim, claimId, lng));
+  }
 
   if (claim.hasExpertDetails()) {
     hearingRequirementsSection.summaryList.rows.push(...getExpertDetails(claim, claimId, lng));
