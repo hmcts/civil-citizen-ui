@@ -16,7 +16,7 @@ import {
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import {
   getFormattedAnswerForYesNoNotReceived,
-  getEmptyStringIfUndefined
+  getEmptyStringIfUndefined,
 } from 'common/utils/checkYourAnswer/formatAnswer';
 
 export const triedToSettleQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
