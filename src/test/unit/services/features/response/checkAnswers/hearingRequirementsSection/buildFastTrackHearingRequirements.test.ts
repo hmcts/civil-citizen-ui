@@ -146,8 +146,6 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
     it('should display expert details if the expect evidence is YES', function () {
       //Given
       claim.directionQuestionnaire.experts.expertEvidence = {option: YesNo.YES};
-      claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList();
-
       claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList(
         [new ExpertDetails('Mike', 'James', 'mike@gmail.com', 7411111, 'reason', 'expert', 500)],
       );
@@ -172,6 +170,32 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       expect(summaryRows[7].key.text).toEqual('PAGES.EXPERT_DETAILS.COST_OPTIONAL');
       expect(summaryRows[7].value.html).toEqual('500');
 
+    });
+    it('should display empty line for expert when phone number is not present', ()=>{
+      //Given
+      claim.directionQuestionnaire.experts.expertEvidence = {option: YesNo.YES};
+      claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList(
+        [new ExpertDetails('Mike', 'James', 'mike@gmail.com', undefined, 'reason', 'expert', 500)],
+      );
+      //When
+      const summaryRows = getExpertDetails(claim, '1', 'eng');
+      //Then
+      expect(summaryRows.length).toEqual(8);
+      expect(summaryRows[4].key.text).toEqual('PAGES.EXPERT_DETAILS.PHONE_OPTIONAL');
+      expect(summaryRows[4].value.html).toEqual('');
+    });
+    it('should display empty line when estimated cost is not present', ()=>{
+      //Given
+      claim.directionQuestionnaire.experts.expertEvidence = {option: YesNo.YES};
+      claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList(
+        [new ExpertDetails('Mike', 'James', 'mike@gmail.com', 15267357253, 'reason', 'expert', undefined)],
+      );
+      //When
+      const summaryRows = getExpertDetails(claim, '1', 'eng');
+      //Then
+      expect(summaryRows.length).toEqual(8);
+      expect(summaryRows[7].key.text).toEqual('PAGES.EXPERT_DETAILS.COST_OPTIONAL');
+      expect(summaryRows[7].value.html).toEqual('');
     });
     it('should display the use of expert evidence No if the claimant choose not', () => {
       //Given
