@@ -439,8 +439,8 @@ export class Claim {
   }
 
   hasExpertDetails(): boolean {
-    return this.directionQuestionnaire?.experts?.expertEvidence?.option === YesNo.YES
-      && this.directionQuestionnaire?.experts?.expertDetailsList?.items?.length > 0;
+    return this.directionQuestionnaire?.experts?.expertDetailsList?.items?.length
+      && this.directionQuestionnaire?.experts?.expertEvidence?.option === YesNo.YES;
   }
 
   private getName(party: Party): string {
