@@ -140,7 +140,7 @@
     "webpack-node-externals": "^3.0.0"
   },
   "resolutions": {
-    "**/jest/**/node-notifier": "^8.0.1",
+    "**/jest/**/node-notifier": "^10.0.0",
     "**/sass-lint/**/merge": "^2.1.1",
     "**/minimist": "^1.2.6",
     "**/sass-lint/**/ajv": "^6.12.3",
