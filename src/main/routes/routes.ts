@@ -160,7 +160,7 @@ import helpWithFeesController from './features/claim/details/helpWithFeesControl
 import debtRespiteReferenceNumberController from './features/breathingSpace/debtRespiteReferenceNumberController';
 import datePaidViewController from './features/claimantResponse/paidInFull/datePaidController';
 import settleClaimController from './features/claimantResponse/settleClaimController';
-import fullAdmitSetDatePaymentController from './features/claimantResponse/fullAdmitSetDatePaymentController';
+import acceptRepaymentPlanController from './features/claimantResponse/acceptRepaymentPlanController';
 import partPaymentReceivedController from './features/claimantResponse/partPaymentReceivedController';
 import defendantDOBController from './features/claimantResponse/ccj/defendantDOBController';
 import claimantIntentionToProceedController from './features/claimantResponse/claimantIntentionToProceedController';
@@ -192,6 +192,9 @@ import judgmentAmountSummaryController from './features/claimantResponse/ccj/jud
 import ccjCheckAnswersController from './features/claimantResponse/ccj/ccjCheckAnswersController';
 import claimantResponseTasklistController from './features/claimantResponse/claimantResponseTasklistController';
 import unavailableDatesForHearingController from './features/directionsQuestionnaire/hearing/unavailableDatesForHearingController';
+import claimantSuggestedPaymentOptionController from './features/claimantResponse/claimantSuggestedPaymentOptionController';
+import claimantSuggestedPaymentDateController from './features/claimantResponse/claimantSuggestedPaymentDateController';
+import claimantSuggestedInstalmentsController from './features/claimantResponse/claimantSuggestedInstalmentsController';
 
 export default [
   homeController,
@@ -341,7 +344,7 @@ export default [
   breathingSpaceCheckAnswersController,
   datePaidViewController,
   settleClaimController,
-  fullAdmitSetDatePaymentController,
+  acceptRepaymentPlanController,
   partPaymentReceivedController,
   defendantDOBController,
   claimantIntentionToProceedController,
@@ -372,4 +375,7 @@ export default [
   judgmentAmountSummaryController,
   claimantResponseTasklistController,
   unavailableDatesForHearingController,
+  claimantSuggestedPaymentOptionController,
+  claimantSuggestedPaymentDateController,
+  claimantSuggestedInstalmentsController,
 ];

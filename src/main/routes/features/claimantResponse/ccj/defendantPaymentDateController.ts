@@ -7,19 +7,19 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const paymentDatePath = 'features/response/admission/payment-date';
 const defendantPaymentDateController = Router();
-const nextMonth = new Date();
-nextMonth.setMonth(nextMonth.getMonth() + 1);
+const title = 'PAGES.CCJ_DEFENDANT_PAYMENT_DATE.TITLE';
+
+function renderView(form: GenericForm<PaymentDate>, res: Response): void {
+  res.render(paymentDatePath, {form, title});
+}
 
 defendantPaymentDateController
   .get(
     CCJ_PAY_BY_SET_DATE_URL, async (req: Request, res: Response, next: NextFunction) => {
       try {
         const claimantResponse = await getClaimantResponse(req.params.id);
-        const defendantPaymentDate = claimantResponse.ccjRequest ?
-          claimantResponse.ccjRequest.defendantPaymentDate : new PaymentDate();
-        res.render(paymentDatePath, {
-          form: new GenericForm(defendantPaymentDate), nextMonth, title: 'PAGES.CCJ_DEFENDANT_PAYMENT_DATE.TITLE',
-        });
+        const defendantPaymentDate = claimantResponse.ccjRequest?.defendantPaymentDate ?? new PaymentDate();
+        renderView(new GenericForm(defendantPaymentDate), res);
       } catch (error) {
         next(error);
       }
@@ -29,13 +29,10 @@ defendantPaymentDateController
       const claimId = req.params.id;
       const defendantPaymentDate = new PaymentDate(req.body.year, req.body.month, req.body.day);
       const form: GenericForm<PaymentDate> = new GenericForm<PaymentDate>(defendantPaymentDate);
-      await form.validate();
+      form.validateSync();
 
       if (form.hasErrors()) {
-        res.render(paymentDatePath, {
-          form, nextMonth,
-          title: 'PAGES.CCJ_DEFENDANT_PAYMENT_DATE.TITLE',
-        });
+        renderView(form, res);
       } else {
         try {
           await saveClaimantResponse(claimId, form.model, 'defendantPaymentDate', 'ccjRequest');
