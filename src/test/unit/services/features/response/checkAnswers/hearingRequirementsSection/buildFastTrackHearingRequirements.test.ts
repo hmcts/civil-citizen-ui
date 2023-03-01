@@ -54,23 +54,35 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       claim = getClaimWithDirectionQuestionnaireAndHearing();
     });
     describe('triedToSettleQuestion', () => {
-      it('should return summaryRow if triedToSettle option is no', () => {
+      it('should return summaryRow with Yes when triedToSettle option is YES', () => {
         //Given
         claim.directionQuestionnaire.hearing.triedToSettle = {
-          option: YesNo.NO,
+          option: YesNo.YES,
         };
         const mockSummarySection = summaryRow(
           'PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE',
-          'COMMON.NO',
+          'COMMON.YES',
           `/case/${claimId}/directions-questionnaire/tried-to-settle`,
           changeButton,
         );
         //Then
         expect(triedToSettleQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
       });
-
+      it('should return No when direction questionnaire hearing is undefined', () =>{
+        //Given
+        const claimWithNoHearing = new Claim();
+        const mockSummarySection = summaryRow(
+          'PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE',
+          'COMMON.NO',
+          `/case/${claimId}/directions-questionnaire/tried-to-settle`,
+          changeButton,
+        );
+        //When
+        const row = triedToSettleQuestion(claimWithNoHearing, claimId, lng);
+        //Then
+        expect(row).toStrictEqual(mockSummarySection);
+      });
     });
-
     describe('requestExtra4WeeksQuestion', () => {
 
       it('should return summaryRow if requestExtra4Weeks option is yes', () => {
@@ -124,7 +136,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
 
   });
 
-  describe('should return summary row relative to expect', () => {
+  describe('should return expert summary row', () => {
     let claim: Claim;
     beforeEach(() => {
       claim = getClaimWithDirectionQuestionnaireAndExperts();
