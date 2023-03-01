@@ -42,7 +42,7 @@ describe('translate Fast claim hearing details to CCD model', () => {
   it('should return undefined if items doesnt exist', () => {
     //given
     const expected: CCDFastClaimHearing = {
-      hearingLength: CCDHearingLength.ONE_DAY,
+      hearingLength: undefined,
       hearingLengthHours: '3',
       hearingLengthDays: '1',
       unavailableDatesRequired: undefined,
@@ -60,7 +60,7 @@ describe('translate Fast claim hearing details to CCD model', () => {
     claim.directionQuestionnaire.hearing.cantAttendHearingInNext12Months = {option: YesNo.NO};
 
     const expected: CCDFastClaimHearing = {
-      hearingLength: CCDHearingLength.ONE_DAY,
+      hearingLength: undefined,
       hearingLengthHours: '3',
       hearingLengthDays: '1',
       unavailableDatesRequired: YesNoUpperCamelCase.NO,
@@ -80,7 +80,7 @@ describe('translate Fast claim hearing details to CCD model', () => {
     claim.directionQuestionnaire.hearing.unavailableDatesForHearing.items = [singleDateMock];
 
     const expected: CCDFastClaimHearing = {
-      hearingLength: CCDHearingLength.ONE_DAY,
+      hearingLength: undefined,
       hearingLengthHours: '3',
       hearingLengthDays: '1',
       unavailableDatesRequired: YesNoUpperCamelCase.YES,
@@ -108,7 +108,7 @@ describe('translate Fast claim hearing details to CCD model', () => {
     claim.directionQuestionnaire.hearing.unavailableDatesForHearing.items = [longerPeriod10DaysMock];
 
     const expected: CCDFastClaimHearing = {
-      hearingLength: CCDHearingLength.ONE_DAY,
+      hearingLength: undefined,
       hearingLengthHours: '3',
       hearingLengthDays: '1',
       unavailableDatesRequired: YesNoUpperCamelCase.YES,
