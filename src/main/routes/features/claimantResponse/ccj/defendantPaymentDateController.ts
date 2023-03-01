@@ -1,6 +1,9 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
-import {CCJ_CHECK_AND_SEND_URL, CCJ_DEPENDANT_PAYMENT_DATE_URL} from 'routes/urls';
+import {
+  CCJ_CHECK_AND_SEND_URL,
+  CCJ_DEPENDANT_PAYMENT_DATE_URL,
+} from 'routes/urls';
 import {getClaimantResponse, saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
 import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
