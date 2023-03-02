@@ -69,34 +69,36 @@ const createHearing = (triedToSettleOption: YesNo, requestExtra4weeksOption: Yes
   return hearing;
 };
 
+function addTotalAmountAndYesHearing(claim: Claim) {
+  claim.totalClaimAmount = 11000;
+  claim.directionQuestionnaire.hearing = createHearing(YesNo.YES, YesNo.YES, YesNo.YES, YesNo.YES, undefined, YesNo.YES, YesNo.YES);
+}
+
 describe('Hearing Requirements Section', () => {
-  const claim = new Claim();
-  claim.directionQuestionnaire = new DirectionQuestionnaire();
+  let claim: Claim;
+  beforeEach(() => {
+    claim = new Claim();
+    claim.directionQuestionnaire = new DirectionQuestionnaire();
 
-  claim.directionQuestionnaire.defendantYourselfEvidence = {
-    option: YesNo.YES,
-  };
-  claim.directionQuestionnaire.vulnerabilityQuestions = new VulnerabilityQuestions();
-  claim.directionQuestionnaire.vulnerabilityQuestions.vulnerability = {
-    option: YesNo.YES,
-    vulnerabilityDetails: 'Test vulnerability details',
-  };
+    claim.directionQuestionnaire.defendantYourselfEvidence = {
+      option: YesNo.YES,
+    };
+    claim.directionQuestionnaire.vulnerabilityQuestions = new VulnerabilityQuestions();
+    claim.directionQuestionnaire.vulnerabilityQuestions.vulnerability = {
+      option: YesNo.YES,
+      vulnerabilityDetails: 'Test vulnerability details',
+    };
 
-  claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
-  claim.directionQuestionnaire.welshLanguageRequirements.language = {
-    speakLanguage : LanguageOptions.ENGLISH,
-    documentsLanguage : LanguageOptions.WELSH_AND_ENGLISH,
-  };
+    claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
+    claim.directionQuestionnaire.welshLanguageRequirements.language = {
+      speakLanguage: LanguageOptions.ENGLISH,
+      documentsLanguage: LanguageOptions.WELSH_AND_ENGLISH,
+    };
+  });
   describe('FastTrack Claim ', () => {
-
     it('build hearing requirement for Fast Track Claim When all questions answer set to yes.', () => {
       //Given
-      claim.totalClaimAmount = 11000;
-      claim.directionQuestionnaire.hearing = createHearing(YesNo.YES, YesNo.YES, YesNo.YES, YesNo.YES, undefined, YesNo.YES, YesNo.YES);
-      claim.directionQuestionnaire.vulnerabilityQuestions.vulnerability = {
-        option: YesNo.YES,
-        vulnerabilityDetails: 'Test vulnerability details',
-      };
+      addTotalAmountAndYesHearing(claim);
 
       //When
       const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
@@ -104,6 +106,7 @@ describe('Hearing Requirements Section', () => {
       //Then
 
       expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
+      expect(summaryRows.summaryList.rows.length).toEqual(18);
       expect(summaryRows.summaryList.rows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE');
       expect(summaryRows.summaryList.rows[0].value.html).toEqual('COMMON.YES');
       expect(summaryRows.summaryList.rows[1].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.REQUEST_EXTRA_4WEEKS');
@@ -131,12 +134,21 @@ describe('Hearing Requirements Section', () => {
       expect(summaryRows.summaryList.rows[11].value.html).toEqual('COMMON.YES');
       expect(summaryRows.summaryList.rows[12].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_INFO');
       expect(summaryRows.summaryList.rows[12].value.html).toEqual('Test vulnerability details');
+      expect(summaryRows.summaryList.rows[13].key.text).toEqual('PAGES.SPECIFIC_COURT.TITLE');
+      expect(summaryRows.summaryList.rows[13].value.html).toEqual('COMMON.YES');
+      expect(summaryRows.summaryList.rows[14].key.text).toEqual('PAGES.SPECIFIC_COURT.SELECTED_COURT');
+      expect(summaryRows.summaryList.rows[14].value.html).toEqual('High Wycombe Law Courts - THE LAW COURTS, EASTON STREET - HP11 1LR');
+      expect(summaryRows.summaryList.rows[15].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WELSH_LANGUAGE');
+      expect(summaryRows.summaryList.rows[16].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK');
+      expect(summaryRows.summaryList.rows[16].value.html).toEqual('PAGES.WELSH_LANGUAGE.ENGLISH');
+      expect(summaryRows.summaryList.rows[17].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS');
+      expect(summaryRows.summaryList.rows[17].value.html).toEqual('PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH');
 
     });
-
-    it('build hearing requirement for Fast Track Claim When all questions answer set to no.', () => {
+    it('should build hearing requirement for Fast Track Claim When all questions answer set to no.', () => {
       //Given
-      const hearing = createHearing(YesNo.NO, YesNo.NO, YesNo.NO, YesNo.NO, undefined, YesNo.NO, YesNo.NO, YesNo.NO);
+      claim.totalClaimAmount = 11000;
+      const hearing = createHearing(YesNo.NO, YesNo.NO, YesNo.NO, YesNo.NO, undefined, YesNo.NO, YesNo.NO);
       claim.directionQuestionnaire.hearing = hearing;
 
       claim.directionQuestionnaire.defendantYourselfEvidence = {
@@ -151,6 +163,7 @@ describe('Hearing Requirements Section', () => {
       const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
 
       //Then
+      expect(summaryRows.summaryList.rows.length).toEqual(12);
       expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
       expect(summaryRows.summaryList.rows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE');
       expect(summaryRows.summaryList.rows[0].value.html).toEqual('COMMON.NO');
@@ -181,7 +194,7 @@ describe('Hearing Requirements Section', () => {
 
   describe('Small Claim', () => {
 
-    it('build hearing requirement for Small Claim.', () => {
+    it('should build hearing requirement for Small Claim.', () => {
       //Given
       claim.totalClaimAmount = 1000;
       claim.directionQuestionnaire = new DirectionQuestionnaire();

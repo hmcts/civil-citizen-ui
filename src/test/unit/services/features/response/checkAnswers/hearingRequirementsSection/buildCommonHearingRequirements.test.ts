@@ -35,6 +35,8 @@ import {Witnesses} from 'models/directionsQuestionnaire/witnesses/witnesses';
 import {OtherWitnesses} from 'models/directionsQuestionnaire/witnesses/otherWitnesses';
 import {UnavailableDatePeriod, UnavailableDateType} from 'common/models/directionsQuestionnaire/hearing/unavailableDates';
 import {SpecificCourtLocation} from 'common/models/directionsQuestionnaire/hearing/specificCourtLocation';
+import {getClaimWithDirectionQuestionnaireAndHearing} from './buildFastTrackHearingRequirements.test';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/i18n');
@@ -523,12 +525,13 @@ describe('Common Hearing Requirements Section', () => {
   });
 
   describe('should return summary rows relative to unavailable date for hearing', () => {
-    const claim = new Claim();
-    claim.directionQuestionnaire = new DirectionQuestionnaire();
-    claim.directionQuestionnaire.hearing = new Hearing();
+    let claim: Claim;
+    beforeEach(() => {
+      claim = getClaimWithDirectionQuestionnaireAndHearing();
+    });
     it('should display NO if defendant select NO on question expert or witnesses cannot go to hearing ', () => {
       //WHEN
-      claim.directionQuestionnaire.hearing.cantAttendHearingInNext12Months = {option: YesNo.NO};
+      claim.directionQuestionnaire.hearing.cantAttendHearingInNext12Months = new GenericYesNo(YesNo.NO);
       const mockSummarySection = summaryRow(
         'PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE',
         'COMMON.NO',
@@ -543,9 +546,6 @@ describe('Common Hearing Requirements Section', () => {
 
     it('should display YES if defendant select YES on question expert or witnesses cannot go to hearing ', () => {
       //WHEN
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.hearing = new Hearing();
       claim.directionQuestionnaire.hearing.cantAttendHearingInNext12Months = {option: YesNo.YES};
       const mockSummarySection = summaryRow(
         'PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE',
@@ -561,7 +561,7 @@ describe('Common Hearing Requirements Section', () => {
 
     it('should  display unavailable single date if defendant YES ', () => {
       //WHEN
-      claim.directionQuestionnaire.hearing.cantAttendHearingInNext12Months = {option: YesNo.YES};
+      claim.directionQuestionnaire.hearing.cantAttendHearingInNext12Months = <GenericYesNo>{option: YesNo.YES};
       const date = new Date('2023-12-30T00:00:00.000Z');
       const singleDateMockData: UnavailableDatePeriod = {
         from: date,
@@ -620,7 +620,10 @@ describe('Common Hearing Requirements Section', () => {
     });
 
     describe('Should display if the number of dates unavailable was greater than 30 ', () => {
-      claim.directionQuestionnaire.hearing.cantAttendHearingInNext12Months = {option: YesNo.YES};
+      let claim: Claim;
+      beforeEach(() => {
+        claim = getClaimWithDirectionQuestionnaireAndHearing();
+      });
       const dateOne = new Date('2023-10-10T00:00:00.000Z');
       const dateTwo = new Date('2023-12-14T00:00:00.000Z');
       const longerPeriod4DaysOverlapMockData: UnavailableDatePeriod = {
@@ -673,14 +676,15 @@ describe('Common Hearing Requirements Section', () => {
   });
 
   describe('should return summary rows relative to court location defendant choice on the day of hearing', () => {
-    const claim = new Claim();
-    claim.directionQuestionnaire = new DirectionQuestionnaire();
-    claim.directionQuestionnaire.hearing = new Hearing();
+    let claim: Claim;
+    beforeEach(() => {
+      claim = getClaimWithDirectionQuestionnaireAndHearing();
+    });
     const courtLocations = [{
       code: '28b3277a-92f8-4e6b-a8b5-78c5de5c9a7a',
       label: "Barnet Civil and Family Centre - ST MARY'S COURT, REGENTS PARK ROAD - N3 1BQ",
     }];
-    it('should display NO if the defendant does not have a preference for  hearing court location', function () {
+    it('should display NO if the defendant does not have a preference for hearing court location', function () {
       //GIVEN
       claim.directionQuestionnaire.hearing.specificCourtLocation = new SpecificCourtLocation(YesNo.NO, courtLocations[0].label, 'reason');
       const mockSummarySection: SummaryRow = summaryRow(
@@ -694,7 +698,7 @@ describe('Common Hearing Requirements Section', () => {
       //THEN
       expect(specificCourtLocation).toStrictEqual(mockSummarySection);
     });
-    it('should display YES if the defendant does have a preference for  hearing court location', function () {
+    it('should display YES if the defendant does have a preference for hearing court location', function () {
       //GIVEN
       claim.directionQuestionnaire.hearing.specificCourtLocation = new SpecificCourtLocation(YesNo.YES, courtLocations[0].label, 'reason');
       //WHEN
@@ -708,6 +712,21 @@ describe('Common Hearing Requirements Section', () => {
       //THEN
       expect(specificCourtLocation).toStrictEqual(mockSummarySection);
     });
+    it('should display selection as empty if there is no hearing object', function () {
+      //GIVEN
+      const claimWithNoHearing = new Claim();
+      //WHEN
+      const specificCourtLocation: SummaryRow = getSpecificCourtLocation(claimWithNoHearing, claimId, lng);
+      const mockSummarySection: SummaryRow = summaryRow(
+        'PAGES.SPECIFIC_COURT.TITLE',
+        '',
+        '/case/validClaimId/directions-questionnaire/court-location',
+        changeButton,
+      );
+      //THEN
+      expect(specificCourtLocation).toStrictEqual(mockSummarySection);
+    });
+
     it('should display court location if the defendant does have a preference for  hearing', function () {
       //GIVEN
       claim.directionQuestionnaire.hearing.specificCourtLocation = new SpecificCourtLocation(YesNo.YES, courtLocations[0].label, 'reason');

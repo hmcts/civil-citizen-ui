@@ -23,7 +23,7 @@ import {SummarySection} from 'models/summaryList/summarySections';
 import {
   getEmptyStringIfUndefined,
   getFormattedAnswerForYesNoNotReceived,
-} from 'common/utils/checkYourAnswer/getEmptyStringIfUndefined';
+} from 'common/utils/checkYourAnswer/formatAnswer';
 import {
   getListOfUnavailableDate,
   getNumberOfUnavailableDays,
