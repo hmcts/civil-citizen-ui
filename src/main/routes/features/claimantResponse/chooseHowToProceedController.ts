@@ -18,7 +18,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 chooseHowToProceedController.get(CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimantResponse = await getClaimantResponse(req.params.id);
-    renderView(new GenericForm(new ChooseHowToProceed(claimantResponse.chooseHowToProceed.option)), res);
+    renderView(new GenericForm(new ChooseHowToProceed(claimantResponse.chooseHowToProceed?.option)), res);
   } catch (error) {
     next(error);
   }
