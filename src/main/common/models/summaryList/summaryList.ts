@@ -52,6 +52,8 @@ export function summaryRow(key?: string, value?: string, href?: string, hrefText
   }
   return row;
 }
+
 export interface TableCell {
-  text: string
+  text?: string
+  html?: string
 }

@@ -2,8 +2,7 @@ import {t} from 'i18next';
 import {Claim} from '../../../../../common/models/claim';
 import {ClaimSummarySection, ClaimSummaryType} from '../../../../../common/form/models/claimSummarySection';
 import {CITIZEN_CONTACT_THEM_URL} from '../../../../../routes/urls';
-import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
-import {addDaysToDate} from '../../../../../common/utils/dateUtils';
+import {addDaysToDate, formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 
 export function getFAPAyImmediatelyStatus(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantName = claim.getClaimantFullName();
@@ -87,7 +86,7 @@ export function getfinancialDetails(claimId: string, claim: Claim, lang: string)
   }
 }
 
-export function getNextStepsTitle(lang: string):ClaimSummarySection[] {
+export function getNextStepsTitle(lang: string): ClaimSummarySection[] {
   return [
     {
       type: ClaimSummaryType.TITLE,
@@ -98,7 +97,7 @@ export function getNextStepsTitle(lang: string):ClaimSummarySection[] {
   ];
 }
 
-export function getFAPayImmediatelyNextSteps(claimId: string, claim: Claim, lang: string): ClaimSummarySection[]{
+export function getFAPayImmediatelyNextSteps(claimId: string, claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantName = claim.getClaimantFullName();
   const immediatePaymentDate = addDaysToDate(claim?.respondent1ResponseDate, 5);
   const immediatePaymentDeadline = formatDateToFullDate(immediatePaymentDate, lang);
@@ -106,7 +105,10 @@ export function getFAPayImmediatelyNextSteps(claimId: string, claim: Claim, lang
     {
       type: ClaimSummaryType.HTML,
       data: {
-        html: `<p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.MAKE_SURE_THAT', {lng: lang})}:</p><ul class="govuk-list govuk-list--bullet"><li>${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.THEY_CAN_REQUEST_CCJ', {paymentDate: immediatePaymentDeadline, lng: lang})}</li><li>${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.BANK_TRANSFERS_CLEAR_IN_THEIR_ACC', {lng: lang})}</li><li>${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.RECEIPT_FOR_PAYMENTS', {lng: lang})}</li><li>${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.THEY_CALL_COURT_FOR_YOU_PAID', {lng: lang})}</li></ul>`,
+        html: `<p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.MAKE_SURE_THAT', {lng: lang})}:</p><ul class="govuk-list govuk-list--bullet"><li>${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.THEY_CAN_REQUEST_CCJ', {
+          paymentDate: immediatePaymentDeadline,
+          lng: lang,
+        })}</li><li>${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.BANK_TRANSFERS_CLEAR_IN_THEIR_ACC', {lng: lang})}</li><li>${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.RECEIPT_FOR_PAYMENTS', {lng: lang})}</li><li>${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.THEY_CALL_COURT_FOR_YOU_PAID', {lng: lang})}</li></ul>`,
       },
     },
     {
@@ -134,7 +136,11 @@ export function getFAPayByDateNextSteps(claimId: string, claim: Claim, lang: str
     {
       type: ClaimSummaryType.HTML,
       data: {
-        html: `<p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.YOU_SHOULD', {lng: lang})}</p><ul class="govuk-list govuk-list--bullet"><li>${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_BY_DATE.PAY_CLAIMANT_BY_DATE', {claimantName, paymentDate, lng: lang})}</li><li>${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_BY_DATE.BANK_TRANSFERS_CLEAR_IN_THEIR_ACC', {lng: lang})}</li><li><a href=${contactThemUrl}>${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_BY_DATE.CONTACT_THEM', {lng: lang})}</a>${t('PAGES.SUBMIT_CONFIRMATION.IF_NEED_PAYMENT_DETAILS', {lng: lang})}</li><li>${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.RECEIPT_FOR_PAYMENTS', {lng: lang})}</li></ul>`,
+        html: `<p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.YOU_SHOULD', {lng: lang})}</p><ul class="govuk-list govuk-list--bullet"><li>${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_BY_DATE.PAY_CLAIMANT_BY_DATE', {
+          claimantName,
+          paymentDate,
+          lng: lang,
+        })}</li><li>${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_BY_DATE.BANK_TRANSFERS_CLEAR_IN_THEIR_ACC', {lng: lang})}</li><li><a href=${contactThemUrl}>${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_BY_DATE.CONTACT_THEM', {lng: lang})}</a>${t('PAGES.SUBMIT_CONFIRMATION.IF_NEED_PAYMENT_DETAILS', {lng: lang})}</li><li>${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.RECEIPT_FOR_PAYMENTS', {lng: lang})}</li></ul>`,
       },
     },
   ];
@@ -143,7 +149,7 @@ export function getFAPayByDateNextSteps(claimId: string, claim: Claim, lang: str
   return [...acceptedOfferContent, ...notPayImmediatelyContent, ...rejectedOfferContent];
 }
 
-export function getFAPayByInstallmentsNextSteps(claimId: string, claim: Claim, lang:string): ClaimSummarySection[] {
+export function getFAPayByInstallmentsNextSteps(claimId: string, claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantName = claim.getClaimantFullName();
   const contactThemUrl = CITIZEN_CONTACT_THEM_URL.replace(':id', claimId);
   const acceptedOfferContent = [
@@ -165,13 +171,16 @@ export function getFAPayByInstallmentsNextSteps(claimId: string, claim: Claim, l
   return [...acceptedOfferContent, ...notPayImmediatelyContent, ...rejectedOfferContent];
 }
 
-export function getNotPayImmediatelyContent(claim: Claim, lang: string): ClaimSummarySection[]{
+export function getNotPayImmediatelyContent(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantName = claim.getClaimantFullName();
   return [
     {
       type: ClaimSummaryType.HTML,
       data: {
-        html: `<p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.YOU_WONT_PAY_IMMEDIATELY', {claimantName, lng: lang})}:</p><ul class="govuk-list govuk-list--bullet"><li>${t('PAGES.SUBMIT_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT', {lng: lang})}</li><li>${t('PAGES.SUBMIT_CONFIRMATION.REQUEST_CCJ_AGAINST_YOU', {lng: lang})}</li></ul>`,
+        html: `<p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.YOU_WONT_PAY_IMMEDIATELY', {
+          claimantName,
+          lng: lang,
+        })}:</p><ul class="govuk-list govuk-list--bullet"><li>${t('PAGES.SUBMIT_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT', {lng: lang})}</li><li>${t('PAGES.SUBMIT_CONFIRMATION.REQUEST_CCJ_AGAINST_YOU', {lng: lang})}</li></ul>`,
         variables: {claimantName: claimantName},
       },
     },
@@ -196,3 +205,68 @@ export function getFARejectOfferContent(claim: Claim, lang: string): ClaimSummar
     },
   ];
 }
+
+export function getSummaryTestContent(claim: Claim, lang: string): ClaimSummarySection[] {
+
+  return [
+    {
+      type: ClaimSummaryType.SUMMARY,
+      data: {
+        text: 'TaskList Test',
+        rows: [
+          {
+            key: {
+              text: 'Text1 test' + '<br>' + 'Second line',
+            },
+            value: {
+              html: 'html1 test',
+            },
+          }, {
+            key: {
+              text: 'Text2 test' + 'second line very very very large',
+            },
+            value: {
+              html: 'html2 test',
+            },
+          }, {
+            key: {
+              text: 'Text2 test' + '                second line' + ' very' + ' very very large',
+            },
+            value: {
+              html: 'html3 test' + '<br>' + 'Second line',
+            },
+          }, {
+            key: {
+              text: 'Text4 test' + 'second line',
+            },
+            value: {
+              html: 'html4 test',
+            },
+          }],
+      },
+    },
+  ];
+}
+
+export function getTableTestContent(claim: Claim, lang: string): ClaimSummarySection[] {
+  return [
+    {
+      type: ClaimSummaryType.TABLE,
+      data: {
+        head: [
+          {
+            text: 'column 1',
+          },
+          {
+            text: 'Column 2',
+          },
+        ],
+        tableRows: [
+          [{html: 'Text1 test' + '<br>' + 'Second line'}, {text: 'Description'}],
+          [{html: 'Text2 test' + '<br>' + 'Date line'}, {text: 'Description2'}],
+        ]
+      }
+    }
+  ];
+}
+

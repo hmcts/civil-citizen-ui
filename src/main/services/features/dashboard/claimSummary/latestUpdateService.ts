@@ -1,8 +1,6 @@
 import {ClaimSummaryContent} from 'form/models/claimSummarySection';
 import {Claim} from 'models/claim';
-import {
-  buildResponseToClaimSection,
-} from './latestUpdate/latestUpdateContentBuilder';
+import {buildResponseToClaimSection} from './latestUpdate/latestUpdateContentBuilder';
 
 export const getLatestUpdateContent = (claimId: string, claim: Claim): ClaimSummaryContent[] => {
   const responseToClaimSection = buildResponseToClaimSection(claim, claimId);

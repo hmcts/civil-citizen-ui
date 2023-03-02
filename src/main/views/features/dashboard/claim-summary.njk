@@ -20,6 +20,17 @@
         {% endfor %}
       {% endset %}
 
+            {% set testListSummary %}
+                {{ claimSummaryContent({
+                  contentSections: testSummary
+                }) }}
+            {% endset %}
+             {% set testTableList %}
+                {{ claimSummaryContent({
+                   contentSections: testTable
+                }) }}
+             {% endset %}
+
       {% set documents %}
       <h1 class="govuk-heading-m govuk-!-margin-0">{{ t('PAGES.CLAIM_SUMMARY.CLAIM_DOCUMENTS') }}</h1>
 
@@ -42,14 +53,24 @@
             classes: 'tab-section',
             items: [
               {
-                label: t('PAGES.CLAIM_SUMMARY.LATEST_UPDATE'),
+                label: "Updates",
                 id: "latest-update",
                 panel: {html: latestUpdate}
               },
               {
-                label: t('PAGES.CLAIM_SUMMARY.DOCUMENTS'),
+                label: "Notices and orders",
+                id: "notices",
+                panel: {html: testTableList}
+              },
+              {
+                label: "Documents",
                 id: "documents",
                 panel: {html: documents}
+              },
+              {
+                label: "Bundles",
+                id: "bundles",
+                panel: {html: testListSummary}
               }
             ]
           }) }}
