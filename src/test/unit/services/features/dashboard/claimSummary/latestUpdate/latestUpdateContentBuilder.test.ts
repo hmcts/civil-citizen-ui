@@ -208,7 +208,7 @@ describe('Latest Update Content Builder', () => {
         // Then
         expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
       });
-      it(' Full Admit Pay Instalments + Defendant ISNOT Company or ORG ', () => {
+      it('Full Admit Pay Instalments + Defendant ISNOT Company or ORG ', () => {
         // Given
         const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.FULL_ADMISSION, PaymentOptionType.INSTALMENTS);
         const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
@@ -334,7 +334,7 @@ describe('Latest Update Content Builder', () => {
         // Then
         expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
       });
-      it(' Part Admit Pay Instalments - Defendant IS NOT Org or Company', () => {
+      it('Part Admit Pay Instalments - Defendant IS NOT Org or Company', () => {
         // Given
         const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
         const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
