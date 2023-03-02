@@ -33,8 +33,8 @@ dependencies:
     condition: camunda-bpm.enabled
   - name: elasticsearch
     version: 7.17.3
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
-    condition: elastic.enabled
+    repository: 'https://helm.elastic.co'
+    condition: ccd.elastic.enabled
   - name: logstash
     version: 2.4.1
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
