@@ -8,10 +8,10 @@ export const toCCDPaymentOption = (claim: Claim) : CCDPaymentOption => {
 
   switch(claim.respondent1?.responseType) {
     case ResponseType.PART_ADMISSION:
-      paymentOptionType = claim.partialAdmission.paymentIntention.paymentOption;
+      paymentOptionType = claim.partialAdmission?.paymentIntention?.paymentOption;
       break;
     case ResponseType.FULL_ADMISSION:
-      paymentOptionType = claim.fullAdmission.paymentIntention.paymentOption;
+      paymentOptionType = claim.fullAdmission?.paymentIntention?.paymentOption;
       break;
     default:
       paymentOptionType = undefined;

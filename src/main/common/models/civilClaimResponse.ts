@@ -84,6 +84,7 @@ export interface CCDClaim extends ClaimUpdate {
   specResponseTimelineOfEvents?: CCDTimeLineOfEvents[],
   detailsOfClaim?: string,
   speclistYourEvidenceList?: CCDEvidence[],
+  specResponselistYourEvidenceList?: CCDEvidence[],
   interestClaimOptions?: CCDInterestType,
   breakDownInterestTotal?: number,
   breakDownInterestDescription?: string,

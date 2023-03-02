@@ -2,8 +2,9 @@ import {EvidenceItem} from 'models/evidence/evidenceItem';
 import {EvidenceType} from 'models/evidence/evidenceType';
 import {CCDEvidence, CCDEvidenceType} from 'models/ccdResponse/ccdEvidence';
 import {Evidence} from 'form/models/evidence/evidence';
+import {DefendantEvidence} from "models/evidence/evidence";
 
-export const toCCDEvidence = (evidence: Evidence): CCDEvidence[] => {
+export const toCCDEvidence = (evidence: Evidence | DefendantEvidence): CCDEvidence[] => {
   if (!evidence?.evidenceItem) return undefined;
   const ccdEvidences: CCDEvidence[] = [];
   evidence.evidenceItem.forEach((row, index) => {

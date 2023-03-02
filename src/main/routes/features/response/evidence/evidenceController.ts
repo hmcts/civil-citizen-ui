@@ -2,7 +2,7 @@ import {NextFunction, Request, Response, Router} from 'express';
 import {Evidence, INIT_ROW_COUNT} from '../../../../common/form/models/evidence/evidence';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {
-  getEvidence,
+  // getEvidence,
   saveEvidence,
 } from '../../../../services/features/response/evidence/evidenceService';
 import {
@@ -11,6 +11,8 @@ import {
 } from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import * as utilEvidence from '../../../../common/form/models/evidence/transformAndRemoveEmptyValues';
+import {getDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
+// import {Claim} from 'models/claim';
 
 const evidenceViewPath = 'features/response/evidence/evidences';
 const evidenceController = Router();
@@ -21,9 +23,10 @@ function renderView(form: GenericForm<Evidence>, res: Response): void {
 
 evidenceController.get(CITIZEN_EVIDENCE_URL, async (req, res, next: NextFunction) => {
   try {
-    const form: Evidence = await getEvidence(req.params.id);
-    if (form.evidenceItem.length < INIT_ROW_COUNT) {
-      form.setRows(INIT_ROW_COUNT - form.evidenceItem.length);
+    const claim = await getDraftClaimFromStore(req.params.id);
+    const form: Evidence = new Evidence();
+    if(claim?.case_data?.specResponselistYourEvidenceList?.evidenceItem?.length < INIT_ROW_COUNT) {
+      form.setRows(INIT_ROW_COUNT - claim?.case_data?.specResponselistYourEvidenceList?.evidenceItem?.length);
     }
     renderView(new GenericForm<Evidence>(form), res);
   } catch (error) {
