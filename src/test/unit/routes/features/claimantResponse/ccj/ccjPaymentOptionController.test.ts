@@ -4,9 +4,9 @@ import request from 'supertest';
 import {t} from 'i18next';
 import {app} from '../../../../../../main/app';
 import {
-  CCJ_PAY_BY_SET_DATE_URL,
+  CCJ_DEPENDANT_PAYMENT_DATE_URL,
   CCJ_PAYMENT_OPTIONS_URL,
-  CCJ_REPAYMENT_PLAN_URL,
+  CCJ_REPAYMENT_PLAN_INSTALMENTS_URL,
   CCJ_CHECK_AND_SEND_URL,
 } from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
@@ -70,7 +70,7 @@ describe('CCJ - Payment option', () => {
         .send('type=INSTALMENTS')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CCJ_REPAYMENT_PLAN_URL);
+          expect(res.header.location).toEqual(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL);
         });
     });
     it('should redirect to by set date page when by set date option is selected', async () => {
@@ -79,7 +79,7 @@ describe('CCJ - Payment option', () => {
         .send('type=BY_SET_DATE')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CCJ_PAY_BY_SET_DATE_URL);
+          expect(res.header.location).toEqual(CCJ_DEPENDANT_PAYMENT_DATE_URL);
         });
     });
     it('should return 500 status when there is error', async () => {

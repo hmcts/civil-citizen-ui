@@ -5,8 +5,6 @@ import {
   RESPONSE_TASK_LIST_URL,
 } from '../../../../urls';
 import {PaymentOption} from '../../../../../common/form/models/admission/paymentOption/paymentOption';
-import {PaymentOptionType}
-  from '../../../../../common/form/models/admission/paymentOption/paymentOptionType';
 import {
   getPaymentOptionForm,
   savePaymentOptionData,
@@ -22,7 +20,7 @@ const partialAdmissionPaymentOptionController = Router();
 const citizenPaymentOptionViewPath = 'features/response/admission/payment-option';
 
 function renderView(form: GenericForm<PaymentOption>, res: Response, amount: number) {
-  res.render(citizenPaymentOptionViewPath, {form, PaymentOptionType, amount});
+  res.render(citizenPaymentOptionViewPath, {form, amount});
 }
 
 function redirectToNextPage(claimId: string, form: PaymentOption, res: Response) {

@@ -380,7 +380,8 @@
       "TITLE": "Payment Options"
     },
     "CCJ_DEFENDANT_PAYMENT_DATE": {
-      "TITLE": "When do you want the defendant to pay?"
+      "TITLE": "When do you want the defendant to pay?",
+      "INSET": "The court will review your suggestion and may reject it if it's sooner than the defendant can afford to repay the money."
     },
     "CCJ_REPAYMENT_PLAN_INSTALMENTS": {
       "EACH_INSTALMENT_AMOUNT": "Amount for each instalment",
@@ -389,7 +390,7 @@
       "INSTALMENT_AMOUNT_HELP": "For example £10",
       "PAGE_TITLE": "Suggest instalments for the defendant",
       "TITLE": "Suggest instalments for the defendant",
-      "TOTAL_CLAIM_AMOUNT": "Total claim amount is £{{ totalClaimAmount }}"
+      "TOTAL_CLAIM_AMOUNT": "Total claim amount is £{{ totalClaimAmount }}."
     },
     "CHECK_YOUR_ANSWER": {
       "BANK_BALANCE": "Balance",
@@ -425,9 +426,10 @@
       "DETAILS_TITLE_CLAIMANT": "Your details (claimant)",
       "DISABILITY_ARE_YOU_DISABLED": "Are you disabled?",
       "DO_YOU_HAVE_OTHER_WITNESSES": "Do you have other witnesses?",
+      "DO_YOU_WANT_PHONE_OR_VIDEO_HEARING": "Do you want to ask for a telephone or video hearing?",
       "DOB": "Date of birth",
       "EMAIL": "Email",
-      "EMAIL_ADDRESS": "Email address",
+      "EMAIL_ADDRESS": "Email address (optional)",
       "EMPLOYMENT_DETAILS": "Employment details",
       "EMPLOYMENT_DO_YOU_HAVE_A_JOB": "Do you have a job?",
       "EMPLOYMENT_WHO_EMPLOYS_YOU": "Who employs you?",
@@ -443,6 +445,7 @@
       "EVIDENCE_STATEMENT_OF_ACCOUNT": "Statements of account",
       "EVIDENCE_TITLE": "Your evidence (optional)",
       "EXPENSES_REGULAR": "Regular expenses",
+      "EXPERT_WITNESSES_SUPPORT": "Do you, your experts or witnesses need support to attend a hearing?",
       "FREE_TELEPHONE_CONTACT_NAME": "Contact name",
       "FREE_TELEPHONE_CONTACT_NUMBER": "Contact number",
       "FREE_TELEPHONE_MEDIATION": "Will you try free mediation",
@@ -462,6 +465,7 @@
       "INCOME_JOB_SEEKER_ALLOWANCE": "Jobseeker's Allowance (income based)",
       "INCOME_JOB_SEEKER_ALLOWANCE_CONTRIBUTION": "Jobseeker's Allowance (contribution based)",
       "INCOME_WORKING_TAX_CREDIT": "Working Tax Credit",
+      "NEED_HEARING_SUPPORT" : "Do you, your experts or witnesses need support to attend a hearing",
       "OWE_MONEY": "Do you owe the money claimed?",
       "PAYMENT_TITLE": "Payment",
       "PAYMENT_FREQUENCY": "Frequency of payments",
@@ -470,7 +474,7 @@
       "PARTNER_DOES_RECEIVE_A_PENSION": "Does your partner receive a pension?",
       "PARTNER_IS_DISABLED": "Is your partner disabled?",
       "PARTNER_IS_SEVERELY_DISABLED": "Is your partner severely disabled?",
-      "PHONE_NUMBER": "Phone number",
+      "PHONE_NUMBER": "Phone number (optional)",
       "PRIORITY_DEBTS_YOU_ARE_BEHIND_ON": "Debts you are behind on",
       "PRIORITY_DEBT_TYPE": "Debt type",
       "PRIORITY_DEBT_ARREARS_REPAYMENT": "Arrears repayment",
@@ -503,6 +507,7 @@
       "TAX_PAYMENT_AMOUNT_YOU_OWE": "Amount you owe?",
       "TAX_PAYMENT_REASON": "Reason",
       "TELL_US_WHY": "Tell us what they witnessed",
+      "TELL_US_WHY_DO_YOU_WANT_PHONE_VIDEO_HEARING": "Tell us why you want a telephone or video hearing",
       "THEIR_DETAILS_TITLE": "Their details",
       "THEIR_DETAILS_TITLE_DEFENDANT": "Their details (defendant)",
       "TITLE": "Check your answers",
@@ -512,6 +517,9 @@
       "TRIED_TO_SETTLE" : "Have you tried to settle this claim before going to court?",
       "VULNERABILITY_INFO": "Tell us who is vulnerable and what support they need",
       "VULNERABILITY_QUESTION": "Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider?",
+      "WHAT_LANGUAGE_SPEAK": "What languages will you, your experts and your witnesses speak at the hearing?",
+      "WHAT_LANGUAGE_DOCUMENTS": "What languages will the documents be provided in?",
+      "WELSH_LANGUAGE": "Welsh language",
       "WHEN_PAY": "When will you pay",
       "WHEN_PAY_TITLE": "When you'll pay",
       "WHERE_DO_YOU_LIVE": "Where do you live?",
@@ -788,6 +796,10 @@
         "NOT_PROCEED_WITH_CLAIM": "You didn't proceed with the claim",
         "CLAIM_ENDED": "The claim has now ended. We've emailed {{ defendantName }} to tell them."
       }
+    },
+    "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
+      "PAGE_TITLE": "How do you want the defandant to pay?",
+      "TITLE": "How do you want the defandant to pay?"
     },
     "CLAIMANT_RESPONSE_PROCEED": {
       "PAGE_TITLE": "Do you want to proceed with claim?",
@@ -1380,8 +1392,7 @@
       "PAGE_TITLE": "Free telephone mediation",
       "REACHING_SETTLEMENT": "Reaching a settlement"
     },
-    "FULL_ADMIT_SET_DATE_PAYMENT": {
-      "DEFENDANT_OFFERED_TO_PAY": "{{ defendantName }} has offered to pay you in full by {{ proposedSetDate }}",
+    "ACCEPT_REPAYMENT_PLAN": {
       "DO_YOU_ACCEPT": "Do you accept the repayment plan?",
       "NO_OPTION": "No - I'll suggest my own",
       "PAGE_TITLE": "How they want to pay",
@@ -1710,9 +1721,13 @@
     },
     "REPAYMENT_PLAN": {
       "ADMIT_YOU_OWE": "You admit you owe £{{amount}}.",
+      "DATE_FOR_FIRST_INSTALMENT": "Date for first instalment",
       "FIRST_PAYMENT": "When will you make the first payment?",
       "FOR_EXAMPLE": "For example, ",
+      "FOR_EXAMPLE_NEXT_MONTH": "This must be no sooner than ",
       "HOW_OFTEN_PAYMENTS": "How often you'll make these payments",
+      "HOW_OFTEN_RECEIVE_PAYMENTS": "How often do you want to receive these payments",
+      "HOW_OFTEN_RECEIVE_PAYMENTS_HINT": "The court will accept the defendant's payment frequency. We'll only consider your preferred frequency if a different plan is set by a judge later.",
       "LENGTH": "Length of repayment plan",
       "PAGE_TITLE": "Your repayment plan",
       "REGULAR_PAYMENTS": "Regular payments of",
