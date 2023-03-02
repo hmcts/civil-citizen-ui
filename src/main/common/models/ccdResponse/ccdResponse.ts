@@ -8,7 +8,7 @@ import {CCDRespondentLiPResponse} from 'models/ccdResponse/ccdRespondentLiPRespo
 import {RespondToClaim} from 'models/ccdResponse/ccdAdmitPartRoute';
 import {TimelineUploadTypeSpec} from 'models/ccdResponse/ccdHowToAddTimeline';
 import {CCDTimeLineOfEvents} from 'models/ccdResponse/ccdTimeLineOfEvents';
-import {CCDEvidence} from "models/ccdResponse/ccdEvidence";
+import {CCDEvidence} from 'models/ccdResponse/ccdEvidence';
 
 export interface CCDResponse extends ClaimUpdate {
   respondent1ClaimResponseTypeForSpec: string;
