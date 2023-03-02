@@ -22,7 +22,7 @@ const logger = Logger.getLogger('claimantResponseService');
 const getClaimantResponse = async (claimId: string): Promise<ClaimantResponse> => {
   try {
     const claim = await getCaseDataFromStore(claimId);
-    return (claim.claimantResponse) ? claim.claimantResponse : new ClaimantResponse();
+    return claim.claimantResponse ?? new ClaimantResponse();
   } catch (error) {
     logger.error(error);
     throw error;
@@ -49,6 +49,15 @@ const saveClaimantResponse = async (claimId: string, value: any, claimantRespons
       }
 
       claim.claimantResponse = claimantResponse;
+    }
+    const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
+    if (claimantResponse.suggestedPaymentIntention) {
+      if (claimantResponse.isClaimantSuggestedPayImmediately || claimantResponse.isClaimantSuggestedPayByDate) {
+        delete claim.claimantResponse.suggestedPaymentIntention?.repaymentPlan;
+      }
+      if (claimantResponse.isClaimantSuggestedPayImmediately || claimantResponse.isClaimantSuggestedPayByInstalments) {
+        delete claim.claimantResponse?.suggestedPaymentIntention?.paymentDate;
+      }
     }
     await saveDraftClaim(claimId, claim);
   } catch (error) {

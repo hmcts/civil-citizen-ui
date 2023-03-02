@@ -4,17 +4,17 @@ import {app} from '../../../../../main/app';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import request from 'supertest';
 import {
-  CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAYMENT_URL,
+  CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from '../../../../../main/routes/urls';
 import {t} from 'i18next';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {YesNo} from '../../../../../main/common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 
-describe('Full Admit How They Want To Pay Page', () => {
+describe('Accept Repayment Plan Page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   beforeAll(() => {
@@ -24,20 +24,20 @@ describe('Full Admit How They Want To Pay Page', () => {
   });
 
   describe('on GET', () => {
-    it('should return on full admit how they want to pay page successfully', async () => {
+    it('should return accept repayment plan page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .get(CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAYMENT_URL)
+        .get(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.FULL_ADMIT_SET_DATE_PAYMENT.TITLE'));
+          expect(res.text).toContain(t('PAGES.ACCEPT_REPAYMENT_PLAN.TITLE'));
         });
     });
 
     it('should return 500 status code when error occurs', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .get(CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAYMENT_URL)
+        .get(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -49,7 +49,7 @@ describe('Full Admit How They Want To Pay Page', () => {
     it('should redirect to task list when yes is selected', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .post(CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAYMENT_URL)
+        .post(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL)
         .send({
           option: YesNo.YES,
         })
@@ -62,7 +62,7 @@ describe('Full Admit How They Want To Pay Page', () => {
     it('should redirect to task list when no is selected', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .post(CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAYMENT_URL)
+        .post(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL)
         .send({
           option: YesNo.NO,
         })
@@ -75,13 +75,23 @@ describe('Full Admit How They Want To Pay Page', () => {
     it('should return error when no option selected', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .post(CLAIMANT_RESPONSE_FULL_ADMIT_SET_DATE_PAYMENT_URL)
+        .post(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL)
         .send({
           option: undefined,
         })
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.VALID_YES_NO_SELECTION'));
+        });
+    });
+    it('should return 500 status code when error occurs', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app)
+        .post(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL)
+        .send({option: YesNo.NO})
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

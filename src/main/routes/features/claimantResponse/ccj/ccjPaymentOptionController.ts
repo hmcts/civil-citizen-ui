@@ -1,15 +1,14 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {
   CCJ_PAYMENT_OPTIONS_URL,
-  CCJ_PAY_BY_SET_DATE_URL,
-  CCJ_REPAYMENT_PLAN_URL,
+  CCJ_DEPENDANT_PAYMENT_DATE_URL,
+  CCJ_REPAYMENT_PLAN_INSTALMENTS_URL,
   CCJ_CHECK_AND_SEND_URL,
 } from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {getClaimantResponse, saveClaimantResponse} from '../../../../../main/services/features/claimantResponse/claimantResponseService';
 import {CcjPaymentOption} from 'form/models/claimantResponse/ccj/ccjPaymentOption';
-import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 
 const ccjPaymentOptionController = Router();
 const ccjPaymentOptionViewPath = 'features/claimantResponse/ccj/ccj-payment-options';
@@ -17,7 +16,7 @@ const crPropertyName = 'ccjPaymentOption';
 const crParentName = 'ccjRequest';
 
 function renderView(form: GenericForm<CcjPaymentOption>, res: Response): void {
-  res.render(ccjPaymentOptionViewPath, { form, PaymentOptionType});
+  res.render(ccjPaymentOptionViewPath, {form});
 }
 
 ccjPaymentOptionController.get(CCJ_PAYMENT_OPTIONS_URL, async (req, res, next: NextFunction) => {
@@ -39,9 +38,9 @@ ccjPaymentOptionController.post(CCJ_PAYMENT_OPTIONS_URL, async (req: Request, re
     } else {
       await saveClaimantResponse(claimId, ccjPaymentOption.model, crPropertyName, crParentName);
       if (ccjPaymentOption.model.isCcjPaymentOptionBySetDate()) {
-        res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_PAY_BY_SET_DATE_URL));
+        res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_DEPENDANT_PAYMENT_DATE_URL));
       } else if (ccjPaymentOption.model.isCcjPaymentOptionInstalments()) {
-        res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_REPAYMENT_PLAN_URL));
+        res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_REPAYMENT_PLAN_INSTALMENTS_URL));
       } else {
         res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_CHECK_AND_SEND_URL));
       }
