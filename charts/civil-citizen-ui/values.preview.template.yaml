@@ -174,6 +174,14 @@ ccd:
     elastic:
       enabled: true
 
+  elasticsearch:
+    nameOverride: ${SERVICE_NAME}-es
+    clusterName: "es"
+    replicas: 1
+
+  logstash:
+    image:
+    tag: ccd-cmc-logstash-latest
 
   global:
     ccdApiGatewayIngress: http://${SERVICE_NAME}-ccd-api-gw
@@ -251,12 +259,3 @@ camunda-bpm:
       CAMUNDA_BPM_DATABASE_SCHEMA_UPDATE: true
       S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
       CAMUNDA_DB_CONN_OPTIONS: ""
-
-elasticsearch:
-  nameOverride: ${SERVICE_NAME}-es
-  clusterName: "es"
-  replicas: 1
-
-logstash:
-  image:
-  tag: ccd-cmc-logstash-latest
