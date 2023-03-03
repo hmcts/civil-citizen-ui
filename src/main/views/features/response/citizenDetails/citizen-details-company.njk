@@ -44,6 +44,7 @@
             {% endif %}
             <p class="govuk-label govuk-!-margin-bottom-5">{{ party.model.partyName }}</p>
             <input type="hidden" id="partyName" name="partyName" value="{{ party.model.partyName }}"/>
+            --------------------HELLO-COMPANY-----------------
             {{ govukInput({
               label: { text: t('COMMON.OPTIONAL_CONTACT_PERSON') },
               classes: "govuk-input--width-20",
@@ -55,13 +56,13 @@
             {{ addressForm(
               t,
               party = party,
-              addressType = 'primary',
+              addressType = 'primaryAddress',
               addressTitle = addressTitle
             ) }}
             {% set correspondenceAddressHtml %}
             {{ postcodeLookupAndAddressForm(t, {
                 party:party,
-                addressType:'correspondence',
+                addressType:'correspondenceAddress',
                 addressTitle:addressTitle
               }) }}
             {% endset -%}

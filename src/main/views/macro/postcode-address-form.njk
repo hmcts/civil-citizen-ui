@@ -1,7 +1,7 @@
 {% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "./address.njk" import addressForm %}
 {% macro postcodeLookupAndAddressForm(t,params) %}
-  {% if params.addressType === 'primary' and params.party.model.primaryAddress %}
+  {% if params.addressType === 'primaryAddress' and params.party.model.primaryAddress %}
     {% if params.party.errorFor('primaryAddress') %}
       {% set govukVisuallyHidden = '' %}
       {% set govukVisuallyHiddenForAnchor = 'govuk-visually-hidden' %}
@@ -10,7 +10,7 @@
       {% set govukVisuallyHiddenForAnchor = '' %}
     {% endif %}
   {% endif %}
-  {% if params.addressType === 'correspondence' and params.party.model.correspondenceAddress %}
+  {% if params.addressType === 'correspondenceAddress' and params.party.model.correspondenceAddress %}
     {% if params.party.errorFor('correspondenceAddress') %}
       {% set govukVisuallyHidden = '' %}
       {% set govukVisuallyHiddenForAnchor = 'govuk-visually-hidden' %}
@@ -53,7 +53,7 @@
       </a>
     </div>
     <div>
-      {% if params.addressType === 'primary' %}
+      {% if params.addressType === 'primaryAddress' %}
         <div class="{{ govukVisuallyHidden }} address-form">
           {{ addressForm(
             t,

@@ -62,14 +62,14 @@
             {{ addressForm(
               t,
               party = party,
-              addressType = 'primary',
+              addressType = 'primaryAddress',
               addressTitle = addressTitle
             ) }}
             {% set correspondenceAddressHtml %}
             <p class="govuk-label govuk-!-margin-bottom-5">{{ t('PAGES.CITIZEN_DETAILS.ALL_CORRESPONDENCE') + t('PAGES.CITIZEN_DETAILS.ADDRESS_FOR_SERVICE') }}</p>
             {{ postcodeLookupAndAddressForm(t, {
               party: party,
-              addressType:'correspondence',
+              addressType:'correspondenceAddress',
               addressTitle:addressTitle
             }) }}
             {% endset -%}
