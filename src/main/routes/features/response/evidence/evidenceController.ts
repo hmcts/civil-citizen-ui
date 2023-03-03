@@ -2,7 +2,6 @@ import {NextFunction, Request, Response, Router} from 'express';
 import {Evidence, INIT_ROW_COUNT} from '../../../../common/form/models/evidence/evidence';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {
-  // getEvidence,
   saveEvidence,
 } from '../../../../services/features/response/evidence/evidenceService';
 import {
@@ -12,7 +11,6 @@ import {
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import * as utilEvidence from '../../../../common/form/models/evidence/transformAndRemoveEmptyValues';
 import {getDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
-// import {Claim} from 'models/claim';
 
 const evidenceViewPath = 'features/response/evidence/evidences';
 const evidenceController = Router();

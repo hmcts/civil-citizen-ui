@@ -1,6 +1,6 @@
 import {PartialAdmission} from 'models/partialAdmission';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
-import {toCCDAdmitPartRoute} from 'services/translation/response/convertToCCDAdmitPartRoute';
+import {toCCDRespondToClaim} from 'services/translation/response/convertToCCDRespondToClaim';
 import {PaymentMethod} from 'models/ccdResponse/ccdAdmitPartRoute';
 
 describe('convert respond to Claim', () => {
@@ -52,7 +52,7 @@ describe('convert respond to Claim', () => {
       },
     };
 
-    const converted = toCCDAdmitPartRoute(respondToClaim);
+    const converted = toCCDRespondToClaim(respondToClaim);
     expect(respondToClaim.howMuchHaveYouPaid.amount).toEqual(converted.howMuchWasPaid);
     expect(respondToClaim.howMuchHaveYouPaid.date).toEqual(converted.whenWasThisAmountPaid);
     expect(PaymentMethod.OTHER).toEqual(converted.howWasThisAmountPaid);

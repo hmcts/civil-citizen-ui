@@ -17,6 +17,6 @@ export enum YesNoUpperCamelCase {
   YES = 'Yes',
   NO = 'No',
 }
-export const toUpperYesOrNo = (yesNo: GenericYesNo): YesNoUpperCamelCase => {
+export const toUpperCaseGenericYesNo = (yesNo: GenericYesNo): YesNoUpperCamelCase => {
   return yesNo?.option.toLowerCase() ===  'yes' ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO;
 };

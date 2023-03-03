@@ -1,7 +1,7 @@
 import {PartialAdmission} from 'models/partialAdmission';
 import {PaymentMethod, RespondToClaim} from 'models/ccdResponse/ccdAdmitPartRoute';
 
-export const toCCDAdmitPartRoute = (partialAdmission: PartialAdmission): RespondToClaim => {
+export const toCCDRespondToClaim = (partialAdmission: PartialAdmission): RespondToClaim => {
   return {
     howMuchWasPaid: partialAdmission?.howMuchHaveYouPaid?.amount,
     whenWasThisAmountPaid: partialAdmission?.howMuchHaveYouPaid?.date,

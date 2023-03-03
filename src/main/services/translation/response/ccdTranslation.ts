@@ -1,13 +1,13 @@
 import {Claim} from 'models/claim';
 import {CCDResponse} from 'models/ccdResponse/ccdResponse';
-import {toUpperYesOrNo, YesNoUpperCamelCase} from 'form/models/yesNo';
+import {toUpperCaseGenericYesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 import {toAgreedMediation} from './convertToCCDAgreedMediation';
 import {toCCDParty} from './convertToCCDParty';
 import {toCCDRepaymentPlan} from './convertToCCDRepaymentPlan';
 import {toCCDPaymentOption} from './convertToCCDPaymentOption';
 import {toCCDPayBySetDate} from './convertToCCDPayBySetDate';
 import {toCCDRespondentLiPResponse} from 'services/translation/response/convertToCCDRespondentLiPResponse';
-import {toCCDAdmitPartRoute} from 'services/translation/response/convertToCCDAdmitPartRoute';
+import {toCCDRespondToClaim} from 'services/translation/response/convertToCCDRespondToClaim';
 import {TimelineUploadTypeSpec} from 'models/ccdResponse/ccdHowToAddTimeline';
 import {toCCDResponseTimelineOfEvents} from 'services/translation/response/convertToCCDResponseTimelineOfEvents';
 import {toCCDEvidence} from 'services/translation/response/convertToCCDEvidence';
@@ -23,8 +23,8 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     totalClaimAmount: claim.totalClaimAmount,
     respondent1: toCCDParty(claim.respondent1),
     respondent1LiPResponse: toCCDRespondentLiPResponse(claim),
-    respondToAdmittedClaim: toCCDAdmitPartRoute(claim.partialAdmission),
-    specDefenceAdmittedRequired: toUpperYesOrNo(claim.partialAdmission?.alreadyPaid),
+    respondToAdmittedClaim: toCCDRespondToClaim(claim.partialAdmission),
+    specDefenceAdmittedRequired: toUpperCaseGenericYesNo(claim.partialAdmission?.alreadyPaid),
     respondToAdmittedClaimOwingAmount: claim.partialAdmission.howMuchDoYouOwe?.amount?.toString(),
     detailsOfWhyDoesYouDisputeTheClaim: claim.partialAdmission?.whyDoYouDisagree?.text,
     specClaimResponseTimelineList: TimelineUploadTypeSpec.MANUAL, // sets to manual cause CUI do not have other option
