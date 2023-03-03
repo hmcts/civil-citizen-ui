@@ -182,10 +182,9 @@ ccd:
   logstash:
     image:
       tag: ccd-cmc-logstash-latest
-    resources:
-      requests:
-        cpu: "100m"
-        memory: "1536Mi"
+    requests:
+      cpu: "100m"
+      memory: "1536Mi"
 
   global:
     ccdApiGatewayIngress: http://${SERVICE_NAME}-ccd-api-gw
