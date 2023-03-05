@@ -171,20 +171,6 @@ ccd:
       enabled: false
     userProfile:
       enabled: false
-    elastic:
-      enabled: true
-
-  elasticsearch:
-    nameOverride: ${SERVICE_NAME}-es
-    clusterName: "es"
-    replicas: 1
-
-  logstash:
-    image:
-      tag: ccd-cmc-logstash-latest
-    requests:
-      cpu: "100m"
-      memory: "1536Mi"
 
   global:
     ccdApiGatewayIngress: http://${SERVICE_NAME}-ccd-api-gw
