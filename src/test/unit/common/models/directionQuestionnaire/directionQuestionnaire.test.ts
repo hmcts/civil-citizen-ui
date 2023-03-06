@@ -1,10 +1,13 @@
 import {YesNo} from 'common/form/models/yesNo';
 import {DirectionQuestionnaire} from 'common/models/directionsQuestionnaire/directionQuestionnaire';
 import {ExpertReportDetails} from 'common/models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails';
+import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
 import {Hearing} from 'common/models/directionsQuestionnaire/hearing/hearing';
 import {UnavailableDateType} from 'common/models/directionsQuestionnaire/hearing/unavailableDates';
 import {WhyUnavailableForHearing} from 'common/models/directionsQuestionnaire/hearing/whyUnavailableForHearing';
 import {LanguageOptions} from 'common/models/directionsQuestionnaire/languageOptions';
+import {VulnerabilityQuestions} from 'common/models/directionsQuestionnaire/vulnerabilityQuestions/vulnerabilityQuestions';
+import {Witnesses} from 'common/models/directionsQuestionnaire/witnesses/witnesses';
 import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
 import {WelshLanguageRequirements} from 'models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
 
@@ -16,8 +19,14 @@ describe('DirectionQuestionnaire', () => {
   };
 
   describe('get expertReportDetailsAvailable', () => {
-    const dq = new DirectionQuestionnaire();
+    let dq: DirectionQuestionnaire;
+    beforeEach(() => {
+      dq = new DirectionQuestionnaire();
+      dq.experts = new Experts();
+    });
     it('should return false with empty DQ object', () => {
+      //Given
+      dq.experts = undefined;
       //When
       const result = dq.expertReportDetailsAvailable;
       //Then
@@ -25,8 +34,6 @@ describe('DirectionQuestionnaire', () => {
     });
 
     it('should return false with empty experts object', () => {
-      //Given
-      dq.experts = {};
       //When
       const result = dq.expertReportDetailsAvailable;
       //Then
@@ -53,7 +60,7 @@ describe('DirectionQuestionnaire', () => {
 
     it('should return true with option Yes', () => {
       //Given
-      dq.experts.expertReportDetails.option = YesNo.YES;
+      dq.experts.expertReportDetails = {option: YesNo.YES};
       //When
       const result = dq.expertReportDetailsAvailable;
       //Then
@@ -178,6 +185,10 @@ describe('DirectionQuestionnaire', () => {
 
     it('should return true with all required information provided', () => {
       //Given
+      dq.hearing = new Hearing();
+      dq.witnesses = new Witnesses();
+      dq.vulnerabilityQuestions = new VulnerabilityQuestions();
+      dq.welshLanguageRequirements = new WelshLanguageRequirements();
       dq.defendantYourselfEvidence = {option: YesNo.NO};
       dq.hearing.whyUnavailableForHearing = {reason: 'test'};
       dq.witnesses.otherWitnesses = {option: YesNo.NO};
