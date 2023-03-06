@@ -236,26 +236,14 @@ function getFaPayImmediately(claim: Claim) {
 
 function generateLastUpdateResponseSections(claimResponseStatus: ClaimResponseStatus, claim: Claim) {
   const claimResponsesStatus = {
-    [ClaimResponseStatus.FA_PAY_IMMEDIATELY]: (claim: Claim): ClaimSummarySection[] => {
-      return getFaPayImmediately(claim);
-    },
-    [ClaimResponseStatus.FA_PAY_BY_DATE]: (claim: Claim): ClaimSummarySection[] => {
-      return getFaPayByDate(claim);
-    },
-    [ClaimResponseStatus.FA_PAY_INSTALLMENTS]: (claim: Claim): ClaimSummarySection[] => {
-      return getFaPayInstallments(claim);
-    },
-    [ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY]: (claim: Claim): ClaimSummarySection[] => {
-      return getPaPaidPayImmediately(claim);
-    },
-    [ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE]: (claim: Claim): ClaimSummarySection[] => {
-      return getPaPaidPayByDate(claim);
-    },
-    [ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS]: (claim: Claim): ClaimSummarySection[] => {
-      return getPaPaidPayInstallmentItems(claim);
-    },
+    [ClaimResponseStatus.FA_PAY_IMMEDIATELY]: getFaPayImmediately(claim),
+    [ClaimResponseStatus.FA_PAY_BY_DATE]: getFaPayByDate(claim),
+    [ClaimResponseStatus.FA_PAY_INSTALLMENTS]: getFaPayInstallments(claim),
+    [ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY]: getPaPaidPayImmediately(claim),
+    [ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE]: getPaPaidPayByDate(claim),
+    [ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS]: getPaPaidPayInstallmentItems(claim),
   };
-  return claimResponsesStatus[claimResponseStatus as keyof typeof claimResponsesStatus]?.(claim);
+  return claimResponsesStatus[claimResponseStatus as keyof typeof claimResponsesStatus];
 }
 
 export const buildResponseToClaimSection = (claim: Claim, claimId: string): ClaimSummarySection[] => {
