@@ -187,4 +187,5 @@ describe('Unemployemt Details', () => {
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_TYPE);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].value.html).toBe('Other details here');
   });
+  //Adding this for test coverage for PR
 });
