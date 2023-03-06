@@ -4,6 +4,7 @@ import {CCDRepaymentPlan} from './ccdRepaymentPlan';
 import {CCDPayBySetDate} from './ccdPayBySetDate';
 import {YesNoUpperCamelCase} from '../../../common/form/models/yesNo';
 import {CCDParty} from './ccdParty';
+import {CCDRespondToClaim} from "models/ccdResponse/ccdRespondToClaim";
 
 export interface CCDResponse extends ClaimUpdate {
   respondent1ClaimResponseTypeForSpec: string;
@@ -14,4 +15,7 @@ export interface CCDResponse extends ClaimUpdate {
   specAoSApplicantCorrespondenceAddressRequired?: YesNoUpperCamelCase;
   totalClaimAmount: number,
   respondent1: CCDParty;
+  defenceRouteRequired: string;
+  respondToClaim: CCDRespondToClaim;
+  detailsOfWhyDoesYouDisputeTheClaim: string;
 }
