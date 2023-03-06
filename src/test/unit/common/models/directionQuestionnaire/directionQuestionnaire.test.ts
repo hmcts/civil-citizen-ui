@@ -1,12 +1,19 @@
 import {YesNo} from 'common/form/models/yesNo';
 import {DirectionQuestionnaire} from 'common/models/directionsQuestionnaire/directionQuestionnaire';
 import {ExpertReportDetails} from 'common/models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails';
+import {Hearing} from 'common/models/directionsQuestionnaire/hearing/hearing';
+import {UnavailableDateType} from 'common/models/directionsQuestionnaire/hearing/unavailableDates';
 import {WhyUnavailableForHearing} from 'common/models/directionsQuestionnaire/hearing/whyUnavailableForHearing';
 import {LanguageOptions} from 'common/models/directionsQuestionnaire/languageOptions';
 import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
 import {WelshLanguageRequirements} from 'models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
 
 describe('DirectionQuestionnaire', () => {
+  const moreThan30DaysPeriodMockDates = {
+    type: UnavailableDateType.LONGER_PERIOD,
+    from: new Date('2023-05-05T00:00:00.000Z'),
+    until: new Date('2023-12-30T00:00:00.000Z'),
+  };
 
   describe('get expertReportDetailsAvailable', () => {
     const dq = new DirectionQuestionnaire();
@@ -55,24 +62,68 @@ describe('DirectionQuestionnaire', () => {
   });
 
   describe('get isUnavailabilityDatesCompleted', () => {
-    const dq = new DirectionQuestionnaire();
+    let dq: DirectionQuestionnaire;
+    beforeEach(() => {
+      dq = new DirectionQuestionnaire();
+      dq.hearing = new Hearing();
+    });
     it('should return false with empty DQ object', () => {
+      //Given
+      dq.hearing = undefined;
       //When
       const result = dq.isUnavailabilityDatesCompleted;
       //Then
       expect(result).toBe(false);
     });
     it('should return false with empty hearing object', () => {
-      //Given
-      dq.hearing = {};
       //When
       const result = dq.isUnavailabilityDatesCompleted;
       //Then
       expect(result).toBe(false);
     });
-    it('should return true with WhyUnavailableForHearing object', () => {
+    it('should return true if no option is selected for unavailability', () => {
       //Given
-      dq.hearing.whyUnavailableForHearing = new WhyUnavailableForHearing();
+      dq.hearing.cantAttendHearingInNext12Months = {option: YesNo.NO};
+      //When
+      const result = dq.isUnavailabilityDatesCompleted;
+      //Then
+      expect(result).toBe(true);
+    });
+
+    it('should return true if yes option is selected and unavailability is less than 30 days', () => {
+      //Given
+      dq.hearing.cantAttendHearingInNext12Months = {option: YesNo.YES};
+      dq.hearing.unavailableDatesForHearing = {
+        items: [
+          {
+            type: UnavailableDateType.SINGLE_DATE,
+            from: new Date('2023-12-30T00:00:00.000Z'),
+          },
+        ]};
+      //When
+      const result = dq.isUnavailabilityDatesCompleted;
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return false if yes option is selectedbut no reason provided when unavailability is more than 30 days', () => {
+      //Given
+      dq.hearing.cantAttendHearingInNext12Months = {option: YesNo.YES};
+      dq.hearing.unavailableDatesForHearing = {
+        items: [moreThan30DaysPeriodMockDates],
+      };
+      //When
+      const result = dq.isUnavailabilityDatesCompleted;
+      //Then
+      expect(result).toBe(false);
+    });
+
+    it('should return true with with reason when unavailability is more than 30 days', () => {
+      //Given
+      dq.hearing.cantAttendHearingInNext12Months = {option: YesNo.YES};
+      dq.hearing.unavailableDatesForHearing = {
+        items: [moreThan30DaysPeriodMockDates],
+      };
+      dq.hearing.whyUnavailableForHearing = new WhyUnavailableForHearing('test');
       //When
       const result = dq.isUnavailabilityDatesCompleted;
       //Then
@@ -135,6 +186,11 @@ describe('DirectionQuestionnaire', () => {
       dq.hearing.supportRequiredList = {option: YesNo.NO};
       dq.hearing.specificCourtLocation = <SpecificCourtLocation>{option: YesNo.NO};
       dq.welshLanguageRequirements.language = {speakLanguage: LanguageOptions.WELSH, documentsLanguage: LanguageOptions.ENGLISH};
+      dq.hearing.cantAttendHearingInNext12Months = {option: YesNo.YES};
+      dq.hearing.unavailableDatesForHearing = {
+        items: [moreThan30DaysPeriodMockDates],
+      };
+      dq.hearing.whyUnavailableForHearing = new WhyUnavailableForHearing('test');
       //When
       const result = dq.isCommonDQJourneyCompleted;
       //Then
