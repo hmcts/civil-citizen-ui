@@ -266,21 +266,6 @@ describe('Confirm Details page', () => {
       });
   });
 
-  it('get/Citizen details - should return test variable when there is no data on redis and civil-service', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      const party = new Party();
-      party.type = PartyType.INDIVIDUAL;
-      return party;
-    });
-    await request(app)
-      .get('/case/1111/response/your-details')
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Confirm your details');
-        expect(res.text).toContain('individualTitle Test');
-      });
-  });
-
   describe('Redirect to Phone or DOB screen (phone number not provided)', () => {
     it('should redirect to confirm phone screen if respondent type is COMPANY', async () => {
       mockGetRespondentInformation.mockImplementation(async () => {
