@@ -61,3 +61,4 @@ describe('translate YesNo to CCD model From Generic YesNo', () => {
     expect(yesNoResponseCCD).toBe(undefined);
   });
 });
+
