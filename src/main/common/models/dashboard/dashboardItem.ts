@@ -56,9 +56,9 @@ export class DashboardDefendantItem extends DashboardItem {
   getStatus(lang: string) {
     const paramNumberOfDays = {key: 'numberOfDays', value: this.numberOfDays};
     const paramNumberOfDaysOverdue = {key: 'numberOfDays', value: this.numberOfDaysOverdue};
-    const paramPaymentDate = {key: 'paymentDate', value:  formatDateToFullDate(this.paymentDate)};
+    const paramPaymentDate = {key: 'paymentDate', value:  formatDateToFullDate(this.paymentDate, lang)};
     const paramClaimantName = {key: 'claimantName', value: this.claimantName};
-    const paramResponseDeadline = {key: 'responseDeadline', value:  formatDateToFullDate(this.responseDeadline)};
+    const paramResponseDeadline = {key: 'responseDeadline', value:  formatDateToFullDate(this.responseDeadline, lang)};
 
     const dashboardStatus: DashboardDefendantStatus =  {
       NO_STATUS: {translationKey:''},
