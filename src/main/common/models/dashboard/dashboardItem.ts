@@ -1,6 +1,5 @@
 import config from 'config';
-
-import {formatDate} from 'modules/nunjucks/filters/dateFilter';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
 
@@ -57,9 +56,9 @@ export class DashboardDefendantItem extends DashboardItem {
   getStatus(lang: string) {
     const paramNumberOfDays = {key: 'numberOfDays', value: this.numberOfDays};
     const paramNumberOfDaysOverdue = {key: 'numberOfDays', value: this.numberOfDaysOverdue};
-    const paramPaymentDate = {key: 'paymentDate', value: formatDate(this.paymentDate?.toString())};
+    const paramPaymentDate = {key: 'paymentDate', value:  formatDateToFullDate(this.paymentDate)};
     const paramClaimantName = {key: 'claimantName', value: this.claimantName};
-    const paramResponseDeadline = {key: 'responseDeadline', value: formatDate(this.responseDeadline?.toString())};
+    const paramResponseDeadline = {key: 'responseDeadline', value:  formatDateToFullDate(this.responseDeadline)};
 
     const dashboardStatus: DashboardDefendantStatus =  {
       NO_STATUS: {translationKey:''},
