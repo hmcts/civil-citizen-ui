@@ -97,6 +97,15 @@ describe('DirectionQuestionnaire', () => {
       expect(result).toBe(true);
     });
 
+    it('should return false if yes option is selected but no dates provided', () => {
+      //Given
+      dq.hearing.cantAttendHearingInNext12Months = {option: YesNo.YES};
+      //When
+      const result = dq.isUnavailabilityDatesCompleted;
+      //Then
+      expect(result).toBe(false);
+    });
+
     it('should return true if yes option is selected and unavailability is less than 30 days', () => {
       //Given
       dq.hearing.cantAttendHearingInNext12Months = {option: YesNo.YES};
@@ -112,7 +121,8 @@ describe('DirectionQuestionnaire', () => {
       //Then
       expect(result).toBe(true);
     });
-    it('should return false if yes option is selectedbut no reason provided when unavailability is more than 30 days', () => {
+
+    it('should return false if yes option is selected but no reason provided when unavailability is more than 30 days', () => {
       //Given
       dq.hearing.cantAttendHearingInNext12Months = {option: YesNo.YES};
       dq.hearing.unavailableDatesForHearing = {
