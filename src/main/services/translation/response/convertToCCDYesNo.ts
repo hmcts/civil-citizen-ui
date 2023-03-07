@@ -1,4 +1,3 @@
-
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 
