@@ -1,7 +1,7 @@
 import {YesNoUpperCamelCase} from '../../../common/form/models/yesNo';
 import {
   CCDFinancialDetailsLiP,
-} from 'models/ccdResponse/ccdFinancialDetailsLiP';
+} from '../../models/ccdResponse/ccdFinancialDetailsLiP';
 
 import {CCDMediation} from 'models/ccdResponse/ccdMediation';
 export interface CCDRespondentLiPResponse {
