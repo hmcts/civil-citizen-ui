@@ -1,7 +1,7 @@
 import {PartialAdmission} from 'models/partialAdmission';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {toCCDRespondToClaim} from 'services/translation/response/convertToCCDRespondToClaim';
-import {PaymentMethod} from 'models/ccdResponse/ccdAdmitPartRoute';
+import {PaymentMethod} from 'models/ccdResponse/ccdRespondToClaim';
 
 describe('convert respond to Claim', () => {
 

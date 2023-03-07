@@ -91,7 +91,7 @@ export class Claim {
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
     claim.claimDetails = toCUIClaimDetails(ccdClaim);
-    claim.evidence = toCUIEvidence(ccdClaim?.speclistYourEvidenceList);
+    claim.evidence = toCUIEvidence(ccdClaim?.specResponselistYourEvidenceList);
     claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
     claim.respondent1 = toCUIParty(ccdClaim?.respondent1);
     return claim;

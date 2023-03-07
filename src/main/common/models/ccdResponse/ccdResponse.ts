@@ -5,7 +5,7 @@ import {CCDPayBySetDate} from './ccdPayBySetDate';
 import {YesNoUpperCamelCase} from '../../../common/form/models/yesNo';
 import {CCDParty} from './ccdParty';
 import {CCDRespondentLiPResponse} from 'models/ccdResponse/ccdRespondentLiPResponse';
-import {RespondToClaim} from 'models/ccdResponse/ccdAdmitPartRoute';
+import {RespondToClaim} from 'models/ccdResponse/ccdRespondToClaim';
 import {TimelineUploadTypeSpec} from 'models/ccdResponse/ccdHowToAddTimeline';
 import {CCDTimeLineOfEvents} from 'models/ccdResponse/ccdTimeLineOfEvents';
 import {CCDEvidence} from 'models/ccdResponse/ccdEvidence';
@@ -19,7 +19,7 @@ export interface CCDResponse extends ClaimUpdate {
   specAoSApplicantCorrespondenceAddressRequired?: YesNoUpperCamelCase;
   totalClaimAmount: number;
   respondent1: CCDParty;
-  respondent1LiPResponse: CCDRespondentLiPResponse;
+  respondent1LiPResponse?: CCDRespondentLiPResponse;
   respondToAdmittedClaim: RespondToClaim;
   specDefenceAdmittedRequired: YesNoUpperCamelCase;
   respondToAdmittedClaimOwingAmount: string;
