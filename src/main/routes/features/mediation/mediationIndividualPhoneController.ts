@@ -1,21 +1,21 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {MediationIndividualPhoneNumber} from '../../../common/form/models/mediation/mediationIndividualPhoneNumber';
-import {GenericForm} from '../../../common/form/models/genericForm';
-import {Mediation} from '../../../common/models/mediation/mediation';
-import {Claim} from '../../../common/models/claim';
-import {YesNo} from '../../../common/form/models/yesNo';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
-import {getMediation, saveMediation} from '../../../services/features/response/mediation/mediationService';
+import {MediationIndividualPhoneNumber} from 'common/form/models/mediation/mediationIndividualPhoneNumber';
+import {GenericForm} from 'common/form/models/genericForm';
+import {Mediation} from 'common/models/mediation/mediation';
+import {Claim} from 'common/models/claim';
+import {YesNo} from 'common/form/models/yesNo';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getMediation, saveMediation} from 'services/features/response/mediation/mediationService';
 import {CAN_WE_USE_URL, CLAIMANT_RESPONSE_TASK_LIST_URL, RESPONSE_TASK_LIST_URL} from '../../urls';
-import {GenericYesNo} from '../../../common/form/models/genericYesNo';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
 
 const mediationIndividualPhoneViewPath = 'features/mediation/can-we-use';
 const mediationIndividualPhoneController = Router();
 
 async function renderView(form: GenericForm<MediationIndividualPhoneNumber>, res: Response, claimId: string): Promise<void> {
   const claim: Claim = await getCaseDataFromStore(claimId);
-  res.render(mediationIndividualPhoneViewPath, {form, respondentTelNumber: claim.respondent1?.partyPhone});
+  res.render(mediationIndividualPhoneViewPath, {form, respondentTelNumber: claim.respondent1?.partyPhone?.phone});
 }
 
 const getGenericForm = (mediationIndividualPhoneNumber: MediationIndividualPhoneNumber) => {
