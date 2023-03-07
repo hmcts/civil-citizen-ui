@@ -26,7 +26,7 @@ describe('getGiveUsDetailsHearingTask', () => {
   const claimId = '5129';
   const lang = 'en';
   const smallClaimsDQUrl = constructResponseUrlWithIdParams(claimId, DETERMINATION_WITHOUT_HEARING_URL);
-  const fastTrackClaimsDQUrl = constructResponseUrlWithIdParams(claimId, DQ_TRIED_TO_SETTLE_CLAIM_URL)
+  const fastTrackClaimsDQUrl = constructResponseUrlWithIdParams(claimId, DQ_TRIED_TO_SETTLE_CLAIM_URL);
 
   describe('Small Claims track DQ', () => {
     let claim: Claim;
