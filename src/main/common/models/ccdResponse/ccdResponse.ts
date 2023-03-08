@@ -4,7 +4,7 @@ import {CCDRepaymentPlan} from './ccdRepaymentPlan';
 import {CCDPayBySetDate} from './ccdPayBySetDate';
 import {YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {CCDParty} from './ccdParty';
-import {RespondToClaim} from 'models/ccdResponse/ccdRespondToClaim';
+import {CCDRespondToClaim} from 'models/ccdResponse/ccdRespondToClaim';
 import {TimelineUploadTypeSpec} from 'models/ccdResponse/ccdHowToAddTimeline';
 import {CCDTimeLineOfEvents} from 'models/ccdResponse/ccdTimeLineOfEvents';
 import {CCDEvidence} from 'models/ccdResponse/ccdEvidence';
@@ -31,7 +31,7 @@ export interface CCDResponse extends ClaimUpdate {
   totalClaimAmount?: number;
   respondent1?: CCDParty;
   respondent1LiPResponse?: CCDRespondentLiPResponse;
-  respondToAdmittedClaim?: RespondToClaim;
+  respondToAdmittedClaim?: CCDRespondToClaim;
   specDefenceAdmittedRequired?: YesNoUpperCamelCase;
   respondToAdmittedClaimOwingAmount?: string;
   detailsOfWhyDoesYouDisputeTheClaim?: string;

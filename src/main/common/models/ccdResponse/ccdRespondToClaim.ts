@@ -1,11 +1,11 @@
-export interface RespondToClaim {
+export interface CCDRespondToClaim {
   howMuchWasPaid?: number
   whenWasThisAmountPaid?: Date
-  howWasThisAmountPaid?: PaymentMethod
+  howWasThisAmountPaid?: CCDHowWasThisAmountPaid
   howWasThisAmountPaidOther?: string
 }
 
-export enum PaymentMethod {
+export enum CCDHowWasThisAmountPaid {
   CREDIT_CARD = 'Credit card',
   CHEQUE = 'Cheque',
   BACS = 'BACS',

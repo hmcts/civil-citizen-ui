@@ -110,7 +110,7 @@ describe('translate response to ccd version', () => {
     //Then
     expect(ccdResponse.specAoSApplicantCorrespondenceAddressRequired).toBe(YesNoUpperCamelCase.NO);
   });
-  it('should translate addres has not changed to ccd', ()=>{
+  it('should translate address has not changed to ccd', ()=>{
     //Given
     const claim = new Claim();
     claim.respondent1 = new Party();
