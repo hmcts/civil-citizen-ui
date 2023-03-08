@@ -2,13 +2,15 @@ import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftSto
 import {Claim} from 'common/models/claim';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
+import {Request} from 'express';
+import {getClaimById} from 'modules/utilityService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('selfEmployedAsService');
 
-const getBilingualLangPreference = async (claimId: string) => {
+const getBilingualLangPreference = async (claimId: string, req: Request) => {
   try {
-    const claim = await getCaseDataFromStore(claimId);
+    const claim = await getClaimById(claimId, req);
     if (claim.claimBilingualLanguagePreference) {
       return new GenericYesNo(claim.claimBilingualLanguagePreference);
     }
