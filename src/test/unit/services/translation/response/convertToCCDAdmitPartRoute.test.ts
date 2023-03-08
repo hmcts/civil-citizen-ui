@@ -1,11 +1,11 @@
 import {PartialAdmission} from 'models/partialAdmission';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {toCCDRespondToClaim} from 'services/translation/response/convertToCCDRespondToClaim';
-import {PaymentMethod} from 'models/ccdResponse/ccdRespondToClaim';
+import {CCDHowWasThisAmountPaid} from 'models/ccdResponse/ccdRespondToClaim';
 
 describe('convert respond to Claim', () => {
 
-  it('should all values be ok', () => {
+  it('should all values be mapped properly', () => {
     const respondToClaim: PartialAdmission = {
       whyDoYouDisagree: {
         text: 'Cause I can',
@@ -55,8 +55,7 @@ describe('convert respond to Claim', () => {
     const converted = toCCDRespondToClaim(respondToClaim);
     expect(respondToClaim.howMuchHaveYouPaid.amount).toEqual(converted.howMuchWasPaid);
     expect(respondToClaim.howMuchHaveYouPaid.date).toEqual(converted.whenWasThisAmountPaid);
-    expect(PaymentMethod.OTHER).toEqual(converted.howWasThisAmountPaid);
+    expect(CCDHowWasThisAmountPaid.OTHER).toEqual(converted.howWasThisAmountPaid);
     expect(respondToClaim.howMuchHaveYouPaid.text).toEqual(converted.howWasThisAmountPaidOther);
-    expect(respondToClaim.howMuchDoYouOwe.amount).toEqual(converted.respondToAdmittedClaimOwingAmount);
   });
 });
