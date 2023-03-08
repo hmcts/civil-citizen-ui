@@ -8,7 +8,9 @@ const logger = Logger.getLogger('selfEmployedAsService');
 const getEvidences = async (claimId: string) => {
   try {
     const claim = await getCaseDataFromStore(claimId);
-    return claim.evidence;
+    if(claim.evidence)
+      return claim.evidence;
+    return new Evidence();
   } catch (error) {
     logger.error(error);
     throw error;
