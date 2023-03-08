@@ -1,10 +1,10 @@
 import {NextFunction, Router} from 'express';
 import config from 'config';
-import {getLatestUpdateContent} from '../../../services/features/dashboard/claimSummary/latestUpdateService';
-import {getDocumentsContent} from '../../../services/features/dashboard/claimSummaryService';
-import {AppRequest} from '../../../common/models/AppRequest';
+import {getLatestUpdateContent} from 'services/features/dashboard/claimSummary/latestUpdateService';
+import {getDocumentsContent} from 'services/features/dashboard/claimSummaryService';
+import {AppRequest} from 'models/AppRequest';
 import {DEFENDANT_SUMMARY_URL} from '../../urls';
-import {CivilServiceClient} from '../../../app/client/civilServiceClient';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryController = Router();
