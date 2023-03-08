@@ -1,10 +1,11 @@
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import {getEvidence, saveEvidence} from '../../../../../../main/services/features/response/evidence/evidenceService';
+import {getEvidences, saveEvidence} from '../../../../../../main/services/features/response/evidence/evidenceService';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {EvidenceType} from '../../../../../../main/common/models/evidence/evidenceType';
 import {Evidence} from '../../../../../../main/common/form/models/evidence/evidence';
 import {EvidenceItem} from '../../../../../../main/common/form/models/evidence/evidenceItem';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {DefendantEvidence} from "models/evidence/evidence";
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -29,10 +30,13 @@ describe('Evidence Service', () => {
     it('should get empty form when no data exist', async () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
+        const claim = new Claim();
+        claim.evidence = <DefendantEvidence>{};
+        claim.evidence.evidenceItem = EVIDENCE_ITEM_EMPTY;
+        return claim;
       });
       //When
-      const form = await getEvidence('123');
+      const form = await getEvidences('123');
       //Then
       expect(form.comment).toBeUndefined();
       expect(form.evidenceItem).toEqual(EVIDENCE_ITEM_EMPTY);
@@ -49,7 +53,7 @@ describe('Evidence Service', () => {
         return claim;
       });
       //When
-      const form = await getEvidence('123');
+      const form = await getEvidences('123');
       //Then
       expect(form.comment).toEqual('');
       expect(form.evidenceItem).toEqual([]);
@@ -67,7 +71,7 @@ describe('Evidence Service', () => {
       return claim;
     });
     //When
-    const form = await getEvidence('123');
+    const form = await getEvidences('123');
 
     //Then
     expect(form.comment).toEqual(COMMENT);
@@ -80,7 +84,7 @@ describe('Evidence Service', () => {
       throw new Error(TestMessages.REDIS_FAILURE);
     });
     //Then
-    await expect(getEvidence('123')).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    await expect(getEvidences('123')).rejects.toThrow(TestMessages.REDIS_FAILURE);
   });
 
   describe('saveEvidence', () => {
