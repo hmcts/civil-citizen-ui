@@ -5,6 +5,59 @@ import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOpti
 import {CCDPaymentOption} from 'models/ccdResponse/ccdPaymentOption';
 
 describe('convert payment option', () => {
+  describe('UNDEFINED', () => {
+    it('IMMEDIATELY', () => {
+      // GIVEN
+      const claim: Claim = new Claim();
+      claim.respondent1 = {
+        responseType: undefined,
+      };
+      claim.partialAdmission = {
+        paymentIntention: {
+          paymentOption: PaymentOptionType.IMMEDIATELY,
+        },
+      };
+      // WHEN
+      const result = toCCDPaymentOption(claim);
+      // THEN
+      expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
+    });
+
+    it('INSTALMENTS', () => {
+      // GIVEN
+      const claim: Claim = new Claim();
+      claim.respondent1 = {
+        responseType: undefined,
+      };
+      claim.partialAdmission = {
+        paymentIntention: {
+          paymentOption: PaymentOptionType.INSTALMENTS,
+        },
+      };
+      // WHEN
+      const result = toCCDPaymentOption(claim);
+      // THEN
+      expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
+    });
+
+    it('BY_SET_DATE', () => {
+      // GIVEN
+      const claim: Claim = new Claim();
+      claim.respondent1 = {
+        responseType: undefined,
+      };
+      claim.partialAdmission = {
+        paymentIntention: {
+          paymentOption: PaymentOptionType.BY_SET_DATE,
+        },
+      };
+      // WHEN
+      const result = toCCDPaymentOption(claim);
+      // THEN
+      expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
+    });
+  });
+
   describe('PART ADMISSION', () => {
     it('return payment options IMMEDIATELY', () => {
       // GIVEN
