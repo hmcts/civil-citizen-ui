@@ -16,6 +16,7 @@ import {HowMuchDoYouOwe} from 'form/models/admission/partialAdmission/howMuchDoY
 import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 import {DefendantTimeline} from 'form/models/timeLineOfEvents/defendantTimeline';
 import {WhyDoYouDisagree} from 'form/models/admission/partialAdmission/whyDoYouDisagree';
+import {DefendantEvidence} from "models/evidence/evidence";
 
 describe('translate response to ccd version', () => {
   it('should translate payment option to ccd', () => {
@@ -394,5 +395,20 @@ describe('translate response to ccd version', () => {
     const ccdResponse = translateDraftResponseToCCD(claim, false);
     //Then
     expect(ccdResponse.detailsOfWhyDoesYouDisputeTheClaim).toEqual(reason);
+  });
+
+  it('should translate to respondResponseLip', ()=>{
+    //Given
+    const claim = new Claim();
+    claim.evidence = <DefendantEvidence>{};
+    claim.evidence.comment = 'evidence comment';
+    claim.partialAdmission = new PartialAdmission();
+    claim.partialAdmission.timeline = new DefendantTimeline();
+    claim.partialAdmission.timeline.comment = 'timeline comment';
+    //When
+    const ccdResponse = translateDraftResponseToCCD(claim, false);
+    //Then
+    expect(ccdResponse.respondent1LiPResponse.evidenceComment).toEqual(claim.evidence.comment);
+    expect(ccdResponse.respondent1LiPResponse.timelineComment).toEqual(claim.partialAdmission.timeline.comment);
   });
 });
