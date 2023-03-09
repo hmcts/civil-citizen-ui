@@ -1,4 +1,4 @@
-import {CCDRespondentLiPResponse} from '../../../common/models/ccdResponse/CCDRespondentLiPResponse';
+import {CCDRespondentLiPResponse} from '../../../common/models/ccdResponse/ccdRespondentLiPResponse';
 import {Claim} from '../../../common/models/claim';
 import {toUpperCaseGenericYesNo} from '../../../common/form/models/yesNo';
 import {toCCDMediation} from '../../../services/translation/response/convertToCCDMediation';
