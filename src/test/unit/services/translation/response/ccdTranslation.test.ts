@@ -15,6 +15,7 @@ import {CourtOrders} from 'form/models/statementOfMeans/courtOrders/courtOrders'
 import {HowMuchDoYouOwe} from 'form/models/admission/partialAdmission/howMuchDoYouOwe';
 import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 import {DefendantTimeline} from 'form/models/timeLineOfEvents/defendantTimeline';
+import {WhyDoYouDisagree} from 'form/models/admission/partialAdmission/whyDoYouDisagree';
 
 describe('translate response to ccd version', () => {
   it('should translate payment option to ccd', () => {
@@ -30,23 +31,64 @@ describe('translate response to ccd version', () => {
     //Then
     expect(ccdResponse.defenceAdmitPartPaymentTimeRouteRequired).toBe(CCDPaymentOption.BY_SET_DATE);
   });
-  it('should translate repayment plan to ccd', () => {
-    //Given
-    const claim = new Claim();
-    claim.partialAdmission = new PartialAdmission();
-    claim.partialAdmission.paymentIntention = new PaymentIntention();
-    claim.partialAdmission.paymentIntention.repaymentPlan = {
-      paymentAmount: 100,
-      firstRepaymentDate: new Date(),
-      repaymentFrequency: 'MONTH',
-    };
-    //When
-    const ccdResponse = translateDraftResponseToCCD(claim, false);
-    //Then
-    expect(ccdResponse.respondent1RepaymentPlan).not.toBeUndefined();
-    expect(ccdResponse.respondent1RepaymentPlan?.repaymentFrequency).toBe(CCDRepaymentPlanFrequency.ONCE_ONE_MONTH);
-    expect(ccdResponse.respondent1RepaymentPlan?.firstRepaymentDate).toBe(claim.partialAdmission.paymentIntention.repaymentPlan.firstRepaymentDate);
-    expect(ccdResponse.respondent1RepaymentPlan?.paymentAmount).toBe(claim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount);
+
+  describe('should translate repayment plan to ccd', () => {
+    it('frequency once one month', () => {
+      //Given
+      const claim = new Claim();
+      claim.partialAdmission = new PartialAdmission();
+      claim.partialAdmission.paymentIntention = new PaymentIntention();
+      claim.partialAdmission.paymentIntention.repaymentPlan = {
+        paymentAmount: 100,
+        firstRepaymentDate: new Date(),
+        repaymentFrequency: 'MONTH',
+      };
+      //When
+      const ccdResponse = translateDraftResponseToCCD(claim, false);
+      //Then
+      expect(ccdResponse.respondent1RepaymentPlan).not.toBeUndefined();
+      expect(ccdResponse.respondent1RepaymentPlan?.repaymentFrequency).toBe(CCDRepaymentPlanFrequency.ONCE_ONE_MONTH);
+      expect(ccdResponse.respondent1RepaymentPlan?.firstRepaymentDate).toBe(claim.partialAdmission.paymentIntention.repaymentPlan.firstRepaymentDate);
+      expect(ccdResponse.respondent1RepaymentPlan?.paymentAmount).toBe(claim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount);
+    });
+
+    it('frequency once four weeks', () => {
+      //Given
+      const claim = new Claim();
+      claim.partialAdmission = new PartialAdmission();
+      claim.partialAdmission.paymentIntention = new PaymentIntention();
+      claim.partialAdmission.paymentIntention.repaymentPlan = {
+        paymentAmount: 100,
+        firstRepaymentDate: new Date(),
+        repaymentFrequency: 'FOUR_WEEKS',
+      };
+      //When
+      const ccdResponse = translateDraftResponseToCCD(claim, false);
+      //Then
+      expect(ccdResponse.respondent1RepaymentPlan).not.toBeUndefined();
+      expect(ccdResponse.respondent1RepaymentPlan?.repaymentFrequency).toBe(CCDRepaymentPlanFrequency.ONCE_FOUR_WEEKS);
+      expect(ccdResponse.respondent1RepaymentPlan?.firstRepaymentDate).toBe(claim.partialAdmission.paymentIntention.repaymentPlan.firstRepaymentDate);
+      expect(ccdResponse.respondent1RepaymentPlan?.paymentAmount).toBe(claim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount);
+    });
+
+    it('frequency once two week', () => {
+      //Given
+      const claim = new Claim();
+      claim.partialAdmission = new PartialAdmission();
+      claim.partialAdmission.paymentIntention = new PaymentIntention();
+      claim.partialAdmission.paymentIntention.repaymentPlan = {
+        paymentAmount: 100,
+        firstRepaymentDate: new Date(),
+        repaymentFrequency: 'TWO_WEEKS',
+      };
+      //When
+      const ccdResponse = translateDraftResponseToCCD(claim, false);
+      //Then
+      expect(ccdResponse.respondent1RepaymentPlan).not.toBeUndefined();
+      expect(ccdResponse.respondent1RepaymentPlan?.repaymentFrequency).toBe(CCDRepaymentPlanFrequency.ONCE_TWO_WEEKS);
+      expect(ccdResponse.respondent1RepaymentPlan?.firstRepaymentDate).toBe(claim.partialAdmission.paymentIntention.repaymentPlan.firstRepaymentDate);
+      expect(ccdResponse.respondent1RepaymentPlan?.paymentAmount).toBe(claim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount);
+    });
   });
 
   it('should translate response type to CCD', () => {
@@ -269,19 +311,35 @@ describe('translate response to ccd version', () => {
     expect(ccdResponse.responseToClaimAdmitPartWhyNotPayLRspec).toBe(undefined);
   });
 
-  it('should translate spec defence admitted required', ()=>{
+  describe('should translate spec defence admitted required', ()=>{
     //Given
-    const claim = new Claim();
-    claim.statementOfMeans = new StatementOfMeans();
-    claim.statementOfMeans.explanation = undefined;
-    claim.partialAdmission = new PartialAdmission();
-    claim.partialAdmission.alreadyPaid = {};
-    claim.partialAdmission.alreadyPaid.messageName = 'Some messsage';
-    claim.partialAdmission.alreadyPaid.option = 'yes';
-    //When
-    const ccdResponse = translateDraftResponseToCCD(claim, false);
-    //Then
-    expect(ccdResponse.specDefenceAdmittedRequired).toBe(YesNoUpperCamelCase.YES);
+    it('should be yes', () => {
+      const claim = new Claim();
+      claim.statementOfMeans = new StatementOfMeans();
+      claim.statementOfMeans.explanation = undefined;
+      claim.partialAdmission = new PartialAdmission();
+      claim.partialAdmission.alreadyPaid = {};
+      claim.partialAdmission.alreadyPaid.messageName = 'Some message';
+      claim.partialAdmission.alreadyPaid.option = 'yes';
+      //When
+      const ccdResponse = translateDraftResponseToCCD(claim, false);
+      //Then
+      expect(ccdResponse.specDefenceAdmittedRequired).toBe(YesNoUpperCamelCase.YES);
+    });
+
+    it('should be no', () => {
+      const claim = new Claim();
+      claim.statementOfMeans = new StatementOfMeans();
+      claim.statementOfMeans.explanation = undefined;
+      claim.partialAdmission = new PartialAdmission();
+      claim.partialAdmission.alreadyPaid = {};
+      claim.partialAdmission.alreadyPaid.messageName = 'Some message';
+      claim.partialAdmission.alreadyPaid.option = 'no';
+      //When
+      const ccdResponse = translateDraftResponseToCCD(claim, false);
+      //Then
+      expect(ccdResponse.specDefenceAdmittedRequired).toBe(YesNoUpperCamelCase.NO);
+    });
   });
 
   it('should translate to respond to admitted claim amount', ()=>{
@@ -317,7 +375,24 @@ describe('translate response to ccd version', () => {
     const ccdResponse = translateDraftResponseToCCD(claim, false);
     //Then
     expect(ccdResponse.specResponseTimelineOfEvents).not.toBeUndefined();
+    expect(ccdResponse.specResponseTimelineOfEvents.length).toBeGreaterThan(0);
     expect(ccdResponse.specResponseTimelineOfEvents[0].value.timelineDescription).toEqual('description');
     expect(ccdResponse.specResponseTimelineOfEvents[0].value.timelineDate).toEqual('2022-09-12');
+  });
+
+  it('should translate details of why does you dispute the claim', ()=>{
+    //Given
+    const reason = 'here is the reason';
+    const claim = new Claim();
+    claim.statementOfMeans = new StatementOfMeans();
+    claim.statementOfMeans.explanation = undefined;
+    claim.partialAdmission = new PartialAdmission();
+    claim.partialAdmission.whyDoYouDisagree = <WhyDoYouDisagree>{
+      text: reason,
+    };
+    //When
+    const ccdResponse = translateDraftResponseToCCD(claim, false);
+    //Then
+    expect(ccdResponse.detailsOfWhyDoesYouDisputeTheClaim).toEqual(reason);
   });
 });
