@@ -1,5 +1,10 @@
-import {toCCDYesNo} from 'services/translation/response/convertToCCDYesNo';
+import {
+  toCCDYesNo,
+  toCCDYesNoFromBoolean,
+  toCCDYesNoFromGenericYesNo,
+} from 'services/translation/response/convertToCCDYesNo';
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
+import {GenericYesNo} from 'form/models/genericYesNo';
 
 describe('translate YesNo to CCD model', () => {
 
@@ -12,4 +17,48 @@ describe('translate YesNo to CCD model', () => {
     const yesNoResponseCCD = toCCDYesNo(YesNo.NO);
     expect(yesNoResponseCCD).toBe(YesNoUpperCamelCase.NO);
   });
+
+  it('should return undefined', () => {
+    const yesNoResponseCCD = toCCDYesNo(undefined);
+    expect(yesNoResponseCCD).toBe(undefined);
+  });
 });
+
+describe('translate YesNo to CCD model From Boolean', () => {
+
+  it('should return Yes', () => {
+    const yesNoResponseCCD = toCCDYesNoFromBoolean(true);
+    expect(yesNoResponseCCD).toBe(YesNoUpperCamelCase.YES);
+  });
+
+  it('should return No', () => {
+    const yesNoResponseCCD = toCCDYesNoFromBoolean(false);
+    expect(yesNoResponseCCD).toBe(YesNoUpperCamelCase.NO);
+  });
+
+  it('should return undefined', () => {
+    const yesNoResponseCCD = toCCDYesNoFromBoolean(undefined);
+    expect(yesNoResponseCCD).toBe(undefined);
+  });
+});
+
+describe('translate YesNo to CCD model From Generic YesNo', () => {
+
+  it('should return Yes', () => {
+    const genericYes = new GenericYesNo(YesNo.YES);
+    const yesNoResponseCCD = toCCDYesNoFromGenericYesNo(genericYes);
+    expect(yesNoResponseCCD).toBe(YesNoUpperCamelCase.YES);
+  });
+
+  it('should return No', () => {
+    const genericNo = new GenericYesNo(YesNo.NO);
+    const yesNoResponseCCD = toCCDYesNoFromGenericYesNo(genericNo);
+    expect(yesNoResponseCCD).toBe(YesNoUpperCamelCase.NO);
+  });
+
+  it('should return undefined', () => {
+    const yesNoResponseCCD = toCCDYesNoFromGenericYesNo(undefined);
+    expect(yesNoResponseCCD).toBe(undefined);
+  });
+});
+
