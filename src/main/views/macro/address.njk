@@ -12,7 +12,7 @@
     {% set addresHasErrors = party.hasFieldError('correspondenceAddress') %}
   {% endif %}
   {% set govukFormGroupError = 'govuk-form-group govuk-form-group--error' if addresHasErrors else '' %}
-  <p class={{ "govuk-fieldset__legend--m" if addressType == 'primary' else "govuk-visually-hidden" }}>
+  <p class={{ "govuk-fieldset__legend--m" if addressType == 'primaryAddress' else "govuk-visually-hidden" }}>
     {{ addressTitle }}
   </p>
   {% if addressType == 'primaryAddress' and addressTitle.length %}
