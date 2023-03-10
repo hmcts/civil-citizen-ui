@@ -40,9 +40,9 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     specAoSApplicantCorrespondenceAddressRequired: addressHasChange ? YesNoUpperCamelCase.NO : YesNoUpperCamelCase.YES,
     totalClaimAmount: claim.totalClaimAmount,
     respondent1: toCCDParty(claim.respondent1),
-    defenceRouteRequired: toCCDRejectAllOfClaimType(claim.rejectAllOfClaim.option),
-    respondToClaim: toCCDRespondToClaim(claim.rejectAllOfClaim.howMuchHaveYouPaid),
-    detailsOfWhyDoesYouDisputeTheClaim: claim.rejectAllOfClaim.defence.text
+    defenceRouteRequired: toCCDRejectAllOfClaimType(claim.rejectAllOfClaim?.option),
+    respondToClaim: toCCDRespondToClaim(claim.rejectAllOfClaim?.howMuchHaveYouPaid),
+    detailsOfWhyDoesYouDisputeTheClaim: claim.rejectAllOfClaim?.defence?.text,
     respondent1BankAccountList: toCCDBankAccountList(claim.statementOfMeans?.bankAccounts),
     disabilityPremiumPayments: toCCDYesNoFromGenericYesNo(claim.statementOfMeans?.disability),
     severeDisabilityPremiumPayments: toCCDYesNoFromGenericYesNo(claim.statementOfMeans?.severeDisability),
