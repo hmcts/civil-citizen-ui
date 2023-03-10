@@ -10,7 +10,7 @@ export const toCCDRespondentLiPResponse = (claim: Claim): CCDRespondentLiPRespon
   return {
     respondent1LiPFinancialDetails : toCCDResponseLiPFinancialDetails(claim.statementOfMeans),
     respondent1MediationLiPResponse: toCCDMediation(claim.mediation),
-    respondent1ContactPerson: claim.respondent1?.partyDetails?.contactPerson,
-    respondent1CorrespondenceAddress: claim.respondent1?.partyDetails?.provideCorrespondenceAddress === 'yes' ? toCCDAddress(claim.respondent1?.partyDetails?.correspondenceAddress) : undefined,
+    respondent1LiPContactPerson: claim.respondent1?.partyDetails?.contactPerson,
+    respondent1LiPCorrespondenceAddress: claim.respondent1?.partyDetails?.provideCorrespondenceAddress === 'yes' ? toCCDAddress(claim.respondent1?.partyDetails?.correspondenceAddress) : undefined,
   };
 };
