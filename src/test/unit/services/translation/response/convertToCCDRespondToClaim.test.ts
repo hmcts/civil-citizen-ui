@@ -6,6 +6,7 @@ import {CCDHowWasThisAmountPaid} from 'models/ccdResponse/ccdRespondToClaim';
 
 describe('convert respond to claim', () => {
   it('should translate to Respond to Claim', () => {
+    // Given
     const claim = new Claim();
     claim.partialAdmission = <PartialAdmission>{
       howMuchHaveYouPaid: <HowMuchHaveYouPaid> {
@@ -18,9 +19,9 @@ describe('convert respond to claim', () => {
         totalClaimAmount: 10000,
       },
     };
-
+    // When
     const ccdResponse = toCCDRespondToClaim(claim.partialAdmission);
-
+    // Then
     expect(ccdResponse.howMuchWasPaid).toEqual(claim.partialAdmission.howMuchHaveYouPaid.amount);
     expect(ccdResponse.howWasThisAmountPaid).toEqual(CCDHowWasThisAmountPaid.OTHER);
     expect(ccdResponse.howWasThisAmountPaidOther).toEqual(claim.partialAdmission.howMuchHaveYouPaid.text);

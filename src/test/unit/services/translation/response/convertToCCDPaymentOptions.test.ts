@@ -5,10 +5,15 @@ import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOpti
 import {CCDPaymentOption} from 'models/ccdResponse/ccdPaymentOption';
 
 describe('convert payment option', () => {
-  describe('UNDEFINED', () => {
-    it('IMMEDIATELY', () => {
+  let claim: Claim;
+
+  beforeEach(() => {
+    claim = new Claim();
+  });
+
+  describe('response type is UNDEFINED', () => {
+    it('payment option is IMMEDIATELY should return IMMEDIATELY', () => {
       // GIVEN
-      const claim: Claim = new Claim();
       claim.respondent1 = {
         responseType: undefined,
       };
@@ -23,9 +28,8 @@ describe('convert payment option', () => {
       expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
     });
 
-    it('INSTALMENTS', () => {
+    it('payment option is INSTALMENTS should return IMMEDIATELY', () => {
       // GIVEN
-      const claim: Claim = new Claim();
       claim.respondent1 = {
         responseType: undefined,
       };
@@ -40,9 +44,8 @@ describe('convert payment option', () => {
       expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
     });
 
-    it('BY_SET_DATE', () => {
+    it('payment option is BY_SET_DATE should return IMMEDIATELY', () => {
       // GIVEN
-      const claim: Claim = new Claim();
       claim.respondent1 = {
         responseType: undefined,
       };
@@ -58,10 +61,9 @@ describe('convert payment option', () => {
     });
   });
 
-  describe('PART ADMISSION', () => {
-    it('return payment options IMMEDIATELY', () => {
+  describe('response type PART ADMISSION', () => {
+    it('when payment option is IMMEDIATELY should return IMMEDIATELY', () => {
       // GIVEN
-      const claim: Claim = new Claim();
       claim.respondent1 = {
         responseType: ResponseType.PART_ADMISSION,
       };
@@ -76,9 +78,8 @@ describe('convert payment option', () => {
       expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
     });
 
-    it('return payment options INSTALMENTS', () => {
+    it('when payment options is INSTALMENTS should return REPAYMENT_PLAN', () => {
       // GIVEN
-      const claim: Claim = new Claim();
       claim.respondent1 = {
         responseType: ResponseType.PART_ADMISSION,
       };
@@ -93,9 +94,8 @@ describe('convert payment option', () => {
       expect(result).toEqual(CCDPaymentOption.REPAYMENT_PLAN);
     });
 
-    it('return payment options BY_SET_DATE', () => {
+    it('when payment options is BY_SET_DATE should return BY_SET_DATE', () => {
       // GIVEN
-      const claim: Claim = new Claim();
       claim.respondent1 = {
         responseType: ResponseType.PART_ADMISSION,
       };
@@ -111,10 +111,9 @@ describe('convert payment option', () => {
     });
   });
 
-  describe('FULL_ADMISSION', () => {
-    it('return payment options IMMEDIATELY', () => {
+  describe('response type is FULL_ADMISSION', () => {
+    it('when payment option is IMMEDIATELY should return IMMEDIATELY', () => {
       // GIVEN
-      const claim: Claim = new Claim();
       claim.respondent1 = {
         responseType: ResponseType.FULL_ADMISSION,
       };
@@ -129,9 +128,8 @@ describe('convert payment option', () => {
       expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
     });
 
-    it('return payment options INSTALMENTS', () => {
+    it('when payment option is INSTALMENTS should return IMMEDIATELY', () => {
       // GIVEN
-      const claim: Claim = new Claim();
       claim.respondent1 = {
         responseType: ResponseType.FULL_ADMISSION,
       };
@@ -146,9 +144,8 @@ describe('convert payment option', () => {
       expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
     });
 
-    it('return payment options BY_SET_DATE', () => {
+    it('when payment option is BY_SET_DATE should return IMMEDIATELY', () => {
       // GIVEN
-      const claim: Claim = new Claim();
       claim.respondent1 = {
         responseType: ResponseType.FULL_ADMISSION,
       };

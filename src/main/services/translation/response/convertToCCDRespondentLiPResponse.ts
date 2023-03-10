@@ -1,8 +1,8 @@
-import {CCDRespondentLiPResponse} from '../../../common/models/ccdResponse/ccdRespondentLiPResponse';
-import {Claim} from '../../../common/models/claim';
-import {toUpperCaseGenericYesNo} from '../../../common/form/models/yesNo';
-import {toCCDMediation} from '../../../services/translation/response/convertToCCDMediation';
-import {toCCDResponseLiPFinancialDetails} from '../../../services/translation/response/convertToCCDResponseLiPFinancialDetails';
+import {CCDRespondentLiPResponse} from 'models/ccdResponse/ccdRespondentLiPResponse';
+import {Claim} from 'models/claim';
+import {toUpperCaseGenericYesNo} from 'form/models/yesNo';
+import {toCCDMediation} from 'services/translation/response/convertToCCDMediation';
+import {toCCDResponseLiPFinancialDetails} from 'services/translation/response/convertToCCDResponseLiPFinancialDetails';
 
 export const toCCDRespondentLiPResponse = (claim: Claim): CCDRespondentLiPResponse => {
   return {

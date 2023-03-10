@@ -4,6 +4,7 @@ import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 describe('convert to respondent LIP response', () => {
   it('return the Respondent LiP Response object', () => {
+    // Given
     const claim = new Claim();
     claim.partialAdmission = {
       alreadyPaid: {
@@ -22,8 +23,10 @@ describe('convert to respondent LIP response', () => {
       evidenceItem: [],
     };
 
+    // When
     const result = toCCDRespondentLiPResponse(claim);
 
+    // Then
     expect(result.partialAdmissionAlreadyPaid).toEqual(YesNoUpperCamelCase.YES);
     expect(result.timelineComment).toEqual(claim.partialAdmission.timeline.comment);
     expect(result.evidenceComment).toEqual(claim.evidence.comment);

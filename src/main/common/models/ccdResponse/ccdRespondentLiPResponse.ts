@@ -1,7 +1,7 @@
-import {YesNoUpperCamelCase} from '../../../common/form/models/yesNo';
-import {CCDFinancialDetailsLiP} from '../../models/ccdResponse/ccdFinancialDetailsLiP';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
 
-import {CCDMediation} from '../../models/ccdResponse/ccdMediation';
+import {CCDMediation} from 'models/ccdResponse/ccdMediation';
 export interface CCDRespondentLiPResponse {
   partialAdmissionAlreadyPaid: YesNoUpperCamelCase
   timelineComment: string
