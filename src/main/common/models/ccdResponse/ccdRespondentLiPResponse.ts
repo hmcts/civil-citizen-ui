@@ -6,8 +6,6 @@ export interface CCDRespondentLiPResponse {
   partialAdmissionAlreadyPaid?: YesNoUpperCamelCase
   timelineComment?: string
   evidenceComment?: string
-}
-export interface CCDRespondentLiPResponse {
   respondent1LiPFinancialDetails?: CCDFinancialDetailsLiP,
   respondent1MediationLiPResponse?: CCDMediation,
 }
