@@ -7,7 +7,6 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL,
   DQ_DEFENDANT_EXPERT_EVIDENCE_URL,
-  DQ_EXPERT_DETAILS_URL,
   DQ_REQUEST_EXTRA_4WEEKS_URL,
   DQ_SENT_EXPERT_REPORTS_URL,
   DQ_SHARE_AN_EXPERT_URL,
@@ -65,25 +64,6 @@ export const considerClaimantDocResponse = (claim: Claim, claimId: string, lng: 
     t('PAGES.CHECK_YOUR_ANSWER.GIVE_DOC_DETAILS', {lng}),
     getEmptyStringIfUndefined(details),
   );
-};
-
-export const getExpertDetails = (claim: Claim, claimId: string, lang: string): SummaryRow[] => {
-  const expertHref = constructResponseUrlWithIdParams(claimId, DQ_EXPERT_DETAILS_URL);
-  const expertDetails = claim.directionQuestionnaire?.experts?.expertDetailsList?.items;
-  const summaryRows: SummaryRow [] = [];
-
-  expertDetails?.forEach((expert, index) => {
-    summaryRows.push(summaryRow(`${t('PAGES.EXPERT_DETAILS.SECTION_TITLE', lang)} ${index + 1}`, '', expertHref, changeLabel(lang)));
-    summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.FIRST_NAME_OPTIONAL', lang), expert.firstName));
-    summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.LAST_NAME_OPTIONAL', lang), expert.lastName));
-    summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.EMAIL_ADDRESS_OPTIONAL', lang), expert.emailAddress));
-    summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.PHONE_OPTIONAL', lang), getEmptyStringIfUndefined(expert.phoneNumber?.toString())));
-    summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.FIELD_OF_EXPERTISE', lang), expert.fieldOfExpertise));
-    summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.TELL_US_WHY_NEED_EXPERT', lang), expert.whyNeedExpert));
-    summaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.COST_OPTIONAL', lang), getEmptyStringIfUndefined(expert.estimatedCost?.toString())));
-  });
-
-  return summaryRows;
 };
 
 export const getUseExpertEvidence = (claim: Claim, claimId: string, lng: string): SummaryRow => {
@@ -149,7 +129,4 @@ export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequireme
     hearingRequirementsSection.summaryList.rows.push(getShareExpertWithClaimant(claim, claimId, lng));
   }
 
-  if (claim.hasExpertDetails()) {
-    hearingRequirementsSection.summaryList.rows.push(...getExpertDetails(claim, claimId, lng));
-  }
 };

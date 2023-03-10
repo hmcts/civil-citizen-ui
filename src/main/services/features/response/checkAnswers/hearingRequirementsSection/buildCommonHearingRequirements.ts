@@ -20,6 +20,9 @@ import {
   getEmptyStringIfUndefined,
   getFormattedAnswerForYesNoNotReceived,
 } from 'common/utils/checkYourAnswer/formatAnswer';
+import {
+  buildExpertReportSection
+} from 'services/features/response/checkAnswers/hearingRequirementsSection/hearingExportsReportBuilderSection';
 
 export const getWitnesses = (claim: Claim, claimId: string, lng: string): SummaryRow[]  => {
   const witnessesHref = constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_WITNESSES_URL);
@@ -157,6 +160,7 @@ export const buildCommonHearingRequirements = (claim: Claim, hearingRequirements
     addSupportRequiredList(claim, hearingRequirementsSection, claimId, lng);
   }
 
+  hearingRequirementsSection.summaryList.rows.push(... buildExpertReportSection(claim, claimId, lng));
   if (claim.directionQuestionnaire?.welshLanguageRequirements?.language) {
     hearingRequirementsSection.summaryList.rows.push(summaryRow(
       t('PAGES.CHECK_YOUR_ANSWER.WELSH_LANGUAGE', {lng}),null ,constructResponseUrlWithIdParams(claimId, DQ_WELSH_LANGUAGE_URL), changeLabel(lng)));

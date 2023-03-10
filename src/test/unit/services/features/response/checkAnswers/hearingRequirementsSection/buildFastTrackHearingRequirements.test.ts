@@ -5,18 +5,15 @@ import {YesNo, YesNoNotReceived} from 'form/models/yesNo';
 import {summaryRow} from 'models/summaryList/summaryList';
 import {
   considerClaimantDocQuestion,
-  considerClaimantDocResponse, getExpertDetails,
+  considerClaimantDocResponse,
   getSentReportToOtherParties,
   getShareExpertWithClaimant,
   getUseExpertEvidence,
   requestExtra4WeeksQuestion,
   triedToSettleQuestion,
 } from 'services/features/response/checkAnswers/hearingRequirementsSection/buildFastTrackHearingRequirements';
-import {Experts} from '../../../../../../../main/common/models/directionsQuestionnaire/experts/experts';
-import {
-  ExpertDetailsList,
-} from '../../../../../../../main/common/models/directionsQuestionnaire/experts/expertDetailsList';
-import {ExpertDetails} from '../../../../../../../main/common/models/directionsQuestionnaire/experts/expertDetails';
+import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
+
 import {
   getSummaryRowForDisplayEvidenceYourself,
 } from 'services/features/response/checkAnswers/hearingRequirementsSection/buildCommonHearingRequirements';
@@ -204,81 +201,6 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
     beforeEach(() => {
       claim = getClaimWithDirectionQuestionnaireAndExperts();
     });
-
-    it('should not display expert if the the expect evidence is NO', () => {
-      //Given
-      claim.directionQuestionnaire.experts.expertEvidence = {option: YesNo.NO};
-      claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList();
-
-      const result: [] = [];
-
-      //When
-      const expertDetails = getExpertDetails(claim, claimId, lng);
-
-      //Then
-      expect(expertDetails).toStrictEqual(result);
-    });
-    it('should display expert details if the expect evidence is YES', function () {
-      //Given
-      claim.directionQuestionnaire.experts.expertEvidence = {option: YesNo.YES};
-      claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList(
-        [new ExpertDetails('Mike', 'James', 'mike@gmail.com', 7411111, 'reason', 'expert', 500)],
-      );
-
-      //When
-      const summaryRows = getExpertDetails(claim, '1', 'eng');
-      //Then
-      expect(summaryRows.length).toEqual(8);
-      expect(summaryRows[0].key.text).toEqual('PAGES.EXPERT_DETAILS.SECTION_TITLE 1');
-      expect(summaryRows[1].key.text).toEqual('PAGES.EXPERT_DETAILS.FIRST_NAME_OPTIONAL');
-      expect(summaryRows[1].value.html).toEqual('Mike');
-      expect(summaryRows[2].key.text).toEqual('PAGES.EXPERT_DETAILS.LAST_NAME_OPTIONAL');
-      expect(summaryRows[2].value.html).toEqual('James');
-      expect(summaryRows[3].key.text).toEqual('PAGES.EXPERT_DETAILS.EMAIL_ADDRESS_OPTIONAL');
-      expect(summaryRows[3].value.html).toEqual('mike@gmail.com');
-      expect(summaryRows[4].key.text).toEqual('PAGES.EXPERT_DETAILS.PHONE_OPTIONAL');
-      expect(summaryRows[4].value.html).toEqual('7411111');
-      expect(summaryRows[5].key.text).toEqual('PAGES.EXPERT_DETAILS.FIELD_OF_EXPERTISE');
-      expect(summaryRows[5].value.html).toEqual('expert');
-      expect(summaryRows[6].key.text).toEqual('PAGES.EXPERT_DETAILS.TELL_US_WHY_NEED_EXPERT');
-      expect(summaryRows[6].value.html).toEqual('reason');
-      expect(summaryRows[7].key.text).toEqual('PAGES.EXPERT_DETAILS.COST_OPTIONAL');
-      expect(summaryRows[7].value.html).toEqual('500');
-
-    });
-    it('should display empty line for expert when phone number is not present', () => {
-      //Given
-      claim.directionQuestionnaire.experts.expertEvidence = {option: YesNo.YES};
-      claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList(
-        [new ExpertDetails('Mike', 'James', 'mike@gmail.com', undefined, 'reason', 'expert', 500)],
-      );
-      //When
-      const summaryRows = getExpertDetails(claim, '1', 'eng');
-      //Then
-      expect(summaryRows.length).toEqual(8);
-      expect(summaryRows[4].key.text).toEqual('PAGES.EXPERT_DETAILS.PHONE_OPTIONAL');
-      expect(summaryRows[4].value.html).toEqual('');
-    });
-    it('should display empty line when estimated cost is not present', () => {
-      //Given
-      claim.directionQuestionnaire.experts.expertEvidence = {option: YesNo.YES};
-      claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList(
-        [new ExpertDetails('Mike', 'James', 'mike@gmail.com', 15267357253, 'reason', 'expert', undefined)],
-      );
-      //When
-      const summaryRows = getExpertDetails(claim, '1', 'eng');
-      //Then
-      expect(summaryRows.length).toEqual(8);
-      expect(summaryRows[7].key.text).toEqual('PAGES.EXPERT_DETAILS.COST_OPTIONAL');
-      expect(summaryRows[7].value.html).toEqual('');
-    });
-    it('should return an empty array when there are no experts', () => {
-      //Given no experts
-      //When
-      const summaryRows = getExpertDetails(claim, '1', 'eng');
-      //Then
-      expect(summaryRows.length).toEqual(0);
-    });
     it('should display the use of expert evidence No if the claimant choose not', () => {
       //Given
       claim.directionQuestionnaire.experts.expertEvidence = {option: YesNo.NO};
@@ -378,5 +300,4 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       expect(sentReportToOtherParties).toStrictEqual(mockSummarySection);
     });
   });
-
 });
