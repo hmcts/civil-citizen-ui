@@ -7,7 +7,7 @@ import {toCCDRejectAllOfClaimType} from './convertToCCDRejectAllOfClaimType';
 import {toCCDRepaymentPlan} from './convertToCCDRepaymentPlan';
 import {toCCDPaymentOption} from './convertToCCDPaymentOption';
 import {toCCDPayBySetDate} from './convertToCCDPayBySetDate';
-import {toCCDRespondToClaim} from "./convertToCCDRespondToClaim";
+import {toCCDRespondToClaim} from './convertToCCDRespondToClaim';
 import {toCCDBankAccountList} from './convertToCCDBankAccount';
 import {toCCDHomeDetails} from './convertToCCDHomeDetails';
 import {toCCDPartnerAndDependents} from './convertToCCDPartnerAndDependent';

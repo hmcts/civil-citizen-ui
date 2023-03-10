@@ -4,7 +4,7 @@ import {CCDRepaymentPlan} from './ccdRepaymentPlan';
 import {CCDPayBySetDate} from './ccdPayBySetDate';
 import {YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {CCDParty} from './ccdParty';
-import {CCDRespondToClaim} from "models/ccdResponse/ccdRespondToClaim";
+import {CCDRespondToClaim} from 'models/ccdResponse/ccdRespondToClaim';
 import {CCDBankAccount} from 'models/ccdResponse/ccdBankAccount';
 import {CCDHomeDetails} from 'models/ccdResponse/ccdHomeDetails';
 import {CCDPartnerAndDependent} from 'models/ccdResponse/ccdPartnerAndDependent';

@@ -1,8 +1,8 @@
-import {Claim} from "models/claim";
-import {RejectAllOfClaimType} from "form/models/rejectAllOfClaimType";
-import {CCDRejectAllOfClaimType} from "models/ccdResponse/ccdRejectAllOfClaimType";
-import {RejectAllOfClaim} from "form/models/rejectAllOfClaim";
-import {toCCDRejectAllOfClaimType} from "services/translation/response/convertToCCDRejectAllOfClaimType";
+import {Claim} from 'models/claim';
+import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
+import {CCDRejectAllOfClaimType} from 'models/ccdResponse/ccdRejectAllOfClaimType';
+import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
+import {toCCDRejectAllOfClaimType} from 'services/translation/response/convertToCCDRejectAllOfClaimType';
 
 describe('translate RejectAllOfClaimType to CCD model', () => {
 

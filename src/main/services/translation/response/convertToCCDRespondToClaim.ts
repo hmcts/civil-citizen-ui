@@ -1,6 +1,5 @@
-import {CCDRespondToClaim, CCDHowWasThisAmountPaid} from "../../../common/models/ccdResponse/ccdRespondToClaim";
-import {HowMuchHaveYouPaid} from "../../../common/form/models/admission/howMuchHaveYouPaid";
-
+import {CCDRespondToClaim, CCDHowWasThisAmountPaid} from '../../../common/models/ccdResponse/ccdRespondToClaim';
+import {HowMuchHaveYouPaid} from '../../../common/form/models/admission/howMuchHaveYouPaid';
 
 export const toCCDRespondToClaim = (howMuchHaveYouPaid: HowMuchHaveYouPaid): CCDRespondToClaim => {
   if (howMuchHaveYouPaid) {
@@ -11,5 +10,4 @@ export const toCCDRespondToClaim = (howMuchHaveYouPaid: HowMuchHaveYouPaid): CCD
       howWasThisAmountPaidOther: howMuchHaveYouPaid.text,
     };
   }
-
 };
