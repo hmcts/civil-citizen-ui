@@ -6,5 +6,7 @@ export const toCCDRejectAllOfClaimType = (option: string): string => {
     return CCDRejectAllOfClaimType.HAS_PAID_THE_AMOUNT_CLAIMED;
   } else if (option == RejectAllOfClaimType.DISPUTE) {
     return CCDRejectAllOfClaimType.DISPUTES_THE_CLAIM;
+  } else {
+    return undefined;
   }
 };
