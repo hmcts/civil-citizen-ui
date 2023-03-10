@@ -1,4 +1,4 @@
-import {GenericYesNo} from '../../form/models/genericYesNo';
+import {GenericYesNo} from 'form/models/genericYesNo';
 
 export enum YesNo {
   YES = 'yes',
