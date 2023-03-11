@@ -84,4 +84,5 @@ const buildExpertsDetailsRows = (claim: Claim, claimId: string, lang: string): S
 
 export {
   buildExpertReportSection,
+  buildExpertsDetailsRows,
 };
