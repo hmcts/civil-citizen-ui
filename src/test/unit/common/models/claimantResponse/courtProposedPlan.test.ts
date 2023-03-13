@@ -17,5 +17,5 @@ describe('CourtProposedPlan constructor', () => {
     //Then
     expect(courtProposedPlan).toBeDefined();
     expect(courtProposedPlan.decision).toEqual(expectedDecision);
-  });
+  }); 
 });
