@@ -1,6 +1,6 @@
 import {ClaimantInterestRate} from '../../../../../../../src/main/common/form/models/claim/interest/claimantInterestRate';
 import {validate} from 'class-validator';
-import {SameRateInterestType} from '../../../../../../../src/main/common/form/models/claimDetails'
+import {SameRateInterestType} from '../../../../../../../src/main/common/form/models/claimDetails';
 
 describe('ClaimantInterestRate', () => {
   it('should validate the ClaimantInterestRate class', async () => {

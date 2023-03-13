@@ -21,7 +21,7 @@ describe('CourtProposedPlan constructor', () => {
   
   it('should create a new CourtProposedPlan instance with decision set to undefined if no value is provided', async () => {
     //Given
-    const expectedDecision: any = undefined;
+    const expectedDecision: undefined = undefined;
     
     //When
     const courtProposedPlan = new CourtProposedPlan();

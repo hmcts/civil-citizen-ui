@@ -1,5 +1,5 @@
 import {getDocumentsContent} from '../../../../../../src/main/services/features/dashboard/claimSummaryService';
-import {buildDownloadSealedClaimSection} from '../../../../../../src/main/services/features/dashboard/claimDocuments/claimDocumentContentBuilder'
+import {buildDownloadSealedClaimSection} from '../../../../../../src/main/services/features/dashboard/claimDocuments/claimDocumentContentBuilder';
 
 import {Claim} from 'models/claim';
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -10,20 +10,20 @@ jest.mock('i18next', () => ({
 }));
 
 describe('getDocumentsContent', () => {
-    it('should return an array with one ClaimSummaryContent object with one content section containing the download claim section', async () => {
-      // Given
-      const claimId = '123';
-      const lang = 'en';
+  it('should return an array with one ClaimSummaryContent object with one content section containing the download claim section', async () => {
+    // Given
+    const claimId = '123';
+    const lang = 'en';
   
-      // When
-      const result = getDocumentsContent(new Claim, claimId, lang);
+    // When
+    const result = getDocumentsContent(new Claim, claimId, lang);
   
-      // Then
-      expect(result).toHaveLength(1);
-      expect(result[0].contentSections).toHaveLength(1);
+    // Then
+    expect(result).toHaveLength(1);
+    expect(result[0].contentSections).toHaveLength(1);
   
-      const downloadClaimSection = buildDownloadSealedClaimSection(new Claim, claimId, lang);
+    const downloadClaimSection = buildDownloadSealedClaimSection(new Claim, claimId, lang);
   
-      expect(result[0].contentSections[0]).toEqual(downloadClaimSection);
-    });
+    expect(result[0].contentSections[0]).toEqual(downloadClaimSection);
   });
+});
