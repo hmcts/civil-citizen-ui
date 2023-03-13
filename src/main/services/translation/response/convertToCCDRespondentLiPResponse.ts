@@ -1,4 +1,4 @@
-import {CCDRespondentLiPResponse} from 'models/ccdResponse/CCDRespondentLiPResponse';
+import {CCDRespondentLiPResponse} from 'models/ccdResponse/ccdRespondentLiPResponse';
 import {Claim} from 'models/claim';
 import {
   toCCDResponseLiPFinancialDetails,
