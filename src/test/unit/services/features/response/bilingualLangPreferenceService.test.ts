@@ -1,49 +1,54 @@
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import * as utilityService from 'modules/utilityService';
 import {getBilingualLangPreference, saveBilingualLangPreference} from 'services/features/response/bilingualLangPreferenceService';
 import {Claim} from 'common/models/claim';
 import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
+import express from 'express';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../main/modules/utilityService');
 
 describe('Bilingual Langiage Preference Service', () => {
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockGetClaimById = utilityService.getClaimById as jest.Mock;
+  const req = express.request;
   describe('getBilingualLangPreference', () => {
     it('should get empty form when no data exist', async () => {
       //Given
-      mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
+      mockGetClaimById.mockImplementation(async () => {
+        return {};
       });
       //When
-      const form = await getBilingualLangPreference('123');
+      const form = await getBilingualLangPreference('123', req);
       //Then
       expect(form.option).toBeUndefined();
     });
 
     it('should get empty form when bilingual language preference does not exist', async () => {
       //Given
-      mockGetCaseData.mockImplementation(async () => {
+      mockGetClaimById.mockImplementation(async () => {
         const claim = new Claim();
         claim.claimBilingualLanguagePreference = undefined;
         return claim;
       });
       //When
-      const form = await getBilingualLangPreference('123');
+      const form = await getBilingualLangPreference('123',req);
       //Then
       expect(form.option).toEqual(undefined);
     });
 
     it('should return populated form when ENGLISH bilingual language preference exists', async () => {
       //Given
-      mockGetCaseData.mockImplementation(async () => {
+      mockGetClaimById.mockImplementation(async () => {
         const claim = new Claim();
         claim.claimBilingualLanguagePreference = ClaimBilingualLanguagePreference.ENGLISH;
         return claim;
       });
       //When
-      const form = await getBilingualLangPreference('123');
+      const form = await getBilingualLangPreference('123', req);
 
       //Then
       expect(form.option).toEqual(ClaimBilingualLanguagePreference.ENGLISH);
@@ -51,25 +56,24 @@ describe('Bilingual Langiage Preference Service', () => {
 
     it('should return populated form when WELSH_AND_ENGLISH bilingual language preference exists', async () => {
       //Given
-      mockGetCaseData.mockImplementation(async () => {
+      mockGetClaimById.mockImplementation(async () => {
         const claim = new Claim();
         claim.claimBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
         return claim;
       });
       //When
-      const form = await getBilingualLangPreference('123');
-
+      const form = await getBilingualLangPreference('123', req);
       //Then
       expect(form.option).toEqual(ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH);
     });
 
     it('should rethrow error when error occurs', async () => {
-      //When
-      mockGetCaseData.mockImplementation(async () => {
+      //Given
+      mockGetClaimById.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
-      //Then
-      await expect(getBilingualLangPreference('123')).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      //When-Then
+      await expect(getBilingualLangPreference('123', req)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 
