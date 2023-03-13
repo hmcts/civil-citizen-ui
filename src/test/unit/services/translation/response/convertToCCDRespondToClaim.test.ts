@@ -3,7 +3,7 @@ import {HowMuchHaveYouPaid} from 'form/models/admission/howMuchHaveYouPaid';
 import {Claim} from 'models/claim';
 import {toCCDRespondToClaim} from 'services/translation/response/convertToCCDRespondToClaim';
 import {CCDHowWasThisAmountPaid} from 'models/ccdResponse/ccdRespondToClaim';
-import {RejectAllOfClaim} from "form/models/rejectAllOfClaim";
+import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
 
 describe('convert respond to claim', () => {
   it('should translate to Respond to Claim Partial Admission', () => {
