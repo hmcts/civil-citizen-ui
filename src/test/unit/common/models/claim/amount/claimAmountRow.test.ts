@@ -1,19 +1,19 @@
-import {ClaimAmountRow} from "../../../../../../../src/main/common/form/models/claim/amount/claimAmountRow";
+import {ClaimAmountRow} from '../../../../../../../src/main/common/form/models/claim/amount/claimAmountRow';
 
-describe("ClaimAmountRow", () => {
+describe('ClaimAmountRow', () => {
   let row: ClaimAmountRow;
 
   beforeEach(() => {
     row = new ClaimAmountRow();
   });
 
-    describe('isAtleastOneFieldPopulated', () => {
-    it("should return false when row is empty", async () => {
+  describe('isAtleastOneFieldPopulated', () => {
+    it('should return false when row is empty', async () => {
       expect(row.isAtLeastOneFieldPopulated()).toBe(false);
     });
 
     it('should return true when row has a reason', async () => {
-      row.reason = "Some reason";
+      row.reason = 'Some reason';
       expect(row.isAtLeastOneFieldPopulated()).toBe(true);
     });
 
@@ -23,7 +23,7 @@ describe("ClaimAmountRow", () => {
     });
 
     it('should return true when row has both reason and amount', async () => {
-      row.reason = "Some reason";
+      row.reason = 'Some reason';
       row.amount = 123.45;
       expect(row.isAtLeastOneFieldPopulated()).toBe(true);
     });

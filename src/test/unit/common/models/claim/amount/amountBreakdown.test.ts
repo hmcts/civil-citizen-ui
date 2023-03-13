@@ -6,7 +6,7 @@ describe('AmountBreakdown', () => {
   
   beforeEach(() => {
     sut = new AmountBreakdown();
-    });
+  });
   
   it('should return false when the total amount is greater than the maximum', async () => {
         
@@ -23,7 +23,7 @@ describe('AmountBreakdown', () => {
   describe('fromObject', () => {
     it('should return undefined when value is false', async () => {
       // GIVEN
-      const value: null = null;
+      const value: any = null;
 
       // WHEN
       const result = AmountBreakdown.fromObject(value);
