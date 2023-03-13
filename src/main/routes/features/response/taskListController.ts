@@ -6,10 +6,14 @@ import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatt
 import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from '../../../modules/utilityService';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('taskListController');
+
 const taskListViewPath = 'features/response/task-list';
 const taskListController = Router();
 
 taskListController.get(RESPONSE_TASK_LIST_URL, async (req: AppRequest, res, next) => {
+  logger.error('task list controller1 {}', req.session?.user?.accessToken);
   try {
     const currentClaimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
@@ -21,7 +25,9 @@ taskListController.get(RESPONSE_TASK_LIST_URL, async (req: AppRequest, res, next
     const title = getTitle(taskLists, lang);
     const description = getDescription(taskLists, lang);
     const claimDetailsUrl = constructResponseUrlWithIdParams(currentClaimId, CLAIM_DETAILS_URL);
+    logger.error('task list controller2 {}', req.session?.user?.accessToken);
     res.render(taskListViewPath, {taskLists, title, description, claim: caseData, claimDetailsUrl});
+    logger.error('task list controller3 after render {}', req.session?.user?.accessToken);
   } catch (error) {
     next(error);
   }
