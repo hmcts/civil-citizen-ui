@@ -6,7 +6,6 @@ import {toCCDParty} from './convertToCCDParty';
 import {toCCDRepaymentPlan} from './convertToCCDRepaymentPlan';
 import {toCCDPaymentOption} from './convertToCCDPaymentOption';
 import {toCCDPayBySetDate} from './convertToCCDPayBySetDate';
-import {toCCDRespondentLiPResponse} from 'services/translation/response/convertToCCDRespondentLiPResponse';
 import {toCCDBankAccountList} from './convertToCCDBankAccount';
 import {toCCDHomeDetails} from './convertToCCDHomeDetails';
 import {toCCDPartnerAndDependents} from './convertToCCDPartnerAndDependent';
