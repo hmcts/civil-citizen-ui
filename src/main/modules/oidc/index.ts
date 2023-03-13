@@ -84,21 +84,21 @@ export class OidcMiddleware {
       logger.error('index.ts app.use start: appReq.session.user=' + appReq.session?.user);
       if (appReq.session?.user) {
         if (appReq.session.user.roles?.includes(citizenRole)) {
-          logger.error('index.ts app.use return 1 - next')
+          logger.error('index.ts app.use return 1 - next');
           return next();
         }
-        logger.error('index.ts app.use return 2 - dashboard')
+        logger.error('index.ts app.use return 2 - dashboard');
         return res.redirect(DASHBOARD_URL);
       }
       if (requestIsForPinAndPost(req)) {
-        logger.error('index.ts app.use return 3 - next (pin and post)')
+        logger.error('index.ts app.use return 3 - next (pin and post)');
         return next();
       }
       if (requestIsForAssigningClaimForDefendant(req)) {
-        logger.error('index.ts app.use debug 4 - setting claim id')
+        logger.error('index.ts app.use debug 4 - setting claim id');
         app.locals.assignClaimId = <string>req.query.id;
       }
-      logger.error('index.ts app.use end - redirecting to sign in url')
+      logger.error('index.ts app.use end - redirecting to sign in url');
       return res.redirect(SIGN_IN_URL);
     });
   }
