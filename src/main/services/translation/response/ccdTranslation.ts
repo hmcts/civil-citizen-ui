@@ -42,7 +42,7 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     respondent1: toCCDParty(claim.respondent1),
     defenceRouteRequired: toCCDRejectAllOfClaimType(claim.rejectAllOfClaim?.option),
     respondToClaim: toCCDRespondToClaim(claim.rejectAllOfClaim?.howMuchHaveYouPaid),
-    detailsOfWhyDoesYouDisputeTheClaim: claim.rejectAllOfClaim?.defence?.text,
+    detailsOfWhyDoesYouDisputeTheClaim: claim.rejectAllOfClaim?.defence?.text ? claim.rejectAllOfClaim?.defence?.text : claim.rejectAllOfClaim?.whyDoYouDisagree?.text,
     respondent1BankAccountList: toCCDBankAccountList(claim.statementOfMeans?.bankAccounts),
     disabilityPremiumPayments: toCCDYesNoFromGenericYesNo(claim.statementOfMeans?.disability),
     severeDisabilityPremiumPayments: toCCDYesNoFromGenericYesNo(claim.statementOfMeans?.severeDisability),

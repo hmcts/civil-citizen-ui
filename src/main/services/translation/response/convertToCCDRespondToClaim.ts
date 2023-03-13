@@ -5,7 +5,7 @@ export const toCCDRespondToClaim = (howMuchHaveYouPaid: HowMuchHaveYouPaid): CCD
   if (howMuchHaveYouPaid) {
     return {
       howMuchWasPaid: howMuchHaveYouPaid.amount,
-      howWasThisAmountPaid: CCDHowWasThisAmountPaid.OTHER,
+      howWasThisAmountPaid: howMuchHaveYouPaid.amount ? CCDHowWasThisAmountPaid.OTHER : undefined,
       whenWasThisAmountPaid: howMuchHaveYouPaid.date,
       howWasThisAmountPaidOther: howMuchHaveYouPaid.text,
     };
