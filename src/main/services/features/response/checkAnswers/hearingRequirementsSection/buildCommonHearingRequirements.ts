@@ -21,7 +21,6 @@ import {
   getFormattedAnswerForYesNoNotReceived,
 } from 'common/utils/checkYourAnswer/formatAnswer';
 
-
 export const getWitnesses = (claim: Claim, claimId: string, lng: string): SummaryRow[]  => {
   const witnessesHref = constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_WITNESSES_URL);
   const otherWitnesses = claim.directionQuestionnaire?.witnesses?.otherWitnesses?.option === YesNo.YES ? YesNoUpperCase.YES : YesNoUpperCase.NO;

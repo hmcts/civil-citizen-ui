@@ -18,8 +18,8 @@ import {
   getEmptyStringIfUndefined,
 } from 'common/utils/checkYourAnswer/formatAnswer';
 import {
-  buildExpertsDetailsRows
-} from "services/features/response/checkAnswers/hearingRequirementsSection/hearingExportsReportBuilderSection";
+  buildExpertsDetailsRows,
+} from 'services/features/response/checkAnswers/hearingRequirementsSection/hearingExportsReportBuilderSection';
 
 export const triedToSettleQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const option = claim.directionQuestionnaire?.hearing?.triedToSettle?.option === YesNo.YES
