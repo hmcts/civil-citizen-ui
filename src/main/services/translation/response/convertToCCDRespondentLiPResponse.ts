@@ -4,7 +4,6 @@ import {
   toCCDResponseLiPFinancialDetails,
 } from 'services/translation/response/convertToCCDResponseLiPFinancialDetails';
 import {toCCDMediation} from 'services/translation/response/convertToCCDMediation';
-import {CCDRespondentLiPResponse} from 'models/ccdResponse/ccdRespondentLiPResponse';
 import {toCCDDQExtraDetails} from 'services/translation/response/convertToCCDDQExtraDetials';
 import {toCCDSHearingSupport} from 'services/translation/response/convertToCCDHearingSupport';
 
