@@ -82,6 +82,10 @@ export class OidcMiddleware {
     app.use((req: Request, res: Response, next: NextFunction) => {
       const appReq: AppRequest = <AppRequest>req;
       logger.error('index.ts app.use start: appReq.session.user=' + appReq.session?.user);
+      logger.error('index.ts app.use start : appReq.session=' + appReq.session
+        + ' appReq.session.id=' + appReq.session?.id);
+      logger.error('index.ts app.use start : req.session=' + req.session
+        + ' req.session.id=' + req.session?.id + ' req.sessionID=' + req.sessionID);
       if (appReq.session?.user) {
         if (appReq.session.user.roles?.includes(citizenRole)) {
           logger.error('index.ts app.use return 1 - next');
