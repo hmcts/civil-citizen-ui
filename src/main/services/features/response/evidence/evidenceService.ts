@@ -5,11 +5,12 @@ import {Evidence} from '../../../../common/form/models/evidence/evidence';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('selfEmployedAsService');
 
-const getEvidences = async (claimId: string) => {
+const getEvidence = async (claimId: string) => {
   try {
     const claim = await getCaseDataFromStore(claimId);
-    if(claim.evidence)
+    if(claim.evidence) {
       return claim.evidence;
+    }
     return new Evidence();
   } catch (error) {
     logger.error(error);
@@ -40,6 +41,6 @@ const getClaim = async (claimId: string): Promise<Claim> => {
 };
 
 export {
-  getEvidences,
+  getEvidence,
   saveEvidence,
 };

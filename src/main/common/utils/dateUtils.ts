@@ -57,3 +57,12 @@ export const addMonths = (date: Date, months: number) => {
   date.setMonth(date.getMonth() + months);
   return date;
 };
+
+export const stringDateToObject = (text: string) => {
+  const date = new Date(Date.parse(text));
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear();
+
+  return `${year}-${month}-${day}`;
+};

@@ -2,7 +2,7 @@ import {NextFunction, Request, Response, Router} from 'express';
 import {Evidence, INIT_ROW_COUNT} from '../../../../common/form/models/evidence/evidence';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {
-  getEvidences,
+  getEvidence,
   saveEvidence,
 } from '../../../../services/features/response/evidence/evidenceService';
 import {
@@ -21,10 +21,10 @@ function renderView(form: GenericForm<Evidence>, res: Response): void {
 
 evidenceController.get(CITIZEN_EVIDENCE_URL, async (req, res, next: NextFunction) => {
   try {
-    const evidences = await getEvidences(req.params.id);
+    const evidence = await getEvidence(req.params.id);
     const form: Evidence = new Evidence();
-    if(evidences.evidenceItem?.length < INIT_ROW_COUNT) {
-      form.setRows(INIT_ROW_COUNT - evidences.evidenceItem?.length);
+    if (evidence.evidenceItem?.length < INIT_ROW_COUNT) {
+      form.setRows(INIT_ROW_COUNT - evidence.evidenceItem?.length);
     }
     renderView(new GenericForm<Evidence>(form), res);
   } catch (error) {

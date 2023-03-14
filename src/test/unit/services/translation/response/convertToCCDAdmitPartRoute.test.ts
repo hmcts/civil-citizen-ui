@@ -2,10 +2,14 @@ import {PartialAdmission} from 'models/partialAdmission';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {toCCDRespondToClaim} from 'services/translation/response/convertToCCDRespondToClaim';
 import {CCDHowWasThisAmountPaid} from 'models/ccdResponse/ccdRespondToClaim';
+import {DefendantTimeline} from 'form/models/timeLineOfEvents/defendantTimeline';
+import {TimelineRow} from 'form/models/timeLineOfEvents/timelineRow';
 
 describe('convert respond to Claim', () => {
 
   it('should all values be mapped properly', () => {
+    const timeline: DefendantTimeline = new DefendantTimeline([new TimelineRow('11 November 2022', 'Event description')]);
+    // Given
     const respondToClaim: PartialAdmission = {
       whyDoYouDisagree: {
         text: 'Cause I can',
@@ -27,24 +31,7 @@ describe('convert respond to Claim', () => {
         totalClaimAmount: 222222,
         year: 2022,
       },
-      timeline: {
-        rows: [
-          {
-            date: '2022-11-11',
-            description: 'some description of this event',
-            isAtLeastOneFieldPopulated(): boolean {
-              return true;
-            },
-            isEmpty(): boolean {
-              return false;
-            },
-          },
-        ],
-        comment: 'Timeline comment',
-        filterOutEmptyRows() {
-          // not needed for tests but linter complaining about being missed
-        },
-      },
+      timeline: timeline,
       paymentIntention: {
         paymentOption: PaymentOptionType.IMMEDIATELY,
         paymentDate: null,
@@ -52,7 +39,10 @@ describe('convert respond to Claim', () => {
       },
     };
 
+    // When
     const converted = toCCDRespondToClaim(respondToClaim);
+
+    // Then
     expect(respondToClaim.howMuchHaveYouPaid.amount).toEqual(converted.howMuchWasPaid);
     expect(respondToClaim.howMuchHaveYouPaid.date).toEqual(converted.whenWasThisAmountPaid);
     expect(CCDHowWasThisAmountPaid.OTHER).toEqual(converted.howWasThisAmountPaid);

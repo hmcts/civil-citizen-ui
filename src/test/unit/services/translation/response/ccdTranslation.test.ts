@@ -18,6 +18,37 @@ import {DefendantTimeline} from 'form/models/timeLineOfEvents/defendantTimeline'
 import {WhyDoYouDisagree} from 'form/models/admission/partialAdmission/whyDoYouDisagree';
 import {DefendantEvidence} from 'models/evidence/evidence';
 
+function getPartialAdmission(claim: Claim, option: YesNo) {
+  claim.statementOfMeans = new StatementOfMeans();
+  claim.statementOfMeans.explanation = undefined;
+  claim.partialAdmission = new PartialAdmission();
+  claim.partialAdmission.alreadyPaid = {};
+  claim.partialAdmission.alreadyPaid.messageName = 'Some message';
+  claim.partialAdmission.alreadyPaid.option = option;
+}
+
+function getPartialAdmissionByRepaymentFrequency(claim: Claim, frequency: string) {
+  claim.partialAdmission = new PartialAdmission();
+  claim.partialAdmission.paymentIntention = new PaymentIntention();
+  claim.partialAdmission.paymentIntention.repaymentPlan = {
+    paymentAmount: 100,
+    firstRepaymentDate: new Date(),
+    repaymentFrequency: frequency,
+  };
+}
+
+function getPartialAdmissionWithMediation(claim: Claim){
+  claim.respondent1 = new Party();
+  claim.mediation = {
+    canWeUse: undefined,
+    mediationDisagreement: undefined,
+    companyTelephoneNumber: {
+      mediationContactPerson : 'test',
+      mediationPhoneNumber : '123',
+    },
+  };
+}
+
 describe('translate response to ccd version', () => {
   let claim: Claim;
 
@@ -41,13 +72,7 @@ describe('translate response to ccd version', () => {
   describe('should translate repayment plan to ccd', () => {
     it('when repayment frequency is set to once one month', () => {
       //Given
-      claim.partialAdmission = new PartialAdmission();
-      claim.partialAdmission.paymentIntention = new PaymentIntention();
-      claim.partialAdmission.paymentIntention.repaymentPlan = {
-        paymentAmount: 100,
-        firstRepaymentDate: new Date(),
-        repaymentFrequency: 'MONTH',
-      };
+      getPartialAdmissionByRepaymentFrequency(claim, 'MONTH');
       //When
       const ccdResponse = translateDraftResponseToCCD(claim, false);
       //Then
@@ -59,13 +84,7 @@ describe('translate response to ccd version', () => {
 
     it('frequency once four weeks', () => {
       //Given
-      claim.partialAdmission = new PartialAdmission();
-      claim.partialAdmission.paymentIntention = new PaymentIntention();
-      claim.partialAdmission.paymentIntention.repaymentPlan = {
-        paymentAmount: 100,
-        firstRepaymentDate: new Date(),
-        repaymentFrequency: 'FOUR_WEEKS',
-      };
+      getPartialAdmissionByRepaymentFrequency(claim, 'FOUR_WEEKS');
       //When
       const ccdResponse = translateDraftResponseToCCD(claim, false);
       //Then
@@ -77,13 +96,7 @@ describe('translate response to ccd version', () => {
 
     it('frequency once two week', () => {
       //Given
-      claim.partialAdmission = new PartialAdmission();
-      claim.partialAdmission.paymentIntention = new PaymentIntention();
-      claim.partialAdmission.paymentIntention.repaymentPlan = {
-        paymentAmount: 100,
-        firstRepaymentDate: new Date(),
-        repaymentFrequency: 'TWO_WEEKS',
-      };
+      getPartialAdmissionByRepaymentFrequency(claim, 'TWO_WEEKS');
       //When
       const ccdResponse = translateDraftResponseToCCD(claim, false);
       //Then
@@ -120,15 +133,7 @@ describe('translate response to ccd version', () => {
 
   it('should translate mediation option to CCD', () => {
     //Given
-    claim.respondent1 = new Party();
-    claim.mediation = {
-      canWeUse: undefined,
-      mediationDisagreement: undefined,
-      companyTelephoneNumber: {
-        mediationContactPerson: 'test',
-        mediationPhoneNumber: '123',
-      },
-    };
+    getPartialAdmissionWithMediation(claim);
     claim.partialAdmission = new PartialAdmission();
     claim.partialAdmission.paymentIntention = new PaymentIntention();
     //When
@@ -139,16 +144,8 @@ describe('translate response to ccd version', () => {
 
   it('should translate address changed to ccd', ()=> {
     //Given
-    claim.respondent1 = new Party();
-    claim.mediation = {
-      canWeUse: undefined,
-      mediationDisagreement: undefined,
-      companyTelephoneNumber: {
-        mediationContactPerson : 'test',
-        mediationPhoneNumber : '123',
-      },
-    };
     const addressChanged = true;
+    getPartialAdmissionWithMediation(claim);
     claim.partialAdmission = new PartialAdmission();
     claim.partialAdmission.paymentIntention = new PaymentIntention();
     //When
@@ -159,16 +156,8 @@ describe('translate response to ccd version', () => {
 
   it('should translate address has not changed to ccd', ()=>{
     //Given
-    claim.respondent1 = new Party();
-    claim.mediation = {
-      canWeUse: undefined,
-      mediationDisagreement: undefined,
-      companyTelephoneNumber: {
-        mediationContactPerson : 'test',
-        mediationPhoneNumber : '123',
-      },
-    };
     const addressChanged = false;
+    getPartialAdmissionWithMediation(claim);
     claim.partialAdmission = new PartialAdmission();
     claim.partialAdmission.paymentIntention = new PaymentIntention();
     //When
@@ -306,12 +295,7 @@ describe('translate response to ccd version', () => {
   describe('should translate spec defence admitted required', ()=>{
     it('should be yes', () => {
       //Given
-      claim.statementOfMeans = new StatementOfMeans();
-      claim.statementOfMeans.explanation = undefined;
-      claim.partialAdmission = new PartialAdmission();
-      claim.partialAdmission.alreadyPaid = {};
-      claim.partialAdmission.alreadyPaid.messageName = 'Some message';
-      claim.partialAdmission.alreadyPaid.option = 'yes';
+      getPartialAdmission(claim, YesNo.YES);
       //When
       const ccdResponse = translateDraftResponseToCCD(claim, false);
       //Then
@@ -320,12 +304,7 @@ describe('translate response to ccd version', () => {
 
     it('should be no', () => {
       // Given
-      claim.statementOfMeans = new StatementOfMeans();
-      claim.statementOfMeans.explanation = undefined;
-      claim.partialAdmission = new PartialAdmission();
-      claim.partialAdmission.alreadyPaid = {};
-      claim.partialAdmission.alreadyPaid.messageName = 'Some message';
-      claim.partialAdmission.alreadyPaid.option = 'no';
+      getPartialAdmission(claim, YesNo.NO);
       //When
       const ccdResponse = translateDraftResponseToCCD(claim, false);
       //Then
