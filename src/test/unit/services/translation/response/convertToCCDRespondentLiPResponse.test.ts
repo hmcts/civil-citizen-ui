@@ -5,6 +5,31 @@ import {Party} from 'models/party';
 import {PartyDetails} from 'form/models/partyDetails';
 import {Address} from 'form/models/address';
 import {CCDAddress} from 'models/ccdResponse/ccdAddress';
+import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
+
+const setUpUndefinedFinancialDetails = () : CCDFinancialDetailsLiP => {
+  return {
+    partnerPensionLiP: undefined,
+    partnerDisabilityLiP: undefined,
+    partnerSevereDisabilityLiP: undefined,
+    childrenEducationLiP: undefined,
+  };
+};
+
+const setUPEmptyRespondent = () : Claim => {
+  const input = new Claim();
+  input.respondent1 = new Party();
+  input.respondent1.partyDetails = new PartyDetails({});
+  return input;
+};
+
+const addressCCD: CCDAddress = {
+  AddressLine1: 'line 1',
+  AddressLine2: 'line 2',
+  AddressLine3: 'line 3',
+  PostCode: 'SW1A 2AA',
+  PostTown: 'london',
+};
 
 describe('translate cui fields to CCD model', () => {
   it('should return undefined if it is undefined', () => {
@@ -18,22 +43,13 @@ describe('translate cui fields to CCD model', () => {
 
   it('should return value if provideCorrespondenceAddress is yes and have data', () => {
     //Given
-    const input = new Claim();
-    input.respondent1 = new Party();
-    const partyDetails = new PartyDetails({});
-    partyDetails.contactPerson = 'Example contactPerson';
-    partyDetails.provideCorrespondenceAddress = 'yes';
-    partyDetails.correspondenceAddress = new Address('line 1', 'line 2', 'line 3', 'london', 'SW1A 2AA' );
-
-    input.respondent1.partyDetails = partyDetails;
+    const input = setUPEmptyRespondent();
+    input.respondent1.partyDetails.contactPerson = 'Example contactPerson';
+    input.respondent1.partyDetails.provideCorrespondenceAddress = 'yes';
+    input.respondent1.partyDetails.correspondenceAddress = new Address('line 1', 'line 2', 'line 3', 'london', 'SW1A 2AA' );
 
     const expected : CCDRespondentLiPResponse = {
-      respondent1LiPFinancialDetails: {
-        partnerPensionLiP: undefined,
-        partnerDisabilityLiP: undefined,
-        partnerSevereDisabilityLiP: undefined,
-        childrenEducationLiP: undefined,
-      },
+      respondent1LiPFinancialDetails: setUpUndefinedFinancialDetails(),
       respondent1MediationLiPResponse: undefined,
       respondent1LiPContactPerson: 'Example contactPerson',
       respondent1LiPCorrespondenceAddress: addressCCD,
@@ -46,21 +62,12 @@ describe('translate cui fields to CCD model', () => {
 
   it('should return only contact person if provideCorrespondenceAddress is no ', () => {
     //Given
-    const input = new Claim();
-    input.respondent1 = new Party();
-    const partyDetails = new PartyDetails({});
-    partyDetails.contactPerson = 'Example contactPerson';
-    partyDetails.provideCorrespondenceAddress = 'no';
-
-    input.respondent1.partyDetails = partyDetails;
+    const input = setUPEmptyRespondent();
+    input.respondent1.partyDetails.contactPerson = 'Example contactPerson';
+    input.respondent1.partyDetails.provideCorrespondenceAddress = 'no';
 
     const expected : CCDRespondentLiPResponse = {
-      respondent1LiPFinancialDetails: {
-        partnerPensionLiP: undefined,
-        partnerDisabilityLiP: undefined,
-        partnerSevereDisabilityLiP: undefined,
-        childrenEducationLiP: undefined,
-      },
+      respondent1LiPFinancialDetails: setUpUndefinedFinancialDetails(),
       respondent1MediationLiPResponse: undefined,
       respondent1LiPContactPerson: 'Example contactPerson',
     };
@@ -72,21 +79,12 @@ describe('translate cui fields to CCD model', () => {
 
   it('should return only correspondenceAddress if provideCorrespondenceAddress is yes and contactPerson undefined ', () => {
     //Given
-    const input = new Claim();
-    input.respondent1 = new Party();
-    const partyDetails = new PartyDetails({});
-    partyDetails.provideCorrespondenceAddress = 'yes';
-    partyDetails.correspondenceAddress = new Address('line 1', 'line 2', 'line 3', 'london', 'SW1A 2AA' );
-
-    input.respondent1.partyDetails = partyDetails;
+    const input = setUPEmptyRespondent();
+    input.respondent1.partyDetails.provideCorrespondenceAddress = 'yes';
+    input.respondent1.partyDetails.correspondenceAddress = new Address('line 1', 'line 2', 'line 3', 'london', 'SW1A 2AA' );
 
     const expected : CCDRespondentLiPResponse = {
-      respondent1LiPFinancialDetails: {
-        partnerPensionLiP: undefined,
-        partnerDisabilityLiP: undefined,
-        partnerSevereDisabilityLiP: undefined,
-        childrenEducationLiP: undefined,
-      },
+      respondent1LiPFinancialDetails: setUpUndefinedFinancialDetails(),
       respondent1MediationLiPResponse: undefined,
       respondent1LiPCorrespondenceAddress: addressCCD,
     };
@@ -99,22 +97,10 @@ describe('translate cui fields to CCD model', () => {
 
 const setUpUndefinedOutput = () : CCDRespondentLiPResponse => {
   return {
-    respondent1LiPFinancialDetails : {
-      partnerPensionLiP: undefined,
-      partnerDisabilityLiP: undefined,
-      partnerSevereDisabilityLiP: undefined,
-      childrenEducationLiP: undefined,
-    },
+    respondent1LiPFinancialDetails : setUpUndefinedFinancialDetails(),
     respondent1MediationLiPResponse: undefined,
     respondent1LiPContactPerson: undefined,
     respondent1LiPCorrespondenceAddress: undefined,
   };
 };
 
-const addressCCD: CCDAddress = {
-  AddressLine1: 'line 1',
-  AddressLine2: 'line 2',
-  AddressLine3: 'line 3',
-  PostCode: 'SW1A 2AA',
-  PostTown: 'london',
-};
