@@ -1,9 +1,9 @@
-export class CCDTimeLineOfEvents {
+export interface CCDTimeLineOfEvents {
   id?: string;
   value?: CCDTimeLineOfEventsItem;
 }
 
-export class CCDTimeLineOfEventsItem {
+export interface CCDTimeLineOfEventsItem {
   timelineDate: string;
   timelineDescription: string;
 }

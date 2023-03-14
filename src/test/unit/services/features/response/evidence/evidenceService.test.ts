@@ -1,5 +1,5 @@
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import {getEvidences, saveEvidence} from '../../../../../../main/services/features/response/evidence/evidenceService';
+import {getEvidence, saveEvidence} from '../../../../../../main/services/features/response/evidence/evidenceService';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {EvidenceType} from '../../../../../../main/common/models/evidence/evidenceType';
 import {Evidence} from '../../../../../../main/common/form/models/evidence/evidence';
@@ -36,7 +36,7 @@ describe('Evidence Service', () => {
         return claim;
       });
       //When
-      const form = await getEvidences('123');
+      const form = await getEvidence('123');
       //Then
       expect(form.comment).toBeUndefined();
       expect(form.evidenceItem).toEqual(EVIDENCE_ITEM_EMPTY);
@@ -53,7 +53,7 @@ describe('Evidence Service', () => {
         return claim;
       });
       //When
-      const form = await getEvidences('123');
+      const form = await getEvidence('123');
       //Then
       expect(form.comment).toEqual('');
       expect(form.evidenceItem).toEqual([]);
@@ -71,7 +71,7 @@ describe('Evidence Service', () => {
       return claim;
     });
     //When
-    const form = await getEvidences('123');
+    const form = await getEvidence('123');
 
     //Then
     expect(form.comment).toEqual(COMMENT);
@@ -84,7 +84,7 @@ describe('Evidence Service', () => {
       throw new Error(TestMessages.REDIS_FAILURE);
     });
     //Then
-    await expect(getEvidences('123')).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    await expect(getEvidence('123')).rejects.toThrow(TestMessages.REDIS_FAILURE);
   });
 
   describe('saveEvidence', () => {
