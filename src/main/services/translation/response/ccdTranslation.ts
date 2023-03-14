@@ -35,7 +35,7 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     respondent1ClaimResponseTypeForSpec: claim.respondent1?.responseType,
     defenceAdmitPartPaymentTimeRouteRequired: toCCDPaymentOption(claim),
     respondent1RepaymentPlan: toCCDRepaymentPlan(claim.partialAdmission?.paymentIntention?.repaymentPlan),
-    respondToClaimAdmitPartLRspec: toCCDPayBySetDate(claim.partialAdmission.paymentIntention.paymentDate),
+    respondToClaimAdmitPartLRspec: toCCDPayBySetDate(claim.partialAdmission?.paymentIntention?.paymentDate),
     responseClaimMediationSpecRequired: toAgreedMediation(claim.mediation),
     specAoSApplicantCorrespondenceAddressRequired: addressHasChange ? YesNoUpperCamelCase.NO : YesNoUpperCamelCase.YES,
     totalClaimAmount: claim.totalClaimAmount,
