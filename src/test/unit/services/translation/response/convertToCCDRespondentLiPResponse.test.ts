@@ -36,7 +36,7 @@ describe('translate cui fields to CCD model', () => {
       },
       respondent1MediationLiPResponse: undefined,
       respondent1LiPContactPerson: 'Example contactPerson',
-      respondent1LiPCorrespondenceAddress: addressCCD
+      respondent1LiPCorrespondenceAddress: addressCCD,
     };
     //When
     const output = toCCDRespondentLiPResponse(input);
@@ -88,7 +88,7 @@ describe('translate cui fields to CCD model', () => {
         childrenEducationLiP: undefined,
       },
       respondent1MediationLiPResponse: undefined,
-      respondent1LiPCorrespondenceAddress: addressCCD
+      respondent1LiPCorrespondenceAddress: addressCCD,
     };
     //When
     const output = toCCDRespondentLiPResponse(input);
