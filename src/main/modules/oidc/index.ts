@@ -53,7 +53,7 @@ export class OidcMiddleware {
           const assignClaimUrlWithClaimId = buildAssignClaimUrlWithId(req, app);
           return res.redirect(assignClaimUrlWithClaimId);
         }
-        if (req.session.user?.roles?.includes(citizenRole)) {
+        if (app.locals.user?.roles?.includes(citizenRole)) {
           logger.error('index.ts callback - redirect to dashboard');
           return res.redirect(DASHBOARD_URL);
         }
@@ -67,7 +67,7 @@ export class OidcMiddleware {
 
     app.get(SIGN_OUT_URL, (req: AppRequest, res: Response) => {
       const params = new URLSearchParams({
-        'id_token_hint': req.session.user?.accessToken,
+        'id_token_hint': app.locals.user?.accessToken,
         'post_logout_redirect_uri': applicationUrl,
       });
 
@@ -82,11 +82,8 @@ export class OidcMiddleware {
     app.use((req: Request, res: Response, next: NextFunction) => {
       const appReq: AppRequest = <AppRequest>req;
       logger.error('index.ts app.use start: appReq.session.user=' + appReq.session?.user
-        + ' app.locals.user=' + app.locals.user);
-      logger.error('index.ts app.use start : appReq.session=' + appReq.session
+        + ' app.locals.user=' + app.locals.user + ' appReq.session=' + appReq.session
         + ' appReq.session.id=' + appReq.session?.id);
-      logger.error('index.ts app.use start : req.session=' + req.session
-        + ' req.session.id=' + req.session?.id + ' req.sessionID=' + req.sessionID);
       if (app.locals.user) {
         if (app.locals.user.roles?.includes(citizenRole)) {
           logger.error('index.ts app.use return 1 - next');
