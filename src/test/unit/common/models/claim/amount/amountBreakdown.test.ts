@@ -13,9 +13,9 @@ describe('AmountBreakdown', () => {
     expect(result).toBeFalsy();
   });
 
-  it('should return undefined when value is false', async () => {
+  it('should return undefined when there is no value ', async () => {
     //Given
-    const value: any = false;
+    const value: null = null;
 
     //When
     const result = AmountBreakdown.fromObject(value);
