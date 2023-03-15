@@ -134,7 +134,7 @@
     "uglifyjs-webpack-plugin": "^2.2.0",
     "uuid": "^9.0.0",
     "webdriverio": "^8.3.2",
-    "webpack": "^5.75.0",
+    "webpack": "^5.76.0",
     "webpack-cli": "^5.0.1",
     "webpack-dev-middleware": "^6.0.1",
     "webpack-node-externals": "^3.0.0"
