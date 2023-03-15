@@ -1,8 +1,7 @@
 import {DateOfBirth} from '../../../../../main/common/models/claimantResponse/ccj/dateOfBirth';
 
-describe('DateOfBirth', () => {
-  let params: Record<string, string>;
-  params = {
+describe('DateOfBirth', () => {  
+  const params = {
     year: '1990',
     month: '01',
     day: '01',

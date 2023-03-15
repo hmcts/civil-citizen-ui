@@ -1,30 +1,27 @@
 import {AmountBreakdown} from 'common/form/models/claim/amount/amountBreakdown';
-import {MAX_CLAIM_AMOUNT_TOTAL} from '../../../../../../main/common/form/validators/validationConstraints'
+import {MAX_CLAIM_AMOUNT_TOTAL} from '../../../../../../main/common/form/validators/validationConstraints';
 
 describe('AmountBreakdown', () => {
   it('should return false when the total amount is greater than the maximum', async () => {
-      // Given
-      const amountBreakdown = new AmountBreakdown([], MAX_CLAIM_AMOUNT_TOTAL + 1);
+    //Given
+    const amountBreakdown = new AmountBreakdown([], MAX_CLAIM_AMOUNT_TOTAL + 1);
 
-      // When
-      const result = amountBreakdown.isValidTotal();
+    //When
+    const result = amountBreakdown.isValidTotal();
   
-      //Then
-      expect(result).toBeFalsy();
-    });
-  
-  
+    //Then
+    expect(result).toBeFalsy();
+  });
 
+  it('should return undefined when value is false', async () => {
+    //Given
+    const value: any = false;
 
-    it('should return undefined when value is false', async () => {
-      // GIVEN
-      const value: null = null;
+    //When
+    const result = AmountBreakdown.fromObject(value);
 
-      // WHEN
-      const result = AmountBreakdown.fromObject(value);
-
-      // THEN
-      expect(result).toBeUndefined();
+    //Then
+    expect(result).toBeUndefined();
   });
 });
 
