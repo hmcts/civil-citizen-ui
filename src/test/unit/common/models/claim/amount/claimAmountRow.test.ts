@@ -9,22 +9,29 @@ describe('ClaimAmountRow', () => {
 
   describe('isAtleastOneFieldPopulated', () => {
     it('should return false when row is empty', async () => {
+      //Then
       expect(row.isAtLeastOneFieldPopulated()).toBe(false);
     });
 
     it('should return true when row has a reason', async () => {
+      //When
       row.reason = 'Some reason';
+      //Then
       expect(row.isAtLeastOneFieldPopulated()).toBe(true);
     });
 
     it('should return true when row has an amount', async () => {
+      //When
       row.amount = 123.45;
+      //Then
       expect(row.isAtLeastOneFieldPopulated()).toBe(true);
     });
 
     it('should return true when row has both reason and amount', async () => {
+      //When
       row.reason = 'Some reason';
       row.amount = 123.45;
+      //Then
       expect(row.isAtLeastOneFieldPopulated()).toBe(true);
     });
   });
@@ -58,4 +65,4 @@ describe('ClaimAmountRow fromObject', () => {
     expect(result.amount).toEqual(1000);
   });
 });
-  
+

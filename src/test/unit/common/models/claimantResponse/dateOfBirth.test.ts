@@ -2,15 +2,11 @@ import {DateOfBirth} from '../../../../../main/common/models/claimantResponse/cc
 
 describe('DateOfBirth', () => {
   let params: Record<string, string>;
-
-  beforeEach(() => {
-    params = {
-      year: '1990',
-      month: '01',
-      day: '01',
-    };
-  });
-
+  params = {
+    year: '1990',
+    month: '01',
+    day: '01',
+  };
   it('should initialise the DateOfBirth instance with correct values', async () => {
     // Given
     const expectedDateOfBirth = new Date('1990-01-01');
@@ -25,3 +21,4 @@ describe('DateOfBirth', () => {
     expect(dob.day).toEqual(1);
   });
 });
+

@@ -1,24 +1,22 @@
 import {SignSettlmentAgreement} from '../../../../../../src/main/common/form/models/claimantResponse/signSettlementAgreement';
 
 describe('SignSettlementAgreement', () => {
-  describe('constructor', () => {
-    it('should create a new instance of SignSettlementAgreement with the given signed value', async () => {
-      //Given
-      const signedValue = 'Agreement signed';
+  it('should create a new instance of SignSettlementAgreement with the given signed value', async () => {
+    //Given
+    const signedValue = 'Agreement signed';
 
-      //When
-      const signSettlementAgreement = new SignSettlmentAgreement(signedValue);
+    //When
+    const signSettlementAgreement = new SignSettlmentAgreement(signedValue);
 
-      //Then
-      expect(signSettlementAgreement.signed).toEqual(signedValue);
-    });
+    //Then
+    expect(signSettlementAgreement.signed).toEqual(signedValue);
+  });
 
-    it('should create a new instance of SignSettlementAgreement with the signed value set to undefined when no value is provided', async () => {
-      //When
-      const signSettlementAgreement = new SignSettlmentAgreement();
+  it('should create a new instance of SignSettlementAgreement with the signed value set to undefined when no value is provided', async () => {
+    //When
+    const signSettlementAgreement = new SignSettlmentAgreement();
 
-      //Then
-      expect(signSettlementAgreement.signed).toBeUndefined();
-    });
+    //Then
+    expect(signSettlementAgreement.signed).toBeUndefined();
   });
 });

@@ -16,13 +16,13 @@ describe('getDocumentsContent', () => {
     const lang = 'en';
   
     // When
-    const result = getDocumentsContent(new Claim, claimId, lang);
-  
+    const result = getDocumentsContent(new Claim(), claimId, lang);
+      
     // Then
     expect(result).toHaveLength(1);
     expect(result[0].contentSections).toHaveLength(1);
   
-    const downloadClaimSection = buildDownloadSealedClaimSection(new Claim, claimId, lang);
+    const downloadClaimSection = buildDownloadSealedClaimSection(new Claim(), claimId, lang);
   
     expect(result[0].contentSections[0]).toEqual(downloadClaimSection);
   });

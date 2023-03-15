@@ -15,7 +15,7 @@ describe('InterestClaimOption', () => {
     expect(errors.length).toBe(0);
   });
 
-  it('should not validate the InterestClaimOption class with an invalid interestType value', async () => {
+  it('should validate the InterestClaimOption class with an error', async () => {
     //Given
     const invalidInterestType = 'invalid';
     const interestClaimOption = new InterestClaimOption(invalidInterestType as InterestClaimOptionsType);

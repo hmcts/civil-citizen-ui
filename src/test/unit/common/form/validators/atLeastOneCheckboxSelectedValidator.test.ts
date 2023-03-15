@@ -1,4 +1,4 @@
-import {AtLeastOneCheckboxSelectedValidator} from '../../../../../../src/main/common/form/validators/atLeastOneCheckboxSelectedValidator';
+import {AtLeastOneCheckboxSelectedValidator} from '../../../../../main/common/form/validators/atLeastOneCheckboxSelectedValidator';
 
 describe('AtLeastOneCheckboxSelectedValidator', () => {
   let validator: AtLeastOneCheckboxSelectedValidator;

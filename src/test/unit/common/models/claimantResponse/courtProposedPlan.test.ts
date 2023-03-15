@@ -1,15 +1,11 @@
 import {CourtProposedPlan, CourtProposedPlanOptions} from '../../../../../../src/main/common/form/models/claimantResponse/courtProposedPlan';
 
 describe('CourtProposedPlan constructor', () => {
-  let decision: CourtProposedPlanOptions;
-  
-  beforeEach(() => {
-    decision = CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN;
-  });
-  
+  const decision = CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN; 
+   
   it('should create a new CourtProposedPlan instance with decision set to the provided value', async () => {
     //Given
-    const expectedDecision = decision;
+    const expectedDecision = CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN; 
     
     //When
     const courtProposedPlan = new CourtProposedPlan(decision);

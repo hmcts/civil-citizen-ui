@@ -3,28 +3,26 @@ import {DefendantDOB} from '../../../../../../src/main/common/models/claimantRes
 import {DateOfBirth} from '../../../../../../src/main/common/models/claimantResponse/ccj/dateOfBirth';
 
 describe('DefendantDOB', () => {
-  describe('constructor', () => {
-    it('should set option and dob when option is Yes', async () => {
+  it('should set option and dob when option is Yes', async () => {
 
-      //Given
-      const dateOfBirth = new DateOfBirth();
+    //Given
+    const dateOfBirth = new DateOfBirth({day: '11', month: '05', year: '1980'});
 
-      //When
-      const defendantDOB = new DefendantDOB(YesNo.YES, dateOfBirth);
+    //When
+    const defendantDOB = new DefendantDOB(YesNo.YES, dateOfBirth);
 
-      //Then
-      expect(defendantDOB.option).toEqual(YesNo.YES);
-      expect(defendantDOB.dob).toEqual(dateOfBirth);
-    });
+    //Then
+    expect(defendantDOB.option).toEqual(YesNo.YES);
+    expect(defendantDOB.dob).toEqual(dateOfBirth);
+  });
 
-    it('should set option and dob to undefined when option is No', async () => {
+  it('should set option and dob to undefined when option is No', async () => {
 
-      //When
-      const defendantDOB = new DefendantDOB(YesNo.NO);
+    //When
+    const defendantDOB = new DefendantDOB(YesNo.NO);
 
-      //Then
-      expect(defendantDOB.option).toEqual(YesNo.NO);
-      expect(defendantDOB.dob).toBeUndefined();
-    });
+    //Then
+    expect(defendantDOB.option).toEqual(YesNo.NO);
+    expect(defendantDOB.dob).toBeUndefined();
   });
 });
