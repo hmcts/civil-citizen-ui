@@ -14,11 +14,8 @@ describe('AmountBreakdown', () => {
   });
 
   it('should return undefined when there is no value ', async () => {
-    //Given
-    const value: null = null;
-
     //When
-    const result = AmountBreakdown.fromObject(value);
+    const result = AmountBreakdown.fromObject(undefined);
 
     //Then
     expect(result).toBeUndefined();
