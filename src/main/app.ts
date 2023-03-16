@@ -16,7 +16,7 @@ import {DraftStoreClient} from './modules/draft-store';
 import {CSRFToken} from './modules/csrf';
 import routes from './routes/routes';
 //import {TaskList} from './common/models/taskList/taskList';
-// import {setLanguage} from 'modules/i18n/languageService';
+import {setLanguage} from 'modules/i18n/languageService';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const { setupDev } = require('./development');
@@ -34,7 +34,7 @@ app.use(cookieSession({
   sameSite: 'lax',
 }));
 // app.use(cookieParser());
-// app.use(setLanguage);
+app.use(setLanguage);
 app.use(express.static(path.join(__dirname, 'public')));
 
 /*
