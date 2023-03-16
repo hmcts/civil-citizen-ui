@@ -1,6 +1,6 @@
 import * as bodyParser from 'body-parser';
 import config = require('config');
-import cookieParser from 'cookie-parser';
+//import cookieParser from 'cookie-parser';
 import express from 'express';
 import cookieSession from 'cookie-session';
 import { Helmet } from './modules/helmet';
@@ -16,7 +16,7 @@ import {DraftStoreClient} from './modules/draft-store';
 import {CSRFToken} from './modules/csrf';
 import routes from './routes/routes';
 //import {TaskList} from './common/models/taskList/taskList';
-import {setLanguage} from 'modules/i18n/languageService';
+// import {setLanguage} from 'modules/i18n/languageService';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const { setupDev } = require('./development');
@@ -33,8 +33,8 @@ app.use(cookieSession({
   secure: false,
   sameSite: 'lax',
 }));
-app.use(cookieParser());
-app.use(setLanguage);
+// app.use(cookieParser());
+// app.use(setLanguage);
 app.use(express.static(path.join(__dirname, 'public')));
 
 /*
