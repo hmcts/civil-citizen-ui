@@ -2,7 +2,6 @@ import config from 'config';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
-import {getLanguage} from 'modules/i18n/languageService';
 
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
@@ -59,8 +58,7 @@ export class DashboardDefendantItem extends DashboardItem {
     this.url = '/dashboard/:claimId/defendant';
   }
 
-  getStatus() {
-    const lang = getLanguage();
+  getStatus(lang: string | unknown) {
     const paramNumberOfDays = {key: 'numberOfDays', value: this.numberOfDays};
     const paramNumberOfDaysOverdue = {key: 'numberOfDays', value: this.numberOfDaysOverdue};
     const paramPaymentDate = {key: 'paymentDate', value: formatDateToFullDate(this.paymentDate, lang)};
