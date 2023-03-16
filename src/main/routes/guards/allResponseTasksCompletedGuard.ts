@@ -5,7 +5,7 @@ import assert from 'assert';
 import {constructResponseUrlWithIdParams} from '../../common/utils/urlFormatter';
 import {Claim} from '../../common/models/claim';
 import {getCaseDataFromStore} from '../../modules/draft-store/draftStoreService';
-import {AppRequest} from "models/AppRequest";
+import {AppRequest} from 'models/AppRequest';
 
 export class AllResponseTasksCompletedGuard {
   static apply(redirectUrl: string) {
