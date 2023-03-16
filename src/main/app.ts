@@ -30,8 +30,8 @@ app.use(cookieSession({
   name: 'citizen-ui-session',
   secret: 'local',
   maxAge: cookieMaxAge,
-  secure: false,
-  sameSite: 'lax',
+  secure: !developmentMode,
+  sameSite: !developmentMode,
 }));
 app.use(cookieParser());
 app.use(setLanguage);
