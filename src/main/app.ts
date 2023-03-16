@@ -39,7 +39,7 @@ app.use(session({
   cookie : {
     secure: false,
     maxAge: cookieMaxAge,
-  }
+  },
 }));
 /*
 app.use(cookieSession({
