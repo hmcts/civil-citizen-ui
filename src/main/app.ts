@@ -1,7 +1,7 @@
 import * as bodyParser from 'body-parser';
 import config = require('config');
 import cookieParser from 'cookie-parser';
-const session = require('express-session')
+const session = require('express-session');
 import express from 'express';
 import cookieSession from 'cookie-session';
 import { Helmet } from './modules/helmet';
@@ -30,7 +30,7 @@ export const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
 export const app = express();
 app.use(session({
   store: new MemoryStore({
-    checkPeriod: 86400000 // prune expired entries every 24h
+    checkPeriod: 86400000, // prune expired entries every 24h
   }),
 }));
 app.use(cookieSession({
