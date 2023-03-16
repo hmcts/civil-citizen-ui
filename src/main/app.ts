@@ -3,7 +3,7 @@ import config = require('config');
 import cookieParser from 'cookie-parser';
 const session = require('express-session');
 import express from 'express';
-import cookieSession from 'cookie-session';
+//import cookieSession from 'cookie-session';
 import { Helmet } from './modules/helmet';
 import * as path from 'path';
 import { HTTPError } from '../main/HttpError';
@@ -29,16 +29,26 @@ export const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
 
 export const app = express();
 app.use(session({
+  name: 'citizen-ui-session',
   store: new MemoryStore({
     checkPeriod: 86400000, // prune expired entries every 24h
   }),
+  secret: 'local',
+  resave: true,
+  saveUninitialized: true,
+  cookie : {
+    secure: false,
+    maxAge: cookieMaxAge,
+  }
 }));
+/*
 app.use(cookieSession({
   name: 'citizen-ui-session',
   secret: 'local',
   maxAge: cookieMaxAge,
   secure: false,
 }));
+ */
 app.use(cookieParser());
 app.use(setLanguage);
 app.use(express.static(path.join(__dirname, 'public')));
