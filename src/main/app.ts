@@ -32,7 +32,6 @@ app.use(cookieSession({
   maxAge: cookieMaxAge,
   secure: !developmentMode,
   sameSite: !developmentMode,
-  overwrite: false,
 }));
 app.use(cookieParser());
 app.use(setLanguage);
