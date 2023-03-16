@@ -31,7 +31,7 @@ app.use(cookieSession({
   secret: 'local',
   maxAge: cookieMaxAge,
   secure: false,
-  sameSite: 'none',
+  sameSite: 'lax',
 }));
 app.use(cookieParser());
 app.use(setLanguage);
@@ -60,8 +60,7 @@ new OidcMiddleware().enableFor(app);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+
 app.use((_req, res, next) => {
   res.setHeader(
     'Cache-Control',
