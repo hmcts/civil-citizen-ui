@@ -1,6 +1,7 @@
 import * as bodyParser from 'body-parser';
 import config = require('config');
-//import cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser';
+const session = require('express-session')
 import express from 'express';
 import cookieSession from 'cookie-session';
 import { Helmet } from './modules/helmet';
@@ -20,20 +21,25 @@ import {setLanguage} from 'modules/i18n/languageService';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const { setupDev } = require('./development');
+const MemoryStore = require('memorystore')(session);
 
 const env = process.env.NODE_ENV || 'development';
 const developmentMode = env === 'development';
 export const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
 
 export const app = express();
+app.use(session({
+  store: new MemoryStore({
+    checkPeriod: 86400000 // prune expired entries every 24h
+  }),
+}));
 app.use(cookieSession({
   name: 'citizen-ui-session',
   secret: 'local',
   maxAge: cookieMaxAge,
   secure: false,
-  sameSite: 'lax',
 }));
-// app.use(cookieParser());
+app.use(cookieParser());
 app.use(setLanguage);
 app.use(express.static(path.join(__dirname, 'public')));
 
