@@ -1,4 +1,4 @@
-import {CourtProposedDate, CourtProposedDateOptions} from '../../../../../../src/main/common/form/models/claimantResponse/courtProposedDate';
+import {CourtProposedDate, CourtProposedDateOptions} from 'common/form/models/claimantResponse/courtProposedDate';
 
 describe('CourtProposedDate constructor', () => {
   it('should create a new CourtProposedDate instance with the provided decision', async () => {

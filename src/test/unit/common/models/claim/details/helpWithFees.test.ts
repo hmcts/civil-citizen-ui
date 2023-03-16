@@ -1,4 +1,4 @@
-import {YesNo} from '../../../../../../../src/main/common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
 import {HelpWithFees} from 'common/form/models/claim/details/helpWithFees';
 
 describe('HelpWithFees', () => {

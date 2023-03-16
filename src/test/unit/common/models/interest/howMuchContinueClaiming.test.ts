@@ -1,5 +1,5 @@
-import {HowMuchContinueClaiming} from '../../../../../../src/main/common/form/models/interest/howMuchContinueClaiming';
-import {SameRateInterestType} from '../../../../../../src/main/common/form/models/claimDetails';
+import {HowMuchContinueClaiming} from 'common/form/models/interest/howMuchContinueClaiming';
+import {SameRateInterestType} from 'common/form/models/claimDetails';
 
 describe('HowMuchContinueClaiming constructor', () => {
   it('should create a new instance of HowMuchContinueClaiming', async () => {

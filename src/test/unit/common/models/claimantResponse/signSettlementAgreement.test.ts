@@ -1,4 +1,4 @@
-import {SignSettlmentAgreement} from '../../../../../../src/main/common/form/models/claimantResponse/signSettlementAgreement';
+import {SignSettlmentAgreement} from 'common/form/models/claimantResponse/signSettlementAgreement';
 
 describe('SignSettlementAgreement', () => {
   it('should create a new instance of SignSettlementAgreement with the given signed value', async () => {

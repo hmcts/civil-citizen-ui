@@ -1,5 +1,5 @@
 import {PartyType} from 'models/partyType';
-import {PartyTypeSelection} from '../../../../../../src/main/common/form/models/claim/partyTypeSelection';
+import {PartyTypeSelection} from 'common/form/models/claim/partyTypeSelection';
 
 describe('PartyTypeSelection', () => {
   describe('option', () => {

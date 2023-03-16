@@ -1,8 +1,7 @@
 import {ChooseHowProceed} from 'models/chooseHowProceed';
-import {ChooseHowToProceed} from '../../../../../../src/main/common/form/models/claimantResponse/chooseHowToProceed';
+import {ChooseHowToProceed} from 'common/form/models/claimantResponse/chooseHowToProceed';
 
 describe('constructor', () => {
-
   it('should create an instance of ChooseHowToProceed with a defined option', () => {
     // Given
     const option: ChooseHowProceed = ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT;
@@ -27,7 +26,6 @@ describe('constructor', () => {
 });
 
 describe('option', () => {
-
   it('should be defined', () => {
     // Given
     const chooseHowToProceed = new ChooseHowToProceed();

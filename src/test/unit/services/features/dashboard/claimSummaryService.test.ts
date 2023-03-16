@@ -1,5 +1,5 @@
-import {getDocumentsContent} from '../../../../../../src/main/services/features/dashboard/claimSummaryService';
-import {buildDownloadSealedClaimSection} from '../../../../../../src/main/services/features/dashboard/claimDocuments/claimDocumentContentBuilder';
+import {getDocumentsContent} from 'services/features/dashboard/claimSummaryService';
+import {buildDownloadSealedClaimSection} from 'services/features/dashboard/claimDocuments/claimDocumentContentBuilder';
 
 import {Claim} from 'models/claim';
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');

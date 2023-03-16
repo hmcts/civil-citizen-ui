@@ -16,6 +16,7 @@ describe('ClaimAmountRow', () => {
     it('should return true when row has a reason', async () => {
       //When
       row.reason = 'Some reason';
+
       //Then
       expect(row.isAtLeastOneFieldPopulated()).toBe(true);
     });
@@ -23,6 +24,7 @@ describe('ClaimAmountRow', () => {
     it('should return true when row has an amount', async () => {
       //When
       row.amount = 123.45;
+
       //Then
       expect(row.isAtLeastOneFieldPopulated()).toBe(true);
     });
@@ -31,6 +33,7 @@ describe('ClaimAmountRow', () => {
       //When
       row.reason = 'Some reason';
       row.amount = 123.45;
+
       //Then
       expect(row.isAtLeastOneFieldPopulated()).toBe(true);
     });

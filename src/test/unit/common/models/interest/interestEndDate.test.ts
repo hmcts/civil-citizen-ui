@@ -1,5 +1,5 @@
-import {InterestEndDate} from '../../../../../../src/main/common/form/models/interest/interestEndDate';
-import {InterestEndDateType} from '../../../../../../src/main/common/form/models/claimDetails';
+import {InterestEndDate} from 'common/form/models/interest/interestEndDate';
+import {InterestEndDateType} from 'common/form/models/claimDetails';
 
 describe('InterestEndDate constructor', () => {
   it('should set the option property when option is provided', async () => {

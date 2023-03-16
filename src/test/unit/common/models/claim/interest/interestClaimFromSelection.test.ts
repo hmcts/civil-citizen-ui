@@ -1,5 +1,5 @@
-import {InterestClaimFromSelection} from '../../../../../../main/common/form/models/claim/interest/interestClaimFromSelection';
-import {InterestClaimFromType} from '../../../../../../main/common/form/models/claimDetails';
+import {InterestClaimFromSelection} from 'common/form/models/claim/interest/interestClaimFromSelection';
+import {InterestClaimFromType} from 'common/form/models/claimDetails';
 import {validate} from 'class-validator';
 
 describe('InterestClaimFromSelection', () => {

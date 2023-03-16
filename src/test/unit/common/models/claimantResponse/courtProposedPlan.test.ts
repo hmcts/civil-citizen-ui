@@ -1,4 +1,4 @@
-import {CourtProposedPlan, CourtProposedPlanOptions} from '../../../../../../src/main/common/form/models/claimantResponse/courtProposedPlan';
+import {CourtProposedPlan, CourtProposedPlanOptions} from 'common/form/models/claimantResponse/courtProposedPlan';
 
 describe('CourtProposedPlan constructor', () => {
   const decision = CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN; 

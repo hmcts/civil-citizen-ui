@@ -1,4 +1,4 @@
-import {DateOfBirth} from '../../../../../main/common/models/claimantResponse/ccj/dateOfBirth';
+import {DateOfBirth} from 'models/claimantResponse/ccj/dateOfBirth';
 
 describe('DateOfBirth', () => {  
   const params = {
