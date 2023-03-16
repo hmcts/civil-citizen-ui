@@ -47,19 +47,19 @@ def setUrls(suffix){
   env.IDAM_API_URL = "https://idam-api.aat.platform.hmcts.net"
   env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
   if("${suffix}" == 'aat') {
-    env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-${suffix}.service.core-compute-aat.internal"
+    env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-${suffix}.service.aat.platform.hmcts.net"
     env.URL="https://manage-case.aat.platform.hmcts.net"
-    env.TEST_URL="https://civil-citizen-ui-staging.service.core-compute-aat.internal"
-    env.CIVIL_SERVICE_URL="http://civil-service-${suffix}.service.core-compute-aat.internal"
+    env.TEST_URL="https://civil-citizen-ui-staging.service.aat.platform.hmcts.net"
+    env.CIVIL_SERVICE_URL="http://civil-service-${suffix}.service.aat.platform.hmcts.net"
 
   } else {
-    env.CCD_DATA_STORE_URL = "https://ccd-data-store-api-${suffix}.service.core-compute-preview.internal"
-    env.URL="https://xui-${suffix}.service.core-compute-preview.internal"
-    env.TEST_URL="https://${suffix}.service.core-compute-preview.internal"
-    env.CIVIL_SERVICE_URL="https://civil-service-${suffix}.service.core-compute-preview.internal"
+    env.CCD_DATA_STORE_URL = "https://ccd-data-store-api-${suffix}.service.preview.platform.hmcts.net"
+    env.URL="https://xui-${suffix}.service.preview.platform.hmcts.net"
+    env.TEST_URL="https://${suffix}.service.preview.platform.hmcts.net"
+    env.CIVIL_SERVICE_URL="https://civil-service-${suffix}.service.preview.platform.hmcts.net"
 
   }
-  env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
+  env.DM_STORE_URL = "http://dm-store-aat.service.aat.internal"
 }
 
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
