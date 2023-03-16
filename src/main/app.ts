@@ -31,7 +31,6 @@ app.use(cookieSession({
   secret: 'local',
   maxAge: cookieMaxAge,
   secure: false,
-  overwrite: false,
   sameSite: 'none',
 }));
 app.use(cookieParser());
