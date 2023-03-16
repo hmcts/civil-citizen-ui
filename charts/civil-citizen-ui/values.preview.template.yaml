@@ -71,8 +71,8 @@ civil-service:
       FEES_API_URL: http://fees-register-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       PAYMENTS_API_URL: http://payment-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       SEND_LETTER_URL: http://rpe-send-letter-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-      CUI_URL: https://civil-citizen-ui.{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-      CUI_URL_RESPOND_TO_CLAIM: https://civil-citizen-ui.{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/first-contact/start
+      CUI_URL: ${SERVICE_NAME}.preview.platform.hmcts.net
+      CUI_URL_RESPOND_TO_CLAIM: ${SERVICE_NAME}.preview.platform.hmcts.net/first-contact/start
       CLAIM_STORE_URL: http://cmc-claim-store-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       GENAPP_LRD_URL: http://rd-location-ref-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       GENAPP_JRD_URL: http://rd-judicial-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
@@ -241,7 +241,6 @@ camunda-bpm:
   java:
     disableKeyVaults: true
     releaseNameOverride: ${SERVICE_NAME}-camunda
-    ingressHost: camunda-${SERVICE_NAME}.preview.platform.hmcts.net
     environment:
       CAMUNDA_API_AUTH_ENABLED: false
       CAMUNDA_DB_HOST: ${SERVICE_NAME}-postgresql
