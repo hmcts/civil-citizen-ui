@@ -15,7 +15,7 @@ import { OidcMiddleware } from './modules/oidc';
 import {DraftStoreClient} from './modules/draft-store';
 import {CSRFToken} from './modules/csrf';
 import routes from './routes/routes';
-import {TaskList} from './common/models/taskList/taskList';
+//import {TaskList} from './common/models/taskList/taskList';
 import {setLanguage} from 'modules/i18n/languageService';
 
 const { Logger } = require('@hmcts/nodejs-logging');
@@ -32,17 +32,20 @@ app.use(cookieSession({
   maxAge: cookieMaxAge,
   secure: !developmentMode,
   sameSite: !developmentMode,
+  overwrite: false,
 }));
 app.use(cookieParser());
 app.use(setLanguage);
 app.use(express.static(path.join(__dirname, 'public')));
 
+/*
 declare module 'express-session' {
   interface Session {
     claimId: string;
     taskLists: TaskList[];
   }
 }
+*/
 
 app.locals.ENV = env;
 I18Next.enableFor(app);
