@@ -56,7 +56,7 @@ def setUrls(suffix){
     env.CCD_DATA_STORE_URL = "https://ccd-data-store-api-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net"
     env.URL="https://xui-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net"
     env.TEST_URL="https://civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net"
-    env.CIVIL_SERVICE_URL="https://civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.CIVIL_SERVICE_URL="https://civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net"
 
   }
   env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
