@@ -3,7 +3,6 @@ import config = require('config');
 import cookieParser from 'cookie-parser';
 const session = require('express-session');
 import express from 'express';
-//import cookieSession from 'cookie-session';
 import { Helmet } from './modules/helmet';
 import * as path from 'path';
 import { HTTPError } from '../main/HttpError';
@@ -16,7 +15,6 @@ import { OidcMiddleware } from './modules/oidc';
 import {DraftStoreClient} from './modules/draft-store';
 import {CSRFToken} from './modules/csrf';
 import routes from './routes/routes';
-//import {TaskList} from './common/models/taskList/taskList';
 import {setLanguage} from 'modules/i18n/languageService';
 
 const { Logger } = require('@hmcts/nodejs-logging');
@@ -41,26 +39,9 @@ app.use(session({
     maxAge: cookieMaxAge,
   },
 }));
-/*
-app.use(cookieSession({
-  name: 'citizen-ui-session',
-  secret: 'local',
-  maxAge: cookieMaxAge,
-  secure: false,
-}));
- */
 app.use(cookieParser());
 app.use(setLanguage);
 app.use(express.static(path.join(__dirname, 'public')));
-
-/*
-declare module 'express-session' {
-  interface Session {
-    claimId: string;
-    taskLists: TaskList[];
-  }
-}
-*/
 
 app.locals.ENV = env;
 I18Next.enableFor(app);
