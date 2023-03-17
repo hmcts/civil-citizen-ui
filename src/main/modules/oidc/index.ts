@@ -11,8 +11,6 @@ import {
   UNAUTHORISED_URL,
 } from '../../routes/urls';
 
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('index');
 
 const requestIsForAssigningClaimForDefendant = (req: Request): boolean => {
   return req.originalUrl.startsWith(ASSIGN_CLAIM_URL) && req.query?.id !== undefined;
@@ -65,10 +63,7 @@ export class OidcMiddleware {
         'post_logout_redirect_uri': applicationUrl,
       });
 
-      req.session.destroy((error) => {
-        if (error) {
-          logger.error(error);
-        }
+      req.session.destroy(() => {
         req.session = app.locals.user = undefined;
         res.redirect(idamSignOutUrl + '?' + params.toString());
       });
