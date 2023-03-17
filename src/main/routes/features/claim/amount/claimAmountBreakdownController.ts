@@ -11,7 +11,7 @@ import {
 import {AppRequest} from 'models/AppRequest';
 import {constructUrlWithNotEligibleReason} from 'common/utils/urlFormatter';
 import {NotEligibleReason} from 'form/models/eligibility/NotEligibleReason';
-import {app} from "../../../../app";
+import {app} from '../../../../app';
 
 const claimAmountBreakdownController = Router();
 const viewPath = 'features/claim/amount/claim-amount-breakdown';

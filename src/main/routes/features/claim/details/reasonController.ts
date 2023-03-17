@@ -6,7 +6,7 @@ import {CLAIM_REASON_URL, CLAIM_TIMELINE_URL} from 'routes/urls';
 import {getClaimDetails, saveClaimDetails} from 'services/features/claim/details/claimDetailsService';
 import {Reason} from 'form/models/claim/details/reason';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
-import {app} from "../../../../app";
+import {app} from '../../../../app';
 
 const reasonController = Router();
 const reasonViewPath = 'features/claim/details/reason';

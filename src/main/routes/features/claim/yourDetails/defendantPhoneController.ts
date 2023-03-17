@@ -5,7 +5,7 @@ import {getTelephone, saveTelephone} from '../../../../services/features/claim/y
 import {AppRequest} from 'common/models/AppRequest';
 import {CitizenTelephoneNumber} from '../../../../common/form/models/citizenTelephoneNumber';
 import {ClaimantOrDefendant} from '../../../../common/models/partyType';
-import {app} from "../../../../app";
+import {app} from '../../../../app';
 
 const defendantPhoneViewPath = 'features/public/claim/defendant-phone';
 const defendantPhoneController = Router();

@@ -12,7 +12,7 @@ import {
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {ClaimDetails} from '../../../../common/form/models/claim/details/claimDetails';
-import {app} from "../../../../app";
+import {app} from '../../../../app';
 
 const evidenceViewPath = 'features/claim/claimant-evidences';
 const evidenceController = Router();

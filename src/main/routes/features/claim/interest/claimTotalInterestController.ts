@@ -4,7 +4,7 @@ import {AppRequest} from '../../../../common/models/AppRequest';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {TotalInterest} from '../../../../common/form/models/interest/totalInterest';
 import {getInterest, saveInterest} from '../../../../services/features/claim/interest/interestService';
-import {app} from "../../../../app";
+import {app} from '../../../../app';
 
 const claimTotalInterestController = Router();
 const claimTotalInterestViewPath = 'features/claim/interest/total-claim-interest';

@@ -5,7 +5,7 @@ import {Claim} from '../../../common/models/claim';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from '../../../modules/utilityService';
-import {app} from "../../../app";
+import {app} from '../../../app';
 
 const taskListViewPath = 'features/response/task-list';
 const taskListController = Router();

@@ -7,7 +7,7 @@ import {
 import {ClaimantInterestRate} from '../../../../common/form/models/claim/interest/claimantInterestRate';
 import {AppRequest} from 'common/models/AppRequest';
 import {getInterest, saveInterest} from '../../../../services/features/claim/interest/interestService';
-import {app} from "../../../../app";
+import {app} from '../../../../app';
 
 const interestRateController = Router();
 const interestRateViewPath = 'features/claim/interest/claimant-interest-rate';

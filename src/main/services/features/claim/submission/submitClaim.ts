@@ -4,7 +4,7 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {Claim} from 'common/models/claim';
 import {translateDraftClaimToCCD} from 'services/translation/claim/ccdTranslation';
-import {app} from "../../../../app";
+import {app} from '../../../../app';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('partialAdmissionService');

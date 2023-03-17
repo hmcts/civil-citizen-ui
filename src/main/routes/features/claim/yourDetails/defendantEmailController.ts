@@ -4,7 +4,7 @@ import {CLAIM_DEFENDANT_EMAIL_URL, CLAIM_DEFENDANT_PHONE_NUMBER_URL} from '../..
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {getDefendantEmail,saveDefendantEmail} from '../../../../services/features/claim/yourDetails/defendantEmailService';
 import {AppRequest} from '../../../../common/models/AppRequest';
-import {app} from "../../../../app";
+import {app} from '../../../../app';
 
 const defendantEmailViewPath = 'features/claim/yourDetails/defendant-email';
 const defendantEmailController = Router();

@@ -9,7 +9,7 @@ import {InterestClaimFromSelection} from '../../../../common/form/models/claim/i
 import {InterestClaimFromType} from '../../../../common/form/models/claimDetails';
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {getInterest, saveInterest} from '../../../../services/features/claim/interest/interestService';
-import {app} from "../../../../app";
+import {app} from '../../../../app';
 
 const claimantInterestFromController = Router();
 const claimantInterestFromViewPath = 'features/claim/interest/claimant-interest-from';

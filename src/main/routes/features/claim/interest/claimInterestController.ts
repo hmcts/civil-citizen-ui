@@ -13,7 +13,7 @@ import {
   saveClaimInterest,
 } from '../../../../services/features/claim/interest/claimInterestService';
 import {AppRequest} from '../../../../common/models/AppRequest';
-import {app} from "../../../../app";
+import {app} from '../../../../app';
 
 const claimInterestController = express.Router();
 const claimInterestPath = 'features/claim/interest/claim-interest';

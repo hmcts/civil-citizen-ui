@@ -17,7 +17,7 @@ import {Party} from '../../../../common/models/party';
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {PartyType} from '../../../../common/models/partyType';
 import {PartyDetails} from '../../../../common/form/models/partyDetails';
-import {app} from "../../../../app";
+import {app} from '../../../../app';
 
 const claimantDetailsController = Router();
 const claimantOrganisationDetailsPath = 'features/claim/yourDetails/claimant-organisation-details';
