@@ -25,7 +25,6 @@ import {CourtLocation} from '../../common/models/courts/courtLocations';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {app} from '../../app';
 
-
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
 
