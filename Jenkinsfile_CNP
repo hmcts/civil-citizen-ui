@@ -59,7 +59,7 @@ def setUrls(suffix){
    env.CIVIL_SERVICE_URL="https://civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net"
 
   }
-  env.DM_STORE_URL = "http://dm-store-aat.service.aat.internal"
+  env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
 }
 
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
