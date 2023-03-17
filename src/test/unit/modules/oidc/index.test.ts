@@ -23,7 +23,6 @@ const userDetails = {accessToken: citizenRoleToken, email:'dfkdh', id: 'jfkdljfd
 
 jest.mock('../../../../main/app/auth/user/oidc');
 
-
 describe('OIDC middleware', () => {
   describe('Sign out', () => {
     beforeEach(() => {
