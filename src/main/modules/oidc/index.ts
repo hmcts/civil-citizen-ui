@@ -84,7 +84,6 @@ export class OidcMiddleware {
         if (appReq.session.user.roles?.includes(citizenRole)) {
           return next();
         }
-        return res.redirect(DASHBOARD_URL);
       }
       if (requestIsForPinAndPost(req)) {
         return next();

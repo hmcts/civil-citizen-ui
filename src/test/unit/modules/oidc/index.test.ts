@@ -22,6 +22,8 @@ const signOutUrl = idamServiceUrl.replace('/login', '/o/endSession');
 const userDetails = {accessToken: citizenRoleToken, email:'dfkdh', id: 'jfkdljfd', familyName:'masslover', givenName:'tatiana', roles:['citizen']};
 
 jest.mock('../../../../main/app/auth/user/oidc');
+
+
 describe('OIDC middleware', () => {
   describe('Sign out', () => {
     beforeEach(() => {
@@ -95,6 +97,16 @@ describe('OIDC middleware', () => {
     });
     it ('should redirect to dashboard when query type is not string', async () => {
       await request(app).get(CALLBACK_URL)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.text).toContain(DASHBOARD_URL);
+        });
+    });
+    it('should redirect to dashboard when query is string and user has citizen role', async () => {
+      userDetails.roles = ['citizen'];
+      mockGetUserDetails.mockImplementation(async () => userDetails);
+      await request(app).get(CALLBACK_URL)
+        .query({code: 'string'})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.text).toContain(DASHBOARD_URL);
