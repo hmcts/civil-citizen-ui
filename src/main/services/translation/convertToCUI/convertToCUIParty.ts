@@ -14,14 +14,12 @@ export const toCUIParty = (ccdParty: CCDParty): Party => {
     cuiParty.partyDetails.individualFirstName = ccdParty?.individualFirstName ? ccdParty.individualFirstName : undefined;
     cuiParty.partyDetails.individualLastName = ccdParty.individualLastName ? ccdParty?.individualLastName : undefined;
     cuiParty.partyDetails.individualTitle = ccdParty.individualTitle ? ccdParty?.individualTitle : undefined;
-    cuiParty.dateOfBirth = new CitizenDate();
-    cuiParty.dateOfBirth.date = ccdParty?.individualDateOfBirth ? new Date(ccdParty.individualDateOfBirth) : undefined;
+    cuiParty.dateOfBirth = getDateOfBirth(ccdParty?.individualDateOfBirth);
   } else if (ccdParty?.type === PartyType.SOLE_TRADER) {
     cuiParty.partyDetails.individualFirstName = ccdParty.soleTraderFirstName ? ccdParty?.soleTraderFirstName : undefined;
     cuiParty.partyDetails.individualLastName = ccdParty.soleTraderLastName ? ccdParty?.soleTraderLastName : undefined;
     cuiParty.partyDetails.individualTitle = ccdParty.soleTraderTitle ? ccdParty?.soleTraderTitle : undefined;
-    cuiParty.dateOfBirth = new CitizenDate();
-    cuiParty.dateOfBirth.date = ccdParty.soleTraderDateOfBirth ? new Date(ccdParty?.soleTraderDateOfBirth) : undefined;
+    cuiParty.dateOfBirth = getDateOfBirth(ccdParty?.soleTraderDateOfBirth);
     cuiParty.partyDetails.soleTraderTradingAs = ccdParty.soleTraderTradingAs ? ccdParty?.soleTraderTradingAs : undefined;
   } else if (ccdParty?.type === PartyType.COMPANY) {
     cuiParty.partyDetails.partyName = ccdParty?.companyName ? ccdParty.companyName : undefined;
@@ -34,3 +32,9 @@ export const toCUIParty = (ccdParty: CCDParty): Party => {
   cuiParty.partyDetails.primaryAddress = new Address(ccdParty?.primaryAddress?.AddressLine1, ccdParty?.primaryAddress?.AddressLine2, ccdParty?.primaryAddress?.AddressLine3, ccdParty?.primaryAddress?.PostTown, ccdParty?.primaryAddress?.PostCode);
   return cuiParty;
 };
+
+const getDateOfBirth = (dateStr: Date): CitizenDate => {
+  if(!dateStr) return undefined;
+  const [day, month, year] = dateStr.toString().split("-");
+  return new CitizenDate(year, month, day);
+}
