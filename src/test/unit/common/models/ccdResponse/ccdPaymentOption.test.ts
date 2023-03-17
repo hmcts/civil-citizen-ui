@@ -7,7 +7,7 @@ import {ResponseType} from 'form/models/responseType';
 describe('translate payment option to ccd version', ()=> {
   const claim = new Claim();
 
-  it('should translate pay immediately to ccd version for part admit', ()=> {
+  it.concurrent('should translate pay immediately to ccd version for part admit.concurrent', ()=> {
     //Given
     claim.partialAdmission = {
       paymentIntention: {
@@ -22,7 +22,7 @@ describe('translate payment option to ccd version', ()=> {
     //Then
     expect(result).toBe(CCDPaymentOption.IMMEDIATELY);
   });
-  it('should translate pay by set date to ccd version for part admit', ()=> {
+  it.concurrent('should translate pay by set date to ccd version for part admit.concurrent', ()=> {
     //Given
     claim.partialAdmission = {
       paymentIntention: {
@@ -37,7 +37,7 @@ describe('translate payment option to ccd version', ()=> {
     //Then
     expect(result).toBe(CCDPaymentOption.BY_SET_DATE);
   });
-  it('should translate pay by pay by instalments to ccd version for part admit', ()=> {
+  it.concurrent('should translate pay by pay by instalments to ccd version for part admit.concurrent', ()=> {
     //Given
     claim.partialAdmission = {
       paymentIntention: {
@@ -52,7 +52,7 @@ describe('translate payment option to ccd version', ()=> {
     //Then
     expect(result).toBe(CCDPaymentOption.REPAYMENT_PLAN);
   });
-  it('should translate pay immediately to ccd version for full admit', ()=> {
+  it.concurrent('should translate pay immediately to ccd version for full admit.concurrent', ()=> {
     //Given
     claim.fullAdmission = {
       paymentIntention: {
@@ -67,7 +67,7 @@ describe('translate payment option to ccd version', ()=> {
     //Then
     expect(result).toBe(CCDPaymentOption.IMMEDIATELY);
   });
-  it('should translate pay by set date to ccd version for full admit', ()=> {
+  it.concurrent('should translate pay by set date to ccd version for full admit.concurrent', ()=> {
     //Given
     claim.fullAdmission = {
       paymentIntention: {
@@ -82,7 +82,7 @@ describe('translate payment option to ccd version', ()=> {
     //Then
     expect(result).toBe(CCDPaymentOption.BY_SET_DATE);
   });
-  it('should translate pay by pay by instalments to ccd version for full admit', ()=> {
+  it.concurrent('should translate pay by pay by instalments to ccd version for full admit.concurrent', ()=> {
     //Given
     claim.fullAdmission = {
       paymentIntention: {

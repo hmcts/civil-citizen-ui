@@ -25,12 +25,12 @@ describe('How much money admit owe Task', () => {
 
   describe('getHowMuchMoneyAdmitOweTask', () => {
 
-    it('should return incomplete task', () => {
+    it.concurrent('should return incomplete task', () => {
       const howMuchMoneyAdmitOweTask = getHowMuchMoneyAdmitOweTask(claim, claimId, lang);
       expect(howMuchMoneyAdmitOweTask).toEqual(resultIncomplete);
     });
 
-    it('should return complete task', () => {
+    it.concurrent('should return complete task', () => {
       claim.partialAdmission = new PartialAdmission();
       claim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(500);
       const howMuchMoneyAdmitOweTask = getHowMuchMoneyAdmitOweTask(claim, claimId, lang);

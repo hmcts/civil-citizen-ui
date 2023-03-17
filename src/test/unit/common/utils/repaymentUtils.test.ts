@@ -68,7 +68,7 @@ describe('repaymentUtils', () => {
   const claim = createClaimWithBasicRespondentDetails();
 
   describe('isRepaymentPlanFullOrPartAdmit', () => {
-    it('should refer to repayment plan for full admit journey', () => {
+    it.concurrent('should refer to repayment plan for full admit journey', () => {
       //Given
       claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
@@ -86,7 +86,7 @@ describe('repaymentUtils', () => {
       expect(claim.fullAdmission?.paymentIntention?.paymentDate).not.toBeNull();
     });
 
-    it('should refer to repayment plan for part admit journey', () => {
+    it.concurrent('should refer to repayment plan for part admit journey', () => {
       //Given
       claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.PART_ADMISSION;
@@ -120,7 +120,7 @@ describe('repaymentUtils', () => {
         firstRepaymentDate: new Date(Date.now()),
       };
     });
-    it('should return final repayment date when repayment frequency is set to WEEK', () => {
+    it.concurrent('should return final repayment date when repayment frequency is set to WEEK', () => {
       //Given
       claim.partialAdmission.paymentIntention.repaymentPlan.repaymentFrequency = TransactionSchedule.WEEK;
       //When
@@ -133,7 +133,7 @@ describe('repaymentUtils', () => {
       expect(finalRepaymentDate).toEqual(expected);
     });
 
-    it('should return final repayment date when repayment frequency is set to TWO_WEEKS', () => {
+    it.concurrent('should return final repayment date when repayment frequency is set to TWO_WEEKS', () => {
       //Given
       claim.partialAdmission.paymentIntention.repaymentPlan.repaymentFrequency = TransactionSchedule.TWO_WEEKS;
       //When
@@ -146,7 +146,7 @@ describe('repaymentUtils', () => {
       expect(finalRepaymentDate).toEqual(expected);
     });
 
-    it('should return final repayment date when repayment frequency is set to MONTH', () => {
+    it.concurrent('should return final repayment date when repayment frequency is set to MONTH', () => {
       //Given
       claim.partialAdmission.paymentIntention.repaymentPlan.repaymentFrequency = TransactionSchedule.MONTH;
       //When
@@ -174,7 +174,7 @@ describe('repaymentUtils', () => {
       };
     });
 
-    it('should return final repayment date when repayment frequency is set to WEEK', () => {
+    it.concurrent('should return final repayment date when repayment frequency is set to WEEK', () => {
       //Given
       claim.fullAdmission.paymentIntention.repaymentPlan.repaymentFrequency = TransactionSchedule.WEEK;
       //When
@@ -184,7 +184,7 @@ describe('repaymentUtils', () => {
       expect(finalRepaymentDate).toEqual(expected);
     });
 
-    it('should return final repayment date when repayment frequency is set to TWO_WEEKS', () => {
+    it.concurrent('should return final repayment date when repayment frequency is set to TWO_WEEKS', () => {
       //Given
       claim.fullAdmission.paymentIntention.repaymentPlan.repaymentFrequency = TransactionSchedule.TWO_WEEKS;
       //When
@@ -194,7 +194,7 @@ describe('repaymentUtils', () => {
       expect(finalRepaymentDate).toEqual(expected);
     });
 
-    it('should return final repayment date when repayment frequency is set to MONTH', () => {
+    it.concurrent('should return final repayment date when repayment frequency is set to MONTH', () => {
       //Given
       claim.fullAdmission.paymentIntention.repaymentPlan.repaymentFrequency = TransactionSchedule.MONTH;
       //When
@@ -206,22 +206,22 @@ describe('repaymentUtils', () => {
   });
 
   describe('convertFrequencyToText', () => {
-    it('should translate frequency weekly to text', () => {
+    it.concurrent('should translate frequency weekly to text', () => {
       const result = convertFrequencyToText(TransactionSchedule.WEEK, 'en');
       expect(result).toBe(t('COMMON.FREQUENCY_OF_PAYMENTS.WEEKLY'));
     });
-    it('should translate frequency each two week to text', () => {
+    it.concurrent('should translate frequency each two week to text', () => {
       const result = convertFrequencyToText(TransactionSchedule.TWO_WEEKS, 'en');
       expect(result).toBe(t('COMMON.FREQUENCY_OF_PAYMENTS.TWO_WEEKS'));
     });
-    it('should translate frequency monthly to text', () => {
+    it.concurrent('should translate frequency monthly to text', () => {
       const result = convertFrequencyToText(TransactionSchedule.MONTH, 'en');
       expect(result).toBe(t('COMMON.FREQUENCY_OF_PAYMENTS.MONTHLY'));
     });
   });
 
   describe('getRepaymentFrequency', () => {
-    it('should return weekly payment frequency of repayment plan when response type is full admission', () => {
+    it.concurrent('should return weekly payment frequency of repayment plan when response type is full admission', () => {
       //Given
       const claim = getClaimForFA(TransactionSchedule.WEEK);
       //When
@@ -230,7 +230,7 @@ describe('repaymentUtils', () => {
       expect(result).toBe(TransactionSchedule.WEEK);
     });
 
-    it('should return two weeks payment frequency of repayment plan when response type is full admission', () => {
+    it.concurrent('should return two weeks payment frequency of repayment plan when response type is full admission', () => {
       //Given
       const claim = getClaimForFA(TransactionSchedule.TWO_WEEKS);
       //When
@@ -239,7 +239,7 @@ describe('repaymentUtils', () => {
       expect(result).toBe(TransactionSchedule.TWO_WEEKS);
     });
 
-    it('should return monthly payment frequency of repayment plan when response type is full admission', () => {
+    it.concurrent('should return monthly payment frequency of repayment plan when response type is full admission', () => {
       //Given
       const claim = getClaimForFA(TransactionSchedule.MONTH);
       //When
@@ -248,7 +248,7 @@ describe('repaymentUtils', () => {
       expect(result).toBe(TransactionSchedule.MONTH);
     });
 
-    it('should return weekly payment frequency of repayment plan when response type is part admission', () => {
+    it.concurrent('should return weekly payment frequency of repayment plan when response type is part admission', () => {
       //Given
       const claim = getClaimForFA(TransactionSchedule.WEEK);
       //When
@@ -257,7 +257,7 @@ describe('repaymentUtils', () => {
       expect(result).toBe(TransactionSchedule.WEEK);
     });
 
-    it('should return two weeks payment frequency of repayment plan when response type is part admission', () => {
+    it.concurrent('should return two weeks payment frequency of repayment plan when response type is part admission', () => {
       //Given
       const claim = getClaimForFA(TransactionSchedule.TWO_WEEKS);
       //When
@@ -266,7 +266,7 @@ describe('repaymentUtils', () => {
       expect(result).toBe(TransactionSchedule.TWO_WEEKS);
     });
 
-    it('should return monthly payment frequency of repayment plan when response type is part admission', () => {
+    it.concurrent('should return monthly payment frequency of repayment plan when response type is part admission', () => {
       //Given
       const claim = getClaimForFA(TransactionSchedule.MONTH);
       //When
@@ -277,7 +277,7 @@ describe('repaymentUtils', () => {
   });
 
   describe('getPaymentAmount', () => {
-    it('should return payment amount of repayment plan when response type is full admission on weekly schedule', () => {
+    it.concurrent('should return payment amount of repayment plan when response type is full admission on weekly schedule', () => {
       //Given
       const claim = getClaimForFA(TransactionSchedule.WEEK);
       //When
@@ -286,7 +286,7 @@ describe('repaymentUtils', () => {
       expect(result).toBe(50);
     });
 
-    it('should return payment amount of repayment plan when response type is full admission on two weeks schedule', () => {
+    it.concurrent('should return payment amount of repayment plan when response type is full admission on two weeks schedule', () => {
       //Given
       const claim = getClaimForFA(TransactionSchedule.TWO_WEEKS);
       //When
@@ -295,7 +295,7 @@ describe('repaymentUtils', () => {
       expect(result).toBe(50);
     });
 
-    it('should return payment amount of repayment plan when response type is full admission on monthly schedule', () => {
+    it.concurrent('should return payment amount of repayment plan when response type is full admission on monthly schedule', () => {
       //Given
       const claim = getClaimForFA(TransactionSchedule.MONTH);
       //When
@@ -304,7 +304,7 @@ describe('repaymentUtils', () => {
       expect(result).toBe(50);
     });
 
-    it('should return payment amount of repayment plan when response type is part admission on weekly schedule', () => {
+    it.concurrent('should return payment amount of repayment plan when response type is part admission on weekly schedule', () => {
       //Given
       const claim = getClaimForPA(TransactionSchedule.WEEK);
       //When
@@ -313,7 +313,7 @@ describe('repaymentUtils', () => {
       expect(result).toBe(50);
     });
 
-    it('should return payment amount of repayment plan when response type is part admission two weeks schedule', () => {
+    it.concurrent('should return payment amount of repayment plan when response type is part admission two weeks schedule', () => {
       //Given
       const claim = getClaimForPA(TransactionSchedule.TWO_WEEKS);
       //When
@@ -322,7 +322,7 @@ describe('repaymentUtils', () => {
       expect(result).toBe(50);
     });
 
-    it('should return payment amount of repayment plan when response type is part admission monthly schedule', () => {
+    it.concurrent('should return payment amount of repayment plan when response type is part admission monthly schedule', () => {
       //Given
       const claim = getClaimForPA(TransactionSchedule.MONTH);
       //When
@@ -333,7 +333,7 @@ describe('repaymentUtils', () => {
   });
 
   describe('getAmount', () => {
-    it('should return amount you owe when response type is part admission on weekly schedule', () => {
+    it.concurrent('should return amount you owe when response type is part admission on weekly schedule', () => {
       //Given
       const claim = getClaimForPA(TransactionSchedule.WEEK);
       //When
@@ -342,7 +342,7 @@ describe('repaymentUtils', () => {
       expect(result).toBe(200);
     });
 
-    it('should return amount you owe when response type is part admission on two weeks schedule', () => {
+    it.concurrent('should return amount you owe when response type is part admission on two weeks schedule', () => {
       //Given
       const claim = getClaimForPA(TransactionSchedule.TWO_WEEKS);
       //When
@@ -351,7 +351,7 @@ describe('repaymentUtils', () => {
       expect(result).toBe(200);
     });
 
-    it('should return amount you owe when response type is part admission on monthly schedule', () => {
+    it.concurrent('should return amount you owe when response type is part admission on monthly schedule', () => {
       //Given
       const claim = getClaimForPA(TransactionSchedule.MONTH);
       //When
@@ -360,7 +360,7 @@ describe('repaymentUtils', () => {
       expect(result).toBe(200);
     });
 
-    it('should return total claim amount when response type is full admission on weekly schedule', () => {
+    it.concurrent('should return total claim amount when response type is full admission on weekly schedule', () => {
       //Given
       const claim = getClaimForFA(TransactionSchedule.WEEK);
       //When
@@ -369,7 +369,7 @@ describe('repaymentUtils', () => {
       expect(result).toBe(1000);
     });
 
-    it('should return total claim amount when response type is full admission on two weeks schedule', () => {
+    it.concurrent('should return total claim amount when response type is full admission on two weeks schedule', () => {
       //Given
       const claim = getClaimForFA(TransactionSchedule.TWO_WEEKS);
       //When
@@ -378,7 +378,7 @@ describe('repaymentUtils', () => {
       expect(result).toBe(1000);
     });
 
-    it('should return total claim amount when response type is full admission on monthly schedule', () => {
+    it.concurrent('should return total claim amount when response type is full admission on monthly schedule', () => {
       //Given
       const claim = getClaimForFA(TransactionSchedule.MONTH);
       //When
@@ -389,7 +389,7 @@ describe('repaymentUtils', () => {
   });
 
   describe('getRepaymentLength', () => {
-    it('should return repayment length when response type is part admission on weekly schedule', () => {
+    it.concurrent('should return repayment length when response type is part admission on weekly schedule', () => {
       //Given
       const claim = getClaimForPA(TransactionSchedule.WEEK, 100);
       //When
@@ -397,7 +397,7 @@ describe('repaymentUtils', () => {
       //Then
       expect(repaymentLength).toBeUndefined();
     });
-    it('should return repayment length when response type is part admission on weekly schedule', () => {
+    it.concurrent('should return repayment length when response type is part admission on weekly schedule', () => {
       //Given
       const claim = getClaimForPA(TransactionSchedule.WEEK);
       //When
@@ -405,7 +405,7 @@ describe('repaymentUtils', () => {
       //Then
       expect(repaymentLength).toContain('4');
     });
-    it('should return repayment length when response type is part admission on two weeks schedule', () => {
+    it.concurrent('should return repayment length when response type is part admission on two weeks schedule', () => {
       //Given
       const claim = getClaimForPA(TransactionSchedule.TWO_WEEKS);
       //When
@@ -413,7 +413,7 @@ describe('repaymentUtils', () => {
       //Then
       expect(repaymentLength).toContain('8');
     });
-    it('should return repayment length when response type is part admission on monthly schedule', () => {
+    it.concurrent('should return repayment length when response type is part admission on monthly schedule', () => {
       //Given
       const claim = getClaimForPA(TransactionSchedule.MONTH);
       //When
@@ -421,7 +421,7 @@ describe('repaymentUtils', () => {
       //Then
       expect(repaymentLength).toContain('4');
     });
-    it('should return repayment length when response type is full admission on weekly schedule', () => {
+    it.concurrent('should return repayment length when response type is full admission on weekly schedule', () => {
       //Given
       const claim = getClaimForFA(TransactionSchedule.WEEK, 500);
       //When
@@ -429,7 +429,7 @@ describe('repaymentUtils', () => {
       //Then
       expect(repaymentLength).toBeUndefined();
     });
-    it('should return repayment length when response type is full admission on weekly schedule', () => {
+    it.concurrent('should return repayment length when response type is full admission on weekly schedule', () => {
       //Given
       const claim = getClaimForFA(TransactionSchedule.WEEK);
       //When
@@ -437,7 +437,7 @@ describe('repaymentUtils', () => {
       //Then
       expect(repaymentLength).toContain('20');
     });
-    it('should return repayment length when response type is full admission on two weeks schedule', () => {
+    it.concurrent('should return repayment length when response type is full admission on two weeks schedule', () => {
       //Given
       const claim = getClaimForFA(TransactionSchedule.TWO_WEEKS);
       //When
@@ -445,7 +445,7 @@ describe('repaymentUtils', () => {
       //Then
       expect(repaymentLength).toContain('40');
     });
-    it('should return repayment length when response type is full admission on monthly schedule', () => {
+    it.concurrent('should return repayment length when response type is full admission on monthly schedule', () => {
       //Given
       const claim = getClaimForFA(TransactionSchedule.MONTH);
       //When

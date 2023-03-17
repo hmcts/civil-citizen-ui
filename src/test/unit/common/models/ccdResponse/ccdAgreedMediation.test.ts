@@ -2,7 +2,7 @@ import {toAgreedMediation} from '../../../../../main/services/translation/respon
 import {YesNo, YesNoUpperCamelCase} from '../../../../../main/common/form/models/yesNo';
 
 describe('translate mediation option to ccd version', ()=> {
-  it('should transfer mediation to ccd version if can we use is yes', ()=> {
+  it.concurrent('should transfer mediation to ccd version if can we use is yes', ()=> {
     //Given
     const mediation = {
       canWeUse: {option: YesNo.YES},
@@ -13,7 +13,7 @@ describe('translate mediation option to ccd version', ()=> {
     //Then
     expect(result).toBe(YesNoUpperCamelCase.YES);
   });
-  it('should transfer mediation to ccd version if disagree is yes', ()=> {
+  it.concurrent('should transfer mediation to ccd version if disagree is yes', ()=> {
     //Given
     const mediation = {
       canWeUse: {},
@@ -25,7 +25,7 @@ describe('translate mediation option to ccd version', ()=> {
     //Then
     expect(result).toBe(YesNoUpperCamelCase.NO);
   });
-  it('should transfer mediation to ccd version if there is phone number', ()=> {
+  it.concurrent('should transfer mediation to ccd version if there is phone number', ()=> {
     //Given
     const mediation = {
       canWeUse: {},
@@ -40,7 +40,7 @@ describe('translate mediation option to ccd version', ()=> {
     //Then
     expect(result).toBe(YesNoUpperCamelCase.YES);
   });
-  it('should transfer mediation to ccd version if there is no phone number', ()=> {
+  it.concurrent('should transfer mediation to ccd version if there is no phone number', ()=> {
     //Given
     const mediation = {
       canWeUse: {},

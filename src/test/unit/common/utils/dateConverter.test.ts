@@ -1,7 +1,7 @@
 import {DateConverter} from '../../../../main/common/utils/dateConverter';
 
 describe('Convert to valid Date', () => {
-  it('should convert to valid date successfully with valid input', () => {
+  it.concurrent('should convert to valid date successfully with valid input', () => {
     //Given
     const day = '1';
     const month = '2';
@@ -12,7 +12,7 @@ describe('Convert to valid Date', () => {
     expect(result).not.toBeNull();
   });
 
-  it('should convert to date with leap year date', () => {
+  it.concurrent('should convert to date with leap year date', () => {
     //Given
     const day = '29';
     const month = '2';
@@ -25,7 +25,7 @@ describe('Convert to valid Date', () => {
     expect(result).toEqual(convertedDate);
   });
 
-  it('should not convert to date with invalid input', () => {
+  it.concurrent('should not convert to date with invalid input', () => {
     //Given
     const day = '1';
     const month = 'abc';
@@ -36,7 +36,7 @@ describe('Convert to valid Date', () => {
     expect(result.toDateString()).toBe('Invalid Date');
   });
 
-  it('should not convert to date with non-leap year date', () => {
+  it.concurrent('should not convert to date with non-leap year date', () => {
     //Given
     const day = '29';
     const month = '2';

@@ -25,12 +25,12 @@ describe('Tell us how much you have paid Task', () => {
   describe('getTellUsHowMuchYouHavePaidTask', () => {
     const claim = new Claim();
 
-    it('should return incomplete task', () => {
+    it.concurrent('should return incomplete task', () => {
       const giveUsDetailsHearingTask = getTellUsHowMuchYouHavePaidTask(claim, claimId, lang);
       expect(giveUsDetailsHearingTask).toEqual(resultIncomplete);
     });
 
-    it('should return complete task', () => {
+    it.concurrent('should return complete task', () => {
       claim.rejectAllOfClaim = new RejectAllOfClaim();
       claim.rejectAllOfClaim.howMuchHaveYouPaid = new HowMuchHaveYouPaid();
       claim.rejectAllOfClaim.howMuchHaveYouPaid.amount = 10;

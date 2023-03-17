@@ -25,19 +25,19 @@ describe('How much money admit owe Task', () => {
 
   describe('getHowMuchHaveYouPaidTask', () => {
 
-    it('should return incomplete task', () => {
+    it.concurrent('should return incomplete task', () => {
       const howMuchMoneyAdmitOweTask = getHowMuchHaveYouPaidTask(claim, claimId, lang);
       expect(howMuchMoneyAdmitOweTask).toEqual(resultIncomplete);
     });
 
-    it('should return incomplete task when missing amount, date or text', () => {
+    it.concurrent('should return incomplete task when missing amount, date or text', () => {
       claim.partialAdmission = new PartialAdmission();
       claim.partialAdmission.howMuchHaveYouPaid = new HowMuchHaveYouPaid({amount:1});
       const howMuchMoneyAdmitOweTask = getHowMuchHaveYouPaidTask(claim, claimId, lang);
       expect(howMuchMoneyAdmitOweTask).toEqual(resultIncomplete);
     });
 
-    it('should return complete task when has amount, date and text', () => {
+    it.concurrent('should return complete task when has amount, date and text', () => {
       claim.partialAdmission = new PartialAdmission();
       claim.partialAdmission.howMuchHaveYouPaid = new HowMuchHaveYouPaid();
       claim.partialAdmission.howMuchHaveYouPaid.amount = 1;

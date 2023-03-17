@@ -9,7 +9,7 @@ import {
 
 describe('regular income converter', () => {
   describe('convert to regular expenses form', () => {
-    it('should convert request body successfully when declared is not empty', () => {
+    it.concurrent('should convert request body successfully when declared is not empty', () => {
       //Given
       const req = express.request;
       req.body = {
@@ -28,7 +28,7 @@ describe('regular income converter', () => {
       expect(form).not.toBeUndefined();
       expect(form?.mortgage?.declared).toBeTruthy();
     });
-    it('should not convert when declared is empty', () => {
+    it.concurrent('should not convert when declared is empty', () => {
       const req = express.request;
       req.body = {
         declared: undefined, model: {
@@ -48,7 +48,7 @@ describe('regular income converter', () => {
     });
   });
   describe('convert to regular income form', () => {
-    it('should convert request body successfully when declared is not empty', () => {
+    it.concurrent('should convert request body successfully when declared is not empty', () => {
       //Given
       const req = express.request;
       req.body = {

@@ -19,7 +19,7 @@ import { TotalInterest } from 'common/form/models/interest/totalInterest';
 describe('Interest Utils', () => {
   const claim: Claim = Object.assign(new Claim(), deepCopy(mockResponse));
 
-  it('getInterestDetails should return undefined when interest is not requested', () => {
+  it.concurrent('getInterestDetails should return undefined when interest is not requested', () => {
     //Given
     claim.claimInterest = YesNo.NO;
 
@@ -29,7 +29,7 @@ describe('Interest Utils', () => {
     expect(result).toBeUndefined();
   });
 
-  it('getInterestDateOrIssueDate should return submit date when InterestClaimFromType is selected claim submit date', () => {
+  it.concurrent('getInterestDateOrIssueDate should return submit date when InterestClaimFromType is selected claim submit date', () => {
     //Given
     claim.interest.interestClaimFrom = InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
 
@@ -39,7 +39,7 @@ describe('Interest Utils', () => {
     expect(result).toEqual(claim.submittedDate);
   });
 
-  it('getInterestRate should return %8 interest rate when no different rate is selected', () => {
+  it.concurrent('getInterestRate should return %8 interest rate when no different rate is selected', () => {
     //Given
     const claimWithSameInterestRate = deepCopy(claim);
     claimWithSameInterestRate.interest.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
@@ -51,7 +51,7 @@ describe('Interest Utils', () => {
     expect(result).toEqual(8);
   });
 
-  it('getInterestRate should return different rate value when different interesst rate than %8 is selected', () => {
+  it.concurrent('getInterestRate should return different rate value when different interesst rate than %8 is selected', () => {
     //Given
     const DIFFERENT_INTEREST_RATE = 7;
     claim.interest.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
@@ -64,7 +64,7 @@ describe('Interest Utils', () => {
     expect(result).toEqual(DIFFERENT_INTEREST_RATE);
   });
 
-  it('calculateInterest should return correct interest', () => {
+  it.concurrent('calculateInterest should return correct interest', () => {
     //Given
     const amount = 6000;
     const interest = 8;
@@ -78,7 +78,7 @@ describe('Interest Utils', () => {
     expect(result).toEqual(13.150684931506849);
   });
 
-  it('getInterestStartDate should return new Date if InterestClaimFromType is FROM_CLAIM_SUBMIT_DATE', () => {
+  it.concurrent('getInterestStartDate should return new Date if InterestClaimFromType is FROM_CLAIM_SUBMIT_DATE', () => {
     //Given
     const claim = new Claim();
     claim.interest = new Interest();
@@ -91,7 +91,7 @@ describe('Interest Utils', () => {
     expect(result.toLocaleDateString()).toEqual((new Date()).toLocaleDateString());
   });
 
-  it('getInterestStartDate should return correct date if InterestClaimFromType is FROM_A_SPECIFIC_DATE', () => {
+  it.concurrent('getInterestStartDate should return correct date if InterestClaimFromType is FROM_A_SPECIFIC_DATE', () => {
     //Given
     const claim = new Claim();
     claim.interest = new Interest();
@@ -105,7 +105,7 @@ describe('Interest Utils', () => {
     expect(result).toEqual(new Date('2022-10-20'));
   });
 
-  it('calculateInterestToDate should return correct interest to date when BREAK_DOWN_INTEREST selected', () => {
+  it.concurrent('calculateInterestToDate should return correct interest to date when BREAK_DOWN_INTEREST selected', () => {
     //Given
     const claim = new Claim();
     claim.totalClaimAmount = 6000;
@@ -123,7 +123,7 @@ describe('Interest Utils', () => {
     expect(result).toEqual(200);
   });
 
-  it('calculateInterestToDate should return correct interest to date when SAME_RATE_INTEREST selected', () => {
+  it.concurrent('calculateInterestToDate should return correct interest to date when SAME_RATE_INTEREST selected', () => {
     //Given
     const claim = new Claim();
     claim.totalClaimAmount = 6000;

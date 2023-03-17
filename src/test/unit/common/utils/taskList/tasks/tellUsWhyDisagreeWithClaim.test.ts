@@ -27,12 +27,12 @@ describe('Tell us why you disagree with the claim Task', () => {
   describe('getTellUsWhyDisagreeWithClaimTask', () => {
     const claim = new Claim();
 
-    it('should return incomplete task', () => {
+    it.concurrent('should return incomplete task', () => {
       const giveUsDetailsHearingTask = getTellUsWhyDisagreeWithClaimTask(claim, claimId, lang);
       expect(giveUsDetailsHearingTask).toEqual(resultIncomplete);
     });
 
-    it('should return complete task', () => {
+    it.concurrent('should return complete task', () => {
       claim.rejectAllOfClaim = new RejectAllOfClaim();
       claim.rejectAllOfClaim.defence = new Defence();
       claim.rejectAllOfClaim.defence.text = 'test';

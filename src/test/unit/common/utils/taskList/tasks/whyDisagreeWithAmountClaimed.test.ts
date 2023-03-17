@@ -30,12 +30,12 @@ describe('Why disagree with amount claimed Task', () => {
   describe('getWhyDisagreeWithAmountClaimedTask', () => {
 
     describe('partial admission', () => {
-      it('should return incomplete task', () => {
+      it.concurrent('should return incomplete task', () => {
         const claim = new Claim();
         const whyDisagreeWithAmountClaimedTask = getWhyDisagreeWithAmountClaimedTask(claim, claimId, ResponseType.PART_ADMISSION, lang);
         expect(whyDisagreeWithAmountClaimedTask).toEqual(resultIncompletePA);
       });
-      it('should return complete task', () => {
+      it.concurrent('should return complete task', () => {
         const claim = new Claim();
         claim.partialAdmission = new PartialAdmission();
         claim.partialAdmission.whyDoYouDisagree = new WhyDoYouDisagree();
@@ -46,12 +46,12 @@ describe('Why disagree with amount claimed Task', () => {
     });
 
     describe('full rejection', () => {
-      it('should return incomplete task', () => {
+      it.concurrent('should return incomplete task', () => {
         const claim = new Claim();
         const whyDisagreeWithAmountClaimedTask = getWhyDisagreeWithAmountClaimedTask(claim, claimId, ResponseType.FULL_DEFENCE, lang);
         expect(whyDisagreeWithAmountClaimedTask).toEqual(resultIncompleteFD);
       });
-      it('should return complete task', () => {
+      it.concurrent('should return complete task', () => {
         const claim = new Claim();
         claim.rejectAllOfClaim = new RejectAllOfClaim();
         claim.rejectAllOfClaim.whyDoYouDisagree = new WhyDoYouDisagree();

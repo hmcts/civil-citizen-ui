@@ -3,7 +3,7 @@ import {RepaymentPlan} from '../../../../../main/common/models/repaymentPlan';
 import {toCCDRepaymentPlan} from '../../../../../main/services/translation/response/convertToCCDRepaymentPlan';
 
 describe('translate repayment plan to ccd', ()=> {
-  it('should translate weekly repayment plan', ()=> {
+  it.concurrent('should translate weekly repayment plan', ()=> {
     //Given
     const repaymentPlan = getRepaymentPlan('WEEK');
     //When
@@ -11,7 +11,7 @@ describe('translate repayment plan to ccd', ()=> {
     //Then
     expect(ccdRepaymentPlan.repaymentFrequency).toBe(CCDRepaymentPlanFrequency.ONCE_ONE_WEEK);
   });
-  it('should translate two weekly payment plan', ()=> {
+  it.concurrent('should translate two weekly payment plan', ()=> {
     //Given
     const repaymentPlan = getRepaymentPlan('TWO_WEEKS');
     //When
@@ -19,7 +19,7 @@ describe('translate repayment plan to ccd', ()=> {
     //Then
     expect(ccdRepaymentPlan.repaymentFrequency).toBe(CCDRepaymentPlanFrequency.ONCE_TWO_WEEKS);
   });
-  it('should translate four weekly payment plan', ()=>{
+  it.concurrent('should translate four weekly payment plan', ()=>{
     //Given
     const repaymentPlan = getRepaymentPlan('FOUR_WEEKS');
     //When
@@ -27,7 +27,7 @@ describe('translate repayment plan to ccd', ()=> {
     //Then
     expect(ccdRepaymentPlan.repaymentFrequency).toBe(CCDRepaymentPlanFrequency.ONCE_FOUR_WEEKS);
   });
-  it('should translate monthly payment plan', ()=> {
+  it.concurrent('should translate monthly payment plan', ()=> {
     //Given
     const repaymentPlan = getRepaymentPlan('MONTH');
     //When
@@ -35,7 +35,7 @@ describe('translate repayment plan to ccd', ()=> {
     //Then
     expect(ccdRepaymentPlan.repaymentFrequency).toBe(CCDRepaymentPlanFrequency.ONCE_ONE_MONTH);
   });
-  it('should translate payment amount and first payment date successfully', ()=>{
+  it.concurrent('should translate payment amount and first payment date successfully', ()=>{
     //Given
     const repaymentPlan = getRepaymentPlan('MONTH');
     //When

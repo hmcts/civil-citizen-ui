@@ -2,7 +2,7 @@ import {getLng} from '../../../../main/common/utils/languageToggleUtils';
 
 describe('language tolggle utils', () => {
   describe('getLng', () => {
-    it('should return language passed when parameter is defined', () => {
+    it.concurrent('should return language passed when parameter is defined', () => {
       //Given
       const langParam = 'cy';
       //When
@@ -10,7 +10,7 @@ describe('language tolggle utils', () => {
       //Then
       expect(language).toBe(langParam);
     });
-    it('should return eng language when parameter is not defined', () => {
+    it.concurrent('should return eng language when parameter is not defined', () => {
       //When
       const language = getLng(undefined);
       //Then

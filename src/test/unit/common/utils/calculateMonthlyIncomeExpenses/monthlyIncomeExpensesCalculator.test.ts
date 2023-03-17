@@ -11,7 +11,7 @@ import {
 } from '../../../../../main/common/utils/calculateMonthlyIncomeExpenses/monthlyIncomeExpensesCalculator';
 
 describe('calculate monthly income expenses', () => {
-  it('should calculate monthly income expenses successfully', () => {
+  it.concurrent('should calculate monthly income expenses successfully', () => {
     //Given
     const regularExpenses = new RegularExpenses({
       rent: Transaction.buildPopulatedForm('rent', '10', TransactionSchedule.WEEK),
@@ -23,7 +23,7 @@ describe('calculate monthly income expenses', () => {
     //Then
     expect(total).toBe('63.33');
   });
-  it('should not calculate when there is no data', () => {
+  it.concurrent('should not calculate when there is no data', () => {
     //When
     const total = calculateTotalAmount(undefined);
     //Then

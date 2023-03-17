@@ -55,56 +55,56 @@ describe('Task List Helpers', () => {
   });
 
   describe('isCounterpartyCompany helper', () => {
-    it('should return true if counterparty is organisation', () => {
+    it.concurrent('should return true if counterparty is organisation', () => {
       mockRespondent.type = PartyType.ORGANISATION;
       expect(isCounterpartyCompany(mockRespondent)).toEqual(true);
     });
 
-    it('should return true if counterparty is company', () => {
+    it.concurrent('should return true if counterparty is company', () => {
       mockRespondent.type = PartyType.COMPANY;
       expect(isCounterpartyCompany(mockRespondent)).toEqual(true);
     });
 
-    it('should return false if counterparty is individual', () => {
+    it.concurrent('should return false if counterparty is individual', () => {
       mockRespondent.type = PartyType.INDIVIDUAL;
       expect(isCounterpartyCompany(mockRespondent)).toEqual(false);
     });
 
-    it('should return false if counterparty is sole trader', () => {
+    it.concurrent('should return false if counterparty is sole trader', () => {
       mockRespondent.type = PartyType.SOLE_TRADER;
       expect(isCounterpartyCompany(mockRespondent)).toEqual(false);
     });
   });
 
   describe('isCounterpartyIndividual helper', () => {
-    it('should return false if counterparty is organisation', () => {
+    it.concurrent('should return false if counterparty is organisation', () => {
       mockRespondent.type = PartyType.ORGANISATION;
       expect(isCounterpartyIndividual(mockRespondent)).toEqual(false);
     });
 
-    it('should return false if counterparty is company', () => {
+    it.concurrent('should return false if counterparty is company', () => {
       mockRespondent.type = PartyType.COMPANY;
       expect(isCounterpartyIndividual(mockRespondent)).toEqual(false);
     });
 
-    it('should return true if counterparty is individual', () => {
+    it.concurrent('should return true if counterparty is individual', () => {
       mockRespondent.type = PartyType.INDIVIDUAL;
       expect(isCounterpartyIndividual(mockRespondent)).toEqual(true);
     });
 
-    it('should return true if counterparty is sole trader', () => {
+    it.concurrent('should return true if counterparty is sole trader', () => {
       mockRespondent.type = PartyType.SOLE_TRADER;
       expect(isCounterpartyIndividual(mockRespondent)).toEqual(true);
     });
   });
 
   describe('isStatementOfMeansComplete helper', () => {
-    it('should return true if statement of means is set', () => {
+    it.concurrent('should return true if statement of means is set', () => {
       caseData = {...mockClaim.case_data};
       expect(isStatementOfMeansComplete(caseData)).toEqual(true);
     });
 
-    it('should return true if statement of means has more than one property set', () => {
+    it.concurrent('should return true if statement of means has more than one property set', () => {
       caseData.statementOfMeans = {
         numberOfChildrenLivingWithYou: 0,
         employment: {
@@ -115,11 +115,11 @@ describe('Task List Helpers', () => {
       expect(isStatementOfMeansComplete(caseData)).toEqual(true);
     });
 
-    it('should return false if statement of means is not set', () => {
+    it.concurrent('should return false if statement of means is not set', () => {
       expect(isStatementOfMeansComplete(caseData)).toEqual(false);
     });
 
-    it('should return false if statement of means has only one property set', () => {
+    it.concurrent('should return false if statement of means has only one property set', () => {
       caseData.statementOfMeans = {
         explanation: {
           text: 'explanation',
@@ -130,15 +130,15 @@ describe('Task List Helpers', () => {
   });
 
   describe('isRepaymentPlanMissing helper', () => {
-    it('should return true if there is no repayment plan', () => {
+    it.concurrent('should return true if there is no repayment plan', () => {
       expect(isRepaymentPlanMissing(caseData)).toEqual(true);
     });
 
-    it('should return true if there is no repayment plan for full admit', () => {
+    it.concurrent('should return true if there is no repayment plan for full admit', () => {
       expect(isFullAdmissionRepaymentPlanMissing(caseData)).toEqual(true);
     });
 
-    it('should return true if repayment plan is not set for part admit journey', () => {
+    it.concurrent('should return true if repayment plan is not set for part admit journey', () => {
       caseData.partialAdmission = new PartialAdmission();
       caseData.partialAdmission.paymentIntention = new PaymentIntention();
       caseData.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe();
@@ -146,14 +146,14 @@ describe('Task List Helpers', () => {
       expect(isRepaymentPlanMissing(caseData)).toEqual(true);
     });
 
-    it('should return true if repayment plan is not set for full admit journey', () => {
+    it.concurrent('should return true if repayment plan is not set for full admit journey', () => {
       caseData.fullAdmission = new FullAdmission();
       caseData.fullAdmission.paymentIntention = new PaymentIntention();
       caseData.fullAdmission.paymentIntention.repaymentPlan = undefined;
       expect(isFullAdmissionRepaymentPlanMissing(caseData)).toEqual(true);
     });
 
-    it('should return false if repayment plan object is set for part admit', () => {
+    it.concurrent('should return false if repayment plan object is set for part admit', () => {
       mockRespondent.responseType = ResponseType.PART_ADMISSION;
       caseData.partialAdmission = new PartialAdmission();
       caseData.partialAdmission.paymentIntention = new PaymentIntention();
@@ -162,7 +162,7 @@ describe('Task List Helpers', () => {
       expect(isRepaymentPlanMissing(caseData)).toEqual(false);
     });
 
-    it('should return false if repayment plan object is set for full admit', () => {
+    it.concurrent('should return false if repayment plan object is set for full admit', () => {
       mockRespondent.responseType = ResponseType.FULL_ADMISSION;
       caseData.fullAdmission = new FullAdmission();
       caseData.fullAdmission.paymentIntention = new PaymentIntention();
@@ -170,7 +170,7 @@ describe('Task List Helpers', () => {
       expect(isFullAdmissionRepaymentPlanMissing(caseData)).toEqual(false);
     });
 
-    it('should return false if repayment plan object is set', () => {
+    it.concurrent('should return false if repayment plan object is set', () => {
       mockRespondent.responseType = ResponseType.PART_ADMISSION;
       caseData.partialAdmission = new PartialAdmission();
       caseData.partialAdmission.paymentIntention = new PaymentIntention();
@@ -181,7 +181,7 @@ describe('Task List Helpers', () => {
       expect(isRepaymentPlanMissing(caseData)).toEqual(false);
     });
 
-    it('should return false if repayment plan object is set for full admit', () => {
+    it.concurrent('should return false if repayment plan object is set for full admit', () => {
       mockRespondent.responseType = ResponseType.FULL_ADMISSION;
       caseData.fullAdmission = new FullAdmission();
       caseData.fullAdmission.paymentIntention = new PaymentIntention();
@@ -193,32 +193,32 @@ describe('Task List Helpers', () => {
   });
 
   describe('isNotPayImmediatelyResponse helper', () => {
-    it('should return true if there is no payment option', () => {
+    it.concurrent('should return true if there is no payment option', () => {
       expect(isNotPayImmediatelyResponse(caseData)).toEqual(true);
     });
 
-    it('should return true if payment option is undefined', () => {
+    it.concurrent('should return true if payment option is undefined', () => {
       caseData.fullAdmission = new FullAdmission();
       caseData.fullAdmission.paymentIntention = new PaymentIntention();
       caseData.fullAdmission.paymentIntention.paymentOption = undefined;
       expect(isNotPayImmediatelyResponse(caseData)).toEqual(true);
     });
 
-    it('should return true if payment option is INSTALMENTS', () => {
+    it.concurrent('should return true if payment option is INSTALMENTS', () => {
       caseData.fullAdmission = new FullAdmission();
       caseData.fullAdmission.paymentIntention = new PaymentIntention();
       caseData.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
       expect(isNotPayImmediatelyResponse(caseData)).toEqual(true);
     });
 
-    it('should return true if payment option is BY_SET_DATE', () => {
+    it.concurrent('should return true if payment option is BY_SET_DATE', () => {
       caseData.fullAdmission = new FullAdmission();
       caseData.fullAdmission.paymentIntention = new PaymentIntention();
       caseData.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
       expect(isNotPayImmediatelyResponse(caseData)).toEqual(true);
     });
 
-    it('should return false if payment option is IMMEDIATELY', () => {
+    it.concurrent('should return false if payment option is IMMEDIATELY', () => {
       caseData.fullAdmission = new FullAdmission();
       caseData.fullAdmission.paymentIntention = new PaymentIntention();
       caseData.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
@@ -227,18 +227,18 @@ describe('Task List Helpers', () => {
   });
 
   describe('isPaymentOptionMissing helper', () => {
-    it('should return true if there is no paymentOption', () => {
+    it.concurrent('should return true if there is no paymentOption', () => {
       expect(isPaymentOptionMissing(caseData)).toEqual(true);
     });
 
-    it('should return true if paymentOption is undefined', () => {
+    it.concurrent('should return true if paymentOption is undefined', () => {
       caseData.fullAdmission = new FullAdmission();
       caseData.fullAdmission.paymentIntention = new PaymentIntention();
       caseData.fullAdmission.paymentIntention .paymentOption = undefined;
       expect(isPaymentOptionMissing(caseData)).toEqual(true);
     });
 
-    it('should return false if paymentOption is set', () => {
+    it.concurrent('should return false if paymentOption is set', () => {
       caseData.fullAdmission = new FullAdmission();
       caseData.fullAdmission.paymentIntention = new PaymentIntention();
       caseData.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
@@ -247,46 +247,46 @@ describe('Task List Helpers', () => {
   });
 
   describe('financialDetailsShared helper', () => {
-    it('should return false if financial details are not set', () => {
+    it.concurrent('should return false if financial details are not set', () => {
       expect(financialDetailsShared(caseData)).toEqual(false);
     });
 
-    it('should return false if financial details are undefined', () => {
+    it.concurrent('should return false if financial details are undefined', () => {
       caseData.taskSharedFinancialDetails = undefined;
       expect(financialDetailsShared(caseData)).toEqual(false);
     });
 
-    it('should return false if financial details are set to false', () => {
+    it.concurrent('should return false if financial details are set to false', () => {
       caseData.taskSharedFinancialDetails = false;
       expect(financialDetailsShared(caseData)).toEqual(false);
     });
 
-    it('should return true if financial details are set to true', () => {
+    it.concurrent('should return true if financial details are set to true', () => {
       caseData.taskSharedFinancialDetails = true;
       expect(financialDetailsShared(caseData)).toEqual(true);
     });
   });
 
   describe('hasContactPersonAndCompanyPhone helper', () => {
-    it('should return false if companyTelephoneNumber are not set', () => {
+    it.concurrent('should return false if companyTelephoneNumber are not set', () => {
       expect(hasContactPersonAndCompanyPhone(caseData)).toEqual(false);
     });
 
-    it('should return false if contact person are not set', () => {
+    it.concurrent('should return false if contact person are not set', () => {
       caseData.mediation = new Mediation();
       caseData.mediation.companyTelephoneNumber = new CompanyTelephoneNumber();
       caseData.mediation.companyTelephoneNumber.mediationPhoneNumber = '123';
       expect(hasContactPersonAndCompanyPhone(caseData)).toEqual(false);
     });
 
-    it('should return false if mediation phone are not set', () => {
+    it.concurrent('should return false if mediation phone are not set', () => {
       caseData.mediation = new Mediation();
       caseData.mediation.companyTelephoneNumber = new CompanyTelephoneNumber();
       caseData.mediation.companyTelephoneNumber.mediationContactPerson = 'test';
       expect(hasContactPersonAndCompanyPhone(caseData)).toEqual(false);
     });
 
-    it('should return true if contact person and mediation phone are set', () => {
+    it.concurrent('should return true if contact person and mediation phone are set', () => {
       caseData.mediation = new Mediation();
       caseData.mediation.companyTelephoneNumber = new CompanyTelephoneNumber();
       caseData.mediation.companyTelephoneNumber.mediationContactPerson = 'test';
@@ -296,11 +296,11 @@ describe('Task List Helpers', () => {
   });
 
   describe('hasClaimantResponseContactPersonAndCompanyPhone helper', () => {
-    it('should return false if companyTelephoneNumber are not set', () => {
+    it.concurrent('should return false if companyTelephoneNumber are not set', () => {
       caseData.claimantResponse = new ClaimantResponse();
       expect(hasClaimantResponseContactPersonAndCompanyPhone(caseData)).toEqual(false);
     });
-    it('should return true if contact person and mediation phone are set', () => {
+    it.concurrent('should return true if contact person and mediation phone are set', () => {
       caseData.claimantResponse = new ClaimantResponse();
       caseData.claimantResponse.mediation = new Mediation();
       caseData.claimantResponse.mediation.companyTelephoneNumber = new CompanyTelephoneNumber();
@@ -311,19 +311,19 @@ describe('Task List Helpers', () => {
   });
 
   describe('isFullDefenceAndNotCounterClaim helper', () => {
-    it('should return false if is not fullDefence', () => {
+    it.concurrent('should return false if is not fullDefence', () => {
       caseData.respondent1 = new Party();
       caseData.respondent1.responseType = ResponseType.FULL_ADMISSION;
       expect(isFullDefenceAndNotCounterClaim(caseData)).toEqual(false);
     });
 
-    it('should return false if rejectAllOfClaim is a counter claim', () => {
+    it.concurrent('should return false if rejectAllOfClaim is a counter claim', () => {
       caseData.rejectAllOfClaim = new RejectAllOfClaim();
       caseData.rejectAllOfClaim.option = RejectAllOfClaimType.COUNTER_CLAIM;
       expect(isFullDefenceAndNotCounterClaim(caseData)).toEqual(false);
     });
 
-    it('should return true if is FullDefence And Not a CounterClaim', () => {
+    it.concurrent('should return true if is FullDefence And Not a CounterClaim', () => {
       caseData.respondent1 = new Party();
       caseData.respondent1.responseType = ResponseType.FULL_DEFENCE;
       caseData.rejectAllOfClaim = new RejectAllOfClaim();
@@ -333,20 +333,20 @@ describe('Task List Helpers', () => {
   });
 
   describe('hasDateOfBirthIfIndividual helper', () => {
-    it('should return false if individual', () => {
+    it.concurrent('should return false if individual', () => {
       caseData.respondent1 = new Party();
       caseData.respondent1.type = PartyType.INDIVIDUAL;
       expect(hasDateOfBirthIfIndividual(caseData.respondent1)).toEqual(false);
     });
 
-    it('should return true if individual and has dateOfBirth', () => {
+    it.concurrent('should return true if individual and has dateOfBirth', () => {
       caseData.respondent1 = new Party();
       caseData.respondent1.type = PartyType.INDIVIDUAL;
       caseData.respondent1.dateOfBirth = new CitizenDate('1', '1', '2000');
       expect(hasDateOfBirthIfIndividual(caseData.respondent1)).toEqual(true);
     });
 
-    it('should return true if is not individual', () => {
+    it.concurrent('should return true if is not individual', () => {
       caseData.respondent1 = new Party();
       caseData.respondent1.type = PartyType.ORGANISATION;
       expect(hasDateOfBirthIfIndividual(caseData.respondent1)).toEqual(true);
@@ -356,14 +356,14 @@ describe('Task List Helpers', () => {
   describe('hasCorrespondenceAndPrimaryAddress helper', () => {
     const address = new Address('test', 'test', 'test', 'test', 'test');
 
-    it('should return false if only has primaryAdress', () => {
+    it.concurrent('should return false if only has primaryAdress', () => {
       caseData.respondent1 = new Party();
       caseData.respondent1.partyDetails = new PartyDetails({});
       caseData.respondent1.partyDetails.primaryAddress = address;
       expect(hasCorrespondenceAndPrimaryAddress(caseData.respondent1)).toEqual(false);
     });
 
-    it('should return false if has primaryAdress, YES and doesnt has correspondenceAdress', () => {
+    it.concurrent('should return false if has primaryAdress, YES and doesnt has correspondenceAdress', () => {
       caseData.respondent1 = new Party();
       caseData.respondent1.partyDetails = new PartyDetails({});
       caseData.respondent1.partyDetails.primaryAddress = address;
@@ -371,7 +371,7 @@ describe('Task List Helpers', () => {
       expect(hasCorrespondenceAndPrimaryAddress(caseData.respondent1)).toEqual(false);
     });
 
-    it('should return true if has primaryAdress and NO', () => {
+    it.concurrent('should return true if has primaryAdress and NO', () => {
       caseData.respondent1 = new Party();
       caseData.respondent1.partyDetails = new PartyDetails({});
       caseData.respondent1.partyDetails.primaryAddress = new Address('test', 'test', 'test', 'test', 'test');
@@ -379,7 +379,7 @@ describe('Task List Helpers', () => {
       expect(hasCorrespondenceAndPrimaryAddress(caseData.respondent1)).toEqual(true);
     });
 
-    it('should return true if has primaryAdress, YES and has correspondenceAdress', () => {
+    it.concurrent('should return true if has primaryAdress, YES and has correspondenceAdress', () => {
       caseData.respondent1 = new Party();
       caseData.respondent1.partyDetails = new PartyDetails({});
       caseData.respondent1.partyDetails.primaryAddress = address;

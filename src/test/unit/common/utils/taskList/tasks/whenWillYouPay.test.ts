@@ -25,13 +25,13 @@ describe('When will you pay Task', () => {
 
   describe('getWhenWillYouPayTask', () => {
 
-    it('should return incomplete task', () => {
+    it.concurrent('should return incomplete task', () => {
       const claim = new Claim();
       const whenWillYouPayTask = getWhenWillYouPayTask(claim, claimId, lang);
       expect(whenWillYouPayTask).toEqual(resultIncomplete);
     });
 
-    it('should return complete task when paymentOption is IMMEDIATELY', () => {
+    it.concurrent('should return complete task when paymentOption is IMMEDIATELY', () => {
       const claim  = new Claim();
       claim.partialAdmission = new PartialAdmission();
       claim.partialAdmission.paymentIntention = new PaymentIntention();
@@ -40,7 +40,7 @@ describe('When will you pay Task', () => {
       expect(whenWillYouPayTask).toEqual(resultComplete);
     });
 
-    it('should return complete task when paymentOption is BY_SET_DATE and has paymentDate', () => {
+    it.concurrent('should return complete task when paymentOption is BY_SET_DATE and has paymentDate', () => {
       const claim  = new Claim();
       claim.partialAdmission = new PartialAdmission();
       claim.partialAdmission.paymentIntention = new PaymentIntention();
@@ -50,7 +50,7 @@ describe('When will you pay Task', () => {
       expect(whenWillYouPayTask).toEqual(resultComplete);
     });
 
-    it('should return incomplete task when paymentOption is BY_SET_DATE and doesnt has paymentDate', () => {
+    it.concurrent('should return incomplete task when paymentOption is BY_SET_DATE and doesnt has paymentDate', () => {
       const claim  = new Claim();
       claim.partialAdmission = new PartialAdmission();
       claim.partialAdmission.paymentIntention = new PaymentIntention();
@@ -59,7 +59,7 @@ describe('When will you pay Task', () => {
       expect(whenWillYouPayTask).toEqual(resultIncomplete);
     });
 
-    it('should return complete task when paymentOption is INSTALMENTS', () => {
+    it.concurrent('should return complete task when paymentOption is INSTALMENTS', () => {
       const claim  = new Claim();
       claim.partialAdmission = new PartialAdmission();
       claim.partialAdmission.paymentIntention = new PaymentIntention();

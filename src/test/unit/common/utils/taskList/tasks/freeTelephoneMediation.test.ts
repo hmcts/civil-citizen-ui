@@ -25,19 +25,19 @@ describe('Free telephone mediation', () => {
 
   describe('getFreeTelephoneMediationTask', () => {
 
-    it('should return incomplete', () => {
+    it.concurrent('should return incomplete', () => {
       const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
       expect(freeTelephoneMediationTask).toEqual(resultIncomplete);
     });
 
-    it('should return complete if no mediation', () => {
+    it.concurrent('should return complete if no mediation', () => {
       claim.mediation = new Mediation(undefined, { option: YesNo.NO }, undefined, undefined);
       const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
       expect(freeTelephoneMediationTask).toEqual(resultComplete);
     });
 
     describe('type Individual or Sole Trader', () => {
-      it('should return complete if canWeUse NO and provide new phone', () => {
+      it.concurrent('should return complete if canWeUse NO and provide new phone', () => {
         claim.mediation = new Mediation(
           { option: YesNo.NO, mediationPhoneNumber: '666555444' },
           { option: YesNo.YES },
@@ -48,7 +48,7 @@ describe('Free telephone mediation', () => {
         expect(freeTelephoneMediationTask).toEqual(resultComplete);
       });
 
-      it('should return complete if canWeUse YES and use same phone', () => {
+      it.concurrent('should return complete if canWeUse YES and use same phone', () => {
         claim.mediation = new Mediation(
           { option: YesNo.YES },
           { option: YesNo.YES },
@@ -61,7 +61,7 @@ describe('Free telephone mediation', () => {
     });
 
     describe('type Organisation or Company', () => {
-      it('should return complete if companyTelephoneNumber NO', () => {
+      it.concurrent('should return complete if companyTelephoneNumber NO', () => {
         claim.mediation = new Mediation(
           undefined,
           { option: YesNo.YES },
@@ -72,7 +72,7 @@ describe('Free telephone mediation', () => {
         expect(freeTelephoneMediationTask).toEqual(resultComplete);
       });
 
-      it('should return incomplete if companyTelephoneNumber NO and doesnt has contact person', () => {
+      it.concurrent('should return incomplete if companyTelephoneNumber NO and doesnt has contact person', () => {
         claim.mediation = new Mediation(
           undefined,
           { option: YesNo.YES },
@@ -83,7 +83,7 @@ describe('Free telephone mediation', () => {
         expect(freeTelephoneMediationTask).toEqual(resultIncomplete);
       });
 
-      it('should return complete if companyTelephoneNumber YES', () => {
+      it.concurrent('should return complete if companyTelephoneNumber YES', () => {
         claim.mediation = new Mediation(
           undefined,
           { option: YesNo.YES },
