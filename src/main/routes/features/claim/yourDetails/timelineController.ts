@@ -9,7 +9,7 @@ import {
   getTimeline,
   saveTimeline,
 } from '../../../../services/features/claim/yourDetails/timelineService';
-import {app} from 'app';
+import {app} from "../../../../app";
 
 const timelineController = Router();
 const timelineViewPath = 'features/claim/yourDetails/timeline';

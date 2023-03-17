@@ -10,7 +10,7 @@ import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
 import {PartyPhone} from 'common/models/PartyPhone';
 // import {req} from '../../../../utils/UserDetails';
 import {Email} from 'models/Email';
-import {app} from 'app';
+import {app} from "../../../../../main/app";
 
 const companyName = 'Version 1';
 const phone = new PartyPhone('123456789');

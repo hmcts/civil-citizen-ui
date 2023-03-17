@@ -5,7 +5,7 @@ import {GenericForm} from '../../../../common/form/models/genericForm';
 import {CLAIM_INTEREST_END_DATE_URL, CLAIM_INTEREST_START_DATE_URL} from '../../../urls';
 import {InterestStartDate} from '../../../../common/form/models/interest/interestStartDate';
 import {getInterest, saveInterest} from '../../../../services/features/claim/interest/interestService';
-import {app} from 'app';
+import {app} from "../../../../app";
 
 const interestStartDateController = Router();
 const interestStartDateViewPath = 'features/claim/interest/interest-start-date';

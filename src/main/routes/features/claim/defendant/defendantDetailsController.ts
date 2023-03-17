@@ -15,7 +15,7 @@ import {GenericForm} from '../../../../common/form/models/genericForm';
 import {PartyType} from '../../../../common/models/partyType';
 import {PartyDetails} from '../../../../common/form/models/partyDetails';
 import {Party} from '../../../../common/models/party';
-import {app} from 'app';
+import {app} from "../../../../app";
 
 const defendantDetailsController = Router();
 const defendantDetailsCompanyOrOrganisationViewPath = 'features/claim/defendant/defendant-details-company-or-organisation';

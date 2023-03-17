@@ -7,7 +7,7 @@ import {redirectToPage} from '../../../../services/features/claim/partyTypeServi
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {getClaimantInformation, saveClaimantProperty} from '../../../../../main/services/features/claim/yourDetails/claimantDetailsService';
 import {Party} from '../../../../common/models/party';
-import {app} from 'app';
+import {app} from "../../../../app";
 
 const claimantPartyTypeViewPath = 'features/claim/claimant-party-type';
 const claimantPartyTypeController = Router();

@@ -5,7 +5,7 @@ import {DASHBOARD_URL} from '../../urls';
 import {AppRequest, UserDetails} from 'models/AppRequest';
 import {getOcmcDraftClaims} from '../../../app/client/legacyDraftStoreClient';
 import {DashboardClaimantItem, DashboardDefendantItem} from '../../../common/models/dashboard/dashboardItem';
-import {app} from 'app';
+import {app} from "../../../app";
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const ocmcBaseUrl = config.get<string>('services.cmc.url');

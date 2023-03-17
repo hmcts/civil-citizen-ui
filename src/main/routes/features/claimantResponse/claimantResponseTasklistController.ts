@@ -4,7 +4,7 @@ import {getDescription, getTitle} from '../../../services/features/common/taskLi
 import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from '../../../modules/utilityService';
 import {getClaimantResponseTaskLists} from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistService';
-import {app} from 'app';
+import {app} from "../../../app";
 
 const claimantResponseTasklistViewPath = 'features/claimantResponse/claimant-response-task-list';
 const claimantResponseTasklistController = Router();

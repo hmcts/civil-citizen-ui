@@ -10,7 +10,7 @@ import {
 } from '../../../../services/features/common/defendantDetailsService';
 import {Party} from '../../../../common/models/party';
 import {AppRequest} from '../../../../common/models/AppRequest';
-import {app} from 'app';
+import {app} from "../../../../app";
 
 const defendantPartyTypeViewPath = 'features/claim/defendant-party-type';
 const defendantPartyTypeController = Router();

@@ -23,7 +23,8 @@ import {ClaimUpdate, EventDto} from '../../common/models/events/eventDto';
 import {CaseEvent} from '../../common/models/events/caseEvent';
 import {CourtLocation} from '../../common/models/courts/courtLocations';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
-import {app} from 'app';
+import {app} from "../../app";
+
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');

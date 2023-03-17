@@ -6,7 +6,7 @@ import {getInterest, saveInterest} from '../../../../services/features/claim/int
 import {HowMuchContinueClaiming} from '../../../../common/form/models/interest/howMuchContinueClaiming';
 import { SameRateInterestType } from '../../../../common/form/models/claimDetails';
 import {toNumberOrUndefined} from '../../../../common/utils/numberConverter';
-import {app} from 'app';
+import {app} from "../../../../app";
 
 const howMuchContinueClaimingController = Router();
 const howMuchContinueClaimingPath = 'features/claim/interest/how-much-continue-claiming';

@@ -6,7 +6,7 @@ import {CLAIM_TOTAL_URL, CLAIMANT_TASK_LIST_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {convertToPoundsFilter} from '../../../common/utils/currencyFormat';
 import {calculateInterestToDate} from '../../../common/utils/interestUtils';
-import {app} from 'app';
+import {app} from "../../../app";
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);

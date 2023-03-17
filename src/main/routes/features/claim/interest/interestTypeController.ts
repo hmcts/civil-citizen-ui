@@ -10,7 +10,7 @@ import InterestClaimOption from '../../../../common/form/models/claim/interest/i
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {InterestClaimOptionsType} from '../../../../common/form/models/claim/interest/interestClaimOptionsType';
 import {getInterest, saveInterest} from '../../../../services/features/claim/interest/interestService';
-import {app} from 'app';
+import {app} from "../../../../app";
 
 const interestTypeController = Router();
 const interestTypeViewPath = 'features/claim/interest/interest-type';

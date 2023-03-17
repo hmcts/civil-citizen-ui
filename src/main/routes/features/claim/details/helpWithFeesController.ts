@@ -6,7 +6,7 @@ import {YesNo} from 'form/models/yesNo';
 import {HelpWithFees} from 'form/models/claim/details/helpWithFees';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {getClaimDetails, saveClaimDetails} from 'services/features/claim/details/claimDetailsService';
-import {app} from 'app';
+import {app} from "../../../../app";
 
 const helpWithFeesController = Router();
 const helpWithFeesViewPath = 'features/claim/details/help-with-fees';
