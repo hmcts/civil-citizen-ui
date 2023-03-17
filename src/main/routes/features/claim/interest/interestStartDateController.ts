@@ -5,6 +5,7 @@ import {GenericForm} from '../../../../common/form/models/genericForm';
 import {CLAIM_INTEREST_END_DATE_URL, CLAIM_INTEREST_START_DATE_URL} from '../../../urls';
 import {InterestStartDate} from '../../../../common/form/models/interest/interestStartDate';
 import {getInterest, saveInterest} from '../../../../services/features/claim/interest/interestService';
+import {app} from 'app';
 
 const interestStartDateController = Router();
 const interestStartDateViewPath = 'features/claim/interest/interest-start-date';
@@ -16,7 +17,7 @@ function renderView(form: GenericForm<InterestStartDate>, res: Response): void {
 
 interestStartDateController.get(CLAIM_INTEREST_START_DATE_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const interest = await getInterest(req.session?.user?.id);
+    const interest = await getInterest(app.locals.user?.id);
     const interestStartDate = Object.assign(new InterestStartDate(), interest.interestStartDate);
     const form = new GenericForm(interestStartDate);
 
@@ -34,8 +35,7 @@ interestStartDateController.post(CLAIM_INTEREST_START_DATE_URL, async (req: AppR
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      const appRequest = <AppRequest>req;
-      await saveInterest(appRequest.session?.user?.id, form.model, interestPropertyName);
+      await saveInterest(app.locals.user?.id, form.model, interestPropertyName);
       res.redirect(CLAIM_INTEREST_END_DATE_URL);
     }
   } catch (error) {

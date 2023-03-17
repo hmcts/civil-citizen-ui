@@ -11,6 +11,7 @@ import {toCCDSameRateInterestSelection} from '../response/convertToCCDtoSameRate
 import {toCCDYesNo} from '../response/convertToCCDYesNo';
 import {AppRequest} from 'models/AppRequest';
 import {getClaimantIdamDetails} from 'services/translation/response/claimantIdamDetails';
+import {app} from 'app';
 
 export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClaim => {
   return {
@@ -31,6 +32,6 @@ export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClai
     interestFromSpecificDate: claim.isInterestFromASpecificDate() ? DateTime.fromJSDate(new Date(claim.interest?.interestStartDate?.date)).toFormat('yyyy-MM-dd') : undefined,
     interestFromSpecificDateDescription: claim.isInterestFromASpecificDate() ? claim.interest?.interestStartDate?.reason : undefined,
     interestClaimUntil: claim.interest?.interestEndDate,
-    claimantUserDetails: getClaimantIdamDetails(req.session?.user),
+    claimantUserDetails: getClaimantIdamDetails(app.locals.user),
   };
 };

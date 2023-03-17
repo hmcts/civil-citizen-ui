@@ -10,13 +10,14 @@ import {
 } from '../../../../services/features/common/defendantDetailsService';
 import {Party} from '../../../../common/models/party';
 import {AppRequest} from '../../../../common/models/AppRequest';
+import {app} from 'app';
 
 const defendantPartyTypeViewPath = 'features/claim/defendant-party-type';
 const defendantPartyTypeController = Router();
 
 defendantPartyTypeController.get(CLAIM_DEFENDANT_PARTY_TYPE_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const caseId = req.session?.user?.id;
+    const caseId = app.locals.user?.id;
     const defendant: Party = await getDefendantInformation(caseId);
     const defendantPartyType = defendant?.type;
     const form = new GenericForm(new PartyTypeSelection(defendantPartyType));
@@ -28,7 +29,7 @@ defendantPartyTypeController.get(CLAIM_DEFENDANT_PARTY_TYPE_URL, async (req: App
 
 defendantPartyTypeController.post(CLAIM_DEFENDANT_PARTY_TYPE_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const caseId = req.session?.user?.id;
+    const caseId = app.locals.user?.id;
     const form = new GenericForm(new PartyTypeSelection(Object.assign(req.body).option));
     form.validateSync();
 

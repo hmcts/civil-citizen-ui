@@ -6,6 +6,7 @@ import {getInterest, saveInterest} from '../../../../services/features/claim/int
 import {HowMuchContinueClaiming} from '../../../../common/form/models/interest/howMuchContinueClaiming';
 import { SameRateInterestType } from '../../../../common/form/models/claimDetails';
 import {toNumberOrUndefined} from '../../../../common/utils/numberConverter';
+import {app} from 'app';
 
 const howMuchContinueClaimingController = Router();
 const howMuchContinueClaimingPath = 'features/claim/interest/how-much-continue-claiming';
@@ -15,7 +16,7 @@ function renderView(form: GenericForm<HowMuchContinueClaiming>, res: Response): 
 }
 
 howMuchContinueClaimingController.get(CLAIM_INTEREST_HOW_MUCH_URL, async (req:AppRequest, res:Response, next: NextFunction) => {
-  const caseId = req.session?.user?.id;
+  const caseId = app.locals.user?.id;
   try {
     const interest = await getInterest(caseId);
     renderView(new GenericForm<HowMuchContinueClaiming>(interest.howMuchContinueClaiming), res);
@@ -27,7 +28,7 @@ howMuchContinueClaimingController.get(CLAIM_INTEREST_HOW_MUCH_URL, async (req:Ap
 howMuchContinueClaimingController.post(CLAIM_INTEREST_HOW_MUCH_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   const howMuchContinueClaiming = 'howMuchContinueClaiming';
   try {
-    const caseId = (<AppRequest>req).session?.user?.id;
+    const caseId = app.locals.user?.id;
     const dailyInterestAmount = req.body.option === SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE ? toNumberOrUndefined(req.body.dailyInterestAmount) : null;
     const form: GenericForm<HowMuchContinueClaiming> = new GenericForm(new HowMuchContinueClaiming(req.body.option, dailyInterestAmount));
     form.validateSync();

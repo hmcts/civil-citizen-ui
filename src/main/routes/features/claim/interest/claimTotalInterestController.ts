@@ -4,6 +4,7 @@ import {AppRequest} from '../../../../common/models/AppRequest';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {TotalInterest} from '../../../../common/form/models/interest/totalInterest';
 import {getInterest, saveInterest} from '../../../../services/features/claim/interest/interestService';
+import {app} from 'app';
 
 const claimTotalInterestController = Router();
 const claimTotalInterestViewPath = 'features/claim/interest/total-claim-interest';
@@ -11,7 +12,7 @@ const propertyName = 'totalInterest';
 
 claimTotalInterestController.get(CLAIM_INTEREST_TOTAL_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const interest = await getInterest(req.session?.user?.id);
+    const interest = await getInterest(app.locals.user?.id);
     res.render(claimTotalInterestViewPath, {
       form: new GenericForm(new TotalInterest(interest?.totalInterest?.amount.toString(), interest?.totalInterest?.reason)),
     });
@@ -28,8 +29,7 @@ claimTotalInterestController.post(CLAIM_INTEREST_TOTAL_URL, async (req: AppReque
     if (form.hasErrors()) {
       res.render(claimTotalInterestViewPath, {form});
     } else {
-      const appRequest = <AppRequest>req;
-      await saveInterest(appRequest.session?.user?.id, form.model, propertyName);
+      await saveInterest(app.locals.user?.id, form.model, propertyName);
       res.redirect(CLAIM_INTEREST_CONTINUE_CLAIMING_URL);
     }
   } catch (error) {

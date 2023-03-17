@@ -9,6 +9,7 @@ import {InterestClaimFromSelection} from '../../../../common/form/models/claim/i
 import {InterestClaimFromType} from '../../../../common/form/models/claimDetails';
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {getInterest, saveInterest} from '../../../../services/features/claim/interest/interestService';
+import {app} from 'app';
 
 const claimantInterestFromController = Router();
 const claimantInterestFromViewPath = 'features/claim/interest/claimant-interest-from';
@@ -19,7 +20,7 @@ function renderView(form: GenericForm<InterestClaimFromSelection>, res: Response
 }
 
 claimantInterestFromController.get(CLAIM_INTEREST_DATE_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
-  const claimId = req.session?.user?.id;
+  const claimId = app.locals.user?.id;
   try {
     const interest = await getInterest(claimId);
     renderView(new GenericForm(new InterestClaimFromSelection(interest.interestClaimFrom)), res);
@@ -30,7 +31,7 @@ claimantInterestFromController.get(CLAIM_INTEREST_DATE_URL, async (req: AppReque
 
 claimantInterestFromController.post(CLAIM_INTEREST_DATE_URL, async (req: any, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.session?.user?.id;
+    const claimId = app.locals.user?.id;
     const form: GenericForm<InterestClaimFromSelection> = new GenericForm(new InterestClaimFromSelection(req.body.option as InterestClaimFromType));
     form.validateSync();
 

@@ -4,6 +4,7 @@ import {CLAIM_DEFENDANT_EMAIL_URL, CLAIM_DEFENDANT_PHONE_NUMBER_URL} from '../..
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {getDefendantEmail,saveDefendantEmail} from '../../../../services/features/claim/yourDetails/defendantEmailService';
 import {AppRequest} from '../../../../common/models/AppRequest';
+import {app} from 'app';
 
 const defendantEmailViewPath = 'features/claim/yourDetails/defendant-email';
 const defendantEmailController = Router();
@@ -14,7 +15,7 @@ function renderView(form: GenericForm<DefendantEmail>, res: Response): void {
 
 defendantEmailController.get(CLAIM_DEFENDANT_EMAIL_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.session?.user?.id;
+    const claimId = app.locals.user?.id;
     const form: DefendantEmail = await getDefendantEmail(claimId);
     renderView(new GenericForm<DefendantEmail>(form), res);
   } catch (error) {
@@ -24,7 +25,7 @@ defendantEmailController.get(CLAIM_DEFENDANT_EMAIL_URL, async (req: AppRequest, 
 
 defendantEmailController.post(CLAIM_DEFENDANT_EMAIL_URL, async (req: any, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.session?.user?.id;
+    const claimId = app.locals.user?.id;
     const form: GenericForm<DefendantEmail> = new GenericForm(new DefendantEmail(req.body.emailAddress));
     form.validateSync();
 

@@ -13,6 +13,7 @@ import {
   saveClaimInterest,
 } from '../../../../services/features/claim/interest/claimInterestService';
 import {AppRequest} from '../../../../common/models/AppRequest';
+import {app} from 'app';
 
 const claimInterestController = express.Router();
 const claimInterestPath = 'features/claim/interest/claim-interest';
@@ -22,7 +23,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: express.Response): voi
 }
 
 claimInterestController.get(CLAIM_INTEREST_URL, async (req:AppRequest, res:express.Response, next: express.NextFunction) => {
-  const caseId = req.session?.user?.id;
+  const caseId = app.locals.user?.id;
 
   try {
     renderView(new GenericForm(await getClaimInterest(caseId)), res);
@@ -33,7 +34,7 @@ claimInterestController.get(CLAIM_INTEREST_URL, async (req:AppRequest, res:expre
 
 claimInterestController.post(CLAIM_INTEREST_URL, async (req: any, res: express.Response, next: express.NextFunction) => {
   try {
-    const caseId = req.session?.user?.id;
+    const caseId = app.locals.user?.id;
     const claimInterest = getClaimInterestForm(req.body.option);
     const form = new GenericForm(claimInterest);
     form.validateSync();

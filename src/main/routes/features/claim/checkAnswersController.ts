@@ -14,6 +14,7 @@ import {GenericForm} from 'common/form/models/genericForm';
 import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
 import {QualifiedStatementOfTruth} from 'common/form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {YesNo} from 'common/form/models/yesNo';
+import {app} from 'app';
 
 const checkAnswersViewPath = 'features/claim/check-answers';
 const claimCheckAnswersController = Router();
@@ -36,7 +37,7 @@ claimCheckAnswersController.get(CLAIM_CHECK_ANSWERS_URL,
   // AllResponseTasksCompletedGuard.apply(CLAIM_INCOMPLETE_SUBMISSION_URL), TODO implement guard
   async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
-      const userId = req.session?.user?.id;
+      const userId = app.locals.user?.id;
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await getCaseDataFromStore(userId);
       const form = new GenericForm(getStatementOfTruth(claim));
@@ -48,7 +49,7 @@ claimCheckAnswersController.get(CLAIM_CHECK_ANSWERS_URL,
 
 claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | AppRequest, res: Response, next: NextFunction) => {
   try {
-    const userId = (<AppRequest>req).session?.user?.id;
+    const userId = app.locals.user?.id;
     const isFullAmountRejected = (req.body?.isFullAmountRejected === 'true');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const form = new GenericForm((req.body.type === 'qualified')

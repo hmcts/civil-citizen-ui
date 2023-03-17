@@ -6,6 +6,7 @@ import {CLAIM_TOTAL_URL, CLAIMANT_TASK_LIST_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {convertToPoundsFilter} from '../../../common/utils/currencyFormat';
 import {calculateInterestToDate} from '../../../common/utils/interestUtils';
+import {app} from 'app';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -18,7 +19,7 @@ function renderView(form: any, res: Response): void {
 
 totalAmountController.get(CLAIM_TOTAL_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const userId = req.session?.user?.id;
+    const userId = app.locals.user?.id;
     const claim = await getCaseDataFromStore(userId);
     const claimFee = await civilServiceClient.getClaimAmountFee(claim.totalClaimAmount, req);
     const hearingResponse = await civilServiceClient.getHearingAmount(claim.totalClaimAmount, req);

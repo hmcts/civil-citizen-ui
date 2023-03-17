@@ -7,6 +7,7 @@ import {
 import {ClaimantInterestRate} from '../../../../common/form/models/claim/interest/claimantInterestRate';
 import {AppRequest} from 'common/models/AppRequest';
 import {getInterest, saveInterest} from '../../../../services/features/claim/interest/interestService';
+import {app} from 'app';
 
 const interestRateController = Router();
 const interestRateViewPath = 'features/claim/interest/claimant-interest-rate';
@@ -17,7 +18,7 @@ function renderView(form: GenericForm<ClaimantInterestRate>, res: Response): voi
 }
 
 interestRateController.get(CLAIM_INTEREST_RATE_URL, async (req:AppRequest, res: Response, next: NextFunction) => {
-  const claimId = req.session.user?.id;
+  const claimId = app.locals.user?.id;
   try {
     const interest = await getInterest(claimId);
     renderView(new GenericForm<ClaimantInterestRate>(interest.sameRateInterestSelection),res);
@@ -27,7 +28,7 @@ interestRateController.get(CLAIM_INTEREST_RATE_URL, async (req:AppRequest, res: 
 });
 
 interestRateController.post(CLAIM_INTEREST_RATE_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
-  const claimId = (<AppRequest>req).session.user?.id;
+  const claimId = app.locals.user?.id;
   try {
     const sameRateInterestSelection = await getInterestRateForm(req.body.sameRateInterestType,req.body.differentRate,req.body.reason);
     const form: GenericForm<ClaimantInterestRate> = new GenericForm(new ClaimantInterestRate(sameRateInterestSelection.sameRateInterestType,sameRateInterestSelection.differentRate,sameRateInterestSelection.reason));

@@ -9,13 +9,14 @@ import {
   getTimeline,
   saveTimeline,
 } from '../../../../services/features/claim/yourDetails/timelineService';
+import {app} from 'app';
 
 const timelineController = Router();
 const timelineViewPath = 'features/claim/yourDetails/timeline';
 
 timelineController.get(CLAIM_TIMELINE_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const userId = req.session?.user?.id;
+    const userId = app.locals.user?.id;
     const form = new GenericForm(getTimeline(await getClaimDetails(userId)));
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const dates = [
@@ -44,7 +45,7 @@ timelineController.post(CLAIM_TIMELINE_URL, async (req: AppRequest, res: Respons
       ];
       res.render(timelineViewPath, {form, dates});
     } else {
-      await saveTimeline(req.session?.user?.id, form.model);
+      await saveTimeline(app.locals.user?.id, form.model);
       res.redirect(CLAIM_EVIDENCE_URL);
     }
   } catch (error) {

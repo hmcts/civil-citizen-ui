@@ -5,6 +5,7 @@ import {getTelephone, saveTelephone} from '../../../../services/features/claim/y
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {CitizenTelephoneNumber} from '../../../../common/form/models/citizenTelephoneNumber';
 import {ClaimantOrDefendant} from '../../../../common/models/partyType';
+import {app} from 'app';
 
 const claimantPhoneViewPath = 'features/claim/claimant-phone';
 const claimantPhoneController = Router();
@@ -15,7 +16,7 @@ function renderView(form: GenericForm<CitizenTelephoneNumber>, res: Response): v
 
 claimantPhoneController.get(CLAIMANT_PHONE_NUMBER_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.session.user?.id;
+    const claimId = app.locals.user?.id;
     const form: CitizenTelephoneNumber = await getTelephone(claimId, ClaimantOrDefendant.CLAIMANT);
     renderView(new GenericForm<CitizenTelephoneNumber>(form), res);
   } catch (error) {
@@ -25,7 +26,7 @@ claimantPhoneController.get(CLAIMANT_PHONE_NUMBER_URL, async (req: AppRequest, r
 
 claimantPhoneController.post(CLAIMANT_PHONE_NUMBER_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
-    const claimId = (<AppRequest>req).session.user?.id;
+    const claimId = app.locals.user?.id;
     const form: GenericForm<CitizenTelephoneNumber> = new GenericForm(new CitizenTelephoneNumber(req.body.telephoneNumber));
     form.validateSync();
 

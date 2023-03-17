@@ -4,6 +4,7 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {Claim} from 'common/models/claim';
 import {translateDraftClaimToCCD} from 'services/translation/claim/ccdTranslation';
+import {app} from 'app';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('partialAdmissionService');
@@ -13,7 +14,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 export const submitClaim = async (req: AppRequest): Promise<Claim> => {
   try {
-    const claim = await getCaseDataFromStore(req.session?.user?.id);
+    const claim = await getCaseDataFromStore(app.locals.user?.id);
     const ccdClaim = translateDraftClaimToCCD(claim, req);
     logger.info(ccdClaim);
     return await civilServiceClient.submitDraftClaim(ccdClaim, req);

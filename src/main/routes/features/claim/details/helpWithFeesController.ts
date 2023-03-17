@@ -6,6 +6,7 @@ import {YesNo} from 'form/models/yesNo';
 import {HelpWithFees} from 'form/models/claim/details/helpWithFees';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {getClaimDetails, saveClaimDetails} from 'services/features/claim/details/claimDetailsService';
+import {app} from 'app';
 
 const helpWithFeesController = Router();
 const helpWithFeesViewPath = 'features/claim/details/help-with-fees';
@@ -17,7 +18,7 @@ function renderView(form: GenericForm<HelpWithFees>, res: Response): void {
 
 helpWithFeesController.get(CLAIM_HELP_WITH_FEES_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const userId = req.session?.user?.id;
+    const userId = app.locals.user?.id;
     const claimDetails: ClaimDetails = await getClaimDetails(userId);
     const form = new GenericForm(claimDetails.helpWithFees);
     renderView(form, res);
@@ -28,7 +29,7 @@ helpWithFeesController.get(CLAIM_HELP_WITH_FEES_URL, async (req: AppRequest, res
 
 helpWithFeesController.post(CLAIM_HELP_WITH_FEES_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
-    const userId = (<AppRequest>req).session?.user?.id;
+    const userId = app.locals.user?.id;
     const referenceNumber = req.body.option === YesNo.NO ? '' : req.body.referenceNumber;
     const helpWithFees = new HelpWithFees(req.body.option, referenceNumber);
     const form = new GenericForm(helpWithFees);

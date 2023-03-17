@@ -8,6 +8,7 @@ import {InterestEndDate} from '../../../../common/form/models/interest/interestE
 import {InterestEndDateType} from '../../../../common/form/models/claimDetails';
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {getInterest, saveInterest} from '../../../../services/features/claim/interest/interestService';
+import {app} from 'app';
 
 const interestEndDateController = Router();
 const interestEndDateViewPath = 'features/claim/interest/interest-end-date';
@@ -19,7 +20,7 @@ function renderView(form: GenericForm<InterestEndDate>, res: Response): void {
 
 interestEndDateController.get(CLAIM_INTEREST_END_DATE_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.session?.user?.id;
+    const claimId = app.locals.user?.id;
     const interest = await getInterest(claimId);
     const interestEndDate =  new InterestEndDate(interest.interestEndDate);
     const form = new GenericForm(interestEndDate);
@@ -38,8 +39,7 @@ interestEndDateController.post(CLAIM_INTEREST_END_DATE_URL, async (req: AppReque
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      const appRequest = <AppRequest>req;
-      await saveInterest(appRequest.session?.user?.id, form.model.option, dqPropertyName);
+      await saveInterest(app.locals.user?.id, form.model.option, dqPropertyName);
       res.redirect(CLAIM_HELP_WITH_FEES_URL);
     }
   } catch (error) {

@@ -10,6 +10,7 @@ import {AppRequest} from '../../../../common/models/AppRequest';
 import {YesNo} from '../../../../common/form/models/yesNo';
 import {getInterest, saveInterest} from '../../../../services/features/claim/interest/interestService';
 import {getClaimInterestForm} from '../../../../services/features/claim/interest/claimInterestService';
+import {app} from 'app';
 
 const continueClaimingInterestController = Router();
 const continueClaimingInterestPath = 'features/claim/interest/continue-claiming-interest';
@@ -19,7 +20,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 }
 
 continueClaimingInterestController.get(CLAIM_INTEREST_CONTINUE_CLAIMING_URL, async (req:AppRequest, res:Response, next: NextFunction) => {
-  const caseId = req.session?.user?.id;
+  const caseId = app.locals.user?.id;
   try {
     const interest = await getInterest(caseId);
     renderView(new GenericForm(new GenericYesNo(interest.continueClaimingInterest)), res);
@@ -30,7 +31,7 @@ continueClaimingInterestController.get(CLAIM_INTEREST_CONTINUE_CLAIMING_URL, asy
 
 continueClaimingInterestController.post(CLAIM_INTEREST_CONTINUE_CLAIMING_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const caseId = req.session?.user?.id;
+    const caseId = app.locals.user?.id;
     const body = req.body as Record<string, string>;
     const continueClaimingInterest = getClaimInterestForm(body.option);
     const form = new GenericForm(continueClaimingInterest);

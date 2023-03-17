@@ -11,6 +11,7 @@ import {
 import {AppRequest} from 'models/AppRequest';
 import {constructUrlWithNotEligibleReason} from 'common/utils/urlFormatter';
 import {NotEligibleReason} from 'form/models/eligibility/NotEligibleReason';
+import {app} from 'app';
 
 const claimAmountBreakdownController = Router();
 const viewPath = 'features/claim/amount/claim-amount-breakdown';
@@ -21,7 +22,7 @@ function renderView(form: GenericForm<AmountBreakdown>, res: Response) {
 
 claimAmountBreakdownController.get(CLAIM_AMOUNT_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const userid = req.session?.user?.id;
+    const userid = app.locals.user?.id;
     const form = new GenericForm<AmountBreakdown>(await getClaimAmountBreakdownForm(userid));
     renderView(form, res);
   } catch (error) {
@@ -46,7 +47,7 @@ claimAmountBreakdownController.get(CLAIM_AMOUNT_URL, async (req: AppRequest, res
 });
 
 const saveAndRedirectToNextPage = async (req: AppRequest, res: Response, amountBreakdown: AmountBreakdown) => {
-  await saveClaimAmountBreakdownForm(req.session?.user?.id, amountBreakdown);
+  await saveClaimAmountBreakdownForm(app.locals.user?.id, amountBreakdown);
   res.redirect(CLAIM_INTEREST_URL);
 };
 

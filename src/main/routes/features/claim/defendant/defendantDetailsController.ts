@@ -15,6 +15,7 @@ import {GenericForm} from '../../../../common/form/models/genericForm';
 import {PartyType} from '../../../../common/models/partyType';
 import {PartyDetails} from '../../../../common/form/models/partyDetails';
 import {Party} from '../../../../common/models/party';
+import {app} from 'app';
 
 const defendantDetailsController = Router();
 const defendantDetailsCompanyOrOrganisationViewPath = 'features/claim/defendant/defendant-details-company-or-organisation';
@@ -36,7 +37,7 @@ function renderView(res: Response, form: GenericForm<PartyDetails>, defendantTyp
 
 defendantDetailsController.get(detailsURLs, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const userId = req.session?.user?.id;
+    const userId = app.locals.user?.id;
     const defendantDetails = await getDefendantInformation(userId);
     const partyDetails = new GenericForm<PartyDetails>(defendantDetails.partyDetails);
 
@@ -47,7 +48,7 @@ defendantDetailsController.get(detailsURLs, async (req: AppRequest, res: Respons
 });
 
 defendantDetailsController.post(detailsURLs, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
-  const userId = (<AppRequest>req).session?.user?.id;
+  const userId = app.locals.user?.id;
 
   try {
     const defendant: Party = await getDefendantInformation(userId);

@@ -5,6 +5,7 @@ import {DASHBOARD_URL} from '../../urls';
 import {AppRequest, UserDetails} from 'models/AppRequest';
 import {getOcmcDraftClaims} from '../../../app/client/legacyDraftStoreClient';
 import {DashboardClaimantItem, DashboardDefendantItem} from '../../../common/models/dashboard/dashboardItem';
+import {app} from 'app';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
@@ -27,7 +28,7 @@ function renderPage(res: Response, claimsAsClaimant: DashboardClaimantItem[], cl
 const dashboardController = Router();
 
 dashboardController.get(DASHBOARD_URL, async function (req: AppRequest, res) {
-  const user: UserDetails = req.session.user;
+  const user: UserDetails = app.locals.user;
   /*This is a call to validate integration with legacy draft-store. This will have to be refined in the future
   to display the draft claims on the dashboard*/
   const claimsAsClaimant : DashboardClaimantItem[] = await civilServiceClient.getClaimsForClaimant(req);

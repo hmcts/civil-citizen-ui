@@ -17,6 +17,7 @@ import {Party} from '../../../../common/models/party';
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {PartyType} from '../../../../common/models/partyType';
 import {PartyDetails} from '../../../../common/form/models/partyDetails';
+import {app} from 'app';
 
 const claimantDetailsController = Router();
 const claimantOrganisationDetailsPath = 'features/claim/yourDetails/claimant-organisation-details';
@@ -45,7 +46,7 @@ function renderPage(res: Response, req: Request, claimantDetails: GenericForm<Pa
 
 claimantDetailsController.get(detailsURLs, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const caseId = req.session?.user?.id;
+    const caseId = app.locals.user?.id;
     const claimant: Party = await getClaimantInformation(caseId);
     const claimantDetails = new GenericForm<PartyDetails>(claimant.partyDetails);
     renderPage(res, req, claimantDetails, claimant.type);
@@ -55,7 +56,7 @@ claimantDetailsController.get(detailsURLs, async (req: AppRequest, res: Response
 });
 
 claimantDetailsController.post(detailsURLs, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
-  const caseId = (<AppRequest>req).session?.user?.id;
+  const caseId = app.locals.user?.id;
 
   try {
     const claimant = await getClaimantInformation(caseId);

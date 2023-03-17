@@ -7,13 +7,14 @@ import {redirectToPage} from '../../../../services/features/claim/partyTypeServi
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {getClaimantInformation, saveClaimantProperty} from '../../../../../main/services/features/claim/yourDetails/claimantDetailsService';
 import {Party} from '../../../../common/models/party';
+import {app} from 'app';
 
 const claimantPartyTypeViewPath = 'features/claim/claimant-party-type';
 const claimantPartyTypeController = Router();
 
 claimantPartyTypeController.get(CLAIMANT_PARTY_TYPE_SELECTION_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const userId = req.session?.user?.id;
+    const userId = app.locals.user?.id;
     const claimant: Party = await getClaimantInformation(userId);
     const form = new GenericForm(new PartyTypeSelection(claimant?.type));
     res.render(claimantPartyTypeViewPath, {form});
@@ -24,7 +25,7 @@ claimantPartyTypeController.get(CLAIMANT_PARTY_TYPE_SELECTION_URL, async (req: A
 
 claimantPartyTypeController.post(CLAIMANT_PARTY_TYPE_SELECTION_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const userId = req.session?.user?.id;
+    const userId = app.locals.user?.id;
     const reqBody = req.body as Record<string, string>;
     const form = new GenericForm(new PartyTypeSelection(reqBody.option as PartyType));
     form.validateSync();

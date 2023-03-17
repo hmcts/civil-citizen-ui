@@ -5,6 +5,7 @@ import {Claim} from '../../../common/models/claim';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from '../../../modules/utilityService';
+import {app} from 'app';
 
 const taskListViewPath = 'features/response/task-list';
 const taskListController = Router();
@@ -16,7 +17,7 @@ taskListController.get(RESPONSE_TASK_LIST_URL, async (req: AppRequest, res, next
     const caseData: Claim = await getClaimById(currentClaimId, req);
     const taskLists = getTaskLists(caseData, currentClaimId, lang);
 
-    req.session.claimId = currentClaimId;
+    app.locals.claimId = currentClaimId;
 
     const title = getTitle(taskLists, lang);
     const description = getDescription(taskLists, lang);

@@ -6,13 +6,14 @@ import {Claim} from '../../../../common/models/claim';
 import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {saveClaimantProperty} from '../../../../../main/services/features/claim/yourDetails/claimantDetailsService';
+import {app} from 'app';
 
 const claimantDoBController = Router();
 const claimantDoBViewPath = 'features/response/citizenDob/citizen-dob';
 
 claimantDoBController.get(CLAIMANT_DOB_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const caseId = req.session?.user?.id;
+    const caseId = app.locals.user?.id;
     const claim: Claim = await getCaseDataFromStore(caseId);
     let form = new GenericForm(new CitizenDate());
     if (claim.applicant1?.dateOfBirth) {
@@ -27,7 +28,7 @@ claimantDoBController.get(CLAIMANT_DOB_URL, async (req: AppRequest, res: Respons
 
 claimantDoBController.post(CLAIMANT_DOB_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
-    const claimId = (<AppRequest>req).session.user?.id;
+    const claimId = app.locals.user?.id;
     const {year, month, day} = req.body;
     const form = new GenericForm(new CitizenDate(day, month, year));
     form.validateSync();

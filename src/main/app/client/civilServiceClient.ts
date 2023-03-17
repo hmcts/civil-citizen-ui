@@ -23,6 +23,7 @@ import {ClaimUpdate, EventDto} from '../../common/models/events/eventDto';
 import {CaseEvent} from '../../common/models/events/caseEvent';
 import {CourtLocation} from '../../common/models/courts/courtLocations';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
+import {app} from 'app';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -55,14 +56,14 @@ export class CivilServiceClient {
     return {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${req.session?.user?.accessToken}`,
+        'Authorization': `Bearer ${app.locals.user?.accessToken}`,
       },
     };
   }
 
   async getClaimsForClaimant(req: AppRequest): Promise<DashboardClaimantItem[]> {
     const config = this.getConfig(req);
-    const submitterId = req.session?.user?.id;
+    const submitterId = app.locals.user?.id;
     try {
       const response = await this.client.get('/cases/claimant/' + submitterId, config);
       return plainToInstance(DashboardClaimantItem, response.data as object[]);
@@ -73,7 +74,7 @@ export class CivilServiceClient {
 
   async getClaimsForDefendant(req: AppRequest): Promise<DashboardDefendantItem[]> {
     const config = this.getConfig(req);
-    const submitterId = req.session?.user?.id;
+    const submitterId = app.locals.user?.id;
     try {
       const response = await this.client.get('/cases/defendant/' + submitterId, config);
       return plainToInstance(DashboardDefendantItem, response.data as object[]);
@@ -192,7 +193,7 @@ export class CivilServiceClient {
 
   async submitEvent(event: CaseEvent, claimId: string, updatedClaim?: ClaimUpdate, req?: AppRequest): Promise<Claim> {
     const config = this.getConfig(req);
-    const userId = req.session?.user?.id;
+    const userId = app.locals.user?.id;
     const data: EventDto = {
       event: event,
       caseDataUpdate: updatedClaim,
@@ -235,7 +236,7 @@ export class CivilServiceClient {
   async assignDefendantToClaim(claimId:string, req:AppRequest): Promise<void> {
     try{
       await this.client.post(ASSIGN_CLAIM_TO_DEFENDANT.replace(':claimId', claimId),{}, // nosonar
-        {headers: {'Authorization': `Bearer ${req.session?.user?.accessToken}`}}); // nosonar
+        {headers: {'Authorization': `Bearer ${app.locals.user?.accessToken}`}}); // nosonar
     } catch (error: unknown) {
       logger.error(error);
       throw error;
