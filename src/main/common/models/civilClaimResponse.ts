@@ -28,6 +28,7 @@ import {CCDPayBySetDate} from './ccdResponse/ccdPayBySetDate';
 import {FullAdmission} from './fullAdmission';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {RepaymentPlan} from './repaymentPlan';
+import {CCDRespondentLiPResponse} from "models/ccdResponse/ccdRespondentLiPResponse";
 
 export class CivilClaimResponse {
   id: string;
@@ -99,6 +100,7 @@ export interface CCDClaim extends ClaimUpdate {
   responseClaimMediationSpecRequired?: string;
   specAoSApplicantCorrespondenceAddressRequired?: YesNoUpperCamelCase;
   claimantUserDetails?: IdamUserDetails;
+  respondent1LiPResponse?: CCDRespondentLiPResponse;
 }
 
 export interface ClaimFeeData {
