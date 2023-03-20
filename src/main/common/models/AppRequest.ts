@@ -2,6 +2,8 @@ import {Request} from 'express';
 import {Session} from 'express-session';
 import {Claim} from './claim';
 
+import {TaskList} from 'common/models/taskList/taskList';
+
 export interface AppRequest<T = Partial<Claim>> extends Request {
   session: AppSession;
   locals: {
@@ -14,6 +16,9 @@ export interface AppRequest<T = Partial<Claim>> extends Request {
 export interface AppSession extends Session {
   user: UserDetails;
   lang: string | undefined;
+
+  claimId: string;
+  taskLists: TaskList[];
 }
 
 export interface UserDetails {
