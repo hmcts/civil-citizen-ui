@@ -94,6 +94,8 @@ export class Claim {
     claim.evidence = toCUIEvidence(ccdClaim?.speclistYourEvidenceList);
     claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
     claim.respondent1 = toCUIParty(ccdClaim?.respondent1);
+    claim.respondent1ResponseDeadline = ccdClaim?.respondent1ResponseDeadline;
+    claim.respondentSolicitor1AgreedDeadlineExtension = ccdClaim?.respondentSolicitor1AgreedDeadlineExtension;
     return claim;
   }
 
