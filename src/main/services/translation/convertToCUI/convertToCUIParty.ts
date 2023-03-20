@@ -14,6 +14,8 @@ export const toCUIParty = (ccdParty: CCDParty): Party => {
     cuiParty.partyDetails.individualFirstName = ccdParty?.individualFirstName ? ccdParty.individualFirstName : undefined;
     cuiParty.partyDetails.individualLastName = ccdParty.individualLastName ? ccdParty?.individualLastName : undefined;
     cuiParty.partyDetails.individualTitle = ccdParty.individualTitle ? ccdParty?.individualTitle : undefined;
+    console.log('XXXXXXXx', ccdParty?.individualDateOfBirth);
+    console.log('GET', getDateOfBirth(ccdParty?.individualDateOfBirth));
     cuiParty.dateOfBirth = getDateOfBirth(ccdParty?.individualDateOfBirth);
   } else if (ccdParty?.type === PartyType.SOLE_TRADER) {
     cuiParty.partyDetails.individualFirstName = ccdParty.soleTraderFirstName ? ccdParty?.soleTraderFirstName : undefined;
@@ -33,8 +35,8 @@ export const toCUIParty = (ccdParty: CCDParty): Party => {
   return cuiParty;
 };
 
-const getDateOfBirth = (dateStr: Date): CitizenDate => {
-  if(!dateStr) return undefined;
-  const [day, month, year] = dateStr.toString().split("-");
-  return new CitizenDate(year, month, day);
+const getDateOfBirth = (date: Date): CitizenDate => {
+  console.log(date);
+  if(!date) return undefined;
+    return new CitizenDate(date.getDate().toString(), date.getMonth().toString(), date.getFullYear().toString());
 }

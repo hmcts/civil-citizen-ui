@@ -15,7 +15,7 @@ const title = 'Mr';
 const firstName = 'Jon';
 const lastName = 'Doe';
 const soleTraderTradingAs = 'test';
-const dateOfBirth = new CitizenDate('10', '10', '1990');
+const dateOfBirth = new CitizenDate('20', '10', '1990');
 const email = new Email('test@test.com');
 const emailCCD = 'test@test.com';
 
@@ -55,7 +55,7 @@ const partyIndividual: Party = {
     individualLastName: lastName,
     ...commonParty,
   },
-  dateOfBirth: {date: dateOfBirth.date, year: NaN, month: NaN, day: NaN},
+  dateOfBirth: dateOfBirth,
 };
 
 const partySoleTrader: Party = {
@@ -69,7 +69,7 @@ const partySoleTrader: Party = {
     soleTraderTradingAs: soleTraderTradingAs,
     ...commonParty,
   },
-  dateOfBirth: {date: dateOfBirth.date, year: NaN, month: NaN, day: NaN},
+  dateOfBirth: dateOfBirth,
 };
 
 const partyCompanyCCD: CCDParty = {
@@ -92,7 +92,7 @@ const partyCompanyCCD: CCDParty = {
 
 const partyIndividualCCD: CCDParty = {
   companyName: undefined,
-  individualDateOfBirth: new Date('Wed Oct 10 1990 01:00:00 GMT+0100'),
+  individualDateOfBirth: new Date('1990-10-20'),
   individualTitle: title,
   individualFirstName: firstName,
   individualLastName: lastName,
@@ -118,7 +118,7 @@ const partySoleTraderCCD: CCDParty = {
   partyEmail: emailCCD,
   partyPhone: phoneCCD,
   primaryAddress: addressCCD,
-  soleTraderDateOfBirth: new Date('Wed Oct 10 1990 01:00:00 GMT+0100'),
+  soleTraderDateOfBirth: new Date('1990-10-20'),
   soleTraderTitle: title,
   soleTraderFirstName: firstName,
   soleTraderLastName: lastName,
