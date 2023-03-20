@@ -50,7 +50,7 @@ def setUrls(suffix){
     env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-aat.aat.platform.hmcts.net"
     env.URL="https://manage-case.aat.platform.hmcts.net"
     env.TEST_URL="https://civil-citizen-ui-staging.aat.platform.hmcts.net"
-    env.CIVIL_SERVICE_URL="http://civil-service-aat.service.aat.platform.hmcts.net"
+    env.CIVIL_SERVICE_URL="http://civil-service-aat.aat.platform.hmcts.net"
 
   } else {
     env.CCD_DATA_STORE_URL = "https://ccd-data-store-api-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net"
