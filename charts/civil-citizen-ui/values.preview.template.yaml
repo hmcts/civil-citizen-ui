@@ -28,7 +28,7 @@ civil-service:
     releaseNameOverride: ${SERVICE_NAME}-civil-service
     image: 'hmctspublic.azurecr.io/civil/service:latest'
     imagePullPolicy: Always
-    ingressHost: civil-service-${SERVICE_FQDN}
+    ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
     keyVaults:
       civil:
         resourceGroup: civil
@@ -71,8 +71,8 @@ civil-service:
       FEES_API_URL: http://fees-register-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       PAYMENTS_API_URL: http://payment-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       SEND_LETTER_URL: http://rpe-send-letter-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-      CUI_URL: https://civil-citizen-ui.{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-      CUI_URL_RESPOND_TO_CLAIM: https://civil-citizen-ui.{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/first-contact/start
+      CUI_URL: ${SERVICE_NAME}.preview.platform.hmcts.net
+      CUI_URL_RESPOND_TO_CLAIM: ${SERVICE_NAME}.preview.platform.hmcts.net/first-contact/start
       CLAIM_STORE_URL: http://cmc-claim-store-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       GENAPP_LRD_URL: http://rd-location-ref-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       GENAPP_JRD_URL: http://rd-judicial-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
@@ -125,9 +125,9 @@ idam-pr:
   enabled: true
   redirect_uris:
     Civil Citizen UI:
-      - https://${SERVICE_FQDN}/oauth2/callback
+      - https://${SERVICE_NAME}.preview.platform.hmcts.net/oauth2/callback
     XUI:
-      - https://xui-${SERVICE_FQDN}/oauth2/callback
+      - https://xui-${SERVICE_NAME}.preview.platform.hmcts.net/oauth2/callback
 
 xui-webapp:
   enabled: true
@@ -176,7 +176,7 @@ ccd:
   global:
     ccdApiGatewayIngress: http://${SERVICE_NAME}-ccd-api-gw
     ccdDataStoreUrl: http://${SERVICE_NAME}-ccd-data-store-api
-    ccdDefinitionStoreUrl: http://${SERVICE_NAME}-ccd-definition-store
+    ccdDefinitionStoreUrl: http://${SERVICE_NAME}-ccd-definition-store-api
     ccdUserProfileUrl: http://ccd-user-profile-api-aat.service.core-compute-aat.internal
     dmStoreUrl: http://dm-store-aat.service.core-compute-aat.internal
     idamApiUrl: https://idam-api.aat.platform.hmcts.net
@@ -191,11 +191,12 @@ ccd:
         IDAM_SERVICE_KEY: ${CCD_API_GATEWAY_S2S_SECRET}
         IDAM_OAUTH2_CLIENT_SECRET: ${CCD_API_GATEWAY_IDAM_CLIENT_SECRET}
         PROXY_DOCUMENT_MANAGEMENT: http://dm-store-aat.service.core-compute-aat.internal
-      ingressHost: gateway-${SERVICE_FQDN}
+      ingressHost: gateway-${SERVICE_NAME}.preview.platform.hmcts.net
       ingressIP: ${INGRESS_IP}
       keyVaults: []
   ccd-data-store-api:
     java:
+      releaseNameOverride: ${SERVICE_NAME}-ccd-data-store-api
       imagePullPolicy: Always
       devcpuRequests: 500m
       environment:
@@ -216,10 +217,11 @@ ccd:
         ELASTIC_SEARCH_HOSTS: ${SERVICE_NAME}-es-master:9200
         ELASTIC_SEARCH_DATA_NODES_HOSTS: http://${SERVICE_NAME}-es-master:9200
       keyVaults: []
-      ingressHost: ccd-data-store-api-${SERVICE_FQDN}
+      ingressHost: ccd-data-store-api-${SERVICE_NAME}.preview.platform.hmcts.net
   ccd-definition-store-api:
     java:
       imagePullPolicy: Always
+      releaseNameOverride: ${SERVICE_NAME}-ccd-definition-store-api
       environment:
         DEFINITION_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
         DEFINITION_STORE_IDAM_KEY: ${CCD_DEFINITION_STORE_S2S_SECRET}
@@ -228,7 +230,7 @@ ccd:
         ELASTIC_SEARCH_HOST: ${SERVICE_NAME}-es-master
         ELASTIC_SEARCH_CASE_INDEX_MAPPING_FIELDS_LIMIT: 10000
       keyVaults: []
-      ingressHost: ccd-definition-store-${SERVICE_FQDN}
+      ingressHost: ccd-definition-store-${SERVICE_NAME}.preview.platform.hmcts.net
 
   postgresql:
     persistence:
