@@ -6,11 +6,11 @@ export class Address {
     addressLine1?: string;
   addressLine2?: string;
   addressLine3?: string;
+  @IsNotEmpty({message: 'ERRORS.VALID_CITY'})
+    city?: string;
   @IsNotEmpty({message: 'ERRORS.VALID_POSTCODE'})
   @Validate(PostcodeValidator, {message: 'ERRORS.DEFENDANT_POSTCODE_NOT_VALID'})
     postCode?: string;
-  @IsNotEmpty({message: 'ERRORS.VALID_CITY'})
-    city?: string;
 
   constructor(
     addressLine1?: string,
