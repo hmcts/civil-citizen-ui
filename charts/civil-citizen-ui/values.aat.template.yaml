@@ -1,7 +1,7 @@
 nodejs:
   # Don't modify below here
   image: ${IMAGE_NAME}
-  ingressHost: ${SERVICE_FQDN}
+  ingressHost: civil-citizen-ui-staging.aat.platform.hmcts.net
   keyVaults:
     civil-citizen-ui:
       resourceGroup: civil-citizen-ui
