@@ -262,7 +262,6 @@ describe('Hearing Requirements Section', () => {
       //Given
       claim.totalClaimAmount = 11000;
       claim.directionQuestionnaire.experts = new Experts();
-      claim.directionQuestionnaire.experts.expertReportDetails.option = YesNo.YES;
       claim.directionQuestionnaire.experts.expertEvidence = new GenericYesNo(YesNo.NO);
       //When
       const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
