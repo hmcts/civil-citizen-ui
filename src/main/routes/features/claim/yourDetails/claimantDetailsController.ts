@@ -6,17 +6,17 @@ import {
   CLAIMANT_ORGANISATION_DETAILS_URL,
   CLAIMANT_PHONE_NUMBER_URL,
   CLAIMANT_SOLE_TRADER_DETAILS_URL,
-} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
+} from 'routes/urls';
+import {GenericForm} from 'form/models/genericForm';
 import {
   getClaimantInformation,
   saveClaimantProperty,
-} from '../../../../services/features/claim/yourDetails/claimantDetailsService';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {Party} from '../../../../common/models/party';
-import {AppRequest} from '../../../../common/models/AppRequest';
-import {PartyType} from '../../../../common/models/partyType';
-import {PartyDetails} from '../../../../common/form/models/partyDetails';
+} from 'services/features/claim/yourDetails/claimantDetailsService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {Party} from 'models/party';
+import {AppRequest} from 'models/AppRequest';
+import {PartyType} from 'models/partyType';
+import {generateCorrespondenceAddressErrorMessages, PartyDetails} from 'form/models/partyDetails';
 
 const claimantDetailsController = Router();
 const claimantOrganisationDetailsPath = 'features/claim/yourDetails/claimant-organisation-details';
@@ -64,6 +64,7 @@ claimantDetailsController.post(detailsURLs, async (req: AppRequest | Request, re
     partyDetails.validateSync();
 
     if (partyDetails.hasErrors()) {
+      generateCorrespondenceAddressErrorMessages(partyDetails);
       renderPage(res, req, partyDetails, claimant.type);
     } else {
       await saveClaimantProperty(caseId, 'partyDetails', partyDetails.model);
