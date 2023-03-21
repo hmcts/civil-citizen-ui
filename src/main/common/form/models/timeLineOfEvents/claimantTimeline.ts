@@ -2,7 +2,7 @@ import {TimelineRow} from '../../models/timeLineOfEvents/timelineRow';
 import {ValidateNested} from 'class-validator';
 import {AtLeastOneRowIsPopulated} from '../../../../common/form/validators/atLeastOneRowIsPopulated';
 
-const MINIMUM_ROWS = 4;
+export const MINIMUM_ROWS = 4;
 
 export class ClaimantTimeline {
   @AtLeastOneRowIsPopulated( {message: 'ERRORS.ONE_ROW_REQUIRED'})
