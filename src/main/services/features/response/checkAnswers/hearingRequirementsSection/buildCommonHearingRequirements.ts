@@ -20,6 +20,9 @@ import {
   getEmptyStringIfUndefined,
   getFormattedAnswerForYesNoNotReceived,
 } from 'common/utils/checkYourAnswer/formatAnswer';
+import {
+  buildExpertReportSection,
+} from 'services/features/response/checkAnswers/hearingRequirementsSection/hearingExportsReportBuilderSection';
 
 export const getWitnesses = (claim: Claim, claimId: string, lng: string): SummaryRow[]  => {
   const witnessesHref = constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_WITNESSES_URL);
@@ -134,6 +137,7 @@ export const phoneAndVideoInfo = (claim: Claim, claimId: string, lng: string): S
 };
 
 export const buildCommonHearingRequirements = (claim: Claim, hearingRequirementsSection: SummarySection, claimId: string, lng: string) => {
+  hearingRequirementsSection.summaryList.rows.push(... buildExpertReportSection(claim, claimId, lng));
   if (claim.directionQuestionnaire?.defendantYourselfEvidence?.option) {
     hearingRequirementsSection.summaryList.rows.push(getSummaryRowForDisplayEvidenceYourself(claim, claimId, lng));
   }

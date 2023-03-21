@@ -6,20 +6,19 @@ import {
   buildFastTrackHearingRequirements,
 } from 'services/features/response/checkAnswers/hearingRequirementsSection/buildFastTrackHearingRequirements';
 import {
-  buildSmallClaimHearingRequirements,
+  buildSmallClaimHearingRequirements, determinationWithoutHearingQuestion,
 } from 'services/features/response/checkAnswers/hearingRequirementsSection/buildSmallClaimHearingRequirements';
 import {
   buildCommonHearingRequirements,
 } from 'services/features/response/checkAnswers/hearingRequirementsSection/buildCommonHearingRequirements';
 
 export const buildHearingRequirementsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
-
   const lng = getLng(lang);
   const hearingRequirementsSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE', {lng}),
     summaryRows: [],
   });
-
+  hearingRequirementsSection.summaryList.rows.push(determinationWithoutHearingQuestion(claim, claimId, lng));
   if (claim.isFastTrackClaim) {
     buildFastTrackHearingRequirements(claim, hearingRequirementsSection, claimId, lng);
   } else {

@@ -17,9 +17,7 @@ import {
   getFormattedAnswerForYesNoNotReceived,
   getEmptyStringIfUndefined,
 } from 'common/utils/checkYourAnswer/formatAnswer';
-import {
-  buildExpertsDetailsRows,
-} from 'services/features/response/checkAnswers/hearingRequirementsSection/hearingExportsReportBuilderSection';
+
 
 export const triedToSettleQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const option = claim.directionQuestionnaire?.hearing?.triedToSettle?.option === YesNo.YES
@@ -103,7 +101,6 @@ export const getShareExpertWithClaimant = (claim: Claim, claimId: string, lng: s
 };
 
 export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequirementsSection: SummarySection, claimId: string, lng: string) => {
-
   if (claim.directionQuestionnaire?.hearing?.triedToSettle?.option) {
     hearingRequirementsSection.summaryList.rows.push(triedToSettleQuestion(claim, claimId, lng));
   }
@@ -131,6 +128,5 @@ export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequireme
   if (claim.directionQuestionnaire?.experts?.sharedExpert?.option) {
     hearingRequirementsSection.summaryList.rows.push(getShareExpertWithClaimant(claim, claimId, lng));
   }
-  hearingRequirementsSection.summaryList.rows.push(... buildExpertsDetailsRows(claim, claimId, lng));
 
 };
