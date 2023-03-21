@@ -478,7 +478,7 @@ describe('Claimant Response Service', () => {
         mockGetCaseDataFromDraftStore.mockImplementation(async () => {
           const claim = new Claim();
           const date = new Date();
-          claim.claimantResponse = { ccjRequest: new CCJRequest(), datePaid: new CitizenDate(date.getFullYear().toString(),(date.getMonth()-1).toString(),date.getDate().toString())};
+          claim.claimantResponse = <ClaimantResponse>{ ccjRequest: new CCJRequest(), datePaid: new CitizenDate(date.getFullYear().toString(),(date.getMonth()-1).toString(),date.getDate().toString())};
           claim.claimantResponse.ccjRequest.defendantDOB = { option : YesNo.YES };
           return claim;
         });
