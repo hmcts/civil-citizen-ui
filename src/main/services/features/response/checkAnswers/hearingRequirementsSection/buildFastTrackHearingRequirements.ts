@@ -18,7 +18,6 @@ import {
   getEmptyStringIfUndefined,
 } from 'common/utils/checkYourAnswer/formatAnswer';
 
-
 export const triedToSettleQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const option = claim.directionQuestionnaire?.hearing?.triedToSettle?.option === YesNo.YES
     ? YesNoUpperCase.YES

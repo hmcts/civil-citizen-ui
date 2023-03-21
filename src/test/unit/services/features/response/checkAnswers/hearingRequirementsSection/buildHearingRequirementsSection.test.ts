@@ -15,8 +15,8 @@ import {GenericYesNo} from 'form/models/genericYesNo';
 import {SentExpertReports} from 'models/directionsQuestionnaire/experts/sentExpertReports';
 import {ExpertDetailsList} from 'models/directionsQuestionnaire/experts/expertDetailsList';
 import {ExpertDetails} from 'models/directionsQuestionnaire/experts/expertDetails';
-import {ExpertReportDetails} from "models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails";
-import {ExpertCanStillExamine} from "models/directionsQuestionnaire/experts/expertCanStillExamine";
+import {ExpertReportDetails} from 'models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails';
+import {ExpertCanStillExamine} from 'models/directionsQuestionnaire/experts/expertCanStillExamine';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/i18n');
