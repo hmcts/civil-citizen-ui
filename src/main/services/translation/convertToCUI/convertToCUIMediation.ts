@@ -18,14 +18,14 @@ export const toCUIMediation = (ccdMediation: CCDMediation): Mediation => {
 function toCanWeUse(mediation: CCDMediation) : CanWeUse {
   return {
     option: toCUIYesNo(mediation.canWeUseMediationLiP),
-    mediationPhoneNumber: mediation.canWeUseMediationPhoneLiP
+    mediationPhoneNumber: mediation.canWeUseMediationPhoneLiP,
   };
 }
 
 function toNoMediationReason(mediation: CCDMediation) : NoMediationReason {
   return new NoMediationReason(
     mediation.noMediationReasonLiP,
-    mediation.noMediationOtherReasonLiP
+    mediation.noMediationOtherReasonLiP,
   );
 }
 
@@ -34,6 +34,6 @@ function toCompanyTelephoneNumber(mediation: CCDMediation) : CompanyTelephoneNum
     toCUIYesNo(mediation.companyTelephoneOptionMediationLiP),
     mediation.companyTelephonePhoneNumberMediationLiP,
     mediation.companyTelephoneContactPersonMediationLiP,
-    mediation.companyTelephoneConfirmationMediationLiP
+    mediation.companyTelephoneConfirmationMediationLiP,
   );
 }
