@@ -1,5 +1,6 @@
 import {YesNo} from 'common/form/models/yesNo';
 import {Claim} from 'common/models/claim';
+import {ClaimantResponse} from 'common/models/claimantResponse';
 import {Mediation} from 'common/models/mediation/mediation';
 import {TaskStatus} from 'common/models/taskList/TaskStatus';
 import {
@@ -36,7 +37,7 @@ describe('What to do next section task', () => {
     });
     it('should return complete', () => {
       //Given
-      claim.claimantResponse = { hasPartAdmittedBeenAccepted: { option: YesNo.YES } };
+      claim.claimantResponse = <ClaimantResponse>{ hasPartAdmittedBeenAccepted: { option: YesNo.YES } };
       //When
       const acceptOrRejectDefendantAdmittedTask = getAcceptOrRejectDefendantAdmittedTask(claim, claimId, lang);
       //Then
@@ -63,7 +64,7 @@ describe('What to do next section task', () => {
 
     it('should return complete if no mediation', () => {
       //Given
-      claim.claimantResponse = {
+      claim.claimantResponse = <ClaimantResponse>{
         mediation: new Mediation(undefined, { option: YesNo.NO }, undefined, undefined),
       };
       //When
@@ -74,7 +75,7 @@ describe('What to do next section task', () => {
 
     it('should return complete if canWeUse NO and provide new phone', () => {
       //Given
-      claim.claimantResponse = {
+      claim.claimantResponse = <ClaimantResponse>{
         mediation: new Mediation({ option: YesNo.NO, mediationPhoneNumber: '666555444' }, { option: YesNo.YES }, undefined, undefined),
       };
       //When
@@ -85,7 +86,7 @@ describe('What to do next section task', () => {
 
     it('should return complete if canWeUse YES and use same phone', () => {
       //Given
-      claim.claimantResponse = {
+      claim.claimantResponse = <ClaimantResponse>{
         mediation: new Mediation({ option: YesNo.YES }, { option: YesNo.YES }, undefined, undefined),
       };
       //When
@@ -96,7 +97,7 @@ describe('What to do next section task', () => {
 
     it('should return complete if companyTelephoneNumber NO', () => {
       //Given
-      claim.claimantResponse = {
+      claim.claimantResponse = <ClaimantResponse>{
         mediation: new Mediation(
           undefined,
           { option: YesNo.YES },
@@ -112,7 +113,7 @@ describe('What to do next section task', () => {
 
     it('should return incomplete if companyTelephoneNumber NO and doesnt has contact person', () => {
       //Given
-      claim.claimantResponse = {
+      claim.claimantResponse = <ClaimantResponse>{
         mediation: new Mediation(
           undefined,
           { option: YesNo.YES },
@@ -128,7 +129,7 @@ describe('What to do next section task', () => {
 
     it('should return complete if companyTelephoneNumber YES', () => {
       //Given
-      claim.claimantResponse = {
+      claim.claimantResponse = <ClaimantResponse>{
         mediation: new Mediation(
           undefined,
           { option: YesNo.YES },

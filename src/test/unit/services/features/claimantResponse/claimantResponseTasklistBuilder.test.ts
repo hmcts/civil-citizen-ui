@@ -54,7 +54,7 @@ describe('Claimant Response Task List builder', () => {
 
     it('should display view defendant`s response task as complete', () => {
       //Given
-      claim.claimantResponse = {defendantResponseViewed: true};
+      claim.claimantResponse = <ClaimantResponse>{defendantResponseViewed: true};
       //When
       const howDefendantRespond = buildHowDefendantRespondSection(claim, claimId, lang);
       //Then
@@ -76,7 +76,7 @@ describe('Claimant Response Task List builder', () => {
     it('should display Free telephone mediation task as incomplete', () => {
       //Given
       claim.respondent1 = { responseType: ResponseType.PART_ADMISSION };
-      claim.claimantResponse = { hasPartAdmittedBeenAccepted: { option: YesNo.NO } };
+      claim.claimantResponse = <ClaimantResponse>{ hasPartAdmittedBeenAccepted: { option: YesNo.NO } };
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
       //Then
@@ -87,7 +87,7 @@ describe('Claimant Response Task List builder', () => {
     });
     it('should display Accept or reject their repayment plan task as incomplete', () => {
       //Given
-      claim.claimantResponse = {hasPartAdmittedBeenAccepted: {option: YesNo.YES}};
+      claim.claimantResponse = <ClaimantResponse>{hasPartAdmittedBeenAccepted: {option: YesNo.YES}};
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
       //Then
@@ -98,7 +98,7 @@ describe('Claimant Response Task List builder', () => {
     });
     it('should display Choose how to formalise repayment task as incomplete', () => {
       //Given
-      claim.claimantResponse = {
+      claim.claimantResponse = <ClaimantResponse>{
         hasPartAdmittedBeenAccepted: {option: YesNo.YES},
         fullAdmitSetDateAcceptPayment: {option: YesNo.YES},
       };
@@ -114,7 +114,7 @@ describe('Claimant Response Task List builder', () => {
     });
     it('should display propose alternative repayment task as incomplete', () => {
       //Given
-      claim.claimantResponse = {
+      claim.claimantResponse = <ClaimantResponse>{
         hasPartAdmittedBeenAccepted: {option: YesNo.YES},
         fullAdmitSetDateAcceptPayment: {option: YesNo.NO},
       };
@@ -131,7 +131,7 @@ describe('Claimant Response Task List builder', () => {
 
     it('should display Choose how to formalise repayment task as incomplete', () => {
       //Given
-      claim.claimantResponse = {
+      claim.claimantResponse = <ClaimantResponse>{
         hasPartAdmittedBeenAccepted: {option: YesNo.YES},
         fullAdmitSetDateAcceptPayment: {option: YesNo.YES},
         courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},
@@ -152,7 +152,7 @@ describe('Claimant Response Task List builder', () => {
     });
     it('should display Choose how to formalise repayment task as complete', () => {
       //Given
-      claim.claimantResponse = {
+      claim.claimantResponse = <ClaimantResponse>{
         hasPartAdmittedBeenAccepted: {option: YesNo.YES},
         fullAdmitSetDateAcceptPayment: {option: YesNo.YES},
         chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT},
@@ -175,7 +175,7 @@ describe('Claimant Response Task List builder', () => {
 
     it('should display Sign a settlement agreement task as incomplete', () => {
       //Given
-      claim.claimantResponse = {
+      claim.claimantResponse = <ClaimantResponse>{
         hasPartAdmittedBeenAccepted: {option: YesNo.YES},
         fullAdmitSetDateAcceptPayment: {option: YesNo.NO},
         chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT},
@@ -199,7 +199,7 @@ describe('Claimant Response Task List builder', () => {
 
     it('should display Request a County Court Judgment task as incomplete', () => {
       //Given
-      claim.claimantResponse = {
+      claim.claimantResponse = <ClaimantResponse>{
         hasPartAdmittedBeenAccepted: {option: YesNo.YES},
         fullAdmitSetDateAcceptPayment: {option: YesNo.NO},
         chooseHowToProceed: {option: ChooseHowProceed.REQUEST_A_CCJ},
@@ -224,7 +224,7 @@ describe('Claimant Response Task List builder', () => {
     it('should display Sign a settlement agreement task as complete', () => {
       //Given
 
-      claim.claimantResponse = {
+      claim.claimantResponse = <ClaimantResponse>{
         hasPartAdmittedBeenAccepted: {option: YesNo.YES},
         fullAdmitSetDateAcceptPayment: {option: YesNo.NO},
         chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT},
@@ -249,7 +249,7 @@ describe('Claimant Response Task List builder', () => {
 
     it('should display Request a County Court Judgment task as complete', () => {
       //Given
-      claim.claimantResponse = {
+      claim.claimantResponse = <ClaimantResponse>{
         hasPartAdmittedBeenAccepted: {option: YesNo.YES},
         fullAdmitSetDateAcceptPayment: {option: YesNo.NO},
         chooseHowToProceed: {option: ChooseHowProceed.REQUEST_A_CCJ},
@@ -276,7 +276,7 @@ describe('Claimant Response Task List builder', () => {
   describe('Your hearing requirements section', () => {
     it('shouldn`t display hearingRequirement section when there is no value for settlement', () => {
       //Given
-      claim.claimantResponse = {hasPartAdmittedBeenAccepted: undefined};
+      claim.claimantResponse = <ClaimantResponse>{hasPartAdmittedBeenAccepted: undefined};
 
       //When
       const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
@@ -364,7 +364,7 @@ describe('Claimant Response Task List builder', () => {
         claim.claimantResponse.directionQuestionnaire.hearing.determinationWithoutHearing = {option: YesNo.YES};
         claim.claimantResponse.directionQuestionnaire.defendantYourselfEvidence = {option: YesNo.YES};
         claim.claimantResponse.directionQuestionnaire.witnesses.otherWitnesses = {option: YesNo.NO};
-        claim.claimantResponse.directionQuestionnaire.hearing.whyUnavailableForHearing = {reason: 'test'};
+        claim.claimantResponse.directionQuestionnaire.hearing.cantAttendHearingInNext12Months = {option: YesNo.NO};
         claim.claimantResponse.directionQuestionnaire.hearing.phoneOrVideoHearing = {option: YesNo.NO};
         claim.claimantResponse.directionQuestionnaire.vulnerabilityQuestions.vulnerability = {option: YesNo.NO};
         claim.claimantResponse.directionQuestionnaire.hearing.supportRequiredList = {option: YesNo.NO};
@@ -542,7 +542,7 @@ describe('Claimant Response Task List builder', () => {
         claim.claimantResponse.directionQuestionnaire.experts.expertEvidence = {option: YesNo.NO};
         claim.claimantResponse.directionQuestionnaire.defendantYourselfEvidence = {option: YesNo.NO};
         claim.claimantResponse.directionQuestionnaire.witnesses.otherWitnesses = {option: YesNo.NO};
-        claim.claimantResponse.directionQuestionnaire.hearing.whyUnavailableForHearing = {reason: 'test'};
+        claim.claimantResponse.directionQuestionnaire.hearing.cantAttendHearingInNext12Months = {option: YesNo.NO};
         claim.claimantResponse.directionQuestionnaire.hearing.phoneOrVideoHearing = {option: YesNo.NO};
         claim.claimantResponse.directionQuestionnaire.vulnerabilityQuestions.vulnerability = {option: YesNo.NO};
         claim.claimantResponse.directionQuestionnaire.hearing.supportRequiredList = {option: YesNo.NO};
