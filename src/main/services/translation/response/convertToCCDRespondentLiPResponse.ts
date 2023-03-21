@@ -1,5 +1,5 @@
 import {Claim} from 'models/claim';
-import {toCCDResponseLiPFinancialDetails,} from 'services/translation/response/convertToCCDResponseLiPFinancialDetails';
+import {toCCDResponseLiPFinancialDetails} from 'services/translation/response/convertToCCDResponseLiPFinancialDetails';
 import {toCCDMediation} from 'services/translation/response/convertToCCDMediation';
 import {CCDRespondentLiPResponse, CCDRespondentResponseLanguage} from 'models/ccdResponse/ccdRespondentLiPResponse';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
