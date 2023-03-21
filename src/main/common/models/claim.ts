@@ -52,7 +52,7 @@ import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreferen
 import {toCUIEvidence} from 'services/translation/convertToCUI/convertToCUIEvidence';
 import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIClaimDetails';
 import {analyseClaimType, claimType} from 'common/form/models/claimType';
-
+import {PaymentIntention} from 'form/models/admission/paymentIntention';
 export class Claim {
   legacyCaseReference: string;
   applicant1?: Party;
@@ -436,6 +436,10 @@ export class Claim {
 
   getHowTheInterestCalculatedReason(): string {
     return this.interest?.totalInterest?.reason;
+  }
+
+  getPaymentIntention() : PaymentIntention {
+    return this.isPartialAdmission()? this.partialAdmission?.paymentIntention : this.fullAdmission?.paymentIntention;
   }
 
   private getName(party: Party): string {
