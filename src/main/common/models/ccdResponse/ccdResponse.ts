@@ -49,4 +49,5 @@ export interface CCDResponse extends ClaimUpdate {
   respondent1DQRecurringExpenses?: CCDRecurringExpenses[];
   respondent1DQRecurringExpensesFA?: CCDRecurringExpenses[];
   respondent1LiPResponse?: CCDRespondentLiPResponse;
+  //
 }
