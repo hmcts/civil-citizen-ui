@@ -68,44 +68,12 @@ import {CCDTimeLineOfEvents} from './ccdResponse/ccdTimeLineOfEvents';
 
 export function toCUIPartialAdmission(ccdClaim: CCDClaim): PartialAdmission {
   const partialAdmission = new PartialAdmission()
-  // partialAdmission.alreadyPaid = new GenericYesNo(ccdClaim?.specDefenceAdmittedRequired);
-  // ask kamil which one is correct
   partialAdmission.alreadyPaid = toCUIGenericYesNo(ccdClaim?.respondent1LiPResponse?.partialAdmissionAlreadyPaid);
-  // refactor this toCUI function
   partialAdmission.howMuchHaveYouPaid = toCUIHowMuchHaveYouPaid(ccdClaim?.respondToAdmittedClaim);
-  // partialAdmission.howMuchHaveYouPaid = new HowMuchHaveYouPaid();
-  // partialAdmission.howMuchHaveYouPaid.amount = ccdClaim?.respondToAdmittedClaim?.howMuchWasPaid;
-  // partialAdmission.howMuchHaveYouPaid.date = ccdClaim?.respondToAdmittedClaim?.whenWasThisAmountPaid;
-  // partialAdmission.howMuchHaveYouPaid.text = ccdClaim?.respondToAdmittedClaim?.howWasThisAmountPaidOther;
   partialAdmission.whyDoYouDisagree = new WhyDoYouDisagree(ccdClaim?.detailsOfWhyDoesYouDisputeTheClaim);
-
-  // const times = [{
-  //   id: 1,
-  //   value: {
-  //     timelineDate: '21 September 2022',
-  //     timelineDescription: 'Add your timeline of events - 1'
-
-  //   }
-  // }, {
-  //   id: 2,
-  //   value: {
-  //     timelineDate: '22 September 2022',
-  //     timelineDescription: 'Add your timeline of events - 2'
-  //     }
-  //   }]
-  // refactor with seperate toCUItimelineofEvents like toCUIEvidence
-  // const rows = ccdClaim?.timelineOfEvents?.map(event => ({date : event.value?.timelineDate, description: event.value?.timelineDescription})) as TimelineRow[]
   partialAdmission.timeline = toCUIResponseTimelineOfEvents(ccdClaim?.specResponseTimelineOfEvents, ccdClaim?.respondent1LiPResponse?.timelineComment);
   partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(Number(ccdClaim?.respondToAdmittedClaimOwingAmount));
   partialAdmission.paymentIntention = toCUIPaymentIntention(ccdClaim);
-  // partialAdmission.paymentIntention = new PaymentIntention();
-  // partialAdmission.paymentIntention.paymentOption = toCUIPaymentOption(ccdClaim?.defenceAdmitPartPaymentTimeRouteRequired);
-  // if (ccdClaim?.defenceAdmitPartPaymentTimeRouteRequired === CCDPaymentOption.BY_SET_DATE) {
-  //   partialAdmission.paymentIntention.paymentDate = ccdClaim?.respondToClaimAdmitPartLRspec?.whenWillThisAmountBePaid;
-  // }
-  // if (ccdClaim?.defenceAdmitPartPaymentTimeRouteRequired === CCDPaymentOption.REPAYMENT_PLAN) {
-  //   partialAdmission.paymentIntention.repaymentPlan = toCUIRepaymentPlan(ccdClaim?.respondent1RepaymentPlan);
-  // }
   return partialAdmission;
 }
 
@@ -128,15 +96,6 @@ export function toCUIPaymentIntention(ccdClaim: CCDClaim): PaymentIntention {
 }
 
 export function toCUIRepaymentPlan(respondentRepaymentPlan: CCDRepaymentPlan): RepaymentPlan {
-  // const repaymentPlan = {
-  //   paymentAmount: respondentRepaymentPlan?.paymentAmount,
-  //   firstRepaymentDate: respondentRepaymentPlan?.firstRepaymentDate,
-  //   repaymentFrequency: toCUIRepaymentPlanFrequency(respondentRepaymentPlan?.repaymentFrequency)
-  // } as RepaymentPlan;
-  // repaymentPlan.paymentAmount = respondentRepaymentPlan?.paymentAmount;
-  // repaymentPlan.firstRepaymentDate = respondentRepaymentPlan?.firstRepaymentDate;
-  // repaymentPlan.repaymentFrequency = toCUIRepaymentPlanFrequency(respondentRepaymentPlan?.repaymentFrequency);
-  // return repaymentPlan;
   return {
     paymentAmount: respondentRepaymentPlan?.paymentAmount,
     firstRepaymentDate: respondentRepaymentPlan?.firstRepaymentDate,
