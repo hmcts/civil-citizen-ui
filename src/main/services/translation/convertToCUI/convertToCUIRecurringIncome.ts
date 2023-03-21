@@ -1,0 +1,97 @@
+import {CCDIncomeType, CCDRecurringIncome} from 'models/ccdResponse/ccdRecurringIncome';
+import {RegularIncome} from 'form/models/statementOfMeans/expensesAndIncome/regularIncome';
+import {CCDPaymentFrequency} from 'models/ccdResponse/ccdPaymentFrequency';
+import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {Transaction} from 'form/models/statementOfMeans/expensesAndIncome/transaction';
+import {
+  OtherTransaction,
+} from 'form/models/statementOfMeans/expensesAndIncome/otherTransaction';
+import {IncomeType} from 'form/models/statementOfMeans/expensesAndIncome/incomeType';
+import {TransactionSource} from 'form/models/statementOfMeans/expensesAndIncome/transactionSource';
+
+export const toCUIRecurringIncome = (recurringIncomeItemsPA: CCDRecurringIncome[], recurringIncomeItemsFA: CCDRecurringIncome[]): RegularIncome => {
+  if (!recurringIncomeItemsPA?.length && !recurringIncomeItemsFA?.length) return undefined;
+
+  if (!recurringIncomeItemsPA) {
+    return toCUIRecurringIncomeItems(recurringIncomeItemsPA);
+  }
+
+  if (!recurringIncomeItemsFA) {
+    return toCUIRecurringIncomeItems(recurringIncomeItemsFA);
+  }
+};
+
+const toCUIRecurringIncomeItems = (recurringIncomeItems: CCDRecurringIncome[]): RegularIncome => {
+  const regularIncome = RegularIncome.buildEmptyForm();
+  const otherTransactionSources: TransactionSource[] = [];
+  recurringIncomeItems.forEach((recurringIncome: CCDRecurringIncome) => {
+    switch(recurringIncome?.value?.type) {
+      case(CCDIncomeType.JOB):
+        regularIncome.job = toCUIRecurringIncomeItem(recurringIncome, IncomeType.JOB);
+        break;
+      case(CCDIncomeType.UNIVERSAL_CREDIT):
+        regularIncome.universalCredit = toCUIRecurringIncomeItem(recurringIncome, IncomeType.UNIVERSAL_CREDIT);
+        break;
+      case(CCDIncomeType.JOBSEEKER_ALLOWANCE_INCOME):
+        regularIncome.jobseekerAllowanceIncome = toCUIRecurringIncomeItem(recurringIncome, IncomeType.JOB_SEEKERS_ALLOWANCE_INCOME_BASED);
+        break;
+      case(CCDIncomeType.JOBSEEKER_ALLOWANCE_CONTRIBUTION):
+        regularIncome.jobseekerAllowanceContribution = toCUIRecurringIncomeItem(recurringIncome, IncomeType.JOB_SEEKERS_ALLOWANCE_CONTRIBUTION_BASED);
+        break;
+      case(CCDIncomeType.INCOME_SUPPORT):
+        regularIncome.incomeSupport = toCUIRecurringIncomeItem(recurringIncome, IncomeType.INCOME_SUPPORT);
+        break;
+      case(CCDIncomeType.WORKING_TAX_CREDIT):
+        regularIncome.workingTaxCredit = toCUIRecurringIncomeItem(recurringIncome, IncomeType.WORKING_TAX_CREDIT);
+        break;
+      case(CCDIncomeType.CHILD_TAX):
+        regularIncome.childTaxCredit = toCUIRecurringIncomeItem(recurringIncome, IncomeType.CHILD_TAX_CREDIT);
+        break;
+      case(CCDIncomeType.CHILD_BENEFIT):
+        regularIncome.childBenefit = toCUIRecurringIncomeItem(recurringIncome, IncomeType.CHILD_BENEFIT);
+        break;
+      case(CCDIncomeType.COUNCIL_TAX_SUPPORT):
+        regularIncome.councilTaxSupport = toCUIRecurringIncomeItem(recurringIncome, IncomeType.COUNCIL_TAX_SUPPORT);
+        break;
+      case(CCDIncomeType.PENSION):
+        regularIncome.pension = toCUIRecurringIncomeItem(recurringIncome, IncomeType.PENSION);
+        break;
+      case(CCDIncomeType.OTHER):
+        otherTransactionSources.push(
+          new TransactionSource({
+            name: recurringIncome.value.type,
+            isIncome: true,
+            amount:recurringIncome.value.amount,
+            schedule: toCUIPaymentFrequency(recurringIncome.value.frequency),
+            nameRequired: true,
+          },
+          ));
+        regularIncome.other = new OtherTransaction(true, otherTransactionSources);
+    }
+  });
+  return regularIncome;
+};
+
+export const toCUIPaymentFrequency = (schedule: CCDPaymentFrequency): TransactionSchedule => {
+  switch (schedule) {
+    case CCDPaymentFrequency.ONCE_ONE_WEEK:
+      return  TransactionSchedule.WEEK;
+    case CCDPaymentFrequency.ONCE_TWO_WEEKS:
+      return TransactionSchedule.TWO_WEEKS;
+    case CCDPaymentFrequency.ONCE_FOUR_WEEKS:
+      return TransactionSchedule.FOUR_WEEKS;
+    case CCDPaymentFrequency.ONCE_ONE_MONTH:
+      return TransactionSchedule.MONTH;
+    default:
+      return undefined;
+  }
+};
+
+const toCUIRecurringIncomeItem = (ccdRecurringIncome: CCDRecurringIncome, incomeType: IncomeType): Transaction => {
+  return Transaction.buildPopulatedForm(
+    incomeType,
+    ccdRecurringIncome.value.amount.toString(),
+    toCUIPaymentFrequency(ccdRecurringIncome?.value?.frequency),
+    true,
+  );
+};
