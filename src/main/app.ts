@@ -1,8 +1,8 @@
 import * as bodyParser from 'body-parser';
 import config = require('config');
 import cookieParser from 'cookie-parser';
+const session = require('express-session');
 import express from 'express';
-import cookieSession from 'cookie-session';
 import { Helmet } from './modules/helmet';
 import * as path from 'path';
 import { HTTPError } from '../main/HttpError';
@@ -15,33 +15,33 @@ import { OidcMiddleware } from './modules/oidc';
 import {DraftStoreClient} from './modules/draft-store';
 import {CSRFToken} from './modules/csrf';
 import routes from './routes/routes';
-import {TaskList} from './common/models/taskList/taskList';
 import {setLanguage} from 'modules/i18n/languageService';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const { setupDev } = require('./development');
+const MemoryStore = require('memorystore')(session);
 
 const env = process.env.NODE_ENV || 'development';
 const developmentMode = env === 'development';
 export const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
 
 export const app = express();
-app.use(cookieSession({
+app.use(session({
   name: 'citizen-ui-session',
+  store: new MemoryStore({
+    checkPeriod: 86400000, // prune expired entries every 24h
+  }),
   secret: 'local',
-  maxAge: cookieMaxAge,
-  secure: false,
+  resave: true,
+  saveUninitialized: true,
+  cookie : {
+    secure: false,
+    maxAge: cookieMaxAge,
+  },
 }));
 app.use(cookieParser());
 app.use(setLanguage);
 app.use(express.static(path.join(__dirname, 'public')));
-
-declare module 'express-session' {
-  interface Session {
-    claimId: string;
-    taskLists: TaskList[];
-  }
-}
 
 app.locals.ENV = env;
 I18Next.enableFor(app);
@@ -58,6 +58,7 @@ new OidcMiddleware().enableFor(app);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use((_req, res, next) => {
   res.setHeader(
     'Cache-Control',

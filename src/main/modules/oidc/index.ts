@@ -47,7 +47,7 @@ export class OidcMiddleware {
           const assignClaimUrlWithClaimId = buildAssignClaimUrlWithId(req, app);
           return res.redirect(assignClaimUrlWithClaimId);
         }
-        if (app.locals.user?.roles?.includes(citizenRole)) {
+        if (req.session.user?.roles?.includes(citizenRole)) {
           return res.redirect(DASHBOARD_URL);
         }
         return res.redirect(UNAUTHORISED_URL);
@@ -58,12 +58,14 @@ export class OidcMiddleware {
 
     app.get(SIGN_OUT_URL, (req: AppRequest, res: Response) => {
       const params = new URLSearchParams({
-        'id_token_hint': app.locals.user?.accessToken,
+        'id_token_hint': req.session.user?.accessToken,
         'post_logout_redirect_uri': applicationUrl,
       });
 
-      req.session = app.locals.user = undefined;
-      res.redirect(idamSignOutUrl + '?' + params.toString());
+      req.session.destroy(() => {
+        req.session = app.locals.user = undefined;
+        res.redirect(idamSignOutUrl + '?' + params.toString());
+      });
     });
 
     app.get('/', (_req: AppRequest, res: Response) => {
@@ -71,11 +73,11 @@ export class OidcMiddleware {
     });
 
     app.use((req: Request, res: Response, next: NextFunction) => {
-      if (app.locals.user) {
-        if (app.locals.user.roles?.includes(citizenRole)) {
+      const appReq: AppRequest = <AppRequest>req;
+      if (appReq.session?.user) {
+        if (appReq.session.user.roles?.includes(citizenRole)) {
           return next();
         }
-        return res.redirect(DASHBOARD_URL);
       }
       if (requestIsForPinAndPost(req)) {
         return next();
