@@ -3,7 +3,7 @@ import config from 'config';
 import Module from 'module';
 import {DASHBOARD_URL} from '../../../../../main/routes/urls';
 import {CIVIL_SERVICE_CASES_URL} from '../../../../../main/app/client/civilServiceUrls';
-import {TestMessages} from "../../../../utils/errorMessageTestConstants";
+import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 const nock = require('nock');
 
 const session = require('supertest-session');
