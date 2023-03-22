@@ -7,7 +7,7 @@ describe('translate claimBilingualLanguagePreference to CCD model', () => {
   it('should translate Bilingual response ', () => {
     //Given
     const claim = new Claim();
-    claim.claimBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH
+    claim.claimBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
     //When
     const responseLang = toCCDRespondentResponseLanguage(claim.claimBilingualLanguagePreference);
     //then
@@ -18,7 +18,7 @@ describe('translate claimBilingualLanguagePreference to CCD model', () => {
   it('should translate response lang = ENGLISH correctly ', () => {
     //Given
     const claim = new Claim();
-    claim.claimBilingualLanguagePreference = ClaimBilingualLanguagePreference.ENGLISH
+    claim.claimBilingualLanguagePreference = ClaimBilingualLanguagePreference.ENGLISH;
     //When
     const responseLang = toCCDRespondentResponseLanguage(claim.claimBilingualLanguagePreference);
     //then
