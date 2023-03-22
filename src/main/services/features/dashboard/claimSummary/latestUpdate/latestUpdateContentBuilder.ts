@@ -96,7 +96,7 @@ function getPartAdmitPayInstallmentItems(claim: Claim) {
         claimantName: claimantFullName,
         installmentAmount: currencyFormat(getPaymentAmount(claim)),
         paymentSchedule: getRepaymentFrequency(claim),
-        paymentDate: formatDateToFullDate(getPaymentDate(claim),getLanguage()),
+        paymentDate: formatDateToFullDate(getPaymentDate(claim), getLanguage()),
       })
       .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
       .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claimId)
