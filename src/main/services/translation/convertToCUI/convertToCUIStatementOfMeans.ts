@@ -19,7 +19,6 @@ import {CCDClaim} from 'models/civilClaimResponse';
 import {toCUIGenericYesNo} from 'services/translation/convertToCUI/convertToCUIYesNo';
 
 export const toCUIStatementOfMeans = (ccdClaim: CCDClaim): StatementOfMeans => {
-  // console.log(ccdClaim);
   if (!ccdClaim) return undefined;
   const statementOfMeans: StatementOfMeans = new StatementOfMeans();
   statementOfMeans.bankAccounts = toCUIBankAccount(ccdClaim?.respondent1BankAccountList);

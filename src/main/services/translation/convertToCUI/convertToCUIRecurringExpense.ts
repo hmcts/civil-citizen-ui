@@ -2,19 +2,18 @@ import {CCDExpensesType, CCDRecurringExpenses} from 'models/ccdResponse/ccdRecur
 import {RegularExpenses} from 'form/models/statementOfMeans/expensesAndIncome/regularExpenses';
 import {TransactionSource} from 'form/models/statementOfMeans/expensesAndIncome/transactionSource';
 import {OtherTransaction} from 'form/models/statementOfMeans/expensesAndIncome/otherTransaction';
-import {CCDPaymentFrequency} from 'models/ccdResponse/ccdPaymentFrequency';
-import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {Transaction} from 'form/models/statementOfMeans/expensesAndIncome/transaction';
 import {ExpenseType} from 'form/models/statementOfMeans/expensesAndIncome/expenseType';
+import {toCUIPaymentFrequency} from 'services/translation/convertToCUI/convertToCUIPaymentFrequency';
 
 export const toCUIRecurringExpense = (recurringExpensesItemsPA: CCDRecurringExpenses[], recurringExpensesItemsFA: CCDRecurringExpenses[]): RegularExpenses => {
   if (!recurringExpensesItemsPA?.length && !recurringExpensesItemsFA?.length) return undefined;
 
-  if (!recurringExpensesItemsPA) {
+  if (recurringExpensesItemsPA?.length) {
     return toCUIRecurringExpenseItems(recurringExpensesItemsPA);
   }
 
-  if (!recurringExpensesItemsFA) {
+  if (recurringExpensesItemsFA?.length) {
     return toCUIRecurringExpenseItems(recurringExpensesItemsFA);
   }
 };
@@ -64,41 +63,29 @@ const toCUIRecurringExpenseItems = (recurringExpensesItems: CCDRecurringExpenses
         regularExpenses.maintenance = toCUIRecurringExpenseItem(recurringExpenses, ExpenseType.MAINTENANCE_PAYMENTS);
         break;
       case(CCDExpensesType.OTHER):
-        otherTransactionSources.push(
-          new TransactionSource({
-            name: recurringExpenses.value.type,
-            isIncome: true,
-            amount:recurringExpenses.value.amount,
-            schedule: toCUIPaymentFrequency(recurringExpenses.value.frequency),
-            nameRequired: true,
-          },
-          ));
+        otherTransactionSources.push(toCUIOtherTransaction(recurringExpenses));
         regularExpenses.other = new OtherTransaction(true, otherTransactionSources);
     }
   });
   return regularExpenses;
 };
 
-export const toCUIPaymentFrequency = (schedule: CCDPaymentFrequency): TransactionSchedule => {
-  switch (schedule) {
-    case CCDPaymentFrequency.ONCE_ONE_WEEK:
-      return  TransactionSchedule.WEEK;
-    case CCDPaymentFrequency.ONCE_TWO_WEEKS:
-      return TransactionSchedule.TWO_WEEKS;
-    case CCDPaymentFrequency.ONCE_FOUR_WEEKS:
-      return TransactionSchedule.FOUR_WEEKS;
-    case CCDPaymentFrequency.ONCE_ONE_MONTH:
-      return TransactionSchedule.MONTH;
-    default:
-      return undefined;
-  }
-};
-
 const toCUIRecurringExpenseItem = (ccdRecurringIncome: CCDRecurringExpenses, expenseType: ExpenseType): Transaction => {
   return Transaction.buildPopulatedForm(
     expenseType,
-    ccdRecurringIncome.value.amount.toString(),
+    ccdRecurringIncome.value?.amount?.toString(),
     toCUIPaymentFrequency(ccdRecurringIncome?.value?.frequency),
     false,
+  );
+};
+
+const toCUIOtherTransaction = (recurringExpenses: CCDRecurringExpenses) : TransactionSource => {
+  return new TransactionSource({
+    name: recurringExpenses?.value?.typeOtherDetails,
+    isIncome: true,
+    amount:recurringExpenses?.value?.amount,
+    schedule: toCUIPaymentFrequency(recurringExpenses?.value?.frequency),
+    nameRequired: true,
+  },
   );
 };
