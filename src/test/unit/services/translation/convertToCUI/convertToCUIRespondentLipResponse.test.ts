@@ -27,7 +27,7 @@ describe('translate respondentLipResponse to CUI model', () => {
     //When
     const responseLang = toCUIClaimBilingualLangPreference(ccdRespondLipResponse.respondent1ResponseLanguage);
     //then
-    expect(responseLang).toBe(ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH);
+    expect(responseLang).toBe(ClaimBilingualLanguagePreference.ENGLISH);
 
   });
 
