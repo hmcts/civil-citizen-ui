@@ -15,7 +15,7 @@ class HowMuchHaveYouPaidService {
       const totalClaimAmount = claim?.totalClaimAmount;
       if (type === ResponseType.PART_ADMISSION) {
         if (claim?.partialAdmission?.howMuchHaveYouPaid) {
-          const paymentDate = new Date(claim.partialAdmission.howMuchHaveYouPaid.date)
+          const paymentDate = new Date(claim.partialAdmission.howMuchHaveYouPaid.date);
           claim.partialAdmission.howMuchHaveYouPaid.year = paymentDate.getFullYear();
           claim.partialAdmission.howMuchHaveYouPaid.month = paymentDate.getMonth() + 1;
           claim.partialAdmission.howMuchHaveYouPaid.day = paymentDate.getDate();
