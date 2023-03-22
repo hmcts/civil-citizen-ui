@@ -1475,7 +1475,7 @@
       "YOU_HAVE_OFFERED_TO_PAY_STARTING":  "You’ve offered to pay {{ claimantName }} {{ installmentAmount }} {{ paymentSchedule }} starting {{ paymentDate }}.",
       "YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_IMMEDIATELY": "You’ve said you owe {{ amount }} and offered to pay {{ claimantName }} immediately.",
       "YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_BY": "You’ve said you owe {{ amount }} and offered to pay {{ claimantName }} by {{ paymentDate }}",
-      "YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_STARING": "You’ve said you owe {{ amount }} and offered to pay {{ claimantName }} {{ installmentAmount }} {{ paymentSchedule }} starting {{ paymentDate }}"
+      "YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_STARTING": "You’ve said you owe {{ amount }} and offered to pay {{ claimantName }} {{ installmentAmount }} {{ paymentSchedule }} starting {{ paymentDate }}"
     },
     "MEDIATION_CAN_WE_USE": {
       "CAN_MEDIATION_USE": "A all y gwasanaeth cyfryngu ddefnyddio’r rhif {{ respondentTelNumber }} i’ch ffonio?",
