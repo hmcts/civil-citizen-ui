@@ -6,6 +6,6 @@ export const toCUIClaimBilingualLangPreference = (responseLanguage: string) : Cl
       return ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
     case 'ENGLISH' :
       return ClaimBilingualLanguagePreference.ENGLISH;
-    default: undefined;
+    default: return undefined;
   }
 };

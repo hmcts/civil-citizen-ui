@@ -12,7 +12,7 @@ export const toCCDRespondentLiPResponse = (claim: Claim): CCDRespondentLiPRespon
   };
 };
 
-function toCCDRespondentResponseLanguage(language: ClaimBilingualLanguagePreference) {
+export const toCCDRespondentResponseLanguage = (language: ClaimBilingualLanguagePreference): CCDRespondentResponseLanguage => {
   switch(language) {
     case ClaimBilingualLanguagePreference.ENGLISH :
       return CCDRespondentResponseLanguage.ENGLISH;
@@ -20,4 +20,4 @@ function toCCDRespondentResponseLanguage(language: ClaimBilingualLanguagePrefere
       return CCDRespondentResponseLanguage.BOTH;
     default: return undefined;
   }
-}
+};
