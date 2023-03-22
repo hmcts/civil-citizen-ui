@@ -1,10 +1,10 @@
 import {Response, Router} from 'express';
 
 import config from 'config';
-import {DASHBOARD_URL} from 'routes/urls';
+import {DASHBOARD_URL} from '../../urls';
 import {AppRequest, UserDetails} from 'models/AppRequest';
-import {getOcmcDraftClaims} from 'app/client/legacyDraftStoreClient';
-import {DashboardClaimantItem, DashboardDefendantItem} from 'common/models/dashboard/dashboardItem';
+import {getOcmcDraftClaims} from '../../../app/client/legacyDraftStoreClient';
+import {DashboardClaimantItem, DashboardDefendantItem} from '../../../common/models/dashboard/dashboardItem';
 import {CivilServiceClient} from 'client/civilServiceClient';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
