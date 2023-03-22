@@ -1,21 +1,7 @@
-import {PaymentOptionType} from '../../../common/form/models/admission/paymentOption/paymentOptionType';
-import {CCDPaymentOption} from '../../../common/models/ccdResponse/ccdPaymentOption';
-import {Claim} from 'models/claim';
-import {ResponseType} from 'form/models/responseType';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {CCDPaymentOption} from 'common/models/ccdResponse/ccdPaymentOption';
 
-export const toCCDPaymentOption = (claim: Claim) : CCDPaymentOption => {
-  let paymentOptionType;
-
-  switch(claim.respondent1?.responseType) {
-    case ResponseType.PART_ADMISSION:
-      paymentOptionType = claim.partialAdmission.paymentIntention.paymentOption;
-      break;
-    case ResponseType.FULL_ADMISSION:
-      paymentOptionType = claim.fullAdmission.paymentIntention.paymentOption;
-      break;
-    default:
-      paymentOptionType = undefined;
-  }
+export const toCCDPaymentOption = (paymentOptionType: PaymentOptionType) : CCDPaymentOption => {
 
   switch(paymentOptionType) {
     case PaymentOptionType.INSTALMENTS:

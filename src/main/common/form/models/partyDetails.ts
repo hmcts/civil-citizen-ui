@@ -1,5 +1,6 @@
 import {IsDefined, IsNotEmpty, MaxLength, ValidateIf, ValidateNested} from 'class-validator';
-import {Address} from '../../../common/form/models/address';
+import {Address} from 'form/models/address';
+import {GenericForm} from 'form/models/genericForm';
 
 export class PartyDetails {
 
@@ -49,4 +50,12 @@ export class PartyDetails {
 
   }
 
+}
+
+export function generateCorrespondenceAddressErrorMessages(partyDetailsForm : GenericForm<PartyDetails>) {
+  partyDetailsForm.errors =  partyDetailsForm.errors
+    .map(error => error.property === 'correspondenceAddress' ? ({...error, 'children' : error.children.map(childrenError => ({
+      ...childrenError,
+      constraints: {'error': Object.values(childrenError.constraints)[0].concat('_CORRESPONDENCE')},
+    }))}) : error);
 }
