@@ -12,7 +12,7 @@ export const toCUIDebts = (debtDeclared: YesNoUpperCamelCase, debtItems: CCDLoan
   );
 };
 
-export const toCUIDebtsList = (ccdDebtItems: CCDLoanCredit[]): DebtItems[] => {
+const toCUIDebtsList = (ccdDebtItems: CCDLoanCredit[]): DebtItems[] => {
   if (!ccdDebtItems?.length) return undefined;
   return ccdDebtItems.map((ccdDebtItem: CCDLoanCredit) => {
     return new DebtItems(
