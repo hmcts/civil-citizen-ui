@@ -4,7 +4,7 @@ import {Claim} from 'models/claim';
 import {toCCDRespondentResponseLanguage} from 'services/translation/response/convertToCCDRespondentLiPResponse';
 
 describe('translate claimBilingualLanguagePreference to CCD model', () => {
-  it('should translate Bilingual response ', () => {
+  it('should translate Bilingual response', () => {
     //Given
     const claim = new Claim();
     claim.claimBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
@@ -15,7 +15,7 @@ describe('translate claimBilingualLanguagePreference to CCD model', () => {
 
   });
 
-  it('should translate response lang = ENGLISH correctly ', () => {
+  it('should translate response lang = ENGLISH correctly', () => {
     //Given
     const claim = new Claim();
     claim.claimBilingualLanguagePreference = ClaimBilingualLanguagePreference.ENGLISH;
@@ -23,6 +23,17 @@ describe('translate claimBilingualLanguagePreference to CCD model', () => {
     const responseLang = toCCDRespondentResponseLanguage(claim.claimBilingualLanguagePreference);
     //then
     expect(responseLang).toBe(CCDRespondentResponseLanguage.ENGLISH);
+
+  });
+
+  it('when response language is undefined', () => {
+    //Given
+    const claim = new Claim();
+    claim.claimBilingualLanguagePreference = undefined;
+    //When
+    const responseLang = toCCDRespondentResponseLanguage(claim.claimBilingualLanguagePreference);
+    //then
+    expect(responseLang).toBe(undefined);
 
   });
 });
