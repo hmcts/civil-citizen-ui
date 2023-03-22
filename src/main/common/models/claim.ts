@@ -89,7 +89,7 @@ export class Claim {
   respondent1ResponseDate?: Date;
   claimBilingualLanguagePreference: ClaimBilingualLanguagePreference;
   id: string;
-  respondent1LiPResponse?: CCDRespondentLiPResponse
+  respondent1LiPResponse?: CCDRespondentLiPResponse;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
