@@ -15,7 +15,7 @@ import {RepaymentPlan} from 'common/models/repaymentPlan';
 import {toCUIGenericYesNo} from './convertToCUIYesNo';
 
 export function toCUIPartialAdmission(ccdClaim: CCDClaim): PartialAdmission {
-  const partialAdmission = new PartialAdmission()
+  const partialAdmission = new PartialAdmission();
   partialAdmission.alreadyPaid = toCUIGenericYesNo(ccdClaim?.respondent1LiPResponse?.partialAdmissionAlreadyPaid);
   partialAdmission.howMuchHaveYouPaid = toCUIHowMuchHaveYouPaid(ccdClaim?.respondToAdmittedClaim);
   partialAdmission.whyDoYouDisagree = new WhyDoYouDisagree(ccdClaim?.detailsOfWhyDoesYouDisputeTheClaim);
@@ -34,7 +34,7 @@ export function toCUIHowMuchHaveYouPaid(respondToAdmittedClaim: CCDRespondToClai
 }
 
 export function toCUIResponseTimelineOfEvents(timelineOfEvents: CCDTimeLineOfEvents[], timelineComment: string): DefendantTimeline {
-  const timelineRows = timelineOfEvents?.map(event => ({date: event.value?.timelineDate, description: event.value?.timelineDescription})) as TimelineRow[]
+  const timelineRows = timelineOfEvents?.map(event => ({date: event.value?.timelineDate, description: event.value?.timelineDescription})) as TimelineRow[];
   return new DefendantTimeline(timelineRows, timelineComment);
 }
 
@@ -66,8 +66,8 @@ export function toCUIPaymentOption(paymentOption: CCDPaymentOption): PaymentOpti
 export function toCUIRepaymentPlan(respondentRepaymentPlan: CCDRepaymentPlan): RepaymentPlan {
   return {
     ...respondentRepaymentPlan,
-    repaymentFrequency: toCUIRepaymentPlanFrequency(respondentRepaymentPlan?.repaymentFrequency)
-  } as RepaymentPlan
+    repaymentFrequency: toCUIRepaymentPlanFrequency(respondentRepaymentPlan?.repaymentFrequency),
+  } as RepaymentPlan;
 }
 
 export function toCUIRepaymentPlanFrequency(repaymentFrequency: CCDRepaymentPlanFrequency): string {
