@@ -4,7 +4,7 @@ import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paym
 import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {SignatureType} from 'common/models/signatureType';
-import {isCounterpartyIndividual} from 'common/utils/taskList/tasks/taskListHelpers';
+import {isCounterpartyIndividual, isFullDefenceAndNotCounterClaim} from 'common/utils/taskList/tasks/taskListHelpers';
 import {QualifiedStatementOfTruth} from 'common/form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {isFullAmountReject} from 'modules/claimDetailsService';
 import {buildYourDetailsSection} from './detailsSection/buildYourDetailsSection';
@@ -70,6 +70,12 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
       : null;
   };
 
+  const getHearingRequirementsSection = () => {
+    return (claim.isPartialAdmission() || isFullDefenceAndNotCounterClaim(claim))
+      ? buildHearingRequirementsSection(claim, claimId, lang)
+      : null;
+  };
+
   return {
     sections: [
       buildYourDetailsSection(claim, claimId, lang),
@@ -80,7 +86,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
       getFinancialSectionPA(),
       getResponsePaymentSection(),
       getFreeTelephoneMediationSection(),
-      buildHearingRequirementsSection(claim, claimId, lang),
+      getHearingRequirementsSection(),
     ],
   };
 };
