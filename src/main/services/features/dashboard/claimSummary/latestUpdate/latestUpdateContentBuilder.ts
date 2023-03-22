@@ -118,7 +118,7 @@ function getPartAdmitPayInstallmentItems(claim: Claim) {
     .build();
 }
 
-function getPaPaidPayByDate(claim: Claim) {
+function getPartAdmitPaidPayByDate(claim: Claim) {
   const claimantFullName = claim.getClaimantFullName();
   const claimId = claim.id;
   if (!claim.isBusiness()) {
@@ -147,7 +147,7 @@ function getPaPaidPayByDate(claim: Claim) {
     .build();
 }
 
-function getPaPaidPayImmediately(claim: Claim) {
+function getPartAdmitPaidPayImmediately(claim: Claim) {
   return new LastUpdateSectionBuilder()
     .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_IMMEDIATELY`, {
@@ -159,7 +159,7 @@ function getPaPaidPayImmediately(claim: Claim) {
     .build();
 }
 
-function getFaPayInstallments(claim: Claim) {
+function getFullAdmitPayInstallments(claim: Claim) {
   const claimantFullName = claim.getClaimantFullName();
   const claimId = claim.id;
   if (!claim.isBusiness()) {
@@ -190,7 +190,7 @@ function getFaPayInstallments(claim: Claim) {
     .build();
 }
 
-function getFaPayByDate(claim: Claim) {
+function getFullAdmitPayByDate(claim: Claim) {
   const claimantFullName = claim.getClaimantFullName();
   const claimId = claim.id;
   if (!claim.isBusiness()) {
@@ -217,7 +217,7 @@ function getFaPayByDate(claim: Claim) {
     .build();
 }
 
-function getFaPayImmediately(claim: Claim) {
+function getFullAdmitPayImmediately(claim: Claim) {
   const claimantFullName = claim.getClaimantFullName();
   const claimId = claim.id;
   return new LastUpdateSectionBuilder()
@@ -236,12 +236,12 @@ function getFaPayImmediately(claim: Claim) {
 
 function generateLastUpdateResponseSections(claimResponseStatus: ClaimResponseStatus, claim: Claim) {
   const claimResponsesStatus = {
-    [ClaimResponseStatus.FA_PAY_IMMEDIATELY]: getFaPayImmediately(claim),
-    [ClaimResponseStatus.FA_PAY_BY_DATE]: getFaPayByDate(claim),
-    [ClaimResponseStatus.FA_PAY_INSTALLMENTS]: getFaPayInstallments(claim),
-    [ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY]: getPaPaidPayImmediately(claim),
-    [ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE]: getPaPaidPayByDate(claim),
-    [ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS]: getPaPaidPayInstallmentItems(claim),
+    [ClaimResponseStatus.FA_PAY_IMMEDIATELY]: getFullAdmitPayImmediately(claim),
+    [ClaimResponseStatus.FA_PAY_BY_DATE]: getFullAdmitPayByDate(claim),
+    [ClaimResponseStatus.FA_PAY_INSTALLMENTS]: getFullAdmitPayInstallments(claim),
+    [ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY]: getPartAdmitPaidPayImmediately(claim),
+    [ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE]: getPartAdmitPaidPayByDate(claim),
+    [ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS]: getPartAdmitPayInstallmentItems(claim),
   };
   return claimResponsesStatus[claimResponseStatus as keyof typeof claimResponsesStatus];
 }
