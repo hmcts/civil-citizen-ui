@@ -1,5 +1,5 @@
 import {DashboardClaimantItem, DashboardDefendantItem} from 'common/models/dashboard/dashboardItem';
-//import * as languageService from 'modules/i18n/languageService';
+
 import config from 'config';
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
@@ -62,7 +62,7 @@ describe('Dashboard Items', ()=> {
       dashboardClaim.numberOfDays = '10';
       dashboardClaim.status ='NO_RESPONSE';
       //When
-      const status = dashboardClaim.getStatus();
+      const status = dashboardClaim.getStatus('en');
       //Then
       expect(status).toBe('PAGES.DASHBOARD.STATUS.NO_RESPONSE_ON_TIME');
     });
