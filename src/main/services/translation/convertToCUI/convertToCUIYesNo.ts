@@ -14,18 +14,14 @@ export const toCUIYesNo = (value: YesNoUpperCamelCase) : YesNo=> {
 };
 
 export const toCUIBoolean = (value: YesNoUpperCamelCase) => {
-  if (value === YesNoUpperCamelCase.YES) {
-    return true;
-  } else if (value === YesNoUpperCamelCase.NO) {
-    return false;
+  if (value) {
+    return value === YesNoUpperCamelCase.YES;
   }
 };
 
 export const toCUIBooleanString = (value: YesNoUpperCamelCase) => {
-  if (value === YesNoUpperCamelCase.YES) {
-    return 'true';
-  } else if (value === YesNoUpperCamelCase.NO) {
-    return 'false';
+  if (value) {
+    return value === YesNoUpperCamelCase.YES ? 'true' : 'false';
   }
 };
 

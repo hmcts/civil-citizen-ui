@@ -15,6 +15,9 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextF
   try {
     const claimId = req.params.id;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
+    console.log("---------- CLAIM FROM SUMMARY ----------")
+    // console.log(claim)
+    console.log(claim.statementOfMeans)
     if (claim && !claim.isEmpty()) {
       const latestUpdateContent = getLatestUpdateContent(claimId, claim);
       const documentsContent = getDocumentsContent(claim, claimId);

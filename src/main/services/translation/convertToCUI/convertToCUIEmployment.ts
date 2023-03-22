@@ -5,6 +5,7 @@ import {Employment} from 'models/employment';
 import {toCUIBoolean} from 'services/translation/convertToCUI/convertToCUIYesNo';
 
 export const toCUIEmployment = (employmentDeclared: YesNoUpperCamelCase, employmentTypeList : string[]): Employment => {
+  if (!employmentDeclared) return undefined;
   return {
     declared: toCUIBoolean(employmentDeclared),
     employmentType: employmentTypeList.map((employmentType: CCDEmploymentOption) => {

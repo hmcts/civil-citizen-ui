@@ -11,6 +11,7 @@ export const toCUIDependents = (partnerAndDependents: CCDPartnerAndDependent): D
 };
 
 const toCUINumberOfChildren = (childrenByAgeGroup : CCDChildrenByAgeGroup): NumberOfChildren => {
+  if (!childrenByAgeGroup) return undefined;
   return new NumberOfChildren(
     Number(childrenByAgeGroup?.numberOfUnderEleven),
     Number(childrenByAgeGroup?.numberOfElevenToFifteen),

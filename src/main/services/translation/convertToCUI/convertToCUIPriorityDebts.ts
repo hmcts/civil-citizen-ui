@@ -11,7 +11,7 @@ export const toCUIPriorityDebts = (priorityDebts: CCDDebtDetails): PriorityDebts
   return new PriorityDebts(toCUIPriorityDebtsList(priorityDebts?.debtDetails));
 };
 
-export const toCUIPriorityDebtsList = (priorityDebtsItems: CCDDebtDetailsList[]) : PriorityDebts => {
+const toCUIPriorityDebtsList = (priorityDebtsItems: CCDDebtDetailsList[]) : PriorityDebts => {
   if (!priorityDebtsItems?.length) return undefined;
   const priorityDebts = PriorityDebts.buildEmptyForm();
   priorityDebtsItems.forEach((ccdPriorityDebts: CCDDebtDetailsList) => {
@@ -42,7 +42,7 @@ export const toCUIPriorityDebtsList = (priorityDebtsItems: CCDDebtDetailsList[])
   return priorityDebts;
 };
 
-export const toCUIPaymentFrequency = (schedule: CCDPaymentFrequency): TransactionSchedule => {
+const toCUIPaymentFrequency = (schedule: CCDPaymentFrequency): TransactionSchedule => {
   switch (schedule) {
     case CCDPaymentFrequency.ONCE_ONE_WEEK:
       return  TransactionSchedule.WEEK;
@@ -57,7 +57,7 @@ export const toCUIPaymentFrequency = (schedule: CCDPaymentFrequency): Transactio
   }
 };
 
-export const toCUIPriorityDebtsItem = (ccdPriorityDebts: CCDDebtDetailsList, expenseType: ExpenseType): Transaction => {
+const toCUIPriorityDebtsItem = (ccdPriorityDebts: CCDDebtDetailsList, expenseType: ExpenseType): Transaction => {
   return Transaction.buildPopulatedForm(
     expenseType,
     ccdPriorityDebts?.value?.paymentAmount?.toString(),
