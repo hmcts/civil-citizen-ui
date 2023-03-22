@@ -1,0 +1,528 @@
+import {Party} from '../../../../../main/common/models/party';
+import {toCUIParty} from '../../../../../main/services/translation/convertToCUI/convertToCUIParty';
+import {PartyType} from '../../../../../main/common/models/partyType';
+import {Address} from '../../../../../main/common/form/models/address';
+import {CCDParty} from '../../../../../main/common/models/ccdResponse/ccdParty';
+import {CCDAddress} from '../../../../../main/common/models/ccdResponse/ccdAddress';
+import {CitizenDate} from '../../../../../main/common/form/models/claim/claimant/citizenDate';
+import {PartyPhone} from '../../../../../main/common/models/PartyPhone';
+import {Email} from '../../../../../main/common/models/Email';
+import {toCUIHowMuchHaveYouPaid, toCUIPartialAdmission, toCUIPaymentIntention, toCUIPaymentOption, toCUIRepaymentPlan, toCUIRepaymentPlanFrequency, toCUIResponseTimelineOfEvents} from 'services/translation/convertToCUI/convertToCUIPartialAdmission';
+import {CCDRespondToClaim} from 'common/models/ccdResponse/ccdRespondToClaim';
+import {HowMuchHaveYouPaid} from 'common/form/models/admission/howMuchHaveYouPaid';
+import {CCDTimeLineOfEvents, CCDTimeLineOfEventsItem} from 'common/models/ccdResponse/ccdTimeLineOfEvents';
+import {CCDPaymentOption} from 'common/models/ccdResponse/ccdPaymentOption';
+import {PaymentOption} from 'common/form/models/admission/paymentOption/paymentOption';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {CCDRepaymentPlan, CCDRepaymentPlanFrequency} from 'common/models/ccdResponse/ccdRepaymentPlan';
+import {CCDClaim} from 'common/models/civilClaimResponse';
+import {CCDPayBySetDate} from 'common/models/ccdResponse/ccdPayBySetDate';
+import {PartialAdmission} from 'common/models/partialAdmission';
+import {CCDRespondentLiPResponse} from 'common/models/ccdResponse/ccdRespondentLiPResponse';
+import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {DefendantTimeline} from 'common/form/models/timeLineOfEvents/defendantTimeline';
+import {TimelineRow} from 'common/form/models/timeLineOfEvents/timelineRow';
+import {WhyDoYouDisagree} from 'common/form/models/admission/partialAdmission/whyDoYouDisagree';
+import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
+
+const companyName = 'Version 1';
+const phone = new PartyPhone('123456789');
+const phoneCCD = '123456789';
+const title = 'Mr';
+const firstName = 'Jon';
+const lastName = 'Doe';
+const soleTraderTradingAs = 'test';
+const dateOfBirth = new CitizenDate('10', '10', '1990');
+const email = new Email('test@test.com');
+const emailCCD = 'test@test.com';
+
+const address: Address = new Address('Street test', '1', '1A', 'test', 'sl11gf');
+
+const addressCCD: CCDAddress = {
+  AddressLine1: 'Street test',
+  AddressLine2: '1',
+  AddressLine3: '1A',
+  PostTown: 'test',
+  PostCode: 'sl11gf',
+  Country: 'test',
+  County: 'test',
+};
+
+const commonParty = {
+  primaryAddress: address,
+};
+
+const partyCompany: Party = {
+  type: PartyType.COMPANY,
+  partyPhone: phone,
+  emailAddress: email,
+  partyDetails: {
+    partyName: companyName,
+    ...commonParty,
+  },
+};
+
+const partyIndividual: Party = {
+  type: PartyType.INDIVIDUAL,
+  partyPhone: phone,
+  emailAddress: email,
+  partyDetails: {
+    individualTitle: title,
+    individualFirstName: firstName,
+    individualLastName: lastName,
+    ...commonParty,
+  },
+  dateOfBirth: {date: dateOfBirth.date, year: NaN, month: NaN, day: NaN},
+};
+
+const partySoleTrader: Party = {
+  type: PartyType.SOLE_TRADER,
+  partyPhone: phone,
+  emailAddress: email,
+  partyDetails: {
+    individualTitle: title,
+    individualFirstName: firstName,
+    individualLastName: lastName,
+    soleTraderTradingAs: soleTraderTradingAs,
+    ...commonParty,
+  },
+  dateOfBirth: {date: dateOfBirth.date, year: NaN, month: NaN, day: NaN},
+};
+
+const partyCompanyCCD: CCDParty = {
+  companyName: companyName,
+  individualDateOfBirth: undefined,
+  individualFirstName: undefined,
+  individualLastName: undefined,
+  individualTitle: undefined,
+  organisationName: undefined,
+  partyEmail: emailCCD,
+  partyPhone: phoneCCD,
+  primaryAddress: addressCCD,
+  soleTraderDateOfBirth: undefined,
+  soleTraderFirstName: undefined,
+  soleTraderLastName: undefined,
+  soleTraderTitle: undefined,
+  soleTraderTradingAs: undefined,
+  type: PartyType.COMPANY,
+};
+
+const partyIndividualCCD: CCDParty = {
+  companyName: undefined,
+  individualDateOfBirth: new Date('Wed Oct 10 1990 01:00:00 GMT+0100'),
+  individualTitle: title,
+  individualFirstName: firstName,
+  individualLastName: lastName,
+  organisationName: undefined,
+  partyEmail: emailCCD,
+  partyPhone: phoneCCD,
+  primaryAddress: addressCCD,
+  soleTraderDateOfBirth: undefined,
+  soleTraderTitle: undefined,
+  soleTraderFirstName: undefined,
+  soleTraderLastName: undefined,
+  soleTraderTradingAs: undefined,
+  type: PartyType.INDIVIDUAL,
+};
+
+const partySoleTraderCCD: CCDParty = {
+  companyName: undefined,
+  individualDateOfBirth: undefined,
+  individualFirstName: undefined,
+  individualLastName: undefined,
+  individualTitle: undefined,
+  organisationName: undefined,
+  partyEmail: emailCCD,
+  partyPhone: phoneCCD,
+  primaryAddress: addressCCD,
+  soleTraderDateOfBirth: new Date('Wed Oct 10 1990 01:00:00 GMT+0100'),
+  soleTraderTitle: title,
+  soleTraderFirstName: firstName,
+  soleTraderLastName: lastName,
+  soleTraderTradingAs: soleTraderTradingAs,
+  type: PartyType.SOLE_TRADER,
+};
+
+describe('translate partial admission to cui model', () => {
+  describe('toCUIHowMuchHaveYouPaid', () => {
+    it('should translate CCD data to CUI HowMuchHaveYouPaid model with empty respondToAdmittedClaim field', () => {
+      // Given
+      const respondToAdmittedClaim: CCDRespondToClaim = undefined;
+      // When
+      const cuiHowMuchHaveYouPaid = toCUIHowMuchHaveYouPaid(respondToAdmittedClaim)
+      // Then
+      expect(cuiHowMuchHaveYouPaid.amount).toBeUndefined();
+      expect(cuiHowMuchHaveYouPaid.date).toBeUndefined();
+      expect(cuiHowMuchHaveYouPaid.text).toBeUndefined();
+    });
+
+    it('should translate CCD data to CUI HowMuchHaveYouPaid with howMuchWasPaid field', () => {
+      // Given
+      const respondToAdmittedClaim = { howMuchWasPaid: 55 } as CCDRespondToClaim;
+      // When
+      const cuiHowMuchHaveYouPaid = toCUIHowMuchHaveYouPaid(respondToAdmittedClaim)
+      // Then
+      expect(cuiHowMuchHaveYouPaid.amount).toBe(55);
+      expect(cuiHowMuchHaveYouPaid.date).toBeUndefined();
+      expect(cuiHowMuchHaveYouPaid.text).toBeUndefined();
+    });
+
+    it('should translate CCD data to CUI HowMuchHaveYouPaid model with whenWasThisAmountPaid field', () => {
+      // Given
+      const respondToAdmittedClaim = {whenWasThisAmountPaid: new Date('2022-03-25') } as CCDRespondToClaim;
+      // When
+      const cuiHowMuchHaveYouPaid = toCUIHowMuchHaveYouPaid(respondToAdmittedClaim)
+      // Then
+      expect(cuiHowMuchHaveYouPaid.amount).toBeUndefined()
+      expect(cuiHowMuchHaveYouPaid.date.toDateString()).toBe('Fri Mar 25 2022');
+      expect(cuiHowMuchHaveYouPaid.text).toBeUndefined();
+    });
+
+    it('should translate CCD data to CUI HowMuchHaveYouPaid model with howWasThisAmountPaidOther', () => {
+      // Given
+      const respondToAdmittedClaim = {howWasThisAmountPaidOther: 'Credit card'} as CCDRespondToClaim;
+      // When
+      const cuiHowMuchHaveYouPaid = toCUIHowMuchHaveYouPaid(respondToAdmittedClaim)
+      // Then
+      expect(cuiHowMuchHaveYouPaid.amount).toBeUndefined()
+      expect(cuiHowMuchHaveYouPaid.date).toBeUndefined()
+      expect(cuiHowMuchHaveYouPaid.text).toBe('Credit card');
+    });
+
+    it('should translate CCD data to CUI HowMuchHaveYouPaid model with all fields', () => {
+      // Given
+      const respondToAdmittedClaim = {
+        howMuchWasPaid: 55,
+        whenWasThisAmountPaid: new Date('2022-03-25'),
+        howWasThisAmountPaidOther: 'Credit card'
+      } as CCDRespondToClaim;
+      // When
+      const cuiHowMuchHaveYouPaid = toCUIHowMuchHaveYouPaid(respondToAdmittedClaim)
+      // Then
+      expect(cuiHowMuchHaveYouPaid.amount).toBe(55)
+      expect(cuiHowMuchHaveYouPaid.date.toDateString()).toBe('Fri Mar 25 2022');
+      expect(cuiHowMuchHaveYouPaid.text).toBe('Credit card');
+    });
+  })
+
+  describe('toCUIResponseTimelineOfEvents', () => {
+    it('should translate CCD data to CUI DefendantTimeline model without TOEs and comments', () => {
+      // Given
+      const timelineOfEvents: CCDTimeLineOfEvents[] = undefined ;
+      const timelineComment: string = undefined;
+      // When
+      const cuiResponseTimelineOfEvents = toCUIResponseTimelineOfEvents(timelineOfEvents, timelineComment);
+      // Then
+      expect(cuiResponseTimelineOfEvents.rows).toBeUndefined()
+      expect(cuiResponseTimelineOfEvents.comment).toBeUndefined()
+    });
+
+    it('should translate CCD data to CUI DefendantTimeline model with only comments', () => {
+      // Given
+      const timelineOfEvents: CCDTimeLineOfEvents[] = undefined;
+      const timelineComment: string = 'timeline comment';
+      // When
+      const cuiResponseTimelineOfEvents = toCUIResponseTimelineOfEvents(timelineOfEvents, timelineComment);
+      // Then
+      expect(cuiResponseTimelineOfEvents.rows).toBeUndefined()
+      expect(cuiResponseTimelineOfEvents.comment).toBe('timeline comment')
+    });
+
+    it('should translate CCD data to CUI DefendantTimeline model with TOEs', () => {
+      // Given
+      const timelineOfEvents: CCDTimeLineOfEvents[] = [
+        <CCDTimeLineOfEvents>{
+          value: <CCDTimeLineOfEventsItem>{
+            timelineDate: '2022-09-22',
+            timelineDescription: 'you might have signed a contract',
+          },
+        },
+      ];
+      const timelineComment: string = undefined;
+      // When
+      const cuiResponseTimelineOfEvents = toCUIResponseTimelineOfEvents(timelineOfEvents, timelineComment);
+      // Then
+      expect(cuiResponseTimelineOfEvents.rows.length).toBe(1)
+      expect(cuiResponseTimelineOfEvents.rows[0].date).toBe('2022-09-22')
+      expect(cuiResponseTimelineOfEvents.rows[0].description).toBe('you might have signed a contract')
+      expect(cuiResponseTimelineOfEvents.comment).toBeUndefined()
+    });
+
+    it('should translate CCD data to CUI DefendantTimeline model with TOEs and comment', () => {
+      // Given
+      const timelineOfEvents: CCDTimeLineOfEvents[] = [
+        <CCDTimeLineOfEvents>{
+          value: <CCDTimeLineOfEventsItem>{
+            timelineDate: '2022-09-22',
+            timelineDescription: 'you might have signed a contract',
+          },
+        },
+      ];
+      const timelineComment: string = 'timeline comment'
+      // When
+      const cuiResponseTimelineOfEvents = toCUIResponseTimelineOfEvents(timelineOfEvents, timelineComment);
+      // Then
+      expect(cuiResponseTimelineOfEvents.rows.length).toBe(1)
+      expect(cuiResponseTimelineOfEvents.rows[0].date).toBe('2022-09-22')
+      expect(cuiResponseTimelineOfEvents.rows[0].description).toBe('you might have signed a contract')
+      expect(cuiResponseTimelineOfEvents.comment).toBe('timeline comment')
+    });
+  })
+
+  describe('toCUIPaymentIntention', () => {
+    it('should translate CCD data to CUI PaymentIntention model with undefined', () => {
+      // Given
+      const ccdClaim: CCDClaim = undefined;
+      // When
+      const cuiPaymentIntention = toCUIPaymentIntention(ccdClaim);
+      // Then
+      expect(cuiPaymentIntention.paymentOption).toBeUndefined();
+    });
+    it('should translate CCD data to CUI PaymentIntention model with pay immediatelty', () => {
+      // Given
+      const ccdClaim: CCDClaim = { defenceAdmitPartPaymentTimeRouteRequired: CCDPaymentOption.IMMEDIATELY } as CCDClaim;
+      // When
+      const cuiPaymentIntention = toCUIPaymentIntention(ccdClaim);
+      // Then
+      expect(cuiPaymentIntention.paymentOption).toBe(PaymentOptionType.IMMEDIATELY);
+      expect(cuiPaymentIntention.paymentDate).toBeUndefined();
+      expect(cuiPaymentIntention.repaymentPlan).toBeUndefined();
+    });
+    it('should translate CCD data to CUI PaymentIntention model with pay by set date', () => {
+      // Given
+      const ccdClaim: CCDClaim = {
+        defenceAdmitPartPaymentTimeRouteRequired: CCDPaymentOption.BY_SET_DATE,
+        respondToClaimAdmitPartLRspec: <CCDPayBySetDate>{
+          whenWillThisAmountBePaid: new Date('2022-03-25')
+        }
+      };
+      // When
+      const cuiPaymentIntention = toCUIPaymentIntention(ccdClaim);
+      // Then
+      expect(cuiPaymentIntention.paymentOption).toBe(PaymentOptionType.BY_SET_DATE);
+      expect(cuiPaymentIntention.paymentDate.toDateString()).toBe('Fri Mar 25 2022');
+      expect(cuiPaymentIntention.repaymentPlan).toBeUndefined();
+    });
+    it('should translate CCD data to CUI PaymentIntention model with repayment plan', () => {
+      // Given
+      const ccdClaim: CCDClaim = {
+        defenceAdmitPartPaymentTimeRouteRequired: CCDPaymentOption.REPAYMENT_PLAN,
+        respondent1RepaymentPlan: <CCDRepaymentPlan>{
+          paymentAmount: 55,
+          repaymentFrequency: CCDRepaymentPlanFrequency.ONCE_ONE_MONTH,
+          firstRepaymentDate: new Date('2022-03-25')
+        }
+      };;
+      // When
+      const cuiPaymentIntention = toCUIPaymentIntention(ccdClaim);
+      // Then
+      expect(cuiPaymentIntention.paymentOption).toBe(PaymentOptionType.INSTALMENTS);
+      expect(cuiPaymentIntention.paymentDate).toBeUndefined();
+      expect(cuiPaymentIntention.repaymentPlan.paymentAmount).toBe(55);
+      expect(cuiPaymentIntention.repaymentPlan.firstRepaymentDate.toDateString()).toBe('Fri Mar 25 2022');
+      expect(cuiPaymentIntention.repaymentPlan.repaymentFrequency).toBe('MONTH');
+    });
+
+  })
+
+  describe('toCUIPaymentOption', () => {
+    it('should translate CCDPaymentOption to CUI PaymentOption with undefined', () => {
+      // Given
+      const ccdPaymentOption: CCDPaymentOption = undefined;
+      // When
+      const cuiPaymentOption = toCUIPaymentOption(ccdPaymentOption);
+      // Then
+      expect(cuiPaymentOption).toBeUndefined()
+    });
+    it('should translate CCDPaymentOption to CUI PaymentOption with immediately', () => {
+      // Given
+      const ccdPaymentOption: CCDPaymentOption = CCDPaymentOption.IMMEDIATELY;
+      // When
+      const cuiPaymentOption = toCUIPaymentOption(ccdPaymentOption);
+      // Then
+      expect(cuiPaymentOption).toBe(PaymentOptionType.IMMEDIATELY);
+    });
+    it('should translate CCDPaymentOption to CUI PaymentOption with set date', () => {
+      // Given
+      const ccdPaymentOption: CCDPaymentOption = CCDPaymentOption.BY_SET_DATE;
+      // When
+      const cuiPaymentOption = toCUIPaymentOption(ccdPaymentOption);
+      // Then
+      expect(cuiPaymentOption).toBe(PaymentOptionType.BY_SET_DATE);
+    });
+    it('should translate CCDPaymentOption to CUI PaymentOption with repayment plan', () => {
+      // Given
+      const ccdPaymentOption: CCDPaymentOption = CCDPaymentOption.REPAYMENT_PLAN;
+      // When
+      const cuiPaymentOption = toCUIPaymentOption(ccdPaymentOption);
+      // Then
+      expect(cuiPaymentOption).toBe(PaymentOptionType.INSTALMENTS);
+    });
+  })
+
+  describe('toCUIRepaymentPlan', () => {
+    it('should translate CCDRepaymentPlan to CUI CCDRepaymentPlan model with empty respondToAdmittedClaim field', () => {
+      // Given
+      const ccdRepaymentPlan: CCDRepaymentPlan = undefined;
+      // When
+      const cuiRepaymentPlan = toCUIRepaymentPlan(ccdRepaymentPlan)
+      // Then
+      expect(cuiRepaymentPlan.paymentAmount).toBeUndefined();
+      expect(cuiRepaymentPlan.firstRepaymentDate).toBeUndefined();
+      expect(cuiRepaymentPlan.repaymentFrequency).toBeUndefined();
+    });
+    it('should translate CCDRepaymentPlan to CUI CCDRepaymentPlan model with paymentAmount field', () => {
+      // Given
+      const ccdRepaymentPlan = {paymentAmount: 55} as CCDRepaymentPlan;
+      // When
+      const cuiRepaymentPlan = toCUIRepaymentPlan(ccdRepaymentPlan)
+      // Then
+      expect(cuiRepaymentPlan.paymentAmount).toBe(55);
+      expect(cuiRepaymentPlan.firstRepaymentDate).toBeUndefined();
+      expect(cuiRepaymentPlan.repaymentFrequency).toBeUndefined();
+    });
+    it('should translate CCDRepaymentPlan to CUI CCDRepaymentPlan model with firstRepaymentDate field', () => {
+      // Given
+      const ccdRepaymentPlan = {firstRepaymentDate: new Date('2022-03-25')} as CCDRepaymentPlan;
+      // When
+      const cuiRepaymentPlan = toCUIRepaymentPlan(ccdRepaymentPlan)
+      // Then
+      expect(cuiRepaymentPlan.paymentAmount).toBeUndefined()
+      expect(cuiRepaymentPlan.firstRepaymentDate.toDateString()).toBe('Fri Mar 25 2022');
+      expect(cuiRepaymentPlan.repaymentFrequency).toBeUndefined();
+    });
+    it('should translate CCDRepaymentPlan to CUI CCDRepaymentPlan model with repaymentFrequency field', () => {
+      // Given
+      const ccdRepaymentPlan = {repaymentFrequency: CCDRepaymentPlanFrequency.ONCE_ONE_MONTH} as CCDRepaymentPlan;
+      // When
+      const cuiRepaymentPlan = toCUIRepaymentPlan(ccdRepaymentPlan)
+      // Then
+      expect(cuiRepaymentPlan.paymentAmount).toBeUndefined()
+      expect(cuiRepaymentPlan.firstRepaymentDate).toBeUndefined()
+      expect(cuiRepaymentPlan.repaymentFrequency).toBe('MONTH');
+    });
+    it('should translate CCDRepaymentPlan to CUI CCDRepaymentPlan model with all fields', () => {
+      // Given
+      const ccdRepaymentPlan = {
+        paymentAmount: 55,
+        firstRepaymentDate: new Date('2022-03-25'),
+        repaymentFrequency: CCDRepaymentPlanFrequency.ONCE_ONE_MONTH,
+      } as CCDRepaymentPlan;
+      // When
+      const cuiRepaymentPlan = toCUIRepaymentPlan(ccdRepaymentPlan)
+      // Then
+      expect(cuiRepaymentPlan.paymentAmount).toBe(55)
+      expect(cuiRepaymentPlan.firstRepaymentDate.toDateString()).toBe('Fri Mar 25 2022');
+      expect(cuiRepaymentPlan.repaymentFrequency).toBe('MONTH');
+    });
+
+  })
+
+  describe('toCUIRepaymentPlanFrequency', () => {
+    it('should translate CCDRepaymentPlanFrequency to CUI repaymentPlanFrequency with undefined', () => {
+      // Given
+      const ccdRepaymentPlanFrequency: CCDRepaymentPlanFrequency = undefined;
+      // When
+      const cuiRepaymentPlanFrequency = toCUIRepaymentPlanFrequency(ccdRepaymentPlanFrequency);
+      // Then
+      expect(cuiRepaymentPlanFrequency).toBeUndefined()
+    });
+    it('should translate CCDRepaymentPlanFrequency to CUI repaymentPlanFrequency with one week', () => {
+      // Given
+      const ccdRepaymentPlanFrequency: CCDRepaymentPlanFrequency = CCDRepaymentPlanFrequency.ONCE_ONE_WEEK;
+      // When
+      const cuiRepaymentPlanFrequency = toCUIRepaymentPlanFrequency(ccdRepaymentPlanFrequency);
+      // Then
+      expect(cuiRepaymentPlanFrequency).toBe('WEEK');
+    });
+    it('should translate CCDRepaymentPlanFrequency to CUI repaymentPlanFrequency with two weeks', () => {
+      // Given
+      const ccdRepaymentPlanFrequency: CCDRepaymentPlanFrequency = CCDRepaymentPlanFrequency.ONCE_TWO_WEEKS;
+      // When
+      const cuiRepaymentPlanFrequency = toCUIRepaymentPlanFrequency(ccdRepaymentPlanFrequency);
+      // Then
+      expect(cuiRepaymentPlanFrequency).toBe('TWO_WEEKS');
+    });
+    it('should translate CCDRepaymentPlanFrequency to CUI repaymentPlanFrequency with four weeks', () => {
+      // Given
+      const ccdRepaymentPlanFrequency: CCDRepaymentPlanFrequency = CCDRepaymentPlanFrequency.ONCE_FOUR_WEEKS;
+      // When
+      const cuiRepaymentPlanFrequency = toCUIRepaymentPlanFrequency(ccdRepaymentPlanFrequency);
+      // Then
+      expect(cuiRepaymentPlanFrequency).toBe('FOUR_WEEKS');
+    });
+    it('should translate CCDRepaymentPlanFrequency to CUI repaymentPlanFrequency with one moth', () => {
+      // Given
+      const ccdRepaymentPlanFrequency: CCDRepaymentPlanFrequency = CCDRepaymentPlanFrequency.ONCE_ONE_MONTH;
+      // When
+      const cuiRepaymentPlanFrequency = toCUIRepaymentPlanFrequency(ccdRepaymentPlanFrequency);
+      // Then
+      expect(cuiRepaymentPlanFrequency).toBe('MONTH');
+    });
+  })
+
+  describe('toCUIPartialAdmission', () => {
+    // Respond to claim & PAID
+    //  Respond to claim & NOT PAID
+    it('should translate CCDRepaymentPlanFrequency to CUI repaymentPlanFrequency with undefined', () => {
+      // Given
+      const ccdClaim: CCDClaim = undefined;
+      // When
+      const cuiPartialAdmission = toCUIPartialAdmission(ccdClaim);
+      // Then
+      expect(cuiPartialAdmission).toMatchObject(new PartialAdmission());
+    });
+    it('Respond to claim & PAID', () => {
+      // Given
+      const ccdClaim: CCDClaim = {
+        respondent1LiPResponse: <CCDRespondentLiPResponse>{
+          partialAdmissionAlreadyPaid: YesNoUpperCamelCase.YES,
+          timelineComment : 'timeline comment'
+        },
+        respondToAdmittedClaim: <CCDRespondToClaim>{
+          howMuchWasPaid: 55,
+          whenWasThisAmountPaid: new Date('2022-03-25'),
+          howWasThisAmountPaidOther: 'Credit card'
+        },
+        detailsOfWhyDoesYouDisputeTheClaim: 'reason',
+        specResponseTimelineOfEvents: [
+          <CCDTimeLineOfEvents>{
+            value: <CCDTimeLineOfEventsItem>{
+              timelineDate: '2022-09-22',
+              timelineDescription: 'you might have signed a contract',
+            },
+          },
+        ],
+      } as CCDClaim;
+      const target = new PartialAdmission();
+      target.alreadyPaid = new GenericYesNo(YesNo.YES);
+      target.howMuchHaveYouPaid = <HowMuchHaveYouPaid>{
+        amount: 55,
+        date: new Date('2022-03-25T00:00:00.000Z'),
+        text: 'Credit card',
+      };
+      // target.paymentIntention = <PaymentIntention>{paymentOption: undefined};
+      target.timeline = <DefendantTimeline>{
+        comment: 'timeline comment',
+        rows: [new TimelineRow('2022-09-22', 'you might have signed a contract')]
+      };
+      target.whyDoYouDisagree = <WhyDoYouDisagree>{text: 'reason' }
+      // When
+      const cuiPartialAdmission = toCUIPartialAdmission(ccdClaim);
+      // Then
+      expect(cuiPartialAdmission.alreadyPaid.option).toBe(YesNo.YES);
+      expect(cuiPartialAdmission).toMatchObject(target)
+    });
+    // it('Respond to claim & NOT PAID', () => {
+    //   // Given
+    //   const ccdClaim: CCDClaim = {
+
+    //   } as CCDClaim;
+    //   // When
+    //   const cuiPartialAdmission = toCUIPartialAdmission(ccdClaim);
+    //   // Then
+    //   expect(cuiPartialAdmission).toMatchObject(new PartialAdmission());
+    // });
+  })
+});
