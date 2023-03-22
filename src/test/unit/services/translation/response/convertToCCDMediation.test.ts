@@ -14,7 +14,7 @@ describe('translate Mediation to CCD model', () => {
     expect(mediationResponseCCD).toBe(undefined);
   });
 
-  it('should translate claimAmountBreakup to CCD', () => {
+  it('should translate CUI Mediation model to CCD Mediation model', () => {
     const mediationCCD: CCDMediation=
       {
         canWeUseMediationLiP: YesNoUpperCamelCase.NO,
