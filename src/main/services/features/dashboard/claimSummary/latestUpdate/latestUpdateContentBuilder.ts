@@ -85,7 +85,7 @@ export class LastUpdateSectionBuilder {
   }
 }
 
-function getPaPaidPayInstallmentItems(claim: Claim) {
+function getPartAdmitPayInstallmentItems(claim: Claim) {
   const claimantFullName = claim.getClaimantFullName();
   const claimId = claim.id;
   if (!claim.isBusiness()) {
