@@ -98,7 +98,9 @@ export class Claim {
     claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
     claim.respondent1 = toCUIParty(ccdClaim?.respondent1);
     claim.respondent1.responseType = ccdClaim?.respondent1ClaimResponseTypeForSpec;
-    claim.partialAdmission = toCUIPartialAdmission(ccdClaim);
+    if (claim.isPartialAdmission()) {
+      claim.partialAdmission = toCUIPartialAdmission(ccdClaim);
+    }
     return claim;
   }
 

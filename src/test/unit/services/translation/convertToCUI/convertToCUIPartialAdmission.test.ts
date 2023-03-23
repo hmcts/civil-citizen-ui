@@ -1,14 +1,28 @@
-import {toCUIHowMuchHaveYouPaid, toCUIPartialAdmission, toCUIPaymentIntention, toCUIPaymentOption, toCUIRepaymentPlan, toCUIRepaymentPlanFrequency, toCUIResponseTimelineOfEvents} from 'services/translation/convertToCUI/convertToCUIPartialAdmission';
+import {
+  toCUIHowMuchHaveYouPaid,
+  toCUIPartialAdmission,
+  toCUIPaymentIntention,
+  toCUIPaymentOption,
+  toCUIRepaymentPlan,
+  toCUIRepaymentPlanFrequency,
+  toCUIResponseTimelineOfEvents,
+} from 'services/translation/convertToCUI/convertToCUIPartialAdmission';
 import {CCDRespondToClaim} from 'common/models/ccdResponse/ccdRespondToClaim';
 import {CCDPaymentOption} from 'common/models/ccdResponse/ccdPaymentOption';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
-import {CCDRepaymentPlan, CCDRepaymentPlanFrequency} from 'common/models/ccdResponse/ccdRepaymentPlan';
+import {
+  CCDRepaymentPlan,
+  CCDRepaymentPlanFrequency,
+} from 'common/models/ccdResponse/ccdRepaymentPlan';
 import {CCDClaim} from 'common/models/civilClaimResponse';
 import {CCDPayBySetDate} from 'common/models/ccdResponse/ccdPayBySetDate';
 import {PartialAdmission} from 'common/models/partialAdmission';
 import {CCDRespondentLiPResponse} from 'common/models/ccdResponse/ccdRespondentLiPResponse';
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
-import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {
+  CCDTimeLineOfEvents,
+  CCDTimeLineOfEventsItem,
+} from 'common/models/ccdResponse/ccdTimeLineOfEvents';
 
 describe('translate partial admission to cui model', () => {
   describe('toCUIHowMuchHaveYouPaid', () => {
@@ -342,20 +356,7 @@ describe('translate partial admission to cui model', () => {
           partialAdmissionAlreadyPaid: YesNoUpperCamelCase.YES,
           timelineComment: 'timeline comment',
         },
-        // respondToAdmittedClaim: <CCDRespondToClaim>{
-        //   howMuchWasPaid: 55,
-        //   whenWasThisAmountPaid: new Date('2022-03-25'),
-        //   howWasThisAmountPaidOther: 'Credit card',
-        // },
         detailsOfWhyDoesYouDisputeTheClaim: 'reason',
-        // specResponseTimelineOfEvents: [
-        //   <CCDTimeLineOfEvents>{
-        //     value: <CCDTimeLineOfEventsItem>{
-        //       timelineDate: '2022-09-22',
-        //       timelineDescription: 'you might have signed a contract',
-        //     },
-        //   },
-        // ],
       } as CCDClaim;
       // When
       const cuiPartialAdmission = toCUIPartialAdmission(ccdClaim);
