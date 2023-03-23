@@ -28,8 +28,9 @@ ccd:
         cpu: "25m"
         memory: "512Mi"
   logstash:
-    image:
-      pullPolicy: Always
+    image: hmctspublic.azurecr.io/imported/logstash/logstash
+    imageTag: 8.5.1
+    imagePullPolicy: "IfNotPresent"
     resources:
       requests:
         cpu: "500m"
