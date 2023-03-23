@@ -38,6 +38,7 @@ export const determinationWithoutHearingReason = (claim: Claim, claimId: string,
 };
 
 export const buildSmallClaimHearingRequirements = (claim: Claim, hearingRequirementsSection: SummarySection, claimId: string, lng: string) => {
+  hearingRequirementsSection.summaryList.rows.push(determinationWithoutHearingQuestion(claim, claimId, lng));
   if (claim.directionQuestionnaire?.hearing?.determinationWithoutHearing?.option === YesNo.NO) {
     hearingRequirementsSection.summaryList.rows.push(determinationWithoutHearingReason(claim, claimId, lng));
   }
