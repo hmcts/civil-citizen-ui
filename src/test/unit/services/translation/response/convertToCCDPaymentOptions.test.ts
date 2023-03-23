@@ -23,7 +23,7 @@ describe('convert payment option', () => {
         },
       };
       // WHEN
-      const result = toCCDPaymentOption(claim);
+      const result = toCCDPaymentOption(claim.getPaymentIntention()?.paymentOption);
       // THEN
       expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
     });
@@ -39,7 +39,7 @@ describe('convert payment option', () => {
         },
       };
       // WHEN
-      const result = toCCDPaymentOption(claim);
+      const result = toCCDPaymentOption(claim.getPaymentIntention()?.paymentOption);
       // THEN
       expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
     });
@@ -55,7 +55,7 @@ describe('convert payment option', () => {
         },
       };
       // WHEN
-      const result = toCCDPaymentOption(claim);
+      const result = toCCDPaymentOption(claim.getPaymentIntention()?.paymentOption);
       // THEN
       expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
     });
@@ -73,7 +73,7 @@ describe('convert payment option', () => {
         },
       };
       // WHEN
-      const result = toCCDPaymentOption(claim);
+      const result = toCCDPaymentOption(claim.getPaymentIntention().paymentOption);
       // THEN
       expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
     });
@@ -89,7 +89,7 @@ describe('convert payment option', () => {
         },
       };
       // WHEN
-      const result = toCCDPaymentOption(claim);
+      const result = toCCDPaymentOption(claim.getPaymentIntention().paymentOption);
       // THEN
       expect(result).toEqual(CCDPaymentOption.REPAYMENT_PLAN);
     });
@@ -105,7 +105,7 @@ describe('convert payment option', () => {
         },
       };
       // WHEN
-      const result = toCCDPaymentOption(claim);
+      const result = toCCDPaymentOption(claim.getPaymentIntention().paymentOption);
       // THEN
       expect(result).toEqual(CCDPaymentOption.BY_SET_DATE);
     });
@@ -117,47 +117,47 @@ describe('convert payment option', () => {
       claim.respondent1 = {
         responseType: ResponseType.FULL_ADMISSION,
       };
-      claim.partialAdmission = {
+      claim.fullAdmission = {
         paymentIntention: {
           paymentOption: PaymentOptionType.IMMEDIATELY,
         },
       };
       // WHEN
-      const result = toCCDPaymentOption(claim);
+      const result = toCCDPaymentOption(claim.getPaymentIntention().paymentOption);
       // THEN
       expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
     });
 
-    it('when payment option is INSTALMENTS should return IMMEDIATELY', () => {
+    it('when payment option is INSTALMENTS should return REPAYMENT_PLAN', () => {
       // GIVEN
       claim.respondent1 = {
         responseType: ResponseType.FULL_ADMISSION,
       };
-      claim.partialAdmission = {
+      claim.fullAdmission = {
         paymentIntention: {
           paymentOption: PaymentOptionType.INSTALMENTS,
         },
       };
       // WHEN
-      const result = toCCDPaymentOption(claim);
+      const result = toCCDPaymentOption(claim.getPaymentIntention().paymentOption);
       // THEN
-      expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
+      expect(result).toEqual(CCDPaymentOption.REPAYMENT_PLAN);
     });
 
-    it('when payment option is BY_SET_DATE should return IMMEDIATELY', () => {
+    it('when payment option is BY_SET_DATE should return BY_SET_DATE', () => {
       // GIVEN
       claim.respondent1 = {
         responseType: ResponseType.FULL_ADMISSION,
       };
-      claim.partialAdmission = {
+      claim.fullAdmission = {
         paymentIntention: {
           paymentOption: PaymentOptionType.BY_SET_DATE,
         },
       };
       // WHEN
-      const result = toCCDPaymentOption(claim);
+      const result = toCCDPaymentOption(claim.getPaymentIntention().paymentOption);
       // THEN
-      expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
+      expect(result).toEqual(CCDPaymentOption.BY_SET_DATE);
     });
   });
 });

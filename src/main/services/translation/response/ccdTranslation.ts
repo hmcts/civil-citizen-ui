@@ -33,11 +33,12 @@ import {
 } from 'services/translation/response/convertToCCDYesNo';
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
+  const paymentIntention = claim.getPaymentIntention();
   return {
     respondent1ClaimResponseTypeForSpec: claim.respondent1?.responseType,
-    defenceAdmitPartPaymentTimeRouteRequired: toCCDPaymentOption(claim),
-    respondent1RepaymentPlan: toCCDRepaymentPlan(claim.partialAdmission?.paymentIntention?.repaymentPlan),
-    respondToClaimAdmitPartLRspec: toCCDPayBySetDate(claim.partialAdmission?.paymentIntention?.paymentDate),
+    defenceAdmitPartPaymentTimeRouteRequired: toCCDPaymentOption(paymentIntention?.paymentOption),
+    respondent1RepaymentPlan: toCCDRepaymentPlan(paymentIntention?.repaymentPlan),
+    respondToClaimAdmitPartLRspec: toCCDPayBySetDate(paymentIntention?.paymentDate),
     responseClaimMediationSpecRequired: toAgreedMediation(claim.mediation),
     specAoSApplicantCorrespondenceAddressRequired: addressHasChange ? YesNoUpperCamelCase.NO : YesNoUpperCamelCase.YES,
     totalClaimAmount: claim.totalClaimAmount,
@@ -45,7 +46,7 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     respondent1LiPResponse: toCCDRespondentLiPResponse(claim),
     respondToAdmittedClaim: toCCDRespondToClaim(claim.partialAdmission),
     specDefenceAdmittedRequired: toUpperCaseGenericYesNo(claim.partialAdmission?.alreadyPaid),
-    respondToAdmittedClaimOwingAmount: claim.partialAdmission.howMuchDoYouOwe?.amount?.toString(),
+    respondToAdmittedClaimOwingAmount: claim.partialAdmission?.howMuchDoYouOwe?.amount?.toString(),
     detailsOfWhyDoesYouDisputeTheClaim: claim.partialAdmission?.whyDoYouDisagree?.text,
     specClaimResponseTimelineList: TimelineUploadTypeSpec.MANUAL, // sets to manual cause CUI do not have other option
     specResponseTimelineOfEvents: toCCDResponseTimelineOfEvents(claim.partialAdmission?.timeline),

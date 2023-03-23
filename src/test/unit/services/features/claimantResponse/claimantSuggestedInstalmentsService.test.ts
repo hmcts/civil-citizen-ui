@@ -2,11 +2,11 @@ import {request} from 'express';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
-import {TestMessages} from '../../../../../../../../../utils/errorMessageTestConstants';
+import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import {getClaimantSuggestedInstalmentsForm, getClaimantSuggestedInstalmentsPlan} from 'services/features/claimantResponse/claimantSuggestedInstalmentsService';
 
-jest.mock('../../../../../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 const TOTAL_CLAIM_AMOUNT = 1000;
 const PAYMENT_AMOUNT = 100;
@@ -62,7 +62,7 @@ describe('Claiman Suggested Instalments Plan Service', () => {
         const repaymentPlan = {
           paymentAmount: PAYMENT_AMOUNT,
           repaymentFrequency: REPAYMENT_FREQUENCY,
-          firstRepaymentDate: FIRST_PAYMENT_DATE,
+          firstRepaymentDate: new Date(FIRST_PAYMENT_DATE),
         };
         claim.claimantResponse.suggestedPaymentIntention = {
           paymentOption: PaymentOptionType.INSTALMENTS,
