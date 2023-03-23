@@ -23,7 +23,7 @@ describe('convert payment option', () => {
         },
       };
       // WHEN
-      const result = toCCDPaymentOption(claim);
+      const result = toCCDPaymentOption(claim.getPaymentIntention()?.paymentOption);
       // THEN
       expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
     });
@@ -39,7 +39,7 @@ describe('convert payment option', () => {
         },
       };
       // WHEN
-      const result = toCCDPaymentOption(claim);
+      const result = toCCDPaymentOption(claim.getPaymentIntention()?.paymentOption);
       // THEN
       expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
     });
@@ -55,7 +55,7 @@ describe('convert payment option', () => {
         },
       };
       // WHEN
-      const result = toCCDPaymentOption(claim);
+      const result = toCCDPaymentOption(claim.getPaymentIntention()?.paymentOption);
       // THEN
       expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
     });
@@ -73,7 +73,7 @@ describe('convert payment option', () => {
         },
       };
       // WHEN
-      const result = toCCDPaymentOption(claim);
+      const result = toCCDPaymentOption(claim.getPaymentIntention()?.paymentOption);
       // THEN
       expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
     });
@@ -89,7 +89,7 @@ describe('convert payment option', () => {
         },
       };
       // WHEN
-      const result = toCCDPaymentOption(claim);
+      const result = toCCDPaymentOption(claim.getPaymentIntention()?.paymentOption);
       // THEN
       expect(result).toEqual(CCDPaymentOption.REPAYMENT_PLAN);
     });
@@ -105,7 +105,7 @@ describe('convert payment option', () => {
         },
       };
       // WHEN
-      const result = toCCDPaymentOption(claim);
+      const result = toCCDPaymentOption(claim.getPaymentIntention()?.paymentOption);
       // THEN
       expect(result).toEqual(CCDPaymentOption.BY_SET_DATE);
     });
@@ -123,7 +123,7 @@ describe('convert payment option', () => {
         },
       };
       // WHEN
-      const result = toCCDPaymentOption(claim);
+      const result = toCCDPaymentOption(claim.getPaymentIntention()?.paymentOption);
       // THEN
       expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
     });
@@ -139,7 +139,7 @@ describe('convert payment option', () => {
         },
       };
       // WHEN
-      const result = toCCDPaymentOption(claim);
+      const result = toCCDPaymentOption(claim.getPaymentIntention()?.paymentOption);
       // THEN
       expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
     });
@@ -155,7 +155,7 @@ describe('convert payment option', () => {
         },
       };
       // WHEN
-      const result = toCCDPaymentOption(claim);
+      const result = toCCDPaymentOption(claim.getPaymentIntention()?.paymentOption);
       // THEN
       expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
     });
