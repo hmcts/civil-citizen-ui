@@ -3,10 +3,6 @@ import {Claim} from 'models/claim';
 import {
   buildResponseToClaimSection,
 } from './latestUpdate/latestUpdateContentBuilder';
-jest.mock('../../../../../main/modules/i18n/languageService', () => ({
-  getLanguage: jest.fn().mockReturnValue('en'),
-  setLanguage: jest.fn(),
-}));
 export const getLatestUpdateContent = (claimId: string, claim: Claim): ClaimSummaryContent[] => {
   const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
   const latestUpdateContent = [responseToClaimSection];

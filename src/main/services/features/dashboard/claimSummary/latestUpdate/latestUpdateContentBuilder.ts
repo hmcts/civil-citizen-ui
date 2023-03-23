@@ -91,7 +91,7 @@ function getPartAdmitPayInstallmentItems(claim: Claim) {
   if (!claim.isBusiness()) {
     return new LastUpdateSectionBuilder()
       .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
-      .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_STARING`, {
+      .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_STARTING`, {
         amount: currencyFormat(getAmount(claim)),
         claimantName: claimantFullName,
         installmentAmount: currencyFormat(getPaymentAmount(claim)),
@@ -104,7 +104,7 @@ function getPartAdmitPayInstallmentItems(claim: Claim) {
   }
   return new LastUpdateSectionBuilder()
     .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
-    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_STARING`, {
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_STARTING`, {
       amount: currencyFormat(getAmount(claim)),
       claimantName: claimantFullName,
       installmentAmount: currencyFormat(getPaymentAmount(claim)),
@@ -165,7 +165,7 @@ function getFullAdmitPayInstallments(claim: Claim) {
   if (!claim.isBusiness()) {
     return new LastUpdateSectionBuilder()
       .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
-      .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY_STARRING`, {
+      .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY_STARTING`, {
         claimantName: claimantFullName,
         installmentAmount: currencyFormat(getPaymentAmount(claim)),
         paymentSchedule: getRepaymentFrequency(claim),
@@ -177,7 +177,7 @@ function getFullAdmitPayInstallments(claim: Claim) {
   }
   return new LastUpdateSectionBuilder()
     .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
-    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY_STARRING`, {
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY_STARTING`, {
       claimantName: claimantFullName,
       installmentAmount:  currencyFormat(getPaymentAmount(claim)),
       paymentSchedule: getRepaymentFrequency(claim),

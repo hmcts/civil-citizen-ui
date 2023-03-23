@@ -6,6 +6,11 @@ import {
   buildResponseToClaimSection,
 } from '../../../../../../main/services/features/dashboard/claimSummary/latestUpdate/latestUpdateContentBuilder';
 
+jest.mock('../../../../../../main/modules/i18n/languageService', () => ({
+  getLanguage: jest.fn().mockReturnValue('en'),
+  setLanguage: jest.fn(),
+}));
+
 describe('Latest Update Content service', () => {
   const mockClaim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
   const claim = new Claim();
