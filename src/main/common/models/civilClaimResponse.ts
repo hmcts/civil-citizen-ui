@@ -1,22 +1,22 @@
 import {StatementOfTruth} from './claim';
-import {CaseState, ClaimAmountBreakup, ClaimFee, InterestClaimFromType, InterestEndDateType} from '../form/models/claimDetails';
-import {ClaimantResponse} from '../../common/models/claimantResponse';
-import {ClaimDetails} from '../../common/form/models/claim/details/claimDetails';
-import {StatementOfMeans} from '../../common/models/statementOfMeans';
-import {PartialAdmission} from '../../common/models/partialAdmission';
-import {RejectAllOfClaim} from '../../common/form/models/rejectAllOfClaim';
-import {Mediation} from '../../common/models/mediation/mediation';
-import {DefendantEvidence} from '../../common/models/evidence/evidence';
-import {TimeLineOfEvents} from '../../common/models/timelineOfEvents/timeLineOfEvents';
-import {StatementOfTruthForm} from '../../common/form/models/statementOfTruth/statementOfTruthForm';
-import {QualifiedStatementOfTruth} from '../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
-import {YesNoUpperCamelCase} from '../../common/form/models/yesNo';
-import {Interest} from '../../common/form/models/interest/interest';
-import {Document} from '../../common/models/document/document';
-import {SystemGeneratedCaseDocuments} from '../../common/models/document/systemGeneratedCaseDocuments';
-import {ResponseDeadline} from '../../common/models/responseDeadline';
-import {DirectionQuestionnaire} from '../../common/models/directionsQuestionnaire/directionQuestionnaire';
-import {CCDParty} from '../../common/models/ccdResponse/ccdParty';
+import {CaseState, ClaimAmountBreakup, ClaimFee, InterestClaimFromType, InterestEndDateType} from 'form/models/claimDetails';
+import {ClaimantResponse} from 'models/claimantResponse';
+import {ClaimDetails} from 'form/models/claim/details/claimDetails';
+import {StatementOfMeans} from 'models/statementOfMeans';
+import {PartialAdmission} from 'models/partialAdmission';
+import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
+import {Mediation} from 'models/mediation/mediation';
+import {DefendantEvidence} from 'models/evidence/evidence';
+import {TimeLineOfEvents} from 'models/timelineOfEvents/timeLineOfEvents';
+import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
+import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import {Interest} from 'form/models/interest/interest';
+import {Document} from 'models/document/document';
+import {SystemGeneratedCaseDocuments} from 'models/document/systemGeneratedCaseDocuments';
+import {ResponseDeadline} from 'models/responseDeadline';
+import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
+import {CCDParty} from 'models/ccdResponse/ccdParty';
 import {ClaimUpdate} from 'models/events/eventDto';
 import {CCDInterestType} from './ccdResponse/ccdInterestType';
 import {CCDSameRateInterestSelection} from './ccdResponse/ccdSameRateInterestSelection';
@@ -28,6 +28,7 @@ import {CCDPayBySetDate} from './ccdResponse/ccdPayBySetDate';
 import {FullAdmission} from './fullAdmission';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {RepaymentPlan} from './repaymentPlan';
+import {CCDRespondentLiPResponse} from 'models/ccdResponse/ccdRespondentLiPResponse';
 
 export class CivilClaimResponse {
   id: string;
@@ -99,6 +100,7 @@ export interface CCDClaim extends ClaimUpdate {
   responseClaimMediationSpecRequired?: string;
   specAoSApplicantCorrespondenceAddressRequired?: YesNoUpperCamelCase;
   claimantUserDetails?: IdamUserDetails;
+  respondent1LiPResponse?: CCDRespondentLiPResponse;
 }
 
 export interface ClaimFeeData {
