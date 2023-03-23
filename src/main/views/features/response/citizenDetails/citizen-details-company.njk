@@ -55,13 +55,13 @@
             {{ addressForm(
               t,
               party = party,
-              addressType = 'primary',
+              addressType = 'primaryAddress',
               addressTitle = addressTitle
             ) }}
             {% set correspondenceAddressHtml %}
             {{ postcodeLookupAndAddressForm(t, {
                 party:party,
-                addressType:'correspondence',
+                addressType:'correspondenceAddress',
                 addressTitle:addressTitle
               }) }}
             {% endset -%}

@@ -35,11 +35,12 @@ import {toCCDSmallClaimHearing} from 'services/translation/response/convertToCCD
 import {toCCDFastClaimHearing} from 'services/translation/response/convertToCCDFastClaimHearing';
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
+  const paymentIntention = claim.getPaymentIntention();
   return {
     respondent1ClaimResponseTypeForSpec: claim.respondent1?.responseType,
-    defenceAdmitPartPaymentTimeRouteRequired: toCCDPaymentOption(claim),
-    respondent1RepaymentPlan: toCCDRepaymentPlan(claim.partialAdmission?.paymentIntention?.repaymentPlan),
-    respondToClaimAdmitPartLRspec: toCCDPayBySetDate(claim.partialAdmission.paymentIntention.paymentDate),
+    defenceAdmitPartPaymentTimeRouteRequired: toCCDPaymentOption(paymentIntention?.paymentOption),
+    respondent1RepaymentPlan: toCCDRepaymentPlan(paymentIntention?.repaymentPlan),
+    respondToClaimAdmitPartLRspec: toCCDPayBySetDate(paymentIntention?.paymentDate),
     responseClaimMediationSpecRequired: toAgreedMediation(claim.mediation),
     specAoSApplicantCorrespondenceAddressRequired: addressHasChange ? YesNoUpperCamelCase.NO : YesNoUpperCamelCase.YES,
     totalClaimAmount: claim.totalClaimAmount,

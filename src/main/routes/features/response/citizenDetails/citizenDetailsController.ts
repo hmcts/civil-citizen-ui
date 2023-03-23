@@ -1,17 +1,17 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {CITIZEN_DETAILS_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL, RESPONSE_TASK_LIST_URL} from '../../../urls';
-import {Party} from '../../../../common/models/party';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+import {CITIZEN_DETAILS_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
+import {Party} from 'models/party';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getDefendantInformation,
   saveDefendantProperty,
-} from '../../../../services/features/common/defendantDetailsService';
-import {ClaimantOrDefendant, PartyType} from '../../../../common/models/partyType';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {PartyDetails} from '../../../../common/form/models/partyDetails';
-import {PartyPhone} from '../../../../common/models/PartyPhone';
-import {saveTelephone} from '../../../../services/features/claim/yourDetails/phoneService';
-import {CitizenTelephoneNumber} from '../../../../common/form/models/citizenTelephoneNumber';
+} from 'services/features/common/defendantDetailsService';
+import {ClaimantOrDefendant, PartyType} from 'models/partyType';
+import {GenericForm} from 'form/models/genericForm';
+import {generateCorrespondenceAddressErrorMessages, PartyDetails} from 'form/models/partyDetails';
+import {PartyPhone} from 'models/PartyPhone';
+import {saveTelephone} from 'services/features/claim/yourDetails/phoneService';
+import {CitizenTelephoneNumber} from 'form/models/citizenTelephoneNumber';
 
 const citizenDetailsController = Router();
 
@@ -67,6 +67,7 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: Request, res: Res
     partyDetails.validateSync();
 
     if (partyDetails.hasErrors()) {
+      generateCorrespondenceAddressErrorMessages(partyDetails);
       renderPage(res, req, partyDetails, respondent.type, partyPhone);
     } else {
       await saveDefendantProperty(req.params.id, propertyName, partyDetails.model);

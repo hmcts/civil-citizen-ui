@@ -52,6 +52,8 @@ import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreferen
 import {toCUIEvidence} from 'services/translation/convertToCUI/convertToCUIEvidence';
 import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIClaimDetails';
 import {analyseClaimType, claimType} from 'common/form/models/claimType';
+import {PaymentIntention} from 'form/models/admission/paymentIntention';
+import {toCUIMediation} from 'services/translation/convertToCUI/convertToCUIMediation';
 
 export class Claim {
   legacyCaseReference: string;
@@ -94,6 +96,7 @@ export class Claim {
     claim.evidence = toCUIEvidence(ccdClaim?.speclistYourEvidenceList);
     claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
     claim.respondent1 = toCUIParty(ccdClaim?.respondent1);
+    claim.mediation = toCUIMediation(ccdClaim?.respondent1LiPResponse?.respondent1MediationLiPResponse);
     return claim;
   }
 
@@ -436,6 +439,10 @@ export class Claim {
 
   getHowTheInterestCalculatedReason(): string {
     return this.interest?.totalInterest?.reason;
+  }
+
+  getPaymentIntention() : PaymentIntention {
+    return this.isPartialAdmission()? this.partialAdmission?.paymentIntention : this.fullAdmission?.paymentIntention;
   }
 
   private getName(party: Party): string {

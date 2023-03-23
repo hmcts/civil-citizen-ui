@@ -28,6 +28,7 @@ import {
   DETERMINATION_WITHOUT_HEARING_URL,
   FINANCIAL_DETAILS_URL,
   RESPONSE_YOUR_DEFENCE_URL,
+  DQ_TRIED_TO_SETTLE_CLAIM_URL,
 } from 'routes/urls';
 import {RejectAllOfClaim} from 'common/form/models/rejectAllOfClaim';
 import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
@@ -48,7 +49,8 @@ describe('Task List Builder', () => {
   const howMuchHaveYouPaidUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_AMOUNT_YOU_PAID_URL);
   const howMuchMoneyAdmitOweUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_OWED_AMOUNT_URL);
   const freeTelephoneMediationUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_FREE_TELEPHONE_MEDIATION_URL);
-  const giveUsDetailsHearingUrl = constructResponseUrlWithIdParams(claimId, DETERMINATION_WITHOUT_HEARING_URL);
+  const giveUsDetailsHearingUrlForSmallClaims = constructResponseUrlWithIdParams(claimId, DETERMINATION_WITHOUT_HEARING_URL);
+  const giveUsDetailsHearingUrlForFastTrack = constructResponseUrlWithIdParams(claimId, DQ_TRIED_TO_SETTLE_CLAIM_URL);
   const whenWillYouPayUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL);
 
   const tellUsHowMuchYouHavePaidUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_FR_AMOUNT_YOU_PAID_URL);
@@ -242,19 +244,37 @@ describe('Task List Builder', () => {
   });
 
   describe('test buildYourHearingRequirementsSection', () => {
-    it('should be empty', () => {
-      const claim = new Claim();
-      const respondToClaimSection = buildYourHearingRequirementsSection(claim, claimId, lang);
-      expect(respondToClaimSection.tasks.length).toBe(0);
-    });
-    it('should have freeTelephoneMediationTask', () => {
-      const claim = new Claim();
+    let claim: Claim;
+    beforeEach(() => {
+      claim = new Claim();
       claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+    });
+    it('should be empty', () => {
+      //Given
+      claim.respondent1 = undefined;
+      //When
+      const respondToClaimSection = buildYourHearingRequirementsSection(claim, claimId, lang);
+      //Then
+      expect(respondToClaimSection.tasks.length).toBe(0);
+    });
+    it('should have giveUsDetailsHearingTask for small claims', () => {
+      //Given
+      claim.totalClaimAmount = 9000;
+      //When
       const yourHearingRequirementsSection = buildYourHearingRequirementsSection(claim, claimId, lang);
+      //Then
       expect(yourHearingRequirementsSection.tasks.length).toBe(1);
-      expect(yourHearingRequirementsSection.tasks[0].url).toEqual(giveUsDetailsHearingUrl);
+      expect(yourHearingRequirementsSection.tasks[0].url).toEqual(giveUsDetailsHearingUrlForSmallClaims);
+    });
+    it('should have giveUsDetailsHearingTask for fast track claims', () => {
+      //Given
+      claim.totalClaimAmount = 11000;
+      //Then
+      const yourHearingRequirementsSection = buildYourHearingRequirementsSection(claim, claimId, lang);
+      //Then
+      expect(yourHearingRequirementsSection.tasks.length).toBe(1);
+      expect(yourHearingRequirementsSection.tasks[0].url).toEqual(giveUsDetailsHearingUrlForFastTrack);
     });
   });
-
 });
