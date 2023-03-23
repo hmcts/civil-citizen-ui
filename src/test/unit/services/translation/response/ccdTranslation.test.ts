@@ -27,27 +27,23 @@ function getPartialAdmission(claim: Claim, option: YesNo) {
   claim.partialAdmission.alreadyPaid.option = option;
 }
 
-function getPartialAdmissionByRepaymentFrequency(claim: Claim, frequency: string) {
+const createFullAdmitClaim = (): Claim => {
+  const claim = new Claim();
+  claim.respondent1 = new Party();
+  claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+  claim.fullAdmission = new FullAdmission();
+  claim.fullAdmission.paymentIntention = new PaymentIntention();
+  return claim;
+};
+
+const createPartAdmitClaim = (): Claim => {
+  const claim = new Claim();
+  claim.respondent1 = new Party();
+  claim.respondent1.responseType = ResponseType.PART_ADMISSION;
   claim.partialAdmission = new PartialAdmission();
   claim.partialAdmission.paymentIntention = new PaymentIntention();
-  claim.partialAdmission.paymentIntention.repaymentPlan = {
-    paymentAmount: 100,
-    firstRepaymentDate: new Date(),
-    repaymentFrequency: frequency,
-  };
-}
-
-function getPartialAdmissionWithMediation(claim: Claim){
-  claim.respondent1 = new Party();
-  claim.mediation = {
-    canWeUse: undefined,
-    mediationDisagreement: undefined,
-    companyTelephoneNumber: {
-      mediationContactPerson : 'test',
-      mediationPhoneNumber : '123',
-    },
-  };
-}
+  return claim;
+};
 
 describe('translate response to ccd version', () => {
   let claim: Claim;
@@ -56,10 +52,19 @@ describe('translate response to ccd version', () => {
     claim = new Claim();
   });
 
-  it('should translate payment option to ccd', () => {
+  it('should translate payment option for full admit claim to ccd', () => {
     //Given
-    claim.partialAdmission = new PartialAdmission();
-    claim.partialAdmission.paymentIntention = new PaymentIntention();
+    const claim: Claim = createFullAdmitClaim();
+    claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+    //When
+    const ccdResponse = translateDraftResponseToCCD(claim, false);
+    //Then
+    expect(ccdResponse.defenceAdmitPartPaymentTimeRouteRequired).toBe(CCDPaymentOption.BY_SET_DATE);
+  });
+
+  it('should translate payment option to ccd for part admit', () => {
+    //Given
+    const claim = createPartAdmitClaim();
     claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
     claim.respondent1 = new Party();
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
@@ -69,61 +74,62 @@ describe('translate response to ccd version', () => {
     expect(ccdResponse.defenceAdmitPartPaymentTimeRouteRequired).toBe(CCDPaymentOption.BY_SET_DATE);
   });
 
-  describe('should translate repayment plan to ccd', () => {
-    it('when repayment frequency is set to once one month', () => {
-      //Given
-      getPartialAdmissionByRepaymentFrequency(claim, 'MONTH');
-      //When
-      const ccdResponse = translateDraftResponseToCCD(claim, false);
-      //Then
-      expect(ccdResponse.respondent1RepaymentPlan).not.toBeUndefined();
-      expect(ccdResponse.respondent1RepaymentPlan?.repaymentFrequency).toBe(CCDRepaymentPlanFrequency.ONCE_ONE_MONTH);
-      expect(ccdResponse.respondent1RepaymentPlan?.firstRepaymentDate).toBe(claim.partialAdmission.paymentIntention.repaymentPlan.firstRepaymentDate);
-      expect(ccdResponse.respondent1RepaymentPlan?.paymentAmount).toBe(claim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount);
-    });
+  it('should translate repayment plan for full admission to ccd', () => {
+    //Given
+    const claim = createFullAdmitClaim();
+    claim.fullAdmission.paymentIntention.repaymentPlan = {
+      paymentAmount: 100,
+      firstRepaymentDate: new Date(),
+      repaymentFrequency: 'MONTH',
+    };
+    //When
+    const ccdResponse = translateDraftResponseToCCD(claim, false);
+    //Then
+    expect(ccdResponse.respondent1RepaymentPlan).not.toBeUndefined();
+    expect(ccdResponse.respondent1RepaymentPlan?.repaymentFrequency).toBe(CCDRepaymentPlanFrequency.ONCE_ONE_MONTH);
+    expect(ccdResponse.respondent1RepaymentPlan?.firstRepaymentDate).toBe(claim.fullAdmission.paymentIntention.repaymentPlan.firstRepaymentDate);
+    expect(ccdResponse.respondent1RepaymentPlan?.paymentAmount).toBe(claim.fullAdmission.paymentIntention.repaymentPlan.paymentAmount);
+  });
 
-    it('frequency once four weeks', () => {
-      //Given
-      getPartialAdmissionByRepaymentFrequency(claim, 'FOUR_WEEKS');
-      //When
-      const ccdResponse = translateDraftResponseToCCD(claim, false);
-      //Then
-      expect(ccdResponse.respondent1RepaymentPlan).not.toBeUndefined();
-      expect(ccdResponse.respondent1RepaymentPlan?.repaymentFrequency).toBe(CCDRepaymentPlanFrequency.ONCE_FOUR_WEEKS);
-      expect(ccdResponse.respondent1RepaymentPlan?.firstRepaymentDate).toBe(claim.partialAdmission.paymentIntention.repaymentPlan.firstRepaymentDate);
-      expect(ccdResponse.respondent1RepaymentPlan?.paymentAmount).toBe(claim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount);
-    });
-
-    it('frequency once two week', () => {
-      //Given
-      getPartialAdmissionByRepaymentFrequency(claim, 'TWO_WEEKS');
-      //When
-      const ccdResponse = translateDraftResponseToCCD(claim, false);
-      //Then
-      expect(ccdResponse.respondent1RepaymentPlan).not.toBeUndefined();
-      expect(ccdResponse.respondent1RepaymentPlan?.repaymentFrequency).toBe(CCDRepaymentPlanFrequency.ONCE_TWO_WEEKS);
-      expect(ccdResponse.respondent1RepaymentPlan?.firstRepaymentDate).toBe(claim.partialAdmission.paymentIntention.repaymentPlan.firstRepaymentDate);
-      expect(ccdResponse.respondent1RepaymentPlan?.paymentAmount).toBe(claim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount);
-    });
+  it('should translate repayment plan for part admission to ccd', () => {
+    //Given
+    const claim = createPartAdmitClaim();
+    claim.partialAdmission.paymentIntention.repaymentPlan = {
+      paymentAmount: 100,
+      firstRepaymentDate: new Date(),
+      repaymentFrequency: 'MONTH',
+    };
+    //When
+    const ccdResponse = translateDraftResponseToCCD(claim, false);
+    //Then
+    expect(ccdResponse.respondent1RepaymentPlan).not.toBeUndefined();
+    expect(ccdResponse.respondent1RepaymentPlan?.repaymentFrequency).toBe(CCDRepaymentPlanFrequency.ONCE_ONE_MONTH);
+    expect(ccdResponse.respondent1RepaymentPlan?.firstRepaymentDate).toBe(claim.partialAdmission.paymentIntention.repaymentPlan.firstRepaymentDate);
+    expect(ccdResponse.respondent1RepaymentPlan?.paymentAmount).toBe(claim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount);
   });
 
   it('should translate response type to CCD', () => {
     //Given
-    claim.respondent1 = new Party();
-    claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
-    claim.fullAdmission = new FullAdmission();
-    claim.partialAdmission = new PartialAdmission();
-    claim.fullAdmission.paymentIntention = new PaymentIntention();
-    claim.partialAdmission.paymentIntention = new PaymentIntention();
+    const claim = createFullAdmitClaim();
     //When
     const ccdResponse = translateDraftResponseToCCD(claim, false);
     //Then
     expect(ccdResponse.respondent1ClaimResponseTypeForSpec).toBe(ResponseType.FULL_ADMISSION);
   });
-  it('should translate payment date to CCD', () => {
+
+  it('should translate payment date to CCD for full admission', () => {
     //Given
-    claim.partialAdmission = new PartialAdmission();
-    claim.partialAdmission.paymentIntention = new PaymentIntention();
+    const claim = createFullAdmitClaim();
+    claim.fullAdmission.paymentIntention.paymentDate = new Date();
+    //When
+    const ccdResponse = translateDraftResponseToCCD(claim, false);
+    //Then
+    expect(ccdResponse.respondToClaimAdmitPartLRspec?.whenWillThisAmountBePaid).toBe(claim.fullAdmission.paymentIntention.paymentDate);
+  });
+
+  it('should translate payment date to CCD for partial admission', () => {
+    //Given
+    const claim = createPartAdmitClaim();
     claim.partialAdmission.paymentIntention.paymentDate = new Date();
     //When
     const ccdResponse = translateDraftResponseToCCD(claim, false);
@@ -133,9 +139,16 @@ describe('translate response to ccd version', () => {
 
   it('should translate mediation option to CCD', () => {
     //Given
-    getPartialAdmissionWithMediation(claim);
-    claim.partialAdmission = new PartialAdmission();
-    claim.partialAdmission.paymentIntention = new PaymentIntention();
+    const claim = createFullAdmitClaim();
+    claim.mediation = {
+      canWeUse: undefined,
+      mediationDisagreement: undefined,
+      companyTelephoneNumber: {
+        mediationContactPerson: 'test',
+        mediationPhoneNumber: '123',
+      },
+    };
+
     //When
     const ccdResponse = translateDraftResponseToCCD(claim, false);
     //Then
@@ -144,10 +157,17 @@ describe('translate response to ccd version', () => {
 
   it('should translate address changed to ccd', ()=> {
     //Given
+    const claim = createFullAdmitClaim();
+    claim.mediation = {
+      canWeUse: undefined,
+      mediationDisagreement: undefined,
+      companyTelephoneNumber: {
+        mediationContactPerson : 'test',
+        mediationPhoneNumber : '123',
+      },
+    };
     const addressChanged = true;
-    getPartialAdmissionWithMediation(claim);
-    claim.partialAdmission = new PartialAdmission();
-    claim.partialAdmission.paymentIntention = new PaymentIntention();
+
     //When
     const ccdResponse = translateDraftResponseToCCD(claim, addressChanged);
     //Then
@@ -156,10 +176,16 @@ describe('translate response to ccd version', () => {
 
   it('should translate address has not changed to ccd', ()=>{
     //Given
+    const claim = createFullAdmitClaim();
+    claim.mediation = {
+      canWeUse: undefined,
+      mediationDisagreement: undefined,
+      companyTelephoneNumber: {
+        mediationContactPerson : 'test',
+        mediationPhoneNumber : '123',
+      },
+    };
     const addressChanged = false;
-    getPartialAdmissionWithMediation(claim);
-    claim.partialAdmission = new PartialAdmission();
-    claim.partialAdmission.paymentIntention = new PaymentIntention();
     //When
     const ccdResponse = translateDraftResponseToCCD(claim, addressChanged);
     //Then
