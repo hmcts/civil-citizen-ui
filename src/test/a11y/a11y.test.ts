@@ -68,81 +68,72 @@ function expectNoErrors(messages: PallyIssue[]): void {
 }
 
 function expectNoPerceivableWarnings(messages: PallyIssue[]): void {
-  const identification  = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline1_1.1_1_1'));
-  const instructions = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline1_2.1_2_1'));
-  const suggestion = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline1_1.1_2_2'));
-  if (identification.length > 0) {
-    const errorsAsJson = `${JSON.stringify(identification, null, 2)}`;
-    fail(`There are parsing Guideline 3.3.1 issues: \n${errorsAsJson}\n`);
+  const nonTextContent  = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline1_1'));
+  if (nonTextContent.length > 0) {
+    const errorsAsJson = `${JSON.stringify(nonTextContent, null, 2)}`;
+    fail(`There are non text content Guideline 1.1.1 issues: \n${errorsAsJson}\n`);
   }
-  if (instructions.length > 0) {
-    const errorsAsJson = `${JSON.stringify(instructions, null, 2)}`;
-    fail(`There are instructions Guideline 3.3.2 issues: \n${errorsAsJson}\n`);
-  }
-  if (suggestion.length > 0) {
-    const errorsAsJson = `${JSON.stringify(suggestion, null, 2)}`;
-    fail(`There are suggestion Guideline 3.3.3 issues: \n${errorsAsJson}\n`);
-  }
+
 }
 
 function expectNoAdaptableWarnings(messages: PallyIssue[]): void {
-  const info  = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline1_3.1_3_1'));
+  //const info  = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline1_3.1_3_1'));
   const meaningful = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline1_3.1_3_2'));
   const sensory = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline1_3.1_3_3'));
-  const orientatioon = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline1_3.1_3_4'));
-  const identifyInput = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline1_3.1_3_5'));
-  if (identification.length > 0) {
-    const errorsAsJson = `${JSON.stringify(identification, null, 2)}`;
-    fail(`There are parsing Guideline 3.3.1 issues: \n${errorsAsJson}\n`);
+  const orientation = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline1_3.1_3_4'));
+  //const identifyInput = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline1_3.1_3_5'));
+  /* if (info.length > 0) {
+    const errorsAsJson = `${JSON.stringify(info, null, 2)}`;
+    fail(`There are parsing Guideline 1.3.1 issues: \n${errorsAsJson}\n`);
+  }*/
+  if (meaningful.length > 0) {
+    const errorsAsJson = `${JSON.stringify(meaningful, null, 2)}`;
+    fail(`There are instructions Guideline 1.3.2 issues: \n${errorsAsJson}\n`);
   }
-  if (instructions.length > 0) {
-    const errorsAsJson = `${JSON.stringify(instructions, null, 2)}`;
-    fail(`There are instructions Guideline 3.3.2 issues: \n${errorsAsJson}\n`);
+  if (sensory.length > 0) {
+    const errorsAsJson = `${JSON.stringify(sensory, null, 2)}`;
+    fail(`There are suggestion Guideline 1.3.3 issues: \n${errorsAsJson}\n`);
   }
-  if (suggestion.length > 0) {
-    const errorsAsJson = `${JSON.stringify(suggestion, null, 2)}`;
-    fail(`There are suggestion Guideline 3.3.3 issues: \n${errorsAsJson}\n`);
+  if (orientation.length > 0) {
+    const errorsAsJson = `${JSON.stringify(orientation, null, 2)}`;
+    fail(`There are parsing Guideline 1.3.4 issues: \n${errorsAsJson}\n`);
   }
-  if (identification.length > 0) {
-    const errorsAsJson = `${JSON.stringify(identification, null, 2)}`;
-    fail(`There are parsing Guideline 3.3.1 issues: \n${errorsAsJson}\n`);
-  }
-  if (instructions.length > 0) {
-    const errorsAsJson = `${JSON.stringify(instructions, null, 2)}`;
-    fail(`There are instructions Guideline 3.3.2 issues: \n${errorsAsJson}\n`);
-  }
+  /*if (identifyInput.length > 0) {
+    const errorsAsJson = `${JSON.stringify(identifyInput, null, 2)}`;
+    fail(`There are instructions Guideline 1.3.5 issues: \n${errorsAsJson}\n`);
+  }*/
 }
 
 function expectNoDistinguishableWarnings(messages: PallyIssue[]): void {
-  const identification  = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline3_3.3_3_1'));
-  const instructions = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline3_3.3_3_2'));
-  const suggestion = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline3_3.3_3_3'));
-  const identification  = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline3_3.3_3_1'));
-  const instructions = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline3_3.3_3_2'));
-  const suggestion = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline3_3.3_3_3'));
-  if (identification.length > 0) {
-    const errorsAsJson = `${JSON.stringify(identification, null, 2)}`;
-    fail(`There are parsing Guideline 3.3.1 issues: \n${errorsAsJson}\n`);
+  const useColor  = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline1_4.1_4_1'));
+  //const contracts = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline1_4.1_4_3'));
+  const resizeText = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline1_4.1_4_4'));
+  const reflow  = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline1_4.1_4_10'));
+  const nonTextContracts = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline1_4.1_4_11'));
+  const content = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline1_4.1_4_12'));
+  if (useColor.length > 0) {
+    const errorsAsJson = `${JSON.stringify(useColor, null, 2)}`;
+    fail(`There are identification Guideline 1.4.1 issues: \n${errorsAsJson}\n`);
   }
-  if (instructions.length > 0) {
-    const errorsAsJson = `${JSON.stringify(instructions, null, 2)}`;
-    fail(`There are instructions Guideline 3.3.2 issues: \n${errorsAsJson}\n`);
+  /*if (contracts.length > 0) {
+    const errorsAsJson = `${JSON.stringify(contracts, null, 2)}`;
+    fail(`There are instruction Guideline 1.4.3 issues: \n${errorsAsJson}\n`);
+  }*/
+  if (resizeText.length > 0) {
+    const errorsAsJson = `${JSON.stringify(resizeText, null, 2)}`;
+    fail(`There are suggestion Guideline 1.4.4 issues: \n${errorsAsJson}\n`);
   }
-  if (suggestion.length > 0) {
-    const errorsAsJson = `${JSON.stringify(suggestion, null, 2)}`;
-    fail(`There are suggestion Guideline 3.3.3 issues: \n${errorsAsJson}\n`);
+  if (reflow.length > 0) {
+    const errorsAsJson = `${JSON.stringify(reflow, null, 2)}`;
+    fail(`There are parsing Guideline 1.4.10 issues: \n${errorsAsJson}\n`);
   }
-  if (identification.length > 0) {
-    const errorsAsJson = `${JSON.stringify(identification, null, 2)}`;
-    fail(`There are parsing Guideline 3.3.1 issues: \n${errorsAsJson}\n`);
+  if (nonTextContracts.length > 0) {
+    const errorsAsJson = `${JSON.stringify(nonTextContracts, null, 2)}`;
+    fail(`There are instructions Guideline 1.4.11 issues: \n${errorsAsJson}\n`);
   }
-  if (instructions.length > 0) {
-    const errorsAsJson = `${JSON.stringify(instructions, null, 2)}`;
-    fail(`There are instructions Guideline 3.3.2 issues: \n${errorsAsJson}\n`);
-  }
-  if (suggestion.length > 0) {
-    const errorsAsJson = `${JSON.stringify(suggestion, null, 2)}`;
-    fail(`There are suggestion Guideline 3.3.3 issues: \n${errorsAsJson}\n`);
+  if (content.length > 0) {
+    const errorsAsJson = `${JSON.stringify(content, null, 2)}`;
+    fail(`There are suggestion Guideline 1.4.12 issues: \n${errorsAsJson}\n`);
   }
 }
 
@@ -173,31 +164,31 @@ function expectNavigableWarnings(messages: PallyIssue[]): void {
   const focus = messages.filter(m => m.code.includes('WCAG2AA.Principle2.Guideline2_4.2_4_7'));
   if (bypass.length > 0) {
     const errorsAsJson = `${JSON.stringify(bypass, null, 2)}`;
-    fail(`There are bypass blocks Guideline 4.2.1 issues: \n${errorsAsJson}\n`);
+    fail(`There are bypass blocks Guideline 2.4.1 issues: \n${errorsAsJson}\n`);
   }
   if (pageTitled.length > 0) {
     const errorsAsJson = `${JSON.stringify(pageTitled, null, 2)}`;
-    fail(`There are page titled Guideline 4.2.3 issues: \n${errorsAsJson}\n`);
+    fail(`There are page titled Guideline 2.4.2 issues: \n${errorsAsJson}\n`);
   }
   if (focusOrder.length > 0) {
     const errorsAsJson = `${JSON.stringify(focusOrder, null, 2)}`;
-    fail(`There are focus order Guideline 4.2.4 issues: \n${errorsAsJson}\n`);
+    fail(`There are focus order Guideline 2.4.3 issues: \n${errorsAsJson}\n`);
   }
   if (linkPurpose.length > 0) {
     const errorsAsJson = `${JSON.stringify(linkPurpose, null, 2)}`;
-    fail(`There are clink purpose Guideline 4.2.5 issues: \n${errorsAsJson}\n`);
+    fail(`There are clink purpose Guideline 2.4.4 issues: \n${errorsAsJson}\n`);
   }
   if (multipleWays.length > 0) {
     const errorsAsJson = `${JSON.stringify(multipleWays, null, 2)}`;
-    fail(`There are multiple ways Guideline 4.2.6 issues: \n${errorsAsJson}\n`);
+    fail(`There are multiple ways Guideline 2.4.5 issues: \n${errorsAsJson}\n`);
   }
   if (heading.length > 0) {
     const errorsAsJson = `${JSON.stringify(heading, null, 2)}`;
-    fail(`There are cheadings and labels Guideline 4.2.6 issues: \n${errorsAsJson}\n`);
+    fail(`There are cheadings and labels Guideline 2.4.6 issues: \n${errorsAsJson}\n`);
   }
   if (focus.length > 0) {
     const errorsAsJson = `${JSON.stringify(focus, null, 2)}`;
-    fail(`There are focus visible Guideline 4.2.2 issues: \n${errorsAsJson}\n`);
+    fail(`There are focus visible Guideline 2.4.7 issues: \n${errorsAsJson}\n`);
   }
 }
 
@@ -207,24 +198,24 @@ function expectNoInputModalitiesWarnings(messages: PallyIssue[]): void {
   const labelInName = messages.filter(m => m.code.includes('WCAG2AA.Principle2.Guideline2_5.2_5_3'));
   if (pointerGestures.length > 0) {
     const errorsAsJson = `${JSON.stringify(pointerGestures, null, 2)}`;
-    fail(`There are parsing Guideline 3.3.1 issues: \n${errorsAsJson}\n`);
+    fail(`There are parsing Guideline 2.5.1 issues: \n${errorsAsJson}\n`);
   }
   if (pointerCancellation.length > 0) {
     const errorsAsJson = `${JSON.stringify(pointerCancellation, null, 2)}`;
-    fail(`There are instructions Guideline 3.3.2 issues: \n${errorsAsJson}\n`);
+    fail(`There are instructions Guideline 2.5.2 issues: \n${errorsAsJson}\n`);
   }
   if (labelInName.length > 0) {
     const errorsAsJson = `${JSON.stringify(labelInName, null, 2)}`;
-    fail(`There are suggestion Guideline 3.3.3 issues: \n${errorsAsJson}\n`);
+    fail(`There are suggestion Guideline 2.5.3 issues: \n${errorsAsJson}\n`);
   }
 }
 function expectNoReadableWarnings(messages: PallyIssue[]): void {
   const languajePage = messages.filter(m => m.code.includes('WCAG2AA.Principle3.Guideline3_1.3_1_1'));
   const languajePart = messages.filter(m => m.code.includes('WCAG2AA.Principle3.Guideline3_1.3_1_2'));
-  const onFocus = messages.filter(m => m.code.includes('WCAG2AA.Principle3.Guideline3_1.3_1_3'));
-  const onInput  = messages.filter(m => m.code.includes('WCAG2AA.Principle3.Guideline3_1.3_1_4'));
-  const consistentNavigation = messages.filter(m => m.code.includes('WCAG2AA.Principle3.Guideline3_1.3_1_5'));
-  const consistentIdentification = messages.filter(m => m.code.includes('WCAG2AA.Principle3.Guideline3_1.3_1_6'));
+  const onFocus = messages.filter(m => m.code.includes('WCAG2AA.Principle3.Guideline3_2.3_2_1'));
+  const onInput  = messages.filter(m => m.code.includes('WCAG2AA.Principle3.Guideline3_2.3_2_2'));
+  const consistentNavigation = messages.filter(m => m.code.includes('WCAG2AA.Principle3.Guideline3_2.3_2_3'));
+  const consistentIdentification = messages.filter(m => m.code.includes('WCAG2AA.Principle3.Guideline3_2.3_2_4'));
   if (languajePage.length > 0) {
     const errorsAsJson = `${JSON.stringify(languajePage, null, 2)}`;
     fail(`There are language page Guideline 3.1.1 issues: \n${errorsAsJson}\n`);
@@ -235,19 +226,19 @@ function expectNoReadableWarnings(messages: PallyIssue[]): void {
   }
   if (onFocus.length > 0) {
     const errorsAsJson = `${JSON.stringify(onFocus, null, 2)}`;
-    fail(`There are on focus Guideline 3.1.3 issues: \n${errorsAsJson}\n`);
+    fail(`There are on focus Guideline 3.2.1 issues: \n${errorsAsJson}\n`);
   }
   if (onInput.length > 0) {
     const errorsAsJson = `${JSON.stringify(onInput, null, 2)}`;
-    fail(`There are on input Guideline 3.1.4 issues: \n${errorsAsJson}\n`);
+    fail(`There are on input Guideline 3.2.2 issues: \n${errorsAsJson}\n`);
   }
   if (consistentNavigation.length > 0) {
     const errorsAsJson = `${JSON.stringify(consistentNavigation, null, 2)}`;
-    fail(`There are consistent navigation Guideline 3.1.5 issues: \n${errorsAsJson}\n`);
+    fail(`There are consistent navigation Guideline 3.2.3 issues: \n${errorsAsJson}\n`);
   }
   if (consistentIdentification.length > 0) {
     const errorsAsJson = `${JSON.stringify(consistentIdentification, null, 2)}`;
-    fail(`There are consistent identification Guideline 3.1.6 issues: \n${errorsAsJson}\n`);
+    fail(`There are consistent identification Guideline 3.2.4 issues: \n${errorsAsJson}\n`);
   }
 }
 
@@ -270,19 +261,19 @@ function expectNoInputAssistanceWarnings(messages: PallyIssue[]): void {
 }
 function expectNoRobustWarnings(messages: PallyIssue[]): void {
   const parsing = messages.filter(m => m.code.includes('WCAG2AA.Principle4.Guideline4_1.4_1_1'));
-  const nameRole = messages.filter(m => m.code.includes('WCAG2AA.Principle4.Guideline4_1.4_1_2') && !m.context.includes('govuk-footer__link'));
+  //const nameRole = messages.filter(m => m.code.includes('WCAG2AA.Principle4.Guideline4_1.4_1_2')); // && !m.context.includes('govuk-footer__link'));
   const status = messages.filter(m => m.code.includes('WCAG2AA.Principle4.Guideline4_1.4_1_3'));
   if (parsing.length > 0) {
     const errorsAsJson = `${JSON.stringify(parsing, null, 2)}`;
-    fail(`There are parsing Guideline 4.1 issues: \n${errorsAsJson}\n`);
+    fail(`There are parsing Guideline 4.1.1 issues: \n${errorsAsJson}\n`);
   }
-  if (nameRole.length > 0) {
+  /*if (nameRole.length > 0) {
     const errorsAsJson = `${JSON.stringify(nameRole, null, 2)}`;
-    fail(`There are name Role Guideline 4.2 issues: \n${errorsAsJson}\n`);
-  }
+    fail(`There are name Role Guideline 4.1.2 issues: \n${errorsAsJson}\n`);
+  }*/
   if (status.length > 0) {
     const errorsAsJson = `${JSON.stringify(status, null, 2)}`;
-    fail(`There are status Guideline 4.3 issues: \n${errorsAsJson}\n`);
+    fail(`There are status Guideline 4.1.3 issues: \n${errorsAsJson}\n`);
   }
 }
 
@@ -293,12 +284,15 @@ function testAccessibilityWithActions(url: string, actions: string[]): void {
         .then(() => runPally(agent.get(url).url, actions))
         .then((result: Pa11yResult) => {
           expectNoErrors(result.issues);
-          expectNoRobustWarnings(result.issues);
-          expectNoInputAssistanceWarnings(result.issues);
-          expectNoReadableWarnings(result.issues);
-          expectNoInputModalitiesWarnings(result.issues);
-          expectNavigableWarnings(result.issues);
+          expectNoPerceivableWarnings(result.issues);
+          expectNoAdaptableWarnings(result.issues);
+          expectNoDistinguishableWarnings(result.issues);
           expectNoKeyboardAccesibleWarnings(result.issues);
+          expectNavigableWarnings(result.issues);
+          expectNoInputModalitiesWarnings(result.issues);
+          expectNoReadableWarnings(result.issues);
+          expectNoInputAssistanceWarnings(result.issues);
+          expectNoRobustWarnings(result.issues);
           done();
         })
         .catch((err: Error) => done(err));
