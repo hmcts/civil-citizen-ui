@@ -95,17 +95,7 @@ export class UnavailableDatePeriod {
 }
 
 interface UnavailableDatePeriodArgs extends ValidationArguments {
-  object: {
-    type: UnavailableDateType,
-    from: Date,
-    startDay: number,
-    startMonth: number,
-    startYear: number,
-    until: Date,
-    endDay: number,
-    endMonth: number,
-    endYear: number,
-  }
+  object: UnavailableDatePeriod
 }
 
 function generateErrorMessage(args: UnavailableDatePeriodArgs): string {
