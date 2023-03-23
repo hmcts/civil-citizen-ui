@@ -87,6 +87,7 @@ const partyCompanyCCD: CCDParty = {
   soleTraderLastName: undefined,
   soleTraderTitle: undefined,
   soleTraderTradingAs: undefined,
+  partyName: companyName,
   type: PartyType.COMPANY,
 };
 

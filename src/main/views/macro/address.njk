@@ -5,12 +5,17 @@
   {% set textInputLabel = t('COMMON.ADDRESS_FORM.BUILDING_AND_STREET') %}
   {% set citizenAddress = party.model.primaryAddress %}
   {% set citizenCorrespondenceAddress = party.model.correspondenceAddress %}
-  {% set addressLine1Error = party.errorFor('primaryAddress[addressLine1]') %}
-  {% set govukFormGroupError = 'govuk-form-group govuk-form-group--error' if addressLine1Error else '' %}
-  <p class={{ "govuk-fieldset__legend--m" if addressType == 'primary' else "govuk-visually-hidden" }}>
+  {% if params.addressType === 'primaryAddress' %}
+    {% set addresHasErrors = party.hasFieldError('primaryAddress') %}
+  {% endif %}
+  {% if params.addressType === 'correspondenceAddress' %}
+    {% set addresHasErrors = party.hasFieldError('correspondenceAddress') %}
+  {% endif %}
+  {% set govukFormGroupError = 'govuk-form-group govuk-form-group--error' if addresHasErrors else '' %}
+  <p class={{ "govuk-fieldset__legend--m" if addressType == 'primaryAddress' else "govuk-visually-hidden" }}>
     {{ addressTitle }}
   </p>
-  {% if addressType == 'primary' and addressTitle.length %}
+  {% if addressType == 'primaryAddress' and addressTitle.length %}
     <p class="govuk-body govuk-!-padding-top-4">{{ fieldSetText }}</p>
   {% endif %}
   <div class="{{ govukFormGroupError }}">
@@ -19,32 +24,32 @@
       html: textInputLabel + ' <span class="govuk-visually-hidden">line 1 of 3</span>'
     },
     classes: "govuk-input--width-20",
-    id: addressType + "addressLine1",
+    id: addressType + "[addressLine1]",
     name: "addressLine1",
     autocomplete: addressType + "AddressLine-1",
-    value: citizenAddress.addressLine1 if addressType == 'primary' else citizenCorrespondenceAddress.addressLine1,
-    errorMessage: { text: t(party.errorFor('primaryAddress[addressLine1]')) } if (addressType == 'primary' and party.errorFor('primaryAddress[addressLine1]'))
-      else ({ text: t(party.errorFor('correspondenceAddress[addressLine1]')) } if (addressType == 'correspondence' and party.errorFor('correspondenceAddress[addressLine1]')))
+    value: citizenAddress.addressLine1 if addressType == 'primaryAddress' else citizenCorrespondenceAddress.addressLine1,
+    errorMessage: { text: t(party.errorFor('primaryAddress[addressLine1]')) } if (addressType == 'primaryAddress' and party.errorFor('primaryAddress[addressLine1]'))
+      else ({ text: t(party.errorFor('correspondenceAddress[addressLine1]')) } if (addressType == 'correspondenceAddress' and party.errorFor('correspondenceAddress[addressLine1]')))
   }) }}
     {{ govukInput({
     label: {
       html: '<span class="govuk-visually-hidden">' + textInputLabel + ' line 2 of 3</span>'
     },
     classes: "govuk-input--width-20",
-    id: addressType + "addressLine2",
+    id: addressType + "[addressLine2]",
     name: "addressLine2",
     autocomplete: addressType + "AddressLine-2",
-    value: citizenAddress.addressLine2 if addressType == 'primary' else citizenCorrespondenceAddress.addressLine2
+    value: citizenAddress.addressLine2 if addressType == 'primaryAddress' else citizenCorrespondenceAddress.addressLine2
   }) }}
     {{ govukInput({
     label: {
       html: '<span class="govuk-visually-hidden">' + textInputLabel + ' <span class="govuk-visually-hidden">line 3 of 3</span>'
     },
     classes: "govuk-input--width-20",
-    id: addressType + "addressLine3",
+    id: addressType + "[addressLine3]",
     name: "addressLine3",
     autocomplete: addressType + "AddressLine-3",
-    value: citizenAddress.addressLine3 if addressType == 'primary' else citizenCorrespondenceAddress.addressLine3
+    value: citizenAddress.addressLine3 if addressType == 'primaryAddress' else citizenCorrespondenceAddress.addressLine3
   }) }}
   </div>
   {{ govukInput({
@@ -52,23 +57,23 @@
       text: t('COMMON.ADDRESS_FORM.TOWN_OR_CITY')
     },
     classes: "govuk-input--width-20",
-    id: addressType + "city",
+    id: addressType + "[city]",
     name: "city",
     autocomplete: addressType + "address-level2",
-     value: citizenAddress.city if addressType == 'primary' else citizenCorrespondenceAddress.city,
-    errorMessage: { text: t(party.errorFor('primaryAddress[city]')) } if (addressType == 'primary' and party.errorFor('primaryAddress[city]'))
-    else ({ text: t(party.errorFor('correspondenceAddress[city]')) } if (addressType == 'correspondence' and party.errorFor('correspondenceAddress[city]')))
+     value: citizenAddress.city if addressType == 'primaryAddress' else citizenCorrespondenceAddress.city,
+    errorMessage: { text: t(party.errorFor('primaryAddress[city]')) } if (addressType == 'primaryAddress' and party.errorFor('primaryAddress[city]'))
+    else ({ text: t(party.errorFor('correspondenceAddress[city]')) } if (addressType == 'correspondenceAddress' and party.errorFor('correspondenceAddress[city]')))
   }) }}
   {{ govukInput({
     label: {
       text: t('COMMON.ADDRESS_FORM.POSTCODE')
     },
     classes: "govuk-input--width-10",
-    id: addressType + "postCode",
+    id: addressType + "[postCode]",
     name: "postCode",
     autocomplete: addressType + "postal-code",
-    value: citizenAddress.postCode if addressType == 'primary' else citizenCorrespondenceAddress.postCode,
-    errorMessage: { text: t(party.errorFor('primaryAddress[postCode]')) } if (addressType == 'primary' and party.errorFor('primaryAddress[postCode]'))
-    else ({ text: t(party.errorFor('correspondenceAddress[postCode]')) } if (addressType == 'correspondence' and party.errorFor('correspondenceAddress[postCode]')))
+    value: citizenAddress.postCode if addressType == 'primaryAddress' else citizenCorrespondenceAddress.postCode,
+    errorMessage: { text: t(party.errorFor('primaryAddress[postCode]')) } if (addressType == 'primaryAddress' and party.errorFor('primaryAddress[postCode]'))
+    else ({ text: t(party.errorFor('correspondenceAddress[postCode]')) } if (addressType == 'correspondenceAddress' and party.errorFor('correspondenceAddress[postCode]')))
   }) }}
 {% endmacro %}
