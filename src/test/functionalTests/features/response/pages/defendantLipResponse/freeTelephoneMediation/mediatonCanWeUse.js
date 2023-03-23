@@ -1,13 +1,13 @@
 
 const I = actor();
 
-class MediaTonCanWeUse {
+class MediationCanWeUse {
 
-  enterPhoneNumber() {    
+  enterPhoneNumber() {
     I.see('Enter a phone number', 'h1');
     I.fillField('input[id="telephoneNumber"]', '02088908876');
     I.click('Save and continue');
   }
 }
 
-module.exports = MediaTonCanWeUse;
+module.exports = MediationCanWeUse;

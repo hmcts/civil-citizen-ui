@@ -1,6 +1,5 @@
 const config =  require('../../config');
-const  ResponseSteps  =  require('../features/response/steps/prepareYourResponseSteps');
-const  CommonSteps  =  require('../features/response/steps/commonSteps');
+const  ResponseSteps  =  require('../features/response/steps/lipDefendantResponseSteps');
 const  LoginSteps =  require('../features/home/steps/login');
 
 const partAdmit = 'partAdmit';
@@ -10,6 +9,7 @@ const repaymentPlan = 'repaymentPlan';
 const dontWantMoreTime = 'dontWantMoreTime';
 // eslint-disable-next-line no-unused-vars
 const yesIWantMoretime = 'yesIWantMoretime';
+const claimType = 'smallClaims';
 
 let claimRef;
 
@@ -26,9 +26,9 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Response with PartAdmit and Immediate payment @citizenUI @partAdmit', () => {
-  CommonSteps.EnterPersonalDetails(claimRef);
-  CommonSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
+Scenario('Response with PartAdmit and Immediate payment @citizenUI @partAdmit1', () => {
+  ResponseSteps.EnterPersonalDetails(claimRef);
+  ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
   ResponseSteps.SelectPartAdmitAlreadyPaid('yes');
   ResponseSteps.EnterPaymentOption(claimRef, immediatePayment);
@@ -37,17 +37,17 @@ Scenario('Response with PartAdmit and Immediate payment @citizenUI @partAdmit', 
   ResponseSteps.AddYourTimeLineEvents();
   ResponseSteps.EnterYourEvidenceDetails();
   ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
-  ResponseSteps.AddMandatoryPhoneNumber();
+  ResponseSteps.
   ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
 });
 
 Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit', () => {
-  CommonSteps.EnterPersonalDetails(claimRef);
+  ResponseSteps.EnterPersonalDetails(claimRef);
   ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
   ResponseSteps.SelectPartAdmitAlreadyPaid('yes');
   ResponseSteps.EnterPaymentOption(claimRef, bySetDate);
   ResponseSteps.EnterDateToPayOn();
-  CommonSteps.EnterFinancialDetails(claimRef);
+  ResponseSteps.EnterFinancialDetails(claimRef);
   ResponseSteps.EnterHowMuchYouHavePaid(claimRef, 500);
   ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef);
   ResponseSteps.AddYourTimeLineEvents();
@@ -61,17 +61,17 @@ Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit', () =
 });
 
 Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit', () => {
-  CommonSteps.EnterPersonalDetails(claimRef);
+  ResponseSteps.EnterPersonalDetails(claimRef);
   ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
   ResponseSteps.SelectPartAdmitAlreadyPaid('yes');
   ResponseSteps.EnterPaymentOption(claimRef, repaymentPlan);
-  CommonSteps.EnterFinancialDetails(claimRef);
+  ResponseSteps.EnterFinancialDetails(claimRef);
   ResponseSteps.EnterRepaymentPlan(claimRef);
   ResponseSteps.EnterHowMuchYouHavePaid(claimRef, 500);
   ResponseSteps.EnterYourOptions(claimRef, dontWantMoreTime);
   ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef);
   ResponseSteps.AddYourTimeLineEvents();
   ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
-  ResponseSteps.AddMandatoryPhoneNumber();    
+  ResponseSteps.AddMandatoryPhoneNumber();
   ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
 });
