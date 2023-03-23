@@ -6,11 +6,15 @@ import {toCUIBoolean} from 'services/translation/convertToCUI/convertToCUIYesNo'
 
 export const toCUIEmployment = (employmentDeclared: YesNoUpperCamelCase, employmentTypeList : string[]): Employment => {
   if (!employmentDeclared) return undefined;
+  let cuiEmploymentTypeList = undefined;
+  if (employmentTypeList?.length) {
+    cuiEmploymentTypeList = employmentTypeList.map((employmentType: CCDEmploymentOption) => {
+      return toCUIEmploymentOption(employmentType);
+    });
+  }
   return {
     declared: toCUIBoolean(employmentDeclared),
-    employmentType: employmentTypeList.map((employmentType: CCDEmploymentOption) => {
-      return toCUIEmploymentOption(employmentType);
-    }),
+    employmentType: cuiEmploymentTypeList,
   };
 };
 
