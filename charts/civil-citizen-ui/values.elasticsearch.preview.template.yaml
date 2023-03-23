@@ -4,12 +4,14 @@ ccd:
       enabled: true
   ccd-data-store-api:
     java:
+      releaseNameOverride: ${SERVICE_NAME}-ccd-data-store-api
       environment:
         ELASTIC_SEARCH_ENABLED: true
         ELASTIC_SEARCH_HOSTS: ${SERVICE_NAME}-es-master:9200
         ELASTIC_SEARCH_DATA_NODES_HOSTS: http://${SERVICE_NAME}-es-master:9200
   ccd-definition-store-api:
     java:
+      releaseNameOverride: ${SERVICE_NAME}-ccd-definition-store-api
       environment:
         DEFINITION_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
         DEFINITION_STORE_IDAM_KEY: ${CCD_DEFINITION_STORE_S2S_SECRET}
@@ -28,8 +30,9 @@ ccd:
         cpu: "25m"
         memory: "512Mi"
   logstash:
-    image:
-      pullPolicy: Always
+    image: hmctspublic.azurecr.io/imported/logstash/logstash
+    imageTag: 8.5.1
+    imagePullPolicy: "IfNotPresent"
     resources:
       requests:
         cpu: "500m"

@@ -53,6 +53,7 @@ import {toCUIEvidence} from 'services/translation/convertToCUI/convertToCUIEvide
 import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIClaimDetails';
 import {analyseClaimType, claimType} from 'common/form/models/claimType';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
+import {toCUIMediation} from 'services/translation/convertToCUI/convertToCUIMediation';
 import {toCUIStatementOfMeans} from 'services/translation/convertToCUI/convertToCUIStatementOfMeans';
 
 export class Claim {
@@ -96,6 +97,7 @@ export class Claim {
     claim.evidence = toCUIEvidence(ccdClaim?.speclistYourEvidenceList);
     claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
     claim.respondent1 = toCUIParty(ccdClaim?.respondent1);
+    claim.mediation = toCUIMediation(ccdClaim?.respondent1LiPResponse?.respondent1MediationLiPResponse);
     claim.statementOfMeans = toCUIStatementOfMeans(ccdClaim);
     return claim;
   }
