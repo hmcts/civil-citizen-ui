@@ -116,6 +116,10 @@ civil-service:
               CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
               CREATE DATABASE "camunda" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
               CREATE DATABASE "role_assignment" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+              CREATE DATABASE "wa-task-management-api" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+              CREATE DATABASE "wa-case-event-handler" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+              CREATE DATABASE "wa_workflow_api" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+              CREATE DATABASE "cft_task_db" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       auth:
         username: ${POSTGRES_USER}
         password: ${POSTGRES_PASSWORD}
