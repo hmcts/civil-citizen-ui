@@ -5,6 +5,9 @@ import {WelshLanguageRequirements} from './welshLanguageRequirements/welshLangua
 import {Witnesses} from './witnesses/witnesses';
 import {Hearing} from './hearing/hearing';
 import {YesNo} from 'common/form/models/yesNo';
+import {getNumberOfUnavailableDays} from 'services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation';
+
+const UNAVAILABLE_DAYS_LIMIT = 30;
 
 export class DirectionQuestionnaire {
   defendantYourselfEvidence?: GenericYesNo;
@@ -111,12 +114,19 @@ export class DirectionQuestionnaire {
     return false;
   }
 
-  get isUnavailabilityDatesCompleted (): boolean {
-    // TODO : include completion logic for unavailable dates when `available-dates` page is developed
-    // TODO : update if condition for whyUnavailableForHearing when getCalculatedDays function return real value instead mock dat
-    if (!this.hearing?.whyUnavailableForHearing) {
-      return false;
+  get isUnavailabilityDatesCompleted(): boolean {
+    if (this.hearing?.cantAttendHearingInNext12Months?.option === YesNo.NO) {
+      return true;
     }
-    return true;
+    if (this.hearing?.cantAttendHearingInNext12Months?.option === YesNo.YES) {
+      const numberOfUnavailableDays = getNumberOfUnavailableDays(this.hearing?.unavailableDatesForHearing);
+      if (numberOfUnavailableDays > UNAVAILABLE_DAYS_LIMIT && !this.hearing?.whyUnavailableForHearing) {
+        return false;
+      }
+      if (numberOfUnavailableDays) {
+        return true;
+      }
+    }
+    return false;
   }
 }
