@@ -129,7 +129,7 @@ wa-message-cron-service:
     environment:
       WA_CASE_EVENT_HANDLER_SERVICE_URL: http://{{ .Release.Name }}-wa-case-event-handler
 
-wa-task-batch-initiation:
+wa-task-batch-service:
   job:
     releaseNameOverride: ${SERVICE_NAME}-wa-task-batch-initiation
     schedule: "*/5 * * * *"
