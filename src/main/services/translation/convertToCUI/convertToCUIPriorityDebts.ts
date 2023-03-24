@@ -2,8 +2,7 @@ import {PriorityDebts} from 'form/models/statementOfMeans/priorityDebts';
 import {CCDDebtDetails, CCDDebtDetailsList, CCDDebtType} from 'models/ccdResponse/ccdDebtDetails';
 import {Transaction} from 'form/models/statementOfMeans/expensesAndIncome/transaction';
 import {ExpenseType} from 'form/models/statementOfMeans/expensesAndIncome/expenseType';
-import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
-import {CCDPaymentFrequency} from 'models/ccdResponse/ccdPaymentFrequency';
+import {toCUIPaymentFrequency} from "services/translation/convertToCUI/convertToCUIPaymentFrequency";
 
 export const toCUIPriorityDebts = (priorityDebts: CCDDebtDetails): PriorityDebts => {
   if (!priorityDebts) return undefined;
@@ -40,21 +39,6 @@ const toCUIPriorityDebtsList = (priorityDebtsItems: CCDDebtDetailsList[]) : Prio
     }
   });
   return priorityDebts;
-};
-
-const toCUIPaymentFrequency = (schedule: CCDPaymentFrequency): TransactionSchedule => {
-  switch (schedule) {
-    case CCDPaymentFrequency.ONCE_ONE_WEEK:
-      return  TransactionSchedule.WEEK;
-    case CCDPaymentFrequency.ONCE_TWO_WEEKS:
-      return TransactionSchedule.TWO_WEEKS;
-    case CCDPaymentFrequency.ONCE_FOUR_WEEKS:
-      return TransactionSchedule.FOUR_WEEKS;
-    case CCDPaymentFrequency.ONCE_ONE_MONTH:
-      return TransactionSchedule.MONTH;
-    default:
-      return undefined;
-  }
 };
 
 const toCUIPriorityDebtsItem = (ccdPriorityDebts: CCDDebtDetailsList, expenseType: ExpenseType): Transaction => {

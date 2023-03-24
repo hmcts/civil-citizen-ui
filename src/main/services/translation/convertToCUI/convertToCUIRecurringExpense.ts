@@ -82,7 +82,7 @@ const toCUIRecurringExpenseItem = (ccdRecurringIncome: CCDRecurringExpenses, exp
 const toCUIOtherTransaction = (recurringExpenses: CCDRecurringExpenses) : TransactionSource => {
   return new TransactionSource({
     name: recurringExpenses?.value?.typeOtherDetails,
-    isIncome: true,
+    isIncome: false,
     amount:recurringExpenses?.value?.amount,
     schedule: toCUIPaymentFrequency(recurringExpenses?.value?.frequency),
     nameRequired: true,
