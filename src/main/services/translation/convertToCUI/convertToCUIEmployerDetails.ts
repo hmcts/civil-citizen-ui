@@ -4,10 +4,10 @@ import {CCDEmployerDetails, CCDEmployerDetailsList} from 'models/ccdResponse/ccd
 export const toCUIEmploymentDetails = (employers: CCDEmployerDetails): Employers => {
   if (!employers || !employers.employerDetails?.length) return undefined;
   const employersList =
-    employers?.employerDetails?.map((employer: CCDEmployerDetailsList) => {
+    employers.employerDetails?.map((employer: CCDEmployerDetailsList) => {
       return {
-        employerName: employer?.value?.employerName,
-        jobTitle: employer?.value?.jobTitle,
+        employerName: employer.value?.employerName,
+        jobTitle: employer.value?.jobTitle,
       };
     });
   return new Employers(employersList);

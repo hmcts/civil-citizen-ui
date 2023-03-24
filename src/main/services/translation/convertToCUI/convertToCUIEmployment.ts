@@ -24,7 +24,5 @@ const toCUIEmploymentOption = (option: CCDEmploymentOption): EmploymentCategory 
       return EmploymentCategory.SELF_EMPLOYED;
     case CCDEmploymentOption.EMPLOYED:
       return EmploymentCategory.EMPLOYED;
-    default:
-      return undefined;
   }
 };

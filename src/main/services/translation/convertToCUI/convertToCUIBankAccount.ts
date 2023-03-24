@@ -8,9 +8,9 @@ export const toCUIBankAccount = (ccdBankAccount: CCDBankAccount[]): CitizenBankA
   const citizenBankAccountList =
     ccdBankAccount.map((ccdBankAccount: CCDBankAccount) => {
       return {
-        typeOfAccount: toCUIBankAccountType(ccdBankAccount?.value?.accountType),
-        joint: toCUIBooleanString(ccdBankAccount?.value?.jointAccount),
-        balance: ccdBankAccount?.value?.balance?.toString(),
+        typeOfAccount: toCUIBankAccountType(ccdBankAccount.value?.accountType),
+        joint: toCUIBooleanString(ccdBankAccount.value?.jointAccount),
+        balance: ccdBankAccount.value?.balance?.toString(),
       };
     });
   return citizenBankAccountList;

@@ -6,16 +6,16 @@ import {toCUIBoolean} from 'services/translation/convertToCUI/convertToCUIYesNo'
 export const toCUIDependents = (partnerAndDependents: CCDPartnerAndDependent): Dependants => {
   if (!partnerAndDependents) return undefined;
   return new Dependants(
-    toCUIBoolean(partnerAndDependents?.haveAnyChildrenRequired),
-    toCUINumberOfChildren(partnerAndDependents?.howManyChildrenByAgeGroup),
+    toCUIBoolean(partnerAndDependents.haveAnyChildrenRequired),
+    toCUINumberOfChildren(partnerAndDependents.howManyChildrenByAgeGroup),
   );
 };
 
 const toCUINumberOfChildren = (childrenByAgeGroup : CCDChildrenByAgeGroup): NumberOfChildren => {
   if (!childrenByAgeGroup) return undefined;
   return new NumberOfChildren(
-    Number(childrenByAgeGroup?.numberOfUnderEleven),
-    Number(childrenByAgeGroup?.numberOfElevenToFifteen),
-    Number(childrenByAgeGroup?.numberOfSixteenToNineteen),
+    Number(childrenByAgeGroup.numberOfUnderEleven),
+    Number(childrenByAgeGroup.numberOfElevenToFifteen),
+    Number(childrenByAgeGroup.numberOfSixteenToNineteen),
   );
 };

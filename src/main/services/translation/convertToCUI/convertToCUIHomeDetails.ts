@@ -4,7 +4,7 @@ import {ResidenceType} from 'form/models/statementOfMeans/residence/residenceTyp
 
 export const toCUIHomeDetails = (ccdHomeDetails: CCDHomeDetails): Residence => {
   if (!ccdHomeDetails) return undefined;
-  return new Residence(toCUIResidenceType(ccdHomeDetails?.type), ccdHomeDetails?.typeOtherDetails);
+  return new Residence(toCUIResidenceType(ccdHomeDetails.type), ccdHomeDetails.typeOtherDetails);
 };
 
 const toCUIResidenceType = (type: CCDHomeType): ResidenceType=> {

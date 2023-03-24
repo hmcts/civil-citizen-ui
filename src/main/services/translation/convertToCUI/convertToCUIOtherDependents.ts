@@ -6,8 +6,8 @@ export const toCUIOtherDependents = (partnerAndDependents: CCDPartnerAndDependen
   if (!partnerAndDependents) return undefined;
 
   return new OtherDependants(
-    toCUIYesNo(partnerAndDependents?.supportedAnyoneFinancialRequired),
-    Number(partnerAndDependents?.supportPeopleNumber),
-    partnerAndDependents?.supportPeopleDetails,
+    toCUIYesNo(partnerAndDependents.supportedAnyoneFinancialRequired),
+    Number(partnerAndDependents.supportPeopleNumber),
+    partnerAndDependents.supportPeopleDetails,
   );
 };

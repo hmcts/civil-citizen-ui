@@ -6,9 +6,9 @@ export const toCUISelfEmploymentTaxPayment = (selfEmploymentDetails: CCDSelfEmpl
   if (!selfEmploymentDetails) return undefined;
 
   return {
-    owed: toCUIBoolean(selfEmploymentDetails?.isBehindOnTaxPayment),
-    amountOwed: selfEmploymentDetails?.amountOwed,
-    reason: selfEmploymentDetails?.reason,
+    owed: toCUIBoolean(selfEmploymentDetails.isBehindOnTaxPayment),
+    amountOwed: selfEmploymentDetails.amountOwed,
+    reason: selfEmploymentDetails.reason,
   };
 };
 

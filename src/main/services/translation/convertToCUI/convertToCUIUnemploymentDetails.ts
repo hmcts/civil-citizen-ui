@@ -11,9 +11,9 @@ import {OtherDetails} from 'form/models/statementOfMeans/unemployment/otherDetai
 export const toCUIUnemploymentDetails = (unemployment: CCDUnemploymentDetails): Unemployment => {
   if (!unemployment) return undefined;
   return new Unemployment(
-    toCUIUnemploymentCategory(unemployment?.unemployedComplexTypeRequired),
-    toCUILengthOfUnemployment(unemployment?.lengthOfUnemployment),
-    toCUIOtherDetails(unemployment?.otherUnemployment));
+    toCUIUnemploymentCategory(unemployment.unemployedComplexTypeRequired),
+    toCUILengthOfUnemployment(unemployment.lengthOfUnemployment),
+    toCUIOtherDetails(unemployment.otherUnemployment));
 };
 
 const toCUIUnemploymentCategory = (option: CCDUnemploymentType): UnemploymentCategory => {
@@ -32,7 +32,7 @@ const toCUIUnemploymentCategory = (option: CCDUnemploymentType): UnemploymentCat
 const toCUILengthOfUnemployment = (lengthOfUnemployment: CCDLengthOfUnemployment): UnemploymentDetails=> {
   if (!lengthOfUnemployment) return undefined;
   return new UnemploymentDetails(
-    lengthOfUnemployment?.numberOfYearsInUnemployment?.toString(), lengthOfUnemployment?.numberOfMonthsInUnemployment?.toString() );
+    lengthOfUnemployment.numberOfYearsInUnemployment?.toString(), lengthOfUnemployment.numberOfMonthsInUnemployment?.toString() );
 };
 
 const toCUIOtherDetails = (otherDetails: string): OtherDetails=> {

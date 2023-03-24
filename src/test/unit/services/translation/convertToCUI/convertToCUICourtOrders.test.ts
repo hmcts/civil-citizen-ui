@@ -74,4 +74,13 @@ describe('translate Court Orders to CUI model', () => {
     const expected = new CourtOrders(false, courtOrders);
     expect(output).toEqual(expected);
   });
+
+  it('should return data if Court Orders with value is undefined', () => {
+    //Given
+    //When
+    const output = toCUICourtOrders(YesNoUpperCamelCase.NO, undefined);
+    //Then
+    const expected = new CourtOrders(false, undefined);
+    expect(output).toEqual(expected);
+  });
 });

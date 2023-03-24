@@ -83,4 +83,25 @@ describe('translate Debts to CUI model', () => {
     );
     expect(output).toEqual(expected);
   });
+
+  it('should return data if Debts value is undefined', () => {
+    //Given
+    const input : CCDLoanCredit[] = [
+      {
+        id: '1',
+        value: undefined,
+      },
+    ];
+    //When
+    const output = toCUIDebts(YesNoUpperCamelCase.NO, input);
+    //Then
+    const debtItems : DebtItems[] = [
+      new DebtItems(undefined, undefined, undefined),
+    ];
+    const expected = new Debts(
+      YesNo.NO,
+      debtItems,
+    );
+    expect(output).toEqual(expected);
+  });
 });

@@ -76,13 +76,13 @@ describe('translate Home Details to CUI model', () => {
   it('should return data if Home Details is other', () => {
     //Given
     const input : CCDHomeDetails = {
-      type: CCDHomeType.ASSOCIATION_HOME,
+      type: CCDHomeType.OTHER,
       typeOtherDetails: 'test',
     };
     //When
     const output = toCUIHomeDetails(input);
     //Then
-    const expected = new Residence(ResidenceType.COUNCIL_OR_HOUSING_ASSN_HOME, 'test');
+    const expected = new Residence(ResidenceType.OTHER, 'test');
     expect(output).toEqual(expected);
   });
 });

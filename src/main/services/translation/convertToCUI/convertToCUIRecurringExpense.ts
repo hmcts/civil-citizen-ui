@@ -22,7 +22,7 @@ const toCUIRecurringExpenseItems = (recurringExpensesItems: CCDRecurringExpenses
   const regularExpenses = RegularExpenses.buildEmptyForm();
   const otherTransactionSources: TransactionSource[] = [];
   recurringExpensesItems.forEach((recurringExpenses: CCDRecurringExpenses) => {
-    switch(recurringExpenses?.value?.type) {
+    switch(recurringExpenses.value?.type) {
       case(CCDExpensesType.MORTGAGE):
         regularExpenses.mortgage = toCUIRecurringExpenseItem(recurringExpenses, ExpenseType.MORTGAGE);
         break;
@@ -70,11 +70,11 @@ const toCUIRecurringExpenseItems = (recurringExpensesItems: CCDRecurringExpenses
   return regularExpenses;
 };
 
-const toCUIRecurringExpenseItem = (ccdRecurringIncome: CCDRecurringExpenses, expenseType: ExpenseType): Transaction => {
+const toCUIRecurringExpenseItem = (ccdRecurringExpenses: CCDRecurringExpenses, expenseType: ExpenseType): Transaction => {
   return Transaction.buildPopulatedForm(
     expenseType,
-    ccdRecurringIncome.value?.amount?.toString(),
-    toCUIPaymentFrequency(ccdRecurringIncome?.value?.frequency),
+    ccdRecurringExpenses.value?.amount?.toString(),
+    toCUIPaymentFrequency(ccdRecurringExpenses?.value?.frequency),
     false,
   );
 };

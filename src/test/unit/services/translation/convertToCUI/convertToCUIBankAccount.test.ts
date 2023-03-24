@@ -61,6 +61,27 @@ describe('translate Bank Account to CUI model', () => {
     const input : CCDBankAccount[] = [
       {
         id: '1',
+        value: undefined,
+      },
+    ];
+    //When
+    const output = toCUIBankAccount(input);
+    //Then
+    const expected : CitizenBankAccount[] = [
+      {
+        typeOfAccount: undefined,
+        joint: undefined,
+        balance: undefined,
+      },
+    ];
+    expect(output).toEqual(expected);
+  });
+
+  it('should return undefined if Bank Account data value is undefined', () => {
+    //Given
+    const input : CCDBankAccount[] = [
+      {
+        id: '1',
         value: {
           accountType: undefined,
           jointAccount: undefined,
