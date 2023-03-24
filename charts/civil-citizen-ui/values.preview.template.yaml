@@ -116,9 +116,14 @@ civil-service:
               CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
               CREATE DATABASE "camunda" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
               CREATE DATABASE "role_assignment" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+              CREATE DATABASE "wa-task-management-api" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+              CREATE DATABASE "wa-case-event-handler" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+              CREATE DATABASE "wa_workflow_api" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+              CREATE DATABASE "cft_task_db" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       auth:
         username: ${POSTGRES_USER}
         password: ${POSTGRES_PASSWORD}
+        postgresPassword: ${POSTGRES_PASSWORD}
 
 idam-pr:
   releaseNameOverride: ${SERVICE_NAME}-xui-idam-pr
@@ -251,3 +256,6 @@ camunda-bpm:
       CAMUNDA_BPM_DATABASE_SCHEMA_UPDATE: true
       S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
       CAMUNDA_DB_CONN_OPTIONS: ""
+
+wa:
+  enabled: false
