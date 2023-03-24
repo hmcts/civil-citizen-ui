@@ -3,9 +3,11 @@ import {CCDResponse} from 'models/ccdResponse/ccdResponse';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {toAgreedMediation} from './convertToCCDAgreedMediation';
 import {toCCDParty} from './convertToCCDParty';
+import {toCCDRejectAllOfClaimType} from './convertToCCDRejectAllOfClaimType';
 import {toCCDRepaymentPlan} from './convertToCCDRepaymentPlan';
 import {toCCDPaymentOption} from './convertToCCDPaymentOption';
 import {toCCDPayBySetDate} from './convertToCCDPayBySetDate';
+import {toCCDRespondToClaim} from './convertToCCDRespondToClaim';
 import {toCCDBankAccountList} from './convertToCCDBankAccount';
 import {toCCDHomeDetails} from './convertToCCDHomeDetails';
 import {toCCDPartnerAndDependents} from './convertToCCDPartnerAndDependent';
@@ -39,6 +41,9 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     specAoSApplicantCorrespondenceAddressRequired: addressHasChange ? YesNoUpperCamelCase.NO : YesNoUpperCamelCase.YES,
     totalClaimAmount: claim.totalClaimAmount,
     respondent1: toCCDParty(claim.respondent1),
+    defenceRouteRequired: toCCDRejectAllOfClaimType(claim.rejectAllOfClaim?.option),
+    respondToClaim: toCCDRespondToClaim(claim.rejectAllOfClaim?.howMuchHaveYouPaid),
+    detailsOfWhyDoesYouDisputeTheClaim: claim.rejectAllOfClaim?.defence?.text ?? claim.rejectAllOfClaim?.whyDoYouDisagree?.text,
     respondent1BankAccountList: toCCDBankAccountList(claim.statementOfMeans?.bankAccounts),
     disabilityPremiumPayments: toCCDYesNoFromGenericYesNo(claim.statementOfMeans?.disability),
     severeDisabilityPremiumPayments: toCCDYesNoFromGenericYesNo(claim.statementOfMeans?.severeDisability),
