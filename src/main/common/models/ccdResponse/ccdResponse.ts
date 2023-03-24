@@ -4,6 +4,7 @@ import {CCDRepaymentPlan} from './ccdRepaymentPlan';
 import {CCDPayBySetDate} from './ccdPayBySetDate';
 import {YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {CCDParty} from './ccdParty';
+import {CCDRespondToClaim} from 'models/ccdResponse/ccdRespondToClaim';
 import {CCDBankAccount} from 'models/ccdResponse/ccdBankAccount';
 import {CCDHomeDetails} from 'models/ccdResponse/ccdHomeDetails';
 import {CCDPartnerAndDependent} from 'models/ccdResponse/ccdPartnerAndDependent';
@@ -26,6 +27,9 @@ export interface CCDResponse extends ClaimUpdate {
   specAoSApplicantCorrespondenceAddressRequired?: YesNoUpperCamelCase;
   totalClaimAmount: number,
   respondent1: CCDParty;
+  defenceRouteRequired: string;
+  respondToClaim: CCDRespondToClaim;
+  detailsOfWhyDoesYouDisputeTheClaim: string;
   respondent1BankAccountList?: CCDBankAccount[];
   disabilityPremiumPayments?: YesNoUpperCamelCase;
   severeDisabilityPremiumPayments?: YesNoUpperCamelCase;
