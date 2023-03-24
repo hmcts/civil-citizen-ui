@@ -104,4 +104,16 @@ describe('translate Debts to CUI model', () => {
     );
     expect(output).toEqual(expected);
   });
+
+  it('should return data if Debts value is undefined', () => {
+    //Given
+    //When
+    const output = toCUIDebts(YesNoUpperCamelCase.NO, undefined);
+    //Then
+    const expected = new Debts(
+      YesNo.NO,
+      undefined
+    );
+    expect(output).toEqual(expected);
+  });
 });

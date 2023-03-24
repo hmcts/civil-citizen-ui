@@ -63,13 +63,16 @@ describe('translate Unemployment Details to CUI model', () => {
     //Given
     const input : CCDUnemploymentDetails = {
       unemployedComplexTypeRequired: undefined,
-      lengthOfUnemployment: undefined,
+      lengthOfUnemployment: {
+        numberOfYearsInUnemployment: undefined,
+        numberOfMonthsInUnemployment: undefined,
+      },
       otherUnemployment: undefined,
     };
     //When
     const output = toCUIUnemploymentDetails(input);
     //Then
-    const expected  = new Unemployment(undefined, undefined, undefined);
+    const expected  = new Unemployment(undefined, new UnemploymentDetails(undefined, undefined), undefined);
     expect(output).toEqual(expected);
   });
 });

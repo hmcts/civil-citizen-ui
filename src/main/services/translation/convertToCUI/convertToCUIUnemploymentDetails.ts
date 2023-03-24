@@ -32,7 +32,9 @@ const toCUIUnemploymentCategory = (option: CCDUnemploymentType): UnemploymentCat
 const toCUILengthOfUnemployment = (lengthOfUnemployment: CCDLengthOfUnemployment): UnemploymentDetails=> {
   if (!lengthOfUnemployment) return undefined;
   return new UnemploymentDetails(
-    lengthOfUnemployment.numberOfYearsInUnemployment?.toString(), lengthOfUnemployment.numberOfMonthsInUnemployment?.toString() );
+    lengthOfUnemployment.numberOfYearsInUnemployment ? lengthOfUnemployment.numberOfYearsInUnemployment.toString() : undefined,
+    lengthOfUnemployment.numberOfMonthsInUnemployment ? lengthOfUnemployment.numberOfMonthsInUnemployment.toString() : undefined,
+    );
 };
 
 const toCUIOtherDetails = (otherDetails: string): OtherDetails=> {

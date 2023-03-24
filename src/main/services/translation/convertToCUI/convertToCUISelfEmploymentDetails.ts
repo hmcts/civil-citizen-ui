@@ -5,7 +5,7 @@ export const toCUISelfEmploymentDetails = (selfEmploymentDetails: CCDSelfEmploym
   if (!selfEmploymentDetails) return undefined;
 
   return {
-    jobTitle:  selfEmploymentDetails?.jobTitle,
-    annualTurnover: selfEmploymentDetails?.annualTurnover,
+    jobTitle:  selfEmploymentDetails.jobTitle,
+    annualTurnover: selfEmploymentDetails.annualTurnover,
   };
 };

@@ -14,7 +14,7 @@ const toCUIPriorityDebtsList = (priorityDebtsItems: CCDDebtDetailsList[]) : Prio
   if (!priorityDebtsItems?.length) return undefined;
   const priorityDebts = PriorityDebts.buildEmptyForm();
   priorityDebtsItems.forEach((ccdPriorityDebts: CCDDebtDetailsList) => {
-    switch(ccdPriorityDebts?.value?.debtType) {
+    switch(ccdPriorityDebts.value?.debtType) {
       case(CCDDebtType.MORTGAGE):
         priorityDebts.mortgage = toCUIPriorityDebtsItem(ccdPriorityDebts, ExpenseType.MORTGAGE_DEBT);
         break;
