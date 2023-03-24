@@ -34,7 +34,7 @@ const toCUILengthOfUnemployment = (lengthOfUnemployment: CCDLengthOfUnemployment
   return new UnemploymentDetails(
     lengthOfUnemployment.numberOfYearsInUnemployment ? lengthOfUnemployment.numberOfYearsInUnemployment.toString() : undefined,
     lengthOfUnemployment.numberOfMonthsInUnemployment ? lengthOfUnemployment.numberOfMonthsInUnemployment.toString() : undefined,
-    );
+  );
 };
 
 const toCUIOtherDetails = (otherDetails: string): OtherDetails=> {

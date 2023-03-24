@@ -112,7 +112,7 @@ describe('translate Debts to CUI model', () => {
     //Then
     const expected = new Debts(
       YesNo.NO,
-      undefined
+      undefined,
     );
     expect(output).toEqual(expected);
   });
