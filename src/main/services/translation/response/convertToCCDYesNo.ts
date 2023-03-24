@@ -1,7 +1,7 @@
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 
-export const toCCDYesNo = (value: YesNo) => {
+export const toCCDYesNo = (value: YesNo | string) => {
   if (value) {
     return value === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO;
   }
