@@ -1,12 +1,12 @@
-import {Transaction} from "form/models/statementOfMeans/expensesAndIncome/transaction";
-import {OtherTransaction} from "form/models/statementOfMeans/expensesAndIncome/otherTransaction";
-import {CCDPaymentFrequency} from "models/ccdResponse/ccdPaymentFrequency";
-import {TransactionSource} from "form/models/statementOfMeans/expensesAndIncome/transactionSource";
-import {TransactionSchedule} from "form/models/statementOfMeans/expensesAndIncome/transactionSchedule";
-import {toCUIRecurringExpense} from "services/translation/convertToCUI/convertToCUIRecurringExpense";
-import {CCDExpensesType, CCDRecurringExpenses, CCDRecurringExpensesItem} from "models/ccdResponse/ccdRecurringExpenses";
-import {RegularExpenses} from "form/models/statementOfMeans/expensesAndIncome/regularExpenses";
-import {ExpenseType} from "form/models/statementOfMeans/expensesAndIncome/expenseType";
+import {Transaction} from 'form/models/statementOfMeans/expensesAndIncome/transaction';
+import {OtherTransaction} from 'form/models/statementOfMeans/expensesAndIncome/otherTransaction';
+import {CCDPaymentFrequency} from 'models/ccdResponse/ccdPaymentFrequency';
+import {TransactionSource} from 'form/models/statementOfMeans/expensesAndIncome/transactionSource';
+import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {toCUIRecurringExpense} from 'services/translation/convertToCUI/convertToCUIRecurringExpense';
+import {CCDExpensesType, CCDRecurringExpenses, CCDRecurringExpensesItem} from 'models/ccdResponse/ccdRecurringExpenses';
+import {RegularExpenses} from 'form/models/statementOfMeans/expensesAndIncome/regularExpenses';
+import {ExpenseType} from 'form/models/statementOfMeans/expensesAndIncome/expenseType';
 
 describe('translate Recurring Expenses to CUI model', () => {
   it('should return undefined if Recurring Expenses doesnt exist', () => {

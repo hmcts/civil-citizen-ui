@@ -2,7 +2,7 @@ import {PriorityDebts} from 'form/models/statementOfMeans/priorityDebts';
 import {CCDDebtDetails, CCDDebtDetailsList, CCDDebtType} from 'models/ccdResponse/ccdDebtDetails';
 import {Transaction} from 'form/models/statementOfMeans/expensesAndIncome/transaction';
 import {ExpenseType} from 'form/models/statementOfMeans/expensesAndIncome/expenseType';
-import {toCUIPaymentFrequency} from "services/translation/convertToCUI/convertToCUIPaymentFrequency";
+import {toCUIPaymentFrequency} from 'services/translation/convertToCUI/convertToCUIPaymentFrequency';
 
 export const toCUIPriorityDebts = (priorityDebts: CCDDebtDetails): PriorityDebts => {
   if (!priorityDebts) return undefined;

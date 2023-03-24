@@ -1,6 +1,6 @@
-import {toCUIPaymentFrequency} from "services/translation/convertToCUI/convertToCUIPaymentFrequency";
-import {CCDPaymentFrequency} from "models/ccdResponse/ccdPaymentFrequency";
-import {TransactionSchedule} from "form/models/statementOfMeans/expensesAndIncome/transactionSchedule";
+import {toCUIPaymentFrequency} from 'services/translation/convertToCUI/convertToCUIPaymentFrequency';
+import {CCDPaymentFrequency} from 'models/ccdResponse/ccdPaymentFrequency';
+import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 
 describe('translate Payment Frequency to CUI model', () => {
   it('should return undefined if Payment Frequency doesnt exist', () => {
@@ -50,4 +50,4 @@ describe('translate Payment Frequency to CUI model', () => {
     //Then
     expect(output).toEqual(TransactionSchedule.MONTH);
   });
-})
+});
