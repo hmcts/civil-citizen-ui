@@ -4,8 +4,8 @@ import {CCDClaim} from 'models/civilClaimResponse';
 import {StatementOfMeans} from 'models/statementOfMeans';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {Explanation} from 'form/models/statementOfMeans/explanation';
-import {Dependants} from "form/models/statementOfMeans/dependants/dependants";
-import {OtherDependants} from "form/models/statementOfMeans/otherDependants";
+import {Dependants} from 'form/models/statementOfMeans/dependants/dependants';
+import {OtherDependants} from 'form/models/statementOfMeans/otherDependants';
 
 describe('translate Statement Of Means to CUI model', () => {
   it('should return undefined if Statement Of Means doesnt exist', () => {
@@ -45,7 +45,7 @@ describe('translate Statement Of Means to CUI model', () => {
     //Given
     const input : CCDClaim = {
       respondent1PartnerAndDependent: {
-        liveWithPartnerRequired: YesNoUpperCamelCase.YES
+        liveWithPartnerRequired: YesNoUpperCamelCase.YES,
       },
     };
     //When
@@ -54,7 +54,7 @@ describe('translate Statement Of Means to CUI model', () => {
     const expected = setUpDefaultData();
     expected.cohabiting = new GenericYesNo(YesNo.YES);
     expected.dependants = new Dependants(undefined, undefined);
-    expected.otherDependants = new OtherDependants(undefined, NaN, undefined)
+    expected.otherDependants = new OtherDependants(undefined, NaN, undefined);
     expect(output).toEqual(expected);
   });
 
@@ -62,7 +62,7 @@ describe('translate Statement Of Means to CUI model', () => {
     //Given
     const input : CCDClaim = {
       respondent1PartnerAndDependent: {
-        liveWithPartnerRequired: undefined
+        liveWithPartnerRequired: undefined,
       },
     };
     //When
@@ -70,7 +70,7 @@ describe('translate Statement Of Means to CUI model', () => {
     //Then
     const expected = setUpDefaultData();
     expected.dependants = new Dependants(undefined, undefined);
-    expected.otherDependants = new OtherDependants(undefined, NaN, undefined)
+    expected.otherDependants = new OtherDependants(undefined, NaN, undefined);
     expect(output).toEqual(expected);
   });
 
@@ -78,7 +78,7 @@ describe('translate Statement Of Means to CUI model', () => {
     //Given
     const input : CCDClaim = {
       respondent1PartnerAndDependent: {
-        partnerAgedOver: YesNoUpperCamelCase.YES
+        partnerAgedOver: YesNoUpperCamelCase.YES,
       },
     };
     //When
@@ -87,7 +87,7 @@ describe('translate Statement Of Means to CUI model', () => {
     const expected = setUpDefaultData();
     expected.partnerAge = new GenericYesNo(YesNo.YES);
     expected.dependants = new Dependants(undefined, undefined);
-    expected.otherDependants = new OtherDependants(undefined, NaN, undefined)
+    expected.otherDependants = new OtherDependants(undefined, NaN, undefined);
     expect(output).toEqual(expected);
   });
 
@@ -95,7 +95,7 @@ describe('translate Statement Of Means to CUI model', () => {
     //Given
     const input : CCDClaim = {
       respondent1PartnerAndDependent: {
-        partnerAgedOver: undefined
+        partnerAgedOver: undefined,
       },
     };
     //When
@@ -103,7 +103,7 @@ describe('translate Statement Of Means to CUI model', () => {
     //Then
     const expected = setUpDefaultData();
     expected.dependants = new Dependants(undefined, undefined);
-    expected.otherDependants = new OtherDependants(undefined, NaN, undefined)
+    expected.otherDependants = new OtherDependants(undefined, NaN, undefined);
     expect(output).toEqual(expected);
   });
 
@@ -111,7 +111,7 @@ describe('translate Statement Of Means to CUI model', () => {
     //Given
     const input : CCDClaim = {
       respondent1PartnerAndDependent: {
-        receiveDisabilityPayments: YesNoUpperCamelCase.YES
+        receiveDisabilityPayments: YesNoUpperCamelCase.YES,
       },
     };
     //When
@@ -120,7 +120,7 @@ describe('translate Statement Of Means to CUI model', () => {
     const expected = setUpDefaultData();
     expected.childrenDisability = new GenericYesNo(YesNo.YES);
     expected.dependants = new Dependants(undefined, undefined);
-    expected.otherDependants = new OtherDependants(undefined, NaN, undefined)
+    expected.otherDependants = new OtherDependants(undefined, NaN, undefined);
     expect(output).toEqual(expected);
   });
 
@@ -128,7 +128,7 @@ describe('translate Statement Of Means to CUI model', () => {
     //Given
     const input : CCDClaim = {
       respondent1PartnerAndDependent: {
-        receiveDisabilityPayments: undefined
+        receiveDisabilityPayments: undefined,
       },
     };
     //When
@@ -136,7 +136,7 @@ describe('translate Statement Of Means to CUI model', () => {
     //Then
     const expected = setUpDefaultData();
     expected.dependants = new Dependants(undefined, undefined);
-    expected.otherDependants = new OtherDependants(undefined, NaN, undefined)
+    expected.otherDependants = new OtherDependants(undefined, NaN, undefined);
     expect(output).toEqual(expected);
   });
 
