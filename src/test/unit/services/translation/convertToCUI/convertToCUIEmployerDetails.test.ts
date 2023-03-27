@@ -84,4 +84,15 @@ describe('translate Employer Details to CUI model', () => {
     //Then
     expect(output).toEqual(undefined);
   });
+
+  it('should return data if Employment Details empty', () => {
+    //Given
+    const input : CCDEmployerDetails = {
+      employerDetails: [],
+    };
+    //When
+    const output = toCUIEmploymentDetails(input);
+    //Then
+    expect(output).toEqual(undefined);
+  });
 });

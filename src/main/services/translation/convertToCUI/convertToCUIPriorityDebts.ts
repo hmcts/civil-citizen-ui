@@ -7,7 +7,7 @@ import {toCUIPaymentFrequency} from 'services/translation/convertToCUI/convertTo
 export const toCUIPriorityDebts = (priorityDebts: CCDDebtDetails): PriorityDebts => {
   if (!priorityDebts) return undefined;
 
-  return new PriorityDebts(toCUIPriorityDebtsList(priorityDebts?.debtDetails));
+  return new PriorityDebts(toCUIPriorityDebtsList(priorityDebts.debtDetails));
 };
 
 const toCUIPriorityDebtsList = (priorityDebtsItems: CCDDebtDetailsList[]) : PriorityDebts => {
