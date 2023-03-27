@@ -62,8 +62,10 @@ export class OidcMiddleware {
         'post_logout_redirect_uri': applicationUrl,
       });
 
-      req.session = app.locals.user = undefined;
-      res.redirect(idamSignOutUrl + '?' + params.toString());
+      req.session.destroy(() => {
+        req.session = app.locals.user = undefined;
+        res.redirect(idamSignOutUrl + '?' + params.toString());
+      });
     });
 
     app.get('/', (_req: AppRequest, res: Response) => {
@@ -76,7 +78,6 @@ export class OidcMiddleware {
         if (appReq.session.user.roles?.includes(citizenRole)) {
           return next();
         }
-        return res.redirect(DASHBOARD_URL);
       }
       if (requestIsForPinAndPost(req)) {
         return next();
