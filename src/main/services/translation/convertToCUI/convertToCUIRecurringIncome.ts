@@ -24,7 +24,7 @@ const toCUIRecurringIncomeItems = (recurringIncomeItems: CCDRecurringIncome[]): 
   const regularIncome = RegularIncome.buildEmptyForm();
   const otherTransactionSources: TransactionSource[] = [];
   recurringIncomeItems.forEach((recurringIncome: CCDRecurringIncome) => {
-    switch(recurringIncome?.value?.type) {
+    switch(recurringIncome.value?.type) {
       case(CCDIncomeType.JOB):
         regularIncome.job = toCUIRecurringIncomeItem(recurringIncome, IncomeType.JOB);
         break;
