@@ -1,4 +1,3 @@
-import {CCDRespondentLiPResponse} from 'models/ccdResponse/ccdRespondentLiPResponse';
 import {Claim} from 'models/claim';
 import {toCCDResponseLiPFinancialDetails} from 'services/translation/response/convertToCCDResponseLiPFinancialDetails';
 import {toCCDMediation} from 'services/translation/response/convertToCCDMediation';
