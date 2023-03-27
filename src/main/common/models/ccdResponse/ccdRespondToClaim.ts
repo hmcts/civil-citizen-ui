@@ -1,13 +1,13 @@
 export interface CCDRespondToClaim {
-  howMuchWasPaid?: number
-  whenWasThisAmountPaid?: Date
-  howWasThisAmountPaid?: CCDHowWasThisAmountPaid
-  howWasThisAmountPaidOther?: string
+  howMuchWasPaid?: number;
+  howWasThisAmountPaid?: CCDHowWasThisAmountPaid;
+  whenWasThisAmountPaid?: Date;
+  howWasThisAmountPaidOther? : string;
 }
 
 export enum CCDHowWasThisAmountPaid {
-  CREDIT_CARD = 'Credit card',
-  CHEQUE = 'Cheque',
+  CREDIT_CARD = 'CREDIT_CARD',
+  CHEQUE = 'CHEQUE',
   BACS = 'BACS',
-  OTHER = 'OTHER'
+  OTHER  = 'OTHER',
 }

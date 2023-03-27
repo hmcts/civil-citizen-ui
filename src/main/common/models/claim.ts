@@ -441,6 +441,14 @@ export class Claim {
     return this.interest?.totalInterest?.reason;
   }
 
+  detailsOfWhyYouDisputeTheClaim(): string {
+    if(this.rejectAllOfClaim) {
+      return this.rejectAllOfClaim?.defence?.text ?? this.rejectAllOfClaim?.whyDoYouDisagree?.text;
+    } else if(this.partialAdmission) {
+      return this.partialAdmission?.whyDoYouDisagree?.text;
+    }
+  }
+
   getPaymentIntention() : PaymentIntention {
     return this.isPartialAdmission()? this.partialAdmission?.paymentIntention : this.fullAdmission?.paymentIntention;
   }
@@ -467,6 +475,7 @@ export class Claim {
   get isSmallClaimsTrackDQ(): boolean {
     return this.claimType === claimType.SMALL_CLAIM;
   }
+
 }
 
 export interface StatementOfTruth {
