@@ -6,6 +6,8 @@ import {PartyDetails} from 'form/models/partyDetails';
 import {Address} from 'form/models/address';
 import {CCDAddress} from 'models/ccdResponse/ccdAddress';
 import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
+import {CCDDQExtraDetails} from 'models/ccdResponse/ccdDQExtraDetails';
+import {CCDHearingSupport} from 'models/ccdResponse/ccdHearingSupport';
 
 const setUpUndefinedFinancialDetails = () : CCDFinancialDetailsLiP => {
   return {
@@ -13,6 +15,23 @@ const setUpUndefinedFinancialDetails = () : CCDFinancialDetailsLiP => {
     partnerDisabilityLiP: undefined,
     partnerSevereDisabilityLiP: undefined,
     childrenEducationLiP: undefined,
+
+  };
+};
+
+const setUpUndefinedDQExtraDetails = () : CCDDQExtraDetails => {
+  return {
+    wantPhoneOrVideoHearing: undefined,
+    whyPhoneOrVideoHearing: '',
+    whyUnavailableForHearing: undefined,
+    giveEvidenceYourSelf: undefined,
+  };
+};
+
+const setUpUndefinedDQHearingSupport = () : CCDHearingSupport => {
+  return {
+    supportRequirementLip: undefined,
+    requirementsLip: undefined,
   };
 };
 
@@ -21,6 +40,17 @@ const setUPEmptyRespondent = () : Claim => {
   input.respondent1 = new Party();
   input.respondent1.partyDetails = new PartyDetails({});
   return input;
+};
+
+const setUpUndefinedOutput = () : CCDRespondentLiPResponse => {
+  return {
+    respondent1LiPFinancialDetails : setUpUndefinedFinancialDetails(),
+    respondent1MediationLiPResponse: undefined,
+    respondent1DQHearingSupportLip: setUpUndefinedDQHearingSupport(),
+    respondent1DQExtraDetails: setUpUndefinedDQExtraDetails(),
+    respondent1LiPContactPerson: undefined,
+    respondent1LiPCorrespondenceAddress: undefined,
+  };
 };
 
 const addressCCD: CCDAddress = {
@@ -51,6 +81,8 @@ describe('translate cui fields to CCD model', () => {
     const expected : CCDRespondentLiPResponse = {
       respondent1LiPFinancialDetails: setUpUndefinedFinancialDetails(),
       respondent1MediationLiPResponse: undefined,
+      respondent1DQHearingSupportLip: setUpUndefinedDQHearingSupport(),
+      respondent1DQExtraDetails: setUpUndefinedDQExtraDetails(),
       respondent1LiPContactPerson: 'Example contactPerson',
       respondent1LiPCorrespondenceAddress: addressCCD,
     };
@@ -68,6 +100,8 @@ describe('translate cui fields to CCD model', () => {
 
     const expected : CCDRespondentLiPResponse = {
       respondent1LiPFinancialDetails: setUpUndefinedFinancialDetails(),
+      respondent1DQHearingSupportLip: setUpUndefinedDQHearingSupport(),
+      respondent1DQExtraDetails: setUpUndefinedDQExtraDetails(),
       respondent1MediationLiPResponse: undefined,
       respondent1LiPContactPerson: 'Example contactPerson',
     };
@@ -85,6 +119,8 @@ describe('translate cui fields to CCD model', () => {
 
     const expected : CCDRespondentLiPResponse = {
       respondent1LiPFinancialDetails: setUpUndefinedFinancialDetails(),
+      respondent1DQHearingSupportLip: setUpUndefinedDQHearingSupport(),
+      respondent1DQExtraDetails: setUpUndefinedDQExtraDetails(),
       respondent1MediationLiPResponse: undefined,
       respondent1LiPCorrespondenceAddress: addressCCD,
     };
@@ -94,13 +130,4 @@ describe('translate cui fields to CCD model', () => {
     expect(output).toEqual(expected);
   });
 });
-
-const setUpUndefinedOutput = () : CCDRespondentLiPResponse => {
-  return {
-    respondent1LiPFinancialDetails : setUpUndefinedFinancialDetails(),
-    respondent1MediationLiPResponse: undefined,
-    respondent1LiPContactPerson: undefined,
-    respondent1LiPCorrespondenceAddress: undefined,
-  };
-};
 
