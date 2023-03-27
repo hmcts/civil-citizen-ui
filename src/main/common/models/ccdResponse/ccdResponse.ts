@@ -17,6 +17,13 @@ import {CCDDebtDetails} from 'models/ccdResponse/ccdDebtDetails';
 import {CCDRecurringIncome} from 'models/ccdResponse/ccdRecurringIncome';
 import {CCDRecurringExpenses} from 'models/ccdResponse/ccdRecurringExpenses';
 import {CCDRespondentLiPResponse} from 'models/ccdResponse/ccdRespondentLiPResponse';
+import {CCDWelshLanguageRequirements} from 'models/ccdResponse/ccdWelshLanguageRequirements';
+import {CCDVulnerability} from 'models/ccdResponse/ccdVulnerability';
+import {CCDSpecificCourtLocations} from 'models/ccdResponse/ccdSpecificCourtLocations';
+import {CCDHearingSupport} from 'models/ccdResponse/ccdHearingSupport';
+import {CCDWitnesses} from 'models/ccdResponse/ccdWitnesses';
+import {CCDSmallClaimHearing} from 'models/ccdResponse/ccdSmallClaimHearing';
+import {CCDFastClaimHearing} from 'models/ccdResponse/ccdFastClaimHearing';
 
 export interface CCDResponse extends ClaimUpdate {
   respondent1ClaimResponseTypeForSpec: string;
@@ -53,4 +60,11 @@ export interface CCDResponse extends ClaimUpdate {
   respondent1DQRecurringExpenses?: CCDRecurringExpenses[];
   respondent1DQRecurringExpensesFA?: CCDRecurringExpenses[];
   respondent1LiPResponse?: CCDRespondentLiPResponse;
+  respondent1DQLanguage?: CCDWelshLanguageRequirements;
+  respondent1DQVulnerabilityQuestions?: CCDVulnerability;
+  respondent1DQRequestedCourt?: CCDSpecificCourtLocations;
+  respondent1DQHearingSupport?: CCDHearingSupport;
+  respondent1DQWitnesses?: CCDWitnesses;
+  respondent1DQHearingSmallClaim?: CCDSmallClaimHearing;
+  respondent1DQHearingFastClaim?: CCDFastClaimHearing;
 }
