@@ -10,7 +10,7 @@ echo "Switch to ${branchName} branch on civil-ccd-definition"
 git checkout ${branchName}
 cd ..
 
-#Copy ccd definition files  to civil-ccd-def which contians ccd def files
+#Copy ccd definition files to civil-ccd-def which contains ccd def files
 cp -r ./civil-ccd-definition/ccd-definition .
 echo *
 rm -rf ./civil-ccd-definition
