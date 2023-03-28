@@ -2,10 +2,10 @@ import {CCDParty} from '../../../common/models/ccdResponse/ccdParty';
 import {Party} from '../../../common/models/party';
 import {PartyType} from '../../../common/models/partyType';
 import {PartyDetails} from '../../../common/form/models/partyDetails';
-import {Address} from '../../../common/form/models/address';
 import {PartyPhone} from '../../../common/models/PartyPhone';
 import {Email} from '../../../common/models/Email';
 import {CitizenDate} from '../../../common/form/models/claim/claimant/citizenDate';
+import {toCUIAddress} from 'services/translation/convertToCUI/convertToCUIAddress';
 
 export const toCUIParty = (ccdParty: CCDParty): Party => {
   const cuiParty = new Party();
@@ -31,6 +31,6 @@ export const toCUIParty = (ccdParty: CCDParty): Party => {
   cuiParty.partyPhone = ccdParty?.partyPhone ? new PartyPhone(ccdParty?.partyPhone) : undefined;
   cuiParty.emailAddress = ccdParty?.partyEmail ? new Email(ccdParty?.partyEmail) : undefined;
   cuiParty.type = ccdParty?.type ? ccdParty?.type : undefined;
-  cuiParty.partyDetails.primaryAddress = new Address(ccdParty?.primaryAddress?.AddressLine1, ccdParty?.primaryAddress?.AddressLine2, ccdParty?.primaryAddress?.AddressLine3, ccdParty?.primaryAddress?.PostTown, ccdParty?.primaryAddress?.PostCode);
+  cuiParty.partyDetails.primaryAddress = toCUIAddress(ccdParty?.primaryAddress);
   return cuiParty;
 };

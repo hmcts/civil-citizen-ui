@@ -23,13 +23,13 @@ import {ClaimUpdate, EventDto} from 'models/events/eventDto';
 import {CaseEvent} from 'models/events/caseEvent';
 import {CourtLocation} from 'models/courts/courtLocations';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
-import {translateCCDCaseDatatoCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
+import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
 
 const convertCaseToClaim = (caseDetails: CivilClaimResponse): Claim => {
-  const claim: Claim = translateCCDCaseDatatoCUIModel(caseDetails.case_data);
+  const claim: Claim = translateCCDCaseDataToCUIModel(caseDetails.case_data);
   claim.ccdState = caseDetails.state;
   claim.id = caseDetails.id;
   return claim;
@@ -201,7 +201,7 @@ export class CivilServiceClient {
         .replace(':caseId', claimId), data, config);// nosonar
       logger.info('submitted event ' + data.event + ' with update ' + data.caseDataUpdate);
       const claimResponse = response.data as CivilClaimResponse;
-      return translateCCDCaseDatatoCUIModel(claimResponse.case_data);
+      return translateCCDCaseDataToCUIModel(claimResponse.case_data);
     } catch (err: unknown) {
       logger.error(err);
       throw err;
