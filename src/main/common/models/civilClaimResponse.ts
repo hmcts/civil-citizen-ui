@@ -29,6 +29,7 @@ import {FullAdmission} from './fullAdmission';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {RepaymentPlan} from './repaymentPlan';
 import {CCDRespondentLiPResponse} from 'models/ccdResponse/ccdRespondentLiPResponse';
+import {CCDRespondToClaim} from "models/ccdResponse/ccdRespondToClaim";
 
 export class CivilClaimResponse {
   id: string;
@@ -47,6 +48,9 @@ export class CivilClaimResponse {
 }
 
 export interface CCDClaim extends ClaimUpdate {
+  respondToClaim: CCDRespondToClaim;
+  detailsOfWhyDoesYouDisputeTheClaim: string;
+  defenceRouteRequired: string;
   legacyCaseReference?: string;
   applicant1?: CCDParty;
   applicant1Represented?: YesNoUpperCamelCase,

@@ -54,6 +54,8 @@ import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIC
 import {analyseClaimType, claimType} from 'common/form/models/claimType';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {toCUIMediation} from 'services/translation/convertToCUI/convertToCUIMediation';
+import {toCUIRejectAllOfClaimType} from "services/translation/convertToCUI/convertToCUIRejectAllOfClaimType";
+import {toCUIRespondToClaim} from "services/translation/convertToCUI/convertToCUIRespondToClaim";
 
 export class Claim {
   legacyCaseReference: string;
@@ -97,6 +99,11 @@ export class Claim {
     claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
     claim.respondent1 = toCUIParty(ccdClaim?.respondent1);
     claim.mediation = toCUIMediation(ccdClaim?.respondent1LiPResponse?.respondent1MediationLiPResponse);
+    claim.rejectAllOfClaim.option = toCUIRejectAllOfClaimType(ccdClaim?.defenceRouteRequired);
+    claim.rejectAllOfClaim.defence.text = ccdClaim.detailsOfWhyDoesYouDisputeTheClaim;
+    claim.rejectAllOfClaim.whyDoYouDisagree.text = ccdClaim.detailsOfWhyDoesYouDisputeTheClaim;
+    claim.rejectAllOfClaim.whyDoYouDisagree.text = ccdClaim.detailsOfWhyDoesYouDisputeTheClaim;
+    claim.rejectAllOfClaim.howMuchHaveYouPaid = toCUIRespondToClaim(ccdClaim.respondToClaim);
     return claim;
   }
 
