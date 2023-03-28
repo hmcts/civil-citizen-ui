@@ -41,7 +41,7 @@ ccd:
         cpu: "2500m"
         memory: "1024Mi"
     elasticsearch:
-      host: "${SERVICE_NAME}-es-master"
+      host: ${SERVICE_NAME}-es-master
       port: 9200
     configTpl:
       db.url: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
