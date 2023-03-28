@@ -445,6 +445,11 @@ export class Claim {
     return this.isPartialAdmission()? this.partialAdmission?.paymentIntention : this.fullAdmission?.paymentIntention;
   }
 
+  hasExpertDetails(): boolean {
+    return this.directionQuestionnaire?.experts?.expertDetailsList?.items?.length
+      && this.directionQuestionnaire?.experts?.expertEvidence?.option === YesNo.YES;
+  }
+
   private getName(party: Party): string {
     if (party?.type == PartyType.INDIVIDUAL || party?.type == PartyType.SOLE_TRADER) {
       if (party.partyDetails?.individualTitle) {
