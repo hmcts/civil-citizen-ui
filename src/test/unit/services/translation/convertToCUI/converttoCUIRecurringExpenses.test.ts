@@ -12,7 +12,7 @@ describe('translate Recurring Expenses to CUI model', () => {
   it('should return undefined if Recurring Expenses doesnt exist', () => {
     //Given
     //When
-    const output = toCUIRecurringExpense(undefined, undefined);
+    const output = toCUIRecurringExpense(undefined);
     //Then
     expect(output).toBe(undefined);
   });
@@ -21,12 +21,12 @@ describe('translate Recurring Expenses to CUI model', () => {
     //Given
     const input : CCDRecurringExpenses[] = [];
     //When
-    const output = toCUIRecurringExpense(input, input);
+    const output = toCUIRecurringExpense(input);
     //Then
     expect(output).toBe(undefined);
   });
 
-  it('should return data if Recurring Income Part Admit details data exist', () => {
+  it('should return data if Recurring Expense details data exist', () => {
     //Given
     const input : CCDRecurringExpenses[] = [
       { value : setUpCcdRecurringExpenses(CCDExpensesType.MORTGAGE)},
@@ -45,7 +45,7 @@ describe('translate Recurring Expenses to CUI model', () => {
       { value : setUpCcdRecurringOtherExpenses(CCDExpensesType.OTHER)},
     ];
     //When
-    const output = toCUIRecurringExpense(input, undefined);
+    const output = toCUIRecurringExpense(input);
     //Then
     const expected : RegularExpenses= {
       mortgage: new Transaction(true, setUpTransactionSource(ExpenseType.MORTGAGE)),
@@ -66,53 +66,13 @@ describe('translate Recurring Expenses to CUI model', () => {
     expect(output).toEqual(expected);
   });
 
-  it('should return data if Recurring Income Part Admit details data exist full admit', () => {
-    //Given
-    const input : CCDRecurringExpenses[] = [
-      { value : setUpCcdRecurringExpenses(CCDExpensesType.MORTGAGE)},
-      { value : setUpCcdRecurringExpenses(CCDExpensesType.RENT)},
-      { value : setUpCcdRecurringExpenses(CCDExpensesType.COUNCIL_TAX)},
-      { value : setUpCcdRecurringExpenses(CCDExpensesType.GAS)},
-      { value : setUpCcdRecurringExpenses(CCDExpensesType.ELECTRICITY)},
-      { value : setUpCcdRecurringExpenses(CCDExpensesType.WATER)},
-      { value : setUpCcdRecurringExpenses(CCDExpensesType.TRAVEL)},
-      { value : setUpCcdRecurringExpenses(CCDExpensesType.SCHOOL)},
-      { value : setUpCcdRecurringExpenses(CCDExpensesType.FOOD)},
-      { value : setUpCcdRecurringExpenses(CCDExpensesType.TV)},
-      { value : setUpCcdRecurringExpenses(CCDExpensesType.HIRE_PURCHASE)},
-      { value : setUpCcdRecurringExpenses(CCDExpensesType.MOBILE_PHONE)},
-      { value : setUpCcdRecurringExpenses(CCDExpensesType.MAINTENANCE)},
-      { value : setUpCcdRecurringOtherExpenses(CCDExpensesType.OTHER)},
-    ];
-    //When
-    const output = toCUIRecurringExpense(undefined, input);
-    //Then
-    const expected : RegularExpenses= {
-      mortgage: new Transaction(true, setUpTransactionSource(ExpenseType.MORTGAGE)),
-      rent: new Transaction(true, setUpTransactionSource(ExpenseType.RENT)),
-      councilTax: new Transaction(true, setUpTransactionSource(ExpenseType.COUNCIL_TAX)),
-      gas: new Transaction(true, setUpTransactionSource(ExpenseType.GAS)),
-      electricity: new Transaction(true, setUpTransactionSource(ExpenseType.ELECTRICITY)),
-      water: new Transaction(true, setUpTransactionSource(ExpenseType.WATER)),
-      travel: new Transaction(true, setUpTransactionSource(ExpenseType.TRAVEL)),
-      schoolCosts: new Transaction(true, setUpTransactionSource(ExpenseType.SCHOOL_COSTS)),
-      foodAndHousekeeping: new Transaction(true, setUpTransactionSource(ExpenseType.FOOD_HOUSEKEEPING)),
-      tvAndBroadband: new Transaction(true, setUpTransactionSource(ExpenseType.TV_AND_BROADBAND)),
-      hirePurchase: new Transaction(true, setUpTransactionSource(ExpenseType.HIRE_PURCHASES)),
-      mobilePhone: new Transaction(true, setUpTransactionSource(ExpenseType.MOBILE_PHONE)),
-      maintenance: new Transaction(true, setUpTransactionSource(ExpenseType.MAINTENANCE_PAYMENTS)),
-      other: new OtherTransaction(true, [setUpTransactionSourceOther()]),
-    };
-    expect(output).toEqual(expected);
-  });
-
-  it('should return data if Recurring Income Part Admit details data undefined', () => {
+  it('should return data if Recurring Expense details data undefined', () => {
     //Given
     const input : CCDRecurringExpenses[] = [
       { value : setUpCcdRecurringExpensesUndefined()},
     ];
     //When
-    const output = toCUIRecurringExpense(input, undefined);
+    const output = toCUIRecurringExpense(input);
     //Then
     const expected : RegularExpenses= {
       mortgage: new Transaction(undefined, setUpTransactionSourceUndefined(ExpenseType.MORTGAGE)),
