@@ -301,6 +301,13 @@ function testAccessibilityWithActions(url: string, actions: string[]): void {
 }
 
 function testAccessibility(url: string): void {
+  //we need to add actions for example:
+  //          `set field #username to ${email}`,
+  //         `set field #password to ${password}`,
+  //         'click element .button',
+  //         'wait for element .govuk-fieldset__legend--xl to be visible'
+  //const action =['click element .govuk-button'];
+  //testAccessibilityWithActions(url, action);
   testAccessibilityWithActions(url, []);
 }
 
