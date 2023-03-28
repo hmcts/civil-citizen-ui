@@ -6,19 +6,18 @@ import {
 import {LanguageOptions} from 'models/directionsQuestionnaire/languageOptions';
 import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
 import {
-  displaySpecificCourtLocation,
-  displayUnavailabilityForHearing,
-  documentsLanguagePreference,
-  getSpecificCourtLocation,
-  getUnavailabilityReason,
-  getUnavailableDatesList,
+  documentsLanguagePreference, getSummaryRowForDisplayEvidenceYourself,
   getWitnesses,
-  giveEvidenceYourself,
   phoneAndVideoInfo,
   phoneAndVideoQuestion,
   speakingLanguagePreference,
   vulnerabilityInfo,
   vulnerabilityQuestion,
+  displaySpecificCourtLocation,
+  displayUnavailabilityForHearing,
+  getSpecificCourtLocation,
+  getUnavailabilityReason,
+  getUnavailableDatesList,
 } from 'services/features/response/checkAnswers/hearingRequirementsSection/buildCommonHearingRequirements';
 import {YesNo} from 'common/form/models/yesNo';
 import {
@@ -220,13 +219,13 @@ describe('Common Hearing Requirements Section', () => {
         option: YesNo.NO,
       };
       const mockSummarySection = summaryRow(
-        'PAGES.CHECK_YOUR_ANSWER.GIVE_EVIDENCE',
+        'PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE',
         'COMMON.NO',
         `/case/${claimId}/directions-questionnaire/give-evidence-yourself`,
         changeButton,
       );
       //Then
-      expect(giveEvidenceYourself(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      expect(getSummaryRowForDisplayEvidenceYourself(claim, claimId, lng)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if give evidence yourself option is yes', () => {
@@ -237,13 +236,13 @@ describe('Common Hearing Requirements Section', () => {
         option: YesNo.YES,
       };
       const mockSummarySection = summaryRow(
-        'PAGES.CHECK_YOUR_ANSWER.GIVE_EVIDENCE',
+        'PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE',
         'COMMON.YES',
         `/case/${claimId}/directions-questionnaire/give-evidence-yourself`,
         changeButton,
       );
       //Then
-      expect(giveEvidenceYourself(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      expect(getSummaryRowForDisplayEvidenceYourself(claim, claimId, lng)).toStrictEqual(mockSummarySection);
     });
   });
 

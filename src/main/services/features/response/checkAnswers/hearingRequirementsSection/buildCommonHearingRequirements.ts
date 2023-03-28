@@ -4,14 +4,13 @@ import {
 import {summaryRow, SummaryRow} from 'models/summaryList/summaryList';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
-  DQ_AVAILABILITY_DATES_FOR_HEARING_URL,
-  DQ_COURT_LOCATION_URL,
-  DQ_DEFENDANT_WITNESSES_URL,
-  DQ_GIVE_EVIDENCE_YOURSELF_URL,
-  DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL,
+  DQ_DEFENDANT_WITNESSES_URL, DQ_GIVE_EVIDENCE_YOURSELF_URL,
   DQ_PHONE_OR_VIDEO_HEARING_URL,
   DQ_WELSH_LANGUAGE_URL,
   VULNERABILITY_URL,
+  DQ_AVAILABILITY_DATES_FOR_HEARING_URL,
+  DQ_COURT_LOCATION_URL,
+  DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL,
 } from 'routes/urls';
 import {YesNo, YesNoUpperCase} from 'form/models/yesNo';
 import {t} from 'i18next';
@@ -25,8 +24,8 @@ import {
   getFormattedAnswerForYesNoNotReceived,
 } from 'common/utils/checkYourAnswer/formatAnswer';
 import {
-  getListOfUnavailableDate,
   getNumberOfUnavailableDays,
+  getListOfUnavailableDate,
 } from 'services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation';
 
 const MAX_UNAVAILABLE_DAYS_FOR_HEARING_WITHOUT_REASON = 30;
@@ -50,6 +49,17 @@ export const getWitnesses = (claim: Claim, claimId: string, lng: string): Summar
     });
   }
   return summaryRows;
+};
+
+export const getSummaryRowForDisplayEvidenceYourself = (claim: Claim, claimId: string, lng: string): SummaryRow => {
+  const giveEvidenceYourselfAnswer = getFormattedAnswerForYesNoNotReceived(claim.directionQuestionnaire?.defendantYourselfEvidence?.option, lng);
+
+  return summaryRow(
+    t('PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE', {lng}),
+    giveEvidenceYourselfAnswer,
+    constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL),
+    changeLabel(lng),
+  );
 };
 
 export const vulnerabilityQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
@@ -196,9 +206,8 @@ export const displaySpecificCourtLocation = (claim: Claim, claimId: string, lng:
 export const buildCommonHearingRequirements = (claim: Claim, hearingRequirementsSection: SummarySection, claimId: string, lng: string) => {
 
   if (claim.directionQuestionnaire?.defendantYourselfEvidence?.option) {
-    hearingRequirementsSection.summaryList.rows.push(giveEvidenceYourself(claim, claimId, lng));
+    hearingRequirementsSection.summaryList.rows.push(getSummaryRowForDisplayEvidenceYourself(claim, claimId, lng));
   }
-
   hearingRequirementsSection.summaryList.rows.push(...getWitnesses(claim, claimId, lng));
 
   hearingRequirementsSection.summaryList.rows.push(displayUnavailabilityForHearing(claim, claimId, lng));
