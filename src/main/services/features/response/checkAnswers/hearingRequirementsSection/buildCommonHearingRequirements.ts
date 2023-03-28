@@ -203,6 +203,16 @@ export const displaySpecificCourtLocation = (claim: Claim, claimId: string, lng:
   );
 };
 
+export const getSpecificCourtLocationReason = (claim: Claim, claimId: string, lng: string): SummaryRow => {
+  const whySpecificCourtLocation = claim.directionQuestionnaire?.hearing?.specificCourtLocation?.reason;
+  return summaryRow(
+    t('PAGES.SPECIFIC_COURT.REASON', {lng}),
+    whySpecificCourtLocation,
+    constructResponseUrlWithIdParams(claimId, DQ_COURT_LOCATION_URL),
+    changeLabel(lng),
+  );
+};
+
 export const buildCommonHearingRequirements = (claim: Claim, hearingRequirementsSection: SummarySection, claimId: string, lng: string) => {
 
   if (claim.directionQuestionnaire?.defendantYourselfEvidence?.option) {
@@ -241,6 +251,7 @@ export const buildCommonHearingRequirements = (claim: Claim, hearingRequirements
   hearingRequirementsSection.summaryList.rows.push(getSpecificCourtLocation(claim, claimId, lng));
   if (claim.directionQuestionnaire?.hearing?.specificCourtLocation?.option === YesNo.YES) {
     hearingRequirementsSection.summaryList.rows.push(displaySpecificCourtLocation(claim, claimId, lng));
+    hearingRequirementsSection.summaryList.rows.push(getSpecificCourtLocationReason(claim, claimId, lng));
   }
 
   if (claim.directionQuestionnaire?.welshLanguageRequirements?.language) {

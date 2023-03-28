@@ -111,7 +111,7 @@ describe('Hearing Requirements Section', () => {
 
       //Then
       expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
-      expect(summaryRows.summaryList.rows.length).toEqual(18);
+      expect(summaryRows.summaryList.rows.length).toEqual(19);
       expect(summaryRows.summaryList.rows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE');
       expect(summaryRows.summaryList.rows[0].value.html).toEqual('COMMON.YES');
       expect(summaryRows.summaryList.rows[1].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.REQUEST_EXTRA_4WEEKS');
@@ -143,11 +143,13 @@ describe('Hearing Requirements Section', () => {
       expect(summaryRows.summaryList.rows[13].value.html).toEqual('COMMON.YES');
       expect(summaryRows.summaryList.rows[14].key.text).toEqual('PAGES.SPECIFIC_COURT.SELECTED_COURT');
       expect(summaryRows.summaryList.rows[14].value.html).toEqual('High Wycombe Law Courts - THE LAW COURTS, EASTON STREET - HP11 1LR');
-      expect(summaryRows.summaryList.rows[15].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WELSH_LANGUAGE');
-      expect(summaryRows.summaryList.rows[16].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK');
-      expect(summaryRows.summaryList.rows[16].value.html).toEqual('PAGES.WELSH_LANGUAGE.ENGLISH');
-      expect(summaryRows.summaryList.rows[17].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS');
-      expect(summaryRows.summaryList.rows[17].value.html).toEqual('PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH');
+      expect(summaryRows.summaryList.rows[15].key.text).toEqual('PAGES.SPECIFIC_COURT.REASON');
+      expect(summaryRows.summaryList.rows[15].value.html).toEqual('test');
+      expect(summaryRows.summaryList.rows[16].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WELSH_LANGUAGE');
+      expect(summaryRows.summaryList.rows[17].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK');
+      expect(summaryRows.summaryList.rows[17].value.html).toEqual('PAGES.WELSH_LANGUAGE.ENGLISH');
+      expect(summaryRows.summaryList.rows[18].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS');
+      expect(summaryRows.summaryList.rows[18].value.html).toEqual('PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH');
     });
     it('should build hearing requirement for Fast Track Claim When all questions answer set to no.', () => {
       //Given
@@ -229,7 +231,7 @@ describe('Hearing Requirements Section', () => {
       //When
       const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
       //Then
-      expect(summaryRows.summaryList.rows.length).toEqual(19);
+      expect(summaryRows.summaryList.rows.length).toEqual(20);
       expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.DEFENDANT_EXPERT_EVIDENCE.TITLE');
     });
     it('should not display expert evidence section when there is no data for that section', () => {
@@ -240,7 +242,7 @@ describe('Hearing Requirements Section', () => {
       //When
       const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
       //Then
-      expect(summaryRows.summaryList.rows.length).toEqual(18);
+      expect(summaryRows.summaryList.rows.length).toEqual(19);
       expect(summaryRows.summaryList.rows[4].key.text).not.toEqual('PAGES.DEFENDANT_EXPERT_EVIDENCE.TITLE');
     });
     it('should display expert reports when there is data for that section', () => {
@@ -251,7 +253,7 @@ describe('Hearing Requirements Section', () => {
       //When
       const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
       //Then
-      expect(summaryRows.summaryList.rows.length).toEqual(19);
+      expect(summaryRows.summaryList.rows.length).toEqual(20);
       expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.SENT_EXPERT_REPORTS.TITLE');
     });
     it('should display shared expert section when there is data for that section', () => {
@@ -262,7 +264,7 @@ describe('Hearing Requirements Section', () => {
       //When
       const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
       //Then
-      expect(summaryRows.summaryList.rows.length).toEqual(19);
+      expect(summaryRows.summaryList.rows.length).toEqual(20);
       expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.SHARED_EXPERT.WITH_CLAIMANT');
     });
     it('should display experts when claim has experts', () => {
