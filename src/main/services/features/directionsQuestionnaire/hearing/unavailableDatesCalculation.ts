@@ -22,19 +22,12 @@ const getDatesBetween = (startDate: Date, endDate: Date): Set<string> => {
 export const getListOfUnavailableDate = (unavailableDates: UnavailableDates): Set<string> => {
   const unavailableDateSet = new Set<string>();
   unavailableDates.items.forEach((item: UnavailableDatePeriod) => {
-    switch (item.type) {
-      case UnavailableDateType.SINGLE_DATE:
-        unavailableDateSet.add(formatDateToFullDate(new Date(item.from)));
-        break;
-      case UnavailableDateType.LONGER_PERIOD: {
-        const datesBetween = getDatesBetween(new Date(item.from), new Date(item.until));
-        datesBetween.forEach((date: string) => {
-          unavailableDateSet.add(date);},
-        );
-      }
-        break;
-      default:
-        break;
+    if (item.type === UnavailableDateType.SINGLE_DATE) {
+      unavailableDateSet.add(formatDateToFullDate(new Date(item.from)));
+    }
+    if (item.type === UnavailableDateType.LONGER_PERIOD) {
+      const datesBetween = getDatesBetween(new Date(item.from), new Date(item.until));
+      datesBetween.forEach((date: string) => unavailableDateSet.add(date));
     }
   });
   return unavailableDateSet;

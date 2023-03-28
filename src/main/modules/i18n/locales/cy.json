@@ -1509,10 +1509,10 @@
     },
     "CANT_ATTEND_HEARING_IN_NEXT_12MONTHS": {
       "CONTENT": "Dylai’r rhain ond fod yn ddyddiadau digwyddiadau pwysig fel apwyntiadau meddygol, gwrandawiadau eraill neu wyliau rydych eisoes wedi trefnu",
-      "UNAVAILABLE_DATES": "Dates unavailable",
-      "WHY_UNAVAILABLE_FOR_MORE_THAN_30_DAYS": "Why are you, your experts or witness unavailable for {{days}} days?",
       "PAGE_TITLE": "Can’t attend hearing in next months",
-      "TITLE": "A oes yna unrhyw ddyddiadau yn y 12 mis nesaf pan na allwch chi, eich arbenigwyr neu eich tystion fynychu gwrandawiad?"
+      "TITLE": "A oes yna unrhyw ddyddiadau yn y 12 mis nesaf pan na allwch chi, eich arbenigwyr neu eich tystion fynychu gwrandawiad?",
+      "UNAVAILABLE_DATES": "Dates unavailable",
+      "WHY_UNAVAILABLE_FOR_MORE_THAN_30_DAYS": "Why are you, your experts or witness unavailable for {{days}} days?"
     },
     "NOT_ELIGIBLE_FOR_SERVICE": {
       "ABLE_TO_GET_AN_ADVICE": {

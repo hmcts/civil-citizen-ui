@@ -1509,10 +1509,10 @@
     },
     "CANT_ATTEND_HEARING_IN_NEXT_12MONTHS": {
       "CONTENT": "These should only be the dates of important events like medical appointments, other court hearing, or holidays you have already booked",
-      "UNAVAILABLE_DATES": "Dates unavailable",
-      "WHY_UNAVAILABLE_FOR_MORE_THAN_30_DAYS": "Why are you, your experts or witness unavailable for {{days}} days?",
       "PAGE_TITLE": "Can't attend hearing in next months",
-      "TITLE": "Are there any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing?"
+      "TITLE": "Are there any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing?",
+      "UNAVAILABLE_DATES": "Dates unavailable",
+      "WHY_UNAVAILABLE_FOR_MORE_THAN_30_DAYS": "Why are you, your experts or witness unavailable for {{days}} days?"
     },
     "NOT_ELIGIBLE_FOR_SERVICE": {
       "ABLE_TO_GET_AN_ADVICE": {
