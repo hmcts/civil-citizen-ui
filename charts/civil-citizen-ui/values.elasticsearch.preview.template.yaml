@@ -34,7 +34,9 @@ ccd:
     imageTag: 8.5.1
     imagePullPolicy: "IfNotPresent"
     environment:
-      -xpack.monitoring.enabled: false
+      - xpack.monitoring.enabled: false
+      - name: ES_HOSTS
+        value: "http://${SERVICE_NAME}-es-master:9200"
     resources:
       requests:
         cpu: "500m"
