@@ -31,14 +31,14 @@ const toCUIUnemploymentCategory = (option: CCDUnemploymentType): UnemploymentCat
 };
 
 const toCUILengthOfUnemployment = (lengthOfUnemployment: CCDLengthOfUnemployment): UnemploymentDetails=> {
-  if (!lengthOfUnemployment) return undefined;
-  return new UnemploymentDetails(
-    lengthOfUnemployment.numberOfYearsInUnemployment?.toString(),
-    lengthOfUnemployment.numberOfMonthsInUnemployment?.toString(),
-  );
+  if (lengthOfUnemployment) {
+    return new UnemploymentDetails(
+      lengthOfUnemployment.numberOfYearsInUnemployment?.toString(),
+      lengthOfUnemployment.numberOfMonthsInUnemployment?.toString(),
+    );
+  }
 };
 
 const toCUIOtherDetails = (otherDetails: string): OtherDetails=> {
-  if (!otherDetails) return undefined;
-  return new OtherDetails(otherDetails);
+  if (otherDetails) return new OtherDetails(otherDetails);
 };

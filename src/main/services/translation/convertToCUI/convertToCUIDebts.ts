@@ -14,11 +14,12 @@ export const toCUIDebts = (debtDeclared: YesNoUpperCamelCase, debtItems: CCDLoan
 };
 
 const toCUIDebtsList = (ccdDebtItems: CCDLoanCredit[]): DebtItems[] => {
-  if (!ccdDebtItems?.length) return undefined;
-  return ccdDebtItems.map((ccdDebtItem: CCDLoanCredit) => {
-    return new DebtItems(
-      ccdDebtItem.value?.loanCardDebtDetail,
-      ccdDebtItem.value?.totalOwed?.toString(),
-      ccdDebtItem.value?.monthlyPayment?.toString());
-  });
+  if (ccdDebtItems?.length) {
+    return ccdDebtItems.map((ccdDebtItem: CCDLoanCredit) => {
+      return new DebtItems(
+        ccdDebtItem.value?.loanCardDebtDetail,
+        ccdDebtItem.value?.totalOwed?.toString(),
+        ccdDebtItem.value?.monthlyPayment?.toString());
+    });
+  }
 };

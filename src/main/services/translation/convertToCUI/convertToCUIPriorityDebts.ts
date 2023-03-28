@@ -9,34 +9,35 @@ export const toCUIPriorityDebts = (priorityDebts: CCDDebtDetails): PriorityDebts
 };
 
 const toCUIPriorityDebtsList = (priorityDebtsItems: CCDDebtDetailsList[]) : PriorityDebts => {
-  if (!priorityDebtsItems?.length) return undefined;
-  const priorityDebts = PriorityDebts.buildEmptyForm();
-  priorityDebtsItems.forEach((ccdPriorityDebts: CCDDebtDetailsList) => {
-    switch(ccdPriorityDebts.value?.debtType) {
-      case(CCDDebtType.MORTGAGE):
-        priorityDebts.mortgage = toCUIPriorityDebtsItem(ccdPriorityDebts, ExpenseType.MORTGAGE_DEBT);
-        break;
-      case(CCDDebtType.RENT):
-        priorityDebts.rent = toCUIPriorityDebtsItem(ccdPriorityDebts, ExpenseType.RENT_DEBT);
-        break;
-      case(CCDDebtType.COUNCIL_TAX):
-        priorityDebts.councilTax = toCUIPriorityDebtsItem(ccdPriorityDebts, ExpenseType.COUNCIL_TAX_OR_COMMUNITY_CHARGE);
-        break;
-      case(CCDDebtType.GAS):
-        priorityDebts.gas = toCUIPriorityDebtsItem(ccdPriorityDebts, ExpenseType.GAS_DEBT);
-        break;
-      case(CCDDebtType.ELECTRICITY):
-        priorityDebts.electricity = toCUIPriorityDebtsItem(ccdPriorityDebts, ExpenseType.ELECTRICITY_DEBT);
-        break;
-      case(CCDDebtType.WATER):
-        priorityDebts.water = toCUIPriorityDebtsItem(ccdPriorityDebts, ExpenseType.WATER_DEBT);
-        break;
-      case(CCDDebtType.MAINTENANCE_PAYMENTS):
-        priorityDebts.maintenance = toCUIPriorityDebtsItem(ccdPriorityDebts, ExpenseType.MAINTENANCE_PAYMENTS_DEBT);
-        break;
-    }
-  });
-  return priorityDebts;
+  if (priorityDebtsItems?.length) {
+    const priorityDebts = PriorityDebts.buildEmptyForm();
+    priorityDebtsItems.forEach((ccdPriorityDebts: CCDDebtDetailsList) => {
+      switch(ccdPriorityDebts.value?.debtType) {
+        case(CCDDebtType.MORTGAGE):
+          priorityDebts.mortgage = toCUIPriorityDebtsItem(ccdPriorityDebts, ExpenseType.MORTGAGE_DEBT);
+          break;
+        case(CCDDebtType.RENT):
+          priorityDebts.rent = toCUIPriorityDebtsItem(ccdPriorityDebts, ExpenseType.RENT_DEBT);
+          break;
+        case(CCDDebtType.COUNCIL_TAX):
+          priorityDebts.councilTax = toCUIPriorityDebtsItem(ccdPriorityDebts, ExpenseType.COUNCIL_TAX_OR_COMMUNITY_CHARGE);
+          break;
+        case(CCDDebtType.GAS):
+          priorityDebts.gas = toCUIPriorityDebtsItem(ccdPriorityDebts, ExpenseType.GAS_DEBT);
+          break;
+        case(CCDDebtType.ELECTRICITY):
+          priorityDebts.electricity = toCUIPriorityDebtsItem(ccdPriorityDebts, ExpenseType.ELECTRICITY_DEBT);
+          break;
+        case(CCDDebtType.WATER):
+          priorityDebts.water = toCUIPriorityDebtsItem(ccdPriorityDebts, ExpenseType.WATER_DEBT);
+          break;
+        case(CCDDebtType.MAINTENANCE_PAYMENTS):
+          priorityDebts.maintenance = toCUIPriorityDebtsItem(ccdPriorityDebts, ExpenseType.MAINTENANCE_PAYMENTS_DEBT);
+          break;
+      }
+    });
+    return priorityDebts;
+  }
 };
 
 const toCUIPriorityDebtsItem = (ccdPriorityDebts: CCDDebtDetailsList, expenseType: ExpenseType): Transaction => {
