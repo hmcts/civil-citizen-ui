@@ -7,11 +7,7 @@ import {ExpenseType} from 'form/models/statementOfMeans/expensesAndIncome/expens
 import {toCUIPaymentFrequency} from 'services/translation/convertToCUI/convertToCUIPaymentFrequency';
 
 export const toCUIRecurringExpense = (recurringExpensesItems: CCDRecurringExpenses[]): RegularExpenses => {
-  if (!recurringExpensesItems?.length) return undefined;
-
-  if (recurringExpensesItems?.length) {
-    return toCUIRecurringExpenseItems(recurringExpensesItems);
-  }
+  if (recurringExpensesItems?.length) return toCUIRecurringExpenseItems(recurringExpensesItems);
 };
 
 const toCUIRecurringExpenseItems = (recurringExpensesItems: CCDRecurringExpenses[]): RegularExpenses => {
