@@ -33,6 +33,8 @@ ccd:
     image: hmctspublic.azurecr.io/imported/logstash/logstash
     imageTag: 8.5.1
     imagePullPolicy: "IfNotPresent"
+    environment:
+      -xpack.monitoring.enabled: false
     resources:
       requests:
         cpu: "500m"
@@ -47,4 +49,4 @@ ccd:
       es.data.nodes.url: http://${SERVICE_NAME}-es-master:9200
     livenessProbe:
       initialDelaySeconds: 90
-    xpack.monitoring.enabled: false
+
