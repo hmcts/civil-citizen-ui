@@ -5,11 +5,12 @@ import {DebtItems} from 'form/models/statementOfMeans/debts/debtItems';
 import {toCUIYesNo} from 'services/translation/convertToCUI/convertToCUIYesNo';
 
 export const toCUIDebts = (debtDeclared: YesNoUpperCamelCase, debtItems: CCDLoanCredit[]): Debts => {
-  if (!debtDeclared) return undefined;
-  return new Debts(
-    toCUIYesNo(debtDeclared),
-    toCUIDebtsList(debtItems),
-  );
+  if (debtDeclared) {
+    return new Debts(
+      toCUIYesNo(debtDeclared),
+      toCUIDebtsList(debtItems),
+    );
+  }
 };
 
 const toCUIDebtsList = (ccdDebtItems: CCDLoanCredit[]): DebtItems[] => {

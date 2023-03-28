@@ -9,7 +9,6 @@ import {toCUIUnemploymentDetails} from 'services/translation/convertToCUI/conver
 import {toCUICourtOrders} from 'services/translation/convertToCUI/convertToCUICourtOrders';
 import {toCUIDebts} from 'services/translation/convertToCUI/convertToCUIDebts';
 import {Explanation} from 'form/models/statementOfMeans/explanation';
-import {toCUICarerAllowanceCredit} from 'services/translation/convertToCUI/convertToCUICareerAllowance';
 import {toCUIPriorityDebts} from 'services/translation/convertToCUI/convertToCUIPriorityDebts';
 import {toCUIRecurringIncome} from 'services/translation/convertToCUI/convertToCUIRecurringIncome';
 import {toCUIRecurringExpense} from 'services/translation/convertToCUI/convertToCUIRecurringExpense';
@@ -42,10 +41,10 @@ export const toCUIStatementOfMeans = (ccdClaim: CCDClaim): StatementOfMeans => {
   statementOfMeans.courtOrders = toCUICourtOrders(ccdClaim.respondent1CourtOrderPaymentOption, ccdClaim.respondent1CourtOrderDetails);
   statementOfMeans.debts = toCUIDebts(ccdClaim.respondent1LoanCreditOption, ccdClaim.respondent1LoanCreditDetails);
   statementOfMeans.explanation = ccdClaim.responseToClaimAdmitPartWhyNotPayLRspec ? new Explanation(ccdClaim.responseToClaimAdmitPartWhyNotPayLRspec) : undefined;
-  statementOfMeans.carer = toCUICarerAllowanceCredit(ccdClaim.respondent1DQCarerAllowanceCredit, ccdClaim.respondent1DQCarerAllowanceCreditFullAdmission);
+  statementOfMeans.carer = toCUIGenericYesNo(ccdClaim.respondent1DQCarerAllowanceCredit || ccdClaim.respondent1DQCarerAllowanceCreditFullAdmission);
   statementOfMeans.priorityDebts = toCUIPriorityDebts(ccdClaim.specDefendant1Debts);
-  statementOfMeans.regularIncome = toCUIRecurringIncome(ccdClaim.respondent1DQRecurringIncome, ccdClaim.respondent1DQRecurringIncomeFA);
-  statementOfMeans.regularExpenses = toCUIRecurringExpense(ccdClaim.respondent1DQRecurringExpenses, ccdClaim.respondent1DQRecurringExpensesFA);
+  statementOfMeans.regularIncome = toCUIRecurringIncome(ccdClaim.respondent1DQRecurringIncome || ccdClaim.respondent1DQRecurringIncomeFA);
+  statementOfMeans.regularExpenses = toCUIRecurringExpense(ccdClaim.respondent1DQRecurringExpenses || ccdClaim.respondent1DQRecurringExpensesFA);
   return statementOfMeans;
 };
 

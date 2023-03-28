@@ -4,11 +4,12 @@ import {NumberOfChildren} from 'form/models/statementOfMeans/dependants/numberOf
 import {toCUIBoolean} from 'services/translation/convertToCUI/convertToCUIYesNo';
 
 export const toCUIDependents = (partnerAndDependents: CCDPartnerAndDependent): Dependants => {
-  if (!partnerAndDependents) return undefined;
-  return new Dependants(
-    toCUIBoolean(partnerAndDependents.haveAnyChildrenRequired),
-    toCUINumberOfChildren(partnerAndDependents.howManyChildrenByAgeGroup),
-  );
+  if (partnerAndDependents) {
+    return new Dependants(
+      toCUIBoolean(partnerAndDependents.haveAnyChildrenRequired),
+      toCUINumberOfChildren(partnerAndDependents.howManyChildrenByAgeGroup),
+    );
+  }
 };
 
 const toCUINumberOfChildren = (childrenByAgeGroup : CCDChildrenByAgeGroup): NumberOfChildren => {

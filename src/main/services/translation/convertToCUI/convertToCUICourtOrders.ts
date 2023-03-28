@@ -5,8 +5,7 @@ import {CourtOrder} from 'form/models/statementOfMeans/courtOrders/courtOrder';
 import {toCUIBoolean} from 'services/translation/convertToCUI/convertToCUIYesNo';
 
 export const toCUICourtOrders = (courtOrdersDeclared: YesNoUpperCamelCase, courtOrders: CCDCourtOrders[]): CourtOrders => {
-  if (!courtOrdersDeclared) return undefined;
-  return new CourtOrders(toCUIBoolean(courtOrdersDeclared), toCUICourtOrdersList(courtOrders));
+  if (courtOrdersDeclared) return new CourtOrders(toCUIBoolean(courtOrdersDeclared), toCUICourtOrdersList(courtOrders));
 };
 
 const toCUICourtOrdersList = (ccdCourtOrders: CCDCourtOrders[]): CourtOrder[] => {

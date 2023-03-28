@@ -4,16 +4,17 @@ import {BankAccountTypeValues} from 'form/models/bankAndSavings/bankAccountTypeV
 import {toCUIBooleanString} from 'services/translation/convertToCUI/convertToCUIYesNo';
 
 export const toCUIBankAccount = (ccdBankAccount: CCDBankAccount[]): CitizenBankAccount[] => {
-  if (!ccdBankAccount?.length) return undefined;
-  const citizenBankAccountList =
-    ccdBankAccount.map((ccdBankAccount: CCDBankAccount) => {
-      return {
-        typeOfAccount: toCUIBankAccountType(ccdBankAccount.value?.accountType),
-        joint: toCUIBooleanString(ccdBankAccount.value?.jointAccount),
-        balance: ccdBankAccount.value?.balance?.toString(),
-      };
-    });
-  return citizenBankAccountList;
+  if (ccdBankAccount?.length) {
+    const citizenBankAccountList =
+      ccdBankAccount.map((ccdBankAccount: CCDBankAccount) => {
+        return {
+          typeOfAccount: toCUIBankAccountType(ccdBankAccount.value?.accountType),
+          joint: toCUIBooleanString(ccdBankAccount.value?.jointAccount),
+          balance: ccdBankAccount.value?.balance?.toString(),
+        };
+      });
+    return citizenBankAccountList;
+  }
 };
 
 const toCUIBankAccountType = (typeOfAccount: string): BankAccountTypeValues => {

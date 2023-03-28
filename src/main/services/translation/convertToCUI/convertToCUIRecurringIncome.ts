@@ -8,16 +8,10 @@ import {IncomeType} from 'form/models/statementOfMeans/expensesAndIncome/incomeT
 import {TransactionSource} from 'form/models/statementOfMeans/expensesAndIncome/transactionSource';
 import {toCUIPaymentFrequency} from 'services/translation/convertToCUI/convertToCUIPaymentFrequency';
 
-export const toCUIRecurringIncome = (recurringIncomeItemsPA: CCDRecurringIncome[], recurringIncomeItemsFA: CCDRecurringIncome[]): RegularIncome => {
-  if (!recurringIncomeItemsPA?.length && !recurringIncomeItemsFA?.length) return undefined;
+export const toCUIRecurringIncome = (recurringIncomeItems: CCDRecurringIncome[]): RegularIncome => {
+  if (!recurringIncomeItems?.length) return undefined;
 
-  if (recurringIncomeItemsPA?.length) {
-    return toCUIRecurringIncomeItems(recurringIncomeItemsPA);
-  }
-
-  if (recurringIncomeItemsFA?.length) {
-    return toCUIRecurringIncomeItems(recurringIncomeItemsFA);
-  }
+  return toCUIRecurringIncomeItems(recurringIncomeItems);
 };
 
 const toCUIRecurringIncomeItems = (recurringIncomeItems: CCDRecurringIncome[]): RegularIncome => {

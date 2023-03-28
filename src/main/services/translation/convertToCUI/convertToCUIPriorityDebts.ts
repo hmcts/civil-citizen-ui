@@ -5,9 +5,7 @@ import {ExpenseType} from 'form/models/statementOfMeans/expensesAndIncome/expens
 import {toCUIPaymentFrequency} from 'services/translation/convertToCUI/convertToCUIPaymentFrequency';
 
 export const toCUIPriorityDebts = (priorityDebts: CCDDebtDetails): PriorityDebts => {
-  if (!priorityDebts) return undefined;
-
-  return new PriorityDebts(toCUIPriorityDebtsList(priorityDebts.debtDetails));
+  if (priorityDebts) return new PriorityDebts(toCUIPriorityDebtsList(priorityDebts.debtDetails));
 };
 
 const toCUIPriorityDebtsList = (priorityDebtsItems: CCDDebtDetailsList[]) : PriorityDebts => {
