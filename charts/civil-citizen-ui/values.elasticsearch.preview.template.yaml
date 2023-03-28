@@ -47,3 +47,4 @@ ccd:
       es.data.nodes.url: http://${SERVICE_NAME}-es-master:9200
     livenessProbe:
       initialDelaySeconds: 90
+    xpack.monitoring.enabled: false
