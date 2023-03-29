@@ -353,9 +353,9 @@ describe('translate partial admission to cui model', () => {
       // Given
       const ccdClaim: CCDClaim = {
         respondent1LiPResponse: <CCDRespondentLiPResponse>{
-          partialAdmissionAlreadyPaid: YesNoUpperCamelCase.YES,
           timelineComment: 'timeline comment',
         },
+        specDefenceAdmittedRequired: YesNoUpperCamelCase.YES,
         detailsOfWhyDoesYouDisputeTheClaim: 'reason',
       } as CCDClaim;
       // When
@@ -369,9 +369,7 @@ describe('translate partial admission to cui model', () => {
     it('Respond to claim & NOT PAID', () => {
       // Given
       const ccdClaim: CCDClaim = {
-        respondent1LiPResponse: <CCDRespondentLiPResponse>{
-          partialAdmissionAlreadyPaid: YesNoUpperCamelCase.NO,
-        },
+        specDefenceAdmittedRequired: YesNoUpperCamelCase.NO,
         respondToAdmittedClaimOwingAmount: '55',
         detailsOfWhyDoesYouDisputeTheClaim: 'reason',
         defenceAdmitPartPaymentTimeRouteRequired: CCDPaymentOption.IMMEDIATELY,

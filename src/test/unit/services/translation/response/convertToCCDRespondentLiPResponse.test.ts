@@ -8,8 +8,8 @@ import {CCDAddress} from 'models/ccdResponse/ccdAddress';
 import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
 import {CCDDQExtraDetails} from 'models/ccdResponse/ccdDQExtraDetails';
 import {CCDHearingSupport} from 'models/ccdResponse/ccdHearingSupport';
-import {DefendantTimeline} from 'common/form/models/timeLineOfEvents/defendantTimeline';
-import {TimelineRow} from 'common/form/models/timeLineOfEvents/timelineRow';
+import {DefendantTimeline} from 'form/models/timeLineOfEvents/defendantTimeline';
+import {TimelineRow} from 'form/models/timeLineOfEvents/timelineRow';
 
 const setUpUndefinedFinancialDetails = () : CCDFinancialDetailsLiP => {
   return {

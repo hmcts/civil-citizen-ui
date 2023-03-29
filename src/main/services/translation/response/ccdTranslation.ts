@@ -7,7 +7,10 @@ import {toCCDRejectAllOfClaimType} from './convertToCCDRejectAllOfClaimType';
 import {toCCDRepaymentPlan} from './convertToCCDRepaymentPlan';
 import {toCCDPaymentOption} from './convertToCCDPaymentOption';
 import {toCCDPayBySetDate} from './convertToCCDPayBySetDate';
-import {toCCDRespondToClaim} from './convertToCCDRespondToClaim';
+import {toCCDRespondToClaim} from 'services/translation/response/convertToCCDRespondToClaim';
+import {TimelineUploadTypeSpec} from 'models/ccdResponse/ccdHowToAddTimeline';
+import {toCCDResponseTimelineOfEvents} from 'services/translation/response/convertToCCDResponseTimelineOfEvents';
+import {toCCDEvidence} from 'services/translation/response/convertToCCDEvidence';
 import {toCCDBankAccountList} from './convertToCCDBankAccount';
 import {toCCDHomeDetails} from './convertToCCDHomeDetails';
 import {toCCDPartnerAndDependents} from './convertToCCDPartnerAndDependent';
@@ -35,9 +38,6 @@ import {toCCDSpecificCourtLocations} from 'services/translation/response/convert
 import {toCCDWitnesses} from 'services/translation/response/convertToCCDWitnesses';
 import {toCCDSmallClaimHearing} from 'services/translation/response/convertToCCDSmallClaimHearing';
 import {toCCDFastClaimHearing} from 'services/translation/response/convertToCCDFastClaimHearing';
-import {TimelineUploadTypeSpec} from 'common/models/ccdResponse/ccdHowToAddTimeline';
-import {toCCDResponseTimelineOfEvents} from './convertToCCDResponseTimelineOfEvents';
-import {toCCDEvidence} from './convertToCCDEvidence';
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   const paymentIntention = claim.getPaymentIntention();

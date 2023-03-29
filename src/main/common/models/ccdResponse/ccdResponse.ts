@@ -5,6 +5,9 @@ import {CCDPayBySetDate} from './ccdPayBySetDate';
 import {YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {CCDParty} from './ccdParty';
 import {CCDRespondToClaim} from 'models/ccdResponse/ccdRespondToClaim';
+import {TimelineUploadTypeSpec} from 'models/ccdResponse/ccdHowToAddTimeline';
+import {CCDTimeLineOfEvents} from 'models/ccdResponse/ccdTimeLineOfEvents';
+import {CCDEvidence} from 'models/ccdResponse/ccdEvidence';
 import {CCDBankAccount} from 'models/ccdResponse/ccdBankAccount';
 import {CCDHomeDetails} from 'models/ccdResponse/ccdHomeDetails';
 import {CCDPartnerAndDependent} from 'models/ccdResponse/ccdPartnerAndDependent';
@@ -24,9 +27,6 @@ import {CCDHearingSupport} from 'models/ccdResponse/ccdHearingSupport';
 import {CCDWitnesses} from 'models/ccdResponse/ccdWitnesses';
 import {CCDSmallClaimHearing} from 'models/ccdResponse/ccdSmallClaimHearing';
 import {CCDFastClaimHearing} from 'models/ccdResponse/ccdFastClaimHearing';
-import {TimelineUploadTypeSpec} from 'models/ccdResponse/ccdHowToAddTimeline';
-import {CCDTimeLineOfEvents} from 'models/ccdResponse/ccdTimeLineOfEvents';
-import {CCDEvidence} from 'models/ccdResponse/ccdEvidence';
 
 export interface CCDResponse extends ClaimUpdate {
   respondent1ClaimResponseTypeForSpec?: string;
