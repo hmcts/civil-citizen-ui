@@ -30,8 +30,8 @@ ccd:
         cpu: "25m"
         memory: "512Mi"
   logstash:
-    image:
-      pullPolicy: Always
+    image: docker.elastic.co/logstash/logstash
+    imagePullPolicy: "IfNotPresent"
     resources:
       requests:
         cpu: "500m"
@@ -46,4 +46,3 @@ ccd:
       es.data.nodes.url: http://${SERVICE_NAME}-es-master:9200
     livenessProbe:
       initialDelaySeconds: 90
-
