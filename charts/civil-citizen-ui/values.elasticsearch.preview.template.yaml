@@ -33,6 +33,16 @@ ccd:
     image: hmctspublic.azurecr.io/imported/logstash/logstash
     imageTag: 8.5.1
     imagePullPolicy: "IfNotPresent"
+    extraEnvs:
+      - name: db.url
+        value: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
+      - name: db.user
+        value: ${POSTGRES_USER}
+      - name: db.pwd
+        value: ${POSTGRES_PASSWORD}
+      - name: es.data.nodes.url
+        value: http://${SERVICE_NAME}-es-master:9200
+
     resources:
       requests:
         cpu: "500m"
@@ -40,10 +50,5 @@ ccd:
       limits:
         cpu: "2500m"
         memory: "1024Mi"
-    configTpl:
-      db.url: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
-      db.user: ${POSTGRES_USER}
-      db.pwd: ${POSTGRES_PASSWORD}
-      es.data.nodes.url: http://${SERVICE_NAME}-es-master:9200
     livenessProbe:
       initialDelaySeconds: 90
