@@ -54,6 +54,7 @@ import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIC
 import {analyseClaimType, claimType} from 'common/form/models/claimType';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {toCUIMediation} from 'services/translation/convertToCUI/convertToCUIMediation';
+import {toCUIStatementOfMeans} from 'services/translation/convertToCUI/convertToCUIStatementOfMeans';
 import {CCDRespondentLiPResponse} from './ccdResponse/ccdRespondentLiPResponse';
 import {toCUIPartialAdmission} from 'services/translation/convertToCUI/convertToCUIPartialAdmission';
 
@@ -100,6 +101,7 @@ export class Claim {
     claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
     claim.respondent1 = toCUIParty(ccdClaim?.respondent1);
     claim.mediation = toCUIMediation(ccdClaim?.respondent1LiPResponse?.respondent1MediationLiPResponse);
+    claim.statementOfMeans = toCUIStatementOfMeans(ccdClaim);
     claim.respondent1.responseType = ccdClaim?.respondent1ClaimResponseTypeForSpec;
     if (claim.isPartialAdmission()) {
       claim.partialAdmission = toCUIPartialAdmission(ccdClaim);
@@ -448,8 +450,21 @@ export class Claim {
     return this.interest?.totalInterest?.reason;
   }
 
+  detailsOfWhyYouDisputeTheClaim(): string {
+    if (this.rejectAllOfClaim) {
+      return this.rejectAllOfClaim?.defence?.text ?? this.rejectAllOfClaim?.whyDoYouDisagree?.text;
+    } else if (this.partialAdmission) {
+      return this.partialAdmission?.whyDoYouDisagree?.text;
+    }
+  }
+
   getPaymentIntention() : PaymentIntention {
     return this.isPartialAdmission()? this.partialAdmission?.paymentIntention : this.fullAdmission?.paymentIntention;
+  }
+
+  hasExpertDetails(): boolean {
+    return this.directionQuestionnaire?.experts?.expertDetailsList?.items?.length
+      && this.directionQuestionnaire?.experts?.expertEvidence?.option === YesNo.YES;
   }
 
   private getName(party: Party): string {

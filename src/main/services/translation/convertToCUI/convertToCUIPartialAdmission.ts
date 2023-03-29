@@ -12,11 +12,9 @@ import {CCDTimeLineOfEvents} from 'common/models/ccdResponse/ccdTimeLineOfEvents
 import {CCDClaim} from 'common/models/civilClaimResponse';
 import {PartialAdmission} from 'common/models/partialAdmission';
 import {RepaymentPlan} from 'common/models/repaymentPlan';
-import {toCUIGenericYesNo} from './convertToCUIYesNo';
 
 export function toCUIPartialAdmission(ccdClaim: CCDClaim): PartialAdmission {
   const partialAdmission = new PartialAdmission();
-  partialAdmission.alreadyPaid = toCUIGenericYesNo(ccdClaim?.respondent1LiPResponse?.partialAdmissionAlreadyPaid);
   partialAdmission.howMuchHaveYouPaid = toCUIHowMuchHaveYouPaid(ccdClaim?.respondToAdmittedClaim);
   partialAdmission.whyDoYouDisagree = new WhyDoYouDisagree(ccdClaim?.detailsOfWhyDoesYouDisputeTheClaim);
   partialAdmission.timeline = toCUIResponseTimelineOfEvents(ccdClaim?.specResponseTimelineOfEvents, ccdClaim?.respondent1LiPResponse?.timelineComment);

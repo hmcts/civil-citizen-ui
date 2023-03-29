@@ -1,11 +1,13 @@
-import {PartialAdmission} from 'models/partialAdmission';
-import {CCDHowWasThisAmountPaid, CCDRespondToClaim} from 'models/ccdResponse/ccdRespondToClaim';
+import {CCDRespondToClaim, CCDHowWasThisAmountPaid} from '../../../common/models/ccdResponse/ccdRespondToClaim';
+import {HowMuchHaveYouPaid} from '../../../common/form/models/admission/howMuchHaveYouPaid';
 
-export const toCCDRespondToClaim = (partialAdmission: PartialAdmission): CCDRespondToClaim => {
-  return {
-    howMuchWasPaid: partialAdmission?.howMuchHaveYouPaid?.amount,
-    whenWasThisAmountPaid: partialAdmission?.howMuchHaveYouPaid?.date,
-    howWasThisAmountPaid: partialAdmission?.howMuchHaveYouPaid ? CCDHowWasThisAmountPaid.OTHER : undefined,
-    howWasThisAmountPaidOther: partialAdmission?.howMuchHaveYouPaid?.text,
-  };
+export const toCCDRespondToClaim = (howMuchHaveYouPaid: HowMuchHaveYouPaid): CCDRespondToClaim => {
+  if (howMuchHaveYouPaid) {
+    return {
+      howMuchWasPaid: howMuchHaveYouPaid.amount,
+      howWasThisAmountPaid: howMuchHaveYouPaid.amount ? CCDHowWasThisAmountPaid.OTHER : undefined,
+      whenWasThisAmountPaid: howMuchHaveYouPaid.date,
+      howWasThisAmountPaidOther: howMuchHaveYouPaid.text,
+    };
+  }
 };

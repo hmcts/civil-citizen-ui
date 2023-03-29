@@ -3,13 +3,11 @@ import {CCDResponse} from 'models/ccdResponse/ccdResponse';
 import {toUpperCaseGenericYesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 import {toAgreedMediation} from './convertToCCDAgreedMediation';
 import {toCCDParty} from './convertToCCDParty';
+import {toCCDRejectAllOfClaimType} from './convertToCCDRejectAllOfClaimType';
 import {toCCDRepaymentPlan} from './convertToCCDRepaymentPlan';
 import {toCCDPaymentOption} from './convertToCCDPaymentOption';
 import {toCCDPayBySetDate} from './convertToCCDPayBySetDate';
-import {toCCDRespondToClaim} from 'services/translation/response/convertToCCDRespondToClaim';
-import {TimelineUploadTypeSpec} from 'models/ccdResponse/ccdHowToAddTimeline';
-import {toCCDResponseTimelineOfEvents} from 'services/translation/response/convertToCCDResponseTimelineOfEvents';
-import {toCCDEvidence} from 'services/translation/response/convertToCCDEvidence';
+import {toCCDRespondToClaim} from './convertToCCDRespondToClaim';
 import {toCCDBankAccountList} from './convertToCCDBankAccount';
 import {toCCDHomeDetails} from './convertToCCDHomeDetails';
 import {toCCDPartnerAndDependents} from './convertToCCDPartnerAndDependent';
@@ -31,6 +29,15 @@ import {
   toCCDYesNoFromBoolean,
   toCCDYesNoFromGenericYesNo,
 } from 'services/translation/response/convertToCCDYesNo';
+import {toCCDWelshLanguageRequirements} from 'services/translation/response/convertToCCDWelshLanguageRequirements';
+import {toCCDVulnerability} from 'services/translation/response/convertToCCDVulenrabilityQuestions';
+import {toCCDSpecificCourtLocations} from 'services/translation/response/convertToCCDSpecificCourtLocations';
+import {toCCDWitnesses} from 'services/translation/response/convertToCCDWitnesses';
+import {toCCDSmallClaimHearing} from 'services/translation/response/convertToCCDSmallClaimHearing';
+import {toCCDFastClaimHearing} from 'services/translation/response/convertToCCDFastClaimHearing';
+import {TimelineUploadTypeSpec} from 'common/models/ccdResponse/ccdHowToAddTimeline';
+import {toCCDResponseTimelineOfEvents} from './convertToCCDResponseTimelineOfEvents';
+import {toCCDEvidence} from './convertToCCDEvidence';
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   const paymentIntention = claim.getPaymentIntention();
@@ -44,13 +51,15 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     totalClaimAmount: claim.totalClaimAmount,
     respondent1: toCCDParty(claim.respondent1),
     respondent1LiPResponse: toCCDRespondentLiPResponse(claim),
-    respondToAdmittedClaim: toCCDRespondToClaim(claim.partialAdmission),
+    respondToAdmittedClaim: toCCDRespondToClaim(claim.partialAdmission?.howMuchHaveYouPaid),
     specDefenceAdmittedRequired: toUpperCaseGenericYesNo(claim.partialAdmission?.alreadyPaid),
     respondToAdmittedClaimOwingAmount: claim.partialAdmission?.howMuchDoYouOwe?.amount?.toString(),
-    detailsOfWhyDoesYouDisputeTheClaim: claim.partialAdmission?.whyDoYouDisagree?.text,
+    detailsOfWhyDoesYouDisputeTheClaim: claim.detailsOfWhyYouDisputeTheClaim(),
     specClaimResponseTimelineList: TimelineUploadTypeSpec.MANUAL, // sets to manual cause CUI do not have other option
     specResponseTimelineOfEvents: toCCDResponseTimelineOfEvents(claim.partialAdmission?.timeline),
     specResponselistYourEvidenceList: toCCDEvidence(claim.evidence),
+    defenceRouteRequired: toCCDRejectAllOfClaimType(claim.rejectAllOfClaim?.option),
+    respondToClaim: toCCDRespondToClaim(claim.rejectAllOfClaim?.howMuchHaveYouPaid),
     respondent1BankAccountList: toCCDBankAccountList(claim.statementOfMeans?.bankAccounts),
     disabilityPremiumPayments: toCCDYesNoFromGenericYesNo(claim.statementOfMeans?.disability),
     severeDisabilityPremiumPayments: toCCDYesNoFromGenericYesNo(claim.statementOfMeans?.severeDisability),
@@ -73,6 +82,12 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     respondent1DQRecurringIncomeFA: toCCDRecurringIncomeField(claim, ResponseType.FULL_ADMISSION),
     respondent1DQRecurringExpenses: toCCDRecurringExpensesField(claim, ResponseType.PART_ADMISSION),
     respondent1DQRecurringExpensesFA: toCCDRecurringExpensesField(claim, ResponseType.FULL_ADMISSION),
+    respondent1DQLanguage: toCCDWelshLanguageRequirements(claim.directionQuestionnaire?.welshLanguageRequirements),
+    respondent1DQVulnerabilityQuestions: toCCDVulnerability(claim.directionQuestionnaire?.vulnerabilityQuestions),
+    respondent1DQRequestedCourt: toCCDSpecificCourtLocations(claim.directionQuestionnaire?.hearing?.specificCourtLocation),
+    respondent1DQWitnesses: toCCDWitnesses(claim.directionQuestionnaire?.witnesses),
+    respondent1DQHearingSmallClaim: claim.isSmallClaimsTrackDQ ? toCCDSmallClaimHearing(claim.directionQuestionnaire?.hearing) : undefined,
+    respondent1DQHearingFastClaim: claim.isFastTrackClaim ? toCCDFastClaimHearing(claim.directionQuestionnaire?.hearing) : undefined,
   };
 };
 
