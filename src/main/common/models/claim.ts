@@ -56,6 +56,7 @@ import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {toCUIMediation} from 'services/translation/convertToCUI/convertToCUIMediation';
 import {toCUIRejectAllOfClaimType} from "services/translation/convertToCUI/convertToCUIRejectAllOfClaimType";
 import {toCUIRespondToClaim} from "services/translation/convertToCUI/convertToCUIRespondToClaim";
+import {toCUIStatementOfMeans} from 'services/translation/convertToCUI/convertToCUIStatementOfMeans';
 
 export class Claim {
   legacyCaseReference: string;
@@ -104,6 +105,7 @@ export class Claim {
     claim.rejectAllOfClaim.whyDoYouDisagree.text = ccdClaim.detailsOfWhyDoesYouDisputeTheClaim;
     claim.rejectAllOfClaim.whyDoYouDisagree.text = ccdClaim.detailsOfWhyDoesYouDisputeTheClaim;
     claim.rejectAllOfClaim.howMuchHaveYouPaid = toCUIRespondToClaim(ccdClaim.respondToClaim);
+    claim.statementOfMeans = toCUIStatementOfMeans(ccdClaim);
     return claim;
   }
 
@@ -450,6 +452,11 @@ export class Claim {
 
   getPaymentIntention() : PaymentIntention {
     return this.isPartialAdmission()? this.partialAdmission?.paymentIntention : this.fullAdmission?.paymentIntention;
+  }
+
+  hasExpertDetails(): boolean {
+    return this.directionQuestionnaire?.experts?.expertDetailsList?.items?.length
+      && this.directionQuestionnaire?.experts?.expertEvidence?.option === YesNo.YES;
   }
 
   private getName(party: Party): string {
