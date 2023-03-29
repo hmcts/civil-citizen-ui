@@ -36,7 +36,13 @@ ccd:
 
     logstashConfig:
       logstash.yml: |
+        http.host: 0.0.0.0
         xpack.monitoring.enabled: false
+
+    logstashPipeline:
+      uptime.conf: |
+        input { exec { command => "uptime" interval => 30 } }
+        output { elasticsearch { hosts => [http://${SERVICE_NAME}-es-master:9200] index => "logstash" } }
 
     extraEnvs:
       - name: DB_URL
