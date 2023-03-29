@@ -15,7 +15,6 @@ const setUpUndefinedFinancialDetails = () : CCDFinancialDetailsLiP => {
     partnerDisabilityLiP: undefined,
     partnerSevereDisabilityLiP: undefined,
     childrenEducationLiP: undefined,
-
   };
 };
 
