@@ -45,7 +45,6 @@ ccd:
         value: ${POSTGRES_PASSWORD}
       - name: ES_DATA_NODES_URL
         value: http://${SERVICE_NAME}-es-master:9200
-    logstashConfig:
 
     resources:
       requests:
