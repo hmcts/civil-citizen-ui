@@ -35,9 +35,8 @@ ccd:
     imagePullPolicy: "IfNotPresent"
     logstashConfig:
       logstash.yml: |
-        xpack.monitoring.enabled: true
+        xpack.monitoring.enabled: false
         xpack.monitoring.elasticsearch.ssl.verification_mode: "none"
-        xpack.monitoring.elasticsearch.hosts: [http://${SERVICE_NAME}-es-master:9200]
     resources:
       requests:
         cpu: "500m"
