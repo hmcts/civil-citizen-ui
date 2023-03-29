@@ -34,13 +34,13 @@ ccd:
     imageTag: 8.5.1
     imagePullPolicy: "IfNotPresent"
     extraEnvs:
-      - name: db.url
+      - name: DB_URL
         value: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
-      - name: db.user
+      - name: DB_USER
         value: ${POSTGRES_USER}
-      - name: db.pwd
+      - name: DB_PWD
         value: ${POSTGRES_PASSWORD}
-      - name: es.data.nodes.url
+      - name: ES_DATA_NODES_URL
         value: http://${SERVICE_NAME}-es-master:9200
 
     resources:
