@@ -33,10 +33,16 @@ ccd:
     image: hmctspublic.azurecr.io/imported/logstash/logstash
     imageTag: 8.5.1
     imagePullPolicy: "IfNotPresent"
-    logstashConfig:
-      logstash.yml: |
-        xpack.monitoring.enabled: false
-        xpack.monitoring.elasticsearch.ssl.verification_mode: "none"
+    extraEnvs:
+      - name: DB_URL
+        value: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
+      - name: DB_USER
+        value: ${POSTGRES_USER}
+      - name: DB_PWD
+        value: ${POSTGRES_PASSWORD}
+      - name: ES_DATA_NODES_URL
+        value: http://${SERVICE_NAME}-es-master:9200
+
     resources:
       requests:
         cpu: "500m"
@@ -44,10 +50,5 @@ ccd:
       limits:
         cpu: "2500m"
         memory: "1024Mi"
-    configTpl:
-      db.url: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
-      db.user: ${POSTGRES_USER}
-      db.pwd: ${POSTGRES_PASSWORD}
-      es.data.nodes.url: http://${SERVICE_NAME}-es-master:9200
     livenessProbe:
       initialDelaySeconds: 90
