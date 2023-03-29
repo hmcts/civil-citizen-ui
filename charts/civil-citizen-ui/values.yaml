@@ -16,6 +16,9 @@ civil-service:
 elastic:
   enabled: false
 
+wa:
+  enabled: false
+
 nodejs:
   applicationPort: 3001
   ingressHost: civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net
