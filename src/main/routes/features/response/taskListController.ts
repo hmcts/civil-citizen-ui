@@ -14,7 +14,6 @@ taskListController.get(RESPONSE_TASK_LIST_URL, async (req: AppRequest, res, next
     const currentClaimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const caseData: Claim = await getClaimById(currentClaimId, req);
-    console.log('TASK LIST CONTROLLER', caseData?.evidence?.evidenceItem);
     const taskLists = getTaskLists(caseData, currentClaimId, lang);
 
     req.session.claimId = currentClaimId;

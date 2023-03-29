@@ -1,5 +1,4 @@
 import {Claim} from 'models/claim';
-import {toUpperCaseGenericYesNo} from 'form/models/yesNo';
 import {toCCDResponseLiPFinancialDetails} from 'services/translation/response/convertToCCDResponseLiPFinancialDetails';
 import {toCCDMediation} from 'services/translation/response/convertToCCDMediation';
 import {toCCDDQExtraDetails} from 'services/translation/response/convertToCCDDQExtraDetials';
@@ -10,7 +9,6 @@ import {YesNo} from 'form/models/yesNo';
 
 export const toCCDRespondentLiPResponse = (claim: Claim): CCDRespondentLiPResponse => {
   return {
-    partialAdmissionAlreadyPaid: toUpperCaseGenericYesNo(claim.partialAdmission?.alreadyPaid),
     timelineComment: claim.partialAdmission?.timeline?.comment,
     evidenceComment: claim.evidence?.comment,
     respondent1LiPFinancialDetails : toCCDResponseLiPFinancialDetails(claim.statementOfMeans),
