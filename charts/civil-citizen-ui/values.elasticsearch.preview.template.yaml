@@ -43,7 +43,7 @@ ccd:
         value: ${POSTGRES_USER}
       - name: DB_PWD
         value: ${POSTGRES_PASSWORD}
-      - name: ES_DATA_NODES_URL
+      - name: ES_HOSTS
         value: http://${SERVICE_NAME}-es-master:9200
 
     resources:
