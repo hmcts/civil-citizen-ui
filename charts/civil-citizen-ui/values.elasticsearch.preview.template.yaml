@@ -30,9 +30,14 @@ ccd:
         cpu: "25m"
         memory: "512Mi"
   logstash:
-    image:
-        value: hmctspublic.azurecr.io/imported/logstash/logstash
-        pullPolicy: Always
+    image: hmctspublic.azurecr.io/imported/logstash/logstash
+    imageTag: 8.5.1
+    imagePullPolicy: "IfNotPresent"
+    logstashConfig:
+      logstash.yml: |
+        xpack.monitoring.enabled: true
+        xpack.monitoring.elasticsearch.ssl.verification_mode: "none"
+        xpack.monitoring.elasticsearch.hosts: [ "http://${{SERVICE_NAME}}-es-master:9200 30"]
     resources:
       requests:
         cpu: "500m"
