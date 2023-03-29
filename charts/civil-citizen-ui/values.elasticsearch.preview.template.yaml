@@ -30,8 +30,9 @@ ccd:
         cpu: "25m"
         memory: "512Mi"
   logstash:
-    image: docker.elastic.co/logstash/logstash
-    imagePullPolicy: "IfNotPresent"
+    image:
+        value: hmctspublic.azurecr.io/imported/logstash/logstash
+        pullPolicy: Always
     resources:
       requests:
         cpu: "500m"
