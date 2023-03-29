@@ -40,7 +40,7 @@ describe('convert respond to Claim', () => {
     };
 
     // When
-    const converted = toCCDRespondToClaim(respondToClaim);
+    const converted = toCCDRespondToClaim(respondToClaim.howMuchHaveYouPaid);
 
     // Then
     expect(respondToClaim.howMuchHaveYouPaid.amount).toEqual(converted.howMuchWasPaid);

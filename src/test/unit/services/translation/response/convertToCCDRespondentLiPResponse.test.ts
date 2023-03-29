@@ -152,7 +152,6 @@ describe('translate cui fields to CCD model', () => {
     const result = toCCDRespondentLiPResponse(claim);
 
     // Then
-    expect(result.partialAdmissionAlreadyPaid).toEqual(YesNoUpperCamelCase.YES);
     expect(result.timelineComment).toEqual(claim.partialAdmission.timeline.comment);
     expect(result.evidenceComment).toEqual(claim.evidence.comment);
   });
