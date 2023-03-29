@@ -34,6 +34,11 @@ ccd:
     imageTag: 8.5.1
     imagePullPolicy: "IfNotPresent"
 
+    logstashConfig:
+      logstash.yml: |
+        http.host: 0.0.0.0
+        xpack.monitoring.enabled: false
+
     extraEnvs:
       - name: DB_URL
         value: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
@@ -42,8 +47,6 @@ ccd:
       - name: DB_PWD
         value: ${POSTGRES_PASSWORD}
       - name: ES_HOSTS
-        value: http://${SERVICE_NAME}-es-master:9200
-      - name: ELASTICSEARCH_URL
         value: http://${SERVICE_NAME}-es-master:9200
 
     resources:
