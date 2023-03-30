@@ -1,12 +1,16 @@
-import {Party} from '../../../../../main/common/models/party';
-import {toCUIParty} from '../../../../../main/services/translation/convertToCUI/convertToCUIParty';
-import {PartyType} from '../../../../../main/common/models/partyType';
-import {Address} from '../../../../../main/common/form/models/address';
-import {CCDParty} from '../../../../../main/common/models/ccdResponse/ccdParty';
-import {CCDAddress} from '../../../../../main/common/models/ccdResponse/ccdAddress';
-import {CitizenDate} from '../../../../../main/common/form/models/claim/claimant/citizenDate';
-import {PartyPhone} from '../../../../../main/common/models/PartyPhone';
-import {Email} from '../../../../../main/common/models/Email';
+import {Party} from 'models/party';
+import {
+  toCUIParty,
+  toCUIPartyRespondent,
+} from 'services/translation/convertToCUI/convertToCUIParty';
+import {PartyType} from 'models/partyType';
+import {Address} from 'form/models/address';
+import {CCDParty} from 'models/ccdResponse/ccdParty';
+import {CCDAddress} from 'models/ccdResponse/ccdAddress';
+import {CitizenDate} from 'form/models/claim/claimant/citizenDate';
+import {PartyPhone} from 'models/PartyPhone';
+import {Email} from 'models/Email';
+import {CCDRespondentLiPResponse} from 'models/ccdResponse/ccdRespondentLiPResponse';
 
 const companyName = 'Version 1';
 const phone = new PartyPhone('123456789');
@@ -20,6 +24,7 @@ const email = new Email('test@test.com');
 const emailCCD = 'test@test.com';
 
 const address: Address = new Address('Street test', '1', '1A', 'test', 'sl11gf');
+const correspondenceAddressCUI: Address = new Address('Street test - correspondence', '1 - correspondence', '1A - correspondence', 'test - correspondence', 'sl11gf - correspondence');
 
 const addressCCD: CCDAddress = {
   AddressLine1: 'Street test',
@@ -29,6 +34,16 @@ const addressCCD: CCDAddress = {
   PostCode: 'sl11gf',
   Country: 'test',
   County: 'test',
+};
+
+const correspondenceAddressCCD: CCDAddress = {
+  AddressLine1: 'Street test - correspondence',
+  AddressLine2: '1 - correspondence',
+  AddressLine3: '1A - correspondence',
+  PostTown: 'test - correspondence',
+  PostCode: 'sl11gf - correspondence',
+  Country: 'test - correspondence',
+  County: 'test - correspondence',
 };
 
 const commonParty = {
@@ -41,6 +56,7 @@ const partyCompany: Party = {
   emailAddress: email,
   partyDetails: {
     partyName: companyName,
+    contactPerson: undefined,
     ...commonParty,
   },
 };
@@ -55,7 +71,7 @@ const partyIndividual: Party = {
     individualLastName: lastName,
     ...commonParty,
   },
-  dateOfBirth: {date: dateOfBirth.date, year: NaN, month: NaN, day: NaN},
+  dateOfBirth: {date: dateOfBirth.date, year: 1990, month: 10, day: 10},
 };
 
 const partySoleTrader: Party = {
@@ -69,7 +85,7 @@ const partySoleTrader: Party = {
     soleTraderTradingAs: soleTraderTradingAs,
     ...commonParty,
   },
-  dateOfBirth: {date: dateOfBirth.date, year: NaN, month: NaN, day: NaN},
+  dateOfBirth: {date: dateOfBirth.date, year: 1990, month: 10, day: 10},
 };
 
 const partyCompanyCCD: CCDParty = {
@@ -127,19 +143,46 @@ const partySoleTraderCCD: CCDParty = {
   type: PartyType.SOLE_TRADER,
 };
 
-describe('translate party to cui model', () => {
-  it('should translate COMPANY party to ccd', () => {
-    const partyResponseCCD = toCUIParty(partyCompanyCCD);
-    expect(partyResponseCCD).toMatchObject(partyCompany);
+const respondent1LiPResponse : CCDRespondentLiPResponse = {
+  respondent1LiPCorrespondenceAddress: correspondenceAddressCCD,
+  respondent1LiPContactPerson: 'example contact',
+};
+describe('Party translations', () => {
+  describe('translate party to cui model', () => {
+    it('should translate COMPANY party to ccd', () => {
+      const partyResponseCCD = toCUIParty(partyCompanyCCD);
+      expect(partyResponseCCD).toMatchObject(partyCompany);
+    });
+
+    it('should translate INDIVIDUAL party to cui', () => {
+      const partyResponse = toCUIParty(partyIndividualCCD);
+      expect(partyResponse).toMatchObject(partyIndividual);
+    });
+
+    it('should translate SOLE TRADER party to cui', () => {
+      const partyResponse = toCUIParty(partySoleTraderCCD);
+      expect(partyResponse).toMatchObject(partySoleTrader);
+    });
   });
 
-  it('should translate INDIVIDUAL party to cui', () => {
-    const partyResponse = toCUIParty(partyIndividualCCD);
-    expect(partyResponse).toMatchObject(partyIndividual);
-  });
+  describe('translate respondent party to cui model', () => {
+    it('should translate COMPANY RESPONDENT party to ccd', () => {
+      partyCompany.partyDetails.contactPerson = 'example contact';
+      partyCompany.partyDetails.correspondenceAddress = correspondenceAddressCUI;
+      const partyResponseCCD = toCUIPartyRespondent(partyCompanyCCD, respondent1LiPResponse);
+      expect(partyResponseCCD).toMatchObject(partyCompany);
+    });
 
-  it('should translate SOLE TRADER party to cui', () => {
-    const partyResponse = toCUIParty(partySoleTraderCCD);
-    expect(partyResponse).toMatchObject(partySoleTrader);
+    it('should translate INDIVIDUAL RESPONDENT party to cui', () => {
+      partyIndividual.partyDetails.correspondenceAddress = correspondenceAddressCUI;
+      const partyResponse = toCUIPartyRespondent(partyIndividualCCD, respondent1LiPResponse);
+      expect(partyResponse).toMatchObject(partyIndividual);
+    });
+
+    it('should translate SOLE TRADER RESPONDENT party to cui', () => {
+      partySoleTrader.partyDetails.correspondenceAddress = correspondenceAddressCUI;
+      const partyResponse = toCUIPartyRespondent(partySoleTraderCCD, respondent1LiPResponse);
+      expect(partyResponse).toMatchObject(partySoleTrader);
+    });
   });
 });
