@@ -55,22 +55,12 @@ ccd:
         emptyDir: {}
       extraVolumeMounts: |
       - name: logstash-lib
-        mountPath: /usr/share/logstash/ccd
+        mountPath: /usr/share/logstash/files
     logstashConfig:
       logstash.yml: |
         http.host: 0.0.0.0
         xpack.monitoring.enabled: false
         xpack.monitoring.elasticsearch.hosts: ["${ES_HOSTS}"]
-      pipelines.yml: |
-        - pipeline.id: main
-          path.config: "/usr/share/logstash/pipeline/{01_input,02_filter,03_output}.conf"
-          pipeline.workers: 4
-          pipeline.batch.size: 500
-          queue.type: persisted
-        - pipeline.id: index-dead-letter-to-es
-          path.config: "/usr/share/logstash/pipeline/dead_letter_indexing_pipeline.conf"
-          pipeline.workers: 1
-          dead_letter_queue.enable: false
     logstashPipeline:
       01_input.conf: |
         input  {
