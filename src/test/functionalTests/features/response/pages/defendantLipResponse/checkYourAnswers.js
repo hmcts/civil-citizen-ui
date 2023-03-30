@@ -16,7 +16,7 @@ class CheckYourAnswersPage {
     I.see('Check your answers', 'h1');
     I.waitForElement(fields.cyaSigned);
     I.checkOption(fields.cyaSigned);
-    if (responseType == 'partAdmit') {
+    if (responseType == 'partial-admission') {
       I.waitForElement(fields.directionsQuestionnaireSigned);
       I.checkOption(fields.directionsQuestionnaireSigned);
     } else if (responseType == 'admitPartTwo') {

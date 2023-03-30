@@ -2,17 +2,16 @@
 const I = actor();
 
 const fields ={
-  yesButton: 'input[id="option"]',
-  noButton: 'input[id="option-2"]',
+  continueWithExpert: 'input[id="expertYes"]',
+  continueWithoutExpert: 'button.govuk-button',
 };
 
 class DqExpert {
 
-  selectHearingRequirements(claimRef) {
+  chooseExpert(claimRef) {
     I.amOnPage('/case/'+claimRef+'/directions-questionnaire/expert');
-    I.see('Determination without Hearing Questions', 'h1');
-    I.click(fields.yesButton);
-    I.click('Save and continue');
+    I.see('Using an expert', 'h1');
+    I.click(fields.continueWithExpert);
   }
 }
 

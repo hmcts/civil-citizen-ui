@@ -33,12 +33,25 @@ const  RejectAllOfClaim  =  require('../pages/defendantLipResponse/howYouWillPay
 const  CarerDetails  =  require('../pages/defendantLipResponse/shareYourFinancialDetails/carerDetails');
 const ViewYourOptionsBeforeDeadline = require('../pages/defendantLipResponse/viewYourOptionsBeforeDeadline/viewYourOptionsBeforeDeadline');
 const HowMuchYouHavePaid = require('../pages/defendantLipResponse/howYouWillPay/howMuchYouHavePaid');
+const HowMuchDoYouOwe = require('../pages/defendantLipResponse/howYouWillPay/howMuchDoYouOwe');
 const AddYourTimeLine = require('../pages/defendantLipResponse/whyDoYouDisagree/addYourTimeLine');
 const WhyDoYouDisagreeTheClaimAmount = require('../pages/defendantLipResponse/whyDoYouDisagree/whyDoYouDisagreeTheClaimAmount');
 const ListYourEvidence = require('../pages/defendantLipResponse/whyDoYouDisagree/listYourEvidence');
 const FreeTelephoneMediation = require('../pages/defendantLipResponse/freeTelephoneMediation/freeTelephoneMediation');
 const MediationCanWeUse = require('../pages/defendantLipResponse/freeTelephoneMediation/mediatonCanWeUse');
 const RequestMoreTime = require('../pages/defendantLipResponse/viewYourOptionsBeforeDeadline/requestMoreTime');
+const HearingRequirements = require('../pages/defendantLipResponse/defendantDQ/hearingRequirements');
+const DQExpert = require('../pages/defendantLipResponse/defendantDQ/dqExpert');
+const ExpertReportDetails = require('../pages/defendantLipResponse/defendantDQ/expertReportDetails');
+const GiveEvidenceYourself = require('../pages/defendantLipResponse/defendantDQ/giveEvidenceYourself');
+const DefendantWitnesses = require('../pages/defendantLipResponse/defendantDQ/defendantWitnesses');
+const CantAttendHearing = require('../pages/defendantLipResponse/defendantDQ/cantAttendHearing');
+const AvailabilityDates = require('../pages/defendantLipResponse/defendantDQ/availabilityDates');
+const PhoneOrVideoHearing = require('../pages/defendantLipResponse/defendantDQ/phoneOrVideoHearing');
+const VulnerabilityDetails = require('../pages/defendantLipResponse/defendantDQ/vulnerability');
+const SupportRequired = require('../pages/defendantLipResponse/defendantDQ/supportRequired');
+const CourtLocation = require('../pages/defendantLipResponse/defendantDQ/courtLocation');
+const WelshLanguage = require('../pages/defendantLipResponse/defendantDQ/welshLanguage');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const requestMoreTime = new RequestMoreTime();
@@ -81,7 +94,20 @@ const rejectAllOfClaim = new RejectAllOfClaim();
 const selectCarerDetails = new CarerDetails();
 const viewYourOptionsBeforeDeadline = new ViewYourOptionsBeforeDeadline();
 const howMuchYouHavePaid = new HowMuchYouHavePaid();
+const howMuchDoYouOwe = new HowMuchDoYouOwe();
 const whyDoYouDisagreeTheClaimAmount = new WhyDoYouDisagreeTheClaimAmount();
+const hearingRequirements = new HearingRequirements();
+const dqExpert = new DQExpert();
+const expertReportDetails = new ExpertReportDetails();
+const giveEvidenceYourself = new GiveEvidenceYourself();
+const defendantWitnesses = new DefendantWitnesses();
+const cantAttendHearing = new CantAttendHearing();
+const availabilityDates = new AvailabilityDates();
+const phoneOrVideoHearing = new PhoneOrVideoHearing();
+const vulnerabilityDetails = new VulnerabilityDetails();
+const supportRequired = new SupportRequired();
+const courtLocation = new CourtLocation();
+const welshLanguage = new WelshLanguage();
 
 class ResponseSteps {
 
@@ -130,20 +156,20 @@ class ResponseSteps {
     this.SelectResidenceDetails('ownHome');
     this.SelectPartnerDetails('yes');
     this.SelectPartnerAge('yes');
-    ResponseSteps.SelectPartnerPension('yes');
-    ResponseSteps.SelectPartnerDisability('no');
-    ResponseSteps.SelectDependantDetails('yes');
-    ResponseSteps.SelectOtherDependantDetails('yes');
-    ResponseSteps.SelectEmploymentDetails('yes');
-    ResponseSteps.EnterEmployerDetails();
-    ResponseSteps.EnterSelfEmploymentDetails();
-    ResponseSteps.EnterSelfEmploymentTaxDetails();
-    ResponseSteps.EnterCourtOrderDetails(claimRef);
-    ResponseSteps.PriorityDebtsDetails('120','20','10', '5');
-    ResponseSteps.EnterDebtDetails();
-    ResponseSteps.MonthlyExpensesDetails('1200','45', '25', '30', '100', '125');
-    ResponseSteps.MonthlyIncomeDetails('4500', '120', '1100');
-    ResponseSteps.EnterExplanation();
+    this.SelectPartnerPension('yes');
+    this.SelectPartnerDisability('no');
+    this.SelectDependantDetails('yes');
+    this.SelectOtherDependantDetails('yes');
+    this.SelectEmploymentDetails('yes');
+    this.EnterEmployerDetails();
+    this.EnterSelfEmploymentDetails();
+    this.EnterSelfEmploymentTaxDetails();
+    this.EnterCourtOrderDetails(claimRef);
+    this.PriorityDebtsDetails('120','20','10', '5');
+    this.EnterDebtDetails();
+    this.MonthlyExpensesDetails('1200','45', '25', '30', '100', '125');
+    this.MonthlyIncomeDetails('4500', '120', '1100');
+    this.EnterExplanation();
   }
 
   ShareYourFinancialDetailsIntro(claimRef) {
@@ -228,6 +254,9 @@ class ResponseSteps {
   EnterHowMuchYouHavePaid(claimRef, amount) {
     howMuchYouHavePaid.enterPaymentDetails(claimRef, amount);
   }
+  EnterHowMuchMoneyYouOwe(claimRef, amount) {
+    howMuchDoYouOwe.enterHowMuchMoneyDoYouOwe(claimRef, amount);
+  }
   EnterEmployerDetails() {
     enterEmployerDetails.enterEmployerDetails();
   }
@@ -287,8 +316,71 @@ class ResponseSteps {
 
   EnterFreeTelephoneMediationDetails(claimRef) {
     freeTelephoneMediation.selectMediation(claimRef);
+    mediationCanWeUse.selectOptionForMediation(claimRef);
   }
 
+  EnterDQForSmallClaims(claimRef){
+    this.SelectHearingRequirements(claimRef);
+    this.SelectExpertNeededOrNot(claimRef);
+    this.EnterExpertReportDetails(claimRef, 'TestExpert1', '20', '10', '2022');
+    this.SelectGiveEvidenceYourself(claimRef);
+    this.EnterDefedantWitnesses(claimRef);
+    this.SelectOptionForCantAttendHearing(claimRef);
+    this.EnterUnavailabilityDates(claimRef);
+    this.SelectOptionForPhoneOrVideoHearing(claimRef);
+    this.SelectOptionForVulnerability(claimRef);
+    this.SelectOptionForSupportRequired(claimRef);
+    this.SelectPreferredCourtLocation(claimRef);
+    this.SelectLanguageOption(claimRef);
+  }
+
+  SelectHearingRequirements(claimRef){
+    hearingRequirements.selectHearingRequirements(claimRef);
+  }
+
+  SelectExpertNeededOrNot(claimRef){
+    dqExpert.chooseExpert(claimRef);
+  }
+
+  EnterExpertReportDetails(claimRef, expertName, day, month, year){
+    expertReportDetails.enterExpertReportDetails(claimRef, expertName, day, month, year);
+  }
+
+  SelectGiveEvidenceYourself(claimRef){
+    giveEvidenceYourself.SelectGiveEvidenceYourself(claimRef);
+  }
+
+  EnterDefedantWitnesses(claimRef){
+    defendantWitnesses.enterDefendantWitnesses(claimRef);
+  }
+
+  SelectOptionForCantAttendHearing(claimRef){
+    cantAttendHearing.selectYesForCantAttendHearing(claimRef);
+  }
+
+  EnterUnavailabilityDates(claimRef){
+    availabilityDates.enterUnavailableDates(claimRef);
+  }
+
+  SelectOptionForPhoneOrVideoHearing(claimRef){
+    phoneOrVideoHearing.selectOptionForPhoneOrVideoHearing(claimRef);
+  }
+
+  SelectOptionForVulnerability(claimRef){
+    vulnerabilityDetails.selectOptionForVulnerability(claimRef);
+  }
+
+  SelectOptionForSupportRequired(claimRef){
+    supportRequired.selectOptionForSupportRequired(claimRef);
+  }
+
+  SelectPreferredCourtLocation(claimRef){
+    courtLocation.selectPreferredCourtLocation(claimRef);
+  }
+
+  SelectLanguageOption(claimRef){
+    welshLanguage.selectLanguageOption(claimRef);
+  }
 }
 
 module.exports = new ResponseSteps();
