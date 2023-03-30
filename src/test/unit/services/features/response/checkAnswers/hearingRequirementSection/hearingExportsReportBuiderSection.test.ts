@@ -5,7 +5,7 @@ import {
 import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
 import {Experts} from '../../../../../../../main/common/models/directionsQuestionnaire/experts/experts';
 import {
-  buildExportReportSection,
+  buildExpertReportSection,
 } from '../../../../../../../main/services/features/response/checkAnswers/hearingRequirementsSection/hearingExportsReportBuilderSection';
 import {
   ExpertReportDetails,
@@ -35,7 +35,7 @@ describe('test buildExportReportSection', ()=>{
     claim.directionQuestionnaire.experts.expertReportDetails.option = YesNo.YES;
     claim.directionQuestionnaire.experts.expertReportDetails.reportDetails = [new ReportDetail()];
     //When
-    const summaryRows = buildExportReportSection(claim, '1', 'eng');
+    const summaryRows = buildExpertReportSection(claim, '1', 'eng');
     //Then
     expect(summaryRows[0].key.text).toEqual('PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE');
     expect(summaryRows[0].value.html).toEqual('COMMON.VARIATION_2.YES');
@@ -48,7 +48,7 @@ describe('test buildExportReportSection', ()=>{
     claim.directionQuestionnaire.experts.expertReportDetails = new ExpertReportDetails();
     claim.directionQuestionnaire.experts.expertReportDetails.option = YesNo.NO;
     //When
-    const summaryRows = buildExportReportSection(claim, '1', 'eng');
+    const summaryRows = buildExpertReportSection(claim, '1', 'eng');
     //Then
     expect(summaryRows[0].key.text).toEqual('PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE');
     expect(summaryRows[0].value.html).toEqual('COMMON.VARIATION_2.NO');
@@ -62,7 +62,7 @@ describe('test buildExportReportSection', ()=>{
     claim.directionQuestionnaire.experts.expertReportDetails.option = YesNo.NO;
     claim.directionQuestionnaire.experts.expertCanStillExamine = new ExpertCanStillExamine(YesNo.YES, 'something');
     //When
-    const summaryRows = buildExportReportSection(claim, '1', 'eng');
+    const summaryRows = buildExpertReportSection(claim, '1', 'eng');
     //Then
     expect(summaryRows[2].key.text).toEqual('PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE');
     expect(summaryRows[2].value.html).toEqual('COMMON.VARIATION.YES');
@@ -76,7 +76,7 @@ describe('test buildExportReportSection', ()=>{
     claim.directionQuestionnaire.experts.expertReportDetails.option = YesNo.NO;
     claim.directionQuestionnaire.experts.expertCanStillExamine = new ExpertCanStillExamine(YesNo.NO, 'something');
     //When
-    const summaryRows = buildExportReportSection(claim, '1', 'eng');
+    const summaryRows = buildExpertReportSection(claim, '1', 'eng');
     //Then
     expect(summaryRows[2].key.text).toEqual('PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE');
     expect(summaryRows[2].value.html).toEqual('COMMON.VARIATION.NO');
@@ -91,7 +91,7 @@ describe('test buildExportReportSection', ()=>{
     claim.directionQuestionnaire.experts.expertCanStillExamine = new ExpertCanStillExamine(YesNo.YES, 'something');
     claim.directionQuestionnaire.experts.permissionForExpert = new GenericYesNo(YesNo.YES);
     //When
-    const summaryRows = buildExportReportSection(claim, '1', 'eng');
+    const summaryRows = buildExpertReportSection(claim, '1', 'eng');
     //Then
     expect(summaryRows[1].key.text).toEqual('PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE');
     expect(summaryRows[1].value.html).toEqual('COMMON.VARIATION.YES');
@@ -106,7 +106,7 @@ describe('test buildExportReportSection', ()=>{
     claim.directionQuestionnaire.experts.expertCanStillExamine = new ExpertCanStillExamine(YesNo.YES, 'something');
     claim.directionQuestionnaire.experts.permissionForExpert = new GenericYesNo(YesNo.NO);
     //When
-    const summaryRows = buildExportReportSection(claim, '1', 'eng');
+    const summaryRows = buildExpertReportSection(claim, '1', 'eng');
     //Then
     expect(summaryRows[1].key.text).toEqual('PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE');
     expect(summaryRows[1].value.html).toEqual('COMMON.VARIATION.NO');
@@ -120,7 +120,7 @@ describe('test buildExportReportSection', ()=>{
       [new ReportDetail('John Smith', '2021', '1', '1')]);
 
     //When
-    const summaryRows = buildExportReportSection(claim, '1', 'eng');
+    const summaryRows = buildExpertReportSection(claim, '1', 'eng');
     //Then
     expect(summaryRows.length).toEqual(2);
     expect(summaryRows[1].key.text).toEqual('PAGES.EXPERT_REPORT_DETAILS.REPORT_TEXT 1');
@@ -138,7 +138,7 @@ describe('test buildExportReportSection', ()=>{
     claim.directionQuestionnaire.experts.permissionForExpert = new GenericYesNo(YesNo.YES);
     claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList([new ExpertDetails('John', 'Smith', 'email', 60098, 'reason', 'expert', 1000)]);
     //When
-    const summaryRows = buildExportReportSection(claim, '1', 'eng');
+    const summaryRows = buildExpertReportSection(claim, '1', 'eng');
     //Then
     expect(summaryRows.length).toEqual(12);
     expect(summaryRows[0].key.text).toEqual('PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE');

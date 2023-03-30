@@ -1930,6 +1930,7 @@
       "PAGE_TITLE": "Do you want to share an expert with the other party?",
       "PREPARE_REPORT": "They will prepare a report for the court on behalf of two or more of the parties, including the claimant.",
       "SINGLE_JOINT_EXPERT": "This is known as a ’single joint expert’.",
+      "WITH_CLAIMANT": "Do you want to share an expert with the claimant",
       "TITLE": "Do you want to share an expert with the other party?"
     },
     "SPECIFIC_COURT": {
@@ -2116,7 +2117,7 @@
       "PERSON_TEXT": "Person",
       "SELECT_ALL_THAT_APPLY": "Select all that apply.",
       "SIGN_LANGUAGE": "Sign language interpreter",
-      "TITLE": "Do you, your experts or witnesses need support to attend a hearing",
+      "TITLE": "Do you, your experts or witnesses need support to attend a hearing?",
       "WHAT_LANGUAGE": "What language needs to be interpreted?"
     },
     "UNAVAILABLE_DATES_FOR_HEARING": {
