@@ -42,7 +42,8 @@
       },
       attributes: {
         'data-name': 'rows[%index%][amount]',
-        'data-id': 'rows[%index%][amount]'
+        'data-id': 'rows[%index%][amount]',
+        'aria-label': 'Amount you owe, in pounds'
       },
       errorMessage: {
         text: t(errorFor('rows['+courtOrderIndex+'][amount]'))
@@ -61,7 +62,8 @@
       },
       attributes: {
         'data-name': 'rows[%index%][instalmentAmount]',
-        'data-id': 'rows[%index%][instalmentAmount]'
+        'data-id': 'rows[%index%][instalmentAmount]',
+        'aria-label': 'Monthly instalment amount, in pounds'
       },
       errorMessage: {
         text: t(errorFor('rows['+courtOrderIndex+'][instalmentAmount]'))

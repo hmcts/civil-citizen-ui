@@ -34,6 +34,9 @@
           prefix: {
             text: "£"
           },
+          attributes: {
+            'aria-label': 'Amount you owe, in pounds'
+          },
           classes: "govuk-input--width-5 govuk-input--error" if form.hasFieldError('amountYouOwe') else "govuk-input--width-5",
           spellcheck: false,
           value: form.model.getAmountYouOweAsString(),
