@@ -1,5 +1,5 @@
-import {convertToDocumentType} from '../../../../main/common/utils/documentTypeConverter';
-import {DocumentType} from '../../../../main/common/models/document/documentType';
+import {convertToDocumentType} from 'common/utils/documentTypeConverter';
+import {DocumentType} from 'models/document/documentType';
 
 describe('Document type converter', () => {
   it('should return undefined when uri is empty', () => {
@@ -67,6 +67,12 @@ describe('Document type converter', () => {
     const result = convertToDocumentType('claimant-draft-directions');
     //Then
     expect(result).toBe(DocumentType.CLAIMANT_DRAFT_DIRECTIONS);
+  });
+  it('should return SDO_ORDER', () => {
+    //When
+    const result = convertToDocumentType('sdo-order');
+    //Then
+    expect(result).toBe(DocumentType.SDO_ORDER);
   });
 });
 
