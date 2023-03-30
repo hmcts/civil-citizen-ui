@@ -21,7 +21,7 @@ ccd:
         ELASTIC_SEARCH_CASE_INDEX_MAPPING_FIELDS_LIMIT: 10000
   elasticsearch:
     nameOverride: ${SERVICE_NAME}-es
-    imageTag: "7.17.3"
+    imageTag: "7.17.1"
     initResources:
       limits:
         cpu: "500m"
@@ -30,6 +30,8 @@ ccd:
         cpu: "25m"
         memory: "512Mi"
   logstash:
+    image: hmctspublic.azurecr.io/imported/logstash/logstash
+    imageTag: 8.5.1
     imagePullPolicy: "IfNotPresent"
     logstashJavaOpts: -Xmx1g -Xms512M
     resources:
