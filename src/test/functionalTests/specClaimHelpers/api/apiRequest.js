@@ -14,6 +14,7 @@ const getRequestHeaders = (userAuth) => {
     'ServiceAuthorization': tokens.s2sAuth,
   };
 };
+const getCivilServiceUrl = () => `${config.url.civilService}`;
 
 module.exports = {
   setupTokens: async (user) => {
@@ -75,5 +76,13 @@ module.exports = {
         event_data: caseData,
         event_token: tokens.ccdEvent,
       }, 'POST', 201);
+  },
+
+  paymentUpdate: async (caseId, endpoint, serviceRequestUpdateDto) => {
+    let endpointURL = getCivilServiceUrl() + endpoint;
+    let response = await restHelper.retriedRequest(endpointURL, getRequestHeaders(tokens.userAuth),
+      serviceRequestUpdateDto,'PUT');
+
+    return response || {};
   },
 };
