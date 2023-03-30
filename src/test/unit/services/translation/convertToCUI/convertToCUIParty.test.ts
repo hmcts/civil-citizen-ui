@@ -218,6 +218,9 @@ describe('Party translations', () => {
     });
 
     it('should translate COMPANY RESPONDENT party to ccd with postToThisAddress: NO and contactPerson undefined ', () => {
+      partyCompany.partyDetails.correspondenceAddress = undefined;
+      partyCompany.partyDetails.contactPerson = undefined;
+      partyCompany.partyDetails.postToThisAddress = YesNo.NO;
       //Given
       respondent1LiPResponse.respondent1LiPCorrespondenceAddress = undefined;
       respondent1LiPResponse.respondent1LiPContactPerson = undefined;
