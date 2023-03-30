@@ -7,7 +7,7 @@ chai.config.truncateThreshold = 0;
 const {expect, assert} = chai;
 
 const {
-  waitForFinishedBusinessProcess,
+  waitForFinishedBusinessProcess, checkToggleEnabled,
 } = require('./testingSupport');
 const {assignCaseRoleToUser, addUserCaseMapping, unAssignAllUsers} = require('./caseRoleAssignmentHelper');
 const apiRequest = require('./apiRequest.js');
@@ -19,6 +19,7 @@ const data = {
 
 let caseId, eventName;
 let caseData = {};
+const PBAv3Toggle = 'pba-version-3-ways-to-pay';
 
 module.exports = {
 
@@ -36,6 +37,17 @@ module.exports = {
     }
 
     await assertSubmittedSpecEvent('PENDING_CASE_ISSUED');
+
+    await waitForFinishedBusinessProcess(caseId);
+
+    const pbaV3 = await checkToggleEnabled(PBAv3Toggle);
+    console.log('Is PBAv3 toggle on?: ' + pbaV3);
+
+    if (pbaV3) {
+      await apiRequest.paymentUpdate(caseId, '/service-request-update-claim-issued',
+        claimSpecData.serviceUpdateDto(caseId, 'paid'));
+      console.log('Service request update sent to callback URL');
+    }
 
     await assignSpecCase(caseId, multipartyScenario);
     await waitForFinishedBusinessProcess(caseId);
