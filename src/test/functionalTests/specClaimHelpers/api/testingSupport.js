@@ -105,13 +105,13 @@ module.exports = {
         'Authorization': `Bearer ${authToken}`,
       }, null, 'GET')
       .then(async response =>  {
-          if (response.status === 200) {
-            const json = await response.json();
-            return json.toggleEnabled;
-          } else {
-            throw new Error(`Error when checking toggle occurred with status : ${response.status}`);
-          }
+        if (response.status === 200) {
+          const json = await response.json();
+          return json.toggleEnabled;
+        } else {
+          throw new Error(`Error when checking toggle occurred with status : ${response.status}`);
         }
+      },
       );
   },
 };

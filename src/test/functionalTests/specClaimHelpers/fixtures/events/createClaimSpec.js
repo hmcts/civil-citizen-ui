@@ -217,8 +217,8 @@ module.exports = {
         payment_amount: 167.00,
         payment_reference: '13213223',
         payment_method: 'by account',
-        case_reference: 'example of case ref'
-      }
+        case_reference: 'example of case ref',
+      },
     };
   },
 };
