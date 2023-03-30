@@ -1,18 +1,18 @@
 const I = actor();
 
 const fields = {
-  addressLine1: 'input[id="primaryaddressLine1"]',
-  addressLine2: 'input[id="primaryaddressLine2"]',
-  addressLine3: 'input[id="primaryaddressLine3"]',
-  city: 'input[id="primarycity"]',
-  postcode: 'input[id="primarypostCode"]',
+  addressLine1: 'input[id="primaryAddress[addressLine1]"]',
+  addressLine2: 'input[id="primaryAddress[addressLine2]"]',
+  addressLine3: 'input[id="primaryAddress[addressLine3]"]',
+  city: 'input[id="primaryAddress[city]"]',
+  postcode: 'input[id="primaryAddress[postCode]"]',
   correspondenceAddress_yes: 'input[id="postToThisAddress-2"]',
   enterAddressManuallyLink: 'a[id="enterAddressManually"]',
-  correspondenceAddressLine1: 'input[id="correspondenceaddressLine1"]',
-  correspondenceAddressLine2: 'input[id="correspondenceAddressLine2"]',
-  correspondenceAddressLine3: 'input[id="correspondenceAddressLine3"]',
-  correspondenceCity: 'input[id="correspondenceCity"]',
-  correspondencePostCode: 'input[id="correspondencePostCode"]',
+  correspondenceAddressLine1: 'input[id="correspondenceAddress[addressLine1]"]',
+  correspondenceAddressLine2: 'input[id="correspondenceAddress[addressLine2]"]',
+  correspondenceAddressLine3: 'input[id="correspondenceAddress[addressLine3]"]',
+  correspondenceCity: 'input[id="correspondenceAddress[city]"]',
+  correspondencePostCode: 'input[id="correspondenceAddress[postCode]"]',
 };
 
 class NameAndAddressDetailsPage {
