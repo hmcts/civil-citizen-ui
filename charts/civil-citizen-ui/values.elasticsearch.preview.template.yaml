@@ -30,28 +30,20 @@ ccd:
         cpu: "25m"
         memory: "512Mi"
   logstash:
-    image: hmctspublic.azurecr.io/imported/logstash/logstash
-    imageTag: 8.5.1
+    image: "hmcts/ccd-logstash:latest"
     imagePullPolicy: "IfNotPresent"
 
-    logstashConfig:
-      logstash.yml: |
-        http.host: 0.0.0.0
-        xpack.monitoring.enabled: false
-
-    logstashPipeline:
-      uptime.conf: |
-        input { exec { command => "uptime" interval => 30 } }
-        output { elasticsearch { hosts => [http://${SERVICE_NAME}-es-master:9200] index => "logstash" } }
 
     extraEnvs:
+      - name: XPACK_MONITORING_ENABLED
+        value: false
       - name: DB_URL
         value: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
       - name: DB_USER
         value: ${POSTGRES_USER}
       - name: DB_PWD
         value: ${POSTGRES_PASSWORD}
-      - name: ES_HOSTS
+      - name: ES_DATA_NODES_URL
         value: http://${SERVICE_NAME}-es-master:9200
 
     resources:
