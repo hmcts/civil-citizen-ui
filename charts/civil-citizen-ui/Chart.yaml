@@ -16,7 +16,7 @@ dependencies:
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: civil-service.enabled
   - name: ccd
-    version: 8.0.23
+    version: 8.0.26
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: ccd.enabled
   - name: xui-webapp
@@ -39,6 +39,9 @@ dependencies:
     version: 2.4.1
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: elastic.enabled
+  - name: java
+    version: 4.0.14
+    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
 # WA
   - name: wa-task-management-api
     version: ~0.0.37
