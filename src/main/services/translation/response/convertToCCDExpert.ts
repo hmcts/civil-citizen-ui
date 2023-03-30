@@ -18,11 +18,11 @@ export const toCCDExpert = (claim: Claim) => {
 };
 
 function toCCDResponse(claim: Claim) {
-  if(claim.isFastTrackClaim)
+  if (claim.isFastTrackClaim) {
     return toCCDYesNo(claim.directionQuestionnaire?.experts?.expertEvidence?.option);
-  else
+  } else {
     return toCCDYesNoFromBoolean(claim.directionQuestionnaire?.experts?.expertRequired);
-
+  }
 }
 
 function toCCDExpertReport(sentExpertReports: YesNoNotReceived | undefined) {
@@ -35,21 +35,21 @@ function toCCDExpertReport(sentExpertReports: YesNoNotReceived | undefined) {
 }
 
 function toCCDExpertDetails(expertDetailsList: ExpertDetails[]) {
-  if (!expertDetailsList?.length) return undefined;
-  const expertList = expertDetailsList.map((expertDetails: ExpertDetails) => {
-    return {
-      value: {
-        name : expertDetails.firstName+ ' ' +expertDetails.lastName,
-        firstName: expertDetails.firstName,
-        lastName: expertDetails.lastName,
-        phoneNumber: expertDetails.phoneNumber.toString(),
-        emailAddress: expertDetails.emailAddress,
-        whyRequired: expertDetails.whyNeedExpert,
-        fieldOfExpertise: expertDetails.fieldOfExpertise,
-        estimatedCost: expertDetails.estimatedCost*100,
-      },
-    };
-  });
-  return expertList;
+  if (expertDetailsList?.length) {
+    return expertDetailsList.map((expertDetails: ExpertDetails) => {
+      return {
+        value: {
+          name: expertDetails.firstName + ' ' + expertDetails.lastName,
+          firstName: expertDetails.firstName,
+          lastName: expertDetails.lastName,
+          phoneNumber: expertDetails.phoneNumber.toString(),
+          emailAddress: expertDetails.emailAddress,
+          whyRequired: expertDetails.whyNeedExpert,
+          fieldOfExpertise: expertDetails.fieldOfExpertise,
+          estimatedCost: expertDetails.estimatedCost * 100,
+        },
+      };
+    });
+  }
 }
 

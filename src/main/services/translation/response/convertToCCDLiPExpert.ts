@@ -15,14 +15,14 @@ export const toCCDLiPExpert = (expert: Experts | undefined) => {
 };
 
 function toCCDReportDetailItem(reportDetails: ReportDetail[]) {
-  if (!reportDetails?.length) return undefined;
-  const expertList = reportDetails.map((reportDetail: ReportDetail) => {
-    return {
-      value: {
-        expertName: reportDetail.expertName,
-        reportDate: reportDetail.reportDate,
-      },
-    };
-  });
-  return expertList;
+  if (reportDetails?.length) {
+    return reportDetails.map((reportDetail: ReportDetail) => {
+      return {
+        value: {
+          expertName: reportDetail.expertName,
+          reportDate: reportDetail.reportDate,
+        },
+      };
+    });
+  }
 }
