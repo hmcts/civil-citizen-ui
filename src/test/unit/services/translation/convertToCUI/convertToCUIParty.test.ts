@@ -11,6 +11,7 @@ import {CitizenDate} from 'form/models/claim/claimant/citizenDate';
 import {PartyPhone} from 'models/PartyPhone';
 import {Email} from 'models/Email';
 import {CCDRespondentLiPResponse} from 'models/ccdResponse/ccdRespondentLiPResponse';
+import {YesNo} from 'form/models/yesNo';
 
 const companyName = 'Version 1';
 const phone = new PartyPhone('123456789');
@@ -88,78 +89,94 @@ const partySoleTrader: Party = {
   dateOfBirth: {date: dateOfBirth.date, year: 1990, month: 10, day: 10},
 };
 
-const partyCompanyCCD: CCDParty = {
-  companyName: companyName,
-  individualDateOfBirth: undefined,
-  individualFirstName: undefined,
-  individualLastName: undefined,
-  individualTitle: undefined,
-  organisationName: undefined,
-  partyEmail: emailCCD,
-  partyPhone: phoneCCD,
-  primaryAddress: addressCCD,
-  soleTraderDateOfBirth: undefined,
-  soleTraderFirstName: undefined,
-  soleTraderLastName: undefined,
-  soleTraderTitle: undefined,
-  soleTraderTradingAs: undefined,
-  partyName: companyName,
-  type: PartyType.COMPANY,
+const getPartyCompanyCCD = () : CCDParty => {
+  return {
+    companyName: companyName,
+    individualDateOfBirth: undefined,
+    individualFirstName: undefined,
+    individualLastName: undefined,
+    individualTitle: undefined,
+    organisationName: undefined,
+    partyEmail: emailCCD,
+    partyPhone: phoneCCD,
+    primaryAddress: addressCCD,
+    soleTraderDateOfBirth: undefined,
+    soleTraderFirstName: undefined,
+    soleTraderLastName: undefined,
+    soleTraderTitle: undefined,
+    soleTraderTradingAs: undefined,
+    partyName: companyName,
+    type: PartyType.COMPANY,
+  };
 };
 
-const partyIndividualCCD: CCDParty = {
-  companyName: undefined,
-  individualDateOfBirth: new Date('Wed Oct 10 1990 01:00:00 GMT+0100'),
-  individualTitle: title,
-  individualFirstName: firstName,
-  individualLastName: lastName,
-  organisationName: undefined,
-  partyEmail: emailCCD,
-  partyPhone: phoneCCD,
-  primaryAddress: addressCCD,
-  soleTraderDateOfBirth: undefined,
-  soleTraderTitle: undefined,
-  soleTraderFirstName: undefined,
-  soleTraderLastName: undefined,
-  soleTraderTradingAs: undefined,
-  type: PartyType.INDIVIDUAL,
+const getPartyIndividualCCD = (): CCDParty => {
+  return {
+    companyName: undefined,
+    individualDateOfBirth: new Date('Wed Oct 10 1990 01:00:00 GMT+0100'),
+    individualTitle: title,
+    individualFirstName: firstName,
+    individualLastName: lastName,
+    organisationName: undefined,
+    partyEmail: emailCCD,
+    partyPhone: phoneCCD,
+    primaryAddress: addressCCD,
+    soleTraderDateOfBirth: undefined,
+    soleTraderTitle: undefined,
+    soleTraderFirstName: undefined,
+    soleTraderLastName: undefined,
+    soleTraderTradingAs: undefined,
+    type: PartyType.INDIVIDUAL,
+  };
 };
 
-const partySoleTraderCCD: CCDParty = {
-  companyName: undefined,
-  individualDateOfBirth: undefined,
-  individualFirstName: undefined,
-  individualLastName: undefined,
-  individualTitle: undefined,
-  organisationName: undefined,
-  partyEmail: emailCCD,
-  partyPhone: phoneCCD,
-  primaryAddress: addressCCD,
-  soleTraderDateOfBirth: new Date('Wed Oct 10 1990 01:00:00 GMT+0100'),
-  soleTraderTitle: title,
-  soleTraderFirstName: firstName,
-  soleTraderLastName: lastName,
-  soleTraderTradingAs: soleTraderTradingAs,
-  type: PartyType.SOLE_TRADER,
+const getPartySoleTraderCCD = () : CCDParty => {
+  return {
+    companyName: undefined,
+    individualDateOfBirth: undefined,
+    individualFirstName: undefined,
+    individualLastName: undefined,
+    individualTitle: undefined,
+    organisationName: undefined,
+    partyEmail: emailCCD,
+    partyPhone: phoneCCD,
+    primaryAddress: addressCCD,
+    soleTraderDateOfBirth: new Date('Wed Oct 10 1990 01:00:00 GMT+0100'),
+    soleTraderTitle: title,
+    soleTraderFirstName: firstName,
+    soleTraderLastName: lastName,
+    soleTraderTradingAs: soleTraderTradingAs,
+    type: PartyType.SOLE_TRADER,
+  };
 };
 
 const respondent1LiPResponse : CCDRespondentLiPResponse = {
   respondent1LiPCorrespondenceAddress: correspondenceAddressCCD,
   respondent1LiPContactPerson: 'example contact',
 };
+
 describe('Party translations', () => {
   describe('translate party to cui model', () => {
     it('should translate COMPANY party to ccd', () => {
+      //Given
+      const partyCompanyCCD = getPartyCompanyCCD();
+      //When
       const partyResponseCCD = toCUIParty(partyCompanyCCD);
+      //Then
       expect(partyResponseCCD).toMatchObject(partyCompany);
     });
 
     it('should translate INDIVIDUAL party to cui', () => {
+      //Given
+      const partyIndividualCCD = getPartyIndividualCCD();
+      //When
       const partyResponse = toCUIParty(partyIndividualCCD);
+      //Then
       expect(partyResponse).toMatchObject(partyIndividual);
     });
 
     it('should translate SOLE TRADER party to cui', () => {
+      const partySoleTraderCCD = getPartySoleTraderCCD();
       const partyResponse = toCUIParty(partySoleTraderCCD);
       expect(partyResponse).toMatchObject(partySoleTrader);
     });
@@ -169,20 +186,46 @@ describe('Party translations', () => {
     it('should translate COMPANY RESPONDENT party to ccd', () => {
       partyCompany.partyDetails.contactPerson = 'example contact';
       partyCompany.partyDetails.correspondenceAddress = correspondenceAddressCUI;
+      partyCompany.partyDetails.postToThisAddress = YesNo.YES;
+      //Given
+      const partyCompanyCCD = getPartyCompanyCCD();
+      //When
       const partyResponseCCD = toCUIPartyRespondent(partyCompanyCCD, respondent1LiPResponse);
+      //Then
       expect(partyResponseCCD).toMatchObject(partyCompany);
     });
 
     it('should translate INDIVIDUAL RESPONDENT party to cui', () => {
       partyIndividual.partyDetails.correspondenceAddress = correspondenceAddressCUI;
+      partyCompany.partyDetails.postToThisAddress = YesNo.YES;
+      //Given
+      const partyIndividualCCD = getPartyIndividualCCD();
+      //When
       const partyResponse = toCUIPartyRespondent(partyIndividualCCD, respondent1LiPResponse);
+      //Then
       expect(partyResponse).toMatchObject(partyIndividual);
     });
 
     it('should translate SOLE TRADER RESPONDENT party to cui', () => {
       partySoleTrader.partyDetails.correspondenceAddress = correspondenceAddressCUI;
+      partyCompany.partyDetails.postToThisAddress = YesNo.YES;
+      //Given
+      const partySoleTraderCCD = getPartySoleTraderCCD();
+      //When
       const partyResponse = toCUIPartyRespondent(partySoleTraderCCD, respondent1LiPResponse);
+      //Then
       expect(partyResponse).toMatchObject(partySoleTrader);
+    });
+
+    it('should translate COMPANY RESPONDENT party to ccd with postToThisAddress: NO and contactPerson undefined ', () => {
+      //Given
+      respondent1LiPResponse.respondent1LiPCorrespondenceAddress = undefined;
+      respondent1LiPResponse.respondent1LiPContactPerson = undefined;
+      const partyCompanyCCD = getPartyCompanyCCD();
+      //When
+      const partyResponseCCD = toCUIPartyRespondent(partyCompanyCCD, respondent1LiPResponse);
+      //Then
+      expect(partyResponseCCD).toMatchObject(partyCompany);
     });
   });
 });
