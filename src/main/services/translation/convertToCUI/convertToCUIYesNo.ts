@@ -13,3 +13,15 @@ export const toCUIYesNo = (value: YesNoUpperCamelCase) : YesNo=> {
   }
 };
 
+export const toCUIBoolean = (value: YesNoUpperCamelCase) => {
+  if (value) {
+    return value === YesNoUpperCamelCase.YES;
+  }
+};
+
+export const toCUIBooleanString = (value: YesNoUpperCamelCase) => {
+  if (value) {
+    return value === YesNoUpperCamelCase.YES ? 'true' : 'false';
+  }
+};
+
