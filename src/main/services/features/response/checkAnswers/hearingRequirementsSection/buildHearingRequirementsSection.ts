@@ -6,7 +6,7 @@ import {
   buildFastTrackHearingRequirements,
 } from 'services/features/response/checkAnswers/hearingRequirementsSection/buildFastTrackHearingRequirements';
 import {
-  buildSmallClaimHearingRequirements, determinationWithoutHearingQuestion,
+  buildSmallClaimHearingRequirements,
 } from 'services/features/response/checkAnswers/hearingRequirementsSection/buildSmallClaimHearingRequirements';
 import {
   buildCommonHearingRequirements,
@@ -18,7 +18,7 @@ export const buildHearingRequirementsSection = (claim: Claim, claimId: string, l
     title: t('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE', {lng}),
     summaryRows: [],
   });
-  hearingRequirementsSection.summaryList.rows.push(determinationWithoutHearingQuestion(claim, claimId, lng));
+
   if (claim.isFastTrackClaim) {
     buildFastTrackHearingRequirements(claim, hearingRequirementsSection, claimId, lng);
   } else {

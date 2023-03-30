@@ -7,6 +7,9 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {DETERMINATION_WITHOUT_HEARING_URL} from 'routes/urls';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import {getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/formatAnswer';
+import {
+  buildExpertReportSection,
+} from 'services/features/response/checkAnswers/hearingRequirementsSection/hearingExportsReportBuilderSection';
 
 export const determinationWithoutHearingQuestion = (claim: Claim, claimId: string, lng: string) => {
   const determinationWithoutHearingQuestion = t('PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARING', {lng})
@@ -35,8 +38,9 @@ export const determinationWithoutHearingReason = (claim: Claim, claimId: string,
 };
 
 export const buildSmallClaimHearingRequirements = (claim: Claim, hearingRequirementsSection: SummarySection, claimId: string, lng: string) => {
-
+  hearingRequirementsSection.summaryList.rows.push(determinationWithoutHearingQuestion(claim, claimId, lng));
   if (claim.directionQuestionnaire?.hearing?.determinationWithoutHearing?.option === YesNo.NO) {
     hearingRequirementsSection.summaryList.rows.push(determinationWithoutHearingReason(claim, claimId, lng));
   }
+  hearingRequirementsSection.summaryList.rows.push(... buildExpertReportSection(claim, claimId, lng));
 };
