@@ -11,7 +11,7 @@ import {DocumentUri} from 'models/document/documentType';
 
 const PAGES_LATEST_UPDATE_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT';
 
-function getLastUpdateSdo(claimId: string) {
+const getLastUpdateSdoDocument = (claimId: string) => {
   return [
     {
       type: ClaimSummaryType.TITLE,
@@ -40,7 +40,7 @@ function getLastUpdateSdo(claimId: string) {
       },
     },
   ];
-}
+};
 
 export const buildResponseToClaimSection = (claim: Claim, claimId: string): ClaimSummarySection[] => {
   const sectionContent = [];
@@ -57,7 +57,7 @@ export const buildResponseToClaimSection = (claim: Claim, claimId: string): Clai
     }
     sectionContent.push(respondToClaimLink);
   } else if (claim.hasSdoOrderDocument()) {
-    sectionContent.push(getLastUpdateSdo(claimId));
+    sectionContent.push(getLastUpdateSdoDocument(claimId));
   }
   return sectionContent.flat();
 };
