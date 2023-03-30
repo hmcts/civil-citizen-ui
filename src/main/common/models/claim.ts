@@ -100,7 +100,7 @@ export class Claim {
     claim.respondent1 = toCUIParty(ccdClaim?.respondent1);
     claim.mediation = toCUIMediation(ccdClaim?.respondent1LiPResponse?.respondent1MediationLiPResponse);
     claim.statementOfMeans = toCUIStatementOfMeans(ccdClaim);
-    claim.sdoOrderDocument = ccdClaim.sdoOrderDocument;
+    claim.sdoOrderDocument = ccdClaim?.sdoOrderDocument;
     return claim;
   }
 
