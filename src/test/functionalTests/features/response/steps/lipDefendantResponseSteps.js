@@ -111,7 +111,6 @@ const welshLanguage = new WelshLanguage();
 
 class ResponseSteps {
 
-
   EnterPersonalDetails(claimRef) {
     taskListPage.open(claimRef);
     taskListPage.verifyResponsePageContent();

@@ -9,7 +9,6 @@ const repaymentPlan = 'repaymentPlan';
 const dontWantMoreTime = 'dontWantMoreTime';
 // eslint-disable-next-line no-unused-vars
 const yesIWantMoretime = 'yesIWantMoretime';
-const claimType = 'smallClaims';
 
 let claimRef;
 

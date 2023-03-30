@@ -13,7 +13,7 @@ const fields ={
 
 class DefendantWitnesses {
 
-  enterDefendantWitnesses(claimRef, expertName, day, month, year) {
+  enterDefendantWitnesses(claimRef) {
     I.amOnPage('/case/'+claimRef+'/directions-questionnaire/defendant-witnesses');
     I.see('Do you have other witnesses?', 'h1');
     I.click(fields.yesButton);

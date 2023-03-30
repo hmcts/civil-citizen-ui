@@ -8,7 +8,6 @@ const immediatePayment = 'immediate';
 const bySetDate = 'bySetDate';
 const repaymentPlan = 'repaymentPlan';
 const dontWantMoreTime = 'dontWantMoreTime';
-const claimType = 'smallClaims';
 
 let claimRef;
 

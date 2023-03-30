@@ -16,7 +16,7 @@ class SupportRequired {
     I.amOnPage('/case/'+claimRef+'/directions-questionnaire/support-required');
     I.see('Do you, your experts or witnesses need support to attend a hearing', 'h1');
     I.click(fields.yesButton);
-    I.selectOption(fields.selectDropDown,"WitnessFName WitnessLName");
+    I.selectOption(fields.selectDropDown,'WitnessFName WitnessLName');
     I.click(fields.hearingLoop);
     I.click(fields.signLanguage);
     I.fillField(fields.signLanguageText, 'Spanish');
