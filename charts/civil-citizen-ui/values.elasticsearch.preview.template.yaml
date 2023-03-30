@@ -30,8 +30,7 @@ ccd:
         cpu: "25m"
         memory: "512Mi"
   logstash:
-    image:
-    tag: ccd-logstash
+    imageTag: ccd-logstash
 
     extraEnvs:
       - name: DATA_STORE_URL
