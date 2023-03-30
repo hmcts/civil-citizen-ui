@@ -50,10 +50,10 @@ ccd:
         volumeMounts:
         - name: logstash-lib
           mountPath: /logstash-lib
-      extraVolumes: |
+    extraVolumes: |
       - name: logstash-lib
         emptyDir: {}
-      extraVolumeMounts: |
+    extraVolumeMounts: |
       - name: logstash-lib
         mountPath: /usr/share/logstash/files
     logstashConfig:
