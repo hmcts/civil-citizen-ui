@@ -89,6 +89,7 @@ export class Claim {
   respondent1ResponseDate?: Date;
   claimBilingualLanguagePreference: ClaimBilingualLanguagePreference;
   id: string;
+  sdoOrderDocument?: CaseDocument;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -97,6 +98,7 @@ export class Claim {
     claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
     claim.respondent1 = toCUIParty(ccdClaim?.respondent1);
     claim.mediation = toCUIMediation(ccdClaim?.respondent1LiPResponse?.respondent1MediationLiPResponse);
+    claim.sdoOrderDocument = ccdClaim.sdoOrderDocument;
     return claim;
   }
 
@@ -471,6 +473,10 @@ export class Claim {
 
   get isSmallClaimsTrackDQ(): boolean {
     return this.claimType === claimType.SMALL_CLAIM;
+  }
+
+  hasSdoOrderDocument(): boolean{
+    return !!this.sdoOrderDocument;
   }
 }
 
