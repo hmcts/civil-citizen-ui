@@ -30,19 +30,17 @@ ccd:
         cpu: "25m"
         memory: "512Mi"
   logstash:
-    image: "hmcts/ccd-logstash:latest"
-    imagePullPolicy: "IfNotPresent"
+    image:
+    tag: ccd-logstash
 
     extraEnvs:
-      - name: XPACK_MONITORING_ENABLED
-        value: false
-      - name: DB_URL
+      - name: DATA_STORE_URL
         value: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
-      - name: DB_USER
+      - name: DATA_STORE_USER
         value: ${POSTGRES_USER}
-      - name: DB_PWD
+      - name: DATA_STORE_PASS
         value: ${POSTGRES_PASSWORD}
-      - name: ES_DATA_NODES_URL
+      - name: ES_HOSTS
         value: http://${SERVICE_NAME}-es-master:9200
 
     resources:
