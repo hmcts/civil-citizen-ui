@@ -29,6 +29,17 @@ import {FullAdmission} from './fullAdmission';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {RepaymentPlan} from './repaymentPlan';
 import {CCDRespondentLiPResponse} from 'models/ccdResponse/ccdRespondentLiPResponse';
+import {CCDBankAccount} from 'models/ccdResponse/ccdBankAccount';
+import {CCDHomeDetails} from 'models/ccdResponse/ccdHomeDetails';
+import {CCDPartnerAndDependent} from 'models/ccdResponse/ccdPartnerAndDependent';
+import {CCDEmployerDetails} from 'models/ccdResponse/ccdEmployerDetails';
+import {CCDSelfEmploymentDetails} from 'models/ccdResponse/ccdSelfEmploymentDetails';
+import {CCDUnemploymentDetails} from 'models/ccdResponse/ccdUnemploymentDetails';
+import {CCDCourtOrders} from 'models/ccdResponse/ccdCourtOrders';
+import {CCDLoanCredit} from 'models/ccdResponse/ccdLoanCredit';
+import {CCDDebtDetails} from 'models/ccdResponse/ccdDebtDetails';
+import {CCDRecurringIncome} from 'models/ccdResponse/ccdRecurringIncome';
+import {CCDRecurringExpenses} from 'models/ccdResponse/ccdRecurringExpenses';
 import {CaseDocument} from 'models/document/caseDocument';
 
 export class CivilClaimResponse {
@@ -101,6 +112,29 @@ export interface CCDClaim extends ClaimUpdate {
   responseClaimMediationSpecRequired?: string;
   specAoSApplicantCorrespondenceAddressRequired?: YesNoUpperCamelCase;
   claimantUserDetails?: IdamUserDetails;
+  //Defendant Response part
+  respondent1BankAccountList?: CCDBankAccount[];
+  disabilityPremiumPayments?: YesNoUpperCamelCase;
+  severeDisabilityPremiumPayments?: YesNoUpperCamelCase;
+  respondent1DQHomeDetails?: CCDHomeDetails;
+  respondent1PartnerAndDependent?: CCDPartnerAndDependent;
+  defenceAdmitPartEmploymentTypeRequired?: YesNoUpperCamelCase;
+  respondToClaimAdmitPartEmploymentTypeLRspec?: string[];
+  responseClaimAdmitPartEmployer?: CCDEmployerDetails;
+  specDefendant1SelfEmploymentDetails?: CCDSelfEmploymentDetails;
+  respondToClaimAdmitPartUnemployedLRspec?: CCDUnemploymentDetails;
+  respondent1CourtOrderPaymentOption?: YesNoUpperCamelCase;
+  respondent1CourtOrderDetails?: CCDCourtOrders[];
+  respondent1LoanCreditOption?: YesNoUpperCamelCase;
+  respondent1LoanCreditDetails?: CCDLoanCredit[];
+  responseToClaimAdmitPartWhyNotPayLRspec?: string;
+  respondent1DQCarerAllowanceCredit?: YesNoUpperCamelCase;
+  respondent1DQCarerAllowanceCreditFullAdmission?: YesNoUpperCamelCase;
+  specDefendant1Debts?: CCDDebtDetails;
+  respondent1DQRecurringIncome?: CCDRecurringIncome[];
+  respondent1DQRecurringIncomeFA?: CCDRecurringIncome[];
+  respondent1DQRecurringExpenses?: CCDRecurringExpenses[];
+  respondent1DQRecurringExpensesFA?: CCDRecurringExpenses[];
   respondent1LiPResponse?: CCDRespondentLiPResponse;
   sdoOrderDocument?: CaseDocument;
 }
