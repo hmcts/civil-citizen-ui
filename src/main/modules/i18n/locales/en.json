@@ -1939,8 +1939,8 @@
       "EXPlANATION": "You can ask for the hearing to be held at a specific court, for example, if you spend weekdays a long distance from your home. The court will consider both parties' circumstances when deciding where to hold the hearing.",
       "PAGE_TITLE": "Specific court",
       "SELECT_COURT": "Select a court",
-      "SELECTED_COURT": "Selected court",
       "SELECT_VALUE": "Select a value",
+      "SELECTED_COURT": "Selected court",
       "REASON": "Tell us why you want the hearing to be held at this court",
       "TITLE": "Do you want to ask for the hearing to be held at a specific court?"
     },
@@ -2120,7 +2120,7 @@
       "PERSON_TEXT": "Person",
       "SELECT_ALL_THAT_APPLY": "Select all that apply.",
       "SIGN_LANGUAGE": "Sign language interpreter",
-      "TITLE": "Do you, your experts or witnesses need support to attend a hearing",
+      "TITLE": "Do you, your experts or witnesses need support to attend a hearing?",
       "WHAT_LANGUAGE": "What language needs to be interpreted?"
     },
     "UNAVAILABLE_DATES_FOR_HEARING": {
