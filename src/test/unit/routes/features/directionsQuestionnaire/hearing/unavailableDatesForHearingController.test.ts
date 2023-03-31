@@ -468,13 +468,13 @@ describe('Unavailable dates for hearing Controller', () => {
             type: UnavailableDateType.LONGER_PERIOD,
             period: {
               start: {
-                day: today.getDate(),
-                month: today.getMonth() + 2,
+                day: 15,
+                month: today.getMonth(),
                 year: today.getFullYear() + 1,
               },
               end: {
-                day: today.getDate(),
-                month: today.getMonth() + 1,
+                day: 10,
+                month: today.getMonth(),
                 year: today.getFullYear() + 1,
 
               },
