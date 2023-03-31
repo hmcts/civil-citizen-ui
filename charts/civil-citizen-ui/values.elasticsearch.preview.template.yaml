@@ -31,7 +31,7 @@ ccd:
         memory: "512Mi"
   logstash:
     image: hmctspublic.azurecr.io/imported/logstash/logstash
-    imageTag: 8.5.1
+    imageTag: 7.16.1
     imagePullPolicy: "IfNotPresent"
     resources:
       requests:
