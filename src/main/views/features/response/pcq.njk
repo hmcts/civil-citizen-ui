@@ -1,0 +1,46 @@
+{% extends "claim-details-tpl.njk" %}
+
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/external-link.njk" import externalLink %}
+{% import "external-urls.njk" as externalURLs %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.PCQ.TITLE') }}
+{% endblock %}
+
+{% set panelContent %}
+  {{ t('PAGES.PCQ.THESE_ARE_OPTIONAL_QUESTION') }}
+  {{ t('PAGES.PCQ.YOUR_ANSWER_WILL_NOT_AFFECT') }}
+{% endset %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {{ govukPanel({
+        titleText: t('PAGES.PCQ.EQUALITY_AND_DIVERSITY'),
+        html: panelContent
+      }) }}
+      <p class="govuk-body">
+        {{ t('PAGES.PCQ.YOUR_ANSWER_WILL_HELP') }}
+      </p>
+      <p class="govuk-body">
+        {{ t('PAGES.PCQ.FIND_OUT_HOW_WE_USE') }}
+        {{ externalLink(t, 'PAGES.PCQ.PRIVACY_POLICY', '', false) }}
+      </p>
+      <div class="form-group">
+        {{ govukButton({
+          text: t('PAGES.PCQ.CONTINUE_TO_QUESTIONS'),
+          href: ''
+        }) }}
+        {{ govukButton({
+          text: t('PAGES.PCQ.DONT_WANT_ANSWER'),
+          classes: "govuk-button--secondary append-row",
+          href: ''
+        }) }}
+      </div>
+    </div>
+  </div>
+{% endblock %}
