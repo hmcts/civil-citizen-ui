@@ -134,5 +134,4 @@ export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequireme
   if(claim.hasExpertDetails()) {
     hearingRequirementsSection.summaryList.rows.push(... buildExpertsDetailsRows(claim, claimId, lng));
   }
-
 };
