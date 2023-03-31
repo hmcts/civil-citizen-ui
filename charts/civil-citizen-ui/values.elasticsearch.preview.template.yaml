@@ -51,6 +51,8 @@ ccd:
         value: http://${SERVICE_NAME}-es-master:9200
       - name: ELASTIC_SEARCH_DATA_NODES_HOSTS
         value: http://${SERVICE_NAME}-es-master:9200
+      - name: ES_URL
+        value: http://${SERVICE_NAME}-es-master:9200
     resources:
       requests:
         cpu: "500m"
