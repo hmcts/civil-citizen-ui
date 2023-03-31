@@ -43,9 +43,9 @@ export const toCUIPartyRespondent = (ccdParty: CCDParty, ccdRespondent1: CCDResp
   return cuiParty;
 };
 
-const toCitizenDate = (dateOfBirth : Date) : CitizenDate => {
-  if(dateOfBirth){
-    const auxDate = new Date(dateOfBirth);
-    return new CitizenDate(auxDate.getDate().toString(), (auxDate.getMonth() + 1).toString(), auxDate.getFullYear().toString());
+const toCitizenDate = (ccdDateOfBirth : Date) : CitizenDate => {
+  if(ccdDateOfBirth){
+    const dateOfBirth = new Date(ccdDateOfBirth);
+    return new CitizenDate(dateOfBirth.getDate().toString(), (dateOfBirth.getMonth() + 1).toString(), dateOfBirth.getFullYear().toString());
   }
 };
