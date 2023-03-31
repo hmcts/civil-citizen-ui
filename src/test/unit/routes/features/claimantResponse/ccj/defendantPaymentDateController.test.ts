@@ -2,7 +2,7 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import request from 'supertest';
-import {CCJ_CHECK_AND_SEND_URL, CCJ_DEPENDANT_PAYMENT_DATE_URL} from 'routes/urls';
+import {CCJ_CHECK_AND_SEND_URL, CCJ_DEFENDANT_PAYMENT_DATE_URL} from 'routes/urls';
 import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
@@ -23,7 +23,7 @@ describe('CCJ - defendant Payment date', () => {
     it('should return http 500 when has error in the get method', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .get(CCJ_DEPENDANT_PAYMENT_DATE_URL)
+        .get(CCJ_DEFENDANT_PAYMENT_DATE_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -33,7 +33,7 @@ describe('CCJ - defendant Payment date', () => {
     it('should return http 500 when has error in the post method', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .post(CCJ_DEPENDANT_PAYMENT_DATE_URL)
+        .post(CCJ_DEFENDANT_PAYMENT_DATE_URL)
         .send('year=9999')
         .send('month=12')
         .send('day=31')
@@ -48,7 +48,7 @@ describe('CCJ - defendant Payment date', () => {
     it('should return payment date page', async () => {
       app.locals.draftStoreClient = mockNoStatementOfMeans;
       await request(app)
-        .get(CCJ_DEPENDANT_PAYMENT_DATE_URL)
+        .get(CCJ_DEFENDANT_PAYMENT_DATE_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('name="year" type="text"');
@@ -66,7 +66,7 @@ describe('CCJ - defendant Payment date', () => {
     it('should return errors on no input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .post(CCJ_DEPENDANT_PAYMENT_DATE_URL)
+        .post(CCJ_DEFENDANT_PAYMENT_DATE_URL)
         .send('year=')
         .send('month=')
         .send('day=')
@@ -81,7 +81,7 @@ describe('CCJ - defendant Payment date', () => {
     it('should return errors on no input : invalid month', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .post(CCJ_DEPENDANT_PAYMENT_DATE_URL)
+        .post(CCJ_DEFENDANT_PAYMENT_DATE_URL)
         .send('year= 2023')
         .send('month=13')
         .send('day=1')
@@ -94,7 +94,7 @@ describe('CCJ - defendant Payment date', () => {
 
     it('should return error on date in the past', async () => {
       await request(app)
-        .post(CCJ_DEPENDANT_PAYMENT_DATE_URL)
+        .post(CCJ_DEFENDANT_PAYMENT_DATE_URL)
         .send('year=1999')
         .send('month=1')
         .send('day=1')
@@ -106,7 +106,7 @@ describe('CCJ - defendant Payment date', () => {
 
     it('should redirect to claim task list page on valid payment date', async () => {
       await request(app)
-        .post(CCJ_DEPENDANT_PAYMENT_DATE_URL)
+        .post(CCJ_DEFENDANT_PAYMENT_DATE_URL)
         .send('year=9999')
         .send('month=1')
         .send('day=1')
