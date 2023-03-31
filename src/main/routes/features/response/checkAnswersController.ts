@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {CONFIRMATION_URL, RESPONSE_CHECK_ANSWERS_URL, RESPONSE_INCOMPLETE_SUBMISSION_URL} from '../../urls';
+import {CONFIRMATION_URL, PCQ_URL, RESPONSE_CHECK_ANSWERS_URL, RESPONSE_INCOMPLETE_SUBMISSION_URL} from '../../urls';
 import {
   getStatementOfTruth,
   getSummarySections,
@@ -22,6 +22,7 @@ const checkAnswersController = Router();
 function renderView(req: Request, res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const summarySections = getSummarySections(req.params.id, claim, lang);
+
   res.render(checkAnswersViewPath, {
     form,
     summarySections,
@@ -34,7 +35,12 @@ checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL,
     try {
       const claim = await getCaseDataFromStore(req.params.id);
       const form = new GenericForm(getStatementOfTruth(claim));
-      renderView(req, res, form, claim);
+
+      if(!claim.pcqPageSeen) {
+        res.redirect(constructResponseUrlWithIdParams(req.params.id, PCQ_URL));
+      } else {
+        renderView(req, res, form, claim);
+      }
     } catch (error) {
       next(error);
     }
