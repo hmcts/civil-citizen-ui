@@ -103,7 +103,6 @@ export class Claim {
     claim.rejectAllOfClaim.option = toCUIRejectAllOfClaimType(ccdClaim?.defenceRouteRequired);
     claim.rejectAllOfClaim.defence.text = ccdClaim.detailsOfWhyDoesYouDisputeTheClaim;
     claim.rejectAllOfClaim.whyDoYouDisagree.text = ccdClaim.detailsOfWhyDoesYouDisputeTheClaim;
-    claim.rejectAllOfClaim.whyDoYouDisagree.text = ccdClaim.detailsOfWhyDoesYouDisputeTheClaim;
     claim.rejectAllOfClaim.howMuchHaveYouPaid = toCUIRespondToClaim(ccdClaim.respondToClaim);
     claim.statementOfMeans = toCUIStatementOfMeans(ccdClaim);
     return claim;
