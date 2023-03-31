@@ -138,8 +138,8 @@ class ResponseSteps {
   EnterResponseToClaim(claimRef, responseType) {
     respondTypePage.enterResponseToClaim(claimRef, responseType);
   }
-  EnterPaymentOption(claimRef, paymentOption) {
-    paymentOptionPage.enterPaymentOption(claimRef, paymentOption);
+  EnterPaymentOption(claimRef, responseType, paymentOption) {
+    paymentOptionPage.enterPaymentOption(claimRef, responseType, paymentOption);
   }
   CheckAndSubmit(claimRef,responseType) {
     checkYourAnswersPage.checkAndSubmit(claimRef,responseType);
