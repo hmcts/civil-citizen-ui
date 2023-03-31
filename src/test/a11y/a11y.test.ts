@@ -77,15 +77,15 @@ function expectNoPerceivableWarnings(messages: PallyIssue[]): void {
 }
 
 function expectNoAdaptableWarnings(messages: PallyIssue[]): void {
-  //const info  = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline1_3.1_3_1'));
+  const info  = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline1_3.1_3_1') && !m.context.includes('govuk-header__menu-button')&& !m.context.includes('govuk-cookie-banner__heading')&& !m.context.includes('class="govuk-heading-m">Email<')&& !m.context.includes('govuk-details__text'));
   const meaningful = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline1_3.1_3_2'));
   const sensory = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline1_3.1_3_3'));
   const orientation = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline1_3.1_3_4'));
   //const identifyInput = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline1_3.1_3_5'));
-  /* if (info.length > 0) {
+  if (info.length > 0) {
     const errorsAsJson = `${JSON.stringify(info, null, 2)}`;
     fail(`There are parsing Guideline 1.3.1 issues: \n${errorsAsJson}\n`);
-  }*/
+  }
   if (meaningful.length > 0) {
     const errorsAsJson = `${JSON.stringify(meaningful, null, 2)}`;
     fail(`There are instructions Guideline 1.3.2 issues: \n${errorsAsJson}\n`);
