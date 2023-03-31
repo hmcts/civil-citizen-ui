@@ -17,6 +17,8 @@ const request = require('supertest');
 const {app} = require('../../../../../main/app');
 const session = require('supertest-session');
 const civilServiceUrl = config.get<string>('services.civilService.url');
+import {mockCivilClaim, mockCivilClaimWithPcqSeen} from '../../../../utils/mockDraftStore';
+
 const data = require('../../../../utils/mocks/defendantClaimsMock.json');
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/claimDetailsService');
@@ -77,7 +79,29 @@ describe('Response - Check answers', () => {
         });
     });
 
+    it('should redirect to PCQ page', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
+
+      await session(app).get(respondentCheckAnswersUrl)
+        .query({lang: 'en'})
+        .expect((res: Response) => {
+          expect(res.status).toBe(302);
+        });
+    });
+
+    it('should not redirect to PCQ page', async () => {
+      app.locals.draftStoreClient = mockCivilClaimWithPcqSeen;
+
+      await session(app).get(respondentCheckAnswersUrl)
+        .query({lang: 'en'})
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+        });
+    });
+
     it('should pass english translation via query', async () => {
+      app.locals.draftStoreClient = mockCivilClaimWithPcqSeen;
+
       await session(app).get(respondentCheckAnswersUrl)
         .query({lang: 'en'})
         .expect((res: Response) => {
@@ -85,7 +109,10 @@ describe('Response - Check answers', () => {
           expect(res.text).toContain(checkYourAnswerEng);
         });
     });
+
     it('should pass cy translation via query', async () => {
+      app.locals.draftStoreClient = mockCivilClaimWithPcqSeen;
+
       await session(app).get(respondentCheckAnswersUrl)
         .query({lang: 'cy'})
         .expect((res: Response) => {
@@ -98,6 +125,7 @@ describe('Response - Check answers', () => {
       mockGetSummarySections.mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
+
       await session(app)
         .get(respondentCheckAnswersUrl)
         .expect((res: Response) => {
@@ -106,6 +134,7 @@ describe('Response - Check answers', () => {
         });
     });
   });
+
   describe('on Post', () => {
     it('should return errors when form is incomplete', async () => {
       mockGetSummarySections.mockImplementation(() => {
