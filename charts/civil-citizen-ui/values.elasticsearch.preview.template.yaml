@@ -31,7 +31,8 @@ ccd:
         memory: "512Mi"
   logstash:
     image: hmctspublic.azurecr.io/ccd/logstash
-    imageTag: "latest
+    imageTag: "latest"
+
     resources:
       requests:
         cpu: "500m"
