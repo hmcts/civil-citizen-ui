@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {
   CCJ_PAYMENT_OPTIONS_URL,
-  CCJ_DEPENDANT_PAYMENT_DATE_URL,
+  CCJ_DEFENDANT_PAYMENT_DATE_URL,
   CCJ_REPAYMENT_PLAN_INSTALMENTS_URL,
   CCJ_CHECK_AND_SEND_URL,
 } from '../../../urls';
@@ -38,7 +38,7 @@ ccjPaymentOptionController.post(CCJ_PAYMENT_OPTIONS_URL, async (req: Request, re
     } else {
       await saveClaimantResponse(claimId, ccjPaymentOption.model, crPropertyName, crParentName);
       if (ccjPaymentOption.model.isCcjPaymentOptionBySetDate()) {
-        res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_DEPENDANT_PAYMENT_DATE_URL));
+        res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_DEFENDANT_PAYMENT_DATE_URL));
       } else if (ccjPaymentOption.model.isCcjPaymentOptionInstalments()) {
         res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_REPAYMENT_PLAN_INSTALMENTS_URL));
       } else {
