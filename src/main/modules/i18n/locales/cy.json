@@ -1653,6 +1653,17 @@
       "TITLE_FOR_PART_ADMIT": "Pryd ydych chi eisiau talu yr £{{ amount }}?",
       "YOU_MUST_CONTACT": "Rhaid i chi gysylltu â'r hawlydd a thalu'r swm llawn o fewn 5 diwrnod. Rhaid i unrhyw sieciau neu drosglwyddiadau banc fod wedi clirio yn eu cyfrif."
     },
+    "PCQ": {
+      "CONTINUE_TO_QUESTIONS": "Continue to questions",
+      "DONT_WANT_ANSWER": "I don't want to answer these questions",
+      "EQUALITY_AND_DIVERSITY": "Equality and diversity questions",
+      "FIND_OUT_HOW_WE_USE": "Find out how we use this information in our ",
+      "PRIVACY_POLICY": "privacy policy",
+      "YOUR_ANSWER_WILL_HELP": "Your answers will help us check we are treating people fairly and equally.",
+      "YOUR_ANSWER_WILL_NOT_AFFECT": "Your answer will not affect your case.",
+      "THESE_ARE_OPTIONAL_QUESTION": "These are optional questions about you.",
+      "TITLE": "Protected Characteristics Questions"
+    },
     "PERMISSION_FOR_EXPERT": {
       "PAGE_TITLE": "A ydych eisiau gofyn am ganiatâd y llys i ddefnyddio arbenigwr?",
       "TITLE": "Permission for expert"
