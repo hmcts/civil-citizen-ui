@@ -16,14 +16,12 @@ export const toCUIParty = (ccdParty: CCDParty): Party => {
     cuiParty.partyDetails.individualFirstName = ccdParty?.individualFirstName ? ccdParty.individualFirstName : undefined;
     cuiParty.partyDetails.individualLastName = ccdParty.individualLastName ? ccdParty?.individualLastName : undefined;
     cuiParty.partyDetails.individualTitle = ccdParty.individualTitle ? ccdParty?.individualTitle : undefined;
-    const auxDate = new Date(ccdParty.individualDateOfBirth);
-    cuiParty.dateOfBirth = ccdParty.individualDateOfBirth ? new CitizenDate(auxDate.getDate().toString(), (auxDate.getMonth()+1).toString(), auxDate.getFullYear().toString()) : undefined;
+    cuiParty.dateOfBirth = toCitizenDate(ccdParty.individualDateOfBirth);
   } else if (ccdParty?.type === PartyType.SOLE_TRADER) {
     cuiParty.partyDetails.individualFirstName = ccdParty.soleTraderFirstName ? ccdParty?.soleTraderFirstName : undefined;
     cuiParty.partyDetails.individualLastName = ccdParty.soleTraderLastName ? ccdParty?.soleTraderLastName : undefined;
     cuiParty.partyDetails.individualTitle = ccdParty.soleTraderTitle ? ccdParty?.soleTraderTitle : undefined;
-    const auxDate = new Date(ccdParty.soleTraderDateOfBirth);
-    cuiParty.dateOfBirth = ccdParty.soleTraderDateOfBirth ? new CitizenDate(auxDate.getDate().toString(), (auxDate.getMonth() + 1).toString(), auxDate.getFullYear().toString()) : undefined;
+    cuiParty.dateOfBirth = toCitizenDate(ccdParty.soleTraderDateOfBirth);
     cuiParty.partyDetails.soleTraderTradingAs = ccdParty.soleTraderTradingAs ? ccdParty?.soleTraderTradingAs : undefined;
   } else if (ccdParty?.type === PartyType.COMPANY) {
     cuiParty.partyDetails.partyName = ccdParty?.partyName ? ccdParty.partyName : undefined;
@@ -43,4 +41,11 @@ export const toCUIPartyRespondent = (ccdParty: CCDParty, ccdRespondent1: CCDResp
   cuiParty.partyDetails.postToThisAddress = cuiParty.partyDetails.correspondenceAddress ? YesNo.YES : YesNo.NO;
   cuiParty.partyDetails.contactPerson = ccdRespondent1?.respondent1LiPContactPerson;
   return cuiParty;
+};
+
+const toCitizenDate = (dateOfBirth : Date) : CitizenDate => {
+  if(dateOfBirth){
+    const auxDate = new Date(dateOfBirth);
+    return new CitizenDate(auxDate.getDate().toString(), (auxDate.getMonth() + 1).toString(), auxDate.getFullYear().toString());
+  }
 };
