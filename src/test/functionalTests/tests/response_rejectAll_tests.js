@@ -1,6 +1,5 @@
 const config =  require('../../config');
-const  ResponseSteps  =  require('../features/response/steps/prepareYourResponseSteps');
-const  CommonSteps  =  require('../features/response/steps/commonSteps');
+const  ResponseSteps  =  require('../features/response/steps/lipDefendantResponseSteps');
 const  LoginSteps =  require('../features/home/steps/login');
 
 const partAdmit = 'partAdmit';
@@ -19,7 +18,7 @@ Before(async ({api}) => {
 });
 
 Scenario('Response with RejectAll and Immediate payment @citizenUI @rejectAll', () => {
-  CommonSteps.EnterPersonalDetails(claimRef);
+  ResponseSteps.EnterPersonalDetails(claimRef);
   ResponseSteps.EnterResponseToClaim(claimRef, rejectAll);
   ResponseSteps.SelectOptionInRejectAllClaim('alreadyPaid');
   ResponseSteps.EnterPaymentOption(claimRef, immediatePayment);
@@ -27,21 +26,21 @@ Scenario('Response with RejectAll and Immediate payment @citizenUI @rejectAll', 
 });
 
 Scenario('Response with RejectAll and Date to PayOn @citizenUI @rejectAll', () => {
-  CommonSteps.EnterPersonalDetails(claimRef);
+  ResponseSteps.EnterPersonalDetails(claimRef);
   ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
   ResponseSteps.SelectOptionInRejectAllClaim('alreadyPaid');
   ResponseSteps.EnterPaymentOption(claimRef, bySetDate);
   ResponseSteps.EnterDateToPayOn();
-  CommonSteps.EnterFinancialDetails(claimRef);
+  ResponseSteps.EnterFinancialDetails(claimRef);
   ResponseSteps.CheckAndSubmit(claimRef);
 });
 
 Scenario('Response with RejectAll and Repayment plan @citizenUI @rejectAll', () => {
-  CommonSteps.EnterPersonalDetails(claimRef);
+  ResponseSteps.EnterPersonalDetails(claimRef);
   ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
   ResponseSteps.SelectOptionInRejectAllClaim('alreadyPaid');
   ResponseSteps.EnterPaymentOption(claimRef, repaymentPlan);
-  CommonSteps.EnterFinancialDetails(claimRef);
+  ResponseSteps.EnterFinancialDetails(claimRef);
   ResponseSteps.EnterRepaymentPlan(claimRef);
   ResponseSteps.CheckAndSubmit(claimRef);
 });
