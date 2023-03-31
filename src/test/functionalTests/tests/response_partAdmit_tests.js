@@ -1,9 +1,8 @@
 const config =  require('../../config');
-const  ResponseSteps  =  require('../features/response/steps/prepareYourResponseSteps');
-const  CommonSteps  =  require('../features/response/steps/commonSteps');
+const  ResponseSteps  =  require('../features/response/steps/lipDefendantResponseSteps');
 const  LoginSteps =  require('../features/home/steps/login');
 
-const partAdmit = 'partAdmit';
+const partAdmit = 'partial-admission';
 const immediatePayment = 'immediate';
 const bySetDate = 'bySetDate';
 const repaymentPlan = 'repaymentPlan';
@@ -26,28 +25,42 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Response with PartAdmit and Immediate payment @citizenUI @partAdmit', () => {
-  CommonSteps.EnterPersonalDetails(claimRef);
-  CommonSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
+Scenario('Response with PartAdmit-AlreadyPaid and Immediate payment @citizenUI @partAdmit @regression', () => {
+  ResponseSteps.EnterPersonalDetails(claimRef);
+  ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
   ResponseSteps.SelectPartAdmitAlreadyPaid('yes');
-  ResponseSteps.EnterPaymentOption(claimRef, immediatePayment);
   ResponseSteps.EnterHowMuchYouHavePaid(claimRef, 500);
   ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef);
   ResponseSteps.AddYourTimeLineEvents();
   ResponseSteps.EnterYourEvidenceDetails();
   ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
-  ResponseSteps.AddMandatoryPhoneNumber();
+  ResponseSteps.EnterDQForSmallClaims(claimRef);
+  ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
+});
+
+Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @partAdmit @regression', () => {
+  ResponseSteps.EnterPersonalDetails(claimRef);
+  ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
+  ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
+  ResponseSteps.SelectPartAdmitAlreadyPaid('no');
+  ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 500);
+  ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef);
+  ResponseSteps.AddYourTimeLineEvents();
+  ResponseSteps.EnterYourEvidenceDetails();
+  ResponseSteps.EnterPaymentOption(claimRef, partAdmit, immediatePayment);
+  ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
+  ResponseSteps.EnterDQForSmallClaims(claimRef);
   ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
 });
 
 Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit', () => {
-  CommonSteps.EnterPersonalDetails(claimRef);
+  ResponseSteps.EnterPersonalDetails(claimRef);
   ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
   ResponseSteps.SelectPartAdmitAlreadyPaid('yes');
-  ResponseSteps.EnterPaymentOption(claimRef, bySetDate);
+  ResponseSteps.EnterPaymentOption(claimRef, partAdmit, bySetDate);
   ResponseSteps.EnterDateToPayOn();
-  CommonSteps.EnterFinancialDetails(claimRef);
+  ResponseSteps.EnterFinancialDetails(claimRef);
   ResponseSteps.EnterHowMuchYouHavePaid(claimRef, 500);
   ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef);
   ResponseSteps.AddYourTimeLineEvents();
@@ -61,17 +74,17 @@ Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit', () =
 });
 
 Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit', () => {
-  CommonSteps.EnterPersonalDetails(claimRef);
+  ResponseSteps.EnterPersonalDetails(claimRef);
   ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
   ResponseSteps.SelectPartAdmitAlreadyPaid('yes');
-  ResponseSteps.EnterPaymentOption(claimRef, repaymentPlan);
-  CommonSteps.EnterFinancialDetails(claimRef);
+  ResponseSteps.EnterPaymentOption(claimRef, partAdmit, repaymentPlan);
+  ResponseSteps.EnterFinancialDetails(claimRef);
   ResponseSteps.EnterRepaymentPlan(claimRef);
   ResponseSteps.EnterHowMuchYouHavePaid(claimRef, 500);
   ResponseSteps.EnterYourOptions(claimRef, dontWantMoreTime);
   ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef);
   ResponseSteps.AddYourTimeLineEvents();
   ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
-  ResponseSteps.AddMandatoryPhoneNumber();    
+  ResponseSteps.AddMandatoryPhoneNumber();
   ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
 });

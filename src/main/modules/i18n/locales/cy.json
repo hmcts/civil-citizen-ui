@@ -1514,8 +1514,10 @@
     },
     "CANT_ATTEND_HEARING_IN_NEXT_12MONTHS": {
       "CONTENT": "Dylai’r rhain ond fod yn ddyddiadau digwyddiadau pwysig fel apwyntiadau meddygol, gwrandawiadau eraill neu wyliau rydych eisoes wedi trefnu",
-      "PAGE_TITLE": "Can’t attend hearing in next months",
-      "TITLE": "A oes yna unrhyw ddyddiadau yn y 12 mis nesaf pan na allwch chi, eich arbenigwyr neu eich tystion fynychu gwrandawiad?"
+      "PAGE_TITLE": "Are there any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing?",
+      "TITLE": "A oes yna unrhyw ddyddiadau yn y 12 mis nesaf pan na allwch chi, eich arbenigwyr neu eich tystion fynychu gwrandawiad?",
+      "UNAVAILABLE_DATES": "Dates unavailable",
+      "WHY_UNAVAILABLE_FOR_MORE_THAN_30_DAYS": "Why are you, your experts or witness unavailable for {{days}} days?"
     },
     "NOT_ELIGIBLE_FOR_SERVICE": {
       "ABLE_TO_GET_AN_ADVICE": {
@@ -1942,6 +1944,7 @@
       "EXPlANATION": "Gallwch ofyn am gynnal y gwrandawiad mewn llys penodol, er enghraifft, os ydych yn treulio dyddiau'r wythnos yn bell o'ch cartref. Bydd y llys yn ystyried amgylchiadau'r ddau barti wrth benderfynu ble i gynnal y gwrandawiad.",
       "PAGE_TITLE": "Llys penodol",
       "SELECT_COURT": "Dewiswch lys",
+      "SELECTED_COURT": "Selected court",
       "SELECT_VALUE": "Dewis gwerth",
       "REASON": "Dywedwch wrthym pam ydych chi eisiau i’r gwrandawiad gael ei gynnal yn y llys hwn",
       "TITLE": "Ydych chi eisiau gwneud cais i’r gwrandawiad gael ei gynnal mewn llys penodol?"
