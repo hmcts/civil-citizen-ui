@@ -1,5 +1,6 @@
 import {TestMessages} from './errorMessageTestConstants';
 import civilClaimResponseMock from './mocks/civilClaimResponseMock.json';
+import civilClaimResponseMockPcqSeen from './mocks/civilClaimResponseMockWithPcqSeen.json';
 import noStatementOfMeansMock from './mocks/noStatementOfMeansMock.json';
 import civilClaimResponseOptionNoMock from './mocks/civilClaimResponseOptionNoMock.json';
 import civilClaimResponseUnemploymentRetired from './mocks/civilClaimResponseUnemploymentRetiredMock.json';
@@ -115,6 +116,11 @@ const mockCivilClaimWithExpertAndWitness = {
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseWithWithExpertAndWitness))),
 };
 
+const mockCivilClaimWithPcqSeen = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseMockPcqSeen))),
+};
+
 export {
   mockCivilClaim,
   mockCivilClaimUndefined,
@@ -136,4 +142,5 @@ export {
   mockCivilClaimWithTimelineAndEvidence,
   mockCivilClaimWithExpertAndWitness,
   mockCivilClaimantIntention,
+  mockCivilClaimWithPcqSeen,
 };
