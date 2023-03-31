@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const newRow = lastRow.cloneNode(true);
       const children = newRow.children;
       Array.from(children).forEach((child) => {
-        const elements = child.querySelectorAll(`input, textarea, select, label, ${checkboxConditionalClassName}, ${radioButtonConditionalClassName}`);
+        const elements = child.querySelectorAll(`div, input, textarea, select, label, ${checkboxConditionalClassName}, ${radioButtonConditionalClassName}`);
         updateInputs(elements);
         removeErrors(child);
       });
@@ -107,14 +107,14 @@ document.addEventListener('DOMContentLoaded', function () {
         element.parentNode.classList.remove('govuk-form-group--error');
         incrementIndexOnNameAndId(element);
         updateAttributes(element);
-        if (element.className?.includes(checkboxConditional) 
+        if (element.className?.includes(checkboxConditional)
             && !element.className?.includes(checkboxConditionalHidden)) {
           element.classList.add(checkboxConditionalHidden);
         }
         if (element.type === 'checkbox') {
           addEventToAddedCheckbox(element);
         }
-        if (element.className?.includes(radioButtonConditional) 
+        if (element.className?.includes(radioButtonConditional)
             && !element.className?.includes(radioButtonConditionalHidden)) {
           element.classList.add(radioButtonConditionalHidden);
         }
@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function () {
     } else if (lastCheckboxInput.length) {
       const number = lastCheckboxInput[0].id.split('-')[1];
       return Number(number) + 1;
-    } 
+    }
     return document.getElementsByClassName('multiple-row').length;
   }
 
@@ -172,6 +172,9 @@ document.addEventListener('DOMContentLoaded', function () {
           .getAttribute('aria-controls')
           .replace(checkboxIndexRegex, '-' + newIndex + '-'),
       );
+    }
+    if (element.getAttribute('aria-describedby')) {
+      element.setAttribute('aria-describedby', element.getAttribute('aria-describedby').replace(indexRegex, '[' + newIndex + ']'));
     }
   }
 
@@ -221,15 +224,15 @@ document.addEventListener('DOMContentLoaded', function () {
       const index = event.target.id.split('-')[1];
 
       if(elementSelectedBefore[index]?.id === radioButton.id) return;
-        
+
       elementSelectedBefore[index] = radioButton;
-      
+
       const fieldName = event.target.id.split('-')[2];
       const name = fieldName === 'longer' ? 'longer-period' : 'single-date';
       const oppositeName = fieldName === 'longer' ? 'single-date' : 'longer-period';
       const conditional = document.getElementById(`conditional-items-${index}-${name}`);
       const oppositeConditional = document.getElementById(`conditional-items-${index}-${oppositeName}`);
-      
+
       if (conditional?.className?.includes(radioButtonConditionalHidden)) {
         conditional.classList.remove(radioButtonConditionalHidden);
         oppositeConditional.classList.add(radioButtonConditionalHidden);
