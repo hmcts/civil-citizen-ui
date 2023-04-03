@@ -77,10 +77,10 @@
             name: balance,
             value: bankAccount.balance,
             prefix: {
-              text: "£",
-              attributes: {
-                'aria-label': 'Balance, in pounds'
-              }
+              text: "£"
+            },
+            attributes: {
+              'aria-label': 'Balance, in pounds'
             },
             classes: "govuk-grid-column-full govuk-input--error" if errorFor(balance) else "govuk-grid-column-full",
             spellcheck: false,
