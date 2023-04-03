@@ -528,6 +528,7 @@
     },
     "CITIZEN_BANK_ACCOUNTS": {
       "ADD_ANOTHER": "Add another account",
+      "BANK_ACCOUNT": "Account",
       "BANK_AND_SAVINGS_ACCOUNTS": "List your bank and savings accounts",
       "CURRENT_ACCOUNT": "Current account",
       "EXAMPLE": "Put a minus (-) in front of the amount if you’re overdrawn. For example £-804.45.",

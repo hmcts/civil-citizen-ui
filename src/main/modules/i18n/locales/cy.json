@@ -528,6 +528,7 @@
     },
     "CITIZEN_BANK_ACCOUNTS": {
       "ADD_ANOTHER": "Ychwanegu cyfrif arall",
+      "BANK_ACCOUNT": "Account",
       "BANK_AND_SAVINGS_ACCOUNTS": "Rhestrwch eich cyfrifon banc a chyfrifon cynilo",
       "CURRENT_ACCOUNT": "Cyfrif cyfredol",
       "EXAMPLE": "Rhowch minws (-) o flaen y swm os ydych yn eich gorddrafft. Er enghraifft -£804.45.",
