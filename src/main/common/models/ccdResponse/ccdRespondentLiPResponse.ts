@@ -11,7 +11,6 @@ export interface CCDRespondentLiPResponse {
   respondent1MediationLiPResponse?: CCDMediation,
   respondent1DQExtraDetails?: CCDDQExtraDetails,
   respondent1DQHearingSupportLip?: CCDHearingSupport,
-
   respondent1LiPContactPerson?: string,
   respondent1LiPCorrespondenceAddress?: CCDAddress,
 }
