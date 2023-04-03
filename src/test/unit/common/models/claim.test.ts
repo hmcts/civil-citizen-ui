@@ -35,6 +35,9 @@ import {Hearing} from 'common/models/directionsQuestionnaire/hearing/hearing';
 import {Address} from 'common/form/models/address';
 import {FullAdmission} from 'common/models/fullAdmission';
 import {claimType} from 'form/models/claimType';
+import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
+import {ExpertDetails} from 'models/directionsQuestionnaire/experts/expertDetails';
+import {ExpertDetailsList} from 'common/models/directionsQuestionnaire/experts/expertDetailsList';
 
 describe('Claim isInterestEnDateUntilSubmitDate', () => {
   const claim = new Claim();
@@ -47,7 +50,7 @@ describe('Claim isInterestEnDateUntilSubmitDate', () => {
   it('should return true', () => {
     //Given
     claim.interest = {
-      interestEndDate : InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE,
+      interestEndDate: InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE,
     };
     //When
     const result = claim.isInterestEndDateUntilSubmitDate();
@@ -57,7 +60,7 @@ describe('Claim isInterestEnDateUntilSubmitDate', () => {
   it('should return false', () => {
     //Given
     claim.interest = {
-      interestEndDate : InterestEndDateType.UNTIL_SETTLED_OR_JUDGEMENT_MADE,
+      interestEndDate: InterestEndDateType.UNTIL_SETTLED_OR_JUDGEMENT_MADE,
     };
     //When
     const result = claim.isInterestEndDateUntilSubmitDate();
@@ -75,7 +78,7 @@ describe('Claim isInterestFromClaimSubmitDate', () => {
   });
   it('should return true', () => {
     //Given
-    claim.interest = {interestClaimFrom : InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE};
+    claim.interest = {interestClaimFrom: InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE};
     //When
     const result = claim.isInterestFromClaimSubmitDate();
     //Then
@@ -83,7 +86,7 @@ describe('Claim isInterestFromClaimSubmitDate', () => {
   });
   it('should return false', () => {
     //Given
-    claim.interest = {interestClaimFrom : InterestClaimFromType.FROM_A_SPECIFIC_DATE};
+    claim.interest = {interestClaimFrom: InterestClaimFromType.FROM_A_SPECIFIC_DATE};
     //When
     const result = claim.isInterestFromClaimSubmitDate();
     //Then
@@ -101,7 +104,7 @@ describe('Claim isInterestFromASpecificDate', () => {
   });
   it('should return true', () => {
     //Given
-    claim.interest = {interestClaimFrom : InterestClaimFromType.FROM_A_SPECIFIC_DATE};
+    claim.interest = {interestClaimFrom: InterestClaimFromType.FROM_A_SPECIFIC_DATE};
     //When
     const result = claim.isInterestFromASpecificDate();
     //Then
@@ -109,7 +112,7 @@ describe('Claim isInterestFromASpecificDate', () => {
   });
   it('should return false', () => {
     //Given
-    claim.interest = {interestClaimFrom : InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE};
+    claim.interest = {interestClaimFrom: InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE};
     //When
     const result = claim.isInterestFromASpecificDate();
     //Then
@@ -127,7 +130,7 @@ describe('Claim isInterestClaimOptionsSameRateInterest', () => {
   });
   it('should return true', () => {
     //Given
-    claim.interest ={interestClaimOptions: InterestClaimOptionsType.SAME_RATE_INTEREST};
+    claim.interest = {interestClaimOptions: InterestClaimOptionsType.SAME_RATE_INTEREST};
     //When
     const result = claim.isInterestClaimOptionsSameRateInterest();
     //Then
@@ -135,7 +138,7 @@ describe('Claim isInterestClaimOptionsSameRateInterest', () => {
   });
   it('should return false', () => {
     //Given
-    claim.interest ={interestClaimOptions: InterestClaimOptionsType.BREAK_DOWN_INTEREST};
+    claim.interest = {interestClaimOptions: InterestClaimOptionsType.BREAK_DOWN_INTEREST};
     //When
     const result = claim.isInterestClaimOptionsSameRateInterest();
     //Then
@@ -153,7 +156,7 @@ describe('Claim isSameRateTypeEightPercent', () => {
   });
   it('should return true', () => {
     //Given
-    claim.interest = {sameRateInterestSelection : {sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC}};
+    claim.interest = {sameRateInterestSelection: {sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC}};
     //When
     const result = claim.isSameRateTypeEightPercent();
     //Then
@@ -161,7 +164,7 @@ describe('Claim isSameRateTypeEightPercent', () => {
   });
   it('should return false', () => {
     //Given
-    claim.interest = {sameRateInterestSelection : {sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE}};
+    claim.interest = {sameRateInterestSelection: {sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE}};
     //When
     const result = claim.isSameRateTypeEightPercent();
     //Then
@@ -1091,7 +1094,7 @@ describe('Documents', () => {
     });
     it('should return true with details', () => {
       //Given
-      claim.directionQuestionnaire.hearing.supportRequiredList = { option : YesNo.YES};
+      claim.directionQuestionnaire.hearing.supportRequiredList = {option: YesNo.YES};
       //When
       const result = claim.hasSupportRequiredList;
       //Then
@@ -1191,7 +1194,7 @@ describe('Documents', () => {
     });
   });
   describe('Identify if its a SMALL or FAST_TRACK claim', () => {
-    const  claim = new Claim();
+    const claim = new Claim();
     it('Its a small claim', () => {
       //Given
       claim.totalClaimAmount = 10000;
@@ -1205,6 +1208,40 @@ describe('Documents', () => {
       //when Then
       expect(claim.claimType).toEqual(claimType.FAST_TRACK_CLAIM);
       expect(claim.isFastTrackClaim).toBe(true);
+    });
+  });
+  describe('hasExpertDetails', () => {
+    let claim: Claim;
+    beforeEach(() => {
+      claim = new Claim;
+      claim.directionQuestionnaire = new DirectionQuestionnaire();
+      claim.directionQuestionnaire.experts = new Experts();
+
+    });
+    it('should return true when expert evidence is yes and expert detail list is not empty', () => {
+      //Given
+      claim.directionQuestionnaire.experts.expertEvidence = new GenericYesNo(YesNo.YES);
+      claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList([new ExpertDetails('John', 'Smith')]);
+      //Then
+      expect(claim.hasExpertDetails()).toBeTruthy();
+    });
+    it('should return false when expert evidence is yes but expert details list is empty', () => {
+      //Given
+      claim.directionQuestionnaire.experts.expertEvidence = new GenericYesNo(YesNo.YES);
+      //Then
+      expect(claim.hasExpertDetails()).toBeFalsy();
+    });
+    it('should return false when expert evidence is no', () => {
+      //Given
+      claim.directionQuestionnaire.experts.expertEvidence = new GenericYesNo(YesNo.NO);
+      //Then
+      expect(claim.hasExpertDetails()).toBeFalsy();
+    });
+    it('should return false when claim is empty', () => {
+      //Given
+      claim = new Claim();
+      //Then
+      expect(claim.hasExpertDetails()).toBeFalsy();
     });
   });
 });

@@ -14,7 +14,7 @@
                 text: t('COMMON.EMPLOYER_NAME'),
                 classes: 'govuk-visually-hidden'
               },
-              errorMessage: { text: t(errorFor('rows[' + index + '][employerName]')) } if errorFor('rows[' + index + '][employerName]') else ''
+              errorMessage: { text: t(errorFor('rows[' + index + '][employerName]')) } if errorFor('rows[' + index + '][employerName]') else false
             }) }}
           {{ govukInput({
               id: 'rows[' + index + '][jobTitle]',
@@ -25,7 +25,7 @@
                 text: t('COMMON.JOB_TITLE'),
                 classes: 'govuk-visually-hidden'
               },
-              errorMessage: { text: t(errorFor('rows[' + index + '][jobTitle]')) } if errorFor('rows[' + index + '][jobTitle]') else ''
+              errorMessage: { text: t(errorFor('rows[' + index + '][jobTitle]')) } if errorFor('rows[' + index + '][jobTitle]') else false
             }) }}
         </div>
       </div>

@@ -15,11 +15,11 @@ class RespondTypePage {
     I.amOnPage('/case/'+claimRef+'/response/response-type');
     I.see('How do you respond to the claim?', 'h1');
     switch (responseType){
-      case 'admitAll':{
+      case 'full-admission':{
         I.click(fields.responseAdmitAll);
         break;
       }
-      case 'partAdmit':{
+      case 'partial-admission':{
         I.click(fields.responsePartAdmit);
         break;
       }
