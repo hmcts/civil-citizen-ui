@@ -31,7 +31,7 @@
         {{ t('PAGES.PCQ.FIND_OUT_HOW_WE_USE') }}
         {{ externalLink(t, 'PAGES.PCQ.PRIVACY_POLICY', '', false) }}
       </p>
-      <form method="post" href='/case/' + caseId + '/pcq' novalidate>
+      <form method="post" novalidate>
         {{ csrfProtection(csrf) }}
         <div class="govuk-form-group">
           {{ govukButton({

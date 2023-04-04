@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {CONFIRMATION_URL, PCQ_URL, RESPONSE_CHECK_ANSWERS_URL, RESPONSE_INCOMPLETE_SUBMISSION_URL} from '../../urls';
 import {
-  // getStatementOfTruth,
+  getStatementOfTruth,
   getSummarySections,
   saveStatementOfTruth,
 } from 'services/features/response/checkAnswers/checkAnswersService';
@@ -33,14 +33,14 @@ checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL,
   AllResponseTasksCompletedGuard.apply(RESPONSE_INCOMPLETE_SUBMISSION_URL),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      // const claim = await getCaseDataFromStore(req.params.id);
-      // const form = new GenericForm(getStatementOfTruth(claim));
+      const claim = await getCaseDataFromStore(req.params.id);
+      const form = new GenericForm(getStatementOfTruth(claim));
 
-      // if(!claim.pcqPageSeen) {
+      if(!claim.pcqPageSeen) {
         res.redirect(constructResponseUrlWithIdParams(req.params.id, PCQ_URL));
-      // } else {
-      //   renderView(req, res, form, claim);
-      // }
+      } else {
+        renderView(req, res, form, claim);
+      }
     } catch (error) {
       next(error);
     }
