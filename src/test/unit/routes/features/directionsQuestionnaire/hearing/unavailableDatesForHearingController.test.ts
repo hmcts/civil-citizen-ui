@@ -25,7 +25,7 @@ describe('Unavailable dates for hearing Controller', () => {
   beforeAll(() => {
     nock(idamServiceUrl)
       .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
+      .reply(200, {id_token: citizenRoleToken});
   });
 
   describe('on GET', () => {
@@ -58,7 +58,7 @@ describe('Unavailable dates for hearing Controller', () => {
       await request(app)
         .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
         .send({
-          items: [{ single: {} }],
+          items: [{single: {}}],
         })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -468,12 +468,12 @@ describe('Unavailable dates for hearing Controller', () => {
             type: UnavailableDateType.LONGER_PERIOD,
             period: {
               start: {
-                day: today.getDate(),
-                month: today.getMonth() + 2,
+                day: 15,
+                month: today.getMonth() + 1,
                 year: today.getFullYear() + 1,
               },
               end: {
-                day: today.getDate(),
+                day: 10,
                 month: today.getMonth() + 1,
                 year: today.getFullYear() + 1,
 

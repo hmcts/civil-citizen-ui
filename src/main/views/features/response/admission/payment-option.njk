@@ -23,7 +23,7 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set hintPayImmediatly %}
+      {% set hintPayImmediately %}
         <div
           class='govuk-hint'>{{ t('PAGES.PAYMENT_OPTION.YOU_MUST_CONTACT') }}</div>
       {% endset -%}
@@ -39,7 +39,7 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
               <h1 class="govuk-fieldset__heading">{{ title }}</h1>
             </legend>
             {{ govukRadios({
@@ -51,7 +51,7 @@
                   text: t('COMMON.PAYMENT_OPTION.IMMEDIATELY'),
                   checked: true if form.model.paymentType == PaymentOptionType.IMMEDIATELY,
                   conditional: {
-                  html: hintPayImmediatly if not isClaimantResponse
+                  html: hintPayImmediately if not isClaimantResponse
                 }
                 },
                 {

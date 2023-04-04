@@ -1511,8 +1511,10 @@
     },
     "CANT_ATTEND_HEARING_IN_NEXT_12MONTHS": {
       "CONTENT": "These should only be the dates of important events like medical appointments, other court hearing, or holidays you have already booked",
-      "PAGE_TITLE": "cant attend hearing in next months",
-      "TITLE": "Are there any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing?"
+      "PAGE_TITLE": "Are there any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing?",
+      "TITLE": "Are there any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing?",
+      "UNAVAILABLE_DATES": "Dates unavailable",
+      "WHY_UNAVAILABLE_FOR_MORE_THAN_30_DAYS": "Why are you, your experts or witness unavailable for {{days}} days?"
     },
     "NOT_ELIGIBLE_FOR_SERVICE": {
       "ABLE_TO_GET_AN_ADVICE": {
@@ -1932,12 +1934,14 @@
       "PAGE_TITLE": "Do you want to share an expert with the other party?",
       "PREPARE_REPORT": "They will prepare a report for the court on behalf of two or more of the parties, including the claimant.",
       "SINGLE_JOINT_EXPERT": "This is known as a ’single joint expert’.",
+      "WITH_CLAIMANT": "Do you want to share an expert with the claimant",
       "TITLE": "Do you want to share an expert with the other party?"
     },
     "SPECIFIC_COURT": {
       "EXPlANATION": "You can ask for the hearing to be held at a specific court, for example, if you spend weekdays a long distance from your home. The court will consider both parties' circumstances when deciding where to hold the hearing.",
       "PAGE_TITLE": "Specific court",
       "SELECT_COURT": "Select a court",
+      "SELECTED_COURT": "Selected court",
       "SELECT_VALUE": "Select a value",
       "REASON": "Tell us why you want the hearing to be held at this court",
       "TITLE": "Do you want to ask for the hearing to be held at a specific court?"
@@ -2118,7 +2122,7 @@
       "PERSON_TEXT": "Person",
       "SELECT_ALL_THAT_APPLY": "Select all that apply.",
       "SIGN_LANGUAGE": "Sign language interpreter",
-      "TITLE": "Do you, your experts or witnesses need support to attend a hearing",
+      "TITLE": "Do you, your experts or witnesses need support to attend a hearing?",
       "WHAT_LANGUAGE": "What language needs to be interpreted?"
     },
     "UNAVAILABLE_DATES_FOR_HEARING": {
