@@ -13,7 +13,6 @@
 {% endblock %}
 
 {% block content %}
-
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set errors = form.getAllErrors() %}
@@ -24,7 +23,9 @@
       <form method="post" novalidate>
         {{ csrfProtection(csrf) }}
         <div class="govuk-form-group-!-margin-9 {%- if errors[0].text %} govuk-form-group--error{% endif %}">
-          {{ govukErrorMessage({ text:t(errors[0].text) })  }}
+          {% if errors[0].text %}
+            {{ govukErrorMessage({ text:t(errors[0].text) })  }}
+           {% endif %}
           {% for employer in form.model.rows %}
             {{employerRow(employer, loop.index0, form.errorFor,t)}}
           {% endfor %}
@@ -46,5 +47,4 @@
       </form>
     </main>
   </div>
-
 {% endblock %}

@@ -1,5 +1,5 @@
 const I = actor();
-const config = require('../../../../config');
+const config = require('../../../../../config');
 
 const fields = {
   cyaSigned: 'input[id="signed"]',
@@ -16,7 +16,7 @@ class CheckYourAnswersPage {
     I.see('Check your answers', 'h1');
     I.waitForElement(fields.cyaSigned);
     I.checkOption(fields.cyaSigned);
-    if (responseType == 'partAdmit') {
+    if (responseType == 'partial-admission') {
       I.waitForElement(fields.directionsQuestionnaireSigned);
       I.checkOption(fields.directionsQuestionnaireSigned);
     } else if (responseType == 'admitPartTwo') {
