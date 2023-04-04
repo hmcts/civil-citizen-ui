@@ -79,11 +79,13 @@
             prefix: {
               text: "£"
             },
-            attributes: {
-              'aria-label': commonLabel + t('PAGES.CITIZEN_BANK_ACCOUNTS.BALANCE_IN_POUNDS')
-            },
             classes: "govuk-grid-column-full govuk-input--error" if errorFor(balance) else "govuk-grid-column-full",
-            spellcheck: false
+            spellcheck: false,
+              label: {
+                text: commonLabel + t('PAGES.CITIZEN_BANK_ACCOUNTS.BALANCE_IN_POUNDS'),
+                for: balance,
+                classes: 'govuk-visually-hidden'
+              }
           }) }}
         </div>
       </div>
