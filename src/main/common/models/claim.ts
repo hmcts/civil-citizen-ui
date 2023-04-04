@@ -39,8 +39,6 @@ import {Interest} from 'form/models/interest/interest';
 import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
 import {ClaimDetails} from 'common/form/models/claim/details/claimDetails';
 import {ClaimantResponse} from './claimantResponse';
-import {CCDClaim} from 'models/civilClaimResponse';
-import {toCUIParty} from 'services/translation/convertToCUI/convertToCUIParty';
 import {SelfEmployedAs} from 'models/selfEmployedAs';
 import {TaxPayments} from 'models/taxPayments';
 import {RegularIncome} from 'form/models/statementOfMeans/expensesAndIncome/regularIncome';
@@ -49,11 +47,13 @@ import {CourtOrders} from 'form/models/statementOfMeans/courtOrders/courtOrders'
 import {PriorityDebts} from 'form/models/statementOfMeans/priorityDebts';
 import {Debts} from 'form/models/statementOfMeans/debts/debts';
 import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreference';
-import {toCUIEvidence} from 'services/translation/convertToCUI/convertToCUIEvidence';
-import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIClaimDetails';
 import {analyseClaimType, claimType} from 'common/form/models/claimType';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
+import {CCDClaim} from 'models/civilClaimResponse';
+import {toCUIEvidence} from 'services/translation/convertToCUI/convertToCUIEvidence';
+import {toCUIParty} from 'services/translation/convertToCUI/convertToCUIParty';
 import {toCUIMediation} from 'services/translation/convertToCUI/convertToCUIMediation';
+import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIClaimDetails';
 
 export class Claim {
   legacyCaseReference: string;
