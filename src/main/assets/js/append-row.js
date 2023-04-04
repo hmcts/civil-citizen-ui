@@ -179,9 +179,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (element.getAttribute('aria-describedby')) {
       element.setAttribute('aria-describedby', element.getAttribute('aria-describedby').replace(indexRegex, '[' + newIndex + ']'));
     }
-    if (element.getAttribute('aria-label')) {
-      element.setAttribute('aria-label', element.getAttribute('aria-label').replace(/\d/g, newIndex + 1));
-    }
   }
 
   function showRemoveButton() {
