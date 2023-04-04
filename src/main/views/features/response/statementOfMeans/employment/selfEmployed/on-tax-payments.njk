@@ -28,14 +28,14 @@
           id: "amountYouOwe",
           name: "amountYouOwe",
           label: {
-            text: t('PAGES.SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS.AMOUNT')
+            text: t('PAGES.SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS.AMOUNT'),
+            attributes: {
+              'aria-label': t('PAGES.SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS.AMOUNT_YOU_OWE_IN_POUNDS')
+            }
           },
           type: "number",
           prefix: {
             text: "£"
-          },
-          attributes: {
-            'aria-label': t('PAGES.SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS.AMOUNT_YOU_OWE_IN_POUNDS')
           },
           classes: "govuk-input--width-5 govuk-input--error" if form.hasFieldError('amountYouOwe') else "govuk-input--width-5",
           spellcheck: false,
