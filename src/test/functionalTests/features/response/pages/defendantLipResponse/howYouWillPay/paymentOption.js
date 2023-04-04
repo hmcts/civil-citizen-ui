@@ -11,9 +11,9 @@ const buttons = {
 };
 
 class PaymentOptionPage {
-  enterPaymentOption(claimRef, paymentType) {
-    I.amOnPage('/case/'+claimRef+'/response/full-admission/payment-option');
-    I.see('When do you want to pay?', 'h1');
+  enterPaymentOption(claimRef, responseType, paymentType) {
+    I.amOnPage('/case/'+claimRef+'/response/'+responseType+'/payment-option');
+    I.see('When do you want to pay', 'h1');
     switch (paymentType){
       case 'immediate':{
         I.click(fields.responseAdmitAllImmediate);
