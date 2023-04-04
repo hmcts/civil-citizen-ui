@@ -6,6 +6,7 @@
 {% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "../../macro/external-link.njk" import externalLink %}
 {% import "external-urls.njk" as externalURLs %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.PCQ.TITLE') }}
@@ -30,17 +31,22 @@
         {{ t('PAGES.PCQ.FIND_OUT_HOW_WE_USE') }}
         {{ externalLink(t, 'PAGES.PCQ.PRIVACY_POLICY', '', false) }}
       </p>
-      <div class="form-group">
-        {{ govukButton({
-          text: t('PAGES.PCQ.CONTINUE_TO_QUESTIONS'),
-          href: ''
-        }) }}
-        {{ govukButton({
-          text: t('PAGES.PCQ.DONT_WANT_ANSWER'),
-          classes: "govuk-button--secondary append-row",
-          href: ''
-        }) }}
-      </div>
+      <form method="post" href='/case/' + caseId + '/pcq' novalidate>
+        {{ csrfProtection(csrf) }}
+        <div class="govuk-form-group">
+          {{ govukButton({
+            text: t('PAGES.PCQ.CONTINUE_TO_QUESTIONS'),
+            value: t('COMMON.VARIATION.YES'),
+            name: 'test'
+          }) }}
+          {{ govukButton({
+            text: t('PAGES.PCQ.DONT_WANT_ANSWER'),
+            classes: "govuk-button--secondary",
+            value: t('COMMON.VARIATION.NO'),
+            name: 'test'
+          }) }}
+        </div>
+      </form>
     </div>
   </div>
 {% endblock %}
