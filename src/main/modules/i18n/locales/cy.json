@@ -36,7 +36,7 @@
     "REASON": "Rheswm",
     "REMOVE": "Tynnu",
     "RETURN_PAGE": "You can return to RETURN-PAGE and start your claim or defence again.",
-    "TECHNICAL_PROBLEMS": "Sorry, we had some technical problems during your last operation. Please try again later.",
+    "TECHNICAL_PROBLEMS": "Mae’n ddrwg gennym, cawsom broblemau technegol yn ystod eich gweithred olaf. Rhowch gynnig arall arni nes ymlaen.",
     "TOTAL_DEBT": "Cyfanswm sy’n ddyledus gennych",
     "YEAR": "Blwyddyn",
     "YEARS": "Blwyddyn",
@@ -1660,10 +1660,10 @@
       "TITLE": "Permission for expert"
     },
     "PHONE_OR_VIDEO_HEARING": {
-      "JUDGE_DECISION": "The judge will decide if the hearing can be held by telephone or video.",
-      "PAGE_TITLE": "Do you want to ask for a telephone or video hearing?",
-      "TELL_US_WHY": "Tell us why you want a telephone or video hearing",
-      "TITLE": "Do you want to ask for a telephone or video hearing?"
+      "JUDGE_DECISION": "Bydd y barnwr yn penderfynu a oes modd cynnal y gwrandawiad dros y ffôn neu drwy fideo.",
+      "PAGE_TITLE": "Ydych chi eisiau gofyn am wrandawiad ffôn neu fideo?",
+      "TELL_US_WHY": "Dywedwch pam eich bod eisiau gwrandawiad ffôn neu fideo",
+      "TITLE": "Ydych chi eisiau gofyn am wrandawiad ffôn neu fideo?"
     },
     "PRIORITY_DEBTS": {
       "ARREARS": "'mewn ôl-ddyled' (rydych wedi methu taliadau rheolaidd)",
@@ -2105,20 +2105,20 @@
       "YOU_WILL_BE_ASKED": "You will be asked some questions to check you are eligible to use this service."
     },
     "SUPPORT_REQUIRED": {
-      "ADD_ANOTHER": "Add another person",
+      "ADD_ANOTHER": "Ychwanegu unigolyn arall",
       "CHOOSE_NAME": "Dewis enw'r unigolyn",
-      "DISABLE": "Disabled access",
+      "DISABLE": "Mynediad i bobl anabl",
       "ENTER_SIGN_LANGUAGE": "What sign language needs to be interpreted?",
       "EXTRA_SUPPORT": "Tell us what other support they need",
       "HEARING": "Dolen clyw",
-      "LANGUAGE": "Language interpreter",
-      "NAME_OF_PERSON": "Name of the person who needs support",
+      "LANGUAGE": "Cyfieithydd",
+      "NAME_OF_PERSON": "Rhowch enw'r unigolyn sydd angen cymorth",
       "OTHER": "Cefnogaeth arall",
       "PAGE_TITLE": "Support required",
       "PERSON_TEXT": "Unigolyn",
-      "SELECT_ALL_THAT_APPLY": "Select all that apply.",
-      "SIGN_LANGUAGE": "Sign language interpreter",
-      "TITLE": "Do you, your experts or witnesses need support to attend a hearing",
+      "SELECT_ALL_THAT_APPLY": "Dewiswch bopeth sy'n berthnasol.",
+      "SIGN_LANGUAGE": "Cyfieithydd iaith arwyddion",
+      "TITLE": "Ydych chi, eich arbenigwyr neu'ch tystion angen cymorth i fynychu gwrandawiad",
       "WHAT_LANGUAGE": "What language needs to be interpreted?"
     },
     "UNAVAILABLE_DATES_FOR_HEARING": {
@@ -2198,9 +2198,9 @@
     },
     "YOU_HAVE_PAID_LESS": {
       "PAGE_TITLE": "You've paid less",
-      "HEADER": "You've paid less than the total claim amount",
-      "EXPLAIN_WHY_YOU_DONT_OWE_REMAINING_AMOUNT": "You need to explain why you believe you don't owe the remaining amount.",
-      "IF_CLAIMANT_REJECTS": "If CLAIMANT_NAME rejects your explanation you might have to go to a hearing."
+      "HEADER": "Rydych wedi talu llai na chyfanswm yr hawliad",
+      "EXPLAIN_WHY_YOU_DONT_OWE_REMAINING_AMOUNT": "Mae angen i chi egluro pam eich bod yn credu nad oes arnoch y swm sy'n weddill.",
+      "IF_CLAIMANT_REJECTS": "Os yw CLAIMANT_NAME yn gwrthod eich esboniad efallai y bydd rhaid i chi fynd i wrandawiad."
     },
     "YOUR_DEFENCE": {
       "BRIEFLY": "Eglurwch yn fyr pam yr ydych chi’n anghytuno â’r hawliad",
@@ -2250,7 +2250,7 @@
     "ENTER_EXPERT_FIELD": "Nodwch faes arbenigedd yr arbenigwr",
     "ENTER_FIRST_NAME": "Enter first name",
     "ENTER_LAST_NAME": "Enter last name",
-    "ENTER_PERSON_NAME": "Enter the name of the person who needs support",
+    "ENTER_PERSON_NAME": "Rhowch enw'r unigolyn sydd angen cymorth",
     "ENTER_PAYMENT_EXPLANATION": "Rhowch eglurhad o sut y gwnaethoch dalu",
     "ENTER_DATES_FOR_UNAVAILABILITY": "Enter the dates they are unavailable",
     "ENTER_DATE_FOR_UNAVAILABILITY": "Enter the date they are unavailable",
@@ -2400,13 +2400,13 @@
     "SELECT_LANGUAGE_DOCUMENTS": "Dewiswch ym mha iaith y bydd eich dogfennau yn cael eu darparu",
     "SELECT_LANGUAGE_SPEAK": "Dewiswch yr iaith y byddwch chi, eich arbenigwyr, a'ch tystion yn ei siarad yn y gwrandawiad",
     "SELECT_REQUEST": "Dewiswch os ydych eisiau gwneud cais am ragor o amser i ymateb, os ydych eisoes wedi cytuno ar ragor o amser i ymateb, os yw eich cais am ragor o amser wedi’i wrthod, neu nid ydych angen rhagor o amser i ymateb",
-    "SELECT_SUPPORT": "Select the support the person needs to attend a hearing",
+    "SELECT_SUPPORT": "Dewiswch y cymorth y mae’r unigolyn ei angen i fynychu gwrandawiad",
     "SELECT_YES_IF_DOCUMENTS": "Dewiswch ‘oes’ os oes gan yr hawlydd ddogfennau yr ydych eisiau i’r llys eu hystyried",
     "SELECT_YES_IF_SUPPORT": "Select yes if someone needs support to attend a hearing",
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
     "SIGNER_NAME_TOO_LONG": "You've entered too many characters",
     "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",
-    "SOMETHING_WENT_WRONG": "Something went wrong",
+    "SOMETHING_WENT_WRONG": "Aeth rhywbeth o'i le",
     "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Dywedwch wrthym os ydych yn credu bod y ffeithiau a nodir yn yr ymateb hwn yn wir",
     "SPECIFIC_COURT": {
       "SELECT_YES_NO": "Select yes if you want to ask for the hearing to be held at a specific court",
