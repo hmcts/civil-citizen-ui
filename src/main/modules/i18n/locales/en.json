@@ -528,7 +528,7 @@
     },
     "CITIZEN_BANK_ACCOUNTS": {
       "ADD_ANOTHER": "Add another account",
-      "BANK_ACCOUNT": "Account",
+      "BANK_ACCOUNT": "Account {{ indx }} ",
       "BANK_AND_SAVINGS_ACCOUNTS": "List your bank and savings accounts",
       "BALANCE_IN_POUNDS": "Balance, in pounds",
       "CURRENT_ACCOUNT": "Current account",
@@ -1054,7 +1054,9 @@
       "ADD": "Add a debt",
       "LIST": "List each loan or credit card debt",
       "PAGE_TITLE": "Any debts?",
-      "TITLE": "Do you have loans or credit card debts?"
+      "MONTHLY_PAYMENTS_IN_POUNDS": "Monthly payments, in pounds",
+      "TITLE": "Do you have loans or credit card debts?",
+      "TOTAL_OWED_IN_POUNDS": "Total owed, in pounds"
     },
     "DEBT_RESPITE_REF_NUMBER": {
       "ENTER_REFERENCE": "Enter the reference number (optional):",

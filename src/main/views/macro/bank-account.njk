@@ -29,7 +29,7 @@
         {% set typeOfAccount = 'accounts[' + index + '][typeOfAccount]' %}
         {% set joint = 'accounts[' + index + '][joint]' %}
         {% set balance = 'accounts[' + index + '][balance]' %}
-        {% set commonLabel = t('PAGES.CITIZEN_BANK_ACCOUNTS.BANK_ACCOUNT') + ' ' + (index+1) + ' ' %}
+        {% set commonLabel = t('PAGES.CITIZEN_BANK_ACCOUNTS.BANK_ACCOUNT', { indx: index+1 }) %}
         <div class="govuk-grid-column-one-third govuk-!-display-inline">
           {{ govukSelect({
             id: typeOfAccount,
@@ -79,13 +79,11 @@
             prefix: {
               text: "£"
             },
+            attributes: {
+              'aria-label': commonLabel + t('PAGES.CITIZEN_BANK_ACCOUNTS.BALANCE_IN_POUNDS')
+            },
             classes: "govuk-grid-column-full govuk-input--error" if errorFor(balance) else "govuk-grid-column-full",
-            spellcheck: false,
-            label: {
-              text: commonLabel + t('PAGES.CITIZEN_BANK_ACCOUNTS.BALANCE_IN_POUNDS'),
-              for: balance,
-              classes: 'govuk-visually-hidden'
-            }
+            spellcheck: false
           }) }}
         </div>
       </div>

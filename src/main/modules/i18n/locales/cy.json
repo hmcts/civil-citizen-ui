@@ -528,7 +528,7 @@
     },
     "CITIZEN_BANK_ACCOUNTS": {
       "ADD_ANOTHER": "Ychwanegu cyfrif arall",
-      "BANK_ACCOUNT": "Cyfrif",
+      "BANK_ACCOUNT": "Cyfrif {{ indx }} ",
       "BANK_AND_SAVINGS_ACCOUNTS": "Rhestrwch eich cyfrifon banc a chyfrifon cynilo",
       "BALANCE_IN_POUNDS": "Balance, in pounds",
       "CURRENT_ACCOUNT": "Cyfrif cyfredol",
@@ -1054,7 +1054,9 @@
       "ADD": "Ychwanegu dyled",
       "LIST": "Rhestrwch bob benthyciad neu ddyled cerdyn credyd",
       "PAGE_TITLE": "Any debts?",
-      "TITLE": "A oes gennych fenthyciadau neu ddyledion cerdyn credyd?"
+      "MONTHLY_PAYMENTS_IN_POUNDS": "Monthly payments, in pounds",
+      "TITLE": "A oes gennych fenthyciadau neu ddyledion cerdyn credyd?",
+      "TOTAL_OWED_IN_POUNDS": "Total owed, in pounds"
     },
     "DEBT_RESPITE_REF_NUMBER": {
       "ENTER_REFERENCE": "Enter the reference number (optional):",
