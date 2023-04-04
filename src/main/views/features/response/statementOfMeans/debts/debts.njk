@@ -71,11 +71,8 @@
                 text: "£"
               },
               label: {
-                text: t('COMMON.TOTAL_DEBT'),
-                classes: 'govuk-visually-hidden',
-                attributes: {
-                  'aria-label': t('PAGES.DEBTS.TOTAL_OWED_IN_POUNDS')
-                }
+                text: t('PAGES.DEBTS.TOTAL_OWED_IN_POUNDS'),
+                classes: 'govuk-visually-hidden'
               },
               spellcheck: false,
               classes: "govuk-grid-column-full govuk-input--error" if form.errorFor(totalOwned) else "govuk-grid-column-full"
@@ -91,11 +88,8 @@
                 text: "£"
               },
               label: {
-                text: t('COMMON.MONTHLY_PAYMENTS'),
-                classes: 'govuk-visually-hidden',
-                attributes: {
-                  'aria-label': t('PAGES.DEBTS.MONTHLY_PAYMENTS_IN_POUNDS')
-                }
+                text: t('PAGES.DEBTS.MONTHLY_PAYMENTS_IN_POUNDS'),
+                classes: 'govuk-visually-hidden'
               },
               spellcheck: false,
               classes: "govuk-grid-column-full govuk-input--error" if form.errorFor(monthlyPayments) else "govuk-grid-column-full"

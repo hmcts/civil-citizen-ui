@@ -82,12 +82,9 @@
             classes: "govuk-grid-column-full govuk-input--error" if errorFor(balance) else "govuk-grid-column-full",
             spellcheck: false,
             label: {
-              text: label + 'accountBalance',
+              text: label + t('PAGES.CITIZEN_BANK_ACCOUNTS.BALANCE_IN_POUNDS'),
               for: balance,
-              classes: 'govuk-visually-hidden',
-              attributes: {
-                'aria-label': t('PAGES.CITIZEN_BANK_ACCOUNTS.BALANCE_IN_POUNDS')
-              }
+              classes: 'govuk-visually-hidden'
             }
           }) }}
         </div>
