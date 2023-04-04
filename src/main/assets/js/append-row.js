@@ -147,6 +147,9 @@ document.addEventListener('DOMContentLoaded', function () {
       element.name = element.name.replace(indexRegex, '[' + newIndex + ']');
       element.id = element.id.replace(checkboxIndexRegex, '-' + newIndex + '-');
     }
+    if (element.localName === 'label') {
+      element.innerHTML = element.innerHTML.replace(/\d/g, newIndex + 1);
+    }
     element.id = element.id.replace(indexRegex, '[' + newIndex + ']');
     element.id = element.id.replace(checkboxIndexRegex, '-' + newIndex + '-');
   }
