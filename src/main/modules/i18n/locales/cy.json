@@ -2177,7 +2177,7 @@
     },
     "WHO_EMPLOYS_YOU": {
       "ADD_ANOTHER_JOB": "Ychwanegu swydd arall",
-      "JOB": "Swydd",
+      "JOB": "Swydd {{ indx }} ",
       "PAGE_TITLE": "Your employer",
       "WHO_EMPLOYS": "Pwy sy’n eich cyflogi"
     },

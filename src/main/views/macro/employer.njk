@@ -1,7 +1,7 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 
 {% macro employerRow(employer, index, errorFor,t) %}
-  {% set commonLabel = t('PAGES.WHO_EMPLOYS_YOU.JOB') + ' ' + (index+1) + ' ' %}
+  {% set commonLabel = t('PAGES.WHO_EMPLOYS_YOU.JOB', { indx: index+1 }) %}
   <div class="row-container govuk-grid-column-two-thirds">
     <div class="multiple-row">
       <div class="govuk-form-group {%- if errors.length>0 %} govuk-form-group--error{% endif %}">
