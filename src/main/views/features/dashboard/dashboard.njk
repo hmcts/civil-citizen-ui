@@ -34,6 +34,7 @@
           </thead>
           <tbody class="govuk-table__body">
             {% if claimDraftSaved | length %}
+              {% set viewClaimNumberDraft = t('PAGES.DASHBOARD.VIEW_CLAIM_NUMBER') + " " + t(claimDraftSaved.claimNumber) %}
               <tr class="govuk-table__row">
                 <td class="govuk-table__cell">
                   <a href={{ claimDraftSaved.getHref() }}>
@@ -51,11 +52,13 @@
                 <td class="govuk-table__cell">
                   <a href={{ claimDraftSaved.getHref() }}>
                     {{ t('PAGES.DASHBOARD.VIEW') }}
+                    <span class="govuk-visually-hidden">{{ viewClaimNumberDraft }}</span>
                   </a>
                 </td>
               </tr>
             {% endif %}
             {% for item in claimsAsClaimant %}
+              {% set viewClaimNumber = t('PAGES.DASHBOARD.VIEW_CLAIM_NUMBER', {claimNumber:item.claimNumber })%}
               <tr class="govuk-table__row">
                 <td class="govuk-table__cell">
                   <a href={{ item.getHref() }}>
@@ -69,6 +72,7 @@
                 <td class="govuk-table__cell">
                   <a href={{ item.getHref() }}>
                     {{ t('PAGES.DASHBOARD.VIEW') }}
+                    <span class="govuk-visually-hidden">{{ viewClaimNumber }}</span>
                   </a>
                 </td>
               </tr>
