@@ -1,5 +1,5 @@
-import {RejectAllOfClaimType} from "form/models/rejectAllOfClaimType";
-import {CCDRejectAllOfClaimType} from "models/ccdResponse/CCDRejectAllOfClaimType";
+import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
+import {CCDRejectAllOfClaimType} from 'models/ccdResponse/ccdRejectAllOfClaimType';
 
 export const toCUIRejectAllOfClaimType = (option: string): string => {
   if (option == CCDRejectAllOfClaimType.HAS_PAID_THE_AMOUNT_CLAIMED) {
