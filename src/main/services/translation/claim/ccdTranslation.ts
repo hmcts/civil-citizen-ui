@@ -11,8 +11,8 @@ import {toCCDSameRateInterestSelection} from '../response/convertToCCDtoSameRate
 import {toCCDYesNo} from '../response/convertToCCDYesNo';
 import {AppRequest} from 'models/AppRequest';
 import {getClaimantIdamDetails} from 'services/translation/response/claimantIdamDetails';
-import {toCCDRejectAllOfClaimType} from "services/translation/response/convertToCCDRejectAllOfClaimType";
-import {toCCDRespondToClaim} from "services/translation/response/convertToCCDRespondToClaim";
+import {toCCDRejectAllOfClaimType} from 'services/translation/response/convertToCCDRejectAllOfClaimType';
+import {toCCDRespondToClaim} from 'services/translation/response/convertToCCDRespondToClaim';
 
 export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClaim => {
   return {

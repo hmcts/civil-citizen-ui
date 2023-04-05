@@ -1,5 +1,5 @@
 import {CCDHowWasThisAmountPaid, CCDRespondToClaim} from 'models/ccdResponse/ccdRespondToClaim';
-import {toCUIRespondToClaim} from "services/translation/convertToCUI/convertToCUIRespondToClaim";
+import {toCUIRespondToClaim} from 'services/translation/convertToCUI/convertToCUIRespondToClaim';
 
 describe('convert to CUI respond to claim', () => {
   it('should translate to CUI Respond to Claim Full Reject', () => {

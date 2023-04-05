@@ -9,4 +9,4 @@ export const toCUIRejectAllOfClaimType = (option: string): string => {
   } else {
     return undefined;
   }
-}
+};

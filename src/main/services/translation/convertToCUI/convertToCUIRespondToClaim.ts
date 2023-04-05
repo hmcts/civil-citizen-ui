@@ -2,13 +2,13 @@ import {CCDHowWasThisAmountPaid, CCDRespondToClaim} from 'models/ccdResponse/ccd
 import {HowMuchHaveYouPaid} from 'form/models/admission/howMuchHaveYouPaid';
 
 export const toCUIRespondToClaim = (ccdRespondToClaim: CCDRespondToClaim): HowMuchHaveYouPaid => {
-  let howMuchHaveYouPaid = new HowMuchHaveYouPaid();
+  const howMuchHaveYouPaid = new HowMuchHaveYouPaid();
 
   function setHowMuchHaveYouPaidText(ccdRespondToClaim: CCDRespondToClaim) : string {
     if(ccdRespondToClaim?.howWasThisAmountPaid == CCDHowWasThisAmountPaid.OTHER) {
       return ccdRespondToClaim?.howWasThisAmountPaidOther;
     } else {
-      return ccdRespondToClaim?.howWasThisAmountPaid
+      return ccdRespondToClaim?.howWasThisAmountPaid;
     }
   }
 
@@ -20,4 +20,4 @@ export const toCUIRespondToClaim = (ccdRespondToClaim: CCDRespondToClaim): HowMu
   howMuchHaveYouPaid.text = setHowMuchHaveYouPaidText(ccdRespondToClaim);
 
   return howMuchHaveYouPaid;
-}
+};

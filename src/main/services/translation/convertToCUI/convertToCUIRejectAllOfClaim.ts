@@ -7,8 +7,8 @@ import {Defence} from 'form/models/defence';
 
 export const toCUIRejectAllOfClaim = (ccdClaim: CCDClaim): RejectAllOfClaim => {
   const whyDoYouDisagree = new WhyDoYouDisagree(ccdClaim.detailsOfWhyDoesYouDisputeTheClaim);
-  const defence = new Defence(ccdClaim.detailsOfWhyDoesYouDisputeTheClaim)
+  const defence = new Defence(ccdClaim.detailsOfWhyDoesYouDisputeTheClaim);
 
   return new RejectAllOfClaim(toCUIRejectAllOfClaimType(ccdClaim?.defenceRouteRequired),
     toCUIRespondToClaim(ccdClaim.respondToClaim), whyDoYouDisagree, defence);
-}
+};
