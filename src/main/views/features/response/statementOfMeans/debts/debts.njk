@@ -2,6 +2,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/error-message/macro.njk" import govukErrorMessage %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
@@ -118,30 +119,26 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          {{ csrfProtection(csrf) }}
-          <h1 class="govuk-heading-l">{{ title }}</h1>
-        </div>
-      </div>
-      <form method="post" novalidate>
-        {{ csrfProtection(csrf) }}
-        <div class="govuk-grid-row">
-          <div class="govuk-grid-column-full">
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+              {% call govukFieldset({
+                 legend: {
+                 html: title,
+                 classes: "govuk-fieldset__legend--l",
+                 isPageHeading: true
+                 }
+              }) %}
             {{ yesNoRadioButton(t,'debtsRadio','option','', form,'',{yesHtml:yesHtml}) }}
-          </div>
+              <div class="govuk-form-group">
+                {{ govukButton({
+                  text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+                }) }}
+                {{ contactUsForHelp(t) }}
+              </div>
+              {% endcall %}
+          </form>
         </div>
-        <div class="govuk-grid-row">
-          <div class="govuk-grid-column-two-thirds">
-            {{ govukButton({
-              text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
-            }) }}
-          </div>
-        </div>
-      </form>
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-          {{ contactUsForHelp(t) }}
-        </div>
-      </div>
+     </div>
     </main>
   </div>
 {% endblock %}
