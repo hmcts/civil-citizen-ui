@@ -19,10 +19,6 @@
   {% set payingExtra = t('PAGES.DEFENDANT_DETAILS.PAYING_EXTRA_ORGANISATION') %}
   {% set inputTitle = t('PAGES.DEFENDANT_DETAILS.ORGANISATION_NAME') %}
   {% set addressTitle = t('PAGES.DEFENDANT_DETAILS.ORGANISATION_ADDRESS') %}
-{% else %}
-  {% set title = '' %}
-  {% set inputTitle = '' %}
-  {% set addressTitle = '' %}
 {% endif %}
 {% set formErrors = form.getAllErrors() %}
 
@@ -70,7 +66,9 @@
               errorMessage: { text: t(form.errorFor('contactPerson')) } if form.errorFor('contactPerson')
             }) }}
             <div class="govuk-form-group">
-              <h2 class="govuk-heading-m">{{ addressTitle }}</h2>
+              {% if addressTitle %}
+                <h2 class="govuk-heading-m">{{ addressTitle }}</h2>
+              {% endif %}
               <p class="govuk-body">
                 {{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }}
                 {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}

@@ -14,8 +14,6 @@
   {% set title = t('PAGES.DEFENDANT_DETAILS.PAGE_TITLES.INDIVIDUAL') %}
 {% elif defendantType === partyType.SOLE_TRADER %}
   {% set title = t('PAGES.DEFENDANT_DETAILS.PAGE_TITLES.SOLE_TRADER') %}
-{% else %}
-  {% set title = '' %}
 {% endif %}
 
 {% set formErrors = form.getAllErrors() %}
