@@ -1,5 +1,6 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
@@ -18,15 +19,21 @@
   {% endset -%}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set errors = form.getErrors() %}
       {% if form.hasErrors() %}
-        {{ errorSummary(errors, t) }}
+        {{ errorSummary(form.getErrors(), t) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-
           <div class="govuk-!-margin-bottom-8">
-            <h1 class="govuk-heading-l">{{ t('PAGES.MEDIATION_DISAGREEMENT.MEDIATION_DISAGREEMENT') }}</h1>
+            <form method="post" novalidate>
+             {{ csrfProtection(csrf) }}
+                {% call govukFieldset({
+                  legend: {
+                     html: t('PAGES.MEDIATION_DISAGREEMENT.MEDIATION_DISAGREEMENT'),
+                     classes: "govuk-fieldset__legend--l",
+                     isPageHeading: true
+                  }
+             }) %}
             <p class="govuk-body">{{ t('PAGES.MEDIATION_DISAGREEMENT.THE_CLAIM_WILL_CONTINUE') }}</p>
           </div>
 
@@ -49,9 +56,6 @@
 
           <h2 class="govuk-heading-m">{{ t('PAGES.MEDIATION_DISAGREEMENT.WILL_YOU_CHANGE_YOUR_DECISION') }}</h2>
           <p class="govuk-body">{{ t('PAGES.MEDIATION_DISAGREEMENT.IF_YOU_CHOOSE_NOT') }}</p>
-
-          <form method="post" novalidate>
-            {{ csrfProtection(csrf) }}
             {% if claimStatus == CaseState.AWAITING_APPLICANT_INTENTION %}
               {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {classes: 'govuk-radios', yes: 'COMMON.VARIATION.YES', no: 'COMMON.VARIATION.NO'}) }}
             {% else %}
@@ -63,6 +67,7 @@
               }) }}
               {{ contactUsForHelp(t) }}
             </div>
+            {% endcall %}
           </form>
         </div>
       </div>
