@@ -2,6 +2,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
@@ -28,7 +29,13 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t(title) }}</h1>
+          {% call govukFieldset({
+             legend: {
+                html: t(title),
+                classes: "govuk-fieldset__legend--l",
+                isPageHeading: true
+             }
+          }) %}
           {% if insetText %}
             {{ govukInsetText({
               text: t(insetText)
@@ -83,6 +90,7 @@
             {{ govukButton({
               text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
             }) }}
+            {% endcall %}
           </form>
         </div>
       </div>
