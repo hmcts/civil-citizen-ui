@@ -46,8 +46,7 @@
       {{ t('PAGES.COMPANY_DETAILS.ADDRESS_FOR_SERVICE') }}</p>
     {{ postcodeLookupAndAddressForm(t, {
       party: party,
-      addressType:'correspondenceAddress',
-      addressTitle:addressTitle
+      addressType:'correspondenceAddress'
     }) }}
   </div>
 {% endset -%}
@@ -101,8 +100,7 @@
                 <p class="govuk-body">{{ addressExplanation }}</p>
                 {{ postcodeLookupAndAddressForm(t, {
                     party: party,
-                    addressType:'primaryAddress',
-                    addressTitle:''
+                    addressType:'primaryAddress'
                   }) }}
               </div>
               <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_DETAILS.CORRESPONDENCE_ADDRESS') }}</h2>
