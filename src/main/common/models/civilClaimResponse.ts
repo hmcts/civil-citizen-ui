@@ -40,6 +40,7 @@ import {CCDLoanCredit} from 'models/ccdResponse/ccdLoanCredit';
 import {CCDDebtDetails} from 'models/ccdResponse/ccdDebtDetails';
 import {CCDRecurringIncome} from 'models/ccdResponse/ccdRecurringIncome';
 import {CCDRecurringExpenses} from 'models/ccdResponse/ccdRecurringExpenses';
+import {CCDExpert} from './ccdResponse/ccdExpert';
 
 export class CivilClaimResponse {
   id: string;
@@ -135,6 +136,9 @@ export interface CCDClaim extends ClaimUpdate {
   respondent1DQRecurringExpenses?: CCDRecurringExpenses[];
   respondent1DQRecurringExpensesFA?: CCDRecurringExpenses[];
   respondent1LiPResponse?: CCDRespondentLiPResponse;
+  respondent1DQExperts?: CCDExpert;
+  responseClaimExpertSpecRequired?: YesNoUpperCamelCase;
+
 }
 
 export interface ClaimFeeData {
