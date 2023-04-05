@@ -13,7 +13,9 @@
   {% endif %}
   {% set govukFormGroupError = 'govuk-form-group govuk-form-group--error' if addresHasErrors else '' %}
   <div class={{ "govuk-fieldset__legend--m" if addressType == 'primaryAddress' else "govuk-visually-hidden" }}>
-   <h2 class="govuk-heading-m">{{ addressTitle }}</h2>
+    {% if addressTitle %}
+    <h2 class="govuk-heading-m">{{ addressTitle }}</h2>
+    {% endif %}
   </div>
   {% if addressType == 'primaryAddress' and addressTitle.length %}
     <p class="govuk-body govuk-!-padding-top-4">{{ fieldSetText }}</p>
