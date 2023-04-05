@@ -6,6 +6,8 @@ import {toCUIParty, toCUIPartyRespondent} from 'services/translation/convertToCU
 import {toCUIMediation} from 'services/translation/convertToCUI/convertToCUIMediation';
 import {toCUIStatementOfMeans} from 'services/translation/convertToCUI/convertToCUIStatementOfMeans';
 import {toCUIClaimBilingualLangPreference} from 'services/translation/convertToCUI/convertToCUIRespondentLiPResponse';
+import {toCUIRejectAllOfClaimType} from "services/translation/convertToCUI/convertToCUIRejectAllOfClaimType";
+import {toCUIRespondToClaim} from "services/translation/convertToCUI/convertToCUIRespondToClaim";
 
 export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -16,6 +18,10 @@ export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   claim.mediation = toCUIMediation(ccdClaim?.respondent1LiPResponse?.respondent1MediationLiPResponse);
   claim.statementOfMeans = toCUIStatementOfMeans(ccdClaim);
   claim.claimBilingualLanguagePreference = toCUIClaimBilingualLangPreference(ccdClaim?.respondent1LiPResponse?.respondent1ResponseLanguage);
+  claim.rejectAllOfClaim.option = toCUIRejectAllOfClaimType(ccdClaim?.defenceRouteRequired);
+  claim.rejectAllOfClaim.defence.text = ccdClaim.detailsOfWhyDoesYouDisputeTheClaim;
+  claim.rejectAllOfClaim.whyDoYouDisagree.text = ccdClaim.detailsOfWhyDoesYouDisputeTheClaim;
+  claim.rejectAllOfClaim.howMuchHaveYouPaid = toCUIRespondToClaim(ccdClaim.respondToClaim);
   return claim;
 };
 
