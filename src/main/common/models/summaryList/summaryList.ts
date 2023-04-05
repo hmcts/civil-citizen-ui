@@ -46,7 +46,7 @@ export function summaryRow(key?: string, value?: string, href?: string, hrefText
         {
           href: href,
           text: hrefText,
-          visuallyHiddenText: `${hrefText} ${key}`,
+          visuallyHiddenText: ` ${key}`,
         },
       ],
     };
