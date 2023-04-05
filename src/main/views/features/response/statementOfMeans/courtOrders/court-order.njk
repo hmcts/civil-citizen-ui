@@ -38,7 +38,10 @@
         text: "£"
       },
       label: {
-        text: t('PAGES.COURT_ORDERS.OWED_AMOUNT')
+        text: t('PAGES.COURT_ORDERS.OWED_AMOUNT'),
+        attributes: {
+          'aria-label': t('PAGES.COURT_ORDERS.AMOUNT_YOU_OWE_IN_POUNDS')
+        }
       },
       attributes: {
         'data-name': 'rows[%index%][amount]',
@@ -57,7 +60,10 @@
         text: "£"
       },
       label: {
-        text: t('PAGES.COURT_ORDERS.MONTHLY_INSTALMENT_AMOUNT')
+        text: t('PAGES.COURT_ORDERS.MONTHLY_INSTALMENT_AMOUNT'),
+        attributes: {
+          'aria-label': t('PAGES.COURT_ORDERS.MONTHLY_INSTALMENT_IN_POUNDS')
+        }
       },
       attributes: {
         'data-name': 'rows[%index%][instalmentAmount]',
