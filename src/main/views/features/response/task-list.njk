@@ -56,7 +56,11 @@
         {% if remainingDays < 1  %}
           {% set responseDeadLineHintStyle = "due-or-overdue" %}
         {% endif %}
-        {{ aboutClaimWidget({header:'',lines:[{title: 'Response deadline:', content: responseDeadLineExpression, href: '', hrefContact: '', hint:responseDeadLineHint, hintStyle:responseDeadLineHintStyle},{title: 'Claim number:', content : claimNumber, href: '', hrefContact: ''},{title: 'Total claim amount:', content:totalClaimAmount},{title: 'Claim details:', href: claimDetailsUrl, hrefContact: 'View claim'}]}) }}
+        {{ aboutClaimWidget({header:'',lines:[
+        {title: t('PAGES.CLAIM_SUMMARY.RESPONSE_DEADLINE'), content: responseDeadLineExpression, href: '', hrefContact: '', hint:responseDeadLineHint, hintStyle:responseDeadLineHintStyle},
+        {title: t('PAGES.CLAIM_SUMMARY.CLAIM_NUMBER'), content : claimNumber, href: '', hrefContact: ''},
+        {title: t('PAGES.CLAIM_SUMMARY.TOTAL_CLAIM_AMOUNT'), content:totalClaimAmount},
+        {title: t('PAGES.CLAIM_SUMMARY.CLAIM_DETAILS'), href: claimDetailsUrl, hrefContact: 'View claim'}]}) }}
       </div>
     </main>
   </div>
