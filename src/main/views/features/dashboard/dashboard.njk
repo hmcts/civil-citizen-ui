@@ -34,7 +34,7 @@
           </thead>
           <tbody class="govuk-table__body">
             {% if claimDraftSaved | length %}
-              {% set viewClaimNumberDraft = t('PAGES.DASHBOARD.VIEW_CLAIM_NUMBER') + " " + t(claimDraftSaved.claimNumber) %}
+              {% set viewClaimNumberDraft = t('PAGES.DASHBOARD.VIEW_CLAIM_NUMBER', {claimNumber:t(claimDraftSaved.claimNumber) }) %}
               <tr class="govuk-table__row">
                 <td class="govuk-table__cell">
                   <a href={{ claimDraftSaved.getHref() }}>
