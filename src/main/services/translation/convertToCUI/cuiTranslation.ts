@@ -12,12 +12,16 @@ import {ConsiderClaimantDocuments} from 'common/models/directionsQuestionnaire/h
 import {toCUIBoolean, toCUIGenericYesNo, toCUIYesNo} from 'services/translation/convertToCUI/convertToCUIYesNo';
 import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
 import {SentExpertReports} from 'common/models/directionsQuestionnaire/experts/sentExpertReports';
-import {CCDExpertDetails, CCDExportReportSent} from 'common/models/ccdResponse/ccdExpert';
-// import {ExpertReportDetails} from 'common/models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails';
-// import {ExpertDetails} from 'common/models/directionsQuestionnaire/experts/expertDetails';
+import {
+  CCDExpertDetails,
+  CCDExportReportSent,
+} from 'common/models/ccdResponse/ccdExpert';
 import {ExpertDetailsList} from 'common/models/directionsQuestionnaire/experts/expertDetailsList';
+import {YesNoNotReceived} from 'common/form/models/yesNo';
+import {ExpertDetails} from 'common/models/directionsQuestionnaire/experts/expertDetails';
+import {SMALL_CLAIM_AMOUNT} from 'common/form/models/claimType';
 
-export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
+export const translateCCDCaseDataToCUIModel = (ccdClaim: any): Claim => {
   const claim: Claim = Object.assign(new Claim(), ccdClaim);
   claim.claimDetails = toCUIClaimDetails(ccdClaim);
   claim.evidence = toCUIEvidence(ccdClaim?.speclistYourEvidenceList);
@@ -34,9 +38,11 @@ export function toCUIDirectionQuestionnaire(ccdClaim: CCDClaim): DirectionQuesti
   if (ccdClaim) {
     const directionQuestionnaire = new DirectionQuestionnaire();
     directionQuestionnaire.hearing = new Hearing();
-
+    // /directions-questionnaire/tried-to-settle
     directionQuestionnaire.hearing.triedToSettle = toCUIGenericYesNo(ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.triedToSettle);
+    // /directions-questionnaire/request-extra-4-weeks
     directionQuestionnaire.hearing.requestExtra4weeks = toCUIGenericYesNo(ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.requestExtra4weeks);
+    // /directions-questionnaire/consider-claimant-documents
     directionQuestionnaire.hearing.considerClaimantDocuments =
     {
       option: toCUIYesNo(ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.considerClaimantDocuments),
@@ -46,8 +52,14 @@ export function toCUIDirectionQuestionnaire(ccdClaim: CCDClaim): DirectionQuesti
     // TODO try to find a way to understand fast track
     // /directions-questionnaire/expert-evidence (Do you want to use expert evidence )
     directionQuestionnaire.experts = new Experts();
-    directionQuestionnaire.experts.expertEvidence = toCUIGenericYesNo(ccdClaim.respondent1DQExperts?.expertRequired); // Fast-track
-    directionQuestionnaire.experts.expertRequired = toCUIBoolean(ccdClaim.respondent1DQExperts?.expertRequired); // small-claim
+    console.log('tiatl----', ccdClaim.totalClaimAmount);
+    if (ccdClaim.totalClaimAmount <= SMALL_CLAIM_AMOUNT) {
+      directionQuestionnaire.experts.expertRequired = toCUIBoolean(ccdClaim.respondent1DQExperts?.expertRequired); // small-claim
+      console.log('tiatl--samll----expertRequired', directionQuestionnaire.experts.expertRequired);
+    } else {
+      directionQuestionnaire.experts.expertEvidence = toCUIGenericYesNo(ccdClaim.respondent1DQExperts?.expertRequired); // Fast-track
+      console.log('tiatl--fast----expertEvidence', directionQuestionnaire.experts.expertEvidence);
+    }
     // /directions-questionnaire/sent-expert-reports (Have you already sent expert reports to other parties)
     directionQuestionnaire.experts.sentExpertReports = toCUISentExpertReports(ccdClaim.respondent1DQExperts?.expertReportsSent);
     // /directions-questionnaire/shared-expert (Do you want to share an expert with the claimant? )
@@ -59,7 +71,7 @@ export function toCUIDirectionQuestionnaire(ccdClaim: CCDClaim): DirectionQuesti
     // done in fast track
     // directions-questionnaire/permission-for-expert
     directionQuestionnaire.experts.permissionForExpert = toCUIGenericYesNo(ccdClaim.responseClaimExpertSpecRequired);
-    // /directions-questionnaire/expert-evidence
+    // /directions-questionnaire/expert-evidence ---->  /directions-questionnaire/expert
     // done in fast track
     // /directions-questionnaire/expert-details (Enter the expert's details)
     // done in fast track
@@ -74,21 +86,46 @@ export function toCUIDirectionQuestionnaire(ccdClaim: CCDClaim): DirectionQuesti
     // 5.5 Experts (For Small claims)
     // +directions-questionnaire/sent-expert-reports
     // +directions-questionnaire/permission-for-expert
-    // +/directions-questionnaire/expert-evidence
+    // +/directions-questionnaire/expert --? expert-evidence with fast track
     // +/directions-questionnaire/expert-details (Enter the expert's details)
     return directionQuestionnaire;
   }
 }
 
-export function toCUISentExpertReports(ccdExportReportSent: CCDExportReportSent): SentExpertReports {
-  console.log(ccdExportReportSent);
-  return new SentExpertReports();
-
+export function toCUISentExpertReports(ccdExportReportSent: CCDExportReportSent | undefined): SentExpertReports {
+  const mapping = {
+    'YES': YesNoNotReceived.YES,
+    'NO': YesNoNotReceived.NO,
+    'NOT_OBTAINED': YesNoNotReceived.NOT_RECEIVED,
+  };
+  if (ccdExportReportSent) {
+    return new SentExpertReports(mapping[ccdExportReportSent])
+  }
 }
 
 export function toCUIExpertDetails(ccdExpertDetailsList: CCDExpertDetails[]): ExpertDetailsList {
-  console.log(ccdExpertDetailsList);
-  return new ExpertDetailsList();
-
+  const convertedValue = ccdExpertDetailsList?.map(expertDetail => {
+    const {
+      value: {
+        firstName,
+        lastName,
+        emailAddress,
+        phoneNumber,
+        whyRequired,
+        fieldOfExpertise,
+        estimatedCost,
+      },
+    } = expertDetail;
+    return <ExpertDetails>{
+      firstName,
+      lastName,
+      emailAddress,
+      phoneNumber: Number(phoneNumber),
+      whyNeedExpert: whyRequired,
+      fieldOfExpertise,
+      estimatedCost,
+    };
+  });
+  return new ExpertDetailsList(convertedValue);
 }
 
