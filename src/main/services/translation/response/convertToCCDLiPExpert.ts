@@ -1,5 +1,5 @@
 import {Experts} from 'models/directionsQuestionnaire/experts/experts';
-import {toCCDYesNo, toCCDYesNoFromBoolean,} from 'services/translation/response/convertToCCDYesNo';
+import {toCCDYesNo, toCCDYesNoFromBoolean} from 'services/translation/response/convertToCCDYesNo';
 import {ReportDetail} from 'models/directionsQuestionnaire/experts/expertReportDetails/reportDetail';
 import {YesNo} from 'form/models/yesNo';
 
