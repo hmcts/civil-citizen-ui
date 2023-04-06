@@ -1,4 +1,8 @@
-import {YesNo, YesNoNotReceived, YesNoUpperCamelCase} from 'common/form/models/yesNo';
+import {
+  YesNo,
+  YesNoNotReceived,
+  YesNoUpperCamelCase,
+} from 'common/form/models/yesNo';
 import {
   CCDExpertDetails,
   CCDExpertDetailsItem,
@@ -11,7 +15,7 @@ import {
   toCUIExpertReportDetails,
 } from 'services/translation/convertToCUI/convertToCUIDQ/covertToCUIDQExperts';
 
-describe('translate CCD DQ to CUI DQ Experts model', () => {
+describe('translate CCD data to CUI DQ Experts model', () => {
   describe('toCUISentExpertReports', () => {
     it('should translate CCD data to CUI SentExpertReports model with empty ccdExportReportSent field', () => {
       // Given
@@ -109,7 +113,7 @@ describe('translate CCD DQ to CUI DQ Experts model', () => {
       expect(result.items[0].emailAddress).toBe('abc@test.com');
       expect(result.items[0].whyNeedExpert).toBe('Test Reason');
       expect(result.items[0].fieldOfExpertise).toBe('Construction');
-      expect(result.items[0].estimatedCost).toBe(10000);
+      expect(result.items[0].estimatedCost).toBe(100);
     });
   });
 
@@ -128,7 +132,7 @@ describe('translate CCD DQ to CUI DQ Experts model', () => {
       // Given
       const ccdLipExpert: CCDLiPExpert = {
         expertReportRequired: YesNoUpperCamelCase.NO,
-        reportDetails: undefined,
+        details: undefined,
       };
       // When
       const result = toCUIExpertReportDetails(ccdLipExpert);
@@ -141,7 +145,7 @@ describe('translate CCD DQ to CUI DQ Experts model', () => {
       // Given
       const ccdLipExpert: CCDLiPExpert = {
         expertReportRequired: YesNoUpperCamelCase.YES,
-        reportDetails: [
+        details: [
           <CCDReportDetail>{
             value: <CCDExpertDetailsItem>{
               expertName: 'Mike Brown',

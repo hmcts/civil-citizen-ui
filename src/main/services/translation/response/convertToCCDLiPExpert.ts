@@ -1,16 +1,16 @@
 import {Experts} from 'models/directionsQuestionnaire/experts/experts';
 import {
-  toCCDYesNo,
+  toCCDYesNo, toCCDYesNoFromBoolean,
 } from 'services/translation/response/convertToCCDYesNo';
 import {ReportDetail} from 'models/directionsQuestionnaire/experts/expertReportDetails/reportDetail';
 import {YesNo} from 'form/models/yesNo';
 
 export const toCCDLiPExpert = (expert: Experts | undefined) => {
   return {
-    expertCanStillExamine: toCCDYesNo(expert?.expertCanStillExamine?.option),
+    caseNeedsAnExpert: toCCDYesNoFromBoolean(expert?.expertRequired), // CUI expert required /expert screen
     expertCanStillExamineDetails: expert?.expertCanStillExamine?.option == YesNo.YES ? expert?.expertCanStillExamine?.details : '',
     expertReportRequired: toCCDYesNo(expert?.expertReportDetails?.option),
-    reportDetails: toCCDReportDetailItem(expert?.expertReportDetails?.reportDetails),
+    details: expert?.expertReportDetails?.option == YesNo.YES ? toCCDReportDetailItem(expert?.expertReportDetails?.reportDetails) : undefined,
   };
 };
 

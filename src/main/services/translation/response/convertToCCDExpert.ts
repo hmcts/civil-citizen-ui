@@ -1,17 +1,16 @@
 import {
   toCCDYesNo,
-  toCCDYesNoFromBoolean,
   toCCDYesNoFromGenericYesNo,
 } from 'services/translation/response/convertToCCDYesNo';
 import {CCDExportReportSent} from 'models/ccdResponse/ccdExpert';
 import {ExpertDetails} from 'models/directionsQuestionnaire/experts/expertDetails';
 import {Claim} from 'models/claim';
-import {YesNoNotReceived} from 'form/models/yesNo';
+import {YesNoNotReceived, YesNoUpperCamelCase} from 'form/models/yesNo';
 
 export const toCCDExpert = (claim: Claim) => {
   return{
     expertRequired: toCCDExpertRequiredResponse(claim),
-    details: toCCDExpertDetails(claim.directionQuestionnaire?.experts?.expertDetailsList?.items),
+    details: toCCDExpertRequiredResponse(claim) === YesNoUpperCamelCase.YES ? toCCDExpertDetails(claim.directionQuestionnaire?.experts?.expertDetailsList?.items) : undefined,
     expertReportsSent: toCCDExpertReport(claim.directionQuestionnaire?.experts?.sentExpertReports?.option),
     jointExpertSuitable: toCCDYesNoFromGenericYesNo(claim.directionQuestionnaire?.experts?.sharedExpert),
   };
@@ -21,7 +20,7 @@ const toCCDExpertRequiredResponse = (claim: Claim) => {
   if (claim.isFastTrackClaim) {
     return toCCDYesNo(claim.directionQuestionnaire?.experts?.expertEvidence?.option);
   } else {
-    return toCCDYesNoFromBoolean(claim.directionQuestionnaire?.experts?.expertRequired);
+    return toCCDYesNo(claim.directionQuestionnaire?.experts?.expertCanStillExamine?.option);
   }
 };
 

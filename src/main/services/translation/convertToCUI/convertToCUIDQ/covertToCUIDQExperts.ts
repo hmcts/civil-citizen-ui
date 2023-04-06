@@ -45,7 +45,7 @@ export function toCUIExpertDetails(ccdExpertDetailsList: CCDExpertDetails[]): Ex
       phoneNumber: Number(phoneNumber) || undefined,
       whyNeedExpert: whyRequired,
       fieldOfExpertise,
-      estimatedCost,
+      estimatedCost: estimatedCost/100 || undefined,
     } as ExpertDetails;
   });
   return new ExpertDetailsList(convertedValue);
@@ -54,7 +54,7 @@ export function toCUIExpertDetails(ccdExpertDetailsList: CCDExpertDetails[]): Ex
 export function toCUIExpertReportDetails(ccdLipExpert: CCDLiPExpert): ExpertReportDetails {
   return new ExpertReportDetails(
     toCUIYesNo(ccdLipExpert?.expertReportRequired),
-    toCUIReportDetais(ccdLipExpert?.reportDetails),
+    toCUIReportDetais(ccdLipExpert?.details),
   );
 }
 
