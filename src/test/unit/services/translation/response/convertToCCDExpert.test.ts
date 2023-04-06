@@ -37,6 +37,10 @@ describe('translate DQ expert details to CCD model', () => {
     //Given
     claim.directionQuestionnaire.experts ={
       expertRequired: true,
+      expertCanStillExamine: {
+        option: YesNo.YES,
+        details: 'photo evidence',
+      },
       expertDetailsList:{
         items : [mockExpertDetail],
       },

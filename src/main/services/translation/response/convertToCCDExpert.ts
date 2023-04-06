@@ -10,7 +10,7 @@ import {YesNoNotReceived, YesNoUpperCamelCase} from 'form/models/yesNo';
 export const toCCDExpert = (claim: Claim) => {
   return{
     expertRequired: toCCDExpertRequiredResponse(claim),
-    details: toCCDExpertRequiredResponse(claim) === YesNoUpperCamelCase.YES ? toCCDExpertDetails(claim.directionQuestionnaire?.experts?.expertDetailsList?.items) : undefined,
+    details: toCCDExpertRequiredResponse(claim) == YesNoUpperCamelCase.YES ? toCCDExpertDetails(claim.directionQuestionnaire?.experts?.expertDetailsList?.items) : undefined,
     expertReportsSent: toCCDExpertReport(claim.directionQuestionnaire?.experts?.sentExpertReports?.option),
     jointExpertSuitable: toCCDYesNoFromGenericYesNo(claim.directionQuestionnaire?.experts?.sharedExpert),
   };

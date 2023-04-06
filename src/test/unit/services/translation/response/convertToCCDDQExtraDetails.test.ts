@@ -30,10 +30,10 @@ describe('translate DQ extra details to CCD model', () => {
       considerClaimantDocuments: undefined,
       considerClaimantDocumentsDetails: '',
       respondent1DQLiPExpert: {
-        expertCanStillExamine: undefined,
+        caseNeedsAnExpert: undefined,
         expertCanStillExamineDetails: '',
         expertReportRequired: undefined,
-        reportDetails: undefined,
+        details: undefined,
       },
     };
 
@@ -66,6 +66,7 @@ describe('translate DQ extra details to CCD model', () => {
     };
 
     claim.directionQuestionnaire.experts = {
+      expertRequired: true,
       expertReportDetails: {
         option: YesNo.YES,
         reportDetails:[mockReportDetail],
@@ -91,10 +92,10 @@ describe('translate DQ extra details to CCD model', () => {
       considerClaimantDocuments: YesNoUpperCamelCase.YES,
       considerClaimantDocumentsDetails: 'details',
       respondent1DQLiPExpert: {
-        expertCanStillExamine: YesNoUpperCamelCase.YES,
+        caseNeedsAnExpert: YesNoUpperCamelCase.YES,
         expertCanStillExamineDetails: 'details',
         expertReportRequired: YesNoUpperCamelCase.YES,
-        reportDetails: [{
+        details: [{
           value: {
             'expertName': mockReportDetail.expertName,
             'reportDate': mockReportDetail.reportDate,
