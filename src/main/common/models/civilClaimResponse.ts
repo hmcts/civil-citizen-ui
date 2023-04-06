@@ -138,7 +138,6 @@ export interface CCDClaim extends ClaimUpdate {
   respondent1LiPResponse?: CCDRespondentLiPResponse;
   respondent1DQExperts?: CCDExpert;
   responseClaimExpertSpecRequired?: YesNoUpperCamelCase;
-
 }
 
 export interface ClaimFeeData {

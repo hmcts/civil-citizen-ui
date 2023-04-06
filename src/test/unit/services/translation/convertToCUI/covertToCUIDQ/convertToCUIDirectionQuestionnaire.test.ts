@@ -30,10 +30,10 @@ describe('Convert CCD data to CUI DirectionQuestionnaire model ', () => {
       // When
       const result = toCUIDirectionQuestionnaire(ccdClaim);
       // Then
-      expect(result.hearing.determinationWithoutHearing.option).toBe(YesNo.YES); // no and reason
+      expect(result.hearing.determinationWithoutHearing.option).toBe(YesNo.YES);
       expect(result.hearing.determinationWithoutHearing.reasonForHearing).toBeUndefined();
       expect(result.experts.expertRequired).toBe(true);
-      expect(result.experts.expertReportDetails.option).toBe(YesNo.NO); // yes and details
+      expect(result.experts.expertReportDetails.option).toBe(YesNo.NO);
       expect(result.experts.expertReportDetails.reportDetails).toBeUndefined();
       expect(result.experts.permissionForExpert.option).toBe(YesNo.YES);
       expect(result.experts.expertCanStillExamine.option).toBe(YesNo.NO);
@@ -61,8 +61,8 @@ describe('Convert CCD data to CUI DirectionQuestionnaire model ', () => {
       expect(result.hearing.determinationWithoutHearing).toBeUndefined();
       expect(result.hearing.triedToSettle.option).toBe(YesNo.YES);
       expect(result.hearing.requestExtra4weeks.option).toBe(YesNo.YES);
-      expect(result.hearing.considerClaimantDocuments.option).toBe(YesNo.NO); // yes and details
-      expect(result.hearing.considerClaimantDocuments.details).toBeUndefined(); // yes and details
+      expect(result.hearing.considerClaimantDocuments.option).toBe(YesNo.NO);
+      expect(result.hearing.considerClaimantDocuments.details).toBeUndefined();
       expect(result.experts.expertEvidence.option).toBe(YesNo.YES);
       expect(result.experts.sentExpertReports.option).toBe(YesNoNotReceived.NOT_RECEIVED);
       expect(result.experts.sharedExpert.option).toBe(YesNo.YES);
@@ -83,11 +83,11 @@ function getCCDDataForSmallClaimUncommonFields(): CCDClaim {
     totalClaimAmount: 4555,
     respondent1LiPResponse: <CCDRespondentLiPResponse>{
       respondent1DQExtraDetails: <CCDDQExtraDetails>{
-        determinationWithoutHearingRequired: YesNoUpperCamelCase.YES, // no and reason
+        determinationWithoutHearingRequired: YesNoUpperCamelCase.YES,
         determinationWithoutHearingReason: undefined,
         respondent1DQLiPExpert: <CCDLiPExpert>{
           caseNeedsAnExpert: YesNoUpperCamelCase.YES,
-          expertReportRequired: YesNoUpperCamelCase.NO, // yes and report details
+          expertReportRequired: YesNoUpperCamelCase.NO,
           expertCanStillExamineDetails: 'Examine details',
         },
       },
@@ -121,7 +121,7 @@ function getCCDDataForFastTrackClaimUncommonFields(): CCDClaim {
       respondent1DQExtraDetails: <CCDDQExtraDetails>{
         triedToSettle: YesNoUpperCamelCase.YES,
         requestExtra4weeks: YesNoUpperCamelCase.YES,
-        considerClaimantDocuments: YesNoUpperCamelCase.NO, // yes doc details
+        considerClaimantDocuments: YesNoUpperCamelCase.NO,
         considerClaimantDocumentsDetails: undefined,
         respondent1DQLiPExpert: <CCDLiPExpert>{
         },

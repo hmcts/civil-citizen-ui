@@ -1,4 +1,5 @@
 import {Claim} from 'models/claim';
+import {CCDClaim} from 'models/civilClaimResponse';
 import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIClaimDetails';
 import {toCUIEvidence} from 'services/translation/convertToCUI/convertToCUIEvidence';
 import {toCUIParty, toCUIPartyRespondent} from 'services/translation/convertToCUI/convertToCUIParty';
@@ -7,7 +8,7 @@ import {toCUIStatementOfMeans} from 'services/translation/convertToCUI/convertTo
 import {toCUIClaimBilingualLangPreference} from 'services/translation/convertToCUI/convertToCUIRespondentLiPResponse';
 import {toCUIDirectionQuestionnaire} from './convertToCUIDQ/convertToCUIDirectionQuestionnaire';
 
-export const translateCCDCaseDataToCUIModel = (ccdClaim: any): Claim => {
+export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   const claim: Claim = Object.assign(new Claim(), ccdClaim);
   claim.claimDetails = toCUIClaimDetails(ccdClaim);
   claim.evidence = toCUIEvidence(ccdClaim?.speclistYourEvidenceList);
