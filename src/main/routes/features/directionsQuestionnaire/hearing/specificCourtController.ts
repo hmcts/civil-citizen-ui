@@ -21,19 +21,19 @@ const renderView = async (form: GenericForm<SpecificCourtLocation>, req: Request
   const courtLocations = [
     {
       code: '28b3277a-92f8-4e6b-a8b5-78c5de5c9a7a',
-      label: "Barnet Civil and Family Centre - ST MARY'S COURT, REGENTS PARK ROAD - N3 1BQ"
+      label: "Barnet Civil and Family Centre - ST MARY'S COURT, REGENTS PARK ROAD - N3 1BQ",
     },
     {
       code: 'a50a3a8c-69bd-4ce5-aa2f-0b12cca5a85b',
-      label: 'Central London County Court - THOMAS MORE BUILDING, ROYAL COURTS OF JUSTICE, STRAND, LONDON - WC2A 2LL'
+      label: 'Central London County Court - THOMAS MORE BUILDING, ROYAL COURTS OF JUSTICE, STRAND, LONDON - WC2A 2LL',
     },
     {
       code: 'd0647ef5-b80b-4ac7-adc9-91879b7bd198',
-      label: 'High Wycombe Law Courts - THE LAW COURTS, EASTON STREET - HP11 1LR'
+      label: 'High Wycombe Law Courts - THE LAW COURTS, EASTON STREET - HP11 1LR',
     },
     {
       code: '50bf1014-c8c8-4bf8-be77-c8896db1e5b4',
-      label: 'Liverpool Civil and Family Court - 35, VERNON STREET, CITY SQUARE - L2 2BX'
+      label: 'Liverpool Civil and Family Court - 35, VERNON STREET, CITY SQUARE - L2 2BX',
     }];
   res.render(viewPath, {form, courtLocations});
 };
