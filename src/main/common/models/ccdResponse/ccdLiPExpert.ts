@@ -1,10 +1,10 @@
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 export interface CCDLiPExpert {
-  expertCanStillExamine?: YesNoUpperCamelCase;
+  caseNeedsAnExpert?: YesNoUpperCamelCase;
   expertCanStillExamineDetails?: string;
   expertReportRequired? : YesNoUpperCamelCase;
-  reportDetails? : CCDReportDetail[];
+  details? : CCDReportDetail[];
 }
 
 export interface CCDReportDetail {
