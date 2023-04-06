@@ -4,7 +4,7 @@ import request from 'supertest';
 import {t} from 'i18next';
 import {app} from '../../../../../../main/app';
 import {
-  CCJ_DEPENDANT_PAYMENT_DATE_URL,
+  CCJ_DEFENDANT_PAYMENT_DATE_URL,
   CCJ_PAYMENT_OPTIONS_URL,
   CCJ_REPAYMENT_PLAN_INSTALMENTS_URL,
   CCJ_CHECK_AND_SEND_URL,
@@ -79,7 +79,7 @@ describe('CCJ - Payment option', () => {
         .send('type=BY_SET_DATE')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CCJ_DEPENDANT_PAYMENT_DATE_URL);
+          expect(res.header.location).toEqual(CCJ_DEFENDANT_PAYMENT_DATE_URL);
         });
     });
     it('should return 500 status when there is error', async () => {

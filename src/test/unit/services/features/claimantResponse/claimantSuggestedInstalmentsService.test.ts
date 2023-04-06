@@ -14,7 +14,7 @@ const REPAYMENT_FREQUENCY = 'WEEK';
 const YEAR = '2024';
 const MONTH = '02';
 const DAY = '14';
-const FIRST_PAYMENT_DATE = '2024-02-14T00:00:00.000';
+const FIRST_PAYMENT_DATE = new Date('2024-02-14T00:00:00.000');
 const claimId = '5129';
 
 describe('Claiman Suggested Instalments Plan Service', () => {
@@ -77,7 +77,7 @@ describe('Claiman Suggested Instalments Plan Service', () => {
       expect(form.totalClaimAmount).toBe(TOTAL_CLAIM_AMOUNT);
       expect(form.paymentAmount).toBe(PAYMENT_AMOUNT);
       expect(form.repaymentFrequency).toBe(REPAYMENT_FREQUENCY);
-      expect(form.firstRepaymentDate.toJSON()).toContain('2024-02-14');
+      expect(form.firstRepaymentDate.toDateString()).toBe('Wed Feb 14 2024');
     });
 
     it('should return an error on redis failure', async () => {
@@ -134,7 +134,7 @@ describe('Claiman Suggested Instalments Plan Service', () => {
       expect(form.totalClaimAmount).toBe(TOTAL_CLAIM_AMOUNT);
       expect(form.paymentAmount).toBe(PAYMENT_AMOUNT);
       expect(form.repaymentFrequency).toBe(REPAYMENT_FREQUENCY);
-      expect(form.firstRepaymentDate.toJSON()).toContain('2024-02-14');
+      expect(form.firstRepaymentDate.toDateString()).toBe('Wed Feb 14 2024');
     });
 
     it('should rethrow error when error occurs on get claim', async () => {

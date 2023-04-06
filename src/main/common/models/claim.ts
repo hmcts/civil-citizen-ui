@@ -39,8 +39,6 @@ import {Interest} from 'form/models/interest/interest';
 import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
 import {ClaimDetails} from 'common/form/models/claim/details/claimDetails';
 import {ClaimantResponse} from './claimantResponse';
-import {CCDClaim} from 'models/civilClaimResponse';
-import {toCUIParty} from 'services/translation/convertToCUI/convertToCUIParty';
 import {SelfEmployedAs} from 'models/selfEmployedAs';
 import {TaxPayments} from 'models/taxPayments';
 import {RegularIncome} from 'form/models/statementOfMeans/expensesAndIncome/regularIncome';
@@ -49,14 +47,9 @@ import {CourtOrders} from 'form/models/statementOfMeans/courtOrders/courtOrders'
 import {PriorityDebts} from 'form/models/statementOfMeans/priorityDebts';
 import {Debts} from 'form/models/statementOfMeans/debts/debts';
 import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreference';
-import {toCUIEvidence} from 'services/translation/convertToCUI/convertToCUIEvidence';
-import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIClaimDetails';
 import {analyseClaimType, claimType} from 'common/form/models/claimType';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
-import {toCUIMediation} from 'services/translation/convertToCUI/convertToCUIMediation';
-import {toCUIStatementOfMeans} from 'services/translation/convertToCUI/convertToCUIStatementOfMeans';
 import {CCDRespondentLiPResponse} from './ccdResponse/ccdRespondentLiPResponse';
-import {toCUIPartialAdmission} from 'services/translation/convertToCUI/convertToCUIPartialAdmission';
 
 export class Claim {
   legacyCaseReference: string;
@@ -93,21 +86,6 @@ export class Claim {
   claimBilingualLanguagePreference: ClaimBilingualLanguagePreference;
   id: string;
   respondent1LiPResponse?: CCDRespondentLiPResponse;
-
-  public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
-    const claim: Claim = Object.assign(new Claim(), ccdClaim);
-    claim.claimDetails = toCUIClaimDetails(ccdClaim);
-    claim.evidence = toCUIEvidence(ccdClaim?.specResponselistYourEvidenceList, ccdClaim?.respondent1LiPResponse?.evidenceComment);
-    claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
-    claim.respondent1 = toCUIParty(ccdClaim?.respondent1);
-    claim.mediation = toCUIMediation(ccdClaim?.respondent1LiPResponse?.respondent1MediationLiPResponse);
-    claim.statementOfMeans = toCUIStatementOfMeans(ccdClaim);
-    claim.respondent1.responseType = ccdClaim?.respondent1ClaimResponseTypeForSpec;
-    if (claim.isPartialAdmission()) {
-      claim.partialAdmission = toCUIPartialAdmission(ccdClaim);
-    }
-    return claim;
-  }
 
   get responseStatus(): ClaimResponseStatus {
     if (this.isFullAdmission() && this.isFAPaymentOptionPayImmediately()) {
