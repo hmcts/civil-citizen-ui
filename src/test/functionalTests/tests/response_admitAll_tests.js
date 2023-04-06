@@ -1,10 +1,9 @@
 const config = require('../../config');
 
-const ResponseSteps  =  require('../features/response/steps/prepareYourResponseSteps');
-const CommonSteps  =  require('../features/response/steps/commonSteps');
+const ResponseSteps  =  require('../features/response/steps/lipDefendantResponseSteps');
 const LoginSteps =  require('../features/home/steps/login');
 
-const admitAll = 'admitAll';
+const admitAll = 'full-admission';
 const immediatePayment = 'immediate';
 const bySetDate = 'bySetDate';
 const repaymentPlan = 'repaymentPlan';
@@ -22,33 +21,33 @@ Before(async ({api}) => {
   } else
   {
     console.log('claimRef has not been Created');
-  } 
+  }
 });
 
-Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll', () => {
-  CommonSteps.EnterPersonalDetails(claimRef);
-  CommonSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
+Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @regression', () => {
+  ResponseSteps.EnterPersonalDetails(claimRef);
+  ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   ResponseSteps.EnterResponseToClaim(claimRef, admitAll);
-  ResponseSteps.EnterPaymentOption(claimRef, immediatePayment);
+  ResponseSteps.EnterPaymentOption(claimRef, admitAll, immediatePayment);
   ResponseSteps.CheckAndSubmit(claimRef, admitAll);
 });
 
-Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll', () => {
-  CommonSteps.EnterPersonalDetails(claimRef);
-  CommonSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
+Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @regression', () => {
+  ResponseSteps.EnterPersonalDetails(claimRef);
+  ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   ResponseSteps.EnterResponseToClaim(claimRef, admitAll);
-  ResponseSteps.EnterPaymentOption(claimRef, bySetDate);
+  ResponseSteps.EnterPaymentOption(claimRef, admitAll, bySetDate);
   ResponseSteps.EnterDateToPayOn();
-  CommonSteps.EnterFinancialDetails(claimRef);
+  ResponseSteps.EnterFinancialDetails(claimRef);
   ResponseSteps.CheckAndSubmit(claimRef, admitAll);
 });
 
-Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll', () => {
-  CommonSteps.EnterPersonalDetails(claimRef);
-  CommonSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
+Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll @regression', () => {
+  ResponseSteps.EnterPersonalDetails(claimRef);
+  ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   ResponseSteps.EnterResponseToClaim(claimRef, admitAll);
-  ResponseSteps.EnterPaymentOption(claimRef, repaymentPlan);
-  CommonSteps.EnterFinancialDetails(claimRef);
+  ResponseSteps.EnterPaymentOption(claimRef, admitAll, repaymentPlan);
+  ResponseSteps.EnterFinancialDetails(claimRef);
   ResponseSteps.EnterRepaymentPlan(claimRef);
   ResponseSteps.CheckAndSubmit(claimRef, admitAll);
 });

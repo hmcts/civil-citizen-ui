@@ -30,12 +30,11 @@ const getClaimWithDirectionQuestionnaire = (): Claim => {
   claim.directionQuestionnaire = new DirectionQuestionnaire();
   return claim;
 };
-const getClaimWithDirectionQuestionnaireAndHearing = (): Claim => {
+export const getClaimWithDirectionQuestionnaireAndHearing = (): Claim => {
   const claim = getClaimWithDirectionQuestionnaire();
   claim.directionQuestionnaire.hearing = new Hearing();
   return claim;
 };
-
 const getClaimWithDirectionQuestionnaireAndExperts = (): Claim => {
   const claim = getClaimWithDirectionQuestionnaire();
   claim.directionQuestionnaire.experts = new Experts();
@@ -126,7 +125,6 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         //Then
         expect(row).toStrictEqual(mockSummarySection);
       });
-
     });
 
     describe('considerClaimantDocQuestion', () => {
