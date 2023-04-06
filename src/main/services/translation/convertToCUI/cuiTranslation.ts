@@ -20,6 +20,11 @@ import {ExpertDetailsList} from 'common/models/directionsQuestionnaire/experts/e
 import {YesNoNotReceived} from 'common/form/models/yesNo';
 import {ExpertDetails} from 'common/models/directionsQuestionnaire/experts/expertDetails';
 import {SMALL_CLAIM_AMOUNT} from 'common/form/models/claimType';
+import {ExpertReportDetails} from 'common/models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails';
+import {CCDLiPExpert, CCDReportDetail} from 'common/models/ccdResponse/ccdLiPExpert';
+import {ReportDetail} from 'common/models/directionsQuestionnaire/experts/expertReportDetails/reportDetail';
+import {DeterminationWithoutHearing} from 'common/models/directionsQuestionnaire/hearing/determinationWithoutHearing';
+import {ExpertCanStillExamine} from 'common/models/directionsQuestionnaire/experts/expertCanStillExamine';
 
 export const translateCCDCaseDataToCUIModel = (ccdClaim: any): Claim => {
   const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -49,16 +54,16 @@ export function toCUIDirectionQuestionnaire(ccdClaim: CCDClaim): DirectionQuesti
       details: ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.considerClaimantDocumentsDetails,
     } as ConsiderClaimantDocuments;
     // 5.4 Experts (For Fast track)
-    // TODO try to find a way to understand fast track
-    // /directions-questionnaire/expert-evidence (Do you want to use expert evidence )
     directionQuestionnaire.experts = new Experts();
-    console.log('tiatl----', ccdClaim.totalClaimAmount);
+    console.log('total----', ccdClaim.totalClaimAmount);
     if (ccdClaim.totalClaimAmount <= SMALL_CLAIM_AMOUNT) {
+      // /directions-questionnaire/expert-evidence ---->  /directions-questionnaire/expert
       directionQuestionnaire.experts.expertRequired = toCUIBoolean(ccdClaim.respondent1DQExperts?.expertRequired); // small-claim
-      console.log('tiatl--samll----expertRequired', directionQuestionnaire.experts.expertRequired);
+      console.log('total--small----expertRequired', directionQuestionnaire.experts.expertRequired);
     } else {
+      // /directions-questionnaire/expert-evidence (Do you want to use expert evidence )
       directionQuestionnaire.experts.expertEvidence = toCUIGenericYesNo(ccdClaim.respondent1DQExperts?.expertRequired); // Fast-track
-      console.log('tiatl--fast----expertEvidence', directionQuestionnaire.experts.expertEvidence);
+      console.log('total--fast----expertEvidence', directionQuestionnaire.experts.expertEvidence);
     }
     // /directions-questionnaire/sent-expert-reports (Have you already sent expert reports to other parties)
     directionQuestionnaire.experts.sentExpertReports = toCUISentExpertReports(ccdClaim.respondent1DQExperts?.expertReportsSent);
@@ -67,10 +72,20 @@ export function toCUIDirectionQuestionnaire(ccdClaim: CCDClaim): DirectionQuesti
     // /directions-questionnaire/expert-details (Enter the expert's details)
     directionQuestionnaire.experts.expertDetailsList = toCUIExpertDetails(ccdClaim.respondent1DQExperts?.details);
     // 5.5 Experts (For Small claims)
-    // directions-questionnaire/expert-reports
-    // done in fast track
+    // /directions-questionnaire/determination-without-hearing (Determination without Hearing Questions)
+    directionQuestionnaire.hearing.determinationWithoutHearing = {
+      option: toCUIYesNo(ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.determinationWithoutHearingRequired),
+      reasonForHearing: ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.determinationWithoutHearingReason,
+    } as DeterminationWithoutHearing;
+    // directions-questionnaire/expert-reports (Have you already got a report written by an expert?)
+    directionQuestionnaire.experts.expertReportDetails = toCCDExpertReportDetails(ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.respondent1DQLiPExpert);
     // directions-questionnaire/permission-for-expert
     directionQuestionnaire.experts.permissionForExpert = toCUIGenericYesNo(ccdClaim.responseClaimExpertSpecRequired);
+    // directions-questionnaire/expert-can-still-examine (Does the claim involve something an expert can still examine?)
+    directionQuestionnaire.experts.expertCanStillExamine = {
+      option: toCUIYesNo(ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.respondent1DQLiPExpert?.expertCanStillExamine),
+      details: ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.respondent1DQLiPExpert?.expertCanStillExamineDetails,
+    } as ExpertCanStillExamine; // ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.respondent1DQLiPExpert);
     // /directions-questionnaire/expert-evidence ---->  /directions-questionnaire/expert
     // done in fast track
     // /directions-questionnaire/expert-details (Enter the expert's details)
@@ -78,15 +93,15 @@ export function toCUIDirectionQuestionnaire(ccdClaim: CCDClaim): DirectionQuesti
 
     // -/-/-/-/-/-/-/-/-/-/
     // *5.4 Experts (For Fast track)
-    // */directions-questionnaire/expert-evidence (Do you want to use expert evidence )
-    // */directions-questionnaire/sent-expert-reports (Have you already sent expert reports to other parties)
+    // */directions-questionnaire/defendant-expert-evidence ----> expert-evidence (Do you want to use expert evidence )
+    // */directions-questionnaire/expert-reports -----> sent-expert-reports (Have you already sent expert reports to other parties)
     // */directions-questionnaire/shared-expert (Do you want to share an expert with the claimant? )
     // */directions-questionnaire/expert-details (Enter the expert's details)
 
     // 5.5 Experts (For Small claims)
-    // +directions-questionnaire/sent-expert-reports
+    // +directions-questionnaire/expert-reports ????
     // +directions-questionnaire/permission-for-expert
-    // +/directions-questionnaire/expert --? expert-evidence with fast track
+    // +/directions-questionnaire/expert-evidence-----> expert? ===> expert-evidence with fast track
     // +/directions-questionnaire/expert-details (Enter the expert's details)
     return directionQuestionnaire;
   }
@@ -99,7 +114,7 @@ export function toCUISentExpertReports(ccdExportReportSent: CCDExportReportSent 
     'NOT_OBTAINED': YesNoNotReceived.NOT_RECEIVED,
   };
   if (ccdExportReportSent) {
-    return new SentExpertReports(mapping[ccdExportReportSent])
+    return new SentExpertReports(mapping[ccdExportReportSent]);
   }
 }
 
@@ -116,7 +131,7 @@ export function toCUIExpertDetails(ccdExpertDetailsList: CCDExpertDetails[]): Ex
         estimatedCost,
       },
     } = expertDetail;
-    return <ExpertDetails>{
+    return {
       firstName,
       lastName,
       emailAddress,
@@ -124,8 +139,25 @@ export function toCUIExpertDetails(ccdExpertDetailsList: CCDExpertDetails[]): Ex
       whyNeedExpert: whyRequired,
       fieldOfExpertise,
       estimatedCost,
-    };
+    } as ExpertDetails;
   });
   return new ExpertDetailsList(convertedValue);
 }
 
+export function toCCDExpertReportDetails(ccdLipExpert: CCDLiPExpert): ExpertReportDetails {
+  return new ExpertReportDetails(
+    toCUIYesNo(ccdLipExpert.expertReportRequired),
+    toCUIReportDetais(ccdLipExpert.reportDetails),
+  );
+}
+
+export function toCUIReportDetais(ccdReportDetails: CCDReportDetail[]): ReportDetail[] {
+  if (ccdReportDetails) {
+    return ccdReportDetails.map(reportDetail => {
+      return {
+        expertName: reportDetail.value?.expertName,
+        reportDate: reportDetail.value?.reportDate,
+      } as ReportDetail;
+    });
+  }
+}
