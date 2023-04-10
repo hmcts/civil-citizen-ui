@@ -26,13 +26,12 @@
             {{ csrfProtection(csrf) }}
             {% call govukFieldset({
                legend: {
-                 html: t('PAGES.I_DON_T_WANT_FREE_MEDIATION.DO_NOT_AGREE_TO_FREE_MEDIATION'),
+                 text: t('PAGES.I_DON_T_WANT_FREE_MEDIATION.DO_NOT_AGREE_TO_FREE_MEDIATION'),
                  classes: "govuk-fieldset__legend--l",
                  isPageHeading: true
                }
             }) %}
-            {% set ttext = t('PAGES.I_DON_T_WANT_FREE_MEDIATION.YOU_HAVE_CHOSEN_TELL_US_WHY') %}
-            {{govukHint({text: ttext})}}
+            {{govukHint({text: t('PAGES.I_DON_T_WANT_FREE_MEDIATION.YOU_HAVE_CHOSEN_TELL_US_WHY')})}}
             {% set ifOther %}
               {{ govukTextarea({
                 name: "otherReason",

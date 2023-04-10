@@ -27,13 +27,6 @@
           <div class="govuk-!-margin-bottom-8">
             <form method="post" novalidate>
              {{ csrfProtection(csrf) }}
-                {% call govukFieldset({
-                  legend: {
-                     html: t('PAGES.MEDIATION_DISAGREEMENT.MEDIATION_DISAGREEMENT'),
-                     classes: "govuk-fieldset__legend--l",
-                     isPageHeading: true
-                  }
-             }) %}
             <p class="govuk-body">{{ t('PAGES.MEDIATION_DISAGREEMENT.THE_CLAIM_WILL_CONTINUE') }}</p>
           <div class="govuk-!-margin-bottom-8">
             <h2 class="govuk-heading-m">{{ t('PAGES.MEDIATION_DISAGREEMENT.ADVANTAGES_OF_FREE_MEDIATION') }}</h2>
@@ -62,7 +55,6 @@
                 text: t("COMMON.BUTTONS.SAVE_AND_CONTINUE")
               }) }}
               {{ contactUsForHelp(t) }}
-            {% endcall %}
           </form>
           </div>
         </div>

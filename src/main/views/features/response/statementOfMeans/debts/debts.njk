@@ -121,13 +121,6 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-              {% call govukFieldset({
-                 legend: {
-                 html: title,
-                 classes: "govuk-fieldset__legend--l",
-                 isPageHeading: true
-                 }
-              }) %}
             {{ yesNoRadioButton(t,'debtsRadio','option','', form,'',{yesHtml:yesHtml}) }}
               <div class="govuk-form-group">
                 {{ govukButton({
@@ -135,7 +128,6 @@
                 }) }}
                 {{ contactUsForHelp(t) }}
               </div>
-              {% endcall %}
           </form>
         </div>
      </div>

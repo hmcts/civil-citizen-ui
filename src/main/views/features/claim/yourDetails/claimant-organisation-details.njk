@@ -46,7 +46,8 @@
       {{ t('PAGES.COMPANY_DETAILS.ADDRESS_FOR_SERVICE') }}</p>
     {{ postcodeLookupAndAddressForm(t, {
       party: party,
-      addressType:'correspondenceAddress'
+      addressType:'correspondenceAddress',
+      addressTitle:addressTitle
     }) }}
   </div>
 {% endset -%}
