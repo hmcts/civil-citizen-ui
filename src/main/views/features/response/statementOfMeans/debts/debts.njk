@@ -121,7 +121,7 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            {{ yesNoRadioButton(t,'debtsRadio','option','', form,'',{yesHtml:yesHtml}) }}
+            {{ yesNoRadioButton(t,'debtsRadio','option',title, form,'',{yesHtml:yesHtml}) }}
               <div class="govuk-form-group">
                 {{ govukButton({
                   text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
