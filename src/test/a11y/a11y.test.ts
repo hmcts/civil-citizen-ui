@@ -73,11 +73,10 @@ function expectNoPerceivableWarnings(messages: PallyIssue[]): void {
     const errorsAsJson = `${JSON.stringify(nonTextContent, null, 2)}`;
     fail(`There are non text content Guideline 1.1.1 issues: \n${errorsAsJson}\n`);
   }
-
 }
 
 function expectNoAdaptableWarnings(messages: PallyIssue[]): void {
- // const info  = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline1_3.1_3_1') && !m.context.includes('govuk-header__menu-button')&& !m.context.includes('govuk-cookie-banner__heading')&& !m.context.includes('class="govuk-heading-m">Email<')&& !m.context.includes('govuk-details__text'));
+  //const info  = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline1_3.1_3_1') && !m.context.includes('govuk-header__menu-button')&& !m.context.includes('govuk-cookie-banner__heading')&& !m.context.includes('class="govuk-heading-m">Email<')&& !m.context.includes('govuk-details__text'));
   const meaningful = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline1_3.1_3_2'));
   const sensory = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline1_3.1_3_3'));
   const orientation = messages.filter(m => m.code.includes('WCAG2AA.Principle1.Guideline1_3.1_3_4'));
