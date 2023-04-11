@@ -14,11 +14,13 @@
                 <div class="govuk-grid-column-two-thirds">
                     <h1 class="govuk-heading-l">{{ t('PAGES.CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS.TITLE') }}</h1>
                     {% for section in summarySections.sections %}
+                      {% if section.summaryList.rows %}
                         <div class="govuk-form-group">
-                            {{ govukSummaryList({
-                                rows: section.summaryList.rows
-                            }) }}
+                          {{ govukSummaryList({
+                              rows: section.summaryList.rows
+                          }) }}
                         </div>
+                      {% endif %}
                     {% endfor %}
                     <form method="post" novalidate autocomplete="off">
                         {{ csrfProtection(csrf) }}
