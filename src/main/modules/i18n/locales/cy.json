@@ -95,7 +95,7 @@
       "TITLE": "Cysylltwch â ni i gael cymorth",
       "TELEPHONE": "Ffôn",
       "WEB_CHAT": "Sgwrsio ar y We",
-      "WEB_CHAT_CLOSED": "Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.",
+      "WEB_CHAT_CLOSED": "Mae’r gwasanaeth sgwrsio dros y we nawr ar gau. Dewch yn ôl dydd Llun i ddydd Gwener rhwng 8.30am - 5pm neu cysylltwch â ni dros y ffôn neu drwy e-bost.",
       "WEB_CHAT_NO_ADVISORS": "Nid oes cynghorwyr ar gael ar hyn o bryd. Rhowch gynnig arni eto yn nes ymlaen.",
       "WEB_CHAT_UNAVAILABLE": "Nid yw'r gwasanaeth sgwrsio ar y we ar gael ar hyn o bryd. Rhowch gynnig arni eto yn nes ymlaen."
     },
@@ -285,31 +285,31 @@
   },
   "TASK_LIST": {
     "APPLICATION_COMPLETE": "Application complete",
-    "APPLICATION_INCOMPLETE": "Application incomplete",
-    "COMPLETED_SECTIONS": "You have completed {{ completed }} of {{ total }} sections",
+    "APPLICATION_INCOMPLETE": "Cais heb ei gwblhau",
+    "COMPLETED_SECTIONS": "Rydych wedi  cwblhau {{ completed }} o {{ total }} adran",
     "PREPARE_YOUR_RESPONSE": {
-      "TITLE": "Prepare your response"
+      "TITLE": "Paratoi eich ymateb"
     },
     "RESOLVING_THE_CLAIM": {
       "TITLE": "Resolving the claim"
     },
     "RESPOND_TO_CLAIM": {
-      "CHOOSE_A_RESPONSE": "Choose a response",
+      "CHOOSE_A_RESPONSE": "Dewiswch ymateb",
       "DECIDE_HOW_YOU_WILL_PAYS": "Decide how you'll pay",
       "HOW_MUCH_HAVE_YOU_PAID": "Faint o arian ydych chi wedi talu",
       "HOW_MUCH_MONEY_ADMIT_OWE": "How much money do you admit you owe",
       "SHARE_YOUR_FINANCIAL_DETAILS": "Share your financial details",
       "TELL_US_HOW_MUCH_YOU_HAVE_PAID": "Tell us how much you've paid",
       "TELL_US_WHY_DISAGREE_WITH_CLAIM": "Tell us why you disagree with the claim",
-      "TITLE": "Respond to claim",
-      "VIEW_OPTIONS": "View your options before response deadline",
+      "TITLE": "Ymateb i hawliad",
+      "VIEW_OPTIONS": "Gweld eich opsiynau cyn y dyddiad terfyn ar gyfer ymateb",
       "WHEN_WILL_YOU_PAY": "Pryd fyddwch chi’n talu’r £{{ amount }}?",
       "WHY_DO_YOU_DISAGREE": "Why do you disagree with the amount claimed?",
       "YOUR_REPAYMENT_PLAN": "Your repayment plan"
     },
     "SUBMIT": {
-      "CHECK_AND_SUBMIT": "Check and submit your response",
-      "TITLE": "Submit"
+      "CHECK_AND_SUBMIT": "Gwirio a chyflwyno eich ymateb",
+      "TITLE": "Cyflwyno"
     },
     "YOUR_HEARING_REQUIREMENTS": {
       "GIVE_US_DETAILS": "Give us details in case there's a hearing",
@@ -723,7 +723,9 @@
       "DOWNLOAD_JUDGMENT_ORDER": "Download the judgment order",
       "DOWNLOAD_RESPONSE": "Llwytho'r ymateb i lawr",
       "LATEST_UPDATE": "Diweddariad diweddaraf",
-      "VIEW_CLAIM": "Gweld yr hawliad"
+      "VIEW_CLAIM": "Gweld yr hawliad",
+      "RESPONSE_DEADLINE": "Dyddiad cau ar gyfer ymateb:",
+      "TOTAL_CLAIM_AMOUNT":"Cyfanswm swm yr hawliad:"
     },
     "CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS": {
       "PAGE_TITLE": "Check your answers before submitting",
@@ -1361,8 +1363,8 @@
     },
     "FIRST_CONTACT_SIGNPOSTING": {
       "SUBTITLE": "If you don't respond",
-      "TITLE": "Respond to a money claim",
-      "PAGE_TITLE": "Respond to a money claim",
+      "TITLE": "Ymateb i hawliad ariannol",
+      "PAGE_TITLE": "Ymateb i hawliad ariannol",
       "PARAGRAPH_1": "You have 28 days to respond to the claim from the date the court issued it.",
       "PARAGRAPH_2": "Find the exact deadline date in the letter or email you received explaining the claim.",
       "PARAGRAPH_3": "We'll send your response to the claimant (the person or organisation who says you owe them money).",
@@ -2061,8 +2063,8 @@
     },
     "TASK_LIST": {
       "PAGE_TITLE": "Your task list",
-      "HEADER": "Respond to a money claim",
-      "ALL_ACTIONS_COMPLETED_CHECK_ANSWERS": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting."
+      "HEADER": "Ymateb i hawliad ariannol",
+      "ALL_ACTIONS_COMPLETED_CHECK_ANSWERS": "Ar ôl i chi gwblhau'r holl gamau byddwch yn mynd ymlaen i dudalen lle gallwch wirio'ch atebion cyn eu cyflwyno."
     },
     "TENANCY_DEPOSIT": {
       "TITLE": "Is your claim for a tenancy deposit?"
@@ -2227,7 +2229,7 @@
   },
   "ERRORS": {
     "ACCEPT_REPAYMENT_PLAN": "Select I want to accept this repayment plan to accept the court's proposed repayment plan",
-    "ADDRESS_NOT_FOUND": "We can't find an address for that postcode.",
+    "ADDRESS_NOT_FOUND": "Ni allwn ddod o hyd i gyfeiriad ar gyfer y cod post hwnnw.",
     "AMOUNT_INVALID_DECIMALS": "Rhowch swm, dim mwy na dau le degol",
     "AMOUNT_LESS_THAN_CLAIMED": "Nodwch werth sy'n llai na'r swm a hawlir",
     "AMOUNT_REQUIRED": "Nodwch swm o £1 neu fwy",
@@ -2242,8 +2244,8 @@
     "DATE_NOT_MORE_THAN_28_DAYS": "Ni all y dyddiad ymateb yr ydych wedi’i gytuno fod mwy na 28 diwrnod ar ôl y dyddiad ymateb gwreiddiol",
     "DEFENCE_REQUIRED": "Mae angen ichi egluro pam nad oes arian yn ddyledus gennych",
     "DEFENDANT_AGE_REQUIRED": "Select yes, no, or company/organisation",
-    "DEFENDANT_POSTCODE_NOT_VALID": "Postcode must be in England or Wales",
-    "DEFENDANT_POSTCODE_NOT_VALID_CORRESPONDENCE": "Postcode must be in England or Wales",
+    "DEFENDANT_POSTCODE_NOT_VALID": "Rhaid nodi cod post yng Nghymru neu Loegr",
+    "DEFENDANT_POSTCODE_NOT_VALID_CORRESPONDENCE": "Rhaid nodi cod post yng Nghymru neu Loegr",
     "DEFENDANT_EXPERT_EVIDENCE_REQUIRED": "Dewiswch ‘ydw’ os ydych eisiau defnyddio tystiolaeth arbenigwr",
     "DEFENDANT_EXPERT_EXPLAIN_EXAMINE": "Eglurwch beth ellir ei archwilio",
     "DEFENDANT_WITNESS_ENTER_FIRST_NAME": "Nodwch enw cyntaf y tyst",
@@ -2474,7 +2476,7 @@
     "TEXT_TOO_MANY": "You've entered too many characters",
     "TEXT400_TOO_LONG": "Rhaid i'r rheswm fod yn 400 o nodau neu'n llai",
     "THERE_WAS_A_PROBLEM": "Roedd problem",
-    "TRY_AGAIN": "Try again or enter the address manually.",
+    "TRY_AGAIN": "Rhowch gynnig arall arni neu nodwch y cyfeiriad â llaw.",
     "TYPE_OF_ACCOUNT_REQUIRED": "Dewiswch math o gyfrif",
     "VALID_ADDRESS_LINE_1": "Rhowch linell gyntaf y cyfeiriad",
     "VALID_ADDRESS_LINE_1_CORRESPONDENCE": "Rhowch linell gyntaf y cyfeiriad ar gyfer gohebiaeth",
@@ -2532,7 +2534,7 @@
     "VALID_OWED_AMOUNT_REQUIRED": "Rhowch swm dilys",
     "VALID_PARTY_NAME": "Enter name",
     "VALID_PAYMENT_OPTION": "Dewis opsiwn ad-dalu",
-    "VALID_PHONE_NUMBER": "Phone number must be a UK number",
+    "VALID_PHONE_NUMBER": "Rhaid i’r rhif ffôn fod yn rhif yn y DU",
     "VALID_PHONE_OR_VIDEO_HEARING": {
       "TELL_US_WHY": "Dywedwch wrthym pam ydych chi eisiau gwrandawiad dros y ffôn neu wrandawiad fideo",
       "YES_NO": "Dewiswch ydw os ydych chi eisiau gwneud cais am wrandawiad dros y ffôn neu wrandawiad fideo"
