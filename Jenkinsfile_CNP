@@ -7,10 +7,10 @@ import uk.gov.hmcts.contino.GithubAPI
 def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
-def camundaBranch = "master"
+def camundaBranch = "feat/CIV-7137-Part-Admit-Paid-CYA"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
-def ccdBranch = "master"
+def ccdBranch = "feat/CIV-7137-Part-Admit-Paid-CYA"
 AppPipelineConfig pipelineConf
 
 static Map<String, Object> secret(String secretName, String envVariable) {
@@ -109,7 +109,7 @@ withPipeline(type, product, component) {
           ./bin/pull-latest-dmn-files.sh ${dmnBranch}
           ./bin/pull-latest-camunda-wa-files.sh ${waStandaloneBranch}
           ./bin/pull-latest-ccd-files.sh ${ccdBranch}
-          ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json,*ClaimantResponseLRspec-nonprod.json,*DocmosisEvents-nonprod.json,*UserEventsLRspec-nonprod.json,*ClaimantResponseLRspec-base-nonprod.json,Categories*.json"
+          ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json,*ClaimantResponseLRspec-nonprod.json,*DocmosisEvents-nonprod.json,*UserEventsLRspec-nonprod.json,*ClaimantResponseLRspec-base-nonprod.json,Categories*.json" ${ccdBranch}
         """
     setUrls("civil-citizen-ui-pr-${CHANGE_ID}")
   }
