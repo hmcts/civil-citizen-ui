@@ -5,6 +5,7 @@ import {toCUIEvidence} from 'services/translation/convertToCUI/convertToCUIEvide
 import {toCUIParty, toCUIPartyRespondent} from 'services/translation/convertToCUI/convertToCUIParty';
 import {toCUIMediation} from 'services/translation/convertToCUI/convertToCUIMediation';
 import {toCUIStatementOfMeans} from 'services/translation/convertToCUI/convertToCUIStatementOfMeans';
+import {toCUIClaimBilingualLangPreference} from 'services/translation/convertToCUI/convertToCUIRespondentLiPResponse';
 import {toCUIDQs} from 'services/translation/convertToCUI/convertToCUIDQs';
 
 export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
@@ -15,6 +16,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   claim.respondent1 = toCUIPartyRespondent(ccdClaim?.respondent1,ccdClaim?.respondent1LiPResponse);
   claim.mediation = toCUIMediation(ccdClaim?.respondent1LiPResponse?.respondent1MediationLiPResponse);
   claim.statementOfMeans = toCUIStatementOfMeans(ccdClaim);
+  claim.claimBilingualLanguagePreference = toCUIClaimBilingualLangPreference(ccdClaim?.respondent1LiPResponse?.respondent1ResponseLanguage);
   claim.directionQuestionnaire = toCUIDQs(ccdClaim);
   return claim;
 };
