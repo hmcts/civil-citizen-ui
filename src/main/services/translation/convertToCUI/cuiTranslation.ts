@@ -8,7 +8,6 @@ import {toCUIStatementOfMeans} from 'services/translation/convertToCUI/convertTo
 import {toCUIClaimBilingualLangPreference} from 'services/translation/convertToCUI/convertToCUIRespondentLiPResponse';
 
 export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
-  console.log('translateCCDCaseDataToCUIModel' + ccdClaim);
   const claim: Claim = Object.assign(new Claim(), ccdClaim);
   claim.claimDetails = toCUIClaimDetails(ccdClaim);
   claim.evidence = toCUIEvidence(ccdClaim?.speclistYourEvidenceList);
