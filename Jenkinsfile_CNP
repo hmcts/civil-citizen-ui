@@ -109,7 +109,9 @@ withPipeline(type, product, component) {
           ./bin/pull-latest-dmn-files.sh ${dmnBranch}
           ./bin/pull-latest-camunda-wa-files.sh ${waStandaloneBranch}
           ./bin/pull-latest-ccd-files.sh ${ccdBranch}
-          ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json,*ClaimantResponseLRspec-nonprod.json,*DocmosisEvents-nonprod.json,*UserEventsLRspec-nonprod.json,*ClaimantResponseLRspec-base-nonprod.json,Categories*.json"
+          ./bin/pull-latest-ccd-files.sh ${ccdBranch}
+          ./bin/pull-latest-ccd-files.sh ${ccdBranch}
+          ./bin/pull-latest-ccd-files.sh ${ccdBranch} ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json,*ClaimantResponseLRspec-nonprod.json,*DocmosisEvents-nonprod.json,*UserEventsLRspec-nonprod.json,*ClaimantResponseLRspec-base-nonprod.json,Categories*.json"
         """
     setUrls("civil-citizen-ui-pr-${CHANGE_ID}")
   }
