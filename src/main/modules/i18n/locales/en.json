@@ -1051,7 +1051,8 @@
         "REQUESTED_MORE_TIME_TO_RESPOND": "You need to respond before 4pm on {{ responseDeadline }}."
       },
       "TITLE": "Your money claims account",
-      "VIEW": "View"
+      "VIEW": "View",
+      "VIEW_CLAIM_NUMBER": "claim number {{ claimNumber }}"
     },
     "DEBTS": {
       "ADD": "Add a debt",
