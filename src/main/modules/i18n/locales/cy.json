@@ -529,6 +529,7 @@
     "CITIZEN_BANK_ACCOUNTS": {
       "ADD_ANOTHER": "Ychwanegu cyfrif arall",
       "BANK_AND_SAVINGS_ACCOUNTS": "Rhestrwch eich cyfrifon banc a chyfrifon cynilo",
+      "BALANCE_IN_POUNDS": "Balance, in pounds",
       "CURRENT_ACCOUNT": "Cyfrif cyfredol",
       "EXAMPLE": "Rhowch minws (-) o flaen y swm os ydych yn eich gorddrafft. Er enghraifft -£804.45.",
       "ISA": "ISA",
@@ -1010,9 +1011,11 @@
     },
     "COURT_ORDERS": {
       "ADD_ANOTHER": "Ychwanegu gorchymyn llys arall",
+      "AMOUNT_YOU_OWE_IN_POUNDS": "Amount you owe, in pounds",
       "CLAIM_NUMBER": "Rhif yr hawliad",
       "COURT_ORDER": "Gorchymyn llys",
       "MONTHLY_INSTALMENT_AMOUNT": "Swm y rhandaliad bob mis",
+      "MONTHLY_INSTALMENT_IN_POUNDS": "Monthly instalment amount, in pounds",
       "OWED_AMOUNT": "Swm sy'n ddyledus gennych",
       "PAGE_TITLE": "Any court orders?",
       "TITLE": "A ydych yn talu arian o ganlyniad i unrhyw orchmynion llys?"
@@ -1054,7 +1057,9 @@
       "ADD": "Ychwanegu dyled",
       "LIST": "Rhestrwch bob benthyciad neu ddyled cerdyn credyd",
       "PAGE_TITLE": "Any debts?",
-      "TITLE": "A oes gennych fenthyciadau neu ddyledion cerdyn credyd?"
+      "MONTHLY_PAYMENTS_IN_POUNDS": "Monthly payments, in pounds",
+      "TITLE": "A oes gennych fenthyciadau neu ddyledion cerdyn credyd?",
+      "TOTAL_OWED_IN_POUNDS": "Total owed, in pounds"
     },
     "DEBT_RESPITE_REF_NUMBER": {
       "ENTER_REFERENCE": "Enter the reference number (optional):",
@@ -1693,6 +1698,7 @@
     "REGULAR_EXPENSES": {
       "ADD_ANOTHER_EXPENSE": "Ychwanegu ffynhonnell arall o wariant",
       "AMOUNT_PAID": "Swm a dalwyd",
+      "AMOUNT_PAID_IN_POUNDS": "Amount paid, in pounds",
       "INCLUDE_ALL_MORTGAGES": "Dylech gynnwys pob morgais",
       "INCLUDE_SEWERAGE_PAYMENTS": "Cynnwys taliadau carthffosiaeth",
       "INFORMATION_NOTE": "Dewiswch bob un sy’n berthnasol. Rhaid i’r wybodaeth rydych yn ei nodi fod yn wir ac yn gywir. Peidiwch â chynnwys unrhyw ad-daliadau ar gyfer ôl-ddyledion.",
@@ -1749,6 +1755,7 @@
       "LENGTH": "Hyd y cynllun ad-dalu",
       "PAGE_TITLE": "Your repayment plan",
       "REGULAR_PAYMENTS": "Taliadau rheolaidd o",
+      "REGULAR_PAYMENTS_IN_POUNDS": "Regular payments of, in pounds",
       "SUBTITLE": "Y cyfanswm a hawlir yw £{{totalAmount}}. Mae hyn yn cynnwys ffi’r hawliad ac unrhyw log.",
       "TITLE": "Eich cynllun ad-dalu"
     },
@@ -1865,11 +1872,13 @@
       "REJECT_CLAIM_PAID_LESS_STATEMENT": "{{ defendant }} said they paid you £{{ paidAmount}}. They said this is all they owe, not the amount you claim."
     },
     "SELF_EMPLOYED": {
+      "ANNUAL_TURNOVER_IN_POUNDS": "Annual Turnover, in pounds",
       "PAGE_TITLE": "Manylion yr hunangyflogaeth",
       "TITLE": "Mewn pa fodd ydych chi’n hunangyflogedig?"
     },
     "SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS": {
       "AMOUNT": "Swm sy'n ddyledus gennych",
+      "AMOUNT_YOU_OWE_IN_POUNDS": "Amount you owe, in pounds",
       "PAGE_TITLE": "Behind on tax payments?",
       "TITLE": "A ydych yn hwyr yn gwneud taliadau treth?",
       "EXAMPLE": "Er enghraifft cyfraniadau Yswiriant Gwladol, Treth Incwm neu TAW."
