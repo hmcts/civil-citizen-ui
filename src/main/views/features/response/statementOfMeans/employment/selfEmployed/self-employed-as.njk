@@ -47,7 +47,10 @@
               {{ govukInput({
               label: {
                 text: t('COMMON.ANNUAL_TURNOVER'),
-                isPageHeading: true
+                isPageHeading: true,
+                attributes: {
+                  'aria-label': t('PAGES.SELF_EMPLOYED.ANNUAL_TURNOVER_IN_POUNDS')
+                }
               },
               id: "annualTurnover",
               name: "annualTurnover",
