@@ -529,6 +529,7 @@
     "CITIZEN_BANK_ACCOUNTS": {
       "ADD_ANOTHER": "Add another account",
       "BANK_AND_SAVINGS_ACCOUNTS": "List your bank and savings accounts",
+      "BALANCE_IN_POUNDS": "Balance, in pounds",
       "CURRENT_ACCOUNT": "Current account",
       "EXAMPLE": "Put a minus (-) in front of the amount if you’re overdrawn. For example £-804.45.",
       "ISA": "ISA",
@@ -723,7 +724,9 @@
       "DOWNLOAD_JUDGMENT_ORDER": "Download the judgment order",
       "DOWNLOAD_RESPONSE": "Download response",
       "LATEST_UPDATE": "Latest update",
-      "VIEW_CLAIM": "View claim"
+      "VIEW_CLAIM": "View claim",
+      "RESPONSE_DEADLINE": "Response deadline:",
+      "TOTAL_CLAIM_AMOUNT":"Total claim amount:"
     },
     "CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS": {
       "PAGE_TITLE": "Check your answers before submitting",
@@ -1008,9 +1011,11 @@
     },
     "COURT_ORDERS": {
       "ADD_ANOTHER": "Add another court order",
+      "AMOUNT_YOU_OWE_IN_POUNDS": "Amount you owe, in pounds",
       "CLAIM_NUMBER": "Claim number",
       "COURT_ORDER": "Court order",
       "MONTHLY_INSTALMENT_AMOUNT": "Monthly instalment amount",
+      "MONTHLY_INSTALMENT_IN_POUNDS": "Monthly instalment amount, in pounds",
       "OWED_AMOUNT": "Amount you owe",
       "PAGE_TITLE": "Any court orders?",
       "TITLE": "Are you paying money as a result of any court orders?"
@@ -1053,7 +1058,9 @@
       "ADD": "Add a debt",
       "LIST": "List each loan or credit card debt",
       "PAGE_TITLE": "Any debts?",
-      "TITLE": "Do you have loans or credit card debts?"
+      "MONTHLY_PAYMENTS_IN_POUNDS": "Monthly payments, in pounds",
+      "TITLE": "Do you have loans or credit card debts?",
+      "TOTAL_OWED_IN_POUNDS": "Total owed, in pounds"
     },
     "DEBT_RESPITE_REF_NUMBER": {
       "ENTER_REFERENCE": "Enter the reference number (optional):",
@@ -1692,6 +1699,7 @@
     "REGULAR_EXPENSES": {
       "ADD_ANOTHER_EXPENSE": "Add another expense",
       "AMOUNT_PAID": "Amount paid",
+      "AMOUNT_PAID_IN_POUNDS": "Amount paid, in pounds",
       "INCLUDE_ALL_MORTGAGES": "Include all mortgages",
       "INCLUDE_SEWERAGE_PAYMENTS": "Include sewerage payments",
       "INFORMATION_NOTE": "Select all that apply. The information you enter must be truthful and accurate. Do not include any arrears repayments.",
@@ -1748,6 +1756,7 @@
       "LENGTH": "Length of repayment plan",
       "PAGE_TITLE": "Your repayment plan",
       "REGULAR_PAYMENTS": "Regular payments of",
+      "REGULAR_PAYMENTS_IN_POUNDS": "Regular payments of, in pounds",
       "SUBTITLE": "The total amount claimed is £{{totalAmount}}. This includes the claim fee and any interest.",
       "TITLE": "Your repayment plan"
     },
@@ -1864,11 +1873,13 @@
       "REJECT_CLAIM_PAID_LESS_STATEMENT": "{{ defendant }} said they paid you £{{ paidAmount}}. They said this is all they owe, not the amount you claim."
     },
     "SELF_EMPLOYED": {
+      "ANNUAL_TURNOVER_IN_POUNDS": "Annual Turnover, in pounds",
       "PAGE_TITLE": "Self employment details",
       "TITLE": "What are you self-employed as?"
     },
     "SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS": {
       "AMOUNT": "Amount you owe",
+      "AMOUNT_YOU_OWE_IN_POUNDS": "Amount you owe, in pounds",
       "PAGE_TITLE": "Behind on tax payments?",
       "TITLE": "Are you behind on tax payments?",
       "EXAMPLE": "For example National Insurance contributions, Income Tax or VAT."
