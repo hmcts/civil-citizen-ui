@@ -68,7 +68,7 @@ export class CivilServiceClient {
       const response = await this.client.get('/cases/claimant/' + submitterId, config);
       return plainToInstance(DashboardClaimantItem, response.data as object[]);
     } catch (err) {
-      logger.error(err);
+      logger.info(err);
     }
   }
 
@@ -79,7 +79,7 @@ export class CivilServiceClient {
       const response = await this.client.get('/cases/defendant/' + submitterId, config);
       return plainToInstance(DashboardDefendantItem, response.data as object[]);
     } catch (err) {
-      logger.error(err);
+      logger.info(err);
     }
   }
 
@@ -94,7 +94,7 @@ export class CivilServiceClient {
           return new CivilClaimResponse(claim.id, caseData);
         });
       }).catch(error => {
-        logger.error(error.message);
+        logger.info(error.message);
       });
     return claims;
   }
@@ -109,7 +109,7 @@ export class CivilServiceClient {
       const caseDetails: CivilClaimResponse = response.data;
       return convertCaseToClaim(caseDetails);
     } catch (err: unknown) {
-      logger.error(err);
+      logger.info(err);
     }
   }
 
@@ -119,7 +119,7 @@ export class CivilServiceClient {
       const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_FEES_RANGES, config);
       return new FeeRanges(plainToInstance(FeeRange, response.data as object[]));
     } catch (err: unknown) {
-      logger.error(err);
+      logger.info(err);
       throw err;
     }
   }
@@ -130,7 +130,7 @@ export class CivilServiceClient {
       const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_HEARING_URL}/${amount}`, config);
       return response.data;
     } catch (err: unknown) {
-      logger.error(err);
+      logger.info(err);
       throw err;
     }
   }
@@ -142,7 +142,7 @@ export class CivilServiceClient {
       const claimFeeResponse: ClaimFeeData = response.data;
       return convertToPoundsFilter(claimFeeResponse?.calculatedAmountInPence.toString());
     } catch (err: unknown) {
-      logger.error(err);
+      logger.info(err);
       throw err;
     }
   }
@@ -158,7 +158,7 @@ export class CivilServiceClient {
       return convertCaseToClaim(caseDetails);
 
     } catch (err: unknown) {
-      logger.error(err);
+      logger.info(err);
       throw err;
     }
   }
@@ -171,7 +171,7 @@ export class CivilServiceClient {
       }
       return response.data as Buffer;
     } catch (err: unknown) {
-      logger.error(err);
+      logger.info(err);
       throw err;
     }
   }
@@ -203,7 +203,7 @@ export class CivilServiceClient {
       const claimResponse = response.data as CivilClaimResponse;
       return translateCCDCaseDataToCUIModel(claimResponse.case_data);
     } catch (err: unknown) {
-      logger.error(err);
+      logger.info(err);
       throw err;
     }
   }
@@ -214,7 +214,7 @@ export class CivilServiceClient {
       const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_CALCULATE_DEADLINE, extendedDeadline, config);
       return response.data as Date;
     } catch (err: unknown) {
-      logger.error(err);
+      logger.info(err);
       throw err;
     }
   }
@@ -225,7 +225,7 @@ export class CivilServiceClient {
       const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_COURT_LOCATIONS, config);
       return plainToInstance(CourtLocation, response.data as object[]);
     } catch (error: unknown) {
-      logger.error(error);
+      logger.info(error);
       throw error;
     }
   }
@@ -235,7 +235,7 @@ export class CivilServiceClient {
       await this.client.post(ASSIGN_CLAIM_TO_DEFENDANT.replace(':claimId', claimId),{}, // nosonar
         {headers: {'Authorization': `Bearer ${req.session?.user?.accessToken}`}}); // nosonar
     } catch (error: unknown) {
-      logger.error(error);
+      logger.info(error);
       throw error;
     }
   }
