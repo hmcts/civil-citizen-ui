@@ -724,7 +724,9 @@
       "DOWNLOAD_JUDGMENT_ORDER": "Download the judgment order",
       "DOWNLOAD_RESPONSE": "Download response",
       "LATEST_UPDATE": "Latest update",
-      "VIEW_CLAIM": "View claim"
+      "VIEW_CLAIM": "View claim",
+      "RESPONSE_DEADLINE": "Response deadline:",
+      "TOTAL_CLAIM_AMOUNT":"Total claim amount:"
     },
     "CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS": {
       "PAGE_TITLE": "Check your answers before submitting",
