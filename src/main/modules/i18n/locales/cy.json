@@ -1052,7 +1052,8 @@
         "REQUESTED_MORE_TIME_TO_RESPOND": "You need to respond before 4pm on {{ responseDeadline }}."
       },
       "TITLE": "Eich cyfrif hawliadau am arian",
-      "VIEW": "Weiv"
+      "VIEW": "Weiv",
+      "VIEW_CLAIM_NUMBER": "claim number {{ claimNumber }}"
     },
     "DEBTS": {
       "ADD": "Ychwanegu dyled",
