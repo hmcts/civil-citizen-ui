@@ -1,5 +1,3 @@
-import {GenericYesNo} from 'form/models/genericYesNo';
-
 export enum YesNo {
   YES = 'yes',
   NO = 'no'
@@ -17,6 +15,3 @@ export enum YesNoUpperCamelCase {
   YES = 'Yes',
   NO = 'No',
 }
-export const toUpperCaseGenericYesNo = (yesNo: GenericYesNo): YesNoUpperCamelCase => {
-  return yesNo?.option.toLowerCase() ===  'yes' ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO;
-};

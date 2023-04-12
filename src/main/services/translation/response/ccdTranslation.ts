@@ -1,6 +1,6 @@
 import {Claim} from 'models/claim';
 import {CCDResponse} from 'models/ccdResponse/ccdResponse';
-import {toUpperCaseGenericYesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {toAgreedMediation} from './convertToCCDAgreedMediation';
 import {toCCDParty} from './convertToCCDParty';
 import {toCCDRejectAllOfClaimType} from './convertToCCDRejectAllOfClaimType';
@@ -52,7 +52,7 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     respondent1: toCCDParty(claim.respondent1),
     respondent1LiPResponse: toCCDRespondentLiPResponse(claim),
     respondToAdmittedClaim: toCCDRespondToClaim(claim.partialAdmission?.howMuchHaveYouPaid),
-    specDefenceAdmittedRequired: toUpperCaseGenericYesNo(claim.partialAdmission?.alreadyPaid),
+    specDefenceAdmittedRequired: toCCDYesNoFromGenericYesNo(claim.partialAdmission?.alreadyPaid),
     respondToAdmittedClaimOwingAmount: claim.partialAdmission?.howMuchDoYouOwe?.amount?.toString(),
     detailsOfWhyDoesYouDisputeTheClaim: claim.detailsOfWhyYouDisputeTheClaim(),
     specClaimResponseTimelineList: TimelineUploadTypeSpec.MANUAL, // sets to manual cause CUI do not have other option
