@@ -24,6 +24,18 @@ const setUpUndefinedDQExtraDetails = () : CCDDQExtraDetails => {
     whyPhoneOrVideoHearing: '',
     whyUnavailableForHearing: undefined,
     giveEvidenceYourSelf: undefined,
+    triedToSettle: undefined,
+    determinationWithoutHearingRequired: undefined,
+    determinationWithoutHearingReason: '',
+    requestExtra4weeks: undefined,
+    considerClaimantDocuments: undefined,
+    considerClaimantDocumentsDetails: '',
+    respondent1DQLiPExpert: {
+      expertCanStillExamine: undefined,
+      expertCanStillExamineDetails: '',
+      expertReportRequired: undefined,
+      reportDetails: undefined,
+    },
   };
 };
 
@@ -70,11 +82,11 @@ describe('translate cui fields to CCD model', () => {
     expect(output).toEqual(expected);
   });
 
-  it('should return value if provideCorrespondenceAddress is yes and have data', () => {
+  it('should return value if postToThisAddress is yes and have data', () => {
     //Given
     const input = setUPEmptyRespondent();
     input.respondent1.partyDetails.contactPerson = 'Example contactPerson';
-    input.respondent1.partyDetails.provideCorrespondenceAddress = 'yes';
+    input.respondent1.partyDetails.postToThisAddress = 'yes';
     input.respondent1.partyDetails.correspondenceAddress = new Address('line 1', 'line 2', 'line 3', 'london', 'SW1A 2AA' );
 
     const expected : CCDRespondentLiPResponse = {
@@ -91,11 +103,11 @@ describe('translate cui fields to CCD model', () => {
     expect(output).toEqual(expected);
   });
 
-  it('should return only contact person if provideCorrespondenceAddress is no ', () => {
+  it('should return only contact person if postToThisAddress is no ', () => {
     //Given
     const input = setUPEmptyRespondent();
     input.respondent1.partyDetails.contactPerson = 'Example contactPerson';
-    input.respondent1.partyDetails.provideCorrespondenceAddress = 'no';
+    input.respondent1.partyDetails.postToThisAddress = 'no';
 
     const expected : CCDRespondentLiPResponse = {
       respondent1LiPFinancialDetails: setUpUndefinedFinancialDetails(),
@@ -110,10 +122,10 @@ describe('translate cui fields to CCD model', () => {
     expect(output).toEqual(expected);
   });
 
-  it('should return only correspondenceAddress if provideCorrespondenceAddress is yes and contactPerson undefined ', () => {
+  it('should return only correspondenceAddress if postToThisAddress is yes and contactPerson undefined ', () => {
     //Given
     const input = setUPEmptyRespondent();
-    input.respondent1.partyDetails.provideCorrespondenceAddress = 'yes';
+    input.respondent1.partyDetails.postToThisAddress = 'yes';
     input.respondent1.partyDetails.correspondenceAddress = new Address('line 1', 'line 2', 'line 3', 'london', 'SW1A 2AA' );
 
     const expected : CCDRespondentLiPResponse = {
