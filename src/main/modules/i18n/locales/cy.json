@@ -139,7 +139,7 @@
     },
     "HELP_WITH_INTEREST_RATES": {
       "THE_COURT_WILL_DECIDE": "The court will decide if you're entitled to some or all of the interest claimed.",
-      "TITLE": "Help with interest rates",
+      "TITLE": "Cymorth gyda chyfraddau llog",
       "YOU_CAN_CLAIM": "You can claim 8% interest on money owed to you. This is the statutory rate. If you know that a different rate applies you can use that. For example if you have a contract with a specific rate"
     },
     "INPUT_LABELS": {
@@ -606,48 +606,48 @@
       "RESPONSE_MEANING": "Canfod beth mae pob ymateb yn ei olygu"
     },
     "CLAIM_AMOUNT_BREAKDOWN": {
-      "ADD_ANOTHER_ROW": "Add another row",
-      "AMOUNT": "Amount",
-      "CLAIM_FEE": "your claim fee - we’ll add this for you",
-      "DONT_INCLUDE": "Don’t include:",
-      "DESCRIPTION": "Your claim could be for a single amount or made up of multiple items.",
-      "HINT": "Briefly explain each item - for example, \"broken tiles\", \"roof damage\"",
-      "INTEREST": "interest - we’ll ask you about this next",
-      "REASON": "What you’re claiming for",
-      "TITLE": "Claim amount"
+      "ADD_ANOTHER_ROW": "Ychwanegu rhes arall",
+      "AMOUNT": "Swm",
+      "CLAIM_FEE": "eich ffi hawliad - byddwn yn ychwanegu hyn i chi",
+      "DONT_INCLUDE": "Peidiwch â chynnwys:",
+      "DESCRIPTION": "Gallai eich hawliad fod am un swm neu'n cynnwys nifer o eitemau.",
+      "HINT": "Esboniwch bob eitem yn fyr - er enghraifft, \"teils wedi torri\", \"difrod to\"",
+      "INTEREST": "llog - byddwn yn gofyn i chi am hyn nesaf",
+      "REASON": "Yr hyn rydych chi'n ei hawlio amdano",
+      "TITLE": "Hawlio swm"
     },
     "CLAIM_DETAILS": {
-      "AMOUNT": "Amount",
-      "AMOUNT_BREAKDOWN": "Amount breakdown",
-      "CLAIM_FEE": "Claim fee",
+      "AMOUNT": "Swm",
+      "AMOUNT_BREAKDOWN": "Dadansoddiad o’r swm",
+      "CLAIM_FEE": "Ffi hawliad",
       "CLAIM_NUMBER": "Rhif yr hawliad",
-      "CLAIM_TOTAL": "Claim Total",
-      "DOWNLOAD_AND_VIEW_TIMELINE": "Download and view timeline",
-      "DOWNLOAD_CLAIM": "Download claim (PDF)",
+      "CLAIM_TOTAL": "Cyfanswm yr hawliad",
+      "DOWNLOAD_AND_VIEW_TIMELINE": "Lawrlwytho a gweld llinell amser",
+      "DOWNLOAD_CLAIM": "Lawrlwytho'r hawliad (PDF)",
       "HEADER": "Manylion yr hawliad",
-      "INTEREST": "Interest",
-      "INTEREST_SNIPPET": "Interest calculated at {{ rate }}% for {{ numberOfDays }} days ({{ interestDate }} to {{ interestToDate }})",
+      "INTEREST": "Llog",
+      "INTEREST_SNIPPET": "Llog wedi ei gyfrifo ar {{ rate }}% am  {{ numberOfDays }} diwrnod ({{ interestDate }} tan {{ interestToDate }})",
       "PAGE_TITLE": "Manylion yr hawliad",
-      "REASON_FOR_CLAIM": "Reason for claim",
-      "TIMELINE": "Timeline",
-      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown"
+      "REASON_FOR_CLAIM": "Rheswm dros yr hawliad",
+      "TIMELINE": "Amserlen",
+      "VIEW_AMOUNT_BREAKDOWN": "Gweld dadansoddiad o’r swm"
     },
     "CLAIM_JOURNEY": {
       "CLAIM_INTEREST": {
-        "PAGE_TITLE": "Do you want to claim interest?",
-        "TITLE": "Do you want to claim interest?",
-        "YOU_CAN_CLAIM_INTEREST": "You can claim interest on the money you say you're owed. The court will decide if you're entitled to it."
+        "PAGE_TITLE": "Ydych chi eisiau hawlio llog?",
+        "TITLE": "Ydych chi eisiau hawlio llog?",
+        "YOU_CAN_CLAIM_INTEREST": "Gallwch hawlio llog am yr arian rydych yn ei ddweud sy'n ddyledus i chi. Bydd y llys yn penderfynu a oes gennych hawl iddo."
       },
       "CLAIMANT_INDIVIDUAL_DETAILS": {
-        "PAGE_TITLE": "Enter your details",
-        "THESE_DETAILS_ARE": "These details are shared with the person, business or organisation you are claiming from (the defendant).",
-        "TITLE": "Enter your details",
-        "TRADING": "Trading (optional)",
-        "YOUR_POSTAL_ADDRESS": "Your postal address"
+        "PAGE_TITLE": "Rhowch eich manylion",
+        "THESE_DETAILS_ARE": "Bydd y manylion hyn yn cael eu rhannu gyda'r unigolyn, y busnes neu'r sefydliad yr ydych yn ei hawlio yn ei erbyn (y diffynnydd).",
+        "TITLE": "Rhowch eich manylion",
+        "TRADING": "Masnachu (dewisol)",
+        "YOUR_POSTAL_ADDRESS": "Eich cyfeiriad ar gyfer postio"
       },
       "CONTINUE_CLAIMING_INTEREST": {
-        "PAGE_TITLE": "Continue claiming interest",
-        "TITLE": "Continue to claim interest after you submit your claim?"
+        "PAGE_TITLE": "Parhau i hawlio llog",
+        "TITLE": "Parhau i hawlio llog ar ôl i chi gyflwyno eich cais?"
       },
       "DEFENDANT_EMAIL": {
         "PAGE_TITLE": "Their email address (optional)",
@@ -2252,8 +2252,8 @@
     "ENTER_EXPERT_DETAILS": "Nodwch fanylion yr arbenigwr",
     "ENTER_WHY_NEED_EXPERT": "Dywedwch wrthym pam ydych chi angen yr arbenigwr hwn",
     "ENTER_EXPERT_FIELD": "Nodwch faes arbenigedd yr arbenigwr",
-    "ENTER_FIRST_NAME": "Enter first name",
-    "ENTER_LAST_NAME": "Enter last name",
+    "ENTER_FIRST_NAME": "Rhowch enw cyntaf",
+    "ENTER_LAST_NAME": "Rhowch enw olaf",
     "ENTER_PERSON_NAME": "Nodwch enw’r unigolyn sydd angen cymorth",
     "ENTER_PAYMENT_EXPLANATION": "Rhowch eglurhad o sut y gwnaethoch dalu",
     "ENTER_DATES_FOR_UNAVAILABILITY": "Rhowch y dyddiadau nad yw ar gael",
@@ -2480,7 +2480,7 @@
     "VALID_CHOOSE": "Choose your response",
     "VALID_CITY": "Rhowch enw tref/dinas dilys",
     "VALID_CITY_CORRESPONDENCE": "Rhowch enw tref/dinas ar gyfer gohebiaeth",
-    "VALID_CLAIM_AMOUNT": "Enter an amount of money",
+    "VALID_CLAIM_AMOUNT": "Nodwch swm o arian",
     "VALID_CLAIM_INTEREST_FROM": "Choose when to claim interest from",
     "VALID_CLAIM_INTEREST_END_DATE": "Choose when you want to stop claiming interest",
     "VALID_CLAIM_NUMBER": "Enter a claim number",
