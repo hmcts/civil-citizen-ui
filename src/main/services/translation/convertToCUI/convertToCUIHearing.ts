@@ -5,6 +5,9 @@ import {CCDSpecificCourtLocations} from 'models/ccdResponse/ccdSpecificCourtLoca
 import {toCUIGenericYesNo, toCUIYesNo} from 'services/translation/convertToCUI/convertToCUIYesNo';
 import {UnavailableDatePeriod, UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavailableDates';
 import {CCDUnavailableDates, CCDUnavailableDateType} from 'models/ccdResponse/ccdSmallClaimHearing';
+import {YesNo} from "form/models/yesNo";
+import {Support, SupportRequired} from "models/directionsQuestionnaire/supportRequired";
+import {CCDSupportRequirement, CCDSupportRequirements} from "models/ccdResponse/ccdHearingSupport";
 
 export const toCUIHearing = (ccdClaim: CCDClaim) : Hearing => {
   if(ccdClaim){
@@ -14,9 +17,26 @@ export const toCUIHearing = (ccdClaim: CCDClaim) : Hearing => {
       hearing.unavailableDatesForHearing.items = toCUIUnavailableDates(ccdClaim.respondent1DQHearingSmallClaim.smallClaimUnavailableDate);
       hearing.cantAttendHearingInNext12Months = toCUIGenericYesNo(ccdClaim.respondent1DQHearingSmallClaim.unavailableDatesRequired);
     }
-    if(ccdClaim.respondent1DQHearingSmallClaim){
+    if(ccdClaim.respondent1DQHearingFastClaim){
       hearing.unavailableDatesForHearing.items = toCUIUnavailableDates(ccdClaim.respondent1DQHearingFastClaim.unavailableDates);
       hearing.cantAttendHearingInNext12Months = toCUIGenericYesNo(ccdClaim.respondent1DQHearingFastClaim.unavailableDatesRequired);
+    }
+    if (ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.whyUnavailableForHearing) {
+      hearing.whyUnavailableForHearing = {
+        reason: (ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.whyUnavailableForHearing)
+      }
+    }
+    if (ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.wantPhoneOrVideoHearing) {
+      hearing.phoneOrVideoHearing = {
+        option: toCUIYesNo(ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.wantPhoneOrVideoHearing),
+        details: ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.whyPhoneOrVideoHearing
+      }
+    }
+    if (ccdClaim.respondent1LiPResponse?.respondent1DQHearingSupportLip) {
+      hearing.supportRequiredList = {
+        option: toCUIYesNo(ccdClaim.respondent1LiPResponse?.respondent1DQHearingSupportLip?.supportRequirementLip),
+        items: toCUISupportItems(ccdClaim.respondent1LiPResponse?.respondent1DQHearingSupportLip?.requirementsLip)
+      }
     }
     return hearing;
   }
@@ -47,3 +67,40 @@ function toCUIUnavailableDateType(type: CCDUnavailableDateType) : UnavailableDat
       return undefined;
   }
 }
+
+function toCUISupportItems(ccdSupportItems : CCDSupportRequirements[]) : SupportRequired[] {
+  if (ccdSupportItems?.length) {
+    return ccdSupportItems.map((ccdSupportItem: CCDSupportRequirements) => {
+      return {
+        fullName: ccdSupportItem.value?.name,
+        disabledAccess: toCUISupportDetails(ccdSupportItem.value?.requirements, CCDSupportRequirement.DISABLED_ACCESS, CUISourceName.DISABLED_ACCESS, undefined),
+        hearingLoop: toCUISupportDetails(ccdSupportItem.value?.requirements, CCDSupportRequirement.HEARING_LOOPS, CUISourceName.HEARING_LOOPS, undefined),
+        signLanguageInterpreter: toCUISupportDetails(ccdSupportItem.value?.requirements, CCDSupportRequirement.SIGN_INTERPRETER, CUISourceName.SIGN_INTERPRETER, ccdSupportItem.value?.signLanguageRequired),
+        languageInterpreter: toCUISupportDetails(ccdSupportItem.value?.requirements, CCDSupportRequirement.LANGUAGE_INTERPRETER, CUISourceName.LANGUAGE_INTERPRETER, ccdSupportItem.value?.languageToBeInterpreted),
+        otherSupport: toCUISupportDetails(ccdSupportItem.value?.requirements, CCDSupportRequirement.OTHER_SUPPORT, CUISourceName.OTHER_SUPPORT, ccdSupportItem.value?.otherSupport),
+        declared: YesNo.YES
+      };
+    });
+  }
+  return
+}
+
+function toCUISupportDetails(ccdSupportRequirementItems : CCDSupportRequirement[], ccdSupportName : CCDSupportRequirement, cuiSourceName: string,  content: string) : Support {
+  if (ccdSupportRequirementItems.includes(ccdSupportName)) {
+    return {
+      sourceName: cuiSourceName,
+      selected: true,
+      content: content
+    }
+  }
+  return
+}
+
+enum CUISourceName{
+  DISABLED_ACCESS =  'disabledAccess',
+  HEARING_LOOPS = 'hearingLoop',
+  SIGN_INTERPRETER = 'signLanguageInterpreter',
+  LANGUAGE_INTERPRETER = 'languageInterpreter',
+  OTHER_SUPPORT = 'otherSupport',
+}
+
