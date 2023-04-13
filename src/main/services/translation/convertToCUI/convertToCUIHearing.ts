@@ -5,38 +5,43 @@ import {CCDSpecificCourtLocations} from 'models/ccdResponse/ccdSpecificCourtLoca
 import {toCUIGenericYesNo, toCUIYesNo} from 'services/translation/convertToCUI/convertToCUIYesNo';
 import {UnavailableDatePeriod, UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavailableDates';
 import {CCDUnavailableDates, CCDUnavailableDateType} from 'models/ccdResponse/ccdSmallClaimHearing';
-import {YesNo} from "form/models/yesNo";
-import {Support, SupportRequired} from "models/directionsQuestionnaire/supportRequired";
-import {CCDSupportRequirement, CCDSupportRequirements} from "models/ccdResponse/ccdHearingSupport";
+import {Support, SupportRequired} from 'models/directionsQuestionnaire/supportRequired';
+import {CCDSupportRequirement, CCDSupportRequirements} from 'models/ccdResponse/ccdHearingSupport';
 
 export const toCUIHearing = (ccdClaim: CCDClaim) : Hearing => {
   if(ccdClaim){
     const hearing: Hearing = new Hearing();
-    hearing.specificCourtLocation = toCUISpecificCourtLocation(ccdClaim.respondent1DQRequestedCourt);
-    if(ccdClaim.respondent1DQHearingSmallClaim){
-      hearing.unavailableDatesForHearing.items = toCUIUnavailableDates(ccdClaim.respondent1DQHearingSmallClaim.smallClaimUnavailableDate);
+    if (ccdClaim.respondent1DQRequestedCourt) {
+      hearing.specificCourtLocation = toCUISpecificCourtLocation(ccdClaim.respondent1DQRequestedCourt);
+    }
+    if (ccdClaim.respondent1DQHearingSmallClaim) {
+      hearing.unavailableDatesForHearing = {
+        items : toCUIUnavailableDates(ccdClaim.respondent1DQHearingSmallClaim.smallClaimUnavailableDate),
+      };
       hearing.cantAttendHearingInNext12Months = toCUIGenericYesNo(ccdClaim.respondent1DQHearingSmallClaim.unavailableDatesRequired);
     }
-    if(ccdClaim.respondent1DQHearingFastClaim){
-      hearing.unavailableDatesForHearing.items = toCUIUnavailableDates(ccdClaim.respondent1DQHearingFastClaim.unavailableDates);
+    if(ccdClaim.respondent1DQHearingFastClaim) {
+      hearing.unavailableDatesForHearing = {
+        items : toCUIUnavailableDates(ccdClaim.respondent1DQHearingFastClaim.unavailableDates),
+      };
       hearing.cantAttendHearingInNext12Months = toCUIGenericYesNo(ccdClaim.respondent1DQHearingFastClaim.unavailableDatesRequired);
     }
     if (ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.whyUnavailableForHearing) {
       hearing.whyUnavailableForHearing = {
-        reason: (ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.whyUnavailableForHearing)
-      }
+        reason: (ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.whyUnavailableForHearing),
+      };
     }
     if (ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.wantPhoneOrVideoHearing) {
       hearing.phoneOrVideoHearing = {
         option: toCUIYesNo(ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.wantPhoneOrVideoHearing),
-        details: ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.whyPhoneOrVideoHearing
-      }
+        details: ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.whyPhoneOrVideoHearing,
+      };
     }
     if (ccdClaim.respondent1LiPResponse?.respondent1DQHearingSupportLip) {
       hearing.supportRequiredList = {
         option: toCUIYesNo(ccdClaim.respondent1LiPResponse?.respondent1DQHearingSupportLip?.supportRequirementLip),
-        items: toCUISupportItems(ccdClaim.respondent1LiPResponse?.respondent1DQHearingSupportLip?.requirementsLip)
-      }
+        items: toCUISupportItems(ccdClaim.respondent1LiPResponse?.respondent1DQHearingSupportLip?.requirementsLip),
+      };
     }
     return hearing;
   }
@@ -57,7 +62,7 @@ function toCUIUnavailableDates(ccdUnavailableDates: CCDUnavailableDates[]) : Una
   });
 }
 
-function toCUIUnavailableDateType(type: CCDUnavailableDateType) : UnavailableDateType{
+function toCUIUnavailableDateType(type: CCDUnavailableDateType) : UnavailableDateType {
   switch(type) {
     case CCDUnavailableDateType.SINGLE_DATE:
       return UnavailableDateType.SINGLE_DATE;
@@ -78,11 +83,11 @@ function toCUISupportItems(ccdSupportItems : CCDSupportRequirements[]) : Support
         signLanguageInterpreter: toCUISupportDetails(ccdSupportItem.value?.requirements, CCDSupportRequirement.SIGN_INTERPRETER, CUISourceName.SIGN_INTERPRETER, ccdSupportItem.value?.signLanguageRequired),
         languageInterpreter: toCUISupportDetails(ccdSupportItem.value?.requirements, CCDSupportRequirement.LANGUAGE_INTERPRETER, CUISourceName.LANGUAGE_INTERPRETER, ccdSupportItem.value?.languageToBeInterpreted),
         otherSupport: toCUISupportDetails(ccdSupportItem.value?.requirements, CCDSupportRequirement.OTHER_SUPPORT, CUISourceName.OTHER_SUPPORT, ccdSupportItem.value?.otherSupport),
-        declared: YesNo.YES
+        checkboxGrp: toCUISupportCheckBox(ccdSupportItem.value?.requirements),
       };
     });
   }
-  return
+  return;
 }
 
 function toCUISupportDetails(ccdSupportRequirementItems : CCDSupportRequirement[], ccdSupportName : CCDSupportRequirement, cuiSourceName: string,  content: string) : Support {
@@ -90,10 +95,30 @@ function toCUISupportDetails(ccdSupportRequirementItems : CCDSupportRequirement[
     return {
       sourceName: cuiSourceName,
       selected: true,
-      content: content
-    }
+      content: content,
+    };
   }
-  return
+  return;
+}
+
+function toCUISupportCheckBox(ccdSupportRequirementItems : CCDSupportRequirement[]) : boolean[] {
+  const chkBoxList : boolean[] = [null, null, null, null, null];
+  if (ccdSupportRequirementItems.includes(CCDSupportRequirement.DISABLED_ACCESS)) {
+    chkBoxList[0] = true;
+  }
+  if (ccdSupportRequirementItems.includes(CCDSupportRequirement.HEARING_LOOPS)) {
+    chkBoxList[1] = true;
+  }
+  if (ccdSupportRequirementItems.includes(CCDSupportRequirement.SIGN_INTERPRETER)) {
+    chkBoxList[2] = true;
+  }
+  if (ccdSupportRequirementItems.includes(CCDSupportRequirement.LANGUAGE_INTERPRETER)) {
+    chkBoxList[3] = true;
+  }
+  if (ccdSupportRequirementItems.includes(CCDSupportRequirement.OTHER_SUPPORT)) {
+    chkBoxList[4] = true;
+  }
+  return chkBoxList;
 }
 
 enum CUISourceName{

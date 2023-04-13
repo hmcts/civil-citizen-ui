@@ -4,8 +4,8 @@ import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQu
 import {toCUIWelshLanguageRequirements} from 'services/translation/convertToCUI/convertToCUIWelshLanguageRequirements';
 import {toCUIVulnerability} from 'services/translation/convertToCUI/convertToCUIVulnerability';
 import {toCUIHearing} from 'services/translation/convertToCUI/convertToCUIHearing';
-import {toCUIWitnesses} from "services/translation/convertToCUI/convertToCUIWitnesses";
-import {toCUIGenericYesNo} from "services/translation/convertToCUI/convertToCUIYesNo";
+import {toCUIWitnesses} from 'services/translation/convertToCUI/convertToCUIWitnesses';
+import {toCUIGenericYesNo} from 'services/translation/convertToCUI/convertToCUIYesNo';
 
 export const toCUIDQs = (ccdClaim: CCDClaim): DirectionQuestionnaire => {
   if (ccdClaim){
