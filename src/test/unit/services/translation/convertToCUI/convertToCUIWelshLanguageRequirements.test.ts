@@ -1,7 +1,7 @@
-import {toCUIWelshLanguageRequirements} from "services/translation/convertToCUI/convertToCUIWelshLanguageRequirements";
-import {CCDLanguage, CCDWelshLanguageRequirements} from "models/ccdResponse/ccdWelshLanguageRequirements";
-import {WelshLanguageRequirements} from "models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements";
-import {LanguageOptions} from "models/directionsQuestionnaire/languageOptions";
+import {toCUIWelshLanguageRequirements} from 'services/translation/convertToCUI/convertToCUIWelshLanguageRequirements';
+import {CCDLanguage, CCDWelshLanguageRequirements} from 'models/ccdResponse/ccdWelshLanguageRequirements';
+import {WelshLanguageRequirements} from 'models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
+import {LanguageOptions} from 'models/directionsQuestionnaire/languageOptions';
 
 describe('translate CCDWelshLanguage to CUI Welsh Language model', () => {
   it('should return undefined if CCDWelshLanguage doesnt exist', () => {
@@ -26,8 +26,8 @@ describe('translate CCDWelshLanguage to CUI Welsh Language model', () => {
       language: {
         speakLanguage: undefined,
         documentsLanguage: undefined,
-      }
-    }
+      },
+    };
     //Then
     expect(output).toEqual(expected);
   });
@@ -45,8 +45,8 @@ describe('translate CCDWelshLanguage to CUI Welsh Language model', () => {
       language: {
         speakLanguage: LanguageOptions.WELSH,
         documentsLanguage: LanguageOptions.WELSH,
-      }
-    }
+      },
+    };
     //Then
     expect(output).toEqual(expected);
   });
@@ -64,8 +64,8 @@ describe('translate CCDWelshLanguage to CUI Welsh Language model', () => {
       language: {
         speakLanguage: LanguageOptions.ENGLISH,
         documentsLanguage: LanguageOptions.ENGLISH,
-      }
-    }
+      },
+    };
     //Then
     expect(output).toEqual(expected);
   });
@@ -83,8 +83,8 @@ describe('translate CCDWelshLanguage to CUI Welsh Language model', () => {
       language: {
         speakLanguage: LanguageOptions.WELSH_AND_ENGLISH,
         documentsLanguage: LanguageOptions.WELSH_AND_ENGLISH,
-      }
-    }
+      },
+    };
     //Then
     expect(output).toEqual(expected);
   });

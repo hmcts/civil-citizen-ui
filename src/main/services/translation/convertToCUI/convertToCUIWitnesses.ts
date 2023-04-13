@@ -1,7 +1,7 @@
 import {Witnesses} from 'models/directionsQuestionnaire/witnesses/witnesses';
 import {CCDWitnessDetails, CCDWitnesses} from 'models/ccdResponse/ccdWitnesses';
 import {OtherWitnesses} from 'models/directionsQuestionnaire/witnesses/otherWitnesses';
-import {toCUIYesNo} from "services/translation/convertToCUI/convertToCUIYesNo";
+import {toCUIYesNo} from 'services/translation/convertToCUI/convertToCUIYesNo';
 
 export const toCUIWitnesses = (ccdWitnesses: CCDWitnesses) : Witnesses => {
   if (ccdWitnesses?.witnessesToAppear && ccdWitnesses?.details) {

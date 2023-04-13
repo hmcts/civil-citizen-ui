@@ -1,7 +1,7 @@
-import {CCDWitnesses} from "models/ccdResponse/ccdWitnesses";
-import {toCUIWitnesses} from "services/translation/convertToCUI/convertToCUIWitnesses";
-import {YesNo, YesNoUpperCamelCase} from "form/models/yesNo";
-import {Witnesses} from "models/directionsQuestionnaire/witnesses/witnesses";
+import {CCDWitnesses} from 'models/ccdResponse/ccdWitnesses';
+import {toCUIWitnesses} from 'services/translation/convertToCUI/convertToCUIWitnesses';
+import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
+import {Witnesses} from 'models/directionsQuestionnaire/witnesses/witnesses';
 
 describe('translate CCDWitnesses to CUI Witnesses model', () => {
   it('should return undefined if CCDWitnesses doesnt exist', () => {
@@ -16,7 +16,7 @@ describe('translate CCDWitnesses to CUI Witnesses model', () => {
   it('should return undefined if witness appear is undefined', () => {
     //Given
     const input: CCDWitnesses  = {
-      witnessesToAppear: undefined
+      witnessesToAppear: undefined,
     };
     //When
     const output = toCUIWitnesses(input);
@@ -28,7 +28,7 @@ describe('translate CCDWitnesses to CUI Witnesses model', () => {
     //Given
     const input: CCDWitnesses  = {
       witnessesToAppear: YesNoUpperCamelCase.NO,
-      details: undefined
+      details: undefined,
     };
     //When
     const output = toCUIWitnesses(input);
@@ -40,16 +40,16 @@ describe('translate CCDWitnesses to CUI Witnesses model', () => {
     //Given
     const input: CCDWitnesses = {
       witnessesToAppear: YesNoUpperCamelCase.NO,
-      details: []
+      details: [],
     };
     //When
     const output = toCUIWitnesses(input);
     const expected : Witnesses = {
       otherWitnesses: {
         option: YesNo.NO,
-        witnessItems: []
-      }
-    }
+        witnessItems: [],
+      },
+    };
     //Then
     expect(output).toEqual(expected);
   });
@@ -60,9 +60,9 @@ describe('translate CCDWitnesses to CUI Witnesses model', () => {
       witnessesToAppear: YesNoUpperCamelCase.NO,
       details: [
         {
-          value: undefined
-        }
-      ]
+          value: undefined,
+        },
+      ],
     };
     //When
     const output = toCUIWitnesses(input);
@@ -76,10 +76,10 @@ describe('translate CCDWitnesses to CUI Witnesses model', () => {
             email: undefined,
             telephone: undefined,
             details: undefined,
-          }
-        ]
-      }
-    }
+          },
+        ],
+      },
+    };
     //Then
     expect(output).toEqual(expected);
   });
@@ -97,9 +97,9 @@ describe('translate CCDWitnesses to CUI Witnesses model', () => {
             emailAddress: 'email',
             phoneNumber: '012345678',
             reasonForWitness: 'test',
-          }
-        }
-      ]
+          },
+        },
+      ],
     };
     //When
     const output = toCUIWitnesses(input);
@@ -113,10 +113,10 @@ describe('translate CCDWitnesses to CUI Witnesses model', () => {
             email: 'email',
             telephone: '012345678',
             details: 'test',
-          }
-        ]
-      }
-    }
+          },
+        ],
+      },
+    };
     //Then
     expect(output).toEqual(expected);
   });
