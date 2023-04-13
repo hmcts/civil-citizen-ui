@@ -48,14 +48,14 @@
         {% set debt = 'debtsItems['+index+'][debt]' %}
         {% set totalOwned = 'debtsItems['+index+'][totalOwned]' %}
         {% set monthlyPayments = 'debtsItems['+index+'][monthlyPayments]' %}
-        {% set label = 'debtsItems[' + index + ']' %}
+        {% set commonLabel = t('COMMON.DEBT') + ' ' + (index+1) + ' ' %}
         <div class="govuk-grid-column-one-half ">
           {{ govukInput({
               id: debt,
               name: debt,
               value: debtsItem.debt,
               label: {
-                text: t('PAGES.DEBTS.LIST'),
+                text: commonLabel + t('PAGES.DEBTS.LIST'),
                 classes: 'govuk-visually-hidden'
               },
               spellcheck: false,
@@ -72,7 +72,7 @@
                 text: "£"
               },
               label: {
-                text: t('PAGES.DEBTS.TOTAL_OWED_IN_POUNDS'),
+                text: commonLabel + t('PAGES.DEBTS.TOTAL_OWED_IN_POUNDS'),
                 classes: 'govuk-visually-hidden'
               },
               spellcheck: false,
@@ -89,7 +89,7 @@
                 text: "£"
               },
               label: {
-                text: t('PAGES.DEBTS.MONTHLY_PAYMENTS_IN_POUNDS'),
+                text: commonLabel + t('PAGES.DEBTS.MONTHLY_PAYMENTS_IN_POUNDS'),
                 classes: 'govuk-visually-hidden'
               },
               spellcheck: false,
