@@ -27,6 +27,7 @@ import {CCDHearingSupport} from 'models/ccdResponse/ccdHearingSupport';
 import {CCDWitnesses} from 'models/ccdResponse/ccdWitnesses';
 import {CCDSmallClaimHearing} from 'models/ccdResponse/ccdSmallClaimHearing';
 import {CCDFastClaimHearing} from 'models/ccdResponse/ccdFastClaimHearing';
+import {CCDExpert} from 'models/ccdResponse/ccdExpert';
 
 export interface CCDResponse extends ClaimUpdate {
   respondent1ClaimResponseTypeForSpec?: string;
@@ -76,4 +77,6 @@ export interface CCDResponse extends ClaimUpdate {
   respondent1DQWitnesses?: CCDWitnesses;
   respondent1DQHearingSmallClaim?: CCDSmallClaimHearing;
   respondent1DQHearingFastClaim?: CCDFastClaimHearing;
+  respondent1DQExperts?: CCDExpert;
+  responseClaimExpertSpecRequired?: YesNoUpperCamelCase;
 }

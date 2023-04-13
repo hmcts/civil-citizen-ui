@@ -27,6 +27,18 @@ const setUpUndefinedDQExtraDetails = () : CCDDQExtraDetails => {
     whyPhoneOrVideoHearing: '',
     whyUnavailableForHearing: undefined,
     giveEvidenceYourSelf: undefined,
+    triedToSettle: undefined,
+    determinationWithoutHearingRequired: undefined,
+    determinationWithoutHearingReason: '',
+    requestExtra4weeks: undefined,
+    considerClaimantDocuments: undefined,
+    considerClaimantDocumentsDetails: '',
+    respondent1DQLiPExpert: {
+      expertCanStillExamine: undefined,
+      expertCanStillExamineDetails: '',
+      expertReportRequired: undefined,
+      reportDetails: undefined,
+    },
   };
 };
 
