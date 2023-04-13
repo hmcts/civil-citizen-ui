@@ -1,10 +1,10 @@
 import {Witnesses} from 'models/directionsQuestionnaire/witnesses/witnesses';
 import {CCDWitnessDetails, CCDWitnesses} from 'models/ccdResponse/ccdWitnesses';
 import {OtherWitnesses} from 'models/directionsQuestionnaire/witnesses/otherWitnesses';
-import {YesNo} from 'form/models/yesNo';
+import {toCUIYesNo} from "services/translation/convertToCUI/convertToCUIYesNo";
 
 export const toCUIWitnesses = (ccdWitnesses: CCDWitnesses) : Witnesses => {
-  if (ccdWitnesses?.witnessesToAppear || ccdWitnesses?.details?.length) {
+  if (ccdWitnesses?.witnessesToAppear && ccdWitnesses?.details) {
     const otherWitness = new OtherWitnesses;
     const witnessItems =
       ccdWitnesses.details.map((ccdWitnessDetails: CCDWitnessDetails) => {
@@ -16,7 +16,7 @@ export const toCUIWitnesses = (ccdWitnesses: CCDWitnesses) : Witnesses => {
           details: ccdWitnessDetails?.value?.reasonForWitness,
         };
       });
-    otherWitness.option = YesNo.YES;
+    otherWitness.option = toCUIYesNo(ccdWitnesses.witnessesToAppear);
     otherWitness.witnessItems = witnessItems;
     const witness : Witnesses = {
       otherWitnesses : otherWitness,
