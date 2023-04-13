@@ -26,6 +26,7 @@ import {
   toCCDRespondentLiPResponse,
 } from 'services/translation/response/convertToCCDRespondentLiPResponse';
 import {
+  toCCDYesNo,
   toCCDYesNoFromBoolean,
   toCCDYesNoFromGenericYesNo,
 } from 'services/translation/response/convertToCCDYesNo';
@@ -35,6 +36,7 @@ import {toCCDSpecificCourtLocations} from 'services/translation/response/convert
 import {toCCDWitnesses} from 'services/translation/response/convertToCCDWitnesses';
 import {toCCDSmallClaimHearing} from 'services/translation/response/convertToCCDSmallClaimHearing';
 import {toCCDFastClaimHearing} from 'services/translation/response/convertToCCDFastClaimHearing';
+import {toCCDExpert} from 'services/translation/response/convertToCCDExpert';
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   const paymentIntention = claim.getPaymentIntention();
@@ -79,6 +81,8 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     respondent1DQWitnesses: toCCDWitnesses(claim.directionQuestionnaire?.witnesses),
     respondent1DQHearingSmallClaim: claim.isSmallClaimsTrackDQ ? toCCDSmallClaimHearing(claim.directionQuestionnaire?.hearing) : undefined,
     respondent1DQHearingFastClaim: claim.isFastTrackClaim ? toCCDFastClaimHearing(claim.directionQuestionnaire?.hearing) : undefined,
+    respondent1DQExperts: toCCDExpert(claim),
+    responseClaimExpertSpecRequired: toCCDYesNo(claim.directionQuestionnaire?.experts?.permissionForExpert?.option),
   };
 };
 

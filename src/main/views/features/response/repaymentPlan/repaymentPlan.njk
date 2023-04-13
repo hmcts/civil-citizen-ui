@@ -48,7 +48,10 @@
         {{ govukInput({
           label: {
             html: '<p class="govuk-!-margin-0 govuk-body-m"><strong>' + t('PAGES.REPAYMENT_PLAN.REGULAR_PAYMENTS') + ':' + '</strong></p>',
-            isPageHeading: true
+            isPageHeading: true,
+            attributes: {
+              'aria-label': t('PAGES.REPAYMENT_PLAN.REGULAR_PAYMENTS_IN_POUNDS')
+            }
           },
           hint: {
             text: t('PAGES.REPAYMENT_PLAN.FOR_EXAMPLE') + '£200'
