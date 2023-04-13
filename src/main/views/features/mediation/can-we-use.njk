@@ -38,7 +38,6 @@
                   value: form.model.mediationPhoneNumber,
                   type: "number",
                   autocomplete: "number",
-                  classes: "govuk-!-width-two-thirds",
                   label: pTextEnterPhone}, t)
               }}
               {% endset %}
@@ -49,8 +48,8 @@
                   type: "number",
                   value: form.model.mediationPhoneNumber,
                   autocomplete: "number",
-                  classes: "govuk-!-width-two-thirds",
-                  label: ''}, t)
+                  classes: "govuk-visually-hidden",
+                  label: pTextEnterPhone}, t)
               }}
             {% endif %}
             <div class="govuk-form-group">
