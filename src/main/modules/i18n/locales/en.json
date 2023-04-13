@@ -528,6 +528,7 @@
     },
     "CITIZEN_BANK_ACCOUNTS": {
       "ADD_ANOTHER": "Add another account",
+      "BANK_ACCOUNT": "Account {{ indx }} ",
       "BANK_AND_SAVINGS_ACCOUNTS": "List your bank and savings accounts",
       "BALANCE_IN_POUNDS": "Balance, in pounds",
       "CURRENT_ACCOUNT": "Current account",
@@ -2196,6 +2197,7 @@
     },
     "WHO_EMPLOYS_YOU": {
       "ADD_ANOTHER_JOB": "Add another job",
+      "JOB": "Job {{ indx }} ",
       "PAGE_TITLE": "Your employer",
       "WHO_EMPLOYS": "Who employs you?"
     },
