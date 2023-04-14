@@ -28,19 +28,19 @@ export const toCUIHearing = (ccdClaim: CCDClaim) : Hearing => {
     }
     if (ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.whyUnavailableForHearing) {
       hearing.whyUnavailableForHearing = {
-        reason: (ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.whyUnavailableForHearing),
+        reason: (ccdClaim.respondent1LiPResponse.respondent1DQExtraDetails.whyUnavailableForHearing),
       };
     }
     if (ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.wantPhoneOrVideoHearing) {
       hearing.phoneOrVideoHearing = {
-        option: toCUIYesNo(ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.wantPhoneOrVideoHearing),
-        details: ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.whyPhoneOrVideoHearing,
+        option: toCUIYesNo(ccdClaim.respondent1LiPResponse.respondent1DQExtraDetails.wantPhoneOrVideoHearing),
+        details: ccdClaim.respondent1LiPResponse.respondent1DQExtraDetails.whyPhoneOrVideoHearing,
       };
     }
     if (ccdClaim.respondent1LiPResponse?.respondent1DQHearingSupportLip) {
       hearing.supportRequiredList = {
-        option: toCUIYesNo(ccdClaim.respondent1LiPResponse?.respondent1DQHearingSupportLip?.supportRequirementLip),
-        items: toCUISupportItems(ccdClaim.respondent1LiPResponse?.respondent1DQHearingSupportLip?.requirementsLip),
+        option: toCUIYesNo(ccdClaim.respondent1LiPResponse.respondent1DQHearingSupportLip.supportRequirementLip),
+        items: toCUISupportItems(ccdClaim.respondent1LiPResponse.respondent1DQHearingSupportLip.requirementsLip),
       };
     }
     return hearing;
@@ -77,17 +77,16 @@ function toCUISupportItems(ccdSupportItems : CCDSupportRequirements[]) : Support
   if (ccdSupportItems?.length) {
     return ccdSupportItems.map((ccdSupportItem: CCDSupportRequirements) => {
       return {
-        fullName: ccdSupportItem.value?.name,
-        disabledAccess: toCUISupportDetails(ccdSupportItem.value?.requirements, CCDSupportRequirement.DISABLED_ACCESS, CUISourceName.DISABLED_ACCESS, undefined),
-        hearingLoop: toCUISupportDetails(ccdSupportItem.value?.requirements, CCDSupportRequirement.HEARING_LOOPS, CUISourceName.HEARING_LOOPS, undefined),
-        signLanguageInterpreter: toCUISupportDetails(ccdSupportItem.value?.requirements, CCDSupportRequirement.SIGN_INTERPRETER, CUISourceName.SIGN_INTERPRETER, ccdSupportItem.value?.signLanguageRequired),
-        languageInterpreter: toCUISupportDetails(ccdSupportItem.value?.requirements, CCDSupportRequirement.LANGUAGE_INTERPRETER, CUISourceName.LANGUAGE_INTERPRETER, ccdSupportItem.value?.languageToBeInterpreted),
-        otherSupport: toCUISupportDetails(ccdSupportItem.value?.requirements, CCDSupportRequirement.OTHER_SUPPORT, CUISourceName.OTHER_SUPPORT, ccdSupportItem.value?.otherSupport),
-        checkboxGrp: toCUISupportCheckBox(ccdSupportItem.value?.requirements),
+        fullName: ccdSupportItem.value.name,
+        disabledAccess: toCUISupportDetails(ccdSupportItem.value.requirements, CCDSupportRequirement.DISABLED_ACCESS, CUISourceName.DISABLED_ACCESS, undefined),
+        hearingLoop: toCUISupportDetails(ccdSupportItem.value.requirements, CCDSupportRequirement.HEARING_LOOPS, CUISourceName.HEARING_LOOPS, undefined),
+        signLanguageInterpreter: toCUISupportDetails(ccdSupportItem.value.requirements, CCDSupportRequirement.SIGN_INTERPRETER, CUISourceName.SIGN_INTERPRETER, ccdSupportItem.value?.signLanguageRequired),
+        languageInterpreter: toCUISupportDetails(ccdSupportItem.value.requirements, CCDSupportRequirement.LANGUAGE_INTERPRETER, CUISourceName.LANGUAGE_INTERPRETER, ccdSupportItem.value?.languageToBeInterpreted),
+        otherSupport: toCUISupportDetails(ccdSupportItem.value.requirements, CCDSupportRequirement.OTHER_SUPPORT, CUISourceName.OTHER_SUPPORT, ccdSupportItem.value?.otherSupport),
+        checkboxGrp: toCUISupportCheckBox(ccdSupportItem.value.requirements),
       };
     });
   }
-  return;
 }
 
 function toCUISupportDetails(ccdSupportRequirementItems : CCDSupportRequirement[], ccdSupportName : CCDSupportRequirement, cuiSourceName: string,  content: string) : Support {
@@ -98,7 +97,6 @@ function toCUISupportDetails(ccdSupportRequirementItems : CCDSupportRequirement[
       content: content,
     };
   }
-  return;
 }
 
 function toCUISupportCheckBox(ccdSupportRequirementItems : CCDSupportRequirement[]) : boolean[] {

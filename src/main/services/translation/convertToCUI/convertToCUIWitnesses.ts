@@ -13,7 +13,7 @@ export const toCUIWitnesses = (ccdWitnesses: CCDWitnesses) : Witnesses => {
           lastName: ccdWitnessDetails.value?.lastName,
           email: ccdWitnessDetails.value?.emailAddress,
           telephone: ccdWitnessDetails.value?.phoneNumber,
-          details: ccdWitnessDetails?.value?.reasonForWitness,
+          details: ccdWitnessDetails.value?.reasonForWitness,
         };
       });
     otherWitness.option = toCUIYesNo(ccdWitnesses.witnessesToAppear);
@@ -23,5 +23,4 @@ export const toCUIWitnesses = (ccdWitnesses: CCDWitnesses) : Witnesses => {
     };
     return witness;
   }
-  return;
 };
