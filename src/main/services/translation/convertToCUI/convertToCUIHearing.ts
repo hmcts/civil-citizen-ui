@@ -52,14 +52,15 @@ export const toCUISpecificCourtLocation = (specificCourtLocation: CCDSpecificCou
 };
 
 function toCUIUnavailableDates(ccdUnavailableDates: CCDUnavailableDates[]) : UnavailableDatePeriod[] {
-  if (!ccdUnavailableDates?.length) return undefined;
-  return ccdUnavailableDates.map((ccdUnavailableDate: CCDUnavailableDates) => {
-    return {
-      from: ccdUnavailableDate.value.date,
-      until: ccdUnavailableDate.value.toDate,
-      type: toCUIUnavailableDateType(ccdUnavailableDate.value.unavailableDateType),
-    };
-  });
+  if (ccdUnavailableDates?.length) {
+    return ccdUnavailableDates.map((ccdUnavailableDate: CCDUnavailableDates) => {
+      return {
+        from: ccdUnavailableDate.value.date,
+        until: ccdUnavailableDate.value.toDate,
+        type: toCUIUnavailableDateType(ccdUnavailableDate.value.unavailableDateType),
+      };
+    });
+  }
 }
 
 function toCUIUnavailableDateType(type: CCDUnavailableDateType) : UnavailableDateType {

@@ -18,9 +18,8 @@ export const toCUIWitnesses = (ccdWitnesses: CCDWitnesses) : Witnesses => {
       });
     otherWitness.option = toCUIYesNo(ccdWitnesses.witnessesToAppear);
     otherWitness.witnessItems = witnessItems;
-    const witness : Witnesses = {
+    return {
       otherWitnesses : otherWitness,
     };
-    return witness;
   }
 };
