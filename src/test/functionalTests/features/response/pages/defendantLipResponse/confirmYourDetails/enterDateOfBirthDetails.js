@@ -8,7 +8,7 @@ const fields = {
 };
 
 const buttons = {
-  saveAndContinue: 'div > form > button',
+  saveAndContinue: 'Save and continue',
 };
 
 class DateOfBirthDetailsPage {
