@@ -121,7 +121,7 @@ function toCUISupportCheckBox(ccdSupportRequirementItems : CCDSupportRequirement
   return chkBoxList;
 }
 
-enum CUISourceName{
+export enum CUISourceName{
   DISABLED_ACCESS =  'disabledAccess',
   HEARING_LOOPS = 'hearingLoop',
   SIGN_INTERPRETER = 'signLanguageInterpreter',
