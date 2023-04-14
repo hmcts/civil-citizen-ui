@@ -80,9 +80,9 @@ function toCUISupportItems(ccdSupportItems : CCDSupportRequirements[]) : Support
         fullName: ccdSupportItem.value.name,
         disabledAccess: toCUISupportDetails(ccdSupportItem.value.requirements, CCDSupportRequirement.DISABLED_ACCESS, CUISourceName.DISABLED_ACCESS, undefined),
         hearingLoop: toCUISupportDetails(ccdSupportItem.value.requirements, CCDSupportRequirement.HEARING_LOOPS, CUISourceName.HEARING_LOOPS, undefined),
-        signLanguageInterpreter: toCUISupportDetails(ccdSupportItem.value.requirements, CCDSupportRequirement.SIGN_INTERPRETER, CUISourceName.SIGN_INTERPRETER, ccdSupportItem.value?.signLanguageRequired),
-        languageInterpreter: toCUISupportDetails(ccdSupportItem.value.requirements, CCDSupportRequirement.LANGUAGE_INTERPRETER, CUISourceName.LANGUAGE_INTERPRETER, ccdSupportItem.value?.languageToBeInterpreted),
-        otherSupport: toCUISupportDetails(ccdSupportItem.value.requirements, CCDSupportRequirement.OTHER_SUPPORT, CUISourceName.OTHER_SUPPORT, ccdSupportItem.value?.otherSupport),
+        signLanguageInterpreter: toCUISupportDetails(ccdSupportItem.value.requirements, CCDSupportRequirement.SIGN_INTERPRETER, CUISourceName.SIGN_INTERPRETER, ccdSupportItem.value.signLanguageRequired),
+        languageInterpreter: toCUISupportDetails(ccdSupportItem.value.requirements, CCDSupportRequirement.LANGUAGE_INTERPRETER, CUISourceName.LANGUAGE_INTERPRETER, ccdSupportItem.value.languageToBeInterpreted),
+        otherSupport: toCUISupportDetails(ccdSupportItem.value.requirements, CCDSupportRequirement.OTHER_SUPPORT, CUISourceName.OTHER_SUPPORT, ccdSupportItem.value.otherSupport),
         checkboxGrp: toCUISupportCheckBox(ccdSupportItem.value.requirements),
       };
     });
