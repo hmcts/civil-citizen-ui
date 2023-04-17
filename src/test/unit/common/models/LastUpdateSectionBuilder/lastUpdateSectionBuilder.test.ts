@@ -12,7 +12,7 @@ describe('LatestUpdateTest tests', ()=> {
     const result = new LastUpdateSectionBuilder()
       .addTitle(title)
       .build();
-    //When Then
+    //Then
     expect(titleObject).toEqual(result);
   });
 
