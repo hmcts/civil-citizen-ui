@@ -52,13 +52,14 @@
   {% if content.type === ClaimSummaryType.LINK %}
     <p class="govuk-body govuk-!-margin-bottom-1">{{ t(content.data.textBefore) }}
       {% set object = '' %}
-      {% if content.data.variables %}
-        {% set object = content.data.variables %}
+        {% if content.data.variables %}
+          {% set object = content.data.variables %}
           <a class="govuk-link" href={{ content.data.href }}>{{ t(content.data.text,object) }}</a>
         {% else %}
           <a class="govuk-link" href={{ content.data.href }}>{{ t(content.data.text) }}</a>
         {% endif %}
-      {{ t(content.data.textAfter) }}</p>
+      {{ t(content.data.textAfter) }}
+    </p>
     <p class="govuk-body-s mid-grey">{{ t(content.data.subtitle) }}</p>
   {% endif %}
 

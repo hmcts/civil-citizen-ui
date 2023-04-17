@@ -1,15 +1,15 @@
-import {LastUpdateSectionBuilder} from 'models/LastUpdateSectionBuilder/latestUpdateBuilder';
+import {LatestUpdateSectionBuilder} from 'models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 
-describe('LatestUpdateTest tests', ()=> {
+describe('LatestUpdateSectionBuilder tests', ()=> {
   it('should create title', ()=> {
     //Given
     const title = 'testTitle';
-    const titleObject = new LastUpdateSectionBuilder()
+    const titleObject = new LatestUpdateSectionBuilder()
       .addTitle(title)
       .build();
 
     //When
-    const result = new LastUpdateSectionBuilder()
+    const result = new LatestUpdateSectionBuilder()
       .addTitle(title)
       .build();
     //Then
@@ -19,15 +19,15 @@ describe('LatestUpdateTest tests', ()=> {
   it('should add Paragraph', ()=> {
     //Given
     const paragraph = 'testTitle';
-    const paragraphExpected = new LastUpdateSectionBuilder()
+    const paragraphExpected = new LatestUpdateSectionBuilder()
       .addParagraph(paragraph)
       .build();
 
     //When
-    const result = new LastUpdateSectionBuilder()
+    const result = new LatestUpdateSectionBuilder()
       .addParagraph(paragraph)
       .build();
-    //When Then
+    //Then
     expect(paragraphExpected).toEqual(result);
   });
 
@@ -38,15 +38,15 @@ describe('LatestUpdateTest tests', ()=> {
       claimId: '01',
     };
 
-    const contactLinkExpected = new LastUpdateSectionBuilder()
+    const contactLinkExpected = new LatestUpdateSectionBuilder()
       .addContactLink(contactLinkObject.text,contactLinkObject.claimId)
       .build();
 
     //When
-    const result = new LastUpdateSectionBuilder()
+    const result = new LatestUpdateSectionBuilder()
       .addContactLink(contactLinkObject.text,contactLinkObject.claimId)
       .build();
-    //When Then
+    //Then
     expect(contactLinkExpected).toEqual(result);
   });
 
@@ -57,15 +57,15 @@ describe('LatestUpdateTest tests', ()=> {
       claimId: '01',
     };
 
-    const contactLinkExpected = new LastUpdateSectionBuilder()
+    const contactLinkExpected = new LatestUpdateSectionBuilder()
       .addResponseDocumentLink(contactLinkObject.text,contactLinkObject.claimId)
       .build();
 
     //When
-    const result = new LastUpdateSectionBuilder()
+    const result = new LatestUpdateSectionBuilder()
       .addResponseDocumentLink(contactLinkObject.text,contactLinkObject.claimId)
       .build();
-    //When Then
+    //Then
     expect(contactLinkExpected).toEqual(result);
   });
 
