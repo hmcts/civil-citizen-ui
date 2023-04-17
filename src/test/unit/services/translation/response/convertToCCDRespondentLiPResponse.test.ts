@@ -9,7 +9,6 @@ import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP'
 import {CCDDQExtraDetails} from 'models/ccdResponse/ccdDQExtraDetails';
 import {CCDHearingSupport} from 'models/ccdResponse/ccdHearingSupport';
 import {DefendantTimeline} from 'form/models/timeLineOfEvents/defendantTimeline';
-import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {TimelineRow} from 'form/models/timeLineOfEvents/timelineRow';
 
 const setUpUndefinedFinancialDetails = () : CCDFinancialDetailsLiP => {
@@ -34,10 +33,10 @@ const setUpUndefinedDQExtraDetails = () : CCDDQExtraDetails => {
     considerClaimantDocuments: undefined,
     considerClaimantDocumentsDetails: '',
     respondent1DQLiPExpert: {
-      expertCanStillExamine: undefined,
+      caseNeedsAnExpert: undefined,
       expertCanStillExamineDetails: '',
       expertReportRequired: undefined,
-      reportDetails: undefined,
+      details: undefined,
     },
   };
 };
