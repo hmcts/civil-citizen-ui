@@ -1,8 +1,5 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {
-  CONFIRMATION_URL, RESPONSE_CHECK_ANSWERS_URL,
-  RESPONSE_INCOMPLETE_SUBMISSION_URL,
-} from '../../urls';
+import {CONFIRMATION_URL, RESPONSE_CHECK_ANSWERS_URL, RESPONSE_INCOMPLETE_SUBMISSION_URL} from '../../urls';
 import {
   getStatementOfTruth,
   getSummarySections,
