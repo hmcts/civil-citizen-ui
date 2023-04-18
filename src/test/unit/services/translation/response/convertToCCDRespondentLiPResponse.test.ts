@@ -31,10 +31,10 @@ const setUpUndefinedDQExtraDetails = () : CCDDQExtraDetails => {
     considerClaimantDocuments: undefined,
     considerClaimantDocumentsDetails: '',
     respondent1DQLiPExpert: {
-      expertCanStillExamine: undefined,
+      caseNeedsAnExpert: undefined,
       expertCanStillExamineDetails: '',
       expertReportRequired: undefined,
-      reportDetails: undefined,
+      details: undefined,
     },
   };
 };
