@@ -1,6 +1,7 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../../macro/csrf.njk" import csrfProtection %}
@@ -25,10 +26,15 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.DEPENDANTS.TITLE') }}</h1>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-
+            {% call govukFieldset({
+             legend: {
+                html: t('PAGES.DEPENDANTS.TITLE'),
+                classes: "govuk-fieldset__legend--l",
+                isPageHeading: true
+             }
+            }) %}
             {% set numberOfChildrenHtml %}
               <div class="govuk-form-group {% if atLeastOneNumberShouldBeEnteredError %} govuk-form-group--error {% endif %}">
                 {% if atLeastOneNumberShouldBeEnteredError %}
@@ -108,6 +114,7 @@
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
               }) }}
             </div>
+          {% endcall %}
           </form>
         </div>
       </div>

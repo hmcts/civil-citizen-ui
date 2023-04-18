@@ -2,6 +2,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/error-message/macro.njk" import govukErrorMessage %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
@@ -47,14 +48,14 @@
         {% set debt = 'debtsItems['+index+'][debt]' %}
         {% set totalOwned = 'debtsItems['+index+'][totalOwned]' %}
         {% set monthlyPayments = 'debtsItems['+index+'][monthlyPayments]' %}
-        {% set label = 'debtsItems[' + index + ']' %}
+        {% set commonLabel = t('COMMON.DEBT') + ' ' + (index+1) + ' ' %}
         <div class="govuk-grid-column-one-half ">
           {{ govukInput({
               id: debt,
               name: debt,
               value: debtsItem.debt,
               label: {
-                text: t('PAGES.DEBTS.LIST'),
+                text: commonLabel + t('PAGES.DEBTS.LIST'),
                 classes: 'govuk-visually-hidden'
               },
               spellcheck: false,
@@ -71,7 +72,7 @@
                 text: "£"
               },
               label: {
-                text: t('PAGES.DEBTS.TOTAL_OWED_IN_POUNDS'),
+                text: commonLabel + t('PAGES.DEBTS.TOTAL_OWED_IN_POUNDS'),
                 classes: 'govuk-visually-hidden'
               },
               spellcheck: false,
@@ -88,7 +89,7 @@
                 text: "£"
               },
               label: {
-                text: t('PAGES.DEBTS.MONTHLY_PAYMENTS_IN_POUNDS'),
+                text: commonLabel + t('PAGES.DEBTS.MONTHLY_PAYMENTS_IN_POUNDS'),
                 classes: 'govuk-visually-hidden'
               },
               spellcheck: false,
@@ -118,30 +119,18 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          {{ csrfProtection(csrf) }}
-          <h1 class="govuk-heading-l">{{ title }}</h1>
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            {{ yesNoRadioButton(t,'debtsRadio','option',title, form,'',{yesHtml:yesHtml}) }}
+              <div class="govuk-form-group">
+                {{ govukButton({
+                  text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+                }) }}
+                {{ contactUsForHelp(t) }}
+              </div>
+          </form>
         </div>
-      </div>
-      <form method="post" novalidate>
-        {{ csrfProtection(csrf) }}
-        <div class="govuk-grid-row">
-          <div class="govuk-grid-column-full">
-            {{ yesNoRadioButton(t,'debtsRadio','option','', form,'',{yesHtml:yesHtml}) }}
-          </div>
-        </div>
-        <div class="govuk-grid-row">
-          <div class="govuk-grid-column-two-thirds">
-            {{ govukButton({
-              text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
-            }) }}
-          </div>
-        </div>
-      </form>
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-          {{ contactUsForHelp(t) }}
-        </div>
-      </div>
+     </div>
     </main>
   </div>
 {% endblock %}
