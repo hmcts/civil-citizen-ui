@@ -22,7 +22,7 @@ const getMediation = async (claimId: string): Promise<Mediation> => {
   }
 };
 
-const saveMediation = async (claimId: string, value: any, mediationPropertyName: keyof Mediation): Promise<void> => {
+const saveMediation = async <GenericMediation>(claimId: string, value: GenericMediation, mediationPropertyName: keyof Mediation): Promise<void> => {
   try {
     const claim: Claim = await getCaseDataFromStore(claimId);
     if (claim.isClaimantIntentionPending()) {

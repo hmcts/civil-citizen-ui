@@ -1,6 +1,7 @@
 import {IsDefined, IsNotEmpty, Validate, ValidateIf, ValidateNested} from 'class-validator';
 import {AtLeastOneCheckboxSelectedValidator} from '../../form/validators/atLeastOneCheckboxSelectedValidator';
 import {YesNo} from '../../form/models/yesNo';
+import {ValidationArgs} from 'common/form/models/genericForm';
 
 export enum SupportType {
   SIGN_LANGUAGE_INTERPRETER = 'signLanguageInterpreter',
@@ -93,7 +94,7 @@ function generateErrorMessage (sourceName: string): string {
 }
 
 function withMessage (buildErrorFn: (sourceName: string) => string) {
-  return (args: any): string => {
+  return (args: ValidationArgs<Support>): string => {
     return buildErrorFn(args.object.sourceName);
   };
 }

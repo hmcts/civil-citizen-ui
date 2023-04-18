@@ -1,6 +1,7 @@
 import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
 import {BreathingSpace} from '../../../common/models/breathingSpace';
 import {ClaimDetails} from '../../../common/form/models/claim/details/claimDetails';
+import {Claim} from 'common/models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('breathingSpaceService');
@@ -15,16 +16,16 @@ const getBreathingSpace = async (claimId: string): Promise<BreathingSpace> => {
   }
 };
 
-const saveBreathingSpace = async (claimId: string, value: any, breathingSpacePropertyName: string): Promise<void> => {
+const saveBreathingSpace = async (claimId: string, value: any, breathingSpacePropertyName: keyof BreathingSpace): Promise<void> => {
   try {
-    const claim: any = await getCaseDataFromStore(claimId);
+    const claim: Claim = await getCaseDataFromStore(claimId);
     if (!claim.claimDetails) {
       claim.claimDetails = new ClaimDetails();
     }
     if (claim.claimDetails.breathingSpace) {
       claim.claimDetails.breathingSpace[breathingSpacePropertyName] = value;
     } else {
-      const breathingSpace: any = new BreathingSpace();
+      const breathingSpace = new BreathingSpace();
       breathingSpace[breathingSpacePropertyName] = value;
       claim.claimDetails.breathingSpace = breathingSpace;
     }

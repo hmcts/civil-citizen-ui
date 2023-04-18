@@ -218,7 +218,7 @@ describe('Breathing Space Service', () => {
       mockSaveDraftClaim.mockImplementation(async () => {
         throw new Error(REDIS_FAILURE);
       });
-      await expect(saveBreathingSpace('claimId', mockGetCaseDataFromDraftStore, ''))
+      await expect(saveBreathingSpace('claimId', mockGetCaseDataFromDraftStore, 'debtRespiteReferenceNumber'))
         .rejects.toThrow(REDIS_FAILURE);
     });
   });
