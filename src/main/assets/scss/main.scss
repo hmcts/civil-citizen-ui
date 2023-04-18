@@ -178,3 +178,8 @@
     color: $govuk-link-active-colour;
   }
 }
+
+.fit-tableContent-to-mobile-view{
+  word-wrap: break-word;
+  table-layout:fixed;
+}
