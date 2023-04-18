@@ -179,7 +179,7 @@
   }
 }
 
-.fit-tableContent-to-mobile-view{
+.fit-tableContent-to-mobile-view {
+  table-layout: fixed;
   word-wrap: break-word;
-  table-layout:fixed;
 }
