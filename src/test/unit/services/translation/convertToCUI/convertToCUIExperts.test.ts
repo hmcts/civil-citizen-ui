@@ -13,7 +13,7 @@ import {
   toCUISentExpertReports,
   toCUIExpertDetails,
   toCUIExpertReportDetails,
-} from 'services/translation/convertToCUI/convertToCUIDQ/covertToCUIDQExperts';
+} from 'services/translation/convertToCUI/convertToCUIExperts';
 
 describe('translate CCD data to CUI DQ Experts model', () => {
   describe('toCUISentExpertReports', () => {
