@@ -36,7 +36,7 @@
     "REASON": "Rheswm",
     "REMOVE": "Tynnu",
     "RETURN_PAGE": "You can return to RETURN-PAGE and start your claim or defence again.",
-    "TECHNICAL_PROBLEMS": "Sorry, we had some technical problems during your last operation. Please try again later.",
+    "TECHNICAL_PROBLEMS": "Mae’n ddrwg gennym, cawsom broblemau technegol yn ystod eich gweithred olaf. Rhowch gynnig arall arni nes ymlaen.",
     "TOTAL_DEBT": "Cyfanswm sy’n ddyledus gennych",
     "YEAR": "Blwyddyn",
     "YEARS": "Blwyddyn",
@@ -528,7 +528,9 @@
     },
     "CITIZEN_BANK_ACCOUNTS": {
       "ADD_ANOTHER": "Ychwanegu cyfrif arall",
+      "BANK_ACCOUNT": "Cyfrif {{ indx }} ",
       "BANK_AND_SAVINGS_ACCOUNTS": "Rhestrwch eich cyfrifon banc a chyfrifon cynilo",
+      "BALANCE_IN_POUNDS": "Balance, in pounds",
       "CURRENT_ACCOUNT": "Cyfrif cyfredol",
       "EXAMPLE": "Rhowch minws (-) o flaen y swm os ydych yn eich gorddrafft. Er enghraifft -£804.45.",
       "ISA": "ISA",
@@ -1010,9 +1012,11 @@
     },
     "COURT_ORDERS": {
       "ADD_ANOTHER": "Ychwanegu gorchymyn llys arall",
+      "AMOUNT_YOU_OWE_IN_POUNDS": "Amount you owe, in pounds",
       "CLAIM_NUMBER": "Rhif yr hawliad",
       "COURT_ORDER": "Gorchymyn llys",
       "MONTHLY_INSTALMENT_AMOUNT": "Swm y rhandaliad bob mis",
+      "MONTHLY_INSTALMENT_IN_POUNDS": "Monthly instalment amount, in pounds",
       "OWED_AMOUNT": "Swm sy'n ddyledus gennych",
       "PAGE_TITLE": "Any court orders?",
       "TITLE": "A ydych yn talu arian o ganlyniad i unrhyw orchmynion llys?"
@@ -1048,13 +1052,16 @@
         "REQUESTED_MORE_TIME_TO_RESPOND": "You need to respond before 4pm on {{ responseDeadline }}."
       },
       "TITLE": "Eich cyfrif hawliadau am arian",
-      "VIEW": "Weiv"
+      "VIEW": "Weiv",
+      "VIEW_CLAIM_NUMBER": "claim number {{ claimNumber }}"
     },
     "DEBTS": {
       "ADD": "Ychwanegu dyled",
       "LIST": "Rhestrwch bob benthyciad neu ddyled cerdyn credyd",
       "PAGE_TITLE": "Any debts?",
-      "TITLE": "A oes gennych fenthyciadau neu ddyledion cerdyn credyd?"
+      "MONTHLY_PAYMENTS_IN_POUNDS": "Monthly payments, in pounds",
+      "TITLE": "A oes gennych fenthyciadau neu ddyledion cerdyn credyd?",
+      "TOTAL_OWED_IN_POUNDS": "Total owed, in pounds"
     },
     "DEBT_RESPITE_REF_NUMBER": {
       "ENTER_REFERENCE": "Enter the reference number (optional):",
@@ -1693,6 +1700,7 @@
     "REGULAR_EXPENSES": {
       "ADD_ANOTHER_EXPENSE": "Ychwanegu ffynhonnell arall o wariant",
       "AMOUNT_PAID": "Swm a dalwyd",
+      "AMOUNT_PAID_IN_POUNDS": "Amount paid, in pounds",
       "INCLUDE_ALL_MORTGAGES": "Dylech gynnwys pob morgais",
       "INCLUDE_SEWERAGE_PAYMENTS": "Cynnwys taliadau carthffosiaeth",
       "INFORMATION_NOTE": "Dewiswch bob un sy’n berthnasol. Rhaid i’r wybodaeth rydych yn ei nodi fod yn wir ac yn gywir. Peidiwch â chynnwys unrhyw ad-daliadau ar gyfer ôl-ddyledion.",
@@ -1749,6 +1757,7 @@
       "LENGTH": "Hyd y cynllun ad-dalu",
       "PAGE_TITLE": "Your repayment plan",
       "REGULAR_PAYMENTS": "Taliadau rheolaidd o",
+      "REGULAR_PAYMENTS_IN_POUNDS": "Regular payments of, in pounds",
       "SUBTITLE": "Y cyfanswm a hawlir yw £{{totalAmount}}. Mae hyn yn cynnwys ffi’r hawliad ac unrhyw log.",
       "TITLE": "Eich cynllun ad-dalu"
     },
@@ -1865,11 +1874,13 @@
       "REJECT_CLAIM_PAID_LESS_STATEMENT": "{{ defendant }} said they paid you £{{ paidAmount}}. They said this is all they owe, not the amount you claim."
     },
     "SELF_EMPLOYED": {
+      "ANNUAL_TURNOVER_IN_POUNDS": "Annual Turnover, in pounds",
       "PAGE_TITLE": "Manylion yr hunangyflogaeth",
       "TITLE": "Mewn pa fodd ydych chi’n hunangyflogedig?"
     },
     "SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS": {
       "AMOUNT": "Swm sy'n ddyledus gennych",
+      "AMOUNT_YOU_OWE_IN_POUNDS": "Amount you owe, in pounds",
       "PAGE_TITLE": "Behind on tax payments?",
       "TITLE": "A ydych yn hwyr yn gwneud taliadau treth?",
       "EXAMPLE": "Er enghraifft cyfraniadau Yswiriant Gwladol, Treth Incwm neu TAW."
@@ -2175,6 +2186,7 @@
     },
     "WHO_EMPLOYS_YOU": {
       "ADD_ANOTHER_JOB": "Ychwanegu swydd arall",
+      "JOB": "Swydd {{ indx }} ",
       "PAGE_TITLE": "Your employer",
       "WHO_EMPLOYS": "Pwy sy’n eich cyflogi"
     },
@@ -2202,9 +2214,9 @@
     },
     "YOU_HAVE_PAID_LESS": {
       "PAGE_TITLE": "You've paid less",
-      "HEADER": "You've paid less than the total claim amount",
-      "EXPLAIN_WHY_YOU_DONT_OWE_REMAINING_AMOUNT": "You need to explain why you believe you don't owe the remaining amount.",
-      "IF_CLAIMANT_REJECTS": "If CLAIMANT_NAME rejects your explanation you might have to go to a hearing."
+      "HEADER": "Rydych wedi talu llai na chyfanswm yr hawliad",
+      "EXPLAIN_WHY_YOU_DONT_OWE_REMAINING_AMOUNT": "Mae angen i chi egluro pam eich bod yn credu nad oes arnoch y swm sy'n weddill.",
+      "IF_CLAIMANT_REJECTS": "Os yw CLAIMANT_NAME yn gwrthod eich esboniad efallai y bydd rhaid i chi fynd i wrandawiad."
     },
     "YOUR_DEFENCE": {
       "BRIEFLY": "Eglurwch yn fyr pam yr ydych chi’n anghytuno â’r hawliad",
@@ -2410,7 +2422,7 @@
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
     "SIGNER_NAME_TOO_LONG": "You've entered too many characters",
     "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",
-    "SOMETHING_WENT_WRONG": "Something went wrong",
+    "SOMETHING_WENT_WRONG": "Aeth rhywbeth o'i le",
     "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Dywedwch wrthym os ydych yn credu bod y ffeithiau a nodir yn yr ymateb hwn yn wir",
     "SPECIFIC_COURT": {
       "SELECT_YES_NO": "Dewiswch ydw os ydych eisiau gofyn am gael cynnal y gwrandawiad mewn llys penodol",
