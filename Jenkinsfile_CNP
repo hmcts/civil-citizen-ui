@@ -114,12 +114,28 @@ withPipeline(type, product, component) {
     setUrls("civil-citizen-ui-pr-${CHANGE_ID}")
   }
 
+
   afterSuccess('smoketest:preview') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/smokeTest/**/*'
   }
 
   afterSuccess('functionalTest:preview') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
+  }
+
+  afterAlways('smoketest:preview') {
+        loadVaultSecrets(inTestTrue)
+        stage('Accessibility') {
+            yarnBuilder.yarn('tests:a11y')
+            publishHTML([
+                allowMissing         : true,
+                alwaysLinkToLastBuild: true,
+                keepAll              : true,
+                reportDir            : "functional-output/accessibility-report",
+                reportFiles          : 'a11y.html',
+                reportName           : 'Accessibility results'
+          ])
+        }
   }
 
   before('smoketest:aat') {
