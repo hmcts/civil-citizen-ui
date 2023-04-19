@@ -25,7 +25,7 @@ const saveBreathingSpace = async (claimId: string, value: any, breathingSpacePro
     if (claim.claimDetails.breathingSpace) {
       claim.claimDetails.breathingSpace[breathingSpacePropertyName] = value;
     } else {
-      const breathingSpace = new BreathingSpace();
+      const breathingSpace: BreathingSpace = new BreathingSpace();
       breathingSpace[breathingSpacePropertyName] = value;
       claim.claimDetails.breathingSpace = breathingSpace;
     }
