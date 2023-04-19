@@ -1579,7 +1579,7 @@
         "USE": "Use "
       },
       "N1_PAPER_FORM": "N1 paper form",
-      "OPENS_IN_A_NEW_WINDOW": "(opens in a new window)",
+      "OPENS_IN_A_NEW_WINDOW": "(agor mewn ffenestr newydd)",
       "PAGE_TITLE": "You can’t use this service",
       "TENANCY_DEPOSIT": {
         "GET": "Get",
@@ -2392,7 +2392,7 @@
     "REDIS_FAILURE": "Redis DraftStore failure.",
     "SECURITY_CODE_WRONG_OR_EXPIRED": "The security code was not right or has expired",
     "SELECT_ADDITIONAL_TIME": "Dewiswch faint o amser ychwanegol yr ydych yn gwneud cais amdano",
-    "SELECT_WELSH_AND_ENGLISH_OPTION": "Select Welsh and English if you want to respond to this claim in Welsh",
+    "SELECT_WELSH_AND_ENGLISH_OPTION": "Dewiswch Cymraeg a Saesneg os ydych am ymateb i'r hawliad hwn yn Gymraeg",
     "SELECT_AN_OPTION": "Dewiswch opsiwn",
     "SELECT_AMOUNT": {
       "COUNCIL_TAX": "Nodwch faint o Dreth y Cyngor neu Dâl Cymunedol ydych chi'n ei dalu",
