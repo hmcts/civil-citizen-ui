@@ -84,6 +84,13 @@ function buildMockClaim(): Claim {
         },
       },
     },
+    get isClaimantSuggestedPayByDate(): boolean {
+      return this.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY;
+    }, get isClaimantSuggestedPayByInstalments(): boolean {
+      return this.suggestedPaymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE;
+    }, get isClaimantSuggestedPayImmediately(): boolean {
+      return this.suggestedPaymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS;
+    },
   };
   _mockClaim.evidence = {
     'comment': 'evidence comments',
