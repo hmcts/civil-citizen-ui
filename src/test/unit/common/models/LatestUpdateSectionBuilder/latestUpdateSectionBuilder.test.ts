@@ -69,4 +69,23 @@ describe('LatestUpdateSectionBuilder tests', ()=> {
     expect(contactLinkExpected).toEqual(result);
   });
 
+  it('should add Green Button', ()=> {
+    //Given
+    const buttonObject = {
+      title: 'test',
+      href: 'nextPage',
+    };
+
+    const buttonExpected = new LatestUpdateSectionBuilder()
+      .addResponseDocumentLink(buttonObject.title,buttonObject.href)
+      .build();
+
+    //When
+    const result = new LatestUpdateSectionBuilder()
+      .addResponseDocumentLink(buttonObject.title,buttonObject.href)
+      .build();
+    //Then
+    expect(buttonExpected).toEqual(result);
+  });
+
 });

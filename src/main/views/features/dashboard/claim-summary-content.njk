@@ -6,9 +6,6 @@
       {% if content.contentSections %}
         {% for section in content.contentSections %}
           {{ itemContent(section,t) }}
-          {% if not loop.last %}
-            <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
-          {% endif %}
         {% endfor %}
       {% endif %}
       {% if content.hasDivider === true %}
