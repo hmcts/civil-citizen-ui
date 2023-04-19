@@ -48,7 +48,7 @@
         {{ govukInput({
           label: {
             html: '<p class="govuk-!-margin-0 govuk-body-m"><strong>' + t('PAGES.REPAYMENT_PLAN.REGULAR_PAYMENTS') + ':' + '</strong></p>',
-            isPageHeading: true,
+            isPageHeading: false,
             attributes: {
               'aria-label': t('PAGES.REPAYMENT_PLAN.REGULAR_PAYMENTS_IN_POUNDS')
             }
@@ -77,7 +77,7 @@
           fieldset: {
             legend: {
               text: t("PAGES.REPAYMENT_PLAN.HOW_OFTEN_PAYMENTS"),
-              isPageHeading: true,
+              isPageHeading: false,
               classes: "govuk-fieldset__legend--s"
             }
           },
@@ -129,7 +129,7 @@
           fieldset: {
             legend: {
               text: t('PAGES.REPAYMENT_PLAN.FIRST_PAYMENT'),
-              isPageHeading: true,
+              isPageHeading: false,
               classes: "govuk-fieldset__legend--s"
             }
           },
