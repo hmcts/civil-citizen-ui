@@ -2010,7 +2010,7 @@
         "YOU_BELIEVE_YOU_OWE": "You believe you owe £{{ partialAmount }}. We've emailed {{ claimantName }} your offer to pay this amount by instalments."
       },
       "RC_PAY_LESS": {
-        "CLAIMANT_REFUSE_MEDIATION": "If they don't want to try media to yoution the court will review the case. You might have to go to a hearing.",
+        "CLAIMANT_REFUSE_MEDIATION": "If they don't want to try mediation the court will review the case. You might have to go to a hearing.",
         "IF_CLAIMANT_ACCEPTS_CLAIM_TO_SETTLED": "If {{claimantName}} accepts your response the claim will be settled. We'll contact you when they respond.",
         "WE_ASK_CLAIMANT_FOR_MEDIATION": "We'll ask if they want to try mediation. If they agree, we'll contact you to try to arrange an appointment.",
         "WE_EMAILED_CLAIMANT_YOUR_INTENTION": "You told us you've paid the £{{amount}} you believe you owe. We've sent {{claimantName}} this response."
