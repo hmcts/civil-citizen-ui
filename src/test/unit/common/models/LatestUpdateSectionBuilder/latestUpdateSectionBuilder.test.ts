@@ -77,12 +77,12 @@ describe('LatestUpdateSectionBuilder tests', ()=> {
     };
 
     const buttonExpected = new LatestUpdateSectionBuilder()
-      .addResponseDocumentLink(buttonObject.title,buttonObject.href)
+      .addButton(buttonObject.title,buttonObject.href)
       .build();
 
     //When
     const result = new LatestUpdateSectionBuilder()
-      .addResponseDocumentLink(buttonObject.title,buttonObject.href)
+      .addButton(buttonObject.title,buttonObject.href)
       .build();
     //Then
     expect(buttonExpected).toEqual(result);
