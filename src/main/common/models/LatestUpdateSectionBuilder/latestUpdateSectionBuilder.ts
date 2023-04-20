@@ -57,7 +57,19 @@ export class LatestUpdateSectionBuilder {
     this._claimSummarySections.push(linkSection);
     return this;
   }
+  addButton(title: string, href: string) {
+    const titleSection = ({
+      type: ClaimSummaryType.BUTTON,
+      data: {
+        text: title,
+        //TODO: (href) in here in the future we should added the document url(is in development)
+        href: href,
+      },
+    });
 
+    this._claimSummarySections.push(titleSection);
+    return this;
+  }
   build() {
     return this._claimSummarySections;
   }
