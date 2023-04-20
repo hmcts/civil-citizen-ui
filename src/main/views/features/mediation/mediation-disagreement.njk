@@ -1,5 +1,6 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
@@ -18,18 +19,15 @@
   {% endset -%}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set errors = form.getErrors() %}
       {% if form.hasErrors() %}
-        {{ errorSummary(errors, t) }}
+        {{ errorSummary(form.getErrors(), t) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-
           <div class="govuk-!-margin-bottom-8">
-            <h1 class="govuk-heading-l">{{ t('PAGES.MEDIATION_DISAGREEMENT.MEDIATION_DISAGREEMENT') }}</h1>
+            <form method="post" novalidate>
+             {{ csrfProtection(csrf) }}
             <p class="govuk-body">{{ t('PAGES.MEDIATION_DISAGREEMENT.THE_CLAIM_WILL_CONTINUE') }}</p>
-          </div>
-
           <div class="govuk-!-margin-bottom-8">
             <h2 class="govuk-heading-m">{{ t('PAGES.MEDIATION_DISAGREEMENT.ADVANTAGES_OF_FREE_MEDIATION') }}</h2>
             <p class="govuk-body">{{ t('PAGES.MEDIATION_DISAGREEMENT.MANY_ADVANTAGES_TO_FREE_MEDIATION') }}</p>
@@ -46,24 +44,19 @@
                 {{ ' ' + t('PAGES.MEDIATION_DISAGREEMENT.COUNT_COURT_JUDGMENT_SENTENCE_LINK_3') }}</li>
             </ul>
           </div>
-
           <h2 class="govuk-heading-m">{{ t('PAGES.MEDIATION_DISAGREEMENT.WILL_YOU_CHANGE_YOUR_DECISION') }}</h2>
           <p class="govuk-body">{{ t('PAGES.MEDIATION_DISAGREEMENT.IF_YOU_CHOOSE_NOT') }}</p>
-
-          <form method="post" novalidate>
-            {{ csrfProtection(csrf) }}
             {% if claimStatus == CaseState.AWAITING_APPLICANT_INTENTION %}
-              {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {classes: 'govuk-radios', yes: 'COMMON.VARIATION.YES', no: 'COMMON.VARIATION.NO'}) }}
+              {{ yesNoRadioButton(t, 'option', 'option', t('PAGES.MEDIATION_DISAGREEMENT.MEDIATION_DISAGREEMENT'), form, '', {classes: 'govuk-radios', yes: 'COMMON.VARIATION.YES', no: 'COMMON.VARIATION.NO'}) }}
             {% else %}
-              {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml:yesHtml, classes: 'govuk-radios', yes: 'COMMON.VARIATION.YES', no: 'COMMON.VARIATION.NO'}) }}
+              {{ yesNoRadioButton(t, 'option', 'option', t('PAGES.MEDIATION_DISAGREEMENT.MEDIATION_DISAGREEMENT'), form, '', {yesHtml:yesHtml, classes: 'govuk-radios', yes: 'COMMON.VARIATION.YES', no: 'COMMON.VARIATION.NO'}) }}
             {% endif %}
-            <div class="govuk-form-group">
               {{ govukButton({
                 text: t("COMMON.BUTTONS.SAVE_AND_CONTINUE")
               }) }}
               {{ contactUsForHelp(t) }}
-            </div>
           </form>
+          </div>
         </div>
       </div>
     </main>
