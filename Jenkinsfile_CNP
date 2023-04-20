@@ -101,6 +101,10 @@ withPipeline(type, product, component) {
     loadVaultSecrets(secrets)
   }
 
+  afterSuccess('build') {
+    yarnBuilder.yarn('build')
+  }
+
   before('smoketest:preview') {
     sh """
           eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
