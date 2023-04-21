@@ -82,7 +82,7 @@
     "lodash": "^4.17.21",
     "luxon": "^3.2.1",
     "memorystore": "^1.6.7",
-    "nunjucks": "^3.2.3",
+    "nunjucks": "^3.2.4",
     "otplib": "^12.0.1",
     "reflect-metadata": "^0.1.13",
     "require-directory": "^2.1.1",
