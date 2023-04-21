@@ -13,7 +13,7 @@ const fields ={
 
 class DefendantWitnesses {
 
-  enterDefendantWitnesses(claimRef) {
+  enterDefendantWitnesses() {
     I.see('Do you have other witnesses?', 'h1');
     I.click(fields.yesButton);
     I.fillField(fields.firstWitnessFirstName, 'WitnessFName');

@@ -12,7 +12,7 @@ const fields ={
 
 class ExpertReportDetails {
 
-  enterExpertReportDetails(claimRef, expertName, day, month, year) {
+  enterExpertReportDetails(expertName, day, month, year) {
     I.see('Have you already got a report written by an expert?', 'h1');
     I.click(fields.yesButton);
     I.fillField(fields.firstExpertsName, expertName);

@@ -8,7 +8,7 @@ const fields ={
 
 class GiveEvidenceYourself {
 
-  SelectGiveEvidenceYourself(claimRef) {
+  SelectGiveEvidenceYourself() {
     I.see('Do you want to give evidence yourself?', 'h1');
     I.click(fields.yesButton);
     I.click('Save and continue');

@@ -8,7 +8,7 @@ const fields ={
 
 class DqExpert {
 
-  chooseExpert(claimRef) {
+  chooseExpert() {
     I.see('Using an expert', 'h1');
     I.click(fields.continueWithExpert);
   }

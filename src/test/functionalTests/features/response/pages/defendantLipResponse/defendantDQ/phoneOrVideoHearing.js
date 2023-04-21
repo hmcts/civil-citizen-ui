@@ -9,7 +9,7 @@ const fields ={
 
 class PhoneOrVideoHearing {
 
-  selectOptionForPhoneOrVideoHearing(claimRef) {
+  selectOptionForPhoneOrVideoHearing() {
     I.see('Do you want to ask for a telephone or video hearing?', 'h1');
     I.see('The judge will decide if the hearing can be held by telephone or video.');
     I.click(fields.yesButton);

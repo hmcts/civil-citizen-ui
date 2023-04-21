@@ -12,7 +12,7 @@ const fields ={
 
 class SupportRequired {
 
-  selectOptionForSupportRequired(claimRef) {
+  selectOptionForSupportRequired() {
     I.see('Do you, your experts or witnesses need support to attend a hearing', 'h1');
     I.click(fields.yesButton);
     I.selectOption(fields.selectDropDown,'WitnessFName WitnessLName');

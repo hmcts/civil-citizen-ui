@@ -1,5 +1,5 @@
 const TaskListPage = require('../pages/defendantLipResponse/taskList');
-const DefendantLatestUpdate = require('../pages/defendantLipResponse/defendantLatestUpdate')
+const DefendantLatestUpdate = require('../pages/defendantLipResponse/defendantLatestUpdate');
 const BilingualLanguagePreference = require('../pages/defendantLipResponse/bilingualLanguagePreference');
 const NameAndAddressDetailsPage = require('../pages/defendantLipResponse/confirmYourDetails/enterNameAndAddressDetails');
 const DateOfBirthDetailsPage = require('../pages/defendantLipResponse/confirmYourDetails/enterDateOfBirthDetails');
@@ -356,65 +356,65 @@ class ResponseSteps {
 
   EnterDQForSmallClaims(claimRef) {
     this.SelectHearingRequirements(claimRef);
-    this.SelectExpertNeededOrNot(claimRef);
-    this.EnterExpertReportDetails(claimRef, 'TestExpert1', '20', '10', '2022');
-    this.SelectGiveEvidenceYourself(claimRef);
-    this.EnterDefedantWitnesses(claimRef);
-    this.SelectOptionForCantAttendHearing(claimRef);
-    this.EnterUnavailabilityDates(claimRef);
-    this.SelectOptionForPhoneOrVideoHearing(claimRef);
-    this.SelectOptionForVulnerability(claimRef);
-    this.SelectOptionForSupportRequired(claimRef);
-    this.SelectPreferredCourtLocation(claimRef);
-    this.SelectLanguageOption(claimRef);
+    this.SelectExpertNeededOrNot();
+    this.EnterExpertReportDetails('TestExpert1', '20', '10', '2022');
+    this.SelectGiveEvidenceYourself();
+    this.EnterDefedantWitnesses();
+    this.SelectOptionForCantAttendHearing();
+    this.EnterUnavailabilityDates();
+    this.SelectOptionForPhoneOrVideoHearing();
+    this.SelectOptionForVulnerability();
+    this.SelectOptionForSupportRequired();
+    this.SelectPreferredCourtLocation();
+    this.SelectLanguageOption();
   }
 
   SelectHearingRequirements(claimRef) {
     hearingRequirements.selectHearingRequirements(claimRef);
   }
 
-  SelectExpertNeededOrNot(claimRef) {
-    dqExpert.chooseExpert(claimRef);
+  SelectExpertNeededOrNot() {
+    dqExpert.chooseExpert();
   }
 
-  EnterExpertReportDetails(claimRef, expertName, day, month, year) {
-    expertReportDetails.enterExpertReportDetails(claimRef, expertName, day, month, year);
+  EnterExpertReportDetails(expertName, day, month, year) {
+    expertReportDetails.enterExpertReportDetails(expertName, day, month, year);
   }
 
-  SelectGiveEvidenceYourself(claimRef) {
-    giveEvidenceYourself.SelectGiveEvidenceYourself(claimRef);
+  SelectGiveEvidenceYourself() {
+    giveEvidenceYourself.SelectGiveEvidenceYourself();
   }
 
-  EnterDefedantWitnesses(claimRef) {
-    defendantWitnesses.enterDefendantWitnesses(claimRef);
+  EnterDefedantWitnesses() {
+    defendantWitnesses.enterDefendantWitnesses();
   }
 
-  SelectOptionForCantAttendHearing(claimRef) {
-    cantAttendHearing.selectYesForCantAttendHearing(claimRef);
+  SelectOptionForCantAttendHearing() {
+    cantAttendHearing.selectYesForCantAttendHearing();
   }
 
-  EnterUnavailabilityDates(claimRef) {
-    availabilityDates.enterUnavailableDates(claimRef);
+  EnterUnavailabilityDates() {
+    availabilityDates.enterUnavailableDates();
   }
 
-  SelectOptionForPhoneOrVideoHearing(claimRef) {
-    phoneOrVideoHearing.selectOptionForPhoneOrVideoHearing(claimRef);
+  SelectOptionForPhoneOrVideoHearing() {
+    phoneOrVideoHearing.selectOptionForPhoneOrVideoHearing();
   }
 
-  SelectOptionForVulnerability(claimRef) {
-    vulnerabilityDetails.selectOptionForVulnerability(claimRef);
+  SelectOptionForVulnerability() {
+    vulnerabilityDetails.selectOptionForVulnerability();
   }
 
-  SelectOptionForSupportRequired(claimRef) {
-    supportRequired.selectOptionForSupportRequired(claimRef);
+  SelectOptionForSupportRequired() {
+    supportRequired.selectOptionForSupportRequired();
   }
 
-  SelectPreferredCourtLocation(claimRef) {
-    courtLocation.selectPreferredCourtLocation(claimRef);
+  SelectPreferredCourtLocation() {
+    courtLocation.selectPreferredCourtLocation();
   }
 
-  SelectLanguageOption(claimRef) {
-    welshLanguage.selectLanguageOption(claimRef);
+  SelectLanguageOption() {
+    welshLanguage.selectLanguageOption();
   }
 }
 
