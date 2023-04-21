@@ -361,8 +361,13 @@
       "PAGE_TITLE": "Upload documents",
       "TITLE": "Upload documents",
       "SUBTITLE": "Acceptable documents formats",
-      "FORMAT": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF."
-
+      "FORMAT": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+      "WITNESS": "Witness evidence",
+      "STATEMENT": "Your statement",
+      "NAME": "Your name",
+      "DATE": "Date statement was written",
+      "DATE_EXAMPLE": "For example, 27 9 2022",
+      "STATEMENT": "Your statement"
     },
     "CCJ_CONFIRMATION": {
       "ACTIONS_LINK_TEXT": "Find out about actions you can take after a CCJ is issued ",
