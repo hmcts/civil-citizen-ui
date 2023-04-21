@@ -1,23 +1,48 @@
-import {ClaimSummarySection, ClaimSummaryType} from '../../../../../../common/form/models/claimSummarySection';
-import {Claim} from '../../../../../../common/models/claim';
-import {BILINGUAL_LANGUAGE_PREFERENCE_URL} from '../../../../../../routes/urls';
+import {ClaimSummarySection, ClaimSummaryType} from '../../../common/form/models/claimSummarySection';
 
 export const getWitnessTitle = (): ClaimSummarySection => {
   return ({
     type: ClaimSummaryType.TITLE,
     data: {
-      text: 'PAGES.LATEST_UPDATE_CONTENT.MORE_TIME_REQUESTED',
+      text: 'PAGES.UPLOAD_DOCUMENTS.WITNESS',
     },
   });
 };
 
 export const getWitnessYourStatement = (): ClaimSummarySection => {
   return {
-    type: ClaimSummaryType.PARAGRAPH,
+    type: ClaimSummaryType.SUBTITLE,
     data: {
-      text: 'PAGES.LATEST_UPDATE_CONTENT.YOU_NEED_TO_RESPOND_BEFORE_DEADLINE',
-      variables:
-        {},
+      text: 'PAGES.UPLOAD_DOCUMENTS.STATEMENT',
     },
   };
 };
+export const getInput = (title:string): ClaimSummarySection => {
+  return {
+    type: ClaimSummaryType.INPUT,
+    data: {
+      text: title,
+    },
+  };
+};
+export const getDate = (title:string,  hint:string): ClaimSummarySection => {
+  return {
+    type: ClaimSummaryType.DATE,
+    data: {
+      id: 'date',
+      name:'date',
+      text: title,
+      hint: hint,
+      classes:'govuk-fieldset__legend--s',
+    },
+  };
+};
+export const getUpload = (): ClaimSummarySection => {
+  return {
+    type: ClaimSummaryType.UPLOAD,
+    data: {
+      text: 'PAGES.UPLOAD_DOCUMENTS.STATEMENT',
+    },
+  };
+};
+
