@@ -1,9 +1,9 @@
 export interface CCDTimeLineOfEvents {
-  id: string,
-  value: CCDTimeLineOfEventsItem,
+  id?: string;
+  value?: CCDTimeLineOfEventsItem;
 }
 
 export interface CCDTimeLineOfEventsItem {
-  timelineDate: string,
-  timelineDescription: string,
+  timelineDate?: string;
+  timelineDescription?: string;
 }

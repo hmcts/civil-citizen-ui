@@ -5,7 +5,6 @@ import {CCDPaymentOption} from 'common/models/ccdResponse/ccdPaymentOption';
 import {CCDRepaymentPlanFrequency} from 'common/models/ccdResponse/ccdRepaymentPlan';
 import {Party} from 'common/models/party';
 import {ResponseType} from 'common/form/models/responseType';
-import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {PartialAdmission} from 'common/models/partialAdmission';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {FullAdmission} from 'common/models/fullAdmission';
@@ -13,6 +12,20 @@ import {StatementOfMeans} from 'models/statementOfMeans';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {Employment} from 'models/employment';
 import {CourtOrders} from 'form/models/statementOfMeans/courtOrders/courtOrders';
+import {HowMuchDoYouOwe} from 'form/models/admission/partialAdmission/howMuchDoYouOwe';
+import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
+import {DefendantTimeline} from 'form/models/timeLineOfEvents/defendantTimeline';
+import {WhyDoYouDisagree} from 'form/models/admission/partialAdmission/whyDoYouDisagree';
+import {DefendantEvidence} from 'models/evidence/evidence';
+
+function getPartialAdmission(claim: Claim, option: YesNo) {
+  claim.statementOfMeans = new StatementOfMeans();
+  claim.statementOfMeans.explanation = undefined;
+  claim.partialAdmission = new PartialAdmission();
+  claim.partialAdmission.alreadyPaid = {};
+  claim.partialAdmission.alreadyPaid.messageName = 'Some message';
+  claim.partialAdmission.alreadyPaid.option = option;
+}
 
 const createFullAdmitClaim = (): Claim => {
   const claim = new Claim();
@@ -33,6 +46,12 @@ const createPartAdmitClaim = (): Claim => {
 };
 
 describe('translate response to ccd version', () => {
+  let claim: Claim;
+
+  beforeEach(() => {
+    claim = new Claim();
+  });
+
   it('should translate payment option for full admit claim to ccd', () => {
     //Given
     const claim: Claim = createFullAdmitClaim();
@@ -42,6 +61,7 @@ describe('translate response to ccd version', () => {
     //Then
     expect(ccdResponse.defenceAdmitPartPaymentTimeRouteRequired).toBe(CCDPaymentOption.BY_SET_DATE);
   });
+
   it('should translate payment option to ccd for part admit', () => {
     //Given
     const claim = createPartAdmitClaim();
@@ -53,6 +73,7 @@ describe('translate response to ccd version', () => {
     //Then
     expect(ccdResponse.defenceAdmitPartPaymentTimeRouteRequired).toBe(CCDPaymentOption.BY_SET_DATE);
   });
+
   it('should translate repayment plan for full admission to ccd', () => {
     //Given
     const claim = createFullAdmitClaim();
@@ -69,6 +90,7 @@ describe('translate response to ccd version', () => {
     expect(ccdResponse.respondent1RepaymentPlan?.firstRepaymentDate).toBe(claim.fullAdmission.paymentIntention.repaymentPlan.firstRepaymentDate);
     expect(ccdResponse.respondent1RepaymentPlan?.paymentAmount).toBe(claim.fullAdmission.paymentIntention.repaymentPlan.paymentAmount);
   });
+
   it('should translate repayment plan for part admission to ccd', () => {
     //Given
     const claim = createPartAdmitClaim();
@@ -85,6 +107,7 @@ describe('translate response to ccd version', () => {
     expect(ccdResponse.respondent1RepaymentPlan?.firstRepaymentDate).toBe(claim.partialAdmission.paymentIntention.repaymentPlan.firstRepaymentDate);
     expect(ccdResponse.respondent1RepaymentPlan?.paymentAmount).toBe(claim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount);
   });
+
   it('should translate response type to CCD', () => {
     //Given
     const claim = createFullAdmitClaim();
@@ -93,6 +116,7 @@ describe('translate response to ccd version', () => {
     //Then
     expect(ccdResponse.respondent1ClaimResponseTypeForSpec).toBe(ResponseType.FULL_ADMISSION);
   });
+
   it('should translate payment date to CCD for full admission', () => {
     //Given
     const claim = createFullAdmitClaim();
@@ -112,6 +136,7 @@ describe('translate response to ccd version', () => {
     //Then
     expect(ccdResponse.respondToClaimAdmitPartLRspec?.whenWillThisAmountBePaid).toBe(claim.partialAdmission.paymentIntention.paymentDate);
   });
+
   it('should translate mediation option to CCD', () => {
     //Given
     const claim = createFullAdmitClaim();
@@ -129,6 +154,7 @@ describe('translate response to ccd version', () => {
     //Then
     expect(ccdResponse.responseClaimMediationSpecRequired).toBe(YesNoUpperCamelCase.YES);
   });
+
   it('should translate address changed to ccd', ()=> {
     //Given
     const claim = createFullAdmitClaim();
@@ -147,6 +173,7 @@ describe('translate response to ccd version', () => {
     //Then
     expect(ccdResponse.specAoSApplicantCorrespondenceAddressRequired).toBe(YesNoUpperCamelCase.NO);
   });
+
   it('should translate address has not changed to ccd', ()=>{
     //Given
     const claim = createFullAdmitClaim();
@@ -167,7 +194,6 @@ describe('translate response to ccd version', () => {
 
   it('should translate bank list has not changed to ccd', ()=>{
     //Given
-    const claim = new Claim();
     claim.statementOfMeans = new StatementOfMeans();
     claim.statementOfMeans.bankAccounts = undefined;
     const addressChanged = false;
@@ -181,7 +207,6 @@ describe('translate response to ccd version', () => {
 
   it('should translate disability changed to ccd', ()=>{
     //Given
-    const claim = new Claim();
     claim.statementOfMeans = new StatementOfMeans();
     claim.statementOfMeans.disability = new GenericYesNo(YesNo.YES);
     const addressChanged = false;
@@ -195,7 +220,6 @@ describe('translate response to ccd version', () => {
 
   it('should translate severe disability changed to ccd', ()=>{
     //Given
-    const claim = new Claim();
     claim.statementOfMeans = new StatementOfMeans();
     claim.statementOfMeans.severeDisability = new GenericYesNo(YesNo.YES);
     const addressChanged = false;
@@ -209,7 +233,6 @@ describe('translate response to ccd version', () => {
 
   it('should translate employment changed to ccd', ()=>{
     //Given
-    const claim = new Claim();
     claim.statementOfMeans = new StatementOfMeans();
     const employment : Employment = {
       declared: true,
@@ -227,7 +250,6 @@ describe('translate response to ccd version', () => {
 
   it('should translate court order changed to ccd', ()=>{
     //Given
-    const claim = new Claim();
     claim.statementOfMeans = new StatementOfMeans();
     const courtOrders = new CourtOrders(true, undefined);
     claim.statementOfMeans.courtOrders = courtOrders;
@@ -242,7 +264,6 @@ describe('translate response to ccd version', () => {
 
   it('should translate debt undefined to ccd', ()=>{
     //Given
-    const claim = new Claim();
     claim.statementOfMeans = new StatementOfMeans();
     claim.statementOfMeans.debts = undefined;
     const addressChanged = false;
@@ -256,7 +277,6 @@ describe('translate response to ccd version', () => {
 
   it('should translate why not pay to ccd', ()=>{
     //Given
-    const claim = new Claim();
     claim.statementOfMeans = new StatementOfMeans();
     claim.statementOfMeans.explanation = {
       text: 'test',
@@ -272,7 +292,6 @@ describe('translate response to ccd version', () => {
 
   it('should translate undefined text why not pay to ccd', ()=>{
     //Given
-    const claim = new Claim();
     claim.statementOfMeans = new StatementOfMeans();
     claim.statementOfMeans.explanation = {
       text: undefined,
@@ -288,7 +307,6 @@ describe('translate response to ccd version', () => {
 
   it('should translate undefined why not pay to ccd', ()=>{
     //Given
-    const claim = new Claim();
     claim.statementOfMeans = new StatementOfMeans();
     claim.statementOfMeans.explanation = undefined;
     const addressChanged = false;
@@ -299,5 +317,89 @@ describe('translate response to ccd version', () => {
     //Then
     expect(ccdResponse.responseToClaimAdmitPartWhyNotPayLRspec).toBe(undefined);
   });
-});
 
+  describe('should translate spec defence admitted required', ()=>{
+    it('should be yes', () => {
+      //Given
+      getPartialAdmission(claim, YesNo.YES);
+      //When
+      const ccdResponse = translateDraftResponseToCCD(claim, false);
+      //Then
+      expect(ccdResponse.specDefenceAdmittedRequired).toBe(YesNoUpperCamelCase.YES);
+    });
+
+    it('should be no', () => {
+      // Given
+      getPartialAdmission(claim, YesNo.NO);
+      //When
+      const ccdResponse = translateDraftResponseToCCD(claim, false);
+      //Then
+      expect(ccdResponse.specDefenceAdmittedRequired).toBe(YesNoUpperCamelCase.NO);
+    });
+  });
+
+  it('should translate to respond to admitted claim amount', ()=>{
+    //Given
+    claim.statementOfMeans = new StatementOfMeans();
+    claim.statementOfMeans.explanation = undefined;
+    claim.partialAdmission = new PartialAdmission();
+    claim.partialAdmission.howMuchDoYouOwe = <HowMuchDoYouOwe>{};
+    claim.partialAdmission.howMuchDoYouOwe.amount = 10000;
+    //When
+    const ccdResponse = translateDraftResponseToCCD(claim, false);
+    //Then
+    expect(ccdResponse.respondToAdmittedClaimOwingAmount).toBe('10000');
+  });
+
+  it('should translate timeline of events', ()=>{
+    //Given
+    claim.statementOfMeans = new StatementOfMeans();
+    claim.statementOfMeans.explanation = undefined;
+    claim.partialAdmission = new PartialAdmission();
+    claim.partialAdmission.timeline = <DefendantTimeline>{
+      rows: [
+        {
+          description: 'description',
+          date: '12 Sep 2022',
+        },
+      ],
+
+    };
+    //When
+    const ccdResponse = translateDraftResponseToCCD(claim, false);
+    //Then
+    expect(ccdResponse.specResponseTimelineOfEvents).not.toBeUndefined();
+    expect(ccdResponse.specResponseTimelineOfEvents.length).toBeGreaterThan(0);
+    expect(ccdResponse.specResponseTimelineOfEvents[0].value.timelineDescription).toEqual('description');
+    expect(ccdResponse.specResponseTimelineOfEvents[0].value.timelineDate).toEqual('2022-09-12');
+  });
+
+  it('should translate details of why does you dispute the claim', ()=>{
+    //Given
+    const reason = 'here is the reason';
+    claim.statementOfMeans = new StatementOfMeans();
+    claim.statementOfMeans.explanation = undefined;
+    claim.partialAdmission = new PartialAdmission();
+    claim.partialAdmission.whyDoYouDisagree = <WhyDoYouDisagree>{
+      text: reason,
+    };
+    //When
+    const ccdResponse = translateDraftResponseToCCD(claim, false);
+    //Then
+    expect(ccdResponse.detailsOfWhyDoesYouDisputeTheClaim).toEqual(reason);
+  });
+
+  it('should translate to respondResponseLip', ()=>{
+    //Given
+    claim.evidence = <DefendantEvidence>{};
+    claim.evidence.comment = 'evidence comment';
+    claim.partialAdmission = new PartialAdmission();
+    claim.partialAdmission.timeline = new DefendantTimeline();
+    claim.partialAdmission.timeline.comment = 'timeline comment';
+    //When
+    const ccdResponse = translateDraftResponseToCCD(claim, false);
+    //Then
+    expect(ccdResponse.respondent1LiPResponse.evidenceComment).toEqual(claim.evidence.comment);
+    expect(ccdResponse.respondent1LiPResponse.timelineComment).toEqual(claim.partialAdmission.timeline.comment);
+  });
+});
