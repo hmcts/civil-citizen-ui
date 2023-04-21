@@ -1,36 +1,38 @@
 const TaskListPage = require('../pages/defendantLipResponse/taskList');
-const  NameAndAddressDetailsPage  =  require('../pages/defendantLipResponse/confirmYourDetails/enterNameAndAddressDetails');
-const  DateOfBirthDetailsPage  =  require('../pages/defendantLipResponse/confirmYourDetails/enterDateOfBirthDetails');
-const  ContactNumberDetailsPage  =  require('../pages/defendantLipResponse/confirmYourDetails/enterContactNumberDetails');
-const  RespondTypePage  =  require('../pages/defendantLipResponse/chooseAResponse/respondType');
-const  PaymentOptionPage  =  require('../pages/defendantLipResponse/howYouWillPay/paymentOption');
-const  CheckYourAnswersPage  =  require('../pages/defendantLipResponse/checkYourAnswers');
-const  DateToPayOn  =  require('../pages/defendantLipResponse/yourRepaymentPlan/dateToPayOn');
-const  ShareYouFinancialDetailsIntro  =  require('../pages/defendantLipResponse/shareYourFinancialDetails/shareYouFinancialDetailsIntro');
-const  BankAccountsDetails  =  require('../pages/defendantLipResponse/shareYourFinancialDetails/bankAccountsDetails');
-const  DisabilityDetails  =  require('../pages/defendantLipResponse/shareYourFinancialDetails/disabilityDetails');
-const  SevereDisabilityDetails  =  require('../pages/defendantLipResponse/shareYourFinancialDetails/severeDisabilityDetails');
-const  ResidenceDetails  =  require('../pages/defendantLipResponse/shareYourFinancialDetails/residenceDetails');
-const  PartnerDetails  =  require('../pages/defendantLipResponse/shareYourFinancialDetails/partnerDetails');
-const  PartnerAgeDetails  =  require('../pages/defendantLipResponse/shareYourFinancialDetails/partnerAgeDetails');
-const  PartnerPensionDetails  =  require('../pages/defendantLipResponse/shareYourFinancialDetails/partnerPensionDetails');
-const  PartnerDisabilityDetails  =  require('../pages/defendantLipResponse/shareYourFinancialDetails/partnerDisabilityDetails');
-const  DependantDetails  =  require('../pages/defendantLipResponse/shareYourFinancialDetails/dependantDetails');
-const  OtherDependantDetails  =  require('../pages/defendantLipResponse/shareYourFinancialDetails/otherDependantDetails');
-const  EmploymentDetails  =  require('../pages/defendantLipResponse/shareYourFinancialDetails/employment');
-const  EmployerDetails  =  require('../pages/defendantLipResponse/shareYourFinancialDetails/employerDetails');
-const  SelfEmploymentDetails  =  require('../pages/defendantLipResponse/shareYourFinancialDetails/selfEmploymentDetails');
-const  SelfEmploymentTaxDetails  =  require('../pages/defendantLipResponse/shareYourFinancialDetails/selfEmploymentTaxDetails');
-const  CourtOrders  =  require('../pages/defendantLipResponse/shareYourFinancialDetails/courtOrders');
-const  PriorityDebtsDetails  =  require('../pages/defendantLipResponse/shareYourFinancialDetails/priorityDebtsDetails');
-const  Debts  =  require('../pages/defendantLipResponse/shareYourFinancialDetails/debts');
-const  MonthlyExpenses  =  require('../pages/defendantLipResponse/shareYourFinancialDetails/monthlyExpenses');
-const  MonthlyIncome  =  require('../pages/defendantLipResponse/shareYourFinancialDetails/monthlyIncome');
-const  Explanation  =  require('../pages/defendantLipResponse/whyDoYouDisagree/explanation');
-const  RepaymentPlan  =  require('../pages/defendantLipResponse/yourRepaymentPlan/repaymentPlan');
-const  PartAdmitAlreadyPaid  =  require('../pages/defendantLipResponse/howYouWillPay/partAdmitAlreadyPaid');
-const  RejectAllOfClaim  =  require('../pages/defendantLipResponse/howYouWillPay/rejectAllOfClaim');
-const  CarerDetails  =  require('../pages/defendantLipResponse/shareYourFinancialDetails/carerDetails');
+const DefendantLatestUpdate = require('../pages/defendantLipResponse/defendantLatestUpdate')
+const BilingualLanguagePreference = require('../pages/defendantLipResponse/bilingualLanguagePreference');
+const NameAndAddressDetailsPage = require('../pages/defendantLipResponse/confirmYourDetails/enterNameAndAddressDetails');
+const DateOfBirthDetailsPage = require('../pages/defendantLipResponse/confirmYourDetails/enterDateOfBirthDetails');
+const ContactNumberDetailsPage = require('../pages/defendantLipResponse/confirmYourDetails/enterContactNumberDetails');
+const RespondTypePage = require('../pages/defendantLipResponse/chooseAResponse/respondType');
+const PaymentOptionPage = require('../pages/defendantLipResponse/howYouWillPay/paymentOption');
+const CheckYourAnswersPage = require('../pages/defendantLipResponse/checkYourAnswers');
+const DateToPayOn = require('../pages/defendantLipResponse/yourRepaymentPlan/dateToPayOn');
+const ShareYouFinancialDetailsIntro = require('../pages/defendantLipResponse/shareYourFinancialDetails/shareYouFinancialDetailsIntro');
+const BankAccountsDetails = require('../pages/defendantLipResponse/shareYourFinancialDetails/bankAccountsDetails');
+const DisabilityDetails = require('../pages/defendantLipResponse/shareYourFinancialDetails/disabilityDetails');
+const SevereDisabilityDetails = require('../pages/defendantLipResponse/shareYourFinancialDetails/severeDisabilityDetails');
+const ResidenceDetails = require('../pages/defendantLipResponse/shareYourFinancialDetails/residenceDetails');
+const PartnerDetails = require('../pages/defendantLipResponse/shareYourFinancialDetails/partnerDetails');
+const PartnerAgeDetails = require('../pages/defendantLipResponse/shareYourFinancialDetails/partnerAgeDetails');
+const PartnerPensionDetails = require('../pages/defendantLipResponse/shareYourFinancialDetails/partnerPensionDetails');
+const PartnerDisabilityDetails = require('../pages/defendantLipResponse/shareYourFinancialDetails/partnerDisabilityDetails');
+const DependantDetails = require('../pages/defendantLipResponse/shareYourFinancialDetails/dependantDetails');
+const OtherDependantDetails = require('../pages/defendantLipResponse/shareYourFinancialDetails/otherDependantDetails');
+const EmploymentDetails = require('../pages/defendantLipResponse/shareYourFinancialDetails/employment');
+const EmployerDetails = require('../pages/defendantLipResponse/shareYourFinancialDetails/employerDetails');
+const SelfEmploymentDetails = require('../pages/defendantLipResponse/shareYourFinancialDetails/selfEmploymentDetails');
+const SelfEmploymentTaxDetails = require('../pages/defendantLipResponse/shareYourFinancialDetails/selfEmploymentTaxDetails');
+const CourtOrders = require('../pages/defendantLipResponse/shareYourFinancialDetails/courtOrders');
+const PriorityDebtsDetails = require('../pages/defendantLipResponse/shareYourFinancialDetails/priorityDebtsDetails');
+const Debts = require('../pages/defendantLipResponse/shareYourFinancialDetails/debts');
+const MonthlyExpenses = require('../pages/defendantLipResponse/shareYourFinancialDetails/monthlyExpenses');
+const MonthlyIncome = require('../pages/defendantLipResponse/shareYourFinancialDetails/monthlyIncome');
+const Explanation = require('../pages/defendantLipResponse/whyDoYouDisagree/explanation');
+const RepaymentPlan = require('../pages/defendantLipResponse/yourRepaymentPlan/repaymentPlan');
+const PartAdmitAlreadyPaid = require('../pages/defendantLipResponse/howYouWillPay/partAdmitAlreadyPaid');
+const RejectAllOfClaim = require('../pages/defendantLipResponse/howYouWillPay/rejectAllOfClaim');
+const CarerDetails = require('../pages/defendantLipResponse/shareYourFinancialDetails/carerDetails');
 const ViewYourOptionsBeforeDeadline = require('../pages/defendantLipResponse/viewYourOptionsBeforeDeadline/viewYourOptionsBeforeDeadline');
 const HowMuchYouHavePaid = require('../pages/defendantLipResponse/howYouWillPay/howMuchYouHavePaid');
 const HowMuchDoYouOwe = require('../pages/defendantLipResponse/howYouWillPay/howMuchDoYouOwe');
@@ -60,7 +62,9 @@ const addYourTimeLine = new AddYourTimeLine();
 const freeTelephoneMediation = new FreeTelephoneMediation();
 const listYourEvidence = new ListYourEvidence();
 const taskListPage = new TaskListPage();
-const nameAndAddressDetailsPage  = new NameAndAddressDetailsPage();
+const defendantLatestUpdate = new DefendantLatestUpdate();
+const bilingualLanguagePreference = new BilingualLanguagePreference();
+const nameAndAddressDetailsPage = new NameAndAddressDetailsPage();
 const dateOfBirthDetailsPage = new DateOfBirthDetailsPage();
 const contactNumberDetailsPage = new ContactNumberDetailsPage();
 const respondTypePage = new RespondTypePage();
@@ -88,7 +92,7 @@ const debts = new Debts();
 const monthlyExpenses = new MonthlyExpenses();
 const monthlyIncome = new MonthlyIncome();
 const explanation = new Explanation();
-const repaymentPlan= new RepaymentPlan();
+const repaymentPlan = new RepaymentPlan();
 const partAdmitAlreadyPaid = new PartAdmitAlreadyPaid();
 const rejectAllOfClaim = new RejectAllOfClaim();
 const selectCarerDetails = new CarerDetails();
@@ -110,40 +114,46 @@ const courtLocation = new CourtLocation();
 const welshLanguage = new WelshLanguage();
 
 class ResponseSteps {
+  RespondToClaim(claimRef){
+    defendantLatestUpdate.open(claimRef);
+    bilingualLanguagePreference.verifyContent();
+  }
 
   EnterPersonalDetails(claimRef) {
-    taskListPage.open(claimRef);
     taskListPage.verifyResponsePageContent();
     nameAndAddressDetailsPage.enterNameAndAddressDetails(claimRef);
     dateOfBirthDetailsPage.enterDateOfBirth(claimRef);
     contactNumberDetailsPage.enterContactNumber(claimRef);
   }
 
-  EnterYourOptionsForDeadline(claimRef, deadlineOption){
+  EnterYourOptionsForDeadline(claimRef, deadlineOption) {
     viewYourOptionsBeforeDeadline.selectYouOptions(claimRef, deadlineOption);
   }
 
-  RespondToRequest (claimRef) {
+  RespondToRequest(claimRef) {
     requestMoreTime.requestMoreTimeToRespond(claimRef);
   }
 
-  AddMandatoryPhoneNumber(){
+  AddMandatoryPhoneNumber() {
     mediationCanWeUse.enterPhoneNumber();
   }
 
-  AddYourTimeLineEvents(){
+  AddYourTimeLineEvents() {
     addYourTimeLine.addTimeLineOfEvents();
   }
 
   EnterResponseToClaim(claimRef, responseType) {
     respondTypePage.enterResponseToClaim(claimRef, responseType);
   }
+
   EnterPaymentOption(claimRef, responseType, paymentOption) {
     paymentOptionPage.enterPaymentOption(claimRef, responseType, paymentOption);
   }
-  CheckAndSubmit(claimRef,responseType) {
-    checkYourAnswersPage.checkAndSubmit(claimRef,responseType);
+
+  CheckAndSubmit(claimRef, responseType) {
+    checkYourAnswersPage.checkAndSubmit(claimRef, responseType);
   }
+
   EnterDateToPayOn() {
     dateToPayOn.enterDateToPayOn();
   }
@@ -164,9 +174,9 @@ class ResponseSteps {
     this.EnterSelfEmploymentDetails();
     this.EnterSelfEmploymentTaxDetails();
     this.EnterCourtOrderDetails(claimRef);
-    this.PriorityDebtsDetails('120','20','10', '5');
+    this.PriorityDebtsDetails('120', '20', '10', '5');
     this.EnterDebtDetails();
-    this.MonthlyExpensesDetails('1200','45', '25', '30', '100', '125');
+    this.MonthlyExpensesDetails('1200', '45', '25', '30', '100', '125');
     this.MonthlyIncomeDetails('4500', '120', '1100');
     this.EnterExplanation();
   }
@@ -175,99 +185,117 @@ class ResponseSteps {
     shareYourFinancialDetailsIntro.open(claimRef);
     shareYourFinancialDetailsIntro.clickContinue();
   }
+
   EnterBankAccountDetails() {
     bankAccountDetails.enterBankAccountDetails();
     bankAccountDetails.clickContinue();
   }
+
   SelectDisabilityDetails(disability, severeDisability) {
-    if(disability == 'yes'){
+    if (disability == 'yes') {
       disabilityDetails.clickYesButton();
-      if(severeDisability == 'yes'){
+      if (severeDisability == 'yes') {
         severeDisabilityDetails.clickYesButton();
-      }else{
+      } else {
         severeDisabilityDetails.clickNoButton();
       }
-    }else{
+    } else {
       disabilityDetails.clickNoButton();
     }
   }
+
   SelectResidenceDetails(residenceType) {
     selectResidenceDetails.selectResidenceType(residenceType);
   }
+
   SelectPartnerDetails(partner) {
-    if(partner == 'yes'){
+    if (partner == 'yes') {
       selectPartnerDetails.clickYesButton();
-    }else{
+    } else {
       selectPartnerDetails.clickNoButton();
     }
   }
+
   SelectPartnerAge(partnerAge) {
-    if(partnerAge == 'yes'){
+    if (partnerAge == 'yes') {
       selectPartnerAge.clickYesButton();
-    }else{
+    } else {
       selectPartnerAge.clickNoButton();
     }
   }
+
   SelectPartnerPension(partnerPension) {
-    if(partnerPension == 'yes'){
+    if (partnerPension == 'yes') {
       selectPartnerPension.clickYesButton();
-    }else{
+    } else {
       selectPartnerPension.clickNoButton();
     }
   }
+
   SelectPartnerDisability(partnerDisability) {
-    if(partnerDisability == 'yes'){
+    if (partnerDisability == 'yes') {
       selectPartnerDisability.clickYesButton();
-    }else{
+    } else {
       selectPartnerDisability.clickNoButton();
     }
   }
+
   SelectDependantDetails(dependant) {
-    if(dependant == 'yes'){
+    if (dependant == 'yes') {
       selectDependantDetails.clickYesButton();
-    }else{
+    } else {
       selectDependantDetails.clickNoButton();
     }
   }
+
   SelectOtherDependantDetails(dependant) {
-    if(dependant == 'yes'){
+    if (dependant == 'yes') {
       selectOtherDependantsDetails.clickYesButton();
-    }else{
+    } else {
       selectOtherDependantsDetails.clickNoButton();
     }
   }
+
   SelectCarerDetails(carer) {
-    if(carer == 'yes'){
+    if (carer == 'yes') {
       selectCarerDetails.clickYesButton();
-    }else{
+    } else {
       selectCarerDetails.clickNoButton();
     }
   }
+
   SelectEmploymentDetails(employment) {
-    if(employment == 'yes'){
+    if (employment == 'yes') {
       selectEmploymentDetails.clickYesButton();
-    }else{
+    } else {
       selectEmploymentDetails.clickNoButton();
     }
   }
+
   EnterHowMuchYouHavePaid(claimRef, amount) {
     howMuchYouHavePaid.enterPaymentDetails(claimRef, amount);
   }
+
   EnterHowMuchMoneyYouOwe(claimRef, amount) {
     howMuchDoYouOwe.enterHowMuchMoneyDoYouOwe(claimRef, amount);
   }
+
   EnterEmployerDetails() {
     enterEmployerDetails.enterEmployerDetails();
   }
+
   EnterSelfEmploymentDetails() {
     enterSelfEmploymentDetails.enterSelfEmployerDetails();
   }
+
   EnterSelfEmploymentTaxDetails() {
     enterSelfEmploymentTaxDetails.clickYesButton();
   }
+
   EnterCourtOrderDetails(claimRef) {
     courtOrders.clickYesButton(claimRef);
   }
+
   PriorityDebtsDetails(mortage, councilTax, gas, electricity) {
     priorityDebtsDetails.selectMortgage(mortage);
     priorityDebtsDetails.selectCouncilTax(councilTax);
@@ -275,9 +303,11 @@ class ResponseSteps {
     priorityDebtsDetails.selectElectricity(electricity);
     priorityDebtsDetails.clickContinue();
   }
+
   EnterDebtDetails() {
     debts.clickYesButton();
   }
+
   MonthlyExpensesDetails(mortgage, councilTax, gas, electricity, foodAndHouseKeeping, otherExpenses) {
     monthlyExpenses.selectMortgage(mortgage);
     monthlyExpenses.selectCouncilTax(councilTax);
@@ -287,24 +317,30 @@ class ResponseSteps {
     monthlyExpenses.selectOtherExpenses(otherExpenses);
     monthlyExpenses.clickContinue();
   }
+
   MonthlyIncomeDetails(incomeFromJob, childBenefit, otherIncome) {
     monthlyIncome.selectIncomeFromJob(incomeFromJob);
     monthlyIncome.selectChildBenefit(childBenefit);
     monthlyIncome.selectOtherIncome(otherIncome);
     monthlyIncome.clickContinue();
   }
+
   EnterExplanation() {
     explanation.enterExplanation();
   }
+
   EnterRepaymentPlan(claimRef) {
     repaymentPlan.enterRepaymentPlan(claimRef);
   }
+
   SelectPartAdmitAlreadyPaid(option) {
     partAdmitAlreadyPaid.selectAlreadyPaid(option);
   }
+
   SelectOptionInRejectAllClaim(reason) {
     rejectAllOfClaim.selectRejectAllReason(reason);
   }
+
   EnterWhyYouDisagreeTheClaimAmount(claimRef) {
     whyDoYouDisagreeTheClaimAmount.enterReason(claimRef);
   }
@@ -318,7 +354,7 @@ class ResponseSteps {
     mediationCanWeUse.selectOptionForMediation(claimRef);
   }
 
-  EnterDQForSmallClaims(claimRef){
+  EnterDQForSmallClaims(claimRef) {
     this.SelectHearingRequirements(claimRef);
     this.SelectExpertNeededOrNot(claimRef);
     this.EnterExpertReportDetails(claimRef, 'TestExpert1', '20', '10', '2022');
@@ -333,51 +369,51 @@ class ResponseSteps {
     this.SelectLanguageOption(claimRef);
   }
 
-  SelectHearingRequirements(claimRef){
+  SelectHearingRequirements(claimRef) {
     hearingRequirements.selectHearingRequirements(claimRef);
   }
 
-  SelectExpertNeededOrNot(claimRef){
+  SelectExpertNeededOrNot(claimRef) {
     dqExpert.chooseExpert(claimRef);
   }
 
-  EnterExpertReportDetails(claimRef, expertName, day, month, year){
+  EnterExpertReportDetails(claimRef, expertName, day, month, year) {
     expertReportDetails.enterExpertReportDetails(claimRef, expertName, day, month, year);
   }
 
-  SelectGiveEvidenceYourself(claimRef){
+  SelectGiveEvidenceYourself(claimRef) {
     giveEvidenceYourself.SelectGiveEvidenceYourself(claimRef);
   }
 
-  EnterDefedantWitnesses(claimRef){
+  EnterDefedantWitnesses(claimRef) {
     defendantWitnesses.enterDefendantWitnesses(claimRef);
   }
 
-  SelectOptionForCantAttendHearing(claimRef){
+  SelectOptionForCantAttendHearing(claimRef) {
     cantAttendHearing.selectYesForCantAttendHearing(claimRef);
   }
 
-  EnterUnavailabilityDates(claimRef){
+  EnterUnavailabilityDates(claimRef) {
     availabilityDates.enterUnavailableDates(claimRef);
   }
 
-  SelectOptionForPhoneOrVideoHearing(claimRef){
+  SelectOptionForPhoneOrVideoHearing(claimRef) {
     phoneOrVideoHearing.selectOptionForPhoneOrVideoHearing(claimRef);
   }
 
-  SelectOptionForVulnerability(claimRef){
+  SelectOptionForVulnerability(claimRef) {
     vulnerabilityDetails.selectOptionForVulnerability(claimRef);
   }
 
-  SelectOptionForSupportRequired(claimRef){
+  SelectOptionForSupportRequired(claimRef) {
     supportRequired.selectOptionForSupportRequired(claimRef);
   }
 
-  SelectPreferredCourtLocation(claimRef){
+  SelectPreferredCourtLocation(claimRef) {
     courtLocation.selectPreferredCourtLocation(claimRef);
   }
 
-  SelectLanguageOption(claimRef){
+  SelectLanguageOption(claimRef) {
     welshLanguage.selectLanguageOption(claimRef);
   }
 }

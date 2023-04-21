@@ -13,7 +13,6 @@ const fields ={
 class SupportRequired {
 
   selectOptionForSupportRequired(claimRef) {
-    I.amOnPage('/case/'+claimRef+'/directions-questionnaire/support-required');
     I.see('Do you, your experts or witnesses need support to attend a hearing', 'h1');
     I.click(fields.yesButton);
     I.selectOption(fields.selectDropDown,'WitnessFName WitnessLName');
