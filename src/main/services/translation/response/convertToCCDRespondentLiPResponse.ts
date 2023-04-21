@@ -10,6 +10,8 @@ import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePre
 
 export const toCCDRespondentLiPResponse = (claim: Claim): CCDRespondentLiPResponse => {
   return {
+    timelineComment: claim.partialAdmission?.timeline?.comment,
+    evidenceComment: claim.evidence?.comment,
     respondent1LiPFinancialDetails : toCCDResponseLiPFinancialDetails(claim.statementOfMeans),
     respondent1MediationLiPResponse: toCCDMediation(claim.mediation),
     respondent1DQExtraDetails: toCCDDQExtraDetails(claim.directionQuestionnaire),

@@ -49,6 +49,11 @@ import {Debts} from 'form/models/statementOfMeans/debts/debts';
 import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreference';
 import {analyseClaimType, claimType} from 'common/form/models/claimType';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
+import {CCDClaim} from 'models/civilClaimResponse';
+import {toCUIEvidence} from 'services/translation/convertToCUI/convertToCUIEvidence';
+import {toCUIParty} from 'services/translation/convertToCUI/convertToCUIParty';
+import {toCUIMediation} from 'services/translation/convertToCUI/convertToCUIMediation';
+import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIClaimDetails';
 
 export class Claim {
   legacyCaseReference: string;
@@ -85,6 +90,16 @@ export class Claim {
   claimBilingualLanguagePreference: ClaimBilingualLanguagePreference;
   id: string;
   sdoOrderDocument?: CaseDocument;
+
+  public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
+    const claim: Claim = Object.assign(new Claim(), ccdClaim);
+    claim.claimDetails = toCUIClaimDetails(ccdClaim);
+    claim.evidence = toCUIEvidence(ccdClaim?.specResponselistYourEvidenceList);
+    claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
+    claim.respondent1 = toCUIParty(ccdClaim?.respondent1);
+    claim.mediation = toCUIMediation(ccdClaim?.respondent1LiPResponse?.respondent1MediationLiPResponse);
+    return claim;
+  }
 
   get responseStatus(): ClaimResponseStatus {
     if (this.isFullAdmission() && this.isFAPaymentOptionPayImmediately()) {
@@ -425,6 +440,14 @@ export class Claim {
 
   getHowTheInterestCalculatedReason(): string {
     return this.interest?.totalInterest?.reason;
+  }
+
+  detailsOfWhyYouDisputeTheClaim(): string {
+    if(this.rejectAllOfClaim) {
+      return this.rejectAllOfClaim?.defence?.text ?? this.rejectAllOfClaim?.whyDoYouDisagree?.text;
+    } else if(this.partialAdmission) {
+      return this.partialAdmission?.whyDoYouDisagree?.text;
+    }
   }
 
   getPaymentIntention() : PaymentIntention {
