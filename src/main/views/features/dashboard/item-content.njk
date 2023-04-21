@@ -3,6 +3,7 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 
 {% macro itemContent(content) %}
   {% if content.type === ClaimSummaryType.HTML %}
@@ -83,4 +84,41 @@
       }) }}
     </div>
   {% endif %}
+
+      {% if content.type === ClaimSummaryType.INPUT %}
+        <div>
+    {{ govukInsetText({
+      text: t(content.data.text),
+      html: content.data.html
+    }) }}
+        </div>
+      {% endif %}
+        {% if content.type === ClaimSummaryType.UPLOAD %}
+          <div>
+    {{ govukInsetText({
+      text: t(content.data.text),
+      html: content.data.html
+    }) }}
+          </div>
+        {% endif %}
+          {% if content.type === ClaimSummaryType.DATE %}
+            <div>
+              {{ govukDateInput({
+                id: content.data.id,
+                namePrefix: content.data.name,
+                fieldset: {
+                  legend: {
+                    text: t(content.data.text),
+                    isPageHeading: false,
+                    classes: content.data.classes
+                  }
+                },
+                hint: {
+                  text: t(content.data.hint)
+                }
+              }) }}
+            </div>
+          {% endif %}
+
+
 {% endmacro %}
