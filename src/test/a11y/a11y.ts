@@ -1,4 +1,4 @@
-/* eslint-disable jest/no-done-callback,jest/expect-expect */
+/* eslint-disable */
 import { fail } from 'assert';
 
 import { PageUrls } from './constants';
