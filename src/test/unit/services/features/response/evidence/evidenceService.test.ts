@@ -5,6 +5,7 @@ import {EvidenceType} from '../../../../../../main/common/models/evidence/eviden
 import {Evidence} from '../../../../../../main/common/form/models/evidence/evidence';
 import {EvidenceItem} from '../../../../../../main/common/form/models/evidence/evidenceItem';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {DefendantEvidence} from 'models/evidence/evidence';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -29,7 +30,10 @@ describe('Evidence Service', () => {
     it('should get empty form when no data exist', async () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
+        const claim = new Claim();
+        claim.evidence = <DefendantEvidence>{};
+        claim.evidence.evidenceItem = EVIDENCE_ITEM_EMPTY;
+        return claim;
       });
       //When
       const form = await getEvidence('123');
