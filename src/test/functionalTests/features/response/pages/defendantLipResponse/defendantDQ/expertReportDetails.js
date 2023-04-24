@@ -12,8 +12,7 @@ const fields ={
 
 class ExpertReportDetails {
 
-  enterExpertReportDetails(claimRef, expertName, day, month, year) {
-    I.amOnPage('/case/'+claimRef+'/directions-questionnaire/expert-report-details');
+  enterExpertReportDetails(expertName, day, month, year) {
     I.see('Have you already got a report written by an expert?', 'h1');
     I.click(fields.yesButton);
     I.fillField(fields.firstExpertsName, expertName);
