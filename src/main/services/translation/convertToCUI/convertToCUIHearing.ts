@@ -7,9 +7,12 @@ import {UnavailableDatePeriod, UnavailableDateType} from 'models/directionsQuest
 import {CCDUnavailableDates, CCDUnavailableDateType} from 'models/ccdResponse/ccdSmallClaimHearing';
 import {Support, SupportRequired} from 'models/directionsQuestionnaire/supportRequired';
 import {CCDSupportRequirement, CCDSupportRequirements} from 'models/ccdResponse/ccdHearingSupport';
+import {claimType} from 'common/form/models/claimType';
+import {DeterminationWithoutHearing} from 'common/models/directionsQuestionnaire/hearing/determinationWithoutHearing';
+import {ConsiderClaimantDocuments} from 'common/models/directionsQuestionnaire/hearing/considerClaimantDocuments';
 
 export const toCUIHearing = (ccdClaim: CCDClaim) : Hearing => {
-  if(ccdClaim){
+  if (ccdClaim) {
     const hearing: Hearing = new Hearing();
     if (ccdClaim.respondent1DQRequestedCourt) {
       hearing.specificCourtLocation = toCUISpecificCourtLocation(ccdClaim.respondent1DQRequestedCourt);
@@ -42,6 +45,28 @@ export const toCUIHearing = (ccdClaim: CCDClaim) : Hearing => {
         option: toCUIYesNo(ccdClaim.respondent1LiPResponse.respondent1DQHearingSupportLip.supportRequirementLip),
         items: toCUISupportItems(ccdClaim.respondent1LiPResponse.respondent1DQHearingSupportLip.requirementsLip),
       };
+    }
+    if (ccdClaim.claimType === claimType.SMALL_CLAIM) {
+      if (ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails) {
+        hearing.determinationWithoutHearing = {
+          option: toCUIYesNo(ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.determinationWithoutHearingRequired),
+          reasonForHearing: ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.determinationWithoutHearingReason,
+        } as DeterminationWithoutHearing;
+      }
+    } else {
+      if (ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.triedToSettle) {
+        hearing.triedToSettle = toCUIGenericYesNo(ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.triedToSettle);
+      }
+      if (ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.requestExtra4weeks) {
+        hearing.requestExtra4weeks = toCUIGenericYesNo(ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.requestExtra4weeks);
+      }
+      if (ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.considerClaimantDocuments) {
+        hearing.considerClaimantDocuments =
+          {
+            option: toCUIYesNo(ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.considerClaimantDocuments),
+            details: ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.considerClaimantDocumentsDetails,
+          } as ConsiderClaimantDocuments;
+      }
     }
     return hearing;
   }
