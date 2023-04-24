@@ -24,6 +24,10 @@
             <h2 class="govuk-heading-s">{{ titleH2 }}</h2>
             <p class="govuk-body-m">{{ paragraph }}</p>
             <hr class="govuk-section-break--s govuk-section-break--visible">
+            {{ govukButton({
+               text: t('PAGES.UPLOAD_DOCUMENTS.REMOVE_SECTION'),
+               classes: "govuk-button--secondary remove-row"
+            }) }}
             <div data-module="moj-add-another" class="select-toggle">
               {% for witnessSection in witnessContent %}
                 {{ claimSummaryContent({
