@@ -133,7 +133,6 @@ withPipeline(type, product, component) {
   }
 
   afterAlways('smoketest:preview') {
-        //loadVaultSecrets(inTestTrue)
         stage('Accessibility') {
             yarnBuilder.yarn('tests:a11y')
             publishHTML([
