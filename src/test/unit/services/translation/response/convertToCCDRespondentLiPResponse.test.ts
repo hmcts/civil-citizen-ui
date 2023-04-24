@@ -8,6 +8,8 @@ import {CCDAddress} from 'models/ccdResponse/ccdAddress';
 import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
 import {CCDDQExtraDetails} from 'models/ccdResponse/ccdDQExtraDetails';
 import {CCDHearingSupport} from 'models/ccdResponse/ccdHearingSupport';
+import {DefendantTimeline} from 'form/models/timeLineOfEvents/defendantTimeline';
+import {TimelineRow} from 'form/models/timeLineOfEvents/timelineRow';
 
 const setUpUndefinedFinancialDetails = () : CCDFinancialDetailsLiP => {
   return {
@@ -31,10 +33,10 @@ const setUpUndefinedDQExtraDetails = () : CCDDQExtraDetails => {
     considerClaimantDocuments: undefined,
     considerClaimantDocumentsDetails: '',
     respondent1DQLiPExpert: {
-      expertCanStillExamine: undefined,
+      caseNeedsAnExpert: undefined,
       expertCanStillExamineDetails: '',
       expertReportRequired: undefined,
-      reportDetails: undefined,
+      details: undefined,
     },
   };
 };
@@ -140,5 +142,28 @@ describe('translate cui fields to CCD model', () => {
     //Then
     expect(output).toEqual(expected);
   });
-});
 
+  it('return the Respondent LiP Response object', () => {
+    // Given
+    const claim = new Claim();
+    const timeline: DefendantTimeline = new DefendantTimeline([new TimelineRow('6 November 2022', 'Event 1')]);
+
+    claim.partialAdmission = {
+      alreadyPaid: {
+        option: 'yes',
+      },
+      timeline: timeline,
+    };
+    claim.evidence = {
+      comment: 'Evidence commet',
+      evidenceItem: [],
+    };
+
+    // When
+    const result = toCCDRespondentLiPResponse(claim);
+
+    // Then
+    expect(result.timelineComment).toEqual(claim.partialAdmission.timeline.comment);
+    expect(result.evidenceComment).toEqual(claim.evidence.comment);
+  });
+});
