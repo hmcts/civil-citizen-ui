@@ -6,7 +6,6 @@ import {StatementOfMeans} from 'models/statementOfMeans';
 import {PartialAdmission} from 'models/partialAdmission';
 import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
 import {Mediation} from 'models/mediation/mediation';
-import {DefendantEvidence} from 'models/evidence/evidence';
 import {TimeLineOfEvents} from 'models/timelineOfEvents/timeLineOfEvents';
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
@@ -40,12 +39,14 @@ import {CCDLoanCredit} from 'models/ccdResponse/ccdLoanCredit';
 import {CCDDebtDetails} from 'models/ccdResponse/ccdDebtDetails';
 import {CCDRecurringIncome} from 'models/ccdResponse/ccdRecurringIncome';
 import {CCDRecurringExpenses} from 'models/ccdResponse/ccdRecurringExpenses';
+import {Evidence} from 'form/models/evidence/evidence';
 import {CCDWelshLanguageRequirements} from 'models/ccdResponse/ccdWelshLanguageRequirements';
 import {CCDVulnerability} from 'models/ccdResponse/ccdVulnerability';
 import {CCDSpecificCourtLocations} from 'models/ccdResponse/ccdSpecificCourtLocations';
 import {CCDWitnesses} from 'models/ccdResponse/ccdWitnesses';
 import {CCDSmallClaimHearing} from 'models/ccdResponse/ccdSmallClaimHearing';
 import {CCDFastClaimHearing} from 'models/ccdResponse/ccdFastClaimHearing';
+import {CCDExpert} from './ccdResponse/ccdExpert';
 
 export class CivilClaimResponse {
   id: string;
@@ -81,7 +82,7 @@ export interface CCDClaim extends ClaimUpdate {
   partialAdmission?: PartialAdmission;
   rejectAllOfClaim?: RejectAllOfClaim;
   mediation?: Mediation;
-  evidence?: DefendantEvidence;
+  evidence?: Evidence;
   timelineOfEvents?: TimeLineOfEvents[]; // TODO: Release 2: ClaimDetails timeline needs to translate into this field
   taskSharedFinancialDetails?: boolean;
   defendantStatementOfTruth?: StatementOfTruthForm | QualifiedStatementOfTruth;
@@ -102,6 +103,7 @@ export interface CCDClaim extends ClaimUpdate {
   specResponseTimelineOfEvents?: CCDTimeLineOfEvents[],
   detailsOfClaim?: string,
   speclistYourEvidenceList?: CCDEvidence[],
+  specResponselistYourEvidenceList?: CCDEvidence[],
   interestClaimOptions?: CCDInterestType,
   breakDownInterestTotal?: number,
   breakDownInterestDescription?: string,
@@ -147,6 +149,9 @@ export interface CCDClaim extends ClaimUpdate {
   respondent1DQWitnesses?: CCDWitnesses;
   respondent1DQHearingSmallClaim?: CCDSmallClaimHearing;
   respondent1DQHearingFastClaim?: CCDFastClaimHearing;
+  respondent1DQExperts?: CCDExpert;
+  responseClaimExpertSpecRequired?: YesNoUpperCamelCase;
+  claimType?: string;
 }
 
 export interface ClaimFeeData {
