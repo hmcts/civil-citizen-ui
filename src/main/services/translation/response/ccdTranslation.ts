@@ -1,6 +1,6 @@
 import {Claim} from 'models/claim';
 import {CCDResponse} from 'models/ccdResponse/ccdResponse';
-import {toUpperCaseGenericYesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {toAgreedMediation} from './convertToCCDAgreedMediation';
 import {toCCDParty} from './convertToCCDParty';
 import {toCCDRejectAllOfClaimType} from './convertToCCDRejectAllOfClaimType';
@@ -29,6 +29,7 @@ import {
   toCCDRespondentLiPResponse,
 } from 'services/translation/response/convertToCCDRespondentLiPResponse';
 import {
+  toCCDYesNo,
   toCCDYesNoFromBoolean,
   toCCDYesNoFromGenericYesNo,
 } from 'services/translation/response/convertToCCDYesNo';
@@ -38,6 +39,7 @@ import {toCCDSpecificCourtLocations} from 'services/translation/response/convert
 import {toCCDWitnesses} from 'services/translation/response/convertToCCDWitnesses';
 import {toCCDSmallClaimHearing} from 'services/translation/response/convertToCCDSmallClaimHearing';
 import {toCCDFastClaimHearing} from 'services/translation/response/convertToCCDFastClaimHearing';
+import {toCCDExpert} from 'services/translation/response/convertToCCDExpert';
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   const paymentIntention = claim.getPaymentIntention();
@@ -52,7 +54,7 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     respondent1: toCCDParty(claim.respondent1),
     respondent1LiPResponse: toCCDRespondentLiPResponse(claim),
     respondToAdmittedClaim: toCCDRespondToClaim(claim.partialAdmission?.howMuchHaveYouPaid),
-    specDefenceAdmittedRequired: toUpperCaseGenericYesNo(claim.partialAdmission?.alreadyPaid),
+    specDefenceAdmittedRequired: toCCDYesNoFromGenericYesNo(claim.partialAdmission?.alreadyPaid),
     respondToAdmittedClaimOwingAmount: claim.partialAdmission?.howMuchDoYouOwe?.amount?.toString(),
     detailsOfWhyDoesYouDisputeTheClaim: claim.detailsOfWhyYouDisputeTheClaim(),
     specClaimResponseTimelineList: TimelineUploadTypeSpec.MANUAL, // sets to manual cause CUI do not have other option
@@ -88,6 +90,8 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     respondent1DQWitnesses: toCCDWitnesses(claim.directionQuestionnaire?.witnesses),
     respondent1DQHearingSmallClaim: claim.isSmallClaimsTrackDQ ? toCCDSmallClaimHearing(claim.directionQuestionnaire?.hearing) : undefined,
     respondent1DQHearingFastClaim: claim.isFastTrackClaim ? toCCDFastClaimHearing(claim.directionQuestionnaire?.hearing) : undefined,
+    respondent1DQExperts: toCCDExpert(claim),
+    responseClaimExpertSpecRequired: toCCDYesNo(claim.directionQuestionnaire?.experts?.permissionForExpert?.option),
   };
 };
 

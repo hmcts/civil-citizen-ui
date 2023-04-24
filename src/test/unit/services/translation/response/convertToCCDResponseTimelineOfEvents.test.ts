@@ -1,7 +1,7 @@
 import {toCCDResponseTimelineOfEvents} from 'services/translation/response/convertToCCDResponseTimelineOfEvents';
 import {DefendantTimeline} from 'form/models/timeLineOfEvents/defendantTimeline';
 import {TimelineRow} from 'form/models/timeLineOfEvents/timelineRow';
-import {stringDateToObject} from 'common/utils/dateUtils';
+import {formatStringDate} from 'common/utils/dateUtils';
 
 describe('convert to response timeline of events', () => {
 
@@ -13,7 +13,7 @@ describe('convert to response timeline of events', () => {
 
     // Then
     expect(result.length).toEqual(1);
-    expect(result[0].value.timelineDate).toEqual(stringDateToObject(events.rows[0].date));
+    expect(result[0].value.timelineDate).toEqual(formatStringDate(events.rows[0].date));
     expect(result[0].value.timelineDescription).toEqual(events.rows[0].description);
   });
 });

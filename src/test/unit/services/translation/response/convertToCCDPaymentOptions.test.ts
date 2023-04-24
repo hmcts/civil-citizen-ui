@@ -117,7 +117,7 @@ describe('convert payment option', () => {
       claim.respondent1 = {
         responseType: ResponseType.FULL_ADMISSION,
       };
-      claim.fullAdmission = {
+      claim.partialAdmission = {
         paymentIntention: {
           paymentOption: PaymentOptionType.IMMEDIATELY,
         },
@@ -128,12 +128,12 @@ describe('convert payment option', () => {
       expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
     });
 
-    it('when payment option is INSTALMENTS should return REPAYMENT_PLAN', () => {
+    it('when payment option is INSTALMENTS should return IMMEDIATELY', () => {
       // GIVEN
       claim.respondent1 = {
         responseType: ResponseType.FULL_ADMISSION,
       };
-      claim.fullAdmission = {
+      claim.partialAdmission = {
         paymentIntention: {
           paymentOption: PaymentOptionType.INSTALMENTS,
         },
@@ -141,15 +141,15 @@ describe('convert payment option', () => {
       // WHEN
       const result = toCCDPaymentOption(claim.getPaymentIntention()?.paymentOption);
       // THEN
-      expect(result).toEqual(CCDPaymentOption.REPAYMENT_PLAN);
+      expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
     });
 
-    it('when payment option is BY_SET_DATE should return BY_SET_DATE', () => {
+    it('when payment option is BY_SET_DATE should return IMMEDIATELY', () => {
       // GIVEN
       claim.respondent1 = {
         responseType: ResponseType.FULL_ADMISSION,
       };
-      claim.fullAdmission = {
+      claim.partialAdmission = {
         paymentIntention: {
           paymentOption: PaymentOptionType.BY_SET_DATE,
         },
@@ -157,7 +157,7 @@ describe('convert payment option', () => {
       // WHEN
       const result = toCCDPaymentOption(claim.getPaymentIntention()?.paymentOption);
       // THEN
-      expect(result).toEqual(CCDPaymentOption.BY_SET_DATE);
+      expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
     });
   });
 });

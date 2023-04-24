@@ -5,9 +5,10 @@
   name: param.name,
   type: param.type,
   autocomplete: param.autocomplete,
-  classes: param.classes,
+  classes: "govuk-!-width-two-thirds",
   label: {
-    text: param.label
+    text: param.label,
+    classes: param.classes
   },
   value: param.value if form.model.option == 'no',
   errorMessage: {

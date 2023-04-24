@@ -6,6 +6,7 @@ import {toCUIParty, toCUIPartyRespondent} from 'services/translation/convertToCU
 import {toCUIMediation} from 'services/translation/convertToCUI/convertToCUIMediation';
 import {toCUIStatementOfMeans} from 'services/translation/convertToCUI/convertToCUIStatementOfMeans';
 import {toCUIClaimBilingualLangPreference} from 'services/translation/convertToCUI/convertToCUIRespondentLiPResponse';
+import {toCUIDQs} from 'services/translation/convertToCUI/convertToCUIDQs';
 import {toCUIPartialAdmission} from './convertToCUIPartialAdmission';
 
 export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
@@ -18,6 +19,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   claim.mediation = toCUIMediation(ccdClaim?.respondent1LiPResponse?.respondent1MediationLiPResponse);
   claim.statementOfMeans = toCUIStatementOfMeans(ccdClaim);
   claim.claimBilingualLanguagePreference = toCUIClaimBilingualLangPreference(ccdClaim?.respondent1LiPResponse?.respondent1ResponseLanguage);
+  claim.directionQuestionnaire = toCUIDQs(ccdClaim);
   if (claim.isPartialAdmission()) {
     claim.partialAdmission = toCUIPartialAdmission(ccdClaim);
   }
