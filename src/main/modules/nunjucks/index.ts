@@ -94,7 +94,8 @@ export class Nunjucks {
             return ({...key, text: replaced});
           }
         }
-        return ({...key, text: t(key?.text)});
+        if(key?.text)
+          return ({...key, text: t(key?.text)});
       });
     };
 

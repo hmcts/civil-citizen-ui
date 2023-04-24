@@ -29,7 +29,7 @@ module.exports = {
   Username: process.env.CITIZEN_USERNAME,
   Password: process.env.CITIZEN_PASSWORD,
   idamStub: {
-    enabled: process.env.IDAM_STUB_ENABLED || false,
+    enabled: process.env.IDAM_STUB_ENABLED === 'true',
     url: 'http://localhost:5555',
   },
   url: {
