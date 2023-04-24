@@ -30,7 +30,7 @@ module.exports = {
   Password: process.env.CITIZEN_PASSWORD,
   idamStub: {
     enabled: process.env.IDAM_STUB_ENABLED === 'true',
-    url: 'http://localhost:5555'
+    url: 'http://localhost:5555',
   },
   url: {
     manageCase: process.env.URL || 'https://manage-case.demo.platform.hmcts.net/',
