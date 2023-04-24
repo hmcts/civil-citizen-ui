@@ -40,7 +40,7 @@ const toCCDExpertDetails = (expertDetailsList: ExpertDetails[]) => {
         name: expertDetails.firstName+ ' ' + expertDetails.lastName,
         firstName: expertDetails.firstName,
         lastName: expertDetails.lastName,
-        phoneNumber: expertDetails.phoneNumber.toString(),
+        phoneNumber: expertDetails.phoneNumber?.toString(),
         emailAddress: expertDetails.emailAddress,
         whyRequired: expertDetails.whyNeedExpert,
         fieldOfExpertise: expertDetails.fieldOfExpertise,

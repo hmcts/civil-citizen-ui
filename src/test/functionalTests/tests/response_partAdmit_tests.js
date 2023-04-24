@@ -26,6 +26,7 @@ Before(async ({api}) => {
 });
 
 Scenario('Response with PartAdmit-AlreadyPaid and Immediate payment @citizenUI @partAdmit @regression', () => {
+  ResponseSteps.RespondToClaim(claimRef);
   ResponseSteps.EnterPersonalDetails(claimRef);
   ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
@@ -40,6 +41,7 @@ Scenario('Response with PartAdmit-AlreadyPaid and Immediate payment @citizenUI @
 });
 
 Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @partAdmit @regression', () => {
+  ResponseSteps.RespondToClaim(claimRef);
   ResponseSteps.EnterPersonalDetails(claimRef);
   ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
