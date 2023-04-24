@@ -20,8 +20,9 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextF
     if (claim && !claim.isEmpty()) {
       const latestUpdateContent = getLatestUpdateContent(claimId, claim);
       const documentsContent = getDocumentsContent(claim, claimId);
-      if(await isCaseProgressionV1Enable()) {
-        getLatestUpdateContentCaseProgression(claimId, claim).forEach(items => latestUpdateContent.push(items));
+      if (latestUpdateContent.length === 0 && await isCaseProgressionV1Enable()) {
+        getLatestUpdateContentCaseProgression(claimId, claim)
+          .forEach(items => latestUpdateContent.push(items));
       }
       res.render(claimSummaryViewPath, {claim, claimId, latestUpdateContent, documentsContent});
     }
