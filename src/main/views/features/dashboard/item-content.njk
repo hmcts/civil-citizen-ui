@@ -82,14 +82,13 @@
         classes: content.data.classes,
         titleHtml: content.data.title,
         html: content.data.html
-
       }) }}
     </div>
   {% endif %}
 
-  {% if content.type === claimsummarytype.input %}
-    <div>
-       {{ govukinput({
+  {% if content.type === ClaimSummaryType.INPUT %}
+     <div>
+      {{ govukInput({
          id: "name",
          name: "name",
          value: form.model.name,
@@ -97,20 +96,20 @@
          label: {
            html: '<strong>'+ t(content.data.text)+'</strong>'
          }
-       }) }}
-    </div>
+      }) }}
+     </div>
   {% endif %}
 
-  {% if content.type === claimsummarytype.upload %}
+  {% if content.type === ClaimSummaryType.UPLOAD %}
      <div class="govuk-inset-text">
-        {{ govukfileupload({
-          id: content.data.id,
-          name: content.data.name,
-          label: {
-            html: '<strong>'+t(content.data.text)+'</strong><hr class="govuk-section-break--s govuk-section-break--visible">'+t(content.data.html)+'</br></br>'
-          }
+        {{ govukFileUpload({
+           id: content.data.id,
+           name: content.data.name,
+           label: {
+             html: '<strong>'+t(content.data.text)+'</strong><hr class="govuk-section-break--s govuk-section-break--visible">'+t(content.data.html)+'</br></br>'
+           }
         }) }}
-     </div>
+    </div>
   {% endif %}
 
   {% if content.type === ClaimSummaryType.DATE %}
