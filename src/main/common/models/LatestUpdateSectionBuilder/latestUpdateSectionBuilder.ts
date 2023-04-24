@@ -29,6 +29,22 @@ export class LatestUpdateSectionBuilder {
     return this;
   }
 
+  addLink(text: string, href: string, textBefore?: string, textAfter?: string, variables?: any) {
+    const linkSection = ({
+      type: ClaimSummaryType.LINK,
+      data: {
+        text: text,
+        href: href,
+        textBefore: textBefore,
+        textAfter: textAfter,
+        variables: variables,
+      },
+    });
+
+    this._claimSummarySections.push(linkSection);
+    return this;
+  }
+
   addContactLink(text: string, claimId: string, variables?: any, textAfter?: string) {
     const linkSection = ({
       type: ClaimSummaryType.LINK,

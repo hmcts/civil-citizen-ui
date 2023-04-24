@@ -18,6 +18,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   claim.statementOfMeans = toCUIStatementOfMeans(ccdClaim);
   claim.claimBilingualLanguagePreference = toCUIClaimBilingualLangPreference(ccdClaim?.respondent1LiPResponse?.respondent1ResponseLanguage);
   claim.directionQuestionnaire = toCUIDQs(ccdClaim);
+  claim.sdoOrderDocument = ccdClaim?.sdoOrderDocument;
   return claim;
 };
 

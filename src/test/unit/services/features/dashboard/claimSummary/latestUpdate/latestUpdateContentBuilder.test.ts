@@ -6,7 +6,8 @@ import {
 import {CaseState} from '../../../../../../../main/common/form/models/claimDetails';
 import {PartyType} from '../../../../../../../main/common/models/partyType';
 import {ClaimSummaryType} from '../../../../../../../main/common/form/models/claimSummarySection';
-import {BILINGUAL_LANGUAGE_PREFERENCE_URL} from '../../../../../../../main/routes/urls';
+import {BILINGUAL_LANGUAGE_PREFERENCE_URL, CASE_DOCUMENT_DOWNLOAD_URL} from '../../../../../../../main/routes/urls';
+import {DocumentUri} from 'models/document/documentType';
 
 describe('Latest Update Content Builder', () => {
   const partyName = 'Mr. John Doe';
@@ -21,6 +22,7 @@ describe('Latest Update Content Builder', () => {
   };
   const claimId = '5129';
   const bilingualLanguagePreferencetUrl = BILINGUAL_LANGUAGE_PREFERENCE_URL.replace(':id', claimId);
+  const sdoUrl = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentType', DocumentUri.SDO_ORDER);
 
   describe('test buildResponseToClaimSection', () => {
     it('should have responseNotSubmittedTitle and respondToClaimLink', () => {
@@ -82,6 +84,31 @@ describe('Latest Update Content Builder', () => {
       const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
       // Then
       expect(responseToClaimSection.length).toBe(0);
+    });
+
+    it('should have evidence upload content', () => {
+      // Given
+      claim.ccdState = CaseState.PENDING_CASE_ISSUED;
+
+      claim.sdoOrderDocument = {
+        createdBy: '',
+        createdDatetime: undefined,
+        documentLink: undefined,
+        documentName: '',
+        documentSize: 0,
+        documentType: undefined,
+      };
+      // when
+      const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
+      // Then
+      expect(responseToClaimSection.length).toBe(4);
+      expect(responseToClaimSection[0].type).toEqual(ClaimSummaryType.TITLE);
+      expect(responseToClaimSection[0].data?.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
+      expect(responseToClaimSection[1].type).toEqual(ClaimSummaryType.PARAGRAPH);
+      expect(responseToClaimSection[2].type).toEqual(ClaimSummaryType.LINK);
+      expect(responseToClaimSection[2].data?.href).toEqual(sdoUrl);
+      expect(responseToClaimSection[3].type).toEqual(ClaimSummaryType.BUTTON);
+      expect(responseToClaimSection[3].data?.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
     });
   });
 });

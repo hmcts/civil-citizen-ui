@@ -1470,7 +1470,14 @@
       "MORE_TIME_REQUESTED": "More time requested",
       "YOU_CAN_STILL_RESPOND_TO_CLAIM": "You can still respond to the claim before they ask for a judgment.",
       "YOU_HAVENT_RESPONDED_TO_CLAIM": "You haven't responded to this claim",
-      "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "You need to respond before 4pm on {{ responseDeadline }} ({{ remainingDays }} Days remaining)."
+      "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "You need to respond before 4pm on {{ responseDeadline }} ({{ remainingDays }} Days remaining).",
+      "EVIDENCE_UPLOAD": {
+        "TITLE": "Upload documents",
+        "YOU_CAN_UPLOAD_AND_SUBMIT_DOCUMENTS": "You can upload and submit any documents which support your claim. These can include any communications, paperwork and statements from expert and witnesses.",
+        "FOLLOW_INSTRUCTIONS_IN": "Please follow the instructions sent in the ",
+        "SDO": "standard directions order ",
+        "FOUND_UNDER_NOTICES_AND_ORDERS": "which can be found under 'Notices and orders'."
+      }
     },
     "MEDIATION_CAN_WE_USE": {
       "CAN_MEDIATION_USE": "A all y gwasanaeth cyfryngu ddefnyddio’r rhif {{ respondentTelNumber }} i’ch ffonio?",
