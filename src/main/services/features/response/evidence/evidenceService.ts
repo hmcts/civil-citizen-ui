@@ -1,7 +1,6 @@
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {Claim} from '../../../../common/models/claim';
 import {Evidence} from '../../../../common/form/models/evidence/evidence';
-import {EvidenceItem} from '../../../../common/form/models/evidence/evidenceItem';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('selfEmployedAsService');
@@ -9,10 +8,8 @@ const logger = Logger.getLogger('selfEmployedAsService');
 const getEvidence = async (claimId: string) => {
   try {
     const claim = await getCaseDataFromStore(claimId);
-    if (claim.evidence) {
-      const evidence = claim.evidence;
-      claim.evidence.evidenceItem = claim.evidence.evidenceItem.map(item => new EvidenceItem(item.type, item.description));
-      return new Evidence(evidence.comment, evidence.evidenceItem);
+    if(claim.evidence) {
+      return claim.evidence;
     }
     return new Evidence();
   } catch (error) {
