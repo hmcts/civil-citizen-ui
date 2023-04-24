@@ -21,9 +21,10 @@ function renderView(form: GenericForm<Evidence>, res: Response): void {
 
 evidenceController.get(CITIZEN_EVIDENCE_URL, async (req, res, next: NextFunction) => {
   try {
-    const form: Evidence = await getEvidence(req.params.id);
-    if (form.evidenceItem.length < INIT_ROW_COUNT) {
-      form.setRows(INIT_ROW_COUNT - form.evidenceItem.length);
+    const evidence = await getEvidence(req.params.id);
+    const form: Evidence = new Evidence(evidence.comment, evidence.evidenceItem);
+    if (evidence.evidenceItem?.length < INIT_ROW_COUNT) {
+      form.setRows(INIT_ROW_COUNT - evidence.evidenceItem?.length);
     }
     renderView(new GenericForm<Evidence>(form), res);
   } catch (error) {

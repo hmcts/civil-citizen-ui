@@ -5,6 +5,9 @@ import {CCDPayBySetDate} from './ccdPayBySetDate';
 import {YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {CCDParty} from './ccdParty';
 import {CCDRespondToClaim} from 'models/ccdResponse/ccdRespondToClaim';
+import {TimelineUploadTypeSpec} from 'models/ccdResponse/ccdHowToAddTimeline';
+import {CCDTimeLineOfEvents} from 'models/ccdResponse/ccdTimeLineOfEvents';
+import {CCDEvidence} from 'models/ccdResponse/ccdEvidence';
 import {CCDBankAccount} from 'models/ccdResponse/ccdBankAccount';
 import {CCDHomeDetails} from 'models/ccdResponse/ccdHomeDetails';
 import {CCDPartnerAndDependent} from 'models/ccdResponse/ccdPartnerAndDependent';
@@ -26,12 +29,18 @@ import {CCDFastClaimHearing} from 'models/ccdResponse/ccdFastClaimHearing';
 import {CCDExpert} from 'models/ccdResponse/ccdExpert';
 
 export interface CCDResponse extends ClaimUpdate {
-  respondent1ClaimResponseTypeForSpec: string;
+  respondent1ClaimResponseTypeForSpec?: string;
   defenceAdmitPartPaymentTimeRouteRequired?: CCDPaymentOption;
   respondent1RepaymentPlan?: CCDRepaymentPlan;
   respondToClaimAdmitPartLRspec?: CCDPayBySetDate;
   responseClaimMediationSpecRequired?: string;
   specAoSApplicantCorrespondenceAddressRequired?: YesNoUpperCamelCase;
+  respondToAdmittedClaim?: CCDRespondToClaim;
+  specDefenceAdmittedRequired?: YesNoUpperCamelCase;
+  respondToAdmittedClaimOwingAmount?: string;
+  specClaimResponseTimelineList?: TimelineUploadTypeSpec;
+  specResponseTimelineOfEvents?: CCDTimeLineOfEvents[];
+  specResponselistYourEvidenceList?: CCDEvidence[];
   totalClaimAmount: number,
   respondent1: CCDParty;
   defenceRouteRequired: string;
