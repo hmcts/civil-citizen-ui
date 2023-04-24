@@ -6,8 +6,9 @@ import {
 import {CaseState} from 'form/models/claimDetails';
 import {PartyType} from 'models/partyType';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
-import {BILINGUAL_LANGUAGE_PREFERENCE_URL, CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
-import {DocumentType, DocumentUri} from 'models/document/documentType';
+import {BILINGUAL_LANGUAGE_PREFERENCE_URL} from 'routes/urls';
+import {DocumentType} from 'models/document/documentType';
+import {LatestUpdateSectionBuilder} from 'models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 
 const PAGES_LATEST_UPDATE_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT';
 const getClaimWithSdoDocument = () =>  {
@@ -29,34 +30,13 @@ const getClaimWithSdoDocument = () =>  {
 };
 
 const getLastUpdateSdoDocumentExpected = (claimId: string) => {
-  return [
-    {
-      type: ClaimSummaryType.TITLE,
-      data: {
-        text: `${PAGES_LATEST_UPDATE_CONTENT}.SDO_AN_ORDER_HAS_BEEN_ISSUED_BY_THE_COURT`,
-      },
-    },
-    {
-      type: ClaimSummaryType.PARAGRAPH,
-      data: {
-        text: `${PAGES_LATEST_UPDATE_CONTENT}.SDO_PLEASE_FOLLOW_THE_INSTRUCTIONS_IN_THE_ORDER`,
-      },
-    },
-    {
-      type: ClaimSummaryType.PARAGRAPH,
-      data: {
-        text: `${PAGES_LATEST_UPDATE_CONTENT}.SDO_THIS_CLAIM_WILL_NO_PROCEED_OFFLINE`,
-      },
-    },
-    {
-      type: ClaimSummaryType.LINK,
-      data: {
-        text: `${PAGES_LATEST_UPDATE_CONTENT}.SDO_DOWNLOAD_THE_COURTS_ORDER`,
-        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentType', DocumentUri.SDO_ORDER),
-        textAfter: `${PAGES_LATEST_UPDATE_CONTENT}.SDO_TO_FIND_OUT_THE_DETAILS`,
-      },
-    },
-  ];
+  const builder = new LatestUpdateSectionBuilder()
+    .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.SDO_AN_ORDER_HAS_BEEN_ISSUED_BY_THE_COURT`)
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.SDO_PLEASE_FOLLOW_THE_INSTRUCTIONS_IN_THE_ORDER`)
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.SDO_THIS_CLAIM_WILL_NO_PROCEED_OFFLINE`)
+    .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.SDO_DOWNLOAD_THE_COURTS_ORDER`, claimId, null, `${PAGES_LATEST_UPDATE_CONTENT}.SDO_TO_FIND_OUT_THE_DETAILS`)
+    .build();
+  return builder;
 };
 
 describe('Latest Update Content Builder', () => {
