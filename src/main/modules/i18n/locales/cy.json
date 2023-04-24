@@ -1422,10 +1422,10 @@
       "TITLE": "How they want to pay"
     },
     "HELP_WITH_FEES": {
-      "ENTER_NUMBER": "Enter the Help With Fees number",
-      "PAGE_TITLE": "Do you have a Help With Fees reference number?",
+      "ENTER_NUMBER": "Rhowch y rhif help i dalu ffioedd",
+      "PAGE_TITLE": "Oes gennych chi rif cyfeirnod Help i Dalu Ffioedd?",
       "REFERENCE_NUMBER": "Help with fees reference number",
-      "TITLE": "Do you have a Help With Fees reference number?",
+      "TITLE": "Oes gennych chi rif cyfeirnod Help i Dalu Ffioedd?",
       "ONLY_ONE": "Dim ond os gwnaethoch gais am help i dalu ffioedd y bydd gennych gyfeirnod help i dalu ffioedd."
     },
     "INTEREST_CLAIM_OPTIONS": {
@@ -2386,8 +2386,8 @@
     "PAYMENT_FREQUENCY_REQUIRED": "Dewiswch amlder talu",
     "PHONE_NUMBER_REQUIRED": "Nodwch rif ffôn",
     "RATE_CHOOSE_ONE": "Dewis cyfradd llog",
-    "RATE_CORRECT_THE_ONE_ENTERED": "Correct rate you’ve entered",
-    "RATE_EXPLAIN_CLAIMING_IT": "You haven’t explained why you’re claiming this rate",
+    "RATE_CORRECT_THE_ONE_ENTERED": "Y gyfradd gywir rydych chi wedi'i nodi",
+    "RATE_EXPLAIN_CLAIMING_IT": "Nid ydych wedi esbonio pam eich bod yn hawlio'r gyfradd hon",
     "REASON_REQUIRED": "You need to explain why you believe you’re owed the money",
     "REDIS_FAILURE": "Redis DraftStore failure.",
     "SECURITY_CODE_WRONG_OR_EXPIRED": "The security code was not right or has expired",
