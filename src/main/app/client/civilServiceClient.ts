@@ -80,6 +80,7 @@ export class CivilServiceClient {
       return plainToInstance(DashboardDefendantItem, response.data as object[]);
     } catch (err) {
       logger.error(err);
+      throw err;
     }
   }
 
