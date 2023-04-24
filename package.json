@@ -9,9 +9,10 @@
     "start": "NODE_ENV=production ./node_modules/.bin/ts-node -r tsconfig-paths/register src/main/server.ts",
     "start:dev": "yarn start:redis && nodemon --config nodemon.json",
     "start:redis": "docker-compose -f ./compose/draft-store.yml up -d",
-    "startwin": "SET NODE_ENV=production && ./node_modules/.bin/ts-node -r tsconfig-paths/register src/main/server.ts",
+    "startwin": "NODE_ENV=production && ./node_modules/.bin/ts-node -r tsconfig-paths/register src/main/server.ts",
     "startwin:dev": "nodemon --config nodemon.json --exec yarn startwin",
     "lint": "sass-lint -v -q && eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:win": "yarn lint -c win.eslint.json",
     "build": "yarn webpack --config webpack.config.js",
     "build:prod": "NODE_ENV=production yarn webpack --mode production --config webpack.config.js",
     "test": "echo -c jest.config.js",
@@ -81,7 +82,7 @@
     "lodash": "^4.17.21",
     "luxon": "^3.2.1",
     "memorystore": "^1.6.7",
-    "nunjucks": "^3.2.3",
+    "nunjucks": "^3.2.4",
     "otplib": "^12.0.1",
     "reflect-metadata": "^0.1.13",
     "require-directory": "^2.1.1",
@@ -143,13 +144,6 @@
     "webpack-node-externals": "^3.0.0"
   },
   "resolutions": {
-    "**/jest/**/node-notifier": "^8.0.1",
-    "**/sass-lint/**/merge": "^2.1.1",
-    "**/minimist": "^1.2.6",
-    "**/sass-lint/**/ajv": "^6.12.3",
-    "**/**/ansi-regex": "^5.0.1",
-    "**/**/json-schema": "^0.4.0",
-    "**/**/winston": "^3.7.2",
     "minimatch": "^3.0.5",
     "node-fetch": "^2.6.7",
     "shelljs": "^0.8.5",
@@ -157,5 +151,6 @@
     "qs": "^6.9.3",
     "flat": "^5.0.1",
     "debug": "^4.3.4"
-  }
+  },
+  "packageManager": "yarn@3.5.0"
 }

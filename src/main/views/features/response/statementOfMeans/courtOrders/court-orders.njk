@@ -1,6 +1,7 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../../macro/error-summary.njk" import errorSummary %}
@@ -22,11 +23,16 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.COURT_ORDERS.TITLE') }}</h1>
           <div data-module="moj-add-another">
             <form method="post" novalidate>
               {{ csrfProtection(csrf) }}
-
+            {% call govukFieldset({
+             legend: {
+                text: t('PAGES.COURT_ORDERS.TITLE'),
+                classes: "govuk-fieldset__legend--l",
+                isPageHeading: true
+             }
+            }) %}
               {% set courtOrdersHtml %}
                 <div
                   class="govuk-form-group {% if atLeastOneCourtOrderError %} govuk-form-group--error {% endif %}">
@@ -84,6 +90,7 @@
                   text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
                 }) }}
               </div>
+             {% endcall %}
             </form>
           </div>
         </div>
