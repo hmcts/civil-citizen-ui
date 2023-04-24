@@ -47,6 +47,7 @@ import {CCDSpecificCourtLocations} from 'models/ccdResponse/ccdSpecificCourtLoca
 import {CCDWitnesses} from 'models/ccdResponse/ccdWitnesses';
 import {CCDSmallClaimHearing} from 'models/ccdResponse/ccdSmallClaimHearing';
 import {CCDFastClaimHearing} from 'models/ccdResponse/ccdFastClaimHearing';
+import {CCDExpert} from './ccdResponse/ccdExpert';
 
 export class CivilClaimResponse {
   id: string;
@@ -152,6 +153,9 @@ export interface CCDClaim extends ClaimUpdate {
   respondent1DQWitnesses?: CCDWitnesses;
   respondent1DQHearingSmallClaim?: CCDSmallClaimHearing;
   respondent1DQHearingFastClaim?: CCDFastClaimHearing;
+  respondent1DQExperts?: CCDExpert;
+  responseClaimExpertSpecRequired?: YesNoUpperCamelCase;
+  claimType?: string;
 }
 
 export interface ClaimFeeData {
