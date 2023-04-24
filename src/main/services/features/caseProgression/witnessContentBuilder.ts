@@ -12,9 +12,9 @@ export const buildWitnessSection = (claim: Claim, claimId: string): ClaimSummary
   const witnessTitle = getWitnessTitle();
 
   const witnessYourStatementContent = getWitnessYourStatement();
-  const inputContent = getInput('PAGES.UPLOAD_DOCUMENTS.NAME');
+  const inputContent = getInput('PAGES.UPLOAD_DOCUMENTS.NAME','govuk-!-width-three-half');
   const dateContent = getDate('PAGES.UPLOAD_DOCUMENTS.DATE', 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE');
-  const uploadContent = getUpload();
+  const uploadContent = getUpload('PAGES.UPLOAD_DOCUMENTS.UPLOAD','PAGES.UPLOAD_DOCUMENTS.NO_UPLOAD');
 
   sectionContent.push(witnessTitle);
   sectionContent.push(witnessYourStatementContent);

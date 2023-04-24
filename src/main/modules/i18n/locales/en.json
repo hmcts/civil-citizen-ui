@@ -367,7 +367,9 @@
       "NAME": "Your name",
       "DATE": "Date statement was written",
       "DATE_EXAMPLE": "For example, 27 9 2022",
-      "STATEMENT": "Your statement"
+      "STATEMENT": "Your statement",
+      "UPLOAD": "Upload a file",
+      "NO_UPLOAD": "No files uploaded"
     },
     "CCJ_CONFIRMATION": {
       "ACTIONS_LINK_TEXT": "Find out about actions you can take after a CCJ is issued ",

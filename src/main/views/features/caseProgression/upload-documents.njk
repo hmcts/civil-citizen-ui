@@ -23,6 +23,7 @@
             <h1 class="govuk-heading-l">{{ titleH1 }}</h1>
             <h2 class="govuk-heading-s">{{ titleH2 }}</h2>
             <p class="govuk-body-m">{{ paragraph }}</p>
+            <hr class="govuk-section-break--s govuk-section-break--visible">
             <div data-module="moj-add-another" class="select-toggle">
               {% for witnessSection in witnessContent %}
                 {{ claimSummaryContent({
@@ -37,6 +38,7 @@
                   }) }}
               </div>
             </div>
+            <hr class="govuk-section-break--s govuk-section-break--visible">
 
 
             <div class="govuk-form-group">

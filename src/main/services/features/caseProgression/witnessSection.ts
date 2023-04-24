@@ -17,11 +17,12 @@ export const getWitnessYourStatement = (): ClaimSummarySection => {
     },
   };
 };
-export const getInput = (title:string): ClaimSummarySection => {
+export const getInput = (title:string, classes:string): ClaimSummarySection => {
   return {
     type: ClaimSummaryType.INPUT,
     data: {
       text: title,
+      classes:classes,
     },
   };
 };
@@ -37,11 +38,14 @@ export const getDate = (title:string,  hint:string): ClaimSummarySection => {
     },
   };
 };
-export const getUpload = (): ClaimSummarySection => {
+export const getUpload = (title:string,  html:string): ClaimSummarySection => {
   return {
     type: ClaimSummaryType.UPLOAD,
     data: {
-      text: 'PAGES.UPLOAD_DOCUMENTS.STATEMENT',
+      id: 'file-upload',
+      name:'file-upload',
+      text: title,
+      html: html,
     },
   };
 };
