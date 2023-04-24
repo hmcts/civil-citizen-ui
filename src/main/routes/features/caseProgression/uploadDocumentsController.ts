@@ -9,7 +9,6 @@ const uploadDocumentsController = Router();
 uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, async (req:Request, res:Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    console.log('entrando en caseData');
     const claim: Claim = await getCaseDataFromStore(claimId);
 
     if (claim && !claim.isEmpty()) {
@@ -17,7 +16,6 @@ uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, async (req:Request, res:R
       const witnessContent = getWitnessContent(claimId, claim);
       const expertContent:string = undefined ; // = getExpertContent(claim, claimId);
       const trialContent:string = undefined ; // = getTrialContent(claim, claimId);
-      console.log('entrando en render');
       res.render(uploadDocumentsViewPath, {claim, claimId, disclosureContent, witnessContent,expertContent,trialContent});
     }
   } catch (error) {
