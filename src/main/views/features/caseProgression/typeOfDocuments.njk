@@ -1,0 +1,61 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+
+{% block pageTitle %}
+  {{ setPageTitle('TITLE') }}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-width-container">
+  <main class="govuk-main-wrapper" role="main">
+    {% if form.hasErrors() %}
+    {{ errorSummary(form.getErrors(), t) }}
+    {% endif %}
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">test</h1>
+
+        {{ govukCheckboxes({
+        name: "nationality",
+        fieldset: {
+        legend: {
+        text: "What is your nationality?",
+        isPageHeading: true,
+        classes: "govuk-fieldset__legend--l"
+        }
+        },
+        hint: {
+        text: "If you have dual nationality, select all options that are relevant to you."
+        },
+        errorMessage: {
+        text: "Select if you are British, Irish or a citizen of a different country"
+        },
+        items: [
+        {
+        value: form.model.value,
+        text: form.model.text,
+        hint: {
+        text: "including English, Scottish, Welsh and Northern Irish"
+        }
+        },
+        {
+        value: "irish",
+        text: "Irish"
+        },
+        {
+        value: "other",
+        text: "Citizen of another country"
+        }
+        ]
+        }) }}
+
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+
+{% endblock %}

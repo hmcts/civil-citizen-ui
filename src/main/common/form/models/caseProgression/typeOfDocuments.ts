@@ -1,4 +1,4 @@
-class TypeOfDocuments {
+export class TypeOfDocuments {
   value ?: string;
   text ?: string;
 
