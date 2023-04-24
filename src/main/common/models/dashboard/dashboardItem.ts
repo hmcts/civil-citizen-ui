@@ -74,6 +74,7 @@ export class DashboardDefendantItem extends DashboardItem {
       TRANSFERRED: {translationKey: 'PAGES.DASHBOARD.STATUS.CASE_SENT_TO_COURT'},
       REQUESTED_COUNTRY_COURT_JUDGEMENT: {translationKey: 'PAGES.DASHBOARD.STATUS.CLAIMANT_REQUESTED_CCJ', parameter: paramClaimantName},
       SETTLED: {translationKey:'PAGES.DASHBOARD.STATUS.CLAIM_SETTLED'},
+      HEARING_FORM_GENERATED: {translationKey: 'PAGES.DASHBOARD.STATUS.TRIAL_OR_HEARING_SCHEDULED'},
     };
     const currentStatus = dashboardStatus[this.status];
     return translate(currentStatus.translationKey, currentStatus.parameter, lang);
