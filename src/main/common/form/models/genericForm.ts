@@ -1,4 +1,4 @@
-import {ValidateNested, ValidationError, Validator} from 'class-validator';
+import {ValidateNested, ValidationArguments, ValidationError, Validator} from 'class-validator';
 import {FormValidationError} from '../validationErrors/formValidationError';
 
 const validator = new Validator();
@@ -100,4 +100,8 @@ export class GenericForm<Model> {
       return formErrors;
     }
   }
+}
+
+export interface ValidationArgs<Model extends object> extends ValidationArguments {
+  object: Model
 }

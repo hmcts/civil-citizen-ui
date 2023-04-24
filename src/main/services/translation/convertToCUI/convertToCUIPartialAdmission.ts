@@ -43,8 +43,7 @@ export function toCUIPaymentIntention(ccdClaim: CCDClaim): PaymentIntention {
   paymentIntention.paymentOption = toCUIPaymentOption(ccdClaim?.defenceAdmitPartPaymentTimeRouteRequired);
   if (ccdClaim?.defenceAdmitPartPaymentTimeRouteRequired === CCDPaymentOption.BY_SET_DATE) {
     paymentIntention.paymentDate = ccdClaim?.respondToClaimAdmitPartLRspec?.whenWillThisAmountBePaid;
-  }
-  if (ccdClaim?.defenceAdmitPartPaymentTimeRouteRequired === CCDPaymentOption.REPAYMENT_PLAN) {
+  } else if (ccdClaim?.defenceAdmitPartPaymentTimeRouteRequired === CCDPaymentOption.REPAYMENT_PLAN) {
     paymentIntention.repaymentPlan = toCUIRepaymentPlan(ccdClaim?.respondent1RepaymentPlan);
   }
   return paymentIntention;
