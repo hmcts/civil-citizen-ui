@@ -356,21 +356,6 @@
     "CARER": {
       "PAGE_TITLE": "Carer's allowance"
     },
-    "UPLOAD_DOCUMENTS": {
-      "ADD": "Add another",
-      "PAGE_TITLE": "Upload documents",
-      "TITLE": "Upload documents",
-      "SUBTITLE": "Acceptable documents formats",
-      "FORMAT": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
-      "WITNESS": "Witness evidence",
-      "STATEMENT": "Your statement",
-      "NAME": "Your name",
-      "DATE": "Date statement was written",
-      "DATE_EXAMPLE": "For example, 27 9 2022",
-      "STATEMENT": "Your statement",
-      "UPLOAD": "Upload a file",
-      "NO_UPLOAD": "No files uploaded"
-    },
     "CCJ_CONFIRMATION": {
       "ACTIONS_LINK_TEXT": "Find out about actions you can take after a CCJ is issued ",
       "PAGE_TITLE": "County Court Judgement confirmation",
@@ -2183,6 +2168,20 @@
       "RETIRED": "Retired",
       "TITLE": "Are you unemployed or retired?",
       "UNEMPLOYED": "Unemployed"
+    },
+    "UPLOAD_DOCUMENTS": {
+      "ADD": "Add another",
+      "DATE": "Date statement was written",
+      "DATE_EXAMPLE": "For example, 27 9 2022",
+      "FORMAT": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+      "NAME": "Your name",
+      "NO_UPLOAD": "No files uploaded",
+      "PAGE_TITLE": "Upload documents",
+      "STATEMENT": "Your statement",
+      "SUBTITLE": "Acceptable documents formats",
+      "TITLE": "Upload documents",
+      "UPLOAD": "Upload a file",
+      "WITNESS": "Witness evidence"
     },
     "VULNERABILITY": {
       "PAGE_TITLE": "Vulnerability questions",
