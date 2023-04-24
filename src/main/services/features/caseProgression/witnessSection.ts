@@ -9,11 +9,11 @@ export const getWitnessTitle = (): ClaimSummarySection => {
   });
 };
 
-export const getWitnessYourStatement = (): ClaimSummarySection => {
+export const getWitnessSubtitle = (subTitle:string): ClaimSummarySection => {
   return {
     type: ClaimSummaryType.SUBTITLE,
     data: {
-      text: 'PAGES.UPLOAD_DOCUMENTS.STATEMENT',
+      text: subTitle,
     },
   };
 };
