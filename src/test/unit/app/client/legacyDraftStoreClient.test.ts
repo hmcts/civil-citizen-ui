@@ -4,6 +4,10 @@ import axios from 'axios';
 
 jest.mock('../../../../main/app/client/serviceAuthProviderClient');
 jest.mock('axios');
+jest.mock('../../../../main/modules/i18n/languageService', ()=> ({
+  setLanguage: jest.fn(),
+  getLanguage: jest.fn(),
+}));
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe('Legacy Draft Store Client', () => {
