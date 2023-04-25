@@ -57,3 +57,14 @@ export const addMonths = (date: Date, months: number) => {
   date.setMonth(date.getMonth() + months);
   return date;
 };
+
+//  input: 01 February 2022 or 01 Fab 2022
+// output: 2022-02-01
+export const formatStringDate = (text: string) => {
+  const date = new Date(Date.parse(text));
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear();
+
+  return `${year}-${month}-${day}`;
+};

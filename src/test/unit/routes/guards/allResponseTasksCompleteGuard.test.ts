@@ -29,7 +29,7 @@ const MOCK_REQUEST = () => {
     session: {
       claimId: CLAIM_ID,
     },
-  } as express.Request;
+  } as unknown as express.Request;
 };
 
 const MOCK_RESPONSE = {

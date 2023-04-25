@@ -23,6 +23,7 @@ import {PartyDetails} from '../../main/common/form/models/partyDetails';
 import {PartyPhone} from '../../main/common/models/PartyPhone';
 import {CitizenDate} from '../../main/common/form/models/claim/claimant/citizenDate';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {ClaimantResponse} from 'common/models/claimantResponse';
 
 export const buildAddress = (): Address => {
   return new Address('addressLine1', 'addressLine2', 'addressLine3', 'city', 'postCode');
@@ -66,7 +67,7 @@ function buildMockClaim(): Claim {
     },
     type: PartyType.INDIVIDUAL,
   };
-  _mockClaim.claimantResponse = {
+  _mockClaim.claimantResponse =<ClaimantResponse>{
     ccjRequest: {
       paidAmount: {
         option: YesNo.YES,
@@ -83,6 +84,13 @@ function buildMockClaim(): Claim {
           return this.type === PaymentOptionType.INSTALMENTS;
         },
       },
+    },
+    get isClaimantSuggestedPayByDate(): boolean {
+      return this.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY;
+    }, get isClaimantSuggestedPayByInstalments(): boolean {
+      return this.suggestedPaymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE;
+    }, get isClaimantSuggestedPayImmediately(): boolean {
+      return this.suggestedPaymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS;
     },
   };
   _mockClaim.evidence = {
