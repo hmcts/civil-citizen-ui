@@ -1,6 +1,6 @@
 import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
 import {CCDRejectAllOfClaimType} from 'models/ccdResponse/ccdRejectAllOfClaimType';
-import {toCUIRejectAllOfClaimType} from "services/translation/convertToCUI/convertToCUIRejectAllOfClaimType";
+import {toCUIRejectAllOfClaimType} from 'services/translation/convertToCUI/convertToCUIRejectAllOfClaimType';
 
 describe('translate RejectAllOfClaimType to CUI model', () => {
 

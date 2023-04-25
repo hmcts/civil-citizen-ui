@@ -28,7 +28,7 @@ import {FullAdmission} from './fullAdmission';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {RepaymentPlan} from './repaymentPlan';
 import {CCDRespondentLiPResponse} from 'models/ccdResponse/ccdRespondentLiPResponse';
-import {CCDRespondToClaim} from "models/ccdResponse/ccdRespondToClaim";
+import {CCDRespondToClaim} from 'models/ccdResponse/ccdRespondToClaim';
 import {CCDBankAccount} from 'models/ccdResponse/ccdBankAccount';
 import {CCDHomeDetails} from 'models/ccdResponse/ccdHomeDetails';
 import {CCDPartnerAndDependent} from 'models/ccdResponse/ccdPartnerAndDependent';
