@@ -66,9 +66,6 @@ export class CivilClaimResponse {
 }
 
 export interface CCDClaim extends ClaimUpdate {
-  respondToClaim: CCDRespondToClaim;
-  detailsOfWhyDoesYouDisputeTheClaim: string;
-  defenceRouteRequired: string;
   legacyCaseReference?: string;
   applicant1?: CCDParty;
   applicant1Represented?: YesNoUpperCamelCase,
@@ -153,6 +150,9 @@ export interface CCDClaim extends ClaimUpdate {
   respondent1DQWitnesses?: CCDWitnesses;
   respondent1DQHearingSmallClaim?: CCDSmallClaimHearing;
   respondent1DQHearingFastClaim?: CCDFastClaimHearing;
+  respondToClaim?: CCDRespondToClaim;
+  detailsOfWhyDoesYouDisputeTheClaim?: string;
+  defenceRouteRequired?: string;
   respondent1DQExperts?: CCDExpert;
   responseClaimExpertSpecRequired?: YesNoUpperCamelCase;
   claimType?: string;
