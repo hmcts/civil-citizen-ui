@@ -177,3 +177,8 @@ wa-task-batch-service:
       WA_TASK_MONITOR_SERVICE_URL: http://{{ .Release.Name }}-wa-task-monitor
       JOB_NAME: "INITIATION"
       ALLOW_CONFIG_MUTATIONS: true
+
+xui-webapp:
+  nodejs:
+    environment:
+      WA_SUPPORTED_JURISDICTIONS: "IA,PRIVATELAW,CIVIL"
