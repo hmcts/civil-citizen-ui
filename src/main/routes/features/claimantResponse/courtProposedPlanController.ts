@@ -33,7 +33,7 @@ const crPropertyName = 'decision';
 const crParentName = 'courtProposedPlan';
 let repaymentPlan= {};
 
-function renderView(form: GenericForm<CourtProposedPlan>, repaymentPlan: any, res: Response): void {
+function renderView(form: GenericForm<CourtProposedPlan>, repaymentPlan: object, res: Response): void {
   res.render(courtProposedPlanViewPath, { form, repaymentPlan });
 }
 

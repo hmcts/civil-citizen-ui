@@ -31,7 +31,7 @@ claimInterestController.get(CLAIM_INTEREST_URL, async (req:AppRequest, res:expre
   }
 });
 
-claimInterestController.post(CLAIM_INTEREST_URL, async (req: any, res: express.Response, next: express.NextFunction) => {
+claimInterestController.post(CLAIM_INTEREST_URL, async (req: AppRequest & express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const caseId = req.session?.user?.id;
     const claimInterest = getClaimInterestForm(req.body.option);
