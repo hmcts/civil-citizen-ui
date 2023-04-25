@@ -21,9 +21,7 @@ const year = newDate.getFullYear();
 
 class AvailabilityDates {
 
-  enterUnavailableDates(claimRef) {
-
-    I.amOnPage('/case/'+claimRef+'/directions-questionnaire/availability-dates');
+  enterUnavailableDates() {
     I.see('Add a single date or longer period of time when you, your experts or witnesses cannot go to a hearing', 'h1');
 
     I.click(fields.singleDate);

@@ -45,6 +45,10 @@ describe('Repayment Plan', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('List your evidence');
+          expect(res.text).toContain('evidenceItem[0]');
+          expect(res.text).toContain('evidenceItem[1]');
+          expect(res.text).toContain('evidenceItem[2]');
+          expect(res.text).toContain('evidenceItem[3]');
         });
     });
 

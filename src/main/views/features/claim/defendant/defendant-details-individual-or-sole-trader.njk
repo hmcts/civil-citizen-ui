@@ -10,12 +10,9 @@
 {% from "../../../macro/postcode-address-form.njk" import postcodeLookupAndAddressForm %}
 {% set payingExtra = t('PAGES.DEFENDANT_DETAILS.PAYING_EXTRA') %}
 {% set correspondenceAddressClass = 'govuk-visually-hidden' %}
+{% set title = t('PAGES.DEFENDANT_DETAILS.PAGE_TITLES.SOLE_TRADER') %}
 {% if defendantType === partyType.INDIVIDUAL %}
   {% set title = t('PAGES.DEFENDANT_DETAILS.PAGE_TITLES.INDIVIDUAL') %}
-{% elif defendantType === partyType.SOLE_TRADER %}
-  {% set title = t('PAGES.DEFENDANT_DETAILS.PAGE_TITLES.SOLE_TRADER') %}
-{% else %}
-  {% set title = '' %}
 {% endif %}
 
 {% set formErrors = form.getAllErrors() %}
@@ -102,8 +99,7 @@
             <div class="govuk-form-group">
               {{ postcodeLookupAndAddressForm(t, {
                 party: form,
-                addressType:'primaryAddress',
-                addressTitle:''
+                addressType:'primaryAddress'
               }) }}
             </div>
             {{ govukButton({
