@@ -1,13 +1,14 @@
 
 import {CCDClaim} from 'models/civilClaimResponse';
-import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
+import {CaseProgressionHearing, HearingLocation} from 'models/caseProgression/caseProgressionHearing';
 
 export const toCUICaseProgressionHearing = (ccdClaim: CCDClaim): CaseProgressionHearing => {
   if (ccdClaim) {
     const caseProgressionHearing : CaseProgressionHearing = new CaseProgressionHearing();
     caseProgressionHearing.hearingDocuments = ccdClaim.hearingDocuments;
     caseProgressionHearing.hearingDate = ccdClaim.hearingDate;
-    caseProgressionHearing.hearingLocation = ccdClaim.hearingLocation;
+    caseProgressionHearing.hearingLocation = new HearingLocation(ccdClaim.hearingLocation.value);
+    caseProgressionHearing.hearingTimeHourMinute = ccdClaim.hearingTimeHourMinute;
     return caseProgressionHearing;
   }
 };

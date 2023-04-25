@@ -156,6 +156,7 @@ export interface CCDClaim extends ClaimUpdate {
   hearingDocuments?: Document[];
   hearingDate?: string;
   hearingLocation?: HearingLocation;
+  hearingTimeHourMinute?: string;
 }
 
 export interface ClaimFeeData {

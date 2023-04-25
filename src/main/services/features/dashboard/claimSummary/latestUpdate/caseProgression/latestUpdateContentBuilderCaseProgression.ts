@@ -18,7 +18,9 @@ export const buildResponseToClaimSectionCaseProgression = (claim: Claim, claimId
 
   const section = new LatestUpdateSectionBuilder()
     .addTitle(trialHearingTitle)
-    .addParagraph(trialHearingParagraph, {hearingDate: 'hearingDate' , hearingTimeHourMinute: 'hearingTimeHourMinute', courtName: 'courtName'})
+    .addParagraph(trialHearingParagraph, {hearingDate: claim.caseProgressionHearing.hearingDate,
+      hearingTimeHourMinute: claim.caseProgressionHearing.getHearingTimeHourMinuteFormatted(),
+      courtName: claim.caseProgressionHearing.hearingLocation.getCourtName()})
     .addButton(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, 'href')
     .build();
   sectionContent.push(section);
