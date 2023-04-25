@@ -35,10 +35,6 @@ class NameAndAddressDetailsPage {
     I.fillField(fields.correspondenceCity, 'Barkingside');
     I.fillField(fields.correspondencePostCode, 'IG2 6QU');
   }
-
-  navigateToNameAndAddressDetailsPage(claimRef) {
-    I.amOnPage('/case/'+claimRef+'/response/your-details');
-  }
 }
 
 module.exports = NameAndAddressDetailsPage;
