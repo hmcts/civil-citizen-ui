@@ -28,17 +28,21 @@ function renderPage(res: Response, claimsAsClaimant: DashboardClaimantItem[], cl
 
 const dashboardController = Router();
 
-dashboardController.get(DASHBOARD_URL, async function (req, res) {
+dashboardController.get(DASHBOARD_URL, async function (req, res, next) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const appRequest = <AppRequest> req;
   const user: UserDetails = appRequest.session.user;
-  const claimsAsClaimant : DashboardClaimantItem[] = await civilServiceClient.getClaimsForClaimant(appRequest);
-  const claimsAsDefendant : DashboardDefendantItem[] = await civilServiceClient.getClaimsForDefendant(appRequest);
-  const claimDraftSaved = await getOcmcDraftClaims(user?.accessToken);
-  const responseDraftSaved = false;
-  const paginationArgumentClaimant: object = {};
-  const paginationArgumentDefendant: object = {};
-  renderPage(res, claimsAsClaimant, claimDraftSaved, claimsAsDefendant, responseDraftSaved, paginationArgumentClaimant, paginationArgumentDefendant, lang);
+  try{
+    const claimsAsClaimant : DashboardClaimantItem[] = await civilServiceClient.getClaimsForClaimant(appRequest);
+    const claimsAsDefendant : DashboardDefendantItem[] = await civilServiceClient.getClaimsForDefendant(appRequest);
+    const claimDraftSaved = await getOcmcDraftClaims(user?.accessToken);
+    const responseDraftSaved = false;
+    const paginationArgumentClaimant: object = {};
+    const paginationArgumentDefendant: object = {};
+    renderPage(res, claimsAsClaimant, claimDraftSaved, claimsAsDefendant, responseDraftSaved, paginationArgumentClaimant, paginationArgumentDefendant, lang);
+  }catch(error){
+    next(error);
+  }
 });
 
 export default dashboardController;
