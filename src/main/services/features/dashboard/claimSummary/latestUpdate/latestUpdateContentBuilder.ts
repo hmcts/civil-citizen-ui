@@ -242,4 +242,4 @@ function fillIsNotBusiness (commonLastUpdateSection: LastUpdateSectionBuilder, c
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
     .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claimId)
     .build();
-};
+}
