@@ -20,8 +20,6 @@ export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   claim.claimBilingualLanguagePreference = toCUIClaimBilingualLangPreference(ccdClaim?.respondent1LiPResponse?.respondent1ResponseLanguage);
   claim.directionQuestionnaire = toCUIDQs(ccdClaim);
   claim.caseProgressionHearing = toCUICaseProgressionHearing(ccdClaim);
-  //hearingNotice
-  claim.caseProgressionHearing = toCUICaseProgressionHearing(ccdClaim);
   return claim;
 };
 
