@@ -154,7 +154,7 @@ export interface CCDClaim extends ClaimUpdate {
   responseClaimExpertSpecRequired?: YesNoUpperCamelCase;
   claimType?: string;
   hearingDocuments?: Document[];
-  hearingDate?: string;
+  hearingDate?: Date;
   hearingLocation?: HearingLocation;
   hearingTimeHourMinute?: string;
 }
