@@ -8,6 +8,7 @@ import {
   ValidateIf,
   ValidateNested,
 } from 'class-validator';
+import {ValidationArgs} from 'common/form/models/genericForm';
 import {DateNotAfterReferenceDate} from 'common/form/validators/dateNotAfterReferenceDate';
 import {OptionalDateFourDigitValidator} from 'common/form/validators/optionalDateFourDigitValidator';
 import {OptionalDateNotInPastValidator} from 'common/form/validators/optionalDateNotInPastValidator';
@@ -93,7 +94,7 @@ export class UnavailableDatePeriod {
   }
 }
 
-function generateErrorMessage(args: any): string {
+function generateErrorMessage(args: ValidationArgs<UnavailableDatePeriod>): string {
   switch (args.property) {
     case 'startDay':
       if (args.object.type === UnavailableDateType.SINGLE_DATE) {
@@ -123,14 +124,14 @@ function generateErrorMessage(args: any): string {
   }
 }
 
-function generateErrorMessageForMaxDate(args: any): string {
+function generateErrorMessageForMaxDate(args: ValidationArgs<UnavailableDatePeriod>): string {
   if (args.object.type === UnavailableDateType.SINGLE_DATE) {
     return 'ERRORS.ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS';
   }
   return 'ERRORS.ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS_FROM';
 }
 
-function generateErrorMessageForIsDate(args: any): string {
+function generateErrorMessageForIsDate(args: ValidationArgs<UnavailableDatePeriod>): string {
   if (args.object.type === UnavailableDateType.SINGLE_DATE) {
     return 'ERRORS.ENTER_DATE_FOR_UNAVAILABILITY';
   }
@@ -139,7 +140,7 @@ function generateErrorMessageForIsDate(args: any): string {
   }
 }
 
-function generateErrorMessageForDateNotInPastValidator(args: any): string {
+function generateErrorMessageForDateNotInPastValidator(args: ValidationArgs<UnavailableDatePeriod>): string {
   if (args.object.type === UnavailableDateType.SINGLE_DATE) {
     return 'ERRORS.ENTER_UNAVAILABILITY_DATE_IN_FUTURE';
   }
