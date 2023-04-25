@@ -15,6 +15,7 @@
       {% set titleH1 = t('PAGES.UPLOAD_DOCUMENTS.TITLE') %}
       {% set titleH2 = t('PAGES.UPLOAD_DOCUMENTS.SUBTITLE') %}
       {% set paragraph = t('PAGES.UPLOAD_DOCUMENTS.FORMAT') %}
+      {% set witness = t('PAGES.UPLOAD_DOCUMENTS.WITNESS') %}
 
       <div class="govuk-grid-row">
         <form method="post" novalidate>
@@ -25,21 +26,21 @@
             <p class="govuk-body-m">{{ paragraph }}</p>
             <hr class="govuk-section-break--s govuk-section-break--visible">
 
-            <div data-module="moj-add-another" class="select-toggle">
+            <h2 class="govuk-heading-l">{{ witness }}</h2>
               {% for witnessSection in witnessContent %}
+                <div data-module="moj-add-another" class="select-toggle">
                 {{ claimSummaryContent({
-                  contentSections: witnessSection.contentSections,
-                  hasDivider: witnessSection.hasDivider
+                  contentSections: witnessSection.contentSections
                 }) }}
+                              <div class="moj-button-action">
+                                {{ govukButton({
+                                    text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
+                                    classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-4'
+                                  }) }}
+                              </div>
+                            </div>
+                            <hr class="govuk-section-break--s govuk-section-break--visible">
               {% endfor %}
-              <div class="moj-button-action">
-                {{ govukButton({
-                    text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
-                    classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-4'
-                  }) }}
-              </div>
-            </div>
-            <hr class="govuk-section-break--s govuk-section-break--visible">
 
             <div class="govuk-form-group">
               {{ govukButton({

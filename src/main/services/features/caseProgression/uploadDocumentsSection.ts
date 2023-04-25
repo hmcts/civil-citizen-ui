@@ -1,14 +1,5 @@
 import {ClaimSummarySection, ClaimSummaryType} from '../../../common/form/models/claimSummarySection';
 
-export const getWitnessTitle = (): ClaimSummarySection => {
-  return ({
-    type: ClaimSummaryType.TITLE,
-    data: {
-      text: 'PAGES.UPLOAD_DOCUMENTS.WITNESS',
-    },
-  });
-};
-
 export const getWitnessSubtitle = (subTitle:string): ClaimSummarySection => {
   return {
     type: ClaimSummaryType.SUBTITLE,
