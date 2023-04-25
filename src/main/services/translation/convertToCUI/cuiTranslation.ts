@@ -7,6 +7,7 @@ import {toCUIMediation} from 'services/translation/convertToCUI/convertToCUIMedi
 import {toCUIStatementOfMeans} from 'services/translation/convertToCUI/convertToCUIStatementOfMeans';
 import {toCUIClaimBilingualLangPreference} from 'services/translation/convertToCUI/convertToCUIRespondentLiPResponse';
 import {toCUIDQs} from 'services/translation/convertToCUI/convertToCUIDQs';
+import {toCUICaseProgressionHearing} from 'services/translation/convertToCUI/convertToCaseProgressionHearing';
 
 export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -18,6 +19,9 @@ export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   claim.statementOfMeans = toCUIStatementOfMeans(ccdClaim);
   claim.claimBilingualLanguagePreference = toCUIClaimBilingualLangPreference(ccdClaim?.respondent1LiPResponse?.respondent1ResponseLanguage);
   claim.directionQuestionnaire = toCUIDQs(ccdClaim);
+  claim.caseProgressionHearing = toCUICaseProgressionHearing(ccdClaim);
+  //hearingNotice
+  claim.caseProgressionHearing = toCUICaseProgressionHearing(ccdClaim);
   return claim;
 };
 

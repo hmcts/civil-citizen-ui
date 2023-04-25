@@ -54,6 +54,7 @@ import {toCUIEvidence} from 'services/translation/convertToCUI/convertToCUIEvide
 import {toCUIParty} from 'services/translation/convertToCUI/convertToCUIParty';
 import {toCUIMediation} from 'services/translation/convertToCUI/convertToCUIMediation';
 import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIClaimDetails';
+import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 
 export class Claim {
   legacyCaseReference: string;
@@ -89,6 +90,7 @@ export class Claim {
   respondent1ResponseDate?: Date;
   claimBilingualLanguagePreference: ClaimBilingualLanguagePreference;
   id: string;
+  caseProgressionHearing?: CaseProgressionHearing;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -97,6 +99,7 @@ export class Claim {
     claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
     claim.respondent1 = toCUIParty(ccdClaim?.respondent1);
     claim.mediation = toCUIMediation(ccdClaim?.respondent1LiPResponse?.respondent1MediationLiPResponse);
+
     return claim;
   }
 
@@ -481,6 +484,9 @@ export class Claim {
     return this.claimType === claimType.SMALL_CLAIM;
   }
 
+  hasCaseProgressionHearingDocuments(): boolean{
+    return !!this.caseProgressionHearing.hearingDocuments;
+  }
 }
 
 export interface StatementOfTruth {

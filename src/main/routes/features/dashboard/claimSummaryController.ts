@@ -20,7 +20,10 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextF
     if (claim && !claim.isEmpty()) {
       const latestUpdateContent = getLatestUpdateContent(claimId, claim);
       const documentsContent = getDocumentsContent(claim, claimId);
-      if (latestUpdateContent.length === 0 && await isCaseProgressionV1Enable()) {
+      //caseprogression
+      if (latestUpdateContent.length === 0 &&
+        claim.hasCaseProgressionHearingDocuments() &&
+        await isCaseProgressionV1Enable()) {
         getLatestUpdateContentCaseProgression(claimId, claim)
           .forEach(items => latestUpdateContent.push(items));
       }
