@@ -18,17 +18,18 @@ import {
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
 import {CaseDocument} from 'common/models/document/caseDocument';
-import {DashboardClaimantItem, DashboardDefendantItem} from '../../common/models/dashboard/dashboardItem';
-import {ClaimUpdate, EventDto} from '../../common/models/events/eventDto';
-import {CaseEvent} from '../../common/models/events/caseEvent';
-import {CourtLocation} from '../../common/models/courts/courtLocations';
+import {DashboardClaimantItem, DashboardDefendantItem} from 'models/dashboard/dashboardItem';
+import {ClaimUpdate, EventDto} from 'models/events/eventDto';
+import {CaseEvent} from 'models/events/caseEvent';
+import {CourtLocation} from 'models/courts/courtLocations';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
+import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
 
 const convertCaseToClaim = (caseDetails: CivilClaimResponse): Claim => {
-  const claim: Claim = Claim.fromCCDCaseData(caseDetails.case_data);
+  const claim: Claim = translateCCDCaseDataToCUIModel(caseDetails.case_data);
   claim.ccdState = caseDetails.state;
   claim.id = caseDetails.id;
   return claim;
@@ -79,6 +80,7 @@ export class CivilServiceClient {
       return plainToInstance(DashboardDefendantItem, response.data as object[]);
     } catch (err) {
       logger.error(err);
+      throw err;
     }
   }
 
@@ -106,9 +108,7 @@ export class CivilServiceClient {
         throw new AssertionError({message: 'Claim details not available!'});
       }
       const caseDetails: CivilClaimResponse = response.data;
-      const claim: Claim = convertCaseToClaim(caseDetails);
-
-      return claim;
+      return convertCaseToClaim(caseDetails);
     } catch (err: unknown) {
       logger.error(err);
     }
@@ -156,8 +156,7 @@ export class CivilServiceClient {
         return new Claim();
       }
       const caseDetails: CivilClaimResponse = response.data;
-      const claim: Claim = convertCaseToClaim(caseDetails);
-      return claim;
+      return convertCaseToClaim(caseDetails);
 
     } catch (err: unknown) {
       logger.error(err);
@@ -203,7 +202,7 @@ export class CivilServiceClient {
         .replace(':caseId', claimId), data, config);// nosonar
       logger.info('submitted event ' + data.event + ' with update ' + data.caseDataUpdate);
       const claimResponse = response.data as CivilClaimResponse;
-      return Claim.fromCCDCaseData(claimResponse.case_data);
+      return translateCCDCaseDataToCUIModel(claimResponse.case_data);
     } catch (err: unknown) {
       logger.error(err);
       throw err;

@@ -8,6 +8,8 @@ import {CCDAddress} from 'models/ccdResponse/ccdAddress';
 import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
 import {CCDDQExtraDetails} from 'models/ccdResponse/ccdDQExtraDetails';
 import {CCDHearingSupport} from 'models/ccdResponse/ccdHearingSupport';
+import {DefendantTimeline} from 'form/models/timeLineOfEvents/defendantTimeline';
+import {TimelineRow} from 'form/models/timeLineOfEvents/timelineRow';
 
 const setUpUndefinedFinancialDetails = () : CCDFinancialDetailsLiP => {
   return {
@@ -24,6 +26,18 @@ const setUpUndefinedDQExtraDetails = () : CCDDQExtraDetails => {
     whyPhoneOrVideoHearing: '',
     whyUnavailableForHearing: undefined,
     giveEvidenceYourSelf: undefined,
+    triedToSettle: undefined,
+    determinationWithoutHearingRequired: undefined,
+    determinationWithoutHearingReason: '',
+    requestExtra4weeks: undefined,
+    considerClaimantDocuments: undefined,
+    considerClaimantDocumentsDetails: '',
+    respondent1DQLiPExpert: {
+      caseNeedsAnExpert: undefined,
+      expertCanStillExamineDetails: '',
+      expertReportRequired: undefined,
+      details: undefined,
+    },
   };
 };
 
@@ -70,11 +84,11 @@ describe('translate cui fields to CCD model', () => {
     expect(output).toEqual(expected);
   });
 
-  it('should return value if provideCorrespondenceAddress is yes and have data', () => {
+  it('should return value if postToThisAddress is yes and have data', () => {
     //Given
     const input = setUPEmptyRespondent();
     input.respondent1.partyDetails.contactPerson = 'Example contactPerson';
-    input.respondent1.partyDetails.provideCorrespondenceAddress = 'yes';
+    input.respondent1.partyDetails.postToThisAddress = 'yes';
     input.respondent1.partyDetails.correspondenceAddress = new Address('line 1', 'line 2', 'line 3', 'london', 'SW1A 2AA' );
 
     const expected : CCDRespondentLiPResponse = {
@@ -91,11 +105,11 @@ describe('translate cui fields to CCD model', () => {
     expect(output).toEqual(expected);
   });
 
-  it('should return only contact person if provideCorrespondenceAddress is no ', () => {
+  it('should return only contact person if postToThisAddress is no ', () => {
     //Given
     const input = setUPEmptyRespondent();
     input.respondent1.partyDetails.contactPerson = 'Example contactPerson';
-    input.respondent1.partyDetails.provideCorrespondenceAddress = 'no';
+    input.respondent1.partyDetails.postToThisAddress = 'no';
 
     const expected : CCDRespondentLiPResponse = {
       respondent1LiPFinancialDetails: setUpUndefinedFinancialDetails(),
@@ -110,10 +124,10 @@ describe('translate cui fields to CCD model', () => {
     expect(output).toEqual(expected);
   });
 
-  it('should return only correspondenceAddress if provideCorrespondenceAddress is yes and contactPerson undefined ', () => {
+  it('should return only correspondenceAddress if postToThisAddress is yes and contactPerson undefined ', () => {
     //Given
     const input = setUPEmptyRespondent();
-    input.respondent1.partyDetails.provideCorrespondenceAddress = 'yes';
+    input.respondent1.partyDetails.postToThisAddress = 'yes';
     input.respondent1.partyDetails.correspondenceAddress = new Address('line 1', 'line 2', 'line 3', 'london', 'SW1A 2AA' );
 
     const expected : CCDRespondentLiPResponse = {
@@ -127,6 +141,29 @@ describe('translate cui fields to CCD model', () => {
     const output = toCCDRespondentLiPResponse(input);
     //Then
     expect(output).toEqual(expected);
+  });
+
+  it('return the Respondent LiP Response object', () => {
+    // Given
+    const claim = new Claim();
+    const timeline: DefendantTimeline = new DefendantTimeline([new TimelineRow('6 November 2022', 'Event 1')]);
+
+    claim.partialAdmission = {
+      alreadyPaid: {
+        option: 'yes',
+      },
+      timeline: timeline,
+    };
+    claim.evidence = {
+      comment: 'Evidence commet',
+      evidenceItem: [],
+    };
+
+    // When
+    const result = toCCDRespondentLiPResponse(claim);
+
+    // Then
+    expect(result.timelineComment).toEqual(claim.partialAdmission.timeline.comment);
+    expect(result.evidenceComment).toEqual(claim.evidence.comment);
   });
 });
-
