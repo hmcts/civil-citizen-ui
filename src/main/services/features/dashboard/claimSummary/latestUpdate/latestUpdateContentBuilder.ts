@@ -98,10 +98,7 @@ function getPartAdmitPayInstallmentItems(claim: Claim) {
       paymentDate: formatDateToFullDate(getPaymentDate(claim), getLanguage()),
     });
   if (!claim.isBusiness()) {
-    return commonLastUpdateSection
-      .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
-      .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claimId)
-      .build();
+    return fillIsNotBusiness(commonLastUpdateSection);
   }
   return commonLastUpdateSection
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`)
@@ -123,10 +120,7 @@ function getPartAdmitPaidPayByDate(claim: Claim) {
     });
 
   if (!claim.isBusiness()) {
-    return commonLastUpdateSection
-      .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
-      .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claimId)
-      .build();
+    return fillIsNotBusiness(commonLastUpdateSection);
   }
   return commonLastUpdateSection
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`)
@@ -161,10 +155,7 @@ function getFullAdmitPayInstallments(claim: Claim) {
     });
   
   if (!claim.isBusiness()) {
-    return commonLastUpdateSection
-      .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
-      .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claimId)
-      .build();
+    return fillIsNotBusiness(commonLastUpdateSection);
   }
   return commonLastUpdateSection
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`)
@@ -185,10 +176,7 @@ function getFullAdmitPayByDate(claim: Claim) {
     });
 
   if (!claim.isBusiness()) {
-    return commonLastUpdateSection
-      .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
-      .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claimId)
-      .build();
+    return fillIsNotBusiness(commonLastUpdateSection);
   }
   return commonLastUpdateSection
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`)
@@ -248,3 +236,10 @@ export const buildResponseToClaimSection = (claim: Claim, claimId: string): Clai
   }
   return sectionContent.flat();
 };
+
+function fillIsNotBusiness (commonLastUpdateSection: LastUpdateSectionBuilder) {
+  return commonLastUpdateSection
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
+    .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claimId)
+    .build();
+}
