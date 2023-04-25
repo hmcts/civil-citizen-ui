@@ -4,6 +4,7 @@ import {MAX_AMOUNT_VALUE} from '../../../validators/validationConstraints';
 import {ScheduledAmount} from '../../../../utils/calculateMonthlyIncomeExpenses/monthlyIncomeExpensesCalculator';
 import {IncomeType} from './incomeType';
 import {ExpenseType} from './expenseType';
+import {ValidationArgs} from '../../genericForm';
 
 export interface TransactionSourceParams {
   name?: string;
@@ -133,7 +134,7 @@ export class ValidationErrors {
   }
 
   static withMessage(buildErrorFn: (name?: string, isIncome?: boolean) => string) {
-    return (args: any): string => {
+    return (args: ValidationArgs<TransactionSource>): string => {
       const object: TransactionSource = args.object;
       return buildErrorFn(object.name, object.isIncome);
     };
