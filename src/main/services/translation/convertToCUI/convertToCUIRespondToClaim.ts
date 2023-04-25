@@ -12,11 +12,12 @@ export const toCUIRespondToClaim = (ccdRespondToClaim: CCDRespondToClaim): HowMu
     }
   }
 
-  howMuchHaveYouPaid.date = ccdRespondToClaim?.whenWasThisAmountPaid;
+  const date = new Date (ccdRespondToClaim?.whenWasThisAmountPaid);
+  howMuchHaveYouPaid.date = date;
   howMuchHaveYouPaid.amount = ccdRespondToClaim?.howMuchWasPaid;
-  howMuchHaveYouPaid.day = ccdRespondToClaim?.whenWasThisAmountPaid?.getDay();
-  howMuchHaveYouPaid.month = ccdRespondToClaim?.whenWasThisAmountPaid?.getMonth();
-  howMuchHaveYouPaid.year = ccdRespondToClaim?.whenWasThisAmountPaid?.getFullYear();
+  howMuchHaveYouPaid.day = date.getDate();
+  howMuchHaveYouPaid.month = date.getMonth() + 1 ;
+  howMuchHaveYouPaid.year = date.getFullYear();
   howMuchHaveYouPaid.text = setHowMuchHaveYouPaidText(ccdRespondToClaim);
 
   return howMuchHaveYouPaid;
