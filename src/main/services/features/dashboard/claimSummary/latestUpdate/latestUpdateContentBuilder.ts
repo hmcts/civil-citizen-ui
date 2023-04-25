@@ -96,7 +96,7 @@ function getPartAdmitPayInstallmentItems(claim: Claim) {
       installmentAmount: currencyFormat(getPaymentAmount(claim)),
       paymentSchedule: getRepaymentFrequency(claim),
       paymentDate: formatDateToFullDate(getPaymentDate(claim), getLanguage()),
-    })
+    });
   if (!claim.isBusiness()) {
     return commonLastUpdateSection
       .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
@@ -120,7 +120,7 @@ function getPartAdmitPaidPayByDate(claim: Claim) {
       amount: currencyFormat(getAmount(claim)),
       claimantName: claimantFullName,
       paymentDate: formatDateToFullDate(getFirstRepaymentDate(claim),getLanguage()),
-    })
+    });
 
   if (!claim.isBusiness()) {
     return commonLastUpdateSection
