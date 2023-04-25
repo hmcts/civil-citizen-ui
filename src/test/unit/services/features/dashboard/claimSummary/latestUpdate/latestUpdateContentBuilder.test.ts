@@ -61,6 +61,7 @@ describe('Latest Update Content Builder', () => {
       // Then
       expect(responseToClaimSection[1].type).toEqual(ClaimSummaryType.PARAGRAPH);
     });
+
     it('should have responseDeadlinePassedContent when defendant not responded after dead line', () => {
       // Given
       const expectedNow = DateTime.local(2022, 8, 1, 23, 0, 0);
@@ -86,10 +87,9 @@ describe('Latest Update Content Builder', () => {
       expect(responseToClaimSection.length).toBe(0);
     });
 
-    it('should have evidence upload content', () => {
+    it('should have evidence upload content WHEN state is PENDING_CASE_ISSUED AND has sdoOrderDocument', () => {
       // Given
       claim.ccdState = CaseState.PENDING_CASE_ISSUED;
-
       claim.sdoOrderDocument = {
         createdBy: '',
         createdDatetime: undefined,
@@ -109,6 +109,16 @@ describe('Latest Update Content Builder', () => {
       expect(responseToClaimSection[2].data?.href).toEqual(sdoUrl);
       expect(responseToClaimSection[3].type).toEqual(ClaimSummaryType.BUTTON);
       expect(responseToClaimSection[3].data?.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
+    });
+
+    it('should not have evidence upload content WHEN state is PENDING_CASE_ISSUED AND no sdoOrderDocument', () => {
+      // Given
+      claim.ccdState = CaseState.PENDING_CASE_ISSUED;
+      claim.sdoOrderDocument = null;
+      // when
+      const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
+      // Then
+      expect(responseToClaimSection.length).toBe(0);
     });
   });
 });

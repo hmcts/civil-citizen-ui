@@ -100,14 +100,28 @@ describe('LatestUpdateSectionBuilder tests', ()=> {
         textAfter: 'after',
       },
     });
-
     //When
     const contactLinkExpected = new LatestUpdateSectionBuilder()
       .addLink(contactLinkObject.data.text,contactLinkObject.data.href, contactLinkObject.data.textBefore, contactLinkObject.data.textAfter)
       .build();
-
     //Then
     expect(contactLinkExpected).toEqual([contactLinkObject]);
   });
 
+  it('should addLink with just text', ()=> {
+    //Given
+    const contactLinkObject = ({
+      type: ClaimSummaryType.LINK,
+      data: {
+        text: 'text',
+        href: 'href',
+      },
+    });
+    //When
+    const contactLinkExpected = new LatestUpdateSectionBuilder()
+      .addLink(contactLinkObject.data.text,contactLinkObject.data.href)
+      .build();
+    //Then
+    expect(contactLinkExpected).toEqual([contactLinkObject]);
+  });
 });
