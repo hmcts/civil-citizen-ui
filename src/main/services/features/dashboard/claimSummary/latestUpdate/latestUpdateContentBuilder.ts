@@ -89,7 +89,7 @@ function getPartAdmitPayInstallmentItems(claim: Claim) {
   const claimantFullName = claim.getClaimantFullName();
   const claimId = claim.id;
   const commonLastUpdateSection = new LastUpdateSectionBuilder()
-    .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
+    // .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_STARTING`, {
       amount: currencyFormat(getAmount(claim)),
       claimantName: claimantFullName,
@@ -112,7 +112,7 @@ function getPartAdmitPaidPayByDate(claim: Claim) {
   const claimantFullName = claim.getClaimantFullName();
   const claimId = claim.id;
   const commonLastUpdateSection = new LastUpdateSectionBuilder()
-    .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
+    // .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_BY`, {
       amount: currencyFormat(getAmount(claim)),
       claimantName: claimantFullName,
@@ -132,7 +132,7 @@ function getPartAdmitPaidPayByDate(claim: Claim) {
 
 function getPartAdmitPaidPayImmediately(claim: Claim) {
   return new LastUpdateSectionBuilder()
-    .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
+    // .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_IMMEDIATELY`, {
       amount: currencyFormat(getAmount(claim)),
       claimantName: claim.getClaimantFullName(),
@@ -146,7 +146,7 @@ function getFullAdmitPayInstallments(claim: Claim) {
   const claimantFullName = claim.getClaimantFullName();
   const claimId = claim.id;
   const commonLastUpdateSection = new LastUpdateSectionBuilder()
-    .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
+    // .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY_STARTING`, {
       claimantName: claimantFullName,
       installmentAmount: currencyFormat(getPaymentAmount(claim)),
@@ -169,7 +169,7 @@ function getFullAdmitPayByDate(claim: Claim) {
   const claimantFullName = claim.getClaimantFullName();
   const claimId = claim.id;
   const commonLastUpdateSection = new LastUpdateSectionBuilder()
-    .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
+    // .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY`, {
       claimantName: claimantFullName,
       paymentDate: formatDateToFullDate(getPaymentDate(claim), getLanguage()),
@@ -190,7 +190,7 @@ function getFullAdmitPayImmediately(claim: Claim) {
   const claimantFullName = claim.getClaimantFullName();
   const claimId = claim.id;
   return new LastUpdateSectionBuilder()
-    .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
+    // .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_SAID_YOU_WILL_PAY`, {
       claimantName: claimantFullName,
       amount: currencyFormat(getAmount(claim)),
