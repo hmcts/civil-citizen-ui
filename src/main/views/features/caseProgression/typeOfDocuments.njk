@@ -16,42 +16,101 @@
     {% endif %}
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">test</h1>
-
+        <h1 class="govuk-heading-l">What types of documents do you want to upload?</h1>
+        <p class="govuk-body">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.SELECT_THE_TYPE_OF_DOCUMENT') }}</p>
+        <p class="govuk-body">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CASE_REFERENCE_NUMBER') }}</p>
         {{ govukCheckboxes({
-        name: "nationality",
+        name: "witnessEvidence",
         fieldset: {
         legend: {
-        text: "What is your nationality?",
+        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_EVIDENCE'),
         isPageHeading: true,
         classes: "govuk-fieldset__legend--l"
         }
         },
+        items: [
+        {
+        value: form.model.value,
+        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.YOUR_STATEMENT'),
         hint: {
-        text: "If you have dual nationality, select all options that are relevant to you."
+        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.YOUR_STATEMENT_HINT')
+        }
         },
-        errorMessage: {
-        text: "Select if you are British, Irish or a citizen of a different country"
+        {
+        value: form.model.value,
+        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_STATEMENT'),
+        hint: {
+        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_STATEMENT_HINT')
+        }
+        },
+        {
+        value: "WitnessSummary",
+        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_SUMMARY'),
+        hint: {
+        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_SUMMARY_HINT')
+        }
+        },
+        {
+        value: "documentsRefferedStatement",
+        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_REFFERED_TO_STATEMENT'),
+        hint: {
+        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_REFFERED_TO_STATEMENT_HINT')
+        }
+        }
+        ]
+        }) }}
+{{ govukCheckboxes({
+        name: "expertEvidence",
+        fieldset: {
+        legend: {
+        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.EXPERT_EVIDENCE'),
+        isPageHeading: true,
+        classes: "govuk-fieldset__legend--l"
+        }
         },
         items: [
         {
         value: form.model.value,
-        text: form.model.text,
+        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.EXPERTS_REPORT'),
         hint: {
-        text: "including English, Scottish, Welsh and Northern Irish"
+        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.EXPERTS_REPORT_HINT')
         }
         },
         {
-        value: "irish",
-        text: "Irish"
-        },
-        {
-        value: "other",
-        text: "Citizen of another country"
+        value: form.model.value,
+        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.JOINT_STATEMENT_OF_EXPERTS'),
+        hint: {
+        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.JOINT_STATEMENT_OF_EXPERTS_HINT')
+        }
         }
         ]
         }) }}
-
+{{ govukCheckboxes({
+        name: "hearingDocuments",
+        fieldset: {
+        legend: {
+        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.HEARING_DOCUMENTS'),
+        isPageHeading: true,
+        classes: "govuk-fieldset__legend--l"
+        }
+        },
+        items: [
+        {
+        value: form.model.value,
+        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTARY_EVIDENCE'),
+        hint: {
+        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTARY_EVIDENCE_HINT')
+        }
+        },
+        {
+        value: form.model.value,
+        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.LEGAL_AUTHORITIES'),
+        hint: {
+        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.LEGAL_AUTHORITIES_HINT')
+        }
+        }
+        ]
+        }) }}
         </form>
       </div>
     </div>
