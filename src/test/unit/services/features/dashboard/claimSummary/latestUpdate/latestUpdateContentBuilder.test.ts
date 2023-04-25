@@ -151,7 +151,7 @@ describe('Latest Update Content Builder', () => {
         // Given
         const claim = getClaim(PartyType.COMPANY, ResponseType.FULL_ADMISSION, PaymentOptionType.IMMEDIATELY);
         const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
-          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
+          // .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_SAID_YOU_WILL_PAY`, {
             claimantName: claim.getClaimantFullName(),
             amount: currencyFormat(getAmount(claim)),
@@ -173,7 +173,7 @@ describe('Latest Update Content Builder', () => {
         // Given
         const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.FULL_ADMISSION, PaymentOptionType.BY_SET_DATE);
         const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
-          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
+          // .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY`, {
             claimantName: claim.getClaimantFullName(),
             paymentDate: formatDateToFullDate(getPaymentDate(claim), getLanguage()),
@@ -192,7 +192,7 @@ describe('Latest Update Content Builder', () => {
         // Given
         const claim = getClaim(PartyType.COMPANY, ResponseType.FULL_ADMISSION, PaymentOptionType.BY_SET_DATE);
         const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
-          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
+          // .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY`, {
             claimantName: claim.getClaimantFullName(),
             paymentDate: formatDateToFullDate(getPaymentDate(claim), getLanguage()),
@@ -212,7 +212,7 @@ describe('Latest Update Content Builder', () => {
         // Given
         const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.FULL_ADMISSION, PaymentOptionType.INSTALMENTS);
         const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
-          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
+          // .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY_STARTING`, {
             claimantName: claim.getClaimantFullName(),
             installmentAmount:  currencyFormat(getPaymentAmount(claim)),
@@ -232,7 +232,7 @@ describe('Latest Update Content Builder', () => {
         // Given
         const claim = getClaim(PartyType.COMPANY, ResponseType.FULL_ADMISSION, PaymentOptionType.INSTALMENTS);
         const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
-          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
+          // .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY_STARTING`, {
             claimantName: claim.getClaimantFullName(),
             installmentAmount:  currencyFormat(getPaymentAmount(claim)),
@@ -256,7 +256,7 @@ describe('Latest Update Content Builder', () => {
         // Given
         const claim = getClaim(PartyType.COMPANY, ResponseType.PART_ADMISSION, PaymentOptionType.IMMEDIATELY);
         const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
-          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
+          // .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_IMMEDIATELY`, {
             amount: currencyFormat(getAmount(claim)),
             claimantName: claim.getClaimantFullName(),
@@ -275,7 +275,7 @@ describe('Latest Update Content Builder', () => {
         // Given
         const claim = getClaim(PartyType.COMPANY, ResponseType.PART_ADMISSION, PaymentOptionType.BY_SET_DATE);
         const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
-          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
+          // .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_BY`, {
             amount: currencyFormat(getAmount(claim)),
             claimantName: claim.getClaimantFullName(),
@@ -296,7 +296,7 @@ describe('Latest Update Content Builder', () => {
         // Given
         const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.BY_SET_DATE);
         const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
-          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
+          // .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_BY`, {
             amount: currencyFormat(getAmount(claim)),
             claimantName: claim.getClaimantFullName(),
@@ -315,7 +315,7 @@ describe('Latest Update Content Builder', () => {
         // Given
         const claim = getClaim(PartyType.COMPANY, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
         const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
-          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
+          // .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_STARTING`, {
             amount: currencyFormat(getAmount(claim)),
             claimantName: claim.getClaimantFullName(),
@@ -338,7 +338,7 @@ describe('Latest Update Content Builder', () => {
         // Given
         const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
         const lastUpdateSectionExpected = new LastUpdateSectionBuilder()
-          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
+          // .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_STARTING`, {
             amount: currencyFormat(getAmount(claim)),
             claimantName: claim.getClaimantFullName(),
