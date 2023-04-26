@@ -6,7 +6,7 @@ import {
   getRespondToClaimLink,
   getResponseNotSubmittedTitle,
 } from './latestUpdateContent/responseToClaimSection';
-import {getEvidenceUpload} from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContent/evidenceUploadContent';
+import {getEvidenceUpload} from './latestUpdateContent/evidenceUploadContent';
 
 export const buildResponseToClaimSection = (claim: Claim, claimId: string): ClaimSummarySection[] => {
   const sectionContent = [];

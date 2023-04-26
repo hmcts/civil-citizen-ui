@@ -9,7 +9,6 @@ import {AppRequest} from 'models/AppRequest';
 import {DEFENDANT_SUMMARY_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {isCaseProgressionV1Enable} from '../../../app/auth/launchdarkly/launchDarklyClient';
-
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
