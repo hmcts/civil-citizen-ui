@@ -5291,12 +5291,12 @@ __metadata:
   linkType: hard
 
 "deep-equal-in-any-order@npm:^2.0.2":
-  version: 2.0.5
-  resolution: "deep-equal-in-any-order@npm:2.0.5"
+  version: 2.0.6
+  resolution: "deep-equal-in-any-order@npm:2.0.6"
   dependencies:
     lodash.mapvalues: ^4.6.0
     sort-any: ^2.0.0
-  checksum: 6a8240184c41408a96e793e6ea5cda85457116c266d2f93595bf5befbe007ee4eb3419ac59a3b66a4832af19b89abf6ce25e91daee79cf486a6a6b2b0eaaa490
+  checksum: c975530c2455a15c835306bf388e9c5f7a79b6a45ff0c9c9c5c3ba089c36613ffa7b5b63031ec666e5209f7c7b035155039575d6b7c9876b9cfb7b410af3de2f
   languageName: node
   linkType: hard
 
