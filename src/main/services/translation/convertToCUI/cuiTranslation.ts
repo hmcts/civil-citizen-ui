@@ -23,10 +23,11 @@ export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   claim.claimBilingualLanguagePreference = toCUIClaimBilingualLangPreference(ccdClaim?.respondent1LiPResponse?.respondent1ResponseLanguage);
   claim.rejectAllOfClaim = toCUIRejectAllOfClaim(ccdClaim);
   claim.directionQuestionnaire = toCUIDQs(ccdClaim);
-  claim.fullAdmission = toCUIFullAdmission(ccdClaim);
-  if (claim.isPartialAdmission()) {
+  if (claim.isFullAdmission())
+    claim.fullAdmission = toCUIFullAdmission(ccdClaim);
+  else if (claim.isPartialAdmission())
     claim.partialAdmission = toCUIPartialAdmission(ccdClaim);
-  }
+
   return claim;
 };
 
