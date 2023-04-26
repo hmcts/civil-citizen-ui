@@ -54,6 +54,7 @@ import {toCUIEvidence} from 'services/translation/convertToCUI/convertToCUIEvide
 import {toCUIParty} from 'services/translation/convertToCUI/convertToCUIParty';
 import {toCUIMediation} from 'services/translation/convertToCUI/convertToCUIMediation';
 import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIClaimDetails';
+import {CCDRespondentLiPResponse} from './ccdResponse/ccdRespondentLiPResponse';
 
 export class Claim {
   legacyCaseReference: string;
@@ -90,6 +91,7 @@ export class Claim {
   claimBilingualLanguagePreference: ClaimBilingualLanguagePreference;
   id: string;
   sdoOrderDocument?: CaseDocument;
+  respondent1LiPResponse?: CCDRespondentLiPResponse;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
