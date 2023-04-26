@@ -138,10 +138,10 @@
       "USUAL_RATE": "For most types of debt the rate is usually 8%"
     },
     "HELP_WITH_INTEREST_RATES": {
-      "THE_COURT_WILL_DECIDE": "The court will decide if you're entitled to some or all of the interest claimed.",
-      "TITLE": "Help with interest rates",
-      "YOU_CAN_CLAIM": "You can claim 8% interest on money owed to you. This is the statutory rate. If you know that a different rate applies you can use that. For example if you have a contract with a specific rate"
-    },
+      "THE_COURT_WILL_DECIDE": "Bydd y llys yn penderfynu os oes gennych hawl i rywfaint o’r llog a hawlir neu’r llog cyfan.",
+      "TITLE": "Cymorth gyda chyfraddau llog",
+      "YOU_CAN_CLAIM": "Gallwch hawlio llog ar y gyfradd o 8% ar gyfer arian sy’n ddyledus i chi. Dyma’r gyfradd statudol. Os ydych yn gwybod bod cyfradd wahanol yn berthnasol yna gallwch ddefnyddio’r gyfradd honno. Er enghraifft, os oes gennych gontract sy’n nodi cyfradd benodol"
+      },
     "INPUT_LABELS": {
       "FIRST_NAME": "Enw cyntaf",
       "LAST_NAME": "Cyfenw",
@@ -319,78 +319,78 @@
   "PAGES": {
     "ADMISSION_PAYMENT_DATE": {
       "FOR_EXAMPLE": "Er enghraifft, {{nextDate}} {{nextMonth}} {{nextYear}}",
-      "PAGE_TITLE": "Payment date",
+      "PAGE_TITLE": "Dyddiad talu",
       "TITLE": "Ar ba ddyddiad byddwch yn talu"
     },
     "AGREED_RESPONSE_DEADLINE": {
-      "PAGE_TITLE": "Agree more time to respond",
+      "PAGE_TITLE": "Cytuno ar fwy o amser i ymateb",
       "SUB_TITLE": "Rhowch y dyddiad ymateb yr ydych wedi’i gytuno â chynrychiolydd cyfreithiol {{ claimantName }}",
       "TITLE": "Rydych eisoes wedi cytuno i ragor o amser i ymateb"
     },
     "ARE_YOU_SEVERELY_DISABLED": {
-      "PAGE_TITLE": "Severely disabled"
+      "PAGE_TITLE": "Anabledd difrifol"
     },
     "BILINGUAL_LANGUAGE_PREFERENCE": {
-      "PAGE_TITLE": "Do you want to respond to this claim in Welsh?",
-      "TITLE": "Do you want to respond to this claim in Welsh?",
-      "DESCRIPTION": "You can respond to this claim in Welsh. After you've submitted your response, anything else you may have to do relating to the claim will be in English. You'll receive emails and letters in English.",
+      "PAGE_TITLE": "Ydych chi eisiau ymateb i'r hawliad hwn yn Gymraeg?",
+      "TITLE": "Ydych chi eisiau ymateb i'r hawliad hwn yn Gymraeg?",
+      "DESCRIPTION": "Gallwch ymateb i'r hawliad hwn yn Gymraeg. Ar ôl i chi gyflwyno eich ymateb, bydd unrhyw beth arall y bydd yn rhaid i chi ei wneud yn ymwneud â'r hawliad yn Saesneg. Byddwch yn cael e-byst a llythyrau yn Saesneg.",
       "ENGLISH": "Saesneg",
       "WELSH_AND_ENGLISH": "Cymraeg a Saesneg"
     },
     "BREATHING_SPACE_DEBT_RESPITE_LIFT": {
-      "DATE_LIFT_OPTIONAL": "This is the date that you have been told it will finish (optional):",
-      "PAGE_TITLE": "Date for lifting debt respite scheme (breathing space)",
-      "TITLE": "Date for lifting debt respite scheme (breathing space)"
+      "DATE_LIFT_OPTIONAL": "Dyma'r dyddiad y dywedwyd wrthych y bydd yn gorffen (dewisol):",
+      "PAGE_TITLE": "Dyddiad codi cynllun seibiant dyledion (lle i anadlu)",
+      "TITLE": "Dyddiad codi cynllun seibiant dyledion (lle i anadlu)"
     },
     "BREATHING_SPACE_DEBT_RESPITE_START": {
-      "DATE_START_OPTIONAL": "This is the date it started, not the date you received notification of it (optional).",
-      "PAGE_TITLE": "When did it start?",
-      "TITLE": "When did it start?"
+      "DATE_START_OPTIONAL": "Dyma'r dyddiad y dechreuodd, nid y dyddiad y cawsoch hysbysiad amdano (dewisol).",
+      "PAGE_TITLE": "Pryd ddechreuodd o?",
+      "TITLE": "Pryd ddechreuodd o?"
     },
     "BREATHING_SPACE_DEBT_RESPITE_TYPE": {
-      "MENTAL_HEALTH": "Mental health crisis moratorium",
-      "PAGE_TITLE": "What type is it?",
-      "STANDARD": "Standard breathing space",
-      "TITLE": "What type is it?"
+      "MENTAL_HEALTH": "Moratoriwm argyfwng iechyd meddwl",
+      "PAGE_TITLE": "Pa fath ydy o?",
+      "STANDARD": "Lle i anadlu safonol",
+      "TITLE": "Pa fath ydy o?"
     },
     "CARER": {
-      "PAGE_TITLE": "Carer's allowance"
+      "PAGE_TITLE": "Lwfans gofalwr"
     },
     "CCJ_CONFIRMATION": {
-      "ACTIONS_LINK_TEXT": "Find out about actions you can take after a CCJ is issued ",
-      "PAGE_TITLE": "County Court Judgement confirmation",
-      "PROCESS_YOUR_REQUEST": "We’ll process your request and post a copy of the judgment to you and to {{ defendantName }}. We aim to do this within 10 working days.",
-      "POSTAL_RESPONSE": "If a postal response is received before the judgment is issued your request will be rejected.",
-      "TITLE": "County Court Judgement requested",
-      "UPDATES": "Your online account will not be updated with the progress of this claim - any further updates will be by post.",
-      "NO_LONGER_RESPONSE": "{{ defendantName }} can no longer respond to your claim online."
+      "ACTIONS_LINK_TEXT": "Gwybodaeth am gamau y gallwch eu cymryd ar ôl cyhoeddi CCJ ",
+      "PAGE_TITLE": "Cadarnhad Dyfarniad Llys Sirol",
+      "PROCESS_YOUR_REQUEST": "Byddwn yn prosesu eich cais ac yn postio copi o'r dyfarniad i chi ac i {{ defendantName }}. Rydym yn anelu at wneud hyn o fewn 10 diwrnod gwaith.",
+      "POSTAL_RESPONSE": "Os derbynnir ymateb drwy'r post cyn cyhoeddi'r dyfarniad bydd eich cais yn cael ei wrthod.",
+      "TITLE": "Cais am Ddyfarniad Llys Sirol",
+      "UPDATES": "Ni fydd eich cyfrif ar-lein yn cael ei ddiweddaru wrth i’r hawliad hwn fynd rhagddo - bydd unrhyw ddiweddariadau pellach drwy'r post.",
+      "NO_LONGER_RESPONSE": "Ni all {{ defendantName }} ymateb i'ch hawliad ar-lein mwyach."
     },
     "CCJ_DEFENDANT_DOB": {
-      "PAGE_TITLE": "Do you know the defendant's date of birth?",
-      "TITLE": "Do you know the defendant's date of birth?"
+      "PAGE_TITLE": "Ydych chi'n gwybod dyddiad geni'r diffynnydd?",
+      "TITLE": "Ydych chi'n gwybod dyddiad geni'r diffynnydd?"
     },
     "CCJ_PAID_AMOUNT": {
-      "AMOUNT_PAID": "Amount already paid",
-      "PAGE_TITLE": "Has the defendant paid some of the amount owed?",
-      "TITLE": "Has the defendant paid some of the amount owed?"
+      "AMOUNT_PAID": "Swm a dalwyd eisoes",
+      "PAGE_TITLE": "Ydy'r diffynnydd wedi talu rhywfaint o'r swm sy'n ddyledus?",
+      "TITLE": "Ydy'r diffynnydd wedi talu rhywfaint o'r swm sy'n ddyledus?"
     },
     "CCJ_PAYMENT_TYPE": {
-      "WOULD_PAY": "I would like the defendant to pay:",
-      "PAGE_TITLE": "Payment Options",
-      "TITLE": "Payment Options"
+      "WOULD_PAY": "Hoffwn i'r diffynnydd dalu:",
+      "PAGE_TITLE": "Opsiynau talu",
+      "TITLE": "Opsiynau talu"
     },
     "CCJ_DEFENDANT_PAYMENT_DATE": {
-      "TITLE": "When do you want the defendant to pay?",
+      "TITLE": "Pryd ydych chi eisiau i'r diffynnydd dalu?",
       "INSET": "The court will review your suggestion and may reject it if it's sooner than the defendant can afford to repay the money."
     },
     "CCJ_REPAYMENT_PLAN_INSTALMENTS": {
-      "EACH_INSTALMENT_AMOUNT": "Amount for each instalment",
-      "FIRST_PAYMENT_DATE": "Date for first payment",
-      "HOW_OFTEN": "How often do you want them to pay instalments?",
-      "INSTALMENT_AMOUNT_HELP": "For example £10",
-      "PAGE_TITLE": "Suggest instalments for the defendant",
-      "TITLE": "Suggest instalments for the defendant",
-      "TOTAL_CLAIM_AMOUNT": "Total claim amount is £{{ totalClaimAmount }}."
+      "EACH_INSTALMENT_AMOUNT": "Swm ar gyfer pob rhandaliad",
+      "FIRST_PAYMENT_DATE": "Dyddiad ar gyfer y taliad cyntaf",
+      "HOW_OFTEN": "Pa mor aml ydych chi eisiau i’r diffynnydd dalu rhandaliadau?",
+      "INSTALMENT_AMOUNT_HELP": "Er enghraifft £10",
+      "PAGE_TITLE": "Awgrymu rhandaliadau i'r diffynnydd",
+      "TITLE": "Awgrymu rhandaliadau i'r diffynnydd",
+      "TOTAL_CLAIM_AMOUNT": "Cyfanswm y swm hawlio yw £{{ totalClaimAmount }}."
     },
     "CHECK_YOUR_ANSWER": {
       "BANK_BALANCE": "Cydbwysedd",
@@ -608,48 +608,48 @@
       "RESPONSE_MEANING": "Canfod beth mae pob ymateb yn ei olygu"
     },
     "CLAIM_AMOUNT_BREAKDOWN": {
-      "ADD_ANOTHER_ROW": "Add another row",
-      "AMOUNT": "Amount",
-      "CLAIM_FEE": "your claim fee - we’ll add this for you",
-      "DONT_INCLUDE": "Don’t include:",
-      "DESCRIPTION": "Your claim could be for a single amount or made up of multiple items.",
-      "HINT": "Briefly explain each item - for example, \"broken tiles\", \"roof damage\"",
-      "INTEREST": "interest - we’ll ask you about this next",
-      "REASON": "What you’re claiming for",
-      "TITLE": "Claim amount"
+      "ADD_ANOTHER_ROW": "Ychwanegu rhes arall",
+      "AMOUNT": "Swm",
+      "CLAIM_FEE": "eich ffi hawliad - byddwn yn ychwanegu hyn i chi",
+      "DONT_INCLUDE": "Peidiwch â chynnwys:",
+      "DESCRIPTION": "Gallai eich hawliad fod am un swm neu'n cynnwys nifer o eitemau.",
+      "HINT": "Esboniwch bob eitem yn fyr - er enghraifft, \"teils wedi torri\", \"difrod to\"",
+      "INTEREST": "llog - byddwn yn gofyn i chi am hyn nesaf",
+      "REASON": "Yr hyn rydych chi'n ei hawlio amdano",
+      "TITLE": "Hawlio swm"
     },
     "CLAIM_DETAILS": {
-      "AMOUNT": "Amount",
-      "AMOUNT_BREAKDOWN": "Amount breakdown",
-      "CLAIM_FEE": "Claim fee",
+      "AMOUNT": "Swm",
+      "AMOUNT_BREAKDOWN": "Dadansoddiad o’r swm",
+      "CLAIM_FEE": "Ffi hawliad",
       "CLAIM_NUMBER": "Rhif yr hawliad",
-      "CLAIM_TOTAL": "Claim Total",
-      "DOWNLOAD_AND_VIEW_TIMELINE": "Download and view timeline",
-      "DOWNLOAD_CLAIM": "Download claim (PDF)",
+      "CLAIM_TOTAL": "Cyfanswm yr hawliad",
+      "DOWNLOAD_AND_VIEW_TIMELINE": "Lawrlwytho a gweld llinell amser",
+      "DOWNLOAD_CLAIM": "Lawrlwytho'r hawliad (PDF)",
       "HEADER": "Manylion yr hawliad",
-      "INTEREST": "Interest",
-      "INTEREST_SNIPPET": "Interest calculated at {{ rate }}% for {{ numberOfDays }} days ({{ interestDate }} to {{ interestToDate }})",
+      "INTEREST": "Llog",
+      "INTEREST_SNIPPET": "Llog wedi ei gyfrifo ar {{ rate }}% am  {{ numberOfDays }} diwrnod ({{ interestDate }} tan {{ interestToDate }})",
       "PAGE_TITLE": "Manylion yr hawliad",
-      "REASON_FOR_CLAIM": "Reason for claim",
-      "TIMELINE": "Timeline",
-      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown"
+      "REASON_FOR_CLAIM": "Rheswm dros yr hawliad",
+      "TIMELINE": "Amserlen",
+      "VIEW_AMOUNT_BREAKDOWN": "Gweld dadansoddiad o’r swm"
     },
     "CLAIM_JOURNEY": {
       "CLAIM_INTEREST": {
-        "PAGE_TITLE": "Do you want to claim interest?",
-        "TITLE": "Do you want to claim interest?",
-        "YOU_CAN_CLAIM_INTEREST": "You can claim interest on the money you say you're owed. The court will decide if you're entitled to it."
+        "PAGE_TITLE": "Ydych chi eisiau hawlio llog?",
+        "TITLE": "Ydych chi eisiau hawlio llog?",
+        "YOU_CAN_CLAIM_INTEREST": "Gallwch hawlio llog am yr arian rydych yn ei ddweud sy'n ddyledus i chi. Bydd y llys yn penderfynu a oes gennych hawl iddo."
       },
       "CLAIMANT_INDIVIDUAL_DETAILS": {
-        "PAGE_TITLE": "Enter your details",
-        "THESE_DETAILS_ARE": "These details are shared with the person, business or organisation you are claiming from (the defendant).",
-        "TITLE": "Enter your details",
-        "TRADING": "Trading (optional)",
-        "YOUR_POSTAL_ADDRESS": "Your postal address"
+        "PAGE_TITLE": "Rhowch eich manylion",
+        "THESE_DETAILS_ARE": "Bydd y manylion hyn yn cael eu rhannu gyda'r unigolyn, y busnes neu'r sefydliad yr ydych yn ei hawlio yn ei erbyn (y diffynnydd).",
+        "TITLE": "Rhowch eich manylion",
+        "TRADING": "Masnachu (dewisol)",
+        "YOUR_POSTAL_ADDRESS": "Eich cyfeiriad ar gyfer postio"
       },
       "CONTINUE_CLAIMING_INTEREST": {
-        "PAGE_TITLE": "Continue claiming interest",
-        "TITLE": "Continue to claim interest after you submit your claim?"
+        "PAGE_TITLE": "Parhau i hawlio llog",
+        "TITLE": "Parhau i hawlio llog ar ôl i chi gyflwyno eich cais?"
       },
       "DEFENDANT_EMAIL": {
         "PAGE_TITLE": "Their email address (optional)",
@@ -1386,15 +1386,15 @@
       "SUPPORT_CONTACT_US_URL": "Contact us "
     },
     "FIRST_CONTACT_ACCESS_DENIED": {
-      "CLICK_HERE": "Click here to try again",
-      "THERE_WAS_AN_ERROR": "There was an error during your last operation. Please try again later.",
-      "TITLE": "You are not authorised to view the claim!"
+      "CLICK_HERE": "Cliciwch yma i roi cynnig arall arni",
+      "THERE_WAS_AN_ERROR": "Roedd gwall yn ystod eich gweithred olaf. Rhowch gynnig arni eto nes ymlaen.",
+      "TITLE": "Nid oes gennych awdurdod i weld yr hawliad!"
     },
     "FIRST_CONTACT_CLAIM_REFERENCE": {
       "CLAIM_NUMBER": "Rhif hawlio",
-      "ENTER_CLAIM": "Enter the claim number from the email or letter we sent you.",
-      "PAGE_TITLE": "Enter your claim number",
-      "TITLE": "Enter your claim number"
+      "ENTER_CLAIM": "Rhowch y rhif hawlio o'r e-bost neu'r llythyr a anfonwyd gennym.",
+      "PAGE_TITLE": "Nodwch rif eich hawliad",
+      "TITLE": "Nodwch rif eich hawliad"
     },
     "FIRST_CONTACT_CLAIM_SUMMARY": {
       "CLAIM_NUMBER": "Rhif hawlio",
@@ -1590,7 +1590,7 @@
         "USE": "Use "
       },
       "N1_PAPER_FORM": "N1 paper form",
-      "OPENS_IN_A_NEW_WINDOW": "(opens in a new window)",
+      "OPENS_IN_A_NEW_WINDOW": "(agor mewn ffenestr newydd)",
       "PAGE_TITLE": "You can’t use this service",
       "TENANCY_DEPOSIT": {
         "GET": "Get",
@@ -2046,7 +2046,7 @@
       "CONTACT_CLAIMANT": "Contact {{ claimantName }}",
       "COURT_DECIDE_HOW_TO_PAY": "The court will decide how you must pay.",
       "GET_FINANCIAL_DETAILS": "Get {{ claimantName }}’s financial details.",
-      "GO_TO_ACCOUNT": "Go to your account",
+      "GO_TO_ACCOUNT": "Mynd i'ch cyfrif",
       "IF_CLAIMANT_ACCEPTS_OFFER": "If {{ claimantName }} accepts your offer",
       "IF_CLAIMANT_ACCEPTS_RESPONSE": "If {{ claimantName }} accepts your response",
       "IF_CLAIMANT_REJECTS_OFFER": "If {{ claimantName }} rejects your offer",
@@ -2070,7 +2070,7 @@
       "YOU_SHOULD": "You should:",
       "YOU_SUBMITTED_YOUR_RESPONSE": "You've submitted your response",
       "YOU_WONT_PAY_IMMEDIATELY": "Because you’ve said you won’t pay immediately, {{ claimantName }} can either",
-      "YOUR_OPINION_OF_SERVICE": "What did you think of this service?"
+      "YOUR_OPINION_OF_SERVICE": "Beth oedd eich barn am y gwasanaeth hwn?"
     },
     "TASK_LIST": {
       "PAGE_TITLE": "Your task list",
@@ -2275,8 +2275,8 @@
     "ENTER_EXPERT_DETAILS": "Nodwch fanylion yr arbenigwr",
     "ENTER_WHY_NEED_EXPERT": "Dywedwch wrthym pam ydych chi angen yr arbenigwr hwn",
     "ENTER_EXPERT_FIELD": "Nodwch faes arbenigedd yr arbenigwr",
-    "ENTER_FIRST_NAME": "Enter first name",
-    "ENTER_LAST_NAME": "Enter last name",
+    "ENTER_FIRST_NAME": "Rhowch enw cyntaf",
+    "ENTER_LAST_NAME": "Rhowch enw olaf",
     "ENTER_PERSON_NAME": "Nodwch enw’r unigolyn sydd angen cymorth",
     "ENTER_PAYMENT_EXPLANATION": "Rhowch eglurhad o sut y gwnaethoch dalu",
     "ENTER_DATES_FOR_UNAVAILABILITY": "Rhowch y dyddiadau nad yw ar gael",
@@ -2403,7 +2403,7 @@
     "REDIS_FAILURE": "Redis DraftStore failure.",
     "SECURITY_CODE_WRONG_OR_EXPIRED": "The security code was not right or has expired",
     "SELECT_ADDITIONAL_TIME": "Dewiswch faint o amser ychwanegol yr ydych yn gwneud cais amdano",
-    "SELECT_WELSH_AND_ENGLISH_OPTION": "Select Welsh and English if you want to respond to this claim in Welsh",
+    "SELECT_WELSH_AND_ENGLISH_OPTION": "Dewiswch Cymraeg a Saesneg os ydych am ymateb i'r hawliad hwn yn Gymraeg",
     "SELECT_AN_OPTION": "Dewiswch opsiwn",
     "SELECT_AMOUNT": {
       "COUNCIL_TAX": "Nodwch faint o Dreth y Cyngor neu Dâl Cymunedol ydych chi'n ei dalu",
@@ -2485,7 +2485,7 @@
       }
     },
     "TEXT_TOO_LONG": "Rhaid i'r rheswm fod yn 500 llythyren neu lai.",
-    "TEXT_TOO_MANY": "You've entered too many characters",
+    "TEXT_TOO_MANY": "Rydych wedi defnyddio gormod o nodau",
     "TEXT400_TOO_LONG": "Rhaid i'r rheswm fod yn 400 o nodau neu'n llai",
     "THERE_WAS_A_PROBLEM": "Roedd problem",
     "TRY_AGAIN": "Rhowch gynnig arall arni neu nodwch y cyfeiriad â llaw.",
@@ -2497,13 +2497,13 @@
     "VALID_AMOUNT": "Nodwch swm dilys",
     "VALID_AMOUNT_ONE_POUND_OR_MORE": "Nodwch swm o £1 neu fwy",
     "VALID_AT_LEAST_ONE_OPTION": "Rhaid i chi ddewis o leiaf un opsiwn",
-    "VALID_BETWEEN_NUMBERS_0_11": "Enter a number between 0 and 11",
-    "VALID_BETWEEN_NUMBERS_0_80": "Enter a number between 0 and 80",
-    "VALID_CCJ_PAYMENT_OPTION": "Choose option",
+    "VALID_BETWEEN_NUMBERS_0_11": "Rhowch rif rhwng 0 ac 11",
+    "VALID_BETWEEN_NUMBERS_0_80": "Rhowch rif rhwng 0 ac 80",
+    "VALID_CCJ_PAYMENT_OPTION": "Dewis opsiwn",
     "VALID_CHOOSE": "Choose your response",
     "VALID_CITY": "Rhowch enw tref/dinas dilys",
     "VALID_CITY_CORRESPONDENCE": "Rhowch enw tref/dinas ar gyfer gohebiaeth",
-    "VALID_CLAIM_AMOUNT": "Enter an amount of money",
+    "VALID_CLAIM_AMOUNT": "Nodwch swm o arian",
     "VALID_CLAIM_INTEREST_FROM": "Choose when to claim interest from",
     "VALID_CLAIM_INTEREST_END_DATE": "Choose when you want to stop claiming interest",
     "VALID_CLAIM_NUMBER": "Enter a claim number",
@@ -2524,8 +2524,8 @@
       "RENT": "Enter a valid Rent amount, maximum two decimal places",
       "WATER": "Enter a valid Water amount, maximum two decimal places"
     },
-    "VALID_DEBT_RESPITE_END_DATE": "Expected end date must not be before today's date",
-    "VALID_DEBT_RESPITE_OPTION": "You must select the Type before continuing",
+    "VALID_DEBT_RESPITE_END_DATE": "Ni ddylai'r dyddiad gorffen disgwyliedig fod cyn dyddiad heddiw",
+    "VALID_DEBT_RESPITE_OPTION": "Rhaid dewis y Math cyn parhau",
     "VALID_DISAGREE_REASON_REQUIRED": "Dywedwch pam ydych yn anghytuno",
     "VALID_ENTER_A_DATE_BEFORE": "Please enter a date of birth before {{ maxDate }}",
     "VALID_ENTER_AN_EMPLOYER_NAME": "Rhowch enw cyflogwr",

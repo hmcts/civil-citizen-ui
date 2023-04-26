@@ -6,18 +6,25 @@ import {toCUIParty, toCUIPartyRespondent} from 'services/translation/convertToCU
 import {toCUIMediation} from 'services/translation/convertToCUI/convertToCUIMediation';
 import {toCUIStatementOfMeans} from 'services/translation/convertToCUI/convertToCUIStatementOfMeans';
 import {toCUIClaimBilingualLangPreference} from 'services/translation/convertToCUI/convertToCUIRespondentLiPResponse';
+import {toCUIRejectAllOfClaim} from 'services/translation/convertToCUI/convertToCUIRejectAllOfClaim';
 import {toCUIDQs} from 'services/translation/convertToCUI/convertToCUIDQs';
+import {toCUIPartialAdmission} from './convertToCUIPartialAdmission';
 
 export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   const claim: Claim = Object.assign(new Claim(), ccdClaim);
   claim.claimDetails = toCUIClaimDetails(ccdClaim);
-  claim.evidence = toCUIEvidence(ccdClaim?.speclistYourEvidenceList);
+  claim.evidence = toCUIEvidence(ccdClaim?.specResponselistYourEvidenceList, ccdClaim?.respondent1LiPResponse?.evidenceComment);
   claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
   claim.respondent1 = toCUIPartyRespondent(ccdClaim?.respondent1,ccdClaim?.respondent1LiPResponse);
+  claim.respondent1.responseType = ccdClaim?.respondent1ClaimResponseTypeForSpec;
   claim.mediation = toCUIMediation(ccdClaim?.respondent1LiPResponse?.respondent1MediationLiPResponse);
   claim.statementOfMeans = toCUIStatementOfMeans(ccdClaim);
   claim.claimBilingualLanguagePreference = toCUIClaimBilingualLangPreference(ccdClaim?.respondent1LiPResponse?.respondent1ResponseLanguage);
+  claim.rejectAllOfClaim = toCUIRejectAllOfClaim(ccdClaim);
   claim.directionQuestionnaire = toCUIDQs(ccdClaim);
+  if (claim.isPartialAdmission()) {
+    claim.partialAdmission = toCUIPartialAdmission(ccdClaim);
+  }
   return claim;
 };
 
