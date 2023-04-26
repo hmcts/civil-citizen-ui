@@ -15,11 +15,6 @@ class ContactNumberDetailsPage {
     I.fillField(fields.contactNumber, '02088908876');    
     I.click(buttons.saveAndContinue);
   }
-
-  navigateToEnterContactNumberDetailsPage(claimRef) {
-    I.amOnPage('/case/'+claimRef+'/response/your-phone');
-  }
-  
 }
 
 module.exports = ContactNumberDetailsPage;
