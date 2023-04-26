@@ -1,5 +1,7 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/error-summary.njk" import errorSummary %}
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
@@ -17,100 +19,32 @@
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-l">What types of documents do you want to upload?</h1>
-        <p class="govuk-body">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.SELECT_THE_TYPE_OF_DOCUMENT') }}</p>
-        <p class="govuk-body">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CASE_REFERENCE_NUMBER') }}</p>
-        {{ govukCheckboxes({
-        name: "witnessEvidence",
-        fieldset: {
-        legend: {
-        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_EVIDENCE'),
-        isPageHeading: true,
-        classes: "govuk-fieldset__legend--l"
-        }
-        },
-        items: [
-        {
-        value: form.model.value,
-        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.YOUR_STATEMENT'),
-        hint: {
-        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.YOUR_STATEMENT_HINT')
-        }
-        },
-        {
-        value: form.model.value,
-        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_STATEMENT'),
-        hint: {
-        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_STATEMENT_HINT')
-        }
-        },
-        {
-        value: "WitnessSummary",
-        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_SUMMARY'),
-        hint: {
-        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_SUMMARY_HINT')
-        }
-        },
-        {
-        value: "documentsRefferedStatement",
-        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_REFFERED_TO_STATEMENT'),
-        hint: {
-        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_REFFERED_TO_STATEMENT_HINT')
-        }
-        }
-        ]
-        }) }}
-{{ govukCheckboxes({
-        name: "expertEvidence",
-        fieldset: {
-        legend: {
-        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.EXPERT_EVIDENCE'),
-        isPageHeading: true,
-        classes: "govuk-fieldset__legend--l"
-        }
-        },
-        items: [
-        {
-        value: form.model.value,
-        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.EXPERTS_REPORT'),
-        hint: {
-        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.EXPERTS_REPORT_HINT')
-        }
-        },
-        {
-        value: form.model.value,
-        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.JOINT_STATEMENT_OF_EXPERTS'),
-        hint: {
-        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.JOINT_STATEMENT_OF_EXPERTS_HINT')
-        }
-        }
-        ]
-        }) }}
-{{ govukCheckboxes({
-        name: "hearingDocuments",
-        fieldset: {
-        legend: {
-        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.HEARING_DOCUMENTS'),
-        isPageHeading: true,
-        classes: "govuk-fieldset__legend--l"
-        }
-        },
-        items: [
-        {
-        value: form.model.value,
-        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTARY_EVIDENCE'),
-        hint: {
-        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTARY_EVIDENCE_HINT')
-        }
-        },
-        {
-        value: form.model.value,
-        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.LEGAL_AUTHORITIES'),
-        hint: {
-        text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.LEGAL_AUTHORITIES_HINT')
-        }
-        }
-        ]
-        }) }}
+         <p class="govuk-body">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CASE_REFERENCE_NUMBER') }}{{claimId}}</p>
+         <p class="govuk-body">{{claimantFullName}} v {{defendantFullName}}</p>
+         <p class="govuk-body">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.SELECT_THE_TYPE_OF_DOCUMENT') }}</p>
+        {% for sections in form.model %}
+                      {{ govukCheckboxes({
+                              name: "hearingDocuments",
+                              fieldset: {
+                              legend: {
+                              text: sections.title,
+                              isPageHeading: true,
+                              classes: "govuk-fieldset__legend--l"
+                              }
+                              },
+                              items: sections.items
+                              }) }}
+
+        {% endfor %}
+               <div class="govuk-button-group">
+                 {{ govukButton({
+                   text: "Continue"
+                 }) }}
+
+                 <a class="govuk-link" href="#">Cancel</a>
+               </div>
+              {{ contactUsForHelp(t) }}
+              </div>
         </form>
       </div>
     </div>

@@ -4,26 +4,58 @@ import { TYPES_OF_DOCUMENTS_URL} from '../../urls';
 import {AppRequest} from 'common/models/AppRequest';
 
 import {GenericForm} from 'common/form/models/genericForm';
-import {TypeOfDocuments} from 'form/models/caseProgression/typeOfDocuments';
+import {Hint, TypeOfDocumentsItems} from 'form/models/caseProgression/typeOfDocuments';
+import {SectionTypeOfDocuments} from 'form/models/caseProgression/sectionTypeOfDocuments';
+import {t} from 'i18next';
+
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 const typeOfDocumentsViewPath = 'features/caseProgression/typeOfDocuments';
 const typeOfDocumentsController = Router();
 
-function renderView(res: Response, form: GenericForm<TypeOfDocuments>) {
+function renderView(res: Response, form: GenericForm<SectionTypeOfDocuments[]>, claimId: string, claimantFullName: string, defendantFullName: string) {
 
   res.render(typeOfDocumentsViewPath, {
-    form,
+    form,claimId,claimantFullName,defendantFullName,
   });
 }
 
 typeOfDocumentsController.get(TYPES_OF_DOCUMENTS_URL,
   async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
-      /*const userId = req.session?.user?.id;
-      const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-      const claim = await getCaseDataFromStore(userId);*/
-      const form = new GenericForm(new TypeOfDocuments('s', 's'));
-      renderView(res, form);
+
+      const claimId = req.params.id;
+      const claim = await getCaseDataFromStore(req.params.id);
+      const claimantFullName = claim.getClaimantFullName();
+      const defendantFullName = claim.getDefendantFullName();
+      const disclosureItems = [];
+      disclosureItems.push(new TypeOfDocumentsItems('disclosure1', t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_FOR_DISCLOSURE'), new Hint(t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_FOR_DISCLOSURE_HINT'))));
+      disclosureItems.push(new TypeOfDocumentsItems('disclosure2', t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DISCLOSURE_LIST'), new Hint(t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DISCLOSURE_LIST_HINT'))));
+      const witnessItems = [];
+      witnessItems.push(new TypeOfDocumentsItems('witness statement', t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.YOUR_STATEMENT'), new Hint(t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.YOUR_STATEMENT_HINT'))));
+      witnessItems.push(new TypeOfDocumentsItems('witness section 2', t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_STATEMENT'), new Hint(t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_STATEMENT_HINT'))));
+      witnessItems.push(new TypeOfDocumentsItems('witness section 3', t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_SUMMARY'), new Hint(t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_SUMMARY_HINT'))));
+      witnessItems.push(new TypeOfDocumentsItems('witness section 4', t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.NOTICE_OF_INTENTION'), new Hint(t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.NOTICE_OF_INTENTION_HINT'))));
+      witnessItems.push(new TypeOfDocumentsItems('witness section 4', t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_REFFERED_TO_STATEMENT'), new Hint(t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_REFFERED_TO_STATEMENT_HINT'))));
+      const expertItems = [];
+      expertItems.push(new TypeOfDocumentsItems('expert evidence 1', t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.EXPERTS_REPORT'), new Hint(t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.EXPERTS_REPORT_HINT'))));
+      expertItems.push(new TypeOfDocumentsItems('expert evidence 2', t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.JOINT_STATEMENT_OF_EXPERTS'), new Hint(t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.JOINT_STATEMENT_OF_EXPERTS_HINT'))));
+      expertItems.push(new TypeOfDocumentsItems('expert evidence 1', t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.QUESTIONS_FOR_OTHER_PARTY'), new Hint(t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.QUESTIONS_FOR_OTHER_PARTY_HINT'))));
+      expertItems.push(new TypeOfDocumentsItems('expert evidence 2', t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.ANSWERS_TO_QUESTIONS'), new Hint(t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.ANSWERS_TO_QUESTIONS_HINT'))));
+      const trialItems = [];
+      trialItems.push(new TypeOfDocumentsItems('expert evidence 1', t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CASE_SUMMARY'), new Hint(t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CASE_SUMMARY_HINT'))));
+      trialItems.push(new TypeOfDocumentsItems('expert evidence 1', t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.SKELETON_ARGUMENT'), new Hint(t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.SKELETON_ARGUMENT_HINT'))));
+      trialItems.push(new TypeOfDocumentsItems('expert evidence 2', t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.LEGAL_AUTHORITIES'), new Hint(t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.LEGAL_AUTHORITIES_HINT'))));
+      trialItems.push(new TypeOfDocumentsItems('expert evidence 2', t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.COSTS'), new Hint(t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.COSTS_HINT'))));
+      trialItems.push(new TypeOfDocumentsItems('expert evidence 1', t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTARY_EVIDENCE'), new Hint(t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTARY_EVIDENCE_HINT'))));
+      const arrayOfSection = [];
+      arrayOfSection.push(new SectionTypeOfDocuments('Disclosure', disclosureItems));
+      arrayOfSection.push(new SectionTypeOfDocuments('Witness evidence', witnessItems));
+      arrayOfSection.push(new SectionTypeOfDocuments('Expert evidence', expertItems));
+      arrayOfSection.push(new SectionTypeOfDocuments('Trial documents', trialItems));
+
+      const form = new GenericForm(arrayOfSection);
+      renderView(res, form, claimId, claimantFullName, defendantFullName);
     } catch (error) {
       next(error);
     }
@@ -31,25 +63,7 @@ typeOfDocumentsController.get(TYPES_OF_DOCUMENTS_URL,
 
 typeOfDocumentsController.post(TYPES_OF_DOCUMENTS_URL, async (req: Request | AppRequest, res: Response, next: NextFunction) => {
   try {
-    //const userId = (<AppRequest>req).session?.user?.id;
-    //const isFullAmountRejected = (req.body?.isFullAmountRejected === 'true');
-    //const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    //const form = new GenericForm((req.body.type === 'qualified')
-    //  ? new QualifiedStatementOfTruth(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole)
-    //  : new StatementOfTruthForm(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned));
-    //const claim = await getCaseDataFromStore(userId);
-    /* await form.validate();
-     if (form.hasErrors()) {
-       renderView(res, form);
-     } else {
-       await saveStatementOfTruth(userId, form.model);
-       const submittedClaim = await submitClaim(<AppRequest>req);
-       await deleteDraftClaimFromStore(userId);
-       if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
-         res.redirect(constructResponseUrlWithIdParams(userId, paymentUrl));
-       } else {
-         res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
-       }*/
+   /* empty method */
   } catch (error) {
     next(error);
   }
