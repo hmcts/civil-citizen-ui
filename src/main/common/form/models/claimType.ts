@@ -1,5 +1,5 @@
-const SMALL_CLAIM_AMOUNT = 10000;
-const FAST_TRACK_CLAIM_AMOUNT = 25000;
+export const SMALL_CLAIM_AMOUNT = 10000;
+export const FAST_TRACK_CLAIM_AMOUNT = 25000;
 
 export enum claimType {
   SMALL_CLAIM = 'SMALL_CLAIM',
