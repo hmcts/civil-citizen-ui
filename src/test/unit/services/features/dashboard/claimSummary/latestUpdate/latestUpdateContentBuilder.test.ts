@@ -7,7 +7,7 @@ import {CaseState} from 'form/models/claimDetails';
 import {PartyType} from 'models/partyType';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
 import {BILINGUAL_LANGUAGE_PREFERENCE_URL} from 'routes/urls';
-import {DocumentType} from 'models/document/documentType';
+import {DocumentType, DocumentUri} from 'models/document/documentType';
 import {LatestUpdateSectionBuilder} from 'models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 
 const PAGES_LATEST_UPDATE_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT';
@@ -30,13 +30,12 @@ const getClaimWithSdoDocument = () =>  {
 };
 
 const getLastUpdateSdoDocumentExpected = (claimId: string) => {
-  const builder = new LatestUpdateSectionBuilder()
+  return new LatestUpdateSectionBuilder()
     .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.SDO_AN_ORDER_HAS_BEEN_ISSUED_BY_THE_COURT`)
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.SDO_PLEASE_FOLLOW_THE_INSTRUCTIONS_IN_THE_ORDER`)
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.SDO_THIS_CLAIM_WILL_NO_PROCEED_OFFLINE`)
-    .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.SDO_DOWNLOAD_THE_COURTS_ORDER`, claimId, null, `${PAGES_LATEST_UPDATE_CONTENT}.SDO_TO_FIND_OUT_THE_DETAILS`)
+    .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.SDO_DOWNLOAD_THE_COURTS_ORDER`, claimId, DocumentUri.SDO_ORDER, null, `${PAGES_LATEST_UPDATE_CONTENT}.SDO_TO_FIND_OUT_THE_DETAILS`)
     .build();
-  return builder;
 };
 
 describe('Latest Update Content Builder', () => {

@@ -7,10 +7,10 @@ import request from 'supertest';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as documentUtils from '../../../../../main/common/utils/downloadUtils';
 import {DocumentUri} from '../../../../../main/common/models/document/documentType';
+import civilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/app/client/civilServiceClient');
 
 describe('Document download controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -20,12 +20,23 @@ describe('Document download controller', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+
   });
 
   describe('on Get', () => {
     it('should download the pdf successfully', async () => {
+
       app.locals.draftStoreClient = mockCivilClaimPDFTimeline;
       const mockDownloadPDFDocument = jest.spyOn(documentUtils, 'downloadPDF');
+
+      nock('http://localhost:4000')
+        .get('/cases/:id')
+        .reply(200, civilClaimResponseMock);
+
+      nock('http://localhost:4000')
+        .post('/case/document/downloadSealedDoc/')
+        .reply(200, civilClaimResponseMock);
+
       await request(app)
         .get(CASE_DOCUMENT_DOWNLOAD_URL.replace(':documentType', DocumentUri.SEALED_CLAIM))
         .expect((res) => {
