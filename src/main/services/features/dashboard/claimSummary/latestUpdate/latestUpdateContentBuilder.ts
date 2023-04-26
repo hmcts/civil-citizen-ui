@@ -6,7 +6,7 @@ import {
   getRespondToClaimLink,
   getResponseNotSubmittedTitle,
 } from './latestUpdateContent/responseToClaimSection';
-import {getEvidenceUpload} from './latestUpdateContent/evidenceUploadContent';
+import {getEvidenceUpload} from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContent/evidenceUploadContent';
 
 export const buildResponseToClaimSection = (claim: Claim, claimId: string): ClaimSummarySection[] => {
   const sectionContent = [];
@@ -14,7 +14,6 @@ export const buildResponseToClaimSection = (claim: Claim, claimId: string): Clai
   const responseDeadlineNotPassedContent = getNotPastResponseDeadlineContent(claim);
   const responseDeadlinePassedContent = getPastResponseDeadlineContent(claim);
   const respondToClaimLink = getRespondToClaimLink(claimId);
-  const evidenceUploadContent = getEvidenceUpload(claim);
   if (claim.isDefendantNotResponded()) {
     sectionContent.push(responseNotSubmittedTitle);
     if (claim.isDeadLinePassed()) {
@@ -23,9 +22,12 @@ export const buildResponseToClaimSection = (claim: Claim, claimId: string): Clai
       sectionContent.push(responseDeadlineNotPassedContent);
     }
     sectionContent.push(respondToClaimLink);
-  } else if (claim.hasSdoOrderDocument()) {
-    sectionContent.push(evidenceUploadContent);
   }
+  return sectionContent.flat();
+};
 
+export const buildEvidenceUploadSection = (claim: Claim): ClaimSummarySection[] => {
+  const sectionContent = [];
+  sectionContent.push(getEvidenceUpload(claim));
   return sectionContent.flat();
 };

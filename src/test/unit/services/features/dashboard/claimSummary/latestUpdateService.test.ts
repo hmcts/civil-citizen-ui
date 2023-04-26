@@ -1,8 +1,10 @@
 import {Claim} from '../../../../../../main/common/models/claim';
 import {
+  getEvidenceUploadLatestUpdateContent,
   getLatestUpdateContent,
 } from '../../../../../../main/services/features/dashboard/claimSummary/latestUpdateService';
 import {
+  buildEvidenceUploadSection,
   buildResponseToClaimSection,
 } from '../../../../../../main/services/features/dashboard/claimSummary/latestUpdate/latestUpdateContentBuilder';
 
@@ -27,5 +29,20 @@ describe('Latest Update Content service', () => {
     expect(actualLatestUpdateContent).toMatchObject(formattedLatestUpdateContent);
     expect(actualLatestUpdateContent[0].contentSections).toEqual(filteredLatestUpdateContent[0]);
     expect(actualLatestUpdateContent[0].contentSections.length).toEqual(filteredLatestUpdateContent[0].length);
+  });
+
+  const evidenceUploadContent = getEvidenceUploadLatestUpdateContent(mockClaimId, caseData);
+  it('should return evidence upload section for latest update content', () => {
+    //when
+    const evidenceUploadSection = buildEvidenceUploadSection(claim);
+    const expectedContent = [evidenceUploadSection].map((sectionContent, index) => ({
+      contentSections: sectionContent,
+      hasDivider: index < evidenceUploadSection.length - 1,
+    }));
+
+    //Then
+    expect(evidenceUploadContent).toMatchObject(expectedContent);
+    expect(evidenceUploadContent[0].contentSections).toEqual(expectedContent[0].contentSections);
+    expect(evidenceUploadContent[0].contentSections.length).toEqual(expectedContent[0].contentSections.length);
   });
 });

@@ -1,6 +1,7 @@
 import {DateTime, Settings} from 'luxon';
 import {Claim} from '../../../../../../../main/common/models/claim';
 import {
+  buildEvidenceUploadSection,
   buildResponseToClaimSection,
 } from '../../../../../../../main/services/features/dashboard/claimSummary/latestUpdate/latestUpdateContentBuilder';
 import {CaseState} from '../../../../../../../main/common/form/models/claimDetails';
@@ -86,10 +87,11 @@ describe('Latest Update Content Builder', () => {
       // Then
       expect(responseToClaimSection.length).toBe(0);
     });
+  });
 
-    it('should have evidence upload content WHEN state is PENDING_CASE_ISSUED AND has sdoOrderDocument', () => {
+  describe('test buildResponseToClaimSection', () => {
+    it('should have evidence upload content', () => {
       // Given
-      claim.ccdState = CaseState.PENDING_CASE_ISSUED;
       claim.sdoOrderDocument = {
         createdBy: '',
         createdDatetime: undefined,
@@ -99,26 +101,16 @@ describe('Latest Update Content Builder', () => {
         documentType: undefined,
       };
       // when
-      const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
+      const evidenceUploadSection = buildEvidenceUploadSection(claim);
       // Then
-      expect(responseToClaimSection.length).toBe(4);
-      expect(responseToClaimSection[0].type).toEqual(ClaimSummaryType.TITLE);
-      expect(responseToClaimSection[0].data?.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
-      expect(responseToClaimSection[1].type).toEqual(ClaimSummaryType.PARAGRAPH);
-      expect(responseToClaimSection[2].type).toEqual(ClaimSummaryType.LINK);
-      expect(responseToClaimSection[2].data?.href).toEqual(sdoUrl);
-      expect(responseToClaimSection[3].type).toEqual(ClaimSummaryType.BUTTON);
-      expect(responseToClaimSection[3].data?.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
-    });
-
-    it('should not have evidence upload content WHEN state is PENDING_CASE_ISSUED AND no sdoOrderDocument', () => {
-      // Given
-      claim.ccdState = CaseState.PENDING_CASE_ISSUED;
-      claim.sdoOrderDocument = null;
-      // when
-      const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
-      // Then
-      expect(responseToClaimSection.length).toBe(0);
+      expect(evidenceUploadSection.length).toBe(4);
+      expect(evidenceUploadSection[0].type).toEqual(ClaimSummaryType.TITLE);
+      expect(evidenceUploadSection[0].data?.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
+      expect(evidenceUploadSection[1].type).toEqual(ClaimSummaryType.PARAGRAPH);
+      expect(evidenceUploadSection[2].type).toEqual(ClaimSummaryType.LINK);
+      expect(evidenceUploadSection[2].data?.href).toEqual(sdoUrl);
+      expect(evidenceUploadSection[3].type).toEqual(ClaimSummaryType.BUTTON);
+      expect(evidenceUploadSection[3].data?.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
     });
   });
 });
