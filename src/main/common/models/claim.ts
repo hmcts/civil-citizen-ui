@@ -49,6 +49,12 @@ import {Debts} from 'form/models/statementOfMeans/debts/debts';
 import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreference';
 import {analyseClaimType, claimType} from 'common/form/models/claimType';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
+import {CCDClaim} from 'models/civilClaimResponse';
+import {toCUIEvidence} from 'services/translation/convertToCUI/convertToCUIEvidence';
+import {toCUIParty} from 'services/translation/convertToCUI/convertToCUIParty';
+import {toCUIMediation} from 'services/translation/convertToCUI/convertToCUIMediation';
+import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIClaimDetails';
+import {CCDRespondentLiPResponse} from './ccdResponse/ccdRespondentLiPResponse';
 
 export class Claim {
   legacyCaseReference: string;
@@ -84,6 +90,7 @@ export class Claim {
   respondent1ResponseDate?: Date;
   claimBilingualLanguagePreference: ClaimBilingualLanguagePreference;
   id: string;
+  respondent1LiPResponse?: CCDRespondentLiPResponse;
   sdoOrderDocument?: CaseDocument;
 
   get responseStatus(): ClaimResponseStatus {

@@ -3,13 +3,14 @@ import {OptionalDateFourDigitValidator} from '../../../common/form/validators/op
 import {DateConverter} from '../../../common/utils/dateConverter';
 import {OptionalDateInPastValidator} from '../../../common/form/validators/optionalDateInPastValidator';
 import {toNumberOrUndefined} from '../../../common/utils/numberConverter';
+import {ValidationArgs} from 'common/form/models/genericForm';
 
 const generateErrorMessage = (messageName: string): string => {
   return messageName ? messageName : 'ERRORS.VALID_DATE_START_NOT_AFTER_TODAY';
 };
 
 const withMessage = (buildErrorFn: (messageName: string) => string) => {
-  return (args: any): string => {
+  return (args: ValidationArgs<DebtRespiteStartDate>): string => {
     return buildErrorFn(args.object.messageName);
   };
 };

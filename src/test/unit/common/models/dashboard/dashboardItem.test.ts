@@ -1,8 +1,13 @@
 import {DashboardClaimantItem, DashboardDefendantItem} from 'common/models/dashboard/dashboardItem';
+
 import config from 'config';
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
 jest.mock('../../../../../main/modules/i18n');
+jest.mock('../../../../../main/modules/i18n/languageService', ()=> ({
+  setLanguage: jest.fn(),
+  getLanguage: jest.fn(),
+}));
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
