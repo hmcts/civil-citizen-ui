@@ -1988,14 +1988,14 @@ __metadata:
   linkType: hard
 
 "@ministryofjustice/frontend@npm:^1.6.3":
-  version: 1.6.5
-  resolution: "@ministryofjustice/frontend@npm:1.6.5"
+  version: 1.6.6
+  resolution: "@ministryofjustice/frontend@npm:1.6.6"
   dependencies:
     govuk-frontend: ^3.0.0 || ^4.0.0
     moment: ^2.27.0
   peerDependencies:
     jquery: ^3.6.0
-  checksum: 8cea1ef610b9494ba6f10ea089928d72fb2586a60ead619728457e575f7baa8ab7f5d970a94d6d84ca30c32c5cb3e16ed2aa1006c69a38d2619981d9c41036b1
+  checksum: a45bb60ba39509e3a61ce73c960b7528b3dc67b06ba69df301b93dfb175ab69edff7cd27f1812f754e591f195d0653e62a7a1cbbba1bd178b6665e0f95466585
   languageName: node
   linkType: hard
 
