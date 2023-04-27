@@ -1,10 +1,10 @@
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../main/app';
 import config from 'config';
 import Module from 'module';
-import {CIVIL_SERVICE_CASES_URL} from '../../../../../../main/app/client/civilServiceUrls';
-import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
+import {isCaseProgressionV1Enable} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {CaseState} from 'form/models/claimDetails';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
 const nock = require('nock');
 const session = require('supertest-session');
@@ -12,11 +12,11 @@ const citizenRoleToken: string = config.get('citizenRoleToken');
 const testSession = session(app);
 const isCaseProgressionV1EnableMock = isCaseProgressionV1Enable as jest.Mock;
 
-jest.mock('../../../../../../main/app/auth/user/oidc', () => ({
-  ...jest.requireActual('../../../../../../main/app/auth/user/oidc') as Module,
+jest.mock('../../../../../main/app/auth/user/oidc', () => ({
+  ...jest.requireActual('../../../../../main/app/auth/user/oidc') as Module,
   getUserDetails: jest.fn(() => USER_DETAILS),
 }));
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 export const USER_DETAILS = {
   accessToken: citizenRoleToken,
@@ -38,7 +38,7 @@ describe('Claim Summary Controller Defendant', () => {
       });
   });
 
-  const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
+  const claim = require('../../../../utils/mocks/civilClaimResponseMock.json');
   const claimId = claim.id;
   const claimWithSdo = {
     ...claim,
@@ -115,7 +115,7 @@ describe('Claim Summary Controller Defendant', () => {
       //when
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, claim);
+        .reply(200, claimWithSdo);
       //then
       await testSession
         .get(`/dashboard/${claimId}/defendant`)

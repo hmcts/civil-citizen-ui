@@ -1,14 +1,12 @@
 import {DateTime, Settings} from 'luxon';
 import {Claim} from '../../../../../../../main/common/models/claim';
 import {
-  buildEvidenceUploadSection,
   buildResponseToClaimSection,
 } from '../../../../../../../main/services/features/dashboard/claimSummary/latestUpdate/latestUpdateContentBuilder';
 import {CaseState} from '../../../../../../../main/common/form/models/claimDetails';
 import {PartyType} from '../../../../../../../main/common/models/partyType';
 import {ClaimSummaryType} from '../../../../../../../main/common/form/models/claimSummarySection';
-import {BILINGUAL_LANGUAGE_PREFERENCE_URL, CASE_DOCUMENT_DOWNLOAD_URL} from '../../../../../../../main/routes/urls';
-import {DocumentUri} from 'models/document/documentType';
+import {BILINGUAL_LANGUAGE_PREFERENCE_URL} from '../../../../../../../main/routes/urls';
 
 describe('Latest Update Content Builder', () => {
   const partyName = 'Mr. John Doe';
@@ -23,7 +21,6 @@ describe('Latest Update Content Builder', () => {
   };
   const claimId = '5129';
   const bilingualLanguagePreferencetUrl = BILINGUAL_LANGUAGE_PREFERENCE_URL.replace(':id', claimId);
-  const sdoUrl = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentType', DocumentUri.SDO_ORDER);
 
   describe('test buildResponseToClaimSection', () => {
     it('should have responseNotSubmittedTitle and respondToClaimLink', () => {
@@ -62,7 +59,6 @@ describe('Latest Update Content Builder', () => {
       // Then
       expect(responseToClaimSection[1].type).toEqual(ClaimSummaryType.PARAGRAPH);
     });
-
     it('should have responseDeadlinePassedContent when defendant not responded after dead line', () => {
       // Given
       const expectedNow = DateTime.local(2022, 8, 1, 23, 0, 0);
@@ -86,31 +82,6 @@ describe('Latest Update Content Builder', () => {
       const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
       // Then
       expect(responseToClaimSection.length).toBe(0);
-    });
-  });
-
-  describe('test buildResponseToClaimSection', () => {
-    it('should have evidence upload content', () => {
-      // Given
-      claim.sdoOrderDocument = {
-        createdBy: '',
-        createdDatetime: undefined,
-        documentLink: undefined,
-        documentName: '',
-        documentSize: 0,
-        documentType: undefined,
-      };
-      // when
-      const evidenceUploadSection = buildEvidenceUploadSection(claim);
-      // Then
-      expect(evidenceUploadSection.length).toBe(4);
-      expect(evidenceUploadSection[0].type).toEqual(ClaimSummaryType.TITLE);
-      expect(evidenceUploadSection[0].data?.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
-      expect(evidenceUploadSection[1].type).toEqual(ClaimSummaryType.PARAGRAPH);
-      expect(evidenceUploadSection[2].type).toEqual(ClaimSummaryType.LINK);
-      expect(evidenceUploadSection[2].data?.href).toEqual(sdoUrl);
-      expect(evidenceUploadSection[3].type).toEqual(ClaimSummaryType.BUTTON);
-      expect(evidenceUploadSection[3].data?.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
     });
   });
 });

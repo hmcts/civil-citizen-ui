@@ -1,7 +1,6 @@
 import {NextFunction, Router} from 'express';
 import config from 'config';
 import {
-  getEvidenceUploadLatestUpdateContent,
   getLatestUpdateContent,
 } from 'services/features/dashboard/claimSummary/latestUpdateService';
 import {getDocumentsContent} from 'services/features/dashboard/claimSummaryService';
@@ -9,6 +8,9 @@ import {AppRequest} from 'models/AppRequest';
 import {DEFENDANT_SUMMARY_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {isCaseProgressionV1Enable} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {
+  getEvidenceUploadLatestUpdateContent,
+} from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/caseProgressionLatestUpdateService';
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -21,8 +23,7 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextF
     if (claim && !claim.isEmpty()) {
       const latestUpdateContent = getLatestUpdateContent(claimId, claim);
       const documentsContent = getDocumentsContent(claim, claimId);
-      const caseProgressionEnabled = await isCaseProgressionV1Enable();
-      if (latestUpdateContent.length === 0 && caseProgressionEnabled) {
+      if (latestUpdateContent.length === 0 && await isCaseProgressionV1Enable()) {
         if(claim.hasSdoOrderDocument()){
           getEvidenceUploadLatestUpdateContent(claimId, claim)
             .forEach(items => latestUpdateContent.push(items));

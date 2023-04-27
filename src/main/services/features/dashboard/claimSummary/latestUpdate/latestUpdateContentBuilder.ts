@@ -6,7 +6,6 @@ import {
   getRespondToClaimLink,
   getResponseNotSubmittedTitle,
 } from './latestUpdateContent/responseToClaimSection';
-import {getEvidenceUpload} from './latestUpdateContent/evidenceUploadContent';
 
 export const buildResponseToClaimSection = (claim: Claim, claimId: string): ClaimSummarySection[] => {
   const sectionContent = [];
@@ -23,11 +22,6 @@ export const buildResponseToClaimSection = (claim: Claim, claimId: string): Clai
     }
     sectionContent.push(respondToClaimLink);
   }
-  return sectionContent.flat();
-};
 
-export const buildEvidenceUploadSection = (claim: Claim): ClaimSummarySection[] => {
-  const sectionContent = [];
-  sectionContent.push(getEvidenceUpload(claim));
   return sectionContent.flat();
 };
