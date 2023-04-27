@@ -35,14 +35,14 @@ describe('Latest Update Content Builder Case Progression', () => {
       // when
       const evidenceUploadSection = buildEvidenceUploadSection(claim);
       // Then
-      expect(evidenceUploadSection.length).toBe(4);
-      expect(evidenceUploadSection[0].type).toEqual(ClaimSummaryType.TITLE);
-      expect(evidenceUploadSection[0].data?.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
-      expect(evidenceUploadSection[1].type).toEqual(ClaimSummaryType.PARAGRAPH);
-      expect(evidenceUploadSection[2].type).toEqual(ClaimSummaryType.LINK);
-      expect(evidenceUploadSection[2].data?.href).toEqual(sdoUrl);
-      expect(evidenceUploadSection[3].type).toEqual(ClaimSummaryType.BUTTON);
-      expect(evidenceUploadSection[3].data?.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
+      expect(evidenceUploadSection[0].length).toBe(4);
+      expect(evidenceUploadSection[0][0].type).toEqual(ClaimSummaryType.TITLE);
+      expect(evidenceUploadSection[0][0].data?.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
+      expect(evidenceUploadSection[0][1].type).toEqual(ClaimSummaryType.PARAGRAPH);
+      expect(evidenceUploadSection[0][2].type).toEqual(ClaimSummaryType.LINK);
+      expect(evidenceUploadSection[0][2].data?.href).toEqual(sdoUrl);
+      expect(evidenceUploadSection[0][3].type).toEqual(ClaimSummaryType.BUTTON);
+      expect(evidenceUploadSection[0][3].data?.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
     });
   });
 });

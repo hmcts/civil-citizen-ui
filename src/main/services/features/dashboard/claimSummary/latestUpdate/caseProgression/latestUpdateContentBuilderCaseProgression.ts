@@ -4,8 +4,8 @@ import {
   getEvidenceUpload,
 } from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContent/evidenceUploadContent';
 
-export const buildEvidenceUploadSection = (claim: Claim): ClaimSummarySection[] => {
+export const buildEvidenceUploadSection = (claim: Claim): ClaimSummarySection[][] => {
   const sectionContent = [];
   sectionContent.push(getEvidenceUpload(claim));
-  return sectionContent.flat();
+  return sectionContent;
 };
