@@ -44,7 +44,8 @@
       {{ govukButton({
         href: content.data.href,
         text:  t(content.data.text),
-        classes: content.data.classes
+        classes: content.data.classes,
+        isStartButton: content.data.isStartButton
       }) }}
     </div>
   {% endif %}

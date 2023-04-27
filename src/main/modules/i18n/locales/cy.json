@@ -2237,6 +2237,10 @@
       "TITLE": "Pam ydych chi’n anghytuno â’r hawliad?",
       "REASON": "Eu rhesymau dros wneud yr hawliad",
       "CLAIMANT": "Anfonir eich ymateb at {{ claimantFullName }}."
+    },
+    "UPLOAD_YOUR_DOCUMENTS": {
+      "PAGE_TITLE": "Upload your documents",
+      "TITLE": "Upload your documents"
     }
   },
   "ERRORS": {

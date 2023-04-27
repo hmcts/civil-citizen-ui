@@ -29,6 +29,22 @@ export class LatestUpdateSectionBuilder {
     return this;
   }
 
+  addLink(text: string, href: string, textBefore?: string, textAfter?: string, variables?: any) {
+    const linkSection = ({
+      type: ClaimSummaryType.LINK,
+      data: {
+        text: text,
+        href: href,
+        textBefore: textBefore,
+        textAfter: textAfter,
+        variables: variables,
+      },
+    });
+
+    this._claimSummarySections.push(linkSection);
+    return this;
+  }
+
   addContactLink(text: string, claimId: string, variables?: any, textAfter?: string) {
     const linkSection = ({
       type: ClaimSummaryType.LINK,
@@ -64,6 +80,21 @@ export class LatestUpdateSectionBuilder {
         text: title,
         //TODO: (href) in here in the future we should added the document url(is in development)
         href: href,
+      },
+    });
+
+    this._claimSummarySections.push(titleSection);
+    return this;
+  }
+
+  addStartButton(title: string, href: string) {
+    const titleSection = ({
+      type: ClaimSummaryType.BUTTON,
+      data: {
+        text: title,
+        //TODO: (href) in here in the future we should added the document url(is in development)
+        href: href,
+        isStartButton: true,
       },
     });
 
