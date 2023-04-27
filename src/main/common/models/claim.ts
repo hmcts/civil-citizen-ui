@@ -485,7 +485,7 @@ export class Claim {
   }
 
   hasCaseProgressionHearingDocuments(): boolean{
-    return !!this.caseProgressionHearing.hearingDocuments;
+    return !!this.caseProgressionHearing?.hearingDocuments;
   }
 }
 

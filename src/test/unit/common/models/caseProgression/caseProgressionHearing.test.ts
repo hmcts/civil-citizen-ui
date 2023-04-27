@@ -2,12 +2,14 @@ import {CaseProgressionHearing, HearingLocation} from 'models/caseProgression/ca
 jest.mock('../../../../../main/modules/i18n/languageService', ()=> ({
   getLanguage: jest.fn(),
 }));
+
 const hearingLocation =  new HearingLocation(  {
   code: '1',
   label: 'test - test',
 });
 
 const fixedDate = new Date(2023, 3, 26);
+
 describe('testing of caseProgressionHearing class', ()=> {
   it('should getHearingTimeHourMinuteFormatted returns with correct information', () => {
     //Given

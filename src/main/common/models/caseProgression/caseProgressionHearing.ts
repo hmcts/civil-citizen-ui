@@ -1,6 +1,7 @@
-import {Document} from 'models/document/document';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {getLanguage} from 'modules/i18n/languageService';
+import {CaseDocument} from 'models/document/caseDocument';
+
 export class HearingLocation {
   value: {
     code: string;
@@ -16,13 +17,19 @@ export class HearingLocation {
     return courtName[0].trim();
   }
 }
+
+export class  CaseProgressionHearingDocuments{
+  id: string;
+  value: CaseDocument;
+}
+
 export class CaseProgressionHearing {
-  hearingDocuments?: Document[];
+  hearingDocuments?: CaseProgressionHearingDocuments[];
   hearingLocation?: HearingLocation;
   hearingDate?: Date;
   hearingTimeHourMinute?: string;
 
-  constructor(hearingDocuments?: Document[], hearingLocation?: HearingLocation, hearingDate?: Date, hearingTimeHourMinute?: string) {
+  constructor(hearingDocuments?: CaseProgressionHearingDocuments[], hearingLocation?: HearingLocation, hearingDate?: Date, hearingTimeHourMinute?: string) {
     this.hearingDocuments = hearingDocuments;
     this.hearingLocation = hearingLocation;
     this.hearingDate = hearingDate;

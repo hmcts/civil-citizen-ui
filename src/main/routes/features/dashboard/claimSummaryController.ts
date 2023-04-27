@@ -35,5 +35,4 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextF
   }
 });
 
-
 export default claimSummaryController;
