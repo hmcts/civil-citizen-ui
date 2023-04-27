@@ -3,9 +3,6 @@ const  ResponseSteps  =  require('../features/response/steps/lipDefendantRespons
 const  LoginSteps =  require('../features/home/steps/login');
 
 const rejectAll = 'rejectAll';
-const immediatePayment = 'immediate';
-const bySetDate = 'bySetDate';
-const repaymentPlan = 'repaymentPlan';
 const dontWantMoreTime = 'dontWantMoreTime';
 
 let claimRef;
