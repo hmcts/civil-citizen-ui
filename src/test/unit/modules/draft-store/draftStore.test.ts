@@ -1,5 +1,5 @@
-import {DraftStoreClient} from '../../../../main/modules/draft-store';
-import {Logger} from 'winston';
+import {DraftStoreClient} from 'modules/draft-store';
+import {LoggerInstance} from 'winston';
 import express from 'express';
 
 jest.mock('ioredis', () => {
@@ -17,7 +17,7 @@ jest.mock('ioredis', () => {
 const mockLogger = {
   error: jest.fn().mockImplementation((message: string) => message),
   info: jest.fn().mockImplementation((message: string) => message),
-} as unknown as Logger;
+} as unknown as LoggerInstance;
 
 const app: express.Application = {
   locals: {
