@@ -1,6 +1,6 @@
 import config from 'config';
 import {Application} from 'express';
-import {Logger} from 'winston';
+import {LoggerInstance} from 'winston';
 
 const Redis = require('ioredis');
 
@@ -9,7 +9,7 @@ const REDIS_DATA = require('./redisData.json');
 export class DraftStoreClient {
   public static REDIS_CONNECTION_SUCCESS = 'Connected to Redis instance successfully';
 
-  constructor(private readonly logger: Logger) {
+  constructor(private readonly logger: LoggerInstance) {
   }
 
   public enableFor(app: Application): void {
