@@ -1,8 +1,8 @@
 import {IsDate, IsInt, Max, Min, Validate, ValidateIf} from 'class-validator';
-import {OptionalDateFourDigitValidator} from '../../../common/form/validators/optionalDateFourDigitValidator';
-import {DateConverter} from '../../../common/utils/dateConverter';
-import {OptionalDateInPastValidator} from '../../../common/form/validators/optionalDateInPastValidator';
-import {toNumberOrString} from '../../../common/utils/numberConverter';
+import {OptionalDateFourDigitValidator} from 'form/validators/optionalDateFourDigitValidator';
+import {DateConverter} from 'common/utils/dateConverter';
+import {OptionalDateInPastValidator} from 'form/validators/optionalDateInPastValidator';
+import {toNumberOrString} from 'common/utils/numberConverter';
 import {ValidationArgs} from 'common/form/models/genericForm';
 
 const generateErrorMessage = (messageName: string): string => {
@@ -18,7 +18,7 @@ const withMessage = (buildErrorFn: (messageName: string) => string) => {
 export class DebtRespiteStartDate {
   messageName?: string;
 
-  @ValidateIf(o => (o.day < 32 && o.month < 13 && o.year > 999))
+  @ValidateIf(o => (o.day < 32 && o.month < 13 && o.year > 1872))
   @IsDate({message: 'ERRORS.VALID_DATE'})
   @Validate(OptionalDateInPastValidator, {message: withMessage(generateErrorMessage)})
     date?: Date;
@@ -30,7 +30,7 @@ export class DebtRespiteStartDate {
     day?: number|string;
 
   @ValidateIf(o => (o.day || o.month || o.year))
-  @IsInt({message: 'ERRORS.VALID_YEAR'})
+  @IsInt({message: 'ERRORS.VALID_MONTH'})
   @Min(1, {message: 'ERRORS.VALID_MONTH'})
   @Max(12, {message: 'ERRORS.VALID_MONTH'})
     month?: number|string;
@@ -42,7 +42,6 @@ export class DebtRespiteStartDate {
     year?: number|string;
 
   constructor(day?: string, month?: string, year?: string, messageName?: string) {
-
     this.date = DateConverter.convertToDate(year, month, day);
     this.year = toNumberOrString(year);
     this.month = toNumberOrString(month);
