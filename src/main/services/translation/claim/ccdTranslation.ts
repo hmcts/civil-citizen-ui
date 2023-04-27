@@ -11,11 +11,16 @@ import {toCCDSameRateInterestSelection} from '../response/convertToCCDtoSameRate
 import {toCCDYesNo} from '../response/convertToCCDYesNo';
 import {AppRequest} from 'models/AppRequest';
 import {getClaimantIdamDetails} from 'services/translation/response/claimantIdamDetails';
+import {toCCDRejectAllOfClaimType} from 'services/translation/response/convertToCCDRejectAllOfClaimType';
+import {toCCDRespondToClaim} from 'services/translation/response/convertToCCDRespondToClaim';
 
 export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClaim => {
   return {
     applicant1: toCCDParty(claim.applicant1),
     respondent1: toCCDParty(claim.respondent1),
+    defenceRouteRequired: toCCDRejectAllOfClaimType(claim.rejectAllOfClaim?.option),
+    respondToClaim: toCCDRespondToClaim(claim.rejectAllOfClaim?.howMuchHaveYouPaid),
+    detailsOfWhyDoesYouDisputeTheClaim: claim.rejectAllOfClaim?.defence?.text ?? claim.rejectAllOfClaim?.whyDoYouDisagree?.text,
     applicant1Represented: YesNoUpperCamelCase.NO,
     totalClaimAmount: claim.totalClaimAmount,
     claimAmountBreakup: toCCDClaimAmount(claim.claimAmountBreakup),

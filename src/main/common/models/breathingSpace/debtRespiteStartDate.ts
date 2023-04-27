@@ -1,8 +1,8 @@
 import {IsDate, IsInt, Max, Min, Validate, ValidateIf} from 'class-validator';
-import {OptionalDateFourDigitValidator} from 'form/validators/optionalDateFourDigitValidator';
-import {DateConverter} from 'common/utils/dateConverter';
-import {OptionalDateInPastValidator} from 'form/validators/optionalDateInPastValidator';
-import {toNumberOrString} from 'common/utils/numberConverter';
+import {OptionalDateFourDigitValidator} from '../../../common/form/validators/optionalDateFourDigitValidator';
+import {DateConverter} from '../../../common/utils/dateConverter';
+import {OptionalDateInPastValidator} from '../../../common/form/validators/optionalDateInPastValidator';
+import {toNumberOrString} from '../../../common/utils/numberConverter';
 import {ValidationArgs} from 'common/form/models/genericForm';
 
 const generateErrorMessage = (messageName: string): string => {
