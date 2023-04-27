@@ -49,7 +49,7 @@ import {CCDSmallClaimHearing} from 'models/ccdResponse/ccdSmallClaimHearing';
 import {CCDFastClaimHearing} from 'models/ccdResponse/ccdFastClaimHearing';
 import {CaseDocument} from 'models/document/caseDocument';
 import {CCDExpert} from './ccdResponse/ccdExpert';
-import {HearingLocation} from 'models/caseProgression/caseProgressionHearing';
+import {CaseProgressionHearingDocuments, HearingLocation} from 'models/caseProgression/caseProgressionHearing';
 
 export class CivilClaimResponse {
   id: string;
@@ -162,7 +162,7 @@ export interface CCDClaim extends ClaimUpdate {
   respondToAdmittedClaim?: CCDRespondToClaim;
   detailsOfWhyDoesYouDisputeTheClaim?: string;
   respondToAdmittedClaimOwingAmount?: string;
-  hearingDocuments?: Document[];
+  hearingDocuments?: CaseProgressionHearingDocuments[];
   hearingDate?: Date;
   hearingLocation?: HearingLocation;
   hearingTimeHourMinute?: string;
