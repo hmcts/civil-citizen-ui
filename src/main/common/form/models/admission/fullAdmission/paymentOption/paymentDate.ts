@@ -20,7 +20,6 @@ export class PaymentDate {
     month: number;
 
   @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
-  @Min(1000, {message: 'ERRORS.VALID_YEAR' })
   @Max(9999, {message: 'ERRORS.VALID_YEAR' })
     year: number;
 
