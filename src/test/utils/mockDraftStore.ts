@@ -18,7 +18,7 @@ import civilClaimResponseWithTimelineAndEvidenceMock from './mocks/civilClaimRes
 import civilClaimResponseWithWithExpertAndWitness from './mocks/civilClaimResponseExpertAndWitnessMock.json';
 import noRespondentTelephoneClaimantIntentionMock from './mocks/noRespondentTelephoneClaimantIntentionMock.json';
 
-import {Logger} from 'winston';
+import {LoggerInstance} from 'winston';
 
 const mockCivilClaim = {
   set: jest.fn(() => Promise.resolve({})),
@@ -83,7 +83,7 @@ const mockRedisFailure = {
 const mockLogger = {
   error: jest.fn().mockImplementation((message: string) => message),
   info: jest.fn().mockImplementation((message: string) => message),
-} as unknown as Logger;
+} as unknown as LoggerInstance;
 
 const mockCivilClaimApplicantCompanyType = {
   set: jest.fn(() => Promise.resolve({})),
