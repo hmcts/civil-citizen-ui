@@ -1,7 +1,14 @@
 import {Claim} from 'models/claim';
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
-import {LatestUpdateSectionBuilder} from 'models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
+import {
+  getEvidenceUpload,
+} from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContent/evidenceUploadContent';
 
+export const buildEvidenceUploadSection = (claim: Claim): ClaimSummarySection[] => {
+  const sectionContent = [];
+  sectionContent.push(getEvidenceUpload(claim));
+  return sectionContent.flat();
+};
 const TRIAL_HEARING_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.TRIAL_HEARING_CONTENT';
 export const buildResponseToClaimSectionCaseProgression = (claim: Claim, claimId: string): ClaimSummarySection[][] => {
   const sectionContent = [];

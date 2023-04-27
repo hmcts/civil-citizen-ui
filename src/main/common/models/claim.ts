@@ -54,6 +54,7 @@ import {toCUIEvidence} from 'services/translation/convertToCUI/convertToCUIEvide
 import {toCUIParty} from 'services/translation/convertToCUI/convertToCUIParty';
 import {toCUIMediation} from 'services/translation/convertToCUI/convertToCUIMediation';
 import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIClaimDetails';
+import {CCDRespondentLiPResponse} from './ccdResponse/ccdRespondentLiPResponse';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 
 export class Claim {
@@ -90,6 +91,8 @@ export class Claim {
   respondent1ResponseDate?: Date;
   claimBilingualLanguagePreference: ClaimBilingualLanguagePreference;
   id: string;
+  sdoOrderDocument?: CaseDocument;
+  respondent1LiPResponse?: CCDRespondentLiPResponse;
   caseProgressionHearing?: CaseProgressionHearing;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
@@ -99,7 +102,6 @@ export class Claim {
     claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
     claim.respondent1 = toCUIParty(ccdClaim?.respondent1);
     claim.mediation = toCUIMediation(ccdClaim?.respondent1LiPResponse?.respondent1MediationLiPResponse);
-
     return claim;
   }
 
@@ -482,6 +484,10 @@ export class Claim {
 
   get isSmallClaimsTrackDQ(): boolean {
     return this.claimType === claimType.SMALL_CLAIM;
+  }
+
+  hasSdoOrderDocument(): boolean{
+    return !!this.sdoOrderDocument;
   }
 
   hasCaseProgressionHearingDocuments(): boolean{

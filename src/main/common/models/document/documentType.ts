@@ -8,6 +8,7 @@ export enum DocumentType {
   DEFAULT_JUDGMENT = 'DEFAULT_JUDGMENT',
   CLAIMANT_DEFENCE = 'CLAIMANT_DEFENCE',
   CLAIMANT_DRAFT_DIRECTIONS = 'CLAIMANT_DRAFT_DIRECTIONS',
+  SDO_ORDER = 'SDO_ORDER',
   HEARING_FORM = 'HEARING_FORM'
 }
 
@@ -20,5 +21,6 @@ export enum DocumentUri {
   DEFENDANT_DRAFT_DIRECTIONS = 'defendant-draft-directions',
   DEFAULT_JUDGMENT = 'default-judgement',
   CLAIMANT_DEFENCE = 'claimant-defence',
-  CLAIMANT_DRAFT_DIRECTIONS = 'claimant-draft-directions'
+  CLAIMANT_DRAFT_DIRECTIONS = 'claimant-draft-directions',
+  SDO_ORDER = 'sdo-order'
 }
