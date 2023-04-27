@@ -12,7 +12,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 const totalAmountController = Router();
 const totalAmountViewPath = 'features/claim/total-amount';
 
-function renderView(form: any, res: Response): void {
+function renderView(form: object, res: Response): void {
   res.render(totalAmountViewPath, {form});
 }
 

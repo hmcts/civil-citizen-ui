@@ -77,7 +77,7 @@ const toCCDRecurringExpensesItem = (transactionSource: TransactionSource, expens
 const toCCDRecurringExpensesOtherItem = (otherTransactions: TransactionSource[], expensesType: CCDExpensesType): CCDRecurringExpenses[] => {
   if (!otherTransactions?.length) return undefined;
   const ccdOtherRecurringExpensesList: CCDRecurringExpenses[] = [];
-  otherTransactions.forEach((otherTransactionItem, index) => {
+  otherTransactions.forEach((otherTransactionItem) => {
     const ccdRecurringExpenses = toCCDRecurringExpensesItem(otherTransactionItem, expensesType);
     ccdRecurringExpenses.value.typeOtherDetails = otherTransactionItem?.name;
     ccdOtherRecurringExpensesList.push(ccdRecurringExpenses);
