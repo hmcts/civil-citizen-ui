@@ -17,10 +17,15 @@ const month = currentDate.getMonth();
 const year = currentDate.getFullYear() - 1;
 
 class HowMuchYouHavePaid {
-    
-  enterPaymentDetails(claimRef, amount) {
-    I.amOnPage('/case/'+claimRef+'/response/partial-admission/how-much-have-you-paid');
-    I.see('How much have you paid the claimant?', 'h1');
+
+  enterPaymentDetails(claimRef, amount, responseType) {
+    if(responseType == 'partial-admission'){
+      I.amOnPage('/case/'+claimRef+'/response/partial-admission/how-much-have-you-paid');
+      I.see('How much have you paid the claimant?', 'h1');
+    }else{
+      I.amOnPage('/case/'+claimRef+'/response/full-rejection/how-much-have-you-paid');
+      I.see('How much have you paid?', 'h1');
+    }
     I.see('The total amount claimed is £');
     I.see('How much have you paid?');
     I.fillField(fields.amount, amount);
@@ -31,7 +36,7 @@ class HowMuchYouHavePaid {
     I.fillField(fields.year, year.toString());
     I.see('How did you pay this amount?');
     I.fillField(fields.text, 'Bank transfer');
-    I.click(buttons.saveAndContinue);    
+    I.click(buttons.saveAndContinue);
   }
 }
 
