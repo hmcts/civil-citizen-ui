@@ -38,6 +38,7 @@ const HowMuchYouHavePaid = require('../pages/defendantLipResponse/howYouWillPay/
 const HowMuchDoYouOwe = require('../pages/defendantLipResponse/howYouWillPay/howMuchDoYouOwe');
 const AddYourTimeLine = require('../pages/defendantLipResponse/whyDoYouDisagree/addYourTimeLine');
 const WhyDoYouDisagreeTheClaimAmount = require('../pages/defendantLipResponse/whyDoYouDisagree/whyDoYouDisagreeTheClaimAmount');
+const WhyDoYouDisagree = require('../pages/defendantLipResponse/whyDoYouDisagree/whyDoYouDisagree');
 const ListYourEvidence = require('../pages/defendantLipResponse/whyDoYouDisagree/listYourEvidence');
 const FreeTelephoneMediation = require('../pages/defendantLipResponse/freeTelephoneMediation/freeTelephoneMediation');
 const MediationCanWeUse = require('../pages/defendantLipResponse/freeTelephoneMediation/mediatonCanWeUse');
@@ -100,6 +101,7 @@ const viewYourOptionsBeforeDeadline = new ViewYourOptionsBeforeDeadline();
 const howMuchYouHavePaid = new HowMuchYouHavePaid();
 const howMuchDoYouOwe = new HowMuchDoYouOwe();
 const whyDoYouDisagreeTheClaimAmount = new WhyDoYouDisagreeTheClaimAmount();
+const whyDoYouDisagree = new WhyDoYouDisagree();
 const hearingRequirements = new HearingRequirements();
 const dqExpert = new DQExpert();
 const expertReportDetails = new ExpertReportDetails();
@@ -272,8 +274,8 @@ class ResponseSteps {
     }
   }
 
-  EnterHowMuchYouHavePaid(claimRef, amount) {
-    howMuchYouHavePaid.enterPaymentDetails(claimRef, amount);
+  EnterHowMuchYouHavePaid(claimRef, amount, responseType) {
+    howMuchYouHavePaid.enterPaymentDetails(claimRef, amount, responseType);
   }
 
   EnterHowMuchMoneyYouOwe(claimRef, amount) {
@@ -341,8 +343,12 @@ class ResponseSteps {
     rejectAllOfClaim.selectRejectAllReason(reason);
   }
 
-  EnterWhyYouDisagreeTheClaimAmount(claimRef) {
-    whyDoYouDisagreeTheClaimAmount.enterReason(claimRef);
+  EnterWhyYouDisagreeTheClaimAmount(claimRef, responseType) {
+    whyDoYouDisagreeTheClaimAmount.enterReason(claimRef, responseType);
+  }
+
+  EnterWhyYouDisagree(claimRef){
+    whyDoYouDisagree.enterReason(claimRef);
   }
 
   EnterYourEvidenceDetails() {
