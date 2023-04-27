@@ -12,6 +12,8 @@ export class DateConverter {
         return new Date('Invalid Date');
       }
     }
+    console.log('------------------DATE------------');
+    console.log(date);
     return date;
   }
 }

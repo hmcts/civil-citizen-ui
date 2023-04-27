@@ -1,8 +1,8 @@
-import {IsDate, Max, Min, Validate, ValidateIf} from 'class-validator';
-import {OptionalDateFourDigitValidator} from '../../../common/form/validators/optionalDateFourDigitValidator';
-import {DateConverter} from '../../../common/utils/dateConverter';
-import {OptionalDateInPastValidator} from '../../../common/form/validators/optionalDateInPastValidator';
-import {toNumberOrUndefined} from '../../../common/utils/numberConverter';
+import {IsDate, isNumber, Max, Min, Validate, ValidateIf} from 'class-validator';
+import {OptionalDateFourDigitValidator} from 'form/validators/optionalDateFourDigitValidator';
+import {DateConverter} from 'common/utils/dateConverter';
+import {OptionalDateInPastValidator} from 'form/validators/optionalDateInPastValidator';
+import {toNumberOrUndefined} from 'common/utils/numberConverter';
 
 const generateErrorMessage = (messageName: string): string => {
   return messageName ? messageName : 'ERRORS.VALID_DATE_START_NOT_AFTER_TODAY';
@@ -17,7 +17,7 @@ const withMessage = (buildErrorFn: (messageName: string) => string) => {
 export class DebtRespiteStartDate {
   messageName?: string;
 
-  @ValidateIf(o => (o.day < 32 && o.month < 13 && o.year > 999))
+  @ValidateIf(o => (o.day > 0 && o.day <32 && o.month > 0 && o.month < 13 && o.year > 1872))
   @IsDate({message: 'ERRORS.VALID_DATE'})
   @Validate(OptionalDateInPastValidator, {message: withMessage(generateErrorMessage)})
     date?: Date;
@@ -38,10 +38,18 @@ export class DebtRespiteStartDate {
     year?: number;
 
   constructor(day?: string, month?: string, year?: string, messageName?: string) {
+    console.log(day);
+    console.log(month);
+    console.log(year);
     this.date = DateConverter.convertToDate(year, month, day);
     this.year = toNumberOrUndefined(year);
     this.month = toNumberOrUndefined(month);
     this.day = toNumberOrUndefined(day);
     this.messageName = messageName;
+    if(!isNumber(day) || !isNumber(month) || !isNumber(year)){
+      this.day = -1;
+      this.month = -1;
+      this.year = -1;
+    }
   }
 }
