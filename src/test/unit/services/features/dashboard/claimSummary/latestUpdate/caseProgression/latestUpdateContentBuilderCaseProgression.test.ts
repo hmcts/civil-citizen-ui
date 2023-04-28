@@ -85,7 +85,8 @@ describe('Latest Update Content Builder Case Progression', () => {
 
       // Then
       expect(evidenceUploadSection).toEqual([lastedContentBuilderExpected]);
-    });    it('should have Hearing upload content with small claims', () => {
+    });
+    it('should have Hearing upload content with fast track', () => {
       // Given
       claim.totalClaimAmount = FAST_TRACK_CLAIM_AMOUNT - 5;
       const lastedContentBuilderExpected = new LatestUpdateSectionBuilder()

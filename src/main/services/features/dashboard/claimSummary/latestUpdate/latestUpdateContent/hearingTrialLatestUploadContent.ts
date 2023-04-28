@@ -4,22 +4,23 @@ import {Claim} from 'models/claim';
 const TRIAL_HEARING_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.TRIAL_HEARING_CONTENT';
 
 export const getHearingTrialLatestUpload = (claim: Claim) => {
-  let trialHearingTitle;
-  let trialHearingParagraph;
+  const trialHearingTitle = claim.isFastTrackClaim
+    ? `${TRIAL_HEARING_CONTENT}.YOUR_TRIAL_TITLE`
+    : `${TRIAL_HEARING_CONTENT}.YOUR_HEARING_TITLE`;
 
-  if(claim.isFastTrackClaim){
-    trialHearingTitle = `${TRIAL_HEARING_CONTENT}.YOUR_TRIAL_TITLE`;
-    trialHearingParagraph = `${TRIAL_HEARING_CONTENT}.YOUR_TRIAL_PARAGRAPH`;
-  } else if(claim.isSmallClaimsTrackDQ){
-    trialHearingTitle = `${TRIAL_HEARING_CONTENT}.YOUR_HEARING_TITLE`;
-    trialHearingParagraph = `${TRIAL_HEARING_CONTENT}.YOUR_HEARING_PARAGRAPH`;
-  }
-  return new LatestUpdateSectionBuilder()
+  const trialHearingParagraph = claim.isFastTrackClaim
+    ? `${TRIAL_HEARING_CONTENT}.YOUR_TRIAL_PARAGRAPH`
+    : `${TRIAL_HEARING_CONTENT}.YOUR_HEARING_PARAGRAPH`;
+
+  const hearingDate = claim.caseProgressionHearing.getHearingDateFormatted();
+  const hearingTimeHourMinute = claim.caseProgressionHearing.getHearingTimeHourMinuteFormatted();
+  const courtName = claim.caseProgressionHearing.hearingLocation.getCourtName();
+
+  const latestUpdateSectionBuilder = new LatestUpdateSectionBuilder()
     .addTitle(trialHearingTitle)
-    .addParagraph(trialHearingParagraph, {hearingDate: claim.caseProgressionHearing.getHearingDateFormatted() ,
-      hearingTimeHourMinute: claim.caseProgressionHearing.getHearingTimeHourMinuteFormatted(),
-      courtName: claim.caseProgressionHearing.hearingLocation.getCourtName()})
-    .addButton(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, 'href')
-    .build();
+    .addParagraph(trialHearingParagraph, { hearingDate, hearingTimeHourMinute, courtName })
+    .addButton(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, 'href');
+
+  return latestUpdateSectionBuilder.build();
 };
 
