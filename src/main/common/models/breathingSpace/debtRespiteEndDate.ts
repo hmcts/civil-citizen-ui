@@ -26,7 +26,6 @@ export class DebtRespiteEndDate {
   @ValidateIf(o => (o.day || o.month || o.year))
   @IsInt({message: 'ERRORS.VALID_YEAR'})
   @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
-  @Min(1872, {message: 'ERRORS.VALID_YEAR'})
   @Max(9999, {message: 'ERRORS.VALID_YEAR' })
     year: number|string;
 

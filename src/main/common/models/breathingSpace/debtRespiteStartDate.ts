@@ -18,7 +18,7 @@ const withMessage = (buildErrorFn: (messageName: string) => string) => {
 export class DebtRespiteStartDate {
   messageName?: string;
 
-  @ValidateIf(o => (o.day < 32 && o.month < 13 && o.year > 1872))
+  @ValidateIf(o => (o.day > 0 && o.day < 32 && o.month > 0 && o.month < 13 && o.year > 1872))
   @IsDate({message: 'ERRORS.VALID_DATE'})
   @Validate(OptionalDateInPastValidator, {message: withMessage(generateErrorMessage)})
     date?: Date;
