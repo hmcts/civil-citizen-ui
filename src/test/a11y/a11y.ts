@@ -2,7 +2,6 @@
 import {fail} from 'assert';
 
 import {PageUrls} from './constants';
-import {createSpecifiedClaim} from '../functionalTests/specClaimHelpers/api/steps';
 
 const pa11y = require('pa11y');
 
@@ -29,9 +28,7 @@ function expectNoErrors(messages: PallyIssue[]): void {
   }
 }
 
-function testAccessibility(url: string, caseId : string): void {
-
-  url = url.replace(':id', caseId);
+function testAccessibility(url: string): void {
   describe(`Page ${url}`, () => {
     it('should have no accessibility errors', async () => {
       if (!ignoredPages.includes(url)) {
@@ -46,8 +43,7 @@ function testAccessibility(url: string, caseId : string): void {
 }
 
 describe('Accessibility', async () => {
-  let caseId = await createSpecifiedClaim();
   Object.values({...PageUrls}).forEach(url => {
-    testAccessibility(url, caseId);
+    testAccessibility(url);
   });
 });
