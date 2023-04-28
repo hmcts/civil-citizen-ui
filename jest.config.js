@@ -21,6 +21,6 @@ module.exports = {
     '^routes/(.*)$': '<rootDir>/src/main/routes/$1',
     '^services/(.*)$': '<rootDir>/src/main/services/$1',
   },
-  setupFilesAfterEnv: ['./jest.setup.redis-mock.js'],
+  setupFilesAfterEnv: ['./jest.setup.redis-mock.js', './jest.setup.lang.js'],
   coverageProvider: 'v8',
 };
