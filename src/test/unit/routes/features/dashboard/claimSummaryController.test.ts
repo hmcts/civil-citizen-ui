@@ -58,6 +58,23 @@ describe('Claim Summary Controller Defendant', () => {
           documentType: 'test',
           createdDatetime: 'test',
         },
+        hearingDocuments: [
+          {
+            id: '1fbce32f-a7f5-48ea-b543-b19d642ebe56',
+            value: {
+              createdBy: 'Civil',
+              documentLink: {
+                document_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6',
+                document_filename: 'hearing_small_claim_000MC110.pdf',
+                document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
+              },
+              documentName: 'hearing_small_claim_000MC110.pdf',
+              documentSize: 56461,
+              documentType: 'HEARING_FORM',
+              createdDatetime: '2023-04-24T14:44:17',
+            },
+          },
+        ],
         classification: 'test',
       },
     },
@@ -160,5 +177,23 @@ describe('Claim Summary Controller Defendant', () => {
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
+
+    it('should not return evidence upload content when flag is enabled and hasHearingDocument but latestUpdateContent not empty', async () => {
+      //given
+      isCaseProgressionV1EnableMock.mockResolvedValue(true);
+      getLatestUpdateContentMock.mockReturnValue(mockClaimSummaryContent);
+      //when
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId)
+        .reply(200, claimWithSdo);
+      //then
+      await testSession
+        .get(`/dashboard/${claimId}/defendant`)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).not.toContain('Upload documents');
+        });
+    });
+
   });
 });
