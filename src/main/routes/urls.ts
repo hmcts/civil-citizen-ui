@@ -219,4 +219,6 @@ export const BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL = `${BASE_BREATHING_SPACE
 export const BREATHING_SPACE_RESPITE_LIFTED_URL = `${BASE_BREATHING_SPACE_URL}/respite-lifted`;
 export const CCJ_PAID_AMOUNT_SUMMARY_URL = `${BASE_CCJ_URL}/paid-amount-summary`;
 export const CCJ_DEFENDANT_PAYMENT_DATE_URL = `${BASE_CCJ_URL}/pay-by-set-date`;
+
+export const TYPES_OF_DOCUMENTS_URL = `${BASE_CASE_PROGRESSION_URL}/type-of-documents`;
 export const UPLOAD_YOUR_DOCUMENTS_URL = `${BASE_CASE_PROGRESSION_URL}/upload-your-documents`;
