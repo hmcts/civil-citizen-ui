@@ -5,6 +5,18 @@ import {DocumentUri} from 'models/document/documentType';
 export class LatestUpdateSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
 
+  addCaption(caption: string, variables?: any) {
+    const captionSection = ({
+      type: ClaimSummaryType.CAPTION,
+      data: {
+        text: caption,
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(captionSection);
+    return this;
+  }
+
   addTitle(title: string, variables?: any) {
     const titleSection = ({
       type: ClaimSummaryType.TITLE,
@@ -17,6 +29,18 @@ export class LatestUpdateSectionBuilder {
     return this;
   }
 
+  addSubTitle(subTitle: string, variables?: any) {
+    const subTitleSection = ({
+      type: ClaimSummaryType.SUBTITLE,
+      data: {
+        text: subTitle,
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(subTitleSection);
+    return this;
+  }
+
   addParagraph(text: string, variables?: any) {
     const paragraphSection = ({
       type: ClaimSummaryType.PARAGRAPH,
@@ -26,6 +50,18 @@ export class LatestUpdateSectionBuilder {
       },
     });
     this._claimSummarySections.push(paragraphSection);
+    return this;
+  }
+
+  addLeadParagraph(text: string, variables?: any) {
+    const leadParagraphSection = ({
+      type: ClaimSummaryType.LEAD_PARAGRAPH,
+      data: {
+        text: text,
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(leadParagraphSection);
     return this;
   }
 

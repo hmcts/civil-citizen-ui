@@ -9,6 +9,10 @@
     {{ content.data.html | safe }}
   {% endif %}
 
+  {% if content.type === ClaimSummaryType.CAPTION %}
+    <span class="govuk-caption-m">{{ t(content.data.text) }}</span>
+  {% endif %}
+
   {% if content.type === ClaimSummaryType.TITLE %}
     <h3 class="govuk-heading-m">{{ t(content.data.text) }}</h3>
   {% endif %}
@@ -16,6 +20,17 @@
   {% if content.type === ClaimSummaryType.SUBTITLE %}
     <h3 class="govuk-heading-s">{{ t(content.data.text) }}</h3>
   {% endif %}
+
+  {% if content.type === ClaimSummaryType.LEAD_PARAGRAPH %}
+      {% set object = '' %}
+      {% if content.data.variables %}
+          {% set object = content.data.variables %}
+          <p class="govuk-body-l">{{ t(content.data.text,object)}}</p>
+      {% else %}
+          <p class="govuk-body-l">{{ t(content.data.text)}}</p>
+      {% endif %}
+  {% endif %}
+
   {% if content.type === ClaimSummaryType.PARAGRAPH %}
     {% set object = '' %}
     {% if content.data.variables %}

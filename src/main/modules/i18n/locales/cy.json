@@ -2240,7 +2240,7 @@
     },
     "UPLOAD_YOUR_DOCUMENTS": {
       "PAGE_TITLE": "Upload your documents",
-      "SECTION_TITLE": "Document upload",
+      "CAPTION": "Document upload",
       "TITLE": "Upload your documents",
       "CASE_REFERENCE": "Case reference: {{ caseId }}",
       "PARTIES": "{{ claimantName }} v {{ defendantName }}",
