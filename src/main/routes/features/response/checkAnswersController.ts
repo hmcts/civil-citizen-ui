@@ -1,8 +1,5 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {
-  CONFIRMATION_URL, RESPONSE_CHECK_ANSWERS_URL,
-  // RESPONSE_INCOMPLETE_SUBMISSION_URL
-} from '../../urls';
+import {CONFIRMATION_URL, RESPONSE_CHECK_ANSWERS_URL, RESPONSE_INCOMPLETE_SUBMISSION_URL} from '../../urls';
 import {
   getStatementOfTruth,
   getSummarySections,
@@ -14,7 +11,7 @@ import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTrut
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
-// import {AllResponseTasksCompletedGuard} from 'routes/guards/allResponseTasksCompletedGuard';
+import {AllResponseTasksCompletedGuard} from 'routes/guards/allResponseTasksCompletedGuard';
 import {submitResponse} from 'services/features/response/submission/submitResponse';
 import {AppRequest} from 'models/AppRequest';
 import {SignatureType} from 'models/signatureType';
@@ -32,7 +29,7 @@ function renderView(req: Request, res: Response, form: GenericForm<StatementOfTr
 }
 
 checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL,
-  // AllResponseTasksCompletedGuard.apply(RESPONSE_INCOMPLETE_SUBMISSION_URL),
+  AllResponseTasksCompletedGuard.apply(RESPONSE_INCOMPLETE_SUBMISSION_URL),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const claim = await getCaseDataFromStore(req.params.id);

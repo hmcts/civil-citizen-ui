@@ -38,26 +38,26 @@ const renderView = async (form: GenericForm<SpecificCourtLocation>, req: Request
   res.render(viewPath, {form, courtLocations});
 };
 
-specificCourtController.get(DQ_COURT_LOCATION_URL, async (req: Request, res: Response, next: NextFunction) => {
-  try {
+specificCourtController.get(DQ_COURT_LOCATION_URL, async (req: Request, res: Response, next: NextFunction) =>{
+  try{
     const form = new GenericForm<SpecificCourtLocation>(await getSpecificCourtLocationForm(req.params.id));
     await renderView(form, req, res);
-  } catch (error) {
+  }catch(error){
     next(error);
   }
 })
-  .post(DQ_COURT_LOCATION_URL, async (req: Request, res: Response, next: NextFunction) => {
+  .post(DQ_COURT_LOCATION_URL, async (req: Request, res: Response, next: NextFunction)=>{
     const claimId = req.params.id;
-    try {
+    try{
       const form = new GenericForm<SpecificCourtLocation>(SpecificCourtLocation.fromObject(req.body));
       form.validateSync();
-      if (form.hasErrors()) {
+      if(form.hasErrors()){
         await renderView(form, req, res);
-      } else {
+      }else {
         await saveDirectionQuestionnaire(claimId, form.model, dqPropertyName, dqParentName);
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_WELSH_LANGUAGE_URL));
       }
-    } catch (error) {
+    }catch(error){
       next(error);
     }
   });

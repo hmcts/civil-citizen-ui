@@ -7,7 +7,10 @@ import {toCCDRejectAllOfClaimType} from './convertToCCDRejectAllOfClaimType';
 import {toCCDRepaymentPlan} from './convertToCCDRepaymentPlan';
 import {toCCDPaymentOption} from './convertToCCDPaymentOption';
 import {toCCDPayBySetDate} from './convertToCCDPayBySetDate';
-import {toCCDRespondToClaim} from './convertToCCDRespondToClaim';
+import {toCCDRespondToClaim} from 'services/translation/response/convertToCCDRespondToClaim';
+import {TimelineUploadTypeSpec} from 'models/ccdResponse/ccdHowToAddTimeline';
+import {toCCDResponseTimelineOfEvents} from 'services/translation/response/convertToCCDResponseTimelineOfEvents';
+import {toCCDEvidence} from 'services/translation/response/convertToCCDEvidence';
 import {toCCDBankAccountList} from './convertToCCDBankAccount';
 import {toCCDHomeDetails} from './convertToCCDHomeDetails';
 import {toCCDPartnerAndDependents} from './convertToCCDPartnerAndDependent';
@@ -49,9 +52,16 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     specAoSApplicantCorrespondenceAddressRequired: addressHasChange ? YesNoUpperCamelCase.NO : YesNoUpperCamelCase.YES,
     totalClaimAmount: claim.totalClaimAmount,
     respondent1: toCCDParty(claim.respondent1),
+    respondent1LiPResponse: toCCDRespondentLiPResponse(claim),
+    respondToAdmittedClaim: toCCDRespondToClaim(claim.partialAdmission?.howMuchHaveYouPaid),
+    specDefenceAdmittedRequired: toCCDYesNoFromGenericYesNo(claim.partialAdmission?.alreadyPaid),
+    respondToAdmittedClaimOwingAmount: claim.partialAdmission?.howMuchDoYouOwe?.amount?.toString(),
+    detailsOfWhyDoesYouDisputeTheClaim: claim.detailsOfWhyYouDisputeTheClaim(),
+    specClaimResponseTimelineList: TimelineUploadTypeSpec.MANUAL, // sets to manual cause CUI do not have other option
+    specResponseTimelineOfEvents: toCCDResponseTimelineOfEvents(claim.partialAdmission?.timeline),
+    specResponselistYourEvidenceList: toCCDEvidence(claim.evidence),
     defenceRouteRequired: toCCDRejectAllOfClaimType(claim.rejectAllOfClaim?.option),
     respondToClaim: toCCDRespondToClaim(claim.rejectAllOfClaim?.howMuchHaveYouPaid),
-    detailsOfWhyDoesYouDisputeTheClaim: claim.rejectAllOfClaim?.defence?.text ?? claim.rejectAllOfClaim?.whyDoYouDisagree?.text,
     respondent1BankAccountList: toCCDBankAccountList(claim.statementOfMeans?.bankAccounts),
     disabilityPremiumPayments: toCCDYesNoFromGenericYesNo(claim.statementOfMeans?.disability),
     severeDisabilityPremiumPayments: toCCDYesNoFromGenericYesNo(claim.statementOfMeans?.severeDisability),
@@ -74,7 +84,6 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     respondent1DQRecurringIncomeFA: toCCDRecurringIncomeField(claim, ResponseType.FULL_ADMISSION),
     respondent1DQRecurringExpenses: toCCDRecurringExpensesField(claim, ResponseType.PART_ADMISSION),
     respondent1DQRecurringExpensesFA: toCCDRecurringExpensesField(claim, ResponseType.FULL_ADMISSION),
-    respondent1LiPResponse: toCCDRespondentLiPResponse(claim),
     respondent1DQLanguage: toCCDWelshLanguageRequirements(claim.directionQuestionnaire?.welshLanguageRequirements),
     respondent1DQVulnerabilityQuestions: toCCDVulnerability(claim.directionQuestionnaire?.vulnerabilityQuestions),
     respondent1DQRequestedCourt: toCCDSpecificCourtLocations(claim.directionQuestionnaire?.hearing?.specificCourtLocation),
