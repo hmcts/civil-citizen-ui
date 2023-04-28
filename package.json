@@ -21,14 +21,15 @@
     "test:a11y": "echo 'a11y tests are ran through GitHub actions as a mandatory step in order to save time on the main pipeline and unable to mock at the moment.'",
     "tests:a11y": "NODE_TLS_REJECT_UNAUTHORIZED=0 NODE_ENV=test LOG_LEVEL=ERROR mocha --exit --reporter mochawesome --require ts-node/register --require tsconfig-paths/register src/test/a11y/a11y.ts --timeout 60000 --reporter-options reportDir=functional-output/accessibility-report,reportFilename=a11y,inlineAssets=true,reportTitle=civil-citizen-ui",
     "sonar-scan": "sonar-scanner",
-    "test:smoke": "yarn test:functional:codeceptjs run --grep @smoketestDisabled --reporter mocha-multi --verbose",
-    "test:functional": "yarn test:functional:codeceptjs run --grep @regression --reporter mocha-multi --verbose",
+    "test:smoke": "yarn test:functional:codeceptjs run --grep @smoketest --reporter mocha-multi --verbose",
+    "test:functional": "yarn test:functional:codeceptjs run-workers --suites 4 --grep @regression --reporter mocha-multi --verbose",
     "test:crossbrowser": "SAUCE='true' yarn test:crossbrowser:codeceptjs run",
     "test:crossbrowser:playwright": "yarn test:crossbrowser:codeceptjs run-multiple crossBrowser",
     "test:crossbrowser:codeceptjs": "codeceptjs --config ./src/test/cross-browser/codecept.conf.js",
     "test:functional:codeceptjs": "codeceptjs --config src/test/functionalTests/codecept.conf.js",
     "test:api": "MOCHAWESOME_REPORTFILENAME=api npx codeceptjs -c 'e2e/codecept.conf.js' run --grep @test --reporter mocha-multi --verbose",
-    "cichecks": "yarn && yarn build && yarn lint  && yarn test && yarn test:routes &&  yarn test:a11y"
+    "cichecks": "yarn && yarn build && yarn lint && yarn test:coverage && yarn test:routes && yarn test:a11y",
+    "cichecks:win": "yarn && yarn build && yarn lint:win && yarn test:coverage && yarn test:routes && yarn test:a11y"
   },
   "dependencies": {
     "@codeceptjs/configure": "^0.10.0",
