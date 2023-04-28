@@ -4,6 +4,37 @@ wa:
 global:
   jobKind: CronJob
 
+ccd-message-publisher:
+  java:
+    ingressHost: ccd-message-publisher-${SERVICE_FQDN}
+    releaseNameOverride: ${SERVICE_NAME}-ccd-message-publisher
+    keyVaults:
+      ccd:
+        secrets:
+          - name: AppInsightsInstrumentationKey
+            alias: azure.application-insights.instrumentation-key
+    environment:
+      DATA_STORE_DB_HOST: "{{ .Release.Name }}-postgresql"
+      DATA_STORE_DB_NAME: data-store
+      DATA_STORE_DB_USERNAME: hmcts
+      DATA_STORE_DB_PASSWORD: hmcts
+      DATA_STORE_DB_OPTIONS: "?stringtype=unspecified"
+      CCD_CASE_EVENTS_DESTINATION: ${SERVICE_NAME}-asb-ccd-case-events
+    secrets:
+      SERVICE_BUS_CONNECTION_STRING:
+        secretRef: civil-sb-preview
+        key: connectionString
+
+servicebus:
+  enabled: true
+  releaseNameOverride: ${SERVICE_NAME}-asb
+  resourceGroup: civil-aso-preview-rg
+  sbNamespace: civil # due to a bug https://github.com/kubernetes-sigs/kustomize/issues/5072 this value is set to civil, when this bug is resolved, the sbNamespace should be changed to the actual name of the Service Bus Namespace (civil-sb-preview)
+  setup:
+    topics:
+      - name: ccd-case-events
+        subscriptionNeeded: yes
+        requiresSession: true
 
 wa-task-management-api:
   java:
@@ -26,7 +57,7 @@ wa-task-management-api:
             alias: LAUNCH_DARKLY_SDK_KEY
     environment:
       CAMUNDA_URL: http://{{ .Release.Name }}-camunda/engine-rest
-      ROLE_ASSIGNMENT_URL: http://{{ .Release.Name }}-am-role-assignment-service
+      ROLE_ASSIGNMENT_URL: http://am-role-assignment-service-aat.service.core-compute-aat.internal
       POSTGRES_HOST: "{{ .Release.Name }}-postgresql"
       POSTGRES_NAME: cft_task_db
       POSTGRES_USERNAME: postgres
@@ -54,10 +85,11 @@ wa-task-monitor:
     environment:
       CAMUNDA_URL: http://{{ .Release.Name }}-camunda/engine-rest
       TASK_MANAGEMENT_SERVICE_URL: http://{{ .Release.Name }}-wa-task-management-api
+      WA_TASK_MANAGEMENT_API_URL: http://{{ .Release.Name }}-wa-task-management-api
       CASE_EVENT_HANDLER_SERVICE_URL: http://{{ .Release.Name }}-wa-case-event-handler
       CCD_SEARCH_URL: http://{{ .Release.Name }}-ccd-data-store-api
       CCD_URL: http://{{ .Release.Name }}-ccd-data-store-api
-      ROLE_ASSIGNMENT_URL: http://{{ .Release.Name }}-am-role-assignment-service
+      ROLE_ASSIGNMENT_URL: http://am-role-assignment-service-aat.service.core-compute-aat.internal
 
 wa-case-event-handler:
   java:
@@ -65,7 +97,7 @@ wa-case-event-handler:
     releaseNameOverride: ${SERVICE_NAME}-wa-case-event-handler
     secrets:
       AZURE_SERVICE_BUS_CONNECTION_STRING:
-        secretRef: civil-work-allocation-secret
+        secretRef: civil-sb-preview
         key: connectionString
     keyVaults:
       wa:
@@ -84,13 +116,13 @@ wa-case-event-handler:
       CAMUNDA_URL: http://{{ .Release.Name }}-camunda/engine-rest
       CCD_URL: http://{{ .Release.Name }}-ccd-data-store-api
       CCD_SEARCH_URL: http://{{ .Release.Name }}-ccd-data-store-api
-      ROLE_ASSIGNMENT_URL: http://{{ .Release.Name }}-am-role-assignment-service
+      ROLE_ASSIGNMENT_URL: http://am-role-assignment-service-aat.service.core-compute-aat.internal
       WA_WORKFLOW_API_URL: http://{{ .Release.Name }}-wa-workflow-api
       WA_TASK_MANAGEMENT_API_URL: http://{{ .Release.Name }}-wa-task-management-api
-      AZURE_SERVICE_BUS_TOPIC_NAME: ccd-case-events
-      AZURE_SERVICE_BUS_SUBSCRIPTION_NAME: ccd-case-events
+      AZURE_SERVICE_BUS_TOPIC_NAME: ${SERVICE_NAME}-asb-ccd-case-events
+      AZURE_SERVICE_BUS_SUBSCRIPTION_NAME: ${SERVICE_NAME}-asb-ccd-case-events
       #AZURE_SERVICE_BUS_TOPIC_NAME: servicebus-topic-{{ .Release.Name }}-asb-ccd-case-events
-      AZURE_SERVICE_BUS_CCD_CASE_EVENTS_SUBSCRIPTION_NAME: ccd-case-events
+      AZURE_SERVICE_BUS_CCD_CASE_EVENTS_SUBSCRIPTION_NAME: ${SERVICE_NAME}-asb-ccd-case-events
       POSTGRES_HOST: "{{ .Release.Name }}-postgresql"
       POSTGRES_NAME: wa-case-event-handler
       POSTGRES_USERNAME: hmcts
@@ -131,7 +163,8 @@ wa-message-cron-service:
 
 wa-task-batch-service:
   job:
-    releaseNameOverride: ${SERVICE_NAME}-wa-task-batch-initiation
+    kind: CronJob
+    releaseNameOverride: ${SERVICE_NAME}-wa-task-batch-service
     schedule: "*/5 * * * *"
     aadIdentityName: wa
     keyVaults:
@@ -144,3 +177,8 @@ wa-task-batch-service:
       WA_TASK_MONITOR_SERVICE_URL: http://{{ .Release.Name }}-wa-task-monitor
       JOB_NAME: "INITIATION"
       ALLOW_CONFIG_MUTATIONS: true
+
+xui-webapp:
+  nodejs:
+    environment:
+      WA_SUPPORTED_JURISDICTIONS: "IA,PRIVATELAW,CIVIL"
