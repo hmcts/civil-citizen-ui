@@ -11,9 +11,8 @@ export const getHearingTrialUploadLatestUpdateContent = (claim: Claim): ClaimSum
   return getClaimSummaryContent(buildHearingTrialLatestUploadSection(claim));
 };
 
-export const getClaimSummaryContent = (section: ClaimSummarySection[]) : ClaimSummaryContent[] => {
-  const latestUpdateContent = [section];
-  return latestUpdateContent.map((sectionContent, index) => ({
+export const getClaimSummaryContent = (section: ClaimSummarySection[][]) : ClaimSummaryContent[] => {
+  return section.map((sectionContent, index) => ({
     contentSections: sectionContent,
     hasDivider: index < section.length - 1,
   }));

@@ -7,10 +7,10 @@ import {
   getHearingTrialLatestUpload,
 } from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContent/hearingTrialLatestUploadContent';
 
-export const buildEvidenceUploadSection = (claim: Claim): ClaimSummarySection[] => {
+export const buildEvidenceUploadSection = (claim: Claim): ClaimSummarySection[][] => {
   const sectionContent = [];
   sectionContent.push(getEvidenceUpload(claim));
-  return sectionContent.flat();
+  return sectionContent;
 };
 export const buildHearingTrialLatestUploadSection = (claim: Claim): ClaimSummarySection[] => {
   return getHearingTrialLatestUpload(claim);

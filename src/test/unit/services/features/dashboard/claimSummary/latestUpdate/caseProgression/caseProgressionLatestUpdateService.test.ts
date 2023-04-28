@@ -16,7 +16,7 @@ describe('Case Progression Latest Update Content service', () => {
   it('should return evidence upload section for latest update content', () => {
     //when
     const evidenceUploadSection = buildEvidenceUploadSection(claim);
-    const expectedContent = [evidenceUploadSection].map((sectionContent, index) => ({
+    const expectedContent = evidenceUploadSection.map((sectionContent, index) => ({
       contentSections: sectionContent,
       hasDivider: index < evidenceUploadSection.length - 1,
     }));
