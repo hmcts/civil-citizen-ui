@@ -12,6 +12,8 @@ export const buildEvidenceUploadSection = (claim: Claim): ClaimSummarySection[][
   sectionContent.push(getEvidenceUpload(claim));
   return sectionContent;
 };
-export const buildHearingTrialLatestUploadSection = (claim: Claim): ClaimSummarySection[] => {
-  return getHearingTrialLatestUpload(claim);
+export const buildHearingTrialLatestUploadSection = (claim: Claim): ClaimSummarySection[][] => {
+  const sectionContent = [];
+  sectionContent.push(getHearingTrialLatestUpload(claim));
+  return sectionContent;
 };

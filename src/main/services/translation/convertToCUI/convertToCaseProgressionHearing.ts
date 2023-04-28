@@ -7,7 +7,7 @@ export const toCUICaseProgressionHearing = (ccdClaim: CCDClaim): CaseProgression
     const caseProgressionHearing : CaseProgressionHearing = new CaseProgressionHearing();
     caseProgressionHearing.hearingDocuments = ccdClaim.hearingDocuments;
     caseProgressionHearing.hearingDate = ccdClaim.hearingDate;
-    caseProgressionHearing.hearingLocation = new HearingLocation(ccdClaim.hearingLocation.value);
+    caseProgressionHearing.hearingLocation = new HearingLocation(ccdClaim.hearingLocation?.value);
     caseProgressionHearing.hearingTimeHourMinute = ccdClaim.hearingTimeHourMinute;
     return caseProgressionHearing;
   }
