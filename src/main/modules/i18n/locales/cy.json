@@ -1060,7 +1060,8 @@
         "REQUESTED_CHANGE_BY_DEFENDANT": "You applied to change the claim",
         "REQUESTED_CHANGE_BY_CLAIMANT": "The claimant applied to change something about the claim",
         "RESPONSE_BY_POST": "The claim will continue by post",
-        "SETTLEMENT_SIGNED": "You’ve both signed a settlement agreement."
+        "SETTLEMENT_SIGNED": "You’ve both signed a settlement agreement.",
+        "TRIAL_OR_HEARING_SCHEDULED": "A Trial or Hearing has been scheduled for this case"
       },
       "TITLE": "Eich cyfrif hawliadau am arian",
       "VIEW": "Weiv",
