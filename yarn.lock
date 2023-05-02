@@ -34,20 +34,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/core-rest-pipeline@npm:^1.10.0":
-  version: 1.10.3
-  resolution: "@azure/core-rest-pipeline@npm:1.10.3"
+"@azure/core-rest-pipeline@npm:1.10.1":
+  version: 1.10.1
+  resolution: "@azure/core-rest-pipeline@npm:1.10.1"
   dependencies:
     "@azure/abort-controller": ^1.0.0
     "@azure/core-auth": ^1.4.0
     "@azure/core-tracing": ^1.0.1
-    "@azure/core-util": ^1.3.0
+    "@azure/core-util": ^1.0.0
     "@azure/logger": ^1.0.0
     form-data: ^4.0.0
     http-proxy-agent: ^5.0.0
     https-proxy-agent: ^5.0.0
     tslib: ^2.2.0
-  checksum: 6704101a2d6ca651ffc09e4d9fa77bc9718ed0d9b96b93d23a845dbac50a71bb089486808230ebaf59c9cb2557661ee5b020222ad5ad6d49d09b47c6ed11fce4
+    uuid: ^8.3.0
+  checksum: d1c165047519c05b702184ffadf900a1f3eca032795b0f4f5b174c8257b663c1b1eab847236579dddcf637ea380896e17328ebf5022050441ee80672ad6c449d
   languageName: node
   linkType: hard
 
@@ -60,7 +61,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/core-util@npm:^1.3.0":
+"@azure/core-util@npm:1.2.0":
+  version: 1.2.0
+  resolution: "@azure/core-util@npm:1.2.0"
+  dependencies:
+    "@azure/abort-controller": ^1.0.0
+    tslib: ^2.2.0
+  checksum: 58c7e3c9e9fda27242c1ab1dbfcf11eab52cc3e6459a2509fa5572a3faebf3f24c6bf9d92883cd80974119fc1e2c16c7bd2c71f20cfbe670405515c73fdb4093
+  languageName: node
+  linkType: hard
+
+"@azure/core-util@npm:^1.0.0":
   version: 1.3.1
   resolution: "@azure/core-util@npm:1.3.1"
   dependencies:
@@ -79,7 +90,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/opentelemetry-instrumentation-azure-sdk@npm:^1.0.0-beta.2":
+"@azure/opentelemetry-instrumentation-azure-sdk@npm:^1.0.0-beta.3":
   version: 1.0.0-beta.3
   resolution: "@azure/opentelemetry-instrumentation-azure-sdk@npm:1.0.0-beta.3"
   dependencies:
@@ -2062,7 +2073,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/core@npm:1.12.0, @opentelemetry/core@npm:^1.0.1, @opentelemetry/core@npm:^1.9.0":
+"@opentelemetry/core@npm:1.12.0, @opentelemetry/core@npm:^1.12.0, @opentelemetry/core@npm:^1.9.0":
   version: 1.12.0
   resolution: "@opentelemetry/core@npm:1.12.0"
   dependencies:
@@ -2098,7 +2109,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/sdk-trace-base@npm:^1.0.1":
+"@opentelemetry/sdk-trace-base@npm:^1.12.0":
   version: 1.12.0
   resolution: "@opentelemetry/sdk-trace-base@npm:1.12.0"
   dependencies:
@@ -2111,7 +2122,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/semantic-conventions@npm:1.12.0, @opentelemetry/semantic-conventions@npm:^1.0.1":
+"@opentelemetry/semantic-conventions@npm:1.12.0, @opentelemetry/semantic-conventions@npm:^1.12.0":
   version: 1.12.0
   resolution: "@opentelemetry/semantic-conventions@npm:1.12.0"
   checksum: 211fa2fffa82706f641cc785c4bef6ac03ef4cedeacb81972e832d09070e9cf7007867d87776af5c6baa9fddaabced476536962fd9ca1dc0487c9fb5f3f538b8
@@ -3519,27 +3530,28 @@ __metadata:
   linkType: hard
 
 "applicationinsights@npm:^2.3.5":
-  version: 2.5.1
-  resolution: "applicationinsights@npm:2.5.1"
+  version: 2.6.0
+  resolution: "applicationinsights@npm:2.6.0"
   dependencies:
     "@azure/core-auth": ^1.4.0
-    "@azure/core-rest-pipeline": ^1.10.0
-    "@azure/opentelemetry-instrumentation-azure-sdk": ^1.0.0-beta.2
+    "@azure/core-rest-pipeline": 1.10.1
+    "@azure/core-util": 1.2.0
+    "@azure/opentelemetry-instrumentation-azure-sdk": ^1.0.0-beta.3
     "@microsoft/applicationinsights-web-snippet": ^1.0.1
     "@opentelemetry/api": ^1.0.4
-    "@opentelemetry/core": ^1.0.1
-    "@opentelemetry/sdk-trace-base": ^1.0.1
-    "@opentelemetry/semantic-conventions": ^1.0.1
+    "@opentelemetry/core": ^1.12.0
+    "@opentelemetry/sdk-trace-base": ^1.12.0
+    "@opentelemetry/semantic-conventions": ^1.12.0
     cls-hooked: ^4.2.2
     continuation-local-storage: ^3.2.1
     diagnostic-channel: 1.1.0
-    diagnostic-channel-publishers: 1.0.5
+    diagnostic-channel-publishers: 1.0.6
   peerDependencies:
     applicationinsights-native-metrics: "*"
   peerDependenciesMeta:
     applicationinsights-native-metrics:
       optional: true
-  checksum: e2a060bea38fe06f26f92dcb0b5584389b8bbd5c43fd8297af91b4d053b1bfd01a4db75913d3286f9bda368321492054f028ac9e4e575f6cc7411c9bbbd529ab
+  checksum: c72361fcc523a8568da8377b67445a01ed3f95a86647e36ed1d8b8f87626b4646d12ab75ea33753a51469f245e5683623ac6350fa8ae70b17ac081949c47c9e2
   languageName: node
   linkType: hard
 
@@ -5544,12 +5556,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"diagnostic-channel-publishers@npm:1.0.5":
-  version: 1.0.5
-  resolution: "diagnostic-channel-publishers@npm:1.0.5"
+"diagnostic-channel-publishers@npm:1.0.6":
+  version: 1.0.6
+  resolution: "diagnostic-channel-publishers@npm:1.0.6"
   peerDependencies:
     diagnostic-channel: "*"
-  checksum: dd8c80b6826f11aa9c4db0b092d6eb72693e527b88f4c7f8f5d6a7f52e0b2e1ed2f635f640cf87ca6f6f9edb9126f908dc553725d85445143fdae1f73eb9ab53
+  checksum: 66f30470378c6095ee8eae351769f73664e15615b2252d8b0f4adc6b88beb8532328392894861725ff4864f2832767ac321f6a162be403b52ff18a200635439d
   languageName: node
   linkType: hard
 
@@ -13730,7 +13742,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uuid@npm:^8.0.0, uuid@npm:^8.3.2":
+"uuid@npm:^8.0.0, uuid@npm:^8.3.0, uuid@npm:^8.3.2":
   version: 8.3.2
   resolution: "uuid@npm:8.3.2"
   bin:
