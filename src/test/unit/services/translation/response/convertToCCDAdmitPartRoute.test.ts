@@ -43,7 +43,7 @@ describe('convert respond to Claim', () => {
     const converted = toCCDRespondToClaim(respondToClaim.howMuchHaveYouPaid);
 
     // Then
-    expect(respondToClaim.howMuchHaveYouPaid.amount).toEqual(converted.howMuchWasPaid);
+    expect(respondToClaim.howMuchHaveYouPaid.amount).toEqual(converted.howMuchWasPaid/100);
     expect(respondToClaim.howMuchHaveYouPaid.date).toEqual(converted.whenWasThisAmountPaid);
     expect(CCDHowWasThisAmountPaid.OTHER).toEqual(converted.howWasThisAmountPaid);
     expect(respondToClaim.howMuchHaveYouPaid.text).toEqual(converted.howWasThisAmountPaidOther);
