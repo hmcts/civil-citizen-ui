@@ -4525,8 +4525,9 @@ __metadata:
     luxon: ^3.2.1
     memorystore: ^1.6.7
     mini-css-extract-plugin: ^2.7.2
-    mocha-multi: ^1.1.7
-    mochawesome: ^7.0.1
+    mocha: ^10.2.0
+    mocha-multi: 1.1.7
+    mochawesome: 7.1.3
     nock: ^13.2.9
     node-cache: ^5.1.2
     nodemon: ^2.0.20
@@ -10007,7 +10008,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mocha-multi@npm:^1.1.7":
+"mocha-multi@npm:1.1.7":
   version: 1.1.7
   resolution: "mocha-multi@npm:1.1.7"
   dependencies:
@@ -10076,7 +10077,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mochawesome@npm:^7.0.1":
+"mochawesome@npm:7.1.3":
   version: 7.1.3
   resolution: "mochawesome@npm:7.1.3"
   dependencies:
