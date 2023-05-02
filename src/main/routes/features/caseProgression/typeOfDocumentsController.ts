@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Response, Router} from 'express';
 import { TYPES_OF_DOCUMENTS_URL} from '../../urls';
 
 import {AppRequest} from 'common/models/AppRequest';
@@ -28,6 +28,7 @@ typeOfDocumentsController.get(TYPES_OF_DOCUMENTS_URL,
       const claim = await getCaseDataFromStore(req.params.id);
       const claimantFullName = claim.getClaimantFullName();
       const defendantFullName = claim.getDefendantFullName();
+
       const disclosureItems = [];
       disclosureItems.push(new TypeOfDocumentsItems('disclosure1', t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_FOR_DISCLOSURE'), new Hint(t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_FOR_DISCLOSURE_HINT'))));
       disclosureItems.push(new TypeOfDocumentsItems('disclosure2', t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DISCLOSURE_LIST'), new Hint(t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DISCLOSURE_LIST_HINT'))));
@@ -61,12 +62,29 @@ typeOfDocumentsController.get(TYPES_OF_DOCUMENTS_URL,
     }
   });
 
-typeOfDocumentsController.post(TYPES_OF_DOCUMENTS_URL, async (req: Request | AppRequest, res: Response, next: NextFunction) => {
+/*typeOfDocumentsController.post(TYPES_OF_DOCUMENTS_URL, async (req: Request | AppRequest, res: Response, next: NextFunction) => {
   try {
-   /* empty method */
+    const {ValidatorConstraint, ValidatorConstraintInterface} = req.body;
+     try {
+       const typeOfDocumentsUpload = new GenericForm(new TypeOfDocumentsUpload(ValidatorConstraint, ValidatorConstraintInterface));
+       const citizenDob = new GenericForm(new CitizenDob(year, month, day));
+       await typeOfDocumentsUpload.validate();
+       if (typeOfDocumentsUpload.hasErrors()) {
+         renderView(typeOfDocumentsUpload, res);
+       } else {
+         const claim = await getCaseDataFromStore(req.params.id);
+         if (claim.respondent1) {
+           claim.respondent1.dateOfBirth = new CitizenDate(day, month, year);
+         } else {
+           const respondent = new Party();
+           respondent.dateOfBirth = new CitizenDate(day, month, year);
+           claim.respondent1 = respondent;
+         }
+         await saveDraftClaim(req.params.id, claim);
+         redirectToNextPage(req, res, claim.respondent1.dateOfBirth.date, claim.respondent1);
   } catch (error) {
     next(error);
   }
-});
+});*/
 
 export default typeOfDocumentsController;
