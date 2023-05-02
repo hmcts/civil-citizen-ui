@@ -20,6 +20,10 @@ jest.mock('modules/draft-store');
 jest.mock('modules/draft-store/courtLocationCache');
 jest.mock('services/features/directionsQuestionnaire/directionQuestionnaireService');
 
+jest.mock('modules/i18n/languageService', () => ({
+  getLanguage: jest.fn(() => 'en'),
+  setLanguage: jest.fn(),
+}));
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 
