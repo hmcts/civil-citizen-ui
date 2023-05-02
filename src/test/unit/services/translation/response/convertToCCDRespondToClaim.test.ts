@@ -23,7 +23,7 @@ describe('convert respond to claim', () => {
     // When
     const ccdResponse = toCCDRespondToClaim(claim.partialAdmission.howMuchHaveYouPaid);
     // Then
-    expect(ccdResponse.howMuchWasPaid).toEqual(claim.partialAdmission.howMuchHaveYouPaid.amount);
+    expect(ccdResponse.howMuchWasPaid).toEqual(claim.partialAdmission.howMuchHaveYouPaid.amount*100);
     expect(ccdResponse.howWasThisAmountPaid).toEqual(CCDHowWasThisAmountPaid.OTHER);
     expect(ccdResponse.howWasThisAmountPaidOther).toEqual(claim.partialAdmission.howMuchHaveYouPaid.text);
     expect(ccdResponse.whenWasThisAmountPaid).toEqual(claim.partialAdmission.howMuchHaveYouPaid.date);
@@ -46,7 +46,7 @@ describe('convert respond to claim', () => {
     // When
     const ccdResponse = toCCDRespondToClaim(claim.rejectAllOfClaim.howMuchHaveYouPaid);
     // Then
-    expect(ccdResponse.howMuchWasPaid).toEqual(claim.rejectAllOfClaim.howMuchHaveYouPaid.amount);
+    expect(ccdResponse.howMuchWasPaid).toEqual(claim.rejectAllOfClaim.howMuchHaveYouPaid.amount*100);
     expect(ccdResponse.howWasThisAmountPaid).toEqual(CCDHowWasThisAmountPaid.OTHER);
     expect(ccdResponse.howWasThisAmountPaidOther).toEqual(claim.rejectAllOfClaim.howMuchHaveYouPaid.text);
     expect(ccdResponse.whenWasThisAmountPaid).toEqual(claim.rejectAllOfClaim.howMuchHaveYouPaid.date);
