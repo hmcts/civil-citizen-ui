@@ -53,7 +53,7 @@
       "BACK": "Yn ol",
       "CHANGE": "Newid",
       "CONTINUE": "Parhau",
-      "I_CONFIRM_IVE_READ_THIS": "I confirm I've read this",
+      "I_CONFIRM_IVE_READ_THIS": "Cadarnhaf fy mod wedi darllen hwn",
       "RESPOND_TO_CLAIM": "Respond to claim",
       "SAVE": "Save",
       "SAVE_AND_CONTINUE": "Cadw a Pharhau",
@@ -652,50 +652,50 @@
         "TITLE": "Parhau i hawlio llog ar ôl i chi gyflwyno eich cais?"
       },
       "DEFENDANT_EMAIL": {
-        "PAGE_TITLE": "Their email address (optional)",
-        "PERSONAL_EMAIL": "This must be their personal email address",
-        "TITLE": "Their email address (optional)",
-        "USE_THIS_EMAIL": "We'll use this to tell them you've made a claim, as well as notifying them by post."
+        "PAGE_TITLE": "Ei gyfeiriad e-bost (dewisol)",
+        "PERSONAL_EMAIL": "Rhaid mai dyma yw ei gyfeiriad e-bost personol",
+        "TITLE": "Ei gyfeiriad e-bost (dewisol)",
+        "USE_THIS_EMAIL": "Byddwn yn defnyddio hwn i ddweud wrtho eich bod wedi gwneud hawliad, yn ogystal â'i hysbysu drwy'r post."
       },
       "HOW_MUCH_CONTINUE": {
-        "DAILY_INTEREST_AMOUNT": "Daily interest amount",
-        "OPTION_1": "8% per year",
-        "OPTION_2": "Specific daily interest amount",
-        "PAGE_TITLE": "How much do you want to continue claiming?",
-        "TITLE": "How much do you want to continue claiming?"
+        "DAILY_INTEREST_AMOUNT": "Swm llog dyddiol",
+        "OPTION_1": "8% y flwyddyn",
+        "OPTION_2": "Swm llog dyddiol penodol",
+        "PAGE_TITLE": "Faint ydych chi am barhau i hawlio?",
+        "TITLE": "Faint ydych chi am barhau i hawlio?"
       },
       "INTEREST_END_DATE": {
-        "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
-        "PAGE_TITLE": "When do you want to stop claiming interest?",
-        "TITLE": "When do you want to stop claiming interest?",
-        "UNTIL_CLAIM_SUBMIT_DATE": "When you submit the claim",
-        "UNTIL_SETTLED_OR_JUDGEMENT_MADE": "Continue until the claim is settled or judgment made"
+        "HINT_AFTER_4PM": "Os byddwch yn ei gyflwyno ar ôl 4pm bydd hwn y diwrnod gwaith nesaf.",
+        "PAGE_TITLE": "Pryd ydych chi am roi'r gorau i hawlio llog?",
+        "TITLE": "Pryd ydych chi am roi'r gorau i hawlio llog?",
+        "UNTIL_CLAIM_SUBMIT_DATE": "Pan fyddwch yn cyflwyno'r hawliad",
+        "UNTIL_SETTLED_OR_JUDGEMENT_MADE": "Parhau nes bod yr hawliad wedi'i setlo neu ddyfarniad wedi ei roi"
       },
       "RESOLVE_THE_DISPUTE": {
         "P1": {
-          "BEFORE_YOU_CLAIM": "Before you claim you should:",
-          "CONSIDER_MEDIATION": "consider mediation",
-          "TALK_TO_THE_PERSON": "talk to the person or organisation you want to claim against"
+          "BEFORE_YOU_CLAIM": "Cyn i chi hawlio dylech:",
+          "CONSIDER_MEDIATION": "ystyried cyfryngu",
+          "TALK_TO_THE_PERSON": "siarad â'r unigolyn neu'r sefydliad yr ydych am hawlio yn ei erbyn"
         },
         "P2": {
-          "HEADING": "Talk to the person or organisation",
-          "MAKE_A_CLAIM": "explaining you'll make a claim against them if they don't follow your timetable",
-          "SUGGESTING_TIMETABLE": "suggesting timetable with actions you want them to take",
-          "TELLING_THEM_WHY": "telling them why you intend to make a claim against them",
-          "TRY_TO_RESOLVE": "Try to resolve the dispute by:"
+          "HEADING": "siarad â'r unigolyn neu'r sefydliad",
+          "MAKE_A_CLAIM": "esbonio y byddwch yn gwneud hawliad yn ei erbyn os nad yw’n dilyn eich amserlen",
+          "SUGGESTING_TIMETABLE": "awgrymu amserlen gyda chamau rydych eisiau i'r unigolyn eu cymryd",
+          "TELLING_THEM_WHY": "dweud wrth yr unigolyn pam eich bod yn bwriadu gwneud hawliad yn ei erbyn",
+          "TRY_TO_RESOLVE": "Ceisiwch ddatrys yr anghydfod drwy:"
         },
-        "PAGE_TITLE": "Try to resolve the dispute",
-        "TITLE": "Try to resolve the dispute"
+        "PAGE_TITLE": "Ceisio datrys yr anghydfod",
+        "TITLE": "Ceisio datrys yr anghydfod"
       },
       "WHEN_CLAIM_INTEREST_FROM": {
         "DATE_INTEREST": "Date interest applied from",
-        "FROM_A_SPECIFIC_DATE": "A particular date",
-        "FROM_CLAIM_SUBMIT_DATE": "The date you submit the claim",
-        "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
+        "FROM_A_SPECIFIC_DATE": "Dyddiad penodol",
+        "FROM_CLAIM_SUBMIT_DATE": "Y dyddiad y byddwch yn cyflwyno'r hawliad",
+        "HINT_AFTER_4PM": "Os byddwch yn ei gyflwyno ar ôl 4pm bydd hwn y diwrnod gwaith nesaf.",
         "HINT_EXAMPLE_DATE": "For example the date an invoice was overdue or that you told someone they owed you the money.",
-        "PAGE_TITLE": "When are you claiming interest from?",
+        "PAGE_TITLE": "O pa bryd ydych chi’n hawlio llog?",
         "REASON": "Explain why you're claiming for this date",
-        "TITLE": "When are you claiming interest from?"
+        "TITLE": "O pa bryd ydych chi’n hawlio llog?"
       }
     },
     "CLAIM_SUBMITTED": {
@@ -758,14 +758,14 @@
       "TITLE": "Choose how to formalise repayment"
     },
     "CLAIMANT_INTEREST_RATE": {
-      "DIFFERENT_RATE_LABEL": "A different rate",
+      "DIFFERENT_RATE_LABEL": "Cyfradd wahanol",
       "PAGE_TITLE": "Annual rate interest you want to claim",
-      "RATE_CLAIMING": "Rate you're claiming",
-      "RATE_INFORMATION": "You can claim 8% per year unless you know that a different rate applies.",
+      "RATE_CLAIMING": "Y gyfradd rydych chi'n ei hawlio",
+      "RATE_INFORMATION": "Gallwch hawlio 8% y flwyddyn oni bai eich bod yn gwybod bod cyfradd wahanol yn berthnasol.",
       "REASON": "Why you're claiming this rate",
       "SAME_RATE_INTEREST_8_PC": "8.00%",
-      "TITLE": "What annual rate of interest do you want to claim?",
-      "WHY_YOU_ARE_ENTITLED": "Why you're entitled to this rate"
+      "TITLE": "Pa gyfradd llog flynyddol ydych chi am ei hawlio?",
+      "WHY_YOU_ARE_ENTITLED": "Pam bod gennych hawl i'r gyfradd hon"
     },
     "CLAIMANT_RESPONSE": {
       "COURT_PROPOSED_DATE": {
@@ -1075,9 +1075,9 @@
       "TOTAL_OWED_IN_POUNDS": "Total owed, in pounds"
     },
     "DEBT_RESPITE_REF_NUMBER": {
-      "ENTER_REFERENCE": "Enter the reference number (optional):",
+      "ENTER_REFERENCE": "Rhowch y cyfeirnod (dewisol):",
       "PAGE_TITLE": "Debt Respite Scheme reference number",
-      "TITLE": "Do you have a Debt Respite Scheme reference number?"
+      "TITLE": "Oes gennych chi rif cyfeirnod Cynllun Seibiant Dyled?"
     },
     "DEBT_RESPITE_END_DATE": {
       "PAGE_TITLE": "Expected end date",
@@ -1137,8 +1137,8 @@
       "TITLE": "Ydych chi eisiau defnyddio tystiolaeth arbenigwr?"
     },
     "DEFENDANT_PHONE_NUMBER": {
-      "PAGE_TITLE": "Their phone number",
-      "TITLE": "Their phone number (optional)"
+      "PAGE_TITLE": "Ei rif ffôn",
+      "TITLE": "Ei rif ffôn (dewisol)"
     },
     "DEFENDANT_EXPERT_CAN_STILL_EXAMINE": {
       "CAN_NOT_USE": "Ni allwch ddefnyddio arbenigwr yn yr achos hwn",
@@ -1184,8 +1184,8 @@
     },
     "INTEREST_START_DATE": {
       "PAGE_TITLE": "claim interest from",
-      "TITLE": "Enter the date you want to claim interest from",
-      "REASON": "Explain why you’re claiming from this date"
+      "TITLE": "Nodwch y dyddiad yr ydych am ddechrau hawlio llog",
+      "REASON": "Esboniwch pam rydych chi'n hawlio o'r dyddiad hwn"
     },
     "ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES": {
       "PARAGRAPH1_1": "If you have already applied for Help with Fees in respect ooooof ",
@@ -1233,8 +1233,8 @@
       "DECIDE": "Decide whether to apply for Help with Fees",
       "MAKE_A_NOTE": "Make a note of the Help with Fees number when you make an application.",
       "MAKE_CLAIM_USING": " and make a claim using a Help with Fees number. If you need to use the paper Help with Fees application rather than the online version then you will not be able to use Online Civil Money Claims to issue your claim.",
-      "PAGE_TITLE": "Do you have a Help With Fees reference number?",
-      "TITLE": "Do you have a Help With Fees reference number?",
+      "PAGE_TITLE": "Oes gennych chi rif cyfeirnod Help i Dalu Ffioedd?",
+      "TITLE": "Oes gennych chi rif cyfeirnod Help i Dalu Ffioedd?",
       "WHEN_YOU_APPLY": "When you apply for Help with Fees you will be asked for the number on your court or tribunal form. Please note that this is N1.",
       "WILL_NEED": "You will need this number to make your claim when you are returned to this service."
     },
@@ -1433,11 +1433,11 @@
       "TITLE": "How they want to pay"
     },
     "HELP_WITH_FEES": {
-      "ENTER_NUMBER": "Enter the Help With Fees number",
-      "PAGE_TITLE": "Do you have a Help With Fees reference number?",
+      "ENTER_NUMBER": "Rhowch y rhif help i dalu ffioedd",
+      "PAGE_TITLE": "Oes gennych chi rif cyfeirnod Help i Dalu Ffioedd?",
       "REFERENCE_NUMBER": "Help with fees reference number",
-      "TITLE": "Do you have a Help With Fees reference number?",
-      "ONLY_ONE": "You'll only have one if you applied for Help With Fees."
+      "TITLE": "Oes gennych chi rif cyfeirnod Help i Dalu Ffioedd?",
+      "ONLY_ONE": "Dim ond os gwnaethoch gais am help i dalu ffioedd y bydd gennych gyfeirnod help i dalu ffioedd."
     },
     "INTEREST_CLAIM_OPTIONS": {
       "BREAK_DOWN_INTEREST": "Break down interest for different time periods or items",
@@ -2251,7 +2251,7 @@
     "AMOUNT_LESS_THAN_CLAIMED": "Nodwch werth sy'n llai na'r swm a hawlir",
     "AMOUNT_REQUIRED": "Nodwch swm o £1 neu fwy",
     "ANNUAL_TURNOVER_REQUIRED": "A ydych yn siŵr bod hwn yn swm dilys?",
-    "CHOOSE_TYPE_OF_INTEREST": "Choose a type of interest",
+    "CHOOSE_TYPE_OF_INTEREST": "Dewis math o log",
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_NUMBER_REQUIRED": "You need to enter the claim number",
     "CLAIM_VALID_AMOUNT": "Rhowch swm dilys",
@@ -2304,7 +2304,7 @@
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS_FROM": "Mae'n rhaid i’r dyddiad nad yw ar gael o fod yn y 12 mis nesaf",
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS_TO": "Mae'n rhaid i’r dyddiad nad yw ar gael tan fod yn y 12 mis nesaf",
     "ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE": "Rhaid i’r dyddiad nad yw ar gael o fod cyn y dyddiad y mae ar gael tan",
-    "ENTER_VALID_EMAIL": "Enter a valid email address",
+    "ENTER_VALID_EMAIL": "Rhowch gyfeiriad e-bost dilys",
     "ENTER_SECURITY_CODE": "Enter your security code",
     "ENTER_VALID_SECURITY_CODE": "Enter a valid security code",
     "ENTER_VALID_TITLE": "Enter valid title",
@@ -2383,7 +2383,7 @@
     "ERROR": "Error",
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Rhowch ddyddiad talu cyntaf yn y dyfodol",
     "GIVE_DETAILS_DOCUMENTS": "Give details of the documents",
-    "HELP_WITH_FEES_REFERENCE_REQUIRED": "Enter your Help With Fees reference number",
+    "HELP_WITH_FEES_REFERENCE_REQUIRED": "Rhowch eich cyfeirnod Help i Dalu Ffioedd",
     "INVALID_AMOUNT": "Invalid amount",
     "HOW_YOU_CALCULATED_AMOUNT": "You must tell us how you calculated the amount",
     "JOB_TITLE_REQUIRED": "Rhowch deitl swydd",
@@ -2401,9 +2401,9 @@
     "PAGE_NOT_FOUND": "Page Not Found",
     "PAYMENT_FREQUENCY_REQUIRED": "Dewiswch amlder talu",
     "PHONE_NUMBER_REQUIRED": "Nodwch rif ffôn",
-    "RATE_CHOOSE_ONE": "Choose rate of interest",
-    "RATE_CORRECT_THE_ONE_ENTERED": "Correct rate you’ve entered",
-    "RATE_EXPLAIN_CLAIMING_IT": "You haven’t explained why you’re claiming this rate",
+    "RATE_CHOOSE_ONE": "Dewis cyfradd llog",
+    "RATE_CORRECT_THE_ONE_ENTERED": "Y gyfradd gywir rydych chi wedi'i nodi",
+    "RATE_EXPLAIN_CLAIMING_IT": "Nid ydych wedi esbonio pam eich bod yn hawlio'r gyfradd hon",
     "REASON_REQUIRED": "You need to explain why you believe you’re owed the money",
     "REDIS_FAILURE": "Redis DraftStore failure.",
     "SECURITY_CODE_WRONG_OR_EXPIRED": "The security code was not right or has expired",
@@ -2509,8 +2509,8 @@
     "VALID_CITY": "Rhowch enw tref/dinas dilys",
     "VALID_CITY_CORRESPONDENCE": "Rhowch enw tref/dinas ar gyfer gohebiaeth",
     "VALID_CLAIM_AMOUNT": "Nodwch swm o arian",
-    "VALID_CLAIM_INTEREST_FROM": "Choose when to claim interest from",
-    "VALID_CLAIM_INTEREST_END_DATE": "Choose when you want to stop claiming interest",
+    "VALID_CLAIM_INTEREST_FROM": "Dewiswch pryd i hawlio llog gan",
+    "VALID_CLAIM_INTEREST_END_DATE": "Dewiswch pryd rydych am roi'r gorau i hawlio llog",
     "VALID_CLAIM_NUMBER": "Enter a claim number",
     "VALID_CLAIM_REFERENCE_NUMBER": "Enter a valid claim number",
     "VALID_DATE": "Rhowch ddyddiad dilys",
@@ -2572,7 +2572,7 @@
     "VALID_YES_NO_OPTION": "Dewiswch opsiwn: ie neu na",
     "VALID_YES_NO_OPTION_NAC_YDW": "Dewiswch opsiwn: ‘ydw’ neu ‘nac ydw’",
     "VALID_YES_NO_SELECTION": "Dewiswch ie neu na, os gwelwch yn dda",
-    "VALID_WHY_FROM_PARTICULAR_DATE": "You need to explain why you are claiming",
+    "VALID_WHY_FROM_PARTICULAR_DATE": "Mae angen i chi egluro pam eich bod yn hawlio",
     "QUESTION_1_REQUIRED": "Dewiswch 'oes' os yw rhywun yn fregus a bod angen i'r llys ystyried hynny",
     "QUESTION_2_REQUIRED": "Tell us who is vulnerable and what support they need",
     "CLAIMANT_REJECTION_RESPONSE_REQUIRED": "Enter why you rejected repayment plan"
