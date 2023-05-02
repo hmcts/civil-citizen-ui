@@ -172,7 +172,7 @@ describe('Latest Update Content Builder', () => {
         const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.FULL_ADMISSION, PaymentOptionType.BY_SET_DATE);
         const lastUpdateSectionExpected = new LatestUpdateSectionBuilder()
           .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
-          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY`, {
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY_BY`, {
             claimantName: claim.getClaimantFullName(),
             paymentDate: formatDateToFullDate(getPaymentDate(claim), getLanguage()),
           })
@@ -191,7 +191,7 @@ describe('Latest Update Content Builder', () => {
         const claim = getClaim(PartyType.COMPANY, ResponseType.FULL_ADMISSION, PaymentOptionType.BY_SET_DATE);
         const lastUpdateSectionExpected = new LatestUpdateSectionBuilder()
           .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
-          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY`, {
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY_BY`, {
             claimantName: claim.getClaimantFullName(),
             paymentDate: formatDateToFullDate(getPaymentDate(claim), getLanguage()),
           })
