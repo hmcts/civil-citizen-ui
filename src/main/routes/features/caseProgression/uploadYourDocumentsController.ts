@@ -34,7 +34,8 @@ uploadYourDocumentsController.get([UPLOAD_YOUR_DOCUMENTS_URL], async (req, res, 
         .addSubTitle('PAGES.UPLOAD_YOUR_DOCUMENTS.BEFORE_YOU_UPLOAD_YOUR')
         .addParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.BEFORE_YOU_UPLOAD_THE')
         .addParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.EACH_DOCUMENT_MUST')
-        .addStartButton('PAGES.UPLOAD_YOUR_DOCUMENTS.START_NOW', TYPES_OF_DOCUMENTS_URL)
+        .addStartButton('PAGES.UPLOAD_YOUR_DOCUMENTS.START_NOW', TYPES_OF_DOCUMENTS_URL
+          .replace(':id', claim.id))
         .build();
 
       res.render(uploadYourDocumentsViewPath, {latestUpdateSection});

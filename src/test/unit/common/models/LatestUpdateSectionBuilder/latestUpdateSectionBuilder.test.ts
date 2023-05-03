@@ -1,6 +1,21 @@
 import {LatestUpdateSectionBuilder} from 'models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 
 describe('LatestUpdateSectionBuilder tests', ()=> {
+  it('should create caption', ()=> {
+    //Given
+    const caption = 'testCaption';
+    const captionObject = new LatestUpdateSectionBuilder()
+      .addCaption(caption)
+      .build();
+
+    //When
+    const result = new LatestUpdateSectionBuilder()
+      .addCaption(caption)
+      .build();
+    //Then
+    expect(captionObject).toEqual(result);
+  });
+
   it('should create title', ()=> {
     //Given
     const title = 'testTitle';
@@ -16,6 +31,21 @@ describe('LatestUpdateSectionBuilder tests', ()=> {
     expect(titleObject).toEqual(result);
   });
 
+  it('should create subTitle', ()=> {
+    //Given
+    const subTitle = 'testSubTitle';
+    const subTitleObject = new LatestUpdateSectionBuilder()
+      .addSubTitle(subTitle)
+      .build();
+
+    //When
+    const result = new LatestUpdateSectionBuilder()
+      .addSubTitle(subTitle)
+      .build();
+    //Then
+    expect(subTitleObject).toEqual(result);
+  });
+
   it('should add Paragraph', ()=> {
     //Given
     const paragraph = 'testTitle';
@@ -29,6 +59,42 @@ describe('LatestUpdateSectionBuilder tests', ()=> {
       .build();
     //Then
     expect(paragraphExpected).toEqual(result);
+  });
+
+  it('should add leadParagraph', ()=> {
+    //Given
+    const leadParagraph = 'testLeadParagraph';
+    const leadParagraphExpected = new LatestUpdateSectionBuilder()
+      .addLeadParagraph(leadParagraph)
+      .build();
+
+    //When
+    const result = new LatestUpdateSectionBuilder()
+      .addLeadParagraph(leadParagraph)
+      .build();
+    //Then
+    expect(leadParagraphExpected).toEqual(result);
+  });
+
+  it('should add link', ()=> {
+    //Given
+    const linkObject = {
+      text: 'text',
+      href: 'href',
+      textBefore: 'textBefore',
+      textAfter: 'textAfter',
+    };
+
+    const linkExpected = new LatestUpdateSectionBuilder()
+      .addLink(linkObject.text,linkObject.href,linkObject.textBefore,linkObject.textAfter)
+      .build();
+
+    //When
+    const result = new LatestUpdateSectionBuilder()
+      .addLink(linkObject.text,linkObject.href,linkObject.textBefore,linkObject.textAfter)
+      .build();
+    //Then
+    expect(linkExpected).toEqual(result);
   });
 
   it('should add contactLink', ()=> {
@@ -48,6 +114,26 @@ describe('LatestUpdateSectionBuilder tests', ()=> {
       .build();
     //Then
     expect(contactLinkExpected).toEqual(result);
+  });
+
+  it('should add Start Button', ()=> {
+    //Given
+    const startButtonObject = {
+      title: 'test',
+      href: 'nextPage',
+      isStartButton: true,
+    };
+
+    const startButtonExpected = new LatestUpdateSectionBuilder()
+      .addStartButton(startButtonObject.title,startButtonObject.href)
+      .build();
+
+    //When
+    const result = new LatestUpdateSectionBuilder()
+      .addStartButton(startButtonObject.title,startButtonObject.href)
+      .build();
+    //Then
+    expect(startButtonExpected).toEqual(result);
   });
 
   it('should add ResponseDocumentLink', ()=> {

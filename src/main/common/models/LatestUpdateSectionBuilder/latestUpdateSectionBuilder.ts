@@ -5,7 +5,7 @@ import {DocumentUri} from 'models/document/documentType';
 export class LatestUpdateSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
 
-  addCaption(caption: string, variables?: any) {
+  addCaption(caption: string, variables?: unknown) {
     const captionSection = ({
       type: ClaimSummaryType.CAPTION,
       data: {
@@ -29,7 +29,7 @@ export class LatestUpdateSectionBuilder {
     return this;
   }
 
-  addSubTitle(subTitle: string, variables?: any) {
+  addSubTitle(subTitle: string, variables?: unknown) {
     const subTitleSection = ({
       type: ClaimSummaryType.SUBTITLE,
       data: {
@@ -53,7 +53,7 @@ export class LatestUpdateSectionBuilder {
     return this;
   }
 
-  addLeadParagraph(text: string, variables?: any) {
+  addLeadParagraph(text: string, variables?: unknown) {
     const leadParagraphSection = ({
       type: ClaimSummaryType.LEAD_PARAGRAPH,
       data: {
@@ -65,7 +65,7 @@ export class LatestUpdateSectionBuilder {
     return this;
   }
 
-  addLink(text: string, href: string, textBefore?: string, textAfter?: string, variables?: any) {
+  addLink(text: string, href: string, textBefore?: string, textAfter?: string, variables?: unknown) {
     const linkSection = ({
       type: ClaimSummaryType.LINK,
       data: {
@@ -124,7 +124,7 @@ export class LatestUpdateSectionBuilder {
   }
 
   addStartButton(title: string, href: string) {
-    const titleSection = ({
+    const startButtonSection = ({
       type: ClaimSummaryType.BUTTON,
       data: {
         text: title,
@@ -134,7 +134,7 @@ export class LatestUpdateSectionBuilder {
       },
     });
 
-    this._claimSummarySections.push(titleSection);
+    this._claimSummarySections.push(startButtonSection);
     return this;
   }
   build() {
