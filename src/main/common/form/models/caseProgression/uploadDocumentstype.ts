@@ -14,10 +14,10 @@ export class uploadDocumentTypeList {
     option: YesNo;
   @ValidateIf(o => o.option === YesNo.YES)
   @ValidateNested()
-    items?: uploadDocument;
+    items?: UploadDocument;
 
-  [key: string]: YesNo | uploadDocument;
-  constructor(option?: YesNo, items?: uploadDocument) {
+  [key: string]: YesNo | UploadDocument;
+  constructor(option?: YesNo, items?: UploadDocument) {
     this.option = option;
     this.items = items;
   }
@@ -30,7 +30,7 @@ export interface SupportRequiredParams{
   trial?: UploadDocumentTypes[],
 }
 
-export class uploadDocument {
+export class UploadDocument {
 
   @ValidateNested()
     disclosure?: UploadDocumentTypes[];
