@@ -905,11 +905,11 @@
       "YES_CORRESPONDENCE": "Ydw. Ychwanegu cyfeiriad ar gyfer gohebiaeth"
     },
     "COMPLETING_CLAIM": {
-      "ADD_INFORMATION": "add information that significantly change your claim",
-      "CHANGE_THE_BASIS": "change the basis of your claim - for example, saying goods were undelivered instead of faulty",
-      "CHANGE_THE_NAME": "change the name of anyone involved with the claim",
-      "PAGE_TITLE": "Get the details right",
-      "YOULL_HAVE_TO_PAY": "You'll have to pay an additional fee if you want you"
+      "ADD_INFORMATION": "ychwanegu gwybodaeth sy'n newid eich hawliad yn sylweddol",
+      "CHANGE_THE_BASIS": "newid sail eich cais - er enghraifft, dweud bod nwyddau heb eu cyflenwi yn hytrach na’u bod yn ddiffygiol",
+      "CHANGE_THE_NAME": "newid enw unrhyw un sy'n gysylltiedig â'r hawliad",
+      "PAGE_TITLE": "Cael y manylion yn iawn",
+      "YOULL_HAVE_TO_PAY": "Bydd yn rhaid i chi dalu ffi ychwanegol os ydych am"
     },
     "CONSIDER_CLAIMANT_DOCUMENTS": {
       "GIVE_DETAILS": "Rhowch fanylion y dogfennau",
@@ -1092,21 +1092,21 @@
       "COMPANY_NAME": "Company name",
       "CONTACT_PERSON": "Name of contact person (optional)",
       "CONTACT_PERSON_HINT": "This might be a person you’ve discussed the claim with.",
-      "ENGLAND_OR_WALES_ADDRESS": "The address must be in England or Wales.",
+      "ENGLAND_OR_WALES_ADDRESS": "Rhaid i'r cyfeiriad fod yng Nghymru neu yn Lloegr.",
       "INVALID_CLAIM": "Your claim may be invalid if you use the wrong address.",
       "NO_WORK_ADDRESS": "You cannot use their work address.",
       "ORGANISATION_ADDRESS": "Organisation address",
-      "ORGANISATION_MAIN_OFFICE": "Enter the organisation’s main office or address that has a connection with the claim.",
+      "ORGANISATION_MAIN_OFFICE": "Nodwch brif swyddfa neu gyfeiriad y sefydliad sydd â chysylltiad â'r hawliad.",
       "ORGANISATION_NAME": "Organisation name",
       "PAGE_TITLES": {
         "COMPANY": "Company details",
         "INDIVIDUAL": "Enter the defendant’s details",
         "ORGANISATION": "Enter organisation details",
-        "SOLE_TRADER": "Enter the defendant's details"
+        "SOLE_TRADER": "Rhowch fanylion y diffynnydd"
       },
-      "PAYING_EXTRA": "You’ll have to pay extra fee if you later want to change the name of anyone involved with the claim.",
+      "PAYING_EXTRA": "Bydd rhaid i chi dalu ffi ychwanegol os ydych chi am newid enw unrhyw un sy'n gysylltiedig â'r hawliad yn ddiweddarach.",
       "PAYING_EXTRA_ORGANISATION": "You’ll have to pay extra fee if you later want to change the name of an organisation involved with the claim.",
-      "THEIR_ADDRESS": "Their address",
+      "THEIR_ADDRESS": "Ei gyfeiriad",
       "USUAL_ADDRESS": "You must enter their usual or last known home address."
     },
     "DEFENDANT_PARTY_TYPE": {
@@ -1161,12 +1161,12 @@
       "UNDER": "Dan 11"
     },
     "DEPENDANTS_BETWEEN_16_AND_19": {
-      "ENTER_NUMBER": "Enter number",
-      "FULL_TIME_EDUCATION": "in full-time education or training",
-      "HOW_MANY": "How many are both",
+      "ENTER_NUMBER": "Rhowch rif",
+      "FULL_TIME_EDUCATION": "mewn addysg neu hyfforddiant llawn amser",
+      "HOW_MANY": "Faint yw'r ddau",
       "PAGE_TITLE": "Any dependants between 16 and 19?",
-      "SINGLE": "single (unmarried and not in a civil partnership)",
-      "TITLE": "Children aged 16 to 19 living with you"
+      "SINGLE": "sengl (di-briod a heb fod mewn partneriaeth sifil)",
+      "TITLE": "Plant 16 i 19 oed sy'n byw gyda chi"
     },
     "DEPENDANTS_CHILDREN_DISABILITY": {
       "ANY_DISABLED_CHILDREN": "A oes gan unrhyw un o'r plant sy'n byw gyda chi anabledd?",
@@ -1703,11 +1703,11 @@
       "TITLE": "Nodwch y cod diogelwch"
     },
     "REASON": {
-      "EXTRA_FEE_IF_CHANGE_DETAILS": "You'll have to pay an extra fee if you want to change the details of the claim later.",
-      "DONT_GIVE_TIMELINE": "Don't give us a detailed timeline - we'll ask for that separately.",
-      "PAGE_TITLE": "Briefly explain your claim",
-      "TELL_US_WHY": "Tell us why you believe the defendant owes you money.",
-      "TITLE": "Briefly explain your claim"
+      "EXTRA_FEE_IF_CHANGE_DETAILS": "Bydd yn rhaid i chi dalu ffi ychwanegol os ydych chi am newid manylion yr hawliad nes ymlaen.",
+      "DONT_GIVE_TIMELINE": "Peidiwch â rhoi llinell amser fanwl i ni - byddwn yn gofyn am hynny ar wahân.",
+      "PAGE_TITLE": "Esboniwch eich hawliad yn gryno",
+      "TELL_US_WHY": "Dywedwch pam eich bod yn credu bod ar y diffynnydd arian i chi.",
+      "TITLE": "Esboniwch eich hawliad yn gryno"
     },
     "REGULAR_EXPENSES": {
       "ADD_ANOTHER_EXPENSE": "Ychwanegu ffynhonnell arall o wariant",
@@ -2082,12 +2082,12 @@
       "TITLE": "A yw eich hawliad am flaendal tenantiaeth?"
     },
     "TIMELINE": {
-      "EXAMPLE": "Example timeline",
-      "EXAMPLE_ONE": "John Smith gave me a quote to replace the roof.",
-      "EXAMPLE_TWO": "We agreed and signed a contract for the work.",
-      "EXAMPLE_THREE": "I noticed a leak on the landing and told Mr Smith about this.",
-      "NO_EXACT_DATE": "If you don’t know exact date, tell us the month and year",
-      "TITLE": "Timeline of events"
+      "EXAMPLE": "Llinell amser enghreifftiol",
+      "EXAMPLE_ONE": "Rhoddodd John Smith ddyfynbris i ail-doi.",
+      "EXAMPLE_TWO": "Fe wnaethon ni gytuno a llofnodi contract ar gyfer y gwaith.",
+      "EXAMPLE_THREE": "Sylwais fod y to yn gollwng a dywedais wrth Mr Smith am hyn.",
+      "NO_EXACT_DATE": "Os nad ydych chi'n gwybod yr union ddyddiad, nodwch y mis a'r flwyddyn",
+      "TITLE": "Llinell amser o ddigwyddiadau"
     },
     "TOTAL_AMOUNT": {
       "ADDITIONAL_FEES": "There may be additional fees as your case progresses.",
@@ -2270,7 +2270,7 @@
     "DETAILS_REQUIRED": "Rhowch fanylion",
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Tell us if you believe the hearing requirement details on this page are true",
     "ENTER_A_DEBT": "Rhowch fanylion y ddyled",
-    "ENTER_AN_EXPLANATION": "Enter an explanation of why you can't pay now",
+    "ENTER_AN_EXPLANATION": "Rhowch esboniad pam na allwch dalu nawr",
     "ENTER_AT_LEAST_ONE_DEBT": "Rhowch fanylion o leiaf un ddyled",
     "ENTER_AT_LEAST_ONE_REPORT": "Enter at least one report",
     "ENTER_EXPERT_DETAILS": "Nodwch fanylion yr arbenigwr",
@@ -2390,7 +2390,7 @@
     "NOT_TO_REMOVE_PHONE_NUMBER": "You can only change your phone number, not remove it",
     "NUMBER_OF_PEOPLE_REQUIRED": "Rhowch rif, er enghraifft 3",
     "NUMBER_REQUIRED": "Rhowch rif dilys",
-    "ONE_ROW_REQUIRED": "Enter at least one row",
+    "ONE_ROW_REQUIRED": "Rhowch o leiaf un llinell",
     "OPTION_REQUIRED": "Dewiswch un rheswm",
     "OPTION_REQUIRED_RESPONSE": "Please select a response",
     "PAID_AMOUNT_NOT_GREATER": "Paid amount cannot be greater than or equal to admitted amount",
@@ -2400,7 +2400,7 @@
     "RATE_CHOOSE_ONE": "Dewis cyfradd llog",
     "RATE_CORRECT_THE_ONE_ENTERED": "Y gyfradd gywir rydych chi wedi'i nodi",
     "RATE_EXPLAIN_CLAIMING_IT": "Nid ydych wedi esbonio pam eich bod yn hawlio'r gyfradd hon",
-    "REASON_REQUIRED": "You need to explain why you believe you’re owed the money",
+    "REASON_REQUIRED": "Mae angen i chi egluro pam eich bod yn credu bod yr arian yn ddyledus i chi",
     "REDIS_FAILURE": "Redis DraftStore failure.",
     "SECURITY_CODE_WRONG_OR_EXPIRED": "Nid oedd y cod diogelwch yn iawn neu mae wedi dod i ben",
     "SELECT_ADDITIONAL_TIME": "Dewiswch faint o amser ychwanegol yr ydych yn gwneud cais amdano",
