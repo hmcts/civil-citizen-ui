@@ -151,6 +151,7 @@ export interface CCDClaim extends ClaimUpdate {
   respondent1DQWitnesses?: CCDWitnesses;
   respondent1DQHearingSmallClaim?: CCDSmallClaimHearing;
   respondent1DQHearingFastClaim?: CCDFastClaimHearing;
+  sdoOrderDocument?: CaseDocument;
   respondToClaim?: CCDRespondToClaim;
   defenceRouteRequired?: string;
   respondent1DQExperts?: CCDExpert;
