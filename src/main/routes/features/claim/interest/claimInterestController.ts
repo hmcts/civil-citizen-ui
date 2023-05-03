@@ -13,6 +13,7 @@ import {
   saveClaimInterest,
 } from '../../../../services/features/claim/interest/claimInterestService';
 import {AppRequest} from '../../../../common/models/AppRequest';
+import {RequestHandler} from 'express';
 
 const claimInterestController = express.Router();
 const claimInterestPath = 'features/claim/interest/claim-interest';
@@ -21,7 +22,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: express.Response): voi
   res.render(claimInterestPath, {form});
 }
 
-claimInterestController.get(CLAIM_INTEREST_URL, async (req:AppRequest, res:express.Response, next: express.NextFunction) => {
+claimInterestController.get(CLAIM_INTEREST_URL, (async (req:AppRequest, res:express.Response, next: express.NextFunction) => {
   const caseId = req.session?.user?.id;
 
   try {
@@ -29,9 +30,9 @@ claimInterestController.get(CLAIM_INTEREST_URL, async (req:AppRequest, res:expre
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-claimInterestController.post(CLAIM_INTEREST_URL, async (req: AppRequest & express.Request, res: express.Response, next: express.NextFunction) => {
+claimInterestController.post(CLAIM_INTEREST_URL, (async (req: AppRequest & express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const caseId = req.session?.user?.id;
     const claimInterest = getClaimInterestForm(req.body.option);
@@ -49,6 +50,6 @@ claimInterestController.post(CLAIM_INTEREST_URL, async (req: AppRequest & expres
   } catch (error) {
     next(error);
   }
-});
+}) as express.RequestHandler);
 
 export default claimInterestController;

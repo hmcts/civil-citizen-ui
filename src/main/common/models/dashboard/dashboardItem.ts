@@ -122,6 +122,7 @@ export class DashboardDefendantItem extends DashboardItem {
         parameter: [paramClaimantName],
       },
       DEFENDANT_PART_ADMIT: {translationKey: 'PAGES.DASHBOARD.STATUS.PART_ADMIT_NOT_PAID'},
+      HEARING_FORM_GENERATED: {translationKey: 'PAGES.DASHBOARD.STATUS.TRIAL_OR_HEARING_SCHEDULED'},
     };
     const currentStatus = dashboardStatus[this.status];
     return translate(currentStatus.translationKey, currentStatus.parameter, lang);
