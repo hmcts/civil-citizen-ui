@@ -20,6 +20,8 @@ export const convertToDocumentType = (uri: string): DocumentType => {
       return DocumentType.CLAIMANT_DEFENCE;
     case 'claimant-draft-directions':
       return DocumentType.CLAIMANT_DRAFT_DIRECTIONS;
+    case 'sdo-order':
+      return DocumentType.SDO_ORDER;
     default:
       return undefined;
   }
