@@ -25,12 +25,12 @@ export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   claim.rejectAllOfClaim = toCUIRejectAllOfClaim(ccdClaim);
   claim.directionQuestionnaire = toCUIDQs(ccdClaim);
   claim.sdoOrderDocument = ccdClaim?.sdoOrderDocument;
+  claim.caseProgressionHearing = toCUICaseProgressionHearing(ccdClaim);
   if (claim.isFullAdmission())
     claim.fullAdmission = toCUIFullAdmission(ccdClaim);
   else if (claim.isPartialAdmission())
     claim.partialAdmission = toCUIPartialAdmission(ccdClaim);
-  }
-  claim.caseProgressionHearing = toCUICaseProgressionHearing(ccdClaim);
+
   return claim;
 };
 

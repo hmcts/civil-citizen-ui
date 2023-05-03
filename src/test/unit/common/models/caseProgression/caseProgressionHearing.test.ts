@@ -24,7 +24,7 @@ describe('testing of caseProgressionHearing class', ()=> {
     //Given
     const caseProgressionHearing = new CaseProgressionHearing(null, null,fixedDate,null);
     //When
-    const resultDateExpected = caseProgressionHearing.getHearingDateFormatted();
+    const resultDateExpected = caseProgressionHearing.getHearingDateFormatted('en');
     //Then
     expect(resultDateExpected).toBe('26 April 2023');
   });
