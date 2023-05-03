@@ -24,3 +24,6 @@ export async function getFlagValue(
   return await ldClient.variation(key, user, false);
 }
 
+export async function isCaseProgressionV1Enable(): Promise<boolean> {
+  return await getFlagValue('cui-case-progression') as boolean;
+}
