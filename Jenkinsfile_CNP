@@ -8,7 +8,7 @@ def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
 def camundaBranch = "master"
-def dmnBranch = "wa_changes_for_cui"
+def dmnBranch = "feat/WA_CUI_SDO_Changes"
 def waStandaloneBranch = "master"
 def ccdBranch = "feat/ccd_WA_changes"
 AppPipelineConfig pipelineConf
