@@ -14,7 +14,6 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 function getUploadYourDocumentsContent(claimId: string, claim: Claim) {
   return new LatestUpdateSectionBuilder()
-    .addCaption('PAGES.UPLOAD_YOUR_DOCUMENTS.CAPTION')
     .addTitle('PAGES.UPLOAD_YOUR_DOCUMENTS.TITLE')
     .addLeadParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.CASE_REFERENCE', {claimId: claimId})
     .addLeadParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.PARTIES', {

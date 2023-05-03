@@ -7,7 +7,6 @@ import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import Module from 'module';
 const session = require('supertest-session');
 const testSession = session(app);
-
 const citizenRoleToken: string = config.get('citizenRoleToken');
 
 export const USER_DETAILS = {
@@ -40,12 +39,15 @@ describe('"upload your documents" page test', () => {
 
   describe('on GET', () => {
     it('should return expected page when claim exists', async () => {
+      //Given
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claim);
+      //When
       await testSession
         .get(UPLOAD_YOUR_DOCUMENTS_URL.replace(':id', claimId))
-        .expect((res: { status: any; text: any; }) => {
+      //Then
+        .expect((res: { status: unknown; text: unknown; }) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.UPLOAD_YOUR_DOCUMENTS.TITLE'));
         });

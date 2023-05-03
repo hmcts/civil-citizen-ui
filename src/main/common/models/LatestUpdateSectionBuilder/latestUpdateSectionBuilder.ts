@@ -5,18 +5,6 @@ import {DocumentUri} from 'models/document/documentType';
 export class LatestUpdateSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
 
-  addCaption(caption: string, variables?: unknown) {
-    const captionSection = ({
-      type: ClaimSummaryType.CAPTION,
-      data: {
-        text: caption,
-        variables: variables,
-      },
-    });
-    this._claimSummarySections.push(captionSection);
-    return this;
-  }
-
   addTitle(title: string, variables?: any) {
     const titleSection = ({
       type: ClaimSummaryType.TITLE,

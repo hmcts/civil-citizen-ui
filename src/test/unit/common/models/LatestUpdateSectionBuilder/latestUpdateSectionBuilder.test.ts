@@ -2,21 +2,6 @@ import {LatestUpdateSectionBuilder} from 'models/LatestUpdateSectionBuilder/late
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
 
 describe('LatestUpdateSectionBuilder tests', ()=> {
-  it('should create caption', ()=> {
-    //Given
-    const caption = 'testCaption';
-    const captionObject = new LatestUpdateSectionBuilder()
-      .addCaption(caption)
-      .build();
-
-    //When
-    const result = new LatestUpdateSectionBuilder()
-      .addCaption(caption)
-      .build();
-    //Then
-    expect(captionObject).toEqual(result);
-  });
-
   it('should create title', ()=> {
     //Given
     const title = 'testTitle';
