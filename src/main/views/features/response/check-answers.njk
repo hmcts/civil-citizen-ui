@@ -24,14 +24,14 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t('PAGES.CHECK_YOUR_ANSWER.TITLE') }}</h1>
-
-          {% for section in summarySections.sections %}
-            {% if section.summaryList.rows %}
+          {% for section in summarySections %}
+            {% if section.rows and section.rows.length %}
               <div class="govuk-!-margin-bottom-9">
-                <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h2>
+
                 <div class="govuk-form-group">
                   {{ govukSummaryList({
-                    rows: section.summaryList.rows
+                    card: section.card,
+                    rows: section.rows
                   }) }}
                 </div>
               </div>

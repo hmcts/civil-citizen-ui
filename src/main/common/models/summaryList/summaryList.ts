@@ -1,3 +1,6 @@
+import {t} from 'i18next';
+import {getLanguage} from 'modules/i18n/languageService';
+
 export interface SummaryList {
   classes?: string;
   rows: SummaryRow[];
@@ -31,13 +34,17 @@ interface Item {
   html?: string;
 }
 
-export function summaryRow(key?: string, value?: string, href?: string, hrefText?: string): SummaryRow {
+export function summaryRow(key?: any, value?: string, href?: string, hrefText?: string): SummaryRow {
+  const langObj = {
+    lng: getLanguage(),
+  };
+  const titleValue = t(key.text ? key.text : key, {...langObj, ...key.variables} as object);
   const row: SummaryRow = {
     key: {
-      text: key,
+      text: titleValue,
     },
     value: {
-      html: value,
+      html: t(value, langObj),
     },
   };
   if (href) {
@@ -53,6 +60,18 @@ export function summaryRow(key?: string, value?: string, href?: string, hrefText
   }
   return row;
 }
+
 export interface TableCell {
   text: string
+}
+
+export function converToSummaryCard(value: string) {
+  const langObj = {
+    lng: getLanguage(),
+  };
+  return {
+    title: {
+      text: t(value, langObj),
+    },
+  };
 }

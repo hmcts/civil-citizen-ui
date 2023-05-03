@@ -195,6 +195,7 @@ import unavailableDatesForHearingController from './features/directionsQuestionn
 import claimantSuggestedPaymentOptionController from './features/claimantResponse/claimantSuggestedPaymentOptionController';
 import claimantSuggestedPaymentDateController from './features/claimantResponse/claimantSuggestedPaymentDateController';
 import claimantSuggestedInstalmentsController from './features/claimantResponse/claimantSuggestedInstalmentsController';
+import claimantResponseCheckAnswersController from './features/claimantResponse/checkAnswersController';
 
 export default [
   homeController,
@@ -378,4 +379,5 @@ export default [
   claimantSuggestedPaymentOptionController,
   claimantSuggestedPaymentDateController,
   claimantSuggestedInstalmentsController,
+  claimantResponseCheckAnswersController,
 ];
