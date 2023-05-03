@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, Response, Router, RequestHandler} from 'express';
 import {
   CLAIM_HELP_WITH_FEES_URL,
   CLAIM_INTEREST_DATE_URL,
@@ -18,7 +18,7 @@ function renderView(form: GenericForm<InterestClaimFromSelection>, res: Response
   res.render(claimantInterestFromViewPath, {form});
 }
 
-claimantInterestFromController.get(CLAIM_INTEREST_DATE_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+claimantInterestFromController.get(CLAIM_INTEREST_DATE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   const claimId = req.session?.user?.id;
   try {
     const interest = await getInterest(claimId);
@@ -26,9 +26,9 @@ claimantInterestFromController.get(CLAIM_INTEREST_DATE_URL, async (req: AppReque
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-claimantInterestFromController.post(CLAIM_INTEREST_DATE_URL, async (req: AppRequest & Request, res: Response, next: NextFunction) => {
+claimantInterestFromController.post(CLAIM_INTEREST_DATE_URL, (async (req: AppRequest & Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.session?.user?.id;
     const form: GenericForm<InterestClaimFromSelection> = new GenericForm(new InterestClaimFromSelection(req.body.option as InterestClaimFromType));
@@ -48,6 +48,6 @@ claimantInterestFromController.post(CLAIM_INTEREST_DATE_URL, async (req: AppRequ
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default claimantInterestFromController;
