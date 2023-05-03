@@ -4,12 +4,12 @@ import {
   CITIZEN_CONTACT_THEM_URL,
   FINANCIAL_DETAILS_URL,
   RESPONSE_TASK_LIST_URL,
-} from '../../../urls';
-import {Claim} from '../../../../common/models/claim';
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
-import {PartyType} from '../../../../common/models/partyType';
-import {Logger as winLogger} from 'winston';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+} from 'routes/urls';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {PartyType} from 'models/partyType';
+import {LoggerInstance as winLogger} from 'winston';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const financialDetailsViewPath = 'features/response/financialDetails/financial-details';
 const financialDetailsController = Router();
