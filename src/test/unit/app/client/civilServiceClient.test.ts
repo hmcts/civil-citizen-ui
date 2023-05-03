@@ -19,12 +19,6 @@ import {TestMessages} from '../../../utils/errorMessageTestConstants';
 import { CivilServiceClient } from 'client/civilServiceClient';
 
 jest.mock('axios');
-jest.mock('../../../../main/modules/i18n/languageService');
-jest.mock('../../../../main/modules/i18n/languageService', () => ({
-  getLanguage: jest.fn().mockReturnValue('en'),
-  setLanguage: jest.fn(),
-}));
-
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 const baseUrl: string = config.get('baseUrl');
 declare const appRequest: requestModels.AppRequest;

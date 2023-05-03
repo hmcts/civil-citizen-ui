@@ -1,7 +1,6 @@
 import {formatDateToFullDate} from 'common/utils/dateUtils';
-import {getLanguage} from 'modules/i18n/languageService';
 import {CaseDocument} from 'models/document/caseDocument';
-import {getLng} from "common/utils/languageToggleUtils";
+import {getLng} from 'common/utils/languageToggleUtils';
 
 export class HearingLocation {
   value: {
