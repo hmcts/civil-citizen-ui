@@ -7,6 +7,7 @@ import {CaseState} from 'form/models/claimDetails';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {ClaimSummaryContent, ClaimSummaryType} from 'form/models/claimSummarySection';
 import {getLatestUpdateContent} from 'services/features/dashboard/claimSummary/latestUpdateService';
+import {getCaseProgressionHearingMock} from '../../../../utils/caseProgression/mockCaseProgressionHearing';
 
 const nock = require('nock');
 const session = require('supertest-session');
@@ -58,23 +59,6 @@ describe('Claim Summary Controller Defendant', () => {
           documentType: 'test',
           createdDatetime: 'test',
         },
-        hearingDocuments: [
-          {
-            id: '1fbce32f-a7f5-48ea-b543-b19d642ebe56',
-            value: {
-              createdBy: 'Civil',
-              documentLink: {
-                document_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6',
-                document_filename: 'hearing_small_claim_000MC110.pdf',
-                document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
-              },
-              documentName: 'hearing_small_claim_000MC110.pdf',
-              documentSize: 56461,
-              documentType: 'HEARING_FORM',
-              createdDatetime: '2023-04-24T14:44:17',
-            },
-          },
-        ],
         classification: 'test',
       },
     },
@@ -178,14 +162,27 @@ describe('Claim Summary Controller Defendant', () => {
         });
     });
 
-    it('should not return evidence upload content when flag is enabled and hasHearingDocument but latestUpdateContent not empty', async () => {
+    it('should show case progression hearing latest Update', async () => {
       //given
+      const caseProgressionHearing = getCaseProgressionHearingMock();
+      const claimWithHeringDocs = {
+        ...claim,
+        state: CaseState.AWAITING_APPLICANT_INTENTION,
+        case_data: {
+          ...claim.case_data,
+          hearingDate: caseProgressionHearing.hearingDate,
+          hearingLocation: caseProgressionHearing.hearingLocation,
+          hearingTimeHourMinute: caseProgressionHearing.hearingTimeHourMinute,
+          hearingDocuments: caseProgressionHearing.hearingDocuments,
+        },
+      };
+
       isCaseProgressionV1EnableMock.mockResolvedValue(true);
-      getLatestUpdateContentMock.mockReturnValue(mockClaimSummaryContent);
+      getLatestUpdateContentMock.mockReturnValue([]);
       //when
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, claimWithSdo);
+        .reply(200, claimWithHeringDocs);
       //then
       await testSession
         .get(`/dashboard/${claimId}/defendant`)

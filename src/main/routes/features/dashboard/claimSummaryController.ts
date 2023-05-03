@@ -10,7 +10,6 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {isCaseProgressionV1Enable} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {
   getEvidenceUploadLatestUpdateContent, getHearingTrialUploadLatestUpdateContent,
-  //getHearingTrialUploadLatestUpdateContent
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/caseProgressionLatestUpdateService';
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryController = Router();
@@ -29,7 +28,7 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextF
         if(claim.hasCaseProgressionHearingDocuments()){
           getHearingTrialUploadLatestUpdateContent(claim, lang)
             .forEach(items => latestUpdateContent.push(items));
-        }else if(claim.hasSdoOrderDocument()){
+        } else if(claim.hasSdoOrderDocument()){
           getEvidenceUploadLatestUpdateContent(claimId, claim)
             .forEach(items => latestUpdateContent.push(items));
         }
