@@ -7,7 +7,7 @@ import {
   DOB_URL,
   CITIZEN_PHONE_NUMBER_URL,
   RESPONSE_TASK_LIST_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {
   mockCivilClaim,
   mockCivilClaimUndefined,
@@ -84,7 +84,7 @@ describe('Citizen date of birth', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.VALID_DAY'));
           expect(res.text).toContain(t('ERRORS.VALID_MONTH'));
-          expect(res.text).toContain(t('ERRORS.VALID_YEAR'));
+          expect(res.text).toContain(t('ERRORS.VALID_FOUR_DIGIT_YEAR'));
         });
     });
     it('should return error on year less than 1872', async () => {
@@ -106,7 +106,7 @@ describe('Citizen date of birth', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_YEAR'));
+          expect(res.text).toContain(t('ERRORS.VALID_FOUR_DIGIT_YEAR'));
         });
     });
     it('should return error on future date', async () => {

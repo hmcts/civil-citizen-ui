@@ -39,7 +39,7 @@ describe('translate partial admission to cui model', () => {
 
     it('should translate CCD data to CUI HowMuchHaveYouPaid with howMuchWasPaid field', () => {
       // Given
-      const respondToAdmittedClaim = {howMuchWasPaid: 55} as CCDRespondToClaim;
+      const respondToAdmittedClaim = {howMuchWasPaid: 5500} as CCDRespondToClaim;
       // When
       const cuiHowMuchHaveYouPaid = toCUIHowMuchHaveYouPaid(respondToAdmittedClaim);
       // Then
@@ -73,7 +73,7 @@ describe('translate partial admission to cui model', () => {
     it('should translate CCD data to CUI HowMuchHaveYouPaid model with all fields', () => {
       // Given
       const respondToAdmittedClaim = {
-        howMuchWasPaid: 55,
+        howMuchWasPaid: 5500,
         whenWasThisAmountPaid: new Date('2022-03-25'),
         howWasThisAmountPaidOther: 'Credit card',
       } as CCDRespondToClaim;

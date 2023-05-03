@@ -4,7 +4,7 @@ import {HowMuchHaveYouPaid} from '../../../common/form/models/admission/howMuchH
 export const toCCDRespondToClaim = (howMuchHaveYouPaid: HowMuchHaveYouPaid): CCDRespondToClaim => {
   if (howMuchHaveYouPaid) {
     return {
-      howMuchWasPaid: howMuchHaveYouPaid.amount,
+      howMuchWasPaid: howMuchHaveYouPaid.amount*100,
       howWasThisAmountPaid: howMuchHaveYouPaid.amount ? CCDHowWasThisAmountPaid.OTHER : undefined,
       whenWasThisAmountPaid: howMuchHaveYouPaid.date,
       howWasThisAmountPaidOther: howMuchHaveYouPaid.text,
