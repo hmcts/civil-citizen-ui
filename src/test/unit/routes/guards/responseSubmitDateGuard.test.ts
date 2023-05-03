@@ -7,10 +7,7 @@ import nock from 'nock';
 const MOCK_REQUEST = { params: { id: '123' } } as unknown as Request;
 const MOCK_RESPONSE = { redirect: jest.fn() } as unknown as Response;
 const MOCK_NEXT = jest.fn() as NextFunction;
-jest.mock('../../../../main/modules/i18n/languageService', () => ({
-  getLanguage: jest.fn(() => 'en'),
-  setLanguage: jest.fn(),
-}));
+
 describe('Response Submit Date Guard', () => {
   it('should redirect to the dashboard if response submit date is not set', async () => {
     nock('http://localhost:4000')

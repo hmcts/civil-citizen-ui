@@ -10,10 +10,6 @@ jest.mock('../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../main/routes/features/response/checkAnswersController');
 jest.mock('../../../../main/services/features/common/taskListService');
 jest.mock('../../../../main/modules/i18n');
-jest.mock('../../../../main/modules/i18n/languageService', () => ({
-  getLanguage: jest.fn(() => 'en'),
-  setLanguage: jest.fn(),
-}));
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

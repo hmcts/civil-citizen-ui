@@ -7,8 +7,8 @@ import {
 export const getEvidenceUploadLatestUpdateContent = (claimId: string, claim: Claim): ClaimSummaryContent[] => {
   return getClaimSummaryContent(buildEvidenceUploadSection(claim));
 };
-export const getHearingTrialUploadLatestUpdateContent = (claim: Claim): ClaimSummaryContent[] => {
-  return getClaimSummaryContent(buildHearingTrialLatestUploadSection(claim));
+export const getHearingTrialUploadLatestUpdateContent = (claim: Claim, lang: string): ClaimSummaryContent[] => {
+  return getClaimSummaryContent(buildHearingTrialLatestUploadSection(claim, lang));
 };
 
 export const getClaimSummaryContent = (section: ClaimSummarySection[][]) : ClaimSummaryContent[] => {

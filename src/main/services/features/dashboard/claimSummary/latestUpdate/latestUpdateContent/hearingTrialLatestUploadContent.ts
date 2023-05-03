@@ -3,7 +3,7 @@ import {Claim} from 'models/claim';
 
 const TRIAL_HEARING_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.TRIAL_HEARING_CONTENT';
 
-export const getHearingTrialLatestUpload = (claim: Claim) => {
+export const getHearingTrialLatestUpload = (claim: Claim, lang: string) => {
   const trialHearingTitle = claim.isFastTrackClaim
     ? `${TRIAL_HEARING_CONTENT}.YOUR_TRIAL_TITLE`
     : `${TRIAL_HEARING_CONTENT}.YOUR_HEARING_TITLE`;
@@ -12,7 +12,7 @@ export const getHearingTrialLatestUpload = (claim: Claim) => {
     ? `${TRIAL_HEARING_CONTENT}.YOUR_TRIAL_PARAGRAPH`
     : `${TRIAL_HEARING_CONTENT}.YOUR_HEARING_PARAGRAPH`;
 
-  const hearingDate = claim.caseProgressionHearing.getHearingDateFormatted();
+  const hearingDate = claim.caseProgressionHearing.getHearingDateFormatted(lang);
   const hearingTimeHourMinute = claim.caseProgressionHearing.getHearingTimeHourMinuteFormatted();
   const courtName = claim.caseProgressionHearing.hearingLocation.getCourtName();
 

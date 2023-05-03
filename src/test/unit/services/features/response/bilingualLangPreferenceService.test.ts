@@ -10,10 +10,7 @@ import express from 'express';
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/utilityService');
-jest.mock('../../../../../main/modules/i18n/languageService', () => ({
-  getLanguage: jest.fn(() => 'en'),
-  setLanguage: jest.fn(),
-}));
+
 describe('Bilingual Langiage Preference Service', () => {
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
   const mockGetClaimById = utilityService.getClaimById as jest.Mock;

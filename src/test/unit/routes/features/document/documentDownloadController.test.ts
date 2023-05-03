@@ -11,10 +11,6 @@ import {DocumentUri} from '../../../../../main/common/models/document/documentTy
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/app/client/civilServiceClient');
-jest.mock('../../../../../main/modules/i18n/languageService', () => ({
-  getLanguage: jest.fn(() => 'en'),
-  setLanguage: jest.fn(),
-}));
 
 describe('Document download controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

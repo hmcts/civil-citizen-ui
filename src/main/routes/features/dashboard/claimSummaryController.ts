@@ -25,8 +25,9 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextF
       const latestUpdateContent = getLatestUpdateContent(claimId, claim);
       const documentsContent = getDocumentsContent(claim, claimId);
       if (latestUpdateContent.length === 0 && await isCaseProgressionV1Enable()) {
+        const lang = req?.query?.lang ? req.query.lang : req?.cookies?.lang;
         if(claim.hasCaseProgressionHearingDocuments()){
-          getHearingTrialUploadLatestUpdateContent(claim)
+          getHearingTrialUploadLatestUpdateContent(claim, lang)
             .forEach(items => latestUpdateContent.push(items));
         }else if(claim.hasSdoOrderDocument()){
           getEvidenceUploadLatestUpdateContent(claimId, claim)

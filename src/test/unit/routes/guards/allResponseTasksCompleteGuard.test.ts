@@ -13,14 +13,9 @@ jest.mock('../../../../main/modules/draft-store');
 jest.mock('../../../../main/routes/features/response/checkAnswersController');
 jest.mock('../../../../main/services/features/common/taskListService');
 jest.mock('../../../../main/modules/i18n');
-jest.mock('../../../../main/modules/i18n/languageService');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
-}));
-jest.mock('../../../../main/modules/i18n/languageService', () => ({
-  getLanguage: jest.fn().mockReturnValue('en'),
-  setLanguage: jest.fn(),
 }));
 
 const mockGetTaskList = getTaskLists as jest.Mock;

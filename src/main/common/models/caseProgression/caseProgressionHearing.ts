@@ -1,6 +1,7 @@
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {getLanguage} from 'modules/i18n/languageService';
 import {CaseDocument} from 'models/document/caseDocument';
+import {getLng} from "common/utils/languageToggleUtils";
 
 export class HearingLocation {
   value: {
@@ -43,8 +44,8 @@ export class CaseProgressionHearing {
     return `${hours}:${minutes}`;
   }
 
-  getHearingDateFormatted(){
-    return formatDateToFullDate(this.hearingDate, getLanguage());
+  getHearingDateFormatted(lang : string){
+    return formatDateToFullDate(this.hearingDate, getLng(lang));
   }
 
 }
