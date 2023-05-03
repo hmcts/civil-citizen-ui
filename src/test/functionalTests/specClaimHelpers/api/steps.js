@@ -14,6 +14,10 @@ const apiRequest = require('./apiRequest.js');
 const claimSpecData = require('../fixtures/events/createClaimSpec.js');
 const defendantResponse = require('../fixtures/events/createDefendantResponse.js');
 
+const data = {
+  CREATE_SPEC_CLAIM: (mpScenario) => claimSpecData.createClaim(mpScenario),
+};
+
 let caseId, eventName;
 let caseData = {};
 const PBAv3Toggle = 'pba-version-3-ways-to-pay';
@@ -21,9 +25,10 @@ const PBAv3Toggle = 'pba-version-3-ways-to-pay';
 module.exports = {
 
   performCitizenResponse: async (user, caseId) => {
-    console.log('This is inside performCitizenResponse');
+    console.log('This is inside performCitizenResponse : '+caseId);
     eventName = 'DEFENDANT_RESPONSE_CUI';
     const payload = defendantResponse.createDefendantResponse();
+    console.log('The payload : '+payload);
     await apiRequest.setupTokens(user);
     console.log('To the end :::::');
   },
