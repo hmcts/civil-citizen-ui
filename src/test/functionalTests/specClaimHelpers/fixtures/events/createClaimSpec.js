@@ -12,6 +12,7 @@ const respondent1WithPartyName = {
   ...respondent1,
   partyName: 'Sir John Doe',
   partyTypeDisplayValue: 'Individual',
+  partyEmail: 'civilmoneyclaimsdemo@gmail.com',
 };
 const applicant1 = {
   type: 'COMPANY',
@@ -62,7 +63,7 @@ module.exports = {
             correct: 'No',
           },
           applicantSolicitor1UserDetails: {
-            email: solicitor1Email,
+            email: 'civilmoneyclaimsdemo@gmail.com',
           },
         },
         ClaimantSolicitorOrganisation: {
