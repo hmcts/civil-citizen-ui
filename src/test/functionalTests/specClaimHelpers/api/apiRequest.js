@@ -52,6 +52,18 @@ module.exports = {
     return response.case_details.case_data || {};
   },
 
+  startEventForCitizen: async (eventName, caseId, userId) => {
+    let url = getCivilServiceUrl();
+    if (caseId) {
+      url += `/cases/${caseId}`;
+    }
+    url += `citizen/${userId}/${eventName}`;
+
+    let response = await restHelper.retriedRequest(url, getRequestHeaders(tokens.userAuth), null, 'GET',200)
+      .then(response => response.json());
+    tokens.ccdEvent = response.token;
+  },
+
   validatePage: async (eventName, pageId, caseData, caseId, expectedStatus = 200) => {
     return restHelper.retriedRequest(`${getCcdDataStoreBaseUrl()}/validate?pageId=${eventName}${pageId}`, getRequestHeaders(tokens.userAuth),
       {

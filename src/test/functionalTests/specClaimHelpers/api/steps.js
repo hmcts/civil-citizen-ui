@@ -12,10 +12,7 @@ const {
 const {assignCaseRoleToUser, addUserCaseMapping, unAssignAllUsers} = require('./caseRoleAssignmentHelper');
 const apiRequest = require('./apiRequest.js');
 const claimSpecData = require('../fixtures/events/createClaimSpec.js');
-
-const data = {
-  CREATE_SPEC_CLAIM: (mpScenario) => claimSpecData.createClaim(mpScenario),
-};
+const defendantResponse = require('../fixtures/events/createDefendantResponse.js');
 
 let caseId, eventName;
 let caseData = {};
@@ -23,8 +20,15 @@ const PBAv3Toggle = 'pba-version-3-ways-to-pay';
 
 module.exports = {
 
+  performCitizenResponse: async (user, caseId) => {
+    console.log('This is inside performCitizenResponse');
+    eventName = 'DEFENDANT_RESPONSE_CUI';
+    const payload = defendantResponse.createDefendantResponse();
+    await apiRequest.setupTokens(user);
+    console.log('To the end :::::');
+  },
+
   createSpecifiedClaim: async (user, multipartyScenario) => {
-    console.log(' This is inside createSpecifiedClaim');
     eventName = 'CREATE_CLAIM_SPEC';
     caseId = null;
     caseData = {};
