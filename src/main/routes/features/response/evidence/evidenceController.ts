@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, Response, Router, RequestHandler} from 'express';
 import {Evidence, INIT_ROW_COUNT} from '../../../../common/form/models/evidence/evidence';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {
@@ -19,7 +19,7 @@ function renderView(form: GenericForm<Evidence>, res: Response): void {
   res.render(evidenceViewPath, {form});
 }
 
-evidenceController.get(CITIZEN_EVIDENCE_URL, async (req, res, next: NextFunction) => {
+evidenceController.get(CITIZEN_EVIDENCE_URL, (async (req, res, next: NextFunction) => {
   try {
     const evidence = await getEvidence(req.params.id);
     const form: Evidence = new Evidence(evidence.comment, evidence.evidenceItem);
@@ -30,9 +30,9 @@ evidenceController.get(CITIZEN_EVIDENCE_URL, async (req, res, next: NextFunction
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-evidenceController.post(CITIZEN_EVIDENCE_URL, async (req: Request, res: Response, next: NextFunction) => {
+evidenceController.post(CITIZEN_EVIDENCE_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     let form: GenericForm<Evidence>;
     form = new GenericForm(new Evidence(req.body.comment, utilEvidence.transformToEvidences(req.body)));
@@ -47,6 +47,6 @@ evidenceController.post(CITIZEN_EVIDENCE_URL, async (req: Request, res: Response
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default evidenceController;
