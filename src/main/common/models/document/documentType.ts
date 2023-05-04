@@ -22,5 +22,6 @@ export enum DocumentUri {
   DEFAULT_JUDGMENT = 'default-judgement',
   CLAIMANT_DEFENCE = 'claimant-defence',
   CLAIMANT_DRAFT_DIRECTIONS = 'claimant-draft-directions',
-  SDO_ORDER = 'sdo-order'
+  SDO_ORDER = 'sdo-order',
+  HEARING_FORM = 'hearing-form'
 }

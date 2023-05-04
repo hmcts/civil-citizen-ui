@@ -722,6 +722,7 @@
       "DOCUMENTS": "Dogfennau",
       "DOCUMENT_CREATED": "Creu:",
       "DOWNLOAD_CLAIM": "Download claim",
+      "DOWNLOAD_HEARING_NOTICE": "Download hearing notice",
       "DOWNLOAD_JUDGMENT_ORDER": "Download the judgment order",
       "DOWNLOAD_RESPONSE": "Llwytho'r ymateb i lawr",
       "LATEST_UPDATE": "Diweddariad diweddaraf",
@@ -1492,10 +1493,10 @@
       "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "You need to respond before 4pm on {{ responseDeadline }} ({{ remainingDays }} Days remaining).",
       "CASE_PROGRESSION": {
         "TRIAL_HEARING_CONTENT": {
-          "YOUR_TRIAL_TITLE": "A trial has been schedule for your case",
-          "YOUR_HEARING_TITLE": "A hearing has been schedule for your case",
-          "YOUR_TRIAL_PARAGRAPH": "Your trial has been schedule for {{ trialDate }} at {{ trialTime }} at {{ courtName }}.",
-          "YOUR_HEARING_PARAGRAPH": "Your hearing has been schedule for {{ hearingDate }} at {{ hearingTimeHourMinute }} at {{ courtName }}.",
+          "YOUR_TRIAL_TITLE": "A trial has been scheduled for your case",
+          "YOUR_HEARING_TITLE": "A hearing has been scheduled for your case",
+          "YOUR_TRIAL_PARAGRAPH": "Your trial has been scheduled for {{ trialDate }} at {{ trialTime }} at {{ courtName }}.",
+          "YOUR_HEARING_PARAGRAPH": "Your hearing has been scheduled for {{ hearingDate }} at {{ hearingTimeHourMinute }} at {{ courtName }}.",
           "VIEW_HEARING_NOTICE_BUTTON": "View hearing notice"
         }
       }

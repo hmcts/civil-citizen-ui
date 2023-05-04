@@ -22,6 +22,8 @@ export const convertToDocumentType = (uri: string): DocumentType => {
       return DocumentType.CLAIMANT_DRAFT_DIRECTIONS;
     case 'sdo-order':
       return DocumentType.SDO_ORDER;
+    case 'hearing-form':
+      return DocumentType.HEARING_FORM;
     default:
       return undefined;
   }
