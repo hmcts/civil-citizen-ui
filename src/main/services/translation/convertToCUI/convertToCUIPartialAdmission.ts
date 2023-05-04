@@ -27,7 +27,7 @@ export function toCUIPartialAdmission(ccdClaim: CCDClaim): PartialAdmission {
 
 export function toCUIHowMuchHaveYouPaid(respondToAdmittedClaim: CCDRespondToClaim): HowMuchHaveYouPaid {
   const howMuchHaveYouPaid = new HowMuchHaveYouPaid();
-  howMuchHaveYouPaid.amount = respondToAdmittedClaim?.howMuchWasPaid;
+  howMuchHaveYouPaid.amount = respondToAdmittedClaim?.howMuchWasPaid ? respondToAdmittedClaim.howMuchWasPaid/100 : undefined;
   howMuchHaveYouPaid.date = respondToAdmittedClaim?.whenWasThisAmountPaid;
   howMuchHaveYouPaid.text = respondToAdmittedClaim?.howWasThisAmountPaidOther;
   return howMuchHaveYouPaid;

@@ -68,5 +68,11 @@ describe('Document type converter', () => {
     //Then
     expect(result).toBe(DocumentType.CLAIMANT_DRAFT_DIRECTIONS);
   });
+  it('should return SDO_ORDER', () => {
+    //When
+    const result = convertToDocumentType('sdo-order');
+    //Then
+    expect(result).toBe(DocumentType.SDO_ORDER);
+  });
 });
 

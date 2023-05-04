@@ -5,7 +5,7 @@ import {app} from '../../../../../main/app';
 import {
   BREATHING_SPACE_RESPITE_START_DATE_URL,
   BREATHING_SPACE_RESPITE_TYPE_URL,
-} from '../../../../../main/routes/urls';
+} from 'routes/urls';
 import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
@@ -144,7 +144,7 @@ describe('Claimant Response - Debt Respite When Start Controller', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_YEAR'));
+          expect(res.text).toContain(t('ERRORS.VALID_FOUR_DIGIT_YEAR'));
         });
     });
 
