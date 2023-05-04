@@ -38,7 +38,7 @@ function getUploadYourDocumentsContent(claimId: string, claim: Claim) {
 
 uploadYourDocumentsController.get([UPLOAD_YOUR_DOCUMENTS_URL], async (req, res, next: NextFunction) => {
   try {
-    const claimId = await req.params.id;
+    const claimId = req.params.id;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     if (claim && !claim.isEmpty()) {
       const latestUpdateSection = getUploadYourDocumentsContent(claimId, claim);
@@ -47,7 +47,6 @@ uploadYourDocumentsController.get([UPLOAD_YOUR_DOCUMENTS_URL], async (req, res, 
   } catch (error) {
     next(error);
   }
-
 });
 
 export default uploadYourDocumentsController;
