@@ -1492,11 +1492,14 @@
       "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "You need to respond before 4pm on {{ responseDeadline }} ({{ remainingDays }} Days remaining)."
     },
     "UPLOAD_EVIDENCE_DOCUMENTS": {
+      "TITLE": "What types of documents do you want to upload?",
+      "TRIAL": "Trial documents",
       "WITNESS_EVIDENCE": "Witness evidence",
       "EXPERT_EVIDENCE": "Expert evidence",
       "HEARING_DOCUMENTS": "Hearing documents",
       "SELECT_THE_TYPE_OF_DOCUMENT": "Select the types of documents that apply to your case. You may not need to upload documents for every category.",
       "DOCUMENTS_FOR_DISCLOSURE": "Documents for disclosure",
+      "DISCLOSURE": "Disclosure",
       "DISCLOSURE_LIST": "Disclosure list",
       "YOUR_STATEMENT": "Your statement",
       "WITNESS_STATEMENT": "Witness statement",
@@ -1508,7 +1511,7 @@
       "DISCLOSURE_LIST_HINT": "A list of the documents that you must show the other parties",
       "YOUR_STATEMENT_HINT": "A written statement of what you want to tell the court",
       "WITNESS_STATEMENT_HINT": "A written statement of what your witness wants to tell the court",
-      "WITNESS_SUMMARY_HINT": "If you cannot get a written statement from your witness, you can write a summary of the evidence you would want to include in the witness statement. You must apply to the court to use a witness summary at the hearing. You must do this before the deadline. use form N244 {{ contactocmc }}",
+      "WITNESS_SUMMARY_HINT": "If you cannot get a written statement from your witness, you can write a summary of the evidence you would want to include in the witness statement. You must apply to the court to use a witness summary at the hearing. You must do this before the deadline. use form N244 {{ application_notice }}",
       "NOTICE_OF_INTENTION_HINT": "Notice to tell the other parties that you intend to rely on hearsay evidence at the trail. If the evidence is in a witness statement and the witness is not going to be in court, you must say why",
       "EXPERTS_REPORT_HINT": "A written report by your expert. Expert evidence is an opinion based on the expertise of a specialist, for example - a building surveyor who can comment on the quality of building work.An expert is not a legal representative",
       "QUESTIONS_FOR_OTHER_PARTY_HINT": "Written questions about an expert's report or a joint statement of experts",
