@@ -90,6 +90,7 @@ export class Claim {
   respondent1ResponseDate?: Date;
   claimBilingualLanguagePreference: ClaimBilingualLanguagePreference;
   id: string;
+  sdoOrderDocument?: CaseDocument;
   respondent1LiPResponse?: CCDRespondentLiPResponse;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
@@ -481,6 +482,10 @@ export class Claim {
 
   get isSmallClaimsTrackDQ(): boolean {
     return this.claimType === claimType.SMALL_CLAIM;
+  }
+
+  hasSdoOrderDocument(): boolean{
+    return !!this.sdoOrderDocument;
   }
 
 }
