@@ -1,4 +1,4 @@
-import {NextFunction, Router} from 'express';
+import {NextFunction, RequestHandler, Router} from 'express';
 import {UPLOAD_YOUR_DOCUMENTS_URL,TYPES_OF_DOCUMENTS_URL} from '../../urls';
 import {AppRequest} from 'models/AppRequest';
 import config from 'config';
@@ -36,7 +36,7 @@ function getUploadYourDocumentsContent(claimId: string, claim: Claim) {
     .build();
 }
 
-uploadYourDocumentsController.get([UPLOAD_YOUR_DOCUMENTS_URL], async (req, res, next: NextFunction) => {
+uploadYourDocumentsController.get([UPLOAD_YOUR_DOCUMENTS_URL], (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
@@ -47,6 +47,6 @@ uploadYourDocumentsController.get([UPLOAD_YOUR_DOCUMENTS_URL], async (req, res, 
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default uploadYourDocumentsController;
