@@ -18,8 +18,10 @@ const getCivilServiceUrl = () => `${config.url.civilService}`;
 
 module.exports = {
   setupTokens: async (user) => {
+    console.log("The value of the user : " + user.email);
     tokens.userAuth = await idamHelper.accessToken(user);
     tokens.userId = await idamHelper.userId(tokens.userAuth);
+    console.log('The value of the userId from the startEventForCitizen() :'+ tokens.userId);
     tokens.s2sAuth = await restHelper.retriedRequest(
       `${config.url.authProviderApi}/lease`,
       {'Content-Type': 'application/json'},
@@ -52,14 +54,17 @@ module.exports = {
     return response.case_details.case_data || {};
   },
 
-  startEventForCitizen: async (eventName, caseId, userId) => {
+  startEventForCitizen: async (eventName, caseId, payload) => {
     let url = getCivilServiceUrl();
+    const userId = await idamHelper.userId(tokens.userAuth);
+    console.log('The value of the userId from the startEventForCitizen() : '+userId);
+    console.log('The value of the Auth Token from the startEventForCitizen() : '+tokens.userAuth);
     if (caseId) {
       url += `/cases/${caseId}`;
     }
-    url += `citizen/${userId}/${eventName}`;
+    url += `/citizen/${userId}/${eventName}`;
 
-    let response = await restHelper.retriedRequest(url, getRequestHeaders(tokens.userAuth), null, 'GET',200)
+    let response = await restHelper.retriedRequest(url, getRequestHeaders(tokens.userAuth), payload, 'POST',200)
       .then(response => response.json());
     tokens.ccdEvent = response.token;
   },

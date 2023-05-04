@@ -25,11 +25,12 @@ const PBAv3Toggle = 'pba-version-3-ways-to-pay';
 module.exports = {
 
   performCitizenResponse: async (user, caseId) => {
-    console.log('This is inside performCitizenResponse : '+caseId);
+    console.log('This is inside performCitizenResponse : ' + caseId);
     eventName = 'DEFENDANT_RESPONSE_CUI';
     const payload = defendantResponse.createDefendantResponse();
-    console.log('The payload : '+payload);
+    console.log('The payload : ' + payload);
     await apiRequest.setupTokens(user);
+    await apiRequest.startEventForCitizen(eventName, caseId, payload);
     console.log('To the end :::::');
   },
 

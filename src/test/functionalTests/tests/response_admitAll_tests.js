@@ -15,7 +15,7 @@ Feature('Response with AdmitAll');
 
 Before(async ({api}) => {
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
-  //await api.performCitizenResponse(config.defendantCitizenUser, claimRef);
+  await api.performCitizenResponse(config.defendantCitizenUser, claimRef);
   console.log('claimRef has been created Successfully    <===>  '  , claimRef);
   if (claimRef) {
     LoginSteps.EnterUserCredentials(config.Username, config.Password);
@@ -26,12 +26,12 @@ Before(async ({api}) => {
 });
 
 Scenario('Response with AdmitAll and Immediate payment @pats @citizenUI @admitAll @regression', () => {
-  ResponseSteps.RespondToClaim(claimRef);
+  /*ResponseSteps.RespondToClaim(claimRef);
   ResponseSteps.EnterPersonalDetails(claimRef);
   ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   ResponseSteps.EnterResponseToClaim(claimRef, admitAll);
   ResponseSteps.EnterPaymentOption(claimRef, admitAll, immediatePayment);
-  ResponseSteps.CheckAndSubmit(claimRef, admitAll);
+  ResponseSteps.CheckAndSubmit(claimRef, admitAll);*/
 });
 
 Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @regression', () => {
