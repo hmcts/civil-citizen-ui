@@ -43,7 +43,7 @@ uploadYourDocumentsController.get([UPLOAD_YOUR_DOCUMENTS_URL], async (req, res, 
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     if (claim && !claim.isEmpty()) {
       const latestUpdateSection = getUploadYourDocumentsContent(claimId, claim);
-      res.render(uploadYourDocumentsViewPath, {latestUpdateSection});
+      await res.render(uploadYourDocumentsViewPath, {latestUpdateSection});
     }
   } catch (error) {
     next(error);
