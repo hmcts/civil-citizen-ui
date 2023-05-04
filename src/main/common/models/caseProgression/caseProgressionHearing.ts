@@ -1,6 +1,6 @@
-import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {CaseDocument} from 'models/document/caseDocument';
-import {getLng} from 'common/utils/languageToggleUtils';
+import {HearingDateTimeFormatter} from 'services/features/caseProgression/hearingDateTimeFormatter';
+import {CourtNameExtractor} from 'services/features/caseProgression/courtNameExtractor';
 
 export class HearingLocation {
   value: {
@@ -13,8 +13,7 @@ export class HearingLocation {
   }
 
   getCourtName():string{
-    const courtName = this.value.label.split('-', 1);
-    return courtName[0].trim();
+    return CourtNameExtractor.extractCourtName(this.value.label);
   }
 }
 
@@ -36,15 +35,13 @@ export class CaseProgressionHearing {
     this.hearingTimeHourMinute = hearingTimeHourMinute;
   }
 
-  getHearingTimeHourMinuteFormatted(){
-    const hearingTimeHourMinute = this.hearingTimeHourMinute;
-    const hours = hearingTimeHourMinute.slice(0, 2);
-    const minutes = hearingTimeHourMinute.slice(2, 4);
-    return `${hours}:${minutes}`;
+  getHearingTimeHourMinuteFormatted(): string {
+    return HearingDateTimeFormatter.getHearingTimeHourMinuteFormatted(this.hearingTimeHourMinute);
+
   }
 
-  getHearingDateFormatted(lang : string){
-    return formatDateToFullDate(this.hearingDate, getLng(lang));
+  getHearingDateFormatted(lang: string): string {
+    return HearingDateTimeFormatter.getHearingDateFormatted(this.hearingDate, lang);
   }
 
 }
