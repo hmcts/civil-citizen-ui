@@ -29,16 +29,6 @@ describe('addFiveDaysBefore4pm', () => {
   });
 });
 
-// export const addFiveDaysBefore4pm = (date: Date): Date => {
-//   const datePlusDays = date;
-//   if (date.getUTCHours() > FOUR_PM) {
-//     datePlusDays.setDate(date.getDate() + SIX_DAYS);
-//   } else {
-//     datePlusDays.setDate(date.getDate() + FIVE_DAYS);
-//   }
-//   return datePlusDays;
-// } ;
-
 describe('getDOBforAgeFromCurrentTime', () => {
   it('should return the maximim date for age', () => {
     //Given
