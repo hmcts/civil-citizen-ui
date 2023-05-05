@@ -1,6 +1,6 @@
 {% from "govuk/components/table/macro.njk" import govukTable %}
 
-{% macro repaymentPlanSummary(repaymentPlan) %}
+{% macro repaymentPlanSummary(repaymentPlan, t) %}
   {{ govukTable({
     rows: [
       [

@@ -55,9 +55,9 @@
       "CONTINUE": "Parhau",
       "I_CONFIRM_IVE_READ_THIS": "Cadarnhaf fy mod wedi darllen hwn",
       "RESPOND_TO_CLAIM": "Respond to claim",
-      "SAVE": "Save",
+      "SAVE": "Cadw",
       "SAVE_AND_CONTINUE": "Cadw a Pharhau",
-      "SETTLE_THE_CLAIM": "Settle the claim",
+      "SETTLE_THE_CLAIM": "Setlo'r hawliad",
       "START_AGAIN": "Start again",
       "SIGN_AND_SUBMIT_RESPONSE": "Sign and submit",
       "SUBMIT_CLAIM": "Submit claim",
@@ -784,11 +784,11 @@
         "BASED_ON": "Based on the financial details provided by the defendant, we don’t believe they would be able to make these repayments.",
         "COURT_AFFORDABILITY": "The court affordability calculator has determined a new repayment plan as the most the defendant can repay.",
         "COURT_PROPOSED_PLAN": "The court’s proposed repayment plan",
-        "REGULAR_PAYMENTS_OF": "Regular payments of",
-        "FREQUENCY_OF_PAYMENTS": "Frequency of payments",
-        "FIRST_PAYMENT_DATE": "First payment date",
-        "LAST_PAYMENT_DATE": "Last payment date",
-        "LENGTH_OF_REPAYMENT": "Length of repayment plan",
+        "REGULAR_PAYMENTS_OF": "Taliadau rheolaidd",
+        "FREQUENCY_OF_PAYMENTS": "Amlder taliadau",
+        "FIRST_PAYMENT_DATE": "Dyddiad talu cyntaf",
+        "LAST_PAYMENT_DATE": "Dyddiad talu diwethaf",
+        "LENGTH_OF_REPAYMENT": "Hyd y cynllun ad-dalu",
         "DO_YOU_ACCEPT": "Do you accept the court’s proposed repayment plan?",
         "I_WANT_ACCEPT": "I want to accept this repayment plan",
         "I_WANT_JUDGE": "I want a judge to make a repayment plan"
@@ -807,19 +807,19 @@
       "TITLE": "How do you want the defandant to pay?"
     },
     "CLAIMANT_RESPONSE_PROCEED": {
-      "PAGE_TITLE": "Do you want to proceed with claim?",
-      "TITLE": "Do you want to proceed with claim?"
+      "PAGE_TITLE": "Ydych chi am fwrw ymlaen â’r hawliad?",
+      "TITLE": "Ydych chi am fwrw ymlaen â’r hawliad?"
     },
     "CLAIMANT_PARTY_TYPE_SELECTION": {
       "CLAIMING_AS_HEADER": "I'm claiming as:",
-      "CLAIMING_AS_AN_INDIVIDUAL": "An individual",
-      "CLAIMING_AS_SOLE_TRADER_OR_SELF_EMPLOYED": "A sole trader or self-employed person",
-      "CLAIMING_AS_LIMITED_COMPANY": "A limited company",
-      "CLAIMING_AS_ORGANISATION": "Another type of organisation",
+      "CLAIMING_AS_AN_INDIVIDUAL": "Unigolyn",
+      "CLAIMING_AS_SOLE_TRADER_OR_SELF_EMPLOYED": "Unig fasnachwr neu unigolyn hunangyflogedig",
+      "CLAIMING_AS_LIMITED_COMPANY": "Cwmni cyfyngedig",
+      "CLAIMING_AS_ORGANISATION": "Math arall o sefydliad",
       "CLAIMING_FOR_YOURSELF": "You're claiming for yourself",
       "CLAIMING_FOR_EXAMPLE_TRADEPERSON": "For example a tradesperson",
       "CLAIMING_FOR_EXAMPLE_COMPANY": "For example a company that sells goods or services",
-      "CLAIMING_FOR_EXAMPLE_PARTNERSHIP_TRUST_CHARITY_CLUB_OR_ASSOCIATION": "For example a partnership, trust, charity, club or association",
+      "CLAIMING_FOR_EXAMPLE_PARTNERSHIP_TRUST_CHARITY_CLUB_OR_ASSOCIATION": "Er enghraifft partneriaeth, ymddiriedaeth, elusen, clwb neu gymdeithas",
       "PAGE_TITLE": "About you and this claim",
       "TITLE": "About you and this claim"
     },
@@ -854,7 +854,7 @@
     },
     "CLAIMANT_RESPONSE_REJECTION_REASON": {
       "PAGE_TITLE": "Rejection reason",
-      "TITLE": "Why did you reject their response?"
+      "TITLE": "Pam wnaethoch chi wrthod yr ymateb?"
     },
     "CLAIMANT_RESPONSE_TASK_LIST": {
       "PAGE_TITLE": "Claimant response task list",
@@ -926,90 +926,90 @@
     "COOKIES": {
       "ADDITIONAL_COOKIES": "Government services may set additional cookies and, if so, will have their own cookie policy and banner.",
       "ANALYTICS_COOKIE_OPTIONS": {
-        "HEADING": "Allow cookies that measure website use?",
-        "ON_OPTION": "Use cookies that measure my website use",
-        "OFF_OPTION": "Do not use cookies that measure my website use"
+        "HEADING": "Caniatáu cwcis sy'n mesur y defnydd sydd ar y wefan?",
+        "ON_OPTION": "Defnyddio cwcis sy'n mesur fy nefnydd o'r wefan",
+        "OFF_OPTION": "Peidiwch â defnyddio cwcis sy'n mesur fy nefnydd o'r wefan"
       },
       "BULLET_LIST1": {
-        "FIRST": "store your cookie preferences",
-        "SECOND": "measure how you use the service so it can be improved"
+        "FIRST": "storio eich dewisiadau cwcis",
+        "SECOND": "mesur sut rydych chi'n defnyddio'r gwasanaeth fel y gellir ei wella"
       },
       "BULLET_LIST2": {
-        "FIRST": "Site performance",
-        "SECOND": "Website usage",
-        "THIRD": "User behaviour"
+        "FIRST": "Perfformiad y safle",
+        "SECOND": "Defnydd o'r wefan",
+        "THIRD": "Ymddygiad defnyddwyr"
       },
       "COOKIE_DETAILS1": {
         "GA": {
           "NAME": "_ga",
-          "PURPOSE": "This helps us count how many people visit the service by tracking if you’ve visited before",
-          "EXPIRES": "2 years"
+          "PURPOSE": "Mae hyn yn ein helpu i gyfrif faint o bobl sy'n ymweld â'r gwasanaeth trwy olrhain a ydych wedi ymweld o'r blaen",
+          "EXPIRES": "2 flynedd"
         },
         "GID": {
           "NAME": "_gid",
-          "PURPOSE": "Identifies you to the service",
-          "EXPIRES": "24 hours"
+          "PURPOSE": "Bydd y gwasanaeth yn eich adnabod",
+          "EXPIRES": "24 awr"
         },
         "GAT": {
           "NAME": "_gat",
-          "PURPOSE": "Manages the rate at which page view requests are made",
-          "EXPIRES": "10 minutes"
+          "PURPOSE": "Rheoli'r gyfradd gwneud ceisiadau i weld tudalen",
+          "EXPIRES": "10 munud"
         }
       },
       "COOKIE_DETAILS2": {
         "DTCOOKIE": {
           "NAME": "dtCookie",
-          "PURPOSE": "Tracks a visit across multiple request",
-          "EXPIRES": "Session end"
+          "PURPOSE": "Tracio ymweliadau ar draws sawl cais",
+          "EXPIRES": "Diwedd y sesiwn"
         },
         "DTLATC": {
           "NAME": "dtLatC",
-          "PURPOSE": "Measures server latency for performance monitoring",
-          "EXPIRES": "Session end"
+          "PURPOSE": "Mesurau segurdod gweinydd ar gyfer monitro perfformiad",
+          "EXPIRES": "Diwedd y sesiwn"
         },
         "DTPC": {
           "NAME": "dtPC",
-          "PURPOSE": "Required to identify proper endpoints for beacon transmission; includes session ID for correlation",
-          "EXPIRES": "Session end"
+          "PURPOSE": "Er mwyn canfod pwyntiau terfyn priodol ar gyfer trosglwyddo tywysydd: mae’n cynnwys rhif adnabod y sesiwn at ddibenion cydberthyniad",
+          "EXPIRES": "Diwedd y sesiwn"
         },
         "DTSA": {
           "NAME": "dtSa",
-          "PURPOSE": "Intermediate store for page-spanning actions",
-          "EXPIRES": "Session end"
+          "PURPOSE": "Storfa ganolradd ar gyfer gweithredoedd sy'n rhychwantu tudalennau",
+          "EXPIRES": "Diwedd y sesiwn"
         },
         "RXVISITOR": {
           "NAME": "rxVisitor",
-          "PURPOSE": "Visitor ID to correlate sessions",
-          "EXPIRES": "1 year"
+          "PURPOSE": "ID Ymwelwyr i sesiynau cydberthynol",
+          "EXPIRES": "1 blwyddyn"
         },
         "RXVT": {
           "NAME": "rxvt",
-          "PURPOSE": "Session timeout",
-          "EXPIRES": "Session end"
+          "PURPOSE": "Pan ddaw'r sesiwn i ben",
+          "EXPIRES": "Diwedd y sesiwn"
         }
       },
-      "COOKIES_EXPLANATION1": "Cookies are files saved on your phone, tablet or computer when you visit a website. Most websites need cookies to work properly",
-      "COOKIES_EXPLANATION2": "This service uses cookies to:",
-      "COOKIES_EXPLANATION3": "We use Google Analytics software to collect information about how you use this service. We do this to help make sure the service is meeting the needs of its users and to help us make improvements. We do not allow Google to use or share the data about how you use this site.",
-      "COOKIES_EXPLANATION4": "We use Dynatrace Software Intelligence Platform to provide an Application Performance Monitoring Service to collect information about how you use HMCTS services. We do this to monitor HMCTS services in order to resolve issues within our services as well as collect data on how our services can be improved. HMCTS store information about:",
-      "COOKIES_EXPLANATION5": "Information is presented within the Application Performance Monitoring service for the purposes detailed above. We do not use or share the information for any other purpose. We do not allow Dynatrace to use or share the information for any other purposes.",
-      "COOKIES_EXPLANATION6": "These essential cookies do things like making the service more secure. They always need to be on.",
-      "COOKIE_SETTINGS_SAVED": "Your cookie settings were saved",
-      "EXPIRES": "Expires",
-      "FIND_MORE_ABOUT_COOKIES": "Find out more about essential cookies",
-      "HEADING": "How cookies are used in this service",
-      "NAME": "Name",
+      "COOKIES_EXPLANATION1": "Ffeiliau a gedwir ar eich ffôn, eich tabled neu'ch cyfrifiadur pan fyddwch yn ymweld â gwefan yw cwcis. Mae'r rhan fwyaf o wefannau angen cwcis i weithio'n iawn",
+      "COOKIES_EXPLANATION2": "Mae'r gwasanaeth hwn yn defnyddio cwcis i:",
+      "COOKIES_EXPLANATION3": "Rydym yn defnyddio meddalwedd Google Analytics i gasglu gwybodaeth am sut rydych yn defnyddio'r gwasanaeth hwn. Rydym yn gwneud hyn i helpu i sicrhau bod y gwasanaeth yn diwallu anghenion ei ddefnyddwyr ac i'n helpu i wneud gwelliannau. Nid ydym yn caniatáu i Google ddefnyddio na rhannu'r data am sut rydych chi'n defnyddio'r wefan hon.",
+      "COOKIES_EXPLANATION4": "Rydym yn defnyddio Llwyfan Gwybodaeth Meddalwedd Dynatrace i ddarparu Gwasanaeth Monitro Perfformiad i gasglu gwybodaeth am sut rydych chi'n defnyddio gwasanaethau GLlTEF. Rydym yn gwneud hyn i fonitro gwasanaethau GLlTEF er mwyn datrys materion o fewn ein gwasanaethau yn ogystal â chasglu data ar sut y gellir gwella ein gwasanaethau. Mae GLlTEF yn cadw gwybodaeth am:",
+      "COOKIES_EXPLANATION5": "Cyflwynir gwybodaeth o fewn y gwasanaeth Monitro Perfformiad at y dibenion y manylir arnynt uchod. Nid ydym yn defnyddio nac yn rhannu'r wybodaeth at unrhyw ddiben arall. Nid ydym yn caniatáu i Dynatrace ddefnyddio na rhannu'r wybodaeth at unrhyw ddibenion eraill.",
+      "COOKIES_EXPLANATION6": "Mae'r cwcis hanfodol hyn yn gwneud pethau fel gwneud y gwasanaeth yn fwy diogel. Mae angen iddynt fod ymlaen drwy’r amser.",
+      "COOKIE_SETTINGS_SAVED": "Cadwyd eich gosodiadau cwcis",
+      "EXPIRES": "Daw i ben ar",
+      "FIND_MORE_ABOUT_COOKIES": "Mwy o wybodaeth am gwcis hanfodol",
+      "HEADING": "Sut mae cwcis yn cael eu defnyddio yn y gwasanaeth hwn",
+      "NAME": "Enw",
       "PERFORMANCE_COOKIE_OPTIONS": {
-        "HEADING": "Allow cookies that measure website application performance monitoring?",
-        "ON_OPTION": "Use cookies that measure website application performance monitoring",
-        "OFF_OPTION": "Do not use cookies that measure website application performance monitoring"
+        "HEADING": "Caniatáu cwcis sy'n mesur monitro perfformiad ceisiadau gwefannau?",
+        "ON_OPTION": "Defnyddio cwcis sy'n mesur monitro perfformiad ceisiadau gwefan",
+        "OFF_OPTION": "Peidio â defnyddio cwcis sy'n mesur monitro perfformiad ceisiadau gwefannau"
       },
-      "PURPOSE": "Purpose",
-      "SUBHEADING1": "To measure website usage",
-      "SUBHEADING2": "Cookie details",
-      "SUBHEADING3": "To measure application performance",
-      "SUBHEADING4": "Essential cookies",
-      "TITLE": "Cookies"
+      "PURPOSE": "Diben",
+      "SUBHEADING1": "Mesur y defnydd o'r wefan",
+      "SUBHEADING2": "Manylion cwcis",
+      "SUBHEADING3": "I fesur perfformiad ceisiadau",
+      "SUBHEADING4": "Cwcis hanfodol",
+      "TITLE": "Cwcis"
     },
     "COURT_ORDERS": {
       "ADD_ANOTHER": "Ychwanegu gorchymyn llys arall",
@@ -1111,16 +1111,16 @@
       "USUAL_ADDRESS": "You must enter their usual or last known home address."
     },
     "DEFENDANT_PARTY_TYPE": {
-      "CLAIMING_AGAINST_AN_INDIVIDUAL": "An individual",
-      "CLAIMING_AGAINST_LIMITED_COMPANY": "A limited company",
-      "CLAIMING_AGAINST_ORGANISATION": "Another type of organisation",
-      "CLAIMING_AGAINST_SOLE_TRADER_OR_SELF_EMPLOYED": "A sole trader or self-employed person",
-      "CLAIMING_AGAINST_AN_INDIVIDUAL_HINT": "For example someone you lent money to",
-      "CLAIMING_AGAINST_LIMITED_COMPANY_HINT": "For example a company that sold you goods or services",
-      "CLAIMING_AGAINST_ORGANISATION_HINT": "For example a partnership, trust, charity, club or association",
-      "CLAIMING_AGAINST_SOLE_TRADER_OR_SELF_EMPLOYED_HINT": "For example a tradesperson who did work for you",
-      "PAGE_TITLE": "Who are you making the claim against?",
-      "TITLE": "Who are you making the claim against?"
+      "CLAIMING_AGAINST_AN_INDIVIDUAL": "Unigolyn",
+      "CLAIMING_AGAINST_LIMITED_COMPANY": "Cwmni cyfyngedig",
+      "CLAIMING_AGAINST_ORGANISATION": "Math arall o sefydliad",
+      "CLAIMING_AGAINST_SOLE_TRADER_OR_SELF_EMPLOYED": "Unig fasnachwr neu unigolyn hunangyflogedig",
+      "CLAIMING_AGAINST_AN_INDIVIDUAL_HINT": "Er enghraifft rhywun wnaethoch chi fenthyg arian iddo",
+      "CLAIMING_AGAINST_LIMITED_COMPANY_HINT": "Er enghraifft cwmni oedd yn gwerthu nwyddau neu wasanaethau i chi",
+      "CLAIMING_AGAINST_ORGANISATION_HINT": "Er enghraifft partneriaeth, ymddiriedaeth, elusen, clwb neu gymdeithas",
+      "CLAIMING_AGAINST_SOLE_TRADER_OR_SELF_EMPLOYED_HINT": "Er enghraifft crefftwr a wnaeth waith ichi",
+      "PAGE_TITLE": "Yn erbyn pwy ydych chi'n gwneud yr hawliad?",
+      "TITLE": "Yn erbyn pwy ydych chi'n gwneud yr hawliad?"
     },
     "DEFENDANT_TIMELINE": {
       "PAGE_TITLE": "Ychwanegu eich amserlen digwyddiadau",
@@ -1429,10 +1429,10 @@
       "REACHING_SETTLEMENT": "Setlo’r anghydfod"
     },
     "ACCEPT_REPAYMENT_PLAN": {
-      "DO_YOU_ACCEPT": "Do you accept the repayment plan?",
-      "NO_OPTION": "No - I'll suggest my own",
-      "PAGE_TITLE": "How they want to pay",
-      "TITLE": "How they want to pay"
+      "DO_YOU_ACCEPT": "Ydych chi'n derbyn y cynllun ad-dalu?",
+      "NO_OPTION": "Na – byddaf yn awgrymu fy nghynllun fy hun",
+      "PAGE_TITLE": "Sut mae am dalu",
+      "TITLE": "Sut mae am dalu"
     },
     "HELP_WITH_FEES": {
       "ENTER_NUMBER": "Rhowch y rhif help i dalu ffioedd",
@@ -1644,10 +1644,10 @@
       "WHEN_DID": "Pryd y gwnaethoch dalu’r swm hwn?"
     },
     "PARTIAL_ADMISSION_SETTLE_ADMITTED": {
-      "PAGE_TITLE": "Do you want to settle the claim for the £{{ admittedAmount }} the defendant admitted?",
-      "CONTINUE_AMOUNT_YOU_CLAIMED": "The claim will continue for the total amount you claimed",
-      "THIS_IS_THE_TOTAL_AMOUNT": "This is the total amount you'll be paid, including the claim fee and interest if applicable",
-      "TITLE": "Do you want to settle the claim for the £{{ admittedAmount }} the defendant admitted?"
+      "PAGE_TITLE": "Ydych chi eisiau setlo'r cais am y £{{ admittedAmount }} a addefir gan y diffynnydd?",
+      "CONTINUE_AMOUNT_YOU_CLAIMED": "Bydd yr hawliad yn parhau am y cyfanswm a hawliwyd gennych",
+      "THIS_IS_THE_TOTAL_AMOUNT": "Dyma'r cyfanswm a delir i chi, gan gynnwys y ffi hawlio a'r llog os yw'n berthnasol",
+      "TITLE": "Ydych chi eisiau setlo'r cais am y £{{ admittedAmount }} a addefir gan y diffynnydd?"
     },
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
       "PAGE_TITLE": "Why do you disagree?",
@@ -1876,14 +1876,14 @@
       "WHY_THEY_DISAGREE_CLAIM": "Why they disagree with the claim",
       "WHY_THEY_DISAGREE_EVIDENCE": "Why they disagree with your evidence",
       "WHY_THEY_DISAGREE_TIMELINE": "Why they disagree with your timeline",
-      "HOW_THEY_WANT_TO_PAY_RESPONSE": "They've offered to pay you £{{ amount }} by {{ paymentDate }}. This is the total amount you'll be paid, including the claim fee and interest if applicable.",
+      "HOW_THEY_WANT_TO_PAY_RESPONSE": "They've offered to pay you £{{ amount }} by {{ paymentDate }}. Dyma'r cyfanswm a delir i chi, gan gynnwys y ffi hawlio a'r llog os yw'n berthnasol.",
       "PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE": {
-        "TITLE": "How they want to pay",
+        "TITLE": "Sut mae am dalu",
         "SUGGESTED_REPAYMENT": "The defendant suggested this repayment plan",
         "REPAYMENT_PLAN": {
           "FREQUENCY_OF_PAYMENTS": "Amlder taliadau",
-          "FIRST_PAYMENT_DATE": "First payment date",
-          "FINAL_PAYMENT_DATE": "Final payment date",
+          "FIRST_PAYMENT_DATE": "Dyddiad talu cyntaf",
+          "FINAL_PAYMENT_DATE": "Dyddiad talu terfynol",
           "LENGTH": "Hyd y cynllun ad-dalu",
           "REGULAR_PAYMENTS": "Taliadau rheolaidd o"
         }
@@ -1955,10 +1955,10 @@
       "TITLE": "Ydych chi wedi anfon adroddiadau arbenigwyr at y partïon eraill yn barod?"
     },
     "SETTLE_CLAIM_PART_PAYMENT_RECEIVED": {
-      "PAGE_TITLE": "Do you want to settle the claim for the £{{ paidAmount }} the defendant has paid?",
-      "PROCEED_WITH_CLAIM": "Proceed with the claim",
-      "SETTLE_THE_CLAIM": "Settle the claim",
-      "TITLE": "Do you want to settle the claim for the £{{ paidAmount }} the defendant has paid?"
+      "PAGE_TITLE": "Ydych chi eisiau setlo'r cais am y £{{ paidAmount }} mae'r diffynnydd wedi ei dalu?",
+      "PROCEED_WITH_CLAIM": "Bwrw ymlaen â'r hawliad",
+      "SETTLE_THE_CLAIM": "Setlo'r hawliad",
+      "TITLE": "Ydych chi eisiau setlo'r cais am y £{{ paidAmount }} mae'r diffynnydd wedi ei dalu?"
     },
     "SHARED_EXPERT": {
       "IF_YOU_SHARE": "Os byddwch yn rhannu arbenigwr, byddwch hefyd yn rhannu’r costau oni bai bod y barnwr yn penderfynu bod rhaid i un parti dalu cyfran y parti arall.",
@@ -2579,6 +2579,6 @@
     "VALID_WHY_FROM_PARTICULAR_DATE": "Mae angen i chi egluro pam eich bod yn hawlio",
     "QUESTION_1_REQUIRED": "Dewiswch 'oes' os yw rhywun yn fregus a bod angen i'r llys ystyried hynny",
     "QUESTION_2_REQUIRED": "Tell us who is vulnerable and what support they need",
-    "CLAIMANT_REJECTION_RESPONSE_REQUIRED": "Enter why you rejected repayment plan"
+    "CLAIMANT_REJECTION_RESPONSE_REQUIRED": "Nodwch pam y gwnaethoch wrthod y cynllun ad-dalu"
   }
 }
