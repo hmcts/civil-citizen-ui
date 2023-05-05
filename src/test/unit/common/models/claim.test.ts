@@ -1244,4 +1244,16 @@ describe('Documents', () => {
       expect(claim.hasExpertDetails()).toBeFalsy();
     });
   });
+  describe('hasClaimHearing', () => {
+    let claim: Claim;
+    beforeEach(() => {
+      claim = new Claim;
+    });
+    it('should return formatted date 3 weeks prior from 22', () => {
+      //Given
+      claim.hearingDate = new Date(2023, 0 ,22);
+      //Then
+      expect('1 January 2023').toEqual(claim.bundleStitchingDeadline);
+    });
+  });
 });

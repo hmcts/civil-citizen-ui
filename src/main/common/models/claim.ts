@@ -55,6 +55,7 @@ import {toCUIParty} from 'services/translation/convertToCUI/convertToCUIParty';
 import {toCUIMediation} from 'services/translation/convertToCUI/convertToCUIMediation';
 import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIClaimDetails';
 import {CCDRespondentLiPResponse} from './ccdResponse/ccdRespondentLiPResponse';
+import {DateTimeFormatOptions} from 'luxon';
 
 export class Claim {
   legacyCaseReference: string;
@@ -92,6 +93,7 @@ export class Claim {
   id: string;
   sdoOrderDocument?: CaseDocument;
   respondent1LiPResponse?: CCDRespondentLiPResponse;
+  hearingDate?: Date;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -486,6 +488,13 @@ export class Claim {
 
   hasSdoOrderDocument(): boolean{
     return !!this.sdoOrderDocument;
+  }
+
+  get bundleStitchingDeadline(): string {
+    const hearingDateTime = new Date(this.hearingDate).getTime();
+    const threeWeeksMilli = 21 * 24 * 60 * 60 * 1000;
+    const options: DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
+    return new Date(hearingDateTime - threeWeeksMilli).toLocaleDateString('en-GB', options);
   }
 
 }

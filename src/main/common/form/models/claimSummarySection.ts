@@ -40,5 +40,6 @@ export enum ClaimSummaryType {
   INSET_TEXT = 'insetText',
   SUMMARY = 'summary',
   TABLE = 'table',
-  PANEL = 'panel'
+  PANEL = 'panel',
+  WARNING = 'warning',
 }
