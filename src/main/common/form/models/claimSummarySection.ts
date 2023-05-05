@@ -11,6 +11,9 @@ export interface ClaimSummarySection {
 }
 
 export interface ClaimSummaryItem {
+  id?: string;
+  name?: string;
+  hint?: string;
   text?: string;
   href?: string;
   classes?: string;
@@ -42,4 +45,7 @@ export enum ClaimSummaryType {
   TABLE = 'table',
   PANEL = 'panel',
   WARNING = 'warning',
+  INPUT = 'input',
+  DATE = 'date',
+  UPLOAD = 'upload',
 }

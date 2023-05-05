@@ -3,6 +3,9 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "govuk/components/file-upload/macro.njk" import govukFileUpload %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
 {% macro itemContent(content) %}
@@ -80,9 +83,53 @@
         classes: content.data.classes,
         titleHtml: content.data.title,
         html: content.data.html
-
       }) }}
     </div>
+  {% endif %}
+
+  {% if content.type === ClaimSummaryType.INPUT %}
+     <div>
+      {{ govukInput({
+         id: "name",
+         name: "name",
+         value: form.model.name,
+         classes: content.data.classes,
+         label: {
+           html: '<strong>'+ t(content.data.text)+'</strong>'
+         }
+      }) }}
+     </div>
+  {% endif %}
+
+  {% if content.type === ClaimSummaryType.UPLOAD %}
+     <div class="govuk-inset-text">
+        {{ govukFileUpload({
+           id: content.data.id,
+           name: content.data.name,
+           label: {
+             html: '<strong>'+t(content.data.text)+'</strong><hr class="govuk-section-break--s govuk-section-break--visible">'+t(content.data.html)+'</br></br>'
+           }
+        }) }}
+    </div>
+  {% endif %}
+
+  {% if content.type === ClaimSummaryType.DATE %}
+     <div>
+        {{ govukDateInput({
+           id: content.data.id,
+           namePrefix: content.data.name,
+           fieldset: {
+             legend: {
+              text: t(content.data.text),
+              isPageHeading: false,
+              classes: content.data.classes
+             }
+           },
+           hint: {
+            text: t(content.data.hint)
+           }
+        }) }}
+     </div>
   {% endif %}
 
   {% if content.type === ClaimSummaryType.WARNING %}
