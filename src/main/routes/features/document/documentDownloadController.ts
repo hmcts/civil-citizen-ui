@@ -16,7 +16,7 @@ const civilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
 
 documentDownloadController.get(CASE_DOCUMENT_DOWNLOAD_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    deleteDraftClaimFromStore(req.params.id);
+    await deleteDraftClaimFromStore(req.params.id);
     const claim: Claim = await getClaimById(req.params.id, req);
     const documentType = convertToDocumentType(req.params.documentType);
     const documentDetails = claim.getDocumentDetails(DocumentType[documentType]);
