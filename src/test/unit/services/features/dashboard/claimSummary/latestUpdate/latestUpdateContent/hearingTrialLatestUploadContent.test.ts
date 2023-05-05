@@ -8,6 +8,7 @@ import {
   getHearingTrialLatestUpload,
 } from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContent/hearingTrialLatestUploadContent';
 import {DocumentUri} from 'models/document/documentType';
+import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
 
 const lang = 'en';
 describe('Latest Update Content Builder Case Progression', () => {
@@ -34,7 +35,7 @@ describe('Latest Update Content Builder Case Progression', () => {
         .addParagraph(`${TRIAL_HEARING_CONTENT}.YOUR_HEARING_PARAGRAPH`, {hearingDate: claim.caseProgressionHearing.getHearingDateFormatted(lang) ,
           hearingTimeHourMinute: claim.caseProgressionHearing.getHearingTimeHourMinuteFormatted(),
           courtName: claim.caseProgressionHearing.hearingLocation.getCourtName()})
-        .addDocumentButton(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, claim.id, DocumentUri.HEARING_FORM)
+        .addButton(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentType', DocumentUri.HEARING_FORM))
         .build();
 
       // when
@@ -52,7 +53,7 @@ describe('Latest Update Content Builder Case Progression', () => {
         .addParagraph(`${TRIAL_HEARING_CONTENT}.YOUR_TRIAL_PARAGRAPH`, {hearingDate: claim.caseProgressionHearing.getHearingDateFormatted(lang) ,
           hearingTimeHourMinute: claim.caseProgressionHearing.getHearingTimeHourMinuteFormatted(),
           courtName: claim.caseProgressionHearing.hearingLocation.getCourtName()})
-        .addDocumentButton(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, claim.id, DocumentUri.HEARING_FORM)
+        .addButton(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentType', DocumentUri.HEARING_FORM))
         .build();
 
       // when

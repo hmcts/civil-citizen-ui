@@ -73,26 +73,13 @@ export class LatestUpdateSectionBuilder {
     this._claimSummarySections.push(linkSection);
     return this;
   }
-  addButton(title: string, claimId:string,  href: string) {
+  addButton(title: string, href: string) {
     const titleSection = ({
       type: ClaimSummaryType.BUTTON,
       data: {
         text: title,
         //TODO: (href) in here in the future we should added the document url(is in development)
         href: href,
-      },
-    });
-
-    this._claimSummarySections.push(titleSection);
-    return this;
-  }
-
-  addDocumentButton(title: string, claimId: string, documentUri: DocumentUri) {
-    const titleSection = ({
-      type: ClaimSummaryType.BUTTON,
-      data: {
-        text: title,
-        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentType', documentUri.toString()),
       },
     });
 
