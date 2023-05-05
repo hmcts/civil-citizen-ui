@@ -16,15 +16,10 @@ import {
   getPaymentAmount,
   getPaymentDate, getRepaymentFrequency,
 } from 'common/utils/repaymentUtils';
-import {getLanguage} from 'modules/i18n/languageService';
 import currencyFormat from 'common/utils/currencyFormat';
 import {PartialAdmission} from 'models/partialAdmission';
 import {LatestUpdateSectionBuilder} from 'common/models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 
-jest.mock('../../../../../../../main/modules/i18n/languageService', () => ({
-  getLanguage: jest.fn().mockReturnValue('en'),
-  setLanguage: jest.fn(),
-}));
 const PAGES_LATEST_UPDATE_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT.';
 const PARTY_NAME = 'Mr. John Doe';
 
@@ -80,6 +75,7 @@ describe('Latest Update Content Builder', () => {
   };
   const claimId = '5129';
   const bilingualLanguagePreferencetUrl = BILINGUAL_LANGUAGE_PREFERENCE_URL.replace(':id', claimId);
+  const lng = 'en';
 
   describe('test buildResponseToClaimSection', () => {
     it('should have responseNotSubmittedTitle and respondToClaimLink', () => {
@@ -87,7 +83,7 @@ describe('Latest Update Content Builder', () => {
       const expectedNow = DateTime.local(2022, 7, 1, 23, 0, 0);
       Settings.now = () => expectedNow.toMillis();
       // When
-      const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
+      const responseToClaimSection = buildResponseToClaimSection(claim, claimId, lng);
       // Then
       expect(responseToClaimSection.length).toBe(3);
       expect(responseToClaimSection[0].type).toEqual(ClaimSummaryType.TITLE);
@@ -100,7 +96,7 @@ describe('Latest Update Content Builder', () => {
       //Given
       claim.respondentSolicitor1AgreedDeadlineExtension = new Date();
       //When
-      const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
+      const responseToClaimSection = buildResponseToClaimSection(claim, claimId, lng);
       // Then
       expect(responseToClaimSection.length).toBe(3);
       expect(responseToClaimSection[0].type).toEqual(ClaimSummaryType.TITLE);
@@ -114,7 +110,7 @@ describe('Latest Update Content Builder', () => {
       const expectedNow = DateTime.local(2022, 6, 1, 23, 0, 0);
       Settings.now = () => expectedNow.toMillis();
       // When
-      const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
+      const responseToClaimSection = buildResponseToClaimSection(claim, claimId, lng);
       // Then
       expect(responseToClaimSection[1].type).toEqual(ClaimSummaryType.PARAGRAPH);
     });
@@ -123,7 +119,7 @@ describe('Latest Update Content Builder', () => {
       const expectedNow = DateTime.local(2022, 8, 1, 23, 0, 0);
       Settings.now = () => expectedNow.toMillis();
       // When
-      const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
+      const responseToClaimSection = buildResponseToClaimSection(claim, claimId, lng);
       // Then
       expect(responseToClaimSection.length).toBe(5);
       expect(responseToClaimSection[0].type).toEqual(ClaimSummaryType.TITLE);
@@ -138,7 +134,7 @@ describe('Latest Update Content Builder', () => {
       // Given
       claim.ccdState = CaseState.PENDING_CASE_ISSUED;
       // when
-      const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
+      const responseToClaimSection = buildResponseToClaimSection(claim, claimId, lng);
       // Then
       expect(responseToClaimSection.length).toBe(1);
     });
@@ -153,7 +149,7 @@ describe('Latest Update Content Builder', () => {
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_SAID_YOU_WILL_PAY`, {
             claimantName: claim.getClaimantFullName(),
             amount: currencyFormat(getAmount(claim)),
-            paymentDate: formatDateToFullDate(getPaymentDate(claim), getLanguage()),
+            paymentDate: formatDateToFullDate(getPaymentDate(claim), lng),
           })
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}IF_YOU_PAY_BY_CHEQUE`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}IF_THEY_DONT_RECEIVE_THE_MONEY_BY_THEN`)
@@ -162,7 +158,7 @@ describe('Latest Update Content Builder', () => {
           .build();
 
         // When
-        const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
+        const responseToClaimSection = buildResponseToClaimSection(claim, claimId, lng);
 
         // Then
         expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
@@ -174,14 +170,14 @@ describe('Latest Update Content Builder', () => {
           .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY_BY`, {
             claimantName: claim.getClaimantFullName(),
-            paymentDate: formatDateToFullDate(getPaymentDate(claim), getLanguage()),
+            paymentDate: formatDateToFullDate(getPaymentDate(claim), lng),
           })
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
           .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claim.id)
           .build();
 
         // When
-        const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
+        const responseToClaimSection = buildResponseToClaimSection(claim, claimId, lng);
 
         // Then
         expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
@@ -193,7 +189,7 @@ describe('Latest Update Content Builder', () => {
           .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}YOUR_RESPONSE_TO_THE_CLAIM`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY_BY`, {
             claimantName: claim.getClaimantFullName(),
-            paymentDate: formatDateToFullDate(getPaymentDate(claim), getLanguage()),
+            paymentDate: formatDateToFullDate(getPaymentDate(claim), lng),
           })
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`)
           .addContactLink(`${PAGES_LATEST_UPDATE_CONTENT}GET_CONTACT_DETAILS`, claim.id, {claimantName: claim.getClaimantFullName()})
@@ -201,7 +197,7 @@ describe('Latest Update Content Builder', () => {
           .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claim.id)
           .build();
         // When
-        const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
+        const responseToClaimSection = buildResponseToClaimSection(claim, claimId, lng);
 
         // Then
         expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
@@ -215,13 +211,13 @@ describe('Latest Update Content Builder', () => {
             claimantName: claim.getClaimantFullName(),
             installmentAmount:  currencyFormat(getPaymentAmount(claim)),
             paymentSchedule: getRepaymentFrequency(claim),
-            paymentDate: formatDateToFullDate(getFirstRepaymentDate(claim),getLanguage()),
+            paymentDate: formatDateToFullDate(getFirstRepaymentDate(claim),lng),
           })
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
           .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claim.id)
           .build();
         // When
-        const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
+        const responseToClaimSection = buildResponseToClaimSection(claim, claimId, lng);
 
         // Then
         expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
@@ -235,7 +231,7 @@ describe('Latest Update Content Builder', () => {
             claimantName: claim.getClaimantFullName(),
             installmentAmount:  currencyFormat(getPaymentAmount(claim)),
             paymentSchedule: getRepaymentFrequency(claim),
-            paymentDate: formatDateToFullDate(getFirstRepaymentDate(claim),getLanguage()),
+            paymentDate: formatDateToFullDate(getFirstRepaymentDate(claim),lng),
           })
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`)
           .addContactLink(`${PAGES_LATEST_UPDATE_CONTENT}GET_CONTACT_DETAILS`, claim.id, {claimantName: claim.getClaimantFullName()})
@@ -243,7 +239,7 @@ describe('Latest Update Content Builder', () => {
           .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claim.id)
           .build();
         // When
-        const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
+        const responseToClaimSection = buildResponseToClaimSection(claim, claimId, lng);
 
         // Then
         expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
@@ -264,7 +260,7 @@ describe('Latest Update Content Builder', () => {
           .build();
 
         // When
-        const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
+        const responseToClaimSection = buildResponseToClaimSection(claim, claimId, lng);
 
         // Then
         expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
@@ -277,7 +273,7 @@ describe('Latest Update Content Builder', () => {
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_BY`, {
             amount: currencyFormat(getAmount(claim)),
             claimantName: claim.getClaimantFullName(),
-            paymentDate: formatDateToFullDate(getFirstRepaymentDate(claim),getLanguage()),
+            paymentDate: formatDateToFullDate(getFirstRepaymentDate(claim),lng),
           })
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`)
           .addContactLink(`${PAGES_LATEST_UPDATE_CONTENT}GET_CONTACT_DETAILS`, claim.id, {claimantName: claim.getClaimantFullName()})
@@ -285,7 +281,7 @@ describe('Latest Update Content Builder', () => {
           .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claim.id)
           .build();
         // When
-        const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
+        const responseToClaimSection = buildResponseToClaimSection(claim, claimId, lng);
 
         // Then
         expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
@@ -298,13 +294,13 @@ describe('Latest Update Content Builder', () => {
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_BY`, {
             amount: currencyFormat(getAmount(claim)),
             claimantName: claim.getClaimantFullName(),
-            paymentDate: formatDateToFullDate(getFirstRepaymentDate(claim),getLanguage()),
+            paymentDate: formatDateToFullDate(getFirstRepaymentDate(claim),lng),
           })
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
           .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claim.id)
           .build();
         // When
-        const responseToClaimSection = buildResponseToClaimSection(claim, claim.id);
+        const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
 
         // Then
         expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
@@ -319,7 +315,7 @@ describe('Latest Update Content Builder', () => {
             claimantName: claim.getClaimantFullName(),
             installmentAmount: currencyFormat(getPaymentAmount(claim)),
             paymentSchedule: getRepaymentFrequency(claim),
-            paymentDate: formatDateToFullDate(getPaymentDate(claim),getLanguage()),
+            paymentDate: formatDateToFullDate(getPaymentDate(claim),lng),
           })
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`)
           .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}GET_CONTACT_DETAILS`, claim.id, {claimantName: claim.getClaimantFullName()})
@@ -327,7 +323,7 @@ describe('Latest Update Content Builder', () => {
           .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claim.id)
           .build();
         // When
-        const responseToClaimSection = buildResponseToClaimSection(claim, claim.id);
+        const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
 
         // Then
         expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
@@ -342,13 +338,13 @@ describe('Latest Update Content Builder', () => {
             claimantName: claim.getClaimantFullName(),
             installmentAmount: currencyFormat(getPaymentAmount(claim)),
             paymentSchedule: getRepaymentFrequency(claim),
-            paymentDate: formatDateToFullDate(getPaymentDate(claim),getLanguage()),
+            paymentDate: formatDateToFullDate(getPaymentDate(claim),lng),
           })
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
           .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claim.id)
           .build();
         // When
-        const responseToClaimSection = buildResponseToClaimSection(claim, claim.id);
+        const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
 
         // Then
         expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
