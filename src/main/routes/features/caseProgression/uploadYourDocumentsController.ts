@@ -11,7 +11,7 @@ const uploadYourDocumentsController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-function getUploadYourDocumentsContent(claimId: string, claim: Claim) {
+function getUploadYourDocumentsContents(claimId: string, claim: Claim) {
   return new LatestUpdateSectionBuilder()
     .addTitle('PAGES.UPLOAD_YOUR_DOCUMENTS.TITLE')
     .addLeadParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.CASE_REFERENCE', {claimId: claimId})
@@ -41,8 +41,8 @@ uploadYourDocumentsController.get([UPLOAD_YOUR_DOCUMENTS_URL], (async (req, res,
     const claimId = req.params.id;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     if (claim && !claim.isEmpty()) {
-      const latestUpdateSection = getUploadYourDocumentsContent(claimId, claim);
-      res.render(uploadYourDocumentsViewPath, {latestUpdateSection});
+      const uploadYourDocumentsContents = getUploadYourDocumentsContents(claimId, claim);
+      res.render(uploadYourDocumentsViewPath, {uploadYourDocumentsContents});
     }
   } catch (error) {
     next(error);

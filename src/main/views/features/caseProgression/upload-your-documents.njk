@@ -13,8 +13,8 @@
       <div class="govuk-grid-row govuk-!-margin-top-0">
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
 
-        {% for section in latestUpdateSection %}
-            {{ itemContent(section,t) }}
+        {% for content in uploadYourDocumentsContents %}
+            {{ itemContent(content,t) }}
         {% endfor %}
 
         {{ contactUsForHelp(t) }}
