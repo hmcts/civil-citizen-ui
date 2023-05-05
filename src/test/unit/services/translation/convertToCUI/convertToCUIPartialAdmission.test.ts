@@ -170,7 +170,6 @@ describe('translate partial admission to cui model', () => {
       const cuiPaymentIntention = toCUIPaymentIntention(ccdClaim);
       // Then
       expect(cuiPaymentIntention.paymentOption).toBe(PaymentOptionType.IMMEDIATELY);
-      // expect(cuiPaymentIntention.paymentDate).toBe(resultDate);
       expect(cuiPaymentIntention.paymentDate.getDate()).toBe(resultDate.getDate());
       expect(cuiPaymentIntention.repaymentPlan).toBeUndefined();
     });
@@ -185,7 +184,6 @@ describe('translate partial admission to cui model', () => {
       const cuiPaymentIntention = toCUIPaymentIntention(ccdClaim);
       // Then
       expect(cuiPaymentIntention.paymentOption).toBe(PaymentOptionType.IMMEDIATELY);
-      // expect(cuiPaymentIntention.paymentDate).toBe(resultDate);
       expect(cuiPaymentIntention.paymentDate.getDate()).toBe(resultDate.getDate());
       expect(cuiPaymentIntention.repaymentPlan).toBeUndefined();
     });
