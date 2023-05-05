@@ -1495,8 +1495,8 @@
         "TRIAL_HEARING_CONTENT": {
           "YOUR_TRIAL_TITLE": "A trial has been scheduled for your case",
           "YOUR_HEARING_TITLE": "A hearing has been scheduled for your case",
-          "YOUR_TRIAL_PARAGRAPH": "Your trial has been scheduled for {{ trialDate }} at {{ trialTime }} at the {{ courtName }}.",
-          "YOUR_HEARING_PARAGRAPH": "Your hearing has been scheduled for {{ hearingDate }} at {{ hearingTimeHourMinute }} at the {{ courtName }}.",
+          "YOUR_TRIAL_PARAGRAPH": "Your trial has been scheduled for {{ hearingDate }} at {{ hearingTimeHourMinute }} at {{ courtName }}.",
+          "YOUR_HEARING_PARAGRAPH": "Your hearing has been scheduled for {{ hearingDate }} at {{ hearingTimeHourMinute }} at {{ courtName }}.",
           "VIEW_HEARING_NOTICE_BUTTON": "View hearing notice"
         }
       }
