@@ -7,6 +7,7 @@ import {getCaseProgressionHearingMock} from '../../../../../../../utils/caseProg
 import {
   getHearingTrialLatestUpload,
 } from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContent/hearingTrialLatestUploadContent';
+import {DocumentUri} from 'models/document/documentType';
 
 const lang = 'en';
 describe('Latest Update Content Builder Case Progression', () => {
@@ -33,7 +34,7 @@ describe('Latest Update Content Builder Case Progression', () => {
         .addParagraph(`${TRIAL_HEARING_CONTENT}.YOUR_HEARING_PARAGRAPH`, {hearingDate: claim.caseProgressionHearing.getHearingDateFormatted(lang) ,
           hearingTimeHourMinute: claim.caseProgressionHearing.getHearingTimeHourMinuteFormatted(),
           courtName: claim.caseProgressionHearing.hearingLocation.getCourtName()})
-        .addButton(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, 'href')
+        .addDocumentButton(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, claim.id, DocumentUri.HEARING_FORM)
         .build();
 
       // when
@@ -51,7 +52,7 @@ describe('Latest Update Content Builder Case Progression', () => {
         .addParagraph(`${TRIAL_HEARING_CONTENT}.YOUR_TRIAL_PARAGRAPH`, {hearingDate: claim.caseProgressionHearing.getHearingDateFormatted(lang) ,
           hearingTimeHourMinute: claim.caseProgressionHearing.getHearingTimeHourMinuteFormatted(),
           courtName: claim.caseProgressionHearing.hearingLocation.getCourtName()})
-        .addButton(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, 'href')
+        .addDocumentButton(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, claim.id, DocumentUri.HEARING_FORM)
         .build();
 
       // when

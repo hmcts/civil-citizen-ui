@@ -8,6 +8,7 @@ import {AppRequest} from '../../../common/models/AppRequest';
 import {DocumentType} from '../../../common/models/document/documentType';
 import {Claim} from 'models/claim';
 import {getClaimById} from '../../../modules/utilityService';
+import {deleteDraftClaimFromStore} from "modules/draft-store/draftStoreService";
 
 const documentDownloadController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -15,6 +16,7 @@ const civilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
 
 documentDownloadController.get(CASE_DOCUMENT_DOWNLOAD_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
+    deleteDraftClaimFromStore(req.params.id);
     const claim: Claim = await getClaimById(req.params.id, req);
     const documentType = convertToDocumentType(req.params.documentType);
     const documentDetails = claim.getDocumentDetails(DocumentType[documentType]);

@@ -1,5 +1,6 @@
 import {LatestUpdateSectionBuilder} from 'models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 import {Claim} from 'models/claim';
+import {DocumentUri} from 'models/document/documentType';
 
 const TRIAL_HEARING_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.TRIAL_HEARING_CONTENT';
 
@@ -19,7 +20,7 @@ export const getHearingTrialLatestUpload = (claim: Claim, lang: string) => {
   const latestUpdateSectionBuilder = new LatestUpdateSectionBuilder()
     .addTitle(trialHearingTitle)
     .addParagraph(trialHearingParagraph, { hearingDate, hearingTimeHourMinute, courtName })
-    .addButton(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, 'href');
+    .addDocumentButton(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, claim.id, DocumentUri.HEARING_FORM);
 
   return latestUpdateSectionBuilder.build();
 };

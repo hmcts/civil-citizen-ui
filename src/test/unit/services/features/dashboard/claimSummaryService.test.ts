@@ -1,5 +1,8 @@
 import {getDocumentsContent} from 'services/features/dashboard/claimSummaryService';
-import {buildDownloadSealedClaimSection} from 'services/features/dashboard/claimDocuments/claimDocumentContentBuilder';
+import {
+  buildDownloadHearingNoticeSection,
+  buildDownloadSealedClaimSection
+} from 'services/features/dashboard/claimDocuments/claimDocumentContentBuilder';
 
 import {Claim} from 'models/claim';
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -14,16 +17,18 @@ describe('getDocumentsContent', () => {
     // Given
     const claimId = '123';
     const lang = 'en';
-  
+
     // When
     const result = getDocumentsContent(new Claim(), claimId, lang);
-      
+
     // Then
     expect(result).toHaveLength(1);
-    expect(result[0].contentSections).toHaveLength(1);
-  
+    expect(result[0].contentSections).toHaveLength(2);
+
     const downloadClaimSection = buildDownloadSealedClaimSection(new Claim(), claimId, lang);
-  
+    const downloadHearingNoticeSection = buildDownloadHearingNoticeSection(new Claim(), claimId, lang);
+
     expect(result[0].contentSections[0]).toEqual(downloadClaimSection);
+    expect(result[0].contentSections[1]).toEqual(downloadHearingNoticeSection);
   });
 });

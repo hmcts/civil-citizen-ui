@@ -73,7 +73,7 @@ export class LatestUpdateSectionBuilder {
     this._claimSummarySections.push(linkSection);
     return this;
   }
-  addButton(title: string, href: string) {
+  addButton(title: string, claimId:string,  href: string) {
     const titleSection = ({
       type: ClaimSummaryType.BUTTON,
       data: {
@@ -86,6 +86,20 @@ export class LatestUpdateSectionBuilder {
     this._claimSummarySections.push(titleSection);
     return this;
   }
+
+  addDocumentButton(title: string, claimId: string, documentUri: DocumentUri) {
+    const titleSection = ({
+      type: ClaimSummaryType.BUTTON,
+      data: {
+        text: title,
+        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentType', documentUri.toString()),
+      },
+    });
+
+    this._claimSummarySections.push(titleSection);
+    return this;
+  }
+
   build() {
     return this._claimSummarySections;
   }
