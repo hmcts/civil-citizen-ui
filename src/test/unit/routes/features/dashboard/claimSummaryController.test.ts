@@ -7,6 +7,7 @@ import {CaseState} from 'form/models/claimDetails';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {ClaimSummaryContent, ClaimSummaryType} from 'form/models/claimSummarySection';
 import {getLatestUpdateContent} from 'services/features/dashboard/claimSummary/latestUpdateService';
+import {getCaseProgressionHearingMock} from '../../../../utils/caseProgression/mockCaseProgressionHearing';
 
 const nock = require('nock');
 const session = require('supertest-session');
@@ -160,5 +161,36 @@ describe('Claim Summary Controller Defendant', () => {
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
+
+    it('should show case progression hearing latest Update', async () => {
+      //given
+      const caseProgressionHearing = getCaseProgressionHearingMock();
+      const claimWithHeringDocs = {
+        ...claim,
+        state: CaseState.AWAITING_APPLICANT_INTENTION,
+        case_data: {
+          ...claim.case_data,
+          hearingDate: caseProgressionHearing.hearingDate,
+          hearingLocation: caseProgressionHearing.hearingLocation,
+          hearingTimeHourMinute: caseProgressionHearing.hearingTimeHourMinute,
+          hearingDocuments: caseProgressionHearing.hearingDocuments,
+        },
+      };
+
+      isCaseProgressionV1EnableMock.mockResolvedValue(true);
+      getLatestUpdateContentMock.mockReturnValue([]);
+      //when
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId)
+        .reply(200, claimWithHeringDocs);
+      //then
+      await testSession
+        .get(`/dashboard/${claimId}/defendant`)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).not.toContain('Upload documents');
+        });
+    });
+
   });
 });

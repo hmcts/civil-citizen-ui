@@ -38,6 +38,11 @@ import {claimType} from 'form/models/claimType';
 import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
 import {ExpertDetails} from 'models/directionsQuestionnaire/experts/expertDetails';
 import {ExpertDetailsList} from 'common/models/directionsQuestionnaire/experts/expertDetailsList';
+import {CaseProgressionHearing, CaseProgressionHearingDocuments} from 'models/caseProgression/caseProgressionHearing';
+
+jest.mock('../../../../main/modules/i18n/languageService', ()=> ({
+  getLanguage: jest.fn(),
+}));
 
 describe('Claim isInterestEnDateUntilSubmitDate', () => {
   const claim = new Claim();
@@ -1244,6 +1249,41 @@ describe('Documents', () => {
       expect(claim.hasExpertDetails()).toBeFalsy();
     });
   });
+
+  describe('test of method hasCaseProgressionHearingDocuments', () => {
+    it('should return true when have hasCaseProgressionHearingDocuments', () => {
+      //Given
+      const caseProgressionHearing = new CaseProgressionHearing([getCaseProgressionDocuments()], null, null, null);
+      const claim = new Claim();
+      claim.caseProgressionHearing = caseProgressionHearing;
+      //Then
+      expect(claim.hasCaseProgressionHearingDocuments()).toBeTruthy();
+    });
+    it('should return false when have hasCaseProgressionHearingDocuments', () => {
+      //Given
+      const claim = new Claim();
+      //Then
+      expect(claim.hasCaseProgressionHearingDocuments()).toBeFalsy();
+    });
+
+  });
+  function getCaseProgressionDocuments() {
+    const caseProgressionHearingDocuments = new CaseProgressionHearingDocuments();
+    caseProgressionHearingDocuments.id = '1221';
+    caseProgressionHearingDocuments.value = {
+      'createdBy': 'Civil',
+      'documentLink': {
+        'document_url': 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6',
+        'document_filename': 'hearing_small_claim_000MC110.pdf',
+        'document_binary_url': 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
+      },
+      'documentName': 'hearing_small_claim_000MC110.pdf',
+      'documentSize': 56461,
+      documentType: DocumentType.HEARING_FORM,
+      createdDatetime: new Date('2022-06-21T14:15:19'),
+    };
+    return caseProgressionHearingDocuments;
+  }
   describe('hasClaimHearing', () => {
     let claim: Claim;
     beforeEach(() => {
@@ -1251,7 +1291,7 @@ describe('Documents', () => {
     });
     it('should return formatted date 3 weeks prior from 22', () => {
       //Given
-      claim.hearingDate = new Date(2023, 0 ,22);
+      claim.caseProgressionHearing.hearingDate = new Date(2023, 0 ,22);
       //Then
       expect('1 January 2023').toEqual(claim.bundleStitchingDeadline);
     });
