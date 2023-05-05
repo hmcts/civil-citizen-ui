@@ -1491,7 +1491,16 @@
       "MORE_TIME_REQUESTED": "More time requested",
       "YOU_CAN_STILL_RESPOND_TO_CLAIM": "You can still respond to the claim before they ask for a judgment.",
       "YOU_HAVENT_RESPONDED_TO_CLAIM": "You haven't responded to this claim",
-      "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "You need to respond before 4pm on {{ responseDeadline }} ({{ remainingDays }} Days remaining)."
+      "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "You need to respond before 4pm on {{ responseDeadline }} ({{ remainingDays }} Days remaining).",
+      "CASE_PROGRESSION": {
+        "TRIAL_HEARING_CONTENT": {
+          "YOUR_TRIAL_TITLE": "A trial has been scheduled for your case",
+          "YOUR_HEARING_TITLE": "A hearing has been scheduled for your case",
+          "YOUR_TRIAL_PARAGRAPH": "Your trial has been scheduled for {{ trialDate }} at {{ trialTime }} at the {{ courtName }}.",
+          "YOUR_HEARING_PARAGRAPH": "Your hearing has been scheduled for {{ hearingDate }} at {{ hearingTimeHourMinute }} at the {{ courtName }}.",
+          "VIEW_HEARING_NOTICE_BUTTON": "View hearing notice"
+        }
+      }
     },
     "MEDIATION_CAN_WE_USE": {
       "CAN_MEDIATION_USE": "Can the mediation service use {{ respondentTelNumber }} to call you?",

@@ -1,10 +1,12 @@
 import {Claim} from 'models/claim';
 import {
-  getEvidenceUploadLatestUpdateContent,
+  getClaimSummaryContent,
+  getEvidenceUploadLatestUpdateContent, getHearingTrialUploadLatestUpdateContent,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/caseProgressionLatestUpdateService';
 import {
-  buildEvidenceUploadSection,
+  buildEvidenceUploadSection, buildHearingTrialLatestUploadSection,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/latestUpdateContentBuilderCaseProgression';
+import {getCaseProgressionHearingMock} from '../../../../../../../utils/caseProgression/mockCaseProgressionHearing';
 
 describe('Case Progression Latest Update Content service', () => {
   const mockClaim = require('../../../../../../../utils/mocks/civilClaimResponseMock.json');
@@ -25,5 +27,19 @@ describe('Case Progression Latest Update Content service', () => {
     expect(evidenceUploadContent).toMatchObject(expectedContent);
     expect(evidenceUploadContent[0].contentSections).toEqual(expectedContent[0].contentSections);
     expect(evidenceUploadContent[0].contentSections.length).toEqual(expectedContent[0].contentSections.length);
+  });
+
+  it('should return CaseProgression hearing upload section for latest update content', () => {
+    //Given
+    claim.caseProgressionHearing = getCaseProgressionHearingMock();
+    const hearingUploadSectionExpected = buildHearingTrialLatestUploadSection(claim, 'en');
+    const hearingUploadSectionExpect = getClaimSummaryContent(hearingUploadSectionExpected);
+
+    //when
+    const hearingUploadSectionResult = getHearingTrialUploadLatestUpdateContent(claim, 'en');
+
+    //Then
+    expect(hearingUploadSectionExpect).toMatchObject(hearingUploadSectionResult);
+
   });
 });
