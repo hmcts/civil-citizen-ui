@@ -59,6 +59,7 @@ describe('Latest Update Content Builder Case Progression', () => {
         documentSize: 0,
         documentType: undefined,
       };
+      claim.hearingDate = null;
       // when
       const evidenceUploadSection = buildEvidenceUploadSection(claim);
       // Then
