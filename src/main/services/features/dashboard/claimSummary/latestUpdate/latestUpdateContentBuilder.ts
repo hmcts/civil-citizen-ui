@@ -184,7 +184,7 @@ function generateLastUpdateResponseSections(claimResponseStatus: ClaimResponseSt
 
 export const buildResponseToClaimSection = (claim: Claim, claimId: string, lang: string): ClaimSummarySection[] => {
   const sectionContent = [];
-  const lng = getLng(lang)
+  const lng = getLng(lang);
 
   const responseNotSubmittedTitle = getResponseNotSubmittedTitle(claim.isDeadlineExtended());
   const responseDeadlineNotPassedContent = getNotPastResponseDeadlineContent(claim);
