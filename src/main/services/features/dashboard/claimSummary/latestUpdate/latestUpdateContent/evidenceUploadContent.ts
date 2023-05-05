@@ -5,7 +5,7 @@ import {DocumentUri} from 'models/document/documentType';
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 
 export const getEvidenceUpload = (claim: Claim) : ClaimSummarySection[] => {
-  if (claim.hearingDate){
+  if (claim?.caseProgressionHearing?.hearingDate){
     return getEvidenceUploadSectionWithBundleDeadline(claim.id, claim.bundleStitchingDeadline);
   } else {
     return getEvidenceUploadSection(claim.id);

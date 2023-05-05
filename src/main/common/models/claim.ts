@@ -496,7 +496,7 @@ export class Claim {
   }
 
   get bundleStitchingDeadline(): string {
-    const hearingDateTime = new Date(this.hearingDate).getTime();
+    const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
     const threeWeeksMilli = 21 * 24 * 60 * 60 * 1000;
     const options: DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
     return new Date(hearingDateTime - threeWeeksMilli).toLocaleDateString('en-GB', options);
