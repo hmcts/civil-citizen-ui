@@ -1,7 +1,7 @@
 import {getDocumentsContent} from 'services/features/dashboard/claimSummaryService';
 import {
   buildDownloadHearingNoticeSection,
-  buildDownloadSealedClaimSection
+  buildDownloadSealedClaimSection,
 } from 'services/features/dashboard/claimDocuments/claimDocumentContentBuilder';
 
 import {Claim} from 'models/claim';

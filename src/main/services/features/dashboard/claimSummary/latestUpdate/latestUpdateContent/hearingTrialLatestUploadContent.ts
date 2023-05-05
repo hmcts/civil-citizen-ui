@@ -1,7 +1,7 @@
 import {LatestUpdateSectionBuilder} from 'models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 import {Claim} from 'models/claim';
 import {DocumentUri} from 'models/document/documentType';
-import {CASE_DOCUMENT_DOWNLOAD_URL} from "routes/urls";
+import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
 
 const TRIAL_HEARING_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.TRIAL_HEARING_CONTENT';
 

@@ -8,7 +8,7 @@ import {AppRequest} from '../../../common/models/AppRequest';
 import {DocumentType} from '../../../common/models/document/documentType';
 import {Claim} from 'models/claim';
 import {getClaimById} from '../../../modules/utilityService';
-import {deleteDraftClaimFromStore} from "modules/draft-store/draftStoreService";
+import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 
 const documentDownloadController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
