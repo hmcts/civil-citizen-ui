@@ -36,7 +36,7 @@ describe('Latest Update Content Builder Case Progression', () => {
         documentSize: 0,
         documentType: undefined,
       };
-      claim.hearingDate = new Date();
+      claim.caseProgressionHearing.hearingDate = new Date();
       // when
       const evidenceUploadSection = buildEvidenceUploadSection(claim);
       // Then
@@ -63,7 +63,7 @@ describe('Latest Update Content Builder Case Progression', () => {
         documentSize: 0,
         documentType: undefined,
       };
-      claim.hearingDate = null;
+      claim.caseProgressionHearing.hearingDate = null;
       // when
       const evidenceUploadSection = buildEvidenceUploadSection(claim);
       // Then
