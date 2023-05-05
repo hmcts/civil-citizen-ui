@@ -1,4 +1,4 @@
-import {IsDefined, Validate, ValidateIf, ValidateNested} from 'class-validator';
+import {Validate, ValidateNested} from 'class-validator';
 import {CaseDocument} from 'models/document/caseDocument';
 import {
   EvidenceUploadDisclosure,
@@ -7,30 +7,15 @@ import {
   EvidenceUploadWitness,
 } from 'models/document/documentType';
 import {AtLeastOneCheckboxSelectedValidator} from 'form/validators/atLeastOneCheckboxSelectedValidator';
-import {YesNo} from 'form/models/yesNo';
 
-export class uploadDocumentTypeList {
-  @IsDefined({message: 'ERRORS.SELECT_YES_IF_SUPPORT'})
-    option: YesNo;
-  @ValidateIf(o => o.option === YesNo.YES)
-  @ValidateNested()
-    items?: UploadDocument;
-
-  [key: string]: YesNo | UploadDocument;
-  constructor(option?: YesNo, items?: UploadDocument) {
-    this.option = option;
-    this.items = items;
-  }
-}
-
-export interface SupportRequiredParams{
+export interface uploadDocumentParams{
   disclosure?: UploadDocumentTypes[],
   witness?: UploadDocumentTypes[],
   expert?: UploadDocumentTypes[],
   trial?: UploadDocumentTypes[],
 }
 
-export class UploadDocument {
+export class UploadDocuments {
 
   @ValidateNested()
     disclosure?: UploadDocumentTypes[];
@@ -40,11 +25,11 @@ export class UploadDocument {
     expert?: UploadDocumentTypes[];
   @ValidateNested()
     trial?: UploadDocumentTypes[];
-  @Validate(AtLeastOneCheckboxSelectedValidator, {message: 'ERRORS.SELECT_SUPPORT' })
+  @Validate(AtLeastOneCheckboxSelectedValidator, {message: 'ERRORS.VALID_ENTER_AT_LEAST_ONE_UPLOAD' })
     checkboxGrp?: boolean [];
 
   [key: string]: string | UploadDocumentTypes[] | boolean[];
-  constructor(params?: SupportRequiredParams) {
+  constructor(params?: uploadDocumentParams) {
     this.disclosure = params?.disclosure;
     this.witness = params?.witness;
     this.expert = params?.expert;
