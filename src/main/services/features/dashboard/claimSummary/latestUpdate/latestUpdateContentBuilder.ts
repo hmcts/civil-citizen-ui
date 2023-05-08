@@ -63,7 +63,7 @@ function getPartAdmitPaidPayByDate(claim: Claim, lng: string) {
       .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_BY`, {
         amount: currencyFormat(getAmount(claim)),
         claimantName: claimantFullName,
-        paymentDate: formatDateToFullDate(getFirstRepaymentDate(claim),lng),
+        paymentDate: formatDateToFullDate(getPaymentDate(claim),lng),
       })
       .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
       .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claimId)
@@ -74,7 +74,7 @@ function getPartAdmitPaidPayByDate(claim: Claim, lng: string) {
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_BY`, {
       amount: currencyFormat(getAmount(claim)),
       claimantName: claimantFullName,
-      paymentDate: formatDateToFullDate(getFirstRepaymentDate(claim),lng),
+      paymentDate: formatDateToFullDate(getPaymentDate(claim),lng),
     })
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`)
     .addContactLink(`${PAGES_LATEST_UPDATE_CONTENT}GET_CONTACT_DETAILS`, claimId, {claimantName: claimantFullName})
