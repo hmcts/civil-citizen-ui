@@ -14,16 +14,20 @@
 <div class="govuk-width-container">
   <main class="govuk-main-wrapper" role="main">
     {% if form.hasErrors() %}
-    {{ errorSummary(form.getErrors(), t) }}
+    {{ errorSummary(form.getAllErrors(), t) }}
     {% endif %}
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.TITLE') }}</h1>
-         <p class="govuk-body">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CASE_REFERENCE_NUMBER') }}{{claimId}}</p>
-         <p class="govuk-body">{{claimantFullName}} v {{defendantFullName}}</p>
-         <p class="govuk-body">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.SELECT_THE_TYPE_OF_DOCUMENT') }}</p>
+         <form method="post" novalidate>
+          {{ csrfProtection(csrf) }}
+          <h1 class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.TITLE') }}</h1>
+          <p class="govuk-body">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CASE_REFERENCE_NUMBER') }}{{claimId}}</p>
+          <p class="govuk-body">{{claimantFullName}} v {{defendantFullName}}</p>
+          <p class="govuk-body">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.SELECT_THE_TYPE_OF_DOCUMENT') }}</p>
+                  <div class='multiple-row'>
                       {{ govukCheckboxes({
                         idPrefix: 'typeOfDocuments',
+                        id: 'typeOfDocuments',
                         name: 'typeOfDocuments',
                         fieldset: {
                            legend: {
@@ -32,27 +36,26 @@
                            classes: "govuk-fieldset__legend--l"
                           }
                         },
-                        errorMessage: {
-                           text: t(checkboxGrpError)
-                        } if checkboxGrpError,
                         items: [
                           {
                             id: 'documents',
+                            name: 'documents',
                             value: 'documents',
                             text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_FOR_DISCLOSURE'),
                             hint: {
                                  text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_FOR_DISCLOSURE_HINT')
                             },
-                            checked: true if form.model.disclosure.documents
+                            checked: true if form.model.disclosure[0].selected
                           },
                           {
                             id: 'list',
+                            name: 'list',
                             value: 'list',
                             text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DISCLOSURE_LIST'),
                             hint: {
                                  text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DISCLOSURE_LIST_HINT')
                             },
-                            checked: true if form.model.disclosure.list
+                            checked: true if form.model.disclosure[1].selected
                           }
                         ]
                       }) }}
@@ -67,55 +70,57 @@
                              classes: "govuk-fieldset__legend--l"
                             }
                           },
-                          errorMessage: {
-                             text: t(checkboxGrpError)
-                          } if checkboxGrpError,
                           items: [
                           {
                             id: 'yourStatement',
+                            name: 'yourStatement',
                             value: 'yourStatement',
                             text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.YOUR_STATEMENT'),
                                                         hint: {
                                                              text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.YOUR_STATEMENT_HINT')
                                                         },
-                            checked: true if form.model.witness.yourStatement
+                            checked: true if form.model.witness[0].selected
                             },
                           {
                             id: 'witnessStatement',
+                            name: 'witnessStatement',
                             value: 'witnessStatement',
                             text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_STATEMENT'),
                                                         hint: {
                                                              text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_STATEMENT_HINT')
                                                         },
-                            checked: true if form.model.witness.witnessStatement
+                            checked: true if form.model.witness[1].selected
                           },
                           {
                             id: 'summary',
+                            name: 'summary',
                             value: 'summary',
                             text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_SUMMARY'),
                                                         hint: {
                                                              text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_SUMMARY_HINT')
                                                         },
-                            checked: true if form.model.witness.summary
+                            checked: true if form.model.witness[2].selected
                           },
                           {
-                            id: 'notice',
-                            value: 'notice',
+                            id: 'witnessNotice',
+                            name: 'witnessNotice',
+                            value: 'witnessNotice',
                             text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.NOTICE_OF_INTENTION'),
                                                         hint: {
                                                              text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.NOTICE_OF_INTENTION_HINT')
                                                         },
-                            checked: true if form.model.witness.notice
+                            checked: true if form.model.witness[3].selected
                           }
                           ,
                           {
                             id: 'witnessDocuments',
+                            name: 'witnessDocuments',
                             value: 'witnessDocuments',
                             text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_REFFERED_TO_STATEMENT'),
                                                         hint: {
                                                              text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_REFFERED_TO_STATEMENT_HINT')
                                                         },
-                            checked: true if form.model.witness.documents
+                            checked: true if form.model.witness[4].selected
                           }
                           ]
                           }) }}
@@ -129,49 +134,50 @@
                                  classes: "govuk-fieldset__legend--l"
                                 }
                               },
-                              errorMessage: {
-                                 text: t(checkboxGrpError)
-                              } if checkboxGrpError,
-                              items: [
-                          {
-                            id: 'report',
-                            value: 'report',
-                            text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.EXPERTS_REPORT'),
-                            hint: {
-                              text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_REFFERED_TO_STATEMENT_HINT')
+                           items: [
+                            {
+                              id: 'report',
+                              name: 'report',
+                              value: 'report',
+                              text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.EXPERTS_REPORT'),
+                              hint: {
+                                text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_REFFERED_TO_STATEMENT_HINT')
+                              },
+                              checked: true if form.model.expert[0].selected
+                            }
+                            ,
+                            {
+                              id: 'statement',
+                              name: 'statement',
+                              value: 'statement',
+                              text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.JOINT_STATEMENT_OF_EXPERTS'),
+                              hint: {
+                                   text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_REFFERED_TO_STATEMENT_HINT')
+                              },
+                              checked: true if form.model.expert[1].selected
                             },
-                            checked: true if form.model.experts.report
-                          }
-                          ,
-                          {
-                            id: 'statement',
-                            value: 'statement',
-                            text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.JOINT_STATEMENT_OF_EXPERTS'),
-                            hint: {
-                                 text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_REFFERED_TO_STATEMENT_HINT')
+                            {
+                              id: 'questions',
+                              name: 'questions',
+                              value: 'questions',
+                              text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.QUESTIONS_FOR_OTHER_PARTY'),
+                              hint: {
+                                   text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.QUESTIONS_FOR_OTHER_PARTY_HINT')
+                              },
+                              checked: true if form.model.expert[2].selected
                             },
-                            checked: true if form.model.experts.statement
-                          },
-                          {
-                            id: 'questions',
-                            value: 'questions',
-                            text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.QUESTIONS_FOR_OTHER_PARTY'),
-                            hint: {
-                                 text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.QUESTIONS_FOR_OTHER_PARTY_HINT')
-                            },
-                            checked: true if form.model.experts.statement
-                          },
-                           {
-                             id: 'answer',
-                             value: 'answer',
-                             text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.ANSWERS_TO_QUESTIONS'),
-                             hint: {
-                                  text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.ANSWERS_TO_QUESTIONS_HINT')
-                             },
-                             checked: true if form.model.experts.statement
-                           }
-                        ]
-                      }) }}
+                             {
+                               id: 'answer',
+                               name: 'answer',
+                               value: 'answer',
+                               text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.ANSWERS_TO_QUESTIONS'),
+                               hint: {
+                                    text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.ANSWERS_TO_QUESTIONS_HINT')
+                               },
+                               checked: true if form.model.expert[3].selected
+                             }
+                          ]
+                        }) }}
                       {{ govukCheckboxes({
                             idPrefix: 'trial',
                             name: 'trial',
@@ -182,67 +188,68 @@
                                classes: "govuk-fieldset__legend--l"
                               }
                             },
-                            errorMessage: {
-                               text: t(checkboxGrpError)
-                            } if checkboxGrpError,
                             items: [
                             {
-                              id: 'yourStatement',
-                              value: 'yourStatement',
+                              id: 'case',
+                              name: 'case',
+                              value: 'case',
                               text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CASE_SUMMARY'),
                               hint: {
                                    text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CASE_SUMMARY_HINT')
                               },
-                              checked: true if form.model.witness.yourStatement
+                              checked: true if form.model.trial[0].selected
                               },
                             {
-                              id: 'witnessStatement',
-                              value: 'witnessStatement',
+                              id: 'skeleton',
+                              name: 'skeleton',
+                              value: 'skeleton',
                               text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.SKELETON_ARGUMENT'),
                               hint: {
                                    text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.SKELETON_ARGUMENT_HINT')
                               },
-                              checked: true if form.model.witness.witnessStatement
+                              checked: true if form.model.trial[1].selected
                             },
                             {
-                              id: 'summary',
-                              value: 'summary',
+                              id: 'legal',
+                              name: 'legal',
+                              value: 'legal',
                               text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.LEGAL_AUTHORITIES'),
                               hint: {
                                    text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.LEGAL_AUTHORITIES_HINT')
                               },
-                              checked: true if form.model.witness.summary
+                              checked: true if form.model.trial[2].selected
                             },
                             {
-                              id: 'notice',
-                              value: 'notice',
+                              id: 'cost',
+                              name: 'cost',
+                              value: 'cost',
                               text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.COSTS'),
                               hint: {
                                    text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.COSTS_HINT')
                               },
-                              checked: true if form.model.witness.notice
+                              checked: true if form.model.trial[3].selected
                             }
                             ,
                             {
-                              id: 'witnessDocuments',
-                              value: 'witnessDocuments',
+                              id: 'documentary',
+                              name: 'documentary',
+                              value: 'documentary',
                               text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTARY_EVIDENCE'),
                               hint: {
                                    text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTARY_EVIDENCE_HINT')
                               },
-                              checked: true if form.model.witness.documents
+                              checked: true if form.model.trial[4].selected
                             }
                             ]
                             }) }}
-               <div class="govuk-button-group">
+                  </div>
+               <div class="govuk-form-group">
                  {{ govukButton({
                    text: "Continue"
                  }) }}
-
                  <a class="govuk-link" href="#">Cancel</a>
+                 {{ contactUsForHelp(t) }}
                </div>
-              {{ contactUsForHelp(t) }}
-              </div>
         </form>
       </div>
     </div>

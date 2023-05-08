@@ -4,9 +4,12 @@ import {AppRequest} from 'common/models/AppRequest';
 
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {Claim} from 'models/claim';
 import {GenericForm} from 'form/models/genericForm';
-import {getDocuments, saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
+import {
+  getDocuments,
+  getTypeDocumentForm,
+  saveCaseProgression,
+} from 'services/features/caseProgression/caseProgressionService';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {UploadDocuments} from 'form/models/caseProgression/uploadDocumentstype';
 
@@ -18,7 +21,7 @@ async function renderView(res: Response, claimId: string, form: GenericForm<Uplo
   const claim = await getCaseDataFromStore(claimId);
   const claimantFullName = claim.getClaimantFullName();
   const defendantFullName = claim.getDefendantFullName();
-  res.render(typeOfDocumentsViewPath, {form:new GenericForm(new Claim()),
+  res.render(typeOfDocumentsViewPath, {form,
     claimId,claimantFullName,defendantFullName,
   });
 }
@@ -39,8 +42,8 @@ typeOfDocumentsController.get(TYPES_OF_DOCUMENTS_URL,
 typeOfDocumentsController.post(TYPES_OF_DOCUMENTS_URL, async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    const documentslist = await getDocuments(claimId,ClaimantOrDefendant.DEFENDANT);
-    const form = new GenericForm(documentslist);
+    const typeDocumentList= getTypeDocumentForm(req);
+    const form = new GenericForm(typeDocumentList);
     form.validateSync();
     if (form.hasErrors()) {
       renderView(res, claimId,form);
