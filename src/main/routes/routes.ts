@@ -196,6 +196,7 @@ import claimantSuggestedPaymentOptionController from './features/claimantRespons
 import claimantSuggestedPaymentDateController from './features/claimantResponse/claimantSuggestedPaymentDateController';
 import claimantSuggestedInstalmentsController from './features/claimantResponse/claimantSuggestedInstalmentsController';
 import typeOfDocumentsController from './features/caseProgression/typeOfDocumentsController';
+import uploadDocumentsController from './features/caseProgression/uploadDocumentsController';
 
 export default [
   homeController,
@@ -380,4 +381,5 @@ export default [
   claimantSuggestedPaymentDateController,
   claimantSuggestedInstalmentsController,
   typeOfDocumentsController,
+  uploadDocumentsController,
 ];
