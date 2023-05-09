@@ -87,7 +87,6 @@ export class Claim {
   id: string;
   sdoOrderDocument?: CaseDocument;
   respondent1LiPResponse?: CCDRespondentLiPResponse;
-  sdoOrderDocument?: CaseDocument;
 
   get responseStatus(): ClaimResponseStatus {
     if (this.isFullAdmission() && this.isFAPaymentOptionPayImmediately()) {
