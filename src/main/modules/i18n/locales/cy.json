@@ -678,7 +678,8 @@
           "TALK_TO_THE_PERSON": "siarad â'r unigolyn neu'r sefydliad yr ydych am hawlio yn ei erbyn"
         },
         "P2": {
-          "HEADING": "siarad â'r unigolyn neu'r sefydliad",
+
+          "HEADING": "Siarad â'r unigolyn neu'r sefydliad",
           "MAKE_A_CLAIM": "esbonio y byddwch yn gwneud hawliad yn ei erbyn os nad yw’n dilyn eich amserlen",
           "SUGGESTING_TIMETABLE": "awgrymu amserlen gyda chamau rydych eisiau i'r unigolyn eu cymryd",
           "TELLING_THEM_WHY": "dweud wrth yr unigolyn pam eich bod yn bwriadu gwneud hawliad yn ei erbyn",
@@ -1199,20 +1200,20 @@
       "TITLE": "Apply For Help With Fees"
     },
     "ELIGIBILITY_CLAIMANT_ADDRESS": {
-      "PAGE_TITLE": "Do you have a postal address in the UK?",
-      "TITLE": "Do you have a postal address in the UK?",
-      "UK_MADE_UP": "The UK is made up of England and Wales."
+      "PAGE_TITLE": "Oes gennych chi gyfeiriad post yn y DU?",
+      "TITLE": "Oes gennych chi gyfeiriad post yn y DU?",
+      "UK_MADE_UP": "Mae'r DU yn cynnwys Cymru a Lloegr."
     },
     "ELIGIBILITY_CLAIM_AGAINST_GOVERNMENT": {
-      "LIST_OF_GOVERNMENT": "See list of government departments (opens in a new window).",
+      "LIST_OF_GOVERNMENT": "Gweler y rhestr o adrannau'r llywodraeth (yn agor mewn ffenestr newydd).",
       "PAGE_TITLE": "Government department",
-      "TITLE": "Are you claiming against a government department?"
+      "TITLE": "Ydych chi'n hawlio yn erbyn adran o'r llywodraeth?"
     },
     "ELIGIBILITY_CLAIM_TYPE": {
-      "A_CLIENT": "A client - I'm their solicitor",
-      "JUST_MYSELF": "Just my self or my organisation",
-      "MORE_THAN_ONE_PERSON_OR_ORGANISATION": "More than one person or organisation",
-      "TITLE": "Who are you making the claim for?"
+      "A_CLIENT": "Cleient - fi yw ei gyfreithiwr",
+      "JUST_MYSELF": "Dim ond fi fy hunan neu fy sefydliad",
+      "MORE_THAN_ONE_PERSON_OR_ORGANISATION": "Mwy nag un unigolyn neu sefydliad",
+      "TITLE": "Dros bwy ydych chi’n gwneud hawliad?"
     },
     "ELIGIBILITY_DEFENDANT_ADDRESS": {
       "PAGE_TITLE": "Defendant Address in England or Wales",
@@ -1224,9 +1225,9 @@
       "TITLE": "Do you believe the person you’re claiming against is 18 or over?"
     },
     "ELIGIBILITY_HELP_WITH_FEES": {
-      "PAGE_TITLE": "Do you need help paying your court fee?",
-      "TITLE": "Do you need help paying your court fee?",
-      "FINANCIAL_HELP": "You could get financial help with court fees if you have little or no savings, are on a low income or get certain benefits."
+      "PAGE_TITLE": "Ydych chi angen help i dalu ffi’r llys?",
+      "TITLE": "Ydych chi angen help i dalu ffi’r llys?",
+      "FINANCIAL_HELP": "Gallech gael cymorth ariannol gyda ffioedd llys os nad oes gennych lawer neu ddim cynilion, os ydych ar incwm isel neu os ydych yn cael budd-daliadau penodol."
     },
     "ELIGIBILITY_HWF_REFERENCE": {
       "ALREADY_APPLIED": "You’ll only have one if you’ve already applied for Help with Fees in respect of this claim.",
@@ -1244,11 +1245,11 @@
       "TITLE": "Is this claim against more than one person or organisation?"
     },
     "ELIGIBILITY_TOTAL_AMOUNT": {
-      "DONT_KNOW": "I don't know the amount",
-      "INCLUDE_AMOUNT": "If you're claiming interest, include that in the amount",
-      "OVER_25000": "Over £25,000",
-      "TITLE": "Total amount you're claiming",
-      "25000_OR_LESS": "£25,000 or less"
+      "DONT_KNOW": "Dydw i ddim yn gwybod y swm",
+      "INCLUDE_AMOUNT": "Os ydych chi'n hawlio llog, dylech gynnwys hynny yn y swm",
+      "OVER_25000": "Dros £25,000",
+      "TITLE": "Y cyfanswm yr ydych yn ei hawlio",
+      "25000_OR_LESS": "£25,000 neu lai"
     },
     "ELIGIBILITY_OVER_18_CLAIMANT": {
       "PAGE_TITLE": "Are you 18 or over?",
@@ -1370,21 +1371,21 @@
       "REJECT_COURT_MAKE_NEW_PLAN_BASED": "If they reject your plan, the court will make a new plan based on your financial details."
     },
     "FIRST_CONTACT_SIGNPOSTING": {
-      "SUBTITLE": "If you don't respond",
+      "SUBTITLE": "Os na fyddwch yn ymateb",
       "TITLE": "Ymateb i hawliad ariannol",
       "PAGE_TITLE": "Ymateb i hawliad ariannol",
-      "PARAGRAPH_1": "You have 28 days to respond to the claim from the date the court issued it.",
-      "PARAGRAPH_2": "Find the exact deadline date in the letter or email you received explaining the claim.",
-      "PARAGRAPH_3": "We'll send your response to the claimant (the person or organisation who says you owe them money).",
-      "PARAGRAPH_4_CCJ_URL": "County Court Judgment (CCJ) ",
-      "PARAGRAPH_4_PART_1": "The claimant can apply for a",
-      "PARAGRAPH_4_PART_2": "against you if you don't respond before the deadline.",
-      "PARAGRAPH_5": "They can use a CCJ to get the money from you, for example by applying to the court to send bailiffs to your home or business.",
-      "PARAGRAPH_6": "A CCJ may make it harder to get credit, such as a mobile phone contract, credit card or mortgage.",
-      "START_NOW": "Start now",
-      "SUPPORT": "Support",
-      "SUPPORT_CLAIM_FEES_URL": "Money claim fees ",
-      "SUPPORT_CONTACT_US_URL": "Contact us "
+      "PARAGRAPH_1": "Mae gennych 28 diwrnod i ymateb i'r hawliad o'r dyddiad y cyhoeddodd y llys yr hawliad.",
+      "PARAGRAPH_2": "Mae'r union ddyddiad terfyn yn y llythyr neu'r e-bost a gawsoch yn egluro'r hawliad.",
+      "PARAGRAPH_3": "Byddwn yn anfon eich ymateb at yr hawlydd (yr unigolyn neu'r sefydliad sy'n dweud bod arnoch arian iddo).",
+      "PARAGRAPH_4_CCJ_URL": "Dyfarniad Llys Sirol (CCJ) ",
+      "PARAGRAPH_4_PART_1": "Gall yr hawlydd wneud cais am",
+      "PARAGRAPH_4_PART_2": "yn eich erbyn os nad ydych yn ymateb cyn y dyddiad cau.",
+      "PARAGRAPH_5": "Gall ddefnyddio CCJ i gael yr arian gennych, er enghraifft drwy wneud cais i'r llys i anfon beilïaid i'ch cartref neu eich busnes.",
+      "PARAGRAPH_6": "Gall CCJ ei gwneud hi'n anoddach i gael credyd, fel contract ffôn symudol, cerdyn credyd neu forgais.",
+      "START_NOW": "Dechrau nawr",
+      "SUPPORT": "Cefnogaeth",
+      "SUPPORT_CLAIM_FEES_URL": "Ffioedd hawliadau am arian ",
+      "SUPPORT_CONTACT_US_URL": "Cysylltu â ni "
     },
     "FIRST_CONTACT_ACCESS_DENIED": {
       "CLICK_HERE": "Cliciwch yma i roi cynnig arall arni",
@@ -1604,7 +1605,7 @@
       },
       "N1_PAPER_FORM": "N1 paper form",
       "OPENS_IN_A_NEW_WINDOW": "(agor mewn ffenestr newydd)",
-      "PAGE_TITLE": "You can’t use this service",
+      "PAGE_TITLE": "Ni allwch ddefnyddio'r gwasanaeth hwn",
       "TENANCY_DEPOSIT": {
         "GET": "Get",
         "HELP_TO_RESOLVE_YOUR_DISPUTE": "help to resolve your dispute",
@@ -1709,10 +1710,10 @@
     "PIN": {
       "CONTACT_US": "contact us",
       "CHECK_SECURITY_CODE": "Check the security code is the one we sent you. You can",
-      "FIND_PIN": "You can find it on the email or letter we sent you.",
+      "FIND_PIN": "Gellir ei weld ar yr e-bost neu'r llythyr a anfonwyd gennym.",
       "FOR_A_NEW_SECURITY_CODE": "for a new security code.",
-      "SECURITY_CODE": "Security code",
-      "TITLE": "Enter security code"
+      "SECURITY_CODE": "Cod diogelwch",
+      "TITLE": "Nodwch y cod diogelwch"
     },
     "REASON": {
       "EXTRA_FEE_IF_CHANGE_DETAILS": "You'll have to pay an extra fee if you want to change the details of the claim later.",
@@ -2091,7 +2092,7 @@
       "ALL_ACTIONS_COMPLETED_CHECK_ANSWERS": "Ar ôl i chi gwblhau'r holl gamau byddwch yn mynd ymlaen i dudalen lle gallwch wirio'ch atebion cyn eu cyflwyno."
     },
     "TENANCY_DEPOSIT": {
-      "TITLE": "Is your claim for a tenancy deposit?"
+      "TITLE": "A yw eich hawliad am flaendal tenantiaeth?"
     },
     "TIMELINE": {
       "EXAMPLE": "Example timeline",
@@ -2193,6 +2194,21 @@
       "TITLE": "A ydych yn ddi-waith neu wedi ymddeol?",
       "UNEMPLOYED": "Di-waith"
     },
+    "UPLOAD_DOCUMENTS": {
+      "ADD": "Add another",
+      "DATE": "Date statement was written",
+      "DATE_EXAMPLE": "For example, 27 9 2022",
+      "FORMAT": "Each document must be less than 100MB. You can upload the following file types: Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF,TIFF.",
+      "NAME": "Your name",
+      "NO_UPLOAD": "No files uploaded",
+      "PAGE_TITLE": "Upload documents",
+      "REMOVE_SECTION": "Remove section",
+      "STATEMENT": "Your statement",
+      "SUBTITLE": "Acceptable documents formats",
+      "TITLE": "Upload documents",
+      "UPLOAD": "Upload a file",
+      "WITNESS": "Witness evidence"
+    },
     "VULNERABILITY": {
       "PAGE_TITLE": "Vulnerability questions",
       "QUESTION_1": "Diffinnir hyn fel rhywun sydd wedi dioddef camdriniaeth ddomestig neu ryw fath arall o gamdriniaeth, rhywun sydd ag anabledd dysgu, anabledd corfforol, salwch meddyliol neu ddiffyg galluedd meddyliol.  Bydd y llys yn ystyried pa addasiadau neu gymorth y bydd yr unigolyn ei angen",
@@ -2261,7 +2277,7 @@
     "ANNUAL_TURNOVER_REQUIRED": "A ydych yn siŵr bod hwn yn swm dilys?",
     "CHOOSE_TYPE_OF_INTEREST": "Dewis math o log",
     "CLAIM_DETAILS": "Claim details",
-    "CLAIM_NUMBER_REQUIRED": "You need to enter the claim number",
+    "CLAIM_NUMBER_REQUIRED": "Mae angen i chi nodi rhif yr hawliad",
     "CLAIM_VALID_AMOUNT": "Rhowch swm dilys",
     "CLAIMANT_ACCEPT_TERMS_OF_THE_AGREEMENT": "Please select I confirm I’ve read and accept the terms of the agreement",
     "CORRECT_DATE_NOT_IN_FUTURE": "Cywirwch y dyddiad, ni allwch ddefnyddio dyddiad yn y dyfodol.",
@@ -2313,8 +2329,8 @@
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS_TO": "Mae'n rhaid i’r dyddiad nad yw ar gael tan fod yn y 12 mis nesaf",
     "ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE": "Rhaid i’r dyddiad nad yw ar gael o fod cyn y dyddiad y mae ar gael tan",
     "ENTER_VALID_EMAIL": "Rhowch gyfeiriad e-bost dilys",
-    "ENTER_SECURITY_CODE": "Enter your security code",
-    "ENTER_VALID_SECURITY_CODE": "Enter a valid security code",
+    "ENTER_SECURITY_CODE": "Rhowch eich cod diogelwch",
+    "ENTER_VALID_SECURITY_CODE": "Rhowch god diogelwch dilys",
     "ENTER_VALID_TITLE": "Enter valid title",
     "EQUAL_INSTALMENTS_REQUIRED": "Rhowch swm dilys i'w dalu fesul rhan",
     "EXPENSES_ENTER_OTHER_SOURCE": "Rhowch fanylion unrhyw ffynhonnell arall o wariant",
@@ -2414,7 +2430,7 @@
     "RATE_EXPLAIN_CLAIMING_IT": "Nid ydych wedi esbonio pam eich bod yn hawlio'r gyfradd hon",
     "REASON_REQUIRED": "You need to explain why you believe you’re owed the money",
     "REDIS_FAILURE": "Redis DraftStore failure.",
-    "SECURITY_CODE_WRONG_OR_EXPIRED": "The security code was not right or has expired",
+    "SECURITY_CODE_WRONG_OR_EXPIRED": "Nid oedd y cod diogelwch yn iawn neu mae wedi dod i ben",
     "SELECT_ADDITIONAL_TIME": "Dewiswch faint o amser ychwanegol yr ydych yn gwneud cais amdano",
     "SELECT_WELSH_AND_ENGLISH_OPTION": "Dewiswch Cymraeg a Saesneg os ydych am ymateb i'r hawliad hwn yn Gymraeg",
     "SELECT_AN_OPTION": "Dewiswch opsiwn",
@@ -2520,7 +2536,7 @@
     "VALID_CLAIM_INTEREST_FROM": "Dewiswch pryd i hawlio llog gan",
     "VALID_CLAIM_INTEREST_END_DATE": "Dewiswch pryd rydych am roi'r gorau i hawlio llog",
     "VALID_CLAIM_NUMBER": "Enter a claim number",
-    "VALID_CLAIM_REFERENCE_NUMBER": "Enter a valid claim number",
+    "VALID_CLAIM_REFERENCE_NUMBER": "Rhowch rif hawliad dilys",
     "VALID_DATE": "Rhowch ddyddiad dilys",
     "VALID_DATE_IN_PAST": "Nodwch ddyddiad cyn {{dateToday}}",
     "VALID_DATE_NOT_IN_PAST": "Nodwch ddyddiad heddiw neu ddyddiad yn y dyfodol",
