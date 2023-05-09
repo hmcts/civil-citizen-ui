@@ -1,4 +1,33 @@
-import {addMonths, getDOBforAgeFromCurrentTime} from '../../../../main/common/utils/dateUtils';
+import {
+  addFiveDaysBefore4pm, 
+  addMonths, 
+  getDOBforAgeFromCurrentTime,
+} from '../../../../main/common/utils/dateUtils';
+
+describe('addFiveDaysBefore4pm', () => {
+  it('should add 5 days to date if hour is before 4pm', () => {
+    //Given
+    const date = new Date('2023-01-05');
+    date.setHours(10, 0, 0, 0);
+    const resultDate = new Date('2023-01-10');
+    resultDate.setHours(10, 0, 0, 0);
+    //When
+    const result = addFiveDaysBefore4pm(date);
+    //Then
+    expect(result.getDate()).toBe(resultDate.getDate());
+  });
+  it('should add 6 days to date if hour is after 4pm', () => {
+    //Given
+    const date = new Date('2023-01-05');
+    date.setHours(22, 0, 0, 0);
+    const resultDate = new Date('2023-01-11');
+    resultDate.setHours(22, 0, 0, 0);
+    //When
+    const result = addFiveDaysBefore4pm(date);
+    //Then
+    expect(result.getDate()).toBe(resultDate.getDate());
+  });
+});
 
 describe('getDOBforAgeFromCurrentTime', () => {
   it('should return the maximim date for age', () => {
