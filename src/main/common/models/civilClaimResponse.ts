@@ -161,6 +161,7 @@ export interface CCDClaim extends ClaimUpdate {
   respondToAdmittedClaim?: CCDRespondToClaim;
   detailsOfWhyDoesYouDisputeTheClaim?: string;
   respondToAdmittedClaimOwingAmount?: string;
+  respondToAdmittedClaimOwingAmountPounds?: string;
 }
 
 export interface ClaimFeeData {
