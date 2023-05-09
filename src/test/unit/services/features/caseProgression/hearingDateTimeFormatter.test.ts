@@ -1,14 +1,22 @@
-import {CourtNameExtractor} from 'services/features/caseProgression/courtNameExtractor';
+import {HearingDateTimeFormatter} from 'services/features/caseProgression/hearingDateTimeFormatter';
 
 describe('HearingDateTimeFormatter Service', () => {
-  it('should extract the CourtName correctly', async () => {
+  it('should format Hearing Time Hour Minute correctly', async () => {
     //Given
-    const countName = 'test - test';
-    const countNameExpected = 'test';
+    const hearingTimeHourMinute = '1000';
+    const hearingTimeHourMinuteExpected = '10:00';
     //When
-    const courtNameResult = CourtNameExtractor.extractCourtName(countName);
+    const hearingTimeHourMinuteResult = HearingDateTimeFormatter.getHearingTimeHourMinuteFormatted(hearingTimeHourMinute);
     //Then
-    expect(countNameExpected).toEqual(courtNameResult);
+    expect(hearingTimeHourMinuteExpected).toEqual(hearingTimeHourMinuteResult);
   });
-
+  it('should format Hearing Date Formatted correctly', async () => {
+    //Given
+    const hearingDate = new Date(2022, 10, 31);
+    const hearingDateExpected = '1 December 2022';
+    //When
+    const hearingDateResult = HearingDateTimeFormatter.getHearingDateFormatted(hearingDate, 'en');
+    //Then
+    expect(hearingDateExpected).toEqual(hearingDateResult);
+  });
 });
