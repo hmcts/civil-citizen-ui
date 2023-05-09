@@ -1,7 +1,7 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {UploadDocuments, UploadDocumentTypes} from 'form/models/caseProgression/uploadDocumentstype';
+import {UploadDocuments, UploadDocumentTypes} from 'models/caseProgression/uploadDocumentsType';
 import {ClaimantOrDefendant} from 'models/partyType';
-import {CaseProgression} from 'form/models/caseProgression/caseProgression';
+import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 import {Request} from 'express';
 import {
   EvidenceUploadDisclosure,

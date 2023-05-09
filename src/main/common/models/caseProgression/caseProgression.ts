@@ -1,4 +1,4 @@
-import {UploadDocuments} from 'form/models/caseProgression/uploadDocumentstype';
+import {UploadDocuments} from 'models/caseProgression/uploadDocumentsType';
 
 export class CaseProgression{
   ClaimantUploadDocuments?: UploadDocuments;

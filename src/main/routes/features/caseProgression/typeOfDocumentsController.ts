@@ -11,7 +11,7 @@ import {
   saveCaseProgression,
 } from 'services/features/caseProgression/caseProgressionService';
 import {ClaimantOrDefendant} from 'models/partyType';
-import {UploadDocuments} from 'form/models/caseProgression/uploadDocumentstype';
+import {UploadDocuments} from 'models/caseProgression/uploadDocumentsType';
 
 const typeOfDocumentsViewPath = 'features/caseProgression/typeOfDocuments';
 const typeOfDocumentsController = Router();

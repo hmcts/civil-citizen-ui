@@ -26,7 +26,6 @@ export class UploadDocuments {
     this.witness = witness;
     this.expert = expert;
     this.trial = trial;
-    //Todo foreach one inside of each section
     this.checkboxGrp = [
       disclosure?.[0].selected,disclosure?.[1].selected,
       witness?.[0].selected,witness?.[1].selected,witness?.[2].selected,witness?.[3].selected,witness?.[4].selected,
