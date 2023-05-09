@@ -1877,7 +1877,42 @@
     "created_date": "2022-03-01T13:29:22.447",
     "last_modified": "2022-03-01T13:29:24.971",
     "security_classification": "PUBLIC",
+    "security_classification": "PUBLIC",
     "case_data": {
+      "caseProgression" : {
+        "caseProgressionDocuments": [
+          {
+            "id": "1fbce32f-a7f5-48ea-b543-b19d642ebe56",
+            "value": {
+              "createdBy": "Civil",
+              "documentLink": {
+                "document_url": "http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6",
+                "document_filename": "hearing_small_claim_000MC110.pdf",
+                "document_binary_url": "http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary"
+              },
+              "documentName": "hearing_small_claim_000MC110.pdf",
+              "documentSize": 56461,
+              "documentType": "HEARING_FORM",
+              "createdDatetime": "2023-04-24T14:44:17"
+            }
+          },
+          {
+            "id": "1fbce32f-a7f5-48ea-b543-b19d642ebe56",
+            "value": {
+              "createdBy": "Civil",
+              "documentLink": {
+                "document_url": "http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6",
+                "document_filename": "hearing_small_claim_000MC110.pdf",
+                "document_binary_url": "http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary"
+              },
+              "documentName": "hearing_small_claim_000MC110.pdf",
+              "documentSize": 56461,
+              "documentType": "HEARING_FORM",
+              "createdDatetime": "2023-04-24T14:44:17"
+            }
+          }
+        ]
+      },
       "ccdState": "PENDING_CASE_ISSUED",
       "claimFee": {
         "code": "FEE0204",

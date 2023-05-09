@@ -56,6 +56,7 @@ import {toCUIMediation} from 'services/translation/convertToCUI/convertToCUIMedi
 import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIClaimDetails';
 import {CCDRespondentLiPResponse} from './ccdResponse/ccdRespondentLiPResponse';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
+import {CaseProgression} from "models/caseProgression/caseProgression";
 
 export class Claim {
   legacyCaseReference: string;
@@ -94,7 +95,7 @@ export class Claim {
   sdoOrderDocument?: CaseDocument;
   respondent1LiPResponse?: CCDRespondentLiPResponse;
   caseProgressionHearing?: CaseProgressionHearing;
-
+  caseProgression?: CaseProgression;
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
     claim.claimDetails = toCUIClaimDetails(ccdClaim);
@@ -327,6 +328,7 @@ export class Claim {
       });
       return filteredDocumentDetailsByType.value;
     }
+
     return undefined;
   }
 

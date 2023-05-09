@@ -11,6 +11,7 @@ import {toCUIDQs} from 'services/translation/convertToCUI/convertToCUIDQs';
 import {toCUIFullAdmission} from 'services/translation/convertToCUI/convertToCUIFullAdmission';
 import {toCUIPartialAdmission} from './convertToCUIPartialAdmission';
 import {toCUICaseProgressionHearing} from 'services/translation/convertToCUI/convertToCaseProgressionHearing';
+import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCaseProgression';
 
 export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -26,6 +27,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   claim.directionQuestionnaire = toCUIDQs(ccdClaim);
   claim.sdoOrderDocument = ccdClaim?.sdoOrderDocument;
   claim.caseProgressionHearing = toCUICaseProgressionHearing(ccdClaim);
+  claim.caseProgression = toCUICaseProgression(ccdClaim);
   if (claim.isFullAdmission())
     claim.fullAdmission = toCUIFullAdmission(ccdClaim);
   else if (claim.isPartialAdmission())
