@@ -25,25 +25,25 @@ describe('PageSectionBuilder tests', ()=> {
     expect(titleExpected).toEqual(result);
   });
 
-  it('should create subTitle', ()=> {
+  it('should create mainTitle', ()=> {
     //Given
-    const subTitle = 'testSubTitle';
+    const mainTitle = 'testMainTitle';
     const variables = 'variables';
-    const subTitleExpected = ([{
-      type: ClaimSummaryType.SUBTITLE,
+    const mainTitleExpected = ([{
+      type: ClaimSummaryType.MAINTITLE,
       data: {
-        text: subTitle,
+        text: mainTitle,
         variables: variables,
       },
     }]);
 
     //When
     const result = new PageSectionBuilder()
-      .addSubTitle(subTitle,variables)
+      .addMainTitle(mainTitle,variables)
       .build();
 
     //Then
-    expect(subTitleExpected).toEqual(result);
+    expect(mainTitleExpected).toEqual(result);
   });
 
   it('should add Paragraph', ()=> {

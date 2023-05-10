@@ -2262,6 +2262,7 @@
       "CLAIMANT": "Your response will be sent to {{ claimantFullName }}."
     },
     "UPLOAD_YOUR_DOCUMENTS": {
+      "CAPTION": "Document upload",
       "PAGE_TITLE": "Upload your documents",
       "TITLE": "Upload your documents",
       "CASE_REFERENCE": "Case reference: {{ claimId }}",

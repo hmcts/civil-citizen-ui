@@ -4,6 +4,29 @@ import {DocumentUri} from 'models/document/documentType';
 
 export class PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
+  addCaption(caption: string, variables?: any) {
+    const captionSection = ({
+      type: ClaimSummaryType.CAPTION,
+      data: {
+        text: caption,
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(captionSection);
+    return this;
+  }
+
+  addMainTitle(mainTitle: string, variables?: unknown) {
+    const mainTitleSection = ({
+      type: ClaimSummaryType.MAINTITLE,
+      data: {
+        text: mainTitle,
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(mainTitleSection);
+    return this;
+  }
 
   addTitle(title: string, variables?: any) {
     const titleSection = ({
@@ -14,18 +37,6 @@ export class PageSectionBuilder {
       },
     });
     this._claimSummarySections.push(titleSection);
-    return this;
-  }
-
-  addSubTitle(subTitle: string, variables?: unknown) {
-    const subTitleSection = ({
-      type: ClaimSummaryType.SUBTITLE,
-      data: {
-        text: subTitle,
-        variables: variables,
-      },
-    });
-    this._claimSummarySections.push(subTitleSection);
     return this;
   }
 
