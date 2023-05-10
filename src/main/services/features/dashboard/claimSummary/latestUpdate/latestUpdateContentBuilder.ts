@@ -18,6 +18,7 @@ import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {getLng} from 'common/utils/languageToggleUtils';
 import currencyFormat from 'common/utils/currencyFormat';
 import {LatestUpdateSectionBuilder} from 'common/models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
+import {t} from 'i18next';
 
 const PAGES_LATEST_UPDATE_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT.';
 
@@ -31,8 +32,8 @@ function getPartAdmitPayInstallmentItems(claim: Claim, lng: string) {
         amount: currencyFormat(getAmount(claim)),
         claimantName: claimantFullName,
         installmentAmount: currencyFormat(getPaymentAmount(claim)),
-        paymentSchedule: getRepaymentFrequency(claim),
-        paymentDate: formatDateToFullDate(getPaymentDate(claim), lng),
+        paymentSchedule: t(`COMMON.PAYMENT_FREQUENCY.${getRepaymentFrequency(claim)}`, {lng}),
+        paymentDate: formatDateToFullDate(getFirstRepaymentDate(claim), lng),
       })
       .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
       .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}DOWNLOAD_YOUR_RESPONSE`, claimId)
@@ -44,8 +45,8 @@ function getPartAdmitPayInstallmentItems(claim: Claim, lng: string) {
       amount: currencyFormat(getAmount(claim)),
       claimantName: claimantFullName,
       installmentAmount: currencyFormat(getPaymentAmount(claim)),
-      paymentSchedule: getRepaymentFrequency(claim),
-      paymentDate: formatDateToFullDate(getPaymentDate(claim),lng),
+      paymentSchedule: t(`COMMON.PAYMENT_FREQUENCY.${getRepaymentFrequency(claim)}`, {lng}),
+      paymentDate: formatDateToFullDate(getFirstRepaymentDate(claim),lng),
     })
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`)
     .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}GET_CONTACT_DETAILS`, claimId, {claimantName: claimantFullName})
@@ -104,7 +105,7 @@ function getFullAdmitPayInstallments(claim: Claim, lng: string) {
       .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY_STARTING`, {
         claimantName: claimantFullName,
         installmentAmount: currencyFormat(getPaymentAmount(claim)),
-        paymentSchedule: getRepaymentFrequency(claim),
+        paymentSchedule: t(`COMMON.PAYMENT_FREQUENCY.${getRepaymentFrequency(claim)}`, {lng}),
         paymentDate: formatDateToFullDate(getFirstRepaymentDate(claim),lng),
       })
       .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
@@ -116,7 +117,7 @@ function getFullAdmitPayInstallments(claim: Claim, lng: string) {
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY_STARTING`, {
       claimantName: claimantFullName,
       installmentAmount:  currencyFormat(getPaymentAmount(claim)),
-      paymentSchedule: getRepaymentFrequency(claim),
+      paymentSchedule: t(`COMMON.PAYMENT_FREQUENCY.${getRepaymentFrequency(claim)}`, {lng}),
       paymentDate: formatDateToFullDate(getFirstRepaymentDate(claim),lng),
     })
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`)

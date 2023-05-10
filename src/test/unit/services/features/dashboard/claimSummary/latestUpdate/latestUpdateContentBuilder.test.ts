@@ -19,6 +19,7 @@ import {
 import currencyFormat from 'common/utils/currencyFormat';
 import {PartialAdmission} from 'models/partialAdmission';
 import {LatestUpdateSectionBuilder} from 'common/models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
+import { t } from 'i18next';
 
 const PAGES_LATEST_UPDATE_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT.';
 const PARTY_NAME = 'Mr. John Doe';
@@ -210,7 +211,7 @@ describe('Latest Update Content Builder', () => {
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY_STARTING`, {
             claimantName: claim.getClaimantFullName(),
             installmentAmount:  currencyFormat(getPaymentAmount(claim)),
-            paymentSchedule: getRepaymentFrequency(claim),
+            paymentSchedule: t(`COMMON.PAYMENT_FREQUENCY.${getRepaymentFrequency(claim)}`, {lng}),
             paymentDate: formatDateToFullDate(getFirstRepaymentDate(claim),lng),
           })
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
@@ -230,7 +231,7 @@ describe('Latest Update Content Builder', () => {
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_HAVE_OFFERED_TO_PAY_STARTING`, {
             claimantName: claim.getClaimantFullName(),
             installmentAmount:  currencyFormat(getPaymentAmount(claim)),
-            paymentSchedule: getRepaymentFrequency(claim),
+            paymentSchedule: t(`COMMON.PAYMENT_FREQUENCY.${getRepaymentFrequency(claim)}`, {lng}),
             paymentDate: formatDateToFullDate(getFirstRepaymentDate(claim),lng),
           })
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`)
@@ -314,7 +315,7 @@ describe('Latest Update Content Builder', () => {
             amount: currencyFormat(getAmount(claim)),
             claimantName: claim.getClaimantFullName(),
             installmentAmount: currencyFormat(getPaymentAmount(claim)),
-            paymentSchedule: getRepaymentFrequency(claim),
+            paymentSchedule: t(`COMMON.PAYMENT_FREQUENCY.${getRepaymentFrequency(claim)}`, {lng}),
             paymentDate: formatDateToFullDate(getPaymentDate(claim),lng),
           })
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`)
@@ -337,7 +338,7 @@ describe('Latest Update Content Builder', () => {
             amount: currencyFormat(getAmount(claim)),
             claimantName: claim.getClaimantFullName(),
             installmentAmount: currencyFormat(getPaymentAmount(claim)),
-            paymentSchedule: getRepaymentFrequency(claim),
+            paymentSchedule: t(`COMMON.PAYMENT_FREQUENCY.${getRepaymentFrequency(claim)}`, {lng}),
             paymentDate: formatDateToFullDate(getPaymentDate(claim),lng),
           })
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
