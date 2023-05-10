@@ -122,7 +122,7 @@
     "mini-css-extract-plugin": "^2.7.2",
     "nock": "^13.2.9",
     "node-cache": "^5.1.2",
-    "nodemon": "^2.0.20",
+    "nodemon": "^2.0.22",
     "pa11y": "^6.2.3",
     "playwright": "^1.30.0",
     "sass": "^1.57.1",
