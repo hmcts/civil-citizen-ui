@@ -1,9 +1,9 @@
-import {LatestUpdateSectionBuilder} from 'models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
+import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
 import {CASE_DOCUMENT_DOWNLOAD_URL, CITIZEN_CONTACT_THEM_URL} from 'routes/urls';
 import {DocumentUri} from 'models/document/documentType';
 
-describe('LatestUpdateSectionBuilder tests', ()=> {
+describe('PageSectionBuilder tests', ()=> {
   it('should create title', ()=> {
     //Given
     const title = 'testTitle';
@@ -17,7 +17,7 @@ describe('LatestUpdateSectionBuilder tests', ()=> {
     }]);
 
     //When
-    const result = new LatestUpdateSectionBuilder()
+    const result = new PageSectionBuilder()
       .addTitle(title,variables)
       .build();
 
@@ -38,7 +38,7 @@ describe('LatestUpdateSectionBuilder tests', ()=> {
     }]);
 
     //When
-    const result = new LatestUpdateSectionBuilder()
+    const result = new PageSectionBuilder()
       .addSubTitle(subTitle,variables)
       .build();
 
@@ -59,7 +59,7 @@ describe('LatestUpdateSectionBuilder tests', ()=> {
     }]);
 
     //When
-    const result = new LatestUpdateSectionBuilder()
+    const result = new PageSectionBuilder()
       .addParagraph(paragraph,variables)
       .build();
 
@@ -80,7 +80,7 @@ describe('LatestUpdateSectionBuilder tests', ()=> {
     }]);
 
     //When
-    const result = new LatestUpdateSectionBuilder()
+    const result = new PageSectionBuilder()
       .addLeadParagraph(leadParagraph,variables)
       .build();
 
@@ -105,7 +105,7 @@ describe('LatestUpdateSectionBuilder tests', ()=> {
     }]);
 
     //When
-    const result = new LatestUpdateSectionBuilder()
+    const result = new PageSectionBuilder()
       .addLink(text,href,textBefore,textAfter)
       .build();
 
@@ -130,7 +130,7 @@ describe('LatestUpdateSectionBuilder tests', ()=> {
     }]);
 
     //When
-    const result = new LatestUpdateSectionBuilder()
+    const result = new PageSectionBuilder()
       .addContactLink(text,claimId,variables,textAfter)
       .build();
 
@@ -153,7 +153,7 @@ describe('LatestUpdateSectionBuilder tests', ()=> {
     }]);
 
     //When
-    const result = new LatestUpdateSectionBuilder()
+    const result = new PageSectionBuilder()
       .addStartButton(title,href)
       .build();
 
@@ -179,7 +179,7 @@ describe('LatestUpdateSectionBuilder tests', ()=> {
     }]);
 
     //When
-    const result = new LatestUpdateSectionBuilder()
+    const result = new PageSectionBuilder()
       .addResponseDocumentLink(text,claimId,variables,textAfter)
       .build();
 
@@ -200,7 +200,7 @@ describe('LatestUpdateSectionBuilder tests', ()=> {
     }]);
 
     //When
-    const result = new LatestUpdateSectionBuilder()
+    const result = new PageSectionBuilder()
       .addButton(title,href)
       .build();
 
@@ -227,7 +227,7 @@ describe('LatestUpdateSectionBuilder tests', ()=> {
     })];
 
     //When
-    const result = new LatestUpdateSectionBuilder()
+    const result = new PageSectionBuilder()
       .addLink(text,href,textBefore,textAfter,variables)
       .build();
 
@@ -252,7 +252,7 @@ describe('LatestUpdateSectionBuilder tests', ()=> {
     })];
 
     //When
-    const result = new LatestUpdateSectionBuilder()
+    const result = new PageSectionBuilder()
       .addLink(text,href)
       .build();
 

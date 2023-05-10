@@ -2,7 +2,7 @@ import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySec
 import {CASE_DOCUMENT_DOWNLOAD_URL, CITIZEN_CONTACT_THEM_URL} from 'routes/urls';
 import {DocumentUri} from 'models/document/documentType';
 
-export class LatestUpdateSectionBuilder {
+export class PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
 
   addTitle(title: string, variables?: any) {

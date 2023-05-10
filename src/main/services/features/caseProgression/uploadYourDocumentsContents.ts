@@ -1,9 +1,9 @@
-import {LatestUpdateSectionBuilder} from 'models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
+import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {Claim} from 'models/claim';
 import {TYPES_OF_DOCUMENTS_URL} from 'routes/urls';
 
 export const getUploadYourDocumentsContents = (claimId: string, claim: Claim) => {
-  return new LatestUpdateSectionBuilder()
+  return new PageSectionBuilder()
     .addTitle('PAGES.UPLOAD_YOUR_DOCUMENTS.TITLE')
     .addLeadParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.CASE_REFERENCE', {claimId: claimId})
     .addLeadParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.PARTIES', {
