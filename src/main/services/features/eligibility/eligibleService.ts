@@ -3,12 +3,13 @@ import {t} from 'i18next';
 import {ELIGIBILITY_HWF_ELIGIBLE_URL, ELIGIBILITY_HWF_ELIGIBLE_REFERENCE_URL, ELIGIBLE_FOR_THIS_SERVICE_URL} from '../../../routes/urls';
 
 export const getYouCanUseContent = (url: string, lang: string): ClaimSummarySection[] => {
+  url = url.split('?')[0];
   switch (url){
     case ELIGIBILITY_HWF_ELIGIBLE_URL:{
       return getYouCanUseHWFEligible(lang);
     }
     case ELIGIBILITY_HWF_ELIGIBLE_REFERENCE_URL:{
-      return getYouCanUseHWFEligibleReference();
+      return getYouCanUseHWFEligibleReference(lang);
     }
     case ELIGIBLE_FOR_THIS_SERVICE_URL:{
       return [];
@@ -33,12 +34,12 @@ export function getYouCanUseHWFEligible(lang: string): ClaimSummarySection[] {
   ];
 }
 
-export function getYouCanUseHWFEligibleReference(): ClaimSummarySection[] {
+export function getYouCanUseHWFEligibleReference(lang: string): ClaimSummarySection[] {
   return [
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: 'PAGES.YOU_CAN_USE.HWF_ELIGIBLE_REFERENCE.REMEMBER',
+        text: t('PAGES.YOU_CAN_USE.HWF_ELIGIBLE_REFERENCE.REMEMBER', {lng: lang}),
       },
     },
   ];
