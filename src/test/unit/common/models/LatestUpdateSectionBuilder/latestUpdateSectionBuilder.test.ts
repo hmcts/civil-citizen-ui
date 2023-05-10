@@ -1,48 +1,68 @@
 import {LatestUpdateSectionBuilder} from 'models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
+import {CASE_DOCUMENT_DOWNLOAD_URL, CITIZEN_CONTACT_THEM_URL} from 'routes/urls';
+import {DocumentUri} from 'models/document/documentType';
 
 describe('LatestUpdateSectionBuilder tests', ()=> {
   it('should create title', ()=> {
     //Given
     const title = 'testTitle';
-    const titleObject = new LatestUpdateSectionBuilder()
-      .addTitle(title)
-      .build();
+    const variables = 'testVariables';
+    const titleExpected = ([{
+      type: ClaimSummaryType.TITLE,
+      data: {
+        text: title,
+        variables: variables,
+      },
+    }]);
 
     //When
     const result = new LatestUpdateSectionBuilder()
-      .addTitle(title)
+      .addTitle(title,variables)
       .build();
+
     //Then
-    expect(titleObject).toEqual(result);
+    expect(titleExpected).toEqual(result);
   });
 
   it('should create subTitle', ()=> {
     //Given
     const subTitle = 'testSubTitle';
-    const subTitleObject = new LatestUpdateSectionBuilder()
-      .addSubTitle(subTitle)
-      .build();
+    const variables = 'variables';
+    const subTitleExpected = ([{
+      type: ClaimSummaryType.SUBTITLE,
+      data: {
+        text: subTitle,
+        variables: variables,
+      },
+    }]);
 
     //When
     const result = new LatestUpdateSectionBuilder()
-      .addSubTitle(subTitle)
+      .addSubTitle(subTitle,variables)
       .build();
+
     //Then
-    expect(subTitleObject).toEqual(result);
+    expect(subTitleExpected).toEqual(result);
   });
 
   it('should add Paragraph', ()=> {
     //Given
-    const paragraph = 'testTitle';
-    const paragraphExpected = new LatestUpdateSectionBuilder()
-      .addParagraph(paragraph)
-      .build();
+    const paragraph = 'testParagraph';
+    const variables = 'variables';
+    const paragraphExpected = ([{
+      type: ClaimSummaryType.PARAGRAPH,
+      data: {
+        text: paragraph,
+        variables: variables,
+      },
+    }]);
 
     //When
     const result = new LatestUpdateSectionBuilder()
-      .addParagraph(paragraph)
+      .addParagraph(paragraph,variables)
       .build();
+
     //Then
     expect(paragraphExpected).toEqual(result);
   });
@@ -50,149 +70,193 @@ describe('LatestUpdateSectionBuilder tests', ()=> {
   it('should add leadParagraph', ()=> {
     //Given
     const leadParagraph = 'testLeadParagraph';
-    const leadParagraphExpected = new LatestUpdateSectionBuilder()
-      .addLeadParagraph(leadParagraph)
-      .build();
+    const variables = 'variables';
+    const leadParagraphExpected = ([{
+      type: ClaimSummaryType.LEAD_PARAGRAPH,
+      data: {
+        text: leadParagraph,
+        variables: variables,
+      },
+    }]);
 
     //When
     const result = new LatestUpdateSectionBuilder()
-      .addLeadParagraph(leadParagraph)
+      .addLeadParagraph(leadParagraph,variables)
       .build();
+
     //Then
     expect(leadParagraphExpected).toEqual(result);
   });
 
   it('should add link', ()=> {
     //Given
-    const linkObject = {
-      text: 'text',
-      href: 'href',
-      textBefore: 'textBefore',
-      textAfter: 'textAfter',
-    };
-
-    const linkExpected = new LatestUpdateSectionBuilder()
-      .addLink(linkObject.text,linkObject.href,linkObject.textBefore,linkObject.textAfter)
-      .build();
+    const text = 'text';
+    const href = 'href';
+    const textBefore = 'textBefore';
+    const textAfter= 'textAfter';
+    const linkExpected = ([{
+      type: ClaimSummaryType.LINK,
+      data: {
+        text: text,
+        href: href,
+        textBefore: textBefore,
+        textAfter: textAfter,
+      },
+    }]);
 
     //When
     const result = new LatestUpdateSectionBuilder()
-      .addLink(linkObject.text,linkObject.href,linkObject.textBefore,linkObject.textAfter)
+      .addLink(text,href,textBefore,textAfter)
       .build();
+
     //Then
     expect(linkExpected).toEqual(result);
   });
 
   it('should add contactLink', ()=> {
     //Given
-    const contactLinkObject = {
-      text: 'text',
-      claimId: '01',
-    };
-
-    const contactLinkExpected = new LatestUpdateSectionBuilder()
-      .addContactLink(contactLinkObject.text,contactLinkObject.claimId)
-      .build();
+    const text = 'text';
+    const claimId = '01';
+    const variables = 'variables';
+    const textAfter = 'textAfter';
+    const contactLinkExpected = ([{
+      type: ClaimSummaryType.LINK,
+      data: {
+        href: CITIZEN_CONTACT_THEM_URL.replace(':id', claimId),
+        text: text,
+        textAfter: textAfter,
+        variables: variables,
+      },
+    }]);
 
     //When
     const result = new LatestUpdateSectionBuilder()
-      .addContactLink(contactLinkObject.text,contactLinkObject.claimId)
+      .addContactLink(text,claimId,variables,textAfter)
       .build();
+
     //Then
     expect(contactLinkExpected).toEqual(result);
   });
 
   it('should add Start Button', ()=> {
     //Given
-    const startButtonObject = {
-      title: 'test',
-      href: 'nextPage',
-      isStartButton: true,
-    };
-
-    const startButtonExpected = new LatestUpdateSectionBuilder()
-      .addStartButton(startButtonObject.title,startButtonObject.href)
-      .build();
+    const title = 'test';
+    const href = 'nextPage';
+    const isStartButton = true;
+    const startButtonExpected = ([{
+      type: ClaimSummaryType.BUTTON,
+      data: {
+        text: title,
+        href: href,
+        isStartButton: isStartButton,
+      },
+    }]);
 
     //When
     const result = new LatestUpdateSectionBuilder()
-      .addStartButton(startButtonObject.title,startButtonObject.href)
+      .addStartButton(title,href)
       .build();
+
     //Then
     expect(startButtonExpected).toEqual(result);
   });
 
   it('should add ResponseDocumentLink', ()=> {
     //Given
-    const contactLinkObject = {
-      text: 'text',
-      claimId: '01',
-    };
-
-    const contactLinkExpected = new LatestUpdateSectionBuilder()
-      .addResponseDocumentLink(contactLinkObject.text,contactLinkObject.claimId)
-      .build();
+    const text = 'text';
+    const claimId = '01';
+    const variables = 'variables';
+    const textAfter = 'textAfter';
+    const responseDocumentLinkExpected = ([{
+      type: ClaimSummaryType.LINK,
+      data: {
+        text: text,
+        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId)
+          .replace(':documentType', DocumentUri.SEALED_CLAIM),
+        textAfter: textAfter,
+        variables: variables,
+      },
+    }]);
 
     //When
     const result = new LatestUpdateSectionBuilder()
-      .addResponseDocumentLink(contactLinkObject.text,contactLinkObject.claimId)
+      .addResponseDocumentLink(text,claimId,variables,textAfter)
       .build();
+
     //Then
-    expect(contactLinkExpected).toEqual(result);
+    expect(responseDocumentLinkExpected).toEqual(result);
   });
 
   it('should add Green Button', ()=> {
     //Given
-    const buttonObject = {
-      title: 'test',
-      href: 'nextPage',
-    };
-
-    const buttonExpected = new LatestUpdateSectionBuilder()
-      .addButton(buttonObject.title,buttonObject.href)
-      .build();
+    const title = 'test';
+    const href = 'nextPage';
+    const buttonExpected = ([{
+      type: ClaimSummaryType.BUTTON,
+      data: {
+        text: title,
+        href: href,
+      },
+    }]);
 
     //When
     const result = new LatestUpdateSectionBuilder()
-      .addButton(buttonObject.title,buttonObject.href)
+      .addButton(title,href)
       .build();
+
     //Then
     expect(buttonExpected).toEqual(result);
   });
 
   it('should addLink with text before and after', ()=> {
     //Given
-    const contactLinkObject = ({
+    const text = 'text';
+    const href = 'href';
+    const textBefore = 'before';
+    const textAfter = 'after';
+    const variables = 'variables';
+    const contactLinkExpected = [({
       type: ClaimSummaryType.LINK,
       data: {
-        text: 'text',
-        href: 'href',
-        textBefore: 'before',
-        textAfter: 'after',
+        text: text,
+        href: href,
+        textBefore: textBefore,
+        textAfter: textAfter,
+        variables: variables,
       },
-    });
+    })];
+
     //When
-    const contactLinkExpected = new LatestUpdateSectionBuilder()
-      .addLink(contactLinkObject.data.text,contactLinkObject.data.href, contactLinkObject.data.textBefore, contactLinkObject.data.textAfter)
+    const result = new LatestUpdateSectionBuilder()
+      .addLink(text,href,textBefore,textAfter,variables)
       .build();
+
     //Then
-    expect(contactLinkExpected).toEqual([contactLinkObject]);
+    expect(contactLinkExpected).toEqual(result);
   });
 
   it('should addLink with just text', ()=> {
     //Given
-    const contactLinkObject = ({
+    const text = 'text';
+    const href = 'href';
+    const textAfter: any = undefined;
+    const textBefore: any = undefined;
+    const contactLinkExpected = [({
       type: ClaimSummaryType.LINK,
       data: {
-        text: 'text',
-        href: 'href',
+        text: text,
+        href: href,
+        textAfter: textAfter,
+        textBefore: textBefore,
       },
-    });
+    })];
+
     //When
-    const contactLinkExpected = new LatestUpdateSectionBuilder()
-      .addLink(contactLinkObject.data.text,contactLinkObject.data.href)
+    const result = new LatestUpdateSectionBuilder()
+      .addLink(text,href)
       .build();
+
     //Then
-    expect(contactLinkExpected).toEqual([contactLinkObject]);
+    expect(contactLinkExpected).toEqual(result);
   });
 });
