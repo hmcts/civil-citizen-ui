@@ -3,7 +3,7 @@ import {
   DocumentType,
   EvidenceUploadDisclosure,
   EvidenceUploadTrial,
-  EvidenceUploadWitness
+  EvidenceUploadWitness,
 } from './documentType';
 
 export interface CaseDocument {
