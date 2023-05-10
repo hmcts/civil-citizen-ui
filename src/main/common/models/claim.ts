@@ -55,7 +55,7 @@ import {toCUIParty} from 'services/translation/convertToCUI/convertToCUIParty';
 import {toCUIMediation} from 'services/translation/convertToCUI/convertToCUIMediation';
 import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIClaimDetails';
 import {CCDRespondentLiPResponse} from './ccdResponse/ccdRespondentLiPResponse';
-import {CaseProgression} from 'form/models/caseProgression/caseProgression';
+import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 
 export class Claim {
   legacyCaseReference: string;

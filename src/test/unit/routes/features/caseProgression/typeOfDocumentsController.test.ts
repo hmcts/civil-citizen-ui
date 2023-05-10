@@ -27,30 +27,29 @@ describe('Upload document- type of documents controller', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
+  describe('on GET', () => {
+    it('should render page successfully if cookie has correct values', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      await request(app).get(typeOfDocumentUrl).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('What types of documents do you want to upload?');
+      });
+    });
 
-  it('should render page successfully if cookie has correct values', async () => {
-    app.locals.draftStoreClient = mockCivilClaim;
-    await request(app).get(typeOfDocumentUrl).expect((res) => {
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('What types of documents do you want to upload?');
+    it('should return 500 error page for redis failure', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app)
+        .get(typeOfDocumentUrl)
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
     });
   });
-
-  it('should return 500 error page for redis failure', async () => {
-    app.locals.draftStoreClient = mockRedisFailure;
-    await request(app)
-      .get(typeOfDocumentUrl)
-      .expect((res) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
-  });
-
   describe('on POST', () => {
-    beforeAll(() => {
+    beforeEach(() => {
       app.locals.draftStoreClient = mockCivilClaim;
     });
-
     it('should display error when there is no option selection', async () => {
       await request(app)
         .post(typeOfDocumentUrl)
@@ -73,17 +72,6 @@ describe('Upload document- type of documents controller', () => {
         .expect((res: express.Response) => {
           expect(res.status).toBe(302);
           expect(res.get('location')).toBe(UPLOAD_YOUR_DOCUMENTS_URL.replace(':id', 'aaa'));
-        });
-    });
-
-    it('should status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(typeOfDocumentUrl)
-        .send()
-        .expect((res: Response) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

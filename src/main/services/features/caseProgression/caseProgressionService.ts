@@ -16,11 +16,11 @@ const logger = Logger.getLogger('supportRequiredService');
 export const getDocuments = async (claimId: string,claimantOrDefendant: ClaimantOrDefendant): Promise<UploadDocuments> => {
   try {
     const caseData = await getCaseDataFromStore(claimId);
-    if (caseData?.caseProgression?.DefendantUploadDocuments && claimantOrDefendant===ClaimantOrDefendant.DEFENDANT) {
-      return caseData?.caseProgression?.DefendantUploadDocuments ? caseData?.caseProgression.DefendantUploadDocuments : new UploadDocuments();
+    if (caseData?.caseProgression?.defendantUploadDocuments && claimantOrDefendant===ClaimantOrDefendant.DEFENDANT) {
+      return caseData?.caseProgression?.defendantUploadDocuments ? caseData?.caseProgression.defendantUploadDocuments : new UploadDocuments();
     }
-    else if (caseData?.caseProgression?.ClaimantUploadDocuments && claimantOrDefendant===ClaimantOrDefendant.CLAIMANT) {
-      return caseData?.caseProgression?.ClaimantUploadDocuments ? caseData?.caseProgression.ClaimantUploadDocuments : new UploadDocuments();
+    else if (caseData?.caseProgression?.claimantUploadDocuments && claimantOrDefendant===ClaimantOrDefendant.CLAIMANT) {
+      return caseData?.caseProgression?.claimantUploadDocuments ? caseData?.caseProgression.claimantUploadDocuments : new UploadDocuments();
     }
   } catch (error) {
     logger.error(error);
