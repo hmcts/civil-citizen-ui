@@ -14,10 +14,12 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
 const getDocumentDetails = (ccdClaim: CCDClaim): CaseProgressionDocuments[] => {
   const caseProgressionDocuments: CaseProgressionDocuments[] = [];
   //hearing document
-  ccdClaim.hearingDocuments.forEach((item) => {
-    pushItems(caseProgressionDocuments, item.id, item.value);
-  });
-  if (ccdClaim.sdoOrderDocument){
+  if(ccdClaim.hearingDocuments){
+    ccdClaim?.hearingDocuments.forEach((item) => {
+      pushItems(caseProgressionDocuments, item.id, item.value);
+    });
+  }
+  if (ccdClaim?.sdoOrderDocument){
     pushItems(caseProgressionDocuments, null, ccdClaim.sdoOrderDocument);
   }
   return caseProgressionDocuments;

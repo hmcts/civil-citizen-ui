@@ -31,7 +31,7 @@ documentDownloadController.get(CASE_DOCUMENT_DOWNLOAD_URL, async (req: Request, 
 });
 //TODO sdo haven't id from identification
 const getCaseProgressionDocumentDetails = (claim: Claim, documentType: DocumentType): CaseDocument =>{
-  return claim.caseProgression.caseProgressionDocuments.find(
+  return claim.caseProgression?.caseProgressionDocuments.find(
     document => document.value.documentType === documentType)
     .value;
 };
