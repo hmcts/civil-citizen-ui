@@ -16,12 +16,12 @@
     <span class="govuk-caption-m">{{ t(content.data.text) }}</span>
   {% endif %}
 
-  {% if content.type === ClaimSummaryType.TITLE %}
-    <h3 class="govuk-heading-m">{{ t(content.data.text) }}</h3>
+  {% if content.type === ClaimSummaryType.MAINTITLE %}
+    <h1 class="govuk-heading-l">{{ t(content.data.text) }}</h1>
   {% endif %}
 
-  {% if content.type === ClaimSummaryType.SUBTITLE %}
-    <h3 class="govuk-heading-s">{{ t(content.data.text) }}</h3>
+  {% if content.type === ClaimSummaryType.TITLE %}
+    <h3 class="govuk-heading-m">{{ t(content.data.text) }}</h3>
   {% endif %}
 
   {% if content.type === ClaimSummaryType.LEAD_PARAGRAPH %}
