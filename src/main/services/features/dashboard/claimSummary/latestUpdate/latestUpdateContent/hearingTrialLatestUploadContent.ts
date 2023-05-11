@@ -14,6 +14,8 @@ export const getHearingTrialLatestUpload = (claim: Claim, lang: string) => {
     ? `${TRIAL_HEARING_CONTENT}.YOUR_TRIAL_PARAGRAPH`
     : `${TRIAL_HEARING_CONTENT}.YOUR_HEARING_PARAGRAPH`;
 
+  const shouldViewParagraph = `${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE`;
+
   const hearingDate = claim.caseProgressionHearing.getHearingDateFormatted(lang);
   const hearingTimeHourMinute = claim.caseProgressionHearing.getHearingTimeHourMinuteFormatted();
   const courtName = claim.caseProgressionHearing.hearingLocation.getCourtName();
@@ -21,6 +23,7 @@ export const getHearingTrialLatestUpload = (claim: Claim, lang: string) => {
   const latestUpdateSectionBuilder = new LatestUpdateSectionBuilder()
     .addTitle(trialHearingTitle)
     .addParagraph(trialHearingParagraph, { hearingDate, hearingTimeHourMinute, courtName })
+    .addParagraph(shouldViewParagraph)
     .addButton(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`,  CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentType', DocumentUri.HEARING_FORM));
 
   return latestUpdateSectionBuilder.build();
