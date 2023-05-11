@@ -1,12 +1,13 @@
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {Claim} from 'models/claim';
 import {TYPES_OF_DOCUMENTS_URL} from 'routes/urls';
+import {caseNumberPrettify} from 'common/utils/stringUtils';
 
 export const getUploadYourDocumentsContents = (claimId: string, claim: Claim) => {
   return new PageSectionBuilder()
     .addCaption('PAGES.UPLOAD_YOUR_DOCUMENTS.CAPTION')
     .addMainTitle('PAGES.UPLOAD_YOUR_DOCUMENTS.TITLE')
-    .addLeadParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.CASE_REFERENCE', {claimId: claimId})
+    .addLeadParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.CASE_REFERENCE', {claimId:caseNumberPrettify( claimId)})
     .addLeadParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.PARTIES', {
       claimantName: claim.getClaimantFullName(),
       defendantName: claim.getDefendantFullName(),
