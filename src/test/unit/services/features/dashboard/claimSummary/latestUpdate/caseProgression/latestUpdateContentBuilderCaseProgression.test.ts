@@ -26,7 +26,7 @@ describe('Latest Update Content Builder Case Progression', () => {
   const sdoUrl = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentType', DocumentUri.SDO_ORDER);
 
   describe('test buildEvidenceUploadSection', () => {
-    it('should have evidence upload content', () => {
+    it('should have evidence upload content with bundle deadline', () => {
       // Given
       claim.sdoOrderDocument = {
         createdBy: '',
@@ -36,6 +36,34 @@ describe('Latest Update Content Builder Case Progression', () => {
         documentSize: 0,
         documentType: undefined,
       };
+      claim.caseProgressionHearing.hearingDate = new Date();
+      // when
+      const evidenceUploadSection = buildEvidenceUploadSection(claim);
+      // Then
+      expect(evidenceUploadSection[0].length).toBe(6);
+      expect(evidenceUploadSection[0][0].type).toEqual(ClaimSummaryType.TITLE);
+      expect(evidenceUploadSection[0][0].data?.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
+      expect(evidenceUploadSection[0][1].type).toEqual(ClaimSummaryType.WARNING);
+      expect(evidenceUploadSection[0][2].type).toEqual(ClaimSummaryType.PARAGRAPH);
+      expect(evidenceUploadSection[0][3].type).toEqual(ClaimSummaryType.LINK);
+      expect(evidenceUploadSection[0][3].data?.href).toEqual(sdoUrl);
+      expect(evidenceUploadSection[0][4].type).toEqual(ClaimSummaryType.PARAGRAPH);
+      expect(evidenceUploadSection[0][4].data?.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.DOCUMENTS_SUBMITTED_NOT_CONSIDERED');
+      expect(evidenceUploadSection[0][5].type).toEqual(ClaimSummaryType.BUTTON);
+      expect(evidenceUploadSection[0][5].data?.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
+    });
+
+    it('should have evidence upload content without bundle deadline', () => {
+      // Given
+      claim.sdoOrderDocument = {
+        createdBy: '',
+        createdDatetime: undefined,
+        documentLink: undefined,
+        documentName: '',
+        documentSize: 0,
+        documentType: undefined,
+      };
+      claim.caseProgressionHearing.hearingDate = null;
       // when
       const evidenceUploadSection = buildEvidenceUploadSection(claim);
       // Then

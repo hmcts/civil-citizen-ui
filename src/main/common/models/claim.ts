@@ -56,6 +56,7 @@ import {toCUIMediation} from 'services/translation/convertToCUI/convertToCUIMedi
 import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIClaimDetails';
 import {CCDRespondentLiPResponse} from './ccdResponse/ccdRespondentLiPResponse';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
+import {DateTimeFormatOptions} from 'luxon';
 
 export class Claim {
   legacyCaseReference: string;
@@ -492,6 +493,13 @@ export class Claim {
 
   hasCaseProgressionHearingDocuments(): boolean{
     return !!this.caseProgressionHearing?.hearingDocuments;
+  }
+
+  get bundleStitchingDeadline(): string {
+    const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
+    const threeWeeksMilli = 21 * 24 * 60 * 60 * 1000;
+    const options: DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
+    return new Date(hearingDateTime - threeWeeksMilli).toLocaleDateString('en-GB', options);
   }
 }
 

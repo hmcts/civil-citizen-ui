@@ -189,6 +189,7 @@ describe('Claim Summary Controller Defendant', () => {
         .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).not.toContain('Upload documents');
+          expect(res.text).toContain('A hearing has been scheduled for your case');
         });
     });
 

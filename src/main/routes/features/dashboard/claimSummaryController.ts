@@ -9,7 +9,7 @@ import {DEFENDANT_SUMMARY_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {isCaseProgressionV1Enable} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {
-  getEvidenceUploadLatestUpdateContent, getHearingTrialUploadLatestUpdateContent,
+  getCaseProgressionLatestUpdates,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/caseProgressionLatestUpdateService';
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryController = Router();
@@ -25,13 +25,8 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextF
       const documentsContent = getDocumentsContent(claim, claimId);
       if (latestUpdateContent.length === 0 && await isCaseProgressionV1Enable()) {
         const lang = req?.query?.lang ? req.query.lang : req?.cookies?.lang;
-        if(claim.hasCaseProgressionHearingDocuments()){
-          getHearingTrialUploadLatestUpdateContent(claim, lang)
-            .forEach(items => latestUpdateContent.push(items));
-        } else if(claim.hasSdoOrderDocument()){
-          getEvidenceUploadLatestUpdateContent(claimId, claim)
-            .forEach(items => latestUpdateContent.push(items));
-        }
+        getCaseProgressionLatestUpdates(claim, lang)
+          .forEach(items => latestUpdateContent.push(items));
       }
       res.render(claimSummaryViewPath, {claim, claimId, latestUpdateContent, documentsContent});
     }

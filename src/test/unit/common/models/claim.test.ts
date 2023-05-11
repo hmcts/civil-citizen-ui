@@ -1265,7 +1265,14 @@ describe('Documents', () => {
       //Then
       expect(claim.hasCaseProgressionHearingDocuments()).toBeFalsy();
     });
-
+    it('should return formatted date 3 weeks prior from 22', () => {
+      //Given
+      const caseProgressionHearing = new CaseProgressionHearing([getCaseProgressionDocuments()], null, new Date(2023, 0 ,22), null);
+      const claim = new Claim();
+      claim.caseProgressionHearing = caseProgressionHearing;
+      //Then
+      expect('1 January 2023').toEqual(claim.bundleStitchingDeadline);
+    });
   });
   function getCaseProgressionDocuments() {
     const caseProgressionHearingDocuments = new CaseProgressionHearingDocuments();
