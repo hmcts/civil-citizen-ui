@@ -4,25 +4,25 @@ import {CASE_DOCUMENT_DOWNLOAD_URL, CITIZEN_CONTACT_THEM_URL} from 'routes/urls'
 import {DocumentUri} from 'models/document/documentType';
 
 describe('PageSectionBuilder tests', ()=> {
-  it('should create title', ()=> {
+  it('should create caption', ()=> {
     //Given
-    const title = 'testTitle';
-    const variables = 'testVariables';
-    const titleExpected = ([{
-      type: ClaimSummaryType.TITLE,
+    const caption = 'caption';
+    const variables = 'variables';
+    const captionExpected = ([{
+      type: ClaimSummaryType.CAPTION,
       data: {
-        text: title,
+        text: caption,
         variables: variables,
       },
     }]);
 
     //When
     const result = new PageSectionBuilder()
-      .addTitle(title,variables)
+      .addCaption(caption,variables)
       .build();
 
     //Then
-    expect(titleExpected).toEqual(result);
+    expect(captionExpected).toEqual(result);
   });
 
   it('should create mainTitle', ()=> {
@@ -46,6 +46,27 @@ describe('PageSectionBuilder tests', ()=> {
     expect(mainTitleExpected).toEqual(result);
   });
 
+  it('should create title', ()=> {
+    //Given
+    const title = 'testTitle';
+    const variables = 'testVariables';
+    const titleExpected = ([{
+      type: ClaimSummaryType.TITLE,
+      data: {
+        text: title,
+        variables: variables,
+      },
+    }]);
+
+    //When
+    const result = new PageSectionBuilder()
+      .addTitle(title,variables)
+      .build();
+
+    //Then
+    expect(titleExpected).toEqual(result);
+  });
+
   it('should add Paragraph', ()=> {
     //Given
     const paragraph = 'testParagraph';
@@ -65,27 +86,6 @@ describe('PageSectionBuilder tests', ()=> {
 
     //Then
     expect(paragraphExpected).toEqual(result);
-  });
-
-  it('should add leadParagraph', ()=> {
-    //Given
-    const leadParagraph = 'testLeadParagraph';
-    const variables = 'variables';
-    const leadParagraphExpected = ([{
-      type: ClaimSummaryType.LEAD_PARAGRAPH,
-      data: {
-        text: leadParagraph,
-        variables: variables,
-      },
-    }]);
-
-    //When
-    const result = new PageSectionBuilder()
-      .addLeadParagraph(leadParagraph,variables)
-      .build();
-
-    //Then
-    expect(leadParagraphExpected).toEqual(result);
   });
 
   it('should add link', ()=> {
@@ -111,101 +111,6 @@ describe('PageSectionBuilder tests', ()=> {
 
     //Then
     expect(linkExpected).toEqual(result);
-  });
-
-  it('should add contactLink', ()=> {
-    //Given
-    const text = 'text';
-    const claimId = '01';
-    const variables = 'variables';
-    const textAfter = 'textAfter';
-    const contactLinkExpected = ([{
-      type: ClaimSummaryType.LINK,
-      data: {
-        href: CITIZEN_CONTACT_THEM_URL.replace(':id', claimId),
-        text: text,
-        textAfter: textAfter,
-        variables: variables,
-      },
-    }]);
-
-    //When
-    const result = new PageSectionBuilder()
-      .addContactLink(text,claimId,variables,textAfter)
-      .build();
-
-    //Then
-    expect(contactLinkExpected).toEqual(result);
-  });
-
-  it('should add Start Button', ()=> {
-    //Given
-    const title = 'test';
-    const href = 'nextPage';
-    const isStartButton = true;
-    const startButtonExpected = ([{
-      type: ClaimSummaryType.BUTTON,
-      data: {
-        text: title,
-        href: href,
-        isStartButton: isStartButton,
-      },
-    }]);
-
-    //When
-    const result = new PageSectionBuilder()
-      .addStartButton(title,href)
-      .build();
-
-    //Then
-    expect(startButtonExpected).toEqual(result);
-  });
-
-  it('should add ResponseDocumentLink', ()=> {
-    //Given
-    const text = 'text';
-    const claimId = '01';
-    const variables = 'variables';
-    const textAfter = 'textAfter';
-    const responseDocumentLinkExpected = ([{
-      type: ClaimSummaryType.LINK,
-      data: {
-        text: text,
-        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId)
-          .replace(':documentType', DocumentUri.SEALED_CLAIM),
-        textAfter: textAfter,
-        variables: variables,
-      },
-    }]);
-
-    //When
-    const result = new PageSectionBuilder()
-      .addResponseDocumentLink(text,claimId,variables,textAfter)
-      .build();
-
-    //Then
-    expect(responseDocumentLinkExpected).toEqual(result);
-  });
-
-  it('should add Green Button', ()=> {
-    //Given
-    const title = 'test';
-    const href = 'nextPage';
-    const buttonExpected = ([{
-      type: ClaimSummaryType.BUTTON,
-      data: {
-        text: title,
-        href: href,
-      },
-    }]);
-
-    //When
-    const result = new PageSectionBuilder()
-      .addButton(title,href)
-      .build();
-
-    //Then
-    expect(buttonExpected).toEqual(result);
   });
 
   it('should addLink with text before and after', ()=> {
@@ -258,5 +163,121 @@ describe('PageSectionBuilder tests', ()=> {
 
     //Then
     expect(contactLinkExpected).toEqual(result);
+  });
+
+  it('should add leadParagraph', ()=> {
+    //Given
+    const leadParagraph = 'testLeadParagraph';
+    const variables = 'variables';
+    const leadParagraphExpected = ([{
+      type: ClaimSummaryType.LEAD_PARAGRAPH,
+      data: {
+        text: leadParagraph,
+        variables: variables,
+      },
+    }]);
+
+    //When
+    const result = new PageSectionBuilder()
+      .addLeadParagraph(leadParagraph,variables)
+      .build();
+
+    //Then
+    expect(leadParagraphExpected).toEqual(result);
+  });
+
+  it('should add contactLink', ()=> {
+    //Given
+    const text = 'text';
+    const claimId = '01';
+    const variables = 'variables';
+    const textAfter = 'textAfter';
+    const contactLinkExpected = ([{
+      type: ClaimSummaryType.LINK,
+      data: {
+        href: CITIZEN_CONTACT_THEM_URL.replace(':id', claimId),
+        text: text,
+        textAfter: textAfter,
+        variables: variables,
+      },
+    }]);
+
+    //When
+    const result = new PageSectionBuilder()
+      .addContactLink(text,claimId,variables,textAfter)
+      .build();
+
+    //Then
+    expect(contactLinkExpected).toEqual(result);
+  });
+
+  it('should add ResponseDocumentLink', ()=> {
+    //Given
+    const text = 'text';
+    const claimId = '01';
+    const variables = 'variables';
+    const textAfter = 'textAfter';
+    const responseDocumentLinkExpected = ([{
+      type: ClaimSummaryType.LINK,
+      data: {
+        text: text,
+        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId)
+          .replace(':documentType', DocumentUri.SEALED_CLAIM),
+        textAfter: textAfter,
+        variables: variables,
+      },
+    }]);
+
+    //When
+    const result = new PageSectionBuilder()
+      .addResponseDocumentLink(text,claimId,variables,textAfter)
+      .build();
+
+    //Then
+    expect(responseDocumentLinkExpected).toEqual(result);
+  });
+
+  it('should add Green Button', ()=> {
+    //Given
+    const title = 'test';
+    const href = 'nextPage';
+    const buttonExpected = ([{
+      type: ClaimSummaryType.BUTTON,
+      data: {
+        text: title,
+        href: href,
+      },
+    }]);
+
+    //When
+    const result = new PageSectionBuilder()
+      .addButton(title,href)
+      .build();
+
+    //Then
+    expect(buttonExpected).toEqual(result);
+  });
+
+  it('should add Start Button', ()=> {
+    //Given
+    const title = 'test';
+    const href = 'nextPage';
+    const isStartButton = true;
+    const startButtonExpected = ([{
+      type: ClaimSummaryType.BUTTON,
+      data: {
+        text: title,
+        href: href,
+        isStartButton: isStartButton,
+      },
+    }]);
+
+    //When
+    const result = new PageSectionBuilder()
+      .addStartButton(title,href)
+      .build();
+
+    //Then
+    expect(startButtonExpected).toEqual(result);
   });
 });
