@@ -1,4 +1,4 @@
-import {NextFunction, Response, Router} from 'express';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {TYPES_OF_DOCUMENTS_URL, UPLOAD_YOUR_DOCUMENTS_URL} from '../../urls';
 import {AppRequest} from 'common/models/AppRequest';
 
@@ -27,33 +27,32 @@ async function renderView(res: Response, claimId: string, form: GenericForm<Uplo
 }
 
 typeOfDocumentsController.get(TYPES_OF_DOCUMENTS_URL,
-  async (req: AppRequest, res: Response, next: NextFunction) => {
+  (async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
       const claimId = req.params.id;
       const documentslist = await getDocuments(req.params.id,ClaimantOrDefendant.DEFENDANT);
-
       const form = new GenericForm(documentslist);
-      renderView(res, claimId,form);
+      await renderView(res, claimId,form);
     } catch (error) {
       next(error);
     }
-  });
+  })as RequestHandler);
 
-typeOfDocumentsController.post(TYPES_OF_DOCUMENTS_URL, async (req, res, next) => {
+typeOfDocumentsController.post(TYPES_OF_DOCUMENTS_URL, (async (req, res, next) => {
   try {
     const claimId = req.params.id;
     const typeDocumentList= getTypeDocumentForm(req);
     const form = new GenericForm(typeDocumentList);
     form.validateSync();
     if (form.hasErrors()) {
-      renderView(res, claimId,form);
+      await renderView(res, claimId,form);
     } else {
-      saveCaseProgression(claimId, form.model, dqPropertyName);
+      await saveCaseProgression(claimId, form.model, dqPropertyName);
       res.redirect(constructResponseUrlWithIdParams(claimId, UPLOAD_YOUR_DOCUMENTS_URL));
     }
   } catch (error) {
     next(error);
   }
-});
+})as RequestHandler);
 
 export default typeOfDocumentsController;
