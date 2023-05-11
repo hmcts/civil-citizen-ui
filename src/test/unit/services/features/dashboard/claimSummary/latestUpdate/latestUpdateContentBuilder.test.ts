@@ -19,7 +19,7 @@ import {
 import currencyFormat from 'common/utils/currencyFormat';
 import {PartialAdmission} from 'models/partialAdmission';
 import {LatestUpdateSectionBuilder} from 'common/models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
-import { t } from 'i18next';
+import {t} from 'i18next';
 
 const PAGES_LATEST_UPDATE_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT.';
 const PARTY_NAME = 'Mr. John Doe';
