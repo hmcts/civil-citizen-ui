@@ -14,9 +14,7 @@ uploadYourDocumentsController.get([UPLOAD_YOUR_DOCUMENTS_URL], (async (req, res,
   try {
     const claimId = req.params.id;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-    if (claim && !claim.isEmpty()) {
-      res.render(uploadYourDocumentsViewPath, {uploadYourDocumentsContents:getUploadYourDocumentsContents(claimId, claim)});
-    }
+    res.render(uploadYourDocumentsViewPath, {uploadYourDocumentsContents:getUploadYourDocumentsContents(claimId, claim)});
   } catch (error) {
     next(error);
   }
