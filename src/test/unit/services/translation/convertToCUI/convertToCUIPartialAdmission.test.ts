@@ -39,7 +39,7 @@ describe('translate partial admission to cui model', () => {
 
     it('should translate CCD data to CUI HowMuchHaveYouPaid with howMuchWasPaid field', () => {
       // Given
-      const respondToAdmittedClaim = {howMuchWasPaid: 55} as CCDRespondToClaim;
+      const respondToAdmittedClaim = {howMuchWasPaid: 5500} as CCDRespondToClaim;
       // When
       const cuiHowMuchHaveYouPaid = toCUIHowMuchHaveYouPaid(respondToAdmittedClaim);
       // Then
@@ -73,7 +73,7 @@ describe('translate partial admission to cui model', () => {
     it('should translate CCD data to CUI HowMuchHaveYouPaid model with all fields', () => {
       // Given
       const respondToAdmittedClaim = {
-        howMuchWasPaid: 55,
+        howMuchWasPaid: 5500,
         whenWasThisAmountPaid: new Date('2022-03-25'),
         howWasThisAmountPaidOther: 'Credit card',
       } as CCDRespondToClaim;
@@ -159,14 +159,32 @@ describe('translate partial admission to cui model', () => {
       // Then
       expect(cuiPaymentIntention.paymentOption).toBeUndefined();
     });
-    it('should translate CCD data to CUI PaymentIntention model with pay immediatelty', () => {
+    it('should translate CCD data to CUI PaymentIntention model with pay immediatelty and add 5 days', () => {
       // Given
-      const ccdClaim: CCDClaim = {defenceAdmitPartPaymentTimeRouteRequired: CCDPaymentOption.IMMEDIATELY} as CCDClaim;
+      const submittedDate = new Date('2023-01-05');
+      submittedDate.setHours(10, 0, 0, 0);
+      const resultDate = new Date('2023-01-10');
+      resultDate.setHours(10, 0, 0, 0);
+      const ccdClaim: CCDClaim = {defenceAdmitPartPaymentTimeRouteRequired: CCDPaymentOption.IMMEDIATELY, submittedDate: submittedDate} as CCDClaim;
       // When
       const cuiPaymentIntention = toCUIPaymentIntention(ccdClaim);
       // Then
       expect(cuiPaymentIntention.paymentOption).toBe(PaymentOptionType.IMMEDIATELY);
-      expect(cuiPaymentIntention.paymentDate).toBeUndefined();
+      expect(cuiPaymentIntention.paymentDate.getDate()).toBe(resultDate.getDate());
+      expect(cuiPaymentIntention.repaymentPlan).toBeUndefined();
+    });
+    it('should translate CCD data to CUI PaymentIntention model with pay immediatelty and add 6 days', () => {
+      // Given
+      const submittedDate = new Date('2023-01-05');
+      submittedDate.setHours(22, 0, 0, 0);
+      const resultDate = new Date('2023-01-11');
+      resultDate.setHours(22, 0, 0, 0);
+      const ccdClaim: CCDClaim = {defenceAdmitPartPaymentTimeRouteRequired: CCDPaymentOption.IMMEDIATELY, submittedDate: submittedDate} as CCDClaim;
+      // When
+      const cuiPaymentIntention = toCUIPaymentIntention(ccdClaim);
+      // Then
+      expect(cuiPaymentIntention.paymentOption).toBe(PaymentOptionType.IMMEDIATELY);
+      expect(cuiPaymentIntention.paymentDate.getDate()).toBe(resultDate.getDate());
       expect(cuiPaymentIntention.repaymentPlan).toBeUndefined();
     });
     it('should translate CCD data to CUI PaymentIntention model with pay by set date', () => {

@@ -1,8 +1,22 @@
 import {DateTime} from 'luxon';
 
+const FIVE_DAYS = 5;
+const SIX_DAYS = 6;
+const FOUR_PM = 16;
+
 export const currentDateTime = () => {
   return DateTime.now();
 };
+
+export const addFiveDaysBefore4pm = (date: Date): Date => {
+  const datePlusDays = new Date(date);
+  if (date.getUTCHours() > FOUR_PM) {
+    datePlusDays.setDate(date.getDate() + SIX_DAYS);
+  } else {
+    datePlusDays.setDate(date.getDate() + FIVE_DAYS);
+  }
+  return datePlusDays;
+} ;
 
 // set deadline time 4pm
 export const setTimeFourPM = (deadlineDay: Date | string) => {

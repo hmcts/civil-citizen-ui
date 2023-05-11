@@ -17,6 +17,18 @@ export class LatestUpdateSectionBuilder {
     return this;
   }
 
+  addWarning(text: string, variables?: any) {
+    const warningSection = ({
+      type: ClaimSummaryType.WARNING,
+      data: {
+        text: text,
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(warningSection);
+    return this;
+  }
+
   addParagraph(text: string, variables?: any) {
     const paragraphSection = ({
       type: ClaimSummaryType.PARAGRAPH,
@@ -26,6 +38,22 @@ export class LatestUpdateSectionBuilder {
       },
     });
     this._claimSummarySections.push(paragraphSection);
+    return this;
+  }
+
+  addLink(text: string, href: string, textBefore?: string, textAfter?: string, variables?: any) {
+    const linkSection = ({
+      type: ClaimSummaryType.LINK,
+      data: {
+        text: text,
+        href: href,
+        textBefore: textBefore,
+        textAfter: textAfter,
+        variables: variables,
+      },
+    });
+
+    this._claimSummarySections.push(linkSection);
     return this;
   }
 
@@ -62,7 +90,6 @@ export class LatestUpdateSectionBuilder {
       type: ClaimSummaryType.BUTTON,
       data: {
         text: title,
-        //TODO: (href) in here in the future we should added the document url(is in development)
         href: href,
       },
     });

@@ -28,6 +28,7 @@ import {FullAdmission} from './fullAdmission';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {RepaymentPlan} from './repaymentPlan';
 import {CCDRespondentLiPResponse} from 'models/ccdResponse/ccdRespondentLiPResponse';
+import {CCDRespondToClaim} from 'models/ccdResponse/ccdRespondToClaim';
 import {CCDBankAccount} from 'models/ccdResponse/ccdBankAccount';
 import {CCDHomeDetails} from 'models/ccdResponse/ccdHomeDetails';
 import {CCDPartnerAndDependent} from 'models/ccdResponse/ccdPartnerAndDependent';
@@ -46,8 +47,9 @@ import {CCDSpecificCourtLocations} from 'models/ccdResponse/ccdSpecificCourtLoca
 import {CCDWitnesses} from 'models/ccdResponse/ccdWitnesses';
 import {CCDSmallClaimHearing} from 'models/ccdResponse/ccdSmallClaimHearing';
 import {CCDFastClaimHearing} from 'models/ccdResponse/ccdFastClaimHearing';
+import {CaseDocument} from 'models/document/caseDocument';
 import {CCDExpert} from './ccdResponse/ccdExpert';
-import {CCDRespondToClaim} from './ccdResponse/ccdRespondToClaim';
+import {CaseProgressionHearingDocuments, HearingLocation} from 'models/caseProgression/caseProgressionHearing';
 
 export class CivilClaimResponse {
   id: string;
@@ -150,6 +152,9 @@ export interface CCDClaim extends ClaimUpdate {
   respondent1DQWitnesses?: CCDWitnesses;
   respondent1DQHearingSmallClaim?: CCDSmallClaimHearing;
   respondent1DQHearingFastClaim?: CCDFastClaimHearing;
+  sdoOrderDocument?: CaseDocument;
+  respondToClaim?: CCDRespondToClaim;
+  defenceRouteRequired?: string;
   respondent1DQExperts?: CCDExpert;
   responseClaimExpertSpecRequired?: YesNoUpperCamelCase;
   claimType?: string;
@@ -157,6 +162,10 @@ export interface CCDClaim extends ClaimUpdate {
   respondToAdmittedClaim?: CCDRespondToClaim;
   detailsOfWhyDoesYouDisputeTheClaim?: string;
   respondToAdmittedClaimOwingAmount?: string;
+  hearingDocuments?: CaseProgressionHearingDocuments[];
+  hearingDate?: Date;
+  hearingLocation?: HearingLocation;
+  hearingTimeHourMinute?: string;
 }
 
 export interface ClaimFeeData {
