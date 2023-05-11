@@ -1,4 +1,5 @@
 import {CaseEvent} from './caseEvent';
+import {CCDRespondentLiPResponse} from "models/ccdResponse/ccdRespondentLiPResponse";
 
 export interface EventDto {
   event: CaseEvent,
@@ -7,4 +8,5 @@ export interface EventDto {
 
 export interface ClaimUpdate {
   respondentSolicitor1AgreedDeadlineExtension?:Date;
+  respondent1LiPResponse?: CCDRespondentLiPResponse;
 }
