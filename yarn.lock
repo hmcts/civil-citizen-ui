@@ -3730,22 +3730,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"assign-deep@npm:1.0.1":
-  version: 1.0.1
-  resolution: "assign-deep@npm:1.0.1"
-  dependencies:
-    assign-symbols: ^2.0.2
-  checksum: 87ec212482212b99f4ac57b024f250059c47637978ad76800dad8364012a2ee6bd5d89562186fa0d5f1a76b1ee83ff82e8c3f8dedc73aee756bdcc9936a3ebe6
-  languageName: node
-  linkType: hard
-
-"assign-symbols@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "assign-symbols@npm:2.0.2"
-  checksum: 98429fd55c435cf3762a0d8276659a09305e7ca0eb97f4f723f9e3b94f1fca1eb61bdca48d16db0eef8c31e743c9ec55d545646a52604896ce2154439c2fd47d
-  languageName: node
-  linkType: hard
-
 "async-hook-jl@npm:^1.7.6":
   version: 1.7.6
   resolution: "async-hook-jl@npm:1.7.6"
@@ -4548,7 +4532,7 @@ __metadata:
     eslint: 8.33.0
     eslint-plugin-codeceptjs: ^1.3.0
     express: ^4.18.2
-    express-nunjucks: ^2.2.5
+    express-nunjucks: ^3.0.0
     express-session: ^1.17.3
     glob: ^8.0.3
     govuk-frontend: 4.6.0
@@ -4735,7 +4719,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"co@npm:4.6.0, co@npm:^4.6.0":
+"co@npm:^4.6.0":
   version: 4.6.0
   resolution: "co@npm:4.6.0"
   checksum: 5210d9223010eb95b29df06a91116f2cf7c8e0748a9013ed853b53f362ea0e822f1e5bb054fb3cefc645239a4cf966af1f6133a3b43f40d591f3b68ed6cf0510
@@ -5987,13 +5971,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"es6-promisify@npm:6.1.0":
-  version: 6.1.0
-  resolution: "es6-promisify@npm:6.1.0"
-  checksum: 6d3a4366f0e43d954a34ef7ef06eda43c447d4c0cf5e2331bc55eb0cc110239ce192c6682c6653865d7a980ca04adf1b7f376930397e22d1113fb5e0a4906387
-  languageName: node
-  linkType: hard
-
 "es6-set@npm:~0.1.5":
   version: 0.1.6
   resolution: "es6-set@npm:0.1.6"
@@ -6380,13 +6357,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express-nunjucks@npm:^2.2.5":
-  version: 2.2.5
-  resolution: "express-nunjucks@npm:2.2.5"
+"express-nunjucks@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "express-nunjucks@npm:3.0.0"
   dependencies:
-    assign-deep: 1.0.1
-    nunjucks-async-loader: 1.1.5
-  checksum: 43725f84dbe2875c79e0205425f35d5ed0c54396482a2e10df12559e2b6397b3cde7f024d7288eb3d90fb60dcb884f7525b9bdf3e18d5f26363ed1d449ac5e47
+    nunjucks-async-loader: ^2.0.0
+  peerDependencies:
+    express: ^4.18.2
+    nunjucks: ^3.2.4
+  checksum: 3b1913c7719175038e59b9f13997cdfff1a0a328b86fc7e09ea54dbafd56a5d4e84e1b769bf223b35876d3fa92dc0d59ff40ef2154d287ac2c3899f76a1e815d
   languageName: node
   linkType: hard
 
@@ -10518,14 +10497,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nunjucks-async-loader@npm:1.1.5":
-  version: 1.1.5
-  resolution: "nunjucks-async-loader@npm:1.1.5"
+"nunjucks-async-loader@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "nunjucks-async-loader@npm:2.0.0"
   dependencies:
     chokidar: 3.3.1
-    co: 4.6.0
-    es6-promisify: 6.1.0
-  checksum: 84818c33b1692f17be3f41f2521d1931c5eab495b20998b9c41fa1c531ba3e8570ef42397a116e6e689113d8bad03504e8a6a8e16879ed4b19d1c818a35d6109
+  peerDependencies:
+    nunjucks: ^3.2.4
+  checksum: 44af991a653932db34d2b738a0c416af77a09c73dba99a2721ec0d4d5ff0a58cfc10985c9503206331580fb8f3b7149b8ad1f2ccdb06a5ce4c7a9feea7e6bfce
   languageName: node
   linkType: hard
 
