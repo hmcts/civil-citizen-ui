@@ -1480,6 +1480,8 @@
       "CLAIMANT_CAN_ASK_FOR_CCJ_AGAINST_YOU": "You haven't responded to the claim. {{ claimantName }} can now ask for a County Court Judgement against you.",
       "CCJ_COULD_SEND_BAILIFFS_TO_YOUR_HOME": "A County Court Judgment can mean you find it difficult to get credit, like a mortgage or mobile phone contract. Bailiffs could also be sent to your home.",
       "EVIDENCE_UPLOAD": {
+        "DOCUMENTS_DUE_BY": "Due by: {{bundleStitchingDeadline}}",
+        "DOCUMENTS_SUBMITTED_NOT_CONSIDERED": "Any documents submitted after the due date may not be considered by the judge.",
         "FOLLOW_INSTRUCTIONS_IN": "Please follow the instructions sent in the ",
         "FOUND_UNDER_NOTICES_AND_ORDERS": "which can be found under 'Notices and orders'.",
         "SDO": "standard directions order ",
@@ -1489,7 +1491,16 @@
       "MORE_TIME_REQUESTED": "More time requested",
       "YOU_CAN_STILL_RESPOND_TO_CLAIM": "You can still respond to the claim before they ask for a judgment.",
       "YOU_HAVENT_RESPONDED_TO_CLAIM": "You haven't responded to this claim",
-      "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "You need to respond before 4pm on {{ responseDeadline }} ({{ remainingDays }} Days remaining)."
+      "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "You need to respond before 4pm on {{ responseDeadline }} ({{ remainingDays }} Days remaining).",
+      "CASE_PROGRESSION": {
+        "TRIAL_HEARING_CONTENT": {
+          "YOUR_TRIAL_TITLE": "A trial has been scheduled for your case",
+          "YOUR_HEARING_TITLE": "A hearing has been scheduled for your case",
+          "YOUR_TRIAL_PARAGRAPH": "Your trial has been scheduled for {{ hearingDate }} at {{ hearingTimeHourMinute }} at {{ courtName }}.",
+          "YOUR_HEARING_PARAGRAPH": "Your hearing has been scheduled for {{ hearingDate }} at {{ hearingTimeHourMinute }} at {{ courtName }}.",
+          "VIEW_HEARING_NOTICE_BUTTON": "View hearing notice"
+        }
+      }
     },
     "MEDIATION_CAN_WE_USE": {
       "CAN_MEDIATION_USE": "Can the mediation service use {{ respondentTelNumber }} to call you?",
@@ -2187,6 +2198,21 @@
       "RETIRED": "Retired",
       "TITLE": "Are you unemployed or retired?",
       "UNEMPLOYED": "Unemployed"
+    },
+    "UPLOAD_DOCUMENTS": {
+      "ADD": "Add another",
+      "DATE": "Date statement was written",
+      "DATE_EXAMPLE": "For example, 27 9 2022",
+      "FORMAT": "Each document must be less than 100MB. You can upload the following file types: Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF,TIFF.",
+      "NAME": "Your name",
+      "NO_UPLOAD": "No files uploaded",
+      "PAGE_TITLE": "Upload documents",
+      "REMOVE_SECTION": "Remove section",
+      "STATEMENT": "Your statement",
+      "SUBTITLE": "Acceptable documents formats",
+      "TITLE": "Upload documents",
+      "UPLOAD": "Upload a file",
+      "WITNESS": "Witness evidence"
     },
     "VULNERABILITY": {
       "PAGE_TITLE": "Vulnerability questions",

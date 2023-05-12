@@ -169,29 +169,29 @@
         }
       ],
       "interest": {
-          "sameRateInterestSelection": {
-            "sameRateInterestType": "SAME_RATE_INTEREST_8_PC",
-            "reason": ""
-          },
-          "interestClaimFrom": "FROM_A_SPECIFIC_DATE",
-          "interestStartDate": {
-            "date": "2022-08-21T00:00:00.000Z",
-            "year": "2022",
-            "month": "8",
-            "day": "21",
-            "reason": "test 1"
-          },
-          "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
-          "interestClaimOptions": "SAME_RATE_INTEREST",
-          "totalInterest": {
-            "amount": "90",
-            "reason": "test"
-          },
-          "continueClaimingInterest": "yes",
-          "howMuchContinueClaiming": {
-            "option": "SAME_RATE_INTEREST_DIFFERENT_RATE",
-            "dailyInterestAmount": "50"
-          }
+        "sameRateInterestSelection": {
+          "sameRateInterestType": "SAME_RATE_INTEREST_8_PC",
+          "reason": ""
+        },
+        "interestClaimFrom": "FROM_A_SPECIFIC_DATE",
+        "interestStartDate": {
+          "date": "2022-08-21T00:00:00.000Z",
+          "year": "2022",
+          "month": "8",
+          "day": "21",
+          "reason": "test 1"
+        },
+        "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+        "interestClaimOptions": "SAME_RATE_INTEREST",
+        "totalInterest": {
+          "amount": "90",
+          "reason": "test"
+        },
+        "continueClaimingInterest": "yes",
+        "howMuchContinueClaiming": {
+          "option": "SAME_RATE_INTEREST_DIFFERENT_RATE",
+          "dailyInterestAmount": "50"
+        }
       },
       "legacyCaseReference": "000MC009",
       "solicitorReferences": {
@@ -2594,7 +2594,7 @@
         "version": "4",
         "calculatedAmountInPence": "7000"
       },
-      "claimantResponse":{
+      "claimantResponse": {
         "hasPartAdmittedBeenAccepted": {
           "option": "no"
         }
@@ -3122,5 +3122,454 @@
     "case_type_id": "CIVIL",
     "created_date": "2022-03-01T13:29:22.447",
     "last_modified": "2022-03-01T13:29:24.971"
+  },
+  {
+    "id": 1645992162449509,
+    "jurisdiction": "CIVIL",
+    "case_type_id": "CIVIL",
+    "created_date": "2022-03-01T13:29:22.447",
+    "last_modified": "2022-03-01T13:29:24.971",
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "ccdState": "CASE_PROGRESSION",
+      "claimFee": {
+        "code": "FEE0205",
+        "version": "6",
+        "calculatedAmountInPence": "8000"
+      },
+      "issueDate": "2023-05-10",
+      "applicant1": {
+        "type": "COMPANY",
+        "flags": {
+          "partyName": "Test Inc",
+          "roleOnCase": "Applicant 1"
+        },
+        "partyName": "Test Inc",
+        "companyName": "Test Inc",
+        "primaryAddress": {
+          "County": "Kent",
+          "Country": "United Kingdom",
+          "PostCode": "RG4 7AA",
+          "PostTown": "Reading",
+          "AddressLine1": "Flat 2 - applicant",
+          "AddressLine2": "Caversham House 15-17",
+          "AddressLine3": "Church Road"
+        },
+        "partyTypeDisplayValue": "Company"
+      },
+      "respondent1": {
+        "type": "INDIVIDUAL",
+        "partyName": "Sir John Doe",
+        "partyEmail": "civilmoneyclaimsdemo@gmail.com",
+        "partyPhone": "07123456789",
+        "primaryAddress": {
+          "PostCode": "RG4 7AA",
+          "PostTown": "Reading",
+          "AddressLine1": "Flat 2 - respondent",
+          "AddressLine2": "Caversham House 15-17",
+          "AddressLine3": "Church Road"
+        },
+        "individualTitle": "Sir",
+        "individualLastName": "Doe",
+        "individualFirstName": "John",
+        "individualDateOfBirth": "1978-01-01",
+        "partyTypeDisplayValue": "Individual"
+      },
+      "locationName": "Barnsley Law Courts",
+      "addApplicant2": "No",
+      "claimInterest": "No",
+      "submittedDate": "2023-05-10T21:20:40",
+      "totalInterest": 0,
+      "SearchCriteria": {
+        "SearchParties": [
+          {
+            "id": "91a38b0c-ffc7-4a2d-95e6-5a20402ecf3f",
+            "value": {
+              "Name": "Sir John Doe",
+              "PostCode": "RG4 7AA",
+              "DateOfBirth": "1978-01-01",
+              "AddressLine1": "Flat 2 - respondent",
+              "EmailAddress": "hmcts.civil+organisation.2.solicitor.1@gmail.com"
+            }
+          },
+          {
+            "id": "387d318b-2649-4bfe-bfda-6db1e7f7aa14",
+            "value": {
+              "Name": "Test Inc",
+              "PostCode": "RG4 7AA",
+              "AddressLine1": "Flat 2 - applicant",
+              "EmailAddress": "civilmoneyclaimsdemo@gmail.com"
+            }
+          }
+        ],
+        "OtherCaseReferences": [
+          {
+            "id": "f12cbebf-c91c-4301-8972-cf53100c6344",
+            "value": "000MC008"
+          }
+        ]
+      },
+      "addRespondent2": "No",
+      "detailsOfClaim": "Test details of claim",
+      "businessProcess": {
+        "status": "FINISHED",
+        "camundaEvent": "CREATE_SDO"
+      },
+      "sdoOrderDocument": {
+        "createdBy": "Civil",
+        "documentLink": {
+          "document_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/2dd65a8c-2579-4923-8729-001d3b06db3e",
+          "document_filename": "small_claims_sdo_000MC008.pdf",
+          "document_binary_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/2dd65a8c-2579-4923-8729-001d3b06db3e/binary"
+        },
+        "documentName": "small_claims_sdo_000MC008.pdf",
+        "documentSize": 61847,
+        "documentType": "SDO_ORDER",
+        "createdDatetime": "2023-05-10T21:31:56"
+      },
+      "smallClaimsNotes": {
+        "input": "This order has been made without hearing. Each party has the right to apply to have this Order set aside or varied. Any such application must be received by the Court (together with the appropriate fee) by 4pm on 17 May 2023"
+      },
+      "timelineOfEvents": [
+        {
+          "id": "a99b88d7-9b2f-495c-85b9-0192c63e0820",
+          "value": {
+            "timelineDate": "2021-02-01",
+            "timelineDescription": "event 1"
+          }
+        }
+      ],
+      "totalClaimAmount": 1500,
+      "smallClaimsMethod": "smallClaimsMethodInPerson",
+      "CaseAccessCategory": "SPEC_CLAIM",
+      "calculatedInterest": " | Description | Amount | \n |---|---| \n | Claim amount | £ 1500 | \n | Interest amount | £ 0 | \n | Total amount | £ 1500 |",
+      "claimAmountBreakup": [
+        {
+          "id": "fe9e54de-4f22-4309-bea3-c13ebaf1442e",
+          "value": {
+            "claimAmount": "150000",
+            "claimReason": "amount reason"
+          }
+        }
+      ],
+      "paymentTypePBASpec": "PBAv3",
+      "responseClaimTrack": "SMALL_CLAIM",
+      "smallClaimsHearing": {
+        "time": "TWO_HOURS",
+        "input1": "The hearing of the claim will be on a date to be notified to you by a separate notification. The hearing will have a time estimate of",
+        "input2": "The claimant must by no later than 4 weeks before the hearing date, pay the court the required hearing fee or submit a fully completed application for Help with Fees. \nIf the claimant fails to pay the fee or obtain a fee exemption by that time the claim will be struck without further order.",
+        "dateFrom": "2023-07-01"
+      },
+      "applicant1DQHearing": {
+        "unavailableDatesRequired": "No"
+      },
+      "legacyCaseReference": "000MC008",
+      "solicitorReferences": {
+        "applicantSolicitor1Reference": "Applicant reference",
+        "respondentSolicitor1Reference": "Respondent reference"
+      },
+      "applicant1DQLanguage": {
+        "court": "ENGLISH",
+        "documents": "ENGLISH"
+      },
+      "defenceRouteRequired": "DISPUTES_THE_CLAIM",
+      "respondent1DQHearing": {
+        "unavailableDatesRequired": "No"
+      },
+      "smallClaimsDocuments": {
+        "input1": "Each party must upload to the Digital Portal copies of all documents which they wish the court to consider when reaching its decision not less than 14 days before the hearing.",
+        "input2": "The court may refuse to consider any document which has not been uploaded to the Digital Portal by the above date."
+      },
+      "applicant1DQWitnesses": {
+        "witnessesToAppear": "No"
+      },
+      "caseNameHmctsInternal": "Test Inc v Sir John Doe",
+      "claimIssuedPBADetails": {
+        "fee": {
+          "code": "FEE0205",
+          "version": "6",
+          "calculatedAmountInPence": "8000"
+        },
+        "applicantsPbaAccounts": {
+          "value": {
+            "code": "1bea29e0-ef70-11ed-a32d-034ffa5ca350",
+            "label": "PBA0088192"
+          },
+          "list_items": [
+            {
+              "code": "1bea29e0-ef70-11ed-a32d-034ffa5ca350",
+              "label": "PBA0088192"
+            },
+            {
+              "code": "1bea29e1-ef70-11ed-a32d-034ffa5ca350",
+              "label": "PBA0078095"
+            }
+          ]
+        },
+        "serviceRequestReference": "2023-1683750043954"
+      },
+      "claimNotificationDate": "2023-05-10T21:20:50",
+      "respondent1DQLanguage": {
+        "court": "ENGLISH",
+        "documents": "ENGLISH"
+      },
+      "applicant1ResponseDate": "2023-05-10T21:28:33",
+      "caseManagementCategory": {
+        "value": {
+          "code": "Civil",
+          "label": "Civil"
+        },
+        "list_items": [
+          {
+            "id": "f5681a6a-8415-4b6b-b312-6516a23f32c8",
+            "value": {
+              "code": "Civil",
+              "label": "Civil"
+            }
+          }
+        ]
+      },
+      "caseManagementLocation": {
+        "region": "3",
+        "baseLocation": "574546"
+      },
+      "respondent1DQWitnesses": {
+        "witnessesToAppear": "No"
+      },
+      "respondent1LiPResponse": {
+        "respondent1DQExtraDetails": {
+          "giveEvidenceYourSelf": "No",
+          "respondent1DQLiPExpert": {
+            "caseNeedsAnExpert": "No"
+          },
+          "wantPhoneOrVideoHearing": "No",
+          "determinationWithoutHearingReason": "Why",
+          "determinationWithoutHearingRequired": "No"
+        },
+        "respondent1ResponseLanguage": "ENGLISH",
+        "respondent1DQHearingSupportLip": {
+          "supportRequirementLip": "No"
+        },
+        "respondent1MediationLiPResponse": {
+          "mediationDisagreementLiP": "No"
+        }
+      },
+      "respondent1Represented": "Yes",
+      "respondent1ResponseDate": "2023-05-10T21:23:42",
+      "showResponseOneVOneFlag": "ONE_V_ONE_FULL_DEFENCE",
+      "smallClaimsMethodToggle": [
+        "SHOW"
+      ],
+      "applicant1ClaimWitnesses": "1",
+      "respondent1OrgRegistered": "Yes",
+      "smallClaimsHearingToggle": [
+        "SHOW"
+      ],
+      "smallClaimsJudgesRecital": {
+        "input": "Upon considering the statements of case and the information provided by the parties,"
+      },
+      "speclistYourEvidenceList": [
+        {
+          "id": "e77072e6-1e8a-49dc-9bef-f6f03d4f0ba3",
+          "value": {
+            "evidenceType": "CONTRACTS_AND_AGREEMENTS",
+            "contractAndAgreementsEvidence": "evidence details"
+          }
+        }
+      ],
+      "claimIssuedPaymentDetails": {
+        "status": "SUCCESS",
+        "reference": "13213223",
+        "customerReference": "Applicant reference"
+      },
+      "claimNotificationDeadline": "2023-09-10T23:59:59",
+      "applicant1DQHearingSupport": {
+        "supportRequirements": "No"
+      },
+      "applicant1DQRequestedCourt": {
+        "caseLocation": {
+          "region": "3",
+          "baseLocation": "574546"
+        },
+        "responseCourtCode": "118",
+        "reasonForHearingAtSpecificCourt": "Proof"
+      },
+      "applicant1ProceedWithClaim": "Yes",
+      "applicant1ResponseDeadline": "2023-06-08T16:00:00",
+      "smallClaimsDocumentsToggle": [
+        "SHOW"
+      ],
+      "specRespondent1Represented": "Yes",
+      "drawDirectionsOrderRequired": "Yes",
+      "respondent1DQRequestedCourt": {
+        "requestHearingAtSpecificCourt": "No"
+      },
+      "respondent1ResponseDeadline": "2023-06-08T16:00:00",
+      "smallClaimsWitnessStatement": {
+        "text": "A witness statement must: \na) Start with the name of the case and the claim number;\nb) State the full name and address of the witness; \nc) Set out the witness's evidence clearly in numbered paragraphs on numbered pages;\nd) End with this paragraph: 'I believe that the facts stated in this witness statement are true. I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth'.\ne) be signed by the witness and dated.\nf) If a witness is unable to read the statement there must be a certificate that it has been read or interpreted to the witness by a suitably qualified person and at the final hearing there must be an independent interpreter who will not be provided by the Court.\n\nThe judge may refuse to allow a witness to give evidence or consider any statement of any witness whose statement has not been uploaded to the Digital Portal in accordance with the paragraphs above.\n\nA witness whose statement has been uploaded in accordance with the above must attend the hearing. If they do not attend, it will be for the court to decide how much reliance, if any, to place on their evidence.",
+        "input1": "Each party must upload to the Digital Portal copies of all witness statements of the witnesses upon whose evidence they intend to rely at the hearing not less than 14 days before the hearing.",
+        "input2": "4",
+        "input3": "2",
+        "input4": "For this limitation, a party is counted as a witness."
+      },
+      "applicant1DQStatementOfTruth": {
+        "name": "Tester Tester",
+        "role": "Tester"
+      },
+      "applicant1OrganisationPolicy": {
+        "Organisation": {
+          "OrganisationID": "Q1KOKP2"
+        },
+        "OrgPolicyReference": "Claimant policy reference",
+        "OrgPolicyCaseAssignedRole": "[APPLICANTSOLICITORONE]"
+      },
+      "claimantResponseScenarioFlag": "ONE_V_ONE",
+      "systemGeneratedCaseDocuments": [
+        {
+          "id": "9da16b07-8c0d-4448-bd0e-14b92738c065",
+          "value": {
+            "createdBy": "Civil",
+            "documentLink": {
+              "document_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/e44fbe89-cca8-4cd4-a9dd-4768f45a3ed1",
+              "document_filename": "sealed_claim_form_000MC008.pdf",
+              "document_binary_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/e44fbe89-cca8-4cd4-a9dd-4768f45a3ed1/binary"
+            },
+            "documentName": "sealed_claim_form_000MC008.pdf",
+            "documentSize": 52419,
+            "documentType": "SEALED_CLAIM",
+            "createdDatetime": "2023-05-10T21:20:48"
+          }
+        },
+        {
+          "id": "2ea254d6-c354-4d54-b8e6-b3171e648415",
+          "value": {
+            "createdBy": "Civil",
+            "documentLink": {
+              "document_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/c8b416cd-27f2-4a89-a8ba-4e4a33a4f019",
+              "document_filename": "claimant_directions_questionnaire_form_000MC008.pdf",
+              "document_binary_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/c8b416cd-27f2-4a89-a8ba-4e4a33a4f019/binary"
+            },
+            "documentName": "claimant_directions_questionnaire_form_000MC008.pdf",
+            "documentSize": 79747,
+            "documentType": "DIRECTIONS_QUESTIONNAIRE",
+            "createdDatetime": "2023-05-10T21:28:38"
+          }
+        },
+        {
+          "id": "e2477066-d8ff-435c-96e4-f76879d638b2",
+          "value": {
+            "createdBy": "Civil",
+            "documentLink": {
+              "document_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/2dd65a8c-2579-4923-8729-001d3b06db3e",
+              "document_filename": "small_claims_sdo_000MC008.pdf",
+              "document_binary_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/2dd65a8c-2579-4923-8729-001d3b06db3e/binary"
+            },
+            "documentName": "small_claims_sdo_000MC008.pdf",
+            "documentSize": 61847,
+            "documentType": "SDO_ORDER",
+            "createdDatetime": "2023-05-10T21:31:56"
+          }
+        }
+      ],
+      "applicant1DQSmallClaimHearing": {
+        "unavailableDatesRequired": "No"
+      },
+      "respondent1OrganisationPolicy": {
+        "Organisation": {
+          "OrganisationID": "79ZRSOU"
+        },
+        "OrgPolicyReference": "Defendant policy reference",
+        "OrgPolicyCaseAssignedRole": "[RESPONDENTSOLICITORONE]"
+      },
+      "respondent2OrganisationPolicy": {
+        "OrgPolicyCaseAssignedRole": "[RESPONDENTSOLICITORTWO]"
+      },
+      "specClaimResponseTimelineList": "MANUAL",
+      "applicantSolicitor1PbaAccounts": {
+        "value": {
+          "code": "1bea29e0-ef70-11ed-a32d-034ffa5ca350",
+          "label": "PBA0088192"
+        },
+        "list_items": [
+          {
+            "code": "1bea29e0-ef70-11ed-a32d-034ffa5ca350",
+            "label": "PBA0088192"
+          },
+          {
+            "code": "1bea29e1-ef70-11ed-a32d-034ffa5ca350",
+            "label": "PBA0078095"
+          }
+        ]
+      },
+      "applicantSolicitor1UserDetails": {
+        "id": "9c5e5972-618f-47c2-9c88-88db317051a1",
+        "email": "civilmoneyclaimsdemo@gmail.com"
+      },
+      "drawDirectionsOrderSmallClaims": "Yes",
+      "respondent1DQHearingSmallClaim": {
+        "unavailableDatesRequired": "No"
+      },
+      "applicant1DQWitnessesSmallClaim": {
+        "witnessesToAppear": "No"
+      },
+      "claimAmountBreakupSummaryObject": " | Description | Amount | \n |---|---| \n | amount reason | £ 1500.00 |\n  | **Total** | £ 1500.00 | ",
+      "respondentSolicitor1EmailAddress": "hmcts.civil+organisation.2.solicitor.1@gmail.com",
+      "applicant1ClaimExpertSpecRequired": "No",
+      "smallClaimsWitnessStatementToggle": [
+        "SHOW"
+      ],
+      "applicant1DQVulnerabilityQuestions": {
+        "vulnerabilityAdjustmentsRequired": "No"
+      },
+      "detailsOfWhyDoesYouDisputeTheClaim": "Why",
+      "respondent1PaymentDateToStringSpec": "15 May 2023",
+      "responseClaimMediationSpecRequired": "No",
+      "respondent1ClaimResponseTypeForSpec": "FULL_DEFENCE",
+      "respondent1DQVulnerabilityQuestions": {
+        "vulnerabilityAdjustmentsRequired": "No"
+      },
+      "respondent1ClaimResponseDocumentSpec": {
+        "documentSize": 0
+      },
+      "respondent1DetailsForClaimDetailsTab": {
+        "type": "INDIVIDUAL",
+        "partyName": "Sir John Doe",
+        "partyEmail": "civilmoneyclaimsdemo@gmail.com",
+        "primaryAddress": {
+          "County": "Kent",
+          "Country": "United Kingdom",
+          "PostCode": "RG4 7AA",
+          "PostTown": "Reading",
+          "AddressLine1": "Flat 2 - respondent",
+          "AddressLine2": "Caversham House 15-17",
+          "AddressLine3": "Church Road"
+        },
+        "individualTitle": "Sir",
+        "individualLastName": "Doe",
+        "individualFirstName": "John",
+        "partyTypeDisplayValue": "Individual"
+      },
+      "respondent1GeneratedResponseDocument": {
+        "createdBy": "Civil",
+        "documentLink": {
+          "document_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/c8b416cd-27f2-4a89-a8ba-4e4a33a4f019",
+          "document_filename": "claimant_directions_questionnaire_form_000MC008.pdf",
+          "document_binary_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/c8b416cd-27f2-4a89-a8ba-4e4a33a4f019/binary"
+        },
+        "documentName": "claimant_directions_questionnaire_form_000MC008.pdf",
+        "documentSize": 79747,
+        "documentType": "DIRECTIONS_QUESTIONNAIRE",
+        "createdDatetime": "2023-05-10T21:28:38"
+      },
+      "applicantSolicitor1PbaAccountsIsEmpty": "No",
+      "applicantSolicitor1ClaimStatementOfTruth": {
+        "name": "John Doe",
+        "role": "Test Solicitor"
+      },
+      "defenceAdmitPartPaymentTimeRouteRequired": "IMMEDIATELY",
+      "specApplicantCorrespondenceAddressRequired": "No",
+      "specRespondentCorrespondenceAddressRequired": "No",
+      "specAoSApplicantCorrespondenceAddressRequired": "Yes"
+    }
   }
 ]

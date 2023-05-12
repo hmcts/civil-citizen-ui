@@ -124,4 +124,20 @@ describe('LatestUpdateSectionBuilder tests', ()=> {
     //Then
     expect(contactLinkExpected).toEqual([contactLinkObject]);
   });
+
+  it('should addWarning with just text', ()=> {
+    //Given
+    const warningObject = ({
+      type: ClaimSummaryType.WARNING,
+      data: {
+        text: 'text',
+      },
+    });
+    //When
+    const warningObjectExpected = new LatestUpdateSectionBuilder()
+      .addWarning(warningObject.data.text)
+      .build();
+    //Then
+    expect(warningObjectExpected).toEqual([warningObject]);
+  });
 });
