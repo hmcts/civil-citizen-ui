@@ -3302,13 +3302,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@webpack-cli/configtest@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "@webpack-cli/configtest@npm:2.0.1"
+"@webpack-cli/configtest@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@webpack-cli/configtest@npm:2.1.0"
   peerDependencies:
     webpack: 5.x.x
     webpack-cli: 5.x.x
-  checksum: 15d0ca835f2e16ec99e9f295f07b676435b9e706d7700df0ad088692fea065e34772fc44b96a4f6a86178b9ca8cf1ff941fbce15269587cf0925d70b18928cea
+  checksum: b875fccd8be9a936924e24986725823347703e3eb72ea884e74669ca20f007704e859855a6a05940d5d3805ce2fc08b183a0f1658d5395b5454b3f5f88293081
   languageName: node
   linkType: hard
 
@@ -3322,16 +3322,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@webpack-cli/serve@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "@webpack-cli/serve@npm:2.0.2"
+"@webpack-cli/serve@npm:^2.0.4":
+  version: 2.0.4
+  resolution: "@webpack-cli/serve@npm:2.0.4"
   peerDependencies:
     webpack: 5.x.x
     webpack-cli: 5.x.x
   peerDependenciesMeta:
     webpack-dev-server:
       optional: true
-  checksum: f74c8cc7d3e4de58e1261c6d09af0e8b8a23f53ada4ec336140f30fa16d57d9f56de954e87125947c090c06a30b10a243ca1e093c3e4bd60ba3f19c852cb20b7
+  checksum: 561ea2e6eb551415f0b1675393a8480e1201293fe37eae334cbb1fdc466986668cca76ca1ca327ada9b498eae27cbecef0793e3bb5677288f1a5216cad414efe
   languageName: node
   linkType: hard
 
@@ -3853,22 +3853,6 @@ __metadata:
   version: 1.1.0
   resolution: "assertion-error@npm:1.1.0"
   checksum: fd9429d3a3d4fd61782eb3962ae76b6d08aa7383123fca0596020013b3ebd6647891a85b05ce821c47d1471ed1271f00b0545cf6a4326cf2fc91efcc3b0fbecf
-  languageName: node
-  linkType: hard
-
-"assign-deep@npm:1.0.1":
-  version: 1.0.1
-  resolution: "assign-deep@npm:1.0.1"
-  dependencies:
-    assign-symbols: ^2.0.2
-  checksum: 87ec212482212b99f4ac57b024f250059c47637978ad76800dad8364012a2ee6bd5d89562186fa0d5f1a76b1ee83ff82e8c3f8dedc73aee756bdcc9936a3ebe6
-  languageName: node
-  linkType: hard
-
-"assign-symbols@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "assign-symbols@npm:2.0.2"
-  checksum: 98429fd55c435cf3762a0d8276659a09305e7ca0eb97f4f723f9e3b94f1fca1eb61bdca48d16db0eef8c31e743c9ec55d545646a52604896ce2154439c2fd47d
   languageName: node
   linkType: hard
 
@@ -4674,7 +4658,7 @@ __metadata:
     eslint: 8.39.0
     eslint-plugin-codeceptjs: ^1.3.0
     express: ^4.18.2
-    express-nunjucks: ^2.2.5
+    express-nunjucks: ^3.0.0
     express-session: ^1.17.3
     glob: ^8.0.3
     govuk-frontend: 4.6.0
@@ -4861,7 +4845,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"co@npm:4.6.0, co@npm:^4.6.0":
+"co@npm:^4.6.0":
   version: 4.6.0
   resolution: "co@npm:4.6.0"
   checksum: 5210d9223010eb95b29df06a91116f2cf7c8e0748a9013ed853b53f362ea0e822f1e5bb054fb3cefc645239a4cf966af1f6133a3b43f40d591f3b68ed6cf0510
@@ -6120,13 +6104,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"es6-promisify@npm:6.1.0":
-  version: 6.1.0
-  resolution: "es6-promisify@npm:6.1.0"
-  checksum: 6d3a4366f0e43d954a34ef7ef06eda43c447d4c0cf5e2331bc55eb0cc110239ce192c6682c6653865d7a980ca04adf1b7f376930397e22d1113fb5e0a4906387
-  languageName: node
-  linkType: hard
-
 "es6-set@npm:~0.1.5":
   version: 0.1.6
   resolution: "es6-set@npm:0.1.6"
@@ -6503,13 +6480,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express-nunjucks@npm:^2.2.5":
-  version: 2.2.5
-  resolution: "express-nunjucks@npm:2.2.5"
+"express-nunjucks@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "express-nunjucks@npm:3.0.0"
   dependencies:
-    assign-deep: 1.0.1
-    nunjucks-async-loader: 1.1.5
-  checksum: 43725f84dbe2875c79e0205425f35d5ed0c54396482a2e10df12559e2b6397b3cde7f024d7288eb3d90fb60dcb884f7525b9bdf3e18d5f26363ed1d449ac5e47
+    nunjucks-async-loader: ^2.0.0
+  peerDependencies:
+    express: ^4.18.2
+    nunjucks: ^3.2.4
+  checksum: 3b1913c7719175038e59b9f13997cdfff1a0a328b86fc7e09ea54dbafd56a5d4e84e1b769bf223b35876d3fa92dc0d59ff40ef2154d287ac2c3899f76a1e815d
   languageName: node
   linkType: hard
 
@@ -7618,10 +7597,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"helmet@npm:*, helmet@npm:^6.0.1":
-  version: 6.1.5
-  resolution: "helmet@npm:6.1.5"
-  checksum: 58cc8f8715e2c486f3c7a58f89fcda3c9e83ab427bfe16d8486d8be53a681afc291f9900b9e60e5d42c63c25ece3da864a33cdd621a12f5a67cbc9046cff393d
+"helmet@npm:*":
+  version: 7.0.0
+  resolution: "helmet@npm:7.0.0"
+  checksum: 3622b8b68b7ac4736369fe7717adb5b87ddcdcda7c11c13277d79fb5670acab032e8c971835565b1d2144d234f3e0dbcd327a44249b9e61f0f64c0c753faf1bc
+  languageName: node
+  linkType: hard
+
+"helmet@npm:^6.0.1":
+  version: 6.2.0
+  resolution: "helmet@npm:6.2.0"
+  checksum: cf01e024244205bd10d70fd2f3874244b72ba37a10a4604e4383bbd63fe1438ee24bae7672c4ee5c5e16e6cd88ac58003274034fab0ba199761471555a322b37
   languageName: node
   linkType: hard
 
@@ -10664,14 +10650,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nunjucks-async-loader@npm:1.1.5":
-  version: 1.1.5
-  resolution: "nunjucks-async-loader@npm:1.1.5"
+"nunjucks-async-loader@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "nunjucks-async-loader@npm:2.0.0"
   dependencies:
     chokidar: 3.3.1
-    co: 4.6.0
-    es6-promisify: 6.1.0
-  checksum: 84818c33b1692f17be3f41f2521d1931c5eab495b20998b9c41fa1c531ba3e8570ef42397a116e6e689113d8bad03504e8a6a8e16879ed4b19d1c818a35d6109
+  peerDependencies:
+    nunjucks: ^3.2.4
+  checksum: 44af991a653932db34d2b738a0c416af77a09c73dba99a2721ec0d4d5ff0a58cfc10985c9503206331580fb8f3b7149b8ad1f2ccdb06a5ce4c7a9feea7e6bfce
   languageName: node
   linkType: hard
 
@@ -14133,13 +14119,13 @@ __metadata:
   linkType: hard
 
 "webpack-cli@npm:^5.0.1":
-  version: 5.0.2
-  resolution: "webpack-cli@npm:5.0.2"
+  version: 5.1.1
+  resolution: "webpack-cli@npm:5.1.1"
   dependencies:
     "@discoveryjs/json-ext": ^0.5.0
-    "@webpack-cli/configtest": ^2.0.1
+    "@webpack-cli/configtest": ^2.1.0
     "@webpack-cli/info": ^2.0.1
-    "@webpack-cli/serve": ^2.0.2
+    "@webpack-cli/serve": ^2.0.4
     colorette: ^2.0.14
     commander: ^10.0.1
     cross-spawn: ^7.0.3
@@ -14160,13 +14146,13 @@ __metadata:
       optional: true
   bin:
     webpack-cli: bin/cli.js
-  checksum: 98816d84c51487b90e1008ddbcda8827dcb7ae9ab7892f4d742f0d7b93f90a4a18a6ec2671b380e5a7ee4b0917cf0c43921119419d8ba9e1b14ea060115684fd
+  checksum: 7738e6a84a0098886e1e0c0fd0dab44b7dedfbb0580afbb5ef734c5109dcaee80140bebb5d9f4b40f425029563bb09bcbda8b08d904fa14e60ff632e6dcc8a17
   languageName: node
   linkType: hard
 
 "webpack-dev-middleware@npm:^6.0.1":
-  version: 6.0.2
-  resolution: "webpack-dev-middleware@npm:6.0.2"
+  version: 6.1.0
+  resolution: "webpack-dev-middleware@npm:6.1.0"
   dependencies:
     colorette: ^2.0.10
     memfs: ^3.4.12
@@ -14178,7 +14164,7 @@ __metadata:
   peerDependenciesMeta:
     webpack:
       optional: true
-  checksum: a2f65ffdec8120ae2a2def17f0f2941e65b26ee2922708aaec47ada4e262ad99f4e644136d0463fa9bbc32c4168425a1f55d928b7f3e0a2a3905c579358141b8
+  checksum: 0377f953b0b163ebbb7097abeaf6c4d8c6873443cf91ee848103b1702f1cd8d2df03587afd0d9f397251b24dc11ba1105a90b9f51c120c216f6232149a7e2628
   languageName: node
   linkType: hard
 
