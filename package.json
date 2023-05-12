@@ -101,6 +101,8 @@
     "@babel/core": "^7.19.6",
     "@babel/eslint-parser": "^7.19.1",
     "@babel/preset-env": "^7.20.2",
+    "@pact-foundation/pact": "^9.11.1",
+    "@pact-foundation/pact-node": "^10.9.7",
     "@types/copy-webpack-plugin": "^10.1.0",
     "@types/jest": "^29.4.0",
     "@types/supertest": "^2.0.12",
