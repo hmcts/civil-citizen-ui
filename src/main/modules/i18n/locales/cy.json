@@ -1492,6 +1492,11 @@
       "YOU_CAN_STILL_RESPOND_TO_CLAIM": "You can still respond to the claim before they ask for a judgment.",
       "YOU_HAVENT_RESPONDED_TO_CLAIM": "You haven't responded to this claim",
       "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "You need to respond before 4pm on {{ responseDeadline }} ({{ remainingDays }} Days remaining).",
+      "SDO_AN_ORDER_HAS_BEEN_ISSUED_BY_THE_COURT": "An order has been issued by the court.",
+      "SDO_PLEASE_FOLLOW_THE_INSTRUCTIONS_IN_THE_ORDER": "Please follow the instructions in the order and comply with the deadlines, if applicable.",
+      "SDO_THIS_CLAIM_WILL_NO_PROCEED_OFFLINE": "This claim will now proceed offline, you will receive any further updates by post.",
+      "SDO_DOWNLOAD_THE_COURTS_ORDER": "Download the court’s order (PDF)",
+      "SDO_TO_FIND_OUT_THE_DETAILS": "to find out the details you need to send.",
       "CASE_PROGRESSION": {
         "TRIAL_HEARING_CONTENT": {
           "YOUR_TRIAL_TITLE": "A trial has been scheduled for your case",
