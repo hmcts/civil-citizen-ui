@@ -1,133 +1,128 @@
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
 
-const text = 'text';
-const variables = 'variables';
-const href = 'nextPage';
-const textBefore = 'textBefore';
-const textAfter= 'textAfter';
-
 describe('PageSectionBuilder tests', ()=> {
   it('should create title', ()=> {
     //Given
-    const titleExpected = ([{
+    const titleExpected = ({
       type: ClaimSummaryType.TITLE,
       data: {
-        text: text,
-        variables: variables,
+        text: 'text',
+        variables: 'variables',
       },
-    }]);
+    });
 
     //When
-    const result = new PageSectionBuilder()
-      .addTitle(text,variables)
+    const titleBuilt = new PageSectionBuilder()
+      .addTitle(titleExpected.data.text,titleExpected.data.variables)
       .build();
 
     //Then
-    expect(titleExpected).toEqual(result);
+    expect(titleBuilt).toEqual([titleExpected]);
   });
 
   it('should add Paragraph', ()=> {
     //Given
-    const paragraphExpected = ([{
+    const paragraphExpected = ({
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: text,
-        variables: variables,
+        text: 'text',
+        variables: 'variables',
       },
-    }]);
+    });
 
     //When
-    const result = new PageSectionBuilder()
-      .addParagraph(text,variables)
+    const paragraphBuilt = new PageSectionBuilder()
+      .addParagraph(paragraphExpected.data.text,paragraphExpected.data.variables)
       .build();
 
     //Then
-    expect(paragraphExpected).toEqual(result);
+    expect(paragraphBuilt).toEqual([paragraphExpected]);
   });
 
   it('should add link', ()=> {
     //Given
-    const linkExpected = ([{
+    const linkExpected = ({
       type: ClaimSummaryType.LINK,
       data: {
-        text: text,
-        href: href,
-        textBefore: textBefore,
-        textAfter: textAfter,
+        text: 'text',
+        href: 'href',
+        textBefore: 'textBefore',
+        textAfter: 'textAfter',
       },
-    }]);
+    });
 
     //When
-    const result = new PageSectionBuilder()
-      .addLink(text,href,textBefore,textAfter)
+    const linkBuilt = new PageSectionBuilder()
+      .addLink(linkExpected.data.text,linkExpected.data.href,linkExpected.data.textBefore,linkExpected.data.textAfter)
       .build();
 
     //Then
-    expect(linkExpected).toEqual(result);
+    expect(linkBuilt).toEqual([linkExpected]);
   });
 
   it('should addLink with text before and after', ()=> {
     //Given
-    const contactLinkExpected = [({
+    const contactLinkExpected = ({
       type: ClaimSummaryType.LINK,
       data: {
-        text: text,
-        href: href,
-        textBefore: textBefore,
-        textAfter: textAfter,
-        variables: variables,
+        text: 'text',
+        href: 'href',
+        textBefore: 'textBefore',
+        textAfter: 'textAfter',
+        variables: 'variables',
       },
-    })];
+    });
 
     //When
-    const result = new PageSectionBuilder()
-      .addLink(text,href,textBefore,textAfter,variables)
+    const contactLinkBuilt = new PageSectionBuilder()
+      .addLink(contactLinkExpected.data.text,contactLinkExpected.data.href,contactLinkExpected
+        .data.textBefore,contactLinkExpected.data.textAfter,contactLinkExpected.data.variables)
       .build();
 
     //Then
-    expect(contactLinkExpected).toEqual(result);
+    expect(contactLinkBuilt).toEqual([contactLinkExpected]);
   });
 
   it('should addLink with just text', ()=> {
     //Given
     const textAfterUnd: any = undefined;
     const textBeforeUnd: any = undefined;
-    const contactLinkExpected = [({
+    const contactLinkExpected = ({
       type: ClaimSummaryType.LINK,
       data: {
-        text: text,
-        href: href,
+        text: 'text',
+        href: 'href',
         textAfter: textAfterUnd,
         textBefore: textBeforeUnd,
       },
-    })];
+    });
 
     //When
-    const result = new PageSectionBuilder()
-      .addLink(text,href)
+    const contactLinkBuilt = new PageSectionBuilder()
+      .addLink(contactLinkExpected.data.text,contactLinkExpected.data.href)
       .build();
 
     //Then
-    expect(contactLinkExpected).toEqual(result);
+    expect(contactLinkBuilt).toEqual([contactLinkExpected]);
   });
 
   it('should add Green Button', ()=> {
     //Given
-    const buttonExpected = ([{
+    const buttonExpected = ({
       type: ClaimSummaryType.BUTTON,
       data: {
-        text: text,
-        href: href,
+        text: 'text',
+        href: 'href',
       },
-    }]);
+    });
 
     //When
-    const result = new PageSectionBuilder()
-      .addButton(text,href)
+    const buttonBuilt = new PageSectionBuilder()
+      .addButton(buttonExpected.data.text,buttonExpected.data.href)
       .build();
 
     //Then
-    expect(buttonExpected).toEqual(result);
+    expect(buttonBuilt).toEqual([buttonExpected]);
   });
 });

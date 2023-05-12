@@ -3,68 +3,67 @@ import {ClaimSummaryType} from 'form/models/claimSummarySection';
 import {CASE_DOCUMENT_DOWNLOAD_URL, CITIZEN_CONTACT_THEM_URL} from 'routes/urls';
 import {DocumentUri} from 'models/document/documentType';
 
-const text = 'text';
-const variables = 'variables';
-const textAfter= 'textAfter';
-const claimId = '01';
-
 describe('LatestUpdateSectionBuilder tests', ()=> {
   it('should add contactLink', ()=> {
     //Given
-    const contactLinkExpected = ([{
+    const contactLinkExpected = ({
       type: ClaimSummaryType.LINK,
       data: {
-        href: CITIZEN_CONTACT_THEM_URL.replace(':id', claimId),
-        text: text,
-        textAfter: textAfter,
-        variables: variables,
+        href: CITIZEN_CONTACT_THEM_URL.replace(':id', '1234'),
+        text: 'text',
+        textAfter: 'textAfter',
+        variables: 'variables',
       },
-    }]);
+    });
 
     //When
-    const result = new LatestUpdateSectionBuilder()
-      .addContactLink(text,claimId,variables,textAfter)
+    const contactLinkBuilt = new LatestUpdateSectionBuilder()
+      .addContactLink(contactLinkExpected.data.text,'1234',contactLinkExpected.data
+        .variables,contactLinkExpected.data.textAfter)
       .build();
 
     //Then
-    expect(contactLinkExpected).toEqual(result);
+    expect(contactLinkBuilt).toEqual([contactLinkExpected]);
   });
 
   it('should add ResponseDocumentLink', ()=> {
     //Given
-    const responseDocumentLinkExpected = ([{
+    const responseDocumentLinkExpected = ({
       type: ClaimSummaryType.LINK,
       data: {
-        text: text,
-        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId)
+        text: 'text',
+        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', '1234')
           .replace(':documentType', DocumentUri.SEALED_CLAIM),
-        textAfter: textAfter,
-        variables: variables,
+        textAfter: 'textAfter',
+        variables: 'variables',
       },
-    }]);
+    });
 
     //When
-    const result = new LatestUpdateSectionBuilder()
-      .addResponseDocumentLink(text,claimId,variables,textAfter)
+    const responseDocumentLinkBuilt = new LatestUpdateSectionBuilder()
+      .addResponseDocumentLink(responseDocumentLinkExpected.data.text,'1234', responseDocumentLinkExpected
+        .data.variables,responseDocumentLinkExpected.data.textAfter)
       .build();
 
     //Then
-    expect(responseDocumentLinkExpected).toEqual(result);
+    expect(responseDocumentLinkBuilt).toEqual([responseDocumentLinkExpected]);
   });
 
   it('should addWarning with just text', ()=> {
     //Given
-    const warningObject = ({
+    const warningExpected = ({
       type: ClaimSummaryType.WARNING,
       data: {
         text: 'text',
       },
     });
+
     //When
-    const warningObjectExpected = new LatestUpdateSectionBuilder()
-      .addWarning(warningObject.data.text)
+    const warningBuilt = new LatestUpdateSectionBuilder()
+      .addWarning(warningExpected.data.text)
       .build();
+
     //Then
-    expect(warningObjectExpected).toEqual([warningObject]);
+    expect(warningBuilt).toEqual([warningExpected]);
   });
 });
