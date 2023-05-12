@@ -50,6 +50,8 @@ import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreferen
 import {analyseClaimType, claimType} from 'common/form/models/claimType';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {CCDRespondentLiPResponse} from './ccdResponse/ccdRespondentLiPResponse';
+import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
+import {DateTimeFormatOptions} from 'luxon';
 
 export class Claim {
   legacyCaseReference: string;
@@ -87,6 +89,7 @@ export class Claim {
   id: string;
   sdoOrderDocument?: CaseDocument;
   respondent1LiPResponse?: CCDRespondentLiPResponse;
+  caseProgressionHearing?: CaseProgressionHearing;
 
   get responseStatus(): ClaimResponseStatus {
     if (this.isFullAdmission() && this.isFAPaymentOptionPayImmediately()) {
@@ -471,6 +474,17 @@ export class Claim {
 
   hasSdoOrderDocument(): boolean{
     return !!this.sdoOrderDocument;
+  }
+
+  hasCaseProgressionHearingDocuments(): boolean{
+    return !!this.caseProgressionHearing?.hearingDocuments;
+  }
+
+  get bundleStitchingDeadline(): string {
+    const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
+    const threeWeeksMilli = 21 * 24 * 60 * 60 * 1000;
+    const options: DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
+    return new Date(hearingDateTime - threeWeeksMilli).toLocaleDateString('en-GB', options);
   }
 }
 
