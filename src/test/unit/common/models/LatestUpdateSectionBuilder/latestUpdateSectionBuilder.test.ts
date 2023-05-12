@@ -1,6 +1,6 @@
 import {LatestUpdateSectionBuilder} from 'models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
-import {DocumentUri} from "models/document/documentType";
+import {DocumentUri} from 'models/document/documentType';
 
 describe('LatestUpdateSectionBuilder tests', ()=> {
   it('should create title', ()=> {
