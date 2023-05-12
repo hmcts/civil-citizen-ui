@@ -25,6 +25,10 @@
     <h3 class="govuk-heading-m">{{ t(content.data.text) }}</h3>
   {% endif %}
 
+  {% if content.type === ClaimSummaryType.SUBTITLE %}
+    <h3 class="govuk-heading-s">{{ t(content.data.text) }}</h3>
+  {% endif %}
+
   {% if content.type === ClaimSummaryType.LEAD_PARAGRAPH %}
       {% set object = '' %}
       {% if content.data.variables %}
