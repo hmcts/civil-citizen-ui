@@ -14,9 +14,7 @@ documentsUploadedController.get(CP_EVIDENCE_UPLOAD_SUBMISSION_URL, (async (req:R
     const documentsTabUrl = DEFENDANT_SUMMARY_URL.replace(':id', claim.id)+'#documents';
     const caseNumber = caseNumberPrettify(claimId);
 
-    if (claim && !claim.isEmpty()) {
-      res.render(uploadDocumentsViewPath, {claim, caseNumber, uploadYourDocumentsUrl, documentsTabUrl});
-    }
+    res.render(uploadDocumentsViewPath, {claim, caseNumber, uploadYourDocumentsUrl, documentsTabUrl});
   } catch (error) {
     next(error);
   }
