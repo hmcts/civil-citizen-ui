@@ -3,22 +3,27 @@ import {ClaimSummaryType} from 'form/models/claimSummarySection';
 import {CASE_DOCUMENT_DOWNLOAD_URL, CITIZEN_CONTACT_THEM_URL} from 'routes/urls';
 import {DocumentUri} from 'models/document/documentType';
 
+const text = 'text';
+const variables = 'variables';
+const href = 'nextPage';
+const textBefore = 'textBefore';
+const textAfter= 'textAfter';
+const claimId = '01';
+
 describe('PageSectionBuilder tests', ()=> {
   it('should create caption', ()=> {
     //Given
-    const caption = 'caption';
-    const variables = 'variables';
     const captionExpected = ([{
       type: ClaimSummaryType.CAPTION,
       data: {
-        text: caption,
+        text: text,
         variables: variables,
       },
     }]);
 
     //When
     const result = new PageSectionBuilder()
-      .addCaption(caption,variables)
+      .addCaption(text,variables)
       .build();
 
     //Then
@@ -27,19 +32,17 @@ describe('PageSectionBuilder tests', ()=> {
 
   it('should create mainTitle', ()=> {
     //Given
-    const mainTitle = 'testMainTitle';
-    const variables = 'variables';
     const mainTitleExpected = ([{
       type: ClaimSummaryType.MAINTITLE,
       data: {
-        text: mainTitle,
+        text: text,
         variables: variables,
       },
     }]);
 
     //When
     const result = new PageSectionBuilder()
-      .addMainTitle(mainTitle,variables)
+      .addMainTitle(text,variables)
       .build();
 
     //Then
@@ -48,19 +51,17 @@ describe('PageSectionBuilder tests', ()=> {
 
   it('should create title', ()=> {
     //Given
-    const title = 'testTitle';
-    const variables = 'testVariables';
     const titleExpected = ([{
       type: ClaimSummaryType.TITLE,
       data: {
-        text: title,
+        text: text,
         variables: variables,
       },
     }]);
 
     //When
     const result = new PageSectionBuilder()
-      .addTitle(title,variables)
+      .addTitle(text,variables)
       .build();
 
     //Then
@@ -69,19 +70,17 @@ describe('PageSectionBuilder tests', ()=> {
 
   it('should add Paragraph', ()=> {
     //Given
-    const paragraph = 'testParagraph';
-    const variables = 'variables';
     const paragraphExpected = ([{
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: paragraph,
+        text: text,
         variables: variables,
       },
     }]);
 
     //When
     const result = new PageSectionBuilder()
-      .addParagraph(paragraph,variables)
+      .addParagraph(text,variables)
       .build();
 
     //Then
@@ -90,10 +89,6 @@ describe('PageSectionBuilder tests', ()=> {
 
   it('should add link', ()=> {
     //Given
-    const text = 'text';
-    const href = 'href';
-    const textBefore = 'textBefore';
-    const textAfter= 'textAfter';
     const linkExpected = ([{
       type: ClaimSummaryType.LINK,
       data: {
@@ -115,11 +110,6 @@ describe('PageSectionBuilder tests', ()=> {
 
   it('should addLink with text before and after', ()=> {
     //Given
-    const text = 'text';
-    const href = 'href';
-    const textBefore = 'before';
-    const textAfter = 'after';
-    const variables = 'variables';
     const contactLinkExpected = [({
       type: ClaimSummaryType.LINK,
       data: {
@@ -142,17 +132,15 @@ describe('PageSectionBuilder tests', ()=> {
 
   it('should addLink with just text', ()=> {
     //Given
-    const text = 'text';
-    const href = 'href';
-    const textAfter: any = undefined;
-    const textBefore: any = undefined;
+    const textAfterUnd: any = undefined;
+    const textBeforeUnd: any = undefined;
     const contactLinkExpected = [({
       type: ClaimSummaryType.LINK,
       data: {
         text: text,
         href: href,
-        textAfter: textAfter,
-        textBefore: textBefore,
+        textAfter: textAfterUnd,
+        textBefore: textBeforeUnd,
       },
     })];
 
@@ -167,19 +155,17 @@ describe('PageSectionBuilder tests', ()=> {
 
   it('should add leadParagraph', ()=> {
     //Given
-    const leadParagraph = 'testLeadParagraph';
-    const variables = 'variables';
     const leadParagraphExpected = ([{
       type: ClaimSummaryType.LEAD_PARAGRAPH,
       data: {
-        text: leadParagraph,
+        text: text,
         variables: variables,
       },
     }]);
 
     //When
     const result = new PageSectionBuilder()
-      .addLeadParagraph(leadParagraph,variables)
+      .addLeadParagraph(text,variables)
       .build();
 
     //Then
@@ -188,10 +174,6 @@ describe('PageSectionBuilder tests', ()=> {
 
   it('should add contactLink', ()=> {
     //Given
-    const text = 'text';
-    const claimId = '01';
-    const variables = 'variables';
-    const textAfter = 'textAfter';
     const contactLinkExpected = ([{
       type: ClaimSummaryType.LINK,
       data: {
@@ -213,10 +195,6 @@ describe('PageSectionBuilder tests', ()=> {
 
   it('should add ResponseDocumentLink', ()=> {
     //Given
-    const text = 'text';
-    const claimId = '01';
-    const variables = 'variables';
-    const textAfter = 'textAfter';
     const responseDocumentLinkExpected = ([{
       type: ClaimSummaryType.LINK,
       data: {
@@ -239,19 +217,17 @@ describe('PageSectionBuilder tests', ()=> {
 
   it('should add Green Button', ()=> {
     //Given
-    const title = 'test';
-    const href = 'nextPage';
     const buttonExpected = ([{
       type: ClaimSummaryType.BUTTON,
       data: {
-        text: title,
+        text: text,
         href: href,
       },
     }]);
 
     //When
     const result = new PageSectionBuilder()
-      .addButton(title,href)
+      .addButton(text,href)
       .build();
 
     //Then
@@ -260,21 +236,18 @@ describe('PageSectionBuilder tests', ()=> {
 
   it('should add Start Button', ()=> {
     //Given
-    const title = 'test';
-    const href = 'nextPage';
-    const isStartButton = true;
     const startButtonExpected = ([{
       type: ClaimSummaryType.BUTTON,
       data: {
-        text: title,
+        text: text,
         href: href,
-        isStartButton: isStartButton,
+        isStartButton: true,
       },
     }]);
 
     //When
     const result = new PageSectionBuilder()
-      .addStartButton(title,href)
+      .addStartButton(text,href)
       .build();
 
     //Then
