@@ -62,7 +62,7 @@ module.exports = {
     if (caseId) {
       url += `/cases/${caseId}`;
     }
-    url += `/citizen/${userId}/${eventName}`;
+    url += `/citizen/${userId}/event`;
 
     let response = await restHelper.retriedRequest(url, getRequestHeaders(tokens.userAuth), payload, 'POST',200)
       .then(response => response.json());
