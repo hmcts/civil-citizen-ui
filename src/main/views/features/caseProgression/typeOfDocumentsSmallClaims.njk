@@ -26,41 +26,6 @@
           <p class="govuk-body">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.SELECT_THE_TYPE_OF_DOCUMENT') }}</p>
                   <div class='multiple-row'>
                       {{ govukCheckboxes({
-                        idPrefix: 'typeOfDocuments',
-                        id: 'typeOfDocuments',
-                        name: 'typeOfDocuments',
-                        fieldset: {
-                           legend: {
-                           text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DISCLOSURE'),
-                           isPageHeading: false,
-                           classes: "govuk-fieldset__legend--l"
-                          }
-                        },
-                        items: [
-                          {
-                            id: 'documents',
-                            name: 'documents',
-                            value: 'documents',
-                            text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_FOR_DISCLOSURE'),
-                            hint: {
-                                 text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_FOR_DISCLOSURE_HINT')
-                            },
-                            checked: true if form.model.disclosure[0].selected
-                          },
-                          {
-                            id: 'list',
-                            name: 'list',
-                            value: 'list',
-                            text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DISCLOSURE_LIST'),
-                            hint: {
-                                 text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DISCLOSURE_LIST_HINT')
-                            },
-                            checked: true if form.model.disclosure[1].selected
-                          }
-                        ]
-                      }) }}
-
-                      {{ govukCheckboxes({
                           idPrefix: 'witness',
                           name: 'witness',
                           fieldset: {
@@ -101,17 +66,6 @@
                                                         },
                             checked: true if form.model.witness[2].selected
                           },
-                          {
-                            id: 'witnessNotice',
-                            name: 'witnessNotice',
-                            value: 'witnessNotice',
-                            text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.NOTICE_OF_INTENTION'),
-                                                        hint: {
-                                                             text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.NOTICE_OF_INTENTION_HINT')
-                                                        },
-                            checked: true if form.model.witness[3].selected
-                          }
-                          ,
                           {
                             id: 'witnessDocuments',
                             name: 'witnessDocuments',
@@ -155,27 +109,7 @@
                                    text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_REFFERED_TO_STATEMENT_HINT')
                               },
                               checked: true if form.model.expert[1].selected
-                            },
-                            {
-                              id: 'questions',
-                              name: 'questions',
-                              value: 'questions',
-                              text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.QUESTIONS_FOR_OTHER_PARTY'),
-                              hint: {
-                                   text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.QUESTIONS_FOR_OTHER_PARTY_HINT')
-                              },
-                              checked: true if form.model.expert[2].selected
-                            },
-                             {
-                               id: 'answer',
-                               name: 'answer',
-                               value: 'answer',
-                               text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.ANSWERS_TO_QUESTIONS'),
-                               hint: {
-                                    text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.ANSWERS_TO_QUESTIONS_HINT')
-                               },
-                               checked: true if form.model.expert[3].selected
-                             }
+                            }
                           ]
                         }) }}
                       {{ govukCheckboxes({
@@ -183,32 +117,22 @@
                             name: 'trial',
                             fieldset: {
                                legend: {
-                               text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.TRIAL'),
+                               text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.HEARING_DOCUMENTS'),
                                isPageHeading: false,
                                classes: "govuk-fieldset__legend--l"
                               }
                             },
                             items: [
-                            {
-                              id: 'case',
-                              name: 'case',
-                              value: 'case',
-                              text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CASE_SUMMARY'),
-                              hint: {
-                                   text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CASE_SUMMARY_HINT')
-                              },
-                              checked: true if form.model.trial[0].selected
-                              },
-                            {
-                              id: 'skeleton',
-                              name: 'skeleton',
-                              value: 'skeleton',
-                              text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.SKELETON_ARGUMENT'),
-                              hint: {
-                                   text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.SKELETON_ARGUMENT_HINT')
-                              },
-                              checked: true if form.model.trial[1].selected
-                            },
+                             {
+                               id: 'documentary',
+                               name: 'documentary',
+                               value: 'documentary',
+                               text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTARY_EVIDENCE_HEARING'),
+                               hint: {
+                                    text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTARY_EVIDENCE_HEARING_HINT')
+                               },
+                               checked: true if form.model.trial[4].selected
+                             },
                             {
                               id: 'legal',
                               name: 'legal',
@@ -218,27 +142,6 @@
                                    text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.LEGAL_AUTHORITIES_HINT')
                               },
                               checked: true if form.model.trial[2].selected
-                            },
-                            {
-                              id: 'cost',
-                              name: 'cost',
-                              value: 'cost',
-                              text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.COSTS'),
-                              hint: {
-                                   text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.COSTS_HINT')
-                              },
-                              checked: true if form.model.trial[3].selected
-                            }
-                            ,
-                            {
-                              id: 'documentary',
-                              name: 'documentary',
-                              value: 'documentary',
-                              text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTARY_EVIDENCE'),
-                              hint: {
-                                   text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTARY_EVIDENCE_HINT')
-                              },
-                              checked: true if form.model.trial[4].selected
                             }
                             ]
                             }) }}
