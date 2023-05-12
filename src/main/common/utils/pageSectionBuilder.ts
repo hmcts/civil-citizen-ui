@@ -40,6 +40,18 @@ export class PageSectionBuilder {
     return this;
   }
 
+  addWarning(text: string, variables?: any) {
+    const warningSection = ({
+      type: ClaimSummaryType.WARNING,
+      data: {
+        text: text,
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(warningSection);
+    return this;
+  }
+
   addParagraph(text: string, variables?: any) {
     const paragraphSection = ({
       type: ClaimSummaryType.PARAGRAPH,
@@ -113,7 +125,6 @@ export class PageSectionBuilder {
       type: ClaimSummaryType.BUTTON,
       data: {
         text: title,
-        //TODO: (href) in here in the future we should added the document url(is in development)
         href: href,
       },
     });

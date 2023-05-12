@@ -47,8 +47,8 @@ export enum ClaimSummaryType {
   SUMMARY = 'summary',
   TABLE = 'table',
   PANEL = 'panel',
+  WARNING = 'warning',
   INPUT = 'input',
   DATE = 'date',
   UPLOAD = 'upload',
-
 }
