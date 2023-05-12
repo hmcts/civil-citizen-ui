@@ -33,7 +33,6 @@ async function renderView(res: Response, claimId: string, form: GenericForm<Uplo
       claimId,claimantFullName,defendantFullName,
     });
   }
-
 }
 
 typeOfDocumentsController.get(TYPES_OF_DOCUMENTS_URL,
