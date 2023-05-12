@@ -12,8 +12,7 @@ import {
 } from 'services/features/caseProgression/caseProgressionService';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {UploadDocuments} from 'models/caseProgression/uploadDocumentsType';
-const typeOfDocumentsSmallClaimsViewPath = 'features/caseProgression/typeOfDocumentsSmallClaims';
-const typeOfDocumentsFastTrackViewPath = 'features/caseProgression/typeOfDocumentsFastTrack';
+const typeOfDocumentsViewPath = 'features/caseProgression/typeOfDocuments';
 const typeOfDocumentsController = Router();
 const dqPropertyName = 'DefendantUploadDocuments';
 
@@ -21,18 +20,12 @@ async function renderView(res: Response, claimId: string, form: GenericForm<Uplo
   const claim = await getCaseDataFromStore(claimId);
   const claimantFullName = claim.getClaimantFullName();
   const defendantFullName = claim.getDefendantFullName();
-  if(claim.isFastTrackClaim)
-  {
-    res.render(typeOfDocumentsFastTrackViewPath, {form,
-      claimId,claimantFullName,defendantFullName,
-    });
-  }
-  else if (claim.isSmallClaimsTrackDQ)
-  {
-    res.render(typeOfDocumentsSmallClaimsViewPath, {form,
-      claimId,claimantFullName,defendantFullName,
-    });
-  }
+  const isFastTrack = claim.isFastTrackClaim;
+  const isSmallClaims = claim.isSmallClaimsTrackDQ;
+
+  res.render(typeOfDocumentsViewPath, {form,
+    claimId,claimantFullName,defendantFullName, isFastTrack, isSmallClaims,
+  });
 }
 
 typeOfDocumentsController.get(TYPES_OF_DOCUMENTS_URL,
