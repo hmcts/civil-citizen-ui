@@ -155,5 +155,5 @@
     "flat": "^5.0.1",
     "debug": "^4.3.4"
   },
-  "packageManager": "yarn@3.5.1"
+  "packageManager": "yarn@3.5.0"
 }
