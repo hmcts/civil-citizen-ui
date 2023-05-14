@@ -1,28 +1,32 @@
 
 export enum DocumentType {
   DISCLOSURE = 'Disclosure',
-  WITNESS_EVIDENCE = ' Witness evidence',
+  WITNESS_EVIDENCE = 'Witness evidence',
   EXPERT_EVIDENCE = 'Expert evidence',
   TRIAL_DOCUMENTS = 'Trial documents',
 }
 export class TypeOfDocument {
   documentType: DocumentType;
-  TypeOfDocumentItem: TypeOfDocumentItem[];
+  typeOfDocumentItem: TypeOfDocumentItem[];
 
   constructor(documentType: DocumentType, TypeOfDocumentItem: TypeOfDocumentItem[]) {
     this.documentType = documentType;
-    this.TypeOfDocumentItem = TypeOfDocumentItem;
+    this.typeOfDocumentItem = TypeOfDocumentItem;
   }
 }
 
 export class TypeOfDocumentItem {
-  tile: string;
-  subtitle: string;
+  value: string;
+  text: string;
+  hint: { text: string };
+  checked: boolean;
   //TODO add all new fieds in here
 
-  constructor(tile: string, subtitle: string) {
-    this.tile = tile;
-    this.subtitle = subtitle;
+  constructor(value: string, text: string, hint: string, checked: boolean) {
+    this.value = value;
+    this.text = text;
+    this.hint = { text:hint };
+    this.checked = checked;
   }
 }
 export class TypeOfDocumentUpload {

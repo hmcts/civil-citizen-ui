@@ -5,7 +5,7 @@ import {AppRequest} from 'common/models/AppRequest';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
-import {getTypeDocumentForm, saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
+import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
 import {
   DocumentType,
   TypeOfDocument,
@@ -24,16 +24,54 @@ async function renderView(res: Response, claimId: string, form: GenericForm<Type
   });
 }
 
+function createDisclosureItem() {
+  const disclosureTypeOfDocumentItems: TypeOfDocumentItem[] = [];
+  disclosureTypeOfDocumentItems.push(new TypeOfDocumentItem(
+    'documentDisclosure',
+    'Documents for disclosure',
+    'Recorded information that you must show the other parties-for example,contracts,invoices,receipts,emails,text messages,photos,social media messages',
+    false));
+  disclosureTypeOfDocumentItems.push(new TypeOfDocumentItem(
+    'documentDisclosure',
+    'Documents for disclosure',
+    'Recorded information that you must show the other parties-for example,contracts,invoices,receipts,emails,text messages,photos,social media messages',
+    false));
+
+  return new TypeOfDocument(DocumentType.DISCLOSURE, disclosureTypeOfDocumentItems);
+}
+function createTrialItem() {
+  const disclosureTypeOfDocumentItems: TypeOfDocumentItem[] = [];
+  disclosureTypeOfDocumentItems.push(new TypeOfDocumentItem(
+    'documentDisclosure',
+    'Documents for disclosure',
+    'Recorded information that you must show the other parties-for example,contracts,invoices,receipts,emails,text messages,photos,social media messages',
+    false));
+  disclosureTypeOfDocumentItems.push(new TypeOfDocumentItem(
+    'documentDisclosure',
+    'Documents for disclosure',
+    'Recorded information that you must show the other parties-for example,contracts,invoices,receipts,emails,text messages,photos,social media messages',
+    false));
+
+  return new TypeOfDocument(DocumentType.TRIAL_DOCUMENTS, disclosureTypeOfDocumentItems);
+}
+
+function createTypeOfDocumentUpload() {
+  const typeOfDocuments: TypeOfDocument[] = [];
+  typeOfDocuments.push(createDisclosureItem());
+  typeOfDocuments.push(createTrialItem());
+
+  const typeOfDocumentUpload = new TypeOfDocumentUpload(
+    'caseReference',
+    'claimantandDefendanteName',
+    typeOfDocuments);
+  return typeOfDocumentUpload;
+}
+const typeOfDocumentUpload = createTypeOfDocumentUpload();
+
 typeOfDocumentsController.get(TYPES_OF_DOCUMENTS_URL,
   (async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
       const claimId = req.params.id;
-      const disclosureTypeOfDocumentItems: TypeOfDocumentItem[] = [];
-      disclosureTypeOfDocumentItems.push(new TypeOfDocumentItem('Documents for disclosure', 'Recorded information that you must show the other parties-for example,contracts,invoices,receipts,emails,text messages,photos,social media messages '));      const typeOfDocuments : TypeOfDocument[] = [];
-      typeOfDocuments.push(new TypeOfDocument(DocumentType.DISCLOSURE,disclosureTypeOfDocumentItems ));
-
-      const typeOfDocumentUpload = new TypeOfDocumentUpload('caseReference',
-        'claimantandDefendanteName', typeOfDocuments);
       const form = new GenericForm(typeOfDocumentUpload);
       await renderView(res, claimId,form);
     } catch (error) {
@@ -41,11 +79,22 @@ typeOfDocumentsController.get(TYPES_OF_DOCUMENTS_URL,
     }
   })as RequestHandler);
 
+
 typeOfDocumentsController.post(TYPES_OF_DOCUMENTS_URL, (async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    const typeDocumentList= getTypeDocumentForm(req);
-    const form = new GenericForm(typeDocumentList);
+    const values = Object.values(req.body);
+    //const typeDocumentList= getTypeDocumentForm(req);
+    for (const bodyItem of values) {
+      typeOfDocumentUpload.typeOfDocument.forEach(typeOfDocument => {
+        typeOfDocument.typeOfDocumentItem.find(typeOfDocumentItem => {
+          if (typeOfDocumentItem.value === bodyItem){
+            typeOfDocumentItem.checked = true;
+          }
+        });
+      });
+    }
+    const form = new GenericForm(typeOfDocumentUpload);
     form.validateSync();
     if (form.hasErrors()) {
       //await renderView(res, claimId,form);
