@@ -29,3 +29,12 @@ services:
 port: PORT
 appInsights:
   instrumentationKey: APPINSIGHTS_KEY
+
+pact:
+  brokerUrl: 'PACT_BROKER_URL'
+  branchName: 'PACT_BRANCH_NAME'
+  "consumerVersion": 'PACT_CONSUMER_VERSION',
+  "brokerUsername": 'PACT_BROKER_USERNAME',
+  "brokerPassword": 'PACT_BROKER_PASSWORD'
+
+

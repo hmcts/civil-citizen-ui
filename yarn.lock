@@ -2750,6 +2750,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/mocha@npm:^10.0.1":
+  version: 10.0.1
+  resolution: "@types/mocha@npm:10.0.1"
+  checksum: 224ea9fce7b1734ccdb9aa99a622d902a538ce1847bca7fd22c5fb38adcf3ed536f50f48f587085db988a4bb3c2eb68f4b98e1cd6a38bc5547bd3bbbedc54495
+  languageName: node
+  linkType: hard
+
 "@types/needle@npm:^2.5.1":
   version: 2.5.3
   resolution: "@types/needle@npm:2.5.3"
@@ -3956,6 +3963,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"auto-parse@npm:^1.3.0":
+  version: 1.8.0
+  resolution: "auto-parse@npm:1.8.0"
+  dependencies:
+    typpy: 2.3.11
+  checksum: 05c6562edd290b04bd73e8aace2a627b755e66a3320be7306b594296aa73490a5591595ac50f00f9a2325c8eeddab7a35fdb4a370ad823c9e2656c35db91a244
+  languageName: node
+  linkType: hard
+
 "available-typed-arrays@npm:^1.0.5":
   version: 1.0.5
   resolution: "available-typed-arrays@npm:1.0.5"
@@ -3981,6 +3997,18 @@ __metadata:
   version: 4.2.4
   resolution: "axe-core@npm:4.2.4"
   checksum: bb0e1076005ad876af8f09dc878a7d6a468e97d2816e27920994669394cb52e8821f35c6cabb62010ad8d84ab15d169fa64b77671bf1e6db61a655585f1b2a05
+  languageName: node
+  linkType: hard
+
+"axios-mock-adapter@npm:^1.18.2":
+  version: 1.21.4
+  resolution: "axios-mock-adapter@npm:1.21.4"
+  dependencies:
+    fast-deep-equal: ^3.1.3
+    is-buffer: ^2.0.5
+  peerDependencies:
+    axios: ">= 0.17.0"
+  checksum: adcd838c8b21f1ed67950c18b68dcf7c7c9bcddc75418720b5a407fd8448a3aa97b736307c631c27c2971368ac56716a310ea6cfc056517c1f1b0f8825427e58
   languageName: node
   linkType: hard
 
@@ -4541,6 +4569,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chai-as-promised@npm:7.1.1":
+  version: 7.1.1
+  resolution: "chai-as-promised@npm:7.1.1"
+  dependencies:
+    check-error: ^1.0.2
+  peerDependencies:
+    chai: ">= 2.1.2 < 5"
+  checksum: 7262868a5b51a12af4e432838ddf97a893109266a505808e1868ba63a12de7ee1166e9d43b5c501a190c377c1b11ecb9ff8e093c89f097ad96c397e8ec0f8d6a
+  languageName: node
+  linkType: hard
+
 "chai-deep-match@npm:^1.2.1":
   version: 1.2.1
   resolution: "chai-deep-match@npm:1.2.1"
@@ -4554,7 +4593,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chai@npm:^4.3.6":
+"chai@npm:^4.2.0, chai@npm:^4.3.6":
   version: 4.3.7
   resolution: "chai@npm:4.3.7"
   dependencies:
@@ -4800,6 +4839,7 @@ __metadata:
     "@types/jest": ^29.4.0
     "@types/lodash": ^4.14.191
     "@types/luxon": ^3.2.0
+    "@types/mocha": ^10.0.1
     "@types/node": ^18.11.10
     "@types/nunjucks": ^3.2.1
     "@types/require-directory": ^2.1.1
@@ -4810,8 +4850,11 @@ __metadata:
     "@typescript-eslint/parser": ^5.50.0
     applicationinsights: ^2.3.5
     axios: ^1.3.0
+    axios-mock-adapter: ^1.18.2
     babel-loader: ^9.1.0
     boolean: ^3.2.0
+    chai: ^4.2.0
+    chai-as-promised: 7.1.1
     class-transformer: ^0.5.1
     class-validator: ^0.14.0
     codeceptjs: ^3.3.7
@@ -4824,6 +4867,7 @@ __metadata:
     dayjs: ^1.11.7
     debug: ^4.3.4
     deep-equal-in-any-order: ^2.0.2
+    dotenv-extended: ^2.7.1
     eslint: 8.33.0
     eslint-plugin-codeceptjs: ^1.3.0
     express: ^4.18.2
@@ -6021,6 +6065,27 @@ __metadata:
     no-case: ^3.0.4
     tslib: ^2.0.3
   checksum: a65e3519414856df0228b9f645332f974f2bf5433370f544a681122eab59e66038fc3349b4be1cdc47152779dac71a5864f1ccda2f745e767c46e9c6543b1169
+  languageName: node
+  linkType: hard
+
+"dotenv-extended@npm:^2.7.1":
+  version: 2.9.0
+  resolution: "dotenv-extended@npm:2.9.0"
+  dependencies:
+    auto-parse: ^1.3.0
+    camelcase: ^5.3.1
+    cross-spawn: ^7.0.1
+    dotenv: ^8.2.0
+  bin:
+    dotenv-extended: lib/bin/index.js
+  checksum: e7daf245c8c59c0ccb6861a942ae0a9893bf7a4871442fbe83322c7792d3a6da6fef07b82fa9db3c46dc2bcc199528c574feb72c4c1074116d5693608923e2ef
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^8.2.0":
+  version: 8.6.0
+  resolution: "dotenv@npm:8.6.0"
+  checksum: 38e902c80b0666ab59e9310a3d24ed237029a7ce34d976796349765ac96b8d769f6df19090f1f471b77a25ca391971efde8a1ea63bb83111bd8bec8e5cc9b2cd
   languageName: node
   linkType: hard
 
@@ -7416,6 +7481,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"function.name@npm:^1.0.3":
+  version: 1.0.13
+  resolution: "function.name@npm:1.0.13"
+  dependencies:
+    noop6: ^1.0.1
+  checksum: 376bd4247cacffb50ae425c64e99c42fd10a875197e09db7e65002a5bc0f539608b03f1ff7e27234516cd5b3bbfd9d9d8e912fa9aaeec52d3b422d501f290fff
+  languageName: node
+  linkType: hard
+
 "functions-have-names@npm:^1.2.3":
   version: 1.2.3
   resolution: "functions-have-names@npm:1.2.3"
@@ -8404,6 +8478,13 @@ __metadata:
     call-bind: ^1.0.2
     has-tostringtag: ^1.0.0
   checksum: c03b23dbaacadc18940defb12c1c0e3aaece7553ef58b162a0f6bba0c2a7e1551b59f365b91e00d2dbac0522392d576ef322628cb1d036a0fe51eb466db67222
+  languageName: node
+  linkType: hard
+
+"is-buffer@npm:^2.0.5":
+  version: 2.0.5
+  resolution: "is-buffer@npm:2.0.5"
+  checksum: 764c9ad8b523a9f5a32af29bdf772b08eb48c04d2ad0a7240916ac2688c983bf5f8504bf25b35e66240edeb9d9085461f9b5dae1f3d2861c6b06a65fe983de42
   languageName: node
   linkType: hard
 
@@ -10972,6 +11053,13 @@ __metadata:
   bin:
     nodemon: bin/nodemon.js
   checksum: 9c987e139748f5b5c480c6c9080bdc97304ee7d29172b7b3da1a7db590b1323ad57b96346304e9b522b0e445c336dc393ccd3f9f45c73b20d476d2347890dcd0
+  languageName: node
+  linkType: hard
+
+"noop6@npm:^1.0.1":
+  version: 1.0.9
+  resolution: "noop6@npm:1.0.9"
+  checksum: cc46d03eb22c5a990b3ce5e3ff71a82628efadcdeefdae566639657d2a947033ea919d1f4bfc7bfbcf674d43c21b3e580c2f07c8043e7ef487ac527237e2532f
   languageName: node
   linkType: hard
 
@@ -14349,6 +14437,15 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: ab417a2f398380c90a6cf5a5f74badd17866adf57f1165617d6a551f059c3ba0a3e4da0d147b3ac5681db9ac76a303c5876394b13b3de75fdd5b1eaa06181c9d
+  languageName: node
+  linkType: hard
+
+"typpy@npm:2.3.11":
+  version: 2.3.11
+  resolution: "typpy@npm:2.3.11"
+  dependencies:
+    function.name: ^1.0.3
+  checksum: 9bbef6a83a70e123cce6466d268ddebcb58251decec431f57c91be4b62c79511e986427b21efb47f5053e4b2e8287ecc305e8f57966517f689166490aeed51fc
   languageName: node
   linkType: hard
 
