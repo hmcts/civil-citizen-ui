@@ -678,7 +678,6 @@
           "TALK_TO_THE_PERSON": "siarad â'r unigolyn neu'r sefydliad yr ydych am hawlio yn ei erbyn"
         },
         "P2": {
-
           "HEADING": "Siarad â'r unigolyn neu'r sefydliad",
           "MAKE_A_CLAIM": "esbonio y byddwch yn gwneud hawliad yn ei erbyn os nad yw’n dilyn eich amserlen",
           "SUGGESTING_TIMETABLE": "awgrymu amserlen gyda chamau rydych eisiau i'r unigolyn eu cymryd",
@@ -1190,14 +1189,14 @@
       "REASON": "Esboniwch pam rydych chi'n hawlio o'r dyddiad hwn"
     },
     "ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES": {
-      "PARAGRAPH1_1": "If you have already applied for Help with Fees in respect ooooof ",
-      "PARAGRAPH1_2": "you may already have a reference number. If so, you can save and continue and enter it when asked. Do not use a number related to a different claim. If you don’t have a Help with Fees number for this claim, please follow the instructions below.",
-      "PARAGRAPH2": "If you need to use the paper Help with Fees application rather than the online version, you will not be able to use Online Civil Money Claims to issue your claim.",
-      "PARAGRAPH3": "When you apply for Help with Fees you will be asked for the number on your court or tribunal form. Please note that this is N1.",
-      "PARAGRAPH4": "When you have completed your Help with Fees application, you will be given a reference number. Please note the number and keep it safe. You will need it later in the claim process. Then return to this page and click the Save and continue box below so that you can start the claim.",
-      "PLEASE_NOTE": "Please Note:",
-      "THIS_CLAIM": "THIS CLAIM",
-      "TITLE": "Apply For Help With Fees"
+      "PARAGRAPH1_1": "Os ydych eisoes wedi gwneud cais am Help i Dalu Ffioedd mewn perthynas â ",
+      "PARAGRAPH1_2": "efallai bod gennych chi rif cyfeirnod yn barod. Os felly, gallwch gadw eich cais a pharhau a’i nodi pan ofynnir amdano. Peidiwch â defnyddio rhif sy'n gysylltiedig â hawliad gwahanol. Os nad oes gennych rif Help i Dalu Ffioedd ar gyfer yr hawliad hwn, dilynwch y cyfarwyddiadau isod.",
+      "PARAGRAPH2": "Os oes angen i chi ddefnyddio'r cais papur Help i Dalu Ffioedd yn hytrach na'r fersiwn ar-lein, ni fyddwch yn gallu defnyddio'r gwasanaeth Hawliadau am Arian yn y Llys Sifil ar-lein i gychwyn eich hawliad.",
+      "PARAGRAPH3": "Pan fyddwch yn gwneud cais am Help i Dalu Ffioedd gofynnir i chi am y rhif ar eich ffurflen llys neu dribiwnlys. Sylwch mai N1 yw hwnnw.",
+      "PARAGRAPH4": "Pan fyddwch wedi cwblhau eich cais Help i Dalu Ffioedd, byddwch yn cael rhif cyfeirnod. Nodwch y rhif a'i gadw'n ddiogel. Bydd ei angen arnoch yn nes ymlaen yn y broses hawlio. Yna dychwelwch i'r dudalen hon a chliciwch ar y blwch Cadw a pharhau isod er mwyn i chi allu cychwyn yr hawliad.",
+      "PLEASE_NOTE": "Sylwer:",
+      "THIS_CLAIM": "YR HAWLIAD HWN",
+      "TITLE": "Gwneud cais am Help i Dalu Ffioedd"
     },
     "ELIGIBILITY_CLAIMANT_ADDRESS": {
       "PAGE_TITLE": "Oes gennych chi gyfeiriad post yn y DU?",
@@ -1220,9 +1219,9 @@
       "TITLE": "Does the person or organisation you’re claiming against have a postal address in England or Wales?"
     },
     "ELIGIBILITY_DEFENDANT_AGE": {
-      "COMPANY_ORGANISATION": "I'm claiming against a company or organisation",
+      "COMPANY_ORGANISATION": "Rydw i'n hawlio yn erbyn cwmni neu sefydliad",
       "PAGE_TITLE": "Defendant Age Eligibility",
-      "TITLE": "Do you believe the person you’re claiming against is 18 or over?"
+      "TITLE": "Ydych chi'n credu bod yr unigolyn rydych chi'n gwneud hawliad yn ei erbyn yn 18 oed neu'n hŷn?"
     },
     "ELIGIBILITY_HELP_WITH_FEES": {
       "PAGE_TITLE": "Ydych chi angen help i dalu ffi’r llys?",
@@ -1252,15 +1251,15 @@
       "25000_OR_LESS": "£25,000 neu lai"
     },
     "ELIGIBILITY_OVER_18_CLAIMANT": {
-      "PAGE_TITLE": "Are you 18 or over?",
-      "TITLE": "Are you 18 or over?"
+      "PAGE_TITLE": "Ydych chi'n 18 oed neu'n hŷn?",
+      "TITLE": "Ydych chi'n 18 oed neu'n hŷn?"
     },
     "ELIGIBILITY_USEFUL_INFO_FEES": {
-      "CONTINUE_HELP_WITH_FEES": "Do you wish to continue to make a Help with Fees Application?",
-      "HELP_WITH_FEES": "If you want to apply for Help with Fees, you will complete an online form in a new window. This will give you a reference number. Please note the number and keep it safe, as you will need it later in the claim process. (NB: if you have more than one claim going on, each claim must have a separate Help with Fees application and reference number). You can send in your claim as soon as you have the Help with Fees reference number, but the claim will not be issued until the Help with Fees application has been processed by the court. This is so that you will know what fees are covered and what you still have to pay. If you choose not to pay, the claim will not be issued. The claim will stop here unless you change your mind within 95 days.",
-      "HELP_WITH_FEES_ADVICE": "You may be asked by the court to email evidence in support of your application before your claim is issued.",
-      "HELP_WITH_FEES_INTRO": "Making an application for Help with Fees does not guarantee that you will get your fee covered. You may still have to pay some or all of your court fee to get the claim issued (for the court system to officially start the claim and send details to the other side). When you apply for Help with Fees, you should receive an update from us within 5 working days, giving you the result of your application.",
-      "TITLE": "Some useful information about Help with Fees"
+      "CONTINUE_HELP_WITH_FEES": "Ydych chi am ddal i wneud Cais Help i Dalu Ffioedd?",
+      "HELP_WITH_FEES": "Os ydych chi am wneud cais am Help i Dalu Ffioedd, byddwch yn llenwi ffurflen ar-lein mewn ffenestr newydd. Bydd hyn yn rhoi rhif cyfeirnod i chi. Nodwch y rhif a'i gadw'n ddiogel, gan y bydd ei angen arnoch yn nes ymlaen yn y broses hawlio. (DS: os oes gennych fwy nag un hawliad yn mynd ymlaen, rhaid i bob hawliad gael cais Help i Dalu Ffioedd ar wahân a rhif cyfeirnod). Gallwch anfon eich cais cyn gynted ag y bydd gennych y cyfeirnod Help i Dalu Ffioedd, ond ni fydd yr hawliad yn cael ei gychwyn nes bydd y cais Help i Dalu Ffioedd wedi ei brosesu gan y llys. Gwneir hyn fel y byddwch yn gwybod pa ffioedd sy'n cael eu cynnwys a'r hyn y mae'n rhaid i chi  ei dalu o hyd. Os ydych chi'n dewis peidio talu, ni fydd yr hawliad yn cael ei gychwyn. Bydd yr hawliad yn dod i ben yma oni bai eich bod yn newid eich meddwl o fewn 95 diwrnod.",
+      "HELP_WITH_FEES_ADVICE": "Efallai y bydd y llys yn gofyn i chi e-bostio tystiolaeth i gefnogi eich cais cyn i'ch cais gael ei gychwyn.",
+      "HELP_WITH_FEES_INTRO": "Nid yw gwneud cais am Help i Dalu Ffioedd yn gwarantu na fyddwch yn gorfod talu’r ffi. Efallai y bydd rhaid i chi dalu rhywfaint neu'r holl ffi o hyd i gychwyn yr hawliad (er mwyn i'r system llys ddechrau'r hawliad yn swyddogol ac anfon manylion i'r ochr arall). Pan fyddwch yn gwneud cais am Help i Dalu Ffioedd, dylech dderbyn diweddariad gennym o fewn 5 diwrnod gwaith, gyda chanlyniad eich cais.",
+      "TITLE": "Gwybodaeth ddefnyddiol am Help i Dalu Ffioedd"
     },
     "EMPLOYMENT_STATUS": {
       "BOTH": "Gallwch ddewis y ddau",
@@ -1481,6 +1480,8 @@
       "CLAIMANT_CAN_ASK_FOR_CCJ_AGAINST_YOU": "You haven't responded to the claim. {{ claimantName }} can now ask for a County Court Judgement against you.",
       "CCJ_COULD_SEND_BAILIFFS_TO_YOUR_HOME": "A County Court Judgment can mean you find it difficult to get credit, like a mortgage or mobile phone contract. Bailiffs could also be sent to your home.",
       "EVIDENCE_UPLOAD": {
+        "DOCUMENTS_DUE_BY": "Due by: {{bundleStitchingDeadline}}",
+        "DOCUMENTS_SUBMITTED_NOT_CONSIDERED": "Any documents submitted after the due date may not be considered by the judge.",
         "FOLLOW_INSTRUCTIONS_IN": "Please follow the instructions sent in the ",
         "FOUND_UNDER_NOTICES_AND_ORDERS": "which can be found under 'Notices and orders'.",
         "SDO": "standard directions order ",
@@ -1490,7 +1491,35 @@
       "MORE_TIME_REQUESTED": "More time requested",
       "YOU_CAN_STILL_RESPOND_TO_CLAIM": "You can still respond to the claim before they ask for a judgment.",
       "YOU_HAVENT_RESPONDED_TO_CLAIM": "You haven't responded to this claim",
-      "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "You need to respond before 4pm on {{ responseDeadline }} ({{ remainingDays }} Days remaining)."
+      "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "You need to respond before 4pm on {{ responseDeadline }} ({{ remainingDays }} Days remaining).",
+      "YOUR_RESPONSE_TO_THE_CLAIM": "Your response to the claim",
+      "YOU_SAID_YOU_WILL_PAY":"You said you’ll pay {{ claimantName }} {{ amount }} before 4pm on {{ paymentDate }}",
+      "IF_YOU_PAY_BY_CHEQUE": "If you pay by cheque or transfer the money must be clear in their account.",
+      "IF_THEY_DONT_RECEIVE_THE_MONEY_BY_THEN": "If they don’t receive the money by then, they can request a County Court Judgment against you.",
+      "CONTACT": "Contact {{ claimantName }}",
+      "DOWNLOAD_YOUR_RESPONSE": "Download your response (PDF)",
+      "YOU_HAVE_OFFERED_TO_PAY_BY":  "You’ve offered to pay {{ claimantName }} by {{ paymentDate }}",
+      "WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND" : "We’ll contact you when they respond.",
+      "YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL" : "You need to send them your company’s financial details if you haven’t already.",
+      "GET_CONTACT_DETAILS": "Get {{ claimantName }}’s contact details.",
+      "YOU_HAVE_OFFERED_TO_PAY_STARTING":  "You’ve offered to pay {{ claimantName }} {{ installmentAmount }} {{ paymentSchedule }} starting {{ paymentDate }}.",
+      "YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_IMMEDIATELY": "You’ve said you owe {{ amount }} and offered to pay {{ claimantName }} immediately.",
+      "YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_BY": "You’ve said you owe {{ amount }} and offered to pay {{ claimantName }} by {{ paymentDate }}",
+      "YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_STARTING": "You’ve said you owe {{ amount }} and offered to pay {{ claimantName }} {{ installmentAmount }} {{ paymentSchedule }} starting {{ paymentDate }}",
+      "SDO_AN_ORDER_HAS_BEEN_ISSUED_BY_THE_COURT": "An order has been issued by the court.",
+      "SDO_PLEASE_FOLLOW_THE_INSTRUCTIONS_IN_THE_ORDER": "Please follow the instructions in the order and comply with the deadlines, if applicable.",
+      "SDO_THIS_CLAIM_WILL_NO_PROCEED_OFFLINE": "This claim will now proceed offline, you will receive any further updates by post.",
+      "SDO_DOWNLOAD_THE_COURTS_ORDER": "Download the court’s order (PDF)",
+      "SDO_TO_FIND_OUT_THE_DETAILS": "to find out the details you need to send.",
+      "CASE_PROGRESSION": {
+        "TRIAL_HEARING_CONTENT": {
+          "YOUR_TRIAL_TITLE": "A trial has been scheduled for your case",
+          "YOUR_HEARING_TITLE": "A hearing has been scheduled for your case",
+          "YOUR_TRIAL_PARAGRAPH": "Your trial has been scheduled for {{ hearingDate }} at {{ hearingTimeHourMinute }} at {{ courtName }}.",
+          "YOUR_HEARING_PARAGRAPH": "Your hearing has been scheduled for {{ hearingDate }} at {{ hearingTimeHourMinute }} at {{ courtName }}.",
+          "VIEW_HEARING_NOTICE_BUTTON": "View hearing notice"
+        }
+      }
     },
     "MEDIATION_CAN_WE_USE": {
       "CAN_MEDIATION_USE": "A all y gwasanaeth cyfryngu ddefnyddio’r rhif {{ respondentTelNumber }} i’ch ffonio?",
@@ -1554,7 +1583,7 @@
         "COMMA_COMPLETE_RETURN": ", complete it and return it to make your claim",
         "GOVERNMENT_DEPARTMENTS": "government departments"
       },
-      "CLAIM_BY_PAPER": "You can also claim by paper. ",
+      "CLAIM_BY_PAPER": "Gallwch hefyd wneud hawliad ar bapur. ",
       "CLAIM_ON_BEHALF": {
         "CURRENTLY_SERVICE": "This service is currently for claimants representing themselves.",
         "COMPLETE_RETURN": ", complete and return it to make your claim.",
@@ -1563,7 +1592,7 @@
         "MCOL_LINK": "use the Money Claim Online (MCOL) service",
         "OR": " or "
       },
-      "COMPLETE_AND_RETURN_PAPER_FORM": "complete it and return it to make your claim.",
+      "COMPLETE_AND_RETURN_PAPER_FORM": "ei gwblhau a'i ddychwelyd i wneud eich hawliad.",
       "DEFENDANT_ADDRESS": {
         "AND": "and",
         "CAN_ONLY_USE_ADDRESS_ENGLAND_OR_WALES": "You can only use this service to claim against a person or organisation with an address in England or Wales.",
@@ -1585,9 +1614,9 @@
       "CLAIMANT_UNDER_18": {
         "CANT_USE_IF_UNDER_18": "You need to be 18 or over to use this service."
       },
-      "DOWNLOAD_PAPER_FORM": "Download a paper form",
-      "FOR_CLAIMS_LESS_THAN_25000": "This service is for claims of £25,000 or less.",
-      "FOR_CLAIMS_BETWEEN_25001_AND_100000": "For claims between £25,001 and £100,000 you might be able to ",
+      "DOWNLOAD_PAPER_FORM": "Lawrlwytho ffurflen bapur",
+      "FOR_CLAIMS_LESS_THAN_25000": "Mae'r gwasanaeth hwn ar gyfer hawliadau am £25,000 neu lai.",
+      "FOR_CLAIMS_BETWEEN_25001_AND_100000": "Ar gyfer hawliadau rhwng £25,001 a £100,000 efallai y byddwch yn gallu ",
       "MULTIPLE_CLAIMANTS": {
         "CANT_USE_IF_MULTIPLE_CLAIMANTS": "You can’t use this service if more than one person or organisation is making the claim."
       },
@@ -1607,8 +1636,8 @@
         "NOT_USED_FOR_TENANCY_DEPOSIT": "You can’t make a claim for a tenancy deposit using this service.",
         "WITH_A_LANLORD_OR_TENANT": "with a landlord or tenant."
       },
-      "USE_MCOL": "use Money Claim Online (MCOL)",
-      "WHERE_TO_SEND_PAPER_FORMS": "Where to send paper forms",
+      "USE_MCOL": "defnyddio Hawliadau am Arian Ar-lein (MCOL)",
+      "WHERE_TO_SEND_PAPER_FORMS": "Ble i anfon ffurflenni papur",
       "YOU_NEED_TO_KNOW_AMOUNT": "You need to know the claim amount to use this service."
     },
     "OTHER_DEPENDANTS": {
@@ -2189,6 +2218,21 @@
       "TITLE": "A ydych yn ddi-waith neu wedi ymddeol?",
       "UNEMPLOYED": "Di-waith"
     },
+    "UPLOAD_DOCUMENTS": {
+      "ADD": "Add another",
+      "DATE": "Date statement was written",
+      "DATE_EXAMPLE": "For example, 27 9 2022",
+      "FORMAT": "Each document must be less than 100MB. You can upload the following file types: Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF,TIFF.",
+      "NAME": "Your name",
+      "NO_UPLOAD": "No files uploaded",
+      "PAGE_TITLE": "Upload documents",
+      "REMOVE_SECTION": "Remove section",
+      "STATEMENT": "Your statement",
+      "SUBTITLE": "Acceptable documents formats",
+      "TITLE": "Upload documents",
+      "UPLOAD": "Upload a file",
+      "WITNESS": "Witness evidence"
+    },
     "VULNERABILITY": {
       "PAGE_TITLE": "Vulnerability questions",
       "QUESTION_1": "Diffinnir hyn fel rhywun sydd wedi dioddef camdriniaeth ddomestig neu ryw fath arall o gamdriniaeth, rhywun sydd ag anabledd dysgu, anabledd corfforol, salwch meddyliol neu ddiffyg galluedd meddyliol.  Bydd y llys yn ystyried pa addasiadau neu gymorth y bydd yr unigolyn ei angen",
@@ -2216,21 +2260,21 @@
       "TITLE": "Pam nad ydych chi, eich arbenigwyr neu eich tystion ar gael i fynychu gwrandawiad am {{days}} diwrnod?"
     },
     "YOU_CAN_USE_SERVICE": {
-      "PAGE_TITLE": "You can use this service",
-      "TITLE": "You can use this service",
-      "BASED_ON_ANSWERS": "Based on your answers you can make a money claim using this service."
+      "PAGE_TITLE": "Gallwch ddefnyddio'r gwasanaeth hwn",
+      "TITLE": "Gallwch ddefnyddio'r gwasanaeth hwn",
+      "BASED_ON_ANSWERS": "Yn seiliedig ar eich atebion gallwch wneud hawliad am arian gan ddefnyddio'r gwasanaeth hwn."
     },
     "YOU_CAN_USE": {
-      "BASED_ON": "Based on your answers you can make a money claim using this service.",
+      "BASED_ON": "Yn seiliedig ar eich atebion gallwch wneud hawliad am arian gan ddefnyddio'r gwasanaeth hwn.",
       "HWF_ELIGIBLE": {
-        "PAY_COURT": "You will have to pay court fees unless you are eligible for Help with Fees. ",
-        "HELP_WITH_FEES": "Find out more about Help with Fees (opens in a new window)"
+        "PAY_COURT": "Bydd rhaid i chi dalu ffioedd llys oni bai eich bod yn gymwys i gael Help i Dalu Ffioedd.",
+        "HELP_WITH_FEES": "Dod i wybod mwy am Help i Dalu Ffioedd (Mae'n agor mewn ffenestr newydd)"
       },
       "HWF_ELIGIBLE_REFERENCE": {
-        "REMEMBER": "Remember that you will not know about the fee until we have processed your Help with Fees application. Your claim will only be issued after Help with Fees is confirmed, or the fee is paid."
+        "REMEMBER": "Cofiwch na fyddwch yn gwybod am y ffi nes ein bod wedi prosesu eich cais Help i Dalu Ffioedd. Dim ond ar ôl i Help i Dalu Ffioedd gael ei gadarnhau y bydd eich hawliad yn cael ei gychwyn, neu os telir y ffi."
       },
-      "PAGE_TITLE": "You can use this service",
-      "TITLE": "You can use this service"
+      "PAGE_TITLE": "Gallwch ddefnyddio'r gwasanaeth hwn",
+      "TITLE": "Gallwch ddefnyddio'r gwasanaeth hwn"
     },
     "YOU_HAVE_PAID_LESS": {
       "PAGE_TITLE": "You've paid less",
@@ -2264,7 +2308,7 @@
     "DATE_REQUIRED": "Nodwch ddyddiad",
     "DATE_NOT_MORE_THAN_28_DAYS": "Ni all y dyddiad ymateb yr ydych wedi’i gytuno fod mwy na 28 diwrnod ar ôl y dyddiad ymateb gwreiddiol",
     "DEFENCE_REQUIRED": "Mae angen ichi egluro pam nad oes arian yn ddyledus gennych",
-    "DEFENDANT_AGE_REQUIRED": "Select yes, no, or company/organisation",
+    "DEFENDANT_AGE_REQUIRED": "Dewiswch ie, na, neu cwmni/sefydliad",
     "DEFENDANT_POSTCODE_NOT_VALID": "Rhaid nodi cod post yng Nghymru neu Loegr",
     "DEFENDANT_POSTCODE_NOT_VALID_CORRESPONDENCE": "Rhaid nodi cod post yng Nghymru neu Loegr",
     "DEFENDANT_EXPERT_EVIDENCE_REQUIRED": "Dewiswch ‘ydw’ os ydych eisiau defnyddio tystiolaeth arbenigwr",
