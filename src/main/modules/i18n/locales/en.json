@@ -1035,8 +1035,10 @@
       "DRAFT_CLAIM_NEXT_STEPS": "Continue with claim",
       "DRAFT_CLAIM_NUMBER": "Draft claim",
       "MAKE_A_NEW_CLAIM": "Make a new money claim",
+      "NEXT": "Next",
       "NEXT_STEPS": "Next steps",
       "PAGE_TITLE": "Claims made by or against you",
+      "PREVIOUS": "Previous",
       "STATUS": {
         "ADMIT_PAY_BY_SET_DATE": "You’ve admitted all of the claim and offered to pay the full amount by {{ paymentDate }}.",
         "ADMIT_PAY_BY_INSTALLMENTS": "You’ve admitted all of the claim and offered to pay the full amount in instalments.",
