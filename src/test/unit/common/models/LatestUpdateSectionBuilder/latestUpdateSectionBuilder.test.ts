@@ -1,5 +1,6 @@
 import {LatestUpdateSectionBuilder} from 'models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
+import {DocumentUri} from 'models/document/documentType';
 
 describe('LatestUpdateSectionBuilder tests', ()=> {
   it('should create title', ()=> {
@@ -59,12 +60,12 @@ describe('LatestUpdateSectionBuilder tests', ()=> {
     };
 
     const contactLinkExpected = new LatestUpdateSectionBuilder()
-      .addResponseDocumentLink(contactLinkObject.text,contactLinkObject.claimId)
+      .addResponseDocumentLink(contactLinkObject.text,contactLinkObject.claimId, DocumentUri.SEALED_CLAIM)
       .build();
 
     //When
     const result = new LatestUpdateSectionBuilder()
-      .addResponseDocumentLink(contactLinkObject.text,contactLinkObject.claimId)
+      .addResponseDocumentLink(contactLinkObject.text,contactLinkObject.claimId, DocumentUri.SEALED_CLAIM)
       .build();
     //Then
     expect(contactLinkExpected).toEqual(result);
