@@ -30,6 +30,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
     claim.fullAdmission = toCUIFullAdmission(ccdClaim);
   else if (claim.isPartialAdmission())
     claim.partialAdmission = toCUIPartialAdmission(ccdClaim);
+  claim.sdoOrderDocument = ccdClaim?.sdoOrderDocument;
 
   return claim;
 };
