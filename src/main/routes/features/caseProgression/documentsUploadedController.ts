@@ -3,10 +3,10 @@ import {CP_EVIDENCE_UPLOAD_SUBMISSION_URL, DEFENDANT_SUMMARY_URL, UPLOAD_YOUR_DO
 import {Claim} from 'models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
-import {TestMessages} from '../../../../test/utils/errorMessageTestConstants';
 
 const uploadDocumentsViewPath = 'features/caseProgression/documents-uploaded';
 const documentsUploadedController = Router();
+
 documentsUploadedController.get(CP_EVIDENCE_UPLOAD_SUBMISSION_URL, (async (req:Request, res:Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
@@ -14,13 +14,7 @@ documentsUploadedController.get(CP_EVIDENCE_UPLOAD_SUBMISSION_URL, (async (req:R
     const uploadYourDocumentsUrl = UPLOAD_YOUR_DOCUMENTS_URL.replace(':id', claim.id);
     const documentsTabUrl = DEFENDANT_SUMMARY_URL.replace(':id', claim.id)+'#documents';
     const caseNumber = caseNumberPrettify(claimId);
-
-    if (claim && !claim.isEmpty()) {
-      res.render(uploadDocumentsViewPath, {claim, caseNumber, uploadYourDocumentsUrl, documentsTabUrl});
-    } else {
-      res.status(500);
-      res.render(TestMessages.SOMETHING_WENT_WRONG);
-    }
+    res.render(uploadDocumentsViewPath, {claim, caseNumber, uploadYourDocumentsUrl, documentsTabUrl});
   } catch (error) {
     next(error);
   }
