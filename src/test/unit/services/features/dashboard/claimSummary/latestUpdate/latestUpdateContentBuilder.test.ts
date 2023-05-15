@@ -390,7 +390,7 @@ describe('Latest Update Content Builder', () => {
       // When
       const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, 'en');
       // Then
-      expect(responseToClaimSection.length).toBe(4);
+      expect(responseToClaimSection.length).toBe(5);
       expect(lastUpdateSdoDocumentExpected.flat()).toEqual(responseToClaimSection);
     });
   });
