@@ -15,7 +15,7 @@ import {UploadDocuments} from 'models/caseProgression/uploadDocumentsType';
 
 const typeOfDocumentsViewPath = 'features/caseProgression/typeOfDocuments';
 const typeOfDocumentsController = Router();
-const dqPropertyName = 'DefendantUploadDocuments';
+const dqPropertyName = 'defendantUploadDocuments';
 
 async function renderView(res: Response, claimId: string, form: GenericForm<UploadDocuments>) {
   const claim = await getCaseDataFromStore(claimId);
