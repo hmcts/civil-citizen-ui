@@ -388,9 +388,10 @@ describe('Latest Update Content Builder', () => {
       const lastUpdateSdoDocumentExpected = getLastUpdateSdoDocumentExpected(claim.id);
 
       // When
-      const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, 'en');
+      const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+
       // Then
-      expect(responseToClaimSection.length).toBe(5);
+      expect(responseToClaimSection.length).toBe(4);
       expect(lastUpdateSdoDocumentExpected.flat()).toEqual(responseToClaimSection);
     });
   });
