@@ -8,24 +8,24 @@
     "BANK_JOINT_ACCOUNT": "Cyfrif ar y cyd",
     "CHILDREN": "Plant",
     "CHOOSE": "Dewiswch",
-    "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
+    "CIVIL_MONEY_CLAIMS": "Hawliadau am Arian yn y Llys Sifil",
     "CLAIM_AMOUNT": "Swm yr hawliad",
     "CLAIM_NUMBER": "Rhif hawlio",
     "CONFIRM_YOUR_DETAILS": "Cadarnhau eich manylion",
-    "DASHBOARD": "Dashboard",
+    "DASHBOARD": "Dangosfwrdd",
     "DATE": "Dyddiad",
     "DATE_EXAMPLE": "Er enghraifft, {{ date }}",
     "DAY": "Diwrnod",
     "DEBT": "Dyled",
     "DESCRIPTION": "Disgrifiad",
-    "DOWNLOAD_THE_CLAIM": "Download the claim",
+    "DOWNLOAD_THE_CLAIM": "Lawrlwytho’r hawliad",
     "EMAIL": "E-bost",
     "EMPLOYER_NAME": "Enw’r cyflogwr",
     "EMPLOYMENT_DETAILS": "Manylion cyflogaeth",
     "EMPLOYMENT_TYPE": "Math o swydd",
     "FREE_TELEPHONE_MEDIATION": "Gwasanaeth cyfryngu dros y ffôn am ddim",
     "GIVE_DETAILS": "Rhowch fanylion",
-    "GO_TO_HOMEPAGE": "Go to homepage",
+    "GO_TO_HOMEPAGE": "Ewch i’r dudalen hafan",
     "JOB_TITLE": "Teitl swydd",
     "MONTH": "Mis",
     "MONTHLY_PAYMENTS": "Taliadau misol",
@@ -35,7 +35,7 @@
     "OPTIONAL_CONTACT_PERSON": "Unigolyn cyswllt (dewisol)",
     "REASON": "Rheswm",
     "REMOVE": "Tynnu",
-    "RETURN_PAGE": "You can return to RETURN-PAGE and start your claim or defence again.",
+    "RETURN_PAGE": "Gallwch ddychwelyd i RETURN-PAGE a dechrau eich hawliad neu’ch amddiffyniad eto.",
     "TECHNICAL_PROBLEMS": "Mae’n ddrwg gennym, cawsom broblemau technegol yn ystod eich gweithred olaf. Rhowch gynnig arall arni nes ymlaen.",
     "TOTAL_DEBT": "Cyfanswm sy’n ddyledus gennych",
     "YEAR": "Blwyddyn",
@@ -58,12 +58,12 @@
       "SAVE": "Cadw",
       "SAVE_AND_CONTINUE": "Cadw a Pharhau",
       "SETTLE_THE_CLAIM": "Setlo'r hawliad",
-      "START_AGAIN": "Start again",
+      "START_AGAIN": "Dechrau eto",
       "SIGN_AND_SUBMIT_RESPONSE": "Sign and submit",
       "SUBMIT_CLAIM": "Submit claim",
       "SUBMIT_RESPONSE": "Cyflwyno'r ymateb",
       "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})",
-      "SUBMIT": "Submit"
+      "SUBMIT": "Cyflwyno"
     },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Treth Cyngor",
@@ -100,32 +100,32 @@
       "WEB_CHAT_UNAVAILABLE": "Nid yw'r gwasanaeth sgwrsio ar y we ar gael ar hyn o bryd. Rhowch gynnig arni eto yn nes ymlaen."
     },
     "COOKIE_BANNER": {
-      "ACCEPT_BUTTON": "Accept additional cookies",
-      "ADDITIONAL_COOKIES_MESSAGE": "We'd like to set additional cookies so we can remember your settings, understand how people use the service and to improve government services.",
-      "CHANGE": "You can CHANGE_HTML at any time.",
-      "CHANGE_LINK": "change your cookie settings",
-      "COOKIES_ACCEPTED": "You've accepted additional cookies.",
-      "COOKIES_REJECTED": "You have rejected additional cookies.",
-      "ESSENTIAL_COOKIES_MESSAGE": "We use some essential cookies to make this service work.",
-      "HIDE_THIS_MESSAGE": "Hide this message",
-      "REJECT_BUTTON": "Reject additional cookies",
-      "TITLE": "Cookies on Money Claims",
-      "VIEW_COOKIES": "View cookies"
+      "ACCEPT_BUTTON": "Derbyn cwcis ychwanegol",
+      "ADDITIONAL_COOKIES_MESSAGE": "Hoffwn osod cwcis ychwanegol ar eich cyfrifiadur fel y gallwn gofio eich gosodiadau, deall sut mae pobl yn defnyddio’r gwasanaeth a gwella gwasanaethau’r llywodraeth.",
+      "CHANGE": "Gallwch CHANGE_HTML unrhyw bryd.",
+      "CHANGE_LINK": "newid eich gosodiadau cwcis",
+      "COOKIES_ACCEPTED": "Rydych wedi derbyn cwcis ychwanegol.",
+      "COOKIES_REJECTED": "Rydych wedi gwrthod cwcis ychwanegol.",
+      "ESSENTIAL_COOKIES_MESSAGE": "Rydym yn defnyddio rhai cwcis hanfodol i wneud i’r gwasanaeth hwn weithio.",
+      "HIDE_THIS_MESSAGE": "Cuddio’r neges hon",
+      "REJECT_BUTTON": "Gwrthod cwcis ychwanegol",
+      "TITLE": "Cwcis ar y gwasanaeth Hawliadau am Arian",
+      "VIEW_COOKIES": "Gweld cwcis"
     },
     "EVIDENCE_SUMMARY": {
       "TITLE": "Tystiolaeth",
       "ROW_TYPE": "Type"
     },
     "HEADER": {
-      "MONEY_CLAIMS": "Money Claims",
-      "MY_ACCOUNT": "My account",
+      "MONEY_CLAIMS": "Hawliadau am Arian",
+      "MY_ACCOUNT": "Fy nghyfrif",
       "SIGN_IN": "Mewngofnodi",
-      "SIGN_OUT": "Sign out"
+      "SIGN_OUT": "Allgofnodi"
     },
     "HELP_CALCULATING_INTEREST": {
       "CALCULATE_THIS": "To calculate this, use the steps bellow",
       "EXAMPLE": {
-        "EXAMPLE": "Example",
+        "EXAMPLE": "Enghraifft",
         "OWED": "If you were owed £,1000:",
         "ANNUAL_INTEREST": "the annual interest would be £80 (1000 x 0.08 = 80) you’d divide £80 by 365 to get the daily interest: about 22p a day (80 / 365 = 0.22) after 50 days this would be £11 (50 x 0.22 = 11)"
       },
@@ -189,11 +189,11 @@
       "WEEKLY": "Weekly Payments"
     },
     "POSTAL_ADDRESS": {
-      "BUILDING": "HMCTS CMC",
+      "BUILDING": "Hawliadau am Arian yn y Llys Sifil GLlTEF",
       "CITY": "Harlow",
-      "PO_BOX": "PO Box 12747",
+      "PO_BOX": "Blwch Post 12747",
       "POSTCODE": "CM20 9RA",
-      "TELEPHONE": "Tel: 0300 303 5174"
+      "TELEPHONE": "Ffôn: 0300 303 5174"
     },
     "POSTCODE": {
       "ADDESSES_FOUND": "wedi dod o hyd i gyfeiriadau",
@@ -206,8 +206,8 @@
       "ARE_YOU_SEVERELY_DISABLED": "Ydych chi'n anabl iawn?"
     },
     "REMAINING_TASKS": {
-      "TITLE": "You still need to complete:",
-      "BACK": "Back to task list"
+      "TITLE": "Mae dal angen i chi gwblhau:",
+      "BACK": "Yn ôl i'r rhestr dasgau"
     },
     "SCHEDULE": {
       "FOUR_WEEKS": "4 wythnos",
@@ -226,7 +226,7 @@
       "CORRECT_INFORMATION_CONFIRMATION": "Rwy'n cadarnhau fy mod i'n credu bod y manylion rwyf wedi'u darparu yn gywir.",
       "DETAILS_TRUTHY": "Mae manylion gofynion y gwrandawiad ar y dudalen hon yn wir hyd eithaf fy ngwybodaeth.",
       "INFORMATION_ON_PAGE": "Mae'r wybodaeth ar y dudalen hon yn ffurfio eich {{ type }}. Gallwch ei gweld ar y ffurflen {{ type }} ar ôl i chi ei chyflwyno.",
-      "SENIOR_POSITION_REQUIREMENT": "You must hold a senior position in your organisation to sign the {{ typeOfStatement }}.",
+      "SENIOR_POSITION_REQUIREMENT": "Rhaid i chi ddal uwch swydd yn eich sefydliad i lofnodi'r  {{ typeOfStatement }}.",
       "STATEMENT_OF_WORK": "satganiad gwirionedd",
       "TITLE": "Datganiad Gwirionedd",
       "WHEN_SATISFIED": "Pan rydych yn fodlon bod eich atebion yn gywir, dylech roi tic i \"lofnodi'r\" datganiad gwirionedd ar y ffurflen."
@@ -236,19 +236,19 @@
       "WHAT_HAPPENED": "Beth ddigwyddodd"
     },
     "TYPES_OF_SENIOR_POSITION": {
-      "CORPORATION_NOT_REGISTERED": "If your corporation isn't registered, a senior position could be:",
+      "CORPORATION_NOT_REGISTERED": "Os nad yw eich corfforaeth wedi'i chofrestru, gallai uwch swydd fod yn un o’r canlynol:",
       "NON_CORPORATION_SENIOR_POSITIONS": {
-        "ANOTHER_OFFICER": "another officer of the corporation",
-        "CHAIR": "the chairperson or president"
+        "ANOTHER_OFFICER": "swyddog arall yn y gorfforaeth",
+        "CHAIR": "y cadeirydd neu'r llywydd"
       },
-      "POSITION_COULD_BE": "A senior position could be a:",
+      "POSITION_COULD_BE": "Gallai uwch swydd fod yn un o’r canlynol:",
       "SENIOR_POSITIONS": {
-        "CEO": "chief executive",
-        "DIRECTOR": "director",
-        "MANAGER_OR_OTHER": "manager or other officer of the company or corporation",
-        "TREASURER": "treasurer"
+        "CEO": "prif weithredwr",
+        "DIRECTOR": "cyfarwyddwr",
+        "MANAGER_OR_OTHER": "rheolwr neu swyddog arall yn y cwmni neu'r gorfforaeth",
+        "TREASURER": "trysorydd"
       },
-      "TITLE": "Types of senior position"
+      "TITLE": "Mathau o uwch swyddi"
     },
     "VARIATION": {
       "YES": "Ie",
@@ -295,25 +295,25 @@
     },
     "RESPOND_TO_CLAIM": {
       "CHOOSE_A_RESPONSE": "Dewiswch ymateb",
-      "DECIDE_HOW_YOU_WILL_PAYS": "Decide how you'll pay",
+      "DECIDE_HOW_YOU_WILL_PAYS": "Penderfynu sut byddwch yn talu",
       "HOW_MUCH_HAVE_YOU_PAID": "Faint o arian ydych chi wedi talu",
-      "HOW_MUCH_MONEY_ADMIT_OWE": "How much money do you admit you owe",
-      "SHARE_YOUR_FINANCIAL_DETAILS": "Share your financial details",
-      "TELL_US_HOW_MUCH_YOU_HAVE_PAID": "Tell us how much you've paid",
-      "TELL_US_WHY_DISAGREE_WITH_CLAIM": "Tell us why you disagree with the claim",
+      "HOW_MUCH_MONEY_ADMIT_OWE": "Faint o arian rydych chi'n ei gyfaddef sydd arnoch chi",
+      "SHARE_YOUR_FINANCIAL_DETAILS": "Rhannu eich manylion ariannol",
+      "TELL_US_HOW_MUCH_YOU_HAVE_PAID": "Dywedwch wrthym faint rydych wedi'i dalu",
+      "TELL_US_WHY_DISAGREE_WITH_CLAIM": "Dywedwch wrthym pam rydych yn anghytuno â'r hawliad",
       "TITLE": "Ymateb i hawliad",
       "VIEW_OPTIONS": "Gweld eich opsiynau cyn y dyddiad terfyn ar gyfer ymateb",
       "WHEN_WILL_YOU_PAY": "Pryd fyddwch chi’n talu’r £{{ amount }}?",
-      "WHY_DO_YOU_DISAGREE": "Why do you disagree with the amount claimed?",
-      "YOUR_REPAYMENT_PLAN": "Your repayment plan"
+      "WHY_DO_YOU_DISAGREE": "Pam rydych chi'n anghytuno â'r swm sy'n cael ei hawlio?",
+      "YOUR_REPAYMENT_PLAN": "Eich cynllun ad-dalu"
     },
     "SUBMIT": {
       "CHECK_AND_SUBMIT": "Gwirio a chyflwyno eich ymateb",
       "TITLE": "Cyflwyno"
     },
     "YOUR_HEARING_REQUIREMENTS": {
-      "GIVE_US_DETAILS": "Give us details in case there's a hearing",
-      "TITLE": "Your hearing requirements"
+      "GIVE_US_DETAILS": "Rhowch fanylion i ni rhag ofn y bydd gwrandawiad",
+      "TITLE": "Eich gofynion ar gyfer gwrandawiad"
     }
   },
   "PAGES": {
