@@ -1,4 +1,3 @@
-{
   "COMMON": {
     "ACCOUNT_TYPE": "Math o gyfrif",
     "ADDRESS": "Cyfeiriad",
@@ -2580,5 +2579,3 @@
     "QUESTION_1_REQUIRED": "Dewiswch 'oes' os yw rhywun yn fregus a bod angen i'r llys ystyried hynny",
     "QUESTION_2_REQUIRED": "Tell us who is vulnerable and what support they need",
     "CLAIMANT_REJECTION_RESPONSE_REQUIRED": "Nodwch pam y gwnaethoch wrthod y cynllun ad-dalu"
-  }
-}
