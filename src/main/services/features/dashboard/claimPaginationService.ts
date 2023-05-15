@@ -16,7 +16,7 @@ export function buildPaginationData(claims: DashboardDefendantItem[], currentPag
 }
 
 function getPaginatedClaims(claims: DashboardDefendantItem[], currentPage: number, casePerPage: number): DashboardDefendantItem[] {
-  return claims.slice((currentPage - 1) * casePerPage, currentPage * casePerPage)
+  return claims.slice((currentPage - 1) * casePerPage, currentPage * casePerPage);
 }
 
 function buildPaginationListArgs(totalPages: number, currentPage: number, lang: string) {
