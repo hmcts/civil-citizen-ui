@@ -37,7 +37,6 @@ export enum ClaimSummaryType {
   PARAGRAPH = 'p',
   LEAD_PARAGRAPH = 'leadParagraph',
   BUTTON = 'button',
-  CAPTION = 'caption',
   MAINTITLE = 'mainTitle',
   TITLE = 'title',
   SUBTITLE = 'subtitle',

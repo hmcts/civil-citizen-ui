@@ -1,7 +1,6 @@
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
 import {CASE_DOCUMENT_DOWNLOAD_URL, CITIZEN_CONTACT_THEM_URL} from 'routes/urls';
-import {DocumentUri} from 'models/document/documentType';
 
 export class LatestUpdateSectionBuilder extends PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
@@ -18,13 +17,13 @@ export class LatestUpdateSectionBuilder extends PageSectionBuilder {
     this._claimSummarySections.push(linkSection);
     return this;
   }
-  addResponseDocumentLink(text: string, claimId: string, variables?: any, textAfter?: string) {
+  addResponseDocumentLink(text: string, claimId: string, documentUri: string, variables?: any, textAfter?: string) {
     const linkSection = ({
       type: ClaimSummaryType.LINK,
       data: {
         text: text,
         variables: variables,
-        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentType', DocumentUri.SEALED_CLAIM),
+        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentType', documentUri),
         textAfter: textAfter,
       },
     });

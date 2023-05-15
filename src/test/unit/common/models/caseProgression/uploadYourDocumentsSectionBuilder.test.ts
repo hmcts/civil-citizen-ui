@@ -2,25 +2,6 @@ import {UploadYourDocumentsSectionBuilder} from 'common/models/caseProgression/u
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
 
 describe('UploadYourDocumentsSectionBuilder tests', ()=> {
-  it('should create caption', ()=> {
-    //Given
-    const captionExpected = ({
-      type: ClaimSummaryType.CAPTION,
-      data: {
-        text: 'text',
-        variables: 'variables',
-      },
-    });
-
-    //When
-    const captionBuilt = new UploadYourDocumentsSectionBuilder()
-      .addCaption(captionExpected.data.text,captionExpected.data.variables)
-      .build();
-
-    //Then
-    expect(captionBuilt).toEqual([captionExpected]);
-  });
-
   it('should create mainTitle', ()=> {
   //Given
     const mainTitleExpected = ({

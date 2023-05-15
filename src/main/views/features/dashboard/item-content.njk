@@ -13,10 +13,6 @@
     {{ content.data.html | safe }}
   {% endif %}
 
-  {% if content.type === ClaimSummaryType.CAPTION %}
-    <span class="govuk-caption-m">{{ t(content.data.text) }}</span>
-  {% endif %}
-
   {% if content.type === ClaimSummaryType.MAINTITLE %}
     <h1 class="govuk-heading-l">{{ t(content.data.text) }}</h1>
   {% endif %}

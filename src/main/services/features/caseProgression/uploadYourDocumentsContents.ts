@@ -5,7 +5,6 @@ import {UploadYourDocumentsSectionBuilder} from 'models/caseProgression/uploadYo
 
 export const getUploadYourDocumentsContents = (claimId: string, claim: Claim) => {
   return new UploadYourDocumentsSectionBuilder()
-    .addCaption('PAGES.UPLOAD_YOUR_DOCUMENTS.CAPTION')
     .addMainTitle('PAGES.UPLOAD_YOUR_DOCUMENTS.TITLE')
     .addLeadParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.CASE_REFERENCE', {claimId:caseNumberPrettify( claimId)})
     .addLeadParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.PARTIES', {

@@ -1,7 +1,6 @@
 import {LatestUpdateSectionBuilder} from 'models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
 import {CASE_DOCUMENT_DOWNLOAD_URL, CITIZEN_CONTACT_THEM_URL} from 'routes/urls';
-import {DocumentUri} from 'models/document/documentType';
 
 describe('LatestUpdateSectionBuilder tests', ()=> {
   it('should add contactLink', ()=> {
@@ -33,7 +32,7 @@ describe('LatestUpdateSectionBuilder tests', ()=> {
       data: {
         text: 'text',
         href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', '1234')
-          .replace(':documentType', DocumentUri.SEALED_CLAIM),
+          .replace(':documentType', 'documentUri'),
         textAfter: 'textAfter',
         variables: 'variables',
       },
@@ -41,7 +40,7 @@ describe('LatestUpdateSectionBuilder tests', ()=> {
 
     //When
     const responseDocumentLinkBuilt = new LatestUpdateSectionBuilder()
-      .addResponseDocumentLink(responseDocumentLinkExpected.data.text,'1234', responseDocumentLinkExpected
+      .addResponseDocumentLink(responseDocumentLinkExpected.data.text,'1234','documentUri', responseDocumentLinkExpected
         .data.variables,responseDocumentLinkExpected.data.textAfter)
       .build();
 

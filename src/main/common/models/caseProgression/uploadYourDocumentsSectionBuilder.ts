@@ -2,18 +2,6 @@ import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySec
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 export class UploadYourDocumentsSectionBuilder extends PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
-  addCaption(caption: string, variables?: any) {
-    const captionSection = ({
-      type: ClaimSummaryType.CAPTION,
-      data: {
-        text: caption,
-        variables: variables,
-      },
-    });
-    this._claimSummarySections.push(captionSection);
-    return this;
-  }
-
   addMainTitle(mainTitle: string, variables?: unknown) {
     const mainTitleSection = ({
       type: ClaimSummaryType.MAINTITLE,
