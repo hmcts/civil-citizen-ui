@@ -30,12 +30,16 @@ describe('Latest Update Content Builder Case Progression', () => {
     it('should have Hearing upload content with small claim amount', () => {
       // Given
       claim.totalClaimAmount = SMALL_CLAIM_AMOUNT;
+      const noticesAndOrdersBeforeText = `${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BEFORE`;
+      const noticesAndOrdersLinkText = `${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_LINK`;
+      const noticesAndOrdersAfterText = `${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_AFTER`;
+
       const lastedContentBuilderExpected = new LatestUpdateSectionBuilder()
         .addTitle(`${TRIAL_HEARING_CONTENT}.YOUR_HEARING_TITLE`)
         .addParagraph(`${TRIAL_HEARING_CONTENT}.YOUR_HEARING_PARAGRAPH`, {hearingDate: claim.caseProgressionHearing.getHearingDateFormatted(lang) ,
           hearingTimeHourMinute: claim.caseProgressionHearing.getHearingTimeHourMinuteFormatted(),
           courtName: claim.caseProgressionHearing.hearingLocation.getCourtName()})
-        .addParagraph(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE`)
+        .addLink(noticesAndOrdersLinkText,'href',noticesAndOrdersBeforeText, noticesAndOrdersAfterText)
         .addButton(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentType', DocumentUri.HEARING_FORM))
         .build();
 
@@ -49,12 +53,16 @@ describe('Latest Update Content Builder Case Progression', () => {
     it('should have Hearing upload content with fast track', () => {
       // Given
       claim.totalClaimAmount = FAST_TRACK_CLAIM_AMOUNT - 5;
+      const noticesAndOrdersBeforeText = `${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BEFORE`;
+      const noticesAndOrdersLinkText = `${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_LINK`;
+      const noticesAndOrdersAfterText = `${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_AFTER`;
+
       const lastedContentBuilderExpected = new LatestUpdateSectionBuilder()
         .addTitle(`${TRIAL_HEARING_CONTENT}.YOUR_TRIAL_TITLE`)
         .addParagraph(`${TRIAL_HEARING_CONTENT}.YOUR_TRIAL_PARAGRAPH`, {hearingDate: claim.caseProgressionHearing.getHearingDateFormatted(lang) ,
           hearingTimeHourMinute: claim.caseProgressionHearing.getHearingTimeHourMinuteFormatted(),
           courtName: claim.caseProgressionHearing.hearingLocation.getCourtName()})
-        .addParagraph(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE`)
+        .addLink(noticesAndOrdersLinkText,'href',noticesAndOrdersBeforeText, noticesAndOrdersAfterText)
         .addButton(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentType', DocumentUri.HEARING_FORM))
         .build();
 

@@ -14,7 +14,9 @@ export const getHearingTrialLatestUpload = (claim: Claim, lang: string) => {
     ? `${TRIAL_HEARING_CONTENT}.YOUR_TRIAL_PARAGRAPH`
     : `${TRIAL_HEARING_CONTENT}.YOUR_HEARING_PARAGRAPH`;
 
-  const shouldViewParagraph = `${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE`;
+  const noticesAndOrdersBeforeText = `${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BEFORE`;
+  const noticesAndOrdersLinkText = `${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_LINK`;
+  const noticesAndOrdersAfterText = `${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_AFTER`;
 
   const hearingDate = claim.caseProgressionHearing.getHearingDateFormatted(lang);
   const hearingTimeHourMinute = claim.caseProgressionHearing.getHearingTimeHourMinuteFormatted();
@@ -23,7 +25,8 @@ export const getHearingTrialLatestUpload = (claim: Claim, lang: string) => {
   const latestUpdateSectionBuilder = new LatestUpdateSectionBuilder()
     .addTitle(trialHearingTitle)
     .addParagraph(trialHearingParagraph, { hearingDate, hearingTimeHourMinute, courtName })
-    .addParagraph(shouldViewParagraph)
+    //href in link will need to be updated once Notices & Orders page is done.
+    .addLink(noticesAndOrdersLinkText,'href',noticesAndOrdersBeforeText, noticesAndOrdersAfterText)
     .addButton(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`,  CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentType', DocumentUri.HEARING_FORM));
 
   return latestUpdateSectionBuilder.build();
