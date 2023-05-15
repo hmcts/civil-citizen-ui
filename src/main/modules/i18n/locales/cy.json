@@ -55,9 +55,9 @@
       "CONTINUE": "Parhau",
       "I_CONFIRM_IVE_READ_THIS": "Cadarnhaf fy mod wedi darllen hwn",
       "RESPOND_TO_CLAIM": "Respond to claim",
-      "SAVE": "Save",
+      "SAVE": "Cadw",
       "SAVE_AND_CONTINUE": "Cadw a Pharhau",
-      "SETTLE_THE_CLAIM": "Settle the claim",
+      "SETTLE_THE_CLAIM": "Setlo'r hawliad",
       "START_AGAIN": "Start again",
       "SIGN_AND_SUBMIT_RESPONSE": "Sign and submit",
       "SUBMIT_CLAIM": "Submit claim",
@@ -546,13 +546,13 @@
       "BUSINESS_NAME": "Enw'r busnes",
       "CLAIMANT_DETAILS_PROVIDED": "Darparwyd eich enw a'ch cyfeiriad gan yr unigolyn, y busnes neu'r sefydliad sy'n cyflwyno'r hawliad (yr hawlydd).",
       "CONTACT_PERSON_HINT": "The defendant can contact this person to discuss the claim",
-      "COMPANY_ADDRESS": "Company Address",
+      "COMPANY_ADDRESS": "Cyfeiriad y Cwmni",
       "COMPANY_DETAILS": "Enter company details",
       "CORRESPONDENCE_ADDRESS": "Cyfeiriad ar gyfer gohebiaeth",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Ydych chi am inni anfon gohebiaeth i gyfeiriad arall?",
       "FULL_NAME": "Eich enw llawn",
-      "PARTY_NAME_COMPANY": "Company name",
-      "PARTY_NAME_ORGANISATION": "Organisation name",
+      "PARTY_NAME_COMPANY": "Enw'r cwmni",
+      "PARTY_NAME_ORGANISATION": "Enw'r sefydliad",
       "PAGE_TITLE": "Eich manylion",
       "TRY_AGAIN": "Rhowch gynnig arall arni neu nodwch y cyfeiriad â llaw.",
       "YES_CORRESPONDENCE": "Ydw. Ychwanegu cyfeiriad ar gyfer gohebiaeth"
@@ -678,7 +678,6 @@
           "TALK_TO_THE_PERSON": "siarad â'r unigolyn neu'r sefydliad yr ydych am hawlio yn ei erbyn"
         },
         "P2": {
-
           "HEADING": "Siarad â'r unigolyn neu'r sefydliad",
           "MAKE_A_CLAIM": "esbonio y byddwch yn gwneud hawliad yn ei erbyn os nad yw’n dilyn eich amserlen",
           "SUGGESTING_TIMETABLE": "awgrymu amserlen gyda chamau rydych eisiau i'r unigolyn eu cymryd",
@@ -784,11 +783,11 @@
         "BASED_ON": "Based on the financial details provided by the defendant, we don’t believe they would be able to make these repayments.",
         "COURT_AFFORDABILITY": "The court affordability calculator has determined a new repayment plan as the most the defendant can repay.",
         "COURT_PROPOSED_PLAN": "The court’s proposed repayment plan",
-        "REGULAR_PAYMENTS_OF": "Regular payments of",
-        "FREQUENCY_OF_PAYMENTS": "Frequency of payments",
-        "FIRST_PAYMENT_DATE": "First payment date",
-        "LAST_PAYMENT_DATE": "Last payment date",
-        "LENGTH_OF_REPAYMENT": "Length of repayment plan",
+        "REGULAR_PAYMENTS_OF": "Taliadau rheolaidd",
+        "FREQUENCY_OF_PAYMENTS": "Amlder taliadau",
+        "FIRST_PAYMENT_DATE": "Dyddiad talu cyntaf",
+        "LAST_PAYMENT_DATE": "Dyddiad talu diwethaf",
+        "LENGTH_OF_REPAYMENT": "Hyd y cynllun ad-dalu",
         "DO_YOU_ACCEPT": "Do you accept the court’s proposed repayment plan?",
         "I_WANT_ACCEPT": "I want to accept this repayment plan",
         "I_WANT_JUDGE": "I want a judge to make a repayment plan"
@@ -807,19 +806,19 @@
       "TITLE": "How do you want the defandant to pay?"
     },
     "CLAIMANT_RESPONSE_PROCEED": {
-      "PAGE_TITLE": "Do you want to proceed with claim?",
-      "TITLE": "Do you want to proceed with claim?"
+      "PAGE_TITLE": "Ydych chi am fwrw ymlaen â’r hawliad?",
+      "TITLE": "Ydych chi am fwrw ymlaen â’r hawliad?"
     },
     "CLAIMANT_PARTY_TYPE_SELECTION": {
       "CLAIMING_AS_HEADER": "I'm claiming as:",
-      "CLAIMING_AS_AN_INDIVIDUAL": "An individual",
-      "CLAIMING_AS_SOLE_TRADER_OR_SELF_EMPLOYED": "A sole trader or self-employed person",
-      "CLAIMING_AS_LIMITED_COMPANY": "A limited company",
-      "CLAIMING_AS_ORGANISATION": "Another type of organisation",
+      "CLAIMING_AS_AN_INDIVIDUAL": "Unigolyn",
+      "CLAIMING_AS_SOLE_TRADER_OR_SELF_EMPLOYED": "Unig fasnachwr neu unigolyn hunangyflogedig",
+      "CLAIMING_AS_LIMITED_COMPANY": "Cwmni cyfyngedig",
+      "CLAIMING_AS_ORGANISATION": "Math arall o sefydliad",
       "CLAIMING_FOR_YOURSELF": "You're claiming for yourself",
       "CLAIMING_FOR_EXAMPLE_TRADEPERSON": "For example a tradesperson",
       "CLAIMING_FOR_EXAMPLE_COMPANY": "For example a company that sells goods or services",
-      "CLAIMING_FOR_EXAMPLE_PARTNERSHIP_TRUST_CHARITY_CLUB_OR_ASSOCIATION": "For example a partnership, trust, charity, club or association",
+      "CLAIMING_FOR_EXAMPLE_PARTNERSHIP_TRUST_CHARITY_CLUB_OR_ASSOCIATION": "Er enghraifft partneriaeth, ymddiriedaeth, elusen, clwb neu gymdeithas",
       "PAGE_TITLE": "About you and this claim",
       "TITLE": "About you and this claim"
     },
@@ -854,7 +853,7 @@
     },
     "CLAIMANT_RESPONSE_REJECTION_REASON": {
       "PAGE_TITLE": "Rejection reason",
-      "TITLE": "Why did you reject their response?"
+      "TITLE": "Pam wnaethoch chi wrthod yr ymateb?"
     },
     "CLAIMANT_RESPONSE_TASK_LIST": {
       "PAGE_TITLE": "Claimant response task list",
@@ -905,11 +904,11 @@
       "YES_CORRESPONDENCE": "Ydw. Ychwanegu cyfeiriad ar gyfer gohebiaeth"
     },
     "COMPLETING_CLAIM": {
-      "ADD_INFORMATION": "add information that significantly change your claim",
-      "CHANGE_THE_BASIS": "change the basis of your claim - for example, saying goods were undelivered instead of faulty",
-      "CHANGE_THE_NAME": "change the name of anyone involved with the claim",
-      "PAGE_TITLE": "Get the details right",
-      "YOULL_HAVE_TO_PAY": "You'll have to pay an additional fee if you want you"
+      "ADD_INFORMATION": "ychwanegu gwybodaeth sy'n newid eich hawliad yn sylweddol",
+      "CHANGE_THE_BASIS": "newid sail eich cais - er enghraifft, dweud bod nwyddau heb eu cyflenwi yn hytrach na’u bod yn ddiffygiol",
+      "CHANGE_THE_NAME": "newid enw unrhyw un sy'n gysylltiedig â'r hawliad",
+      "PAGE_TITLE": "Cael y manylion yn iawn",
+      "YOULL_HAVE_TO_PAY": "Bydd yn rhaid i chi dalu ffi ychwanegol os ydych am"
     },
     "CONSIDER_CLAIMANT_DOCUMENTS": {
       "GIVE_DETAILS": "Rhowch fanylion y dogfennau",
@@ -926,90 +925,90 @@
     "COOKIES": {
       "ADDITIONAL_COOKIES": "Government services may set additional cookies and, if so, will have their own cookie policy and banner.",
       "ANALYTICS_COOKIE_OPTIONS": {
-        "HEADING": "Allow cookies that measure website use?",
-        "ON_OPTION": "Use cookies that measure my website use",
-        "OFF_OPTION": "Do not use cookies that measure my website use"
+        "HEADING": "Caniatáu cwcis sy'n mesur y defnydd sydd ar y wefan?",
+        "ON_OPTION": "Defnyddio cwcis sy'n mesur fy nefnydd o'r wefan",
+        "OFF_OPTION": "Peidiwch â defnyddio cwcis sy'n mesur fy nefnydd o'r wefan"
       },
       "BULLET_LIST1": {
-        "FIRST": "store your cookie preferences",
-        "SECOND": "measure how you use the service so it can be improved"
+        "FIRST": "storio eich dewisiadau cwcis",
+        "SECOND": "mesur sut rydych chi'n defnyddio'r gwasanaeth fel y gellir ei wella"
       },
       "BULLET_LIST2": {
-        "FIRST": "Site performance",
-        "SECOND": "Website usage",
-        "THIRD": "User behaviour"
+        "FIRST": "Perfformiad y safle",
+        "SECOND": "Defnydd o'r wefan",
+        "THIRD": "Ymddygiad defnyddwyr"
       },
       "COOKIE_DETAILS1": {
         "GA": {
           "NAME": "_ga",
-          "PURPOSE": "This helps us count how many people visit the service by tracking if you’ve visited before",
-          "EXPIRES": "2 years"
+          "PURPOSE": "Mae hyn yn ein helpu i gyfrif faint o bobl sy'n ymweld â'r gwasanaeth trwy olrhain a ydych wedi ymweld o'r blaen",
+          "EXPIRES": "2 flynedd"
         },
         "GID": {
           "NAME": "_gid",
-          "PURPOSE": "Identifies you to the service",
-          "EXPIRES": "24 hours"
+          "PURPOSE": "Bydd y gwasanaeth yn eich adnabod",
+          "EXPIRES": "24 awr"
         },
         "GAT": {
           "NAME": "_gat",
-          "PURPOSE": "Manages the rate at which page view requests are made",
-          "EXPIRES": "10 minutes"
+          "PURPOSE": "Rheoli'r gyfradd gwneud ceisiadau i weld tudalen",
+          "EXPIRES": "10 munud"
         }
       },
       "COOKIE_DETAILS2": {
         "DTCOOKIE": {
           "NAME": "dtCookie",
-          "PURPOSE": "Tracks a visit across multiple request",
-          "EXPIRES": "Session end"
+          "PURPOSE": "Tracio ymweliadau ar draws sawl cais",
+          "EXPIRES": "Diwedd y sesiwn"
         },
         "DTLATC": {
           "NAME": "dtLatC",
-          "PURPOSE": "Measures server latency for performance monitoring",
-          "EXPIRES": "Session end"
+          "PURPOSE": "Mesurau segurdod gweinydd ar gyfer monitro perfformiad",
+          "EXPIRES": "Diwedd y sesiwn"
         },
         "DTPC": {
           "NAME": "dtPC",
-          "PURPOSE": "Required to identify proper endpoints for beacon transmission; includes session ID for correlation",
-          "EXPIRES": "Session end"
+          "PURPOSE": "Er mwyn canfod pwyntiau terfyn priodol ar gyfer trosglwyddo tywysydd: mae’n cynnwys rhif adnabod y sesiwn at ddibenion cydberthyniad",
+          "EXPIRES": "Diwedd y sesiwn"
         },
         "DTSA": {
           "NAME": "dtSa",
-          "PURPOSE": "Intermediate store for page-spanning actions",
-          "EXPIRES": "Session end"
+          "PURPOSE": "Storfa ganolradd ar gyfer gweithredoedd sy'n rhychwantu tudalennau",
+          "EXPIRES": "Diwedd y sesiwn"
         },
         "RXVISITOR": {
           "NAME": "rxVisitor",
-          "PURPOSE": "Visitor ID to correlate sessions",
-          "EXPIRES": "1 year"
+          "PURPOSE": "ID Ymwelwyr i sesiynau cydberthynol",
+          "EXPIRES": "1 blwyddyn"
         },
         "RXVT": {
           "NAME": "rxvt",
-          "PURPOSE": "Session timeout",
-          "EXPIRES": "Session end"
+          "PURPOSE": "Pan ddaw'r sesiwn i ben",
+          "EXPIRES": "Diwedd y sesiwn"
         }
       },
-      "COOKIES_EXPLANATION1": "Cookies are files saved on your phone, tablet or computer when you visit a website. Most websites need cookies to work properly",
-      "COOKIES_EXPLANATION2": "This service uses cookies to:",
-      "COOKIES_EXPLANATION3": "We use Google Analytics software to collect information about how you use this service. We do this to help make sure the service is meeting the needs of its users and to help us make improvements. We do not allow Google to use or share the data about how you use this site.",
-      "COOKIES_EXPLANATION4": "We use Dynatrace Software Intelligence Platform to provide an Application Performance Monitoring Service to collect information about how you use HMCTS services. We do this to monitor HMCTS services in order to resolve issues within our services as well as collect data on how our services can be improved. HMCTS store information about:",
-      "COOKIES_EXPLANATION5": "Information is presented within the Application Performance Monitoring service for the purposes detailed above. We do not use or share the information for any other purpose. We do not allow Dynatrace to use or share the information for any other purposes.",
-      "COOKIES_EXPLANATION6": "These essential cookies do things like making the service more secure. They always need to be on.",
-      "COOKIE_SETTINGS_SAVED": "Your cookie settings were saved",
-      "EXPIRES": "Expires",
-      "FIND_MORE_ABOUT_COOKIES": "Find out more about essential cookies",
-      "HEADING": "How cookies are used in this service",
-      "NAME": "Name",
+      "COOKIES_EXPLANATION1": "Ffeiliau a gedwir ar eich ffôn, eich tabled neu'ch cyfrifiadur pan fyddwch yn ymweld â gwefan yw cwcis. Mae'r rhan fwyaf o wefannau angen cwcis i weithio'n iawn",
+      "COOKIES_EXPLANATION2": "Mae'r gwasanaeth hwn yn defnyddio cwcis i:",
+      "COOKIES_EXPLANATION3": "Rydym yn defnyddio meddalwedd Google Analytics i gasglu gwybodaeth am sut rydych yn defnyddio'r gwasanaeth hwn. Rydym yn gwneud hyn i helpu i sicrhau bod y gwasanaeth yn diwallu anghenion ei ddefnyddwyr ac i'n helpu i wneud gwelliannau. Nid ydym yn caniatáu i Google ddefnyddio na rhannu'r data am sut rydych chi'n defnyddio'r wefan hon.",
+      "COOKIES_EXPLANATION4": "Rydym yn defnyddio Llwyfan Gwybodaeth Meddalwedd Dynatrace i ddarparu Gwasanaeth Monitro Perfformiad i gasglu gwybodaeth am sut rydych chi'n defnyddio gwasanaethau GLlTEF. Rydym yn gwneud hyn i fonitro gwasanaethau GLlTEF er mwyn datrys materion o fewn ein gwasanaethau yn ogystal â chasglu data ar sut y gellir gwella ein gwasanaethau. Mae GLlTEF yn cadw gwybodaeth am:",
+      "COOKIES_EXPLANATION5": "Cyflwynir gwybodaeth o fewn y gwasanaeth Monitro Perfformiad at y dibenion y manylir arnynt uchod. Nid ydym yn defnyddio nac yn rhannu'r wybodaeth at unrhyw ddiben arall. Nid ydym yn caniatáu i Dynatrace ddefnyddio na rhannu'r wybodaeth at unrhyw ddibenion eraill.",
+      "COOKIES_EXPLANATION6": "Mae'r cwcis hanfodol hyn yn gwneud pethau fel gwneud y gwasanaeth yn fwy diogel. Mae angen iddynt fod ymlaen drwy’r amser.",
+      "COOKIE_SETTINGS_SAVED": "Cadwyd eich gosodiadau cwcis",
+      "EXPIRES": "Daw i ben ar",
+      "FIND_MORE_ABOUT_COOKIES": "Mwy o wybodaeth am gwcis hanfodol",
+      "HEADING": "Sut mae cwcis yn cael eu defnyddio yn y gwasanaeth hwn",
+      "NAME": "Enw",
       "PERFORMANCE_COOKIE_OPTIONS": {
-        "HEADING": "Allow cookies that measure website application performance monitoring?",
-        "ON_OPTION": "Use cookies that measure website application performance monitoring",
-        "OFF_OPTION": "Do not use cookies that measure website application performance monitoring"
+        "HEADING": "Caniatáu cwcis sy'n mesur monitro perfformiad ceisiadau gwefannau?",
+        "ON_OPTION": "Defnyddio cwcis sy'n mesur monitro perfformiad ceisiadau gwefan",
+        "OFF_OPTION": "Peidio â defnyddio cwcis sy'n mesur monitro perfformiad ceisiadau gwefannau"
       },
-      "PURPOSE": "Purpose",
-      "SUBHEADING1": "To measure website usage",
-      "SUBHEADING2": "Cookie details",
-      "SUBHEADING3": "To measure application performance",
-      "SUBHEADING4": "Essential cookies",
-      "TITLE": "Cookies"
+      "PURPOSE": "Diben",
+      "SUBHEADING1": "Mesur y defnydd o'r wefan",
+      "SUBHEADING2": "Manylion cwcis",
+      "SUBHEADING3": "I fesur perfformiad ceisiadau",
+      "SUBHEADING4": "Cwcis hanfodol",
+      "TITLE": "Cwcis"
     },
     "COURT_ORDERS": {
       "ADD_ANOTHER": "Ychwanegu gorchymyn llys arall",
@@ -1087,40 +1086,40 @@
       "TITLE": "Expected end date"
     },
     "DEFENDANT_DETAILS": {
-      "BUSINESS_NAME": "Trading as (If you know it)",
-      "COMPANY_ADDRESS": "Company address",
-      "COMPANY_MAIN_OFFICE": "Enter the company’s main office or a company address that has a connection with the claim.",
-      "COMPANY_NAME": "Company name",
-      "CONTACT_PERSON": "Name of contact person (optional)",
-      "CONTACT_PERSON_HINT": "This might be a person you’ve discussed the claim with.",
-      "ENGLAND_OR_WALES_ADDRESS": "The address must be in England or Wales.",
+      "BUSINESS_NAME": "Masnachu fel (os yn hysbys)",
+      "COMPANY_ADDRESS": "Cyfeiriad y Cwmni",
+      "COMPANY_MAIN_OFFICE": "Rhowch brif swyddfa'r cwmni neu gyfeiriad cwmni sydd â chysylltiad â'r cais.",
+      "COMPANY_NAME": "Enw'r cwmni",
+      "CONTACT_PERSON": "Enw'r person cyswllt (dewisol)",
+      "CONTACT_PERSON_HINT": "Efallai bod hwn yn rhywun rydych wedi trafod yr hawliad gydag ef.",
+      "ENGLAND_OR_WALES_ADDRESS": "Rhaid i'r cyfeiriad fod yng Nghymru neu yn Lloegr.",
       "INVALID_CLAIM": "Your claim may be invalid if you use the wrong address.",
       "NO_WORK_ADDRESS": "You cannot use their work address.",
-      "ORGANISATION_ADDRESS": "Organisation address",
-      "ORGANISATION_MAIN_OFFICE": "Enter the organisation’s main office or address that has a connection with the claim.",
-      "ORGANISATION_NAME": "Organisation name",
+      "ORGANISATION_ADDRESS": "Cyfeiriad y sefydliad",
+      "ORGANISATION_MAIN_OFFICE": "Nodwch brif swyddfa neu gyfeiriad y sefydliad sydd â chysylltiad â'r hawliad.",
+      "ORGANISATION_NAME": "Enw'r sefydliad",
       "PAGE_TITLES": {
-        "COMPANY": "Company details",
-        "INDIVIDUAL": "Enter the defendant’s details",
-        "ORGANISATION": "Enter organisation details",
-        "SOLE_TRADER": "Enter the defendant's details"
+        "COMPANY": "Manylion y cwmni",
+        "INDIVIDUAL": "Rhowch fanylion y diffynnydd",
+        "ORGANISATION": "Rhowch fanylion y sefydliad",
+        "SOLE_TRADER": "Rhowch fanylion y diffynnydd"
       },
-      "PAYING_EXTRA": "You’ll have to pay extra fee if you later want to change the name of anyone involved with the claim.",
-      "PAYING_EXTRA_ORGANISATION": "You’ll have to pay extra fee if you later want to change the name of an organisation involved with the claim.",
-      "THEIR_ADDRESS": "Their address",
+      "PAYING_EXTRA": "Bydd rhaid i chi dalu ffi ychwanegol os ydych chi am newid enw unrhyw un sy'n gysylltiedig â'r hawliad yn ddiweddarach.",
+      "PAYING_EXTRA_ORGANISATION": "Bydd rhaid i chi dalu ffi ychwanegol os ydych chi am newid enw sefydliad sy'n gysylltiedig â'r hawliad yn ddiweddarach.",
+      "THEIR_ADDRESS": "Ei gyfeiriad",
       "USUAL_ADDRESS": "You must enter their usual or last known home address."
     },
     "DEFENDANT_PARTY_TYPE": {
-      "CLAIMING_AGAINST_AN_INDIVIDUAL": "An individual",
-      "CLAIMING_AGAINST_LIMITED_COMPANY": "A limited company",
-      "CLAIMING_AGAINST_ORGANISATION": "Another type of organisation",
-      "CLAIMING_AGAINST_SOLE_TRADER_OR_SELF_EMPLOYED": "A sole trader or self-employed person",
-      "CLAIMING_AGAINST_AN_INDIVIDUAL_HINT": "For example someone you lent money to",
-      "CLAIMING_AGAINST_LIMITED_COMPANY_HINT": "For example a company that sold you goods or services",
-      "CLAIMING_AGAINST_ORGANISATION_HINT": "For example a partnership, trust, charity, club or association",
-      "CLAIMING_AGAINST_SOLE_TRADER_OR_SELF_EMPLOYED_HINT": "For example a tradesperson who did work for you",
-      "PAGE_TITLE": "Who are you making the claim against?",
-      "TITLE": "Who are you making the claim against?"
+      "CLAIMING_AGAINST_AN_INDIVIDUAL": "Unigolyn",
+      "CLAIMING_AGAINST_LIMITED_COMPANY": "Cwmni cyfyngedig",
+      "CLAIMING_AGAINST_ORGANISATION": "Math arall o sefydliad",
+      "CLAIMING_AGAINST_SOLE_TRADER_OR_SELF_EMPLOYED": "Unig fasnachwr neu unigolyn hunangyflogedig",
+      "CLAIMING_AGAINST_AN_INDIVIDUAL_HINT": "Er enghraifft rhywun wnaethoch chi fenthyg arian iddo",
+      "CLAIMING_AGAINST_LIMITED_COMPANY_HINT": "Er enghraifft cwmni oedd yn gwerthu nwyddau neu wasanaethau i chi",
+      "CLAIMING_AGAINST_ORGANISATION_HINT": "Er enghraifft partneriaeth, ymddiriedaeth, elusen, clwb neu gymdeithas",
+      "CLAIMING_AGAINST_SOLE_TRADER_OR_SELF_EMPLOYED_HINT": "Er enghraifft crefftwr a wnaeth waith ichi",
+      "PAGE_TITLE": "Yn erbyn pwy ydych chi'n gwneud yr hawliad?",
+      "TITLE": "Yn erbyn pwy ydych chi'n gwneud yr hawliad?"
     },
     "DEFENDANT_TIMELINE": {
       "PAGE_TITLE": "Ychwanegu eich amserlen digwyddiadau",
@@ -1162,12 +1161,12 @@
       "UNDER": "Dan 11"
     },
     "DEPENDANTS_BETWEEN_16_AND_19": {
-      "ENTER_NUMBER": "Enter number",
-      "FULL_TIME_EDUCATION": "in full-time education or training",
-      "HOW_MANY": "How many are both",
+      "ENTER_NUMBER": "Rhowch rif",
+      "FULL_TIME_EDUCATION": "mewn addysg neu hyfforddiant llawn amser",
+      "HOW_MANY": "Faint yw'r ddau",
       "PAGE_TITLE": "Any dependants between 16 and 19?",
-      "SINGLE": "single (unmarried and not in a civil partnership)",
-      "TITLE": "Children aged 16 to 19 living with you"
+      "SINGLE": "sengl (di-briod a heb fod mewn partneriaeth sifil)",
+      "TITLE": "Plant 16 i 19 oed sy'n byw gyda chi"
     },
     "DEPENDANTS_CHILDREN_DISABILITY": {
       "ANY_DISABLED_CHILDREN": "A oes gan unrhyw un o'r plant sy'n byw gyda chi anabledd?",
@@ -1190,14 +1189,14 @@
       "REASON": "Esboniwch pam rydych chi'n hawlio o'r dyddiad hwn"
     },
     "ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES": {
-      "PARAGRAPH1_1": "If you have already applied for Help with Fees in respect ooooof ",
-      "PARAGRAPH1_2": "you may already have a reference number. If so, you can save and continue and enter it when asked. Do not use a number related to a different claim. If you don’t have a Help with Fees number for this claim, please follow the instructions below.",
-      "PARAGRAPH2": "If you need to use the paper Help with Fees application rather than the online version, you will not be able to use Online Civil Money Claims to issue your claim.",
-      "PARAGRAPH3": "When you apply for Help with Fees you will be asked for the number on your court or tribunal form. Please note that this is N1.",
-      "PARAGRAPH4": "When you have completed your Help with Fees application, you will be given a reference number. Please note the number and keep it safe. You will need it later in the claim process. Then return to this page and click the Save and continue box below so that you can start the claim.",
-      "PLEASE_NOTE": "Please Note:",
-      "THIS_CLAIM": "THIS CLAIM",
-      "TITLE": "Apply For Help With Fees"
+      "PARAGRAPH1_1": "Os ydych eisoes wedi gwneud cais am Help i Dalu Ffioedd mewn perthynas â ",
+      "PARAGRAPH1_2": "efallai bod gennych chi rif cyfeirnod yn barod. Os felly, gallwch gadw eich cais a pharhau a’i nodi pan ofynnir amdano. Peidiwch â defnyddio rhif sy'n gysylltiedig â hawliad gwahanol. Os nad oes gennych rif Help i Dalu Ffioedd ar gyfer yr hawliad hwn, dilynwch y cyfarwyddiadau isod.",
+      "PARAGRAPH2": "Os oes angen i chi ddefnyddio'r cais papur Help i Dalu Ffioedd yn hytrach na'r fersiwn ar-lein, ni fyddwch yn gallu defnyddio'r gwasanaeth Hawliadau am Arian yn y Llys Sifil ar-lein i gychwyn eich hawliad.",
+      "PARAGRAPH3": "Pan fyddwch yn gwneud cais am Help i Dalu Ffioedd gofynnir i chi am y rhif ar eich ffurflen llys neu dribiwnlys. Sylwch mai N1 yw hwnnw.",
+      "PARAGRAPH4": "Pan fyddwch wedi cwblhau eich cais Help i Dalu Ffioedd, byddwch yn cael rhif cyfeirnod. Nodwch y rhif a'i gadw'n ddiogel. Bydd ei angen arnoch yn nes ymlaen yn y broses hawlio. Yna dychwelwch i'r dudalen hon a chliciwch ar y blwch Cadw a pharhau isod er mwyn i chi allu cychwyn yr hawliad.",
+      "PLEASE_NOTE": "Sylwer:",
+      "THIS_CLAIM": "YR HAWLIAD HWN",
+      "TITLE": "Gwneud cais am Help i Dalu Ffioedd"
     },
     "ELIGIBILITY_CLAIMANT_ADDRESS": {
       "PAGE_TITLE": "Oes gennych chi gyfeiriad post yn y DU?",
@@ -1220,9 +1219,9 @@
       "TITLE": "Does the person or organisation you’re claiming against have a postal address in England or Wales?"
     },
     "ELIGIBILITY_DEFENDANT_AGE": {
-      "COMPANY_ORGANISATION": "I'm claiming against a company or organisation",
+      "COMPANY_ORGANISATION": "Rydw i'n hawlio yn erbyn cwmni neu sefydliad",
       "PAGE_TITLE": "Defendant Age Eligibility",
-      "TITLE": "Do you believe the person you’re claiming against is 18 or over?"
+      "TITLE": "Ydych chi'n credu bod yr unigolyn rydych chi'n gwneud hawliad yn ei erbyn yn 18 oed neu'n hŷn?"
     },
     "ELIGIBILITY_HELP_WITH_FEES": {
       "PAGE_TITLE": "Ydych chi angen help i dalu ffi’r llys?",
@@ -1252,15 +1251,15 @@
       "25000_OR_LESS": "£25,000 neu lai"
     },
     "ELIGIBILITY_OVER_18_CLAIMANT": {
-      "PAGE_TITLE": "Are you 18 or over?",
-      "TITLE": "Are you 18 or over?"
+      "PAGE_TITLE": "Ydych chi'n 18 oed neu'n hŷn?",
+      "TITLE": "Ydych chi'n 18 oed neu'n hŷn?"
     },
     "ELIGIBILITY_USEFUL_INFO_FEES": {
-      "CONTINUE_HELP_WITH_FEES": "Do you wish to continue to make a Help with Fees Application?",
-      "HELP_WITH_FEES": "If you want to apply for Help with Fees, you will complete an online form in a new window. This will give you a reference number. Please note the number and keep it safe, as you will need it later in the claim process. (NB: if you have more than one claim going on, each claim must have a separate Help with Fees application and reference number). You can send in your claim as soon as you have the Help with Fees reference number, but the claim will not be issued until the Help with Fees application has been processed by the court. This is so that you will know what fees are covered and what you still have to pay. If you choose not to pay, the claim will not be issued. The claim will stop here unless you change your mind within 95 days.",
-      "HELP_WITH_FEES_ADVICE": "You may be asked by the court to email evidence in support of your application before your claim is issued.",
-      "HELP_WITH_FEES_INTRO": "Making an application for Help with Fees does not guarantee that you will get your fee covered. You may still have to pay some or all of your court fee to get the claim issued (for the court system to officially start the claim and send details to the other side). When you apply for Help with Fees, you should receive an update from us within 5 working days, giving you the result of your application.",
-      "TITLE": "Some useful information about Help with Fees"
+      "CONTINUE_HELP_WITH_FEES": "Ydych chi am ddal i wneud Cais Help i Dalu Ffioedd?",
+      "HELP_WITH_FEES": "Os ydych chi am wneud cais am Help i Dalu Ffioedd, byddwch yn llenwi ffurflen ar-lein mewn ffenestr newydd. Bydd hyn yn rhoi rhif cyfeirnod i chi. Nodwch y rhif a'i gadw'n ddiogel, gan y bydd ei angen arnoch yn nes ymlaen yn y broses hawlio. (DS: os oes gennych fwy nag un hawliad yn mynd ymlaen, rhaid i bob hawliad gael cais Help i Dalu Ffioedd ar wahân a rhif cyfeirnod). Gallwch anfon eich cais cyn gynted ag y bydd gennych y cyfeirnod Help i Dalu Ffioedd, ond ni fydd yr hawliad yn cael ei gychwyn nes bydd y cais Help i Dalu Ffioedd wedi ei brosesu gan y llys. Gwneir hyn fel y byddwch yn gwybod pa ffioedd sy'n cael eu cynnwys a'r hyn y mae'n rhaid i chi  ei dalu o hyd. Os ydych chi'n dewis peidio talu, ni fydd yr hawliad yn cael ei gychwyn. Bydd yr hawliad yn dod i ben yma oni bai eich bod yn newid eich meddwl o fewn 95 diwrnod.",
+      "HELP_WITH_FEES_ADVICE": "Efallai y bydd y llys yn gofyn i chi e-bostio tystiolaeth i gefnogi eich cais cyn i'ch cais gael ei gychwyn.",
+      "HELP_WITH_FEES_INTRO": "Nid yw gwneud cais am Help i Dalu Ffioedd yn gwarantu na fyddwch yn gorfod talu’r ffi. Efallai y bydd rhaid i chi dalu rhywfaint neu'r holl ffi o hyd i gychwyn yr hawliad (er mwyn i'r system llys ddechrau'r hawliad yn swyddogol ac anfon manylion i'r ochr arall). Pan fyddwch yn gwneud cais am Help i Dalu Ffioedd, dylech dderbyn diweddariad gennym o fewn 5 diwrnod gwaith, gyda chanlyniad eich cais.",
+      "TITLE": "Gwybodaeth ddefnyddiol am Help i Dalu Ffioedd"
     },
     "EMPLOYMENT_STATUS": {
       "BOTH": "Gallwch ddewis y ddau",
@@ -1429,10 +1428,10 @@
       "REACHING_SETTLEMENT": "Setlo’r anghydfod"
     },
     "ACCEPT_REPAYMENT_PLAN": {
-      "DO_YOU_ACCEPT": "Do you accept the repayment plan?",
-      "NO_OPTION": "No - I'll suggest my own",
-      "PAGE_TITLE": "How they want to pay",
-      "TITLE": "How they want to pay"
+      "DO_YOU_ACCEPT": "Ydych chi'n derbyn y cynllun ad-dalu?",
+      "NO_OPTION": "Na – byddaf yn awgrymu fy nghynllun fy hun",
+      "PAGE_TITLE": "Sut mae am dalu",
+      "TITLE": "Sut mae am dalu"
     },
     "HELP_WITH_FEES": {
       "ENTER_NUMBER": "Rhowch y rhif help i dalu ffioedd",
@@ -1481,6 +1480,8 @@
       "CLAIMANT_CAN_ASK_FOR_CCJ_AGAINST_YOU": "You haven't responded to the claim. {{ claimantName }} can now ask for a County Court Judgement against you.",
       "CCJ_COULD_SEND_BAILIFFS_TO_YOUR_HOME": "A County Court Judgment can mean you find it difficult to get credit, like a mortgage or mobile phone contract. Bailiffs could also be sent to your home.",
       "EVIDENCE_UPLOAD": {
+        "DOCUMENTS_DUE_BY": "Due by: {{bundleStitchingDeadline}}",
+        "DOCUMENTS_SUBMITTED_NOT_CONSIDERED": "Any documents submitted after the due date may not be considered by the judge.",
         "FOLLOW_INSTRUCTIONS_IN": "Please follow the instructions sent in the ",
         "FOUND_UNDER_NOTICES_AND_ORDERS": "which can be found under 'Notices and orders'.",
         "SDO": "standard directions order ",
@@ -1490,7 +1491,21 @@
       "MORE_TIME_REQUESTED": "More time requested",
       "YOU_CAN_STILL_RESPOND_TO_CLAIM": "You can still respond to the claim before they ask for a judgment.",
       "YOU_HAVENT_RESPONDED_TO_CLAIM": "You haven't responded to this claim",
-      "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "You need to respond before 4pm on {{ responseDeadline }} ({{ remainingDays }} Days remaining)."
+      "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "You need to respond before 4pm on {{ responseDeadline }} ({{ remainingDays }} Days remaining).",
+      "SDO_AN_ORDER_HAS_BEEN_ISSUED_BY_THE_COURT": "An order has been issued by the court.",
+      "SDO_PLEASE_FOLLOW_THE_INSTRUCTIONS_IN_THE_ORDER": "Please follow the instructions in the order and comply with the deadlines, if applicable.",
+      "SDO_THIS_CLAIM_WILL_NO_PROCEED_OFFLINE": "This claim will now proceed offline, you will receive any further updates by post.",
+      "SDO_DOWNLOAD_THE_COURTS_ORDER": "Download the court’s order (PDF)",
+      "SDO_TO_FIND_OUT_THE_DETAILS": "to find out the details you need to send.",
+      "CASE_PROGRESSION": {
+        "TRIAL_HEARING_CONTENT": {
+          "YOUR_TRIAL_TITLE": "A trial has been scheduled for your case",
+          "YOUR_HEARING_TITLE": "A hearing has been scheduled for your case",
+          "YOUR_TRIAL_PARAGRAPH": "Your trial has been scheduled for {{ hearingDate }} at {{ hearingTimeHourMinute }} at {{ courtName }}.",
+          "YOUR_HEARING_PARAGRAPH": "Your hearing has been scheduled for {{ hearingDate }} at {{ hearingTimeHourMinute }} at {{ courtName }}.",
+          "VIEW_HEARING_NOTICE_BUTTON": "View hearing notice"
+        }
+      }
     },
     "MEDIATION_CAN_WE_USE": {
       "CAN_MEDIATION_USE": "A all y gwasanaeth cyfryngu ddefnyddio’r rhif {{ respondentTelNumber }} i’ch ffonio?",
@@ -1554,7 +1569,7 @@
         "COMMA_COMPLETE_RETURN": ", complete it and return it to make your claim",
         "GOVERNMENT_DEPARTMENTS": "government departments"
       },
-      "CLAIM_BY_PAPER": "You can also claim by paper. ",
+      "CLAIM_BY_PAPER": "Gallwch hefyd wneud hawliad ar bapur. ",
       "CLAIM_ON_BEHALF": {
         "CURRENTLY_SERVICE": "This service is currently for claimants representing themselves.",
         "COMPLETE_RETURN": ", complete and return it to make your claim.",
@@ -1563,7 +1578,7 @@
         "MCOL_LINK": "use the Money Claim Online (MCOL) service",
         "OR": " or "
       },
-      "COMPLETE_AND_RETURN_PAPER_FORM": "complete it and return it to make your claim.",
+      "COMPLETE_AND_RETURN_PAPER_FORM": "ei gwblhau a'i ddychwelyd i wneud eich hawliad.",
       "DEFENDANT_ADDRESS": {
         "AND": "and",
         "CAN_ONLY_USE_ADDRESS_ENGLAND_OR_WALES": "You can only use this service to claim against a person or organisation with an address in England or Wales.",
@@ -1585,9 +1600,9 @@
       "CLAIMANT_UNDER_18": {
         "CANT_USE_IF_UNDER_18": "You need to be 18 or over to use this service."
       },
-      "DOWNLOAD_PAPER_FORM": "Download a paper form",
-      "FOR_CLAIMS_LESS_THAN_25000": "This service is for claims of £25,000 or less.",
-      "FOR_CLAIMS_BETWEEN_25001_AND_100000": "For claims between £25,001 and £100,000 you might be able to ",
+      "DOWNLOAD_PAPER_FORM": "Lawrlwytho ffurflen bapur",
+      "FOR_CLAIMS_LESS_THAN_25000": "Mae'r gwasanaeth hwn ar gyfer hawliadau am £25,000 neu lai.",
+      "FOR_CLAIMS_BETWEEN_25001_AND_100000": "Ar gyfer hawliadau rhwng £25,001 a £100,000 efallai y byddwch yn gallu ",
       "MULTIPLE_CLAIMANTS": {
         "CANT_USE_IF_MULTIPLE_CLAIMANTS": "You can’t use this service if more than one person or organisation is making the claim."
       },
@@ -1607,8 +1622,8 @@
         "NOT_USED_FOR_TENANCY_DEPOSIT": "You can’t make a claim for a tenancy deposit using this service.",
         "WITH_A_LANLORD_OR_TENANT": "with a landlord or tenant."
       },
-      "USE_MCOL": "use Money Claim Online (MCOL)",
-      "WHERE_TO_SEND_PAPER_FORMS": "Where to send paper forms",
+      "USE_MCOL": "defnyddio Hawliadau am Arian Ar-lein (MCOL)",
+      "WHERE_TO_SEND_PAPER_FORMS": "Ble i anfon ffurflenni papur",
       "YOU_NEED_TO_KNOW_AMOUNT": "You need to know the claim amount to use this service."
     },
     "OTHER_DEPENDANTS": {
@@ -1644,10 +1659,10 @@
       "WHEN_DID": "Pryd y gwnaethoch dalu’r swm hwn?"
     },
     "PARTIAL_ADMISSION_SETTLE_ADMITTED": {
-      "PAGE_TITLE": "Do you want to settle the claim for the £{{ admittedAmount }} the defendant admitted?",
-      "CONTINUE_AMOUNT_YOU_CLAIMED": "The claim will continue for the total amount you claimed",
-      "THIS_IS_THE_TOTAL_AMOUNT": "This is the total amount you'll be paid, including the claim fee and interest if applicable",
-      "TITLE": "Do you want to settle the claim for the £{{ admittedAmount }} the defendant admitted?"
+      "PAGE_TITLE": "Ydych chi eisiau setlo'r cais am y £{{ admittedAmount }} a addefir gan y diffynnydd?",
+      "CONTINUE_AMOUNT_YOU_CLAIMED": "Bydd yr hawliad yn parhau am y cyfanswm a hawliwyd gennych",
+      "THIS_IS_THE_TOTAL_AMOUNT": "Dyma'r cyfanswm a delir i chi, gan gynnwys y ffi hawlio a'r llog os yw'n berthnasol",
+      "TITLE": "Ydych chi eisiau setlo'r cais am y £{{ admittedAmount }} a addefir gan y diffynnydd?"
     },
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
       "PAGE_TITLE": "Why do you disagree?",
@@ -1711,11 +1726,11 @@
       "TITLE": "Nodwch y cod diogelwch"
     },
     "REASON": {
-      "EXTRA_FEE_IF_CHANGE_DETAILS": "You'll have to pay an extra fee if you want to change the details of the claim later.",
-      "DONT_GIVE_TIMELINE": "Don't give us a detailed timeline - we'll ask for that separately.",
-      "PAGE_TITLE": "Briefly explain your claim",
-      "TELL_US_WHY": "Tell us why you believe the defendant owes you money.",
-      "TITLE": "Briefly explain your claim"
+      "EXTRA_FEE_IF_CHANGE_DETAILS": "Bydd yn rhaid i chi dalu ffi ychwanegol os ydych chi am newid manylion yr hawliad nes ymlaen.",
+      "DONT_GIVE_TIMELINE": "Peidiwch â rhoi llinell amser fanwl i ni - byddwn yn gofyn am hynny ar wahân.",
+      "PAGE_TITLE": "Esboniwch eich hawliad yn gryno",
+      "TELL_US_WHY": "Dywedwch pam eich bod yn credu bod ar y diffynnydd arian i chi.",
+      "TITLE": "Esboniwch eich hawliad yn gryno"
     },
     "REGULAR_EXPENSES": {
       "ADD_ANOTHER_EXPENSE": "Ychwanegu ffynhonnell arall o wariant",
@@ -1876,14 +1891,14 @@
       "WHY_THEY_DISAGREE_CLAIM": "Why they disagree with the claim",
       "WHY_THEY_DISAGREE_EVIDENCE": "Why they disagree with your evidence",
       "WHY_THEY_DISAGREE_TIMELINE": "Why they disagree with your timeline",
-      "HOW_THEY_WANT_TO_PAY_RESPONSE": "They've offered to pay you £{{ amount }} by {{ paymentDate }}. This is the total amount you'll be paid, including the claim fee and interest if applicable.",
+      "HOW_THEY_WANT_TO_PAY_RESPONSE": "They've offered to pay you £{{ amount }} by {{ paymentDate }}. Dyma'r cyfanswm a delir i chi, gan gynnwys y ffi hawlio a'r llog os yw'n berthnasol.",
       "PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE": {
-        "TITLE": "How they want to pay",
+        "TITLE": "Sut mae am dalu",
         "SUGGESTED_REPAYMENT": "The defendant suggested this repayment plan",
         "REPAYMENT_PLAN": {
           "FREQUENCY_OF_PAYMENTS": "Amlder taliadau",
-          "FIRST_PAYMENT_DATE": "First payment date",
-          "FINAL_PAYMENT_DATE": "Final payment date",
+          "FIRST_PAYMENT_DATE": "Dyddiad talu cyntaf",
+          "FINAL_PAYMENT_DATE": "Dyddiad talu terfynol",
           "LENGTH": "Hyd y cynllun ad-dalu",
           "REGULAR_PAYMENTS": "Taliadau rheolaidd o"
         }
@@ -1955,10 +1970,10 @@
       "TITLE": "Ydych chi wedi anfon adroddiadau arbenigwyr at y partïon eraill yn barod?"
     },
     "SETTLE_CLAIM_PART_PAYMENT_RECEIVED": {
-      "PAGE_TITLE": "Do you want to settle the claim for the £{{ paidAmount }} the defendant has paid?",
-      "PROCEED_WITH_CLAIM": "Proceed with the claim",
-      "SETTLE_THE_CLAIM": "Settle the claim",
-      "TITLE": "Do you want to settle the claim for the £{{ paidAmount }} the defendant has paid?"
+      "PAGE_TITLE": "Ydych chi eisiau setlo'r cais am y £{{ paidAmount }} mae'r diffynnydd wedi ei dalu?",
+      "PROCEED_WITH_CLAIM": "Bwrw ymlaen â'r hawliad",
+      "SETTLE_THE_CLAIM": "Setlo'r hawliad",
+      "TITLE": "Ydych chi eisiau setlo'r cais am y £{{ paidAmount }} mae'r diffynnydd wedi ei dalu?"
     },
     "SHARED_EXPERT": {
       "IF_YOU_SHARE": "Os byddwch yn rhannu arbenigwr, byddwch hefyd yn rhannu’r costau oni bai bod y barnwr yn penderfynu bod rhaid i un parti dalu cyfran y parti arall.",
@@ -2090,12 +2105,12 @@
       "TITLE": "A yw eich hawliad am flaendal tenantiaeth?"
     },
     "TIMELINE": {
-      "EXAMPLE": "Example timeline",
-      "EXAMPLE_ONE": "John Smith gave me a quote to replace the roof.",
-      "EXAMPLE_TWO": "We agreed and signed a contract for the work.",
-      "EXAMPLE_THREE": "I noticed a leak on the landing and told Mr Smith about this.",
-      "NO_EXACT_DATE": "If you don’t know exact date, tell us the month and year",
-      "TITLE": "Timeline of events"
+      "EXAMPLE": "Llinell amser enghreifftiol",
+      "EXAMPLE_ONE": "Rhoddodd John Smith ddyfynbris i ail-doi.",
+      "EXAMPLE_TWO": "Fe wnaethon ni gytuno a llofnodi contract ar gyfer y gwaith.",
+      "EXAMPLE_THREE": "Sylwais fod y to yn gollwng a dywedais wrth Mr Smith am hyn.",
+      "NO_EXACT_DATE": "Os nad ydych chi'n gwybod yr union ddyddiad, nodwch y mis a'r flwyddyn",
+      "TITLE": "Llinell amser o ddigwyddiadau"
     },
     "TOTAL_AMOUNT": {
       "ADDITIONAL_FEES": "There may be additional fees as your case progresses.",
@@ -2231,21 +2246,21 @@
       "TITLE": "Pam nad ydych chi, eich arbenigwyr neu eich tystion ar gael i fynychu gwrandawiad am {{days}} diwrnod?"
     },
     "YOU_CAN_USE_SERVICE": {
-      "PAGE_TITLE": "You can use this service",
-      "TITLE": "You can use this service",
-      "BASED_ON_ANSWERS": "Based on your answers you can make a money claim using this service."
+      "PAGE_TITLE": "Gallwch ddefnyddio'r gwasanaeth hwn",
+      "TITLE": "Gallwch ddefnyddio'r gwasanaeth hwn",
+      "BASED_ON_ANSWERS": "Yn seiliedig ar eich atebion gallwch wneud hawliad am arian gan ddefnyddio'r gwasanaeth hwn."
     },
     "YOU_CAN_USE": {
-      "BASED_ON": "Based on your answers you can make a money claim using this service.",
+      "BASED_ON": "Yn seiliedig ar eich atebion gallwch wneud hawliad am arian gan ddefnyddio'r gwasanaeth hwn.",
       "HWF_ELIGIBLE": {
-        "PAY_COURT": "You will have to pay court fees unless you are eligible for Help with Fees. ",
-        "HELP_WITH_FEES": "Find out more about Help with Fees (opens in a new window)"
+        "PAY_COURT": "Bydd rhaid i chi dalu ffioedd llys oni bai eich bod yn gymwys i gael Help i Dalu Ffioedd.",
+        "HELP_WITH_FEES": "Dod i wybod mwy am Help i Dalu Ffioedd (Mae'n agor mewn ffenestr newydd)"
       },
       "HWF_ELIGIBLE_REFERENCE": {
-        "REMEMBER": "Remember that you will not know about the fee until we have processed your Help with Fees application. Your claim will only be issued after Help with Fees is confirmed, or the fee is paid."
+        "REMEMBER": "Cofiwch na fyddwch yn gwybod am y ffi nes ein bod wedi prosesu eich cais Help i Dalu Ffioedd. Dim ond ar ôl i Help i Dalu Ffioedd gael ei gadarnhau y bydd eich hawliad yn cael ei gychwyn, neu os telir y ffi."
       },
-      "PAGE_TITLE": "You can use this service",
-      "TITLE": "You can use this service"
+      "PAGE_TITLE": "Gallwch ddefnyddio'r gwasanaeth hwn",
+      "TITLE": "Gallwch ddefnyddio'r gwasanaeth hwn"
     },
     "YOU_HAVE_PAID_LESS": {
       "PAGE_TITLE": "You've paid less",
@@ -2279,7 +2294,7 @@
     "DATE_REQUIRED": "Nodwch ddyddiad",
     "DATE_NOT_MORE_THAN_28_DAYS": "Ni all y dyddiad ymateb yr ydych wedi’i gytuno fod mwy na 28 diwrnod ar ôl y dyddiad ymateb gwreiddiol",
     "DEFENCE_REQUIRED": "Mae angen ichi egluro pam nad oes arian yn ddyledus gennych",
-    "DEFENDANT_AGE_REQUIRED": "Select yes, no, or company/organisation",
+    "DEFENDANT_AGE_REQUIRED": "Dewiswch ie, na, neu cwmni/sefydliad",
     "DEFENDANT_POSTCODE_NOT_VALID": "Rhaid nodi cod post yng Nghymru neu Loegr",
     "DEFENDANT_POSTCODE_NOT_VALID_CORRESPONDENCE": "Rhaid nodi cod post yng Nghymru neu Loegr",
     "DEFENDANT_EXPERT_EVIDENCE_REQUIRED": "Dewiswch ‘ydw’ os ydych eisiau defnyddio tystiolaeth arbenigwr",
@@ -2293,7 +2308,7 @@
     "DETAILS_REQUIRED": "Rhowch fanylion",
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Tell us if you believe the hearing requirement details on this page are true",
     "ENTER_A_DEBT": "Rhowch fanylion y ddyled",
-    "ENTER_AN_EXPLANATION": "Enter an explanation of why you can't pay now",
+    "ENTER_AN_EXPLANATION": "Rhowch esboniad pam na allwch dalu nawr",
     "ENTER_AT_LEAST_ONE_DEBT": "Rhowch fanylion o leiaf un ddyled",
     "ENTER_AT_LEAST_ONE_REPORT": "Enter at least one report",
     "ENTER_EXPERT_DETAILS": "Nodwch fanylion yr arbenigwr",
@@ -2413,7 +2428,7 @@
     "NOT_TO_REMOVE_PHONE_NUMBER": "You can only change your phone number, not remove it",
     "NUMBER_OF_PEOPLE_REQUIRED": "Rhowch rif, er enghraifft 3",
     "NUMBER_REQUIRED": "Rhowch rif dilys",
-    "ONE_ROW_REQUIRED": "Enter at least one row",
+    "ONE_ROW_REQUIRED": "Rhowch o leiaf un llinell",
     "OPTION_REQUIRED": "Dewiswch un rheswm",
     "OPTION_REQUIRED_RESPONSE": "Please select a response",
     "PAID_AMOUNT_NOT_GREATER": "Paid amount cannot be greater than or equal to admitted amount",
@@ -2423,7 +2438,7 @@
     "RATE_CHOOSE_ONE": "Dewis cyfradd llog",
     "RATE_CORRECT_THE_ONE_ENTERED": "Y gyfradd gywir rydych chi wedi'i nodi",
     "RATE_EXPLAIN_CLAIMING_IT": "Nid ydych wedi esbonio pam eich bod yn hawlio'r gyfradd hon",
-    "REASON_REQUIRED": "You need to explain why you believe you’re owed the money",
+    "REASON_REQUIRED": "Mae angen i chi egluro pam eich bod yn credu bod yr arian yn ddyledus i chi",
     "REDIS_FAILURE": "Redis DraftStore failure.",
     "SECURITY_CODE_WRONG_OR_EXPIRED": "Nid oedd y cod diogelwch yn iawn neu mae wedi dod i ben",
     "SELECT_ADDITIONAL_TIME": "Dewiswch faint o amser ychwanegol yr ydych yn gwneud cais amdano",
@@ -2563,12 +2578,12 @@
     "VALID_INTEGER": "Rhowch rif, er enghraifft 3",
     "VALID_INTEREST_TYPE_OPTION": "Choose same rate or breakdown",
     "VALID_MONTH": "Rhowch fis dilys",
-    "VALID_NAME": "Enter name",
+    "VALID_NAME": "Rhowch enw",
     "VALID_CANT_ATTEND_HEARING": "Dewiswch oes os oes yna unrhyw ddyddiadau yn y 12 mis nesaf pan na allwch chi, eich arbenigwyr neu eich tystion fynychu gwrandawiad",
     "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Ni all y rhif fod yn uwch na'r rhif ar y dudalen flaenorol",
     "VALID_OPTION_SELECTION": "Dewiswch opsiwn",
     "VALID_OWED_AMOUNT_REQUIRED": "Rhowch swm dilys",
-    "VALID_PARTY_NAME": "Enter name",
+    "VALID_PARTY_NAME": "Rhowch enw",
     "VALID_PAYMENT_OPTION": "Dewis opsiwn ad-dalu",
     "VALID_PHONE_NUMBER": "Rhaid i’r rhif ffôn fod yn rhif yn y DU",
     "VALID_PHONE_OR_VIDEO_HEARING": {
@@ -2594,6 +2609,6 @@
     "VALID_WHY_FROM_PARTICULAR_DATE": "Mae angen i chi egluro pam eich bod yn hawlio",
     "QUESTION_1_REQUIRED": "Dewiswch 'oes' os yw rhywun yn fregus a bod angen i'r llys ystyried hynny",
     "QUESTION_2_REQUIRED": "Tell us who is vulnerable and what support they need",
-    "CLAIMANT_REJECTION_RESPONSE_REQUIRED": "Enter why you rejected repayment plan"
+    "CLAIMANT_REJECTION_RESPONSE_REQUIRED": "Nodwch pam y gwnaethoch wrthod y cynllun ad-dalu"
   }
 }
