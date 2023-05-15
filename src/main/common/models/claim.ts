@@ -55,6 +55,8 @@ import {toCUIParty} from 'services/translation/convertToCUI/convertToCUIParty';
 import {toCUIMediation} from 'services/translation/convertToCUI/convertToCUIMediation';
 import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIClaimDetails';
 import {CCDRespondentLiPResponse} from './ccdResponse/ccdRespondentLiPResponse';
+import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
+import {DateTimeFormatOptions} from 'luxon';
 import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 
 export class Claim {
@@ -94,6 +96,7 @@ export class Claim {
   sdoOrderDocument?: CaseDocument;
   caseProgression?: CaseProgression;
   respondent1LiPResponse?: CCDRespondentLiPResponse;
+  caseProgressionHearing?: CaseProgressionHearing;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -490,6 +493,16 @@ export class Claim {
     return !!this.sdoOrderDocument;
   }
 
+  hasCaseProgressionHearingDocuments(): boolean{
+    return !!this.caseProgressionHearing?.hearingDocuments;
+  }
+
+  get bundleStitchingDeadline(): string {
+    const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
+    const threeWeeksMilli = 21 * 24 * 60 * 60 * 1000;
+    const options: DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
+    return new Date(hearingDateTime - threeWeeksMilli).toLocaleDateString('en-GB', options);
+  }
 }
 
 export interface StatementOfTruth {
