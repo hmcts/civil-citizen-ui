@@ -22,7 +22,7 @@ export const getUploadYourDocumentsContents = (claimId: string, claim: Claim) =>
     .addParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.YOU_DO_NOT_HAVE')
     .addTitle('PAGES.UPLOAD_YOUR_DOCUMENTS.BEFORE_YOU_UPLOAD_YOUR')
     .addParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.BEFORE_YOU_UPLOAD_THE')
-    .addParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.EACH_DOCUMENT_MUST')
+    .addParagraph('PAGES.UPLOAD_DOCUMENTS.FORMAT')
     .addStartButton('PAGES.UPLOAD_YOUR_DOCUMENTS.START_NOW', TYPES_OF_DOCUMENTS_URL
       .replace(':id', claim.id))
     .build();
