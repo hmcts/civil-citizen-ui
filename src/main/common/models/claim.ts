@@ -57,7 +57,7 @@ import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIC
 import {CCDRespondentLiPResponse} from './ccdResponse/ccdRespondentLiPResponse';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 import {DateTimeFormatOptions} from 'luxon';
-import {isCaseProgressionV1Enable} from "../../app/auth/launchdarkly/launchDarklyClient";
+import {isCaseProgressionV1Enable} from '../../app/auth/launchdarkly/launchDarklyClient';
 
 export class Claim {
   legacyCaseReference: string;
