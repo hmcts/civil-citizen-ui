@@ -29,19 +29,18 @@
             <h2 class="govuk-heading-l">{{ witness }}</h2>
               {% for witnessSection in witnessContent %}
                 <div data-module="moj-add-another" class="select-toggle">
-                {{ claimSummaryContent({
-                  contentSections: witnessSection.contentSections
-                }) }}
-                              <div class="moj-button-action">
-                                {{ govukButton({
-                                    text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
-                                    classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-4'
-                                  }) }}
-                              </div>
-                            </div>
-                            <hr class="govuk-section-break--s govuk-section-break--visible">
+                  {{ claimSummaryContent({
+                    contentSections: witnessSection.contentSections
+                  }) }}
+                  <div class="moj-button-action">
+                    {{ govukButton({
+                      text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
+                      classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-4'
+                    }) }}
+                   </div>
+                </div>
+                <hr class="govuk-section-break--s govuk-section-break--visible">
               {% endfor %}
-
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
