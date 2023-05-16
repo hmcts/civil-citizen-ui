@@ -206,7 +206,7 @@ const input = [
     createdDate: '2022-06-21',
     status: 'CLAIMANT_ACCEPTED_ADMISSION_OF_AMOUNT',
     numberOfDaysOverdue: 99,
-    numberOfDays: 0
+    numberOfDays: 0,
   } as unknown as DashboardDefendantItem,
   {
     url: '/dashboard/:claimId/defendant',
@@ -220,7 +220,7 @@ const input = [
     createdDate: '2022-06-21',
     status: 'RESPONSE_BY_POST',
     numberOfDaysOverdue: 0,
-    numberOfDays: 7
+    numberOfDays: 7,
   } as unknown as DashboardDefendantItem,
   {
     url: '/dashboard/:claimId/defendant',
@@ -234,7 +234,7 @@ const input = [
     createdDate: '2022-06-21',
     status: 'SETTLED',
     numberOfDaysOverdue: 328,
-    numberOfDays: 0
+    numberOfDays: 0,
   } as unknown as DashboardDefendantItem,
   {
     url: '/dashboard/:claimId/defendant',
@@ -249,7 +249,7 @@ const input = [
     numberOfDaysOverdue: 0,
     numberOfDays: 23,
   } as unknown as DashboardDefendantItem,
-]
+];
 
 describe('buildPaginationData', () => {
   const CASE_PER_PAGE = 10;
@@ -270,7 +270,7 @@ describe('buildPaginationData', () => {
   it('should return pagination arguments as undefined when claims are less than case per page', async () => {
     // Given
     const claims: DashboardDefendantItem[] = input;
-    const currentPageAsString: string = '2';
+    const currentPageAsString = '2';
     // When
     const result = buildPaginationData(claims, currentPageAsString, CASE_PER_PAGE, lang);
     // Then
@@ -283,7 +283,7 @@ describe('buildPaginationData', () => {
   it('should return both pagination arguments and pagianted claims when there is more than case per page', async () => {
     // Given
     const claims: DashboardDefendantItem[] = list;
-    const currentPageAsString: string = '2';
+    const currentPageAsString = '2';
     // When
     const result = buildPaginationData(claims, currentPageAsString, CASE_PER_PAGE, lang);
     // Then
@@ -292,10 +292,10 @@ describe('buildPaginationData', () => {
     expect(result.paginatedClaims[0].claimantName).toEqual('GINNY Perro');
     expect(result.paginatedClaims[0].defendantName).toEqual('Bruce Lee');
     expect(result.paginationArguments.items.length).toEqual(2);
-    expect(result.paginationArguments.items[0]).toStrictEqual({"current": false, "href": "/dashboard?lang=en&page=1", "number": 1});
-    expect(result.paginationArguments.items[1]).toStrictEqual({"current": true, "href": "/dashboard?lang=en&page=2", "number": 2});
+    expect(result.paginationArguments.items[0]).toStrictEqual({'current': false, 'href': '/dashboard?lang=en&page=1', 'number': 1});
+    expect(result.paginationArguments.items[1]).toStrictEqual({'current': true, 'href': '/dashboard?lang=en&page=2', 'number': 2});
     expect(result.paginationArguments.next).toBeUndefined();
-    expect(result.paginationArguments.previous).toStrictEqual({"href": "/dashboard?lang=en&page=1", "text": "PAGES.DASHBOARD.PREVIOUS"});
+    expect(result.paginationArguments.previous).toStrictEqual({'href': '/dashboard?lang=en&page=1', 'text': 'PAGES.DASHBOARD.PREVIOUS'});
   });
   // currentPageAsString is '1'
   // maybe--- currentPageAsString undefined
@@ -307,20 +307,13 @@ describe('buildPaginationData', () => {
   //   // Given
   //   // const claimId = '123';
   //   const lang = 'en';
-
   //   // When
   //   const result = buildPaginationData(list, '2', 10, lang);
-
   //   // Then
-
   //   expect(result.paginationArguments).toBeUndefined();
   //   expect(result.paginatedClaims).toHaveLength(1);
   //   // expect(result[0].contentSections).toHaveLength(1);
-
   //   // const downloadClaimSection = buildDownloadSealedClaimSection(new Claim(), claimId, lang);
-
-
   //   // as no more than 10 cases availbale
-
   // });
 });
