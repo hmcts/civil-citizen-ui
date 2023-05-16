@@ -57,6 +57,7 @@ import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIC
 import {CCDRespondentLiPResponse} from './ccdResponse/ccdRespondentLiPResponse';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 import {DateTimeFormatOptions} from 'luxon';
+import {isCaseProgressionV1Enable} from "../../app/auth/launchdarkly/launchDarklyClient";
 
 export class Claim {
   legacyCaseReference: string;
@@ -322,13 +323,14 @@ export class Claim {
   }
 
   getDocumentDetails(documentType: DocumentType): CaseDocument {
-    if (documentType === DocumentType.HEARING_FORM && this.hasCaseProgressionHearingDocuments()){
+    if (documentType === DocumentType.HEARING_FORM && this.hasCaseProgressionHearingDocuments()
+      && isCaseProgressionV1Enable()){
       const hearingNotice = this.caseProgressionHearing.hearingDocuments.find(document => {
         return document.value.documentType === documentType;
       });
       return hearingNotice.value;
     }
-    else if (documentType === DocumentType.HEARING_FORM){
+    else if (documentType === DocumentType.HEARING_FORM && isCaseProgressionV1Enable()){
       return undefined;
     }
 
