@@ -7,7 +7,7 @@ const DEFAULT_PAGE_NUMBER = 1;
 export function buildPaginationData(claims: DashboardDefendantItem[], currentPageAsString: string, casePerPage: number, lang: string) {
   const currentPage = Number(currentPageAsString) ? Number(currentPageAsString) : DEFAULT_PAGE_NUMBER;
   const totalPages = claims?.length ? Math.ceil(claims.length / casePerPage) : undefined;
-  const paginationArguments: object = totalPages > 1 ? buildPaginationListArgs(totalPages, currentPage, lang) : undefined;
+  const paginationArguments = totalPages > 1 ? buildPaginationListArgs(totalPages, currentPage, lang) : undefined;
   const paginatedClaims = totalPages > 1 ? getPaginatedClaims(claims, currentPage, casePerPage) : claims;
   return {
     paginationArguments,
