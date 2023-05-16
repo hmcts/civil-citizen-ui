@@ -16,7 +16,7 @@ civil-service:
 elastic:
   enabled: false
 
-wa:
+civil-wa:
   enabled: false
 
 nodejs:
