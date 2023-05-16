@@ -1,6 +1,6 @@
 import {CourtNameExtractor} from 'services/features/caseProgression/courtNameExtractor';
 
-describe('CourtNameExtractor Service', () => {
+describe('HearingDateTimeFormatter Service', () => {
   it('should extract the CourtName correctly', async () => {
     //Given
     const countName = 'test - test';
@@ -10,4 +10,5 @@ describe('CourtNameExtractor Service', () => {
     //Then
     expect(countNameExpected).toEqual(courtNameResult);
   });
+
 });
