@@ -9,7 +9,6 @@ jest.mock('i18next', () => ({
 }));
 
 describe('buildPaginationData Service', () => {
-  const CASE_PER_PAGE = 10;
   const lang = 'en';
 
   // claims undefined
@@ -18,7 +17,7 @@ describe('buildPaginationData Service', () => {
     const claims: DashboardDefendantItem[] = undefined;
     const currentPageAsString: string = undefined;
     // When
-    const result = buildPaginationData(claims, currentPageAsString, CASE_PER_PAGE, lang);
+    const result = buildPaginationData(claims, currentPageAsString, lang);
     // Then
     expect(result.paginationArguments).toBeUndefined();
     expect(result.paginatedClaims).toBeUndefined();
@@ -29,7 +28,7 @@ describe('buildPaginationData Service', () => {
     const claims: DashboardDefendantItem[] = generateClaims(true);
     const currentPageAsString = '2';
     // When
-    const result = buildPaginationData(claims, currentPageAsString, CASE_PER_PAGE, lang);
+    const result = buildPaginationData(claims, currentPageAsString, lang);
     // Then
     expect(result.paginatedClaims.length).toEqual(4);
     expect(result.paginatedClaims[0].claimantName).toEqual('Mr Baddy Bad');
@@ -42,7 +41,7 @@ describe('buildPaginationData Service', () => {
     const claims: DashboardDefendantItem[] = generateClaims(false);
     const currentPageAsString = '2';
     // When
-    const result = buildPaginationData(claims, currentPageAsString, CASE_PER_PAGE, lang);
+    const result = buildPaginationData(claims, currentPageAsString, lang);
     // Then
     expect(result.paginatedClaims.length).toEqual(3);
     expect(result.paginatedClaims[0].claimNumber).toEqual('000MC038');

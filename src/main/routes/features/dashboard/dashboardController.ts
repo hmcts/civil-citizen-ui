@@ -11,7 +11,6 @@ import {buildPaginationData} from 'services/features/dashboard/claimPaginationSe
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
-const CASE_PER_PAGE = 10;
 
 function renderPage(res: Response, claimsAsClaimant: DashboardClaimantItem[], claimDraftSaved: DashboardClaimantItem,
   claimsAsDefendant: DashboardDefendantItem[], responseDraftSaved: boolean,
@@ -37,7 +36,7 @@ dashboardController.get(DASHBOARD_URL, async function (req, res, next) {
   try{
     const claimsAsClaimant : DashboardClaimantItem[] = await civilServiceClient.getClaimsForClaimant(appRequest);
     const claimsAsDefendant: DashboardDefendantItem[] = await civilServiceClient.getClaimsForDefendant(appRequest);
-    const claimsAsDefendantPaginationData = buildPaginationData(claimsAsDefendant, req.query?.page as string, CASE_PER_PAGE, lang);
+    const claimsAsDefendantPaginationData = buildPaginationData(claimsAsDefendant, req.query?.page as string, lang);
     const claimDraftSaved = await getOcmcDraftClaims(user?.accessToken);
     const responseDraftSaved = false;
     const paginationArgumentClaimant: object = {};
