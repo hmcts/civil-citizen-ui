@@ -5,6 +5,7 @@ import {CASE_DOCUMENT_DOWNLOAD_URL} from '../../../../routes/urls';
 import {formatDateToFullDate} from '../../../../common/utils/dateUtils';
 import {displayDocumentSizeInKB} from '../../../../common/utils/documentSizeDisplayFormatter';
 import {t} from 'i18next';
+import {isCaseProgressionV1Enable} from "../../../../app/auth/launchdarkly/launchDarklyClient";
 
 const buildDownloadSealedClaimSection = (claim: Claim, claimId: string, lang: string): ClaimSummarySection => {
   const document = claim.getDocumentDetails(DocumentType.SEALED_CLAIM);
@@ -26,7 +27,7 @@ const buildDownloadHearingNoticeSection = (claim: Claim, claimId: string, lang: 
   const document = claim.getDocumentDetails(DocumentType.HEARING_FORM);
   const downloadClaimLabel = 'PAGES.CLAIM_SUMMARY.DOWNLOAD_HEARING_NOTICE';
   const createdLabel = 'PAGES.CLAIM_SUMMARY.DOCUMENT_CREATED';
-  if (document) {
+  if (document && isCaseProgressionV1Enable()) {
     return {
       type: ClaimSummaryType.LINK,
       data: {
