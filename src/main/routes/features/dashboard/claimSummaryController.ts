@@ -23,7 +23,7 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextF
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     if (claim && !claim.isEmpty()) {
       const latestUpdateContent = getLatestUpdateContent(claimId, claim, lang);
-      const documentsContent = getDocumentsContent(claim, claimId);
+      const documentsContent = await getDocumentsContent(claim, claimId);
       if (latestUpdateContent.length === 0 && await isCaseProgressionV1Enable()) {
         const lang = req?.query?.lang ? req.query.lang : req?.cookies?.lang;
         getCaseProgressionLatestUpdates(claim, lang)
