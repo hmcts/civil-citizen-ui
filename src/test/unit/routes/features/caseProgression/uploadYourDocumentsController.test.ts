@@ -24,6 +24,11 @@ describe('"upload your documents" page test', () => {
   const claim = require('../../../../utils/mocks/civilClaimResponseMock.json');
   const claimId = claim.id;
   const civilServiceUrl = config.get<string>('services.civilService.url');
+  const idamUrl: string = config.get('idamUrl');
+
+  nock(idamUrl)
+    .post('/o/token')
+    .reply(200, {id_token: citizenRoleToken});
 
   beforeAll((done) => {
     testSession
