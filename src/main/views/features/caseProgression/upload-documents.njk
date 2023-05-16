@@ -20,7 +20,7 @@
       <div class="govuk-grid-row">
         <form method="post" novalidate>
           {{ csrfProtection(csrf) }}
-          <div class="govuk-grid-column-one-half">
+          <div class="govuk-grid-column-one-half multiple-row">
             <h1 class="govuk-heading-l">{{ titleH1 }}</h1>
             <h2 class="govuk-heading-s">{{ titleH2 }}</h2>
             <p class="govuk-body-m">{{ paragraph }}</p>
@@ -32,14 +32,14 @@
                 {{ claimSummaryContent({
                   contentSections: witnessSection.contentSections
                 }) }}
-                              <div class="moj-button-action">
-                                {{ govukButton({
-                                    text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
-                                    classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-4'
-                                  }) }}
-                              </div>
-                            </div>
-                            <hr class="govuk-section-break--s govuk-section-break--visible">
+                <div class="moj-button-action">
+                  {{ govukButton({
+                      text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
+                      classes: 'govuk-button--secondary append-row govuk-!-margin-bottom-4'
+                    }) }}
+                </div>
+              </div>
+              <hr class="govuk-section-break--s govuk-section-break--visible">
               {% endfor %}
 
             <div class="govuk-form-group">
