@@ -1,5 +1,5 @@
 import {DashboardDefendantItem} from 'common/models/dashboard/dashboardItem';
-import {buildPaginationData} from 'services/features/dashboard/claimPaginationService.ts';
+import {buildPaginationData} from 'services/features/dashboard/claimPaginationService';
 
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/i18n');

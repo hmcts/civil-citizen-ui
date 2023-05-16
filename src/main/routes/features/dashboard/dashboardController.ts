@@ -6,7 +6,7 @@ import {AppRequest, UserDetails} from 'models/AppRequest';
 import {getOcmcDraftClaims} from '../../../app/client/legacyDraftStoreClient';
 import {DashboardClaimantItem, DashboardDefendantItem} from '../../../common/models/dashboard/dashboardItem';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {buildPaginationData} from 'services/features/dashboard/claimPaginationService.ts';
+import {buildPaginationData} from 'services/features/dashboard/claimPaginationService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);

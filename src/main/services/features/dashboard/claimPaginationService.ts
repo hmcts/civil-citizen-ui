@@ -40,11 +40,3 @@ function buildPaginationListArgs(totalPages: number, currentPage: number, lang: 
     items,
   };
 }
-
-
-
-
-
-
-
-
