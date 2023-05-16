@@ -11,7 +11,7 @@ import {buildPaginationData} from 'services/features/dashboard/claimPaginationSe
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
-const CASE_PER_PAGE = 10;
+const CASE_PER_PAGE = 4;
 
 function renderPage(res: Response, claimsAsClaimant: DashboardClaimantItem[], claimDraftSaved: DashboardClaimantItem,
   claimsAsDefendant: DashboardDefendantItem[], responseDraftSaved: boolean,

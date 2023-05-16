@@ -56,7 +56,7 @@ describe('buildPaginationData Service', () => {
   });
 });
 
-export function generateClaims(isLessThan10: boolean = false) {
+export function generateClaims(isLessThan10: boolean) {
   const claimsMoreThan10 = [
     {
       url: '/dashboard/:claimId/defendant',
