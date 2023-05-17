@@ -1,5 +1,9 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {TYPES_OF_DOCUMENTS_URL, UPLOAD_YOUR_DOCUMENTS_URL} from '../../urls';
+import {
+  DEFENDANT_SUMMARY_URL,
+  TYPES_OF_DOCUMENTS_URL,
+  UPLOAD_YOUR_DOCUMENTS_URL,
+} from '../../urls';
 import {AppRequest} from 'common/models/AppRequest';
 
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
@@ -17,6 +21,7 @@ const typeOfDocumentsController = Router();
 const dqPropertyName = 'defendantUploadDocuments';
 
 async function renderView(res: Response, claimId: string, form: GenericForm<UploadDocuments>) {
+  const latestUploadUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
   const claim = await getCaseDataFromStore(claimId);
   const claimantFullName = claim.getClaimantFullName();
   const defendantFullName = claim.getDefendantFullName();
@@ -24,7 +29,7 @@ async function renderView(res: Response, claimId: string, form: GenericForm<Uplo
   const isSmallClaims = claim.isSmallClaimsTrackDQ;
 
   res.render(typeOfDocumentsViewPath, {form,
-    claimId,claimantFullName,defendantFullName, isFastTrack, isSmallClaims,
+    claimId,claimantFullName,defendantFullName, latestUploadUrl, isFastTrack, isSmallClaims,
   });
 }
 
@@ -32,8 +37,8 @@ typeOfDocumentsController.get(TYPES_OF_DOCUMENTS_URL,
   (async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
       const claimId = req.params.id;
-      const documentslist = await getDocuments(req.params.id,ClaimantOrDefendant.DEFENDANT);
-      const form = new GenericForm(documentslist);
+      const documentsList = await getDocuments(req.params.id,ClaimantOrDefendant.DEFENDANT);
+      const form = new GenericForm(documentsList);
       await renderView(res, claimId,form);
     } catch (error) {
       next(error);
