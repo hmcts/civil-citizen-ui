@@ -287,10 +287,10 @@
           ]
       },
       "defendantUploadDocuments":{
-        "trial": [
-          {"documentType": "CASE_SUMMARY", "selected": true},
-          {"documentType": "DOCUMENTARY", "selected": true}
-        ]
+          "trial": [
+            {"documentType": "CASE_SUMMARY", "selected": true},
+            {"documentType": "DOCUMENTARY", "selected": true}
+          ]
       }
     }
   }
