@@ -1561,6 +1561,7 @@
       "WITNESS_EVIDENCE": "Witness evidence",
       "WITNESS_STATEMENT": "Witness statement",
       "WITNESS_STATEMENT_HINT": "A written statement of what your witness wants to tell the court",
+      "WITNESS_SUMMARY": "Witness summary",
       "WITNESS_SUMMARY_HINT": "If you cannot get a written statement from your witness, you can write a summary of the evidence you would want to include in the witness statement. You must apply to the court to use a witness summary at the hearing. You must do this before the deadline. Use ",
       "WITNESS_SUMMARY_HINT_URL": "form N244 'application notice'"
     },
