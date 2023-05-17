@@ -4534,9 +4534,9 @@ __metadata:
     express: ^4.18.2
     express-nunjucks: ^3.0.0
     express-session: ^1.17.3
-    glob: ^8.0.3
+    glob: ^10.0.0
     govuk-frontend: 4.6.0
-    helmet: ^6.0.1
+    helmet: ^7.0.0
     html-webpack-plugin: ^5.5.0
     html_codesniffer: ^2.5.1
     i18next: ^22.4.6
@@ -7168,6 +7168,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"glob@npm:^10.0.0":
+  version: 10.2.4
+  resolution: "glob@npm:10.2.4"
+  dependencies:
+    foreground-child: ^3.1.0
+    jackspeak: ^2.0.3
+    minimatch: ^9.0.0
+    minipass: ^5.0.0 || ^6.0.0
+    path-scurry: ^1.7.0
+  bin:
+    glob: dist/cjs/src/bin.js
+  checksum: 29845faaa1a8bd2d1f2f26e0c4e5040898c7b4ccfb42e0a558319f6229d124dbc7ccf0ff214402505c5b62c1a39d9d2a1de9c582a74ad415591b96fa53cef466
+  languageName: node
+  linkType: hard
+
 "glob@npm:^10.2.2":
   version: 10.2.2
   resolution: "glob@npm:10.2.2"
@@ -7455,17 +7470,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"helmet@npm:*":
+"helmet@npm:*, helmet@npm:^7.0.0":
   version: 7.0.0
   resolution: "helmet@npm:7.0.0"
   checksum: 3622b8b68b7ac4736369fe7717adb5b87ddcdcda7c11c13277d79fb5670acab032e8c971835565b1d2144d234f3e0dbcd327a44249b9e61f0f64c0c753faf1bc
-  languageName: node
-  linkType: hard
-
-"helmet@npm:^6.0.1":
-  version: 6.2.0
-  resolution: "helmet@npm:6.2.0"
-  checksum: cf01e024244205bd10d70fd2f3874244b72ba37a10a4604e4383bbd63fe1438ee24bae7672c4ee5c5e16e6cd88ac58003274034fab0ba199761471555a322b37
   languageName: node
   linkType: hard
 
@@ -8902,9 +8910,9 @@ __metadata:
   linkType: hard
 
 "jquery@npm:^3.6.3":
-  version: 3.6.4
-  resolution: "jquery@npm:3.6.4"
-  checksum: 8354f7bd0a0424aa714ee1b6b1ef74b410f834eb5c8501682289b358bc151f11677f11188b544f3bb49309d6ec4d15d1a5de175661250c206b06185a252f706f
+  version: 3.7.0
+  resolution: "jquery@npm:3.7.0"
+  checksum: 907785e133afc427650a131af5fccef66a404885037513b3d4d7d63aee6409bcc32a39836868c60e59b05aa0fb8ace8961c18b2ee3ffdf6ffdb571d6d7cd88ff
   languageName: node
   linkType: hard
 
@@ -8969,8 +8977,8 @@ __metadata:
   linkType: hard
 
 "jsdom@npm:^21.1.0":
-  version: 21.1.1
-  resolution: "jsdom@npm:21.1.1"
+  version: 21.1.2
+  resolution: "jsdom@npm:21.1.2"
   dependencies:
     abab: ^2.0.6
     acorn: ^8.8.2
@@ -8985,7 +8993,7 @@ __metadata:
     http-proxy-agent: ^5.0.0
     https-proxy-agent: ^5.0.1
     is-potential-custom-element-name: ^1.0.1
-    nwsapi: ^2.2.2
+    nwsapi: ^2.2.4
     parse5: ^7.1.2
     rrweb-cssom: ^0.6.0
     saxes: ^6.0.0
@@ -9003,7 +9011,7 @@ __metadata:
   peerDependenciesMeta:
     canvas:
       optional: true
-  checksum: ea33c3f3f084b48685e3838baa1112f0cbffc2949b0249f90ee19152b66dbafc6ae7dd8573ee66933697f881e3bc04c0efc2b56cd26f64fd3e6321a64164e2d1
+  checksum: 6b3cf2d15e5a5712b3db5ff56eba82b97c9a879b52e95063cc8323bdf8837b6ca15cfec85b57ab71c95c6b4a4098bf67f274c6ff4e9ff519aa4811a04f290610
   languageName: node
   linkType: hard
 
@@ -9997,6 +10005,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"minipass@npm:^5.0.0 || ^6.0.0":
+  version: 6.0.1
+  resolution: "minipass@npm:6.0.1"
+  checksum: 1df70bb5653251ad7bb0c979e07c18bbc64af1a92472a1d598f4311646da0c192d6ad92850cdfb9f0cd3ada8a9da369dd361c9f2e38a9f64b6a368ae2ac27fac
+  languageName: node
+  linkType: hard
+
 "minizlib@npm:^2.1.1, minizlib@npm:^2.1.2":
   version: 2.1.2
   resolution: "minizlib@npm:2.1.2"
@@ -10533,7 +10548,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nwsapi@npm:^2.2.2":
+"nwsapi@npm:^2.2.4":
   version: 2.2.4
   resolution: "nwsapi@npm:2.2.4"
   checksum: a5eb9467158bdf255d27e9c4555e9ca02e4ba84ddce9b683856ed49de23eb1bb28ae3b8e791b7a93d156ad62b324a56f4d44cad827c2ca288c107ed6bdaff8a8
