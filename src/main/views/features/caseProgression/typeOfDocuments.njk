@@ -142,7 +142,7 @@
                               value: 'report',
                               text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.EXPERTS_REPORT'),
                               hint: {
-                                text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_REFFERED_TO_STATEMENT_HINT')
+                                text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.EXPERTS_REPORT_HINT')
                               },
                               checked: true if form.model.expert[0].selected
                             }
@@ -248,7 +248,8 @@
                  {{ govukButton({
                    text: t('COMMON.BUTTONS.CONTINUE')
                  }) }}
-                 <a class="govuk-link" href={{ latestUploadUrl }}>{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+                 <a href={{ latestUploadUrl }} class="govuk-link" rel="noreferrer noopener" target="_blank">{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+
                  {{ contactUsForHelp(t) }}
                </div>
         </form>
