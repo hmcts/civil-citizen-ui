@@ -16,7 +16,7 @@ import {
 } from 'services/features/caseProgression/caseProgressionService';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {UploadDocuments} from 'models/caseProgression/uploadDocumentsType';
-import {caseNumberPrettify} from "common/utils/stringUtils";
+import {caseNumberPrettify} from 'common/utils/stringUtils';
 
 const typeOfDocumentsViewPath = 'features/caseProgression/typeOfDocuments';
 const typeOfDocumentsController = Router();
