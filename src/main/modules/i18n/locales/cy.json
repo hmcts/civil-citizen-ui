@@ -1538,12 +1538,12 @@
       "DOCUMENTARY_EVIDENCE_TRIAL": "Documentary evidence for trial",
       "DOCUMENTARY_EVIDENCE_TRIAL_HINT": "Documents that you wish to rely on at the trial, including emails, receipts, invoices, contracts and photos. You do not need to add documents that you have already added under witness evidence",
       "DOCUMENTS_FOR_DISCLOSURE": "Documents for disclosure",
-      "DOCUMENTS_FOR_DISCLOSURE_HINT": "Recorded information that you must show the other parties-for example,contracts,invoices,receipts,emails,text messages,photos,social media messages",
+      "DOCUMENTS_FOR_DISCLOSURE_HINT": "Recorded information that you must show the other parties - for example, contracts, invoices, receipts, emails, text messages, photos, social media messages",
       "DOCUMENTS_REFERRED_TO_STATEMENT": "Documents referred to in the statement",
       "DOCUMENTS_REFERRED_TO_STATEMENT_HINT": "Documents you or your witness refer to in the statement, including emails, receipts, invoices, contracts and photos",
       "EXPERT_EVIDENCE": "Expert evidence",
       "EXPERTS_REPORT": "Expert's report",
-      "EXPERTS_REPORT_HINT": "A written report by your expert. Expert evidence is an opinion based on the expertise of a specialist, for example - a building surveyor who can comment on the quality of building work.An expert is not a legal representative",
+      "EXPERTS_REPORT_HINT": "A written report by your expert. Expert evidence is an opinion based on the expertise of a specialist, for example - a building surveyor who can comment on the quality of building work. An expert is not a legal representative",
       "HEARING_DOCUMENTS": "Hearing documents",
       "JOINT_STATEMENT_OF_EXPERTS": "Joint statement of experts",
       "JOINT_STATEMENT_OF_EXPERTS_HINT": "A statement by the experts for the both parties, setting out the facts in the case that they agree on or disagree on. This only applies if you and the other party set up a meeting for your experts. The experts write this statement after their discussion",
@@ -1563,7 +1563,9 @@
       "WITNESS_STATEMENT_HINT": "A written statement of what your witness wants to tell the court",
       "WITNESS_SUMMARY": "Witness summary",
       "WITNESS_SUMMARY_HINT": "If you cannot get a written statement from your witness, you can write a summary of the evidence you would want to include in the witness statement. You must apply to the court to use a witness summary at the hearing. You must do this before the deadline. Use ",
-      "WITNESS_SUMMARY_HINT_URL": "form N244 'application notice'"
+      "WITNESS_SUMMARY_HINT_URL": "form N244 'application notice'",
+      "YOUR_STATEMENT": "Your statement",
+      "YOUR_STATEMENT_HINT": "A written statement of what you want to tell the court"
     },
     "MEDIATION_CAN_WE_USE": {
       "CAN_MEDIATION_USE": "A all y gwasanaeth cyfryngu ddefnyddio’r rhif {{ respondentTelNumber }} i’ch ffonio?",

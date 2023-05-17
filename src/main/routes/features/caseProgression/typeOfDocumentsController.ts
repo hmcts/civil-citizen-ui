@@ -16,6 +16,8 @@ import {
 } from 'services/features/caseProgression/caseProgressionService';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {UploadDocuments} from 'models/caseProgression/uploadDocumentsType';
+import {caseNumberPrettify} from 'common/utils/stringUtils';
+
 const typeOfDocumentsViewPath = 'features/caseProgression/typeOfDocuments';
 const typeOfDocumentsController = Router();
 const dqPropertyName = 'defendantUploadDocuments';
@@ -27,6 +29,7 @@ async function renderView(res: Response, claimId: string, form: GenericForm<Uplo
   const defendantFullName = claim.getDefendantFullName();
   const isFastTrack = claim.isFastTrackClaim;
   const isSmallClaims = claim.isSmallClaimsTrackDQ;
+  claimId = caseNumberPrettify(claimId);
 
   res.render(typeOfDocumentsViewPath, {form,
     claimId,claimantFullName,defendantFullName, latestUploadUrl, isFastTrack, isSmallClaims,
@@ -37,7 +40,7 @@ typeOfDocumentsController.get(TYPES_OF_DOCUMENTS_URL,
   (async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
       const claimId = req.params.id;
-      const documentsList = await getDocuments(req.params.id,ClaimantOrDefendant.DEFENDANT);
+      const documentsList = await getDocuments(claimId,ClaimantOrDefendant.DEFENDANT);
       const form = new GenericForm(documentsList);
       await renderView(res, claimId,form);
     } catch (error) {

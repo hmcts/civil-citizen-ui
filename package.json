@@ -15,7 +15,7 @@
     "lint:win": "yarn lint -c win.eslint.json",
     "build": "yarn webpack --config webpack.config.js",
     "build:prod": "NODE_ENV=production yarn webpack --mode production --config webpack.config.js",
-    "test": "echo -c jest.config.js",
+    "test": "jest -c jest.config.js",
     "test:coverage": "jest --coverage --silent",
     "test:routes": "jest -c jest.routes.config.js --silent",
     "test:a11y": "echo 'a11y tests are ran through GitHub actions as a mandatory step in order to save time on the main pipeline and unable to mock at the moment.'",

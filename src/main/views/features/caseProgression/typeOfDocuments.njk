@@ -21,7 +21,7 @@
          <form method="post" novalidate>
           {{ csrfProtection(csrf) }}
           <h1 class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.TITLE') }}</h1>
-          <p class="govuk-body-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CASE_REFERENCE_NUMBER') }}{{claimId}}</p>
+          <p class="govuk-body-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CASE_REFERENCE_NUMBER') }} {{claimId}}</p>
           <p class="govuk-body-l">{{claimantFullName}} v {{defendantFullName}}</p>
           <p class="govuk-body">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.SELECT_THE_TYPE_OF_DOCUMENT') }}</p>
                   <div class='multiple-row'>
@@ -314,7 +314,7 @@
                               value: 'report',
                               text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.EXPERTS_REPORT'),
                               hint: {
-                                text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_REFERRED_TO_STATEMENT_HINT')
+                                text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.EXPERTS_REPORT_HINT')
                               },
                               checked: true if form.model.expert[0].selected
                             }
@@ -364,29 +364,18 @@
                             }
                             ]
                             }) }}
-<<<<<<< HEAD
                             {% endif %}
-                    </div>
-                 <div class="govuk-form-group">
-                   {{ govukButton({
-                     text: "Continue"
-                   }) }}
-                   <a class="govuk-link" href="#">Cancel</a>
-                   {{ contactUsForHelp(t) }}
-                 </div>
-          </form>
-        </div>
-=======
                   </div>
                <div class="govuk-form-group">
                  {{ govukButton({
                    text: t('COMMON.BUTTONS.CONTINUE')
                  }) }}
-                 <a class="govuk-link" href={{ latestUploadUrl }}>{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+                 <a href={{ latestUploadUrl }} class="govuk-link" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+
                  {{ contactUsForHelp(t) }}
                </div>
         </form>
->>>>>>> 583e46421c7ef54adee0700eb739e6dbeea150fa
+        </div>
       </div>
     </main>
   </div>
