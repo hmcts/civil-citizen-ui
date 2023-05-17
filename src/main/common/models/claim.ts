@@ -92,7 +92,7 @@ export class Claim {
   respondent1ResponseDate?: Date;
   claimBilingualLanguagePreference: ClaimBilingualLanguagePreference;
   id: string;
-  sdoOrderDocument?: CaseDocument;
+  sdoOrderDocument?: SystemGeneratedCaseDocuments;
   respondent1LiPResponse?: CCDRespondentLiPResponse;
   caseProgressionHearing?: CaseProgressionHearing;
 
