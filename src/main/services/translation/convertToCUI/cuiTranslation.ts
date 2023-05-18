@@ -11,7 +11,7 @@ import {toCUIDQs} from 'services/translation/convertToCUI/convertToCUIDQs';
 import {toCUIFullAdmission} from 'services/translation/convertToCUI/convertToCUIFullAdmission';
 import {toCUIPartialAdmission} from './convertToCUIPartialAdmission';
 import {toCUICaseProgressionHearing} from 'services/translation/convertToCUI/convertToCaseProgressionHearing';
-import {DocumentType} from "models/document/documentType";
+import {DocumentType} from 'models/document/documentType';
 
 export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -25,7 +25,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   claim.claimBilingualLanguagePreference = toCUIClaimBilingualLangPreference(ccdClaim?.respondent1LiPResponse?.respondent1ResponseLanguage);
   claim.rejectAllOfClaim = toCUIRejectAllOfClaim(ccdClaim);
   claim.directionQuestionnaire = toCUIDQs(ccdClaim);
-  claim.sdoOrderDocument = ccdClaim.systemGeneratedCaseDocuments.find((documents) => documents.value.documentType === DocumentType.SDO_ORDER);
+  claim.sdoOrderDocument = ccdClaim?.systemGeneratedCaseDocuments?.find((documents) => documents.value.documentType === DocumentType.SDO_ORDER);
   claim.caseProgressionHearing = toCUICaseProgressionHearing(ccdClaim);
   if (claim.isFullAdmission())
     claim.fullAdmission = toCUIFullAdmission(ccdClaim);
