@@ -35,7 +35,9 @@ export interface ClaimSummaryItem {
  */
 export enum ClaimSummaryType {
   PARAGRAPH = 'p',
+  LEAD_PARAGRAPH = 'leadParagraph',
   BUTTON = 'button',
+  MAINTITLE = 'mainTitle',
   TITLE = 'title',
   SUBTITLE = 'subtitle',
   LINK = 'link',
