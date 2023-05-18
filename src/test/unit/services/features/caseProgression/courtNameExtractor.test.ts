@@ -3,11 +3,11 @@ import {CourtNameExtractor} from 'services/features/caseProgression/courtNameExt
 describe('CourtNameExtractor Service', () => {
   it('should extract the CourtName correctly', async () => {
     //Given
-    const countName = 'test - test';
-    const countNameExpected = 'test';
+    const courtName = 'test - test';
+    const courtNameExpected = 'test';
     //When
-    const courtNameResult = CourtNameExtractor.extractCourtName(countName);
+    const courtNameResult = CourtNameExtractor.extractCourtName(courtName);
     //Then
-    expect(countNameExpected).toEqual(courtNameResult);
+    expect(courtNameExpected).toEqual(courtNameResult);
   });
 });
