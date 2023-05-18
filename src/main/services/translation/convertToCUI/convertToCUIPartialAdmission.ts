@@ -21,7 +21,7 @@ export function toCUIPartialAdmission(ccdClaim: CCDClaim): PartialAdmission {
   partialAdmission.howMuchHaveYouPaid = toCUIHowMuchHaveYouPaid(ccdClaim?.respondToAdmittedClaim);
   partialAdmission.whyDoYouDisagree = new WhyDoYouDisagree(ccdClaim?.detailsOfWhyDoesYouDisputeTheClaim);
   partialAdmission.timeline = toCUIResponseTimelineOfEvents(ccdClaim?.specResponseTimelineOfEvents, ccdClaim?.respondent1LiPResponse?.timelineComment);
-  partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(Number(ccdClaim?.respondToAdmittedClaimOwingAmount));
+  partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(Number(ccdClaim?.respondToAdmittedClaimOwingAmountPounds));
   partialAdmission.paymentIntention = toCUIPaymentIntention(ccdClaim);
   return partialAdmission;
 }
