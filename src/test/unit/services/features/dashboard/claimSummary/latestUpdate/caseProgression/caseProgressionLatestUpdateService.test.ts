@@ -16,17 +16,6 @@ describe('Case Progression Latest Update Content service', () => {
     state: CaseState.AWAITING_APPLICANT_INTENTION,
     case_data: {
       ...claim.case_data,
-      sdoOrderDocument: {
-        value: {
-          createdBy: 'test',
-          documentLink: 'test',
-          documentName: 'test',
-          documentSize: 'test',
-          documentType: 'test',
-          createdDatetime: 'test',
-        },
-        classification: 'test',
-      },
     },
   };
 

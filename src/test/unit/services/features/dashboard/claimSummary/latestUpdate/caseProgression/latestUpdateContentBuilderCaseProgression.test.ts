@@ -28,14 +28,6 @@ describe('Latest Update Content Builder Case Progression', () => {
   describe('test buildEvidenceUploadSection', () => {
     it('should have evidence upload content with bundle deadline', () => {
       // Given
-      claim.sdoOrderDocument = {
-        createdBy: '',
-        createdDatetime: undefined,
-        documentLink: undefined,
-        documentName: '',
-        documentSize: 0,
-        documentType: undefined,
-      };
       claim.caseProgressionHearing.hearingDate = new Date();
       // when
       const evidenceUploadSection = buildEvidenceUploadSection(claim);
@@ -55,14 +47,6 @@ describe('Latest Update Content Builder Case Progression', () => {
 
     it('should have evidence upload content without bundle deadline', () => {
       // Given
-      claim.sdoOrderDocument = {
-        createdBy: '',
-        createdDatetime: undefined,
-        documentLink: undefined,
-        documentName: '',
-        documentSize: 0,
-        documentType: undefined,
-      };
       claim.caseProgressionHearing.hearingDate = null;
       // when
       const evidenceUploadSection = buildEvidenceUploadSection(claim);
