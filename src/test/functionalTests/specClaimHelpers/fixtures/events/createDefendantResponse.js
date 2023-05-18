@@ -11,7 +11,7 @@ module.exports = {
           totalClaimAmount: 2233,
           respondent1: {
             companyName: 'Hendricks Alvarez Co',
-            partyEmail: 'kywijyj@mailinator.com',
+            partyEmail: 'cuisuser@gmail.com',
             partyPhone: '07123456789',
             primaryAddress: {
               AddressLine1: '62 Rocky Cowley Freeway',
