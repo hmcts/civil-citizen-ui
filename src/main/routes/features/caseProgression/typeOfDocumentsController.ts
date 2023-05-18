@@ -53,6 +53,7 @@ typeOfDocumentsController.post(TYPES_OF_DOCUMENTS_URL, (async (req, res, next) =
     const claimId = req.params.id;
     const typeDocumentList= getTypeDocumentForm(req);
     const form = new GenericForm(typeDocumentList);
+
     form.validateSync();
     if (form.hasErrors()) {
       await renderView(res, claimId,form);
