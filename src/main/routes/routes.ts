@@ -196,6 +196,7 @@ import claimantSuggestedPaymentOptionController from './features/claimantRespons
 import claimantSuggestedPaymentDateController from './features/claimantResponse/claimantSuggestedPaymentDateController';
 import claimantSuggestedInstalmentsController from './features/claimantResponse/claimantSuggestedInstalmentsController';
 import uploadDocumentsController from './features/caseProgression/uploadDocumentsController';
+import uploadYourDocumentsController from 'routes/features/caseProgression/uploadYourDocumentsController';
 import documentsUploadedController from 'routes/features/caseProgression/documentsUploadedController';
 
 export default [
@@ -381,5 +382,6 @@ export default [
   claimantSuggestedPaymentDateController,
   claimantSuggestedInstalmentsController,
   uploadDocumentsController,
+  uploadYourDocumentsController,
   documentsUploadedController,
 ];

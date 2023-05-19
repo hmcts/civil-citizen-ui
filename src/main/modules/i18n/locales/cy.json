@@ -2298,6 +2298,24 @@
       "TITLE": "Pam ydych chi’n anghytuno â’r hawliad?",
       "REASON": "Eu rhesymau dros wneud yr hawliad",
       "CLAIMANT": "Anfonir eich ymateb at {{ claimantFullName }}."
+    },
+    "UPLOAD_YOUR_DOCUMENTS": {
+      "PAGE_TITLE": "Upload your documents",
+      "TITLE": "Upload your documents",
+      "CASE_REFERENCE": "Case reference: {{ caseId }}",
+      "PARTIES": "{{ claimantName }} v {{ defendantName }}",
+      "CHECK_THE_ORDER": "Check the order the court sent you for what documents you need to upload for your case.",
+      "YOU_CANNOT_WITHDRAW": "You cannot withdraw a document once you have submitted it. If you want to add more information to something you have already submitted, you can upload the document again. You should add a version number to the name, for example 'version2'.",
+      "THE_OTHER_PARTIES": "The other parties will be able to see the documents you have uploaded, and you will be able to see their documents.",
+      "DEADLINES_FOR_UPLOADING": "Deadlines for uploading documents",
+      "CHECK_THE_ORDER_DEADLINES": "Check the order the court sent you for the deadlines for uploading your documents.",
+      "AFTER_THE_DEADLINE": "After the deadline, you will have to ",
+      "APPLY_TO_THE_COURT": "apply to the court",
+      "IF_YOU_WANT_ANY": " if you want any new document to be used at the trial or hearing.",
+      "YOU_DO_NOT_HAVE": "You do not have to upload all your documents at once. You can return to upload them later.",
+      "BEFORE_YOU_UPLOAD_YOUR": "Before you upload your documents",
+      "BEFORE_YOU_UPLOAD_THE": "Before you upload the document, give it a name that tells the court what it is, for example 'Witness statement by Jane Smith'.",
+      "START_NOW": "Start now"
     }
   },
   "ERRORS": {
