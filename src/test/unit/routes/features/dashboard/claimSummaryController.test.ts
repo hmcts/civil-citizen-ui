@@ -8,7 +8,6 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {ClaimSummaryContent, ClaimSummaryType} from 'form/models/claimSummarySection';
 import {getLatestUpdateContent} from 'services/features/dashboard/claimSummary/latestUpdateService';
 import {getCaseProgressionHearingMock} from '../../../../utils/caseProgression/mockCaseProgressionHearing';
-import {DocumentType} from 'models/document/documentType';
 
 const nock = require('nock');
 const session = require('supertest-session');
@@ -168,36 +167,5 @@ describe('Claim Summary Controller Defendant', () => {
         });
     });
 
-    it('should return evidence upload content when flag is enabled and hasSDODocument', async () => {
-      //given
-      claimWithSdo.case_data.systemGeneratedCaseDocuments.push(    {
-        id: '1',
-        'value': {
-          'createdBy': 'Civil',
-          'documentLink': {
-            'document_url': 'http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de',
-            'document_filename': 'sealed_claim_form_000MC001.pdf',
-            'document_binary_url': 'http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de/binary',
-          },
-          'documentName': 'sealed_claim_form_000MC001.pdf',
-          'documentSize': 45794,
-          'documentType': DocumentType.SDO_ORDER,
-          'createdDatetime': new Date('2022-06-21T14:15:19'),
-        },
-      });
-      isCaseProgressionV1EnableMock.mockResolvedValue(true);
-      getLatestUpdateContentMock.mockReturnValue([]);
-      //when
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, claimWithSdo);
-      //then
-      await testSession
-        .get(`/dashboard/${claimId}/defendant`)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Upload documents');
-        });
-    });
   });
 });

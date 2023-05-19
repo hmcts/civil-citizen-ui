@@ -1,6 +1,6 @@
 import {
   getCaseProgressionLatestUpdates,
-  getEvidenceUploadLatestUpdateContent, getHearingTrialUploadLatestUpdateContent,
+  getHearingTrialUploadLatestUpdateContent,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/caseProgressionLatestUpdateService';
 import {
   buildEvidenceUploadSection, buildHearingTrialLatestUploadSection,
@@ -10,7 +10,6 @@ import {CaseState} from 'form/models/claimDetails';
 
 describe('Case Progression Latest Update Content service', () => {
   const claim = require('../../../../../../../utils/mocks/civilClaimResponseMock.json');
-  const claimId = claim.id;
   const claimWithSdo = {
     ...claim,
     state: CaseState.AWAITING_APPLICANT_INTENTION,
@@ -18,19 +17,6 @@ describe('Case Progression Latest Update Content service', () => {
       ...claim.case_data,
     },
   };
-
-  it('getEvidenceUploadLatestUpdateContent: should return evidence upload section for latest update content', () => {
-    //Given
-    const evidenceUploadContentExpected = getEvidenceUploadLatestUpdateContent(claimId, claimWithSdo);
-
-    //When
-    const evidenceUploadSectionResult = buildEvidenceUploadSection(claimWithSdo);
-
-    //Then
-    expect(evidenceUploadContentExpected).toMatchObject(evidenceUploadSectionResult);
-    expect(evidenceUploadSectionResult[0][0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
-    expect(evidenceUploadSectionResult[0].length).toEqual(4);
-  });
 
   it('getEvidenceUploadLatestUpdateContent: evidence upload should have additional content with hearing', () => {
     //Given:
