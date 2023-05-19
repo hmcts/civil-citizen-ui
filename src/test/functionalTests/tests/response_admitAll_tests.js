@@ -15,7 +15,8 @@ Feature('Response with AdmitAll');
 
 Before(async ({api}) => {
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
-  await api.performCitizenResponse(config.defendantCitizenUser, claimRef);
+  /*await api.performCitizenResponse(config.defendantCitizenUser, claimRef);
+  await api.performViewAndRespondToDefence(config.applicantSolicitorUser, claimRef);*/
   console.log('claimRef has been created Successfully    <===>  '  , claimRef);
   if (claimRef) {
     LoginSteps.EnterUserCredentials(config.Username, config.Password);

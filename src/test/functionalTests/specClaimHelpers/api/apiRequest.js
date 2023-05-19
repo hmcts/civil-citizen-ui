@@ -7,6 +7,8 @@ const totp = require('totp-generator');
 const tokens = {};
 const getCcdDataStoreBaseUrl = () => `${config.url.ccdDataStore}/caseworkers/${tokens.userId}/jurisdictions/${config.definition.jurisdiction}/case-types/${config.definition.caseType}`;
 const getCcdCaseUrl = (userId, caseId) => `${config.url.ccdDataStore}/aggregated/caseworkers/${userId}/jurisdictions/${config.definition.jurisdiction}/case-types/${config.definition.caseType}/cases/${caseId}`;
+const getManageCaseURLForEventInitiate = (caseId, event) => `${config.url.manageCase}/data/internal/cases/${caseId}/event-triggers/${event}?ignore-warning=false`
+
 const getRequestHeaders = (userAuth) => {
   return {
     'Content-Type': 'application/json',
@@ -21,7 +23,6 @@ module.exports = {
     console.log("The value of the user : " + user.email);
     tokens.userAuth = await idamHelper.accessToken(user);
     tokens.userId = await idamHelper.userId(tokens.userAuth);
-    console.log('The value of the userId from the startEventForCitizen() :'+ tokens.userId);
     tokens.s2sAuth = await restHelper.retriedRequest(
       `${config.url.authProviderApi}/lease`,
       {'Content-Type': 'application/json'},
@@ -51,6 +52,7 @@ module.exports = {
     let response = await restHelper.retriedRequest(url, getRequestHeaders(tokens.userAuth), null, 'GET')
       .then(response => response.json());
     tokens.ccdEvent = response.token;
+    console.log('The value of the Event Token '+ tokens.ccdEvent);
     return response.case_details.case_data || {};
   },
 
