@@ -96,7 +96,7 @@ civil-service:
       DOCUMENT_MANAGEMENT_SECURED: true
       STITCHING_API_ENABLED: false
       SERVICE_REQUEST_UPDATE: https://${SERVICE_NAME}.preview.platform.hmcts.net/service-request-update
-      SERVICE_REQUEST_UPDATE_CLAIM_ISSUED: https://${SERVICE_NAME.preview.platform.hmcts.net/service-request-update-claim-issued
+      SERVICE_REQUEST_UPDATE_CLAIM_ISSUED: https://${SERVICE_NAME}.preview.platform.hmcts.net/service-request-update-claim-issued
     postgresql:
       enabled: true
       releaseNameOverride: ${SERVICE_NAME}-postgresql
