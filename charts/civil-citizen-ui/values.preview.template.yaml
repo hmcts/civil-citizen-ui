@@ -28,7 +28,7 @@ civil-service:
     releaseNameOverride: ${SERVICE_NAME}-civil-service
     image: 'hmctspublic.azurecr.io/civil/service:latest'
     imagePullPolicy: Always
-    ingressHost: ${SERVICE_NAME}.civil-service.preview.platform.hmcts.net
+    ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
     keyVaults:
       civil:
         resourceGroup: civil
@@ -95,8 +95,8 @@ civil-service:
       POLLING_EVENT_EMITTER_ENABLED: false
       DOCUMENT_MANAGEMENT_SECURED: true
       STITCHING_API_ENABLED: false
-      SERVICE_REQUEST_UPDATE: https://${SERVICE_NAME}.civil-service.preview.platform.hmcts.net/service-request-update
-      SERVICE_REQUEST_UPDATE_CLAIM_ISSUED: https://${SERVICE_NAME}.civil-service.preview.platform.hmcts.net/service-request-update-claim-issued
+      SERVICE_REQUEST_UPDATE: https://${SERVICE_NAME}-civil-service.preview.platform.hmcts.net/service-request-update
+      SERVICE_REQUEST_UPDATE_CLAIM_ISSUED: https://${SERVICE_NAME}-civil-service.preview.platform.hmcts.net/service-request-update-claim-issued
     postgresql:
       enabled: true
       releaseNameOverride: ${SERVICE_NAME}-postgresql
