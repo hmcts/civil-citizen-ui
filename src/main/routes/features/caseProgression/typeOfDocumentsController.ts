@@ -1,8 +1,8 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
+  CP_UPLOAD_DOCUMENTS_URL,
   DEFENDANT_SUMMARY_URL,
   TYPES_OF_DOCUMENTS_URL,
-  UPLOAD_YOUR_DOCUMENTS_URL,
 } from '../../urls';
 import {AppRequest} from 'common/models/AppRequest';
 
@@ -56,7 +56,7 @@ typeOfDocumentsController.post(TYPES_OF_DOCUMENTS_URL, (async (req, res, next) =
       await renderView(res, claimId,form);
     } else {
       await saveCaseProgression(claimId, form.model, dqPropertyName);
-      res.redirect(constructResponseUrlWithIdParams(claimId, UPLOAD_YOUR_DOCUMENTS_URL));
+      res.redirect(constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL));
     }
   } catch (error) {
     next(error);
