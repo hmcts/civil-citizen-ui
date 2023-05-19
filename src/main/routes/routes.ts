@@ -195,6 +195,7 @@ import unavailableDatesForHearingController from './features/directionsQuestionn
 import claimantSuggestedPaymentOptionController from './features/claimantResponse/claimantSuggestedPaymentOptionController';
 import claimantSuggestedPaymentDateController from './features/claimantResponse/claimantSuggestedPaymentDateController';
 import claimantSuggestedInstalmentsController from './features/claimantResponse/claimantSuggestedInstalmentsController';
+import typeOfDocumentsController from './features/caseProgression/typeOfDocumentsController';
 import uploadDocumentsController from './features/caseProgression/uploadDocumentsController';
 import uploadYourDocumentsController from 'routes/features/caseProgression/uploadYourDocumentsController';
 import documentsUploadedController from 'routes/features/caseProgression/documentsUploadedController';
@@ -381,6 +382,7 @@ export default [
   claimantSuggestedPaymentOptionController,
   claimantSuggestedPaymentDateController,
   claimantSuggestedInstalmentsController,
+  typeOfDocumentsController,
   uploadDocumentsController,
   uploadYourDocumentsController,
   documentsUploadedController,
