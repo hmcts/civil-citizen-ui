@@ -198,6 +198,7 @@ import claimantSuggestedInstalmentsController from './features/claimantResponse/
 import typeOfDocumentsController from './features/caseProgression/typeOfDocumentsController';
 import uploadDocumentsController from './features/caseProgression/uploadDocumentsController';
 import uploadYourDocumentsController from 'routes/features/caseProgression/uploadYourDocumentsController';
+import documentsUploadedController from 'routes/features/caseProgression/documentsUploadedController';
 
 export default [
   homeController,
@@ -384,4 +385,5 @@ export default [
   typeOfDocumentsController,
   uploadDocumentsController,
   uploadYourDocumentsController,
+  documentsUploadedController,
 ];
