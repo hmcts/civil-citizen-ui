@@ -2383,7 +2383,7 @@
     },
     "EXPENSES_AMOUNT_FORMAT": {
       "COUNCIL_TAX": "Nodwch swm treth gyngor dilys, uchafswm o ddau le degol",
-      "COUNCIL_TAX_OR_COMMUNITY_CHARGE": "Enter a valid Council Tax or Community Charge amount, maximum two decimal places",
+      "COUNCIL_TAX_OR_COMMUNITY_CHARGE": "Rhowch swm dilys o Dreth Gyngor neu Dreth Gymunedol, uchafswm dau le degol",
       "ELECTRICITY": "Nodwch swm trydan dilys, uchafswm o ddau le degol",
       "ELECTRICITY_DEBT": "Rhowch swm Trydan dilys, uchafswm dau le degol",
       "FOOD_HOUSEKEEPING": "Nodwch swm cadw tŷ dilys, uchafswm o ddau le degol",
