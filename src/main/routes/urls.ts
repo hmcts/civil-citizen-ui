@@ -221,3 +221,5 @@ export const CCJ_PAID_AMOUNT_SUMMARY_URL = `${BASE_CCJ_URL}/paid-amount-summary`
 export const CCJ_DEFENDANT_PAYMENT_DATE_URL = `${BASE_CCJ_URL}/pay-by-set-date`;
 export const CP_UPLOAD_DOCUMENTS_URL = `${BASE_CASE_PROGRESSION_URL}/upload-documents`;
 export const UPLOAD_YOUR_DOCUMENTS_URL = `${BASE_CASE_PROGRESSION_URL}/upload-your-documents`;
+export const CP_CHECK_ANSWERS_URL = `${BASE_CASE_PROGRESSION_URL}/check-and-send`;
+export const CP_EVIDENCE_UPLOAD_SUBMISSION_URL = `${BASE_CASE_PROGRESSION_URL}/documents-uploaded`;
