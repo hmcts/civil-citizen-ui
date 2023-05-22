@@ -8,12 +8,7 @@ import {
   buildExpertEvidenceSection,
 } from 'services/features/caseProgression/checkYourAnswers/buildExpertEvidenceSection';
 import {buildDisclosureSection} from 'services/features/caseProgression/checkYourAnswers/buildDisclosureSection';
-import {
-  buildTrialDocumentsSection,
-} from 'services/features/caseProgression/checkYourAnswers/buildTrialDocumentsSection';
-
-// const {Logger} = require('@hmcts/nodejs-logging');
-// const logger = Logger.getLogger('claimantResponseService');
+import {buildTrialDocumentsSection} from 'services/features/caseProgression/checkYourAnswers/buildTrialDocumentsSection';
 
 const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): documentUploadSections => {
 
@@ -21,7 +16,6 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
     witnessEvidenceSection: buildWitnessEvidenceSection(claim, claimId, lang),
     disclosureSection: buildDisclosureSection(claim, claimId, lang),
     expertEvidenceSection: buildExpertEvidenceSection(claim, claimId, lang),
-    hearingDocuments: null,
     trialDocuments: buildTrialDocumentsSection(claim, claimId, lang),
   };
 };
@@ -34,20 +28,20 @@ export const getSummarySections = (claimId: string, claim: Claim, lang?: string 
 //   try {
 //     const userId: string = req.session.user.id;
 //     const claim: any = await getCaseDataFromStore(req.session.user.id);
-
-//TODO: There will need to be an addition to check for
-
-// if(findUserRole(userId) === 'applicant') {
 //
-// } else if (findUserRole(userId) === 'claimant') {
+//     //TODO: There will need to be an addition to check for
 //
-// }
-
-//TODO: documents will need a location on the claim first, then it will be possible to save.
-
-//   await saveDraftClaim(claimId, claim);
-// } catch (error) {
-//   logger.error(error);
-//   throw error;
-// }
+//     // if(findUserRole(userId) === 'applicant') {
+//     //
+//     // } else if (findUserRole(userId) === 'claimant') {
+//     //
+//     // }
+//
+//     //TODO: documents will need a location on the claim first, then it will be possible to save.
+//
+//     await saveDraftClaim(claimId, claim);
+//   } catch (error) {
+//     logger.error(error);
+//     throw error;
+//   }
 // };

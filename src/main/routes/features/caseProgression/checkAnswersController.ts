@@ -43,13 +43,14 @@ documentUploadCheckAnswerController.post(CP_CHECK_ANSWERS_URL, (async (req: Requ
     if (form.hasErrors()) {
       renderView(res, form, claim, userId, lang);
     } else {
-      // await saveDocuments(<AppRequest>req);
+      //await saveDocuments(<AppRequest>req);
       await deleteDraftClaimFromStore(userId);
       res.redirect(constructResponseUrlWithIdParams(claim.id, CP_EVIDENCE_UPLOAD_SUBMISSION_URL));
     }
   } catch (error) {
     next(error);
   }
+
 })as RequestHandler);
 
 export default documentUploadCheckAnswerController;

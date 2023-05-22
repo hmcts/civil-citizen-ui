@@ -5,5 +5,4 @@ export interface documentUploadSections {
   disclosureSection: SummarySections,
   expertEvidenceSection: SummarySections,
   trialDocuments: SummarySections,
-  hearingDocuments: SummarySections
 }
