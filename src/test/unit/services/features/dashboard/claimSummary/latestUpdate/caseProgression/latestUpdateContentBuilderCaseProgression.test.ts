@@ -28,14 +28,6 @@ describe('Latest Update Content Builder Case Progression', () => {
   describe('test buildEvidenceUploadSection', () => {
     it('should have evidence upload content with bundle deadline', () => {
       // Given
-      claim.sdoOrderDocument = {
-        createdBy: '',
-        createdDatetime: undefined,
-        documentLink: undefined,
-        documentName: '',
-        documentSize: 0,
-        documentType: undefined,
-      };
       claim.caseProgressionHearing.hearingDate = new Date();
       // when
       const evidenceUploadSection = buildEvidenceUploadSection(claim);
@@ -53,30 +45,8 @@ describe('Latest Update Content Builder Case Progression', () => {
       expect(evidenceUploadSection[0][5].data?.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
     });
 
-    it('should have evidence upload content without bundle deadline', () => {
-      // Given
-      claim.sdoOrderDocument = {
-        createdBy: '',
-        createdDatetime: undefined,
-        documentLink: undefined,
-        documentName: '',
-        documentSize: 0,
-        documentType: undefined,
-      };
-      claim.caseProgressionHearing.hearingDate = null;
-      // when
-      const evidenceUploadSection = buildEvidenceUploadSection(claim);
-      // Then
-      expect(evidenceUploadSection[0].length).toBe(4);
-      expect(evidenceUploadSection[0][0].type).toEqual(ClaimSummaryType.TITLE);
-      expect(evidenceUploadSection[0][0].data?.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
-      expect(evidenceUploadSection[0][1].type).toEqual(ClaimSummaryType.PARAGRAPH);
-      expect(evidenceUploadSection[0][2].type).toEqual(ClaimSummaryType.LINK);
-      expect(evidenceUploadSection[0][2].data?.href).toEqual(sdoUrl);
-      expect(evidenceUploadSection[0][3].type).toEqual(ClaimSummaryType.BUTTON);
-      expect(evidenceUploadSection[0][3].data?.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
-    });
   });
+
   describe('test buildHearingTrialLatestUploadSection', () => {
     const TRIAL_HEARING_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.TRIAL_HEARING_CONTENT';
     claim.caseProgressionHearing = getCaseProgressionHearingMock();

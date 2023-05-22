@@ -7,8 +7,6 @@ import {ClaimSummarySection} from 'form/models/claimSummarySection';
 export const getEvidenceUpload = (claim: Claim) : ClaimSummarySection[] => {
   if (claim?.caseProgressionHearing?.hearingDate){
     return getEvidenceUploadSectionWithBundleDeadline(claim.id, claim.bundleStitchingDeadline);
-  } else {
-    return getEvidenceUploadSection(claim.id);
   }
 };
 
@@ -23,11 +21,3 @@ const getEvidenceUploadSectionWithBundleDeadline = (claimId: string, deadline: s
     .build();
 };
 
-const getEvidenceUploadSection = (claimId: string) : ClaimSummarySection[] => {
-  return new LatestUpdateSectionBuilder()
-    .addTitle('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE')
-    .addParagraph('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.YOU_CAN_UPLOAD_AND_SUBMIT_DOCUMENTS')
-    .addLink('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.SDO', CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentType', DocumentUri.SDO_ORDER), 'PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.FOLLOW_INSTRUCTIONS_IN', 'PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.FOUND_UNDER_NOTICES_AND_ORDERS')
-    .addButton('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE', UPLOAD_YOUR_DOCUMENTS_URL.replace(':id', claimId))
-    .build();
-};
