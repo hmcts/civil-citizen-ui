@@ -4,7 +4,7 @@ const ResponseSteps  =  require('../features/response/steps/lipDefendantResponse
 const LoginSteps =  require('../features/home/steps/login');
 
 const admitAll = 'full-admission';
-const immediatePayment = 'immediate';
+//const immediatePayment = 'immediate';
 const bySetDate = 'bySetDate';
 const repaymentPlan = 'repaymentPlan';
 const dontWantMoreTime = 'dontWantMoreTime';
@@ -15,8 +15,8 @@ Feature('Response with AdmitAll');
 
 Before(async ({api}) => {
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
-  /*await api.performCitizenResponse(config.defendantCitizenUser, claimRef);
-  await api.performViewAndRespondToDefence(config.applicantSolicitorUser, claimRef);*/
+  //await api.performCitizenResponse(config.defendantCitizenUser, claimRef);
+  //await api.performViewAndRespondToDefence(config.applicantSolicitorUser, claimRef);
   console.log('claimRef has been created Successfully    <===>  '  , claimRef);
   if (claimRef) {
     LoginSteps.EnterUserCredentials(config.Username, config.Password);

@@ -7,7 +7,7 @@ const totp = require('totp-generator');
 const tokens = {};
 const getCcdDataStoreBaseUrl = () => `${config.url.ccdDataStore}/caseworkers/${tokens.userId}/jurisdictions/${config.definition.jurisdiction}/case-types/${config.definition.caseType}`;
 const getCcdCaseUrl = (userId, caseId) => `${config.url.ccdDataStore}/aggregated/caseworkers/${userId}/jurisdictions/${config.definition.jurisdiction}/case-types/${config.definition.caseType}/cases/${caseId}`;
-const getManageCaseURLForEventInitiate = (caseId, event) => `${config.url.manageCase}/data/internal/cases/${caseId}/event-triggers/${event}?ignore-warning=false`
+//const getManageCaseURLForEventInitiate = (caseId, event) => `${config.url.manageCase}/data/internal/cases/${caseId}/event-triggers/${event}?ignore-warning=false`
 
 const getRequestHeaders = (userAuth) => {
   return {
@@ -20,7 +20,7 @@ const getCivilServiceUrl = () => `${config.url.civilService}`;
 
 module.exports = {
   setupTokens: async (user) => {
-    console.log("The value of the user : " + user.email);
+    console.log('The value of the user : ' + user.email);
     tokens.userAuth = await idamHelper.accessToken(user);
     tokens.userId = await idamHelper.userId(tokens.userAuth);
     tokens.s2sAuth = await restHelper.retriedRequest(
