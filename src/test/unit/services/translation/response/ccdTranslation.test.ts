@@ -348,7 +348,8 @@ describe('translate response to ccd version', () => {
     //When
     const ccdResponse = translateDraftResponseToCCD(claim, false);
     //Then
-    expect(ccdResponse.respondToAdmittedClaimOwingAmount).toBe('10000');
+    expect(ccdResponse.respondToAdmittedClaimOwingAmount).toBe('1000000');
+    expect(ccdResponse.respondToAdmittedClaimOwingAmountPounds).toBe('10000');
   });
 
   it('should translate timeline of events', ()=>{
