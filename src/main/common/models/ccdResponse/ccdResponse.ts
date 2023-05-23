@@ -37,6 +37,7 @@ export interface CCDResponse extends ClaimUpdate {
   specAoSApplicantCorrespondenceAddressRequired?: YesNoUpperCamelCase;
   respondToAdmittedClaim?: CCDRespondToClaim;
   specDefenceAdmittedRequired?: YesNoUpperCamelCase;
+  respondToAdmittedClaimOwingAmountPounds?: string;
   respondToAdmittedClaimOwingAmount?: string;
   specClaimResponseTimelineList?: TimelineUploadTypeSpec;
   specResponseTimelineOfEvents?: CCDTimeLineOfEvents[];

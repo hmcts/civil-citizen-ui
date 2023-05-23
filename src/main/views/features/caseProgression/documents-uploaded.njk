@@ -1,0 +1,45 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.SUBMIT_CONFIRMATION.PAGE_TITLE') }}
+{% endblock %}
+
+{% set panelContent %}
+  {{ t('PAGES.EVIDENCE_DOCUMENTS_UPLOADED.CASE_REFERENCE_NUMBER')}}
+  <br><strong>{{ caseNumber }}</strong><br>
+{% endset %}
+
+{% block content %}
+<div class="govuk-width-container govuk-!-padding-top-0">
+  <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
+      <div class="govuk-grid-row govuk-!-margin-top-0">
+        <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
+          {{ govukPanel({
+            titleText: t('PAGES.EVIDENCE_DOCUMENTS_UPLOADED.TITLE'),
+            html: panelContent
+          }) }}
+          <p class="govuk-body">
+            {{t('PAGES.EVIDENCE_DOCUMENTS_UPLOADED.UPLOAD_MORE_DOCUMENTS_START')}}
+            <a class="govuk-link" href={{ uploadYourDocumentsUrl }}> {{t('PAGES.EVIDENCE_DOCUMENTS_UPLOADED.UPLOAD_MORE_DOCUMENTS_MID')}} </a>
+            {{t('PAGES.EVIDENCE_DOCUMENTS_UPLOADED.UPLOAD_MORE_DOCUMENTS_END')}}
+          </p>
+          <div class="form-group">
+            <form method="post" novalidate>
+              {{ csrfProtection(csrf) }}
+              {{ govukButton({
+                text: t('PAGES.EVIDENCE_DOCUMENTS_UPLOADED.VIEW_DOCUMENTS'),
+                href: documentsTabUrl
+              }) }}
+            </form>
+          </div>
+        {{ contactUsForHelp(t) }}
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %}

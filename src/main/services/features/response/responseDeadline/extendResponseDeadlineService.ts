@@ -5,6 +5,7 @@ import {AppRequest} from '../../../../common/models/AppRequest';
 import {Claim} from '../../../../common/models/claim';
 import {getViewOptionsBeforeDeadlineTask} from '../../../../common/utils/taskList/tasks/viewOptionsBeforeDeadline';
 import {TaskStatus} from '../../../../common/models/taskList/TaskStatus';
+import {toCCDRespondentResponseLanguage} from 'services/translation/response/convertToCCDRespondentLiPResponse';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -32,7 +33,12 @@ const submitExtendedResponseDeadline = async (req: AppRequest) => {
     const claim = await getCaseDataFromStore(req.params.id);
     const viewOptionsBeforeDeadlineTask = getViewOptionsBeforeDeadlineTask(claim, req.params.id, 'en');
     if (viewOptionsBeforeDeadlineTask.status === TaskStatus.INCOMPLETE) {
-      await civilServiceClient.submitAgreedResponseExtensionDateEvent(req.params.id, {respondentSolicitor1AgreedDeadlineExtension: claim.responseDeadline.calculatedResponseDeadline}, req);
+      await civilServiceClient.submitAgreedResponseExtensionDateEvent(req.params.id, {
+        respondentSolicitor1AgreedDeadlineExtension:
+        claim.responseDeadline.calculatedResponseDeadline,
+        respondent1LiPResponse: {
+          respondent1ResponseLanguage: toCCDRespondentResponseLanguage(claim.claimBilingualLanguagePreference),
+        }}, req);
       claim.respondent1ResponseDeadline = claim.responseDeadline.calculatedResponseDeadline;
       claim.respondentSolicitor1AgreedDeadlineExtension = claim.responseDeadline.calculatedResponseDeadline;
       await saveDraftClaim(req.params.id, claim);
