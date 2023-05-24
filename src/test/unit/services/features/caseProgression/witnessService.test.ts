@@ -7,7 +7,7 @@ describe('Latest Update Content service', () => {
   const claim = new Claim();
   const mockClaimId = '5129';
   const caseData = Object.assign(claim, mockClaim.case_data);
-  const actualLatestWitnessContent = getWitnessContent(mockClaimId, caseData);
+  const actualLatestWitnessContent = getWitnessContent(mockClaimId, caseData, getDocumentTypes(uploadDocuments.witness));
   it('should return witness section content', () => {
     //when
     const witnessSection = buildWitnessSection(caseData, mockClaimId);

@@ -3,7 +3,7 @@ import {Claim} from 'models/claim';
 
 import {buildWitnessSection} from 'services/features/caseProgression/witnessContentBuilder';
 
-export const getWitnessContent = (claimId: string, claim: Claim): ClaimSummaryContent[] => {
+export const getWitnessContent = (claimId: string, claim: Claim, documentTypes: any): ClaimSummaryContent[] => {
   const witnessSection = buildWitnessSection(claim, claimId);
   const witnessContent = [witnessSection];
 
