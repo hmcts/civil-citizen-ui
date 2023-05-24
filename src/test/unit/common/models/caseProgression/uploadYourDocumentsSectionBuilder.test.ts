@@ -1,5 +1,6 @@
 import {UploadYourDocumentsSectionBuilder} from 'common/models/caseProgression/uploadYourDocumentsSectionBuilder';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
+import {t} from "i18next";
 
 describe('UploadYourDocumentsSectionBuilder tests', ()=> {
   it('should create mainTitle', ()=> {
@@ -45,14 +46,14 @@ describe('UploadYourDocumentsSectionBuilder tests', ()=> {
     const insetTextExpected = ({
       type: ClaimSummaryType.INSET_TEXT,
       data: {
-        html: 'text',
+        html: t('text'),
         variables: 'variables',
       },
     });
 
     //When
     const insetTextBuilt = new UploadYourDocumentsSectionBuilder()
-      .addInsetText(insetTextExpected.data.html, insetTextExpected.data.variables)
+      .addInsetText('text', 'variables')
       .build();
 
     //Then

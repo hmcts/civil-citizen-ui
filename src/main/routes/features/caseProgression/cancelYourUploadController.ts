@@ -38,7 +38,7 @@ cancelYourUploadController.post([CP_EVIDENCE_UPLOAD_CANCEL], (async (req, res, n
     } else if(form.model.option === YesNo.NO) {
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CP_UPLOAD_DOCUMENTS_URL));
     } else {
-      //Part of another ticket
+      //Part of CIV-8019
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CP_UPLOAD_DOCUMENTS_URL));
     }
   } catch (error) {
