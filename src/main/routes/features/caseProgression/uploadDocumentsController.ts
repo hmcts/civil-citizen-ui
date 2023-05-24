@@ -12,10 +12,20 @@ uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req:Request, res:
     const claim: Claim = await getCaseDataFromStore(claimId);
 
     if (claim && !claim.isEmpty()) {
-      const disclosureContent:string = undefined ; //TODO getDisclosureContent(claim, claimId);
-      const witnessContent = getWitnessContent(claimId, claim);
-      const expertContent:string = undefined ; //TODO = getExpertContent(claim, claimId);
-      const trialContent:string = undefined ; //TODO = getTrialContent(claim, claimId);
+      const documentTypes = claim.caseProgression.defendantUploadDocuments;
+      let witnessContent, disclosureContent, expertContent, trialContent = undefined;
+      if (documentTypes.disclosure.filter(index => index.selected === true).length > 0) {
+        disclosureContent = undefined; //TODO getDisclosureContent(claim, claimId);
+      }
+      if (documentTypes.witness.filter(index => index.selected === true).length > 0) {
+        witnessContent = getWitnessContent(claimId, claim);
+      }
+      if (documentTypes.expert.filter(index => index.selected === true).length > 0) {
+        expertContent = undefined; //TODO = getExpertContent(claim, claimId);
+      }
+      if (documentTypes.trial.filter(index => index.selected === true).length > 0) {
+        trialContent = undefined; //TODO = getTrialContent(claim, claimId);
+      }
       res.render(uploadDocumentsViewPath, {claim, claimId, disclosureContent, witnessContent,expertContent,trialContent});
     }
   } catch (error) {

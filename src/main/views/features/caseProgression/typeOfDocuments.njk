@@ -11,6 +11,7 @@
 {% endblock %}
 
 {% block content %}
+  <meta http-equiv="Content-Security-Policy" content="form-action 'self'; style-src 'self'">
 <div class="govuk-width-container">
   <main class="govuk-main-wrapper" role="main">
     {% if form.hasErrors() %}
