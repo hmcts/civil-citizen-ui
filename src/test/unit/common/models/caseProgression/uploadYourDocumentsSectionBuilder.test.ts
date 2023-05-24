@@ -40,6 +40,25 @@ describe('UploadYourDocumentsSectionBuilder tests', ()=> {
     expect(leadParagraphBuilt).toEqual([leadParagraphExpected]);
   });
 
+  it('should add Inset Text', ()=> {
+    //Given
+    const insetTextExpected = ({
+      type: ClaimSummaryType.INSET_TEXT,
+      data: {
+        html: 'text',
+        variables: 'variables',
+      },
+    });
+
+    //When
+    const insetTextBuilt = new UploadYourDocumentsSectionBuilder()
+      .addInsetText(insetTextExpected.data.html, insetTextExpected.data.variables)
+      .build();
+
+    //Then
+    expect(insetTextBuilt).toEqual([insetTextExpected]);
+  });
+
   it('should add Start Button', ()=> {
     //Given
     const startButtonExpected = ({

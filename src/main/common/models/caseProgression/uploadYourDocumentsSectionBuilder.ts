@@ -1,5 +1,6 @@
 import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
+import {t} from "i18next";
 export class UploadYourDocumentsSectionBuilder extends PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
   addMainTitle(mainTitle: string, variables?: unknown) {
@@ -11,6 +12,18 @@ export class UploadYourDocumentsSectionBuilder extends PageSectionBuilder {
       },
     });
     this._claimSummarySections.push(mainTitleSection);
+    return this;
+  }
+
+  addSubTitle(subTitle: string, variables?: unknown) {
+    const subTitleSection = ({
+      type: ClaimSummaryType.SUBTITLE,
+      data: {
+        text: subTitle,
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(subTitleSection);
     return this;
   }
 
@@ -37,6 +50,18 @@ export class UploadYourDocumentsSectionBuilder extends PageSectionBuilder {
       },
     });
     this._claimSummarySections.push(startButtonSection);
+    return this;
+  }
+
+  addInsetText(text: string, variables?: unknown) {
+    const insetSection = ({
+      type: ClaimSummaryType.INSET_TEXT,
+      data: {
+        html: t(text),
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(insetSection);
     return this;
   }
 
