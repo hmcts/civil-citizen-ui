@@ -6,14 +6,16 @@ import {getWitnessContent} from 'services/features/caseProgression/witnessServic
 
 const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
 const uploadDocumentsController = Router();
+
 uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req:Request, res:Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId =
+      req.params.id;
     const claim: Claim = await getCaseDataFromStore(claimId);
 
     if (claim && !claim.isEmpty()) {
       const disclosureContent:string = undefined ; //TODO getDisclosureContent(claim, claimId);
-      const witnessContent = getWitnessContent(claimId, claim);
+      const witnessContent = getWitnessContent(claim);
       const expertContent:string = undefined ; //TODO = getExpertContent(claim, claimId);
       const trialContent:string = undefined ; //TODO = getTrialContent(claim, claimId);
       res.render(uploadDocumentsViewPath, {claim, claimId, disclosureContent, witnessContent,expertContent,trialContent});

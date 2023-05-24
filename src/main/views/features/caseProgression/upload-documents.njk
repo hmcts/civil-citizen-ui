@@ -4,7 +4,7 @@
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
-{% from "../dashboard/claim-summary-content.njk" import claimSummaryContent %}
+{% from "../caseProgression/upload-document-content.njk" import uploadDocumentContent %}
 
 {% block pageTitle %}
 {{ setPageTitle('PAGES.EVIDENCE.PAGE_TITLE') }}
@@ -30,40 +30,20 @@
           <hr class="govuk-section-break--s govuk-section-break--visible">
           <h2 class="govuk-heading-l">{{ witness }}</h2>
           {% for witnessSection in witnessContent %}
-          <div class="row-container">
-            <div class="multiple-row">
-              {% if isRemoveButtonHidden %}
-              {{ govukButton({
-              text: t('PAGES.UPLOAD_DOCUMENTS.REMOVE_SECTION'),
-              classes: "govuk-button--secondary remove-row govuk-visually-hidden float-right"
-              }) }}
-              {% else %}
-              {{ govukButton({
-              text: t('PAGES.UPLOAD_DOCUMENTS.REMOVE_SECTION'),
-              classes: "govuk-button--secondary remove-row float-right"
-              }) }}
-              {% endif %}
-              {{ claimSummaryContent({
-              contentSections: witnessSection.contentSections
-              }) }}
-              <hr class="govuk-section-break--s govuk-section-break--visible">
-            </div>
-          </div>
+              {{ uploadDocumentContent({
+              contentSections: witnessSection.contentSections,
+              isRemoveButtonHidden:isRemoveButtonHidden
+              },t) }}
           {% endfor %}
-          <div class="govuk-!-margin-top-6">
-            {{ govukButton({
-            text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
-            classes: 'govuk-button--secondary append-row'
-            }) }}
-          </div>
           <div class="govuk-form-group">
             {{ govukButton({
             text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
             }) }}
+            {{ contactUsForHelp(t) }}
           </div>
         </div>
       </form>
-      {{ contactUsForHelp(t) }}
+
     </div>
 </main>
 </div>

@@ -8,11 +8,12 @@ export const getWitnessSubtitle = (subTitle:string): ClaimSummarySection => {
     },
   };
 };
-export const getInput = (title:string, classes:string): ClaimSummarySection => {
+export const getInput = (title:string, classes:string,hint?: string): ClaimSummarySection => {
   return {
     type: ClaimSummaryType.INPUT,
     data: {
       text: title,
+      hint: hint,
       classes:classes,
     },
   };
