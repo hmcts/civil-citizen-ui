@@ -1,6 +1,6 @@
 import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
-import {t} from "i18next";
+import {t} from 'i18next';
 export class UploadYourDocumentsSectionBuilder extends PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
   addMainTitle(mainTitle: string, variables?: unknown) {
