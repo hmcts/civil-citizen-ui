@@ -1,6 +1,7 @@
 import {SupportRequired, SupportRequiredList} from 'models/directionsQuestionnaire/supportRequired';
 import {CCDSupportRequirement} from 'models/ccdResponse/ccdHearingSupport';
 import {toCCDYesNo} from 'services/translation/response/convertToCCDYesNo';
+import {YesNo} from 'form/models/yesNo';
 
 function ccdHearingSupportRequirementList(hearingSupportItem: SupportRequired) {
   const supportRequirementsList: CCDSupportRequirement[] = [];
@@ -38,6 +39,6 @@ function ccdHearingSupportRequirement(items: SupportRequired[] | undefined) {
 export const toCCDSHearingSupport = (supportRequiredList: SupportRequiredList | undefined) => {
   return {
     supportRequirementLip: toCCDYesNo(supportRequiredList?.option),
-    requirementsLip: ccdHearingSupportRequirement(supportRequiredList?.items),
+    requirementsLip: supportRequiredList?.option === YesNo.YES ? ccdHearingSupportRequirement(supportRequiredList?.items) : undefined,
   };
 };
