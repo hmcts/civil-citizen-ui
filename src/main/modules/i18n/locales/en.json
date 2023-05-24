@@ -2290,7 +2290,7 @@
         "DISCLOSURE_LIST": "Disclosure list",
         "TYPE_OF_DOCUMENT": "Type of document",
         "TYPE_OF_DOCUMENT_EXAMPLE": "For example, contract, invoice, receipt, email, text message, photo, social media message",
-        "DOCUMENT_ISSUE_DATE": "Date document was issues or message was sent"
+        "DOCUMENT_ISSUE_DATE": "Date document was issued or message was sent"
       }
     },
     "VULNERABILITY": {
