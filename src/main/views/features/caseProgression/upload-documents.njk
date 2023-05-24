@@ -29,22 +29,22 @@
           <p class="govuk-body-m">{{ paragraph }}</p>
           <hr class="govuk-section-break--s govuk-section-break--visible">
           <h2 class="govuk-heading-l">{{ witness }}</h2>
-          {% for witnessSection in witnessContent %}
-              {{ uploadDocumentContent({
-              contentSections: witnessSection.contentSections,
-              isRemoveButtonHidden:isRemoveButtonHidden
-              },t) }}
-          {% endfor %}
-          <div class="govuk-form-group">
-            {{ govukButton({
-            text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
-            }) }}
-            {{ contactUsForHelp(t) }}
-          </div>
+              {% for witnessSection in witnessContent %}
+                    {{ uploadDocumentContent({
+                    contentSections: witnessSection.contentSections,
+                    isRemoveButtonHidden:isRemoveButtonHidden
+                    },t) }}
+              {% endfor %}
+
+         <div class="govuk-form-group">
+           {{ govukButton({
+           text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+           }) }}
+           {{ contactUsForHelp(t) }}
+         </div>
         </div>
       </form>
-
     </div>
-</main>
+  </main>
 </div>
 {% endblock %}
