@@ -15,17 +15,17 @@ uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req:Request, res:
       const uploadDocuments = claim.caseProgression.defendantUploadDocuments;
       let witnessContent, disclosureContent, expertContent, trialContent = undefined;
       if (uploadDocuments.disclosure.filter(document => document.selected === true).length > 0) {
-        disclosureContent = undefined; //TODO getDisclosureContent(claim, claimId);
+        disclosureContent = undefined; //TODO getDisclosureContent(claim, claimId, type);
       }
       if (uploadDocuments.witness.filter(document => document.selected === true).length > 0)
       {
-        witnessContent = getWitnessContent(claimId, claim);
+        witnessContent = getWitnessContent(claimId, claim); //TODO add "type" to pass the selected types.
       }
       if (uploadDocuments.expert.filter(document => document.selected === true).length > 0) {
-        expertContent = undefined; //TODO = getExpertContent(claim, claimId);
+        expertContent = undefined; //TODO = getExpertContent(claim, claimId, type));
       }
       if (uploadDocuments.trial.filter(document => document.selected === true).length > 0) {
-        trialContent = undefined; //TODO = getTrialContent(claim, claimId);
+        trialContent = undefined; //TODO = getTrialContent(claim, claimId, type));
       }
       res.render(uploadDocumentsViewPath, {claim, claimId, disclosureContent, witnessContent,expertContent,trialContent});
     }
