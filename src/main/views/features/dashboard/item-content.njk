@@ -117,6 +117,20 @@
      </div>
   {% endif %}
 
+  {% if content.type === ClaimSummaryType.CUSTOM_INPUT %}
+     <div>
+      {{ govukInput({
+         id: content.data.id,
+         name: content.data.name,
+         value: form.model.name,
+         classes: content.data.classes,
+         label: {
+           html: '<strong>'+ t(content.data.text)+'</strong>'
+         }
+      }) }}
+     </div>
+  {% endif %}
+
   {% if content.type === ClaimSummaryType.UPLOAD %}
      <div class="govuk-inset-text">
         {{ govukFileUpload({

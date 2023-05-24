@@ -50,4 +50,5 @@ export enum ClaimSummaryType {
   INPUT = 'input',
   DATE = 'date',
   UPLOAD = 'upload',
+  CUSTOM_INPUT = 'customInput',
 }
