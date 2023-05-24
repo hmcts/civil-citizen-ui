@@ -1,6 +1,6 @@
 import {UploadYourDocumentsSectionBuilder} from 'common/models/caseProgression/uploadYourDocumentsSectionBuilder';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
-import {t} from "i18next";
+import {t} from 'i18next';
 
 describe('UploadYourDocumentsSectionBuilder tests', ()=> {
   it('should create mainTitle', ()=> {

@@ -15,18 +15,6 @@ export class UploadYourDocumentsSectionBuilder extends PageSectionBuilder {
     return this;
   }
 
-  addSubTitle(subTitle: string, variables?: unknown) {
-    const subTitleSection = ({
-      type: ClaimSummaryType.SUBTITLE,
-      data: {
-        text: subTitle,
-        variables: variables,
-      },
-    });
-    this._claimSummarySections.push(subTitleSection);
-    return this;
-  }
-
   addLeadParagraph(text: string, variables?: unknown) {
     const leadParagraphSection = ({
       type: ClaimSummaryType.LEAD_PARAGRAPH,
