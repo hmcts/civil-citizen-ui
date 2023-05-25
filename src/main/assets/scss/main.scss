@@ -17,12 +17,21 @@
     position: relative;
   }
 
+  // sass-lint:disable property-sort-order
   .moj-add-another__remove-button {
     display: block;
     position: absolute;
     right: 0;
     top: 10px;
     width: auto;
+    color: transparent;
+    font-size: 0;
+
+    &::after {
+      content: 'Remove section';
+      font-size: 19px;
+      color: $govuk-remove-section-text-colour;
+    }
   }
 }
 
