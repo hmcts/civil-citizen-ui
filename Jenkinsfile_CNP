@@ -113,7 +113,7 @@ withPipeline(type, product, component) {
           ./bin/pull-latest-dmn-files.sh ${dmnBranch}
           ./bin/pull-latest-camunda-wa-files.sh ${waStandaloneBranch}
           ./bin/pull-latest-ccd-files.sh ${ccdBranch}
-          ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json,*ClaimantResponseLRspec-nonprod.json,*DocmosisEvents-nonprod.json,*UserEventsLRspec-nonprod.json,*ClaimantResponseLRspec-base-nonprod.json,*NotificationEventsDJSpec-nonprod.json,*DefaultJudgmentDJspec-nonprod.json,ClaimantResponseLRspec-hnl-legal-rep-nonprod.json,Categories*.json,AuthorisationCaseType*.json" ${ccdBranch}
+          ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json,*ClaimantResponseLRspec-nonprod.json,*DocmosisEvents-nonprod.json,*UserEventsLRspec-nonprod.json,*ClaimantResponseLRspec-base-nonprod.json,*NotificationEventsDJSpec-nonprod.json,*DefaultJudgmentDJspec-nonprod.json,ClaimantResponseLRspec-hnl-legal-rep-nonprod.json,Categories*.json,AuthorisationCaseType-shuttered.json" ${ccdBranch}
         """
     setUrls("civil-citizen-ui-pr-${CHANGE_ID}")
   }
@@ -151,7 +151,7 @@ withPipeline(type, product, component) {
       eval \$(./bin/variables/load-staging-environment-variables.sh)
       ./bin/add-roles.sh
       ./bin/pull-latest-release-asset.sh civil-ccd-definition civil-ccd-definition.zip
-      ./bin/import-ccd-definition.sh "-e *GAspec.json,*-nonprod.json,AuthorisationCaseType*.json"
+      ./bin/import-ccd-definition.sh "-e *GAspec.json,*-nonprod.json,AuthorisationCaseType-shuttered.json"
       ./bin/pull-latest-camunda-files.sh ${camundaBranch}
     """
     setUrls("aat");
