@@ -6,18 +6,20 @@ import {
   buildDisclosureListSection,
 } from 'services/features/caseProgression/disclosureContentBuilder';
 
-export const getDisclosureContent = (claimId: string, claim: Claim): ClaimSummaryContent[] => {
+export const getDisclosureContent = (claim: Claim): ClaimSummaryContent[] => {
   const sectionContent = [];
 
-  //todo: wrap in if (should we show this section)
-  const disclosureSection = buildDisclosureDocumentSection(claim, claimId);
-  const disclosureContent = [disclosureSection];
-  sectionContent.push(disclosureContent);
+  if(claim?.caseProgression?.defendantUploadDocuments?.disclosure[0]?.selected){
+    const disclosureSection = buildDisclosureDocumentSection();
+    const disclosureContent = [disclosureSection];
+    sectionContent.push(disclosureContent);
+  }
 
-  //todo: wrap in if (should we show this section)
-  const disclosureListSection = buildDisclosureListSection(claim, claimId);
-  const disclosureListContent = [disclosureListSection];
-  sectionContent.push(disclosureListContent);
+  if(claim?.caseProgression?.defendantUploadDocuments?.disclosure[1]?.selected){
+    const disclosureListSection = buildDisclosureListSection();
+    const disclosureListContent = [disclosureListSection];
+    sectionContent.push(disclosureListContent);
+  }
 
   return sectionContent.flat().map((sectionContent, index) => ({
     contentSections: sectionContent,

@@ -30,35 +30,39 @@
           <h2 class="govuk-heading-s">{{ titleH2 }}</h2>
           <p class="govuk-body-m">{{ paragraph }}</p>
           <hr class="govuk-section-break--s govuk-section-break--visible">
-          <h2 class="govuk-heading-l">{{ disclosure }}</h2>
-          {% for disclosureSections in disclosureContent %}
-          <div class="row-container">
-            <div data-module="moj-add-another">
-              {% call govukFieldset({
-                classes: 'moj-add-another__item',
-                legend: {
-                  classes: 'moj-add-another__title',
-                  isPageHeading: false
-                }
-              }) %}
-              {{ claimSummaryContent({
-              contentSections: disclosureSections.contentSections
-              }) }}
-              {% endcall %}
-              <div class="moj-button-action">
-                    {{ govukButton({
-                      text: 'Add another',
-                      classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
-                      type: 'button',
-                      attributes: {
-                        'id': 'add-another-disclosure-list'
-                      }
-                    }) }}
+
+          {% if disclosureContent.length > 0 %}
+            <h2 class="govuk-heading-l">{{ disclosure }}</h2>
+            {% for disclosureSections in disclosureContent %}
+            <div class="row-container">
+              <div data-module="moj-add-another">
+                {% call govukFieldset({
+                  classes: 'moj-add-another__item',
+                  legend: {
+                    classes: 'moj-add-another__title',
+                    isPageHeading: false
+                  }
+                }) %}
+                {{ claimSummaryContent({
+                contentSections: disclosureSections.contentSections
+                }) }}
+                {% endcall %}
+                <div class="moj-button-action">
+                      {{ govukButton({
+                        text: 'Add another',
+                        classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
+                        type: 'button',
+                        attributes: {
+                          'id': 'add-another-disclosure-list'
+                        }
+                      }) }}
+                </div>
+                <hr class="govuk-section-break--s govuk-section-break--visible">
               </div>
-              <hr class="govuk-section-break--s govuk-section-break--visible">
             </div>
-          </div>
-          {% endfor %}
+            {% endfor %}
+          {% endif %}
+
           <h2 class="govuk-heading-l">{{ witness }}</h2>
           {% for witnessSection in witnessContent %}
           <div class="row-container">

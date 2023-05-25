@@ -15,7 +15,7 @@ uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req:Request, res:
     const claim: Claim = await getCaseDataFromStore(claimId);
 
     if (claim && !claim.isEmpty()) {
-      const disclosureContent = getDisclosureContent(claimId, claim) ;
+      const disclosureContent = getDisclosureContent(claim);
       const witnessContent = getWitnessContent(claimId, claim);
       const expertContent:string = undefined ; //TODO = getExpertContent(claim, claimId);
       const trialContent:string = undefined ; //TODO = getTrialContent(claim, claimId);
