@@ -35,7 +35,9 @@ export interface ClaimSummaryItem {
  */
 export enum ClaimSummaryType {
   PARAGRAPH = 'p',
+  LEAD_PARAGRAPH = 'leadParagraph',
   BUTTON = 'button',
+  MAINTITLE = 'mainTitle',
   TITLE = 'title',
   SUBTITLE = 'subtitle',
   LINK = 'link',
@@ -44,8 +46,8 @@ export enum ClaimSummaryType {
   SUMMARY = 'summary',
   TABLE = 'table',
   PANEL = 'panel',
+  WARNING = 'warning',
   INPUT = 'input',
   DATE = 'date',
   UPLOAD = 'upload',
-
 }

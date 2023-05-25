@@ -388,7 +388,7 @@ describe('translate partial admission to cui model', () => {
       // Given
       const ccdClaim: CCDClaim = {
         specDefenceAdmittedRequired: YesNoUpperCamelCase.NO,
-        respondToAdmittedClaimOwingAmount: '55',
+        respondToAdmittedClaimOwingAmountPounds: '55',
         detailsOfWhyDoesYouDisputeTheClaim: 'reason',
         defenceAdmitPartPaymentTimeRouteRequired: CCDPaymentOption.IMMEDIATELY,
       } as CCDClaim;

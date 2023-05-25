@@ -6,10 +6,15 @@
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 {% from "govuk/components/file-upload/macro.njk" import govukFileUpload %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
 {% macro itemContent(content) %}
   {% if content.type === ClaimSummaryType.HTML %}
     {{ content.data.html | safe }}
+  {% endif %}
+
+  {% if content.type === ClaimSummaryType.MAINTITLE %}
+    <h1 class="govuk-heading-l">{{ t(content.data.text) }}</h1>
   {% endif %}
 
   {% if content.type === ClaimSummaryType.TITLE %}
@@ -19,6 +24,17 @@
   {% if content.type === ClaimSummaryType.SUBTITLE %}
     <h3 class="govuk-heading-s">{{ t(content.data.text) }}</h3>
   {% endif %}
+
+  {% if content.type === ClaimSummaryType.LEAD_PARAGRAPH %}
+      {% set object = '' %}
+      {% if content.data.variables %}
+          {% set object = content.data.variables %}
+          <p class="govuk-body-l">{{ t(content.data.text,object)}}</p>
+      {% else %}
+          <p class="govuk-body-l">{{ t(content.data.text)}}</p>
+      {% endif %}
+  {% endif %}
+
   {% if content.type === ClaimSummaryType.PARAGRAPH %}
     {% set object = '' %}
     {% if content.data.variables %}
@@ -47,7 +63,8 @@
       {{ govukButton({
         href: content.data.href,
         text:  t(content.data.text),
-        classes: content.data.classes
+        classes: content.data.classes,
+        isStartButton: content.data.isStartButton
       }) }}
     </div>
   {% endif %}
@@ -131,4 +148,19 @@
      </div>
   {% endif %}
 
+  {% if content.type === ClaimSummaryType.WARNING %}
+    <div class="govuk-warning-text">
+      <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+      <strong class="govuk-warning-text__text">
+        <span class="govuk-warning-text__assistive">Warning</span>
+          {% set object = '' %}
+          {% if content.data.variables %}
+            {% set object = content.data.variables %}
+            {{ t(content.data.text,object)}}
+          {% else %}
+            {{ t(content.data.text)}}
+          {% endif %}
+      </strong>
+    </div>
+  {% endif %}
 {% endmacro %}
