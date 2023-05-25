@@ -18,7 +18,6 @@
     {% set titleH1 = t('PAGES.UPLOAD_DOCUMENTS.TITLE') %}
     {% set titleH2 = t('PAGES.UPLOAD_DOCUMENTS.SUBTITLE') %}
     {% set paragraph = t('PAGES.UPLOAD_DOCUMENTS.FORMAT') %}
-    {% set witness = t('PAGES.UPLOAD_DOCUMENTS.WITNESS') %}
 
     <div class="govuk-grid-row">
       <form method="post" novalidate>
@@ -28,7 +27,6 @@
           <h2 class="govuk-heading-s">{{ titleH2 }}</h2>
           <p class="govuk-body-m">{{ paragraph }}</p>
           <hr class="govuk-section-break--s govuk-section-break--visible">
-          <h2 class="govuk-heading-l">{{ witness }}</h2>
           {% for witnessSection in witnessContent %}
           <div class="row-container">
             <div class="multiple-row">
