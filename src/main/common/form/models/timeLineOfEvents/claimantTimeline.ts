@@ -19,8 +19,8 @@ export class ClaimantTimeline {
 
   public static buildPopulatedForm(rows: TimelineRow[]): ClaimantTimeline {
     return new ClaimantTimeline(ClaimantTimeline.addRemainingRows(
-      rows.map((timeline: TimelineRow) => {
-        return TimelineRow.buildPopulatedForm(timeline.date, timeline.description);
+      rows.map((timeline: any) => {
+        return TimelineRow.buildPopulatedForm(timeline.day, timeline.month, timeline.year, timeline.description);
       })));
   }
 

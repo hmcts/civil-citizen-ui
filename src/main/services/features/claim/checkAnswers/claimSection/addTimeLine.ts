@@ -16,7 +16,7 @@ export const addTimeLine = (claim: Claim, claimSection: SummarySection, claimId:
     const timeLine: TimelineRow[] = claim.claimDetails.timeline.rows;
     for (let i = 0; i < timeLine.length; i++) {
       claimSection.summaryList.rows.push(
-        summaryRow(timeLine[i].date, timeLine[i].description, CLAIM_TIMELINE_URL, changeLabel(lang)),
+        summaryRow(timeLine[i].date.getDate().toString(), timeLine[i].description, CLAIM_TIMELINE_URL, changeLabel(lang)),
       );
     }
   }

@@ -114,7 +114,7 @@ describe('translate partial admission to cui model', () => {
       const timelineOfEvents: CCDTimeLineOfEvents[] = [
         <CCDTimeLineOfEvents>{
           value: <CCDTimeLineOfEventsItem>{
-            timelineDate: '2022-09-22',
+            timelineDate: new Date('2022-09-22'),
             timelineDescription: 'you might have signed a contract',
           },
         },
@@ -134,7 +134,7 @@ describe('translate partial admission to cui model', () => {
       const timelineOfEvents: CCDTimeLineOfEvents[] = [
         <CCDTimeLineOfEvents>{
           value: <CCDTimeLineOfEventsItem>{
-            timelineDate: '2022-09-22',
+            timelineDate: new Date('2022-09-22'),
             timelineDescription: 'you might have signed a contract',
           },
         },
