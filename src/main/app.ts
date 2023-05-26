@@ -16,6 +16,8 @@ import {DraftStoreClient} from './modules/draft-store';
 import {CSRFToken} from './modules/csrf';
 import routes from './routes/routes';
 import {setLanguage} from 'modules/i18n/languageService';
+import {isServiceAvailable} from 'app/auth/launchdarkly/launchDarklyClient';
+import { dateFilter } from 'modules/nunjucks/filters/dateFilter';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const { setupDev } = require('./development');
@@ -69,6 +71,24 @@ app.use((_req, res, next) => {
 if (env !== 'test') {
   new CSRFToken().enableFor(app);
 }
+
+const checkServiceAvailability = async (_req: express.Request, res: express.Response, next: express.NextFunction) => {
+  logger.info(`Checking for service availability... ${await isServiceAvailable()}`);
+  // TODO: get date from launchdarkly
+  const date = '2023-01-20';
+  if (await isServiceAvailable()) {
+    next();
+  } else {
+    if (date) {
+      res.render('service-unavailable-specific-date', {date: dateFilter(date)});
+    } else {
+      res.render('service-unavailable');
+    }
+  }
+}
+
+app.use(checkServiceAvailability);
+
 app.use(routes);
 
 setupDev(app,developmentMode);

@@ -27,3 +27,12 @@ export async function getFlagValue(
 export async function isCaseProgressionV1Enable(): Promise<boolean> {
   return await getFlagValue('cui-case-progression') as boolean;
 }
+
+export async function isServiceAvailable(): Promise<boolean> {
+  return false;
+  // return await getFlagValue('cui-service-available') as boolean;
+}
+
+// export async function getKeyValue<T>(key: string): Promise<T> {
+//   return await getFlagValue(key) as T;
+// }
