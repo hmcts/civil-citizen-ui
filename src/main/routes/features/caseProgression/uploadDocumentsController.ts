@@ -16,8 +16,8 @@ uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req:Request, res:
       const disclosureContent:string = undefined ; //TODO getDisclosureContent(claim, claimId);
       const witnessContent = getWitnessContent(claimId, claim);
       const expertContent:string = undefined ; //TODO = getExpertContent(claim, claimId);
-      const trialContent:string = undefined ; getTrialContent(claimId, claim);
-      res.render(uploadDocumentsViewPath, {claim, claimId, disclosureContent, witnessContent,expertContent,trialContent});
+      const trialContent = getTrialContent(claimId, claim);
+      res.render(uploadDocumentsViewPath, {claim, claimId, disclosureContent, witnessContent, expertContent, trialContent});
     }
   } catch (error) {
     next(error);
