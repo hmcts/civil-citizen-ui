@@ -1,28 +1,58 @@
-import {Claim} from 'models/claim';
 import {getWitnessContent} from 'services/features/caseProgression/witnessService';
-import {buildWitnessSection} from 'services/features/caseProgression/witnessContentBuilder';
+import {CaseState} from 'form/models/claimDetails';
 
-describe('Latest Update Content service', () => {
+describe('Witness Content service', () => {
   const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
-  const claim = new Claim();
-  const mockClaimId = '5129';
-  const caseData = Object.assign(claim, mockClaim.case_data);
-  const actualLatestWitnessContent = getWitnessContent(mockClaimId, caseData, getDocumentTypes(uploadDocuments.witness));
-  it('should return witness section content', () => {
+
+  it('should return Witness Statement section content if selected', () => {
     //when
-    const witnessSection = buildWitnessSection(caseData, mockClaimId);
-    const witnessContent = [witnessSection];
-    const filteredWitnessContent = witnessContent.filter(sectionContent => sectionContent.length);
-    let formattedWitnessContent=[];
-    formattedWitnessContent = filteredWitnessContent.map((sectionContent, index) => {
-      return ({
-        contentSections: sectionContent,
-        hasDivider: index < formattedWitnessContent.length - 1,
-      });
-    });
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+        caseProgression: {
+          defendantUploadDocuments : {
+            witness: [
+              {documentType: 'YOUR_STATEMENT', selected: false},
+              {documentType: 'WITNESS_STATEMENT', selected: true},
+              {documentType: 'WITNESS_SUMMARY', selected: false},
+              {documentType: 'NOTICE_OF_INTENTION', selected: false},
+              {documentType: 'DOCUMENTS_REFERRED', selected: false},
+            ],
+          },
+        },
+      },
+    };
+    const actualWitnessContent = getWitnessContent(testClaim.id, testClaim.case_data);
     //Then
-    expect(actualLatestWitnessContent).toMatchObject(formattedWitnessContent);
-    expect(actualLatestWitnessContent[0].contentSections).toEqual(filteredWitnessContent[0]);
-    expect(actualLatestWitnessContent[0].contentSections.length).toEqual(filteredWitnessContent[0].length);
+    expect(actualWitnessContent.length).toEqual(1);
+    expect(actualWitnessContent[0].contentSections.length).toEqual(5);
+    expect(actualWitnessContent[0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.WITNESS');
+  });
+
+  it('should not return any content if not selected', () => {
+    //when
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+        caseProgression: {
+          defendantUploadDocuments : {
+            witness: [
+              {documentType: 'YOUR_STATEMENT', selected: false},
+              {documentType: 'WITNESS_STATEMENT', selected: false},
+              {documentType: 'WITNESS_SUMMARY', selected: false},
+              {documentType: 'NOTICE_OF_INTENTION', selected: false},
+              {documentType: 'DOCUMENTS_REFERRED', selected: false},
+            ],
+          },
+        },
+      },
+    };
+    const actualEmptyWitnessContent = getWitnessContent(testClaim.id, testClaim.case_data);
+    //Then
+    expect(actualEmptyWitnessContent.length).toEqual(0);
   });
 });

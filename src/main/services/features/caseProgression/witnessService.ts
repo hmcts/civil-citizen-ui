@@ -2,12 +2,11 @@ import {ClaimSummaryContent} from 'form/models/claimSummarySection';
 import {Claim} from 'models/claim';
 
 import {buildWitnessSection} from 'services/features/caseProgression/witnessContentBuilder';
-import {EvidenceUploadWitness} from 'models/document/documentType';
 
-export const getWitnessContent = (claimId: string, claim: Claim, documentTypes: any): ClaimSummaryContent[] => {
+export const getWitnessContent = (claimId: string, claim: Claim): ClaimSummaryContent[] => {
   const sectionContent = [];
 
-  if (documentTypes.includes(EvidenceUploadWitness.WITNESS_STATEMENT)) {
+  if(claim?.caseProgression?.defendantUploadDocuments?.witness[1]?.selected) {
     const witnessSection = buildWitnessSection(claim, claimId);
     const witnessContent = [witnessSection];
 
