@@ -21,15 +21,15 @@ export class TimelineRow {
   @MaxLength(FREE_TEXT_MAX_LENGTH, {message: 'ERRORS.VALID_TEXT_LENGTH'})
     description?: string;
 
-  constructor(day?: string, month?: string, year?: string, description?: string) {
-    this.date = DateConverter.convertToDate(year, month, day);
+  constructor(day?: number, month?: number, year?: number, description?: string) {
+    this.date = DateConverter.convertToDate(year?.toString(), month?.toString(), day?.toString());
     this.description = description;
     this.year = Number(year);
     this.month = Number(month);
     this.day = Number(day);
   }
 
-  public static buildPopulatedForm(day?: string, month?: string, year?: string, description?: string) : TimelineRow{
+  public static buildPopulatedForm(day?: number, month?: number, year?: number, description?: string) : TimelineRow{
     return new TimelineRow(day, month, year, description);
   }
 

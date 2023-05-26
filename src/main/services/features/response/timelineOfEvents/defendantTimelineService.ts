@@ -8,7 +8,6 @@ const logger = Logger.getLogger('defendantTimelineService');
 
 const getPartialAdmitTimeline = (claim: Claim): DefendantTimeline => {
   if (claim.partialAdmission?.timeline) {
-    console.log('TimeLineData : ',claim.partialAdmission.timeline.rows);
     return DefendantTimeline.buildPopulatedForm(claim.partialAdmission.timeline.rows, claim.partialAdmission.timeline.comment);
   }
   return DefendantTimeline.buildEmptyForm();

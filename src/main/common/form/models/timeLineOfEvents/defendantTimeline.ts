@@ -24,7 +24,7 @@ export class DefendantTimeline {
   public static buildPopulatedForm(timelineOfEvents: TimelineRow[], comment?: string): DefendantTimeline {
     return new DefendantTimeline(DefendantTimeline.addRemainingRows(
       timelineOfEvents.map((timeline: TimelineRow) => {
-        return TimelineRow.buildPopulatedForm(timeline.day.toString(), timeline.month.toString(), timeline.year.toString(), timeline.description);
+        return TimelineRow.buildPopulatedForm(timeline.day, timeline.month, timeline.year, timeline.description);
       })), comment);
   }
 
