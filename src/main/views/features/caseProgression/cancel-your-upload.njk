@@ -26,8 +26,6 @@
         <div class="govuk-grid-column-two-thirds">
           {{ csrfProtection(csrf) }}
 
-          <span class="govuk-caption-l">{{t('PAGES.EVIDENCE_UPLOAD_CANCEL.HEADING')}}</span>
-
           {% for content in cancelYourUploadContents %}
             {{ itemContent(content,t) }}
           {% endfor %}
