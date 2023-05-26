@@ -6,6 +6,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getTaskLists, outstandingTasksFromTaskLists} from 'services/features/common/taskListService';
 import {TaskList} from 'models/taskList/taskList';
 import {Task} from 'models/taskList/task';
+import {AppRequest} from 'models/AppRequest';
 
 jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
@@ -29,7 +30,7 @@ const MOCK_REQUEST = () => {
     session: {
       claimId: CLAIM_ID,
     },
-  } as unknown as express.Request;
+  } as unknown as AppRequest;
 };
 
 const MOCK_RESPONSE = {
