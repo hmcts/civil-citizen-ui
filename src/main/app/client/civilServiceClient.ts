@@ -4,7 +4,7 @@ import {AssertionError} from 'assert';
 import {AppRequest} from 'common/models/AppRequest';
 import {CivilClaimResponse, ClaimFeeData} from 'common/models/civilClaimResponse';
 import {
-  ASSIGN_CLAIM_TO_DEFENDANT,
+  ASSIGN_CLAIM_TO_DEFENDANT, CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE,
   CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
   CIVIL_SERVICE_CLAIM_AMOUNT_URL,
@@ -235,6 +235,17 @@ export class CivilServiceClient {
     try{
       await this.client.post(ASSIGN_CLAIM_TO_DEFENDANT.replace(':claimId', claimId),{}, // nosonar
         {headers: {'Authorization': `Bearer ${req.session?.user?.accessToken}`}}); // nosonar
+    } catch (error: unknown) {
+      logger.error(error);
+      throw error;
+    }
+  }
+
+  async getAgreedDeadlineResponseDate(claimId: string, req: AppRequest): Promise<Date> {
+    const config = this.getConfig(req);
+    try {
+      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE.replace(':claimId', claimId), config);
+      return response.data as Date;
     } catch (error: unknown) {
       logger.error(error);
       throw error;
