@@ -14,12 +14,12 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
     return this;
   }
 
-  addCustomInput(title:string, classes:string, hint:string, id:string) {
+  addInputArray(title:string, classes:string, hint:string, category:string, field:string) {
     const section = ({
-      type: ClaimSummaryType.CUSTOM_INPUT,
+      type: ClaimSummaryType.INPUT_ARRAY,
       data: {
-        id: id+'-input',
-        name: id+'-input',
+        category: category,
+        field: field,
         text: title,
         classes:classes,
         hint: hint,
@@ -29,12 +29,12 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
     return this;
   }
 
-  addCustomDateInput(title:string,  hint:string, id: string) {
+  addCustomDateInput(title:string, hint:string, category:string) {
     const section = ({
-      type: ClaimSummaryType.DATE,
+      type: ClaimSummaryType.DATE_ARRAY,
       data: {
-        id:  id+'-date',
-        name: id+'-date',
+        category: category,
+        field: 'date',
         text: title,
         hint: hint,
         classes:'govuk-fieldset__legend--s',
@@ -44,12 +44,12 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
     return this;
   }
 
-  addCustomUploadInput(title:string,  html:string, id: string) {
+  addUploadArray(title:string, html:string, category:string, field:string) {
     const section = ({
-      type: ClaimSummaryType.UPLOAD,
+      type: ClaimSummaryType.UPLOAD_ARRAY,
       data: {
-        id: id+'-file-upload',
-        name: id+'-file-upload',
+        category: category,
+        field: field,
         text: title,
         html: html,
       },
