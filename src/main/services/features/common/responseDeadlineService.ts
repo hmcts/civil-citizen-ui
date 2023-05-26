@@ -1,4 +1,4 @@
-import {Claim} from '../../../common/models/claim';
+import {Claim} from 'models/claim';
 import {AppRequest} from 'models/AppRequest';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
