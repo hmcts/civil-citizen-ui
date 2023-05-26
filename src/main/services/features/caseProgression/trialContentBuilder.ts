@@ -22,7 +22,7 @@ export const buildTrialLegalSection = (claim: Claim, claimId: string): ClaimSumm
 
 export const buildTrialCostSection = (claim: Claim, claimId: string): ClaimSummarySection[] => {
   return new UploadYourDocumentsSectionBuilder()
-    .addTitle('PAGES.UPLOAD_DOCUMENTS.TRIAL.COST')
+    .addTitle('PAGES.UPLOAD_DOCUMENTS.TRIAL.COSTS')
     .build();
 };
 
