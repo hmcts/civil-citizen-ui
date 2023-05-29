@@ -1,5 +1,5 @@
 import {Claim} from 'common/models/claim';
-import Axios, {AxiosInstance, AxiosResponse} from 'axios';
+import Axios, {AxiosInstance, AxiosResponse, HttpStatusCode} from 'axios';
 import {AssertionError} from 'assert';
 import {AppRequest} from 'common/models/AppRequest';
 import {CivilClaimResponse, ClaimFeeData} from 'common/models/civilClaimResponse';
@@ -17,13 +17,13 @@ import {
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
-import {CaseDocument} from 'common/models/document/caseDocument';
 import {DashboardClaimantItem, DashboardDefendantItem} from 'models/dashboard/dashboardItem';
 import {ClaimUpdate, EventDto} from 'models/events/eventDto';
 import {CaseEvent} from 'models/events/caseEvent';
 import {CourtLocation} from 'models/courts/courtLocations';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
+import {FileResponse} from "models/FileResponse";
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -164,13 +164,16 @@ export class CivilServiceClient {
     }
   }
 
-  async retrieveDocument(documentDetails: CaseDocument, req: AppRequest): Promise<Buffer> {
+  async retrieveDocument(documentId: string) {
     try {
-      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL, documentDetails);
-      if (!response.data) {
+      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL.replace(':documentId', documentId));
+      if (response.status !== HttpStatusCode.Ok) {
         throw new AssertionError({message: 'Document is not available.'});
       }
-      return response.data as Buffer;
+
+      return new FileResponse(response.headers['content-type'],
+        response.headers['originalfilename'],
+        response.data as Buffer);
     } catch (err: unknown) {
       logger.error(err);
       throw err;
