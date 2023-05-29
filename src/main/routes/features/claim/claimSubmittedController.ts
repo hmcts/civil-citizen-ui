@@ -1,8 +1,9 @@
 import {NextFunction, Router} from 'express';
 import {CASE_DOCUMENT_DOWNLOAD_URL, CLAIM_CONFIRMATION_URL} from '../../urls';
 import {getClaimById} from 'modules/utilityService';
-import {DocumentUri} from 'models/document/documentType';
+import {DocumentType} from 'models/document/documentType';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 
 const claimSubmittedView = 'features/claim/claim-submitted';
 const claimSubmittedController = Router();
@@ -15,7 +16,7 @@ claimSubmittedController.get(CLAIM_CONFIRMATION_URL, async (req, res, next: Next
 
     if(!claim.isEmpty()) {
       const claimNumber = claim.legacyCaseReference;
-      const downloadHref = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentType', DocumentUri.SEALED_CLAIM);
+      const downloadHref = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SEALED_CLAIM));
       const defendantFullName = claim.getDefendantFullName();
       const defendantResponseLimit = formatDateToFullDate(claim.respondent1ResponseDeadline, lang);
       const helpWithFee = claim.hasHelpWithFees();
