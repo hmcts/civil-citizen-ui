@@ -3,7 +3,7 @@ import {CP_UPLOAD_DOCUMENTS_URL} from '../../urls';
 import {Claim} from 'models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {getWitnessContent} from 'services/features/caseProgression/witnessService';
-import {getTrialContent} from "services/features/caseProgression/trialService";
+import {getTrialContent} from 'services/features/caseProgression/trialService';
 
 const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
 const uploadDocumentsController = Router();
