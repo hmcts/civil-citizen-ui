@@ -274,4 +274,18 @@ describe('Civil Service Client', () => {
       await expect(civilServiceClient.assignDefendantToClaim('1', mockedAppRequest)).rejects.toThrow('error');
     });
   });
+
+  describe('getResponseDeadlineDate', () => {
+    it('should return response deadline date successfully', async () => {
+      //Given
+      const responseDeadlineDate = new Date(2023, 6, 22);
+      const mockGet = jest.fn().mockResolvedValue({data: responseDeadlineDate});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //When
+      const deadlineDate= await civilServiceClient.getAgreedDeadlineResponseDate('1', mockedAppRequest);
+      //Then
+      expect(deadlineDate).toBe(responseDeadlineDate);
+    });
+  });
 });
