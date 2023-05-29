@@ -75,12 +75,13 @@ if (env !== 'test') {
 const checkServiceAvailability = async (_req: express.Request, res: express.Response, next: express.NextFunction) => {
   logger.info(`Checking for service availability... ${await isServiceAvailable()}`);
   // TODO: get date from launchdarkly
-  const date = '2023-01-20';
+  const date:string = null;
+  // const date = '2023-01-20';
   if (await isServiceAvailable()) {
     next();
   } else {
     if (date) {
-      res.render('service-unavailable-specific-date', {date: dateFilter(date)});
+      res.render('service-unavailable', {date: dateFilter(date)});
     } else {
       res.render('service-unavailable');
     }
