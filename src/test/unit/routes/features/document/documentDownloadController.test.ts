@@ -27,7 +27,7 @@ describe('Document download controller', () => {
     it('should download the pdf successfully', async () => {
 
       app.locals.draftStoreClient = mockCivilClaimPDFTimeline;
-      const mockDownloadPDFDocument = jest.spyOn(documentUtils, 'downloadPDF');
+      const mockDownloadPDFDocument = jest.spyOn(documentUtils, 'downloadFile');
 
       nock('http://localhost:4000')
         .get('/cases/:id')

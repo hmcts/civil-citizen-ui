@@ -1,5 +1,5 @@
 import {Claim} from 'common/models/claim';
-import Axios, {AxiosInstance, AxiosResponse, HttpStatusCode} from 'axios';
+import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
 import {AppRequest} from 'common/models/AppRequest';
 import {CivilClaimResponse, ClaimFeeData} from 'common/models/civilClaimResponse';
@@ -23,7 +23,7 @@ import {CaseEvent} from 'models/events/caseEvent';
 import {CourtLocation} from 'models/courts/courtLocations';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
-import {FileResponse} from "models/FileResponse";
+import {FileResponse} from 'models/FileResponse';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -166,16 +166,15 @@ export class CivilServiceClient {
 
   async retrieveDocument(documentId: string) {
     try {
-      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL.replace(':documentId', documentId));
-      if (response.status !== HttpStatusCode.Ok) {
-        throw new AssertionError({message: 'Document is not available.'});
-      }
+      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL
+        .replace(':documentId', documentId));
 
       return new FileResponse(response.headers['content-type'],
         response.headers['originalfilename'],
         response.data as Buffer);
-    } catch (err: unknown) {
-      logger.error(err);
+
+    } catch (err) {
+      logger.error(`Error occurred: ${err.message}, http Code: ${err.code}`);
       throw err;
     }
   }
