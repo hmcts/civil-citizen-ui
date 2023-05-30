@@ -4,8 +4,8 @@ import {
   mockRedisFailure,
 } from '../../../../utils/mockDraftStore';
 import {
+  CP_UPLOAD_DOCUMENTS_URL,
   TYPES_OF_DOCUMENTS_URL,
-  UPLOAD_YOUR_DOCUMENTS_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {app} from '../../../../../main/app';
@@ -71,7 +71,7 @@ describe('Upload document- type of documents controller', () => {
         })
         .expect((res: express.Response) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(UPLOAD_YOUR_DOCUMENTS_URL.replace(':id', 'aaa'));
+          expect(res.get('location')).toBe(CP_UPLOAD_DOCUMENTS_URL.replace(':id', 'aaa'));
         });
     });
   });
