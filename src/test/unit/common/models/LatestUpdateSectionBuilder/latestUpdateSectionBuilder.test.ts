@@ -32,7 +32,7 @@ describe('LatestUpdateSectionBuilder tests', ()=> {
       data: {
         text: 'text',
         href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', '1234')
-          .replace(':documentType', 'documentUri'),
+          .replace(':documentId', 'documentUri'),
         textAfter: 'textAfter',
         variables: 'variables',
       },

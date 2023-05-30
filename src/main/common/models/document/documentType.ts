@@ -11,18 +11,7 @@ export enum DocumentType {
   SDO_ORDER = 'SDO_ORDER',
   HEARING_FORM = 'HEARING_FORM'
 }
-export enum DocumentUri {
-  SEALED_CLAIM = 'sealed-claim',
-  ACKNOWLEDGEMENT_OF_CLAIM = 'acknowledgement-of-claim',
-  ACKNOWLEDGEMENT_OF_SERVICE = 'acknowledgement-of-service',
-  DIRECTIONS_QUESTIONNAIRE = 'directions-questionnaire',
-  DEFENDANT_DEFENCE = 'defendant-defence',
-  DEFENDANT_DRAFT_DIRECTIONS = 'defendant-draft-directions',
-  DEFAULT_JUDGMENT = 'default-judgement',
-  CLAIMANT_DEFENCE = 'claimant-defence',
-  CLAIMANT_DRAFT_DIRECTIONS = 'claimant-draft-directions',
-  SDO_ORDER = 'sdo-order'
-}
+
 export enum EvidenceUploadWitness {
   YOUR_STATEMENT='YOUR_STATEMENT',
   WITNESS_STATEMENT='WITNESS_STATEMENT',
