@@ -36,7 +36,6 @@ export const getCaseDataFromStore = async (claimId: string): Promise<Claim> => {
   const claim: Claim = new Claim();
   Object.assign(claim, civilClaimResponse?.case_data);
   claim.id = civilClaimResponse?.id;
-  claim.ccdState = civilClaimResponse?.state;
   return claim;
 };
 
