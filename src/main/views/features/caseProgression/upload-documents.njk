@@ -5,18 +5,14 @@
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "../dashboard/claim-summary-content.njk" import claimSummaryContent %}
+{%- from "govuk/components/fieldset/macro.njk" import govukFieldset -%}
 
 {% block pageTitle %}
 {{ setPageTitle('PAGES.EVIDENCE.PAGE_TITLE') }}
 {% endblock %}
 {% block content %}
-<div class="govuk-width-container">
+<div class="govuk-width-container caseProgression">
   <main class="govuk-main-wrapper" role="main">
-    {% set rowNumberToShowRemoveButton = 2 %}
-    {% set witnessContentLength = witnessContent.length %}
-    {% set isWitnessRemoveButtonHidden = witnessContentLength < rowNumberToShowRemoveButton %}
-    {% set trialContentLength = trialContent.length %}
-    {% set isTrialRemoveButtonHidden = trialContentLength < rowNumberToShowRemoveButton %}
     {% set titleH1 = t('PAGES.UPLOAD_DOCUMENTS.TITLE') %}
     {% set titleH2 = t('PAGES.UPLOAD_DOCUMENTS.SUBTITLE') %}
     {% set paragraph = t('PAGES.UPLOAD_DOCUMENTS.FORMAT') %}
@@ -32,74 +28,45 @@
           <p class="govuk-body-m">{{ paragraph }}</p>
           <hr class="govuk-section-break--s govuk-section-break--visible">
 
-          {% if witnessContent.length > 0 %}
-            <h2 class="govuk-heading-l">{{ witness }}</h2>
-            {% for witnessSection in witnessContent %}
-            <div class="row-container">
-              <div class="multiple-row">
-                {% if isWitnessRemoveButtonHidden %}
-                {{ govukButton({
-                text: t('PAGES.UPLOAD_DOCUMENTS.REMOVE_SECTION'),
-                classes: "govuk-button--secondary remove-row govuk-visually-hidden float-right"
-                }) }}
-                {% else %}
-                {{ govukButton({
-                text: t('PAGES.UPLOAD_DOCUMENTS.REMOVE_SECTION'),
-                classes: "govuk-button--secondary remove-row float-right"
-                }) }}
-                {% endif %}
-                {{ claimSummaryContent({
-                contentSections: witnessSection.contentSections
-                }) }}
-                <hr class="govuk-section-break--s govuk-section-break--visible">
-              </div>
-            </div>
-            <div class="govuk-!-margin-top-6">
-              {{ govukButton({
-              text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
-              classes: 'govuk-button--secondary append-row'
-              }) }}
-            </div>
-            {% endfor %}
-          {% endif %}
-
           {% if trialContent.length > 0 %}
             <h2 class="govuk-heading-l">{{ trial }}</h2>
             {% for trialSections in trialContent %}
               <div class="row-container">
-                <div class="multiple-row">
-                  {% if isTrialRemoveButtonHidden %}
-                    {{ govukButton({
-                      text: t('PAGES.UPLOAD_DOCUMENTS.REMOVE_SECTION'),
-                      classes: "govuk-button--secondary remove-row govuk-visually-hidden float-right"
+                <div data-module="moj-add-another">
+                  {% call govukFieldset({
+                    classes: 'moj-add-another__item',
+                    legend: {
+                      classes: 'moj-add-another__title',
+                      isPageHeading: false
+                    }
+                  }) %}
+                    {{ claimSummaryContent({
+                      contentSections: trialSections.contentSections
                     }) }}
-                  {% else %}
-                    {{ govukButton({
-                      text: t('PAGES.UPLOAD_DOCUMENTS.REMOVE_SECTION'),
-                      classes: "govuk-button--secondary remove-row float-right"
-                    }) }}
-                  {% endif %}
-                  {{ claimSummaryContent({
-                    contentSections: trialSections.contentSections
-                  }) }}
-                  <div class="govuk-!-margin-top-6">
+                  {% endcall %}
+                  <div class="moj-button-action">
                     {{ govukButton({
                       text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
-                      classes: 'govuk-button--secondary append-row'
+                      classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
+                      type: 'button',
+                      attributes: {
+                        'id': 'add-another-trial-list'
+                      }
                     }) }}
-                    <hr class="govuk-section-break--s govuk-section-break--visible">
                   </div>
+                  <hr class="govuk-section-break--s govuk-section-break--visible">
                 </div>
               </div>
             {% endfor %}
           {% endif %}
 
-          <div class="govuk-form-group">
+          <div class="govuk-button-group">
             {{ govukButton({
-            text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+              text: t('COMMON.BUTTONS.CONTINUE')
             }) }}
+            <a href= {{ latestUploadUrl }} class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener"> {{ t('COMMON.BUTTONS.CANCEL') }} </a>
           </div>
-          {{ contactUsForHelp(t) }}
+            {{ contactUsForHelp(t) }}
         </div>
       </form>
     </div>

@@ -18,7 +18,7 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
     return this;
   }
 
-  addCustomDateInput(title:string, hint:string, category:string) {
+  addDateArray(title:string, hint:string, category:string) {
     const section = ({
       type: ClaimSummaryType.DATE_ARRAY,
       data: {
@@ -33,7 +33,7 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
     return this;
   }
 
-  addUploadArray(title:string, html:string, category:string, field:string, button:string) {
+  addUploadArray(title:string, html:string, category:string, field:string) {
     const section = ({
       type: ClaimSummaryType.UPLOAD_ARRAY,
       data: {
@@ -41,7 +41,6 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
         field: field,
         text: title,
         html: html,
-        button: button,
       },
     });
     this._claimSummarySections.push(section);

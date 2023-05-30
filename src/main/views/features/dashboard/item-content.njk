@@ -127,9 +127,6 @@
         label: {
           html: '<strong>'+ t(content.data.text)+'</strong>'
         },
-        hint: {
-          text: t(content.data.hint)
-        },
         attributes: {
           'data-name': content.data.category+'[%index%]'+content.data.field,
           'data-id': content.data.category+'[%index%]'+content.data.field
@@ -178,7 +175,7 @@
             id: content.data.category+'[0]'+content.data.field+'-year',
             name: content.data.category+'[0]'+content.data.field+'-year',
             label: "Year",
-            classes: "govuk-input--width-2",
+            classes: "govuk-input--width-3",
             attributes: {
             'data-name': content.data.category+'[%index%]'+content.data.field+'-year',
             'data-id': content.data.category+'[%index%]'+content.data.field+'-year'
@@ -195,17 +192,12 @@
         id: content.data.category+'[0]'+content.data.field,
         name: content.data.category+'[0]'+content.data.field,
         label: {
-          html: '<strong>'+t(content.data.text)+'</strong><hr class="govuk-section-break--s govuk-section-break--visible">'+t(content.data.html)+'</strong><hr class="govuk-section-break--s govuk-section-break--visible">'
+          html: '<strong>'+t(content.data.text)+'</strong><hr class="govuk-section-break--s govuk-section-break--visible">'+t(content.data.html)
         },
         attributes: {
           'data-name': content.data.category+'[%index%]'+content.data.field,
           'data-id': content.data.category+'[%index%]'+content.data.field
         }
-      }) }}
-      {{ govukButton({
-        text: t(content.data.button),
-        classes: 'govuk-button--secondary append-row',
-        disabled: true
       }) }}
     </div>
   {% endif %}
