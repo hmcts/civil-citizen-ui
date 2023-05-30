@@ -29,7 +29,7 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
     return this;
   }
 
-  addCustomDateInput(title:string, hint:string, category:string) {
+  addDateArray(title:string, hint:string, category:string) {
     const section = ({
       type: ClaimSummaryType.DATE_ARRAY,
       data: {

@@ -63,42 +63,16 @@
             {% endfor %}
           {% endif %}
 
-          <h2 class="govuk-heading-l">{{ witness }}</h2>
-          {% for witnessSection in witnessContent %}
-          <div class="row-container">
-            <div class="multiple-row">
-              {% if isRemoveButtonHidden %}
-              {{ govukButton({
-              text: t('PAGES.UPLOAD_DOCUMENTS.REMOVE_SECTION'),
-              classes: "govuk-button--secondary remove-row govuk-visually-hidden float-right"
-              }) }}
-              {% else %}
-              {{ govukButton({
-              text: t('PAGES.UPLOAD_DOCUMENTS.REMOVE_SECTION'),
-              classes: "govuk-button--secondary remove-row float-right"
-              }) }}
-              {% endif %}
-              {{ claimSummaryContent({
-              contentSections: witnessSection.contentSections
-              }) }}
-              <hr class="govuk-section-break--s govuk-section-break--visible">
-            </div>
-          </div>
-          {% endfor %}
-          <div class="govuk-!-margin-top-6">
+          <br>
+          <div class="govuk-button-group">
             {{ govukButton({
-            text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
-            classes: 'govuk-button--secondary append-row'
+              text: t('COMMON.BUTTONS.CONTINUE')
             }) }}
+            <a href={{ latestUploadUrl }} class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
           </div>
-          <div class="govuk-form-group">
-            {{ govukButton({
-            text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
-            }) }}
-          </div>
+          {{ contactUsForHelp(t) }}
         </div>
       </form>
-      {{ contactUsForHelp(t) }}
     </div>
 </main>
 </div>
