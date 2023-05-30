@@ -35,6 +35,9 @@ const MOCK_REQUEST = () => {
     session: {
       claimId: CLAIM_ID,
     },
+    params: {
+      id: CLAIM_ID,
+    },
   } as unknown as express.Request;
 };
 
