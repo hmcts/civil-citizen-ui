@@ -24,7 +24,6 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          {{ csrfProtection(csrf) }}
 
           {% for content in cancelYourUploadContents %}
             {{ itemContent(content,t) }}
