@@ -6,7 +6,11 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getTaskLists, outstandingTasksFromTaskLists} from 'services/features/common/taskListService';
 import {TaskList} from 'models/taskList/taskList';
 import {Task} from 'models/taskList/task';
-import {AppRequest} from 'models/AppRequest';
+import * as utilityService from 'modules/utilityService';
+import {Claim} from 'models/claim';
+import nock from 'nock';
+import {CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE} from 'client/civilServiceUrls';
+import config from 'config';
 
 jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
@@ -14,6 +18,7 @@ jest.mock('../../../../main/modules/draft-store');
 jest.mock('../../../../main/routes/features/response/checkAnswersController');
 jest.mock('../../../../main/services/features/common/taskListService');
 jest.mock('../../../../main/modules/i18n');
+jest.mock('../../../../main/modules/utilityService');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
@@ -22,7 +27,7 @@ jest.mock('i18next', () => ({
 const mockGetTaskList = getTaskLists as jest.Mock;
 const mockOutstandingTasksFromTaskLists = outstandingTasksFromTaskLists as jest.Mock;
 
-const CLAIM_ID = 'aaa';
+const CLAIM_ID = '1';
 const respondentIncompleteSubmissionUrl = constructResponseUrlWithIdParams(CLAIM_ID, RESPONSE_INCOMPLETE_SUBMISSION_URL);
 
 const MOCK_REQUEST = () => {
@@ -30,7 +35,7 @@ const MOCK_REQUEST = () => {
     session: {
       claimId: CLAIM_ID,
     },
-  } as unknown as AppRequest;
+  } as unknown as express.Request;
 };
 
 const MOCK_RESPONSE = {
@@ -39,9 +44,23 @@ const MOCK_RESPONSE = {
 
 const MOCK_NEXT = jest.fn() as express.NextFunction;
 
+const mockGetClaimById = utilityService.getClaimById as jest.Mock;
+const civilServiceUrl = config.get<string>('services.civilService.url');
+nock(civilServiceUrl)
+  .get(CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE.replace(':claimId', '1'))
+  .reply(200, new Date());
+
 describe('Response - Incomplete Submission', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    nock(civilServiceUrl)
+      .get(CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE.replace(':claimId', '1'))
+      .reply(200, new Date());
+    mockGetClaimById.mockImplementation(async () => {
+      const claim = new Claim();
+      claim.id = '1';
+      return claim;
+    });
   });
 
   describe('on GET', () => {
@@ -49,6 +68,7 @@ describe('Response - Incomplete Submission', () => {
     it('should call next middleware function which will render check answers screen', async () => {
       //Given
       const mockRequest = MOCK_REQUEST();
+
       mockGetTaskList.mockImplementation(() => {
         return [{
           title: 'Task List',
