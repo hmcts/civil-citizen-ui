@@ -35,9 +35,6 @@ const MOCK_REQUEST = () => {
     session: {
       claimId: CLAIM_ID,
     },
-    params: {
-      id: CLAIM_ID,
-    },
   } as unknown as express.Request;
 };
 
@@ -49,9 +46,6 @@ const MOCK_NEXT = jest.fn() as express.NextFunction;
 
 const mockGetClaimById = utilityService.getClaimById as jest.Mock;
 const civilServiceUrl = config.get<string>('services.civilService.url');
-nock(civilServiceUrl)
-  .get(CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE.replace(':claimId', '1'))
-  .reply(200, new Date());
 
 describe('Response - Incomplete Submission', () => {
   beforeEach(() => {

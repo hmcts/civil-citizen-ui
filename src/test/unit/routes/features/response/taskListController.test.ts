@@ -4,9 +4,12 @@ import nock from 'nock';
 import config from 'config';
 import {RESPONSE_TASK_LIST_URL} from '../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE} from 'client/civilServiceUrls';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+
+const civilServiceUrl = config.get<string>('services.civilService.url');
 
 describe('Claimant details', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -17,6 +20,9 @@ describe('Claimant details', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    nock(civilServiceUrl)
+      .get(CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE.replace(':claimId', '1645882162449409'))
+      .reply(200, new Date());
   });
 
   describe('on GET', () => {
