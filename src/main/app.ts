@@ -17,7 +17,7 @@ import {CSRFToken} from './modules/csrf';
 import routes from './routes/routes';
 import {setLanguage} from 'modules/i18n/languageService';
 import {isServiceAvailable} from 'app/auth/launchdarkly/launchDarklyClient';
-import { dateFilter } from 'modules/nunjucks/filters/dateFilter';
+// import { dateFilter } from 'modules/nunjucks/filters/dateFilter';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const { setupDev } = require('./development');
@@ -73,18 +73,12 @@ if (env !== 'test') {
 }
 
 const checkServiceAvailability = async (_req: express.Request, res: express.Response, next: express.NextFunction) => {
-  logger.info(`Checking for service availability... ${await isServiceAvailable()}`);
-  // TODO: get date from launchdarkly
-  const date:string = null;
-  // const date = '2023-01-20';
-  if (await isServiceAvailable()) {
+  const isAvailable = await isServiceAvailable();
+  logger.info(`Checking for service availability... ${isAvailable}`);
+  if (isAvailable) {
     next();
   } else {
-    if (date) {
-      res.render('service-unavailable', {date: dateFilter(date)});
-    } else {
-      res.render('service-unavailable');
-    }
+    res.render('service-unavailable');
   }
 }
 

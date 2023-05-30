@@ -1,4 +1,3 @@
-
 import config from 'config';
 import {LDClient, init, LDFlagValue} from 'launchdarkly-node-server-sdk';
 
@@ -28,11 +27,6 @@ export async function isCaseProgressionV1Enable(): Promise<boolean> {
   return await getFlagValue('cui-case-progression') as boolean;
 }
 
-export async function isServiceAvailable(): Promise<boolean> {
-  return false;
-  // return await getFlagValue('cui-service-available') as boolean;
+export async function isServiceAvailable(): Promise<any> {
+  return await getFlagValue('shutter-cui-service') as any;
 }
-
-// export async function getKeyValue<T>(key: string): Promise<T> {
-//   return await getFlagValue(key) as T;
-// }
