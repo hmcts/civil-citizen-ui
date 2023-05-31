@@ -6,7 +6,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getTaskLists, outstandingTasksFromTaskLists} from 'services/features/common/taskListService';
 import {TaskList} from 'models/taskList/taskList';
 import {Task} from 'models/taskList/task';
-import {setResponseDeadline} from 'services/features/common/responseDeadlineService';
+import {setResponseDeadline} from 'services/features/common/responseDeadlineAgreedService';
 
 jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
@@ -15,7 +15,7 @@ jest.mock('../../../../main/routes/features/response/checkAnswersController');
 jest.mock('../../../../main/services/features/common/taskListService');
 jest.mock('../../../../main/modules/i18n');
 jest.mock('../../../../main/modules/utilityService');
-jest.mock('../../../../main/services/features/common/responseDeadlineService');
+jest.mock('../../../../main/services/features/common/responseDeadlineAgreedService');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

@@ -4,7 +4,7 @@ import {getTaskLists, outstandingTasksFromTaskLists} from 'services/features/com
 import assert from 'assert';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {Claim} from 'models/claim';
-import {setResponseDeadline} from 'services/features/common/responseDeadlineService';
+import {setResponseDeadline} from 'services/features/common/responseDeadlineAgreedService';
 import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 export class AllResponseTasksCompletedGuard {

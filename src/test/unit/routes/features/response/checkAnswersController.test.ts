@@ -12,7 +12,7 @@ import {SummarySections} from 'models/summaryList/summarySections';
 import {TaskStatus} from 'models/taskList/TaskStatus';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {isFullAmountReject} from 'modules/claimDetailsService';
-import {setResponseDeadline} from 'services/features/common/responseDeadlineService';
+import {setResponseDeadline} from 'services/features/common/responseDeadlineAgreedService';
 
 const request = require('supertest');
 const {app} = require('../../../../../main/app');
@@ -22,7 +22,7 @@ const data = require('../../../../utils/mocks/defendantClaimsMock.json');
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/claimDetailsService');
 jest.mock('../../../../../main/services/features/response/checkAnswers/checkAnswersService');
-jest.mock('../../../../../main/services/features/common/responseDeadlineService');
+jest.mock('../../../../../main/services/features/common/responseDeadlineAgreedService');
 jest.mock('../../../../../main/services/features/common/taskListService', () => ({
   ...jest.requireActual('../../../../../main/services/features/common/taskListService') as Module,
   getTaskLists: jest.fn(() => TASK_LISTS),

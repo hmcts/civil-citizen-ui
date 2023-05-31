@@ -4,11 +4,11 @@ import nock from 'nock';
 import config from 'config';
 import {RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
-import {setResponseDeadline} from 'services/features/common/responseDeadlineService';
+import {setResponseDeadline} from 'services/features/common/responseDeadlineAgreedService';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/services/features/common/responseDeadlineService');
+jest.mock('../../../../../main/services/features/common/responseDeadlineAgreedService');
 
 const mockSetResponseDeadline = setResponseDeadline as jest.Mock;
 
