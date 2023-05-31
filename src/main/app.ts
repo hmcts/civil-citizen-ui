@@ -79,7 +79,7 @@ const checkServiceAvailability = async (_req: express.Request, res: express.Resp
   } else {
     next();
   }
-}
+};
 
 app.use(checkServiceAvailability);
 
