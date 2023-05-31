@@ -67,9 +67,6 @@ app.use((_req, res, next) => {
   );
   next();
 });
-if (env !== 'test') {
-  new CSRFToken().enableFor(app);
-}
 
 const checkServiceAvailability = async (_req: express.Request, res: express.Response, next: express.NextFunction) => {
   const serviceShuttered = await isServiceShuttered();
@@ -81,7 +78,10 @@ const checkServiceAvailability = async (_req: express.Request, res: express.Resp
   }
 };
 
-app.use(checkServiceAvailability);
+if (env !== 'test') {
+  new CSRFToken().enableFor(app);
+  app.use(checkServiceAvailability);
+}
 
 app.use(routes);
 
