@@ -5,18 +5,12 @@
   {{ setPageTitle('PAGES.SERVICE_UNAVAILABLE.PAGE_TITLE') }}
 {% endblock %}
 
-{% if date %}
-  {% set text = t('PAGES.SERVICE_UNAVAILABLE.YOU_WILL_BE_ABLE_ON', {date: date}) %}
-{% else %}
-  {% set text = t('PAGES.SERVICE_UNAVAILABLE.YOU_WILL_BE_ABLE_LATER') %}
-{% endif %}
-
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-l">{{ t('PAGES.SERVICE_UNAVAILABLE.SORRY') }}</h1>
       <p class="govuk-body">
-        {{ text }}
+        {{ t('PAGES.SERVICE_UNAVAILABLE.YOU_WILL_BE_ABLE_LATER') }}
       </p>
       <p class="govuk-body">
         <a class="govuk-link" href="#">{{ t('PAGES.SERVICE_UNAVAILABLE.CONTACT') }}</a> 
