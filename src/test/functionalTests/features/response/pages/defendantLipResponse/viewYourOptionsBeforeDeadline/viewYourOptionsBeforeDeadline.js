@@ -1,4 +1,3 @@
-const {isValidLocalDateAndTimeString} = require("jsdom/lib/jsdom/living/helpers/dates-and-times");
 const I = actor();
 
 const fields ={
@@ -9,18 +8,16 @@ const fields ={
   day: 'input[id="day"]',
   month: 'input[id="month"]',
   year: 'input[id="year"]',
-
 };
 const buttons = {
   continue: 'a.govuk-button',
   saveAndContinue:'button.govuk-button',
 };
 
-let dateInImmediateFuture = new Date();
-dateInImmediateFuture.setTime(dateInImmediateFuture.getTime() + 500 * 60);
-const extendedDay = dateInImmediateFuture.getDate()- 20;
-const extendedMonth =  parseInt(dateInImmediateFuture.getMonth()+ 3);
-const extendedYear = dateInImmediateFuture.getFullYear();
+const newDate = new Date(new Date().setMonth(new Date().getMonth()+3));
+const extendedDay = newDate.getDay();
+const extendedMonth = newDate.getMonth();
+const extendedYear = newDate.getFullYear();
 
 class ViewYourOptionsBeforeDeadline {
 
