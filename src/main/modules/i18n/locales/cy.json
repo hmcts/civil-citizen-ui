@@ -2052,10 +2052,10 @@
     "SHARED_EXPERT": {
       "IF_YOU_SHARE": "Os byddwch yn rhannu arbenigwr, byddwch hefyd yn rhannu’r costau oni bai bod y barnwr yn penderfynu bod rhaid i un parti dalu cyfran y parti arall.",
       "PAGE_TITLE": "Ydych chi eisiau rhannu arbenigwr gyda’r hawlydd?",
-      "PREPARE_REPORT": "Byddant yn paratoi adroddiad ar gyfer y llys ar ran dau neu fwy o’r partïon, gan gynnwys yr hawlydd.",
+      "PREPARE_REPORT": "Byddant yn paratoi adroddiad ar gyfer y llys ar ran dau neu fwy o’r partïon, gan gynnwys y parti arall.”",
       "SINGLE_JOINT_EXPERT": "Gelwir hyn yn ‘arbenigwr sengl ar y cyd’.",
       "WITH_CLAIMANT": "Do you want to share an expert with the claimant",
-      "TITLE": "Ydych chi eisiau rhannu arbenigwr gyda’r hawlydd?"
+      "TITLE": "Ydych chi eisiau rhannu arbenigwr gyda’r parti arall?”"
     },
     "SPECIFIC_COURT": {
       "EXPlANATION": "Gallwch ofyn am gynnal y gwrandawiad mewn llys penodol, er enghraifft, os ydych yn treulio dyddiau'r wythnos yn bell o'ch cartref. Bydd y llys yn ystyried amgylchiadau'r ddau barti wrth benderfynu ble i gynnal y gwrandawiad.",
