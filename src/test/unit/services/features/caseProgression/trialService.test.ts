@@ -43,6 +43,171 @@ describe('Trial service', () => {
     expect(actualDisclosureContent[4].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.DOCUMENTARY');
   });
 
+  it('should return section 1 if selected', () => {
+    //Given
+    const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+        caseProgression: {
+          defendantUploadDocuments : {
+            trial: [
+              {documentType: 'CASE_SUMMARY', selected: true},
+              {documentType: 'SKELETON', selected: false},
+              {documentType: 'LEGAL', selected: false},
+              {documentType: 'COSTS', selected: false},
+              {documentType: 'DOCUMENTARY', selected: false},
+            ],
+          },
+        },
+      },
+    };
+
+    //when
+    const actualDisclosureContent = getTrialContent(testClaim.id, testClaim.case_data);
+
+    //Then
+    expect(actualDisclosureContent.length).toEqual(1);
+
+    expect(actualDisclosureContent[0].contentSections.length).toEqual(2);
+
+    expect(actualDisclosureContent[0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.CASE_SUMMARY');
+  });
+
+  it('should return section 2 if selected', () => {
+    //Given
+    const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+        caseProgression: {
+          defendantUploadDocuments : {
+            trial: [
+              {documentType: 'CASE_SUMMARY', selected: false},
+              {documentType: 'SKELETON', selected: true},
+              {documentType: 'LEGAL', selected: false},
+              {documentType: 'COSTS', selected: false},
+              {documentType: 'DOCUMENTARY', selected: false},
+            ],
+          },
+        },
+      },
+    };
+
+    //when
+    const actualDisclosureContent = getTrialContent(testClaim.id, testClaim.case_data);
+
+    //Then
+    expect(actualDisclosureContent.length).toEqual(1);
+
+    expect(actualDisclosureContent[0].contentSections.length).toEqual(2);
+
+    expect(actualDisclosureContent[0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.SKELETON');
+  });
+
+  it('should return section 3 if selected', () => {
+    //Given
+    const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+        caseProgression: {
+          defendantUploadDocuments : {
+            trial: [
+              {documentType: 'CASE_SUMMARY', selected: false},
+              {documentType: 'SKELETON', selected: false},
+              {documentType: 'LEGAL', selected: true},
+              {documentType: 'COSTS', selected: false},
+              {documentType: 'DOCUMENTARY', selected: false},
+            ],
+          },
+        },
+      },
+    };
+
+    //when
+    const actualDisclosureContent = getTrialContent(testClaim.id, testClaim.case_data);
+
+    //Then
+    expect(actualDisclosureContent.length).toEqual(1);
+
+    expect(actualDisclosureContent[0].contentSections.length).toEqual(2);
+
+    expect(actualDisclosureContent[0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.LEGAL');
+  });
+
+  it('should return section 4 if selected', () => {
+    //Given
+    const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+        caseProgression: {
+          defendantUploadDocuments : {
+            trial: [
+              {documentType: 'CASE_SUMMARY', selected: false},
+              {documentType: 'SKELETON', selected: false},
+              {documentType: 'LEGAL', selected: false},
+              {documentType: 'COSTS', selected: true},
+              {documentType: 'DOCUMENTARY', selected: false},
+            ],
+          },
+        },
+      },
+    };
+
+    //when
+    const actualDisclosureContent = getTrialContent(testClaim.id, testClaim.case_data);
+
+    //Then
+    expect(actualDisclosureContent.length).toEqual(1);
+
+    expect(actualDisclosureContent[0].contentSections.length).toEqual(2);
+
+    expect(actualDisclosureContent[0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.COSTS');
+  });
+
+  it('should return section 5 if selected', () => {
+    //Given
+    const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+        caseProgression: {
+          defendantUploadDocuments : {
+            trial: [
+              {documentType: 'CASE_SUMMARY', selected: false},
+              {documentType: 'SKELETON', selected: false},
+              {documentType: 'LEGAL', selected: false},
+              {documentType: 'COSTS', selected: false},
+              {documentType: 'DOCUMENTARY', selected: true},
+            ],
+          },
+        },
+      },
+    };
+
+    //when
+    const actualDisclosureContent = getTrialContent(testClaim.id, testClaim.case_data);
+
+    //Then
+    expect(actualDisclosureContent.length).toEqual(1);
+
+    expect(actualDisclosureContent[0].contentSections.length).toEqual(4);
+
+    expect(actualDisclosureContent[0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.DOCUMENTARY');
+  });
+
   it('should return no section if nothing selected', () => {
     //Given
     const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
