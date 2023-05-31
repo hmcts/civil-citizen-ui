@@ -1,7 +1,6 @@
 import {Claim} from 'models/claim';
 import {CaseState} from 'form/models/claimDetails';
 import {PartyType} from 'models/partyType';
-import {DocumentUri} from 'models/document/documentType';
 import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
 import {
   buildEvidenceUploadSection, buildHearingTrialLatestUploadSection,
@@ -10,6 +9,9 @@ import {ClaimSummaryType} from 'form/models/claimSummarySection';
 import {LatestUpdateSectionBuilder} from 'models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 import {FAST_TRACK_CLAIM_AMOUNT, SMALL_CLAIM_AMOUNT} from 'form/models/claimType';
 import {getCaseProgressionHearingMock} from '../../../../../../../utils/caseProgression/mockCaseProgressionHearing';
+import {
+  SystemGeneratedCaseDocumentsWithSEALEDCLAIMAndSDOMock,
+} from '../../../../../../../utils/mocks/SystemGeneratedCaseDocumentsMock';
 
 const lang = 'en';
 describe('Latest Update Content Builder Case Progression', () => {
@@ -23,7 +25,8 @@ describe('Latest Update Content Builder Case Progression', () => {
       partyName: partyName,
     },
   };
-  const sdoUrl = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentType', DocumentUri.SDO_ORDER);
+  claim.systemGeneratedCaseDocuments = SystemGeneratedCaseDocumentsWithSEALEDCLAIMAndSDOMock();
+  const sdoUrl = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentId', '123');
 
   describe('test buildEvidenceUploadSection', () => {
     it('should have evidence upload content with bundle deadline', () => {
