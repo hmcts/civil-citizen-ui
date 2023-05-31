@@ -9,33 +9,23 @@ export const getTrialContent = (claimId: string, claim: Claim): ClaimSummaryCont
   const sectionContent: any[] = [];
 
   if(claim.caseProgression?.defendantUploadDocuments?.trial[0]?.selected) {
-    const trialCaseSummarySection = buildTrialCaseSummarySection();
-    const trialCaseSummaryContent = [trialCaseSummarySection];
-    sectionContent.push(trialCaseSummaryContent);
+    sectionContent.push([buildTrialCaseSummarySection()]);
   }
 
   if(claim.caseProgression?.defendantUploadDocuments?.trial[1]?.selected) {
-    const trialSkeletonSection = buildTrialSkeletonSection();
-    const trialSkeletonContent = [trialSkeletonSection];
-    sectionContent.push(trialSkeletonContent);
+    sectionContent.push([buildTrialSkeletonSection()]);
   }
 
   if(claim.caseProgression?.defendantUploadDocuments?.trial[2]?.selected) {
-    const trialLegalSection = buildTrialLegalSection();
-    const trialLegalContent = [trialLegalSection];
-    sectionContent.push(trialLegalContent);
+    sectionContent.push([buildTrialLegalSection()]);
   }
 
   if(claim.caseProgression?.defendantUploadDocuments?.trial[3]?.selected) {
-    const trialCostSection = buildTrialCostSection();
-    const trialCostContent = [trialCostSection];
-    sectionContent.push(trialCostContent);
+    sectionContent.push([buildTrialCostSection()]);
   }
 
   if(claim.caseProgression?.defendantUploadDocuments?.trial[4]?.selected) {
-    const trialDocumentarySection = buildTrialDocumentarySection();
-    const trialDocumentaryContent = [trialDocumentarySection];
-    sectionContent.push(trialDocumentaryContent);
+    sectionContent.push([buildTrialDocumentarySection()]);
   }
 
   return sectionContent.flat().map((sectionContent, index) => ({
