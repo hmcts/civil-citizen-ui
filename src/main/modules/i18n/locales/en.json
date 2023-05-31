@@ -1573,6 +1573,14 @@
       "UPLOAD_MORE_DOCUMENTS_MID": "upload more documents",
       "UPLOAD_MORE_DOCUMENTS_END": "now or come back later. You can view your documents and the other party's documents."
     },
+    "EVIDENCE_UPLOAD_CANCEL": {
+      "HEADING": "Document upload",
+      "TITLE": "Cancel document upload",
+      "CASE_REFERENCE": "Case reference: {{ claimId }}",
+      "PARTIES": "{{ claimantName }} v {{ defendantName }}",
+      "WARNING_CANCEL": "<span class=\"govuk-body govuk-!-font-weight-bold\">Warning</span> </br> If you cancel, you will lose all unsubmitted information and documents.",
+      "ARE_YOU_SURE": "Are you sure you want to cancel?"
+    },
     "MEDIATION_CAN_WE_USE": {
       "CAN_MEDIATION_USE": "Can the mediation service use {{ respondentTelNumber }} to call you?",
       "CONFIRM_YOUR_NUMBER": "Confirm your telephone number",
@@ -2044,7 +2052,7 @@
     "SHARED_EXPERT": {
       "IF_YOU_SHARE": "If you share an expert, you will also share the costs unless the judge decides that one party must pay the other party’s share.",
       "PAGE_TITLE": "Do you want to share an expert with the other party?",
-      "PREPARE_REPORT": "They will prepare a report for the court on behalf of two or more of the parties, including the claimant.",
+      "PREPARE_REPORT": "They will prepare a report for the court on behalf of two or more of the parties, including the other party.",
       "SINGLE_JOINT_EXPERT": "This is known as a ’single joint expert’.",
       "WITH_CLAIMANT": "Do you want to share an expert with the claimant",
       "TITLE": "Do you want to share an expert with the other party?"
