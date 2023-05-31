@@ -6,7 +6,8 @@ import {toCUIResponseDeadline} from 'services/translation/convertToCUI/convertTo
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 const setResponseDeadline = async (claim: Claim, req: AppRequest) => {
-  const agreedDeadlineDate: Date = await civilServiceClient.getAgreedDeadlineResponseDate(claim.id, req);
+  const claimId : string = claim.id ? claim.id : req.params.id;
+  const agreedDeadlineDate: Date = await civilServiceClient.getAgreedDeadlineResponseDate(claimId, req);
   claim.responseDeadline = toCUIResponseDeadline(agreedDeadlineDate);
 
 };

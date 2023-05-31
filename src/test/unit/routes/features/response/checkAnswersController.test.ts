@@ -62,9 +62,6 @@ describe('Response - Check answers', () => {
     nock(civilServiceUrl)
       .get('/cases/claimant/123')
       .reply(200, {data: data});
-    nock(civilServiceUrl)
-      .get('/cases/response/agreeddeadline/aaa')
-      .reply(200);
   });
 
   describe('on GET', () => {
@@ -89,9 +86,6 @@ describe('Response - Check answers', () => {
         });
     });
     it('should pass cy translation via query', async () => {
-      nock(civilServiceUrl)
-        .get('/cases/response/agreeddeadline/aaa')
-        .reply(200);
       await session(app).get(respondentCheckAnswersUrl)
         .query({lang: 'cy'})
         .expect((res: Response) => {
