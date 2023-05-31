@@ -236,4 +236,64 @@ describe('Trial service', () => {
     //Then
     expect(actualDisclosureContent.length).toEqual(0);
   });
+
+  it('should return no section if documentType not present', () => {
+    //Given
+    const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+        caseProgression: {
+          defendantUploadDocuments : {
+            trial: [],
+          },
+        },
+      },
+    };
+
+    //when
+    const actualDisclosureContent = getTrialContent(testClaim.id, testClaim.case_data);
+
+    //Then
+    expect(actualDisclosureContent.length).toEqual(0);
+  });
+
+  it('should return no section if defendantUploadDocuments not present', () => {
+    //Given
+    const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+        caseProgression: {},
+      },
+    };
+
+    //when
+    const actualDisclosureContent = getTrialContent(testClaim.id, testClaim.case_data);
+
+    //Then
+    expect(actualDisclosureContent.length).toEqual(0);
+  });
+
+  it('should return no section if caseProgression not present', () => {
+    //Given
+    const mockClaim = require('../../../../utils/mocks/civilClaimantIntentionMock.json');
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+      },
+    };
+
+    //when
+    const actualDisclosureContent = getTrialContent(testClaim.id, testClaim.case_data);
+
+    //Then
+    expect(actualDisclosureContent.length).toEqual(0);
+  });
 });
