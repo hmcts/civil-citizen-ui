@@ -199,6 +199,7 @@ import typeOfDocumentsController from './features/caseProgression/typeOfDocument
 import uploadDocumentsController from './features/caseProgression/uploadDocumentsController';
 import uploadYourDocumentsController from 'routes/features/caseProgression/uploadYourDocumentsController';
 import documentsUploadedController from 'routes/features/caseProgression/documentsUploadedController';
+import cancelYourUploadController from 'routes/features/caseProgression/cancelYourUploadController';
 
 export default [
   homeController,
@@ -386,4 +387,5 @@ export default [
   uploadDocumentsController,
   uploadYourDocumentsController,
   documentsUploadedController,
+  cancelYourUploadController,
 ];
