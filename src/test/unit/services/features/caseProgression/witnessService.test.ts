@@ -78,10 +78,10 @@ describe('Witness service', () => {
     };
 
     //when
-    const actualDisclosureContent = getWitnessContent(testClaim.case_data);
+    const actualWitnessContent = getWitnessContent(testClaim.case_data);
 
     //Then
-    expect(actualDisclosureContent.length).toEqual(0);
+    expect(actualWitnessContent.length).toEqual(0);
   });
 
   it('should return no section if caseProgression not present', () => {
@@ -96,9 +96,9 @@ describe('Witness service', () => {
     };
 
     //when
-    const actualDisclosureContent = getWitnessContent(testClaim.case_data);
+    const actualWitnessContent = getWitnessContent(testClaim.case_data);
 
     //Then
-    expect(actualDisclosureContent.length).toEqual(0);
+    expect(actualWitnessContent.length).toEqual(0);
   });
 });
