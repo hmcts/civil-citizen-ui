@@ -4,12 +4,10 @@ import {outstandingTasksFromCase} from 'services/features/common/taskListService
 import {Task} from 'models/taskList/task';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {AppRequest} from 'models/AppRequest';
-
 const incompleteSubmissionViewPath = 'features/response/incomplete-submission';
 const incompleteSubmissionController = Router();
 
-incompleteSubmissionController.get(RESPONSE_INCOMPLETE_SUBMISSION_URL, async (req: AppRequest, res, next: NextFunction) => {
+incompleteSubmissionController.get(RESPONSE_INCOMPLETE_SUBMISSION_URL, async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;

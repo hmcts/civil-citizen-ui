@@ -6,11 +6,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getTaskLists, outstandingTasksFromTaskLists} from 'services/features/common/taskListService';
 import {TaskList} from 'models/taskList/taskList';
 import {Task} from 'models/taskList/task';
-import * as utilityService from 'modules/utilityService';
-import {Claim} from 'models/claim';
-import nock from 'nock';
-import {CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE} from 'client/civilServiceUrls';
-import config from 'config';
+import {setResponseDeadline} from 'services/features/common/responseDeadlineService';
 
 jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
@@ -19,6 +15,7 @@ jest.mock('../../../../main/routes/features/response/checkAnswersController');
 jest.mock('../../../../main/services/features/common/taskListService');
 jest.mock('../../../../main/modules/i18n');
 jest.mock('../../../../main/modules/utilityService');
+jest.mock('../../../../main/services/features/common/responseDeadlineService');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
@@ -26,8 +23,9 @@ jest.mock('i18next', () => ({
 
 const mockGetTaskList = getTaskLists as jest.Mock;
 const mockOutstandingTasksFromTaskLists = outstandingTasksFromTaskLists as jest.Mock;
+const mockSetResponseDeadline = setResponseDeadline as jest.Mock;
 
-const CLAIM_ID = '1';
+const CLAIM_ID = 'aaa';
 const respondentIncompleteSubmissionUrl = constructResponseUrlWithIdParams(CLAIM_ID, RESPONSE_INCOMPLETE_SUBMISSION_URL);
 
 const MOCK_REQUEST = () => {
@@ -44,19 +42,11 @@ const MOCK_RESPONSE = {
 
 const MOCK_NEXT = jest.fn() as express.NextFunction;
 
-const mockGetClaimById = utilityService.getClaimById as jest.Mock;
-const civilServiceUrl = config.get<string>('services.civilService.url');
-
 describe('Response - Incomplete Submission', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    nock(civilServiceUrl)
-      .get(CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE.replace(':claimId', '1'))
-      .reply(200, new Date());
-    mockGetClaimById.mockImplementation(async () => {
-      const claim = new Claim();
-      claim.id = '1';
-      return claim;
+    mockSetResponseDeadline.mockImplementation(async () => {
+      return new Date();
     });
   });
 

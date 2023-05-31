@@ -2,14 +2,15 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {RESPONSE_TASK_LIST_URL} from '../../../../../main/routes/urls';
+import {RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
-import {CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE} from 'client/civilServiceUrls';
+import {setResponseDeadline} from 'services/features/common/responseDeadlineService';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/services/features/common/responseDeadlineService');
 
-const civilServiceUrl = config.get<string>('services.civilService.url');
+const mockSetResponseDeadline = setResponseDeadline as jest.Mock;
 
 describe('Claimant details', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -20,9 +21,9 @@ describe('Claimant details', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    nock(civilServiceUrl)
-      .get(CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE.replace(':claimId', '1645882162449409'))
-      .reply(200, new Date());
+    mockSetResponseDeadline.mockImplementation(async () => {
+      return new Date();
+    });
   });
 
   describe('on GET', () => {

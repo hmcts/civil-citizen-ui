@@ -12,6 +12,7 @@ import {SummarySections} from 'models/summaryList/summarySections';
 import {TaskStatus} from 'models/taskList/TaskStatus';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {isFullAmountReject} from 'modules/claimDetailsService';
+import {setResponseDeadline} from 'services/features/common/responseDeadlineService';
 
 const request = require('supertest');
 const {app} = require('../../../../../main/app');
@@ -21,6 +22,7 @@ const data = require('../../../../utils/mocks/defendantClaimsMock.json');
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/claimDetailsService');
 jest.mock('../../../../../main/services/features/response/checkAnswers/checkAnswersService');
+jest.mock('../../../../../main/services/features/common/responseDeadlineService');
 jest.mock('../../../../../main/services/features/common/taskListService', () => ({
   ...jest.requireActual('../../../../../main/services/features/common/taskListService') as Module,
   getTaskLists: jest.fn(() => TASK_LISTS),
@@ -28,6 +30,7 @@ jest.mock('../../../../../main/services/features/common/taskListService', () => 
 const mockGetSummarySections = getSummarySections as jest.Mock;
 const mockSaveStatementOfTruth = saveStatementOfTruth as jest.Mock;
 const mockRejectingFullAmount = isFullAmountReject as jest.Mock;
+const mockSetResponseDeadline = setResponseDeadline as jest.Mock;
 mockRejectingFullAmount.mockImplementation(() => true);
 
 const PARTY_NAME = 'Mrs. Mary Richards';
@@ -62,9 +65,9 @@ describe('Response - Check answers', () => {
     nock(civilServiceUrl)
       .get('/cases/claimant/123')
       .reply(200, {data: data});
-    nock(civilServiceUrl)
-      .get('/cases/response/agreeddeadline/aaa')
-      .reply(200);
+    mockSetResponseDeadline.mockImplementation(async () => {
+      return new Date();
+    });
   });
 
   describe('on GET', () => {
