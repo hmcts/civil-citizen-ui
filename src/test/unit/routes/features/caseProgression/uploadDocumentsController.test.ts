@@ -9,12 +9,15 @@ import {app} from '../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import {getDisclosureContent} from 'services/features/caseProgression/disclosureService';
+import {getWitnessContent} from 'services/features/caseProgression/witnessService';
 
 const getDisclosureContentMock = getDisclosureContent as jest.Mock;
+const getWitnessContentMock = getWitnessContent as jest.Mock;
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('services/features/caseProgression/disclosureService');
+jest.mock('services/features/caseProgression/witnessService');
 
 describe('Upload document- upload document controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -25,6 +28,7 @@ describe('Upload document- upload document controller', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
     getDisclosureContentMock.mockReturnValue([]);
+    getWitnessContentMock.mockReturnValue([]);
   });
 
   it('should render page successfully if cookie has correct values', async () => {

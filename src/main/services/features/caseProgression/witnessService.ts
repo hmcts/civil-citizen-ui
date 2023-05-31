@@ -1,17 +1,42 @@
 import {ClaimSummaryContent} from 'form/models/claimSummarySection';
 import {Claim} from 'models/claim';
 
-import {buildWitnessSection} from 'services/features/caseProgression/witnessContentBuilder';
+import {
+  buildDocumentsInStatement,
+  buildNoticeOfHearsayEvidence,
+  buildWitnessStatement, buildWitnessSummary,
+  buildYourStatement,
+} from 'services/features/caseProgression/witnessContentBuilder';
+import {UploadDocuments} from 'models/caseProgression/uploadDocumentsType';
 
 export const getWitnessContent = (claim: Claim): ClaimSummaryContent[] => {
-  const witnessSection = buildWitnessSection(claim);
-  const witnessContent = [witnessSection];
+  const sectionContent = [];
 
-  const filteredWitnessContent = witnessContent.filter(sectionContent => sectionContent.length);
-  return filteredWitnessContent.map((sectionContent, index) => {
-    return ({
-      contentSections: sectionContent,
-      hasDivider: index < filteredWitnessContent.length - 1,
-    });
-  });
+  const defendant = claim?.caseProgression?.defendantUploadDocuments;
+  const defendantUploadDocuments = new UploadDocuments(defendant.disclosure, defendant.witness, defendant.expert,defendant.trial);
+
+  if (defendantUploadDocuments.witness?.[0].selected){
+    sectionContent.push([buildYourStatement()]);
+  }
+
+  if (defendantUploadDocuments.witness?.[1].selected){
+    sectionContent.push([buildWitnessStatement()]);
+  }
+
+  if (defendantUploadDocuments.witness?.[2].selected){
+    sectionContent.push([buildWitnessSummary()]);
+  }
+
+  if (defendantUploadDocuments.witness?.[3].selected){
+    sectionContent.push([buildNoticeOfHearsayEvidence()]);
+  }
+
+  if (defendantUploadDocuments.witness?.[4].selected){
+    sectionContent.push([buildDocumentsInStatement()]);
+  }
+
+  return sectionContent.flat().map((sectionContent, index) => ({
+    contentSections: sectionContent,
+    hasDivider: index < sectionContent.length - 1,
+  }));
 };

@@ -1,63 +1,57 @@
-import {Claim} from 'models/claim';
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
-import {
-  getDate,
-  getInput, getUpload,
-  getWitnessSubtitle,
-} from 'services/features/caseProgression/uploadDocumentsSection';
-import {UploadDocuments} from 'models/caseProgression/uploadDocumentsType';
+import {UploadDocumentsSectionBuilder} from 'models/caseProgression/uploadDocumentsSectionBuilder';
 
-export const buildWitnessSection = (claim: Claim): ClaimSummarySection[] => {
-  const sectionContent = [];
-  const defendant = claim?.caseProgression?.defendantUploadDocuments;
-  const defendantUploadDocuments = new UploadDocuments(defendant.disclosure, defendant.witness, defendant.expert,defendant.trial);
+const witnessEvidence = 'witness-evidence';
+const yourStatement = witnessEvidence + '-your-statement';
+const witnessStatement = witnessEvidence + '-witness-statement';
+const witnessSummary = witnessEvidence + '-witness-summary';
+const noticeOfHearsayEvidence = witnessEvidence + '-notice';
+const documentsInStatement = witnessEvidence + '-documents';
 
-  const uploadContent = getUpload('PAGES.UPLOAD_DOCUMENTS.UPLOAD','PAGES.UPLOAD_DOCUMENTS.NO_UPLOAD');
-  const dateStatementContent = getDate('PAGES.UPLOAD_DOCUMENTS.DATE', 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE');
-  const inputWitnessNameContent = getInput('PAGES.UPLOAD_DOCUMENTS.WITNESS_NAME','govuk-!-width-three-half');
+const fileUpload = 'file_upload';
+const widthThreeHalfClass = 'govuk-!-width-three-half';
 
-  if (defendantUploadDocuments?.witness?.[0].selected){
-    const witnessYourStatementContent = getWitnessSubtitle('PAGES.UPLOAD_DOCUMENTS.STATEMENT');
-    const inputNameContent = getInput('PAGES.UPLOAD_DOCUMENTS.NAME','govuk-!-width-three-half');
-    sectionContent.push(witnessYourStatementContent);
-    sectionContent.push(inputNameContent);
-    sectionContent.push(dateStatementContent);
-    sectionContent.push(uploadContent);
-  }
-  if (defendantUploadDocuments?.witness?.[1].selected){
-    const witnessStatementContent = getWitnessSubtitle('PAGES.UPLOAD_DOCUMENTS.WITNESS_STATEMENT');
+export const buildYourStatement = (): ClaimSummarySection[] => {
+  return new UploadDocumentsSectionBuilder()
+    .addTitle('PAGES.UPLOAD_DOCUMENTS.WITNESS.YOUR_STATEMENT')
+    .addInputArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.YOUR_NAME', widthThreeHalfClass, '', yourStatement, 'name')
+    .addDateArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_STATEMENT', 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', yourStatement)
+    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', yourStatement, fileUpload)
+    .build();
+};
 
-    sectionContent.push(witnessStatementContent);
-    sectionContent.push(inputWitnessNameContent);
-    sectionContent.push(dateStatementContent);
-    sectionContent.push(uploadContent);
-  }
-  if (defendantUploadDocuments?.witness?.[2].selected){
-    const witnessSummaryContent = getWitnessSubtitle('PAGES.UPLOAD_DOCUMENTS.WITNESS_SUMMARY');
-    const dateSummaryContent = getDate('PAGES.UPLOAD_DOCUMENTS.DATE_SUMMARY', 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE');
-    sectionContent.push(witnessSummaryContent);
-    sectionContent.push(inputWitnessNameContent);
-    sectionContent.push(dateSummaryContent);
-    sectionContent.push(uploadContent);
-  }
-  if (defendantUploadDocuments?.witness?.[3].selected){
-    const witnessNoticeContent = getWitnessSubtitle('PAGES.UPLOAD_DOCUMENTS.WITNESS_NOTICE');
+export const buildWitnessStatement = (): ClaimSummarySection[] => {
+  return new UploadDocumentsSectionBuilder()
+    .addTitle('PAGES.UPLOAD_DOCUMENTS.WITNESS.STATEMENT')
+    .addInputArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', widthThreeHalfClass, '', witnessStatement, 'name')
+    .addDateArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_STATEMENT', 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', witnessStatement)
+    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', witnessStatement, fileUpload)
+    .build();
+};
 
-    sectionContent.push(witnessNoticeContent);
-    sectionContent.push(inputWitnessNameContent);
-    sectionContent.push(dateStatementContent);
-    sectionContent.push(uploadContent);
-  }
-  if (defendantUploadDocuments?.witness?.[4].selected){
-    const witnessDocumentsContent = getWitnessSubtitle('PAGES.UPLOAD_DOCUMENTS.WITNESS_DOCUMENT');
-    const inputContent = getInput('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT','govuk-!-width-three-half','PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT_HINT');
-    const dateContent = getDate('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_DATE', 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE');
+export const buildWitnessSummary = (): ClaimSummarySection[] => {
+  return new UploadDocumentsSectionBuilder()
+    .addTitle('PAGES.UPLOAD_DOCUMENTS.WITNESS.SUMMARY')
+    .addInputArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', widthThreeHalfClass, '', witnessSummary, 'name')
+    .addDateArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_SUMMARY', 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', witnessSummary)
+    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', witnessSummary, fileUpload)
+    .build();
+};
 
-    sectionContent.push(witnessDocumentsContent);
-    sectionContent.push(inputContent);
-    sectionContent.push(dateContent);
-    sectionContent.push(uploadContent);
-  }
+export const buildNoticeOfHearsayEvidence = (): ClaimSummarySection[] => {
+  return new UploadDocumentsSectionBuilder()
+    .addTitle('PAGES.UPLOAD_DOCUMENTS.WITNESS.NOTICE')
+    .addInputArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', widthThreeHalfClass, '', noticeOfHearsayEvidence, 'name')
+    .addDateArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_SUMMARY', 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', noticeOfHearsayEvidence)
+    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', noticeOfHearsayEvidence, fileUpload)
+    .build();
+};
 
-  return sectionContent.flat();
+export const buildDocumentsInStatement = (): ClaimSummarySection[] => {
+  return new UploadDocumentsSectionBuilder()
+    .addTitle('PAGES.UPLOAD_DOCUMENTS.WITNESS.DOCUMENT')
+    .addInputArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.TYPE_OF_DOCUMENT', widthThreeHalfClass, 'PAGES.UPLOAD_DOCUMENTS.WITNESS.TYPE_OF_DOCUMENT_HINT', documentsInStatement, 'type')
+    .addDateArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.DOCUMENT_DATE', 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', documentsInStatement)
+    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', documentsInStatement, fileUpload)
+    .build();
 };
