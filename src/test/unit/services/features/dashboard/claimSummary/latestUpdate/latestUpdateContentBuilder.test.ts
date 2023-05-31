@@ -20,7 +20,11 @@ import currencyFormat from 'common/utils/currencyFormat';
 import {PartialAdmission} from 'models/partialAdmission';
 import {LatestUpdateSectionBuilder} from 'common/models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 import {t} from 'i18next';
-import {DocumentType, DocumentUri} from 'models/document/documentType';
+import {
+  SystemGeneratedCaseDocumentsWithSEALEDCLAIMAndSDOMock,
+  SystemGeneratedCaseDocumentsWithSEALEDCLAIMMock,
+} from '../../../../../../utils/mocks/SystemGeneratedCaseDocumentsMock';
+import {DocumentType} from 'models/document/documentType';
 
 const PAGES_LATEST_UPDATE_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT';
 
@@ -62,12 +66,14 @@ const getClaim = (partyType: PartyType, responseType: ResponseType, paymentOptio
     repaymentFrequency: 'Monthly',
     firstRepaymentDate: new Date(Date.now()),
   };
+  claim.systemGeneratedCaseDocuments = SystemGeneratedCaseDocumentsWithSEALEDCLAIMMock();
   return claim;
 };
 
 const getClaimWithSdoDocument = () =>  {
   const claim = new Claim();
   claim.id = '001';
+  claim.systemGeneratedCaseDocuments = SystemGeneratedCaseDocumentsWithSEALEDCLAIMAndSDOMock();
   claim.sdoOrderDocument = {
     id: '1',
     'value': {
@@ -85,13 +91,13 @@ const getClaimWithSdoDocument = () =>  {
   };
   return claim;
 };
-
+const docId = '123';
 const getLastUpdateSdoDocumentExpected = (claimId: string) => {
   return new LatestUpdateSectionBuilder()
     .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.SDO_AN_ORDER_HAS_BEEN_ISSUED_BY_THE_COURT`)
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.SDO_PLEASE_FOLLOW_THE_INSTRUCTIONS_IN_THE_ORDER`)
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.SDO_THIS_CLAIM_WILL_NO_PROCEED_OFFLINE`)
-    .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.SDO_DOWNLOAD_THE_COURTS_ORDER`, claimId, DocumentUri.SDO_ORDER, null, `${PAGES_LATEST_UPDATE_CONTENT}.SDO_TO_FIND_OUT_THE_DETAILS`)
+    .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.SDO_DOWNLOAD_THE_COURTS_ORDER`, claimId, docId, null, `${PAGES_LATEST_UPDATE_CONTENT}.SDO_TO_FIND_OUT_THE_DETAILS`)
     .build();
 };
 
@@ -107,6 +113,7 @@ describe('Latest Update Content Builder', () => {
     },
   };
   const claimId = '5129';
+
   const bilingualLanguagePreferencetUrl = BILINGUAL_LANGUAGE_PREFERENCE_URL.replace(':id', claimId);
   const lng = 'en';
 
@@ -187,7 +194,7 @@ describe('Latest Update Content Builder', () => {
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.IF_YOU_PAY_BY_CHEQUE`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.IF_THEY_DONT_RECEIVE_THE_MONEY_BY_THEN`)
           .addContactLink(`${PAGES_LATEST_UPDATE_CONTENT}.CONTACT`, claim.id, {claimantName: claim.getClaimantFullName()})
-          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claim.id, DocumentUri.SEALED_CLAIM)
+          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claim.id, docId)
           .build();
 
         // When
@@ -206,7 +213,7 @@ describe('Latest Update Content Builder', () => {
             paymentDate: formatDateToFullDate(getPaymentDate(claim), lng),
           })
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
-          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claim.id, DocumentUri.SEALED_CLAIM)
+          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claim.id, docId)
           .build();
 
         // When
@@ -227,7 +234,7 @@ describe('Latest Update Content Builder', () => {
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`)
           .addContactLink(`${PAGES_LATEST_UPDATE_CONTENT}.GET_CONTACT_DETAILS`, claim.id, {claimantName: claim.getClaimantFullName()})
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
-          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claim.id, DocumentUri.SEALED_CLAIM)
+          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claim.id, docId)
           .build();
         // When
         const responseToClaimSection = buildResponseToClaimSection(claim, claimId, lng);
@@ -247,7 +254,7 @@ describe('Latest Update Content Builder', () => {
             paymentDate: formatDateToFullDate(getFirstRepaymentDate(claim),lng),
           })
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
-          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claim.id, DocumentUri.SEALED_CLAIM)
+          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claim.id, docId)
           .build();
         // When
         const responseToClaimSection = buildResponseToClaimSection(claim, claimId, lng);
@@ -269,7 +276,7 @@ describe('Latest Update Content Builder', () => {
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`)
           .addContactLink(`${PAGES_LATEST_UPDATE_CONTENT}.GET_CONTACT_DETAILS`, claim.id, {claimantName: claim.getClaimantFullName()})
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
-          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claim.id, DocumentUri.SEALED_CLAIM)
+          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claim.id, docId)
           .build();
         // When
         const responseToClaimSection = buildResponseToClaimSection(claim, claimId, lng);
@@ -289,7 +296,7 @@ describe('Latest Update Content Builder', () => {
             claimantName: claim.getClaimantFullName(),
           })
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
-          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claim.id, DocumentUri.SEALED_CLAIM)
+          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claim.id, docId)
           .build();
 
         // When
@@ -311,7 +318,7 @@ describe('Latest Update Content Builder', () => {
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`)
           .addContactLink(`${PAGES_LATEST_UPDATE_CONTENT}.GET_CONTACT_DETAILS`, claim.id, {claimantName: claim.getClaimantFullName()})
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
-          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claim.id, DocumentUri.SEALED_CLAIM)
+          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claim.id, docId)
           .build();
         // When
         const responseToClaimSection = buildResponseToClaimSection(claim, claimId, lng);
@@ -330,7 +337,7 @@ describe('Latest Update Content Builder', () => {
             paymentDate: formatDateToFullDate(getFirstRepaymentDate(claim),lng),
           })
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
-          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claim.id, DocumentUri.SEALED_CLAIM)
+          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claim.id, docId)
           .build();
         // When
         const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
@@ -353,7 +360,7 @@ describe('Latest Update Content Builder', () => {
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`)
           .addContactLink(`${PAGES_LATEST_UPDATE_CONTENT}.GET_CONTACT_DETAILS`, claim.id, {claimantName: claim.getClaimantFullName()})
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
-          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claim.id, DocumentUri.SEALED_CLAIM)
+          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claim.id, docId)
           .build();
         // When
         const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
@@ -374,7 +381,7 @@ describe('Latest Update Content Builder', () => {
             paymentDate: formatDateToFullDate(getPaymentDate(claim),lng),
           })
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
-          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claim.id, DocumentUri.SEALED_CLAIM)
+          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claim.id, docId)
           .build();
         // When
         const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
