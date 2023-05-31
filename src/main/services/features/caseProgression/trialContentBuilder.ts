@@ -1,11 +1,10 @@
-import {Claim} from 'models/claim';
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {UploadDocumentsSectionBuilder} from 'models/caseProgression/uploadDocumentsSectionBuilder';
 
 const trialDocumentsType = 'trial_documents';
 const fileUpload = 'file_upload';
 
-export const buildTrialCaseSummarySection = (claim: Claim, claimId: string): ClaimSummarySection[] => {
+export const buildTrialCaseSummarySection = (): ClaimSummarySection[] => {
   return new UploadDocumentsSectionBuilder()
     .addTitle('PAGES.UPLOAD_DOCUMENTS.TRIAL.CASE_SUMMARY')
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD','', trialDocumentsType,
@@ -13,7 +12,7 @@ export const buildTrialCaseSummarySection = (claim: Claim, claimId: string): Cla
     .build();
 };
 
-export const buildTrialSkeletonSection = (claim: Claim, claimId: string): ClaimSummarySection[] => {
+export const buildTrialSkeletonSection = (): ClaimSummarySection[] => {
   return new UploadDocumentsSectionBuilder()
     .addTitle('PAGES.UPLOAD_DOCUMENTS.TRIAL.SKELETON')
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD','', trialDocumentsType,
@@ -21,7 +20,7 @@ export const buildTrialSkeletonSection = (claim: Claim, claimId: string): ClaimS
     .build();
 };
 
-export const buildTrialLegalSection = (claim: Claim, claimId: string): ClaimSummarySection[] => {
+export const buildTrialLegalSection = (): ClaimSummarySection[] => {
   return new UploadDocumentsSectionBuilder()
     .addTitle('PAGES.UPLOAD_DOCUMENTS.TRIAL.LEGAL')
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD','', trialDocumentsType,
@@ -29,7 +28,7 @@ export const buildTrialLegalSection = (claim: Claim, claimId: string): ClaimSumm
     .build();
 };
 
-export const buildTrialCostSection = (claim: Claim, claimId: string): ClaimSummarySection[] => {
+export const buildTrialCostSection = (): ClaimSummarySection[] => {
   return new UploadDocumentsSectionBuilder()
     .addTitle('PAGES.UPLOAD_DOCUMENTS.TRIAL.COSTS')
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD','', trialDocumentsType,
@@ -37,7 +36,7 @@ export const buildTrialCostSection = (claim: Claim, claimId: string): ClaimSumma
     .build();
 };
 
-export const buildTrialDocumentarySection = (claim: Claim, claimId: string): ClaimSummarySection[] => {
+export const buildTrialDocumentarySection = (): ClaimSummarySection[] => {
   return new UploadDocumentsSectionBuilder()
     .addTitle('PAGES.UPLOAD_DOCUMENTS.TRIAL.DOCUMENTARY')
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT','govuk-!-width-three-half','PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT_EXAMPLE',trialDocumentsType,'type')
