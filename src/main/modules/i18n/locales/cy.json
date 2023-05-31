@@ -1575,6 +1575,14 @@
       "UPLOAD_MORE_DOCUMENTS_MID": "upload more documents",
       "UPLOAD_MORE_DOCUMENTS_END": "now or come back later. You can view your documents and the other party's documents."
     },
+    "EVIDENCE_UPLOAD_CANCEL": {
+      "HEADING": "Document upload",
+      "TITLE": "Cancel document upload",
+      "CASE_REFERENCE": "Case reference: {{ claimId }}",
+      "PARTIES": "{{ claimantName }} v {{ defendantName }}",
+      "WARNING_CANCEL": "<span class=\"govuk-body govuk-!-font-weight-bold\">Warning</span> </br> If you cancel, you will lose all unsubmitted information and documents.",
+      "ARE_YOU_SURE": "Are you sure you want to cancel?"
+    },
     "MEDIATION_CAN_WE_USE": {
       "CAN_MEDIATION_USE": "A all y gwasanaeth cyfryngu ddefnyddio’r rhif {{ respondentTelNumber }} i’ch ffonio?",
       "CONFIRM_YOUR_NUMBER": "Cadarnhewch eich rhif ffôn",
