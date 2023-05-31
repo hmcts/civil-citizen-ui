@@ -1,8 +1,8 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
+  CP_UPLOAD_DOCUMENTS_URL,
   DEFENDANT_SUMMARY_URL,
   TYPES_OF_DOCUMENTS_URL,
-  UPLOAD_YOUR_DOCUMENTS_URL,
 } from '../../urls';
 import {AppRequest} from 'common/models/AppRequest';
 
@@ -27,10 +27,12 @@ async function renderView(res: Response, claimId: string, form: GenericForm<Uplo
   const claim = await getCaseDataFromStore(claimId);
   const claimantFullName = claim.getClaimantFullName();
   const defendantFullName = claim.getDefendantFullName();
+  const isFastTrack = claim.isFastTrackClaim;
+  const isSmallClaims = claim.isSmallClaimsTrackDQ;
   claimId = caseNumberPrettify(claimId);
 
   res.render(typeOfDocumentsViewPath, {form,
-    claimId,claimantFullName,defendantFullName, latestUploadUrl,
+    claimId,claimantFullName,defendantFullName, latestUploadUrl, isFastTrack, isSmallClaims,
   });
 }
 
@@ -51,12 +53,13 @@ typeOfDocumentsController.post(TYPES_OF_DOCUMENTS_URL, (async (req, res, next) =
     const claimId = req.params.id;
     const typeDocumentList= getTypeDocumentForm(req);
     const form = new GenericForm(typeDocumentList);
+
     form.validateSync();
     if (form.hasErrors()) {
       await renderView(res, claimId,form);
     } else {
       await saveCaseProgression(claimId, form.model, dqPropertyName);
-      res.redirect(constructResponseUrlWithIdParams(claimId, UPLOAD_YOUR_DOCUMENTS_URL));
+      res.redirect(constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL));
     }
   } catch (error) {
     next(error);
