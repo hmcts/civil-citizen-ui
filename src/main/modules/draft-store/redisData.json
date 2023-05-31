@@ -2577,24 +2577,7 @@
           "text": "I disagree with claim"
         }
       },
-      "taskSharedFinancialDetails": true,
-      "caseProgression": {
-        "claimantUploadDocuments":{
-          "witness": [
-            {"documentType": "CASE_SUMMARY", "selected": true},
-            {"documentType": "DOCUMENTARY", "selected": true}
-          ]
-        },
-        "defendantUploadDocuments":{
-          "witness": [
-            {"documentType": "YOUR_STATEMENT", "selected": true},
-            {"documentType": "WITNESS_STATEMENT", "selected": true},
-            {"documentType": "WITNESS_SUMMARY", "selected": true},
-            {"documentType": "NOTICE_OF_INTENTION", "selected": true},
-            {"documentType": "DOCUMENTS_REFERRED", "selected": true}
-          ]
-        }
-      }
+      "taskSharedFinancialDetails": true
     }
   },
   {
