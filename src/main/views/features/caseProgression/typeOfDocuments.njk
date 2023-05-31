@@ -244,14 +244,13 @@
                             ]
                             }) }}
                   </div>
-               <div class="govuk-form-group">
+               <div class="govuk-button-group">
                  {{ govukButton({
                    text: t('COMMON.BUTTONS.CONTINUE')
                  }) }}
-                 <a href={{ latestUploadUrl }} class="govuk-link" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
-
-                 {{ contactUsForHelp(t) }}
+                 <a href={{ latestUploadUrl }} class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
                </div>
+           {{ contactUsForHelp(t) }}
         </form>
       </div>
     </div>
