@@ -3,8 +3,11 @@ import {CP_UPLOAD_DOCUMENTS_URL, DEFENDANT_SUMMARY_URL} from '../../urls';
 import {Claim} from 'models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {getWitnessContent} from 'services/features/caseProgression/witnessService';
-import {getTrialContent} from 'services/features/caseProgression/trialService';
+import {
+  getDisclosureContent,
+} from 'services/features/caseProgression/disclosureService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getTrialContent} from 'services/features/caseProgression/trialService';
 
 const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
 const uploadDocumentsController = Router();
@@ -15,7 +18,7 @@ uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req:Request, res:
     const latestUploadUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
 
     if (claim && !claim.isEmpty()) {
-      const disclosureContent:string = undefined ; //TODO getDisclosureContent(claim, claimId);
+      const disclosureContent = getDisclosureContent(claim);
       const witnessContent = getWitnessContent(claimId, claim);
       const expertContent:string = undefined ; //TODO = getExpertContent(claim, claimId);
       const trialContent = getTrialContent(claimId, claim);

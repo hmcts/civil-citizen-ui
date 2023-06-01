@@ -8,6 +8,9 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {app} from '../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
+import {getDisclosureContent} from 'services/features/caseProgression/disclosureService';
+
+const getDisclosureContentMock = getDisclosureContent as jest.Mock;
 import {t} from 'i18next';
 import {getTrialContent} from 'services/features/caseProgression/trialService';
 
@@ -15,6 +18,7 @@ const getTrialContentMock = getTrialContent as jest.Mock;
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('services/features/caseProgression/disclosureService');
 jest.mock('services/features/caseProgression/trialService');
 
 describe('Upload document- upload document controller', () => {
@@ -25,6 +29,7 @@ describe('Upload document- upload document controller', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    getDisclosureContentMock.mockReturnValue([]);
     getTrialContentMock.mockReturnValue([]);
   });
 
@@ -45,5 +50,4 @@ describe('Upload document- upload document controller', () => {
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
   });
-
 });

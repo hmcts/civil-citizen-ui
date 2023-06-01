@@ -2304,6 +2304,11 @@
         "LEGAL": "Legal authorities",
         "COSTS": "Costs",
         "DOCUMENTARY": "Documentary evidence for trial"
+      },
+      "DISCLOSURE": {
+        "TITLE": "Disclosure",
+        "DISCLOSURE_DOCUMENTS": "Documents for disclosure",
+        "DISCLOSURE_LIST": "Disclosure list"
       }
     },
     "VULNERABILITY": {
