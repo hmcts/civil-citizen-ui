@@ -101,7 +101,7 @@
       "WEB_CHAT_UNAVAILABLE": "Nid yw'r gwasanaeth sgwrsio ar y we ar gael ar hyn o bryd. Rhowch gynnig arni eto yn nes ymlaen."
     },
     "COOKIE_BANNER": {
-      "ACCEPT_BUTTON": "Accept additional cookies",
+      "ACCEPT_BUTTON": "Derbyn cwcis ychwanegol",
       "ADDITIONAL_COOKIES_MESSAGE": "Hoffwn osod cwcis ychwanegol ar eich cyfrifiadur fel y gallwn gofio eich gosodiadau, deall sut mae pobl yn defnyddio’r gwasanaeth a gwella gwasanaethau’r llywodraeth.",
       "CHANGE": "Gallwch CHANGE_HTML unrhyw bryd.",
       "CHANGE_LINK": "newid eich gosodiadau cwcis",
