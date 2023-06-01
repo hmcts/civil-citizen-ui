@@ -23,7 +23,7 @@
     <div class="govuk-grid-row">
       <form method="post" novalidate>
         {{ csrfProtection(csrf) }}
-        <div class="govuk-grid-column-one-half">
+        <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
           <h1 class="govuk-heading-l">{{ titleH1 }}</h1>
           <h2 class="govuk-heading-s">{{ titleH2 }}</h2>
           <p class="govuk-body-m">{{ paragraph }}</p>
@@ -61,9 +61,6 @@
             {% endfor %}
           {% endif %}
 
-          <br>
-          <div class="govuk-button-group">
-
           {% if trialContent.length > 0 %}
             <h2 class="govuk-heading-l">{{ trial }}</h2>
             {% for trialSections in trialContent %}
@@ -96,6 +93,7 @@
             {% endfor %}
           {% endif %}
 
+          <br>
           <div class="govuk-button-group">
             {{ govukButton({
               text: t('COMMON.BUTTONS.CONTINUE')
