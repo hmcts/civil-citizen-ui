@@ -53,6 +53,7 @@
       "BACK": "Back",
       "CHANGE": "Change",
       "CONTINUE": "Continue",
+      "CANCEL": "Cancel",
       "I_CONFIRM_IVE_READ_THIS": "I confirm I've read this",
       "RESPOND_TO_CLAIM": "Respond to claim",
       "SAVE": "Save",
@@ -1521,6 +1522,67 @@
         }
       }
     },
+    "UPLOAD_EVIDENCE_DOCUMENTS": {
+      "ANSWERS_TO_QUESTIONS": "Answers to questions asked by other party",
+      "ANSWERS_TO_QUESTIONS_HINT": "Your expert's answers to questions put by the other party",
+      "CASE_REFERENCE_NUMBER": "Case reference:",
+      "CASE_SUMMARY": "Case summary",
+      "CASE_SUMMARY_HINT": "Overview of your whole case",
+      "COSTS": "Costs",
+      "COSTS_HINT": "A detailed list of the costs you have incurred in making or defending the claim, for example photocopying, getting copies of contracts, include receipts",
+      "DISCLOSURE": "Disclosure",
+      "DISCLOSURE_LIST": "Disclosure list",
+      "DISCLOSURE_LIST_HINT": "A list of the documents that you must show the other parties",
+      "DOCUMENTARY_EVIDENCE_HEARING": "Documentary evidence for hearing",
+      "DOCUMENTARY_EVIDENCE_HEARING_HINT": "Documents that you wish to rely on at the hearing, including emails, receipts, invoices, contracts and photos. You do not need to add documents that you have already added under witness evidence",
+      "DOCUMENTARY_EVIDENCE_TRIAL": "Documentary evidence for trial",
+      "DOCUMENTARY_EVIDENCE_TRIAL_HINT": "Documents that you wish to rely on at the trial, including emails, receipts, invoices, contracts and photos. You do not need to add documents that you have already added under witness evidence",
+      "DOCUMENTS_FOR_DISCLOSURE": "Documents for disclosure",
+      "DOCUMENTS_FOR_DISCLOSURE_HINT": "Recorded information that you must show the other parties - for example, contracts, invoices, receipts, emails, text messages, photos, social media messages",
+      "DOCUMENTS_REFERRED_TO_STATEMENT": "Documents referred to in the statement",
+      "DOCUMENTS_REFERRED_TO_STATEMENT_HINT": "Documents you or your witness refer to in the statement, including emails, receipts, invoices, contracts and photos",
+      "EXPERT_EVIDENCE": "Expert evidence",
+      "EXPERTS_REPORT": "Expert's report",
+      "EXPERTS_REPORT_HINT": "A written report by your expert. Expert evidence is an opinion based on the expertise of a specialist, for example - a building surveyor who can comment on the quality of building work. An expert is not a legal representative",
+      "HEARING_DOCUMENTS": "Hearing documents",
+      "JOINT_STATEMENT_OF_EXPERTS": "Joint statement of experts",
+      "JOINT_STATEMENT_OF_EXPERTS_HINT": "A statement by the experts for the both parties, setting out the facts in the case that they agree on or disagree on. This only applies if you and the other party set up a meeting for your experts. The experts write this statement after their discussion",
+      "LEGAL_AUTHORITIES": "Legal authorities",
+      "LEGAL_AUTHORITIES_HINT": "You can use legal authorities to support your case. These are Acts of Parliament, Rules - for example, the Civil Procedure Rules - or other court cases that have decided a point that is relevant to your case. Copy and paste the relevant extracts from Acts, Rules or cases into a document to upload",
+      "NOTICE_OF_INTENTION": "Notice of intention to rely on hearsay evidence",
+      "NOTICE_OF_INTENTION_HINT": "Notice to tell the other parties that you intend to rely on hearsay evidence at the trail. If the evidence is in a witness statement and the witness is not going to be in court, you must say why",
+      "QUESTIONS_FOR_OTHER_PARTY": "Questions for other party's expert or joint expert",
+      "QUESTIONS_FOR_OTHER_PARTY_HINT": "Written questions about an expert's report or a joint statement of experts",
+      "SELECT_THE_TYPE_OF_DOCUMENT": "Select the types of documents that apply to your case. You may not need to upload documents for every category.",
+      "SKELETON_ARGUMENT": "Skeleton argument",
+      "SKELETON_ARGUMENT_HINT": "Summary of the case, the areas in dispute and the reasons why you think those disputes should be resolved in your favour",
+      "TITLE": "What types of documents do you want to upload?",
+      "TRIAL": "Trial documents",
+      "WITNESS_EVIDENCE": "Witness evidence",
+      "WITNESS_STATEMENT": "Witness statement",
+      "WITNESS_STATEMENT_HINT": "A written statement of what your witness wants to tell the court",
+      "WITNESS_SUMMARY": "Witness summary",
+      "WITNESS_SUMMARY_HINT": "If you cannot get a written statement from your witness, you can write a summary of the evidence you would want to include in the witness statement. You must apply to the court to use a witness summary at the hearing. You must do this before the deadline. Use ",
+      "WITNESS_SUMMARY_HINT_URL": "form N244 'application notice'",
+      "YOUR_STATEMENT": "Your statement",
+      "YOUR_STATEMENT_HINT": "A written statement of what you want to tell the court"
+    },
+    "EVIDENCE_DOCUMENTS_UPLOADED": {
+      "TITLE": "Documents uploaded",
+      "CASE_REFERENCE_NUMBER": "Your case reference number",
+      "VIEW_DOCUMENTS": "View documents",
+      "UPLOAD_MORE_DOCUMENTS_START": "You can",
+      "UPLOAD_MORE_DOCUMENTS_MID": "upload more documents",
+      "UPLOAD_MORE_DOCUMENTS_END": "now or come back later. You can view your documents and the other party's documents."
+    },
+    "EVIDENCE_UPLOAD_CANCEL": {
+      "HEADING": "Document upload",
+      "TITLE": "Cancel document upload",
+      "CASE_REFERENCE": "Case reference: {{ claimId }}",
+      "PARTIES": "{{ claimantName }} v {{ defendantName }}",
+      "WARNING_CANCEL": "<span class=\"govuk-body govuk-!-font-weight-bold\">Warning</span> </br> If you cancel, you will lose all unsubmitted information and documents.",
+      "ARE_YOU_SURE": "Are you sure you want to cancel?"
+    },
     "MEDIATION_CAN_WE_USE": {
       "CAN_MEDIATION_USE": "Can the mediation service use {{ respondentTelNumber }} to call you?",
       "CONFIRM_YOUR_NUMBER": "Confirm your telephone number",
@@ -1992,7 +2054,7 @@
     "SHARED_EXPERT": {
       "IF_YOU_SHARE": "If you share an expert, you will also share the costs unless the judge decides that one party must pay the other party’s share.",
       "PAGE_TITLE": "Do you want to share an expert with the other party?",
-      "PREPARE_REPORT": "They will prepare a report for the court on behalf of two or more of the parties, including the claimant.",
+      "PREPARE_REPORT": "They will prepare a report for the court on behalf of two or more of the parties, including the other party.",
       "SINGLE_JOINT_EXPERT": "This is known as a ’single joint expert’.",
       "WITH_CLAIMANT": "Do you want to share an expert with the claimant",
       "TITLE": "Do you want to share an expert with the other party?"
@@ -2231,7 +2293,15 @@
       "SUBTITLE": "Acceptable documents formats",
       "TITLE": "Upload documents",
       "UPLOAD": "Upload a file",
-      "WITNESS": "Witness evidence"
+      "WITNESS": "Witness evidence",
+      "DISCLOSURE": {
+        "TITLE": "Disclosure",
+        "DISCLOSURE_DOCUMENTS": "Documents for disclosure",
+        "DISCLOSURE_LIST": "Disclosure list",
+        "TYPE_OF_DOCUMENT": "Type of document",
+        "TYPE_OF_DOCUMENT_EXAMPLE": "For example, contract, invoice, receipt, email, text message, photo, social media message",
+        "DOCUMENT_ISSUE_DATE": "Date document was issued or message was sent"
+      }
     },
     "VULNERABILITY": {
       "PAGE_TITLE": "Vulnerability questions",
@@ -2290,6 +2360,24 @@
       "TITLE": "Why do you disagree with the claim?",
       "REASON": "Their reasons for making the claim",
       "CLAIMANT": "Your response will be sent to {{ claimantFullName }}."
+    },
+    "UPLOAD_YOUR_DOCUMENTS": {
+      "PAGE_TITLE": "Upload your documents",
+      "TITLE": "Upload your documents",
+      "CASE_REFERENCE": "Case reference: {{ claimId }}",
+      "PARTIES": "{{ claimantName }} v {{ defendantName }}",
+      "CHECK_THE_ORDER": "Check the order the court sent you for what documents you need to upload for your case.",
+      "YOU_CANNOT_WITHDRAW": "You cannot withdraw a document once you have submitted it. If you want to add more information to something you have already submitted, you can upload the document again. You should add a version number to the name, for example 'version2'.",
+      "THE_OTHER_PARTIES": "The other parties will be able to see the documents you have uploaded, and you will be able to see their documents.",
+      "DEADLINES_FOR_UPLOADING": "Deadlines for uploading documents",
+      "CHECK_THE_ORDER_DEADLINES": "Check the order the court sent you for the deadlines for uploading your documents.",
+      "AFTER_THE_DEADLINE": "After the deadline, you will have to ",
+      "APPLY_TO_THE_COURT": "apply to the court",
+      "IF_YOU_WANT_ANY": " if you want any new document to be used at the trial or hearing.",
+      "YOU_DO_NOT_HAVE": "You do not have to upload all your documents at once. You can return to upload them later.",
+      "BEFORE_YOU_UPLOAD_YOUR": "Before you upload your documents",
+      "BEFORE_YOU_UPLOAD_THE": "Before you upload the document, give it a name that tells the court what it is, for example 'Witness statement by Jane Smith'.",
+      "START_NOW": "Start now"
     }
   },
   "ERRORS": {
@@ -2585,6 +2673,7 @@
     "VALID_ENTER_AT_LEAST_ONE_COURT_ORDER": "Enter at least one court order",
     "VALID_ENTER_AT_LEAST_ONE_EMPLOYER": "Enter at least one employer",
     "VALID_ENTER_AT_LEAST_ONE_NUMBER": "Enter a number for at least one field",
+    "VALID_ENTER_AT_LEAST_ONE_UPLOAD": "You must select at least one type of document",
     "VALID_FOUR_DIGIT_YEAR": "Enter a 4 digit year",
     "VALID_FREE_TEXT_DATE_LENGTH": "Enter a date no longer than $constraint1 characters",
     "VALID_HOUSING": "Describe your housing",

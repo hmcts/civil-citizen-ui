@@ -3,20 +3,16 @@ import {
   mockCivilClaim,
   mockRedisFailure,
 } from '../../../../utils/mockDraftStore';
-import {CP_UPLOAD_DOCUMENTS_URL} from 'routes/urls';
+import {CP_EVIDENCE_UPLOAD_SUBMISSION_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {app} from '../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
-import {getDisclosureContent} from 'services/features/caseProgression/disclosureService';
-
-const getDisclosureContentMock = getDisclosureContent as jest.Mock;
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
-jest.mock('services/features/caseProgression/disclosureService');
 
-describe('Upload document- upload document controller', () => {
+describe('Documents uploaded controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
@@ -24,24 +20,24 @@ describe('Upload document- upload document controller', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    getDisclosureContentMock.mockReturnValue([]);
   });
 
-  it('should render page successfully if cookie has correct values', async () => {
+  it('should render the page successfully', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
-    await request(app).get(CP_UPLOAD_DOCUMENTS_URL).expect((res) => {
+    await request(app).get(CP_EVIDENCE_UPLOAD_SUBMISSION_URL).expect((res) => {
       expect(res.status).toBe(200);
-      expect(res.text).toContain('Upload documents');
+      expect(res.text).toContain('Documents uploaded');
     });
   });
 
   it('should return 500 error page for redis failure', async () => {
     app.locals.draftStoreClient = mockRedisFailure;
     await request(app)
-      .get(CP_UPLOAD_DOCUMENTS_URL)
+      .get(CP_EVIDENCE_UPLOAD_SUBMISSION_URL)
       .expect((res) => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
   });
+
 });
