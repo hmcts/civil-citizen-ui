@@ -1,5 +1,6 @@
 import {UploadYourDocumentsSectionBuilder} from 'common/models/caseProgression/uploadYourDocumentsSectionBuilder';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
+import {t} from 'i18next';
 
 describe('UploadYourDocumentsSectionBuilder tests', ()=> {
   it('should create mainTitle', ()=> {
@@ -38,6 +39,25 @@ describe('UploadYourDocumentsSectionBuilder tests', ()=> {
 
     //Then
     expect(leadParagraphBuilt).toEqual([leadParagraphExpected]);
+  });
+
+  it('should add Inset Text', ()=> {
+    //Given
+    const insetTextExpected = ({
+      type: ClaimSummaryType.INSET_TEXT,
+      data: {
+        html: t('text'),
+        variables: 'variables',
+      },
+    });
+
+    //When
+    const insetTextBuilt = new UploadYourDocumentsSectionBuilder()
+      .addInsetText('text', 'variables')
+      .build();
+
+    //Then
+    expect(insetTextBuilt).toEqual([insetTextExpected]);
   });
 
   it('should add Start Button', ()=> {
