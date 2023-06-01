@@ -2,7 +2,6 @@ import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {UploadDocumentsSectionBuilder} from 'models/caseProgression/uploadDocumentsSectionBuilder';
 
 const witnessEvidence = 'witness-evidence';
-const yourStatement = witnessEvidence + '-your-statement';
 const witnessStatement = witnessEvidence + '-witness-statement';
 const witnessSummary = witnessEvidence + '-witness-summary';
 const noticeOfHearsayEvidence = witnessEvidence + '-notice';
@@ -10,15 +9,6 @@ const documentsInStatement = witnessEvidence + '-documents';
 
 const fileUpload = 'file_upload';
 const widthThreeHalfClass = 'govuk-!-width-three-half';
-
-export const buildYourStatement = (): ClaimSummarySection[] => {
-  return new UploadDocumentsSectionBuilder()
-    .addTitle('PAGES.UPLOAD_DOCUMENTS.WITNESS.YOUR_STATEMENT')
-    .addInputArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.YOUR_NAME', widthThreeHalfClass, '', yourStatement, 'name')
-    .addDateArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_STATEMENT', 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', yourStatement)
-    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', yourStatement, fileUpload)
-    .build();
-};
 
 export const buildWitnessStatement = (): ClaimSummarySection[] => {
   return new UploadDocumentsSectionBuilder()
