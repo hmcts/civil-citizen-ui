@@ -53,6 +53,7 @@ export class DashboardDefendantItem extends DashboardItem {
   paymentDate?: Date;
   ccjRequestedDate?: Date;
   admittedAmount?: number;
+  createdDate?: Date;
 
   constructor() {
     super();
