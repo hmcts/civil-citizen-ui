@@ -25,7 +25,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Response with PartAdmit-AlreadyPaid and Immediate payment @citizenUI @partAdmit @regression', () => {
+Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @regression', () => {
   ResponseSteps.RespondToClaim(claimRef);
   ResponseSteps.EnterPersonalDetails(claimRef);
   ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -56,37 +56,38 @@ Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @
   ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
 });
 
-Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit', () => {
+Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit @regression', () => {
+  ResponseSteps.RespondToClaim(claimRef);
   ResponseSteps.EnterPersonalDetails(claimRef);
+  ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
-  ResponseSteps.SelectPartAdmitAlreadyPaid('yes');
-  ResponseSteps.EnterPaymentOption(claimRef, partAdmit, bySetDate);
-  ResponseSteps.EnterDateToPayOn();
-  ResponseSteps.EnterFinancialDetails(claimRef);
-  ResponseSteps.EnterHowMuchYouHavePaid(claimRef, 500), partAdmit;
+  ResponseSteps.SelectPartAdmitAlreadyPaid('no');
+  ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 500, partAdmit);
   ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit);
   ResponseSteps.AddYourTimeLineEvents();
   ResponseSteps.EnterYourEvidenceDetails();
+  ResponseSteps.EnterPaymentOption(claimRef, partAdmit, bySetDate);
+  ResponseSteps.EnterDateToPayOn();
+  ResponseSteps.EnterFinancialDetails(claimRef);
   ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
-  ResponseSteps.EnterYourOptions(claimRef, yesIWantMoretime);
-  ResponseSteps.RespondToRequest(claimRef);
-  ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
-  ResponseSteps.AddMandatoryPhoneNumber();
+  ResponseSteps.EnterDQForSmallClaims(claimRef);
   ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
 });
 
-Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit', () => {
+Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit @regression', () => {
+  ResponseSteps.RespondToClaim(claimRef);
   ResponseSteps.EnterPersonalDetails(claimRef);
+  ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
-  ResponseSteps.SelectPartAdmitAlreadyPaid('yes');
-  ResponseSteps.EnterPaymentOption(claimRef, partAdmit, repaymentPlan);
-  ResponseSteps.EnterFinancialDetails(claimRef);
-  ResponseSteps.EnterRepaymentPlan(claimRef);
-  ResponseSteps.EnterHowMuchYouHavePaid(claimRef, 500, partAdmit);
-  ResponseSteps.EnterYourOptions(claimRef, dontWantMoreTime);
+  ResponseSteps.SelectPartAdmitAlreadyPaid('no');
+  ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 500, partAdmit);
   ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit);
   ResponseSteps.AddYourTimeLineEvents();
+  ResponseSteps.EnterYourEvidenceDetails();
+  ResponseSteps.EnterPaymentOption(claimRef, partAdmit, repaymentPlan);
+  ResponseSteps.EnterRepaymentPlan(claimRef);
+  ResponseSteps.EnterFinancialDetails(claimRef);
   ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
-  ResponseSteps.AddMandatoryPhoneNumber();
+  ResponseSteps.EnterDQForSmallClaims(claimRef);
   ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
 });
