@@ -22,8 +22,6 @@ const extendedYear = newDate.getFullYear();
 class ViewYourOptionsBeforeDeadline {
 
   selectYouOptions(claimRef, deadlineOption) {
-    I.see('Respond to a money claim');
-    I.click('View your options before response deadline');
     I.see('Requesting extra time','h1');
     I.see('How much extra time can you request?','h3');
     I.click(buttons.continue);
