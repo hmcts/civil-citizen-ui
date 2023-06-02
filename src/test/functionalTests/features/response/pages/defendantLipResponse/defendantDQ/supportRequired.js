@@ -12,13 +12,24 @@ const fields ={
 
 class SupportRequired {
 
-  selectOptionForSupportRequired() {
+  selectOptionForSupportRequired(option = 'Yes') {
     I.see('Do you, your experts or witnesses need support to attend a hearing', 'h1');
-    I.click(fields.yesButton);
-    I.selectOption(fields.selectDropDown,'WitnessFName WitnessLName');
-    I.click(fields.hearingLoop);
-    I.click(fields.signLanguage);
-    I.fillField(fields.signLanguageText, 'Spanish');
+    switch (option) {
+      case 'Yes': {
+        I.click(fields.yesButton);
+        I.selectOption(fields.selectDropDown,'WitnessFName WitnessLName');
+        I.click(fields.hearingLoop);
+        I.click(fields.signLanguage);
+        I.fillField(fields.signLanguageText, 'Spanish');
+        break;
+      }
+      case 'No': {
+        I.click(fields.noButton);
+        break;
+      }
+      default:
+        I.click(fields.yesButton);
+    }
     I.click('Save and continue');
   }
 }

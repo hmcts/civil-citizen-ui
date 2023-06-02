@@ -9,11 +9,22 @@ const fields ={
 
 class PhoneOrVideoHearing {
 
-  selectOptionForPhoneOrVideoHearing() {
+  selectOptionForPhoneOrVideoHearing(option = 'Yes') {
     I.see('Do you want to ask for a telephone or video hearing?', 'h1');
     I.see('The judge will decide if the hearing can be held by telephone or video.');
-    I.click(fields.yesButton);
-    I.fillField(fields.details, 'Test details');
+    switch (option) {
+      case 'Yes': {
+        I.click(fields.yesButton);
+        I.fillField(fields.details, 'Test details');
+        break;
+      }
+      case 'No': {
+        I.click(fields.noButton);
+        break;
+      }
+      default:
+        I.click(fields.yesButton);
+    }
     I.click('Save and continue');
   }
 }

@@ -41,6 +41,8 @@ const WhyDoYouDisagreeTheClaimAmount = require('../pages/defendantLipResponse/wh
 const WhyDoYouDisagree = require('../pages/defendantLipResponse/whyDoYouDisagree/whyDoYouDisagree');
 const ListYourEvidence = require('../pages/defendantLipResponse/whyDoYouDisagree/listYourEvidence');
 const FreeTelephoneMediation = require('../pages/defendantLipResponse/freeTelephoneMediation/freeTelephoneMediation');
+const MediationDisagreement = require('../pages/defendantLipResponse/freeTelephoneMediation/mediationDisagreement');
+const DoNotAgreeToFreeMediation = require('../pages/defendantLipResponse/freeTelephoneMediation/doNotAgreeToFreeMediation');
 const MediationCanWeUse = require('../pages/defendantLipResponse/freeTelephoneMediation/mediatonCanWeUse');
 const RequestMoreTime = require('../pages/defendantLipResponse/viewYourOptionsBeforeDeadline/requestMoreTime');
 const HearingRequirements = require('../pages/defendantLipResponse/defendantDQ/hearingRequirements');
@@ -61,6 +63,7 @@ const requestMoreTime = new RequestMoreTime();
 const mediationCanWeUse = new MediationCanWeUse();
 const addYourTimeLine = new AddYourTimeLine();
 const freeTelephoneMediation = new FreeTelephoneMediation();
+const mediationDisagreement = new MediationDisagreement();
 const listYourEvidence = new ListYourEvidence();
 const taskListPage = new TaskListPage();
 const defendantLatestUpdate = new DefendantLatestUpdate();
@@ -114,9 +117,10 @@ const vulnerabilityDetails = new VulnerabilityDetails();
 const supportRequired = new SupportRequired();
 const courtLocation = new CourtLocation();
 const welshLanguage = new WelshLanguage();
+const doNotAgreeToFreeMediation = new DoNotAgreeToFreeMediation();
 
 class ResponseSteps {
-  RespondToClaim(claimRef){
+  RespondToClaim(claimRef) {
     defendantLatestUpdate.open(claimRef);
     bilingualLanguagePreference.verifyContent();
   }
@@ -347,7 +351,7 @@ class ResponseSteps {
     whyDoYouDisagreeTheClaimAmount.enterReason(claimRef, responseType);
   }
 
-  EnterWhyYouDisagree(claimRef){
+  EnterWhyYouDisagree(claimRef) {
     whyDoYouDisagree.enterReason(claimRef);
   }
 
@@ -360,12 +364,32 @@ class ResponseSteps {
     mediationCanWeUse.selectOptionForMediation(claimRef);
   }
 
+  EnterSkipTelephoneMediationDetails(claimRef) {
+    freeTelephoneMediation.skipMediation(claimRef);
+    mediationDisagreement.mediationDisagreement(claimRef);
+    doNotAgreeToFreeMediation.skipReasonForMediation(claimRef);
+  }
+
+
+  EnterNoOptionsForDQForSmallClaims(claimRef) {
+    this.SelectHearingRequirements(claimRef, 'No');
+    this.SelectExpertNotNeeded('No');
+    this.SelectGiveEvidenceYourself('No');
+    this.EnterNoDefendantWitnesses('No');
+    this.SelectOptionForCantAttendHearing('No');
+    this.SelectOptionForPhoneOrVideoHearing('No');
+    this.SelectOptionForVulnerability('No');
+    this.SelectOptionForSupportRequired('No');
+    this.SelectPreferredCourtLocation('No');
+    this.SelectLanguageOption();
+  }
+
   EnterDQForSmallClaims(claimRef) {
     this.SelectHearingRequirements(claimRef);
     this.SelectExpertNeededOrNot();
     this.EnterExpertReportDetails('TestExpert1', '20', '10', '2022');
     this.SelectGiveEvidenceYourself();
-    this.EnterDefedantWitnesses();
+    this.EnterDefendantWitnesses();
     this.SelectOptionForCantAttendHearing();
     this.EnterUnavailabilityDates();
     this.SelectOptionForPhoneOrVideoHearing();
@@ -375,48 +399,56 @@ class ResponseSteps {
     this.SelectLanguageOption();
   }
 
-  SelectHearingRequirements(claimRef) {
-    hearingRequirements.selectHearingRequirements(claimRef);
+  SelectHearingRequirements(claimRef, option = 'Yes') {
+    hearingRequirements.selectHearingRequirements(claimRef, option);
   }
 
   SelectExpertNeededOrNot() {
     dqExpert.chooseExpert();
   }
 
+  SelectExpertNotNeeded() {
+    dqExpert.chooseExpert('No');
+  }
+
   EnterExpertReportDetails(expertName, day, month, year) {
     expertReportDetails.enterExpertReportDetails(expertName, day, month, year);
   }
 
-  SelectGiveEvidenceYourself() {
-    giveEvidenceYourself.SelectGiveEvidenceYourself();
+  SelectGiveEvidenceYourself(option) {
+    giveEvidenceYourself.SelectGiveEvidenceYourself(option);
   }
 
-  EnterDefedantWitnesses() {
+  EnterNoDefendantWitnesses(option) {
+    defendantWitnesses.enterDefendantWitnesses(option);
+  }
+
+  EnterDefendantWitnesses() {
     defendantWitnesses.enterDefendantWitnesses();
   }
 
-  SelectOptionForCantAttendHearing() {
-    cantAttendHearing.selectYesForCantAttendHearing();
+  SelectOptionForCantAttendHearing(option) {
+    cantAttendHearing.selectYesForCantAttendHearing(option);
   }
 
   EnterUnavailabilityDates() {
     availabilityDates.enterUnavailableDates();
   }
 
-  SelectOptionForPhoneOrVideoHearing() {
-    phoneOrVideoHearing.selectOptionForPhoneOrVideoHearing();
+  SelectOptionForPhoneOrVideoHearing(option = 'Yes') {
+    phoneOrVideoHearing.selectOptionForPhoneOrVideoHearing(option);
   }
 
-  SelectOptionForVulnerability() {
-    vulnerabilityDetails.selectOptionForVulnerability();
+  SelectOptionForVulnerability(option) {
+    vulnerabilityDetails.selectOptionForVulnerability(option);
   }
 
-  SelectOptionForSupportRequired() {
-    supportRequired.selectOptionForSupportRequired();
+  SelectOptionForSupportRequired(option) {
+    supportRequired.selectOptionForSupportRequired(option);
   }
 
-  SelectPreferredCourtLocation() {
-    courtLocation.selectPreferredCourtLocation();
+  SelectPreferredCourtLocation(option) {
+    courtLocation.selectPreferredCourtLocation(option);
   }
 
   SelectLanguageOption() {

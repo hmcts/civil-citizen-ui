@@ -8,9 +8,20 @@ const fields ={
 
 class DqExpert {
 
-  chooseExpert() {
+  chooseExpert(option = 'Yes') {
     I.see('Using an expert', 'h1');
-    I.click(fields.continueWithExpert);
+    switch(option){
+      case 'Yes':{
+        I.click(fields.continueWithExpert);
+        break;
+      }
+      case 'No':{
+        I.click(fields.continueWithoutExpert);
+        break;
+      }
+      default:
+        I.click(fields.continueWithExpert);
+    }
   }
 }
 

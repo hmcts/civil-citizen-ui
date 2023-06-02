@@ -8,9 +8,20 @@ const fields ={
 
 class GiveEvidenceYourself {
 
-  SelectGiveEvidenceYourself() {
+  SelectGiveEvidenceYourself(option = 'Yes') {
     I.see('Do you want to give evidence yourself?', 'h1');
-    I.click(fields.yesButton);
+    switch(option){
+      case 'Yes':{
+        I.click(fields.yesButton);
+        break;
+      }
+      case 'No':{
+        I.click(fields.noButton);
+        break;
+      }
+      default:
+        I.click(fields.yesButton);
+    }
     I.click('Save and continue');
   }
 }
