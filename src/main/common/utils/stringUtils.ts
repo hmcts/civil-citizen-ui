@@ -4,6 +4,6 @@ export function caseNumberPrettify(caseNumber: string) {
 
 export function documentIdPrettify(documentBinaryUrl: string){
   const regex = /\/([\w-]+)\/binary$/;
-  const match = documentBinaryUrl.match(regex);
+  const match = regex.exec(documentBinaryUrl);
   return match[1];
 }

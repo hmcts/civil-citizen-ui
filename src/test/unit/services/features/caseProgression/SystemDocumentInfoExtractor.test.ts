@@ -6,7 +6,7 @@ import {SystemGeneratedCaseDocumentsWithSDOMock} from '../../../../utils/mocks/S
 import {DocumentType} from 'models/document/documentType';
 
 describe('System Document Info Extractor Service', () => {
-  it('should extract document if correctly', async () => {
+  it('should extract document correctly', async () => {
     //Given
     const systemGeneratedCaseDocuments: SystemGeneratedCaseDocuments[] = SystemGeneratedCaseDocumentsWithSDOMock();
     const documentType = DocumentType.SDO_ORDER;
