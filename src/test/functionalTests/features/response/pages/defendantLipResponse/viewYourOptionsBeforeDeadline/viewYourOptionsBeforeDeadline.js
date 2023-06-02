@@ -14,7 +14,7 @@ const buttons = {
   saveAndContinue:'button.govuk-button',
 };
 
-const newDate = new Date(new Date().setMonth(new Date().getMonth()+3));
+const newDate = new Date(new Date().setMonth(new Date().getMonth()+2));
 const extendedDay = newDate.getDay();
 const extendedMonth = newDate.getMonth();
 const extendedYear = newDate.getFullYear();
