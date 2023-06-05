@@ -26,6 +26,7 @@ const developmentMode = env === 'development';
 export const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
 
 export const app = express();
+app.enable('trust proxy');
 app.use(session({
   name: 'citizen-ui-session',
   store: new MemoryStore({
@@ -37,6 +38,7 @@ app.use(session({
   cookie : {
     secure: false,
     maxAge: cookieMaxAge,
+    sameSite: 'none',
   },
 }));
 app.use(cookieParser());
