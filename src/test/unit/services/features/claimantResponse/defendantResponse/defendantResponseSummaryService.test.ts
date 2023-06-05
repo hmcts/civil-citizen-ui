@@ -85,7 +85,7 @@ describe("Defendant's response summary service", () => {
     expect(defendantsResponseContent[4].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.THEIR_TOE');
     expect(defendantsResponseContent[5].data?.head[0].text).toEqual('COMMON.DATE');
     expect(defendantsResponseContent[5].data?.head[1].text).toEqual('COMMON.TIMELINE.WHAT_HAPPENED');
-    expect(defendantsResponseContent[5].data?.tableRows[0][0].text.toString()).toEqual('1 April 2022');
+    expect(defendantsResponseContent[5].data?.tableRows[0][0].text).toEqual('1 April 2022');
     expect(defendantsResponseContent[5].data?.tableRows[0][1].text).toEqual('I contacted Mary Richards to discuss building works on our roof.');
     expect(defendantsResponseContent[6].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.WHY_THEY_DISAGREE_TIMELINE');
     expect(defendantsResponseContent[7].data?.text).toEqual('timeline comments');

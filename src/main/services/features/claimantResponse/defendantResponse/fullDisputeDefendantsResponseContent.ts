@@ -6,10 +6,10 @@ import {TimelineRow} from 'form/models/timeLineOfEvents/timelineRow';
 import {TableCell} from 'models/summaryList/summaryList';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 
-export const generateTableRowsForTOEs = (theirTOERows: TimelineRow[]): TableCell[][] => {
+export const generateTableRowsForTOEs = (theirTOERows: TimelineRow[], lng: string): TableCell[][] => {
   return theirTOERows.map(row => {
     return [{
-      text: formatDateToFullDate(new Date(row?.date?.toString())),
+      text: formatDateToFullDate(new Date(row?.date?.toString()), lng ),
     }, {
       text: row?.description,
     }];
@@ -60,7 +60,7 @@ export const getTheirTOEs = (claim: Claim, lng: string): ClaimSummarySection[] =
             text: t('COMMON.TIMELINE.WHAT_HAPPENED', {lng}),
           },
         ],
-        tableRows: generateTableRowsForTOEs(theirTOERows),
+        tableRows: generateTableRowsForTOEs(theirTOERows, lng),
       },
     },
   ];

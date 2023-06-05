@@ -24,9 +24,9 @@ export class TimelineRow {
   constructor(day?: number, month?: number, year?: number, description?: string) {
     this.date = DateConverter.convertToDate(year?.toString(), month?.toString(), day?.toString());
     this.description = description;
-    this.year = Number(year);
-    this.month = Number(month);
-    this.day = Number(day);
+    this.year = year;
+    this.month = month;
+    this.day = day;
   }
 
   public static buildPopulatedForm(day?: number, month?: number, year?: number, description?: string) : TimelineRow{

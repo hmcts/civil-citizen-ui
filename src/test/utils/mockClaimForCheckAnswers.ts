@@ -1212,7 +1212,7 @@ export const claimWithClaimTimeLineAndEvents = (): Claim => {
   const claim = new Claim();
   claim.claimDetails = new ClaimDetails();
   claim.claimDetails.evidence = new Evidence('test', [new EvidenceItem(EvidenceType.CONTRACTS_AND_AGREEMENTS, 'roof'), new EvidenceItem(EvidenceType.EXPERT_WITNESS, 'door')]);
-  claim.claimDetails.timeline = new ClaimantTimeline([new TimelineRow(1, 2, 2000, 'contract'), new TimelineRow(1,2,3, 'meeting'), new TimelineRow(1, 2, 1999, 'damages')]);
+  claim.claimDetails.timeline = new ClaimantTimeline([new TimelineRow(1, 2, 2000, 'contract'), new TimelineRow(1, 2, 2002, 'meeting'), new TimelineRow(1, 2, 1999, 'damages')]);
 
   return claim;
 };
