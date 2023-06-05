@@ -30,6 +30,6 @@ describe('Add the days to current date to get the expected result', () => {
     const result = addDaysFilterTranslated(referenceDate.toJSON(), days, t);
     //Then
     expect(result).not.toBeNull();
-    expect(result).toContain('3 12 2004');
+    expect(result).toContain('3 COMMON.MONTH_NAMES.DECEMBER 2004');
   });
 });
