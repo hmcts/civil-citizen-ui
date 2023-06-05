@@ -32,6 +32,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   else if (claim.isPartialAdmission())
     claim.partialAdmission = toCUIPartialAdmission(ccdClaim);
 
+  console.log('claim part of translateCCDCaseDataToCUIModel...', claim);
   return claim;
 };
 
