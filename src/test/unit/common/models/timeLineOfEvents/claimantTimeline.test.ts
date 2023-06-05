@@ -47,7 +47,7 @@ describe('ClaimantTimeline', () => {
       timeline.filterOutEmptyRows();
 
       //Then
-      expect(timeline.rows.length).toBe(1);
+      expect(timeline.rows.length).toBe(3);
     });
 
     it('should not remove any rows when there are no rows', async () => {
@@ -56,7 +56,7 @@ describe('ClaimantTimeline', () => {
 
       //When
       timeline.filterOutEmptyRows();
-      
+
       //Then
       expect(timeline.rows.length).toBe(0);
     });

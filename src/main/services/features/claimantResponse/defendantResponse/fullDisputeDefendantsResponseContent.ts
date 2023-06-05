@@ -9,7 +9,7 @@ import {formatDateToFullDate} from 'common/utils/dateUtils';
 export const generateTableRowsForTOEs = (theirTOERows: TimelineRow[]): TableCell[][] => {
   return theirTOERows.map(row => {
     return [{
-      text: row?.date?.getDate().toString(),
+      text: formatDateToFullDate(new Date(row?.date?.toString())),
     }, {
       text: row?.description,
     }];
