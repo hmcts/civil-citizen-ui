@@ -5,13 +5,14 @@ import {
 } from '../../../../utils/mockDraftStore';
 import {
   TYPES_OF_DOCUMENTS_URL,
-  UPLOAD_YOUR_DOCUMENTS_URL,
+  CP_UPLOAD_DOCUMENTS_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {app} from '../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import express from 'express';
+import {t} from 'i18next';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -32,7 +33,7 @@ describe('Upload document- type of documents controller', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(typeOfDocumentUrl).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('What types of documents do you want to upload?');
+        expect(res.text).toContain(t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.TITLE'));
       });
     });
 
@@ -62,7 +63,7 @@ describe('Upload document- type of documents controller', () => {
         });
     });
 
-    it('when at least 1 is  selected, should redirect to document upload screen', async () => {
+    it('when at least 1 is  selected, should redirect to Upload documents screen', async () => {
       await request(app)
         .post(typeOfDocumentUrl)
         .send({
@@ -71,7 +72,7 @@ describe('Upload document- type of documents controller', () => {
         })
         .expect((res: express.Response) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(UPLOAD_YOUR_DOCUMENTS_URL.replace(':id', 'aaa'));
+          expect(res.get('location')).toBe(CP_UPLOAD_DOCUMENTS_URL.replace(':id', 'aaa'));
         });
     });
   });
