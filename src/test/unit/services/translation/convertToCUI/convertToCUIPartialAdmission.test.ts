@@ -124,7 +124,7 @@ describe('translate partial admission to cui model', () => {
       const cuiResponseTimelineOfEvents = toCUIResponseTimelineOfEvents(timelineOfEvents, timelineComment);
       // Then
       expect(cuiResponseTimelineOfEvents.rows.length).toBe(1);
-      expect(cuiResponseTimelineOfEvents.rows[0].date).toBe('2022-09-22');
+      expect(cuiResponseTimelineOfEvents.rows[0].date.toDateString()).toBe('Thu Sep 22 2022');
       expect(cuiResponseTimelineOfEvents.rows[0].description).toBe('you might have signed a contract');
       expect(cuiResponseTimelineOfEvents.comment).toBeUndefined();
     });
@@ -144,7 +144,7 @@ describe('translate partial admission to cui model', () => {
       const cuiResponseTimelineOfEvents = toCUIResponseTimelineOfEvents(timelineOfEvents, timelineComment);
       // Then
       expect(cuiResponseTimelineOfEvents.rows.length).toBe(1);
-      expect(cuiResponseTimelineOfEvents.rows[0].date).toBe('2022-09-22');
+      expect(cuiResponseTimelineOfEvents.rows[0].date.toDateString()).toBe('Thu Sep 22 2022');
       expect(cuiResponseTimelineOfEvents.rows[0].description).toBe('you might have signed a contract');
       expect(cuiResponseTimelineOfEvents.comment).toBe('timeline comment');
     });

@@ -11,8 +11,8 @@ import {mockClaim} from '../../../../../utils/mockClaim';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {FullAdmission} from 'common/models/fullAdmission';
 import howMuchHaveYouPaidService from 'services/features/response/admission/howMuchHaveYouPaidService';
-import {HowMuchHaveYouPaid} from '../../../../../../main/common/form/models/admission/howMuchHaveYouPaid';
-import {HowMuchDoYouOwe} from '../../../../../../main/common/form/models/admission/partialAdmission/howMuchDoYouOwe';
+import {HowMuchHaveYouPaid} from 'form/models/admission/howMuchHaveYouPaid';
+import {HowMuchDoYouOwe} from 'form/models/admission/partialAdmission/howMuchDoYouOwe';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({

@@ -1,6 +1,6 @@
 import {
   getSummarySections,
-} from '../../../../../../../main/services/features/response/checkAnswers/checkAnswersService';
+} from 'services/features/response/checkAnswers/checkAnswersService';
 import {
   CITIZEN_AMOUNT_YOU_PAID_URL,
   CITIZEN_EVIDENCE_URL,
@@ -11,27 +11,27 @@ import {
   CITIZEN_TIMELINE_URL,
   CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL,
   CITIZEN_WHY_DO_YOU_DISAGREE_URL,
-} from '../../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {
   ceateClaimWithPartialAdmission,
   createClaimWithBasicRespondentDetails,
   createClaimWithFullRejection,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
-import {DefendantTimeline} from '../../../../../../../main/common/form/models/timeLineOfEvents/defendantTimeline';
-import {DefendantEvidence} from '../../../../../../../main/common/models/evidence/evidence';
-import {EvidenceItem} from '../../../../../../../main/common/form/models/evidence/evidenceItem';
-import {Evidence} from '../../../../../../../main/common/form/models/evidence/evidence';
-import {EvidenceType} from '../../../../../../../main/common/models/evidence/evidenceType';
-import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
-import {RejectAllOfClaimType} from '../../../../../../../main/common/form/models/rejectAllOfClaimType';
-import {ResponseType} from '../../../../../../../main/common/form/models/responseType';
-import {RejectAllOfClaim} from '../../../../../../../main/common/form/models/rejectAllOfClaim';
+import {DefendantTimeline} from 'form/models/timeLineOfEvents/defendantTimeline';
+import {DefendantEvidence} from 'models/evidence/evidence';
+import {EvidenceItem} from 'form/models/evidence/evidenceItem';
+import {Evidence} from 'form/models/evidence/evidence';
+import {EvidenceType} from 'models/evidence/evidenceType';
+import {YesNo} from 'form/models/yesNo';
+import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
+import {ResponseType} from 'form/models/responseType';
+import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
 import {
   WhyDoYouDisagree,
-} from '../../../../../../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
-import {Defence} from '../../../../../../../main/common/form/models/defence';
-import {TimelineRow} from '../../../../../../../main/common/form/models/timeLineOfEvents/timelineRow';
+} from 'form/models/admission/partialAdmission/whyDoYouDisagree';
+import {Defence} from 'form/models/defence';
+import {TimelineRow} from 'form/models/timeLineOfEvents/timelineRow';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -117,12 +117,12 @@ describe('Partial Admit - Response Details', () => {
       //When
       const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
       //Then
-      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].key.text).toBe(new Date('6 November 2022'));
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].key.text).toBe('6 November 2022');
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].value.html).toBe('Event 1');
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].actions?.items[0].href).toBe(CITIZEN_TIMELINE_URL.replace(':id', constVal.CLAIM_ID));
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
 
-      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[6].key.text).toBe(new Date('7 November 2022'));
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[6].key.text).toBe('7 November 2022');
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[6].value.html).toBe('Event 2');
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[6].actions?.items[0].href).toBe(CITIZEN_TIMELINE_URL.replace(':id', constVal.CLAIM_ID));
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[6].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
@@ -145,7 +145,7 @@ describe('Partial Admit - Response Details', () => {
       //When
       const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
       //Then
-      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].key.text).toBe(new Date('6 November 2022'));
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].key.text).toBe('6 November 2022');
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].value.html).toBe('Event 1');
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].actions?.items[0].href).toBe(CITIZEN_TIMELINE_URL.replace(':id', constVal.CLAIM_ID));
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
