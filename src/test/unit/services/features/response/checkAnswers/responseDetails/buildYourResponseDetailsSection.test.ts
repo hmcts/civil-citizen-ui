@@ -117,12 +117,12 @@ describe('Partial Admit - Response Details', () => {
       //When
       const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
       //Then
-      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].key.text).toBe('6 November 2022');
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].key.text).toBe(new Date('6 November 2022'));
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].value.html).toBe('Event 1');
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].actions?.items[0].href).toBe(CITIZEN_TIMELINE_URL.replace(':id', constVal.CLAIM_ID));
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
 
-      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[6].key.text).toBe('7 November 2022');
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[6].key.text).toBe(new Date('7 November 2022'));
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[6].value.html).toBe('Event 2');
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[6].actions?.items[0].href).toBe(CITIZEN_TIMELINE_URL.replace(':id', constVal.CLAIM_ID));
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[6].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
@@ -136,7 +136,7 @@ describe('Partial Admit - Response Details', () => {
       //Given
       const claim = ceateClaimWithPartialAdmission(YesNo.YES);
       const timeline: DefendantTimeline = new DefendantTimeline(
-        [new TimelineRow('6 November 2022', 'Event 1')],
+        [new TimelineRow(6, 11, 2022, 'Event 1')],
         '',
       );
       claim.partialAdmission = {
@@ -145,7 +145,7 @@ describe('Partial Admit - Response Details', () => {
       //When
       const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
       //Then
-      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].key.text).toBe('6 November 2022');
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].key.text).toBe(new Date('6 November 2022'));
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].value.html).toBe('Event 1');
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].actions?.items[0].href).toBe(CITIZEN_TIMELINE_URL.replace(':id', constVal.CLAIM_ID));
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);

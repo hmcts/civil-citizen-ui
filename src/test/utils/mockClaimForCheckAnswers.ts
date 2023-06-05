@@ -939,7 +939,7 @@ export const ceateClaimWithPartialAdmission = (alreadyPaid?: YesNo, paymentOptio
   const howMuchHaveYouPaid: HowMuchHaveYouPaid = new HowMuchHaveYouPaid(param);
 
   const timeline: DefendantTimeline = new DefendantTimeline(
-    [new TimelineRow('6 November 2022', 'Event 1'), new TimelineRow('7 November 2022', 'Event 2')],
+    [new TimelineRow(6, 11, 2022, 'Event 1'), new TimelineRow(7, 11, 2022, 'Event 2')],
     'Comments about timeline',
   );
 
@@ -1005,7 +1005,7 @@ export const createClaimWithFreeTelephoneMediationSectionForIndividual = (): Cla
     claim.respondent1.type = PartyType.INDIVIDUAL;
   }
   const timeline: DefendantTimeline = new DefendantTimeline(
-    [new TimelineRow('6 November 2022', 'Event 1'), new TimelineRow('7 November 2022', 'Event 2')],
+    [new TimelineRow(6, 11, 2022, 'Event 1'), new TimelineRow(7, 11,  2022, 'Event 2')],
     'Comments about timeline',
   );
   const param: HowMuchHaveYouPaidParams = {};
@@ -1212,7 +1212,7 @@ export const claimWithClaimTimeLineAndEvents = (): Claim => {
   const claim = new Claim();
   claim.claimDetails = new ClaimDetails();
   claim.claimDetails.evidence = new Evidence('test', [new EvidenceItem(EvidenceType.CONTRACTS_AND_AGREEMENTS, 'roof'), new EvidenceItem(EvidenceType.EXPERT_WITNESS, 'door')]);
-  claim.claimDetails.timeline = new ClaimantTimeline([new TimelineRow('01022000', 'contract'), new TimelineRow('123', 'meeting'), new TimelineRow('01021999', 'damages')]);
+  claim.claimDetails.timeline = new ClaimantTimeline([new TimelineRow(1, 2, 2000, 'contract'), new TimelineRow(1,2,3, 'meeting'), new TimelineRow(1, 2, 1999, 'damages')]);
 
   return claim;
 };
