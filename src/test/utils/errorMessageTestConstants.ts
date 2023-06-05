@@ -143,4 +143,5 @@ export const enum TestMessages {
   INTEREST_START_DATE = 'Enter the date you want to claim interest from',
   REASON_EXPLANATION = 'Briefly explain your claim',
   CLAIMANT_REJECTION_REASON = 'Enter why you rejected repayment plan',
+  VALID_ENTER_AT_LEAST_ONE_UPLOAD ='You must select at least one type of document'
 }

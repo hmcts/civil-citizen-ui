@@ -57,6 +57,7 @@ import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIC
 import {CCDRespondentLiPResponse} from './ccdResponse/ccdRespondentLiPResponse';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 import {DateTimeFormatOptions} from 'luxon';
+import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 
 export class Claim {
   legacyCaseReference: string;
@@ -92,7 +93,8 @@ export class Claim {
   respondent1ResponseDate?: Date;
   claimBilingualLanguagePreference: ClaimBilingualLanguagePreference;
   id: string;
-  sdoOrderDocument?: CaseDocument;
+  sdoOrderDocument?: SystemGeneratedCaseDocuments;
+  caseProgression?: CaseProgression;
   respondent1LiPResponse?: CCDRespondentLiPResponse;
   caseProgressionHearing?: CaseProgressionHearing;
 
