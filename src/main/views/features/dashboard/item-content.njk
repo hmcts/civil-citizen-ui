@@ -248,4 +248,21 @@
       </strong>
     </div>
   {% endif %}
+
+  {% if content.type === ClaimSummaryType.SELECT %}
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="subject">
+        <strong>{{ t(content.data.text) }}</strong>
+      </label>
+      <div id="subject-hint" class="govuk-hint">
+        {{ t(content.data.hint) }}
+      </div>
+      <select class="govuk-select" id={{ content.data.category+'[0]'+content.data.field }} name={{ content.data.category+'[0]'+content.data.field }} aria-describedby="subject-hint">
+        <option value={{ form.model.name }} selected>{{ t(content.data.choose) }}</option>
+        {% for item in content.data.items %}
+          <option value={{ item }}>{{ item }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  {% endif %}
 {% endmacro %}

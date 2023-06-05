@@ -2303,6 +2303,21 @@
         "TYPE_OF_DOCUMENT": "Type of document",
         "TYPE_OF_DOCUMENT_EXAMPLE": "For example, contract, invoice, receipt, email, text message, photo, social media message",
         "DOCUMENT_ISSUE_DATE": "Date document was issued or message was sent"
+      },
+      "EXPERT": {
+        "TITLE": "Expert evidence",
+        "EXPERT_REPORT": "Expert's report",
+        "EXPERT_NAME": "Expert's name",
+        "FIELD_EXPERTISE": "Field of expertise",
+        "DATE_REPORT_WAS": "Date report was written",
+        "JOINT_STATEMENT": "Joint statement of experts",
+        "EXPERTS_NAMES": "Experts' names",
+        "QUESTIONS_FOR_OTHER": "Questions for other party's expert or joint expert",
+        "OTHER_PARTY_NAME": "Other party's name",
+        "NAME_DOCUMENT_YOU": "Name of document you have questions about",
+        "ANSWERS_TO_QUESTIONS": "Answers to questions asked by other party",
+        "NAME_DOCUMENT_WITH": "Name of document with other party's questions",
+        "SELECT": "Select"
       }
     },
     "VULNERABILITY": {

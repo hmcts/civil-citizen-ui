@@ -21,11 +21,12 @@
     {% set paragraph = t('PAGES.UPLOAD_DOCUMENTS.FORMAT') %}
     {% set witness = t('PAGES.UPLOAD_DOCUMENTS.WITNESS') %}
     {% set disclosure = t('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.TITLE') %}
+    {% set expert = t('PAGES.UPLOAD_DOCUMENTS.EXPERT.TITLE') %}
 
     <div class="govuk-grid-row">
       <form method="post" novalidate>
         {{ csrfProtection(csrf) }}
-        <div class="govuk-grid-column-one-half">
+        <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
           <h1 class="govuk-heading-l">{{ titleH1 }}</h1>
           <h2 class="govuk-heading-s">{{ titleH2 }}</h2>
           <p class="govuk-body-m">{{ paragraph }}</p>
@@ -63,6 +64,38 @@
             {% endfor %}
           {% endif %}
 
+          {% if expertContent.length > 0 %}
+            <h2 class="govuk-heading-l">{{ expert }}</h2>
+            {% for expertSections in expertContent %}
+              <div class="row-container">
+                <div data-module="moj-add-another">
+                  {% call govukFieldset({
+                    classes: 'moj-add-another__item',
+                    legend: {
+                      classes: 'moj-add-another__title',
+                      isPageHeading: false
+                    }
+                  }) %}
+                    {{ claimSummaryContent({
+                      contentSections: expertSections.contentSections
+                    }) }}
+                  {% endcall %}
+                  <div class="moj-button-action">
+                    {{ govukButton({
+                      text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
+                      classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
+                      type: 'button',
+                      attributes: {
+                        'id': 'add-another-expert-list'
+                      }
+                    }) }}
+                  </div>
+                  <hr class="govuk-section-break--s govuk-section-break--visible">
+                </div>
+              </div>
+            {% endfor %}
+          {% endif %}
+
           <br>
           <div class="govuk-button-group">
             {{ govukButton({
@@ -74,6 +107,6 @@
         </div>
       </form>
     </div>
-</main>
+  </main>
 </div>
 {% endblock %}
