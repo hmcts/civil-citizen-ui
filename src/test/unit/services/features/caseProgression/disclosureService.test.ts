@@ -62,16 +62,19 @@ describe('Disclosure service', () => {
     documentsForDisclosure.push(new DocumentsForDisclosure());
     documentsForDisclosure.push(new DocumentsForDisclosure());
     const form = new UploadDocumentsUserForm(documentsForDisclosure);
+    const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
+    genericForm.validateSync();
 
     disclosureSections.case_data.caseProgression.defendantUploadDocuments.disclosure.find(
       (document: { documentType: string; }) => document.documentType === 'DISCLOSURE_LIST',
     ).selected = false;
 
     //when
-    const actualDisclosureContent = getDisclosureContent(disclosureSections.case_data, new GenericForm<UploadDocumentsUserForm>(form));
+    const actualDisclosureContent = getDisclosureContent(disclosureSections.case_data, genericForm);
 
     //Then
     expect(actualDisclosureContent[0].length).toEqual(2);
+    expect(actualDisclosureContent[0][0].contentSections[1].data.classes).toEqual('govuk-form-group--error govuk-input--error');
   });
 
   it('should return only disclosure list content', () => {

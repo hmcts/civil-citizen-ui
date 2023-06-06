@@ -14,11 +14,11 @@ import {
 export const getDisclosureContent = (claim: Claim, form: GenericForm<UploadDocumentsUserForm>): ClaimSummaryContent[][] => {
   const sectionContent = [];
 
-  if (claim?.caseProgression?.defendantUploadDocuments?.disclosure[0]?.selected) {
+  if (claim.caseProgression?.defendantUploadDocuments?.disclosure[0]?.selected) {
     sectionContent.push(documentsForDisclosure(form));
   }
 
-  if (claim?.caseProgression?.defendantUploadDocuments?.disclosure[1]?.selected) {
+  if (claim.caseProgression?.defendantUploadDocuments?.disclosure[1]?.selected) {
     sectionContent.push(disclosureList(form));
   }
 

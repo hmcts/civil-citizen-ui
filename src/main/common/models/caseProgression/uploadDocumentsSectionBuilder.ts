@@ -66,8 +66,8 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
     return this;
   }
 
-  addRemoveSectionButton(index = 0) {
-    if (index != 0) {
+  addRemoveSectionButton(showRemoveButton = false) {
+    if (showRemoveButton) {
       const titleSection = ({
         type: ClaimSummaryType.BUTTON,
         data: {

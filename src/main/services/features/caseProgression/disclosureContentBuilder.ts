@@ -12,15 +12,20 @@ const disclosureList = 'disclosureList';
 const fileUpload = 'file_upload';
 
 export const buildDisclosureDocumentSection = (documentsForDisclosureValue: DocumentsForDisclosure = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
-  const errorFieldNamePrefix = 'documentsForDisclosure[documentsForDisclosure][' + index + ']';
-  const missingInputError = form?.errorFor(errorFieldNamePrefix + '[typeOfDocument]', documentsForDisclosureType) !== undefined ? 'govuk-form-group--error govuk-input--error' : '';
+  let missingInputError = '';
+  let showRemoveButton = false;
+  if(form){
+    const errorFieldNamePrefix = 'documentsForDisclosure[documentsForDisclosure][' + index + ']';
+    missingInputError = form.errorFor(errorFieldNamePrefix + '[typeOfDocument]', documentsForDisclosureType) !== undefined ? 'govuk-form-group--error govuk-input--error' : '';
+    showRemoveButton = form.model.documentsForDisclosure.length > 1;
+  }
 
   return new UploadDocumentsSectionBuilder()
     .addTitle('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.DISCLOSURE_DOCUMENTS')
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.TYPE_OF_DOCUMENT', missingInputError, 'PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.TYPE_OF_DOCUMENT_EXAMPLE', documentsForDisclosureType, 'typeOfDocument', documentsForDisclosureValue?.typeOfDocument, index)
     .addDateArray('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.DOCUMENT_ISSUE_DATE', 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', documentsForDisclosureType, documentsForDisclosureValue?.dateDay, documentsForDisclosureValue?.dateMonth, documentsForDisclosureValue?.dateYear, index)
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', documentsForDisclosureType, fileUpload, index)
-    .addRemoveSectionButton(index)
+    .addRemoveSectionButton(showRemoveButton)
     .build();
 };
 
