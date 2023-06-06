@@ -9,9 +9,11 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 const setResponseDeadline = async (claim: Claim, req: AppRequest) => {
   const claimId : string = claim.id ? claim.id : req.params.id;
   const agreedDeadlineDate: Date = await civilServiceClient.getAgreedDeadlineResponseDate(claimId, req);
-  claim.responseDeadline = toCUIResponseDeadline(agreedDeadlineDate);
-  claim.respondentSolicitor1AgreedDeadlineExtension = agreedDeadlineDate;
-  await saveDraftClaim(claim.id,  claim);
+  if(agreedDeadlineDate){
+    claim.responseDeadline = toCUIResponseDeadline(agreedDeadlineDate);
+    claim.respondentSolicitor1AgreedDeadlineExtension = agreedDeadlineDate;
+    await saveDraftClaim(claim.id,  claim);
+  }
 };
 
 export {
