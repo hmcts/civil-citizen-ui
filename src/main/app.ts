@@ -38,7 +38,7 @@ app.use(session({
   cookie : {
     secure: false,
     maxAge: cookieMaxAge,
-    // sameSite: 'none',
+    sameSite: 'lax',
   },
 }));
 app.use(cookieParser());
