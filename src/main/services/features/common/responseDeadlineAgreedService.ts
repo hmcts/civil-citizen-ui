@@ -12,6 +12,7 @@ const setResponseDeadline = async (claim: Claim, req: AppRequest) => {
   if(agreedDeadlineDate){
     claim.responseDeadline = toCUIResponseDeadline(agreedDeadlineDate);
     claim.respondentSolicitor1AgreedDeadlineExtension = agreedDeadlineDate;
+    claim.respondent1ResponseDeadline = agreedDeadlineDate;
     await saveDraftClaim(claim.id,  claim);
   }
 };
