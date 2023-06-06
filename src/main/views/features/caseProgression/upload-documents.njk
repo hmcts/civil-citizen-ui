@@ -13,6 +13,9 @@
 {% block content %}
 <div class="govuk-width-container caseProgression">
   <main class="govuk-main-wrapper" role="main">
+    {% if form != null and form.hasErrors() %}
+      {{ errorSummary(form.getAllErrors(), t) }}
+    {% endif %}
     {% set rowNumberToShowRemoveButton = 2 %}
     {% set witnessContentLength = witnessContent.length %}
     {% set isRemoveButtonHidden = witnessContentLength < rowNumberToShowRemoveButton %}
@@ -36,17 +39,19 @@
             {% for disclosureSections in disclosureContent %}
             <div class="row-container">
               <div data-module="moj-add-another">
-                {% call govukFieldset({
-                  classes: 'moj-add-another__item',
-                  legend: {
-                    classes: 'moj-add-another__title',
-                    isPageHeading: false
-                  }
-                }) %}
-                {{ claimSummaryContent({
-                contentSections: disclosureSections.contentSections
-                }) }}
-                {% endcall %}
+                {% for section in disclosureSections %}
+                  {% call govukFieldset({
+                    classes: 'moj-add-another__item',
+                    legend: {
+                      classes: 'moj-add-another__title',
+                      isPageHeading: false
+                    }
+                  }) %}
+                  {{ claimSummaryContent({
+                  contentSections: section.contentSections
+                  }) }}
+                  {% endcall %}
+                {% endfor %}
                 <div class="moj-button-action">
                       {{ govukButton({
                         text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
