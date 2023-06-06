@@ -36,7 +36,7 @@ app.use(session({
   resave: true,
   saveUninitialized: true,
   cookie : {
-    secure: false,
+    secure: !developmentMode,
     maxAge: cookieMaxAge,
     sameSite: 'lax',
   },
