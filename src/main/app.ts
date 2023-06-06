@@ -22,6 +22,7 @@ const { setupDev } = require('./development');
 const MemoryStore = require('memorystore')(session);
 
 const env = process.env.NODE_ENV || 'development';
+const productionMode = env === 'production';
 const developmentMode = env === 'development';
 export const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
 
@@ -36,7 +37,7 @@ app.use(session({
   resave: true,
   saveUninitialized: true,
   cookie : {
-    secure: !developmentMode,
+    secure: productionMode,
     maxAge: cookieMaxAge,
     sameSite: 'lax',
   },
