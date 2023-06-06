@@ -77,7 +77,7 @@ describe('on POST', () => {
   it('should not error, nothing to validate', async () => {
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
-      .send()
+      .send({})
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Upload');
