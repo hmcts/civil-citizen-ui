@@ -53,7 +53,8 @@ export class DashboardDefendantItem extends DashboardItem {
   ccjRequestedDate?: Date;
   admittedAmount?: number;
   createdDate?: Date;
-
+  respondToAdmittedClaimOwingAmountPounds?:number;
+  
   constructor() {
     super();
     this.url = '/dashboard/:claimId/defendant';
@@ -66,7 +67,7 @@ export class DashboardDefendantItem extends DashboardItem {
     const paramClaimantName = {key: 'claimantName', value: this.claimantName};
     const paramCCJRequestedDate = {key: 'ccjRequestedDate', value: formatDateToFullDate(this.ccjRequestedDate, lang)};
     const paramResponseDeadline = {key: 'responseDeadline', value: formatDateToFullDate(this.responseDeadline, lang)};
-    const paramAdmittedAmount = {key: 'amount', value: this.admittedAmount?.toString()};
+    const paramAdmittedAmount = {key: 'amount', value: this.respondToAdmittedClaimOwingAmountPounds?.toString() ?? this.admittedAmount?.toString()};
 
     const dashboardStatus: DashboardDefendantStatus = {
       NO_STATUS: {translationKey: ''},
