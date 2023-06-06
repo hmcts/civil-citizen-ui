@@ -1,90 +1,109 @@
 import {getDisclosureContent} from 'services/features/caseProgression/disclosureService';
 import {CaseState} from 'form/models/claimDetails';
+import {
+  DisclosureList,
+  DocumentsForDisclosure,
+  UploadDocumentsUserForm,
+} from 'models/caseProgression/uploadDocumentsUserForm';
+import {GenericForm} from 'form/models/genericForm';
 
 describe('Disclosure service', () => {
-  it('should return both disclosure document and disclosure list content', () => {
-    //Given
-    const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
-    const testClaim = {
+  let mockClaim;
+  let disclosureSections:any;
+
+  beforeEach(() => {
+    mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    disclosureSections = {
       ...mockClaim,
       state: CaseState.AWAITING_APPLICANT_INTENTION,
       case_data: {
         ...mockClaim.case_data,
         caseProgression: {
-          defendantUploadDocuments : {
+          defendantUploadDocuments: {
             disclosure: [
-              {documentType: 'DOCUMENTS_FOR_DISCLOSURE', selected: true},
-              {documentType: 'DISCLOSURE_LIST', selected: true},
+              { documentType: 'DOCUMENTS_FOR_DISCLOSURE', selected: true },
+              { documentType: 'DISCLOSURE_LIST', selected: true },
             ],
           },
         },
       },
     };
+  });
 
+  it('should return both disclosure document and disclosure list content', () => {
     //when
-    const actualDisclosureContent = getDisclosureContent(testClaim.case_data);
+    const actualDisclosureContent = getDisclosureContent(disclosureSections.case_data, null);
 
     //Then
     expect(actualDisclosureContent.length).toEqual(2);
-    expect(actualDisclosureContent[0].contentSections.length).toEqual(4);
-    expect(actualDisclosureContent[0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.DISCLOSURE_DOCUMENTS');
-    expect(actualDisclosureContent[1].contentSections.length).toEqual(2);
-    expect(actualDisclosureContent[1].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.DISCLOSURE_LIST');
+    expect(actualDisclosureContent[0][0].contentSections.length).toEqual(4);
+    expect(actualDisclosureContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.DISCLOSURE_DOCUMENTS');
+    expect(actualDisclosureContent[1][0].contentSections.length).toEqual(2);
+    expect(actualDisclosureContent[1][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.DISCLOSURE_LIST');
   });
 
   it('should return only disclosure document', () => {
     //Given
-    const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
-    const testClaim = {
-      ...mockClaim,
-      state: CaseState.AWAITING_APPLICANT_INTENTION,
-      case_data: {
-        ...mockClaim.case_data,
-        caseProgression: {
-          defendantUploadDocuments : {
-            disclosure: [
-              {documentType: 'DOCUMENTS_FOR_DISCLOSURE', selected: true},
-              {documentType: 'DISCLOSURE_LIST', selected: false},
-            ],
-          },
-        },
-      },
-    };
+    disclosureSections.case_data.caseProgression.defendantUploadDocuments.disclosure.find(
+      (document: { documentType: string; }) => document.documentType === 'DISCLOSURE_LIST',
+    ).selected = false;
 
     //when
-    const actualDisclosureContent = getDisclosureContent(testClaim.case_data);
+    const actualDisclosureContent = getDisclosureContent(disclosureSections.case_data, null);
 
     //Then
     expect(actualDisclosureContent.length).toEqual(1);
-    expect(actualDisclosureContent[0].contentSections.length).toEqual(4);
-    expect(actualDisclosureContent[0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.DISCLOSURE_DOCUMENTS');
+    expect(actualDisclosureContent[0][0].contentSections.length).toEqual(4);
+    expect(actualDisclosureContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.DISCLOSURE_DOCUMENTS');
+  });
+
+  it('should return multiple disclosure documents only', () => {
+    const documentsForDisclosure: DocumentsForDisclosure[] = [];
+    documentsForDisclosure.push(new DocumentsForDisclosure());
+    documentsForDisclosure.push(new DocumentsForDisclosure());
+    const form = new UploadDocumentsUserForm(documentsForDisclosure);
+
+    disclosureSections.case_data.caseProgression.defendantUploadDocuments.disclosure.find(
+      (document: { documentType: string; }) => document.documentType === 'DISCLOSURE_LIST',
+    ).selected = false;
+
+    //when
+    const actualDisclosureContent = getDisclosureContent(disclosureSections.case_data, new GenericForm<UploadDocumentsUserForm>(form));
+
+    //Then
+    expect(actualDisclosureContent[0].length).toEqual(2);
   });
 
   it('should return only disclosure list content', () => {
     //Given
-    const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
-    const testClaim = {
-      ...mockClaim,
-      state: CaseState.AWAITING_APPLICANT_INTENTION,
-      case_data: {
-        ...mockClaim.case_data,
-        caseProgression: {
-          defendantUploadDocuments : {
-            disclosure: [
-              {documentType: 'DOCUMENTS_FOR_DISCLOSURE', selected: false},
-              {documentType: 'DISCLOSURE_LIST', selected: true},
-            ],
-          },
-        },
-      },
-    };
+    disclosureSections.case_data.caseProgression.defendantUploadDocuments.disclosure.find(
+      (document: { documentType: string; }) => document.documentType === 'DOCUMENTS_FOR_DISCLOSURE',
+    ).selected = false;
 
     //when
-    const actualDisclosureContent = getDisclosureContent(testClaim.case_data);
+    const actualDisclosureContent = getDisclosureContent(disclosureSections.case_data, null);
 
     //Then
     expect(actualDisclosureContent.length).toEqual(1);
-    expect(actualDisclosureContent[0].contentSections.length).toEqual(2);
-    expect(actualDisclosureContent[0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.DISCLOSURE_LIST');
+    expect(actualDisclosureContent[0][0].contentSections.length).toEqual(2);
+    expect(actualDisclosureContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.DISCLOSURE_LIST');
+  });
+
+  it('should return multiple disclosure list content only', () => {
+    //Given
+    const disclosureLists: DisclosureList[] = [];
+    disclosureLists.push(new DocumentsForDisclosure());
+    disclosureLists.push(new DocumentsForDisclosure());
+    const form = new UploadDocumentsUserForm(null, disclosureLists);
+
+    disclosureSections.case_data.caseProgression.defendantUploadDocuments.disclosure.find(
+      (document: { documentType: string; }) => document.documentType === 'DOCUMENTS_FOR_DISCLOSURE',
+    ).selected = false;
+
+    //when
+    const actualDisclosureContent = getDisclosureContent(disclosureSections.case_data,  new GenericForm<UploadDocumentsUserForm>(form));
+
+    //Then
+    expect(actualDisclosureContent.length).toEqual(1);
   });
 });

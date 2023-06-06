@@ -117,7 +117,7 @@ export const getUploadDocumentsForm = (req: Request): UploadDocumentsUserForm =>
 
 const getDocumentsForDisclosureFormSection = (req: Request) => {
   const documentsForDisclosure: DocumentsForDisclosure[] = [];
-  req.body.documentsForDisclosure.forEach(function (document: any) {
+  req.body.documentsForDisclosure?.forEach(function (document: any) {
     const formObj: DocumentsForDisclosure = new DocumentsForDisclosure();
 
     formObj.typeOfDocument = document['typeOfDocument'];
@@ -133,7 +133,7 @@ const getDocumentsForDisclosureFormSection = (req: Request) => {
 
 const getDocumentsListFormSection = (req: Request) => {
   const disclosureList: DisclosureList[] = [];
-  req.body.disclosureList.forEach(function (document: any) {
+  req.body.disclosureList?.forEach(function (document: any) {
     const formObj: DisclosureList = new DisclosureList();
 
     formObj.fileUpload = document['file_upload'];

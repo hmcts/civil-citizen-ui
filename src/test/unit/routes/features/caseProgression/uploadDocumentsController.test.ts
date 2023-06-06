@@ -45,3 +45,52 @@ describe('Upload document- upload document controller', () => {
       });
   });
 });
+
+describe('on POST', () => {
+  beforeEach(() => {
+    app.locals.draftStoreClient = mockCivilClaim;
+  });
+  it('should display documentForDisclosure validation error when invalid', async () => {
+    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'date-day':'','date-month':'','date-year':'','file_upload':''}]};
+
+    await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .send(documentForDisclosureModel)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('You must enter type of document');
+      });
+  });
+
+  it('should display disclosureList validation error when invalid', async () => {
+    const disclosureList = {'disclosureList':[{'file_upload':''}]};
+
+    await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .send(disclosureList)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        //todo: validation rules
+      });
+  });
+
+  it('should not error, nothing to validate', async () => {
+    await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .send()
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Upload');
+      });
+  });
+
+  it('should return 500 error page for failure', async () => {
+    app.locals.draftStoreClient = mockRedisFailure;
+    await request(app)
+      .get(CP_UPLOAD_DOCUMENTS_URL)
+      .expect((res) => {
+        expect(res.status).toBe(500);
+        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+      });
+  });
+});
