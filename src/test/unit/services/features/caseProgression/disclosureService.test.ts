@@ -1,8 +1,8 @@
 import {getDisclosureContent} from 'services/features/caseProgression/disclosureService';
 import {CaseState} from 'form/models/claimDetails';
 import {
-  DisclosureList,
-  DocumentsForDisclosure,
+  FileOnlySection,
+  TypeOfDocumentSection,
   UploadDocumentsUserForm,
 } from 'models/caseProgression/uploadDocumentsUserForm';
 import {GenericForm} from 'form/models/genericForm';
@@ -58,9 +58,9 @@ describe('Disclosure service', () => {
   });
 
   it('should return multiple disclosure documents only', () => {
-    const documentsForDisclosure: DocumentsForDisclosure[] = [];
-    documentsForDisclosure.push(new DocumentsForDisclosure());
-    documentsForDisclosure.push(new DocumentsForDisclosure());
+    const documentsForDisclosure: TypeOfDocumentSection[] = [];
+    documentsForDisclosure.push(new TypeOfDocumentSection());
+    documentsForDisclosure.push(new TypeOfDocumentSection());
     const form = new UploadDocumentsUserForm(documentsForDisclosure);
     const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
     genericForm.validateSync();
@@ -94,9 +94,9 @@ describe('Disclosure service', () => {
 
   it('should return multiple disclosure list content only', () => {
     //Given
-    const disclosureLists: DisclosureList[] = [];
-    disclosureLists.push(new DocumentsForDisclosure());
-    disclosureLists.push(new DocumentsForDisclosure());
+    const disclosureLists: FileOnlySection[] = [];
+    disclosureLists.push(new FileOnlySection());
+    disclosureLists.push(new FileOnlySection());
     const form = new UploadDocumentsUserForm(null, disclosureLists);
 
     disclosureSections.case_data.caseProgression.defendantUploadDocuments.disclosure.find(

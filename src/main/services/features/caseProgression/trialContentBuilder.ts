@@ -3,7 +3,7 @@ import {UploadDocumentsSectionBuilder} from 'models/caseProgression/uploadDocume
 import {
   FileOnlySection,
   TypeOfDocumentSection,
-  UploadDocumentsUserForm
+  UploadDocumentsUserForm,
 } from 'models/caseProgression/uploadDocumentsUserForm';
 import {GenericForm} from 'form/models/genericForm';
 
