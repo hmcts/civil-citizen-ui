@@ -118,20 +118,24 @@ export const getUploadDocumentsForm = (req: Request): UploadDocumentsUserForm =>
 
 const getDocumentsForDisclosureFormSection = (req: Request) => {
   const documentsForDisclosure: DocumentsForDisclosure[] = [];
-  req.body.documentsForDisclosure?.forEach(function (document: any) {
+  req.body.documentsForDisclosure?.forEach(function  (document: any, index: number) {
     const formObj: DocumentsForDisclosure = new DocumentsForDisclosure();
-
+    const fileName = `documentsForDisclosure[${index}][file_upload]`;
     formObj.typeOfDocument = document['typeOfDocument'].trim();
     formObj.dateDay = document['date-day'];
     formObj.dateMonth = document['date-month'];
     formObj.dateYear = document['date-year'];
-    formObj.fileUpload = document['file_upload'];
+    formObj.fileUpload = getUploadDocumentsByName(fileName, req);
 
     documentsForDisclosure.push(formObj);
   });
   return documentsForDisclosure;
 };
 
+const getUploadDocumentsByName = (name: string, req: Request) => {
+  const files = req.files as Express.Multer.File[];
+  return files.find(file => file.fieldname === name);
+};
 const getDocumentsListFormSection = (req: Request) => {
   const disclosureList: DisclosureList[] = [];
   req.body.disclosureList?.forEach(function (document: any) {

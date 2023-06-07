@@ -12,14 +12,17 @@ import {
   getUploadDocumentsForm,
 } from 'services/features/caseProgression/caseProgressionService';
 import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
+const multer = require('multer');
 
 const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
 const uploadDocumentsController = Router();
+const storage = multer.memoryStorage();
+const upload = multer({storage: storage});
 
 async function renderView(res: Response, claimId: string, form: GenericForm<UploadDocumentsUserForm> = null) {
   const claim: Claim = await getCaseDataFromStore(claimId);
   const latestUploadUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
-
+  const uploadDocumentControllerUrl =
   if (claim && !claim.isEmpty()) {
     const disclosureContent = getDisclosureContent(claim, form);
     const witnessContent = getWitnessContent(claimId, claim);
@@ -65,5 +68,12 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, (async (req, res, next) 
     next(error);
   }
 }) as RequestHandler);
+uploadDocumentsController.post('/document-upload', upload.any() ,function(req, res) {
 
+  const uploadDocumentsForm = getUploadDocumentsForm(req);
+
+  console.log(uploadDocumentsForm);
+
+  res.sendStatus(200);
+});
 export default uploadDocumentsController;

@@ -24,10 +24,10 @@
     {% set paragraph = t('PAGES.UPLOAD_DOCUMENTS.FORMAT') %}
     {% set witness = t('PAGES.UPLOAD_DOCUMENTS.WITNESS') %}
     {% set disclosure = t('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.TITLE') %}
-
+    {{ csrfProtection(csrf) }}
     <div class="govuk-grid-row">
-      <form method="post" novalidate>
-        {{ csrfProtection(csrf) }}
+      <form method="post" autocomplete="off" action="/document-upload?_csrf={{ csrf }}" enctype="multipart/form-data" novalidate>
+
         <div class="govuk-grid-column-one-half">
           <h1 class="govuk-heading-l">{{ titleH1 }}</h1>
           <h2 class="govuk-heading-s">{{ titleH2 }}</h2>

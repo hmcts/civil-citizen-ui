@@ -24,7 +24,7 @@ export class DocumentsForDisclosure {
   dateYear: string;
 
   //todo: validate files
-  fileUpload: string;
+  fileUpload: object;
 }
 
 export class DisclosureList {
