@@ -22,8 +22,6 @@ export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   claim.respondent1 = toCUIPartyRespondent(ccdClaim?.respondent1,ccdClaim?.respondent1LiPResponse);
   claim.respondent1.responseType = ccdClaim?.respondent1ClaimResponseTypeForSpec;
   claim.responseDeadline = toCUIResponseDeadline(ccdClaim?.respondentSolicitor1AgreedDeadlineExtension);
-  claim.respondent1ResponseDeadline = ccdClaim?.respondentSolicitor1AgreedDeadlineExtension;
-  claim.respondentSolicitor1AgreedDeadlineExtension = ccdClaim?.respondentSolicitor1AgreedDeadlineExtension;
   claim.mediation = toCUIMediation(ccdClaim?.respondent1LiPResponse?.respondent1MediationLiPResponse);
   claim.statementOfMeans = toCUIStatementOfMeans(ccdClaim);
   claim.claimBilingualLanguagePreference = toCUIClaimBilingualLangPreference(ccdClaim?.respondent1LiPResponse?.respondent1ResponseLanguage);
