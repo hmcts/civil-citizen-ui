@@ -1,5 +1,5 @@
 const {v4: uuidv4} = require('uuid');
 
-const generatePcqId = () => {
-  return { pcqId: uuidv4() }
+export const generatePcqId = (): string => {
+  return uuidv4();
 };
