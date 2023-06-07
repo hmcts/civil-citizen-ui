@@ -2,19 +2,36 @@ import {IsNotEmpty, ValidateNested} from 'class-validator';
 
 export class UploadDocumentsUserForm {
   @ValidateNested()
-    documentsForDisclosure?: DocumentsForDisclosure[];
+    documentsForDisclosure?: TypeOfDocumentSection[];
   @ValidateNested()
-    disclosureList?: DisclosureList[];
+    disclosureList?: FileOnlySection[];
+  @ValidateNested()
+    trialCaseSummary?: FileOnlySection[];
+  @ValidateNested()
+    trialSkeletonArgument?: FileOnlySection[];
+  @ValidateNested()
+    trialAuthorities?: FileOnlySection[];
+  @ValidateNested()
+    trialCosts?: FileOnlySection[];
+  @ValidateNested()
+    trialDocumentary?: TypeOfDocumentSection[];
 
-  constructor(documentsForDisclosure?: DocumentsForDisclosure[], disclosureList?: DisclosureList[]) {
+  constructor(documentsForDisclosure?: TypeOfDocumentSection[], disclosureList?: FileOnlySection[], trialCaseSummary?: FileOnlySection[], trialSkeletonArgument?: FileOnlySection[], trialAuthorities?: FileOnlySection[], trialCosts?: FileOnlySection[], trialDocumentary?: TypeOfDocumentSection[]) {
+    //disclosure sections
     this.documentsForDisclosure = documentsForDisclosure;
     this.disclosureList = disclosureList;
 
+    //trial sections
+    this.trialCaseSummary = trialCaseSummary;
+    this.trialSkeletonArgument = trialSkeletonArgument;
+    this.trialAuthorities = trialAuthorities;
+    this.trialCosts = trialCosts;
+    this.trialDocumentary = trialDocumentary;
     //todo: add other sections
   }
 }
 
-export class DocumentsForDisclosure {
+export class TypeOfDocumentSection {
   @IsNotEmpty({message: 'ERRORS.VALID_YOU_MUST_ENTER_TOD'})
     typeOfDocument: string;
 
@@ -23,10 +40,9 @@ export class DocumentsForDisclosure {
   dateMonth: string;
   dateYear: string;
 
-  //todo: validate files
-  fileUpload: string;
+  fileUpload: string; //todo: get and validate files
 }
 
-export class DisclosureList {
-  fileUpload: string;
+export class FileOnlySection {
+  fileUpload: string; //todo: get and validate file
 }

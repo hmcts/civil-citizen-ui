@@ -72,8 +72,9 @@
           {% if trialContent.length > 0 %}
             <h2 class="govuk-heading-l">{{ trial }}</h2>
             {% for trialSections in trialContent %}
-              <div class="row-container">
-                <div data-module="moj-add-another">
+            <div class="row-container">
+              <div data-module="moj-add-another">
+                {% for section in trialSections %}
                   {% call govukFieldset({
                     classes: 'moj-add-another__item',
                     legend: {
@@ -81,23 +82,24 @@
                       isPageHeading: false
                     }
                   }) %}
-                    {{ claimSummaryContent({
-                      contentSections: trialSections.contentSections
-                    }) }}
+                  {{ claimSummaryContent({
+                  contentSections: section.contentSections
+                  }) }}
                   {% endcall %}
-                  <div class="moj-button-action">
-                    {{ govukButton({
-                      text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
-                      classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
-                      type: 'button',
-                      attributes: {
-                        'id': 'add-another-trial-list'
-                      }
-                    }) }}
-                  </div>
-                  <hr class="govuk-section-break--s govuk-section-break--visible">
+                {% endfor %}
+                <div class="moj-button-action">
+                      {{ govukButton({
+                        text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
+                        classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
+                        type: 'button',
+                        attributes: {
+                          'id': 'add-another-trial-list'
+                        }
+                      }) }}
                 </div>
+                <hr class="govuk-section-break--s govuk-section-break--visible">
               </div>
+            </div>
             {% endfor %}
           {% endif %}
 

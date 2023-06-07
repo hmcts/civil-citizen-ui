@@ -25,7 +25,7 @@ async function renderView(res: Response, claimId: string, form: GenericForm<Uplo
     const disclosureContent = getDisclosureContent(claim, form);
     const witnessContent = getWitnessContent(claimId, claim);
     const expertContent: string = undefined; //TODO = getExpertContent(claim, claimId);
-    const trialContent = getTrialContent(claimId, claim);
+    const trialContent = getTrialContent(claim, form);
     res.render(uploadDocumentsViewPath, {
       form,
       claim,
@@ -58,9 +58,9 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, (async (req, res, next) 
       await renderView(res, claimId, form);
     } else {
       console.log('Evidence upload form validated');
-      await renderView(res, claimId, form);
       //todo: save to redis
-      //todo: next page
+      //todo: next page (cancel page or continue page)
+      await renderView(res, claimId, form);
     }
   } catch (error) {
     next(error);

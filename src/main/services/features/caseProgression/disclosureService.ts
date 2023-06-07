@@ -6,8 +6,7 @@ import {
 } from 'services/features/caseProgression/disclosureContentBuilder';
 import {GenericForm} from 'form/models/genericForm';
 import {
-  DisclosureList,
-  DocumentsForDisclosure,
+  FileOnlySection, TypeOfDocumentSection,
   UploadDocumentsUserForm,
 } from 'models/caseProgression/uploadDocumentsUserForm';
 
@@ -25,11 +24,11 @@ export const getDisclosureContent = (claim: Claim, form: GenericForm<UploadDocum
   return sectionContent;
 };
 
-export const documentsForDisclosure = (form: GenericForm<UploadDocumentsUserForm>): ClaimSummaryContent[] => {
+const documentsForDisclosure = (form: GenericForm<UploadDocumentsUserForm>): ClaimSummaryContent[] => {
   const sectionContent = [];
 
   if (form) {
-    form.model.documentsForDisclosure?.forEach(function (documentsForDisclosure: DocumentsForDisclosure, index: number) {
+    form.model.documentsForDisclosure?.forEach(function (documentsForDisclosure: TypeOfDocumentSection, index: number) {
       sectionContent.push([buildDisclosureDocumentSection(documentsForDisclosure, index, form)]);
     });
   } else {
@@ -42,12 +41,12 @@ export const documentsForDisclosure = (form: GenericForm<UploadDocumentsUserForm
   }));
 };
 
-export const disclosureList = (form: GenericForm<UploadDocumentsUserForm>): ClaimSummaryContent[] => {
+const disclosureList = (form: GenericForm<UploadDocumentsUserForm>): ClaimSummaryContent[] => {
   const sectionContent = [];
 
   if (form) {
-    form.model.disclosureList?.forEach(function (disclosureList: DisclosureList, index: number) {
-      sectionContent.push([buildDisclosureListSection(disclosureList, index)]);
+    form.model.disclosureList?.forEach(function (disclosureList: FileOnlySection, index: number) {
+      sectionContent.push([buildDisclosureListSection(disclosureList, index, form)]);
     });
   } else {
     sectionContent.push([buildDisclosureListSection()]);
