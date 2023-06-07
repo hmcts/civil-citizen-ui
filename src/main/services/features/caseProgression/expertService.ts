@@ -21,11 +21,11 @@ export const getExpertContent = (claim: Claim): ClaimSummaryContent[] => {
     sectionContent.push([buildJointStatementSection()]);
   }
 
-  if(claim.caseProgression?.defendantUploadDocuments?.expert[1]?.selected){
+  if(claim.caseProgression?.defendantUploadDocuments?.expert[2]?.selected){
     sectionContent.push([buildQuestionsForOtherSection(selectItems)]);
   }
 
-  if(claim.caseProgression?.defendantUploadDocuments?.expert[1]?.selected){
+  if(claim.caseProgression?.defendantUploadDocuments?.expert[3]?.selected){
     sectionContent.push([buildAnswersToQuestionsSection(selectItems)]);
   }
 
