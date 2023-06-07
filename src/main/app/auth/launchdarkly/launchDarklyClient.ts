@@ -28,7 +28,6 @@ export async function isCaseProgressionV1Enable(): Promise<boolean> {
   return await getFlagValue('cui-case-progression') as boolean;
 }
 
-export async function isPcqEnable(): Promise<boolean> {
-  return false;
-  // return await getFlagValue('shutter-pcq') as boolean;
+export async function isPcqShutterOn(): Promise<boolean> {
+  return await getFlagValue('shutter-pcq') as boolean;
 }
