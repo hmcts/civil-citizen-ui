@@ -2,18 +2,6 @@ import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySec
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
-
-  addTitle(title:string) {
-    const section = ({
-      type: ClaimSummaryType.TITLE,
-      data: {
-        text: title,
-      },
-    });
-    this._claimSummarySections.push(section);
-    return this;
-  }
-
   addInputArray(title:string, classes:string, hint:string, category:string, field:string) {
     const section = ({
       type: ClaimSummaryType.INPUT_ARRAY,

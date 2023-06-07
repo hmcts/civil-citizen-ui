@@ -29,7 +29,7 @@ export const buildJointStatementSection = (): ClaimSummarySection[] => {
 
 export const buildQuestionsForOtherSection = (selectItems: string[]): ClaimSummarySection[] => {
   return new UploadDocumentsSectionBuilder()
-    .addTitle('PAGES.UPLOAD_DOCUMENTS.EXPERT.QUESTIONS_FOR_OTHER')
+    .addTitle('PAGES.UPLOAD_DOCUMENTS.EXPERT.QUESTIONS_FOR_OTHER',null,'govuk-!-width-three-quarters')
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.EXPERT_NAME','govuk-!-width-three-half','',expertQuestionsForOtherType,'type')
     .addSelect('PAGES.UPLOAD_DOCUMENTS.EXPERT.OTHER_PARTY_NAME','govuk-!-width-three-half','','PAGES.UPLOAD_DOCUMENTS.EXPERT.SELECT',selectItems,expertQuestionsForOtherType, 'type')
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.NAME_DOCUMENT_YOU','govuk-!-width-three-half','',expertQuestionsForOtherType,'type')
