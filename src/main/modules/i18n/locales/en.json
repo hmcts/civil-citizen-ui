@@ -2296,13 +2296,21 @@
       "TITLE": "Upload documents",
       "UPLOAD": "Upload a file",
       "WITNESS": "Witness evidence",
+      "TYPE_OF_DOCUMENT": "Type of document",
+      "TYPE_OF_DOCUMENT_EXAMPLE": "For example, contract, invoice, receipt, email, text message, photo, social media message",
+      "DOCUMENT_ISSUE_DATE": "Date document was issued or message was sent",
+      "TRIAL": {
+        "TITLE": "Trial documents",
+        "CASE_SUMMARY": "Case summary",
+        "SKELETON": "Skeleton argument",
+        "LEGAL": "Legal authorities",
+        "COSTS": "Costs",
+        "DOCUMENTARY": "Documentary evidence for trial"
+      },
       "DISCLOSURE": {
         "TITLE": "Disclosure",
         "DISCLOSURE_DOCUMENTS": "Documents for disclosure",
-        "DISCLOSURE_LIST": "Disclosure list",
-        "TYPE_OF_DOCUMENT": "Type of document",
-        "TYPE_OF_DOCUMENT_EXAMPLE": "For example, contract, invoice, receipt, email, text message, photo, social media message",
-        "DOCUMENT_ISSUE_DATE": "Date document was issued or message was sent"
+        "DISCLOSURE_LIST": "Disclosure list"
       }
     },
     "VULNERABILITY": {
