@@ -43,6 +43,7 @@ services:
     url: 'https://localhost:3000'
   pcq:
     url: 'https://pcq.demo.platform.hmcts.net'
+    tokenKey: 'test'
 health:
   timeout: 5000
   deadline: 15000
