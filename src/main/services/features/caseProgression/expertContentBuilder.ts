@@ -22,7 +22,7 @@ export const buildJointStatementSection = (): ClaimSummarySection[] => {
     .addTitle('PAGES.UPLOAD_DOCUMENTS.EXPERT.JOINT_STATEMENT')
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.EXPERTS_NAMES','govuk-!-width-three-half','',expertJointStatementType,'type')
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.FIELD_EXPERTISE','govuk-!-width-three-half','',expertJointStatementType,'type')
-    .addDateArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.DATE', 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', expertJointStatementType)
+    .addDateArray('PAGES.UPLOAD_DOCUMENTS.DATE', 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', expertJointStatementType)
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD','', expertJointStatementType, fileUpload)
     .build();
 };

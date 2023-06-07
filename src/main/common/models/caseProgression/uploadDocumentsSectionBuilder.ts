@@ -65,7 +65,7 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
         category: category,
         field: field,
         text: title,
-        classes:classes,
+        classes: classes,
         hint: hint,
         choose: choose,
         items: selectItems,
