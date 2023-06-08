@@ -12,7 +12,6 @@ import {toCUIFullAdmission} from 'services/translation/convertToCUI/convertToCUI
 import {toCUIPartialAdmission} from './convertToCUIPartialAdmission';
 import {toCUICaseProgressionHearing} from 'services/translation/convertToCUI/convertToCaseProgressionHearing';
 import {DocumentType} from 'models/document/documentType';
-import {toCUIResponseDeadline} from 'services/translation/convertToCUI/convertToCUIResponseDeadline';
 
 export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -21,7 +20,6 @@ export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
   claim.respondent1 = toCUIPartyRespondent(ccdClaim?.respondent1,ccdClaim?.respondent1LiPResponse);
   claim.respondent1.responseType = ccdClaim?.respondent1ClaimResponseTypeForSpec;
-  claim.responseDeadline = toCUIResponseDeadline(ccdClaim?.respondentSolicitor1AgreedDeadlineExtension);
   claim.mediation = toCUIMediation(ccdClaim?.respondent1LiPResponse?.respondent1MediationLiPResponse);
   claim.statementOfMeans = toCUIStatementOfMeans(ccdClaim);
   claim.claimBilingualLanguagePreference = toCUIClaimBilingualLangPreference(ccdClaim?.respondent1LiPResponse?.respondent1ResponseLanguage);

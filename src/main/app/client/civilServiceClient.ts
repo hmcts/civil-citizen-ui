@@ -246,7 +246,8 @@ export class CivilServiceClient {
     const config = this.getConfig(req);
     try {
       const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE.replace(':claimId', claimId), config);
-      return response.data as Date;
+      if(response.data)
+        return new Date(response.data.toString());
     } catch (error: unknown) {
       logger.error(error);
       throw error;
