@@ -285,7 +285,7 @@ describe('Civil Service Client', () => {
       //When
       const deadlineDate= await civilServiceClient.getAgreedDeadlineResponseDate('1', mockedAppRequest);
       //Then
-      expect(deadlineDate).toBe(responseDeadlineDate);
+      expect(deadlineDate).toStrictEqual(responseDeadlineDate);
     });
     it('should throw error when there is an error calling civil service getting the deadline date', async () => {
       const mockGet = jest.fn().mockImplementation(() => {
