@@ -24,11 +24,12 @@
     {% set paragraph = t('PAGES.UPLOAD_DOCUMENTS.FORMAT') %}
     {% set witness = t('PAGES.UPLOAD_DOCUMENTS.WITNESS') %}
     {% set disclosure = t('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.TITLE') %}
-    {{ csrfProtection(csrf) }}
+    {% set trial = t('PAGES.UPLOAD_DOCUMENTS.TRIAL.TITLE') %}
+
     <div class="govuk-grid-row">
       <form method="post" autocomplete="off" action="/case/{{claimId}}/case-progression/upload-documents?_csrf={{csrf}}" enctype="multipart/form-data" novalidate>
-
-        <div class="govuk-grid-column-one-half">
+        {{ csrfProtection(csrf) }}
+        <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
           <h1 class="govuk-heading-l">{{ titleH1 }}</h1>
           <h2 class="govuk-heading-s">{{ titleH2 }}</h2>
           <p class="govuk-body-m">{{ paragraph }}</p>
@@ -68,17 +69,51 @@
             {% endfor %}
           {% endif %}
 
+          {% if trialContent.length > 0 %}
+            <h2 class="govuk-heading-l">{{ trial }}</h2>
+            {% for trialSections in trialContent %}
+            <div class="row-container">
+              <div data-module="moj-add-another">
+                {% for section in trialSections %}
+                  {% call govukFieldset({
+                    classes: 'moj-add-another__item',
+                    legend: {
+                      classes: 'moj-add-another__title',
+                      isPageHeading: false
+                    }
+                  }) %}
+                  {{ claimSummaryContent({
+                  contentSections: section.contentSections
+                  }) }}
+                  {% endcall %}
+                {% endfor %}
+                <div class="moj-button-action">
+                      {{ govukButton({
+                        text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
+                        classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
+                        type: 'button',
+                        attributes: {
+                          'id': 'add-another-trial-list'
+                        }
+                      }) }}
+                </div>
+                <hr class="govuk-section-break--s govuk-section-break--visible">
+              </div>
+            </div>
+            {% endfor %}
+          {% endif %}
+
           <br>
           <div class="govuk-button-group">
             {{ govukButton({
               text: t('COMMON.BUTTONS.CONTINUE')
             }) }}
-            <a href={{ latestUploadUrl }} class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+            <a href={{ cancelUrl }} class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
           </div>
           {{ contactUsForHelp(t) }}
         </div>
       </form>
     </div>
-</main>
+  </main>
 </div>
 {% endblock %}

@@ -13,9 +13,10 @@ import {
   EvidenceUploadWitness,
 } from 'models/document/documentType';
 import {
-  DisclosureList,
-  DocumentsForDisclosure, FileUpload,
+  FileOnlySection,
+  TypeOfDocumentSection,
   UploadDocumentsUserForm,
+  FileUpload,
 } from 'models/caseProgression/uploadDocumentsUserForm';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -110,26 +111,47 @@ export const getTypeDocumentForm = (req: Request): UploadDocuments => {
 };
 
 export const getUploadDocumentsForm = (req: Request): UploadDocumentsUserForm => {
-  const documentsForDisclosure = getDocumentsForDisclosureFormSection(req);
-  const documentsList = getDocumentsListFormSection(req);
+  const documentsForDisclosure = getFormSection<TypeOfDocumentSection>(req.body.documentsForDisclosure, bindRequestToTypeOfDocumentSectionObj);
+  const documentsList = getFormSection<FileOnlySection>(req.body.disclosureList, bindRequestToFileOnlySectionObj);
+  const trialCaseSummary = getFormSection<FileOnlySection>(req.body.trialCaseSummary, bindRequestToFileOnlySectionObj);
+  const trialSkeletonArgument = getFormSection<FileOnlySection>(req.body.trialSkeletonArgument, bindRequestToFileOnlySectionObj);
+  const trialAuthorities = getFormSection<FileOnlySection>(req.body.trialAuthorities, bindRequestToFileOnlySectionObj);
+  const trialCosts = getFormSection<FileOnlySection>(req.body.trialCosts, bindRequestToFileOnlySectionObj);
+  const trialDocumentary = getFormSection<TypeOfDocumentSection>(req.body.trialDocumentary, bindRequestToTypeOfDocumentSectionObj);
 
-  return new UploadDocumentsUserForm(documentsForDisclosure, documentsList);
+  return new UploadDocumentsUserForm(
+    documentsForDisclosure,
+    documentsList,
+    trialCaseSummary,
+    trialSkeletonArgument,
+    trialAuthorities,
+    trialCosts,
+    trialDocumentary,
+  );
 };
 
-const getDocumentsForDisclosureFormSection = (req: Request) => {
-  const documentsForDisclosure: DocumentsForDisclosure[] = [];
-  req.body.documentsForDisclosure?.forEach(function  (document: any, index: number) {
-    const formObj: DocumentsForDisclosure = new DocumentsForDisclosure();
-    const fileName = `documentsForDisclosure[${index}][fileUpload]`;
-    formObj.typeOfDocument = document['typeOfDocument'].trim();
-    formObj.dateDay = document['date-day'];
-    formObj.dateMonth = document['date-month'];
-    formObj.dateYear = document['date-year'];
-    formObj.fileUpload = getUploadDocumentsByName(fileName, req);
-
-    documentsForDisclosure.push(formObj);
+const getFormSection = <T>(data: any[], bindFunction: (request: any) => T): T[] => {
+  const formSection: T[] = [];
+  data?.forEach(function (request: any) {
+    formSection.push(bindFunction(request));
   });
-  return documentsForDisclosure;
+  return formSection;
+};
+
+const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSection => {
+  const formObj: TypeOfDocumentSection = new TypeOfDocumentSection();
+  formObj.typeOfDocument = request['typeOfDocument'].trim();
+  formObj.dateDay = request['date-day'];
+  formObj.dateMonth = request['date-month'];
+  formObj.dateYear = request['date-year'];
+  formObj.fileUpload = getUploadDocumentsByName(fileName, req);
+  return formObj;
+};
+
+const bindRequestToFileOnlySectionObj = (request: any): FileOnlySection => {
+  const formObj: FileOnlySection = new FileOnlySection();
+  formObj.fileUpload = getUploadDocumentsByName(fileName, req);
+  return formObj;
 };
 
 const getUploadDocumentsByName = (name: string, req: Request): FileUpload => {
@@ -145,15 +167,4 @@ const getUploadDocumentsByName = (name: string, req: Request): FileUpload => {
     return mappedFile;
   }
   return mappedFile;
-};
-const getDocumentsListFormSection = (req: Request) => {
-  const disclosureList: DisclosureList[] = [];
-  req.body.disclosureList?.forEach(function (document: any) {
-    const formObj: DisclosureList = new DisclosureList();
-
-    formObj.fileUpload = document['file_upload'];
-
-    disclosureList.push(formObj);
-  });
-  return disclosureList;
 };

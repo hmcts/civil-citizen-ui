@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response, RequestHandler, Router} from 'express';
-import {CP_UPLOAD_DOCUMENTS_URL, DEFENDANT_SUMMARY_URL} from '../../urls';
+import {CP_EVIDENCE_UPLOAD_CANCEL, CP_UPLOAD_DOCUMENTS_URL} from '../../urls';
 import {Claim} from 'models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {getWitnessContent} from 'services/features/caseProgression/witnessService';
@@ -12,6 +12,7 @@ import {
   getUploadDocumentsForm,
 } from 'services/features/caseProgression/caseProgressionService';
 import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
+import {getTrialContent} from 'services/features/caseProgression/trialService';
 const multer = require('multer');
 
 const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
@@ -21,12 +22,13 @@ const upload = multer({storage: storage});
 
 async function renderView(res: Response, claimId: string, form: GenericForm<UploadDocumentsUserForm> = null) {
   const claim: Claim = await getCaseDataFromStore(claimId);
-  const latestUploadUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
+  const cancelUrl = constructResponseUrlWithIdParams(claimId, CP_EVIDENCE_UPLOAD_CANCEL);
+
   if (claim && !claim.isEmpty()) {
     const disclosureContent = getDisclosureContent(claim, form);
     const witnessContent = getWitnessContent(claimId, claim);
     const expertContent: string = undefined; //TODO = getExpertContent(claim, claimId);
-    const trialContent: string = undefined; //TODO = getTrialContent(claim, claimId);
+    const trialContent = getTrialContent(claim, form);
     res.render(uploadDocumentsViewPath, {
       form,
       claim,
@@ -35,7 +37,7 @@ async function renderView(res: Response, claimId: string, form: GenericForm<Uplo
       witnessContent,
       expertContent,
       trialContent,
-      latestUploadUrl,
+      cancelUrl,
     });
   }
 }
@@ -59,9 +61,9 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (re
       await renderView(res, claimId, form);
     } else {
       console.log('Evidence upload form validated');
-      await renderView(res, claimId, form);
       //todo: save to redis
-      //todo: next page
+      //todo: next page (cancel page or continue page)
+      await renderView(res, claimId, form);
     }
   } catch (error) {
     next(error);

@@ -40,7 +40,6 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
         field: 'date',
         text: title,
         hint: hint,
-        classes: 'govuk-fieldset__legend--s',
         dayValue: dayValue,
         monthValue: monthValue,
         yearValue: yearValue,
