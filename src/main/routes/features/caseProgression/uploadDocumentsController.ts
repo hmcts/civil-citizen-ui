@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response, RequestHandler, Router} from 'express';
-import {CP_UPLOAD_DOCUMENTS_URL, DEFENDANT_SUMMARY_URL} from '../../urls';
+import {CP_EVIDENCE_UPLOAD_CANCEL, CP_UPLOAD_DOCUMENTS_URL} from '../../urls';
 import {Claim} from 'models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {getWitnessContent} from 'services/features/caseProgression/witnessService';
@@ -19,7 +19,7 @@ const uploadDocumentsController = Router();
 
 async function renderView(res: Response, claimId: string, form: GenericForm<UploadDocumentsUserForm> = null) {
   const claim: Claim = await getCaseDataFromStore(claimId);
-  const latestUploadUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
+  const cancelUrl = constructResponseUrlWithIdParams(claimId, CP_EVIDENCE_UPLOAD_CANCEL);
 
   if (claim && !claim.isEmpty()) {
     const disclosureContent = getDisclosureContent(claim, form);
@@ -34,7 +34,7 @@ async function renderView(res: Response, claimId: string, form: GenericForm<Uplo
       witnessContent,
       expertContent,
       trialContent,
-      latestUploadUrl,
+      cancelUrl,
     });
   }
 }
