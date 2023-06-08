@@ -3,7 +3,7 @@ import {
   ValidationArguments,
   ValidationOptions,
   ValidatorConstraint,
-  ValidatorConstraintInterface
+  ValidatorConstraintInterface,
 } from 'class-validator';
 
 @ValidatorConstraint({ name: 'fileSize', async: false })
