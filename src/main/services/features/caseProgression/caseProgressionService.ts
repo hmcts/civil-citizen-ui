@@ -9,7 +9,6 @@ import {
   EvidenceUploadTrial,
   EvidenceUploadWitness,
 } from 'models/document/documentType';
-import {FileUpload} from 'models/caseProgression/uploadDocumentsUserForm';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');
@@ -101,19 +100,4 @@ export const getTypeDocumentForm = (req: Request): UploadDocuments => {
 
   const typeDocumentList = new UploadDocuments(disclosure,witness,expert,trial);
   return typeDocumentList;
-};
-
-export const getUploadDocumentsByName = (name: string, req: Request): FileUpload => {
-  const files = req.files as Express.Multer.File[];
-  const file = files.find(file => file.fieldname === name);
-  if (file) {
-    const mappedFile: FileUpload = new FileUpload();
-    mappedFile.fieldname= file.fieldname;
-    mappedFile.originalname= file.originalname;
-    mappedFile.mimetype= file.mimetype;
-    mappedFile.size= file.size;
-    mappedFile.buffer = file.buffer;
-    return mappedFile;
-  }
-  return undefined;
 };
