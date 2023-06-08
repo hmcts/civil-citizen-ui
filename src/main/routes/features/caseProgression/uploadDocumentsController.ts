@@ -22,7 +22,6 @@ const upload = multer({storage: storage});
 async function renderView(res: Response, claimId: string, form: GenericForm<UploadDocumentsUserForm> = null) {
   const claim: Claim = await getCaseDataFromStore(claimId);
   const latestUploadUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
-  const uploadDocumentControllerUrl =
   if (claim && !claim.isEmpty()) {
     const disclosureContent = getDisclosureContent(claim, form);
     const witnessContent = getWitnessContent(claimId, claim);
@@ -50,7 +49,7 @@ uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: Request, res
   }
 }) as RequestHandler);
 
-uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, (async (req, res, next) => {
+uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (req, res, next) => {
   try {
     const claimId = req.params.id;
     const uploadDocumentsForm = getUploadDocumentsForm(req);

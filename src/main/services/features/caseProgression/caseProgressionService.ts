@@ -14,7 +14,7 @@ import {
 } from 'models/document/documentType';
 import {
   DisclosureList,
-  DocumentsForDisclosure,
+  DocumentsForDisclosure, FileUpload,
   UploadDocumentsUserForm,
 } from 'models/caseProgression/uploadDocumentsUserForm';
 
@@ -132,9 +132,19 @@ const getDocumentsForDisclosureFormSection = (req: Request) => {
   return documentsForDisclosure;
 };
 
-const getUploadDocumentsByName = (name: string, req: Request) => {
+const getUploadDocumentsByName = (name: string, req: Request): FileUpload => {
   const files = req.files as Express.Multer.File[];
-  return files.find(file => file.fieldname === name);
+  const file = files.find(file => file.fieldname === name);
+  if (file) {
+    const mappedFile: FileUpload = new FileUpload();
+    mappedFile.fieldname= file.fieldname;
+    mappedFile.originalname= file.originalname;
+    mappedFile.mimetype= file.mimetype;
+    mappedFile.size= file.size;
+    mappedFile.buffer = file.buffer;
+    return mappedFile;
+  }
+  return undefined;
 };
 const getDocumentsListFormSection = (req: Request) => {
   const disclosureList: DisclosureList[] = [];
