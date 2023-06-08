@@ -16,9 +16,9 @@ export const createToken = (params: any) => {
   let encrypted = '';
 
   if (tokenKey) {
-    logger.trace(`Using ${tokenKey === 'SERVICE_TOKEN_KEY' ? 'local' : 'Azure KV'} secret for PCQ token key`);
+    // logger.trace(`Using ${tokenKey === 'SERVICE_TOKEN_KEY' ? 'local' : 'Azure KV'} secret for PCQ token key`);
     // eslint-disable-next-line no-sync
-    const key = crypto.scryptSync(tokenKey, 'salt', keyLen);
+    const key = crypto.scryptSync(tokenKey, 'pcq-generator', keyLen);
     // Convert all params to string before encrypting
     Object.keys(params).forEach(p => {
       params[p] = String(params[p]);
@@ -28,7 +28,7 @@ export const createToken = (params: any) => {
     encrypted = cipher.update(strParams, 'utf8', 'hex');
     encrypted += cipher.final('hex');
   } else {
-    logger.trace('PCQ token key is missing.');
+    logger.error('PCQ token key is missing.');
   }
 
   return encrypted;

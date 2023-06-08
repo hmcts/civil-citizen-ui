@@ -1,6 +1,7 @@
 import config = require('config');
 import axios from 'axios';
 import { PartyType } from 'common/models/partyType';
+import { createToken } from './generatePcqToken';
 
 const pcqBaseUrl: string = config.get('services.pcq.url');
 const SERVICE_ID = 'civil-citizen-ui';
@@ -26,9 +27,9 @@ export const isPcqElegible = (type: PartyType): boolean => {
 
 export const generatePcqtUrl = (
   pcqId: string,
-  actor: string, //Respondents
-  ccdCaseId: string, //ccdCaseId
-  partyId: string, //Respondent's Email Address
+  actor: string,
+  ccdCaseId: string,
+  partyId: string,
   returnUri: string,
   lang: string,
 ): string => {
@@ -40,10 +41,14 @@ export const generatePcqtUrl = (
     partyId: partyId,
     returnUrl: returnUri,
     language: lang,
-    token: 'test', // TODO: TokenGenerator.gen(baseParameters)
   };
 
-  const qs = Object.entries(pcqParameters)
+  const encryptedPcqParams: EncryptedPcqParams = {
+    ...pcqParameters,
+    token: createToken(pcqParameters),
+  };
+
+  const qs = Object.entries(encryptedPcqParams)
     .map(([key, value]) => key + '=' + value)
     .join('&');
     
@@ -58,5 +63,8 @@ export interface PcqParameters {
   partyId: string;
   returnUrl: string;
   language?: string;
+}
+
+export interface EncryptedPcqParams extends PcqParameters {
   token: string;
 }

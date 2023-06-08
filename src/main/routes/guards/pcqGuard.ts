@@ -13,12 +13,15 @@ import { getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import { RESPONSE_CHECK_ANSWERS_URL } from 'routes/urls';
 import { savePcqIdClaim } from 'client/pcq/savePcqIdClaim';
 
+const ACTOR = 'DEFENDANT';
+
 export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFunction) => {
   const caseData: Claim = await getCaseDataFromStore(req.params.id);
   const pcqShutterOn = await isPcqShutterOn();
   console.log('isPcqShutterOn', pcqShutterOn);
-  
-  if (caseData.pcqId || !pcqShutterOn) {
+  console.log('caseData.pcqId', caseData.pcqId);
+
+  if (pcqShutterOn || caseData.pcqId) {
     next();
   }
 
@@ -34,25 +37,30 @@ export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFu
   console.log('isElegible', isElegible);
   
   if (isHealthy && isElegible) {
-    // TODO:
-    // generate token
     const pcqId = generatePcqId();
-    savePcqIdClaim(pcqId, claimId);
+    await savePcqIdClaim(pcqId, claimId);
     console.log('pcqId', pcqId);
 
     const pcqUrl = generatePcqtUrl(
       pcqId,
-      'actor', // RESPONDENT, DEFENDANT??????
-      claimId, // 'ccdCaseId',
+      ACTOR,
+      claimId,
       defendantEmail,
-      constructResponseUrlWithIdParams(claimId, RESPONSE_CHECK_ANSWERS_URL), // missing localhost:3001.... https://case/1645882162449409/response/check-and-send
+      getRedirectionUrl(req.headers.host, claimId),
       lang,
     );
 
+    console.log('getRedirectionUrl', getRedirectionUrl(req.headers.host, claimId));
     console.log('pcqUrl', pcqUrl);
 
     res.redirect(pcqUrl);
   } else {
     next();
   }
+};
+
+const getRedirectionUrl = (host: string, claimId: string): string => {
+  const path = constructResponseUrlWithIdParams(claimId, RESPONSE_CHECK_ANSWERS_URL);
+  return `${host}${path}`;
+  // return `https://${host}${path}`;
 };
