@@ -12,13 +12,15 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
         text: 'title',
         classes: 'classes',
         hint: 'hint',
+        value: 'value',
+        index: 0,
       },
     });
 
     //When
     const inputArrayBuilt = new UploadDocumentsSectionBuilder()
       .addInputArray(inputArrayExpected.data.text,inputArrayExpected.data.classes,
-        inputArrayExpected.data.hint,inputArrayExpected.data.category,inputArrayExpected.data.field)
+        inputArrayExpected.data.hint,inputArrayExpected.data.category,inputArrayExpected.data.field, inputArrayExpected.data.value)
       .build();
 
     //Then
@@ -34,14 +36,18 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
         field: 'date',
         text: 'title',
         hint: 'hint',
-        classes: 'govuk-fieldset__legend--s',
+        classes: '',
+        dayValue: 'dayValue',
+        monthValue: 'monthValue',
+        yearValue: 'yearValue',
+        index: 0,
       },
     });
 
     //When
     const dateArrayBuilt = new UploadDocumentsSectionBuilder()
       .addDateArray(dateArrayExpected.data.text,dateArrayExpected.data.hint,
-        dateArrayExpected.data.category)
+        dateArrayExpected.data.category, dateArrayExpected.data.dayValue, dateArrayExpected.data.monthValue, dateArrayExpected.data.yearValue)
       .build();
 
     //Then
@@ -57,6 +63,7 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
         field: 'field',
         text: 'title',
         html: 'html',
+        index: 0,
       },
     });
 
