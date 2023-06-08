@@ -9,7 +9,7 @@ import {
 
 const documentsForDisclosureType = 'documentsForDisclosure';
 const disclosureList = 'disclosureList';
-const fileUpload = 'file_upload';
+const fileUpload = 'fileUpload';
 
 export const buildDisclosureDocumentSection = (documentsForDisclosureValue: DocumentsForDisclosure = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
   let missingInputError = '';

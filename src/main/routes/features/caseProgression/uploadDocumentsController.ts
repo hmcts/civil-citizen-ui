@@ -67,12 +67,5 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (re
     next(error);
   }
 }) as RequestHandler);
-uploadDocumentsController.post('/document-upload', upload.any() ,function(req, res) {
 
-  const uploadDocumentsForm = getUploadDocumentsForm(req);
-
-  console.log(uploadDocumentsForm);
-
-  res.sendStatus(200);
-});
 export default uploadDocumentsController;

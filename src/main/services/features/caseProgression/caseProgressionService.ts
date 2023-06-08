@@ -120,7 +120,7 @@ const getDocumentsForDisclosureFormSection = (req: Request) => {
   const documentsForDisclosure: DocumentsForDisclosure[] = [];
   req.body.documentsForDisclosure?.forEach(function  (document: any, index: number) {
     const formObj: DocumentsForDisclosure = new DocumentsForDisclosure();
-    const fileName = `documentsForDisclosure[${index}][file_upload]`;
+    const fileName = `documentsForDisclosure[${index}][fileUpload]`;
     formObj.typeOfDocument = document['typeOfDocument'].trim();
     formObj.dateDay = document['date-day'];
     formObj.dateMonth = document['date-month'];
@@ -135,8 +135,8 @@ const getDocumentsForDisclosureFormSection = (req: Request) => {
 const getUploadDocumentsByName = (name: string, req: Request): FileUpload => {
   const files = req.files as Express.Multer.File[];
   const file = files.find(file => file.fieldname === name);
+  const mappedFile: FileUpload = new FileUpload();
   if (file) {
-    const mappedFile: FileUpload = new FileUpload();
     mappedFile.fieldname= file.fieldname;
     mappedFile.originalname= file.originalname;
     mappedFile.mimetype= file.mimetype;
@@ -144,7 +144,7 @@ const getUploadDocumentsByName = (name: string, req: Request): FileUpload => {
     mappedFile.buffer = file.buffer;
     return mappedFile;
   }
-  return undefined;
+  return mappedFile;
 };
 const getDocumentsListFormSection = (req: Request) => {
   const disclosureList: DisclosureList[] = [];
