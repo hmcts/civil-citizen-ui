@@ -23,7 +23,7 @@ import {CaseEvent} from 'models/events/caseEvent';
 import {CourtLocation} from 'models/courts/courtLocations';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
-import {FileUpload} from "models/caseProgression/uploadDocumentsUserForm";
+import {FileUpload} from 'models/caseProgression/uploadDocumentsUserForm';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');

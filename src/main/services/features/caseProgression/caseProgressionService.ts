@@ -9,7 +9,7 @@ import {
   EvidenceUploadTrial,
   EvidenceUploadWitness,
 } from 'models/document/documentType';
-import {FileUpload} from "models/caseProgression/uploadDocumentsUserForm";
+import {FileUpload} from 'models/caseProgression/uploadDocumentsUserForm';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');
