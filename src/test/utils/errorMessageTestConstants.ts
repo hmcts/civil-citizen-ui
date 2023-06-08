@@ -13,6 +13,7 @@ export const enum TestMessages {
   DO_YOU_HAVE_JOB = 'Do you have a job?',
   DO_YOU_LIVE_WITH_PARTNER = 'Do you live with a partner?',
   DOCUMENT_NOT_AVAILABLE = 'Document is not available.',
+  DOCUMENT_UPLOAD_UNSUCCESSFUL = 'Document upload unsuccessful.',
   DOES_YOUR_PARTNER_RECEIVE_PENSION = 'Does your partner receive a pension?',
   ENTER_DATE_FOR_UNAVAILABILITY = 'Enter the date they are unavailable',
   ENTER_DATE_FOR_UNAVAILABILITY_FROM = 'Enter the date they are unavailable from',
