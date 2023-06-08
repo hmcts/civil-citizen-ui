@@ -36,7 +36,6 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
         field: 'date',
         text: 'title',
         hint: 'hint',
-        classes: '',
         dayValue: 'dayValue',
         monthValue: 'monthValue',
         yearValue: 'yearValue',

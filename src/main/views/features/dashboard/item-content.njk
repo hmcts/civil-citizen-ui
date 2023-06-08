@@ -119,22 +119,24 @@
 
   {% if content.type === ClaimSummaryType.INPUT_ARRAY %}
      <div class={{content.data.classes}}>
-      {{ govukInput({
-         id: content.data.category+'['+content.data.index+']['+content.data.field+']',
-         name: content.data.category+'['+content.data.index+']['+content.data.field+']',
-         value: content.data.value,
-         classes: 'govuk-!-width-three-half '+content.data.classes,
-         label: {
-           html: '<strong>'+ t(content.data.text)+'</strong>'
-         },
-         hint: {
-           text: t(content.data.hint)
-         },
-         attributes: {
-           'data-name': content.data.category+'[%index%]['+content.data.field+']',
-           'data-id': content.data.category+'[%index%]['+content.data.field+']'
-         }
-      }) }}
+      <fieldset class="govuk-fieldset">
+        {{ govukInput({
+           id: content.data.category+'['+content.data.index+']['+content.data.field+']',
+           name: content.data.category+'['+content.data.index+']['+content.data.field+']',
+           value: content.data.value,
+           classes: 'govuk-!-width-three-half '+content.data.classes,
+           label: {
+             html: '<strong>'+ t(content.data.text)+'</strong>'
+           },
+           hint: {
+             text: t(content.data.hint)
+           },
+           attributes: {
+             'data-name': content.data.category+'[%index%]['+content.data.field+']',
+             'data-id': content.data.category+'[%index%]['+content.data.field+']'
+           }
+        }) }}
+      </fieldset>
      </div>
   {% endif %}
 
