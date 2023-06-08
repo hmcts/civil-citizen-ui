@@ -1,6 +1,7 @@
 const config = require('../../config');
 
 const ResponseSteps  =  require('../features/response/steps/lipDefendantResponseSteps');
+const ClaimantResponseSteps  =  require('../features/response/steps/ClaimantResponseSteps');
 const LoginSteps =  require('../features/home/steps/login');
 
 const admitAll = 'full-admission';
@@ -24,13 +25,14 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @regression', () => {
+Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @test', () => {
   ResponseSteps.RespondToClaim(claimRef);
   ResponseSteps.EnterPersonalDetails(claimRef);
   ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   ResponseSteps.EnterResponseToClaim(claimRef, admitAll);
   ResponseSteps.EnterPaymentOption(claimRef, admitAll, immediatePayment);
   ResponseSteps.CheckAndSubmit(claimRef, admitAll);
+  ClaimantResponseSteps.ClaimantRespond(claimRef);
 });
 
 Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @regression', () => {
