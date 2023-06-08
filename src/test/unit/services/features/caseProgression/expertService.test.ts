@@ -1,5 +1,6 @@
 import {CaseState} from 'form/models/claimDetails';
 import {getExpertContent} from 'services/features/caseProgression/expertService';
+import {Claim} from 'models/claim';
 
 describe('Expert service', () => {
   it('should return all sections if all selected', () => {
@@ -23,8 +24,10 @@ describe('Expert service', () => {
       },
     };
 
+    const claim =  Object.assign(new Claim(), testClaim.case_data);
+
     //when
-    const actualExpertContent = getExpertContent(testClaim.case_data);
+    const actualExpertContent = getExpertContent(claim);
 
     //Then
     expect(actualExpertContent.length).toEqual(4);
@@ -61,8 +64,10 @@ describe('Expert service', () => {
       },
     };
 
+    const claim =  Object.assign(new Claim(), testClaim.case_data);
+
     //when
-    const actualExpertContent = getExpertContent(testClaim.case_data);
+    const actualExpertContent = getExpertContent(claim);
 
     //Then
     expect(actualExpertContent.length).toEqual(1);
@@ -93,8 +98,10 @@ describe('Expert service', () => {
       },
     };
 
+    const claim =  Object.assign(new Claim(), testClaim.case_data);
+
     //when
-    const actualExpertContent = getExpertContent(testClaim.case_data);
+    const actualExpertContent = getExpertContent(claim);
 
     //Then
     expect(actualExpertContent.length).toEqual(1);
@@ -125,8 +132,10 @@ describe('Expert service', () => {
       },
     };
 
+    const claim =  Object.assign(new Claim(), testClaim.case_data);
+
     //when
-    const actualExpertContent = getExpertContent(testClaim.case_data);
+    const actualExpertContent = getExpertContent(claim);
 
     //Then
     expect(actualExpertContent.length).toEqual(1);
@@ -157,8 +166,10 @@ describe('Expert service', () => {
       },
     };
 
+    const claim =  Object.assign(new Claim(), testClaim.case_data);
+
     //when
-    const actualExpertContent = getExpertContent(testClaim.case_data);
+    const actualExpertContent = getExpertContent(claim);
 
     //Then
     expect(actualExpertContent.length).toEqual(1);
@@ -189,8 +200,10 @@ describe('Expert service', () => {
       },
     };
 
+    const claim =  Object.assign(new Claim(), testClaim.case_data);
+
     //when
-    const actualExpertContent = getExpertContent(testClaim.case_data);
+    const actualExpertContent = getExpertContent(claim);
 
     //Then
     expect(actualExpertContent.length).toEqual(0);
@@ -212,8 +225,10 @@ describe('Expert service', () => {
       },
     };
 
+    const claim =  Object.assign(new Claim(), testClaim.case_data);
+
     //when
-    const actualExpertContent = getExpertContent(testClaim.case_data);
+    const actualExpertContent = getExpertContent(claim);
 
     //Then
     expect(actualExpertContent.length).toEqual(0);
@@ -231,8 +246,10 @@ describe('Expert service', () => {
       },
     };
 
+    const claim =  Object.assign(new Claim(), testClaim.case_data);
+
     //when
-    const actualExpertContent = getExpertContent(testClaim.case_data);
+    const actualExpertContent = getExpertContent(claim);
 
     //Then
     expect(actualExpertContent.length).toEqual(0);
@@ -249,8 +266,10 @@ describe('Expert service', () => {
       },
     };
 
+    const claim =  Object.assign(new Claim(), testClaim.case_data);
+
     //when
-    const actualExpertContent = getExpertContent(testClaim.case_data);
+    const actualExpertContent = getExpertContent(claim);
 
     //Then
     expect(actualExpertContent.length).toEqual(0);
