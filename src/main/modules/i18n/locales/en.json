@@ -2047,6 +2047,12 @@
       "PAGE_TITLE": "Have you already sent expert reports to other parties?",
       "TITLE": "Have you already sent expert reports to other parties?"
     },
+    "SERVICE_UNAVAILABLE": {
+      "SERVICE_NAME": "Money Claims", 
+      "SORRY": "Sorry, the service is unavailable",
+      "TITLE": "Money Claims – GOV.UK",
+      "YOU_WILL_BE_ABLE_LATER": "You will be able to use the service later."
+    },
     "SETTLE_CLAIM_PART_PAYMENT_RECEIVED": {
       "PAGE_TITLE": "Do you want to settle the claim for the £{{ paidAmount }} the defendant has paid?",
       "PROCEED_WITH_CLAIM": "Proceed with the claim",
