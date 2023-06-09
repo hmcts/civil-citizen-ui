@@ -11,8 +11,8 @@ import {mockClaim} from '../../../../../utils/mockClaim';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {FullAdmission} from 'common/models/fullAdmission';
 import howMuchHaveYouPaidService from 'services/features/response/admission/howMuchHaveYouPaidService';
-import {HowMuchHaveYouPaid} from '../../../../../../main/common/form/models/admission/howMuchHaveYouPaid';
-import {HowMuchDoYouOwe} from '../../../../../../main/common/form/models/admission/partialAdmission/howMuchDoYouOwe';
+import {HowMuchHaveYouPaid} from 'form/models/admission/howMuchHaveYouPaid';
+import {HowMuchDoYouOwe} from 'form/models/admission/partialAdmission/howMuchDoYouOwe';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -85,7 +85,7 @@ describe("Defendant's response summary service", () => {
     expect(defendantsResponseContent[4].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.THEIR_TOE');
     expect(defendantsResponseContent[5].data?.head[0].text).toEqual('COMMON.DATE');
     expect(defendantsResponseContent[5].data?.head[1].text).toEqual('COMMON.TIMELINE.WHAT_HAPPENED');
-    expect(defendantsResponseContent[5].data?.tableRows[0][0].text).toEqual('2022-04-01');
+    expect(defendantsResponseContent[5].data?.tableRows[0][0].text).toEqual('1 April 2022');
     expect(defendantsResponseContent[5].data?.tableRows[0][1].text).toEqual('I contacted Mary Richards to discuss building works on our roof.');
     expect(defendantsResponseContent[6].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.WHY_THEY_DISAGREE_TIMELINE');
     expect(defendantsResponseContent[7].data?.text).toEqual('timeline comments');
@@ -124,7 +124,7 @@ describe("Defendant's response summary service", () => {
       expect(defendantsResponseContent[5].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.THEIR_TOE');
       expect(defendantsResponseContent[6].data?.head[0].text).toEqual('COMMON.DATE');
       expect(defendantsResponseContent[6].data?.head[1].text).toEqual('COMMON.TIMELINE.WHAT_HAPPENED');
-      expect(defendantsResponseContent[6].data?.tableRows[0][0].text).toEqual('2022-04-01');
+      expect(defendantsResponseContent[6].data?.tableRows[0][0].text).toEqual('1 April 2022');
       expect(defendantsResponseContent[6].data?.tableRows[0][1].text).toEqual('I contacted Mary Richards to discuss building works on our roof.');
       expect(defendantsResponseContent[7].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.WHY_THEY_DISAGREE_TIMELINE');
       expect(defendantsResponseContent[8].data?.text).toEqual('timeline comments');
@@ -151,7 +151,7 @@ describe("Defendant's response summary service", () => {
       expect(defendantsResponseContent[5].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.THEIR_TOE');
       expect(defendantsResponseContent[6].data?.head[0].text).toEqual('COMMON.DATE');
       expect(defendantsResponseContent[6].data?.head[1].text).toEqual('COMMON.TIMELINE.WHAT_HAPPENED');
-      expect(defendantsResponseContent[6].data?.tableRows[0][0].text).toEqual('2022-04-01');
+      expect(defendantsResponseContent[6].data?.tableRows[0][0].text).toEqual('1 April 2022');
       expect(defendantsResponseContent[6].data?.tableRows[0][1].text).toEqual('I contacted Mary Richards to discuss building works on our roof.');
       expect(defendantsResponseContent[7].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.WHY_THEY_DISAGREE_TIMELINE');
       expect(defendantsResponseContent[8].data?.text).toEqual('timeline comments');
@@ -178,7 +178,7 @@ describe("Defendant's response summary service", () => {
       expect(defendantsResponseContent[5].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.THEIR_TOE');
       expect(defendantsResponseContent[6].data?.head[0].text).toEqual('COMMON.DATE');
       expect(defendantsResponseContent[6].data?.head[1].text).toEqual('COMMON.TIMELINE.WHAT_HAPPENED');
-      expect(defendantsResponseContent[6].data?.tableRows[0][0].text).toEqual('2022-04-01');
+      expect(defendantsResponseContent[6].data?.tableRows[0][0].text).toEqual('1 April 2022');
       expect(defendantsResponseContent[6].data?.tableRows[0][1].text).toEqual('I contacted Mary Richards to discuss building works on our roof.');
       expect(defendantsResponseContent[7].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.WHY_THEY_DISAGREE_TIMELINE');
       expect(defendantsResponseContent[8].data?.text).toEqual('timeline comments');
@@ -223,7 +223,7 @@ describe("Defendant's response summary service", () => {
     expect(defendantsResponseContent[7].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.THEIR_TOE');
     expect(defendantsResponseContent[8].data?.head[0].text).toEqual('COMMON.DATE');
     expect(defendantsResponseContent[8].data?.head[1].text).toEqual('COMMON.TIMELINE.WHAT_HAPPENED');
-    expect(defendantsResponseContent[8].data?.tableRows[0][0].text).toEqual('2022-04-01');
+    expect(defendantsResponseContent[8].data?.tableRows[0][0].text).toEqual('1 April 2022');
     expect(defendantsResponseContent[8].data?.tableRows[0][1].text).toEqual('I contacted Mary Richards to discuss building works on our roof.');
     expect(defendantsResponseContent[9].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.WHY_THEY_DISAGREE_TIMELINE');
     expect(defendantsResponseContent[10].data?.text).toEqual('timeline comments');
@@ -259,7 +259,7 @@ describe("Defendant's response summary service", () => {
     expect(defendantsResponseContent[7].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.THEIR_TOE');
     expect(defendantsResponseContent[8].data?.head[0].text).toEqual('COMMON.DATE');
     expect(defendantsResponseContent[8].data?.head[1].text).toEqual('COMMON.TIMELINE.WHAT_HAPPENED');
-    expect(defendantsResponseContent[8].data?.tableRows[0][0].text).toEqual('2022-04-01');
+    expect(defendantsResponseContent[8].data?.tableRows[0][0].text).toEqual('1 April 2022');
     expect(defendantsResponseContent[8].data?.tableRows[0][1].text).toEqual('I contacted Mary Richards to discuss building works on our roof.');
     expect(defendantsResponseContent[9].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.WHY_THEY_DISAGREE_TIMELINE');
     expect(defendantsResponseContent[10].data?.text).toEqual('timeline comments');
