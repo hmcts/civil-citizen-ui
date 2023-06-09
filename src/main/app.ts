@@ -3,22 +3,23 @@ import config = require('config');
 import cookieParser from 'cookie-parser';
 const session = require('express-session');
 import express from 'express';
-import { Helmet } from './modules/helmet';
+import {Helmet} from './modules/helmet';
 import * as path from 'path';
-import { HTTPError } from '../main/HttpError';
-import { Nunjucks } from './modules/nunjucks';
-import { PropertiesVolume } from './modules/properties-volume';
-import { AppInsights } from './modules/appinsights';
-import { I18Next } from './modules/i18n';
-import { HealthCheck } from './modules/health';
-import { OidcMiddleware } from './modules/oidc';
+import {HTTPError} from '../main/HttpError';
+import {Nunjucks} from './modules/nunjucks';
+import {PropertiesVolume} from './modules/properties-volume';
+import {AppInsights} from './modules/appinsights';
+import {I18Next} from './modules/i18n';
+import {HealthCheck} from './modules/health';
+import {OidcMiddleware} from './modules/oidc';
 import {DraftStoreClient} from './modules/draft-store';
 import {CSRFToken} from './modules/csrf';
 import routes from './routes/routes';
 import {setLanguage} from 'modules/i18n/languageService';
+import {isServiceShuttered} from './app/auth/launchdarkly/launchDarklyClient';
 
-const { Logger } = require('@hmcts/nodejs-logging');
-const { setupDev } = require('./development');
+const {Logger} = require('@hmcts/nodejs-logging');
+const {setupDev} = require('./development');
 const MemoryStore = require('memorystore')(session);
 
 const env = process.env.NODE_ENV || 'development';
@@ -69,9 +70,22 @@ app.use((_req, res, next) => {
   );
   next();
 });
+
+const checkServiceAvailability = async (_req: express.Request, res: express.Response, next: express.NextFunction) => {
+  const serviceShuttered = await isServiceShuttered();
+  logger.info(`Checking for service availability... ${serviceShuttered}`);
+  if (serviceShuttered) {
+    res.render('service-unavailable');
+  } else {
+    next();
+  }
+};
+
 if (env !== 'test') {
   new CSRFToken().enableFor(app);
+  app.use(checkServiceAvailability);
 }
+
 app.use(routes);
 
 setupDev(app,developmentMode);
