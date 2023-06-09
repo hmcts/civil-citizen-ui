@@ -5,6 +5,7 @@ import {t} from 'i18next';
 import {getLng} from '../../../../../common/utils/languageToggleUtils';
 import {CLAIM_TIMELINE_URL} from 'routes/urls';
 import {TimelineRow} from '../../../../../common/form/models/timeLineOfEvents/timelineRow';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
 
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
@@ -16,7 +17,7 @@ export const addTimeLine = (claim: Claim, claimSection: SummarySection, claimId:
     const timeLine: TimelineRow[] = claim.claimDetails.timeline.rows;
     for (let i = 0; i < timeLine.length; i++) {
       claimSection.summaryList.rows.push(
-        summaryRow(timeLine[i].date, timeLine[i].description, CLAIM_TIMELINE_URL, changeLabel(lang)),
+        summaryRow(formatDateToFullDate(timeLine[i].date, lang), timeLine[i].description, CLAIM_TIMELINE_URL, changeLabel(lang)),
       );
     }
   }
