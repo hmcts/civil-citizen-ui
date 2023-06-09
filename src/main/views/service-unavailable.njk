@@ -1,0 +1,19 @@
+{% extends "service-unavailable-layout.njk" %}
+{% from "./macro/page-title.njk" import setPageTitle %}
+{% from "./macro/contact-us-for-help.njk" import contactUsForHelp %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.SERVICE_UNAVAILABLE.TITLE') }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l">{{ t('PAGES.SERVICE_UNAVAILABLE.SORRY') }}</h1>
+      <p class="govuk-body">
+        {{ t('PAGES.SERVICE_UNAVAILABLE.YOU_WILL_BE_ABLE_LATER') }}
+      </p>
+      {{ contactUsForHelp(t) }}
+    </div>
+  </div>
+{% endblock %}
