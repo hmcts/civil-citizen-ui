@@ -9,16 +9,12 @@ import {
 export const getDisclosureContent = (claim: Claim): ClaimSummaryContent[] => {
   const sectionContent = [];
 
-  if(claim?.caseProgression?.defendantUploadDocuments?.disclosure[0]?.selected){
-    const disclosureSection = buildDisclosureDocumentSection();
-    const disclosureContent = [disclosureSection];
-    sectionContent.push(disclosureContent);
+  if(claim.caseProgression?.defendantUploadDocuments?.disclosure[0]?.selected){
+    sectionContent.push([buildDisclosureDocumentSection()]);
   }
 
-  if(claim?.caseProgression?.defendantUploadDocuments?.disclosure[1]?.selected){
-    const disclosureListSection = buildDisclosureListSection();
-    const disclosureListContent = [disclosureListSection];
-    sectionContent.push(disclosureListContent);
+  if(claim.caseProgression?.defendantUploadDocuments?.disclosure[1]?.selected){
+    sectionContent.push([buildDisclosureListSection()]);
   }
 
   return sectionContent.flat().map((sectionContent, index) => ({
