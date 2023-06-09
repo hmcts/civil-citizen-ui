@@ -40,7 +40,7 @@ Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @regression'
   ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
 });
 
-Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @partAdmit @regression', () => {
+Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @partAdmit @nightly', () => {
   ResponseSteps.RespondToClaim(claimRef);
   ResponseSteps.EnterPersonalDetails(claimRef);
   ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -74,7 +74,7 @@ Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit @regre
   ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
 });
 
-Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit @regression', () => {
+Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit @nightly', () => {
   ResponseSteps.RespondToClaim(claimRef);
   ResponseSteps.EnterPersonalDetails(claimRef);
   ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
