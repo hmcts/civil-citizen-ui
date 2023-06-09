@@ -2292,17 +2292,18 @@
       "ADD": "Add another",
       "DATE": "Date statement was written",
       "DATE_EXAMPLE": "For example, 27 9 2022",
+      "DAY": "Day",
       "FORMAT": "Each document must be less than 100MB. You can upload the following file types: Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF,TIFF.",
       "NAME": "Your name",
+      "MONTH": "Month",
       "NO_UPLOAD": "No files uploaded",
       "PAGE_TITLE": "Upload documents",
       "REMOVE_SECTION": "Remove section",
       "STATEMENT": "Your statement",
       "SUBTITLE": "Acceptable documents formats",
       "TITLE": "Upload documents",
-      "UPLOAD": "Upload a file",
-      "WITNESS": "Witness evidence",
       "TYPE_OF_DOCUMENT": "Type of document",
+      "UPLOAD": "Upload a file",
       "TYPE_OF_DOCUMENT_EXAMPLE": "For example, contract, invoice, receipt, email, text message, photo, social media message",
       "DOCUMENT_ISSUE_DATE": "Date document was issued or message was sent",
       "TRIAL": {
@@ -2317,7 +2318,22 @@
         "TITLE": "Disclosure",
         "DISCLOSURE_DOCUMENTS": "Documents for disclosure",
         "DISCLOSURE_LIST": "Disclosure list"
-        },
+      },
+      "WITNESS": {
+        "DATE_STATEMENT": "Date statement was written",
+        "DATE_SUMMARY": "Date summary was written",
+        "DOCUMENT": "Documents referred to in the statement",
+        "DOCUMENT_DATE": "Date document was issued or message was sent",
+        "NOTICE": "Notice of intention to rely on hearsay evidence",
+        "STATEMENT": "Witness statement",
+        "SUMMARY": "Witness summary",
+        "TITLE" : "Witness evidence",
+        "TYPE_OF_DOCUMENT": "Type of document",
+        "TYPE_OF_DOCUMENT_HINT": "For example, contract, invoice, receipt, email, text message, photo, social media message",
+        "YOUR_STATEMENT": "Your statement",
+        "YOUR_NAME": "Your name",
+        "WITNESS_NAME": "Witness's name"
+      },
       "EXPERT": {
         "TITLE": "Expert evidence",
         "EXPERT_REPORT": "Expert's report",
@@ -2332,7 +2348,8 @@
         "ANSWERS_TO_QUESTIONS": "Answers to questions asked by other party",
         "NAME_DOCUMENT_WITH": "Name of document with other party's questions",
         "SELECT": "Select"
-      }
+      },
+      "YEAR": "Year"
     },
     "VULNERABILITY": {
       "PAGE_TITLE": "Vulnerability questions",
