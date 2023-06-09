@@ -1,17 +1,33 @@
 import {ClaimSummaryContent} from 'form/models/claimSummarySection';
 import {Claim} from 'models/claim';
 
-import {buildWitnessSection} from 'services/features/caseProgression/witnessContentBuilder';
+import {
+  buildDocumentsInStatement,
+  buildNoticeOfHearsayEvidence,
+  buildWitnessStatement, buildWitnessSummary,
+} from 'services/features/caseProgression/witnessContentBuilder';
 
-export const getWitnessContent = (claimId: string, claim: Claim): ClaimSummaryContent[] => {
-  const witnessSection = buildWitnessSection(claim, claimId);
-  const witnessContent = [witnessSection];
+export const getWitnessContent = (claim: Claim): ClaimSummaryContent[] => {
+  const sectionContent = [];
 
-  const filteredWitnessContent = witnessContent.filter(sectionContent => sectionContent.length);
-  return filteredWitnessContent.map((sectionContent, index) => {
-    return ({
-      contentSections: sectionContent,
-      hasDivider: index < filteredWitnessContent.length - 1,
-    });
-  });
+  if (claim.caseProgression?.defendantUploadDocuments?.witness[0]?.selected){
+    sectionContent.push([buildWitnessStatement()]);
+  }
+
+  if (claim.caseProgression?.defendantUploadDocuments?.witness[1]?.selected){
+    sectionContent.push([buildWitnessSummary()]);
+  }
+
+  if (claim.caseProgression?.defendantUploadDocuments?.witness[2]?.selected){
+    sectionContent.push([buildNoticeOfHearsayEvidence()]);
+  }
+
+  if (claim.caseProgression?.defendantUploadDocuments?.witness[3]?.selected){
+    sectionContent.push([buildDocumentsInStatement()]);
+  }
+
+  return sectionContent.flat().map((sectionContent, index) => ({
+    contentSections: sectionContent,
+    hasDivider: index < sectionContent.length - 1,
+  }));
 };
