@@ -2048,7 +2048,7 @@
       "TITLE": "Ydych chi wedi anfon adroddiadau arbenigwyr at y partïon eraill yn barod?"
     },
     "SERVICE_UNAVAILABLE": {
-      "SERVICE_NAME": "Money Claims", 
+      "SERVICE_NAME": "Money Claims",
       "SORRY": "Sorry, the service is unavailable",
       "TITLE": "Money Claims – GOV.UK",
       "YOU_WILL_BE_ABLE_LATER": "You will be able to use the service later."
@@ -2302,13 +2302,21 @@
       "TITLE": "Upload documents",
       "UPLOAD": "Upload a file",
       "WITNESS": "Witness evidence",
+      "TYPE_OF_DOCUMENT": "Type of document",
+      "TYPE_OF_DOCUMENT_EXAMPLE": "For example, contract, invoice, receipt, email, text message, photo, social media message",
+      "DOCUMENT_ISSUE_DATE": "Date document was issued or message was sent",
+      "TRIAL": {
+        "TITLE": "Trial documents",
+        "CASE_SUMMARY": "Case summary",
+        "SKELETON": "Skeleton argument",
+        "LEGAL": "Legal authorities",
+        "COSTS": "Costs",
+        "DOCUMENTARY": "Documentary evidence for trial"
+      },
       "DISCLOSURE": {
         "TITLE": "Disclosure",
         "DISCLOSURE_DOCUMENTS": "Documents for disclosure",
-        "DISCLOSURE_LIST": "Disclosure list",
-        "TYPE_OF_DOCUMENT": "Type of document",
-        "TYPE_OF_DOCUMENT_EXAMPLE": "For example, contract, invoice, receipt, email, text message, photo, social media message",
-        "DOCUMENT_ISSUE_DATE": "Date document was issued or message was sent"
+        "DISCLOSURE_LIST": "Disclosure list"
       },
       "EXPERT": {
         "TITLE": "Expert evidence",

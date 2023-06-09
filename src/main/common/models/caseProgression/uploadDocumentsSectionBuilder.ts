@@ -2,6 +2,7 @@ import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySec
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
+
   addInputArray(title:string, classes:string, hint:string, category:string, field:string) {
     const section = ({
       type: ClaimSummaryType.INPUT_ARRAY,
@@ -9,7 +10,7 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
         category: category,
         field: field,
         text: title,
-        classes:classes,
+        classes: classes,
         hint: hint,
       },
     });

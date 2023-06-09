@@ -7,6 +7,7 @@ import {
   getDisclosureContent,
 } from 'services/features/caseProgression/disclosureService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getTrialContent} from 'services/features/caseProgression/trialService';
 import {getExpertContent} from 'services/features/caseProgression/expertService';
 
 const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
@@ -21,7 +22,7 @@ uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req:Request, res:
       const disclosureContent = getDisclosureContent(claim);
       const witnessContent = getWitnessContent(claimId, claim);
       const expertContent = getExpertContent(claim);
-      const trialContent:string = undefined ; //TODO = getTrialContent(claim, claimId);
+      const trialContent = getTrialContent(claimId, claim);
       res.render(uploadDocumentsViewPath, {claim, claimId, disclosureContent, witnessContent, expertContent, trialContent, latestUploadUrl});
     }
   } catch (error) {
