@@ -23,10 +23,12 @@ const {setupDev} = require('./development');
 const MemoryStore = require('memorystore')(session);
 
 const env = process.env.NODE_ENV || 'development';
+const productionMode = env === 'production';
 const developmentMode = env === 'development';
 export const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
 
 export const app = express();
+app.enable('trust proxy');
 app.use(session({
   name: 'citizen-ui-session',
   store: new MemoryStore({
@@ -36,8 +38,9 @@ app.use(session({
   resave: true,
   saveUninitialized: true,
   cookie : {
-    secure: false,
+    secure: productionMode,
     maxAge: cookieMaxAge,
+    sameSite: 'lax',
   },
 }));
 app.use(cookieParser());
