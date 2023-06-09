@@ -7,12 +7,12 @@
   labelHtml
   ) %}
   <legend><h2 class="govuk-heading-m">{{ t('COMMON.STATEMENT_OF_TRUTH.TITLE') }}</h2></legend>
-  {% if form.model.type === SignatureType.RESPONSE or form.model.type === SignatureType.BASIC %}
-    <p class="govuk-body">{{ t('COMMON.STATEMENT_OF_TRUTH.INFORMATION_ON_PAGE', { type: form.model.type }) }}</p>
+  {% if form.model.type === SignatureType.RESPONSE or form.model.type === SignatureType.BASIC or form.model.type === SignatureType.QUALIFIED %}
+    <p class="govuk-body">{{ t('COMMON.STATEMENT_OF_TRUTH.INFORMATION_ON_PAGE') }}</p>
     <p class="govuk-body">{{ t('COMMON.STATEMENT_OF_TRUTH.WHEN_SATISFIED') }}</p>
   {% endif %}
   {% if form.model.type === SignatureType.QUALIFIED %}
-    <p class="govuk-body">{{ t('COMMON.STATEMENT_OF_TRUTH.SENIOR_POSITION_REQUIREMENT', { typeOfStatement: form.model.type}) }}</p>
+    <p class="govuk-body">{{ t('COMMON.STATEMENT_OF_TRUTH.SENIOR_POSITION_REQUIREMENT') }}</p>
     {{ typesOfSeniorPosition() }}
     {{ govukInput({
       classes: "govuk-!-width-one-half",

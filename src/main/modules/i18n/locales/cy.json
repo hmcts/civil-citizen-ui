@@ -226,8 +226,8 @@
     "STATEMENT_OF_TRUTH": {
       "CORRECT_INFORMATION_CONFIRMATION": "Rwy'n cadarnhau fy mod i'n credu bod y manylion rwyf wedi'u darparu yn gywir.",
       "DETAILS_TRUTHY": "Mae manylion gofynion y gwrandawiad ar y dudalen hon yn wir hyd eithaf fy ngwybodaeth.",
-      "INFORMATION_ON_PAGE": "Mae'r wybodaeth ar y dudalen hon yn ffurfio eich {{ type }}. Gallwch ei gweld ar y ffurflen {{ type }} ar ôl i chi ei chyflwyno.",
-      "SENIOR_POSITION_REQUIREMENT": "Rhaid i chi ddal uwch swydd yn eich sefydliad i lofnodi'r  {{ typeOfStatement }}.",
+      "INFORMATION_ON_PAGE": "Mae'r wybodaeth ar y dudalen hon yn ffurfio eich ymateb. Gallwch ei weld ar y ffurflen ymateb ar ôl i chi ei chyflwyno.",
+      "SENIOR_POSITION_REQUIREMENT": "Mae'n rhaid i chi ddal swydd uwch yn eich sefydliad i lofnodi'r datganiad o wirionedd.",
       "STATEMENT_OF_WORK": "satganiad gwirionedd",
       "TITLE": "Datganiad Gwirionedd",
       "WHEN_SATISFIED": "Pan rydych yn fodlon bod eich atebion yn gywir, dylech roi tic i \"lofnodi'r\" datganiad gwirionedd ar y ffurflen."
@@ -1363,10 +1363,11 @@
     },
     "FINANCIAL_DETAILS": {
       "ASK_DETAILS_AND_SEND": "Byddwn yn eich gofyn am y manylion ac yna byddwn yn eu hanfon at {{ applicant1Details }} i’w hadolygu.",
-      "GET_APPLICANT_CONTACT_DETAILS": "Cael manylion cyswllt { { applicant1Details }}.",
+      "GET_APPLICANT_CONTACT_DETAILS": "Cael manylion cyswllt {{ applicant1Details }}.",
       "NEED_GIVE_DETAILS": "Mae arnoch angen rhoi eich manylion ariannol i {{ applicant1Details }}.",
       "PAGE_TITLE": "Eich manylion ariannol",
-      "SEND_STATEMENT_ACCOUNTS": "Mae angen i chi anfon datganiad cyfrifon diweddaraf eich cwmni neu'ch sefydliad at { { applicant1Details }}.",
+      "SEND_STATEMENT_ACCOUNTS": "Mae angen i chi anfon datganiad cyfrifon diweddaraf eich cwmni neu'ch sefydliad at {{ applicant1Details }}.",
+
       "SEND_FINANCIAL_DETAILS": "Anfonwch eich manylion ariannol at {{ applicant1Details }}.",
       "REJECT_PAY_SOONER": "Gallant wrthod eich cynnig os ydynt yn credu y gallwch dalu’n gynt.",
       "REJECT_COURT_MAKE_NEW_PLAN": "Os byddant yn gwrthod eich cynnig, bydd y llys yn llunio cynllun newydd gan ddefnyddio eich manylion ariannol.",
