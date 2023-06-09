@@ -6,16 +6,16 @@ import { t } from 'i18next';
 import {Claim} from 'models/claim';
 import {BILINGUAL_LANGUAGE_PREFERENCE_URL} from 'routes/urls';
 
-export const getResponseNotSubmittedTitle = (isResponseDeadlineExtended: boolean, lang: string): ClaimSummarySection => {
+export const getResponseNotSubmittedTitle = (isResponseDeadlineExtended: boolean): ClaimSummarySection => {
   return isResponseDeadlineExtended ? ({
     type: ClaimSummaryType.TITLE,
     data: {
-      text: t('PAGES.LATEST_UPDATE_CONTENT.MORE_TIME_REQUESTED', {lng : lang}),
+      text: 'PAGES.LATEST_UPDATE_CONTENT.MORE_TIME_REQUESTED',
     },
   }) : ({
     type: ClaimSummaryType.TITLE,
     data: {
-      text: t('PAGES.LATEST_UPDATE_CONTENT.YOU_HAVENT_RESPONDED_TO_CLAIM', {lng : lang}),
+      text: 'PAGES.LATEST_UPDATE_CONTENT.YOU_HAVENT_RESPONDED_TO_CLAIM', 
     },
   });
 };
