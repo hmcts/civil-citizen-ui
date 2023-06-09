@@ -8,7 +8,7 @@ import {TimelineRow} from 'form/models/timeLineOfEvents/timelineRow';
 describe('convert respond to Claim', () => {
 
   it('should all values be mapped properly', () => {
-    const timeline: DefendantTimeline = new DefendantTimeline([new TimelineRow('11 November 2022', 'Event description')]);
+    const timeline: DefendantTimeline = new DefendantTimeline([new TimelineRow(11, 11, 2022, 'Event description')]);
     // Given
     const respondToClaim: PartialAdmission = {
       whyDoYouDisagree: {
