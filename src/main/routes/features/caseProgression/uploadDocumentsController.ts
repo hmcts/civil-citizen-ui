@@ -23,7 +23,7 @@ async function renderView(res: Response, claimId: string, form: GenericForm<Uplo
 
   if (claim && !claim.isEmpty()) {
     const disclosureContent = getDisclosureContent(claim, form);
-    const witnessContent = getWitnessContent(claimId, claim);
+    const witnessContent = getWitnessContent(claim);
     const expertContent: string = undefined; //TODO = getExpertContent(claim, claimId);
     const trialContent = getTrialContent(claim, form);
     res.render(uploadDocumentsViewPath, {
