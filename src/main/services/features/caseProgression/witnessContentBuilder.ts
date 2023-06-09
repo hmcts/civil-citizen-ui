@@ -1,23 +1,47 @@
-import {Claim} from 'models/claim';
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
-import {
-  getDate,
-  getInput, getUpload,
-  getWitnessSubtitle,
-} from 'services/features/caseProgression/uploadDocumentsSection';
+import {UploadDocumentsSectionBuilder} from 'models/caseProgression/uploadDocumentsSectionBuilder';
 
-export const buildWitnessSection = (claim: Claim, claimId: string): ClaimSummarySection[] => {
-  const sectionContent = [];
+const witnessEvidence = 'witness-evidence';
+const witnessStatement = witnessEvidence + '-witness-statement';
+const witnessSummary = witnessEvidence + '-witness-summary';
+const noticeOfHearsayEvidence = witnessEvidence + '-notice';
+const documentsInStatement = witnessEvidence + '-documents';
 
-  const witnessYourStatementContent = getWitnessSubtitle('PAGES.UPLOAD_DOCUMENTS.STATEMENT');
-  const inputContent = getInput('PAGES.UPLOAD_DOCUMENTS.NAME','govuk-!-width-three-half');
-  const dateContent = getDate('PAGES.UPLOAD_DOCUMENTS.DATE', 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE');
-  const uploadContent = getUpload('PAGES.UPLOAD_DOCUMENTS.UPLOAD','PAGES.UPLOAD_DOCUMENTS.NO_UPLOAD');
+const fileUpload = 'file_upload';
+const widthThreeHalfClass = 'govuk-!-width-three-half';
 
-  sectionContent.push(witnessYourStatementContent);
-  sectionContent.push(inputContent);
-  sectionContent.push(dateContent);
-  sectionContent.push(uploadContent);
+export const buildWitnessStatement = (): ClaimSummarySection[] => {
+  return new UploadDocumentsSectionBuilder()
+    .addTitle('PAGES.UPLOAD_DOCUMENTS.WITNESS.STATEMENT')
+    .addInputArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', widthThreeHalfClass, '', witnessStatement, 'name')
+    .addDateArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_STATEMENT', 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', witnessStatement)
+    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', witnessStatement, fileUpload)
+    .build();
+};
 
-  return sectionContent.flat();
+export const buildWitnessSummary = (): ClaimSummarySection[] => {
+  return new UploadDocumentsSectionBuilder()
+    .addTitle('PAGES.UPLOAD_DOCUMENTS.WITNESS.SUMMARY')
+    .addInputArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', widthThreeHalfClass, '', witnessSummary, 'name')
+    .addDateArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_SUMMARY', 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', witnessSummary)
+    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', witnessSummary, fileUpload)
+    .build();
+};
+
+export const buildNoticeOfHearsayEvidence = (): ClaimSummarySection[] => {
+  return new UploadDocumentsSectionBuilder()
+    .addTitle('PAGES.UPLOAD_DOCUMENTS.WITNESS.NOTICE')
+    .addInputArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', widthThreeHalfClass, '', noticeOfHearsayEvidence, 'name')
+    .addDateArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_SUMMARY', 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', noticeOfHearsayEvidence)
+    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', noticeOfHearsayEvidence, fileUpload)
+    .build();
+};
+
+export const buildDocumentsInStatement = (): ClaimSummarySection[] => {
+  return new UploadDocumentsSectionBuilder()
+    .addTitle('PAGES.UPLOAD_DOCUMENTS.WITNESS.DOCUMENT')
+    .addInputArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.TYPE_OF_DOCUMENT', widthThreeHalfClass, 'PAGES.UPLOAD_DOCUMENTS.WITNESS.TYPE_OF_DOCUMENT_HINT', documentsInStatement, 'type')
+    .addDateArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.DOCUMENT_DATE', 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', documentsInStatement)
+    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', documentsInStatement, fileUpload)
+    .build();
 };
