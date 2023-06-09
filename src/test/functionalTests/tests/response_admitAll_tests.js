@@ -27,12 +27,12 @@ Before(async ({api}) => {
 });
 
 Scenario('Response with AdmitAll and Immediate payment @pats @citizenUI @admitAll @regression', () => {
-  /*ResponseSteps.RespondToClaim(claimRef);
+  ResponseSteps.RespondToClaim(claimRef);
   ResponseSteps.EnterPersonalDetails(claimRef);
   ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   ResponseSteps.EnterResponseToClaim(claimRef, admitAll);
   ResponseSteps.EnterPaymentOption(claimRef, admitAll, immediatePayment);
-  ResponseSteps.CheckAndSubmit(claimRef, admitAll);*/
+  ResponseSteps.CheckAndSubmit(claimRef, admitAll);
 });
 
 Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @regression', () => {

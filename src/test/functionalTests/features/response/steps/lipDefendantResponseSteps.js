@@ -129,7 +129,7 @@ class ResponseSteps {
     taskListPage.verifyResponsePageContent();
     nameAndAddressDetailsPage.enterNameAndAddressDetails(claimRef);
     dateOfBirthDetailsPage.enterDateOfBirth(claimRef);
-    contactNumberDetailsPage.enterContactNumber(claimRef);
+    contactNumberDetailsPage.enterContactNumber(claimRef, '07123456789');
   }
 
   EnterYourOptionsForDeadline(claimRef, deadlineOption) {
@@ -144,8 +144,8 @@ class ResponseSteps {
     mediationCanWeUse.enterPhoneNumber();
   }
 
-  AddYourTimeLineEvents() {
-    addYourTimeLine.addTimeLineOfEvents();
+  AddYourTimeLineEvents(optionalFlag = false) {
+    addYourTimeLine.addTimeLineOfEvents(optionalFlag);
   }
 
   EnterResponseToClaim(claimRef, responseType) {
@@ -355,8 +355,8 @@ class ResponseSteps {
     whyDoYouDisagree.enterReason(claimRef);
   }
 
-  EnterYourEvidenceDetails() {
-    listYourEvidence.selectEvidenceFromDropDown();
+  EnterYourEvidenceDetails(optionalFlag = false) {
+    listYourEvidence.selectEvidenceFromDropDown(optionalFlag);
   }
 
   EnterFreeTelephoneMediationDetails(claimRef) {
@@ -381,7 +381,7 @@ class ResponseSteps {
     this.SelectOptionForVulnerability('No');
     this.SelectOptionForSupportRequired('No');
     this.SelectPreferredCourtLocation('No');
-    this.SelectLanguageOption();
+    this.SelectLanguageOption('English', 'English');
   }
 
   EnterDQForSmallClaims(claimRef) {
@@ -451,8 +451,8 @@ class ResponseSteps {
     courtLocation.selectPreferredCourtLocation(option);
   }
 
-  SelectLanguageOption() {
-    welshLanguage.selectLanguageOption();
+  SelectLanguageOption(speakOption , documentOption) {
+    welshLanguage.selectLanguageOption(speakOption , documentOption);
   }
 }
 

@@ -8,10 +8,12 @@ const fields ={
 
 class ListYourEvidence {
 
-  selectEvidenceFromDropDown() {
+  selectEvidenceFromDropDown(optionalFlag) {
     I.see('List your evidence', 'h1');
-    I.selectOption(fields.firstSelection, 'Contracts and agreements');
-    I.fillField(fields.firstEvidenceItem, 'TestEvidence');
+    if (!optionalFlag) {
+      I.selectOption(fields.firstSelection, 'Contracts and agreements');
+      I.fillField(fields.firstEvidenceItem, 'TestEvidence');
+    }
     I.click('Save and continue');
   }
 }

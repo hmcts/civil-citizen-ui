@@ -23,11 +23,10 @@ Scenario('Response with RejectAll and DisputeAll For the Case Progression and He
   ResponseSteps.EnterResponseToClaim(claimRef, rejectAll);
   ResponseSteps.SelectOptionInRejectAllClaim('disputeAll');
   ResponseSteps.EnterWhyYouDisagree(claimRef);
-  ResponseSteps.AddYourTimeLineEvents();
-  ResponseSteps.EnterYourEvidenceDetails();
+  ResponseSteps.AddYourTimeLineEvents(true);
+  ResponseSteps.EnterYourEvidenceDetails(true);
   ResponseSteps.EnterSkipTelephoneMediationDetails(claimRef);
   ResponseSteps.EnterNoOptionsForDQForSmallClaims(claimRef);
-  pause();
   ResponseSteps.CheckAndSubmit(claimRef, rejectAll);
   //await api.performViewAndRespondToDefence(config.applicantSolicitorUser, claimRef);
 }).tag('@pats');
