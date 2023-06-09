@@ -115,13 +115,13 @@
          },
          hint: {
              text: t(content.data.hint)
-           }
+         }
       }) }}
      </div>
   {% endif %}
 
   {% if content.type === ClaimSummaryType.INPUT_ARRAY %}
-     <div>
+    <div>
       {{ govukInput({
          id: content.data.category+'[0]['+content.data.field+']',
          name: content.data.category+'[0]['+content.data.field+']',
@@ -138,7 +138,7 @@
            'data-id': content.data.category+'[%index%]['+content.data.field+']'
          }
       }) }}
-     </div>
+    </div>
   {% endif %}
 
   {% if content.type === ClaimSummaryType.DATE_ARRAY %}
