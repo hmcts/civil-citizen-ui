@@ -160,7 +160,7 @@ describe('Disclosure service', () => {
     };
 
     //when
-    const actualDisclosureContent = getDisclosureContent(testClaim.case_data);
+    const actualDisclosureContent = getDisclosureContent(testClaim.case_data, null);
 
     //Then
     expect(actualDisclosureContent.length).toEqual(0);
@@ -178,7 +178,7 @@ describe('Disclosure service', () => {
     };
 
     //when
-    const actualDisclosureContent = getDisclosureContent(testClaim.case_data);
+    const actualDisclosureContent = getDisclosureContent(testClaim.case_data, null);
 
     //Then
     expect(actualDisclosureContent.length).toEqual(0);
