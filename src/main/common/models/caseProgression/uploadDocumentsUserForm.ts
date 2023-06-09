@@ -32,7 +32,7 @@ export class UploadDocumentsUserForm {
 }
 
 export class TypeOfDocumentSection {
-  @IsNotEmpty({message: 'ERRORS.VALID_YOU_MUST_ENTER_TOD'})
+  @IsNotEmpty({message: 'ERRORS.VALID_ENTER_TYPE_OF_DOCUMENT'})
     typeOfDocument: string;
 
   //todo: validate date
