@@ -71,13 +71,11 @@ export const getTypeDocumentForm = (req: Request): UploadDocuments => {
   const disclosure = [];
   disclosure.push(documents);
   disclosure.push(list);
-  const yourStatement = new UploadDocumentTypes(!!req.body.yourStatement,undefined,EvidenceUploadWitness.YOUR_STATEMENT);
   const witnessStatement = new UploadDocumentTypes(!!req.body.witnessStatement,undefined,EvidenceUploadWitness.WITNESS_STATEMENT);
   const summary = new UploadDocumentTypes(!!req.body.summary,undefined,EvidenceUploadWitness.WITNESS_SUMMARY);
   const witnessNotice = new UploadDocumentTypes(!!req.body.witnessNotice,undefined,EvidenceUploadWitness.NOTICE_OF_INTENTION);
   const witnessDocuments = new UploadDocumentTypes(!!req.body.witnessDocuments,undefined,EvidenceUploadWitness.DOCUMENTS_REFERRED);
   const witness = [];
-  witness.push(yourStatement);
   witness.push(witnessStatement);
   witness.push(summary);
   witness.push(witnessNotice);
