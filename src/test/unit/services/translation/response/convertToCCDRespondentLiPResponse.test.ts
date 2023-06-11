@@ -146,7 +146,7 @@ describe('translate cui fields to CCD model', () => {
   it('return the Respondent LiP Response object', () => {
     // Given
     const claim = new Claim();
-    const timeline: DefendantTimeline = new DefendantTimeline([new TimelineRow('6 November 2022', 'Event 1')]);
+    const timeline: DefendantTimeline = new DefendantTimeline([new TimelineRow(6, 11, 2022, 'Event 1')]);
 
     claim.partialAdmission = {
       alreadyPaid: {
