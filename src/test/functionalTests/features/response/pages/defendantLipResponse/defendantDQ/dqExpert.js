@@ -3,7 +3,7 @@ const I = actor();
 
 const fields ={
   continueWithExpert: 'input[id="expertYes"]',
-  continueWithoutExpert: 'button.govuk-button',
+  continueWithoutExpert: 'Continue without an expert',
 };
 
 class DqExpert {

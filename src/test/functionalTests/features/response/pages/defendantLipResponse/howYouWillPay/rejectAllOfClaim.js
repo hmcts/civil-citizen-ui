@@ -6,7 +6,7 @@ const fields ={
   disputeAllCounterClaim: 'input[id="option-3"]',
 };
 const buttons = {
-  continue: 'button.govuk-button',
+  saveAndContinue: 'Save and continue',
 };
 
 class RejectAllOfClaim {
@@ -28,7 +28,7 @@ class RejectAllOfClaim {
         I.click(fields.alreadyPaid);
       }
     }
-    I.click(buttons.continue);
+    I.click(buttons.saveAndContinue);
   }
 }
 

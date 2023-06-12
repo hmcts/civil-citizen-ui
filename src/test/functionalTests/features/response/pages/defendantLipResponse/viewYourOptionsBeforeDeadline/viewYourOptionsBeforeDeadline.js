@@ -7,8 +7,8 @@ const fields ={
   dontWantMoreTime: 'input[id="option-4"]',
 };
 const buttons = {
-  continue: 'a.govuk-button',
-  saveAndContinue:'button.govuk-button',
+  continue: 'Continue',
+  saveAndContinue: 'Save and continue',
 };
 
 class ViewYourOptionsBeforeDeadline {
@@ -41,7 +41,7 @@ class ViewYourOptionsBeforeDeadline {
       default:
         I.click(fields.dontWantMoreTime);
     }
-    I.click(buttons.saveAndContinue);    
+    I.click(buttons.saveAndContinue);
   }
 }
 module.exports = ViewYourOptionsBeforeDeadline;
