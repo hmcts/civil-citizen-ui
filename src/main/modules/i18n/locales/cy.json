@@ -1040,7 +1040,6 @@
       "NEXT_STEPS": "Next steps",
       "PAGE_TITLE": "Hawliadau a wnaed gennych neu yn eich erbyn",
       "PREVIOUS": "Previous",
-
       "STATUS": {
         "ADMIT_PAY_BY_SET_DATE": "You’ve admitted all of the claim and offered to pay the full amount by {{ paymentDate }}.",
         "ADMIT_PAY_BY_INSTALLMENTS": "You’ve admitted all of the claim and offered to pay the full amount in instalments.",
@@ -1367,7 +1366,6 @@
       "NEED_GIVE_DETAILS": "Mae arnoch angen rhoi eich manylion ariannol i {{ applicant1Details }}.",
       "PAGE_TITLE": "Eich manylion ariannol",
       "SEND_STATEMENT_ACCOUNTS": "Mae angen i chi anfon datganiad cyfrifon diweddaraf eich cwmni neu'ch sefydliad at {{ applicant1Details }}.",
-
       "SEND_FINANCIAL_DETAILS": "Anfonwch eich manylion ariannol at {{ applicant1Details }}.",
       "REJECT_PAY_SOONER": "Gallant wrthod eich cynnig os ydynt yn credu y gallwch dalu’n gynt.",
       "REJECT_COURT_MAKE_NEW_PLAN": "Os byddant yn gwrthod eich cynnig, bydd y llys yn llunio cynllun newydd gan ddefnyddio eich manylion ariannol.",
