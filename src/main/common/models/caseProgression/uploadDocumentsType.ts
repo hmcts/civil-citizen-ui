@@ -1,5 +1,4 @@
 import {Validate, ValidateNested} from 'class-validator';
-import {CaseDocument} from 'models/document/caseDocument';
 import {
   EvidenceUploadDisclosure, EvidenceUploadExpert,
   EvidenceUploadTrial,
@@ -37,12 +36,109 @@ export class UploadDocuments {
 }
 export class UploadDocumentTypes {
   selected?: boolean;
-  caseDocument?: CaseDocument;
+  uuid?: string;
+  caseDocument?: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType;
   documentType?: EvidenceUploadWitness | EvidenceUploadDisclosure | EvidenceUploadExpert | EvidenceUploadTrial;
 
-  constructor(selected?: boolean, caseDocument?: CaseDocument, documentType?: EvidenceUploadWitness | EvidenceUploadDisclosure | EvidenceUploadExpert | EvidenceUploadTrial) {
+  constructor(selected?: boolean, caseDocument?: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType,
+    documentType?: EvidenceUploadWitness | EvidenceUploadDisclosure | EvidenceUploadExpert | EvidenceUploadTrial) {
     this.selected = selected;
     this.caseDocument = caseDocument;
     this.documentType = documentType;
   }
+}
+
+export class UploadEvidenceWitness {
+  witnessOptionName: string;
+  witnessOptionUploadDate: Date;
+  witnessOptionDocument: Document;
+  createdDateTime: Date;
+
+  constructor(witnessOptionName: string, witnessOptionUploadDate: Date, witnessOptionDocument: Document, createdDateTime: Date) {
+    this.witnessOptionName = witnessOptionName;
+    this.witnessOptionUploadDate = witnessOptionUploadDate;
+    this.witnessOptionDocument = witnessOptionDocument;
+    this.createdDateTime = createdDateTime;
+  }
+}
+
+export class UploadEvidenceExpert {
+  expertOptionName: string;
+  expertOptionExpertise: string;
+  expertOptionExpertises: string;
+  expertOptionOtherParty: string;
+  expertDocumentQuestion: string;
+  expertDocumentAnswer: string;
+  expertOptionUploadDate: Date;
+  expertDocument: Document;
+  createdDateTime: Date;
+
+  constructor(expertOptionName: string, expertOptionExpertise: string, expertOptionExpertises: string,
+    expertOptionOtherParty: string, expertDocumentQuestion: string, expertDocumentAnswer: string,
+    expertOptionUploadDate: Date, expertDocument: Document, createdDateTime: Date) {
+    this.expertOptionName = expertOptionName;
+    this.expertOptionExpertise = expertOptionExpertise;
+    this.expertOptionExpertises = expertOptionExpertises;
+    this.expertOptionOtherParty = expertOptionOtherParty;
+    this.expertDocumentQuestion = expertDocumentQuestion;
+    this.expertDocumentAnswer = expertDocumentAnswer;
+    this.expertOptionUploadDate = expertOptionUploadDate;
+    this.expertDocument = expertDocument;
+    this.createdDateTime = createdDateTime;
+  }
+}
+
+export class UploadEvidenceDocumentType {
+  typeOfDocument: string;
+  documentIssuedDate: Date;
+  documentUpload: Document;
+  createdDateTime: Date;
+
+  constructor(typeOfDocument: string, documentIssuedDate: Date, documentUpload: Document, createdDateTime: Date) {
+    this.typeOfDocument = typeOfDocument;
+    this.documentIssuedDate = documentIssuedDate;
+    this.documentUpload = documentUpload;
+    this.createdDateTime = createdDateTime;
+  }
+}
+
+export class UploadEvidenceElementCCD
+{
+  id: string;
+  value: UploadEvidenceDocumentType | UploadEvidenceExpert | UploadEvidenceWitness;
+}
+
+export class CCDEvidenceUpload {
+  documentDisclosureList?: UploadEvidenceElementCCD[];
+  documentForDisclosure?: UploadEvidenceElementCCD[];
+  documentWitnessStatement?: UploadEvidenceElementCCD[];
+  documentWitnessSummary?: UploadEvidenceElementCCD[];
+  documentHearsayNotice?: UploadEvidenceElementCCD[];
+  documentReferredInStatement?: UploadEvidenceElementCCD[];
+  documentExpertReport?: UploadEvidenceElementCCD[];
+  documentJointStatement?: UploadEvidenceElementCCD[];
+  documentQuestions?: UploadEvidenceElementCCD[];
+  documentAnswers?: UploadEvidenceElementCCD[];
+  documentCaseSummary?: UploadEvidenceElementCCD[];
+  documentSkeletonArgument?: UploadEvidenceElementCCD[];
+  documentAuthorities?: UploadEvidenceElementCCD[];
+  documentCosts?: UploadEvidenceElementCCD[];
+  documentEvidenceForTrial?: UploadEvidenceElementCCD[];
+  caseDocumentUploadDate?: Date;
+  documentDisclosureListRes?: UploadEvidenceElementCCD[];
+  documentForDisclosureRes?: UploadEvidenceElementCCD[];
+  documentWitnessStatementRes?: UploadEvidenceElementCCD[];
+  documentWitnessSummaryRes?: UploadEvidenceElementCCD[];
+  documentHearsayNoticeRes?: UploadEvidenceElementCCD[];
+  documentReferredInStatementRes?: UploadEvidenceElementCCD[];
+  documentExpertReportRes?: UploadEvidenceElementCCD[];
+  documentJointStatementRes?: UploadEvidenceElementCCD[];
+  documentQuestionsRes?: UploadEvidenceElementCCD[];
+  documentAnswersRes?: UploadEvidenceElementCCD[];
+  documentCaseSummaryRes?: UploadEvidenceElementCCD[];
+  documentSkeletonArgumentRes?: UploadEvidenceElementCCD[];
+  documentAuthoritiesRes?: UploadEvidenceElementCCD[];
+  documentCostsRes?: UploadEvidenceElementCCD[];
+  documentEvidenceForTrialRes?: UploadEvidenceElementCCD[];
+  caseDocumentUploadDateRes?: Date;
 }
