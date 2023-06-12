@@ -72,16 +72,6 @@
                             },
                             items: [
                             {
-                              id: 'yourStatement',
-                              name: 'yourStatement',
-                              value: 'yourStatement',
-                              text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.YOUR_STATEMENT'),
-                                                          hint: {
-                                                               text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.YOUR_STATEMENT_HINT')
-                                                          },
-                              checked: true if form.model.witness[0].selected
-                              },
-                            {
                               id: 'witnessStatement',
                               name: 'witnessStatement',
                               value: 'witnessStatement',
@@ -89,7 +79,7 @@
                                                           hint: {
                                                                text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_STATEMENT_HINT')
                                                           },
-                              checked: true if form.model.witness[1].selected
+                              checked: true if form.model.witness[0].selected
                             },
                             {
                               id: 'summary',
@@ -99,7 +89,7 @@
                                                           hint: {
                                                                text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_SUMMARY_HINT')
                                                           },
-                              checked: true if form.model.witness[2].selected
+                              checked: true if form.model.witness[1].selected
                             },
                             {
                               id: 'witnessNotice',
@@ -109,7 +99,7 @@
                                                           hint: {
                                                                text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.NOTICE_OF_INTENTION_HINT')
                                                           },
-                              checked: true if form.model.witness[3].selected
+                              checked: true if form.model.witness[2].selected
                             }
                             ,
                             {
@@ -120,7 +110,7 @@
                                                           hint: {
                                                                text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_REFERRED_TO_STATEMENT_HINT')
                                                           },
-                              checked: true if form.model.witness[4].selected
+                              checked: true if form.model.witness[3].selected
                             }
                             ]
                             }) }}
@@ -255,16 +245,6 @@
                           },
                           items: [
                           {
-                            id: 'yourStatement',
-                            name: 'yourStatement',
-                            value: 'yourStatement',
-                            text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.YOUR_STATEMENT'),
-                                                        hint: {
-                                                             text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.YOUR_STATEMENT_HINT')
-                                                        },
-                            checked: true if form.model.witness[0].selected
-                            },
-                          {
                             id: 'witnessStatement',
                             name: 'witnessStatement',
                             value: 'witnessStatement',
@@ -272,7 +252,7 @@
                                                         hint: {
                                                              text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_STATEMENT_HINT')
                                                         },
-                            checked: true if form.model.witness[1].selected
+                            checked: true if form.model.witness[0].selected
                           },
                           {
                             id: 'summary',
@@ -283,7 +263,7 @@
 
                                                           html: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_SUMMARY_HINT') + "<a href='https://www.gov.uk/government/publications/form-n244-application-notice'  target='_blank'>" + t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_SUMMARY_HINT_URL') + "</a>"
                                                         },
-                            checked: true if form.model.witness[2].selected
+                            checked: true if form.model.witness[1].selected
                           },
                           {
                             id: 'witnessDocuments',
@@ -293,7 +273,7 @@
                                                         hint: {
                                                              text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_REFERRED_TO_STATEMENT_HINT')
                                                         },
-                            checked: true if form.model.witness[4].selected
+                            checked: true if form.model.witness[3].selected
                           }
                           ]
                           }) }}
