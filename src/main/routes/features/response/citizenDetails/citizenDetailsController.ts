@@ -36,6 +36,7 @@ function renderPage(res: Response, req: Request, partyDetails: GenericForm<Party
 }
 
 const redirect = (respondent: Party, req: Request, res: Response) => {
+  console.log("phone ", respondent?.partyPhone)
   if (respondent?.type === PartyType.INDIVIDUAL) {
     res.redirect(constructResponseUrlWithIdParams(req.params.id, DOB_URL));
   } else {
@@ -65,13 +66,14 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: Request, res: Res
     const partyPhone = new GenericForm<PartyPhone>(new PartyPhone(req.body.partyPhone));
 
     partyDetails.validateSync();
+    partyPhone.validateSync();
 
-    if (partyDetails.hasErrors()) {
+    if (partyDetails.hasErrors() || partyPhone.hasErrors()) {
       generateCorrespondenceAddressErrorMessages(partyDetails);
       renderPage(res, req, partyDetails, respondent.type, partyPhone);
     } else {
       await saveDefendantProperty(req.params.id, propertyName, partyDetails.model);
-      if (req.body?.partyPhone) {
+      if (req.body?.partyPhone || respondent?.partyPhone?.phone) {
         const citizenTelephoneNumber = new CitizenTelephoneNumber(req.body.partyPhone);
         await saveTelephone(req.params.id, citizenTelephoneNumber, ClaimantOrDefendant.DEFENDANT);
       }
