@@ -121,6 +121,10 @@ class ResponseSteps {
     bilingualLanguagePreference.verifyContent();
   }
 
+  DefendantSummaryPage(claimRef){
+    defendantLatestUpdate.openSummaryPage(claimRef);
+  }
+
   EnterPersonalDetails(claimRef) {
     taskListPage.verifyResponsePageContent();
     nameAndAddressDetailsPage.enterNameAndAddressDetails(claimRef);
