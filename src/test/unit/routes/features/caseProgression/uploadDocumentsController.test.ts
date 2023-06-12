@@ -68,7 +68,7 @@ describe('on POST', () => {
       .send(documentForDisclosureModel)
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('You must enter type of document');
+        expect(res.text).toContain(TestMessages.VALID_ENTER_TYPE_OF_DOCUMENT);
       });
   });
 
@@ -80,7 +80,6 @@ describe('on POST', () => {
       .send(disclosureList)
       .expect((res) => {
         expect(res.status).toBe(200);
-        //todo: validation rules
       });
   });
 
