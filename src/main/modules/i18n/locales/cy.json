@@ -1496,7 +1496,7 @@
       "MORE_TIME_REQUESTED": "Gofyn am fwy o amser",
       "YOU_CAN_STILL_RESPOND_TO_CLAIM": "Gallwch ymateb i'r hawliad o hyd cyn i’r hawlydd ofyn am ddyfarniad.",
       "YOU_HAVENT_RESPONDED_TO_CLAIM": "Dydych chi ddim wedi ymateb i'r hawliad hwn",
-      "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "Mae angen i chi ymateb cyn 4pm ar {{ responseDeadline }}  ({{ remainingDays }} Days remaining).",
+      "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "Mae angen i chi ymateb cyn 4pm ar {{ responseDeadline }}  ({{ remainingDays }} Dyddiau sy'n weddill).",
       "YOUR_RESPONSE_TO_THE_CLAIM": "Your response to the claim",
       "YOU_SAID_YOU_WILL_PAY":"You said you’ll pay {{ claimantName }} {{ amount }} before 4pm on {{ paymentDate }}",
       "IF_YOU_PAY_BY_CHEQUE": "If you pay by cheque or transfer the money must be clear in their account.",
