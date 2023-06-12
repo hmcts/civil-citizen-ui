@@ -18,7 +18,7 @@ describe('defendantTimelineService', () => {
       //Given
       const claim = new Claim();
       const partialAdmission = new PartialAdmission();
-      partialAdmission.timeline = new DefendantTimeline([new TimelineRow('17 November 2021', 'description')], 'comment');
+      partialAdmission.timeline = new DefendantTimeline([new TimelineRow(17, 11, 2021, 'description')], 'comment');
       claim.partialAdmission = partialAdmission;
       //When
       const model = getPartialAdmitTimeline(claim);
@@ -49,7 +49,7 @@ describe('defendantTimelineService', () => {
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await savePartialAdmitTimeline('123', DefendantTimeline.buildPopulatedForm([new TimelineRow('12/02/2020', 'description')], 'comment'));
+      await savePartialAdmitTimeline('123', DefendantTimeline.buildPopulatedForm([new TimelineRow(12, 2, 2020, 'description')], 'comment'));
       //Then
       expect(spySave).toBeCalled();
     });
@@ -60,7 +60,7 @@ describe('defendantTimelineService', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(savePartialAdmitTimeline('123', DefendantTimeline.buildPopulatedForm([new TimelineRow('12/02/2020', 'description')], 'comment')))
+      await expect(savePartialAdmitTimeline('123', DefendantTimeline.buildPopulatedForm([new TimelineRow(12, 2, 2020, 'description')], 'comment')))
         .rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });

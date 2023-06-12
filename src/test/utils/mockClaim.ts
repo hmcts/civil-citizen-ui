@@ -114,7 +114,7 @@ function buildMockClaim(): Claim {
       year: 2040,
       text: 'text',
     },
-    timeline: DefendantTimeline.buildPopulatedForm([new TimelineRow('2022-04-01', 'I contacted Mary Richards to discuss building works on our roof.')], 'timeline comments'),
+    timeline: DefendantTimeline.buildPopulatedForm([new TimelineRow(1, 4, 2022, 'I contacted Mary Richards to discuss building works on our roof.')], 'timeline comments'),
   };
   _mockClaim.rejectAllOfClaim = {
     howMuchHaveYouPaid: {
