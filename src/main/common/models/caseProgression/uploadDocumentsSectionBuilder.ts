@@ -68,6 +68,23 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
     return this;
   }
 
+  addSelect(title:string, classes:string, hint:string, choose:string, selectItems:string[], category:string, field:string) {
+    const section = ({
+      type: ClaimSummaryType.SELECT,
+      data: {
+        category: category,
+        field: field,
+        text: title,
+        classes: classes,
+        hint: hint,
+        choose: choose,
+        items: selectItems,
+      },
+    });
+    this._claimSummarySections.push(section);
+    return this;
+  }
+
   build() {
     return this._claimSummarySections;
   }

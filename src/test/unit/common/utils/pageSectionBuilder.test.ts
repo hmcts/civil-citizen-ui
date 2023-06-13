@@ -9,12 +9,13 @@ describe('PageSectionBuilder tests', ()=> {
       data: {
         text: 'text',
         variables: 'variables',
+        classes: 'classes',
       },
     });
 
     //When
     const titleBuilt = new PageSectionBuilder()
-      .addTitle(titleExpected.data.text,titleExpected.data.variables)
+      .addTitle(titleExpected.data.text,titleExpected.data.variables,titleExpected.data.classes)
       .build();
 
     //Then

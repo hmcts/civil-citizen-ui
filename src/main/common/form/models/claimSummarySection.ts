@@ -54,4 +54,5 @@ export enum ClaimSummaryType {
   INPUT_ARRAY_ERROR = 'inputArrayError',
   DATE_ARRAY = 'dateArray',
   UPLOAD_ARRAY = 'uploadArray',
+  SELECT = 'select'
 }
