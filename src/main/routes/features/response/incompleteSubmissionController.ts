@@ -1,10 +1,9 @@
 import {NextFunction, Router} from 'express';
 import {RESPONSE_TASK_LIST_URL, RESPONSE_INCOMPLETE_SUBMISSION_URL} from '../../urls';
-import {outstandingTasksFromCase} from '../../../services/features/common/taskListService';
-import {Task} from '../../../common/models/taskList/task';
-import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-
+import {outstandingTasksFromCase} from 'services/features/common/taskListService';
+import {Task} from 'models/taskList/task';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 const incompleteSubmissionViewPath = 'features/response/incomplete-submission';
 const incompleteSubmissionController = Router();
 
