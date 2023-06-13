@@ -42,7 +42,7 @@ services:
   cmc:
     url: 'https://localhost:3000'
   pcq:
-    url: 'https://pcq.demo.platform.hmcts.net'
+    url: 'https://pcq.aat.platform.hmcts.net'
     tokenKey: 'test'
 health:
   timeout: 5000

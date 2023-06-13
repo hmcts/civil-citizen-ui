@@ -2,9 +2,7 @@ import crypto from 'crypto';
 import config from 'config';
 
 const { Logger } = require('@hmcts/nodejs-logging');
-
 const logger = Logger.getLogger('generate-pcq-token');
-
 const algorithm = 'aes-256-gcm';
 const bufferSize = 16;
 const iv = Buffer.alloc(bufferSize, 0);
@@ -16,10 +14,7 @@ export const createToken = (params: any) => {
   let encrypted = '';
 
   if (tokenKey) {
-    // logger.trace(`Using ${tokenKey === 'SERVICE_TOKEN_KEY' ? 'local' : 'Azure KV'} secret for PCQ token key`);
-    // eslint-disable-next-line no-sync
-    const key = crypto.scryptSync(tokenKey, 'pcq-generator', keyLen);
-    // Convert all params to string before encrypting
+    const key = crypto.scryptSync(tokenKey, 'salt', keyLen);
     Object.keys(params).forEach(p => {
       params[p] = String(params[p]);
     });

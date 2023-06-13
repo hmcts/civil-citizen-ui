@@ -1,7 +1,7 @@
 import config = require('config');
 import axios from 'axios';
-import { PartyType } from 'common/models/partyType';
-import { createToken } from './generatePcqToken';
+import {PartyType} from 'common/models/partyType';
+import {createToken} from './generatePcqToken';
 
 const pcqBaseUrl: string = config.get('services.pcq.url');
 const SERVICE_ID = 'civil-citizen-ui';
