@@ -14,7 +14,7 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
         hint: 'hint',
         value: 'value',
         index: 0,
-        error: null,
+        error: null as string | null,
       },
     });
 
