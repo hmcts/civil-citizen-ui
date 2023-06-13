@@ -120,7 +120,7 @@ describe('Latest Update Content Builder', () => {
       // Then
       expect(responseToClaimSection.length).toBe(3);
       expect(responseToClaimSection[0].type).toEqual(ClaimSummaryType.TITLE);
-      expect(responseToClaimSection[0].data?.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.YOU_HAVENT_RESPONDED_TO_CLAIM');
+      expect(responseToClaimSection[0].data?.text).toEqual(t('PAGES.LATEST_UPDATE_CONTENT.YOU_HAVENT_RESPONDED_TO_CLAIM', {lng: 'en'}));
       expect(responseToClaimSection[2].type).toEqual(ClaimSummaryType.LINK);
       expect(responseToClaimSection[2].data?.href).toEqual(bilingualLanguagePreferencetUrl);
     });
@@ -133,7 +133,7 @@ describe('Latest Update Content Builder', () => {
       // Then
       expect(responseToClaimSection.length).toBe(3);
       expect(responseToClaimSection[0].type).toEqual(ClaimSummaryType.TITLE);
-      expect(responseToClaimSection[0].data?.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.MORE_TIME_REQUESTED');
+      expect(responseToClaimSection[0].data?.text).toEqual(t('PAGES.LATEST_UPDATE_CONTENT.MORE_TIME_REQUESTED', {lng: 'en'}));
       expect(responseToClaimSection[2].type).toEqual(ClaimSummaryType.LINK);
       expect(responseToClaimSection[2].data?.href).toEqual(bilingualLanguagePreferencetUrl);
     });
