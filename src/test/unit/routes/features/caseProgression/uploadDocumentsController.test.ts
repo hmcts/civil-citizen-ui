@@ -10,9 +10,11 @@ import config from 'config';
 import nock from 'nock';
 import {getDisclosureContent} from 'services/features/caseProgression/disclosureService';
 import {getWitnessContent} from 'services/features/caseProgression/witnessService';
+import {getExpertContent} from 'services/features/caseProgression/expertService';
 
 const getDisclosureContentMock = getDisclosureContent as jest.Mock;
 const getWitnessContentMock = getWitnessContent as jest.Mock;
+const getExpertContentMock = getExpertContent as jest.Mock;
 import {t} from 'i18next';
 import {getTrialContent} from 'services/features/caseProgression/trialService';
 
@@ -22,6 +24,7 @@ jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('services/features/caseProgression/disclosureService');
 jest.mock('services/features/caseProgression/witnessService');
+jest.mock('services/features/caseProgression/expertService');
 jest.mock('services/features/caseProgression/trialService');
 
 describe('Upload document- upload document controller', () => {
@@ -34,6 +37,7 @@ describe('Upload document- upload document controller', () => {
       .reply(200, {id_token: citizenRoleToken});
     getDisclosureContentMock.mockReturnValue([]);
     getWitnessContentMock.mockReturnValue([]);
+    getExpertContentMock.mockReturnValue([]);
     getTrialContentMock.mockReturnValue([]);
   });
 
