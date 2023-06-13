@@ -14,6 +14,7 @@ import {
   mockRedisFailure,
   mockNoStatementOfMeans,
   mockCivilClaimRespondentIndividualTypeWithPhoneNumber,
+  mockCivilClaimRespondentIndividualTypeWithoutPhoneNumber,
   mockCivilClaimApplicantIndividualType,
 } from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
@@ -213,6 +214,18 @@ describe('Citizen date of birth', () => {
       });
       it('should redirect to phone-number screen if phone-number NOT provided', async () => {
         app.locals.draftStoreClient = mockCivilClaimApplicantIndividualType;
+        await request(app)
+          .post(DOB_URL)
+          .send('year=1981')
+          .send('month=1')
+          .send('day=1')
+          .expect((res) => {
+            expect(res.status).toBe(302);
+            expect(res.header.location).toEqual(CITIZEN_PHONE_NUMBER_URL);
+          });
+      });
+      it('should redirect to phone-number screen if phone-number is empty', async () => {
+        app.locals.draftStoreClient = mockCivilClaimRespondentIndividualTypeWithoutPhoneNumber;
         await request(app)
           .post(DOB_URL)
           .send('year=1981')
