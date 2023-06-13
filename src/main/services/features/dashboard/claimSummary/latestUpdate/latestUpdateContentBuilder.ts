@@ -197,10 +197,10 @@ export const buildResponseToClaimSection = (claim: Claim, claimId: string, lang:
   const sectionContent = [];
   const lng = getLng(lang);
 
-  const responseNotSubmittedTitle = getResponseNotSubmittedTitle(claim.isDeadlineExtended());
-  const responseDeadlineNotPassedContent = getNotPastResponseDeadlineContent(claim);
-  const responseDeadlinePassedContent = getPastResponseDeadlineContent(claim);
-  const respondToClaimLink = getRespondToClaimLink(claimId);
+  const responseNotSubmittedTitle = getResponseNotSubmittedTitle(claim.isDeadlineExtended(), lng);
+  const responseDeadlineNotPassedContent = getNotPastResponseDeadlineContent(claim, lng);
+  const responseDeadlinePassedContent = getPastResponseDeadlineContent(claim, lng);
+  const respondToClaimLink = getRespondToClaimLink(claimId, lng);
   if (claim.isDefendantNotResponded()) {
     sectionContent.push(responseNotSubmittedTitle);
     if (claim.isDeadLinePassed()) {
