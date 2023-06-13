@@ -2334,6 +2334,21 @@
         "YOUR_NAME": "Your name",
         "WITNESS_NAME": "Witness's name"
       },
+      "EXPERT": {
+        "TITLE": "Expert evidence",
+        "EXPERT_REPORT": "Expert's report",
+        "EXPERT_NAME": "Expert's name",
+        "FIELD_EXPERTISE": "Field of expertise",
+        "DATE_REPORT_WAS": "Date report was written",
+        "JOINT_STATEMENT": "Joint statement of experts",
+        "EXPERTS_NAMES": "Experts' names",
+        "QUESTIONS_FOR_OTHER": "Questions for other party's expert or joint expert",
+        "OTHER_PARTY_NAME": "Other party's name",
+        "NAME_DOCUMENT_YOU": "Name of document you have questions about",
+        "ANSWERS_TO_QUESTIONS": "Answers to questions asked by other party",
+        "NAME_DOCUMENT_WITH": "Name of document with other party's questions",
+        "SELECT": "Select"
+      },
       "YEAR": "Year"
     },
     "VULNERABILITY": {
@@ -2742,6 +2757,7 @@
     "VALID_YES_NO_OPTION": "Dewiswch opsiwn: ie neu na",
     "VALID_YES_NO_OPTION_NAC_YDW": "Dewiswch opsiwn: ‘ydw’ neu ‘nac ydw’",
     "VALID_YES_NO_SELECTION": "Dewiswch ie neu na, os gwelwch yn dda",
+    "VALID_ENTER_TYPE_OF_DOCUMENT": "You must enter type of document",
     "VALID_WHY_FROM_PARTICULAR_DATE": "Mae angen i chi egluro pam eich bod yn hawlio",
     "QUESTION_1_REQUIRED": "Dewiswch 'oes' os yw rhywun yn fregus a bod angen i'r llys ystyried hynny",
     "QUESTION_2_REQUIRED": "Dywedwch wrthym pwy sy'n agored i niwed a pha gefnogaeth sydd ei hangen arnynt",
