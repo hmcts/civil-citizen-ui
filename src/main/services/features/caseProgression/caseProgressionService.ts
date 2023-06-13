@@ -13,11 +13,11 @@ import {
   EvidenceUploadWitness,
 } from 'models/document/documentType';
 import {
-  FileOnlySection,
-  TypeOfDocumentSection,
+
   UploadDocumentsUserForm,
-  FileUpload,
+
 } from 'models/caseProgression/uploadDocumentsUserForm';
+import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');
@@ -111,60 +111,55 @@ export const getTypeDocumentForm = (req: Request): UploadDocuments => {
 };
 
 export const getUploadDocumentsForm = (req: Request): UploadDocumentsUserForm => {
-  const documentsForDisclosure = getFormSection<TypeOfDocumentSection>(req.body.documentsForDisclosure, bindRequestToTypeOfDocumentSectionObj);
-  const documentsList = getFormSection<FileOnlySection>(req.body.disclosureList, bindRequestToFileOnlySectionObj);
-  const trialCaseSummary = getFormSection<FileOnlySection>(req.body.trialCaseSummary, bindRequestToFileOnlySectionObj);
-  const trialSkeletonArgument = getFormSection<FileOnlySection>(req.body.trialSkeletonArgument, bindRequestToFileOnlySectionObj);
-  const trialAuthorities = getFormSection<FileOnlySection>(req.body.trialAuthorities, bindRequestToFileOnlySectionObj);
-  const trialCosts = getFormSection<FileOnlySection>(req.body.trialCosts, bindRequestToFileOnlySectionObj);
-  const trialDocumentary = getFormSection<TypeOfDocumentSection>(req.body.trialDocumentary, bindRequestToTypeOfDocumentSectionObj);
+  const documentsForDisclosure = TypeOfDocumentSectionMapper.mapToTypeOfDocumentSections(req.body.documentsForDisclosure, req);
+  //const documentsList = getFormSection<FileSection>(req.body.disclosureList, bindRequestToFileOnlySectionObj);
+  //const trialCaseSummary = getFormSection<FileSection>(req.body.trialCaseSummary, bindRequestToFileOnlySectionObj);
+  //const trialSkeletonArgument = getFormSection<FileSection>(req.body.trialSkeletonArgument, bindRequestToFileOnlySectionObj);
+  //const trialAuthorities = getFormSection<FileSection>(req.body.trialAuthorities, bindRequestToFileOnlySectionObj);
+  //const trialCosts = getFormSection<FileSection>(req.body.trialCosts, bindRequestToFileOnlySectionObj);
+  //const trialDocumentary = getFormSection<TypeOfDocumentSection>(req.body.trialDocumentary, bindRequestToTypeOfDocumentSectionObj);
 
   return new UploadDocumentsUserForm(
     documentsForDisclosure,
-    documentsList,
-    trialCaseSummary,
-    trialSkeletonArgument,
-    trialAuthorities,
-    trialCosts,
-    trialDocumentary,
+    //documentsList,
+    //trialCaseSummary,
+    //trialSkeletonArgument,
+    //trialAuthorities,
+    //trialCosts,
+    //trialDocumentary,
   );
 };
 
-const getFormSection = <T>(data: any[], bindFunction: (request: any) => T): T[] => {
+/*const getFormSection = <T>(data: any[]): T[] => {
   const formSection: T[] = [];
   data?.forEach(function (request: any) {
-    formSection.push(bindFunction(request));
+    //const fileName = `[${index}][fileUpload]`;
+    //const className = bindFunction(request).constructor.name;
+    //const fileName = `${className}[${index}][fileUpload]`;
+    formSection.push(request);
   });
   return formSection;
-};
+};*/
+/*const documentsForDisclosure: TypeOfDocumentSection[] = req.body.documentsForDisclosure.map((item: any) => {
+  const typeOfDocument: string = item.typeOfDocument.trim();
+  const dateDay: string = item['date-day'];
+  const dateMonth: string = item['date-month'];
+  const dateYear: string = item['date-year'];
 
-const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSection => {
+  return new TypeOfDocumentSection(fileUpload, typeOfDocument, dateDay, dateMonth, dateYear);
+});*/
+/*const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSection => {
   const formObj: TypeOfDocumentSection = new TypeOfDocumentSection();
   formObj.typeOfDocument = request['typeOfDocument'].trim();
   formObj.dateDay = request['date-day'];
   formObj.dateMonth = request['date-month'];
   formObj.dateYear = request['date-year'];
-  formObj.fileUpload = getUploadDocumentsByName(fileName, req);
+  //formObj.fileUpload = getUploadDocumentsByName(fileName, req);
   return formObj;
-};
+};*/
 
-const bindRequestToFileOnlySectionObj = (request: any): FileOnlySection => {
-  const formObj: FileOnlySection = new FileOnlySection();
-  formObj.fileUpload = getUploadDocumentsByName(fileName, req);
+/*const bindRequestToFileOnlySectionObj = (request: any): FileSection => {
+  const formObj: FileSection = new FileSection();
+  //formObj.fileUpload = getUploadDocumentsByName(fileName, req);
   return formObj;
-};
-
-const getUploadDocumentsByName = (name: string, req: Request): FileUpload => {
-  const files = req.files as Express.Multer.File[];
-  const file = files.find(file => file.fieldname === name);
-  const mappedFile: FileUpload = new FileUpload();
-  if (file) {
-    mappedFile.fieldname= file.fieldname;
-    mappedFile.originalname= file.originalname;
-    mappedFile.mimetype= file.mimetype;
-    mappedFile.size= file.size;
-    mappedFile.buffer = file.buffer;
-    return mappedFile;
-  }
-  return mappedFile;
-};
+};*/

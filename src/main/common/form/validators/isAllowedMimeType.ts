@@ -1,4 +1,9 @@
-import { registerDecorator, ValidationOptions, ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
+import {
+  registerDecorator,
+  ValidationArguments, ValidationOptions,
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
+} from 'class-validator';
 
 @ValidatorConstraint({ name: 'isAllowedMimeType', async: false })
 export class IsAllowedMimeTypeConstraint implements ValidatorConstraintInterface {
@@ -16,7 +21,6 @@ export class IsAllowedMimeTypeConstraint implements ValidatorConstraintInterface
       'image/bmp',
       'image/tiff',
     ];
-    console.log('validator');
     if (value && allowedMimeTypes.includes(value)) {
       return true;
     }
@@ -29,10 +33,11 @@ export function IsAllowedMimeType(validationOptions?: ValidationOptions) {
     registerDecorator({
       name: 'isAllowedMimeType',
       target: object.constructor,
-      propertyName: propertyName,
+      propertyName: 'leo',
       constraints: [],
       options: validationOptions,
       validator: IsAllowedMimeTypeConstraint,
     });
   };
 }
+

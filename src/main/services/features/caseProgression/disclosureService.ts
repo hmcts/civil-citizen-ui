@@ -6,7 +6,7 @@ import {
 } from 'services/features/caseProgression/disclosureContentBuilder';
 import {GenericForm} from 'form/models/genericForm';
 import {
-  FileOnlySection, TypeOfDocumentSection,
+  FileSection, TypeOfDocumentSection,
   UploadDocumentsUserForm,
 } from 'models/caseProgression/uploadDocumentsUserForm';
 
@@ -45,7 +45,7 @@ const disclosureList = (form: GenericForm<UploadDocumentsUserForm>): ClaimSummar
   const sectionContent = [];
 
   if (form) {
-    form.model.disclosureList?.forEach(function (disclosureList: FileOnlySection, index: number) {
+    form.model.disclosureList?.forEach(function (disclosureList: FileSection, index: number) {
       sectionContent.push([buildDisclosureListSection(disclosureList, index, form)]);
     });
   } else {

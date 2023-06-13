@@ -92,6 +92,8 @@ export class GenericForm<Model> {
     if (error.children?.length > 0) {
       error.children.forEach(childError => {
         const errorProperty = parentProperty ? `${parentProperty}[${error.property}]` : error.property;
+        console.log('errorProperty' + errorProperty);
+        console.log('childError' + childError);
         formErrors.push(new FormValidationError(childError, errorProperty));
         if (childError.children?.length > 0) {
           formErrors = formErrors.concat(this.getAllChildrenErrors(childError, errorProperty));

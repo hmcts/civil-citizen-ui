@@ -1,7 +1,7 @@
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {UploadDocumentsSectionBuilder} from 'models/caseProgression/uploadDocumentsSectionBuilder';
 import {
-  FileOnlySection,
+  FileSection,
   TypeOfDocumentSection,
   UploadDocumentsUserForm,
 } from 'models/caseProgression/uploadDocumentsUserForm';
@@ -14,7 +14,7 @@ const trialCosts = 'trialCosts';
 const trialDocumentary = 'trialDocumentary';
 const fileUpload = 'file_upload';
 
-export const buildTrialCaseSummarySection = (section: FileOnlySection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
+export const buildTrialCaseSummarySection = (section: FileSection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
   return new UploadDocumentsSectionBuilder()
     .addTitle('PAGES.UPLOAD_DOCUMENTS.TRIAL.CASE_SUMMARY')
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD','', trialCaseSummary, fileUpload, index)
@@ -22,7 +22,7 @@ export const buildTrialCaseSummarySection = (section: FileOnlySection = null, in
     .build();
 };
 
-export const buildTrialSkeletonSection = (section: FileOnlySection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
+export const buildTrialSkeletonSection = (section: FileSection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
   return new UploadDocumentsSectionBuilder()
     .addTitle('PAGES.UPLOAD_DOCUMENTS.TRIAL.SKELETON')
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD','', trialSkeletonArgument, fileUpload, index)
@@ -30,7 +30,7 @@ export const buildTrialSkeletonSection = (section: FileOnlySection = null, index
     .build();
 };
 
-export const buildTrialLegalSection = (section: FileOnlySection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
+export const buildTrialLegalSection = (section: FileSection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
   return new UploadDocumentsSectionBuilder()
     .addTitle('PAGES.UPLOAD_DOCUMENTS.TRIAL.LEGAL')
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD','', trialAuthorities, fileUpload, index)
@@ -38,7 +38,7 @@ export const buildTrialLegalSection = (section: FileOnlySection = null, index = 
     .build();
 };
 
-export const buildTrialCostSection = (section: FileOnlySection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
+export const buildTrialCostSection = (section: FileSection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
   return new UploadDocumentsSectionBuilder()
     .addTitle('PAGES.UPLOAD_DOCUMENTS.TRIAL.COSTS')
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD','', trialCosts, fileUpload, index)

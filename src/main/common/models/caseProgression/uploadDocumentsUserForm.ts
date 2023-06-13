@@ -1,24 +1,25 @@
-import {IsDefined, IsNotEmpty, ValidateNested} from 'class-validator';
-import {IsAllowedMimeType} from 'form/validators/isAllowedMimeType';
-import {IsFileSize} from 'form/validators/isFileSize';
+import {IsDefined, IsNotEmpty, Validate, ValidateNested} from 'class-validator';
+import {FileSizeValidator} from "form/validators/isFileSize";
+import {IsAllowedMimeType} from "form/validators/isAllowedMimeType";
+
 
 export class UploadDocumentsUserForm {
   @ValidateNested()
     documentsForDisclosure?: TypeOfDocumentSection[];
   @ValidateNested()
-    disclosureList?: FileOnlySection[];
+    disclosureList?: FileSection[];
   @ValidateNested()
-    trialCaseSummary?: FileOnlySection[];
+    trialCaseSummary?: FileSection[];
   @ValidateNested()
-    trialSkeletonArgument?: FileOnlySection[];
+    trialSkeletonArgument?: FileSection[];
   @ValidateNested()
-    trialAuthorities?: FileOnlySection[];
+    trialAuthorities?: FileSection[];
   @ValidateNested()
-    trialCosts?: FileOnlySection[];
+    trialCosts?: FileSection[];
   @ValidateNested()
     trialDocumentary?: TypeOfDocumentSection[];
 
-  constructor(documentsForDisclosure?: TypeOfDocumentSection[], disclosureList?: FileOnlySection[], trialCaseSummary?: FileOnlySection[], trialSkeletonArgument?: FileOnlySection[], trialAuthorities?: FileOnlySection[], trialCosts?: FileOnlySection[], trialDocumentary?: TypeOfDocumentSection[]) {
+  constructor(documentsForDisclosure?: TypeOfDocumentSection[], disclosureList?: FileSection[], trialCaseSummary?: FileSection[], trialSkeletonArgument?: FileSection[], trialAuthorities?: FileSection[], trialCosts?: FileSection[], trialDocumentary?: TypeOfDocumentSection[]) {
     //disclosure sections
     this.documentsForDisclosure = documentsForDisclosure;
     this.disclosureList = disclosureList;
@@ -33,6 +34,25 @@ export class UploadDocumentsUserForm {
   }
 }
 
+export class FileUpload {
+  fieldname: string;
+  originalname: string;
+  @IsAllowedMimeType({ message: 'ERRORS.VALID_MIME_TYPE_FILE' })
+    mimetype: string;
+  buffer: ArrayBuffer;
+  @Validate(FileSizeValidator)
+    size: number;
+}
+
+export class FileSection {
+  //@ValidateNested()
+  //@IsDefined({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
+    fileUpload: FileUpload;
+
+  constructor(fileUpload: FileUpload) {
+    this.fileUpload = fileUpload;
+  }
+}
 export class TypeOfDocumentSection {
   @IsNotEmpty({message: 'ERRORS.VALID_YOU_MUST_ENTER_TOD'})
     typeOfDocument: string;
@@ -44,18 +64,14 @@ export class TypeOfDocumentSection {
 
   @ValidateNested()
   @IsDefined({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
-    fileUpload: FileUpload;}
+    fileUpload: FileUpload;
 
-export class FileOnlySection {
-  fileUpload: string; //todo: get and validate file
+  constructor(typeOfDocument: string, dateDay: string, dateMonth: string, dateYear: string, fileUpload: FileUpload) {
+    this.typeOfDocument = typeOfDocument;
+    this.dateDay = dateDay;
+    this.dateMonth = dateMonth;
+    this.dateYear = dateYear;
+    this.fileUpload = fileUpload;
+  }
 }
 
-export class FileUpload {
-  fieldname: string;
-  originalname: string;
-  @IsAllowedMimeType({ message: 'ERRORS.VALID_MIME_TYPE_FILE' })
-    mimetype: string;
-  buffer: ArrayBuffer;
-  @IsFileSize({ message: 'ERRORS.VALID_SIZE_FILE' })
-    size: number;
-}
