@@ -2,12 +2,13 @@ import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySec
 
 export class PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
-  addTitle(title: string, variables?: any) {
+  addTitle(title: string, variables?: unknown, classes?: string) {
     const titleSection = ({
       type: ClaimSummaryType.TITLE,
       data: {
         text: title,
         variables: variables,
+        classes: classes,
       },
     });
     this._claimSummarySections.push(titleSection);
