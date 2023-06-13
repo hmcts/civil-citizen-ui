@@ -6,7 +6,7 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
 
   addInputArray(title: string, classes: string, hint: string, category: string, field: string, value: string = null, index = 0, error: string = null) {
     const section = ({
-      type: ClaimSummaryType.INPUT_ARRAY,
+      type: error !== null ? ClaimSummaryType.INPUT_ARRAY_ERROR : ClaimSummaryType.INPUT_ARRAY,
       data: {
         category: category,
         field: field,
@@ -15,6 +15,7 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
         hint: hint,
         value: value,
         index: index,
+        error: error,
       },
     });
     this._claimSummarySections.push(section);

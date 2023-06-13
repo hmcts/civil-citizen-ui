@@ -14,6 +14,7 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
         hint: 'hint',
         value: 'value',
         index: 0,
+        error: null,
       },
     });
 
@@ -25,6 +26,34 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
 
     //Then
     expect(inputArrayBuilt).toEqual([inputArrayExpected]);
+    expect(inputArrayBuilt[0].type).toEqual(ClaimSummaryType.INPUT_ARRAY);
+  });
+
+  it('should create Input Array with errorMessage', ()=> {
+    //Given
+    const inputArrayExpected = ({
+      type: ClaimSummaryType.INPUT_ARRAY_ERROR,
+      data: {
+        category: 'category',
+        field: 'field',
+        text: 'title',
+        classes: 'classes',
+        hint: 'hint',
+        value: 'value',
+        index: 0,
+        error: 'error',
+      },
+    });
+
+    //When
+    const inputArrayBuilt = new UploadDocumentsSectionBuilder()
+      .addInputArray(inputArrayExpected.data.text,inputArrayExpected.data.classes,
+        inputArrayExpected.data.hint,inputArrayExpected.data.category,inputArrayExpected.data.field, inputArrayExpected.data.value, 0, 'error')
+      .build();
+
+    //Then
+    expect(inputArrayBuilt).toEqual([inputArrayExpected]);
+    expect(inputArrayBuilt[0].type).toEqual(ClaimSummaryType.INPUT_ARRAY_ERROR);
   });
 
   it('should create Date Array', ()=> {
