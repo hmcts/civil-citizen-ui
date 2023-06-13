@@ -3,7 +3,7 @@ import {
   isPcqElegible,
   isPcqHealthy,
 } from "client/pcq/pcqClient";
-import {isPcqShutterOn} from "app/auth/launchdarkly/launchDarklyClient";
+import {isPcqShutterOn} from "../../app/auth/launchdarkly/launchDarklyClient";
 import {generatePcqId} from "client/pcq/generatePcqId";
 import {Claim} from "common/models/claim";
 import {PartyType} from "common/models/partyType";
