@@ -18,7 +18,11 @@
   {% endif %}
 
   {% if content.type === ClaimSummaryType.TITLE %}
-    <h3 class="govuk-heading-m">{{ t(content.data.text) }}</h3>
+    {% if content.data.classes %}
+      <h3 class="govuk-heading-m {{ content.data.classes }}">{{ t(content.data.text) }}</h3>
+    {% else %}
+      <h3 class="govuk-heading-m">{{ t(content.data.text) }}</h3>
+    {% endif %}
   {% endif %}
 
   {% if content.type === ClaimSummaryType.SUBTITLE %}
@@ -252,6 +256,23 @@
             {{ t(content.data.text)}}
           {% endif %}
       </strong>
+    </div>
+  {% endif %}
+
+  {% if content.type === ClaimSummaryType.SELECT %}
+    <div class="govuk-form-group {{ content.data.classes }}">
+      <label class="govuk-label" for="subject">
+        <strong>{{ t(content.data.text) }}</strong>
+      </label>
+      <div id="subject-hint" class="govuk-hint">
+        {{ t(content.data.hint) }}
+      </div>
+      <select class="govuk-select govuk-!-width-full" id={{ content.data.category+'[0]'+content.data.field }} name={{ content.data.category+'[0]'+content.data.field }} aria-describedby="subject-hint">
+        <option value={{ form.model.name }} selected>{{ t(content.data.choose) }}</option>
+        {% for item in content.data.items %}
+          <option value={{ item }}>{{ item }}</option>
+        {% endfor %}
+      </select>
     </div>
   {% endif %}
 {% endmacro %}
