@@ -12,17 +12,48 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
         text: 'title',
         classes: 'classes',
         hint: 'hint',
+        value: 'value',
+        index: 0,
+        error: null as string | null,
       },
     });
 
     //When
     const inputArrayBuilt = new UploadDocumentsSectionBuilder()
       .addInputArray(inputArrayExpected.data.text,inputArrayExpected.data.classes,
-        inputArrayExpected.data.hint,inputArrayExpected.data.category,inputArrayExpected.data.field)
+        inputArrayExpected.data.hint,inputArrayExpected.data.category,inputArrayExpected.data.field, inputArrayExpected.data.value)
       .build();
 
     //Then
     expect(inputArrayBuilt).toEqual([inputArrayExpected]);
+    expect(inputArrayBuilt[0].type).toEqual(ClaimSummaryType.INPUT_ARRAY);
+  });
+
+  it('should create Input Array with errorMessage', ()=> {
+    //Given
+    const inputArrayExpected = ({
+      type: ClaimSummaryType.INPUT_ARRAY_ERROR,
+      data: {
+        category: 'category',
+        field: 'field',
+        text: 'title',
+        classes: 'classes',
+        hint: 'hint',
+        value: 'value',
+        index: 0,
+        error: 'error',
+      },
+    });
+
+    //When
+    const inputArrayBuilt = new UploadDocumentsSectionBuilder()
+      .addInputArray(inputArrayExpected.data.text,inputArrayExpected.data.classes,
+        inputArrayExpected.data.hint,inputArrayExpected.data.category,inputArrayExpected.data.field, inputArrayExpected.data.value, 0, 'error')
+      .build();
+
+    //Then
+    expect(inputArrayBuilt).toEqual([inputArrayExpected]);
+    expect(inputArrayBuilt[0].type).toEqual(ClaimSummaryType.INPUT_ARRAY_ERROR);
   });
 
   it('should create Date Array', ()=> {
@@ -34,14 +65,17 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
         field: 'date',
         text: 'title',
         hint: 'hint',
-        classes: 'govuk-fieldset__legend--s',
+        dayValue: 'dayValue',
+        monthValue: 'monthValue',
+        yearValue: 'yearValue',
+        index: 0,
       },
     });
 
     //When
     const dateArrayBuilt = new UploadDocumentsSectionBuilder()
       .addDateArray(dateArrayExpected.data.text,dateArrayExpected.data.hint,
-        dateArrayExpected.data.category)
+        dateArrayExpected.data.category, dateArrayExpected.data.dayValue, dateArrayExpected.data.monthValue, dateArrayExpected.data.yearValue)
       .build();
 
     //Then
@@ -57,6 +91,7 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
         field: 'field',
         text: 'title',
         html: 'html',
+        index: 0,
       },
     });
 

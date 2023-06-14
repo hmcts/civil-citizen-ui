@@ -125,36 +125,64 @@
   {% endif %}
 
   {% if content.type === ClaimSummaryType.INPUT_ARRAY %}
-    <div>
-      {{ govukInput({
-         id: content.data.category+'[0]['+content.data.field+']',
-         name: content.data.category+'[0]['+content.data.field+']',
-         value: form.model.name,
-         classes: content.data.classes,
-         label: {
-           html: '<strong>'+ t(content.data.text)+'</strong>'
-         },
-         hint: {
+     <div>
+      <fieldset class="govuk-fieldset">
+        {{ govukInput({
+           id: content.data.category+'['+content.data.index+']['+content.data.field+']',
+           name: content.data.category+'['+content.data.index+']['+content.data.field+']',
+           value: content.data.value,
+           classes: 'govuk-!-width-three-half '+content.data.classes,
+           label: {
+             html: '<strong>'+ t(content.data.text)+'</strong>'
+           },
+           hint: {
              text: t(content.data.hint)
-         },
-         attributes: {
-           'data-name': content.data.category+'[%index%]['+content.data.field+']',
-           'data-id': content.data.category+'[%index%]['+content.data.field+']'
-         }
-      }) }}
-    </div>
+           },
+           attributes: {
+             'data-name': content.data.category+'[%index%]['+content.data.field+']',
+             'data-id': content.data.category+'[%index%]['+content.data.field+']'
+           }
+        }) }}
+      </fieldset>
+     </div>
+  {% endif %}
+
+  {% if content.type === ClaimSummaryType.INPUT_ARRAY_ERROR %}
+     <div>
+      <fieldset class="govuk-fieldset">
+        {{ govukInput({
+           id: content.data.category+'['+content.data.index+']['+content.data.field+']',
+           name: content.data.category+'['+content.data.index+']['+content.data.field+']',
+           value: content.data.value,
+           classes: 'govuk-!-width-three-half '+content.data.classes,
+           label: {
+             html: '<strong>'+ t(content.data.text)+'</strong>'
+           },
+           hint: {
+             text: t(content.data.hint)
+           },
+           errorMessage: {
+             text: t(content.data.error)
+           },
+           attributes: {
+             'data-name': content.data.category+'[%index%]['+content.data.field+']',
+             'data-id': content.data.category+'[%index%]['+content.data.field+']'
+           }
+        }) }}
+      </fieldset>
+     </div>
   {% endif %}
 
   {% if content.type === ClaimSummaryType.DATE_ARRAY %}
      <div>
         {{ govukDateInput({
-           id: content.data.category+'[0]['+content.data.field+']',
-           name: content.data.category+'[0]['+content.data.field+']',
+           id: content.data.category+'['+content.data.index+']['+content.data.field+']',
+           name: content.data.category+'['+content.data.index+']['+content.data.field+']',
            fieldset: {
              legend: {
               text: t(content.data.text),
               isPageHeading: false,
-              classes: content.data.classes
+              classes: "govuk-fieldset__legend--s"
              }
            },
            hint: {
@@ -162,9 +190,10 @@
            },
            items: [
              {
-               id: content.data.category+'[0]['+content.data.field+'-day]',
-               name: content.data.category+'[0]['+content.data.field+'-day]',
-               label: t('PAGES.UPLOAD_DOCUMENTS.DAY'),
+               id: content.data.category+'['+content.data.index+']['+content.data.field+'-day]',
+               name: content.data.category+'['+content.data.index+']['+content.data.field+'-day]',
+               label: "Day",
+               value: content.data.dayValue,
                classes: "govuk-input--width-2",
                attributes: {
                  'data-name': content.data.category+'[%index%]['+content.data.field+'-day]',
@@ -172,9 +201,10 @@
                }
              },
              {
-               id: content.data.category+'[0]['+content.data.field+'-month]',
-               name: content.data.category+'[0]['+content.data.field+'-month]',
-               label: t('PAGES.UPLOAD_DOCUMENTS.MONTH'),
+               id: content.data.category+'['+content.data.index+']['+content.data.field+'-month]',
+               name: content.data.category+'['+content.data.index+']['+content.data.field+'-month]',
+               label: "Month",
+               value: content.data.monthValue,
                classes: "govuk-input--width-2",
                attributes: {
                  'data-name': content.data.category+'[%index%]['+content.data.field+'-month]',
@@ -182,9 +212,10 @@
                }
              },
              {
-               id: content.data.category+'[0]['+content.data.field+'-year]',
-               name: content.data.category+'[0]['+content.data.field+'-year]',
-               label: t('PAGES.UPLOAD_DOCUMENTS.YEAR'),
+               id: content.data.category+'['+content.data.index+']['+content.data.field+'-year]',
+               name: content.data.category+'['+content.data.index+']['+content.data.field+'-year]',
+               label: "Year",
+               value: content.data.yearValue,
                classes: "govuk-input--width-3",
                attributes: {
                  'data-name': content.data.category+'[%index%]['+content.data.field+'-year]',
@@ -199,8 +230,8 @@
   {% if content.type === ClaimSummaryType.UPLOAD_ARRAY %}
      <div class="govuk-inset-text">
         {{ govukFileUpload({
-           id: content.data.category+'[0]['+content.data.field+']',
-           name: content.data.category+'[0]['+content.data.field+']',
+           id: content.data.category+'['+content.data.index+']['+content.data.field+']',
+           name: content.data.category+'['+content.data.index+']['+content.data.field+']',
            label: {
              html: '<strong>'+t(content.data.text)+'</strong><hr class="govuk-section-break--s govuk-section-break--visible">'+t(content.data.html)
            },
