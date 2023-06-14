@@ -1,5 +1,5 @@
 import {
-  generatePcqtUrl,
+  generatePcqUrl,
   isPcqElegible,
   isPcqHealthy,
 } from "client/pcq/pcqClient";
@@ -36,7 +36,7 @@ export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFu
       const pcqId = generatePcqId();
       await savePcqIdClaim(pcqId, claimId);
       
-      const pcqUrl = generatePcqtUrl(
+      const pcqUrl = generatePcqUrl(
         pcqId,
         ACTOR,
         claimId,

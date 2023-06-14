@@ -1,4 +1,4 @@
-import config = require('config');
+import config from "config";
 import axios from 'axios';
 import {PartyType} from 'common/models/partyType';
 import {createToken} from './generatePcqToken';
@@ -25,7 +25,7 @@ export const isPcqElegible = (type: PartyType): boolean => {
   return false;
 };
 
-export const generatePcqtUrl = (
+export const generatePcqUrl = (
   pcqId: string,
   actor: string,
   ccdCaseId: string,
