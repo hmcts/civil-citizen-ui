@@ -298,7 +298,7 @@
       "CHOOSE_A_RESPONSE": "Choose a response",
       "DECIDE_HOW_YOU_WILL_PAYS": "Decide how you'll pay",
       "HOW_MUCH_HAVE_YOU_PAID": "How much have you paid?",
-      "HOW_MUCH_MONEY_ADMIT_OWE": "How much money do you admit you owe",
+      "HOW_MUCH_MONEY_ADMIT_OWE": "How much money do you admit you owe?",
       "SHARE_YOUR_FINANCIAL_DETAILS": "Share your financial details",
       "TELL_US_HOW_MUCH_YOU_HAVE_PAID": "Tell us how much you've paid",
       "TELL_US_WHY_DISAGREE_WITH_CLAIM": "Tell us why you disagree with the claim",
@@ -399,11 +399,11 @@
       "CCJ_HAS_DEFENDANT_PAID_SOME": "Has the defendant paid you some of the amount owed?",
       "CCJ_AMOUNT_ALREADY_PAID": "Amount already paid",
       "CCJ_TOTAL_TO_BE_PAID": "Total to be paid by defendant",
-      "CCJ_HOW_TO_PAY": "How you want the defendant to pay",
-      "CCJ_WHEN_DO_YOU_WANT_TO_BE_PAID_BY": "When you want the defendant to pay",
+      "CCJ_HOW_TO_PAY": "How you want the defendant to pay?",
+      "CCJ_WHEN_DO_YOU_WANT_TO_BE_PAID_BY": "When you want the defendant to pay?",
       "CCJ_INSTALMENTS_OF": "Instalments of",
-      "CCJ_FIRST_PAYMENT_DATE": "When you want them to make the first payment",
-      "CCJ_INSTALMENTS_PAYMENT_FREQUENCY": "How often you want them to make this payment",
+      "CCJ_FIRST_PAYMENT_DATE": "When you want them to make the first payment?",
+      "CCJ_INSTALMENTS_PAYMENT_FREQUENCY": "How often you want them to make this payment?",
       "CHILDREN": "Children",
       "CHILDREN_DO_YOU_HAVE_ANY_LIVE_WITH_YOU": "Do any children live with you?",
       "CHILDREN_UNDER_11": "Under 11",
@@ -449,7 +449,7 @@
       "EXPERT_WITNESSES_SUPPORT": "Do you, your experts or witnesses need support to attend a hearing?",
       "FREE_TELEPHONE_CONTACT_NAME": "Contact name",
       "FREE_TELEPHONE_CONTACT_NUMBER": "Contact number",
-      "FREE_TELEPHONE_MEDIATION": "Will you try free mediation",
+      "FREE_TELEPHONE_MEDIATION": "Will you try free mediation?",
       "FIRST_PAYMENT": "Make the first payment on",
       "FULL_NAME": "Full name",
       "GIVE_DOC_DETAILS" : "Give details of the documents",
@@ -466,7 +466,7 @@
       "INCOME_JOB_SEEKER_ALLOWANCE": "Jobseeker's Allowance (income based)",
       "INCOME_JOB_SEEKER_ALLOWANCE_CONTRIBUTION": "Jobseeker's Allowance (contribution based)",
       "INCOME_WORKING_TAX_CREDIT": "Working Tax Credit",
-      "NEED_HEARING_SUPPORT" : "Do you, your experts or witnesses need support to attend a hearing",
+      "NEED_HEARING_SUPPORT" : "Do you, your experts or witnesses need support to attend a hearing?",
       "OWE_MONEY": "Do you owe the money claimed?",
       "PARTNER_DO_YOU_LIVE_WITH_A": "Do you live with a partner?",
       "PARTNER_IS_AGED_18_OR_OVER": "Is your partner aged 18 or over?",
@@ -521,8 +521,8 @@
       "WHAT_LANGUAGE_SPEAK": "What languages will you, your experts and your witnesses speak at the hearing?",
       "WHAT_LANGUAGE_DOCUMENTS": "What languages will the documents be provided in?",
       "WELSH_LANGUAGE": "Welsh language",
-      "WHEN_PAY": "When will you pay",
-      "WHEN_PAY_TITLE": "When you'll pay",
+      "WHEN_PAY": "When will you pay?",
+      "WHEN_PAY_TITLE": "When you'll pay?",
       "WHERE_DO_YOU_LIVE": "Where do you live?",
       "WITNESS": "Witness",
       "YOUR_FINANCIAL_DETAILS_TITLE": "Your financial details"
@@ -616,7 +616,7 @@
       "DESCRIPTION": "Your claim could be for a single amount or made up of multiple items.",
       "HINT": "Briefly explain each item - for example, \"broken tiles\", \"roof damage\"",
       "INTEREST": "interest - we’ll ask you about this next",
-      "REASON": "What you’re claiming for",
+      "REASON": "What you’re claiming for?",
       "TITLE": "Claim amount"
     },
     "CLAIM_DETAILS": {
@@ -669,7 +669,7 @@
         "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
         "PAGE_TITLE": "When do you want to stop claiming interest?",
         "TITLE": "When do you want to stop claiming interest?",
-        "UNTIL_CLAIM_SUBMIT_DATE": "When you submit the claim",
+        "UNTIL_CLAIM_SUBMIT_DATE": "When you submit the claim?",
         "UNTIL_SETTLED_OR_JUDGEMENT_MADE": "Continue until the claim is settled or judgment made"
       },
       "RESOLVE_THE_DISPUTE": {
@@ -695,7 +695,7 @@
         "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
         "HINT_EXAMPLE_DATE": "For example the date an invoice was overdue or that you told someone they owed you the money.",
         "PAGE_TITLE": "When are you claiming interest from?",
-        "REASON": "Explain why you're claiming for this date",
+        "REASON": "Explain why you're claiming for this date?",
         "TITLE": "When are you claiming interest from?"
       }
     },
@@ -734,9 +734,9 @@
       "PAGE_TITLE": "Check your answers before submitting",
       "TITLE": "Check your answers before submitting",
       "REFERENCE_NUMBER": "Reference number",
-      "WHEN_DID_IT_START": "When did it start",
+      "WHEN_DID_IT_START": "When did it start?",
       "TYPE": {
-        "WHAT_TYPE_IS_IT": "What type is it",
+        "WHAT_TYPE_IS_IT": "What type is it?",
         "MENTAL_HEALTH_CRISIS_MORATORIUM": "Mental health crisis moratorium",
         "STANDARD_BREATHING_SPACE": "Standard breathing space"
       },
@@ -763,10 +763,10 @@
       "PAGE_TITLE": "Annual rate interest you want to claim",
       "RATE_CLAIMING": "Rate you're claiming",
       "RATE_INFORMATION": "You can claim 8% per year unless you know that a different rate applies.",
-      "REASON": "Why you're claiming this rate",
+      "REASON": "Why you're claiming this rate?",
       "SAME_RATE_INTEREST_8_PC": "8.00%",
       "TITLE": "What annual rate of interest do you want to claim?",
-      "WHY_YOU_ARE_ENTITLED": "Why you're entitled to this rate"
+      "WHY_YOU_ARE_ENTITLED": "Why you're entitled to this rate?"
     },
     "CLAIMANT_RESPONSE": {
       "COURT_PROPOSED_DATE": {
@@ -997,7 +997,7 @@
       "COOKIE_SETTINGS_SAVED": "Your cookie settings were saved",
       "EXPIRES": "Expires",
       "FIND_MORE_ABOUT_COOKIES": "Find out more about essential cookies",
-      "HEADING": "How cookies are used in this service",
+      "HEADING": "How cookies are used in this service?",
       "NAME": "Name",
       "PERFORMANCE_COOKIE_OPTIONS": {
         "HEADING": "Allow cookies that measure website application performance monitoring?",
@@ -1189,7 +1189,7 @@
     "INTEREST_START_DATE": {
       "PAGE_TITLE": "claim interest from",
       "TITLE": "Enter the date you want to claim interest from",
-      "REASON": "Explain why you’re claiming from this date"
+      "REASON": "Explain why you’re claiming from this date?"
     },
     "ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES": {
       "PARAGRAPH1_1": "If you have already applied for Help with Fees in respect of",
@@ -1433,8 +1433,8 @@
     "ACCEPT_REPAYMENT_PLAN": {
       "DO_YOU_ACCEPT": "Do you accept the repayment plan?",
       "NO_OPTION": "No - I'll suggest my own",
-      "PAGE_TITLE": "How they want to pay",
-      "TITLE": "How they want to pay"
+      "PAGE_TITLE": "How they want to pay?",
+      "TITLE": "How they want to pay?"
     },
     "HELP_WITH_FEES": {
       "ENTER_NUMBER": "Enter the Help With Fees number",
@@ -1864,8 +1864,8 @@
       "FIRST_PAYMENT": "When will you make the first payment?",
       "FOR_EXAMPLE": "For example, ",
       "FOR_EXAMPLE_NEXT_MONTH": "This must be no sooner than ",
-      "HOW_OFTEN_PAYMENTS": "How often you'll make these payments",
-      "HOW_OFTEN_RECEIVE_PAYMENTS": "How often do you want to receive these payments",
+      "HOW_OFTEN_PAYMENTS": "How often you'll make these payments?",
+      "HOW_OFTEN_RECEIVE_PAYMENTS": "How often do you want to receive these payments?",
       "HOW_OFTEN_RECEIVE_PAYMENTS_HINT": "The court will accept the defendant's payment frequency. We'll only consider your preferred frequency if a different plan is set by a judge later.",
       "LENGTH": "Length of repayment plan",
       "PAGE_TITLE": "Your repayment plan",
@@ -1938,7 +1938,7 @@
       "FINANCIAL_SUPPORT": "Financial support",
       "FULL_ADMISSION": "{{ defendant }} admits they owe all the money you’ve claimed.",
       "FULL_RESPONSE": "Full response",
-      "HOW_PAID": "How they say they paid",
+      "HOW_PAID": "How they say they paid?",
       "MONTHLY_EXPENSES": "Monthly expenses",
       "MONTHLY_INCOME": "Monthly income",
       "PAGE_TITLE": "Review defendant’s response",
@@ -1948,7 +1948,7 @@
         "THEY_OFFERED_TO_PAY_YOU": "They’ve offered to pay you £{{ paidAmount }} in instalments. This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
         "THEY_OFFERED_TO_PAY_YOU_BY_DATE": "They’ve offered to pay you £{{ paidAmount }} by {{datePaid}}. This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
         "THEY_OFFERED_TO_PAY_YOU_IMMEDIATELY": "They’ve offered to pay you £{{ paidAmount }} immediately. This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
-        "WHY_THEY_DONT_OWE": "Why they don’t owe the amount claimed"
+        "WHY_THEY_DONT_OWE": "Why they don’t owe the amount claimed?"
       },
       "PAY_EXPENSES": "Do they pay any expenses?",
       "PAYMENT_DATE": "They’ve offered to pay you this by {{ paymentDate }}",
@@ -1962,16 +1962,16 @@
       "THEIR_TOE": "Their timeline of events",
       "TITLE": "The defendant’s response",
       "TOTAL_PAID_AMOUNT": "This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
-      "UNABLE_TO_PAY_FULL_AMOUNT": "Why they can’t pay the full amount now",
+      "UNABLE_TO_PAY_FULL_AMOUNT": "Why they can’t pay the full amount now?",
       "WHERE_THEY_LIVE": "Where are they living?",
-      "WHEN_THEY_SAY_THEY_PAID": "When they say they paid this amount",
-      "WHY_THEY_DISAGREE_AMOUNT": "Why they say they don’t owe the amount you claimed",
-      "WHY_THEY_DISAGREE_CLAIM": "Why they disagree with the claim",
-      "WHY_THEY_DISAGREE_EVIDENCE": "Why they disagree with your evidence",
-      "WHY_THEY_DISAGREE_TIMELINE": "Why they disagree with your timeline",
+      "WHEN_THEY_SAY_THEY_PAID": "When they say they paid this amount?",
+      "WHY_THEY_DISAGREE_AMOUNT": "Why they say they don’t owe the amount you claimed?",
+      "WHY_THEY_DISAGREE_CLAIM": "Why they disagree with the claim?",
+      "WHY_THEY_DISAGREE_EVIDENCE": "Why they disagree with your evidence?",
+      "WHY_THEY_DISAGREE_TIMELINE": "Why they disagree with your timeline?",
       "HOW_THEY_WANT_TO_PAY_RESPONSE": "They've offered to pay you £{{ amount }} by {{ paymentDate }}. This is the total amount you'll be paid, including the claim fee and interest if applicable.",
       "PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE": {
-        "TITLE": "How they want to pay",
+        "TITLE": "How they want to pay?",
         "SUGGESTED_REPAYMENT": "The defendant suggested this repayment plan",
         "REPAYMENT_PLAN": {
           "FREQUENCY_OF_PAYMENTS": "Frequency of payments",
@@ -1982,8 +1982,8 @@
         }
       },
       "WHEN_THEY_PAID_THIS_AMOUNT": "When they say they paid this amount",
-      "HOW_THEY_PAID": "How they said they paid",
-      "THEY_DONT_OWE_CLAIM_AMOUNT": "Why they say they dont owe the amount you claimed",
+      "HOW_THEY_PAID": "How they said they paid?",
+      "THEY_DONT_OWE_CLAIM_AMOUNT": "Why they say they dont owe the amount you claimed?",
       "REJECT_CLAIM_PAID_LESS_STATEMENT": "{{ defendant }} said they paid you £{{ paidAmount}}. They said this is all they owe, not the amount you claim."
     },
     "SELF_EMPLOYED": {
@@ -2015,7 +2015,7 @@
       "EMAIL_COMPLETED": "Email completed form N9B to",
       "HEADER": "Reject all of the claim and counterclaim",
       "HELP_AND_SUPPORT": "Help and support",
-      "HOW_TO_COUNTERCLAIM": "How to counterclaim",
+      "HOW_TO_COUNTERCLAIM": "How to counterclaim?",
       "OPEN_IN_NEW_WINDOW": "(opens in a new window)",
       "PAGE_TITLE": "Send your response by email",
       "PAY_COURT_FEE": "You`ll need to pay a court fee to make a counterclaim. The court will contact you to take payment.",
@@ -2064,7 +2064,7 @@
       "PAGE_TITLE": "Do you want to share an expert with the other party?",
       "PREPARE_REPORT": "They will prepare a report for the court on behalf of two or more of the parties, including the other party.",
       "SINGLE_JOINT_EXPERT": "This is known as a ’single joint expert’.",
-      "WITH_CLAIMANT": "Do you want to share an expert with the claimant",
+      "WITH_CLAIMANT": "Do you want to share an expert with the claimant?",
       "TITLE": "Do you want to share an expert with the other party?"
     },
     "SPECIFIC_COURT": {
@@ -2201,7 +2201,7 @@
       "CLAIM_FEE": "Claim fee",
       "FIND_OUT_MORE": "Find out more about court fees (opens in a new tab)",
       "HEARING_FEE": "Hearing fee",
-      "HOW_INTEREST_IS_CALCULATED": "How interest to date is calculated",
+      "HOW_INTEREST_IS_CALCULATED": "How interest to date is calculated?",
       "IF_SUCCESSFUL": "If it’s successful, you may not have to pay any or all of the claim fee.",
       "IF_UNSUCCESSFUL": "If it’s unsuccessful, we’ll ask you to pay the claim fee shown on this page in full.",
       "IF_YOU_SETTLE": "If you settle out of court",
