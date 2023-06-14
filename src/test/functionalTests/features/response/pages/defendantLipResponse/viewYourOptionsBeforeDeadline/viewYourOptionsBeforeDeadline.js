@@ -10,8 +10,8 @@ const fields ={
   year: 'input[id="year"]',
 };
 const buttons = {
-  continue: 'a.govuk-button',
-  saveAndContinue:'button.govuk-button',
+  continue: 'Continue',
+  saveAndContinue: 'Save and continue',
 };
 
 var targetDate = new Date();

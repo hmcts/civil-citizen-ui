@@ -7,7 +7,7 @@ const fields = {
 };
 
 const buttons = {
-  saveAndContinue: 'button.govuk-button',
+  saveAndContinue: 'Save and continue',
 };
 
 class RespondTypePage {

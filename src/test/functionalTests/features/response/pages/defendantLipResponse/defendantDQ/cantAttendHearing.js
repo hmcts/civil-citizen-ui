@@ -8,9 +8,20 @@ const fields ={
 
 class CantAttendHearing {
 
-  selectYesForCantAttendHearing() {
+  selectYesForCantAttendHearing(option = 'Yes') {
     I.see('Are there any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing?', 'h1');
-    I.click(fields.yesButton);
+    switch (option) {
+      case 'Yes': {
+        I.click(fields.yesButton);
+        break;
+      }
+      case 'No': {
+        I.click(fields.noButton);
+        break;
+      }
+      default:
+        I.click(fields.yesButton);
+    }
     I.click('Save and continue');
   }
 }
