@@ -1,6 +1,7 @@
 import nock from 'nock';
 import config from 'config';
 import Module from 'module';
+import axios from "axios";
 import {
   getSummarySections,
   saveStatementOfTruth,
@@ -8,23 +9,30 @@ import {
 import {CITIZEN_DETAILS_URL, RESPONSE_TASK_LIST_URL, RESPONSE_CHECK_ANSWERS_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {SummarySections} from 'models/summaryList/summarySections';
-
 import {TaskStatus} from 'models/taskList/TaskStatus';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {isFullAmountReject} from 'modules/claimDetailsService';
+import {mockCivilClaim, mockCivilClaimApplicantIndividualType} from '../../../../utils/mockDraftStore';
+import {isPcqShutterOn} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 const request = require('supertest');
 const {app} = require('../../../../../main/app');
 const session = require('supertest-session');
 const civilServiceUrl = config.get<string>('services.civilService.url');
 const data = require('../../../../utils/mocks/defendantClaimsMock.json');
+
+jest.mock("axios");
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/claimDetailsService');
 jest.mock('../../../../../main/services/features/response/checkAnswers/checkAnswersService');
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../main/services/features/common/taskListService', () => ({
   ...jest.requireActual('../../../../../main/services/features/common/taskListService') as Module,
   getTaskLists: jest.fn(() => TASK_LISTS),
 }));
+
+const isPcqShutterOnMock = isPcqShutterOn as jest.Mock;
 const mockGetSummarySections = getSummarySections as jest.Mock;
 const mockSaveStatementOfTruth = saveStatementOfTruth as jest.Mock;
 const mockRejectingFullAmount = isFullAmountReject as jest.Mock;
@@ -66,6 +74,7 @@ describe('Response - Check answers', () => {
 
   describe('on GET', () => {
     beforeEach((done) => {
+      app.locals.draftStoreClient = mockCivilClaim;
       session(app)
         .get(constructResponseUrlWithIdParams(CLAIM_ID, RESPONSE_TASK_LIST_URL))
         .expect(200)
@@ -78,6 +87,7 @@ describe('Response - Check answers', () => {
     });
 
     it('should pass english translation via query', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
       await session(app).get(respondentCheckAnswersUrl)
         .query({lang: 'en'})
         .expect((res: Response) => {
@@ -86,6 +96,7 @@ describe('Response - Check answers', () => {
         });
     });
     it('should pass cy translation via query', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
       await session(app).get(respondentCheckAnswersUrl)
         .query({lang: 'cy'})
         .expect((res: Response) => {
@@ -93,7 +104,15 @@ describe('Response - Check answers', () => {
           expect(res.text).toContain(checkYourAnswerCy);
         });
     });
-
+    it('should redirect to PCQ jouney', async () => {
+      isPcqShutterOnMock.mockResolvedValue(false);
+      axios.get = jest.fn().mockResolvedValue({ data: { status: "UP" } });
+      app.locals.draftStoreClient = mockCivilClaimApplicantIndividualType;;
+      await session(app).get(respondentCheckAnswersUrl)
+      .expect((res: Response) => {
+        expect(res.status).toBe(302);
+      });
+    });
     it('should return status 500 when error thrown', async () => {
       mockGetSummarySections.mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);

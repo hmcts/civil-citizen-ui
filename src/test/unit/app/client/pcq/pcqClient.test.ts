@@ -6,6 +6,7 @@ import {
   generatePcqUrl,
 } from "client/pcq/pcqClient";
 import {PartyType} from "common/models/partyType";
+import {TestMessages} from "../../../../utils/errorMessageTestConstants";
 
 describe("PCQ Client", () => {
 
@@ -23,7 +24,17 @@ describe("PCQ Client", () => {
     });
     it("should return false on PCQ health check", async () => {
       //Given
-      axios.get = jest.fn().mockResolvedValue({ data: null });
+      axios.get = jest.fn().mockResolvedValue({ data: {} });
+      //When
+      const health = await isPcqHealthy();
+      //Then
+      expect(health).toBe(false);
+    });
+    it("should throw an error on PCQ health check", async () => {
+      //Given
+      axios.get = jest.fn().mockResolvedValue(() => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       //When
       const health = await isPcqHealthy();
       //Then
