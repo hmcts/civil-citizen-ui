@@ -65,6 +65,10 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
         field: 'date',
         text: 'title',
         hint: 'hint',
+        classesDay: 'classesDay',
+        classesMonth: 'classesMonth',
+        classesYear: 'classesYear',
+        classesDate: 'classesDate',
         dayValue: 'dayValue',
         monthValue: 'monthValue',
         yearValue: 'yearValue',
@@ -74,8 +78,7 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
 
     //When
     const dateArrayBuilt = new UploadDocumentsSectionBuilder()
-      .addDateArray(dateArrayExpected.data.text,dateArrayExpected.data.hint,
-        dateArrayExpected.data.category, dateArrayExpected.data.dayValue, dateArrayExpected.data.monthValue, dateArrayExpected.data.yearValue)
+      .addDateArray(dateArrayExpected.data.text, dateArrayExpected.data.classesDay, dateArrayExpected.data.classesMonth,dateArrayExpected.data.classesYear,dateArrayExpected.data.classesDate,dateArrayExpected.data.hint, dateArrayExpected.data.category, 'date', dateArrayExpected.data.dayValue, dateArrayExpected.data.monthValue, dateArrayExpected.data.yearValue, dateArrayExpected.data.index)
       .build();
 
     //Then
@@ -100,7 +103,6 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
       .addUploadArray(uploadArrayExpected.data.text,uploadArrayExpected.data.html,
         uploadArrayExpected.data.category,uploadArrayExpected.data.field)
       .build();
-
     //Then
     expect(uploadArrayBuilt).toEqual([uploadArrayExpected]);
   });

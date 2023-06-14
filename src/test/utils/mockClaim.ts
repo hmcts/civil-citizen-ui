@@ -57,6 +57,7 @@ function buildMockClaim(): Claim {
       day: null,
       month: null,
       year: null,
+      date: null
     },
     partyDetails: {
       individualTitle: 'Mrs',

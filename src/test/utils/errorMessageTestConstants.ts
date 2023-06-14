@@ -144,5 +144,12 @@ export const enum TestMessages {
   INTEREST_START_DATE = 'Enter the date you want to claim interest from',
   REASON_EXPLANATION = 'Briefly explain your claim',
   CLAIMANT_REJECTION_REASON = 'Enter why you rejected repayment plan',
-  VALID_ENTER_AT_LEAST_ONE_UPLOAD ='You must select at least one type of document'
+  VALID_ENTER_AT_LEAST_ONE_UPLOAD ='You must select at least one type of document',
+  VALID_ENTER_DATE_DOC_ISSUED = 'Enter the date the document was issued or message was sent',
+  VALID_REAL_DATE = 'Date of document must be a real date',
+  VALID_DATE_OF_DOC_MUST_INCLUDE_DAY = 'Date of document must include a day',
+  VALID_DATE_OF_DOC_MUST_INCLUDE_MONTH = 'Date of document must include a month',
+  VALID_DATE_OF_DOC_MUST_INCLUDE_YEAR = 'Date of document must include a year',
+  VALID_DATE_NOT_FUTURE = 'Date of document must be today or in the past'
+
 }

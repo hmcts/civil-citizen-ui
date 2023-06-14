@@ -174,7 +174,8 @@
   {% endif %}
 
   {% if content.type === ClaimSummaryType.DATE_ARRAY %}
-     <div>
+     <div class={{content.data.classes}}>
+      <fieldset class="govuk-fieldset">
         {{ govukDateInput({
            id: content.data.category+'['+content.data.index+']['+content.data.field+']',
            name: content.data.category+'['+content.data.index+']['+content.data.field+']',
@@ -194,7 +195,7 @@
                name: content.data.category+'['+content.data.index+']['+content.data.field+'-day]',
                label: "Day",
                value: content.data.dayValue,
-               classes: "govuk-input--width-2",
+               classes: "govuk-input--width-2 "+content.data.classesDay+ " "+content.data.classesDate,
                attributes: {
                  'data-name': content.data.category+'[%index%]['+content.data.field+'-day]',
                  'data-id': content.data.category+'[%index%]['+content.data.field+'-day]'
@@ -205,7 +206,7 @@
                name: content.data.category+'['+content.data.index+']['+content.data.field+'-month]',
                label: "Month",
                value: content.data.monthValue,
-               classes: "govuk-input--width-2",
+               classes: "govuk-input--width-2 "+content.data.classesMonth+ " "+content.data.classesDate,
                attributes: {
                  'data-name': content.data.category+'[%index%]['+content.data.field+'-month]',
                  'data-id': content.data.category+'[%index%]['+content.data.field+'-month]'
@@ -216,7 +217,7 @@
                name: content.data.category+'['+content.data.index+']['+content.data.field+'-year]',
                label: "Year",
                value: content.data.yearValue,
-               classes: "govuk-input--width-3",
+               classes: "govuk-input--width-3 "+content.data.classesYear+ " "+content.data.classesDate,
                attributes: {
                  'data-name': content.data.category+'[%index%]['+content.data.field+'-year]',
                  'data-id': content.data.category+'[%index%]['+content.data.field+'-year]'
@@ -224,6 +225,7 @@
              }
            ]
         }) }}
+      </fieldset>
      </div>
   {% endif %}
 

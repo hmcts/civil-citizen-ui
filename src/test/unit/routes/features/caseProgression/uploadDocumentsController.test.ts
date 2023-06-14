@@ -17,6 +17,7 @@ const getWitnessContentMock = getWitnessContent as jest.Mock;
 const getExpertContentMock = getExpertContent as jest.Mock;
 import {t} from 'i18next';
 import {getTrialContent} from 'services/features/caseProgression/trialService';
+import {getNextYearValue} from '../../../../utils/dateUtils';
 
 const getTrialContentMock = getTrialContent as jest.Mock;
 
@@ -61,6 +62,7 @@ describe('Upload document- upload document controller', () => {
 });
 
 describe('on POST', () => {
+  const mockFutureYear = getNextYearValue();
   beforeEach(() => {
     app.locals.draftStoreClient = mockCivilClaim;
   });
@@ -72,7 +74,73 @@ describe('on POST', () => {
       .send(documentForDisclosureModel)
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.VALID_ENTER_TYPE_OF_DOCUMENT);
+        expect(res.text).toContain('You must enter type of document');
+        expect(res.text).toContain(TestMessages.VALID_ENTER_DATE_DOC_ISSUED);
+      });
+  });
+
+  it('should display documentForDisclosure validation error when Day month and year is invalid', async () => {
+    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'date-day':'45','date-month':'17','date-year':'202','file_upload':''}]};
+
+    await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .send(documentForDisclosureModel)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('You must enter type of document');
+        expect(res.text).toContain(TestMessages.VALID_REAL_DATE);
+      });
+  });
+
+  it('should display documentForDisclosure validation error when day is blank', async () => {
+    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'date-day':'','date-month':'11','date-year':'2022','file_upload':''}]};
+
+    await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .send(documentForDisclosureModel)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('You must enter type of document');
+        expect(res.text).toContain(TestMessages.VALID_DATE_OF_DOC_MUST_INCLUDE_DAY);
+      });
+  });
+
+  it('should display documentForDisclosure validation error when month is blank', async () => {
+    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'date-day':'12','date-month':'','date-year':'2022','file_upload':''}]};
+
+    await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .send(documentForDisclosureModel)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('You must enter type of document');
+        expect(res.text).toContain(TestMessages.VALID_DATE_OF_DOC_MUST_INCLUDE_MONTH);
+      });
+  });
+
+  it('should display documentForDisclosure validation error when year is blank', async () => {
+    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'date-day':'12','date-month':'11','date-year':'','file_upload':''}]};
+
+    await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .send(documentForDisclosureModel)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('You must enter type of document');
+        expect(res.text).toContain(TestMessages.VALID_DATE_OF_DOC_MUST_INCLUDE_YEAR);
+      });
+  });
+
+  it('should display documentForDisclosure validation error when date is in future', async () => {
+    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'date-day':'12','date-month':'11','date-year':mockFutureYear,'file_upload':''}]};
+
+    await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .send(documentForDisclosureModel)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('You must enter type of document');
+        expect(res.text).toContain(TestMessages.VALID_DATE_NOT_FUTURE);
       });
   });
 

@@ -136,12 +136,9 @@ const getFormSection = <T>(data: any[], bindFunction: (request: any) => T): T[] 
 };
 
 const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSection => {
-  const formObj: TypeOfDocumentSection = new TypeOfDocumentSection();
+  const formObj: TypeOfDocumentSection = new TypeOfDocumentSection(request['date-day'], request['date-month'], request['date-year']);
   formObj.typeOfDocument = request['typeOfDocument'].trim();
-  formObj.dateDay = request['date-day'];
-  formObj.dateMonth = request['date-month'];
-  formObj.dateYear = request['date-year'];
-  formObj.fileUpload = request['file_upload'];
+  formObj.fileUpload = request['file_upload'].trim();
   return formObj;
 };
 
