@@ -20,8 +20,8 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
 
     //Claimant
     const uploadApplicantDisclosureDocuments = [] as UploadDocumentTypes[];
-    convertToUploadDocumentTypes(ccdClaim.documentDisclosureList, uploadApplicantDisclosureDocuments, EvidenceUploadDisclosure.DISCLOSURE_LIST);
-    convertToUploadDocumentTypes(ccdClaim.documentForDisclosure, uploadApplicantDisclosureDocuments, EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE);
+    convertToUploadDocumentTypes(ccdClaim?.documentDisclosureList, uploadApplicantDisclosureDocuments, EvidenceUploadDisclosure.DISCLOSURE_LIST);
+    convertToUploadDocumentTypes(ccdClaim?.documentForDisclosure, uploadApplicantDisclosureDocuments, EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE);
     caseProgression.claimantUploadDocuments.disclosure = uploadApplicantDisclosureDocuments;
 
     const uploadApplicantWitnessDocuments = [] as UploadDocumentTypes[];
@@ -39,39 +39,39 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
     caseProgression.claimantUploadDocuments.expert = uploadApplicantExpertDocuments;
 
     const uploadApplicantTrialDocuments = [] as UploadDocumentTypes[];
-    convertToUploadDocumentTypes(ccdClaim.documentCaseSummary, uploadApplicantTrialDocuments, EvidenceUploadTrial.CASE_SUMMARY);
-    convertToUploadDocumentTypes(ccdClaim.documentSkeletonArgument, uploadApplicantTrialDocuments, EvidenceUploadTrial.SKELETON_ARGUMENT);
-    convertToUploadDocumentTypes(ccdClaim.documentAuthorities, uploadApplicantTrialDocuments, EvidenceUploadTrial.AUTHORITIES);
-    convertToUploadDocumentTypes(ccdClaim.documentCosts, uploadApplicantTrialDocuments, EvidenceUploadTrial.COSTS);
-    convertToUploadDocumentTypes(ccdClaim.documentEvidenceForTrial, uploadApplicantTrialDocuments, EvidenceUploadTrial.DOCUMENTARY);
+    convertToUploadDocumentTypes(ccdClaim?.documentCaseSummary, uploadApplicantTrialDocuments, EvidenceUploadTrial.CASE_SUMMARY);
+    convertToUploadDocumentTypes(ccdClaim?.documentSkeletonArgument, uploadApplicantTrialDocuments, EvidenceUploadTrial.SKELETON_ARGUMENT);
+    convertToUploadDocumentTypes(ccdClaim?.documentAuthorities, uploadApplicantTrialDocuments, EvidenceUploadTrial.AUTHORITIES);
+    convertToUploadDocumentTypes(ccdClaim?.documentCosts, uploadApplicantTrialDocuments, EvidenceUploadTrial.COSTS);
+    convertToUploadDocumentTypes(ccdClaim?.documentEvidenceForTrial, uploadApplicantTrialDocuments, EvidenceUploadTrial.DOCUMENTARY);
     caseProgression.claimantUploadDocuments.trial = uploadApplicantTrialDocuments;
 
     // Defendant
     const uploadDefendantDisclosureDocuments = [] as UploadDocumentTypes[];
-    convertToUploadDocumentTypes(ccdClaim.documentDisclosureListRes, uploadDefendantDisclosureDocuments, EvidenceUploadDisclosure.DISCLOSURE_LIST);
-    convertToUploadDocumentTypes(ccdClaim.documentForDisclosureRes, uploadDefendantDisclosureDocuments, EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE);
+    convertToUploadDocumentTypes(ccdClaim?.documentDisclosureListRes, uploadDefendantDisclosureDocuments, EvidenceUploadDisclosure.DISCLOSURE_LIST);
+    convertToUploadDocumentTypes(ccdClaim?.documentForDisclosureRes, uploadDefendantDisclosureDocuments, EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE);
     caseProgression.defendantUploadDocuments.disclosure = uploadDefendantDisclosureDocuments;
 
     const uploadDefendantWitnessDocuments = [] as UploadDocumentTypes[];
-    convertToUploadDocumentTypes(ccdClaim.documentWitnessStatementRes, uploadDefendantWitnessDocuments, EvidenceUploadWitness.WITNESS_STATEMENT);
-    convertToUploadDocumentTypes(ccdClaim.documentWitnessSummaryRes, uploadDefendantWitnessDocuments, EvidenceUploadWitness.WITNESS_SUMMARY);
-    convertToUploadDocumentTypes(ccdClaim.documentHearsayNoticeRes, uploadDefendantWitnessDocuments, EvidenceUploadWitness.NOTICE_OF_INTENTION);
-    convertToUploadDocumentTypes(ccdClaim.documentReferredInStatementRes, uploadDefendantWitnessDocuments, EvidenceUploadWitness.DOCUMENTS_REFERRED);
+    convertToUploadDocumentTypes(ccdClaim?.documentWitnessStatementRes, uploadDefendantWitnessDocuments, EvidenceUploadWitness.WITNESS_STATEMENT);
+    convertToUploadDocumentTypes(ccdClaim?.documentWitnessSummaryRes, uploadDefendantWitnessDocuments, EvidenceUploadWitness.WITNESS_SUMMARY);
+    convertToUploadDocumentTypes(ccdClaim?.documentHearsayNoticeRes, uploadDefendantWitnessDocuments, EvidenceUploadWitness.NOTICE_OF_INTENTION);
+    convertToUploadDocumentTypes(ccdClaim?.documentReferredInStatementRes, uploadDefendantWitnessDocuments, EvidenceUploadWitness.DOCUMENTS_REFERRED);
     caseProgression.defendantUploadDocuments.witness = uploadDefendantWitnessDocuments;
 
     const uploadDefendantExpertDocuments = [] as UploadDocumentTypes[];
-    convertToUploadDocumentTypes(ccdClaim.documentExpertReportRes, uploadDefendantExpertDocuments, EvidenceUploadExpert.EXPERT_REPORT);
-    convertToUploadDocumentTypes(ccdClaim.documentJointStatementRes, uploadDefendantExpertDocuments, EvidenceUploadExpert.STATEMENT);
-    convertToUploadDocumentTypes(ccdClaim.documentQuestionsRes, uploadDefendantExpertDocuments, EvidenceUploadExpert.QUESTIONS_FOR_EXPERTS);
-    convertToUploadDocumentTypes(ccdClaim.documentAnswersRes, uploadDefendantExpertDocuments, EvidenceUploadExpert.ANSWERS_FOR_EXPERTS);
+    convertToUploadDocumentTypes(ccdClaim?.documentExpertReportRes, uploadDefendantExpertDocuments, EvidenceUploadExpert.EXPERT_REPORT);
+    convertToUploadDocumentTypes(ccdClaim?.documentJointStatementRes, uploadDefendantExpertDocuments, EvidenceUploadExpert.STATEMENT);
+    convertToUploadDocumentTypes(ccdClaim?.documentQuestionsRes, uploadDefendantExpertDocuments, EvidenceUploadExpert.QUESTIONS_FOR_EXPERTS);
+    convertToUploadDocumentTypes(ccdClaim?.documentAnswersRes, uploadDefendantExpertDocuments, EvidenceUploadExpert.ANSWERS_FOR_EXPERTS);
     caseProgression.defendantUploadDocuments.expert = uploadDefendantExpertDocuments;
 
     const uploadDefendantTrialDocuments = [] as UploadDocumentTypes[];
-    convertToUploadDocumentTypes(ccdClaim.documentCaseSummaryRes, uploadDefendantTrialDocuments, EvidenceUploadTrial.CASE_SUMMARY);
-    convertToUploadDocumentTypes(ccdClaim.documentSkeletonArgumentRes, uploadDefendantTrialDocuments, EvidenceUploadTrial.SKELETON_ARGUMENT);
-    convertToUploadDocumentTypes(ccdClaim.documentAuthoritiesRes, uploadDefendantTrialDocuments, EvidenceUploadTrial.AUTHORITIES);
-    convertToUploadDocumentTypes(ccdClaim.documentCostsRes, uploadDefendantTrialDocuments, EvidenceUploadTrial.COSTS);
-    convertToUploadDocumentTypes(ccdClaim.documentEvidenceForTrialRes, uploadDefendantTrialDocuments, EvidenceUploadTrial.DOCUMENTARY);
+    convertToUploadDocumentTypes(ccdClaim?.documentCaseSummaryRes, uploadDefendantTrialDocuments, EvidenceUploadTrial.CASE_SUMMARY);
+    convertToUploadDocumentTypes(ccdClaim?.documentSkeletonArgumentRes, uploadDefendantTrialDocuments, EvidenceUploadTrial.SKELETON_ARGUMENT);
+    convertToUploadDocumentTypes(ccdClaim?.documentAuthoritiesRes, uploadDefendantTrialDocuments, EvidenceUploadTrial.AUTHORITIES);
+    convertToUploadDocumentTypes(ccdClaim?.documentCostsRes, uploadDefendantTrialDocuments, EvidenceUploadTrial.COSTS);
+    convertToUploadDocumentTypes(ccdClaim?.documentEvidenceForTrialRes, uploadDefendantTrialDocuments, EvidenceUploadTrial.DOCUMENTARY);
     caseProgression.defendantUploadDocuments.trial = uploadDefendantTrialDocuments;
 
     caseProgression.claimantLastUpload = ccdClaim.caseDocumentUploadDate;
@@ -84,12 +84,16 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
 const convertToUploadDocumentTypes = (ccdList: UploadEvidenceElementCCD[], cuiList: UploadDocumentTypes[],
   documentType: EvidenceUploadDisclosure| EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial) => {
 
-  for(const ccdElement of ccdList)
+  if(ccdList != null)
   {
-    const cuiElement: UploadDocumentTypes = new UploadDocumentTypes();
-    cuiElement.uuid = ccdElement.id;
-    cuiElement.caseDocument = ccdElement.value;
-    cuiElement.documentType = documentType;
-    cuiList.push(cuiElement);
+    for(const ccdElement of ccdList)
+    {
+      const cuiElement: UploadDocumentTypes = new UploadDocumentTypes();
+      cuiElement.uuid = ccdElement.id;
+      cuiElement.caseDocument = ccdElement.value;
+      cuiElement.documentType = documentType;
+      cuiList.push(cuiElement);
+    }
   }
+
 };

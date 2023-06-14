@@ -41,10 +41,11 @@ export class UploadDocumentTypes {
   documentType?: EvidenceUploadWitness | EvidenceUploadDisclosure | EvidenceUploadExpert | EvidenceUploadTrial;
 
   constructor(selected?: boolean, caseDocument?: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType,
-    documentType?: EvidenceUploadWitness | EvidenceUploadDisclosure | EvidenceUploadExpert | EvidenceUploadTrial) {
+    documentType?: EvidenceUploadWitness | EvidenceUploadDisclosure | EvidenceUploadExpert | EvidenceUploadTrial, uuid?: string) {
     this.selected = selected;
     this.caseDocument = caseDocument;
     this.documentType = documentType;
+    this.uuid = uuid;
   }
 }
 
