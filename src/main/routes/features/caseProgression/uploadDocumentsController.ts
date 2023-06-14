@@ -60,7 +60,6 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (re
     if (form.hasErrors()) {
       await renderView(res, claimId, form);
     } else {
-      console.log('Evidence upload form validated');
       //todo: save to redis
       //todo: next page (cancel page or continue page)
       await renderView(res, claimId, form);

@@ -1,7 +1,8 @@
 import {
-  ValidationArguments,
+  registerDecorator, ValidationArguments,
+  ValidationOptions,
   ValidatorConstraint,
-  ValidatorConstraintInterface
+  ValidatorConstraintInterface,
 } from 'class-validator';
 
 @ValidatorConstraint({ name: 'fileSizeValidator', async: false })
@@ -15,7 +16,16 @@ export class FileSizeValidator implements ValidatorConstraintInterface {
     return size <= fileSizeLimit;
   }
 
-  defaultMessage() {
-    return 'File size exceeds the allowed limit.';
-  }
+}
+
+export function IsFileSize(validationOptions?: ValidationOptions) {
+  return function (object: Record<string, any>, propertyName: string) {
+    registerDecorator({
+      name: 'isFileSize',
+      target: object.constructor,
+      propertyName: propertyName,
+      options: validationOptions,
+      validator: FileSizeValidator,
+    });
+  };
 }

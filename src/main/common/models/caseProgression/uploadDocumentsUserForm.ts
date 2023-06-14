@@ -1,6 +1,6 @@
-import {IsDefined, IsNotEmpty, Validate, ValidateNested} from 'class-validator';
-import {FileSizeValidator} from "form/validators/isFileSize";
-import {IsAllowedMimeType} from "form/validators/isAllowedMimeType";
+import {IsDefined, IsNotEmpty, ValidateNested} from 'class-validator';
+import { IsFileSize} from 'form/validators/isFileSize';
+import {IsAllowedMimeType} from 'form/validators/isAllowedMimeType';
 
 
 export class UploadDocumentsUserForm {
@@ -40,13 +40,13 @@ export class FileUpload {
   @IsAllowedMimeType({ message: 'ERRORS.VALID_MIME_TYPE_FILE' })
     mimetype: string;
   buffer: ArrayBuffer;
-  @Validate(FileSizeValidator)
+  @IsFileSize({ message: 'ERRORS.VALID_SIZE_FILE' })
     size: number;
 }
 
 export class FileSection {
-  //@ValidateNested()
-  //@IsDefined({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
+  @ValidateNested()
+  @IsDefined({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
     fileUpload: FileUpload;
 
   constructor(fileUpload: FileUpload) {

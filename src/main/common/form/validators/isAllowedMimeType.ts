@@ -6,7 +6,7 @@ import {
 } from 'class-validator';
 
 @ValidatorConstraint({ name: 'isAllowedMimeType', async: false })
-export class IsAllowedMimeTypeConstraint implements ValidatorConstraintInterface {
+export class IsAllowedMimeTypeValidator implements ValidatorConstraintInterface {
   validate(value: any, args: ValidationArguments) {
     const allowedMimeTypes: string[] = [
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // Word
@@ -31,12 +31,10 @@ export class IsAllowedMimeTypeConstraint implements ValidatorConstraintInterface
 export function IsAllowedMimeType(validationOptions?: ValidationOptions) {
   return function (object: Record<string, any>, propertyName: string): void {
     registerDecorator({
-      name: 'isAllowedMimeType',
       target: object.constructor,
-      propertyName: 'leo',
-      constraints: [],
+      propertyName: propertyName,
       options: validationOptions,
-      validator: IsAllowedMimeTypeConstraint,
+      validator: IsAllowedMimeTypeValidator,
     });
   };
 }
