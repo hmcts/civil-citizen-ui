@@ -33,11 +33,11 @@ describe('getFormattedSupportedServicesCaseTypes', () => {
       configurations: [
         {
           caseTypes: [
-            'Asylum'
+            'Asylum',
           ],
           releaseVersion: '3.5',
-          serviceName: 'IA'
-        }]
+          serviceName: 'IA',
+        }],
     };
     expect(formattedServiceCasetypes).to.deep.equal(expectedValue);
   });
@@ -46,19 +46,19 @@ describe('getFormattedSupportedServicesCaseTypes', () => {
     const expectedValue = {
       configurations: [{
         caseTypes: [
-          'Asylum'
+          'Asylum',
         ],
         releaseVersion: '3.5',
-        serviceName: 'IA'
+        serviceName: 'IA',
       },
       {
         caseTypes: [
           'CIVIL',
-          'GA'
+          'GA',
         ],
         releaseVersion: '3.5',
-        serviceName: 'CIVIL'
-      }]
+        serviceName: 'CIVIL',
+      }],
     };
 
     const stub = sinon.stub(SharedUtilities, 'getConfigValue');

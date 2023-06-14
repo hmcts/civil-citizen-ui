@@ -3,7 +3,7 @@ const I = actor();
 const fields = {
   yesButton: 'input[id="option"]',
   noButton: 'input[id="option-2"]',
-  reason_for_hearing: '#reasonForHearing'
+  reason_for_hearing: '#reasonForHearing',
 };
 
 class HearingRequirements {

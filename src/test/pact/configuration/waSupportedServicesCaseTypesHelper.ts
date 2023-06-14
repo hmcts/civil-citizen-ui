@@ -22,7 +22,7 @@ export function getFormattedSupportedServicesCaseTypes(waSupportedServices: stri
       const serviceConfig: ServiceConfig = {
         caseTypes: caseTypes.split(','),
         releaseVersion,
-        serviceName: service
+        serviceName: service,
       };
       serviceConfig.caseTypes = caseTypes.split(',');
       serviceConfig.releaseVersion = releaseVersion;

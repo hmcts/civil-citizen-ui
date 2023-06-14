@@ -2,7 +2,7 @@
 const I = actor();
 
 const fields ={
-  chose_not_try_mediation: '[value=\'no\']'
+  chose_not_try_mediation: '[value=\'no\']',
 };
 
 class MediationDisagreement {

@@ -370,7 +370,6 @@ class ResponseSteps {
     doNotAgreeToFreeMediation.skipReasonForMediation(claimRef);
   }
 
-
   EnterNoOptionsForDQForSmallClaims(claimRef) {
     this.SelectHearingRequirements(claimRef, 'No');
     this.SelectExpertNotNeeded('No');
@@ -451,8 +450,8 @@ class ResponseSteps {
     courtLocation.selectPreferredCourtLocation(option);
   }
 
-  SelectLanguageOption(speakOption , documentOption) {
-    welshLanguage.selectLanguageOption(speakOption , documentOption);
+  SelectLanguageOption(speakOption, documentOption) {
+    welshLanguage.selectLanguageOption(speakOption, documentOption);
   }
 }
 

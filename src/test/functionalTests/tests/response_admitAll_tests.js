@@ -4,7 +4,7 @@ const ResponseSteps  =  require('../features/response/steps/lipDefendantResponse
 const LoginSteps =  require('../features/home/steps/login');
 
 const admitAll = 'full-admission';
-//const immediatePayment = 'immediate';
+const immediatePayment = 'immediate';
 const bySetDate = 'bySetDate';
 const repaymentPlan = 'repaymentPlan';
 const dontWantMoreTime = 'dontWantMoreTime';

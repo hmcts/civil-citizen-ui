@@ -2,7 +2,7 @@
 const I = actor();
 
 const fields ={
-  skip_this_section: '//a[contains(.,\'Skip this section\')]'
+  skip_this_section: '//a[contains(.,\'Skip this section\')]',
 };
 
 class DoNotAgreeToFreeMediation {

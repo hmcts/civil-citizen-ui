@@ -2,7 +2,7 @@
 const I = actor();
 
 const fields ={
-  mediation_disagreement: '[href=\'./mediation-disagreement\']'
+  mediation_disagreement: '[href=\'./mediation-disagreement\']',
 };
 
 class FreeTelephoneMediation {
