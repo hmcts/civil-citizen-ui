@@ -1,91 +1,85 @@
-import { isPcqHealthy } from "client/pcq/pcqClient";
-import axios, {AxiosInstance} from 'axios';
+import axios from "axios";
+import config from "config";
+import { 
+  isPcqElegible,
+  isPcqHealthy,
+  generatePcqUrl,
+} from "client/pcq/pcqClient";
+import {PartyType} from "common/models/partyType";
 
-jest.mock('axios');
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+describe("PCQ Client", () => {
 
-describe('PCQ Client', () => {
-  it('should check PCQ healthy', async () =>{
-    //Given
-    const mockGet = jest.fn().mockResolvedValue({data: {status:'UP'}});
-    mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
-    // const response = await axios.get(pcqBaseUrl + '/health');
-    //When
-    const health = isPcqHealthy();
-    //Then
-    expect(health).toBe(true);
+  describe("Check PCQ health", () => {
 
+    jest.mock("axios");
+    
+    it("should return true on PCQ health check", async () => {
+      //Given
+      axios.get = jest.fn().mockResolvedValue({ data: { status: "UP" } });
+      //When
+      const health = await isPcqHealthy();
+      //Then
+      expect(health).toBe(true);
+    });
+    it("should return false on PCQ health check", async () => {
+      //Given
+      axios.get = jest.fn().mockResolvedValue({ data: null });
+      //When
+      const health = await isPcqHealthy();
+      //Then
+      expect(health).toBe(false);
+    });
+  });
+
+  describe("Check PCQ elegible", () => {
+    it("should be elegible if individual", async () => {
+      //Given
+      const type = PartyType.INDIVIDUAL;
+      //When
+      const health = isPcqElegible(type);
+      //Then
+      expect(health).toBe(true);
+    });
+    it("should be elegible if sole trader", async () => {
+      //Given
+      const type = PartyType.SOLE_TRADER;
+      //When
+      const health = isPcqElegible(type);
+      //Then
+      expect(health).toBe(true);
+    });
+    it("should NOT be elegible if other", async () => {
+      //Given
+      const type = PartyType.ORGANISATION;
+      //When
+      const health = isPcqElegible(type);
+      //Then
+      expect(health).toBe(false);
+    });
+  });
+
+  describe("Generate PCQ url", () => {
+    it("should generate PCQ url", async () => {
+      //Given
+      const pcqId = 'abc';
+      const actor = 'respondent';
+      const ccdCaseId = '123';
+      const partyId = 'test@test.com';
+      const returnUrl = 'test';
+      const language = 'en';
+      const pcqBaseUrl: string = config.get('services.pcq.url');
+      const result = `${pcqBaseUrl}/service-endpoint?pcqId=abc&serviceId=civil-citizen-ui&actor=respondent&ccdCaseId=123&partyId=test@test.com&returnUrl=test&language=en&token=`;
+      //When
+      const pcqUrl = generatePcqUrl(
+        pcqId,
+        actor,
+        ccdCaseId,
+        partyId,
+        returnUrl,
+        language
+      );
+      //Then
+      expect(pcqUrl).toContain(result);
+    });
   });
 });
-
-
-// import config = require('config');
-// import axios from 'axios';
-// import {PartyType} from 'common/models/partyType';
-// import {createToken} from './generatePcqToken';
-
-// const pcqBaseUrl: string = config.get('services.pcq.url');
-// const SERVICE_ID = 'civil-citizen-ui';
-
-// export const isPcqHealthy = async (): Promise<boolean> => {
-//   try {
-//     const response = await axios.get(pcqBaseUrl + '/health');
-//     if (response.data.status === 'UP') {
-//       return true;
-//     }
-//     return false;
-//   } catch (error) {
-//     return false;
-//   }
-// };
-
-// export const isPcqElegible = (type: PartyType): boolean => {
-//   if (type === PartyType.INDIVIDUAL || type === PartyType.SOLE_TRADER) {
-//     return true;
-//   }
-//   return false;
-// };
-
-// export const generatePcqtUrl = (
-//   pcqId: string,
-//   actor: string,
-//   ccdCaseId: string,
-//   partyId: string,
-//   returnUri: string,
-//   lang: string,
-// ): string => {
-//   const pcqParameters: PcqParameters = {
-//     pcqId: pcqId,
-//     serviceId: SERVICE_ID,
-//     actor: actor,
-//     ccdCaseId: ccdCaseId,
-//     partyId: partyId,
-//     returnUrl: returnUri,
-//     language: lang,
-//   };
-
-//   const encryptedPcqParams: EncryptedPcqParams = {
-//     ...pcqParameters,
-//     token: createToken(pcqParameters),
-//   };
-
-//   const qs = Object.entries(encryptedPcqParams)
-//     .map(([key, value]) => key + '=' + value)
-//     .join('&');
-    
-//   return `${pcqBaseUrl}/service-endpoint?${qs}`;
-// };
-
-// export interface PcqParameters {
-//   serviceId: string;
-//   actor: string;
-//   pcqId: string;
-//   ccdCaseId?: string;
-//   partyId: string;
-//   returnUrl: string;
-//   language?: string;
-// }
-
-// export interface EncryptedPcqParams extends PcqParameters {
-//   token: string;
-// }
