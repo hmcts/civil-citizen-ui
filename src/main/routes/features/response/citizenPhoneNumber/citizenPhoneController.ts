@@ -4,7 +4,7 @@ import {CITIZEN_PHONE_NUMBER_URL, RESPONSE_TASK_LIST_URL} from '../../../urls';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {ClaimantOrDefendant} from '../../../../common/models/partyType';
-import {getTelephone, saveTelephone} from '../../../../services/features/claim/yourDetails/phoneService';
+import {getTelephone, saveTelephoneOptional} from '../../../../services/features/claim/yourDetails/phoneService';
 
 const citizenPhoneViewPath = 'features/response/citizenPhoneNumber/citizen-phone';
 const citizenPhoneController = Router();
@@ -16,6 +16,7 @@ function renderView(form: GenericForm<CitizenTelephoneNumber>, res: Response): v
 citizenPhoneController.get(CITIZEN_PHONE_NUMBER_URL, async (req, res, next: NextFunction) => {
   try {
     const citizenTelephoneNumber: CitizenTelephoneNumber = await getTelephone(req.params.id, ClaimantOrDefendant.DEFENDANT);
+    console.log("citizen telephone ", citizenTelephoneNumber )
     renderView(new GenericForm<CitizenTelephoneNumber>(citizenTelephoneNumber), res);
   } catch (error) {
     next(error);
@@ -30,7 +31,7 @@ citizenPhoneController.post(CITIZEN_PHONE_NUMBER_URL,
       if (citizenTelephoneNumberForm.hasErrors()) {
         renderView(citizenTelephoneNumberForm, res);
       } else {
-        await saveTelephone(req.params.id, model, ClaimantOrDefendant.DEFENDANT);
+        await saveTelephoneOptional(req.params.id, model, ClaimantOrDefendant.DEFENDANT, true);
         const redirectURL = constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL);
         res.redirect(redirectURL);
       }
