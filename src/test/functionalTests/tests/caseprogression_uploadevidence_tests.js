@@ -28,5 +28,5 @@ Scenario('Response with RejectAll and DisputeAll For the Case Progression and He
   ResponseSteps.EnterSkipTelephoneMediationDetails(claimRef);
   ResponseSteps.EnterNoOptionsForDQForSmallClaims(claimRef);
   ResponseSteps.CheckAndSubmit(claimRef, rejectAll);
-  //await api.performViewAndRespondToDefence(config.applicantSolicitorUser, claimRef);
-}).tag('@pats');
+  await api.performViewAndRespondToDefence(config.applicantSolicitorUser, claimRef);
+}).tag('@regression');

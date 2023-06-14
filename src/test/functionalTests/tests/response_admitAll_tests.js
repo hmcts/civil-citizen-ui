@@ -26,7 +26,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Response with AdmitAll and Immediate payment @pats @citizenUI @admitAll @regression', () => {
+Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @regression', () => {
   ResponseSteps.RespondToClaim(claimRef);
   ResponseSteps.EnterPersonalDetails(claimRef);
   ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
