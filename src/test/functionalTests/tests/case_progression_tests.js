@@ -3,12 +3,6 @@ const config = require('../../config');
 const ResponseSteps  =  require('../features/response/steps/lipDefendantResponseSteps');
 const LoginSteps =  require('../features/home/steps/login');
 
-const admitAll = 'full-admission';
-const immediatePayment = 'immediate';
-const bySetDate = 'bySetDate';
-const repaymentPlan = 'repaymentPlan';
-const dontWantMoreTime = 'dontWantMoreTime';
-
 let claimRef;
 
 Feature('Response with AdmitAll');
@@ -24,6 +18,6 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @regression', () => {
+Scenario('Case Progression Input', () => {
   ResponseSteps.RespondToClaim(claimRef);
 }).tag('@regression');
