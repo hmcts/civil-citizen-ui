@@ -8,7 +8,7 @@ const fields = {
   password: 'input[id="password"]'
 };
 
-class claimantLatestUpdate {
+class claimantCaseDetails {
 
   openClaimant(claimRef) {
     I.amOnPage(config.url.manageCase);
@@ -19,4 +19,4 @@ class claimantLatestUpdate {
   }
 }
 
-module.exports = claimantLatestUpdate;
+module.exports = claimantCaseDetails;

@@ -1,7 +1,7 @@
 const config = require('../../config');
 
 const ResponseSteps  =  require('../features/response/steps/lipDefendantResponseSteps');
-const ClaimantResponseSteps  =  require('../features/response/steps/ClaimantResponseSteps');
+const ClaimantResponseSteps  =  require('../features/response/steps/LRclaimantResponseSteps');
 const LoginSteps =  require('../features/home/steps/login');
 
 const admitAll = 'full-admission';
