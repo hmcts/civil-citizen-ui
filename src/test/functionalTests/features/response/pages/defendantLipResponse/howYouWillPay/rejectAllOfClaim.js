@@ -28,7 +28,7 @@ class RejectAllOfClaim {
         I.click(fields.alreadyPaid);
       }
     }
-    I.click(buttons.continue);
+    I.click(buttons.saveAndContinue);
   }
 }
 
