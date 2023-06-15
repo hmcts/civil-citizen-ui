@@ -31,7 +31,7 @@ function renderView(req: Request, res: Response, form: GenericForm<StatementOfTr
 
 checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL,
   [AllResponseTasksCompletedGuard.apply(RESPONSE_INCOMPLETE_SUBMISSION_URL),
-  isFirstTimeInPCQ],
+    isFirstTimeInPCQ],
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const claim = await getCaseDataFromStore(req.params.id);
