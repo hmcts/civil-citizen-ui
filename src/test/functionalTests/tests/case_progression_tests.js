@@ -20,4 +20,7 @@ Before(async ({api}) => {
 
 Scenario('Case Progression Input', () => {
   ResponseSteps.RespondToClaim(claimRef);
+  I.see('Respond to a money claim');
+  I.click('Save and continue'); //Completing the Personal Details Page.
+
 }).tag('@regression');
