@@ -3,7 +3,7 @@ import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {
   UploadDocuments,
   UploadDocumentTypes,
-  UploadEvidenceElementCCD
+  UploadEvidenceElementCCD,
 } from 'models/caseProgression/uploadDocumentsType';
 import {
   EvidenceUploadDisclosure,
@@ -15,70 +15,97 @@ import {
 export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
   if (ccdClaim) {
     const caseProgression : CaseProgression = new CaseProgression();
-    caseProgression.claimantUploadDocuments = new UploadDocuments();
-    caseProgression.defendantUploadDocuments = new UploadDocuments();
 
     //Claimant
-    const uploadApplicantDisclosureDocuments = [] as UploadDocumentTypes[];
+    let uploadApplicantDisclosureDocuments = [] as UploadDocumentTypes[];
     convertToUploadDocumentTypes(ccdClaim?.documentDisclosureList, uploadApplicantDisclosureDocuments, EvidenceUploadDisclosure.DISCLOSURE_LIST);
     convertToUploadDocumentTypes(ccdClaim?.documentForDisclosure, uploadApplicantDisclosureDocuments, EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE);
-    caseProgression.claimantUploadDocuments.disclosure = uploadApplicantDisclosureDocuments;
+    if(uploadApplicantDisclosureDocuments.length == 0)
+    {
+      uploadApplicantDisclosureDocuments = undefined;
+    }
 
-    const uploadApplicantWitnessDocuments = [] as UploadDocumentTypes[];
+    let uploadApplicantWitnessDocuments = [] as UploadDocumentTypes[];
     convertToUploadDocumentTypes(ccdClaim?.documentWitnessStatement, uploadApplicantWitnessDocuments, EvidenceUploadWitness.WITNESS_STATEMENT);
     convertToUploadDocumentTypes(ccdClaim?.documentWitnessSummary, uploadApplicantWitnessDocuments, EvidenceUploadWitness.WITNESS_SUMMARY);
     convertToUploadDocumentTypes(ccdClaim?.documentHearsayNotice, uploadApplicantWitnessDocuments, EvidenceUploadWitness.NOTICE_OF_INTENTION);
     convertToUploadDocumentTypes(ccdClaim?.documentReferredInStatement, uploadApplicantWitnessDocuments, EvidenceUploadWitness.DOCUMENTS_REFERRED);
-    caseProgression.claimantUploadDocuments.witness = uploadApplicantWitnessDocuments;
+    if(uploadApplicantWitnessDocuments.length == 0)
+    {
+      uploadApplicantWitnessDocuments = undefined;
+    }
 
-    const uploadApplicantExpertDocuments = [] as UploadDocumentTypes[];
+    let uploadApplicantExpertDocuments = [] as UploadDocumentTypes[];
     convertToUploadDocumentTypes(ccdClaim?.documentExpertReport, uploadApplicantExpertDocuments, EvidenceUploadExpert.EXPERT_REPORT);
     convertToUploadDocumentTypes(ccdClaim?.documentJointStatement, uploadApplicantExpertDocuments, EvidenceUploadExpert.STATEMENT);
     convertToUploadDocumentTypes(ccdClaim?.documentQuestions, uploadApplicantExpertDocuments, EvidenceUploadExpert.QUESTIONS_FOR_EXPERTS);
     convertToUploadDocumentTypes(ccdClaim?.documentAnswers, uploadApplicantExpertDocuments, EvidenceUploadExpert.ANSWERS_FOR_EXPERTS);
-    caseProgression.claimantUploadDocuments.expert = uploadApplicantExpertDocuments;
+    if(uploadApplicantExpertDocuments.length == 0)
+    {
+      uploadApplicantExpertDocuments = undefined;
+    }
 
-    const uploadApplicantTrialDocuments = [] as UploadDocumentTypes[];
+    let uploadApplicantTrialDocuments = [] as UploadDocumentTypes[];
     convertToUploadDocumentTypes(ccdClaim?.documentCaseSummary, uploadApplicantTrialDocuments, EvidenceUploadTrial.CASE_SUMMARY);
     convertToUploadDocumentTypes(ccdClaim?.documentSkeletonArgument, uploadApplicantTrialDocuments, EvidenceUploadTrial.SKELETON_ARGUMENT);
     convertToUploadDocumentTypes(ccdClaim?.documentAuthorities, uploadApplicantTrialDocuments, EvidenceUploadTrial.AUTHORITIES);
     convertToUploadDocumentTypes(ccdClaim?.documentCosts, uploadApplicantTrialDocuments, EvidenceUploadTrial.COSTS);
     convertToUploadDocumentTypes(ccdClaim?.documentEvidenceForTrial, uploadApplicantTrialDocuments, EvidenceUploadTrial.DOCUMENTARY);
-    caseProgression.claimantUploadDocuments.trial = uploadApplicantTrialDocuments;
+    if(uploadApplicantTrialDocuments.length == 0)
+    {
+      uploadApplicantTrialDocuments = undefined;
+    }
 
     // Defendant
-    const uploadDefendantDisclosureDocuments = [] as UploadDocumentTypes[];
+    let uploadDefendantDisclosureDocuments = [] as UploadDocumentTypes[];
     convertToUploadDocumentTypes(ccdClaim?.documentDisclosureListRes, uploadDefendantDisclosureDocuments, EvidenceUploadDisclosure.DISCLOSURE_LIST);
     convertToUploadDocumentTypes(ccdClaim?.documentForDisclosureRes, uploadDefendantDisclosureDocuments, EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE);
-    caseProgression.defendantUploadDocuments.disclosure = uploadDefendantDisclosureDocuments;
+    if(uploadDefendantDisclosureDocuments.length == 0)
+    {
+      uploadDefendantDisclosureDocuments = undefined;
+    }
 
-    const uploadDefendantWitnessDocuments = [] as UploadDocumentTypes[];
+    let uploadDefendantWitnessDocuments = [] as UploadDocumentTypes[];
     convertToUploadDocumentTypes(ccdClaim?.documentWitnessStatementRes, uploadDefendantWitnessDocuments, EvidenceUploadWitness.WITNESS_STATEMENT);
     convertToUploadDocumentTypes(ccdClaim?.documentWitnessSummaryRes, uploadDefendantWitnessDocuments, EvidenceUploadWitness.WITNESS_SUMMARY);
     convertToUploadDocumentTypes(ccdClaim?.documentHearsayNoticeRes, uploadDefendantWitnessDocuments, EvidenceUploadWitness.NOTICE_OF_INTENTION);
     convertToUploadDocumentTypes(ccdClaim?.documentReferredInStatementRes, uploadDefendantWitnessDocuments, EvidenceUploadWitness.DOCUMENTS_REFERRED);
-    caseProgression.defendantUploadDocuments.witness = uploadDefendantWitnessDocuments;
+    if(uploadDefendantWitnessDocuments.length == 0)
+    {
+      uploadDefendantWitnessDocuments = undefined;
+    }
 
-    const uploadDefendantExpertDocuments = [] as UploadDocumentTypes[];
+    let uploadDefendantExpertDocuments = [] as UploadDocumentTypes[];
     convertToUploadDocumentTypes(ccdClaim?.documentExpertReportRes, uploadDefendantExpertDocuments, EvidenceUploadExpert.EXPERT_REPORT);
     convertToUploadDocumentTypes(ccdClaim?.documentJointStatementRes, uploadDefendantExpertDocuments, EvidenceUploadExpert.STATEMENT);
     convertToUploadDocumentTypes(ccdClaim?.documentQuestionsRes, uploadDefendantExpertDocuments, EvidenceUploadExpert.QUESTIONS_FOR_EXPERTS);
     convertToUploadDocumentTypes(ccdClaim?.documentAnswersRes, uploadDefendantExpertDocuments, EvidenceUploadExpert.ANSWERS_FOR_EXPERTS);
-    caseProgression.defendantUploadDocuments.expert = uploadDefendantExpertDocuments;
+    if(uploadDefendantExpertDocuments.length == 0)
+    {
+      uploadDefendantExpertDocuments = undefined;
+    }
 
-    const uploadDefendantTrialDocuments = [] as UploadDocumentTypes[];
+    let uploadDefendantTrialDocuments = [] as UploadDocumentTypes[];
     convertToUploadDocumentTypes(ccdClaim?.documentCaseSummaryRes, uploadDefendantTrialDocuments, EvidenceUploadTrial.CASE_SUMMARY);
     convertToUploadDocumentTypes(ccdClaim?.documentSkeletonArgumentRes, uploadDefendantTrialDocuments, EvidenceUploadTrial.SKELETON_ARGUMENT);
     convertToUploadDocumentTypes(ccdClaim?.documentAuthoritiesRes, uploadDefendantTrialDocuments, EvidenceUploadTrial.AUTHORITIES);
     convertToUploadDocumentTypes(ccdClaim?.documentCostsRes, uploadDefendantTrialDocuments, EvidenceUploadTrial.COSTS);
     convertToUploadDocumentTypes(ccdClaim?.documentEvidenceForTrialRes, uploadDefendantTrialDocuments, EvidenceUploadTrial.DOCUMENTARY);
-    caseProgression.defendantUploadDocuments.trial = uploadDefendantTrialDocuments;
+    if(uploadDefendantTrialDocuments.length == 0)
+    {
+      uploadDefendantTrialDocuments = undefined;
+    }
 
-    caseProgression.claimantLastUpload = ccdClaim.caseDocumentUploadDate;
-    caseProgression.defendantLastUpload = ccdClaim.caseDocumentUploadDate;
+    caseProgression.claimantUploadDocuments =
+      new UploadDocuments(uploadApplicantDisclosureDocuments, uploadApplicantWitnessDocuments, uploadApplicantExpertDocuments, uploadApplicantTrialDocuments);
+    caseProgression.defendantUploadDocuments =
+      new UploadDocuments(uploadDefendantDisclosureDocuments, uploadDefendantWitnessDocuments, uploadDefendantExpertDocuments, uploadDefendantTrialDocuments);
+    caseProgression.claimantLastUpload = ccdClaim?.caseDocumentUploadDate;
+    caseProgression.defendantLastUpload = ccdClaim?.caseDocumentUploadDateRes;
 
-    return caseProgression;
+    return caseProgression as CaseProgression;
   }
+  return undefined;
 };
 
 const convertToUploadDocumentTypes = (ccdList: UploadEvidenceElementCCD[], cuiList: UploadDocumentTypes[],
@@ -88,10 +115,8 @@ const convertToUploadDocumentTypes = (ccdList: UploadEvidenceElementCCD[], cuiLi
   {
     for(const ccdElement of ccdList)
     {
-      const cuiElement: UploadDocumentTypes = new UploadDocumentTypes();
-      cuiElement.uuid = ccdElement.id;
-      cuiElement.caseDocument = ccdElement.value;
-      cuiElement.documentType = documentType;
+      const cuiElement: UploadDocumentTypes =
+        new UploadDocumentTypes(false, ccdElement.value, documentType, ccdElement.id);
       cuiList.push(cuiElement);
     }
   }
