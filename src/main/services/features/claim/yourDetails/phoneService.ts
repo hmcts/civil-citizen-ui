@@ -62,5 +62,5 @@ const saveForm = (claim: Claim, form: CitizenTelephoneNumber, citizenType: Claim
 export {
   getTelephone,
   saveTelephone,
-  saveTelephoneOptional
+  saveTelephoneOptional,
 };

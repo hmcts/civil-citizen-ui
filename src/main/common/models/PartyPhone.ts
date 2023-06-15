@@ -6,7 +6,7 @@ export class PartyPhone {
   @IsNotEmpty({message: 'ERRORS.NOT_TO_REMOVE_PHONE_NUMBER'})
   @Validate(PhoneUKValidator, {message: 'ERRORS.VALID_PHONE_NUMBER'})
     phone?: string;
-    optional?: boolean;
+  optional?: boolean;
 
   constructor(phone?: string, optional?: boolean) {
     this.phone = phone;
