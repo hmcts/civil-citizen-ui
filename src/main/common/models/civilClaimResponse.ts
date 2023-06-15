@@ -50,6 +50,7 @@ import {CCDFastClaimHearing} from 'models/ccdResponse/ccdFastClaimHearing';
 import {CaseDocument} from 'models/document/caseDocument';
 import {CCDExpert} from './ccdResponse/ccdExpert';
 import {CaseProgressionHearingDocuments, HearingLocation} from 'models/caseProgression/caseProgressionHearing';
+import {UploadEvidenceElementCCD} from "models/caseProgression/uploadDocumentsType";
 
 export class CivilClaimResponse {
   id: string;
@@ -167,6 +168,38 @@ export interface CCDClaim extends ClaimUpdate {
   hearingLocation?: HearingLocation;
   hearingTimeHourMinute?: string;
   respondToAdmittedClaimOwingAmountPounds?: string;
+  documentDisclosureList?: UploadEvidenceElementCCD[];
+  documentForDisclosure?: UploadEvidenceElementCCD[];
+  documentWitnessStatement?: UploadEvidenceElementCCD[];
+  documentWitnessSummary?: UploadEvidenceElementCCD[];
+  documentHearsayNotice?: UploadEvidenceElementCCD[];
+  documentReferredInStatement?: UploadEvidenceElementCCD[];
+  documentExpertReport?: UploadEvidenceElementCCD[];
+  documentJointStatement?: UploadEvidenceElementCCD[];
+  documentQuestions?: UploadEvidenceElementCCD[];
+  documentAnswers?: UploadEvidenceElementCCD[];
+  documentCaseSummary?: UploadEvidenceElementCCD[];
+  documentSkeletonArgument?: UploadEvidenceElementCCD[];
+  documentAuthorities?: UploadEvidenceElementCCD[];
+  documentCosts?: UploadEvidenceElementCCD[];
+  documentEvidenceForTrial?: UploadEvidenceElementCCD[];
+  caseDocumentUploadDate?: Date;
+  documentDisclosureListRes?: UploadEvidenceElementCCD[];
+  documentForDisclosureRes?: UploadEvidenceElementCCD[];
+  documentWitnessStatementRes?: UploadEvidenceElementCCD[];
+  documentWitnessSummaryRes?: UploadEvidenceElementCCD[];
+  documentHearsayNoticeRes?: UploadEvidenceElementCCD[];
+  documentReferredInStatementRes?: UploadEvidenceElementCCD[];
+  documentExpertReportRes?: UploadEvidenceElementCCD[];
+  documentJointStatementRes?: UploadEvidenceElementCCD[];
+  documentQuestionsRes?: UploadEvidenceElementCCD[];
+  documentAnswersRes?: UploadEvidenceElementCCD[];
+  documentCaseSummaryRes?: UploadEvidenceElementCCD[];
+  documentSkeletonArgumentRes?: UploadEvidenceElementCCD[];
+  documentAuthoritiesRes?: UploadEvidenceElementCCD[];
+  documentCostsRes?: UploadEvidenceElementCCD[];
+  documentEvidenceForTrialRes?: UploadEvidenceElementCCD[];
+  caseDocumentUploadDateRes?: Date;
 }
 
 export interface ClaimFeeData {

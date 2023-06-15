@@ -5,6 +5,7 @@ import {
   EvidenceUploadWitness,
 } from 'models/document/documentType';
 import {AtLeastOneCheckboxSelectedValidator} from 'form/validators/atLeastOneCheckboxSelectedValidator';
+import {Document} from 'models/document/document';
 
 export class UploadDocuments {
 
@@ -41,10 +42,11 @@ export class UploadDocumentTypes {
   documentType?: EvidenceUploadWitness | EvidenceUploadDisclosure | EvidenceUploadExpert | EvidenceUploadTrial;
 
   constructor(selected?: boolean, caseDocument?: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType,
-    documentType?: EvidenceUploadWitness | EvidenceUploadDisclosure | EvidenceUploadExpert | EvidenceUploadTrial) {
+    documentType?: EvidenceUploadWitness | EvidenceUploadDisclosure | EvidenceUploadExpert | EvidenceUploadTrial, uuid?: string) {
     this.selected = selected;
     this.caseDocument = caseDocument;
     this.documentType = documentType;
+    this.uuid = uuid;
   }
 }
 
@@ -106,39 +108,4 @@ export class UploadEvidenceElementCCD
 {
   id: string;
   value: UploadEvidenceDocumentType | UploadEvidenceExpert | UploadEvidenceWitness;
-}
-
-export class CCDEvidenceUpload {
-  documentDisclosureList?: UploadEvidenceElementCCD[];
-  documentForDisclosure?: UploadEvidenceElementCCD[];
-  documentWitnessStatement?: UploadEvidenceElementCCD[];
-  documentWitnessSummary?: UploadEvidenceElementCCD[];
-  documentHearsayNotice?: UploadEvidenceElementCCD[];
-  documentReferredInStatement?: UploadEvidenceElementCCD[];
-  documentExpertReport?: UploadEvidenceElementCCD[];
-  documentJointStatement?: UploadEvidenceElementCCD[];
-  documentQuestions?: UploadEvidenceElementCCD[];
-  documentAnswers?: UploadEvidenceElementCCD[];
-  documentCaseSummary?: UploadEvidenceElementCCD[];
-  documentSkeletonArgument?: UploadEvidenceElementCCD[];
-  documentAuthorities?: UploadEvidenceElementCCD[];
-  documentCosts?: UploadEvidenceElementCCD[];
-  documentEvidenceForTrial?: UploadEvidenceElementCCD[];
-  caseDocumentUploadDate?: Date;
-  documentDisclosureListRes?: UploadEvidenceElementCCD[];
-  documentForDisclosureRes?: UploadEvidenceElementCCD[];
-  documentWitnessStatementRes?: UploadEvidenceElementCCD[];
-  documentWitnessSummaryRes?: UploadEvidenceElementCCD[];
-  documentHearsayNoticeRes?: UploadEvidenceElementCCD[];
-  documentReferredInStatementRes?: UploadEvidenceElementCCD[];
-  documentExpertReportRes?: UploadEvidenceElementCCD[];
-  documentJointStatementRes?: UploadEvidenceElementCCD[];
-  documentQuestionsRes?: UploadEvidenceElementCCD[];
-  documentAnswersRes?: UploadEvidenceElementCCD[];
-  documentCaseSummaryRes?: UploadEvidenceElementCCD[];
-  documentSkeletonArgumentRes?: UploadEvidenceElementCCD[];
-  documentAuthoritiesRes?: UploadEvidenceElementCCD[];
-  documentCostsRes?: UploadEvidenceElementCCD[];
-  documentEvidenceForTrialRes?: UploadEvidenceElementCCD[];
-  caseDocumentUploadDateRes?: Date;
 }
