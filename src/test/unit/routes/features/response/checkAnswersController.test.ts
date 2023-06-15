@@ -12,6 +12,7 @@ import {SummarySections} from 'models/summaryList/summarySections';
 import {TaskStatus} from 'models/taskList/TaskStatus';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {isFullAmountReject} from 'modules/claimDetailsService';
+import {setResponseDeadline} from 'services/features/common/responseDeadlineAgreedService';
 import {mockCivilClaim, mockCivilClaimApplicantIndividualType} from '../../../../utils/mockDraftStore';
 import {isPcqShutterOn} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
@@ -26,6 +27,7 @@ jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/claimDetailsService');
 jest.mock('../../../../../main/services/features/response/checkAnswers/checkAnswersService');
+jest.mock('../../../../../main/services/features/common/responseDeadlineAgreedService');
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../main/services/features/common/taskListService', () => ({
   ...jest.requireActual('../../../../../main/services/features/common/taskListService') as Module,
@@ -36,6 +38,7 @@ const isPcqShutterOnMock = isPcqShutterOn as jest.Mock;
 const mockGetSummarySections = getSummarySections as jest.Mock;
 const mockSaveStatementOfTruth = saveStatementOfTruth as jest.Mock;
 const mockRejectingFullAmount = isFullAmountReject as jest.Mock;
+const mockSetResponseDeadline = setResponseDeadline as jest.Mock;
 mockRejectingFullAmount.mockImplementation(() => true);
 
 const PARTY_NAME = 'Mrs. Mary Richards';
@@ -70,6 +73,9 @@ describe('Response - Check answers', () => {
     nock(civilServiceUrl)
       .get('/cases/claimant/123')
       .reply(200, {data: data});
+    mockSetResponseDeadline.mockImplementation(async () => {
+      return new Date();
+    });
   });
 
   describe('on GET', () => {
