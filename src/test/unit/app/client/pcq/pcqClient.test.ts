@@ -1,28 +1,28 @@
-import axios from "axios";
-import config from "config";
+import axios from 'axios';
+import config from 'config';
 import { 
   isPcqElegible,
   isPcqHealthy,
   generatePcqUrl,
-} from "client/pcq/pcqClient";
-import {PartyType} from "common/models/partyType";
-import {TestMessages} from "../../../../utils/errorMessageTestConstants";
+} from 'client/pcq/pcqClient';
+import {PartyType} from 'common/models/partyType';
+import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
-describe("PCQ Client", () => {
+describe('PCQ Client', () => {
 
-  describe("Check PCQ health", () => {
+  describe('Check PCQ health', () => {
 
-    jest.mock("axios");
+    jest.mock('axios');
     
-    it("should return true on PCQ health check", async () => {
+    it('should return true on PCQ health check', async () => {
       //Given
-      axios.get = jest.fn().mockResolvedValue({ data: { status: "UP" } });
+      axios.get = jest.fn().mockResolvedValue({ data: { status: 'UP' } });
       //When
       const health = await isPcqHealthy();
       //Then
       expect(health).toBe(true);
     });
-    it("should return false on PCQ health check", async () => {
+    it('should return false on PCQ health check', async () => {
       //Given
       axios.get = jest.fn().mockResolvedValue({ data: {} });
       //When
@@ -30,7 +30,7 @@ describe("PCQ Client", () => {
       //Then
       expect(health).toBe(false);
     });
-    it("should throw an error on PCQ health check", async () => {
+    it('should throw an error on PCQ health check', async () => {
       //Given
       axios.get = jest.fn().mockResolvedValue(() => {
         throw new Error(TestMessages.REDIS_FAILURE);
@@ -42,8 +42,8 @@ describe("PCQ Client", () => {
     });
   });
 
-  describe("Check PCQ elegible", () => {
-    it("should be elegible if individual", async () => {
+  describe('Check PCQ elegible', () => {
+    it('should be elegible if individual', async () => {
       //Given
       const type = PartyType.INDIVIDUAL;
       //When
@@ -51,7 +51,7 @@ describe("PCQ Client", () => {
       //Then
       expect(health).toBe(true);
     });
-    it("should be elegible if sole trader", async () => {
+    it('should be elegible if sole trader', async () => {
       //Given
       const type = PartyType.SOLE_TRADER;
       //When
@@ -59,7 +59,7 @@ describe("PCQ Client", () => {
       //Then
       expect(health).toBe(true);
     });
-    it("should NOT be elegible if other", async () => {
+    it('should NOT be elegible if other', async () => {
       //Given
       const type = PartyType.ORGANISATION;
       //When
@@ -69,8 +69,8 @@ describe("PCQ Client", () => {
     });
   });
 
-  describe("Generate PCQ url", () => {
-    it("should generate PCQ url", async () => {
+  describe('Generate PCQ url', () => {
+    it('should generate PCQ url', async () => {
       //Given
       const pcqId = 'abc';
       const actor = 'respondent';
@@ -87,7 +87,7 @@ describe("PCQ Client", () => {
         ccdCaseId,
         partyId,
         returnUrl,
-        language
+        language,
       );
       //Then
       expect(pcqUrl).toContain(result);

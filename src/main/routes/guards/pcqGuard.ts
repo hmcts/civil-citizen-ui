@@ -2,18 +2,18 @@ import {
   generatePcqUrl,
   isPcqElegible,
   isPcqHealthy,
-} from "client/pcq/pcqClient";
-import {isPcqShutterOn} from "../../app/auth/launchdarkly/launchDarklyClient";
-import {generatePcqId} from "client/pcq/generatePcqId";
-import {Claim} from "common/models/claim";
-import {PartyType} from "common/models/partyType";
-import {constructResponseUrlWithIdParams} from "common/utils/urlFormatter";
-import {NextFunction, Request, Response} from "express";
-import {getCaseDataFromStore} from "modules/draft-store/draftStoreService";
-import {RESPONSE_CHECK_ANSWERS_URL} from "routes/urls";
-import {savePcqIdClaim} from "client/pcq/savePcqIdClaim";
+} from 'client/pcq/pcqClient';
+import {isPcqShutterOn} from '../../app/auth/launchdarkly/launchDarklyClient';
+import {generatePcqId} from 'client/pcq/generatePcqId';
+import {Claim} from 'common/models/claim';
+import {PartyType} from 'common/models/partyType';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {NextFunction, Request, Response} from 'express';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {RESPONSE_CHECK_ANSWERS_URL} from 'routes/urls';
+import {savePcqIdClaim} from 'client/pcq/savePcqIdClaim';
 
-const ACTOR = "respondent";
+const ACTOR = 'respondent';
 
 export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -42,7 +42,7 @@ export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFu
         claimId,
         defendantEmail,
         getRedirectionUrl(req.headers.host, claimId),
-        lang
+        lang,
       );
 
       res.redirect(pcqUrl);

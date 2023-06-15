@@ -1,7 +1,7 @@
 import nock from 'nock';
 import config from 'config';
 import Module from 'module';
-import axios from "axios";
+import axios from 'axios';
 import {
   getSummarySections,
   saveStatementOfTruth,
@@ -22,7 +22,7 @@ const session = require('supertest-session');
 const civilServiceUrl = config.get<string>('services.civilService.url');
 const data = require('../../../../utils/mocks/defendantClaimsMock.json');
 
-jest.mock("axios");
+jest.mock('axios');
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/claimDetailsService');
@@ -112,12 +112,12 @@ describe('Response - Check answers', () => {
     });
     it('should redirect to PCQ jouney', async () => {
       isPcqShutterOnMock.mockResolvedValue(false);
-      axios.get = jest.fn().mockResolvedValue({ data: { status: "UP" } });
-      app.locals.draftStoreClient = mockCivilClaimApplicantIndividualType;;
+      axios.get = jest.fn().mockResolvedValue({ data: { status: 'UP' } });
+      app.locals.draftStoreClient = mockCivilClaimApplicantIndividualType;
       await session(app).get(respondentCheckAnswersUrl)
-      .expect((res: Response) => {
-        expect(res.status).toBe(302);
-      });
+        .expect((res: Response) => {
+          expect(res.status).toBe(302);
+        });
     });
     it('should return status 500 when error thrown', async () => {
       mockGetSummarySections.mockImplementation(() => {
