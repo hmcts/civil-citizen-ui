@@ -50,7 +50,7 @@ import {CCDFastClaimHearing} from 'models/ccdResponse/ccdFastClaimHearing';
 import {CaseDocument} from 'models/document/caseDocument';
 import {CCDExpert} from './ccdResponse/ccdExpert';
 import {CaseProgressionHearingDocuments, HearingLocation} from 'models/caseProgression/caseProgressionHearing';
-import {UploadEvidenceElementCCD} from "models/caseProgression/uploadDocumentsType";
+import {UploadEvidenceElementCCD} from 'models/caseProgression/uploadDocumentsType';
 
 export class CivilClaimResponse {
   id: string;
