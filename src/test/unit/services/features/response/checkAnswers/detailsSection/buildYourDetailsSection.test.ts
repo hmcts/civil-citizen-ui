@@ -9,7 +9,7 @@ import {
 import {
   createClaimWithBasicRespondentDetails,
   createClaimWithIndividualDetails,
-  createClaimWithContactPersonDetails,
+  createClaimWithContactPersonDetails, createClaimWithIndividualDetailsWithCcdPhoneExist,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
 
@@ -78,5 +78,15 @@ describe('Cirizen Details Section', () => {
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[2].value.html).toBe(CORRESPONDENCE_ADDRESS);
+  });
+  it('should return phone contact when it exists', async () => {
+    //Given
+    const claim = createClaimWithIndividualDetailsWithCcdPhoneExist();
+    //When
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[3].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER_NOT_OPTIONAL');
+    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[3].value.html).toBe(CONTACT_NUMBER);
+    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[3].actions?.items[0].href).toBe(CITIZEN_DETAILS_URL.replace(':id', constVal.CLAIM_ID));
   });
 });
