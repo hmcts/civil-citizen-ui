@@ -6,9 +6,9 @@ const Redis = require('ioredis');
 
 const REDIS_DATA = require('./redisData.json');
 
-export const getConnectionString = (): string => {
+export const getConnectionString = (user: string = ''): string => {
   const protocol = config.get('services.draftStore.redis.tls') ? 'rediss://' : 'redis://';
-  return `${protocol}:${config.get('services.draftStore.redis.key')}@${config.get('services.draftStore.redis.host')}:${config.get('services.draftStore.redis.port')}`;
+  return `${protocol}${user}:${config.get('services.draftStore.redis.key')}@${config.get('services.draftStore.redis.host')}:${config.get('services.draftStore.redis.port')}`;
 };
 
 export class DraftStoreClient {
@@ -18,7 +18,8 @@ export class DraftStoreClient {
   }
 
   public enableFor(app: Application): void {
-    const connectionString = getConnectionString();
+    const protocol = config.get('services.draftStore.redis.tls') ? 'rediss://' : 'redis://';
+    const connectionString = `${protocol}:${config.get('services.draftStore.redis.key')}@${config.get('services.draftStore.redis.host')}:${config.get('services.draftStore.redis.port')}`;
     this.logger.info(`connectionString: ${connectionString}`);
     const client = new Redis(connectionString);
 
