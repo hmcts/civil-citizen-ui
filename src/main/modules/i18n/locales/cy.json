@@ -297,8 +297,8 @@
     "RESPOND_TO_CLAIM": {
       "CHOOSE_A_RESPONSE": "Dewiswch ymateb",
       "DECIDE_HOW_YOU_WILL_PAYS": "Penderfynu sut byddwch yn talu",
-      "HOW_MUCH_HAVE_YOU_PAID": "Faint o arian ydych chi wedi talu",
-      "HOW_MUCH_MONEY_ADMIT_OWE": "Faint o arian rydych chi'n ei gyfaddef sydd arnoch chi",
+      "HOW_MUCH_HAVE_YOU_PAID": "Faint o arian ydych chi wedi talu?",
+      "HOW_MUCH_MONEY_ADMIT_OWE": "Faint o arian rydych chi'n ei gyfaddef sydd arnoch chi?",
       "SHARE_YOUR_FINANCIAL_DETAILS": "Rhannu eich manylion ariannol",
       "TELL_US_HOW_MUCH_YOU_HAVE_PAID": "Dywedwch wrthym faint rydych wedi'i dalu",
       "TELL_US_WHY_DISAGREE_WITH_CLAIM": "Dywedwch wrthym pam rydych yn anghytuno â'r hawliad",
@@ -399,11 +399,11 @@
       "CCJ_HAS_DEFENDANT_PAID_SOME": "Has the defendant paid you some of the amount owed?",
       "CCJ_AMOUNT_ALREADY_PAID": "Amount already paid",
       "CCJ_TOTAL_TO_BE_PAID": "Total to be paid by defendant",
-      "CCJ_HOW_TO_PAY": "How you want the defendant to pay",
-      "CCJ_WHEN_DO_YOU_WANT_TO_BE_PAID_BY": "When you want the defendant to pay",
+      "CCJ_HOW_TO_PAY": "How you want the defendant to pay?",
+      "CCJ_WHEN_DO_YOU_WANT_TO_BE_PAID_BY": "When you want the defendant to pay?",
       "CCJ_INSTALMENTS_OF": "Fesul",
-      "CCJ_FIRST_PAYMENT_DATE": "When you want them to make the first payment",
-      "CCJ_INSTALMENTS_PAYMENT_FREQUENCY": "How often you want them to make this payment",
+      "CCJ_FIRST_PAYMENT_DATE": "When you want them to make the first payment?",
+      "CCJ_INSTALMENTS_PAYMENT_FREQUENCY": "How often you want them to make this payment?",
       "CHILDREN": "Children",
       "CHILDREN_DO_YOU_HAVE_ANY_LIVE_WITH_YOU": "Oes unrhyw blant yn byw gyda chi?",
       "CHILDREN_UNDER_11": "dan 11",
@@ -449,7 +449,7 @@
       "EXPERT_WITNESSES_SUPPORT": "Do you, your experts or witnesses need support to attend a hearing?",
       "FREE_TELEPHONE_CONTACT_NAME": "Enw cyswllt",
       "FREE_TELEPHONE_CONTACT_NUMBER": "Rhif cyswllt",
-      "FREE_TELEPHONE_MEDIATION": "A wnewch chi roi cynnig ar gyfryngu am ddim",
+      "FREE_TELEPHONE_MEDIATION": "A wnewch chi roi cynnig ar gyfryngu am ddim?",
       "FIRST_PAYMENT": "Gwnewch y taliad cyntaf ymlaen",
       "FULL_NAME": "Enw llawn",
       "GIVE_DOC_DETAILS": "Rhoi manylion y dogfennau",
@@ -466,7 +466,7 @@
       "INCOME_JOB_SEEKER_ALLOWANCE": "Lwfans Ceisio Gwaith (yn seiliedig ar incwm)",
       "INCOME_JOB_SEEKER_ALLOWANCE_CONTRIBUTION": "Lwfans Ceisio Gwaith (yn seiliedig ar gyfraniadau)",
       "INCOME_WORKING_TAX_CREDIT": "Credyd Treth Gwaith",
-      "NEED_HEARING_SUPPORT": "Do you, your experts or witnesses need support to attend a hearing",
+      "NEED_HEARING_SUPPORT": "Do you, your experts or witnesses need support to attend a hearing?",
       "OWE_MONEY": "A oes arnoch chi'r arian a hawlir?",
       "PARTNER_DO_YOU_LIVE_WITH_A": "Ydych chi'n byw gyda phartner?",
       "PARTNER_IS_AGED_18_OR_OVER": "Ydy'ch partner yn 18 oed neu'n hŷn?",
@@ -521,8 +521,8 @@
       "WHAT_LANGUAGE_SPEAK": "Pa ieithoedd fyddwch chi, eich arbenigwyr a'ch tystion yn siarad yn y gwrandawiad?",
       "WHAT_LANGUAGE_DOCUMENTS": "Ym mha ieithoedd fydd y dogfennau yn cael eu darparu?",
       "WELSH_LANGUAGE": "Welsh language",
-      "WHEN_PAY": "Pryd fyddwch chi'n talu",
-      "WHEN_PAY_TITLE": "Pryd fyddwch chi'n talu",
+      "WHEN_PAY": "Pryd fyddwch chi'n talu?",
+      "WHEN_PAY_TITLE": "Pryd fyddwch chi'n talu?",
       "WHERE_DO_YOU_LIVE": "Ble rydych chi'n byw?",
       "WITNESS": "Tyst",
       "YOUR_FINANCIAL_DETAILS_TITLE": "Eich manylion ariannol"
@@ -616,7 +616,7 @@
       "DESCRIPTION": "Gallai eich hawliad fod am un swm neu'n cynnwys nifer o eitemau.",
       "HINT": "Esboniwch bob eitem yn fyr - er enghraifft, \"teils wedi torri\", \"difrod to\"",
       "INTEREST": "llog - byddwn yn gofyn i chi am hyn nesaf",
-      "REASON": "Yr hyn rydych chi'n ei hawlio amdano",
+      "REASON": "Yr hyn rydych chi'n ei hawlio amdano?",
       "TITLE": "Hawlio swm"
     },
     "CLAIM_DETAILS": {
@@ -669,7 +669,7 @@
         "HINT_AFTER_4PM": "Os byddwch yn ei gyflwyno ar ôl 4pm bydd hwn y diwrnod gwaith nesaf.",
         "PAGE_TITLE": "Pryd ydych chi am roi'r gorau i hawlio llog?",
         "TITLE": "Pryd ydych chi am roi'r gorau i hawlio llog?",
-        "UNTIL_CLAIM_SUBMIT_DATE": "Pan fyddwch yn cyflwyno'r hawliad",
+        "UNTIL_CLAIM_SUBMIT_DATE": "Pan fyddwch yn cyflwyno'r hawliad?",
         "UNTIL_SETTLED_OR_JUDGEMENT_MADE": "Parhau nes bod yr hawliad wedi'i setlo neu ddyfarniad wedi ei roi"
       },
       "RESOLVE_THE_DISPUTE": {
@@ -695,7 +695,7 @@
         "HINT_AFTER_4PM": "Os byddwch yn ei gyflwyno ar ôl 4pm bydd hwn y diwrnod gwaith nesaf.",
         "HINT_EXAMPLE_DATE": "Er enghraifft, dyddiad pan oedd yr anfoneb yn hwyr neu y dywedoch wrth rywun fod arno arian ichi.",
         "PAGE_TITLE": "O pa bryd ydych chi’n hawlio llog?",
-        "REASON": "Explain why you're claiming for this date",
+        "REASON": "Explain why you're claiming for this date?",
         "TITLE": "O pa bryd ydych chi’n hawlio llog?"
       }
     },
@@ -734,9 +734,9 @@
       "PAGE_TITLE": "Gwiriwch eich atebion cyn cyflwyno eich hawliad",
       "TITLE": "Gwiriwch eich atebion cyn cyflwyno eich hawliad",
       "REFERENCE_NUMBER": "Reference number",
-      "WHEN_DID_IT_START": "When did it start",
+      "WHEN_DID_IT_START": "When did it start?",
       "TYPE": {
-        "WHAT_TYPE_IS_IT": "What type is it",
+        "WHAT_TYPE_IS_IT": "What type is it?",
         "MENTAL_HEALTH_CRISIS_MORATORIUM": "Mental health crisis moratorium",
         "STANDARD_BREATHING_SPACE": "Standard breathing space"
       },
@@ -763,10 +763,10 @@
       "PAGE_TITLE": "Annual rate interest you want to claim",
       "RATE_CLAIMING": "Y gyfradd rydych chi'n ei hawlio",
       "RATE_INFORMATION": "Gallwch hawlio 8% y flwyddyn oni bai eich bod yn gwybod bod cyfradd wahanol yn berthnasol.",
-      "REASON": "Why you're claiming this rate",
+      "REASON": "Why you're claiming this rate?",
       "SAME_RATE_INTEREST_8_PC": "8.00%",
       "TITLE": "Pa gyfradd llog flynyddol ydych chi am ei hawlio?",
-      "WHY_YOU_ARE_ENTITLED": "Pam bod gennych hawl i'r gyfradd hon"
+      "WHY_YOU_ARE_ENTITLED": "Pam bod gennych hawl i'r gyfradd hon?"
     },
     "CLAIMANT_RESPONSE": {
       "COURT_PROPOSED_DATE": {
@@ -997,7 +997,7 @@
       "COOKIE_SETTINGS_SAVED": "Cadwyd eich gosodiadau cwcis",
       "EXPIRES": "Daw i ben ar",
       "FIND_MORE_ABOUT_COOKIES": "Mwy o wybodaeth am gwcis hanfodol",
-      "HEADING": "Sut mae cwcis yn cael eu defnyddio yn y gwasanaeth hwn",
+      "HEADING": "Sut mae cwcis yn cael eu defnyddio yn y gwasanaeth hwn?",
       "NAME": "Enw",
       "PERFORMANCE_COOKIE_OPTIONS": {
         "HEADING": "Caniatáu cwcis sy'n mesur monitro perfformiad ceisiadau gwefannau?",
@@ -1189,7 +1189,7 @@
     "INTEREST_START_DATE": {
       "PAGE_TITLE": "claim interest from",
       "TITLE": "Nodwch y dyddiad yr ydych am ddechrau hawlio llog",
-      "REASON": "Esboniwch pam rydych chi'n hawlio o'r dyddiad hwn"
+      "REASON": "Esboniwch pam rydych chi'n hawlio o'r dyddiad hwn?"
     },
     "ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES": {
       "PARAGRAPH1_1": "Os ydych eisoes wedi gwneud cais am Help i Dalu Ffioedd mewn perthynas â ",
@@ -1433,8 +1433,8 @@
     "ACCEPT_REPAYMENT_PLAN": {
       "DO_YOU_ACCEPT": "Ydych chi'n derbyn y cynllun ad-dalu?",
       "NO_OPTION": "Na – byddaf yn awgrymu fy nghynllun fy hun",
-      "PAGE_TITLE": "Sut mae am dalu",
-      "TITLE": "Sut mae am dalu"
+      "PAGE_TITLE": "Sut mae am dalu?",
+      "TITLE": "Sut mae am dalu?"
     },
     "HELP_WITH_FEES": {
       "ENTER_NUMBER": "Rhowch y rhif help i dalu ffioedd",
@@ -1864,8 +1864,8 @@
       "FIRST_PAYMENT": "Pryd fyddwch chi’n gwneud y taliad cyntaf?",
       "FOR_EXAMPLE": "Er enghraifft, ",
       "FOR_EXAMPLE_NEXT_MONTH": "This must be no sooner than ",
-      "HOW_OFTEN_PAYMENTS": "Pa mor aml y byddwch chi’n gwneud y taliadau hyn",
-      "HOW_OFTEN_RECEIVE_PAYMENTS": "How often do you want to receive these payments",
+      "HOW_OFTEN_PAYMENTS": "Pa mor aml y byddwch chi’n gwneud y taliadau hyn?",
+      "HOW_OFTEN_RECEIVE_PAYMENTS": "How often do you want to receive these payments?",
       "HOW_OFTEN_RECEIVE_PAYMENTS_HINT": "The court will accept the defendant's payment frequency. We'll only consider your preferred frequency if a different plan is set by a judge later.",
       "LENGTH": "Hyd y cynllun ad-dalu",
       "PAGE_TITLE": "Eich cynllun ad-dalu",
@@ -1938,7 +1938,7 @@
       "FINANCIAL_SUPPORT": "Financial support",
       "FULL_ADMISSION": "{{ defendant }} admits they owe all the money you’ve claimed.",
       "FULL_RESPONSE": "Full response",
-      "HOW_PAID": "How they say they paid",
+      "HOW_PAID": "How they say they paid?",
       "MONTHLY_EXPENSES": "Monthly expenses",
       "MONTHLY_INCOME": "Monthly income",
       "PAGE_TITLE": "Review defendant’s response",
@@ -1948,7 +1948,7 @@
         "THEY_OFFERED_TO_PAY_YOU": "They’ve offered to pay you £{{ paidAmount }} in instalments. This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
         "THEY_OFFERED_TO_PAY_YOU_BY_DATE": "They’ve offered to pay you £{{ paidAmount }} by {{datePaid}}. This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
         "THEY_OFFERED_TO_PAY_YOU_IMMEDIATELY": "They’ve offered to pay you £{{ paidAmount }} immediately. This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
-        "WHY_THEY_DONT_OWE": "Why they don’t owe the amount claimed"
+        "WHY_THEY_DONT_OWE": "Why they don’t owe the amount claimed?"
       },
       "PAY_EXPENSES": "Do they pay any expenses?",
       "PAYMENT_DATE": "They’ve offered to pay you this by {{ paymentDate }}",
@@ -1962,16 +1962,16 @@
       "THEIR_TOE": "Their timeline of events",
       "TITLE": "The defendant’s response",
       "TOTAL_PAID_AMOUNT": "This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
-      "UNABLE_TO_PAY_FULL_AMOUNT": "Why they can’t pay the full amount now",
+      "UNABLE_TO_PAY_FULL_AMOUNT": "Why they can’t pay the full amount now?",
       "WHERE_THEY_LIVE": "Where are they living?",
-      "WHEN_THEY_SAY_THEY_PAID": "When they say they paid this amount",
-      "WHY_THEY_DISAGREE_AMOUNT": "Why they say they don’t owe the amount you claimed",
-      "WHY_THEY_DISAGREE_CLAIM": "Why they disagree with the claim",
-      "WHY_THEY_DISAGREE_EVIDENCE": "Why they disagree with your evidence",
-      "WHY_THEY_DISAGREE_TIMELINE": "Why they disagree with your timeline",
+      "WHEN_THEY_SAY_THEY_PAID": "When they say they paid this amount?",
+      "WHY_THEY_DISAGREE_AMOUNT": "Why they say they don’t owe the amount you claimed?",
+      "WHY_THEY_DISAGREE_CLAIM": "Why they disagree with the claim?",
+      "WHY_THEY_DISAGREE_EVIDENCE": "Why they disagree with your evidence?",
+      "WHY_THEY_DISAGREE_TIMELINE": "Why they disagree with your timeline?",
       "HOW_THEY_WANT_TO_PAY_RESPONSE": "They've offered to pay you £{{ amount }} by {{ paymentDate }}. Dyma'r cyfanswm a delir i chi, gan gynnwys y ffi hawlio a'r llog os yw'n berthnasol.",
       "PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE": {
-        "TITLE": "Sut mae am dalu",
+        "TITLE": "Sut mae am dalu?",
         "SUGGESTED_REPAYMENT": "The defendant suggested this repayment plan",
         "REPAYMENT_PLAN": {
           "FREQUENCY_OF_PAYMENTS": "Amlder taliadau",
@@ -1982,8 +1982,8 @@
         }
       },
       "WHEN_THEY_PAID_THIS_AMOUNT": "When they say they paid this amount",
-      "HOW_THEY_PAID": "How they said they paid",
-      "THEY_DONT_OWE_CLAIM_AMOUNT": "Why they say they dont owe the amount you claimed",
+      "HOW_THEY_PAID": "How they said they paid?",
+      "THEY_DONT_OWE_CLAIM_AMOUNT": "Why they say they dont owe the amount you claimed?",
       "REJECT_CLAIM_PAID_LESS_STATEMENT": "{{ defendant }} said they paid you £{{ paidAmount}}. They said this is all they owe, not the amount you claim."
     },
     "SELF_EMPLOYED": {
@@ -2015,7 +2015,7 @@
       "EMAIL_COMPLETED": "E-bostio'r ffurflen N9B wedi'i llenwi i: contactocmc@justice.gov.uk neu ymholiadaucymraeg@justice.gov.uk",
       "HEADER": "Gwrthod yr hawliad cyfan a gwneud gwrth-hawliad",
       "HELP_AND_SUPPORT": "Cymorth a Chefnogaeth",
-      "HOW_TO_COUNTERCLAIM": "Sut i wneud gwrth-hawliad",
+      "HOW_TO_COUNTERCLAIM": "Sut i wneud gwrth-hawliad?",
       "OPEN_IN_NEW_WINDOW": "(yn agor mewn ffenestr newydd)",
       "PAGE_TITLE": "Anfonwch eich ymateb drwy e-bost",
       "PAY_COURT_FEE": "Bydd angen i chi dalu ffi'r llys i wneud gwrth-hawliad. Bydd y llys yn cysylltu â chi i gymryd y taliad.",
@@ -2064,7 +2064,7 @@
       "PAGE_TITLE": "Ydych chi eisiau rhannu arbenigwr gyda’r hawlydd?",
       "PREPARE_REPORT": "Byddant yn paratoi adroddiad ar gyfer y llys ar ran dau neu fwy o’r partïon, gan gynnwys y parti arall.”",
       "SINGLE_JOINT_EXPERT": "Gelwir hyn yn ‘arbenigwr sengl ar y cyd’.",
-      "WITH_CLAIMANT": "Do you want to share an expert with the claimant",
+      "WITH_CLAIMANT": "Do you want to share an expert with the claimant?",
       "TITLE": "Ydych chi eisiau rhannu arbenigwr gyda’r parti arall?”"
     },
     "SPECIFIC_COURT": {
@@ -2201,7 +2201,7 @@
       "CLAIM_FEE": "Claim fee",
       "FIND_OUT_MORE": "Find out more about court fees (opens in a new tab)",
       "HEARING_FEE": "Hearing fee",
-      "HOW_INTEREST_IS_CALCULATED": "How interest to date is calculated",
+      "HOW_INTEREST_IS_CALCULATED": "How interest to date is calculated?",
       "IF_SUCCESSFUL": "If it’s successful, you may not have to pay any or all of the claim fee.",
       "IF_UNSUCCESSFUL": "If it’s unsuccessful, we’ll ask you to pay the claim fee shown on this page in full.",
       "IF_YOU_SETTLE": "If you settle out of court",
