@@ -32,7 +32,7 @@ export const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
 export const app = express();
 
 const redisSessionStoreClient = createClient({
-  url: getConnectionString()
+  url: getConnectionString(),
 });
 redisSessionStoreClient.connect().catch(console.error);
 
