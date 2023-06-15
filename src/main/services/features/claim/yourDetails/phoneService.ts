@@ -41,12 +41,12 @@ const saveForm = (claim: Claim, form: CitizenTelephoneNumber, citizenType: Claim
     if (!claim.applicant1) {
       claim.applicant1 = new Party();
     }
-    claim.applicant1.partyPhone = new PartyPhone(form.telephoneNumber, form?.ccdPhoneExist);
+    claim.applicant1.partyPhone = new PartyPhone(form.telephoneNumber, form.ccdPhoneExist);
   } else if (citizenType === ClaimantOrDefendant.DEFENDANT) {
     if (!claim.respondent1) {
       claim.respondent1 = new Party();
     }
-    claim.respondent1.partyPhone = new PartyPhone(form.telephoneNumber, form?.ccdPhoneExist);
+    claim.respondent1.partyPhone = new PartyPhone(form.telephoneNumber, form.ccdPhoneExist);
   }
 };
 
