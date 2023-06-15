@@ -27,17 +27,8 @@ const getTelephone = async (claimId: string, citizenType: ClaimantOrDefendant) =
 
 const saveTelephone = async (claimId: string, form: CitizenTelephoneNumber, citizenType: ClaimantOrDefendant) => {
   try {
-    await saveTelephoneOptional(claimId, form, citizenType, false);
-  } catch (error) {
-    logger.error(error);
-    throw error;
-  }
-};
-
-const saveTelephoneOptional = async (claimId: string, form: CitizenTelephoneNumber, citizenType: ClaimantOrDefendant, optional: boolean | undefined) => {
-  try {
     const claim = await getCaseDataFromStore(claimId);
-    saveForm(claim, form, citizenType, optional);
+    saveForm(claim, form, citizenType);
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -45,22 +36,22 @@ const saveTelephoneOptional = async (claimId: string, form: CitizenTelephoneNumb
   }
 };
 
-const saveForm = (claim: Claim, form: CitizenTelephoneNumber, citizenType: ClaimantOrDefendant, optional: boolean) => {
+const saveForm = (claim: Claim, form: CitizenTelephoneNumber, citizenType: ClaimantOrDefendant) => {
   if (citizenType === ClaimantOrDefendant.CLAIMANT) {
     if (!claim.applicant1) {
       claim.applicant1 = new Party();
     }
-    claim.applicant1.partyPhone = new PartyPhone(form.telephoneNumber);
+    claim.applicant1.partyPhone = new PartyPhone(form.telephoneNumber, form?.ccdPhoneExist);
   } else if (citizenType === ClaimantOrDefendant.DEFENDANT) {
     if (!claim.respondent1) {
       claim.respondent1 = new Party();
     }
-    claim.respondent1.partyPhone = new PartyPhone(form.telephoneNumber, optional);
+    claim.respondent1.partyPhone = new PartyPhone(form.telephoneNumber, form?.ccdPhoneExist);
   }
 };
 
 export {
   getTelephone,
   saveTelephone,
-  saveTelephoneOptional,
 };
+

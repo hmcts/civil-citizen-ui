@@ -16,8 +16,8 @@ const addressToString = (address: Address) => {
 
 export const buildYourDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
   const yourDetailsHref = constructResponseUrlWithIdParams(claimId, CITIZEN_DETAILS_URL);
-  const phoneNumberUrl = claim.respondent1?.partyPhone?.optional ? CITIZEN_PHONE_NUMBER_URL : CITIZEN_DETAILS_URL;
-  const phoneNumberLabel = claim.respondent1?.partyPhone?.optional ? 'PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER' : 'PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER_NOT_OPTIONAL';
+  const phoneNumberUrl = claim.respondent1?.partyPhone?.ccdPhoneExist ? CITIZEN_DETAILS_URL : CITIZEN_PHONE_NUMBER_URL;
+  const phoneNumberLabel = claim.respondent1?.partyPhone?.ccdPhoneExist ? 'PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER_NOT_OPTIONAL' : 'PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER' ;
   const phoneNumberHref = constructResponseUrlWithIdParams(claimId, phoneNumberUrl);
   const yourDetailsSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.DETAILS_TITLE', {lng: getLng(lang)}),
