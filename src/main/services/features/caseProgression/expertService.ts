@@ -14,6 +14,7 @@ import {
 export const getExpertContent = (claim: Claim, form: GenericForm<UploadDocumentsUserForm>): ClaimSummaryContent[][] => {
   const sectionContent = [];
   const selectItems= [];
+  // TODO check for logged user and send only the other party/parties name/s
   selectItems.push({'value': '', 'text': ''});
   selectItems.push({'value': claim.getClaimantFullName(), 'text': claim.getClaimantFullName()});
   selectItems.push({'value': claim.getDefendantFullName(), 'text': claim.getDefendantFullName()});
