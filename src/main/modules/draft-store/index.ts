@@ -21,6 +21,9 @@ export class DraftStoreClient {
     app.locals.draftStoreClient = client;
     this.logger.info(DraftStoreClient.REDIS_CONNECTION_SUCCESS);
 
+    this.logger.info('I am in draft store index.ts');
+
+    this.logger.info('loading redis data');
     app.locals.draftStoreClient.on('connect', () => {
       REDIS_DATA.forEach((element: any) => {
         client.set(element.id, JSON.stringify(element, null, 4)).then(() =>
