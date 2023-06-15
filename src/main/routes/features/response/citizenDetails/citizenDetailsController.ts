@@ -39,7 +39,6 @@ const redirect = (respondent: Party, req: Request, res: Response) => {
   if (respondent?.type === PartyType.INDIVIDUAL) {
     res.redirect(constructResponseUrlWithIdParams(req.params.id, DOB_URL));
   } else {
-    console.log("redirect optional ", respondent?.partyPhone?.optional)
     if (respondent?.partyPhone && respondent?.partyPhone?.optional == false) {
       res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
     } else {
@@ -52,9 +51,7 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: Request, res: Resp
   try {
     const respondent: Party = await getDefendantInformation(req.params.id);
     const partyDetails = new GenericForm(respondent.partyDetails);
-    console.log("party phone object ", respondent.partyPhone);
     const partyPhoneForm = new GenericForm<PartyPhone>(new PartyPhone(respondent.partyPhone?.phone, respondent.partyPhone?.optional));
-    console.log("party phone object form", partyPhoneForm);
     renderPage(res, req, partyDetails, respondent.type, partyPhoneForm);
   } catch (error) {
     next(error);
@@ -75,8 +72,6 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: Request, res: Res
       renderPage(res, req, partyDetails, respondent.type, partyPhone);
     } else {
       await saveDefendantProperty(req.params.id, propertyName, partyDetails.model);
-      console.log("phone to citizen details ", req.body?.partyPhone)
-      console.log("phone to citizen details 2", respondent?.partyPhone)
       if (req.body?.partyPhone || (respondent?.partyPhone?.phone && !respondent?.partyPhone?.optional)) {
         const citizenTelephoneNumber = new CitizenTelephoneNumber(req.body.partyPhone);
         await saveTelephone(req.params.id, citizenTelephoneNumber, ClaimantOrDefendant.DEFENDANT);

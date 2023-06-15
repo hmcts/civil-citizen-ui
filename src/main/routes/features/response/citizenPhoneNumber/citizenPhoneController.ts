@@ -16,7 +16,6 @@ function renderView(form: GenericForm<CitizenTelephoneNumber>, res: Response): v
 citizenPhoneController.get(CITIZEN_PHONE_NUMBER_URL, async (req, res, next: NextFunction) => {
   try {
     const citizenTelephoneNumber: CitizenTelephoneNumber = await getTelephone(req.params.id, ClaimantOrDefendant.DEFENDANT);
-    console.log("citizen telephone ", citizenTelephoneNumber )
     renderView(new GenericForm<CitizenTelephoneNumber>(citizenTelephoneNumber), res);
   } catch (error) {
     next(error);

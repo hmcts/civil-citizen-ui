@@ -476,6 +476,7 @@
       "PAYMENT_TITLE": "Taliad",
       "PAYMENT_FREQUENCY": "Amlder taliadau",
       "PHONE_NUMBER": "Phone number (optional)",
+      "PHONE_NUMBER_NOT_OPTIONAL": "Phone number",
       "PRIORITY_DEBTS_YOU_ARE_BEHIND_ON": "Dyledion yr ydych ar ei hôl hi",
       "PRIORITY_DEBT_TYPE": "Math o ddyledion",
       "PRIORITY_DEBT_ARREARS_REPAYMENT": "Ad-dalu ôl-ddyledion",

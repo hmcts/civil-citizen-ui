@@ -16,14 +16,13 @@ function renderView(form: GenericForm<CitizenDob>, res: Response): void {
 }
 
 function redirectToNextPage(req: Request, res: Response, dob: Date, respondent: Party) {
-  if (AgeEligibilityVerification.isOverEighteen(dob)) {
-    if (respondent?.partyPhone?.phone) {
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
-    } else {
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PHONE_NUMBER_URL));
-    }
+  if (!AgeEligibilityVerification.isOverEighteen(dob)) {
+    return res.redirect(constructResponseUrlWithIdParams(req.params.id, AGE_ELIGIBILITY_URL));
+  }
+  if (respondent?.partyPhone?.phone && !respondent?.partyPhone?.optional) {
+    res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
   } else {
-    res.redirect(constructResponseUrlWithIdParams(req.params.id, AGE_ELIGIBILITY_URL));
+    res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PHONE_NUMBER_URL));
   }
 }
 
