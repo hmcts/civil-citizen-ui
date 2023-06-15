@@ -17,7 +17,7 @@ import {CSRFToken} from './modules/csrf';
 import routes from './routes/routes';
 import {setLanguage} from 'modules/i18n/languageService';
 import {isServiceShuttered} from './app/auth/launchdarkly/launchDarklyClient';
-import RedisStore from "connect-redis"
+import RedisStore from 'connect-redis';
 import {createClient} from 'redis';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -32,14 +32,14 @@ export const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
 export const app = express();
 
 const redisSessionStoreClient = createClient();
-redisSessionStoreClient.connect().catch(console.error)
+redisSessionStoreClient.connect().catch(console.error);
 
 app.enable('trust proxy');
 app.use(session({
   name: 'citizen-ui-session',
   store: new RedisStore({
     client: redisSessionStoreClient,
-    prefix: "cui:",
+    prefix: 'cui:',
   }),
   // store: new MemoryStore({
   //   checkPeriod: 86400000, // prune expired entries every 24h
