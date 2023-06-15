@@ -19,7 +19,8 @@
       "individualLastName": "Doe",
       "partyName": "Mr. Joe Doe",
       "partyPhone": {
-        "phone": "654323472"
+        "phone": "654323472",
+        "ccdPhoneExist": true
       }
     }
   }

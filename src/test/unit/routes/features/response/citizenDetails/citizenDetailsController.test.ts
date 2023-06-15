@@ -54,6 +54,17 @@ const buildClaimOfRespondentTypeWithCcdPhone = (type: PartyType): Party => {
   return claim.respondent1;
 };
 
+const buildClaimOfRespondentTypeWithoutCcdPhone = (type: PartyType): Party => {
+  claim.respondent1 = new Party();
+  claim.respondent1.partyDetails = new PartyDetails({});
+  claim.respondent1.type = type;
+  claim.respondent1.partyDetails.primaryAddress = buildAddress();
+  claim.respondent1.partyDetails.correspondenceAddress = buildAddress();
+  claim.respondent1.partyPhone = new PartyPhone();
+  claim.respondent1.partyPhone.phone = '123456';
+  return claim.respondent1;
+};
+
 const nock = require('nock');
 
 const validDataForPost = {
@@ -389,6 +400,23 @@ describe('Confirm Details page', () => {
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
+        });
+    });
+    it('should redirect to phone screen if respondent type is SOLE TRADER with phone is not provided', async () => {
+      mockGetRespondentInformation.mockImplementation(async () => {
+        return {...buildClaimOfRespondentTypeWithoutCcdPhone(PartyType.SOLE_TRADER)};
+      });
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.respondent1 = buildClaimOfRespondentTypeWithoutCcdPhone(PartyType.SOLE_TRADER);
+        return claim;
+      });
+      await request(app)
+        .post(CITIZEN_DETAILS_URL)
+        .send(validDataForPost)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_PHONE_NUMBER_URL);
         });
     });
   });

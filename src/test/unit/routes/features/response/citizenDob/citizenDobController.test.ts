@@ -172,7 +172,7 @@ describe('Citizen date of birth', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain(`Redirecting to ${RESPONSE_TASK_LIST_URL}`);
+          expect(res.text).toContain(`Redirecting to ${CITIZEN_PHONE_NUMBER_URL}`);
         });
     });
     it('should redirect to phone number page on valid DOB when has undefined on redis', async () => {
