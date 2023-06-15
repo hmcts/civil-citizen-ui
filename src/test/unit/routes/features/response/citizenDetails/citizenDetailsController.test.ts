@@ -1,7 +1,7 @@
 import {app} from '../../../../../../main/app';
 import config from 'config';
 import request from 'supertest';
-import {CITIZEN_DETAILS_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL, RESPONSE_TASK_LIST_URL,} from 'routes/urls';
+import {CITIZEN_DETAILS_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {getDefendantInformation, saveDefendantProperty} from 'services/features/common/defendantDetailsService';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
@@ -9,8 +9,8 @@ import {buildAddress} from '../../../../../utils/mockClaim';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {PartyType} from 'models/partyType';
 import {PartyDetails} from 'form/models/partyDetails';
-import {PartyPhone} from "models/PartyPhone";
-import * as draftStoreService from "modules/draft-store/draftStoreService";
+import {PartyPhone} from 'models/PartyPhone';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
