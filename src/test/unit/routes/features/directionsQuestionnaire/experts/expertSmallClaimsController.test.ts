@@ -8,7 +8,8 @@ import {
   DQ_GIVE_EVIDENCE_YOURSELF_URL,
 } from 'routes/urls';
 import {t} from 'i18next';
-import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
+import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -52,6 +53,16 @@ describe('Using an expert', () => {
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.get('location')).toBe(DQ_EXPERT_REPORT_DETAILS_URL);
+        });
+    });
+    it('should return status 500 when error thrown', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app)
+        .post(DQ_EXPERT_SMALL_CLAIMS_URL)
+        .send({expertYes: 'yes'})
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

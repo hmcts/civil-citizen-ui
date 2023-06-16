@@ -21,6 +21,12 @@ expertSmallClaimsController.post(DQ_EXPERT_SMALL_CLAIMS_URL, async (req: Request
     const claimId = req.params.id;
     const expertRequiredValue = req.body.expertYes ? true : false;
     const redirectUrl = req.body.expertYes ? DQ_EXPERT_REPORT_DETAILS_URL : DQ_GIVE_EVIDENCE_YOURSELF_URL;
+    if(!expertRequiredValue) {
+      await saveDirectionQuestionnaire(claimId, null, 'expertReportDetails', dqParentName);
+      await saveDirectionQuestionnaire(claimId, null, 'permissionForExpert', dqParentName);
+      await saveDirectionQuestionnaire(claimId, null, 'expertCanStillExamine', dqParentName);
+      await saveDirectionQuestionnaire(claimId, null, 'expertDetailsList', dqParentName);
+    }
     await saveDirectionQuestionnaire(claimId, expertRequiredValue, dqPropertyName, dqParentName);
     res.redirect(constructResponseUrlWithIdParams(claimId, redirectUrl));
   } catch (error) {
