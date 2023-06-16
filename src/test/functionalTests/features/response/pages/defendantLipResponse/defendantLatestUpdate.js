@@ -8,6 +8,11 @@ class DefendantLatestUpdate {
     I.click('Respond to claim');
   }
 
+  openSummaryPage(claimRef) {
+    I.amOnPage('/dashboard/' + claimRef + '/defendant');
+    I.see('More time requested');
+  }
+
   verifyDefendantUpdatePageContent() {
     I.see('You haven\'t responded to this claim');
     I.see('Claim number: ');
