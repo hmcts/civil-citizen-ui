@@ -136,8 +136,6 @@ describe('toCUIEvidenceUpload', () => {
       caseDocumentUploadDateRes: undefined,
     };
     const expectedOutput: CaseProgression = new CaseProgression();
-    expectedOutput.claimantLastUpload = undefined;
-    expectedOutput.defendantLastUpload = undefined;
     expectedOutput.claimantUploadDocuments = new UploadDocuments(undefined, undefined, undefined, undefined);
     expectedOutput.defendantUploadDocuments = new UploadDocuments(undefined, undefined, undefined, undefined);
     const actualOutput = toCUICaseProgression(ccdClaim);
@@ -222,8 +220,6 @@ function createCUIClaim(): CaseProgression {
       new UploadDocuments(getUploadDocumentList('disclosure'), getUploadDocumentList('witness'), getUploadDocumentList('expert'), getUploadDocumentList('trial')),
     defendantUploadDocuments:
       new UploadDocuments(getUploadDocumentList('disclosure'), getUploadDocumentList('witness'), getUploadDocumentList('expert'), getUploadDocumentList('trial')),
-    claimantLastUpload: new Date (0),
-    defendantLastUpload: new Date(0),
   } as CaseProgression;
 }
 
