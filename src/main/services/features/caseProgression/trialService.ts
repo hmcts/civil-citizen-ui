@@ -7,7 +7,7 @@ import {
 import {GenericForm} from 'form/models/genericForm';
 import {TypeOfDocumentSection, UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 
-export const getTrialContent = (claim: Claim, form: GenericForm<UploadDocumentsUserForm>): ClaimSummaryContent[][] => {
+export const getTrialContent = (claim: Claim, form: GenericForm<UploadDocumentsUserForm>, isSmallClaims: boolean): ClaimSummaryContent[][] => {
   const sectionContent: any[] = [];
 
   if(claim.caseProgression?.defendantUploadDocuments?.trial[0]?.selected) {
@@ -18,7 +18,7 @@ export const getTrialContent = (claim: Claim, form: GenericForm<UploadDocumentsU
     sectionContent.push(trialSkeletonArgument(form));
   }
 
-  if(claim.caseProgression?.defendantUploadDocuments?.trial[2]?.selected) {
+  if(claim.caseProgression?.defendantUploadDocuments?.trial[2]?.selected && !isSmallClaims) {
     sectionContent.push(trialAuthorities(form));
   }
 
@@ -28,6 +28,10 @@ export const getTrialContent = (claim: Claim, form: GenericForm<UploadDocumentsU
 
   if(claim.caseProgression?.defendantUploadDocuments?.trial[4]?.selected) {
     sectionContent.push(trialDocumentary(form));
+  }
+
+  if(claim.caseProgression?.defendantUploadDocuments?.trial[2]?.selected && isSmallClaims) {
+    sectionContent.push(trialAuthorities(form));
   }
 
   return sectionContent;

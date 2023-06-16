@@ -2350,9 +2350,7 @@
         "SELECT": "Select"
       },
       "HEARING": {
-        "TITLE": "Hearing documents",
-        "DOCUMENTARY": "Documentary evidence for trial",
-        "LEGAL": "Legal authorities"
+        "TITLE": "Hearing documents"
       },
       "YEAR": "Year"
     },

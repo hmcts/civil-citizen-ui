@@ -136,7 +136,11 @@
           {% endif %}
 
           {% if trialContent.length > 0 %}
-            <h2 class="govuk-heading-l">{{ trial }}</h2>
+            {% if isSmallClaims %}
+              <h2 class="govuk-heading-l">{{ hearing }}</h2>
+            {% else %}
+              <h2 class="govuk-heading-l">{{ trial }}</h2>
+            {% endif %}
             {% for trialSections in trialContent %}
             <div class="row-container">
               <div data-module="moj-add-another">
@@ -166,38 +170,6 @@
                 <hr class="govuk-section-break--s govuk-section-break--visible">
               </div>
             </div>
-            {% endfor %}
-          {% endif %}
-
-          {% if hearingContent.length > 0 %}
-            <h2 class="govuk-heading-l">{{ hearing }}</h2>
-            {% for hearingSections in hearingContent %}
-              <div class="row-container">
-                <div data-module="moj-add-another">
-                  {% call govukFieldset({
-                    classes: 'moj-add-another__item',
-                    legend: {
-                      classes: 'moj-add-another__title',
-                      isPageHeading: false
-                    }
-                  }) %}
-                    {{ claimSummaryContent({
-                      contentSections: hearingSections.contentSections
-                    }) }}
-                  {% endcall %}
-                  <div class="moj-button-action">
-                    {{ govukButton({
-                      text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
-                      classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
-                      type: 'button',
-                      attributes: {
-                        'id': 'add-another-expert-list'
-                      }
-                    }) }}
-                  </div>
-                  <hr class="govuk-section-break--s govuk-section-break--visible">
-                </div>
-              </div>
             {% endfor %}
           {% endif %}
 
