@@ -100,8 +100,6 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
       new UploadDocuments(uploadApplicantDisclosureDocuments, uploadApplicantWitnessDocuments, uploadApplicantExpertDocuments, uploadApplicantTrialDocuments);
     caseProgression.defendantUploadDocuments =
       new UploadDocuments(uploadDefendantDisclosureDocuments, uploadDefendantWitnessDocuments, uploadDefendantExpertDocuments, uploadDefendantTrialDocuments);
-    caseProgression.claimantLastUpload = ccdClaim?.caseDocumentUploadDate;
-    caseProgression.defendantLastUpload = ccdClaim?.caseDocumentUploadDateRes;
 
     return caseProgression as CaseProgression;
   }
