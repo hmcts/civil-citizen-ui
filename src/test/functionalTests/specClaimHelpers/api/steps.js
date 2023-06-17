@@ -13,6 +13,7 @@ const {assignCaseRoleToUser, addUserCaseMapping, unAssignAllUsers} = require('./
 const apiRequest = require('./apiRequest.js');
 const claimSpecData = require('../fixtures/events/createClaimSpec.js');
 const defendantResponse = require('../fixtures/events/createDefendantResponse.js');
+const claimantResponse = require('../fixtures/events/createClaimantResponseToDefence.js');
 
 const data = {
   CREATE_SPEC_CLAIM: (mpScenario) => claimSpecData.createClaim(mpScenario),
@@ -27,8 +28,9 @@ module.exports = {
   performViewAndRespondToDefence: async (user, caseId) => {
     console.log('This is inside performCitizenResponse : ' + caseId);
     eventName = 'CLAIMANT_RESPONSE_SPEC';
+    const payload = claimantResponse.createClaimantIntendsToProceedResponse();
     await apiRequest.setupTokens(user);
-    await apiRequest.startEvent(eventName, caseId);
+    await apiRequest.startEvent(eventName, caseId, payload);
     console.log('End of performViewAndRespondToDefence()');
   },
 
