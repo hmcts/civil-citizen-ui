@@ -208,6 +208,7 @@ ccd:
       keyVaults: []
   ccd-data-store-api:
     java:
+      image: 'hmctspublic.azurecr.io/ccd/data-store-api:pr-2274'
       releaseNameOverride: ${SERVICE_NAME}-ccd-data-store-api
       imagePullPolicy: Always
       devcpuRequests: 500m
