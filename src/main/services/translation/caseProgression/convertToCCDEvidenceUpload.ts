@@ -15,38 +15,6 @@ import {
 import {v4 as uuidv4} from 'uuid';
 import {CCDClaim} from 'models/civilClaimResponse';
 
-export const toCCDEvidenceUploadExpert = (evidenceUpload: any ): UploadEvidenceExpert => {
-  return {
-    expertOptionName: evidenceUpload.expertOptionName,
-    expertOptionExpertise: evidenceUpload.expertOptionExpertise,
-    expertOptionExpertises: evidenceUpload.expertOptionExpertises,
-    expertOptionOtherParty: evidenceUpload.expertOptionOtherParty,
-    expertDocumentQuestion: evidenceUpload.expertDocumentQuestion,
-    expertDocumentAnswer: evidenceUpload.expertDocumentAnswer,
-    expertOptionUploadDate: evidenceUpload.expertOptionUploadDate,
-    expertDocument: evidenceUpload.expertDocument,
-    createdDateTime: evidenceUpload.createdDateTime,
-  };
-};
-
-export const toCCDEvidenceUploadWitness = (evidenceUpload: any ): UploadEvidenceWitness => {
-  return {
-    witnessOptionName: evidenceUpload.witnessOptionName,
-    witnessOptionUploadDate: evidenceUpload.witnessOptionUploadDate,
-    witnessOptionDocument: evidenceUpload.witnessOptionDocument,
-    createdDateTime: evidenceUpload.createdDateTime,
-  };
-};
-
-export const toCCDEvidenceUploadDocumentType = (evidenceUpload: any ): UploadEvidenceDocumentType => {
-  return {
-    typeOfDocument: evidenceUpload.typeOfDocument,
-    documentIssuedDate: evidenceUpload.documentIssuedDate,
-    documentUpload: evidenceUpload.documentUpload,
-    createdDateTime: evidenceUpload.createdDateTime,
-  };
-};
-
 export const toCCDEvidenceUpload = (cuiEvidenceUpload: CaseProgression, ccdClaim: CCDClaim): CCDClaim => {
   if (!cuiEvidenceUpload) return undefined;
 
@@ -102,20 +70,20 @@ const createCCDEvidenceUploadList = (evidenceList: UploadDocumentTypes[],
         continue;
       }
 
-      let evidenceItem;
+      let evidenceItem: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType;
       id = null;
 
       switch (evidenceList[i].documentType) {
         case EvidenceUploadWitness.WITNESS_STATEMENT:
         case EvidenceUploadWitness.WITNESS_SUMMARY:
         case EvidenceUploadWitness.NOTICE_OF_INTENTION:
-          evidenceItem = toCCDEvidenceUploadWitness(evidenceList[i].caseDocument);
+          evidenceItem = evidenceList[i].caseDocument as UploadEvidenceWitness;
           break;
         case EvidenceUploadExpert.EXPERT_REPORT:
         case EvidenceUploadExpert.STATEMENT:
         case EvidenceUploadExpert.QUESTIONS_FOR_EXPERTS:
         case EvidenceUploadExpert.ANSWERS_FOR_EXPERTS:
-          evidenceItem = toCCDEvidenceUploadExpert(evidenceList[i].caseDocument);
+          evidenceItem = evidenceList[i].caseDocument as UploadEvidenceExpert;
           break;
         case EvidenceUploadWitness.DOCUMENTS_REFERRED:
         case EvidenceUploadDisclosure.DISCLOSURE_LIST:
@@ -125,7 +93,7 @@ const createCCDEvidenceUploadList = (evidenceList: UploadDocumentTypes[],
         case EvidenceUploadTrial.AUTHORITIES:
         case EvidenceUploadTrial.COSTS:
         case EvidenceUploadTrial.DOCUMENTARY:
-          evidenceItem = toCCDEvidenceUploadDocumentType(evidenceList[i].caseDocument);
+          evidenceItem = evidenceList[i].caseDocument as UploadEvidenceDocumentType;
           break;
       }
       id = evidenceList[i].uuid == null ? uuidv4() : evidenceList[i].uuid ;
