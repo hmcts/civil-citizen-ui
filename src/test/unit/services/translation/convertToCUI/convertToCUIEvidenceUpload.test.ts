@@ -48,15 +48,6 @@ const expertDocument = {
   createdDateTime: new Date(0),
 };
 
-const typeDocumentIncomplete = {
-  typeOfDocument: 'type',
-  documentIssuedDate: new Date(0),
-  documentUpload: {
-    document_filename: 'document_type.pdf',
-  },
-  createdDateTime: new Date(0),
-};
-
 const typeDocument = {
   typeOfDocument: 'type',
   documentIssuedDate: new Date(0),
