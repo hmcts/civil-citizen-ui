@@ -26,11 +26,13 @@ const PBAv3Toggle = 'pba-version-3-ways-to-pay';
 module.exports = {
 
   performViewAndRespondToDefence: async (user, caseId) => {
-    console.log('This is inside performCitizenResponse : ' + caseId);
+    console.log('This is inside performViewAndRespondToDefence : ' + caseId);
     eventName = 'CLAIMANT_RESPONSE_SPEC';
     const payload = claimantResponse.createClaimantIntendsToProceedResponse();
     await apiRequest.setupTokens(user);
-    await apiRequest.startEvent(eventName, caseId, payload);
+    caseData = payload['caseDataUpdate'];
+    await assertSubmittedSpecEvent('JUDICIAL_REFERRAL');
+    await waitForFinishedBusinessProcess(caseId);
     console.log('End of performViewAndRespondToDefence()');
   },
 
@@ -41,6 +43,7 @@ module.exports = {
     //console.log('The payload : ' + payload);
     await apiRequest.setupTokens(user);
     await apiRequest.startEventForCitizen(eventName, caseId, payload);
+    await waitForFinishedBusinessProcess(caseId);
     console.log('End of performCitizenResponse()');
   },
 

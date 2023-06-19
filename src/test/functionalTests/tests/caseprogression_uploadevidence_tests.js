@@ -11,8 +11,8 @@ Feature('Response with RejectAll');
 
 Before(async ({api}) => {
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
-  //await api.performCitizenResponse(config.defendantCitizenUser, claimRef);
-  //await api.performViewAndRespondToDefence(config.applicantSolicitorUser, claimRef);
+  await api.performCitizenResponse(config.defendantCitizenUser, claimRef);
+  await api.performViewAndRespondToDefence(config.applicantSolicitorUser, claimRef);
   LoginSteps.EnterUserCredentials(config.Username, config.Password);
 });
 

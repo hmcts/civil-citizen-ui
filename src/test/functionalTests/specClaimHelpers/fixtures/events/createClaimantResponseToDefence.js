@@ -14,15 +14,15 @@ module.exports = {
             PostTown: 'Reading',
             County: 'Kent',
             Country: 'United Kingdom',
-            PostCode: 'RG4 7AA'
+            PostCode: 'RG4 7AA',
           },
           partyName: 'Test Inc',
           partyTypeDisplayValue: 'Company',
           flags: {
             partyName: 'Test Inc',
-            roleOnCase: 'Applicant 1'
+            roleOnCase: 'Applicant 1',
           },
-          unavailableDates: null
+          unavailableDates: null,
         },
         respondent1: {
           type: 'INDIVIDUAL',
@@ -35,14 +35,14 @@ module.exports = {
             AddressLine2: 'TestAddressLine2',
             AddressLine3: 'TestAddressLine3',
             PostTown: 'TestCity',
-            PostCode: 'IG61JD'
+            PostCode: 'IG61JD',
           },
           partyName: 'Sir John Doe',
           partyTypeDisplayValue: 'Individual',
           partyEmail: 'civilmoneyclaimsdemo@gmail.com',
           partyPhone: '07123456789',
           unavailableDates: null,
-          flags: null
+          flags: null,
         },
         partAdmitPaidValuePounds: null,
         respondent2: null,
@@ -54,14 +54,14 @@ module.exports = {
           documentType: null,
           documentSize: '0',
           createdDatetime: null,
-          createdBy: null
+          createdBy: null,
         },
         respondent1GeneratedResponseDocument: {
           documentName: null,
           documentType: null,
           documentSize: '0',
           createdDatetime: null,
-          createdBy: null
+          createdBy: null,
         },
         respondent2GeneratedResponseDocument: null,
         applicant1ProceedWithClaim: 'Yes',
@@ -87,19 +87,19 @@ module.exports = {
           reactionProtocolCompliedWith: 'Yes',
           reactionProtocolNotCompliedWithReason: null,
           explainedToClient: [
-            'CONFIRM'
-          ]
+            'CONFIRM',
+          ],
         },
         applicant1DQDisclosureOfElectronicDocuments: {
           reachedAgreement: 'Yes',
           agreementLikely: null,
-          reasonForNoAgreement: null
+          reasonForNoAgreement: null,
         },
         specApplicant1DQDisclosureOfNonElectronicDocuments: null,
         applicant1DQDisclosureReport: {
           disclosureFormFiledAndServed: 'No',
           disclosureProposalAgreed: 'No',
-          draftOrderNumber: null
+          draftOrderNumber: null,
         },
         applicant1DQExperts: {
           expertRequired: 'No',
@@ -118,7 +118,7 @@ module.exports = {
         applicant1DQLanguage: {
           court: 'ENGLISH',
           documents: 'ENGLISH',
-          evidence: null
+          evidence: null,
         },
         applicant1DQSmallClaimHearing: null,
         applicant1DQHearingLRspec: {
@@ -128,7 +128,7 @@ module.exports = {
           hearingLength: null,
           unavailableDates: [
             
-          ]
+          ],
         },
         applicant1DQRequestedCourt: {
           responseCourtLocations: {
@@ -140,15 +140,15 @@ module.exports = {
               {
                 code: '350aa935-4d80-4762-9a4e-2a8f3eaad9fc',
                 label: 'Central London County Court - Thomas More Building, Royal Courts of Justice, Strand, London - WC2A 2LL'
-              }
-            ]
+              },
+            ],
           },
           reasonForHearingAtSpecificCourt: 'reasons',
           responseCourtCode: null,
           caseLocation: {
             region: null,
-            baseLocation: null
-          }
+            baseLocation: null,
+          },
         },
         applicant1DQHearingSupport: {
           signLanguageRequired: null,
@@ -158,7 +158,7 @@ module.exports = {
           supportRequirementsAdditional: null,
           requirements: [
             
-          ]
+          ],
         },
         applicant1DQVulnerabilityQuestions: {
           vulnerabilityAdjustmentsRequired: 'No',
@@ -171,7 +171,7 @@ module.exports = {
         applicant1AdditionalInformationForJudge: 'other info',
         uiStatementOfTruth: {
           name: 'claimant',
-          role: 'nameandrole'
+          role: 'nameandrole',
         },
       },
     };
