@@ -10,7 +10,7 @@ export class HealthCheck {
   public enableFor(app: Application): void {
 
     const redis = healthCheck.raw(() => {
-      const protocol = config.get('services.draftStore.redis.tls') ? 'rediss://' : 'redis://';
+      const protocol = config.get('services.draftStore.redis.tls') ? 'redis://' : 'redis://';
       const connectionString = `${protocol}:${config.get('services.draftStore.redis.key')}@${config.get('services.draftStore.redis.host')}:${config.get('services.draftStore.redis.port')}`;
       logger.info(`connectionString: ${connectionString}`);
       logger.info('About to ping Redis...');
