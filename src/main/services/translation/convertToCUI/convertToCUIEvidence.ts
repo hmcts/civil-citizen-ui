@@ -1,5 +1,5 @@
 import {EvidenceItem} from 'models/evidence/evidenceItem';
-import {CCDEvidence, CCDEvidenceType} from 'models/ccdResponse/ccdEvidence';
+import {CCDEvidence, getEvidenceDetails} from 'models/ccdResponse/ccdEvidence';
 import {Evidence} from 'form/models/evidence/evidence';
 import {convertToEvidenceType} from 'models/evidence/evidenceType';
 
@@ -20,21 +20,6 @@ const createCUIEvidence = (ccdEvidence: CCDEvidence) : EvidenceItem => {
   };
 };
 
-const calculateCUIEvidenceValue = (row: CCDEvidence) => {
-  switch (row.value.evidenceType) {
-    case CCDEvidenceType.CONTRACTS_AND_AGREEMENTS:
-      return row.value.contractAndAgreementsEvidence;
-    case CCDEvidenceType.EXPERT_WITNESS:
-      return row.value.expertWitnessEvidence;
-    case CCDEvidenceType.LETTERS_EMAILS_AND_OTHER_CORRESPONDENCE:
-      return row.value.lettersEmailsAndOtherCorrespondenceEvidence;
-    case CCDEvidenceType.PHOTO_EVIDENCE:
-      return row.value.photoEvidence;
-    case CCDEvidenceType.RECEIPTS:
-      return row.value.receiptsEvidence;
-    case CCDEvidenceType.STATEMENT_OF_ACCOUNT:
-      return row.value.statementOfTruthEvidence;
-    case CCDEvidenceType.OTHER:
-      return row.value.otherEvidence;
-  }
+const calculateCUIEvidenceValue = (row: CCDEvidence): string => {
+  return getEvidenceDetails(row.value);
 };

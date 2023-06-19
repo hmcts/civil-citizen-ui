@@ -1,6 +1,6 @@
 import {Claim} from 'common/models/claim';
 import {EvidenceType} from 'common/models/evidence/evidenceType';
-import {CCDEvidence, CCDEvidenceType} from 'common/models/ccdResponse/ccdEvidence';
+import {CCDEvidence} from 'common/models/ccdResponse/ccdEvidence';
 import {toCCDEvidence} from 'services/translation/response/convertToCCDEvidence';
 import {ClaimDetails} from 'common/form/models/claim/details/claimDetails';
 import {Evidence} from 'common/form/models/evidence/evidence';
@@ -55,49 +55,49 @@ describe('translate Evidence to CCD model', () => {
       {
         id: '0',
         value: {
-          evidenceType: CCDEvidenceType.CONTRACTS_AND_AGREEMENTS,
+          evidenceType: 'Contracts and agreements',
           contractAndAgreementsEvidence: 'test contract',
         },
       },
       {
         id: '1',
         value: {
-          evidenceType: CCDEvidenceType.EXPERT_WITNESS,
+          evidenceType: 'Expert witness',
           expertWitnessEvidence: 'test witness',
         },
       },
       {
         id: '2',
         value: {
-          evidenceType: CCDEvidenceType.LETTERS_EMAILS_AND_OTHER_CORRESPONDENCE,
+          evidenceType: 'Letters, emails and other correspondence',
           lettersEmailsAndOtherCorrespondenceEvidence: 'test correspondence',
         },
       },
       {
         id: '3',
         value: {
-          evidenceType: CCDEvidenceType.PHOTO_EVIDENCE,
+          evidenceType:  'Photo evidence',
           photoEvidence: 'test photo',
         },
       },
       {
         id: '4',
         value: {
-          evidenceType: CCDEvidenceType.RECEIPTS,
+          evidenceType: 'Receipts',
           receiptsEvidence: 'test receipts',
         },
       },
       {
         id: '5',
         value: {
-          evidenceType: CCDEvidenceType.STATEMENT_OF_ACCOUNT,
+          evidenceType: 'Statements of account',
           statementOfTruthEvidence: 'test statement',
         },
       },
       {
         id: '6',
         value: {
-          evidenceType: CCDEvidenceType.OTHER,
+          evidenceType: 'Other',
           otherEvidence: 'test other',
         },
       },

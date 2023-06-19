@@ -4,7 +4,7 @@ export interface CCDEvidence {
 }
 
 export interface CCDEvidenceItem {
-  evidenceType?: CCDEvidenceType,
+  evidenceType?: string,
   photoEvidence?: string,
   contractAndAgreementsEvidence?: string,
   expertWitnessEvidence?: string,
@@ -14,12 +14,8 @@ export interface CCDEvidenceItem {
   otherEvidence?: string,
 }
 
-export enum CCDEvidenceType {
-  CONTRACTS_AND_AGREEMENTS = 'CONTRACTS_AND_AGREEMENTS',
-  EXPERT_WITNESS = 'EXPERT_WITNESS',
-  LETTERS_EMAILS_AND_OTHER_CORRESPONDENCE = 'LETTERS_EMAILS_AND_OTHER_CORRESPONDENCE',
-  PHOTO_EVIDENCE = 'PHOTO_EVIDENCE',
-  RECEIPTS = 'RECEIPTS',
-  STATEMENT_OF_ACCOUNT = 'STATEMENT_OF_ACCOUNT',
-  OTHER = 'OTHER',
+export function getEvidenceDetails(ccdEvidenceItem: CCDEvidenceItem): string {
+  type CCDEvidenceDescription = Omit<CCDEvidenceItem, 'evidenceType'>;
+  const convertedEvidenceItem = <CCDEvidenceDescription> ccdEvidenceItem;
+  return Object.values(convertedEvidenceItem).find(value => value !== undefined || value !== null || value !== '');
 }
