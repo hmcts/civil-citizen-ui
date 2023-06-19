@@ -13,9 +13,8 @@
 {% block content %}
 <div class="govuk-width-container caseProgression">
   <main class="govuk-main-wrapper" role="main">
-    {% if form != null and form.hasErrors() %}
-      {{ errorSummary(form.getAllErrors(), t) }}
-    {% endif %}
+    <div id="error-container"></div>
+
     {% set rowNumberToShowRemoveButton = 2 %}
     {% set witnessContentLength = witnessContent.length %}
     {% set isRemoveButtonHidden = witnessContentLength < rowNumberToShowRemoveButton %}
@@ -27,8 +26,10 @@
     {% set trial = t('PAGES.UPLOAD_DOCUMENTS.TRIAL.TITLE') %}
 
     <div class="govuk-grid-row">
-      <form method="post" autocomplete="off" action="/case/{{claimId}}/case-progression/upload-documents?_csrf={{csrf}}" enctype="multipart/form-data" novalidate>
+      <form method="post" id="myForm" autocomplete="off" action="/case/{{claimId}}/case-progression/upload-documents?_csrf={{csrf}}" enctype="multipart/form-data" novalidate>
         {{ csrfProtection(csrf) }}
+        <div id="content"></div>
+
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
           <h1 class="govuk-heading-l">{{ titleH1 }}</h1>
           <h2 class="govuk-heading-s">{{ titleH2 }}</h2>

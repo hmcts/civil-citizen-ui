@@ -195,11 +195,11 @@
   {% endif %}
 
   {% if content.type === ClaimSummaryType.UPLOAD_ARRAY %}
-     <div class="govuk-inset-text">
+     <div class="govuk-inset-text uploadFile">
        {{ govukFileUpload({
            id: content.data.category+'['+content.data.index+']['+content.data.field+']',
            name: content.data.category+'['+content.data.index+']['+content.data.field+']',
-           classes: 'govuk-!-width-three-half '+content.data.classes,
+           classes: 'uploadFile govuk-!-width-three-half '+content.data.classes,
            value: content.data.value,
            label: {
              html: '<strong>'+t(content.data.text)+'</strong><hr class="govuk-section-break--s govuk-section-break--visible">'+t(content.data.html)

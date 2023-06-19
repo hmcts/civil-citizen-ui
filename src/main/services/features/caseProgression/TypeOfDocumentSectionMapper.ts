@@ -29,4 +29,19 @@ export class TypeOfDocumentSectionMapper {
     }
     return undefined;
   }
+
+  static mapToSingleFile(req: Request): FileUpload {
+    const files = req.files as Express.Multer.File[];
+    const file = files[0];
+    if (file) {
+      const mappedFile: FileUpload = new FileUpload();
+      mappedFile.fieldname= file.fieldname;
+      mappedFile.originalname= file.originalname;
+      mappedFile.mimetype= file.mimetype;
+      mappedFile.size= file.size;
+      mappedFile.buffer = file.buffer;
+      return mappedFile;
+    }
+    return undefined;
+  }
 }

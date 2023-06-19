@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response, RequestHandler, Router} from 'express';
-import {CP_EVIDENCE_UPLOAD_CANCEL, CP_UPLOAD_DOCUMENTS_URL} from '../../urls';
+import {CP_EVIDENCE_UPLOAD_CANCEL, CP_UPLOAD_DOCUMENTS_URL, CP_UPLOAD_FILE} from '../../urls';
 import {Claim} from 'models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {getWitnessContent} from 'services/features/caseProgression/witnessService';
@@ -13,6 +13,15 @@ import {
 } from 'services/features/caseProgression/caseProgressionService';
 import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 import {getTrialContent} from 'services/features/caseProgression/trialService';
+import {TypeOfDocumentSectionMapper} from "services/features/caseProgression/TypeOfDocumentSectionMapper";
+import {CaseDocument} from "models/document/caseDocument";
+import {Document} from "models/document/document";
+import {
+  DocumentType,
+  EvidenceUploadDisclosure,
+  EvidenceUploadTrial,
+  EvidenceUploadWitness
+} from "models/document/documentType";
 const multer = require('multer');
 
 const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
@@ -58,11 +67,49 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (re
     const form = new GenericForm(uploadDocumentsForm);
     form.validateSync();
     if (form.hasErrors()) {
-      await renderView(res, claimId, form);
+      //await renderView(res, claimId, form);
+      res.status(400).json({ errors: form.getNestedErrors().filter((item) => {
+        return !(item.target instanceof Array);
+      }),
+      });
+
     } else {
       //todo: save to redis
       //todo: next page (cancel page or continue page)
       await renderView(res, claimId, form);
+    }
+  } catch (error) {
+    next(error);
+  }
+}) as RequestHandler);
+
+uploadDocumentsController.post(CP_UPLOAD_FILE, upload.any(), (async (req, res, next) => {
+  try {
+    //const claimId = req.params.id;
+    const uploadDocumentsForm = TypeOfDocumentSectionMapper.mapToSingleFile(req);
+    const form = new GenericForm(uploadDocumentsForm);
+    form.validateSync();
+    if (form.hasErrors()) {
+      //await renderView(res, claimId, form);
+      res.status(400).json({ errors: form.errors,
+      });
+
+    } else {
+      //todo: save to redis
+      //todo: next page (cancel page or continue page)
+      //await renderView(res, claimId, form);
+      const document = {
+        createdBy: 'test',
+        documentLink: { document_url: 'test',
+          document_filename: 'test',
+          document_binary_url: 'test'},
+        documentName: 'test',
+        documentType: EvidenceUploadWitness,
+        documentSize: '123',
+        createdDatetime: Date.now(),
+      };
+      res.status(400).json({ document: document,
+      });
     }
   } catch (error) {
     next(error);
