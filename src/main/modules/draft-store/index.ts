@@ -4,8 +4,6 @@ import {LoggerInstance} from 'winston';
 
 const Redis = require('ioredis');
 
-const REDIS_DATA = require('./redisData.json');
-
 export class DraftStoreClient {
   public static REDIS_CONNECTION_SUCCESS = 'Connected to Redis instance successfully';
 
@@ -34,12 +32,5 @@ export class DraftStoreClient {
         this.logger.error('Health check failed on redis', error);
         return false;
       });
-    app.locals.draftStoreClient.on('connect', () => {
-      REDIS_DATA.forEach((element: any) => {
-        client.set(element.id, JSON.stringify(element, null, 4)).then(() =>
-          this.logger.info(`Mock data ${element.id} saved to Redis`),
-        );
-      });
-    });
   }
 }
