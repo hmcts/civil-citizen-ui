@@ -40,6 +40,7 @@ import {toCCDWitnesses} from 'services/translation/response/convertToCCDWitnesse
 import {toCCDSmallClaimHearing} from 'services/translation/response/convertToCCDSmallClaimHearing';
 import {toCCDFastClaimHearing} from 'services/translation/response/convertToCCDFastClaimHearing';
 import {toCCDExpert} from 'services/translation/response/convertToCCDExpert';
+import {toCCDResponseLiPFinancialDetails} from 'services/translation/response/convertToCCDResponseLiPFinancialDetails';
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   const paymentIntention = claim.getPaymentIntention();
@@ -53,6 +54,7 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     totalClaimAmount: claim.totalClaimAmount,
     respondent1: toCCDParty(claim.respondent1),
     respondent1LiPResponse: toCCDRespondentLiPResponse(claim),
+    respondent1LiPFinancialDetails : toCCDResponseLiPFinancialDetails(claim.statementOfMeans),
     respondToAdmittedClaim: toCCDRespondToClaim(claim.partialAdmission?.howMuchHaveYouPaid),
     specDefenceAdmittedRequired: toCCDYesNoFromGenericYesNo(claim.partialAdmission?.alreadyPaid),
     respondToAdmittedClaimOwingAmountPounds: claim.partialAdmission?.howMuchDoYouOwe?.amount?.toString(),
