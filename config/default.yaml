@@ -50,8 +50,7 @@ launchDarkly:
   test:
     sdk: 'sdk-5dca6386-1fcd-48d5-b93a-60d13e22ee62'
 pact:
-  branchName: 'master',
-  brokerUrl: 'https://pact-broker.platform.hmcts.net',
-  consumerVersion: '',
-  brokerUsername: '',
+  branchName: 'master'
+  brokerUrl: 'https://pact-broker.platform.hmcts.net'
+  consumerVersion: ''
   brokerPassword: ''
