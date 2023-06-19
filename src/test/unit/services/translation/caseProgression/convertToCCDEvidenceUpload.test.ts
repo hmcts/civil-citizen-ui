@@ -170,7 +170,7 @@ describe('toCCDEvidenceUpload', () => {
       undefined,
       [
         trialClaimant,
-      ]
+      ],
     );
     cuiClaim.defendantUploadDocuments = new UploadDocuments(
       [
@@ -183,7 +183,7 @@ describe('toCCDEvidenceUpload', () => {
       ],
       [
         trialDefendant,
-      ]
+      ],
     );
     const expectedOutput: CCDClaim = {
       caseDocumentUploadDate: new Date(),
