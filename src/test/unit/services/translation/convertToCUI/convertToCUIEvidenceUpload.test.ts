@@ -48,6 +48,15 @@ const expertDocument = {
   createdDateTime: new Date(0),
 };
 
+const typeDocumentIncomplete = {
+  typeOfDocument: 'type',
+  documentIssuedDate: new Date(0),
+  documentUpload: {
+    document_filename: 'document_type.pdf',
+  },
+  createdDateTime: new Date(0),
+};
+
 const typeDocument = {
   typeOfDocument: 'type',
   documentIssuedDate: new Date(0),
@@ -142,40 +151,17 @@ describe('toCUIEvidenceUpload', () => {
     expect(actualOutput).toEqual(expectedOutput);
   });
 
-  it('should handle partially filled CCDClaim', () => {
+  it('should handle partially filled + multiples of same type', () => {
     const ccdClaim: CCDClaim = {
-      documentDisclosureList: [{id: 'Claimant', value: typeDocument}],
-      documentForDisclosure: undefined,
+      documentDisclosureList: [{id: 'Claimant', value: typeDocument}, {id: 'Claimant', value: typeDocument}],
       documentWitnessStatement: [{id: 'Claimant', value: witnessDocument}],
-      documentWitnessSummary: undefined,
-      documentHearsayNotice: undefined,
-      documentReferredInStatement: undefined,
       documentExpertReport: [{id: 'Claimant', value: expertDocument}],
-      documentJointStatement: undefined,
-      documentQuestions: undefined,
-      documentAnswers: undefined,
-      documentCaseSummary: undefined,
-      documentSkeletonArgument: undefined,
-      documentAuthorities: undefined,
       documentCosts: [{id: 'Claimant', value: typeDocument}],
       documentEvidenceForTrial: undefined,
-      caseDocumentUploadDate: undefined,
-      documentDisclosureListRes: undefined,
       documentForDisclosureRes: [{id: 'Defendant', value: typeDocument}],
       documentWitnessStatementRes: undefined,
       documentWitnessSummaryRes: [{id: 'Defendant', value: witnessDocument}],
-      documentHearsayNoticeRes: undefined,
-      documentReferredInStatementRes: undefined,
-      documentExpertReportRes: undefined,
-      documentJointStatementRes: undefined,
-      documentQuestionsRes: [{id: 'Defendant', value: expertDocument}],
-      documentAnswersRes: undefined,
-      documentCaseSummaryRes: undefined,
-      documentSkeletonArgumentRes: undefined,
       documentAuthoritiesRes: [{id: 'Defendant', value: typeDocument}],
-      documentCostsRes: undefined,
-      documentEvidenceForTrialRes: undefined,
-      caseDocumentUploadDateRes: undefined,
     };
     const expectedOutput: CaseProgression = new CaseProgression();
     expectedOutput.claimantUploadDocuments = new UploadDocuments(
