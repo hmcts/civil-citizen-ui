@@ -14,15 +14,18 @@ export class HealthCheck {
       const connectionString = `${protocol}:${config.get('services.draftStore.redis.key')}@${config.get('services.draftStore.redis.host')}:${config.get('services.draftStore.redis.port')}`;
       logger.info(`connectionString: ${connectionString}`);
       logger.info('About to ping Redis...');
-      return app.locals.draftStoreClient.ping()
-        .then((pingResponse: string) => {
-          logger.info('pingResponse: ', pingResponse);
-          return healthCheck.status(pingResponse === 'PONG');
-        })
-        .catch((error: Error) => {
-          logger.error('Health check failed on redis', error);
-          return false;
-        });
+      (async () => {
+        // Connect to redis server
+        await app.locals.draftStoreClient.ping()
+          .then((pingResponse: string) => {
+            logger.info('pingResponse: ', pingResponse);
+            return healthCheck.status(pingResponse === 'PONG');
+          })
+          .catch((error: Error) => {
+            logger.error('Health check failed on redis', error);
+            return false;
+          });
+      })();
     });
 
     const healthCheckConfig = {
