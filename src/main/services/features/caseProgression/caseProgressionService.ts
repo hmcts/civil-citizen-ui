@@ -1,5 +1,8 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {UploadDocuments, UploadDocumentTypes} from 'models/caseProgression/uploadDocumentsType';
+import {
+  UploadDocuments,
+  UploadDocumentTypes,
+} from 'models/caseProgression/uploadDocumentsType';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 import {Request} from 'express';
@@ -9,6 +12,11 @@ import {
   EvidenceUploadTrial,
   EvidenceUploadWitness,
 } from 'models/document/documentType';
+import {
+  FileOnlySection,
+  TypeOfDocumentSection,
+  UploadDocumentsUserForm,
+} from 'models/caseProgression/uploadDocumentsUserForm';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');
@@ -64,13 +72,11 @@ export const getTypeDocumentForm = (req: Request): UploadDocuments => {
   const disclosure = [];
   disclosure.push(documents);
   disclosure.push(list);
-  const yourStatement = new UploadDocumentTypes(!!req.body.yourStatement,undefined,EvidenceUploadWitness.YOUR_STATEMENT);
   const witnessStatement = new UploadDocumentTypes(!!req.body.witnessStatement,undefined,EvidenceUploadWitness.WITNESS_STATEMENT);
   const summary = new UploadDocumentTypes(!!req.body.summary,undefined,EvidenceUploadWitness.WITNESS_SUMMARY);
   const witnessNotice = new UploadDocumentTypes(!!req.body.witnessNotice,undefined,EvidenceUploadWitness.NOTICE_OF_INTENTION);
   const witnessDocuments = new UploadDocumentTypes(!!req.body.witnessDocuments,undefined,EvidenceUploadWitness.DOCUMENTS_REFERRED);
   const witness = [];
-  witness.push(yourStatement);
   witness.push(witnessStatement);
   witness.push(summary);
   witness.push(witnessNotice);
@@ -100,4 +106,48 @@ export const getTypeDocumentForm = (req: Request): UploadDocuments => {
 
   const typeDocumentList = new UploadDocuments(disclosure,witness,expert,trial);
   return typeDocumentList;
+};
+
+export const getUploadDocumentsForm = (req: Request): UploadDocumentsUserForm => {
+  const documentsForDisclosure = getFormSection<TypeOfDocumentSection>(req.body.documentsForDisclosure, bindRequestToTypeOfDocumentSectionObj);
+  const documentsList = getFormSection<FileOnlySection>(req.body.disclosureList, bindRequestToFileOnlySectionObj);
+  const trialCaseSummary = getFormSection<FileOnlySection>(req.body.trialCaseSummary, bindRequestToFileOnlySectionObj);
+  const trialSkeletonArgument = getFormSection<FileOnlySection>(req.body.trialSkeletonArgument, bindRequestToFileOnlySectionObj);
+  const trialAuthorities = getFormSection<FileOnlySection>(req.body.trialAuthorities, bindRequestToFileOnlySectionObj);
+  const trialCosts = getFormSection<FileOnlySection>(req.body.trialCosts, bindRequestToFileOnlySectionObj);
+  const trialDocumentary = getFormSection<TypeOfDocumentSection>(req.body.trialDocumentary, bindRequestToTypeOfDocumentSectionObj);
+
+  return new UploadDocumentsUserForm(
+    documentsForDisclosure,
+    documentsList,
+    trialCaseSummary,
+    trialSkeletonArgument,
+    trialAuthorities,
+    trialCosts,
+    trialDocumentary,
+  );
+};
+
+const getFormSection = <T>(data: any[], bindFunction: (request: any) => T): T[] => {
+  const formSection: T[] = [];
+  data?.forEach(function (request: any) {
+    formSection.push(bindFunction(request));
+  });
+  return formSection;
+};
+
+const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSection => {
+  const formObj: TypeOfDocumentSection = new TypeOfDocumentSection();
+  formObj.typeOfDocument = request['typeOfDocument'].trim();
+  formObj.dateDay = request['date-day'];
+  formObj.dateMonth = request['date-month'];
+  formObj.dateYear = request['date-year'];
+  formObj.fileUpload = request['file_upload'];
+  return formObj;
+};
+
+const bindRequestToFileOnlySectionObj = (request: any): FileOnlySection => {
+  const formObj: FileOnlySection = new FileOnlySection();
+  formObj.fileUpload = request['file_upload'];
+  return formObj;
 };

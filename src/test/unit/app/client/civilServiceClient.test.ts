@@ -19,7 +19,7 @@ import {TestMessages} from '../../../utils/errorMessageTestConstants';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import {CaseDocument} from 'models/document/caseDocument';
 
-import {FileUpload} from 'models/caseProgression/uploadDocumentsUserForm';
+import {FileUpload} from 'models/caseProgression/fileUpload';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -316,6 +316,29 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
       await expect(civilServiceClient.assignDefendantToClaim('1', mockedAppRequest)).rejects.toThrow('error');
+    });
+  });
+
+  describe('getResponseDeadlineDate', () => {
+    it('should return response deadline date successfully', async () => {
+      //Given
+      const responseDeadlineDate = new Date(2023, 6, 22);
+      const mockGet = jest.fn().mockResolvedValue({data: responseDeadlineDate});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //When
+      const deadlineDate= await civilServiceClient.getAgreedDeadlineResponseDate('1', mockedAppRequest);
+      //Then
+      expect(deadlineDate).toStrictEqual(responseDeadlineDate);
+    });
+    it('should throw error when there is an error calling civil service getting the deadline date', async () => {
+      const mockGet = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.getAgreedDeadlineResponseDate('1', mockedAppRequest)).rejects.toThrow('error');
     });
   });
 });
