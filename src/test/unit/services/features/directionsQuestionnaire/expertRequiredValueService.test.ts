@@ -58,8 +58,7 @@ describe('Expert Required Value service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(saveExpertRequiredValue('1234', true))
-      .rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(saveExpertRequiredValue('1234', true)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 });

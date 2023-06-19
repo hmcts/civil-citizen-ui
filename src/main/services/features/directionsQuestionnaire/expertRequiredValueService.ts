@@ -30,4 +30,4 @@ export const saveExpertRequiredValue = async (claimId: string, expertRequiredVal
     logger.error(error);
     throw error;
   }
-}
+};
