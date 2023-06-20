@@ -14,7 +14,7 @@ import {CCDRespondentLiPResponse} from 'models/ccdResponse/ccdRespondentLiPRespo
 import {YesNo} from 'form/models/yesNo';
 
 const companyName = 'Version 1';
-const phone = new PartyPhone('123456789');
+const phone = new PartyPhone('123456789', true);
 const phoneCCD = '123456789';
 const title = 'Mr';
 const firstName = 'Jon';

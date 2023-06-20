@@ -5,7 +5,7 @@ import {
   EvidenceUploadWitness,
 } from 'models/document/documentType';
 import {AtLeastOneCheckboxSelectedValidator} from 'form/validators/atLeastOneCheckboxSelectedValidator';
-import {Document} from 'models/document/document';
+import {Document} from 'common/models/document/document';
 
 export class UploadDocuments {
 

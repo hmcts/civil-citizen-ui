@@ -104,6 +104,15 @@ describe('Citizen phone number', () => {
           expect(res.status).toBe(302);
         });
     });
+    it('should redirect on empty input', async () => {
+      app.locals.draftStoreClient = mockNoStatementOfMeans;
+      await request(app)
+        .post(CITIZEN_PHONE_NUMBER_URL)
+        .send('telephoneNumber=')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+        });
+    });
     it('should return http 500 when has error in the post method', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
