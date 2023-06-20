@@ -67,20 +67,30 @@ describe('on POST', () => {
     app.locals.draftStoreClient = mockCivilClaim;
   });
   it('should display documentForDisclosure validation error when invalid', async () => {
-    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'date-day':'','date-month':'','date-year':'','file_upload':''}]};
+    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'dateDay':'','dateMonth':'','dateYear':'','file_upload':''}]};
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
       .send(documentForDisclosureModel)
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('You must enter type of document');
-        expect(res.text).toContain(TestMessages.VALID_ENTER_DATE_DOC_ISSUED);
+        expect(res.text).toContain(TestMessages.VALID_ENTER_TYPE_OF_DOCUMENT);
+      });
+  });
+
+  it('should display disclosureList validation error when invalid', async () => {
+    const disclosureList = {'disclosureList':[{'file_upload':''}]};
+
+    await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .send(disclosureList)
+      .expect((res) => {
+        expect(res.status).toBe(200);
       });
   });
 
   it('should display documentForDisclosure validation error when Day month and year is invalid', async () => {
-    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'date-day':'45','date-month':'17','date-year':'202','file_upload':''}]};
+    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'dateDay':'45','dateMonth':'17','dateYear':'202','file_upload':''}]};
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
@@ -93,7 +103,7 @@ describe('on POST', () => {
   });
 
   it('should display documentForDisclosure validation error when day is blank', async () => {
-    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'date-day':'','date-month':'11','date-year':'2022','file_upload':''}]};
+    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'dateDay':'','dateMonth':'11','dateYear':'2022','file_upload':''}]};
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
@@ -106,7 +116,7 @@ describe('on POST', () => {
   });
 
   it('should display documentForDisclosure validation error when month is blank', async () => {
-    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'date-day':'12','date-month':'','date-year':'2022','file_upload':''}]};
+    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'dateDay':'12','dateMonth':'','dateYear':'2022','file_upload':''}]};
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
@@ -119,7 +129,7 @@ describe('on POST', () => {
   });
 
   it('should display documentForDisclosure validation error when year is blank', async () => {
-    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'date-day':'12','date-month':'11','date-year':'','file_upload':''}]};
+    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'dateDay':'12','dateMonth':'11','dateYear':'','file_upload':''}]};
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
@@ -132,7 +142,7 @@ describe('on POST', () => {
   });
 
   it('should display documentForDisclosure validation error when date is in future', async () => {
-    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'date-day':'12','date-month':'11','date-year':mockFutureYear,'file_upload':''}]};
+    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'dateDay':'12','dateMonth':'11','dateYear':mockFutureYear,'file_upload':''}]};
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
@@ -144,14 +154,32 @@ describe('on POST', () => {
       });
   });
 
-  it('should display disclosureList validation error when invalid', async () => {
-    const disclosureList = {'disclosureList':[{'file_upload':''}]};
+  it('should display witness validation error when invalid', async () => {
+    const model = {'witnessStatement':[{'witnessName':'', 'dateDay':'','dateMonth':'','dateYear':'','file_upload':''}]};
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
-      .send(disclosureList)
+      .send(model)
       .expect((res) => {
         expect(res.status).toBe(200);
+        expect(res.text).toContain(TestMessages.VALID_ENTER_WITNESS_NAME);
+        expect(res.text).toContain(TestMessages.VALID_ENTER_DATE_DOC_ISSUED);
+      });
+  });
+
+  it('should display all expert validation errors', async () => {
+    const model = {'expertReport':[{'expertName':'', 'fieldOfExpertise':'', 'questionDocumentName':'', 'otherPartyQuestionsDocumentName':'', 'dateDay':'','dateMonth':'','dateYear':''}]};
+
+    await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .send(model)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(TestMessages.VALID_ENTER_EXPERT_NAME);
+        expect(res.text).toContain(TestMessages.VALID_ENTER_EXPERTISE);
+        expect(res.text).toContain(TestMessages.VALID_ENTER_DOCUMENT_QUESTIONS);
+        expect(res.text).toContain(TestMessages.VALID_ENTER_DOCUMENT_QUESTIONS_OTHER_PARTY);
+        expect(res.text).toContain(TestMessages.VALID_ENTER_DATE_DOC_ISSUED);
       });
   });
 

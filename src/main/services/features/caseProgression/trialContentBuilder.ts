@@ -48,12 +48,11 @@ export const buildTrialCostSection = (section: FileOnlySection = null, index = 0
 
 export const buildTrialDocumentarySection = (section: TypeOfDocumentSection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
   const errorFieldNamePrefix = `${trialDocumentary}[${trialDocumentary}][${index}]`;
-  const invalidDayError = form?.errorFor(`${errorFieldNamePrefix}[dateDay]`, trialDocumentary) !== undefined ? 'govuk-form-group--error govuk-input--error' : '';
-  const invalidMonthError = form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`, trialDocumentary) !== undefined ? 'govuk-form-group--error govuk-input--error' : '';
-  const invalidYearError = form?.errorFor(`${errorFieldNamePrefix}[dateYear]`, trialDocumentary) !== undefined ? 'govuk-form-group--error govuk-input--error' : '';
-  const invalidDateError = form?.errorFor(`${errorFieldNamePrefix}[date]`, trialDocumentary) !== undefined ? 'govuk-form-group--error govuk-input--error' : '';
   const missingInputError = form?.errorFor(`${errorFieldNamePrefix}[typeOfDocument]`, trialDocumentary) !== undefined ? 'ERRORS.VALID_ENTER_TYPE_OF_DOCUMENT' : null;
-
+  const invalidDateError = form?.errorFor(`${errorFieldNamePrefix}[date]`, trialDocumentary) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[date]`, trialDocumentary) : '';
+  const invalidDayError = form?.errorFor(`${errorFieldNamePrefix}[dateDay]`, trialDocumentary) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateDay]`, trialDocumentary) : '';
+  const invalidMonthError = form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`, trialDocumentary) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`, trialDocumentary) : '';
+  const invalidYearError = form?.errorFor(`${errorFieldNamePrefix}[dateYear]`, trialDocumentary) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateYear]`, trialDocumentary) : '';
   return new UploadDocumentsSectionBuilder()
     .addTitle('PAGES.UPLOAD_DOCUMENTS.TRIAL.DOCUMENTARY')
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT', '', 'PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT_EXAMPLE', trialDocumentary, 'typeOfDocument', section?.typeOfDocument, index, missingInputError)

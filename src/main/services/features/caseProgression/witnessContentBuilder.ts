@@ -1,70 +1,79 @@
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {UploadDocumentsSectionBuilder} from 'models/caseProgression/uploadDocumentsSectionBuilder';
-import {TypeOfDocumentSection, UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
+import {
+  TypeOfDocumentSection,
+  UploadDocumentsUserForm,
+  WitnessSection,
+} from 'models/caseProgression/uploadDocumentsUserForm';
 import {GenericForm} from 'form/models/genericForm';
 
-const witnessEvidence = 'witness-evidence';
-const witnessStatement = witnessEvidence + '-witness-statement';
-const witnessSummary = witnessEvidence + '-witness-summary';
-const noticeOfHearsayEvidence = witnessEvidence + '-notice';
-const documentsInStatement = witnessEvidence + '-documents';
+const witnessStatement = 'witnessStatement';
+const witnessSummary = 'witnessSummary';
+const noticeOfIntention = 'noticeOfIntention';
+const documentsReferred = 'documentsReferred';
 
 const fileUpload = 'file_upload';
-const widthThreeHalfClass = 'govuk-!-width-three-half';
 
-export const buildWitnessStatement = (section: TypeOfDocumentSection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
+export const buildWitnessStatement = (section: WitnessSection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
   const errorFieldNamePrefix = `${witnessStatement}[${witnessStatement}][${index}]`;
+  const invalidDateError = form?.errorFor(`${errorFieldNamePrefix}[date]`, witnessStatement) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[date]`, witnessStatement) : '';
   const invalidDayError = form?.errorFor(`${errorFieldNamePrefix}[dateDay]`, witnessStatement) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateDay]`, witnessStatement) : '';
   const invalidMonthError = form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`, witnessStatement) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`, witnessStatement) : '';
   const invalidYearError = form?.errorFor(`${errorFieldNamePrefix}[dateYear]`, witnessStatement) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateYear]`, witnessStatement) : '';
-  const invalidDateError = form?.errorFor(`${errorFieldNamePrefix}[date]`, witnessStatement) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[date]`, witnessStatement) : '';
 
   return new UploadDocumentsSectionBuilder()
     .addTitle('PAGES.UPLOAD_DOCUMENTS.WITNESS.STATEMENT')
-    .addInputArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', widthThreeHalfClass, '', witnessStatement, 'name')
-    .addDateArray('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', invalidDayError, invalidMonthError,invalidYearError,invalidDateError, 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', witnessEvidence, 'date', section?.dateDay.toString(), section?.dateMonth.toString(), section?.dateYear.toString(), index)
+    .addInputArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', '', '', witnessStatement, 'witnessName', section?.witnessName, index, form?.errorFor(`${errorFieldNamePrefix}[witnessName]`, witnessStatement))
+    .addDateArray('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', invalidDayError, invalidMonthError,invalidYearError,invalidDateError, 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', witnessStatement, 'date', section?.dateDay.toString(), section?.dateMonth.toString(), section?.dateYear.toString(), index)
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', witnessStatement, fileUpload)
+    .addRemoveSectionButton(form?.model.witnessStatement?.length > 1 || false)
     .build();
 };
 
-export const buildWitnessSummary = (section: TypeOfDocumentSection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
+export const buildWitnessSummary = (section: WitnessSection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
   const errorFieldNamePrefix = `${witnessSummary}[${witnessSummary}][${index}]`;
+  const invalidDateError = form?.errorFor(`${errorFieldNamePrefix}[date]`, witnessSummary) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[date]`, witnessSummary) : '';
   const invalidDayError = form?.errorFor(`${errorFieldNamePrefix}[dateDay]`, witnessSummary) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateDay]`, witnessSummary) : '';
   const invalidMonthError = form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`, witnessSummary) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`, witnessSummary) : '';
   const invalidYearError = form?.errorFor(`${errorFieldNamePrefix}[dateYear]`, witnessSummary) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateYear]`, witnessSummary) : '';
-  const invalidDateError = form?.errorFor(`${errorFieldNamePrefix}[date]`, witnessSummary) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[date]`, witnessSummary) : '';
+
   return new UploadDocumentsSectionBuilder()
     .addTitle('PAGES.UPLOAD_DOCUMENTS.WITNESS.SUMMARY')
-    .addInputArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', widthThreeHalfClass, '', witnessSummary, 'name')
+    .addInputArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', '', '', witnessSummary, 'witnessName', section?.witnessName, index, form?.errorFor(`${errorFieldNamePrefix}[witnessName]`, witnessSummary))
     .addDateArray('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', invalidDayError, invalidMonthError,invalidYearError,invalidDateError, 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', witnessSummary, 'date', section?.dateDay.toString(), section?.dateMonth.toString(), section?.dateYear.toString(), index)
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', witnessSummary, fileUpload)
+    .addRemoveSectionButton(form?.model.witnessSummary?.length > 1 || false)
     .build();
 };
 
-export const buildNoticeOfHearsayEvidence = (section: TypeOfDocumentSection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
-  const errorFieldNamePrefix = `${noticeOfHearsayEvidence}[${noticeOfHearsayEvidence}][${index}]`;
-  const invalidDayError = form?.errorFor(`${errorFieldNamePrefix}[dateDay]`, noticeOfHearsayEvidence) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateDay]`, noticeOfHearsayEvidence) : '';
-  const invalidMonthError = form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`, noticeOfHearsayEvidence) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`, noticeOfHearsayEvidence) : '';
-  const invalidYearError = form?.errorFor(`${errorFieldNamePrefix}[dateYear]`, noticeOfHearsayEvidence) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateYear]`, noticeOfHearsayEvidence) : '';
-  const invalidDateError = form?.errorFor(`${errorFieldNamePrefix}[date]`, noticeOfHearsayEvidence) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[date]`, noticeOfHearsayEvidence) : '';
+export const buildNoticeOfIntention = (section: WitnessSection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
+  const errorFieldNamePrefix = `${noticeOfIntention}[${noticeOfIntention}][${index}]`;
+  const invalidDateError = form?.errorFor(`${errorFieldNamePrefix}[date]`, noticeOfIntention) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[date]`, noticeOfIntention) : '';
+  const invalidDayError = form?.errorFor(`${errorFieldNamePrefix}[dateDay]`, noticeOfIntention) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateDay]`, noticeOfIntention) : '';
+  const invalidMonthError = form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`, noticeOfIntention) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`, noticeOfIntention) : '';
+  const invalidYearError = form?.errorFor(`${errorFieldNamePrefix}[dateYear]`, noticeOfIntention) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateYear]`, noticeOfIntention) : '';
+
   return new UploadDocumentsSectionBuilder()
     .addTitle('PAGES.UPLOAD_DOCUMENTS.WITNESS.NOTICE')
-    .addInputArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', widthThreeHalfClass, '', noticeOfHearsayEvidence, 'name')
-    .addDateArray('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', invalidDayError, invalidMonthError,invalidYearError,invalidDateError, 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', noticeOfHearsayEvidence, 'date', section?.dateDay.toString(), section?.dateMonth.toString(), section?.dateYear.toString(), index)
-    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', noticeOfHearsayEvidence, fileUpload)
+    .addInputArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', '', '', noticeOfIntention, 'witnessName', section?.witnessName, index, form?.errorFor(`${errorFieldNamePrefix}[witnessName]`, noticeOfIntention))
+    .addDateArray('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', invalidDayError, invalidMonthError,invalidYearError,invalidDateError, 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', noticeOfIntention, 'date', section?.dateDay.toString(), section?.dateMonth.toString(), section?.dateYear.toString(), index)
+    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', noticeOfIntention, fileUpload, index)
+    .addRemoveSectionButton(form?.model.noticeOfIntention?.length > 1 || false)
     .build();
 };
 
-export const buildDocumentsInStatement = (section: TypeOfDocumentSection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
-  const errorFieldNamePrefix = `${documentsInStatement}[${documentsInStatement}][${index}]`;
-  const invalidDayError = form?.errorFor(`${errorFieldNamePrefix}[dateDay]`, documentsInStatement) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateDay]`, documentsInStatement) : '';
-  const invalidMonthError = form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`, documentsInStatement) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`, documentsInStatement) : '';
-  const invalidYearError = form?.errorFor(`${errorFieldNamePrefix}[dateYear]`, documentsInStatement) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateYear]`, documentsInStatement) : '';
-  const invalidDateError = form?.errorFor(`${errorFieldNamePrefix}[date]`, documentsInStatement) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[date]`, documentsInStatement) : '';
+export const buildDocumentsReferred = (section: TypeOfDocumentSection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
+  const errorFieldNamePrefix = `${documentsReferred}[${documentsReferred}][${index}]`;
+  const invalidDateError = form?.errorFor(`${errorFieldNamePrefix}[date]`, documentsReferred) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[date]`, documentsReferred) : '';
+  const invalidDayError = form?.errorFor(`${errorFieldNamePrefix}[dateDay]`, documentsReferred) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateDay]`, documentsReferred) : '';
+  const invalidMonthError = form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`, documentsReferred) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`, documentsReferred) : '';
+  const invalidYearError = form?.errorFor(`${errorFieldNamePrefix}[dateYear]`, documentsReferred) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateYear]`, documentsReferred) : '';
+
   return new UploadDocumentsSectionBuilder()
     .addTitle('PAGES.UPLOAD_DOCUMENTS.WITNESS.DOCUMENT')
-    .addInputArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.TYPE_OF_DOCUMENT', widthThreeHalfClass, 'PAGES.UPLOAD_DOCUMENTS.WITNESS.TYPE_OF_DOCUMENT_HINT', documentsInStatement, 'type')
-    .addDateArray('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', invalidDayError, invalidMonthError,invalidYearError,invalidDateError, 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', noticeOfHearsayEvidence, 'date', section?.dateDay.toString(), section?.dateMonth.toString(), section?.dateYear.toString(), index)
-    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', documentsInStatement, fileUpload)
+    .addInputArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.TYPE_OF_DOCUMENT', '', 'PAGES.UPLOAD_DOCUMENTS.WITNESS.TYPE_OF_DOCUMENT_HINT', documentsReferred, 'typeOfDocument', section?.typeOfDocument, index, form?.errorFor(`${errorFieldNamePrefix}[typeOfDocument]`, documentsReferred))
+    .addDateArray('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', invalidDayError, invalidMonthError,invalidYearError,invalidDateError, 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', documentsReferred, 'date', section?.dateDay.toString(), section?.dateMonth.toString(), section?.dateYear.toString(), index)
+    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', documentsReferred, fileUpload, index)
+    .addRemoveSectionButton(form?.model.documentsReferred?.length > 1 || false)
     .build();
 };

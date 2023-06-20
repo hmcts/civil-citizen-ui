@@ -1,60 +1,66 @@
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {UploadDocumentsSectionBuilder} from 'models/caseProgression/uploadDocumentsSectionBuilder';
-import {TypeOfDocumentSection, UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 import {GenericForm} from 'form/models/genericForm';
+import {
+  ExpertSection,
+  UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 
-const expertReportType = 'expert_report';
+const expertReport = 'expertReport';
+const expertStatement = 'expertStatement';
+const questionsForExperts = 'questionsForExperts';
+const answersForExperts = 'answersForExperts';
 const fileUpload = 'file_upload';
-const expertJointStatementType = 'expert_report';
-const expertQuestionsForOtherType = 'expert_report';
-const expertAnswersToQuestionsType = 'expert_report';
 
-export const buildExpertReportSection = (section: TypeOfDocumentSection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
-  const errorFieldNamePrefix = `${expertReportType}[${expertReportType}][${index}]`;
-  const invalidDayError = form?.errorFor(`${errorFieldNamePrefix}[dateDay]`, expertReportType) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateDay]`, expertReportType) : '';
-  const invalidMonthError = form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`, expertReportType) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`, expertReportType) : '';
-  const invalidYearError = form?.errorFor(`${errorFieldNamePrefix}[dateYear]`, expertReportType) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateYear]`, expertReportType) : '';
-  const invalidDateError = form?.errorFor(`${errorFieldNamePrefix}[date]`, expertReportType) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[date]`, expertReportType) : '';
+export const buildExpertReportSection = (section: ExpertSection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
+  const errorFieldNamePrefix = `${expertReport}[${index}]`;
+  const invalidDateError = form?.errorFor(`${errorFieldNamePrefix}[date]`) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[date]`) : '';
+  const invalidDayError = form?.errorFor(`${errorFieldNamePrefix}[dateDay]`) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateDay]`) : '';
+  const invalidMonthError = form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`) : '';
+  const invalidYearError = form?.errorFor(`${errorFieldNamePrefix}[dateYear]`) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateYear]`) : '';
   return new UploadDocumentsSectionBuilder()
     .addTitle('PAGES.UPLOAD_DOCUMENTS.EXPERT.EXPERT_REPORT')
-    .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.EXPERT_NAME','govuk-!-width-three-half','',expertReportType,'type')
-    .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.FIELD_EXPERTISE','govuk-!-width-three-half','',expertReportType,'type')
-    .addDateArray('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', invalidDayError,invalidMonthError,invalidYearError,invalidDateError,'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', expertReportType, 'date', section?.dateDay.toString(), section?.dateMonth.toString(), section?.dateYear.toString(), index)
-    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD','', expertReportType, fileUpload)
+    .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.EXPERT_NAME', '', '', expertReport, 'expertName', section?.expertName, index, form?.errorFor(`${errorFieldNamePrefix}[expertName]`))
+    .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.FIELD_EXPERTISE', '', '', expertReport, 'fieldOfExpertise', section?.fieldOfExpertise, index, form?.errorFor(`${errorFieldNamePrefix}[fieldOfExpertise]`))
+    .addDateArray('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', invalidDayError,invalidMonthError,invalidYearError,invalidDateError,'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', expertReport, 'date', section?.dateDay.toString(), section?.dateMonth.toString(), section?.dateYear.toString(), index)
+    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD','', expertReport, fileUpload)
     .build();
 };
 
-export const buildJointStatementSection = (section: TypeOfDocumentSection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
-  const errorFieldNamePrefix = `${expertReportType}[${expertReportType}][${index}]`;
-  const invalidDayError = form?.errorFor(`${errorFieldNamePrefix}[dateDay]`, expertJointStatementType) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateDay]`, expertJointStatementType) : '';
-  const invalidMonthError = form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`, expertJointStatementType) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`, expertJointStatementType) : '';
-  const invalidYearError = form?.errorFor(`${errorFieldNamePrefix}[dateYear]`, expertJointStatementType) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateYear]`, expertJointStatementType) : '';
-  const invalidDateError = form?.errorFor(`${errorFieldNamePrefix}[date]`, expertJointStatementType) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[date]`, expertJointStatementType) : '';
+export const buildJointStatementSection = (section: ExpertSection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
+  const errorFieldNamePrefix = `${expertStatement}[${index}]`;
+  const invalidDayError = form?.errorFor(`${errorFieldNamePrefix}[dateDay]`) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateDay]`) : '';
+  const invalidMonthError = form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`) : '';
+  const invalidYearError = form?.errorFor(`${errorFieldNamePrefix}[dateYear]`) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[dateYear]`) : '';
+  const invalidDateError = form?.errorFor(`${errorFieldNamePrefix}[date]`) !== undefined ? form?.errorFor(`${errorFieldNamePrefix}[date]`) : '';
   return new UploadDocumentsSectionBuilder()
     .addTitle('PAGES.UPLOAD_DOCUMENTS.EXPERT.JOINT_STATEMENT')
-    .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.EXPERTS_NAMES','govuk-!-width-three-half','',expertJointStatementType,'type')
-    .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.FIELD_EXPERTISE','govuk-!-width-three-half','',expertJointStatementType,'type')
-    .addDateArray('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', invalidDayError,invalidMonthError,invalidYearError,invalidDateError,'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', expertJointStatementType, 'date', section?.dateDay.toString(), section?.dateMonth.toString(), section?.dateYear.toString(), index)
-    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD','', expertJointStatementType, fileUpload)
+    .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.EXPERTS_NAMES', '', '', expertStatement, 'expertName', section?.expertName, index, form?.errorFor(`${errorFieldNamePrefix}[expertName]`))
+    .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.FIELD_EXPERTISE', 'govuk-!-width-three-half', '', expertStatement, 'fieldOfExpertise', section?.fieldOfExpertise, index, form?.errorFor(`${errorFieldNamePrefix}[fieldOfExpertise]`))
+    .addDateArray('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', invalidDayError,invalidMonthError,invalidYearError,invalidDateError,'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', expertStatement, 'date', section?.dateDay.toString(), section?.dateMonth.toString(), section?.dateYear.toString(), index)
+    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD','', expertStatement, fileUpload)
     .build();
 };
 
-export const buildQuestionsForOtherSection = (selectItems: string[]): ClaimSummarySection[] => {
+export const buildQuestionsForOtherSection = (selectItems: ({ text: string; value: string })[], section: ExpertSection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
+  const errorFieldNamePrefix = `${questionsForExperts}[${index}]`;
+
   return new UploadDocumentsSectionBuilder()
-    .addTitle('PAGES.UPLOAD_DOCUMENTS.EXPERT.QUESTIONS_FOR_OTHER',null,'govuk-!-width-three-quarters')
-    .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.EXPERT_NAME','govuk-!-width-three-half','',expertQuestionsForOtherType,'type')
-    .addSelect('PAGES.UPLOAD_DOCUMENTS.EXPERT.OTHER_PARTY_NAME','govuk-!-width-three-half','','PAGES.UPLOAD_DOCUMENTS.EXPERT.SELECT',selectItems,expertQuestionsForOtherType, 'type')
-    .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.NAME_DOCUMENT_YOU','govuk-!-width-three-half','',expertQuestionsForOtherType,'type')
-    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD','', expertQuestionsForOtherType, fileUpload)
+    .addTitle('PAGES.UPLOAD_DOCUMENTS.EXPERT.QUESTIONS_FOR_OTHER', null, 'govuk-!-width-three-quarters')
+    .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.EXPERT_NAME', '', '', questionsForExperts, 'expertName', section?.expertName, index, form?.errorFor(`${errorFieldNamePrefix}[expertName]`))
+    .addSelect('PAGES.UPLOAD_DOCUMENTS.EXPERT.OTHER_PARTY_NAME', '', '', 'PAGES.UPLOAD_DOCUMENTS.EXPERT.SELECT', selectItems, questionsForExperts, 'otherPartyName', section?.otherPartyName, index, form?.errorFor(`${errorFieldNamePrefix}[otherPartyName]`))
+    .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.NAME_DOCUMENT_YOU', '', '', questionsForExperts, 'questionDocumentName', section?.questionDocumentName, index, form?.errorFor(`${errorFieldNamePrefix}[questionDocumentName]`))
+    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', questionsForExperts, fileUpload)
     .build();
 };
 
-export const buildAnswersToQuestionsSection = (selectItems: string[]): ClaimSummarySection[] => {
+export const buildAnswersToQuestionsSection = (selectItems: ({ text: string; value: string })[], section: ExpertSection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
+  const errorFieldNamePrefix = `${answersForExperts}[${index}]`;
+
   return new UploadDocumentsSectionBuilder()
     .addTitle('PAGES.UPLOAD_DOCUMENTS.EXPERT.ANSWERS_TO_QUESTIONS')
-    .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.EXPERT_NAME','govuk-!-width-three-half','',expertAnswersToQuestionsType,'type')
-    .addSelect('PAGES.UPLOAD_DOCUMENTS.EXPERT.OTHER_PARTY_NAME','govuk-!-width-three-half', '','PAGES.UPLOAD_DOCUMENTS.EXPERT.SELECT',selectItems,expertAnswersToQuestionsType,'type')
-    .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.NAME_DOCUMENT_WITH','govuk-!-width-three-half','',expertAnswersToQuestionsType,'type')
-    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD','', expertAnswersToQuestionsType, fileUpload)
+    .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.EXPERT_NAME', '', '', answersForExperts, 'expertName', section?.expertName, index, form?.errorFor(`${errorFieldNamePrefix}[expertName]`))
+    .addSelect('PAGES.UPLOAD_DOCUMENTS.EXPERT.OTHER_PARTY_NAME', '', '', 'PAGES.UPLOAD_DOCUMENTS.EXPERT.SELECT', selectItems, answersForExperts, 'otherPartyName', section?.otherPartyName, index, form?.errorFor(`${errorFieldNamePrefix}[otherPartyName]`))
+    .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.NAME_DOCUMENT_WITH', '', '', answersForExperts, 'otherPartyQuestionsDocumentName', section?.otherPartyQuestionsDocumentName, index, form?.errorFor(`${errorFieldNamePrefix}[otherPartyQuestionsDocumentName]`))
+    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', answersForExperts, fileUpload)
     .build();
 };
