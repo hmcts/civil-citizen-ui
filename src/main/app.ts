@@ -17,7 +17,7 @@ import {CSRFToken} from './modules/csrf';
 import routes from './routes/routes';
 import {setLanguage} from 'modules/i18n/languageService';
 import {isServiceShuttered} from './app/auth/launchdarkly/launchDarklyClient';
-import {draftStoreClient} from "modules/draft-store/index_test";
+import {draftStoreClient} from 'modules/draft-store/index_test';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
