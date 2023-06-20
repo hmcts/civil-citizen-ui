@@ -13,6 +13,7 @@ Before(async ({api}) => {
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef);
   await api.performViewAndRespondToDefence(config.applicantSolicitorUser, claimRef);
+  await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef);
   LoginSteps.EnterUserCredentials(config.Username, config.Password);
 });
 

@@ -26,6 +26,17 @@ const PBAv3Toggle = 'pba-version-3-ways-to-pay';
 
 module.exports = {
 
+  performCaseProgressedToHearingInitiated: async (user, caseId) => {
+    console.log('This is inside performCaseProgressedToHearingInitiated() : ' + caseId);
+    eventName = 'HEARING_SCHEDULED';
+    const payload = caseProgressionToSDOState.createCaseProgressionToSDOState();
+    await apiRequest.setupTokens(user);
+    caseData = payload['caseDataUpdate'];
+    await assertSubmittedSpecEvent('CASE_PROGRESSION');
+    await waitForFinishedBusinessProcess(caseId);
+    console.log('End of performCaseProgressedToHearingInitiated()');
+  },
+
   performCaseProgressedToSDO: async (user, caseId) => {
     console.log('This is inside performCaseProgressedToSDO : ' + caseId);
     eventName = 'CREATE_SDO';
