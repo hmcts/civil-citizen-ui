@@ -1,7 +1,6 @@
 import {CaseState} from 'form/models/claimDetails';
 import {getWitnessContent} from 'services/features/caseProgression/witnessService';
 import {
-  FileOnlySection,
   UploadDocumentsUserForm,
   WitnessSection,
 } from 'models/caseProgression/uploadDocumentsUserForm';
@@ -168,7 +167,7 @@ describe('Witness service', () => {
     ).selected = true;
 
     const form = new UploadDocumentsUserForm();
-    form.documentsReferred = getMockFileSectionArray();
+    form.documentsReferred = getMockWitnessSectionArray();
     const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
     genericForm.validateSync();
 
@@ -183,14 +182,7 @@ describe('Witness service', () => {
 
 const getMockWitnessSectionArray = () => {
   const sectionArray: WitnessSection[] = [];
-  sectionArray.push(new WitnessSection());
-  sectionArray.push(new WitnessSection());
-  return sectionArray;
-};
-
-const getMockFileSectionArray = () => {
-  const sectionArray: FileOnlySection[] = [];
-  sectionArray.push(new FileOnlySection());
-  sectionArray.push(new FileOnlySection());
+  sectionArray.push(new WitnessSection('12', '12', '2022'));
+  sectionArray.push(new WitnessSection('12', '12', '2022'));
   return sectionArray;
 };
