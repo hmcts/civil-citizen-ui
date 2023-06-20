@@ -1048,7 +1048,7 @@
         "AWAITING_CLAIMANT_RESPONSE": "Wait for the claimant to respond",
         "CLAIM_SETTLED": "This claim is settled.",
         "CLAIMANT_CONFIRMED_PAYMENT": "{{ claimantName }} confirmed you’ve paid",
-        "CLAIMANT_ACCEPTED_PART_ADMIT_PAYMENT": "{{ claimantName }} accepted your admission of {{ amount }}",
+        "CLAIMANT_ACCEPTED_PART_ADMIT_PAYMENT": "{{ claimantName }} accepted your admission of £{{ amount }}",
         "CLAIMANT_ASKED_TO_SIGN_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
         "CLAIMANT_REQUESTED_CCJ": "{{ claimantName }} requested a County Court Judgment against you on {{ccjRequestedDate}}",
         "CLAIMANT_REQUESTED_CCJ_BY_DETERMINATION": "{{ claimantName }} requested a County Court Judgment against you",
