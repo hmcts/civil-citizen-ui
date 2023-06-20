@@ -1,6 +1,7 @@
 import {DraftStoreClient} from 'modules/draft-store';
 import {LoggerInstance} from 'winston';
 import express from 'express';
+import {draftStoreClient} from 'modules/draft-store/index_test';
 
 jest.mock('ioredis', () => {
   return jest.fn().mockImplementation(() => {
@@ -27,8 +28,9 @@ const app: express.Application = {
 
 describe('Draft Store Client', () => {
   it('Upon successful connection to Redis, log info message', async () => {
-    const draftStoreClient: DraftStoreClient = new DraftStoreClient(mockLogger);
-    draftStoreClient.enableFor(app);
+    const draftStoreClient1: DraftStoreClient = new DraftStoreClient(mockLogger);
+    draftStoreClient1.enableFor(app);
+    draftStoreClient(app);
     await new Promise(process.nextTick);
     expect(mockLogger.info).toHaveBeenCalledWith(DraftStoreClient.REDIS_CONNECTION_SUCCESS);
   });
