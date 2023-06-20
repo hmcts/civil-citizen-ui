@@ -86,25 +86,25 @@ export class TypeOfDocumentSection extends FileOnlySection {
   @IsNotEmpty({message: 'ERRORS.VALID_YOU_MUST_ENTER_DOI'})
   @IsDate({message: 'ERRORS.VALID_DATE'})
   @Validate(OptionalDateNotInFutureValidator, {message: 'ERRORS.VALID_DATE_NOT_FUTURE'})
-  date: Date;
+    date: Date;
 
   @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
   @Min(1, {message: 'ERRORS.VALID_REAL_DATE'})
   @Max(31, {message: 'ERRORS.VALID_REAL_DATE'})
   @IsNotEmpty({message: 'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_DAY'})
-  dateDay: number | string;
+    dateDay: number | string;
 
   @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
   @Min(1, {message: 'ERRORS.VALID_REAL_DATE'})
   @Max(12, {message: 'ERRORS.VALID_REAL_DATE'})
   @IsNotEmpty({message: 'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_MONTH'})
-  dateMonth: number | string;
+    dateMonth: number | string;
 
   @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
   @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_REAL_DATE'})
   @Max(9999, {message: 'ERRORS.VALID_REAL_DATE' })
   @IsNotEmpty({message: 'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_YEAR'})
-  dateYear: number | string;
+    dateYear: number | string;
 
   constructor(day?: string, month?: string, year?: string) {
     super();
