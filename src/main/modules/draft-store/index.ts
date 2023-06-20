@@ -18,9 +18,11 @@ export class DraftStoreClient {
     this.logger.info(`connectionString: ${connectionString}`);
     const client = new Redis(connectionString);
 
+    this.logger.info(client.ping());
     app.locals.draftStoreClient = client;
     this.logger.info(DraftStoreClient.REDIS_CONNECTION_SUCCESS);
     app.locals.draftStoreClient.on('connect', () => {
+      this.logger.info('inside on connect---');
       REDIS_DATA.forEach(async (element: any) => {
         await client.set(element.id, JSON.stringify(element, null, 4)).then(() =>
           this.logger.info(`Mock data ${element.id} saved to Redis`),
