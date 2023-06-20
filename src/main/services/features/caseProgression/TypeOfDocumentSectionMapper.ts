@@ -31,8 +31,7 @@ export class TypeOfDocumentSectionMapper {
   }
 
   static mapToSingleFile(req: Request): FileUpload {
-    const files = req.files as Express.Multer.File[];
-    const file = files[0];
+    const file = req.file as Express.Multer.File;
     if (file) {
       const mappedFile: FileUpload = new FileUpload();
       mappedFile.fieldname= file.fieldname;

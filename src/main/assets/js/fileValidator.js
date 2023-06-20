@@ -139,31 +139,82 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('submitted');
   });
 });*/
+function elementExists(element) {
+  return element?.length > 0;
+}
+function removeErrorClass(errorField) {
+  if (elementExists(errorField)) {
+    errorField.forEach(element => element.classList.remove('govuk-form-group--error'));
+  }
+}
+function removeErrors(newRow) {
+  const parentObject = newRow.target.closest('div');
+  const errorRow = parentObject.querySelectorAll('.govuk-error-message');
+  if (elementExists(errorRow)) {
+    errorRow.forEach(element => element.parentNode.removeChild(element));
+    parentObject.classList.remove('govuk-form-group--error');
+  }
+
+}
 
 
-document.querySelectorAll('.govuk-file-upload').forEach(fileUpload => {
-  fileUpload.addEventListener('change', (event) => {
-    const selectedFiles = fileUpload.files; // Get the selected files
-    const objectId = fileUpload.dataset.id; // Get the object identifier
-    const formGroup = fileUpload.closest('div');
+document.addEventListener('DOMContentLoaded', async function() {
+  document.querySelectorAll('.govuk-file-upload').forEach(fileUpload => {
+    fileUpload.addEventListener('change', async (event) => {
+      try {
+        removeErrors(event);
+        const csrfToken = document.getElementsByName('_csrf')[0].value;
+        const formData = new FormData();
+        formData.append('file', fileUpload.files[0]); // Assuming you have an input element with type="file" and id="fileInput"
 
-// Add the 'govuk-form-group--error' class to the parent container
-    formGroup.classList.add('govuk-form-group--error');
+        const options = {
+          method: 'POST',
+          headers: {
+            'CSRF-Token': csrfToken,
+          },
+          body: formData,
+        };
 
-    // Create the error message <p> element
-    const errorMessage = document.createElement('p');
-    errorMessage.id = 'file-upload-1-error';
-    errorMessage.classList.add('govuk-error-message');
-    errorMessage.innerHTML = '<span class="govuk-visually-hidden">Error:</span> The CSV must be smaller than 2MB';
+        const objectId = fileUpload.dataset.id; // Get the object identifier
 
-// Append the error message element to the parent container
+        const response = await fetch('/upload-file', options);
+        const parsed = await response.json();
+        if (response.status === 400) {
+          fileUpload.value = '';
+          // Add the 'govuk-form-group--error' class to the parent container
+          const formGroup = fileUpload.closest('div');
+          formGroup.classList.add('govuk-form-group--error');
 
-    // Insert the fileUpload element as the first child of the wrapping div
-    fileUpload.parentNode.insertBefore(errorMessage, fileUpload);
+          parsed.errors.forEach((item) => {
+            const errorMessage = document.createElement('p');
+            errorMessage.id = `${objectId}-error`;
+            errorMessage.classList.add('govuk-error-message');
+            errorMessage.innerHTML = `<span class="govuk-visually-hidden"></span>${item}`;
+            fileUpload.parentNode.insertBefore(errorMessage, fileUpload);
+          });
+          //fileUpload.parentNode.insertBefore(errorMessage, fileUpload);
+          fileUpload.classList.add('govuk-file-upload--error');
+          fileUpload.setAttribute('aria-describedby', `${objectId}-error`);
+          // Process the data returned from the API
+        }
+        if (response.status === 200 ){
 
-// Add the 'govuk-file-upload--error' class to the input element
+          const fileOkHtml = document.createElement('p');
+          fileOkHtml.id = `${objectId}-fileOk`;
+          fileOkHtml.innerHTML = `<span class="govuk-visually-hidden"></span>${parsed.document.documentName}`;
+          fileUpload.parentNode.insertBefore(fileOkHtml, fileUpload);
+          event.target.value = '';
+        }
 
-    fileUpload.classList.add('govuk-file-upload--error');
-    fileUpload.setAttribute('aria-describedby', 'file-upload-1-error');
+
+
+      } catch (error) {
+        // Handle any errors that occurred during the fetch request or file upload logic
+        console.error('Error:', error);
+      }
+
+
+
+    });
   });
 });
