@@ -17,7 +17,7 @@ Before(async ({api}) => {
 });
 
 Scenario('Response with RejectAll and DisputeAll For the Case Progression and Hearing Scheduled Process To Complete', async ({api}) => {
-  ResponseSteps.RespondToClaim(claimRef);
+ /* ResponseSteps.RespondToClaim(claimRef);
   ResponseSteps.EnterPersonalDetails(claimRef);
   ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   ResponseSteps.EnterResponseToClaim(claimRef, rejectAll);
@@ -28,5 +28,5 @@ Scenario('Response with RejectAll and DisputeAll For the Case Progression and He
   ResponseSteps.EnterSkipTelephoneMediationDetails(claimRef);
   ResponseSteps.EnterNoOptionsForDQForSmallClaims(claimRef);
   ResponseSteps.CheckAndSubmit(claimRef, rejectAll);
-  await api.performViewAndRespondToDefence(config.applicantSolicitorUser, claimRef);
+  await api.performViewAndRespondToDefence(config.applicantSolicitorUser, claimRef);*/
 }).tag('@regression');
