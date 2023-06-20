@@ -19,5 +19,15 @@ export class DraftStoreClient {
     this.logger.info(client.ping());
     app.locals.draftStoreClient = client;
     this.logger.info(DraftStoreClient.REDIS_CONNECTION_SUCCESS);
+    app.locals.draftStoreClient.on('error', (err: any) => {
+      console.log('Could not establish a connection with redis. ' + err);
+    });
+    /*app.locals.draftStoreClient.on('connect', () => {
+      REDIS_DATA.forEach(async (element: any) => {
+        await client.set(element.id, JSON.stringify(element, null, 4)).then(() =>
+          this.logger.info(`Mock data ${element.id} saved to Redis`),
+        );
+      });
+    });*/
   }
 }
