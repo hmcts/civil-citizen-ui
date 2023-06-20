@@ -7,6 +7,8 @@ import civilClaimResponseUnemploymentOther from './mocks/civilClaimResponseUnemp
 import civilClaimResponseApplicantCompany from './mocks/civilClaimResponseApplicantCompanyMock.json';
 import civilClaimResponseApplicantIndividual from './mocks/civilClaimResponseApplicanIndividualMock.json';
 import civilClaimResponseRespondentIndividualWithPhoneNumber from './mocks/civilClaimResponseRespondentIndividualWithPhoneNumberMock.json';
+import civilClaimResponseRespondentIndividualWithoutPhoneNumber from './mocks/civilClaimResponseRespondentIndividualWithoutPhoneNumberMock.json';
+import civilClaimResponseRespondentIndividualWithCcdPhoneNumberFalse from './mocks/civilClaimResponseRespondentIndividualWithCcdPhoneNumberFalseMock.json';
 import civilClaimResponseApplicantWithMediation from './mocks/civilClaimResponseApplicanWithMediationMock.json';
 import civilClaimResponseNoAdmittedPaymentAmountMock from './mocks/civilClaimResponseNoAdmittedPaymentAmountMock.json';
 import civilClaimResponseFullAdmissionMock from './mocks/civilClaimResponseFullAdmissionMock.json';
@@ -100,6 +102,16 @@ const mockCivilClaimRespondentIndividualTypeWithPhoneNumber = {
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseRespondentIndividualWithPhoneNumber))),
 };
 
+const mockCivilClaimRespondentIndividualTypeWithoutPhoneNumber = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseRespondentIndividualWithoutPhoneNumber))),
+};
+
+const mockCivilClaimRespondentIndividualTypeWithCcdPhoneNumberFalse = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseRespondentIndividualWithCcdPhoneNumberFalse))),
+};
+
 const mockCivilClaimPDFTimeline = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponsePDFTimeline))),
@@ -126,6 +138,8 @@ export {
   mockCivilClaimApplicantCompanyType,
   mockCivilClaimApplicantIndividualType,
   mockCivilClaimRespondentIndividualTypeWithPhoneNumber,
+  mockCivilClaimRespondentIndividualTypeWithoutPhoneNumber,
+  mockCivilClaimRespondentIndividualTypeWithCcdPhoneNumberFalse,
   mockLogger,
   mockRedisWithMediationProperties,
   mockRedisWithoutAdmittedPaymentAmount,
