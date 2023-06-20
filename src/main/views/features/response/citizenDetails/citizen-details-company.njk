@@ -91,14 +91,18 @@
                 }
               ]
             }) }}
-            {% if partyPhone.model.phone !== undefined %}
-              <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_PHONE.PAGE_TITLE') }}</h2>
-              <p class="govuk-body">{{ t('PAGES.CLAIMANT_PHONE.INFORMATION') }}</p>
-              {{ citizenTelephone(partyPhone, t, {
-                id: "phone",
-                name: "phone",
-                className: "govuk-input--width-20"
-            }) }}
+            {% if partyPhone.model.phone !== undefined and partyPhone.model.ccdPhoneExist %}
+            <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_PHONE.PAGE_TITLE') }}</h2>
+            <p class="govuk-body">{{ t('PAGES.CLAIMANT_PHONE.INFORMATION') }}</p>
+              {{ govukInput({
+                classes: "govuk-input--width-20",
+                id: "partyPhone",
+                name: "partyPhone",
+                value: partyPhone.model.phone,
+                errorMessage: {
+                  html: t(partyPhone.errorFor("phone"))
+                } if partyPhone.hasErrors()
+              }) }}
             {% endif %}
             {{ govukButton({
               text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
