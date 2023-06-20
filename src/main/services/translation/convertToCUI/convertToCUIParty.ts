@@ -28,7 +28,7 @@ export const toCUIParty = (ccdParty: CCDParty): Party => {
   } else {
     cuiParty.partyDetails.partyName = ccdParty?.partyName ? ccdParty.partyName : undefined;
   }
-  cuiParty.partyPhone = ccdParty?.partyPhone ? new PartyPhone(ccdParty?.partyPhone) : undefined;
+  cuiParty.partyPhone = ccdParty?.partyPhone ? new PartyPhone(ccdParty?.partyPhone, true) : undefined;
   cuiParty.emailAddress = ccdParty?.partyEmail ? new Email(ccdParty?.partyEmail) : undefined;
   cuiParty.type = ccdParty?.type ? ccdParty?.type : undefined;
   cuiParty.partyDetails.primaryAddress = toCUIAddress(ccdParty?.primaryAddress);
