@@ -15,6 +15,7 @@ const claimSpecData = require('../fixtures/events/createClaimSpec.js');
 const defendantResponse = require('../fixtures/events/createDefendantResponse.js');
 const claimantResponse = require('../fixtures/events/createClaimantResponseToDefence.js');
 const caseProgressionToSDOState = require('../fixtures/events/createCaseProgressionToSDOState');
+const caseProgressionToHearingInitiated = require('../fixtures/events/createCaseProgressionToHearingInitiated');
 
 const data = {
   CREATE_SPEC_CLAIM: (mpScenario) => claimSpecData.createClaim(mpScenario),
@@ -29,10 +30,10 @@ module.exports = {
   performCaseProgressedToHearingInitiated: async (user, caseId) => {
     console.log('This is inside performCaseProgressedToHearingInitiated() : ' + caseId);
     eventName = 'HEARING_SCHEDULED';
-    const payload = caseProgressionToSDOState.createCaseProgressionToSDOState();
+    const payload = caseProgressionToHearingInitiated.createCaseProgressionToHearingInitiated();
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
-    await assertSubmittedSpecEvent('CASE_PROGRESSION');
+    await assertSubmittedSpecEvent('HEARING_READINESS');
     await waitForFinishedBusinessProcess(caseId);
     console.log('End of performCaseProgressedToHearingInitiated()');
   },

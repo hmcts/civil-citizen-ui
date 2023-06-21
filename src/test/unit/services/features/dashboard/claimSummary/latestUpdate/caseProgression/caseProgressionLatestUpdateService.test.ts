@@ -35,7 +35,7 @@ describe('Case Progression Latest Update Content service', () => {
     expect(evidenceUploadSectionResult[0][4].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.DOCUMENTS_SUBMITTED_NOT_CONSIDERED');
   });
 
-  it('getHearingTrialUploadLatestUpdateContent: should return CaseProgression hearing upload section for latest update content', () => {
+  it('getHearingTrialUploadLatestUpdateContent: should return caseProgression hearing upload section for latest update content', () => {
     //Given
     claim.caseProgressionHearing = getCaseProgressionHearingMock();
     const hearingUploadSectionExpected = buildHearingTrialLatestUploadSection(claim, 'en');

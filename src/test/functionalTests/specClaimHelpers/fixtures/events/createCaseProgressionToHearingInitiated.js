@@ -1,80 +1,30 @@
 module.exports = {
-  createCaseProgressionToSDOState: () => {
-    const judgeToSDOData = {
-      event: 'CREATE_SDO',
+  createCaseProgressionToHearingInitiated: () => {
+    const hearingScheduledData = {
+      event: 'HEARING_INITIATED',
       caseDataUpdate: {
-        drawDirectionsOrderRequired: 'No',
-        drawDirectionsOrder: null,
-        drawDirectionsOrderSmallClaims: null,
-        claimsTrack: 'smallClaimsTrack',
-        smallClaims: [],
-        drawDirectionsOrderSmallClaimsAdditionalDirections: [],
-        fastClaims: [],
-        setSmallClaimsFlag: null,
-        smallClaimsOrderAndHearingDetails: null,
-        smallClaimsJudgesRecital: {
-          input: 'Upon considering the statements of case and the information provided by the parties,'
-        },
-        smallClaimsAllocation: null,
-        smallClaimsJudgementDeductionStatement: null,
-        smallClaimsJudgementDeductionValue: null,
-        smallClaimsHearingToggle: [
-          'SHOW'
-        ],
-        smallClaimsHearing: {
-          dateFrom: '2023-07-01',
-          dateTo: null,
-          time: "TWO_HOURS",
-          otherHours: null,
-          otherMinutes: null,
-          input2: 'The claimant must by no later than 4 weeks before the hearing date, pay the court the required hearing fee or submit a fully completed application for Help with Fees. \nIf the claimant fails to pay the fee or obtain a fee exemption by that time the claim will be struck without further order.',
-          input1: 'The hearing of the claim will be on a date to be notified to you by a separate notification. The hearing will have a time estimate of'
-        },
-        smallClaimsMethodToggle: [
-          'SHOW'
-        ],
-        smallClaimsMethod: 'smallClaimsMethodInPerson',
-        sdoHearingNotes: null,
-        smallClaimsNotes: {
-          input: 'This order has been made without hearing. Each party has the right to apply to have this Order set aside or varied. Any such application must be received by the Court (together with the appropriate fee) by 4pm on 26 June 2023',
-          date: null
-        },
-        smallClaimsDocumentsToggle: [
-          'SHOW'
-        ],
-        smallClaimsDocuments: {
-          input1: 'Each party must upload to the Digital Portal copies of all documents which they wish the court to consider when reaching its decision not less than 14 days before the hearing.',
-          input2: 'The court may refuse to consider any document which has not been uploaded to the Digital Portal by the above date.'
-        },
-        smallClaimsWitnessStatementToggle: [
-          'SHOW'
-        ],
-        smallClaimsWitnessStatement: {
-          input1: 'Each party must upload to the Digital Portal copies of all witness statements of the witnesses upon whose evidence they intend to rely at the hearing not less than 14 days before the hearing.',
-          input2: '4',
-          input3: '-1',
-          input4: 'For this limitation, a party is counted as a witness.',
-          text: 'A witness statement must: \na) Start with the name of the case and the claim number;\nb) State the full name and address of the witness; \nc) Set out the witness\'s evidence clearly in numbered paragraphs on numbered pages;\nd) End with this paragraph: \'I believe that the facts stated in this witness statement are true. I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth\'.\ne) be signed by the witness and dated.\nf) If a witness is unable to read the statement there must be a certificate that it has been read or interpreted to the witness by a suitably qualified person and at the final hearing there must be an independent interpreter who will not be provided by the Court.\n\nThe judge may refuse to allow a witness to give evidence or consider any statement of any witness whose statement has not been uploaded to the Digital Portal in accordance with the paragraphs above.\n\nA witness whose statement has been uploaded in accordance with the above must attend the hearing. If they do not attend, it will be for the court to decide how much reliance, if any, to place on their evidence.'
-        },
-        smallClaimsCreditHire: null,
-        smallClaimsRoadTrafficAccident: null,
-        smallClaimsAddNewDirections: [],
-        sdoOrderDocument: {
-          documentLink: {
-            document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/bd31efe7-7f2b-418e-ae14-6b6a05feeb85',
-            document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/bd31efe7-7f2b-418e-ae14-6b6a05feeb85/binary',
-            document_filename: 'small_claims_sdo_000MC009.pdf',
-            document_hash: '4144ca13a22b9809b6ff68c5550e38629717511c5412454f805143bb48c20f43',
-            category_id: 'sdo'
+        hearingNoticeList: 'SMALL_CLAIMS',
+        hearingNoticeListOther: null,
+        listingOrRelisting: 'LISTING',
+        hearingLocation: {
+          value: {
+            code: '01691997-da6a-4357-b9c2-46c8b941c1d9',
+            label: 'Central London County Court - Thomas More Building, Royal Courts of Justice, Strand, London - WC2A 2LL'
           },
-          documentName: 'small_claims_sdo_000MC009.pdf',
-          documentType: 'SDO_ORDER',
-          documentSize: '61597',
-          createdDatetime: '2023-06-19T16:55:01',
-          createdBy: 'Civil'
-        }
+          list_items: [
+            {
+              code: '01691997-da6a-4357-b9c2-46c8b941c1d9',
+              label: 'Central London County Court - Thomas More Building, Royal Courts of Justice, Strand, London - WC2A 2LL'
+            }
+          ]
+        },
+        channel: 'IN_PERSON',
+        hearingDate: '2024-07-10',
+        hearingTimeHourMinute: '0930',
+        hearingDuration: 'MINUTES_150',
+        information: null
       }
     };
-    return judgeToSDOData;
+    return hearingScheduledData;
   },
 };
