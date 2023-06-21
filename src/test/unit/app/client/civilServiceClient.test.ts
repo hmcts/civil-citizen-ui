@@ -333,5 +333,71 @@ describe('Civil Service Client', () => {
       expect(mockPost.mock.calls[0][0]).toEqual(CIVIL_SERVICE_ATTACH_CASE_DOCUMENTS.replace(':claimId', claimId));
       await expect(caseDocuments).toEqual(expectedCaseDocuments);
     });
+    it('should call civil service api to attach case documents to a case successfully but not all documents are attached', async () => {
+      //Given
+      const expertReport: CaseDocument = {
+        createdBy: '',
+        createdDatetime: undefined,
+        documentLink: undefined,
+        documentName: '',
+        documentSize: 0,
+        documentType: undefined,
+      };
+      const witnessStatement: CaseDocument = {
+        createdBy: '',
+        createdDatetime: undefined,
+        documentLink: undefined,
+        documentName: '',
+        documentSize: 0,
+        documentType: undefined,
+      };
+      const sentCaseDocuments = [expertReport, witnessStatement];
+      const expectedCaseDocuments = [witnessStatement];
+      const claimId = '1234567890';
+      const mockPost = jest.fn().mockResolvedValue({data: expectedCaseDocuments, status: 200});
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //When
+      const caseDocuments = await civilServiceClient.attachCaseDocuments(claimId, sentCaseDocuments, mockedAppRequest);
+      //Then
+      expect(mockedAxios.create).toHaveBeenCalledWith({
+        baseURL: baseUrl,
+      });
+      expect(mockPost.mock.calls[0][0]).toEqual(CIVIL_SERVICE_ATTACH_CASE_DOCUMENTS.replace(':claimId', claimId));
+      await expect(caseDocuments).toEqual(expectedCaseDocuments);
+    });
+    it('should call civil service api to attach case documents to a case unsuccessfully', async () => {
+      //Given
+      const expertReport: CaseDocument = {
+        createdBy: '',
+        createdDatetime: undefined,
+        documentLink: undefined,
+        documentName: '',
+        documentSize: 0,
+        documentType: undefined,
+      };
+      const witnessStatement: CaseDocument = {
+        createdBy: '',
+        createdDatetime: undefined,
+        documentLink: undefined,
+        documentName: '',
+        documentSize: 0,
+        documentType: undefined,
+      };
+      const caseDocuments = [expertReport, witnessStatement];
+      const claimId = '1234567890';
+      const status = 500;
+      const statusText = 'Unexpected problem during attaching case documents.';
+      const mockPost = jest.fn().mockResolvedValue({data: [], status: status, statusText: statusText});
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //When
+      const apiCall = async () => await civilServiceClient.attachCaseDocuments(claimId, caseDocuments, mockedAppRequest);
+      //Then
+      expect(mockedAxios.create).toHaveBeenCalledWith({
+        baseURL: baseUrl,
+      });
+      await expect(apiCall()).rejects.toThrow(`${status} - ${statusText}`);
+    });
   });
 });
