@@ -321,7 +321,7 @@ describe('Civil Service Client', () => {
       };
       const expectedCaseDocuments = [expertReport, witnessStatement];
       const claimId = '1234567890';
-      const mockPost = jest.fn().mockResolvedValue({data: expectedCaseDocuments});
+      const mockPost = jest.fn().mockResolvedValue({data: expectedCaseDocuments, status: 200});
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //When

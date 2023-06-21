@@ -5,7 +5,8 @@ import {AppRequest} from 'common/models/AppRequest';
 import {CivilClaimResponse, ClaimFeeData} from 'common/models/civilClaimResponse';
 import {
   ASSIGN_CLAIM_TO_DEFENDANT,
-  CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE, CIVIL_SERVICE_ATTACH_CASE_DOCUMENTS,
+  CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE,
+  CIVIL_SERVICE_ATTACH_CASE_DOCUMENTS,
   CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
   CIVIL_SERVICE_CLAIM_AMOUNT_URL,
@@ -258,6 +259,9 @@ export class CivilServiceClient {
     const config = this.getConfig(req);
     try {
       const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_ATTACH_CASE_DOCUMENTS.replace(':claimId', claimId), caseDocuments, config);
+      if (response.status !== 200) {
+        throw new Error(`${response.status} - ${response.statusText}`);
+      }
       return response.data as CaseDocument[];
     } catch (error: unknown) {
       logger.error((error));
