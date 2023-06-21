@@ -414,6 +414,7 @@
       "CLAIM_INTEREST": "Claim Interest",
       "CONTACT_PERSON": "Contact person",
       "CONTACT_NUMBER": "Contact number (optional)",
+      "CONTACT_NUMBER_NOT_OPTIONAL": "Contact number",
       "CONSIDER_CLAIMANT_DOCUMENT" : "Are there any documents the claimant has that you want the court to consider?",
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
       "COURT_ORDERS_TITLE": "Are you paying money as a result of any court orders?",

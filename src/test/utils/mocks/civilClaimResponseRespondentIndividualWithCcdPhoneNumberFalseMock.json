@@ -20,7 +20,7 @@
       "partyName": "Mr. Joe Doe",
       "partyPhone": {
         "phone": "654323472",
-        "ccdPhoneExist": true
+        "ccdPhoneExist": false
       }
     }
   }
