@@ -33,7 +33,10 @@ const convertRedisDataToCivilClaimResponse = (data: string) => {
  */
 export const getCaseDataFromStore = async (claimId: string): Promise<Claim> => {
   const civilClaimResponse = await getDraftClaimFromStore(claimId);
-  return Object.assign(new Claim(), civilClaimResponse?.case_data);
+  const claim: Claim = new Claim();
+  Object.assign(claim, civilClaimResponse?.case_data);
+  claim.id = civilClaimResponse?.id;
+  return claim;
 };
 
 /**
