@@ -56,7 +56,6 @@ export class TypeOfDocumentSection {
   dateMonth: string;
   dateYear: string;
 
-  @ValidateNested()
   @IsDefined({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
     fileUpload: FileUpload;
 

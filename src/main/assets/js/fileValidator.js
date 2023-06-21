@@ -58,14 +58,13 @@ document.addEventListener('DOMContentLoaded', async function () {
           body: formData,
         };
 
-        const objectId = fileUpload.dataset.id; // Get the object identifier
+        const objectId = event.target.id; // Get the object identifier
 
         const response = await fetch('/upload-file', options);
         const parsed = await response.json();
         if (response.status === 400) {
           removeLoading(event);
           fileUpload.value = '';
-          // Add the 'govuk-form-group--error' class to the parent container
           const formGroup = fileUpload.closest('div');
           formGroup.classList.add('govuk-form-group--error');
 
@@ -76,16 +75,15 @@ document.addEventListener('DOMContentLoaded', async function () {
             errorMessage.innerHTML = `<span class="govuk-visually-hidden"></span>${item}`;
             fileUpload.parentNode.insertBefore(errorMessage, fileUpload);
           });
-          //fileUpload.parentNode.insertBefore(errorMessage, fileUpload);
           fileUpload.classList.add('govuk-file-upload--error');
           fileUpload.setAttribute('aria-describedby', `${objectId}-error`);
-          // Process the data returned from the API
         }
         if (response.status === 200) {
           removeLoading(event);
           removeExistsFile(event);
           const fileOkHtml = document.createElement('p');
           fileOkHtml.id = `${objectId}-fileOk`;
+          fileOkHtml.classList.add('govuk-input--fileOk');
           fileOkHtml.innerHTML = `<span class="govuk-visually-hidden"></span>${parsed.document.documentName}`;
           fileUpload.parentNode.insertBefore(fileOkHtml, fileUpload);
           event.target.value = '';
