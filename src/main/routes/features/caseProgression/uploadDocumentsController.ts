@@ -13,12 +13,10 @@ import {
 } from 'services/features/caseProgression/caseProgressionService';
 import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 import {getTrialContent} from 'services/features/caseProgression/trialService';
-const multer = require('multer');
 
 const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
 const uploadDocumentsController = Router();
-const storage = multer.memoryStorage();
-const upload = multer({storage: storage});
+
 
 async function renderView(res: Response, claimId: string, form: GenericForm<UploadDocumentsUserForm> = null) {
   const claim: Claim = await getCaseDataFromStore(claimId);
@@ -51,7 +49,7 @@ uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: Request, res
   }
 }) as RequestHandler);
 
-uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (req, res, next) => {
+uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, (async (req, res, next) => {
   try {
     const claimId = req.params.id;
     const uploadDocumentsForm = getUploadDocumentsForm(req);

@@ -26,7 +26,7 @@
     {% set trial = t('PAGES.UPLOAD_DOCUMENTS.TRIAL.TITLE') %}
 
     <div class="govuk-grid-row">
-      <form method="post" id="myForm" autocomplete="off" action="/case/{{claimId}}/case-progression/upload-documents?_csrf={{csrf}}" enctype="multipart/form-data" novalidate>
+      <form method="post" novalidate>
         {{ csrfProtection(csrf) }}
         <div id="content"></div>
 
