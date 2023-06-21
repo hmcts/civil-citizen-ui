@@ -13,7 +13,6 @@ import {
   EvidenceUploadWitness,
 } from 'models/document/documentType';
 import {
-
   UploadDocumentsUserForm,
 
 } from 'models/caseProgression/uploadDocumentsUserForm';
@@ -112,21 +111,21 @@ export const getTypeDocumentForm = (req: Request): UploadDocuments => {
 
 export const getUploadDocumentsForm = (req: Request): UploadDocumentsUserForm => {
   const documentsForDisclosure = TypeOfDocumentSectionMapper.mapToTypeOfDocumentSections(req.body.documentsForDisclosure, req);
-  //const documentsList = getFormSection<FileSection>(req.body.disclosureList, bindRequestToFileOnlySectionObj);
-  //const trialCaseSummary = getFormSection<FileSection>(req.body.trialCaseSummary, bindRequestToFileOnlySectionObj);
-  //const trialSkeletonArgument = getFormSection<FileSection>(req.body.trialSkeletonArgument, bindRequestToFileOnlySectionObj);
-  //const trialAuthorities = getFormSection<FileSection>(req.body.trialAuthorities, bindRequestToFileOnlySectionObj);
-  //const trialCosts = getFormSection<FileSection>(req.body.trialCosts, bindRequestToFileOnlySectionObj);
-  //const trialDocumentary = getFormSection<TypeOfDocumentSection>(req.body.trialDocumentary, bindRequestToTypeOfDocumentSectionObj);
+  const documentsList = TypeOfDocumentSectionMapper.mapToTypeOfDocumentSections(req.body.disclosureList, req);
+  const trialCaseSummary = TypeOfDocumentSectionMapper.mapToTypeOfDocumentSections(req.body.trialCaseSummary, req);
+  const trialSkeletonArgument = TypeOfDocumentSectionMapper.mapToTypeOfDocumentSections(req.body.trialSkeletonArgument, req);
+  const trialAuthorities = TypeOfDocumentSectionMapper.mapToTypeOfDocumentSections(req.body.trialAuthorities, req);
+  const trialCosts = TypeOfDocumentSectionMapper.mapToTypeOfDocumentSections(req.body.trialCosts, req);
+  const trialDocumentary = TypeOfDocumentSectionMapper.mapToTypeOfDocumentSections(req.body.trialDocumentary, req);
 
   return new UploadDocumentsUserForm(
     documentsForDisclosure,
-    //documentsList,
-    //trialCaseSummary,
-    //trialSkeletonArgument,
-    //trialAuthorities,
-    //trialCosts,
-    //trialDocumentary,
+    documentsList,
+    trialCaseSummary,
+    trialSkeletonArgument,
+    trialAuthorities,
+    trialCosts,
+    trialDocumentary,
   );
 };
 
@@ -139,16 +138,18 @@ export const getUploadDocumentsForm = (req: Request): UploadDocumentsUserForm =>
     formSection.push(request);
   });
   return formSection;
-};*/
-/*const documentsForDisclosure: TypeOfDocumentSection[] = req.body.documentsForDisclosure.map((item: any) => {
+};
+
+const documentsForDisclosure: TypeOfDocumentSection[] = req.body.documentsForDisclosure.map((item: any) => {
   const typeOfDocument: string = item.typeOfDocument.trim();
   const dateDay: string = item['date-day'];
   const dateMonth: string = item['date-month'];
   const dateYear: string = item['date-year'];
 
   return new TypeOfDocumentSection(fileUpload, typeOfDocument, dateDay, dateMonth, dateYear);
-});*/
-/*const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSection => {
+});
+
+const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSection => {
   const formObj: TypeOfDocumentSection = new TypeOfDocumentSection();
   formObj.typeOfDocument = request['typeOfDocument'].trim();
   formObj.dateDay = request['date-day'];
@@ -156,9 +157,9 @@ export const getUploadDocumentsForm = (req: Request): UploadDocumentsUserForm =>
   formObj.dateYear = request['date-year'];
   //formObj.fileUpload = getUploadDocumentsByName(fileName, req);
   return formObj;
-};*/
+};
 
-/*const bindRequestToFileOnlySectionObj = (request: any): FileSection => {
+const bindRequestToFileOnlySectionObj = (request: any): FileSection => {
   const formObj: FileSection = new FileSection();
   //formObj.fileUpload = getUploadDocumentsByName(fileName, req);
   return formObj;

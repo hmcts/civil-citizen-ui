@@ -195,7 +195,7 @@
   {% endif %}
 
   {% if content.type === ClaimSummaryType.UPLOAD_ARRAY %}
-     <div class="govuk-inset-text uploadFile">
+     <div class="govuk-inset-text">
        {{ govukFileUpload({
            id: content.data.category+'['+content.data.index+']['+content.data.field+']',
            name: content.data.category+'['+content.data.index+']['+content.data.field+']',
@@ -206,9 +206,9 @@
            },
            errorMessage: { text: t(content.data.errorMessage) } if content.data.errorMessage,
            attributes: {
-                 'data-name': content.data.category+'['+content.data.index+']['+content.data.field+']',
-                 'data-id': content.data.category+'['+content.data.index+']['+content.data.field+']'
-               }
+              'data-name': content.data.category+'[%index%]['+content.data.field+']',
+              'data-id': content.data.category+'[%index%]['+content.data.field+']'
+           }
         }) }}
     </div>
   {% endif %}
