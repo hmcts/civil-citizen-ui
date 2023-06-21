@@ -58,12 +58,7 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (re
     const form = new GenericForm(uploadDocumentsForm);
     form.validateSync();
     if (form.hasErrors()) {
-      //await renderView(res, claimId, form);
-      res.status(400).json({ errors: form.getNestedErrors().filter((item) => {
-        return !(item.target instanceof Array);
-      }),
-      });
-
+      await renderView(res, claimId, form);
     } else {
       //todo: save to redis
       //todo: next page (cancel page or continue page)
