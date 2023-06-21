@@ -77,96 +77,62 @@ export class FileOnlySection {
   fileUpload: string; //todo: get and validate file
 }
 
-export class TypeOfDocumentSection extends FileOnlySection {
+export class DateOnlySection extends  FileOnlySection {
+    @ValidateIf(o => ((o.dateDay!==undefined && o.dateMonth!==undefined && o.dateDay && o.dateMonth && o.dateYear && o.dateDay > 0 && o.dateDay < 32 && o.dateMonth > 0 && o.dateMonth < 13 && o.dateYear > 999)
+      || (o.dateDay!==undefined && o.dateMonth!==undefined && !o.dateDay && !o.dateMonth && !o.dateYear)))
+    @IsDefined({message: 'ERRORS.VALID_YOU_MUST_ENTER_DOI'})
+    @IsNotEmpty({message: 'ERRORS.VALID_YOU_MUST_ENTER_DOI'})
+    @IsDate({message: 'ERRORS.VALID_DATE'})
+    @Validate(OptionalDateNotInFutureValidator, {message: 'ERRORS.VALID_DATE_NOT_FUTURE'})
+      date: Date;
+
+    @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
+    @Min(1, {message: 'ERRORS.VALID_REAL_DATE'})
+    @Max(31, {message: 'ERRORS.VALID_REAL_DATE'})
+    @IsNotEmpty({message: 'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_DAY'})
+      dateDay: number | string;
+
+    @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
+    @Min(1, {message: 'ERRORS.VALID_REAL_DATE'})
+    @Max(12, {message: 'ERRORS.VALID_REAL_DATE'})
+    @IsNotEmpty({message: 'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_MONTH'})
+      dateMonth: number | string;
+
+    @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
+    @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_REAL_DATE'})
+    @Max(9999, {message: 'ERRORS.VALID_REAL_DATE' })
+    @IsNotEmpty({message: 'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_YEAR'})
+      dateYear: number | string;
+
+    constructor(day?: string, month?: string, year?: string) {
+      super();
+      if (day !== undefined && month !== undefined && year != undefined) {
+        this.dateDay = toNumberOrString(day);
+        this.dateMonth = toNumberOrString(month);
+        this.dateYear = toNumberOrString(year);
+        this.date = DateConverter.convertToDate(year, month, day);
+      }
+    }
+}
+
+export class TypeOfDocumentSection extends DateOnlySection {
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_TYPE_OF_DOCUMENT'})
     typeOfDocument: string;
-  @ValidateIf(o => ((o.dateDay!==undefined && o.dateMonth!==undefined && o.dateDay && o.dateMonth && o.dateYear && o.dateDay > 0 && o.dateDay < 32 && o.dateMonth > 0 && o.dateMonth < 13 && o.dateYear > 999)
-    || (o.dateDay!==undefined && o.dateMonth!==undefined && !o.dateDay && !o.dateMonth && !o.dateYear)))
-  @IsDefined({message: 'ERRORS.VALID_YOU_MUST_ENTER_DOI'})
-  @IsNotEmpty({message: 'ERRORS.VALID_YOU_MUST_ENTER_DOI'})
-  @IsDate({message: 'ERRORS.VALID_DATE'})
-  @Validate(OptionalDateNotInFutureValidator, {message: 'ERRORS.VALID_DATE_NOT_FUTURE'})
-    date: Date;
-
-  @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
-  @Min(1, {message: 'ERRORS.VALID_REAL_DATE'})
-  @Max(31, {message: 'ERRORS.VALID_REAL_DATE'})
-  @IsNotEmpty({message: 'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_DAY'})
-    dateDay: number | string;
-
-  @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
-  @Min(1, {message: 'ERRORS.VALID_REAL_DATE'})
-  @Max(12, {message: 'ERRORS.VALID_REAL_DATE'})
-  @IsNotEmpty({message: 'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_MONTH'})
-    dateMonth: number | string;
-
-  @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
-  @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_REAL_DATE'})
-  @Max(9999, {message: 'ERRORS.VALID_REAL_DATE' })
-  @IsNotEmpty({message: 'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_YEAR'})
-    dateYear: number | string;
-
   constructor(day?: string, month?: string, year?: string) {
-    super();
-    if (day !== undefined && month !== undefined && year != undefined) {
-      this.dateDay = toNumberOrString(day);
-      this.dateMonth = toNumberOrString(month);
-      this.dateYear = toNumberOrString(year);
-      this.date = DateConverter.convertToDate(year, month, day);
-    }
+    super(day, month, year);
   }
 }
-export class WitnessSection extends FileOnlySection {
+export class WitnessSection extends DateOnlySection {
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_WITNESS_NAME'})
     witnessName: string;
-
-  @ValidateIf(o => ((o.dateDay!==undefined && o.dateMonth!==undefined && o.dateDay && o.dateMonth && o.dateYear && o.dateDay > 0 && o.dateDay < 32 && o.dateMonth > 0 && o.dateMonth < 13 && o.dateYear > 999)
-    || (o.dateDay!==undefined && o.dateMonth!==undefined && !o.dateDay && !o.dateMonth && !o.dateYear)))
-  @IsDefined({message: 'ERRORS.VALID_YOU_MUST_ENTER_DOI'})
-  @IsNotEmpty({message: 'ERRORS.VALID_YOU_MUST_ENTER_DOI'})
-  @IsDate({message: 'ERRORS.VALID_DATE'})
-  @Validate(OptionalDateNotInFutureValidator, {message: 'ERRORS.VALID_DATE_NOT_FUTURE'})
-    date: Date;
-
-  @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
-  @Min(1, {message: 'ERRORS.VALID_REAL_DATE'})
-  @Max(31, {message: 'ERRORS.VALID_REAL_DATE'})
-  @IsNotEmpty({message: 'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_DAY'})
-    dateDay: number | string;
-
-  @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
-  @Min(1, {message: 'ERRORS.VALID_REAL_DATE'})
-  @Max(12, {message: 'ERRORS.VALID_REAL_DATE'})
-  @IsNotEmpty({message: 'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_MONTH'})
-    dateMonth: number | string;
-
-  @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
-  @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_REAL_DATE'})
-  @Max(9999, {message: 'ERRORS.VALID_REAL_DATE' })
-  @IsNotEmpty({message: 'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_YEAR'})
-    dateYear: number | string;
   constructor(day?: string, month?: string, year?: string) {
-    super();
-    if (day !== undefined && month !== undefined && year != undefined) {
-      this.dateDay = toNumberOrString(day);
-      this.dateMonth = toNumberOrString(month);
-      this.dateYear = toNumberOrString(year);
-      this.date = DateConverter.convertToDate(year, month, day);
-    }
+    super(day, month, year);
   }
 }
 
-export class ExpertSection extends FileOnlySection {
+export class ExpertSection extends DateOnlySection {
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_EXPERT_NAME'})
     expertName: string;
-
-  @ValidateIf(o => ((o.dateDay!==undefined && o.dateMonth!==undefined && o.dateYear!=undefined &&  o.dateDay && o.dateMonth && o.dateYear && o.dateDay > 0 && o.dateDay < 32 && o.dateMonth > 0 && o.dateMonth < 13 && o.dateYear > 999)
-    || (o.dateDay!==undefined && o.dateMonth!==undefined && o.dateYear!=undefined && !o.dateDay && !o.dateMonth && !o.dateYear)))
-  @IsDefined({message: 'ERRORS.VALID_YOU_MUST_ENTER_DOI'})
-  @IsNotEmpty({message: 'ERRORS.VALID_YOU_MUST_ENTER_DOI'})
-  @IsDate({message: 'ERRORS.VALID_DATE'})
-  @Validate(OptionalDateNotInFutureValidator, {message: 'ERRORS.VALID_DATE_NOT_FUTURE'})
-    date: Date;
 
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_EXPERTISE'})
   @IsOptional()
@@ -184,31 +150,7 @@ export class ExpertSection extends FileOnlySection {
   @IsOptional()
     otherPartyQuestionsDocumentName: string;
 
-  @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
-  @Min(1, {message: 'ERRORS.VALID_REAL_DATE'})
-  @Max(31, {message: 'ERRORS.VALID_REAL_DATE'})
-  @IsNotEmpty({message: 'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_DAY'})
-    dateDay: number | string;
-
-  @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
-  @Min(1, {message: 'ERRORS.VALID_REAL_DATE'})
-  @Max(12, {message: 'ERRORS.VALID_REAL_DATE'})
-  @IsNotEmpty({message: 'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_MONTH'})
-    dateMonth: number | string;
-
-  @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
-  @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_REAL_DATE'})
-  @Max(9999, {message: 'ERRORS.VALID_REAL_DATE' })
-  @IsNotEmpty({message: 'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_YEAR'})
-    dateYear: number | string;
-
   constructor(day?: string, month?: string, year?: string) {
-    super();
-    if (day !== undefined && month !== undefined && year != undefined) {
-      this.dateDay = toNumberOrString(day);
-      this.dateMonth = toNumberOrString(month);
-      this.dateYear = toNumberOrString(year);
-      this.date = DateConverter.convertToDate(year, month, day);
-    }
+    super(day, month, year);
   }
 }
