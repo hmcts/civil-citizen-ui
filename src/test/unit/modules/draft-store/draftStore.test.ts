@@ -27,8 +27,8 @@ const app: express.Application = {
 
 describe('Draft Store Client', () => {
   it('Upon successful connection to Redis, log info message', async () => {
-    const draftStoreClient1: DraftStoreClient = new DraftStoreClient(mockLogger);
-    draftStoreClient1.enableFor(app);
+    const draftStoreClient: DraftStoreClient = new DraftStoreClient(mockLogger);
+    draftStoreClient.enableFor(app);
     await new Promise(process.nextTick);
     expect(mockLogger.info).toHaveBeenCalledWith(DraftStoreClient.REDIS_CONNECTION_SUCCESS);
   });
