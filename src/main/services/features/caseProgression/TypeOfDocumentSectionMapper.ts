@@ -1,8 +1,8 @@
-import {FileUpload, TypeOfDocumentSection} from 'models/caseProgression/uploadDocumentsUserForm';
+import {FileUpload} from 'models/caseProgression/uploadDocumentsUserForm';
 import {Request} from 'express';
 
 export class TypeOfDocumentSectionMapper {
-  static mapToTypeOfDocumentSections(documentsForDisclosure: any[], req: Request): TypeOfDocumentSection[] {
+/*  static mapToTypeOfDocumentSections(documentsForDisclosure: any[], req: Request): TypeOfDocumentSection[] {
     return documentsForDisclosure.map((item: any, index: number) => {
       const typeOfDocument: string = item.typeOfDocument.trim();
       const dateDay: string = item['date-day'];
@@ -10,11 +10,11 @@ export class TypeOfDocumentSectionMapper {
       const dateYear: string = item['date-year'];
 
       const fileName = `documentsForDisclosure[${index}][fileUpload]`; // fileNameSchema
-      const documentSection = new TypeOfDocumentSection(typeOfDocument, dateDay, dateMonth, dateYear, TypeOfDocumentSectionMapper.mapToFilesDocumentSections(fileName, req));
+      //const documentSection = new TypeOfDocumentSection(typeOfDocument, dateDay, dateMonth, dateYear, TypeOfDocumentSectionMapper.mapToFilesDocumentSections(fileName, req));
       return documentSection;
     });
-  }
-  static mapToFilesDocumentSections(name: string, req: Request): FileUpload {
+  }*/
+/*  static mapToFilesDocumentSections(name: string, req: Request): FileUpload {
     const files = req.files as Express.Multer.File[];
     const file = files.find(file => file.fieldname === name);
 
@@ -28,7 +28,7 @@ export class TypeOfDocumentSectionMapper {
       return mappedFile;
     }
     return undefined;
-  }
+  }*/
 
   static mapToSingleFile(req: Request): FileUpload {
     const file = req.file as Express.Multer.File;

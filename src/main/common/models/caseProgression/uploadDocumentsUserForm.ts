@@ -2,24 +2,23 @@ import {IsDefined, IsNotEmpty, ValidateNested} from 'class-validator';
 import { IsFileSize} from 'form/validators/isFileSize';
 import {IsAllowedMimeType} from 'form/validators/isAllowedMimeType';
 
-
 export class UploadDocumentsUserForm {
   @ValidateNested()
     documentsForDisclosure?: TypeOfDocumentSection[];
   @ValidateNested()
-    disclosureList?: FileSection[];
+    disclosureList?: FileOnlySection[];
   @ValidateNested()
-    trialCaseSummary?: FileSection[];
+    trialCaseSummary?: FileOnlySection[];
   @ValidateNested()
-    trialSkeletonArgument?: FileSection[];
+    trialSkeletonArgument?: FileOnlySection[];
   @ValidateNested()
-    trialAuthorities?: FileSection[];
+    trialAuthorities?: FileOnlySection[];
   @ValidateNested()
-    trialCosts?: FileSection[];
+    trialCosts?: FileOnlySection[];
   @ValidateNested()
     trialDocumentary?: TypeOfDocumentSection[];
 
-  constructor(documentsForDisclosure?: TypeOfDocumentSection[], disclosureList?: FileSection[], trialCaseSummary?: FileSection[], trialSkeletonArgument?: FileSection[], trialAuthorities?: FileSection[], trialCosts?: FileSection[], trialDocumentary?: TypeOfDocumentSection[]) {
+  constructor(documentsForDisclosure?: TypeOfDocumentSection[], disclosureList?: FileOnlySection[], trialCaseSummary?: FileOnlySection[], trialSkeletonArgument?: FileOnlySection[], trialAuthorities?: FileOnlySection[], trialCosts?: FileOnlySection[], trialDocumentary?: TypeOfDocumentSection[]) {
     //disclosure sections
     this.documentsForDisclosure = documentsForDisclosure;
     this.disclosureList = disclosureList;
@@ -44,13 +43,9 @@ export class FileUpload {
     size: number;
 }
 
-export class FileSection {
+export class FileOnlySection {
   @IsDefined({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
     fileUpload: FileUpload;
-
-  constructor(fileUpload: FileUpload) {
-    this.fileUpload = fileUpload;
-  }
 }
 export class TypeOfDocumentSection {
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_TYPE_OF_DOCUMENT'})
@@ -65,12 +60,5 @@ export class TypeOfDocumentSection {
   @IsDefined({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
     fileUpload: FileUpload;
 
-  constructor(typeOfDocument: string, dateDay: string, dateMonth: string, dateYear: string, fileUpload: FileUpload) {
-    this.typeOfDocument = typeOfDocument;
-    this.dateDay = dateDay;
-    this.dateMonth = dateMonth;
-    this.dateYear = dateYear;
-    this.fileUpload = fileUpload;
-  }
 }
 
