@@ -154,6 +154,19 @@ describe('on POST', () => {
       });
   });
 
+  it('should not display documentForDisclosure validation error when date is valid', async () => {
+    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'dateDay':'12','dateMonth':'11','dateYear':'2022','file_upload':''}]};
+
+    await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .send(documentForDisclosureModel)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('You must enter type of document');
+        expect(res.text).not.toContain(TestMessages.VALID_ENTER_DATE_DOC_ISSUED);
+      });
+  });
+
   it('should display witness validation error when invalid', async () => {
     const model = {'witnessStatement':[{'witnessName':'', 'dateDay':'','dateMonth':'','dateYear':'','file_upload':''}]};
 
