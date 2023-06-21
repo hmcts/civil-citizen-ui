@@ -18,12 +18,9 @@ export class DraftStoreClient {
     this.logger.info(`connectionString: ${connectionString}`);
     const client = new Redis(connectionString);
 
-    this.logger.info(client.ping());
     app.locals.draftStoreClient = client;
     this.logger.info(DraftStoreClient.REDIS_CONNECTION_SUCCESS);
-    app.locals.draftStoreClient.on('error', (err: any) => {
-      console.log('Could not establish a connection with redis. ' + err);
-    });
+
     app.locals.draftStoreClient.on('connect', () => {
       REDIS_DATA.forEach((element: any) => {
         client.set(element.id, JSON.stringify(element, null, 4)).then(() =>
