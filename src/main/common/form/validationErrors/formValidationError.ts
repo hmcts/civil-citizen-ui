@@ -1,7 +1,5 @@
 import {ValidationError} from 'class-validator';
 import {HtmlConverter} from '../../utils/htmlFormConverter';
-//import {FileUpload} from "models/caseProgression/uploadDocumentsUserForm";
-//import {FileUpload} from "models/caseProgression/uploadDocumentsUserForm";
 
 export class FormValidationError extends ValidationError {
 
@@ -19,13 +17,7 @@ export class FormValidationError extends ValidationError {
   constructor(error: ValidationError, parentProperty?: string) {
     super();
     Object.assign(this, error);
-/*    if (error.target instanceof FileUpload){
-      this.property = parentProperty;
-    } else {
-      this.property = parentProperty ? `${parentProperty}[${this.property}]` : this.property;
-    }*/
     this.property = parentProperty ? `${parentProperty}[${this.property}]` : this.property;
-
     this.fieldName = HtmlConverter.asFieldName(this.property);
     const constraintMessages: string[] = error.constraints ? Object.values(error.constraints) : undefined;
     this.text = constraintMessages ? constraintMessages[0] : '';

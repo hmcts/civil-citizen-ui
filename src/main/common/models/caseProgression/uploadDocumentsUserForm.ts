@@ -45,7 +45,6 @@ export class FileUpload {
 }
 
 export class FileSection {
-  @ValidateNested()
   @IsDefined({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
     fileUpload: FileUpload;
 
