@@ -139,12 +139,33 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('submitted');
   });
 });*/
+function createLoading(event){
+  const eventId = event.target.id;
+  const loadingContainer = document.createElement('div');
+  loadingContainer.id = `${eventId}-loadingContainer`;
+  loadingContainer.innerHTML = `
+  <div id="loadingAnimation"></div>
+    <p id="loadingText">Uploading<span id="loadingDots"></span></p>
+`;
+  event.target.parentNode.insertBefore(loadingContainer, event.target);
+
+}
+
+function removeLoading(event){
+  const eventId = event.target.id;
+  const loadingContainer = document.getElementById(`${eventId}-loadingContainer`);
+  loadingContainer.remove();
+
+}
 function elementExists(element) {
   return element?.length > 0;
 }
-function removeErrorClass(errorField) {
-  if (elementExists(errorField)) {
-    errorField.forEach(element => element.classList.remove('govuk-form-group--error'));
+function removeExistsFile(event) {
+  const eventId = event.target.id;
+  const elementToRemove = document.getElementById(`${eventId}-fileOk`);
+
+  if (elementToRemove) {
+    elementToRemove.remove();
   }
 }
 function removeErrors(newRow) {
@@ -162,6 +183,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   document.querySelectorAll('.govuk-file-upload').forEach(fileUpload => {
     fileUpload.addEventListener('change', async (event) => {
       try {
+        createLoading(event);
         removeErrors(event);
         const csrfToken = document.getElementsByName('_csrf')[0].value;
         const formData = new FormData();
@@ -180,6 +202,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         const response = await fetch('/upload-file', options);
         const parsed = await response.json();
         if (response.status === 400) {
+          removeLoading(event);
           fileUpload.value = '';
           // Add the 'govuk-form-group--error' class to the parent container
           const formGroup = fileUpload.closest('div');
@@ -198,7 +221,8 @@ document.addEventListener('DOMContentLoaded', async function() {
           // Process the data returned from the API
         }
         if (response.status === 200 ){
-
+          removeLoading(event);
+          removeExistsFile(event);
           const fileOkHtml = document.createElement('p');
           fileOkHtml.id = `${objectId}-fileOk`;
           fileOkHtml.innerHTML = `<span class="govuk-visually-hidden"></span>${parsed.document.documentName}`;
