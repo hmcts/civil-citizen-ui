@@ -3,6 +3,7 @@ import * as requestModels from 'common/models/AppRequest';
 import {CCDClaim, CivilClaimResponse} from 'common/models/civilClaimResponse';
 import config from 'config';
 import {
+  CIVIL_SERVICE_ATTACH_CASE_DOCUMENTS,
   CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
   CIVIL_SERVICE_CLAIMANT,
@@ -17,6 +18,7 @@ import {CaseState} from 'common/form/models/claimDetails';
 import {CourtLocation} from 'common/models/courts/courtLocations';
 import {TestMessages} from '../../../utils/errorMessageTestConstants';
 import { CivilServiceClient } from 'client/civilServiceClient';
+import {CaseDocument} from 'models/document/caseDocument';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -295,6 +297,41 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
       await expect(civilServiceClient.getAgreedDeadlineResponseDate('1', mockedAppRequest)).rejects.toThrow('error');
+    });
+  });
+
+  describe('attachCaseDocuments', () => {
+    it('should call civil service api to attach case documents to a case successfully', async () => {
+      //Given
+      const expertReport: CaseDocument = {
+        createdBy: '',
+        createdDatetime: undefined,
+        documentLink: undefined,
+        documentName: '',
+        documentSize: 0,
+        documentType: undefined,
+      };
+      const witnessStatement: CaseDocument = {
+        createdBy: '',
+        createdDatetime: undefined,
+        documentLink: undefined,
+        documentName: '',
+        documentSize: 0,
+        documentType: undefined,
+      };
+      const expectedCaseDocuments = [expertReport, witnessStatement];
+      const claimId = '1234567890';
+      const mockPost = jest.fn().mockResolvedValue({data: expectedCaseDocuments});
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //When
+      const caseDocuments = await civilServiceClient.attachCaseDocuments(claimId, expectedCaseDocuments, mockedAppRequest);
+      //Then
+      expect(mockedAxios.create).toHaveBeenCalledWith({
+        baseURL: baseUrl,
+      });
+      expect(mockPost.mock.calls[0][0]).toEqual(CIVIL_SERVICE_ATTACH_CASE_DOCUMENTS.replace(':claimId', claimId));
+      await expect(caseDocuments).toEqual(expectedCaseDocuments);
     });
   });
 });
