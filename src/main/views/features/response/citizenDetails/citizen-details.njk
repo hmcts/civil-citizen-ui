@@ -2,6 +2,7 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../macro/address.njk" import addressForm %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
@@ -44,8 +45,8 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
-        {% if party.hasErrors() %}
-          {{ errorSummary(party.getAllErrors(), t) }}
+        {% if party.hasErrors() or partyPhone.hasErrors() %}
+          {{ errorSummary(party.getAllErrors().concat(partyPhone.getAllErrors()), t) }}
         {% endif %}
       </div>
       <div class="govuk-grid-row">
@@ -99,13 +100,17 @@
                 }
               ]
             }) }}
-            {% if party.model.partyPhone !== undefined %}
-              <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_PHONE.PAGE_TITLE') }}</h2>
-              <p class="govuk-body">{{ t('PAGES.CLAIMANT_PHONE.INFORMATION') }}</p>
-              {{ citizenTelephone(party, t, {
-                id: "partyPhone",
-                name: "partyPhone",
-                className: "govuk-input--width-20"
+            {% if partyPhone.model.phone !== undefined and partyPhone.model.ccdPhoneExist %}
+            <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_PHONE.PAGE_TITLE') }}</h2>
+            <p class="govuk-body">{{ t('PAGES.CLAIMANT_PHONE.INFORMATION') }}</p>
+            {{ govukInput({
+              classes: "govuk-input--width-20",
+              id: "partyPhone",
+              name: "partyPhone",
+              value: partyPhone.model.phone,
+              errorMessage: {
+                html: t(partyPhone.errorFor("phone"))
+              } if partyPhone.hasErrors()
             }) }}
             {% endif %}
             {{ govukButton({
