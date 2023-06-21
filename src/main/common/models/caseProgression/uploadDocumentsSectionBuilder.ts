@@ -4,20 +4,9 @@ import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
 
-  addTitle(title: string) {
-    const section = ({
-      type: ClaimSummaryType.TITLE,
-      data: {
-        text: title,
-      },
-    });
-    this._claimSummarySections.push(section);
-    return this;
-  }
-
   addInputArray(title: string, classes: string, hint: string, category: string, field: string, value: string = null, index = 0, error: string = null) {
     const section = ({
-      type: ClaimSummaryType.INPUT_ARRAY,
+      type: error !== null ? ClaimSummaryType.INPUT_ARRAY_ERROR : ClaimSummaryType.INPUT_ARRAY,
       data: {
         category: category,
         field: field,
@@ -26,6 +15,7 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
         hint: hint,
         value: value,
         index: index,
+        error: error,
       },
     });
     this._claimSummarySections.push(section);
@@ -77,6 +67,23 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
       });
       this._claimSummarySections.push(titleSection);
     }
+    return this;
+  }
+
+  addSelect(title:string, classes:string, hint:string, choose:string, selectItems:string[], category:string, field:string) {
+    const section = ({
+      type: ClaimSummaryType.SELECT,
+      data: {
+        category: category,
+        field: field,
+        text: title,
+        classes: classes,
+        hint: hint,
+        choose: choose,
+        items: selectItems,
+      },
+    });
+    this._claimSummarySections.push(section);
     return this;
   }
 

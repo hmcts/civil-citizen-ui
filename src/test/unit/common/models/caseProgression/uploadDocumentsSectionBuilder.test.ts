@@ -14,6 +14,7 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
         hint: 'hint',
         value: 'value',
         index: 0,
+        error: null as string | null,
       },
     });
 
@@ -25,6 +26,34 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
 
     //Then
     expect(inputArrayBuilt).toEqual([inputArrayExpected]);
+    expect(inputArrayBuilt[0].type).toEqual(ClaimSummaryType.INPUT_ARRAY);
+  });
+
+  it('should create Input Array with errorMessage', ()=> {
+    //Given
+    const inputArrayExpected = ({
+      type: ClaimSummaryType.INPUT_ARRAY_ERROR,
+      data: {
+        category: 'category',
+        field: 'field',
+        text: 'title',
+        classes: 'classes',
+        hint: 'hint',
+        value: 'value',
+        index: 0,
+        error: 'error',
+      },
+    });
+
+    //When
+    const inputArrayBuilt = new UploadDocumentsSectionBuilder()
+      .addInputArray(inputArrayExpected.data.text,inputArrayExpected.data.classes,
+        inputArrayExpected.data.hint,inputArrayExpected.data.category,inputArrayExpected.data.field, inputArrayExpected.data.value, 0, 'error')
+      .build();
+
+    //Then
+    expect(inputArrayBuilt).toEqual([inputArrayExpected]);
+    expect(inputArrayBuilt[0].type).toEqual(ClaimSummaryType.INPUT_ARRAY_ERROR);
   });
 
   it('should create Date Array', ()=> {
@@ -74,5 +103,30 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
 
     //Then
     expect(uploadArrayBuilt).toEqual([uploadArrayExpected]);
+  });
+
+  it('should add Select', ()=> {
+    //Given
+    const selectExpected = ({
+      type: ClaimSummaryType.SELECT,
+      data: {
+        category: 'category',
+        field: 'field',
+        text: 'title',
+        classes: 'classes',
+        hint: 'hint',
+        choose: 'choose',
+        items: ['item1','item2','item2'],
+      },
+    });
+
+    //When
+    const selectBuilt = new UploadDocumentsSectionBuilder()
+      .addSelect(selectExpected.data.text,selectExpected.data.classes,selectExpected.data.hint
+        ,selectExpected.data.choose,selectExpected.data.items,selectExpected.data.category,selectExpected.data.field)
+      .build();
+
+    //Then
+    expect(selectBuilt).toEqual([selectExpected]);
   });
 });

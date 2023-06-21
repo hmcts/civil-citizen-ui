@@ -6,6 +6,7 @@ import {
   UploadDocumentsUserForm,
 } from 'models/caseProgression/uploadDocumentsUserForm';
 import {GenericForm} from 'form/models/genericForm';
+import {ClaimSummaryType} from 'form/models/claimSummarySection';
 
 describe('Disclosure service', () => {
   let mockClaim;
@@ -74,7 +75,7 @@ describe('Disclosure service', () => {
 
     //Then
     expect(actualDisclosureContent[0].length).toEqual(2);
-    expect(actualDisclosureContent[0][0].contentSections[1].data.classes).toEqual('govuk-form-group--error govuk-input--error');
+    expect(actualDisclosureContent[0][0].contentSections[1].type).toEqual(ClaimSummaryType.INPUT_ARRAY_ERROR);
   });
 
   it('should return only disclosure list content', () => {
@@ -108,6 +109,43 @@ describe('Disclosure service', () => {
 
     //Then
     expect(actualDisclosureContent.length).toEqual(1);
+  });
+
+  it('should return no section if defendantUploadDocuments not present', () => {
+    //Given
+    const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+        caseProgression: {},
+      },
+    };
+
+    //when
+    const actualDisclosureContent = getDisclosureContent(testClaim.case_data, null);
+
+    //Then
+    expect(actualDisclosureContent.length).toEqual(0);
+  });
+
+  it('should return no section if caseProgression not present', () => {
+    //Given
+    const mockClaim = require('../../../../utils/mocks/civilClaimantIntentionMock.json');
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+      },
+    };
+
+    //when
+    const actualDisclosureContent = getDisclosureContent(testClaim.case_data, null);
+
+    //Then
+    expect(actualDisclosureContent.length).toEqual(0);
   });
 
   it('should return no section if defendantUploadDocuments not present', () => {

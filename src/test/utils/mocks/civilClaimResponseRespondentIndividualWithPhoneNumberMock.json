@@ -18,7 +18,10 @@
       "individualFirstName": "Joe",
       "individualLastName": "Doe",
       "partyName": "Mr. Joe Doe",
-      "partyPhone": "654323472"
+      "partyPhone": {
+        "phone": "654323472",
+        "ccdPhoneExist": true
+      }
     }
   }
 }

@@ -13,6 +13,7 @@ import {
 } from 'services/features/caseProgression/caseProgressionService';
 import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 import {getTrialContent} from 'services/features/caseProgression/trialService';
+import {getExpertContent} from 'services/features/caseProgression/expertService';
 
 const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
 const uploadDocumentsController = Router();
@@ -24,8 +25,8 @@ async function renderView(res: Response, claimId: string, form: GenericForm<Uplo
 
   if (claim && !claim.isEmpty()) {
     const disclosureContent = getDisclosureContent(claim, form);
-    const witnessContent = getWitnessContent(claimId, claim);
-    const expertContent: string = undefined; //TODO = getExpertContent(claim, claimId);
+    const witnessContent = getWitnessContent(claim);
+    const expertContent = getExpertContent(claim);
     const trialContent = getTrialContent(claim, form);
     res.render(uploadDocumentsViewPath, {
       form,
