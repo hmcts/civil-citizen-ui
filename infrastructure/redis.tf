@@ -6,7 +6,7 @@ data "azurerm_subnet" "core_infra_redis_subnet" {
 
 module "citizen-ui-draft-store" {
   source      = "git@github.com:hmcts/cnp-module-redis?ref=master"
-  product     = "${var.product}-${var.component}-cache-test-draft-store"
+  product     = "${var.product}-${var.component}-cache-draft-store"
   location    = var.location
   env         = var.env
   subnetid    = data.azurerm_subnet.core_infra_redis_subnet.id
