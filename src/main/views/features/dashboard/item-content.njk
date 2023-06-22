@@ -150,6 +150,9 @@
   {% endif %}
 
   {% if content.type === ClaimSummaryType.DATE_ARRAY %}
+    {% if (content.data.invalidDateError !== undefined and content.data.invalidDateError != '') or (content.data.invalidDayError !== undefined and content.data.invalidDayError != '') or (content.data.invalidMonthError !== undefined and content.data.invalidMonthError != '') or (content.data.invalidYearError !== undefined and content.data.invalidYearError != '') %}
+       {% set isDateError = 'true' %}
+    {% endif %}
      <div>
         {{ govukDateInput({
            id: content.data.category+'['+content.data.index+']['+content.data.field+']',
@@ -166,7 +169,7 @@
            },
            errorMessage: {
             text: t(content.data.invalidDateError) or t(content.data.invalidDayError) or t(content.data.invalidMonthError) or t(content.data.invalidYearError)
-           },
+           } if (isDateError == 'true'),
            items: [
              {
                id: content.data.category+'['+content.data.index+']['+content.data.field+'Day]',
@@ -195,7 +198,7 @@
                name: content.data.category+'['+content.data.index+']['+content.data.field+'Year]',
                label: "Year",
                value: content.data.yearValue,
-               classes: "govuk-input--width-2 govuk-input--error" if content.data.invalidYearError or content.data.invalidDateError else "govuk-input--width-2",
+               classes: "govuk-input--width-3 govuk-input--error" if content.data.invalidYearError or content.data.invalidDateError else "govuk-input--width-3",
                attributes: {
                  'data-name': content.data.category+'[%index%]['+content.data.field+'Year]',
                  'data-id': content.data.category+'[%index%]['+content.data.field+'Year]'
