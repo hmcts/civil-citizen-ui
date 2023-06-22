@@ -6,6 +6,11 @@ const Redis = require('ioredis');
 
 const REDIS_DATA = require('./redisData.json');
 
+export const getConnectionString = (user = ''): string => {
+  const protocol = config.get('services.draftStore.redis.tls') ? 'rediss://' : 'redis://';
+  return `${protocol}${user}:${config.get('services.draftStore.redis.key')}@${config.get('services.draftStore.redis.host')}:${config.get('services.draftStore.redis.port')}`;
+};
+
 export class DraftStoreClient {
   public static REDIS_CONNECTION_SUCCESS = 'Connected to Redis instance successfully';
 
