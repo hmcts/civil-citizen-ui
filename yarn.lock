@@ -9372,7 +9372,7 @@ __metadata:
     launchdarkly-eventsource: 1.4.4
     lru-cache: ^6.0.0
     node-cache: ^5.1.0
-    semver: ^7.3.0
+    semver: ^7.5.2
     tunnel: 0.0.6
     uuid: ^8.3.2
   checksum: 83a24c6157088c19dbe31c7e3369a852a9cc24336778790f173869a0a3f29ed74e6babe9f31e7672ef6a374b5f7880c3c4dc6d9d1eefbf67239d15747491ea2e
