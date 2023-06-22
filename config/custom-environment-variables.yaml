@@ -17,6 +17,10 @@ services:
       tls: REDIS_TLS
     legacy:
       url: DRAFT_STORE_API_URL
+  session:
+    redis:
+      host: REDIS_HOST
+    secureCookie: SECURE_COOKIE
   dmStore:
     microserviceName: MICROSERVICE_NAME
     baseUrl: DOCUMENT_MANAGEMENT_URL

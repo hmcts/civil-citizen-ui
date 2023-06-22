@@ -32,6 +32,10 @@ services:
         microserviceName: 'cmc'
         primarySecret: 'not-a-real-primary-secret'
         secondarySecret: 'not-a-real-secondary-secret'
+    session:
+      redis:
+        host: 'localhost'
+      secureCookie: 'true'
   dmStore:
     microserviceName: 'xui_webapp'
     baseUrl: 'http://localhost:4506'
