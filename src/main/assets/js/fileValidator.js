@@ -7,7 +7,6 @@ function createLoading(event) {
     <p id="loadingText">Uploading<span id="loadingDots"></span></p>
 `;
   event.target.parentNode.insertBefore(loadingContainer, event.target);
-
 }
 
 function removeLoading(event) {
@@ -21,15 +20,6 @@ function elementExists(element) {
   return element?.length > 0;
 }
 
-function removeExistsFile(event) {
-  const eventId = event.target.id;
-  const elementToRemove = document.getElementById(`${eventId}-fileOk`);
-
-  if (elementToRemove) {
-    elementToRemove.remove();
-  }
-}
-
 function removeErrors(newRow) {
   const parentObject = newRow.target.closest('div');
   const errorRow = parentObject.querySelectorAll('.govuk-error-message');
@@ -40,60 +30,88 @@ function removeErrors(newRow) {
 
 }
 
-document.addEventListener('DOMContentLoaded', async function () {
-  document.querySelectorAll('.govuk-file-upload').forEach(fileUpload => {
-    fileUpload.addEventListener('change', async (event) => {
-      try {
-        createLoading(event);
-        removeErrors(event);
-        const csrfToken = document.getElementsByName('_csrf')[0].value;
-        const formData = new FormData();
-        formData.append('file', fileUpload.files[0]); // Assuming you have an input element with type="file" and id="fileInput"
+// Event listener for 'change' event
+async function handleChange(event) {
+  // Handle the change event
+  const objectId = event.target.id; // Get the object identifier
+  const target = event.target;
+  createLoading(event);
+  removeErrors(event);
+  const csrfToken = document.getElementsByName('_csrf')[0].value;
+  const formData = new FormData();
+  formData.append('file', target.files[0]); // Assuming you have an input element with type="file" and id="fileInput"
 
-        const options = {
-          method: 'POST',
-          headers: {
-            'CSRF-Token': csrfToken,
-          },
-          body: formData,
-        };
+  const options = {
+    method: 'POST',
+    headers: {
+      'CSRF-Token': csrfToken,
+    },
+    body: formData,
+  };
 
-        const objectId = event.target.id; // Get the object identifier
+  const response = await fetch('/upload-file', options);
+  const parsed = await response.json();
+  if (response.status === 400) {
+    removeLoading(event);
+    target.value = '';
+    const formGroup = target.closest('div');
+    formGroup.classList.add('govuk-form-group--error');
 
-        const response = await fetch('/upload-file', options);
-        const parsed = await response.json();
-        if (response.status === 400) {
-          removeLoading(event);
-          fileUpload.value = '';
-          const formGroup = fileUpload.closest('div');
-          formGroup.classList.add('govuk-form-group--error');
+    parsed.errors.forEach((item) => {
+      const errorMessage = document.createElement('p');
+      errorMessage.id = `${objectId}-error`;
+      errorMessage.classList.add('govuk-error-message');
+      errorMessage.innerHTML = `<span class="govuk-visually-hidden"></span>${item}`;
+      target.parentNode.insertBefore(errorMessage, target);
+    });
+    target.classList.add('govuk-file-upload--error');
+    target.setAttribute('aria-describedby', `${objectId}-error`);
+  }
+  if (response.status === 200) {
+    removeLoading(event);
+  }
+}
 
-          parsed.errors.forEach((item) => {
-            const errorMessage = document.createElement('p');
-            errorMessage.id = `${objectId}-error`;
-            errorMessage.classList.add('govuk-error-message');
-            errorMessage.innerHTML = `<span class="govuk-visually-hidden"></span>${item}`;
-            fileUpload.parentNode.insertBefore(errorMessage, fileUpload);
-          });
-          fileUpload.classList.add('govuk-file-upload--error');
-          fileUpload.setAttribute('aria-describedby', `${objectId}-error`);
+function createObservable() {
+  const observer = new MutationObserver((mutationsList) => {
+    for (const mutation of mutationsList) {
+      // Check if the mutation is an added node
+      if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+        // Iterate over the added nodes and check if any of them are file input elements
+        for (const node of mutation.addedNodes) {
+          if (node instanceof Element) {
+            // Iterate over the node's children
+            const element = node.querySelector('.govuk-file-upload');
+            if (element) {
+              node.addEventListener('change', handleChange);
+            }
+          }
         }
-        if (response.status === 200) {
-          removeLoading(event);
-          removeExistsFile(event);
-          const fileOkHtml = document.createElement('p');
-          fileOkHtml.id = `${objectId}-fileOk`;
-          fileOkHtml.classList.add('govuk-input--fileOk');
-          fileOkHtml.innerHTML = `<span class="govuk-visually-hidden"></span>${parsed.document.documentName}`;
-          fileUpload.parentNode.insertBefore(fileOkHtml, fileUpload);
-          event.target.value = '';
-        }
-
-      } catch (error) {
-        // Handle any errors that occurred during the fetch request or file upload logic
-        console.error('Error:', error);
       }
+    }
+  });
+  const observerConfig = {attributes: true, childList: true, subtree: true};
+  return {observer, observerConfig};
+}
 
+function addEventListenerWhenDomIsLoaded() {
+  document.addEventListener('DOMContentLoaded', async function () {
+    document.querySelectorAll('.govuk-file-upload').forEach(fileUpload => {
+      fileUpload.addEventListener('change', async (event) => {
+        try {
+          await handleChange(event);
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      });
     });
   });
-});
+}
+
+if (window.location.href.includes('upload-documents')) {
+  const {observer, observerConfig} = createObservable();
+  observer.observe(document, observerConfig);
+  addEventListenerWhenDomIsLoaded();
+
+}
+

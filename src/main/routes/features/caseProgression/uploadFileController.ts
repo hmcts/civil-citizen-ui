@@ -18,9 +18,6 @@ uploadFileController.post(CP_UPLOAD_FILE, upload.single('file'), (req, res) => {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
 
     const form = new GenericForm(uploadDocumentsForm);
-    setTimeout(function() {
-      console.log('Timeout complete');
-    }, 8000);
     form.validateSync();
     if (form.hasErrors()) {
       //await renderView(res, claimId, form);

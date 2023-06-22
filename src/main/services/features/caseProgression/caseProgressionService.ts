@@ -141,14 +141,18 @@ const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSect
   formObj.dateDay = request['date-day'];
   formObj.dateMonth = request['date-month'];
   formObj.dateYear = request['date-year'];
-  //TODO we should get the file from request with
-  //formObj.fileUpload = undefined;
+  //TODO we should get the file from dm-store
+  if (request['fileUpload'] !== '') {
+    formObj.fileUpload = request['fileUpload'];
+  }
   return formObj;
 };
 
 const bindRequestToFileOnlySectionObj = (request: any): FileOnlySection => {
   const formObj: FileOnlySection = new FileOnlySection();
-  //TODO we should get the file from request with hiddenFilen
-  //formObj.fileUpload = undefined; //request['file_upload'];
+  //TODO we should get the file from dm-store
+  if (request['fileUpload'] !== '') {
+    formObj.fileUpload = request['fileUpload'];
+  }
   return formObj;
 };

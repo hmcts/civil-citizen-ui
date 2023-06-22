@@ -13,7 +13,9 @@
 {% block content %}
 <div class="govuk-width-container caseProgression">
   <main class="govuk-main-wrapper" role="main">
-    <div id="error-container"></div>
+    {% if form != null and form.hasErrors() %}
+    {{ errorSummary(form.getAllErrors(), t) }}
+    {% endif %}
 
     {% set rowNumberToShowRemoveButton = 2 %}
     {% set witnessContentLength = witnessContent.length %}
