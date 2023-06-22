@@ -126,5 +126,3 @@ app.use((err: HTTPError, _req: express.Request, res: express.Response, _next: ex
   res.status(err.status || 500);
   res.render('error', {error: res.locals.error});
 });
-
-
