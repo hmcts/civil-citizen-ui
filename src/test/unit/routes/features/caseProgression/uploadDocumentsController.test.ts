@@ -97,7 +97,7 @@ describe('on POST', () => {
       .send(documentForDisclosureModel)
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('You must enter type of document');
+        expect(res.text).toContain(TestMessages.VALID_ENTER_TYPE_OF_DOCUMENT);
         expect(res.text).toContain(TestMessages.VALID_REAL_DATE);
       });
   });
@@ -110,7 +110,7 @@ describe('on POST', () => {
       .send(documentForDisclosureModel)
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('You must enter type of document');
+        expect(res.text).toContain(TestMessages.VALID_ENTER_TYPE_OF_DOCUMENT);
         expect(res.text).toContain(TestMessages.VALID_DATE_OF_DOC_MUST_INCLUDE_DAY);
       });
   });
@@ -123,7 +123,7 @@ describe('on POST', () => {
       .send(documentForDisclosureModel)
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('You must enter type of document');
+        expect(res.text).toContain(TestMessages.VALID_ENTER_TYPE_OF_DOCUMENT);
         expect(res.text).toContain(TestMessages.VALID_DATE_OF_DOC_MUST_INCLUDE_MONTH);
       });
   });
@@ -136,7 +136,7 @@ describe('on POST', () => {
       .send(documentForDisclosureModel)
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('You must enter type of document');
+        expect(res.text).toContain(TestMessages.VALID_ENTER_TYPE_OF_DOCUMENT);
         expect(res.text).toContain(TestMessages.VALID_DATE_OF_DOC_MUST_INCLUDE_YEAR);
       });
   });
@@ -149,7 +149,7 @@ describe('on POST', () => {
       .send(documentForDisclosureModel)
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('You must enter type of document');
+        expect(res.text).toContain(TestMessages.VALID_ENTER_TYPE_OF_DOCUMENT);
         expect(res.text).toContain(TestMessages.VALID_DATE_NOT_FUTURE);
       });
   });
@@ -162,7 +162,7 @@ describe('on POST', () => {
       .send(documentForDisclosureModel)
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('You must enter type of document');
+        expect(res.text).toContain(TestMessages.VALID_ENTER_TYPE_OF_DOCUMENT);
         expect(res.text).not.toContain(TestMessages.VALID_ENTER_DATE_DOC_ISSUED);
       });
   });
