@@ -1,9 +1,9 @@
-const ContactUs = require("../common/contactUs");
+const ContactUs = require("../../common/contactUs");
 const I = actor();
 
 const contactUs = new ContactUs();
 
-class CaseProgressionLatestUpdate {
+class LatestUpdate {
 
   open(claimRef, nextAction) {
     I.amOnPage('/dashboard/' + claimRef + '/defendant');
@@ -46,4 +46,4 @@ class CaseProgressionLatestUpdate {
   }
 }
 
-module.exports = CaseProgressionLatestUpdate;
+module.exports = LatestUpdate;

@@ -1,5 +1,5 @@
 const config = require('../../config');
-const UploadEvidenceSteps = require('../features/response/steps/caseProgressionSteps');
+const UploadEvidenceSteps = require('../features/caseProgression/steps/caseProgressionSteps');
 const LoginSteps = require('../features/home/steps/login');
 
 const rejectAll = 'rejectAll';
