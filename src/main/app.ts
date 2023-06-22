@@ -18,7 +18,8 @@ import routes from './routes/routes';
 import {setLanguage} from 'modules/i18n/languageService';
 import {isServiceShuttered} from './app/auth/launchdarkly/launchDarklyClient';
 import ConnectRedis from 'connect-redis';
-import * as redis from 'redis';
+const Redis = require('ioredis');
+
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -38,15 +39,10 @@ export const app = express();
 const RedisStore = ConnectRedis(session);
 
 app.enable('trust proxy');
-const redisHost = config.get('services.session.redis.host');
-const client = redis.createClient({
-  host: redisHost as string,
-  password: config.get('services.session.redis.key') as string,
-  port: 6380 ,
-  tls: true,
-  connect_timeout: 15000,
-});
 
+const protocol = config.get('services.draftStore.redis.tls') ? 'rediss://' : 'redis://';
+const connectionString = `${protocol}:${config.get('services.session.redis.key')}@${config.get('services.session.redis.host')}:${config.get('services.draftStore.redis.port')}`;
+const client = new Redis(connectionString);
 app.locals.redisClient = client;
 
 app.use(session({
