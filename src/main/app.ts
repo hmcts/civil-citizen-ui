@@ -17,8 +17,8 @@ import {CSRFToken} from './modules/csrf';
 import routes from './routes/routes';
 import {setLanguage} from 'modules/i18n/languageService';
 import {isServiceShuttered} from './app/auth/launchdarkly/launchDarklyClient';
-import RedisStore from 'connect-redis';
-import {createClient} from 'redis';
+import ConnectRedis from 'connect-redis';
+import * as redis from 'redis';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -31,18 +31,27 @@ export const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
 
 export const app = express();
 
-const redisSessionStoreClient = createClient({
-  url: getConnectionString('default'),
-});
-redisSessionStoreClient.connect().catch(console.error);
+// const redisSessionStoreClient = createClient({
+//   url: getConnectionString('default'),
+// });
+// redisSessionStoreClient.connect().catch(console.error);
+const RedisStore = ConnectRedis(session);
 
 app.enable('trust proxy');
+const redisHost = config.get('services.session.redis.host');
+const client = redis.createClient({
+  host: redisHost as string,
+  password: config.get('services.session.redis.key') as string,
+  port: 6380 ,
+  tls: true,
+  connect_timeout: 15000,
+});
+
+app.locals.redisClient = client;
+
 app.use(session({
   name: 'citizen-ui-session',
-  store: new RedisStore({
-    client: redisSessionStoreClient,
-    prefix: 'cui:',
-  }),
+  store: new RedisStore({ client }),
   // store: new MemoryStore({
   //   checkPeriod: 86400000, // prune expired entries every 24h
   // }),
@@ -117,3 +126,5 @@ app.use((err: HTTPError, _req: express.Request, res: express.Response, _next: ex
   res.status(err.status || 500);
   res.render('error', {error: res.locals.error});
 });
+
+
