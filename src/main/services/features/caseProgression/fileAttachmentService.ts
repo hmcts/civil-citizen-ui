@@ -30,7 +30,7 @@ export const attachCaseDocuments = async (claimId: string, claimantOrDefendant: 
   } else {
     documentsToAttach = getDocuments(caseProgression.claimantUploadDocuments);
   }
-  const attachedDocuments = await civilServiceClient.attachCaseDocuments(claimId, documentsToAttach, <AppRequest>req)
+  const attachedDocuments = await civilServiceClient.attachCaseDocuments(claimId, documentsToAttach, <AppRequest>req);
 
   if (documentsToAttach.length === attachedDocuments.length) {
     return caseProgression;
