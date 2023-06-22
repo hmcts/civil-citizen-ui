@@ -18,7 +18,7 @@ import {CaseState} from 'common/form/models/claimDetails';
 import {CourtLocation} from 'common/models/courts/courtLocations';
 import {TestMessages} from '../../../utils/errorMessageTestConstants';
 import { CivilServiceClient } from 'client/civilServiceClient';
-import {CaseDocument} from 'models/document/caseDocument';
+import {Document} from 'models/document/document';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -303,21 +303,11 @@ describe('Civil Service Client', () => {
   describe('attachCaseDocuments', () => {
     it('should call civil service api to attach case documents to a case successfully', async () => {
       //Given
-      const expertReport: CaseDocument = {
-        createdBy: '',
-        createdDatetime: undefined,
-        documentLink: undefined,
-        documentName: '',
-        documentSize: 0,
-        documentType: undefined,
+      const expertReport: Document = {
+        category_id: '', document_binary_url: '', document_filename: '', document_hash: '', document_url: '',
       };
-      const witnessStatement: CaseDocument = {
-        createdBy: '',
-        createdDatetime: undefined,
-        documentLink: undefined,
-        documentName: '',
-        documentSize: 0,
-        documentType: undefined,
+      const witnessStatement: Document = {
+        category_id: '', document_binary_url: '', document_filename: '', document_hash: '', document_url: '',
       };
       const expectedCaseDocuments = [expertReport, witnessStatement];
       const claimId = '1234567890';
@@ -335,21 +325,11 @@ describe('Civil Service Client', () => {
     });
     it('should call civil service api to attach case documents to a case successfully but not all documents are attached', async () => {
       //Given
-      const expertReport: CaseDocument = {
-        createdBy: '',
-        createdDatetime: undefined,
-        documentLink: undefined,
-        documentName: '',
-        documentSize: 0,
-        documentType: undefined,
+      const expertReport: Document = {
+        category_id: '', document_binary_url: '', document_filename: '', document_hash: '', document_url: '',
       };
-      const witnessStatement: CaseDocument = {
-        createdBy: '',
-        createdDatetime: undefined,
-        documentLink: undefined,
-        documentName: '',
-        documentSize: 0,
-        documentType: undefined,
+      const witnessStatement: Document = {
+        category_id: '', document_binary_url: '', document_filename: '', document_hash: '', document_url: '',
       };
       const sentCaseDocuments = [expertReport, witnessStatement];
       const expectedCaseDocuments = [witnessStatement];
@@ -368,21 +348,11 @@ describe('Civil Service Client', () => {
     });
     it('should call civil service api to attach case documents to a case unsuccessfully', async () => {
       //Given
-      const expertReport: CaseDocument = {
-        createdBy: '',
-        createdDatetime: undefined,
-        documentLink: undefined,
-        documentName: '',
-        documentSize: 0,
-        documentType: undefined,
+      const expertReport: Document = {
+        category_id: '', document_binary_url: '', document_filename: '', document_hash: '', document_url: '',
       };
-      const witnessStatement: CaseDocument = {
-        createdBy: '',
-        createdDatetime: undefined,
-        documentLink: undefined,
-        documentName: '',
-        documentSize: 0,
-        documentType: undefined,
+      const witnessStatement: Document = {
+        category_id: '', document_binary_url: '', document_filename: '', document_hash: '', document_url: '',
       };
       const caseDocuments = [expertReport, witnessStatement];
       const claimId = '1234567890';

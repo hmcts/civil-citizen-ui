@@ -20,6 +20,7 @@ import {
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
 import {CaseDocument} from 'common/models/document/caseDocument';
+import {Document} from 'models/document/document';
 import {DashboardClaimantItem, DashboardDefendantItem} from 'models/dashboard/dashboardItem';
 import {ClaimUpdate, EventDto} from 'models/events/eventDto';
 import {CaseEvent} from 'models/events/caseEvent';
@@ -255,14 +256,14 @@ export class CivilServiceClient {
     }
   }
 
-  async attachCaseDocuments(claimId: string, caseDocuments: CaseDocument[], req: AppRequest): Promise<CaseDocument[]> {
+  async attachCaseDocuments(claimId: string, caseDocuments: Document[], req: AppRequest): Promise<Document[]> {
     const config = this.getConfig(req);
     try {
       const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_ATTACH_CASE_DOCUMENTS.replace(':claimId', claimId), caseDocuments, config);
       if (response.status !== 200) {
         throw new Error(`${response.status} - ${response.statusText}`);
       }
-      return response.data as CaseDocument[];
+      return response.data as Document[];
     } catch (error: unknown) {
       logger.error((error));
       throw  error;
