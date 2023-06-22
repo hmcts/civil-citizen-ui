@@ -9,7 +9,7 @@ import {
 export class FileSizeValidator implements ValidatorConstraintInterface {
   validate(size: number, args: ValidationArguments) {
     if (!size) {
-      return true; // If file or size property is missing, assume validation passes (you can modify this behavior as needed)
+      return true;
     }
 
     const fileSizeLimit = 100 * 1024 * 1024; // 100MB in bytes
