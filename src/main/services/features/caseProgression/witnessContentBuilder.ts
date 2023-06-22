@@ -19,7 +19,7 @@ export const buildWitnessStatement = (section: WitnessSection = null, index = 0,
   return new UploadDocumentsSectionBuilder()
     .addTitle('PAGES.UPLOAD_DOCUMENTS.WITNESS.STATEMENT')
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', '', '', witnessStatement, 'witnessName', section?.witnessName, index, form?.errorFor(`${errorFieldNamePrefix}[witnessName]`, witnessStatement))
-    .addDateArray('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', form?.errorFor(`${errorFieldNamePrefix}[dateDay]`, witnessStatement), form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`, witnessStatement),form?.errorFor(`${errorFieldNamePrefix}[dateYear]`, witnessStatement),form?.errorFor(`${errorFieldNamePrefix}[date]`, witnessStatement), 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', witnessStatement, 'date', section?.dateDay.toString(), section?.dateMonth.toString(), section?.dateYear.toString(), index)
+    .addDateArray('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', form?.errorFor(`${errorFieldNamePrefix}[dateDay]`, witnessStatement), form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`, witnessStatement), form?.errorFor(`${errorFieldNamePrefix}[dateYear]`, witnessStatement), form?.errorFor(`${errorFieldNamePrefix}[date]`, witnessStatement), 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', witnessStatement, 'date', section?.dateDay.toString(), section?.dateMonth.toString(), section?.dateYear.toString(), index)
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', witnessStatement, fileUpload)
     .addRemoveSectionButton(form?.model.witnessStatement?.length > 1 || false)
     .build();
@@ -30,7 +30,7 @@ export const buildWitnessSummary = (section: WitnessSection = null, index = 0, f
   return new UploadDocumentsSectionBuilder()
     .addTitle('PAGES.UPLOAD_DOCUMENTS.WITNESS.SUMMARY')
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', '', '', witnessSummary, 'witnessName', section?.witnessName, index, form?.errorFor(`${errorFieldNamePrefix}[witnessName]`, witnessSummary))
-    .addDateArray('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', form?.errorFor(`${errorFieldNamePrefix}[dateDay]`, witnessSummary), form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`, witnessSummary),form?.errorFor(`${errorFieldNamePrefix}[dateYear]`, witnessSummary),form?.errorFor(`${errorFieldNamePrefix}[date]`, witnessSummary), 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', witnessSummary, 'date', section?.dateDay.toString(), section?.dateMonth.toString(), section?.dateYear.toString(), index)
+    .addDateArray('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', form?.errorFor(`${errorFieldNamePrefix}[dateDay]`, witnessSummary), form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`, witnessSummary), form?.errorFor(`${errorFieldNamePrefix}[dateYear]`, witnessSummary), form?.errorFor(`${errorFieldNamePrefix}[date]`, witnessSummary), 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', witnessSummary, 'date', section?.dateDay.toString(), section?.dateMonth.toString(), section?.dateYear.toString(), index)
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', witnessSummary, fileUpload)
     .addRemoveSectionButton(form?.model.witnessSummary?.length > 1 || false)
     .build();

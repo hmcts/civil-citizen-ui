@@ -60,8 +60,8 @@ export class UploadDocumentsUserForm {
 
     //expert sections
     this.expertReport = expertReport;
-    this.expertStatement =expertStatement;
-    this.questionsForExperts =questionsForExperts;
+    this.expertStatement = expertStatement;
+    this.questionsForExperts = questionsForExperts;
     this.answersForExperts = answersForExperts;
 
     //trial sections

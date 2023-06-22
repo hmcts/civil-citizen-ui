@@ -52,7 +52,7 @@ export const buildTrialDocumentarySection = (section: TypeOfDocumentSection = nu
   return new UploadDocumentsSectionBuilder()
     .addTitle('PAGES.UPLOAD_DOCUMENTS.TRIAL.DOCUMENTARY')
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT', '', 'PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT_EXAMPLE', trialDocumentary, 'typeOfDocument', section?.typeOfDocument, index, missingInputError)
-    .addDateArray('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', form?.errorFor(`${errorFieldNamePrefix}[dateDay]`, trialDocumentary),form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`, trialDocumentary),form?.errorFor(`${errorFieldNamePrefix}[dateYear]`, trialDocumentary),form?.errorFor(`${errorFieldNamePrefix}[date]`, trialDocumentary),'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', trialDocumentary, 'date', section?.dateDay.toString(), section?.dateMonth.toString(), section?.dateYear.toString(), index)
+    .addDateArray('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', form?.errorFor(`${errorFieldNamePrefix}[dateDay]`, trialDocumentary), form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`, trialDocumentary), form?.errorFor(`${errorFieldNamePrefix}[dateYear]`, trialDocumentary), form?.errorFor(`${errorFieldNamePrefix}[date]`, trialDocumentary),'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', trialDocumentary, 'date', section?.dateDay.toString(), section?.dateMonth.toString(), section?.dateYear.toString(), index)
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD','', trialDocumentary, fileUpload, index)
     .addRemoveSectionButton(form?.model.trialDocumentary?.length > 1 || false)
     .build();

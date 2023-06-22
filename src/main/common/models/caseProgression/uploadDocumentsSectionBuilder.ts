@@ -22,7 +22,7 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
     return this;
   }
 
-  addDateArray(title: string, invalidDayError: string,invalidMonthError: string, invalidYearError: string, invalidDateError: string,hint: string, category: string, field: string, dayValue: string , monthValue: string , yearValue: string , index = 0) {
+  addDateArray(title: string, invalidDayError: string, invalidMonthError: string, invalidYearError: string, invalidDateError: string, hint: string, category: string, field: string, dayValue: string, monthValue: string, yearValue: string, index = 0) {
     const section = ({
       type: ClaimSummaryType.DATE_ARRAY,
       data: {
