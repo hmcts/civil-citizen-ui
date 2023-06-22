@@ -20,7 +20,6 @@ import {isServiceShuttered} from './app/auth/launchdarkly/launchDarklyClient';
 import ConnectRedis from 'connect-redis';
 const Redis = require('ioredis');
 
-
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
 // const MemoryStore = require('memorystore')(session);
