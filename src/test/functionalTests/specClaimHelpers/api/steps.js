@@ -1,6 +1,7 @@
 const config = require('../../../config');
 const deepEqualInAnyOrder = require('deep-equal-in-any-order');
 const chai = require('chai');
+const breathingSpacePayload = require('../fixtures/events/enterBreathingSpace.js');
 
 chai.use(deepEqualInAnyOrder);
 chai.config.truncateThreshold = 0;
@@ -55,6 +56,23 @@ module.exports = {
     //field is deleted in about to submit callback
     deleteCaseFields('applicantSolicitor1CheckEmail');
     return caseId;
+  },
+
+  viewAndRespondToDefence: async (defenceType = 'ADMIT_ALL')=> {
+
+  },
+
+  enterBreathingSpace: async (user)=> {
+    eventName = breathingSpacePayload['event'];
+    caseData = breathingSpacePayload['caseData'];
+    await apiRequest.setupTokens(user);
+    await assertSubmittedSpecEvent();
+    await waitForFinishedBusinessProcess(caseId);
+    console.log('End of enterBreathingSpace()');
+  },
+
+  liftBreathingSpace: async (defenceType = 'ADMIT_ALL')=> {
+
   },
 
   getCaseRef: async () => {
@@ -177,7 +195,9 @@ const assertSubmittedSpecEvent = async (expectedState, submittedCallbackResponse
   const response = await apiRequest.submitEvent(eventName, caseData, caseId);
   const responseBody = await response.json();
   assert.equal(response.status, 201);
-  assert.equal(responseBody.state, expectedState);
+  if (expectedState) {
+    assert.equal(responseBody.state, expectedState);
+  }
   if (hasSubmittedCallback && submittedCallbackResponseContains) {
     assert.equal(responseBody.callback_response_status_code, 200);
     assert.include(responseBody.after_submit_callback_response.confirmation_header, submittedCallbackResponseContains.header);
