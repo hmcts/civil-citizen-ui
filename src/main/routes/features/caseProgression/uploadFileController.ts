@@ -47,7 +47,7 @@ uploadFileController.post(CP_UPLOAD_FILE, upload.single('file'), (req, res) => {
     }
   } catch (error) {
     res.status(500).json({
-      errors: 'form.errors',
+      errors: error.message,
     });
   }
 });
