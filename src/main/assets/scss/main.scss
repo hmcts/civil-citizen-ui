@@ -205,14 +205,14 @@
 }
 
 @keyframes dotAnimation {
-  0% { content: "."; }
-  20% { content: ".."; }
-  40% { content: "..."; }
-  60% { content: "...."; }
-  80% { content: "....."; }
+  0% { content: '.'; }
+  20% { content: '..'; }
+  40% { content: '...'; }
+  60% { content: '....'; }
+  80% { content: '.....'; }
 }
 
 #loadingDots::after {
-  content: ".....";
+  content: '.....';
   animation: dotAnimation 1s infinite steps(5);
 }
