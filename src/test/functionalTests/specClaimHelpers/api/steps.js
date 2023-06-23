@@ -1,7 +1,7 @@
 const config = require('../../../config');
 const deepEqualInAnyOrder = require('deep-equal-in-any-order');
 const chai = require('chai');
-const breathingSpacePayload = require('../fixtures/events/enterBreathingSpace.js');
+const breathingSpace = require('../fixtures/events/enterBreathingSpace.js');
 
 chai.use(deepEqualInAnyOrder);
 chai.config.truncateThreshold = 0;
@@ -25,7 +25,7 @@ const PBAv3Toggle = 'pba-version-3-ways-to-pay';
 module.exports = {
 
   createSpecifiedClaim: async (user, multipartyScenario) => {
-    console.log(' This is inside createSpecifiedClaim');
+    console.log(' Creating specified claim');
     eventName = 'CREATE_CLAIM_SPEC';
     caseId = null;
     caseData = {};
@@ -63,16 +63,23 @@ module.exports = {
   },
 
   enterBreathingSpace: async (user)=> {
-    eventName = breathingSpacePayload['event'];
-    caseData = breathingSpacePayload['caseData'];
+    const enterBreathingSpacePayload = breathingSpace.enterBreathingSpacePayload();
+    eventName = enterBreathingSpacePayload['event'];
+    caseData = enterBreathingSpacePayload['caseData'];
     await apiRequest.setupTokens(user);
     await assertSubmittedSpecEvent();
     await waitForFinishedBusinessProcess(caseId);
     console.log('End of enterBreathingSpace()');
   },
 
-  liftBreathingSpace: async (defenceType = 'ADMIT_ALL')=> {
-
+  liftBreathingSpace: async (user) => {
+    const liftBreathingSpacePayload = breathingSpace.liftBreathingSpacePayload();
+    eventName = liftBreathingSpacePayload['event'];
+    caseData = liftBreathingSpacePayload['caseData'];
+    await apiRequest.setupTokens(user);
+    await assertSubmittedSpecEvent();
+    await waitForFinishedBusinessProcess(caseId);
+    console.log('End of liftBreathingSpace()');
   },
 
   getCaseRef: async () => {

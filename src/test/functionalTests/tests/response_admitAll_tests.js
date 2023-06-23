@@ -23,7 +23,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @regression', async (api) => {
+Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @regression', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -31,9 +31,10 @@ Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @reg
   await ResponseSteps.EnterPaymentOption(claimRef, admitAll, immediatePayment);
   await ResponseSteps.CheckAndSubmit(claimRef, admitAll);
   await api.enterBreathingSpace(config.applicantSolicitorUser);
+  await api.liftBreathingSpace(config.applicantSolicitorUser);
 });
 
-Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @regression1', async (api) => {
+Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @regression', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -43,9 +44,10 @@ Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @regress
   await ResponseSteps.EnterFinancialDetails(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, admitAll);
   await api.enterBreathingSpace(config.applicantSolicitorUser);
+  await api.liftBreathingSpace(config.applicantSolicitorUser);
 });
 
-Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll @regression', async () => {
+Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll @regression', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -54,5 +56,7 @@ Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll @regres
   await ResponseSteps.EnterFinancialDetails(claimRef);
   await ResponseSteps.EnterRepaymentPlan(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, admitAll);
+  await api.enterBreathingSpace(config.applicantSolicitorUser);
+  await api.liftBreathingSpace(config.applicantSolicitorUser);
 });
 

@@ -3,12 +3,14 @@ module.exports = {
     return {
       event: 'ENTER_BREATHING_SPACE_SPEC',
       caseData: {
-        reference: 'Reference',
-        start: '2023-06-22',
-        type: 'STANDARD',
-        expectedEnd: null,
-        event: 'Summary',
-        eventDescription: 'Description',
+        enterBreathing: {
+          reference: 'Reference',
+          start: '2023-06-22',
+          type: 'STANDARD',
+          expectedEnd: null,
+          event: 'Summary',
+          eventDescription: 'Description',
+        },
       },
     };  
   },
