@@ -11,13 +11,8 @@ const documentsForDisclosure = 'documentsForDisclosure';
 const disclosureList = 'disclosureList';
 const fileUpload = 'fileUpload';
 
-const fieldNamePrefix = (index: number) => {
-  const errorFieldNamePrefix = `${documentsForDisclosure}[${documentsForDisclosure}][${index}]`;
-  return errorFieldNamePrefix;
-}
-
 export const buildDisclosureDocumentSection = (section: TypeOfDocumentSection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
-  const errorFieldNamePrefix = fieldNamePrefix(index);
+  const errorFieldNamePrefix = `${documentsForDisclosure}[${documentsForDisclosure}][${index}]`;
   const missingInputError = form?.errorFor(`${errorFieldNamePrefix}[typeOfDocument]`, documentsForDisclosure) !== undefined ? 'ERRORS.VALID_ENTER_TYPE_OF_DOCUMENT' : null;
 
   return new UploadDocumentsSectionBuilder()
@@ -30,7 +25,7 @@ export const buildDisclosureDocumentSection = (section: TypeOfDocumentSection = 
 };
 
 export const buildDisclosureListSection = (section: FileOnlySection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
-  const errorFieldNamePrefix = fieldNamePrefix(index);
+  const errorFieldNamePrefix = `${disclosureList}[${disclosureList}][${index}]`;
   return new UploadDocumentsSectionBuilder()
     .addTitle('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.DISCLOSURE_LIST')
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', disclosureList, fileUpload, index,section?.fileUpload?.fieldname, form?.errorFor(`${errorFieldNamePrefix}[${fileUpload}]`, disclosureList))
