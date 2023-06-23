@@ -212,7 +212,9 @@
   80% { content: '.....'; }
 }
 
-.loadingDots::after {
-  content: '.....';
-  animation: dotAnimation 1s infinite steps(5);
+.loadingDots {
+  &::after {
+    content: '.....';
+    animation: dotAnimation 1s infinite steps(5);
+  }
 }

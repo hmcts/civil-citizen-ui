@@ -18,7 +18,6 @@ import {getExpertContent} from 'services/features/caseProgression/expertService'
 const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
 const uploadDocumentsController = Router();
 
-
 async function renderView(res: Response, claimId: string, form: GenericForm<UploadDocumentsUserForm> = null) {
   const claim: Claim = await getCaseDataFromStore(claimId);
   const cancelUrl = constructResponseUrlWithIdParams(claimId, CP_EVIDENCE_UPLOAD_CANCEL);
