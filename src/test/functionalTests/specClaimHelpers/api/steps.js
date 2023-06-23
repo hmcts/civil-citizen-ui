@@ -59,11 +59,11 @@ module.exports = {
     return caseId;
   },
 
-  viewAndRespondToDefence: async (user, defenceType = 'ADMIT_ALL_PAY_BY_SET_DATE')=> {
+  viewAndRespondToDefence: async (user, defenceType = config.defenceType.admitAllPayBySetDate)=> {
     let responsePayload;
-    if (defenceType === 'ADMIT_ALL_PAY_BY_SET_DATE') {
+    if (defenceType === config.defenceType.admitAllPayBySetDate) {
       responsePayload = admitAllClaimantResponse.doNotAcceptAskToPayBySetDate();
-    } else if (defenceType === 'ADMIT_ALL_PAY_BY_INSTALLMENTS') {
+    } else if (defenceType === config.defenceType.admitAllPayByInstallment) {
       responsePayload = admitAllClaimantResponse.doNotAcceptAskToPayByInstallment();
     }
     eventName = responsePayload['event'];
