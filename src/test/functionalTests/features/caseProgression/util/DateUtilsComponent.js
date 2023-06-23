@@ -5,8 +5,49 @@ class DateUtilsComponent {
     return currentTime;
   }
 
-  static formatClaimReferenceToADisplayFormat(claimReference) {
+  static formatClaimReferenceToAUIDisplayFormat(claimReference) {
     return claimReference.toString().replace(/\d{4}(?=.)/g, '$& ');
+  }
+
+  static rollWeekendDayToNextWorkingDay(date) {
+    switch (date.getDay()) {
+      case 0: //Sunday
+        date.setDate(date.getDate() + 1);
+        break;
+      case 6: //Saturday
+        date.setDate(date.getDate() + 2);
+        break;
+      default:
+    }
+  }
+
+  static formatDateToSpecifiedDateTimeFormat(date) {
+    return date.toLocaleString('en-GB', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: 'numeric',
+      minute : 'numeric'
+    });
+  }
+
+  static formatDateToSpecifiedDateFormat(date) {
+    return date.toLocaleString('en-GB', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+  }
+
+  static isWeekend(date) {
+    switch (date.getDay()) {
+      case 0: //Sunday
+        return true;
+      case 6: //Saturday
+        return true;
+      default:
+    }
+    return false;
   }
 
   static async getCurrentDate() {
@@ -98,6 +139,6 @@ class DateUtilsComponent {
 
 }
 
-const dateToday = DateUtilsComponent.formatClaimReferenceToADisplayFormat('1686657115832590');
+const dateToday = DateUtilsComponent.formatDateToSpecifiedDateFormat(new Date());
 console.log('There is a date Today : ' + dateToday);
 module.exports = {DateUtilsComponent};
