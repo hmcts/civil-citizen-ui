@@ -45,6 +45,7 @@ Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @regress
   await ResponseSteps.CheckAndSubmit(claimRef, admitAll);
   await api.enterBreathingSpace(config.applicantSolicitorUser);
   await api.liftBreathingSpace(config.applicantSolicitorUser);
+  await api.viewAndRespondToDefence(config.applicantSolicitorUser, 'ADMIT_ALL_PAY_BY_SET_DATE');
 });
 
 Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll @regression', async ({api}) => {

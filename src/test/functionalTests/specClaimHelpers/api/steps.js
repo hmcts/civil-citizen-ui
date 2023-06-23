@@ -2,6 +2,7 @@ const config = require('../../../config');
 const deepEqualInAnyOrder = require('deep-equal-in-any-order');
 const chai = require('chai');
 const breathingSpace = require('../fixtures/events/enterBreathingSpace.js');
+const admitAllClaimantResponse = require('../fixtures/events/admitAllClaimantResponse.js');
 
 chai.use(deepEqualInAnyOrder);
 chai.config.truncateThreshold = 0;
@@ -58,8 +59,17 @@ module.exports = {
     return caseId;
   },
 
-  viewAndRespondToDefence: async (defenceType = 'ADMIT_ALL')=> {
-
+  viewAndRespondToDefence: async (user, defenceType = 'ADMIT_ALL_PAY_BY_SET_DATE')=> {
+    let responsePayload;
+    if (defenceType === 'ADMIT_ALL_PAY_BY_SET_DATE') {
+      responsePayload = admitAllClaimantResponse.doNotAcceptAskToPayBySetDate();
+    }
+    eventName = responsePayload['event'];
+    caseData = responsePayload['caseData'];
+    await apiRequest.setupTokens(user);
+    await assertSubmittedSpecEvent();
+    await waitForFinishedBusinessProcess(caseId);
+    console.log('End of viewAndRespondToDefence()');
   },
 
   enterBreathingSpace: async (user)=> {
