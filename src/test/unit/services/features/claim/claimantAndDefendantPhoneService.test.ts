@@ -217,5 +217,35 @@ describe('Claimant Phone Service', () => {
       //Then
       await expect(saveTelephone('123', new CitizenTelephoneNumber(PHONE_NUMBER), ClaimantOrDefendant.CLAIMANT)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
+
+    it('should save claimant phone data successfully when claim exists with ccd Phone', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.respondent1 = party;
+        return claim;
+
+      });
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await saveTelephone('123', new CitizenTelephoneNumber(PHONE_NUMBER, true), ClaimantOrDefendant.DEFENDANT);
+      //Then
+      expect(spySave).toBeCalled();
+    });
+
+    it('should save claimant phone data successfully when claim exists with ccd Phone', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.respondent1 = party;
+        return claim;
+
+      });
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await saveTelephone('123', new CitizenTelephoneNumber(PHONE_NUMBER, false), ClaimantOrDefendant.DEFENDANT);
+      //Then
+      expect(spySave).toBeCalled();
+    });
   });
 });

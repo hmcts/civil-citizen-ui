@@ -24,7 +24,7 @@ citizenPhoneController.get(CITIZEN_PHONE_NUMBER_URL, async (req, res, next: Next
 citizenPhoneController.post(CITIZEN_PHONE_NUMBER_URL,
   async (req, res, next: NextFunction) => {
     try {
-      const model: CitizenTelephoneNumber = new CitizenTelephoneNumber(req.body.telephoneNumber);
+      const model: CitizenTelephoneNumber = new CitizenTelephoneNumber(req.body.telephoneNumber === '' ? undefined : req.body.telephoneNumber);
       const citizenTelephoneNumberForm = new GenericForm(model);
       citizenTelephoneNumberForm.validateSync();
       if (citizenTelephoneNumberForm.hasErrors()) {

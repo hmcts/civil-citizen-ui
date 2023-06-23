@@ -1,12 +1,7 @@
 import {app} from '../../../../../../main/app';
 import config from 'config';
 import request from 'supertest';
-import {
-  CITIZEN_DETAILS_URL,
-  CITIZEN_PHONE_NUMBER_URL,
-  RESPONSE_TASK_LIST_URL,
-  DOB_URL,
-} from 'routes/urls';
+import {CITIZEN_DETAILS_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {getDefendantInformation, saveDefendantProperty} from 'services/features/common/defendantDetailsService';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
@@ -14,6 +9,8 @@ import {buildAddress} from '../../../../../utils/mockClaim';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {PartyType} from 'models/partyType';
 import {PartyDetails} from 'form/models/partyDetails';
+import {PartyPhone} from 'models/PartyPhone';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -42,6 +39,29 @@ const buildClaimOfRespondentType = (type: PartyType): Party => {
   claim.respondent1.type = type;
   claim.respondent1.partyDetails.primaryAddress = buildAddress();
   claim.respondent1.partyDetails.correspondenceAddress = buildAddress();
+  return claim.respondent1;
+};
+
+const buildClaimOfRespondentTypeWithCcdPhone = (type: PartyType): Party => {
+  claim.respondent1 = new Party();
+  claim.respondent1.partyDetails = new PartyDetails({});
+  claim.respondent1.type = type;
+  claim.respondent1.partyDetails.primaryAddress = buildAddress();
+  claim.respondent1.partyDetails.correspondenceAddress = buildAddress();
+  claim.respondent1.partyPhone = new PartyPhone();
+  claim.respondent1.partyPhone.phone = '123456';
+  claim.respondent1.partyPhone.ccdPhoneExist = true;
+  return claim.respondent1;
+};
+
+const buildClaimOfRespondentTypeWithoutCcdPhone = (type: PartyType): Party => {
+  claim.respondent1 = new Party();
+  claim.respondent1.partyDetails = new PartyDetails({});
+  claim.respondent1.type = type;
+  claim.respondent1.partyDetails.primaryAddress = buildAddress();
+  claim.respondent1.partyDetails.correspondenceAddress = buildAddress();
+  claim.respondent1.partyPhone = new PartyPhone();
+  claim.respondent1.partyPhone.phone = '123456';
   return claim.respondent1;
 };
 
@@ -318,9 +338,15 @@ describe('Confirm Details page', () => {
   });
 
   describe('Redirect to Phone or DOB screen (phone number provided)', () => {
+    const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
     it('should redirect to task-list screen if respondent type is COMPANY', async () => {
       mockGetRespondentInformation.mockImplementation(async () => {
-        return {...buildClaimOfRespondentType(PartyType.COMPANY), partyPhone: '123456'};
+        return {...buildClaimOfRespondentTypeWithCcdPhone(PartyType.COMPANY)};
+      });
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.respondent1 = buildClaimOfRespondentTypeWithCcdPhone(PartyType.COMPANY);
+        return claim;
       });
       await request(app)
         .post(CITIZEN_DETAILS_URL)
@@ -332,7 +358,12 @@ describe('Confirm Details page', () => {
     });
     it('should redirect to task-list screen if respondent type is ORGANISATION', async () => {
       mockGetRespondentInformation.mockImplementation(async () => {
-        return {...buildClaimOfRespondentType(PartyType.ORGANISATION), partyPhone: '123456'};
+        return {...buildClaimOfRespondentTypeWithCcdPhone(PartyType.ORGANISATION)};
+      });
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.respondent1 = buildClaimOfRespondentTypeWithCcdPhone(PartyType.ORGANISATION);
+        return claim;
       });
       await request(app)
         .post(CITIZEN_DETAILS_URL)
@@ -356,7 +387,12 @@ describe('Confirm Details page', () => {
     });
     it('should redirect to task-list  screen if respondent type is SOLE TRADER', async () => {
       mockGetRespondentInformation.mockImplementation(async () => {
-        return {...buildClaimOfRespondentType(PartyType.SOLE_TRADER), partyPhone: '123456'};
+        return {...buildClaimOfRespondentTypeWithCcdPhone(PartyType.SOLE_TRADER)};
+      });
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.respondent1 = buildClaimOfRespondentTypeWithCcdPhone(PartyType.SOLE_TRADER);
+        return claim;
       });
       await request(app)
         .post(CITIZEN_DETAILS_URL)
@@ -364,6 +400,23 @@ describe('Confirm Details page', () => {
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
+        });
+    });
+    it('should redirect to phone screen if respondent type is SOLE TRADER with phone is not provided', async () => {
+      mockGetRespondentInformation.mockImplementation(async () => {
+        return {...buildClaimOfRespondentTypeWithoutCcdPhone(PartyType.SOLE_TRADER)};
+      });
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.respondent1 = buildClaimOfRespondentTypeWithoutCcdPhone(PartyType.SOLE_TRADER);
+        return claim;
+      });
+      await request(app)
+        .post(CITIZEN_DETAILS_URL)
+        .send(validDataForPost)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_PHONE_NUMBER_URL);
         });
     });
   });
