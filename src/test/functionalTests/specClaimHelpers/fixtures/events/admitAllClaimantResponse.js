@@ -41,7 +41,7 @@ module.exports = {
           partyTypeDisplayValue: 'Individual',
           partyEmail: 'civilmoneyclaimsdemo@gmail.com',
           unavailableDates: null,
-          flags: null
+          flags: null,
         },
         respondent2: null,
         partAdmitPaidValuePounds: null,
