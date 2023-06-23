@@ -30,8 +30,10 @@ Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @reg
   await ResponseSteps.EnterResponseToClaim(claimRef, admitAll);
   await ResponseSteps.EnterPaymentOption(claimRef, admitAll, immediatePayment);
   await ResponseSteps.CheckAndSubmit(claimRef, admitAll);
-  await api.enterBreathingSpace(config.applicantSolicitorUser);
-  await api.liftBreathingSpace(config.applicantSolicitorUser);
+  if (['preview', 'demo'  ].includes(config.runningEnv)) {
+    await api.enterBreathingSpace(config.applicantSolicitorUser);
+    await api.liftBreathingSpace(config.applicantSolicitorUser);
+  }
 });
 
 Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @regression', async ({api}) => {
@@ -43,9 +45,11 @@ Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @regress
   await ResponseSteps.EnterDateToPayOn();
   await ResponseSteps.EnterFinancialDetails(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, admitAll);
-  await api.enterBreathingSpace(config.applicantSolicitorUser);
-  await api.liftBreathingSpace(config.applicantSolicitorUser);
-  await api.viewAndRespondToDefence(config.applicantSolicitorUser, 'ADMIT_ALL_PAY_BY_SET_DATE');
+  if (['preview', 'demo'  ].includes(config.runningEnv)) {
+    await api.enterBreathingSpace(config.applicantSolicitorUser);
+    await api.liftBreathingSpace(config.applicantSolicitorUser);
+    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayBySetDate);
+  }
 });
 
 Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll @regression', async ({api}) => {
@@ -57,8 +61,10 @@ Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll @regres
   await ResponseSteps.EnterFinancialDetails(claimRef);
   await ResponseSteps.EnterRepaymentPlan(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, admitAll);
-  await api.enterBreathingSpace(config.applicantSolicitorUser);
-  await api.liftBreathingSpace(config.applicantSolicitorUser);
-  await api.viewAndRespondToDefence(config.applicantSolicitorUser, 'ADMIT_ALL_PAY_BY_INSTALLMENTS');
+  if (['preview', 'demo'  ].includes(config.runningEnv)) {
+    await api.enterBreathingSpace(config.applicantSolicitorUser);
+    await api.liftBreathingSpace(config.applicantSolicitorUser);
+    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayByInstallment);
+  }
 });
 
