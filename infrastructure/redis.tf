@@ -11,4 +11,6 @@ module "citizen-ui-draft-store" {
   env         = var.env
   subnetid    = data.azurerm_subnet.core_infra_redis_subnet.id
   common_tags = var.common_tags
+  redis_version = 6
+
 }

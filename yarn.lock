@@ -4555,7 +4555,7 @@ __metadata:
     jsdom: ^21.1.0
     jwt-decode: ^3.1.2
     launchdarkly-node-client-sdk: ^3.0.0
-    launchdarkly-node-server-sdk: ^7.0.0
+    launchdarkly-node-server-sdk: ^7.0.1
     lodash: ^4.17.21
     luxon: ^3.2.1
     memorystore: ^1.6.7
@@ -9260,7 +9260,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"launchdarkly-node-server-sdk@npm:^7.0.0":
+"launchdarkly-node-server-sdk@npm:^7.0.1":
   version: 7.0.1
   resolution: "launchdarkly-node-server-sdk@npm:7.0.1"
   dependencies:
