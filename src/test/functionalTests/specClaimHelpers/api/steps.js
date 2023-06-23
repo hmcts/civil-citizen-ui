@@ -12,9 +12,11 @@ const {
 const {assignCaseRoleToUser, addUserCaseMapping, unAssignAllUsers} = require('./caseRoleAssignmentHelper');
 const apiRequest = require('./apiRequest.js');
 const claimSpecData = require('../fixtures/events/createClaimSpec.js');
+const claimSpecDataFastTrack = require('../fixtures/events/createClaimSpecFastTrack');
 
 const data = {
   CREATE_SPEC_CLAIM: (mpScenario) => claimSpecData.createClaim(mpScenario),
+  CREATE_SPEC_CLAIM_FASTTRACK: (mpScenario) => claimSpecDataFastTrack.createClaim(mpScenario),
 };
 
 let caseId, eventName;
@@ -23,12 +25,17 @@ const PBAv3Toggle = 'pba-version-3-ways-to-pay';
 
 module.exports = {
 
-  createSpecifiedClaim: async (user, multipartyScenario) => {
+  createSpecifiedClaim: async (user, multipartyScenario, claimType) => {
     console.log(' This is inside createSpecifiedClaim');
     eventName = 'CREATE_CLAIM_SPEC';
     caseId = null;
     caseData = {};
-    const createClaimSpecData = data.CREATE_SPEC_CLAIM(multipartyScenario);
+    let createClaimSpecData;
+    if(claimType === 'fastTrack'){
+      createClaimSpecData = data.CREATE_SPEC_CLAIM_FASTTRACK(multipartyScenario);
+    }else {
+      createClaimSpecData = data.CREATE_SPEC_CLAIM(multipartyScenario);
+    }
 
     await apiRequest.setupTokens(user);
     await apiRequest.startEvent(eventName);
