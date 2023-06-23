@@ -55,6 +55,14 @@ const VulnerabilityDetails = require('../pages/defendantLipResponse/defendantDQ/
 const SupportRequired = require('../pages/defendantLipResponse/defendantDQ/supportRequired');
 const CourtLocation = require('../pages/defendantLipResponse/defendantDQ/courtLocation');
 const WelshLanguage = require('../pages/defendantLipResponse/defendantDQ/welshLanguage');
+const EnterCompanyDetails = require('../pages/defendantLipResponse/confirmYourDetails/enterCompanyDetails');
+const TriedToSettle = require('../pages/defendantLipResponse/defendantDQ/triedToSettle');
+const RequestExtraFourWeeks = require('../pages/defendantLipResponse/defendantDQ/requestExtraFourWeeks');
+const ConsiderClaimantDocs  =  require('../pages/defendantLipResponse/defendantDQ/considerClaimantDocs');
+const ExpertEvidence = require('../pages/defendantLipResponse/defendantDQ/expertEvidence');
+const SentExpertReports = require('../pages/defendantLipResponse/defendantDQ/sentExpertReports');
+const SharedExpert = require('../pages/defendantLipResponse/defendantDQ/sharedExpert');
+const ExpertDetails = require('../pages/defendantLipResponse/defendantDQ/ExpertDetails');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const requestMoreTime = new RequestMoreTime();
@@ -114,6 +122,14 @@ const vulnerabilityDetails = new VulnerabilityDetails();
 const supportRequired = new SupportRequired();
 const courtLocation = new CourtLocation();
 const welshLanguage = new WelshLanguage();
+const enterCompanyDetails = new EnterCompanyDetails();
+const triedToSettle = new TriedToSettle();
+const requestExtraFourWeeks = new RequestExtraFourWeeks();
+const considerClaimantDocs = new ConsiderClaimantDocs();
+const expertEvidence = new ExpertEvidence();
+const sentExpertReports = new SentExpertReports();
+const sharedExpert = new SharedExpert();
+const expertDetails = new ExpertDetails();
 
 class ResponseSteps {
   RespondToClaim(claimRef){
@@ -130,6 +146,13 @@ class ResponseSteps {
     nameAndAddressDetailsPage.enterNameAndAddressDetails(claimRef);
     dateOfBirthDetailsPage.enterDateOfBirth(claimRef);
     contactNumberDetailsPage.enterContactNumber(claimRef);
+  }
+
+  EnterCompanyDetails(){
+    taskListPage.verifyResponsePageContent();
+    enterCompanyDetails.enterCompanyDetails();
+    enterCompanyDetails.enterCorrespondenceAddressManually();
+    contactNumberDetailsPage.enterContactNumber();
   }
 
   EnterYourOptionsForDeadline(claimRef, deadlineOption) {
@@ -364,10 +387,33 @@ class ResponseSteps {
     mediationCanWeUse.selectOptionForMediation(claimRef);
   }
 
+  EnterNoMediation(claimRef){
+    freeTelephoneMediation.selectNoMediation(claimRef);
+  }
+
   EnterDQForSmallClaims(claimRef) {
     this.SelectHearingRequirements(claimRef);
     this.SelectExpertNeededOrNot();
     this.EnterExpertReportDetails('TestExpert1', '20', '10', '2022');
+    this.SelectGiveEvidenceYourself();
+    this.EnterDefedantWitnesses();
+    this.SelectOptionForCantAttendHearing();
+    this.EnterUnavailabilityDates();
+    this.SelectOptionForPhoneOrVideoHearing();
+    this.SelectOptionForVulnerability();
+    this.SelectOptionForSupportRequired();
+    this.SelectPreferredCourtLocation();
+    this.SelectLanguageOption();
+  }
+
+  EnterDQForFastTrack(claimRef){
+    this.SelectOptionForTriedToSettle(claimRef);
+    this.SelectOptionToRequestExtraFourWeeksToSettle();
+    this.SelectConsiderClaimantDocs();
+    this.SelectExpertEvidence();
+    this.SelectSentExpertReports();
+    this.SelectOptionForSharedExpert();
+    this.EnterExpertDetails();
     this.SelectGiveEvidenceYourself();
     this.EnterDefedantWitnesses();
     this.SelectOptionForCantAttendHearing();
@@ -425,6 +471,34 @@ class ResponseSteps {
 
   SelectLanguageOption() {
     welshLanguage.selectLanguageOption();
+  }
+
+  SelectOptionForTriedToSettle(claimRef){
+    triedToSettle.selectTriedToSettle(claimRef);
+  }
+
+  SelectOptionToRequestExtraFourWeeksToSettle(){
+    requestExtraFourWeeks.SelectExtraFourWeeksToSettle();
+  }
+
+  SelectConsiderClaimantDocs(){
+    considerClaimantDocs.SelectConsiderClaimantDocs();
+  }
+
+  SelectExpertEvidence(){
+    expertEvidence.SelectOptionForExpertEvidence();
+  }
+
+  SelectSentExpertReports(){
+    sentExpertReports.SentExpertReports();
+  }
+
+  SelectOptionForSharedExpert(){
+    sharedExpert.SelectOptionForSharedExpert();
+  }
+
+  EnterExpertDetails(){
+    expertDetails.EnterExpertDetails();
   }
 }
 

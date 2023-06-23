@@ -31,9 +31,11 @@ module.exports = {
     caseId = null;
     caseData = {};
     let createClaimSpecData;
-    if(claimType === 'fastTrack'){
+    if(claimType === 'FastTrack'){
+      console.log('Creating FastTrack claim...');
       createClaimSpecData = data.CREATE_SPEC_CLAIM_FASTTRACK(multipartyScenario);
     }else {
+      console.log('Creating small claims...');
       createClaimSpecData = data.CREATE_SPEC_CLAIM(multipartyScenario);
     }
 

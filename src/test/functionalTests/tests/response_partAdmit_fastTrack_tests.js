@@ -12,6 +12,7 @@ const yesIWantMoretime = 'yesIWantMoretime';
 
 let claimRef;
 let claimType = 'FastTrack';
+let defendantType = 'Company';
 
 Feature('Response with PartAdmit');
 
@@ -28,7 +29,7 @@ Before(async ({api}) => {
 
 Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @test', () => {
   ResponseSteps.RespondToClaim(claimRef);
-  ResponseSteps.EnterPersonalDetails(claimRef);
+  ResponseSteps.EnterCompanyDetails();
   ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
   ResponseSteps.SelectPartAdmitAlreadyPaid('yes');
@@ -37,7 +38,7 @@ Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @test', () =
   ResponseSteps.AddYourTimeLineEvents();
   ResponseSteps.EnterYourEvidenceDetails();
   ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
-  ResponseSteps.EnterDQForSmallClaims(claimRef);
+  ResponseSteps.EnterDQForFastTrack(claimRef);
   ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
 });
 
