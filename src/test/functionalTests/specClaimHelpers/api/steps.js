@@ -63,6 +63,8 @@ module.exports = {
     let responsePayload;
     if (defenceType === 'ADMIT_ALL_PAY_BY_SET_DATE') {
       responsePayload = admitAllClaimantResponse.doNotAcceptAskToPayBySetDate();
+    } else if (defenceType === 'ADMIT_ALL_PAY_BY_INSTALLMENTS') {
+      responsePayload = admitAllClaimantResponse.doNotAcceptAskToPayByInstallment();
     }
     eventName = responsePayload['event'];
     caseData = responsePayload['caseData'];
