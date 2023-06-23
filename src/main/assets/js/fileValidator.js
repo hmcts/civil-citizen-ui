@@ -4,7 +4,7 @@ function createLoading(event) {
   loadingContainer.id = `${eventId}-loadingContainer`;
   loadingContainer.innerHTML = `
   <div id="loadingAnimation"></div>
-    <p id="loadingText">Uploading<span id="loadingDots"></span></p>
+    <p id="loadingText">Uploading<span class="loadingDots"></span></p>
 `;
   event.target.parentNode.insertBefore(loadingContainer, event.target);
 }
