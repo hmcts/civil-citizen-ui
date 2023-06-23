@@ -14,18 +14,19 @@ const buttons = {
 
 class DependantDetails {
 
-  clickYesButton() {
-    I.see('Do any children live with you?', 'h1');
-    I.click(fields.yesButton);
-    I.fillField(fields.under11, '1');
-    I.fillField(fields.between11and15, '1');
-    I.fillField(fields.between16and19, '0');
-    I.click(buttons.continue);
+  async clickYesButton() {
+    await I.see('Do any children live with you?', 'h1');
+    await I.click(fields.yesButton);
+    await I.fillField(fields.under11, '1');
+    await I.fillField(fields.between11and15, '1');
+    await I.fillField(fields.between16and19, '0');
+    await I.click(buttons.continue);
   }
-  clickNoButton() {
-    I.see('Do any children live with you?', 'h1');
-    I.click(fields.noButton);
-    I.click(buttons.continue);
+  
+  async clickNoButton() {
+    await I.see('Do any children live with you?', 'h1');
+    await I.click(fields.noButton);
+    await I.click(buttons.continue);
   }
 }
 
