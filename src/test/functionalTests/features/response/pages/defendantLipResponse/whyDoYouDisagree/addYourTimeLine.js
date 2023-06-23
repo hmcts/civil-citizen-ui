@@ -18,17 +18,17 @@ const extendedMonth = newDate.getMonth();
 const extendedYear = newDate.getFullYear();
 
 class AddYourTimeLine {
-  addTimeLineOfEvents() {
-    I.see('Add your timeline of events', 'h1');
-    I.fillField(fields.date1Day, extendedDay);
-    I.fillField(fields.date1Month, extendedMonth - 3);
-    I.fillField(fields.date1Year, extendedYear);
-    I.fillField(fields.whathappened1, 'TestTimeLine');
+  async addTimeLineOfEvents() {
+    await I.see('Add your timeline of events', 'h1');
+    await I.fillField(fields.date1Day, extendedDay);
+    await I.fillField(fields.date1Month, extendedMonth - 3);
+    await I.fillField(fields.date1Year, extendedYear);
+    await I.fillField(fields.whathappened1, 'TestTimeLine');
     this.clickContinue();
   }
 
-  clickContinue(){
-    I.click(buttons.saveAndContinue);
+  async clickContinue(){
+    await I.click(buttons.saveAndContinue);
   }
 }
 
