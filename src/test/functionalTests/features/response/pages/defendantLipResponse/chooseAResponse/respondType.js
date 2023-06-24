@@ -11,28 +11,28 @@ const buttons = {
 };
 
 class RespondTypePage {
-  enterResponseToClaim(claimRef, responseType){
-    I.amOnPage('/case/'+claimRef+'/response/response-type');
-    I.see('How do you respond to the claim?', 'h1');
+  async enterResponseToClaim(claimRef, responseType){
+    await I.amOnPage('/case/'+claimRef+'/response/response-type');
+    await I.see('How do you respond to the claim?', 'h1');
     switch (responseType){
       case 'full-admission':{
-        I.click(fields.responseAdmitAll);
+        await I.click(fields.responseAdmitAll);
         break;
       }
       case 'partial-admission':{
-        I.click(fields.responsePartAdmit);
+        await I.click(fields.responsePartAdmit);
         break;
       }
       case 'rejectAll':{
-        I.click(fields.responseRejectAll);
+        await I.click(fields.responseRejectAll);
         break;
       }
       default:{
-        I.click(fields.responseAdmitAll);
+        await I.click(fields.responseAdmitAll);
         break;
       }
     }
-    I.click(buttons.saveAndContinue);
+    await I.click(buttons.saveAndContinue);
   }
 }
 

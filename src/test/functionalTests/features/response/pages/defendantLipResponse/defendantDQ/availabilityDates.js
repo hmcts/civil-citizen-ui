@@ -21,28 +21,28 @@ const year = newDate.getFullYear();
 
 class AvailabilityDates {
 
-  enterUnavailableDates() {
-    I.see('Add a single date or longer period of time when you, your experts or witnesses cannot go to a hearing', 'h1');
+  async enterUnavailableDates() {
+    await I.see('Add a single date or longer period of time when you, your experts or witnesses cannot go to a hearing', 'h1');
 
-    I.click(fields.singleDate);
-    I.waitForElement(fields.singleDateDay);
-    I.click(fields.singleDateDay);
-    I.fillField(fields.singleDateDay, '10');
-    I.fillField(fields.singleDateMonth, month);
-    I.fillField(fields.singleDateYear, year);
+    await I.click(fields.singleDate);
+    await I.waitForElement(fields.singleDateDay);
+    await I.click(fields.singleDateDay);
+    await I.fillField(fields.singleDateDay, '10');
+    await I.fillField(fields.singleDateMonth, month);
+    await I.fillField(fields.singleDateYear, year);
 
-    I.click('Add another date or period of time');
-    I.click(fields.longerPeriod);
-    I.waitForElement(fields.longerPeriodStartDay);
-    I.fillField(fields.longerPeriodStartDay, '15');
-    I.fillField(fields.longerPeriodStartMonth, month);
-    I.fillField(fields.longerPeriodStartYear, year);
+    await I.click('Add another date or period of time');
+    await I.click(fields.longerPeriod);
+    await I.waitForElement(fields.longerPeriodStartDay);
+    await I.fillField(fields.longerPeriodStartDay, '15');
+    await I.fillField(fields.longerPeriodStartMonth, month);
+    await I.fillField(fields.longerPeriodStartYear, year);
 
-    I.fillField(fields.longerPeriodEndDay, '20');
-    I.fillField(fields.longerPeriodEndMonth, month);
-    I.fillField(fields.longerPeriodEndYear, year);
+    await I.fillField(fields.longerPeriodEndDay, '20');
+    await I.fillField(fields.longerPeriodEndMonth, month);
+    await I.fillField(fields.longerPeriodEndYear, year);
 
-    I.click('Save and continue');
+    await I.click('Save and continue');
   }
 }
 
