@@ -3,10 +3,10 @@ const I = actor();
 
 class FreeTelephoneMediation {
 
-  selectMediation(claimRef) {
-    I.amOnPage('/case/'+claimRef+'/mediation/free-telephone-mediation');
-    I.see('Free telephone mediation', 'h1');
-    I.click('Continue');
+  async selectMediation(claimRef) {
+    await I.amOnPage('/case/'+claimRef+'/mediation/free-telephone-mediation');
+    await I.see('Free telephone mediation', 'h1');
+    await I.click('Continue');
   }
 }
 
