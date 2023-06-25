@@ -18,22 +18,49 @@ import routes from './routes/routes';
 import {setLanguage} from 'modules/i18n/languageService';
 import {isServiceShuttered} from './app/auth/launchdarkly/launchDarklyClient';
 
+import RedisStore from "connect-redis"
+import {createClient} from "redis"
+
+/*const Redis = require('ioredis');
+const connectRedis = require('connect-redis');
+*/
+
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
-const MemoryStore = require('memorystore')(session);
+
+//const RedisStore = connectRedis(session);
+//const MemoryStore = require('memorystore')(session);
+const protocol = config.get('services.draftStore.redis.tls') ? 'rediss://' : 'redis://';
+const connectionString = `${protocol}:${config.get('services.draftStore.redis.key')}@${config.get('services.draftStore.redis.host')}:${config.get('services.draftStore.redis.port')}`;
+const redisClient = createClient({
+  url: connectionString
+});
+redisClient.connect().catch(console.error);
+// Initialize store.
+const redisStore = new RedisStore({
+  client: redisClient,
+  prefix: 'myapp:',
+});
+
 
 const env = process.env.NODE_ENV || 'development';
 const productionMode = env === 'production';
 const developmentMode = env === 'development';
 export const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
-
 export const app = express();
+
+//const protocol = config.get('services.draftStore.redis.tls') ? 'rediss://' : 'redis://';
+//const connectionString = `${protocol}:${config.get('services.draftStore.redis.key')}@${config.get('services.draftStore.redis.host')}:${config.get('services.draftStore.redis.port')}`;
+//this.logger.info(`connectionString: ${connectionString}`);
+//const redisClient = new Redis(connectionString);
+
 app.enable('trust proxy');
 app.use(session({
   name: 'citizen-ui-session',
-  store: new MemoryStore({
+  store: redisStore,
+  /*new MemoryStore({
     checkPeriod: 86400000, // prune expired entries every 24h
-  }),
+  }),*/
   secret: 'local',
   resave: true,
   saveUninitialized: true,
