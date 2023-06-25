@@ -18,8 +18,8 @@ import routes from './routes/routes';
 import {setLanguage} from 'modules/i18n/languageService';
 import {isServiceShuttered} from './app/auth/launchdarkly/launchDarklyClient';
 
-import RedisStore from "connect-redis"
-import {createClient} from "redis"
+import RedisStore from 'connect-redis';
+import {createClient} from 'redis';
 
 /*const Redis = require('ioredis');
 const connectRedis = require('connect-redis');
@@ -33,7 +33,7 @@ const {setupDev} = require('./development');
 const protocol = config.get('services.draftStore.redis.tls') ? 'rediss://' : 'redis://';
 const connectionString = `${protocol}:${config.get('services.draftStore.redis.key')}@${config.get('services.draftStore.redis.host')}:${config.get('services.draftStore.redis.port')}`;
 const redisClient = createClient({
-  url: connectionString
+  url: connectionString,
 });
 redisClient.connect().catch(console.error);
 // Initialize store.
@@ -41,7 +41,6 @@ const redisStore = new RedisStore({
   client: redisClient,
   prefix: 'myapp:',
 });
-
 
 const env = process.env.NODE_ENV || 'development';
 const productionMode = env === 'production';
