@@ -14,6 +14,10 @@ const {
 const {assignCaseRoleToUser, addUserCaseMapping, unAssignAllUsers} = require('./caseRoleAssignmentHelper');
 const apiRequest = require('./apiRequest.js');
 const claimSpecData = require('../fixtures/events/createClaimSpec.js');
+const defendantResponse = require('../fixtures/events/createDefendantResponse.js');
+const claimantResponse = require('../fixtures/events/createClaimantResponseToDefence.js');
+const caseProgressionToSDOState = require('../fixtures/events/createCaseProgressionToSDOState');
+const caseProgressionToHearingInitiated = require('../fixtures/events/createCaseProgressionToHearingInitiated');
 
 const data = {
   CREATE_SPEC_CLAIM: (mpScenario) => claimSpecData.createClaim(mpScenario),
@@ -24,6 +28,50 @@ let caseData = {};
 const PBAv3Toggle = 'pba-version-3-ways-to-pay';
 
 module.exports = {
+
+  performCaseProgressedToHearingInitiated: async (user, caseId) => {
+    console.log('This is inside performCaseProgressedToHearingInitiated() : ' + caseId);
+    eventName = 'HEARING_SCHEDULED';
+    const payload = caseProgressionToHearingInitiated.createCaseProgressionToHearingInitiated();
+    await apiRequest.setupTokens(user);
+    caseData = payload['caseDataUpdate'];
+    await assertSubmittedSpecEvent('HEARING_READINESS');
+    await waitForFinishedBusinessProcess(caseId);
+    console.log('End of performCaseProgressedToHearingInitiated()');
+  },
+
+  performCaseProgressedToSDO: async (user, caseId) => {
+    console.log('This is inside performCaseProgressedToSDO : ' + caseId);
+    eventName = 'CREATE_SDO';
+    const payload = caseProgressionToSDOState.createCaseProgressionToSDOState();
+    await apiRequest.setupTokens(user);
+    caseData = payload['caseDataUpdate'];
+    await assertSubmittedSpecEvent('CASE_PROGRESSION');
+    await waitForFinishedBusinessProcess(caseId);
+    console.log('End of performCaseProgressedToSDO()');
+  },
+
+  performViewAndRespondToDefence: async (user, caseId) => {
+    console.log('This is inside performViewAndRespondToDefence : ' + caseId);
+    eventName = 'CLAIMANT_RESPONSE_SPEC';
+    const payload = claimantResponse.createClaimantIntendsToProceedResponse();
+    await apiRequest.setupTokens(user);
+    caseData = payload['caseDataUpdate'];
+    await assertSubmittedSpecEvent('JUDICIAL_REFERRAL');
+    await waitForFinishedBusinessProcess(caseId);
+    console.log('End of performViewAndRespondToDefence()');
+  },
+
+  performCitizenResponse: async (user, caseId) => {
+    console.log('This is inside performCitizenResponse : ' + caseId);
+    eventName = 'DEFENDANT_RESPONSE_CUI';
+    const payload = defendantResponse.createDefendantResponse();
+    //console.log('The payload : ' + payload);
+    await apiRequest.setupTokens(user);
+    await apiRequest.startEventForCitizen(eventName, caseId, payload);
+    await waitForFinishedBusinessProcess(caseId);
+    console.log('End of performCitizenResponse()');
+  },
 
   createSpecifiedClaim: async (user, multipartyScenario) => {
     console.log(' Creating specified claim');
