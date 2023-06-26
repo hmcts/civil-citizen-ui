@@ -9,6 +9,7 @@ import {
   SIGN_IN_URL,
   SIGN_OUT_URL,
   UNAUTHORISED_URL,
+  CASE_DOCUMENT_DOWNLOAD_URL,
 } from '../../routes/urls';
 
 const requestIsForAssigningClaimForDefendant = (req: Request): boolean => {
@@ -18,6 +19,14 @@ const requestIsForAssigningClaimForDefendant = (req: Request): boolean => {
 const requestIsForPinAndPost = (req: Request): boolean => {
   return req.originalUrl.startsWith(BASE_FIRST_CONTACT_URL);
 };
+
+const requestIsForDownloadClaimPdf = (req: Request): boolean => {
+  return req.originalUrl.includes(CASE_DOCUMENT_DOWNLOAD_URL.replace(':documentType', 'sealed-claim'));
+};
+
+const requestIsForPrivacyPolicy = (req: Request): boolean => {
+  return req.originalUrl.endsWith('/privacy-policy');
+}
 
 const buildAssignClaimUrlWithId = (req: AppRequest, app: Application) : string => {
   const claimId = app.locals.assignClaimId;
@@ -79,10 +88,10 @@ export class OidcMiddleware {
           return next();
         }
       }
-      if (requestIsForPinAndPost(req)) {
+      if (requestIsForPinAndPost(req) || requestIsForDownloadClaimPdf(req) || requestIsForPrivacyPolicy(req)) {
         return next();
       }
-      if (requestIsForAssigningClaimForDefendant(req)) {
+      if (requestIsForAssigningClaimForDefendant(req) ) {
         app.locals.assignClaimId = <string>req.query.id;
       }
       return res.redirect(SIGN_IN_URL);
