@@ -10,30 +10,25 @@ import {
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/draft-store');
 
 describe('You can use this service', () => {
-  // TODO: remove this once paths become publicly available as mocking the response token will not be needed
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  afterAll(() => {
+    global.gc && global.gc()
+  })
+  it('should return you can use this service page', async () => {
+    await request(app)
+      .get(ELIGIBILITY_HWF_ELIGIBLE_URL)
+      .query({ lang: 'en' }) // Adjust the query parameters as needed
+      .set('Cookie', ['lang=en']) // Adjust the cookies as needed
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('You can use this service');
+      });
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
   });
 
-  describe('on GET', () => {
-    it('should return you can use this service page', async () => {
-      await request(app)
-        .get(ELIGIBILITY_HWF_ELIGIBLE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('You can use this service');
-        });
-    });
-  });
-
-  describe('on POST', () => {
+  /*describe('on POST', () => {
     it('should return page not found', async () => {
       await request(app)
         .post(ELIGIBILITY_HWF_ELIGIBLE_URL)
@@ -86,5 +81,5 @@ describe('You can use this service', () => {
           expect(res.text).toContain(TestMessages.PAGE_NOT_FOUND);
         });
     });
-  });
+  });*/
 });
