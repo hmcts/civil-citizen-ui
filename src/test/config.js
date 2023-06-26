@@ -64,8 +64,21 @@ module.exports = {
   defendant1SolicitorOrgId: process.env.ENVIRONMENT == 'demo' ? 'DAWY9LJ' : '79ZRSOU',
   defendant2SolicitorOrgId: process.env.ENVIRONMENT =='demo' ? 'LCVTI1I' : 'H2156A0',
   defendantSelectedCourt:'Leeds Combined Court Centre - The Court House, 1 Oxford Row - LS1 3BG',
+  claimantLRSelectedCourt:'Central London County Court - Thomas More Building, Royal Courts of Justice, Strand, London - WC2A 2LL',
   defenceType: {
     admitAllPayBySetDate: 'ADMIT_ALL_PAY_BY_SET_DATE',
     admitAllPayByInstallment: 'ADMIT_ALL_PAY_BY_INSTALLMENTS',
+    partAdmitAmountPaid: 'PART_ADMIT_ALREADY_PAID',
+    partAdmitHaventPaidPartiallyWantsToPayImmediately: 'PART_ADMIT_PAY_IMMEDIATELY',
+    partAdmitWithPartPaymentOnSpecificDate: 'PART_ADMIT_PAY_BY_SET_DATE',
+    partAdmitWithPartPaymentAsPerInstallmentPlan: 'PART_ADMIT_PAY_BY_INSTALLMENTS',
+  },
+  claimState: {
+    PROCEEDS_IN_HERITAGE_SYSTEM: 'PROCEEDS_IN_HERITAGE_SYSTEM',
+    AWAITING_RESPONDENT_ACKNOWLEDGEMENT: 'AWAITING_RESPONDENT_ACKNOWLEDGEMENT',
+    AWAITING_APPLICANT_INTENTION: 'AWAITING_APPLICANT_INTENTION',
+    JUDICIAL_REFERRAL: 'JUDICIAL_REFERRAL',
+    IN_MEDIATION: 'IN_MEDIATION',
+    CASE_STAYED: 'CASE_STAYED',
   },
 };
