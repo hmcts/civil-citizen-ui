@@ -21,12 +21,13 @@ class CaseDocumentsAttachmentResult {
 }
 
 function getDocument(uploadDocumentTypes: UploadDocumentTypes): Document {
-  return Object.values(uploadDocumentTypes).find(value => value instanceof Document);
+  return Object.values(uploadDocumentTypes).find(value => value.type === Document);
 }
 
 function getDocuments(uploadDocuments: UploadDocumentTypes[][]): Map<Document, UploadDocumentTypes> {
   const documents: Map<Document, UploadDocumentTypes> = new Map();
   for (const uploadDocumentTypes of uploadDocuments) {
+    if (uploadDocumentTypes === undefined) continue;
     uploadDocumentTypes.forEach(elem => documents.set(getDocument(elem), elem));
   }
   return documents;

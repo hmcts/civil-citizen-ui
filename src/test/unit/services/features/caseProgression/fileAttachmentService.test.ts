@@ -11,6 +11,12 @@ import {Document} from 'models/document/document';
 import {attachCaseDocuments} from 'services/features/caseProgression/fileAttachmentService';
 import {ClaimantOrDefendant} from 'models/partyType';
 import * as requestModels from 'models/AppRequest';
+import config from 'config';
+
+jest.mock('client/civilServiceClient');
+const baseUrl: string = config.get('baseUrl');
+const civilServiceClient = new CivilServiceClient(baseUrl);
+const mockCivilServiceClient = civilServiceClient as jest.Mocked<typeof civilServiceClient>;
 
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
@@ -149,15 +155,23 @@ describe('File Attachment service', () => {
     it('should attach all claimant case documents', async () => {
       //Given
       caseProgression.claimantUploadDocuments.witness = [];
-      caseProgression.claimantUploadDocuments.witness.push(new UploadDocumentTypes(true, claimantWitnessStatement, EvidenceUploadWitness.WITNESS_STATEMENT));
-      caseProgression.claimantUploadDocuments.witness.push(new UploadDocumentTypes(true, claimantWitnessSummary, EvidenceUploadWitness.WITNESS_SUMMARY));
+      caseProgression.claimantUploadDocuments.witness
+        .push(new UploadDocumentTypes(true, claimantWitnessStatement, EvidenceUploadWitness.WITNESS_STATEMENT));
+      caseProgression.claimantUploadDocuments.witness
+        .push(new UploadDocumentTypes(true, claimantWitnessSummary, EvidenceUploadWitness.WITNESS_SUMMARY));
       caseProgression.claimantUploadDocuments.expert = [];
-      caseProgression.claimantUploadDocuments.expert.push(new UploadDocumentTypes(true, claimantAnswersForExpert, EvidenceUploadExpert.ANSWERS_FOR_EXPERTS));
-      caseProgression.claimantUploadDocuments.expert.push(new UploadDocumentTypes(true, claimantExpertReport, EvidenceUploadExpert.EXPERT_REPORT));
+      caseProgression.claimantUploadDocuments.expert
+        .push(new UploadDocumentTypes(true, claimantAnswersForExpert, EvidenceUploadExpert.ANSWERS_FOR_EXPERTS));
+      caseProgression.claimantUploadDocuments.expert
+        .push(new UploadDocumentTypes(true, claimantExpertReport, EvidenceUploadExpert.EXPERT_REPORT));
 
-      const expectedDocuments: Document[] = [claimantWitnessStatement.witnessOptionDocument, claimantWitnessSummary.witnessOptionDocument, claimantAnswersForExpert.expertDocument, claimantExpertReport.expertDocument];
-      const civilServiceClient = new CivilServiceClient('');
-      jest.spyOn(civilServiceClient, 'attachCaseDocuments').mockReturnValue(new Promise(() => expectedDocuments));
+      const expectedDocuments: Document[] =
+        [claimantWitnessStatement.witnessOptionDocument,
+          claimantWitnessSummary.witnessOptionDocument,
+          claimantAnswersForExpert.expertDocument,
+          claimantExpertReport.expertDocument,
+        ];
+      jest.spyOn(mockCivilServiceClient, 'attachCaseDocuments').mockReturnValueOnce(new Promise(() => expectedDocuments));
       //When
       const result = await attachCaseDocuments(claimId, ClaimantOrDefendant.CLAIMANT, caseProgression, mockedAppRequest);
       //Then
@@ -167,15 +181,23 @@ describe('File Attachment service', () => {
     it('should attach all defendant case documents', async () => {
       //Given
       caseProgression.defendantUploadDocuments.witness = [];
-      caseProgression.defendantUploadDocuments.witness.push(new UploadDocumentTypes(true, defendantWitnessStatement, EvidenceUploadWitness.WITNESS_STATEMENT));
-      caseProgression.defendantUploadDocuments.witness.push(new UploadDocumentTypes(true, defendantWitnessSummary, EvidenceUploadWitness.WITNESS_SUMMARY));
+      caseProgression.defendantUploadDocuments.witness
+        .push(new UploadDocumentTypes(true, defendantWitnessStatement, EvidenceUploadWitness.WITNESS_STATEMENT));
+      caseProgression.defendantUploadDocuments.witness
+        .push(new UploadDocumentTypes(true, defendantWitnessSummary, EvidenceUploadWitness.WITNESS_SUMMARY));
       caseProgression.defendantUploadDocuments.expert = [];
-      caseProgression.defendantUploadDocuments.expert.push(new UploadDocumentTypes(true, defendantAnswersForExpert, EvidenceUploadExpert.ANSWERS_FOR_EXPERTS));
-      caseProgression.defendantUploadDocuments.expert.push(new UploadDocumentTypes(true, defendantExpertReport, EvidenceUploadExpert.EXPERT_REPORT));
+      caseProgression.defendantUploadDocuments.expert
+        .push(new UploadDocumentTypes(true, defendantAnswersForExpert, EvidenceUploadExpert.ANSWERS_FOR_EXPERTS));
+      caseProgression.defendantUploadDocuments.expert
+        .push(new UploadDocumentTypes(true, defendantExpertReport, EvidenceUploadExpert.EXPERT_REPORT));
 
-      const expectedDocuments: Document[] = [claimantWitnessStatement.witnessOptionDocument, claimantWitnessSummary.witnessOptionDocument, claimantAnswersForExpert.expertDocument, claimantExpertReport.expertDocument];
-      const civilServiceClient = new CivilServiceClient('');
-      jest.spyOn(civilServiceClient, 'attachCaseDocuments').mockReturnValue(new Promise(() => expectedDocuments));
+      const expectedDocuments: Document[] =
+        [defendantWitnessStatement.witnessOptionDocument,
+          defendantWitnessSummary.witnessOptionDocument,
+          defendantAnswersForExpert.expertDocument,
+          defendantExpertReport.expertDocument,
+        ];
+      jest.spyOn(mockCivilServiceClient, 'attachCaseDocuments').mockReturnValue(new Promise(() => expectedDocuments));
       //When
 
       //Then
