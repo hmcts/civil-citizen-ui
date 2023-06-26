@@ -6,7 +6,7 @@ import {t} from 'i18next';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import Module from 'module';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from "../../../../utils/mockDraftStore";
+import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 const session = require('supertest-session');
 const testSession = session(app);
 const citizenRoleToken: string = config.get('citizenRoleToken');
