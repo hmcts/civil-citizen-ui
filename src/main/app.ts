@@ -18,9 +18,6 @@ import routes from './routes/routes';
 import {setLanguage} from 'modules/i18n/languageService';
 import {isServiceShuttered} from './app/auth/launchdarkly/launchDarklyClient';
 
-import RedisStore from 'connect-redis';
-import {createClient} from 'redis';
-
 /*const Redis = require('ioredis');
 const connectRedis = require('connect-redis');
 */
@@ -30,24 +27,28 @@ const {setupDev} = require('./development');
 
 //const RedisStore = connectRedis(session);
 //const MemoryStore = require('memorystore')(session);
+
+import RedisStore from 'connect-redis';
+/*import {createClient} from 'redis';
 const protocol = config.get('services.draftStore.redis.tls') ? 'rediss://' : 'redis://';
 const connectionString = `${protocol}:${config.get('services.draftStore.redis.key')}@${config.get('services.draftStore.redis.host')}:${config.get('services.draftStore.redis.port')}`;
 const redisClient = createClient({
   url: connectionString,
 });
-redisClient.connect().catch(console.error);
+redisClient.connect().catch(console.error);*/
 // Initialize store.
-const redisStore = new RedisStore({
-  client: redisClient,
-  prefix: 'myapp:',
-});
+
 
 const env = process.env.NODE_ENV || 'development';
-const productionMode = env === 'production';
+//const productionMode = env === 'production';
 const developmentMode = env === 'development';
 export const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
 export const app = express();
-
+new DraftStoreClient(Logger.getLogger('draftStoreClient')).enableFor(app);
+const redisStore = new RedisStore({
+  client: app.locals.draftStoreClient,
+  prefix: 'citizen-ui:',
+});
 //const protocol = config.get('services.draftStore.redis.tls') ? 'rediss://' : 'redis://';
 //const connectionString = `${protocol}:${config.get('services.draftStore.redis.key')}@${config.get('services.draftStore.redis.host')}:${config.get('services.draftStore.redis.port')}`;
 //this.logger.info(`connectionString: ${connectionString}`);
@@ -57,14 +58,14 @@ app.enable('trust proxy');
 app.use(session({
   name: 'citizen-ui-session',
   store: redisStore,
-  /*new MemoryStore({
+  /*store: new MemoryStore({
     checkPeriod: 86400000, // prune expired entries every 24h
   }),*/
   secret: 'local',
   resave: true,
   saveUninitialized: true,
   cookie : {
-    secure: productionMode,
+    secure: false,
     maxAge: cookieMaxAge,
     sameSite: 'lax',
   },
@@ -79,7 +80,7 @@ I18Next.enableFor(app);
 const logger = Logger.getLogger('app');
 
 new PropertiesVolume().enableFor(app);
-new DraftStoreClient(Logger.getLogger('draftStoreClient')).enableFor(app);
+
 new AppInsights().enable();
 new Nunjucks(developmentMode).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);
