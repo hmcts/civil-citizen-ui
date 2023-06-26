@@ -54,21 +54,6 @@ const redisStore = new RedisStore({
 //const redisClient = new Redis(connectionString);
 
 app.enable('trust proxy');
-app.use(session({
-  name: 'citizen-ui-session',
-  store: redisStore,
-  /*store: new MemoryStore({
-    checkPeriod: 86400000, // prune expired entries every 24h
-  }),*/
-  secret: 'local',
-  resave: true,
-  saveUninitialized: true,
-  cookie : {
-    secure: productionMode,
-    maxAge: cookieMaxAge,
-    sameSite: 'lax',
-  },
-}));
 app.use(cookieParser());
 app.use(setLanguage);
 app.use(express.static(path.join(__dirname, 'public')));
@@ -79,6 +64,21 @@ I18Next.enableFor(app);
 const logger = Logger.getLogger('app');
 
 new PropertiesVolume().enableFor(app);
+app.use(session({
+  name: 'citizen-ui-session',
+  store: redisStore,
+  /*store: new MemoryStore({
+    checkPeriod: 86400000, // prune expired entries every 24h
+  }),*/
+  secret: 'local',
+  resave: false,
+  saveUninitialized: false,
+  cookie : {
+    secure: productionMode,
+    maxAge: cookieMaxAge,
+    sameSite: 'lax',
+  },
+}));
 
 new AppInsights().enable();
 new Nunjucks(developmentMode).enableFor(app);
