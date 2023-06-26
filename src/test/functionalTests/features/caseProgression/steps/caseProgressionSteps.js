@@ -1,13 +1,9 @@
-const LatestUpdate = require("../pages/latestUpdate");
-const UploadYourDocumentsIntroduction = require("../pages/uploadYourDocumentsIntroduction");
-const ContactUs = require("../../common/contactUs");
-
+const LatestUpdate = require('../pages/latestUpdate');
+const UploadYourDocumentsIntroduction = require('../pages/uploadYourDocumentsIntroduction');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const latestUpdatePage = new LatestUpdate();
 const uploadYourDocumentsIntroduction = new UploadYourDocumentsIntroduction();
-
-
 
 class UploadEvidenceSteps {
 
@@ -21,7 +17,7 @@ class UploadEvidenceSteps {
 
   initiateHearingNoticeJourney(claimRef) {
     latestUpdatePage.open(claimRef);
-    latestUpdatePage.nextAction('View hearing notice')
+    latestUpdatePage.nextAction('View hearing notice');
   }
 
 }

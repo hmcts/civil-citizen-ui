@@ -27,7 +27,7 @@ class DateUtilsComponent {
       month: 'long',
       year: 'numeric',
       hour: 'numeric',
-      minute : 'numeric'
+      minute : 'numeric',
     });
   }
 
@@ -35,11 +35,11 @@ class DateUtilsComponent {
     return date.toLocaleString('en-GB', {
       day: 'numeric',
       month: 'long',
-      year: 'numeric'
+      year: 'numeric',
     });
   }
 
-  static isWeekend(date) {
+  static checkWeekend(date) {
     switch (date.getDay()) {
       case 0: //Sunday
         return true;
@@ -76,7 +76,7 @@ class DateUtilsComponent {
     let year = currentTime.getFullYear();
     let hour = currentTime.getHours();
     let minutes = currentTime.getMinutes();
-    let presentDay = year + "-" + month + "-" + day + "-" + hour + "-" + minutes;
+    let presentDay = year + '-' + month + '-' + day + '-' + hour + '-' + minutes;
     return presentDay;
   }
 
@@ -94,7 +94,7 @@ class DateUtilsComponent {
         dd = targetDate.getDate();
         mm = targetDate.getMonth() + 1;
         yyyy = targetDate.getFullYear();
-        weekend = yyyy + "-" + mm + "-" + dd;
+        weekend = yyyy + '-' + mm + '-' + dd;
         break;
 
       case 2:
@@ -102,7 +102,7 @@ class DateUtilsComponent {
         dd = targetDate.getDate();
         mm = targetDate.getMonth() + 1;
         yyyy = targetDate.getFullYear();
-        weekend = yyyy + "-" + mm + "-" + dd;
+        weekend = yyyy + '-' + mm + '-' + dd;
         break;
 
       case 3:
@@ -110,7 +110,7 @@ class DateUtilsComponent {
         dd = targetDate.getDate();
         mm = targetDate.getMonth() + 1;
         yyyy = targetDate.getFullYear();
-        weekend = yyyy + "-" + mm + "-" + dd;
+        weekend = yyyy + '-' + mm + '-' + dd;
         break;
 
       case 4:
@@ -118,7 +118,7 @@ class DateUtilsComponent {
         dd = targetDate.getDate();
         mm = targetDate.getMonth() + 1;
         yyyy = targetDate.getFullYear();
-        weekend = yyyy + "-" + mm + "-" + dd;
+        weekend = yyyy + '-' + mm + '-' + dd;
         break;
 
       case 5:
@@ -126,11 +126,11 @@ class DateUtilsComponent {
         dd = targetDate.getDate();
         mm = targetDate.getMonth() + 1;
         yyyy = targetDate.getFullYear();
-        weekend = yyyy + "-" + mm + "-" + dd;
+        weekend = yyyy + '-' + mm + '-' + dd;
         break;
 
       default:
-        console.log("please enter the correct date");
+        console.log('please enter the correct date');
         break;
     }
 

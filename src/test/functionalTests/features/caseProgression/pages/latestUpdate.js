@@ -1,11 +1,11 @@
-const ContactUs = require("../../common/contactUs");
+const ContactUs = require('../../common/contactUs');
 const I = actor();
 
 const contactUs = new ContactUs();
 
 class LatestUpdate {
 
-  open(claimRef, nextAction) {
+  open(claimRef) {
     I.amOnPage('/dashboard/' + claimRef + '/defendant');
     this.verifyLatestUpdatePageContent();
   }

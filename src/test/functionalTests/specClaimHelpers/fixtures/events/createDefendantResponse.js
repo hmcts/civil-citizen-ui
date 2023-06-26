@@ -23,16 +23,16 @@ module.exports = {
             AddressLine2:'TestAddressLine2',
             AddressLine3:'TestAddressLine3',
             PostCode:'IG61JD',
-            PostTown:'TestCity'
+            PostTown:'TestCity',
           },
-          type:'INDIVIDUAL'
+          type:'INDIVIDUAL',
         },
         respondent1LiPResponse:{
           respondent1LiPFinancialDetails:{
             
           },
           respondent1MediationLiPResponse:{
-            mediationDisagreementLiP:'No'
+            mediationDisagreementLiP:'No',
           },
           respondent1DQExtraDetails:{
             wantPhoneOrVideoHearing:'No',
@@ -44,12 +44,12 @@ module.exports = {
             considerClaimantDocuments:'No',
             respondent1DQLiPExpert:{
               caseNeedsAnExpert:'No',
-            }
+            },
           },
           respondent1DQHearingSupportLip:{
             supportRequirementLip:'No',
           },
-          respondent1ResponseLanguage:'ENGLISH'
+          respondent1ResponseLanguage:'ENGLISH',
         },
         detailsOfWhyDoesYouDisputeTheClaim:'Testreason',
         specClaimResponseTimelineList:'MANUAL',
@@ -69,7 +69,7 @@ module.exports = {
         respondent1PartnerAndDependent:{
           howManyChildrenByAgeGroup:{
             
-          }
+          },
         },
         specDefendant1SelfEmploymentDetails:{
           
@@ -79,10 +79,10 @@ module.exports = {
         },
         respondent1DQLanguage:{
           court:'ENGLISH',
-          documents:'ENGLISH'
+          documents:'ENGLISH',
         },
         respondent1DQVulnerabilityQuestions:{
-          vulnerabilityAdjustmentsRequired:'No'
+          vulnerabilityAdjustmentsRequired:'No',
         },
         respondent1DQRequestedCourt:{
           requestHearingAtSpecificCourt:'No',
@@ -96,8 +96,8 @@ module.exports = {
           unavailableDatesRequired:'No',
         },
         respondent1DQExperts:{
-          expertRequired:'No'
-        }
+          expertRequired:'No',
+        },
       },
     };
     return defendantResponseData;

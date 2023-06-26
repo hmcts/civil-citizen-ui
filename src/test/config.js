@@ -60,14 +60,14 @@ module.exports = {
     email: '4917924EMP-@ejudiciary.net',
     type: 'judge',
     roleCategory: 'JUDICIAL',
-    regionId: '1'
+    regionId: '1',
   },
   hearingCenterAdminWithRegionId1: {
     email: 'hearing_center_admin_reg1@justice.gov.uk',
     password: defaultPassword,
     type: 'hearing-center-admin',
     roleCategory: 'ADMIN',
-    regionId: '1'
+    regionId: '1',
   },
   definition: {
     jurisdiction: 'CIVIL',

@@ -1,4 +1,4 @@
-const ContactUs = require("../../common/contactUs");
+const ContactUs = require('../../common/contactUs');
 const I = actor();
 
 const contactUs = new ContactUs();
@@ -21,7 +21,6 @@ class UploadYourDocumentsIntroduction {
     I.see('Case reference');
     I.see('Test Inc v Sir John Doe');
   }
-
 
   verifyUploadDocumentSectionContent() {
     I.see('Check the order the court sent you for what documents you need to upload for your case.');

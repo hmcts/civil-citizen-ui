@@ -107,13 +107,13 @@ module.exports = {
           jointExpertSuitable: null,
           details: [
             
-          ]
+          ],
         },
         applicant1DQWitnesses: {
           witnessesToAppear: 'No',
           details: [
             
-          ]
+          ],
         },
         applicant1DQLanguage: {
           court: 'ENGLISH',
@@ -134,12 +134,12 @@ module.exports = {
           responseCourtLocations: {
             value: {
               code: '350aa935-4d80-4762-9a4e-2a8f3eaad9fc',
-              label: 'Central London County Court - Thomas More Building, Royal Courts of Justice, Strand, London - WC2A 2LL'
+              label: 'Central London County Court - Thomas More Building, Royal Courts of Justice, Strand, London - WC2A 2LL',
             },
             list_items: [
               {
                 code: '350aa935-4d80-4762-9a4e-2a8f3eaad9fc',
-                label: 'Central London County Court - Thomas More Building, Royal Courts of Justice, Strand, London - WC2A 2LL'
+                label: 'Central London County Court - Thomas More Building, Royal Courts of Justice, Strand, London - WC2A 2LL',
               },
             ],
           },
@@ -162,11 +162,11 @@ module.exports = {
         },
         applicant1DQVulnerabilityQuestions: {
           vulnerabilityAdjustmentsRequired: 'No',
-          vulnerabilityAdjustments: null
+          vulnerabilityAdjustments: null,
         },
         applicant1DQFutureApplications: {
           intentionToMakeFutureApplications: 'No',
-          whatWillFutureApplicationsBeMadeFor: null
+          whatWillFutureApplicationsBeMadeFor: null,
         },
         applicant1AdditionalInformationForJudge: 'other info',
         uiStatementOfTruth: {
