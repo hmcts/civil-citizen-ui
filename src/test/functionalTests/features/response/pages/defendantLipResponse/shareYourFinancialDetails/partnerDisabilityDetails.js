@@ -10,15 +10,16 @@ const buttons = {
 
 class PartnerDisabilityDetails {
 
-  clickYesButton() {
-    I.see('Is your partner disabled?', 'h1');
-    I.click(fields.yesButton);
-    I.click(buttons.continue);
+  async clickYesButton() {
+    await I.see('Is your partner disabled?', 'h1');
+    await I.click(fields.yesButton);
+    await I.click(buttons.continue);
   }
-  clickNoButton() {
-    I.see('Is your partner disabled?', 'h1');
-    I.click(fields.noButton);
-    I.click(buttons.continue);
+  
+  async clickNoButton() {
+    await I.see('Is your partner disabled?', 'h1');
+    await I.click(fields.noButton);
+    await I.click(buttons.continue);
   }
 }
 
