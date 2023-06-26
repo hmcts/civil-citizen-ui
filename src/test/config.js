@@ -63,4 +63,9 @@ module.exports = {
   claimantSolicitorOrgId: process.env.ENVIRONMENT == 'demo' ? 'B04IXE4' : 'Q1KOKP2',
   defendant1SolicitorOrgId: process.env.ENVIRONMENT == 'demo' ? 'DAWY9LJ' : '79ZRSOU',
   defendant2SolicitorOrgId: process.env.ENVIRONMENT =='demo' ? 'LCVTI1I' : 'H2156A0',
+  defendantSelectedCourt:'Leeds Combined Court Centre - The Court House, 1 Oxford Row - LS1 3BG',
+  defenceType: {
+    admitAllPayBySetDate: 'ADMIT_ALL_PAY_BY_SET_DATE',
+    admitAllPayByInstallment: 'ADMIT_ALL_PAY_BY_INSTALLMENTS',
+  },
 };
