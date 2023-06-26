@@ -66,6 +66,7 @@ export const saveCaseProgression = async (claimId: string, value: any, caseProgr
     throw error;
   }
 };
+
 export const getTypeDocumentForm = (req: Request): UploadDocuments => {
   const documents = new UploadDocumentTypes(!!req.body.documents,undefined,EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE);
   const list = new UploadDocumentTypes(!!req.body.list,undefined,EvidenceUploadDisclosure.DISCLOSURE_LIST);

@@ -22,44 +22,44 @@ const extendedYear = targetDate.getFullYear();
 
 class ViewYourOptionsBeforeDeadline {
 
-  selectYouOptions(claimRef, deadlineOption) {
-    I.amOnPage('/case/'+claimRef+'/response/understanding-your-options');
-    I.see('Requesting extra time','h1');
-    I.see('How much extra time can you request?','h3');
-    I.click(buttons.continue);
-    I.see('Response deadline');
-    I.see('Current response deadline:');
-    I.see('Do you want to request more time to respond?');
+  async selectYouOptions(claimRef, deadlineOption) {
+    await I.amOnPage('/case/'+claimRef+'/response/understanding-your-options');
+    await I.see('Requesting extra time','h1');
+    await I.see('How much extra time can you request?','h3');
+    await I.click(buttons.continue);
+    await I.see('Response deadline');
+    await I.see('Current response deadline:');
+    await I.see('Do you want to request more time to respond?');
     switch(deadlineOption){
       case 'yesIWantMoretime':{
-        I.click(fields.yesIWantMoretime);
+        await I.click(fields.yesIWantMoretime);
         break;
       }
       case 'iHaveAlreadyAgreedMoretime':{
-        I.click(fields.iHaveAlreadyAgreedMoretime);
-        I.click('Save and continue');
-        I.see('You have already agreed to more time to respond','h1');
-        I.see('Enter the respond date you have agreed with Test Inc\'s legal representative');
-        I.fillField(fields.day, extendedDay );
-        I.fillField(fields.month, extendedMonth);
-        I.fillField(fields.year, extendedYear);
-        I.click('Save and continue');
-        I.see('New response deadline','h1');
-        I.click('Continue');
+        await I.click(fields.iHaveAlreadyAgreedMoretime);
+        await I.click('Save and continue');
+        await I.see('You have already agreed to more time to respond','h1');
+        await I.see('Enter the respond date you have agreed with Test Inc\'s legal representative');
+        await I.fillField(fields.day, extendedDay );
+        await I.fillField(fields.month, extendedMonth);
+        await I.fillField(fields.year, extendedYear);
+        await I.click('Save and continue');
+        await I.see('New response deadline','h1');
+        await I.click('Continue');
         break;
       }
       case 'requestRefused':{
-        I.click(fields.requestRefused);
+        await I.click(fields.requestRefused);
         break;
       }
       case 'dontWantMoreTime':{
-        I.click(fields.dontWantMoreTime);
+        await I.click(fields.dontWantMoreTime);
         break;
       }
       default:
-        I.click(fields.dontWantMoreTime);
+        await I.click(fields.dontWantMoreTime);
     }
-    I.click(buttons.saveAndContinue);
+    await I.click(buttons.saveAndContinue);
   }
 }
 module.exports = ViewYourOptionsBeforeDeadline;
