@@ -39,21 +39,10 @@ redisClient.connect().catch(console.error);*/
 // Initialize store.
 
 const env = process.env.NODE_ENV || 'development';
-const productionMode = env === 'production';
+//const productionMode = env === 'production';
 const developmentMode = env === 'development';
 export const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
 export const app = express();
-new DraftStoreClient(Logger.getLogger('draftStoreClient')).enableFor(app);
-const redisStore = new RedisStore({
-  client: app.locals.draftStoreClient,
-  prefix: 'citizen-ui-session:',
-});
-//const protocol = config.get('services.draftStore.redis.tls') ? 'rediss://' : 'redis://';
-//const connectionString = `${protocol}:${config.get('services.draftStore.redis.key')}@${config.get('services.draftStore.redis.host')}:${config.get('services.draftStore.redis.port')}`;
-//this.logger.info(`connectionString: ${connectionString}`);
-//const redisClient = new Redis(connectionString);
-
-app.enable('trust proxy');
 app.use(cookieParser());
 app.use(setLanguage);
 app.use(express.static(path.join(__dirname, 'public')));
@@ -64,6 +53,19 @@ I18Next.enableFor(app);
 const logger = Logger.getLogger('app');
 
 new PropertiesVolume().enableFor(app);
+logger.info('Creating new draftStoreClient');
+new DraftStoreClient(Logger.getLogger('draftStoreClient')).enableFor(app);
+app.enable('trust proxy');
+
+const redisStore = new RedisStore({
+  client: app.locals.draftStoreClient,
+  prefix: 'citizen-ui-session:',
+});
+//const protocol = config.get('services.draftStore.redis.tls') ? 'rediss://' : 'redis://';
+//const connectionString = `${protocol}:${config.get('services.draftStore.redis.key')}@${config.get('services.draftStore.redis.host')}:${config.get('services.draftStore.redis.port')}`;
+logger.info('Adding session configuration');
+//const redisClient = new Redis(connectionString);
+
 app.use(session({
   name: 'citizen-ui-session',
   store: redisStore,
@@ -74,12 +76,12 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie : {
-    secure: productionMode,
+    secure: false,
     maxAge: cookieMaxAge,
     sameSite: 'lax',
   },
 }));
-
+logger.info('Session configuration added successfully');
 new AppInsights().enable();
 new Nunjucks(developmentMode).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);

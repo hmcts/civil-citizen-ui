@@ -8,6 +8,7 @@ const REDIS_DATA = require('./redisData.json');
 
 export class DraftStoreClient {
   public static REDIS_CONNECTION_SUCCESS = 'Connected to Redis instance successfully';
+  public static REDIS_ON_CONNECT_SUCCESS = 'On connect Connected to Redis instance successfully';
 
   constructor(private readonly logger: LoggerInstance) {
   }
@@ -22,6 +23,7 @@ export class DraftStoreClient {
     this.logger.info(DraftStoreClient.REDIS_CONNECTION_SUCCESS);
 
     app.locals.draftStoreClient.on('connect', () => {
+      this.logger.info(DraftStoreClient.REDIS_ON_CONNECT_SUCCESS);
       REDIS_DATA.forEach((element: any) => {
         client.set(element.id, JSON.stringify(element, null, 4)).then(() =>
           this.logger.info(`Mock data ${element.id} saved to Redis`),
