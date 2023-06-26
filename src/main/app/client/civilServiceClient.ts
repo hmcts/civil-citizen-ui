@@ -174,7 +174,7 @@ export class CivilServiceClient {
       if (!response.data) {
         throw new AssertionError({message: 'Document upload unsuccessful.'});
       }
-      return response.data as CaseDocument;
+      return JSON.parse(String.fromCharCode.apply(null, response.data)) as CaseDocument;
     } catch (err: unknown) {
       logger.error(err);
       throw err;

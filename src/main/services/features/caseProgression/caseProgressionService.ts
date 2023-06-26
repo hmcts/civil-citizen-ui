@@ -17,6 +17,7 @@ import {
   TypeOfDocumentSection,
   UploadDocumentsUserForm,
 } from 'models/caseProgression/uploadDocumentsUserForm';
+import {CaseDocument} from 'models/document/caseDocument';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');
@@ -146,6 +147,9 @@ const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSect
   if (request['fileUpload'] !== '') {
     formObj.fileUpload = request['fileUpload'];
   }
+  if (request['caseDocument'] !== '') {
+    formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
+  }
   return formObj;
 };
 
@@ -154,6 +158,9 @@ const bindRequestToFileOnlySectionObj = (request: any): FileOnlySection => {
   //TODO we should get the file from dm-store
   if (request['fileUpload'] !== '') {
     formObj.fileUpload = request['fileUpload'];
+  }
+  if (request['caseDocument'] !== '') {
+    formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
   }
   return formObj;
 };

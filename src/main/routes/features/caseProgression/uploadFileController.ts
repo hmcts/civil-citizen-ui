@@ -1,9 +1,12 @@
 import {Router} from 'express';
+import config from 'config';
 import {CP_UPLOAD_FILE} from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
 import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
-import {EvidenceUploadWitness} from 'models/document/documentType';
 import {t} from 'i18next';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {CaseDocument} from 'models/document/caseDocument';
+import {AppRequest} from 'models/AppRequest';
 
 const multer = require('multer');
 const storage = multer.memoryStorage();
@@ -11,7 +14,10 @@ const upload = multer({storage: storage});
 
 const uploadFileController = Router();
 
-uploadFileController.post(CP_UPLOAD_FILE, upload.single('file'), (req, res) => {
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
+
+uploadFileController.post(CP_UPLOAD_FILE, upload.single('file'), async (req, res) => {
   try {
     //const claimId = req.params.id;
     const uploadDocumentsForm = TypeOfDocumentSectionMapper.mapToSingleFile(req);
@@ -26,24 +32,8 @@ uploadFileController.post(CP_UPLOAD_FILE, upload.single('file'), (req, res) => {
       });
 
     } else {
-      //todo: save to redis
-      //todo: next page (cancel page or continue page)
-      //await renderView(res, claimId, form);
-      const document = {
-        createdBy: 'test',
-        documentLink: {
-          document_url: 'test',
-          document_filename: 'test',
-          document_binary_url: 'test',
-        },
-        documentName: 'test',
-        documentType: EvidenceUploadWitness,
-        documentSize: '123',
-        createdDatetime: Date.now(),
-      };
-      res.status(200).json({
-        document: document,
-      });
+      const document: CaseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, uploadDocumentsForm);
+      res.status(200).json(document);
     }
   } catch (error) {
     res.status(500).json({

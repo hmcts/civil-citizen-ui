@@ -19,7 +19,7 @@ export const buildDisclosureDocumentSection = (section: TypeOfDocumentSection = 
     .addTitle('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.DISCLOSURE_DOCUMENTS')
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT', '', 'PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT_EXAMPLE', documentsForDisclosure, 'typeOfDocument', section?.typeOfDocument, index, missingInputError)
     .addDateArray('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', documentsForDisclosure, section?.dateDay, section?.dateMonth, section?.dateYear, index)
-    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', documentsForDisclosure, fileUpload, index,section?.fileUpload?.fieldname, form?.errorFor(`${errorFieldNamePrefix}[${fileUpload}]`, documentsForDisclosure))
+    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', documentsForDisclosure, fileUpload, index,section?.fileUpload?.fieldname, form?.errorFor(`${errorFieldNamePrefix}[${fileUpload}]`, documentsForDisclosure), section?.caseDocument)
     .addRemoveSectionButton(form?.model.documentsForDisclosure?.length > 1 || false)
     .build();
 };
@@ -28,7 +28,7 @@ export const buildDisclosureListSection = (section: FileOnlySection = null, inde
   const errorFieldNamePrefix = `${disclosureList}[${disclosureList}][${index}]`;
   return new UploadDocumentsSectionBuilder()
     .addTitle('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.DISCLOSURE_LIST')
-    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', disclosureList, fileUpload, index,section?.fileUpload?.fieldname, form?.errorFor(`${errorFieldNamePrefix}[${fileUpload}]`, disclosureList))
+    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', disclosureList, fileUpload, index,section?.fileUpload?.fieldname, form?.errorFor(`${errorFieldNamePrefix}[${fileUpload}]`, disclosureList), section?.caseDocument)
     .addRemoveSectionButton(form?.model.disclosureList?.length > 1 || false)
     .build();
 };

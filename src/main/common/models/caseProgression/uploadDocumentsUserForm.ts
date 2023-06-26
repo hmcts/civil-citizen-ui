@@ -1,6 +1,7 @@
-import {IsDefined, IsNotEmpty, ValidateNested} from 'class-validator';
+import {IsDefined, IsNotEmpty, ValidateIf, ValidateNested} from 'class-validator';
 import { IsFileSize} from 'form/validators/isFileSize';
 import {IsAllowedMimeType} from 'form/validators/isAllowedMimeType';
+import {CaseDocument} from 'models/document/caseDocument';
 
 export class UploadDocumentsUserForm {
   @ValidateNested()
@@ -44,8 +45,11 @@ export class FileUpload {
 }
 
 export class FileOnlySection {
+  @ValidateIf((object, value) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
   @IsDefined({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
     fileUpload: FileUpload;
+
+  caseDocument: CaseDocument;
 }
 export class TypeOfDocumentSection {
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_TYPE_OF_DOCUMENT'})
@@ -56,8 +60,10 @@ export class TypeOfDocumentSection {
   dateMonth: string;
   dateYear: string;
 
+  @ValidateIf((object, value) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
   @IsDefined({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
     fileUpload: FileUpload;
 
+  caseDocument: CaseDocument;
 }
 

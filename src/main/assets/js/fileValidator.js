@@ -16,6 +16,11 @@ function removeLoading(event) {
 
 }
 
+function appendCaseDocument(target, value) {
+  const caseDocumentInput = document.querySelector(`[id='${target}']`);
+  caseDocumentInput.value = value;
+}
+
 function elementExists(element) {
   return element?.length > 0;
 }
@@ -69,6 +74,7 @@ async function handleChange(event) {
   }
   if (response.status === 200) {
     removeLoading(event);
+    appendCaseDocument(objectId.replace(/\].*/, '][caseDocument]'), JSON.stringify(parsed));
   }
 }
 
