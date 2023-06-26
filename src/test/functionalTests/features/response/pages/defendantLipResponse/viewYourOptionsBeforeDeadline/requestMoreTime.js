@@ -10,18 +10,18 @@ const buttons = {
 
 class RequestMoreTime {
 
-  open(claimRef) {
-    I.amOnPage('/case/' + claimRef + '/response/request-more-time');
+  async open(claimRef) {
+    await I.amOnPage('/case/' + claimRef + '/response/request-more-time');
   }
 
-  verifyResponsePageContent() {    
-    I.see('Request more time to respond');
+  async verifyResponsePageContent() {    
+    await I.see('Request more time to respond');
   }
    
-  requestMoreTimeToRespond(claimRef) {
+  async requestMoreTimeToRespond(claimRef) {
     this.open(claimRef);
-    I.click(fields.moreThan28Days);
-    I.click(buttons.continue);    
+    await I.click(fields.moreThan28Days);
+    await I.click(buttons.continue);    
   }
 
 }
