@@ -17,7 +17,7 @@ export const buildExpertReportSection = (section: ExpertSection = null, index = 
     .addTitle('PAGES.UPLOAD_DOCUMENTS.EXPERT.EXPERT_REPORT')
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.EXPERT_NAME', '', '', expertReport, 'expertName', section?.expertName, index, form?.errorFor(`${errorFieldNamePrefix}[expertName]`))
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.FIELD_EXPERTISE', '', '', expertReport, 'fieldOfExpertise', section?.fieldOfExpertise, index, form?.errorFor(`${errorFieldNamePrefix}[fieldOfExpertise]`))
-    .addDateArray('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', form?.errorFor(`${errorFieldNamePrefix}[dateDay]`), form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`), form?.errorFor(`${errorFieldNamePrefix}[dateYear]`), form?.errorFor(`${errorFieldNamePrefix}[date]`),'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', expertReport, 'date', section?.dateDay.toString(), section?.dateMonth.toString(), section?.dateYear.toString(), index)
+    .addDateArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.DATE_REPORT_WAS', form?.errorFor(`${errorFieldNamePrefix}[dateDay]`), form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`), form?.errorFor(`${errorFieldNamePrefix}[dateYear]`), form?.errorFor(`${errorFieldNamePrefix}[date]`),'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', expertReport, 'date', section?.dateDay.toString(), section?.dateMonth.toString(), section?.dateYear.toString(), index)
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD','', expertReport, fileUpload)
     .build();
 };
@@ -28,7 +28,7 @@ export const buildJointStatementSection = (section: ExpertSection = null, index 
     .addTitle('PAGES.UPLOAD_DOCUMENTS.EXPERT.JOINT_STATEMENT')
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.EXPERTS_NAMES', '', '', expertStatement, 'expertName', section?.expertName, index, form?.errorFor(`${errorFieldNamePrefix}[expertName]`))
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.FIELD_EXPERTISE', 'govuk-!-width-three-half', '', expertStatement, 'fieldOfExpertise', section?.fieldOfExpertise, index, form?.errorFor(`${errorFieldNamePrefix}[fieldOfExpertise]`))
-    .addDateArray('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', form?.errorFor(`${errorFieldNamePrefix}[dateDay]`), form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`), form?.errorFor(`${errorFieldNamePrefix}[dateYear]`), form?.errorFor(`${errorFieldNamePrefix}[date]`),'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', expertStatement, 'date', section?.dateDay.toString(), section?.dateMonth.toString(), section?.dateYear.toString(), index)
+    .addDateArray('PAGES.UPLOAD_DOCUMENTS.DATE', form?.errorFor(`${errorFieldNamePrefix}[dateDay]`), form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`), form?.errorFor(`${errorFieldNamePrefix}[dateYear]`), form?.errorFor(`${errorFieldNamePrefix}[date]`),'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', expertStatement, 'date', section?.dateDay.toString(), section?.dateMonth.toString(), section?.dateYear.toString(), index)
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD','', expertStatement, fileUpload)
     .build();
 };
