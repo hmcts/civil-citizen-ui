@@ -62,7 +62,7 @@ const ConsiderClaimantDocs  =  require('../pages/defendantLipResponse/defendantD
 const ExpertEvidence = require('../pages/defendantLipResponse/defendantDQ/expertEvidence');
 const SentExpertReports = require('../pages/defendantLipResponse/defendantDQ/sentExpertReports');
 const SharedExpert = require('../pages/defendantLipResponse/defendantDQ/sharedExpert');
-const ExpertDetails = require('../pages/defendantLipResponse/defendantDQ/ExpertDetails');
+const ExpertDetails = require('../pages/defendantLipResponse/defendantDQ/expertDetails');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const requestMoreTime = new RequestMoreTime();
