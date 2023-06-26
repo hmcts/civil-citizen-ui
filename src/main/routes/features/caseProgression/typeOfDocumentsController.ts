@@ -27,8 +27,8 @@ async function renderView(res: Response, claimId: string, form: GenericForm<Uplo
   const claim = await getCaseDataFromStore(claimId);
   const claimantFullName = claim.getClaimantFullName();
   const defendantFullName = claim.getDefendantFullName();
-  const isFastTrack = true;
-  const isSmallClaims = false;
+  const isFastTrack = claim.isFastTrackClaim;
+  const isSmallClaims = claim.isSmallClaimsTrackDQ;
   claimId = caseNumberPrettify(claimId);
 
   res.render(typeOfDocumentsViewPath, {form,
