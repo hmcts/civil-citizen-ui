@@ -8,10 +8,10 @@ const fields ={
 
 class GiveEvidenceYourself {
 
-  SelectGiveEvidenceYourself() {
-    I.see('Do you want to give evidence yourself?', 'h1');
-    I.click(fields.yesButton);
-    I.click('Save and continue');
+  async SelectGiveEvidenceYourself() {
+    await I.see('Do you want to give evidence yourself?', 'h1');
+    await I.click(fields.yesButton);
+    await I.click('Save and continue');
   }
 }
 
