@@ -48,7 +48,7 @@ Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @regress
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
     await api.enterBreathingSpace(config.applicantSolicitorUser);
     await api.liftBreathingSpace(config.applicantSolicitorUser);
-    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayBySetDate);
+    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayBySetDate, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
   }
 });
 
@@ -64,7 +64,7 @@ Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll @regres
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
     await api.enterBreathingSpace(config.applicantSolicitorUser);
     await api.liftBreathingSpace(config.applicantSolicitorUser);
-    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayByInstallment);
+    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayByInstallment, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
   }
 });
 
