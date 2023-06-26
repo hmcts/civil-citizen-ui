@@ -46,7 +46,7 @@ export const app = express();
 new DraftStoreClient(Logger.getLogger('draftStoreClient')).enableFor(app);
 const redisStore = new RedisStore({
   client: app.locals.draftStoreClient,
-  prefix: 'citizen-ui:',
+  prefix: 'citizen-ui-session:',
 });
 //const protocol = config.get('services.draftStore.redis.tls') ? 'rediss://' : 'redis://';
 //const connectionString = `${protocol}:${config.get('services.draftStore.redis.key')}@${config.get('services.draftStore.redis.host')}:${config.get('services.draftStore.redis.port')}`;
