@@ -6,12 +6,12 @@ const buttons = {
 
 class ShareYouFinancialDetailsIntro {
 
-  open(claimRef) {
-    I.amOnPage('/case/' + claimRef + '/response/statement-of-means/intro');
+  async open(claimRef) {
+    await I.amOnPage('/case/' + claimRef + '/response/statement-of-means/intro');
   }
 
-  clickContinue() {
-    I.click(buttons.continue);
+  async clickContinue() {
+    await I.click(buttons.continue);
   }
 }
 

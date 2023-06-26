@@ -14,18 +14,18 @@ const buttons = {
 
 class CourtOrders {
 
-  clickYesButton(claimref) {
-    I.see('Are you paying money as a result of any court orders?', 'h1');
-    I.click(fields.yesButton);
-    I.fillField(fields.claimNumber, claimref);
-    I.fillField(fields.amountYouOwe, '1000');
-    I.fillField(fields.installment, '120');
-    I.click(buttons.saveAndContinue);
+  async clickYesButton(claimref) {
+    await I.see('Are you paying money as a result of any court orders?', 'h1');
+    await I.click(fields.yesButton);
+    await I.fillField(fields.claimNumber, claimref);
+    await I.fillField(fields.amountYouOwe, '1000');
+    await I.fillField(fields.installment, '120');
+    await I.click(buttons.saveAndContinue);
   }
-  clickNoButton() {
-    I.see('Are you paying money as a result of any court orders?', 'h1');
-    I.click(fields.noButton);
-    I.click(buttons.saveAndContinue);
+  async clickNoButton() {
+    await I.see('Are you paying money as a result of any court orders?', 'h1');
+    await I.click(fields.noButton);
+    await I.click(buttons.saveAndContinue);
   }
 }
 
