@@ -53,17 +53,6 @@ module.exports = {
     console.log('End of performCaseProgressedToSDO()');
   },
 
- /* performViewAndRespondToDefence: async (user, caseId) => {
-    console.log('This is inside performViewAndRespondToDefence : ' + caseId);
-    eventName = 'CLAIMANT_RESPONSE_SPEC';
-    const payload = claimantResponse.createClaimantIntendsToProceedResponse();
-    await apiRequest.setupTokens(user);
-    caseData = payload['caseDataUpdate'];
-    await assertSubmittedSpecEvent('JUDICIAL_REFERRAL');
-    await waitForFinishedBusinessProcess(caseId);
-    console.log('End of performViewAndRespondToDefence()');
-  },*/
-
   performCitizenResponse: async (user, caseId) => {
     console.log('This is inside performCitizenResponse : ' + caseId);
     eventName = 'DEFENDANT_RESPONSE_CUI';
