@@ -1037,10 +1037,10 @@
       "DRAFT_CLAIM_NEXT_STEPS": "Parhau gyda'r hawliad",
       "DRAFT_CLAIM_NUMBER": "Hawliad drafft",
       "MAKE_A_NEW_CLAIM": "Gwneud hawliad newydd am arian",
-      "NEXT": "Next",
+      "NEXT": "Nesaf",
       "NEXT_STEPS": "Y camau nesaf",
       "PAGE_TITLE": "Hawliadau a wnaed gennych neu yn eich erbyn",
-      "PREVIOUS": "Previous",
+      "PREVIOUS": "Blaenorol",
       "STATUS": {
         "ADMIT_PAY_BY_SET_DATE": "Rydych chi wedi derbyn yr hawliad yn ei gyfanrwydd ac wedi cynnig talu'r swm llawn erbyn {{paymentDate}}.",
         "ADMIT_PAY_BY_INSTALLMENTS": "Rydych wedi derbyn yr hawliad yn ei gyfanrwydd ac wedi cynnig talu'r swm llawn mewn rhandaliadau.",
