@@ -12,5 +12,6 @@ import './assets/js/select-toggle';
 import './assets/js/language-toggle';
 import { initAll } from 'govuk-frontend';
 import './modules/cookie/cookieConfig';
+import './assets/js/fileValidator.js';
 
 initAll();

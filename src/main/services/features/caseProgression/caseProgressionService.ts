@@ -142,12 +142,18 @@ const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSect
   formObj.dateDay = request['date-day'];
   formObj.dateMonth = request['date-month'];
   formObj.dateYear = request['date-year'];
-  formObj.fileUpload = request['file_upload'];
+  //TODO we should get the file from dm-store
+  if (request['fileUpload'] !== '') {
+    formObj.fileUpload = request['fileUpload'];
+  }
   return formObj;
 };
 
 const bindRequestToFileOnlySectionObj = (request: any): FileOnlySection => {
   const formObj: FileOnlySection = new FileOnlySection();
-  formObj.fileUpload = request['file_upload'];
+  //TODO we should get the file from dm-store
+  if (request['fileUpload'] !== '') {
+    formObj.fileUpload = request['fileUpload'];
+  }
   return formObj;
 };
