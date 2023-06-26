@@ -8,9 +8,9 @@ const fields ={
 
 class DqExpert {
 
-  chooseExpert() {
-    I.see('Using an expert', 'h1');
-    I.click(fields.continueWithExpert);
+  async chooseExpert() {
+    await I.see('Using an expert', 'h1');
+    await I.click(fields.continueWithExpert);
   }
 }
 

@@ -12,21 +12,21 @@ const buttons = {
 };
 
 class LoginPage  {
-  open () {
-    I.amOnPage('/');
+  async open () {
+    await I.amOnPage('/');
   }
 
-  acceptCookies () {
-    I.click(buttons.acceptCookies);
-    I.click(buttons.hideMessage);
+  async acceptCookies () {
+    await I.click(buttons.acceptCookies);
+    await I.click(buttons.hideMessage);
   }
 
-  login (email, password) {
-    I.waitForVisible(fields.username);
-    I.fillField(fields.username, email);
-    I.fillField(fields.password, password);
-    I.click(buttons.submit);
-    I.seeInCurrentUrl('/dashboard');
+  async login (email, password) {
+    await I.waitForVisible(fields.username);
+    await I.fillField(fields.username, email);
+    await I.fillField(fields.password, password);
+    await I.click(buttons.submit);
+    await I.seeInCurrentUrl('/dashboard');
   }
 }
 
