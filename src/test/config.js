@@ -87,6 +87,7 @@ module.exports = {
     partAdmitHaventPaidPartiallyWantsToPayImmediately: 'PART_ADMIT_PAY_IMMEDIATELY',
     partAdmitWithPartPaymentOnSpecificDate: 'PART_ADMIT_PAY_BY_SET_DATE',
     partAdmitWithPartPaymentAsPerInstallmentPlan: 'PART_ADMIT_PAY_BY_INSTALLMENTS',
+    rejectAll: 'REJECT_ALL',
   },
   claimState: {
     PROCEEDS_IN_HERITAGE_SYSTEM: 'PROCEEDS_IN_HERITAGE_SYSTEM',

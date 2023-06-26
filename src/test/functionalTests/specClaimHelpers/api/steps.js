@@ -53,7 +53,7 @@ module.exports = {
     console.log('End of performCaseProgressedToSDO()');
   },
 
-  performViewAndRespondToDefence: async (user, caseId) => {
+ /* performViewAndRespondToDefence: async (user, caseId) => {
     console.log('This is inside performViewAndRespondToDefence : ' + caseId);
     eventName = 'CLAIMANT_RESPONSE_SPEC';
     const payload = claimantResponse.createClaimantIntendsToProceedResponse();
@@ -62,7 +62,7 @@ module.exports = {
     await assertSubmittedSpecEvent('JUDICIAL_REFERRAL');
     await waitForFinishedBusinessProcess(caseId);
     console.log('End of performViewAndRespondToDefence()');
-  },
+  },*/
 
   performCitizenResponse: async (user, caseId) => {
     console.log('This is inside performCitizenResponse : ' + caseId);
@@ -123,6 +123,8 @@ module.exports = {
       responsePayload = partAdmitClaimantResponse.partAdmitWithPartPaymentOnSpecificDateClaimantWantsToAcceptRepaymentPlanWithFixedCosts();
     } else if (defenceType === config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlan) {
       responsePayload = partAdmitClaimantResponse.partAdmitWithPartPaymentAsPerPlanClaimantWantsToAcceptRepaymentPlanWithoutFixedCosts();
+    } else if (defenceType === config.defenceType.rejectAll) {
+      responsePayload = claimantResponse.createClaimantIntendsToProceedResponse();
     }
     eventName = responsePayload['event'];
     caseData = responsePayload['caseData'];

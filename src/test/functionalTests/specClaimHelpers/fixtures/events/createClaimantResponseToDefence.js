@@ -2,7 +2,7 @@ module.exports = {
   createClaimantIntendsToProceedResponse: () => {
     const claimantResponseData = {
       event: 'CLAIMANT_RESPONSE_SPEC',
-      caseDataUpdate: {
+      caseData: {
         applicant1: {
           partyID: 'df27d531-4a46-4a',
           type: 'COMPANY',
@@ -106,13 +106,13 @@ module.exports = {
           expertReportsSent: null,
           jointExpertSuitable: null,
           details: [
-            
+
           ],
         },
         applicant1DQWitnesses: {
           witnessesToAppear: 'No',
           details: [
-            
+
           ],
         },
         applicant1DQLanguage: {
@@ -127,7 +127,7 @@ module.exports = {
           unavailableDatesRequired: 'No',
           hearingLength: null,
           unavailableDates: [
-            
+
           ],
         },
         applicant1DQRequestedCourt: {
@@ -157,7 +157,7 @@ module.exports = {
           supportRequirements: 'No',
           supportRequirementsAdditional: null,
           requirements: [
-            
+
           ],
         },
         applicant1DQVulnerabilityQuestions: {

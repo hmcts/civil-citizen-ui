@@ -9,7 +9,7 @@ Feature('Response with RejectAll');
 Before(async ({api}) => {
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef);
-  await api.performViewAndRespondToDefence(config.applicantSolicitorUser, claimRef);
+  await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll,'JUDICIAL_REFERRAL');
   await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef);
   await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef);
   if (claimRef) {
