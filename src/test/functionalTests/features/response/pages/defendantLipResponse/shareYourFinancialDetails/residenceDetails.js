@@ -13,35 +13,35 @@ const buttons = {
 
 class ResidenceDetails {
 
-  selectResidenceType(residenceType) {
-    I.see('Where do you live?', 'h1');
+  async selectResidenceType(residenceType) {
+    await I.see('Where do you live?', 'h1');
     switch (residenceType){
       case 'ownHome':{
-        I.click(fields.ownHome);
+        await I.click(fields.ownHome);
         break;
       }
       case 'jointHome':{
-        I.click(fields.jointHome);
+        await I.click(fields.jointHome);
         break;
       }
       case 'privateRental':{
-        I.click(fields.privateRental);
+        await I.click(fields.privateRental);
         break;
       }
       case 'councilHouse':{
-        I.click(fields.councilHouse);
+        await I.click(fields.councilHouse);
         break;
       }
       case 'other':{
-        I.click(fields.other);
+        await I.click(fields.other);
         break;
       }
       default:{
-        I.click(fields.ownHome);
+        await I.click(fields.ownHome);
         break;
       }
     }
-    I.click(buttons.continue);
+    await I.click(buttons.continue);
   }
 }
 
