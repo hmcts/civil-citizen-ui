@@ -38,7 +38,6 @@ const redisClient = createClient({
 redisClient.connect().catch(console.error);*/
 // Initialize store.
 
-
 const env = process.env.NODE_ENV || 'development';
 //const productionMode = env === 'production';
 const developmentMode = env === 'development';
