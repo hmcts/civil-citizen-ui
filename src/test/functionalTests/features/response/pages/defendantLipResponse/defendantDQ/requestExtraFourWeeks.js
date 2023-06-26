@@ -8,10 +8,10 @@ const fields ={
 
 class RequestExtraFourWeeks {
 
-  SelectExtraFourWeeksToSettle() {
-    I.see('Do you want an extra 4 weeks to try to settle the claim?', 'h1');
-    I.click(fields.noButton);
-    I.click('Save and continue');
+  async SelectExtraFourWeeksToSettle() {
+    await I.see('Do you want an extra 4 weeks to try to settle the claim?', 'h1');
+    await I.click(fields.noButton);
+    await I.click('Save and continue');
   }
 }
 

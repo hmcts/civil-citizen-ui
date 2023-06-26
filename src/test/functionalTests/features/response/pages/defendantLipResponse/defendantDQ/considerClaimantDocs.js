@@ -9,11 +9,11 @@ const fields ={
 
 class ConsiderClaimantDocs {
 
-  SelectConsiderClaimantDocs() {
-    I.see('Are there any documents the other party has that you want the court to consider?', 'h1');
-    I.click(fields.yesButton);
-    I.fillField(fields.text,'Test Reason');
-    I.click('Save and continue');
+  async SelectConsiderClaimantDocs() {
+    await I.see('Are there any documents the other party has that you want the court to consider?', 'h1');
+    await I.click(fields.yesButton);
+    await I.fillField(fields.text,'Test Reason');
+    await I.click('Save and continue');
   }
 }
 

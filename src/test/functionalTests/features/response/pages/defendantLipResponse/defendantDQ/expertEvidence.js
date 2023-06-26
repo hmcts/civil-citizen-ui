@@ -8,10 +8,10 @@ const fields ={
 
 class ExpertEvidence {
 
-  SelectOptionForExpertEvidence() {
-    I.see('Do you want to use expert evidence?', 'h1');
-    I.click(fields.yesButton);
-    I.click('Save and continue');
+  async SelectOptionForExpertEvidence() {
+    await I.see('Do you want to use expert evidence?', 'h1');
+    await I.click(fields.yesButton);
+    await I.click('Save and continue');
   }
 }
 

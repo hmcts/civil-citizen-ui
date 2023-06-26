@@ -8,10 +8,10 @@ const fields ={
 
 class SentExpertReports {
 
-  SentExpertReports() {
-    I.see('Have you already sent expert reports to other parties?', 'h1');
-    I.click(fields.noButton);
-    I.click('Save and continue');
+  async SentExpertReports() {
+    await I.see('Have you already sent expert reports to other parties?', 'h1');
+    await I.click(fields.noButton);
+    await I.click('Save and continue');
   }
 }
 

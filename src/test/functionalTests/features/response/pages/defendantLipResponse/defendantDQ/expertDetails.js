@@ -13,16 +13,16 @@ const fields ={
 
 class ExpertDetails {
 
-  EnterExpertDetails() {
-    I.see('Enter the expert’s details', 'h1');
-    I.fillField(fields.firstName, 'Test ExpertFName');
-    I.fillField(fields.lastName, 'Test ExpertLName');
-    I.fillField(fields.emailAddress, 'test@test.com');
-    I.fillField(fields.phoneNumber, '09898989898');
-    I.fillField(fields.fieldOfExpertise, 'Test');
-    I.fillField(fields.reason, 'Terst Reason');
-    I.fillField(fields.estimatedCost, '500');
-    I.click('Save and continue');
+  async EnterExpertDetails() {
+    await I.see('Enter the expert’s details', 'h1');
+    await I.fillField(fields.firstName, 'Test ExpertFName');
+    await I.fillField(fields.lastName, 'Test ExpertLName');
+    await I.fillField(fields.emailAddress, 'test@test.com');
+    await I.fillField(fields.phoneNumber, '09898989898');
+    await I.fillField(fields.fieldOfExpertise, 'Test');
+    await I.fillField(fields.reason, 'Terst Reason');
+    await I.fillField(fields.estimatedCost, '500');
+    await I.click('Save and continue');
   }
 }
 

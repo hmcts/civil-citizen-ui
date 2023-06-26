@@ -17,25 +17,25 @@ const fields = {
 };
 
 class EnterCompanyDetails {
-  enterCompanyDetails () {
-    I.click('Confirm your details');
-    I.fillField(fields.contactPerson, 'TestPerson');
-    I.fillField(fields.addressLine1, 'Test AddressLine1');
-    I.fillField(fields.addressLine2, 'Test AddressLine2');
-    I.fillField(fields.addressLine3, 'Test AddressLine3');
-    I.fillField(fields.city, 'Test City');
-    I.fillField(fields.postcode, 'IG6 1JD');
+  async enterCompanyDetails () {
+    await I.click('Confirm your details');
+    await I.fillField(fields.contactPerson, 'TestPerson');
+    await I.fillField(fields.addressLine1, 'Test AddressLine1');
+    await I.fillField(fields.addressLine2, 'Test AddressLine2');
+    await I.fillField(fields.addressLine3, 'Test AddressLine3');
+    await I.fillField(fields.city, 'Test City');
+    await I.fillField(fields.postcode, 'IG6 1JD');
   }
 
-  enterCorrespondenceAddressManually () {
-    I.click(fields.correspondenceAddress_yes);
-    I.click('Enter address manually');
-    I.fillField(fields.correspondenceAddressLine1, 'Flat 10');
-    I.fillField(fields.correspondenceAddressLine2, '823 Knighton Court');
-    I.fillField(fields.correspondenceAddressLine3, 'Cranbrook Road');
-    I.fillField(fields.correspondenceCity, 'Barkingside');
-    I.fillField(fields.correspondencePostCode, 'IG2 6QU');
-    I.click('Save and continue');
+  async enterCorrespondenceAddressManually () {
+    await I.click(fields.correspondenceAddress_yes);
+    await I.click('Enter address manually');
+    await I.fillField(fields.correspondenceAddressLine1, 'Flat 10');
+    await I.fillField(fields.correspondenceAddressLine2, '823 Knighton Court');
+    await I.fillField(fields.correspondenceAddressLine3, 'Cranbrook Road');
+    await I.fillField(fields.correspondenceCity, 'Barkingside');
+    await I.fillField(fields.correspondencePostCode, 'IG2 6QU');
+    await I.click('Save and continue');
   }
 }
 
