@@ -24,7 +24,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @regression', async () => {
+Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @regression', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -37,9 +37,14 @@ Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @regression'
   await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
+  if (['preview', 'demo'  ].includes(config.runningEnv)) {
+    await api.enterBreathingSpace(config.applicantSolicitorUser);
+    await api.liftBreathingSpace(config.applicantSolicitorUser);
+    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitAmountPaid, config.claimState.JUDICIAL_REFERRAL);
+  }
 });
 
-Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @partAdmit @nightly', async () => {
+Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @partAdmit @nightly', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -53,9 +58,16 @@ Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @
   await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
+  if (['preview', 'demo'  ].includes(config.runningEnv)) {
+    await api.enterBreathingSpace(config.applicantSolicitorUser);
+    await api.liftBreathingSpace(config.applicantSolicitorUser);
+    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitHaventPaidPartiallyWantsToPayImmediately, config.claimState.IN_MEDIATION);
+    //mediation with claimant lr to be replaced with admin after bug CIV-9427
+    await api.mediationSuccessful(config.applicantSolicitorUser);
+  }
 });
 
-Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit @regression', async () => {
+Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit @regression', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -71,9 +83,15 @@ Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit @regre
   await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
+  if (['preview', 'demo'  ].includes(config.runningEnv)) {
+    await api.enterBreathingSpace(config.applicantSolicitorUser);
+    await api.liftBreathingSpace(config.applicantSolicitorUser);
+    //State should be moved to offline but there is a bug at the moment. CIV-9430
+    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitWithPartPaymentOnSpecificDate, config.claimState.AWAITING_APPLICANT_INTENTION);
+  }
 });
 
-Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit @nightly', async () => {
+Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit @nightly', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -89,4 +107,10 @@ Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit @nigh
   await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
+  if (['preview', 'demo'  ].includes(config.runningEnv)) {
+    await api.enterBreathingSpace(config.applicantSolicitorUser);
+    await api.liftBreathingSpace(config.applicantSolicitorUser);
+    //State should be moved to offline but there is a bug at the moment. CIV-9430
+    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlan, config.claimState.AWAITING_APPLICANT_INTENTION);
+  }
 });
