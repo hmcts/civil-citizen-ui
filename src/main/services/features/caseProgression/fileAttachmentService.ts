@@ -21,13 +21,18 @@ class CaseDocumentsAttachmentResult {
 }
 
 function getDocument(uploadDocumentTypes: UploadDocumentTypes): Document {
-  return Object.values(uploadDocumentTypes).find(value => value.type === Document);
+  let document = null;
+  for (const [key, value] of Object.entries(uploadDocumentTypes)) {
+    if (key === 'caseDocument' && value.type === Document) {
+      document = value;
+    }
+  }
+  return document;
 }
 
 function getDocuments(uploadDocuments: UploadDocumentTypes[][]): Map<Document, UploadDocumentTypes> {
   const documents: Map<Document, UploadDocumentTypes> = new Map();
   for (const uploadDocumentTypes of uploadDocuments) {
-    if (uploadDocumentTypes === undefined) continue;
     uploadDocumentTypes.forEach(elem => documents.set(getDocument(elem), elem));
   }
   return documents;
@@ -60,6 +65,7 @@ function remove(element: UploadDocumentTypes, collection: UploadDocumentTypes[])
 
 function removeFrom(elementToRemove: UploadDocumentTypes, uploadDocumentsToProcess: UploadDocumentTypes[][]) {
   for (const collection of uploadDocumentsToProcess) {
+    // if (collection === undefined) continue;
     const removed = remove(elementToRemove, collection);
     if (removed) {
       return;
@@ -67,9 +73,17 @@ function removeFrom(elementToRemove: UploadDocumentTypes, uploadDocumentsToProce
   }
 }
 
+function getUploadDocumentsToProcess(uploadDocuments: UploadDocuments) {
+  return [uploadDocuments.expert,
+    uploadDocuments.disclosure,
+    uploadDocuments.trial,
+    uploadDocuments.witness,
+  ].filter(elem => elem);
+}
+
 export const attachCaseDocuments = async (claimId: string, claimantOrDefendant: ClaimantOrDefendant, caseProgression: CaseProgression, req: Request): Promise<CaseDocumentsAttachmentResult> => {
   const uploadDocuments: UploadDocuments = claimantOrDefendant === ClaimantOrDefendant.DEFENDANT ? caseProgression.defendantUploadDocuments : caseProgression.claimantUploadDocuments;
-  const uploadDocumentsToProcess: UploadDocumentTypes[][] = [uploadDocuments.expert, uploadDocuments.disclosure, uploadDocuments.trial, uploadDocuments.witness];
+  const uploadDocumentsToProcess: UploadDocumentTypes[][] = getUploadDocumentsToProcess(uploadDocuments);
   const documentsToAttach: Map<Document, UploadDocumentTypes> = getDocuments(uploadDocumentsToProcess);
   const attachedDocuments = await civilServiceClient.attachCaseDocuments(claimId, Array.from(documentsToAttach.keys()), <AppRequest>req);
   const errors: string[] = [];
