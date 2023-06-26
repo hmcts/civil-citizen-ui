@@ -1,8 +1,10 @@
 const config = require('../../../config');
 const deepEqualInAnyOrder = require('deep-equal-in-any-order');
 const chai = require('chai');
-const breathingSpace = require('../fixtures/events/enterBreathingSpace.js');
+const breathingSpace = require('../fixtures/events/breathingSpace.js');
+const mediation = require('../fixtures/events/mediation.js');
 const admitAllClaimantResponse = require('../fixtures/events/admitAllClaimantResponse.js');
+const partAdmitClaimantResponse = require('../fixtures/events/partAdmitClaimantResponse.js');
 
 chai.use(deepEqualInAnyOrder);
 chai.config.truncateThreshold = 0;
@@ -59,17 +61,25 @@ module.exports = {
     return caseId;
   },
 
-  viewAndRespondToDefence: async (user, defenceType = config.defenceType.admitAllPayBySetDate)=> {
+  viewAndRespondToDefence: async (user, defenceType = config.defenceType.admitAllPayBySetDate, expectedState)=> {
     let responsePayload;
     if (defenceType === config.defenceType.admitAllPayBySetDate) {
       responsePayload = admitAllClaimantResponse.doNotAcceptAskToPayBySetDate();
     } else if (defenceType === config.defenceType.admitAllPayByInstallment) {
       responsePayload = admitAllClaimantResponse.doNotAcceptAskToPayByInstallment();
+    } else if (defenceType === config.defenceType.partAdmitAmountPaid) {
+      responsePayload = partAdmitClaimantResponse.partAdmitAmountPaidButClaimantWantsToProceed();
+    } else if (defenceType === config.defenceType.partAdmitHaventPaidPartiallyWantsToPayImmediately) {
+      responsePayload = partAdmitClaimantResponse.partAdmitHaventPaidPartiallyWantsToPayImmediatelyButClaimantWantsToProceedWithMediation();
+    } else if (defenceType === config.defenceType.partAdmitWithPartPaymentOnSpecificDate) {
+      responsePayload = partAdmitClaimantResponse.partAdmitWithPartPaymentOnSpecificDateClaimantWantsToAcceptRepaymentPlanWithFixedCosts();
+    } else if (defenceType === config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlan) {
+      responsePayload = partAdmitClaimantResponse.partAdmitWithPartPaymentAsPerPlanClaimantWantsToAcceptRepaymentPlanWithoutFixedCosts();
     }
     eventName = responsePayload['event'];
     caseData = responsePayload['caseData'];
     await apiRequest.setupTokens(user);
-    await assertSubmittedSpecEvent();
+    await assertSubmittedSpecEvent(expectedState);
     await waitForFinishedBusinessProcess(caseId);
     console.log('End of viewAndRespondToDefence()');
   },
@@ -82,6 +92,26 @@ module.exports = {
     await assertSubmittedSpecEvent();
     await waitForFinishedBusinessProcess(caseId);
     console.log('End of enterBreathingSpace()');
+  },
+
+  mediationSuccessful: async (user)=> {
+    const mediationSuccessfulPayload = mediation.mediationSuccessfulPayload();
+    eventName = mediationSuccessfulPayload['event'];
+    caseData = mediationSuccessfulPayload['caseData'];
+    await apiRequest.setupTokens(user);
+    await assertSubmittedSpecEvent(config.claimState.CASE_STAYED);
+    await waitForFinishedBusinessProcess(caseId);
+    console.log('End of mediationSuccessful()');
+  },
+
+  mediationUnsuccessful: async (user)=> {
+    const mediationUnsuccessfulPayload = mediation.mediationUnSuccessfulPayload();
+    eventName = mediationUnsuccessfulPayload['event'];
+    caseData = mediationUnsuccessfulPayload['caseData'];
+    await apiRequest.setupTokens(user);
+    await assertSubmittedSpecEvent(config.claimState.JUDICIAL_REFERRAL);
+    await waitForFinishedBusinessProcess(caseId);
+    console.log('End of mediationUnsuccessful()');
   },
 
   liftBreathingSpace: async (user) => {
