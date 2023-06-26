@@ -52,7 +52,7 @@ export const buildDocumentsReferred = (section: TypeOfDocumentSection = null, in
   return new UploadDocumentsSectionBuilder()
     .addTitle('PAGES.UPLOAD_DOCUMENTS.WITNESS.DOCUMENT')
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.TYPE_OF_DOCUMENT', '', 'PAGES.UPLOAD_DOCUMENTS.WITNESS.TYPE_OF_DOCUMENT_HINT', documentsReferred, 'typeOfDocument', section?.typeOfDocument, index, form?.errorFor(`${errorFieldNamePrefix}[typeOfDocument]`, documentsReferred))
-    .addDateArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.DOCUMENT_DATE', form?.errorFor(`${errorFieldNamePrefix}[dateDay]`, documentsReferred), form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`, documentsReferred),form?.errorFor(`${errorFieldNamePrefix}[dateYear]`, documentsReferred),form?.errorFor(`${errorFieldNamePrefix}[date]`, documentsReferred), 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', documentsReferred, 'date', section?.dateDay.toString(), section?.dateMonth.toString(), section?.dateYear.toString(), index)
+    .addDateArray('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', form?.errorFor(`${errorFieldNamePrefix}[dateDay]`, documentsReferred), form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`, documentsReferred),form?.errorFor(`${errorFieldNamePrefix}[dateYear]`, documentsReferred),form?.errorFor(`${errorFieldNamePrefix}[date]`, documentsReferred), 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', documentsReferred, 'date', section?.dateDay.toString(), section?.dateMonth.toString(), section?.dateYear.toString(), index)
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', documentsReferred, fileUpload, index)
     .addRemoveSectionButton(form?.model.documentsReferred?.length > 1 || false)
     .build();
