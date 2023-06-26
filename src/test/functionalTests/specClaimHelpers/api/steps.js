@@ -1,6 +1,8 @@
 const config = require('../../../config');
 const deepEqualInAnyOrder = require('deep-equal-in-any-order');
 const chai = require('chai');
+const breathingSpace = require('../fixtures/events/enterBreathingSpace.js');
+const admitAllClaimantResponse = require('../fixtures/events/admitAllClaimantResponse.js');
 
 chai.use(deepEqualInAnyOrder);
 chai.config.truncateThreshold = 0;
@@ -24,7 +26,7 @@ const PBAv3Toggle = 'pba-version-3-ways-to-pay';
 module.exports = {
 
   createSpecifiedClaim: async (user, multipartyScenario) => {
-    console.log(' This is inside createSpecifiedClaim');
+    console.log(' Creating specified claim');
     eventName = 'CREATE_CLAIM_SPEC';
     caseId = null;
     caseData = {};
@@ -55,6 +57,41 @@ module.exports = {
     //field is deleted in about to submit callback
     deleteCaseFields('applicantSolicitor1CheckEmail');
     return caseId;
+  },
+
+  viewAndRespondToDefence: async (user, defenceType = config.defenceType.admitAllPayBySetDate)=> {
+    let responsePayload;
+    if (defenceType === config.defenceType.admitAllPayBySetDate) {
+      responsePayload = admitAllClaimantResponse.doNotAcceptAskToPayBySetDate();
+    } else if (defenceType === config.defenceType.admitAllPayByInstallment) {
+      responsePayload = admitAllClaimantResponse.doNotAcceptAskToPayByInstallment();
+    }
+    eventName = responsePayload['event'];
+    caseData = responsePayload['caseData'];
+    await apiRequest.setupTokens(user);
+    await assertSubmittedSpecEvent();
+    await waitForFinishedBusinessProcess(caseId);
+    console.log('End of viewAndRespondToDefence()');
+  },
+
+  enterBreathingSpace: async (user)=> {
+    const enterBreathingSpacePayload = breathingSpace.enterBreathingSpacePayload();
+    eventName = enterBreathingSpacePayload['event'];
+    caseData = enterBreathingSpacePayload['caseData'];
+    await apiRequest.setupTokens(user);
+    await assertSubmittedSpecEvent();
+    await waitForFinishedBusinessProcess(caseId);
+    console.log('End of enterBreathingSpace()');
+  },
+
+  liftBreathingSpace: async (user) => {
+    const liftBreathingSpacePayload = breathingSpace.liftBreathingSpacePayload();
+    eventName = liftBreathingSpacePayload['event'];
+    caseData = liftBreathingSpacePayload['caseData'];
+    await apiRequest.setupTokens(user);
+    await assertSubmittedSpecEvent();
+    await waitForFinishedBusinessProcess(caseId);
+    console.log('End of liftBreathingSpace()');
   },
 
   getCaseRef: async () => {
@@ -177,7 +214,9 @@ const assertSubmittedSpecEvent = async (expectedState, submittedCallbackResponse
   const response = await apiRequest.submitEvent(eventName, caseData, caseId);
   const responseBody = await response.json();
   assert.equal(response.status, 201);
-  assert.equal(responseBody.state, expectedState);
+  if (expectedState) {
+    assert.equal(responseBody.state, expectedState);
+  }
   if (hasSubmittedCallback && submittedCallbackResponseContains) {
     assert.equal(responseBody.callback_response_status_code, 200);
     assert.include(responseBody.after_submit_callback_response.confirmation_header, submittedCallbackResponseContains.header);
