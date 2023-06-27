@@ -282,14 +282,50 @@
     "caseProgression": {
       "claimantUploadDocuments":{
           "trial": [
-            {"documentType": "CASE_SUMMARY", "selected": true},
-            {"documentType": "DOCUMENTARY", "selected": true}
+            {"documentType": "CASE_SUMMARY",
+              "caseDocument": {
+                "documentUpload": {
+                  "document_url": "1234",
+                  "document_filename": "testfile.txt",
+                  "document_binary_url":"1244-binary"
+                },
+                "createdDatetime": "2022-02-20T13:20"
+              },
+              "selected": true},
+            {"documentType": "DOCUMENTARY",
+              "caseDocument": {
+                "documentUpload": {
+                  "document_url": "1234",
+                  "document_filename": "testfile.txt",
+                  "document_binary_url":"1244-binary"
+                },
+                "createdDatetime": "2022-02-20T13:20"
+              },
+              "selected": true}
           ]
       },
       "defendantUploadDocuments":{
           "trial": [
-            {"documentType": "CASE_SUMMARY", "selected": true},
-            {"documentType": "DOCUMENTARY", "selected": true}
+            {"documentType": "CASE_SUMMARY",
+              "caseDocument": {
+                "documentUpload": {
+                  "document_url": "1234",
+                  "document_filename": "testfile.txt",
+                  "document_binary_binary":"1244-binary"
+                },
+                "createdDatetime": "2022-02-20T13:20"
+              },
+              "selected": true},
+            {"documentType": "DOCUMENTARY",
+              "caseDocument": {
+                "documentUpload": {
+                  "document_url": "1234",
+                  "document_filename": "testfile.txt",
+                  "document_binary_url":"1244-binary"
+                },
+                "createdDatetime": "2022-02-20T13:20"
+              },
+              "selected": true}
           ]
       }
     }
