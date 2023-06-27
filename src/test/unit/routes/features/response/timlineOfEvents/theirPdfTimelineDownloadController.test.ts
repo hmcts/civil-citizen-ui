@@ -9,6 +9,7 @@ import * as documentUtils from '../../../../../../main/common/utils/downloadUtil
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/app/client/dmStoreClient');
+jest.mock('connect-redis');
 
 describe('Their PDF timeline controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

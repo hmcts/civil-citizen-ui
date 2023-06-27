@@ -12,6 +12,7 @@ import {t} from 'i18next';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('connect-redis');
 
 describe('Claimant Over 18 Eligibility Controller', () => {
   // TODO: remove this once paths become publicly available as mocking the response token will not be needed

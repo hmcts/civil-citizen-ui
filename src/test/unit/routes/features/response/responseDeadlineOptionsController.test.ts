@@ -18,6 +18,7 @@ import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('connect-redis');
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockSaveCaseData = saveDraftClaim as jest.Mock;

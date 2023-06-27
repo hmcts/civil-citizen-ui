@@ -14,6 +14,7 @@ import {GenericForm} from '../../../../../../../../main/common/form/models/gener
 
 jest.mock('../../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('connect-redis');
 
 const OWED = true;
 const AMOUNT_OWED = 22.2;

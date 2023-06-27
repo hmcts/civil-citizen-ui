@@ -17,6 +17,7 @@ import {GenericForm} from '../../../../../../../main/common/form/models/genericF
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('connect-redis');
 
 describe('dependent teenagers service test', () => {
   describe('saveFormToDraftStore', () => {

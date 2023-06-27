@@ -18,6 +18,7 @@ import {Mediation} from '../../../../../main/common/models/mediation/mediation';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('connect-redis');
 
 const applicantTypeMock = require('./applicantTypeMock.json');
 

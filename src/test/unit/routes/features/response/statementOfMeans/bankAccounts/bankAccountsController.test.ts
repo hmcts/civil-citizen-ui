@@ -8,6 +8,7 @@ import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('connect-redis');
 
 describe('Bank Accounts and Savings', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

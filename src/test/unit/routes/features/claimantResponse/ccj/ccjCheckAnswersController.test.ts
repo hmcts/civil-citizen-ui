@@ -13,6 +13,7 @@ const data = require('../../../../../utils/mocks/defendantClaimsMock.json');
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('connect-redis');
 jest.mock('../../../../../../main/services/features/claimantResponse/ccj/ccjCheckAnswersService');
 
 describe('Response - Check answers', () => {

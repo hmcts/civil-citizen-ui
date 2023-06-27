@@ -11,6 +11,7 @@ import {ClaimantResponse} from '../../../../../../main/common/models/claimantRes
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('connect-redis');
 
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 

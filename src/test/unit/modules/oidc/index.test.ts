@@ -22,6 +22,7 @@ const signOutUrl = idamServiceUrl.replace('/login', '/o/endSession');
 const userDetails = {accessToken: citizenRoleToken, email:'dfkdh', id: 'jfkdljfd', familyName:'masslover', givenName:'tatiana', roles:['citizen']};
 
 jest.mock('../../../../main/app/auth/user/oidc');
+jest.mock('connect-redis');
 
 describe('OIDC middleware', () => {
   describe('Sign out', () => {

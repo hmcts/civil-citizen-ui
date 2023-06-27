@@ -20,6 +20,7 @@ const claimOrganisation: string = JSON.stringify(claimOrganisationMock);
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('connect-redis');
 
 const mockLogger = {
   error: jest.fn().mockImplementation((message: string) => message),

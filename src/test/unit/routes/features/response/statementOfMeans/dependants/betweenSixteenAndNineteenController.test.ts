@@ -15,6 +15,7 @@ import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService');
+jest.mock('connect-redis');
 const mockHasDisabledChildren = hasDisabledChildren as jest.Mock;
 
 const EXPECTED_TEXT = 'Children aged 16 to 19 living with you';

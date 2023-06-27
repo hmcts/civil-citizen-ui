@@ -16,6 +16,7 @@ import {PartyDetails} from 'form/models/partyDetails';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('connect-redis');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;

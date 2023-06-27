@@ -12,6 +12,7 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('connect-redis');
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 mockedAppRequest.params = {id: '1'};

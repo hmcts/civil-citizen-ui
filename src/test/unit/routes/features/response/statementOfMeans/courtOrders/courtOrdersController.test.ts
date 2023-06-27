@@ -9,6 +9,7 @@ const {app} = require('../../../../../../../main/app');
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('connect-redis');
 
 const respondentCourtOrdersUrl = CITIZEN_COURT_ORDERS_URL.replace(':id', 'aaa');
 const mockDraftStore = {

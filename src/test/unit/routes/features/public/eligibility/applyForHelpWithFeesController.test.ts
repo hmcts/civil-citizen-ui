@@ -9,6 +9,7 @@ import {
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('connect-redis');
 
 describe('Some useful information about Help with Fees Controller', () => {
   // TODO: remove this once paths become publicly available as mocking the response token will not be needed

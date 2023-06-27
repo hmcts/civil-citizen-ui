@@ -20,6 +20,7 @@ import {
 import {CCJRequest} from 'models/claimantResponse/ccj/ccjRequest';
 
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('connect-redis');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({

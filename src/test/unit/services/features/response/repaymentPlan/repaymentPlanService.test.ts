@@ -17,6 +17,7 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('connect-redis');
 
 const TOTAL_CLAIM_AMOUNT = 1000;
 const PAYMENT_AMOUNT = 100;

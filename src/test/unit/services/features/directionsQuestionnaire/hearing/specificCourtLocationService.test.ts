@@ -19,6 +19,7 @@ const civilServiceUrl = config.get<string>('services.civilService.url');
 jest.mock('modules/draft-store');
 jest.mock('modules/draft-store/courtLocationCache');
 jest.mock('services/features/directionsQuestionnaire/directionQuestionnaireService');
+jest.mock('connect-redis');
 
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;

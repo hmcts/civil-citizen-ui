@@ -19,6 +19,7 @@ import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('connect-redis');
 
 describe('rejectAllOfClaim', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

@@ -8,6 +8,7 @@ import { mockCivilClaim, mockCivilClaimOptionNo, mockRedisFailure } from '../../
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('connect-redis');
 
 describe('SevereDisability', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

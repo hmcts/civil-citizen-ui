@@ -9,6 +9,7 @@ import {HowMuchDoYouOwe} from '../../../../../../../main/common/form/models/admi
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('connect-redis');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 
 const AMOUNT = 12.9;

@@ -7,6 +7,7 @@ import {TOTAL_AMOUNT_CALCULATION_URL} from '../../../../main/routes/urls';
 jest.mock('.../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store');
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
+jest.mock('connect-redis');
 
 describe('Monthly income expense calculator controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

@@ -12,6 +12,7 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('connect-redis');
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 describe('why do you disagree service', () => {
   describe('get text form', () => {

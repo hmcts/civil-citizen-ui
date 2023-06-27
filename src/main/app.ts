@@ -18,25 +18,10 @@ import routes from './routes/routes';
 import {setLanguage} from 'modules/i18n/languageService';
 import {isServiceShuttered} from './app/auth/launchdarkly/launchDarklyClient';
 
-/*const Redis = require('ioredis');
-const connectRedis = require('connect-redis');
-*/
-
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
 
-//const RedisStore = connectRedis(session);
-//const MemoryStore = require('memorystore')(session);
-
 import RedisStore from 'connect-redis';
-/*import {createClient} from 'redis';
-const protocol = config.get('services.draftStore.redis.tls') ? 'rediss://' : 'redis://';
-const connectionString = `${protocol}:${config.get('services.draftStore.redis.key')}@${config.get('services.draftStore.redis.host')}:${config.get('services.draftStore.redis.port')}`;
-const redisClient = createClient({
-  url: connectionString,
-});
-redisClient.connect().catch(console.error);*/
-// Initialize store.
 
 const env = process.env.NODE_ENV || 'development';
 const productionMode = env === 'production';
@@ -56,22 +41,16 @@ new PropertiesVolume().enableFor(app);
 logger.info('Creating new draftStoreClient');
 new DraftStoreClient(Logger.getLogger('draftStoreClient')).enableFor(app);
 app.enable('trust proxy');
-
 const redisStore = new RedisStore({
   client: app.locals.draftStoreClient,
   prefix: 'citizen-ui-session:',
 });
-//const protocol = config.get('services.draftStore.redis.tls') ? 'rediss://' : 'redis://';
-//const connectionString = `${protocol}:${config.get('services.draftStore.redis.key')}@${config.get('services.draftStore.redis.host')}:${config.get('services.draftStore.redis.port')}`;
+
 logger.info('Adding session configuration');
-//const redisClient = new Redis(connectionString);
 
 app.use(session({
   name: 'citizen-ui-session',
   store: redisStore,
-  /*store: new MemoryStore({
-    checkPeriod: 86400000, // prune expired entries every 24h
-  }),*/
   secret: 'local',
   resave: false,
   saveUninitialized: false,

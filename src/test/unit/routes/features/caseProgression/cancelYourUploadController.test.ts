@@ -13,6 +13,7 @@ import {t} from 'i18next';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('connect-redis');
 
 const claim = require('../../../../utils/mocks/civilClaimResponseMock.json');
 const claimId = claim.id;

@@ -11,6 +11,7 @@ import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('connect-redis');
 
 describe('Single Defendant Controller', () => {
   // TODO: remove this once paths become publicly available as mocking the response token will not be needed

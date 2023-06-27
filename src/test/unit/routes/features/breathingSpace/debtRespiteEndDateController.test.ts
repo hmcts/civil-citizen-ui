@@ -12,6 +12,7 @@ import {t} from 'i18next';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('connect-redis');
 
 describe('Expected end date page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

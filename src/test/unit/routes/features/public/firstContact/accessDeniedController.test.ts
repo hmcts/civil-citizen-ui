@@ -7,6 +7,7 @@ import {
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('connect-redis');
 
 describe('First Contact Access Denied Controller', () => {
   describe('on GET', () => {

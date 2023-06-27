@@ -9,7 +9,7 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 const session = require('supertest-session');
 const testSession = session(app);
 const citizenRoleToken: string = config.get('citizenRoleToken');
-
+jest.mock('connect-redis');
 export const USER_DETAILS = {
   accessToken: citizenRoleToken,
   roles: ['citizen'],

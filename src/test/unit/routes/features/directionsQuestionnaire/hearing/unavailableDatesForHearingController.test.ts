@@ -17,6 +17,7 @@ import {t} from 'i18next';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('connect-redis');
 
 describe('Unavailable dates for hearing Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

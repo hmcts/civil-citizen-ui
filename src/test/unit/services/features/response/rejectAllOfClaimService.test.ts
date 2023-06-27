@@ -10,6 +10,7 @@ import {RejectAllOfClaimType} from '../../../../../main/common/form/models/rejec
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('connect-redis');
 
 describe('rejectAllOfClaim service', () => {
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;

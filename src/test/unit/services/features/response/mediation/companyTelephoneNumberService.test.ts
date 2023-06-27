@@ -11,6 +11,7 @@ import {CompanyTelephoneNumber} from '../../../../../../main/common/form/models/
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('connect-redis');
 
 describe('Mediation - Company or Organisation - Confirm telephone number Service', () => {
   const telephoneNumber = '0123456789';

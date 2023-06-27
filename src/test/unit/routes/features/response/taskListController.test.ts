@@ -9,6 +9,7 @@ import {setResponseDeadline} from 'services/features/common/responseDeadlineAgre
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/services/features/common/responseDeadlineAgreedService');
+jest.mock('connect-redis');
 
 const mockSetResponseDeadline = setResponseDeadline as jest.Mock;
 

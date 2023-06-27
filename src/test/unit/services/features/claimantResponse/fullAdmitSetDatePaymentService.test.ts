@@ -14,6 +14,7 @@ import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('connect-redis');
 
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 

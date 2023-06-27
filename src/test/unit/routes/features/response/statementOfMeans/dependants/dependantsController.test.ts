@@ -18,6 +18,7 @@ const {app} = require('../../../../../../../main/app');
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService');
+jest.mock('connect-redis');
 const mockHasDisabledChildren = hasDisabledChildren as jest.Mock;
 
 const respondentDependantsUrl = CITIZEN_DEPENDANTS_URL.replace(':id', 'aaa');

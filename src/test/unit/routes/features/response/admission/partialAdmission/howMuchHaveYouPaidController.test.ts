@@ -9,6 +9,7 @@ import {ResponseType} from 'form/models/responseType';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('connect-redis');
 
 describe('How Much Have You Paid', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

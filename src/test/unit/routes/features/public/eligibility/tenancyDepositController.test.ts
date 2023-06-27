@@ -13,6 +13,7 @@ import {constructUrlWithNotEligibleReason} from '../../../../../../main/common/u
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('connect-redis');
 
 describe('Tenancy Deposit Controller', () => {
   // TODO: remove this once paths become publicly available as mocking the response token will not be needed

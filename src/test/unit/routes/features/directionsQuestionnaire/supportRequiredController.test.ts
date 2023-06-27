@@ -16,6 +16,7 @@ import {YesNo} from 'form/models/yesNo';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('connect-redis');
 
 const supportRequiredUrl = SUPPORT_REQUIRED_URL.replace(':id', 'aaa');
 

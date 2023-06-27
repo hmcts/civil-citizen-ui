@@ -8,6 +8,7 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {req} from '../../../../../utils/UserDetails';
 
 jest.mock('modules/draft-store');
+jest.mock('connect-redis');
 
 const claim = new Claim();
 

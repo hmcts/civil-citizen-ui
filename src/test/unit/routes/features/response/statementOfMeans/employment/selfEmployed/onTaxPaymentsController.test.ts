@@ -9,6 +9,7 @@ import {YesNo} from '../../../../../../../../main/common/form/models/yesNo';
 
 jest.mock('../../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../../main/modules/draft-store');
+jest.mock('connect-redis');
 
 describe('on tax payments', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

@@ -9,6 +9,7 @@ import {InterestClaimFromType} from '../../../../../../main/common/form/models/c
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('connect-redis');
 
 describe('Claimant Interest From Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

@@ -16,6 +16,7 @@ jest.mock('../../../../main/services/features/common/taskListService');
 jest.mock('../../../../main/modules/i18n');
 jest.mock('../../../../main/modules/utilityService');
 jest.mock('../../../../main/services/features/common/responseDeadlineAgreedService');
+jest.mock('connect-redis');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

@@ -8,6 +8,7 @@ import {ResponseType} from '../../../../../../main/common/form/models/responseTy
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('connect-redis');
 
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const DRAFT_STORE_GET_ERROR = 'draft store get error';

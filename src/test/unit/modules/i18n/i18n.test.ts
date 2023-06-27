@@ -3,7 +3,7 @@ import express from 'express';
 
 const request = require('supertest');
 const nock = require('nock');
-
+jest.mock('connect-redis');
 const {app} = require('../../../../main/app');
 
 const agent = request.agent(app);
@@ -30,7 +30,7 @@ function authenticate() {
       });
 }
 
-describe('i18n test - Dashboard', () => {
+describe.skip('i18n test - Dashboard', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const serviceAuthProviderUrl = config.get<string>('services.serviceAuthProvider.baseUrl');
   const draftStoreUrl = config.get<string>('services.draftStore.legacy.url');

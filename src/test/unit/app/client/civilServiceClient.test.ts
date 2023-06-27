@@ -22,6 +22,7 @@ import {CaseDocument} from 'models/document/caseDocument';
 import {FileUpload} from 'models/caseProgression/fileUpload';
 
 jest.mock('axios');
+jest.mock('connect-redis');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 const baseUrl: string = config.get('baseUrl');
 declare const appRequest: requestModels.AppRequest;

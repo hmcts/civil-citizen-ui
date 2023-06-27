@@ -9,6 +9,7 @@ import {PartyPhone} from '../../../../../main/common/models/PartyPhone';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('connect-redis');
 
 const noRespondentTelephoneMock = require('../../../../utils/mocks/noRespondentTelephoneMock.json');
 const civilClaimResponseMockWithoutRespondentPhone: string = JSON.stringify(noRespondentTelephoneMock);

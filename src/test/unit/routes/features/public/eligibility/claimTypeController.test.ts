@@ -14,6 +14,7 @@ import {
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('connect-redis');
 
 describe('Claim Type Options Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
