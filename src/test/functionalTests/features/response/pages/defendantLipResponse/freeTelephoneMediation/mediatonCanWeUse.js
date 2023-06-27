@@ -19,9 +19,6 @@ class MediationCanWeUse {
     await I.see('Enter the number for a direct line the mediation service can use. We won\'t give the number to anyone else.');
     await I.fillField(fields.phoneNumberID, '02088008800');
 
-    await I.see('Confirm your telephone number', 'h1');
-    await I.see('Can the mediation service use');
-    await I.click(fields.yesButton);
     await I.click('Save and continue');
   }
 }
