@@ -110,10 +110,10 @@ const trialDocumentary = (form: GenericForm<UploadDocumentsUserForm>, isSmallCla
 
   if (form) {
     form.model.trialDocumentary?.forEach(function (trialDocumentary: TypeOfDocumentSection, index: number) {
-      sectionContent.push([buildTrialDocumentarySection(trialDocumentary, index, form, isSmallClaims)]);
+      sectionContent.push([buildTrialDocumentarySection(isSmallClaims, trialDocumentary, index, form)]);
     });
   } else {
-    sectionContent.push([buildTrialDocumentarySection(null,null,null,isSmallClaims)]);
+    sectionContent.push([buildTrialDocumentarySection(isSmallClaims)]);
   }
 
   return sectionContent.flat().map((sectionContent, index) => ({
