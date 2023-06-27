@@ -4,13 +4,9 @@ module.exports = {
   testEnvironment: 'node',
   testPathIgnorePatterns:['src/test/unit/routes/features/claim', 'src/test/unit/routes/features/claimantResponse'],
   transform: {
-    '^.+\\.ts?$': 'ts-jest',
+    '^.+\\.ts?$': ['ts-jest', {  isolatedModules: true, }],
   },
-  globals: {
-          'ts-jest': {
-              isolatedModules: true
-          }
-      },
+
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper: {
     '^common/(.*)$': '<rootDir>/src/main/common/$1',
