@@ -208,40 +208,34 @@ describe('on POST', () => {
   });
 
   it('should redirect to the next page when inputs are validated', async () => {
+
     const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'Word', 'dateDay':'14','dateMonth':'10','dateYear':'2020','file_upload':'Evidence_01.pdf'}]};
     const disclosureList = {'disclosureList':[{'file_upload':'Evidence_02.pdf'}]};
 
     const witnessStatement = {'witnessStatement':[{'witnessName':'witness Name', 'dateDay':'10','dateMonth':'11','dateYear':'2020','file_upload':'Evidence_03.pdf'}]};
-    const witnessSummary = {'witnessStatement':[{'witnessName':'witness Name 1', 'dateDay':'11','dateMonth':'11','dateYear':'2020','file_upload':'Evidence_04.pdf'}]};
-    const noticeOfIntention = {'witnessStatement':[{'witnessName':'witness Name 2', 'dateDay':'12','dateMonth':'11','dateYear':'2020','file_upload':'Evidence_05.pdf'}]};
-    const documentsReferred = {'documentsForDisclosure':[{'typeOfDocument':'Word', 'dateDay':'13','dateMonth':'11','dateYear':'2020','file_upload':'Evidence_06.pdf'}]};
+    const witnessSummary = {'witnessSummary':[{'witnessName':'witness Name 1', 'dateDay':'11','dateMonth':'11','dateYear':'2020','file_upload':'Evidence_04.pdf'}]};
+    const noticeOfIntention = {'noticeOfIntention':[{'witnessName':'witness Name 2', 'dateDay':'12','dateMonth':'11','dateYear':'2020','file_upload':'Evidence_05.pdf'}]};
+    const documentsReferred = {'documentsReferred':[{'typeOfDocument':'Word', 'dateDay':'13','dateMonth':'11','dateYear':'2020','file_upload':'Evidence_06.pdf'}]};
 
     const expertReport = {'expertReport':[{'expertName':'expert Name', 'fieldOfExpertise':'field Of Expertise', 'questionDocumentName':'question Document Name', 'otherPartyQuestionsDocumentName':'O. p. Document Name', 'dateDay':'11','dateMonth':'12','dateYear':'2020'}]};
     const expertStatement = {'expertStatement':[{'expertName':'John Dhoe','fieldOfExpertise':'Architect','otherPartyName':'Mark Smith', 'questionDocumentName':'question Document Name', 'otherPartyQuestionsDocumentName':'O. p. Document Name'}]};
-    const questionsForExperts = {'expertReport':[{'expertName':'expert Name 1', 'fieldOfExpertise':'field Of Expertise', 'questionDocumentName':'question Document Name', 'otherPartyQuestionsDocumentName':'O. p. Document Name', 'dateDay':'10','dateMonth':'10','dateYear':'2020'}]};
-    const answersForExperts = {'expertReport':[{'expertName':'expert Name 2', 'fieldOfExpertise':'field Of Expertise', 'questionDocumentName':'question Document Name', 'otherPartyQuestionsDocumentName':'O. p. Document Name', 'dateDay':'11','dateMonth':'10','dateYear':'2020'}]};
-    //
-    // const trialCaseSummary = {};
-    // const trialSkeletonArgument = {};
-    // const trialAuthorities = {};
-    // const trialCosts = {};
-    // const trialDocumentary = {};
+    const questionsForExperts = {'questionsForExperts':[{'expertName':'expert Name 1', 'fieldOfExpertise':'field Of Expertise', 'questionDocumentName':'question Document Name', 'otherPartyQuestionsDocumentName':'O. p. Document Name', 'dateDay':'10','dateMonth':'10','dateYear':'2020'}]};
+    const answersForExperts = {'answersForExperts':[{'expertName':'expert Name 2', 'fieldOfExpertise':'field Of Expertise', 'questionDocumentName':'question Document Name', 'otherPartyQuestionsDocumentName':'O. p. Document Name', 'dateDay':'11','dateMonth':'10','dateYear':'2020'}]};
+
+    const trialCaseSummary = {'trialCaseSummary':[{'file_upload':'Evidence_07.pdf'}]};
+    const trialSkeletonArgument = {'trialSkeletonArgument':[{'file_upload':'Evidence_08.pdf'}]};
+    const trialAuthorities = {'trialAuthorities':[{'file_upload':'Evidence_09.pdf'}]};
+    const trialCosts = {'trialCosts':[{'file_upload':'Evidence_10.pdf'}]};
+    const trialDocumentary = {'trialDocumentary':[{'typeOfDocument':'Word', 'dateDay':'14','dateMonth':'11','dateYear':'2020','file_upload':'Evidence_11.pdf'}]};
+
+    const sections = Object.assign(documentForDisclosureModel, disclosureList, witnessStatement, witnessSummary, noticeOfIntention,
+      documentsReferred, expertReport, expertStatement, questionsForExperts, answersForExperts, trialCaseSummary, trialSkeletonArgument,
+      trialAuthorities, trialCosts, trialDocumentary);
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
-      .send(documentForDisclosureModel)
-      .send(disclosureList)
-      .send(witnessStatement)
-      .send(witnessSummary)
-      .send(noticeOfIntention)
-      .send(documentsReferred)
-      .send(expertReport)
-      .send(expertStatement)
-      .send(questionsForExperts)
-      .send(answersForExperts)
-
+      .send(sections)
       .expect((res: express.Response) => {
-        expect(res.text).toContain('There was a problem!!!!!!!'); //TODO remove after testing all the sections
         expect(res.status).toBe(302);
         expect(res.get('location')).toBe(CP_CHECK_ANSWERS_URL);
       });

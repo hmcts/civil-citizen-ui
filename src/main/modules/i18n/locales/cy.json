@@ -2324,7 +2324,6 @@
         "DATE_STATEMENT": "Date statement was written",
         "DATE_SUMMARY": "Date summary was written",
         "DOCUMENT": "Documents referred to in the statement",
-        "DOCUMENT_DATE": "Date document was issued or message was sent",
         "NOTICE": "Notice of intention to rely on hearsay evidence",
         "STATEMENT": "Witness statement",
         "SUMMARY": "Witness summary",
