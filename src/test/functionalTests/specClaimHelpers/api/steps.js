@@ -16,6 +16,7 @@ const {
 const {assignCaseRoleToUser, addUserCaseMapping, unAssignAllUsers} = require('./caseRoleAssignmentHelper');
 const apiRequest = require('./apiRequest.js');
 const claimSpecData = require('../fixtures/events/createClaimSpec.js');
+const claimSpecDataFastTrack = require('../fixtures/events/createClaimSpecFastTrack');
 const defendantResponse = require('../fixtures/events/createDefendantResponse.js');
 const claimantResponse = require('../fixtures/events/createClaimantResponseToDefence.js');
 const caseProgressionToSDOState = require('../fixtures/events/createCaseProgressionToSDOState');
@@ -23,6 +24,7 @@ const caseProgressionToHearingInitiated = require('../fixtures/events/createCase
 
 const data = {
   CREATE_SPEC_CLAIM: (mpScenario) => claimSpecData.createClaim(mpScenario),
+  CREATE_SPEC_CLAIM_FASTTRACK: (mpScenario) => claimSpecDataFastTrack.createClaim(mpScenario),
 };
 
 let caseId, eventName;
@@ -64,12 +66,19 @@ module.exports = {
     console.log('End of performCitizenResponse()');
   },
 
-  createSpecifiedClaim: async (user, multipartyScenario) => {
+  createSpecifiedClaim: async (user, multipartyScenario, claimType) => {
     console.log(' Creating specified claim');
     eventName = 'CREATE_CLAIM_SPEC';
     caseId = null;
     caseData = {};
-    const createClaimSpecData = data.CREATE_SPEC_CLAIM(multipartyScenario);
+    let createClaimSpecData;
+    if(claimType === 'FastTrack'){
+      console.log('Creating FastTrack claim...');
+      createClaimSpecData = data.CREATE_SPEC_CLAIM_FASTTRACK(multipartyScenario);
+    }else {
+      console.log('Creating small claims...');
+      createClaimSpecData = data.CREATE_SPEC_CLAIM(multipartyScenario);
+    }
 
     await apiRequest.setupTokens(user);
     await apiRequest.startEvent(eventName);
