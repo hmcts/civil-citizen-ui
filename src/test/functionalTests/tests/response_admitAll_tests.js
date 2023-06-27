@@ -25,7 +25,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @test', () => {
+Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @regression', () => {
   ResponseSteps.RespondToClaim(claimRef);
   ResponseSteps.EnterPersonalDetails(claimRef);
   ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -44,6 +44,8 @@ Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @regress
   ResponseSteps.EnterDateToPayOn();
   ResponseSteps.EnterFinancialDetails(claimRef);
   ResponseSteps.CheckAndSubmit(claimRef, admitAll);
+  // ClaimantResponseSteps.ClaimantRespond(claimRef);
+  // await ClaimantResponseSteps.ClaimantNextSteps('View and respond to defence');
 });
 
 Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll @regression', () => {
