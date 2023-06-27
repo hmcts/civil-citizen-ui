@@ -20,17 +20,21 @@ class CaseDocumentsAttachmentResult {
   }
 }
 
-function getDocument(uploadDocumentTypes: UploadDocumentTypes): Document {
+export function getDocument(uploadDocumentTypes: UploadDocumentTypes): Document {
   let document = null;
-  for (const [key, value] of Object.entries(uploadDocumentTypes)) {
-    if (key === 'caseDocument' && value.type === Document) {
-      document = value;
+  for (const [outerKey, outerValue] of Object.entries(uploadDocumentTypes)) {
+    if (outerKey === 'caseDocument') {
+      for (const [innerKey, innerValue] of Object.entries(outerValue)) {
+        if (innerKey.includes('Document') && innerValue !== undefined) {
+          document = innerValue;
+        }
+      }
     }
   }
-  return document;
+  return <Document>document;
 }
 
-function getDocuments(uploadDocuments: UploadDocumentTypes[][]): Map<Document, UploadDocumentTypes> {
+export function getDocuments(uploadDocuments: UploadDocumentTypes[][]): Map<Document, UploadDocumentTypes> {
   const documents: Map<Document, UploadDocumentTypes> = new Map();
   for (const uploadDocumentTypes of uploadDocuments) {
     uploadDocumentTypes.forEach(elem => documents.set(getDocument(elem), elem));
@@ -38,7 +42,7 @@ function getDocuments(uploadDocuments: UploadDocumentTypes[][]): Map<Document, U
   return documents;
 }
 
-function areEqual(document: Document, attachedDocument: Document): boolean {
+export function areEqual(document: Document, attachedDocument: Document): boolean {
   return document.document_filename === attachedDocument.document_filename
     && document.document_binary_url === attachedDocument.document_binary_url
     && document.document_url === attachedDocument.document_url
@@ -46,7 +50,7 @@ function areEqual(document: Document, attachedDocument: Document): boolean {
     && document.category_id === attachedDocument.category_id;
 }
 
-function isAttachedTo(document: Document, attachedDocuments: Document[]): boolean {
+export function isAttachedTo(document: Document, attachedDocuments: Document[]): boolean {
   for (const attachedDocument of attachedDocuments) {
     if (areEqual(document, attachedDocument)) {
       return true;
@@ -55,7 +59,7 @@ function isAttachedTo(document: Document, attachedDocuments: Document[]): boolea
   return false;
 }
 
-function remove(element: UploadDocumentTypes, collection: UploadDocumentTypes[]): boolean {
+export function remove(element: UploadDocumentTypes, collection: UploadDocumentTypes[]): boolean {
   const index = collection.indexOf(element);
   if (index > -1) {
     collection.splice(index, 1);
@@ -63,17 +67,16 @@ function remove(element: UploadDocumentTypes, collection: UploadDocumentTypes[])
   return index > -1;
 }
 
-function removeFrom(elementToRemove: UploadDocumentTypes, uploadDocumentsToProcess: UploadDocumentTypes[][]) {
+export function removeFrom(elementToRemove: UploadDocumentTypes, uploadDocumentsToProcess: UploadDocumentTypes[][]) {
   for (const collection of uploadDocumentsToProcess) {
-    // if (collection === undefined) continue;
     const removed = remove(elementToRemove, collection);
     if (removed) {
-      return;
+      break;
     }
   }
 }
 
-function getUploadDocumentsToProcess(uploadDocuments: UploadDocuments) {
+export function getUploadDocumentsToProcess(uploadDocuments: UploadDocuments) {
   return [uploadDocuments.expert,
     uploadDocuments.disclosure,
     uploadDocuments.trial,

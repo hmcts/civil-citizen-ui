@@ -8,7 +8,16 @@ import {
 import {EvidenceUploadExpert, EvidenceUploadWitness} from 'models/document/documentType';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {Document} from 'models/document/document';
-import {attachCaseDocuments} from 'services/features/caseProgression/fileAttachmentService';
+import {
+  attachCaseDocuments,
+  getUploadDocumentsToProcess,
+  remove,
+  removeFrom,
+  isAttachedTo,
+  areEqual,
+  getDocument,
+  getDocuments,
+} from 'services/features/caseProgression/fileAttachmentService';
 import {ClaimantOrDefendant} from 'models/partyType';
 import * as requestModels from 'models/AppRequest';
 
@@ -247,6 +256,223 @@ describe('File Attachment service', () => {
       expect(result.caseProgression.defendantUploadDocuments.expert.length).toEqual(1);
       expect(result.errors.length).toEqual(expectedErrors.length);
       expect(result.errors[0]).toEqual(errorMessage);
+    });
+  });
+  describe('getUploadDocumentsToProcess', () => {
+    it('should return expected UploadDocumentTypes', () => {
+      //Given
+      const caseProgression: CaseProgression = initialiseDefendant();
+      const uploadDocuments = caseProgression.defendantUploadDocuments;
+      //When
+      const result = getUploadDocumentsToProcess(uploadDocuments);
+      //Then
+      expect(result.length).toEqual(2);
+      expect(result[0].length).toEqual(2);
+      expect(result[1].length).toEqual(2);
+    });
+  });
+  describe('removeFrom', () => {
+    it('should remove expected element from upload documents to process', () => {
+      //Given
+      const caseProgression: CaseProgression = initialiseDefendant();
+      const uploadDocuments: UploadDocuments = caseProgression.defendantUploadDocuments;
+      const uploadDocumentsToProcess: UploadDocumentTypes[][] = [uploadDocuments.witness, uploadDocuments.expert];
+      const elementToRemove: UploadDocumentTypes = uploadDocumentsToProcess[1][0];
+      //When
+      removeFrom(elementToRemove, uploadDocumentsToProcess);
+      //Then
+      expect(uploadDocumentsToProcess[0].length).toEqual(2);
+      expect(uploadDocumentsToProcess[1].length).toEqual(1);
+      expect(uploadDocumentsToProcess[1][0].documentType).toEqual(EvidenceUploadExpert.EXPERT_REPORT);
+    });
+    it('should not remove an element from upload documents to process even if it has the same properties', () => {
+      //Given
+      const caseProgression: CaseProgression = initialiseDefendant();
+      const uploadDocuments: UploadDocuments = caseProgression.defendantUploadDocuments;
+      const uploadDocumentsToProcess: UploadDocumentTypes[][] = [uploadDocuments.witness, uploadDocuments.expert];
+      const elementToRemove: UploadDocumentTypes = new UploadDocumentTypes(true, defendantExpertReport, EvidenceUploadExpert.EXPERT_REPORT);
+      //When
+      removeFrom(elementToRemove, uploadDocumentsToProcess);
+      //Then
+      expect(uploadDocumentsToProcess[0].length).toEqual(2);
+      expect(uploadDocumentsToProcess[1].length).toEqual(2);
+    });
+  });
+  describe('remove', () => {
+    it('should remove expected element from upload document types', () => {
+      //Given
+      const caseProgression: CaseProgression = initialiseDefendant();
+      const uploadDocuments: UploadDocuments = caseProgression.defendantUploadDocuments;
+      const elementToRemove: UploadDocumentTypes = uploadDocuments.expert[0];
+      //When
+      remove(elementToRemove, uploadDocuments.expert);
+      //Then
+      expect(uploadDocuments.expert.length).toEqual(1);
+      expect(uploadDocuments.expert[0].documentType).toEqual(EvidenceUploadExpert.EXPERT_REPORT);
+    });
+    it('should not remove an element from upload documents types even if it has the same properties', () => {
+      //Given
+      const caseProgression: CaseProgression = initialiseDefendant();
+      const uploadDocuments: UploadDocuments = caseProgression.defendantUploadDocuments;
+      const elementToRemove: UploadDocumentTypes = new UploadDocumentTypes(true, defendantExpertReport, EvidenceUploadExpert.EXPERT_REPORT);
+      //When
+      remove(elementToRemove, uploadDocuments.expert);
+      //Then
+      expect(uploadDocuments.expert.length).toEqual(2);
+    });
+  });
+  describe('isAttachedTo', () => {
+    it('should confirm that an expected document is in the collection of attached documents', () => {
+      //Given
+      const attachedDocuments: Document[] = [defendantExpertReportDocument, defendantAnswersForExpertDocument];
+      //When
+      const result = isAttachedTo(defendantAnswersForExpertDocument, attachedDocuments);
+      //Then
+      expect(result).toEqual(true);
+    });
+    it('should confirm that an unexpected document is not in the collection of attached documents', () => {
+      //Given
+      const attachedDocuments: Document[] = [defendantExpertReportDocument, defendantAnswersForExpertDocument];
+      //When
+      const result = isAttachedTo(claimantExpertReportDocument, attachedDocuments);
+      //Then
+      expect(result).toEqual(false);
+    });
+  });
+  describe('areEqual', () => {
+    it('should confirm that two documents are equal if they contain the same data', () => {
+      //Given
+      const document1 = claimantExpertReportDocument;
+      const document2: Document = {
+        document_url: 'http://dm-store:8080/documents/d3fd1e10-daf3-4d93-dc73-ddeb9f3a2ab3',
+        document_filename: 'expert_document.pdf',
+        document_binary_url: 'http://dm-store:8080/documents/d3fd1e10-daf3-4d93-dc73-ddeb9f3a2ab3/binary',
+        document_hash: 'b93759b36e9aaf6ad8aa5b00e1cef537e2fd248d998224e218b678183b417370',
+        category_id: '',
+      };
+      //When
+      const result = areEqual(document1, document2);
+      //Then
+      expect(result).toEqual(true);
+    });
+    it('should confirm that two documents are not equal if they contain different category id', () => {
+      //Given
+      const document1 = claimantExpertReportDocument;
+      const document2: Document = {
+        document_url: 'http://dm-store:8080/documents/d3fd1e10-daf3-4d93-dc73-ddeb9f3a2ab3',
+        document_filename: 'expert_document.pdf',
+        document_binary_url: 'http://dm-store:8080/documents/d3fd1e10-daf3-4d93-dc73-ddeb9f3a2ab3/binary',
+        document_hash: 'b93759b36e9aaf6ad8aa5b00e1cef537e2fd248d998224e218b678183b417370',
+        category_id: '1',
+      };
+      //When
+      const result = areEqual(document1, document2);
+      //Then
+      expect(result).toEqual(false);
+    });
+    it('should confirm that two documents are not equal if they contain different document url', () => {
+      //Given
+      const document1 = claimantExpertReportDocument;
+      const document2: Document = {
+        document_url: 'http://dm-store:8080/documents/d3fd1e10-daf3-4d93-dc73-ddeb9f3a2ab2',
+        document_filename: 'expert_document.pdf',
+        document_binary_url: 'http://dm-store:8080/documents/d3fd1e10-daf3-4d93-dc73-ddeb9f3a2ab3/binary',
+        document_hash: 'b93759b36e9aaf6ad8aa5b00e1cef537e2fd248d998224e218b678183b417370',
+        category_id: '',
+      };
+      //When
+      const result = areEqual(document1, document2);
+      //Then
+      expect(result).toEqual(false);
+    });
+    it('should confirm that two documents are not equal if they contain different document filename', () => {
+      //Given
+      const document1 = claimantExpertReportDocument;
+      const document2: Document = {
+        document_url: 'http://dm-store:8080/documents/d3fd1e10-daf3-4d93-dc73-ddeb9f3a2ab3',
+        document_filename: 'expert_document1.pdf',
+        document_binary_url: 'http://dm-store:8080/documents/d3fd1e10-daf3-4d93-dc73-ddeb9f3a2ab3/binary',
+        document_hash: 'b93759b36e9aaf6ad8aa5b00e1cef537e2fd248d998224e218b678183b417370',
+        category_id: '',
+      };
+      //When
+      const result = areEqual(document1, document2);
+      //Then
+      expect(result).toEqual(false);
+    });
+    it('should confirm that two documents are not equal if they contain different document binary url', () => {
+      //Given
+      const document1 = claimantExpertReportDocument;
+      const document2: Document = {
+        document_url: 'http://dm-store:8080/documents/d3fd1e10-daf3-4d93-dc73-ddeb9f3a2ab3',
+        document_filename: 'expert_document.pdf',
+        document_binary_url: 'http://dm-store:8080/documents/d3fd1e10-daf3-4d93-dc73-ddeb9f3a2ab2/binary',
+        document_hash: 'b93759b36e9aaf6ad8aa5b00e1cef537e2fd248d998224e218b678183b417370',
+        category_id: '',
+      };
+      //When
+      const result = areEqual(document1, document2);
+      //Then
+      expect(result).toEqual(false);
+    });
+    it('should confirm that two documents are not equal if they contain different document hash', () => {
+      //Given
+      const document1 = claimantExpertReportDocument;
+      const document2: Document = {
+        document_url: 'http://dm-store:8080/documents/d3fd1e10-daf3-4d93-dc73-ddeb9f3a2ab3',
+        document_filename: 'expert_document.pdf',
+        document_binary_url: 'http://dm-store:8080/documents/d3fd1e10-daf3-4d93-dc73-ddeb9f3a2ab3/binary',
+        document_hash: 'b93759b36e9aaf6ad8aa5b00e1cef537e2fd248d998224e218b678183b417371',
+        category_id: '',
+      };
+      //When
+      const result = areEqual(document1, document2);
+      //Then
+      expect(result).toEqual(false);
+    });
+  });
+  describe('getDocuments', () => {
+    it('should return expected collection of key-value pairs', () => {
+      //Given
+      const caseProgression: CaseProgression = initialiseDefendant();
+      const uploadDocuments: UploadDocuments = caseProgression.defendantUploadDocuments;
+      const uploadDocumentsToProcess: UploadDocumentTypes[][] = [uploadDocuments.witness, uploadDocuments.expert];
+      const expectedResult: Map<Document, UploadDocumentTypes> = new Map();
+      expectedResult.set(defendantWitnessStatementDocument, uploadDocuments.witness[0]);
+      expectedResult.set(defendantWitnessSummaryDocument, uploadDocuments.witness[1]);
+      expectedResult.set(defendantAnswersForExpertDocument, uploadDocuments.expert[0]);
+      expectedResult.set(defendantExpertReportDocument, uploadDocuments.expert[1]);
+      //When
+      const result = getDocuments(uploadDocumentsToProcess);
+      //Then
+      expect(result.size).toEqual(expectedResult.size);
+      expect(result.get(defendantWitnessStatementDocument).documentType).toEqual(expectedResult.get(defendantWitnessStatementDocument).documentType);
+      expect(result.get(defendantWitnessSummaryDocument).documentType).toEqual(expectedResult.get(defendantWitnessSummaryDocument).documentType);
+      expect(result.get(defendantAnswersForExpertDocument).documentType).toEqual(expectedResult.get(defendantAnswersForExpertDocument).documentType);
+      expect(result.get(defendantExpertReportDocument).documentType).toEqual(expectedResult.get(defendantExpertReportDocument).documentType);
+    });
+  });
+  describe('getDocument', () => {
+    it('should return expected document', () => {
+      //Given
+      const uploadDocumentTypes: UploadDocumentTypes = new UploadDocumentTypes(true, defendantWitnessStatement, EvidenceUploadWitness.WITNESS_STATEMENT);
+      //When
+      const result = getDocument(uploadDocumentTypes);
+      //Then
+      expect(result.category_id).toEqual(defendantWitnessStatementDocument.category_id);
+      expect(result.document_hash).toEqual(defendantWitnessStatementDocument.document_hash);
+      expect(result.document_url).toEqual(defendantWitnessStatementDocument.document_url);
+      expect(result.document_binary_url).toEqual(defendantWitnessStatementDocument.document_binary_url);
+      expect(result.document_filename).toEqual(defendantWitnessStatementDocument.document_filename);
+    });
+    it('should return null if argument does not contain Document',() => {
+      //Given
+      const uploadEvidenceWitness = new UploadEvidenceWitness('', new Date(), null, new Date());
+      const uploadDocumentTypes: UploadDocumentTypes = new UploadDocumentTypes(true, uploadEvidenceWitness, EvidenceUploadWitness.WITNESS_STATEMENT);
+      //When
+      const result = getDocument(uploadDocumentTypes);
+      //Then
+      expect(result).toBe(null);
     });
   });
 });
