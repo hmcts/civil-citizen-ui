@@ -6,7 +6,7 @@ const fields = {
 };
 
 const buttons = {
-  saveAndContinue: 'Save and continue',
+  saveAndContinue: 'button.govuk-button',
 };
 
 class ContactNumberDetailsPage {
