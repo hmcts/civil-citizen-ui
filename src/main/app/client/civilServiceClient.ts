@@ -174,7 +174,13 @@ export class CivilServiceClient {
       if (!response.data) {
         throw new AssertionError({message: 'Document upload unsuccessful.'});
       }
-      return JSON.parse(String.fromCharCode.apply(null, response.data)) as CaseDocument;
+      if (response.data instanceof Uint8Array) {
+        const decoder = new TextDecoder('utf-8');
+        const decodedString = decoder.decode(response.data);
+        return JSON.parse(decodedString) as CaseDocument;
+      } else {
+        return response.data as CaseDocument;
+      }
     } catch (err: unknown) {
       logger.error(err);
       throw err;
