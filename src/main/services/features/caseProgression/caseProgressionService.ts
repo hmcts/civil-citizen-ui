@@ -17,7 +17,8 @@ import {
   FileOnlySection,
   TypeOfDocumentSection,
   UploadDocumentsUserForm,
-  WitnessSection} from 'models/caseProgression/uploadDocumentsUserForm';
+  WitnessSection,
+} from 'models/caseProgression/uploadDocumentsUserForm';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');
@@ -172,12 +173,12 @@ const bindRequestToWitnessSectionObj = (request: any): WitnessSection => {
 
 const bindRequestToExpertSectionObj = (request: any): ExpertSection => {
   const formObj: ExpertSection = new ExpertSection(request['dateDay'], request['dateMonth'], request['dateYear']);
-  formObj.expertName = request['expertName'].trim();
+  formObj.expertName = request['expertName'] != null ? request['expertName'].trim() : null;
+  formObj.multipleExpertsName = request['multipleExpertsName'] != null ? request['multipleExpertsName'].trim() : null;
   formObj.fieldOfExpertise = request['fieldOfExpertise'] != null ? request['fieldOfExpertise'].trim() : null;
   formObj.otherPartyName = request['otherPartyName'] != null ? request['otherPartyName'].trim() : null;
   formObj.questionDocumentName = request['questionDocumentName'] != null ? request['questionDocumentName'].trim() : null;
   formObj.otherPartyQuestionsDocumentName = request['otherPartyQuestionsDocumentName'] != null ? request['otherPartyQuestionsDocumentName'].trim() : null;
-
   formObj.fileUpload = request['file_upload'];
   return formObj;
 };
