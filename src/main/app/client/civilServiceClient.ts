@@ -10,11 +10,10 @@ import {
   CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
   CIVIL_SERVICE_CLAIM_AMOUNT_URL,
-  CIVIL_SERVICE_COURT_LOCATIONS,
-  CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
+  CIVIL_SERVICE_COURT_LOCATIONS, CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_FEES_RANGES,
   CIVIL_SERVICE_HEARING_URL,
-  CIVIL_SERVICE_SUBMIT_EVENT,
+  CIVIL_SERVICE_SUBMIT_EVENT, CIVIL_SERVICE_UPLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_VALIDATE_PIN_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
@@ -27,6 +26,7 @@ import {CaseEvent} from 'models/events/caseEvent';
 import {CourtLocation} from 'models/courts/courtLocations';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
+import {FileUpload} from 'models/caseProgression/fileUpload';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -161,6 +161,22 @@ export class CivilServiceClient {
       const caseDetails: CivilClaimResponse = response.data;
       return convertCaseToClaim(caseDetails);
 
+    } catch (err: unknown) {
+      logger.error(err);
+      throw err;
+    }
+  }
+
+  async uploadDocument(req: AppRequest, file: FileUpload): Promise<CaseDocument> {
+    try {
+      const formData = new FormData();
+      formData.append('file', new Blob([file.buffer]) , file.originalname);
+      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_UPLOAD_DOCUMENT_URL, formData,
+        {headers: {'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${req.session?.user?.accessToken}`}});
+      if (!response.data) {
+        throw new AssertionError({message: 'Document upload unsuccessful.'});
+      }
+      return response.data as CaseDocument;
     } catch (err: unknown) {
       logger.error(err);
       throw err;
