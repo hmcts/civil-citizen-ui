@@ -16,7 +16,9 @@ const addressToString = (address: Address) => {
 
 export const buildYourDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
   const yourDetailsHref = constructResponseUrlWithIdParams(claimId, CITIZEN_DETAILS_URL);
-  const phoneNumberHref = constructResponseUrlWithIdParams(claimId, CITIZEN_PHONE_NUMBER_URL);
+  const phoneNumberUrl = claim.respondent1?.partyPhone?.ccdPhoneExist ? CITIZEN_DETAILS_URL : CITIZEN_PHONE_NUMBER_URL;
+  const phoneNumberLabel = claim.respondent1?.partyPhone?.ccdPhoneExist ? 'PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER_NOT_OPTIONAL' : 'PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER' ;
+  const phoneNumberHref = constructResponseUrlWithIdParams(claimId, phoneNumberUrl);
   const yourDetailsSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.DETAILS_TITLE', {lng: getLng(lang)}),
     summaryRows: [
@@ -32,6 +34,6 @@ export const buildYourDetailsSection = (claim: Claim, claimId: string, lang: str
     const yourDOBHref = DOB_URL.replace(':id', claimId);
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DOB', {lng: getLng(lang)}), formatDateToFullDate(claim.respondent1.dateOfBirth?.date, getLng(lang)), yourDOBHref, changeLabel(lang)));
   }
-  yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng: getLng(lang)}), claim.respondent1.partyPhone?.phone, phoneNumberHref, changeLabel(lang)));
+  yourDetailsSection.summaryList.rows.push(summaryRow(t(phoneNumberLabel, {lng: getLng(lang)}), claim.respondent1.partyPhone?.phone, phoneNumberHref, changeLabel(lang)));
   return yourDetailsSection;
 };

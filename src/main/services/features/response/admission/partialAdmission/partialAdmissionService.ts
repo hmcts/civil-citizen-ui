@@ -1,6 +1,6 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../../modules/draft-store/draftStoreService';
-import {PartialAdmission} from '../../../../../common/models/partialAdmission';
-import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {PartialAdmission} from 'models/partialAdmission';
+import {GenericYesNo} from 'form/models/genericYesNo';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('partialAdmissionService');
@@ -21,6 +21,8 @@ export class PartialAdmissionService {
       const claim = await getCaseDataFromStore(claimId);
       if (claim.partialAdmission?.alreadyPaid) {
         claim.partialAdmission.alreadyPaid.option = alreadyPaid;
+        logger.info('Resetting Payment Intention.');
+        claim.partialAdmission.paymentIntention = undefined;
       } else {
         claim.partialAdmission = new PartialAdmission();
         claim.partialAdmission.alreadyPaid = new GenericYesNo(alreadyPaid);
