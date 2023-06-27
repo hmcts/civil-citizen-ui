@@ -134,6 +134,10 @@ export class ExpertSection extends DateOnlySection {
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_EXPERT_NAME'})
     expertName: string;
 
+  @IsNotEmpty({message: 'ERRORS.VALID_ENTER_EXPERT_NAMES'})
+  @IsOptional()
+    multipleExpertsName: string;
+
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_EXPERTISE'})
   @IsOptional()
     fieldOfExpertise: string;
