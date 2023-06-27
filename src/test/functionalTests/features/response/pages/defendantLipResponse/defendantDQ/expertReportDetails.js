@@ -12,14 +12,14 @@ const fields ={
 
 class ExpertReportDetails {
 
-  enterExpertReportDetails(expertName, day, month, year) {
-    I.see('Have you already got a report written by an expert?', 'h1');
-    I.click(fields.yesButton);
-    I.fillField(fields.firstExpertsName, expertName);
-    I.fillField(fields.firstExpertReportDay, day);
-    I.fillField(fields.firstExpertReportMonth, month);
-    I.fillField(fields.firstExpertReportYear, year);
-    I.click('Save and continue');
+  async enterExpertReportDetails(expertName, day, month, year) {
+    await I.see('Have you already got a report written by an expert?', 'h1');
+    await I.click(fields.yesButton);
+    await I.fillField(fields.firstExpertsName, expertName);
+    await I.fillField(fields.firstExpertReportDay, day);
+    await I.fillField(fields.firstExpertReportMonth, month);
+    await I.fillField(fields.firstExpertReportYear, year);
+    await I.click('Save and continue');
   }
 }
 
