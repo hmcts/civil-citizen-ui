@@ -55,6 +55,14 @@ const VulnerabilityDetails = require('../pages/defendantLipResponse/defendantDQ/
 const SupportRequired = require('../pages/defendantLipResponse/defendantDQ/supportRequired');
 const CourtLocation = require('../pages/defendantLipResponse/defendantDQ/courtLocation');
 const WelshLanguage = require('../pages/defendantLipResponse/defendantDQ/welshLanguage');
+const EnterCompanyDetails = require('../pages/defendantLipResponse/confirmYourDetails/enterCompanyDetails');
+const TriedToSettle = require('../pages/defendantLipResponse/defendantDQ/triedToSettle');
+const RequestExtraFourWeeks = require('../pages/defendantLipResponse/defendantDQ/requestExtraFourWeeks');
+const ConsiderClaimantDocs  =  require('../pages/defendantLipResponse/defendantDQ/considerClaimantDocs');
+const ExpertEvidence = require('../pages/defendantLipResponse/defendantDQ/expertEvidence');
+const SentExpertReports = require('../pages/defendantLipResponse/defendantDQ/sentExpertReports');
+const SharedExpert = require('../pages/defendantLipResponse/defendantDQ/sharedExpert');
+const ExpertDetails = require('../pages/defendantLipResponse/defendantDQ/expertDetails');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const requestMoreTime = new RequestMoreTime();
@@ -114,6 +122,14 @@ const vulnerabilityDetails = new VulnerabilityDetails();
 const supportRequired = new SupportRequired();
 const courtLocation = new CourtLocation();
 const welshLanguage = new WelshLanguage();
+const enterCompanyDetails = new EnterCompanyDetails();
+const triedToSettle = new TriedToSettle();
+const requestExtraFourWeeks = new RequestExtraFourWeeks();
+const considerClaimantDocs = new ConsiderClaimantDocs();
+const expertEvidence = new ExpertEvidence();
+const sentExpertReports = new SentExpertReports();
+const sharedExpert = new SharedExpert();
+const expertDetails = new ExpertDetails();
 
 class ResponseSteps {
   async RespondToClaim(claimRef){
@@ -134,6 +150,13 @@ class ResponseSteps {
 
   async EnterYourOptionsForDeadline(claimRef, deadlineOption) {
     await viewYourOptionsBeforeDeadline.selectYouOptions(claimRef, deadlineOption);
+  }
+
+  async EnterCompanyDetails(){
+    await taskListPage.verifyResponsePageContent();
+    await enterCompanyDetails.enterCompanyDetails();
+    await enterCompanyDetails.enterCorrespondenceAddressManually();
+    await contactNumberDetailsPage.enterContactNumber();
   }
 
   async RespondToRequest(claimRef) {
@@ -364,10 +387,33 @@ class ResponseSteps {
     await mediationCanWeUse.selectOptionForMediation(claimRef);
   }
 
+  EnterNoMediation(claimRef){
+    freeTelephoneMediation.selectNoMediation(claimRef);
+  }
+
   async EnterDQForSmallClaims(claimRef) {
     await this.SelectHearingRequirements(claimRef);
     await this.SelectExpertNeededOrNot();
     await this.EnterExpertReportDetails('TestExpert1', '20', '10', '2022');
+    await this.SelectGiveEvidenceYourself();
+    await this.EnterDefedantWitnesses();
+    await this.SelectOptionForCantAttendHearing();
+    await this.EnterUnavailabilityDates();
+    await this.SelectOptionForPhoneOrVideoHearing();
+    await this.SelectOptionForVulnerability();
+    await this.SelectOptionForSupportRequired();
+    await this.SelectPreferredCourtLocation();
+    await this.SelectLanguageOption();
+  }
+
+  async EnterDQForFastTrack(claimRef){
+    await this.SelectOptionForTriedToSettle(claimRef);
+    await this.SelectOptionToRequestExtraFourWeeksToSettle();
+    await this.SelectConsiderClaimantDocs();
+    await this.SelectExpertEvidence();
+    await this.SelectSentExpertReports();
+    await this.SelectOptionForSharedExpert();
+    await this.EnterExpertDetails();
     await this.SelectGiveEvidenceYourself();
     await this.EnterDefedantWitnesses();
     await this.SelectOptionForCantAttendHearing();
@@ -425,6 +471,34 @@ class ResponseSteps {
 
   async SelectLanguageOption() {
     await welshLanguage.selectLanguageOption();
+  }
+
+  async SelectOptionForTriedToSettle(claimRef){
+    await triedToSettle.selectTriedToSettle(claimRef);
+  }
+
+  async SelectOptionToRequestExtraFourWeeksToSettle(){
+    await requestExtraFourWeeks.SelectExtraFourWeeksToSettle();
+  }
+
+  async SelectConsiderClaimantDocs(){
+    await considerClaimantDocs.SelectConsiderClaimantDocs();
+  }
+
+  async SelectExpertEvidence(){
+    await expertEvidence.SelectOptionForExpertEvidence();
+  }
+
+  async SelectSentExpertReports(){
+    await sentExpertReports.SentExpertReports();
+  }
+
+  async SelectOptionForSharedExpert(){
+    await sharedExpert.SelectOptionForSharedExpert();
+  }
+
+  async EnterExpertDetails(){
+    await expertDetails.EnterExpertDetails();
   }
 }
 
