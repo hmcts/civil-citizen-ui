@@ -1,8 +1,10 @@
 const config = require('../../../config');
 const deepEqualInAnyOrder = require('deep-equal-in-any-order');
 const chai = require('chai');
-const breathingSpace = require('../fixtures/events/enterBreathingSpace.js');
+const breathingSpace = require('../fixtures/events/breathingSpace.js');
+const mediation = require('../fixtures/events/mediation.js');
 const admitAllClaimantResponse = require('../fixtures/events/admitAllClaimantResponse.js');
+const partAdmitClaimantResponse = require('../fixtures/events/partAdmitClaimantResponse.js');
 
 chai.use(deepEqualInAnyOrder);
 chai.config.truncateThreshold = 0;
@@ -15,6 +17,10 @@ const {assignCaseRoleToUser, addUserCaseMapping, unAssignAllUsers} = require('./
 const apiRequest = require('./apiRequest.js');
 const claimSpecData = require('../fixtures/events/createClaimSpec.js');
 const claimSpecDataFastTrack = require('../fixtures/events/createClaimSpecFastTrack');
+const defendantResponse = require('../fixtures/events/createDefendantResponse.js');
+const claimantResponse = require('../fixtures/events/createClaimantResponseToDefence.js');
+const caseProgressionToSDOState = require('../fixtures/events/createCaseProgressionToSDOState');
+const caseProgressionToHearingInitiated = require('../fixtures/events/createCaseProgressionToHearingInitiated');
 
 const data = {
   CREATE_SPEC_CLAIM: (mpScenario) => claimSpecData.createClaim(mpScenario),
@@ -26,6 +32,39 @@ let caseData = {};
 const PBAv3Toggle = 'pba-version-3-ways-to-pay';
 
 module.exports = {
+
+  performCaseProgressedToHearingInitiated: async (user, caseId) => {
+    console.log('This is inside performCaseProgressedToHearingInitiated() : ' + caseId);
+    eventName = 'HEARING_SCHEDULED';
+    const payload = caseProgressionToHearingInitiated.createCaseProgressionToHearingInitiated();
+    await apiRequest.setupTokens(user);
+    caseData = payload['caseDataUpdate'];
+    await assertSubmittedSpecEvent('HEARING_READINESS');
+    await waitForFinishedBusinessProcess(caseId);
+    console.log('End of performCaseProgressedToHearingInitiated()');
+  },
+
+  performCaseProgressedToSDO: async (user, caseId) => {
+    console.log('This is inside performCaseProgressedToSDO : ' + caseId);
+    eventName = 'CREATE_SDO';
+    const payload = caseProgressionToSDOState.createCaseProgressionToSDOState();
+    await apiRequest.setupTokens(user);
+    caseData = payload['caseDataUpdate'];
+    await assertSubmittedSpecEvent('CASE_PROGRESSION');
+    await waitForFinishedBusinessProcess(caseId);
+    console.log('End of performCaseProgressedToSDO()');
+  },
+
+  performCitizenResponse: async (user, caseId) => {
+    console.log('This is inside performCitizenResponse : ' + caseId);
+    eventName = 'DEFENDANT_RESPONSE_CUI';
+    const payload = defendantResponse.createDefendantResponse();
+    //console.log('The payload : ' + payload);
+    await apiRequest.setupTokens(user);
+    await apiRequest.startEventForCitizen(eventName, caseId, payload);
+    await waitForFinishedBusinessProcess(caseId);
+    console.log('End of performCitizenResponse()');
+  },
 
   createSpecifiedClaim: async (user, multipartyScenario, claimType) => {
     console.log(' Creating specified claim');
@@ -68,17 +107,27 @@ module.exports = {
     return caseId;
   },
 
-  viewAndRespondToDefence: async (user, defenceType = config.defenceType.admitAllPayBySetDate)=> {
+  viewAndRespondToDefence: async (user, defenceType = config.defenceType.admitAllPayBySetDate, expectedState)=> {
     let responsePayload;
     if (defenceType === config.defenceType.admitAllPayBySetDate) {
       responsePayload = admitAllClaimantResponse.doNotAcceptAskToPayBySetDate();
     } else if (defenceType === config.defenceType.admitAllPayByInstallment) {
       responsePayload = admitAllClaimantResponse.doNotAcceptAskToPayByInstallment();
+    } else if (defenceType === config.defenceType.partAdmitAmountPaid) {
+      responsePayload = partAdmitClaimantResponse.partAdmitAmountPaidButClaimantWantsToProceed();
+    } else if (defenceType === config.defenceType.partAdmitHaventPaidPartiallyWantsToPayImmediately) {
+      responsePayload = partAdmitClaimantResponse.partAdmitHaventPaidPartiallyWantsToPayImmediatelyButClaimantWantsToProceedWithMediation();
+    } else if (defenceType === config.defenceType.partAdmitWithPartPaymentOnSpecificDate) {
+      responsePayload = partAdmitClaimantResponse.partAdmitWithPartPaymentOnSpecificDateClaimantWantsToAcceptRepaymentPlanWithFixedCosts();
+    } else if (defenceType === config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlan) {
+      responsePayload = partAdmitClaimantResponse.partAdmitWithPartPaymentAsPerPlanClaimantWantsToAcceptRepaymentPlanWithoutFixedCosts();
+    } else if (defenceType === config.defenceType.rejectAll) {
+      responsePayload = claimantResponse.createClaimantIntendsToProceedResponse();
     }
     eventName = responsePayload['event'];
     caseData = responsePayload['caseData'];
     await apiRequest.setupTokens(user);
-    await assertSubmittedSpecEvent();
+    await assertSubmittedSpecEvent(expectedState);
     await waitForFinishedBusinessProcess(caseId);
     console.log('End of viewAndRespondToDefence()');
   },
@@ -91,6 +140,26 @@ module.exports = {
     await assertSubmittedSpecEvent();
     await waitForFinishedBusinessProcess(caseId);
     console.log('End of enterBreathingSpace()');
+  },
+
+  mediationSuccessful: async (user)=> {
+    const mediationSuccessfulPayload = mediation.mediationSuccessfulPayload();
+    eventName = mediationSuccessfulPayload['event'];
+    caseData = mediationSuccessfulPayload['caseData'];
+    await apiRequest.setupTokens(user);
+    await assertSubmittedSpecEvent(config.claimState.CASE_STAYED);
+    await waitForFinishedBusinessProcess(caseId);
+    console.log('End of mediationSuccessful()');
+  },
+
+  mediationUnsuccessful: async (user)=> {
+    const mediationUnsuccessfulPayload = mediation.mediationUnSuccessfulPayload();
+    eventName = mediationUnsuccessfulPayload['event'];
+    caseData = mediationUnsuccessfulPayload['caseData'];
+    await apiRequest.setupTokens(user);
+    await assertSubmittedSpecEvent(config.claimState.JUDICIAL_REFERRAL);
+    await waitForFinishedBusinessProcess(caseId);
+    console.log('End of mediationUnsuccessful()');
   },
 
   liftBreathingSpace: async (user) => {
