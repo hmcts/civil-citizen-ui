@@ -140,6 +140,6 @@ const translate = (translationKey: string, params?: DashboardStatusTranslationPa
     keyValue.lng = getLng(lang);
     return t(translationKey, keyValue);
   }
-  return t(translationKey);
+  return t(translationKey, {lng:getLng(lang)} );
 };
 
