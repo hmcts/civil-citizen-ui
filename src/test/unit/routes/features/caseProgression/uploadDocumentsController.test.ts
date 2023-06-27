@@ -100,7 +100,7 @@ describe('on POST', () => {
   });
 
   it('should display all expert validation errors', async () => {
-    const model = {'expertReport':[{'expertName':'', 'fieldOfExpertise':'', 'questionDocumentName':'', 'otherPartyQuestionsDocumentName':''}]};
+    const model = {'expertReport':[{'expertName':'', 'multipleExpertsName':'', 'fieldOfExpertise':'', 'questionDocumentName':'', 'otherPartyQuestionsDocumentName':''}]};
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
@@ -108,6 +108,7 @@ describe('on POST', () => {
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(TestMessages.VALID_ENTER_EXPERT_NAME);
+        expect(res.text).toContain(TestMessages.VALID_ENTER_EXPERT_NAMES);
         expect(res.text).toContain(TestMessages.VALID_ENTER_EXPERTISE);
         expect(res.text).toContain(TestMessages.VALID_ENTER_DOCUMENT_QUESTIONS);
         expect(res.text).toContain(TestMessages.VALID_ENTER_DOCUMENT_QUESTIONS_OTHER_PARTY);

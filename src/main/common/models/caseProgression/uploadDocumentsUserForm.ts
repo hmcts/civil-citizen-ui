@@ -85,13 +85,18 @@ export class WitnessSection extends FileOnlySection {
 
 export class ExpertSection extends FileOnlySection {
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_EXPERT_NAME'})
+  @IsOptional()
     expertName: string;
+
+  @IsNotEmpty({message: 'ERRORS.VALID_ENTER_EXPERT_NAMES'})
+  @IsOptional()
+    multipleExpertsName: string;
 
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_EXPERTISE'})
   @IsOptional()
     fieldOfExpertise: string;
 
-  @IsNotEmpty({message: 'ERRORS.VALID_ENTER_OTHER_PARTY'})
+  // @IsNotEmpty({message: 'ERRORS.VALID_ENTER_OTHER_PARTY'})
   @IsOptional()
     otherPartyName: string;
 
