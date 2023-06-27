@@ -4585,7 +4585,6 @@ __metadata:
     launchdarkly-node-server-sdk: ^7.0.1
     lodash: ^4.17.21
     luxon: ^3.2.1
-    memorystore: ^1.6.7
     mini-css-extract-plugin: ^2.7.2
     mocha: ^10.2.0
     mocha-multi: 1.1.7
@@ -9653,7 +9652,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lru-cache@npm:^4.0.3, lru-cache@npm:^4.1.5":
+"lru-cache@npm:^4.1.5":
   version: 4.1.5
   resolution: "lru-cache@npm:4.1.5"
   dependencies:
@@ -9792,16 +9791,6 @@ __metadata:
   dependencies:
     fs-monkey: ^1.0.3
   checksum: fcd037566a4bbb00d61dc991858395ccc06267ab5fe9471aeff28433f2a210bf5dd999e64e8b5473f8244f00dfb7ff3221b5c2fe41ff98af1439e5e2168fc410
-  languageName: node
-  linkType: hard
-
-"memorystore@npm:^1.6.7":
-  version: 1.6.7
-  resolution: "memorystore@npm:1.6.7"
-  dependencies:
-    debug: ^4.3.0
-    lru-cache: ^4.0.3
-  checksum: caa5cc523ec39ad8b317ddb5560771df28a10266281066f554bd77b2179a34f21f06891fffbcfe875ed1afc79cf7e106714eff98189ded1e6bfc273159d07948
   languageName: node
   linkType: hard
 
