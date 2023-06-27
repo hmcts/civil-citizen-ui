@@ -20,29 +20,33 @@ const buttons = {
 
 class PriorityDebtsDetails {
 
-  selectMortgage(mortgageAmount) {
-    I.see('Debts you\'re behind on', 'h1');
-    I.checkOption(fields.mortgage);
-    I.fillField(fields.mortgagePayment, mortgageAmount);
-    I.click(fields.mortgagePaymentScheduleMonthly);
+  async selectMortgage(mortgageAmount) {
+    await I.see('Debts you\'re behind on', 'h1');
+    await I.checkOption(fields.mortgage);
+    await I.fillField(fields.mortgagePayment, mortgageAmount);
+    await I.click(fields.mortgagePaymentScheduleMonthly);
   }
-  selectCouncilTax(councilTaxAmount) {
-    I.checkOption(fields.councilTax);
-    I.fillField(fields.councilTaxPayment, councilTaxAmount);
-    I.click(fields.councilTaxPaymentScheduleMonthly);
+
+  async selectCouncilTax(councilTaxAmount) {
+    await I.checkOption(fields.councilTax);
+    await I.fillField(fields.councilTaxPayment, councilTaxAmount);
+    await I.click(fields.councilTaxPaymentScheduleMonthly);
   }
-  selectGas(gasAmount) {
-    I.checkOption(fields.gas);
-    I.fillField(fields.gasPayment, gasAmount);
-    I.click(fields.gasPaymentScheduleWeekly);
+  
+  async selectGas(gasAmount) {
+    await I.checkOption(fields.gas);
+    await I.fillField(fields.gasPayment, gasAmount);
+    await I.click(fields.gasPaymentScheduleWeekly);
   }
-  selectElectricity(electricityAmount) {
-    I.checkOption(fields.electricity);
-    I.fillField(fields.electricityPayment, electricityAmount);
-    I.click(fields.electricityPaymentScheduleFortnightly);
+
+  async selectElectricity(electricityAmount) {
+    await I.checkOption(fields.electricity);
+    await I.fillField(fields.electricityPayment, electricityAmount);
+    await I.click(fields.electricityPaymentScheduleFortnightly);
   }
-  clickContinue() {
-    I.click(buttons.saveAndContinue);
+  
+  async clickContinue() {
+    await I.click(buttons.saveAndContinue);
   }
 }
 
