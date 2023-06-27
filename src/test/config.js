@@ -2,6 +2,7 @@
 const PropertiesVolume = require('./secretsConfig');
 
 const defaultPassword = process.env.CITIZEN_PASSWORD;
+const judgeDefaultPassword = process.env.JUDGE_PASSWORD;
 const testUrl = process.env.TEST_URL || 'https://civil-citizen-ui.demo.platform.hmcts.net';
 const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
 
@@ -54,6 +55,20 @@ module.exports = {
     email: 'cuiuser@gmail.com',
     type: 'defendant_solicitor',
   },
+  judgeUserWithRegionId1: {
+    password: judgeDefaultPassword,
+    email: '4917924EMP-@ejudiciary.net',
+    type: 'judge',
+    roleCategory: 'JUDICIAL',
+    regionId: '1',
+  },
+  hearingCenterAdminWithRegionId1: {
+    email: 'hearing_center_admin_reg1@justice.gov.uk',
+    password: defaultPassword,
+    type: 'hearing-center-admin',
+    roleCategory: 'ADMIN',
+    regionId: '1',
+  },
   definition: {
     jurisdiction: 'CIVIL',
     caseType: 'CIVIL',
@@ -72,6 +87,7 @@ module.exports = {
     partAdmitHaventPaidPartiallyWantsToPayImmediately: 'PART_ADMIT_PAY_IMMEDIATELY',
     partAdmitWithPartPaymentOnSpecificDate: 'PART_ADMIT_PAY_BY_SET_DATE',
     partAdmitWithPartPaymentAsPerInstallmentPlan: 'PART_ADMIT_PAY_BY_INSTALLMENTS',
+    rejectAll: 'REJECT_ALL',
   },
   claimState: {
     PROCEEDS_IN_HERITAGE_SYSTEM: 'PROCEEDS_IN_HERITAGE_SYSTEM',
