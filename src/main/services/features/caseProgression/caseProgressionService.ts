@@ -147,7 +147,7 @@ const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSect
   if (request['fileUpload'] !== '') {
     formObj.fileUpload = request['fileUpload'];
   }
-  if (request['caseDocument'] !== '') {
+  if (request['caseDocument'] && request['caseDocument'] !== '') {
     formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
   }
   return formObj;

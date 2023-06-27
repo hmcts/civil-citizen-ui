@@ -5,7 +5,7 @@ import {CP_UPLOAD_FILE} from 'routes/urls';
 import Module from 'module';
 import { TypeOfDocumentSectionMapper } from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
 import {FileUpload} from 'models/caseProgression/uploadDocumentsUserForm';
-import {CaseDocument} from "models/document/caseDocument";
+import {CaseDocument} from 'models/document/caseDocument';
 const session = require('supertest-session');
 const testSession = session(app);
 const citizenRoleToken: string = config.get('citizenRoleToken');
