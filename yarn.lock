@@ -4583,7 +4583,7 @@ __metadata:
     launchdarkly-node-client-sdk: ^3.0.0
     launchdarkly-node-server-sdk: ^7.0.1
     lodash: ^4.17.21
-    luxon: ^3.2.1
+    luxon: ^3.3.0
     memorystore: ^1.6.7
     mini-css-extract-plugin: ^2.7.2
     mocha: ^10.2.0
@@ -9685,7 +9685,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"luxon@npm:^3.2.1":
+"luxon@npm:^3.3.0":
   version: 3.3.0
   resolution: "luxon@npm:3.3.0"
   checksum: 50cf17a0dc155c3dcacbeae8c0b7e80db425e0ba97b9cbdf12a7fc142d841ff1ab1560919f033af46240ed44e2f70c49f76e3422524c7fc8bb8d81ca47c66187
