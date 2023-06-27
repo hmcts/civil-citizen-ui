@@ -27,7 +27,7 @@ export const getTrialContent = (claim: Claim, form: GenericForm<UploadDocumentsU
   }
 
   if(claim.caseProgression?.defendantUploadDocuments?.trial[4]?.selected) {
-    sectionContent.push(trialDocumentary(form));
+    sectionContent.push(trialDocumentary(form, isSmallClaims));
   }
 
   if(claim.caseProgression?.defendantUploadDocuments?.trial[2]?.selected && isSmallClaims) {
@@ -105,15 +105,15 @@ const trialCosts = (form: GenericForm<UploadDocumentsUserForm>): ClaimSummaryCon
   }));
 };
 
-const trialDocumentary = (form: GenericForm<UploadDocumentsUserForm>): ClaimSummaryContent[] => {
+const trialDocumentary = (form: GenericForm<UploadDocumentsUserForm>, isSmallClaims: boolean): ClaimSummaryContent[] => {
   const sectionContent = [];
 
   if (form) {
     form.model.trialDocumentary?.forEach(function (trialDocumentary: TypeOfDocumentSection, index: number) {
-      sectionContent.push([buildTrialDocumentarySection(trialDocumentary, index, form)]);
+      sectionContent.push([buildTrialDocumentarySection(trialDocumentary, index, form, isSmallClaims)]);
     });
   } else {
-    sectionContent.push([buildTrialDocumentarySection()]);
+    sectionContent.push([buildTrialDocumentarySection(null,null,null,isSmallClaims)]);
   }
 
   return sectionContent.flat().map((sectionContent, index) => ({

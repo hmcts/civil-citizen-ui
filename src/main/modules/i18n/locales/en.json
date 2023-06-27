@@ -2351,7 +2351,8 @@
         "SELECT": "Select"
       },
       "HEARING": {
-        "TITLE": "Hearing documents"
+        "TITLE": "Hearing documents",
+        "DOCUMENTARY": "Documentary evidence for hearing"
       },
       "YEAR": "Year"
     },
