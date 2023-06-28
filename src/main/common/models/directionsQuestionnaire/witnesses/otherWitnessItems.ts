@@ -1,5 +1,5 @@
 import {IsNotEmpty, IsEmail, Validate, ValidateIf} from 'class-validator';
-import {PhoneUKValidator} from "form/validators/phoneUKValidator";
+import {PhoneUKValidator} from 'form/validators/phoneUKValidator';
 
 export class OtherWitnessItems {
   @IsNotEmpty({message: 'ERRORS.DEFENDANT_WITNESS_ENTER_FIRST_NAME'})
