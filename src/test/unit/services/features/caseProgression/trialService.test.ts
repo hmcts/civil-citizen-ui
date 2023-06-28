@@ -344,7 +344,7 @@ describe('Trial service', () => {
     expect(actualTrialContent[0][0].contentSections.length).toEqual(4);
     expect(actualTrialContent[1][0].contentSections.length).toEqual(2);
 
-    expect(actualTrialContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.DOCUMENTARY');
+    expect(actualTrialContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.HEARING.DOCUMENTARY');
     expect(actualTrialContent[1][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.LEGAL');
   });
 });
