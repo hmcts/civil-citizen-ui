@@ -21,13 +21,13 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 partnerDisabilityController.get(CITIZEN_PARTNER_DISABILITY_URL,
   statementOfMeansGuard,
   async (req, res, next: NextFunction) => {
-  try {
-    const partnerDisability = await partnerDisabilityService.getPartnerDisability(req.params.id);
-    renderView(partnerDisability, res);
-  } catch (error) {
-    next(error);
-  }
-});
+    try {
+      const partnerDisability = await partnerDisabilityService.getPartnerDisability(req.params.id);
+      renderView(partnerDisability, res);
+    } catch (error) {
+      next(error);
+    }
+  });
 
 partnerDisabilityController.post(CITIZEN_PARTNER_DISABILITY_URL,
   statementOfMeansGuard,

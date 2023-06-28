@@ -18,39 +18,39 @@ const whoEmploysYouController = Router();
 whoEmploysYouController.get(CITIZEN_WHO_EMPLOYS_YOU_URL,
   statementOfMeansGuard,
   async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const form = new GenericForm(await getEmployers(req.params.id));
-    res.render(whoEmploysYouViewPath, {form});
-  } catch (error) {
-    next(error);
-  }
-});
+    try {
+      const form = new GenericForm(await getEmployers(req.params.id));
+      res.render(whoEmploysYouViewPath, {form});
+    } catch (error) {
+      next(error);
+    }
+  });
 
 whoEmploysYouController.post(CITIZEN_WHO_EMPLOYS_YOU_URL,
   statementOfMeansGuard,
   async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const claimId = req.params.id;
-    const employers: Employers = new Employers(req.body.rows.map((employer: Employer) => new Employer(employer.employerName, employer.jobTitle)));
-    const form = new GenericForm(employers);
-    form.validateSync();
-    if (form.hasErrors()) {
-      res.render(whoEmploysYouViewPath, {form});
-    } else {
-      await saveEmployers(claimId, employers);
-      const employment: GenericForm<EmploymentForm> = await getEmploymentForm(claimId);
-      if (employment.model.isEmployed()) {
-        res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_COURT_ORDERS_URL));
-      } else if (employment.model.isEmployedAndSelfEmployed()) {
-        res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_SELF_EMPLOYED_URL));
+    try {
+      const claimId = req.params.id;
+      const employers: Employers = new Employers(req.body.rows.map((employer: Employer) => new Employer(employer.employerName, employer.jobTitle)));
+      const form = new GenericForm(employers);
+      form.validateSync();
+      if (form.hasErrors()) {
+        res.render(whoEmploysYouViewPath, {form});
       } else {
-        res.status(500);
-        res.render('error');
+        await saveEmployers(claimId, employers);
+        const employment: GenericForm<EmploymentForm> = await getEmploymentForm(claimId);
+        if (employment.model.isEmployed()) {
+          res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_COURT_ORDERS_URL));
+        } else if (employment.model.isEmployedAndSelfEmployed()) {
+          res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_SELF_EMPLOYED_URL));
+        } else {
+          res.status(500);
+          res.render('error');
+        }
       }
+    } catch (error) {
+      next(error);
     }
-  } catch (error) {
-    next(error);
-  }
-});
+  });
 
 export default whoEmploysYouController;

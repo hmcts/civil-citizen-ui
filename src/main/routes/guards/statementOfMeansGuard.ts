@@ -13,7 +13,7 @@ export const statementOfMeansGuard = async (req: Request, res: Response, next: N
     if (isPaymentOptionExisting(caseData) && isNotPayImmediatelyResponse(caseData)) {
       next();
     } else {
-      logger.info("Redirecting to response task list from ", req.url)
+      logger.info('Redirecting to response task list from ', req.url)
       res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
     }
   } catch (error) {

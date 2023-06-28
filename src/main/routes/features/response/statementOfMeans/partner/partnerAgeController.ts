@@ -24,13 +24,13 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 partnerAgeController.get(CITIZEN_PARTNER_AGE_URL,
   statementOfMeansGuard,
   async (req, res, next: NextFunction) => {
-  try {
-    const partnerAge = await partnerAgeService.getPartnerAge(req.params.id);
-    renderView(partnerAge, res);
-  } catch (error) {
-    next(error);
-  }
-});
+    try {
+      const partnerAge = await partnerAgeService.getPartnerAge(req.params.id);
+      renderView(partnerAge, res);
+    } catch (error) {
+      next(error);
+    }
+  });
 
 partnerAgeController.post(CITIZEN_PARTNER_AGE_URL,
   statementOfMeansGuard,

@@ -19,29 +19,29 @@ function renderView(form: GenericForm<RegularIncome>, res: Response) {
 regularIncomeController.get(CITIZEN_MONTHLY_INCOME_URL,
   statementOfMeansGuard,
   async (req, res, next: NextFunction) => {
-  try {
-    const model = await getRegularIncome(req.params.id);
-    renderView(new GenericForm<RegularIncome>(model), res);
-  } catch (error) {
-    next(error);
-  }
-});
+    try {
+      const model = await getRegularIncome(req.params.id);
+      renderView(new GenericForm<RegularIncome>(model), res);
+    } catch (error) {
+      next(error);
+    }
+  });
 
 regularIncomeController.post(CITIZEN_MONTHLY_INCOME_URL,
   statementOfMeansGuard,
   async (req, res, next: NextFunction) => {
-  try {
-    const form = new GenericForm(toRegularIncomeForm(req));
-    await form.validate();
-    if (form.hasErrors()) {
-      renderView(form, res);
-    } else {
-      await saveRegularIncome(req.params.id, form.model);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_EXPLANATION_URL));
+    try {
+      const form = new GenericForm(toRegularIncomeForm(req));
+      await form.validate();
+      if (form.hasErrors()) {
+        renderView(form, res);
+      } else {
+        await saveRegularIncome(req.params.id, form.model);
+        res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_EXPLANATION_URL));
+      }
+    } catch (error) {
+      next(error);
     }
-  } catch (error) {
-    next(error);
-  }
-});
+  });
 
 export default regularIncomeController;

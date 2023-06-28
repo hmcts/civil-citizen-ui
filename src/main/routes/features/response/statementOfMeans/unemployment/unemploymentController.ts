@@ -25,31 +25,31 @@ function renderView(form: GenericForm<Unemployment>, res: Response): void {
 unemploymentController.get(CITIZEN_UNEMPLOYED_URL,
   statementOfMeansGuard,
   async (req, res, next: NextFunction) => {
-  try {
-    unemployment = await unemploymentService.getUnemployment(req.params.id);
-    renderView(new GenericForm(unemployment), res);
-  } catch (error) {
-    next(error);
-  }
-});
+    try {
+      unemployment = await unemploymentService.getUnemployment(req.params.id);
+      renderView(new GenericForm(unemployment), res);
+    } catch (error) {
+      next(error);
+    }
+  });
 
 unemploymentController.post(CITIZEN_UNEMPLOYED_URL,
   statementOfMeansGuard,
   async (req, res, next: NextFunction) => {
-  try {
-    const unemploymentToSave = new Unemployment(req.body.option, new UnemploymentDetails(req.body.years, req.body.months), new OtherDetails(req.body.details));
-    const unemploymentForm: GenericForm<Unemployment> = new GenericForm(unemploymentToSave);
-    unemploymentForm.errors = validator.validateSync(unemploymentForm.model);
+    try {
+      const unemploymentToSave = new Unemployment(req.body.option, new UnemploymentDetails(req.body.years, req.body.months), new OtherDetails(req.body.details));
+      const unemploymentForm: GenericForm<Unemployment> = new GenericForm(unemploymentToSave);
+      unemploymentForm.errors = validator.validateSync(unemploymentForm.model);
 
-    if (unemploymentForm.hasErrors() || unemploymentForm.hasNestedErrors()) {
-      renderView(unemploymentForm, res);
-    } else {
-      await unemploymentService.saveUnemployment(req.params.id, unemploymentToSave);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_COURT_ORDERS_URL));
+      if (unemploymentForm.hasErrors() || unemploymentForm.hasNestedErrors()) {
+        renderView(unemploymentForm, res);
+      } else {
+        await unemploymentService.saveUnemployment(req.params.id, unemploymentToSave);
+        res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_COURT_ORDERS_URL));
+      }
+    } catch (error) {
+      next(error);
     }
-  } catch (error) {
-    next(error);
-  }
-});
+  });
 
 export default unemploymentController;

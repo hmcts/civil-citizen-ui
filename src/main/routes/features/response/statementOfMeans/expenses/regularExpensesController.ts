@@ -20,29 +20,29 @@ function renderForm(form: GenericForm<RegularExpenses>, res: Response) {
 regularExpensesController.get(CITIZEN_MONTHLY_EXPENSES_URL,
   statementOfMeansGuard,
   async (req, res, next: NextFunction) => {
-  try {
-    const model = await getRegularExpenses(req.params.id);
-    renderForm(new GenericForm<RegularExpenses>(model), res);
-  } catch (error) {
-    next(error);
-  }
-});
+    try {
+      const model = await getRegularExpenses(req.params.id);
+      renderForm(new GenericForm<RegularExpenses>(model), res);
+    } catch (error) {
+      next(error);
+    }
+  });
 
 regularExpensesController.post(CITIZEN_MONTHLY_EXPENSES_URL,
   statementOfMeansGuard,
   async (req, res, next: NextFunction) => {
-  const form = new GenericForm(toRegularExpenseForm(req));
-  try {
-    await form.validate();
-    if (form.hasErrors()) {
-      renderForm(form, res);
-    } else {
-      await saveRegularExpenses(req.params.id, form.model);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_MONTHLY_INCOME_URL));
+    const form = new GenericForm(toRegularExpenseForm(req));
+    try {
+      await form.validate();
+      if (form.hasErrors()) {
+        renderForm(form, res);
+      } else {
+        await saveRegularExpenses(req.params.id, form.model);
+        res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_MONTHLY_INCOME_URL));
+      }
+    } catch (error) {
+      next(error);
     }
-  } catch (error) {
-    next(error);
-  }
-});
+  });
 
 export default regularExpensesController;

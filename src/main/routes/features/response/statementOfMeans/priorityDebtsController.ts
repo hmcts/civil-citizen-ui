@@ -20,29 +20,29 @@ function renderForm(form: GenericForm<PriorityDebts>, res: Response) {
 priorityDebtsController.get(CITIZEN_PRIORITY_DEBTS_URL,
   statementOfMeansGuard,
   async (req, res, next: NextFunction) => {
-  try {
-    const priorityDebts = await getPriorityDebts(req.params.id);
-    renderForm(new GenericForm<PriorityDebts>(priorityDebts), res);
-  } catch (error) {
-    next(error);
-  }
-});
+    try {
+      const priorityDebts = await getPriorityDebts(req.params.id);
+      renderForm(new GenericForm<PriorityDebts>(priorityDebts), res);
+    } catch (error) {
+      next(error);
+    }
+  });
 
 priorityDebtsController.post(CITIZEN_PRIORITY_DEBTS_URL,
   statementOfMeansGuard,
   async (req, res, next: NextFunction) => {
-  try {
-    const form = new GenericForm(getPriorityDebtsForm(req));
-    await form.validate();
-    if (form.hasErrors()) {
-      renderForm(form, res);
-    } else {
-      await savePriorityDebts(req.params.id, form.model);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEBTS_URL));
+    try {
+      const form = new GenericForm(getPriorityDebtsForm(req));
+      await form.validate();
+      if (form.hasErrors()) {
+        renderForm(form, res);
+      } else {
+        await savePriorityDebts(req.params.id, form.model);
+        res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEBTS_URL));
+      }
+    } catch (error) {
+      next(error);
     }
-  } catch (error) {
-    next(error);
-  }
-});
+  });
 
 export default priorityDebtsController;
