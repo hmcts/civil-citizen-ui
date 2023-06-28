@@ -16,7 +16,7 @@ function getTable(isClaimant: boolean, documentText: string[]): ClaimSummarySect
 
   const tableRows = [] as TableCell[][];
 
-  const isClaimantString = isClaimant == true ? 'Claimant ': 'Defendant ';
+  const isClaimantString = isClaimant == true ? 'PAGES.CLAIM_SUMMARY.CLAIMANT': 'PAGES.CLAIM_SUMMARY.DEFENDANT';
 
   for(let i = documentText.length-1; i >= 0; i--){
     tableRows.push([
@@ -30,7 +30,7 @@ function getTable(isClaimant: boolean, documentText: string[]): ClaimSummarySect
     data: {
       head: [
         {
-          text: isClaimantString + 'hearing',
+          text: isClaimantString + 'PAGES.CLAIM_SUMMARY.HEARING_DOCUMENTS',
         },
         {
           text: '',
