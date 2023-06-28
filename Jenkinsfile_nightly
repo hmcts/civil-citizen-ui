@@ -58,7 +58,7 @@ def secrets = [
 withNightlyPipeline(type, product, component) {
   env.TEST_URL = params.TEST_URL
   env.RUNNING_ENV = params.ENVIRONMENT
-  //loadVaultSecrets(secrets)
+  loadVaultSecrets(secrets)
   //enableCrossBrowserTest()
   //enablePactAs([
     //AppPipelineDsl.PactRoles.CONSUMER
