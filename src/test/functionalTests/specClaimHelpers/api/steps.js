@@ -6,6 +6,7 @@ const mediation = require('../fixtures/events/mediation.js');
 const admitAllClaimantResponse = require('../fixtures/events/admitAllClaimantResponse.js');
 const partAdmitClaimantResponse = require('../fixtures/events/partAdmitClaimantResponse.js');
 const rejectAllClaimantResponse = require('../fixtures/events/rejectAllClaimantResponse.js');
+const createSDOReqPayload = require('../fixtures/events/createSDO.js');
 
 chai.use(deepEqualInAnyOrder);
 chai.config.truncateThreshold = 0;
@@ -106,6 +107,28 @@ module.exports = {
     //field is deleted in about to submit callback
     deleteCaseFields('applicantSolicitor1CheckEmail');
     return caseId;
+  },
+
+  createSDO: async (user, sdoSelectionType = config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsYes) => {
+    let createSDOPayload;
+    if (sdoSelectionType === config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsYes) {
+      createSDOPayload = createSDOReqPayload.judgementSumSelectedYesAssignToSmallClaimsYes();
+    } else if (sdoSelectionType === config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing) {
+      createSDOPayload = createSDOReqPayload.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing();
+    } else if (sdoSelectionType === config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoTrialHearing) {
+      createSDOPayload = createSDOReqPayload.judgementSumSelectedYesAssignToSmallClaimsNoTrialHearing();
+    } else if (sdoSelectionType === config.sdoSelectionType.judgementSumSelectedNoAssignToSmallClaimsYes) {
+      createSDOPayload = createSDOReqPayload.judgementSumSelectedNoAssignToSmallClaimsYes();
+    } else if (sdoSelectionType === config.sdoSelectionType.judgementSumSelectedNoAssignToFastTrackYes) {
+      createSDOPayload = createSDOReqPayload.judgementSumSelectedNoAssignToFastTrackYes();
+    }
+
+    eventName = createSDOPayload['event'];
+    caseData = createSDOPayload['caseData'];
+    await apiRequest.setupTokens(user);
+    await assertSubmittedSpecEvent(config.claimState.CASE_PROGRESSION);
+    await waitForFinishedBusinessProcess(caseId);
+    console.log('End of createSDO()');
   },
 
   viewAndRespondToDefence: async (user, defenceType = config.defenceType.admitAllPayBySetDate, expectedState)=> {
