@@ -10,6 +10,7 @@ import {
   ON_TAX_PAYMENTS_URL,
 } from '../../../../../urls';
 import {GenericForm} from '../../../../../../common/form/models/genericForm';
+import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 
 const selfEmployedAsViewPath = 'features/response/statementOfMeans/employment/selfEmployed/self-employed-as';
 const selfEmployedAsController = Router();
@@ -18,7 +19,9 @@ function renderView(form: GenericForm<SelfEmployedAsForm>, res: Response): void 
   res.render(selfEmployedAsViewPath, {form});
 }
 
-selfEmployedAsController.get(CITIZEN_SELF_EMPLOYED_URL, async (req, res, next: NextFunction) => {
+selfEmployedAsController.get(CITIZEN_SELF_EMPLOYED_URL,
+  statementOfMeansGuard,
+  async (req, res, next: NextFunction) => {
   try {
     const form = await getSelfEmployedAsForm(req.params.id);
     renderView(form, res);
@@ -28,6 +31,7 @@ selfEmployedAsController.get(CITIZEN_SELF_EMPLOYED_URL, async (req, res, next: N
 });
 
 selfEmployedAsController.post(CITIZEN_SELF_EMPLOYED_URL,
+  statementOfMeansGuard,
   async (req, res, next: NextFunction) => {
     try{
       const annualTurnover = req.body.annualTurnover ? Number(req.body.annualTurnover) : undefined;

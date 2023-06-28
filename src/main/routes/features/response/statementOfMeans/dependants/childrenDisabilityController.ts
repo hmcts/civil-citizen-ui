@@ -7,12 +7,14 @@ import {
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
+import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 
 const childrenDisabilityViewPath = 'features/response/statementOfMeans/dependants/children-disability';
 const childrenDisabilityController = Router();
 
 childrenDisabilityController
   .get(CHILDREN_DISABILITY_URL,
+    statementOfMeansGuard,
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         const childrenDisability : GenericYesNo = await getChildrenDisability(req.params.id);
@@ -24,6 +26,7 @@ childrenDisabilityController
     })
   .post(
     CHILDREN_DISABILITY_URL,
+    statementOfMeansGuard,
     async (req: Request, res: Response, next: NextFunction) => {
       const childrenDisability: GenericYesNo = new GenericYesNo(req.body.option);
       const form: GenericForm<GenericYesNo> = new GenericForm(childrenDisability);

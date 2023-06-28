@@ -4,6 +4,7 @@ import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlForm
 import {getCarer, saveCarer} from '../../../../services/features/response/statementOfMeans/carerService';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
+import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 
 const carerViewPath = 'features/response/statementOfMeans/carer';
 const carerController = Router();
@@ -12,7 +13,9 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(carerViewPath, {form});
 }
 
-carerController.get(CITIZEN_CARER_URL, async (req, res, next: NextFunction) => {
+carerController.get(CITIZEN_CARER_URL,
+  statementOfMeansGuard,
+  async (req, res, next: NextFunction) => {
   try {
     renderView(new GenericForm(await getCarer(req.params.id)), res);
   } catch (error) {
@@ -21,6 +24,7 @@ carerController.get(CITIZEN_CARER_URL, async (req, res, next: NextFunction) => {
 });
 
 carerController.post(CITIZEN_CARER_URL,
+  statementOfMeansGuard,
   async (req, res, next: NextFunction) => {
     const carerForm: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option));
     carerForm.validateSync();

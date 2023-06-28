@@ -10,6 +10,7 @@ import {DisabilityService} from '../../../../../services/features/response/state
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
+import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 
 const citizenPartnerAgeViewPath = 'features/response/statementOfMeans/partner/partner-age';
 const partnerAgeController = Router();
@@ -20,7 +21,9 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(citizenPartnerAgeViewPath, {form});
 }
 
-partnerAgeController.get(CITIZEN_PARTNER_AGE_URL, async (req, res, next: NextFunction) => {
+partnerAgeController.get(CITIZEN_PARTNER_AGE_URL,
+  statementOfMeansGuard,
+  async (req, res, next: NextFunction) => {
   try {
     const partnerAge = await partnerAgeService.getPartnerAge(req.params.id);
     renderView(partnerAge, res);
@@ -30,6 +33,7 @@ partnerAgeController.get(CITIZEN_PARTNER_AGE_URL, async (req, res, next: NextFun
 });
 
 partnerAgeController.post(CITIZEN_PARTNER_AGE_URL,
+  statementOfMeansGuard,
   async (req, res, next: NextFunction) => {
     try {
       const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option));

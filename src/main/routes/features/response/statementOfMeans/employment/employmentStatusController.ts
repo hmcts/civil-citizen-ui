@@ -13,6 +13,7 @@ import {
   saveEmploymentData,
 } from '../../../../../services/features/response/statementOfMeans/employment/employmentService';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
+import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 
 const citizenEmploymentStatusViewPath = 'features/response/statementOfMeans/employment/employment-status';
 const employmentStatusController = Router();
@@ -37,7 +38,9 @@ function redirectToEmployersPage(form: GenericForm<EmploymentForm>, claimId: str
   }
 }
 
-employmentStatusController.get(CITIZEN_EMPLOYMENT_URL, async (req, res, next: NextFunction) => {
+employmentStatusController.get(CITIZEN_EMPLOYMENT_URL,
+  statementOfMeansGuard,
+  async (req, res, next: NextFunction) => {
   try {
     const form = await getEmploymentForm(req.params.id);
     renderView(form, res);
@@ -46,7 +49,9 @@ employmentStatusController.get(CITIZEN_EMPLOYMENT_URL, async (req, res, next: Ne
   }
 });
 
-employmentStatusController.post(CITIZEN_EMPLOYMENT_URL, async (req, res, next: NextFunction) => {
+employmentStatusController.post(CITIZEN_EMPLOYMENT_URL,
+  statementOfMeansGuard,
+  async (req, res, next: NextFunction) => {
   const form = new GenericForm(new EmploymentForm(req.body.option, EmploymentForm.convertToArray(req.body.employmentCategory)));
   try {
     form.validateSync();

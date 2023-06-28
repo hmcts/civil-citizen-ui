@@ -219,6 +219,7 @@ describe('Task List Helpers', () => {
     });
 
     it('should return false if payment option is IMMEDIATELY', () => {
+      caseData.respondent1 = <Party>{responseType: ResponseType.FULL_ADMISSION};
       caseData.fullAdmission = new FullAdmission();
       caseData.fullAdmission.paymentIntention = new PaymentIntention();
       caseData.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;

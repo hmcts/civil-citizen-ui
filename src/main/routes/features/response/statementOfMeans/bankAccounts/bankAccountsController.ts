@@ -8,6 +8,7 @@ import {BankAccountTypes} from '../../../../../common/form/models/bankAndSavings
 import {BankAccountService} from '../../../../../services/features/response/statementOfMeans/bankAccounts/bankAccountService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
+import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 
 const citizenBankAccountsViewPath = 'features/response/statementOfMeans/citizenBankAndSavings/citizen-bank-accounts';
 const bankAccountsController = Router();
@@ -17,12 +18,16 @@ function renderView(form: GenericForm<BankAccounts>, bankAccountDropDownItems: B
   res.render(citizenBankAccountsViewPath, {form, bankAccountDropDownItems});
 }
 
-bankAccountsController.get(CITIZEN_BANK_ACCOUNT_URL, async (req, res) => {
+bankAccountsController.get(CITIZEN_BANK_ACCOUNT_URL,
+  statementOfMeansGuard,
+  async (req, res) => {
   const bankAccounts = await bankAccountService.getBankAccounts(req.params.id);
   renderView(new GenericForm(bankAccounts), new BankAccountTypes(), res);
 });
 
-bankAccountsController.post(CITIZEN_BANK_ACCOUNT_URL,  async(req, res) => {
+bankAccountsController.post(CITIZEN_BANK_ACCOUNT_URL,
+  statementOfMeansGuard,
+  async (req, res) => {
   const claimId = req.params.id;
   const bankAccounts = new BankAccounts(req.body.accounts.map((bankAccount: BankAccount) =>
     new BankAccount(bankAccount.typeOfAccount, bankAccount.joint, bankAccount.balance)));

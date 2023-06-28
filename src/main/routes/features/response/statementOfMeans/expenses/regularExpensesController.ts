@@ -8,6 +8,7 @@ import {
   saveRegularExpenses,
 } from '../../../../../services/features/response/statementOfMeans/expenses/regularExpensesService';
 import {toRegularExpenseForm} from '../../../../../common/utils/expenseAndIncome/regularIncomeExpenseCoverter';
+import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 
 const regularExpensesController = Router();
 const regularExpensesView = 'features/response/statementOfMeans/expenses/regular-expenses';
@@ -16,7 +17,9 @@ function renderForm(form: GenericForm<RegularExpenses>, res: Response) {
   res.render(regularExpensesView, {form});
 }
 
-regularExpensesController.get(CITIZEN_MONTHLY_EXPENSES_URL, async (req, res, next: NextFunction) => {
+regularExpensesController.get(CITIZEN_MONTHLY_EXPENSES_URL,
+  statementOfMeansGuard,
+  async (req, res, next: NextFunction) => {
   try {
     const model = await getRegularExpenses(req.params.id);
     renderForm(new GenericForm<RegularExpenses>(model), res);
@@ -25,7 +28,9 @@ regularExpensesController.get(CITIZEN_MONTHLY_EXPENSES_URL, async (req, res, nex
   }
 });
 
-regularExpensesController.post(CITIZEN_MONTHLY_EXPENSES_URL, async (req, res, next: NextFunction) => {
+regularExpensesController.post(CITIZEN_MONTHLY_EXPENSES_URL,
+  statementOfMeansGuard,
+  async (req, res, next: NextFunction) => {
   const form = new GenericForm(toRegularExpenseForm(req));
   try {
     await form.validate();

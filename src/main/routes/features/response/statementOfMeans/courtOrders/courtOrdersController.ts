@@ -4,6 +4,7 @@ import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {courtOrdersService}
   from '../../../../../services/features/response/statementOfMeans/courtOrders/courtOrdersService';
 import {CourtOrders} from '../../../../../common/form/models/statementOfMeans/courtOrders/courtOrders';
+import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 
 const residenceViewPath = 'features/response/statementOfMeans/courtOrders/court-orders';
 
@@ -11,6 +12,7 @@ const courtOrdersController = Router();
 courtOrdersController
   .get(
     CITIZEN_COURT_ORDERS_URL,
+    statementOfMeansGuard,
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         const courtOrders: CourtOrders = await courtOrdersService.getCourtOrders(req.params.id);
@@ -23,6 +25,7 @@ courtOrdersController
     })
   .post(
     CITIZEN_COURT_ORDERS_URL,
+    statementOfMeansGuard,
     async (req: Request, res: Response, next: NextFunction) => {
       const courtOrders = courtOrdersService.buildCourtOrders(req.body);
       courtOrdersService.removeEmptyCourtOrders(courtOrders);

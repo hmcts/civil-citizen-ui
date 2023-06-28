@@ -10,6 +10,7 @@ import {GenericForm} from '../../../../../common/form/models/genericForm';
 import dependantsService from '../../../../../services/features/response/statementOfMeans/dependants/dependantsService';
 import {hasDisabledChildren} from '../../../../../services/features/response/statementOfMeans/dependants/childrenDisabilityService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
+import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 
 const residenceViewPath = 'features/response/statementOfMeans/dependants/dependants';
 
@@ -17,6 +18,7 @@ const dependantsController = Router();
 dependantsController
   .get(
     CITIZEN_DEPENDANTS_URL,
+    statementOfMeansGuard,
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         const dependants: Dependants = await dependantsService.getDependants(req.params.id);
@@ -27,6 +29,7 @@ dependantsController
     })
   .post(
     CITIZEN_DEPENDANTS_URL,
+    statementOfMeansGuard,
     async (req: Request, res: Response, next: NextFunction) => {
       const dependants = dependantsService.buildDependants(req.body.declared, req.body.under11,
         req.body.between11and15, req.body.between16and19);

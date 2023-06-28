@@ -4,6 +4,7 @@ import {SevereDisabilityService} from '../../../../services/features/response/st
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
+import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 
 const citizenSevereDisabilityViewPath = 'features/response/statementOfMeans/are-you-severely-disabled';
 const severeDisabilityController = Router();
@@ -13,7 +14,9 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(citizenSevereDisabilityViewPath, {form});
 }
 
-severeDisabilityController.get(CITIZEN_SEVERELY_DISABLED_URL, async (req, res, next: NextFunction) => {
+severeDisabilityController.get(CITIZEN_SEVERELY_DISABLED_URL,
+  statementOfMeansGuard,
+  async (req, res, next: NextFunction) => {
   try {
     const severeDisability = await severeDisabilityService.getSevereDisability(req.params.id);
     renderView(severeDisability, res);
@@ -22,7 +25,9 @@ severeDisabilityController.get(CITIZEN_SEVERELY_DISABLED_URL, async (req, res, n
   }
 });
 
-severeDisabilityController.post(CITIZEN_SEVERELY_DISABLED_URL, async (req, res, next: NextFunction) => {
+severeDisabilityController.post(CITIZEN_SEVERELY_DISABLED_URL,
+  statementOfMeansGuard,
+  async (req, res, next: NextFunction) => {
   try {
     const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option));
     form.validateSync();

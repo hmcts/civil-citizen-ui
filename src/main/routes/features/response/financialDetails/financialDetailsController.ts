@@ -10,6 +10,7 @@ import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftSto
 import {PartyType} from 'models/partyType';
 import {LoggerInstance as winLogger} from 'winston';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 
 const financialDetailsViewPath = 'features/response/financialDetails/financial-details';
 const financialDetailsController = Router();
@@ -26,7 +27,9 @@ function renderView(res: Response, claim: Claim, claimantDetailsUrl: string): vo
 
 financialDetailsController
   .get(
-    FINANCIAL_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
+    FINANCIAL_DETAILS_URL,
+    statementOfMeansGuard,
+    async (req: Request, res: Response, next: NextFunction) => {
       try {
         const claim: Claim = await getCaseDataFromStore(req.params.id);
         const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CITIZEN_CONTACT_THEM_URL);
@@ -35,7 +38,9 @@ financialDetailsController
         next(error);
       }
     })
-  .post(FINANCIAL_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
+  .post(FINANCIAL_DETAILS_URL,
+    statementOfMeansGuard,
+    async (req: Request, res: Response, next: NextFunction) => {
     try {
       const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CITIZEN_CONTACT_THEM_URL);
       const claim: Claim = await getCaseDataFromStore(req.params.id);

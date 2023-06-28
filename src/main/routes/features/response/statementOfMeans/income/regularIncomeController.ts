@@ -8,6 +8,7 @@ import {
 } from '../../../../../services/features/response/statementOfMeans/income/regularIncomeService';
 import {toRegularIncomeForm} from '../../../../../common/utils/expenseAndIncome/regularIncomeExpenseCoverter';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
+import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 
 const regularIncomeController = Router();
 
@@ -15,7 +16,9 @@ function renderView(form: GenericForm<RegularIncome>, res: Response) {
   res.render('features/response/statementOfMeans/income/regular-income', {form});
 }
 
-regularIncomeController.get(CITIZEN_MONTHLY_INCOME_URL, async (req, res, next: NextFunction) => {
+regularIncomeController.get(CITIZEN_MONTHLY_INCOME_URL,
+  statementOfMeansGuard,
+  async (req, res, next: NextFunction) => {
   try {
     const model = await getRegularIncome(req.params.id);
     renderView(new GenericForm<RegularIncome>(model), res);
@@ -24,7 +27,9 @@ regularIncomeController.get(CITIZEN_MONTHLY_INCOME_URL, async (req, res, next: N
   }
 });
 
-regularIncomeController.post(CITIZEN_MONTHLY_INCOME_URL, async (req, res, next: NextFunction) => {
+regularIncomeController.post(CITIZEN_MONTHLY_INCOME_URL,
+  statementOfMeansGuard,
+  async (req, res, next: NextFunction) => {
   try {
     const form = new GenericForm(toRegularIncomeForm(req));
     await form.validate();
