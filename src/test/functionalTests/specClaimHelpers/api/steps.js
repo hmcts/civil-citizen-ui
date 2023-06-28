@@ -5,6 +5,7 @@ const breathingSpace = require('../fixtures/events/breathingSpace.js');
 const mediation = require('../fixtures/events/mediation.js');
 const admitAllClaimantResponse = require('../fixtures/events/admitAllClaimantResponse.js');
 const partAdmitClaimantResponse = require('../fixtures/events/partAdmitClaimantResponse.js');
+const rejectAllClaimantResponse = require('../fixtures/events/rejectAllClaimantResponse.js');
 
 chai.use(deepEqualInAnyOrder);
 chai.config.truncateThreshold = 0;
@@ -72,10 +73,10 @@ module.exports = {
     caseId = null;
     caseData = {};
     let createClaimSpecData;
-    if(claimType === 'FastTrack'){
+    if (claimType === 'FastTrack'){
       console.log('Creating FastTrack claim...');
       createClaimSpecData = data.CREATE_SPEC_CLAIM_FASTTRACK(multipartyScenario);
-    }else {
+    } else {
       console.log('Creating small claims...');
       createClaimSpecData = data.CREATE_SPEC_CLAIM(multipartyScenario);
     }
@@ -123,6 +124,10 @@ module.exports = {
       responsePayload = partAdmitClaimantResponse.partAdmitWithPartPaymentAsPerPlanClaimantWantsToAcceptRepaymentPlanWithoutFixedCosts();
     } else if (defenceType === config.defenceType.rejectAll) {
       responsePayload = claimantResponse.createClaimantIntendsToProceedResponse();
+    } else if (defenceType === config.defenceType.rejectAllAlreadyPaid) {
+      responsePayload = rejectAllClaimantResponse.rejectAllAlreadyPaidButClaimantWantsToProceed();
+    } else if (defenceType === config.defenceType.rejectAllDisputeAll) {
+      responsePayload = rejectAllClaimantResponse.rejectAllDisputeAllButClaimantWantsToProceedWithMediation();
     }
     eventName = responsePayload['event'];
     caseData = responsePayload['caseData'];

@@ -81,6 +81,7 @@ module.exports = {
   defendantSelectedCourt:'Leeds Combined Court Centre - The Court House, 1 Oxford Row - LS1 3BG',
   claimantLRSelectedCourt:'Leeds Combined Court Centre - The Court House, 1 Oxford Row - LS1 3BG',
   defenceType: {
+    admitAllPayImmediate: 'ADMIT_ALL_PAU_IMMEDIATE',
     admitAllPayBySetDate: 'ADMIT_ALL_PAY_BY_SET_DATE',
     admitAllPayByInstallment: 'ADMIT_ALL_PAY_BY_INSTALLMENTS',
     partAdmitAmountPaid: 'PART_ADMIT_ALREADY_PAID',
@@ -88,6 +89,8 @@ module.exports = {
     partAdmitWithPartPaymentOnSpecificDate: 'PART_ADMIT_PAY_BY_SET_DATE',
     partAdmitWithPartPaymentAsPerInstallmentPlan: 'PART_ADMIT_PAY_BY_INSTALLMENTS',
     rejectAll: 'REJECT_ALL',
+    rejectAllAlreadyPaid: 'REJECT_ALL_ALREADY_PAID',
+    rejectAllDisputeAll: 'REJECT_ALL_DISPUTE_ALL',
   },
   claimState: {
     PROCEEDS_IN_HERITAGE_SYSTEM: 'PROCEEDS_IN_HERITAGE_SYSTEM',
