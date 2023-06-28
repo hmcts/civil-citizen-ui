@@ -27,8 +27,7 @@ function getPartAdmitPayInstallmentItems(claim: Claim, lng: string) {
   const claimantFullName = claim.getClaimantFullName();
   const claimId = claim.id;
   if (!claim.isBusiness()) {
-    return new LatestUpdateSectionBuilder()
-      .addTitle(t`${PAGES_LATEST_UPDATE_CONTENT}.YOUR_RESPONSE_TO_THE_CLAIM`, {lng : lng})
+    return new LatestUpdateSectionBuilder().addTitle(t`${PAGES_LATEST_UPDATE_CONTENT}.YOUR_RESPONSE_TO_THE_CLAIM`, {lng : lng})
       .addParagraph(t`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_STARTING`, {
         amount: currencyFormat(getAmount(claim)),
         claimantName: claimantFullName,
