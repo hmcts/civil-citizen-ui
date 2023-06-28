@@ -32,31 +32,31 @@ function convertToForm(req: Request): GenericForm<BetweenSixteenAndNineteenDepen
 betweenSixteenAndNineteenController.get(CITIZEN_DEPENDANTS_EDUCATION_URL,
   statementOfMeansGuard,
   async (req, res, next: NextFunction) => {
-  try {
-    renderView(await getForm(req.params.id), res);
-  } catch (error) {
-    next(error);
-  }
-});
+    try {
+      renderView(await getForm(req.params.id), res);
+    } catch (error) {
+      next(error);
+    }
+  });
 
 betweenSixteenAndNineteenController.post(CITIZEN_DEPENDANTS_EDUCATION_URL,
   statementOfMeansGuard,
   async (req, res, next: NextFunction) => {
-  const form = convertToForm(req);
-  try {
-    form.validateSync();
-    if (form.hasErrors()) {
-      renderView(form, res);
-    } else {
-      const claim = await saveFormToDraftStore(req.params.id, form);
-      if (hasDisabledChildren(claim)) {
-        res.redirect(constructResponseUrlWithIdParams(req.params.id, CHILDREN_DISABILITY_URL));
+    const form = convertToForm(req);
+    try {
+      form.validateSync();
+      if (form.hasErrors()) {
+        renderView(form, res);
       } else {
-        res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_OTHER_DEPENDANTS_URL));
+        const claim = await saveFormToDraftStore(req.params.id, form);
+        if (hasDisabledChildren(claim)) {
+          res.redirect(constructResponseUrlWithIdParams(req.params.id, CHILDREN_DISABILITY_URL));
+        } else {
+          res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_OTHER_DEPENDANTS_URL));
+        }
       }
+    } catch (error) {
+      next(error);
     }
-  } catch (error) {
-    next(error);
-  }
-});
+  });
 export default betweenSixteenAndNineteenController;

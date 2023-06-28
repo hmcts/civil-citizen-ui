@@ -21,28 +21,28 @@ function renderView(form: GenericForm<OnTaxPayments>, res: Response) {
 onTaxPaymentsController.get(ON_TAX_PAYMENTS_URL,
   statementOfMeansGuard,
   async (req, res, next: NextFunction) => {
-  try {
-    renderView(await getOnTaxPaymentsForm(req.params.id), res);
-  } catch (error) {
-    next(error);
-  }
-});
+    try {
+      renderView(await getOnTaxPaymentsForm(req.params.id), res);
+    } catch (error) {
+      next(error);
+    }
+  });
 
 onTaxPaymentsController.post(ON_TAX_PAYMENTS_URL,
   statementOfMeansGuard,
   async (req, res, next: NextFunction) => {
-  const form = new GenericForm(new OnTaxPayments(req.body.option, Number(req.body.amountYouOwe), req.body.reason));
-  try {
-    form.validateSync();
-    if (form.hasErrors()) {
-      renderView(form, res);
-    } else {
-      await saveTaxPaymentsData(req.params.id, form);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_COURT_ORDERS_URL));
+    const form = new GenericForm(new OnTaxPayments(req.body.option, Number(req.body.amountYouOwe), req.body.reason));
+    try {
+      form.validateSync();
+      if (form.hasErrors()) {
+        renderView(form, res);
+      } else {
+        await saveTaxPaymentsData(req.params.id, form);
+        res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_COURT_ORDERS_URL));
+      }
+    } catch (error) {
+      next(error);
     }
-  } catch (error) {
-    next(error);
-  }
-});
+  });
 
 export default onTaxPaymentsController;

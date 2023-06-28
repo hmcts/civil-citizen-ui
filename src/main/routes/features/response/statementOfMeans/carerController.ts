@@ -16,12 +16,12 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 carerController.get(CITIZEN_CARER_URL,
   statementOfMeansGuard,
   async (req, res, next: NextFunction) => {
-  try {
-    renderView(new GenericForm(await getCarer(req.params.id)), res);
-  } catch (error) {
-    next(error);
-  }
-});
+    try {
+      renderView(new GenericForm(await getCarer(req.params.id)), res);
+    } catch (error) {
+      next(error);
+    }
+  });
 
 carerController.post(CITIZEN_CARER_URL,
   statementOfMeansGuard,

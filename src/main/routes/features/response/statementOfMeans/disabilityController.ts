@@ -17,12 +17,12 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 disabilityController.get(CITIZEN_DISABILITY_URL,
   statementOfMeansGuard,
   async (req, res, next: NextFunction) => {
-  try {
-    renderView(await disabilityService.getDisability(req.params.id), res);
-  } catch (error) {
-    next(error);
-  }
-});
+    try {
+      renderView(await disabilityService.getDisability(req.params.id), res);
+    } catch (error) {
+      next(error);
+    }
+  });
 
 disabilityController.post(CITIZEN_DISABILITY_URL,
   statementOfMeansGuard,
