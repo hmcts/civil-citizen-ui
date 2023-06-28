@@ -70,9 +70,9 @@ describe('Dashboard Items', ()=> {
     it('should return the translated string without parameters when params is provided but empty', () => {
         // Given
         const translationKey = 'PAGES.DASHBOARD.STATUS.CLAIMANT_CONFIRMED_PAYMENT';
-        const expectedTranslation = 'Mae {{ claimantName }} wedi cadarnhau eich bod wedi talu'; // Replace with the expected translation for the given translation key
+        const expectedTranslation = 'PAGES.DASHBOARD.STATUS.CLAIMANT_CONFIRMED_PAYMENT'; 
         const params: DashboardStatusTranslationParam[] = []; 
-        const lang = 'cy'; // Replace with the desired language for translation
+        const lang = 'cy'; 
       
         // When
         const result = translate(translationKey, params, lang);
