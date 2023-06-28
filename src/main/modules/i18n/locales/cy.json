@@ -382,7 +382,7 @@
     },
     "CCJ_DEFENDANT_PAYMENT_DATE": {
       "TITLE": "Pryd ydych chi eisiau i'r diffynnydd dalu?",
-      "INSET": "The court will review your suggestion and may reject it if it's sooner than the defendant can afford to repay the money."
+      "INSET": "Bydd y llys yn adolygu eich awgrym a gall ei wrthod os yw'n gynt nag y gall y diffynnydd fforddio ad-dalu'r arian."
     },
     "CCJ_REPAYMENT_PLAN_INSTALMENTS": {
       "EACH_INSTALMENT_AMOUNT": "Swm ar gyfer pob rhandaliad",
@@ -396,22 +396,22 @@
     "CHECK_YOUR_ANSWER": {
       "BANK_BALANCE": "Cydbwysedd",
       "CARER_CREDIT_DO_YOU_CLAIM": "Ydych chi'n hawlio Lwfans Gofalwr neu Gredyd Gofalwr?",
-      "CCJ_HAS_DEFENDANT_PAID_SOME": "Has the defendant paid you some of the amount owed?",
-      "CCJ_AMOUNT_ALREADY_PAID": "Amount already paid",
-      "CCJ_TOTAL_TO_BE_PAID": "Total to be paid by defendant",
-      "CCJ_HOW_TO_PAY": "How you want the defendant to pay?",
-      "CCJ_WHEN_DO_YOU_WANT_TO_BE_PAID_BY": "When you want the defendant to pay?",
+      "CCJ_AMOUNT_ALREADY_PAID": "Swm a dalwyd eisoes",
+      "CCJ_FIRST_PAYMENT_DATE": "Pa bryd ydych chi eisiau i’r diffynnydd wneud y taliad cynt?",
+      "CCJ_HAS_DEFENDANT_PAID_SOME": "Ydy'r diffynnydd wedi talu rhywfaint o'r swm sy'n ddyledus i chi?",
+      "CCJ_HOW_TO_PAY": "Sut ydych chi am i'r diffynnydd dalu?",
       "CCJ_INSTALMENTS_OF": "Fesul",
-      "CCJ_FIRST_PAYMENT_DATE": "When you want them to make the first payment?",
-      "CCJ_INSTALMENTS_PAYMENT_FREQUENCY": "How often you want them to make this payment?",
-      "CHILDREN": "Children",
+      "CCJ_INSTALMENTS_PAYMENT_FREQUENCY": "Pa mor aml ydych chi eisiau i’r diffynnydd wneud y taliad hwn?",
+      "CCJ_TOTAL_TO_BE_PAID": "Cyfanswm i'w dalu gan y diffynnydd",
+      "CCJ_WHEN_DO_YOU_WANT_TO_BE_PAID_BY": "Pa bryd ydych eisiau i'r diffynnydd dalu?",
+      "CHILDREN": "Plant",
       "CHILDREN_DO_YOU_HAVE_ANY_LIVE_WITH_YOU": "Oes unrhyw blant yn byw gyda chi?",
       "CHILDREN_UNDER_11": "dan 11",
       "CHILDREN_BETWEEN_11_TO_15": "11 i 15",
       "CHILDREN_BETWEEN_16_TO_19": "16 i 19",
       "CHILDREN_AGED_16_19_FT_EDUCATION": "Nifer y plant 16 i 19 oed sy'n derbyn addysg neu hyfforddiant amser llawn",
-      "CLAIM_AMOUNT_BREAKDOWN": "Claim amount breakdown",
-      "CLAIM_INTEREST": "Claim Interest",
+      "CLAIM_AMOUNT_BREAKDOWN": "Dadansoddiad o'r swm a hawliwyd",
+      "CLAIM_INTEREST": "Hawlio llog",
       "CONTACT_PERSON": "Cyswllt",
       "CONTACT_NUMBER": "Rhif cyswllt (dewisol)",
       "CONTACT_NUMBER_NOT_OPTIONAL": "Rhif cyswllt",
@@ -428,7 +428,7 @@
       "DETAILS_TITLE_CLAIMANT": "Eich manylion (yr hawlydd)",
       "DISABILITY_ARE_YOU_DISABLED": "Ydych chi'n anabl?",
       "DO_YOU_HAVE_OTHER_WITNESSES": "A oes gennych chi dystion eraill?",
-      "DO_YOU_WANT_PHONE_OR_VIDEO_HEARING": "Do you want to ask for a telephone or video hearing?",
+      "DO_YOU_WANT_PHONE_OR_VIDEO_HEARING": "Ydych chi eisiau gofyn am wrandawiad ffôn neu fideo?",
       "DOB": "Dyddiad Geni",
       "EMAIL": "E-bost",
       "EMAIL_ADDRESS": "Email address (optional)",
@@ -447,7 +447,7 @@
       "EVIDENCE_STATEMENT_OF_ACCOUNT": "Datganiadau cyfrifon",
       "EVIDENCE_TITLE": "Eich tystiolaeth (dewisol)",
       "EXPENSES_REGULAR": "Treuliau rheolaidd",
-      "EXPERT_WITNESSES_SUPPORT": "Do you, your experts or witnesses need support to attend a hearing?",
+      "EXPERT_WITNESSES_SUPPORT": "Ydych chi, eich arbenigwyr neu'ch tystion angen cymorth i fynychu gwrandawiad?",
       "FREE_TELEPHONE_CONTACT_NAME": "Enw cyswllt",
       "FREE_TELEPHONE_CONTACT_NUMBER": "Rhif cyswllt",
       "FREE_TELEPHONE_MEDIATION": "A wnewch chi roi cynnig ar gyfryngu am ddim?",
@@ -467,7 +467,7 @@
       "INCOME_JOB_SEEKER_ALLOWANCE": "Lwfans Ceisio Gwaith (yn seiliedig ar incwm)",
       "INCOME_JOB_SEEKER_ALLOWANCE_CONTRIBUTION": "Lwfans Ceisio Gwaith (yn seiliedig ar gyfraniadau)",
       "INCOME_WORKING_TAX_CREDIT": "Credyd Treth Gwaith",
-      "NEED_HEARING_SUPPORT": "Do you, your experts or witnesses need support to attend a hearing?",
+      "NEED_HEARING_SUPPORT": "Ydych chi, eich arbenigwyr neu'ch tystion angen cymorth i fynychu gwrandawiad?",
       "OWE_MONEY": "A oes arnoch chi'r arian a hawlir?",
       "PARTNER_DO_YOU_LIVE_WITH_A": "Ydych chi'n byw gyda phartner?",
       "PARTNER_IS_AGED_18_OR_OVER": "Ydy'ch partner yn 18 oed neu'n hŷn?",
@@ -814,8 +814,8 @@
       }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
-      "PAGE_TITLE": "How do you want the defandant to pay?",
-      "TITLE": "How do you want the defandant to pay?"
+      "PAGE_TITLE": "Sut ydych chi am i'r diffynnydd dalu?",
+      "TITLE": "Sut ydych chi am i'r diffynnydd dalu?"
     },
     "CLAIMANT_RESPONSE_PROCEED": {
       "PAGE_TITLE": "Ydych chi am fwrw ymlaen â’r hawliad?",
@@ -1461,7 +1461,7 @@
       "TITLE": "How do you want to claim interest?"
     },
     "INCOMPLETE_SUBMISSION": {
-      "TITLE": "You need to complete all sections before you submit your response"
+      "TITLE": "Rydych angen cwblhau pob adran cyn i chi gyflwyno eich ymateb"
     },
     "I_DON_T_WANT_FREE_MEDIATION": {
       "ALREADY_TRIED": "Rwyf eisoes wedi ceisio datrys yr anghydfod gyda’r parti arall, yn aflwyddiannus",
@@ -1871,17 +1871,17 @@
     },
     "REPAYMENT_PLAN": {
       "ADMIT_YOU_OWE": "Rydych yn cyfaddef bod arnoch chi £{{amount}}.",
-      "DATE_FOR_FIRST_INSTALMENT": "Date for first instalment",
+      "DATE_FOR_FIRST_INSTALMENT": "Dyddiad ar gyfer rhandaliad cyntaf",
       "FIRST_PAYMENT": "Pryd fyddwch chi’n gwneud y taliad cyntaf?",
       "FOR_EXAMPLE": "Er enghraifft, ",
-      "FOR_EXAMPLE_NEXT_MONTH": "This must be no sooner than ",
-      "HOW_OFTEN_PAYMENTS": "Pa mor aml y byddwch chi’n gwneud y taliadau hyn?",
-      "HOW_OFTEN_RECEIVE_PAYMENTS": "How often do you want to receive these payments?",
-      "HOW_OFTEN_RECEIVE_PAYMENTS_HINT": "The court will accept the defendant's payment frequency. We'll only consider your preferred frequency if a different plan is set by a judge later.",
+      "FOR_EXAMPLE_NEXT_MONTH": "Ni ddylai hyn fod yn gynt na ",
+      "HOW_OFTEN_PAYMENTS": "Pa mor aml y byddwch chi’n gwneud y taliadau hyn",
+      "HOW_OFTEN_RECEIVE_PAYMENTS": "Pa mor aml ydych chi am dderbyn y taliadau hyn?",
+      "HOW_OFTEN_RECEIVE_PAYMENTS_HINT": "Bydd y llys yn derbyn pa mor aml mae’r diffynnydd am dalu. Ni fyddwn ond yn ystyried eich dewis o ran pa mor aml y bydd yn talu os bydd cynllun gwahanol yn cael ei osod gan farnwr yn ddiweddarach.",
       "LENGTH": "Hyd y cynllun ad-dalu",
       "PAGE_TITLE": "Eich cynllun ad-dalu",
       "REGULAR_PAYMENTS": "Taliadau rheolaidd o",
-      "REGULAR_PAYMENTS_IN_POUNDS": "Regular payments of, in pounds",
+      "REGULAR_PAYMENTS_IN_POUNDS": "Taliadau rheolaidd, mewn punnoedd",
       "SUBTITLE": "Y cyfanswm a hawlir yw £{{totalAmount}}. Mae hyn yn cynnwys ffi’r hawliad ac unrhyw log.",
       "TITLE": "Eich cynllun ad-dalu"
     },
