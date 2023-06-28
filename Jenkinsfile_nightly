@@ -1,5 +1,4 @@
 #!groovy
-
 properties([
     // H allow predefined but random minute see https://en.wikipedia.org/wiki/Cron#Non-standard_characters
     pipelineTriggers([cron('H 8 * * 1-5')]),
@@ -21,49 +20,47 @@ def waStandaloneBranch = "master"
 def ccdBranch = "master"
 AppPipelineConfig pipelineConf
 
-static Map<String, Object> secret(String secretName, String envVariable) {
-  [$class     : 'AzureKeyVaultSecret',
-   secretType : 'Secret',
-   name       : secretName,
-   envVariable: envVariable
-  ]
-}
+//static Map<String, Object> secret(String secretName, String envVariable) {
+  //[$class     : 'AzureKeyVaultSecret',
+   //secretType : 'Secret',
+   //name       : secretName,
+   //envVariable: envVariable
+  //]
+//}
 
-def secrets = [
-  's2s-${env}': [
-    secret('microservicekey-ccd-gw', 'CCD_API_GATEWAY_S2S_SECRET'),
-    secret('microservicekey-ccd-data', 'CCD_DATA_STORE_S2S_SECRET'),
-    secret('microservicekey-ccd-definition', 'CCD_DEFINITION_STORE_S2S_SECRET')
-  ],
-  'ccd-${env}': [
-    secret('ccd-api-gateway-oauth2-client-secret', 'CCD_API_GATEWAY_IDAM_CLIENT_SECRET'),
-    secret('postcode-info-address-lookup-token', 'ADDRESS_LOOKUP_TOKEN'),
-    secret('ccd-admin-web-oauth2-client-secret', 'ADMIN_WEB_IDAM_SECRET'),
-    secret('idam-data-store-client-secret','IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET'),
-    secret('idam-data-store-system-user-username','IDAM_DATA_STORE_SYSTEM_USER_USERNAME'),
-    secret('idam-data-store-system-user-password','IDAM_DATA_STORE_SYSTEM_USER_PASSWORD')
-  ],
-  'civil-${env}': [
-    secret('microservicekey-civil-service', 'S2S_SECRET'),
-    secret('ccd-importer-username', 'CCD_CONFIGURER_IMPORTER_USERNAME'),
-    secret('ccd-importer-password', 'CCD_CONFIGURER_IMPORTER_PASSWORD'),
-    secret('postgres-user', 'POSTGRES_USER'),
-    secret('postgres-password', 'POSTGRES_PASSWORD'),
-    secret('ordnance-survey-api-key', 'ORDNANCE_SURVEY_API_KEY'),
-    secret('citizen-ui-test-username', 'CITIZEN_USERNAME'),
-    secret('citizen-ui-test-password', 'CITIZEN_PASSWORD'),
-    secret('civil-judge-password', 'JUDGE_PASSWORD')
-  ]
-]
+//def secrets = [
+  //'s2s-${env}': [
+    //secret('microservicekey-ccd-gw', 'CCD_API_GATEWAY_S2S_SECRET'),
+    //secret('microservicekey-ccd-data', 'CCD_DATA_STORE_S2S_SECRET'),
+    //secret('microservicekey-ccd-definition', 'CCD_DEFINITION_STORE_S2S_SECRET')
+  //],
+  //'ccd-${env}': [
+    //secret('ccd-api-gateway-oauth2-client-secret', 'CCD_API_GATEWAY_IDAM_CLIENT_SECRET'),
+    //secret('postcode-info-address-lookup-token', 'ADDRESS_LOOKUP_TOKEN'),
+    //secret('ccd-admin-web-oauth2-client-secret', 'ADMIN_WEB_IDAM_SECRET'),
+    //secret('idam-data-store-client-secret','IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET'),
+    //secret('idam-data-store-system-user-username','IDAM_DATA_STORE_SYSTEM_USER_USERNAME'),
+    //secret('idam-data-store-system-user-password','IDAM_DATA_STORE_SYSTEM_USER_PASSWORD')
+  //],
+  //'civil-${env}': [
+    //secret('microservicekey-civil-service', 'S2S_SECRET'),
+    //secret('ccd-importer-username', 'CCD_CONFIGURER_IMPORTER_USERNAME'),
+    //secret('ccd-importer-password', 'CCD_CONFIGURER_IMPORTER_PASSWORD'),
+    //secret('postgres-user', 'POSTGRES_USER'),
+    //secret('postgres-password', 'POSTGRES_PASSWORD'),
+    //secret('ordnance-survey-api-key', 'ORDNANCE_SURVEY_API_KEY'),
+    //secret('citizen-ui-test-username', 'CITIZEN_USERNAME'),
+    //secret('citizen-ui-test-password', 'CITIZEN_PASSWORD'),
+    //secret('civil-judge-password', 'JUDGE_PASSWORD')
+  //]
+//]
 
 withNightlyPipeline(type, product, component) {
-  loadVaultSecrets(secrets)
-  enableCrossBrowserTest()
-
   env.TEST_URL = params.TEST_URL
   env.RUNNING_ENV = params.ENVIRONMENT
-
-   enablePactAs([
-      AppPipelineDsl.PactRoles.CONSUMER
-     ])
+  //loadVaultSecrets(secrets)
+  //enableCrossBrowserTest()
+  //enablePactAs([
+    //AppPipelineDsl.PactRoles.CONSUMER
+ // ])
 }
