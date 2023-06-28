@@ -6,7 +6,6 @@ import {
   UploadEvidenceWitness,
 } from 'models/caseProgression/uploadDocumentsType';
 import {TableCell} from 'models/summaryList/summaryList';
-//import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
 import {
   EvidenceUploadDisclosure,
   EvidenceUploadExpert,
