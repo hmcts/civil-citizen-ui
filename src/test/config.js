@@ -97,4 +97,12 @@ module.exports = {
     IN_MEDIATION: 'IN_MEDIATION',
     CASE_STAYED: 'CASE_STAYED',
   },
+  saucelabs: {
+    browser: 'chrome',
+    username: 'username',
+    key: 'privatekey',
+    tunnelId: 'reformtunnel',
+    waitForTimeout: 20000,
+    smartWait: 20000,
+  },
 };
