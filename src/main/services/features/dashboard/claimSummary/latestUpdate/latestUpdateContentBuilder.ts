@@ -36,7 +36,7 @@ function getPartAdmitPayInstallmentItems(claim: Claim, lng: string) {
         paymentSchedule: t(`COMMON.PAYMENT_FREQUENCY.${getRepaymentFrequency(claim)}`, {lng}),
         paymentDate: formatDateToFullDate(getFirstRepaymentDate(claim), lng),
       })
-      .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
+      .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`, {lng}))
       .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, DocumentUri.SEALED_CLAIM)
       .build();
   }
@@ -51,7 +51,7 @@ function getPartAdmitPayInstallmentItems(claim: Claim, lng: string) {
     })
     .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`, {lng}))
     .addContactLink(`${PAGES_LATEST_UPDATE_CONTENT}.GET_CONTACT_DETAILS`, claimId, {claimantName: claimantFullName})
-    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND` , {lng}))
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`, {lng}))
     .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, DocumentUri.SEALED_CLAIM)
     .build();
 }
@@ -62,25 +62,25 @@ function getPartAdmitPaidPayByDate(claim: Claim, lng: string) {
   if (!claim.isBusiness()) {
     return new LatestUpdateSectionBuilder()
       .addTitle(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOUR_RESPONSE_TO_THE_CLAIM`, {lng}))
-      .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_BY`, {
+      .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_BY`, {lng}), {
         amount: currencyFormat(getAmount(claim)),
         claimantName: claimantFullName,
         paymentDate: formatDateToFullDate(getPaymentDate(claim),lng),
       })
-      .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
+      .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`, {lng}))
       .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, DocumentUri.SEALED_CLAIM)
       .build();
   }
   return new LatestUpdateSectionBuilder()
     .addTitle(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOUR_RESPONSE_TO_THE_CLAIM`, {lng}))
-    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_BY`, {
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_BY`, {lng}), {
       amount: currencyFormat(getAmount(claim)),
       claimantName: claimantFullName,
       paymentDate: formatDateToFullDate(getPaymentDate(claim),lng),
     })
-    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`)
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`, {lng}))
     .addContactLink(`${PAGES_LATEST_UPDATE_CONTENT}.GET_CONTACT_DETAILS`, claimId, {claimantName: claimantFullName})
-    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`, {lng}))
     .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, DocumentUri.SEALED_CLAIM)
     .build();
 }
@@ -88,11 +88,11 @@ function getPartAdmitPaidPayByDate(claim: Claim, lng: string) {
 function getPartAdmitPaidPayImmediately(claim: Claim, lng: string) {
   return new LatestUpdateSectionBuilder()
     .addTitle(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOUR_RESPONSE_TO_THE_CLAIM`, {lng}))
-    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_IMMEDIATELY`, {
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_IMMEDIATELY`, {lng}), {
       amount: currencyFormat(getAmount(claim)),
       claimantName: claim.getClaimantFullName(),
     })
-    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`, lng))
     .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claim.id, DocumentUri.SEALED_CLAIM)
     .build();
 }
@@ -103,27 +103,27 @@ function getFullAdmitPayInstallments(claim: Claim, lng: string) {
   if (!claim.isBusiness()) {
     return new LatestUpdateSectionBuilder()
       .addTitle(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOUR_RESPONSE_TO_THE_CLAIM`, {lng}))
-      .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_OFFERED_TO_PAY_STARTING`, {
+      .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_OFFERED_TO_PAY_STARTING`, {lng}), {
         claimantName: claimantFullName,
         installmentAmount: currencyFormat(getPaymentAmount(claim)),
         paymentSchedule: t(`COMMON.PAYMENT_FREQUENCY.${getRepaymentFrequency(claim)}`, {lng}),
         paymentDate: formatDateToFullDate(getFirstRepaymentDate(claim),lng),
       })
-      .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
+      .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`, {lng}))
       .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, DocumentUri.SEALED_CLAIM)
       .build();
   }
   return new LatestUpdateSectionBuilder()
     .addTitle(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOUR_RESPONSE_TO_THE_CLAIM`, {lng}))
-    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_OFFERED_TO_PAY_STARTING`, {
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_OFFERED_TO_PAY_STARTING`, {lng}), {
       claimantName: claimantFullName,
       installmentAmount:  currencyFormat(getPaymentAmount(claim)),
       paymentSchedule: t(`COMMON.PAYMENT_FREQUENCY.${getRepaymentFrequency(claim)}`, {lng}),
       paymentDate: formatDateToFullDate(getFirstRepaymentDate(claim),lng),
     })
-    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`)
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`, {lng}))
     .addContactLink(`${PAGES_LATEST_UPDATE_CONTENT}.GET_CONTACT_DETAILS`, claimId, {claimantName: claimantFullName})
-    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`, {lng}))
     .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, DocumentUri.SEALED_CLAIM)
     .build();
 }
@@ -134,23 +134,23 @@ function getFullAdmitPayByDate(claim: Claim, lng: string) {
   if (!claim.isBusiness()) {
     return new LatestUpdateSectionBuilder()
       .addTitle(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOUR_RESPONSE_TO_THE_CLAIM`, {lng}))
-      .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_OFFERED_TO_PAY_BY`, {
+      .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_OFFERED_TO_PAY_BY`, {lng}), {
         claimantName: claimantFullName,
         paymentDate:  formatDateToFullDate(getPaymentDate(claim),lng),
       })
-      .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
+      .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`, {lng}))
       .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, DocumentUri.SEALED_CLAIM)
       .build();
   }
   return new LatestUpdateSectionBuilder()
     .addTitle(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOUR_RESPONSE_TO_THE_CLAIM`, {lng}))
-    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_OFFERED_TO_PAY_BY`, {
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_OFFERED_TO_PAY_BY`, {lng}), {
       claimantName: claimantFullName,
       paymentDate: formatDateToFullDate(getPaymentDate(claim), lng),
     })
-    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`)
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`, {lng}))
     .addContactLink(`${PAGES_LATEST_UPDATE_CONTENT}.GET_CONTACT_DETAILS`, claimId, {claimantName: claimantFullName})
-    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`)
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`, {lng}))
     .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, DocumentUri.SEALED_CLAIM)
     .build();
 }
@@ -160,13 +160,13 @@ function getFullAdmitPayImmediately(claim: Claim, lng: string) {
   const claimId = claim.id;
   return new LatestUpdateSectionBuilder()
     .addTitle(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOUR_RESPONSE_TO_THE_CLAIM`, {lng}))
-    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_SAID_YOU_WILL_PAY`, {
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_SAID_YOU_WILL_PAY`, {lng}), {
       claimantName: claimantFullName,
       amount: currencyFormat(getAmount(claim)),
       paymentDate: formatDateToFullDate(getPaymentDate(claim), lng),
     })
-    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.IF_YOU_PAY_BY_CHEQUE`)
-    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.IF_THEY_DONT_RECEIVE_THE_MONEY_BY_THEN`)
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.IF_YOU_PAY_BY_CHEQUE`, {lng}))
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.IF_THEY_DONT_RECEIVE_THE_MONEY_BY_THEN`, {lng}))
     .addContactLink(`${PAGES_LATEST_UPDATE_CONTENT}.CONTACT`, claimId, {claimantName: claimantFullName})
     .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, DocumentUri.SEALED_CLAIM)
     .build();
