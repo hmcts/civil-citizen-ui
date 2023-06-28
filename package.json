@@ -78,7 +78,7 @@
     "i18next-http-middleware": "^3.2.1",
     "ioredis": "^5.3.2",
     "jquery": "^3.6.3",
-    "jsdom": "^21.1.0",
+    "jsdom": "^22.1.0",
     "jwt-decode": "^3.1.2",
     "launchdarkly-node-client-sdk": "^3.0.0",
     "launchdarkly-node-server-sdk": "^7.0.1",
