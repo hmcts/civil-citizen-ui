@@ -68,17 +68,17 @@ describe('Dashboard Items', ()=> {
       expect(status).toBe('PAGES.DASHBOARD.STATUS.NO_RESPONSE_ON_TIME');
     });
     it('should return the translated string without parameters when params is provided but empty', () => {
-        // Given
-        const translationKey = 'PAGES.DASHBOARD.STATUS.CLAIMANT_CONFIRMED_PAYMENT';
-        const expectedTranslation = 'PAGES.DASHBOARD.STATUS.CLAIMANT_CONFIRMED_PAYMENT'; 
-        const params: DashboardStatusTranslationParam[] = []; 
-        const lang = 'cy'; 
+      // Given
+      const translationKey = 'PAGES.DASHBOARD.STATUS.CLAIMANT_CONFIRMED_PAYMENT';
+      const expectedTranslation = 'PAGES.DASHBOARD.STATUS.CLAIMANT_CONFIRMED_PAYMENT'; 
+      const params: DashboardStatusTranslationParam[] = []; 
+      const lang = 'cy'; 
       
-        // When
-        const result = translate(translationKey, params, lang);
+      // When
+      const result = translate(translationKey, params, lang);
       
-        // Then
-        expect(result).toBe(expectedTranslation);
+      // Then
+      expect(result).toBe(expectedTranslation);
     }); 
   });
 });
