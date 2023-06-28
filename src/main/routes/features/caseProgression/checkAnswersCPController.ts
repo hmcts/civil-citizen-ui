@@ -1,23 +1,20 @@
 import {NextFunction, Request, Response, RequestHandler, Router} from 'express';
 import {CP_CHECK_ANSWERS_URL} from '../../urls';
-import {GenericForm} from "form/models/genericForm";
-import {Claim} from "models/claim";
-import {getCaseDataFromStore} from "modules/draft-store/draftStoreService";
-import {getDocuments} from "services/features/caseProgression/caseProgressionService";
-import {ClaimantOrDefendant} from "models/partyType";
-import {UploadDocuments} from "models/caseProgression/uploadDocumentsType";
+import {GenericForm} from 'form/models/genericForm';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getDocuments} from 'services/features/caseProgression/caseProgressionService';
+import {ClaimantOrDefendant} from 'models/partyType';
+import {UploadDocuments} from 'models/caseProgression/uploadDocumentsType';
 
 const checkAnswersCPViewPath = 'features/caseProgression/check-answers';
 const checkAnswersCPController = Router();
-
 
 async function renderView(res: Response, claimId: string, form: GenericForm<UploadDocuments> = null) {
   const claim: Claim = await getCaseDataFromStore(claimId);
   const claimantFullName = claim.getClaimantFullName();
   const defendantFullName = claim.getDefendantFullName();
   const documents = claim.caseProgression.defendantUploadDocuments;
-  console.log('Testing stored info')
-  console.log(claim.caseProgression.defendantUploadDocuments)
   if (claim && !claim.isEmpty()) {
 
     res.render(checkAnswersCPViewPath, {
@@ -26,7 +23,7 @@ async function renderView(res: Response, claimId: string, form: GenericForm<Uplo
       claimId,
       claimantFullName,
       defendantFullName,
-      documents
+      documents,
     });
   }
 }
