@@ -19,6 +19,7 @@ export const DATE_PAID_CONFIRMATION_URL = `${BASE_CASE_PAID_IN_FULL_URL}/confirm
 export const CALLBACK_URL = '/oauth2/callback';
 export const ASSIGN_CLAIM_URL='/assignclaim';
 export const COOKIES_URL = '/cookies';
+export const TERMS_AND_CONDITIONS_URL = '/terms-and-conditions';
 export const SIGN_IN_URL = '/login';
 export const SIGN_OUT_URL = '/logout';
 export const DASHBOARD_URL = '/dashboard';
