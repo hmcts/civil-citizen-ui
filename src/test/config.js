@@ -62,6 +62,13 @@ module.exports = {
     roleCategory: 'JUDICIAL',
     regionId: '1',
   },
+  judgeUserWithRegionId3: {
+    password: judgeDefaultPassword,
+    email: '4924221EMP-@ejudiciary.net',
+    type: 'judge',
+    roleCategory: 'JUDICIAL',
+    regionId: '1',
+  },
   hearingCenterAdminWithRegionId1: {
     email: 'hearing_center_admin_reg1@justice.gov.uk',
     password: defaultPassword,
@@ -92,6 +99,13 @@ module.exports = {
     rejectAllAlreadyPaid: 'REJECT_ALL_ALREADY_PAID',
     rejectAllDisputeAll: 'REJECT_ALL_DISPUTE_ALL',
   },
+  sdoSelectionType: {
+    judgementSumSelectedYesAssignToSmallClaimsYes: 'JUDGEMENT_SUM_YES_SMALL_CLAIMS_YES',
+    judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing: 'JUDGEMENT_SUM_YES_SMALL_CLAIMS_NO_DISPOSAL_HEARING',
+    judgementSumSelectedYesAssignToSmallClaimsNoTrialHearing: 'JUDGEMENT_SUM_YES_SMALL_CLAIMS_NO_TRIAL_HEARING',
+    judgementSumSelectedNoAssignToSmallClaimsYes: 'JUDGEMENT_SUM_NO_SMALL_CLAIMS_YES',
+    judgementSumSelectedNoAssignToFastTrackYes: 'JUDGEMENT_SUM_NO_FAST_TRACK_YES',
+  },
   claimState: {
     PROCEEDS_IN_HERITAGE_SYSTEM: 'PROCEEDS_IN_HERITAGE_SYSTEM',
     AWAITING_RESPONDENT_ACKNOWLEDGEMENT: 'AWAITING_RESPONDENT_ACKNOWLEDGEMENT',
@@ -99,5 +113,6 @@ module.exports = {
     JUDICIAL_REFERRAL: 'JUDICIAL_REFERRAL',
     IN_MEDIATION: 'IN_MEDIATION',
     CASE_STAYED: 'CASE_STAYED',
+    CASE_PROGRESSION: 'CASE_PROGRESSION',
   },
 };
