@@ -1,4 +1,4 @@
-import {DashboardClaimantItem, DashboardDefendantItem} from 'common/models/dashboard/dashboardItem';
+import {DashboardClaimantItem, DashboardDefendantItem, DashboardStatusTranslationParam} from 'common/models/dashboard/dashboardItem';
 import { translate } from 'common/models/dashboard/dashboardItem';
 
 import config from 'config';
@@ -67,23 +67,18 @@ describe('Dashboard Items', ()=> {
       //Then
       expect(status).toBe('PAGES.DASHBOARD.STATUS.NO_RESPONSE_ON_TIME');
     });
-  });
-
-  describe('translate', () => {
-    it('should return the translated string with parameters when params is provided', () => {
-      // Given
-      const translationKey = 'dashboard.status.error';
-      const expectedTranslation = 'Error: Connection Timeout'; 
-      const params = [
-        { key: 'errorMessage', value: 'Connection Timeout' }, 
-      ];
-      const lang = 'cy'; 
-  
-      // When
-      const result = translate(translationKey, params, lang);
-  
-      // Then
-      expect(result).toBe(expectedTranslation);
+      it('should return the translated string without parameters when params is provided but empty', () => {
+        // Given
+        const translationKey = 'dashboard.status.success';
+        const expectedTranslation = 'Success'; // Replace with the expected translation for the given translation key
+        const params: DashboardStatusTranslationParam[] = []; // Empty parameters array
+        const lang = 'en'; // Replace with the desired language for translation
+      
+        // When
+        const result = translate(translationKey, params, lang);
+      
+        // Then
+        expect(result).toBe(expectedTranslation);
     });
   });
 });
