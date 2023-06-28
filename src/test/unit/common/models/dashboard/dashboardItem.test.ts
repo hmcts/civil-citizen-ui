@@ -1,5 +1,5 @@
-import {DashboardClaimantItem, DashboardDefendantItem, DashboardStatusTranslationParam} from 'common/models/dashboard/dashboardItem';
-import { translate } from 'common/models/dashboard/dashboardItem';
+import {DashboardClaimantItem, DashboardDefendantItem/* DashboardStatusTranslationParam*/} from 'common/models/dashboard/dashboardItem';
+//import { translate } from 'common/models/dashboard/dashboardItem';
 
 import config from 'config';
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
