@@ -131,7 +131,7 @@ export class DashboardDefendantItem extends DashboardItem {
   }
 }
 
-const translate = (translationKey: string, params?: DashboardStatusTranslationParam[], lang?: string | unknown) => {
+export const translate = (translationKey: string, params?: DashboardStatusTranslationParam[], lang?: string | unknown) => {
   if (params && params.length) {
     const keyValue: { [k: string]: string } = {};
     params.forEach(param => {
@@ -142,4 +142,6 @@ const translate = (translationKey: string, params?: DashboardStatusTranslationPa
   }
   return t(translationKey, {lng:getLng(lang)} );
 };
+
+export { t };
 

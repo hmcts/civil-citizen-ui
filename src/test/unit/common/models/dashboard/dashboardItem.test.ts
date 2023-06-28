@@ -1,4 +1,5 @@
 import {DashboardClaimantItem, DashboardDefendantItem} from 'common/models/dashboard/dashboardItem';
+import { translate } from 'common/models/dashboard/dashboardItem';
 
 import config from 'config';
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
@@ -65,6 +66,24 @@ describe('Dashboard Items', ()=> {
       const status = dashboardClaim.getStatus('en');
       //Then
       expect(status).toBe('PAGES.DASHBOARD.STATUS.NO_RESPONSE_ON_TIME');
+    });
+  });
+
+  describe('translate', () => {
+    it('should return the translated string with parameters when params is provided', () => {
+      // Given
+      const translationKey = 'dashboard.status.error';
+      const expectedTranslation = 'Error: Connection Timeout'; 
+      const params = [
+        { key: 'errorMessage', value: 'Connection Timeout' }, 
+      ];
+      const lang = 'cy'; 
+  
+      // When
+      const result = translate(translationKey, params, lang);
+  
+      // Then
+      expect(result).toBe(expectedTranslation);
     });
   });
 });
