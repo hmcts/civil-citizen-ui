@@ -1,4 +1,3 @@
-import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
 import {Request, Response, NextFunction} from 'express';
 import {Claim} from 'models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';

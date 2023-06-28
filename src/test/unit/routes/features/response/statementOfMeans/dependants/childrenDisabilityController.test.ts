@@ -3,12 +3,8 @@ import {app} from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {CHILDREN_DISABILITY_URL, CITIZEN_OTHER_DEPENDANTS_URL} from 'routes/urls';
-import {mockResponseFullAdmitPayBySetDate, mockRedisFailure, mockCivilClaim} from '../../../../../../utils/mockDraftStore';
+import {mockResponseFullAdmitPayBySetDate, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-
-const jsdom = require('jsdom');
-const {JSDOM} = jsdom;
-
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');

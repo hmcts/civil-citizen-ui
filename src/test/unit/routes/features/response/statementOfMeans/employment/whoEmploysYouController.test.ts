@@ -17,14 +17,14 @@ function getMockWithEmploymentType(employmentType: string[]) {
   return {
     'id': 1645882162449409,
     'case_data': {
-      "respondent1": {
-        "responseType": "FULL_ADMISSION"
+      'respondent1': {
+        'responseType': 'FULL_ADMISSION',
       },
-      "fullAdmission": {
-        "paymentIntention": {
-          "paymentOption": "BY_SET_DATE",
-          "paymentDate": "2023-11-11T00:00:00.000Z"
-        }
+      'fullAdmission': {
+        'paymentIntention': {
+          'paymentOption': 'BY_SET_DATE',
+          'paymentDate': '2023-11-11T00:00:00.000Z',
+        },
       },
       'statementOfMeans': {
         'employment': {
@@ -33,7 +33,7 @@ function getMockWithEmploymentType(employmentType: string[]) {
         },
       },
     },
-  }
+  };
 }
 
 const mockRedisEmployed = getMockWithEmploymentType(['EMPLOYED']);
