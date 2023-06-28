@@ -2427,6 +2427,11 @@
       "BEFORE_YOU_UPLOAD_YOUR": "Before you upload your documents",
       "BEFORE_YOU_UPLOAD_THE": "Before you upload the document, give it a name that tells the court what it is, for example 'Witness statement by Jane Smith'.",
       "START_NOW": "Start now"
+    },
+    "CHECK_ANSWERS_DOCUMENTS": {
+      "CONFIRMATION": "Confirmation",
+      "NO_WITHDRAW": "You cannot withdraw a document once you have submitted it",
+      "CYA_CONFIRMATION": "I confirm the documents are correct, and understand that I cannot withdraw documents once I have submitted them"
     }
   },
   "ERRORS": {

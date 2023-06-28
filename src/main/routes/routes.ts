@@ -201,6 +201,7 @@ import uploadYourDocumentsController from 'routes/features/caseProgression/uploa
 import documentsUploadedController from 'routes/features/caseProgression/documentsUploadedController';
 import cancelYourUploadController from 'routes/features/caseProgression/cancelYourUploadController';
 import uploadFileController from 'routes/features/caseProgression/uploadFileController';
+import checkAnswersCPController from 'routes/features/caseProgression/checkAnswersCPController';
 
 export default [
   homeController,
@@ -390,4 +391,5 @@ export default [
   documentsUploadedController,
   cancelYourUploadController,
   uploadFileController,
+  checkAnswersCPController,
 ];

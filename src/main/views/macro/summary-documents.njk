@@ -1,0 +1,40 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+
+{% macro summaryDocuments(
+  keyName,
+  type,
+  day,
+  month,
+  year,
+  fileUpload,
+  docURL,
+  upperTitle,
+  middleTitle,
+  lowerTitle
+  ) %}
+  <dl class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      {{ keyName }}
+    </dt>
+    <dd class="govuk-summary-list__value">
+      <p> <b>{{ upperTitle }}</b> </p> {{ type }}
+      <hr class="govuk-section-break--s govuk-section-break--visible">
+      <p> <b>{{ middleTitle }}</b> </p> {{ day }}/{{ month }}/{{ year }}
+      <hr class="govuk-section-break--s govuk-section-break--visible">
+      <p> <b>{{ lowerTitle }}</b> </p>
+      <a class="govuk-link" href={{ docURL }}>{{ docURL }}</a>
+    </dd>
+    <dd class="govuk-summary-list__actions">
+      <a class="govuk-link" href="#">
+        Change<span class="govuk-visually-hidden"> name</span>
+      </a>
+    </dd>
+  </div>
+</dl>
+{% endmacro %}
