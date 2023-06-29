@@ -12,7 +12,6 @@ jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/services/translation/response/ccdTranslation');
 jest.mock('../../../../../../main/services/features/response/submission/compareAddress');
-jest.mock('connect-redis');
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 mockedAppRequest.params = {id:'1'};

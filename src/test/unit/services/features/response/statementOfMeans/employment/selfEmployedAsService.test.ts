@@ -13,7 +13,6 @@ import {GenericForm} from '../../../../../../../main/common/form/models/genericF
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('connect-redis');
 
 const JOB_TITLE = 'Developer';
 const ANNUAL_TURNOVER = 70000.22;

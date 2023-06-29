@@ -15,7 +15,6 @@ jest.mock('../../../../../main/app/auth/user/oidc', () => ({
   ...jest.requireActual('../../../../../main/app/auth/user/oidc') as Module,
   getUserDetails: jest.fn(() => USER_DETAILS),
 }));
-jest.mock('connect-redis');
 
 export const USER_DETAILS = {
   accessToken: citizenRoleToken,

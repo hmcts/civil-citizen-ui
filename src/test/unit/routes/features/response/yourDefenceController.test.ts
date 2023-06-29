@@ -14,7 +14,6 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 
 describe('yourDefence', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

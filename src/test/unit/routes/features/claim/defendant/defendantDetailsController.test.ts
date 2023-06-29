@@ -19,7 +19,6 @@ import {
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 jest.mock('../../../../../../main/services/features/common/defendantDetailsService');
 
 const mockDefendantInformation = getDefendantInformation as jest.Mock;

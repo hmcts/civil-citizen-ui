@@ -15,7 +15,6 @@ import {
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 
 describe('Interest type controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

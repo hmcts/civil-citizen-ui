@@ -17,7 +17,6 @@ import {FullAdmission} from 'common/models/fullAdmission';
 
 jest.mock('.../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('connect-redis');
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 
 describe('payment option service', () => {

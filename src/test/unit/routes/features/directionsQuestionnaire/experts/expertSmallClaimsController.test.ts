@@ -12,7 +12,6 @@ import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 
 describe('Using an expert', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

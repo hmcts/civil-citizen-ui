@@ -15,7 +15,6 @@ import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/modules/i18n');
-jest.mock('connect-redis');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

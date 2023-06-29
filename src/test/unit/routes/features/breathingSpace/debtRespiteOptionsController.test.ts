@@ -12,7 +12,6 @@ import {t} from 'i18next';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('connect-redis');
 
 describe('Breathing Space - Debt Respite Type Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

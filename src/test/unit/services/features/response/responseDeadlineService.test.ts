@@ -8,7 +8,6 @@ import {mockClaim} from '../../../../utils/mockClaim';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('connect-redis');
 
 const responseDeadlineService = new ResponseDeadlineService();
 

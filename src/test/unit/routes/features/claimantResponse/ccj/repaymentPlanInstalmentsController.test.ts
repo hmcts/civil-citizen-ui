@@ -13,7 +13,6 @@ import {TransactionSchedule} from '../../../../../../main/common/form/models/sta
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 
 describe('CCJ Repayment Plan page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

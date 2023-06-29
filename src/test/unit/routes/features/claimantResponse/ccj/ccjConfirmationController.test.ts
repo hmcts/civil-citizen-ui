@@ -8,7 +8,6 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftSt
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 
 describe('CCJ confirmation controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

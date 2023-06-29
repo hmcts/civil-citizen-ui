@@ -10,7 +10,6 @@ import {Claim} from '../../../../../../main/common/models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 jest.mock('../../../../../../main/services/features/claim/interest/interestService');
 const getInterestMock = getInterest as jest.Mock;
 const saveInterestMock = saveInterest as jest.Mock;

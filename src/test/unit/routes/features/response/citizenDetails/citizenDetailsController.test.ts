@@ -16,7 +16,6 @@ jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/services/features/common/defendantDetailsService');
-jest.mock('connect-redis');
 
 const mockGetRespondentInformation = getDefendantInformation as jest.Mock;
 const mockSaveRespondent = saveDefendantProperty as jest.Mock;

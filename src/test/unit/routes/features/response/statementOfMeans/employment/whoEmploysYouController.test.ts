@@ -15,7 +15,6 @@ import {t} from 'i18next';
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 const mockEmployer = {rows: [{employerName: 'Felipe', jobTitle: 'Developer'}]};
-jest.mock('connect-redis');
 
 const mockRedisEmployed = {
   'id': 1645882162449409,
@@ -70,7 +69,6 @@ const mockSelfEmployed = {
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 
 describe('Who employs you', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

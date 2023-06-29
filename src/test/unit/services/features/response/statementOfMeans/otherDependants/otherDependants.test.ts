@@ -10,7 +10,6 @@ import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('connect-redis');
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 const otherDependantsService = new OtherDependantsService();
 

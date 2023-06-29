@@ -9,7 +9,6 @@ import {PartyPhone} from '../../../../../main/common/models/PartyPhone';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('connect-redis');
 
 const party: Party = {
   partyDetails: {

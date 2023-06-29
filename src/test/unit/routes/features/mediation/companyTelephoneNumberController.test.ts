@@ -10,7 +10,6 @@ import civilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMo
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 
 describe('Mediation - Company or Organisation - Confirm telephone number', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

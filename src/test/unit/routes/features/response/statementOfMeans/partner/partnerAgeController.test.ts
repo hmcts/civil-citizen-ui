@@ -13,7 +13,6 @@ import { mockCivilClaim, mockCivilClaimUndefined, mockNoStatementOfMeans, mockCi
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 
 describe('Partner Age', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

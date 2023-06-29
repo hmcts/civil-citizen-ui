@@ -15,7 +15,6 @@ jest.mock('modules/oidc');
 jest.mock('modules/draft-store');
 jest.mock('services/features/directionsQuestionnaire/hearing/specificCourtLocationService');
 jest.mock('services/features/directionsQuestionnaire/directionQuestionnaireService');
-jest.mock('connect-redis');
 
 const getSpecificCourtLocation = specificCourtLocationService.getSpecificCourtLocationForm as jest.Mock;
 const saveDirectionQuestionnaire = directionQuestionnaireService.saveDirectionQuestionnaire as jest.Mock;

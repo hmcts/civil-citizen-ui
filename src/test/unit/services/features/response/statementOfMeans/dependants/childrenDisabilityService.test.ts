@@ -40,7 +40,6 @@ const noPartnerOrDisability: string = JSON.stringify(civilClaimResponseNoPartner
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('connect-redis');
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 
 describe('Children Disability service', () => {

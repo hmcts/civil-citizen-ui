@@ -11,7 +11,6 @@ import {TestMessages} from '../../../../../../../src/test/utils/errorMessageTest
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 jest.mock('../../../../../../main/services/features/claim/amount/claimAmountBreakdownService');
 
 const mockServiceGet = claimAmountbreakdownService.getClaimAmountBreakdownForm as jest.Mock;

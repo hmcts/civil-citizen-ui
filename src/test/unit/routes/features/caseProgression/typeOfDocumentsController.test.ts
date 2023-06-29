@@ -16,7 +16,6 @@ import {t} from 'i18next';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 
 const typeOfDocumentUrl = TYPES_OF_DOCUMENTS_URL.replace(':id', 'aaa');
 

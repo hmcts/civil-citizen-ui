@@ -12,7 +12,6 @@ import {Email} from '../../../../../main/common/models/Email';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('connect-redis');
 
 const EMAIL_ADDRESS = 'test@gmail.com';
 

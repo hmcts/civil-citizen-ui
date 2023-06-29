@@ -57,7 +57,6 @@ const mockWithDisabledChildren = {
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 
 describe('Other Dependants', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

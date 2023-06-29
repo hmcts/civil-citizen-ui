@@ -15,7 +15,6 @@ import {RegularIncome}
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('connect-redis');
 
 describe('regularIncome service', () => {
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;

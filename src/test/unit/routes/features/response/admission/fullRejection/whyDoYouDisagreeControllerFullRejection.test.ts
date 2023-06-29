@@ -8,7 +8,6 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraf
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 
 describe('Why do you disagree Full Rejection Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

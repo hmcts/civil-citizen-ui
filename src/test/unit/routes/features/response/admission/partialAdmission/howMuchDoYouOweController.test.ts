@@ -9,7 +9,6 @@ import {ResponseType} from 'common/form/models/responseType';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 
 describe('Partial Admit - How much money do you admit you owe? Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

@@ -11,7 +11,6 @@ import {TimelineRow} from '../../../../../../main/common/form/models/timeLineOfE
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('connect-redis');
 
 describe('defendantTimelineService', () => {
   describe('getPartialAdmitTimeline', () => {

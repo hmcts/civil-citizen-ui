@@ -8,7 +8,6 @@ import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('connect-redis');
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 

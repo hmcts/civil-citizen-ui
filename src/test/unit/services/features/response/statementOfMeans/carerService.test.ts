@@ -7,7 +7,6 @@ import {GenericYesNo} from 'form/models/genericYesNo';
 
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 
 const claimId = '123';
 

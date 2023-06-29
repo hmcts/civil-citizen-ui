@@ -9,7 +9,6 @@ import {DefendantEvidence} from 'models/evidence/evidence';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('connect-redis');
 
 const COMMENT = 'Nam ac ante id turpis elementum laoreet. Nunc a erat nec eros iaculis lobortis ut in quam.';
 const EVIDENCE_ITEM = [

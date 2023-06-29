@@ -14,7 +14,6 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftSt
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 
 const mockFullClaim = { 'id': 1662129391355637, 'case_data': {}};
 describe('Respond to Claim - Pin Controller', () => {

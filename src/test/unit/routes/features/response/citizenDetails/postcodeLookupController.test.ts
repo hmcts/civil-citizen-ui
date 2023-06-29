@@ -5,7 +5,6 @@ import { POSTCODE_LOOKUP_URL } from '../../../../../../main/routes/urls';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 const nock = require('nock');
 
 const mockPostcodeServer = 'https://api.os.uk';

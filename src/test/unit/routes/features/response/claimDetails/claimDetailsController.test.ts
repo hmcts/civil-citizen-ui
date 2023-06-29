@@ -19,7 +19,6 @@ import {PartyType} from 'models/partyType';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 const nock = require('nock');
 
 describe('Claim details page', () => {

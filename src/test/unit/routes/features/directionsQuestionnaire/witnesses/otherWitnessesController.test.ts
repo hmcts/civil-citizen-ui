@@ -13,7 +13,6 @@ import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 
 const otherWitnessMock = {
   'id': 1645882162449409,

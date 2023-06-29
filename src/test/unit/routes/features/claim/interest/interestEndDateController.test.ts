@@ -9,7 +9,6 @@ import {InterestEndDateType} from '../../../../../../main/common/form/models/cla
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 
 describe('Claimant Interest From Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

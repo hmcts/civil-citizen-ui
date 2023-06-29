@@ -19,7 +19,6 @@ import {ResponseType} from '../../../../../../main/common/form/models/responseTy
 import {ClaimDetails} from '../../../../../../main/common/form/models/claim/details/claimDetails';
 
 jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({

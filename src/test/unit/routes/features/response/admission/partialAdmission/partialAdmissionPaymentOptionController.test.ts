@@ -19,7 +19,6 @@ import civilClaimResponseWithAdmittedPaymentAmountMock
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 
 describe('Part Admit - Payment Option Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

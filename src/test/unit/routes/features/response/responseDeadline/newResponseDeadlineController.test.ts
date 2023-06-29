@@ -12,7 +12,6 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('connect-redis');
 
 const mockGetCaseDataFromStore = getCaseDataFromStore as jest.Mock;
 

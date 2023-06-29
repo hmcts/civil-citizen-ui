@@ -26,7 +26,6 @@ jest.mock('services/features/caseProgression/disclosureService');
 jest.mock('services/features/caseProgression/witnessService');
 jest.mock('services/features/caseProgression/expertService');
 jest.mock('services/features/caseProgression/trialService');
-jest.mock('connect-redis');
 
 describe('Upload document- upload document controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

@@ -11,7 +11,6 @@ import civilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMo
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 
 describe('Document download controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

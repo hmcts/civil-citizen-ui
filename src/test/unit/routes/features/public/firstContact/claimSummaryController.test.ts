@@ -8,7 +8,6 @@ import {FIRST_CONTACT_ACCESS_DENIED_URL, FIRST_CONTACT_CLAIM_SUMMARY_URL} from '
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 
 describe('First contact - claim summary controller', () => {
   it('should render page successfully if cookie has correct values', async () => {

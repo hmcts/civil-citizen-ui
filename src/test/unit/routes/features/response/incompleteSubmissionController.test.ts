@@ -19,7 +19,6 @@ jest.mock('../../../../../main/services/features/response/checkAnswers/checkAnsw
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/services/features/common/taskListService');
-jest.mock('connect-redis');
 const mockGetCaseDataFromStore = getCaseDataFromStore as jest.Mock;
 const mockOutstandingTasksFromCase = outstandingTasksFromCase as jest.Mock;
 

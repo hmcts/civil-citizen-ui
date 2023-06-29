@@ -10,7 +10,6 @@ import express from 'express';
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/utilityService');
-jest.mock('connect-redis');
 
 describe('Bilingual Langiage Preference Service', () => {
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;

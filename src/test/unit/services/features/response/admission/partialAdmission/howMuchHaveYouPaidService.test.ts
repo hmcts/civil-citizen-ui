@@ -7,7 +7,6 @@ import {mockClaim} from '../../../../../../utils/mockClaim';
 import {ResponseType} from '../../../../../../../main/common/form/models/responseType';
 
 jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;

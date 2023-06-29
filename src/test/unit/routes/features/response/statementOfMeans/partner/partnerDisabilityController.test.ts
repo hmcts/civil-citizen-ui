@@ -12,7 +12,6 @@ import { mockCivilClaim, mockCivilClaimUndefined, mockNoStatementOfMeans, mockRe
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 
 describe('Partner disability', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

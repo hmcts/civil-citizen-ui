@@ -9,7 +9,6 @@ import {NoMediationReasonOptions} from 'form/models/mediation/noMediationReasonO
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 
 describe('I dont want free meditation', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

@@ -13,7 +13,6 @@ import {FREE_TEXT_MAX_LENGTH} from 'form/validators/validationConstraints';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 
 const civilClaimResponseMockWithNoEvidence =
 {

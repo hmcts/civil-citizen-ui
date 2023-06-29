@@ -9,7 +9,6 @@ const {app} = require('../../../../../../main/app');
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 
 describe('Priority Debts Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

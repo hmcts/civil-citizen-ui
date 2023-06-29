@@ -13,7 +13,6 @@ import {SameRateInterestType} from '../../../../../../main/common/form/models/cl
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('connect-redis');
 
 describe('Claimant Interest Rate', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
