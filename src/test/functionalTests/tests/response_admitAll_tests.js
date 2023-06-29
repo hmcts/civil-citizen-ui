@@ -33,6 +33,7 @@ Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @reg
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
     await api.enterBreathingSpace(config.applicantSolicitorUser);
     await api.liftBreathingSpace(config.applicantSolicitorUser);
+    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayImmediate);
   }
 });
 
