@@ -3,7 +3,6 @@ module.exports = {
   testRegex: '(/src/test/.*|\\.(test|spec))\\.(ts|js)$',
   testEnvironment: 'node',
   testPathIgnorePatterns:['src/test/unit/routes/features/claim', 'src/test/unit/routes/features/claimantResponse', 'checkAnswersController.test.ts', 'submitReponse.test.ts', 'pinController.test.ts', 'submitComfirmationController.test.ts','newResponseDeadlineController.test.ts', 'documentDownloadController.test.ts', 'dashboardController.test.ts', 'claimDetailsController.test.ts', '/services/', '/routes/', '/common/'],
-  coveragePathIgnorePatterns:['src/test/unit/routes/features/claim', 'src/test/unit/routes/features/claimantResponse', 'checkAnswersController.test.ts', 'submitReponse.test.ts', 'pinController.test.ts', 'submitComfirmationController.test.ts','newResponseDeadlineController.test.ts', 'documentDownloadController.test.ts', 'dashboardController.test.ts', 'claimDetailsController.test.ts', '/service/', '/routes/', '/common/'],
   transform: {
     '^.+\\.ts?$': ['ts-jest', {  isolatedModules: true, }],
   },
