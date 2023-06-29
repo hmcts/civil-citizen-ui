@@ -13,22 +13,18 @@ const uploadFileController = Router();
 
 uploadFileController.post(CP_UPLOAD_FILE, upload.single('file'), (req, res) => {
   try {
-    //const claimId = req.params.id;
     const uploadDocumentsForm = TypeOfDocumentSectionMapper.mapToSingleFile(req);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
 
     const form = new GenericForm(uploadDocumentsForm);
     form.validateSync();
     if (form.hasErrors()) {
-      //await renderView(res, claimId, form);
       res.status(400).json({
         errors: form.getAllErrors().map(error => t(error.text, lang)),
       });
 
     } else {
-      //todo: save to redis
-      //todo: next page (cancel page or continue page)
-      //await renderView(res, claimId, form);
+
       const document = {
         createdBy: 'test',
         documentLink: {
