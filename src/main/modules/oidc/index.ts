@@ -4,13 +4,13 @@ import {AppRequest} from '../../common/models/AppRequest';
 import {getUserDetails} from '../../app/auth/user/oidc';
 import {
   ASSIGN_CLAIM_URL, BASE_FIRST_CONTACT_URL,
-  CALLBACK_URL, CASE_DOCUMENT_DOWNLOAD_URL,
+  CALLBACK_URL,
   DASHBOARD_URL,
   SIGN_IN_URL,
   SIGN_OUT_URL,
   UNAUTHORISED_URL,
 } from '../../routes/urls';
-import {DocumentUri} from 'models/document/documentType';
+
 
 const requestIsForAssigningClaimForDefendant = (req: Request): boolean => {
   return req.originalUrl.startsWith(ASSIGN_CLAIM_URL) && req.query?.id !== undefined;
@@ -21,8 +21,8 @@ const requestIsForPinAndPost = (req: Request): boolean => {
 };
 
 const requestIsForDownloadPdf = (req: Request): boolean => {
-  return req.originalUrl.includes(CASE_DOCUMENT_DOWNLOAD_URL.replace(':documentType', 'timeline'))
-    || req.originalUrl.includes(CASE_DOCUMENT_DOWNLOAD_URL.replace(':documentType', DocumentUri.SEALED_CLAIM));
+  return req.originalUrl.endsWith('/documents/timeline')
+    || req.originalUrl.endsWith('/documents/sealed-claim');
 };
 
 const buildAssignClaimUrlWithId = (req: AppRequest, app: Application) : string => {
