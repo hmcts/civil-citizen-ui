@@ -11,11 +11,11 @@ const buttons = {
 
 class EmployerDetails {
 
-  enterEmployerDetails() {
-    I.see('Who employs you?', 'h1');
-    I.fillField(fields.employerName, 'ABC Ltd');
-    I.fillField(fields.jobTitle, 'Builder');
-    I.click(buttons.saveAndContinue);
+  async enterEmployerDetails() {
+    await I.see('Who employs you?', 'h1');
+    await I.fillField(fields.employerName, 'ABC Ltd');
+    await I.fillField(fields.jobTitle, 'Builder');
+    await I.click(buttons.saveAndContinue);
   }
 }
 
