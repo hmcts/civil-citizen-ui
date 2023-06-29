@@ -23,7 +23,7 @@ import {DocumentUri} from 'models/document/documentType';
 
 const PAGES_LATEST_UPDATE_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT';
 
-function getPartAdmitPayInstallmentItems(claim: Claim, lng: string, ) {
+function getPartAdmitPayInstallmentItems(claim: Claim, lng: string) {
   const claimantFullName = claim.getClaimantFullName();
   const claimId = claim.id;
   if (!claim.isBusiness()) {
