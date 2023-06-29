@@ -41,8 +41,7 @@ module.exports = {
     const payload = caseProgressionToHearingInitiated.createCaseProgressionToHearingInitiated();
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
-    await assertSubmittedSpecEvent('HEARING_READINESS');
-    await waitForFinishedBusinessProcess(caseId);
+    await assertSubmittedSpecEvent(config.claimState.HEARING_READINESS);
     console.log('End of performCaseProgressedToHearingInitiated()');
   },
 
@@ -52,8 +51,7 @@ module.exports = {
     const payload = caseProgressionToSDOState.createCaseProgressionToSDOState();
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
-    await assertSubmittedSpecEvent('CASE_PROGRESSION');
-    await waitForFinishedBusinessProcess(caseId);
+    await assertSubmittedSpecEvent(config.claimState.CASE_PROGRESSION);
     console.log('End of performCaseProgressedToSDO()');
   },
 
@@ -89,9 +87,6 @@ module.exports = {
     }
 
     await assertSubmittedSpecEvent('PENDING_CASE_ISSUED');
-
-    await waitForFinishedBusinessProcess(caseId);
-
     const pbaV3 = await checkToggleEnabled(PBAv3Toggle);
     console.log('Is PBAv3 toggle on?: ' + pbaV3);
 
@@ -127,7 +122,6 @@ module.exports = {
     caseData = createSDOPayload['caseData'];
     await apiRequest.setupTokens(user);
     await assertSubmittedSpecEvent(config.claimState.CASE_PROGRESSION);
-    await waitForFinishedBusinessProcess(caseId);
     console.log('End of createSDO()');
   },
 
@@ -135,6 +129,8 @@ module.exports = {
     let responsePayload;
     if (defenceType === config.defenceType.admitAllPayBySetDate) {
       responsePayload = admitAllClaimantResponse.doNotAcceptAskToPayBySetDate();
+    } else if (defenceType === config.defenceType.admitAllPayImmediate) {
+      responsePayload = admitAllClaimantResponse.doNotAcceptAskToPayImmediately();
     } else if (defenceType === config.defenceType.admitAllPayByInstallment) {
       responsePayload = admitAllClaimantResponse.doNotAcceptAskToPayByInstallment();
     } else if (defenceType === config.defenceType.partAdmitAmountPaid) {
@@ -156,7 +152,6 @@ module.exports = {
     caseData = responsePayload['caseData'];
     await apiRequest.setupTokens(user);
     await assertSubmittedSpecEvent(expectedState);
-    await waitForFinishedBusinessProcess(caseId);
     console.log('End of viewAndRespondToDefence()');
   },
 
@@ -166,7 +161,6 @@ module.exports = {
     caseData = enterBreathingSpacePayload['caseData'];
     await apiRequest.setupTokens(user);
     await assertSubmittedSpecEvent();
-    await waitForFinishedBusinessProcess(caseId);
     console.log('End of enterBreathingSpace()');
   },
 
@@ -176,7 +170,6 @@ module.exports = {
     caseData = mediationSuccessfulPayload['caseData'];
     await apiRequest.setupTokens(user);
     await assertSubmittedSpecEvent(config.claimState.CASE_STAYED);
-    await waitForFinishedBusinessProcess(caseId);
     console.log('End of mediationSuccessful()');
   },
 
@@ -186,7 +179,6 @@ module.exports = {
     caseData = mediationUnsuccessfulPayload['caseData'];
     await apiRequest.setupTokens(user);
     await assertSubmittedSpecEvent(config.claimState.JUDICIAL_REFERRAL);
-    await waitForFinishedBusinessProcess(caseId);
     console.log('End of mediationUnsuccessful()');
   },
 
@@ -196,7 +188,6 @@ module.exports = {
     caseData = liftBreathingSpacePayload['caseData'];
     await apiRequest.setupTokens(user);
     await assertSubmittedSpecEvent();
-    await waitForFinishedBusinessProcess(caseId);
     console.log('End of liftBreathingSpace()');
   },
 
@@ -320,9 +311,6 @@ const assertSubmittedSpecEvent = async (expectedState, submittedCallbackResponse
   const response = await apiRequest.submitEvent(eventName, caseData, caseId);
   const responseBody = await response.json();
   assert.equal(response.status, 201);
-  if (expectedState) {
-    assert.equal(responseBody.state, expectedState);
-  }
   if (hasSubmittedCallback && submittedCallbackResponseContains) {
     assert.equal(responseBody.callback_response_status_code, 200);
     assert.include(responseBody.after_submit_callback_response.confirmation_header, submittedCallbackResponseContains.header);
@@ -333,6 +321,10 @@ const assertSubmittedSpecEvent = async (expectedState, submittedCallbackResponse
     caseId = responseBody.id;
     await addUserCaseMapping(caseId, config.applicantSolicitorUser);
     console.log('Case created: ' + caseId);
+  }
+  await waitForFinishedBusinessProcess(caseId);
+  if (expectedState) {
+    assert.equal(responseBody.state, expectedState);
   }
 };
 // Mid event will not return case fields that were already filled in another event if they're present on currently processed event.
