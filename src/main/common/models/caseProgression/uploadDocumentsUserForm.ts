@@ -1,18 +1,8 @@
-import {
-  IsDate,
-  IsDefined,
-  IsNotEmpty,
-  IsOptional,
-  Max,
-  Min,
-  Validate,
-  ValidateIf,
-  ValidateNested} from 'class-validator';
+import {IsDate, IsDefined, IsNotEmpty, IsOptional, Max, Min, Validate, ValidateIf, ValidateNested} from 'class-validator';
 import {DateConverter} from 'common/utils/dateConverter';
 import {OptionalDateNotInFutureValidator} from 'form/validators/optionalDateNotInFutureValidator';
 import {OptionalDateFourDigitValidator} from 'form/validators/optionalDateFourDigitValidator';
 import {toNumberOrString} from 'common/utils/numberConverter';
-import {IsDefined, IsNotEmpty, ValidateNested} from 'class-validator';
 import { IsFileSize} from 'form/validators/isFileSize';
 import {IsAllowedMimeType} from 'form/validators/isAllowedMimeType';
 
@@ -81,18 +71,18 @@ export class FileUpload {
   fieldname: string;
   originalname: string;
   @IsAllowedMimeType({ message: 'ERRORS.VALID_MIME_TYPE_FILE' })
-  mimetype: string;
+    mimetype: string;
   buffer: ArrayBuffer;
   @IsFileSize({ message: 'ERRORS.VALID_SIZE_FILE' })
-  size: number;
+    size: number;
 }
 
 export class FileOnlySection {
   @IsDefined({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
-  fileUpload: FileUpload;
+    fileUpload: FileUpload;
 }
 
-export class DateInputFields extends  FileOnlySection {
+export class DateInputFields extends FileOnlySection {
     @ValidateIf(o => ((o.dateDay!==undefined && o.dateMonth!==undefined && o.dateDay && o.dateMonth && o.dateYear && o.dateDay > 0 && o.dateDay < 32 && o.dateMonth > 0 && o.dateMonth < 13 && o.dateYear > 999)
       || (o.dateDay!==undefined && o.dateMonth!==undefined && !o.dateDay && !o.dateMonth && !o.dateYear)))
     @IsDefined({message: 'ERRORS.VALID_YOU_MUST_ENTER_DOI'})
@@ -136,8 +126,6 @@ export class TypeOfDocumentSection extends DateInputFields {
   constructor(day?: string, month?: string, year?: string) {
     super(day, month, year);
   }
-  @IsDefined({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
-    fileUpload: FileUpload;
 }
 
 export class WitnessSection extends DateInputFields {
