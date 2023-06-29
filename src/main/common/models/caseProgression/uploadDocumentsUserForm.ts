@@ -77,7 +77,7 @@ export class FileOnlySection {
   fileUpload: string; //todo: get and validate file
 }
 
-export class DateOnlySection extends  FileOnlySection {
+export class DateInputFields extends  FileOnlySection {
     @ValidateIf(o => ((o.dateDay!==undefined && o.dateMonth!==undefined && o.dateDay && o.dateMonth && o.dateYear && o.dateDay > 0 && o.dateDay < 32 && o.dateMonth > 0 && o.dateMonth < 13 && o.dateYear > 999)
       || (o.dateDay!==undefined && o.dateMonth!==undefined && !o.dateDay && !o.dateMonth && !o.dateYear)))
     @IsDefined({message: 'ERRORS.VALID_YOU_MUST_ENTER_DOI'})
@@ -115,14 +115,14 @@ export class DateOnlySection extends  FileOnlySection {
     }
 }
 
-export class TypeOfDocumentSection extends DateOnlySection {
+export class TypeOfDocumentSection extends DateInputFields {
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_TYPE_OF_DOCUMENT'})
     typeOfDocument: string;
   constructor(day?: string, month?: string, year?: string) {
     super(day, month, year);
   }
 }
-export class WitnessSection extends DateOnlySection {
+export class WitnessSection extends DateInputFields {
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_WITNESS_NAME'})
     witnessName: string;
   constructor(day?: string, month?: string, year?: string) {
@@ -130,13 +130,9 @@ export class WitnessSection extends DateOnlySection {
   }
 }
 
-export class ExpertSection extends DateOnlySection {
+export class ExpertSection extends DateInputFields {
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_EXPERT_NAME'})
     expertName: string;
-
-  @IsNotEmpty({message: 'ERRORS.VALID_ENTER_EXPERT_NAMES'})
-  @IsOptional()
-    multipleExpertsName: string;
 
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_EXPERTISE'})
   @IsOptional()
