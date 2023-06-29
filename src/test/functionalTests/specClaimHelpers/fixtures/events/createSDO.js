@@ -202,7 +202,7 @@ module.exports = {
           input: 'At least 7 days before the disposal hearing, the claimant must file and serve',
           type: [
             'DOCUMENTS',
-          ]
+          ],
         },
         disposalHearingClaimSettlingToggle: [
           'SHOW',
