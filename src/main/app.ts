@@ -22,7 +22,7 @@ const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
 
 import RedisStore from 'connect-redis';
-import Redis from "ioredis";
+import Redis from 'ioredis';
 
 const env = process.env.NODE_ENV || 'development';
 const productionMode = env === 'production';
