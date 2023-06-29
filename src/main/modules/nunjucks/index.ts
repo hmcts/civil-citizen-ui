@@ -143,6 +143,10 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('today', new Date());
     nunjucksEnv.addGlobal('nextMonth', nextMonth);
     nunjucksEnv.addGlobal('PaymentOptionType', PaymentOptionType);
+    nunjucksEnv.addGlobal('ContactUsUrl', 'https://www.moneyclaims.service.gov.uk/contact-us');
+    nunjucksEnv.addGlobal('AccessibilityStatementUrl', 'https://www.moneyclaims.service.gov.uk/accessibility-statement');
+    nunjucksEnv.addGlobal('TermsAndConditionsUrl', 'https://www.moneyclaims.service.gov.uk/terms-and-conditions');
+    nunjucksEnv.addGlobal('PrivacyPolicyUrl', 'https://www.moneyclaims.service.gov.uk/privacy-policy');
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;
