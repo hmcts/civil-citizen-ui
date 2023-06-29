@@ -7,12 +7,11 @@ import {
 } from '../../../../services/features/response/statementOfMeans/explanationService';
 import {Explanation} from '../../../../common/form/models/statementOfMeans/explanation';
 import {GenericForm} from '../../../../common/form/models/genericForm';
-import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 
 const explanationViewPath = 'features/response/statementOfMeans/explanation';
 const explanationController = Router();
 
-explanationController.get(CITIZEN_EXPLANATION_URL, statementOfMeansGuard, async (req, res, next: NextFunction) => {
+explanationController.get(CITIZEN_EXPLANATION_URL, async (req, res, next: NextFunction) => {
   try {
     res.render(explanationViewPath, {form: new GenericForm(await getExplanation(req.params.id))});
   } catch (error) {
@@ -21,7 +20,6 @@ explanationController.get(CITIZEN_EXPLANATION_URL, statementOfMeansGuard, async 
 });
 
 explanationController.post(CITIZEN_EXPLANATION_URL,
-  statementOfMeansGuard,
   async (req, res, next: NextFunction) => {
     const explanation: Explanation = new Explanation(req.body.text);
     const form: GenericForm<Explanation> = new GenericForm(explanation);

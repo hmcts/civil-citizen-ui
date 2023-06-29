@@ -8,7 +8,6 @@ import {
   getPriorityDebtsForm,
   savePriorityDebts,
 } from '../../../../services/features/response/statementOfMeans/priorityDebtsService';
-import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 
 const priorityDebtsController = Router();
 const priorityDebtsView = 'features/response/statementOfMeans/priority-debts';
@@ -17,7 +16,7 @@ function renderForm(form: GenericForm<PriorityDebts>, res: Response) {
   res.render(priorityDebtsView, {form});
 }
 
-priorityDebtsController.get(CITIZEN_PRIORITY_DEBTS_URL, statementOfMeansGuard, async (req, res, next: NextFunction) => {
+priorityDebtsController.get(CITIZEN_PRIORITY_DEBTS_URL, async (req, res, next: NextFunction) => {
   try {
     const priorityDebts = await getPriorityDebts(req.params.id);
     renderForm(new GenericForm<PriorityDebts>(priorityDebts), res);
@@ -26,7 +25,7 @@ priorityDebtsController.get(CITIZEN_PRIORITY_DEBTS_URL, statementOfMeansGuard, a
   }
 });
 
-priorityDebtsController.post(CITIZEN_PRIORITY_DEBTS_URL, statementOfMeansGuard, async (req, res, next: NextFunction) => {
+priorityDebtsController.post(CITIZEN_PRIORITY_DEBTS_URL, async (req, res, next: NextFunction) => {
   try {
     const form = new GenericForm(getPriorityDebtsForm(req));
     await form.validate();

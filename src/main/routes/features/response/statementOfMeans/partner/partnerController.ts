@@ -4,7 +4,6 @@ import {CohabitingService} from '../../../../../services/features/response/state
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
-import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 
 const partnerViewPath = 'features/response/statementOfMeans/partner/partner';
 const partnerController = Router();
@@ -14,7 +13,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(partnerViewPath, {form});
 }
 
-partnerController.get(CITIZEN_PARTNER_URL, statementOfMeansGuard, async (req, res, next: NextFunction) => {
+partnerController.get(CITIZEN_PARTNER_URL, async (req, res, next: NextFunction) => {
   try {
     const cohabiting = await cohabitingService.getCohabiting(req.params.id);
     renderView(cohabiting, res);
@@ -24,7 +23,6 @@ partnerController.get(CITIZEN_PARTNER_URL, statementOfMeansGuard, async (req, re
 });
 
 partnerController.post(CITIZEN_PARTNER_URL,
-  statementOfMeansGuard,
   async (req, res, next: NextFunction) => {
     try {
       const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option));

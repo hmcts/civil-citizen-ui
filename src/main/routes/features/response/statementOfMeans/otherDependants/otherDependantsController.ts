@@ -10,7 +10,6 @@ import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlF
 import {Claim} from '../../../../../common/models/claim';
 import {getCaseDataFromStore} from '../../../../../modules/draft-store/draftStoreService';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
-import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 
 const citizenOtherDependantsViewPath = 'features/response/statementOfMeans/otherDependants/other-dependants';
 const otherDependantsController = Router();
@@ -20,7 +19,7 @@ function renderView(form: GenericForm<OtherDependants>, res: Response): void {
   res.render(citizenOtherDependantsViewPath, {form});
 }
 
-otherDependantsController.get(CITIZEN_OTHER_DEPENDANTS_URL, statementOfMeansGuard, async (req, res, next: NextFunction) => {
+otherDependantsController.get(CITIZEN_OTHER_DEPENDANTS_URL, async (req, res, next: NextFunction) => {
   try {
     const response = await otherDependantsService.getOtherDependants(req.params.id);
     const otherDependants = response
@@ -33,7 +32,6 @@ otherDependantsController.get(CITIZEN_OTHER_DEPENDANTS_URL, statementOfMeansGuar
 });
 
 otherDependantsController.post(CITIZEN_OTHER_DEPENDANTS_URL,
-  statementOfMeansGuard,
   async (req, res, next: NextFunction) => {
     try {
       const form: GenericForm<OtherDependants> = new GenericForm(new OtherDependants(

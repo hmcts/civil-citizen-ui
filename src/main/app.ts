@@ -17,6 +17,8 @@ import {CSRFToken} from './modules/csrf';
 import routes from './routes/routes';
 import {setLanguage} from 'modules/i18n/languageService';
 import {isServiceShuttered} from './app/auth/launchdarkly/launchDarklyClient';
+import {STATEMENT_OF_MEANS_URL} from 'routes/urls';
+import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -60,6 +62,7 @@ new Helmet(config.get('security')).enableFor(app);
 new HealthCheck().enableFor(app);
 new OidcMiddleware().enableFor(app);
 
+app.use(STATEMENT_OF_MEANS_URL, statementOfMeansGuard);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

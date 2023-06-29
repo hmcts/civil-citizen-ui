@@ -8,7 +8,6 @@ import {PartnerDisabilityService} from '../../../../../services/features/respons
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
-import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 
 const partnerViewPath = 'features/response/statementOfMeans/partner/partner-disability';
 const partnerDisabilityController = Router();
@@ -18,7 +17,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(partnerViewPath, {form});
 }
 
-partnerDisabilityController.get(CITIZEN_PARTNER_DISABILITY_URL, statementOfMeansGuard, async (req, res, next: NextFunction) => {
+partnerDisabilityController.get(CITIZEN_PARTNER_DISABILITY_URL, async (req, res, next: NextFunction) => {
   try {
     const partnerDisability = await partnerDisabilityService.getPartnerDisability(req.params.id);
     renderView(partnerDisability, res);
@@ -28,7 +27,6 @@ partnerDisabilityController.get(CITIZEN_PARTNER_DISABILITY_URL, statementOfMeans
 });
 
 partnerDisabilityController.post(CITIZEN_PARTNER_DISABILITY_URL,
-  statementOfMeansGuard,
   async (req, res, next: NextFunction) => {
     try {
       const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option));

@@ -10,12 +10,11 @@ import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlF
 import {getEmploymentForm} from '../../../../../services/features/response/statementOfMeans/employment/employmentService';
 import {EmploymentForm} from '../../../../../common/form/models/statementOfMeans/employment/employmentForm';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
-import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 
 const whoEmploysYouViewPath = 'features/response/statementOfMeans/employment/who-employs-you';
 const whoEmploysYouController = Router();
 
-whoEmploysYouController.get(CITIZEN_WHO_EMPLOYS_YOU_URL, statementOfMeansGuard, async (req: Request, res: Response, next: NextFunction) => {
+whoEmploysYouController.get(CITIZEN_WHO_EMPLOYS_YOU_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const form = new GenericForm(await getEmployers(req.params.id));
     res.render(whoEmploysYouViewPath, {form});
@@ -24,7 +23,7 @@ whoEmploysYouController.get(CITIZEN_WHO_EMPLOYS_YOU_URL, statementOfMeansGuard, 
   }
 });
 
-whoEmploysYouController.post(CITIZEN_WHO_EMPLOYS_YOU_URL, statementOfMeansGuard, async (req: Request, res: Response, next: NextFunction) => {
+whoEmploysYouController.post(CITIZEN_WHO_EMPLOYS_YOU_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const employers: Employers = new Employers(req.body.rows.map((employer: Employer) => new Employer(employer.employerName, employer.jobTitle)));

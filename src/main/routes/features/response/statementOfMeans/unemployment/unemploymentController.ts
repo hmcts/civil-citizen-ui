@@ -10,7 +10,6 @@ import {
 } from '../../../../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {Validator} from 'class-validator';
-import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 
 const citizenEmploymentStatusViewPath = 'features/response/statementOfMeans/unemployment';
 const unemploymentController = Router();
@@ -22,7 +21,7 @@ function renderView(form: GenericForm<Unemployment>, res: Response): void {
   res.render(citizenEmploymentStatusViewPath, {form, UnemploymentCategory});
 }
 
-unemploymentController.get(CITIZEN_UNEMPLOYED_URL, statementOfMeansGuard, async (req, res, next: NextFunction) => {
+unemploymentController.get(CITIZEN_UNEMPLOYED_URL, async (req, res, next: NextFunction) => {
   try {
     unemployment = await unemploymentService.getUnemployment(req.params.id);
     renderView(new GenericForm(unemployment), res);
@@ -31,7 +30,7 @@ unemploymentController.get(CITIZEN_UNEMPLOYED_URL, statementOfMeansGuard, async 
   }
 });
 
-unemploymentController.post(CITIZEN_UNEMPLOYED_URL, statementOfMeansGuard, async (req, res, next: NextFunction) => {
+unemploymentController.post(CITIZEN_UNEMPLOYED_URL, async (req, res, next: NextFunction) => {
   try {
     const unemploymentToSave = new Unemployment(req.body.option, new UnemploymentDetails(req.body.years, req.body.months), new OtherDetails(req.body.details));
     const unemploymentForm: GenericForm<Unemployment> = new GenericForm(unemploymentToSave);

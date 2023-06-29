@@ -7,14 +7,12 @@ import {
   getResidenceForm,
   saveResidence,
 } from '../../../../services/features/response/statementOfMeans/residence/residenceService';
-import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 
 const residenceViewPath = 'features/response/statementOfMeans/residence';
 
 const residenceController = Router();
 residenceController.get(
   CITIZEN_RESIDENCE_URL,
-  statementOfMeansGuard,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const residence = await getResidence(req.params.id);
@@ -27,7 +25,6 @@ residenceController.get(
 
 residenceController.post(
   CITIZEN_RESIDENCE_URL,
-  statementOfMeansGuard,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const residence = getResidenceForm(req.body.type, req.body.housingDetails);

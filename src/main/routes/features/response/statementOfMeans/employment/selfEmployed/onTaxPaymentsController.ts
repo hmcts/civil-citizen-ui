@@ -9,7 +9,6 @@ import {
 } from '../../../../../../services/features/response/statementOfMeans/employment/selfEmployed/onTaxPaymentsService';
 import {constructResponseUrlWithIdParams} from '../../../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../../../common/form/models/genericForm';
-import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 
 const citizenOnTaxPaymentsViewPath = 'features/response/statementOfMeans/employment/selfEmployed/on-tax-payments';
 const onTaxPaymentsController = Router();
@@ -18,7 +17,7 @@ function renderView(form: GenericForm<OnTaxPayments>, res: Response) {
   res.render(citizenOnTaxPaymentsViewPath, {form});
 }
 
-onTaxPaymentsController.get(ON_TAX_PAYMENTS_URL, statementOfMeansGuard, async (req, res, next: NextFunction) => {
+onTaxPaymentsController.get(ON_TAX_PAYMENTS_URL, async (req, res, next: NextFunction) => {
   try {
     renderView(await getOnTaxPaymentsForm(req.params.id), res);
   } catch (error) {
@@ -26,7 +25,7 @@ onTaxPaymentsController.get(ON_TAX_PAYMENTS_URL, statementOfMeansGuard, async (r
   }
 });
 
-onTaxPaymentsController.post(ON_TAX_PAYMENTS_URL, statementOfMeansGuard, async (req, res, next: NextFunction) => {
+onTaxPaymentsController.post(ON_TAX_PAYMENTS_URL, async (req, res, next: NextFunction) => {
   const form = new GenericForm(new OnTaxPayments(req.body.option, Number(req.body.amountYouOwe), req.body.reason));
   try {
     form.validateSync();

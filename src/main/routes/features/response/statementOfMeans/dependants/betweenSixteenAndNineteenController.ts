@@ -14,7 +14,6 @@ import {
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {hasDisabledChildren} from '../../../../../services/features/response/statementOfMeans/dependants/childrenDisabilityService';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
-import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 
 const dependantTeenagersViewPath = 'features/response/statementOfMeans/dependants/between_16_and_19';
 const betweenSixteenAndNineteenController = Router();
@@ -29,7 +28,7 @@ function convertToForm(req: Request): GenericForm<BetweenSixteenAndNineteenDepen
   return new GenericForm(new BetweenSixteenAndNineteenDependants(value, maxValue));
 }
 
-betweenSixteenAndNineteenController.get(CITIZEN_DEPENDANTS_EDUCATION_URL, statementOfMeansGuard, async (req, res, next: NextFunction) => {
+betweenSixteenAndNineteenController.get(CITIZEN_DEPENDANTS_EDUCATION_URL, async (req, res, next: NextFunction) => {
   try {
     renderView(await getForm(req.params.id), res);
   } catch (error) {
@@ -37,7 +36,7 @@ betweenSixteenAndNineteenController.get(CITIZEN_DEPENDANTS_EDUCATION_URL, statem
   }
 });
 
-betweenSixteenAndNineteenController.post(CITIZEN_DEPENDANTS_EDUCATION_URL, statementOfMeansGuard, async (req, res, next: NextFunction) => {
+betweenSixteenAndNineteenController.post(CITIZEN_DEPENDANTS_EDUCATION_URL, async (req, res, next: NextFunction) => {
   const form = convertToForm(req);
   try {
     form.validateSync();

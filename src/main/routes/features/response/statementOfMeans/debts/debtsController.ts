@@ -8,7 +8,6 @@ import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
 import {YesNo} from '../../../../../common/form/models/yesNo';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
-import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 
 const debtsViewPath = 'features/response/statementOfMeans/debts/debts';
 const debtsController = Router();
@@ -17,7 +16,7 @@ function renderView(form: GenericForm<Debts>, res: Response): void {
   res.render(debtsViewPath, {form});
 }
 
-debtsController.get(CITIZEN_DEBTS_URL, statementOfMeansGuard, async (req, res, next: NextFunction) => {
+debtsController.get(CITIZEN_DEBTS_URL, async (req, res, next: NextFunction) => {
   try {
     const debtsForm: GenericForm<Debts> = new GenericForm(new Debts());
     const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
@@ -34,7 +33,6 @@ debtsController.get(CITIZEN_DEBTS_URL, statementOfMeansGuard, async (req, res, n
 });
 
 debtsController.post(CITIZEN_DEBTS_URL,
-  statementOfMeansGuard,
   async (req, res, next: NextFunction) => {
     try {
       const debtsForm: GenericForm<Debts> = new GenericForm(new Debts(req.body.option, transformToDebts(req)));
