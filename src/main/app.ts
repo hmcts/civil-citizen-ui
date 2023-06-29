@@ -17,7 +17,8 @@ import {CSRFToken} from './modules/csrf';
 import routes from './routes/routes';
 import {setLanguage} from 'modules/i18n/languageService';
 import {isServiceShuttered} from './app/auth/launchdarkly/launchDarklyClient';
-import {SessionStoreClient} from 'modules/session-store';
+import {getRedisStoreForSession} from 'modules/utilityService';
+import session from 'express-session';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -25,6 +26,7 @@ const {setupDev} = require('./development');
 const env = process.env.NODE_ENV || 'development';
 const productionMode = env === 'production';
 const developmentMode = env === 'development';
+const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
 export const app = express();
 app.use(cookieParser());
 app.use(setLanguage);
@@ -36,9 +38,26 @@ I18Next.enableFor(app);
 const logger = Logger.getLogger('app');
 
 new PropertiesVolume().enableFor(app);
+
 logger.info('Creating new draftStoreClient');
 new DraftStoreClient(Logger.getLogger('draftStoreClient')).enableFor(app);
-new SessionStoreClient(Logger.getLogger('SessionStoreStoreClient')).enableFor(app, productionMode);
+
+logger.info('Adding configuration for session store');
+const sessionStore = getRedisStoreForSession();
+
+app.use(session({
+  name: 'citizen-ui-session',
+  store: sessionStore,
+  secret: 'local',
+  resave: false,
+  saveUninitialized: false,
+  cookie : {
+    secure: productionMode,
+    maxAge: cookieMaxAge,
+    sameSite: 'lax',
+  },
+}));
+
 app.enable('trust proxy');
 
 new AppInsights().enable();
