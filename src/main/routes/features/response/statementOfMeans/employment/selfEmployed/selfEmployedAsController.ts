@@ -20,13 +20,13 @@ function renderView(form: GenericForm<SelfEmployedAsForm>, res: Response): void 
 }
 
 selfEmployedAsController.get(CITIZEN_SELF_EMPLOYED_URL, statementOfMeansGuard, async (req, res, next: NextFunction) => {
-    try {
-      const form = await getSelfEmployedAsForm(req.params.id);
-      renderView(form, res);
-    } catch (error) {
-      next(error);
-    }
-  });
+  try {
+    const form = await getSelfEmployedAsForm(req.params.id);
+    renderView(form, res);
+  } catch (error) {
+    next(error);
+  }
+});
 
 selfEmployedAsController.post(CITIZEN_SELF_EMPLOYED_URL,
   statementOfMeansGuard,

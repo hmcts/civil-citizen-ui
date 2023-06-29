@@ -36,27 +36,26 @@ financialDetailsController
         next(error);
       }
     })
-  .post(
-    FINANCIAL_DETAILS_URL, statementOfMeansGuard, async (req: Request, res: Response, next: NextFunction) => {
-      try {
-        const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CITIZEN_CONTACT_THEM_URL);
-        const claim: Claim = await getCaseDataFromStore(req.params.id);
-        const partyType: PartyType = claim.respondent1?.type;
-        if (partyType) {
-          if (partyType == PartyType.INDIVIDUAL || partyType == PartyType.SOLE_TRADER) {
-            res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_BANK_ACCOUNT_URL));
-          } else if (partyType == PartyType.COMPANY || partyType == PartyType.ORGANISATION) {
-            claim.taskSharedFinancialDetails = true;
-            await saveDraftClaim(req.params.id, claim);
-            res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
-          }
-        } else {
-          logger.error('No partyType found.');
-          renderView(res, claim, claimantDetailsUrl);
+  .post(FINANCIAL_DETAILS_URL, statementOfMeansGuard, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CITIZEN_CONTACT_THEM_URL);
+      const claim: Claim = await getCaseDataFromStore(req.params.id);
+      const partyType: PartyType = claim.respondent1?.type;
+      if (partyType) {
+        if (partyType == PartyType.INDIVIDUAL || partyType == PartyType.SOLE_TRADER) {
+          res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_BANK_ACCOUNT_URL));
+        } else if (partyType == PartyType.COMPANY || partyType == PartyType.ORGANISATION) {
+          claim.taskSharedFinancialDetails = true;
+          await saveDraftClaim(req.params.id, claim);
+          res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
         }
-      } catch (error) {
-        next(error);
+      } else {
+        logger.error('No partyType found.');
+        renderView(res, claim, claimantDetailsUrl);
       }
-    });
+    } catch (error) {
+      next(error);
+    }
+  });
 
 export default financialDetailsController;
