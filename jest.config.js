@@ -11,6 +11,10 @@ module.exports = {
       isolatedModules: true
     }
   },
+  jest: {
+    'resetMocks': true,
+    'restoreMocks': true
+  },
 
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper: {
