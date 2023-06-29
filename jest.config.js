@@ -7,10 +7,11 @@ module.exports = {
     '^.+\\.ts?$': 'ts-jest',
   },
   globals: {
-          'ts-jest': {
-              isolatedModules: true
-          }
-      },
+    'ts-jest': {
+      isolatedModules: true
+    }
+  },
+
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper: {
     '^common/(.*)$': '<rootDir>/src/main/common/$1',
