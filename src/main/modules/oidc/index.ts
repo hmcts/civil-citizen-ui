@@ -4,13 +4,13 @@ import {AppRequest} from '../../common/models/AppRequest';
 import {getUserDetails} from '../../app/auth/user/oidc';
 import {
   ASSIGN_CLAIM_URL, BASE_FIRST_CONTACT_URL,
-  CALLBACK_URL,
+  CALLBACK_URL, CASE_DOCUMENT_DOWNLOAD_URL,
   DASHBOARD_URL,
   SIGN_IN_URL,
   SIGN_OUT_URL,
   UNAUTHORISED_URL,
-  CASE_DOCUMENT_DOWNLOAD_URL,
 } from '../../routes/urls';
+import {DocumentUri} from 'models/document/documentType';
 
 const requestIsForAssigningClaimForDefendant = (req: Request): boolean => {
   return req.originalUrl.startsWith(ASSIGN_CLAIM_URL) && req.query?.id !== undefined;
@@ -20,13 +20,10 @@ const requestIsForPinAndPost = (req: Request): boolean => {
   return req.originalUrl.startsWith(BASE_FIRST_CONTACT_URL);
 };
 
-const requestIsForDownloadClaimPdf = (req: Request): boolean => {
-  return req.originalUrl.includes(CASE_DOCUMENT_DOWNLOAD_URL.replace(':documentType', 'sealed-claim'));
+const requestIsForDownloadPdf = (req: Request): boolean => {
+  return req.originalUrl.includes(CASE_DOCUMENT_DOWNLOAD_URL.replace(':documentType', 'timeline'))
+    || req.originalUrl.includes(CASE_DOCUMENT_DOWNLOAD_URL.replace(':documentType', DocumentUri.SEALED_CLAIM));
 };
-
-const requestIsForPrivacyPolicy = (req: Request): boolean => {
-  return req.originalUrl.endsWith('/privacy-policy');
-}
 
 const buildAssignClaimUrlWithId = (req: AppRequest, app: Application) : string => {
   const claimId = app.locals.assignClaimId;
@@ -88,7 +85,7 @@ export class OidcMiddleware {
           return next();
         }
       }
-      if (requestIsForPinAndPost(req) || requestIsForDownloadClaimPdf(req) || requestIsForPrivacyPolicy(req)) {
+      if (requestIsForPinAndPost(req) || requestIsForDownloadPdf(req)) {
         return next();
       }
       if (requestIsForAssigningClaimForDefendant(req) ) {
