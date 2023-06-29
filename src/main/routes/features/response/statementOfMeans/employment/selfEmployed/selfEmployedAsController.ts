@@ -19,9 +19,7 @@ function renderView(form: GenericForm<SelfEmployedAsForm>, res: Response): void 
   res.render(selfEmployedAsViewPath, {form});
 }
 
-selfEmployedAsController.get(CITIZEN_SELF_EMPLOYED_URL,
-  statementOfMeansGuard,
-  async (req, res, next: NextFunction) => {
+selfEmployedAsController.get(CITIZEN_SELF_EMPLOYED_URL, statementOfMeansGuard, async (req, res, next: NextFunction) => {
     try {
       const form = await getSelfEmployedAsForm(req.params.id);
       renderView(form, res);
@@ -33,7 +31,7 @@ selfEmployedAsController.get(CITIZEN_SELF_EMPLOYED_URL,
 selfEmployedAsController.post(CITIZEN_SELF_EMPLOYED_URL,
   statementOfMeansGuard,
   async (req, res, next: NextFunction) => {
-    try {
+    try{
       const annualTurnover = req.body.annualTurnover ? Number(req.body.annualTurnover) : undefined;
       const form: GenericForm<SelfEmployedAsForm> = new GenericForm(new SelfEmployedAsForm(req.body.jobTitle, annualTurnover));
       form.validateSync();

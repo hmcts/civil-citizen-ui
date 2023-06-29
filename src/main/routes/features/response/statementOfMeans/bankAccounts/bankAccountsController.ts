@@ -18,28 +18,24 @@ function renderView(form: GenericForm<BankAccounts>, bankAccountDropDownItems: B
   res.render(citizenBankAccountsViewPath, {form, bankAccountDropDownItems});
 }
 
-bankAccountsController.get(CITIZEN_BANK_ACCOUNT_URL,
-  statementOfMeansGuard,
-  async (req, res) => {
-    const bankAccounts = await bankAccountService.getBankAccounts(req.params.id);
-    renderView(new GenericForm(bankAccounts), new BankAccountTypes(), res);
-  });
+bankAccountsController.get(CITIZEN_BANK_ACCOUNT_URL, statementOfMeansGuard, async (req, res) => {
+  const bankAccounts = await bankAccountService.getBankAccounts(req.params.id);
+  renderView(new GenericForm(bankAccounts), new BankAccountTypes(), res);
+});
 
-bankAccountsController.post(CITIZEN_BANK_ACCOUNT_URL,
-  statementOfMeansGuard,
-  async (req, res) => {
-    const claimId = req.params.id;
-    const bankAccounts = new BankAccounts(req.body.accounts.map((bankAccount: BankAccount) =>
-      new BankAccount(bankAccount.typeOfAccount, bankAccount.joint, bankAccount.balance)));
-    const form = new GenericForm<BankAccounts>(bankAccounts);
-    form.validateSync();
+bankAccountsController.post(CITIZEN_BANK_ACCOUNT_URL, statementOfMeansGuard, async (req, res) => {
+  const claimId = req.params.id;
+  const bankAccounts = new BankAccounts(req.body.accounts.map((bankAccount: BankAccount) =>
+    new BankAccount(bankAccount.typeOfAccount, bankAccount.joint, bankAccount.balance)));
+  const form = new GenericForm<BankAccounts>(bankAccounts);
+  form.validateSync();
 
-    if (form.hasErrors()) {
-      renderView(form, new BankAccountTypes(), res);
-    } else {
-      await bankAccountService.saveBankAccounts(claimId, bankAccounts);
-      res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_DISABILITY_URL));
-    }
-  });
+  if (form.hasErrors()) {
+    renderView(form, new BankAccountTypes(), res);
+  } else {
+    await bankAccountService.saveBankAccounts(claimId, bankAccounts);
+    res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_DISABILITY_URL));
+  }
+});
 
 export default bankAccountsController;

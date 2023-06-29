@@ -20,19 +20,17 @@ function renderView(form: GenericForm<OtherDependants>, res: Response): void {
   res.render(citizenOtherDependantsViewPath, {form});
 }
 
-otherDependantsController.get(CITIZEN_OTHER_DEPENDANTS_URL,
-  statementOfMeansGuard,
-  async (req, res, next: NextFunction) => {
-    try {
-      const response = await otherDependantsService.getOtherDependants(req.params.id);
-      const otherDependants = response
-        ? new GenericForm(new OtherDependants(response.option, response.numberOfPeople, response.details))
-        : new GenericForm(new OtherDependants());
-      renderView(otherDependants, res);
-    } catch (error) {
-      next(error);
-    }
-  });
+otherDependantsController.get(CITIZEN_OTHER_DEPENDANTS_URL, statementOfMeansGuard, async (req, res, next: NextFunction) => {
+  try {
+    const response = await otherDependantsService.getOtherDependants(req.params.id);
+    const otherDependants = response
+      ? new GenericForm(new OtherDependants(response.option, response.numberOfPeople, response.details))
+      : new GenericForm(new OtherDependants());
+    renderView(otherDependants, res);
+  } catch (error) {
+    next(error);
+  }
+});
 
 otherDependantsController.post(CITIZEN_OTHER_DEPENDANTS_URL,
   statementOfMeansGuard,

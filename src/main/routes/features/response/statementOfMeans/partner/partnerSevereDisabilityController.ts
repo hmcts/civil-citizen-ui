@@ -14,16 +14,14 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(partnerViewPath, {form});
 }
 
-partnerSevereDisabilityController.get(CITIZEN_PARTNER_SEVERE_DISABILITY_URL,
-  statementOfMeansGuard,
-  async (req, res, next: NextFunction) => {
-    try {
-      const partnerSevereDisability = await partnerSevereDisabilityService.getPartnerSevereDisability(req.params.id);
-      renderView(partnerSevereDisability, res);
-    } catch (error) {
-      next(error);
-    }
-  });
+partnerSevereDisabilityController.get(CITIZEN_PARTNER_SEVERE_DISABILITY_URL, statementOfMeansGuard, async (req, res, next: NextFunction) => {
+  try {
+    const partnerSevereDisability = await partnerSevereDisabilityService.getPartnerSevereDisability(req.params.id);
+    renderView(partnerSevereDisability, res);
+  } catch (error) {
+    next(error);
+  }
+});
 
 partnerSevereDisabilityController.post(CITIZEN_PARTNER_SEVERE_DISABILITY_URL,
   statementOfMeansGuard,

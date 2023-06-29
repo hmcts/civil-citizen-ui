@@ -17,23 +17,21 @@ function renderView(form: GenericForm<Debts>, res: Response): void {
   res.render(debtsViewPath, {form});
 }
 
-debtsController.get(CITIZEN_DEBTS_URL,
-  statementOfMeansGuard,
-  async (req, res, next: NextFunction) => {
-    try {
-      const debtsForm: GenericForm<Debts> = new GenericForm(new Debts());
-      const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
-      if (responseDataRedis.statementOfMeans?.debts) {
-        debtsForm.model.option = responseDataRedis.statementOfMeans.debts.option;
-        if (debtsForm.model.option === YesNo.YES) {
-          debtsForm.model.debtsItems = responseDataRedis.statementOfMeans.debts.debtsItems.map(item => new DebtItems(item.debt, item.totalOwned, item.monthlyPayments));
-        }
+debtsController.get(CITIZEN_DEBTS_URL, statementOfMeansGuard, async (req, res, next: NextFunction) => {
+  try {
+    const debtsForm: GenericForm<Debts> = new GenericForm(new Debts());
+    const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
+    if (responseDataRedis.statementOfMeans?.debts) {
+      debtsForm.model.option = responseDataRedis.statementOfMeans.debts.option;
+      if (debtsForm.model.option === YesNo.YES) {
+        debtsForm.model.debtsItems = responseDataRedis.statementOfMeans.debts.debtsItems.map(item => new DebtItems(item.debt, item.totalOwned, item.monthlyPayments));
       }
-      renderView(debtsForm, res);
-    } catch (error) {
-      next(error);
     }
-  });
+    renderView(debtsForm, res);
+  } catch (error) {
+    next(error);
+  }
+});
 
 debtsController.post(CITIZEN_DEBTS_URL,
   statementOfMeansGuard,

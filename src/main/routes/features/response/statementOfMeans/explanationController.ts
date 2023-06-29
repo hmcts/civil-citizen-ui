@@ -12,15 +12,13 @@ import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 const explanationViewPath = 'features/response/statementOfMeans/explanation';
 const explanationController = Router();
 
-explanationController.get(CITIZEN_EXPLANATION_URL,
-  statementOfMeansGuard,
-  async (req, res, next: NextFunction) => {
-    try {
-      res.render(explanationViewPath, {form: new GenericForm(await getExplanation(req.params.id))});
-    } catch (error) {
-      next(error);
-    }
-  });
+explanationController.get(CITIZEN_EXPLANATION_URL, statementOfMeansGuard, async (req, res, next: NextFunction) => {
+  try {
+    res.render(explanationViewPath, {form: new GenericForm(await getExplanation(req.params.id))});
+  } catch (error) {
+    next(error);
+  }
+});
 
 explanationController.post(CITIZEN_EXPLANATION_URL,
   statementOfMeansGuard,
