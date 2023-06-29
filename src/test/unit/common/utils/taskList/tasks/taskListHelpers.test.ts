@@ -13,6 +13,7 @@ import {
   isPaymentOptionMissing,
   isRepaymentPlanMissing,
   isStatementOfMeansComplete,
+  isPaymentOptionExisting,
 } from 'common/utils/taskList/tasks/taskListHelpers';
 import {PartyType} from 'common/models/partyType';
 import {Party} from 'common/models/party';
@@ -224,6 +225,42 @@ describe('Task List Helpers', () => {
       caseData.fullAdmission.paymentIntention = new PaymentIntention();
       caseData.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
       expect(isNotPayImmediatelyResponse(caseData)).toEqual(false);
+    });
+  });
+
+  describe('isPaymentOptionExisting helper', () => {
+    it('should return false if there is no payment option', () => {
+      expect(isPaymentOptionExisting(caseData)).toEqual(false);
+    });
+
+    it('should return false if payment option is undefined - FULL_ADMISSION', () => {
+      caseData.respondent1 = <Party>{responseType: ResponseType.FULL_ADMISSION};
+      caseData.fullAdmission = new FullAdmission();
+      caseData.fullAdmission.paymentIntention = new PaymentIntention();
+      expect(isPaymentOptionExisting(caseData)).toEqual(false);
+    });
+
+    it('should return true if payment option is existing - FULL_ADMISSION', () => {
+      caseData.respondent1 = <Party>{responseType: ResponseType.FULL_ADMISSION};
+      caseData.fullAdmission = new FullAdmission();
+      caseData.fullAdmission.paymentIntention = new PaymentIntention();
+      caseData.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
+      expect(isPaymentOptionExisting(caseData)).toEqual(true);
+    });
+
+    it('should return false if payment option is undefined - PART_ADMISSION', () => {
+      caseData.respondent1 = <Party>{responseType: ResponseType.PART_ADMISSION};
+      caseData.partialAdmission = new PartialAdmission();
+      caseData.partialAdmission.paymentIntention = new PaymentIntention();
+      expect(isPaymentOptionExisting(caseData)).toEqual(false);
+    });
+
+    it('should return true if payment option is IMMEDIATELY- PART_ADMISSION', () => {
+      caseData.respondent1 = <Party>{responseType: ResponseType.PART_ADMISSION};
+      caseData.partialAdmission = new PartialAdmission();
+      caseData.partialAdmission.paymentIntention = new PaymentIntention();
+      caseData.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
+      expect(isPaymentOptionExisting(caseData)).toEqual(true);
     });
   });
 
