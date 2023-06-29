@@ -198,32 +198,47 @@ describe('Task List Helpers', () => {
       expect(isNotPayImmediatelyResponse(caseData)).toEqual(true);
     });
 
-    it('should return true if payment option is undefined', () => {
+    it('should return true if payment option is undefined - FULL_ADMISSION', () => {
+      caseData.respondent1 = <Party>{responseType: ResponseType.FULL_ADMISSION};
       caseData.fullAdmission = new FullAdmission();
-      caseData.fullAdmission.paymentIntention = new PaymentIntention();
-      caseData.fullAdmission.paymentIntention.paymentOption = undefined;
       expect(isNotPayImmediatelyResponse(caseData)).toEqual(true);
     });
 
-    it('should return true if payment option is INSTALMENTS', () => {
+    it('should return true if payment option is INSTALMENTS - FULL_ADMISSION', () => {
+      caseData.respondent1 = <Party>{responseType: ResponseType.FULL_ADMISSION};
       caseData.fullAdmission = new FullAdmission();
       caseData.fullAdmission.paymentIntention = new PaymentIntention();
       caseData.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
       expect(isNotPayImmediatelyResponse(caseData)).toEqual(true);
     });
 
-    it('should return true if payment option is BY_SET_DATE', () => {
-      caseData.fullAdmission = new FullAdmission();
-      caseData.fullAdmission.paymentIntention = new PaymentIntention();
-      caseData.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
-      expect(isNotPayImmediatelyResponse(caseData)).toEqual(true);
-    });
-
-    it('should return false if payment option is IMMEDIATELY', () => {
+    it('should return false if payment option is IMMEDIATELY - FULL_ADMISSION', () => {
       caseData.respondent1 = <Party>{responseType: ResponseType.FULL_ADMISSION};
       caseData.fullAdmission = new FullAdmission();
       caseData.fullAdmission.paymentIntention = new PaymentIntention();
       caseData.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
+      expect(isNotPayImmediatelyResponse(caseData)).toEqual(false);
+    });
+
+    it('should return true if payment option is undefined - PART_ADMISSION', () => {
+      caseData.respondent1 = <Party>{responseType: ResponseType.PART_ADMISSION};
+      caseData.partialAdmission = new PartialAdmission();
+      expect(isNotPayImmediatelyResponse(caseData)).toEqual(true);
+    });
+
+    it('should return true if payment option is INSTALMENTS - PART_ADMISSION', () => {
+      caseData.respondent1 = <Party>{responseType: ResponseType.PART_ADMISSION};
+      caseData.partialAdmission = new FullAdmission();
+      caseData.partialAdmission.paymentIntention = new PaymentIntention();
+      caseData.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
+      expect(isNotPayImmediatelyResponse(caseData)).toEqual(true);
+    });
+
+    it('should return false if payment option is IMMEDIATELY - PART_ADMISSION', () => {
+      caseData.respondent1 = <Party>{responseType: ResponseType.PART_ADMISSION};
+      caseData.partialAdmission = new PartialAdmission();
+      caseData.partialAdmission.paymentIntention = new PaymentIntention();
+      caseData.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
       expect(isNotPayImmediatelyResponse(caseData)).toEqual(false);
     });
   });
