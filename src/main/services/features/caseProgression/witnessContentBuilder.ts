@@ -42,7 +42,7 @@ export const buildNoticeOfIntention = (section: WitnessSection = null, index = 0
   const errorFieldNamePrefix = `${noticeOfIntention}[${noticeOfIntention}][${index}]`;
 
   return new UploadDocumentsSectionBuilder()
-    .addTitle('PAGES.UPLOAD_DOCUMENTS.WITNESS.NOTICE')
+    .addTitle('PAGES.UPLOAD_DOCUMENTS.WITNESS.NOTICE', null, 'govuk-!-width-three-quarters')
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', '', '', noticeOfIntention, 'witnessName', section?.witnessName, index, form?.errorFor(`${errorFieldNamePrefix}[witnessName]`, noticeOfIntention))
     .addDateArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_SUMMARY', 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', noticeOfIntention, section?.dateDay, section?.dateMonth, section?.dateYear, index)
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', noticeOfIntention, fileUpload, index)
