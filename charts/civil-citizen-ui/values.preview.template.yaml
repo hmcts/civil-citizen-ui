@@ -22,6 +22,7 @@ nodejs:
     IDAM_SIGN_OUT_REDIRECT_URL: https://${SERVICE_FQDN}/dashboard
 
 civil-service:
+  image: 'hmctspublic.azurecr.io/civil/service:pr-2875'
   enabled: true
   java:
     applicationPort: 4000
