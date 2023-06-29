@@ -41,18 +41,6 @@
                 </td>
                 <td class="govuk-table__cell">-</td>
                 <td class="govuk-table__cell">-</td>
-                <td class="govuk-table__cell">
-                  <a href={{ claimDraftSaved.getHref() }}>
-                    {{ t(claimDraftSaved.nextSteps) }}
-                  </a>
-                </td>
-                <td class="govuk-table__cell">-</td>
-                <td class="govuk-table__cell">
-                  <a href={{ claimDraftSaved.getHref() }}>
-                    {{ t('PAGES.DASHBOARD.VIEW') }}
-                    <span class="govuk-visually-hidden">{{ viewClaimNumberDraft }}</span>
-                  </a>
-                </td>
               </tr>
             {% endif %}
             {% for item in claimsAsClaimant %}
