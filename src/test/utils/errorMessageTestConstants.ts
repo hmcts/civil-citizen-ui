@@ -115,7 +115,7 @@ export const enum TestMessages {
   VALID_ENTER_TYPE_OF_DOCUMENT = 'You must enter type of document',
   VALID_ENTER_WITNESS_NAME = 'You must enter name of witness',
   VALID_ENTER_EXPERT_NAME = 'You must enter name of expert',
-  VALID_ENTER_EXPERT_NAMES = 'You must enter the name of At least One Expert',
+  VALID_ENTER_EXPERT_NAMES = 'You must enter the name of at least one expert',
   VALID_ENTER_EXPERTISE = 'You must enter field of expertise',
   VALID_ENTER_DOCUMENT_QUESTIONS = 'You must enter name of document you have questions about',
   VALID_ENTER_DOCUMENT_QUESTIONS_OTHER_PARTY = 'You must enter name of document with other party&#39;s questions',
