@@ -65,8 +65,6 @@
                 </td>
                 <td class="govuk-table__cell">{{ item.defendantName }}</td>
                 <td class="govuk-table__cell">{{ item.claimAmount | currencyFormat(item.claimAmount) }}</td>
-                <td class="govuk-table__cell">{{ item.nextSteps }}</td>
-                <td class="govuk-table__cell">{{ item.responseDeadline | formatDate }}</td>
                 <td class="govuk-table__cell">
                   <a href={{ item.getHref() }}>
                     {{ t('PAGES.DASHBOARD.VIEW') }}
