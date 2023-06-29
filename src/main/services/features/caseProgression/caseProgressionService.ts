@@ -159,14 +159,20 @@ const getFormSection = <T>(data: any[], bindFunction: (request: any) => T): T[] 
 const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSection => {
   const formObj: TypeOfDocumentSection = new TypeOfDocumentSection(request['dateDay'], request['dateMonth'], request['dateYear']);
   formObj.typeOfDocument = request['typeOfDocument'].trim();
-  formObj.fileUpload = request['file_upload'].trim();
+  //TODO we should get the file from dm-store
+  if (request['fileUpload'] !== '') {
+    formObj.fileUpload = request['fileUpload'];
+  }
   return formObj;
 };
 
 const bindRequestToWitnessSectionObj = (request: any): WitnessSection => {
   const formObj: WitnessSection = new WitnessSection(request['dateDay'], request['dateMonth'], request['dateYear']);
   formObj.witnessName = request['witnessName'].trim();
-  formObj.fileUpload = request['file_upload'];
+  //TODO we should get the file from dm-store
+  if (request['fileUpload'] !== '') {
+    formObj.fileUpload = request['fileUpload'];
+  }
   return formObj;
 };
 
@@ -177,13 +183,18 @@ const bindRequestToExpertSectionObj = (request: any): ExpertSection => {
   formObj.otherPartyName = request['otherPartyName'] != null ? request['otherPartyName'].trim() : null;
   formObj.questionDocumentName = request['questionDocumentName'] != null ? request['questionDocumentName'].trim() : null;
   formObj.otherPartyQuestionsDocumentName = request['otherPartyQuestionsDocumentName'] != null ? request['otherPartyQuestionsDocumentName'].trim() : null;
-
-  formObj.fileUpload = request['file_upload'];
+  //TODO we should get the file from dm-store
+  if (request['fileUpload'] !== '') {
+    formObj.fileUpload = request['fileUpload'];
+  }
   return formObj;
 };
 
 const bindRequestToFileOnlySectionObj = (request: any): FileOnlySection => {
   const formObj: FileOnlySection = new FileOnlySection();
-  formObj.fileUpload = request['file_upload'];
+  //TODO we should get the file from dm-store
+  if (request['fileUpload'] !== '') {
+    formObj.fileUpload = request['fileUpload'];
+  }
   return formObj;
 };

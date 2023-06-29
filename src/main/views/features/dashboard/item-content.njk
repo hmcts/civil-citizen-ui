@@ -211,15 +211,18 @@
 
   {% if content.type === ClaimSummaryType.UPLOAD_ARRAY %}
      <div class="govuk-inset-text">
-        {{ govukFileUpload({
+       {{ govukFileUpload({
            id: content.data.category+'['+content.data.index+']['+content.data.field+']',
            name: content.data.category+'['+content.data.index+']['+content.data.field+']',
+           classes: 'uploadFile govuk-!-width-three-half '+content.data.classes,
+           value: content.data.value,
            label: {
              html: '<strong>'+t(content.data.text)+'</strong><hr class="govuk-section-break--s govuk-section-break--visible">'+t(content.data.html)
            },
+           errorMessage: { text: t(content.data.errorMessage) } if content.data.errorMessage,
            attributes: {
-             'data-name': content.data.category+'[%index%]['+content.data.field+']',
-             'data-id': content.data.category+'[%index%]['+content.data.field+']'
+              'data-name': content.data.category+'[%index%]['+content.data.field+']',
+              'data-id': content.data.category+'[%index%]['+content.data.field+']'
            }
         }) }}
     </div>

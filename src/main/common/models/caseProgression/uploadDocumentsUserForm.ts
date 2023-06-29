@@ -12,6 +12,10 @@ import {DateConverter} from 'common/utils/dateConverter';
 import {OptionalDateNotInFutureValidator} from 'form/validators/optionalDateNotInFutureValidator';
 import {OptionalDateFourDigitValidator} from 'form/validators/optionalDateFourDigitValidator';
 import {toNumberOrString} from 'common/utils/numberConverter';
+import {IsDefined, IsNotEmpty, ValidateNested} from 'class-validator';
+import { IsFileSize} from 'form/validators/isFileSize';
+import {IsAllowedMimeType} from 'form/validators/isAllowedMimeType';
+
 export class UploadDocumentsUserForm {
   @ValidateNested()
     documentsForDisclosure?: TypeOfDocumentSection[];
@@ -73,8 +77,19 @@ export class UploadDocumentsUserForm {
   }
 }
 
+export class FileUpload {
+  fieldname: string;
+  originalname: string;
+  @IsAllowedMimeType({ message: 'ERRORS.VALID_MIME_TYPE_FILE' })
+  mimetype: string;
+  buffer: ArrayBuffer;
+  @IsFileSize({ message: 'ERRORS.VALID_SIZE_FILE' })
+  size: number;
+}
+
 export class FileOnlySection {
-  fileUpload: string; //todo: get and validate file
+  @IsDefined({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
+  fileUpload: FileUpload;
 }
 
 export class DateInputFields extends  FileOnlySection {
@@ -121,7 +136,10 @@ export class TypeOfDocumentSection extends DateInputFields {
   constructor(day?: string, month?: string, year?: string) {
     super(day, month, year);
   }
+  @IsDefined({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
+    fileUpload: FileUpload;
 }
+
 export class WitnessSection extends DateInputFields {
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_WITNESS_NAME'})
     witnessName: string;

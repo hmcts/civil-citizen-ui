@@ -44,15 +44,17 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
     return this;
   }
 
-  addUploadArray(title: string, html: string, category: string, field: string, index = 0) {
+  addUploadArray(title: string, html: string, category: string, field: string, index = 0, classes?: string, errorMessage?: string) {
     const section = ({
       type: ClaimSummaryType.UPLOAD_ARRAY,
       data: {
         category: category,
+        classes: classes,
         field: field,
         text: title,
         html: html,
         index: index,
+        errorMessage: errorMessage,
       },
     });
     this._claimSummarySections.push(section);
