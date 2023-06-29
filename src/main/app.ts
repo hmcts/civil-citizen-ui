@@ -1,7 +1,7 @@
 import * as bodyParser from 'body-parser';
 import config = require('config');
 import cookieParser from 'cookie-parser';
-const session = require('express-session');
+
 import express from 'express';
 import {Helmet} from './modules/helmet';
 import * as path from 'path';
@@ -17,17 +17,14 @@ import {CSRFToken} from './modules/csrf';
 import routes from './routes/routes';
 import {setLanguage} from 'modules/i18n/languageService';
 import {isServiceShuttered} from './app/auth/launchdarkly/launchDarklyClient';
+import {SessionStoreStoreClient} from 'modules/session-store';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
 
-import RedisStore from 'connect-redis';
-import Redis from 'ioredis';
-
 const env = process.env.NODE_ENV || 'development';
 const productionMode = env === 'production';
 const developmentMode = env === 'development';
-export const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
 export const app = express();
 app.use(cookieParser());
 app.use(setLanguage);
@@ -41,31 +38,9 @@ const logger = Logger.getLogger('app');
 new PropertiesVolume().enableFor(app);
 logger.info('Creating new draftStoreClient');
 new DraftStoreClient(Logger.getLogger('draftStoreClient')).enableFor(app);
+new SessionStoreStoreClient(Logger.getLogger('SessionStoreStoreClient')).enableFor(app, productionMode);
 app.enable('trust proxy');
 
-const protocol = config.get('services.draftStore.redis.tls') ? 'rediss://' : 'redis://';
-const connectionString = `${protocol}:${config.get('services.draftStore.redis.key')}@${config.get('services.session.redis.host')}:${config.get('services.session.redis.port')}`;
-const redisStore = new RedisStore({
-  client: new Redis(connectionString),
-  prefix: 'citizen-ui-session:',
-  ttl: 86400, //prune expired entries every 24h
-});
-
-logger.info('Adding session configuration');
-
-app.use(session({
-  name: 'citizen-ui-session',
-  store: redisStore,
-  secret: 'local',
-  resave: false,
-  saveUninitialized: false,
-  cookie : {
-    secure: productionMode,
-    maxAge: cookieMaxAge,
-    sameSite: 'lax',
-  },
-}));
-logger.info('Session configuration added successfully');
 new AppInsights().enable();
 new Nunjucks(developmentMode).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);
