@@ -1480,6 +1480,48 @@
       "TOTAL_PERIOD": "({{ interestFromDate }} to {{ interestToDate}})",
       "HOW_INTEREST_IS_CALCULATED": "Interest calculated as \"{{ reason }}\" for {{numberOfDays}} days."
     },
+    "EVIDENCE_UPLOAD": {
+      "CHECK_YOUR_ANSWERS": {
+        "FILE_UPLOADED": "Document Uploaded",
+        "WITNESS_EVIDENCE": {
+          "TITLE": "Witness evidence",
+          "WITNESS_STATEMENT": "Witness statement",
+          "WITNESS_NAME": "Witness's name",
+          "WITNESS_SUMMARY": "Witness summary",
+          "NOTICE_OF_INTENTION": "Notice of intention to rely on hearsay evidence",
+          "DOCUMENTS_REFERRED": "Documents referred to in the statement",
+          "DOCUMENT_TYPE": "Type of document",
+          "DATE_STATEMENT": "Date statement was written"
+        },
+        "EXPERT_EVIDENCE": {
+          "TITLE": "Expert evidence",
+          "EXPERT_REPORT": "Expert's report",
+          "JOINT_STATEMENT_OF_EXPERTS": "Joint statement of experts",
+          "EXPERT_NAME": "Expert's name",
+          "EXPERT_NAMES": "Expert's names",
+          "FIELD_OF_EXPERTISE": "Field of expertise",
+          "DATE_REPORT": "Date report was written"
+        },
+        "DISCLOSURE": {
+          "TITLE": "Disclosure",
+          "DOCUMENTS_DISCLOSURE": "Document for disclosure",
+          "DATE_DOCUMENT": "Date document was issued or message was sent",
+          "DOCUMENT_TYPE": "Type of document",
+          "DISCLOSURE_LIST": "Disclosure list"
+        },
+        "TRIAL_HEARING_DOCUMENTS": {
+          "TITLE_TRIAL": "Trial documents",
+          "TITLE_HEARING": "Hearing documents",
+          "DOCUMENTARY_EVIDENCE_TRIAL": "Documentary evidence for trial",
+          "DOCUMENTARY_EVIDENCE_HEARING": "Documentary evidence for hearing",
+          "DOCUMENT_TYPE": "Type of document",
+          "DATE_DOCUMENT": "Date document was issued or message was sent",
+          "CASE_SUMMARY": "Case summary",
+          "COSTS": "Costs",
+          "LEGAL_AUTHORITIES": "Legal authorities",
+          "SKELETON_ARGUMENT": "Skeleton argument"
+        }
+      },
     "LATEST_UPDATE_CONTENT": {
       "CLAIMANT_CAN_ASK_FOR_CCJ_AGAINST_YOU": "Dydych chi ddim wedi ymateb i'r hawliad. Gall {{ claimantName }} nawr ofyn am Ddyfarniad Llys Sirol yn eich erbyn.",
       "CCJ_COULD_SEND_BAILIFFS_TO_YOUR_HOME": "Gall Dyfarniad Llys Sirol olygu eich bod yn ei chael hi'n anodd cael credyd, fel morgais neu gontract ffôn symudol. Gallai beilïaid hefyd gael eu hanfon i'ch cartref.",
