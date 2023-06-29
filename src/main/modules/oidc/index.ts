@@ -11,7 +11,6 @@ import {
   UNAUTHORISED_URL,
 } from '../../routes/urls';
 
-
 const requestIsForAssigningClaimForDefendant = (req: Request): boolean => {
   return req.originalUrl.startsWith(ASSIGN_CLAIM_URL) && req.query?.id !== undefined;
 };
