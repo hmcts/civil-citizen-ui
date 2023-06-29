@@ -6,7 +6,8 @@ import session from 'express-session';
 
 const Redis = require('ioredis');
 const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
-export class SessionStoreStoreClient {
+export class SessionStoreClient {
+  public static ADD_SESSION_CONFIUGRATION_SUCCESFULY = 'Session configuration added successfully';
   constructor(private readonly logger: LoggerInstance) {
   }
 
@@ -33,6 +34,6 @@ export class SessionStoreStoreClient {
         sameSite: 'lax',
       },
     }));
-    this.logger.info('Session configuration added successfully');
+    this.logger.info(SessionStoreClient.ADD_SESSION_CONFIUGRATION_SUCCESFULY);
   }
 }

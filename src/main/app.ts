@@ -17,7 +17,7 @@ import {CSRFToken} from './modules/csrf';
 import routes from './routes/routes';
 import {setLanguage} from 'modules/i18n/languageService';
 import {isServiceShuttered} from './app/auth/launchdarkly/launchDarklyClient';
-import {SessionStoreStoreClient} from 'modules/session-store';
+import {SessionStoreClient} from 'modules/session-store';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -38,7 +38,7 @@ const logger = Logger.getLogger('app');
 new PropertiesVolume().enableFor(app);
 logger.info('Creating new draftStoreClient');
 new DraftStoreClient(Logger.getLogger('draftStoreClient')).enableFor(app);
-new SessionStoreStoreClient(Logger.getLogger('SessionStoreStoreClient')).enableFor(app, productionMode);
+new SessionStoreClient(Logger.getLogger('SessionStoreStoreClient')).enableFor(app, productionMode);
 app.enable('trust proxy');
 
 new AppInsights().enable();
