@@ -3,15 +3,14 @@ import {
   IsDefined,
   IsNotEmpty,
   IsOptional,
-  Max,
-  Min,
   Validate,
   ValidateIf,
   ValidateNested} from 'class-validator';
 import {DateConverter} from 'common/utils/dateConverter';
 import {OptionalDateNotInFutureValidator} from 'form/validators/optionalDateNotInFutureValidator';
-import {OptionalDateFourDigitValidator} from 'form/validators/optionalDateFourDigitValidator';
-import {toNumberOrString} from 'common/utils/numberConverter';
+import {OptionalDateDayValidator} from 'form/validators/optionalDateDayValidator';
+import {OptionalDateMonthValidator} from 'form/validators/optionalDateMonthValidator';
+import {OptionalDateYearValidator} from 'form/validators/optionalDateYearValidator';
 export class UploadDocumentsUserForm {
   @ValidateNested()
     documentsForDisclosure?: TypeOfDocumentSection[];
@@ -87,29 +86,26 @@ export class DateInputFields extends  FileOnlySection {
       date: Date;
 
     @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
-    @Min(1, {message: 'ERRORS.VALID_REAL_DATE'})
-    @Max(31, {message: 'ERRORS.VALID_REAL_DATE'})
     @IsNotEmpty({message: 'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_DAY'})
-      dateDay: number | string;
+    @Validate(OptionalDateDayValidator, {message: 'ERRORS.VALID_REAL_DATE' })
+      dateDay: string;
 
     @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
-    @Min(1, {message: 'ERRORS.VALID_REAL_DATE'})
-    @Max(12, {message: 'ERRORS.VALID_REAL_DATE'})
     @IsNotEmpty({message: 'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_MONTH'})
-      dateMonth: number | string;
+    @Validate(OptionalDateMonthValidator, {message: 'ERRORS.VALID_REAL_DATE' })
+      dateMonth: string;
 
     @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
-    @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_REAL_DATE'})
-    @Max(9999, {message: 'ERRORS.VALID_REAL_DATE' })
     @IsNotEmpty({message: 'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_YEAR'})
-      dateYear: number | string;
+    @Validate(OptionalDateYearValidator, {message: 'ERRORS.VALID_REAL_DATE'})
+      dateYear: string;
 
     constructor(day?: string, month?: string, year?: string) {
       super();
       if (day !== undefined && month !== undefined && year != undefined) {
-        this.dateDay = toNumberOrString(day);
-        this.dateMonth = toNumberOrString(month);
-        this.dateYear = toNumberOrString(year);
+        this.dateDay = day;
+        this.dateMonth = month;
+        this.dateYear = year;
         this.date = DateConverter.convertToDate(year, month, day);
       }
     }
