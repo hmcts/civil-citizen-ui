@@ -41,7 +41,6 @@ services:
     cmcS2sSecret: 'AAAAAAAAAAAAAAAA'
   cmc:
     url: 'https://localhost:3000'
-  
 health:
   timeout: 5000
   deadline: 15000
