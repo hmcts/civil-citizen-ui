@@ -40,7 +40,7 @@ import config from 'config';
 
 const packageDotJson = require('../../../../package.json');
 
-const moneyClaimBaseUrl = config.get<string>('services.moneyClaims.url');
+const moneyClaimBaseUrl = config.get<string>('services.cmc.url');
 
 const appAssetPaths = {
   js: '/js',
