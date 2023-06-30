@@ -4,7 +4,6 @@ import {Claim} from '../../../../../../main/common/models/claim';
 import {ExpertDetailsList} from '../../../../../../main/common/models/directionsQuestionnaire/experts/expertDetailsList';
 import {DirectionQuestionnaire} from '../../../../../../main/common/models/directionsQuestionnaire/directionQuestionnaire';
 import {Experts} from '../../../../../../main/common/models/directionsQuestionnaire/experts/experts';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {ExpertDetails} from '../../../../../../main/common/models/directionsQuestionnaire/experts/expertDetails';
 import {CaseState} from '../../../../../../main/common/form/models/claimDetails';
 import {ClaimantResponse} from '../../../../../../main/common/models/claimantResponse';

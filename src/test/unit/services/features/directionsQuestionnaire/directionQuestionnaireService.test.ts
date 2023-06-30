@@ -23,7 +23,6 @@ jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
-const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
 describe('Direction questionnaire Service', () => {
   describe('getDirectionQuestionnaire', () => {
