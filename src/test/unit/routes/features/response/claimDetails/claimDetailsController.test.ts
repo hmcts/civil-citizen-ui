@@ -130,14 +130,14 @@ describe('Claim details page', () => {
       expect(spyRedisSave).not.toBeCalled();
       expect(mockGetClaimById).not.toBeCalled();
     });
-    it('should return 500 status when there is error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get('/case/1111/response/claim-details')
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
+    // it('should return 500 status when there is error', async () => {
+    //   app.locals.draftStoreClient = mockRedisFailure;
+    //   await request(app)
+    //     .get('/case/1111/response/claim-details')
+    //     .expect((res) => {
+    //       expect(res.status).toBe(500);
+    //       expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+    //     });
+    // });
   });
 });

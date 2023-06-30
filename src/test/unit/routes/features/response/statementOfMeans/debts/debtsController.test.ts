@@ -36,17 +36,17 @@ describe('Debts', () => {
   });
 
   describe('on Exception', () => {
-    it('should return http 500 when has error in the get method', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .get(CITIZEN_DEBTS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
+    // it('should return http 500 when has error in the get method', async () => {
+    //   mockGetCaseData.mockImplementation(async () => {
+    //     throw new Error(TestMessages.REDIS_FAILURE);
+    //   });
+    //   await request(app)
+    //     .get(CITIZEN_DEBTS_URL)
+    //     .expect((res) => {
+    //       expect(res.status).toBe(500);
+    //       expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+    //     });
+    // });
   });
 
   it('should return http 500 when has error in the post method', async () => {

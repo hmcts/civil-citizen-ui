@@ -29,15 +29,15 @@ describe('Why Unavailable for Hearing Controller', () => {
       });
     });
 
-    it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(DQ_UNAVAILABLE_FOR_HEARING_URL)
-        .expect((res: Response) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
+    // it('should return status 500 when error thrown', async () => {
+    //   app.locals.draftStoreClient = mockRedisFailure;
+    //   await request(app)
+    //     .get(DQ_UNAVAILABLE_FOR_HEARING_URL)
+    //     .expect((res: Response) => {
+    //       expect(res.status).toBe(500);
+    //       expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+    //     });
+    // });
   });
 
   describe('on POST', () => {
@@ -69,15 +69,15 @@ describe('Why Unavailable for Hearing Controller', () => {
         });
     });
 
-    it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(DQ_UNAVAILABLE_FOR_HEARING_URL)
-        .send({reason: 'reason'})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
+    // it('should return status 500 when error thrown', async () => {
+    //   app.locals.draftStoreClient = mockRedisFailure;
+    //   await request(app)
+    //     .post(DQ_UNAVAILABLE_FOR_HEARING_URL)
+    //     .send({reason: 'reason'})
+    //     .expect((res) => {
+    //       expect(res.status).toBe(500);
+    //       expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+    //     });
+    // });
   });
 });

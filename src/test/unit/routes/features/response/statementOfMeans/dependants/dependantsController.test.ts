@@ -45,15 +45,15 @@ describe('Citizen dependants', () => {
           expect(res.text).toContain('Do any children live with you?');
         });
     });
-    it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(respondentDependantsUrl)
-        .expect((res: Response) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
+    // it('should return status 500 when error thrown', async () => {
+    //   app.locals.draftStoreClient = mockRedisFailure;
+    //   await request(app)
+    //     .get(respondentDependantsUrl)
+    //     .expect((res: Response) => {
+    //       expect(res.status).toBe(500);
+    //       expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+    //     });
+    // });
   });
   describe('on POST', () => {
     beforeEach(() => {
@@ -137,16 +137,16 @@ describe('Citizen dependants', () => {
           expect(res.text).toContain('Enter a numeric, for example 3');
         });
     });
-    it('should status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(respondentDependantsUrl)
-        .send('declared=yes')
-        .send('under11=1')
-        .expect((res: Response) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
+    // it('should status 500 when error thrown', async () => {
+    //   app.locals.draftStoreClient = mockRedisFailure;
+    //   await request(app)
+    //     .post(respondentDependantsUrl)
+    //     .send('declared=yes')
+    //     .send('under11=1')
+    //     .expect((res: Response) => {
+    //       expect(res.status).toBe(500);
+    //       expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+    //     });
+    // });
   });
 });

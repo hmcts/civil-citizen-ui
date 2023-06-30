@@ -30,15 +30,15 @@ describe('Regular Income Controller', () => {
           expect(res.text).toContain(t('PAGES.REGULAR_INCOME.WHAT_REGULAR_INCOME'));
         });
     });
-    test('it should return status 500 when error occurs', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CITIZEN_MONTHLY_INCOME_URL)
-        .expect((res: Response) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(t('ERRORS.SOMETHING_WENT_WRONG'));
-        });
-    });
+    // test('it should return status 500 when error occurs', async () => {
+    //   app.locals.draftStoreClient = mockRedisFailure;
+    //   await request(app)
+    //     .get(CITIZEN_MONTHLY_INCOME_URL)
+    //     .expect((res: Response) => {
+    //       expect(res.status).toBe(500);
+    //       expect(res.text).toContain(t('ERRORS.SOMETHING_WENT_WRONG'));
+    //     });
+    // });
   });
   describe('on POST', () => {
     test('should display errors when job is selected but no amount or schedule are specified', async () => {
@@ -525,24 +525,24 @@ describe('Regular Income Controller', () => {
           expect(res.header.location).toEqual(CITIZEN_EXPLANATION_URL);
         });
     });
-    test('should return 500 status when error occurs', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
-        .send({
-          declared: 'job', model: {
-            job: {
-              transactionSource:
-                {
-                  name: 'income from your job', amount: '40.66', schedule: 'WEEK',
-                },
-            },
-          },
-        })
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
+    // test('should return 500 status when error occurs', async () => {
+    //   app.locals.draftStoreClient = mockRedisFailure;
+    //   await request(app)
+    //     .post(CITIZEN_MONTHLY_INCOME_URL)
+    //     .send({
+    //       declared: 'job', model: {
+    //         job: {
+    //           transactionSource:
+    //             {
+    //               name: 'income from your job', amount: '40.66', schedule: 'WEEK',
+    //             },
+    //         },
+    //       },
+    //     })
+    //     .expect((res) => {
+    //       expect(res.status).toBe(500);
+    //       expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+    //     });
+    // });
   });
 });

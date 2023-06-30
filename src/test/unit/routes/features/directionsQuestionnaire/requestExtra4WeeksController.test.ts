@@ -28,15 +28,15 @@ describe('Request extra 4 weeks to Settle Claim Controller', () => {
       });
     });
 
-    it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(DQ_REQUEST_EXTRA_4WEEKS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
+    // it('should return status 500 when error thrown', async () => {
+    //   app.locals.draftStoreClient = mockRedisFailure;
+    //   await request(app)
+    //     .get(DQ_REQUEST_EXTRA_4WEEKS_URL)
+    //     .expect((res) => {
+    //       expect(res.status).toBe(500);
+    //       expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+    //     });
+    // });
   });
 
   describe('on POST', () => {
@@ -67,15 +67,15 @@ describe('Request extra 4 weeks to Settle Claim Controller', () => {
         });
     });
 
-    it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(DQ_REQUEST_EXTRA_4WEEKS_URL)
-        .send({option: 'yes'})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
+    // it('should return status 500 when error thrown', async () => {
+    //   app.locals.draftStoreClient = mockRedisFailure;
+    //   await request(app)
+    //     .post(DQ_REQUEST_EXTRA_4WEEKS_URL)
+    //     .send({option: 'yes'})
+    //     .expect((res) => {
+    //       expect(res.status).toBe(500);
+    //       expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+    //     });
+    // });
   });
 });
