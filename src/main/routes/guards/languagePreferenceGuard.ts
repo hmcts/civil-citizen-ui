@@ -3,7 +3,7 @@ import {getCaseDataFromStore} from '../../modules/draft-store/draftStoreService'
 import {constructResponseUrlWithIdParams} from '../../common/utils/urlFormatter';
 import {DASHBOARD_URL} from '../urls';
 
-export const languagePreferenceGuard = async (req: Request, res: Response, next: NextFunction) => {
+export const languagePreferenceGuard = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const caseData = await getCaseDataFromStore(req.params.id);
     if (caseData.claimBilingualLanguagePreference) {
