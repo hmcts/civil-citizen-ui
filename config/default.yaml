@@ -41,6 +41,8 @@ services:
     cmcS2sSecret: 'AAAAAAAAAAAAAAAA'
   cmc:
     url: 'https://localhost:3000'
+  moneyClaims:
+    url: 'https://www.moneyclaims.service.gov.uk'
 health:
   timeout: 5000
   deadline: 15000
