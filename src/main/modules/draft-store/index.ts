@@ -4,8 +4,6 @@ import {LoggerInstance} from 'winston';
 
 const Redis = require('ioredis');
 
-// const REDIS_DATA = require('./redisData.json');
-
 export class DraftStoreClient {
   public static REDIS_CONNECTION_SUCCESS = 'Connected to Redis instance successfully';
 
