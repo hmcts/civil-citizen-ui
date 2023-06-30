@@ -26,4 +26,5 @@ module.exports = {
   },
   setupFilesAfterEnv: ['./jest.setup.redis-mock.js'],
   coverageProvider: 'v8',
+  workerIdleMemoryLimit: '512MB'
 };

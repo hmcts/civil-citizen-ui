@@ -1,6 +1,18 @@
 import request from 'supertest';
 import {app} from '../../../../main/app';
 
+jest.mock('ioredis', () => {
+  return jest.fn().mockImplementation(() => {
+    return {
+      ping: jest.fn(async () => 'PONG'),
+      set: jest.fn(async () => {return;}),
+      on: jest.fn(async () => {
+        return;
+      }),
+    };
+  });
+});
+
 describe('Draft Store Health Check - UP', () => {
   it('When draft store responding, health check should return UP', async () => {
     await request(app)
