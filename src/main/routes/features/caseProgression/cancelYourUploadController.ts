@@ -38,15 +38,13 @@ cancelYourUploadController.post([CP_EVIDENCE_UPLOAD_CANCEL], (async (req, res, n
       await res.render(cancelYourUploadViewPath,{form, cancelYourUploadContents:getCancelYourUpload(req.params.id, claim)});
     } else if(form.model.option === YesNo.NO) {
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CP_UPLOAD_DOCUMENTS_URL));
-    } else if(form.model.option === YesNo.YES) {
+    } else {
       const claimId = req.params.id;
-      const claim: Claim = await getCaseDataFromStore(req.params.id);
+      const claim: Claim = await getCaseDataFromStore(claimId);
       //todo: differentiate between claimant and defendant (Case Progression can only develop Claimant LiP after CUI R2 is done)
       const claimantOrDefendant: ClaimantOrDefendant = ClaimantOrDefendant.DEFENDANT;
       await cancelDocumentUpload(claimId, claim, claimantOrDefendant);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, DEFENDANT_SUMMARY_URL));
-    } else {
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, DEFENDANT_SUMMARY_URL));
+      res.redirect(constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL));
     }
   } catch (error) {
     next(error);
