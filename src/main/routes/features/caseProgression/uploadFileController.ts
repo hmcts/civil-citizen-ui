@@ -6,9 +6,12 @@ import {EvidenceUploadWitness} from 'models/document/documentType';
 import {t} from 'i18next';
 
 const multer = require('multer');
-const storage = multer.memoryStorage({limits: {
-  fileSize: 100 * 1024 * 1024,
-}});
+const storage = multer.memoryStorage({
+  limits: {
+    fileSize: 100 * 1024 * 1024,
+  },
+});
+
 const upload = multer({
   storage: storage,
   limits: {
