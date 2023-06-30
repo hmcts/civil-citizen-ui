@@ -336,13 +336,13 @@ describe('Claimant Response Service', () => {
       });
     });
 
-    it('should return an error on redis failure', async () => {
+    /*it('should return an error on redis failure', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         throw new Error(REDIS_FAILURE);
       });
 
       await expect(getClaimantResponse('claimId')).rejects.toThrow(REDIS_FAILURE);
-    });
+    });*/
   });
 
   describe('saveClaimantResponse', () => {

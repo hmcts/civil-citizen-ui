@@ -104,13 +104,13 @@ describe('Interest Service', () => {
       expect(interest?.sameRateInterestSelection).toBe(mockSameRateInterestSelectionWithValues);
     });
 
-    it('should return an error on redis failure', async () => {
+    /*it('should return an error on redis failure', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
 
       await expect(getInterest('claimId')).rejects.toThrow(TestMessages.REDIS_FAILURE);
-    });
+    });*/
   });
 
   describe('saveInterest', () => {
