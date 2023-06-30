@@ -52,6 +52,7 @@ describe('Payment Date service', () => {
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(paymentDate).toBeUndefined();
+      spyGetCaseDataFromStore.mockReset();
     });
     it('should return undefined when case_data, but no paymentDate, retrieved', async () => {
       //Given
@@ -64,6 +65,7 @@ describe('Payment Date service', () => {
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(paymentDate).toBeUndefined();
+      spyGetCaseDataFromStore.mockReset();
     });
     it('should return PaymentDate when date retrieved', async () => {
       //Given
@@ -85,6 +87,7 @@ describe('Payment Date service', () => {
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(paymentDate).not.toBeNull();
       expect(paymentDate).toEqual(mockPaymentDate);
+      spyGetCaseDataFromStore.mockReset();
     });
 
     it('should save paymentDate when nothing in Redis draft store', async () => {

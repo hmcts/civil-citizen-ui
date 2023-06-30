@@ -40,6 +40,7 @@ describe('Citizen details service', () => {
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(result).not.toBeNull();
       expect(result).toEqual({});
+      spyGetCaseDataFromStore.mockReset();
     });
     it('should return a respondent Object with value when data is retrieved', async () => {
       //Given
@@ -54,6 +55,7 @@ describe('Citizen details service', () => {
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(result).not.toBeNull();
       expect(result).toEqual(mockClaim.applicant1);
+      spyGetCaseDataFromStore.mockReset();
     });
   });
   describe('get Claimant Party Information', () => {
@@ -71,6 +73,7 @@ describe('Citizen details service', () => {
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(result).not.toBeNull();
       expect(result).toEqual({});
+      spyGetCaseDataFromStore.mockReset();
     });
     it('should return a respondent Object with value when data is retrieved', async () => {
       //Given
@@ -85,6 +88,7 @@ describe('Citizen details service', () => {
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(result).not.toBeNull();
       expect(result).toEqual(mockClaim.applicant1);
+      spyGetCaseDataFromStore.mockReset();
     });
   });
   describe('save Claimant', () => {
@@ -109,6 +113,8 @@ describe('Citizen details service', () => {
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, claimData);
+      spyGetCaseDataFromStore.mockReset();
+      spySaveDraftClaim.mockReset();
     });
 
     it('should save a claimant when in redis correspondentAddress is undefined or empty and the citizenAddress without information', async () => {
@@ -132,6 +138,8 @@ describe('Citizen details service', () => {
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
+      spyGetCaseDataFromStore.mockReset();
+      spySaveDraftClaim.mockReset();
     });
   });
   describe('save Claimant Party', () => {
@@ -157,6 +165,8 @@ describe('Citizen details service', () => {
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, claimData);
+      spyGetCaseDataFromStore.mockReset();
+      spySaveDraftClaim.mockReset();
     });
 
     it('should save a claimant Party when in redis correspondentAddress is undefined or empty and the citizenAddress without information', async () => {
@@ -175,6 +185,8 @@ describe('Citizen details service', () => {
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
+      spyGetCaseDataFromStore.mockReset();
+      spySaveDraftClaim.mockReset();
     });
   });
 
@@ -207,6 +219,8 @@ describe('Citizen details service', () => {
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, claimData);
+      spyGetCaseDataFromStore.mockReset();
+      spySaveDraftClaim.mockReset();
     });
 
     it('should save a claimant Party when in redis correspondentAddress is undefined or empty and the citizenAddress without information', async () => {
@@ -232,6 +246,8 @@ describe('Citizen details service', () => {
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
+      spyGetCaseDataFromStore.mockReset();
+      spySaveDraftClaim.mockReset();
     });
   });
 
@@ -251,6 +267,8 @@ describe('Citizen details service', () => {
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, claimData);
+      spyGetCaseDataFromStore.mockReset();
+      spySaveDraftClaim.mockReset();
     });
 
     it('should save a claimant Party when type is already in redis', async () => {
@@ -271,6 +289,8 @@ describe('Citizen details service', () => {
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, claimData);
+      spyGetCaseDataFromStore.mockReset();
+      spySaveDraftClaim.mockReset();
     });
   });
 });

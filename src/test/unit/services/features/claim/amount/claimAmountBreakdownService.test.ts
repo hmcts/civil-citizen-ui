@@ -57,6 +57,7 @@ describe('claim amount breakdown service', () => {
     //When
     await saveClaimAmountBreakdownForm('123', form);
     expect(spy).toBeCalled();
+    spy.mockReset();
   });
   it('should throw exception when redis throws exception', async () => {
     //Given

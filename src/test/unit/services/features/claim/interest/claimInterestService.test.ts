@@ -30,6 +30,7 @@ describe('Claim interest service', () => {
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(result).not.toBeNull();
       expect(result).toEqual(new GenericYesNo());
+      spyGetCaseDataFromStore.mockReset();
     });
 
     it('should return a claimInterest object with value when data is retrieved', async () => {
@@ -40,6 +41,7 @@ describe('Claim interest service', () => {
         claim.claimInterest = YesNo.YES;
         return claim;
       });
+      spyGetCaseDataFromStore.mockReset();
 
       //When
       const result = await getClaimInterest(CASE_ID);
@@ -69,6 +71,7 @@ describe('Claim interest service', () => {
         claim.claimInterest = YesNo.YES;
         return claim;
       });
+      spySaveDraftClaim.mockReset();
 
       //When
       await saveClaimInterest(CASE_ID, YesNo.YES);
@@ -86,7 +89,7 @@ describe('Claim interest service', () => {
         claim.claimInterest = YesNo.NO;
         return claim;
       });
-
+      spySaveDraftClaim.mockReset();
       //When
       await saveClaimInterest(CASE_ID, YesNo.NO);
 

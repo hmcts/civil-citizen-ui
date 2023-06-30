@@ -95,6 +95,7 @@ describe('Claimant Defendant Email Service', () => {
       await saveDefendantEmail('123', new DefendantEmail(EMAIL_ADDRESS));
       //Then
       expect(spySave).toBeCalled();
+      spySave.mockReset();
     });
 
     it('should rethrow error when error occurs on get claim', async () => {

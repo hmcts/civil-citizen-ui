@@ -76,6 +76,7 @@ describe('Partial Admit - How much money do you admit you owe? Service ', () => 
       await saveHowMuchDoYouOweData('129', new HowMuchDoYouOwe(AMOUNT, TOTAL_AMOUNT));
       //Then
       expect(spySave).toBeCalled();
+      spySave.mockReset();
     });
     it('should throw an error when redis throws an error', async () => {
       //When

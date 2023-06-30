@@ -70,6 +70,7 @@ describe('partial admission service', () => {
         await partialAdmissionService.saveClaimAlreadyPaid('validClaimId', 'Yes');
         // Then
         expect(spySave).toBeCalled();
+        spySave.mockReset();
       });
 
       it('should save successfully when already paid is previously set', async () => {
@@ -88,6 +89,7 @@ describe('partial admission service', () => {
         await partialAdmissionService.saveClaimAlreadyPaid('validClaimId', 'Yes');
         // Then
         expect(spySave).toBeCalled();
+        spySave.mockReset();
       });
 
       it('should throw an error when redis throws an error', async () => {

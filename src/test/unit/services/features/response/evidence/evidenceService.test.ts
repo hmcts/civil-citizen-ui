@@ -105,6 +105,7 @@ describe('Evidence Service', () => {
       ));
       //Then
       expect(spySave).toBeCalled();
+      spySave.mockReset();
     });
 
     it('should rethrow error when error occurs on get claim', async () => {

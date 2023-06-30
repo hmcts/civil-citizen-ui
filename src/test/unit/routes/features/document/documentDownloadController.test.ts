@@ -43,6 +43,7 @@ describe('Document download controller', () => {
           expect(res.status).toBe(200);
           expect(mockDownloadPDFDocument).toBeCalled();
         });
+      mockDownloadPDFDocument.mockReset();
     });
 
     it('should return http 500 when has error', async () => {

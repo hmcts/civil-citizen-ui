@@ -95,6 +95,7 @@ describe('why do you disagree service', () => {
       await saveWhyDoYouDisagreeData('123', new WhyDoYouDisagree('Test'), ResponseType.PART_ADMISSION);
       //Then
       expect(spy).toBeCalled();
+      spy.mockReset();
     });
     it('should save text successfully with no claim in draft store Partial admission', async () => {
       //Given
@@ -107,6 +108,7 @@ describe('why do you disagree service', () => {
       await saveWhyDoYouDisagreeData('123', new WhyDoYouDisagree('Test'), ResponseType.PART_ADMISSION);
       //Then
       expect(spy).toBeCalled();
+      spy.mockReset();
     });
     it('should get new form when Partial Admission does not exist', async () => {
       //Given
@@ -119,6 +121,7 @@ describe('why do you disagree service', () => {
       await saveWhyDoYouDisagreeData('123', new WhyDoYouDisagree('Test'), ResponseType.PART_ADMISSION);
       //Then
       expect(spy).toBeCalled();
+      spy.mockReset();
     });
     it('should save text successfully with existing claim Full Rejection', async () => {
       //Given
@@ -131,6 +134,7 @@ describe('why do you disagree service', () => {
       await saveWhyDoYouDisagreeData('123', new WhyDoYouDisagree('Test'), ResponseType.FULL_DEFENCE);
       //Then
       expect(spy).toBeCalled();
+      spy.mockReset();
     });
     it('should get new form when Full Rejection does not exist', async () => {
       //Given
@@ -143,6 +147,7 @@ describe('why do you disagree service', () => {
       await saveWhyDoYouDisagreeData('123', new WhyDoYouDisagree('Test'), ResponseType.FULL_DEFENCE);
       //Then
       expect(spy).toBeCalled();
+      spy.mockReset();
     });
     it('should throw error when draft store throws error', async () => {
       //Given

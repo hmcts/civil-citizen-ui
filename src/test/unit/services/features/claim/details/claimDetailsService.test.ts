@@ -97,6 +97,7 @@ describe('Claim Details Service', () => {
 
       await saveClaimDetails('validClaimId', claimDetails?.reason, 'reason');
       expect(spySave).toHaveBeenCalledWith('validClaimId', {claimDetails});
+      spySave.mockReset();
     });
 
     it('should update reason successfully', async () => {
@@ -111,6 +112,7 @@ describe('Claim Details Service', () => {
 
       await saveClaimDetails('validClaimId', claimDetails?.reason, 'reason');
       expect(spySave).toHaveBeenCalledWith('validClaimId', {claimDetails});
+      spySave.mockReset();
     });
 
     describe('POST Evidence', () => {
@@ -137,6 +139,7 @@ describe('Claim Details Service', () => {
         ), 'evidence');
         //Then
         expect(spySave).toBeCalled();
+        spySave.mockReset();
       });
     });
 

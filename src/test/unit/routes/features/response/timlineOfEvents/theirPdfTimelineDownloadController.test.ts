@@ -30,6 +30,7 @@ describe('Their PDF timeline controller', () => {
           expect(res.status).toBe(200);
           expect(mockDisplayPDFDocument).toBeCalled();
         });
+      mockDisplayPDFDocument.mockReset();
     });
 
     it('should return http 500 when has error', async () => {

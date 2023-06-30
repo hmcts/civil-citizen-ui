@@ -120,6 +120,7 @@ describe('Claimant Phone Service', () => {
       await saveTelephone('123', new CitizenTelephoneNumber(PHONE_NUMBER), ClaimantOrDefendant.DEFENDANT);
       //Then
       expect(spySave).toBeCalled();
+      spySave.mockReset();
     });
 
     it('should save claimant phone data successfully when claim exists applicant1 not defined', async () => {
@@ -133,6 +134,7 @@ describe('Claimant Phone Service', () => {
       await saveTelephone('123', new CitizenTelephoneNumber(PHONE_NUMBER), ClaimantOrDefendant.CLAIMANT);
       //Then
       expect(spySave).toBeCalled();
+      spySave.mockReset();
     });
 
     it('should rethrow error when error occurs for applicant', async () => {
@@ -168,6 +170,7 @@ describe('Claimant Phone Service', () => {
       await saveTelephone('123', new CitizenTelephoneNumber(PHONE_NUMBER), ClaimantOrDefendant.CLAIMANT);
       //Then
       expect(spySave).toBeCalled();
+      spySave.mockReset();
     });
 
     it('should save defendant phone data successfully when claim exists', async () => {
@@ -184,6 +187,7 @@ describe('Claimant Phone Service', () => {
       await saveTelephone('123', new CitizenTelephoneNumber(PHONE_NUMBER), ClaimantOrDefendant.DEFENDANT);
       //Then
       expect(spySave).toBeCalled();
+      spySave.mockReset();
     });
 
     it('should save claimant/defendant phone data successfully when claim exists and properties are not defined', async () => {
@@ -198,6 +202,7 @@ describe('Claimant Phone Service', () => {
       await saveTelephone('123', new CitizenTelephoneNumber(PHONE_NUMBER), ClaimantOrDefendant.DEFENDANT);
       //Then
       expect(spySave).toBeCalled();
+      spySave.mockReset();
     });
 
     it('should rethrow error when error occurs on get claim or applicant', async () => {
@@ -231,6 +236,7 @@ describe('Claimant Phone Service', () => {
       await saveTelephone('123', new CitizenTelephoneNumber(PHONE_NUMBER, true), ClaimantOrDefendant.DEFENDANT);
       //Then
       expect(spySave).toBeCalled();
+      spySave.mockReset();
     });
 
     it('should save claimant phone data successfully when claim exists with ccd Phone', async () => {
@@ -246,6 +252,7 @@ describe('Claimant Phone Service', () => {
       await saveTelephone('123', new CitizenTelephoneNumber(PHONE_NUMBER, false), ClaimantOrDefendant.DEFENDANT);
       //Then
       expect(spySave).toBeCalled();
+      spySave.mockReset();
     });
   });
 });

@@ -128,6 +128,7 @@ describe('Interest Service', () => {
 
       await saveInterest('validClaimId', interest?.interestStartDate, 'interestStartDate');
       expect(spySave).toHaveBeenCalledWith('validClaimId', {interest});
+      spySave.mockReset();
     });
 
     it('should save total interest', async () => {
@@ -137,6 +138,7 @@ describe('Interest Service', () => {
 
       await saveInterest('claimId', interest.totalInterest, 'totalInterest');
       expect(spySave).toHaveBeenCalledWith('claimId', {interest});
+      spySave.mockReset();
     });
 
     it('should update interest start date successfully', async () => {
@@ -151,6 +153,7 @@ describe('Interest Service', () => {
 
       await saveInterest('validClaimId', interest?.interestStartDate, 'interestStartDate');
       expect(spySave).toHaveBeenCalledWith('validClaimId', {interest});
+      spySave.mockReset();
     });
 
     it('should update interest end date successfully', async () => {
@@ -166,6 +169,7 @@ describe('Interest Service', () => {
 
       await saveInterest('validClaimId', interest?.interestEndDate, 'interestEndDate');
       expect(spySave).toHaveBeenCalledWith('validClaimId', {interest});
+      spySave.mockReset();
     });
 
     it('should update interest claim from successfully', async () => {
@@ -182,6 +186,7 @@ describe('Interest Service', () => {
 
       await saveInterest('validClaimId', interest?.interestClaimFrom, 'interestClaimFrom');
       expect(spySave).toHaveBeenCalledWith('validClaimId', {interest});
+      spySave.mockReset();
     });
 
     it('should update interest claim options successfully', async () => {
@@ -199,6 +204,7 @@ describe('Interest Service', () => {
 
       await saveInterest('validClaimId', interest?.interestClaimOptions, 'interestClaimOptions');
       expect(spySave).toHaveBeenCalledWith('validClaimId', {interest});
+      spySave.mockReset();
     });
 
     it('should update same rate interest selection successfully', async () => {
@@ -217,6 +223,7 @@ describe('Interest Service', () => {
 
       await saveInterest('validClaimId', interest?.sameRateInterestSelection, 'sameRateInterestSelection');
       expect(spySave).toHaveBeenCalledWith('validClaimId', {interest});
+      spySave.mockReset();
     });
 
     it('should return an error on redis failure', async () => {

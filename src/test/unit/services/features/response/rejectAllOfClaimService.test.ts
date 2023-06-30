@@ -26,6 +26,7 @@ describe('rejectAllOfClaim service', () => {
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(result).not.toBeNull();
       expect(result.option).toBeUndefined();
+      spyGetCaseDataFromStore.mockReset();
     });
     it('should return populated form model when data exists', async () => {
       //Given
@@ -41,6 +42,7 @@ describe('rejectAllOfClaim service', () => {
       expect(result).not.toBeNull();
       expect(result.option).toBeTruthy();
       expect(result.option.length).toBe(11);
+      spyGetCaseDataFromStore.mockReset();
     });
   });
 
@@ -56,6 +58,7 @@ describe('rejectAllOfClaim service', () => {
       await saveRejectAllOfClaim('123', new RejectAllOfClaim(RejectAllOfClaimType.ALREADY_PAID));
       //Then
       expect(spySave).toBeCalled();
+      spySave.mockReset();
     });
   });
 });

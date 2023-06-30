@@ -21,6 +21,7 @@ describe('rejectAllOfClaim defence service', () => {
       await saveYourDefence(createClaim(), '123', new Defence('Test'));
       //Then
       expect(spySave).toBeCalled();
+      spySave.mockReset();
     });
     it('should save data successfully without rejectAllofClaim', async () => {
       //Given
@@ -33,6 +34,7 @@ describe('rejectAllOfClaim defence service', () => {
       await saveYourDefence(new Claim(), '123', new Defence('Test'));
       //Then
       expect(spySave).toBeCalled();
+      spySave.mockReset();
     });
 
     it('should Throw an error when save defence data', async () => {
@@ -45,6 +47,7 @@ describe('rejectAllOfClaim defence service', () => {
       await saveYourDefence(new Claim(), '123', new Defence('Test'));
       //Then
       expect(spySave).toBeCalled();
+      spySave.mockReset();
     });
     it('should fail when redis throws an error', async () => {
       // Given

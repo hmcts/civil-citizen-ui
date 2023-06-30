@@ -91,6 +91,7 @@ describe('Bilingual Langiage Preference Service', () => {
       ));
       //Then
       expect(spySave).toBeCalled();
+      spySave.mockReset();
     });
 
     it('should save WELSH_AND_ENGLISH bilingual language preference data successfully when claim exists', async () => {
@@ -106,6 +107,7 @@ describe('Bilingual Langiage Preference Service', () => {
       ));
       //Then
       expect(spySave).toBeCalled();
+      spySave.mockReset();
     });
 
     it('should rethrow error when error occurs on get claim for ENGLISH bilingual language preference', async () => {

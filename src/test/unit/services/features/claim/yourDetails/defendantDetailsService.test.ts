@@ -26,6 +26,7 @@ describe('Defendant details service', () => {
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(result).not.toBeNull();
       expect(result).toEqual({});
+      spyGetCaseDataFromStore.mockReset();
     });
 
     it('should return a defendant object with values when data is retrieved', async () => {
@@ -38,6 +39,7 @@ describe('Defendant details service', () => {
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(result).not.toBeNull();
       expect(result).toEqual(mockClaim.respondent1);
+      spyGetCaseDataFromStore.mockReset();
     });
   });
 
@@ -55,6 +57,8 @@ describe('Defendant details service', () => {
       await saveDefendantProperty(CLAIM_ID, 'type', PartyType.INDIVIDUAL);
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, expectedData);
+      spyGetCaseDataFromStore.mockReset();
+      spySaveDraftClaim.mockReset();
     });
 
     it('should update defendant when in redis', async () => {
@@ -76,6 +80,8 @@ describe('Defendant details service', () => {
       await saveDefendantProperty(CLAIM_ID, 'type', PartyType.ORGANISATION);
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
+      spyGetCaseDataFromStore.mockReset();
+      spySaveDraftClaim.mockReset();
     });
   });
 });
