@@ -9,8 +9,18 @@ import {CaseDocument} from 'models/document/caseDocument';
 import {AppRequest} from 'models/AppRequest';
 
 const multer = require('multer');
-const storage = multer.memoryStorage();
-const upload = multer({storage: storage});
+const storage = multer.memoryStorage({
+  limits: {
+    fileSize: 100 * 1024 * 1024,
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 100 * 1024 * 1024, // 100 MB
+  },
+});
 
 const uploadFileController = Router();
 
@@ -19,14 +29,12 @@ const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceCli
 
 uploadFileController.post(CP_UPLOAD_FILE, upload.single('file'), async (req, res) => {
   try {
-    //const claimId = req.params.id;
     const uploadDocumentsForm = TypeOfDocumentSectionMapper.mapToSingleFile(req);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
 
     const form = new GenericForm(uploadDocumentsForm);
     form.validateSync();
     if (form.hasErrors()) {
-      //await renderView(res, claimId, form);
       res.status(400).json({
         errors: form.getAllErrors().map(error => t(error.text, lang)),
       });
