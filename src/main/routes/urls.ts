@@ -91,6 +91,7 @@ export const CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL = `${FULL_REJECTION_
 export const RESPONSE_INCOMPLETE_SUBMISSION_URL = `${BASE_CASE_RESPONSE_URL}/incomplete-submission`;
 export const CITIZEN_FR_AMOUNT_YOU_PAID_URL = `${FULL_REJECTION_URL}/how-much-have-you-paid`;
 export const DEFENDANT_SUMMARY_URL = `${DASHBOARD_URL}/:id/defendant`;
+export const DEFENDANT_DOCUMENTS_URL = `${DASHBOARD_URL}/:id/defendant#documents`;
 export const BILINGUAL_LANGUAGE_PREFERENCE_URL = `${BASE_CASE_RESPONSE_URL}/bilingual-language-preference`;
 export const EXPERT_GUIDANCE_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/expert-guidance`;
 export const PERMISSION_FOR_EXPERT_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/permission-for-expert`;

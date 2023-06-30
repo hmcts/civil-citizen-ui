@@ -403,7 +403,7 @@
       "CCJ_INSTALMENTS_OF": "Instalments of",
       "CCJ_INSTALMENTS_PAYMENT_FREQUENCY": "How often you want them to make this payment?",
       "CCJ_TOTAL_TO_BE_PAID": "Total to be paid by defendant",
-      "CCJ_WHEN_DO_YOU_WANT_TO_BE_PAID_BY": "When you want the defendant to pay?",   
+      "CCJ_WHEN_DO_YOU_WANT_TO_BE_PAID_BY": "When you want the defendant to pay?",
       "CHILDREN": "Children",
       "CHILDREN_DO_YOU_HAVE_ANY_LIVE_WITH_YOU": "Do any children live with you?",
       "CHILDREN_UNDER_11": "Under 11",
@@ -1483,6 +1483,11 @@
     "LATEST_UPDATE_CONTENT": {
       "CLAIMANT_CAN_ASK_FOR_CCJ_AGAINST_YOU": "You haven't responded to the claim. {{ claimantName }} can now ask for a County Court Judgement against you.",
       "CCJ_COULD_SEND_BAILIFFS_TO_YOUR_HOME": "A County Court Judgment can mean you find it difficult to get credit, like a mortgage or mobile phone contract. Bailiffs could also be sent to your home.",
+      "NEW_UPLOAD": {
+        "TITLE": "New documents have been uploaded",
+        "NEW_DOCUMENTS": "Ahead of your upcoming trial or hearing, new documents have been uploaded. You can view them under 'Documents'.",
+        "VIEW_DOCUMENTS": "View documents"
+      },
       "EVIDENCE_UPLOAD": {
         "DOCUMENTS_DUE_BY": "Due by: {{bundleStitchingDeadline}}",
         "DOCUMENTS_SUBMITTED_NOT_CONSIDERED": "Any documents submitted after the due date may not be considered by the judge.",
