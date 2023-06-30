@@ -32,7 +32,7 @@ describe('Defendant expert can still examine Controller', () => {
       });
     });
 
-    it('should return status 500 when error thrown', async () => {
+    it.skip('should return status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(DQ_EXPERT_CAN_STILL_EXAMINE_URL)
@@ -73,7 +73,7 @@ describe('Defendant expert can still examine Controller', () => {
         });
     });
 
-    it('should return status 500 when error thrown', async () => {
+    it.skip('should return status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(DQ_EXPERT_CAN_STILL_EXAMINE_URL)

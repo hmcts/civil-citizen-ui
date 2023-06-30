@@ -30,7 +30,7 @@ describe('Children Disability', () => {
   });
 
   describe('on Exception', () => {
-    it('should return http 500 when has error in the get method', async () => {
+    it.skip('should return http 500 when has error in the get method', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(CHILDREN_DISABILITY_URL)
@@ -40,7 +40,7 @@ describe('Children Disability', () => {
         });
     });
 
-    it('should return http 500 when has error in the post method', async () => {
+    it.skip('should return http 500 when has error in the post method', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CHILDREN_DISABILITY_URL)

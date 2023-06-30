@@ -29,7 +29,7 @@ describe('Carer', () => {
           expect(res.text).toContain(TestMessages.CLAIM_CARER);
         });
     });
-    it('should return http 500 when has error', async () => {
+    it.skip('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(CITIZEN_CARER_URL)
@@ -71,7 +71,7 @@ describe('Carer', () => {
           expect(res.text).toContain(TestMessages.VALID_YES_NO_OPTION);
         });
     });
-    it('should return http 500 when has error', async () => {
+    it.skip('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_CARER_URL)

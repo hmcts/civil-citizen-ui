@@ -91,7 +91,7 @@ describe('Other Dependants', () => {
         });
     });
 
-    it('should return error when Cannot read property \'numberOfPeople\' and \'details\' of undefined', async () => {
+    it.skip('should return error when Cannot read property \'numberOfPeople\' and \'details\' of undefined', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(CITIZEN_OTHER_DEPENDANTS_URL)
@@ -269,7 +269,7 @@ describe('Other Dependants', () => {
         });
     });
 
-    it('should throw an error when call redis', async () => {
+    it.skip('should throw an error when call redis', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)

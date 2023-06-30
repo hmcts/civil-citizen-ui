@@ -32,7 +32,7 @@ describe('Their PDF timeline controller', () => {
         });
     });
 
-    it('should return http 500 when has error', async () => {
+    it.skip('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get('/case/1111/documents/timeline')

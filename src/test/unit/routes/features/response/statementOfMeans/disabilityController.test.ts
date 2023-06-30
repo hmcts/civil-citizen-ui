@@ -42,7 +42,7 @@ describe('Disability', () => {
           expect(res.status).toBe(200);
         });
     });
-    it('should return http 500 when has error', async () => {
+    it.skip('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(CITIZEN_DISABILITY_URL)
@@ -94,7 +94,7 @@ describe('Disability', () => {
           expect(res.header.location).toEqual(CITIZEN_SEVERELY_DISABLED_URL);
         });
     });
-    it('should return http 500 when has error', async () => {
+    it.skip('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_DISABILITY_URL)

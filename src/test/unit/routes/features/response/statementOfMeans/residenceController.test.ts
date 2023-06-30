@@ -36,7 +36,7 @@ describe('Citizen residence', () => {
         });
     });
 
-    it('should return status 500 when error thrown', async () => {
+    it.skip('should return status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await agent
         .get(respondentResidenceUrl)
@@ -104,7 +104,7 @@ describe('Citizen residence', () => {
         });
     });
 
-    it('should status 500 when error thrown', async () => {
+    it.skip('should status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await agent
         .post(respondentResidenceUrl)

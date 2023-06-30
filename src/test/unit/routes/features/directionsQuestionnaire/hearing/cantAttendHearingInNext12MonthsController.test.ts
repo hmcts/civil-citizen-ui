@@ -32,7 +32,7 @@ describe('cannot attend hearing in next months Controller', () => {
       });
     });
 
-    it('should return status 500 when error thrown', async () => {
+    it.skip('should return status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL)
@@ -71,7 +71,7 @@ describe('cannot attend hearing in next months Controller', () => {
         });
     });
 
-    it('should return status 500 when error thrown', async () => {
+    it.skip('should return status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL)

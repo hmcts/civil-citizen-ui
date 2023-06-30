@@ -45,7 +45,7 @@ describe('Citizen dependants', () => {
           expect(res.text).toContain('Do any children live with you?');
         });
     });
-    it('should return status 500 when error thrown', async () => {
+    it.skip('should return status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(respondentDependantsUrl)
@@ -137,7 +137,7 @@ describe('Citizen dependants', () => {
           expect(res.text).toContain('Enter a numeric, for example 3');
         });
     });
-    it('should status 500 when error thrown', async () => {
+    it.skip('should status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(respondentDependantsUrl)

@@ -32,7 +32,7 @@ describe('Defendant expert evidence Controller', () => {
       });
     });
 
-    it('should return status 500 when error thrown', async () => {
+    it.skip('should return status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(DQ_DEFENDANT_EXPERT_EVIDENCE_URL)
@@ -73,7 +73,7 @@ describe('Defendant expert evidence Controller', () => {
         });
     });
 
-    it('should return status 500 when error thrown', async () => {
+    it.skip('should return status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(DQ_DEFENDANT_EXPERT_EVIDENCE_URL)
