@@ -23,11 +23,6 @@ export class DraftStoreClient {
 
     app.locals.draftStoreClient.on('connect', () => {
       this.logger.info('-------------------connection on-----------------');
-      // REDIS_DATA.forEach((element: any) => {
-      //   client.set(element.id, JSON.stringify(element, null, 4)).then(() =>
-      //     this.logger.info(`Mock data ${element.id} saved to Redis`),
-      //   );
-      // });
     });
   }
 }
