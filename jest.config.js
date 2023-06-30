@@ -11,6 +11,8 @@ module.exports = {
       isolatedModules: true
     }
   },
+  resetMocks: true,
+  restoreMocks: true,
 
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper: {
@@ -24,4 +26,5 @@ module.exports = {
   },
   setupFilesAfterEnv: ['./jest.setup.redis-mock.js'],
   coverageProvider: 'v8',
+  workerIdleMemoryLimit: '512MB'
 };
