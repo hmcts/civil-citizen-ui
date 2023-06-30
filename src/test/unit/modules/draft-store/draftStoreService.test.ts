@@ -47,6 +47,7 @@ describe('Draft store service to save and retrieve claim', () => {
     //Then
     expect(spyGet).toBeCalled();
     expect(id).toBe(Number(CLAIM_ID));
+    spyGet.mockReset();
   });
   it('should return empty result', async () => {
     //Given
@@ -58,6 +59,7 @@ describe('Draft store service to save and retrieve claim', () => {
     //Then
     expect(spyGet).toBeCalled();
     expect(id).toBeUndefined();
+    spyGet.mockReset();
   });
   it('should update existing claim when data exists', async () => {
     //Given
@@ -70,6 +72,7 @@ describe('Draft store service to save and retrieve claim', () => {
     //Then
     expect(spyGet).toBeCalled();
     expect(spySet).toBeCalled();
+    spyGet.mockReset();
   });
   it('should save new claim when data does not exists', async () => {
     //Given
@@ -82,6 +85,7 @@ describe('Draft store service to save and retrieve claim', () => {
     //Then
     expect(spyGet).toBeCalled();
     expect(spySet).toBeCalled();
+    spyGet.mockReset();
   });
   it('should return case data when getting case data and data in redis exists', async () => {
     //Given
@@ -93,6 +97,7 @@ describe('Draft store service to save and retrieve claim', () => {
     //Then
     expect(spyGet).toBeCalled();
     expect(result).not.toBeUndefined();
+    spyGet.mockReset();
   });
   it('should return undefined when getting case data and data in redis exists', async () => {
     //Given
@@ -104,6 +109,7 @@ describe('Draft store service to save and retrieve claim', () => {
     //Then
     expect(spyGet).toBeCalled();
     expect(result).toEqual({});
+    spyGet.mockReset();
   });
 
   it('should delete the claim successfully', async () => {
@@ -115,6 +121,7 @@ describe('Draft store service to save and retrieve claim', () => {
     await deleteDraftClaimFromStore(CLAIM_ID);
     //Then
     expect(spyDel).toBeCalled();
+    spyDel.mockReset();
   });
 
 });

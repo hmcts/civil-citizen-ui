@@ -80,6 +80,7 @@ describe('Claim details page', () => {
           expect(res.text).toContain('1 January 2022'); // timeline date
         });
       expect(spyRedisSave).toBeCalled();
+      spyRedisSave.mockReset();
     });
     it('should retrieve claim from redis when claim exists in redis', async () => {
       const mockGetClaimById = jest.fn().mockImplementation(() => {
@@ -108,6 +109,7 @@ describe('Claim details page', () => {
         });
       expect(spyRedisSave).not.toBeCalled();
       expect(mockGetClaimById).not.toBeCalled();
+      spyRedisSave.mockReset();
     });
     it('should display Download and view their Timeline', async () => {
       const mockGetClaimById = jest.fn().mockImplementation(() => {
@@ -129,6 +131,7 @@ describe('Claim details page', () => {
         });
       expect(spyRedisSave).not.toBeCalled();
       expect(mockGetClaimById).not.toBeCalled();
+      spyRedisSave.mockReset();
     });
     it('should return 500 status when there is error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
