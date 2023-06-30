@@ -128,7 +128,7 @@ describe('Civil Service Client', () => {
         data: mockResponse,
         headers: {
           'content-type': 'application/json',
-          'originalfilename': 'example.json',
+          'original-file-name': 'example.json',
         }};
 
       const mockGet = jest.fn().mockResolvedValue(mockData);

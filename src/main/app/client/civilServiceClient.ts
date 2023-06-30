@@ -170,7 +170,7 @@ export class CivilServiceClient {
         .replace(':documentId', documentId));
 
       return new FileResponse(response.headers['content-type'],
-        response.headers['originalfilename'],
+        response.headers['original-file-name'],
         response.data as Buffer);
 
     } catch (err) {
