@@ -1,9 +1,6 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {CP_CHECK_ANSWERS_URL, CP_EVIDENCE_UPLOAD_SUBMISSION_URL} from '../../urls';
-import {
-  getStatementOfTruth,
-  getSummarySections,
-} from 'services/features/claim/checkAnswers/checkAnswersService';
+import {getSummarySections} from 'services/features/claim/checkAnswers/checkAnswersService';
 import {deleteDraftClaimFromStore, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -46,7 +43,7 @@ documentUploadCheckAnswerController.post(CP_CHECK_ANSWERS_URL, async (req: Reque
     if (form.hasErrors()) {
       renderView(res, form, claim, userId, lang);
     } else {
-      await saveDocuments(<AppRequest>req);
+      // await saveDocuments(<AppRequest>req);
       await deleteDraftClaimFromStore(userId);
       res.redirect(constructResponseUrlWithIdParams(claim.id, CP_EVIDENCE_UPLOAD_SUBMISSION_URL));
     }

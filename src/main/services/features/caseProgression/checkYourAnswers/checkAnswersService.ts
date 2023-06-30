@@ -9,15 +9,11 @@ import {
 } from 'services/features/caseProgression/checkYourAnswers/buildExpertEvidenceSection';
 import {buildDisclosureSection} from 'services/features/caseProgression/checkYourAnswers/buildDisclosureSection';
 import {
-  buildTrialDocumentsSection
+  buildTrialDocumentsSection,
 } from 'services/features/caseProgression/checkYourAnswers/buildTrialDocumentsSection';
-import {documentUploadSubmissionForm} from 'form/models/caseProgression/documentUploadSubmission';
-import {getCaseDataFromStore, saveDraftClaim} from "modules/draft-store/draftStoreService";
-import {ClaimantResponse} from "models/claimantResponse";
-import {AppRequest} from "models/AppRequest";
 
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('claimantResponseService');
+// const {Logger} = require('@hmcts/nodejs-logging');
+// const logger = Logger.getLogger('claimantResponseService');
 
 const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): documentUploadSections => {
 
@@ -34,24 +30,24 @@ export const getSummarySections = (claimId: string, claim: Claim, lang?: string 
   return buildSummarySections(claim, claimId, lang);
 };
 
-const saveDocuments = async (req: AppRequest): Promise<void> => {
-  try {
-    const userId: string = req.session.user.id;
-    const claim: any = await getCaseDataFromStore(req.session.user.id);
+// const saveDocuments = async (req: AppRequest): Promise<void> => {
+//   try {
+//     const userId: string = req.session.user.id;
+//     const claim: any = await getCaseDataFromStore(req.session.user.id);
 
-    //TODO: There will need to be an addition to check for
+//TODO: There will need to be an addition to check for
 
-    // if(findUserRole(userId) === 'applicant') {
-    //
-    // } else if (findUserRole(userId) === 'claimant') {
-    //
-    // }
+// if(findUserRole(userId) === 'applicant') {
+//
+// } else if (findUserRole(userId) === 'claimant') {
+//
+// }
 
-    //TODO: documents will need a location on the claim first, then it will be possible to save.
+//TODO: documents will need a location on the claim first, then it will be possible to save.
 
-    await saveDraftClaim(claimId, claim);
-  } catch (error) {
-    logger.error(error);
-    throw error;
-  }
-};
+//   await saveDraftClaim(claimId, claim);
+// } catch (error) {
+//   logger.error(error);
+//   throw error;
+// }
+// };
