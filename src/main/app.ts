@@ -12,11 +12,11 @@ import {AppInsights} from './modules/appinsights';
 import {I18Next} from './modules/i18n';
 import {HealthCheck} from './modules/health';
 import {OidcMiddleware} from './modules/oidc';
-import {DraftStoreClient} from './modules/draft-store';
 import {CSRFToken} from './modules/csrf';
 import routes from './routes/routes';
 import {setLanguage} from 'modules/i18n/languageService';
 import {isServiceShuttered} from './app/auth/launchdarkly/launchDarklyClient';
+import DraftStoreClient from "modules/draft-store";
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -52,8 +52,10 @@ I18Next.enableFor(app);
 
 const logger = Logger.getLogger('app');
 
+logger.info('here app.js');
+
 new PropertiesVolume().enableFor(app);
-new DraftStoreClient(Logger.getLogger('draftStoreClient')).enableFor(app);
+new DraftStoreClient().enableFor(app);
 new AppInsights().enable();
 new Nunjucks(developmentMode).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);

@@ -1,18 +1,20 @@
-import {app} from '../../app';
+
 import {CivilClaimResponse} from 'models/civilClaimResponse';
 import {Claim} from 'models/claim';
 import {isUndefined} from 'lodash';
+import DraftStoreClient from 'modules/draft-store/index';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
 
+const redisModule = new DraftStoreClient();
 /**
  * Gets civil claim response object with claim from draft store
  * @param claimId
  * @returns claim from redis or undefined when no there is no data for claim id
  */
 export const getDraftClaimFromStore = async (claimId: string) => {
-  const dataFromRedis = await app.locals.draftStoreClient.get(claimId);
+  const dataFromRedis = await redisModule.get(claimId);
   return convertRedisDataToCivilClaimResponse(dataFromRedis);
 };
 
@@ -53,8 +55,7 @@ export const saveDraftClaim = async (claimId: string, claim: Claim) => {
     storedClaimResponse = createNewCivilClaimResponse(claimId);
   }
   storedClaimResponse.case_data = claim;
-  const draftStoreClient = app.locals.draftStoreClient;
-  draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
+  redisModule.setValue(claimId, JSON.stringify(storedClaimResponse));
 };
 
 const createNewCivilClaimResponse = (claimId: string) => {
@@ -64,5 +65,5 @@ const createNewCivilClaimResponse = (claimId: string) => {
 };
 
 export const deleteDraftClaimFromStore = async (claimId: string): Promise<void> => {
-  await app.locals.draftStoreClient.del(claimId);
+  await redisModule.del(claimId);
 };
