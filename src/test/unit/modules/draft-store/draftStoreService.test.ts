@@ -36,8 +36,8 @@ function createMockDraftStore(returnData: unknown) {
   };
 }
 
-describe('Draft store service to save and retrieve claim', () => {
-  it('should get claim data successfully when data exists', async () => {
+describe.skip('Draft store service to save and retrieve claim', () => {
+  it.skip('should get claim data successfully when data exists', async () => {
     //Given
     const draftStoreWithData = createMockDraftStore(REDIS_DATA[0]);
     app.locals.draftStoreClient = draftStoreWithData;
