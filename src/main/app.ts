@@ -55,7 +55,7 @@ const logger = Logger.getLogger('app');
 logger.info('here app.js');
 
 new PropertiesVolume().enableFor(app);
-new DraftStoreClient().enableFor(app);
+new DraftStoreClient().enableFor();
 new AppInsights().enable();
 new Nunjucks(developmentMode).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);
