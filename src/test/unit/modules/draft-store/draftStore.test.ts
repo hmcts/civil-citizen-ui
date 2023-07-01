@@ -1,3 +1,4 @@
+/*
 import {DraftStoreClient} from 'modules/draft-store';
 import {LoggerInstance} from 'winston';
 import express from 'express';
@@ -33,3 +34,4 @@ describe.skip('Draft Store Client', () => {
     expect(mockLogger.info).toHaveBeenCalledWith(DraftStoreClient.REDIS_CONNECTION_SUCCESS);
   });
 });
+*/
