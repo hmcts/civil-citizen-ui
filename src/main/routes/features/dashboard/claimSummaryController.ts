@@ -11,7 +11,6 @@ import {isCaseProgressionV1Enable} from '../../../app/auth/launchdarkly/launchDa
 import {
   getCaseProgressionLatestUpdates,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/caseProgressionLatestUpdateService';
-import {ClaimSummaryContent} from 'form/models/claimSummarySection';
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -24,17 +23,20 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextF
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     if (claim && !claim.isEmpty()) {
       let latestUpdateContent = getLatestUpdateContent(claimId, claim, lang);
-      const documentsContent = getDocumentsContent(claim, claimId);
-      let evidenceUploadDocumentContent: ClaimSummaryContent[] = [];
-
-      if (await isCaseProgressionV1Enable() && claim.hasCaseProgressionHearingDocuments()) {
+      let documentsContent;
+      const caseProgressionEnabled = await isCaseProgressionV1Enable();
+      if (caseProgressionEnabled && claim.hasCaseProgressionHearingDocuments()) {
         latestUpdateContent = [];
         const lang = req?.query?.lang ? req.query.lang : req?.cookies?.lang;
         getCaseProgressionLatestUpdates(claim, lang)
           .forEach(items => latestUpdateContent.push(items));
-        evidenceUploadDocumentContent = getEvidenceUploadContent(claim);
+        documentsContent = getEvidenceUploadContent(claim);
       }
-      res.render(claimSummaryViewPath, {claim, claimId, latestUpdateContent, documentsContent, evidenceUploadDocumentContent});
+      else
+      {
+        documentsContent = getDocumentsContent(claim, claimId);
+      }
+      res.render(claimSummaryViewPath, {claim, claimId, latestUpdateContent, documentsContent, caseProgressionEnabled});
     }
   } catch (error) {
     next(error);

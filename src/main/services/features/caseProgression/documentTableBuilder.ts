@@ -1,4 +1,4 @@
-import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
+import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {Claim} from 'models/claim';
 import {
   UploadDocumentTypes,
@@ -14,23 +14,25 @@ import {
 } from 'models/document/documentType';
 import {t} from 'i18next';
 import {formatStringDateDMY} from 'common/utils/dateUtils';
+import {addEvidenceUploadTable} from 'models/caseProgression/uploadDocumentsTableSectionBuilder';
+import {TypesOfEvidenceUploadDocuments} from 'models/caseProgression/TypesOfEvidenceUploadDocument';
 
-export function getEvidenceUploadDocuments(claim: Claim): DocumentTab {
+export function getEvidenceUploadDocuments(claim: Claim): ClaimSummarySection[] {
 
-  const documentTables = new DocumentTab();
+  const documentTables = [] as ClaimSummarySection[];
   const trialOrHearing: string = claim.isFastTrackClaim ? t('PAGES.CLAIM_SUMMARY.TRIAL_DOCUMENTS'): t('PAGES.CLAIM_SUMMARY.HEARING_DOCUMENTS');
 
-  documentTables.claimantDisclosure = getDocumentTypeTable(t('PAGES.CLAIM_SUMMARY.DISCLOSURE_DOCUMENTS'), claim.caseProgression?.claimantUploadDocuments?.disclosure, true);
-  documentTables.defendantDisclosure = getDocumentTypeTable(t('PAGES.CLAIM_SUMMARY.DISCLOSURE_DOCUMENTS'), claim.caseProgression?.defendantUploadDocuments?.disclosure, false);
+  documentTables.push(getDocumentTypeTable(t('PAGES.CLAIM_SUMMARY.DISCLOSURE_DOCUMENTS'), claim.caseProgression?.claimantUploadDocuments?.disclosure, true));
+  documentTables.push(getDocumentTypeTable(t('PAGES.CLAIM_SUMMARY.DISCLOSURE_DOCUMENTS'), claim.caseProgression?.defendantUploadDocuments?.disclosure, false));
 
-  documentTables.claimantWitness = getDocumentTypeTable(t('PAGES.CLAIM_SUMMARY.WITNESS_EVIDENCE'), claim.caseProgression?.claimantUploadDocuments?.witness, true);
-  documentTables.defendantWitness = getDocumentTypeTable(t('PAGES.CLAIM_SUMMARY.WITNESS_EVIDENCE'), claim.caseProgression?.defendantUploadDocuments?.witness, false);
+  documentTables.push(getDocumentTypeTable(t('PAGES.CLAIM_SUMMARY.WITNESS_EVIDENCE'), claim.caseProgression?.claimantUploadDocuments?.witness, true));
+  documentTables.push(getDocumentTypeTable(t('PAGES.CLAIM_SUMMARY.WITNESS_EVIDENCE'), claim.caseProgression?.defendantUploadDocuments?.witness, false));
 
-  documentTables.claimantExpert = getDocumentTypeTable(t('PAGES.CLAIM_SUMMARY.EXPERT_EVIDENCE'), claim.caseProgression?.claimantUploadDocuments?.expert, true);
-  documentTables.defendantExpert = getDocumentTypeTable(t('PAGES.CLAIM_SUMMARY.EXPERT_EVIDENCE'), claim.caseProgression?.defendantUploadDocuments?.expert, false);
+  documentTables.push(getDocumentTypeTable(t('PAGES.CLAIM_SUMMARY.EXPERT_EVIDENCE'), claim.caseProgression?.claimantUploadDocuments?.expert, true));
+  documentTables.push(getDocumentTypeTable(t('PAGES.CLAIM_SUMMARY.EXPERT_EVIDENCE'), claim.caseProgression?.defendantUploadDocuments?.expert, false));
 
-  documentTables.claimantTrial = getDocumentTypeTable(trialOrHearing, claim.caseProgression?.claimantUploadDocuments?.trial, true);
-  documentTables.defendantTrial = getDocumentTypeTable(trialOrHearing, claim.caseProgression?.defendantUploadDocuments?.trial, false);
+  documentTables.push(getDocumentTypeTable(trialOrHearing, claim.caseProgression?.claimantUploadDocuments?.trial, true));
+  documentTables.push(getDocumentTypeTable(trialOrHearing, claim.caseProgression?.defendantUploadDocuments?.trial, false));
 
   return documentTables;
 }
@@ -42,34 +44,22 @@ function getDocumentTypeTable(header: string, rows: UploadDocumentTypes[], isCla
   const tableRows = [] as TableCell[][];
 
   rows.sort((a: UploadDocumentTypes, b: UploadDocumentTypes) => {
-    return new Date(a.caseDocument?.createdDatetime).getTime() - new Date(b.caseDocument?.createdDatetime).getTime();
+    //Sort in order of upload - newest to oldest
+    return  new Date(b.caseDocument?.createdDatetime).getTime() - new Date(a.caseDocument?.createdDatetime).getTime();
   });
 
-  for(let i = rows.length-1; i>=0; i--)
+  for(const upload of rows)
   {
-    const uploadDate: Date = new Date(rows[i].caseDocument.createdDatetime);
+    const uploadDate: Date = new Date(upload.caseDocument.createdDatetime);
     const uploadDateString: string  = formatStringDateDMY(uploadDate.toISOString());
 
     tableRows.push([
-      {html: getDocumentTypeName(rows[i].documentType, isClaimant) + '<br>' + 'Date Uploaded ' + uploadDateString},
-      {html: getDocumentLink(rows[i])}],
+      {html: getDocumentTypeName(upload.documentType, isClaimant) + '<br>' + t('PAGES.CLAIM_SUMMARY.DATE_DOCUMENT_UPLOADED') + uploadDateString},
+      {html: getDocumentLink(upload)}],
     );
   }
 
-  return {
-    type: ClaimSummaryType.TABLE,
-    data: {
-      head: [
-        {
-          text: isClaimant == true ? t('PAGES.CLAIM_SUMMARY.CLAIMANT') + header : t('PAGES.CLAIM_SUMMARY.DEFENDANT') + header,
-        },
-        {
-          text: '',
-        },
-      ],
-      tableRows: tableRows,
-    },
-  };
+  return addEvidenceUploadTable(header, isClaimant, tableRows);
 }
 
 function getDocumentTypeName(documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial, isClaimant: boolean)
@@ -131,17 +121,17 @@ function getDocumentTypeName(documentType: EvidenceUploadDisclosure | EvidenceUp
 function getDocumentLink (document: UploadDocumentTypes) : string {
   let documentName : string;
 
-  if('documentUpload' in document.caseDocument)
+  if(TypesOfEvidenceUploadDocuments.DOCUMENT_TYPE in document.caseDocument)
   {
     document.caseDocument = document.caseDocument as UploadEvidenceDocumentType;
     documentName = document.caseDocument.documentUpload.document_filename;
   }
-  else if('witnessOptionDocument' in document.caseDocument)
+  else if(TypesOfEvidenceUploadDocuments.WITNESS in document.caseDocument)
   {
     document.caseDocument = document.caseDocument as UploadEvidenceWitness;
     documentName = document.caseDocument.witnessOptionDocument.document_filename;
   }
-  else if('expertDocument' in document.caseDocument)
+  else if(TypesOfEvidenceUploadDocuments.EXPERT in document.caseDocument)
   {
     document.caseDocument = document.caseDocument as UploadEvidenceExpert;
     documentName = document.caseDocument.expertDocument.document_filename;
@@ -149,19 +139,4 @@ function getDocumentLink (document: UploadDocumentTypes) : string {
 
   //TODO: href will need to be added - dependent on document download API implementation.
   return '<a href="href will need to be connected to document">'+documentName+'</a>';
-}
-
-export class DocumentTab {
-
-  //Claimant tables
-  claimantDisclosure: ClaimSummarySection;
-  claimantWitness: ClaimSummarySection;
-  claimantExpert: ClaimSummarySection;
-  claimantTrial: ClaimSummarySection;
-
-  //Defendant tables
-  defendantDisclosure: ClaimSummarySection;
-  defendantWitness: ClaimSummarySection;
-  defendantExpert: ClaimSummarySection;
-  defendantTrial: ClaimSummarySection;
 }

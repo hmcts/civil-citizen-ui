@@ -83,7 +83,7 @@ export const formatStringDate = (text: string) => {
   return `${year}-${month}-${day}`;
 };
 
-export const formatStringDateDMY= (text: string) => {
+export const formatStringDateDMY = (text: string) => {
   const date = new Date(Date.parse(text));
   const day = date.getDate().toString().padStart(2, '0');
   const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
