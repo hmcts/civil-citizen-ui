@@ -11,6 +11,9 @@ import {getInterestDetails} from '../../../../common/utils/interestUtils';
 import {getTotalAmountWithInterestAndFees} from '../../../../modules/claimDetailsService';
 import {YesNo} from '../../../../common/form/models/yesNo';
 import {DocumentUri} from '../../../../common/models/document/documentType';
+import config from 'config';
+
+const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
 const firstContactClaimSummaryController = Router();
 
@@ -25,8 +28,9 @@ firstContactClaimSummaryController.get(FIRST_CONTACT_CLAIM_SUMMARY_URL,
         const totalAmount = getTotalAmountWithInterestAndFees(claim);
         const timelinePdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', claimId);
         const sealedClaimPdfUrl = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentType', DocumentUri.SEALED_CLAIM);
+        const privacyPolicyUrl = `${ocmcBaseUrl}/privacy-policy`;
         res.render('features/public/firstContact/claim-summary', {
-          claim, totalAmount, interestData,timelinePdfUrl,sealedClaimPdfUrl, claimId,
+          claim, totalAmount, interestData,timelinePdfUrl,sealedClaimPdfUrl, privacyPolicyUrl, claimId,
         });
       } else {
         res.redirect(FIRST_CONTACT_ACCESS_DENIED_URL);
