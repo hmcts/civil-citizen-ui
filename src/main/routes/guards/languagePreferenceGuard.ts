@@ -1,16 +1,14 @@
-import {NextFunction, Request, Response} from "express";
-import {getCaseDataFromStore} from "../../modules/draft-store/draftStoreService";
-import {constructResponseUrlWithIdParams} from "../../common/utils/urlFormatter";
-import {DASHBOARD_URL} from "../urls";
+import {NextFunction, Request, Response} from 'express';
+import {getCaseDataFromStore} from '../../modules/draft-store/draftStoreService';
+import {constructResponseUrlWithIdParams} from '../../common/utils/urlFormatter';
+import {DASHBOARD_URL} from '../urls';
 
 export const languagePreferenceGuard = (req: Request, res: Response, next: NextFunction) => {
   try {
     (async () => {
       const caseData = await getCaseDataFromStore(req.params.id);
       if (caseData.claimBilingualLanguagePreference) {
-        return res.redirect(
-          constructResponseUrlWithIdParams(req.params.id, DASHBOARD_URL)
-        );
+        return res.redirect(constructResponseUrlWithIdParams(req.params.id, DASHBOARD_URL));
       } else {
         return next();
       }
