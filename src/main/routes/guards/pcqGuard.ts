@@ -17,24 +17,37 @@ const ACTOR = 'respondent';
 
 export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    console.log('PCQ Guard');
+    
     const caseData: Claim = await getCaseDataFromStore(req.params.id);
     const pcqShutterOn = await isPcqShutterOn();
+
+    console.log('PCQ caseData.pcqId', caseData.pcqId);
+    console.log('PCQ pcqShutterOn', pcqShutterOn);
 
     if (pcqShutterOn || caseData.pcqId) {
       return next();
     }
 
     const type: PartyType = caseData.respondent1.type;
+    console.log('PCQ type', type);
+
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
     const defendantEmail = caseData.respondent1.emailAddress.emailAddress;
 
     const isHealthy = await isPcqHealthy();
+    console.log('PCQ isHealthy', isHealthy);
+
     const isElegible = isPcqElegible(type);
+    console.log('PCQ isElegible', isElegible);
 
     if (isHealthy && isElegible) {
       const pcqId = generatePcqId();
+      console.log('PCQ pcqId', pcqId);
+
       await savePcqIdClaim(pcqId, claimId);
+      console.log('PCQ savePcqIdClaim...');
       
       const pcqUrl = generatePcqUrl(
         pcqId,
@@ -44,6 +57,7 @@ export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFu
         getRedirectionUrl(req.headers.host, claimId),
         lang,
       );
+      console.log('PCQ pcqUrl', pcqUrl);
 
       res.redirect(pcqUrl);
     } else {
