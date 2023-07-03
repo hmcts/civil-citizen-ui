@@ -10,6 +10,7 @@ const keyLen = 32;
 
 export const createToken = (params: any) => {
   const tokenKey: string = config.get('services.pcq.tokenKey');
+  console.log('PCQ tokenKey: ', tokenKey);
 
   let encrypted = '';
 
