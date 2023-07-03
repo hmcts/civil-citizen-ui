@@ -15,7 +15,7 @@ nodejs:
         - citizen-draft-store-primary
         - citizen-draft-store-secondary
         - name: civil-citizen-ui-token-key
-          aias: CUI_TOKEN_KEY
+          alias: CUI_TOKEN_KEY
   environment:
     ORDNANCE_SURVEY_API_KEY: ${ORDNANCE_SURVEY_API_KEY}
     OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
