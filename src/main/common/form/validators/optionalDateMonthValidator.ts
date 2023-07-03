@@ -8,12 +8,17 @@ import {toNumber} from 'lodash';
  */
 @ValidatorConstraint({name: 'OptionalDateMonthValidator', async: false})
 export class OptionalDateMonthValidator implements ValidatorConstraintInterface {
-
+  monthExists:boolean;
   validate(month: string) {
+    if (month === undefined || month === null || month === '') {
+      this.monthExists = false;
+      return false;
+    }
+    this.monthExists = true;
     return !(month.length > 2 || !(isInt(month)) || toNumber(month) > 12 || toNumber(month) < 1);
   }
 
   defaultMessage() {
-    return 'ERRORS.VALID_REAL_DATE';
+    return this.monthExists?'ERRORS.VALID_REAL_DATE':'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_MONTH';
   }
 }

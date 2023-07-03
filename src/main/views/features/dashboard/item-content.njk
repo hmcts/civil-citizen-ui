@@ -168,7 +168,10 @@
             text: t(content.data.hint)
            },
            errorMessage: {
-            text: t(content.data.invalidDateError) or t(content.data.invalidDayError) or t(content.data.invalidMonthError) or t(content.data.invalidYearError)
+            html: '<p class="govuk-error-message">' + t(content.data.invalidDateError) + '</p>' +
+                        '<p class="govuk-error-message">' + t(content.data.invalidDayError) + '</p>' +
+                        '<p class="govuk-error-message">' + t(content.data.invalidMonthError) + '</p>' +
+                        '<p class="govuk-error-message">' + t(content.data.invalidYearError) + '</p>'
            } if (isDateError == 'true'),
            items: [
              {

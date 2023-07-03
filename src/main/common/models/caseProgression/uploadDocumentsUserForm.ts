@@ -86,18 +86,15 @@ export class DateInputFields extends  FileOnlySection {
       date: Date;
 
     @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
-    @IsNotEmpty({message: 'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_DAY'})
-    @Validate(OptionalDateDayValidator, {message: 'ERRORS.VALID_REAL_DATE' })
+    @Validate(OptionalDateDayValidator)
       dateDay: string;
 
     @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
-    @IsNotEmpty({message: 'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_MONTH'})
-    @Validate(OptionalDateMonthValidator, {message: 'ERRORS.VALID_REAL_DATE' })
+    @Validate(OptionalDateMonthValidator)
       dateMonth: string;
 
     @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
-    @IsNotEmpty({message: 'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_YEAR'})
-    @Validate(OptionalDateYearValidator, {message: 'ERRORS.VALID_REAL_DATE'})
+    @Validate(OptionalDateYearValidator)
       dateYear: string;
 
     constructor(day?: string, month?: string, year?: string) {
