@@ -12,7 +12,7 @@ export const languagePreferenceGuard = (req: Request, res: Response, next: NextF
       } else {
         next();
       }
-    }
+    };
   } catch (error) {
     next(error);
   }
