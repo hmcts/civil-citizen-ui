@@ -37,7 +37,7 @@ nodejs:
         - citizen-draft-store-primary
         - citizen-draft-store-secondary
         - name: civil-citizen-ui-token-key
-          alias: CUI_TOKEN_KEY
+          alias: CIVIL_CITIZEN_UI_TOKEN_KEY
 
   environment:
     IDAM_WEB_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/login
@@ -57,7 +57,7 @@ nodejs:
     DRAFT_STORE_API_URL: http://draft-store-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     OCMC_URL: https://moneyclaims.{{ .Values.global.environment }}.platform.hmcts.net
     PCQ_URL: https://pcq.{{ .Values.global.environment }}.platform.hmcts.net
-    CUI_TOKEN_KEY: ${CUI_TOKEN_KEY}
+    CUI_TOKEN_KEY: ${CIVIL_CITIZEN_UI_TOKEN_KEY}
 
   autoscaling:
     enabled: false
