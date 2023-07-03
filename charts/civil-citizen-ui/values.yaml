@@ -36,8 +36,7 @@ nodejs:
         - cmc-s2s-secret
         - citizen-draft-store-primary
         - citizen-draft-store-secondary
-        - name: civil-citizen-ui-token-key
-          alias: CUI_TOKEN_KEY
+        - civil-citizen-ui-token-key
 
   environment:
     IDAM_WEB_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/login
