@@ -13,7 +13,7 @@ import {getExpertContent} from 'services/features/caseProgression/expertService'
 
 const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
 const uploadDocumentsController = Router();
-const dqPropertyName = 'defendantUploadDocuments';
+const dqPropertyName = 'defendantDocuments';
 
 async function renderView(res: Response, claimId: string, form: GenericForm<UploadDocumentsUserForm> = null) {
   const claim: Claim = await getCaseDataFromStore(claimId);

@@ -14,7 +14,7 @@ async function renderView(res: Response, claimId: string, form: GenericForm<Uplo
   const claim: Claim = await getCaseDataFromStore(claimId);
   const claimantFullName = claim.getClaimantFullName();
   const defendantFullName = claim.getDefendantFullName();
-  const documents = claim.caseProgression.defendantUploadDocuments;
+  const documents = claim.caseProgression.defendantDocuments;
   if (claim && !claim.isEmpty()) {
 
     res.render(checkAnswersCPViewPath, {
