@@ -103,18 +103,19 @@ describe('Cancel document upload - on POST', () => {
   it('should redirect to defendant page', async () => {
 
     //Given
+    app.locals.draftStoreClient = mockCivilClaim;
     nock(civilServiceUrl)
-      .post(CIVIL_SERVICE_CASES_URL + '1111')
+      .post(CIVIL_SERVICE_CASES_URL + claimId)
       .reply(200, claimId);
 
     //When
     await testSession
-      .post(CP_EVIDENCE_UPLOAD_CANCEL.replace(':id', '1111'))
+      .post(CP_EVIDENCE_UPLOAD_CANCEL.replace(':id', claimId))
       .send({option: YesNo.YES})
     //Then
       .expect((res: {status: unknown, header: {location: unknown}}) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(DEFENDANT_SUMMARY_URL.replace(':id', '1111'));
+        expect(res.header.location).toEqual(DEFENDANT_SUMMARY_URL.replace(':id', claimId));
       });
   });
 });
