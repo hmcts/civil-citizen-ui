@@ -7,7 +7,7 @@ export const languagePreferenceGuard = async (req: Request, res: Response, next:
   try {
     const caseData = await getCaseDataFromStore(req.params.id);
     if (caseData.claimBilingualLanguagePreference) {
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, DASHBOARD_URL));
+      return res.redirect(constructResponseUrlWithIdParams(req.params.id, DASHBOARD_URL));
     } else {
       next();
     }
