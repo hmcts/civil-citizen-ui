@@ -15,12 +15,15 @@ nodejs:
         - cmc-s2s-secret
         - citizen-draft-store-primary
         - citizen-draft-store-secondary
+        - name: civil-citizen-ui-token-key
+          alias: CIVIL_CITIZEN_UI_TOKEN_KEY
   environment:
     ORDNANCE_SURVEY_API_KEY: ${ORDNANCE_SURVEY_API_KEY}
     OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
     CIVIL_SERVICE_URL: http://${SERVICE_NAME}-civil-service
     IDAM_SIGN_OUT_REDIRECT_URL: https://${SERVICE_FQDN}/dashboard
     PCQ_URL: https://pcq.aat.platform.hmcts.net
+    CUI_TOKEN_KEY: ${CIVIL_CITIZEN_UI_TOKEN_KEY}
 
 civil-service:
   enabled: true
