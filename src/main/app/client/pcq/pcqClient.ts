@@ -52,6 +52,8 @@ export const generatePcqUrl = (
     .map(([key, value]) => key + '=' + value)
     .join('&');
     
+  console.log('PCQ url: ', pcqBaseUrl);
+  
   return `${pcqBaseUrl}/service-endpoint?${qs}`;
 };
 
