@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import {Expose, Type} from 'class-transformer';
 import {TableItem} from 'models/tableItem';
-import {t} from "i18next";
+import {t} from 'i18next';
 
 export class FeeRanges {
   value: FeeRange[];
@@ -44,7 +44,7 @@ export class FeeRange {
           ? `${t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.CLAIM_FEE', {percentage, lng: lang})}`
           : `£${this.currentVersion.flatAmount?.amount.toLocaleString()}`}];
     }
-    //for Claim amount '> £200,000
+    //for Claim amount '> £200,000'
     if(this.minRange && !this.maxRange && this.currentVersion?.flatAmount?.amount) {
       return [{text: `> £${this.minRange.toLocaleString()}`}, {text: `£${this.currentVersion.flatAmount.amount.toLocaleString()}`}];
     }
