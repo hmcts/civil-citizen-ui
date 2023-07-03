@@ -10,7 +10,6 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {Claim} from 'models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {YesNo} from 'form/models/yesNo';
-import {ClaimantOrDefendant} from 'models/partyType';
 
 const cancelYourUploadViewPath = 'features/caseProgression/cancel-your-upload';
 const cancelYourUploadController = Router();
@@ -40,10 +39,7 @@ cancelYourUploadController.post([CP_EVIDENCE_UPLOAD_CANCEL], (async (req, res, n
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CP_UPLOAD_DOCUMENTS_URL));
     } else {
       const claimId = req.params.id;
-      const claim: Claim = await getCaseDataFromStore(claimId);
-      //todo: differentiate between claimant and defendant (Case Progression can only develop Claimant LiP after CUI R2 is done)
-      const claimantOrDefendant: ClaimantOrDefendant = ClaimantOrDefendant.DEFENDANT;
-      await cancelDocumentUpload(claimId, claim, claimantOrDefendant);
+      await cancelDocumentUpload(claimId, req);
       res.redirect(constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL));
     }
   } catch (error) {

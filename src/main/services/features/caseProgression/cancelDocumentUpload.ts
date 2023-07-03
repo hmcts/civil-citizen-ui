@@ -1,9 +1,9 @@
 import {Claim} from 'models/claim';
 import {UploadYourDocumentsSectionBuilder} from 'models/caseProgression/uploadYourDocumentsSectionBuilder';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
-import {ClaimantOrDefendant} from 'models/partyType';
-import {UploadDocuments} from 'models/caseProgression/uploadDocumentsType';
-import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
+import {Request} from 'express';
+import {getClaimById} from 'modules/utilityService';
 
 export const getCancelYourUpload = (claimId: string, claim: Claim) => {
   return new UploadYourDocumentsSectionBuilder()
@@ -18,14 +18,7 @@ export const getCancelYourUpload = (claimId: string, claim: Claim) => {
     .build();
 };
 
-export async function cancelDocumentUpload(claimId: string, claim: Claim, claimantOrDefendant: ClaimantOrDefendant) {
-  const uploadDocuments: UploadDocuments = claimantOrDefendant === ClaimantOrDefendant.DEFENDANT
-    ? claim.caseProgression.defendantUploadDocuments : claim.caseProgression.claimantUploadDocuments;
-  for (const uploadDocumentValue of Object.values(uploadDocuments)) {
-    if (uploadDocumentValue instanceof Array && uploadDocumentValue.length > 0) {
-      uploadDocumentValue.splice(0, uploadDocumentValue.length);
-    }
-  }
-
-  await saveDraftClaim(claimId, claim);
+export async function cancelDocumentUpload(claimId: string, req: Request) {
+  await deleteDraftClaimFromStore(claimId);
+  await getClaimById(claimId, req);
 }
