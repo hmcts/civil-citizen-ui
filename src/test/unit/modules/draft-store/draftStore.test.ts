@@ -1,37 +1,31 @@
-/*
-import {DraftStoreClient} from 'modules/draft-store';
+
 import {LoggerInstance} from 'winston';
-import express from 'express';
+import DraftStoreClient from 'modules/draft-store';
 
-jest.mock('ioredis', () => {
-  return jest.fn().mockImplementation(() => {
-    return {
-      ping: jest.fn(async () => 'PONG'),
-      set: jest.fn(async () => {return;}),
-      on: jest.fn(async () => {
-        return;
-      }),
-    };
+jest.mock('config');
+
+// Mock the dependencies used by DraftStoreClient
+jest.mock('config');
+jest.mock('ioredis');
+jest.mock('@hmcts/nodejs-logging');
+
+describe('Draft Store Client', () => {
+  let client;
+
+  beforeEach(() => {
+    client = new DraftStoreClient();
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+  it('should set a value in Redis', async () => {
+    const setValueSpy = jest.spyOn(client.client, 'set');
+    const loggerInfoSpy = jest.spyOn(client.logger, 'info');
+
+    await client.setValue('key', 'value');
+
+    expect(setValueSpy).toHaveBeenCalledWith('key', 'value');
+    expect(loggerInfoSpy).toHaveBeenCalledWith(`Mock data key saved to Redis`);
   });
 });
-
-const mockLogger = {
-  error: jest.fn().mockImplementation((message: string) => message),
-  info: jest.fn().mockImplementation((message: string) => message),
-} as unknown as LoggerInstance;
-
-const app: express.Application = {
-  locals: {
-    draftStoreClient: null,
-  },
-} as unknown as express.Application;
-
-describe.skip('Draft Store Client', () => {
-  it('Upon successful connection to Redis, log info message', async () => {
-    const draftStoreClient: DraftStoreClient = new DraftStoreClient(mockLogger);
-    draftStoreClient.enableFor(app);
-    await new Promise(process.nextTick);
-    expect(mockLogger.info).toHaveBeenCalledWith(DraftStoreClient.REDIS_CONNECTION_SUCCESS);
-  });
-});
-*/

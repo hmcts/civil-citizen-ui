@@ -11,7 +11,9 @@ class DraftStoreClient {
   public enableFor(): void {
     const protocol = config.get('services.draftStore.redis.tls') ? 'rediss://' : 'redis://';
     const connectionString = `${protocol}:${config.get('services.draftStore.redis.key')}@${config.get('services.draftStore.redis.host')}:${config.get('services.draftStore.redis.port')}`;
+    logger.info(`connectionString: ${connectionString}`);
     this.client = new Redis(connectionString);
+    logger.info(DraftStoreClient.REDIS_CONNECTION_SUCCESS);
 
     this.client.on('connect', () => {
       REDIS_DATA.forEach((element: any) => {

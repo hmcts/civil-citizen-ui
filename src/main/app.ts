@@ -21,7 +21,7 @@ import DraftStoreClient from 'modules/draft-store';
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
 const MemoryStore = require('memorystore')(session);
-
+console.log('here app.ts')
 const env = process.env.NODE_ENV || 'development';
 const productionMode = env === 'production';
 const developmentMode = env === 'development';
