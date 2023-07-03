@@ -1,7 +1,7 @@
 import * as bodyParser from 'body-parser';
 import config = require('config');
 import cookieParser from 'cookie-parser';
-const session = require('express-session');
+
 import express from 'express';
 import {Helmet} from './modules/helmet';
 import * as path from 'path';
@@ -17,32 +17,17 @@ import {CSRFToken} from './modules/csrf';
 import routes from './routes/routes';
 import {setLanguage} from 'modules/i18n/languageService';
 import {isServiceShuttered} from './app/auth/launchdarkly/launchDarklyClient';
+import {getRedisStoreForSession} from 'modules/utilityService';
+import session from 'express-session';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
-const MemoryStore = require('memorystore')(session);
 
 const env = process.env.NODE_ENV || 'development';
-
+const productionMode = env === 'production';
 const developmentMode = env === 'development';
-export const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
-
+const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
 export const app = express();
-app.enable('trust proxy');
-app.use(session({
-  name: 'citizen-ui-session',
-  store: new MemoryStore({
-    checkPeriod: 86400000, // prune expired entries every 24h
-  }),
-  secret: 'local',
-  resave: true,
-  saveUninitialized: true,
-  cookie : {
-    secure: false,
-    maxAge: cookieMaxAge,
-    sameSite: 'lax',
-  },
-}));
 app.use(cookieParser());
 app.use(setLanguage);
 app.use(express.static(path.join(__dirname, 'public')));
@@ -53,7 +38,28 @@ I18Next.enableFor(app);
 const logger = Logger.getLogger('app');
 
 new PropertiesVolume().enableFor(app);
+
+logger.info('Creating new draftStoreClient');
 new DraftStoreClient(Logger.getLogger('draftStoreClient')).enableFor(app);
+
+logger.info('Adding configuration for session store');
+const sessionStore = getRedisStoreForSession();
+
+app.use(session({
+  name: 'citizen-ui-session',
+  store: sessionStore,
+  secret: 'local',
+  resave: false,
+  saveUninitialized: false,
+  cookie : {
+    secure: productionMode,
+    maxAge: cookieMaxAge,
+    sameSite: 'lax',
+  },
+}));
+
+app.enable('trust proxy');
+
 new AppInsights().enable();
 new Nunjucks(developmentMode).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);
