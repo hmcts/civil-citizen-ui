@@ -17,6 +17,7 @@ import {
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
+import {CaseDocument} from 'models/document/caseDocument';
 import {DashboardClaimantItem, DashboardDefendantItem} from 'models/dashboard/dashboardItem';
 import {ClaimUpdate, EventDto} from 'models/events/eventDto';
 import {CaseEvent} from 'models/events/caseEvent';
@@ -24,6 +25,7 @@ import {CourtLocation} from 'models/courts/courtLocations';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
 import {FileResponse} from 'models/FileResponse';
+import {FileUpload} from 'models/caseProgression/fileUpload';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');

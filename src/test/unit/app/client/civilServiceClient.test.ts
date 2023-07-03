@@ -183,7 +183,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl, true);
 
-      const { data: byteArrayMock, headers: { 'content-type': contentType, 'originalfilename': originalFilename } } = mockData;
+      const { data: byteArrayMock, headers: { 'content-type': contentType, 'original-file-name': originalFilename } } = mockData;
       const fileResponseExpected = new FileResponse(
         contentType,
         originalFilename,
