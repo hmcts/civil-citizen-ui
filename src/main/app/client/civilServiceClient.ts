@@ -5,14 +5,14 @@ import {AppRequest} from 'common/models/AppRequest';
 import {CivilClaimResponse, ClaimFeeData} from 'common/models/civilClaimResponse';
 import {
   ASSIGN_CLAIM_TO_DEFENDANT,
+  CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE,
   CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
   CIVIL_SERVICE_CLAIM_AMOUNT_URL,
-  CIVIL_SERVICE_COURT_LOCATIONS,
-  CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
+  CIVIL_SERVICE_COURT_LOCATIONS, CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_FEES_RANGES,
   CIVIL_SERVICE_HEARING_URL,
-  CIVIL_SERVICE_SUBMIT_EVENT,
+  CIVIL_SERVICE_SUBMIT_EVENT, CIVIL_SERVICE_UPLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_VALIDATE_PIN_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
@@ -164,6 +164,22 @@ export class CivilServiceClient {
     }
   }
 
+  async uploadDocument(req: AppRequest, file: FileUpload): Promise<CaseDocument> {
+    try {
+      const formData = new FormData();
+      formData.append('file', new Blob([file.buffer]) , file.originalname);
+      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_UPLOAD_DOCUMENT_URL, formData,
+        {headers: {'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${req.session?.user?.accessToken}`}});
+      if (!response.data) {
+        throw new AssertionError({message: 'Document upload unsuccessful.'});
+      }
+      return response.data as CaseDocument;
+    } catch (err: unknown) {
+      logger.error(err);
+      throw err;
+    }
+  }
+
   async retrieveDocument(documentId: string) {
     try {
       const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL
@@ -237,6 +253,18 @@ export class CivilServiceClient {
     try{
       await this.client.post(ASSIGN_CLAIM_TO_DEFENDANT.replace(':claimId', claimId),{}, // nosonar
         {headers: {'Authorization': `Bearer ${req.session?.user?.accessToken}`}}); // nosonar
+    } catch (error: unknown) {
+      logger.error(error);
+      throw error;
+    }
+  }
+
+  async getAgreedDeadlineResponseDate(claimId: string, req: AppRequest): Promise<Date> {
+    const config = this.getConfig(req);
+    try {
+      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE.replace(':claimId', claimId), config);
+      if(response.data)
+        return new Date(response.data.toString());
     } catch (error: unknown) {
       logger.error(error);
       throw error;

@@ -73,7 +73,7 @@
           {{ govukDetails({
             summaryText: t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.PERSONAL_INFORMATION_USAGE'),
             html: '<p class="govuk-body">' + t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.THIS_CLAIM_INFORMATION', {claimant: claim.respondent1.partyName})
-            + '</p><p class="govuk-body">' + t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.FIND_OUT') + '<a href="/privacy-policy">'
+            + '</p><p class="govuk-body">' + t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.FIND_OUT') + '<a href="' + privacyPolicyUrl +'">'
             + t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.PERSONAL_INFORMATION') + '</a></p>'
           }) }}
           <p class="govuk-body">

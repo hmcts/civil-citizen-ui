@@ -1,4 +1,4 @@
-import {caseNumberPrettify, documentIdPrettify} from 'common/utils/stringUtils';
+import {caseNumberPrettify, documentIdExtractor} from 'common/utils/stringUtils';
 
 describe('case number formatter', () => {
   it('should return case id string spaced after every 4 characters', () => {
@@ -10,7 +10,7 @@ describe('case number formatter', () => {
 
   it('should return document id', () => {
     //When
-    const result = documentIdPrettify('documents/testId/binary');
+    const result = documentIdExtractor('documents/testId/binary');
     //Then
     expect(result).toEqual('testId');
   });

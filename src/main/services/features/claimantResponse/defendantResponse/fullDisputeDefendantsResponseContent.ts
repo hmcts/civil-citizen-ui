@@ -1,17 +1,17 @@
 import {t} from 'i18next';
-import {Claim} from '../../../../common/models/claim';
-import {ClaimSummarySection, ClaimSummaryType} from '../../../../common/form/models/claimSummarySection';
-import {EvidenceItem} from '../../../../common/form/models/evidence/evidenceItem';
-import {TimelineRow} from '../../../../common/form/models/timeLineOfEvents/timelineRow';
-import {TableCell} from '../../../../common/models/summaryList/summaryList';
+import {Claim} from 'models/claim';
+import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
+import {EvidenceItem} from 'form/models/evidence/evidenceItem';
+import {TimelineRow} from 'form/models/timeLineOfEvents/timelineRow';
+import {TableCell} from 'models/summaryList/summaryList';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 
-export const generateTableRowsForTOEs = (theirTOERows: TimelineRow[]): TableCell[][] => {
+export const generateTableRowsForTOEs = (theirTOERows: TimelineRow[], lng: string): TableCell[][] => {
   return theirTOERows.map(row => {
     return [{
-      text: row.date,
+      text: formatDateToFullDate(new Date(row?.date?.toString()), lng ),
     }, {
-      text: row.description,
+      text: row?.description,
     }];
   });
 };
@@ -60,7 +60,7 @@ export const getTheirTOEs = (claim: Claim, lng: string): ClaimSummarySection[] =
             text: t('COMMON.TIMELINE.WHAT_HAPPENED', {lng}),
           },
         ],
-        tableRows: generateTableRowsForTOEs(theirTOERows),
+        tableRows: generateTableRowsForTOEs(theirTOERows, lng),
       },
     },
   ];

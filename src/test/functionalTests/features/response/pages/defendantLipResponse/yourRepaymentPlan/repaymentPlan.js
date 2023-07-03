@@ -18,15 +18,15 @@ const month = currentDate.getMonth() + 1;
 const year = currentDate.getFullYear() + 1;
 
 class RepaymentPlan {
-  enterRepaymentPlan(claimRef) {
-    I.amOnPage('/case/' + claimRef + '/response/full-admission/payment-plan');
-    I.see('Your repayment plan', 'h1');
-    I.fillField(fields.paymentAmount,'100');
-    I.click(fields.rePaymentFrequency);
-    I.fillField(fields.day, day.toString());
-    I.fillField(fields.month, month.toString());
-    I.fillField(fields.year, year.toString());
-    I.click(buttons.saveAndContinue);
+  async enterRepaymentPlan(claimRef) {
+    await I.amOnPage('/case/' + claimRef + '/response/full-admission/payment-plan');
+    await I.see('Your repayment plan', 'h1');
+    await I.fillField(fields.paymentAmount,'100');
+    await I.click(fields.rePaymentFrequency);
+    await I.fillField(fields.day, day.toString());
+    await I.fillField(fields.month, month.toString());
+    await I.fillField(fields.year, year.toString());
+    await I.click(buttons.saveAndContinue);
   }
 }
 

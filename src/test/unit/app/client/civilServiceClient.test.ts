@@ -8,16 +8,20 @@ import {
   CIVIL_SERVICE_CLAIMANT,
   CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_FEES_RANGES,
-  CIVIL_SERVICE_SUBMIT_EVENT,
+  CIVIL_SERVICE_SUBMIT_EVENT, CIVIL_SERVICE_UPLOAD_DOCUMENT_URL,
 } from 'client/civilServiceUrls';
 import {PartyType} from 'common/models/partyType';
 import {mockClaim} from '../../../utils/mockClaim';
 
 import {CaseState} from 'common/form/models/claimDetails';
 import {CourtLocation} from 'common/models/courts/courtLocations';
+import {TestMessages} from '../../../utils/errorMessageTestConstants';
 import { CivilServiceClient } from 'client/civilServiceClient';
+import {CaseDocument} from 'models/document/caseDocument';
+
+import {FileUpload} from 'models/caseProgression/fileUpload';
 import {FileResponse} from 'models/FileResponse';
-import {documentIdPrettify} from 'common/utils/stringUtils';
+import {documentIdExtractor} from 'common/utils/stringUtils';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -119,6 +123,47 @@ describe('Civil Service Client', () => {
       expect(feeRanges.value[0].maxRange).toEqual(data[0].max_range);
     });
   });
+  describe('uploadDocument', () => {
+    const mockBuffer = Buffer.from('<Buffer 25 50 44 73 5b 20 32 20 30 20 52 20 20 34 20 30 20 52 20>');
+    const mockFile : FileUpload = {  fieldname: 'field',
+      originalname: 'name',
+      mimetype: 'mimetype',
+      buffer: mockBuffer,
+      size: 12345,
+    };
+
+    it('should upload document successfully', async () => {
+      //Given
+      const mockCaseDocument: CaseDocument = <CaseDocument>{  createdBy: 'test',
+        documentLink: {document_url: '', document_binary_url:'', document_filename:''},
+        documentName: 'name',
+        documentType: null,
+        documentSize: 12345,
+        createdDatetime: new Date()};
+
+      const mockPost = jest.fn().mockResolvedValue({data: mockCaseDocument});
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+      //When
+      const actualCaseDocument: CaseDocument = await civilServiceClient.uploadDocument(mockedAppRequest, mockFile);
+      //Then
+      expect(mockPost.mock.calls[0][0]).toEqual(CIVIL_SERVICE_UPLOAD_DOCUMENT_URL);
+      expect(actualCaseDocument.documentName).toEqual(mockCaseDocument.documentName);
+      expect(mockedAxios.create).toHaveBeenCalledWith({
+        baseURL: baseUrl,
+        responseEncoding: 'binary',
+        responseType: 'arraybuffer',
+      });
+    });
+    it('should return error', async () => {
+      //Given
+      const mockPost = jest.fn().mockResolvedValue({status: 500});
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+      //Then
+      await expect(civilServiceClient.uploadDocument(mockedAppRequest, mockFile)).rejects.toThrow(TestMessages.DOCUMENT_UPLOAD_UNSUCCESSFUL);
+    });
+  });
   describe('retrieveDocument', () => {
     it('should download document successfully', async () => {
       //Given
@@ -133,7 +178,7 @@ describe('Civil Service Client', () => {
 
       const mockGet = jest.fn().mockResolvedValue(mockData);
 
-      const documentId: string = documentIdPrettify(mockDocumentDetails.documentLink.document_binary_url);
+      const documentId: string = documentIdExtractor(mockDocumentDetails.documentLink.document_binary_url);
 
       mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl, true);
@@ -161,7 +206,7 @@ describe('Civil Service Client', () => {
     it('should return error', async () => {
       //Given
       const mockDocumentDetails = mockClaim.systemGeneratedCaseDocuments[0].value;
-      const documentId: string = documentIdPrettify(mockDocumentDetails.documentLink.document_binary_url);
+      const documentId: string = documentIdExtractor(mockDocumentDetails.documentLink.document_binary_url);
       const mockGet = jest.fn().mockRejectedValueOnce({ status: 404 });
 
       mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
@@ -295,6 +340,29 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
       await expect(civilServiceClient.assignDefendantToClaim('1', mockedAppRequest)).rejects.toThrow('error');
+    });
+  });
+
+  describe('getResponseDeadlineDate', () => {
+    it('should return response deadline date successfully', async () => {
+      //Given
+      const responseDeadlineDate = new Date(2023, 6, 22);
+      const mockGet = jest.fn().mockResolvedValue({data: responseDeadlineDate});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //When
+      const deadlineDate= await civilServiceClient.getAgreedDeadlineResponseDate('1', mockedAppRequest);
+      //Then
+      expect(deadlineDate).toStrictEqual(responseDeadlineDate);
+    });
+    it('should throw error when there is an error calling civil service getting the deadline date', async () => {
+      const mockGet = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.getAgreedDeadlineResponseDate('1', mockedAppRequest)).rejects.toThrow('error');
     });
   });
 });
