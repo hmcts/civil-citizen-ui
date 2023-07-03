@@ -27,7 +27,7 @@ services:
     url: OCMC_URL
   pcq:
     url: PCQ_URL
-    tokenKey: PCQ_TOKEN_KEY
+    tokenKey: CUI_TOKEN_KEY
 
 port: PORT
 appInsights:
