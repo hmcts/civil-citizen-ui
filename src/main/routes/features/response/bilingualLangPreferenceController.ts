@@ -22,8 +22,8 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 
 bilingualLangPreferenceController.get(
   BILINGUAL_LANGUAGE_PREFERENCE_URL,
-  [languagePreferenceGuard],
-  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  languagePreferenceGuard,
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const form: GenericYesNo = await getBilingualLangPreference(req.params.id, req);
       renderView(new GenericForm<GenericYesNo>(form), res);
