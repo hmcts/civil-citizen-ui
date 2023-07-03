@@ -8,9 +8,9 @@ export const languagePreferenceGuard = (req: Request, res: Response, next: NextF
     (async () => {
       const caseData = await getCaseDataFromStore(req.params.id);
       if (caseData.claimBilingualLanguagePreference) {
-        return res.redirect(constructResponseUrlWithIdParams(req.params.id, DASHBOARD_URL));
+        res.redirect(constructResponseUrlWithIdParams(req.params.id, DASHBOARD_URL));
       } else {
-        return next();
+        next();
       }
     })();
   } catch (error) {
