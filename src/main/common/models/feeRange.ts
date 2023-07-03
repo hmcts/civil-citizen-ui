@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import {Expose, Type} from 'class-transformer';
 import {TableItem} from 'models/tableItem';
+import {t} from "i18next";
 
 export class FeeRanges {
   value: FeeRange[];
@@ -35,9 +36,17 @@ export class FeeRange {
     this.currentVersion = currentVersion;
   }
 
-  formatFeeRangeToTableItem(): TableItem[] {
-    if (this.minRange && this.maxRange && this.currentVersion?.flatAmount?.amount) {
-      return [{text: `£${this.minRange.toLocaleString()} to £${this.maxRange.toLocaleString()}`}, {text: `£${this.currentVersion.flatAmount?.amount.toLocaleString()}`}];
+  formatFeeRangeToTableItem(lang: string): TableItem[] {
+    if (this.minRange && this.maxRange && (this.currentVersion?.flatAmount?.amount || this.currentVersion?.percentageAmount?.percentage)) {
+      const percentage = this.currentVersion?.percentageAmount?.percentage.toLocaleString();
+      return [{text: `£${this.minRange.toLocaleString()} to £${this.maxRange.toLocaleString()}`},
+        {text: (this.maxRange === 200000)
+          ? `${t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.CLAIM_FEE', {percentage, lng: lang})}`
+          : `£${this.currentVersion.flatAmount?.amount.toLocaleString()}`}];
+    }
+    //for Claim amount '> £200,000
+    if(this.minRange && !this.maxRange && this.currentVersion?.flatAmount?.amount) {
+      return [{text: `> £${this.minRange.toLocaleString()}`}, {text: `£${this.currentVersion.flatAmount.amount.toLocaleString()}`}];
     }
   }
 
@@ -55,15 +64,27 @@ export class CurrentVersion {
   @Expose({name: 'flat_amount'})
   @Type(() => FlatAmount)
   readonly flatAmount: FlatAmount;
+  @Expose({name: 'percentage_amount'})
+  @Type(() => PercentageAmount)
+  readonly percentageAmount: PercentageAmount;
 
-  constructor(version: number, description: string, status: string, validTo: string, flatAmount: FlatAmount) {
+  constructor(version: number, description: string, status: string, validTo: string, flatAmount: FlatAmount, percentageAmount: PercentageAmount) {
     this.version = version;
     this.description = description;
     this.status = status;
     this.validTo = validTo;
     this.flatAmount = flatAmount;
+    this.percentageAmount = percentageAmount;
   }
 
+}
+
+export class PercentageAmount {
+  readonly percentage: number;
+
+  constructor(percentage: number) {
+    this.percentage = percentage;
+  }
 }
 
 export class FlatAmount {
