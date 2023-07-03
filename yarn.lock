@@ -2009,14 +2009,14 @@ __metadata:
   linkType: hard
 
 "@ministryofjustice/frontend@npm:^1.6.3":
-  version: 1.6.6
-  resolution: "@ministryofjustice/frontend@npm:1.6.6"
+  version: 1.8.0
+  resolution: "@ministryofjustice/frontend@npm:1.8.0"
   dependencies:
     govuk-frontend: ^3.0.0 || ^4.0.0
     moment: ^2.27.0
   peerDependencies:
     jquery: ^3.6.0
-  checksum: a45bb60ba39509e3a61ce73c960b7528b3dc67b06ba69df301b93dfb175ab69edff7cd27f1812f754e591f195d0653e62a7a1cbbba1bd178b6665e0f95466585
+  checksum: d24c2ac86aa11440152a290bff78de4d33e3e39154d1a2df193bbf0e680542602027c373a762b4fbc5a70c88fd6145e904ec267d9f2d27778a899ab16c1910c9
   languageName: node
   linkType: hard
 
