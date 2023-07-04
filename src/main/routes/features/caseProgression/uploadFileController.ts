@@ -6,7 +6,7 @@ import {EvidenceUploadWitness} from 'models/document/documentType';
 import {t} from 'i18next';
 
 const multer = require('multer');
-const upload = multer({storage: multer.memoryStorage(), limits:{fileSize:100000000}});
+const upload = multer({storage: multer.memoryStorage(), limits:{fileSize:8000000}});
 
 const uploadFileController = Router();
 
