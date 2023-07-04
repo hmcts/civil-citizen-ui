@@ -7,7 +7,7 @@ import {t} from 'i18next';
 
 const multer = require('multer');
 const storage = multer.memoryStorage();
-const upload = multer({storage: storage});
+const upload = multer({storage: storage, limits:{fileSize:100000000}}); //100MB limit
 
 const uploadFileController = Router();
 
