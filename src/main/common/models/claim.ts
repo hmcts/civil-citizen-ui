@@ -482,11 +482,11 @@ export class Claim {
   }
 
   get isFastTrackClaim(): boolean {
-    return true;//this.claimType === claimType.FAST_TRACK_CLAIM;
+    return false;//this.claimType === claimType.FAST_TRACK_CLAIM;
   }
 
   get isSmallClaimsTrackDQ(): boolean {
-    return false;//this.claimType === claimType.SMALL_CLAIM;
+    return true;//this.claimType === claimType.SMALL_CLAIM;
   }
 
   hasSdoOrderDocument(): boolean{
