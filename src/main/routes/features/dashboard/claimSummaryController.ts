@@ -23,18 +23,15 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextF
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     if (claim && !claim.isEmpty()) {
       let latestUpdateContent = getLatestUpdateContent(claimId, claim, lang);
-      let documentsContent;
+      let documentsContent = getDocumentsContent(claim, claimId);
       const caseProgressionEnabled = await isCaseProgressionV1Enable();
       if (caseProgressionEnabled && claim.hasCaseProgressionHearingDocuments()) {
         latestUpdateContent = [];
+        documentsContent = [];
         const lang = req?.query?.lang ? req.query.lang : req?.cookies?.lang;
         getCaseProgressionLatestUpdates(claim, lang)
           .forEach(items => latestUpdateContent.push(items));
         documentsContent = getEvidenceUploadContent(claim);
-      }
-      else
-      {
-        documentsContent = getDocumentsContent(claim, claimId);
       }
       res.render(claimSummaryViewPath, {claim, claimId, latestUpdateContent, documentsContent, caseProgressionEnabled});
     }

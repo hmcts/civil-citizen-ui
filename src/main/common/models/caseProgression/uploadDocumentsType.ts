@@ -6,6 +6,7 @@ import {
 } from 'models/document/documentType';
 import {AtLeastOneCheckboxSelectedValidator} from 'form/validators/atLeastOneCheckboxSelectedValidator';
 import {Document} from 'common/models/document/document';
+import {formatStringDateDMY} from 'common/utils/dateUtils';
 
 export class UploadDocuments {
 
@@ -49,6 +50,10 @@ export class UploadDocumentTypes {
     this.documentType = documentType;
     this.uuid = uuid;
   }
+
+  get createdDateTimeFormatted(): string {
+    return formatStringDateDMY(this.caseDocument?.createdDatetime);
+  }
 }
 
 export class UploadEvidenceWitness{
@@ -61,7 +66,7 @@ export class UploadEvidenceWitness{
     this.witnessOptionName = witnessOptionName;
     this.witnessOptionUploadDate = witnessOptionUploadDate;
     this.witnessOptionDocument = witnessOptionDocument;
-    this.createdDatetime = createdDatetime;
+    this.createdDatetime = new Date(createdDatetime);
   }
 }
 
@@ -87,7 +92,7 @@ export class UploadEvidenceExpert {
     this.expertDocumentAnswer = expertDocumentAnswer;
     this.expertOptionUploadDate = expertOptionUploadDate;
     this.expertDocument = expertDocument;
-    this.createdDatetime = createdDatetime;
+    this.createdDatetime = new Date(createdDatetime);
   }
 }
 
@@ -101,7 +106,7 @@ export class UploadEvidenceDocumentType{
     this.typeOfDocument = typeOfDocument;
     this.documentIssuedDate = documentIssuedDate;
     this.documentUpload = documentUpload;
-    this.createdDatetime = createdDatetime;
+    this.createdDatetime = new Date(createdDatetime);
   }
 }
 

@@ -13,23 +13,26 @@ import {
   EvidenceUploadWitness,
 } from 'models/document/documentType';
 import {t} from 'i18next';
-import {formatStringDateDMY} from 'common/utils/dateUtils';
-import {addEvidenceUploadTable} from 'models/caseProgression/uploadDocumentsTableSectionBuilder';
-import {TypesOfEvidenceUploadDocuments} from 'models/caseProgression/TypesOfEvidenceUploadDocument';
+import {
+  addEvidenceUploadDescription,
+  addEvidenceUploadTable,
+} from 'models/caseProgression/uploadDocumentsTableSectionBuilder';
 
 export function getEvidenceUploadDocuments(claim: Claim): ClaimSummarySection[] {
 
   const documentTables = [] as ClaimSummarySection[];
-  const trialOrHearing: string = claim.isFastTrackClaim ? t('PAGES.CLAIM_SUMMARY.TRIAL_DOCUMENTS'): t('PAGES.CLAIM_SUMMARY.HEARING_DOCUMENTS');
+  const trialOrHearing: string = claim.isFastTrackClaim ? 'PAGES.CLAIM_SUMMARY.TRIAL_DOCUMENTS': 'PAGES.CLAIM_SUMMARY.HEARING_DOCUMENTS';
 
-  documentTables.push(getDocumentTypeTable(t('PAGES.CLAIM_SUMMARY.DISCLOSURE_DOCUMENTS'), claim.caseProgression?.claimantUploadDocuments?.disclosure, true));
-  documentTables.push(getDocumentTypeTable(t('PAGES.CLAIM_SUMMARY.DISCLOSURE_DOCUMENTS'), claim.caseProgression?.defendantUploadDocuments?.disclosure, false));
+  documentTables.push(addEvidenceUploadDescription());
 
-  documentTables.push(getDocumentTypeTable(t('PAGES.CLAIM_SUMMARY.WITNESS_EVIDENCE'), claim.caseProgression?.claimantUploadDocuments?.witness, true));
-  documentTables.push(getDocumentTypeTable(t('PAGES.CLAIM_SUMMARY.WITNESS_EVIDENCE'), claim.caseProgression?.defendantUploadDocuments?.witness, false));
+  documentTables.push(getDocumentTypeTable('PAGES.CLAIM_SUMMARY.DISCLOSURE_DOCUMENTS', claim.caseProgression?.claimantUploadDocuments?.disclosure, true));
+  documentTables.push(getDocumentTypeTable('PAGES.CLAIM_SUMMARY.DISCLOSURE_DOCUMENTS', claim.caseProgression?.defendantUploadDocuments?.disclosure, false));
 
-  documentTables.push(getDocumentTypeTable(t('PAGES.CLAIM_SUMMARY.EXPERT_EVIDENCE'), claim.caseProgression?.claimantUploadDocuments?.expert, true));
-  documentTables.push(getDocumentTypeTable(t('PAGES.CLAIM_SUMMARY.EXPERT_EVIDENCE'), claim.caseProgression?.defendantUploadDocuments?.expert, false));
+  documentTables.push(getDocumentTypeTable('PAGES.CLAIM_SUMMARY.WITNESS_EVIDENCE', claim.caseProgression?.claimantUploadDocuments?.witness, true));
+  documentTables.push(getDocumentTypeTable('PAGES.CLAIM_SUMMARY.WITNESS_EVIDENCE', claim.caseProgression?.defendantUploadDocuments?.witness, false));
+
+  documentTables.push(getDocumentTypeTable('PAGES.CLAIM_SUMMARY.EXPERT_EVIDENCE', claim.caseProgression?.claimantUploadDocuments?.expert, true));
+  documentTables.push(getDocumentTypeTable('PAGES.CLAIM_SUMMARY.EXPERT_EVIDENCE', claim.caseProgression?.defendantUploadDocuments?.expert, false));
 
   documentTables.push(getDocumentTypeTable(trialOrHearing, claim.caseProgression?.claimantUploadDocuments?.trial, true));
   documentTables.push(getDocumentTypeTable(trialOrHearing, claim.caseProgression?.defendantUploadDocuments?.trial, false));
@@ -43,15 +46,11 @@ function getDocumentTypeTable(header: string, rows: UploadDocumentTypes[], isCla
 
   const tableRows = [] as TableCell[][];
 
-  rows.sort((a: UploadDocumentTypes, b: UploadDocumentTypes) => {
-    //Sort in order of upload - newest to oldest
-    return  new Date(b.caseDocument?.createdDatetime).getTime() - new Date(a.caseDocument?.createdDatetime).getTime();
-  });
+  orderDocumentNewestToOldest(rows);
 
   for(const upload of rows)
   {
-    const uploadDate: Date = new Date(upload.caseDocument.createdDatetime);
-    const uploadDateString: string  = formatStringDateDMY(uploadDate.toISOString());
+    const uploadDateString: string  = upload.createdDateTimeFormatted;
 
     tableRows.push([
       {html: getDocumentTypeName(upload.documentType, isClaimant) + '<br>' + t('PAGES.CLAIM_SUMMARY.DATE_DOCUMENT_UPLOADED') + uploadDateString},
@@ -60,6 +59,15 @@ function getDocumentTypeTable(header: string, rows: UploadDocumentTypes[], isCla
   }
 
   return addEvidenceUploadTable(header, isClaimant, tableRows);
+}
+
+function orderDocumentNewestToOldest(documentsWithDates: UploadDocumentTypes[]): UploadDocumentTypes[] {
+
+  documentsWithDates.sort((a: UploadDocumentTypes, b: UploadDocumentTypes) => {
+    return +b.caseDocument?.createdDatetime - +a.caseDocument?.createdDatetime;
+  });
+
+  return documentsWithDates;
 }
 
 function getDocumentTypeName(documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial, isClaimant: boolean)
@@ -114,26 +122,22 @@ function getDocumentTypeName(documentType: EvidenceUploadDisclosure | EvidenceUp
       documentName = documentName +t('PAGES.CLAIM_SUMMARY.DOCUMENTARY_EVIDENCE').toLowerCase();
       break;
   }
-
   return documentName;
 }
 
 function getDocumentLink (document: UploadDocumentTypes) : string {
   let documentName : string;
 
-  if(TypesOfEvidenceUploadDocuments.DOCUMENT_TYPE in document.caseDocument)
+  if(document.caseDocument instanceof UploadEvidenceDocumentType)
   {
-    document.caseDocument = document.caseDocument as UploadEvidenceDocumentType;
     documentName = document.caseDocument.documentUpload.document_filename;
   }
-  else if(TypesOfEvidenceUploadDocuments.WITNESS in document.caseDocument)
+  else if(document.caseDocument instanceof  UploadEvidenceWitness)
   {
-    document.caseDocument = document.caseDocument as UploadEvidenceWitness;
     documentName = document.caseDocument.witnessOptionDocument.document_filename;
   }
-  else if(TypesOfEvidenceUploadDocuments.EXPERT in document.caseDocument)
+  else if(document.caseDocument instanceof UploadEvidenceExpert)
   {
-    document.caseDocument = document.caseDocument as UploadEvidenceExpert;
     documentName = document.caseDocument.expertDocument.document_filename;
   }
 

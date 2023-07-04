@@ -21,17 +21,6 @@
       {% endset %}
 
       {% set documents %}
-
-      {% if caseProgressionEnabled == true and claim.hasCaseProgressionHearingDocuments() %}
-        <p class="govuk-body">
-          {{
-          t('PAGES.CLAIM_SUMMARY.EVIDENCE_UPLOAD_SUMMARY')
-          }}
-        </p>
-
-      {% else %}
-        <h1 class="govuk-heading-m govuk-!-margin-0">{{ t('PAGES.CLAIM_SUMMARY.CLAIM_DOCUMENTS') }}</h1>
-      {% endif %}
         {% for documentsSection in documentsContent %}
           {{ claimSummaryContent({
             contentSections: documentsSection.contentSections
