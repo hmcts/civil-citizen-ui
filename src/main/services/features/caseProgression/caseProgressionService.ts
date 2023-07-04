@@ -163,9 +163,7 @@ const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSect
   formObj.dateMonth = request['date-month'];
   formObj.dateYear = request['date-year'];
   //TODO we should get the file from dm-store
-  if (request['fileUpload'] !== '') {
-    formObj.fileUpload = request['fileUpload'];
-  }
+  formObj.fileUpload = request['fileUpload'];
   return formObj;
 };
 
@@ -175,7 +173,7 @@ const bindRequestToWitnessSectionObj = (request: any): WitnessSection => {
   formObj.dateDay = request['date-day'];
   formObj.dateMonth = request['date-month'];
   formObj.dateYear = request['date-year'];
-  formObj.fileUpload = request['file_upload'];
+  formObj.fileUpload = request['fileUpload'];
   return formObj;
 };
 
@@ -191,16 +189,13 @@ const bindRequestToExpertSectionObj = (request: any): ExpertSection => {
   formObj.dateDay = request['date-day'];
   formObj.dateMonth = request['date-month'];
   formObj.dateYear = request['date-year'];
-
-  formObj.fileUpload = request['file_upload'];
+  formObj.fileUpload = request['fileUpload'];
   return formObj;
 };
 
 const bindRequestToFileOnlySectionObj = (request: any): FileOnlySection => {
   const formObj: FileOnlySection = new FileOnlySection();
   //TODO we should get the file from dm-store
-  if (request['fileUpload'] !== '') {
-    formObj.fileUpload = request['fileUpload'];
-  }
+  formObj.fileUpload = request['fileUpload'];
   return formObj;
 };
