@@ -1,11 +1,11 @@
-import {CCDClaim} from "models/civilClaimResponse";
+import {CCDClaim} from 'models/civilClaimResponse';
 import {
   EvidenceUploadDisclosure,
   EvidenceUploadExpert,
   EvidenceUploadTrial,
-  EvidenceUploadWitness
-} from "models/document/documentType";
-import {UploadEvidenceElementCCD} from "models/caseProgression/uploadDocumentsType";
+  EvidenceUploadWitness,
+} from 'models/document/documentType';
+import {UploadEvidenceElementCCD} from 'models/caseProgression/uploadDocumentsType';
 
 export const mockUUID = '1221';
 

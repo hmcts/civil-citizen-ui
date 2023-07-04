@@ -32,5 +32,5 @@ const buildDownloadSealedClaimSection = (claim: Claim, claimId: string, lang: st
 
 export {
   buildDownloadSealedClaimSection,
-  buildDownloadSealedClaimSectionTitle
+  buildDownloadSealedClaimSectionTitle,
 };
