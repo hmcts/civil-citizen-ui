@@ -26,9 +26,19 @@ const mockLogger = {
   info: jest.fn().mockImplementation((message: string) => message),
 } as unknown as LoggerInstance;
 
-let mockDraftStore = {
+const mockIndividualDraftStore = {
   set: jest.fn(() => Promise.resolve({data: {}})),
   get: jest.fn(() => Promise.resolve(claimIndividual)),
+};
+
+const mockOrganisationDraftStore = {
+  set: jest.fn(() => Promise.resolve({data: {}})),
+  get: jest.fn(() => Promise.resolve(claimOrganisation)),
+};
+
+const mockNoIndividualTypeDraftStore = {
+  set: jest.fn(() => Promise.resolve({data: {}})),
+  get: jest.fn(() => Promise.resolve(claimIndividualNoType)),
 };
 
 describe('Citizen financial details', () => {
@@ -44,11 +54,7 @@ describe('Citizen financial details', () => {
 
   describe('on GET', () => {
     it('should return individual financial details page', async () => {
-      mockDraftStore = {
-        set: jest.fn(() => Promise.resolve({data: {}})),
-        get: jest.fn(() => Promise.resolve(claimIndividual)),
-      };
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockIndividualDraftStore;
       await request(app)
         .get(constructResponseUrlWithIdParams('1646818997929180', FINANCIAL_DETAILS_URL))
         .expect((res) => {
@@ -57,11 +63,7 @@ describe('Citizen financial details', () => {
         });
     });
     it('should return organisation financial details page', async () => {
-      mockDraftStore = {
-        set: jest.fn(() => Promise.resolve({data: {}})),
-        get: jest.fn(() => Promise.resolve(claimOrganisation)),
-      };
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockOrganisationDraftStore;
       await request(app)
         .get(constructResponseUrlWithIdParams('1646768947464020', FINANCIAL_DETAILS_URL))
         .expect((res) => {
@@ -83,11 +85,7 @@ describe('Citizen financial details', () => {
 
   describe('on POST', () => {
     it('should redirect for individual', async () => {
-      mockDraftStore = {
-        set: jest.fn(() => Promise.resolve({data: {}})),
-        get: jest.fn(() => Promise.resolve(claimIndividual)),
-      };
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockIndividualDraftStore;
       await request(app)
         .post(constructResponseUrlWithIdParams('1646818997929180', FINANCIAL_DETAILS_URL))
         .expect((res) => {
@@ -95,11 +93,7 @@ describe('Citizen financial details', () => {
         });
     });
     it('should redirect for organisation', async () => {
-      mockDraftStore = {
-        set: jest.fn(() => Promise.resolve({data: {}})),
-        get: jest.fn(() => Promise.resolve(claimOrganisation)),
-      };
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockOrganisationDraftStore;
       await request(app)
         .post(constructResponseUrlWithIdParams('1646768947464020', FINANCIAL_DETAILS_URL))
         .expect((res) => {
@@ -116,11 +110,7 @@ describe('Citizen financial details', () => {
         });
     });
     it('should be 404 for no caseId in path', async () => {
-      mockDraftStore = {
-        set: jest.fn(() => Promise.resolve({data: {}})),
-        get: jest.fn(() => Promise.resolve(claimOrganisation)),
-      };
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockOrganisationDraftStore;
       await request(app)
         .post(constructResponseUrlWithIdParams('', FINANCIAL_DETAILS_URL))
         .expect((res) => {
@@ -128,11 +118,7 @@ describe('Citizen financial details', () => {
         });
     });
     it('should be error for no respondent type in JSON', async () => {
-      mockDraftStore = {
-        set: jest.fn(() => Promise.resolve({data: {}})),
-        get: jest.fn(() => Promise.resolve(claimIndividualNoType)),
-      };
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockNoIndividualTypeDraftStore;
       await request(app)
         .post(constructResponseUrlWithIdParams('1646818997929180', FINANCIAL_DETAILS_URL))
         .expect((res) => {

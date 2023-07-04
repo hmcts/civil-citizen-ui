@@ -2,7 +2,7 @@ import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
 import {CITIZEN_PRIORITY_DEBTS_URL, CITIZEN_DEBTS_URL} from '../../../../../../main/routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 const {app} = require('../../../../../../main/app');
@@ -22,7 +22,7 @@ describe('Priority Debts Controller', () => {
 
   describe('on GET', () => {
     it('should display page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await request(app)
         .get(CITIZEN_PRIORITY_DEBTS_URL)
         .expect((res: Response) => {
@@ -41,6 +41,11 @@ describe('Priority Debts Controller', () => {
     });
   });
   describe('on POST', () => {
+
+    beforeEach(() => {
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+    });
+
     it('should show errors when gas is selected but no amount or schedule selected', async () => {
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
@@ -156,7 +161,6 @@ describe('Priority Debts Controller', () => {
         });
     });
     it('should redirect when no data is selected', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
         .send({
@@ -168,7 +172,6 @@ describe('Priority Debts Controller', () => {
         });
     });
     it('should redirect when correct data is selected', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
         .send({
