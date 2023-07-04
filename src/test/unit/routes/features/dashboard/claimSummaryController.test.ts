@@ -8,7 +8,6 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {ClaimSummaryContent, ClaimSummaryType} from 'form/models/claimSummarySection';
 import {getLatestUpdateContent} from 'services/features/dashboard/claimSummary/latestUpdateService';
 import {getCaseProgressionHearingMock} from '../../../../utils/caseProgression/mockCaseProgressionHearing';
-import {createCCDClaimForEvidenceUpload} from "../../../../utils/caseProgression/mockCCDClaimForEvidenceUpload";
 
 const nock = require('nock');
 const session = require('supertest-session');
