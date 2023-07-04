@@ -1,5 +1,8 @@
 import {getDocumentsContent, getEvidenceUploadContent} from 'services/features/dashboard/claimSummaryService';
-import {buildDownloadSealedClaimSection} from 'services/features/dashboard/claimDocuments/claimDocumentContentBuilder';
+import {
+  buildDownloadSealedClaimSection,
+  buildDownloadSealedClaimSectionTitle,
+} from 'services/features/dashboard/claimDocuments/claimDocumentContentBuilder';
 
 import {Claim} from 'models/claim';
 import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
@@ -80,9 +83,11 @@ describe('getDocumentsContent', () => {
     expect(result).toHaveLength(1);
     expect(result[0].contentSections).toHaveLength(2);
 
+    const downloadClaimTitle = buildDownloadSealedClaimSectionTitle();
     const downloadClaimSection = buildDownloadSealedClaimSection(new Claim(), claimId, lang);
 
-    expect(result[0].contentSections[0]).toEqual(downloadClaimSection);
+    expect(result[0].contentSections[0]).toEqual(downloadClaimTitle);
+    expect(result[0].contentSections[1]).toEqual(downloadClaimSection);
   });
 });
 

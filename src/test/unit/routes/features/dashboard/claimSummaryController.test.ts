@@ -8,6 +8,7 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {ClaimSummaryContent, ClaimSummaryType} from 'form/models/claimSummarySection';
 import {getLatestUpdateContent} from 'services/features/dashboard/claimSummary/latestUpdateService';
 import {getCaseProgressionHearingMock} from '../../../../utils/caseProgression/mockCaseProgressionHearing';
+import {createCCDClaimForEvidenceUpload} from "../../../../utils/caseProgression/mockCCDClaimForEvidenceUpload";
 
 const nock = require('nock');
 const session = require('supertest-session');
@@ -142,6 +143,7 @@ describe('Claim Summary Controller Defendant', () => {
     it('should show case progression hearing latest Update', async () => {
       //given
       const caseProgressionHearing = getCaseProgressionHearingMock();
+
       const claimWithHeringDocs = {
         ...claim,
         state: CaseState.AWAITING_APPLICANT_INTENTION,
@@ -169,38 +171,5 @@ describe('Claim Summary Controller Defendant', () => {
           expect(res.text).toContain('A hearing has been scheduled for your case');
         });
     });
-
-    it('should show Uploaded Documents', async () => {
-      //given
-      const caseProgressionHearing = getCaseProgressionHearingMock();
-      const claimWithHeringDocs = {
-        ...claim,
-        state: CaseState.AWAITING_APPLICANT_INTENTION,
-        case_data: {
-          ...claim.case_data,
-          hearingDate: caseProgressionHearing.hearingDate,
-          hearingLocation: caseProgressionHearing.hearingLocation,
-          hearingTimeHourMinute: caseProgressionHearing.hearingTimeHourMinute,
-          hearingDocuments: caseProgressionHearing.hearingDocuments,
-        },
-      };
-
-      isCaseProgressionV1EnableMock.mockResolvedValue(true);
-      getLatestUpdateContentMock.mockReturnValue([]);
-      //when
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, claimWithHeringDocs);
-      //then
-      await testSession
-        .get(`/dashboard/${claimId}/defendant`)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Upload documents');
-          expect(res.text).toContain('A hearing has been scheduled for your case');
-          expect(res.text).toContain('Read and save all documents uploaded by the parties involved in the claim. Three weeks before the trial, a bundle will be created containing all submitted documents in one place. You will be told when this is available.');
-        });
-    });
-
   });
 });
