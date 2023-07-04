@@ -16,12 +16,12 @@ class UploadEvidenceSteps {
     console.log('The value of the Claim Reference : '+claimRef);
     latestUpdatePage.open(claimRef);
     latestUpdatePage.nextAction('Upload documents');
-    uploadYourDocumentsIntroduction.verifyPageContent(claimRef);
+    uploadYourDocumentsIntroduction.verifyPageContent();
     uploadYourDocumentsIntroduction.nextAction('Start now');
-    whatTypeOfDocumentsDoYouWantToUpload.verifyPageContent(claimRef);
+    whatTypeOfDocumentsDoYouWantToUpload.verifyPageContent();
     whatTypeOfDocumentsDoYouWantToUpload.checkAllDocumentUploadOptions();
     whatTypeOfDocumentsDoYouWantToUpload.nextAction('Continue');
-    uploadYourDocument.verifyPageContent(claimRef);
+    uploadYourDocument.verifyPageContent();
     uploadYourDocument.nextAction('Continue');
 
   }

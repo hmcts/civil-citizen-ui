@@ -11,7 +11,7 @@ class UploadYourDocumentsIntroduction {
     I.click(nextAction);
   }
 
-  verifyPageContent(claimRef) {
+  verifyPageContent() {
     this.verifyHeadingDetails();
     this.verifyUploadDocumentSectionContent();
     this.verifyDeadlinesForUploadingDocumentsContent();

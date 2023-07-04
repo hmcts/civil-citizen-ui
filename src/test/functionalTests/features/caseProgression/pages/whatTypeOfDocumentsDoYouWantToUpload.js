@@ -9,7 +9,7 @@ class WhatTypeOfDocumentsDoYouWantToUpload {
     I.click(nextAction);
   }
 
-  verifyPageContent(claimRef) {
+  verifyPageContent() {
     this.verifyHeadingDetails();
     this.verifyDisclosureSectionContent();
     this.verifyWitnessEvidenceSectionContent();
@@ -92,7 +92,6 @@ class WhatTypeOfDocumentsDoYouWantToUpload {
     I.see('Documentary evidence for trial');
     I.see('Documents that you wish to rely on at the trial, including emails, receipts, invoices, contracts and photos. You do not need to add documents that you have already added under witness evidence');
   }
-
 
 }
 

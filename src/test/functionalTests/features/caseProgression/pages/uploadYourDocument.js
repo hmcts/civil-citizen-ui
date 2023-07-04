@@ -11,7 +11,7 @@ class UploadYourDocument {
     I.click(nextAction);
   }
 
-  verifyPageContent(claimRef) {
+  verifyPageContent() {
     this.verifyHeadingDetails();
     this.verifyAcceptableDocumentsFormatsSectionContent();
     this.verifyDisclosureSectionContent();
