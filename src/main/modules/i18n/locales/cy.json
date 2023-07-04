@@ -1922,10 +1922,10 @@
       "REQUEST_REFUSED": "Os yw eich cais i gynrychiolydd cyfreithiol {{ claimantName }} am ragor o amser i ymateb wedi’i wrthod, bydd angen i chi wneud cais i’r llys i ystyried eich cais drwy lawrlwytho"
     },
     "REVIEW_DEFENDANTS_RESPONSE": {
-      "AGED_11_TO_15": "How many are aged 11 to 15?",
-      "AGED_16_TO_19": "How many are aged 16 to 19?",
-      "AGED_16_TO_19_AND_EDUCATION": "How many aged 16 to 19 are in full-time education or training?",
-      "AGED_UNDER_11": "How many are aged under 11?",
+      "AGED_11_TO_15": "Faint sy’n 11 i 15 oed?",
+      "AGED_16_TO_19": "Faint sy’n 16 i 19 oed?",
+      "AGED_16_TO_19_AND_EDUCATION": "Faint sydd rhwng 16 a 19 oed ac sydd mewn addysg neu hyfforddiant llawn amser?",
+      "AGED_UNDER_11": "Faint sydd o dan 11 oed?",
       "AMOUNT_OWED": "Amount they owe?",
       "BEHIND_ON_TAX_PAYMENTS": "Are they behind on tax payments?",
       "CHILDREN_LIVING_WITH_THEM": "Do any children live with them?",
