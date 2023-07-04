@@ -13,8 +13,14 @@ import {TaskStatus} from 'models/taskList/TaskStatus';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {isFullAmountReject} from 'modules/claimDetailsService';
 import {setResponseDeadline} from 'services/features/common/responseDeadlineAgreedService';
-import {mockCivilClaim, mockCivilClaimApplicantIndividualType} from '../../../../utils/mockDraftStore';
+// import {mockCivilClaim, mockCivilClaimApplicantIndividualType, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {isPcqShutterOn} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
+import {Claim} from 'common/models/claim';
+// import { mockClaim } from '../../../../utils/mockClaim';
+import {Party} from 'common/models/party';
+import {PartyType} from 'common/models/partyType';
+import {Email} from 'common/models/Email';
 
 const request = require('supertest');
 const {app} = require('../../../../../main/app');
@@ -24,7 +30,7 @@ const data = require('../../../../utils/mocks/defendantClaimsMock.json');
 
 jest.mock('axios');
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/claimDetailsService');
 jest.mock('../../../../../main/services/features/response/checkAnswers/checkAnswersService');
 jest.mock('../../../../../main/services/features/common/responseDeadlineAgreedService');
@@ -40,6 +46,7 @@ const mockSaveStatementOfTruth = saveStatementOfTruth as jest.Mock;
 const mockRejectingFullAmount = isFullAmountReject as jest.Mock;
 const mockSetResponseDeadline = setResponseDeadline as jest.Mock;
 mockRejectingFullAmount.mockImplementation(() => true);
+const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 
 const PARTY_NAME = 'Mrs. Mary Richards';
 const CLAIM_ID = 'aaa';
@@ -56,6 +63,9 @@ export const TASK_LISTS = [
   },
 ];
 const respondentCheckAnswersUrl = constructResponseUrlWithIdParams(CLAIM_ID, RESPONSE_CHECK_ANSWERS_URL);
+
+const mockClaimWithPcqId = new Claim();
+mockClaimWithPcqId.pcqId = '123';
 
 describe('Response - Check answers', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -80,7 +90,9 @@ describe('Response - Check answers', () => {
 
   describe('on GET', () => {
     beforeEach((done) => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return mockClaimWithPcqId;
+      });
       session(app)
         .get(constructResponseUrlWithIdParams(CLAIM_ID, RESPONSE_TASK_LIST_URL))
         .expect(200)
@@ -93,7 +105,9 @@ describe('Response - Check answers', () => {
     });
 
     it('should pass english translation via query', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return mockClaimWithPcqId;
+      });
       await session(app).get(respondentCheckAnswersUrl)
         .query({lang: 'en'})
         .expect((res: Response) => {
@@ -102,7 +116,9 @@ describe('Response - Check answers', () => {
         });
     });
     it('should pass cy translation via query', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return mockClaimWithPcqId;
+      });
       await session(app).get(respondentCheckAnswersUrl)
         .query({lang: 'cy'})
         .expect((res: Response) => {
@@ -113,7 +129,14 @@ describe('Response - Check answers', () => {
     it('should redirect to PCQ jouney', async () => {
       isPcqShutterOnMock.mockResolvedValue(false);
       axios.get = jest.fn().mockResolvedValue({ data: { status: 'UP' } });
-      app.locals.draftStoreClient = mockCivilClaimApplicantIndividualType;
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const mockClaimToRedirectToPcq = new Claim();
+        mockClaimToRedirectToPcq.respondent1 = new Party();
+        mockClaimToRedirectToPcq.respondent1.type = PartyType.INDIVIDUAL;
+        mockClaimToRedirectToPcq.respondent1.emailAddress = new Email('test@test.com');
+        return mockClaimToRedirectToPcq;
+      });
+
       await session(app).get(respondentCheckAnswersUrl)
         .expect((res: Response) => {
           expect(res.status).toBe(302);
