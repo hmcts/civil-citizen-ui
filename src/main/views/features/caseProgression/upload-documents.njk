@@ -27,6 +27,7 @@
     {% set disclosure = t('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.TITLE') %}
     {% set trial = t('PAGES.UPLOAD_DOCUMENTS.TRIAL.TITLE') %}
     {% set expert = t('PAGES.UPLOAD_DOCUMENTS.EXPERT.TITLE') %}
+    {% set hearing = t('PAGES.UPLOAD_DOCUMENTS.HEARING.TITLE') %}
 
     <div class="govuk-grid-row">
       <form method="post" novalidate>
@@ -142,7 +143,11 @@
           {% endif %}
 
           {% if trialContent.length > 0 %}
-            <h2 class="govuk-heading-l">{{ trial }}</h2>
+            {% if isSmallClaims %}
+              <h2 class="govuk-heading-l">{{ hearing }}</h2>
+            {% else %}
+              <h2 class="govuk-heading-l">{{ trial }}</h2>
+            {% endif %}
             {% for trialSections in trialContent %}
             <div class="row-container">
               <div data-module="moj-add-another">
