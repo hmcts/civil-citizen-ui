@@ -12,7 +12,7 @@ const witnessSummary = 'witnessSummary';
 const noticeOfIntention = 'noticeOfIntention';
 const documentsReferred = 'documentsReferred';
 
-const fileUpload = 'file_upload';
+const fileUpload = 'fileUpload';
 
 export const buildWitnessStatement = (section: WitnessSection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
   const errorFieldNamePrefix = `${witnessStatement}[${witnessStatement}][${index}]`;
@@ -21,7 +21,9 @@ export const buildWitnessStatement = (section: WitnessSection = null, index = 0,
     .addTitle('PAGES.UPLOAD_DOCUMENTS.WITNESS.STATEMENT')
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', '', '', witnessStatement, 'witnessName', section?.witnessName, index, form?.errorFor(`${errorFieldNamePrefix}[witnessName]`, witnessStatement))
     .addDateArray('PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_STATEMENT', 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', witnessStatement, section?.dateDay, section?.dateMonth, section?.dateYear, index)
-    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', witnessStatement, fileUpload)
+    //.addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', witnessStatement, fileUpload)
+    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', witnessStatement, fileUpload, index,section?.fileUpload?.fieldname, form?.errorFor(`${errorFieldNamePrefix}[${fileUpload}]`, witnessStatement))
+
     .addRemoveSectionButton(form?.model.witnessStatement?.length > 1 || false)
     .build();
 };

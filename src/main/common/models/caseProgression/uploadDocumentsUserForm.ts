@@ -74,7 +74,7 @@ export class FileUpload {
 
 export class FileOnlySection {
   @IsDefined({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
-    fileUpload: string;
+    fileUpload: FileUpload;
 }
 
 export class TypeOfDocumentSection extends FileOnlySection {
@@ -86,8 +86,6 @@ export class TypeOfDocumentSection extends FileOnlySection {
   dateMonth: string;
   dateYear: string;
 
-  @IsDefined({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
-    fileUpload: FileUpload;
 }
 
 export class WitnessSection extends FileOnlySection {
