@@ -2,7 +2,6 @@ import {cancelDocumentUpload} from 'services/features/caseProgression/cancelDocu
 import {app} from '../../../../../main/app';
 import * as requestModels from 'models/AppRequest';
 import {Claim} from 'models/claim';
-import * as utilityService from 'modules/utilityService';
 
 const REDIS_DATA = require('../../../../../main/modules/draft-store/redisData.json');
 declare const appRequest: requestModels.AppRequest;
@@ -28,11 +27,9 @@ describe('cancelDocumentUpload', () => {
     const spyDel = jest.spyOn(app.locals.draftStoreClient, 'del');
     const claimToReturn = new Claim();
     claimToReturn.id = claimId;
-    const spyGetClaimById = jest.spyOn(utilityService, 'getClaimById').mockReturnValue(Promise.resolve(claimToReturn));
     //When
     await cancelDocumentUpload(claimId, mockedAppRequest);
     //Then
     expect(spyDel).toBeCalled();
-    expect(spyGetClaimById).toBeCalled();
   });
 });

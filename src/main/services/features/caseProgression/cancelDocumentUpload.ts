@@ -3,7 +3,6 @@ import {UploadYourDocumentsSectionBuilder} from 'models/caseProgression/uploadYo
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 import {Request} from 'express';
-import {getClaimById} from 'modules/utilityService';
 
 export const getCancelYourUpload = (claimId: string, claim: Claim) => {
   return new UploadYourDocumentsSectionBuilder()
@@ -20,5 +19,4 @@ export const getCancelYourUpload = (claimId: string, claim: Claim) => {
 
 export async function cancelDocumentUpload(claimId: string, req: Request) {
   await deleteDraftClaimFromStore(claimId);
-  await getClaimById(claimId, req);
 }
