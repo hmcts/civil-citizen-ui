@@ -6,8 +6,8 @@ import {toNumber} from 'lodash';
 /**
  * Validates that the input value is a valid day
  */
-@ValidatorConstraint({name: 'OptionalDateDayValidator', async: false})
-export class OptionalDateDayValidator implements ValidatorConstraintInterface {
+@ValidatorConstraint({name: 'DateDayValidator', async: false})
+export class DateDayValidator implements ValidatorConstraintInterface {
   dayExists:boolean;
   validate(day: string) {
     if (day === undefined || day === null || day === '') {

@@ -6,8 +6,8 @@ import {toNumber} from 'lodash';
 /**
  * Validates that the input value is a valid month
  */
-@ValidatorConstraint({name: 'OptionalDateMonthValidator', async: false})
-export class OptionalDateMonthValidator implements ValidatorConstraintInterface {
+@ValidatorConstraint({name: 'DateMonthValidator', async: false})
+export class DateMonthValidator implements ValidatorConstraintInterface {
   monthExists:boolean;
   validate(month: string) {
     if (month === undefined || month === null || month === '') {

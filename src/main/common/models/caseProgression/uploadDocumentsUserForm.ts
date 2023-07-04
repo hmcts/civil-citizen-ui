@@ -8,9 +8,9 @@ import {
   ValidateNested} from 'class-validator';
 import {DateConverter} from 'common/utils/dateConverter';
 import {OptionalDateNotInFutureValidator} from 'form/validators/optionalDateNotInFutureValidator';
-import {OptionalDateDayValidator} from 'form/validators/optionalDateDayValidator';
-import {OptionalDateMonthValidator} from 'form/validators/optionalDateMonthValidator';
-import {OptionalDateYearValidator} from 'form/validators/optionalDateYearValidator';
+import {DateDayValidator} from 'form/validators/dateDayValidator';
+import {DateMonthValidator} from 'form/validators/dateMonthValidator';
+import {DateYearValidator} from 'form/validators/dateYearValidator';
 export class UploadDocumentsUserForm {
   @ValidateNested()
     documentsForDisclosure?: TypeOfDocumentSection[];
@@ -86,15 +86,15 @@ export class DateInputFields extends  FileOnlySection {
       date: Date;
 
     @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
-    @Validate(OptionalDateDayValidator)
+    @Validate(DateDayValidator)
       dateDay: string;
 
     @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
-    @Validate(OptionalDateMonthValidator)
+    @Validate(DateMonthValidator)
       dateMonth: string;
 
     @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
-    @Validate(OptionalDateYearValidator)
+    @Validate(DateYearValidator)
       dateYear: string;
 
     constructor(day?: string, month?: string, year?: string) {

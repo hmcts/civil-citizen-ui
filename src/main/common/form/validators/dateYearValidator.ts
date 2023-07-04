@@ -6,8 +6,8 @@ import {toNumber} from 'lodash';
 /**
  * Validates that the input value is a valid year
  */
-@ValidatorConstraint({name: 'OptionalDateYearValidator', async: false})
-export class OptionalDateYearValidator implements ValidatorConstraintInterface {
+@ValidatorConstraint({name: 'DateYearValidator', async: false})
+export class DateYearValidator implements ValidatorConstraintInterface {
   yearExists:boolean;
   validate(year: string) {
     if (year === undefined || year === null || year === '') {
