@@ -1,4 +1,4 @@
-import {IsDefined, IsNotEmpty, IsOptional, ValidateNested} from 'class-validator';
+import {IsNotEmpty, IsOptional, ValidateNested} from 'class-validator';
 import {IsAllowedMimeType} from 'form/validators/isAllowedMimeType';
 import {IsFileSize} from 'form/validators/isFileSize';
 
@@ -73,7 +73,7 @@ export class FileUpload {
 }
 
 export class FileOnlySection {
-  @IsDefined({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
+  @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
     fileUpload: FileUpload;
 }
 
