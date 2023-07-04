@@ -41,6 +41,8 @@ Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @regression'
     await api.enterBreathingSpace(config.applicantSolicitorUser);
     await api.liftBreathingSpace(config.applicantSolicitorUser);
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitAmountPaid, config.claimState.JUDICIAL_REFERRAL);
+    //Bug CIV-9440
+    //await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoTrialHearing);
   }
 });
 
@@ -88,6 +90,8 @@ Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit @regre
     await api.liftBreathingSpace(config.applicantSolicitorUser);
     //State should be moved to offline but there is a bug at the moment. CIV-9430
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitWithPartPaymentOnSpecificDate, config.claimState.AWAITING_APPLICANT_INTENTION);
+    //Bug CIV-9440
+    //await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedNoAssignToSmallClaimsYes);
   }
 });
 
@@ -112,5 +116,7 @@ Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit @nigh
     await api.liftBreathingSpace(config.applicantSolicitorUser);
     //State should be moved to offline but there is a bug at the moment. CIV-9430
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlan, config.claimState.AWAITING_APPLICANT_INTENTION);
+    //Bug CIV-9440
+    //await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedNoAssignToFastTrackYes);
   }
 });
