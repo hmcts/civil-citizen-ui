@@ -8,7 +8,7 @@ import {
   CITIZEN_UNEMPLOYED_URL,
   CITIZEN_WHO_EMPLOYS_YOU_URL,
 } from '../../../../../../../main/routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
+import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 
@@ -27,7 +27,7 @@ describe('Employment status', () => {
 
   describe('on Get', () => {
     it('should return employment status page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await request(app).get(CITIZEN_EMPLOYMENT_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -45,8 +45,12 @@ describe('Employment status', () => {
     });
   });
   describe('on Post', () => {
+
+    beforeEach(() => {
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+    });
+
     it('should return error message when no option is selected', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app).post(CITIZEN_EMPLOYMENT_URL)
         .send('')
         .expect((res) => {

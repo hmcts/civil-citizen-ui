@@ -5,7 +5,7 @@ import nock from 'nock';
 import config from 'config';
 import {CITIZEN_PARTNER_URL, CITIZEN_RESIDENCE_URL} from '../../../../../../main/routes/urls';
 import {FREE_TEXT_MAX_LENGTH} from '../../../../../../main/common/form/validators/validationConstraints';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
@@ -27,7 +27,7 @@ describe('Citizen residence', () => {
 
   describe('on GET', () => {
     it('should return residence page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await agent
         .get(respondentResidenceUrl)
         .expect((res: Response) => {
@@ -48,7 +48,7 @@ describe('Citizen residence', () => {
   });
   describe('on POST', () => {
     beforeAll(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
     });
 
     it('should redirect when OWN_HOME option selected', async () => {
