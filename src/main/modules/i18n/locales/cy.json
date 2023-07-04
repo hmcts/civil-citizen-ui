@@ -2361,6 +2361,10 @@
         "NAME_DOCUMENT_WITH": "Name of document with other party's questions",
         "SELECT": "Select"
       },
+      "HEARING": {
+        "TITLE": "Hearing documents",
+        "DOCUMENTARY": "Documentary evidence for hearing"
+      },
       "YEAR": "Year"
     },
     "VULNERABILITY": {
