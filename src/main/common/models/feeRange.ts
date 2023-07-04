@@ -31,18 +31,18 @@ export class FeeRange {
   }
 
   formatFeeRangeToTableItem(lang: string): TableItem[] {
-    const minRange = this.maxRange ? `£${this.minRange.toLocaleString()}` : ` > £${this.minRange.toLocaleString()}`;
-    const maxRange = this.maxRange ? ` to £${this.maxRange.toLocaleString()}` : '';
+    const minRange = this.maxRange ? `£${this.minRange?.toLocaleString()}` : ` > £${this.minRange?.toLocaleString()}`;
+    const maxRange = this.maxRange ? ` to £${this.maxRange?.toLocaleString()}` : '';
 
     let feeAmount;
     if (this.currentVersion?.percentageAmount?.percentage) {
-      const percentage = this.currentVersion?.percentageAmount?.percentage.toLocaleString();
+      const percentage = this.currentVersion?.percentageAmount?.percentage?.toLocaleString();
       feeAmount = {
         text: `${t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.CLAIM_FEE', {percentage, lng: lang})}`,
       };
     } else {
       feeAmount = {
-        text: `£${this.currentVersion.flatAmount?.amount.toLocaleString()}`,
+        text: `£${this.currentVersion?.flatAmount?.amount.toLocaleString()}`,
       };
     }
     return [{text: minRange + maxRange}, feeAmount];

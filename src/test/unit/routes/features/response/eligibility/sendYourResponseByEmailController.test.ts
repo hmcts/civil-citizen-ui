@@ -2,7 +2,7 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {SEND_RESPONSE_BY_EMAIL_URL} from '../../../../../../main/routes/urls';
+import {SEND_RESPONSE_BY_EMAIL_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 
