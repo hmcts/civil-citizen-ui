@@ -48,7 +48,6 @@ describe('"upload your documents" page test', () => {
     it('should return expected page when claim exists', async () => {
       //Given
       app.locals.draftStoreClient = mockCivilClaim;
-
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claim);
