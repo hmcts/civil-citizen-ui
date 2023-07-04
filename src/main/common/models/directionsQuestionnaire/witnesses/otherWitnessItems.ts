@@ -1,5 +1,5 @@
-import {OptionalIntegerValidator} from '../../../form/validators/optionalIntegerValidator';
 import {IsNotEmpty, IsEmail, Validate, ValidateIf} from 'class-validator';
+import {PhoneUKValidator} from 'form/validators/phoneUKValidator';
 
 export class OtherWitnessItems {
   @IsNotEmpty({message: 'ERRORS.DEFENDANT_WITNESS_ENTER_FIRST_NAME'})
@@ -13,7 +13,7 @@ export class OtherWitnessItems {
     email?: string;
 
   @ValidateIf(o => o.telephone)
-  @Validate(OptionalIntegerValidator, {message: 'ERRORS.VALID_PHONE_NUMBER'})
+  @Validate(PhoneUKValidator, {message: 'ERRORS.VALID_PHONE_NUMBER'})
     telephone?: string;
 
   @IsNotEmpty({message: 'ERRORS.DEFENDANT_WITNESS_WHAT_THEY_WITNESSED'})
