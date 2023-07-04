@@ -1,11 +1,8 @@
 import {cancelDocumentUpload} from 'services/features/caseProgression/cancelDocumentUpload';
 import {app} from '../../../../../main/app';
-import * as requestModels from 'models/AppRequest';
 import {Claim} from 'models/claim';
 
 const REDIS_DATA = require('../../../../../main/modules/draft-store/redisData.json');
-declare const appRequest: requestModels.AppRequest;
-const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 
 function createMockDraftStore(returnData: unknown) {
   return {
@@ -28,7 +25,7 @@ describe('cancelDocumentUpload', () => {
     const claimToReturn = new Claim();
     claimToReturn.id = claimId;
     //When
-    await cancelDocumentUpload(claimId, mockedAppRequest);
+    await cancelDocumentUpload(claimId);
     //Then
     expect(spyDel).toBeCalled();
   });

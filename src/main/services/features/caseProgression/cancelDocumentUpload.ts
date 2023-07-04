@@ -2,7 +2,6 @@ import {Claim} from 'models/claim';
 import {UploadYourDocumentsSectionBuilder} from 'models/caseProgression/uploadYourDocumentsSectionBuilder';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
-import {Request} from 'express';
 
 export const getCancelYourUpload = (claimId: string, claim: Claim) => {
   return new UploadYourDocumentsSectionBuilder()
@@ -17,6 +16,6 @@ export const getCancelYourUpload = (claimId: string, claim: Claim) => {
     .build();
 };
 
-export async function cancelDocumentUpload(claimId: string, req: Request) {
+export async function cancelDocumentUpload(claimId: string) {
   await deleteDraftClaimFromStore(claimId);
 }
