@@ -160,9 +160,7 @@ const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSect
   const formObj: TypeOfDocumentSection = new TypeOfDocumentSection(request['dateDay'], request['dateMonth'], request['dateYear']);
   formObj.typeOfDocument = request['typeOfDocument'].trim();
   //TODO we should get the file from dm-store
-  if (request['fileUpload'] !== '') {
-    formObj.fileUpload = request['fileUpload'];
-  }
+  formObj.fileUpload = request['fileUpload'];
   return formObj;
 };
 
@@ -170,9 +168,7 @@ const bindRequestToWitnessSectionObj = (request: any): WitnessSection => {
   const formObj: WitnessSection = new WitnessSection(request['dateDay'], request['dateMonth'], request['dateYear']);
   formObj.witnessName = request['witnessName'].trim();
   //TODO we should get the file from dm-store
-  if (request['fileUpload'] !== '') {
-    formObj.fileUpload = request['fileUpload'];
-  }
+  formObj.fileUpload = request['fileUpload'];
   return formObj;
 };
 
@@ -184,17 +180,13 @@ const bindRequestToExpertSectionObj = (request: any): ExpertSection => {
   formObj.questionDocumentName = request['questionDocumentName'] != null ? request['questionDocumentName'].trim() : null;
   formObj.otherPartyQuestionsDocumentName = request['otherPartyQuestionsDocumentName'] != null ? request['otherPartyQuestionsDocumentName'].trim() : null;
   //TODO we should get the file from dm-store
-  if (request['fileUpload'] !== '') {
-    formObj.fileUpload = request['fileUpload'];
-  }
+  formObj.fileUpload = request['fileUpload'];
   return formObj;
 };
 
 const bindRequestToFileOnlySectionObj = (request: any): FileOnlySection => {
   const formObj: FileOnlySection = new FileOnlySection();
   //TODO we should get the file from dm-store
-  if (request['fileUpload'] !== '') {
-    formObj.fileUpload = request['fileUpload'];
-  }
+  formObj.fileUpload = request['fileUpload'];
   return formObj;
 };

@@ -6,28 +6,37 @@ import {EvidenceUploadWitness} from 'models/document/documentType';
 import {t} from 'i18next';
 
 const multer = require('multer');
-const upload = multer({storage: multer.memoryStorage(), limits:{fileSize:8000000}});
+const fileSize = Infinity;
+
+const storage = multer.memoryStorage({
+  limits: {
+    fileSize: fileSize,
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: fileSize,
+  },
+});
 
 const uploadFileController = Router();
 
 uploadFileController.post(CP_UPLOAD_FILE, upload.single('file'), (req, res) => {
   try {
-    //const claimId = req.params.id;
     const uploadDocumentsForm = TypeOfDocumentSectionMapper.mapToSingleFile(req);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
 
     const form = new GenericForm(uploadDocumentsForm);
     form.validateSync();
     if (form.hasErrors()) {
-      //await renderView(res, claimId, form);
       res.status(400).json({
         errors: form.getAllErrors().map(error => t(error.text, lang)),
       });
 
     } else {
-      //todo: save to redis
-      //todo: next page (cancel page or continue page)
-      //await renderView(res, claimId, form);
+
       const document = {
         createdBy: 'test',
         documentLink: {

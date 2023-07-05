@@ -79,7 +79,7 @@ export class FileUpload {
 }
 
 export class FileOnlySection {
-  @IsDefined({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
+  @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
     fileUpload: FileUpload;
 }
 
