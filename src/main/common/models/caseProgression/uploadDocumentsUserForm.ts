@@ -1,10 +1,10 @@
-import {IsDate, IsDefined, IsNotEmpty, IsOptional, Max, Min, Validate, ValidateIf, ValidateNested} from 'class-validator';
+import {IsDate, IsDefined, IsNotEmpty, IsOptional, Validate, ValidateIf, ValidateNested} from 'class-validator';
 import {DateConverter} from 'common/utils/dateConverter';
 import {OptionalDateNotInFutureValidator} from 'form/validators/optionalDateNotInFutureValidator';
 import {DateDayValidator} from 'form/validators/dateDayValidator';
 import {DateMonthValidator} from 'form/validators/dateMonthValidator';
 import {DateYearValidator} from 'form/validators/dateYearValidator';
-import { IsFileSize} from 'form/validators/isFileSize';
+import {IsFileSize} from 'form/validators/isFileSize';
 import {IsAllowedMimeType} from 'form/validators/isAllowedMimeType';
 
 export class UploadDocumentsUserForm {
