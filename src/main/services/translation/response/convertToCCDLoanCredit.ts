@@ -8,8 +8,8 @@ export const toCCDLoanCredit = (debtsItem: DebtItems[]): CCDLoanCredit[] => {
     return {
       value: {
         loanCardDebtDetail: debtsItem.debt,
-        totalOwed: Number(debtsItem.totalOwned),
-        monthlyPayment: Number(debtsItem.monthlyPayments),
+        totalOwed: Number(debtsItem.totalOwned)*100,
+        monthlyPayment: Number(debtsItem.monthlyPayments)*100,
       },
     };
   });

@@ -8,8 +8,8 @@ export const toCCDCourtOrders = (courtOrders: CourtOrders): CCDCourtOrders[] => 
     return {
       value: {
         claimNumberText: courtOrder.claimNumber,
-        amountOwed: courtOrder.amount,
-        monthlyInstalmentAmount: courtOrder.instalmentAmount,
+        amountOwed: courtOrder.amount*100,
+        monthlyInstalmentAmount: courtOrder.instalmentAmount*100,
       },
     };
   });

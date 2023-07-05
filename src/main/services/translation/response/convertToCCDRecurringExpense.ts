@@ -67,7 +67,7 @@ const toCCDRecurringExpensesItem = (transactionSource: TransactionSource, expens
   const ccdRecurringExpenses: CCDRecurringExpenses = {
     value :{
       type: expensesType,
-      amount: transactionSource?.amount,
+      amount: transactionSource?.amount*100,
       frequency: toCCDPaymentFrequency(transactionSource?.schedule),
     },
   };

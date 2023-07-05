@@ -58,7 +58,7 @@ const toCUIRecurringIncomeItems = (recurringIncomeItems: CCDRecurringIncome[]): 
 const toCUIRecurringIncomeItem = (ccdRecurringIncome: CCDRecurringIncome, incomeType: IncomeType): Transaction => {
   return Transaction.buildPopulatedForm(
     incomeType,
-    ccdRecurringIncome?.value?.amount?.toString(),
+    ccdRecurringIncome?.value?.amount ? (ccdRecurringIncome?.value?.amount/100).toString() : undefined,
     toCUIPaymentFrequency(ccdRecurringIncome?.value?.frequency),
     true,
   );
@@ -68,7 +68,7 @@ const toCUIOtherTransaction = (recurringIncome: CCDRecurringIncome) : Transactio
   return  new TransactionSource({
     name: recurringIncome?.value?.typeOtherDetails,
     isIncome: true,
-    amount:recurringIncome?.value?.amount,
+    amount:recurringIncome?.value?.amount/100,
     schedule: toCUIPaymentFrequency(recurringIncome?.value?.frequency),
     nameRequired: true,
   },

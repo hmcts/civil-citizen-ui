@@ -58,7 +58,7 @@ const toCCDRecurringIncomeItem = (transactionSource: TransactionSource, incomeTy
   const ccdRecurringIncome: CCDRecurringIncome = {
     value :{
       type: incomeType,
-      amount: transactionSource?.amount,
+      amount: transactionSource?.amount*100,
       frequency: toCCDPaymentFrequency(transactionSource?.schedule),
     },
   };

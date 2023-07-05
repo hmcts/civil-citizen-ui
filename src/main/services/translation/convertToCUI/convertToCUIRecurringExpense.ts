@@ -65,7 +65,7 @@ const toCUIRecurringExpenseItems = (recurringExpensesItems: CCDRecurringExpenses
 const toCUIRecurringExpenseItem = (ccdRecurringExpenses: CCDRecurringExpenses, expenseType: ExpenseType): Transaction => {
   return Transaction.buildPopulatedForm(
     expenseType,
-    ccdRecurringExpenses.value?.amount?.toString(),
+    ccdRecurringExpenses.value?.amount ? (ccdRecurringExpenses.value?.amount/100).toString() : undefined,
     toCUIPaymentFrequency(ccdRecurringExpenses?.value?.frequency),
     false,
   );
@@ -75,7 +75,7 @@ const toCUIOtherTransaction = (recurringExpenses: CCDRecurringExpenses) : Transa
   return new TransactionSource({
     name: recurringExpenses?.value?.typeOtherDetails,
     isIncome: false,
-    amount:recurringExpenses?.value?.amount,
+    amount:recurringExpenses?.value?.amount/100,
     schedule: toCUIPaymentFrequency(recurringExpenses?.value?.frequency),
     nameRequired: true,
   },

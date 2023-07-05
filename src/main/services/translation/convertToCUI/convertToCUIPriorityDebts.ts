@@ -43,7 +43,7 @@ const toCUIPriorityDebtsList = (priorityDebtsItems: CCDDebtDetailsList[]) : Prio
 const toCUIPriorityDebtsItem = (ccdPriorityDebts: CCDDebtDetailsList, expenseType: ExpenseType): Transaction => {
   return Transaction.buildPopulatedForm(
     expenseType,
-    ccdPriorityDebts?.value?.paymentAmount?.toString(),
+    ccdPriorityDebts?.value?.paymentAmount ? (ccdPriorityDebts?.value?.paymentAmount/100).toString() : undefined,
     toCUIPaymentFrequency(ccdPriorityDebts?.value?.paymentFrequency),
   );
 };

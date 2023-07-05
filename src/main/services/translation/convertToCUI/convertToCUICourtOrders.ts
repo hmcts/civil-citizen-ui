@@ -13,8 +13,8 @@ const toCUICourtOrdersList = (ccdCourtOrders: CCDCourtOrders[]): CourtOrder[] =>
   {
     return ccdCourtOrders.map((ccdCourtOrder: CCDCourtOrders) => {
       return new CourtOrder(
-        ccdCourtOrder.value?.amountOwed,
-        ccdCourtOrder.value?.monthlyInstalmentAmount,
+        ccdCourtOrder.value?.amountOwed/100,
+        ccdCourtOrder.value?.monthlyInstalmentAmount/100,
         ccdCourtOrder.value?.claimNumberText);
     });
   }
