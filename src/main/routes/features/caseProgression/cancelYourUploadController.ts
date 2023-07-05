@@ -39,7 +39,7 @@ cancelYourUploadController.post([CP_EVIDENCE_UPLOAD_CANCEL], (async (req, res, n
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CP_UPLOAD_DOCUMENTS_URL));
     } else {
       const claimId = req.params.id;
-      await cancelDocumentUpload(claimId, req);
+      await cancelDocumentUpload(claimId);
       res.redirect(constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL));
     }
   } catch (error) {
