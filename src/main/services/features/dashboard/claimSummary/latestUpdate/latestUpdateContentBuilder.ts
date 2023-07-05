@@ -172,6 +172,19 @@ function getFullAdmitPayImmediately(claim: Claim, lng: string) {
     .build();
 }
 
+function getStatusPaid(claim: Claim, lng: string) {
+  const claimantFullName = claim.getClaimantFullName();
+  const claimId = claim.id;
+  return new LatestUpdateSectionBuilder()
+    .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.YOUR_RESPONSE_TO_THE_CLAIM`)
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.WE_HAVE_EMAILED`, {
+      claimantName: claimantFullName,
+    })
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU`)
+    .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, DocumentUri.SEALED_CLAIM)
+    .build();
+}
+
 function generateLastUpdateResponseSections(claimResponseStatus: ClaimResponseStatus, claim: Claim, lng: string) {
   const claimResponsesStatus = {
     [ClaimResponseStatus.FA_PAY_IMMEDIATELY]: getFullAdmitPayImmediately(claim, lng),
@@ -180,6 +193,10 @@ function generateLastUpdateResponseSections(claimResponseStatus: ClaimResponseSt
     [ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY]: getPartAdmitPaidPayImmediately(claim, lng),
     [ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE]: getPartAdmitPaidPayByDate(claim, lng),
     [ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS]: getPartAdmitPayInstallmentItems(claim, lng),
+    [ClaimResponseStatus.PA_ALREADY_PAID]: getStatusPaid(claim, lng),
+    [ClaimResponseStatus.RC_PAID_FULL]: getStatusPaid(claim, lng),
+    [ClaimResponseStatus.RC_PAID_LESS]: getStatusPaid(claim, lng),
+
   };
   return claimResponsesStatus[claimResponseStatus as keyof typeof claimResponsesStatus];
 }
@@ -192,6 +209,58 @@ const getLastUpdateSdoDocument = (claimId: string) => {
     .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.SDO_DOWNLOAD_THE_COURTS_ORDER`, claimId,  DocumentUri.SDO_ORDER, null,`${PAGES_LATEST_UPDATE_CONTENT}.SDO_TO_FIND_OUT_THE_DETAILS`)
     .build();
 };
+
+function generateClaimEndedLatestUpdate(claim: Claim, lng: string) {
+  const claimantFullName = claim.getClaimantFullName();
+  const claimTakenOffline = claim.takenOfflineDate;
+  return new LatestUpdateSectionBuilder()
+    .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIM_ENDED_TITLE`)
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIM_ENDED_MESSAGE`, {
+      claimantName: claimantFullName,
+      acceptFullDefenseDate: formatDateToFullDate(claimTakenOffline, lng),
+    })
+    .build();
+}
+
+function generateMediationSuccessfulLatestUpdate(claim: Claim, lng: string) {
+  const claimantFullName = claim.getClaimantFullName();
+  const claimId = claim.id;
+  return new LatestUpdateSectionBuilder()
+    .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_SETTLED_CLAIM_TITLE`)
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_SETTLED_CLAIM`, {
+      claimantName: claimantFullName,
+    })
+    .addContactLink(`${PAGES_LATEST_UPDATE_CONTENT}.CONTACT`, claimId, {claimantName: claimantFullName},
+      `${PAGES_LATEST_UPDATE_CONTENT}.THEIR_PAYMENT_DETAILS`)
+    .build();
+}
+
+function generateMediationUnSuccessfulLatestUpdate(claim: Claim, lng: string) {
+  const claimantFullName = claim.getClaimantFullName();
+  return new LatestUpdateSectionBuilder()
+    .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.MEDIATION_UNSUCCESSFUL_TITLE`)
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.MEDIATION_UNSUCCESSFUL_MSG1`, {
+      claimantName: claimantFullName,
+    })
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.MEDIATION_UNSUCCESSFUL_MSG2`)
+    .build();
+}
+
+function generateDefaultJudgmentSubmittedLatestUpdate(claim: Claim, lng: string) {
+  const claimantFullName = claim.getClaimantFullName();
+  return new LatestUpdateSectionBuilder()
+    .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.DEFAULT_JUDGMENT_SUBMITTED_TITLE`)
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.DEFAULT_JUDGMENT_MSG1`, {
+      claimantName: claimantFullName,
+    })
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.DEFAULT_JUDGMENT_MSG2`)
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.DEFAULT_JUDGMENT_MSG3`)
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.CONTACT_INFO`)
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_POST_COPY`, {
+      claimantName: claimantFullName,
+    })
+    .build();
+}
 
 export const buildResponseToClaimSection = (claim: Claim, claimId: string, lang: string): ClaimSummarySection[] => {
   const sectionContent = [];
@@ -211,6 +280,14 @@ export const buildResponseToClaimSection = (claim: Claim, claimId: string, lang:
     sectionContent.push(respondToClaimLink);
   } else if (claim.hasSdoOrderDocument()) {
     sectionContent.push(getLastUpdateSdoDocument(claimId));
+  } else if (claim.hasClaimTakenOffline()) {
+    sectionContent.push(generateClaimEndedLatestUpdate(claim, lng));
+  } else if (claim.hasMediationSuccessful()) {
+    sectionContent.push(generateMediationSuccessfulLatestUpdate(claim, lng));
+  } else if (claim.hasMediationUnSuccessful()) {
+    sectionContent.push(generateMediationUnSuccessfulLatestUpdate(claim, lng));
+  } else if (claim.hasDefaultJudgmentSubmitted()) {
+    sectionContent.push(generateDefaultJudgmentSubmittedLatestUpdate(claim, lng));
   } else {
     sectionContent.push(generateLastUpdateResponseSections(claim.responseStatus, claim, lng));
   }

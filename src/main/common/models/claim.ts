@@ -58,6 +58,7 @@ import {CCDRespondentLiPResponse} from './ccdResponse/ccdRespondentLiPResponse';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 import {DateTimeFormatOptions} from 'luxon';
 import {CaseProgression} from 'common/models/caseProgression/caseProgression';
+import {MediationAgreement} from 'models/mediation/mediationAgreement';
 
 export class Claim {
   legacyCaseReference: string;
@@ -97,6 +98,10 @@ export class Claim {
   caseProgression?: CaseProgression;
   respondent1LiPResponse?: CCDRespondentLiPResponse;
   caseProgressionHearing?: CaseProgressionHearing;
+  takenOfflineDate?: Date;
+  mediationAgreement?: MediationAgreement;
+  unsuccessfulMediationReason?: string;
+  defaultJudgmentDocuments?: CaseDocument;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -502,6 +507,23 @@ export class Claim {
     const threeWeeksMilli = 21 * 24 * 60 * 60 * 1000;
     const options: DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
     return new Date(hearingDateTime - threeWeeksMilli).toLocaleDateString('en-GB', options);
+  }
+
+  hasClaimTakenOffline() {
+    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && this.defaultJudgmentDocuments === null;
+  }
+
+  hasMediationSuccessful() {
+    return  this.ccdState === CaseState.CASE_STAYED && this.mediationAgreement !== null;
+  }
+
+  hasMediationUnSuccessful() {
+    console.log(this.unsuccessfulMediationReason);
+    return this.unsuccessfulMediationReason !== undefined;
+  }
+
+  hasDefaultJudgmentSubmitted() {
+    return this.defaultJudgmentDocuments !==  null;
   }
 }
 

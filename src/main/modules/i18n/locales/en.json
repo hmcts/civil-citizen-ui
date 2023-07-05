@@ -403,7 +403,7 @@
       "CCJ_INSTALMENTS_OF": "Instalments of",
       "CCJ_INSTALMENTS_PAYMENT_FREQUENCY": "How often you want them to make this payment?",
       "CCJ_TOTAL_TO_BE_PAID": "Total to be paid by defendant",
-      "CCJ_WHEN_DO_YOU_WANT_TO_BE_PAID_BY": "When you want the defendant to pay?",   
+      "CCJ_WHEN_DO_YOU_WANT_TO_BE_PAID_BY": "When you want the defendant to pay?",
       "CHILDREN": "Children",
       "CHILDREN_DO_YOU_HAVE_ANY_LIVE_WITH_YOU": "Do any children live with you?",
       "CHILDREN_UNDER_11": "Under 11",
@@ -1523,7 +1523,23 @@
           "YOUR_HEARING_PARAGRAPH": "Your hearing has been scheduled for {{ hearingDate }} at {{ hearingTimeHourMinute }} at {{ courtName }}.",
           "VIEW_HEARING_NOTICE_BUTTON": "View hearing notice"
         }
-      }
+      },
+      "WE_HAVE_EMAILED": "We’ve emailed {{ claimantName }} telling them when and how you said you paid the claim.",
+      "WE_WILL_CONTACT_YOU": "We’ll contact you to let you know how they respond. They can confirm you’ve paid and the claim is settled, or they can proceed with it.",
+      "CLAIM_ENDED_TITLE": "This claim has ended",
+      "CLAIM_ENDED_MESSAGE": "{{ claimantName }} ended their claim against you on {{ acceptFullDefenseDate }}",
+      "YOU_HAVE_SETTLED_CLAIM_TITLE": "You settled the claim through mediation",
+      "YOU_HAVE_SETTLED_CLAIM": "You made an agreement which means the claim is now ended and sets out the terms of how you must repay {{ claimantName }}.",
+      "THEIR_PAYMENT_DETAILS": "if you need their payment details. Make sure you get receipts for any payments.",
+      "MEDIATION_UNSUCCESSFUL_TITLE": "Mediation was unsuccessful",
+      "MEDIATION_UNSUCCESSFUL_MSG1": "You weren’t able to resolve {{ claimantName }}’s claim against you using mediation.",
+      "MEDIATION_UNSUCCESSFUL_MSG2": "The court will review the case. We’ll contact you to tell you what to do next.",
+      "DEFAULT_JUDGMENT_SUBMITTED_TITLE": "Claimant has requested a County Court Judgment (CCJ)",
+      "DEFAULT_JUDGMENT_MSG1": "{{ claimantName }} has requested a CCJ against you because the deadline for your response has passed.",
+      "DEFAULT_JUDGMENT_MSG2": "Your online account will not be updated with the progress of this claim - any further updates will be by post.",
+      "DEFAULT_JUDGMENT_MSG3": "If your deadline has passed, but the CCJ has not been issued, you can still respond. Contact us for more information:",
+      "CONTACT_INFO": "HM Courts & Tribunals Service",
+      "WE_WILL_POST_COPY": "Otherwise we’ll post a copy of the CCJ to you and to {{ claimantName }} and explain what to do next."
     },
     "UPLOAD_EVIDENCE_DOCUMENTS": {
       "ANSWERS_TO_QUESTIONS": "Answers to questions asked by other party",

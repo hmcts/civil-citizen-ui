@@ -51,6 +51,7 @@ import {CaseDocument} from 'models/document/caseDocument';
 import {CCDExpert} from './ccdResponse/ccdExpert';
 import {CaseProgressionHearingDocuments, HearingLocation} from 'models/caseProgression/caseProgressionHearing';
 import {UploadEvidenceElementCCD} from 'models/caseProgression/uploadDocumentsType';
+import {MediationAgreement} from "models/mediation/mediationAgreement";
 
 export class CivilClaimResponse {
   id: string;
@@ -200,6 +201,10 @@ export interface CCDClaim extends ClaimUpdate {
   documentCostsRes?: UploadEvidenceElementCCD[];
   documentEvidenceForTrialRes?: UploadEvidenceElementCCD[];
   caseDocumentUploadDateRes?: Date;
+  takenOfflineDate?: Date;
+  mediationAgreement?: MediationAgreement;
+  unsuccessfulMediationReason?: string;
+  defaultJudgmentDocuments?:CaseDocument;
 }
 
 export interface ClaimFeeData {
