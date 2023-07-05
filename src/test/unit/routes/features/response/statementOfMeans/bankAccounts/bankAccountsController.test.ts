@@ -4,10 +4,10 @@ import config from 'config';
 import nock from 'nock';
 import {CITIZEN_BANK_ACCOUNT_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
+import {mockResponseFullAdmitPayBySetDate} from '../../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 
 describe('Bank Accounts and Savings', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -21,6 +21,7 @@ describe('Bank Accounts and Savings', () => {
 
   describe('on Get', () => {
     it('should return accounts page successfully', async () => {
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await request(app).get(CITIZEN_BANK_ACCOUNT_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -29,6 +30,9 @@ describe('Bank Accounts and Savings', () => {
     });
   });
   describe('on Post', () => {
+    beforeEach(() => {
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+    });
     it('should return error when type of account is not specified', async () => {
       const data = {
         accounts: [
