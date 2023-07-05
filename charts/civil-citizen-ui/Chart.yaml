@@ -35,7 +35,7 @@ dependencies:
     version: 1.0.4
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: servicebus.enabled
-# WA
+  # WA
   - name: wa-task-management-api
     version: ~0.0.37
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
@@ -45,11 +45,11 @@ dependencies:
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: civil-wa.enabled
   - name: wa-case-event-handler
-    version: 0.0.33
+    version: 0.0.30
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: civil-wa.enabled
   - name: wa-workflow-api
-    version: 0.0.33
+    version: 0.0.29
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: civil-wa.enabled
   # WA Crons
