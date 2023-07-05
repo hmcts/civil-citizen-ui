@@ -18,6 +18,8 @@ class CheckYourAnswersPage {
     if(url.includes('pcq')){
       if(I.see('Equality and diversity questions')){
         await I.click('I don\'t want to answer these questions');
+      }else if(I.see('Sorry, there is a problem with the service')){
+        await I.click('Continue');
       }
     }
     await I.see('Check your answers', 'h1');
