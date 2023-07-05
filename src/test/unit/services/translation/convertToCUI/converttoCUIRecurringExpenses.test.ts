@@ -92,6 +92,33 @@ describe('translate Recurring Expenses to CUI model', () => {
     };
     expect(output).toEqual(expected);
   });
+
+  it('should return data if Recurring Expense details value undefined', () => {
+    //Given
+    const input : CCDRecurringExpenses[] = [
+      { value : undefined },
+    ];
+    //When
+    const output = toCUIRecurringExpense(input);
+    //Then
+    const expected : RegularExpenses= {
+      mortgage: new Transaction(undefined, setUpTransactionSourceUndefined(ExpenseType.MORTGAGE)),
+      rent: new Transaction(undefined, setUpTransactionSourceUndefined(ExpenseType.RENT)),
+      councilTax: new Transaction(undefined, setUpTransactionSourceUndefined(ExpenseType.COUNCIL_TAX)),
+      gas: new Transaction(undefined, setUpTransactionSourceUndefined(ExpenseType.GAS)),
+      electricity: new Transaction(undefined, setUpTransactionSourceUndefined(ExpenseType.ELECTRICITY)),
+      water: new Transaction(undefined, setUpTransactionSourceUndefined(ExpenseType.WATER)),
+      travel: new Transaction(undefined, setUpTransactionSourceUndefined(ExpenseType.TRAVEL)),
+      schoolCosts: new Transaction(undefined, setUpTransactionSourceUndefined(ExpenseType.SCHOOL_COSTS)),
+      foodAndHousekeeping: new Transaction(undefined, setUpTransactionSourceUndefined(ExpenseType.FOOD_HOUSEKEEPING)),
+      tvAndBroadband: new Transaction(undefined, setUpTransactionSourceUndefined(ExpenseType.TV_AND_BROADBAND)),
+      hirePurchase: new Transaction(undefined, setUpTransactionSourceUndefined(ExpenseType.HIRE_PURCHASES)),
+      mobilePhone: new Transaction(undefined, setUpTransactionSourceUndefined(ExpenseType.MOBILE_PHONE)),
+      maintenance: new Transaction(undefined, setUpTransactionSourceUndefined(ExpenseType.MAINTENANCE_PAYMENTS)),
+      other: new OtherTransaction(false, [setUpTransactionSourceOtherUndefined()]),
+    };
+    expect(output).toEqual(expected);
+  });
 });
 
 const setUpCcdRecurringExpenses = (expenseType : CCDExpensesType) : CCDRecurringExpensesItem => {

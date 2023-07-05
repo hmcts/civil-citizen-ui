@@ -83,6 +83,30 @@ describe('translate Recurring Income to CUI model', () => {
     };
     expect(output).toEqual(expected);
   });
+
+  it('should return data if Recurring Income details value undefined', () => {
+    //Given
+    const input : CCDRecurringIncome[] = [
+      { value : undefined },
+    ];
+    //When
+    const output = toCUIRecurringIncome(input);
+    //Then
+    const expected : RegularIncome = {
+      job: new Transaction(undefined, setUpTransactionSourceUndefined(IncomeType.JOB)),
+      universalCredit: new Transaction(undefined, setUpTransactionSourceUndefined(IncomeType.UNIVERSAL_CREDIT)),
+      jobseekerAllowanceIncome: new Transaction(undefined, setUpTransactionSourceUndefined(IncomeType.JOB_SEEKERS_ALLOWANCE_INCOME_BASED)),
+      jobseekerAllowanceContribution: new Transaction(undefined, setUpTransactionSourceUndefined(IncomeType.JOB_SEEKERS_ALLOWANCE_CONTRIBUTION_BASED)),
+      incomeSupport: new Transaction(undefined, setUpTransactionSourceUndefined(IncomeType.INCOME_SUPPORT)),
+      workingTaxCredit: new Transaction(undefined, setUpTransactionSourceUndefined(IncomeType.WORKING_TAX_CREDIT)),
+      childTaxCredit: new Transaction(undefined, setUpTransactionSourceUndefined(IncomeType.CHILD_TAX_CREDIT)),
+      childBenefit: new Transaction(undefined, setUpTransactionSourceUndefined(IncomeType.CHILD_BENEFIT)),
+      councilTaxSupport: new Transaction(undefined, setUpTransactionSourceUndefined(IncomeType.COUNCIL_TAX_SUPPORT)),
+      pension: new Transaction(undefined, setUpTransactionSourceUndefined(IncomeType.PENSION)),
+      other: new OtherTransaction(false, [setUpTransactionSourceOtherUndefined(IncomeType.OTHER)]),
+    };
+    expect(output).toEqual(expected);
+  });
 });
 
 const setUpCcdRecurringIncome = (incomeType : CCDIncomeType) : CCDRecurringIncomeItem => {
