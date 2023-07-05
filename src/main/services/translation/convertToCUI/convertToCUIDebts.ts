@@ -19,7 +19,7 @@ const toCUIDebtsList = (ccdDebtItems: CCDLoanCredit[]): DebtItems[] => {
       return new DebtItems(
         ccdDebtItem.value?.loanCardDebtDetail,
         ccdDebtItem.value?.totalOwed ? (ccdDebtItem.value?.totalOwed/100).toString() : undefined,
-        ccdDebtItem.value?.monthlyPayment ? (ccdDebtItem.value?.monthlyPayment/100).toString() : undefined
+        ccdDebtItem.value?.monthlyPayment ? (ccdDebtItem.value?.monthlyPayment/100).toString() : undefined,
       );
     });
   }
