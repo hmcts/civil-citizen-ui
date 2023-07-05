@@ -4,16 +4,16 @@ import {constructResponseUrlWithIdParams} from '../../common/utils/urlFormatter'
 import {DASHBOARD_URL} from '../urls';
 
 export const languagePreferenceGuard = (req: Request, res: Response, next: NextFunction) => {
-  try {
-    (async () => {
+  (async () => {
+    try {
       const caseData = await getCaseDataFromStore(req.params.id);
       if (caseData.claimBilingualLanguagePreference) {
         res.redirect(constructResponseUrlWithIdParams(req.params.id, DASHBOARD_URL));
       } else {
         next();
       }
-    })();
-  } catch (error) {
-    next(error);
-  }
+    } catch (error) {
+      next(error);
+    }
+  })();
 };
