@@ -1,6 +1,16 @@
-const config =  require('../../config');
-const ResponseSteps  =  require('../features/response/steps/lipDefendantResponseSteps');
-const LoginSteps =  require('../features/home/steps/login');
+const {
+  applicantSolicitorUser,
+  Username,
+  Password,
+  runningEnv,
+  applicantSolicitorUser,
+  defenceType,
+  claimState,
+  judgeUserWithRegionId3,
+  sdoSelectionType
+} = require('../../config');
+const ResponseSteps = require('../features/response/steps/lipDefendantResponseSteps');
+const LoginSteps = require('../features/home/steps/login');
 
 const rejectAll = 'rejectAll';
 const dontWantMoreTime = 'dontWantMoreTime';
@@ -10,8 +20,8 @@ let claimRef;
 Feature('Response with RejectAll');
 
 Before(async ({api}) => {
-  claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
-  await LoginSteps.EnterUserCredentials(config.Username, config.Password);
+  claimRef = await api.createSpecifiedClaim(applicantSolicitorUser);
+  await LoginSteps.EnterUserCredentials(Username, Password);
 });
 
 Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @regression', async ({api}) => {
@@ -27,11 +37,11 @@ Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @regress
   await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, rejectAll);
-  if (['preview', 'demo'  ].includes(config.runningEnv)) {
-    await api.enterBreathingSpace(config.applicantSolicitorUser);
-    await api.liftBreathingSpace(config.applicantSolicitorUser);
-    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAllAlreadyPaid, config.claimState.JUDICIAL_REFERRAL);
-    await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsYes);
+  if (['preview', 'demo'].includes(runningEnv)) {
+    await api.enterBreathingSpace(applicantSolicitorUser);
+    await api.liftBreathingSpace(applicantSolicitorUser);
+    await api.viewAndRespondToDefence(applicantSolicitorUser, defenceType.rejectAllAlreadyPaid, claimState.JUDICIAL_REFERRAL);
+    await api.createSDO(judgeUserWithRegionId3, sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsYes);
   }
 });
 
@@ -47,12 +57,12 @@ Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @regressi
   await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, rejectAll);
-  if (['preview', 'demo'  ].includes(config.runningEnv)) {
-    await api.enterBreathingSpace(config.applicantSolicitorUser);
-    await api.liftBreathingSpace(config.applicantSolicitorUser);
-    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAllDisputeAll, config.claimState.IN_MEDIATION);
+  if (['preview', 'demo'].includes(runningEnv)) {
+    await api.enterBreathingSpace(applicantSolicitorUser);
+    await api.liftBreathingSpace(applicantSolicitorUser);
+    await api.viewAndRespondToDefence(applicantSolicitorUser, defenceType.rejectAllDisputeAll, claimState.IN_MEDIATION);
     //mediation with claimant lr to be replaced with admin after bug CIV-9427
-    await api.mediationUnsuccessful(config.applicantSolicitorUser);
+    await api.mediationUnsuccessful(applicantSolicitorUser);
     //Create sdo in this journey is broken and a bug CIV-9488
     //await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing);
   }
