@@ -4,7 +4,7 @@ import config from 'config';
 import nock from 'nock';
 import {CITIZEN_COURT_ORDERS_URL, ON_TAX_PAYMENTS_URL} from '../../../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../../../utils/mockDraftStore';
+import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../../../utils/mockDraftStore';
 import {YesNo} from '../../../../../../../../main/common/form/models/yesNo';
 
 jest.mock('../../../../../../../../main/modules/oidc');
@@ -22,7 +22,7 @@ describe('on tax payments', () => {
 
   describe('on Get', () => {
     it('should return on tax payment page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await request(app).get(ON_TAX_PAYMENTS_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -40,6 +40,11 @@ describe('on tax payments', () => {
     });
   });
   describe('on Post', () => {
+
+    beforeEach(() => {
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+    });
+
     it('should return error when no option is not selected', async () => {
       await request(app)
         .post(ON_TAX_PAYMENTS_URL)
@@ -105,7 +110,6 @@ describe('on tax payments', () => {
         });
     });
     it('should redirect with valid input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(ON_TAX_PAYMENTS_URL)
         .send({option: YesNo.YES, amountYouOwe: 44.4, reason: 'reason'})

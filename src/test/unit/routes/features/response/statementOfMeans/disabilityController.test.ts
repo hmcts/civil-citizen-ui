@@ -8,7 +8,7 @@ import {
   CITIZEN_SEVERELY_DISABLED_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockCivilClaimOptionNo, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {mockCivilClaimOptionNo, mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -25,7 +25,7 @@ describe('Disability', () => {
 
   describe('on GET', () => {
     it('should return citizen disability page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await request(app)
         .get(CITIZEN_DISABILITY_URL)
         .expect((res) => {
@@ -55,7 +55,7 @@ describe('Disability', () => {
 
   describe('on POST', () => {
     it('should redirect page when "no"', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await request(app)
         .post(CITIZEN_DISABILITY_URL)
         .send('option=no')
@@ -65,7 +65,7 @@ describe('Disability', () => {
         });
     });
     it('should return error on incorrect input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await request(app)
         .post(CITIZEN_DISABILITY_URL)
         .send('')
@@ -85,7 +85,7 @@ describe('Disability', () => {
         });
     });
     it('should redirect page when "yes"', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await request(app)
         .post(CITIZEN_DISABILITY_URL)
         .send('option=yes')

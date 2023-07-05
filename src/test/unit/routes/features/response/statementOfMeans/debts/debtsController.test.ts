@@ -2,7 +2,7 @@ import request from 'supertest';
 import {app} from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {CITIZEN_DEBTS_URL, CITIZEN_MONTHLY_EXPENSES_URL} from 'routes/urls';
+import {CITIZEN_DEBTS_URL, CITIZEN_MONTHLY_EXPENSES_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {
   buildDebtFormNo,
@@ -19,6 +19,8 @@ import {Claim} from 'models/claim';
 import {StatementOfMeans} from 'models/statementOfMeans';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
+import {mockResponseFullAdmitPayBySetDate} from '../../../../../../utils/mockDraftStore';
+import fullAdmitPayBySetDateMock from '../../../../../../utils/mocks/fullAdmitPayBySetDateMock.json';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -62,15 +64,15 @@ describe('Debts', () => {
       });
   });
   describe('on GET', () => {
-    it('should open the debts page when in redis has no data ', async () => {
+    it('should redirect to response task-list page when in redis has no data ', async () => {
       mockGetCaseData.mockImplementation(async () => {
         return new Claim();
       });
       await request(app)
         .get(CITIZEN_DEBTS_URL)
         .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Do you have loans or credit card debts?');
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
     it('should open the debts page when in redis has data with option yes', async () => {
@@ -78,7 +80,7 @@ describe('Debts', () => {
         const claim = new Claim();
         claim.statementOfMeans = new StatementOfMeans();
         claim.statementOfMeans.debts = buildDebtFormYes();
-        return claim;
+        return Object.assign(claim, fullAdmitPayBySetDateMock.case_data);
       });
       await request(app)
         .get(CITIZEN_DEBTS_URL)
@@ -92,7 +94,7 @@ describe('Debts', () => {
         const claim = new Claim();
         claim.statementOfMeans = new StatementOfMeans();
         claim.statementOfMeans.debts = buildDebtFormNo();
-        return claim;
+        return Object.assign(claim, fullAdmitPayBySetDateMock.case_data);
       });
       await request(app)
         .get(CITIZEN_DEBTS_URL)
@@ -104,6 +106,9 @@ describe('Debts', () => {
   });
 
   describe('on POST', () => {
+    beforeEach(() => {
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+    });
     it('should validate when has no option selected', async () => {
       await request(app)
         .post(CITIZEN_DEBTS_URL)
@@ -185,7 +190,7 @@ describe('Debts', () => {
         const claim = new Claim();
         claim.statementOfMeans = new StatementOfMeans();
         claim.statementOfMeans.debts = buildDebtFormYes();
-        return claim;
+        return Object.assign(claim, fullAdmitPayBySetDateMock.case_data);
       });
       await request(app)
         .post(CITIZEN_DEBTS_URL)
@@ -201,7 +206,7 @@ describe('Debts', () => {
         const claim = new Claim();
         claim.statementOfMeans = new StatementOfMeans();
         claim.statementOfMeans.debts = buildDebtFormNo();
-        return claim;
+        return Object.assign(claim, fullAdmitPayBySetDateMock.case_data);
       });
       await request(app)
         .post(CITIZEN_DEBTS_URL)
@@ -217,7 +222,7 @@ describe('Debts', () => {
         const claim = new Claim();
         claim.statementOfMeans = new StatementOfMeans();
         claim.statementOfMeans.debts = buildDebtFormNo();
-        return claim;
+        return Object.assign(claim, fullAdmitPayBySetDateMock.case_data);
       });
       await request(app)
         .post(CITIZEN_DEBTS_URL)
@@ -228,7 +233,7 @@ describe('Debts', () => {
         });
     });
 
-    it('should should redirect to when option is yes but there is no StatementOfMeans on claim', async () => {
+    it('should should redirect to task-lits page when option is yes but there is no StatementOfMeans on claim', async () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
         claim.statementOfMeans = undefined;
@@ -239,17 +244,17 @@ describe('Debts', () => {
         .send(buildDebtFormYesWithEmptyItems())
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_MONTHLY_EXPENSES_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
-    it('should should redirect to monthly expenses when option is yes but claim is undefined', async () => {
+    it('should should redirect to response task-list page when option is yes but claim is undefined', async () => {
       mockGetCaseData.mockImplementation(async () => new Claim());
       await request(app)
         .post(CITIZEN_DEBTS_URL)
         .send(buildDebtFormYesWithEmptyItems())
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_MONTHLY_EXPENSES_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
   });
