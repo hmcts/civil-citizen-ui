@@ -336,7 +336,6 @@ const setUpOtherTransactionInputContentUndefined = (): OtherTransaction => {
   return otherTransaction;
 };
 
-
 const setUpRecurringOutput = (type: CCDExpensesType, frequency :CCDPaymentFrequency): CCDRecurringExpenses => {
   return {
     value: {
