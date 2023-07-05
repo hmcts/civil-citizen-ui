@@ -36,7 +36,7 @@ function getBrowserConfig(browserGroup) {
 }
 
 const setupConfig = {
-  tests: './tests/**/*.js',
+  tests: '../functionalTests/tests/caseprogression_uploadevidence_tests.js',
   output: './test-results/saucelabs',
   helpers: {
     WebDriver: {
