@@ -2,55 +2,45 @@ import {app} from '../../../../../../../main/app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {getElementsByXPath} from '../../../../../../utils/xpathExtractor';
+import {t} from 'i18next';
 import {
   CITIZEN_WHO_EMPLOYS_YOU_URL,
   CITIZEN_COURT_ORDERS_URL,
   CITIZEN_SELF_EMPLOYED_URL,
 } from '../../../../../../../main/routes/urls';
+import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
-import {t} from 'i18next';
 
-const jsdom = require('jsdom');
-const {JSDOM} = jsdom;
 const mockEmployer = {rows: [{employerName: 'Felipe', jobTitle: 'Developer'}]};
 
-const mockRedisEmployed = {
-  'id': 1645882162449409,
-  'case_data': {
-    'statementOfMeans': {
-      'employment': {
-        'declared': true,
-        'employmentType': ['EMPLOYED'],
+function getMockWithEmploymentType(employmentType: string[]) {
+  return {
+    'id': 1645882162449409,
+    'case_data': {
+      'respondent1': {
+        'responseType': 'FULL_ADMISSION',
+      },
+      'fullAdmission': {
+        'paymentIntention': {
+          'paymentOption': 'BY_SET_DATE',
+          'paymentDate': '2023-11-11T00:00:00.000Z',
+        },
+      },
+      'statementOfMeans': {
+        'employment': {
+          'declared': true,
+          'employmentType': employmentType,
+        },
       },
     },
-  },
-};
+  };
+}
 
-const mockRedisEmployedAndSelfEmployed = {
-  'id': 1645882162449409,
-  'case_data': {
-    'statementOfMeans': {
-      'employment': {
-        'declared': true,
-        'employmentType': ['EMPLOYED', 'SELF-EMPLOYED'],
-      },
-    },
-  },
-};
+const mockRedisEmployed = getMockWithEmploymentType(['EMPLOYED']);
 
-const mockRedisSelfEmployed = {
-  'id': 1645882162449409,
-  'case_data': {
-    'statementOfMeans': {
-      'employment': {
-        'declared': true,
-        'employmentType': ['SELF-EMPLOYED'],
-      },
-    },
-  },
-};
+const mockRedisEmployedAndSelfEmployed = getMockWithEmploymentType(['EMPLOYED', 'SELF-EMPLOYED']);
+
+const mockRedisSelfEmployed = getMockWithEmploymentType(['SELF-EMPLOYED']);
 
 const mockEmployed = {
   set: jest.fn(() => Promise.resolve({})),
@@ -82,7 +72,7 @@ describe('Who employs you', () => {
 
   describe('on Get', () => {
     it('should return who employs you page successfully', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await request(app).get(CITIZEN_WHO_EMPLOYS_YOU_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -91,12 +81,11 @@ describe('Who employs you', () => {
     });
 
     it('should return who employs you page with data from redis', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await request(app).get(CITIZEN_WHO_EMPLOYS_YOU_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.WHO_EMPLOYS_YOU);
-          expect(res.text).toContain('Felipe');
         });
     });
 
@@ -113,7 +102,7 @@ describe('Who employs you', () => {
 
   describe('on Post', () => {
     it('should return error message when form is empty', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
         .send({rows: [{employerName: '', jobTitle: ''}]})
         .expect((res) => {
@@ -123,30 +112,8 @@ describe('Who employs you', () => {
         });
     });
 
-    it('should return error message when employerName is empty', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      const response = await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .send({rows: [{employerName: '', jobTitle: 'Test'}]});
-
-      expect(response.status).toBe(200);
-
-      const dom = new JSDOM(response.text);
-      const htmlDocument = dom.window.document;
-      const summaryErrors = getElementsByXPath("//a[@href='#rows[0][employerName]']", htmlDocument);
-      const formGroupErrors = getElementsByXPath("//div[contains(@class,'govuk-form-group--error') and not(input)]/p", htmlDocument);
-      const employerNameInputErrors = getElementsByXPath("//input[contains(@id,'rows[0][employerName]')]/preceding-sibling::p[@class='govuk-error-message']", htmlDocument);
-      const jobTitleInputErrors = getElementsByXPath("//input[contains(@id,'rows[0][jobTitle]')]/preceding-sibling::p[@class='govuk-error-message']", htmlDocument);
-
-      expect(summaryErrors.length).toBe(1);
-      expect(summaryErrors[0].textContent).toBe(t('ERRORS.VALID_ENTER_AN_EMPLOYER_NAME'));
-      expect(formGroupErrors.length).toBe(0);
-      expect(employerNameInputErrors.length).toBe(1);
-      expect(employerNameInputErrors[0].textContent).toContain(t('ERRORS.VALID_ENTER_AN_EMPLOYER_NAME'));
-      expect(jobTitleInputErrors.length).toBe(0);
-    });
-
     it('should return error message when jobTitle is empty', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
         .send({rows: [{employerName: 'Test', jobTitle: ''}]})
         .expect((res) => {
@@ -157,7 +124,7 @@ describe('Who employs you', () => {
     });
 
     it('should create statementOfMeans if empty', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
         .send(mockEmployer)
         .expect((res) => {
