@@ -6,14 +6,14 @@ import {
   CITIZEN_DEPENDANTS_URL,
   CITIZEN_PARTNER_DISABILITY_URL,
   CITIZEN_PARTNER_PENSION_URL,
+  RESPONSE_TASK_LIST_URL,
 } from '../../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {
-  mockCivilClaim,
   mockCivilClaimUndefined,
-  mockNoStatementOfMeans,
   mockCivilClaimOptionNo,
   mockRedisFailure,
+  mockResponseFullAdmitPayBySetDate,
 } from '../../../../../../utils/mockDraftStore';
 import {t} from 'i18next';
 
@@ -32,7 +32,7 @@ describe('Partner Pension', () => {
 
   describe('on GET', () => {
     it('should return citizen partner pension page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await request(app)
         .get(CITIZEN_PARTNER_PENSION_URL)
         .expect((res) => {
@@ -42,7 +42,7 @@ describe('Partner Pension', () => {
     });
 
     it('should show partner pension page when haven´t statementOfMeans', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await request(app)
         .get(CITIZEN_PARTNER_PENSION_URL)
         .send()
@@ -63,18 +63,21 @@ describe('Partner Pension', () => {
   });
 
   describe('on POST', () => {
-    it('should create a new claim if redis gives undefined', async () => {
+    beforeEach(() => {
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+    });
+    it('should redirect to response task list if redis claim is undefined', async () => {
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       await request(app)
         .post(CITIZEN_PARTNER_PENSION_URL)
         .send('option=no')
         .expect((res) => {
           expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
 
     it('should redirect page when "no" and defendant disabled = yes', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PARTNER_PENSION_URL)
         .send('option=no')
@@ -107,7 +110,6 @@ describe('Partner Pension', () => {
     });
 
     it('should redirect page when "yes" and defendant disabled = yes', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PARTNER_PENSION_URL)
         .send('option=yes')
@@ -118,7 +120,6 @@ describe('Partner Pension', () => {
     });
 
     it('should return error on incorrect input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PARTNER_PENSION_URL)
         .send('')
@@ -129,7 +130,6 @@ describe('Partner Pension', () => {
     });
 
     it('should redirect partner disability page when "no" and haven´t statementOfMeans', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
       await request(app)
         .post(CITIZEN_PARTNER_PENSION_URL)
         .send('option=no')
