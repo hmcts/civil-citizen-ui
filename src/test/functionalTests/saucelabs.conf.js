@@ -1,4 +1,4 @@
-const testConfig = require('./config.js');
+const testConfig = require('../config');
 const supportedBrowsers = require('./supportedBrowsers');
 const testUrl = process.env.TEST_URL || 'http://localhost:3001';
 
