@@ -19,7 +19,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('No response submitted, date agreed upon request time  @citizenUI @admitAll @disabled', async () => {
+Scenario('No response submitted, date agreed upon request time  @citizenUI @admitAll @regression', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, iHaveAlreadyAgreedMoretime);
   await ResponseSteps.DefendantSummaryPage(claimRef);
