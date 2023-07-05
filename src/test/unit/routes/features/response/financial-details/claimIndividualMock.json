@@ -36,7 +36,14 @@
           "addressLine1": "44 Thoday Street"
         }
       },
-      "partyTypeDisplayValue": "Individual"
+      "partyTypeDisplayValue": "Individual",
+      "responseType": "FULL_ADMISSION"
+    },
+    "fullAdmission": {
+      "paymentIntention": {
+        "paymentOption": "BY_SET_DATE",
+        "paymentDate": "2023-11-11T00:00:00.000Z"
+      }
     },
     "applicantSolicitor1PbaAccounts": {
       "value": {
