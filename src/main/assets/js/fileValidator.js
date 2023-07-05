@@ -44,7 +44,7 @@ async function handleChange(event) {
   removeErrors(event);
   const csrfToken = document.getElementsByName('_csrf')[0].value;
   const formData = new FormData();
-  formData.append('file', target.files[0]); // Assuming you have an input element with type="file" and id="fileInput"
+  formData.append('file', target.files[0]);
 
   const options = {
     method: 'POST',

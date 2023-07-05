@@ -9,16 +9,18 @@ import {CaseDocument} from 'models/document/caseDocument';
 import {AppRequest} from 'models/AppRequest';
 
 const multer = require('multer');
+const fileSize = Infinity;
+
 const storage = multer.memoryStorage({
   limits: {
-    fileSize: 100 * 1024 * 1024,
+    fileSize: fileSize,
   },
 });
 
 const upload = multer({
   storage: storage,
   limits: {
-    fileSize: 100 * 1024 * 1024, // 100 MB
+    fileSize: fileSize,
   },
 });
 
