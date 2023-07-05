@@ -68,6 +68,7 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
         caseDocument: '',
         classes: '',
         errorMessage: '',
+        documentName: '',
       },
     });
 
