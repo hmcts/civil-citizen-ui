@@ -4,7 +4,6 @@ import {
   buildEvidenceUploadSection, buildHearingTrialLatestUploadSection, buildNewUploadSection,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/latestUpdateContentBuilderCaseProgression';
 import {checkEvidenceUploadTime} from 'common/utils/dateUtils';
-import {UploadDocuments, UploadDocumentTypes} from 'models/caseProgression/uploadDocumentsType';
 
 export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : ClaimSummaryContent[] => {
   const sectionContent = [];
@@ -20,35 +19,10 @@ export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : Cl
 
 export const checkEvidenceUploaded = (claim: Claim, isClaimant: boolean): boolean => {
   if(isClaimant){
-    return checkEvidenceUploadedByOtherParty(claim.caseProgression?.defendantUploadDocuments);
+    return checkEvidenceUploadTime(claim.caseProgression?.defendantLastUploadDate);
   }else {
-    return checkEvidenceUploadedByOtherParty(claim.caseProgression?.claimantUploadDocuments);
+    return checkEvidenceUploadTime(claim.caseProgression?.claimantLastUploadDate);
   }
-};
-
-const checkEvidenceUploadedByOtherParty = (uploadedDocuments: UploadDocuments): boolean => {
-  let isNew = false;
-  const documents = [] as UploadDocumentTypes[][];
-  documents.push(uploadedDocuments.disclosure);
-  documents.push(uploadedDocuments.witness);
-  documents.push(uploadedDocuments.expert);
-  documents.push(uploadedDocuments.trial);
-
-  for(const documentList of documents){
-    for(const document of documentList){
-      if(checkEvidenceUploadTime(document.caseDocument?.createdDatetime))
-      {
-        isNew = true;
-        break;
-      }
-    }
-
-    if(isNew.valueOf() == true){
-      break;
-    }
-  }
-
-  return isNew;
 };
 
 export const getNewUploadLatestUpdateContent = (claim: Claim): ClaimSummarySection[][] => {

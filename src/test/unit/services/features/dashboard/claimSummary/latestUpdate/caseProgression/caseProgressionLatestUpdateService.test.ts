@@ -48,13 +48,21 @@ describe('Case Progression Latest Update Content service', () => {
     expect(hearingUploadSectionResult[0][0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.TRIAL_HEARING_CONTENT.YOUR_HEARING_TITLE');
   });
 
-  it('getCaseProgressionLatestUpdates: should return hearing notice and evidence upload contents', () => {
+  it('getCaseProgressionLatestUpdates: should return hearing notice and evidence upload contents, but not new upload contents', () => {
     //Given:
+    jest
+      .useFakeTimers()
+      .setSystemTime(new Date('2020-01-02T17:59'));
+
     claimWithSdo.caseProgressionHearing = getCaseProgressionHearingMock();
+
     const claimWithSdoAndHearing = {
       ...claimWithSdo,
       hasCaseProgressionHearingDocuments: () => true,
       hasSdoOrderDocument: () => true,
+      caseProgression: {
+        claimantLastUploadDate: new Date('2020-01-01T18:00'),
+      },
     };
 
     //When
@@ -65,5 +73,32 @@ describe('Case Progression Latest Update Content service', () => {
     expect(result[0].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.TRIAL_HEARING_CONTENT.YOUR_HEARING_TITLE');
     expect(result[1].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
     expect(result[1].contentSections.length).toEqual(6);
+  });
+
+  it('getCaseProgressionLatestUpdates: should return hearing notice, evidence upload, and new upload contents', () => {
+    //Given:
+    jest
+      .useFakeTimers()
+      .setSystemTime(new Date('2020-01-02T17:59'));
+    claimWithSdo.caseProgressionHearing = getCaseProgressionHearingMock();
+
+    const claimWithSdoAndHearing = {
+      ...claimWithSdo,
+      hasCaseProgressionHearingDocuments: () => true,
+      hasSdoOrderDocument: () => true,
+      caseProgression: {
+        claimantLastUploadDate: new Date('2020-01-01T17:59'),
+      },
+    };
+
+    //When
+    const result = getCaseProgressionLatestUpdates(claimWithSdoAndHearing, 'en');
+
+    //Then
+    expect(result.length).toEqual(3);
+    expect(result[0].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.NEW_UPLOAD.TITLE');
+    expect(result[1].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.TRIAL_HEARING_CONTENT.YOUR_HEARING_TITLE');
+    expect(result[2].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
+    expect(result[2].contentSections.length).toEqual(6);
   });
 });
