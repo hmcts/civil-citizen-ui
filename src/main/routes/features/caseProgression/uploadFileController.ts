@@ -29,27 +29,29 @@ const uploadFileController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
 
-uploadFileController.post(CP_UPLOAD_FILE, upload.single('file'), async (req, res) => {
-  try {
-    const uploadDocumentsForm = TypeOfDocumentSectionMapper.mapToSingleFile(req);
-    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+uploadFileController.post(CP_UPLOAD_FILE, upload.single('file'), (req, res) => {
+  (async () => {
+    try {
+      const uploadDocumentsForm = TypeOfDocumentSectionMapper.mapToSingleFile(req);
+      const lang = req.query.lang ? req.query.lang : req.cookies.lang;
 
-    const form = new GenericForm(uploadDocumentsForm);
-    form.validateSync();
-    if (form.hasErrors()) {
-      res.status(400).json({
-        errors: form.getAllErrors().map(error => t(error.text, lang)),
+      const form = new GenericForm(uploadDocumentsForm);
+      form.validateSync();
+      if (form.hasErrors()) {
+        res.status(400).json({
+          errors: form.getAllErrors().map(error => t(error.text, lang)),
+        });
+
+      } else {
+        const document: CaseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, uploadDocumentsForm);
+        res.status(200).json(document);
+      }
+    } catch (error) {
+      res.status(500).json({
+        errors: error.message,
       });
-
-    } else {
-      const document: CaseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, uploadDocumentsForm);
-      res.status(200).json(document);
     }
-  } catch (error) {
-    res.status(500).json({
-      errors: error.message,
-    });
-  }
+  })();
 });
 
 export default uploadFileController;
