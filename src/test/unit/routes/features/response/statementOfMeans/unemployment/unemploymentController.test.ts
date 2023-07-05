@@ -2,15 +2,14 @@ import {app} from '../../../../../../../main/app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {CITIZEN_COURT_ORDERS_URL, CITIZEN_UNEMPLOYED_URL} from 'routes/urls';
+import {CITIZEN_COURT_ORDERS_URL, CITIZEN_UNEMPLOYED_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {
-  mockCivilClaim,
   mockCivilClaimOptionNo,
   mockCivilClaimUndefined,
-  mockNoStatementOfMeans,
   mockCivilClaimUnemploymentRetired,
   mockCivilClaimUnemploymentOther,
   mockRedisFailure,
+  mockResponseFullAdmitPayBySetDate,
 } from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
@@ -29,7 +28,7 @@ describe('Unemployment', () => {
 
   describe('on Get', () => {
     it('should return unemployment page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await request(app).get(CITIZEN_UNEMPLOYED_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -37,19 +36,19 @@ describe('Unemployment', () => {
         });
     });
     it('should return unemployment page successfully without statementofmeans', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await request(app).get(CITIZEN_UNEMPLOYED_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Are you unemployed or retired?');
         });
     });
-    it('should return unemployment page successfully without claim', async () => {
+    it('should redirect to response task-list page without claim', async () => {
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       await request(app).get(CITIZEN_UNEMPLOYED_URL)
         .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Are you unemployed or retired?');
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
     it('should return unemployment page successfully without unemployment', async () => {
@@ -87,6 +86,9 @@ describe('Unemployment', () => {
     });
   });
   describe('on Post', () => {
+    beforeEach(() => {
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+    });
     it('should return error message when any option is selected', async () => {
       await request(app).post(CITIZEN_UNEMPLOYED_URL)
         .send()
@@ -98,7 +100,6 @@ describe('Unemployment', () => {
     });
 
     it('should redirect to court page option Retired is selected and without statementofmeans', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
       await request(app).post(CITIZEN_UNEMPLOYED_URL)
         .send({option: 'Retired'})
         .expect((res) => {
@@ -107,7 +108,6 @@ describe('Unemployment', () => {
         });
     });
     it('should redirect to court page option Retired is selected', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app).post(CITIZEN_UNEMPLOYED_URL)
         .send({option: 'Retired'})
         .expect((res) => {
@@ -115,17 +115,16 @@ describe('Unemployment', () => {
           expect(res.header.location).toEqual(CITIZEN_COURT_ORDERS_URL);
         });
     });
-    it('should redirect to court page option Retired is selected without claim data in redis', async () => {
+    it('should redirect to response task-list page option Retired is selected without claim data in redis', async () => {
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       await request(app).post(CITIZEN_UNEMPLOYED_URL)
         .send({option: 'Retired'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_COURT_ORDERS_URL);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
     it('should return error message when option Other is selected and detail is empty', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app).post(CITIZEN_UNEMPLOYED_URL)
         .send({option: 'Other'})
         .expect((res) => {
@@ -135,7 +134,6 @@ describe('Unemployment', () => {
         });
     });
     it('should return error message when option Other is selected and detail is has details', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app).post(CITIZEN_UNEMPLOYED_URL)
         .send({option: 'Other', details: 'Test'})
         .expect((res) => {
@@ -144,7 +142,6 @@ describe('Unemployment', () => {
         });
     });
     it('should return error message when option Unemployed is selected and has year and month', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app).post(CITIZEN_UNEMPLOYED_URL)
         .send({option: 'Unemployed', years: '5', months: '1'})
         .expect((res) => {
@@ -153,7 +150,6 @@ describe('Unemployment', () => {
         });
     });
     it('should return error message when option Unemployed is selected and year and month are empty', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app).post(CITIZEN_UNEMPLOYED_URL)
         .send({option: 'Unemployed'})
         .expect((res) => {
@@ -163,7 +159,6 @@ describe('Unemployment', () => {
         });
     });
     it('should return error message when option Unemployed is selected and year is greater than 80', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app).post(CITIZEN_UNEMPLOYED_URL)
         .send({option: 'Unemployed', years: '150', months: '1'})
         .expect((res) => {
@@ -173,7 +168,6 @@ describe('Unemployment', () => {
         });
     });
     it('should return error message when option Unemployed is selected and month is greater than 11', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app).post(CITIZEN_UNEMPLOYED_URL)
         .send({option: 'Unemployed', years: '1', months: '12'})
         .expect((res) => {
