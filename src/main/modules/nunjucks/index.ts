@@ -36,8 +36,11 @@ import {CourtProposedPlanOptions} from 'common/form/models/claimantResponse/cour
 import {ClaimResponseStatus} from 'common/models/claimResponseStatus';
 import {UnavailableDateType} from 'common/models/directionsQuestionnaire/hearing/unavailableDates';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import config from 'config';
 
 const packageDotJson = require('../../../../package.json');
+
+const moneyClaimBaseUrl = config.get<string>('services.cmc.url');
 
 const appAssetPaths = {
   js: '/js',
@@ -143,6 +146,10 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('today', new Date());
     nunjucksEnv.addGlobal('nextMonth', nextMonth);
     nunjucksEnv.addGlobal('PaymentOptionType', PaymentOptionType);
+    nunjucksEnv.addGlobal('ContactUsUrl', `${moneyClaimBaseUrl}/contact-us`);
+    nunjucksEnv.addGlobal('AccessibilityStatementUrl', `${moneyClaimBaseUrl}/accessibility-statement`);
+    nunjucksEnv.addGlobal('TermsAndConditionsUrl', `${moneyClaimBaseUrl}/terms-and-conditions`);
+    nunjucksEnv.addGlobal('PrivacyPolicyUrl', `${moneyClaimBaseUrl}/privacy-policy`);
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;
