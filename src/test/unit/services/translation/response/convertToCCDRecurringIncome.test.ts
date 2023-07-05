@@ -195,7 +195,7 @@ const setUpRecurringOutput = (type: CCDIncomeType, frequency :CCDPaymentFrequenc
     value: {
       type: type,
       typeOtherDetails: undefined,
-      amount: Number(1),
+      amount: Number(100),
       frequency: frequency,
     },
   };
@@ -206,7 +206,7 @@ const setUpOtherRecurringOutput = (type: CCDIncomeType, frequency :CCDPaymentFre
     value: {
       type: type,
       typeOtherDetails: 'test',
-      amount: Number(1),
+      amount: Number(100),
       frequency: frequency,
     },
   };

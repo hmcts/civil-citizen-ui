@@ -98,7 +98,7 @@ const setUpCcdRecurringExpenses = (expenseType : CCDExpensesType) : CCDRecurring
   return {
     type: expenseType,
     typeOtherDetails: undefined,
-    amount: 100,
+    amount: 10000,
     frequency: CCDPaymentFrequency.ONCE_ONE_WEEK,
   };
 };
@@ -107,7 +107,7 @@ const setUpCcdRecurringOtherExpenses = (expenseType : CCDExpensesType) : CCDRecu
   return {
     type: expenseType,
     typeOtherDetails: 'test',
-    amount: 100,
+    amount: 10000,
     frequency: CCDPaymentFrequency.ONCE_ONE_WEEK,
   };
 };

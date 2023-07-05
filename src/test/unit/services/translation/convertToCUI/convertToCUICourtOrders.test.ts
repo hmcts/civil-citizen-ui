@@ -19,8 +19,8 @@ describe('translate Court Orders to CUI model', () => {
       {
         id: '1',
         value: {
-          amountOwed: 100,
-          monthlyInstalmentAmount: 100,
+          amountOwed: 10000,
+          monthlyInstalmentAmount: 10000,
           claimNumberText: 'test',
         },
       },

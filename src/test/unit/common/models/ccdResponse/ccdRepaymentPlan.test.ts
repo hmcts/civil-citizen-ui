@@ -42,7 +42,7 @@ describe('translate repayment plan to ccd', ()=> {
     const ccdRepaymentPlan = toCCDRepaymentPlan(repaymentPlan);
     //Then
     expect(ccdRepaymentPlan.firstRepaymentDate).toBe(repaymentPlan.firstRepaymentDate);
-    expect(ccdRepaymentPlan.paymentAmount).toBe(repaymentPlan.paymentAmount);
+    expect(ccdRepaymentPlan.paymentAmount).toBe(repaymentPlan.paymentAmount*100);
   });
 });
 

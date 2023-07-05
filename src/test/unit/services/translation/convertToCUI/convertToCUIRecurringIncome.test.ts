@@ -89,7 +89,7 @@ const setUpCcdRecurringIncome = (incomeType : CCDIncomeType) : CCDRecurringIncom
   return {
     type: incomeType,
     typeOtherDetails: undefined,
-    amount: 100,
+    amount: 10000,
     frequency: CCDPaymentFrequency.ONCE_ONE_WEEK,
   };
 };
@@ -98,7 +98,7 @@ const setUpCcdRecurringOtherIncome = (incomeType : CCDIncomeType) : CCDRecurring
   return {
     type: incomeType,
     typeOtherDetails: 'test',
-    amount: 100,
+    amount: 10000,
     frequency: CCDPaymentFrequency.ONCE_ONE_WEEK,
   };
 };

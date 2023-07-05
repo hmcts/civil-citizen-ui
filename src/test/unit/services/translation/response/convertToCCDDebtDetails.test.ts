@@ -115,7 +115,7 @@ const setUpDebtDetailsItem = (debtType: CCDDebtType, frequency: CCDPaymentFreque
   const ccdDebtDetails: CCDDebtDetailsList = {
     value: {
       debtType: debtType,
-      paymentAmount: Number('1'),
+      paymentAmount: Number('100'),
       paymentFrequency: frequency,
     },
   };

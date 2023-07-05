@@ -23,7 +23,7 @@ describe('translate Court Orders to CCD model', () => {
 
   it('should return value if there is input', () => {
     //Given
-    const courtOrderItem = new CourtOrder(123, 123,'test');
+    const courtOrderItem = new CourtOrder(1, 1,'test');
     const courtOrder : CourtOrder[] = [
       courtOrderItem,
     ];
@@ -31,8 +31,8 @@ describe('translate Court Orders to CCD model', () => {
     const expected : CCDCourtOrders[] = [{
       value: {
         claimNumberText: 'test',
-        amountOwed: 123,
-        monthlyInstalmentAmount: 123,
+        amountOwed: 100,
+        monthlyInstalmentAmount: 100,
       },
     }];
     //When

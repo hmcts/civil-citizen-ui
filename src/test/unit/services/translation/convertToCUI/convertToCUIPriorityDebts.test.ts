@@ -130,7 +130,7 @@ describe('translate Priority Debts to CUI model', () => {
 const setUpCcdPriorityDebts = (debtType : CCDDebtType) : CCDDebtDetailsItem => {
   return {
     debtType: debtType,
-    paymentAmount: 100,
+    paymentAmount: 10000,
     paymentFrequency: CCDPaymentFrequency.ONCE_ONE_WEEK,
   };
 };

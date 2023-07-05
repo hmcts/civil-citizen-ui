@@ -20,8 +20,8 @@ describe('translate Debts to CUI model', () => {
         id: '1',
         value: {
           loanCardDebtDetail: 'test',
-          totalOwed: 100,
-          monthlyPayment: 100,
+          totalOwed: 10000,
+          monthlyPayment: 10000,
         },
       },
     ];

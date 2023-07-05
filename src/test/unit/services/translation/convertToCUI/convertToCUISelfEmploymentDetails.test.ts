@@ -15,7 +15,7 @@ describe('translate Self Employment Details to CUI model', () => {
     //Given
     const input : CCDSelfEmploymentDetails = {
       jobTitle: 'test',
-      annualTurnover: 100,
+      annualTurnover: 10000,
     };
     //When
     const output = toCUISelfEmploymentDetails(input);

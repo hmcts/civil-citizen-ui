@@ -37,9 +37,9 @@ describe('translate self employment details to CCD model', () => {
 
     const expected: CCDSelfEmploymentDetails = {
       jobTitle: 'test',
-      annualTurnover: Number(1),
+      annualTurnover: Number(100),
       isBehindOnTaxPayment: YesNoUpperCamelCase.YES,
-      amountOwed: Number(2),
+      amountOwed: Number(200),
       reason: 'test',
     };
     //When
@@ -63,7 +63,7 @@ describe('translate self employment details to CCD model', () => {
 
     const expected: CCDSelfEmploymentDetails = {
       jobTitle: 'test',
-      annualTurnover: Number(1),
+      annualTurnover: Number(100),
       isBehindOnTaxPayment: YesNoUpperCamelCase.NO,
       amountOwed: undefined,
       reason: undefined,

@@ -16,7 +16,7 @@ describe('translate Self Employment Tax Payment to CUI model', () => {
     //Given
     const input : CCDSelfEmploymentDetails = {
       isBehindOnTaxPayment: YesNoUpperCamelCase.YES,
-      amountOwed: 100,
+      amountOwed: 10000,
       reason: 'test',
     };
     //When

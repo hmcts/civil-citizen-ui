@@ -7,7 +7,7 @@ export const toCUISelfEmploymentTaxPayment = (selfEmploymentDetails: CCDSelfEmpl
   {
     return {
       owed: toCUIBoolean(selfEmploymentDetails.isBehindOnTaxPayment),
-      amountOwed: selfEmploymentDetails.amountOwed/100,
+      amountOwed: selfEmploymentDetails.amountOwed? selfEmploymentDetails.amountOwed/100 : undefined,
       reason: selfEmploymentDetails.reason,
     };
   }

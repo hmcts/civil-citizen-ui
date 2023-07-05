@@ -44,7 +44,7 @@ const toCCDDebtDetailsItem = (transactionSource: TransactionSource, debtType: CC
   const ccdDebtDetails: CCDDebtDetailsList = {
     value: {
       debtType: debtType,
-      paymentAmount: transactionSource?.amount*100,
+      paymentAmount: transactionSource?.amount ? transactionSource?.amount*100 : undefined,
       paymentFrequency: toCCDPaymentFrequency(transactionSource?.schedule),
     },
   };
