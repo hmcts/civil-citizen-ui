@@ -119,6 +119,46 @@ describe('translate Recurring Expenses to CUI model', () => {
     };
     expect(output).toEqual(expected);
   });
+
+  it('should return undefined data if Recurring Expense details data is undefined', () => {
+    //Given
+    const input : CCDRecurringExpenses[] = [
+      { value : setUpCcdRecurringOtherExpensesValueUndefined(CCDExpensesType.MORTGAGE)},
+      { value : setUpCcdRecurringOtherExpensesValueUndefined(CCDExpensesType.RENT)},
+      { value : setUpCcdRecurringOtherExpensesValueUndefined(CCDExpensesType.COUNCIL_TAX)},
+      { value : setUpCcdRecurringOtherExpensesValueUndefined(CCDExpensesType.GAS)},
+      { value : setUpCcdRecurringOtherExpensesValueUndefined(CCDExpensesType.ELECTRICITY)},
+      { value : setUpCcdRecurringOtherExpensesValueUndefined(CCDExpensesType.WATER)},
+      { value : setUpCcdRecurringOtherExpensesValueUndefined(CCDExpensesType.TRAVEL)},
+      { value : setUpCcdRecurringOtherExpensesValueUndefined(CCDExpensesType.SCHOOL)},
+      { value : setUpCcdRecurringOtherExpensesValueUndefined(CCDExpensesType.FOOD)},
+      { value : setUpCcdRecurringOtherExpensesValueUndefined(CCDExpensesType.TV)},
+      { value : setUpCcdRecurringOtherExpensesValueUndefined(CCDExpensesType.HIRE_PURCHASE)},
+      { value : setUpCcdRecurringOtherExpensesValueUndefined(CCDExpensesType.MOBILE_PHONE)},
+      { value : setUpCcdRecurringOtherExpensesValueUndefined(CCDExpensesType.MAINTENANCE)},
+      { value : setUpCcdRecurringOtherExpensesValueUndefined(CCDExpensesType.OTHER)},
+    ];
+    //When
+    const output = toCUIRecurringExpense(input);
+    //Then
+    const expected : RegularExpenses= {
+      mortgage: new Transaction(true, setUpTransactionSourceValueUndefined(ExpenseType.MORTGAGE)),
+      rent: new Transaction(true, setUpTransactionSourceValueUndefined(ExpenseType.RENT)),
+      councilTax: new Transaction(true, setUpTransactionSourceValueUndefined(ExpenseType.COUNCIL_TAX)),
+      gas: new Transaction(true, setUpTransactionSourceValueUndefined(ExpenseType.GAS)),
+      electricity: new Transaction(true, setUpTransactionSourceValueUndefined(ExpenseType.ELECTRICITY)),
+      water: new Transaction(true, setUpTransactionSourceValueUndefined(ExpenseType.WATER)),
+      travel: new Transaction(true, setUpTransactionSourceValueUndefined(ExpenseType.TRAVEL)),
+      schoolCosts: new Transaction(true, setUpTransactionSourceValueUndefined(ExpenseType.SCHOOL_COSTS)),
+      foodAndHousekeeping: new Transaction(true, setUpTransactionSourceValueUndefined(ExpenseType.FOOD_HOUSEKEEPING)),
+      tvAndBroadband: new Transaction(true, setUpTransactionSourceValueUndefined(ExpenseType.TV_AND_BROADBAND)),
+      hirePurchase: new Transaction(true, setUpTransactionSourceValueUndefined(ExpenseType.HIRE_PURCHASES)),
+      mobilePhone: new Transaction(true, setUpTransactionSourceValueUndefined(ExpenseType.MOBILE_PHONE)),
+      maintenance: new Transaction(true, setUpTransactionSourceValueUndefined(ExpenseType.MAINTENANCE_PAYMENTS)),
+      other: new OtherTransaction(true, [setUpTransactionSourceOtherValueUndefined()]),
+    };
+    expect(output).toEqual(expected);
+  });
 });
 
 const setUpCcdRecurringExpenses = (expenseType : CCDExpensesType) : CCDRecurringExpensesItem => {
@@ -136,6 +176,15 @@ const setUpCcdRecurringOtherExpenses = (expenseType : CCDExpensesType) : CCDRecu
     typeOtherDetails: 'test',
     amount: 10000,
     frequency: CCDPaymentFrequency.ONCE_ONE_WEEK,
+  };
+};
+
+const setUpCcdRecurringOtherExpensesValueUndefined = (expenseType : CCDExpensesType) : CCDRecurringExpensesItem => {
+  return {
+    type: expenseType,
+    typeOtherDetails: undefined,
+    amount: undefined,
+    frequency: undefined,
   };
 };
 
@@ -184,6 +233,18 @@ const setUpTransactionSourceUndefined = (expenseType : ExpenseType) : Transactio
   );
 };
 
+const setUpTransactionSourceValueUndefined = (expenseType : ExpenseType) : TransactionSource => {
+  return new TransactionSource(
+    {
+      name : expenseType,
+      amount : undefined,
+      schedule : undefined,
+      isIncome : false,
+      nameRequired : undefined,
+    },
+  );
+};
+
 const setUpTransactionSourceOtherUndefined = () : TransactionSource => {
   return new TransactionSource(
     {
@@ -195,3 +256,16 @@ const setUpTransactionSourceOtherUndefined = () : TransactionSource => {
     },
   );
 };
+
+const setUpTransactionSourceOtherValueUndefined = () : TransactionSource => {
+  return new TransactionSource(
+    {
+      name : undefined,
+      amount : undefined,
+      schedule : undefined,
+      isIncome : false,
+      nameRequired : true,
+    },
+  );
+};
+
