@@ -5,9 +5,9 @@ import {toCCDYesNoFromBoolean} from 'services/translation/response/convertToCCDY
 export const toCCDSelfEmploymentDetails = (statementOfMeans: StatementOfMeans): CCDSelfEmploymentDetails => {
   return {
     jobTitle: statementOfMeans?.selfEmployedAs?.jobTitle,
-    annualTurnover: statementOfMeans?.selfEmployedAs?.annualTurnover ? statementOfMeans?.selfEmployedAs?.annualTurnover*100 : undefined,
+    annualTurnover: statementOfMeans?.selfEmployedAs?.annualTurnover ? statementOfMeans.selfEmployedAs.annualTurnover*100 : undefined,
     isBehindOnTaxPayment: toCCDYesNoFromBoolean(statementOfMeans?.taxPayments?.owed),
-    amountOwed: statementOfMeans?.taxPayments?.amountOwed ? statementOfMeans?.taxPayments?.amountOwed*100 : undefined,
+    amountOwed: statementOfMeans?.taxPayments?.amountOwed ? statementOfMeans.taxPayments.amountOwed*100 : undefined,
     reason: statementOfMeans?.taxPayments?.reason,
   };
 };

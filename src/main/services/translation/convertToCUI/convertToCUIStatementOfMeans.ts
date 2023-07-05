@@ -31,7 +31,7 @@ export const toCUIStatementOfMeans = (ccdClaim: CCDClaim): StatementOfMeans => {
   statementOfMeans.partnerSevereDisability = toCUIGenericYesNo(ccdClaim.respondent1LiPFinancialDetails?.partnerSevereDisabilityLiP);
   statementOfMeans.dependants = toCUIDependents(ccdClaim.respondent1PartnerAndDependent);
   statementOfMeans.childrenDisability = toCUIGenericYesNo(ccdClaim.respondent1PartnerAndDependent?.receiveDisabilityPayments);
-  statementOfMeans.numberOfChildrenLivingWithYou = ccdClaim.respondent1LiPFinancialDetails?.childrenEducationLiP ? Number(ccdClaim.respondent1LiPFinancialDetails?.childrenEducationLiP) : undefined;
+  statementOfMeans.numberOfChildrenLivingWithYou = ccdClaim.respondent1LiPFinancialDetails?.childrenEducationLiP ? Number(ccdClaim.respondent1LiPFinancialDetails.childrenEducationLiP) : undefined;
   statementOfMeans.otherDependants = toCUIOtherDependents(ccdClaim.respondent1PartnerAndDependent);
   statementOfMeans.employment = toCUIEmployment(ccdClaim.defenceAdmitPartEmploymentTypeRequired, ccdClaim.respondToClaimAdmitPartEmploymentTypeLRspec);
   statementOfMeans.employers = toCUIEmploymentDetails(ccdClaim.responseClaimAdmitPartEmployer);
