@@ -6,6 +6,7 @@ import {t} from 'i18next';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import Module from 'module';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 const session = require('supertest-session');
 const testSession = session(app);
 const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -46,6 +47,7 @@ describe('"upload your documents" page test', () => {
   describe('on GET', () => {
     it('should return expected page when claim exists', async () => {
       //Given
+      app.locals.draftStoreClient = mockCivilClaim;
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claim);
@@ -61,6 +63,7 @@ describe('"upload your documents" page test', () => {
 
     it('should return "Something went wrong" page when claim does not exist', async () => {
       //Given
+      app.locals.draftStoreClient = mockRedisFailure;
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + '1111')
         .reply(404, null);
