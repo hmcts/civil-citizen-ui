@@ -13,7 +13,7 @@ const citizenBankAccountsViewPath = 'features/response/statementOfMeans/citizenB
 const bankAccountsController = Router();
 const bankAccountService = new BankAccountService();
 
-function renderView(form: GenericForm<BankAccounts>, bankAccountDropDownItems: BankAccountTypes,  res: Response): void {
+function renderView(form: GenericForm<BankAccounts>, bankAccountDropDownItems: BankAccountTypes, res: Response): void {
   res.render(citizenBankAccountsViewPath, {form, bankAccountDropDownItems});
 }
 
@@ -22,14 +22,14 @@ bankAccountsController.get(CITIZEN_BANK_ACCOUNT_URL, async (req, res) => {
   renderView(new GenericForm(bankAccounts), new BankAccountTypes(), res);
 });
 
-bankAccountsController.post(CITIZEN_BANK_ACCOUNT_URL,  async(req, res) => {
+bankAccountsController.post(CITIZEN_BANK_ACCOUNT_URL, async (req, res) => {
   const claimId = req.params.id;
   const bankAccounts = new BankAccounts(req.body.accounts.map((bankAccount: BankAccount) =>
     new BankAccount(bankAccount.typeOfAccount, bankAccount.joint, bankAccount.balance)));
   const form = new GenericForm<BankAccounts>(bankAccounts);
   form.validateSync();
 
-  if(form.hasErrors()) {
+  if (form.hasErrors()) {
     renderView(form, new BankAccountTypes(), res);
   } else {
     await bankAccountService.saveBankAccounts(claimId, bankAccounts);
