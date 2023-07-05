@@ -3,7 +3,6 @@ const {
   Username,
   Password,
   runningEnv,
-  applicantSolicitorUser,
   defenceType,
   claimState,
   judgeUserWithRegionId3,
