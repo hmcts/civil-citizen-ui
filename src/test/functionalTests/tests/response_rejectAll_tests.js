@@ -6,7 +6,7 @@ const {
   defenceType,
   claimState,
   judgeUserWithRegionId3,
-  sdoSelectionType
+  sdoSelectionType,
 } = require('../../config');
 const ResponseSteps = require('../features/response/steps/lipDefendantResponseSteps');
 const LoginSteps = require('../features/home/steps/login');
