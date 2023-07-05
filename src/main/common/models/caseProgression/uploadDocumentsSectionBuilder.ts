@@ -53,6 +53,7 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
         index: index,
         errorMessage: errorMessage,
         caseDocument: caseDocument ? JSON.stringify(caseDocument) : '',
+        documentName: caseDocument ? caseDocument.documentName : '',
       },
     });
     this._claimSummarySections.push(section);

@@ -17,4 +17,16 @@
       errorMessage.classList.add('govuk-form-group');
       errorMessage.classList.remove('govuk-form-group--error');
     });
+
+  if (window.location.href.includes('upload-documents')) {
+    //remove document name on new Add
+    const parentDiv = addButton.closest('[data-module="moj-add-another"]');
+    if (parentDiv) {
+      setTimeout(() => {
+        const documentName = parentDiv.querySelectorAll('.documentName');
+        const lastDocumentName = documentName[documentName.length - 1];
+        lastDocumentName.textContent = '';
+      }, 200);
+    }
+  }
 }));

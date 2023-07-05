@@ -211,7 +211,7 @@
            classes: 'uploadFile govuk-!-width-three-half '+content.data.classes,
            value: content.data.value,
            label: {
-             html: '<strong>'+t(content.data.text)+'</strong><hr class="govuk-section-break--s govuk-section-break--visible">'
+             html: '<strong>'+t(content.data.text)+'</strong><p class="documentName">'+content.data.documentName+'</p><hr class="govuk-section-break--s govuk-section-break--visible">'
            },
            errorMessage: { text: t(content.data.errorMessage) } if content.data.errorMessage,
            attributes: {
