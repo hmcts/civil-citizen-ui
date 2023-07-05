@@ -25,6 +25,12 @@
         }
       }
     ],
+    "fullAdmission": {
+      "paymentIntention": {
+        "paymentOption": "BY_SET_DATE",
+        "paymentDate": "2023-11-11T00:00:00.000Z"
+      }
+    },
     "respondent1": {
       "partyDetails": {
         "individualFirstName": "Jane",
@@ -35,7 +41,8 @@
           "addressLine1": "44 Thoday Street"
         }
       },
-      "partyTypeDisplayValue": "Individual"
+      "partyTypeDisplayValue": "Individual",
+      "responseType": "FULL_ADMISSION"
     },
     "applicantSolicitor1PbaAccounts": {
       "value": {

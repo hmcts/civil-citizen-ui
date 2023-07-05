@@ -2,10 +2,14 @@ module.exports = {
   roots: ['<rootDir>/src/test/unit'],
   testRegex: '(/src/test/.*|\\.(test|spec))\\.(ts|js)$',
   testEnvironment: 'node',
-  testPathIgnorePatterns:['src/test/unit/routes/features/claim', 'src/test/unit/routes/features/claimantResponse', 'checkAnswersController.test.ts', 'submitReponse.test.ts', 'pinController.test.ts', 'submitComfirmationController.test.ts','newResponseDeadlineController.test.ts', 'documentDownloadController.test.ts', 'dashboardController.test.ts', 'claimDetailsController.test.ts'],
-  coveragePathIgnorePatterns:['src/test/unit/routes/features/claim', 'src/test/unit/routes/features/claimantResponse', 'checkAnswersController.test.ts', 'submitReponse.test.ts', 'pinController.test.ts', 'submitComfirmationController.test.ts','newResponseDeadlineController.test.ts', 'documentDownloadController.test.ts', 'dashboardController.test.ts', 'claimDetailsController.test.ts'],
+  testPathIgnorePatterns:['src/test/unit/routes/features/claim', 'src/test/unit/routes/features/claimantResponse', 'src/test/unit/routes/features/directionsQuestionnaire'],
   transform: {
-    '^.+\\.ts?$': ['ts-jest', {  isolatedModules: true, }],
+    '^.+\\.ts?$': 'ts-jest',
+  },
+  globals: {
+    'ts-jest': {
+      isolatedModules: true
+    }
   },
 
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
@@ -20,4 +24,5 @@ module.exports = {
   },
   setupFilesAfterEnv: ['./jest.setup.redis-mock.js'],
   coverageProvider: 'v8',
+  workerIdleMemoryLimit: '1024MB'
 };
