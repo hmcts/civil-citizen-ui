@@ -63,7 +63,7 @@ describe('Upload document- upload document controller', () => {
 });
 
 describe('on POST', () => {
-  const mockFutureYear = getNextYearValue();
+  const mockFutureYear = getNextYearValue().toString();
   beforeEach(() => {
     app.locals.draftStoreClient = mockCivilClaim;
   });

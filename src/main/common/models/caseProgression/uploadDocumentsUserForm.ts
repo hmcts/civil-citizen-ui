@@ -1,8 +1,9 @@
 import {IsDate, IsDefined, IsNotEmpty, IsOptional, Max, Min, Validate, ValidateIf, ValidateNested} from 'class-validator';
 import {DateConverter} from 'common/utils/dateConverter';
 import {OptionalDateNotInFutureValidator} from 'form/validators/optionalDateNotInFutureValidator';
-import {OptionalDateFourDigitValidator} from 'form/validators/optionalDateFourDigitValidator';
-import {toNumberOrString} from 'common/utils/numberConverter';
+import {DateDayValidator} from 'form/validators/dateDayValidator';
+import {DateMonthValidator} from 'form/validators/dateMonthValidator';
+import {DateYearValidator} from 'form/validators/dateYearValidator';
 import { IsFileSize} from 'form/validators/isFileSize';
 import {IsAllowedMimeType} from 'form/validators/isAllowedMimeType';
 
@@ -92,29 +93,23 @@ export class DateInputFields extends FileOnlySection {
       date: Date;
 
     @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
-    @Min(1, {message: 'ERRORS.VALID_REAL_DATE'})
-    @Max(31, {message: 'ERRORS.VALID_REAL_DATE'})
-    @IsNotEmpty({message: 'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_DAY'})
-      dateDay: number | string;
+    @Validate(DateDayValidator)
+      dateDay: string;
 
     @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
-    @Min(1, {message: 'ERRORS.VALID_REAL_DATE'})
-    @Max(12, {message: 'ERRORS.VALID_REAL_DATE'})
-    @IsNotEmpty({message: 'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_MONTH'})
-      dateMonth: number | string;
+    @Validate(DateMonthValidator)
+      dateMonth: string;
 
     @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
-    @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_REAL_DATE'})
-    @Max(9999, {message: 'ERRORS.VALID_REAL_DATE' })
-    @IsNotEmpty({message: 'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_YEAR'})
-      dateYear: number | string;
+    @Validate(DateYearValidator)
+      dateYear: string;
 
     constructor(day?: string, month?: string, year?: string) {
       super();
       if (day !== undefined && month !== undefined && year != undefined) {
-        this.dateDay = toNumberOrString(day);
-        this.dateMonth = toNumberOrString(month);
-        this.dateYear = toNumberOrString(year);
+        this.dateDay = day;
+        this.dateMonth = month;
+        this.dateYear = year;
         this.date = DateConverter.convertToDate(year, month, day);
       }
     }
