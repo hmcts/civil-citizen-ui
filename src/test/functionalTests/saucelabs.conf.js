@@ -4,7 +4,7 @@ const testUrl = process.env.TEST_URL || 'http://localhost:3001';
 
 const waitForTimeout = parseInt(testConfig.saucelabs.waitForTimeout);
 const smartWait = parseInt(testConfig.saucelabs.smartWait);
-const browser = process.env.SAUCE_BROWSER || testConfig.saucelabs.browser;
+const browser = process.env.SAUCE_BROWSER || 'chromium';
 
 const defaultSauceOptions = {
   username: process.env.SAUCE_USERNAME || testConfig.saucelabs.username,
@@ -39,23 +39,24 @@ const setupConfig = {
   tests: '../functionalTests/tests/*_tests.js',
   output: './test-results/saucelabs',
   helpers: {
-    WebDriver: {
+    Playwright: {
       url: testUrl,
-      //browser: process.env.SAUCE_BROWSER || '',
-      //host: process.env.HOST || 'saucelabs',
       browser,
-      waitForTimeout,
       smartWait,
+      waitForTimeout,
       cssSelectorsEnabled: 'true',
       host: 'ondemand.eu-central-1.saucelabs.com',
       port: 80,
       region: 'eu',
-      capabilities: {},
+      capabilities: {}
     },
     MyHelper: {
-      require: './saucelabsHelper.js',
+      require: './helpers/saucelabsHelper.js',
       url: testUrl,
     },
+    Mochawesome: {
+      uniqueScreenshotNames: 'true'
+    }
   },
   /*include: {
     I: './pages/steps.js',
