@@ -97,19 +97,19 @@ export class DateInputFields extends  FileOnlySection {
   @IsNotEmpty({message: 'ERRORS.VALID_YOU_MUST_ENTER_DOI'})
   @IsDate({message: 'ERRORS.VALID_DATE'})
   @Validate(OptionalDateNotInFutureValidator, {message: 'ERRORS.VALID_DATE_NOT_FUTURE'})
-  date: Date;
+    date: Date;
 
   @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
   @Validate(DateDayValidator)
-  dateDay: string;
+    dateDay: string;
 
   @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
   @Validate(DateMonthValidator)
-  dateMonth: string;
+    dateMonth: string;
 
   @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
   @Validate(DateYearValidator)
-  dateYear: string;
+    dateYear: string;
 
   constructor(day?: string, month?: string, year?: string) {
     super();
@@ -126,16 +126,19 @@ export class TypeOfDocumentSection extends DateInputFields {
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_TYPE_OF_DOCUMENT'})
     typeOfDocument: string;
 
+  @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
+    fileUpload: FileUpload;
   constructor(day?: string, month?: string, year?: string) {
     super(day, month, year);
   }
 
 }
 
-export class WitnessSection extends FileOnlySection {
+export class WitnessSection extends DateInputFields {
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_WITNESS_NAME'})
     witnessName: string;
-
+  @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
+    fileUpload: FileUpload;
   constructor(day?: string, month?: string, year?: string) {
     super(day, month, year);
   }
@@ -165,8 +168,9 @@ export class ExpertSection extends DateInputFields {
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_DOCUMENT_QUESTIONS_OTHER_PARTY'})
   @IsOptional()
     otherPartyQuestionsDocumentName: string;
-
-  dateDay: string;
-  dateMonth: string;
-  dateYear: string;
+  @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
+    fileUpload: FileUpload;
+  constructor(day?: string, month?: string, year?: string) {
+    super(day, month, year);
+  }
 }
