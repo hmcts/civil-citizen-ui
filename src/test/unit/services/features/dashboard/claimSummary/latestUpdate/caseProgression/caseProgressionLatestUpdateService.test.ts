@@ -1,4 +1,5 @@
 import {
+  checkEvidenceUploaded,
   getCaseProgressionLatestUpdates,
   getHearingTrialUploadLatestUpdateContent,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/caseProgressionLatestUpdateService';
@@ -7,6 +8,7 @@ import {
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/latestUpdateContentBuilderCaseProgression';
 import {getCaseProgressionHearingMock} from '../../../../../../../utils/caseProgression/mockCaseProgressionHearing';
 import {CaseState} from 'form/models/claimDetails';
+import {Claim} from 'models/claim';
 
 describe('Case Progression Latest Update Content service', () => {
   const claim = require('../../../../../../../utils/mocks/civilClaimResponseMock.json');
@@ -100,5 +102,49 @@ describe('Case Progression Latest Update Content service', () => {
     expect(result[1].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.TRIAL_HEARING_CONTENT.YOUR_HEARING_TITLE');
     expect(result[2].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
     expect(result[2].contentSections.length).toEqual(6);
+  });
+
+  it('getCaseProgressionLatestUpdates: should return hearing notice, evidence upload, and new upload contents', () => {
+    //Given:
+    jest
+      .useFakeTimers()
+      .setSystemTime(new Date('2020-01-02T17:59'));
+
+    const claim = {
+      caseProgression: {
+        claimantLastUploadDate: new Date('2020-01-01T17:59'),
+        defendantLastUploadDate: new Date('2020-01-01T18:00'),
+      },
+    } as Claim;
+
+    //When
+    const resultClaimant = checkEvidenceUploaded(claim, true);
+    const resultDefendant = checkEvidenceUploaded(claim, false);
+
+    //Then
+    expect(resultClaimant).toBeFalsy();
+    expect(resultDefendant).toBeTruthy();
+  });
+
+  it('getCaseProgressionLatestUpdates: should return hearing notice, evidence upload, and new upload contents', () => {
+    //Given:
+    jest
+      .useFakeTimers()
+      .setSystemTime(new Date('2020-01-02T17:59'));
+
+    const claim = {
+      caseProgression: {
+        claimantLastUploadDate: new Date('2020-01-01T18:00'),
+        defendantLastUploadDate: new Date('2020-01-01T17:59'),
+      },
+    } as Claim;
+
+    //When
+    const resultClaimant = checkEvidenceUploaded(claim, true);
+    const resultDefendant = checkEvidenceUploaded(claim, false);
+
+    //Then
+    expect(resultClaimant).toBeTruthy();
+    expect(resultDefendant).toBeFalsy();
   });
 });

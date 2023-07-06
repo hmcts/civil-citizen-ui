@@ -83,18 +83,21 @@ export const formatStringDate = (text: string) => {
   return `${year}-${month}-${day}`;
 };
 
-export const checkEvidenceUploadTime = (date: Date) => {
+export const checkEvidenceUploadTime = (date: Date): boolean => {
+
+  const endOfDay = 18;
+
   if(date == undefined)
   {
     return false;
   }
   const today = new Date();
-  today.setHours(18, 0, 0, 0);
+  today.setHours(endOfDay, 0, 0, 0);
 
   const yesterday = new Date(today);
   yesterday.setDate(today.getDate()-1);
 
-  if(new Date().getHours() >= 18) {
+  if(new Date().getHours() >= endOfDay) {
     return date.getTime() >= yesterday.getTime() && date.getTime() < today.getTime();
   } else {
     const dayBeforeYesterday = new Date(yesterday);
