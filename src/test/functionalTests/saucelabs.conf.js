@@ -51,7 +51,7 @@ const setupConfig = {
       capabilities: {},
     },
     MyHelper: {
-      require: './helpers/saucelabsHelper.js',
+      require: './saucelabsHelper.js',
       url: testUrl,
     },
     Mochawesome: {
