@@ -46,8 +46,8 @@ describe('translate loan credit to CCD model', () => {
     const expected : CCDLoanCredit[] = [{
       value: {
         loanCardDebtDetail: undefined,
-        totalOwed: NaN,
-        monthlyPayment: NaN,
+        totalOwed: undefined,
+        monthlyPayment: undefined,
       },
     }];
     //When
