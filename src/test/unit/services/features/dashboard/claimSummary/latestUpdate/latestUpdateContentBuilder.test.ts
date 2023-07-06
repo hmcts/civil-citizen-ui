@@ -1,6 +1,6 @@
 import {DateTime, Settings} from 'luxon';
 import {Claim} from 'models/claim';
-import {buildResponseToClaimSection} from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContentBuilder';
+import {buildResponseToClaimSection, generateClaimSettledLatestUpdate} from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContentBuilder';
 import {CaseState} from 'form/models/claimDetails';
 import {PartyType} from 'models/partyType';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
@@ -21,6 +21,13 @@ import {PartialAdmission} from 'models/partialAdmission';
 import {LatestUpdateSectionBuilder} from 'common/models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 import {t} from 'i18next';
 import {DocumentType, DocumentUri} from 'models/document/documentType';
+
+
+jest.mock('../../../../../../../main/modules/i18n');
+jest.mock('i18next', () => ({
+  t: (i: string | unknown) => i,
+  use: jest.fn(),
+}));
 
 const PAGES_LATEST_UPDATE_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT';
 
@@ -396,6 +403,22 @@ describe('Latest Update Content Builder', () => {
       // Then
       expect(responseToClaimSection.length).toBe(4);
       expect(lastUpdateSdoDocumentExpected.flat()).toEqual(responseToClaimSection);
+    });
+  });
+  describe('test Claim Settled buildResponseToClaimSection', () => {
+    it('should have build claim settled section', () => {
+      // Given
+      const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
+      claim.ccdState = CaseState.CASE_SETTLED;
+      claim.lastModifiedDate = new Date();
+      // When
+      const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+      // Then
+      expect(responseToClaimSection.length).toBe(3);
+      expect(responseToClaimSection[0].data.text).toBe('PAGES.DASHBOARD.STATUS.CLAIM_SETTLED');
+      expect(responseToClaimSection[1].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CLAIMANT_CONFIRMED_SETTLED_CLAIM');
+      expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.DOWNLOAD_YOUR_RESPONSE');
+      expect(responseToClaimSection[2].data.href).toBe('/case/1/documents/sealed-claim');
     });
   });
 });
