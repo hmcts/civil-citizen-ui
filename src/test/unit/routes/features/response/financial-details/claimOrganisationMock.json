@@ -28,14 +28,21 @@
     ],
     "respondent1": {
       "partyTypeDisplayValue": "Organisation",
-      "partyDetails":{
+      "partyDetails": {
         "partyName": "Everton FC",
         "primaryAddress": {
           "addressLine1": "Goodison Park",
           "postCode": "L4 4EL"
         }
       },
-      "type": "ORGANISATION"
+      "type": "ORGANISATION",
+      "responseType": "FULL_ADMISSION"
+    },
+    "fullAdmission": {
+      "paymentIntention": {
+        "paymentOption": "BY_SET_DATE",
+        "paymentDate": "2023-11-11T00:00:00.000Z"
+      }
     },
     "applicantSolicitor1PbaAccounts": {
       "value": {

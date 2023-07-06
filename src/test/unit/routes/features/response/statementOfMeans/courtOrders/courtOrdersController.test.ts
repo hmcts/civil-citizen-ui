@@ -3,6 +3,7 @@ import nock from 'nock';
 import config from 'config';
 import {CITIZEN_COURT_ORDERS_URL, CITIZEN_PRIORITY_DEBTS_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
+import {mockResponseFullAdmitPayBySetDate, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 
 const request = require('supertest');
 const {app} = require('../../../../../../../main/app');
@@ -11,17 +12,6 @@ jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
 
 const respondentCourtOrdersUrl = CITIZEN_COURT_ORDERS_URL.replace(':id', 'aaa');
-const mockDraftStore = {
-  get: jest.fn(() => Promise.resolve('{"id": "id", "case_data": {"statementOfMeans": {}}}')),
-  set: jest.fn(() => Promise.resolve()),
-};
-
-const mockGetExceptionDraftStore = {
-  get: jest.fn(() => {
-    throw new Error('Draft store exception');
-  }),
-  set: jest.fn(() => Promise.resolve()),
-};
 
 describe('Citizen court orders', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -35,7 +25,7 @@ describe('Citizen court orders', () => {
 
   describe('on GET', () => {
     it('should return court orders page', async () => {
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await request(app)
         .get(respondentCourtOrdersUrl)
         .expect((res: Response) => {
@@ -44,7 +34,7 @@ describe('Citizen court orders', () => {
         });
     });
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockGetExceptionDraftStore;
+      app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(respondentCourtOrdersUrl)
         .expect((res: Response) => {
@@ -56,7 +46,7 @@ describe('Citizen court orders', () => {
 
   describe('on POST', () => {
     beforeAll(() => {
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
     });
 
     it('when Yes option and one court order fully filled in, should redirect to Debts screen', async () => {
@@ -135,7 +125,7 @@ describe('Citizen court orders', () => {
     });
 
     it('should status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockGetExceptionDraftStore;
+      app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(respondentCourtOrdersUrl)
         .send('declared=yes')
