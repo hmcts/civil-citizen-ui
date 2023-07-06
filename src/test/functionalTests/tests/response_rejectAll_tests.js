@@ -6,15 +6,27 @@ const rejectAll = 'rejectAll';
 const dontWantMoreTime = 'dontWantMoreTime';
 
 let claimRef;
+let caseData;
+let claimNumber;
+let securityCode;
 
 Feature('Response with RejectAll');
 
 Before(async ({api}) => {
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
-  await LoginSteps.EnterUserCredentials(config.Username, config.Password);
+  console.log('claimRef has been created Successfully    <===>  '  , claimRef);
+  caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+  claimNumber = caseData.legacyCaseReference;
+  securityCode = caseData.respondent1PinToPostLRspec.accessCode;
+  await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
+  if (claimRef) {
+    await LoginSteps.EnterUserCredentials(config.Username, config.Password);
+  } else {
+    console.log('claimRef has not been Created');
+  }
 });
 
-Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @regression', async ({api}) => {
+Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @test', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);

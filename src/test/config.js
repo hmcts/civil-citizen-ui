@@ -52,8 +52,13 @@ module.exports = {
   },
   defendantCitizenUser: {
     password: defaultPassword,
-    email: 'cuiuser@gmail.com',
-    type: 'defendant_solicitor',
+    email: 'citizen1.user@gmail.com',
+    type: 'defendant',
+  },
+  adminUser: {
+    password: defaultPassword,
+    email: 'civil-admin@mailnesia.com',
+    type: 'admin',
   },
   judgeUserWithRegionId1: {
     password: judgeDefaultPassword,

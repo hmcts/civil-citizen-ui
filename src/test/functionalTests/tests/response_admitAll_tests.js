@@ -10,12 +10,19 @@ const repaymentPlan = 'repaymentPlan';
 const dontWantMoreTime = 'dontWantMoreTime';
 
 let claimRef;
+let caseData;
+let claimNumber;
+let securityCode;
 
 Feature('Response with AdmitAll @regression');
 
 Before(async ({api}) => {
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
   console.log('claimRef has been created Successfully    <===>  '  , claimRef);
+  caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+  claimNumber = caseData.legacyCaseReference;
+  securityCode = caseData.respondent1PinToPostLRspec.accessCode;
+  await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
   if (claimRef) {
     await LoginSteps.EnterUserCredentials(config.Username, config.Password);
   } else {
