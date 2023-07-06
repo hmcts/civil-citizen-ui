@@ -9,6 +9,7 @@ import {
 import {getCaseProgressionHearingMock} from '../../../../../../../utils/caseProgression/mockCaseProgressionHearing';
 import {CaseState} from 'form/models/claimDetails';
 import {Claim} from 'models/claim';
+import {checkEvidenceUploadTime} from 'common/utils/dateUtils';
 
 describe('Case Progression Latest Update Content service', () => {
   const claim = require('../../../../../../../utils/mocks/civilClaimResponseMock.json');
@@ -119,11 +120,16 @@ describe('Case Progression Latest Update Content service', () => {
 
     //When
     const resultClaimant = checkEvidenceUploaded(claim, true);
+    const resultClaimantDirectly = checkEvidenceUploadTime(claim.caseProgression.defendantLastUploadDate);
     const resultDefendant = checkEvidenceUploaded(claim, false);
+    const resultDefendantDirectly = checkEvidenceUploadTime(claim.caseProgression.claimantLastUploadDate);
 
     //Then
     expect(resultClaimant).toBeFalsy();
+    expect(resultClaimantDirectly).toBeFalsy();
     expect(resultDefendant).toBeTruthy();
+    expect(resultDefendantDirectly).toBeTruthy();
+
   });
 
   it('getCaseProgressionLatestUpdates: should return hearing notice, evidence upload, and new upload contents', () => {
@@ -141,10 +147,14 @@ describe('Case Progression Latest Update Content service', () => {
 
     //When
     const resultClaimant = checkEvidenceUploaded(claim, true);
+    const resultClaimantDirectly = checkEvidenceUploadTime(claim.caseProgression.defendantLastUploadDate);
     const resultDefendant = checkEvidenceUploaded(claim, false);
+    const resultDefendantDirectly = checkEvidenceUploadTime(claim.caseProgression.claimantLastUploadDate);
 
     //Then
     expect(resultClaimant).toBeTruthy();
+    expect(resultClaimantDirectly).toBeTruthy();
     expect(resultDefendant).toBeFalsy();
+    expect(resultDefendantDirectly).toBeFalsy();
   });
 });
