@@ -48,15 +48,15 @@ const setupConfig = {
       host: 'ondemand.eu-central-1.saucelabs.com',
       port: 80,
       region: 'eu',
-      capabilities: {}
+      capabilities: {},
     },
     MyHelper: {
       require: './helpers/saucelabsHelper.js',
       url: testUrl,
     },
     Mochawesome: {
-      uniqueScreenshotNames: 'true'
-    }
+      uniqueScreenshotNames: 'true',
+    },
   },
   /*include: {
     I: './pages/steps.js',
