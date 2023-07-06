@@ -1482,6 +1482,7 @@
     },
     "LATEST_UPDATE_CONTENT": {
       "CLAIMANT_CAN_ASK_FOR_CCJ_AGAINST_YOU": "You haven't responded to the claim. {{ claimantName }} can now ask for a County Court Judgement against you.",
+      "CLAIMANT_CONFIRMED_SETTLED_CLAIM": "{{ claimantName }} confirmed you settled on {{ settlemenDate }}",
       "CCJ_COULD_SEND_BAILIFFS_TO_YOUR_HOME": "A County Court Judgment can mean you find it difficult to get credit, like a mortgage or mobile phone contract. Bailiffs could also be sent to your home.",
       "EVIDENCE_UPLOAD": {
         "DOCUMENTS_DUE_BY": "Due by: {{bundleStitchingDeadline}}",

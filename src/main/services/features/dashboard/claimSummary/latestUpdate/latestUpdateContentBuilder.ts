@@ -20,6 +20,7 @@ import currencyFormat from 'common/utils/currencyFormat';
 import {LatestUpdateSectionBuilder} from 'common/models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 import {t} from 'i18next';
 import {DocumentUri} from 'models/document/documentType';
+import {CaseState} from 'common/form/models/claimDetails';
 
 const PAGES_LATEST_UPDATE_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT';
 
@@ -287,6 +288,18 @@ function generateCCJRequestedLatestUpdate(claim: Claim, lng: string) {
     .build();
 }
 
+export function generateClaimSettledLatestUpdate(claim: Claim, lng: string) {
+  const claimantFullName = claim.getClaimantFullName();
+  return new LatestUpdateSectionBuilder()
+    .addTitle(t('PAGES.DASHBOARD.STATUS.CLAIM_SETTLED', {lng}))
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIMANT_CONFIRMED_SETTLED_CLAIM`, {lng}), {
+      claimantName: claimantFullName,
+      settlemenDate: formatDateToFullDate(claim.lastModifiedDate, lng),
+    })
+    .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claim.id, DocumentUri.SEALED_CLAIM)
+    .build();
+}
+
 export const buildResponseToClaimSection = (claim: Claim, claimId: string, lang: string): ClaimSummarySection[] => {
   const sectionContent = [];
   const lng = getLng(lang);
@@ -315,8 +328,9 @@ export const buildResponseToClaimSection = (claim: Claim, claimId: string, lang:
     sectionContent.push(generateDefaultJudgmentSubmittedLatestUpdate(claim, lng));
   } else if(claim.hasClaimantRequestedCCJ()) {
     sectionContent.push(generateCCJRequestedLatestUpdate(claim, lng));
-  } else
-  {
+  } else if (claim.ccdState === CaseState.CASE_SETTLED) {
+    sectionContent.push(generateClaimSettledLatestUpdate(claim, lng))
+  } else {
     sectionContent.push(generateLastUpdateResponseSections(claim.responseStatus, claim, lng));
   }
   return sectionContent.flat();

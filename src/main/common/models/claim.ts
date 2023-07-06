@@ -103,6 +103,7 @@ export class Claim {
   unsuccessfulMediationReason?: string;
   defaultJudgmentDocuments?: CaseDocument;
   ccjJudgmentStatement?: string;
+  lastModifiedDate?: Date;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
