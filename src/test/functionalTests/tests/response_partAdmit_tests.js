@@ -94,7 +94,7 @@ Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit @regre
   }
 });
 
-Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit @regression', async ({api}) => {
+Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit @nightly', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
