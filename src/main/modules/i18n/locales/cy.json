@@ -2776,6 +2776,12 @@
     "VALID_WHY_FROM_PARTICULAR_DATE": "Mae angen i chi egluro pam eich bod yn hawlio",
     "QUESTION_1_REQUIRED": "Dewiswch 'oes' os yw rhywun yn fregus a bod angen i'r llys ystyried hynny",
     "QUESTION_2_REQUIRED": "Dywedwch wrthym pwy sy'n agored i niwed a pha gefnogaeth sydd ei hangen arnynt",
-    "CLAIMANT_REJECTION_RESPONSE_REQUIRED": "Nodwch pam y gwnaethoch wrthod y cynllun ad-dalu"
+    "CLAIMANT_REJECTION_RESPONSE_REQUIRED": "Nodwch pam y gwnaethoch wrthod y cynllun ad-dalu",
+    "VALID_DATE_OF_DOC_MUST_INCLUDE_DAY": "Date of document must include a day",
+    "VALID_DATE_OF_DOC_MUST_INCLUDE_MONTH": "Date of document must include a month",
+    "VALID_DATE_OF_DOC_MUST_INCLUDE_YEAR": "Date of document must include a year",
+    "VALID_REAL_DATE": "Date of document must be a real date",
+    "VALID_DATE_NOT_FUTURE": "Date of document must be today or in the past",
+    "VALID_YOU_MUST_ENTER_DOI": "Enter the date the document was issued or message was sent"
   }
 }

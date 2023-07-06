@@ -31,6 +31,13 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
 
   it('should create Date Array', ()=> {
     //Given
+    const errors = {
+      invalidDayError : 'invalidDayError',
+      invalidMonthError : 'invalidMonthError',
+      invalidYearError : 'invalidYearError',
+      invalidDateError : 'invalidDateError',
+    };
+
     const dateArrayExpected = ({
       type: ClaimSummaryType.DATE_ARRAY,
       data: {
@@ -38,6 +45,10 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
         field: 'date',
         text: 'title',
         hint: 'hint',
+        invalidDayError: 'invalidDayError',
+        invalidMonthError: 'invalidMonthError',
+        invalidYearError: 'invalidYearError',
+        invalidDateError: 'invalidDateError',
         dayValue: 'dayValue',
         monthValue: 'monthValue',
         yearValue: 'yearValue',
@@ -47,8 +58,8 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
 
     //When
     const dateArrayBuilt = new UploadDocumentsSectionBuilder()
-      .addDateArray(dateArrayExpected.data.text,dateArrayExpected.data.hint,
-        dateArrayExpected.data.category, dateArrayExpected.data.dayValue, dateArrayExpected.data.monthValue, dateArrayExpected.data.yearValue)
+      .addDateArray(dateArrayExpected.data.text, errors, dateArrayExpected.data.hint,
+        dateArrayExpected.data.category, dateArrayExpected.data.field, dateArrayExpected.data.dayValue, dateArrayExpected.data.monthValue, dateArrayExpected.data.yearValue)
       .build();
 
     //Then

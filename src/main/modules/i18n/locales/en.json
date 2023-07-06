@@ -2776,6 +2776,12 @@
     "VALID_WHY_FROM_PARTICULAR_DATE": "You need to explain why you are claiming",
     "QUESTION_1_REQUIRED": "Select yes if someone is vulnerable in a way that the court needs to consider",
     "QUESTION_2_REQUIRED": "Tell us who is vulnerable and what support they need",
-    "CLAIMANT_REJECTION_RESPONSE_REQUIRED": "Enter why you rejected repayment plan"
+    "CLAIMANT_REJECTION_RESPONSE_REQUIRED": "Enter why you rejected repayment plan",
+    "VALID_DATE_OF_DOC_MUST_INCLUDE_DAY": "Date of document must include a day",
+    "VALID_DATE_OF_DOC_MUST_INCLUDE_MONTH": "Date of document must include a month",
+    "VALID_DATE_OF_DOC_MUST_INCLUDE_YEAR": "Date of document must include a year",
+    "VALID_REAL_DATE": "Date of document must be a real date",
+    "VALID_DATE_NOT_FUTURE": "Date of document must be today or in the past",
+    "VALID_YOU_MUST_ENTER_DOI": "Enter the date the document was issued or message was sent"
   }
 }
