@@ -101,7 +101,7 @@ export class Claim {
   takenOfflineDate?: Date;
   mediationAgreement?: MediationAgreement;
   unsuccessfulMediationReason?: string;
-  defaultJudgmentDocuments?: CaseDocument;
+  defaultJudgmentDocuments?: CaseDocument[];
   ccjJudgmentStatement?: string;
   lastModifiedDate?: Date;
 

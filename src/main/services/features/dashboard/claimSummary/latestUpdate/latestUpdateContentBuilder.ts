@@ -322,7 +322,7 @@ export const buildResponseToClaimSection = (claim: Claim, claimId: string, lang:
     sectionContent.push(generateClaimEndedLatestUpdate(claim, lng));
   } else if (claim.hasMediationSuccessful()) {
     sectionContent.push(generateMediationSuccessfulLatestUpdate(claim, lng));
-  } else if (claim.hasMediationUnSuccessful()) {
+  } else if (claim.hasMediationUnSuccessful() && !claim.hasSdoOrderDocument()) {
     sectionContent.push(generateMediationUnSuccessfulLatestUpdate(claim, lng));
   } else if (claim.hasDefaultJudgmentSubmitted()) {
     sectionContent.push(generateDefaultJudgmentSubmittedLatestUpdate(claim, lng));
