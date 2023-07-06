@@ -7,6 +7,7 @@ import {
 import {IncomeType} from 'form/models/statementOfMeans/expensesAndIncome/incomeType';
 import {TransactionSource} from 'form/models/statementOfMeans/expensesAndIncome/transactionSource';
 import {toCUIPaymentFrequency} from 'services/translation/convertToCUI/convertToCUIPaymentFrequency';
+import {convertToPound, convertToPoundInStringFormat} from 'services/translation/claim/moneyConversation';
 
 export const toCUIRecurringIncome = (recurringIncomeItems: CCDRecurringIncome[]): RegularIncome => {
   if (recurringIncomeItems?.length) return toCUIRecurringIncomeItems(recurringIncomeItems);
@@ -58,7 +59,7 @@ const toCUIRecurringIncomeItems = (recurringIncomeItems: CCDRecurringIncome[]): 
 const toCUIRecurringIncomeItem = (ccdRecurringIncome: CCDRecurringIncome, incomeType: IncomeType): Transaction => {
   return Transaction.buildPopulatedForm(
     incomeType,
-    ccdRecurringIncome.value.amount ? (ccdRecurringIncome.value.amount/100).toString() : undefined,
+    convertToPoundInStringFormat(ccdRecurringIncome.value.amount),
     toCUIPaymentFrequency(ccdRecurringIncome.value.frequency),
     true,
   );
@@ -68,7 +69,7 @@ const toCUIOtherTransaction = (recurringIncome: CCDRecurringIncome) : Transactio
   return  new TransactionSource({
     name: recurringIncome.value.typeOtherDetails,
     isIncome: true,
-    amount: recurringIncome.value.amount ? recurringIncome.value.amount/100 : undefined,
+    amount: convertToPound(recurringIncome.value.amount),
     schedule: toCUIPaymentFrequency(recurringIncome.value.frequency),
     nameRequired: true,
   },

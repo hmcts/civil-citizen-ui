@@ -5,6 +5,7 @@ import {OtherTransaction} from 'form/models/statementOfMeans/expensesAndIncome/o
 import {Transaction} from 'form/models/statementOfMeans/expensesAndIncome/transaction';
 import {ExpenseType} from 'form/models/statementOfMeans/expensesAndIncome/expenseType';
 import {toCUIPaymentFrequency} from 'services/translation/convertToCUI/convertToCUIPaymentFrequency';
+import {convertToPound, convertToPoundInStringFormat} from 'services/translation/claim/moneyConversation';
 
 export const toCUIRecurringExpense = (recurringExpensesItems: CCDRecurringExpenses[]): RegularExpenses => {
   if (recurringExpensesItems?.length) return toCUIRecurringExpenseItems(recurringExpensesItems);
@@ -65,7 +66,7 @@ const toCUIRecurringExpenseItems = (recurringExpensesItems: CCDRecurringExpenses
 const toCUIRecurringExpenseItem = (ccdRecurringExpenses: CCDRecurringExpenses, expenseType: ExpenseType): Transaction => {
   return Transaction.buildPopulatedForm(
     expenseType,
-    ccdRecurringExpenses.value.amount ? (ccdRecurringExpenses.value.amount/100).toString() : undefined,
+    convertToPoundInStringFormat(ccdRecurringExpenses.value.amount),
     toCUIPaymentFrequency(ccdRecurringExpenses.value.frequency),
     false,
   );
@@ -75,7 +76,7 @@ const toCUIOtherTransaction = (recurringExpenses: CCDRecurringExpenses) : Transa
   return new TransactionSource({
     name: recurringExpenses.value.typeOtherDetails,
     isIncome: false,
-    amount: recurringExpenses.value.amount ? recurringExpenses.value.amount/100 : undefined,
+    amount: convertToPound(recurringExpenses.value.amount),
     schedule: toCUIPaymentFrequency(recurringExpenses.value.frequency),
     nameRequired: true,
   },

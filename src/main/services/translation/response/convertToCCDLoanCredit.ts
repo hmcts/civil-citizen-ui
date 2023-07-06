@@ -1,5 +1,6 @@
 import {CCDLoanCredit} from 'models/ccdResponse/ccdLoanCredit';
 import {DebtItems} from 'form/models/statementOfMeans/debts/debtItems';
+import {convertToPenceFromString} from 'services/translation/claim/moneyConversation';
 
 export const toCCDLoanCredit = (debtsItem: DebtItems[]): CCDLoanCredit[] => {
   if (!debtsItem?.length) return undefined;
@@ -8,8 +9,8 @@ export const toCCDLoanCredit = (debtsItem: DebtItems[]): CCDLoanCredit[] => {
     return {
       value: {
         loanCardDebtDetail: debtsItem.debt,
-        totalOwed: Number(debtsItem.totalOwned)*100,
-        monthlyPayment: Number(debtsItem.monthlyPayments)*100,
+        totalOwed: convertToPenceFromString(debtsItem.totalOwned),
+        monthlyPayment: convertToPenceFromString(debtsItem.monthlyPayments),
       },
     };
   });
