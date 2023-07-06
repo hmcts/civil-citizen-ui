@@ -2009,14 +2009,14 @@ __metadata:
   linkType: hard
 
 "@ministryofjustice/frontend@npm:^1.6.3":
-  version: 1.6.6
-  resolution: "@ministryofjustice/frontend@npm:1.6.6"
+  version: 1.8.0
+  resolution: "@ministryofjustice/frontend@npm:1.8.0"
   dependencies:
     govuk-frontend: ^3.0.0 || ^4.0.0
     moment: ^2.27.0
   peerDependencies:
     jquery: ^3.6.0
-  checksum: a45bb60ba39509e3a61ce73c960b7528b3dc67b06ba69df301b93dfb175ab69edff7cd27f1812f754e591f195d0653e62a7a1cbbba1bd178b6665e0f95466585
+  checksum: d24c2ac86aa11440152a290bff78de4d33e3e39154d1a2df193bbf0e680542602027c373a762b4fbc5a70c88fd6145e904ec267d9f2d27778a899ab16c1910c9
   languageName: node
   linkType: hard
 
@@ -4541,6 +4541,7 @@ __metadata:
     class-validator: ^0.14.0
     codeceptjs: ^3.3.7
     config: ^3.3.8
+    connect-redis: ^7.1.0
     cookie-parser: ^1.4.6
     cookie-session: ^2.0.0
     copy-webpack-plugin: ^11.0.0
@@ -4574,7 +4575,6 @@ __metadata:
     launchdarkly-node-server-sdk: ^7.0.1
     lodash: ^4.17.21
     luxon: ^3.2.1
-    memorystore: ^1.6.7
     mini-css-extract-plugin: ^2.7.2
     mocha: ^10.2.0
     mocha-multi: 1.1.7
@@ -4965,6 +4965,15 @@ __metadata:
   dependencies:
     json5: ^2.2.3
   checksum: 2c29e40be22274462769670a4b69fcbcad2d3049eb15030073e410d32c892ef29e0c879a3d68ef92ddd572c516e4f65a11bb6458f680a44ceb0f051bcd3d97ff
+  languageName: node
+  linkType: hard
+
+"connect-redis@npm:^7.1.0":
+  version: 7.1.0
+  resolution: "connect-redis@npm:7.1.0"
+  peerDependencies:
+    express-session: ">=1"
+  checksum: fb493fae8910a2d61e3babd579c6344c56d7d31d67669d9941465ef00eb54ef9c1a35ccfa761136d36fa38d1f82ebe48c2b10888f292d55b4aadb8ecf1fddf34
   languageName: node
   linkType: hard
 
@@ -9621,7 +9630,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lru-cache@npm:^4.0.3, lru-cache@npm:^4.1.5":
+"lru-cache@npm:^4.1.5":
   version: 4.1.5
   resolution: "lru-cache@npm:4.1.5"
   dependencies:
@@ -9760,16 +9769,6 @@ __metadata:
   dependencies:
     fs-monkey: ^1.0.3
   checksum: fcd037566a4bbb00d61dc991858395ccc06267ab5fe9471aeff28433f2a210bf5dd999e64e8b5473f8244f00dfb7ff3221b5c2fe41ff98af1439e5e2168fc410
-  languageName: node
-  linkType: hard
-
-"memorystore@npm:^1.6.7":
-  version: 1.6.7
-  resolution: "memorystore@npm:1.6.7"
-  dependencies:
-    debug: ^4.3.0
-    lru-cache: ^4.0.3
-  checksum: caa5cc523ec39ad8b317ddb5560771df28a10266281066f554bd77b2179a34f21f06891fffbcfe875ed1afc79cf7e106714eff98189ded1e6bfc273159d07948
   languageName: node
   linkType: hard
 
@@ -14012,8 +14011,8 @@ __metadata:
   linkType: hard
 
 "webpack-dev-middleware@npm:^6.0.1":
-  version: 6.1.0
-  resolution: "webpack-dev-middleware@npm:6.1.0"
+  version: 6.1.1
+  resolution: "webpack-dev-middleware@npm:6.1.1"
   dependencies:
     colorette: ^2.0.10
     memfs: ^3.4.12
@@ -14025,7 +14024,7 @@ __metadata:
   peerDependenciesMeta:
     webpack:
       optional: true
-  checksum: 0377f953b0b163ebbb7097abeaf6c4d8c6873443cf91ee848103b1702f1cd8d2df03587afd0d9f397251b24dc11ba1105a90b9f51c120c216f6232149a7e2628
+  checksum: 3bced6ef644b20f2e76df9db1c5209f4a73761d7d307fe29ae20bc00397d4f9727af2607f98794c6c7c57d5c1a48bfa12690168b08f5d46820b07aab2c63640c
   languageName: node
   linkType: hard
 

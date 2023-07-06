@@ -137,7 +137,7 @@ withPipeline(type, product, component) {
 
   afterAlways('smoketest:preview') {
         stage('Accessibility') {
-            yarnBuilder.yarn('tests:a11ypreview')
+            yarnBuilder.yarn('tests:a11y')
             publishHTML([
                 allowMissing         : true,
                 alwaysLinkToLastBuild: true,
