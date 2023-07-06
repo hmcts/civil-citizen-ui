@@ -18,8 +18,10 @@
   {% endif %}
 
   {% if content.type === ClaimSummaryType.TITLE %}
-    {% if content.data.classes %}
-      <h3 class="govuk-heading-m {{ content.data.classes }}">{{ t(content.data.text) }}</h3>
+    {% set object = '' %}
+    {% if content.data.classes or  content.data.variables%}
+      {% set object = content.data.variables %}
+      <h3 class="govuk-heading-m {{ content.data.classes }}">{{ t(content.data.text,object) }}</h3>
     {% else %}
       <h3 class="govuk-heading-m">{{ t(content.data.text) }}</h3>
     {% endif %}
@@ -41,9 +43,9 @@
 
   {% if content.type === ClaimSummaryType.PARAGRAPH %}
     {% set object = '' %}
-    {% if content.data.variables %}
+    {% if content.data.variables or content.data.classes %}
         {% set object = content.data.variables %}
-        <p class="govuk-body">{{ t(content.data.text,object)}}</p>
+        <p class="govuk-body {{ content.data.classes }}">{{ t(content.data.text,object)}}</p>
     {% else %}
         <p class="govuk-body">{{ t(content.data.text)}}</p>
     {% endif %}
@@ -78,9 +80,9 @@
       {% set object = '' %}
         {% if content.data.variables %}
           {% set object = content.data.variables %}
-          <a class="govuk-link" href={{ content.data.href }}>{{ t(content.data.text,object) }}</a>
+          <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }}>{{ t(content.data.text,object) }}</a>
         {% else %}
-          <a class="govuk-link" href={{ content.data.href }}>{{ t(content.data.text) }}</a>
+          <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }}>{{ t(content.data.text) }}</a>
         {% endif %}
       {{ t(content.data.textAfter) }}
     </p>

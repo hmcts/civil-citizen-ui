@@ -102,6 +102,7 @@ export class Claim {
   mediationAgreement?: MediationAgreement;
   unsuccessfulMediationReason?: string;
   defaultJudgmentDocuments?: CaseDocument;
+  ccjJudgmentStatement?: string;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -510,20 +511,23 @@ export class Claim {
   }
 
   hasClaimTakenOffline() {
-    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && this.defaultJudgmentDocuments === null;
+    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && !this.defaultJudgmentDocuments;
   }
 
   hasMediationSuccessful() {
-    return  this.ccdState === CaseState.CASE_STAYED && this.mediationAgreement !== null;
+    return  this.ccdState === CaseState.CASE_STAYED && !!this.mediationAgreement;
   }
 
   hasMediationUnSuccessful() {
-    console.log(this.unsuccessfulMediationReason);
-    return this.unsuccessfulMediationReason !== undefined;
+    return !!this.unsuccessfulMediationReason;
   }
 
   hasDefaultJudgmentSubmitted() {
-    return this.defaultJudgmentDocuments !==  null;
+    return !!this.defaultJudgmentDocuments;
+  }
+
+  hasClaimantRequestedCCJ() {
+    return !!this.ccjJudgmentStatement;
   }
 }
 

@@ -1539,7 +1539,20 @@
       "DEFAULT_JUDGMENT_MSG2": "Your online account will not be updated with the progress of this claim - any further updates will be by post.",
       "DEFAULT_JUDGMENT_MSG3": "If your deadline has passed, but the CCJ has not been issued, you can still respond. Contact us for more information:",
       "CONTACT_INFO": "HM Courts & Tribunals Service",
-      "WE_WILL_POST_COPY": "Otherwise we’ll post a copy of the CCJ to you and to {{ claimantName }} and explain what to do next."
+      "WE_WILL_POST_COPY": "Otherwise we’ll post a copy of the CCJ to you and to {{ claimantName }} and explain what to do next.",
+      "EMAIL": "Email :",
+      "EMAIL_ID": "contactocmc@justice.gov.uk",
+      "TELEPHONE": "Telephone: 0300 123 7050",
+      "WORKING_HOURS": "Monday to Friday, 8.30am to 5pm.",
+      "CCJ_REQUESTED_TITLE": "{{ claimantName }} requested a County Court Judgment (CCJ) against you",
+      "CCJ_REQUESTED_MSG1": "They accepted your repayment plan.",
+      "CCJ_REQUESTED_MSG2": "If a defendant doesn’t pay immediately, claimants can request a CCJ even if they accept a repayment plan.",
+      "CCJ_REQUESTED_MSG3": "When we’ve processed the request we’ll post a copy of the judgment to you and to {{ claimantName }}.",
+      "CCJ_REQUESTED_MSG4": "If you pay the debt within one month of the date of judgment, the CCJ is removed from the public register. You can pay £15 to ",
+      "CERTIFICATE_LINK": "apply for certificate",
+      "CCJ_REQUESTED_MSG5": "that confirms this. "
+
+
     },
     "UPLOAD_EVIDENCE_DOCUMENTS": {
       "ANSWERS_TO_QUESTIONS": "Answers to questions asked by other party",

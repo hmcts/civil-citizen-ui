@@ -176,8 +176,8 @@ function getStatusPaid(claim: Claim, lng: string) {
   const claimantFullName = claim.getClaimantFullName();
   const claimId = claim.id;
   return new LatestUpdateSectionBuilder()
-    .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.YOUR_RESPONSE_TO_THE_CLAIM`)
-    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.WE_HAVE_EMAILED`, {
+    .addTitle(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOUR_RESPONSE_TO_THE_CLAIM`,{lng}))
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.WE_HAVE_EMAILED`, {lng}), {
       claimantName: claimantFullName,
     })
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU`)
@@ -248,6 +248,8 @@ function generateMediationUnSuccessfulLatestUpdate(claim: Claim, lng: string) {
 
 function generateDefaultJudgmentSubmittedLatestUpdate(claim: Claim, lng: string) {
   const claimantFullName = claim.getClaimantFullName();
+  const styleClass = 'govuk-body govuk-!-margin-bottom-0';
+  const emailId= 'mailto:contactocmc@justice.gov.uk';
   return new LatestUpdateSectionBuilder()
     .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.DEFAULT_JUDGMENT_SUBMITTED_TITLE`)
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.DEFAULT_JUDGMENT_MSG1`, {
@@ -256,9 +258,32 @@ function generateDefaultJudgmentSubmittedLatestUpdate(claim: Claim, lng: string)
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.DEFAULT_JUDGMENT_MSG2`)
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.DEFAULT_JUDGMENT_MSG3`)
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.CONTACT_INFO`)
+    .addLink(`${PAGES_LATEST_UPDATE_CONTENT}.EMAIL_ID`,emailId, `${PAGES_LATEST_UPDATE_CONTENT}.EMAIL`)
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.TELEPHONE`,undefined, styleClass)
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.WORKING_HOURS`)
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_POST_COPY`, {
       claimantName: claimantFullName,
     })
+    .build();
+}
+
+function generateCCJRequestedLatestUpdate(claim: Claim, lng: string) {
+  const claimantFullName = claim.getClaimantFullName();
+  const certificateLink = 'https://www.gov.uk/government/publications/form-n443-application-for-a-certificate-of-satisfaction-or-cancellation';
+  const claimId = claim.id;
+  return new LatestUpdateSectionBuilder()
+    .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.CCJ_REQUESTED_TITLE`, {
+      claimantName: claimantFullName})
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.CCJ_REQUESTED_MSG1`)
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.CCJ_REQUESTED_MSG2`)
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.CCJ_REQUESTED_MSG3`,{
+      claimantName: claimantFullName,
+    })
+    .addLink(`${PAGES_LATEST_UPDATE_CONTENT}.CERTIFICATE_LINK`, certificateLink,
+      `${PAGES_LATEST_UPDATE_CONTENT}.CCJ_REQUESTED_MSG4`,
+      `${PAGES_LATEST_UPDATE_CONTENT}.CCJ_REQUESTED_MSG5`)
+    .addContactLink(`${PAGES_LATEST_UPDATE_CONTENT}.CONTACT`, claimId, {claimantName: claimantFullName})
+    .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, DocumentUri.SEALED_CLAIM)
     .build();
 }
 
@@ -288,7 +313,10 @@ export const buildResponseToClaimSection = (claim: Claim, claimId: string, lang:
     sectionContent.push(generateMediationUnSuccessfulLatestUpdate(claim, lng));
   } else if (claim.hasDefaultJudgmentSubmitted()) {
     sectionContent.push(generateDefaultJudgmentSubmittedLatestUpdate(claim, lng));
-  } else {
+  } else if(claim.hasClaimantRequestedCCJ()) {
+    sectionContent.push(generateCCJRequestedLatestUpdate(claim, lng));
+  } else
+  {
     sectionContent.push(generateLastUpdateResponseSections(claim.responseStatus, claim, lng));
   }
   return sectionContent.flat();

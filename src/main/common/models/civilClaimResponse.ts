@@ -205,6 +205,7 @@ export interface CCDClaim extends ClaimUpdate {
   mediationAgreement?: MediationAgreement;
   unsuccessfulMediationReason?: string;
   defaultJudgmentDocuments?:CaseDocument;
+  ccjJudgmentStatement?:string;
 }
 
 export interface ClaimFeeData {
