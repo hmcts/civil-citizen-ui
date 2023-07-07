@@ -13,7 +13,7 @@ Before(async ({api}) => {
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
   console.log('claimRef has been created Successfully    <===>  '  , claimRef);
   if (claimRef) {
-    await LoginSteps.EnterUserCredentials(config.Username, config.Password);
+    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   } else {
     console.log('claimRef has not been Created');
   }
