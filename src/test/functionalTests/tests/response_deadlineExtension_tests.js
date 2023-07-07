@@ -20,7 +20,7 @@ Before(async ({api}) => {
   securityCode = caseData.respondent1PinToPostLRspec.accessCode;
   await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
   if (claimRef) {
-    await LoginSteps.EnterUserCredentials(config.Username, config.Password);
+    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   } else {
     console.log('claimRef has not been Created');
   }
