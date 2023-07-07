@@ -26,7 +26,7 @@ function getTable(isClaimant: boolean, sectionText: string, documentText: string
 
   for(let i = documentText.length-1; i >= 0; i--){
     tableRows.push([
-      {html: getDocumentSectionName(isClaimantString, documentText[i]) + '<br>' + 'PAGES.CLAIM_SUMMARY.DATE_DOCUMENT_UPLOADED' + '01-01-1970'},
+      {html: getDocumentSectionName(isClaimantString, documentText[i]) + '<br>' + 'PAGES.CLAIM_SUMMARY.DATE_DOCUMENT_UPLOADED' + '01 Jan 1970'},
       {html: '<a href="href will need to be connected to document">'+getDocumentName(sectionText, documentText[i])+'</a>'},
     ]);
   }
