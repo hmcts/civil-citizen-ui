@@ -1,6 +1,6 @@
 nodejs:
   # Don't modify below here
-  image: 'hmctspublic.azurecr.io/civil/service:pr-2919'
+  image: ${IMAGE_NAME}
   memoryLimits: 768Mi
   ingressHost: ${SERVICE_FQDN}
   keyVaults:
@@ -26,7 +26,7 @@ civil-service:
   java:
     applicationPort: 4000
     releaseNameOverride: ${SERVICE_NAME}-civil-service
-    image: 'hmctspublic.azurecr.io/civil/service:latest'
+    image: 'hmctspublic.azurecr.io/civil/service:pr-2919'
     imagePullPolicy: Always
     ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
     keyVaults:
