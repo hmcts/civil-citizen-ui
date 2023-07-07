@@ -9,7 +9,7 @@ import {
 } from '../../../../../../../main/routes/urls';
 import {hasDisabledChildren}
   from '../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
+import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
 const request = require('supertest');
@@ -34,7 +34,7 @@ describe('Citizen dependants', () => {
 
   describe('on GET', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
     });
 
     it('should return dependants page', async () => {
@@ -57,7 +57,7 @@ describe('Citizen dependants', () => {
   });
   describe('on POST', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
     });
 
     it('when Yes option,under11 field filled in, hasDisabledChildren returns false, should redirect to Other Dependants screen', async () => {
