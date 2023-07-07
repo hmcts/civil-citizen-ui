@@ -1,6 +1,6 @@
 nodejs:
   # Don't modify below here
-  image: ${IMAGE_NAME}
+  image: 'hmctspublic.azurecr.io/civil/service:pr-2919'
   memoryLimits: 768Mi
   ingressHost: ${SERVICE_FQDN}
   keyVaults:
