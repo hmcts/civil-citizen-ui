@@ -13,6 +13,15 @@ const buttons = {
 class CheckYourAnswersPage {
   async checkAndSubmit(claimRef, responseType='') {
     await I.click('Check and submit your response');
+    let url = await I.grabCurrentUrl();
+    //Check if PCQ page appears
+    if(url.includes('pcq')){
+      if(I.see('Equality and diversity questions')){
+        await I.click('I don\'t want to answer these questions');
+      }else if(I.see('Sorry, there is a problem with the service')){
+        await I.click('Continue');
+      }
+    }
     await I.see('Check your answers', 'h1');
     await I.waitForElement(fields.cyaSigned);
     await I.checkOption(fields.cyaSigned);
