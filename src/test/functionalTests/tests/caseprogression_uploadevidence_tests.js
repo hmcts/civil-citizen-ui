@@ -14,7 +14,7 @@ Before(async ({api}) => {
     await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef);
     await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef);
     if (claimRef) {
-      await LoginSteps.EnterUserCredentials(config.Username, config.Password);
+      await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     } else {
       console.log('claimRef has not been Created');
     }
