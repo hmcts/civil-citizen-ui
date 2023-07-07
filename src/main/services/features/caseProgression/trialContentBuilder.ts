@@ -54,6 +54,7 @@ export const buildTrialDocumentarySection = (isSmallClaims:boolean, section: Typ
   const errorFieldNamePrefix = `${trialDocumentary}[${trialDocumentary}][${index}]`;
   const missingInputError = form?.errorFor(`${errorFieldNamePrefix}[typeOfDocument]`, trialDocumentary) !== undefined ? 'ERRORS.VALID_ENTER_TYPE_OF_DOCUMENT' : null;
   const hearingOrTrialTitle = isSmallClaims? 'PAGES.UPLOAD_DOCUMENTS.HEARING.DOCUMENTARY' : 'PAGES.UPLOAD_DOCUMENTS.TRIAL.DOCUMENTARY';
+
   const invalidDateErrors = {
     invalidDayError : form?.errorFor(`${errorFieldNamePrefix}[dateDay]`, trialDocumentary),
     invalidMonthError : form?.errorFor(`${errorFieldNamePrefix}[dateMonth]`, trialDocumentary),

@@ -1,7 +1,6 @@
 import {CaseState} from 'form/models/claimDetails';
 import {getWitnessContent} from 'services/features/caseProgression/witnessService';
 import {
-  //FileOnlySection,
   UploadDocumentsUserForm,
   WitnessSection,
 } from 'models/caseProgression/uploadDocumentsUserForm';
@@ -187,10 +186,3 @@ const getMockWitnessSectionArray = () => {
   sectionArray.push(new WitnessSection('12', '12', '2022'));
   return sectionArray;
 };
-
-/*const getMockFileSectionArray = () => {
-  const sectionArray: FileOnlySection[] = [];
-  sectionArray.push(new FileOnlySection());
-  sectionArray.push(new FileOnlySection());
-  return sectionArray;
-};*/

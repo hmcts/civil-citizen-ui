@@ -167,6 +167,7 @@ const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSect
 const bindRequestToWitnessSectionObj = (request: any): WitnessSection => {
   const formObj: WitnessSection = new WitnessSection(request['dateDay'], request['dateMonth'], request['dateYear']);
   formObj.witnessName = request['witnessName'].trim();
+  //TODO we should get the file from dm-store
   formObj.fileUpload = request['fileUpload'];
   return formObj;
 };
@@ -179,6 +180,7 @@ const bindRequestToExpertSectionObj = (request: any): ExpertSection => {
   formObj.otherPartyName = request['otherPartyName'] != null ? request['otherPartyName'].trim() : null;
   formObj.questionDocumentName = request['questionDocumentName'] != null ? request['questionDocumentName'].trim() : null;
   formObj.otherPartyQuestionsDocumentName = request['otherPartyQuestionsDocumentName'] != null ? request['otherPartyQuestionsDocumentName'].trim() : null;
+  //TODO we should get the file from dm-store
   formObj.fileUpload = request['fileUpload'];
   return formObj;
 };
