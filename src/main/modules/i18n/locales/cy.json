@@ -1539,20 +1539,19 @@
           "YOUR_TRIAL_PARAGRAPH": "Your trial has been scheduled for {{ hearingDate }} at {{ hearingTimeHourMinute }} at {{ courtName }}.",
           "YOUR_HEARING_PARAGRAPH": "Your hearing has been scheduled for {{ hearingDate }} at {{ hearingTimeHourMinute }} at {{ courtName }}.",
           "VIEW_HEARING_NOTICE_BUTTON": "View hearing notice"
-        },
-        "WE_HAVE_EMAILED": "We’ve emailed {{ claimantName }} telling them when and how you said you paid the claim.",
-        "WE_WILL_CONTACT_YOU": "We’ll contact you to let you know how they respond. They can confirm you’ve paid and the claim is settled, or they can proceed with it.",
-        "YOU_HAVE_SETTLED_CLAIM_TITLE": "You settled the claim through mediation",
-        "YOU_HAVE_SETTLED_CLAIM": "You made an agreement which means the claim is now ended and sets out the terms of how you must repay {{ claimantName }}.",
-        "THEIR_PAYMENT_DETAILS": "if you need their payment details. Make sure you get receipts for any payments.",
-        "MEDIATION_UNSUCCESSFUL_TITLE": "Mediation was unsuccessful",
-        "MEDIATION_UNSUCCESSFUL_MSG1": "You weren’t able to resolve {{ claimantName }}’s claim against you using mediation.",
-        "MEDIATION_UNSUCCESSFUL_MSG2": "The court will review the case. We’ll contact you to tell you what to do next.",
-        "WE_WILL_POST_COPY": "Otherwise we’ll post a copy of the CCJ to you and to {{ claimantName }} and explain what to do next.",
-        "TELEPHONE": "Telephone: 0300 123 7050",
-        "WORKING_HOURS": "Monday to Friday, 8.30am to 5pm."
+        }
       },
-      "CLAIM_ENDED_TITLE": "Mae'r honiad hwn wedi dod i ben"
+      "WE_HAVE_EMAILED": "We’ve emailed {{ claimantName }} telling them when and how you said you paid the claim.",
+      "WE_WILL_CONTACT_YOU": "We’ll contact you to let you know how they respond. They can confirm you’ve paid and the claim is settled, or they can proceed with it.",
+      "YOU_HAVE_SETTLED_CLAIM_TITLE": "You settled the claim through mediation",
+      "YOU_HAVE_SETTLED_CLAIM": "You made an agreement which means the claim is now ended and sets out the terms of how you must repay {{ claimantName }}.",
+      "THEIR_PAYMENT_DETAILS": "if you need their payment details. Make sure you get receipts for any payments.",
+      "MEDIATION_UNSUCCESSFUL_TITLE": "Mediation was unsuccessful",
+      "MEDIATION_UNSUCCESSFUL_MSG1": "You weren’t able to resolve {{ claimantName }}’s claim against you using mediation.",
+      "MEDIATION_UNSUCCESSFUL_MSG2": "The court will review the case. We’ll contact you to tell you what to do next.",
+      "WE_WILL_POST_COPY": "Otherwise we’ll post a copy of the CCJ to you and to {{ claimantName }} and explain what to do next.",
+      "TELEPHONE": "Telephone: 0300 123 7050",
+      "WORKING_HOURS": "Monday to Friday, 8.30am to 5pm."
     },
     "UPLOAD_EVIDENCE_DOCUMENTS": {
       "ANSWERS_TO_QUESTIONS": "Answers to questions asked by other party",
