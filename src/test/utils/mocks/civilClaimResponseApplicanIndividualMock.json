@@ -16,6 +16,9 @@
     },
     "respondent1": {
       "type": "INDIVIDUAL",
+      "emailAddress":{
+        "emailAddress": "test@test.com"
+      },
       "partyDetails": {
         "individualTitle": "Mr.",
         "individualFirstName": "Joe",
