@@ -28,7 +28,6 @@ import {MediationAgreement} from 'models/mediation/mediationAgreement';
 import {CaseDocument} from 'common/models/document/caseDocument';
 import {Document} from 'common/models/document/document';
 
-
 jest.mock('../../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
@@ -437,14 +436,14 @@ describe('Latest Update Content Builder', () => {
           year: 2023,
           month: 2,
           day: 2,
-          text: 'test'
+          text: 'test',
         },
         whyDoYouDisagree: {
-          text: 'test'
+          text: 'test',
         },
         defence: {
-          text: 'test'
-        }
+          text: 'test',
+        },
       };
       // When
       const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
@@ -467,14 +466,14 @@ describe('Latest Update Content Builder', () => {
           year: 2023,
           month: 2,
           day: 2,
-          text: 'test'
+          text: 'test',
         },
         whyDoYouDisagree: {
-          text: 'test'
+          text: 'test',
         },
         defence: {
-          text: 'test'
-        }
+          text: 'test',
+        },
       };
       // When
       const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
@@ -513,9 +512,9 @@ describe('Latest Update Content Builder', () => {
         document: <Document>{
           document_url: 'http://dm-store:8080/documents/b46f785e-5f2d-4b7a-a359-d516a97f37bc',
           document_filename: 'sealed_claim_form_000MC003.pdf',
-          document_binary_url: 'http://dm-store:8080/documents/b46f785e-5f2d-4b7a-a359-d516a97f37bc/binary'
+          document_binary_url: 'http://dm-store:8080/documents/b46f785e-5f2d-4b7a-a359-d516a97f37bc/binary',
         },
-        documentType: DocumentType.MEDIATION_AGREEMENT
+        documentType: DocumentType.MEDIATION_AGREEMENT,
       };
       // When
       const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
@@ -544,7 +543,6 @@ describe('Latest Update Content Builder', () => {
       expect(responseToClaimSection[3]).toBeUndefined();
     });
   });
-
 
   describe('test default judgement submitted buildResponseToClaimSection', () => {
     it('should have build default judgement submitted section', () => {

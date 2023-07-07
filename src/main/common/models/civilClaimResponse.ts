@@ -51,7 +51,7 @@ import {CaseDocument} from 'models/document/caseDocument';
 import {CCDExpert} from './ccdResponse/ccdExpert';
 import {CaseProgressionHearingDocuments, HearingLocation} from 'models/caseProgression/caseProgressionHearing';
 import {UploadEvidenceElementCCD} from 'models/caseProgression/uploadDocumentsType';
-import {MediationAgreement} from "models/mediation/mediationAgreement";
+import {MediationAgreement} from 'models/mediation/mediationAgreement';
 
 export class CivilClaimResponse {
   id: string;
