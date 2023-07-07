@@ -26,7 +26,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @test', async ({api}) => {
+Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @regression', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -40,8 +40,9 @@ Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @test', 
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, rejectAll);
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
-    await api.enterBreathingSpace(config.applicantSolicitorUser);
-    await api.liftBreathingSpace(config.applicantSolicitorUser);
+    // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
+    // await api.enterBreathingSpace(config.applicantSolicitorUser);
+    // await api.liftBreathingSpace(config.applicantSolicitorUser);
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAllAlreadyPaid, config.claimState.JUDICIAL_REFERRAL);
     await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsYes);
   }
@@ -60,8 +61,9 @@ Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @regressi
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, rejectAll);
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
-    await api.enterBreathingSpace(config.applicantSolicitorUser);
-    await api.liftBreathingSpace(config.applicantSolicitorUser);
+    // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
+    // await api.enterBreathingSpace(config.applicantSolicitorUser);
+    // await api.liftBreathingSpace(config.applicantSolicitorUser);
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAllDisputeAll, config.claimState.IN_MEDIATION);
     //mediation with claimant lr to be replaced with admin after bug CIV-9427
     await api.mediationUnsuccessful(config.applicantSolicitorUser);

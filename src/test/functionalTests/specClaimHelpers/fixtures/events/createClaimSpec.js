@@ -7,17 +7,18 @@ const respondent1 = {
   individualLastName: 'Doe',
   individualTitle: 'Sir',
   primaryAddress: buildAddress('respondent'),
+  partyEmail: 'civilmoneyclaimsdemo@gmail.com',
 };
 const respondent1WithPartyName = {
   ...respondent1,
   partyName: 'Sir John Doe',
   partyTypeDisplayValue: 'Individual',
-  partyEmail: 'civilmoneyclaimsdemo@gmail.com',
 };
 const applicant1 = {
   type: 'COMPANY',
   companyName: 'Test Inc',
   primaryAddress: buildAddress('applicant'),
+  partyEmail: 'civilmoneyclaimsdemo@gmail.com',
 };
 const applicant1WithPartyName = {
   ...applicant1,

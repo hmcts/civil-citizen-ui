@@ -38,8 +38,9 @@ Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @reg
   await ResponseSteps.EnterPaymentOption(claimRef, admitAll, immediatePayment);
   await ResponseSteps.CheckAndSubmit(claimRef, admitAll);
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
-    await api.enterBreathingSpace(config.applicantSolicitorUser);
-    await api.liftBreathingSpace(config.applicantSolicitorUser);
+    // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
+    // await api.enterBreathingSpace(config.applicantSolicitorUser);
+    // await api.liftBreathingSpace(config.applicantSolicitorUser);
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayImmediate);
   }
 });
@@ -54,8 +55,9 @@ Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @regress
   await ResponseSteps.EnterFinancialDetails(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, admitAll);
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
-    await api.enterBreathingSpace(config.applicantSolicitorUser);
-    await api.liftBreathingSpace(config.applicantSolicitorUser);
+    // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
+    // await api.enterBreathingSpace(config.applicantSolicitorUser);
+    // await api.liftBreathingSpace(config.applicantSolicitorUser);
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayBySetDate, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
   }
 });
@@ -70,8 +72,9 @@ Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll @regres
   await ResponseSteps.EnterRepaymentPlan(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, admitAll);
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
-    await api.enterBreathingSpace(config.applicantSolicitorUser);
-    await api.liftBreathingSpace(config.applicantSolicitorUser);
+    // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
+    // await api.enterBreathingSpace(config.applicantSolicitorUser);
+    // await api.liftBreathingSpace(config.applicantSolicitorUser);
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayByInstallment, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
   }
 });
