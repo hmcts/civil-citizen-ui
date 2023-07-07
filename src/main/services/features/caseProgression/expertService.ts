@@ -10,8 +10,10 @@ export const getExpertContent = (claim: Claim): ClaimSummaryContent[] => {
   const sectionContent = [];
   const selectItems= [];
   // TODO check for logged user and send only the other party/parties name/s
+  // at the moment claimant's full name is always added
+  // because Case Progression can only develop relevant logic for Claimant LiP after CUI R2 is done
   selectItems.push(claim.getClaimantFullName());
-  selectItems.push(claim.getDefendantFullName());
+  // selectItems.push(claim.getDefendantFullName());
 
   if(claim.caseProgression?.defendantUploadDocuments?.expert[0]?.selected){
     sectionContent.push([buildExpertReportSection()]);
