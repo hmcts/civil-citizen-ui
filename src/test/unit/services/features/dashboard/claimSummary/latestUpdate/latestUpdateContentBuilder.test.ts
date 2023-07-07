@@ -1,6 +1,6 @@
 import {DateTime, Settings} from 'luxon';
 import {Claim} from 'models/claim';
-import {buildResponseToClaimSection, generateClaimSettledLatestUpdate} from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContentBuilder';
+import {buildResponseToClaimSection} from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContentBuilder';
 import {CaseState} from 'form/models/claimDetails';
 import {PartyType} from 'models/partyType';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
@@ -23,7 +23,6 @@ import {t} from 'i18next';
 import {DocumentType, DocumentUri} from 'models/document/documentType';
 import {YesNo} from 'common/form/models/yesNo';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
-import {RejectAllOfClaim} from 'common/form/models/rejectAllOfClaim';
 import {HowMuchHaveYouPaid} from 'common/form/models/admission/howMuchHaveYouPaid';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
 import {CaseDocument} from 'common/models/document/caseDocument';

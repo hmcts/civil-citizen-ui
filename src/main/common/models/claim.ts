@@ -530,6 +530,10 @@ export class Claim {
   hasClaimantRequestedCCJ() {
     return !!this.ccjJudgmentStatement;
   }
+
+  isClaimSettled() {
+    return this.ccdState === CaseState.CASE_SETTLED;
+  }
 }
 
 export interface StatementOfTruth {
