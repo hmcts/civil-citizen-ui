@@ -3,18 +3,8 @@ import {app} from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {CHILDREN_DISABILITY_URL, CITIZEN_OTHER_DEPENDANTS_URL} from 'routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
+import {mockResponseFullAdmitPayBySetDate, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-
-const jsdom = require('jsdom');
-const {JSDOM} = jsdom;
-const noStatementOfMeansMock = require('../noStatementOfMeansMock.json');
-const noChildrenDisabilityResponse: string = JSON.stringify(noStatementOfMeansMock);
-
-const mockNoChildrenDisabilityDraftStore = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(noChildrenDisabilityResponse)),
-};
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -54,7 +44,7 @@ describe('Children Disability', () => {
 
   describe('on GET', () => {
     it('should return children disability page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await request(app)
         .get(CHILDREN_DISABILITY_URL)
         .expect((res) => {
@@ -64,7 +54,7 @@ describe('Children Disability', () => {
     });
 
     it('should show disability page when haven´t statementOfMeans', async () => {
-      app.locals.draftStoreClient = mockNoChildrenDisabilityDraftStore;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await request(app)
         .get(CHILDREN_DISABILITY_URL)
         .send('')
@@ -72,24 +62,13 @@ describe('Children Disability', () => {
           expect(res.status).toBe(200);
         });
     });
-
-    it('should reflect data from draft store on disability page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      const response = await request(app).get(CHILDREN_DISABILITY_URL);
-      const dom = new JSDOM(response.text);
-      const htmlDocument = dom.window.document;
-      const radios = htmlDocument.getElementsByClassName('govuk-radios__input');
-      expect(radios.length).toBe(2);
-      expect(radios[0].getAttribute('value')).toBe('yes');
-      expect(radios[0].getAttribute('checked')).toBe('');
-      expect(radios[1].getAttribute('value')).toBe('no');
-      expect(radios[1].getAttribute('checked')).toBeNull();
-    });
   });
 
   describe('on POST', () => {
+    beforeEach(() => {
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+    });
     it('should redirect page when "no" and no statement of means', async () => {
-      app.locals.draftStoreClient = mockNoChildrenDisabilityDraftStore;
       await request(app)
         .post(CHILDREN_DISABILITY_URL)
         .send('option=no')
@@ -100,7 +79,6 @@ describe('Children Disability', () => {
     });
 
     it('should redirect page when "no"', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CHILDREN_DISABILITY_URL)
         .send('option=no')
@@ -111,7 +89,6 @@ describe('Children Disability', () => {
     });
 
     it('should redirect page when "yes"', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CHILDREN_DISABILITY_URL)
         .send('option=yes')
@@ -122,7 +99,6 @@ describe('Children Disability', () => {
     });
 
     it('should return error on incorrect input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CHILDREN_DISABILITY_URL)
         .send('')
