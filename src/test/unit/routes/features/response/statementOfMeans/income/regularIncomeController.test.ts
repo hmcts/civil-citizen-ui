@@ -3,7 +3,7 @@ import config from 'config';
 import nock from 'nock';
 import {app} from '../../../../../../../main/app';
 import {CITIZEN_EXPLANATION_URL, CITIZEN_MONTHLY_INCOME_URL} from '../../../../../../../main/routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
+import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 
@@ -22,7 +22,7 @@ describe('Regular Income Controller', () => {
 
   describe('on GET', () => {
     test('should display page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await request(app)
         .get(CITIZEN_MONTHLY_INCOME_URL)
         .expect((res: Response) => {
@@ -41,6 +41,9 @@ describe('Regular Income Controller', () => {
     });
   });
   describe('on POST', () => {
+    beforeEach(() => {
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+    });
     test('should display errors when job is selected but no amount or schedule are specified', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
@@ -507,7 +510,6 @@ describe('Regular Income Controller', () => {
         });
     });
     test('should redirect when all values are correct', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({

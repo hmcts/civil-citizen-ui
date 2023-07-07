@@ -4,7 +4,7 @@ import nock from 'nock';
 import config from 'config';
 import {CITIZEN_CARER_URL, CITIZEN_EMPLOYMENT_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -21,7 +21,7 @@ describe('Carer', () => {
 
   describe('on GET', () => {
     it('should return citizen carer page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await request(app)
         .get(CITIZEN_CARER_URL)
         .expect((res) => {
@@ -41,8 +41,11 @@ describe('Carer', () => {
   });
 
   describe('on POST', () => {
+    beforeEach(() => {
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+    });
+
     it('should redirect page when "no"', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_CARER_URL)
         .send({option:'no'})
@@ -52,7 +55,6 @@ describe('Carer', () => {
         });
     });
     it('should redirect page when "yes"', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_CARER_URL)
         .send({option:'yes'})
@@ -62,7 +64,6 @@ describe('Carer', () => {
         });
     });
     it('should return error on incorrect input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_CARER_URL)
         .send()
