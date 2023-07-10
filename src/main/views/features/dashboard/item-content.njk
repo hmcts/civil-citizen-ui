@@ -306,4 +306,14 @@
       </select>
     </div>
   {% endif %}
+
+  {% if content.type === ClaimSummaryType.LEAD_PARAGRAPH_WITH_NO_BOTTOM_MARGIN %}
+    {% set object = '' %}
+    {% if content.data.variables %}
+      {% set object = content.data.variables %}
+      <p class="govuk-body-l govuk-!-margin-bottom-1">{{ t(content.data.text,object)}}</p>
+    {% else %}
+      <p class="govuk-body-l govuk-!-margin-bottom-1">{{ t(content.data.text)}}</p>
+    {% endif %}
+  {% endif %}
 {% endmacro %}

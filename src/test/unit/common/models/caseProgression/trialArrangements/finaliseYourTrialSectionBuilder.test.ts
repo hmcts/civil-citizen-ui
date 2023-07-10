@@ -1,0 +1,100 @@
+import {FinaliseYourTrialSectionBuilder} from 'models/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
+import {ClaimSummaryType} from 'form/models/claimSummarySection';
+import {t} from 'i18next';
+
+describe('FinaliseYourTrialSectionBuilder tests', ()=> {
+  it('should create mainTitle', ()=> {
+  //Given
+    const mainTitleExpected = ({
+      type: ClaimSummaryType.MAINTITLE,
+      data: {
+        text: 'text',
+        variables: 'variables',
+      },
+    });
+
+    //When
+    const mainTitleBuilt = new FinaliseYourTrialSectionBuilder()
+      .addMainTitle(mainTitleExpected.data.text,mainTitleExpected.data.variables)
+      .build();
+
+    //Then
+    expect(mainTitleBuilt).toEqual([mainTitleExpected]);
+  });
+
+  it('should add leadParagraph', ()=> {
+    //Given
+    const leadParagraphExpected = ({
+      type: ClaimSummaryType.LEAD_PARAGRAPH,
+      data: {
+        text: 'text',
+        variables: 'variables',
+      },
+    });
+
+    //When
+    const leadParagraphBuilt = new FinaliseYourTrialSectionBuilder()
+      .addLeadParagraph(leadParagraphExpected.data.text,leadParagraphExpected.data.variables)
+      .build();
+
+    //Then
+    expect(leadParagraphBuilt).toEqual([leadParagraphExpected]);
+  });
+
+  it('should add Inset Text', ()=> {
+    //Given
+    const insetTextExpected = ({
+      type: ClaimSummaryType.INSET_TEXT,
+      data: {
+        html: '<STRONG>'+ t('text') +'</STRONG>' + t('text1') +'<P>' + t('text2') +'</P>',
+        variables: 'variables',
+      },
+    });
+
+    //When
+    const insetTextBuilt = new FinaliseYourTrialSectionBuilder()
+      .addInsetText('text', 'text1', 'text2', 'variables')
+      .build();
+
+    //Then
+    expect(insetTextBuilt).toEqual([insetTextExpected]);
+  });
+
+  it('should add warning text', ()=> {
+    //Given
+    const warningTextExpected = ({
+      type: ClaimSummaryType.WARNING,
+      data: {
+        text: 'text',
+        variables: 'variables',
+      },
+    });
+
+    //When
+    const warningTextBuilt = new FinaliseYourTrialSectionBuilder()
+      .addWarning(warningTextExpected.data.text, warningTextExpected.data.variables)
+      .build();
+
+    //Then
+    expect(warningTextBuilt).toEqual([warningTextExpected]);
+  });
+
+  it('should add leadParagraph with no bottom margin', ()=> {
+    //Given
+    const leadParaWithNoMarginExpected = ({
+      type: ClaimSummaryType.LEAD_PARAGRAPH_WITH_NO_BOTTOM_MARGIN,
+      data: {
+        text: 'text',
+        variables: 'variables',
+      },
+    });
+
+    //When
+    const leadParagraphBuilt = new FinaliseYourTrialSectionBuilder()
+      .addLeadParagraphWithNoBottomMargin(leadParaWithNoMarginExpected.data.text,leadParaWithNoMarginExpected.data.variables)
+      .build();
+
+    //Then
+    expect(leadParagraphBuilt).toEqual([leadParaWithNoMarginExpected]);
+  });
+});
