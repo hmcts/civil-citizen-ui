@@ -10,10 +10,10 @@ const buttons = {
 };
 
 class ContactNumberDetailsPage {
-  enterContactNumber () {   
-    I.see('Enter a phone number (optional)', 'h1');
-    I.fillField(fields.contactNumber, '02088908876');    
-    I.click(buttons.saveAndContinue);
+  async enterContactNumber () {
+    await I.see('Enter a phone number (optional)', 'h1');
+    await I.fillField(fields.contactNumber, '02088908876');
+    await I.click(buttons.saveAndContinue);
   }
 }
 

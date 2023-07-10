@@ -10,9 +10,9 @@ const buttons = {
 
 class Explanation {
 
-  enterExplanation() {
-    I.fillField(fields.reason, 'Test reason');
-    I.click(buttons.continue);    
+  async enterExplanation() {
+    await I.fillField(fields.reason, 'Test reason');
+    await I.click(buttons.continue);    
   }
 }
 

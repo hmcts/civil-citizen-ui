@@ -3,14 +3,14 @@ const LoginPage = require('../pages/login');
 
 class LoginSteps  {
 
-  AcceptCookies() {
-    LoginPage.acceptCookies();
+  async AcceptCookies() {
+    await LoginPage.acceptCookies();
   }
 
-  EnterUserCredentials(username, password) {    
-    LoginPage.open();
-    this.AcceptCookies();
-    LoginPage.login(username, password);
+  async EnterUserCredentials(username, password) {    
+    await LoginPage.open();
+    await this.AcceptCookies();
+    await LoginPage.login(username, password);
   }
 }
 
