@@ -14,6 +14,7 @@ nodejs:
         - cmc-s2s-secret
         - citizen-draft-store-primary
         - citizen-draft-store-secondary
+        - civil-citizen-ui-token-key
   environment:
     ORDNANCE_SURVEY_API_KEY: ${ORDNANCE_SURVEY_API_KEY}
     OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
