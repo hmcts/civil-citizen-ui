@@ -2,17 +2,17 @@ import {ClaimSummaryContent} from 'form/models/claimSummarySection';
 import {Claim} from 'models/claim';
 import {
   buildDownloadSealedClaimSection,
-  buildGeneratedPDFSection
+  buildDownloadSealedResponseSection,
 } from './claimDocuments/claimDocumentContentBuilder';
 
 function getDocumentsContent(claim: Claim, claimId: string, lang?: string): ClaimSummaryContent[] {
   const downloadClaimSection = buildDownloadSealedClaimSection(claim, claimId, lang);
-  const generatedDocuments = buildGeneratedPDFSection(claim, claimId, lang);
+  const downloadResponseSection = buildDownloadSealedResponseSection(claim, claimId, lang);
 
   return [{
     contentSections: [
       downloadClaimSection,
-      generatedDocuments[0],
+      downloadResponseSection,
     ],
   }];
 }
