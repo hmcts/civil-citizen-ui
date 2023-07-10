@@ -45,13 +45,13 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
   };
 
   const getFinancialSectionFA = () => {
-    return claim.isFullAdmission() && paymentOption !== PaymentOptionType.IMMEDIATELY
+    return claim.isFullAdmission() && paymentOption !== PaymentOptionType.IMMEDIATELY && !claim.isBusiness()
       ? buildYourFinancialSection(claim, claimId, lang)
       : null;
   };
 
   const getFinancialSectionPA = () => {
-    return claim.isPartialAdmission() && paidResponse !== PaymentOptionType.IMMEDIATELY
+    return claim.isPartialAdmission() && paidResponse !== PaymentOptionType.IMMEDIATELY && !claim.isBusiness()
       ? buildYourFinancialSection(claim, claimId, lang)
       : null;
   };
