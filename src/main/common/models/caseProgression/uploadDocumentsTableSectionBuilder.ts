@@ -18,9 +18,11 @@ export const addEvidenceUploadTable = (header: string, isClaimant: boolean, tabl
       head: [
         {
           text: isClaimant == true ? t('PAGES.CLAIM_SUMMARY.CLAIMANT') + t(header) : t('PAGES.CLAIM_SUMMARY.DEFENDANT') + t(header),
+          classes: 'govuk-!-width-one-half',
         },
         {
           text: '',
+          classes: 'govuk-!-width-one-half',
         },
       ],
       tableRows: tableRows,

@@ -53,8 +53,10 @@ function getDocumentTypeTable(header: string, rows: UploadDocumentTypes[], isCla
     const uploadDateString: string  = upload.createdDateTimeFormatted;
 
     tableRows.push([
-      {html: getDocumentTypeName(upload.documentType, isClaimant) + '<br>' + t('PAGES.CLAIM_SUMMARY.DATE_DOCUMENT_UPLOADED') + uploadDateString},
-      {html: getDocumentLink(upload)}],
+      {html: getDocumentTypeName(upload.documentType, isClaimant) + '<br>' + t('PAGES.CLAIM_SUMMARY.DATE_DOCUMENT_UPLOADED') + uploadDateString,
+        classes: 'govuk-!-width-one-half'},
+      {html: getDocumentLink(upload),
+        classes: 'govuk-!-width-one-half govuk-table__cell--numeric'}],
     );
   }
 
@@ -142,5 +144,5 @@ function getDocumentLink (document: UploadDocumentTypes) : string {
   }
 
   //TODO: href will need to be added - dependent on document download API implementation.
-  return '<a href="href will need to be connected to document">'+documentName+'</a>';
+  return '<p class="govuk-body"><a class="govuk-link" href="href will need to be connected to document">'+documentName+'</a></p>';
 }
