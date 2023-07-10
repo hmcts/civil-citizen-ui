@@ -3,6 +3,7 @@ import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {t} from 'i18next';
 export class FinaliseYourTrialSectionBuilder extends PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
+
   addMainTitle(mainTitle: string, variables?: unknown) {
     const mainTitleSection = ({
       type: ClaimSummaryType.MAINTITLE,
@@ -28,14 +29,14 @@ export class FinaliseYourTrialSectionBuilder extends PageSectionBuilder {
   }
 
   addLeadParagraphWithNoBottomMargin(text: string, variables?: unknown) {
-    const leadParagraphSection = ({
+    const leadParagraphSectionWithNoMargin = ({
       type: ClaimSummaryType.LEAD_PARAGRAPH_WITH_NO_BOTTOM_MARGIN,
       data: {
         text: text,
         variables: variables,
       },
     });
-    this._claimSummarySections.push(leadParagraphSection);
+    this._claimSummarySections.push(leadParagraphSectionWithNoMargin);
     return this;
   }
 
