@@ -1,0 +1,40 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% from "../../macro/page-title.njk" import setPageTitle %}}
+{% from "../dashboard/item-content.njk" import itemContent %}
+{% from "../../macro/external-link.njk" import externalLink %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.PAGE_TITLE') }}
+{% endblock %}
+
+{% set titleTextContent %}
+  {% if readyForTrialOrHearing %}
+    {# TODO: add a text for the happy path - covered in CIV-9204 #}
+    {{ t('') }}
+  {% else %}
+    {{ t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.YOU_SAID_CASE_NOT_READY_FOR_TRIAL_OR_HEARING') }}
+  {% endif %}
+{% endset %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {{ govukPanel({
+        titleText: titleTextContent
+      }) }}
+      {% for item in confirmationContent %}
+        {{ itemContent(item,t) }}
+      {% endfor %}
+      <div class="form-group">
+        {{ govukButton({
+          text: t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.RETURN_TO_CASE_DETAILS'),
+          href: '/dashboard'
+        }) }}
+      </div>
+    </div>
+  </div>
+{% endblock %}
