@@ -1361,6 +1361,15 @@
       "PAGE_TITLE": "Esboniad",
       "TITLE": "Esboniwch yn fras pam na allwch dalu ar unwaith"
     },
+    "FINALISE_TRIAL_ARRANGEMENTS": {
+      "CONFIRMATION": {
+        "PAGE_TITLE": "Trial Arrangements Confirmation",
+        "YOU_SAID_CASE_NOT_READY_FOR_TRIAL_OR_HEARING": "You have said this case is not ready for trial or hearing",
+        "RETURN_TO_CASE_DETAILS": "Return to case details",
+        "WHAT_HAPPENS_NEXT": "What happens next",
+        "YOU_WILL_NEED_TO_CALL": "For any changes to accessibility requirements between now and the hearing date you will need to call 0300 123 7050."
+      }
+    },
     "FINANCIAL_DETAILS": {
       "ASK_DETAILS_AND_SEND": "Byddwn yn eich gofyn am y manylion ac yna byddwn yn eu hanfon at {{ applicant1Details }} i’w hadolygu.",
       "GET_APPLICANT_CONTACT_DETAILS": "Cael manylion cyswllt {{ applicant1Details }}.",
