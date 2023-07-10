@@ -2356,6 +2356,13 @@
       },
       "YEAR": "Year"
     },
+    "IS_CASE_READY": {
+      "PAGE_TITLE": "Finalise your trial or hearing arrangements",
+      "CLAIM_NUMBER": "Claim number: {{ claimId }}",
+      "PARTIES": "{{ claimantName }} v {{ defendantName }}",
+      "IS_CASE_READY": "Is the case ready for trial or hearing?",
+      "YOU_ARE_REMINDED": "You are reminded that this information will be shared with all other parties"
+    },
     "VULNERABILITY": {
       "PAGE_TITLE": "Cwestiynau bregusrwydd",
       "QUESTION_1": "Diffinnir hyn fel rhywun sydd wedi dioddef camdriniaeth ddomestig neu ryw fath arall o gamdriniaeth, rhywun sydd ag anabledd dysgu, anabledd corfforol, salwch meddyliol neu ddiffyg galluedd meddyliol.  Bydd y llys yn ystyried pa addasiadau neu gymorth y bydd yr unigolyn ei angen",
@@ -2760,6 +2767,7 @@
     "VALID_VALUE": "A ydych yn siŵr bod hwn yn swm dilys?",
     "VALID_YEAR": "Rhowch flwyddyn ddilys",
     "VALID_YES_NO_OPTION": "Dewiswch opsiwn: ie neu na",
+    "VALID_YES_NO_OPTION_IS_CASE_READY": "Select Yes or No",
     "VALID_YES_NO_OPTION_NAC_YDW": "Dewiswch opsiwn: ‘ydw’ neu ‘nac ydw’",
     "VALID_YES_NO_SELECTION": "Dewiswch ie neu na, os gwelwch yn dda",
     "VALID_ENTER_TYPE_OF_DOCUMENT": "You must enter type of document",
