@@ -22,8 +22,9 @@ export class IsAllowedMimeTypeValidator implements ValidatorConstraintInterface 
       'image/bmp',
       'image/tiff',
     ];
-    if(args?.object instanceof FileOnlySection && args.object.fileUpload){
-      value = args.object.fileUpload.mimetype;
+    const fileOnlySection = args?.object as FileOnlySection;
+    if (typeof fileOnlySection === 'object' && fileOnlySection.fileUpload) {
+      value = fileOnlySection.fileUpload.mimetype;
     }
     if (value && allowedMimeTypes.includes(value)) {
       return true;

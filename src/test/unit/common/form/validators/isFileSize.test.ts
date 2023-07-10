@@ -1,5 +1,6 @@
-import { validate } from 'class-validator';
+import {validate} from 'class-validator';
 import {IsFileSize} from 'form/validators/isFileSize';
+import {FileUpload} from 'models/caseProgression/uploadDocumentsUserForm';
 
 describe('isFileSize validator', () => {
   it('should validate file if file size 100mb', async () => {
@@ -28,6 +29,20 @@ describe('isFileSize validator', () => {
     expect(validationErrors.length).toBe(1);
   });
 
+  it('should invalidate if FileUpload file size is above 100MB', async () => {
+    //Given
+    const fileSize = 101 * 1024 * 1024;
+    const testObject = new TestFileUpload();
+    testObject.fileUpload = new FileUpload();
+    testObject.fileUpload.size = fileSize;
+
+    //When
+    const validationErrors = await validate(testObject);
+
+    //Then
+    expect(validationErrors.length).toBe(1);
+  });
+
   it('should validate if there is no file', async () => {
     //When
     const testObject = new TestFileSize();
@@ -41,4 +56,9 @@ describe('isFileSize validator', () => {
 class TestFileSize {
   @IsFileSize()
     fileSize: number;
+}
+
+class TestFileUpload {
+  @IsFileSize()
+    fileUpload: FileUpload;
 }

@@ -1,5 +1,6 @@
 import { validate } from 'class-validator';
 import {IsAllowedMimeType} from 'form/validators/isAllowedMimeType';
+import {FileUpload} from 'models/caseProgression/uploadDocumentsUserForm';
 
 describe('isAllowedMimeType validator', () => {
   it('should validate the allowed mime types', async () => {
@@ -42,6 +43,19 @@ describe('isAllowedMimeType validator', () => {
     expect(validationErrors.length).toBe(1);
   });
 
+  it('should invalidate any other mimetype for FileUpload', async () => {
+    //Given
+    const testObject = new TestFileUpload();
+    testObject.fileUpload = new FileUpload();
+    testObject.fileUpload.mimetype = 'any';
+
+    //When
+    const validationErrors = await validate(testObject);
+
+    //Then
+    expect(validationErrors.length).toBe(1);
+  });
+
   it('should invalidate when mimetype is not provided', async () => {
     //Given
     const testObject = new TestMimeType();
@@ -57,4 +71,9 @@ describe('isAllowedMimeType validator', () => {
 class TestMimeType {
   @IsAllowedMimeType()
     mimeType: string;
+}
+
+class TestFileUpload {
+  @IsAllowedMimeType()
+    fileUpload: FileUpload;
 }
