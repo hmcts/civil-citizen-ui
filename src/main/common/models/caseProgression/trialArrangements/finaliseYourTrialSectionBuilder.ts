@@ -15,19 +15,7 @@ export class FinaliseYourTrialSectionBuilder extends PageSectionBuilder {
     this._claimSummarySections.push(mainTitleSection);
     return this;
   }
-
-  addLeadParagraph(text: string, variables?: unknown) {
-    const leadParagraphSection = ({
-      type: ClaimSummaryType.LEAD_PARAGRAPH,
-      data: {
-        text: text,
-        variables: variables,
-      },
-    });
-    this._claimSummarySections.push(leadParagraphSection);
-    return this;
-  }
-
+  
   addLeadParagraphWithNoBottomMargin(text: string, variables?: unknown) {
     const leadParagraphSectionWithNoMargin = ({
       type: ClaimSummaryType.LEAD_PARAGRAPH_WITH_NO_BOTTOM_MARGIN,
@@ -61,6 +49,18 @@ export class FinaliseYourTrialSectionBuilder extends PageSectionBuilder {
       },
     });
     this._claimSummarySections.push(insetSection);
+    return this;
+  }
+
+  addLeadParagraph(text: string, variables?: unknown) {
+    const leadParagraphSection = ({
+      type: ClaimSummaryType.LEAD_PARAGRAPH,
+      data: {
+        text: text,
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(leadParagraphSection);
     return this;
   }
 
