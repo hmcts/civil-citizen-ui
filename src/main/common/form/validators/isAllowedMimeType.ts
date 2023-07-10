@@ -4,6 +4,7 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
+import {FileOnlySection} from 'models/caseProgression/uploadDocumentsUserForm';
 
 @ValidatorConstraint({ name: 'isAllowedMimeType', async: false })
 export class IsAllowedMimeTypeValidator implements ValidatorConstraintInterface {
@@ -21,6 +22,9 @@ export class IsAllowedMimeTypeValidator implements ValidatorConstraintInterface 
       'image/bmp',
       'image/tiff',
     ];
+    if(args?.object instanceof FileOnlySection && args.object.fileUpload){
+      value = args.object.fileUpload.mimetype;
+    }
     if (value && allowedMimeTypes.includes(value)) {
       return true;
     }

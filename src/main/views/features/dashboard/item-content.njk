@@ -219,6 +219,15 @@
               'data-id': content.data.category+'[%index%]['+content.data.field+']'
            }
         }) }}
+        <noscript>
+          {{ govukButton({
+            id: 'buttonPressed',
+            name: 'buttonPressed',
+            value: content.data.category+'['+content.data.index+'][uploadButton]',
+            text: t('PAGES.UPLOAD_DOCUMENTS.UPLOAD_FILE'),
+            classes: "govuk-button--secondary govuk-!-margin-bottom-0"
+          }) }}
+        </noscript>
     </div>
     {{ govukInput({
        id: content.data.category+'['+content.data.index+'][caseDocument]',

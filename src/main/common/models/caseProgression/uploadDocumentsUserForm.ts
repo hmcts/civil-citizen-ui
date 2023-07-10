@@ -61,6 +61,8 @@ export class UploadDocumentsUserForm {
     this.trialCosts = trialCosts;
     this.trialDocumentary = trialDocumentary;
   }
+
+  [key: string]: any;
 }
 
 export class FileUpload {
@@ -74,8 +76,10 @@ export class FileUpload {
 }
 
 export class FileOnlySection {
-  @ValidateIf((object, value) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
-  @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
+  @ValidateIf((object, value) => !object.caseDocument)
+  @IsAllowedMimeType({ message: 'ERRORS.VALID_MIME_TYPE_FILE' })
+  @IsFileSize({ message: 'ERRORS.VALID_SIZE_FILE' })
+  @IsNotEmpty({ message: 'ERRORS.VALID_CHOOSE_THE_FILE' })
     fileUpload: FileUpload;
 
   caseDocument: CaseDocument;

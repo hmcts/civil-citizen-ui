@@ -30,7 +30,7 @@
     {% set hearing = t('PAGES.UPLOAD_DOCUMENTS.HEARING.TITLE') %}
 
     <div class="govuk-grid-row">
-      <form method="post" novalidate>
+      <form method="post" enctype="multipart/form-data" novalidate>
         {{ csrfProtection(csrf) }}
         <div id="content"></div>
 
@@ -183,6 +183,9 @@
           <br>
           <div class="govuk-button-group">
             {{ govukButton({
+              id: 'buttonPressed',
+              name: 'buttonPressed',
+              value: 'continue',
               text: t('COMMON.BUTTONS.CONTINUE')
             }) }}
             <a href={{ cancelUrl }} class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>

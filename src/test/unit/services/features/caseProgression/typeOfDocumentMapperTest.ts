@@ -15,7 +15,7 @@ describe('TypeOfDocumentMapper mapToSingleFile', () => {
     } as Request;
 
     // When
-    const result = TypeOfDocumentSectionMapper.mapToSingleFile(mockRequest);
+    const result = TypeOfDocumentSectionMapper.mapReqToSingleFile(mockRequest);
 
     // Then
     expect(result).toBeDefined();
@@ -31,7 +31,7 @@ describe('TypeOfDocumentMapper mapToSingleFile', () => {
     const mockRequest = {} as Request;
 
     // When
-    const result = TypeOfDocumentSectionMapper.mapToSingleFile(mockRequest);
+    const result = TypeOfDocumentSectionMapper.mapReqToSingleFile(mockRequest);
 
     // Then
     expect(result).toBeUndefined();

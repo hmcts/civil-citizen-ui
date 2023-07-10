@@ -50,7 +50,7 @@ describe('"upload File controller test', () => {
   describe('on post', () => {
     it('should return file and http 200 ', async () => {
       //given
-      TypeOfDocumentSectionMapper.mapToSingleFile = jest.fn(() => {
+      TypeOfDocumentSectionMapper.mapReqToSingleFile = jest.fn(() => {
         return file;
       });
 
@@ -82,7 +82,7 @@ describe('"upload File controller test', () => {
       //given
       const error = new Error('Test error');
 
-      TypeOfDocumentSectionMapper.mapToSingleFile = jest.fn().mockImplementation(() => {
+      TypeOfDocumentSectionMapper.mapReqToSingleFile = jest.fn().mockImplementation(() => {
         throw error;
       });
 
@@ -103,7 +103,7 @@ describe('"upload File controller test', () => {
   it('should return validation http 400 ', async () => {
     //given
 
-    TypeOfDocumentSectionMapper.mapToSingleFile = jest.fn(() => {
+    TypeOfDocumentSectionMapper.mapReqToSingleFile = jest.fn(() => {
       return new FileUpload();
     });
     //When

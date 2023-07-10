@@ -4,10 +4,14 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
+import {FileOnlySection} from 'models/caseProgression/uploadDocumentsUserForm';
 
 @ValidatorConstraint({ name: 'fileSizeValidator', async: false })
 export class FileSizeValidator implements ValidatorConstraintInterface {
-  validate(size: number, args: ValidationArguments) {
+  validate(size: any, args: ValidationArguments) {
+    if(args?.object instanceof FileOnlySection && args.object.fileUpload){
+      size = args.object.fileUpload.size;
+    }
     if (!size) {
       return true;
     }

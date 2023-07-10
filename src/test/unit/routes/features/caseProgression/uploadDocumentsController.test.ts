@@ -17,6 +17,12 @@ const getWitnessContentMock = getWitnessContent as jest.Mock;
 const getExpertContentMock = getExpertContent as jest.Mock;
 import {t} from 'i18next';
 import {getTrialContent} from 'services/features/caseProgression/trialService';
+import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
+import {CaseDocument} from 'models/document/caseDocument';
+import {Claim} from 'models/claim';
+import {CaseState} from 'form/models/claimDetails';
+import {GenericForm} from 'form/models/genericForm';
+import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 
 const getTrialContentMock = getTrialContent as jest.Mock;
 
@@ -26,6 +32,82 @@ jest.mock('services/features/caseProgression/disclosureService');
 jest.mock('services/features/caseProgression/witnessService');
 jest.mock('services/features/caseProgression/expertService');
 jest.mock('services/features/caseProgression/trialService');
+
+describe('Upload a single file', () => {
+  jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+
+  const mockGetClaim = jest.fn(); // Define mockGetClaim as a mock function
+  const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+  const disclosureSections = {
+    ...mockClaim,
+    state: CaseState.AWAITING_APPLICANT_INTENTION,
+    case_data: {
+      ...mockClaim.case_data,
+      caseProgression: {
+        defendantUploadDocuments: {
+          disclosure: [
+            { documentType: 'DOCUMENTS_FOR_DISCLOSURE', selected: true },
+            { documentType: 'DISCLOSURE_LIST', selected: true },
+          ],
+        },
+      },
+    },
+  };
+
+  const file = {
+    fieldname: 'documentsForDisclosure[0][fileUpload]',
+    originalname: 'test.txt',
+    mimetype: 'text/plain',
+    size: 123,
+    buffer: Buffer.from('Test file content'),
+  };
+  const civilServiceUrl = config.get<string>('services.civilService.url');
+
+  beforeEach(() => {
+    app.locals.draftStoreClient = mockCivilClaim;
+  });
+
+  it('should upload a single file', async () => {
+    //given
+    // getDisclosureContentMock.mockImplementation(getDisclosureContent);
+
+    mockGetClaim.mockImplementation(() => {
+      return Object.assign(new Claim(), disclosureSections.case_data);
+    });
+
+    TypeOfDocumentSectionMapper.mapMulterFileToSingleFile = jest.fn(() => {
+      return file;
+    });
+
+    const mockCaseDocument: CaseDocument = <CaseDocument>{  createdBy: 'test',
+      documentLink: {document_url: '', document_binary_url:'', document_filename:''},
+      documentName: 'TestCaseDocumentFormData',
+      documentType: null,
+      documentSize: 12345,
+      createdDatetime: new Date()};
+
+    nock(civilServiceUrl)
+      .post('/case/document/generateAnyDoc')
+      .reply(200, mockCaseDocument);
+
+    await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .field('buttonPressed', 'documentsForDisclosure[0][uploadButton]')
+      .field('documentsForDisclosure[0][typeOfDocument]', 'test document')
+      .field('documentsForDisclosure[0][caseDocument]', '')
+      .field('documentsForDisclosure[0][date-day]', '')
+      .field('documentsForDisclosure[0][date-month]', '')
+      .field('documentsForDisclosure[0][date-year]', '')
+      .field('documentsForDisclosure[0][fileUpload]', '')
+      .attach('documentsForDisclosure[0][fileUpload]', file.buffer, {
+        filename: file.originalname,
+        contentType: file.mimetype,
+      });
+
+    const form : GenericForm<UploadDocumentsUserForm> = getDisclosureContentMock.mock.calls[0][1];
+    expect(form.model.documentsForDisclosure[0].caseDocument.documentName).toEqual('TestCaseDocumentFormData');
+  });
+});
 
 describe('Upload document- upload document controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

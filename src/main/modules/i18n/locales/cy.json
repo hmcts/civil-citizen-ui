@@ -2305,6 +2305,7 @@
       "TITLE": "Upload documents",
       "TYPE_OF_DOCUMENT": "Type of document",
       "UPLOAD": "Upload a file",
+      "UPLOAD_FILE": "Upload file",
       "TYPE_OF_DOCUMENT_EXAMPLE": "For example, contract, invoice, receipt, email, text message, photo, social media message",
       "DOCUMENT_ISSUE_DATE": "Date document was issued or message was sent",
       "TRIAL": {

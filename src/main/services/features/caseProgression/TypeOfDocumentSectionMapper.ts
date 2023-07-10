@@ -3,17 +3,28 @@ import {Request} from 'express';
 
 export class TypeOfDocumentSectionMapper {
 
-  static mapToSingleFile(req: Request): FileUpload {
+  static mapReqToSingleFile(req: Request): FileUpload {
     const file = req.file as Express.Multer.File;
     if (file) {
-      const mappedFile: FileUpload = new FileUpload();
-      mappedFile.fieldname= file.fieldname;
-      mappedFile.originalname= file.originalname;
-      mappedFile.mimetype= file.mimetype;
-      mappedFile.size= file.size;
-      mappedFile.buffer = file.buffer;
-      return mappedFile;
+      return TypeOfDocumentSectionMapper.createFileUpload(file);
     }
     return undefined;
+  }
+
+  static mapMulterFileToSingleFile(file: Express.Multer.File): FileUpload {
+    if (file) {
+      return TypeOfDocumentSectionMapper.createFileUpload(file);
+    }
+    return undefined;
+  }
+
+  private static createFileUpload(file: Express.Multer.File): FileUpload {
+    const fileUpload: FileUpload = new FileUpload();
+    fileUpload.fieldname = file.fieldname;
+    fileUpload.originalname = file.originalname;
+    fileUpload.mimetype = file.mimetype;
+    fileUpload.size = file.size;
+    fileUpload.buffer = file.buffer;
+    return fileUpload;
   }
 }

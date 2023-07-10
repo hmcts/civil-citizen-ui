@@ -32,7 +32,7 @@ const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceCli
 uploadFileController.post(CP_UPLOAD_FILE, upload.single('file'), (req, res) => {
   (async () => {
     try {
-      const uploadDocumentsForm = TypeOfDocumentSectionMapper.mapToSingleFile(req);
+      const uploadDocumentsForm = TypeOfDocumentSectionMapper.mapReqToSingleFile(req);
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
 
       const form = new GenericForm(uploadDocumentsForm);
