@@ -94,13 +94,13 @@ function getDocumentTypeName(documentType: EvidenceUploadDisclosure | EvidenceUp
       documentName = documentName +t('PAGES.CLAIM_SUMMARY.NOTICE_OF_INTENTION').toLowerCase();
       break;
     case EvidenceUploadWitness.DOCUMENTS_REFERRED:
-      documentName = documentName +t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_REFERRED_TO_STATEMENT').toLowerCase();
+      documentName = documentName +t('PAGES.CLAIM_SUMMARY.DOCUMENTS_REFERRED_TO_STATEMENT').toLowerCase();
       break;
     case EvidenceUploadExpert.STATEMENT:
       documentName = t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.JOINT_STATEMENT_OF_EXPERTS');
       break;
     case EvidenceUploadExpert.EXPERT_REPORT:
-      documentName = documentName +t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.EXPERTS_REPORT').toLowerCase();
+      documentName = documentName +t('PAGES.CLAIM_SUMMARY.EXPERT_REPORT').toLowerCase();
       break;
     case EvidenceUploadExpert.QUESTIONS_FOR_EXPERTS:
       documentName = documentName +t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.QUESTIONS_FOR_OTHER_PARTY').toLowerCase();
@@ -144,5 +144,5 @@ function getDocumentLink (document: UploadDocumentTypes) : string {
   }
 
   //TODO: href will need to be added - dependent on document download API implementation.
-  return '<p class="govuk-body"><a class="govuk-link" href="href will need to be connected to document">'+documentName+'</a></p>';
+  return '<a class="govuk-link" href="href will need to be connected to document">'+documentName+'</a>';
 }

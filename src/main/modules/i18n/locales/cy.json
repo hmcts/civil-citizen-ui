@@ -733,6 +733,8 @@
       "DOWNLOAD_RESPONSE": "Llwytho'r ymateb i lawr",
       "EVIDENCE_UPLOAD_SUMMARY": "Read and save all documents uploaded by the parties involved in the claim. Three weeks before the trial, a bundle will be created containing all submitted documents in one place. You will be told when this is available.",
       "EXPERT_EVIDENCE": "expert evidence",
+      "EXPERT_REPORT": "expert report",
+      "DOCUMENTS_REFERRED_TO_STATEMENT": "Documents referred to in statement",
       "HEARING_DOCUMENTS": "hearing documents",
       "NOTICE_OF_INTENTION": "Intention to rely on hearsay evidence",
       "LATEST_UPDATE": "Diweddariad diweddaraf",

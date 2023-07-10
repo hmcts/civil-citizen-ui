@@ -26,8 +26,8 @@ function getTable(isClaimant: boolean, sectionText: string, documentText: string
 
   for(let i = documentText.length-1; i >= 0; i--){
     tableRows.push([
-      {html: getDocumentSectionName(isClaimantString, documentText[i]) + '<br>' + 'PAGES.CLAIM_SUMMARY.DATE_DOCUMENT_UPLOADED' + '01 Jan 1970'},
-      {html: '<a style="float: right;" href="href will need to be connected to document">'+getDocumentName(sectionText, documentText[i])+'</a>'},
+      {html: getDocumentSectionName(isClaimantString, documentText[i]) + '<br>' + 'PAGES.CLAIM_SUMMARY.DATE_DOCUMENT_UPLOADED' + '01 Jan 1970', classes: 'govuk-!-width-one-half'},
+      {html: '<a class="govuk-link" href="href will need to be connected to document">'+getDocumentName(sectionText, documentText[i])+'</a>', classes: 'govuk-!-width-one-half govuk-table__cell--numeric'},
     ]);
   }
 
@@ -37,9 +37,11 @@ function getTable(isClaimant: boolean, sectionText: string, documentText: string
       head: [
         {
           text: isClaimantString + sectionText,
+          classes: 'govuk-!-width-one-half',
         },
         {
           text: '',
+          classes: 'govuk-!-width-one-half',
         },
       ],
       tableRows: tableRows,
@@ -51,7 +53,7 @@ function getDocumentName(sectionText: string, documentTypeText: string): string
 {
   let documentText: string;
 
-  if (sectionText.includes('DISCLOSURE') || sectionText.includes('HEARING') || documentTypeText == 'pages.upload_evidence_documents.documents_referred_to_statement') {
+  if (sectionText.includes('DISCLOSURE') || sectionText.includes('HEARING') || documentTypeText == 'pages.claim_summary.documents_referred_to_statement') {
     documentText = 'document_type.pdf';
   } else if (sectionText.includes('WITNESS')){
     documentText = 'witness_document.pdf';
@@ -120,10 +122,10 @@ describe('getEvidenceUploadContent', () => {
     expect(result[0].contentSections[0]).toEqual(evidenceUploadText);
     expect(result[0].contentSections[1]).toEqual(getTable(true, 'PAGES.CLAIM_SUMMARY.DISCLOSURE_DOCUMENTS', ['pages.upload_evidence_documents.documents_for_disclosure', 'pages.upload_evidence_documents.disclosure_list']));
     expect(result[0].contentSections[2]).toEqual(getTable(false, 'PAGES.CLAIM_SUMMARY.DISCLOSURE_DOCUMENTS', ['pages.upload_evidence_documents.documents_for_disclosure', 'pages.upload_evidence_documents.disclosure_list']));
-    expect(result[0].contentSections[3]).toEqual(getTable(true, 'PAGES.CLAIM_SUMMARY.WITNESS_EVIDENCE',['pages.upload_evidence_documents.documents_referred_to_statement', 'pages.claim_summary.notice_of_intention','pages.upload_evidence_documents.witness_summary','pages.upload_evidence_documents.witness_statement']));
-    expect(result[0].contentSections[4]).toEqual(getTable(false, 'PAGES.CLAIM_SUMMARY.WITNESS_EVIDENCE',['pages.upload_evidence_documents.documents_referred_to_statement', 'pages.claim_summary.notice_of_intention','pages.upload_evidence_documents.witness_summary','pages.upload_evidence_documents.witness_statement']));
-    expect(result[0].contentSections[5]).toEqual(getTable(true, 'PAGES.CLAIM_SUMMARY.EXPERT_EVIDENCE',['pages.upload_evidence_documents.answers_to_questions',  'pages.upload_evidence_documents.questions_for_other_party','PAGES.UPLOAD_EVIDENCE_DOCUMENTS.JOINT_STATEMENT_OF_EXPERTS', 'pages.upload_evidence_documents.experts_report']));
-    expect(result[0].contentSections[6]).toEqual(getTable(false, 'PAGES.CLAIM_SUMMARY.EXPERT_EVIDENCE',['pages.upload_evidence_documents.answers_to_questions', 'pages.upload_evidence_documents.questions_for_other_party', 'PAGES.UPLOAD_EVIDENCE_DOCUMENTS.JOINT_STATEMENT_OF_EXPERTS', 'pages.upload_evidence_documents.experts_report']));
+    expect(result[0].contentSections[3]).toEqual(getTable(true, 'PAGES.CLAIM_SUMMARY.WITNESS_EVIDENCE',['pages.claim_summary.documents_referred_to_statement', 'pages.claim_summary.notice_of_intention','pages.upload_evidence_documents.witness_summary','pages.upload_evidence_documents.witness_statement']));
+    expect(result[0].contentSections[4]).toEqual(getTable(false, 'PAGES.CLAIM_SUMMARY.WITNESS_EVIDENCE',['pages.claim_summary.documents_referred_to_statement', 'pages.claim_summary.notice_of_intention','pages.upload_evidence_documents.witness_summary','pages.upload_evidence_documents.witness_statement']));
+    expect(result[0].contentSections[5]).toEqual(getTable(true, 'PAGES.CLAIM_SUMMARY.EXPERT_EVIDENCE',['pages.upload_evidence_documents.answers_to_questions',  'pages.upload_evidence_documents.questions_for_other_party','PAGES.UPLOAD_EVIDENCE_DOCUMENTS.JOINT_STATEMENT_OF_EXPERTS', 'pages.claim_summary.expert_report']));
+    expect(result[0].contentSections[6]).toEqual(getTable(false, 'PAGES.CLAIM_SUMMARY.EXPERT_EVIDENCE',['pages.upload_evidence_documents.answers_to_questions', 'pages.upload_evidence_documents.questions_for_other_party', 'PAGES.UPLOAD_EVIDENCE_DOCUMENTS.JOINT_STATEMENT_OF_EXPERTS', 'pages.claim_summary.expert_report']));
     expect(result[0].contentSections[7]).toEqual(getTable(true, 'PAGES.CLAIM_SUMMARY.HEARING_DOCUMENTS',['pages.claim_summary.documentary_evidence', 'pages.upload_evidence_documents.costs','pages.upload_evidence_documents.legal_authorities', 'pages.upload_evidence_documents.skeleton_argument', 'pages.upload_evidence_documents.case_summary']));
     expect(result[0].contentSections[8]).toEqual(getTable(false, 'PAGES.CLAIM_SUMMARY.HEARING_DOCUMENTS',['pages.claim_summary.documentary_evidence', 'pages.upload_evidence_documents.costs','pages.upload_evidence_documents.legal_authorities', 'pages.upload_evidence_documents.skeleton_argument', 'pages.upload_evidence_documents.case_summary']));
   });
