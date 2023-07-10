@@ -389,5 +389,5 @@ export default [
   uploadYourDocumentsController,
   documentsUploadedController,
   cancelYourUploadController,
-  finaliseTrialArrangementsController
+  finaliseTrialArrangementsController,
 ];
