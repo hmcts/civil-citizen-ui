@@ -13,13 +13,13 @@ Before(async ({api}) => {
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
   console.log('claimRef has been created Successfully    <===>  '  , claimRef);
   if (claimRef) {
-    await LoginSteps.EnterUserCredentials(config.Username, config.Password);
+    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   } else {
     console.log('claimRef has not been Created');
   }
 });
 
-Scenario('No response submitted, date agreed upon request time  @citizenUI @admitAll @disabled', async () => {
+Scenario('No response submitted, date agreed upon request time  @citizenUI @admitAll @regression', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, iHaveAlreadyAgreedMoretime);
   await ResponseSteps.DefendantSummaryPage(claimRef);
