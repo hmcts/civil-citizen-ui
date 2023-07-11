@@ -1,21 +1,9 @@
 import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
-import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {t} from 'i18next';
-export class FinaliseYourTrialSectionBuilder extends PageSectionBuilder {
+import {UploadYourDocumentsSectionBuilder} from 'models/caseProgression/uploadYourDocumentsSectionBuilder';
+export class FinaliseYourTrialSectionBuilder extends UploadYourDocumentsSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
 
-  addMainTitle(mainTitle: string, variables?: unknown) {
-    const mainTitleSection = ({
-      type: ClaimSummaryType.MAINTITLE,
-      data: {
-        text: mainTitle,
-        variables: variables,
-      },
-    });
-    this._claimSummarySections.push(mainTitleSection);
-    return this;
-  }
-  
   addLeadParagraphWithNoBottomMargin(text: string, variables?: unknown) {
     const leadParagraphSectionWithNoMargin = ({
       type: ClaimSummaryType.LEAD_PARAGRAPH_WITH_NO_BOTTOM_MARGIN,
@@ -40,7 +28,7 @@ export class FinaliseYourTrialSectionBuilder extends PageSectionBuilder {
     return this;
   }
 
-  addInsetText(text: string, text1: string, text2: string, variables?: any) {
+  addCustomInsetText(text: string, text1: string, text2: string, variables?: any) {
     const insetSection = ({
       type: ClaimSummaryType.INSET_TEXT,
       data: {
@@ -52,15 +40,17 @@ export class FinaliseYourTrialSectionBuilder extends PageSectionBuilder {
     return this;
   }
 
-  addLeadParagraph(text: string, variables?: unknown) {
-    const leadParagraphSection = ({
-      type: ClaimSummaryType.LEAD_PARAGRAPH,
+  addStartButtonWithLink(title: string, href: string, cancelHref: string) {
+    const startButtonSection = ({
+      type: ClaimSummaryType.BUTTON_WITH_CANCEL_LINK,
       data: {
-        text: text,
-        variables: variables,
+        text: title,
+        href: href,
+        isStartButton: true,
+        cancelHref: cancelHref,
       },
     });
-    this._claimSummarySections.push(leadParagraphSection);
+    this._claimSummarySections.push(startButtonSection);
     return this;
   }
 

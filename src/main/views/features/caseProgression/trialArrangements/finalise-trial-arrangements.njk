@@ -18,14 +18,6 @@
           {% for content in finaliseYourTrialContents %}
             {{ itemContent(content,t) }}
           {% endfor %}
-          <div class="govuk-button-group">
-            {{ govukButton({
-              text: t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.START_NOW'),
-              isStartButton: true,
-              href: finaliseTrialArrangementNextPageUrl
-            }) }}
-            <a href={{ cancelLinkUrl }} class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
-          </div>
           {{ contactUsForHelp(t) }}
 
         </div>

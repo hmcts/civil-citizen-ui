@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import {app} from '../../../../../../main/app';
-import {CP_FINALISE_TRIAL_ARRANGEMENTS} from 'routes/urls';
+import {CP_FINALISE_TRIAL_ARRANGEMENTS_URL} from 'routes/urls';
 import {t} from 'i18next';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import Module from 'module';
@@ -53,7 +53,7 @@ describe('"finalise trial arrangements" page test', () => {
         .reply(200, claim);
       //When
       await testSession
-        .get(CP_FINALISE_TRIAL_ARRANGEMENTS.replace(':id', claimId))
+        .get(CP_FINALISE_TRIAL_ARRANGEMENTS_URL.replace(':id', claimId))
       //Then
         .expect((res: { status: unknown; text: unknown; }) => {
           expect(res.status).toBe(200);
@@ -69,7 +69,7 @@ describe('"finalise trial arrangements" page test', () => {
         .reply(404, null);
       //When
       await testSession
-        .get(CP_FINALISE_TRIAL_ARRANGEMENTS.replace(':id', '1111'))
+        .get(CP_FINALISE_TRIAL_ARRANGEMENTS_URL.replace(':id', '1111'))
         //Then
         .expect((res: { status: unknown; text: unknown; }) => {
           expect(res.status).toBe(500);

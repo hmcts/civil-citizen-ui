@@ -53,7 +53,7 @@ describe('FinaliseYourTrialSectionBuilder tests', ()=> {
 
     //When
     const insetTextBuilt = new FinaliseYourTrialSectionBuilder()
-      .addInsetText('text', 'text1', 'text2', 'variables')
+      .addCustomInsetText('text', 'text1', 'text2', 'variables')
       .build();
 
     //Then
@@ -96,5 +96,26 @@ describe('FinaliseYourTrialSectionBuilder tests', ()=> {
 
     //Then
     expect(leadParagraphBuilt).toEqual([leadParaWithNoMarginExpected]);
+  });
+
+  it('should add Start Button with cancel link', ()=> {
+    //Given
+    const startButtonExpected = ({
+      type: ClaimSummaryType.BUTTON_WITH_CANCEL_LINK,
+      data: {
+        text: 'text',
+        href: 'href',
+        isStartButton: true,
+        cancelHref: 'cancelHref',
+      },
+    });
+
+    //When
+    const startButtonBuilt = new FinaliseYourTrialSectionBuilder()
+      .addStartButtonWithLink(startButtonExpected.data.text,startButtonExpected.data.href,startButtonExpected.data.cancelHref)
+      .build();
+
+    //Then
+    expect(startButtonBuilt).toEqual([startButtonExpected]);
   });
 });

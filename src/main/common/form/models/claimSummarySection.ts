@@ -55,5 +55,6 @@ export enum ClaimSummaryType {
   DATE_ARRAY = 'dateArray',
   UPLOAD_ARRAY = 'uploadArray',
   SELECT = 'select',
-  LEAD_PARAGRAPH_WITH_NO_BOTTOM_MARGIN = 'leadParagraphWithNoBottomMargin'
+  LEAD_PARAGRAPH_WITH_NO_BOTTOM_MARGIN = 'leadParagraphWithNoBottomMargin',
+  BUTTON_WITH_CANCEL_LINK = 'buttonWithCancelLink'
 }
